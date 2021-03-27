@@ -306,6 +306,13 @@ export default class FunctionToolbar extends React.Component {
         disableImage: getThemeAssets().mapTools.icon_tool_multi_media_ash,
         action: () => {
           if (this.props.currentLayer) {
+            if (this.props.currentLayer.themeType) {
+              Toast.show(
+                getLanguage(this.props.language).Prompt
+                  .CANNOT_COLLECT_IN_THEMATIC_LAYERS,
+              )
+              return
+            }
             const layerType = LayerUtils.getLayerType(this.props.currentLayer)
             const isTaggingLayer = layerType === 'TAGGINGLAYER'
             if (isTaggingLayer) {
@@ -323,7 +330,7 @@ export default class FunctionToolbar extends React.Component {
             )
             NavigationService.navigate('LayerManager')
           }
-        }
+        },
         // getData: MediaData.getData,
         // actions: MediaAction,
       })

@@ -5,9 +5,9 @@
 // eslint-disable-next-line
 import { Platform } from 'react-native'
 import RNFS from 'react-native-fs'
-import { SOnlineService } from 'imobile_for_reactnative'
+import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
-import ConstPath from '../../../../constants/ConstPath'
+import { ConstPath, UserType } from '../../../../constants'
 import { OnlineServicesUtils } from '../../../../utils'
 
 function isJSON(str: any) {
@@ -45,7 +45,7 @@ export default class CoworkFileHandle {
     CoworkFileHandle.coworkListFile = ''
     CoworkFileHandle.coworkListFile_ol = ''
 
-    if (user.userId === undefined) {
+    if (user.userId === undefined && user.userName === undefined) {
       return
     }
     CoworkFileHandle.user = user
@@ -113,52 +113,65 @@ export default class CoworkFileHandle {
     if (CoworkFileHandle.coworkListFile_ol === '') {
       return false
     }
-    let JSOnlineService = new OnlineServicesUtils('online')
-    if (
-      (await JSOnlineService.getDataIdByName('cowork.list.zip')) !== undefined
-    ) {
+    let service
+    if (UserType.isOnlineUser(CoworkFileHandle.user)) {
+      service = new OnlineServicesUtils('online')
+    } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
+      service = new OnlineServicesUtils('iportal')
+    }
+    if (service && (await service.getDataIdByName('cowork.list.zip')) !== undefined) {
       let promise = new Promise((resolve, reject) => {
-        SOnlineService.downloadFileWithCallBack(
-          CoworkFileHandle.coworkListFile_ol,
-          'cowork.list',
-          {
-            onResult: async value => {
-              try {
-                if (value === true) {
-                  let value = await RNFS.readFile(
-                    CoworkFileHandle.coworkListFile_ol,
-                  )
-                  let onlineVersion = JSON.parse(value)
-                  if (
-                    !CoworkFileHandle.cowork ||
-                    onlineVersion.rev > CoworkFileHandle.cowork.rev
-                  ) {
-                    //没有本地coworklist或online的版本较新，更新本地文件
-                    CoworkFileHandle.cowork = onlineVersion
-                    await RNFS.writeFile(
-                      CoworkFileHandle.coworkListFile,
-                      value,
-                    )
-                    // CoworkFileHandle.checkCoworkList()
-                    CoworkFileHandle.refreshCallback && CoworkFileHandle.refreshCallback()
-                    CoworkFileHandle.refreshMessageCallback && CoworkFileHandle.refreshMessageCallback()
-                  } else if (
-                    onlineVersion.rev < CoworkFileHandle.cowork.rev
-                  ) {
-                    //本地版本较新，将本地文件更新到online
-                    await CoworkFileHandle.upload()
-                  }
-                  await RNFS.unlink(CoworkFileHandle.coworkListFile_ol)
-                  resolve(true)
-                } else {
-                  resolve(false)
-                }
-              } catch (error) {
-                reject(error)
+        let callback = async (_value: boolean) => {
+          try {
+            if (_value === true) {
+              let value = await RNFS.readFile(
+                CoworkFileHandle.coworkListFile_ol,
+              )
+              let onlineVersion = JSON.parse(value)
+              if (
+                !CoworkFileHandle.cowork ||
+                onlineVersion.rev > CoworkFileHandle.cowork.rev
+              ) {
+                //没有本地coworklist或online的版本较新，更新本地文件
+                CoworkFileHandle.cowork = onlineVersion
+                await RNFS.writeFile(
+                  CoworkFileHandle.coworkListFile,
+                  value,
+                )
+                // CoworkFileHandle.checkCoworkList()
+                CoworkFileHandle.refreshCallback && CoworkFileHandle.refreshCallback()
+                CoworkFileHandle.refreshMessageCallback && CoworkFileHandle.refreshMessageCallback()
+              } else if (
+                onlineVersion.rev < CoworkFileHandle.cowork.rev
+              ) {
+                //本地版本较新，将本地文件更新到online
+                await CoworkFileHandle.upload()
               }
+              await RNFS.unlink(CoworkFileHandle.coworkListFile_ol)
+              resolve(true)
+            } else {
+              resolve(false)
+            }
+          } catch (error) {
+            reject(error)
+          }
+        }
+
+        if (UserType.isOnlineUser(CoworkFileHandle.user)) {
+          SOnlineService.downloadFileWithCallBack(
+            CoworkFileHandle.coworkListFile_ol,
+            'cowork.list',
+            {
+              onResult: callback,
             },
-          },
-        )
+          )
+        } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
+          SIPortalService.downloadMyData(
+            CoworkFileHandle.coworkListFile_ol,
+            'cowork.list',
+            callback,
+          )
+        }
       })
       return promise
     } else {
@@ -276,17 +289,31 @@ export default class CoworkFileHandle {
       UploadFileName = 'cowork.list'
     }
     let promise = new Promise(resolve => {
-      SOnlineService.uploadFile(
-        CoworkFileHandle.coworkListFile,
-        UploadFileName,
-        {
-          onResult: () => {
-            resolve(true)
-            CoworkFileHandle.uploading = false
-            CoworkFileHandle.waitUploading = false
+      if (UserType.isOnlineUser(CoworkFileHandle.user)) {
+        SOnlineService.uploadFile(
+          CoworkFileHandle.coworkListFile,
+          UploadFileName,
+          {
+            onResult: () => {
+              resolve(true)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            },
           },
-        },
-      )
+        )
+      } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
+        SIPortalService.uploadData(
+          CoworkFileHandle.coworkListFile,
+          UploadFileName,
+          {
+            onResult: () => {
+              resolve(true)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            },
+          },
+        )
+      }
     })
     return promise
   }

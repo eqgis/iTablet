@@ -86,6 +86,17 @@ const Profile = {
   CONNECTING: '连接中',
   CONNECT_SERVER_FAIL: '未能连接到服务器，请检查网络或服务器地址',
   NEXT: '下一步',
+  MESSAGE_SERVICE_SETTING: '消息服务配置',
+  MESSAGE_SERVICE_IP: '消息服务IP地址',
+  MESSAGE_SERVICE_PORT: '消息服务端口号',
+  MESSAGE_SERVICE_MANAGE_PORT: '消息服务管理端口号',
+  MESSAGE_SERVICE_HOST_NAME: '虚拟机主机',
+  MESSAGE_SERVICE_ADMIN_NAME: '消息管理者用户名',
+  MESSAGE_SERVICE_ADMIN_PASSWORD: '消息管理者密码',
+
+  FILE_SERVICE_SETTING: '文件服务配置',
+  FILE_SERVICE_UPLOAD_URL: '文件上传服务URL',
+  FILE_SERVICE_UPLOAD_DOWNLOAD: '文件下载服务URL',
 
   SWITCH_ACCOUNT: '切换账号',
   LOG_OUT: '退出登录',

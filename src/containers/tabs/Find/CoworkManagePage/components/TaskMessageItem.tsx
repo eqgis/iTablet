@@ -1,15 +1,14 @@
 import React from 'react'
 import { View, TouchableOpacity, Text, Image, Platform } from 'react-native'
 import { ListSeparator, Progress, RedDot } from '../../../../../components'
-import { ConstPath } from '../../../../../constants'
+import { ConstPath, UserType } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { getThemeAssets } from '../../../../../assets'
 import { color, size } from '../../../../../styles'
 import RNFS from 'react-native-fs'
-import { Toast, scaleSize } from '../../../../../utils'
+import { Toast, scaleSize, OnlineServicesUtils } from '../../../../../utils'
 import DataHandler from '../../../Mine/DataHandler'
 import { FileTools } from '../../../../../native'
-import { SOnlineService } from 'imobile_for_reactnative'
 
 import styles from './styles'
 
@@ -137,14 +136,24 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
 
     let dataId = this.props.data.resource.resourceId
-    let dataUrl =
-      'https://www.supermapol.com/web/datas/' + dataId + '/download'
+    let dataUrl, onlineServicesUtils
+    if (UserType.isIPortalUser(this.props.user.currentUser)) {
+      let url = this.props.user.currentUser.serverUrl
+      if (url.indexOf('http') !== 0) {
+        url = 'http://' + url
+      }
+      dataUrl = `${url}/datas/${dataId}/download`
+      onlineServicesUtils = new OnlineServicesUtils('iportal')
+    } else {
+      dataUrl = 'https://www.supermapol.com/web/datas/' + dataId + '/download'
+      onlineServicesUtils = new OnlineServicesUtils('online')
+    }
 
     const downloadOptions = {
       ...Platform.select({
         android: {
           headers: {
-            cookie: await SOnlineService.getAndroidSessionID(),
+            cookie: await onlineServicesUtils.getCookie(),
           },
         },
       }),

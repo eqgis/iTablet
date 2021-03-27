@@ -137,8 +137,8 @@ export default class Friend extends Component {
 
   componentDidUpdate(prevProps) {
     if (
-      JSON.stringify(prevProps.user.currentUser.userId) !==
-      JSON.stringify(this.props.user.currentUser.userId)
+      JSON.stringify(prevProps.user.currentUser.userName) !==
+      JSON.stringify(this.props.user.currentUser.userName)
     ) {
       this.updateServices()
     }
@@ -176,8 +176,9 @@ export default class Friend extends Component {
     GLOBAL.homePath = await FileTools.appendingHomeDirectory()
   }
 
-  getOnlineGroup = async () => {
-    let servicesUtils = new SCoordination('online')
+  getOnlineGroup = async type => {
+    if (type !== 'online' && type !== 'iportal') return
+    let servicesUtils = new SCoordination(type)
     servicesUtils.getGroupInfos({
       orderBy: 'CREATETIME',
       orderType: 'DESC',
@@ -193,13 +194,14 @@ export default class Friend extends Component {
     })
   }
 
-  initServerInfo = async () => {
+  initServerInfo = async type => {
+    if (type !== 'online' && type !== 'iportal') return
     try {
-      this.getOnlineGroup()
+      this.getOnlineGroup(type)
       let commonPath = await FileTools.appendingHomeDirectory(
         '/iTablet/Common/',
       )
-      let JSOnlineService = new OnlineServicesUtils('online')
+      let servicesUtils = new OnlineServicesUtils(type)
       let data
       let Info
       if (this.props.appConfig.infoServer) {
@@ -217,14 +219,14 @@ export default class Friend extends Component {
           Info = data
         }
       } else {
-        data = await JSOnlineService.getPublicDataByName(
+        data = await servicesUtils.getPublicDataByName(
           '927528',
           'ServerInfo.geojson',
         )
       }
       if (!Info && data && (data.url || data.id !== undefined)) {
         let url =
-          data.url || `https://www.supermapol.com/web/datas/${data.id}/download`
+          data.url || `${servicesUtils.serverUrl}/datas/${data.id}/download`
 
         let filePath = commonPath + data.fileName
 
@@ -266,7 +268,7 @@ export default class Friend extends Component {
     if (this.curChat) {
       MessageDataHandle.readMessage({
         //清除未读信息
-        userId: this.props.user.currentUser.userId, //当前登录账户的id
+        userId: this.props.user.currentUser.userName, //当前登录账户的id
         talkId: this.curChat.targetUser.id, //会话ID
       })
     }
@@ -340,7 +342,7 @@ export default class Friend extends Component {
   startCheckAvailability = async () => {
     //记录本次连接的consumer
     let consumer = await SMessageServiceHTTP.getConsumer(
-      this.props.user.currentUser.userId,
+      this.props.user.currentUser.userName,
     )
     //服务器还没来得及生成，等待
     if (!consumer) {
@@ -355,7 +357,7 @@ export default class Friend extends Component {
       try {
         if (!this.checkAvailability) return
         let consumer = await SMessageServiceHTTP.getConsumer(
-          this.props.user.currentUser.userId,
+          this.props.user.currentUser.userName,
         )
         if (!consumer || consumer !== this.props.chat.consumer) {
           this.restartService()
@@ -365,10 +367,10 @@ export default class Friend extends Component {
             JSON.stringify({
               type: 0,
               user: {
-                id: this.props.user.currentUser.userId,
+                id: this.props.user.currentUser.userName,
               },
             }),
-            this.props.user.currentUser.userId,
+            this.props.user.currentUser.userName,
             true,
           )
         }
@@ -398,8 +400,8 @@ export default class Friend extends Component {
   updateServices = async () => {
     g_connectService && (await this.disconnectService())
     this.restartService()
-    JPushService.init(this.props.user.currentUser.userId)
-    if (this.props.user.currentUser.userId === undefined) {
+    JPushService.init(this.props.user.currentUser.userName)
+    if (this.props.user.currentUser.userName === undefined) {
       FriendListFileHandle.initFriendList(this.props.user.currentUser)
       // CoworkFileHandle.initCoworkList(this.props.user.currentUser)
     }
@@ -443,16 +445,16 @@ export default class Friend extends Component {
   }
 
   connectService = async () => {
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+    if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
       try {
-        await this.initServerInfo()
+        await this.initServerInfo(UserType.isOnlineUser(this.props.user.currentUser) ? 'online' : 'iportal')
         let res = await SMessageService.connectService(
           SMessageServiceHTTP.serviceInfo.MSG_IP,
           SMessageServiceHTTP.serviceInfo.MSG_Port,
           SMessageServiceHTTP.serviceInfo.MSG_HostName,
           SMessageServiceHTTP.serviceInfo.MSG_UserName,
           SMessageServiceHTTP.serviceInfo.MSG_Password,
-          this.props.user.currentUser.userId,
+          this.props.user.currentUser.userName,
         )
         if (!res) {
           Toast.show(
@@ -461,7 +463,7 @@ export default class Friend extends Component {
         } else {
           //是否有其他连接
           let connection = await SMessageServiceHTTP.getConnection(
-            this.props.user.currentUser.userId,
+            this.props.user.currentUser.userName,
           )
           //是否是login时调用
           if (GLOBAL.isLogging) {
@@ -474,7 +476,7 @@ export default class Friend extends Component {
                   time: this.loginTime,
                   message: '',
                 }),
-                this.props.user.currentUser.userId,
+                this.props.user.currentUser.userName,
               )
               await SMessageServiceHTTP.closeConnection(connection)
             }
@@ -483,7 +485,7 @@ export default class Friend extends Component {
             if (connection) {
               //检查是否之前consumer
               let consumer = await SMessageServiceHTTP.getConsumer(
-                this.props.user.currentUser.userId,
+                this.props.user.currentUser.userName,
               )
               if (this.props.chat.consumer === consumer) {
                 await SMessageServiceHTTP.closeConnection(connection)
@@ -495,7 +497,7 @@ export default class Friend extends Component {
           }
 
           await SMessageService.startReceiveMessage(
-            this.props.user.currentUser.userId,
+            this.props.user.currentUser.userName,
             { callback: this._enqueueMessage },
           )
 
@@ -518,7 +520,7 @@ export default class Friend extends Component {
       let coworkId = await AsyncStorage.getItem('COWORKID')
       if (this.props.cowork.currentTask.id === '' && coworkId && coworkId !== '') {
         await SMessageService.exitSession(
-          this.props.user.currentUser.userId,
+          this.props.user.currentUser.userName,
           coworkId,
         )
         CoworkInfo.reset()
@@ -554,7 +556,7 @@ export default class Friend extends Component {
     if (msg?.originMsg?.message?.message) {
       msg.originMsg.message.message.progress = value.percentage
       MessageDataHandle.editMessage({
-        userId: this.props.user.currentUser.userId,
+        userId: this.props.user.currentUser.userName,
         talkId: value.talkId,
         msgId: value.msgId,
         editItem: msg,
@@ -583,8 +585,8 @@ export default class Friend extends Component {
     }
 
     // eslint-disable-next-line no-prototype-builtins
-    if (this.props.chat.hasOwnProperty(this.props.user.currentUser.userId)) {
-      let chats = this.props.chat[this.props.user.currentUser.userId]
+    if (this.props.chat.hasOwnProperty(this.props.user.currentUser.userName)) {
+      let chats = this.props.chat[this.props.user.currentUser.userName]
       // eslint-disable-next-line no-prototype-builtins
       if (chats.hasOwnProperty(targetId)) {
         chatObj = chats[targetId].history
@@ -604,10 +606,10 @@ export default class Friend extends Component {
     let newMembers = JSON.parse(JSON.stringify(members))
 
     members.unshift({
-      id: this.props.user.currentUser.userId,
+      id: this.props.user.currentUser.userName,
       name: this.props.user.currentUser.nickname,
     })
-    let groupId = 'Group_' + time + '_' + this.props.user.currentUser.userId
+    let groupId = 'Group_' + time + '_' + this.props.user.currentUser.userName
 
     let groupName = ''
     for (let i = 0; i < members.length; i++) {
@@ -622,12 +624,12 @@ export default class Friend extends Component {
       id: groupId,
       members: members,
       groupName: groupName,
-      masterID: this.props.user.currentUser.userId,
+      masterID: this.props.user.currentUser.userName,
     })
     let msgObj = {
       user: {
         name: this.props.user.currentUser.nickname,
-        id: this.props.user.currentUser.userId,
+        id: this.props.user.currentUser.userName,
         groupID: groupId,
         groupName: groupName, //群组消息带个群组名
       },
@@ -636,7 +638,7 @@ export default class Friend extends Component {
       message: {
         oldMembers: [
           {
-            id: this.props.user.currentUser.userId,
+            id: this.props.user.currentUser.userName,
             name: this.props.user.currentUser.nickname,
           },
         ],
@@ -660,7 +662,7 @@ export default class Friend extends Component {
     let msgObj = {
       user: {
         name: this.props.user.currentUser.nickname,
-        id: this.props.user.currentUser.userId,
+        id: this.props.user.currentUser.userName,
         groupID: groupId,
         groupName: group.groupName, //群组消息带个群组名
       },
@@ -683,7 +685,7 @@ export default class Friend extends Component {
     let msgObj = {
       user: {
         name: this.props.user.currentUser.nickname,
-        id: this.props.user.currentUser.userId,
+        id: this.props.user.currentUser.userName,
         groupID: groupId,
         groupName: group.groupName, //群组消息带个群组名
       },
@@ -709,10 +711,10 @@ export default class Friend extends Component {
   sendCoworkInvitation = async (talkId, moduleId, mapName) => {
     let time = new Date().getTime()
     let coworkId =
-      'Group_' + 'Cowork_' + time + '_' + this.props.user.currentUser.userId
+      'Group_' + 'Cowork_' + time + '_' + this.props.user.currentUser.userName
     try {
       let isGroup = talkId.indexOf('Group_') === 0
-      let groupId = this.props.user.currentUser.userId
+      let groupId = this.props.user.currentUser.userName
       let groupName = ''
       if (isGroup) {
         let group = FriendListFileHandle.getGroup(talkId)
@@ -724,7 +726,7 @@ export default class Friend extends Component {
         time: time,
         user: {
           name: this.props.user.currentUser.nickname,
-          id: this.props.user.currentUser.userId,
+          id: this.props.user.currentUser.userName,
           groupID: groupId,
           groupName: groupName,
         },
@@ -739,7 +741,7 @@ export default class Friend extends Component {
       CoworkInfo.setId(coworkId)
       CoworkInfo.setGroupId(talkId)
       let member = {
-        id: this.props.user.currentUser.userId,
+        id: this.props.user.currentUser.userName,
         name: this.props.user.currentUser.nickname,
       }
       // CoworkInfo.addMember(member)
@@ -753,7 +755,7 @@ export default class Friend extends Component {
       this.curChat && this.curChat.onReceive(msgId)
 
       this.props.addInvite({
-        userId: this.props.user.currentUser.userId,
+        userId: this.props.user.currentUser.userName,
         module: moduleId,
         mapName: mapName,
         coworkId: coworkId,
@@ -761,14 +763,14 @@ export default class Friend extends Component {
         talkId: talkId,
         user: {
           name: this.props.user.currentUser.nickname,
-          id: this.props.user.currentUser.userId,
+          id: this.props.user.currentUser.userName,
           groupID: groupId,
           groupName: groupName,
         },
       })
     } catch (error) {
       CoworkInfo.reset()
-      SMessageService.exitSession(this.props.user.currentUser.userId, coworkId)
+      SMessageService.exitSession(this.props.user.currentUser.userName, coworkId)
       this.locationTimer && clearInterval(this.locationTimer)
     }
   }
@@ -787,7 +789,7 @@ export default class Friend extends Component {
           time: new Date().getTime(),
           user: {
             name: this.props.user.currentUser.nickname,
-            id: this.props.user.currentUser.userId,
+            id: this.props.user.currentUser.userName,
             groupID: coworkId,
             groupName: '',
           },
@@ -800,7 +802,7 @@ export default class Friend extends Component {
         CoworkInfo.setId(coworkId)
         CoworkInfo.setGroupId(talkId)
         let member = {
-          id: this.props.user.currentUser.userId,
+          id: this.props.user.currentUser.userName,
           name: this.props.user.currentUser.nickname,
         }
         // CoworkInfo.addMember(member)
@@ -824,7 +826,7 @@ export default class Friend extends Component {
     try {
       if (this.props.cowork.currentTask.id !== '') {
         let coworkId = this.props.cowork.currentTask.id
-        let id = this.props.user.currentUser.userId
+        let id = this.props.user.currentUser.userName
         let msgObj = {
           type: MSGConstant.MSG_COWORK,
           time: new Date().getTime(),
@@ -854,7 +856,7 @@ export default class Friend extends Component {
       if (this.props.cowork.currentTask.id !== '') {
         let geoInfo = await SMap.getUserAddGeometry(
           layerInfo.path,
-          this.props.user.currentUser.userId,
+          this.props.user.currentUser.userName,
         )
         let geometry = geoInfo.geometry
         let geoType = geoInfo.geoType
@@ -864,7 +866,7 @@ export default class Friend extends Component {
           time: new Date().getTime(),
           user: {
             name: this.props.user.currentUser.nickname,
-            id: this.props.user.currentUser.userId,
+            id: this.props.user.currentUser.userName,
             groupID: this.props.cowork.currentTask.id,
             groupName: '',
             coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
@@ -877,7 +879,7 @@ export default class Friend extends Component {
             layerName: layerInfo.name,
             caption: layerInfo.caption,
             id: geoID,
-            geoUserID: this.props.user.currentUser.userId,
+            geoUserID: this.props.user.currentUser.userName,
             geometry: geometry,
             geoType: geoType,
           },
@@ -915,7 +917,7 @@ export default class Friend extends Component {
           time: new Date().getTime(),
           user: {
             name: this.props.user.currentUser.nickname,
-            id: this.props.user.currentUser.userId,
+            id: this.props.user.currentUser.userName,
             groupID: this.props.cowork.currentTask.id,     // 任务群组
             groupName: '',
             coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
@@ -951,7 +953,7 @@ export default class Friend extends Component {
           time: new Date().getTime(),
           user: {
             name: this.props.user.currentUser.nickname,
-            id: this.props.user.currentUser.userId,
+            id: this.props.user.currentUser.userName,
             groupID: this.props.cowork.currentTask.id,
             groupName: '',
             coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
@@ -994,7 +996,7 @@ export default class Friend extends Component {
           time: new Date().getTime(),
           user: {
             name: this.props.user.currentUser.nickname,
-            id: this.props.user.currentUser.userId,
+            id: this.props.user.currentUser.userName,
             groupID: this.props.cowork.currentTask.id,     // 任务群组
             groupName: '',
             coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
@@ -1072,7 +1074,7 @@ export default class Friend extends Component {
         this.props.addMemberLocation({
           groupId: this.props.cowork.currentTask.groupID,
           taskId: this.props.cowork.currentTask.id,
-          memberId: this.props.user.currentUser.userId,
+          memberId: this.props.user.currentUser.userName,
           show: true,
           location: {
             longitude: location.longitude,
@@ -1086,7 +1088,7 @@ export default class Friend extends Component {
             time: new Date().getTime(),
             user: {
               name: this.props.user.currentUser.nickname,
-              id: this.props.user.currentUser.userId,
+              id: this.props.user.currentUser.userName,
               groupID: coworkId,
               groupName: '',
               coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
@@ -1109,14 +1111,14 @@ export default class Friend extends Component {
         // if (
         //   isRealTime &&
         //   // CoworkInfo.isRealTime &&
-        //   CoworkInfo.isUserShow(this.props.user.currentUser.userId)
+        //   CoworkInfo.isUserShow(this.props.user.currentUser.userName)
         // ) {
         //   let initial = getLanguage(this.props.language).Friends.SELF
         //   if (initial.length > 2) {
         //     initial = initial.slice(0, 2)
         //   }
         //   this.props.setMemberShow()
-        //   CoworkInfo.setUserLocation(this.props.user.currentUser.userId, {
+        //   CoworkInfo.setUserLocation(this.props.user.currentUser.userName, {
         //     longitude: location.longitude,
         //     latitude: location.latitude,
         //     initial,
@@ -1125,14 +1127,14 @@ export default class Friend extends Component {
         //     location.longitude,
         //     location.latitude,
         //     this.props.user.currentUser.nickname,
-        //     this.props.user.currentUser.userId,
+        //     this.props.user.currentUser.userName,
         //     initial,
         //   )
         // }
         // SMap.addUserTrack(
         //   location.longitude,
         //   location.latitude,
-        //   this.props.user.currentUser.userId,
+        //   this.props.user.currentUser.userName,
         // )
       }
     } catch (error) {
@@ -1213,7 +1215,7 @@ export default class Friend extends Component {
   }
 
   storeMessage = (messageObj, talkId, msgId) => {
-    let userId = this.props.user.currentUser.userId
+    let userId = this.props.user.currentUser.userName
     let type = 0
     if (
       messageObj.type === MSGConstant.MSG_SINGLE ||
@@ -1291,7 +1293,7 @@ export default class Friend extends Component {
             memberList.push(msg.originMsg.message.members[member].name)
             if (
               msg.originMsg.message.members[member].id ===
-              this.props.user.currentUser.userId
+              this.props.user.currentUser.userName
             ) {
               isInList = true
             }
@@ -1367,7 +1369,7 @@ export default class Friend extends Component {
   }
 
   getMsgId = talkId => {
-    let userId = this.props.user.currentUser.userId
+    let userId = this.props.user.currentUser.userName
     let msgId = 0
     let chatHistory = []
     if (this.props.chat[userId] && this.props.chat[userId][talkId]) {
@@ -1380,7 +1382,7 @@ export default class Friend extends Component {
   }
 
   getMsgByMsgId = (talkId, msgId) => {
-    let userId = this.props.user.currentUser.userId
+    let userId = this.props.user.currentUser.userName
     let chatHistory = []
     let msg = undefined
     if (this.props.chat[userId] && this.props.chat[userId][talkId]) {
@@ -1406,7 +1408,7 @@ export default class Friend extends Component {
       let msg = this.getMsgByMsgId(talkId, msgId)
       msg.originMsg.message.message.queueName = res.queueName
       MessageDataHandle.editMessage({
-        userId: this.props.user.currentUser.userId,
+        userId: this.props.user.currentUser.userName,
         talkId: talkId,
         msgId: msgId,
         editItem: msg,
@@ -1427,7 +1429,7 @@ export default class Friend extends Component {
       let res = await SMessageService.sendFileWithThirdServer(
         SMessageServiceHTTP.serviceInfo.FILE_UPLOAD_SERVER_URL,
         filePath,
-        this.props.user.currentUser.userId,
+        this.props.user.currentUser.userName,
         talkId,
         msgId,
       )
@@ -1435,7 +1437,7 @@ export default class Friend extends Component {
       let msg = this.getMsgByMsgId(talkId, msgId)
       msg.originMsg.message.message.queueName = res.queueName
       MessageDataHandle.editMessage({
-        userId: this.props.user.currentUser.userId,
+        userId: this.props.user.currentUser.userName,
         talkId: talkId,
         msgId: msgId,
         editItem: msg,
@@ -1470,7 +1472,7 @@ export default class Friend extends Component {
           talkId,
           msgId,
         )
-        let message = this.props.chat[this.props.user.currentUser.userId][
+        let message = this.props.chat[this.props.user.currentUser.userName][
           talkId
         ].history[msgId]
         if (res === true) {
@@ -1478,7 +1480,7 @@ export default class Friend extends Component {
           message.originMsg.message.message.filePath =
             receivePath + '/' + fileName
           MessageDataHandle.editMessage({
-            userId: this.props.user.currentUser.userId,
+            userId: this.props.user.currentUser.userName,
             talkId: talkId,
             msgId: msgId,
             editItem: message,
@@ -1525,14 +1527,14 @@ export default class Friend extends Component {
         chatMessage._id,
       )
 
-      let message = this.props.chat[this.props.user.currentUser.userId][talkId]
+      let message = this.props.chat[this.props.user.currentUser.userName][talkId]
         .history[chatMessage._id]
       if (res === true) {
         Toast.show(getLanguage(this.props.language).Friends.RECEIVE_SUCCESS)
         message.originMsg.message.message.filePath =
           receivePath + '/' + fileName
         MessageDataHandle.editMessage({
-          userId: this.props.user.currentUser.userId,
+          userId: this.props.user.currentUser.userName,
           talkId: talkId,
           msgId: chatMessage._id,
           editItem: message,
@@ -1644,7 +1646,7 @@ export default class Friend extends Component {
     // let msgId = messageObj.user.groupID || messageObj.id
     let msgId = messageObj.id + ''
     if (msgId && msgId.indexOf('Group_Task_') >= 0) {
-      let onlineGroups = this.props.cowork.groups[this.props.user.currentUser.userId]
+      let onlineGroups = this.props.cowork.groups[this.props.user.currentUser.userName]
       for (let i = 0; i < onlineGroups?.length; i++) {
         if (msgId.includes(onlineGroups[i].id)) {
           exist = true
@@ -1653,7 +1655,7 @@ export default class Friend extends Component {
       }
       if (!exist) {
         await SMessageService.exitSession(
-          this.props.user.currentUser.userId,
+          this.props.user.currentUser.userName,
           msgId,
         )
       }
@@ -1676,7 +1678,7 @@ export default class Friend extends Component {
       }
       return
     }
-    let userId = this.props.user.currentUser.userId
+    let userId = this.props.user.currentUser.userName
     if (userId === messageObj.user.id) {
       //自己的消息，返回
       return
@@ -1746,8 +1748,8 @@ export default class Friend extends Component {
             type: MSGConstant.MSG_DEL_FRIEND,
             user: {
               name: this.props.user.currentUser.userName,
-              id: this.props.user.currentUser.userId,
-              groupID: this.props.user.currentUser.userId,
+              id: this.props.user.currentUser.userName,
+              groupID: this.props.user.currentUser.userName,
             },
             time: Date.parse(new Date()),
           }
@@ -1761,8 +1763,8 @@ export default class Friend extends Component {
             type: MSGConstant.MSG_REJECT,
             user: {
               name: this.props.user.currentUser.userName,
-              id: this.props.user.currentUser.userId,
-              groupID: this.props.user.currentUser.userId,
+              id: this.props.user.currentUser.userName,
+              groupID: this.props.user.currentUser.userName,
             },
             time: Date.parse(new Date()),
           }
@@ -1778,7 +1780,7 @@ export default class Friend extends Component {
         messageObj.message.type === MSGConstant.MSG_INVITE_COWORK
       ) {
         this.props.addInvite({
-          userId: this.props.user.currentUser.userId,
+          userId: this.props.user.currentUser.userName,
           module: messageObj.message.module,
           mapName: messageObj.message.mapName,
           coworkId: messageObj.message.coworkId,
@@ -1805,8 +1807,8 @@ export default class Friend extends Component {
             type: MSGConstant.MSG_ACCEPT_FRIEND,
             user: {
               name: this.props.user.currentUser.userName,
-              id: this.props.user.currentUser.userId,
-              groupID: this.props.user.currentUser.userId,
+              id: this.props.user.currentUser.userName,
+              groupID: this.props.user.currentUser.userName,
               groupName: '',
             },
             time: time,
@@ -1821,8 +1823,8 @@ export default class Friend extends Component {
             type: MSGConstant.MSG_ACCEPT_FRIEND,
             user: {
               name: this.props.user.currentUser.userName,
-              id: this.props.user.currentUser.userId,
-              groupID: this.props.user.currentUser.userId,
+              id: this.props.user.currentUser.userName,
+              groupID: this.props.user.currentUser.userName,
               groupName: '',
             },
             time: time,
@@ -1853,7 +1855,7 @@ export default class Friend extends Component {
         if (
           FriendListFileHandle.isInGroup(
             messageObj.user.groupID,
-            this.props.user.currentUser.userId,
+            this.props.user.currentUser.userName,
           )
         ) {
           await FriendListFileHandle.addGroupMember(
@@ -1892,7 +1894,7 @@ export default class Friend extends Component {
         ) {
           if (
             messageObj.message.members[member].id ===
-            this.props.user.currentUser.userId
+            this.props.user.currentUser.userName
           ) {
             inList = true
             break
@@ -1903,7 +1905,7 @@ export default class Friend extends Component {
           bSysShow = false
           await FriendListFileHandle.delFromGroupList(messageObj.user.groupID)
           MessageDataHandle.delMessage({
-            userId: this.props.user.currentUser.userId,
+            userId: this.props.user.currentUser.userName,
             talkId: messageObj.user.groupID,
           })
           if (
@@ -1929,7 +1931,7 @@ export default class Friend extends Component {
          */
         await FriendListFileHandle.delFromGroupList(messageObj.user.groupID)
         MessageDataHandle.delMessage({
-          userId: this.props.user.currentUser.userId,
+          userId: this.props.user.currentUser.userName,
           talkId: messageObj.user.groupID,
         })
       } else if (messageObj.type === MSGConstant.MSG_MODIFY_GROUP_NAME) {
@@ -2153,9 +2155,7 @@ export default class Friend extends Component {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
-            NavigationService.navigate('Login', {
-              show: ['Online'],
-            })
+            NavigationService.navigate('Login')
           }}
         >
           <View style={styles.itemView}>

@@ -1,17 +1,20 @@
 import * as React from 'react'
 import {
-  TextInput,
+  ScrollView,
   Text,
   View,
   TouchableOpacity,
   Keyboard,
   Animated,
   Dimensions,
+  Image,
 } from 'react-native'
 import { Toast, scaleSize  } from '../../../../../utils/index'
 import styles from './styles'
 import { getLanguage } from '../../../../../language/index'
 import Input from '../../../../../components/Input'
+import { getThemeAssets } from '../../../../../assets'
+import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 export default class IPortalLoginView extends React.Component {
   props: {
     language: string,
@@ -33,7 +36,19 @@ export default class IPortalLoginView extends React.Component {
       nextText:getLanguage(GLOBAL.language).Profile.NEXT,
       canTouch: true,//登录按钮点击判断 add jiakai
       connectTouch: true,//下一步按钮点击判断 add jiakai
+      showMessageServiceSettings: false,
+      showFileServiceSettings: false,
     }
+
+    this.iportalAddress = 'http://192.168.11.206:8190/iportal/web'
+    this.iportalMQIP = '116.196.115.69'
+    this.iportalMQPort = 5672
+    this.iportalMQManagePort = 15672
+    this.iportalHostName = '/'
+    this.iportalMQAdminName = 'admin'
+    this.iportalMQAdminPassword = 'admin'
+    this.iportalFileUploadURL = 'http://116.196.115.69:8124/upload'
+    this.iportalFileDownloadURL = 'http://116.196.115.69:8124/download'
   }
 
   //登录结果按钮状态及提示 add jiakai
@@ -120,26 +135,195 @@ export default class IPortalLoginView extends React.Component {
     }
   }
 
+  _renderInput = ({
+    placeholder,
+    defaultValue,
+    onChangeText = () => {},
+    secureTextEntry = false,
+    showClear = true,
+    tips = '',
+    inputStyle,
+  }) => {
+    return (
+      <View style={[styles.inpuViewStyle, inputStyle]}>
+        <Text style={styles.textStyle}>
+          {placeholder + ': ' + tips}
+        </Text>
+        <View style={[styles.inputBackgroud, {backgroundColor: 'white'}]}>
+          <Input
+            keyboardType={'default'}
+            placeholder={placeholder}
+            placeholderTextColor={'#A7A7A7'}
+            multiline={false}
+            defaultValue={defaultValue || ''}
+            style={[styles.textInputStyle, {backgroundColor: 'transparent'}]}
+            onChangeText={text => {
+              if (onChangeText && typeof onChangeText === 'function') {
+                onChangeText(text)
+              }
+            }}
+            showClear={showClear}
+            secureTextEntry={secureTextEntry}
+            inputStyle={styles.customInputStyle}
+          />
+        </View>
+      </View>
+    )
+  }
+
+  /** 消息服务配置 */
+  _renderMessageServiceSettings = () => {
+    let image = this.state.showMessageServiceSettings
+      ? getThemeAssets().publicAssets.icon_drop_down
+      : getThemeAssets().publicAssets.icon_drop_up
+    return (
+      <View style={styles.settingsView}>
+        <TouchableOpacity
+          activeOpacity={1}
+          style={styles.settingHeader}
+          onPress={() => {
+            this.setState({
+              showMessageServiceSettings: !this.state.showMessageServiceSettings,
+            })
+          }}
+        >
+          <Text style={styles.sectionTitleStyle}>
+            {getLanguage(this.props.language).Profile.MESSAGE_SERVICE_SETTING}
+          </Text>
+          <Image resizeMode={'contain'} source={image} style={styles.arrowImg} />
+        </TouchableOpacity>
+        {
+          this.state.showMessageServiceSettings &&
+          <>
+            {this._renderInput({
+              placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_IP,
+              defaultValue: this.iportalMQIP || '127.0.0.1',
+              onChangeText: text => {
+                this.iportalMQIP = text
+              },
+              tips: 'e.g. 127.0.0.1',
+              inputStyle: {width: '90%'},
+            })}
+            {/* <View
+              style={{
+                width: '90%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                alignSelf: 'center',
+              }}
+            > */}
+              {this._renderInput({
+                placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_PORT,
+                defaultValue: this.iportalMQPort || '5672',
+                onChangeText: text => {
+                  this.iportalMQPort = text
+                },
+                tips: 'e.g. 5672',
+                inputStyle: {width: '90%'},
+              })}
+              {this._renderInput({
+                placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_MANAGE_PORT,
+                defaultValue: this.iportalMQManagePort || '15672',
+                onChangeText: text => {
+                  this.iportalMQManagePort = text
+                },
+                tips: 'e.g. 15672',
+                inputStyle: {width: '90%'},
+              })}
+            {/* </View> */}
+            {this._renderInput({
+              placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_HOST_NAME,
+              defaultValue: this.iportalHostName || '/',
+              onChangeText: text => {
+                this.iportalHostName = text
+              },
+              tips: 'e.g. /',
+              inputStyle: {width: '90%'},
+            })}
+            {this._renderInput({
+              placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_ADMIN_NAME,
+              defaultValue: this.iportalMQAdminName || 'admin',
+              onChangeText: text => {
+                this.iportalMQAdminName = text
+              },
+              // tips: 'e.g. 127.0.0.1',
+              inputStyle: {width: '90%'},
+            })}
+            {this._renderInput({
+              placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_ADMIN_PASSWORD,
+              defaultValue: '**********************',
+              onChangeText: text => {
+                this.iportalMQAdminPassword = text
+              },
+              secureTextEntry: true,
+              // tips: 'e.g. 127.0.0.1',
+              inputStyle: {width: '90%'},
+            })}
+          </>
+        }
+      </View>
+    )
+  }
+
+  /** 文件服务配置 */
+  _renderFileServiceSettings = () => {
+    let image = this.state.showFileServiceSettings
+      ? getThemeAssets().publicAssets.icon_drop_down
+      : getThemeAssets().publicAssets.icon_drop_up
+    return (
+      <View style={styles.settingsView}>
+        <TouchableOpacity
+          activeOpacity={1}
+          style={styles.settingHeader}
+          onPress={() => {
+            this.setState({
+              showFileServiceSettings: !this.state.showFileServiceSettings,
+            })
+          }}
+        >
+          <Text style={styles.sectionTitleStyle}>
+            {getLanguage(this.props.language).Profile.FILE_SERVICE_SETTING}
+          </Text>
+          <Image resizeMode={'contain'} source={image} style={styles.arrowImg} />
+        </TouchableOpacity>
+        {
+          this.state.showFileServiceSettings &&
+          <>
+            {this._renderInput({
+              placeholder: getLanguage(this.props.language).Profile.FILE_SERVICE_UPLOAD_URL,
+              defaultValue: this.iportalFileUploadURL || '',
+              onChangeText: text => {
+                this.iportalFileUploadURL = text
+              },
+              tips: 'e.g. http://ip:port/upload',
+              inputStyle: {width: '90%'},
+            })}
+            {this._renderInput({
+              placeholder: getLanguage(this.props.language).Profile.FILE_SERVICE_UPLOAD_DOWNLOAD,
+              defaultValue: this.iportalFileDownloadURL || '',
+              onChangeText: text => {
+                this.iportalFileDownloadURL = text
+              },
+              tips: 'e.g. http://ip:port/download',
+              inputStyle: {width: '90%'},
+            })}
+          </>
+        }
+      </View>
+    )
+  }
+
   _renderServer = () => {
     return (
-      <View style={styles.sectionViewStyle}>
+      <ScrollView
+        style={[styles.sectionViewStyle]}
+        contentContainerStyle={{paddingBottom: scaleSize(30)}}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.inpuViewStyle}>
           <View style={styles.inputBackgroud}>
-            {/* <TextInput
-              clearButtonMode={'while-editing'}
-              keyboardType={'default'}
-              placeholder={
-                getLanguage(this.props.language).Profile.ENTER_SERVER_ADDRESS
-              }
-              placeholderTextColor={'#A7A7A7'}
-              multiline={false}
-              defaultValue={this.iportalAddress || ''}
-              style={styles.textInputStyle}
-              onChangeText={text => {
-                this.iportalAddress = text
-              }}
-              ref = {ref => this.inputRef = ref}
-            /> */}
             <Input
               keyboardType={'default'}
               placeholder={
@@ -157,9 +341,11 @@ export default class IPortalLoginView extends React.Component {
             />
           </View>
           <Text style={styles.textStyle}>
-            {'Example: http://ip:port/iportal/web'}
+            {'e.g. http://ip:port/iportal/web'}
           </Text>
         </View>
+        {this._renderMessageServiceSettings()}
+        {this._renderFileServiceSettings()}
         <TouchableOpacity
           accessible={true}
           accessibilityLabel={this.state.nextText}
@@ -172,7 +358,7 @@ export default class IPortalLoginView extends React.Component {
             {this.state.nextText}
           </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     )
   }
 

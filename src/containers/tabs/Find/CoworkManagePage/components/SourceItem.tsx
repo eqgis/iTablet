@@ -5,7 +5,7 @@
 */
 import React, { Component } from 'react'
 import { Image, Text, TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
-import { Toast, scaleSize } from '../../../../../utils'
+import { Toast, scaleSize, OnlineServicesUtils } from '../../../../../utils'
 import { CheckBox, ListSeparator, Progress } from '../../../../../components'
 import RNFS from 'react-native-fs'
 import { FileTools } from '../../../../../native'
@@ -203,14 +203,24 @@ export default class SourceItem extends Component<Props, State> {
       RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
 
       let dataId = this.props.data.resourceId
-      let dataUrl =
-        'https://www.supermapol.com/web/datas/' + dataId + '/download'
+      let dataUrl, onlineServicesUtils
+      if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        let url = this.props.user.currentUser.serverUrl
+        if (url.indexOf('http') !== 0) {
+          url = 'http://' + url
+        }
+        dataUrl = `${url}/datas/${dataId}/download`
+        onlineServicesUtils = new OnlineServicesUtils('iportal')
+      } else {
+        dataUrl = 'https://www.supermapol.com/web/datas/' + dataId + '/download'
+        onlineServicesUtils = new OnlineServicesUtils('online')
+      }
       const downloadOptions = {
         // Android 访问online私有数据，需要冲抵cookie
         ...Platform.select({
           android: {
             headers: {
-              cookie: await SOnlineService.getAndroidSessionID(),
+              cookie: await onlineServicesUtils.getCookie(),
             },
           },
         }),

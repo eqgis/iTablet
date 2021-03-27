@@ -161,7 +161,7 @@ export const deleteInvite = (params: DeleteInviteParams) => async (dispatch: (ar
  * @param cb
  */
 export const addCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   if (params.type === MsgConstant.MSG_ONLINE_MEMBER_DELETE) {
     // 接收到被踢出群组的消息，删除本地的群组
     let _params = {
@@ -186,7 +186,7 @@ export const addCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: (ar
  * 读取群组（申请/邀请/聊天）消息
  */
 export const readCoworkGroupMsg = (params: ReadMsgParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   return await dispatch({
     type: COWORK_GROUP_MSG_READ,
     payload: params,
@@ -195,7 +195,7 @@ export const readCoworkGroupMsg = (params: ReadMsgParams) => async (dispatch: (a
 }
 
 export const deleteCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   await dispatch({
     type: COWORK_GROUP_MSG_DELETE,
     payload: params,
@@ -212,7 +212,7 @@ export const deleteCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: 
 export const setCoworkTaskGroup = (
   params: {groupID: string, tasks: Array<any>}, cb?: () => void
 ) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   await dispatch({
     type: COWORK_GROUP_MSG_TASK_SET,
     payload: params,
@@ -227,7 +227,7 @@ export const setCoworkTaskGroup = (
  * @param cb () => {}
  */
 export const setCoworkGroup = (params = {}, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   await dispatch({
     type: COWORK_GROUP_SET,
     payload: params,
@@ -242,7 +242,7 @@ export const setCoworkGroup = (params = {}, cb = () => {}) => async (dispatch: (
  * @param cb () => {}
  */
 export const exitGroup = (params: {groupID: number | string}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   return await dispatch({
     type: COWORK_GROUP_EXIT,
     payload: params,
@@ -269,7 +269,7 @@ export const setCurrentGroup = (params: any, cb = () => {}) => async (dispatch: 
  * @param cb
  */
 export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   await dispatch({
     type: COWORK_TASK_SET_CURRENT,
     payload: params,
@@ -285,7 +285,7 @@ export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (
 export const addTaskMessage = (params: TaskInfoParams, isRealTime = true) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   if (adding) return
   adding = true
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   let result = await dispatch({
     type: COWORK_TASK_INFO_ADD,
     payload: params,
@@ -301,7 +301,7 @@ export const addTaskMessage = (params: TaskInfoParams, isRealTime = true) => asy
  * @param params TaskReadParams
  */
 export const readTaskMessage = (params: TaskReadParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   const coworkInfo = getState().cowork.toJS().coworkInfo
   // 若任务不存在，则设置失败
   if (!coworkInfo?.[userId]?.[params.groupId]?.[params.taskId]) {
@@ -321,7 +321,7 @@ export const readTaskMessage = (params: TaskReadParams) => async (dispatch: (arg
  * @param cb
  */
 export const setIsRealTime = (params: TaskRealTimeParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   const coworkInfo = getState().cowork.toJS().coworkInfo
   // 若任务不存在，则设置失败
   if (!coworkInfo?.[userId]?.[params.groupId]?.[params.taskId]) {
@@ -340,7 +340,7 @@ export const setIsRealTime = (params: TaskRealTimeParams) => async (dispatch: (a
  * @param params TaskMemberLocationParams
  */
 export const setMemberShow = (params: TaskMemberLocationParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   let result = await dispatch({
     type: COWORK_TASK_INFO_MEMBER_LOCATION_SHOW,
     payload: params,
@@ -354,7 +354,7 @@ export const setMemberShow = (params: TaskMemberLocationParams) => async (dispat
  * @param params TaskMemberLocationParams
  */
 export const addMemberLocation = (params: TaskMemberLocationParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   let result = await dispatch({
     type: COWORK_TASK_INFO_MEMBER_LOCATION_ADD,
     payload: params,
@@ -368,7 +368,7 @@ export const addMemberLocation = (params: TaskMemberLocationParams) => async (di
  * @param params TaskMemberDeleteParams
  */
 export const deleteTaskMembers = (params: TaskMemberDeleteParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-  const userId = getState().user.toJS().currentUser.userId || 'Customer'
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
   let result = await dispatch({
     type: COWORK_TASK_MEMBERS_DELETE,
     payload: params,
@@ -389,7 +389,7 @@ export const deleteTaskMembers = (params: TaskMemberDeleteParams) => async (disp
 //   id: string,
 //   members: Array<{id: string, name: string}>,
 // }, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
-//   const userId = getState().user.toJS().currentUser.userId || 'Customer'
+//   const userId = getState().user.toJS().currentUser.userName || 'Customer'
 //   await dispatch({
 //     type: COWORK_TASK_MEMBERS_ADD,
 //     payload: params,

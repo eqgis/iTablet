@@ -401,8 +401,11 @@ class AppRoot extends Component {
             userType: UserType.IPORTAL_COMMON_USER,
           })
         }
+        GLOBAL.getFriend().onUserLoggedin()
         this.container.setLoading(false)
         NavigationService.popToTop()
+      } else {
+        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
       }
     }
   }

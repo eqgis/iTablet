@@ -319,7 +319,7 @@ export default class Login extends React.Component {
         }
         this.iportalLogin.loginResult()
         this.setState({covered:false})
-        
+        GLOBAL.isLogging = true
         // this.container.setLoading(false)
         NavigationService.popToTop()
       } else {

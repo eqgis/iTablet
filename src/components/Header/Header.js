@@ -14,6 +14,7 @@ class NavigationHeader extends Component {
   props: {
     header?: any, // 自定义Header
     headerStyle?: StyleSheet, // 自定义Header Style
+    headStyle?: StyleSheet, // 自定义Header Style 上面那个传数据写死了有问题先开一个新的
     withoutBack?: boolean, // 是否有返回按钮
     backBtnType?: string, // 返回按钮类型（white, gray）
     backAction?: any, // 返回事件
@@ -276,6 +277,7 @@ class NavigationHeader extends Component {
           headerStyle,
           padding,
           { opacity: opacity, top: this.state.headerTop },
+          this.props.headStyle,
         ]}
       >
         {header ? header : this.renderDefaultHeader()}

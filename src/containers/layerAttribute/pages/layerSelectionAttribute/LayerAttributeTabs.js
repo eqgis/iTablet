@@ -430,11 +430,13 @@ export default class LayerAttributeTabs extends React.Component {
         if (smID >= 0 && hasMedia) break
       }
     }
+    let result
     // 若包含多媒体图片，则删除
     if (hasMedia && smID >= 0) {
-      await SMediaCollector.deleteMedia(this.props.currentLayer.path, smID)
+      result = await SMediaCollector.deleteMedia(this.props.currentLayer.path, smID)
+    } else {
+      result = await LayerUtils.deleteSelectionAttributeByLayer(this.props.currentLayer.name, this.state.currentIndex, false)
     }
-    let result = await LayerUtils.deleteSelectionAttributeByLayer(GLOBAL.SelectedSelectionAttribute.layerInfo.path, this.state.currentIndex, this.state.isCollection)
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
       if (this.state.isCollection) {

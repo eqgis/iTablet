@@ -1290,7 +1290,12 @@ export default class LayerAttribute extends React.Component {
           info,
           cb: mData => {
             let _data = this.state.attributes.data[data.rowIndex]
+            let isDelete = false
             for (let j = 0; j < mData.length; j++) {
+              if (mData[j].name === 'mediaFilePaths' && mData[j].value.length === 0) {
+                isDelete = true
+                break
+              }
               if (mData[j].name !== 'mediaName') continue
               for (let i = 0; i < _data.length; i++) {
                 if (_data[i].name !== 'MediaName') continue
@@ -1316,6 +1321,9 @@ export default class LayerAttribute extends React.Component {
                 }
                 this.changeAction(params)
               }
+            }
+            if (isDelete) {
+              this.refresh()
             }
           },
         })

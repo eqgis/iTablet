@@ -126,12 +126,17 @@ export default class MediaEdit extends React.Component {
             '/' +
             ConstPath.RelativeFilePath.Media,
         )
+        let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : true
+        // 若原本有图片，并有callout则不添加到地图上
+        if (this.info.mediaFilePaths.length > 0) {
+          addToMap = false
+        }
         let result = await SMediaCollector.saveMediaByDataset(
           this.info.layerName,
           this.info.geoID,
           targetPath,
           modifiedData,
-          this.info.addToMap !== undefined ? this.info.addToMap : true,
+          addToMap,
         )
         if (
           result &&

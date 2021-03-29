@@ -51,7 +51,7 @@ export default class MapController extends React.Component {
   componentDidMount() {
     if (this.props.type === 'MAP_3D') {
       if (this.compassInterval) {
-        this.compassInterval.clearInterval()
+        clearInterval(this.compassInterval)
         this.compassInterval = null
       }
       this.compassInterval = setInterval(async () => {
@@ -71,7 +71,7 @@ export default class MapController extends React.Component {
 
   componentWillUnmount() {
     if (this.compassInterval) {
-      this.compassInterval.clearInterval()
+      clearInterval(this.compassInterval)
       this.compassInterval = null
     }
   }

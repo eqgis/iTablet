@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -14,11 +14,11 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ptm-Kc-6HY">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="All Rights Reserved" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YXX-Wi-v5O">
-                                <rect key="frame" x="-88" y="726.66666666666663" width="590" height="22"/>
+                                <rect key="frame" x="-107.5" y="622" width="590" height="22"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="590" id="ZDo-fz-cdl"/>
@@ -40,7 +40,7 @@
                                 </variation>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Copyright © 2018-2021 SuperMap" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fwg-ZU-tOo">
-                                <rect key="frame" x="7" y="683.66666666666663" width="400" height="29"/>
+                                <rect key="frame" x="-12.5" y="579" width="400" height="29"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="400" id="IaD-DJ-5af"/>
@@ -62,7 +62,7 @@
                                 </variation>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon.png" highlightedImage="icon.png" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l8T-Ci-k3S">
-                                <rect key="frame" x="122" y="169" width="170" height="100"/>
+                                <rect key="frame" x="102.5" y="34.5" width="170" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="82" id="TDK-jy-DHD"/>
                                     <constraint firstAttribute="width" constant="170" id="ZUQ-zE-0OV"/>
@@ -89,7 +89,7 @@
                                 </variation>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" highlightedImage="logo.png" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X8F-qa-Nee">
-                                <rect key="frame" x="107" y="254" width="200" height="85"/>
+                                <rect key="frame" x="87.5" y="119.5" width="200" height="85"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="90" id="bKc-3L-wpr"/>
                                     <constraint firstAttribute="height" constant="59" id="cE4-O8-wZF"/>
@@ -122,7 +122,7 @@
                                 </variation>
                             </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DPX-YP-gJL" userLabel="APP_SLOGAN">
-                                <rect key="frame" x="-43" y="305" width="500" height="66"/>
+                                <rect key="frame" x="-62.5" y="170.5" width="500" height="66"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" systemColor="linkColor"/>
                                 <constraints>
@@ -164,7 +164,7 @@
                                 </variation>
                             </label>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_slogan_cn.png" translatesAutoresizingMaskIntoConstraints="NO" id="uj2-Ia-9IB">
-                                <rect key="frame" x="-82" y="318" width="578" height="40"/>
+                                <rect key="frame" x="-101.5" y="183.5" width="578" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="578" id="TBa-IY-RzS"/>
                                     <constraint firstAttribute="height" constant="71" id="jV6-mG-cyE">
@@ -190,13 +190,14 @@
                             <constraint firstItem="DPX-YP-gJL" firstAttribute="centerY" secondItem="ptm-Kc-6HY" secondAttribute="centerY" constant="-110" id="Nwr-ZK-E0Y">
                                 <variation key="heightClass=compact" constant="-30"/>
                                 <variation key="heightClass=compact-widthClass=compact" constant="-10"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="-130"/>
                             </constraint>
                             <constraint firstItem="YXX-Wi-v5O" firstAttribute="centerX" secondItem="ptm-Kc-6HY" secondAttribute="centerX" id="PrD-AT-0PQ"/>
                             <constraint firstItem="uj2-Ia-9IB" firstAttribute="centerX" secondItem="ptm-Kc-6HY" secondAttribute="centerX" id="RQ3-w3-Pof"/>
                             <constraint firstItem="fwg-ZU-tOo" firstAttribute="centerY" secondItem="ptm-Kc-6HY" secondAttribute="centerY" constant="300" id="eMV-s4-3TO">
                                 <variation key="heightClass=compact" constant="120"/>
                                 <variation key="heightClass=compact-widthClass=compact" constant="120"/>
-                                <variation key="heightClass=regular-widthClass=compact" constant="250"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="260"/>
                             </constraint>
                             <constraint firstItem="fwg-ZU-tOo" firstAttribute="centerX" secondItem="ptm-Kc-6HY" secondAttribute="centerX" id="nqO-eP-2iv"/>
                             <constraint firstItem="X8F-qa-Nee" firstAttribute="top" secondItem="l8T-Ci-k3S" secondAttribute="bottom" constant="-15" id="olS-Ku-Dvt">
@@ -207,6 +208,7 @@
                             <constraint firstItem="uj2-Ia-9IB" firstAttribute="centerY" secondItem="ptm-Kc-6HY" secondAttribute="centerY" constant="-110" id="vgd-TT-V9t">
                                 <variation key="heightClass=compact" constant="-10"/>
                                 <variation key="heightClass=compact-widthClass=regular" constant="-20"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="-130"/>
                             </constraint>
                         </constraints>
                     </view>

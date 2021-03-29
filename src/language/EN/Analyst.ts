@@ -137,13 +137,13 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
 
   ADD_WEIGHT_STATISTIC: 'Add Weighted Field',
 
-  // 方向
+  // Direction
   LEFT: 'Left',
   DOWN: 'Down',
   RIGHT: 'Right',
   UP: 'Up',
 
-  // 邻近分析
+  // Proximity Analysis
   DISPLAY_REGION_SETTINGS: 'Display Region Settings',
   CUSTOM_LOCALE: 'Custom Locale',
   SELECT_REGION: 'Select Region',
@@ -159,10 +159,10 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   MAX_DISTANCE: 'Max Distance',
   ASSOCIATE_BROWSING_RESULT: 'Associate Browsing Result',
 
-  // 插值分析
+  // Interpolation Analysis
   INTERPOLATION_METHOD: 'Interpolation Analysis',
-  INTERPOLATION_FIELD: 'Interpolation Methods',
-  SCALE_FACTOR: 'Scale Factor',
+  INTERPOLATION_FIELD: 'Interpolation Field',
+  SCALE_FACTOR: 'Scale',
   RESOLUTION: 'Resolution',
   PIXEL_FORMAT: 'Pixel Format',
   INTERPOLATION_BOUNDS: 'Bounds',
@@ -209,39 +209,39 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   REGISTRATION_EXECUTE_SUCCESS: 'Execute success',
   REGISTRATION_EXECUTE_FAILED: 'Execute failed',
   REGISTRATION_SAVE_AS: 'Save as',
-  REGISTRATION_RESAMPLE: 'Result resampling',
-  REGISTRATION_SAMPLE_MODE: 'Sampling mode',
+  REGISTRATION_RESAMPLE: 'Resample Result',
+  REGISTRATION_SAMPLE_MODE: 'Sample Mode',
   REGISTRATION_SAMPLE_MODE_NO: 'No',
-  REGISTRATION_SAMPLE_MODE_NEAR: 'The method of adjacent',
-  REGISTRATION_SAMPLE_MODE_BILINEARITY: 'Bilinear interpolation',
-  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: 'Cubic convolution interpolation',
-  REGISTRATION_SAMPLE_PIXEL: 'Sample pixel',
+  REGISTRATION_SAMPLE_MODE_NEAR: 'Nearest Neighbor',
+  REGISTRATION_SAMPLE_MODE_BILINEARITY: 'Bilinear Interpolation',
+  REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: 'Cubic Convolution Interpolation',
+  REGISTRATION_SAMPLE_PIXEL: 'Sample Pixel',
   REGISTRATION_RESULT_DATASET: 'Result dataset',
-  REGISTRATION_RESULT_DATASOURCE: 'Result datasource',
+  REGISTRATION_RESULT_DATASOURCE: 'Result Datasource',
   REGISTRATION_ORIGINAL_DATASOURCE: 'Original dataset',
   REGISTRATION_POINTS_DETAIL: 'Detail',
-  REGISTRATION_EXECUTING: 'In progress',
-  REGISTRATION_ENUMBER: 'Serial number',
+  REGISTRATION_EXECUTING: 'Executing',
+  REGISTRATION_ENUMBER: 'Serial Number',
   REGISTRATION_ORIGINAL: 'Source',
   REGISTRATION_TAREGT: 'Target',
-  REGISTRATION_RESELECT_POINT: 'Reselect point',
+  REGISTRATION_RESELECT_POINT: 'Reselect Point',
   REGISTRATION_EXPORT: 'Export',
-  REGISTRATION_EXPORT_SUCCESS: 'Export success',
-  REGISTRATION_EXPORT_FAILED: 'Export failed',
-  REGISTRATION_EXPORT_FILE_NAME: 'Export file name',
-  REGISTRATION_EXPORT_FILE: 'Registration info file',
+  REGISTRATION_EXPORT_SUCCESS: 'Exported',
+  REGISTRATION_EXPORT_FAILED: 'Failed to export',
+  REGISTRATION_EXPORT_FILE_NAME: 'File Name',
+  REGISTRATION_EXPORT_FILE: 'Registration Info File',
   REGISTRATION_PLEASE_SELECT: 'Please select',
   REGISTRATION_NOT_SETLECT_DATASET: 'Please select a registration dataset',
   REGISTRATION_NOT_SETLECT_REFER_DATASET: 'Please select a reference dataset',
-  //投影转换
+  //Projection transformation
   PROJECTION_SOURCE_COORDS: 'Source Coords',
-  PROJECTION_COORDS_NAME: 'Coords Name',
-  PROJECTION_COORDS_UNIT: 'Coords Unit',
-  PROJECTION_GROUND_DATUM: 'Ground Datum',
+  PROJECTION_COORDS_NAME: 'Coordinate System',
+  PROJECTION_COORDS_UNIT: 'Unit',
+  PROJECTION_GROUND_DATUM: 'Datum',
   PROJECTION_REFERENCE_ELLIPSOID: 'Reference Ellipsoid',
 
-  PROJECTION_CONVERT_SETTING: 'Reference system conversion settings',
-  PROJECTION_CONVERT_MOTHED: 'Convert method',
+  PROJECTION_CONVERT_SETTING: 'Projection Transformation Settings',
+  PROJECTION_CONVERT_MOTHED: 'Algorithm',
   PROJECTION_PARAMETER_SETTING: 'Parameter Setting',
   BASIC_PARAMETER: 'Basic Parameter',
   ROTATION_ANGLE_SECOND: 'Rotation Angle (second)',
@@ -250,32 +250,32 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   TARGET_COORDS: 'Target Coords',
   COPY: 'Copy',
   RESETING: 'Reset',
-  GEOCOORDSYS: 'Geographic coordinate system',
-  PRJCOORDSYS: 'Projected coordinate system',
-  COMMONCOORDSYS: 'Common coordinate system',
+  GEOCOORDSYS: 'Geographic Coordinate System',
+  PRJCOORDSYS: 'Projected Coordinate System',
+  COMMONCOORDSYS: 'Common Coordinate System',
   CONVERTTING: 'Convertting',
-  CONVERT_SUCCESS: 'Convert success',
-  CONVERT_FAILED: 'Convert failed',
+  CONVERT_SUCCESS: 'Converted',
+  CONVERT_FAILED: 'Failed to convert',
   ARITHMETIC: 'Arithmetic',
 }
 
 const Convert_Unit: typeof CN.Convert_Unit = {
   ///  毫米。
-  MILIMETER: 'Milimeter',
+  MILIMETER: 'mm',
   /// 平方毫米。
-  SQUAREMILIMETER: 'Mm2',
+  SQUAREMILIMETER: 'mm²',
   ///  厘米。
   CENTIMETER: 'cm',
   /// 平方厘米。
-  SQUARECENTIMETER: 'cm2',
+  SQUARECENTIMETER: 'cm²',
   /// 英寸。
   INCH: 'inch',
   /// 平方英寸。
-  SQUAREINCH: 'Square inch',
+  SQUAREINCH: 'Sq.In.',
   /// 分米。
-  DECIMETER: 'Dm',
+  DECIMETER: 'dm',
   /// 平方分米。
-  SQUAREDECIMETER: 'Square decimetres',
+  SQUAREDECIMETER: 'dm²',
   ///  英尺。
   FOOT: 'Foot',
   ///  平方英尺。
@@ -291,7 +291,7 @@ const Convert_Unit: typeof CN.Convert_Unit = {
   /// 千米。
   KILOMETER: 'km',
   /// 平方千米。
-  SQUAREKILOMETER: 'square kilometer',
+  SQUAREKILOMETER: 'km²',
   /// 平方英里。
   MILE: 'Square mile',
   /// 英里。
@@ -307,34 +307,34 @@ const Convert_Unit: typeof CN.Convert_Unit = {
 }
 
 const Analyst_Params: typeof CN.Analyst_Params = {
-  // 缓冲区分析
+  // Buffer analysis
   BUFFER_LEFT_AND_RIGHT: 'Left and Right',
   BUFFER_LEFT: 'Left',
   BUFFER_RIGHT: 'Right',
 
-  // 分析方法
+  // Analysis methods
   SIMPLE_DENSITY_ANALYSIS: 'Simple Density Analysis',
   KERNEL_DENSITY_ANALYSIS: 'Kernel Density Analysis',
 
-  // 网格面类型
+  // Mesh types
   QUADRILATERAL_MESH: 'Quadrilateral Mesh',
   HEXAGONAL_MESH: 'Hexagonal Mesh',
 
-  // 分段模式
+  // Range modes
   EQUIDISTANT_INTERVAL: 'Equidistant Interval',
   LOGARITHMIC_INTERVAL: 'Logarithmic Interval',
   QUANTILE_INTERVAL: 'Quantile Interval',
   SQUARE_ROOT_INTERVAL: 'Square Root Interval',
   STANDARD_DEVIATION_INTERVAL: 'Standard Deviation Interval',
 
-  // 长度单位
+  // Units of length 
   METER: 'm',
   KILOMETER: 'km',
   YARD: 'yd',
   FOOT: 'ft',
   MILE: 'mile',
 
-  // 面积单位
+  // Units of area
   SQUARE_MILE: 'mile²',
   SQUARE_METER: 'm²',
   SQUARE_KILOMETER: 'km²',
@@ -344,14 +344,14 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SQUARE_FOOT: 'ft²',
   SQUARE_YARD: 'yd²',
 
-  // 颜色渐变模式
+  // Color gradient modes
   GREEN_ORANGE_PURPLE_GRADIENT: 'Green Orange Purple Gradient',
   GREEN_ORANGE_RED_GRADIENT: 'Green Orange Red Gradient',
   RAINBOW_COLOR: 'Rainbow Color',
   SPECTRAL_GRADIENT: 'Spectral Gradient',
   TERRAIN_GRADIENT: 'Terrain Gradient',
 
-  // 统计模式
+  // Count modes
   MAX: 'Max',
   MIN: 'Min',
   AVERAGE: 'Average',
@@ -359,25 +359,25 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   VARIANCE: 'Variance',
   STANDARD_DEVIATION: 'Standard Deviation',
 
-  // 聚合类型
+  // Aggregation types
   AGGREGATE_WITH_GRID: 'Aggregate with Grid',
   AGGREGATE_WITH_REGION: 'Aggregate with Region',
 
-  // 插值方法
+  // Interpolation methods
   IDW: 'IDW',
   SPLINE: 'Spline',
   ORDINARY_KRIGING: 'Ordinary Kriging',
   SIMPLE_KRIGING: 'Simple Kriging',
   UNIVERSAL_KRIGING: 'Universal Kriging',
 
-  // 像素格式
+  // Pixel formats
   UBIT1: 'UBIT1',
   UBIT16: 'UBIT16',
   UBIT32: 'UBIT32',
   SINGLE: 'Single',
   DOUBLE: 'Double',
 
-  // 查找方法
+  // Searching Methods
   SEARCH_VARIABLE_LENGTH: 'Variable Length',
   SEARCH_FIXED_LENGTH: 'Fixed Length',
   SEARCH_BLOCK: 'Block',
@@ -389,8 +389,8 @@ const Analyst_Params: typeof CN.Analyst_Params = {
 }
 
 const Analyst_Prompt: typeof CN.Analyst_Prompt = {
-  ANALYSING: 'Analysing',
-  ANALYSIS_START: 'Analysing',
+  ANALYSING: 'Analyzing',
+  ANALYSIS_START: 'Analyzing',
   ANALYSIS_SUCCESS: 'Analysis successfully',
   ANALYSIS_FAIL: 'Analysis failed',
   PLEASE_CONNECT_TO_ISERVER: 'Please connect to iServer',

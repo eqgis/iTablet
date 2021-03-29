@@ -22,6 +22,7 @@ import {
   PanResponderView,
   Progress,
   MTBtn,
+  RedDot,
 } from '../../../../components'
 import {
   FunctionToolbar,
@@ -46,6 +47,7 @@ import { tool3DModule } from '../../components/ToolBar/modules'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { BackHandlerUtil } from '../../util'
 import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
+import { Bar } from 'react-native-progress'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
@@ -1015,7 +1017,45 @@ export default class Map3D extends React.Component {
       } else {
         info = buttonInfos[i]
       }
-      info &&
+      if (buttonInfos[i] === MapHeaderButton.Share || info.newInfo) {
+        info &&
+          buttons.push(
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <MTBtn
+                key={info.key}
+                imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+                image={info.image}
+                onPress={info.action}
+              />
+              {
+                info.newInfo &&
+                <RedDot style={{position: 'absolute', top: 0, right: 0}} />
+              }
+              {buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
+                GLOBAL.Type === this.props.online.share[0].module &&
+                this.props.online.share[0].progress !== undefined && (
+                <Bar
+                  style={{
+                    width: scaleSize(size), height: 2, borderWidth: 0,
+                    backgroundColor: 'black', top: scaleSize(4),
+                  }}
+                  progress={
+                    this.props.online.share[this.props.online.share.length - 1]
+                      .progress
+                  }
+                  width={scaleSize(60)}
+                />
+              )}
+            </View>
+          )
+      }else{
+        info &&
         buttons.push(
           <MTBtn
             key={info.key}
@@ -1024,6 +1064,7 @@ export default class Map3D extends React.Component {
             onPress={info.action}
           />,
         )
+      }
     }
     return (
       <View

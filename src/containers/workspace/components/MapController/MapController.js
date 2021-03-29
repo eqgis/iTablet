@@ -45,11 +45,16 @@ export default class MapController extends React.Component {
       isGuiding: false,
     }
     this.visible = true
+    this.compassInterval = null // 指北针监听
   }
 
   componentDidMount() {
     if (this.props.type === 'MAP_3D') {
-      setInterval(async () => {
+      if (this.compassInterval) {
+        this.compassInterval.clearInterval()
+        this.compassInterval = null
+      }
+      this.compassInterval = setInterval(async () => {
         let deg = await SScene.getcompass()
         this.setCompass(deg)
       }, 600)
@@ -61,6 +66,13 @@ export default class MapController extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.compassInterval) {
+      this.compassInterval.clearInterval()
+      this.compassInterval = null
     }
   }
 

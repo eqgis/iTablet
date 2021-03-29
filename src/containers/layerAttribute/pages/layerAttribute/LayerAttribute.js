@@ -799,7 +799,7 @@ export default class LayerAttribute extends React.Component {
     if (hasMedia && smID >= 0) {
       result = await SMediaCollector.deleteMedia(this.props.currentLayer.path, smID)
     } else {
-      result = await LayerUtils.deleteSelectionAttributeByLayer(this.props.currentLayer.name, this.state.currentIndex, false)
+      result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, this.state.currentIndex, false)
     }
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)

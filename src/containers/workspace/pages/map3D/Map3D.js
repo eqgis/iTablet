@@ -38,12 +38,11 @@ import { MapHeaderButton } from '../../../../constants'
 import { getPublicAssets } from '../../../../assets'
 import { Toast, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
-import { share3DModule } from '../../components/ToolBar/modules'
+import { share3DModule, tool3DModule } from '../../components/ToolBar/modules'
 import NavigationService from '../../../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import SurfaceView from '../../../../components/SurfaceView'
-import { tool3DModule } from '../../components/ToolBar/modules'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { BackHandlerUtil } from '../../util'
 import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
@@ -334,23 +333,23 @@ export default class Map3D extends React.Component {
     // let startOpen = false
     // let openScene = () => {
 
-      // if (startOpen) return
-      // startOpen = true
-      // clearTimeout(this.openTimer)
+    // if (startOpen) return
+    // startOpen = true
+    // clearTimeout(this.openTimer)
 
-      if (Platform.OS === 'android') {
-        this.props.setBackAction({
-          action: this.back,
-        })
-      }
-      GLOBAL.SaveMapView && GLOBAL.SaveMapView.setTitle(SAVE_TITLE)
+    if (Platform.OS === 'android') {
+      this.props.setBackAction({
+        action: this.back,
+      })
+    }
+    GLOBAL.SaveMapView && GLOBAL.SaveMapView.setTitle(SAVE_TITLE)
 
-      // 三维地图只允许单例
-      // setTimeout(this._addScene, 2000)
-      this._addScene()
-      this.addAttributeListener()
-      this.addCircleFlyListen()
-      this.getLayers()
+    // 三维地图只允许单例
+    // setTimeout(this._addScene, 2000)
+    this._addScene()
+    this.addAttributeListener()
+    this.addCircleFlyListen()
+    this.getLayers()
     // }
 
     // this._addScene()
@@ -437,7 +436,7 @@ export default class Map3D extends React.Component {
         await SScene.clearCirclePoint()
       }
       if (Platform.OS === 'android') {
-        if (this.state.showPanResponderView) {
+        if (this.state.showPanResponderView || this.state.showMenuDialog) {
           this.setState({
             showMenuDialog: false,
             showPanResponderView: false,

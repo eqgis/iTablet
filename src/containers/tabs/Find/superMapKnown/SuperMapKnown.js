@@ -19,14 +19,9 @@ export default class SuperMapKnown extends Component {
     const params = this.props.navigation.state.params
     this.type = params.type
     this.state = {
-      alldata:[],
       data: [],
-      isLoading: false,
-      isRefresh: false,
     }
-    this.isLoading = false
-    this.cancelLoading = false
-    this.current = 20
+    this.Edition = '' //记录版本号
   }
 
   componentDidMount() {
@@ -54,59 +49,78 @@ export default class SuperMapKnown extends Component {
         '/iTablet/Cache/' + data.fileName,
       )
 
-      if (await RNFS.exists(fileCachePath)) {
-        await RNFS.unlink(fileCachePath)
+      //版本号文件，控制是否重新下载文件
+      let Editiondata = await JSOnlineService.getPublicDataByName(
+        '927528',
+        'SuperMapGroupEdition.geojson',
+      )
+      let Editionurl = `https://www.supermapol.com/web/datas/${Editiondata.id}/download`
+      let EditionfileCachePath = await FileTools.appendingHomeDirectory(
+        '/iTablet/Cache/' + Editiondata.fileName,
+      )
+
+      if (await RNFS.exists(EditionfileCachePath)) {
+        this.Edition = await RNFS.readFile(EditionfileCachePath)
+        await RNFS.unlink(EditionfileCachePath)
       }
 
-      let downloadOptions = {
-        fromUrl: url,
-        toFile: fileCachePath,
+      let EditiondownloadOptions = {
+        fromUrl: Editionurl,
+        toFile: EditionfileCachePath,
         background: true,
-        fileName: data.fileName,
+        fileName: Editiondata.fileName,
         progressDivider: 1,
       }
 
-      await RNFS.downloadFile(downloadOptions).promise
-
-      if (await RNFS.exists(fileCachePath)) {
-        let fileStr = await RNFS.readFile(fileCachePath)
-        let data = JSON.parse(fileStr)
-        let currentData = data.slice(0,this.current)
-        this.setState({ data: currentData ,alldata : data})
+      await RNFS.downloadFile(EditiondownloadOptions).promise
+      if (await RNFS.exists(EditionfileCachePath)) {
+        let EditionfileStr = await RNFS.readFile(EditionfileCachePath)
+        if(this.Edition !== EditionfileStr)
+        {
+          if (await RNFS.exists(fileCachePath)) {
+            await RNFS.unlink(fileCachePath)
+          }
+          let downloadOptions = {
+            fromUrl: url,
+            toFile: fileCachePath,
+            background: true,
+            fileName: data.fileName,
+            progressDivider: 1,
+          }
+          await RNFS.downloadFile(downloadOptions).promise
+          if (await RNFS.exists(fileCachePath)) {
+            let fileStr = await RNFS.readFile(fileCachePath)
+            let data = JSON.parse(fileStr)
+            this.setState({ data: data })
+          }
+        } else {
+          if (await RNFS.exists(fileCachePath)) {
+            let fileStr = await RNFS.readFile(fileCachePath)
+            let data = JSON.parse(fileStr)
+            this.setState({ data: data })
+          }else{
+            let downloadOptions = {
+              fromUrl: url,
+              toFile: fileCachePath,
+              background: true,
+              fileName: data.fileName,
+              progressDivider: 1,
+            }
+            await RNFS.downloadFile(downloadOptions).promise
+            let fileStr = await RNFS.readFile(fileCachePath)
+            let _data = JSON.parse(fileStr)
+            this.setState({ data: _data })
+          }
+        }
 
         if (this.props.navigation.state.params.callback != null) {
           this.props.navigation.state.params.callback()
         }
-
-        // await RNFS.unlink(fileCachePath)
       }
+
     } catch (error) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
     }
-  }
-
-  loadData = async () => {
-    if(this.current>=this.state.alldata.length) return
-    if (this.isLoading) return
-    this.isLoading = true
-    this.setState({ isLoading: true })
-    try {
-      this.current = this.current + 20
-      if(this.current<this.state.alldata.length){
-        let currentData = this.state.data.slice(0,this.current)
-        this.setState({data:currentData})
-      }else{
-        this.setState({data:this.state.alldata})
-      }
-    } catch (e) {
-      //
-    }
-    // this.timer = setTimeout(() => {
-    this.isLoading = false
-    this.setState({ isLoading: false })
-    //   clearTimeout(this.timer)
-    //   this.timer = null
-    // }, 2000)
   }
 
 
@@ -147,69 +161,7 @@ export default class SuperMapKnown extends Component {
     return <View style={styles.itemSeparator} />
   }
 
-  _footView() {
-    if (this.state.isLoading) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <ActivityIndicator
-            style={{
-              flex: 1,
-              height: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            color={'orange'}
-            animating={true}
-          />
-          <Text
-            style={{
-              flex: 1,
-              lineHeight: 20,
-              fontSize: 12,
-              textAlign: 'center',
-              color: 'orange',
-            }}
-          >
-            {getLanguage(GLOBAL.language).Prompt.LOADING}
-            {/* 加载中... */}
-          </Text>
-        </View>
-      )
-    } else {
-      return (
-        <View>
-          <Text
-            style={{
-              flex: 1,
-              lineHeight: 30,
-              fontSize: 12,
-              textAlign: 'center',
-            }}
-          >
-            {/* -----这是底线----- */}
-          </Text>
-        </View>
-      )
-    }
-  }
 
-  _onRefresh = async () => {
-    try {
-      this.setState({ isRefresh: true })
-      setTimeout(() => {
-        this.setState({ isRefresh: false })
-      }, 3000)
-    } catch (e) {
-      this.setState({ isRefresh: false })
-    }
-  }
 
   render() {
     var tempTitle
@@ -239,20 +191,6 @@ export default class SuperMapKnown extends Component {
           style={[styles.haveDataViewStyle,
             { backgroundColor: color.contentColorWhite }]}
           initialNumToRender={6}
-          onEndReachedThreshold={0.3}
-          onEndReached={this.loadData}
-          ListFooterComponent={this._footView()}
-          // refreshControl={
-          //   <RefreshControl
-          //     refreshing={this.state.isRefresh}
-          //     onRefresh={this._onRefresh}
-          //     colors={['orange', 'red']}
-          //     tintColor={'orange'}
-          //     titleColor={'orange'}
-          //     title={getLanguage(GLOBAL.language).Friends.LOADING}
-          //     enabled={true}
-          //   />
-          // }
         />
       </Container>
     )

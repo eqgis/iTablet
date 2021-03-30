@@ -115,7 +115,7 @@ export default class LayerAttribute extends React.Component {
     // InteractionManager.runAfterInteractions(() => {
     if (this.type === 'MAP_3D') {
       this.getMap3DAttribute()
-    } else if (this.props.currentLayer.name) {
+    } else if (this.props.currentLayer?.name) {
       this.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
       //ConstInfo.LOADING_DATA)
       SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {

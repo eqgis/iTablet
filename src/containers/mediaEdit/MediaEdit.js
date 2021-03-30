@@ -12,6 +12,7 @@ import {
   PopView,
   ImagePicker,
 } from '../../components'
+import { SimpleDialog } from '../tabs/Friend'
 import { Toast, checkType } from '../../utils'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
@@ -20,7 +21,7 @@ import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
 // import ImagePicker from 'react-native-image-crop-picker'
-import { SMediaCollector } from 'imobile_for_reactnative'
+import { SMediaCollector, SMap } from 'imobile_for_reactnative'
 
 const COLUMNS = 3
 const MAX_FILES = 9
@@ -54,6 +55,7 @@ export default class MediaEdit extends React.Component {
       showDelete: false,
     }
     this.mediaItemRef = []
+    this.modifiedData = {} // 修改的信息
   }
 
   componentDidMount() {
@@ -101,15 +103,20 @@ export default class MediaEdit extends React.Component {
     return paths
   }
 
-  save = () => {
+  saveHandler = () => {
     if (!this.info.layerName) {
       return
     }
     (async function() {
       try {
-        let modifiedData = []
+        let modifiedData = [],
+          deleteMedia = false // 用于删除所有图片后，提示是否删除该对象
         for (let key in this.info) {
           if (this.showInfo[key] !== this.state[key]) {
+            // 删除所有图片后，提示是否删除该对象
+            if (key === 'mediaFilePaths' && this.state[key].length === 0) {
+              deleteMedia = true
+            }
             modifiedData.push({
               name: key,
               value: this.state[key],
@@ -120,40 +127,87 @@ export default class MediaEdit extends React.Component {
           Toast.show(getLanguage(this.props.language).Prompt.NO_NEED_TO_SAVE)
           return
         }
-        let targetPath = await FileTools.appendingHomeDirectory(
-          ConstPath.UserPath +
-            this.props.user.currentUser.userName +
-            '/' +
-            ConstPath.RelativeFilePath.Media,
-        )
-        let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : true
-        // 若原本有图片，并有callout则不添加到地图上
-        if (this.info.mediaFilePaths.length > 0) {
-          addToMap = false
+        // let targetPath = await FileTools.appendingHomeDirectory(
+        //   ConstPath.UserPath +
+        //     this.props.user.currentUser.userName +
+        //     '/' +
+        //     ConstPath.RelativeFilePath.Media,
+        // )
+        // let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : true
+        // // 若原本有图片，并有callout则不添加到地图上
+        // if (this.info.mediaFilePaths.length > 0) {
+        //   addToMap = false
+        // }
+
+        this.modifiedData = modifiedData
+        if (deleteMedia) {
+          this.deleteDialog && this.deleteDialog.setVisible(true)
+        } else {
+          this.save(this.modifiedData, false)
         }
-        let result = await SMediaCollector.saveMediaByDataset(
-          this.info.layerName,
-          this.info.geoID,
-          targetPath,
-          modifiedData,
-          addToMap,
-        )
-        if (
-          result &&
-          Object.keys(modifiedData).length > 0 &&
-          typeof this.cb === 'function'
-        ) {
-          this.cb(modifiedData)
-        }
-        Toast.show(
-          result
-            ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
-            : getLanguage(this.props.language).Prompt.SAVE_FAILED,
-        )
+
+        // let result = await SMediaCollector.saveMediaByDataset(
+        //   this.info.layerName,
+        //   this.info.geoID,
+        //   targetPath,
+        //   modifiedData,
+        //   addToMap,
+        // )
+        // if (
+        //   result &&
+        //   Object.keys(modifiedData).length > 0 &&
+        //   typeof this.cb === 'function'
+        // ) {
+        //   this.cb(modifiedData)
+        // }
+        // Toast.show(
+        //   result
+        //     ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
+        //     : getLanguage(this.props.language).Prompt.SAVE_FAILED,
+        // )
       } catch (e) {
         Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
       }
     }.bind(this)())
+  }
+
+  save = async (modifiedData, isDelete = true) => {
+    try {
+      let targetPath = await FileTools.appendingHomeDirectory(
+        ConstPath.UserPath +
+          this.props.user.currentUser.userName +
+          '/' +
+          ConstPath.RelativeFilePath.Media,
+      )
+      let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : true
+      // 若原本有图片，并有callout则不添加到地图上
+      if (this.info.mediaFilePaths.length > 0) {
+        addToMap = false
+      }
+      let result = await SMediaCollector.saveMediaByDataset(
+        this.info.layerName,
+        this.info.geoID,
+        targetPath,
+        modifiedData,
+        addToMap,
+        isDelete,
+      )
+      if (
+        result &&
+        Object.keys(modifiedData).length > 0 &&
+        typeof this.cb === 'function'
+      ) {
+        this.deleteDialog && this.deleteDialog.setVisible(false)
+        this.cb(modifiedData)
+      }
+      Toast.show(
+        result
+          ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
+          : getLanguage(this.props.language).Prompt.SAVE_FAILED,
+      )
+    } catch (e) {
+      Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
+    }
   }
 
   openAlbum = () => {
@@ -326,6 +380,27 @@ export default class MediaEdit extends React.Component {
     )
   }
 
+  renderDeleteDialog = () => {
+    return (
+      <SimpleDialog
+        ref={ref => (this.deleteDialog = ref)}
+        text={getLanguage(this.props.language).Prompt.DELETE_OBJ_WITHOUT_MEDIA_TIPS}
+        disableBackTouch={false}
+
+        confirmAction={async () => {
+          await this.save(this.modifiedData, true)
+          SMap.refreshMap()
+          NavigationService.goBack('MediaEdit')
+        }}
+        confirmText={getLanguage(this.props.language).Prompt.DELETE}
+        cancelAction={() => {
+          this.save(this.modifiedData, false)
+        }}
+        cancelText={getLanguage(this.props.language).Prompt.SAVE_YES}
+      />
+    )
+  }
+
   render() {
     let coordinate =
       this.state.coordinate.x !== undefined &&
@@ -358,7 +433,7 @@ export default class MediaEdit extends React.Component {
                     showDelete: false,
                   })
                 } else {
-                  this.save()
+                  this.saveHandler()
                 }
               }}
             />
@@ -446,6 +521,7 @@ export default class MediaEdit extends React.Component {
           isModal
           device={this.props.device}
         />
+        {this.renderDeleteDialog()}
       </Container>
     )
   }

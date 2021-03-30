@@ -130,6 +130,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'جمع ناجح',
 
   SELECT_TWO_MEDIAS_AT_LEAST: 'يجب عليك اختيار وسيلتين على الأقل',
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
 
   NETWORK_REQUEST_FAILED: 'فشل طلب الشبكة',
 

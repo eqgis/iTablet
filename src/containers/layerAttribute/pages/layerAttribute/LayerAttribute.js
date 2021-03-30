@@ -833,7 +833,12 @@ export default class LayerAttribute extends React.Component {
     let path = this.props.currentLayer.path
     let checkName = dataUtil.isLegalName(fieldInfo.name, this.props.language)
     if (!checkName.result) {
-      Toast.show(checkName.error)
+      Toast.show(getLanguage(this.props.language).Map_Attribute.NAME + checkName.error)
+      return false
+    }
+    let checkCaption = dataUtil.isLegalName(fieldInfo.caption, this.props.language)
+    if (!checkCaption.result) {
+      Toast.show(getLanguage(this.props.language).Map_Attribute.ALIAS + checkCaption.error)
       return false
     }
     let result = await SMap.addAttributeFieldInfo(path, false, fieldInfo)

@@ -667,6 +667,11 @@ export default class MapView extends React.Component {
     }
     // this.props.setMapLegend(false)
 
+    // 防止意外退出地图界面，而没有关闭地图，导致再次进入时打开地图挂掉
+    if (this.props.map.currentMap.name) {
+      this.closeMap()
+    }
+
     // 移除多媒体采集监听
     SMediaCollector.removeListener()
     // 移除协作消息点击监听
@@ -907,50 +912,6 @@ export default class MapView extends React.Component {
     this.props.setTemplate() // 清空模板
   }
 
-  closeWorkspace = (cb = () => { }) => {
-    if (!this.map || !this.mapControl || !this.workspace) return
-    this.saveLatest(
-      async function () {
-        this.setLoading(true, '正在关闭', { bgColor: 'white' })
-        this.clearData()
-        this._removeGeometrySelectedListener()
-        this.setLoading(false)
-        cb && cb()
-      }.bind(this),
-    )
-  }
-
-  saveLatest = (cb = () => { }) => {
-    if (this.isExample) {
-      cb()
-      return
-    }
-    try {
-      this.mapControl &&
-        this.mapControl
-          .outputMap({ mapView: this.mapView })
-          .then(({ result, uri }) => {
-            if (result) {
-              this.props.setLatestMap(
-                {
-                  path: (this.DSParams && this.DSParams.server) || this.path,
-                  type: this.type,
-                  name: this.mapTitle,
-                  image: uri,
-                  DSParams: this.DSParams,
-                  labelDSParams: this.labelDSParams,
-                  layerIndex: this.layerIndex,
-                  mapTitle: this.mapTitle,
-                },
-                cb,
-              )
-            }
-          })
-    } catch (e) {
-      Toast.show('保存失败')
-    }
-  }
-
   /** 原生mapview加载完成回调 */
   _onGetInstance = async mapView => {
     this.mapView = mapView
@@ -1142,6 +1103,19 @@ export default class MapView extends React.Component {
   closeMapHandler = async baskFrom => {
     try {
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+      await this.closeMap()
+      this.setLoading(false)
+      NavigationService.goBack(baskFrom)
+
+      // GLOBAL.clickWait = false
+    } catch (e) {
+      GLOBAL.clickWait = false
+      this.setLoading(false)
+    }
+  }
+
+  closeMap = async () => {
+    try {
       await this.props.closeMap()
       await this._removeGeometrySelectedListener()
       await this.props.setCurrentAttribute({})
@@ -1154,19 +1128,14 @@ export default class MapView extends React.Component {
       await SMap.removeUserCallout()
       await SMap.clearUserTrack()
 
-      this.setLoading(false)
       if (GLOBAL.coworkMode) {
         CoworkInfo.setId('') // 退出任务清空任务ID
         GLOBAL.coworkMode = false
         GLOBAL.getFriend().setCurMod(undefined)
         // NavigationService.goBack('CoworkTabs')
       }
-      NavigationService.goBack(baskFrom)
-
-      // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false
-      this.setLoading(false)
     }
   }
 

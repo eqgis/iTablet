@@ -9,6 +9,7 @@ export default class SimpleDialog extends PureComponent {
   props: {
     confirmAction: () => {},
     cancelAction: () => {},
+    dismissAction: () => {},
     renderExtra: () => {},
     style: Object,
     text: String,
@@ -34,6 +35,7 @@ export default class SimpleDialog extends PureComponent {
       visible: false,
       confirmAction: this.confirm,
       cancelAction: this.cancel,
+      dismissAction: this.dismiss,
       text: '',
       textStyle: {},
       renderExtra: props.renderExtra ? props.renderExtra : this.renderExtra,
@@ -56,6 +58,7 @@ export default class SimpleDialog extends PureComponent {
     textStyle,
     confirmAction,
     cancelAction,
+    dismissAction,
     renderExtra,
     dialogStyle,
     showTitleImage,
@@ -65,7 +68,7 @@ export default class SimpleDialog extends PureComponent {
     disableBackTouch,
     buttonMode,
   }) => {
-    let confirm, cancel
+    let confirm, cancel, dismiss
     if (confirmAction && typeof confirmAction === 'function') {
       confirm = () => {
         this.setVisible(false)
@@ -78,11 +81,18 @@ export default class SimpleDialog extends PureComponent {
         cancelAction()
       }
     }
+    if (dismissAction && typeof dismissAction === 'function') {
+      dismiss = () => {
+        this.setVisible(false)
+        dismissAction()
+      }
+    }
     this.setState({
       text: text || '',
       textStyle: textStyle ? textStyle : {},
       confirmAction: confirmAction ? confirm || this.confirm : this.confirm,
       cancelAction: cancelAction ? cancel || this.cancel : this.cancel,
+      dismissAction: dismissAction ? dismiss || this.dismiss : this.dismiss,
       renderExtra: renderExtra ? renderExtra : this.renderExtra,
       dialogStyle: dialogStyle ? dialogStyle : {},
       showTitleImage: showTitleImage !== undefined ? showTitleImage : true,
@@ -103,6 +113,7 @@ export default class SimpleDialog extends PureComponent {
       textStyle: {},
       confirmAction: this.confirm,
       cancelAction: this.cancel,
+      dismissAction: this.dismiss,
       renderExtra: this.renderExtra,
       dialogStyle: {},
       showTitleImage: true,
@@ -121,6 +132,11 @@ export default class SimpleDialog extends PureComponent {
 
   cancel = () => {
     this.props.cancelAction && this.props.cancelAction()
+    this.setVisible(false)
+  }
+
+  dismiss = () => {
+    this.props.dismissAction && this.props.dismissAction()
     this.setVisible(false)
   }
 
@@ -149,6 +165,7 @@ export default class SimpleDialog extends PureComponent {
         }
         confirmAction={this.state.confirmAction}
         cancelAction={this.state.cancelAction}
+        dismissAction={this.state.dismissAction}
         confirmTitleStyle={this.props.confirmTitleStyle}
         cancelTitleStyle={this.props.cancelTitleStyle}
         // style={[

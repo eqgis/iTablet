@@ -242,7 +242,7 @@ export default class Camera extends React.Component {
     ImagePicker.AlbumListView.defaultProps.assetType = 'All'
     ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
     ImagePicker.getAlbum({
-      maxSize: 9,
+      maxSize: this.limit,
       callback: async data => {
         let mediaPaths = []
         if (data.length > 0) {

@@ -25,6 +25,7 @@ import {
   setEditLayer,
   setSelection,
   setCurrentLayer,
+  setCurrentAttribute,
 } from './src/redux/models/layers'
 import {
   openWorkspace,
@@ -77,6 +78,7 @@ import {
 
 import LaunchGuidePage from './src/components/guide'
 import LaunchGuide from './configs/guide'
+import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -203,6 +205,7 @@ class AppRoot extends Component {
     }
     // this.preLaunchGuideVersion = this.props.appConfig.launchGuideVersion
     this.props.setModules(config) // 设置模块
+    this.props.setNav() // 清空导航记录
     this.initGlobal()
     PT.initCustomPrototype()
     // this.login = this.login.bind(this)
@@ -219,12 +222,17 @@ class AppRoot extends Component {
     SMap.setLicenseListener(this.onInvalidLicense)
 
     this.loginTimer = undefined
+
+    SOnlineService.init()
+    if (Platform.OS === 'android') {
+      this.requestPermission()
+    } else {
+      this.init()
+    }
   }
 
-  UNSAFE_componentWillMount() {
-    SOnlineService.init()
-    // this.initOrientation()
-  }
+  // UNSAFE_componentWillMount() {
+  // }
 
   /** 初始化用户数据 **/
   initUser = async () => {
@@ -417,16 +425,6 @@ class AppRoot extends Component {
     }
   }
 
-  /** 先申请权限再初始化 */
-  componentDidMount() {
-    // this.preLaunchGuideVersion = this.props.appConfig.launchGuideVersion
-    if (Platform.OS === 'android') {
-      this.requestPermission()
-    } else {
-      this.init()
-    }
-  }
-
   requestPermission = async () => {
     const results = await PermissionsAndroid.requestMultiple([
       'android.permission.READ_PHONE_STATE',
@@ -578,12 +576,38 @@ class AppRoot extends Component {
     GLOBAL.SimpleDialog.setVisible(true)
   }
 
-  handleStateChange = appState => {
+  handleStateChange = async appState => {
     if (appState === 'active') {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
         this.login()
         this.reCircleLogin()
       }
+      // if (!this.props.nav.key && this.props.map.currentMap.name) {
+      //   // (async function() {
+      //   try {
+      //     await this.props.closeMap()
+      //     // await this._removeGeometrySelectedListener()
+      //     await this.props.setCurrentAttribute({})
+      //     // this.setState({ showScaleView: false })
+      //     //此处置空unmount内的判断会失效 zhangxt
+      //     // GLOBAL.Type = null
+      //     GLOBAL.clearMapData()
+
+      //     // 移除协作时，个人/新操作的callout
+      //     await SMap.removeUserCallout()
+      //     await SMap.clearUserTrack()
+
+      //     if (GLOBAL.coworkMode) {
+      //       CoworkInfo.setId('') // 退出任务清空任务ID
+      //       GLOBAL.coworkMode = false
+      //       GLOBAL.getFriend().setCurMod(undefined)
+      //       // NavigationService.goBack('CoworkTabs')
+      //     }
+      //   } catch(e) {
+
+      //   }
+      // }.bind(this)())
+      // }
       if (Platform.OS === 'ios') {
         Orientation.getSpecificOrientation((e, orientation) => {
           this.props.setShow({ orientation: orientation })

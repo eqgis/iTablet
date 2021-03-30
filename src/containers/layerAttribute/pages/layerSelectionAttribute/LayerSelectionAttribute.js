@@ -1020,6 +1020,25 @@ export default class LayerSelectionAttribute extends React.Component {
         }
         NavigationService.navigate('MediaEdit', {
           info,
+          cb: mData => {
+            let isDelete = false
+            for (let j = 0; j < mData.length; j++) {
+              if (mData[j].name === 'mediaFilePaths' && mData[j].value.length === 0) {
+                isDelete = true
+                break
+              }
+            }
+            if (isDelete) {
+              this.canBeRefresh = true
+              this.getAttribute({
+                type: 'reset',
+                currentPage: 0,
+                startIndex: 0,
+                relativeIndex: 0,
+                currentIndex: 0,
+              })
+            }
+          },
         })
       },
     ] : []

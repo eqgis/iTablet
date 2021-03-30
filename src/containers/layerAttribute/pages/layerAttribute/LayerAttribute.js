@@ -115,7 +115,7 @@ export default class LayerAttribute extends React.Component {
     // InteractionManager.runAfterInteractions(() => {
     if (this.type === 'MAP_3D') {
       this.getMap3DAttribute()
-    } else {
+    } else if (this.props.currentLayer?.name) {
       this.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
       //ConstInfo.LOADING_DATA)
       SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
@@ -200,7 +200,7 @@ export default class LayerAttribute extends React.Component {
 
   /** 下拉刷新 **/
   refresh = (cb = () => { }, resetCurrent = false) => {
-    if (!this.canBeRefresh) {
+    if (!this.canBeRefresh || !!this.props.currentLayer.name) {
       //Toast.show('已经是最新的了')
       this.getAttribute(
         {
@@ -234,7 +234,7 @@ export default class LayerAttribute extends React.Component {
 
   /** 加载更多 **/
   loadMore = (cb = () => { }) => {
-    if (this.isLoading) return
+    if (this.isLoading || !!this.props.currentLayer.name) return
     if (this.noMore) {
       cb && cb()
       return
@@ -816,10 +816,16 @@ export default class LayerAttribute extends React.Component {
 
   /** 拍照后刷新事件 **/
   refreshAction = async () => {
-    SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
-      this.isMediaLayer = result
+    try {
+      if (this.props.currentLayer.name) {
+        this.isMediaLayer = await SMediaCollector.isMediaLayer(this.props.currentLayer.name)
+        this.refresh()
+      } else {
+        this.refresh()
+      }
+    } catch (error) {
       this.refresh()
-    }).catch(() => this.refresh())
+    }
   }
 
   /** 添加属性字段 **/
@@ -1284,7 +1290,12 @@ export default class LayerAttribute extends React.Component {
           info,
           cb: mData => {
             let _data = this.state.attributes.data[data.rowIndex]
+            let isDelete = false
             for (let j = 0; j < mData.length; j++) {
+              if (mData[j].name === 'mediaFilePaths' && mData[j].value.length === 0) {
+                isDelete = true
+                break
+              }
               if (mData[j].name !== 'mediaName') continue
               for (let i = 0; i < _data.length; i++) {
                 if (_data[i].name !== 'MediaName') continue
@@ -1310,6 +1321,9 @@ export default class LayerAttribute extends React.Component {
                 }
                 this.changeAction(params)
               }
+            }
+            if (isDelete) {
+              this.refresh()
             }
           },
         })

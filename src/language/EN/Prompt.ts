@@ -130,6 +130,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'Collected',
 
   SELECT_TWO_MEDIAS_AT_LEAST: 'You have to select two multi-media files at least',
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
 
   NETWORK_REQUEST_FAILED: 'Failed to request network',
 

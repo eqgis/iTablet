@@ -142,6 +142,7 @@ export default class AudioTopDialog extends PureComponent {
     }
     this.left = new Animated.Value(this.getFixDistance())
     this.right = new Animated.Value(this.getFixDistance())
+    this.top = new Animated.Value(this.getTopDistance())
   }
 
   componentDidUpdate(prevProps) {
@@ -172,6 +173,10 @@ export default class AudioTopDialog extends PureComponent {
         toValue: this.getFixDistance(orientation),
         duration: 0,
       }),
+      Animated.timing(this.top, {
+        toValue: this.getTopDistance(orientation),
+        duration: 300,
+      }),
     ]).start()
   }
 
@@ -195,6 +200,11 @@ export default class AudioTopDialog extends PureComponent {
       let width = Math.abs(screen.getScreenHeight() - screen.getScreenWidth())
       distance = width / 2 + scaleSize(30)
     }
+    return distance
+  }
+
+  getTopDistance = (orientation = '') => {
+    let distance = screen.getHeaderHeight(orientation) + scaleSize(20)
     return distance
   }
 
@@ -261,7 +271,7 @@ export default class AudioTopDialog extends PureComponent {
   render() {
     return (
       <Animated.View
-        style={[styles.dialogStyle, { left: this.left, right: this.right }]}
+        style={[styles.dialogStyle, { left: this.left, right: this.right, top: this.top }]}
       >
         {this.renderTop()}
         <View style={styles.allContentStyle}>

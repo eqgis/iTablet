@@ -258,7 +258,7 @@ export default class LayerAttributeAdd extends React.Component {
           paddingBottom: this.props.device.orientation.indexOf('LANDSCAPE') >= 0
             ? scaleSize(30)
             : scaleSize(100),
-        }
+        },
       ]}>
         <ImageButton
           title={getLanguage(GLOBAL.language).Map_Attribute.CONFIRM_ADD}

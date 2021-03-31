@@ -66,6 +66,7 @@ export default class CustomModePage extends Component {
       }
       length = data.length
     }
+    this.lastLength = length
     this.setState(
       {
         originData: data,
@@ -119,7 +120,7 @@ export default class CustomModePage extends Component {
   }
 
   _changeLength = length => {
-    if (isNaN(Math.round(length)) || length.indexOf('.') > 0 || length < 3) {
+    if (isNaN(Math.round(length)) || length.includes('.') || length < 3) {
       Toast.show(
         getLanguage(GLOBAL.language).Prompt.ONLY_INTEGER_GREATER_THAN_2,
       )
@@ -127,13 +128,13 @@ export default class CustomModePage extends Component {
     }
     let data = JSON.parse(JSON.stringify(this.state.data))
     let min = data[0].end - 0
-    let max = data[this.state.length - 1].start - 0
+    let max = data[this.lastLength - 1].start - 0
 
     let rand = (max - min) / (length - 2)
 
-    let minusRel = this.state.length - length
+    let minusRel = this.lastLength - length
     if (minusRel > 0) {
-      data.splice(this.state.length - 1 - minusRel, minusRel)
+      data.splice(this.lastLength - 1 - minusRel, minusRel)
     } else {
       for (let i = 0; i < Math.abs(minusRel); i++) {
         let newObj = {
@@ -144,7 +145,7 @@ export default class CustomModePage extends Component {
             b: 0,
           },
         }
-        data.splice(this.state.length - 1, 0, newObj)
+        data.splice(this.lastLength - 1, 0, newObj)
       }
     }
     data.map((item, index) => {
@@ -155,6 +156,7 @@ export default class CustomModePage extends Component {
       item.end = min + rand * index + ''
       item.caption = item.start + ' <= X < ' + item.end
     })
+    this.lastLength = ~~length
     this.setState({
       data,
       length: ~~length,
@@ -273,11 +275,32 @@ export default class CustomModePage extends Component {
           </TouchableOpacity>
           <TextInput
             defaultValue={length + ''}
+            value={this.state.length + ''}
             style={styles.inputItem}
             keyboardType={'number-pad'}
             returnKeyType={'done'}
+            onChangeText={text => {
+              if (text === '') {
+                text = ''
+              } else if (isNaN(text) || isNaN(Math.round(text)) || text.includes('.')) {
+                text = this.state.length
+              } else {
+                text = parseInt(text)
+              }
+              this.setState({
+                length: text,
+              })
+            }}
             onEndEditing={evt => {
-              this._changeLength(evt.nativeEvent.text)
+              let text = evt.nativeEvent.text
+              if (text === '' || text < 3) {
+                text = 3
+              }
+              this.setState({
+                length: text,
+              }, () => {
+                this._changeLength(text + '')
+              })
             }}
           />
           <TouchableOpacity

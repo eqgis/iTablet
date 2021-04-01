@@ -1172,12 +1172,25 @@ export default class Friend extends Component {
         messageObj.message = Buffer.from(messageObj.message).toString('base64')
       }
       let generalMsg = JSON.stringify(messageObj)
-      let result = await SMessageService.sendMessage(generalMsg, talkId)
+      
+      let result =  SMessageService.sendMessage(generalMsg, talkId)
+      
+      let timeout = sec => {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve('timeout')
+          }, 1000 * sec)
+        })
+      }
+      
+      let res = await new Promise.race([result, timeout(2)])
+    
+      if(res === 'timeout') result = false
+
       if (messageObj.type !== MSGConstant.MSG_COWORK) {
         result && JPushService.push(messageStr, talkIds)
       }
-
-      if (!bSilent && !result) {
+      if (/*!bSilent &&*/ !result) {
         let option = null
         if (Platform.OS === 'android' && this.curChat) {
           option =
@@ -1751,6 +1764,7 @@ export default class Friend extends Component {
             },
             time: Date.parse(new Date()),
           }
+          debugger
           SMessageService.sendMessage(
             JSON.stringify(delMessage),
             messageObj.user.id,
@@ -1766,6 +1780,7 @@ export default class Friend extends Component {
             },
             time: Date.parse(new Date()),
           }
+          debugger
           SMessageService.sendMessage(
             JSON.stringify(rejMessage),
             messageObj.user.id,
@@ -1811,6 +1826,7 @@ export default class Friend extends Component {
             },
             time: time,
           }
+          debugger
           SMessageService.sendMessage(
             JSON.stringify(message),
             messageObj.user.id,
@@ -1827,6 +1843,7 @@ export default class Friend extends Component {
             },
             time: time,
           }
+          debugger
           SMessageService.sendMessage(
             JSON.stringify(message),
             messageObj.user.id,

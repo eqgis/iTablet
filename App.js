@@ -551,7 +551,14 @@ class AppRoot extends Component {
   }
 
   back = () => {
-    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+    if (this.state.showLaunchGuide) {
+      this.setState({
+        showLaunchGuide: false,
+      })
+      return true
+    } else {
+      return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+    }
   }
 
   onInvalidModule = () => {

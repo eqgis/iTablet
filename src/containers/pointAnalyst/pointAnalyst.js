@@ -72,6 +72,14 @@ export default class PointAnalyst extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
+      JSON.stringify(nextProps.mapSearchHistory) !== JSON.stringify(this.props.mapSearchHistory) ||
+      nextProps.language !== this.props.language
+    )
+  }
+
   renderHeaderOfAnalyst = () => {
     return (
       <View>

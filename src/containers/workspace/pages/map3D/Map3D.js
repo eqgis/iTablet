@@ -362,11 +362,6 @@ export default class Map3D extends React.Component {
     })
   }
 
-  //一级pop按钮 数据采集 点击函数
-  _data_collection = () => {
-    NavigationService.navigate('DataCollection')
-  }
-
   _flyToPoint = () => {
     (async function() {
       let point = await new Point3D().createObj(116.5, 39.9, 500)

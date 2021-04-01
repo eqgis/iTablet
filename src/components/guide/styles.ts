@@ -39,9 +39,14 @@ export default StyleSheet.create({
     color: '#535353',
     marginTop: scaleSize(22),
   },
-  image: {
+  imageP: {
     width: scaleSize(700),
     height: scaleSize(700),
     marginTop: scaleSize(42),
+  },
+  imageL: {
+    width: scaleSize(600),
+    height: scaleSize(600),
+    marginTop: scaleSize(32),
   },
 })

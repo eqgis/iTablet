@@ -1,8 +1,6 @@
 import {
   LayerAttribute,
-  LayerAttributeEdit,
   LayerAttributeAdd,
-  LayerAttributeObj,
   LayerSelectionAttribute,
   LayerAttributeSearch,
   LayerAttributeStatistic,
@@ -10,9 +8,7 @@ import {
 
 export {
   LayerAttribute,
-  LayerAttributeEdit,
   LayerAttributeAdd,
-  LayerAttributeObj,
   LayerSelectionAttribute,
   LayerAttributeSearch,
   LayerAttributeStatistic,

@@ -1,7 +1,6 @@
 import CheckBox from './CheckBox'
 import Header from './Header'
 import TextBtn from './TextBtn'
-import Thumbnails from './Thumbnails'
 import UsualTitle from './UsualTitle'
 import UsualInput from './UsualInput'
 import ImageButton from './ImageButton'
@@ -68,7 +67,6 @@ export {
   CheckBox,
   Header,
   TextBtn,
-  Thumbnails,
   UsualTitle,
   UsualInput,
   ImageButton,

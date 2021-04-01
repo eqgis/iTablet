@@ -59,7 +59,6 @@ import {
   LayerAttributeSearch,
   LayerAttributeStatistic,
 } from './layerAttribute'
-import workspaceFlieList from './workspaceFileList'
 // import dataSourcelist from './dataSourcelist'
 import ColorPickerPage from './colorPickerPage'
 import {
@@ -329,12 +328,6 @@ export default function(appConfig) {
       },
       ChooseLayer: {
         screen: ChooseLayer,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      WorkspaceFileList: {
-        screen: workspaceFlieList,
         navigationOptions: {
           header: null,
         },

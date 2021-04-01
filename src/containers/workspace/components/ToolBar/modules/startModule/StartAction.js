@@ -23,46 +23,6 @@ import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 
-/** 切换工作空间 * */
-function openWorkspace(cb) {
-  // return SMap.setAction(Action.PATCH_HOLLOW_REGION)
-  NavigationService.navigate('WorkspaceFileList', {
-    type: 'WORKSPACE',
-    title: '选择工作空间',
-    cb: path => {
-      if (cb) {
-        cb(path)
-      } else {
-        ToolbarModule.getParams()
-          .closeWorkspace()
-          .then(async () => {
-            try {
-              ToolbarModule.getParams().setContainerLoading &&
-                ToolbarModule.getParams().setContainerLoading(
-                  true,
-                  ConstInfo.WORKSPACE_OPENING,
-                )
-              const data = { server: path }
-              const result = await ToolbarModule.getParams().openWorkspace(data)
-              Toast.show(
-                result
-                  ? ConstInfo.WORKSPACE_OPEN_SUCCESS
-                  : ConstInfo.WORKSPACE_OPEN_FAILED,
-              )
-              NavigationService.goBack()
-              ToolbarModule.getParams().setContainerLoading &&
-                ToolbarModule.getParams().setContainerLoading(false)
-            } catch (error) {
-              Toast.show(ConstInfo.WORKSPACE_OPEN_FAILED)
-              ToolbarModule.getParams().setContainerLoading &&
-                ToolbarModule.getParams().setContainerLoading(false)
-            }
-          })
-      }
-    },
-  })
-}
-
 /** 切换标绘库 * */
 // function changePlotLib() {
 //   if (!ToolbarModule.getParams().setToolbarVisible) return
@@ -991,5 +951,4 @@ export default {
   showHistory,
   saveMap,
   saveMapAs,
-  openWorkspace,
 }

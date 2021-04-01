@@ -252,10 +252,6 @@ export default class MapNavMenu extends React.Component {
     return list
   }
 
-  _map3Dchange = () => {
-    NavigationService.navigate('WorkspaceFileList', { type: ChunkType.MAP_3D })
-  }
-
   _renderItem = ({ item, index }) => {
     return (
       <MTBtn

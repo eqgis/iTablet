@@ -560,6 +560,8 @@ class AppRoot extends Component {
     if (this.state.showLaunchGuide) {
       this.setState({
         showLaunchGuide: false,
+      }, () => {
+        Orientation.unlockAllOrientations()
       })
       return true
     } else {

@@ -201,7 +201,8 @@ class AppRoot extends Component {
       import: null,
       isInit: false,
       /**判断是否显示APP启动引导页，根据launchGuideVersion是否一致和是否有启动页 */
-      showLaunchGuide: config.launchGuideVersion > (this.props.appConfig.launchGuideVersion || '0') && guidePages.length > 0,
+      // showLaunchGuide: config.launchGuideVersion > (this.props.appConfig.launchGuideVersion || '0') && guidePages.length > 0,
+      showLaunchGuide: true,
     }
     // this.preLaunchGuideVersion = this.props.appConfig.launchGuideVersion
     this.props.setModules(config) // 设置模块
@@ -551,7 +552,14 @@ class AppRoot extends Component {
   }
 
   back = () => {
-    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+    if (this.state.showLaunchGuide) {
+      this.setState({
+        showLaunchGuide: false,
+      })
+      return true
+    } else {
+      return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+    }
   }
 
   onInvalidModule = () => {

@@ -25,7 +25,6 @@ import {
   setEditLayer,
   setSelection,
   setCurrentLayer,
-  setCurrentAttribute,
 } from './src/redux/models/layers'
 import {
   openWorkspace,
@@ -1149,6 +1148,7 @@ class AppRoot extends Component {
         ref={ref => this.guidePage = ref}
         defaultVisible={true}
         data={guidePages}
+        device={this.props.device}
         getCustomGuide={LaunchGuide.getCustomGuide}
         dismissCallback={() => {
           this.setState({

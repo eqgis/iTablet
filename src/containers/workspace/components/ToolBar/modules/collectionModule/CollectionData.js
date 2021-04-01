@@ -111,16 +111,9 @@ function getData(type) {
     ToolbarBtnType.CANCEL,
     {
       type: ToolbarBtnType.CHANGE_COLLECTION,
-      // image: getThemeAssets().collection.icon_collection_change,
       image: getThemeAssets().toolbar.icon_toolbar_switch,
       action: () => CollectionAction.changeCollection(type),
     },
-    // {
-    //   type: ToolbarBtnType.MAP_SYMBOL,
-    //   image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
-    //   action: CollectionAction.showSymbol,
-    // },
-    // ToolbarBtnType.COMPLETE,
   ]
 
 
@@ -136,7 +129,6 @@ function getData(type) {
   if (!_params.currentTask?.id) {
     buttons.push({
       type: ToolbarBtnType.MAP_SYMBOL,
-      // image: require('../../../../../../assets/function/icon_function_symbol.png'),
       image: getThemeAssets().collection.icon_symbol,
       action: CollectionAction.showSymbol,
     })
@@ -269,18 +261,12 @@ function getOperationData(type) {
   buttons = [
     ToolbarBtnType.CANCEL,
     ToolbarBtnType.PLACEHOLDER,
-    // {
-    //   type: ToolbarBtnType.MAP_SYMBOL,
-    //   image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
-    //   action: CollectionAction.showSymbol,
-    // },
   ]
 
   // 若是在线协作采集，则没有打开符号库
   if (!_params.currentTask?.id) {
     buttons.push({
       type: ToolbarBtnType.MAP_SYMBOL,
-      // image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
       image: getThemeAssets().collection.icon_symbol,
       action: CollectionAction.showSymbol,
     })

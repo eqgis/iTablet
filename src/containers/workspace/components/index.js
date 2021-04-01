@@ -1,5 +1,4 @@
 import NetworkAnalystToolBar from './NetworkAnalystToolBar'
-import Setting from './Setting'
 import AlertDialog from './AlertDialog'
 import DrawerView from './DrawerView'
 import FunctionToolbar from './FunctionToolbar'
@@ -27,7 +26,6 @@ import {
   AnalystMapRecommend,
   AnalystMapToolbar,
 } from './AnalystMapOptions'
-// import MenuList from './ToolBar/modules/tool3DModule/CustomViews/MenuList'
 import { PoiInfoContainer, PoiTopSearchBar } from './PoiInfoContainer'
 import AIMapSuspensionDialog from './AIMapSuspensionDialog'
 import RNLegendView from './RNLegendView'
@@ -46,7 +44,6 @@ export {
   RNLegendView,
   SimpleSelectList,
   NetworkAnalystToolBar,
-  Setting,
   AlertDialog,
   DrawerView,
   FunctionToolbar,

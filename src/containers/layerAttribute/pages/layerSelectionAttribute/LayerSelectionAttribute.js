@@ -672,11 +672,6 @@ export default class LayerSelectionAttribute extends React.Component {
         title: GLOBAL.language === 'CN' ? '详情' : 'Detail',
         onPress: () => {
           (async function() {
-            // NavigationService.navigate('LayerAttributeAdd', {
-            //   defaultParams: { fieldInfo },
-            //   isDetail: true,
-            // })
-            // TODO this.addPopModal
             this.props.showAddModal && this.props.showAddModal(true, {
               data: {fieldInfo},
               isDetail: true,

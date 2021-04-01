@@ -3192,7 +3192,7 @@ export default class MapView extends React.Component {
         >
           <Image
             resizeMode={'contain'}
-            source={require('../../../../assets/header/icon_search.png')}
+            source={getThemeAssets().nav.icon_search}
             style={styles.search}
           />
         </TouchableOpacity>

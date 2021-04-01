@@ -203,6 +203,9 @@ class AppRoot extends Component {
       /**判断是否显示APP启动引导页，根据launchGuideVersion是否一致和是否有启动页 */
       showLaunchGuide: config.launchGuideVersion > (this.props.appConfig.launchGuideVersion || '0') && guidePages.length > 0,
     }
+    if(this.state.showLaunchGuide === false){
+      Orientation.unlockAllOrientations()
+    }
     // this.preLaunchGuideVersion = this.props.appConfig.launchGuideVersion
     this.props.setModules(config) // 设置模块
     this.props.setNav() // 清空导航记录

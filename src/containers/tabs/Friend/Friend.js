@@ -1190,7 +1190,7 @@ export default class Friend extends Component {
       if (messageObj.type !== MSGConstant.MSG_COWORK) {
         result && JPushService.push(messageStr, talkIds)
       }
-      if (/*!bSilent &&*/ !result) {
+      if (!bSilent && !result) {
         let option = null
         if (Platform.OS === 'android' && this.curChat) {
           option =

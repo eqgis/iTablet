@@ -216,6 +216,7 @@ export default class Map3D extends React.Component {
     let cutLayers = layerlist.map(layer => {
       layer.selected = true
     })
+    console.warn(layerlist.length)
     this.setState({
       layerlist,
       cutLayers,
@@ -300,6 +301,7 @@ export default class Map3D extends React.Component {
         if (await SScene.isEarthScene()) {
           SScene.changeBaseLayer(1)
         }
+        this.getLayers()
       }).catch(() =>{
         //reject异常处理 zhangxt
         setTimeout(() => {
@@ -349,7 +351,6 @@ export default class Map3D extends React.Component {
     this._addScene()
     this.addAttributeListener()
     this.addCircleFlyListen()
-    this.getLayers()
     // }
 
     // this._addScene()

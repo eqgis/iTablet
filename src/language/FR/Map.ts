@@ -366,13 +366,13 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'Illégalement-Pack Collect',
   MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Modèle en fonte',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'Zone RA',
-  MAP_AR_AI_ASSISTANT_MEASURE_ANGLE: 'Angle',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_ANGLE: 'Angle',
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'allant RA',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'Dessin au trait RA',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'Photo RA',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'Points de tirage RA',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'Hauteur',
-  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'Volume',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'Volume',
   MAP_AR_VIDEO: 'Video',
   MAP_AR_IMAGE: 'Image',
   MAP_AR_EFFECT: 'Effet',
@@ -394,11 +394,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'Mesure de polygone',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'Mesure rectangle',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'Mesure circulaire',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',//Need to be translated
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID: 'Cuboid',//Need to be translated
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER: 'Cylinder',//Need to be translated
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE: 'Cuboid Measure',//Need to be translated
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE: 'Cylinder Measure',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID: 'Cuboïde',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER: 'Cylindre',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE: 'Mesure cuboïde',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE: 'Mesure de cylindre',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'Tournez à gauche',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'Tournez à droite',
@@ -417,7 +417,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:'Restez loin',
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:'Trop faible, prenez plus de lumière',
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:'Trop rapide, veuillez ralentir',
-  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:"Déplacer l'appareil pour rechercher les caractéristiques",//Need to be translated
+  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:"Déplacer l'appareil pour rechercher les caractéristiques",
 
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: 'Longueur totale:',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: "Jusqu'à la dernière longueur:",
@@ -426,8 +426,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: 'Aucun historique de collecte',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: "Commencer l'enregistrement",
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: "Arrêter l'enregistrement",
-  MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Area',//need to translate
-  MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: 'Substance',//need to translate
+  MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Surface',
+  MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: 'Substance',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'Ligne',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'Point',
   MAP_AR_AI_SAVE_SUCCESS: 'Enregistré succès',
@@ -493,9 +493,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   ARRIVE_AT_THE_DESTINATION: 'Arrivée à destination',
   START_NAVIGATION: 'Démarrer la navigation',
   SIMULATED_NAVIGATION: 'Navigation simulée',
-  WALK_NAVIGATION: 'Walk Navi', //need to be translated
-  CAR_NAVIGATION: 'Car Navi', //need to be translated
-  CRUISE_NAVIGATION: 'Cruise', //need to be translated
+  WALK_NAVIGATION: 'Navi Marcher',
+  CAR_NAVIGATION: 'Navi Voiture',
+  CRUISE_NAVIGATION: 'Croisière',
   GO_STRAIGHT: 'Aller droit',
   SELECT_START_POINT: 'Sélectionnez Démarrer',
   SELECT_DESTINATION: 'Sélectionner la destination',

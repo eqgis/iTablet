@@ -16,7 +16,7 @@ const Analyst_Modules: typeof CN.Analyst_Modules = {
   FIND_TSP_PATH: 'Trouver la trajectoire TSP',
   TRACING_ANALYSIS: 'Analyse de traçage',
 
-  REGISTRATION_CREATE: 'Nouveau Enregistrement',
+  REGISTRATION_CREATE: 'Nouvel Enregistrement',
   REGISTRATION_SPEEDINESS: 'Enregistrement Rapide',
   PROJECTION_TRANSFORMATION: 'Transformation de projection',
 }

@@ -74,7 +74,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'Veuillez attendre la fin du téléchargement',
   DATA_NOT_FOUND: 'Les données non retrouvées, souhaitez-vous les télécharger à nouveau?',
   LOAD_ORIGIN_PIC: 'Origine de la charge',
-  UNSUPPORTED_MESSAGE: 'Unsupported Message', //to be translated
+  UNSUPPORTED_MESSAGE: 'Message non pris en charge',
   // CustomActions
   MAP: 'Carte',
   TEMPLATE: 'Modèle',
@@ -156,7 +156,7 @@ const Friends: typeof CN.Friends = {
   ADDED: 'Ajouté',
 
   // 创建群组
-  JOIN: '加入', //Need to be translated
+  JOIN: 'Rejoindre',
   VIEW_MORE_MEMBERS: 'Voir plus de membres',
   MY_GROUPS: 'Mes groupes',
   JOINED_GROUPS: 'Groupes rejoints',
@@ -247,9 +247,9 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: 'Voulez-vous quitter le groupe',
   GROUP_DELETE_INFO: 'Voulez-vous supprimer le groupe',
-  GROUP_DELETE_INFO2: 'The current group has been disbanded', //Need to be translated
+  GROUP_DELETE_INFO2: 'Le groupe actuel a été dissous',
   GROUP_MEMBER_DELETE_INFO: 'Voulez-vous supprimer le membre sélectionné',
-  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group', //Need to be translated
+  GROUP_MEMBER_DELETE_INFO2: 'Vous avez été exclu du groupe actuel',
   GROUP_TASK_DELETE_INFO: 'Voulez-vous supprimer des tâches?',
 
   GROUP_MESSAGE_NULL: 'Pas de message',

@@ -364,11 +364,11 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   AGGREGATE_WITH_REGION: 'التجميع مع المنطقة',
 
   // 插值方法
-  IDW: 'IDW',
-  SPLINE: 'Spline',
-  ORDINARY_KRIGING: 'Ordinary Kriging',
-  SIMPLE_KRIGING: 'Simple Kriging',
-  UNIVERSAL_KRIGING: 'Universal Kriging',
+  IDW: 'المسافة العكسية الترجيح',
+  SPLINE: 'خدد منحنى',
+  ORDINARY_KRIGING: 'كريجين',
+  SIMPLE_KRIGING: 'طريقة بسيطة كريغ',
+  UNIVERSAL_KRIGING: 'بان طريقة كريغ',
 
   // 像素格式
   UBIT1: 'حرف واحد',

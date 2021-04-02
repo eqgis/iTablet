@@ -364,15 +364,15 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_TARGET_COLLECT: 'جمع الهدف',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT: 'مسار الواقع المعزز',
   MAP_AR_AI_ASSISTANT_ILLEGALLY_PARK_COLLECT: 'تجميع المتنزهات غير القانونية',
-  MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'Cast Model',
+  MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE: 'الرمال الجدول',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA: 'منطقة AR',
-  MAP_AR_AI_ASSISTANT_MEASURE_ANGLE: 'Angle',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_ANGLE: 'بزاوية',
   MAP_AR_AI_ASSISTANT_MEASURE_LENGTH: 'تنظيم',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE: 'رسم خط الواقع المعزز',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: 'صورة الواقع المعزز',
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: 'نقاط رسم AR',
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: 'نقاط رسم AR',
-  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'Measure Volume',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:'قياس حجم',
 
   MAP_AR_VIDEO: 'فيديو للواقع المعزز',
   MAP_AR_IMAGE: 'صور للواقع المعزز',
@@ -395,11 +395,11 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE: 'قياس المضلع',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE: 'قياس المستطيل',
   MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE: 'قياس دائري',
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'Angle',//Need to be translated
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID: 'Cuboid',//Need to be translated
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER: 'Cylinder',//Need to be translated
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE: 'Cuboid Measure',//Need to be translated
-  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE: 'Cylinder Measure',//Need to be translated
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_ANGLE: 'بزاوية',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID: 'متوازي المستطيلات',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER: 'اسطوانة دائرية',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE: 'متوازي المستطيلات حاكم',
+  MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE: 'قياس اسطوانة',
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: 'انعطف لليسار',
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: 'انعطف يمينا',
@@ -427,8 +427,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: 'لايوجد تاريخ',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: 'بدء التسجيل',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: 'وقف التسجيل',
-  MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: 'Substance',//need to translate
-  MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Area',//need to translate
+  MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: 'مادة',
+  MAP_AR_AI_ASSISTANT_SAVE_AEREA:'مضلع',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'خط',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'نقطة',
   MAP_AR_AI_SAVE_SUCCESS: 'حفظ بنجاح',
@@ -497,9 +497,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   ARRIVE_AT_THE_DESTINATION: 'الوصول الى المكان المقصود',
   START_NAVIGATION: 'بدء التنقل',
   SIMULATED_NAVIGATION: 'التنقل المحاكي',
-  WALK_NAVIGATION: 'Walk Navi', // Need to be translated
-  CAR_NAVIGATION: 'Car Navi', // Need to be translated
-  CRUISE_NAVIGATION: 'Cruise', // Need to be translated
+  WALK_NAVIGATION: 'مشى',
+  CAR_NAVIGATION: 'قاد',
+  CRUISE_NAVIGATION: 'كروز',
   GO_STRAIGHT: 'الذهاب مباشرة',
   SELECT_START_POINT: 'اختر البداية',
   SELECT_DESTINATION: 'اختر المكان المقصود',
@@ -758,7 +758,7 @@ const Map_Setting: typeof CN.Map_Setting = {
 
   // 效果设置
   EFFECT_SETTINGS: 'اعدات التاثير',
-  ANTI_ALIASING_MAP: 'ANTI-ALIASING MAP',
+  ANTI_ALIASING_MAP: 'القضاء على التعرج الخرائط',
   SHOW_OVERLAYS: 'عرض التداخل',
 
   // 范围设置
@@ -823,11 +823,11 @@ const Map_Settings: typeof CN.Map_Settings = {
   DETECT_TYPE_BOOK: 'كتاب',
   DETECT_TYPE_BOTTLE: 'زجاجة',
 
-  DETECT_STYLE_IS_DRAW_TITLE: 'Draw Tiele',
-  DETECT_STYLE_IS_DRAW_CONFIDENCE: 'Diaw Conifidence',
+  DETECT_STYLE_IS_DRAW_TITLE: 'رسم العنوان',
+  DETECT_STYLE_IS_DRAW_CONFIDENCE: 'تعيين قيمة الثقة',
   DETECT_STYLE_IS_SAME_COLOR: 'نفس اللون ',
   DETECT_STYLE_SAME_COLOR: 'نفس قيمة اللون',
-  DETECT_STYLE_STROKE_WIDTH: 'Stroke Width',
+  DETECT_STYLE_STROKE_WIDTH: 'عرض الرسم',
   COUNTRACKED: 'عدد المسار',
 
   // 二级菜单 基本设置
@@ -839,7 +839,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   ROTATION_ANGLE: 'زاوية الدوران',
   COLOR_MODE: 'وضع اللون',
   BACKGROUND_COLOR: 'لون الخلفية',
-  MAP_ANTI_ALIASING: 'Map Anti-aliasing',
+  MAP_ANTI_ALIASING: 'خريطة القضاء على التعرج',
   FIX_SYMBOL_ANGLE: 'إصلاح زاوية الرمز',
   FIX_TEXT_ANGLE: 'إصلاح زاوية النص',
   FIX_TEXT_DIRECTION: 'إصلاح اتجاه النص',

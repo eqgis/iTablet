@@ -43,16 +43,16 @@ const Profile: typeof CN.Profile = {
   SELECT_DATASET:'حدد لإضافة مجموعة بيانات',
   ADD_SELECT_DATASET:'إضافة مجموعة بيانات',
   MOVE_BROWSING:'"تحرك إلى اليسار واليمين" لتصفح المعلومات الكاملة',
-  ADD_THEME_DATA:'1.Add Theme Data',//need to translate
-  CHOOSE_THEME_TYPE:'2.Choose Theme Type',//need to translate
-  CHANGE_THEME_STYLE:'3.Change Theme Style',//need to translate
-  START_COLLECT:'1.New collection map based on template',//need to translate
-  CHOOSE_COLLECT:'2.Select symbols for data acquisition',//need to translate
-  EDIT_COLLECT:'3.Edit the collected data',//need to translate
-  MAP_BROWSE:'Click to open the map',//need to translate
-  MAP_TAGGINGL:'Click to select the marking method to mark',//need to translate
-  SCENE_BROWSE:'Click to open the scene',//need to translate
-  SCENE_FLY:'Click Set flight route to automatically browse the scene from different angles',//need to translate
+  ADD_THEME_DATA:'1.إضافة بيانات الموضوع',
+  CHOOSE_THEME_TYPE:'2.اختر نوع الموضوع',
+  CHANGE_THEME_STYLE:'3.تغيير نمط الموضوع',
+  START_COLLECT:'1.مجموعة جديدة من الرسم البياني القائم على قالب',
+  CHOOSE_COLLECT:'2.اختيار رمز جمع البيانات',
+  EDIT_COLLECT:'3.تحرير البيانات التي تم جمعها',
+  MAP_BROWSE:'انقر فوق فتح الخريطة',
+  MAP_TAGGINGL:'انقر فوق اختيار طريقة وضع العلامات',
+  SCENE_BROWSE:'انقر فوق فتح المشهد',
+  SCENE_FLY:'انقر فوق تحديد مسار الرحلة تلقائيا تصفح المشهد من زوايا مختلفة',
 
   // 我的——登录
   LOGIN: 'تسجيل الدخول',
@@ -241,7 +241,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_DEVICE: 'موقع الجهاز',
   SETTING_LOCATION_LOCAL: 'هذا الجهاز',
   SETTING_CLEAR_CACHE: 'مسح ذاكرة التخزين المؤقت',
-  SETTING_CLEAR_CACHE_SUCCESS:'Clear Success',//need to translate
+  SETTING_CLEAR_CACHE_SUCCESS:'إزالة بنجاح',
 
   // 许可
   LICENSE: 'الرخصة',
@@ -385,18 +385,18 @@ const Profile: typeof CN.Profile = {
   Y_COORDINATE: 'احداثيات Y',
   MAP_AR_DATUM_AUTO_CATCH: 'الالتقاط التلقائي',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'التسامح مع الخطأ',
-  MAP_AR_DRAW_WINDOW: 'Draw Window',//need to translate
+  MAP_AR_DRAW_WINDOW: 'معاينة',
 
-  MAR_AR_DATUM_PICTURE_LOCATION: 'QR location', // need to be translated
-  MAR_AR_POSITION_CORRECT: 'Position calibration', // need to be translated
-  MAP_AR_TOWARDS_NORTH: 'The camera on the back of the phone faces north', // need to be translated
-  MAP_AR_SCAN_TIP: 'Make sure that the QR code just fills the scan box', // need to be translated
-  MAP_AR_SCAN_IT: 'Scan', // need to be translated
-  MAP_AR_DATUM_HEIGHT: 'Height', // need to be translated
-  MAP_AR_DATUM_DIRECTION: 'Direction', // need to be translated
-  MAR_AR_DATUM_NORTH: 'North', // need to be translated
-  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR location succeed', // need to be translated
-  MAR_AR_QR_INVALID: 'QR code information not recognized', // need to be translated
+  MAR_AR_DATUM_PICTURE_LOCATION: 'تحديد موقع',
+  MAR_AR_POSITION_CORRECT: 'مكان التسجيل',
+  MAP_AR_TOWARDS_NORTH: 'يرجى توجيه الكاميرا إلى الشمال',
+  MAP_AR_SCAN_TIP: 'تأكد من أن رمز ثنائي الأبعاد فقط ملء مربع المسح الضوئي',
+  MAP_AR_SCAN_IT: 'مسح',
+  MAP_AR_DATUM_HEIGHT: 'ارتفاع',
+  MAP_AR_DATUM_DIRECTION: 'اتجاه',
+  MAR_AR_DATUM_NORTH: 'الشمال',
+  MAR_AR_PICTURE_LOCATION_SUCCEED: 'تصحيح الموقف بنجاح',
+  MAR_AR_QR_INVALID: 'لم يتم الكشف عن رمز ثنائي الأبعاد',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'إعادة تسمية',

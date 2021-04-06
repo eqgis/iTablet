@@ -88,6 +88,7 @@ export default class MeasureAreaView extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .TRACK,
         action: ()=>{
+          this.toCollectView = true
           this.back()
           this.critical()
         },
@@ -355,6 +356,8 @@ export default class MeasureAreaView extends React.Component {
         left: this._previousLeft,
       },
     }
+
+    this.toCollectView = false // 是否是跳转到轨迹
   }
 
   componentDidUpdate(prevProps) {
@@ -685,7 +688,10 @@ export default class MeasureAreaView extends React.Component {
     // eslint-disable-next-line
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
     // eslint-disable-next-line
-    GLOBAL.toolBox.switchAr()
+    // 如果是跳转到轨迹 不用切换ar相机 否则地图选点时没有mapController zcj
+    if(!this.toCollectView){
+      GLOBAL.toolBox.switchAr()
+    }
 
     NavigationService.goBack()
     return true
@@ -696,7 +702,8 @@ export default class MeasureAreaView extends React.Component {
     //   GLOBAL.arSwitchToMap = true
     //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
     // }
-    GLOBAL.arSwitchToMap = false
+    // CollectSceneFormView 退出时切换ar相机
+    GLOBAL.arSwitchToMap = true
     GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
     // NavigationService.navigate('EnterDatumPoint')
     GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)

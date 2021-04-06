@@ -435,6 +435,8 @@ function captureImage() {
           datasourceAlias,
           datasetName,
         })
+        // 用于采集后切回AI相机时Resume
+        ToolbarModule.addData({ hasCaptureImage: true })
       }
     } else {
       Toast.show(

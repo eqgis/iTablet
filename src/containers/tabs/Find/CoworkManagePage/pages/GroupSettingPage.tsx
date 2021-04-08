@@ -20,6 +20,7 @@ import { Container, TextBtn, TableList, ImageButton, Dialog } from '../../../../
 import { color, size } from '../../../../../styles'
 import { getThemeAssets, getPublicAssets } from '../../../../../assets'
 import { getLanguage } from '../../../../../language'
+import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 import { Users } from '../../../../../redux/models/user'
 import { setCurrentGroup, exitGroup } from '../../../../../redux/models/cowork'
 import { SCoordination, GroupType, SMessageService } from 'imobile_for_reactnative'
@@ -138,15 +139,21 @@ class GroupSettingPage extends Component<Props, State> {
       time: timeStr,
     }
 
+    let temp = []
     for (let i = 0; i < this.state.data.length; i++) {
       if (this.state.data[i].userName === this.props.user.currentUser.userName) {
         continue
       }
-      SMessageService.sendMessage(
-        JSON.stringify(_message),
-        this.state.data[i].userName,
-      )
+      // SMessageService.sendMessage(
+      //   JSON.stringify(_message),
+      //   this.state.data[i].userName,
+      // )
+      temp.push(this.state.data[i].userName)
     }
+    SMessageServiceHTTP.sendMessage(
+      _message,
+      temp,
+    )
     this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
     this._setDialogVisible(false)
     NavigationService.goBack('CoworkManagePage', null)

@@ -163,11 +163,11 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       this.scanTimes = 0
       this._stopAnim()
       Toast.show(getLanguage(GLOBAL.language).Profile.MAR_AR_PICTURE_LOCATION_SUCCEED)
-    }else if(this.scanTimes < 10){
+    }else if(this.scanTimes < 100){
       this.scanTimes++
       setTimeout(()=>{
         this._startScan()
-      },200)
+      },100)
     }else{
       this._stopAnim()
       this.setState({

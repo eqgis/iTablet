@@ -313,7 +313,7 @@ export default class SMessageServiceHTTP {
         }
       }
     } catch (e) {
-
+      Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
     }
   }
 
@@ -343,7 +343,7 @@ export default class SMessageServiceHTTP {
         targetId,
       )
     } catch (e) {
-
+      Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
     }
   }
 }

@@ -435,7 +435,7 @@ export default class LayerAttributeTabs extends React.Component {
     if (hasMedia && smID >= 0) {
       result = await SMediaCollector.deleteMedia(GLOBAL.SelectedSelectionAttribute.layerInfo.path, smID)
     } else {
-      result = await LayerUtils.deleteSelectionAttributeByLayer(
+      result = await LayerUtils.deleteAttributeByLayer(
         GLOBAL.SelectedSelectionAttribute.layerInfo.path,
         this.state.currentIndex, this.state.isCollection)
     }

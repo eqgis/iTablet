@@ -164,17 +164,13 @@ export default class SMessageServiceHTTP {
     let url = ''
     switch (type) {
       case 'exchange':
-        url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port
-          }/api/bindings/%2F`
+        url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port}/api/bindings/%2F`
         break
       case 'queue':
-        url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port
-          }/api/queues/%2F`
+        url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port}/api/queues/%2F`
         break
       case 'binding':
-        url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port
-          // }/api/queues/%2F`
-          }/api/exchanges/%2F/message/bindings/source`
+        url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port}/api/exchanges/%2F/message/bindings/source`
         break
       default:
         return []
@@ -205,20 +201,20 @@ export default class SMessageServiceHTTP {
       if (queueId.includes('Group_')) {
         return false
       }
-      // let _queue
-      // let queues = await this.getMessageQueues('binding')
-      // if (queueId && queues.length > 0) {
-      //   for (let queue of queues) {
-      //     if (queue.routing_key === queueId) {
-      //       _queue = queue
-      //       break
-      //     }
-      //   }
-      // }
+      let _queue
+      let queues = await this.getMessageQueues('binding')
+      if (queueId && queues.length > 0) {
+        for (let queue of queues) {
+          if (queue.routing_key === queueId) {
+            _queue = queue
+            break
+          }
+        }
+      }
       let result = true
-      // if (!_queue && isCreate) {
-      result = await SMessageService.declareQueue(queueId)
-      // }
+      if (!_queue && isCreate) {
+        result = await SMessageService.declareQueue(queueId)
+      }
       return result
     } catch (error) {
       return false
@@ -238,49 +234,49 @@ export default class SMessageServiceHTTP {
       if (!queueId.includes('Group_')) {
         return false
       }
-      // let queues = await this.getMessageQueues('binding')
-      // let groupQueues = await this.getMessageQueues('exchange')
-      // let _queue
-      // let _groupQueues
-      // if (queueId && groupQueues.length > 0) {
-      //   for (let tempGroup of groupQueues) {
-      //     if (tempGroup.routing_key === queueId) {
-      //       _groupQueues = tempGroup
-      //       break
-      //     }
-      //   }
-      // }
-      // let newMemberIds = []
+      let queues = await this.getMessageQueues('binding')
+      let groupQueues = await this.getMessageQueues('exchange')
+      let _queue
+      let _groupQueues
+      if (queueId && groupQueues.length > 0) {
+        for (let tempGroup of groupQueues) {
+          if (tempGroup.routing_key === queueId) {
+            _groupQueues = tempGroup
+            break
+          }
+        }
+      }
+      let newMemberIds = []
       // 声明和判断群成员
       for (let i = 0; i < members.length; i++) {
         let member = members[i]
-        // if (member && queues.length > 0) {
-        // _queue = null
-        // for (let j = 0; j < queues.length; j++) {
-        //   let tempQueue = queues[j]
-        //   if (tempQueue.routing_key === `Message_${member.id}`) {
-        //     _queue = tempQueue
-        //     break
-        //   }
-        // }
+        if (member && queues.length > 0) {
+          _queue = null
+          for (let j = 0; j < queues.length; j++) {
+            let tempQueue = queues[j]
+            if (tempQueue.routing_key === `Message_${member.id}`) {
+              _queue = tempQueue
+              break
+            }
+          }
 
-        // if (!_queue && isCreate) {
-        // newMemberIds.push(member.id)
-        await SMessageService.declareQueue(`Message_${member.id}`)
-        // await SMessageService.bindSession(`Message_${member.id}`, queueId)
-        // }
-        // }
+          if (!_queue && isCreate) {
+            newMemberIds.push(member.id)
+            await SMessageService.declareQueue(`Message_${member.id}`)
+            // await SMessageService.bindSession(`Message_${member.id}`, queueId)
+          }
+        }
       }
       let result = true
-      // if (!_groupQueues && isCreate) {
-      result = await SMessageService.declareSession(members, queueId)
-      // }
+      if (!_groupQueues && isCreate) {
+        result = await SMessageService.declareSession(members, queueId)
+      }
       // 创建好群组和新添加的成员后，绑定关系
-      // if (result && newMemberIds.length > 0) {
-      //   for (let i = 0; i < newMemberIds.length; i++) {
-      //     await SMessageService.bindSession(`Message_${newMemberIds[i]}`, queueId)
-      //   }
-      // }
+      if (result && newMemberIds.length > 0) {
+        for (let i = 0; i < newMemberIds.length; i++) {
+          await SMessageService.bindSession(`Message_${newMemberIds[i]}`, queueId)
+        }
+      }
       return result
     } catch (error) {
       return false

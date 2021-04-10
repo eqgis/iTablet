@@ -185,8 +185,10 @@ class Chat extends React.Component {
   back = () => {
     if (ImageViewer.isShow()) {
       ImageViewer.hide()
-      return true
+    } else {
+      NavigationService.goBack('Chat')
     }
+    return true
     // if (this.state.coworkMode) {
     //   // this.SimpleDialog.set({
     //   //   text: getLanguage(GLOBAL.language).Friends.ALERT_EXIT_COWORK,
@@ -199,7 +201,6 @@ class Chat extends React.Component {
     //   // NavigationService.navigate('CoworkMapStack')
     //   NavigationService.goBack('Chat')
     // }
-    NavigationService.goBack('Chat')
   }
 
   // setCoworkMode = value => {

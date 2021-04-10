@@ -42,7 +42,7 @@ export default class InformSpot extends Component {
         }
         if (
           key.indexOf('Group_Task_') === 0 ||
-          !isFriend && !isGroup && key.toString() !== '1'
+          !isFriend && key.indexOf('Group_') === -1 && !isGroup && key.toString() !== '1'
         ) continue
         bInform = currentUser[key].unReadMsg
         if (bInform) break

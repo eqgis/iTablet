@@ -190,6 +190,7 @@ import {
 import AppletManagement from './applet/appletManagement'
 import AppletList from './applet/appletList'
 import SampleMap from './sampleMap'
+import SelectLocation from './workspace/pages/SelectLocation'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -975,6 +976,13 @@ export default function(appConfig) {
       },
       MeasureAreaView: {
         screen: MeasureAreaView,
+        navigationOptions: {
+          header: null,
+          // gesturesEnabled: true,
+        },
+      },
+      SelectLocation: {
+        screen: SelectLocation,
         navigationOptions: {
           header: null,
           // gesturesEnabled: true,

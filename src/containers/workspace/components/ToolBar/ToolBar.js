@@ -38,6 +38,7 @@ export default class ToolBar extends React.Component {
     navigation: Object,
     data: Array,
     existFullMap: () => {},
+    measureType:() => {},
     symbol: Object,
     user: Object,
     map: Object,
@@ -294,6 +295,10 @@ export default class ToolBar extends React.Component {
     }
   }
 
+  measure = params => {
+    this.props.measure && this.props.measure(params)
+  }
+
   /**
    * 设置是否显示
    * isShow: 是否显示
@@ -320,6 +325,9 @@ export default class ToolBar extends React.Component {
    * }
    **/
   setVisible = (isShow, type = '', params = {}) => {
+    if (params.measureType){
+      this.measure(params)
+    }
     if (params.touchType) {
       GLOBAL.TouchType = params.touchType
     } else {

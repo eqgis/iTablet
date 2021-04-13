@@ -21,6 +21,8 @@ import {
   SMap,
   DatasetType,
   SMMeasureARGeneraView,
+  SMARMapView,
+  SARMap,
 } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
@@ -464,8 +466,8 @@ export default class MeasureAreaView extends React.Component {
           },
         })
 
-        SMeasureAreaView.setDioLogListener({
-          callback: async result => {
+        SARMap.addMeasureStatusListeners({
+          infoListener: async result => {
             this.onshowLog(result)
           },
         })
@@ -497,10 +499,17 @@ export default class MeasureAreaView extends React.Component {
           this.onCurrentHeightChanged,
         )
       } else {
-        DeviceEventEmitter.addListener(
-          'onCurrentHeightChanged',
-          this.onCurrentHeightChanged,
-        )
+        SARMap.addOnHeightChangeListener({
+          onHeightChange: height => {
+            this.setState({
+              currentHeight: height,
+            })
+          },
+        })
+        // DeviceEventEmitter.addListener(
+        //   'onCurrentHeightChanged',
+        //   this.onCurrentHeightChanged,
+        // )
       }
     }.bind(this)())
     // })
@@ -515,6 +524,8 @@ export default class MeasureAreaView extends React.Component {
       'onCurrentHeightChanged',
       this.onCurrentHeightChanged,
     )
+
+    SARMap.removeOnHeightChangeListeners()
 
     AppState.removeEventListener('change', this.handleStateChange)
 
@@ -533,11 +544,11 @@ export default class MeasureAreaView extends React.Component {
   handleStateChange = async appState => {
     if (Platform.OS === 'android') {
       if (appState === 'background') {
-        SMeasureAreaView.onPause()
+        SARMap.onPause()
       }
 
       if (appState === 'active') {
-        SMeasureAreaView.onResume()
+        SARMap.onResume()
       }
     }
   }
@@ -1100,6 +1111,7 @@ export default class MeasureAreaView extends React.Component {
     }
     return (
       <View style={[{
+        position: 'absolute',
         top: scaleSize(300),
         borderRadius: 15,
         // opacity: 0.5,
@@ -1418,39 +1430,43 @@ export default class MeasureAreaView extends React.Component {
     )
   }
 
+
   /** 原生mapview加载完成回调 */
   _onGetInstance = async () => {
     //设置类型需要放到原生空间初始化完成，放到componentDidMount 也不靠谱 add xiezhy
     if (this.measureType) {
+      SARMap.showMeasureView(true)
+      SARMap.showTrackView(false)
+      SARMap.showPointCloud(false)
       if (this.measureType === 'measureArea') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+        SARMap.setMeasureMode('MEASURE_AREA')
         // SMeasureAreaView.setMeasureMode('DRAW_AREA')
       } else if (this.measureType === 'measureLength') {
-        SMeasureAreaView.setMeasureMode('MEASURE_LINE')
+        SARMap.setMeasureMode('MEASURE_LINE')
       } else if (this.measureType === 'drawLine') {
-        SMeasureAreaView.setMeasureMode('DRAW_LINE')
+        SARMap.setMeasureMode('DRAW_LINE')
       } else if (
         this.measureType === 'arDrawArea' ||
         this.measureType === 'arArea'
       ) {
-        SMeasureAreaView.setMeasureMode('DRAW_AREA')
+        SARMap.setMeasureMode('DRAW_AREA')
       } else if (this.measureType === 'arDrawPoint') {
-        SMeasureAreaView.setMeasureMode('DRAW_POINT')
+        SARMap.setMeasureMode('DRAW_POINT')
       } else if (this.measureType === 'arMeasureHeight') {
-        SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
+        SARMap.setMeasureMode('MEASURE_HEIGHT')
         this.setState({
           showCurrentHeightView: true,
         })
       } else if (this.measureType === 'arMeasureCircle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_CIRCLE')
+        SARMap.setMeasureMode('MEASURE_AREA_CIRCLE')
       } else if (this.measureType === 'arMeasureRectangle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_RECTANGLE')
+        SARMap.setMeasureMode('MEASURE_AREA_RECTANGLE')
       } else if (this.measureType === 'measureAngle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_ANGLE')
+        SARMap.setMeasureMode('MEASURE_AREA_ANGLE')
       } else if (this.measureType === 'arMeasureCuboid') {
-        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CUBOID')
+        SARMap.setMeasureMode('MEASURE_VOLUME_CUBOID')
       } else if (this.measureType === 'arMeasureCylinder') {
-        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CYLINDER')
+        SARMap.setMeasureMode('MEASURE_VOLUME_CYLINDER')
       }
       if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
       let datasourceAlias = this.props.currentLayer.datasourceAlias
@@ -1496,9 +1512,9 @@ export default class MeasureAreaView extends React.Component {
           bottomProps={{ type: 'fix' }}
           withoutHeader={showDatumPoint}
         >
-          <SMMeasureAreaView
+          <SMARMapView
             ref={ref => (this.SMMeasureAreaView = ref)}
-            onGetInstance={this._onGetInstance}
+            onLoad={this._onGetInstance}
           />
           { !showDatumPoint && <>
             {this.state.showSwithchButtons && this.renderBottomSwitchBtns()}

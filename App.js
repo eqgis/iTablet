@@ -25,7 +25,6 @@ import {
   setEditLayer,
   setSelection,
   setCurrentLayer,
-  setCurrentAttribute,
 } from './src/redux/models/layers'
 import {
   openWorkspace,
@@ -503,6 +502,13 @@ class AppRoot extends Component {
       this.props.setCurrentLayer() // 清空当前图层
     }
     Platform.OS === 'android' && SplashScreen.hide()
+    if(this.state.showLaunchGuide === false){
+      let orientationTimer = setTimeout(() => {
+        Orientation.unlockAllOrientations()
+        clearTimeout(orientationTimer)
+        orientationTimer = null
+      }, 1000)
+    }
 
     Platform.OS === 'android' &&
       BackHandler.addEventListener('hardwareBackPress', this.back)
@@ -551,7 +557,16 @@ class AppRoot extends Component {
   }
 
   back = () => {
-    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+    if (this.state.showLaunchGuide) {
+      this.setState({
+        showLaunchGuide: false,
+      }, () => {
+        Orientation.unlockAllOrientations()
+      })
+      return true
+    } else {
+      return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+    }
   }
 
   onInvalidModule = () => {
@@ -1139,6 +1154,7 @@ class AppRoot extends Component {
         ref={ref => this.guidePage = ref}
         defaultVisible={true}
         data={guidePages}
+        device={this.props.device}
         getCustomGuide={LaunchGuide.getCustomGuide}
         dismissCallback={() => {
           this.setState({

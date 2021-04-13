@@ -16,6 +16,7 @@ import TaskManage from './TaskManage'
 import { Users } from '../../../../redux/models/user'
 import { ReadMsgParams, DeleteInviteParams } from '../../../../redux/models/cowork'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
+import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
 interface Props {
   navigation: Object,
   user: Users,
@@ -153,13 +154,21 @@ export default class CoworkManagePage extends React.Component<Props, State> {
                     type: MsgConstant.MSG_ONLINE_GROUP_TASK,
                     time: timeStr,
                   }
+                  let temp = []
                   for (const member of members) {
                     if (member.id === this.props.user.currentUser.userName) continue
-                    SMessageService.sendMessage(
-                      JSON.stringify(message),
-                      member.userName,
-                    )
+                    // SMessageService.sendMessage(
+                    //   JSON.stringify(message),
+                    //   member.userName,
+                    // )
+                    temp.push(member.userName)
                   }
+
+                  SMessageServiceHTTP.sendMessage(
+                    message,
+                    temp,
+                  )
+                  // TODO 底层同样declare个人队列
                   await SMessageService.declareSession(_members, id)
                   this.props.addCoworkMsg(message)
                 },

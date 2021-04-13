@@ -51,32 +51,16 @@ import GetBack from './register&getBack/GetBack'
 // 地图二级设置菜单
 import SecondMapSettings from './mapSetting/secondMapSettings'
 // 地图功能页面
-import MTDataCollection from './mtDataCollection'
-import MTDataManagement from './mtDataManagement'
-import NewDSource from './newDSource'
-import { ChooseDatasource, NewDSet } from './newDSet'
 import MTLayerManager from './mtLayerManager'
 import Layer3DManager from './Layer3DManager'
-import AnalystParams from './analystParams'
-import AddLayer from './addLayer'
-import ChooseEditLayer from './chooseEditLayer'
-import AddDataset from './addDataset'
-import AddLayerGroup from './addLayerGroup'
-import MapChange from './mapChange'
 import {
   LayerSelectionAttribute,
-  LayerAttributeEdit,
   LayerAttributeAdd,
-  LayerAttributeObj,
   LayerAttributeSearch,
   LayerAttributeStatistic,
 } from './layerAttribute'
-import { ThemeEntry, ThemeEdit, ChoosePage, ThemeStyle } from './theme'
-import workspaceFlieList from './workspaceFileList'
 // import dataSourcelist from './dataSourcelist'
-import dataSets from './dataSets'
 import ColorPickerPage from './colorPickerPage'
-import UpLoadList from './uploadList'
 import {
   MapStack,
   Map3DStack,
@@ -319,86 +303,8 @@ export default function(appConfig) {
           header: null,
         },
       },
-      DataCollection: {
-        screen: MTDataCollection,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      DataManagement: {
-        screen: MTDataManagement,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      NewDSource: {
-        screen: NewDSource,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      ChooseDatasource: {
-        screen: ChooseDatasource,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      NewDSet: {
-        screen: NewDSet,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      ChooseEditLayer: {
-        screen: ChooseEditLayer,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      AnalystParams: {
-        screen: AnalystParams,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      AddLayer: {
-        screen: AddLayer,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      AddDataset: {
-        screen: AddDataset,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      AddLayerGroup: {
-        screen: AddLayerGroup,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      MapChange: {
-        screen: MapChange,
-        navigationOptions: {
-          header: null,
-        },
-      },
       LayerSelectionAttribute: {
         screen: LayerSelectionAttribute,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      LayerAttributeEdit: {
-        screen: LayerAttributeEdit,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      LayerAttributeObj: {
-        screen: LayerAttributeObj,
         navigationOptions: {
           header: null,
         },
@@ -421,44 +327,8 @@ export default function(appConfig) {
           header: null,
         },
       },
-      ThemeEntry: {
-        screen: ThemeEntry,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      ThemeEdit: {
-        screen: ThemeEdit,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      ChoosePage: {
-        screen: ChoosePage,
-        navigationOptions: {
-          header: null,
-        },
-      },
       ChooseLayer: {
         screen: ChooseLayer,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      ThemeStyle: {
-        screen: ThemeStyle,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      WorkspaceFileList: {
-        screen: workspaceFlieList,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      DataSets: {
-        screen: dataSets,
         navigationOptions: {
           header: null,
         },
@@ -477,13 +347,6 @@ export default function(appConfig) {
       },
       MapCutDS: {
         screen: MapCutDS,
-        navigationOptions: {
-          header: null,
-        },
-      },
-
-      UpLoadList: {
-        screen: UpLoadList,
         navigationOptions: {
           header: null,
         },

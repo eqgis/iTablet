@@ -78,8 +78,6 @@ export default class NetworkAnalystToolBar extends React.Component {
   _setting = type => {
     (async function() {
       this.props.showSetting && this.props.showSetting(type)
-      // this.props.showSetting && this.props.showSetting(Setting.Type.NETWORK_TRACKING)
-      // NavigationService.navigate('ChooseEditLayer',{ workspace: this.props.workspace, map: this.props.map, type: DatasetType.LINE, mapControl: this.props.mapControl, isEdit: true })
     }.bind(this)())
   }
 

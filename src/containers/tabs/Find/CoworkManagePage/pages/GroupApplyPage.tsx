@@ -8,6 +8,7 @@ import { getThemeAssets } from '../../../../../assets'
 import { UserType, MsgConstant } from '../../../../../constants'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
+import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 import { GroupList } from '../components'
 import { connect } from 'react-redux'
 import { SCoordination, SMessageService } from 'imobile_for_reactnative'
@@ -102,9 +103,9 @@ class GroupApplyPage extends Component<Props, State> {
           },
           time: timeStr,
         }
-        SMessageService.sendMessage(
-          JSON.stringify(message),
-          groupInfo.creator,
+        SMessageServiceHTTP.sendMessage(
+          message,
+          [groupInfo.creator],
         )
         NavigationService.goBack('GroupApplyPage', null)
         // this.callBack && this.callBack(groupInfo)

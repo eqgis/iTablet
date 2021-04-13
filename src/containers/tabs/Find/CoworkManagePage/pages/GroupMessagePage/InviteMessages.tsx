@@ -16,6 +16,7 @@ import { MsgConstant } from '../../../../../../constants'
 import { color } from '../../../../../../styles'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
+import SMessageServiceHTTP from '../../../../Friend/SMessageServiceHTTP'
 import { Users } from '../../../../../../redux/models/user'
 import { ReadMsgParams } from '../../../../../../redux/models/cowork'
 import { SCoordination, SMessageService, GroupInviteMessageType } from 'imobile_for_reactnative'
@@ -197,9 +198,13 @@ export default class InviteMessages extends Component<Props, State> {
       feedbackInfo: data.feedbackInfo,
     }).then(result => {
       if (result.succeed) {
-        SMessageService.sendMessage(
-          JSON.stringify(data),
-          data.inviter,
+        // SMessageService.sendMessage(
+        //   JSON.stringify(data),
+        //   data.inviter,
+        // )
+        SMessageServiceHTTP.sendMessage(
+          data,
+          [data.inviter],
         )
         let _data = this.state.data.deepClone()
         _data[index] = data

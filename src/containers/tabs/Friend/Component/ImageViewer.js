@@ -31,6 +31,10 @@ function hide () {
   sibling = null
 }
 
+function isShow() {
+  return elements.length > 0
+}
+
 class ChatImageViewer extends React.Component {
   props: {
     receivePicture: () => {},
@@ -192,4 +196,5 @@ const styles = StyleSheet.create({
 export default {
   show,
   hide,
+  isShow,
 }

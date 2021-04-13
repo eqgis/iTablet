@@ -77,7 +77,7 @@ const Prompt: typeof CN.Prompt = {
   OVERWRITE: 'الكتابة فوق',
   CHOOSE_DATASET: 'الرجاء اختيار مجموعة البيانات',
 
-  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Please Submit Current Geometry',//need to translate
+  PLEASE_SUBMIT_EDIT_GEOMETRY: 'يرجى تقديم الرسومات الهندسية الحالية',
 
   SET_ALL_MAP_VISIBLE: 'كل شيء مرئي',
   SET_ALL_MAP_INVISIBLE: 'كل شىء غير مرئلى',
@@ -89,7 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'مجموعة سوبرماب',
   INSTRUCTION_MANUAL: 'كتيب التعليمات',
   THE_CURRENT_LAYER: 'الطبقة الحالية تكون',
-  NO_BASE_MAP: 'No base map can be removed', // need to translate
+  NO_BASE_MAP: 'لا يمكن حذف الخريطة الأساسية',
   ENTER_KEY_WORDS: 'يرجى إدخال الكلمات الرئيسية',
   SEARCHING: 'جارى البحث',
   SEARCHING_DEVICE_NOT_FOUND: 'لا يوجد جهاز',
@@ -103,9 +103,9 @@ const Prompt: typeof CN.Prompt = {
   CREATE_FAILED: 'فشل إنشاء',
   INVALID_DATASET_NAME: 'اسم مجموعة بيانات غير صالح أو الاسم موجود بالفعل',
 
-  PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
-  PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
-  PLEASE_CHOOSE_REGION_LAYER: 'Please Choose Region Layer',//need to translate
+  PLEASE_CHOOSE_POINT_LAYER: 'الرجاء اختيار طبقة',
+  PLEASE_CHOOSE_LINE_LAYER: 'اختر خط طبقة',
+  PLEASE_CHOOSE_REGION_LAYER: 'الرجاء اختيار المنطقة طبقة',
 
   NO_PLOTTING_DEDUCTION: 'لا يوجد رسم تخطيطي في الخريطة الحالية',
   NO_FLY: 'لايوجد طيران فى المشهد الحالى',
@@ -122,7 +122,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: 'عرض قائمة الأجهزة المدعومة',
   PLEASE_NEW_PLOT_LAYER: 'من فضلك أنشىء طبقة نقاط جديدة',
   DOWNLOADING_PLEASE_WAIT: 'من فضلك انتظر جارى التنزيل',
-  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Please wait while other files are being downloaded', // need to translate
+  DOWNLOADING_OTHERS_PLEASE_WAIT: 'تحميل ملفات أخرى ، يرجى الانتظار',
   SELECT_DELETE_BY_RECTANGLE: 'الرجاء تحديد حذف العنصر عن طريق تحديد المستطيل',
 
   CHOOSE_LAYER: 'اختر الطبقة',
@@ -174,11 +174,11 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_SYMBOL: 'من فضلك اختر رمز النقط',
 
   ENTER_NAME: 'من فضلك ادخل الاسم',
-  ENTER_CAPTION: 'Please input caption', // need to translate
-  CHOICE_TYPE: 'Please choice type', // need to translate
-  INPUT_LENGTH: 'Please input max length', // need to translate
-  DEFAULT_VALUE_EROROR: 'Default value input error', // need to translate
-  SELECT_REQUIRED: 'Please select required', // need to translate
+  ENTER_CAPTION: 'الرجاء إدخال عنوان',
+  CHOICE_TYPE: 'الرجاء اختيار نوع',
+  INPUT_LENGTH: 'أدخل أقصى طول',
+  DEFAULT_VALUE_EROROR: 'القيمة الافتراضية خطأ في الإدخال',
+  SELECT_REQUIRED: 'الرجاء اختيار البند المطلوب',
 
   CLIPPING: 'جارى القطع',
   CLIPPED_SUCCESS: 'تم القطع بنجاح',
@@ -242,7 +242,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: 'يرجى إعداد الموقع',
   OUT_OF_MAP_BOUNDS: 'خارج حدود الخريطة',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: 'الموقع الحالي خارج حدود الخريطة بحيث لا يمكنك استخدام التتبع لزيادة الطريق',
-  AFTER_COLLECT: 'Please collect before viewing',//need to be translated
+  AFTER_COLLECT: 'يرجى جمع قبل مشاهدة',
 
   POI: 'نقاط الاهتمام',
 
@@ -393,8 +393,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'القيمة الافتراضية خالية',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'لا يمكن التجميع في الطبقات المواضيعية',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', //need to be translated
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', //need to be translated
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'لا يمكن جمعها في طبقة كندي',
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'لا يمكن جمعها في طبقة النص',
   HEAT_MAP_DATASET_TYPE_ERROR: 'يمكن إنشاء مجموعة بيانات النقاط فقط',
 
 

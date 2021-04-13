@@ -11,24 +11,6 @@ function getData(type, params) {
   const buttons = []
   if (type !== ConstToolType.SM_MAP3D_START) return { data, buttons }
   data = [
-    // {
-    //   key: constants.CREATE,
-    //   title: '导入场景',
-    //   size: 'large',
-    //   action: () => {
-    //     if (!ToolbarModule.getParams().setToolbarVisible) return
-    //     // ToolbarModule.getParams().setToolbarVisible(false)
-    //     // NavigationService.navigate('WorkspaceFileList', { type: 'MAP_3D' })
-    //     ToolbarModule.getParams().setToolbarVisible(
-    //       true,
-    //       ConstToolType.SM_MAP3D_IMPORTWORKSPACE,
-    //       {
-    //         containerType: 'list',
-    //       },
-    //     )
-    //   },
-    //   image: require('../../../../assets/mapTools/icon_create.png'),
-    // },
     {
       key: constants.OPEN,
       title: getLanguage(GLOBAL.language).Map_Main_Menu.START_OPEN_SENCE,
@@ -37,15 +19,6 @@ function getData(type, params) {
       size: 'large',
       image: getThemeAssets().start.icon_open_scene,
     },
-    // {
-    //   key: constants.BASE_MAP,
-    //   title: constants.BASE_MAP,
-    //   size: 'large',
-    //   action: () => {
-    //     changeBaseLayer('MAP_3D')
-    //   },
-    //   image: require('../../../../assets/mapTools/icon_base_black.png'),
-    // },
   ]
   return { data, buttons }
 }

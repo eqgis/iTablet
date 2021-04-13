@@ -14,6 +14,7 @@ import {
 } from '../../../../../redux/models/cowork'
 import NavigationService from '../../../../NavigationService'
 import CoworkInfo from '../../../Friend/Cowork/CoworkInfo'
+import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 import CoworkFileHandle from '../CoworkFileHandle'
 import { GroupType, SMessageService } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
@@ -149,17 +150,23 @@ class CoworkMember extends Component<Props, State> {
           })
         }
         currentTask.members = currentTask.members.concat(_members)
+        let temp = []
         for (const member of currentTask.members) {
           // CoworkInfo.addMember({
           //   id: member.id,
           //   name: member.name,
           // })
           if (member.userName === this.props.user.currentUser.userName) continue
-          SMessageService.sendMessage(
-            JSON.stringify(currentTask),
-            member.id,
-          )
+          // SMessageService.sendMessage(
+          //   JSON.stringify(currentTask),
+          //   member.id,
+          // )
+          temp.push(member.id)
         }
+        SMessageServiceHTTP.sendMessage(
+          currentTask,
+          temp,
+        )
         currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
         this.props.addCoworkMsg(currentTask)
         // this.props.addTaskMembers({

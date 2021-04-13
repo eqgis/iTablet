@@ -18,6 +18,10 @@
 #import "NativeUtil.h"
 #import "Orientation.h"
 #import "MyLaunchScreenViewController.h"
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+
+#define IS_PAD (UI_USER_INTERFACE_IDIOM()== UIUserInterfaceIdiomPad)
+
 
 static NSString* g_sampleCodeName = @"#";;
 @implementation AppDelegate
@@ -90,6 +94,7 @@ static NSString* g_sampleCodeName = @"#";;
 
 -(void)removeLanchSlogan {
   [launchView removeFromSuperview];
+//  self.allowRotation = UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -113,12 +118,14 @@ static NSString* g_sampleCodeName = @"#";;
   self.window.rootViewController = _nav;
   [self.window makeKeyAndVisible];
   
+  if(IS_IPHONE){
+    self.allowRotation = UIInterfaceOrientationMaskPortrait;
+  }else{
+    self.allowRotation = UIInterfaceOrientationMaskLandscape;
+  }
   [self addLaunchSlogan];
   
-  
-//  [self initDefaultData];
-//  [self initEnvironment];
-  self.allowRotation = UIInterfaceOrientationMaskAll;
+
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:@"SMOrientations" object:nil];
   
   [NSThread sleepForTimeInterval:1];

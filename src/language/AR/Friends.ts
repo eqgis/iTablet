@@ -73,7 +73,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'يرجى الانتظار حتى اكتمال التنزيل',
   DATA_NOT_FOUND: 'لم يتم العثور على البيانات ، هل ترغب في تنزيلها مرة أخرى؟',
   LOAD_ORIGIN_PIC: 'تحميل الأصل',
-  UNSUPPORTED_MESSAGE: 'Unsupported Message', //to be translated
+  UNSUPPORTED_MESSAGE: 'رسالة غير معتمدة',
   // CustomActions
   MAP: 'خريطة',
   TEMPLATE: 'تنسيق الملف',
@@ -160,7 +160,7 @@ const Friends: typeof CN.Friends = {
   ADDED: 'تمت الإضافة',
 
   // 创建群组
-  JOIN: '加入', // Need to be translated
+  JOIN: 'حضر',
   TITLE_CHOOSE_MEMBER: 'اختار العضو',
   VIEW_MORE_MEMBERS: 'عرض المزيد من الأعضاء',
   MY_GROUPS: 'مجموعاتي',
@@ -252,9 +252,9 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: 'هل تريد مغادرة المجموعة',
   GROUP_DELETE_INFO: 'هل تريد حذف المجموعة',
-  GROUP_DELETE_INFO2: 'The current group has been disbanded', // Need to be translated
+  GROUP_DELETE_INFO2: 'وقد حلت المنظمة الحالية',
   GROUP_MEMBER_DELETE_INFO: 'هل تريد حذف المجموعة',
-  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group', // Need to be translated
+  GROUP_MEMBER_DELETE_INFO2: 'لقد حذفت من المجموعة',
   GROUP_TASK_DELETE_INFO: 'هل تريد حذف المهام؟',
 
   GROUP_MESSAGE_NULL: 'لا توجد رسالة',

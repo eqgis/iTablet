@@ -40,6 +40,7 @@ const Friends: typeof CN.Friends = {
   INPUT_INVALID: 'Geçersiz giriş, lütfen tekrar giriş yapın',
   // InformMessage
   TITLE_NOTIFICATION: 'Bildirim',
+  
   FRIEND_RESPOND: 'Bu arkadaşlık isteğini kabul et?',
   // CreateGroupChat
   CONFIRM2: 'Tamam',
@@ -74,7 +75,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'Lütfen indirme tamamlanana kadar bekleyin',
   DATA_NOT_FOUND: 'Veri bulunamadı, tekrar indirmek ister misiniz?',
   LOAD_ORIGIN_PIC: 'Başlangıcı Yükle',
-  UNSUPPORTED_MESSAGE: 'Unsupported Message', //to be translated
+  UNSUPPORTED_MESSAGE: 'Desteklenmeyen Mesaj',
   // CustomActions
   MAP: 'Harita',
   TEMPLATE: 'Taslak',
@@ -156,7 +157,7 @@ const Friends: typeof CN.Friends = {
   ADDED: 'Eklendi',
 
   // 创建群组
-  JOIN: '加入', // need to be translated
+  JOIN: 'Katıl',
   VIEW_MORE_MEMBERS: 'Daha Fazla Üye Gör',
   MY_GROUPS: 'Gruplarım',
   JOINED_GROUPS: 'Kayıtlı Gruplar',
@@ -247,9 +248,9 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: 'Gruptan ayrılmak istiyor musun?',
   GROUP_DELETE_INFO: 'Grubu silmek istiyor musunuz?',
-  GROUP_DELETE_INFO2: 'The current group has been disbanded', //need to be translated
+  GROUP_DELETE_INFO2: 'Mevcut grup dağıtıldı.',
   GROUP_MEMBER_DELETE_INFO: 'Seçili üyeyi silmek istiyor musunuz?',
-  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group',  //need to be translated
+  GROUP_MEMBER_DELETE_INFO2: 'Mevcut gruptan çıkarıldınız.',
   GROUP_TASK_DELETE_INFO: 'Görevleri silmek istiyor musunuz?',
 
   GROUP_MESSAGE_NULL: 'Mesaj Yok',

@@ -3156,6 +3156,12 @@ export default class MapView extends React.Component {
     _showAIDetect
       ? Orientation.lockToPortrait()
       : Orientation.unlockAllOrientations()
+
+    // 是否进行过多媒体采集 防止AI相机卡死 zcj
+    if(Platform.OS === 'android' && ToolbarModule.getData().hasCaptureImage){
+      ToolbarModule.addData({ hasCaptureImage: false })
+      SAIDetectView.onResume()
+    }
     return _showAIDetect
   }
 
@@ -3662,7 +3668,7 @@ export default class MapView extends React.Component {
         >
           <Image
             resizeMode={'contain'}
-            source={require('../../../../assets/header/icon_search.png')}
+            source={getThemeAssets().nav.icon_search}
             style={styles.search}
           />
         </TouchableOpacity>

@@ -96,7 +96,7 @@ export default class WeightItem extends PureComponent {
         <ImageButton
           iconBtnStyle={styles.plusImgView}
           iconStyle={styles.plusImg}
-          icon={require('../../../../assets/layerToolbar/layer_rename.png')}
+          icon={getPublicAssets().mapTools.tools_layer_rename}
           onPress={this.edit}
         />
         <ImageButton

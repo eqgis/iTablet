@@ -24,6 +24,10 @@ export default class MapController extends React.Component {
     compassStyle?: any,
     device: any,
     currentFloorID: string,
+    bottomHeight?: any,
+    selectLocation?: any,
+    selectZoomIn?: any,
+    selectZoomOut?: any,
   }
 
   constructor(props) {
@@ -207,6 +211,10 @@ export default class MapController extends React.Component {
   }
 
   plus = () => {
+    if(this.props.selectZoomIn){
+      this.props.selectZoomIn()
+      return
+    }
     if (this.props.type === 'MAP_3D') {
       return
     }
@@ -214,6 +222,10 @@ export default class MapController extends React.Component {
   }
 
   minus = () => {
+    if(this.props.selectZoomOut){
+      this.props.selectZoomOut()
+      return
+    }
     if (this.props.type === 'MAP_3D') {
       return
     }
@@ -242,6 +254,10 @@ export default class MapController extends React.Component {
   }
 
   location = async () => {
+    if(this.props.selectLocation){
+      this.props.selectLocation()
+      return
+    }
     if (this.props.type === 'MAP_3D') {
       // 平面场景不进行当前点定位 add jiakai
       if(!(await SScene.isEarthScene())){
@@ -268,7 +284,6 @@ export default class MapController extends React.Component {
       }
       GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
    // }}
-    
   }
 
   renderCompass = () => {
@@ -326,6 +341,7 @@ export default class MapController extends React.Component {
           this.props.style,
           { left: this.state.left },
           { bottom: this.state.bottom },
+          this.props.bottomHeight&&{ bottom: this.props.bottomHeight},
         ]}
       >
         <View style={[styles.topView, styles.shadow]}>

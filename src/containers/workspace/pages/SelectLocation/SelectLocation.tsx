@@ -17,6 +17,7 @@ import {
 import { SMMapView2, SMap2 ,SMap} from 'imobile_for_reactnative'
 import {
   scaleSize,
+  Toast,
 } from '../../../../utils'
 import  AppStyle  from './AppStyle'
 import  OnlineDS  from './OnlineDS'
@@ -129,7 +130,7 @@ export default class SelectLocation extends React.Component<Props, State>{
           <View style={styles.line}></View>
           <View style={styles.inputBox}>
             <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location} />
-            <Text>{GLOBAL.language === 'CN' ? getLanguage(GLOBAL.language).Profile.X_COORDINATE : 'Y'}</Text>
+            <Text>{GLOBAL.language === 'CN' ? getLanguage(GLOBAL.language).Profile.Y_COORDINATE : 'Y'}</Text>
             <Input style={styles.input} editable={false} showClear={false} value={this.state.y} textAlign="left" />
           </View>
         </View>
@@ -142,6 +143,33 @@ export default class SelectLocation extends React.Component<Props, State>{
     this.cb && this.cb()
     if (Platform.OS === 'ios') {
       SMap.closeMapControl2()
+    }
+  }
+
+  location = () =>{
+    if (Platform.OS === 'ios') {
+      SMap.moveToCurrent2().then(result => {
+        !result &&
+          Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
+      })
+    }else{
+      SMap2.moveToCurrent()
+    }
+  }
+
+  zoomin = () =>{
+    if (Platform.OS === 'ios') {
+      SMap.zoom2(2)
+    }else{
+      SMap2.zoom(2)
+    }
+  }
+
+  zoomout = () =>{
+    if (Platform.OS === 'ios') {
+      SMap.zoom2(0.5)
+    }else{
+      SMap2.zoom(0.5)
     }
   }
 
@@ -165,12 +193,13 @@ export default class SelectLocation extends React.Component<Props, State>{
           }}
           onSingleTap={this.onSingleTap}
         />
-        {/* <MapController
-          bottomHeight={scaleSize(150)}
-          showZoom={false}
-          mapView={'mapview2'}
+        <MapController
+          bottomHeight={scaleSize(200)}
+          selectLocation={this.location}
+          selectZoomIn={this.zoomin}
+          selectZoomOut={this.zoomout}
           device={this.props.device}
-        /> */}
+        />
         {this.renderBottom()}
       </Container>
     )

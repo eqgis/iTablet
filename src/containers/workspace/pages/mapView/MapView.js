@@ -4624,23 +4624,21 @@ export default class MapView extends React.Component {
     const { showDatumPoint } = this.state
     return (
       <View style={{ flex: 1 }}>
-        <>
-          {this.renderContainer()}
-          {this.renderProgress()}
-          {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
-            this.renderIncrementDialog()}
-          {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()} */}
-          {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()} */}
-          {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()} */}
-          {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_THEME) && this.props.themeGuide && this.renderMapThemeGuideView()}
-          {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_COLLECTION) && this.props.collectGuide && this.renderMapCollectGuideView()}
-          {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_EDIT) && this.props.mapEditGuide && this.renderMapEditGuideView()}
-          {showDatumPoint && <DatumPointCalibration routeName="MapView"
-            routeData={{
-              measureType: this.measureType,
-            }}
-            startScan={this._startScan} onClose={this._onDatumPointClose} />}
-        </>
+        {this.renderContainer()}
+        {this.renderProgress()}
+        {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
+          this.renderIncrementDialog()}
+        {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()} */}
+        {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()} */}
+        {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()} */}
+        {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_THEME) && this.props.themeGuide && this.renderMapThemeGuideView()}
+        {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_COLLECTION) && this.props.collectGuide && this.renderMapCollectGuideView()}
+        {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_EDIT) && this.props.mapEditGuide && this.renderMapEditGuideView()}
+        {showDatumPoint && <DatumPointCalibration routeName="MapView"
+          routeData={{
+            measureType: this.measureType,
+          }}
+          startScan={this._startScan} onClose={this._onDatumPointClose} />}
       </View>
     )
   }

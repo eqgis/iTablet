@@ -424,6 +424,51 @@ async function getData(type) {
           />
           )
           break
+          case ConstToolType.SM_ARSCENEMODULE_Scale:
+            let Scale = await SSceneAR.getScale()
+          buttons = [
+            {
+              type: ToolbarBtnType.TOOLBAR_BACK,
+              action: () => {
+                let { scale } = ToolbarModule.getData()
+                scale = scale === undefined ? 0.0075 : scale
+                SSceneAR.saveScale(scale)
+                ToolbarModule.getParams().setToolbarVisible(
+                  true,
+                  ConstToolType.SM_ARSCENEMODULE_modify_style,
+                  { showMenuDialog: true },
+                )
+              },
+            },
+            {
+              type: 'modify_confirm',
+              image: getThemeAssets().mark.icon_mark_erase,
+              action: () => {
+                SSceneAR.setScale(Scale.scale)
+                this.XYZSlide.onClear()
+              },
+            },
+          ]
+          pageAction = () => {
+            ToolbarModule.addData({
+              scale: Scale.scale,
+            })
+          }
+          customView = () => (
+            <XYZSlide
+            ref={ref => (this.XYZSlide = ref)}
+            rangeX={[0, 10000]}
+            isScale={true}
+            onMoveX={value => {
+              let scale = value/10000
+              ToolbarModule.addData({ scale })
+              SSceneAR.setScale(scale)
+            }}
+            style={{ width: 280 }}
+            defaultValuex={Scale.scale*10000}
+          />
+          )
+            break
           case ConstToolType.SM_ARSCENEMODULE_CHANGE:
               let mapData = await SSceneAR.getSceneLayer()
               let CurrentLayer = await SSceneAR.getCurrentLayerName()
@@ -512,6 +557,16 @@ function getMenuData(type) {
             ToolbarModule.getParams().setToolbarVisible(
               true,
               ConstToolType.SM_ARSCENEMODULE_Rotation,
+              { containerType: 'xyzslide' },
+            ),
+        },
+        {
+          des: 'scale',
+          key: global.language === 'CN' ? '模型比例' : 'Scale',
+          action: () =>
+            ToolbarModule.getParams().setToolbarVisible(
+              true,
+              ConstToolType.SM_ARSCENEMODULE_Scale,
               { containerType: 'xyzslide' },
             ),
         },

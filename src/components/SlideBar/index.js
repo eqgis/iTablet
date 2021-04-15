@@ -101,6 +101,12 @@ export default class SlideBar extends Component {
     this.onEnd(this.prevLeft)
   }
 
+  setDefault = value =>{
+    this.setState({
+      left: this.getLocation(value),
+    })
+  }
+
 
   render() {
     return (

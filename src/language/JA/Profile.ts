@@ -376,18 +376,18 @@ const Profile: typeof CN.Profile = {
   Y_COORDINATE: 'Y 座標',
   MAP_AR_DATUM_AUTO_CATCH: '自動でキャッシュ使用',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'スナップトレランス',
-  MAP_AR_DRAW_WINDOW: 'Draw Window',//need to translate
+  MAP_AR_DRAW_WINDOW: 'プレビューウィンドウ',
 
-  MAR_AR_DATUM_PICTURE_LOCATION: 'QR location', // need to be translated
-  MAR_AR_POSITION_CORRECT: 'Position calibration', // need to be translated
-  MAP_AR_TOWARDS_NORTH: 'The camera on the back of the phone faces north', // need to be translated
-  MAP_AR_SCAN_TIP: 'Make sure that the QR code just fills the scan box', // need to be translated
-  MAP_AR_SCAN_IT: 'Scan', // need to be translated
-  MAP_AR_DATUM_HEIGHT: 'Height', // need to be translated
-  MAP_AR_DATUM_DIRECTION: 'Direction', // need to be translated
-  MAR_AR_DATUM_NORTH: 'North', // need to be translated
-  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR location succeed', // need to be translated
-  MAR_AR_QR_INVALID: 'QR code information not recognized', // need to be translated
+  MAR_AR_DATUM_PICTURE_LOCATION: 'QR ロケーション',
+  MAR_AR_POSITION_CORRECT: '位置補正', 
+  MAP_AR_TOWARDS_NORTH: '背面カメラは北を向いてください', 
+  MAP_AR_SCAN_TIP: 'QRコードがスキャンボックスを埋めていることを確認してください',
+  MAP_AR_SCAN_IT: 'スキャン', 
+  MAP_AR_DATUM_HEIGHT: '高さ', 
+  MAP_AR_DATUM_DIRECTION: '方向', 
+  MAR_AR_DATUM_NORTH: '北', 
+  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR ロケショーンに成功しました', 
+  MAR_AR_QR_INVALID: 'QR コード情報を見つかりませんでした', 
 
   // ar地图
   COLLECT_SCENE_RENAME: '名前変更',

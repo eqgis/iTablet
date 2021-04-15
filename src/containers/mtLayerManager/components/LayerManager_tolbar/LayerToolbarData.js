@@ -563,7 +563,7 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
       {
         title: getLanguage(language).Map_Layer.LAYERS_COLLECT,
         // '当前图层采集',
-        image: require('../../../../assets/layerToolbar/icon_function_symbol.png'),
+        image: getThemeAssets().collection.icon_symbol,
       },
       {
         title: getLanguage(language).Map_Layer.LAYERS_RENAME,

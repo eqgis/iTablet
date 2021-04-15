@@ -10,6 +10,7 @@ import { SCoordination, SearchUserResponse, SMessageService } from 'imobile_for_
 
 import { connect } from 'react-redux'
 import FriendList, { FriendInfo } from '../../../Friend/FriendList/FriendList'
+import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 
 const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
@@ -179,9 +180,13 @@ class GroupInvitePage extends React.Component<Props, State> {
           },
           time: timeStr,
         }
-        SMessageService.sendMessage(
-          JSON.stringify(message),
-          this.state.selectedUser?.name,
+        // SMessageService.sendMessage(
+        //   JSON.stringify(message),
+        //   this.state.selectedUser?.name,
+        // )
+        this.state.selectedUser?.name !== undefined && SMessageServiceHTTP.sendMessage(
+          message,
+          [this.state.selectedUser?.name],
         )
       } else {
         if (result?.error?.errorMsg) {

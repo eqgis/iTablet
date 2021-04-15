@@ -22,6 +22,7 @@ import { Container, TextBtn, CheckBox, PopMenu, ImageButton, Dialog } from '../.
 import { color, size } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
 import { MsgConstant } from '../../../Friend'
+import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import { exitGroup } from '../../../../../redux/models/cowork'
@@ -265,15 +266,21 @@ class GroupFriendListPage extends Component<Props, State> {
       time: timeStr,
     }
 
+    let temp = []
     for (let i = 0; i < ids.length; i++) {
       if (ids[i] === this.props.user.currentUser.userName) {
         continue
       }
-      SMessageService.sendMessage(
-        JSON.stringify(_message),
-        ids[i],
-      )
+      // SMessageService.sendMessage(
+      //   JSON.stringify(_message),
+      //   ids[i],
+      // )
+      temp.push(ids[i])
     }
+    SMessageServiceHTTP.sendMessage(
+      _message,
+      temp,
+    )
     // this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
     // this._setDialogVisible(false)
     // NavigationService.goBack('CoworkManagePage', null)

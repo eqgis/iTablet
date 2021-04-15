@@ -24,6 +24,10 @@ export default class MapController extends React.Component {
     compassStyle?: any,
     device: any,
     currentFloorID: string,
+    bottomHeight?: any,
+    selectLocation?: any,
+    selectZoomIn?: any,
+    selectZoomOut?: any,
   }
 
   constructor(props) {
@@ -45,11 +49,16 @@ export default class MapController extends React.Component {
       isGuiding: false,
     }
     this.visible = true
+    this.compassInterval = null // 指北针监听
   }
 
   componentDidMount() {
     if (this.props.type === 'MAP_3D') {
-      setInterval(async () => {
+      if (this.compassInterval) {
+        clearInterval(this.compassInterval)
+        this.compassInterval = null
+      }
+      this.compassInterval = setInterval(async () => {
         let deg = await SScene.getcompass()
         this.setCompass(deg)
       }, 600)
@@ -61,6 +70,13 @@ export default class MapController extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.compassInterval) {
+      clearInterval(this.compassInterval)
+      this.compassInterval = null
     }
   }
 
@@ -195,6 +211,10 @@ export default class MapController extends React.Component {
   }
 
   plus = () => {
+    if(this.props.selectZoomIn){
+      this.props.selectZoomIn()
+      return
+    }
     if (this.props.type === 'MAP_3D') {
       return
     }
@@ -202,6 +222,10 @@ export default class MapController extends React.Component {
   }
 
   minus = () => {
+    if(this.props.selectZoomOut){
+      this.props.selectZoomOut()
+      return
+    }
     if (this.props.type === 'MAP_3D') {
       return
     }
@@ -230,7 +254,16 @@ export default class MapController extends React.Component {
   }
 
   location = async () => {
+    if(this.props.selectLocation){
+      this.props.selectLocation()
+      return
+    }
     if (this.props.type === 'MAP_3D') {
+      // 平面场景不进行当前点定位 add jiakai
+      if(!(await SScene.isEarthScene())){
+        SScene.ensureVisibleLayer(await SScene.getVisableLayer())
+        return
+      }
       await SScene.setHeading()
       // 定位到当前位置
       await SScene.location()
@@ -251,7 +284,6 @@ export default class MapController extends React.Component {
       }
       GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
    // }}
-    
   }
 
   renderCompass = () => {
@@ -309,6 +341,7 @@ export default class MapController extends React.Component {
           this.props.style,
           { left: this.state.left },
           { bottom: this.state.bottom },
+          this.props.bottomHeight&&{ bottom: this.props.bottomHeight},
         ]}
       >
         <View style={[styles.topView, styles.shadow]}>

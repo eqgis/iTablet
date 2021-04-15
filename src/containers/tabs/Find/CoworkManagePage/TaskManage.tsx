@@ -15,6 +15,7 @@ import { TaskMessageItem } from './components'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import NavigationService from '../../../NavigationService'
 import CoworkFileHandle from './CoworkFileHandle'
+import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
 
 import { connect } from 'react-redux'
 
@@ -269,17 +270,23 @@ class TaskManage extends React.Component<Props, State> {
           })
         }
         currentTask.members = currentTask.members.concat(_members)
+        let temp = []
         for (const member of currentTask.members) {
           // CoworkInfo.addMember({
           //   id: member.id,
           //   name: member.name,
           // })
           if (member.id === this.props.user.currentUser.userName) continue
-          SMessageService.sendMessage(
-            JSON.stringify(currentTask),
-            member.id,
-          )
+          // SMessageService.sendMessage(
+          //   JSON.stringify(currentTask),
+          //   member.id,
+          // )
+          temp.push(member.id)
         }
+        SMessageServiceHTTP.sendMessage(
+          currentTask,
+          temp,
+        )
         currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
         this.props.addCoworkMsg(currentTask)
         // this.props.addTaskMembers({
@@ -309,13 +316,19 @@ class TaskManage extends React.Component<Props, State> {
     if (this.currentData.creator === this.props.user.currentUser.userName) {
       // 群主删除任务
       message.type = MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE
+      let temp = []
       for (const member of members) {
         if (member.id === this.props.user.currentUser.userName) continue
-        SMessageService.sendMessage(
-          JSON.stringify(message),
-          member.id,
-        )
+        // SMessageService.sendMessage(
+        //   JSON.stringify(message),
+        //   member.id,
+        // )
+        temp.push(member.id)
       }
+      SMessageServiceHTTP.sendMessage(
+        message,
+        temp,
+      )
     } else {
       // 成员退出任务
       message.type = MsgConstant.MSG_ONLINE_GROUP_TASK
@@ -326,13 +339,19 @@ class TaskManage extends React.Component<Props, State> {
         }
       }
       message.members = members
+      let temp = []
       // 给其他成员发送修改任务信息
       for (const member of members) {
-        await SMessageService.sendMessage(
-          JSON.stringify(message),
-          member.id,
-        )
+        // await SMessageService.sendMessage(
+        //   JSON.stringify(message),
+        //   member.id,
+        // )
+        temp.push(member.id)
       }
+      SMessageServiceHTTP.sendMessage(
+        message,
+        temp,
+      )
       // 给自己发送删除信息
       message.type = MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE
     }

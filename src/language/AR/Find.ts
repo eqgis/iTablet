@@ -50,8 +50,8 @@ const Find: typeof CN.Find = {
   LAB_POSE_ESTIMATION_INFO: 'طريق：AR Analyze-AR Analyze-Pose Estimation',
   LAB_FORM_COLLECT_INFO: 'طريق：AR Mapping-AR Mapping-High-Precision Collect',
   BETA_TIPS: 'نصائح: هذه مجرد ميزة تجريبية تجريبية',
-  LAB_FORM_ARPIPE_INFO: 'طريق：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
-  LAB_ONLINE_COWORK_INFO: 'طريق：AR：Find-Online Cowork\nOnline Cowork，You can work with the team on the map.',
+  LAB_FORM_ARPIPE_INFO: 'طريق：AR Mapping-ARTools-ARPipe\nع خط أنابيب ، يمكن استخدامها لنشر نموذج ثلاثي الأبعاد من المشهد',
+  LAB_ONLINE_COWORK_INFO: 'طريق：AR：Find-Online Cowork\nالعمل عبر الإنترنت ، يمكنك العمل مع فريق على الخريطة',
 
 }
 

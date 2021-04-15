@@ -1,6 +1,6 @@
 /* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
-import { SMeasureView, SMap } from 'imobile_for_reactnative'
+import { SMeasureView, SMap ,SARMap } from 'imobile_for_reactnative'
 import { LayerUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 
@@ -21,10 +21,16 @@ function collectSceneForm() {
       return
     }
 
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
+
+    // let _point = await SMap.getCurrentLocation()
+    // let point = { x: _point.longitude, y: _point.latitude }
+    // GLOBAL.MeasureCollectData.point = point
+    SARMap.changeTrackingMode(1)
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arCollect'})
 
     // let time = await SCollectSceneFormView.getSystemTime()
     // GLOBAL.mapView.setState({ map: { height: 0 } })
@@ -37,10 +43,10 @@ function collectSceneForm() {
     //   datasetPointName,
     // })
 
-    GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
-    // NavigationService.navigate('EnterDatumPoint')
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    NavigationService.navigate('CollectSceneFormView')
+    // GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
+    // // NavigationService.navigate('EnterDatumPoint')
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // NavigationService.navigate('CollectSceneFormView')
 
     // NavigationService.navigate('InputPage', {
     //   headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
@@ -176,13 +182,15 @@ function arDrawLine() {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
     GLOBAL.MeasureCollectData.measureType = 'drawLine'
-    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+    // NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
   })()
 }
 
@@ -237,14 +245,15 @@ function arDrawArea() {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
 
     GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
-    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+    // NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
   })()
 }
 
@@ -299,14 +308,15 @@ function arDrawPoint() {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
 
     GLOBAL.MeasureCollectData.measureType = 'arDrawPoint'
-    NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+    // NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
   })()
 }
 

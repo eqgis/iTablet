@@ -78,7 +78,7 @@ const Friends: typeof CN.Friends = {
   // CustomActions
   MAP: 'Map',
   TEMPLATE: 'Template',
-  LOCATION: 'Lacation',
+  LOCATION: 'Location',
   PICTURE: 'Picture',
   LOCATION_FAILED: 'Failed to locate',
   // Cowork
@@ -103,7 +103,7 @@ const Friends: typeof CN.Friends = {
   ONLINECOWORK_DISABLE_ADD: 'Unable to add when online cowork',
   ONLINECOWORK_DISABLE_OPERATION: 'Unable to do the operation when online cowork',
   // RecommendFriend
-  FIND_NONE: 'Unable to find new frineds from your contacts',
+  FIND_NONE: 'Unable to find new friends from your contacts',
   ALREADY_FRIEND: 'Your are already friends',
   PERMISSION_DENIED_CONTACT: 'Please turn on the permission of iTablet to view contacts',
   // ManageFriend/Group
@@ -179,7 +179,7 @@ const Friends: typeof CN.Friends = {
   NAME: 'Name',
   GROUP_NAME_PLACEHOLDER: 'Please enter at most 20 characters for Name',
   GROUP_TAG: 'Tag',
-  GROUP_TAG_PLACEHOLDER: '6 tags at most seperating each with comma',
+  GROUP_TAG_PLACEHOLDER: '6 tags at most separating each with comma',
   GROUP_REMARK: 'Note',
   GROUP_REMARK_PLACEHOLDER: 'Please enter at most 100 characters for Note',
   RESOURCE_SHARER: 'Sharer',
@@ -261,7 +261,7 @@ const Friends: typeof CN.Friends = {
   DELETE_CORWORK_MEMBERS: 'Delete Members',
   DELETE_CORWORK_TASK: 'Delete Task',
 
-  INVITE_GROUP_MEMBERS: 'Inivite Members',
+  INVITE_GROUP_MEMBERS: 'Invite Members',
   INVITE_GROUP_MEMBERS_INFO: 'Whether to invite members immediately',
   INVITE_GROUP_MEMBERS_ERROR_1: 'The user already exists',
   INVITE_GROUP_MEMBERS_ERROR_2: 'The group has invited the user',

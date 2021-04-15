@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
-import { View, PanResponder, PanResponderInstance, Text, Image, Animated, Easing } from 'react-native'
+import { View, PanResponder, PanResponderInstance, Text, Image, Animated, Easing, NativeModules, Platform } from 'react-native'
 import Swiper from 'react-native-swiper' // eslint-disable-line
 import Orientation from 'react-native-orientation'
 import styles from './styles'
-
+let AppUtils = NativeModules.AppUtils
 export interface GuideDataType {
   title: string,
   subTitle: string,
@@ -18,6 +18,7 @@ interface Props {
   getCustomGuide?: () => Array<React.ReactNode>,
   dismissCallback?: () => void,
   language: string,
+  device: any,
 }
 
 interface State {
@@ -74,9 +75,20 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
       onPanResponderEnd: (evt, gestureState) => {},
       onPanResponderRelease: (evt, gestureState) => {},
     })
-
-    if (!GLOBAL.isPad) {
-      Orientation.lockToPortrait()
+    if (Platform.OS === 'ios') {
+      if (!Platform.isPad) {
+        Orientation.lockToPortrait()
+      } else {
+        Orientation.unlockAllOrientations()
+      }
+    } else {
+      AppUtils.isPad().then((result: boolean) => {
+        if (!result) {
+          Orientation.lockToPortrait()
+        } else {
+          Orientation.unlockAllOrientations()
+        }
+      })
     }
   }
 
@@ -139,7 +151,7 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
             <Image
               source={item.image}
               resizeMode={'contain'}
-              style={styles.image}
+              style={[this.props.device.orientation.indexOf('PORTRAIT') >= 0 ? styles.imageP : styles.imageL]}
             />
           </View>
         )
@@ -151,7 +163,7 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
             <Image
               source={item.image}
               resizeMode={'contain'}
-              style={styles.image}
+              style={[this.props.device.orientation.indexOf('PORTRAIT') >= 0 ? styles.imageP : styles.imageL]}
             />
           </View>
         )

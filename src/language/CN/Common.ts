@@ -14,6 +14,11 @@ const Common = {
 
   PARAMETER: '参数',
   CONFIRM: '确认',
+  LONGITUDE: '经度',
+  LATITUDE: '纬度',
+  NAME: '名称',
+  TYPE: '类型',
+  LOCATION_FROM_MAP: '地图选点',
 }
 
 export { Protocol, Common }

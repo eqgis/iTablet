@@ -10,6 +10,7 @@ import {
   Image,
   TouchableOpacity,
   Animated,
+  BackHandler,
 } from 'react-native'
 import {
   GiftedChat,
@@ -100,12 +101,12 @@ class Chat extends React.Component {
     this.setState({ title: newTitle })
   }
   componentDidMount() {
+    Platform.OS === 'android' && BackHandler.addEventListener('hardwareBackPress', this.back)
+    // Platform.OS === 'android' && this.props.setBackAction({
+    //   key: this.props.navigation.state.routeName,
+    //   action: () => this.back(),
+    // })
     if (this.state.coworkMode) {
-      Platform.OS === 'android' && this.props.setBackAction({
-        key: this.props.navigation.state.routeName,
-        action: () => this.back(),
-      })
-
       this.props.readCoworkGroupMsg({
         target: { //若存在，则为群组消息
           groupId: this.props.currentTask.groupID,
@@ -172,83 +173,89 @@ class Chat extends React.Component {
 
   componentWillUnmount() {
     if (Platform.OS === 'android') {
-      this.props.removeBackAction({
-        key: this.props.navigation.state.routeName,
-      })
+      BackHandler.removeEventListener('hardwareBackPress', this.back)
+      // this.props.removeBackAction({
+      //   key: this.props.navigation.state.routeName,
+      // })
     }
     this.friend.setCurChat(undefined, this.openTime)
     this._isMounted = false
   }
 
   back = () => {
-    if (this.state.coworkMode) {
-      // this.SimpleDialog.set({
-      //   text: getLanguage(GLOBAL.language).Friends.ALERT_EXIT_COWORK,
-      //   confirmAction: () => {
-      //     this.endCowork()
-      //   },
-      // })
-      // this.SimpleDialog.setVisible(true)
-      // this.friend.curMod.action(this.curUser)
-      // NavigationService.navigate('CoworkMapStack')
+    if (ImageViewer.isShow()) {
+      ImageViewer.hide()
+    } else {
       NavigationService.goBack('Chat')
     }
     return true
+    // if (this.state.coworkMode) {
+    //   // this.SimpleDialog.set({
+    //   //   text: getLanguage(GLOBAL.language).Friends.ALERT_EXIT_COWORK,
+    //   //   confirmAction: () => {
+    //   //     this.endCowork()
+    //   //   },
+    //   // })
+    //   // this.SimpleDialog.setVisible(true)
+    //   // this.friend.curMod.action(this.curUser)
+    //   // NavigationService.navigate('CoworkMapStack')
+    //   NavigationService.goBack('Chat')
+    // }
   }
 
-  setCoworkMode = value => {
-    this.setState({ coworkMode: value })
-    if (Platform.OS === 'android') {
-      if (value) {
-        this.props.setBackAction({
-          key: this.props.navigation.state.routeName,
-          action: () => this.back(),
-        })
-      } else {
-        this.props.removeBackAction({
-          key: this.props.navigation.state.routeName,
-        })
-      }
-    }
-  }
+  // setCoworkMode = value => {
+  //   this.setState({ coworkMode: value })
+  //   if (Platform.OS === 'android') {
+  //     if (value) {
+  //       this.props.setBackAction({
+  //         key: this.props.navigation.state.routeName,
+  //         action: () => this.back(),
+  //       })
+  //     } else {
+  //       this.props.removeBackAction({
+  //         key: this.props.navigation.state.routeName,
+  //       })
+  //     }
+  //   }
+  // }
 
-  endCowork = async () => {
-    let close = () => {
-      this.friend.setCurMod(undefined)
-      this.setCoworkMode(false)
-      GLOBAL.coworkMode = false
-      this.friend.leaveCowork()
-      this.props.navigation.replace('CoworkTabs', {
-        targetId: this.targetId,
-      })
-    }
-    let mapOpen
-    try {
-      mapOpen = await SMap.isAnyMapOpened()
-    } catch (error) {
-      mapOpen = false
-    }
-    if (mapOpen) {
-      SMap.mapIsModified().then(async result => {
-        if (result) {
-          GLOBAL.SaveMapView &&
-            GLOBAL.SaveMapView.setVisible(true, null, async () => {
-              await this.props.closeMap()
-              close()
-              this.props.navigation.pop()
-            })
-        } else {
-          await this.props.closeMap()
-          close()
-          this.props.navigation.pop()
-        }
-      })
-    } else {
-      await this.props.closeMap()
-      close()
-      this.props.navigation.pop()
-    }
-  }
+  // endCowork = async () => {
+  //   let close = () => {
+  //     this.friend.setCurMod(undefined)
+  //     this.setCoworkMode(false)
+  //     GLOBAL.coworkMode = false
+  //     this.friend.leaveCowork()
+  //     this.props.navigation.replace('CoworkTabs', {
+  //       targetId: this.targetId,
+  //     })
+  //   }
+  //   let mapOpen
+  //   try {
+  //     mapOpen = await SMap.isAnyMapOpened()
+  //   } catch (error) {
+  //     mapOpen = false
+  //   }
+  //   if (mapOpen) {
+  //     SMap.mapIsModified().then(async result => {
+  //       if (result) {
+  //         GLOBAL.SaveMapView &&
+  //           GLOBAL.SaveMapView.setVisible(true, null, async () => {
+  //             await this.props.closeMap()
+  //             close()
+  //             this.props.navigation.pop()
+  //           })
+  //       } else {
+  //         await this.props.closeMap()
+  //         close()
+  //         this.props.navigation.pop()
+  //       }
+  //     })
+  //   } else {
+  //     await this.props.closeMap()
+  //     close()
+  //     this.props.navigation.pop()
+  //   }
+  // }
 
   // eslint-disable-next-line
   onPressAvator = data => {}

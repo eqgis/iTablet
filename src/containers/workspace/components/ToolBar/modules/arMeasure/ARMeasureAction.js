@@ -86,15 +86,16 @@ function arMeasurePolygon() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
 
-    NavigationService.navigate('MeasureAreaView', {
-      measureType: 'measureArea',
-    })
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'measureArea',
+    // })
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureArea'})
   })()
 }
 
@@ -107,15 +108,17 @@ function arMeasureRectanglet() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
 
-    NavigationService.navigate('MeasureAreaView', {
-      measureType: 'arMeasureRectangle',
-    })
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'arMeasureRectangle',
+    // })
+
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureRectangle'})
   })()
 }
 
@@ -128,15 +131,16 @@ function arMeasureCircular() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
 
-    NavigationService.navigate('MeasureAreaView', {
-      measureType: 'arMeasureCircle',
-    })
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'arMeasureCircle',
+    // })
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCircle'})
   })()
 }
 
@@ -149,15 +153,16 @@ function arMeasureCuboid() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
 
-    NavigationService.navigate('MeasureAreaView', {
-      measureType: 'arMeasureCuboid',
-    })
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'arMeasureCuboid',
+    // })
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCuboid'})
   })()
 }
 
@@ -171,15 +176,16 @@ function arMeasureCylinder() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
 
-    NavigationService.navigate('MeasureAreaView', {
-      measureType: 'arMeasureCylinder',
-    })
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'arMeasureCylinder',
+    // })
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCylinder'})
   })()
 }
 
@@ -192,14 +198,15 @@ function arMeasureLength() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
-    NavigationService.navigate('MeasureAreaView', {
-      measureType: 'measureLength',
-    })
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'measureLength',
+    // })
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureLength'})
   })()
 }
 
@@ -216,14 +223,16 @@ function arMeasureAngle() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
-    NavigationService.navigate('MeasureAreaView', {
-      measureType: 'measureAngle',
-    })
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'measureAngle',
+    // })
+
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureAngle'})
   })()
 }
 
@@ -236,14 +245,15 @@ function arMeasureHeight() {
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-    }
-    NavigationService.navigate('MeasureAreaView', {
-      measureType: 'arMeasureHeight',
-    })
+    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // if (GLOBAL.showAIDetect) {
+    //   GLOBAL.arSwitchToMap = true
+    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // }
+    // NavigationService.navigate('MeasureAreaView', {
+    //   measureType: 'arMeasureHeight',
+    // })
+    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureHeight'})
   })()
 }
 

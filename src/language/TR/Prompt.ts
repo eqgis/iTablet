@@ -77,7 +77,7 @@ const Prompt: typeof CN.Prompt = {
   OVERWRITE: 'Overwrite',
   CHOOSE_DATASET: 'Lütfen veri kümesi seçin',
 
-  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Please Submit Current Geometry',//need to translate
+  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Lütfen Mevcut Geometriyi Gönderin',
 
   SET_ALL_MAP_VISIBLE: 'Tamamı Görünü',
   SET_ALL_MAP_INVISIBLE: 'Tamamı Görünmez',
@@ -89,7 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'SuperMap Grup',
   INSTRUCTION_MANUAL: 'Kullanım Kılavuzu',
   THE_CURRENT_LAYER: 'Geçerli Katman',
-  NO_BASE_MAP: 'No base map can be removed', // need to translate
+  NO_BASE_MAP: 'Temel harita kaldırılamaz',
   ENTER_KEY_WORDS: 'Lütfen anahtar kelimeleri girin',
   SEARCHING: 'Arıyor',
   SEARCHING_DEVICE_NOT_FOUND: 'hiçbir cihaz bulunamadı',
@@ -103,9 +103,9 @@ const Prompt: typeof CN.Prompt = {
   CREATE_FAILED: 'Oluşturma Başarısız',
   INVALID_DATASET_NAME: 'Geçersiz verikümesi adı ya da ad mevcutta kullanılıyor',
 
-  PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
-  PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
-  PLEASE_CHOOSE_REGION_LAYER: 'Please Choose Region Layer',//need to translate
+  PLEASE_CHOOSE_POINT_LAYER: 'Lütfen Nokta Katmanını Seçiniz',
+  PLEASE_CHOOSE_LINE_LAYER: 'Lütfen Çizgi Katmanını Seçiniz',
+  PLEASE_CHOOSE_REGION_LAYER: 'Lütfen Alan Katmanını Seçiniz',
 
   NO_PLOTTING_DEDUCTION: 'Mevcut haritada çizim kesintisi yok',
   NO_FLY: 'Mevcut sahnede uçuş yok',
@@ -122,7 +122,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: 'Desteklenen cihaz listesini gör',
   PLEASE_NEW_PLOT_LAYER: 'Lütfen Yeni Çizim Katmanı Oluşturun',
   DOWNLOADING_PLEASE_WAIT: 'İndiriliyor, lütfen bekleyin',
-  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Please wait while other files are being downloaded', // need to translate
+  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Lütfen diğer dosyalar indirilirken bekleyin', 
   SELECT_DELETE_BY_RECTANGLE: 'Lütfen öğeyi dikdörtgen seçerek sili seçin',
 
   CHOOSE_LAYER: 'Katman Seç',
@@ -130,6 +130,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'Başarıyla Toplandı',
 
   SELECT_TWO_MEDIAS_AT_LEAST: 'Lütfen en az iki medya seçin',
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
 
   NETWORK_REQUEST_FAILED: 'Ağ İsteği Başarısız',
 
@@ -173,11 +174,11 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_SYMBOL: 'Lütfen çizim sembolü seçin',
 
   ENTER_NAME: 'Lütfen adı girin',
-  ENTER_CAPTION: 'Please input caption', // need to translate
-  CHOICE_TYPE: 'Please choice type', // need to translate
-  INPUT_LENGTH: 'Please input max length', // need to translate
-  DEFAULT_VALUE_EROROR: 'Default value input error', // need to translate
-  SELECT_REQUIRED: 'Please select required', // need to translate
+  ENTER_CAPTION: 'Lütfen başlık girin', 
+  CHOICE_TYPE: 'Lütfen türü seçin', 
+  INPUT_LENGTH: 'Lütfen maksimum uzunluğu girin', 
+  DEFAULT_VALUE_EROROR: 'Varsayılan değer giriş hatası', 
+  SELECT_REQUIRED: 'Lütfen gerekli olanları seçin', 
 
   CLIPPING: 'Kırpılıyor',
   CLIPPED_SUCCESS: 'Başarıyla Kırpıldı',
@@ -241,7 +242,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: 'Lütfen Konum belirleyin.',
   OUT_OF_MAP_BOUNDS: 'Harita sınırları dışında',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: 'Geçerli konum harita sınırları dışında, bu yüzden yolu artırmak için izlemeyi kullanamazsınız',
-  AFTER_COLLECT: 'Please collect before viewing',//need to be translated
+  AFTER_COLLECT: 'Lütfen görüntülemeden önce toplayın',
 
   POI: 'POI',
 
@@ -392,8 +393,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'Varsayılan değer boş',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Tematik düzeyler toplanamaz',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers',// Need to be translated
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers',// Need to be translated
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'CAD katmanlarında toplanamaz',
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Metin katmanlarında toplanamaz',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Sadece nokta veri setleri oluşturulabilir',
 
   INVALID_DATA_SET_FAILED: 'Geçersiz veri türü. Ayarlama başarısız!',

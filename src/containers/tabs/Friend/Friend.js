@@ -84,7 +84,7 @@ export default class Friend extends Component {
     addTaskMessage: () => any,
     addMemberLocation: (params: TaskMemberLocationParams) => any,
     deleteTaskMembers: (params: TaskMemberDeleteParams) => any,
-    exitGroup: (params: {groupID: number | string}) => Promise<any>,
+    exitGroup: (params: { groupID: number | string }) => Promise<any>,
   }
 
   constructor(props) {
@@ -249,6 +249,7 @@ export default class Friend extends Component {
         Info = serverInfo
       }
       if (Info) {
+        // Info.MSG_IP = '10.10.192.84'
         SMessageServiceHTTP.setService(Info)
       } else {
         SMessageServiceHTTP.setService()
@@ -542,7 +543,7 @@ export default class Friend extends Component {
   _startConsumeMessage = async () => {
     this.consumingMessage = true
     try {
-      for (; this.messageQueue.length > 0; ) {
+      for (; this.messageQueue.length > 0;) {
         await this._receiveMessage(this.messageQueue.shift())
       }
       this.consumingMessage = false
@@ -777,7 +778,6 @@ export default class Friend extends Component {
 
   /**
    * 加入协作
-   * 
    */
   joinCowork = async (coworkId, talkId) => {
     try {
@@ -1047,7 +1047,7 @@ export default class Friend extends Component {
         Math.PI *
         R *
         Math.cos((((p2.latitude + p1.latitude) / 2) * Math.PI) / 180)) /
-        180,
+      180,
     )
   }
 
@@ -1081,7 +1081,7 @@ export default class Friend extends Component {
             latitude: location.latitude,
             initial,
           },
-        }).then (async result => {
+        }).then(async result => {
           let coworkId = this.props.cowork.currentTask.id
           let msgObj = {
             type: MSGConstant.MSG_COWORK,
@@ -1160,25 +1160,50 @@ export default class Friend extends Component {
     try {
       let messageObj = JSON.parse(messageStr)
       let talkIds = []
+      let queueExist = true
       if (this.isGroupMsg(messageObj)) {
         let members = FriendListFileHandle.readGroupMemberList(talkId)
-        await SMessageService.declareSession(members, talkId)
+        // await SMessageService.declareSession(members, talkId)
         for (let key = 0; key < members.length; key++) {
           talkIds.push(members[key].id)
         }
+        queueExist = await SMessageServiceHTTP.declareSession(talkId, members, true)
       } else if (messageObj.type !== MSGConstant.MSG_COWORK) {
         talkIds.push(talkId)
+        queueExist = await SMessageServiceHTTP.declare('Message_' + talkId, true)
+      } else if (talkId.includes('Group_Task_') && GLOBAL.coworkMode) {
+        let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
+        queueExist = currentTaskInfo.members && await SMessageServiceHTTP.declareSession(talkId, currentTaskInfo.members, true)
+      }
+      if (!queueExist) {
+        Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
+        return
       }
       //对接桌面
       if (messageObj.type < 10 && typeof messageObj.message === 'string') {
         messageObj.message = Buffer.from(messageObj.message).toString('base64')
       }
       let generalMsg = JSON.stringify(messageObj)
-      let result = await SMessageService.sendMessage(generalMsg, talkId)
+
+      let result = SMessageService.sendMessage(generalMsg, talkId)
+
+      let timeout = sec => {
+        return new Promise(resolve => {
+          let timer = setTimeout(() => {
+            resolve('timeout')
+            clearTimeout(timer)
+            timer = null
+          }, 1000 * sec)
+        })
+      }
+
+      let res = await new Promise.race([result, timeout(5)])
+
+      if (res === 'timeout') result = false
+
       if (messageObj.type !== MSGConstant.MSG_COWORK) {
         result && JPushService.push(messageStr, talkIds)
       }
-
       if (!bSilent && !result) {
         let option = null
         if (Platform.OS === 'android' && this.curChat) {
@@ -1567,9 +1592,9 @@ export default class Friend extends Component {
         SOnlineService.removeCookie()
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
-            ConstPath.RelativeFilePath.Workspace[
-              this.props.language === 'CN' ? 'CN' : 'EN'
-            ],
+          ConstPath.RelativeFilePath.Workspace[
+            this.props.language === 'CN' ? 'CN' : 'EN'
+          ],
         )
         this.props.deleteUser(this.props.user.currentUser)
         this.props.setUser({
@@ -1753,9 +1778,13 @@ export default class Friend extends Component {
             },
             time: Date.parse(new Date()),
           }
-          SMessageService.sendMessage(
-            JSON.stringify(delMessage),
-            messageObj.user.id,
+          // SMessageService.sendMessage(
+          //   JSON.stringify(delMessage),
+          //   messageObj.user.id,
+          // )
+          SMessageServiceHTTP.sendMessage(
+            delMessage,
+            [messageObj.user.id],
           )
 
           let rejMessage = {
@@ -1768,9 +1797,13 @@ export default class Friend extends Component {
             },
             time: Date.parse(new Date()),
           }
-          SMessageService.sendMessage(
-            JSON.stringify(rejMessage),
-            messageObj.user.id,
+          // SMessageService.sendMessage(
+          //   JSON.stringify(rejMessage),
+          //   messageObj.user.id,
+          // )
+          SMessageServiceHTTP.sendMessage(
+            rejMessage,
+            [messageObj.user.id],
           )
           return
         }
@@ -1813,9 +1846,13 @@ export default class Friend extends Component {
             },
             time: time,
           }
-          SMessageService.sendMessage(
-            JSON.stringify(message),
-            messageObj.user.id,
+          // SMessageService.sendMessage(
+          //   JSON.stringify(message),
+          //   messageObj.user.id,
+          // )
+          SMessageServiceHTTP.sendMessage(
+            message,
+            [messageObj.user.id],
           )
         } else if (isFriend === 1) {
           let message = {
@@ -1829,9 +1866,13 @@ export default class Friend extends Component {
             },
             time: time,
           }
-          SMessageService.sendMessage(
-            JSON.stringify(message),
-            messageObj.user.id,
+          // SMessageService.sendMessage(
+          //   JSON.stringify(message),
+          //   messageObj.user.id,
+          // )
+          SMessageServiceHTTP.sendMessage(
+            message,
+            [messageObj.user.id],
           )
         }
       } else if (messageObj.type === MSGConstant.MSG_ACCEPT_FRIEND) {
@@ -1915,8 +1956,8 @@ export default class Friend extends Component {
             NavigationService.goBack()
             Toast.show(
               messageObj.user.name +
-                getLanguage(this.props.language).Friends
-                  .SYS_MSG_REMOVED_FROM_GROUP,
+              getLanguage(this.props.language).Friends
+                .SYS_MSG_REMOVED_FROM_GROUP,
             )
           }
         } else {

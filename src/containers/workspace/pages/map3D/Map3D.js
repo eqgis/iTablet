@@ -22,6 +22,7 @@ import {
   PanResponderView,
   Progress,
   MTBtn,
+  RedDot,
 } from '../../../../components'
 import {
   FunctionToolbar,
@@ -37,15 +38,15 @@ import { MapHeaderButton } from '../../../../constants'
 import { getPublicAssets } from '../../../../assets'
 import { Toast, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
-import { share3DModule } from '../../components/ToolBar/modules'
+import { share3DModule, tool3DModule } from '../../components/ToolBar/modules'
 import NavigationService from '../../../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import SurfaceView from '../../../../components/SurfaceView'
-import { tool3DModule } from '../../components/ToolBar/modules'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { BackHandlerUtil } from '../../util'
 import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
+import { Bar } from 'react-native-progress'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
@@ -215,6 +216,7 @@ export default class Map3D extends React.Component {
     let cutLayers = layerlist.map(layer => {
       layer.selected = true
     })
+    console.warn(layerlist.length)
     this.setState({
       layerlist,
       cutLayers,
@@ -279,7 +281,7 @@ export default class Map3D extends React.Component {
       return
     }
     try {
-      SScene.openScence(this.name).then(result => {
+      SScene.openScence(this.name).then(async result => {
         if (!result) {
           this.container.setLoading(false)
           this.mapLoaded = true
@@ -295,6 +297,11 @@ export default class Map3D extends React.Component {
         }, 1500)
         this.props.refreshLayer3dList && this.props.refreshLayer3dList()
         this.mapLoaded = true
+        // 只有是球面场景时才添加底图 add jiakai
+        if (await SScene.isEarthScene()) {
+          SScene.changeBaseLayer(1)
+        }
+        this.getLayers()
       }).catch(() =>{
         //reject异常处理 zhangxt
         setTimeout(() => {
@@ -310,7 +317,6 @@ export default class Map3D extends React.Component {
         this.mapLoaded = true
       }, 1500)
     }
-    await SScene.changeBaseLayer(1)
     // await SScene.addLayer3D(
     //   'http://t0.tianditu.com/img_c/wmts',
     //   'l3dBingMaps',
@@ -329,23 +335,22 @@ export default class Map3D extends React.Component {
     // let startOpen = false
     // let openScene = () => {
 
-      // if (startOpen) return
-      // startOpen = true
-      // clearTimeout(this.openTimer)
+    // if (startOpen) return
+    // startOpen = true
+    // clearTimeout(this.openTimer)
 
-      if (Platform.OS === 'android') {
-        this.props.setBackAction({
-          action: this.back,
-        })
-      }
-      GLOBAL.SaveMapView && GLOBAL.SaveMapView.setTitle(SAVE_TITLE)
+    if (Platform.OS === 'android') {
+      this.props.setBackAction({
+        action: this.back,
+      })
+    }
+    GLOBAL.SaveMapView && GLOBAL.SaveMapView.setTitle(SAVE_TITLE)
 
-      // 三维地图只允许单例
-      // setTimeout(this._addScene, 2000)
-      this._addScene()
-      this.addAttributeListener()
-      this.addCircleFlyListen()
-      this.getLayers()
+    // 三维地图只允许单例
+    // setTimeout(this._addScene, 2000)
+    this._addScene()
+    this.addAttributeListener()
+    this.addCircleFlyListen()
     // }
 
     // this._addScene()
@@ -356,11 +361,6 @@ export default class Map3D extends React.Component {
     this.setState(() => {
       return { popShow: show, popType: type }
     })
-  }
-
-  //一级pop按钮 数据采集 点击函数
-  _data_collection = () => {
-    NavigationService.navigate('DataCollection')
   }
 
   _flyToPoint = () => {
@@ -432,7 +432,7 @@ export default class Map3D extends React.Component {
         await SScene.clearCirclePoint()
       }
       if (Platform.OS === 'android') {
-        if (this.state.showPanResponderView) {
+        if (this.state.showPanResponderView || this.state.showMenuDialog) {
           this.setState({
             showMenuDialog: false,
             showPanResponderView: false,
@@ -1012,7 +1012,45 @@ export default class Map3D extends React.Component {
       } else {
         info = buttonInfos[i]
       }
-      info &&
+      if (buttonInfos[i] === MapHeaderButton.Share || info.newInfo) {
+        info &&
+          buttons.push(
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <MTBtn
+                key={info.key}
+                imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+                image={info.image}
+                onPress={info.action}
+              />
+              {
+                info.newInfo &&
+                <RedDot style={{position: 'absolute', top: 0, right: 0}} />
+              }
+              {buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
+                GLOBAL.Type === this.props.online.share[0].module &&
+                this.props.online.share[0].progress !== undefined && (
+                <Bar
+                  style={{
+                    width: scaleSize(size), height: 2, borderWidth: 0,
+                    backgroundColor: 'black', top: scaleSize(4),
+                  }}
+                  progress={
+                    this.props.online.share[this.props.online.share.length - 1]
+                      .progress
+                  }
+                  width={scaleSize(60)}
+                />
+              )}
+            </View>
+          )
+      }else{
+        info &&
         buttons.push(
           <MTBtn
             key={info.key}
@@ -1021,6 +1059,7 @@ export default class Map3D extends React.Component {
             onPress={info.action}
           />,
         )
+      }
     }
     return (
       <View

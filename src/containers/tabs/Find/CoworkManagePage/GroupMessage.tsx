@@ -4,7 +4,7 @@ import { FlatList, View, RefreshControl } from 'react-native'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { SCoordination, SMessageService, GroupApplyMessageType } from 'imobile_for_reactnative'
-
+import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
 import { MemberMessageItem } from './components'
 import { GroupMessageType } from './types'
 
@@ -156,9 +156,9 @@ class GroupMessage extends React.Component<Props, State> {
       isAccepted: data.checkStatus === 'ACCEPTED',
     }).then(result => {
       if (result.succeed) {
-        SMessageService.sendMessage(
-          JSON.stringify(data),
-          data.applicant,
+        SMessageServiceHTTP.sendMessage(
+          data,
+          [data.applicant],
         )
         let _data = this.state.data.deepClone()
         _data[index] = data

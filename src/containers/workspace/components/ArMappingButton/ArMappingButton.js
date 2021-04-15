@@ -1,0 +1,1033 @@
+/*
+ Copyright © SuperMap. All rights reserved.
+ Author: jiakai
+ */
+import * as React from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native'
+import {
+  scaleSize,
+  setSpText,
+  Toast,
+  LayerUtils,
+} from '../../../../utils'
+import { getLanguage } from '../../../../language/index'
+import styles from './styles'
+import { getThemeAssets } from '../../../../assets'
+import {
+  SMeasureAreaView,
+  SMap,
+  DatasetType,
+  SARMap,
+} from 'imobile_for_reactnative'
+import { color } from '../../../../styles'
+import NavigationService from '../../../../containers/NavigationService'
+import ToolbarModule from '../ToolBar/modules/ToolbarModule'
+
+
+//ar测量底部按钮
+export default class ArMappingButton extends React.Component {
+  props: {
+    language: any,
+    device: any,
+    showSave: any,
+    showSwitch: () => {},//控制二级菜单弹起时是否显示添加按钮等
+    isDrawing: any,
+    isCollect: any,
+    canContinuousDraw: any,
+    user: Object,
+    nav: Object,
+    currentLayer: SMap.LayerInfo,
+    measureType: any,
+    setCurrentHeight: () => {},
+    isnew: () => {},//判断是否新建采集
+    isTrack: () => {},//判断是轨迹采集还是打点采集
+  }
+
+
+  constructor(props) {
+    super(props)
+
+    const layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+    let disablePoint = true,
+      disableArea = true,
+      disbaleLine = true
+    // 如果当前没有图层或类型不满足，不能绘制
+    // 如果是CAD或者标注图层，则可以绘制点线面 by zcj
+    if (["CADLAYER", "TAGGINGLAYER"].indexOf(layerType) != -1) {
+      disablePoint = false
+      disbaleLine = false
+      disableArea = false
+    } else if (layerType === "POINTLAYER") {
+      disablePoint = false
+    } else if (layerType === "REGIONLAYER") {
+      disableArea = false
+    } else if (layerType === "LINELAYER") {
+      disbaleLine = false
+    }
+
+    this.isDrawing = this.props.isDrawing
+    this.canContinuousDraw = this.props.canContinuousDraw
+    this.measureType = this.props.measureType
+    this.isCollect = this.props.isCollect
+
+    this.collectdata = [
+      {
+        //新建开始
+        key: 'replease',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_NEWDATA,
+        action: () => { this.switchStatus() },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_new,
+      },
+      {
+        //清除
+        key: 'critical',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+        action: () => { this.clearTrack() },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_delete,
+      },
+      {
+        //线
+        key: 'line',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
+        action: () => {
+          if (!disbaleLine) {
+            this.saveline()
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_save_line,
+      },
+      {
+        //保存点
+        key: 'POINT',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_SAVE_POINT,
+        action: () => {
+          if (!disablePoint) {
+            this.savepoint()
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_save_spot,
+      },
+      {
+        //保存面
+        key: 'REGION',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_SAVE_REGION,
+        action: () => {
+          if (!disableArea) {
+            this.saveRegion()
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_save_region,
+      },
+    ]
+
+
+    this.switchdata = [
+      {
+        //占位
+        key: 'replease',
+        title: '',
+        action: ()=>{},
+        size: 'large',
+      },
+      {
+        //轨迹
+        key: 'critical',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_SCENE_TRACK_COLLECT,
+        action: ()=>{ this.trackCollect()},
+        size: 'large',
+        image: getThemeAssets().collection.icon_track_start,
+      },
+      {
+        //点
+        key: 'point',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_SCENE_POINT_COLLECT,
+        action: ()=>{ this.pointCollect()},
+        size: 'large',
+        image: getThemeAssets().collection.icon_point_black,
+      },
+      {
+        //占位
+        key: 'replease',
+        title: '',
+        action: ()=>{},
+        size: 'large',
+      },
+    ]
+
+    this.data = [
+      {
+        //轨迹
+        key: 'critical',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .TRACK,
+        action: () => {
+          this.arCollect()
+        },
+        size: 'large',
+        image: getThemeAssets().toolbar.icon_analysis_critical_element,
+      },
+      {
+        //点
+        key: 'point',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_SAVE_POINT,
+        action: async () => {
+          let is = await SMeasureAreaView.isMeasuring()
+          if (is) {
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disablePoint) {
+            this.drawPoint()
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().toolbar.icon_toolbar_savespot,
+      },
+      {
+        //线
+        key: 'line',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_SAVE_LINE,
+        action: async () => {
+          let is = await SMeasureAreaView.isMeasuring()
+          if (is) {
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disbaleLine) {
+            this.drawLine()
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().toolbar.icon_toolbar_saveline,
+      },
+      {
+        //面
+        key: 'region',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_SAVE_AEREA,
+        action: async () => {
+          let is = await SMeasureAreaView.isMeasuring()
+          if (is) {
+            SMeasureAreaView.cancelCurrent()
+          }
+          if (!disableArea) {
+            this.setState({ data: this.areadata })
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
+          }
+        },
+        size: 'large',
+        image: getThemeAssets().toolbar.icon_toolbar_region,
+      },
+      // {
+      //   //体
+      //   key: 'substance',
+      //   title: getLanguage(GLOBAL.language).Map_Main_Menu
+      //     .MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE,
+      //   action: ()=>{},
+      //   size: 'large',
+      //   image: getThemeAssets().ar.functiontoolbar.icon_ar_volume_select,
+      // },
+    ]
+
+    this.areadata = [
+      {
+        // 多边形
+        key: 'polygon',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON,
+        action: () => {
+          this.drawPolygon()
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_polygon,
+      },
+      {
+        // 矩形
+        key: 'rectangle',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
+        action: () => {
+          this.drawRectangle()
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_rectangle,
+      },
+      {
+        // 圆
+        key: 'circular',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
+        action: () => {
+          this.drawCircular()
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_circular,
+      },
+    ]
+
+
+    this.state = {
+      currentLength: 0,
+      totalLength: 0,
+      tolastLength: 0,
+      totalArea: 0,
+      showModelViews: false,
+      SearchingSurfacesSucceed: false,
+      showSwithchButtons: false,
+
+      showCurrentHeightView: false,
+      currentHeight: '0m',
+      showADDPoint: false,
+      showADD: true,//默认先显示
+      isfirst: true,
+      showLog: false,
+      dioLog: '',
+      diologStyle: {},
+      is_showLog: false,
+      showSwitch: this.props.isCollect?true:false,
+      toolbar: this.props.isCollect?{height: scaleSize(250)}:{},
+      title: this.title,
+      data: this.isCollect?this.collectdata:this.data,
+      showGenera: false,
+      showDatumPoint: this.measureType ? this.isDrawing : true,
+      showSave: this.props.showSave,
+      isCollect:this.props.isCollect,
+    }
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentWillUnmount() {
+
+  }
+
+  switchStatus = () => {
+    if (Platform.OS === 'android') {
+      SARMap.startTracking()
+    }else{
+      SMeasureAreaView.addNewRecord()
+    }
+    this.props.isnew()
+    Toast.show(
+      getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START,
+    )
+  }
+
+  clearTrack = () => {
+    if (Platform.OS === 'ios') {
+      this.clearAll()
+    }else{
+      SARMap.clearTracking()
+    }
+  }
+
+  saveline = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        this.save()
+      }else{
+        await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
+          this.props.currentLayer.datasetName)
+        let result = await SARMap.saveTrackingLine()
+        Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      }
+    } catch (e) {
+      GLOBAL.Loading.setLoading(false)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+    }
+  }
+
+  savepoint = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        this.save()
+      }else{
+        await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
+          this.props.currentLayer.datasetName)
+        let result = await SARMap.saveTrackingPoint()
+        Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      } 
+    } catch (e) {
+      GLOBAL.Loading.setLoading(false)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+    }
+  }
+
+  saveRegion = async () => {
+    try {
+      await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
+        this.props.currentLayer.datasetName)
+      let result = await SARMap.saveTrackingRegion()
+      Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+    } catch (e) {
+      GLOBAL.Loading.setLoading(false)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+    }
+  }
+
+  /** 轨迹式 **/
+  trackCollect = () => {
+    try {
+      if (Platform.OS === 'android') {
+        SARMap.changeTrackingMode(0)
+      } else {
+        SMeasureAreaView.setMeasureMode('arCollect_auto')
+      }
+      this.props.isTrack(true)
+      this.setState({ data: this.collectdata })
+    } catch (e) {
+      () => { }
+    }
+  }
+
+  /** 打点式 **/
+  pointCollect = () => {
+    try {
+      if (Platform.OS === 'android') {
+        SARMap.changeTrackingMode(1)
+      }else{
+        SMeasureAreaView.setMeasureMode('arCollect')
+      }
+      this.props.isTrack(false)
+      this.setState({data:this.collectdata})
+    } catch (e) {
+      () => { }
+    }
+  }
+
+  arCollect = () => {
+    SARMap.clearMeasure()
+    if (Platform.OS === 'android') {
+      SARMap.showMeasureView(false)
+      SARMap.showTrackView(true)
+      SARMap.changeTrackingMode(1)
+    }
+    this.props.isTrack(false)
+    this.props.showSwitch(false)
+    this.setState({ isCollect: true, data: this.collectdata, showSwitch: true })
+    this.isDrawing = false
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({ isExistFullMap: false, measureType: 'arCollect' })
+  }
+
+  drawPoint = async () => {
+    SARMap.clearAllTracking()
+    if (Platform.OS === 'android') {
+      SARMap.showMeasureView(true)
+      SARMap.showTrackView(false)
+    }
+    this.props.isTrack(false)
+    this.isDrawing = true
+    SMeasureAreaView.setMeasureMode('DRAW_POINT')
+    this.setState({
+      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+        GLOBAL.language,
+      ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
+    })
+    this.props.showSwitch(false)
+
+    const _params = ToolbarModule.getParams()
+    let currentLayer = GLOBAL.currentLayer
+    const layerType = LayerUtils.getLayerType(currentLayer)
+
+    // 是否绘制到标注图层
+    let isDrawTaggingLayer = false
+    if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
+      // 当前没有选择图层，则绘制到标注图层
+      isDrawTaggingLayer = true
+    } else if(["POINTLAYER","CADLAYER","TAGGINGLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是点线/CAD/标记图层，则绘制到默认标注图层
+      isDrawTaggingLayer = true
+    }
+
+    if (isDrawTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
+        _params.user.currentUser.userName,
+      )
+      if (!hasDefaultTagging) {
+        await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    } else {
+      const datasourceAlias = currentLayer.datasourceAlias
+      const datasetName = currentLayer.datasetName
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }
+    
+    let _point = await SMap.getCurrentLocation()
+    let point = { x: _point.longitude, y: _point.latitude }
+    GLOBAL.MeasureCollectData.point = point
+    GLOBAL.MeasureCollectData.measureType = 'arDrawPoint'
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+  }
+
+  drawLine = async () => {
+    SARMap.clearAllTracking()
+    if (Platform.OS === 'android') {
+      SARMap.showMeasureView(true)
+      SARMap.showTrackView(false)
+    }
+    this.props.isTrack(false)
+    this.isDrawing = true
+    SMeasureAreaView.setMeasureMode('DRAW_LINE')
+    this.setState({
+      isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+        GLOBAL.language,
+      ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
+    })
+    this.props.showSwitch(false)
+
+    const _params = ToolbarModule.getParams()
+    let currentLayer = GLOBAL.currentLayer
+    const layerType = LayerUtils.getLayerType(currentLayer)
+
+    // 是否绘制到标注图层
+    let isDrawTaggingLayer = false
+    if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
+      // 当前没有选择图层，则绘制到标注图层
+      isDrawTaggingLayer = true
+    } else if(["LINELAYER","CADLAYER","TAGGINGLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是线/CAD/标记图层，则绘制到默认标注图层
+      isDrawTaggingLayer = true
+    }
+    if (isDrawTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
+        _params.user.currentUser.userName,
+      )
+      if (!hasDefaultTagging) {
+        await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    } else {
+      // 否则画到当前图层
+      const datasourceAlias = currentLayer.datasourceAlias
+      const datasetName = currentLayer.datasetName
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }
+
+    let _point = await SMap.getCurrentLocation()
+    let point = { x: _point.longitude, y: _point.latitude }
+    GLOBAL.MeasureCollectData.point = point
+    GLOBAL.MeasureCollectData.measureType = 'drawLine'
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+  }
+
+  drawPolygon = async () => {
+    SARMap.clearAllTracking()
+    if (Platform.OS === 'android') {
+      SARMap.showMeasureView(true)
+      SARMap.showTrackView(false)
+    }
+    this.props.isTrack(false)
+    this.isDrawing = true
+    SMeasureAreaView.setMeasureMode('DRAW_AREA')
+    this.setState({
+      isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+        GLOBAL.language,
+      ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
+    })
+    this.props.showSwitch(false)
+
+
+    const _params = ToolbarModule.getParams()
+    let currentLayer = GLOBAL.currentLayer
+    const layerType = LayerUtils.getLayerType(currentLayer)
+
+    // 是否绘制到标注图层
+    let isDrawTaggingLayer = false
+    if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
+      // 当前没有选择图层，则绘制到标注图层
+      isDrawTaggingLayer = true
+    } else if(["REGIONLAYER","CADLAYER","TAGGINGLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是面线/CAD/标记图层，则绘制到默认标注图层
+      isDrawTaggingLayer = true
+    }
+
+    if (isDrawTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
+        _params.user.currentUser.userName,
+      )
+      if (!hasDefaultTagging) {
+        await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    } else {
+      const datasourceAlias = currentLayer.datasourceAlias
+      const datasetName = currentLayer.datasetName
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }
+
+    let _point = await SMap.getCurrentLocation()
+    let point = { x: _point.longitude, y: _point.latitude }
+    GLOBAL.MeasureCollectData.point = point
+    GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+  }
+
+  drawRectangle = async () => {
+    SARMap.clearAllTracking()
+    if (Platform.OS === 'android') {
+      SARMap.showMeasureView(true)
+      SARMap.showTrackView(false)
+    }
+    this.props.isTrack(false)
+    this.isDrawing = true
+    SMeasureAreaView.setMeasureMode('DRAW_AREA_RECTANGLE')
+    this.setState({
+      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+        GLOBAL.language,
+      ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
+    })
+    this.props.showSwitch(false)
+
+    const _params = ToolbarModule.getParams()
+    let currentLayer = GLOBAL.currentLayer
+    const layerType = LayerUtils.getLayerType(currentLayer)
+
+    // 是否绘制到标注图层
+    let isDrawTaggingLayer = false
+    if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
+      // 当前没有选择图层，则绘制到标注图层
+      isDrawTaggingLayer = true
+    } else if(["REGIONLAYER","CADLAYER","TAGGINGLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是面线/CAD/标记图层，则绘制到默认标注图层
+      isDrawTaggingLayer = true
+    }
+
+    if (isDrawTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
+        _params.user.currentUser.userName,
+      )
+      if (!hasDefaultTagging) {
+        await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    } else {
+      const datasourceAlias = currentLayer.datasourceAlias
+      const datasetName = currentLayer.datasetName
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }
+
+    let _point = await SMap.getCurrentLocation()
+    let point = { x: _point.longitude, y: _point.latitude }
+    GLOBAL.MeasureCollectData.point = point
+    GLOBAL.MeasureCollectData.measureType = 'arDrawRectangle'
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawRectangle',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+  }
+
+  drawCircular = async () => {
+    SARMap.clearAllTracking()
+    if (Platform.OS === 'android') {
+      SARMap.showMeasureView(true)
+      SARMap.showTrackView(false)
+    }
+    this.props.isTrack(false)
+    this.isDrawing = true
+    SMeasureAreaView.setMeasureMode('DRAW_AREA_CIRCLE')
+    this.setState({
+      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+        GLOBAL.language,
+      ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
+    })
+    this.props.showSwitch(false)
+
+    const _params = ToolbarModule.getParams()
+    let currentLayer = GLOBAL.currentLayer
+    const layerType = LayerUtils.getLayerType(currentLayer)
+
+    // 是否绘制到标注图层
+    let isDrawTaggingLayer = false
+    if (!currentLayer || (!currentLayer.datasourceAlias && !currentLayer.datasetName)){
+      // 当前没有选择图层，则绘制到标注图层
+      isDrawTaggingLayer = true
+    } else if(["REGIONLAYER","CADLAYER","TAGGINGLAYER"].indexOf(layerType) == -1) {
+      // 当前图层不是面线/CAD/标记图层，则绘制到默认标注图层
+      isDrawTaggingLayer = true
+    }
+
+    if (isDrawTaggingLayer) {
+      let hasDefaultTagging = await SMap.hasDefaultTagging(
+        _params.user.currentUser.userName,
+      )
+      if (!hasDefaultTagging) {
+        await SMap.newTaggingDataset(
+          'Default_Tagging',
+          _params.user.currentUser.userName,
+        )
+      }
+      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      let datasetName = 'Default_Tagging'
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    } else {
+      const datasourceAlias = currentLayer.datasourceAlias
+      const datasetName = currentLayer.datasetName
+      GLOBAL.MeasureCollectData = {
+        datasourceAlias,
+        datasetName,
+      }
+    }
+
+    let _point = await SMap.getCurrentLocation()
+    let point = { x: _point.longitude, y: _point.latitude }
+    GLOBAL.MeasureCollectData.point = point
+    GLOBAL.MeasureCollectData.measureType = 'arDrawCircular'
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawCircular',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+  }
+
+  renderItems = () => {
+    let items = []
+    for (let i = 0; i < this.state.data.length; i++) {
+      items.push(this.renderItem(this.state.data[i]))
+    }
+    return items
+  }
+
+  renderItem = (item) => {
+    let backgroundColor = '#E5E5E6'
+    if(item.image === undefined){
+      backgroundColor = 'transparent'
+    }
+    return (
+      <View
+        style={{
+          width: scaleSize(100),
+          // height: scaleSize(100),
+          alignItems: 'center',
+          // justifyContent: 'center',
+        }}>
+        <TouchableOpacity
+          onPress={item.action}
+          style={[{
+            width: scaleSize(80),
+            height: scaleSize(80),
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: scaleSize(40),
+            backgroundColor: '#E5E5E6',
+            backgroundColor: backgroundColor,
+          }]}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={item.image}
+            style={styles.smallIcon}
+          />
+        </TouchableOpacity>
+
+        <Text
+          style={[
+            {
+              marginTop: scaleSize(10),
+              color: color.font_color_white,
+              fontSize: setSpText(15),
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+            },
+          ]}
+        >
+          {item.title}
+        </Text>
+      </View>
+    )
+  }
+
+  /** ar画面切换 */
+  switch = async () => {
+    if(this.state.isCollect){
+      if (!this.state.showSwitch) {
+        this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) }, data: this.data })
+        this.props.showSwitch(true)
+      } else {
+        this.setState({ data: this.data })
+      }
+    }else{
+      if (!this.state.showSwitch) {
+        this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) }})
+        this.props.showSwitch(true)
+      } else {
+        this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) }, data: this.data })
+        this.props.showSwitch(false)
+      }
+    }
+  }
+
+  /** 撤销 **/
+  undo = async () => {
+    await SMeasureAreaView.undoDraw()
+    if (this.measureType === 'arMeasureHeight') {
+      let height = await SMeasureAreaView.getCurrentHeight()
+      // this.setState({
+      //   currentHeight: height + 'm',
+      // })
+      this.props.setCurrentHeight(height + 'm')
+    }
+  }
+
+  /** 连续测量 **/
+  continuousDraw = async () => {
+    await SMeasureAreaView.continuousDraw()
+  }
+
+  /** 清除 **/
+  clearAll = async () => {
+    await SMeasureAreaView.clearAll()
+    if (this.measureType === 'arMeasureHeight') {
+      this.props.setCurrentHeight('0m')
+      // this.setState({
+      //   currentHeight: '0m',
+      // })
+    }
+  }
+
+  /** 保存 **/
+  save = async () => {
+    if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
+    let datasourceAlias = this.props.currentLayer.datasourceAlias
+    let datasetName = this.props.currentLayer.datasetName
+    if (this.props.currentLayer.themeType !== 0 || (
+      this.props.currentLayer.type !== DatasetType.CAD &&
+      (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+      (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+      (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT)
+    )) {
+      datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
+      datasetName = 'Default_Tagging'
+    }
+    let result = await SMeasureAreaView.saveDataset(
+      datasourceAlias,
+      datasetName
+    )
+    if (result) {
+      //await SMeasureAreaView.clearAll()
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+    }
+  }
+
+  renderBottomBtn() {
+    return (
+      <View style={styles.buttonView}>
+        <TouchableOpacity
+          onPress={() => {
+            NavigationService.navigate('ChooseLayer')
+          }}
+          style={styles.iconView}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={getThemeAssets().toolbar.icon_toolbar_option}
+            style={styles.smallIcon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            if(this.state.data === this.collectdata){
+              this.setState({data:this.switchdata})
+            }else{
+              this.setState({data:this.collectdata})
+            }
+          }}
+          style={styles.iconView}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={getThemeAssets().toolbar.icon_toolbar_switch}
+            style={styles.smallIcon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            if(this.state.showSwitch){
+              this.setState({showSwitch:false ,toolbar: { height: scaleSize(96) }})
+              this.props.showSwitch(false)
+            }else{
+              this.setState({showSwitch:true ,toolbar: { height: scaleSize(250) }})
+              this.props.showSwitch(true)
+            }
+          }}
+          style={styles.iconView}
+        >
+          <Image
+            resizeMode={'contain'}
+            // source={getThemeAssets().ar.toolbar.icon_flex}
+            source={getThemeAssets().toolbar.icon_toolbar_style}
+            style={styles.smallIcon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.switch()}
+          style={styles.iconView}
+        >
+          <Image
+            resizeMode={'contain'}
+            source={getThemeAssets().toolbar.icon_toolbar_type}
+            style={styles.smallIcon}
+          />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+
+
+  render() {
+    return (
+      <View style={[styles.toolbar, this.state.toolbar]}>
+
+        {this.state.showSwitch && (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              height: scaleSize(150),
+              marginTop: scaleSize(10),
+              justifyContent: 'space-between',
+              // alignItems: 'center',
+            }}
+          >
+            {this.renderItems()}
+          </View>)}
+
+        {this.state.isCollect && this.renderBottomBtn()}
+
+        {!this.state.isCollect &&
+        <View style={styles.buttonView}>
+          {this.state.showSwitch && <View style={{ position: 'absolute', top: 0, width: '100%', height: scaleSize(2), backgroundColor: '#E5E5E6' }} />}
+          <TouchableOpacity
+            onPress={() => this.clearAll()}
+            style={styles.iconView}
+          >
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
+              source={getThemeAssets().toolbar.icon_toolbar_delete}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.undo()} style={styles.iconView}>
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_undo}
+              source={getThemeAssets().toolbar.icon_toolbar_undo}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+
+          {this.canContinuousDraw && (
+            <TouchableOpacity
+              onPress={() => this.continuousDraw()}
+              style={styles.iconView}
+            >
+              <Image
+                resizeMode={'contain'}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                source={getThemeAssets().toolbar.icon_toolbar_submit}
+                style={styles.smallIcon}
+              />
+            </TouchableOpacity>
+          )}
+          {this.state.showSave && this.isDrawing && (
+            <TouchableOpacity
+              onPress={() => this.save()}
+              style={styles.iconView}
+            >
+              <Image
+                resizeMode={'contain'}
+                // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_submit}
+                source={getThemeAssets().toolbar.icon_toolbar_submit}
+                style={styles.smallIcon}
+              />
+            </TouchableOpacity>
+          )}
+          {this.isDrawing && (
+            <TouchableOpacity
+              onPress={() => this.switch()}
+              style={styles.iconView}
+            >
+              <Image
+                resizeMode={'contain'}
+                source={getThemeAssets().toolbar.icon_toolbar_type}
+                style={styles.smallIcon}
+              />
+            </TouchableOpacity>
+          )}
+        </View>}
+      </View>
+    )
+  }
+}

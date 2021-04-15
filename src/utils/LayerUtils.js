@@ -90,6 +90,10 @@ async function deleteSelectionAttributeByLayer(path,index,isCollection) {
   return await SMap.deleteSelectionAttributeByLayer(path,index,isCollection)
 }
 
+async function deleteAttributeByLayer(path, smID, isCollection) {
+  return await SMap.deleteAttributeByLayer(path, smID, isCollection)
+}
+
 async function getCurrentGeometryID(path) {
   return await SMap.getCurrentGeometryID(path)
 }
@@ -483,6 +487,7 @@ export default {
   searchSelectionAttribute,
   getSelectionAttributeByLayer,
   deleteSelectionAttributeByLayer,
+  deleteAttributeByLayer,
   canBeUndo,
   canBeRedo,
   canBeRevert,

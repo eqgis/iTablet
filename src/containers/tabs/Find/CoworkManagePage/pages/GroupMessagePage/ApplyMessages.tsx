@@ -18,6 +18,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
 import { Users } from '../../../../../../redux/models/user'
 import { ReadMsgParams } from '../../../../../../redux/models/cowork'
+import SMessageServiceHTTP from '../../../../Friend/SMessageServiceHTTP'
 import { SCoordination, SMessageService, GroupApplyMessageType } from 'imobile_for_reactnative'
 import { Person } from '../../types'
 import { ApplyItem } from '../../components'
@@ -209,9 +210,13 @@ export default class ApplyMessages extends Component<Props, State> {
             },
             time: timeStr,
           }
-          SMessageService.sendMessage(
-            JSON.stringify(_message),
-            data.applicant,
+          // SMessageService.sendMessage(
+          //   JSON.stringify(_message),
+          //   data.applicant,
+          // )
+          SMessageServiceHTTP.sendMessage(
+            _message,
+            [data.applicant],
           )
         }
         let _data = this.state.data.deepClone()

@@ -130,6 +130,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'コレクションに成功',
 
   SELECT_TWO_MEDIAS_AT_LEAST: '少なくとも2つのメディアファイルを選択してください',
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
 
   NETWORK_REQUEST_FAILED: 'ネットワークリクエストに失敗しました',
 
@@ -392,8 +393,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'デフォルト値は空です',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '主題図レイヤーはコレクションできません',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', //Need to be translated
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', //Need to be translated
+  CANNOT_COLLECT_IN_CAD_LAYERS: '複合レイヤーはコレクションできません', 
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'テキストレイヤーはコレクションできません', 
   HEAT_MAP_DATASET_TYPE_ERROR: 'ポイントデータセットしか作成できません',
 
   INVALID_DATA_SET_FAILED: 'データタイプは無効です。設定に失敗しました。', // ｊｐ0917

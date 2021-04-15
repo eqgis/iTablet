@@ -128,6 +128,7 @@ const Prompt = {
   COLLECT_SUCCESS: '采集成功',
 
   SELECT_TWO_MEDIAS_AT_LEAST: '至少选中两个多媒体文件',
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: '该对象已经没有多媒体文件，是否删除？',
 
   NETWORK_REQUEST_FAILED: '网络请求失败',
 

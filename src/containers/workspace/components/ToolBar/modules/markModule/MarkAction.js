@@ -230,7 +230,7 @@ async function commit(type) {
               await SMediaCollector.updateTour(_params.selection[0].layerInfo.name)
             } else if (
               _params.selection?.[0]?.layerInfo?.name &&
-              SMediaCollector.isMediaLayer(_params.selection[0].layerInfo.name)
+              await SMediaCollector.isMediaLayer(_params.selection[0].layerInfo.name)
             ) {
               // 编辑多媒体对象后，更新位置
               let geoID = _params.selection[0].ids[0] || -1

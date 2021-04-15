@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native'
 // import * as Util from '../../../../utils/constUtil'
-import { scaleSize, constUtil as Util } from '../../../../utils'
+import { scaleSize,setSpText, constUtil as Util } from '../../../../utils'
 import { color, size, zIndexLevel } from '../../../../styles'
+import { Const } from '../../../../constants'
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -293,5 +294,97 @@ export default StyleSheet.create({
     padding: 0,
     fontSize: size.fontSize.fontSizeLg,
     color: color.white,
+  },
+  addcaptureView: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    bottom: Const.BOTTOM_HEIGHT+scaleSize(150)+scaleSize(110),
+    left: '50%',
+    marginLeft: -40,
+    // backgroundColor: 'white',
+    backgroundColor: 'transparent',
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: zIndexLevel.SYSTEM,
+  },
+  addcapture:{
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf:'center',
+  },
+  addText: {
+    fontSize: setSpText(30),
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    marginTop:-scaleSize(10),
+  },
+  addiconView: {
+    width: scaleSize(180),
+    height: scaleSize(180),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  capture: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    bottom: Const.BOTTOM_HEIGHT+scaleSize(150),
+    left: '50%',
+    marginLeft: -40,
+    // backgroundColor: 'white',
+    backgroundColor: 'transparent',
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: zIndexLevel.SYSTEM,
+  },
+  iconView: {
+    width: scaleSize(120),
+    height: scaleSize(120),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  dioLog: {
+    fontSize: setSpText(25),
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    backgroundColor: 'transparent',
+    maxWidth: scaleSize(300),
+  },
+  dioimg: {
+    width: scaleSize(120),
+    height: scaleSize(120),
+  },
+  smallIcon: {
+    width: scaleSize(50),
+    height: scaleSize(50),
+  },
+  currentHeightChangeView: {
+    position: 'absolute',
+    flexDirection: 'column',
+    height: scaleSize(140),
+    minWidth: '100%',
+    backgroundColor: '#rgba(200, 200, 200, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: scaleSize(100),
+  },
+  titleCurrentHeight: {
+    // height: scaleSize(45),
+    // minWidth: scaleSize(180),
+    fontSize: setSpText(42),
+    // backgroundColor: '#rgba(45, 45, 47, 0.5)',
+    color: '#FFFFFF',
+    paddingLeft: 5,
+    paddingRight: 5,
+    textAlign: 'left',
   },
 })

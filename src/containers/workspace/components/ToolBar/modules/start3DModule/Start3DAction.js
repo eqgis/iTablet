@@ -221,13 +221,16 @@ function openScene(item) {
     // '场景已打开,请勿重复打开场景')
     return
   }
-  SScene.openScence(item.name).then(() => {
+  SScene.openScence(item.name).then(async () => {
     SScene.setNavigationControlVisible(false)
     SScene.setListener()
     SScene.getAttribute()
     SScene.setCircleFly()
     SScene.setAction('PAN3D')
-    SScene.changeBaseLayer(1)
+    // 只有是球面场景时才添加底图 add jiakai
+    if(await SScene.isEarthScene()){
+      SScene.changeBaseLayer(1)
+    }
     GLOBAL.action3d = 'PAN3D'
     GLOBAL.openWorkspace = true
     GLOBAL.sceneName = item.name

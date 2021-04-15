@@ -441,6 +441,8 @@ const SM_ARSCENEMODULE_CONST = {
   SM_ARSCENEMODULE_TransLation: 'SM_ARSCENEMODULE_TransLation',
   /** 三维AR管线角度调整 **/
   SM_ARSCENEMODULE_Rotation: 'SM_ARSCENEMODULE_Rotation',
+  /** 三维AR管线模型比例调整 **/
+  SM_ARSCENEMODULE_Scale: 'SM_ARSCENEMODULE_Scale',
   /** 三维AR管线添加场景前初始界面 **/
   SM_ARSCENEMODULE_NOMAL: 'SM_ARSCENEMODULE_NOMAL',
 }

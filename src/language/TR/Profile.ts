@@ -43,16 +43,16 @@ const Profile: typeof CN.Profile = {
   SELECT_DATASET:'Veri kümesi eklemek için kontrol edin',
   ADD_SELECT_DATASET:'Veri Kümesi Ekle ',
   MOVE_BROWSING:'Tüm bilgilere göz atmak için "sola ve sağa hareket edin"',
-  ADD_THEME_DATA:'1.Add Theme Data',//need to translate
-  CHOOSE_THEME_TYPE:'2.Choose Theme Type',//need to translate
-  CHANGE_THEME_STYLE:'3.Change Theme Style',//need to translate
-  START_COLLECT:'1.New collection map based on template',//need to translate
-  CHOOSE_COLLECT:'2.Select symbols for data acquisition',//need to translate
-  EDIT_COLLECT:'3.Edit the collected data',//need to translate
-  MAP_BROWSE:'Click to open the map',//need to translate
-  MAP_TAGGINGL:'Click to select the marking method to mark',//need to translate
-  SCENE_BROWSE:'Click to open the scene',//need to translate
-  SCENE_FLY:'Click Set flight route to automatically browse the scene from different angles',//need to translate
+  ADD_THEME_DATA:'1.Tema Verisini Ekleyin',
+  CHOOSE_THEME_TYPE:'2.Tema Türünü Seçin',
+  CHANGE_THEME_STYLE:'3. Tema Stilini Değiştirin',
+  START_COLLECT:'1. Taslağa dayalı yeni koleksiyon haritası',
+  CHOOSE_COLLECT:'2. Veri toplama için sembolleri seçin',
+  EDIT_COLLECT:'3. Toplanan verileri düzenleyin',
+  MAP_BROWSE:'Haritayı açmak için tıklayın',
+  MAP_TAGGINGL:'Gerekli işaretleme yöntemini seçmek için tıklayın',
+  SCENE_BROWSE:'Sahneyi açmak için tıklayın',
+  SCENE_FLY:'Sahneye farklı açılardan otomatik olarak göz atmak için Uçuş rotasını ayarla seçeneğine tıklayın',
 
   // 我的——登录
   LOGIN: 'Giriş',
@@ -239,7 +239,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_DEVICE: 'Konumlandır',
   SETTING_LOCATION_LOCAL: 'Bu cihaz',
   SETTING_CLEAR_CACHE: 'Çerezleri temizle',
-  SETTING_CLEAR_CACHE_SUCCESS:'Clear Success',//need to translate
+  SETTING_CLEAR_CACHE_SUCCESS:'Temizleme başarılı',
 
   // 许可
   LICENSE: 'Lisans',
@@ -376,18 +376,18 @@ const Profile: typeof CN.Profile = {
   Y_COORDINATE: 'Y Koordinatı',
   MAP_AR_DATUM_AUTO_CATCH: 'Otomatik yakala',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerans',
-  MAP_AR_DRAW_WINDOW: 'Draw Window',//need to translate
+  MAP_AR_DRAW_WINDOW: 'Çizim Penceresi',
 
-  MAR_AR_DATUM_PICTURE_LOCATION: 'QR location', // need to be translated
-  MAR_AR_POSITION_CORRECT: 'Position calibration', // need to be translated
-  MAP_AR_TOWARDS_NORTH: 'The camera on the back of the phone faces north', // need to be translated
-  MAP_AR_SCAN_TIP: 'Make sure that the QR code just fills the scan box', // need to be translated
-  MAP_AR_SCAN_IT: 'Scan', // need to be translated
-  MAP_AR_DATUM_HEIGHT: 'Height', // need to be translated
-  MAP_AR_DATUM_DIRECTION: 'Direction', // need to be translated
-  MAR_AR_DATUM_NORTH: 'North', // need to be translated
-  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR location succeed', // need to be translated
-  MAR_AR_QR_INVALID: 'QR code information not recognized', // need to be translated
+  MAR_AR_DATUM_PICTURE_LOCATION: 'QR konumu', 
+  MAR_AR_POSITION_CORRECT: 'Pozisyon kalibrasyonu', 
+  MAP_AR_TOWARDS_NORTH: 'Telefonun arkasındaki kamera kuzeye bakıyor', 
+  MAP_AR_SCAN_TIP: 'QR kodunun yalnızca tarama kutusunu doldurduğundan emin olun', 
+  MAP_AR_SCAN_IT: 'Tara', 
+  MAP_AR_DATUM_HEIGHT: 'Yükseklik', 
+  MAP_AR_DATUM_DIRECTION: 'Yön', 
+  MAR_AR_DATUM_NORTH: 'Kuzey', 
+  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR konumu başarılı', 
+  MAR_AR_QR_INVALID: 'QR kodu bilgisi tanınmadı', 
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Yeniden adlandırma',

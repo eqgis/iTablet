@@ -39,6 +39,7 @@ export default class Dialog extends PureComponent {
     confirmBtnStyle?: string,
     confirmAction?: () => void,
     cancelAction?: () => void,
+    dismissAction?: () => void,
     confirmTitleStyle?: any,
     cancelTitleStyle?: any,
     showBtns?: boolean,
@@ -284,8 +285,8 @@ export default class Dialog extends PureComponent {
         <TouchableOpacity
           disabled={this.props.disableBackTouch}
           onPress={() => {
-            if (this.props.cancelAction) {
-              this.props.cancelAction()
+            if (this.props.dismissAction) {
+              this.props.dismissAction()
             } else {
               this.setDialogVisible(false)
             }
@@ -341,8 +342,8 @@ export default class Dialog extends PureComponent {
             ]}
             disabled={this.props.disableBackTouch}
             onPress={() => {
-              if (this.props.cancelAction) {
-                this.props.cancelAction()
+              if (this.props.dismissAction) {
+                this.props.dismissAction()
               } else {
                 this.setDialogVisible(false)
               }

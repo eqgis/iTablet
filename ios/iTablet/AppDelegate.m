@@ -18,6 +18,10 @@
 #import "NativeUtil.h"
 #import "Orientation.h"
 #import "MyLaunchScreenViewController.h"
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+
+#define IS_PAD (UI_USER_INTERFACE_IDIOM()== UIUserInterfaceIdiomPad)
+
 
 static NSString* g_sampleCodeName = @"#";;
 @implementation AppDelegate
@@ -85,11 +89,12 @@ static NSString* g_sampleCodeName = @"#";;
   launchView.frame = [UIApplication sharedApplication].keyWindow.frame;
   [mainWindow addSubview:launchView];
   
-  [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(removeLanchSlogan) userInfo:nil repeats:NO];
+  [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(removeLanchSlogan) userInfo:nil repeats:NO];
 }
 
 -(void)removeLanchSlogan {
   [launchView removeFromSuperview];
+//  self.allowRotation = UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -113,12 +118,14 @@ static NSString* g_sampleCodeName = @"#";;
   self.window.rootViewController = _nav;
   [self.window makeKeyAndVisible];
   
-//  [self addLaunchSlogan];
+  if(IS_IPHONE){
+    self.allowRotation = UIInterfaceOrientationMaskPortrait;
+  }else{
+    self.allowRotation = UIInterfaceOrientationMaskLandscape;
+  }
+  [self addLaunchSlogan];
   
-  
-//  [self initDefaultData];
-//  [self initEnvironment];
-  self.allowRotation = UIInterfaceOrientationMaskAll;
+
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:@"SMOrientations" object:nil];
   
   [NSThread sleepForTimeInterval:1];
@@ -200,7 +207,7 @@ static NSString* g_sampleCodeName = @"#";;
   } else {
     #if DEBUG
 //    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.192.84"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.187.250"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

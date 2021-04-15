@@ -27,7 +27,7 @@ const Prompt: typeof CN.Prompt = {
   DOWNLOAD_DATA: 'Téléchargement de données',
   DOWNLOAD: 'Télécharger',
   DOWNLOADING: 'Chargement',
-  DOWNLOAD_SUCCESSFULLY: 'Termine',
+  DOWNLOAD_SUCCESSFULLY: 'Terminé',
   DOWNLOAD_FAILED: 'Échec de téléchargement',
   UNZIPPING: 'décompresser',
   ONLINE_DATA_ERROR: 'Les données du réseau ont été corrompues et ne peuvent pas être utilisées normalement',
@@ -77,7 +77,7 @@ const Prompt: typeof CN.Prompt = {
   OVERWRITE: 'Écraser',
   CHOOSE_DATASET: "Veuillez choisir l'ensemble de données",
 
-  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Please Submit Current Geometry',//need to translate
+  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Veuillez soumettre la géométrie actuelle',
 
   SET_ALL_MAP_VISIBLE: 'Tout visible',
   SET_ALL_MAP_INVISIBLE: 'Tout invisible',
@@ -89,7 +89,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'Groupe SuperMap',
   INSTRUCTION_MANUAL: 'Instruction Manual',
   THE_CURRENT_LAYER: 'La couche actuelle est',
-  NO_BASE_MAP: 'No base map can be removed', // need to translate
+  NO_BASE_MAP: 'Aucune carte de base ne peut être supprimée',
   ENTER_KEY_WORDS: 'Veuillez saisir des mots clés',
   SEARCHING: 'Recherche',
   SEARCHING_DEVICE_NOT_FOUND: 'Aucun appareil trouvé',
@@ -103,12 +103,12 @@ const Prompt: typeof CN.Prompt = {
   CREATE_FAILED: 'Échec de la création',
   INVALID_DATASET_NAME: 'Nom de jeu de données non valide ou le nom existe déjà',
 
-  PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
-  PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
-  PLEASE_CHOOSE_REGION_LAYER: 'Please Choose Region Layer',//need to translate
+  PLEASE_CHOOSE_POINT_LAYER: 'Veuillez choisir la couche de points',
+  PLEASE_CHOOSE_LINE_LAYER: 'Veuillez choisir la couche ligne',
+  PLEASE_CHOOSE_REGION_LAYER: 'Veuillez choisir la couche  région',
 
   NO_PLOTTING_DEDUCTION: 'Aucune déduction de traçage dans la carte actuelle',
-  NO_FLY: 'No Fly dans la scène actuelle',
+  NO_FLY: 'Pas de survol dans la scène actuelle',
   PLEASE_OPEN_SCENE: 'Veuillez ouvrir une scène',
   NO_SCENE: 'Aucune scène',
   ADD_ONLINE_SCENE: 'Ajouter une scène en ligne',
@@ -122,7 +122,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: 'Afficher la liste des appareils pris en charge',
   PLEASE_NEW_PLOT_LAYER: 'Veuillez créer une nouvelle couche de tracé',
   DOWNLOADING_PLEASE_WAIT: 'Téléchargement en cours, veuillez patienter',
-  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Please wait while other files are being downloaded', // need to translate
+  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Veuillez patienter pendant le téléchargement des autres fichiers',
   SELECT_DELETE_BY_RECTANGLE: "Veuillez sélectionner supprimer l'élément par rectangle sélectionnez",
 
   CHOOSE_LAYER: 'Choisir une couche',
@@ -130,6 +130,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'Recueillir le succès',
 
   SELECT_TWO_MEDIAS_AT_LEAST: 'Vous devez sélectionner au moins deux médias',
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
 
   NETWORK_REQUEST_FAILED: 'Échec de la demande réseau',
 
@@ -173,11 +174,11 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_SYMBOL: 'Veuillez sélectionner le symbole de tracé',
 
   ENTER_NAME: 'Veuillez saisir le nom',
-  ENTER_CAPTION: 'Please input caption', // need to translate
-  CHOICE_TYPE: 'Please choice type', // need to translate
-  INPUT_LENGTH: 'Please input max length', // need to translate
-  DEFAULT_VALUE_EROROR: 'Default value input error', // need to translate
-  SELECT_REQUIRED: 'Please select required', // need to translate
+  ENTER_CAPTION: 'Veuillez saisir la légende',
+  CHOICE_TYPE: 'Veuillez choisir le type',
+  INPUT_LENGTH: 'Veuillez saisir la longueur maximale',
+  DEFAULT_VALUE_EROROR: "Erreur de saisie de la valeur par défaut",
+  SELECT_REQUIRED: 'Sélection requise',
 
   CLIPPING: 'Coupure',
   CLIPPED_SUCCESS: 'Coupé avec succès',
@@ -241,8 +242,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: 'Veuillez configurer le lieu',
   OUT_OF_MAP_BOUNDS: 'Hors des limites de la carte',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: "L'emplacement actuel est hors des limites de la carte afin que vous ne puissiez pas utiliser le suivi pour incrémenter la route",
-  AFTER_COLLECT: 'Please collect before viewing',//need to be translated
-
+  AFTER_COLLECT: 'Veuillez collecter avant de visionner',
   POI: 'POI',
 
   ILLEGAL_DATA: 'Données illégales',
@@ -392,8 +392,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'La valeur par défaut est null',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Impossible de collecter dans les couches thématiques',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect in CAD layers', //Need to be translated
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect in Text layers', //Need to be translated
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Impossible de collecter dans les couches CAO',
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'Impossible de collecter dans les couches de texte',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Seul le jeu de données ponctuel peut être créé',
 
   INVALID_DATA_SET_FAILED: 'Type de données non valide. Échec de paramètre',

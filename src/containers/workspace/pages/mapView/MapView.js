@@ -17,6 +17,12 @@ import {
   SMAIDetectView,
   SAIDetectView,
   SSpeechRecognizer,
+  SMARMapView,
+  SARMap,
+  SMMeasureARGeneraView,
+  SMeasureAreaView,
+  DatasetType,
+  SCollectSceneFormView,
 } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import {
@@ -72,7 +78,7 @@ import {
   screen,
   Audio,
 } from '../../../../utils'
-import { color } from '../../../../styles'
+import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { FileTools } from '../../../../native'
 import {
@@ -95,6 +101,11 @@ import {
   TouchableOpacity,
   BackHandler,
   AppState,
+  StyleSheet,
+  PanResponder,
+  NativeModules,
+  NativeEventEmitter,
+  DeviceEventEmitter,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -111,8 +122,20 @@ import GuideViewMapAnalystModel from '../../components/GuideViewMapAnalystModel'
 import GuideViewMapThemeModel from '../../components/GuideViewMapThemeModel'
 import GuideViewMapCollectModel from '../../components/GuideViewMapCollectModel'
 import GuideViewMapEditModel from '../../components/GuideViewMapEditModel'
+import ArMappingButton from '../../components/ArMappingButton'
+import ImageButton from '../../../../components/ImageButton'
+import Header from '../../../../components/Header'
+import DatumPointCalibration from '../../../arDatumPointCalibration/'
 
 GLOBAL.markerTag = 118082
+const SMeasureViewiOS = NativeModules.SMeasureAreaView
+const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
+const TOP_DEFAULT = Platform.select({
+  android: screen.getHeaderHeight('PORTRAIT') + scaleSize(8),
+  // ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
+  // ios: screen.isIphoneX() ? 0 : screen.IOS_TOP,
+  ios: screen.getHeaderHeight('PORTRAIT') + scaleSize(8),
+})
 
 export default class MapView extends React.Component {
   static propTypes = {
@@ -297,6 +320,25 @@ export default class MapView extends React.Component {
       onlineCowork: CoworkInfo.coworkId !== '',
       selectPointType: params && params.selectPointType || undefined,
       mapLoaded: false, // 判断地图是否加载完成
+      showArMappingButton: false,
+      showSave: false,
+      showSwitch: false,
+      showADDPoint: false,
+      isfirst: true,
+      isDrawing: false,
+      currentHeight: '0m',
+      showADD: true,//默认先显示
+      showLog: false,
+      dioLog: '',
+      is_showLog: false,
+      showCurrentHeightView : false,
+      measureType: '',
+      isAR:true,
+      showDatumPoint:GLOBAL.Type === ChunkType.MAP_AR_MAPPING?true:false,
+      isCollect:false,
+      isnew:true,
+      showGenera:false,
+      isTrack:false,
     }
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
@@ -322,6 +364,84 @@ export default class MapView extends React.Component {
     GLOBAL.clickWait = false // 防止重复点击，该页面用于关闭地图方法
     AppState.addEventListener('change', this.handleStateChange)
     CoworkInfo.closeMapHandle = this.back
+
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
+      onPanResponderMove: this._handlePanResponderMove,
+      onPanResponderRelease: this._handlePanResponderEnd,
+      onPanResponderTerminate: this._handlePanResponderEnd,
+    })
+
+    // 初始化位置
+    this._previousTop = screen.getHeaderHeight(this.props.device.orientation) + scaleSize(8)
+    this._previousLeft = 0
+    const position = this._getAvailablePosition(this._previousLeft, this._previousTop)
+    this._previousTop = position.y
+    this._previousLeft = position.x
+    this._moveViewStyles = {
+      style: {
+        top: this._previousTop,
+        left: this._previousLeft,
+      },
+    }
+  }
+
+  _handleStartShouldSetPanResponder = () => {
+    return true
+  }
+
+  _handleMoveShouldSetPanResponder = (evt, gestureState) => {
+    if (Math.abs(gestureState.dy) < 1 && Math.abs(gestureState.dx) < 1) {
+      return false
+    }
+    return true
+  }
+
+  _handlePanResponderMove = (evt, gestureState) => {
+    let y = this._previousTop + gestureState.dy
+    let x = this._previousLeft + gestureState.dx
+
+    const position = this._getAvailablePosition(x, y)
+
+    this._moveViewStyles.style.top = position.y
+    this._moveViewStyles.style.left = position.x
+
+    this._updateNativeStyles()
+  }
+
+  _updateNativeStyles = () => {
+    this.moveView && this.moveView.setNativeProps(this._moveViewStyles)
+  }
+
+  _handlePanResponderEnd = (evt, gestureState) => {
+    this._previousTop = this._moveViewStyles.style.top
+    this._previousLeft = this._moveViewStyles.style.left
+  }
+
+  /**
+ * 获取图例可用位置, 不能超出屏幕
+ */
+  _getAvailablePosition = (x, y) => {
+    if (y < TOP_DEFAULT && this.props.device.orientation.indexOf('PORTRAIT') >= 0) {
+      y = TOP_DEFAULT
+    } else if (y < 0 && this.props.device.orientation.indexOf('LANDSCAPE') >= 0) {
+      y = 0
+    } else {
+      const maxY = this.props.device.safeHeight - scaleSize(250)
+      if (y > maxY) {
+        y = maxY
+      }
+    }
+    if (x < 0) {
+      x = 0
+    } else {
+      const maxX = this.props.device.safeWidth - scaleSize(250)
+      if (x > maxX) {
+        x = maxX
+      }
+    }
+    return { x, y }
   }
 
   handleStateChange = async appState => {
@@ -479,6 +599,115 @@ export default class MapView extends React.Component {
       })
       GLOBAL.SimpleDialog.setVisible(true)
     }
+
+    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
+      (async function () {
+        //提供测量等界面添加按钮及提示语的回调方法 add jiakai
+        if (Platform.OS === 'ios') {
+          iOSEventEmi.addListener(
+            'com.supermap.RN.SMeasureAreaView.ADD',
+            this.onAdd,
+          )
+          iOSEventEmi.addListener(
+            'com.supermap.RN.SMeasureAreaView.CLOSE',
+            this.onshowLog,
+          )
+          iOSEventEmi.addListener(
+            'onCurrentHeightChanged',
+            this.onCurrentHeightChanged,
+          )
+        } else {
+          SMeasureAreaView.setAddListener({
+            callback: async result => {
+              if (result) {
+                // Toast.show("add******")
+                if (this.state.isfirst) {
+                  this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
+                } else {
+                  this.setState({ showADD: true })
+                }
+              } else {
+                this.setState({ showADD: false, showADDPoint: false })
+              }
+            },
+          })
+
+          SARMap.addOnHeightChangeListener({
+            onHeightChange: height => {
+              height = height.toFixed(2)
+              this.setState({
+                currentHeight: height+'m',
+              })
+            },
+          })
+        }
+
+        //没有动画回调的话提示语默认5秒后开启
+        if (!this.state.is_showLog) {
+          setTimeout(() => {
+            this.setState({ is_showLog: true })
+          }, 5000)
+        }
+
+      }.bind(this)())
+    }
+  }
+
+  /**添加按钮 */
+  onAdd = result => {
+    if (result.add) {
+      if (this.state.isfirst) {
+        this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
+      } else {
+        this.setState({ showADD: true })
+      }
+    } else {
+      this.setState({ showADD: false, showADDPoint: false })
+    }
+  }
+
+  /**提示语回调 */
+  onshowLog = result => {
+    if (result.close) {
+      this.setState({
+        dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
+      })
+    }
+
+    if (result.dark) {
+      this.setState({
+        dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
+      })
+    }
+
+    if (result.fast) {
+      this.setState({
+        dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
+      })
+    }
+
+    if (result.nofeature) {
+      if (this.state.dioLog != getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+        this.setState({
+          dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+        })
+    }
+
+    if (result.none) {
+      this.setState({ dioLog: '', showLog: false })
+    }
+  }
+
+  /**高度变化 */
+  onCurrentHeightChanged = params => {
+    this.setState({
+      currentHeight: params.currentHeight,
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -667,6 +896,11 @@ export default class MapView extends React.Component {
     }
     // this.props.setMapLegend(false)
 
+    // 防止意外退出地图界面，而没有关闭地图，导致再次进入时打开地图挂掉
+    if (this.props.map.currentMap.name) {
+      this.closeMap()
+    }
+
     // 移除多媒体采集监听
     SMediaCollector.removeListener()
     // 移除协作消息点击监听
@@ -688,6 +922,25 @@ export default class MapView extends React.Component {
 
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
     AppState.removeEventListener('change', this.handleStateChange)
+
+    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
+      //移除监听
+      DeviceEventEmitter.removeListener(
+        'onCurrentHeightChanged',
+        this.onCurrentHeightChanged,
+      )
+
+      if (Platform.OS === 'ios') {
+        iOSEventEmi.removeListener(
+          'com.supermap.RN.SMeasureAreaView.ADD',
+          this.onAdd,
+        )
+        iOSEventEmi.removeListener(
+          'com.supermap.RN.SMeasureAreaView.CLOSE',
+          this.onshowLog,
+        )
+      }
+    }
   }
 
   /** 添加语音识别监听 */
@@ -907,54 +1160,20 @@ export default class MapView extends React.Component {
     this.props.setTemplate() // 清空模板
   }
 
-  closeWorkspace = (cb = () => { }) => {
-    if (!this.map || !this.mapControl || !this.workspace) return
-    this.saveLatest(
-      async function () {
-        this.setLoading(true, '正在关闭', { bgColor: 'white' })
-        this.clearData()
-        this._removeGeometrySelectedListener()
-        this.setLoading(false)
-        cb && cb()
-      }.bind(this),
-    )
-  }
-
-  saveLatest = (cb = () => { }) => {
-    if (this.isExample) {
-      cb()
-      return
-    }
-    try {
-      this.mapControl &&
-        this.mapControl
-          .outputMap({ mapView: this.mapView })
-          .then(({ result, uri }) => {
-            if (result) {
-              this.props.setLatestMap(
-                {
-                  path: (this.DSParams && this.DSParams.server) || this.path,
-                  type: this.type,
-                  name: this.mapTitle,
-                  image: uri,
-                  DSParams: this.DSParams,
-                  labelDSParams: this.labelDSParams,
-                  layerIndex: this.layerIndex,
-                  mapTitle: this.mapTitle,
-                },
-                cb,
-              )
-            }
-          })
-    } catch (e) {
-      Toast.show('保存失败')
-    }
-  }
-
   /** 原生mapview加载完成回调 */
   _onGetInstance = async mapView => {
     this.mapView = mapView
     this._addMap()
+  }
+
+  _onLoad = async () => {
+    if (Platform.OS === 'ios') {
+      SMeasureAreaView.setMeasureMode('arCollect')
+    }else{
+      SARMap.showMeasureView(false)
+      SARMap.showTrackView(false)
+      SARMap.showPointCloud(false)
+    }
   }
 
   /**
@@ -1142,6 +1361,19 @@ export default class MapView extends React.Component {
   closeMapHandler = async baskFrom => {
     try {
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+      await this.closeMap()
+      this.setLoading(false)
+      NavigationService.goBack(baskFrom)
+
+      // GLOBAL.clickWait = false
+    } catch (e) {
+      GLOBAL.clickWait = false
+      this.setLoading(false)
+    }
+  }
+
+  closeMap = async () => {
+    try {
       await this.props.closeMap()
       await this._removeGeometrySelectedListener()
       await this.props.setCurrentAttribute({})
@@ -1154,19 +1386,14 @@ export default class MapView extends React.Component {
       await SMap.removeUserCallout()
       await SMap.clearUserTrack()
 
-      this.setLoading(false)
       if (GLOBAL.coworkMode) {
         CoworkInfo.setId('') // 退出任务清空任务ID
         GLOBAL.coworkMode = false
         GLOBAL.getFriend().setCurMod(undefined)
         // NavigationService.goBack('CoworkTabs')
       }
-      NavigationService.goBack(baskFrom)
-
-      // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false
-      this.setLoading(false)
     }
   }
 
@@ -1178,7 +1405,7 @@ export default class MapView extends React.Component {
 
         let result = true
         //使用for循环等待，在forEach里await没有用
-        for(let i = 0; i < this.props.selection.length; i++) {
+        for (let i = 0; i < this.props.selection.length; i++) {
           let item = this.props.selection[i]
           if (item.ids.length > 0) {
             result =
@@ -1251,13 +1478,13 @@ export default class MapView extends React.Component {
         }
 
         //处理导航时返回键
-        if(GLOBAL.NAVIGATIONSTARTHEAD?.state.show) {
+        if (GLOBAL.NAVIGATIONSTARTHEAD?.state.show) {
           GLOBAL.NAVIGATIONSTARTHEAD?.close()
           return true
         }
 
         //处理导航中返回键
-        if(this.isGuiding) {
+        if (this.isGuiding) {
           return true
         }
 
@@ -1284,6 +1511,15 @@ export default class MapView extends React.Component {
           }
           await this.closeMapHandler(params?.baskFrom)
           GLOBAL.clickWait = false
+          if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+            if (Platform.OS === 'android') {
+              SARMap.showMeasureView(false)
+              SARMap.showTrackView(false)
+              SARMap.showPointCloud(false)
+              SARMap.dispose()
+            }
+            SMeasureAreaView.dispose()
+          }
         })
       } else {
         try {
@@ -1295,6 +1531,15 @@ export default class MapView extends React.Component {
             })
           }
           await this.closeMapHandler(params?.baskFrom)
+          if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+            if (Platform.OS === 'android') {
+              SARMap.showMeasureView(false)
+              SARMap.showTrackView(false)
+              SARMap.showPointCloud(false)
+              SARMap.dispose()
+            }
+            SMeasureAreaView.dispose()
+          }
         } catch (e) {
           GLOBAL.clickWait = false
           this.setLoading(false)
@@ -1373,7 +1618,7 @@ export default class MapView extends React.Component {
             homePath +
             userPath +
             ConstPath.RelativeFilePath.Workspace[
-              GLOBAL.language === 'CN' ? 'CN' : 'EN'
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ]
           await this._openWorkspace({
             DSParams: { server: wsPath },
@@ -1582,7 +1827,7 @@ export default class MapView extends React.Component {
         friend.startSendLocation(true)
 
         let messages = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.
-          [this.props.currentTask.groupID]?.[this.props.currentTask.id]?.messages || []
+        [this.props.currentTask.groupID]?.[this.props.currentTask.id]?.messages || []
 
         // 把没有更新/追加/忽略的操作的标志添加到地图上
         for (let i = 0; i < messages.length; i++) {
@@ -1822,7 +2067,7 @@ export default class MapView extends React.Component {
         mapModules={this.props.mapModules}
         initIndex={0}
         type={this.type}
-        ARView={this.state.showAIDetect}
+        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect}
       />
     )
   }
@@ -1953,7 +2198,7 @@ export default class MapView extends React.Component {
         online={this.props.online}
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.mapModules}
-        ARView={this.state.showAIDetect}
+        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect}
       />
     )
   }
@@ -2233,8 +2478,189 @@ export default class MapView extends React.Component {
         getOverlay={() => GLOBAL.OverlayView}
         selectPointType={this.state.selectPointType}
         {...this.props}
+        measure={params => { this.measure(params) }}
       />
     )
+  }
+
+  measure = params => {
+    if (Platform.OS === 'android') {
+      SARMap.addMeasureStatusListeners({
+        infoListener: async result => {
+          this.onshowLog(result)
+        },
+      })
+    }else{
+      // iOSEventEmi.addListener(
+      //   'com.supermap.RN.SMeasureAreaView.CLOSE',
+      //   this.onshowLog,
+      // )
+    }
+    this.isMeasure = false
+    this.isDrawing = false
+    this.isCollect = false
+    this.showSave = false
+    this.isnew = true
+    this.canContinuousDraw = false
+    this.measureType = params.measureType
+    if (this.measureType) {
+      if (this.measureType === 'measureArea') {
+        SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE
+      } else if (this.measureType === 'measureLength') {
+        SMeasureAreaView.setMeasureMode('MEASURE_LINE')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_LENGTH
+      } else if (this.measureType === 'drawLine') {
+        SMeasureAreaView.setMeasureMode('DRAW_LINE')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
+      } else if (this.measureType === 'arDrawArea') {
+        SMeasureAreaView.setMeasureMode('DRAW_AREA')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
+      } else if (this.measureType === 'arDrawPoint') {
+        SMeasureAreaView.setMeasureMode('DRAW_POINT')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
+      } else if (this.measureType === 'arMeasureHeight') {
+        SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
+        this.setState({
+          showCurrentHeightView: true,
+        })
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
+      } else if (this.measureType === 'arMeasureCircle') {
+        SMeasureAreaView.setMeasureMode('MEASURE_AREA_CIRCLE')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE
+      } else if (this.measureType === 'arMeasureRectangle') {
+        SMeasureAreaView.setMeasureMode('MEASURE_AREA_RECTANGLE')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE
+      } else if (this.measureType === 'measureAngle') {
+        SMeasureAreaView.setMeasureMode('MEASURE_AREA_ANGLE')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_ANGLE
+      } else if (this.measureType === 'arMeasureCuboid') {
+        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CUBOID')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE
+      } else if (this.measureType === 'arMeasureCylinder') {
+        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CYLINDER')
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE
+      } else if (this.measureType === 'arCollect') {
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT
+      }else if (this.measureType === 'arDrawRectangle') {
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
+      }else if (this.measureType === 'arDrawCircular') {
+        this.title = getLanguage(
+          GLOBAL.language,
+        ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
+      }
+
+      if (this.measureType === 'arMeasureHeight' ||
+        this.measureType === 'measureLength' ||
+        this.measureType === 'measureArea' ||
+        this.measureType === 'measureAngle' ||
+        this.measureType === 'arMeasureCuboid' ||
+        this.measureType === 'arMeasureCylinder') {
+        this.isMeasure = true
+      }
+
+      if (
+        this.measureType === 'drawLine' ||
+        this.measureType === 'arDrawArea' ||
+        this.measureType === 'arDrawPoint' ||
+        this.measureType === 'arDrawRectangle' ||
+        this.measureType === 'arDrawCircular'
+      ) {
+        this.isDrawing = true
+
+        this.datasourceAlias = params.datasourceAlias || ''
+        this.datasetName = params.datasetName || ''
+        this.point = params.point
+      }
+
+      if(this.measureType === 'arCollect')
+      {
+        this.point = params.point
+        this.isCollect = true
+        this.isnew = false
+        if (Platform.OS === 'android') {
+          SARMap.showMeasureView(false)
+          SARMap.showTrackView(true)
+          SARMap.showPointCloud(true)
+        }else{
+          SMeasureAreaView.setMeasureMode('arCollect')
+        }
+      }else{
+        if (Platform.OS === 'android') {
+          SARMap.showMeasureView(true)
+          SARMap.showTrackView(false)
+          SARMap.showPointCloud(true)
+        }
+      }
+
+      if (
+        this.measureType === 'drawLine' ||
+        this.measureType === 'arDrawArea' ||
+        this.measureType === 'arDrawRectangle' ||
+        this.measureType === 'arDrawCircular'
+      ) {
+        this.showSave = true
+      }
+
+      if (
+        this.measureType === 'measureLength' ||
+        this.measureType === 'measureArea' ||
+        this.measureType === 'measureAngle'
+      ) {
+        this.canContinuousDraw = true
+      }
+
+      if (this.isDrawing) {
+        SMeasureAreaView.initMeasureCollector(
+          this.datasourceAlias,
+          this.datasetName,
+        )
+      }
+
+      if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
+      let datasourceAlias = this.props.currentLayer.datasourceAlias
+      let datasetName = this.props.currentLayer.datasetName
+      if (this.props.currentLayer.themeType !== 0 || (
+        this.props.currentLayer.type !== DatasetType.CAD &&
+        (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+        (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+        (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT) ||
+        (this.measureType === 'arDrawRectangle' && this.props.currentLayer.type !== DatasetType.REGION) ||
+        (this.measureType === 'arDrawCircular' && this.props.currentLayer.type !== DatasetType.REGION)
+      )) {
+        datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
+        datasetName = 'Default_Tagging'
+      }
+      SMeasureAreaView.setSavePath(datasourceAlias, datasetName)
+
+      this.setState({ showArMappingButton: true, showSave: this.showSave, isfirst: true, showGenera: true, isDrawing: this.isDrawing,isCollect:this.isCollect, isnew:this.isnew,canContinuousDraw: this.canContinuousDraw,measureType:this.measureType })
+    }
   }
 
   /**
@@ -2314,15 +2740,15 @@ export default class MapView extends React.Component {
           imageStyle={styles.headerBtn}
           onPress={() => {
             if (!this.state.canBeUndo) return
-            ; (async function () {
-              await SMap.undo()
-              let historyCount = await SMap.getMapHistoryCount()
-              let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-              this.setState({
-                canBeUndo: currentHistoryCount >= 0,
-                canBeRedo: currentHistoryCount < historyCount - 1,
-              })
-            }.bind(this)())
+              ; (async function () {
+                await SMap.undo()
+                let historyCount = await SMap.getMapHistoryCount()
+                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                this.setState({
+                  canBeUndo: currentHistoryCount >= 0,
+                  canBeRedo: currentHistoryCount < historyCount - 1,
+                })
+              }.bind(this)())
           }}
         />
         <MTBtn
@@ -2339,15 +2765,15 @@ export default class MapView extends React.Component {
           imageStyle={styles.headerBtn}
           onPress={() => {
             if (!this.state.canBeRedo) return
-            ; (async function () {
-              await SMap.redo()
-              let historyCount = await SMap.getMapHistoryCount()
-              let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-              this.setState({
-                canBeUndo: currentHistoryCount >= 0,
-                canBeRedo: currentHistoryCount < historyCount - 1,
-              })
-            }.bind(this)())
+              ; (async function () {
+                await SMap.redo()
+                let historyCount = await SMap.getMapHistoryCount()
+                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                this.setState({
+                  canBeUndo: currentHistoryCount >= 0,
+                  canBeRedo: currentHistoryCount < historyCount - 1,
+                })
+              }.bind(this)())
           }}
         />
         {/*<MTBtn*/}
@@ -2458,7 +2884,7 @@ export default class MapView extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.props.analyst.params || this.state.showAIDetect)
+    if (this.props.analyst.params || GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect)
       return null
     let itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
@@ -2471,11 +2897,11 @@ export default class MapView extends React.Component {
     let buttonInfos = GLOBAL.coworkMode && [
       MapHeaderButton.CoworkChat,
     ] || (currentMapModule && currentMapModule.headerButtons) || [
-      MapHeaderButton.Share,
-      MapHeaderButton.Search,
-      MapHeaderButton.Undo,
-      MapHeaderButton.Audio,
-    ]
+        MapHeaderButton.Share,
+        MapHeaderButton.Search,
+        MapHeaderButton.Undo,
+        MapHeaderButton.Audio,
+      ]
     let buttons = []
     if (this.isExample) {
       return (
@@ -2600,23 +3026,23 @@ export default class MapView extends React.Component {
                 />
                 {
                   info.newInfo &&
-                  <RedDot style={{position: 'absolute', top: 0, right: 0}} />
+                  <RedDot style={{ position: 'absolute', top: 0, right: 0 }} />
                 }
                 {buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
                   GLOBAL.Type === this.props.online.share[0].module &&
                   this.props.online.share[0].progress !== undefined && (
-                  <Bar
-                    style={{
-                      width: scaleSize(size), height: 2, borderWidth: 0,
-                      backgroundColor: 'black', top: scaleSize(4),
-                    }}
-                    progress={
-                      this.props.online.share[this.props.online.share.length - 1]
-                        .progress
-                    }
-                    width={scaleSize(60)}
-                  />
-                )}
+                    <Bar
+                      style={{
+                        width: scaleSize(size), height: 2, borderWidth: 0,
+                        backgroundColor: 'black', top: scaleSize(4),
+                      }}
+                      progress={
+                        this.props.online.share[this.props.online.share.length - 1]
+                          .progress
+                      }
+                      width={scaleSize(60)}
+                    />
+                  )}
               </View>
             )
         } else {
@@ -2700,6 +3126,18 @@ export default class MapView extends React.Component {
    * @param {boolean} showAIDetect 是否隐藏AR相机页面
    */
   switchAr = showAIDetect => {
+    if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+      if(this.state.isAR){
+        this.setState({isAR:false})
+        Orientation.unlockAllOrientations()
+        return false
+      }else{
+        this.setState({isAR:true})
+        Orientation.lockToPortrait()
+        return true
+      }  
+    }
+
     let _showAIDetect = this.state.showAIDetect
     if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
       if (showAIDetect !== _showAIDetect) {
@@ -2718,6 +3156,12 @@ export default class MapView extends React.Component {
     _showAIDetect
       ? Orientation.lockToPortrait()
       : Orientation.unlockAllOrientations()
+
+    // 是否进行过多媒体采集 防止AI相机卡死 zcj
+    if(Platform.OS === 'android' && ToolbarModule.getData().hasCaptureImage){
+      ToolbarModule.addData({ hasCaptureImage: false })
+      SAIDetectView.onResume()
+    }
     return _showAIDetect
   }
 
@@ -2733,10 +3177,11 @@ export default class MapView extends React.Component {
 
   /** AR和二维地图切换图标 */
   _renderArModeIcon = () => {
+    let show = GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect
     let right
     if (
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
-      !this.state.showAIDetect
+      !show
     ) {
       right = { right: scaleSize(100) }
     } else {
@@ -2767,7 +3212,7 @@ export default class MapView extends React.Component {
             //     getLanguage(this.props.language).Prompt.LOADING,
             //   )
             // }, 3000)
-            if (!this.state.showAIDetect) {
+            if (!show) {
               this.setState({
                 bGoneAIDetect: false,
               })
@@ -3127,13 +3572,13 @@ export default class MapView extends React.Component {
         <TouchableOpacity
           key={'search'}
           onPress={async () => {
-            if (this.state.selectPointType === 'selectPoint'  || this.state.selectPointType === 'DatumPointCalibration') {
+            if (this.state.selectPointType === 'selectPoint' || this.state.selectPointType === 'DatumPointCalibration') {
               GLOBAL.MAPSELECTPOINT.setVisible(false)
               // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
               // 如果是新校准界面 则返回原界面
-              if(this.state.selectPointType === 'selectPoint'){
+              if (this.state.selectPointType === 'selectPoint') {
                 NavigationService.navigate('EnterDatumPoint', {})
-              }else{
+              } else {
                 NavigationService.navigate(this.props.navigation.state.params.backPage,
                   this.props.navigation.state.params.routeData)
               }
@@ -3223,7 +3668,7 @@ export default class MapView extends React.Component {
         >
           <Image
             resizeMode={'contain'}
-            source={require('../../../../assets/header/icon_search.png')}
+            source={getThemeAssets().nav.icon_search}
             style={styles.search}
           />
         </TouchableOpacity>
@@ -3248,7 +3693,7 @@ export default class MapView extends React.Component {
           backAction: async () => {
             if (this.state.selectPointType === 'selectPoint' || this.state.selectPointType === 'DatumPointCalibration') {
               let backPage = 'EnterDatumPoint'
-              if(this.state.selectPointType === 'DatumPointCalibration'){
+              if (this.state.selectPointType === 'DatumPointCalibration') {
                 backPage = this.props.navigation.state.params.backPage
               }
               GLOBAL.mapController.move({
@@ -3461,7 +3906,7 @@ export default class MapView extends React.Component {
 
   //AR地图引导界面 add jiakai
   renderMapArGuideView = () => {
-    return(
+    return (
       <GuideViewMapArModel
         language={this.props.language}
       />
@@ -3470,7 +3915,7 @@ export default class MapView extends React.Component {
 
   //AR测图引导界面 add jiakai
   renderMapArMappingGuideView = () => {
-    return(
+    return (
       <GuideViewMapArMappingModel
         language={this.props.language}
       />
@@ -3479,7 +3924,7 @@ export default class MapView extends React.Component {
 
   //数据处理引导界面 add jiakai
   renderMapAnalystGuideView = () => {
-    return(
+    return (
       <GuideViewMapAnalystModel
         language={this.props.language}
         device={this.props.device}
@@ -3489,7 +3934,7 @@ export default class MapView extends React.Component {
 
   //专题图引导界面 add jiakai
   renderMapThemeGuideView = () => {
-    return(
+    return (
       <GuideViewMapThemeModel
         language={this.props.language}
         device={this.props.device}
@@ -3499,7 +3944,7 @@ export default class MapView extends React.Component {
 
   //外业采集引导界面 add jiakai
   renderMapCollectGuideView = () => {
-    return(
+    return (
       <GuideViewMapCollectModel
         language={this.props.language}
         device={this.props.device}
@@ -3509,7 +3954,7 @@ export default class MapView extends React.Component {
 
   //地图浏览引导界面 add jiakai
   renderMapEditGuideView = () => {
-    return(
+    return (
       <GuideViewMapEditModel
         language={this.props.language}
         device={this.props.device}
@@ -3517,6 +3962,422 @@ export default class MapView extends React.Component {
     )
   }
 
+  renderHeader = () => {
+    return (
+      <Header
+        ref={ref => (this.containerHeader = ref)}
+        backAction={this.ARMappingHeaderBack}
+        title={this.title}
+        type={'fix'}
+        headerRight={this.renderARHeaderRight()}
+      />
+    )
+  }
+
+  renderARHeaderRight = () => {
+    let filters
+    if (this.measureType === 'drawLine') {
+      filters = [DatasetType.LINE]
+    } else if (this.measureType === 'arDrawArea') {
+      filters = [DatasetType.REGION]
+    } else if (this.measureType === 'arDrawPoint') {
+      filters = [DatasetType.POINT]
+    }
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        {this.isDrawing && (
+          <TouchableOpacity
+            onPress={() => NavigationService.navigate('ChooseLayer', {
+              filters: filters,
+            })}
+            style={{
+              width: scaleSize(60),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent'
+            }}
+          >
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.icon_classify_settings}
+              source={getThemeAssets().toolbar.icon_toolbar_option}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>)}
+        {this.isDrawing && (
+          <TouchableOpacity
+            onPress={() => {
+              this.setting()
+            }}
+            style={{
+              width: scaleSize(60),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent'
+            }}
+          >
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.ai_setting}
+              source={getThemeAssets().toolbar.icon_toolbar_setting}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        )}
+        {this.isCollect && (
+          <TouchableOpacity
+            onPress={() => {
+              this.collectsetting()
+            }}
+            style={{
+              width: scaleSize(60),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent'
+            }}
+          >
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.ai_setting}
+              source={getThemeAssets().toolbar.icon_toolbar_setting}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        )}
+        {this.isMeasure && (
+          <TouchableOpacity
+            onPress={() => {
+              this.Measuresetting()
+            }}
+            style={{
+              width: scaleSize(60),
+              height: scaleSize(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent'
+            }}
+          >
+            <Image
+              resizeMode={'contain'}
+              // source={getThemeAssets().ar.toolbar.ai_setting}
+              source={getThemeAssets().toolbar.icon_toolbar_setting}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+    )
+  }
+
+  /** 设置 */
+  setting = async () => {
+    let isSnap = await SMeasureAreaView.getIsSnapRange()
+    let tole = await SMeasureAreaView.getSnapTolerance()
+    let showGenera = this.state.showGenera
+    NavigationService.navigate('CollectSceneFormSet', {
+      point: this.point,
+      fixedPositions: point => {
+        NavigationService.goBack()
+        // SMeasureAreaView.fixedPosition(false, point.x, point.y, 0)
+      },
+      showType: 'newDatumPoint', // 新的位置校准界面
+      reshowDatumPoint: () => {
+        NavigationService.goBack()
+        this.setState({
+          showDatumPoint: true,
+        })
+      },
+      isSnap: isSnap,
+      tole: tole,
+      showGenera: showGenera,
+      autoCatch: value => {
+        SMeasureAreaView.setIsSnapRange(value)
+      },
+      setTolerance: value => {
+        if (value > 100) {
+          value = 100
+        }
+        if (value < 0) {
+          value = 0
+        }
+        SMeasureAreaView.setSnapTolerance(value)
+      },
+      showGeneracb: value => {
+        this.setState({ showGenera: value })
+      },
+    })
+  }
+
+  collectsetting = () => {
+    NavigationService.navigate('CollectSceneFormSet', {
+      showType: 'newDatumPoint', // 新的位置校准界面
+      point: this.datumPoint,
+      fixedPositions: point => {
+        NavigationService.goBack()
+        // SCollectSceneFormView.fixedPosition(false, point.x, point.y, 0)
+      },
+      reshowDatumPoint: ()=>{
+        NavigationService.goBack()
+        this.setState({
+          showDatumPoint: true,
+        })
+      },
+      collectScene: true,
+    })
+  }
+
+  /** 量算的设置（界面传入数据有区别）add jiakai */
+  Measuresetting = async () => {
+    let isSnap = await SMeasureAreaView.getIsSnapRange()
+    let tole = await SMeasureAreaView.getSnapTolerance()
+    NavigationService.navigate('CollectSceneFormSet', {
+      isMeasure: true,
+      isSnap: isSnap,
+      tole: tole,
+      autoCatch: value => {
+        SMeasureAreaView.setIsSnapRange(value)
+      },
+      setTolerance: value => {
+        NavigationService.goBack()
+        if (value > 100) {
+          value = 100
+        }
+        if (value < 0) {
+          value = 0
+        }
+        SMeasureAreaView.setSnapTolerance(value)
+      },
+    })
+  }
+
+  _startScan = () => {
+    return SMeasureAreaView.startScan()
+  }
+
+  _onDatumPointClose = point => {
+    SMeasureAreaView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
+    if (Platform.OS === 'android') {
+      SCollectSceneFormView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
+    }
+    this.setState({
+      showDatumPoint: false,
+    })
+  }
+
+  ARMappingHeaderBack = () => {
+    SMeasureAreaView.cancelCurrent()
+    SARMap.clearMeasure()
+    if (Platform.OS === 'ios') {
+      SMeasureAreaView.setMeasureMode('arCollect')
+      // iOSEventEmi.removeListener(
+      //   'com.supermap.RN.SMeasureAreaView.CLOSE',
+      //   this.onshowLog,
+      // )
+    }else{
+      SARMap.removeOnHeightChangeListeners()
+      SARMap.removeMeasureStatusListeners()
+      SARMap.showMeasureView(false)
+      SARMap.showTrackView(false)
+      SARMap.showPointCloud(false)
+      SARMap.stopTracking()
+    }
+    this.setState({ showArMappingButton: false ,isTrack:false,showCurrentHeightView:false})
+    this.showFullMap(false)
+  }
+
+  renderBottomBtns = () => {
+    return (
+      <ArMappingButton
+        isCollect={this.state.isCollect}
+        showSave={this.state.showSave}
+        isDrawing={this.state.isDrawing}
+        measureType={this.state.measureType}
+        canContinuousDraw={this.state.canContinuousDraw}
+        showSwitch={show => { this.setState({ showSwitch: show }) }}
+        setCurrentHeight={height => { this.setState({ currentHeight:height })}}
+        isnew={() => { this.setState({isnew:true})} }
+        isTrack={ is => { this.setState({isTrack:is}) } }
+      />
+    )
+  }
+
+  renderCurrentHeightChangeView() {
+    return (
+      <View style={styles.currentHeightChangeView}>
+        <Text style={styles.titleCurrentHeight}>
+          {this.state.currentHeight}
+        </Text>
+      </View>
+    )
+  }
+
+  renderADDPoint = () => {
+    let text
+    GLOBAL.language === 'CN' ? text = '添加点' : text = 'Add Point'
+    let image = getThemeAssets().ar.icon_ar_measure_add_toast
+    // GLOBAL.language === 'CN' ? image = getThemeAssets().ar.icon_ar_measure_add_toast : image = getThemeAssets().ar.icon_ar_measure_add_toast_en
+    return (
+      <View style={styles.addcaptureView}>
+        <ImageButton
+          containerStyle={styles.addcapture}
+          iconStyle={styles.addiconView}
+          activeOpacity={0.3}
+          icon={image}
+        />
+        <Text style={styles.addText}>
+          {text}
+        </Text>
+      </View>
+    )
+  }
+
+  renderCenterBtn = () => {
+    return (
+      <ImageButton
+        containerStyle={styles.capture}
+        iconStyle={styles.iconView}
+        activeOpacity={0.5}
+        icon={getThemeAssets().ar.icon_ar_measure_add}
+        onPress={() => {
+          this.addNewRecord()
+        }}
+      />
+    )
+  }
+
+  /** 添加 **/
+  addNewRecord = async () => {
+    if(this.state.isCollect){
+      if (Platform.OS === 'ios') {
+        await SMeasureAreaView.addNewRecord()
+      }else{
+        SARMap.addTrackPoint()
+      }
+      this.setState({ showADDPoint: false, isfirst: false })
+    }else{
+      await SMeasureAreaView.addNewRecord()
+      this.setState({ showADDPoint: false, isfirst: false })
+    }
+  }
+
+  renderDioLog = () => {
+    let img
+    switch (this.state.dioLog) {
+      case getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:
+        img = getThemeAssets().ar.icon_tips_aim
+        break
+      case getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_FAST:
+        img = getThemeAssets().ar.icon_tips_slow_down
+        break
+      case getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK:
+        img = getThemeAssets().ar.icon_tips_lighting
+        break
+      case getLanguage(GLOBAL.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:
+        img = getThemeAssets().ar.icon_tips_approach
+        break
+      default:
+        img = getThemeAssets().ar.icon_tips_move_away
+        break
+    }
+    return (
+      <View style={[{
+        position: 'absolute',
+        top: scaleSize(300),
+        borderRadius: 15,
+        // opacity: 0.5,
+        backgroundColor: '#464646',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        paddingLeft: scaleSize(10),
+        paddingRight: scaleSize(10),
+        zIndex: zIndexLevel.SYSTEM,
+      }]}>
+        <Image
+          source={img}
+          style={styles.dioimg}
+        />
+        <Text style={styles.dioLog}>
+          {this.state.dioLog}
+        </Text>
+      </View>)
+  }
+
+  renderGeneralView() {
+    return (
+      <View
+        ref={ref => this.moveView = ref}
+        style={{
+          position: 'absolute',
+          top: scaleSize(400),
+          width: scaleSize(250),
+          height: scaleSize(250),
+          borderRadius: scaleSize(4),
+          backgroundColor: 'white',
+          ...this._moveViewStyles.style,
+        }}>
+        <View
+          style={{
+            width: '100%',
+            height: scaleSize(30),
+            backgroundColor: 'transparent',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+          }}
+          {...this._panResponder.panHandlers}
+        >
+          <View
+            style={{
+              height: scaleSize(8),
+              width: scaleSize(60),
+              borderRadius: scaleSize(4),
+              backgroundColor: color.separateColorGray4,
+            }}
+          />
+        </View>
+        <SMMeasureARGeneraView />
+      </View>
+    )
+  }
+
+  //ar测图界面
+  _renderMeasureAreaView = () =>{
+    return(
+      <>
+        {!this.isExample &&
+          GLOBAL.Type === ChunkType.MAP_AR_MAPPING &&
+          (
+            <SMARMapView
+              style={
+                screen.isIphoneX() && {
+                  paddingBottom: screen.getIphonePaddingBottom(),
+                }
+              }
+              customStyle={this.state.isAR ? null : styles.hidden}
+              ref={ref => (this.SMMeasureAreaView = ref)}
+              onLoad={this._onLoad}
+            />
+          )
+        }
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderHeader()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderBottomBtns()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showCurrentHeightView && this.renderCurrentHeightChangeView()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.showADDPoint && this.state.isnew && !this.state.isTrack && this.renderADDPoint()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.showADD && this.state.isnew && !this.state.isTrack && this.renderCenterBtn()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.is_showLog && this.state.showLog && this.renderDioLog()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showGenera && (this.isDrawing || this.isCollect) && this.renderGeneralView()}
+      </>
+    )
+  }
 
 
   renderContainer = () => {
@@ -3558,14 +4419,23 @@ export default class MapView extends React.Component {
           this.renderToolBar()
         }
         bottomProps={{ type: 'fix' }}
+        headStyle={this.isExample && { width: '100%' }}
       >
         {this.state.showMap && (
-          <SMMapView
-            ref={ref => (GLOBAL.mapView = ref)}
-            style={styles.map}
-            onGetInstance={this._onGetInstance}
-          />
+          <View style={[
+            StyleSheet.absoluteFill,
+            Platform.OS === 'android' && GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.isAR && { left: 9999 },
+          ]}>
+            <SMMapView
+              ref={ref => (GLOBAL.mapView = ref)}
+              style={styles.map}
+              onGetInstance={this._onGetInstance}
+            />
+          </View>
         )}
+
+        {this._renderMeasureAreaView()}
+
         {GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
@@ -3585,25 +4455,27 @@ export default class MapView extends React.Component {
           GLOBAL.isLicenseValid &&
           GLOBAL.Type &&
           GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
-          !this.state.bGoneAIDetect && (
-          <SMAIDetectView
-            style={
-              screen.isIphoneX() && {
-                paddingBottom: screen.getIphonePaddingBottom(),
+          !this.state.bGoneAIDetect &&
+          GLOBAL.Type !== ChunkType.MAP_AR_MAPPING &&
+          (
+            <SMAIDetectView
+              style={
+                screen.isIphoneX() && {
+                  paddingBottom: screen.getIphonePaddingBottom(),
+                }
               }
-            }
-            customStyle={this.state.showAIDetect ? null : styles.hidden}
-            language={this.props.language}
-            // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
-            onArObjectClick={this._onArObjectClick}
-          />
-        )}
+              customStyle={this.state.showAIDetect ? null : styles.hidden}
+              language={this.props.language}
+              // isDetect={GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS}
+              onArObjectClick={this._onArObjectClick}
+            />
+          )}
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
           orientation={this.props.device.orientation}
         />
-        {!this.state.showAIDetect && this.renderMapController()}
+        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect) && this.renderMapController()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}
@@ -3648,7 +4520,7 @@ export default class MapView extends React.Component {
           this._renderArModeIcon()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}
         {/*{!this.isExample && this.renderMapNavMenu()}*/}
-        {!this.state.showAIDetect && this.state.showScaleView && (
+        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect) && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}
             device={this.props.device}
@@ -3749,6 +4621,7 @@ export default class MapView extends React.Component {
   }
 
   render() {
+    const { showDatumPoint } = this.state
     return (
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
@@ -3758,9 +4631,14 @@ export default class MapView extends React.Component {
         {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR)&&this.props.mapArGuide&&this.renderMapArGuideView()} */}
         {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_AR_MAPPING)&&this.props.mapArMappingGuide && this.renderMapArMappingGuideView()} */}
         {/* {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_ANALYST)&&this.props.mapAnalystGuide && this.renderMapAnalystGuideView()} */}
-        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_THEME)&&this.props.themeGuide && this.renderMapThemeGuideView()}
-        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_COLLECTION)&&this.props.collectGuide && this.renderMapCollectGuideView()}
-        {!this.props.currentGroup.id&&(GLOBAL.Type === ChunkType.MAP_EDIT)&&this.props.mapEditGuide && this.renderMapEditGuideView()}
+        {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_THEME) && this.props.themeGuide && this.renderMapThemeGuideView()}
+        {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_COLLECTION) && this.props.collectGuide && this.renderMapCollectGuideView()}
+        {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_EDIT) && this.props.mapEditGuide && this.renderMapEditGuideView()}
+        {showDatumPoint && <DatumPointCalibration routeName="MapView"
+          routeData={{
+            measureType: this.measureType,
+          }}
+          startScan={this._startScan} onClose={this._onDatumPointClose} />}
       </View>
     )
   }

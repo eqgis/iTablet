@@ -97,7 +97,7 @@ export default class TouchProgress extends Component {
     if (this.props.device.orientation.indexOf('LANDSCAPE') < 0) {
       height -= height.TOOLBAR_BUTTONS
     }
-    return '100%'
+    return height
   }
 
   _updateNativeStyles = () => {
@@ -366,12 +366,12 @@ export default class TouchProgress extends Component {
         style={[
           // styles.box,
           this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? styles.boxL : styles.boxP,
-          { flex: 1, width: this.getWidthByOrientation(), height: this.getHeightByOrientation() },
+          { flex: 1, width: this.getWidthByOrientation(), height: this.getHeightByOrientation()},
         ]}
         behavior={Platform.OS === 'ios' && 'position'}
       >
         <View
-          style={styles.panView}
+          style={[styles.panView, { flex: 1, width: this.getWidthByOrientation(), height: this.getHeightByOrientation()}]}
           {...this._panResponder.panHandlers}
         >
           <View style={[styles.containerRadius, styles.containerShadow]}>

@@ -15,7 +15,7 @@ const Find: typeof CN.Find = {
   ONLINE_DATASOURCE: 'Source de données',
   ONLINE_MAP_RESOURCE: 'Carte de Ressources',
   ONLINE_COLORSCHEME: 'Schéma de couleurs',
-  ONLINE_SYMBOL: 'symbole',
+  ONLINE_SYMBOL: 'symboles',
 
   SORT_BY_NAME: 'Trier par nom',
   SORT_BY_TIME: 'Trier par temps',
@@ -25,7 +25,7 @@ const Find: typeof CN.Find = {
   NO_DATA: 'Données non trouvées',
   NETWORK_ERROR: 'Erreur réseau, veuillez réessayer plus tard',
   NO_MORE_DATA: 'Pas de données trouvées',
-  DOWNLOADED: 'Téléchargement réussi. Vous pouvez importer ces données dans Importer',
+  DOWNLOADED: 'Téléchargement réussi. Vous pouvez importer ces données à partir de Importer',
 
   LABORATORY: 'Laboratoire',
   ONLINE_COWORK: 'Coworking en ligne',
@@ -51,7 +51,7 @@ const Find: typeof CN.Find = {
   LAB_POSE_ESTIMATION_INFO: 'Position：Analyse RA-Analyse RA-Estimation de la pose\nEstimation de la pose，Vous pouvez parcourir la carte avec des gestes pour effectuer un zoom, un panoramique, etc..',
   LAB_FORM_COLLECT_INFO: 'Position：Cartographie RA-Cartographie RA-Collecte de Haute-Précision\nCollecte de Haute-Précision，support l\'arpentage intérieur des points, ligne et région, panoramique etc..',
   BETA_TIPS: 'Conseil: il ne s\'agit que d\'une fonctionnalité bêta expérimentale.',
-  LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',
+  LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，Vous pouvez les utiliser pour publier des modèles 3D de scènes.',
   LAB_ONLINE_COWORK_INFO: "Position：RA：Trouver un coworking en ligne\nCowork en ligne，Vous pouvez travailler avec l'équipe sur la carte.",
 }
 

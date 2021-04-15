@@ -6,6 +6,8 @@ const icon_nav_undo = require('./icon_nav_undo.png')
 const icon_nav_voice = require('./icon_nav_voice.png')
 const icon_nav_import = require('./import_template.png')
 const icon_nav_export = require('./export_template.png')
+
+const icon_search = require('./icon_search.png')
 export default {
   icon_back,
   icon_nav_close,
@@ -15,4 +17,6 @@ export default {
   icon_nav_voice,
   icon_nav_import,
   icon_nav_export,
+
+  icon_search,
 }

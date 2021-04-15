@@ -38,6 +38,7 @@ export default class ToolBar extends React.Component {
     navigation: Object,
     data: Array,
     existFullMap: () => {},
+    measureType:() => {},
     symbol: Object,
     user: Object,
     map: Object,
@@ -294,6 +295,10 @@ export default class ToolBar extends React.Component {
     }
   }
 
+  measure = params => {
+    this.props.measure && this.props.measure(params)
+  }
+
   /**
    * 设置是否显示
    * isShow: 是否显示
@@ -320,6 +325,9 @@ export default class ToolBar extends React.Component {
    * }
    **/
   setVisible = (isShow, type = '', params = {}) => {
+    if (params.measureType){
+      this.measure(params)
+    }
     if (params.touchType) {
       GLOBAL.TouchType = params.touchType
     } else {
@@ -877,7 +885,7 @@ export default class ToolBar extends React.Component {
               !(this.state.isTouchProgress && this.state.isFullScreen) ||
               this.props.device.orientation.indexOf('LANDSCAPE') >= 0
             ) &&
-            [styles.containerRadius, styles.containerShadow]
+            !this.state.customView && [styles.containerRadius, styles.containerShadow]
           }
           pointerEvents={'box-none'}
         >
@@ -886,8 +894,8 @@ export default class ToolBar extends React.Component {
               this.props.device.orientation.indexOf('LANDSCAPE') === 0
                 ? styles.containersLandscape
                 : styles.containers,
-              showContainerRadius && styles.containerRadius,
-              styles.hidden,
+              !this.state.customView && showContainerRadius && styles.containerRadius,
+              !this.state.customView && styles.hidden,
             ]}
             pointerEvents={'box-none'}
           >

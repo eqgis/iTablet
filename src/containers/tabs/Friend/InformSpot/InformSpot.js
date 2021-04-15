@@ -36,9 +36,13 @@ export default class InformSpot extends Component {
       for (let i = 0, key = ''; i < keys.length; i++) {
         key = keys[i]
         let isFriend = FriendListFileHandle.findFromFriendList(key)
+        let isGroup = false
+        if (!isFriend) {
+          isGroup = FriendListFileHandle.findFromGroupList(key)
+        }
         if (
           key.indexOf('Group_Task_') === 0 ||
-          !isFriend && key.indexOf('Group_') === -1 && key.toString() !== '1'
+          !isFriend && !isGroup && key.toString() !== '1'
         ) continue
         bInform = currentUser[key].unReadMsg
         if (bInform) break

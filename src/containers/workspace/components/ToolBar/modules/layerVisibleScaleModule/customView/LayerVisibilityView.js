@@ -89,7 +89,7 @@ export default class LayerVisibilityView extends Component {
 const styles = StyleSheet.create({
   textContainer: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? scaleSize(80) : scaleSize(60),
+    top: Platform.OS === 'ios' ? (screen.isIphoneX()? scaleSize(150):scaleSize(80)) : scaleSize(60),
     maxWidth: scaleSize(320),
     paddingHorizontal: scaleSize(10),
     height: scaleSize(80),

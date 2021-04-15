@@ -43,16 +43,16 @@ const Profile: typeof CN.Profile = {
   SELECT_DATASET:'Cocher pour ajouter un ensemble de données',
   ADD_SELECT_DATASET:'Ajouter un ensemble de données',
   MOVE_BROWSING:'Déplacer vers la gauche et vers la droite "pour parcourir les informations complètes',
-  ADD_THEME_DATA:'1.Add Theme Data',//need to translate
-  CHOOSE_THEME_TYPE:'2.Choose Theme Type',//need to translate
-  CHANGE_THEME_STYLE:'3.Change Theme Style',//need to translate
-  START_COLLECT:'1.New collection map based on template',//need to translate
-  CHOOSE_COLLECT:'2.Select symbols for data acquisition',//need to translate
-  EDIT_COLLECT:'3.Edit the collected data',//need to translate
-  MAP_BROWSE:'Click to open the map',//need to translate
-  MAP_TAGGINGL:'Click to select the marking method to mark',//need to translate
-  SCENE_BROWSE:'Click to open the scene',//need to translate
-  SCENE_FLY:'Click Set flight route to automatically browse the scene from different angles',//need to translate
+  ADD_THEME_DATA:'1.Ajouter des données de thème',
+  CHOOSE_THEME_TYPE:'2.Choisissez le type de thème',
+  CHANGE_THEME_STYLE:'3.Changer le style du thème',
+  START_COLLECT:'1.Nouvelle collection de cartes  basée sur un modèle',
+  CHOOSE_COLLECT:"2.Sélectionnez des symboles pour l'acquisition de données",
+  EDIT_COLLECT:'3.Modifier les données collectées',
+  MAP_BROWSE:'Cliquez pour ouvrir la carte',
+  MAP_TAGGINGL:'Cliquez pour sélectionner la méthode de marquage à utiliser',
+  SCENE_BROWSE:'Cliquez pour ouvrir la scène',
+  SCENE_FLY:"Cliquez sur Définir l'itinéraire de vol et parcourir automatiquement la scène sous différents angles",
 
   // 我的——登录
   LOGIN: 'connexion',
@@ -239,7 +239,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_DEVICE: 'Dispositif de localisation',
   SETTING_LOCATION_LOCAL: 'Cet appareil',
   SETTING_CLEAR_CACHE: 'Vider le cache',
-  SETTING_CLEAR_CACHE_SUCCESS:'Clear Success',//need to translate
+  SETTING_CLEAR_CACHE_SUCCESS:'Suppression réussie',
 
   // 许可
   LICENSE: 'License',
@@ -376,18 +376,18 @@ const Profile: typeof CN.Profile = {
   Y_COORDINATE: 'Coordonnée Y',
   MAP_AR_DATUM_AUTO_CATCH: 'Capture automatique',
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolérance',
-  MAP_AR_DRAW_WINDOW: 'Draw Window',//need to translate
+  MAP_AR_DRAW_WINDOW: 'Dessiner une fenêtre',
 
-  MAR_AR_DATUM_PICTURE_LOCATION: 'QR location', // need to be translated
-  MAR_AR_POSITION_CORRECT: 'Position calibration', // need to be translated
-  MAP_AR_TOWARDS_NORTH: 'The camera on the back of the phone faces north', // need to be translated
-  MAP_AR_SCAN_TIP: 'Make sure that the QR code just fills the scan box', // need to be translated
-  MAP_AR_SCAN_IT: 'Scan', // need to be translated
-  MAP_AR_DATUM_HEIGHT: 'Height', // need to be translated
-  MAP_AR_DATUM_DIRECTION: 'Direction', // need to be translated
-  MAR_AR_DATUM_NORTH: 'North', // need to be translated
-  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR location succeed', // need to be translated
-  MAR_AR_QR_INVALID: 'QR code information not recognized', // need to be translated
+  MAR_AR_DATUM_PICTURE_LOCATION: 'Emplacement QR',
+  MAR_AR_POSITION_CORRECT: 'Calibrage de la position',
+  MAP_AR_TOWARDS_NORTH: "La caméra à l'arrière du téléphone fait face au nord",
+  MAP_AR_SCAN_TIP: 'Assurez-vous que le code QR remplit exactement le cadre de numérisation',
+  MAP_AR_SCAN_IT: 'Numériser',
+  MAP_AR_DATUM_HEIGHT: 'Hauteur',
+  MAP_AR_DATUM_DIRECTION: 'Direction',
+  MAR_AR_DATUM_NORTH: 'Nord',
+  MAR_AR_PICTURE_LOCATION_SUCCEED: 'Emplacement QR réussi',
+  MAR_AR_QR_INVALID: 'Informations sur le code QR non reconnues',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Renommer',

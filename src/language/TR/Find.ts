@@ -47,12 +47,12 @@ const Find: typeof CN.Find = {
   LABORATORY_INFO: 'Deneysel İşlevler',
 
   // 实验室
-  LAB_GESTURE_BONE_INFO: 'Position：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，Harita yakınlaştırma, kaydırma ve benzeri işlemleri gerçekleştirmek için haritaya göz atabilirsiniz.',
-  LAB_POSE_ESTIMATION_INFO: 'Position：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，Harita yakınlaştırma, kaydırma ve benzeri işlemleri gerçekleştirmek için haritaya göz atabilirsiniz.',
-  LAB_FORM_COLLECT_INFO: 'Position：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，nokta, çizgi ve poligonun iç mekan araştırmasını, kaydırma vb. destekler.',
+  LAB_GESTURE_BONE_INFO: 'Pozisyon：AR Analyze-AR Analyze-Gesture Bone\nGesture Bone，Harita yakınlaştırma, kaydırma ve benzeri işlemleri gerçekleştirmek için haritaya göz atabilirsiniz.',
+  LAB_POSE_ESTIMATION_INFO: 'Pozisyon：AR Analyze-AR Analyze-Pose Estimation\nPose Estimation，Harita yakınlaştırma, kaydırma ve benzeri işlemleri gerçekleştirmek için haritaya göz atabilirsiniz.',
+  LAB_FORM_COLLECT_INFO: 'Pozisyon：AR Mapping-AR Mapping-High-Precision Collect\nHigh-Precision Collect，nokta, çizgi ve poligonun iç mekan araştırmasını, kaydırma vb. destekler.',
   BETA_TIPS: 'İpuçları: Bu yalnızca deneysel bir beta özelliktir.',
-  LAB_FORM_ARPIPE_INFO: 'Position：AR Mapping-ARTools-ARPipe\nARPipe，You can use it to release 3D models of scenes.',// Need to be translated
-  LAB_ONLINE_COWORK_INFO: 'Position：AR：Find-Online Cowork\nOnline Cowork，Ekibinizle harita üzerinde çalışabilirsiniz.',
+  LAB_FORM_ARPIPE_INFO: 'Pozisyon：AR Mapping-ARTools-ARPipe\nARPipe，3D sahne modellerini yayınlamak için kullanabilirsiniz.',
+  LAB_ONLINE_COWORK_INFO: 'Pozisyon：AR：Find-Online Cowork\nOnline Cowork，Ekibinizle harita üzerinde çalışabilirsiniz.',
 }
 
 export { Find }

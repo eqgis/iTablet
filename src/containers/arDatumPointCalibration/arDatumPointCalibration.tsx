@@ -163,11 +163,11 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       this.scanTimes = 0
       this._stopAnim()
       Toast.show(getLanguage(GLOBAL.language).Profile.MAR_AR_PICTURE_LOCATION_SUCCEED)
-    }else if(this.scanTimes < 10){
+    }else if(this.scanTimes < 100){
       this.scanTimes++
       setTimeout(()=>{
         this._startScan()
-      },200)
+      },100)
     }else{
       this._stopAnim()
       this.setState({
@@ -235,63 +235,74 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     this.setState({
       activeBtn: 1,
     })
-    if (this.state.type === 'ARNAVIGATION_INDOOR') {
-      //暂存点，返回地图选点时使用
+    if(this.props.routeName === "MapView"){
+      NavigationService.navigate('SelectLocation',{
+        cb: () => {
+          this.setState({
+            longitude: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.x,
+            latitude: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.y,
+          })
+        }})
       GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
-
-      GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-      GLOBAL.MAPSELECTPOINT.setVisible(true)
-
-      NavigationService.navigate('MapView', {selectPointType: 'SELECTPOINTFORARNAVIGATION_INDOOR'})
-      SMap.setAction(Action.PAN)
-    } else {
-      //暂存点，返回地图选点时使用
-      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
-
-      GLOBAL.ToolBar.setVisible(false)
-
-      GLOBAL.MapXmlStr = await SMap.mapToXml()
-
-      GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-      GLOBAL.MAPSELECTPOINT.setVisible(true)
-
-      //导航选点 全屏时保留mapController
-      GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
-
-      // let map = await SMap.getCurrentPosition()
-      // let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
-      // wsData.layerIndex = 3
-      let licenseStatus = await SMap.getEnvironmentStatus()
-      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
-      NavigationService.navigate('MapView', {
-        // NavigationService.navigate('MapViewSingle', {
-        // wsData,
-        isExample: true,
-        noLegend: true,
-        // mapName: message.originMsg.message.message.message,
-        // showMarker: {
-        //   x: map.x,
-        //   y: map.y,
-        // },
-        // selectPointType: 'selectPoint',
-        selectPointType: 'DatumPointCalibration',
-        backPage: this.props.routeName,
-        routeData: this.props.routeData,
-      })
-      GLOBAL.toolBox.showFullMap(true)
-      GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-      // let point = {
-      // x: map.x,
-      // y: map.y,
-      // }
-      // GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
-      SMap.setAction(Action.PAN)
-      GLOBAL.scaleView.isvisible(false)
-      GLOBAL.mapController.setVisible(true)
-      GLOBAL.mapController.move({
-        bottom: scaleSize(50),
-        left: 'default',
-      })
+    }else{
+      if (this.state.type === 'ARNAVIGATION_INDOOR') {
+        //暂存点，返回地图选点时使用
+        GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
+  
+        GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
+        GLOBAL.MAPSELECTPOINT.setVisible(true)
+  
+        NavigationService.navigate('MapView', {selectPointType: 'SELECTPOINTFORARNAVIGATION_INDOOR'})
+        SMap.setAction(Action.PAN)
+      } else {
+        //暂存点，返回地图选点时使用
+        GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
+  
+        GLOBAL.ToolBar.setVisible(false)
+  
+        GLOBAL.MapXmlStr = await SMap.mapToXml()
+  
+        GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
+        GLOBAL.MAPSELECTPOINT.setVisible(true)
+  
+        //导航选点 全屏时保留mapController
+        GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
+  
+        // let map = await SMap.getCurrentPosition()
+        // let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
+        // wsData.layerIndex = 3
+        let licenseStatus = await SMap.getEnvironmentStatus()
+        GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+        NavigationService.navigate('MapView', {
+          // NavigationService.navigate('MapViewSingle', {
+          // wsData,
+          isExample: true,
+          noLegend: true,
+          // mapName: message.originMsg.message.message.message,
+          // showMarker: {
+          //   x: map.x,
+          //   y: map.y,
+          // },
+          // selectPointType: 'selectPoint',
+          selectPointType: 'DatumPointCalibration',
+          backPage: this.props.routeName,
+          routeData: this.props.routeData,
+        })
+        GLOBAL.toolBox.showFullMap(true)
+        GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
+        // let point = {
+        // x: map.x,
+        // y: map.y,
+        // }
+        // GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
+        SMap.setAction(Action.PAN)
+        GLOBAL.scaleView.isvisible(false)
+        GLOBAL.mapController.setVisible(true)
+        GLOBAL.mapController.move({
+          bottom: scaleSize(50),
+          left: 'default',
+        })
+      }
     }
   }
 

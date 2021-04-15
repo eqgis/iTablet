@@ -85,7 +85,7 @@ export default class LayerAttributeTabs extends React.Component {
     clearAttributeHistory: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
-    setSelection:() => {},
+    setSelection: () => {},
   }
 
   constructor(props) {
@@ -430,51 +430,51 @@ export default class LayerAttributeTabs extends React.Component {
         if (smID >= 0 && hasMedia) break
       }
     }
+    let result
     // 若包含多媒体图片，则删除
     if (hasMedia && smID >= 0) {
-      await SMediaCollector.deleteMedia(this.props.currentLayer.path, smID)
+      result = await SMediaCollector.deleteMedia(GLOBAL.SelectedSelectionAttribute.layerInfo.path, smID)
+    } else {
+      result = await LayerUtils.deleteAttributeByLayer(
+        GLOBAL.SelectedSelectionAttribute.layerInfo.path,
+        this.state.currentIndex, this.state.isCollection)
     }
-    let result = await LayerUtils.deleteSelectionAttributeByLayer(GLOBAL.SelectedSelectionAttribute.layerInfo.path, this.state.currentIndex, this.state.isCollection)
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
-      if(this.state.isCollection){
+      if (this.state.isCollection) {
         GLOBAL.HAVEATTRIBUTE = false
         this.props.navigation.goBack()
       }
     } else {
       Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
     }
-    for (let i = 0; i < this.props.selection.length; i++) {
-      this.currentTabRefs[i].getAttribute(
-        {
-          type: 'reset',
-          currentPage: 0,
-          startIndex: 0,
-          relativeIndex: 0,
-          currentIndex: 0,
-        },
-      )
-    }
+    this.currentTabRefs[this.state.currentTabIndex]?.getAttribute(
+      {
+        type: 'reset',
+        currentPage: 0,
+        startIndex: 0,
+        relativeIndex: 0,
+        currentIndex: 0,
+      },
+    )
     this.setState({
       currentIndex: -1,
       currentFieldInfo: [],
     })
   }
 
-    /** 拍照后刷新事件 **/
-    refreshAction = async () => {
-      for (let i = 0; i < this.props.selection.length; i++) {
-        this.currentTabRefs[i].getAttribute(
-          {
-            type: 'reset',
-            currentPage: 0,
-            startIndex: 0,
-            relativeIndex: 0,
-            currentIndex: 0,
-          },
-        )
-      }
-    }
+  /** 拍照后刷新事件 **/
+  refreshAction = async () => {
+    this.currentTabRefs[this.state.currentTabIndex]?.getAttribute(
+      {
+        type: 'reset',
+        currentPage: 0,
+        startIndex: 0,
+        relativeIndex: 0,
+        currentIndex: 0,
+      },
+    )
+  }
 
   /** 关联事件 **/
   relateAction = () => {
@@ -834,7 +834,7 @@ export default class LayerAttributeTabs extends React.Component {
 
     let buttons = []
     if (this.type !== 'MAP_3D') {
-      if(!this.state.isCollection){
+      if (!this.state.isCollection) {
         buttons = [
           <MTBtn
             key={'attribute'}
@@ -859,7 +859,7 @@ export default class LayerAttributeTabs extends React.Component {
             onPress={this.goToSearch}
           />,
         ]
-      }else{
+      } else {
         buttons = [
           <MTBtn
             key={'attribute'}
@@ -927,7 +927,7 @@ export default class LayerAttributeTabs extends React.Component {
           currentIndex={this.state.currentIndex}
           refreshAction={this.refreshAction}
           selectionAttribute={this.state.isCollection}
-          islayerSelection = {true}
+          islayerSelection={true}
         />
         {this.state.isShowView && (
           <View
@@ -941,14 +941,14 @@ export default class LayerAttributeTabs extends React.Component {
               this.props.selection.length > 1 ? (
                 this.renderTabs()
               ) : (
-                  this.renderTable({
-                    data: this.props.selection[0],
-                    index: 0,
-                  })
-                )
+                this.renderTable({
+                  data: this.props.selection[0],
+                  index: 0,
+                })
+              )
             ) : (
-                <View style={{ flex: 1 }} />
-              )}
+              <View style={{ flex: 1 }} />
+            )}
             <LocationView
               language={this.props.language}
               ref={ref => (this.locationView = ref)}

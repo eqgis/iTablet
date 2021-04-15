@@ -221,7 +221,6 @@ function getCollectionData(libId, symbolCode, params) {
     // ToolbarBtnType.CHANGE_COLLECTION,
     {
       type: ToolbarBtnType.MAP_SYMBOL,
-      // image: require('../../../../../../assets/mapEdit/icon_function_symbol.png'),
       image: getThemeAssets().collection.icon_symbol,
       action: PlotAction.showSymbol,
     },

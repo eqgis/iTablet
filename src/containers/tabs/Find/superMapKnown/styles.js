@@ -6,6 +6,10 @@ export const itemHeight = scaleSize(200)
 export const imageWidth = scaleSize(240)
 export const imageHeight = scaleSize(160)
 export default StyleSheet.create({
+  haveDataViewStyle: {
+    flex: 1,
+    backgroundColor: color.content_white,
+  },
   itemBtn: {
     flexDirection: 'row',
     flex: 1,

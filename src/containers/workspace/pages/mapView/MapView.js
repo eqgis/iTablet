@@ -3127,15 +3127,22 @@ export default class MapView extends React.Component {
    */
   switchAr = showAIDetect => {
     if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
-      if(this.state.isAR){
-        this.setState({isAR:false})
-        Orientation.unlockAllOrientations()
-        return false
-      }else{
-        this.setState({isAR:true})
-        Orientation.lockToPortrait()
-        return true
-      }  
+      let _isAR = this.state.isAR
+      if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
+        if (showAIDetect !== _isAR) {
+          _isAR = showAIDetect
+        } else {
+          return
+        }
+      } else {
+        _isAR = !_isAR
+      }
+      this.setState({isAR:_isAR})
+      _isAR
+        ? Orientation.lockToPortrait()
+        : Orientation.unlockAllOrientations()
+
+      return _isAR
     }
 
     let _showAIDetect = this.state.showAIDetect
@@ -4436,7 +4443,8 @@ export default class MapView extends React.Component {
 
         {this._renderMeasureAreaView()}
 
-        {GLOBAL.Type &&
+        {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? !this.state.isAR : true)&&
+          GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (

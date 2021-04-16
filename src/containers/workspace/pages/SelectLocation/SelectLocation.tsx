@@ -146,15 +146,23 @@ export default class SelectLocation extends React.Component<Props, State>{
     }
   }
 
-  location = () =>{
+  location = async () =>{
+    let point
     if (Platform.OS === 'ios') {
       SMap.moveToCurrent2().then(result => {
         !result &&
           Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
       })
+      point = await SMap.getCurrentPoint2()
     }else{
       SMap2.moveToCurrent()
+      point = await SMap2.getCurrentPoint()
     }
+    this.setState({
+      x: point.x,
+      y: point.y,
+    })
+    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(this.state.x), y: Number(this.state.y)}
   }
 
   zoomin = () =>{

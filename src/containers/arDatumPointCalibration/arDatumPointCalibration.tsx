@@ -235,23 +235,24 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     this.setState({
       activeBtn: 1,
     })
-    if(this.props.routeName === "MapView"){
-      NavigationService.navigate('SelectLocation',{
+    if (this.props.routeName === "MapView") {
+      NavigationService.navigate('SelectLocation', {
         cb: () => {
           this.setState({
             longitude: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.x,
             latitude: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.y,
           })
-        }})
-      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
-    }else{
+        },
+      })
+      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(longitude), y: Number(latitude) }
+    } else {
       if (this.state.type === 'ARNAVIGATION_INDOOR') {
         //暂存点，返回地图选点时使用
-        GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
-  
+        GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(longitude), y: Number(latitude) }
+
         GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
         GLOBAL.MAPSELECTPOINT.setVisible(true)
-  
+
         NavigationService.navigate('MapView', {selectPointType: 'SELECTPOINTFORARNAVIGATION_INDOOR'})
         SMap.setAction(Action.PAN)
       } else {

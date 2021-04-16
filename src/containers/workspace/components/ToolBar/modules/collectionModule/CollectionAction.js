@@ -264,6 +264,7 @@ async function collectionSubmit(type) {
   }
   const result = await SCollector.submit(type)
   if (result) {
+    GLOBAL.HAVEATTRIBUTE = true
     //协作时同步编辑对象
     if (GLOBAL.coworkMode && GLOBAL.getFriend) {
       const params = ToolbarModule.getParams()

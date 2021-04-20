@@ -359,7 +359,7 @@ class AppRoot extends Component {
     return bLogin
   }
 
-  login = async () => {
+  login = async (appState) => {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
@@ -384,9 +384,17 @@ class AppRoot extends Component {
           userType: UserType.COMMON_USER,
         }
         this.props.setUser(user)
-        GLOBAL.getFriend().onUserLoggedin()
+        //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
+        debugger
+        if(appState !== true){
+          GLOBAL.getFriend().onUserLoggedin()
+        }
+        
       } else {
-        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
+        if(bResetMsgService !== true){
+          GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        }
       }
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       let url = this.props.user.currentUser.serverUrl
@@ -594,7 +602,7 @@ class AppRoot extends Component {
   handleStateChange = async appState => {
     if (appState === 'active') {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
-        this.login()
+        this.login(true)
         this.reCircleLogin()
       }
       // if (!this.props.nav.key && this.props.map.currentMap.name) {

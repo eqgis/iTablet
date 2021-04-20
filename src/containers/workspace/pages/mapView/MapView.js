@@ -2649,12 +2649,14 @@ export default class MapView extends React.Component {
       let datasourceAlias = this.props.currentLayer.datasourceAlias
       let datasetName = this.props.currentLayer.datasetName
       if (this.props.currentLayer.themeType !== 0 || (
-        this.props.currentLayer.type !== DatasetType.CAD &&
-        (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
-        (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
-        (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT) ||
-        (this.measureType === 'arDrawRectangle' && this.props.currentLayer.type !== DatasetType.REGION) ||
-        (this.measureType === 'arDrawCircular' && this.props.currentLayer.type !== DatasetType.REGION)
+        this.props.currentLayer.type !== DatasetType.CAD && (
+          // 后面的判断应该是一个整体 不然永真 add zcj
+          (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+          (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+          (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT) ||
+          (this.measureType === 'arDrawRectangle' && this.props.currentLayer.type !== DatasetType.REGION) ||
+          (this.measureType === 'arDrawCircular' && this.props.currentLayer.type !== DatasetType.REGION)
+        )
       )) {
         datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
         datasetName = 'Default_Tagging'

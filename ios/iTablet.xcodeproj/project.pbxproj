@@ -14,7 +14,6 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		08952DAFD2BE4406A6583B74 /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49560BBB1D5344A9B91E51D1 /* libRNCookieManagerIOS.a */; };
 		0A0118FB2122D9CE00BC4AAB /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A0118FA2122D9CE00BC4AAB /* Contacts.framework */; };
-		0A065E88248E176C004DD158 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		0A065F15248E1EF0004DD158 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A065ED7248E1EF0004DD158 /* JavaScriptCore.framework */; };
 		0A11D9A021F885B500AFE6D6 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A11D99D21F885A400AFE6D6 /* libART.a */; };
 		0A11D9E121F94DCE00AFE6D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A11D9E021F94DCE00AFE6D6 /* LaunchScreen.storyboard */; };
@@ -36,7 +35,6 @@
 		0A334D30229798BD00E4F302 /* libSupermap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A334D2D229797F800E4F302 /* libSupermap.a */; };
 		0A6180A722A604B300E3D69B /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A61803A22A4F76200E3D69B /* libRCTVideo.a */; };
 		0A64601A21FEB82C00928DAD /* AppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A64601921FEB82C00928DAD /* AppUtils.m */; };
-		0A76887F256F5CB400DE5C77 /* libSupermap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A334D2D229797F800E4F302 /* libSupermap.a */; };
 		0A7E6C8C22437A7100936CE4 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A7E6C8B22437A7100936CE4 /* libstdc++.6.0.9.tbd */; };
 		0A7E6C8E22437A9A00936CE4 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A7E6C8D22437A9A00936CE4 /* libstdc++.6.0.9.tbd */; };
 		0A8EEE0A21104C7100F206BB /* SuperMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A8EEDF221104C7100F206BB /* SuperMap.bundle */; };
@@ -51,7 +49,6 @@
 		0A8EEE1E21104C7100F206BB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8EEE0621104C7100F206BB /* CoreText.framework */; };
 		0A8F7C3921C35DF60003595E /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8F7C3721C35D9B0003595E /* libRCTOrientation.a */; };
 		0A8F7C8521D1BA260003595E /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8F7C8421D1BA250003595E /* ZipArchive.framework */; };
-		0A8F7C8621D1BA320003595E /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8F7C8421D1BA250003595E /* ZipArchive.framework */; };
 		0A8F7C8721D1BA320003595E /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8F7C8421D1BA250003595E /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A95738C21BFA6D500B5853A /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A95738821BFA38500B5853A /* libRNFS.a */; };
 		0A9573C821C0B8EE00B5853A /* NativeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9573C721C0B8EE00B5853A /* NativeMethod.m */; };
@@ -62,7 +59,6 @@
 		0AC5859C2609861C001AB8B5 /* launch_slogan_cn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AC5859A2609861B001AB8B5 /* launch_slogan_cn.png */; };
 		0AECCF782328E034004F84A4 /* Images.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AECCF772328E034004F84A4 /* Images.zip */; };
 		0AEE2C9E24A9977D00C9734E /* Template.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AEE2C9D24A9977D00C9734E /* Template.zip */; };
-		0AEE2CA024A9978E00C9734E /* Template.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AEE2C9F24A9978E00C9734E /* Template.zip */; };
 		0AF433CB224C78E4003FDADE /* SuperMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF433CA224C78E4003FDADE /* SuperMap.framework */; };
 		0AFDDB0A23FE714A00E6BFE4 /* JRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AFDDAC423FE714900E6BFE4 /* JRE.framework */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -114,6 +110,12 @@
 		614D856D23C71A1900BDEC31 /* HorizonalFinemapping.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 614D856423C71A1900BDEC31 /* HorizonalFinemapping.prototxt */; };
 		614D856E23C71A1900BDEC31 /* Segmentation.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = 614D856523C71A1900BDEC31 /* Segmentation.caffemodel */; };
 		614D856F23C71A1900BDEC31 /* CharacterRecognization.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 614D856623C71A1900BDEC31 /* CharacterRecognization.prototxt */; };
+		668A3F67262BDDA500BAE2FF /* JKVValue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5E262BDCC100BAE2FF /* JKVValue.framework */; };
+		668A3F68262BDDA500BAE2FF /* JKVValue.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5E262BDCC100BAE2FF /* JKVValue.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		668A3F6A262BDDB500BAE2FF /* RMQClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5C262BDCC100BAE2FF /* RMQClient.framework */; };
+		668A3F6B262BDDB500BAE2FF /* RMQClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5C262BDCC100BAE2FF /* RMQClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		668A3F6D262BDDC000BAE2FF /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5D262BDCC100BAE2FF /* CocoaAsyncSocket.framework */; };
+		668A3F6E262BDDC000BAE2FF /* CocoaAsyncSocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5D262BDCC100BAE2FF /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		77F6BE748AD84DFBAE668F38 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAB7B312D51420CBFD827D9 /* CFNetwork.framework */; };
 		7D02BE5C1E034E4AAE286DF7 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2174BA18CE944BC3A447F8A2 /* CoreTelephony.framework */; };
 		7DC9BB94CCCC4845980BE3F8 /* libRNPhotoView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DC98EA12C9B40A19AB95463 /* libRNPhotoView.a */; };
@@ -128,7 +130,6 @@
 		CFFC10A9D14645FBB08D3CBA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 125E67BD15C84118B881A822 /* CoreGraphics.framework */; };
 		D15AD4572D5244D593915653 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9098A2463DE246D19C37CCA1 /* UIKit.framework */; };
 		D28F1D6B0B094F6FAFD062E4 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D41562D4EC2400BA51E4DFA /* libRCTImageResizer.a */; };
-		D84D43F7213CC2AF001F83D9 /* MessageQueue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D84D43F6213CC2AE001F83D9 /* MessageQueue.framework */; };
 		DDAFB8CE1D4748E3B330DDE2 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 244D0910A95D47C8B23823F1 /* libRNGestureHandler.a */; };
 		E0509A2D700743D5B7DAB506 /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F600F658FE4C4D69AEB76059 /* libRNBackgroundTimer.a */; };
 		E1C8733E9EBD46178B730F5A /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A72D654CE12343FAABD50105 /* libRCTBEEPickerManager.a */; };
@@ -566,8 +567,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				668A3F6E262BDDC000BAE2FF /* CocoaAsyncSocket.framework in Embed Frameworks */,
+				668A3F6B262BDDB500BAE2FF /* RMQClient.framework in Embed Frameworks */,
 				0A8F7C8721D1BA320003595E /* ZipArchive.framework in Embed Frameworks */,
 				0A13B49E22A66F37005E4AEC /* RSKImageCropper.framework in Embed Frameworks */,
+				668A3F68262BDDA500BAE2FF /* JKVValue.framework in Embed Frameworks */,
 				0A334D24229797C900E4F302 /* QBImagePicker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -702,6 +706,9 @@
 		616F9FBF550E4BF498A86BE9 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		64EBB0CEFDCC424896C92D54 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		6576741CC21E433D89E8DBD7 /* libAMapGeolocation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAMapGeolocation.a; sourceTree = "<group>"; };
+		668A3F5C262BDCC100BAE2FF /* RMQClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RMQClient.framework; sourceTree = "<group>"; };
+		668A3F5D262BDCC100BAE2FF /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		668A3F5E262BDCC100BAE2FF /* JKVValue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JKVValue.framework; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8B1D70E9B9D84EE8B72BFB60 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
@@ -722,7 +729,6 @@
 		CD6BEDE0251A4FD9A83E2659 /* RCTBEEPickerManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTBEEPickerManager.xcodeproj; path = "../node_modules/react-native-picker/ios/RCTBEEPickerManager.xcodeproj"; sourceTree = "<group>"; };
 		CFDD1D39251B42E7AF986C53 /* RNCookieManagerIOS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCookieManagerIOS.xcodeproj; path = "../node_modules/react-native-cookies/ios/RNCookieManagerIOS.xcodeproj"; sourceTree = "<group>"; };
 		D6CD931E62D24C278BC22FC9 /* libresolv.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
-		D84D43F6213CC2AE001F83D9 /* MessageQueue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageQueue.framework; path = MessageQueue.sdk/MessageQueue.framework; sourceTree = "<group>"; };
 		EEB38F0AD8D84316B33CC7A9 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		F600F658FE4C4D69AEB76059 /* libRNBackgroundTimer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundTimer.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -738,6 +744,7 @@
 				6112EBEA231516FA005F89FC /* libsqlite3.tbd in Frameworks */,
 				6112EBEB231516FA005F89FC /* libsqlite3.0.tbd in Frameworks */,
 				2AAEE1D0230E696800902D1D /* libxml2.tbd in Frameworks */,
+				668A3F6A262BDDB500BAE2FF /* RMQClient.framework in Frameworks */,
 				0A1A204B22D6BCF40014058A /* libRCTCameraRoll.a in Frameworks */,
 				0A13B49922A66D38005E4AEC /* ExternalAccessory.framework in Frameworks */,
 				0A6180A722A604B300E3D69B /* libRCTVideo.a in Frameworks */,
@@ -756,7 +763,6 @@
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
-				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				0A334D23229797C900E4F302 /* QBImagePicker.framework in Frameworks */,
@@ -769,22 +775,21 @@
 				0A8EEE1421104C7100F206BB /* AddressBook.framework in Frameworks */,
 				0A8F7C8521D1BA260003595E /* ZipArchive.framework in Frameworks */,
 				0A8EEE1721104C7100F206BB /* MobileCoreServices.framework in Frameworks */,
-				0A8F7C8621D1BA320003595E /* ZipArchive.framework in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
-				0A065E88248E176C004DD158 /* libReact.a in Frameworks */,
 				0A8EEE1821104C7100F206BB /* QuartzCore.framework in Frameworks */,
 				0A7E6C8E22437A9A00936CE4 /* libstdc++.6.0.9.tbd in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				668A3F67262BDDA500BAE2FF /* JKVValue.framework in Frameworks */,
 				0A8EEE1521104C7100F206BB /* AudioToolbox.framework in Frameworks */,
 				0ABCB8CA224606C100992994 /* libWeChatSDK.a in Frameworks */,
+				668A3F6D262BDDC000BAE2FF /* CocoaAsyncSocket.framework in Frameworks */,
 				0A25E342226182950009CB35 /* libAsHttpRequest.a in Frameworks */,
 				0A7E6C8C22437A7100936CE4 /* libstdc++.6.0.9.tbd in Frameworks */,
 				0A8EEE1E21104C7100F206BB /* CoreText.framework in Frameworks */,
-				D84D43F7213CC2AF001F83D9 /* MessageQueue.framework in Frameworks */,
 				4FDE080EB44C437285909CD0 /* libRCTContacts.a in Frameworks */,
 				5070B3E1494A444D84A68BE0 /* libRNCamera.a in Frameworks */,
 				AB9C1E0FCFFF4818AE82E25D /* libRCTJCoreModule.a in Frameworks */,
@@ -803,7 +808,6 @@
 				CFFC10A9D14645FBB08D3CBA /* CoreGraphics.framework in Frameworks */,
 				E0509A2D700743D5B7DAB506 /* libRNBackgroundTimer.a in Frameworks */,
 				DDAFB8CE1D4748E3B330DDE2 /* libRNGestureHandler.a in Frameworks */,
-				0A76887F256F5CB400DE5C77 /* libSupermap.a in Frameworks */,
 				E1C8733E9EBD46178B730F5A /* libRCTBEEPickerManager.a in Frameworks */,
 				D28F1D6B0B094F6FAFD062E4 /* libRCTImageResizer.a in Frameworks */,
 				7DC9BB94CCCC4845980BE3F8 /* libRNPhotoView.a in Frameworks */,
@@ -1193,6 +1197,10 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0A13B49C22A66F37005E4AEC /* RSKImageCropper.framework */,
+				668A3F5D262BDCC100BAE2FF /* CocoaAsyncSocket.framework */,
+				668A3F5E262BDCC100BAE2FF /* JKVValue.framework */,
+				668A3F5C262BDCC100BAE2FF /* RMQClient.framework */,
 				0A065ED7248E1EF0004DD158 /* JavaScriptCore.framework */,
 				0AFDDAC423FE714900E6BFE4 /* JRE.framework */,
 				4EFB3DDF23BBF07300688642 /* libiconv.2.4.0.tbd */,
@@ -1213,7 +1221,6 @@
 				0A7E6C8D22437A9A00936CE4 /* libstdc++.6.0.9.tbd */,
 				0A147441223F6A7B006663C7 /* libc++.1.tbd */,
 				0A8F7C8421D1BA250003595E /* ZipArchive.framework */,
-				D84D43F6213CC2AE001F83D9 /* MessageQueue.framework */,
 				0A0118FA2122D9CE00BC4AAB /* Contacts.framework */,
 				0A8EEDF221104C7100F206BB /* SuperMap.bundle */,
 				0A8EEDFA21104C7100F206BB /* libicucore.A.tbd */,
@@ -1325,7 +1332,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				0A13B49C22A66F37005E4AEC /* RSKImageCropper.framework */,
 				13B07FAE1A68108700A75B9A /* iTablet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* iTabletTests */,
@@ -1416,7 +1422,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 610;
+				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
@@ -2012,7 +2018,6 @@
 				0A11D9E121F94DCE00AFE6D6 /* LaunchScreen.storyboard in Resources */,
 				0A8EEE0A21104C7100F206BB /* SuperMap.bundle in Resources */,
 				614D856D23C71A1900BDEC31 /* HorizonalFinemapping.prototxt in Resources */,
-				0AEE2CA024A9978E00C9734E /* Template.zip in Resources */,
 				2ABCAA1C2386616D0052EB6B /* labelmap.txt in Resources */,
 				4E0D303E24DA9980001AE116 /* resources.bundle in Resources */,
 				2ABCAA1B2386616D0052EB6B /* detect.tflite in Resources */,
@@ -2046,7 +2051,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -2054,7 +2059,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\nexport SKIP_BUNDLING\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
@@ -2173,7 +2178,7 @@
 					"$(SRCROOT)/../node_modules/react-native-cookies/ios/RNCookieManagerIOS",
 				);
 				INFOPLIST_FILE = iTablet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"<Multiple",
@@ -2274,7 +2279,7 @@
 					"$(SRCROOT)/../node_modules/react-native-cookies/ios/RNCookieManagerIOS",
 				);
 				INFOPLIST_FILE = iTablet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"<Multiple",
@@ -2368,7 +2373,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -2423,7 +2428,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
@@ -2431,24 +2436,38 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2461,7 +2480,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2473,17 +2492,29 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2491,13 +2522,14 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;

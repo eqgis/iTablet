@@ -36,7 +36,7 @@ export default class ARSceneView extends React.Component<IProps> {
   }
 
   componentDidMount() {
-    Orientation.lockToLandscape()
+    Orientation.lockToLandscapeLeft()
     ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arSceneModule)
     ToolbarModule.setToolBarData('SM_ARSCENEMODULE')

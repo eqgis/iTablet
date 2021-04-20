@@ -28,6 +28,7 @@ import {
 import { color } from '../../../../styles'
 import NavigationService from '../../../../containers/NavigationService'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
+import ARMeasureAction from '../ToolBar/modules/arMeasure/ARMeasureAction'
 
 
 //ar测量底部按钮
@@ -38,6 +39,7 @@ export default class ArMappingButton extends React.Component {
     showSave: any,
     showSwitch: () => {},//控制二级菜单弹起时是否显示添加按钮等
     isDrawing: any,
+    isMeasure: any,
     isCollect: any,
     canContinuousDraw: any,
     user: Object,
@@ -47,6 +49,7 @@ export default class ArMappingButton extends React.Component {
     setCurrentHeight: () => {},
     isnew: () => {},//判断是否新建采集
     isTrack: () => {},//判断是轨迹采集还是打点采集
+    showCurrentHeightView: () => {},
   }
 
 
@@ -72,6 +75,7 @@ export default class ArMappingButton extends React.Component {
     }
 
     this.isDrawing = this.props.isDrawing
+    this.isMeasure = this.props.isMeasure
     this.canContinuousDraw = this.props.canContinuousDraw
     this.measureType = this.props.measureType
     this.isCollect = this.props.isCollect
@@ -291,6 +295,199 @@ export default class ArMappingButton extends React.Component {
         image: getThemeAssets().ar.functiontoolbar.icon_ar_circular,
       },
     ]
+
+    this.measureAreadata = [
+      {
+        //AR面积 多边形
+        key: 'polygon',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON,
+        action: () => {
+          this.canContinuousDraw = true
+          this.continuousDraw()
+          ARMeasureAction.arMeasurePolygon()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_polygon,
+      },
+      {
+        //AR面积 矩形
+        key: 'rectangle',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureRectanglet()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_rectangle,
+      },
+      {
+        //AR面积 圆
+        key: 'circular',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureCircular()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_circular,
+      },
+    ]
+
+    this.measureAreadata1 = [
+      {
+        //AR体积 长方体
+        key: 'cuboid',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureCuboid()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_cuboid,
+      },
+      {
+        //AR体积 圆柱体
+        key: 'cylinder',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureCylinder()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_cylinder,
+      },
+      {
+        //占位
+        key: 'replease',
+        title: '',
+        action: ()=>{},
+        size: 'large',
+      },
+      {
+        //占位
+        key: 'replease',
+        title: '',
+        action: ()=>{},
+        size: 'large',
+      },
+    ]
+
+    this.measuredata = [
+      {
+        //AR测距
+        key: 'arMeasureArea',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
+        action: () => {
+          this.canContinuousDraw = true
+          this.continuousDraw()
+          ARMeasureAction.arMeasureLength()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.ar_analyst_length,
+      },
+      {
+        //AR测高
+        key: 'arMeasureHeitht',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureHeight()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_altimetry_select,
+      },
+      {
+        //AR面积
+        key: 'arMeasureArea',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
+        action: () => {
+          this.setState({
+            data:this.measureAreadata,
+          })
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.ar_analyst_area,
+      },
+      {
+        //AR测量角度
+        key: 'arMeasureAngle',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
+        action: () => {
+          this.canContinuousDraw = true
+          this.continuousDraw()
+          ARMeasureAction.arMeasureAngle()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.ar_analyst_angle,
+      },
+      {
+        //体积测量
+        key: 'arMeasureAngle',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_VOLUME,
+        action: () => {
+          this.setState({
+            data:this.measureAreadata1,
+          })
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_volume_select,
+      },
+    ]
+
 
 
     this.state = {
@@ -816,10 +1013,14 @@ export default class ArMappingButton extends React.Component {
       } else {
         this.setState({ data: this.data })
       }
-    }else{
+    } else {
       if (!this.state.showSwitch) {
-        this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) }})
         this.props.showSwitch(true)
+        if (this.isMeasure) {
+          this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) }, data: this.measuredata })
+        } else {
+          this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) } })
+        }
       } else {
         this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) }, data: this.data })
         this.props.showSwitch(false)
@@ -1014,7 +1215,7 @@ export default class ArMappingButton extends React.Component {
               />
             </TouchableOpacity>
           )}
-          {this.isDrawing && (
+          {(this.isMeasure||this.isDrawing) && (
             <TouchableOpacity
               onPress={() => this.switch()}
               style={styles.iconView}

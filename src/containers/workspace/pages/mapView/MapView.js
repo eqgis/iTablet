@@ -326,6 +326,7 @@ export default class MapView extends React.Component {
       showADDPoint: false,
       isfirst: true,
       isDrawing: false,
+      isMeasure:false,
       currentHeight: '0m',
       showADD: true,//默认先显示
       showLog: false,
@@ -2485,6 +2486,7 @@ export default class MapView extends React.Component {
 
   measure = params => {
     if (Platform.OS === 'android') {
+      SARMap.removeMeasureStatusListeners()
       SARMap.addMeasureStatusListeners({
         infoListener: async result => {
           this.onshowLog(result)
@@ -2659,7 +2661,7 @@ export default class MapView extends React.Component {
       }
       SMeasureAreaView.setSavePath(datasourceAlias, datasetName)
 
-      this.setState({ showArMappingButton: true, showSave: this.showSave, isfirst: true, showGenera: true, isDrawing: this.isDrawing,isCollect:this.isCollect, isnew:this.isnew,canContinuousDraw: this.canContinuousDraw,measureType:this.measureType })
+      this.setState({ showArMappingButton: true, showSave: this.showSave, isfirst: true, showGenera: true, isDrawing: this.isDrawing,isCollect:this.isCollect, isnew:this.isnew,canContinuousDraw: this.canContinuousDraw,measureType:this.measureType ,isMeasure:this.isMeasure})
     }
   }
 
@@ -3141,6 +3143,20 @@ export default class MapView extends React.Component {
       _isAR
         ? Orientation.lockToPortrait()
         : Orientation.unlockAllOrientations()
+
+      if (this.state.isAR) {
+        if (Platform.OS === 'android') {
+          SARMap.onPause()
+        } else {
+          SMeasureAreaView.onPause()
+        }
+      } else {
+        if (Platform.OS === 'android') {
+          SARMap.onResume()
+        } else {
+          SMeasureAreaView.onResume()
+        }
+      }
 
       return _isAR
     }
@@ -4201,12 +4217,14 @@ export default class MapView extends React.Component {
         isCollect={this.state.isCollect}
         showSave={this.state.showSave}
         isDrawing={this.state.isDrawing}
+        isMeasure={this.state.isMeasure}
         measureType={this.state.measureType}
         canContinuousDraw={this.state.canContinuousDraw}
         showSwitch={show => { this.setState({ showSwitch: show }) }}
         setCurrentHeight={height => { this.setState({ currentHeight:height })}}
         isnew={() => { this.setState({isnew:true})} }
         isTrack={ is => { this.setState({isTrack:is}) } }
+        showCurrentHeightView={ show => { this.setState({showCurrentHeightView:show}) } }
       />
     )
   }

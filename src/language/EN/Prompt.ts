@@ -208,6 +208,7 @@ const Prompt: typeof CN.Prompt = {
   EXPORT_FAILED: 'Failed to export',
   EXPORT_TO: 'Data have been exported to:',
   REQUIRE_PRJ_1984: 'PrjCoordSys of the dataset must be WGS_1984',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: 'Failed to undo',
   REDO_FAILED: 'Failed to redo',

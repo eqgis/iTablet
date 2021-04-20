@@ -208,6 +208,7 @@ const Prompt: typeof CN.Prompt = {
   EXPORT_FAILED: 'Dışa Aktarma Başarısız',
   EXPORT_TO: 'Veri şu konuma dışarı aktarıldı: ',
   REQUIRE_PRJ_1984: 'Verikümesinin PrjCoordSys WGS_1984 olmalıdır',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: 'Geri alma başarısız',
   REDO_FAILED: 'Yeniden yapma başarısız',

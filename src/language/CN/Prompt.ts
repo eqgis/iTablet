@@ -206,6 +206,7 @@ const Prompt = {
   EXPORT_FAILED: '导出失败',
   EXPORT_TO: '数据已导出到：',
   REQUIRE_PRJ_1984: '数据集投影坐标系必须为WGS_1984',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',
 
   UNDO_FAILED: '撤销失败',
   REDO_FAILED: '恢复失败',

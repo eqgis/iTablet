@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Text, View, Image, StyleSheet } from 'react-native'
-import { SMSceneARView ,SSceneAR} from 'imobile_for_reactnative'
+import { SMSceneARView ,SSceneAR,SMap} from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { Container, Dialog } from '../../components'
 import { getLanguage } from '../../language'
@@ -28,6 +28,7 @@ export default class ARSceneView extends React.Component<IProps> {
     this.state = {
       firstDialog: true, // 第一次用于渲染提示，后面渲染超时
       showPlaceholderView: true,
+      visibleInfo:{},
     }
   }
 
@@ -35,7 +36,7 @@ export default class ARSceneView extends React.Component<IProps> {
   componentWillMount() {
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     Orientation.lockToLandscapeLeft()
     ToolbarModule = getToolbarModule('AR')
     ToolbarModule.add(arSceneModule)
@@ -70,6 +71,10 @@ export default class ARSceneView extends React.Component<IProps> {
     this._trackListener = SSceneAR.setImageTrackingCallback(this._trackCb)
     this.customerPath()
     // Toast.show(getLanguage(GLOBAL.language).Prompt.MOVE_PHONE_ADD_SCENE)
+
+
+    let vis = await SMap.getMapLayerVisible()
+    this.setState({visibleInfo:vis})
   }
 
   componentWillUnmount() {
@@ -99,6 +104,7 @@ export default class ARSceneView extends React.Component<IProps> {
   }
 
   back = async () => {
+    SMap.setMapLayerVisible(this.state.visibleInfo)
     this.setState({showPlaceholderView:false})
     await SSceneAR.close()
     // Orientation.lockToPortrait()
@@ -110,7 +116,6 @@ export default class ARSceneView extends React.Component<IProps> {
       GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
       GLOBAL.toolBox.switchAr()
     }, 500)
-
   }
 
   onDialogConfirm = async () => {

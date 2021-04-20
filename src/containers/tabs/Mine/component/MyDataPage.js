@@ -382,11 +382,15 @@ export default class MyDataPage extends Component {
             this.showExportPathDialog()
           }
         } else {
-          Toast.show(
-            type === 'local' || type === 'template'
-              ? getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED
-              : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
-          )
+          if(type === 'template'){
+            Toast.show( getLanguage(GLOBAL.language).Prompt.EXPORT_TEMP_FAILED )
+          } else {
+            Toast.show(
+              type === 'local'
+                ? getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED
+                : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
+            )
+          }
         }
       }
     } catch (error) {

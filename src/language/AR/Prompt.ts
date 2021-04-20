@@ -208,6 +208,7 @@ const Prompt: typeof CN.Prompt = {
   EXPORT_FAILED: 'فشل التصدير',
   EXPORT_TO: 'تم تصدير البيانات إلى',
   REQUIRE_PRJ_1984: 'يجب أن يكون نظام إحداثيات مجموعة البيانات هو WGS_1984',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: 'فشل التراجع',
   REDO_FAILED: 'فشل الإعادة',

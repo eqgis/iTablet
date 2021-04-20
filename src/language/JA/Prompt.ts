@@ -208,6 +208,7 @@ const Prompt: typeof CN.Prompt = {
   EXPORT_FAILED: 'エクスポートに失敗',
   EXPORT_TO: 'データエクスポート先：',
   REQUIRE_PRJ_1984: 'データセットの投影座標系はWGS_1984に設定する必要があります',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: '取り消すに失敗',
   REDO_FAILED: 'やり直すに失敗',

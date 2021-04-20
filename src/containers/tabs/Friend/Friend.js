@@ -1198,7 +1198,7 @@ export default class Friend extends Component {
       let queueExist = true
       if (this.isGroupMsg(messageObj)) {
         let members = FriendListFileHandle.readGroupMemberList(talkId)
-        // await SMessageService.declareSession(members, talkId)
+        await SMessageService.declareSession(members, talkId)
         for (let key = 0; key < members.length; key++) {
           talkIds.push(members[key].id)
         }

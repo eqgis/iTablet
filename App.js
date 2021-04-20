@@ -385,7 +385,6 @@ class AppRoot extends Component {
         }
         this.props.setUser(user)
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
-        debugger
         if(appState !== true){
           GLOBAL.getFriend().onUserLoggedin()
         }

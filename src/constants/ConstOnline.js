@@ -120,6 +120,16 @@ export default {
     layerIndex: 0,
     mapName: 'OSM',
   },
+  GAODE: {
+    type: 'Datasource',
+    DSParams: {
+      server: 'https://www.amap.com',
+      engineType: 232,
+      alias: 'GaoDeMaps',
+    },
+    layerIndex: 0,
+    mapName: 'GaoDe',
+  },
   SuperMapCloud: {
     type: 'Datasource',
     DSParams: {

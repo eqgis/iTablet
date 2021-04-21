@@ -770,6 +770,7 @@ export default class LayerAttributeTabs extends React.Component {
         isShowSystemFields={this.state.isShowSystemFields}
         navigation={this.props.navigation}
         selection={this.props.selection}
+        refreshCurrent={()=>{this.setState({currentIndex:-1})}}
       />
     )
   }

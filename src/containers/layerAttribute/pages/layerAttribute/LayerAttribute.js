@@ -1328,6 +1328,7 @@ export default class LayerAttribute extends React.Component {
               }
             }
             if (isDelete) {
+              this.setState({currentIndex:-1})
               this.refresh()
             }
           },

@@ -38,6 +38,7 @@ export default class LayerSelectionAttribute extends React.Component {
     onAttributeFieldDelete?: () => {},
     isShowSystemFields: boolean,
     selection: Object,
+    refreshCurrent: () => {},
   }
 
   constructor(props) {
@@ -1024,6 +1025,7 @@ export default class LayerSelectionAttribute extends React.Component {
               }
             }
             if (isDelete) {
+              this.props.refreshCurrent()
               this.canBeRefresh = true
               this.getAttribute({
                 type: 'reset',

@@ -850,8 +850,8 @@ class Chat extends React.Component {
     } else if (this.action) {
       Toast.show(getLanguage(GLOBAL.language).Friends.LOCATION_SHARE_NOTIFY)
     } else {
-      let wsData = JSON.parse(JSON.stringify(GLOBAL.language === 'CN'? ConstOnline.TDYX:ConstOnline.Google))
-      wsData.layerIndex = 3
+      let wsData = JSON.parse(JSON.stringify(GLOBAL.language === 'CN'? ConstOnline.OSM:ConstOnline.Google))
+      wsData.layerIndex = 0
       let licenseStatus = await SMap.getEnvironmentStatus()
       GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapViewSingle', {

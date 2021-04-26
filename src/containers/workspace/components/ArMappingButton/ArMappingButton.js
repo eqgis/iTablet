@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  NativeModules,
+  NativeEventEmitter,
 } from 'react-native'
 import {
   scaleSize,
@@ -30,6 +32,8 @@ import NavigationService from '../../../../containers/NavigationService'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import ARMeasureAction from '../ToolBar/modules/arMeasure/ARMeasureAction'
 
+
+const EventEmi = new NativeEventEmitter(NativeModules.SMap)
 
 //ar测量底部按钮
 export default class ArMappingButton extends React.Component {
@@ -520,11 +524,21 @@ export default class ArMappingButton extends React.Component {
   }
 
   componentDidMount() {
-
+    EventEmi.addListener(
+      'com.supermap.RN.armeasure.save',
+      this.saveLog,
+    )
   }
 
   componentWillUnmount() {
+    EventEmi.removeListener(
+      'com.supermap.RN.armeasure.save',
+      this.saveLog,
+    )
+  }
 
+  saveLog = () => {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
   }
 
   switchStatus = () => {
@@ -1076,7 +1090,7 @@ export default class ArMappingButton extends React.Component {
     )
     if (result) {
       //await SMeasureAreaView.clearAll()
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+      // Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
     }
   }
 

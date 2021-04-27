@@ -2486,8 +2486,7 @@ export default class MapView extends React.Component {
 
   measure = params => {
     if (Platform.OS === 'android') {
-      SARMap.removeMeasureStatusListeners()
-      SARMap.addMeasureStatusListeners({
+      this.listeners = SARMap.addMeasureStatusListeners({
         infoListener: async result => {
           this.onshowLog(result)
         },
@@ -4193,6 +4192,7 @@ export default class MapView extends React.Component {
   }
 
   ARMappingHeaderBack = () => {
+    SARMap.stopLocation()
     SMeasureAreaView.cancelCurrent()
     SARMap.clearMeasure()
     if (Platform.OS === 'ios') {
@@ -4203,7 +4203,7 @@ export default class MapView extends React.Component {
       // )
     }else{
       SARMap.removeOnHeightChangeListeners()
-      SARMap.removeMeasureStatusListeners()
+      this.listeners && this.listeners.infoListener.remove()
       SARMap.showMeasureView(false)
       SARMap.showTrackView(false)
       SARMap.showPointCloud(false)

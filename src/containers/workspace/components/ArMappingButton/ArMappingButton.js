@@ -33,7 +33,7 @@ import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import ARMeasureAction from '../ToolBar/modules/arMeasure/ARMeasureAction'
 
 
-const EventEmi = new NativeEventEmitter(NativeModules.SMap)
+const EventEmi = new NativeEventEmitter(NativeModules.SMeasureAreaView)
 
 //ar测量底部按钮
 export default class ArMappingButton extends React.Component {
@@ -651,7 +651,10 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPoint = async () => {
-    // SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
@@ -713,7 +716,10 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawLine = async () => {
-    // SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
@@ -775,7 +781,10 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPolygon = async () => {
-    // SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
@@ -838,7 +847,10 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawRectangle = async () => {
-    // SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
@@ -900,7 +912,10 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawCircular = async () => {
-    // SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)

@@ -651,7 +651,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPoint = async () => {
-    SARMap.clearAllTracking()
+    // SARMap.clearAllTracking()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
@@ -713,7 +713,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawLine = async () => {
-    SARMap.clearAllTracking()
+    // SARMap.clearAllTracking()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
@@ -775,7 +775,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPolygon = async () => {
-    SARMap.clearAllTracking()
+    // SARMap.clearAllTracking()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
@@ -838,7 +838,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawRectangle = async () => {
-    SARMap.clearAllTracking()
+    // SARMap.clearAllTracking()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
@@ -900,7 +900,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawCircular = async () => {
-    SARMap.clearAllTracking()
+    // SARMap.clearAllTracking()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)

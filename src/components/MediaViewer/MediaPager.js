@@ -17,6 +17,7 @@ export default class MediaPager extends React.Component {
     backHide?: boolean,
     defaultIndex: number,
     device: Object,
+    onVisibleChange?: (visible: boolean)=>{}
   }
 
   static defaultProps = {
@@ -58,6 +59,7 @@ export default class MediaPager extends React.Component {
         visible && this.forceUpdate()
       })
     }
+    this.props.onVisibleChange && this.props.onVisibleChange(visible)
   }
 
   getData = () => {

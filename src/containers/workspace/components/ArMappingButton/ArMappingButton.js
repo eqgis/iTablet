@@ -596,10 +596,14 @@ export default class ArMappingButton extends React.Component {
 
   saveRegion = async () => {
     try {
-      await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
-        this.props.currentLayer.datasetName)
-      let result = await SARMap.saveTrackingRegion()
-      Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      if (Platform.OS === 'ios') {
+        this.save()
+      } else {
+        await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
+          this.props.currentLayer.datasetName)
+        let result = await SARMap.saveTrackingRegion()
+        Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      }
     } catch (e) {
       GLOBAL.Loading.setLoading(false)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)

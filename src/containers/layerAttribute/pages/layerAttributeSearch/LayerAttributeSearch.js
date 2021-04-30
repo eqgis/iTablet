@@ -14,6 +14,7 @@ import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import NavigationService from '../../../NavigationService'
+import { SMediaCollector } from 'imobile_for_reactnative'
 
 const PAGE_SIZE = 30
 
@@ -24,6 +25,7 @@ export default class LayerAttributeSearch extends React.Component {
     currentAttribute: Object,
     selection: Object,
     map: Object,
+    currentLayer: Object,
     // attributes: Object,
     // setAttributes: () => {},
     setCurrentAttribute: () => {},
@@ -225,6 +227,34 @@ export default class LayerAttributeSearch extends React.Component {
       this.state.attributes.data.length === 0
     )
       return null
+
+    let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds'], // 属性表cell显示 查看 按钮
+      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
+    let buttonActions = [
+      async data => {
+        let layerName = this.props.currentLayer.name,
+          geoID = data.rowData[1].value
+        if(this.state.attributes.data.length === 1){
+          geoID = data.rowData[0].value
+        }
+        let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
+        if(!has){
+          Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+          return
+        }
+        let info = await SMediaCollector.getMediaInfo(layerName, geoID)
+        let layerType = LayerUtils.getLayerType(this.props.currentLayer)
+        let isTaggingLayer = layerType === 'TAGGINGLAYER'
+        if(isTaggingLayer){
+          Object.assign(info, { addToMap: this.props.currentLayer.isVisible })
+        }else{
+          Object.assign(info, { addToMap: false })
+        }
+        NavigationService.navigate('MediaEdit', {
+          info,
+        })
+      },
+    ]
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}
@@ -261,6 +291,9 @@ export default class LayerAttributeSearch extends React.Component {
         // refresh={cb => this.refresh(cb)}
         loadMore={cb => this.loadMore(cb)}
         changeAction={this.changeAction}
+        buttonNameFilter={buttonNameFilter}
+        buttonActions={buttonActions}
+        buttonTitles={buttonTitles}
       />
     )
   }

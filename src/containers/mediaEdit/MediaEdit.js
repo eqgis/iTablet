@@ -13,15 +13,16 @@ import {
   ImagePicker,
 } from '../../components'
 import { SimpleDialog } from '../tabs/Friend'
-import { Toast, checkType } from '../../utils'
+import { Toast, checkType, OnlineServicesUtils } from '../../utils'
 import { FileTools } from '../../native'
-import { ConstPath } from '../../constants'
+import { ConstPath, UserType } from '../../constants'
 import styles from './styles'
 import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
 // import ImagePicker from 'react-native-image-crop-picker'
-import { SMediaCollector, SMap } from 'imobile_for_reactnative'
+import { SMediaCollector, SOnlineService, SMap, SCoordination } from 'imobile_for_reactnative'
+import * as RNFS from 'react-native-fs'
 
 const COLUMNS = 3
 const MAX_FILES = 9
@@ -32,6 +33,7 @@ export default class MediaEdit extends React.Component {
     user: Object,
     language: String,
     device: Object,
+    currentTask: Object,
   }
 
   constructor(props) {
@@ -48,6 +50,7 @@ export default class MediaEdit extends React.Component {
       description: this.info.description || '',
       httpAddress: this.info.httpAddress || '',
       mediaFilePaths: this.info.mediaFilePaths || [],
+      mediaServiceIds: this.info.mediaServiceIds || [],
     }
     this.state = {
       ...this.showInfo,
@@ -56,15 +59,32 @@ export default class MediaEdit extends React.Component {
     }
     this.mediaItemRef = []
     this.modifiedData = {} // 修改的信息
+    this._newMediaFiles = [] // 临时存放要提交的新多媒体文件
+    this._ids = [] // 临时存放要提交的新多媒体文件ID
+    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        this.servicesUtils = new SCoordination('online')
+        this.onlineServicesUtils = new OnlineServicesUtils('online')
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)){
+        this.servicesUtils = new SCoordination('iportal')
+        this.onlineServicesUtils = new OnlineServicesUtils('iportal')
+      }
+    }
   }
 
   componentDidMount() {
     (async function() {
       let paths = await this.dealData(this.state.mediaFilePaths)
+      this.checkMedia(paths)
       this.setState({
         paths,
       })
     }.bind(this)())
+  }
+
+  componentWillUnmount() {
+    this.servicesUtils = null
+    this.onlineServicesUtils = null
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -74,6 +94,50 @@ export default class MediaEdit extends React.Component {
       JSON.stringify(nextState) !== JSON.stringify(this.state) ||
       JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device)
     return shouldUpdate
+  }
+
+  /**
+   * 检测数据服务的图片是否存在，不存在则下载
+   */
+  checkMedia = async (paths = []) => {
+    // 图片数量和图片id数量保持一致
+    // if (paths.length !== this.info.mediaServiceIds.length) return
+    const URL = this.onlineServicesUtils.serverUrl + '/datas/%@/download'
+    for (let i = 0; i < paths.length; i++) {
+      let path = paths[i].uri + ''
+      // iTablet/User/ysl0917/Data/Media/8ffc99d6-1330-4794-82d5-a2daf9001021.jpg
+      // if (!path.includes(`/${this.props.user.currentUser.userName}/`)) {
+      //   let path1 = path.substr(0, path.indexOf('iTablet/User/') + 13)
+      //   let path2 = path.substr(path.indexOf('/Data/Media/'))
+
+      //   path = path1 + this.props.user.currentUser.userName + path2
+      //   paths[i].uri = path
+      // }
+      let id = this.info.mediaServiceIds[i]
+      if (!(await FileTools.fileIsExist(path)) && id !== undefined) {
+        let url = URL.replace('%@', id)
+        const downloadOptions = {
+          fromUrl: url,
+          toFile: path,
+          background: true,
+          ...Platform.select({
+            android: {
+              headers: {
+                cookie: await SOnlineService.getAndroidSessionID(),
+              },
+            },
+          }),
+          progress: res => {
+            if (res.progress === 100) {
+              this.mediaItemRef[i].forceUpdate()
+              // this.tableList.forceUpdate()
+            }
+          },
+        }
+        
+        await RNFS.downloadFile(downloadOptions).promise
+      }
+    }
   }
 
   dealData = async (mediaPaths = []) => {
@@ -103,19 +167,86 @@ export default class MediaEdit extends React.Component {
     return paths
   }
 
+  uploadMedia = async mediaFilePaths => {
+    let resourceIds = []
+    try {
+      if (GLOBAL.coworkMode && mediaFilePaths.length > 0) {
+        // _mediaPaths = [] // 保存修改名称后的图片地址
+        for (let i = 0 ; i < mediaFilePaths.length; i++) {
+          let name = mediaFilePaths[i].substr(mediaFilePaths[i].lastIndexOf('/') + 1)
+          // let suffix = mediaFilePaths[i].substr(mediaFilePaths[i].lastIndexOf('.') + 1)
+          //获取缩略图
+          // let resizedImageUri = await ImageResizer.createResizedImage(
+          //   mediaPaths[i],
+          //   60,
+          //   100,
+          //   'PNG',
+          //   1,
+          //   0,
+          //   userPath,
+          // )
+          let resourceId = await this.onlineServicesUtils.uploadFile(
+            mediaFilePaths[i],
+            name,
+            'PHOTOS',
+          )
+          // await RNFS.unlink(resizedImageUri.path)
+          // TODO是否删除原图
+          resourceIds.push(resourceId)
+
+          // let _newPath = `${mediaFilePaths[i].replace(name, resourceId)}.${suffix}`
+          // _mediaPaths.push(_newPath)
+        }
+        // 分享到群组中
+        if (resourceIds.length > 0 && this.props.currentTask.groupID) {
+          let result = await this.servicesUtils?.shareDataToGroup({
+            groupId: this.props.currentTask.groupID,
+            ids: resourceIds,
+          })
+          if (result.succeed) {
+            Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_SUCCESS)
+            this.cb && this.cb()
+          } else {
+            Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
+          }
+        }
+      }
+      return resourceIds
+    } catch(e) {
+      Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
+      return resourceIds
+    }
+  }
+
   saveHandler = () => {
     if (!this.info.layerName) {
       return
     }
     (async function() {
       try {
+        this._newMediaFiles = []
+        this._ids = []
         let modifiedData = [],
           deleteMedia = false // 用于删除所有图片后，提示是否删除该对象
         for (let key in this.info) {
+          if (key === 'mediaServiceIds') { // 后面处理ids
+            this._ids = this.state.mediaServiceIds.concat([])
+            continue
+          }
           if (this.showInfo[key] !== this.state[key]) {
             // 删除所有图片后，提示是否删除该对象
             if (key === 'mediaFilePaths' && this.state[key].length === 0) {
               deleteMedia = true
+            }
+
+            if (key === 'mediaFilePaths') {
+              this.state.mediaFilePaths.forEach(item => {
+                if (item.indexOf('/iTablet/User/') !== 0) {
+                  // 把新添加的图片记录下来
+                  // TODO 区分同一张图片删除后重新添加
+                  this._newMediaFiles.push(item)
+                }
+              })
             }
             modifiedData.push({
               name: key,
@@ -179,6 +310,22 @@ export default class MediaEdit extends React.Component {
           '/' +
           ConstPath.RelativeFilePath.Media,
       )
+      // 在线协作，上传到服务器
+      if (GLOBAL.coworkMode) {
+        if (this._newMediaFiles.length > 0) {
+          let _newIds = await this.uploadMedia(this._newMediaFiles)
+          this._ids = this._ids.concat(_newIds)
+          modifiedData.push({
+            name: 'MediaServiceIds',
+            value: this._ids,
+          })
+        } else {
+          modifiedData.push({
+            name: 'MediaServiceIds',
+            value: this._ids,
+          })
+        }
+      }
       let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : true
       // 若原本有图片，并有callout则不添加到地图上
       if (this.info.mediaFilePaths.length > 0) {
@@ -192,6 +339,10 @@ export default class MediaEdit extends React.Component {
         addToMap,
         isDelete,
       )
+      if (GLOBAL.coworkMode && result) {
+        this.info.mediaServiceIds = this._ids
+        this.setState({mediaServiceIds: this._ids})
+      }
       if (
         result &&
         Object.keys(modifiedData).length > 0 &&
@@ -220,16 +371,16 @@ export default class MediaEdit extends React.Component {
       maxSize: maxFiles,
       callback: async data => {
         if (data.length > 0) {
-          this.addMediaFiles(data)
+          this.addMediaFiles({mediaPaths: data})
         }
       },
     })
   }
 
-  addMediaFiles = async (images = []) => {
+  addMediaFiles = async ({mediaPaths = []}) => {
     let mediaFilePaths = [...this.state.mediaFilePaths]
 
-    images.forEach(item => {
+    mediaPaths.forEach(item => {
       let path
       if (typeof item === 'string') {
         path = item
@@ -259,8 +410,15 @@ export default class MediaEdit extends React.Component {
   deleteMediaFile = async index => {
     if (index >= this.state.mediaFilePaths.length) return
     let mediaFilePaths = [...this.state.mediaFilePaths]
+    // 删除图片同时删除对应service id
+    let mediaServiceIds = [...this.state.mediaServiceIds]
 
-    mediaFilePaths.splice(index, 1)
+    if (mediaFilePaths.length > index) {
+      mediaFilePaths.splice(index, 1)
+    }
+    if (mediaServiceIds.length > index) {
+      mediaServiceIds.splice(index, 1)
+    }
 
     let paths = await this.dealData(mediaFilePaths)
 
@@ -268,6 +426,7 @@ export default class MediaEdit extends React.Component {
     this.setState({
       mediaFilePaths,
       paths,
+      mediaServiceIds,
     })
   }
 
@@ -287,14 +446,14 @@ export default class MediaEdit extends React.Component {
     return (
       <MediaItem
         ref={ref => {
-          if (ref && ref.props.data !== '+') {
+          if (ref && ref.props.data.uri !== '+') {
             this.mediaItemRef[rowIndex * COLUMNS + cellIndex] = ref
           }
         }}
         data={item}
         index={rowIndex * COLUMNS + cellIndex}
         onPress={({ data, index }) => {
-          if (data === '+') {
+          if (data.uri === '+') {
             // this.openAlbum()
             this.popModal && this.popModal.setVisible(true)
           } else {
@@ -318,7 +477,7 @@ export default class MediaEdit extends React.Component {
         }}
         onLongPress={() => {
           for (let ref of this.mediaItemRef) {
-            if (ref.props.data !== '+') ref.setDelete && ref.setDelete(true)
+            if (ref.props.data.uri !== '+') ref.setDelete && ref.setDelete(true)
           }
           this.setState({
             showDelete: true,
@@ -331,10 +490,11 @@ export default class MediaEdit extends React.Component {
   renderAlbum = () => {
     let data = [...this.state.paths]
     if (!this.state.showDelete && this.state.paths.length < 9) {
-      data.push('+')
+      data.push({uri: '+', type: 'addMedia'})
     }
     return (
       <TableList
+        ref={ref => this.tableList = ref}
         style={[styles.tableView, { width: '100%' }]}
         cellStyle={styles.tableCellView}
         rowStyle={styles.tableRowStyle}
@@ -426,7 +586,7 @@ export default class MediaEdit extends React.Component {
               btnClick={() => {
                 if (this.state.showDelete) {
                   for (let ref of this.mediaItemRef) {
-                    if (ref && ref.props.data !== '+')
+                    if (ref && ref.props.data.uri !== '+')
                       ref.setDelete && ref.setDelete(false)
                   }
                   this.setState({

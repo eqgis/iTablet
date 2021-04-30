@@ -1,6 +1,8 @@
 import mapModules from './mapModules/index'
 import tabModules from './tabModules/index'
 
+const iportalMQIP = '192.168.11.206'
+
 export default {
   // name: '全功能移动GIS软件',
   name: 'SuperMap iTablet',
@@ -33,5 +35,16 @@ export default {
   infoServer: {
     url: 'https://www.supermapol.com/web/datas/235674088/download',
     fileName: 'ServerInfo.geojson',
+  },
+  messageServer: {
+    MSG_ADDRESS: `http://${iportalMQIP}:8190/iportal/web`,
+    MSG_IP: iportalMQIP,
+    MSG_Port: 5672,
+    MSG_HostName: '/',
+    MSG_UserName: 'admin',
+    MSG_Password: 'admin',
+    MSG_HTTP_Port: 15672,
+    FILE_UPLOAD_SERVER_URL : `http://${iportalMQIP}:8124/upload`,
+    FILE_DOWNLOAD_SERVER_URL: `http://${iportalMQIP}:8124/download`,
   },
 }

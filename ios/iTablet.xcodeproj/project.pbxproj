@@ -55,6 +55,7 @@
 		0A8F7C8721D1BA320003595E /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8F7C8421D1BA250003595E /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A95738C21BFA6D500B5853A /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A95738821BFA38500B5853A /* libRNFS.a */; };
 		0A9573C821C0B8EE00B5853A /* NativeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9573C721C0B8EE00B5853A /* NativeMethod.m */; };
+		0A9C78E925ECFF9100070B11 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		0AA134942267432500606012 /* publicMap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0AA134932267432500606012 /* publicMap.txt */; };
 		0ABCB8C42246056500992994 /* WeiXinUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCB8C32246056500992994 /* WeiXinUtils.m */; };
 		0ABCB8CA224606C100992994 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABCB8C8224605E300992994 /* libWeChatSDK.a */; };
@@ -72,7 +73,6 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		2A15229923979D9F00CBC452 /* SuperMapAR.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2A15229623979C1700CBC452 /* SuperMapAR.bundle */; };
 		2A5299AD2386A1AB0071AD06 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8EEDFB21104C7100F206BB /* Accelerate.framework */; };
 		2A89419622CADE2700AA0363 /* PlotLibData.zip in Resources */ = {isa = PBXBuildFile; fileRef = 2A89416022CADE2700AA0363 /* PlotLibData.zip */; };
@@ -755,7 +755,6 @@
 				0A8EEE1A21104C7100F206BB /* AVFoundation.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
-				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -796,6 +795,7 @@
 				77F6BE748AD84DFBAE668F38 /* CFNetwork.framework in Frameworks */,
 				554AD35F038E444CA9C593BD /* CoreFoundation.framework in Frameworks */,
 				B906E572BE854858B85C8635 /* SystemConfiguration.framework in Frameworks */,
+				0A9C78E925ECFF9100070B11 /* libReact.a in Frameworks */,
 				4E51DC0F37A544EEAA87110D /* Foundation.framework in Frameworks */,
 				0AFDDB0A23FE714A00E6BFE4 /* JRE.framework in Frameworks */,
 				D15AD4572D5244D593915653 /* UIKit.framework in Frameworks */,
@@ -2046,7 +2046,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -2054,7 +2054,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\nexport SKIP_BUNDLING\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};

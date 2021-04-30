@@ -204,8 +204,8 @@ export default class Friend extends Component {
       let servicesUtils = new OnlineServicesUtils(type)
       let data
       let Info
-      if (this.props.appConfig.infoServer) {
-        data = this.props.appConfig.infoServer
+      if (this.props.appConfig.messageServer) {
+        data = this.props.appConfig.messageServer
         if (
           data.MSG_IP &&
           data.MSG_Port &&
@@ -218,6 +218,8 @@ export default class Friend extends Component {
         ) {
           Info = data
         }
+      } else if (this.props.appConfig.infoServer) {
+        data = this.props.appConfig.infoServer
       } else {
         data = await servicesUtils.getPublicDataByName(
           '927528',

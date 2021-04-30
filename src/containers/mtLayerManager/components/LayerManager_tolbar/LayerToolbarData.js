@@ -3,6 +3,7 @@ import { getLanguage } from '../../../../language'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { ChunkType, ConstPath } from '../../../../constants'
 import { FileTools } from '../../../../native'
+import ServiceData from '../../../workspace/components/ToolBar/modules/serviceModule/ServiceData'
 
 // 获取外部导入目录下的xml
 async function getXmlTemplateData() {
@@ -430,10 +431,12 @@ function layereditsetting(language) {
 }
 
 function taggingData(language) {
+  let {data} = ServiceData.getData('SM_MAP_SERVICE')
   return [
     {
       title: '',
       data: [
+        ...data,
         {
           title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
           // '全副显示图层',

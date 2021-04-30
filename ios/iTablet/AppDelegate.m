@@ -118,11 +118,11 @@ static NSString* g_sampleCodeName = @"#";;
   self.window.rootViewController = _nav;
   [self.window makeKeyAndVisible];
   
-  if(IS_IPHONE){
-    self.allowRotation = UIInterfaceOrientationMaskPortrait;
-  }else{
-    self.allowRotation = UIInterfaceOrientationMaskLandscape;
-  }
+//  if(IS_IPHONE){
+//    self.allowRotation = UIInterfaceOrientationMaskPortrait;
+//  }else{
+//    self.allowRotation = UIInterfaceOrientationMaskLandscape;
+//  }
   [self addLaunchSlogan];
   
 
@@ -207,7 +207,7 @@ static NSString* g_sampleCodeName = @"#";;
   } else {
     #if DEBUG
 //    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.187.250"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.192.84"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

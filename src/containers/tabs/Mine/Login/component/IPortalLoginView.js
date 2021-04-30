@@ -18,8 +18,10 @@ import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 export default class IPortalLoginView extends React.Component {
   props: {
     language: string,
+    appConfig: any,
     login: () => {},
     connect: () => {},
+    setMessageService: () => void,
   }
 
   static defaultProps = {
@@ -40,15 +42,16 @@ export default class IPortalLoginView extends React.Component {
       showFileServiceSettings: false,
     }
 
-    this.iportalAddress = 'http://192.168.11.206:8190/iportal/web'
-    this.iportalMQIP = '116.196.115.69'
-    this.iportalMQPort = 5672
-    this.iportalMQManagePort = 15672
-    this.iportalHostName = '/'
-    this.iportalMQAdminName = 'admin'
-    this.iportalMQAdminPassword = 'admin'
-    this.iportalFileUploadURL = 'http://116.196.115.69:8124/upload'
-    this.iportalFileDownloadURL = 'http://116.196.115.69:8124/download'
+    this.iportalAddress = this.props.appConfig.messageServer.MSG_ADDRESS
+    // this.iportalMQIP = '116.196.115.69'
+    this.iportalMQIP = this.props.appConfig.messageServer.MSG_IP
+    this.iportalMQPort = this.props.appConfig.messageServer.MSG_Port
+    this.iportalMQManagePort = this.props.appConfig.messageServer.MSG_HTTP_Port
+    this.iportalHostName = this.props.appConfig.messageServer.MSG_HostName
+    this.iportalMQAdminName = this.props.appConfig.messageServer.MSG_UserName
+    this.iportalMQAdminPassword = this.props.appConfig.messageServer.MSG_Password
+    this.iportalFileUploadURL = this.props.appConfig.messageServer.FILE_UPLOAD_SERVER_URL
+    this.iportalFileDownloadURL = this.props.appConfig.messageServer.FILE_DOWNLOAD_SERVER_URL
   }
 
   //登录结果按钮状态及提示 add jiakai
@@ -69,6 +72,17 @@ export default class IPortalLoginView extends React.Component {
         url: this.iportalAddress,
         userName: this.iportalUser,
         password: this.iportalPassword,
+      })
+      this.props.setMessageService({
+        MSG_ADDRESS: this.iportalAddress,
+        MSG_IP: this.iportalMQIP,
+        MSG_Port: this.iportalMQPort,
+        MSG_HTTP_Port: this.iportalMQManagePort,
+        MSG_HostName: this.iportalHostName,
+        MSG_UserName: this.iportalMQAdminName,
+        MSG_Password: this.iportalMQAdminPassword,
+        FILE_UPLOAD_SERVER_URL: this.iportalFileUploadURL,
+        FILE_DOWNLOAD_SERVER_URL: this.iportalFileDownloadURL,
       })
     } else {
       return

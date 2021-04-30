@@ -11,9 +11,9 @@ import { UserType } from '../constants'
 /** 上传回调 */
 interface UploadCallBack {
   /** 开始回调 */
-  onBegin?: (res: any) => void
+  onBegin?: (res: RNFS.DownloadBeginCallbackResult) => void,
   /** 进度回调 */
-  onProgress?: (res: number) => void
+  onProgress?: (res: RNFS.DownloadBeginCallbackResult) => void,
 }
 
 /** 数据查询参数 */
@@ -116,7 +116,7 @@ export default class OnlineServicesUtils {
       cookie = await SOnlineService.getAndroidSessionID()
     }
 
-    this.cookie = cookie
+    this.cookie = cookie || ''
     return cookie
   }
 
@@ -329,7 +329,7 @@ export default class OnlineServicesUtils {
    * @param fileType 文件类型
    * @param callback 上传回调
    */
-  async uploadFile(filePath: string, fileName: string, fileType: keyof OnlineDataType, callback: UploadCallBack) {
+  async uploadFile(filePath: string, fileName: string, fileType: keyof OnlineDataType, callback?: UploadCallBack) {
     try {
       let id = await this._getUploadId(fileName, fileType)
       if (id) {
@@ -382,6 +382,36 @@ export default class OnlineServicesUtils {
   }
 
   /**
+   * 下载文件
+   * @param url
+   * @param toPath
+   * @param callback
+   * @returns 
+   */
+  async downloadFile(url: string, toPath: string, callback?: UploadCallBack): Promise<RNFS.DownloadResult | boolean>{
+    try {
+      const downloadOptions: RNFS.DownloadFileOptions = {
+        ...Platform.select({
+          android: {
+            headers: {
+              cookie: await this.getCookie() || '',
+            },
+          },
+        }),
+        fromUrl: url,
+        toFile: toPath || '',
+        background: true,
+        ...callback,
+      }
+  
+      const result = RNFS.downloadFile(downloadOptions).promise
+      return result
+    } catch (e) {
+      return false
+    }
+  }
+
+  /**
    * 根据文件名和类型获取上传id
    * @param fileName 
    * @param fileType 
@@ -405,6 +435,7 @@ export default class OnlineServicesUtils {
         }),
       })
       let result = await response.json()
+      console.warn(JSON.stringify(result))
       if (result.childID) {
         return result.childID
       } else {

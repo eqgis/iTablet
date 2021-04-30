@@ -1361,10 +1361,10 @@ export default handleActions(
       return state.setIn(['coworkInfo'], fromJS(coworkInfo))
     },
     [REHYDRATE]: (state: any, { payload }: any) => {
-      const _data = ModelUtils.checkModel(state, payload && payload.cowork)
+      const _data = ModelUtils.checkModel(state, payload && payload.cowork).toJSON()
       _data.currentGroup = {} // 重置当前群组
       _data.currentTask = {} // 重置当前任务
-      return _data
+      return fromJS(_data)
     },
   },
   initialState,

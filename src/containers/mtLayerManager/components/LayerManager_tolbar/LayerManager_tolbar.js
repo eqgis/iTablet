@@ -454,9 +454,9 @@ export default class LayerManager_tolbar extends React.Component {
   listAction = ({ section, type }) => {
     if (section.action) {
       (async function() {
-        await section.action(() => {
+        await section.action({ layerData: this.state.layerData, section, type, callback: () => {
           this.props.getLayers()
-        })
+        }})
         this.props.getLayers()
         this.setVisible(false)
       }.bind(this)())

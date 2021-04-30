@@ -29,6 +29,7 @@ export default class Login extends React.Component {
     navigation: Object,
     user: Object,
     setUser: () => {},
+    setMessageService: (data: any) => void,
     appConfig: Object,
   }
 
@@ -479,6 +480,8 @@ export default class Login extends React.Component {
           language={GLOBAL.language}
           login={this._loginIPortal}
           connect={this._connect}
+          setMessageService={this.props.setMessageService}
+          appConfig={this.props.appConfig}
           ref={ref => (this.iportalLogin = ref)}
         />
       )

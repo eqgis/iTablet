@@ -8,8 +8,6 @@ import {
   TouchableOpacity,
   View,
   Image,
-  BackHandler,
-  Platform,
 } from 'react-native'
 import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
@@ -84,7 +82,6 @@ export default class Camera extends React.Component {
     }
     SMap.setDynamicviewsetVisible(true)
     GLOBAL.isPad && Orientation.unlockAllOrientations()
-    BackHandler.removeEventListener('hardwareBackPress', this.back)
   }
 
   componentDidMount() {
@@ -96,13 +93,7 @@ export default class Camera extends React.Component {
           ConstPath.RelativeFilePath.Media,
       )
       SMediaCollector.initMediaCollector(targetPath)
-      Platform.OS === 'android' &&
-        BackHandler.addEventListener('hardwareBackPress', this.back)
     }.bind(this)())
-  }
-
-  back = () => {
-    NavigationService.goBack('Camera')
   }
 
   /** 照相 **/
@@ -215,11 +206,7 @@ export default class Camera extends React.Component {
       result = await SMediaCollector.updateTour(this.props.currentLayer.name)
     }
     if(this.atcb){
-      this.atcb({
-        datasourceName: this.datasourceAlias,
-        datasetName: this.datasetName,
-        mediaPaths,
-      })
+      this.atcb()
     }
     return result
   }
@@ -232,11 +219,7 @@ export default class Camera extends React.Component {
       let result = false
       if (this.cb && typeof this.cb === 'function') {
         result = true
-        this.cb({
-          datasourceName: this.datasourceAlias,
-          datasetName: this.datasetName,
-          mediaPaths: [sourcePath],
-        })
+        this.cb([sourcePath])
       } else {
         result = await this.addMedia([sourcePath])
       }
@@ -268,11 +251,7 @@ export default class Camera extends React.Component {
             mediaPaths.push(item.uri)
           })
           if (this.cb && typeof this.cb === 'function') {
-            this.cb({
-              datasourceName: this.datasourceAlias,
-              datasetName: this.datasetName,
-              mediaPaths: mediaPaths,
-            })
+            this.cb(mediaPaths)
             NavigationService.goBack()
           } else {
             let result = await this.addMedia(mediaPaths)

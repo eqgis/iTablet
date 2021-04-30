@@ -402,6 +402,8 @@ export default class LayerAttributeTable extends React.Component {
       typeof this.props.changeAction === 'function'
     ) {
       this.props.changeAction(data)
+      // 修改之后 刷新上一页数据
+      GLOBAL.NEEDREFRESHTABLE = true
     }
   }
 

@@ -88,7 +88,7 @@ export default class LayerSelectionAttribute extends React.Component {
         JSON.stringify(this.props.layerSelection) ||
       JSON.stringify(nextProps.attributesHistory) !==
         JSON.stringify(nextProps.attributesHistory) ||
-      this.props.isShowSystemFields !== nextProps.isShowSystemFields
+      this.props.isShowSystemFields !== nextProps.isShowSystemFields || GLOBAL.NEEDREFRESHTABLE
     ) {
       return true
     }
@@ -97,10 +97,14 @@ export default class LayerSelectionAttribute extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (
-      prevProps.layerSelection &&
-      JSON.stringify(prevProps.layerSelection) !==
+      GLOBAL.NEEDREFRESHTABLE || (
+        prevProps.layerSelection &&
+        JSON.stringify(prevProps.layerSelection) !==
         JSON.stringify(this.props.layerSelection)
+      )
     ) {
+      // GLOBAL.NEEDREFRESHTABLE 在搜索页修改了数据时 为true
+      GLOBAL.NEEDREFRESHTABLE = false
       SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name).then(result => this.isMediaLayer = result)
       let checkData = this.checkToolIsViable()
       // this.isInit = true

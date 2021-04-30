@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { Component } from 'react'
 import {  View, Image, Text, TouchableOpacity, Animated, Platform } from 'react-native'
 import { getThemeAssets } from '../../assets'
@@ -315,12 +316,14 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/>
           <Text style={{paddingLeft: scaleSize(8)}}>{GLOBAL.language === 'CN' ?
             getLanguage(GLOBAL.language).Profile.X_COORDINATE : 'X'}</Text>
-          <Input style={styles.input} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
+          <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={longitude}
             onChangeText={text => {
               this.setState({longitude: this.clearNoNum(text)})
             }}
             onClear={() => {
+              // 多次clear value都是0 不会引起Input更新 但是Input自己把value设置为了‘’
+              // 所以值为0时 不显示clear按钮
               this.setState({longitude: "0"})
             }}/>
         </View>
@@ -328,7 +331,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/>
           <Text style={{paddingLeft: scaleSize(8)}}>{GLOBAL.language === 'CN' ?
             getLanguage(GLOBAL.language).Profile.Y_COORDINATE : 'Y'}</Text>
-          <Input style={styles.input} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
+          <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={latitude}
             onChangeText={text => {
               this.setState({latitude: this.clearNoNum(text)})
@@ -340,7 +343,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/>
           <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
-          <Input style={styles.input} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
+          <Input style={styles.input} showClear={height != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={height}
             onChangeText={text => {
               this.setState({height: this.clearNoNum(text)})

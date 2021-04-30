@@ -129,7 +129,7 @@ import DatumPointCalibration from '../../../arDatumPointCalibration/'
 
 GLOBAL.markerTag = 118082
 const SMeasureViewiOS = NativeModules.SMeasureAreaView
-const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
+// const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
 const TOP_DEFAULT = Platform.select({
   android: screen.getHeaderHeight('PORTRAIT') + scaleSize(8),
   // ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
@@ -604,20 +604,21 @@ export default class MapView extends React.Component {
     if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
       (async function () {
         //提供测量等界面添加按钮及提示语的回调方法 add jiakai
-        if (Platform.OS === 'ios') {
-          iOSEventEmi.addListener(
-            'com.supermap.RN.SMeasureAreaView.ADD',
-            this.onAdd,
-          )
-          iOSEventEmi.addListener(
-            'com.supermap.RN.SMeasureAreaView.CLOSE',
-            this.onshowLog,
-          )
-          iOSEventEmi.addListener(
-            'onCurrentHeightChanged',
-            this.onCurrentHeightChanged,
-          )
-        } else {
+        // if (Platform.OS === 'ios') {
+          // iOSEventEmi.addListener(
+          //   'com.supermap.RN.SMeasureAreaView.ADD',
+          //   this.onAdd,
+          // )
+          // iOSEventEmi.addListener(
+          //   'com.supermap.RN.SMeasureAreaView.CLOSE',
+          //   this.onshowLog,
+          // )
+          // iOSEventEmi.addListener(
+          //   'onCurrentHeightChanged',
+          //   this.onCurrentHeightChanged,
+          // )
+        // } else {
+
           SMeasureAreaView.setAddListener({
             callback: async result => {
               if (result) {
@@ -641,7 +642,7 @@ export default class MapView extends React.Component {
               })
             },
           })
-        }
+        // }
 
         //没有动画回调的话提示语默认5秒后开启
         if (!this.state.is_showLog) {
@@ -702,13 +703,6 @@ export default class MapView extends React.Component {
     if (result.none) {
       this.setState({ dioLog: '', showLog: false })
     }
-  }
-
-  /**高度变化 */
-  onCurrentHeightChanged = params => {
-    this.setState({
-      currentHeight: params.currentHeight,
-    })
   }
 
   componentDidUpdate(prevProps) {
@@ -926,21 +920,21 @@ export default class MapView extends React.Component {
 
     if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
       //移除监听
-      DeviceEventEmitter.removeListener(
-        'onCurrentHeightChanged',
-        this.onCurrentHeightChanged,
-      )
+      // DeviceEventEmitter.removeListener(
+      //   'onCurrentHeightChanged',
+      //   this.onCurrentHeightChanged,
+      // )
 
-      if (Platform.OS === 'ios') {
-        iOSEventEmi.removeListener(
-          'com.supermap.RN.SMeasureAreaView.ADD',
-          this.onAdd,
-        )
-        iOSEventEmi.removeListener(
-          'com.supermap.RN.SMeasureAreaView.CLOSE',
-          this.onshowLog,
-        )
-      }
+      // if (Platform.OS === 'ios') {
+      //   iOSEventEmi.removeListener(
+      //     'com.supermap.RN.SMeasureAreaView.ADD',
+      //     this.onAdd,
+      //   )
+      //   iOSEventEmi.removeListener(
+      //     'com.supermap.RN.SMeasureAreaView.CLOSE',
+      //     this.onshowLog,
+      //   )
+      // }
     }
   }
 
@@ -2485,18 +2479,13 @@ export default class MapView extends React.Component {
   }
 
   measure = params => {
-    if (Platform.OS === 'android') {
-      this.listeners = SARMap.addMeasureStatusListeners({
-        infoListener: async result => {
-          this.onshowLog(result)
-        },
-      })
-    }else{
-      // iOSEventEmi.addListener(
-      //   'com.supermap.RN.SMeasureAreaView.CLOSE',
-      //   this.onshowLog,
-      // )
-    }
+    
+    this.listeners = SARMap.addMeasureStatusListeners({
+      infoListener: async result => {
+        this.onshowLog(result)
+      },
+    })
+    
     this.isMeasure = false
     this.isDrawing = false
     this.isCollect = false
@@ -4195,6 +4184,7 @@ export default class MapView extends React.Component {
     SARMap.stopLocation()
     SMeasureAreaView.cancelCurrent()
     SARMap.clearMeasure()
+    SARMap.removeOnHeightChangeListeners()
     if (Platform.OS === 'ios') {
       SMeasureAreaView.setMeasureMode('arCollect')
       // iOSEventEmi.removeListener(
@@ -4202,7 +4192,6 @@ export default class MapView extends React.Component {
       //   this.onshowLog,
       // )
     }else{
-      SARMap.removeOnHeightChangeListeners()
       this.listeners && this.listeners.infoListener.remove()
       SARMap.showMeasureView(false)
       SARMap.showTrackView(false)

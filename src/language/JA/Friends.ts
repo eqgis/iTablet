@@ -234,6 +234,7 @@ const Friends: typeof CN.Friends = {
   RESOURCE_DELETE_INFO: '選択したデータを削除しますか',
   RESOURCE_SELECT_MODULE: 'テンプレートを選択してください',
   RESOURCE_DOWNLOAD_INFO: 'タスクをダウンロードしてください',
+  RESOURCE_NOT_EXIST: 'Resource doesn\'t exist', // need to translate
 
   TASK_DOWNLOAD: 'タスクのダウンロード',
   TASK_DOWNLOADING: 'ダウンロード中',

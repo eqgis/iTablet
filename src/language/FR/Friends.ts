@@ -233,6 +233,7 @@ const Friends: typeof CN.Friends = {
   RESOURCE_DELETE_INFO: 'Êtes-vous sûr de vouloir supprimer les données sélectionnées',
   RESOURCE_SELECT_MODULE: 'Veuillez sélectionner un modèle',
   RESOURCE_DOWNLOAD_INFO: 'Veuillez télécharger la tâche',
+  RESOURCE_NOT_EXIST: 'Resource doesn\'t exist', // need to translate
 
   TASK_DOWNLOAD: 'Télécharger la tâche',
   TASK_DOWNLOADING: 'Téléchargement',

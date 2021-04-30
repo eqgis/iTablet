@@ -233,6 +233,7 @@ const Friends: typeof CN.Friends = {
   RESOURCE_DELETE_INFO: 'Are you sure you want to delete the selected data',
   RESOURCE_SELECT_MODULE: 'Please select a template',
   RESOURCE_DOWNLOAD_INFO: 'Please download the task',
+  RESOURCE_NOT_EXIST: 'Resource doesn\'t exist',
 
   TASK_DOWNLOAD: 'Download Task',
   TASK_DOWNLOADING: 'Downloading',

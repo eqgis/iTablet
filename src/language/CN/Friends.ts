@@ -231,6 +231,7 @@ const Friends = {
   RESOURCE_DELETE_INFO: '是否删除被选中的数据',
   RESOURCE_SELECT_MODULE: '请选择模板',
   RESOURCE_DOWNLOAD_INFO: '请下载任务',
+  RESOURCE_NOT_EXIST: '资源不存在',
 
   TASK_DOWNLOAD: '下载任务',
   TASK_DOWNLOADING: '下载中',

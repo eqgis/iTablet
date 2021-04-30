@@ -163,16 +163,18 @@ export default class LayerAttributeTabs extends React.Component {
         await this.preAction()
       }
       if (this.state.isCollection) {
-        let id = await SMap.getCurrentGeometryID(GLOBAL.currentLayer.name)
+        const layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
+        let id = await SMap.getCurrentGeometryID(layerInfo.path)
+        // let id = await SMap.getCurrentGeometryID(GLOBAL.currentLayer.name)
         this.props.setSelection && this.props.setSelection([{
           layerInfo: {
-            path: GLOBAL.currentLayer.name,
+            path: layerInfo.path,
             type: 149,
             selectTable: true,
             Visible: true,
             editable: false,
-            caption: GLOBAL.currentLayer.name,
-            name: GLOBAL.currentLayer.name,
+            caption: layerInfo.name,
+            name: layerInfo.name,
           },
           ids: [id],
         }])
@@ -431,12 +433,16 @@ export default class LayerAttributeTabs extends React.Component {
       }
     }
     let result
+    const layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
     // 若包含多媒体图片，则删除
     if (hasMedia && smID >= 0) {
-      result = await SMediaCollector.deleteMedia(GLOBAL.SelectedSelectionAttribute.layerInfo.path, smID)
+      result = await SMediaCollector.deleteMedia(layerInfo.path, smID)
     } else {
-      result = await LayerUtils.deleteAttributeByLayer(
-        GLOBAL.SelectedSelectionAttribute.layerInfo.path,
+      // result = await LayerUtils.deleteAttributeByLayer(
+      //   layerInfo.path,
+      //   this.state.currentIndex, this.state.isCollection)
+      result = await LayerUtils.deleteSelectionAttributeByLayer(
+        layerInfo.path,
         this.state.currentIndex, this.state.isCollection)
     }
     if (result) {

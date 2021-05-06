@@ -119,6 +119,7 @@ export default class OnlineDataItem extends Component {
             }}
           >
             <Text
+              numberOfLines={1}
               style={{
                 marginTop: scaleSize(5),
                 color: color.fontColorBlack,

@@ -104,8 +104,6 @@ import {
   StyleSheet,
   PanResponder,
   NativeModules,
-  NativeEventEmitter,
-  DeviceEventEmitter,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -493,6 +491,7 @@ export default class MapView extends React.Component {
       GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
     }
 
+    
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
 
     if (GLOBAL.isLicenseValid) {
@@ -600,7 +599,6 @@ export default class MapView extends React.Component {
       })
       GLOBAL.SimpleDialog.setVisible(true)
     }
-
     if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
       (async function () {
         //提供测量等界面添加按钮及提示语的回调方法 add jiakai
@@ -4184,7 +4182,7 @@ export default class MapView extends React.Component {
     SARMap.stopLocation()
     SMeasureAreaView.cancelCurrent()
     SARMap.clearMeasure()
-    SARMap.removeOnHeightChangeListeners()
+    // SARMap.removeOnHeightChangeListeners()
     if (Platform.OS === 'ios') {
       SMeasureAreaView.setMeasureMode('arCollect')
       // iOSEventEmi.removeListener(

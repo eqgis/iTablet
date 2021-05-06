@@ -916,14 +916,14 @@ async function openTemplate(item) {
 
               params.setToolbarVisible(false)
               params.setContainerLoading && params.setContainerLoading(false)
-              Toast.show(getLanguage(params.language).Prompt.SWITCHED_TEMPLATE)
+              Toast.show(getLanguage(params.language).Prompt.CREATE_SUCCESSFULLY)
             } else {
               params.setContainerLoading && params.setContainerLoading(false)
-              Toast.show(ConstInfo.TEMPLATE_CHANGE_FAILED)
+              Toast.show(ConstInfo.CREATE_FAILED)
             }
           })
       } catch (error) {
-        Toast.show(ConstInfo.TEMPLATE_CHANGE_FAILED)
+        Toast.show(ConstInfo.CREATE_FAILED)
         params.setContainerLoading && params.setContainerLoading(false)
       }
       NavigationService.goBack()

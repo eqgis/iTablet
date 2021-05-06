@@ -125,7 +125,7 @@ export default class FilterList extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: color.background,
+          backgroundColor: color.white,
         }}
       >
         <View
@@ -133,7 +133,7 @@ export default class FilterList extends React.Component {
             width: '100%',
             height: scaleSize(60),
             flexDirection: 'row',
-            borderBottomColor: color.gray,
+            borderBottomColor: color.separateColorGray,
             borderBottomWidth: scaleSize(2),
           }}
         >
@@ -190,7 +190,7 @@ export default class FilterList extends React.Component {
               top: scaleSize(60),
               width: '100%',
               height: '100%',
-              backgroundColor: color.background,
+              backgroundColor: color.white,
             }}
             onPress={() => {
               this.setState({

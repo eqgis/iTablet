@@ -138,6 +138,7 @@ export default class LayerAttributeTabs extends React.Component {
       canBeRevert: false,
 
       isShowSystemFields: true,
+      //采集标注后属性为true 默认false add jiakai
       isCollection: params && params.isCollection ? params.isCollection : false, // Selection为空，查询最后一条
     }
 

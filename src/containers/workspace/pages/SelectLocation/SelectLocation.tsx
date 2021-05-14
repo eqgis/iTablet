@@ -204,7 +204,7 @@ export default class SelectLocation extends React.Component<Props, State>{
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          title: getLanguage().Common.LOCATION_FROM_MAP,
+          title: getLanguage().Profile.MAP_AR_DATUM_MAP_SELECT_POINT,
           backAction: () => {
             this.back()
           },

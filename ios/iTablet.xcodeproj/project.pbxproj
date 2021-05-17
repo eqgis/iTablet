@@ -110,6 +110,7 @@
 		614D856D23C71A1900BDEC31 /* HorizonalFinemapping.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 614D856423C71A1900BDEC31 /* HorizonalFinemapping.prototxt */; };
 		614D856E23C71A1900BDEC31 /* Segmentation.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = 614D856523C71A1900BDEC31 /* Segmentation.caffemodel */; };
 		614D856F23C71A1900BDEC31 /* CharacterRecognization.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 614D856623C71A1900BDEC31 /* CharacterRecognization.prototxt */; };
+		665DD0FC2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 665DD0FB2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m */; };
 		668A3F67262BDDA500BAE2FF /* JKVValue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5E262BDCC100BAE2FF /* JKVValue.framework */; };
 		668A3F68262BDDA500BAE2FF /* JKVValue.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5E262BDCC100BAE2FF /* JKVValue.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		668A3F6A262BDDB500BAE2FF /* RMQClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5C262BDCC100BAE2FF /* RMQClient.framework */; };
@@ -537,6 +538,55 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		6606184C264B692500638D30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6606183D264B692000638D30 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF34489A14EB99A700D8449F;
+			remoteInfo = LibUGC;
+		};
+		6606184E264B692500638D30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6606183D264B692000638D30 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF33B1A016F1978A00A19B73;
+			remoteInfo = LibUGC_Base;
+		};
+		66061850264B692500638D30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6606183D264B692000638D30 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF33B46016F1A08700A19B73;
+			remoteInfo = LibUGC_2D;
+		};
+		66061852264B692500638D30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6606183D264B692000638D30 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF33B61816F1F4B100A19B73;
+			remoteInfo = LibUGC_3D;
+		};
+		66061854264B692500638D30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6606183D264B692000638D30 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03BDDAED1714098D003EC801;
+			remoteInfo = Object_3D;
+		};
+		66061856264B692500638D30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6606183D264B692000638D30 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 00F6D375175F20A9008963A0;
+			remoteInfo = Objects_iOS;
+		};
+		66061858264B692500638D30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6606183D264B692000638D30 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 005EF27D175F5F96005433E1;
+			remoteInfo = Super23D;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -706,6 +756,9 @@
 		616F9FBF550E4BF498A86BE9 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		64EBB0CEFDCC424896C92D54 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		6576741CC21E433D89E8DBD7 /* libAMapGeolocation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAMapGeolocation.a; sourceTree = "<group>"; };
+		6606183D264B692000638D30 /* LibUGC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibUGC.xcodeproj; path = ../../../../../../../Volumes/ExternData/code/sourceCode/UGC/Builds/64_arm_iphone/LibUGC/LibUGC.xcodeproj; sourceTree = "<group>"; };
+		665DD0FA2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+NBUIKitMainThreadGuard.h"; sourceTree = "<group>"; };
+		665DD0FB2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+NBUIKitMainThreadGuard.m"; sourceTree = "<group>"; };
 		668A3F5C262BDCC100BAE2FF /* RMQClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RMQClient.framework; sourceTree = "<group>"; };
 		668A3F5D262BDCC100BAE2FF /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		668A3F5E262BDCC100BAE2FF /* JKVValue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JKVValue.framework; sourceTree = "<group>"; };
@@ -1274,6 +1327,20 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
+		6606183E264B692000638D30 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6606184D264B692500638D30 /* libLibUGC.a */,
+				6606184F264B692500638D30 /* libLibUGC_Base.a */,
+				66061851264B692500638D30 /* libLibUGC_2D.a */,
+				66061853264B692500638D30 /* libLibUGC_3D.a */,
+				66061855264B692500638D30 /* libObject_3D.a */,
+				66061857264B692500638D30 /* libObjects_iOS.a */,
+				66061859264B692500638D30 /* Super23D.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1286,6 +1353,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6606183D264B692000638D30 /* LibUGC.xcodeproj */,
 				0A1A200E22D5E62D0014058A /* RCTCameraRoll.xcodeproj */,
 				0A334D28229797F800E4F302 /* Supermap.xcodeproj */,
 				0A11D99721F885A400AFE6D6 /* ART.xcodeproj */,
@@ -1372,6 +1440,8 @@
 				0ABCB8C32246056500992994 /* WeiXinUtils.m */,
 				0A64601821FEB82C00928DAD /* AppUtils.h */,
 				0A64601921FEB82C00928DAD /* AppUtils.m */,
+				665DD0FA2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.h */,
+				665DD0FB2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1459,6 +1529,10 @@
 				{
 					ProductGroup = 0A334D18229793C600E4F302 /* Products */;
 					ProjectRef = 9B178A29AEDA4320AF6CC78A /* imageCropPicker.xcodeproj */;
+				},
+				{
+					ProductGroup = 6606183E264B692000638D30 /* Products */;
+					ProjectRef = 6606183D264B692000638D30 /* LibUGC.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1977,6 +2051,55 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		6606184D264B692500638D30 /* libLibUGC.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLibUGC.a;
+			remoteRef = 6606184C264B692500638D30 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6606184F264B692500638D30 /* libLibUGC_Base.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLibUGC_Base.a;
+			remoteRef = 6606184E264B692500638D30 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		66061851264B692500638D30 /* libLibUGC_2D.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLibUGC_2D.a;
+			remoteRef = 66061850264B692500638D30 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		66061853264B692500638D30 /* libLibUGC_3D.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLibUGC_3D.a;
+			remoteRef = 66061852264B692500638D30 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		66061855264B692500638D30 /* libObject_3D.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libObject_3D.a;
+			remoteRef = 66061854264B692500638D30 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		66061857264B692500638D30 /* libObjects_iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libObjects_iOS.a;
+			remoteRef = 66061856264B692500638D30 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		66061859264B692500638D30 /* Super23D.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Super23D.app;
+			remoteRef = 66061858264B692500638D30 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2051,7 +2174,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -2059,7 +2182,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\nexport SKIP_BUNDLING\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
@@ -2084,6 +2207,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				665DD0FC2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				0A9573C821C0B8EE00B5853A /* NativeMethod.m in Sources */,

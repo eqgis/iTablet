@@ -103,12 +103,12 @@ export default class MeasureAreaView extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
         action: async ()=>{
-          let is = await SMeasureAreaView.isMeasuring()
+          let is = await SARMap.isMeasuring()
           if(is){
-            SMeasureAreaView.cancelCurrent()
+            SARMap.cancelCurrent()
           }
           if (!disablePoint) {
-            SMeasureAreaView.setMeasureMode('DRAW_POINT'), this.setState({
+            SARMap.setMeasureMode('DRAW_POINT'), this.setState({
               showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
                 GLOBAL.language,
               ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,

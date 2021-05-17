@@ -100,6 +100,9 @@ const Prompt = {
   TURN_ON: '是',
   CREATE_FAILED: '创建失败',
   INVALID_DATASET_NAME: '数据集名称不合法或重名',
+  SAVE_FAIL_POINT:'非法点集合长度,点集合对象长度必须大于等于1',
+  SAVE_LINE_FAIL: '非法点集合长度,点集合对象长度必须大于等于2',
+  SAVE_REGION_FAIL: '非法点集合长度,点集合对象长度必须大于等于3',
 
   PLEASE_CHOOSE_POINT_LAYER: '请先选择点图层采集',
   PLEASE_CHOOSE_LINE_LAYER: '请先选择线图层采集',

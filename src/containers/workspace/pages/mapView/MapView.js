@@ -617,20 +617,20 @@ export default class MapView extends React.Component {
           // )
         // } else {
 
-          SMeasureAreaView.setAddListener({
-            callback: async result => {
-              if (result) {
-                // Toast.show("add******")
-                if (this.state.isfirst) {
-                  this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
-                } else {
-                  this.setState({ showADD: true })
-                }
-              } else {
-                this.setState({ showADD: false, showADDPoint: false })
-              }
-            },
-          })
+          // SMeasureAreaView.setAddListener({
+          //   callback: async result => {
+          //     if (result) {
+          //       // Toast.show("add******")
+          //       if (this.state.isfirst) {
+          //         this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
+          //       } else {
+          //         this.setState({ showADD: true })
+          //       }
+          //     } else {
+          //       this.setState({ showADD: false, showADDPoint: false })
+          //     }
+          //   },
+          // })
 
           SARMap.addOnHeightChangeListener({
             onHeightChange: height => {
@@ -1160,13 +1160,13 @@ export default class MapView extends React.Component {
   }
 
   _onLoad = async () => {
-    if (Platform.OS === 'ios') {
-      SMeasureAreaView.setMeasureMode('arCollect')
-    }else{
-      SARMap.showMeasureView(false)
-      SARMap.showTrackView(false)
-      SARMap.showPointCloud(false)
-    }
+    // if (Platform.OS === 'ios') {
+    //   SARMap.setMeasureMode('arCollect')
+    // }else{
+    SARMap.showMeasureView(false)
+    SARMap.showTrackView(false)
+    SARMap.showPointCloud(false)
+    // }
   }
 
   /**
@@ -1511,7 +1511,7 @@ export default class MapView extends React.Component {
               SARMap.showPointCloud(false)
               SARMap.dispose()
             }
-            SMeasureAreaView.dispose()
+            SARMap.dispose()
           }
         })
       } else {
@@ -1531,7 +1531,7 @@ export default class MapView extends React.Component {
               SARMap.showPointCloud(false)
               SARMap.dispose()
             }
-            SMeasureAreaView.dispose()
+            SARMap.dispose()
           }
         } catch (e) {
           GLOBAL.clickWait = false
@@ -2477,13 +2477,27 @@ export default class MapView extends React.Component {
   }
 
   measure = params => {
-    
+    debugger
     this.listeners = SARMap.addMeasureStatusListeners({
-      infoListener: async result => {
+      infoListener: result => {
+        debugger
         this.onshowLog(result)
       },
+      addListener: async result => {
+        if (result) {
+          debugger
+          // Toast.show("add******")
+          if (this.state.isfirst) {
+            this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
+          } else {
+            this.setState({ showADD: true })
+          }
+        } else {
+          this.setState({ showADD: false, showADDPoint: false })
+        }
+      },
     })
-    
+       
     this.isMeasure = false
     this.isDrawing = false
     this.isCollect = false
@@ -2493,32 +2507,32 @@ export default class MapView extends React.Component {
     this.measureType = params.measureType
     if (this.measureType) {
       if (this.measureType === 'measureArea') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+        SARMap.setMeasureMode('MEASURE_AREA')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE
       } else if (this.measureType === 'measureLength') {
-        SMeasureAreaView.setMeasureMode('MEASURE_LINE')
+        SARMap.setMeasureMode('MEASURE_LINE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_LENGTH
       } else if (this.measureType === 'drawLine') {
-        SMeasureAreaView.setMeasureMode('DRAW_LINE')
+        SARMap.setMeasureMode('DRAW_LINE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
       } else if (this.measureType === 'arDrawArea') {
-        SMeasureAreaView.setMeasureMode('DRAW_AREA')
+        SARMap.setMeasureMode('DRAW_AREA')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
       } else if (this.measureType === 'arDrawPoint') {
-        SMeasureAreaView.setMeasureMode('DRAW_POINT')
+        SARMap.setMeasureMode('DRAW_POINT')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
       } else if (this.measureType === 'arMeasureHeight') {
-        SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
+        SARMap.setMeasureMode('MEASURE_HEIGHT')
         this.setState({
           showCurrentHeightView: true,
         })
@@ -2526,27 +2540,27 @@ export default class MapView extends React.Component {
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
       } else if (this.measureType === 'arMeasureCircle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_CIRCLE')
+        SARMap.setMeasureMode('MEASURE_AREA_CIRCLE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE
       } else if (this.measureType === 'arMeasureRectangle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_RECTANGLE')
+        SARMap.setMeasureMode('MEASURE_AREA_RECTANGLE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE
       } else if (this.measureType === 'measureAngle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_ANGLE')
+        SARMap.setMeasureMode('MEASURE_AREA_ANGLE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_ANGLE
       } else if (this.measureType === 'arMeasureCuboid') {
-        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CUBOID')
+        SARMap.setMeasureMode('MEASURE_VOLUME_CUBOID')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE
       } else if (this.measureType === 'arMeasureCylinder') {
-        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CYLINDER')
+        SARMap.setMeasureMode('MEASURE_VOLUME_CYLINDER')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE
@@ -2592,19 +2606,19 @@ export default class MapView extends React.Component {
         this.point = params.point
         this.isCollect = true
         this.isnew = false
-        if (Platform.OS === 'android') {
-          SARMap.showMeasureView(false)
-          SARMap.showTrackView(true)
-          SARMap.showPointCloud(true)
-        }else{
-          SMeasureAreaView.setMeasureMode('arCollect')
-        }
+        // if (Platform.OS === 'android') {
+        SARMap.showMeasureView(false)
+        SARMap.showTrackView(true)
+        SARMap.showPointCloud(true)
+        // }else{
+        // SARMap.setMeasureMode('arCollect')
+        // }
       }else{
-        if (Platform.OS === 'android') {
-          SARMap.showMeasureView(true)
-          SARMap.showTrackView(false)
-          SARMap.showPointCloud(true)
-        }
+        // if (Platform.OS === 'android') {
+        SARMap.showTrackView(false)
+        SARMap.showMeasureView(true)
+        SARMap.showPointCloud(true)
+        // }
       }
 
       if (
@@ -2624,12 +2638,12 @@ export default class MapView extends React.Component {
         this.canContinuousDraw = true
       }
 
-      if (this.isDrawing) {
-        SMeasureAreaView.initMeasureCollector(
-          this.datasourceAlias,
-          this.datasetName,
-        )
-      }
+      // if (this.isDrawing) {
+      //   SMeasureAreaView.initMeasureCollector(
+      //     this.datasourceAlias,
+      //     this.datasetName,
+      //   )
+      // }
 
       if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
       let datasourceAlias = this.props.currentLayer.datasourceAlias
@@ -2647,7 +2661,7 @@ export default class MapView extends React.Component {
         datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
         datasetName = 'Default_Tagging'
       }
-      SMeasureAreaView.setSavePath(datasourceAlias, datasetName)
+      SARMap.setMeasurePath(datasourceAlias, datasetName)
 
       this.setState({ showArMappingButton: true, showSave: this.showSave, isfirst: true, showGenera: true, isDrawing: this.isDrawing,isCollect:this.isCollect, isnew:this.isnew,canContinuousDraw: this.canContinuousDraw,measureType:this.measureType ,isMeasure:this.isMeasure})
     }
@@ -3133,17 +3147,17 @@ export default class MapView extends React.Component {
         : Orientation.unlockAllOrientations()
 
       if (this.state.isAR) {
-        if (Platform.OS === 'android') {
-          SARMap.onPause()
-        } else {
-          SMeasureAreaView.onPause()
-        }
+        // if (Platform.OS === 'android') {
+        SARMap.onPause()
+        // } else {
+        //   SMeasureAreaView.onPause()
+        // }
       } else {
-        if (Platform.OS === 'android') {
-          SARMap.onResume()
-        } else {
-          SMeasureAreaView.onResume()
-        }
+        // if (Platform.OS === 'android') {
+        SARMap.onResume()
+        // } else {
+        //   SMeasureAreaView.onResume()
+        // }
       }
 
       return _isAR
@@ -4085,8 +4099,8 @@ export default class MapView extends React.Component {
 
   /** 设置 */
   setting = async () => {
-    let isSnap = await SMeasureAreaView.getIsSnapRange()
-    let tole = await SMeasureAreaView.getSnapTolerance()
+    let isSnap = await SARMap.getIsSnapRange()
+    let tole = await SARMap.getSnapTolerance()
     let showGenera = this.state.showGenera
     NavigationService.navigate('CollectSceneFormSet', {
       point: this.point,
@@ -4105,7 +4119,7 @@ export default class MapView extends React.Component {
       tole: tole,
       showGenera: showGenera,
       autoCatch: value => {
-        SMeasureAreaView.setIsSnapRange(value)
+        SARMap.setIsSnapRange(value)
       },
       setTolerance: value => {
         if (value > 100) {
@@ -4114,7 +4128,7 @@ export default class MapView extends React.Component {
         if (value < 0) {
           value = 0
         }
-        SMeasureAreaView.setSnapTolerance(value)
+        SARMap.setSnapTolerance(value)
       },
       showGeneracb: value => {
         this.setState({ showGenera: value })
@@ -4142,14 +4156,14 @@ export default class MapView extends React.Component {
 
   /** 量算的设置（界面传入数据有区别）add jiakai */
   Measuresetting = async () => {
-    let isSnap = await SMeasureAreaView.getIsSnapRange()
-    let tole = await SMeasureAreaView.getSnapTolerance()
+    let isSnap = await SARMap.getIsSnapRange()
+    let tole = await SARMap.getSnapTolerance()
     NavigationService.navigate('CollectSceneFormSet', {
       isMeasure: true,
       isSnap: isSnap,
       tole: tole,
       autoCatch: value => {
-        SMeasureAreaView.setIsSnapRange(value)
+        SARMap.setIsSnapRange(value)
       },
       setTolerance: value => {
         NavigationService.goBack()
@@ -4159,20 +4173,21 @@ export default class MapView extends React.Component {
         if (value < 0) {
           value = 0
         }
-        SMeasureAreaView.setSnapTolerance(value)
+        SARMap.setSnapTolerance(value)
       },
     })
   }
 
   _startScan = () => {
-    return SMeasureAreaView.startScan()
+    return SARMap.startScan()
   }
 
   _onDatumPointClose = point => {
-    SMeasureAreaView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
-    if (Platform.OS === 'android') {
-      SCollectSceneFormView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
-    }
+    SARMap.setPosition(Number(point.x), Number(point.y))
+    // SMeasureAreaView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
+    // if (Platform.OS === 'android') {
+    //   SCollectSceneFormView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
+    // }
     this.setState({
       showDatumPoint: false,
     })
@@ -4180,22 +4195,25 @@ export default class MapView extends React.Component {
 
   ARMappingHeaderBack = () => {
     SARMap.stopLocation()
-    SMeasureAreaView.cancelCurrent()
+    SARMap.cancelCurrent()
     SARMap.clearMeasure()
     // SARMap.removeOnHeightChangeListeners()
-    if (Platform.OS === 'ios') {
-      SMeasureAreaView.setMeasureMode('arCollect')
-      // iOSEventEmi.removeListener(
-      //   'com.supermap.RN.SMeasureAreaView.CLOSE',
-      //   this.onshowLog,
-      // )
-    }else{
-      this.listeners && this.listeners.infoListener.remove()
-      SARMap.showMeasureView(false)
-      SARMap.showTrackView(false)
-      SARMap.showPointCloud(false)
+    // if (Platform.OS === 'ios') {
+    //   SMeasureAreaView.setMeasureMode('arCollect')
+    //   // iOSEventEmi.removeListener(
+    //   //   'com.supermap.RN.SMeasureAreaView.CLOSE',
+    //   //   this.onshowLog,
+    //   // )
+    // }else{
+    this.listeners && this.listeners.infoListener.remove()
+    this.listeners && this.listeners.addListener.remove()
+    SARMap.showMeasureView(false)
+    SARMap.showTrackView(false)
+    SARMap.showPointCloud(false)
+    if (Platform.OS === 'android') {
       SARMap.stopTracking()
     }
+    // }
     this.setState({ showArMappingButton: false ,isTrack:false,showCurrentHeightView:false})
     this.showFullMap(false)
   }
@@ -4266,13 +4284,13 @@ export default class MapView extends React.Component {
   addNewRecord = async () => {
     if(this.state.isCollect){
       if (Platform.OS === 'ios') {
-        await SMeasureAreaView.addNewRecord()
+        await SARMap.draw()
       }else{
         SARMap.addTrackPoint()
       }
       this.setState({ showADDPoint: false, isfirst: false })
     }else{
-      await SMeasureAreaView.addNewRecord()
+      SARMap.draw()
       this.setState({ showADDPoint: false, isfirst: false })
     }
   }

@@ -9,8 +9,6 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  NativeModules,
-  NativeEventEmitter,
 } from 'react-native'
 import {
   scaleSize,
@@ -22,7 +20,6 @@ import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 import { getThemeAssets } from '../../../../assets'
 import {
-  SMeasureAreaView,
   SMap,
   DatasetType,
   SARMap,
@@ -32,8 +29,6 @@ import NavigationService from '../../../../containers/NavigationService'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import ARMeasureAction from '../ToolBar/modules/arMeasure/ARMeasureAction'
 
-
-const EventEmi = new NativeEventEmitter(NativeModules.SMeasureAreaView)
 
 //ar测量底部按钮
 export default class ArMappingButton extends React.Component {
@@ -202,9 +197,9 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
         action: async () => {
-          let is = await SMeasureAreaView.isMeasuring()
+          let is = await SARMap.isMeasuring()
           if (is) {
-            SMeasureAreaView.cancelCurrent()
+            SARMap.cancelCurrent()
           }
           if (!disablePoint) {
             this.drawPoint()
@@ -221,9 +216,9 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_LINE,
         action: async () => {
-          let is = await SMeasureAreaView.isMeasuring()
+          let is = await SARMap.isMeasuring()
           if (is) {
-            SMeasureAreaView.cancelCurrent()
+            SARMap.cancelCurrent()
           }
           if (!disbaleLine) {
             this.drawLine()
@@ -240,9 +235,9 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_AEREA,
         action: async () => {
-          let is = await SMeasureAreaView.isMeasuring()
+          let is = await SARMap.isMeasuring()
           if (is) {
-            SMeasureAreaView.cancelCurrent()
+            SARMap.cancelCurrent()
           }
           if (!disableArea) {
             this.setState({ data: this.areadata })
@@ -524,17 +519,15 @@ export default class ArMappingButton extends React.Component {
   }
 
   componentDidMount() {
-    EventEmi.addListener(
-      'com.supermap.RN.armeasure.save',
-      this.saveLog,
-    )
+    SARMap.addMeasureSaveListeners({
+      onSave: () => {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+      }
+    })
   }
 
   componentWillUnmount() {
-    EventEmi.removeListener(
-      'com.supermap.RN.armeasure.save',
-      this.saveLog,
-    )
+    SARMap.removeMeasureSaveListeners()
   }
 
   saveLog = () => {
@@ -545,7 +538,7 @@ export default class ArMappingButton extends React.Component {
     if (Platform.OS === 'android') {
       SARMap.startTracking()
     }else{
-      SMeasureAreaView.addNewRecord()
+      SARMap.draw()
     }
     this.props.isnew()
     Toast.show(
@@ -565,6 +558,7 @@ export default class ArMappingButton extends React.Component {
   saveline = async () => {
     try {
       if (Platform.OS === 'ios') {
+        this.saveType = 'saveline'
         this.save()
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
@@ -581,13 +575,14 @@ export default class ArMappingButton extends React.Component {
   savepoint = async () => {
     try {
       if (Platform.OS === 'ios') {
+        this.saveType = 'savepoint'
         this.save()
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingPoint()
         Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
-      } 
+      }
     } catch (e) {
       GLOBAL.Loading.setLoading(false)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
@@ -597,6 +592,7 @@ export default class ArMappingButton extends React.Component {
   saveRegion = async () => {
     try {
       if (Platform.OS === 'ios') {
+        this.saveType = 'saveRegion'
         this.save()
       } else {
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
@@ -616,7 +612,7 @@ export default class ArMappingButton extends React.Component {
       if (Platform.OS === 'android') {
         SARMap.changeTrackingMode(0)
       } else {
-        SMeasureAreaView.setMeasureMode('arCollect_auto')
+        SARMap.setMeasureMode('arCollect_auto')
       }
       this.props.isTrack(true)
       this.setState({ data: this.collectdata })
@@ -631,7 +627,7 @@ export default class ArMappingButton extends React.Component {
       if (Platform.OS === 'android') {
         SARMap.changeTrackingMode(1)
       }else{
-        SMeasureAreaView.setMeasureMode('arCollect')
+        SARMap.setMeasureMode('arCollect')
       }
       this.props.isTrack(false)
       this.setState({data:this.collectdata})
@@ -665,7 +661,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_POINT')
+    SARMap.setMeasureMode('DRAW_POINT')
     this.setState({
       isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
@@ -730,7 +726,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_LINE')
+    SARMap.setMeasureMode('DRAW_LINE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
@@ -795,7 +791,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_AREA')
+    SARMap.setMeasureMode('DRAW_AREA')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
@@ -861,7 +857,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_AREA_RECTANGLE')
+    SARMap.setMeasureMode('DRAW_AREA_RECTANGLE')
     this.setState({
       isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
@@ -926,7 +922,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_AREA_CIRCLE')
+    SARMap.setMeasureMode('DRAW_AREA_CIRCLE')
     this.setState({
       isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
@@ -1063,9 +1059,9 @@ export default class ArMappingButton extends React.Component {
 
   /** 撤销 **/
   undo = async () => {
-    await SMeasureAreaView.undoDraw()
+    await SARMap.undoDraw()
     if (this.measureType === 'arMeasureHeight') {
-      let height = await SMeasureAreaView.getCurrentHeight()
+      let height = await SARMap.getCurrentHeight()
       // this.setState({
       //   currentHeight: height + 'm',
       // })
@@ -1075,12 +1071,12 @@ export default class ArMappingButton extends React.Component {
 
   /** 连续测量 **/
   continuousDraw = async () => {
-    await SMeasureAreaView.continuousDraw()
+    await SARMap.endCurrentDraw()
   }
 
   /** 清除 **/
   clearAll = async () => {
-    await SMeasureAreaView.clearAll()
+    await SARMap.clearMeasure()
     if (this.measureType === 'arMeasureHeight') {
       this.props.setCurrentHeight('0m')
       // this.setState({
@@ -1103,13 +1099,17 @@ export default class ArMappingButton extends React.Component {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
       datasetName = 'Default_Tagging'
     }
-    let result = await SMeasureAreaView.saveDataset(
-      datasourceAlias,
-      datasetName
-    )
-    if (result) {
+    SARMap.setMeasurePath(datasourceAlias, datasetName)
+    let result = await SARMap.saveMeasureData(datasourceAlias, datasetName)
+    if (!result) {
       //await SMeasureAreaView.clearAll()
-      // Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+      if(this.saveType === 'savepoint'){
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAIL_POINT)
+      }else if(this.saveType === 'saveline'){
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_LINE_FAIL)
+      }else if(this.saveType === 'saveRegion'){
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
+      }
     }
   }
 

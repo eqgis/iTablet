@@ -102,6 +102,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'شغل',
   CREATE_FAILED: 'فشل إنشاء',
   INVALID_DATASET_NAME: 'اسم مجموعة بيانات غير صالح أو الاسم موجود بالفعل',
+  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
+  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
+  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
 
   PLEASE_CHOOSE_POINT_LAYER: 'الرجاء اختيار طبقة',
   PLEASE_CHOOSE_LINE_LAYER: 'اختر خط طبقة',

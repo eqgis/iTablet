@@ -102,6 +102,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'Aç',
   CREATE_FAILED: 'Oluşturma Başarısız',
   INVALID_DATASET_NAME: 'Geçersiz verikümesi adı ya da ad mevcutta kullanılıyor',
+  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
+  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
+  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
 
   PLEASE_CHOOSE_POINT_LAYER: 'Lütfen Nokta Katmanını Seçiniz',
   PLEASE_CHOOSE_LINE_LAYER: 'Lütfen Çizgi Katmanını Seçiniz',

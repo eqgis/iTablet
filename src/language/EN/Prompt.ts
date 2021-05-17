@@ -102,6 +102,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'Yes',
   CREATE_FAILED: 'Failed to create',
   INVALID_DATASET_NAME: 'Invalid dataset name or the name already existed',
+  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
+  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
+  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
 
   PLEASE_CHOOSE_POINT_LAYER: 'Please select a point layer first',
   PLEASE_CHOOSE_LINE_LAYER: 'Please select a line layer',

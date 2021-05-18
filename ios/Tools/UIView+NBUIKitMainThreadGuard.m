@@ -44,21 +44,38 @@ static inline void com_supermap_exchangeMethod(Class clazz ,SEL originalSelector
 
 - (void)guard_setNeedsLayout
 {
-    [self UIMainThreadCheck];
+  if(![NSThread isMainThread]){
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self guard_setNeedsLayout];
+    });
+  }else{
     [self guard_setNeedsLayout];
+  }
 }
 
 - (void)guard_setNeedsDisplay
 {
-    [self UIMainThreadCheck];
+  if(![NSThread isMainThread]){
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self guard_setNeedsDisplay];
+    });
+  }else{
     [self guard_setNeedsDisplay];
+  }
+    
 }
 
 
 - (void)guard_setNeedsDisplayInRect:(CGRect)rect
 {
-    [self UIMainThreadCheck];
+  if(![NSThread isMainThread]){
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self guard_setNeedsDisplayInRect:rect];
+    });
+  }else{
     [self guard_setNeedsDisplayInRect:rect];
+  }
+    
 }
 
 - (void)UIMainThreadCheck
@@ -66,7 +83,8 @@ static inline void com_supermap_exchangeMethod(Class clazz ,SEL originalSelector
     NSString *desc = [NSString stringWithFormat:@"%@", self.class];
   if(![NSThread isMainThread]){
     NSLog(@"+++ %@",desc);
-  }
 //    NSAssert([NSThread isMainThread], desc);
+  }
+   
 }
 @end

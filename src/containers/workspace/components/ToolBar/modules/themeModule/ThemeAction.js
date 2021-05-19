@@ -742,14 +742,11 @@ async function listSelectableAction({ selectList }) {
   const _params = ToolbarModule.getParams()
   let list = []
 
-  for (const key in selectList) {
-    // let arr = selectList[key]
-    // for (let i = 0, l = arr.length; i < l; i++) {
-    //   for (let expression in arr[i]) {
-    //     if (arr[i][expression] === false) list.push(expression)
-    //   }
-    // }
-    list = list.concat(selectList[key])
+  const keys = Object.keys(selectList)
+  for (const key of keys) {
+    if (selectList[key]) {
+      list = list.concat(selectList[key])
+    }
   }
 
   ToolbarModule.addData({ selectList })

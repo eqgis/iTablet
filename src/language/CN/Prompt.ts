@@ -53,6 +53,7 @@ const Prompt = {
   QUIT: '确认退出SuperMap iTablet?',
   MAP_LOADING: '地图加载中',
   LOADING: '加载中',
+  OPEN_MAP_CONFIRM: '已打开此地图',
   THE_MAP_IS_OPENED: '该地图已打开',
   THE_MAP_IS_NOTEXIST: '该地图不存在',
   THE_SCENE_IS_OPENED: '该场景已打开',

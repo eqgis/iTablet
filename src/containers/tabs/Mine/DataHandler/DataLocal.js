@@ -1,4 +1,4 @@
-import { SMap, EngineType } from 'imobile_for_reactnative'
+import { SMap, EngineType, ARLayerType, DatasetType } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
 import { FileTools, NativeMethod } from '../../../../native'
 import { dataUtil } from '../../../../utils'
@@ -10,6 +10,7 @@ async function getLocalData(user, type) {
     case 'MAP':
     case 'SCENE':
     case 'SYMBOL':
+    case 'ARMAP':
       dataList = await _getListByFilter(user, type)
       break
     case 'COLOR':
@@ -67,6 +68,13 @@ async function _getListByFilter(user, type) {
       path = userPath + ConstPath.RelativePath.Symbol
       filter = {
         type: 'file',
+      }
+      break
+    case 'ARMAP':
+      path = userPath + ConstPath.RelativePath.ARMap
+      filter = {
+        type: 'file',
+        extension: 'arxml',
       }
       break
     case 'COLOR':
@@ -217,7 +225,185 @@ async function createDatasourceFile(user, datasourcePath) {
   return result
 }
 
+/**
+ * 获取不带后缀的可用文件名
+ * @param {*} path  绝对路径
+ * @param {*} name  文件名
+ * @param {*} ext   后缀名
+ * @returns
+ */
+async function getAvailableFileNameNoExt (path, name, ext) {
+  const result = await FileTools.fileIsExist(path)
+  if (!result) {
+    await FileTools.createDirectory(path)
+  }
+  let availableName = name + '.' + ext
+  if (await FileTools.fileIsExist(path + '/' + availableName)) {
+    for (let i = 1; ; i++) {
+      availableName = name + '_' + i + '.' + ext
+      if (!(await FileTools.fileIsExist(path + '/' + availableName))) {
+        return name + '_' + i
+      }
+    }
+  } else {
+    return name
+  }
+}
+
+/**
+ * 获取带后缀的可用文件名
+ * @param {*} path  绝对路径
+ * @param {*} name  文件名
+ * @param {*} ext   后缀名
+ * @returns
+ */
+async function getAvailableFileName (path, name, ext) {
+  const result = await FileTools.fileIsExist(path)
+  if (!result) {
+    await FileTools.createDirectory(path)
+  }
+  let availableName = name + '.' + ext
+  const slash = (path.length === path.lastIndexOf('/') + 1) ? '' : '/'
+  if (await FileTools.fileIsExist(path + slash + availableName)) {
+    for (let i = 1; ; i++) {
+      availableName = name + '_' + i + '.' + ext
+      if (!(await FileTools.fileIsExist(path + slash + availableName))) {
+        return availableName
+      }
+    }
+  } else {
+    return availableName
+  }
+}
+
+/**
+ * 创建数据源文件和指定的数据集
+ * @param datasourcePath 要创建的数据源存放路径
+ * @param datasourceName 数据源文件名
+ * @param datasetName 数据集名称
+ * @param datastType 数据集类型
+ * @param newDatasource 重名时去创建新的数据源
+ * @param newDataset 重名时去创建新的数据集
+ * @returns 创建后的数据源名和数据集名
+ */
+async function createDefaultDatasource(
+  datasourcePath,
+  datasourceName,
+  datasetName,
+  datastType,
+  newDatasource,
+  newDataset,
+) {
+  let result = false
+  try {
+    let server = datasourcePath + datasourceName + '.udb'
+    const exist = await FileTools.fileIsExist(server)
+    if(!exist) {
+      //不存在，创建并打开
+      result = await SMap.createDatasource({
+        alias: datasourceName,
+        server: server,
+        engineType: EngineType.UDB,
+      })
+    } else {
+      if(newDatasource) {
+        //存在，创建新的数据源
+        datasourceName = await getAvailableFileNameNoExt(datasourcePath, datasourceName, 'udb')
+        server = datasourcePath + datasourceName + '.udb'
+        result = await SMap.createDatasource({
+          alias: datasourceName,
+          server: server,
+          engineType: EngineType.UDB,
+        })
+      } else {
+        //存在，检查是否打开
+        const wsds = await SMap.getDatasources()
+        const opends = wsds.filter(item => {
+          return item.server === server
+        })
+        //未打开则在此打开
+        if(opends.length === 0) {
+          result = await SMap.openDatasource({
+            alias: datasourceName,
+            server: server,
+            engineType: EngineType.UDB,
+          }, -1)
+        } else {
+          result = true
+        }
+      }
+
+    }
+    if(result) {
+    //检查打开的数据源中是否有默认的数据集
+      const dsets = await SMap.getDatasetsByDatasource({alias: datasourceName})
+      const defualtDset = dsets.list.filter(item => {
+        return item.datasetName === datasetName
+      })
+      //没有则创建
+      if(defualtDset.length === 0) {
+        result = await SMap.createDataset(datasourceName, datasetName, datastType)
+      } else {
+        //重名则创建新的数据集
+        if(newDataset) {
+          datasetName = await SMap.getAvailableDatasetName(datasourceName, datasetName)
+          result = await SMap.createDataset(datasourceName, datasetName, datastType)
+        }
+      }
+      if(result) {
+        return {
+          success: true,
+          datasourceName,
+          datasetName,
+        }
+      }
+    }
+    return {
+      success: false,
+      error: 'fail',
+    }
+  } catch(e) {
+    return {
+      success: false,
+      error: e,
+    }
+  }
+}
+
+async function createARElementDatasource(
+  user,
+  datasourceName,
+  datasetName,
+  newDatasource,
+  newDataset,
+  type,
+) {
+  try {
+    const homePath = await FileTools.getHomeDirectory()
+    const datasourcePath = homePath + ConstPath.UserPath + user.userName + '/' + ConstPath.RelativePath.ARDatasource
+
+    let datasetType
+    if(type === ARLayerType.AR_LINE_LAYER) {
+      datasetType = DatasetType.LineZ
+    } else if(type === ARLayerType.AR_REGION_LAYER) {
+      datasetType = DatasetType.RegionZ
+    } else {
+      datasetType = DatasetType.PointZ
+    }
+    return await createDefaultDatasource(datasourcePath, datasourceName, datasetName, datasetType, newDatasource, newDataset)
+  } catch (e) {
+    return {
+      success: false,
+      error: e,
+    }
+  }
+}
+
 export default {
   getLocalData,
   createDatasourceFile,
+  getAvailableFileName,
+  getAvailableFileNameNoExt,
+  createDefaultDatasource,
+  createARElementDatasource,
 }

@@ -48,7 +48,7 @@ export default class DefaultTabBar extends React.Component {
         ]}
         onPress={() => onPressHandler(page)}
       >
-        <Text style={[{ color: textColor, fontWeight }, textStyle]}>
+        <Text style={[{ color: textColor, fontWeight, backgroundColor: 'transparent' }, textStyle]}>
           {name}
         </Text>
       </TouchableItem>

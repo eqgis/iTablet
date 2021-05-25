@@ -55,6 +55,7 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'Quitter SuperMap iTablet',
   MAP_LOADING: 'Chargement',
   LOADING: 'Chargement',
+  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: 'La carte est ouverte',
   THE_MAP_IS_NOTEXIST: "La carte n'existe pas",
   THE_SCENE_IS_OPENED: 'La scène est ouverte',

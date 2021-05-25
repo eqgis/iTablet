@@ -55,6 +55,7 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'SuperMap iTabletten çık?',
   MAP_LOADING: 'Yükleniyor',
   LOADING: 'Yükleniyor',
+  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: 'Harita açıldı',
   THE_MAP_IS_NOTEXIST: 'Harita mevcut değil',
   THE_SCENE_IS_OPENED: 'Manzara açıldı',

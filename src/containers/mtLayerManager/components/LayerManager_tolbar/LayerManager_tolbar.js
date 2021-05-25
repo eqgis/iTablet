@@ -1319,21 +1319,19 @@ export default class LayerManager_tolbar extends React.Component {
           { height: this.props.device.height, bottom: this.state.bottom },
         ]}
       >
-        {
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              this.setVisible(false)
-              let overlayView = this.props.getOverlayView
-                ? this.props.getOverlayView()
-                : null
-              if (overlayView) {
-                overlayView.setVisible(false)
-              }
-            }}
-            style={styles.overlay}
-          />
-        }
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            this.setVisible(false)
+            let overlayView = this.props.getOverlayView
+              ? this.props.getOverlayView()
+              : null
+            if (overlayView) {
+              overlayView.setVisible(false)
+            }
+          }}
+          style={styles.overlay}
+        />
         <View style={styles.containers}>{this.renderView()}</View>
         {/*{this.renderDialog()}*/}
       </Animated.View>

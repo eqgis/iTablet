@@ -36,12 +36,14 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     let COLOR = []
     let SYMBOL = []
     let AIMODEL = []
+    let ARMAP = []
 
     // 专题制图导出的xml
     let Xml_Template = []
     // 过滤临时文件： ~[0]@xxxx
     _checkTempFile(contentList)
 
+    ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
     PL = await getPLList(path, contentList)
     WS = await getWSList(path, contentList, uncheckedChildFileList)
     WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
@@ -82,6 +84,7 @@ async function getExternalData(path, uncheckedChildFileList = []) {
       .concat(SYMBOL)
       .concat(AIMODEL)
       .concat(Xml_Template)
+      .concat(ARMAP)
     return resultList
   } catch (e) {
     // console.log(e)
@@ -725,6 +728,44 @@ function getAIModelList(path, contentList) {
   }
 }
 
+/** 获取AR地图 */
+async function getARMAPList(path, contentList, uncheckedChildFileList) {
+  let DATA = []
+  const relatedFiles = []
+  try {
+    _checkUncheckedFile(path, contentList, uncheckedChildFileList)
+    for (let i = 0; i < contentList.length; i++) {
+      if (!contentList[i].check && contentList[i].type === 'file') {
+        if (_isARMap(contentList[i].name)) {
+          contentList[i].check = true
+          // 获取数据源
+          await _checkRelatedARDS(relatedFiles, contentList[i].name, path, contentList)
+          // 获取resource
+          _checkARResource(relatedFiles, path, contentList)
+          DATA.push({
+            directory: path,
+            fileName: contentList[i].name,
+            filePath: `${path}/${contentList[i].name}`,
+            fileType: 'armap',
+            relatedFiles,
+          })
+        }
+      } else if (!contentList[i].check && contentList[i].type === 'directory') {
+        DATA = DATA.concat(
+          await getARMAPList(
+            `${path}/${contentList[i].name}`,
+            contentList[i].contentList,
+            uncheckedChildFileList,
+          ),
+        )
+      }
+    }
+    return DATA
+  } catch(e) {
+    return DATA
+  }
+}
+
 /** 标绘模版 */
 async function _getPlottingList(path) {
   const arrFile = []
@@ -744,6 +785,47 @@ async function _getPlottingList(path) {
     }
   }
   return arrFile
+}
+
+async function _checkRelatedARDS(relatedFiles, name, path, contentList) {
+  try {
+    const mapXml = await RNFS.readFile(`${path}/${name}`)
+    const $ = cheerio.load(mapXml)
+    const nodes = $('DatasourceServer')
+    const datasourceArr = []
+    for(let i = 0; i < nodes.length; i++) {
+      const datasourceNode = nodes[i].children[0]
+      const datasource = datasourceNode
+      datasourceArr.push(datasource.nodeValue)
+    }
+    for (let i = 0; i < contentList.length; i++) {
+      if (!contentList[i].check && contentList[i].type === 'file') {
+        for(let n = 0; n < datasourceArr.length; n ++) {
+          const index = contentList[i].name.lastIndexOf('.')
+          let nameNoExt =  contentList[i].name
+          if(index > 0) {
+            nameNoExt = contentList[i].name.substring(0, index)
+          }
+          if(datasourceArr[n].indexOf(nameNoExt) === 0) {
+            contentList[i].check = true
+            relatedFiles.push(`${path}/${contentList[i].name}`)
+          }
+        }
+      }
+    }
+  } catch(e) {
+    // console.warn(e)
+  }
+}
+
+function _checkARResource(relatedFiles, path, contentList) {
+  for (let i = 0; i < contentList.length; i++) {
+    if (!contentList[i].check && contentList[i].type === 'directory' && contentList[i].name === 'Resource') {
+      contentList[i].check = true
+      relatedFiles.push(`${path}/${contentList[i].name}`)
+      break
+    }
+  }
 }
 
 /**
@@ -945,6 +1027,10 @@ function _isWorkspace(name) {
  * 不含同名的udd等的datasource
  * @param {*} name
  */
+
+function _isARMap(name) {
+  return _isType(name, ['arxml'])
+}
 
 function _isSCIDatasource(name) {
   return _isType(name, ['SCI', 'sci'])

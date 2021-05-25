@@ -55,6 +55,8 @@ import {
 import { setAnalystParams } from '../../../../redux/models/analyst'
 import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
+import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
+import { createARMap } from '../../../../redux/models/armap'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -64,6 +66,8 @@ const mapStateToProps = state => ({
   selection: state.layers.toJS().selection,
   latestMap: state.map.toJS().latestMap,
   map: state.map.toJS(),
+  armap: state.armap.toJS(),
+  arlayer: state.arlayer.toJS(),
   bufferSetting: state.setting.toJS().buffer,
   overlaySetting: state.setting.toJS().overlay,
   symbol: state.symbol.toJS(),
@@ -149,6 +153,9 @@ const mapDispatchToProps = {
   deleteDownloadFile,
   setToolbarStatus,
   setNavBarDisplay,
+  setCurrentARLayer,
+  getARLayers,
+  createARMap,
 }
 
 export default connect(

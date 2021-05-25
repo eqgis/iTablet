@@ -55,6 +55,7 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'الخروج من سوبر ماب تابلت',
   MAP_LOADING: 'تحميل',
   LOADING: 'تحميل',
+  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: 'تم فتح الخريطة',
   THE_MAP_IS_NOTEXIST: 'الخريطة غير موجودة',
   THE_SCENE_IS_OPENED: 'تم فتح المشهد',

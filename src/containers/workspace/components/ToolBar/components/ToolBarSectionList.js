@@ -5,13 +5,12 @@ import { getLanguage } from '../../../../../language'
 import {
   StyleSheet,
   TouchableOpacity,
-  TouchableHighlight,
   Text,
   SectionList,
   Image,
   View,
 } from 'react-native'
-import { getPublicAssets, getThemeAssets, getLayerIconByType } from '../../../../../assets'
+import { getThemeAssets, getLayerIconByType } from '../../../../../assets'
 import { ColorScheme } from '../../../../../components'
 import ToolbarModule from '../modules/ToolbarModule'
 
@@ -25,12 +24,12 @@ export default class ToolBarSectionList extends React.Component {
     activeOpacity?: Object,
     underlayColor?: Object,
     sections: Array,
-    renderItem?: () => {},
+    renderItem?: (data: { item: any, index: number, section: any }) => JSX.Element,
     renderSectionHeader?: () => {},
     renderSectionFooter?: () => {},
     renderSectionSeparator?: () => {},
     renderSeparator?: () => {},
-    keyExtractor: () => {},
+    keyExtractor?: () => {},
     itemAction?: () => {},
     headerAction?: () => {},
     device: Object,
@@ -278,12 +277,13 @@ export default class ToolBarSectionList extends React.Component {
     if (this.props.renderSectionHeader) {
       return this.props.renderSectionHeader({ section })
     }
+    if (!section.title) {
+      return null
+    }
     let allSelectImg = this.state.allSelected
       ? require('../../../../../assets/mapTools/icon_multi_selected_disable_black.png')
       : require('../../../../../assets/mapTools/icon_multi_unselected_disable_black.png')
     let showSysImg = this.state.sectionSelected
-      // ? getPublicAssets().mapTools.tools_legend_on
-      // : getPublicAssets().mapTools.tools_legend_off
       ? getThemeAssets().layer.icon_visible
       : getThemeAssets().layer.icon_invisible
     const isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -694,7 +694,7 @@ export default class ToolBarSectionList extends React.Component {
     if (info.trailingItem === undefined && info.trailingSection) {
       return <View style={styles.sectionSeparateViewStyle} />
     }
-    if (info.trailingItem) {
+    if (info.trailingItem && info.section.title) {
       return <View style={styles.sectionTrailingSeparateViewStyle} />
     }
     return null

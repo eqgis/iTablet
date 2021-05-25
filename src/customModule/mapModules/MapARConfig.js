@@ -8,10 +8,11 @@ import {
   startModule,
   addModule,
   styleModule,
-  arEffecModule,
-  arToolModule,
+  // arEffecModule,
+  // arToolModule,
   markModule,
   toolModule,
+  arDrawingModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
@@ -24,9 +25,10 @@ export default class MapARConfig extends Module {
       addModule,
       markModule,
       styleModule,
-      arEffecModule,
-      arToolModule,
+      // arEffecModule,
+      // arToolModule,
       toolModule,
+      arDrawingModule,
     ]
 //    if (Platform.OS === 'ios') {
 //      modules.splice(4, 1)

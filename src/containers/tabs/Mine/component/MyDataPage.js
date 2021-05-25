@@ -147,7 +147,7 @@ export default class MyDataPage extends Component {
     let relativeExportTemplatePath =
     ConstPath.ExternalData + '/' +
     'Collection/'
-  return relativeExportTemplatePath
+    return relativeExportTemplatePath
   }
 
   //页面popup选项，不会合并公共选项

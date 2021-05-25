@@ -55,6 +55,7 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'SuperMap iTabletを閉じますか?',
   MAP_LOADING: 'マップロード中',
   LOADING: 'ロード中',
+  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: '当マップは開いています',
   THE_MAP_IS_NOTEXIST: '当マップは存在しません',
   THE_SCENE_IS_OPENED: '当シーンは開いています',

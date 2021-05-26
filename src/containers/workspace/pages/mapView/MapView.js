@@ -2477,15 +2477,12 @@ export default class MapView extends React.Component {
   }
 
   measure = params => {
-    debugger
     this.listeners = SARMap.addMeasureStatusListeners({
       infoListener: result => {
-        debugger
         this.onshowLog(result)
       },
       addListener: async result => {
         if (result) {
-          debugger
           // Toast.show("add******")
           if (this.state.isfirst) {
             this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
@@ -2583,7 +2580,9 @@ export default class MapView extends React.Component {
         this.measureType === 'measureArea' ||
         this.measureType === 'measureAngle' ||
         this.measureType === 'arMeasureCuboid' ||
-        this.measureType === 'arMeasureCylinder') {
+        this.measureType === 'arMeasureCylinder' ||
+        this.measureType === 'arMeasureCircle' ||
+        this.measureType === 'arMeasureRectangle') {
         this.isMeasure = true
       }
 
@@ -2606,20 +2605,20 @@ export default class MapView extends React.Component {
         this.point = params.point
         this.isCollect = true
         this.isnew = false
-        // if (Platform.OS === 'android') {
-        SARMap.showMeasureView(false)
-        SARMap.showTrackView(true)
-        SARMap.showPointCloud(true)
-        // }else{
-        // SARMap.setMeasureMode('arCollect')
-        // }
-      }else{
-        // if (Platform.OS === 'android') {
-        SARMap.showTrackView(false)
-        SARMap.showMeasureView(true)
-        SARMap.showPointCloud(true)
-        // }
+        if (Platform.OS === 'android') {
+          SARMap.showMeasureView(false)
+          SARMap.showTrackView(true)
+        } else {
+          SARMap.setMeasureMode('arCollect')
+        }
+      } else {
+        if (Platform.OS === 'android') {
+          SARMap.showTrackView(false)
+          SARMap.showMeasureView(true)
+        }
       }
+
+      SARMap.showPointCloud(true)
 
       if (
         this.measureType === 'drawLine' ||

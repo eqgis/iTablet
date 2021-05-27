@@ -2,7 +2,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import {
-  // SMeasureView,
+  SMeasureView,
   ARLayerType,
   TARLayerType,
   SARMap,
@@ -10,10 +10,12 @@ import {
   ARElementType,
   ARElementLayer,
   ARAction,
+  FileTools,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
 } from '../../../../../../constants'
+import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
@@ -137,21 +139,73 @@ async function arText() {
   // NavigationService.navigate('ARTextView')
 }
 
-async function ar3D() {
-  // let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  // if (!isSupportedARCore) {
-  //   GLOBAL.ARDeviceListDialog.setVisible(true)
-  //   return
-  // }
+async function ar3D(path: string) {
+  setARToolbar(ConstToolType.SM_AR_DRAWING_SCENE, { arScenePath: path })
+}
 
-  if (GLOBAL.showAIDetect) {
-    GLOBAL.isswitch = true
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+/** 打开三维场景 */
+export async function addARScene() {
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  let newDatasource = false
+  const mapInfo = _params.arMapInfo
+  ToolbarModule.addData({
+    addNewDSourceWhenCreate: false,
+    addNewDsetWhenCreate: false,
+  })
+  if(!mapInfo){
+    await _params.createARMap()
+    newDatasource = true
   }
 
-  GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false)
-  // NavigationService.navigate('ARSceneView')
+  let datasourceName = DataHandler.getARRawDatasource()
+  let datasetName = 'scene'
+  const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
+  if(result.success) {
+    datasourceName = result.datasourceName
+    datasetName = result.datasetName
+    if(newDatasource) {
+      DataHandler.setARRawDatasource(datasourceName)
+    }
+
+    const homePath = await FileTools.getHomeDirectory()
+    let path = _data.arScenePath
+    if(!path) {
+      Toast.show('未选择场景！')
+      return
+    }
+    path = homePath + path
+    // 得到的是工作空间所在目录 需要去找到sxwu文件路径
+    try {
+      const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
+      if(list.length == 0) return
+      await SARMap.addScene(datasourceName, datasetName, homePath + list[0].path)
+      if(result){
+        await _params.getARLayers()
+      }
+    } catch(e){
+      console.warn(e)
+    } finally {
+      // AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ADD')
+    }
+  }
+}
+
+async function arModel(path: string) {
+  setARToolbar(ConstToolType.SM_AR_DRAWING_MODAL, { arModelPath: path })
+}
+
+/** 添加模型 */
+export async function addARModel() {
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  await checkARLayer(ARLayerType.AR_MODEL_LAYER)
+  const layer = _params.arlayer.currentLayer
+  if(layer){
+    SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arModelPath, 0).then(() => {
+      // AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ADD')
+    })
+  }
 }
 
 async function addMedia(type: TARElementType) {
@@ -344,4 +398,7 @@ export default {
   arWebView,
   arText,
   ar3D,
+  addARScene,
+  arModel,
+  addARModel,
 }

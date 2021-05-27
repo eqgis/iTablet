@@ -37,6 +37,8 @@ const RelativePath = {
   Color: `${Data}Color/`,
   Temp: `${Data}Temp/`, // 临时文件
   AIModel: `${Data}AIModel/`,
+  ARModel: `${Data}ARModel/`,
+  // ARScene: `${Data}ARScene/`,
 }
 
 const RelativeFilePath = {

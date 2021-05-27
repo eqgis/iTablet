@@ -734,27 +734,27 @@ async function getARMAPList(path, contentList, uncheckedChildFileList) {
   const relatedFiles = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
-    for (let i = 0; i < contentList.length; i++) {
-      if (!contentList[i].check && contentList[i].type === 'file') {
-        if (_isARMap(contentList[i].name)) {
-          contentList[i].check = true
+    for (let item of contentList) {
+      if (!item.check && item.type === 'file') {
+        if (_isARMap(item.name)) {
+          item.check = true
           // 获取数据源
-          await _checkRelatedARDS(relatedFiles, contentList[i].name, path, contentList)
+          await _checkRelatedARDS(relatedFiles, item.name, path, contentList)
           // 获取resource
           _checkARResource(relatedFiles, path, contentList)
           DATA.push({
             directory: path,
-            fileName: contentList[i].name,
-            filePath: `${path}/${contentList[i].name}`,
+            fileName: item.name,
+            filePath: `${path}/${item.name}`,
             fileType: 'armap',
             relatedFiles,
           })
         }
-      } else if (!contentList[i].check && contentList[i].type === 'directory') {
+      } else if (!item.check && item.type === 'directory') {
         DATA = DATA.concat(
           await getARMAPList(
-            `${path}/${contentList[i].name}`,
-            contentList[i].contentList,
+            `${path}/${item.name}`,
+            item.contentList,
             uncheckedChildFileList,
           ),
         )

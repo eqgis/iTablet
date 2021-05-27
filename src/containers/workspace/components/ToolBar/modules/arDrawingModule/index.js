@@ -20,6 +20,8 @@ class ArDrawingModule extends FunctionModule {
       case ConstToolType.SM_AR_DRAWING_IMAGE:
       case ConstToolType.SM_AR_DRAWING_VIDEO:
       case ConstToolType.SM_AR_DRAWING_WEB:
+      case ConstToolType.SM_AR_DRAWING_SCENE:
+      case ConstToolType.SM_AR_DRAWING_MODAL:
         data.height = 0
         break
       case ConstToolType.SM_AR_DRAWING_EDIT:
@@ -40,9 +42,9 @@ class ArDrawingModule extends FunctionModule {
       case ConstToolType.SM_AR_DRAWING_STYLE_ROTATION:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3
         break
-      // default:
-      //   data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3
-      //   break
+      default:
+        data.height = 0
+        break
     }
     return data
   }

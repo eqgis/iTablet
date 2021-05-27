@@ -329,7 +329,7 @@ export default class OnlineServicesUtils {
    * @param fileType 文件类型
    * @param callback 上传回调
    */
-  async uploadFile(filePath: string, fileName: string, fileType: keyof OnlineDataType, callback: UploadCallBack) {
+  async uploadFile(filePath: string, fileName: string, fileType: keyof OnlineDataType, callback?: UploadCallBack) {
     try {
       let id = await this._getUploadId(fileName, fileType)
       if (id) {

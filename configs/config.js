@@ -23,6 +23,7 @@ export default {
     {key: 'MARK'},
     {key: 'MAP'},
     {key: 'ARMAP'},
+    {key: 'ARMODEL'},
     {key: 'SCENE'},
     {key: 'BASE_MAP'},
     {key: 'SYMBOL'},

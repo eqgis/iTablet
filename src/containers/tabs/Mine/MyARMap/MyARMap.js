@@ -3,8 +3,6 @@ import { MyDataPage } from '../component'
 import { openARMap, createARMap, ARMapState } from '../../../../redux/models/armap'
 import { getARLayers, ARMapInfo } from '../../../../redux/models/arlayer'
 import { UserInfo } from '../../../../redux/models/user'
-// import { RootState } from '../../redux/types'
-// import { MainStackScreenNavigationProp, MainStackScreenRouteProp } from '../types'
 import { SARMap } from 'imobile_for_reactnative'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
@@ -12,21 +10,6 @@ import DataHandler from '../DataHandler'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
-import RNFS from 'react-native-fs'
-
-// interface Props extends ReduxProps {
-//   navigation: MainStackScreenNavigationProp<'MyARMap'>
-//   route: MainStackScreenRouteProp<'MyARMap'>
-// }
-
-// interface Props {
-//   language: string,
-//   currentUser: UserInfo,
-//   arlayer: ARMapInfo,
-//   armap: ARMapState,
-//   navigation: any,
-//   orientation: string,
-// }
 
 class MyARMap extends MyDataPage {
   props: {
@@ -138,7 +121,6 @@ class MyARMap extends MyDataPage {
     )
 
     const exportResult = await DataHandler.exportARMap(this.itemInfo.item.name, path + '/' + availableName)
-    console.warn(this.itemInfo.item.name, path + '/' + availableName, exportResult)
 
     return exportResult
   }

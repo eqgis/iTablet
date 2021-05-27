@@ -11,6 +11,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolBarSlide from '../../components/ToolBarSlide'
 import NavigationService from '../../../../../NavigationService'
 import { ARElementType, SARMap } from 'imobile_for_reactnative'
+import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
 interface SectionItemData {
   key: string,
@@ -22,6 +23,7 @@ interface SectionItemData {
 
 interface SectionData {
   title: string,
+  containerType?: string,
   data: SectionItemData[]
 }
 
@@ -40,52 +42,34 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_MODEL:
     case ConstToolType.SM_AR_DRAWING_3D:
     case ConstToolType.SM_AR_DRAWING_VECTOR:
-    case ConstToolType.SM_AR_DRAWING_EFFECT:
+    case ConstToolType.SM_AR_DRAWING_EFFECT: {
+      const data3D = await get3DData()
+      const arModel = await getARModel()
       data = [
         {
           title: getLanguage(GLOBAL.language).Prompt.POI,
           data: [{
             key: ConstToolType.SM_AR_DRAWING_IMAGE,
             image: getThemeAssets().ar.functiontoolbar.ar_picture,
-            // selectedImage: any,
             title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_IMAGE,
             action: ARDrawingAction.arImage,
           }, {
             key: ConstToolType.SM_AR_DRAWING_VIDEO,
             image: getThemeAssets().ar.functiontoolbar.ar_video,
-            // selectedImage: any,
             title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_VIDEO,
             action: ARDrawingAction.arVideo,
           }, {
             key: ConstToolType.SM_AR_DRAWING_WEB,
             image: getThemeAssets().ar.functiontoolbar.ar_webpage,
-            // selectedImage: any,
             title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
             action: ARDrawingAction.arWebView,
           }],
         },
-        // {
-        //   title: '三维',
-        //   data: [{
-        //     key: ConstToolType.SM_AR_DRAWING_PIPELINE,
-        //     image: getThemeAssets().ar.functiontoolbar.ar_pipeline,
-        //     // selectedImage: any,
-        //     title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_PIPELINE,
-        //     action: data => {},
-        //   }, {
-        //     key: ConstToolType.SM_AR_DRAWING_TERRAIN,
-        //     image: getThemeAssets().layer3dType.layer3d_terrain_layer,
-        //     // selectedImage: any,
-        //     title: getLanguage(GLOBAL.language).Map_Layer.TERRAIN,
-        //     action: data => {},
-        //   }, {
-        //     key: ConstToolType.SM_AR_DRAWING_MODAL,
-        //     image: getThemeAssets().ar.toolbar.icon_mapdata,
-        //     // selectedImage: any,
-        //     title: getLanguage(GLOBAL.language).Map_Main_Menu.NETWORK_MODEL,
-        //     action: data => {},
-        //   }],
-        // },
+        {
+          title: '三维',
+          containerType: 'list',
+          data: data3D,
+        },
         // {
         //   title: '矢量',
         //   data: [{
@@ -120,23 +104,10 @@ async function getData(type: string, params: {[name: string]: any}) {
         //     action: data => {},
         //   }],
         // },
-        // {
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
-        //   data: [{
-        //     key: ConstToolType.SM_AR_DRAWING_SAND,
-        //     image: getThemeAssets().toolbar.icon_toolbar_savespot,
-        //     // selectedImage: any,
-        //     title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
-        //     action: data => {},
-        //   }, {
-        //     key: ConstToolType.SM_AR_DRAWING_D_MODAL,
-        //     image: getThemeAssets().toolbar.icon_toolbar_saveline,
-        //     // selectedImage: any,
-        //     // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_LINE,
-        //     title: '动态模型',
-        //     action: data => {},
-        //   }],
-        // },
+        {
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
+          data: arModel,
+        },
       // {
       //   title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
       //   data: [{
@@ -167,9 +138,12 @@ async function getData(type: string, params: {[name: string]: any}) {
       // }
       ]
       break
+    }
     case ConstToolType.SM_AR_DRAWING_IMAGE:
     case ConstToolType.SM_AR_DRAWING_VIDEO:
     case ConstToolType.SM_AR_DRAWING_WEB:
+    case ConstToolType.SM_AR_DRAWING_SCENE:
+    case ConstToolType.SM_AR_DRAWING_MODAL:
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         {
@@ -177,16 +151,22 @@ async function getData(type: string, params: {[name: string]: any}) {
           image: require('../../../../../../assets/mapTools/icon_point_black.png'),
           // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ADD_TO_CURRENT_POSITION,
           action: () => {
-            let _type
-            if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
-              _type = ARElementType.AR_VIDEO
-            } else if (type === ConstToolType.SM_AR_DRAWING_WEB) {
-              _type = ARElementType.AR_WEBVIEW
+            if (type === ConstToolType.SM_AR_DRAWING_SCENE) {
+              ARDrawingAction.addARScene()
+            } else if (type === ConstToolType.SM_AR_DRAWING_MODAL) {
+              ARDrawingAction.addARModel()
             } else {
-              _type = ARElementType.AR_IMAGE
+              let _type
+              if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
+                _type = ARElementType.AR_VIDEO
+              } else if (type === ConstToolType.SM_AR_DRAWING_WEB) {
+                _type = ARElementType.AR_WEBVIEW
+              } else {
+                _type = ARElementType.AR_IMAGE
+              }
+  
+              ARDrawingAction.addMedia(_type)
             }
-
-            ARDrawingAction.addMedia(_type)
           },
         },
         // {
@@ -270,6 +250,42 @@ async function getData(type: string, params: {[name: string]: any}) {
   return { data, buttons }
 }
 
+/** 获取三维数据 */
+async function get3DData() {
+  const _params: any = ToolbarModule.getParams()
+  const data3DTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'WORKSPACE3D')
+  const data3D: any[] = []
+  for (let item of data3DTemp) {
+    data3D.push({
+      key: item.name,
+      image: require('../../../../../../assets/mapTools/icon_scene.png'),
+      // selectedImage: any,
+      title: item.name,
+      data: item,
+      action: () => ARDrawingAction.ar3D(item.path),
+    })
+  }
+  return data3D
+}
+
+/** 获取AR模型数据 */
+async function getARModel() {
+  const _params: any = ToolbarModule.getParams()
+  const arModelTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'ARMODEL')
+  const arModel: any[] = []
+  for (let item of arModelTemp) {
+    arModel.push({
+      key: item.name,
+      image: getThemeAssets().ar.armap.ar_3d,
+      // selectedImage: any,
+      title: item.name,
+      data: item,
+      action: () => ARDrawingAction.arModel(item.path),
+    })
+  }
+  return arModel
+}
+
 interface HeaderRightButton {
   action: () => void,
   image: any,
@@ -343,7 +359,7 @@ async function showSlideToolbar(type: string, language: string, params: any) {
   })
 }
 const ARStyleItems = (language: string) => {
-  const items = [
+  return [
     {
       key: getLanguage(language).Map_Main_Menu.STYLE_TRANSPARENCY,
       action: () => {
@@ -416,7 +432,6 @@ const ARStyleItems = (language: string) => {
       selectKey: getLanguage(language).ARMap.ROTATION,
     },
   ]
-  return items
 }
 
 function getMenuData() {

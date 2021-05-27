@@ -15,13 +15,13 @@ export default class MineItem extends Component {
     showRight: boolean,
     showCheck: boolean,
     showSeperator: boolean,
-    onPress: () => {},
-    onPressMore: () => {},
-    onPressCheck: () => {},
-    contentStyle: {},
-    imageStyle: {},
-    textStyle: {},
-    renderExtra: () => {},
+    onPress: () => void,
+    onPressMore: (event: any, data?: any) => void,
+    onPressCheck: (event: any, data?: any) => void,
+    contentStyle?: {},
+    imageStyle?: {},
+    textStyle?: {},
+    renderExtra: () => void,
   }
 
   static defaultProps = {

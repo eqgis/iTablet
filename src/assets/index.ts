@@ -233,6 +233,8 @@ function getARLayerAssets(type: TARLayerType): any {
       return getThemeAssets().ar.armap.ar_poi
     case ARLayerType.AR3D_LAYER:
       return getThemeAssets().ar.armap.ar_3d
+    case ARLayerType.AR_SCENE_LAYER:
+      return getThemeAssets().ar.armap.ar_3d
     case ARLayerType.AR_MODEL_LAYER:
       return getThemeAssets().ar.armap.ar_model
     case ARLayerType.AR_TEXT_LAYER:

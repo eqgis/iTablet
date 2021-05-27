@@ -37,6 +37,9 @@ async function importExternalData(user, item) {
     case 'armap':
       result = await importARMap(item)
       break
+    case 'armodel':
+      result = await importARModel(user, item)
+      break
     default:
       break
   }
@@ -236,6 +239,12 @@ async function importWorkspace3DAR(user, item) {
 
 async function importARMap(item) {
   return await SARMap.importMap(item.filePath)
+}
+
+async function importARModel(user, item) {
+  const homePath = await FileTools.getHomeDirectory()
+  const targetPath = homePath + ConstPath.UserPath + user.userName + ConstPath.RelativeFilePath.ARModel
+  return await _copyFile(item, targetPath)
 }
 
 async function importDatasource(user, item) {

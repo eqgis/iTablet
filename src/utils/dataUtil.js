@@ -1,4 +1,5 @@
 import { getLanguage } from '../language'
+import { FileTools } from "imobile_for_reactnative"
 const Parser = require('react-native-xml2js').Parser
 
 function sortByPinYin(arr) {
@@ -391,6 +392,28 @@ function isObject(o) {
   return (typeof o === 'object' || typeof o === 'function') && o !== null
 }
 
+async function getAvailableFileName(path, name, ext) {
+  let result = await FileTools.fileIsExist(path)
+  if (!result) {
+    await FileTools.createDirectory(path)
+  }
+  let _ext = ''
+  if (ext) {
+    _ext = '.' + ext
+  }
+  let availableName = name + _ext
+  if (await FileTools.fileIsExist(path + '/' + availableName)) {
+    for (let i = 1; ; i++) {
+      availableName = name + '_' + i + _ext
+      if (!(await FileTools.fileIsExist(path + '/' + availableName))) {
+        return availableName
+      }
+    }
+  } else {
+    return availableName
+  }
+}
+
 export default {
   sortByPinYin,
   pySegSort,
@@ -409,6 +432,7 @@ export default {
   getFileNameWithOutExt,
   checkIpPort,
   getLegalName,
+  getAvailableFileName,
 
   isLegalName,
   isLegalURL,

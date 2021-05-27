@@ -13,6 +13,7 @@ import {
   MyLocalData,
   MyMap,
   MyARMap,
+  MyARModel,
   MyScene,
   MyDatasource,
   MySymbol,
@@ -534,6 +535,12 @@ export default function(appConfig) {
         navigationOptions: {
           header: null,
           // gesturesEnabled: true,
+        },
+      },
+      MyARModel: {
+        screen: MyARModel,
+        navigationOptions: {
+          header: null,
         },
       },
       MyScene: {

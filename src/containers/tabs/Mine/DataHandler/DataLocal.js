@@ -11,6 +11,8 @@ async function getLocalData(user, type) {
     case 'SCENE':
     case 'SYMBOL':
     case 'ARMAP':
+    case 'ARMODEL':
+    case 'WORKSPACE3D':
       dataList = await _getListByFilter(user, type)
       break
     case 'COLOR':
@@ -86,6 +88,20 @@ async function _getListByFilter(user, type) {
       break
     case 'AIMODEL':
       path = userPath + ConstPath.RelativePath.AIModel
+      filter = {
+        type: 'file',
+        extension: 'glb',
+      }
+      break
+    case 'ARMODEL':
+      path = userPath + ConstPath.RelativePath.ARModel
+      filter = {
+        type: 'file',
+        extension: 'glb',
+      }
+      break
+    case 'WORKSPACE3D':
+      path = userPath + ConstPath.RelativePath.Scene
       filter = {
         type: 'Directory',
       }

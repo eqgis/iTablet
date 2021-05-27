@@ -7,18 +7,18 @@ import { getLanguage } from '../../../../language/index'
 
 export default class SimpleDialog extends PureComponent {
   props: {
-    confirmAction: () => {},
-    cancelAction: () => {},
-    dismissAction: () => {},
-    renderExtra: () => {},
-    style: Object,
-    text: String,
-    confirmText: String,
-    cancelText: String,
-    disableBackTouch: boolean,
-    buttonMode: String,
-    confirmTitleStyle: Object,
-    cancelTitleStyle: Object,
+    confirmAction?: () => void,
+    cancelAction?: () => void,
+    dismissAction?: () => void,
+    renderExtra?: () => void,
+    style?: Object,
+    text?: String,
+    confirmText?: String,
+    cancelText?: String,
+    disableBackTouch?: boolean,
+    buttonMode?: String,
+    confirmTitleStyle?: Object,
+    cancelTitleStyle?: Object,
   }
 
   static defaultProps = {

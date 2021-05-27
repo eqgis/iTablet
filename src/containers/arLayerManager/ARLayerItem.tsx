@@ -111,12 +111,14 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
               style={styles.btn_image}
               source={typeIcon}
             />
-            <Text
-              numberOfLines={1}
-              ellipsizeMode={'tail'}
-              style={[styles.text, textStyle]}>
-              {this.props.layer.caption}
-            </Text>
+            <View style={{flex: 1}}>
+              <Text
+                numberOfLines={2}
+                ellipsizeMode={'tail'}
+                style={[styles.text, textStyle]}>
+                {this.props.layer.caption}
+              </Text>
+            </View>
           </View>
           <TouchableOpacity
             style={styles.btn}

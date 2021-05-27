@@ -233,6 +233,14 @@ async function getData(type: string, params: {[name: string]: any}) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
+    case ConstToolType.SM_AR_DRAWING_STYLE: {
+      const _data = await getLayerStyleData(type)
+      if (_data) {
+        data = _data.data
+        buttons = _data.buttons
+      }
+      break
+    }
     case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_COLOR:
       data = color.colors
       break
@@ -242,7 +250,7 @@ async function getData(type: string, params: {[name: string]: any}) {
       const _data = await getStyleData(type)
       if (_data) {
         data = _data.data
-        buttons = _data.data
+        buttons = _data.buttons
       }
       break
     }
@@ -334,7 +342,17 @@ function getHeaderData() {
  * @param params Toolbar setVisible中的params
  */
 async function showSlideToolbar(type: string, language: string, params: any) {
-  const _data = await getStyleData(type)
+  let _data: { buttons: string[]; data: any[] } | undefined
+  switch (type) {
+    case ConstToolType.SM_AR_DRAWING_STYLE:
+    case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_WIDTH:
+    case ConstToolType.SM_AR_DRAWING_STYLE_TRANSFROM:
+    case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_COLOR:
+      _data = await getLayerStyleData(type)
+      break
+    default:
+      _data = await getStyleData(type)
+  }
   GLOBAL.toolBox &&
   GLOBAL.toolBox.setVisible(true, type, {
     isFullScreen: false,
@@ -358,7 +376,46 @@ async function showSlideToolbar(type: string, language: string, params: any) {
     ...params,
   })
 }
+
 const ARStyleItems = (language: string) => {
+  return [
+    {
+      key: getLanguage(language).ARMap.SCALE,
+      action: () => {
+        showSlideToolbar(ConstToolType.SM_AR_DRAWING_STYLE_SCALE, language, {
+          selectName: getLanguage(language).ARMap.SCALE,
+          selectKey: getLanguage(language).ARMap.SCALE,
+          // isTouchProgress: true,
+        })
+      },
+      selectKey: getLanguage(language).ARMap.SCALE,
+    },
+    {
+      key: getLanguage(language).ARMap.POSITION,
+      action: () => {
+        showSlideToolbar(ConstToolType.SM_AR_DRAWING_STYLE_POSITION, language, {
+          selectName: getLanguage(language).ARMap.POSITION,
+          selectKey: getLanguage(language).ARMap.POSITION,
+          // isTouchProgress: true,
+        })
+      },
+      selectKey: getLanguage(language).ARMap.POSITION,
+    },
+    {
+      key: getLanguage(language).ARMap.ROTATION,
+      action: () => {
+        showSlideToolbar(ConstToolType.SM_AR_DRAWING_STYLE_ROTATION, language, {
+          selectName: getLanguage(language).ARMap.ROTATION,
+          selectKey: getLanguage(language).ARMap.ROTATION,
+          // isTouchProgress: true,
+        })
+      },
+      selectKey: getLanguage(language).ARMap.ROTATION,
+    },
+  ]
+}
+
+const ARLayerStyleItems = (language: string) => {
   return [
     {
       key: getLanguage(language).Map_Main_Menu.STYLE_TRANSPARENCY,
@@ -398,39 +455,6 @@ const ARStyleItems = (language: string) => {
       },
       selectKey: getLanguage(language).Map_Main_Menu.STYLE_BORDER_WIDTH,
     },
-    {
-      key: getLanguage(language).ARMap.SCALE,
-      action: () => {
-        showSlideToolbar(ConstToolType.SM_AR_DRAWING_STYLE_SCALE, language, {
-          selectName: getLanguage(language).ARMap.SCALE,
-          selectKey: getLanguage(language).ARMap.SCALE,
-          // isTouchProgress: true,
-        })
-      },
-      selectKey: getLanguage(language).ARMap.SCALE,
-    },
-    {
-      key: getLanguage(language).ARMap.POSITION,
-      action: () => {
-        showSlideToolbar(ConstToolType.SM_AR_DRAWING_STYLE_POSITION, language, {
-          selectName: getLanguage(language).ARMap.POSITION,
-          selectKey: getLanguage(language).ARMap.POSITION,
-          // isTouchProgress: true,
-        })
-      },
-      selectKey: getLanguage(language).ARMap.POSITION,
-    },
-    {
-      key: getLanguage(language).ARMap.ROTATION,
-      action: () => {
-        showSlideToolbar(ConstToolType.SM_AR_DRAWING_STYLE_ROTATION, language, {
-          selectName: getLanguage(language).ARMap.ROTATION,
-          selectKey: getLanguage(language).ARMap.ROTATION,
-          // isTouchProgress: true,
-        })
-      },
-      selectKey: getLanguage(language).ARMap.ROTATION,
-    },
   ]
 }
 
@@ -439,16 +463,27 @@ function getMenuData() {
   const _data: any = ToolbarModule.getData()
 
   let data: { key: string; action: () => void; selectKey: string }[] = []
-  if (_data.selectARElement) {
-    switch (_data.selectARElement.type) {
-      case ARElementType.AR_IMAGE:
-      case ARElementType.AR_VIDEO:
-      case ARElementType.AR_WEBVIEW:
-      case ARElementType.AR_TEXT:
-      case ARElementType.AR_MODEL:
-        data = ARStyleItems(_params.language)
-        break
-    }
+
+  switch (_params.type) {
+    case ConstToolType.SM_AR_DRAWING_STYLE:
+    case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_WIDTH:
+    case ConstToolType.SM_AR_DRAWING_STYLE_TRANSFROM:
+    case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_COLOR:
+      data = ARLayerStyleItems(_params.language)
+      break
+    default:
+      if (_data.selectARElement) {
+        switch (_data.selectARElement.type) {
+          case ARElementType.AR_IMAGE:
+          case ARElementType.AR_VIDEO:
+          case ARElementType.AR_WEBVIEW:
+          case ARElementType.AR_TEXT:
+          case ARElementType.AR_MODEL:
+            data = ARStyleItems(_params.language)
+            break
+        }
+      }
+      break
   }
   return data
 }
@@ -480,7 +515,6 @@ async function getStyleData(type: string) {
 
   const range = {
     scale: [0 , 200],
-    borderWidth: [0 , 200],
     position: [-100, 100],
     rotation: [-180, 180],
   }
@@ -642,14 +676,41 @@ async function getStyleData(type: string) {
       }]
       break
     }
+  }
+  return {
+    buttons,
+    data,
+  }
+}
+
+/**
+ * AR图层风格
+ * @param type
+ * @returns
+ */
+async function getLayerStyleData(type: string) {
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  if(!_params.arlayer.currentLayer)  {
+    Toast.show('未选中对象！')
+    return
+  }
+  SARMap.clearSelection()
+
+  const range = {
+    borderWidth: [0 , 200],
+  }
+  const buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
+  let data: any[] = []
+  switch(type) {
     case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_WIDTH: {
-      const borderWidth = await SARMap.getLayerBorderWidth(element.layerName)
+      const borderWidth = await SARMap.getLayerBorderWidth(layer.name)
       data = [{
         key: 'borderWidth',
         leftImage: getThemeAssets().ar.armap.ar_border_width,
         unit: 'mm',
         onMove: (loc: number) => {
-          SARMap.setLayerBorderWidth(element.layerName, loc)
+          SARMap.setLayerBorderWidth(layer.name, loc)
         },
         defaultValue: borderWidth,
         range: range.borderWidth,
@@ -657,15 +718,15 @@ async function getStyleData(type: string) {
       break
     }
     case ConstToolType.SM_AR_DRAWING_STYLE_TRANSFROM: {
-      const opacity = await SARMap.getLayerOpacity(element.layerName)
+      const opacity = await SARMap.getLayerOpacity(layer.name)
       data = [{
         key: 'transfrom',
         leftImage: getThemeAssets().ar.armap.ar_opacity,
         unit: '%',
         range: [0,100],
         onMove: (loc: number) => {
-          if(element?.layerName) {
-            SARMap.setLayerOpacity(element.layerName, loc / 100)
+          if(layer.name) {
+            SARMap.setLayerOpacity(layer.name, loc / 100)
           }
         },
         defaultValue: parseInt((opacity * 100).toFixed()),

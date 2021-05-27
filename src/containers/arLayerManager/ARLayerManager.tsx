@@ -7,6 +7,7 @@ import { Image, Text, TouchableOpacity, FlatList, Platform, StyleSheet, ListRend
 import { scaleSize, screen, Toast } from '../../utils'
 import { getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
+import { ConstToolType } from '../../constants'
 import { UserInfo } from '../../redux/models/user'
 import { ARMapInfo } from '../../redux/models/arlayer'
 import { ARMapState } from '../../redux/models/armap'
@@ -16,6 +17,7 @@ import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule
 import { arDrawingModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
+import NavigationService from '../NavigationService'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -85,6 +87,19 @@ export default class ARLayerManager extends React.Component<Props, State> {
       menuData: [{
         title: '',
         data: [{
+          title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_LAYER_STYLE,
+          image: getThemeAssets().layer.icon_layer_style,
+          action: async () => {
+            if (this.props.arlayer.currentLayer) {
+              const _params: any = ToolbarModule.getParams()
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_STYLE, {
+                isFullScreen: true,
+                showMenuDialog: true,
+              })
+              NavigationService.goBack('ARLayerManager', null)
+            }
+          },
+        }, {
           title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
           image: getThemeAssets().layer.icon_remove_layer,
           action: async () => {

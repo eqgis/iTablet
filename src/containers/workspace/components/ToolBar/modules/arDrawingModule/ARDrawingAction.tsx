@@ -368,6 +368,7 @@ function showMenuBox(type: string, selectKey: string, params: any) {
     case ConstToolType.SM_AR_DRAWING_STYLE_POSITION:
     case ConstToolType.SM_AR_DRAWING_VISIBLE_DISTANCE:
     case ConstToolType.SM_AR_DRAWING_STYLE_SCALE:
+    case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_COLOR:
     case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_WIDTH:
     case ConstToolType.SM_AR_DRAWING_STYLE_TRANSFROM:
       if (!GLOBAL.ToolBar.state.showMenuDialog) {
@@ -383,11 +384,18 @@ function showMenuBox(type: string, selectKey: string, params: any) {
   }
 }
 
+function commit() {
+  SARMap.clearSelection()
+  SARMap.setAction(ARAction.NULL)
+  return false
+}
+
 export default {
   toolbarBack,
   tableAction,
   menu,
   showMenuBox,
+  commit,
 
   addAtCurrent,
   addAtPoint,

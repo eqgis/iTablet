@@ -56,7 +56,7 @@ export const setCurrentAttribute = (
 
 export const setCurrentLayer = (params, cb = () => {}) => async dispatch => {
   if (params && params.path) {
-      SMap.setLayerEditable(params.path, true)
+    await SMap.setLayerEditable(params.path, true)
   }
   await dispatch({
     type: SET_CURRENT_LAYER,

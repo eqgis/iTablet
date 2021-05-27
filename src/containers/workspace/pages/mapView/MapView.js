@@ -3141,6 +3141,7 @@ export default class MapView extends React.Component {
         _isAR = !_isAR
       }
       this.setState({isAR:_isAR})
+      GLOBAL.showAIDetect = _isAR
       _isAR
         ? Orientation.lockToPortrait()
         : Orientation.unlockAllOrientations()

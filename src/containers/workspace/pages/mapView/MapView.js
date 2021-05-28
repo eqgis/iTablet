@@ -1367,7 +1367,6 @@ export default class MapView extends React.Component {
 
   closeMap = async () => {
     try {
-      await this.props.closeMap()
       await this._removeGeometrySelectedListener()
       await this.props.setCurrentAttribute({})
       // this.setState({ showScaleView: false })
@@ -1385,6 +1384,7 @@ export default class MapView extends React.Component {
         GLOBAL.getFriend().setCurMod(undefined)
         // NavigationService.goBack('CoworkTabs')
       }
+      await this.props.closeMap()
     } catch (e) {
       GLOBAL.clickWait = false
     }
@@ -1496,43 +1496,42 @@ export default class MapView extends React.Component {
       let result = await SMap.mapIsModified()
       if (result && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {
-          this.props.setCurrentAttribute({})
+          await this.props.setCurrentAttribute({})
           // this.setState({ showScaleView: false })
-          this._removeGeometrySelectedListener()
+          await this._removeGeometrySelectedListener()
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-            this._removeNavigationListeners()
+            await this._removeNavigationListeners()
           }
-          await this.closeMapHandler(params?.baskFrom)
           GLOBAL.clickWait = false
           if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
             if (Platform.OS === 'android') {
-              SARMap.showMeasureView(false)
-              SARMap.showTrackView(false)
-              SARMap.showPointCloud(false)
-              SARMap.dispose()
+              await SARMap.showMeasureView(false)
+              await SARMap.showTrackView(false)
+              await SARMap.showPointCloud(false)
+              await SARMap.dispose()
             }
-            SARMap.dispose()
+            await SARMap.dispose()
           }
+          await this.closeMapHandler(params?.baskFrom)
         })
       } else {
         try {
           this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-            this._removeNavigationListeners().then(() => {
-              SMap.clearPoint()
-              SMap.stopGuide()
-            })
+            await this._removeNavigationListeners()
+            await SMap.clearPoint()
+            await SMap.stopGuide()
           }
-          await this.closeMapHandler(params?.baskFrom)
           if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
             if (Platform.OS === 'android') {
-              SARMap.showMeasureView(false)
-              SARMap.showTrackView(false)
-              SARMap.showPointCloud(false)
-              SARMap.dispose()
+              await SARMap.showMeasureView(false)
+              await SARMap.showTrackView(false)
+              await SARMap.showPointCloud(false)
+              await SARMap.dispose()
             }
-            SARMap.dispose()
+            await SARMap.dispose()
           }
+          await this.closeMapHandler(params?.baskFrom)
         } catch (e) {
           GLOBAL.clickWait = false
           this.setLoading(false)
@@ -1611,7 +1610,7 @@ export default class MapView extends React.Component {
             homePath +
             userPath +
             ConstPath.RelativeFilePath.Workspace[
-            GLOBAL.language === 'CN' ? 'CN' : 'EN'
+              GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ]
           await this._openWorkspace({
             DSParams: { server: wsPath },
@@ -1753,7 +1752,6 @@ export default class MapView extends React.Component {
         }
 
 
-        this.setLoading(false)
         //切换地图完成后重置导航选择的数据
         this.selectedData = {
           selectedDatasources: [], //选中的数据源
@@ -1768,11 +1766,11 @@ export default class MapView extends React.Component {
         // 开始协作
         await this.startCowork()
 
-
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true, mapLoaded: true })
         GLOBAL.legend && GLOBAL.legend.getLegendData()
         // this.mapLoaded = true
+        this.setLoading(false)
       } catch (e) {
         this.setLoading(false)
         this.setState({ mapLoaded: true })
@@ -2900,11 +2898,11 @@ export default class MapView extends React.Component {
     let buttonInfos = GLOBAL.coworkMode && [
       MapHeaderButton.CoworkChat,
     ] || (currentMapModule && currentMapModule.headerButtons) || [
-        MapHeaderButton.Share,
-        MapHeaderButton.Search,
-        MapHeaderButton.Undo,
-        MapHeaderButton.Audio,
-      ]
+      MapHeaderButton.Share,
+      MapHeaderButton.Search,
+      MapHeaderButton.Undo,
+      MapHeaderButton.Audio,
+    ]
     let buttons = []
     if (this.isExample) {
       return (

@@ -256,7 +256,7 @@ export default class FunctionToolbar extends React.Component {
     const currentMapModule = this.props.mapModules.modules.find(function(item) {
       return item.key === type
     })
-    const functionModules = currentMapModule.functionModules
+    const functionModules = currentMapModule?.functionModules || []
 
     let data = []
     functionModules.forEach(item => {

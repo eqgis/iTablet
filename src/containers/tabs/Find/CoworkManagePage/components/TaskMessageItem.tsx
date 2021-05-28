@@ -60,13 +60,14 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
+    const recourceName = this.props.data.resource.resourceName.replace('.zip', `_${this.props.data.id}.zip`)
     this.path =
       (await FileTools.getHomeDirectory()) +
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
       ConstPath.RelativePath.Temp +
-      this.props.data.resource.resourceName
+      recourceName
 
     this.downloadingPath =
       (await FileTools.getHomeDirectory()) +

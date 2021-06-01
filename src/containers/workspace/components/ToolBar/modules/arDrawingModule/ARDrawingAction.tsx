@@ -293,6 +293,9 @@ async function checkARLayer(type: TARLayerType) {
 }
 
 async function toolbarBack() {
+  SARMap.setAction(ARAction.SELECT)
+  SARMap.clearSelection()
+  SARMap.cancel()
   const _params: any = ToolbarModule.getParams()
   // if (
   //   _params.type === ConstToolType.SM_AR_DRAWING_EDIT ||
@@ -385,10 +388,12 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 }
 
 function commit() {
-  SARMap.clearSelection()
   SARMap.setAction(ARAction.NULL)
+  SARMap.clearSelection()
+  SARMap.submit()
   return false
 }
+
 
 export default {
   toolbarBack,

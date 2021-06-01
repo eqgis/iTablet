@@ -24,6 +24,7 @@ import {
   DatasetType,
   // SCollectSceneFormView,
   ARElementType,
+  ARAction,
 } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import {
@@ -4403,6 +4404,8 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_TEXT
               || element.type === ARElementType.AR_MODEL
             ) {
+              SARMap.appointEditElement(element.id, element.layerName)
+              SARMap.setAction(ARAction.MOVE)
               this.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_EDIT, {
                 isFullScreen: false,
               })

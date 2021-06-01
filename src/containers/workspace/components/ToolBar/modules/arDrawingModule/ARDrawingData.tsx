@@ -10,7 +10,7 @@ import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolBarSlide from '../../components/ToolBarSlide'
 import NavigationService from '../../../../../NavigationService'
-import { ARElementType, SARMap } from 'imobile_for_reactnative'
+import { ARElementType, SARMap ,  ARAction} from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
 interface SectionItemData {
@@ -508,7 +508,7 @@ async function getStyleData(type: string) {
     Toast.show('未选中对象！')
     return
   }
-  SARMap.clearSelection()
+  // SARMap.clearSelection()
   // SARMap.appointEditElement(element.id, element.layerName)
 
   // option.bottomData = poiEditBottom

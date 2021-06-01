@@ -58,6 +58,7 @@ const Prompt: typeof CN.Prompt = {
   OPEN_MAP_CONFIRM: 'Whether to open the map',
   THE_MAP_IS_OPENED: 'The map is opened',
   THE_MAP_IS_NOTEXIST: 'The map doesn\'t exist',
+  OPEN_MAP_FAILED: 'Failed to open the map',
   THE_SCENE_IS_OPENED: 'The scene has been opened',
   NO_SCENE_LIST: 'No data',
   SWITCHING: 'Switching',

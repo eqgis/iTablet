@@ -129,6 +129,10 @@ export default class FunctionToolbar extends React.Component {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
     }
+    if (this.props.ARView !== prevProps.ARView) {
+      const data = this.getData(this.props.type)
+      this.setState({data: data})
+    }
   }
 
   onOrientationChange = () => {
@@ -256,7 +260,11 @@ export default class FunctionToolbar extends React.Component {
     const currentMapModule = this.props.mapModules.modules.find(function(item) {
       return item.key === type
     })
-    const functionModules = currentMapModule.functionModules
+    let functionModules = currentMapModule.functionModules
+
+    if (currentMapModule.getFunctionModules) {
+      functionModules = currentMapModule.getFunctionModules(this.props.ARView ? 'ar' : 'map')
+    }
 
     let data = []
     functionModules.forEach(item => {
@@ -438,27 +446,31 @@ export default class FunctionToolbar extends React.Component {
 
   _keyExtractor = (item, index) => index + '-' + item.title
 
-  getCurrentData = () => {
-    let filterData = this.state.data.filter(item => {
-      if (this.props.ARView) {
-        if (item.type === ConstToolType.SM_MAP_STYLE) return false
-        if (item.type === ConstToolType.SM_MAP_MARKS) return false
-        if (item.type === ConstToolType.SM_MAP_TOOL) return false
-      } else {
-        if (item.type === ConstToolType.SM_MAP_AR_MEASURE) return false
-        if (item.type === ConstToolType.SM_MAP_AR_ANALYSIS) return false
-        if (item.type === ConstToolType.SM_MAP_AR_TOOL) return false
-        if (item.type === ConstToolType.SM_MAP_AR_EFFECT) return false
-        if (item.type === ConstToolType.SM_MAP_AR_MAPPING) return false
-      }
-      return true
-    })
-    return filterData || []
-  }
+  // getCurrentData = () => {
+  //   // let filterData = this.state.data.filter(item => {
+  //   //   if (this.props.ARView) {
+  //   //     if (item.type === ConstToolType.SM_MAP_STYLE) return false
+  //   //     if (item.type === ConstToolType.SM_MAP_MARKS) return false
+  //   //     if (item.type === ConstToolType.SM_MAP_TOOL) return false
+  //   //     if (item.type === ConstToolType.SM_MAP_START) return false
+  //   //     if (item.type === ConstToolType.SM_MAP_ADD) return false
+  //   //   } else {
+  //   //     if (item.type === ConstToolType.SM_MAP_AR_MEASURE) return false
+  //   //     if (item.type === ConstToolType.SM_MAP_AR_ANALYSIS) return false
+  //   //     if (item.type === ConstToolType.SM_MAP_AR_TOOL) return false
+  //   //     if (item.type === ConstToolType.SM_MAP_AR_EFFECT) return false
+  //   //     if (item.type === ConstToolType.SM_MAP_AR_MAPPING) return false
+  //   //   }
+  //   //   return true
+  //   // })
+
+  //   let filterData = this.getData(this.props.type)
+  //   return filterData || []
+  // }
 
   renderList = () => {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-    let filterData = this.getCurrentData()
+    let filterData = this.state.data
     return (
       <FlatList
         ref={ref => (this.list = ref)}
@@ -490,7 +502,7 @@ export default class FunctionToolbar extends React.Component {
   }
 
   renderIndicator = location => {
-    if (this.getCurrentData().length <= MAX_VISIBLE_NUMBER) {
+    if (this.state.data.length <= MAX_VISIBLE_NUMBER) {
       return <View />
     }
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -533,7 +545,7 @@ export default class FunctionToolbar extends React.Component {
     }
     let containerStyle = []
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      let dataLength = this.getCurrentData().length
+      let dataLength = this.state.data.length
       dataLength =
         dataLength > MAX_VISIBLE_NUMBER ? MAX_VISIBLE_NUMBER : dataLength
       let width =

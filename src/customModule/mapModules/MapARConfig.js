@@ -1,7 +1,8 @@
-import { ChunkType } from '../../constants'
+import { ChunkType, MapTabs, ConstToolType } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
+import FunctionModule from '../../class/FunctionModule'
 import Toast from '../../utils/Toast'
 import { SAIDetectView, SMap } from 'imobile_for_reactnative'
 import {
@@ -13,29 +14,41 @@ import {
   markModule,
   toolModule,
   arDrawingModule,
+  arStartModule,
+  arEditModule,
+  arStyleModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
+import NavigationService from '../../containers/NavigationService'
+
+// class ARStartModule extends FunctionModule {
+//   constructor(props) {
+//     super(props)
+//   }
+
+//   action = () => {
+//     NavigationService.navigate('MyARMap', {
+//       showMode: 'tap',
+//     })
+//   }
+// }
+
+// function arStartModule() {
+//   return new ARStartModule({
+//     type: ConstToolType.SM_AR_DRAWING_START,
+//     title: getLanguage(GLOBAL.language).Map_Main_Menu.START,
+//     size: 'large',
+//     image: getThemeAssets().functionBar.icon_tool_start,
+//   })
+// }
 
 export default class MapARConfig extends Module {
   static key = ChunkType.MAP_AR
   constructor() {
-    let modules = [
-      startModule,
-      addModule,
-      markModule,
-      styleModule,
-      // arEffecModule,
-      // arToolModule,
-      toolModule,
-      arDrawingModule,
-    ]
-//    if (Platform.OS === 'ios') {
-//      modules.splice(4, 1)
-//    }
     super({
       key: MapARConfig.key,
-      functionModules: modules,
+      // functionModules: modules,
       mapType: Module.MapType.AR,
       example: {
         DEFAULT: [
@@ -50,6 +63,53 @@ export default class MapARConfig extends Module {
         ],
       },
     })
+    this.functionModules = this.getFunctionModules('ar')
+  }
+
+  getTabModules = (type = 'map') => {
+    let modules = []
+    switch (type) {
+      case 'map':
+        modules = [
+          MapTabs.MapView,
+          MapTabs.LayerManager,
+          MapTabs.LayerAttribute,
+          MapTabs.MapSetting,
+        ]
+        break
+      case 'ar':
+        modules = [
+          MapTabs.MapView,
+          MapTabs.ARLayerManager,
+          MapTabs.ARMapSetting,
+        ]
+        break
+    }
+    return modules
+  }
+
+  getFunctionModules = (type = 'map') => {
+    let modules = []
+    switch(type) {
+      case 'ar':
+        modules = [
+          arStartModule,
+          arDrawingModule,
+          arEditModule,
+          arStyleModule,
+        ]
+        break
+      case 'map':
+        modules = [
+          startModule,
+          addModule,
+          markModule,
+          styleModule,
+          toolModule,
+        ]
+        break
+    }
+    return modules
   }
 
   getChunk = language => {

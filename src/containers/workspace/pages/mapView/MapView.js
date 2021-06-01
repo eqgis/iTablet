@@ -1356,6 +1356,10 @@ export default class MapView extends React.Component {
     try {
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
       await this.closeMap()
+      if (GLOBAL.Type === ChunkType.MAP_AR) {
+        this.props.closeARMap()
+        this.props.setCurrentARLayer()
+      }
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
 
@@ -1976,8 +1980,10 @@ export default class MapView extends React.Component {
     GLOBAL.SaveMapView &&
       GLOBAL.SaveMapView.setVisible(
         visible,
-        loadingAction,
-        cb,
+        {
+          setLoading: loadingAction,
+          cb,
+        }
         // this.backPositon,
       )
   }
@@ -2064,7 +2070,7 @@ export default class MapView extends React.Component {
         mapModules={this.props.mapModules}
         initIndex={0}
         type={this.type}
-        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect}
+        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.state.isAR :this.state.showAIDetect}
       />
     )
   }
@@ -4403,8 +4409,9 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_TEXT
               || element.type === ARElementType.AR_MODEL
             ) {
-              this.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_EDIT, {
-                isFullScreen: false,
+              this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT, {
+                isFullScreen: true,
+                showMenuDialog: true,
               })
               ToolbarModule.addData({selectARElement: element})
             }

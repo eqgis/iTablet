@@ -58,6 +58,7 @@ const Prompt: typeof CN.Prompt = {
   OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: 'Harita açıldı',
   THE_MAP_IS_NOTEXIST: 'Harita mevcut değil',
+  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: 'Manzara açıldı',
   NO_SCENE_LIST: 'Veri Yok',
   SWITCHING: 'Değiştiriliyor',

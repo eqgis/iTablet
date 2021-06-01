@@ -1,5 +1,4 @@
-import { connect, ConnectedProps } from 'react-redux'
-import { FiltedData } from "imobile_for_reactnative"
+import { connect } from 'react-redux'
 import { MyDataPage } from '../component'
 import { getLanguage } from '../../../../language'
 import DataHandler from '../DataHandler'

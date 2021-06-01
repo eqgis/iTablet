@@ -1,8 +1,6 @@
 /* global GLOBAL */
 import React from 'react'
-import { View } from 'react-native'
 import {
-  SMeasureView,
   ARLayerType,
   TARLayerType,
   SARMap,
@@ -22,7 +20,7 @@ import { ImagePicker } from '../../../../../../components'
 import ToolbarModule from '../ToolbarModule'
 import Tabs from '../../../Tabs'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
-import ARDrawingData, { IARTransform } from './ARDrawingData'
+import ARDrawingData from './ARDrawingData'
 
 interface AssetType {
   Photos: 'Photos',

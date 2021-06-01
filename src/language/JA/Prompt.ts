@@ -58,6 +58,7 @@ const Prompt: typeof CN.Prompt = {
   OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: '当マップは開いています',
   THE_MAP_IS_NOTEXIST: '当マップは存在しません',
+  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: '当シーンは開いています',
   NO_SCENE_LIST: 'シーンリストはありません',
   SWITCHING: 'マップ切り替え中',

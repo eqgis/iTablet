@@ -56,6 +56,7 @@ const Prompt = {
   OPEN_MAP_CONFIRM: '已打开此地图',
   THE_MAP_IS_OPENED: '该地图已打开',
   THE_MAP_IS_NOTEXIST: '该地图不存在',
+  OPEN_MAP_FAILED: '打开地图失败',
   THE_SCENE_IS_OPENED: '该场景已打开',
   NO_SCENE_LIST: '无场景列表',
   SWITCHING: '正在切换地图',

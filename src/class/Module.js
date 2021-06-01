@@ -57,6 +57,10 @@ export default class Module {
           break
       }
     }
+
+    this.getTabModules = undefined
+
+    this.getFunctionModules = undefined
   }
 
   /**

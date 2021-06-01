@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
   arlayer: state.arlayer.toJS(),
   armap: state.armap.toJS(),
   device: state.device.toJS().device,
+  mapModules: state.mapModules.toJS(),
 })
 
 const mapDispatch = {

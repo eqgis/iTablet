@@ -7,7 +7,7 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import Tabs from '../../../Tabs'
-import { SARMap, ARAction } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 
 class ArDrawingModule extends FunctionModule {
   constructor(props) {
@@ -68,18 +68,19 @@ class ArDrawingModule extends FunctionModule {
     })
 
     SARMap.clearSelection()
-    SARMap.setAction(ARAction.SELECT)
+    // SARMap.setAction(ARAction.SELECT)
   }
 }
 
 export default function() {
   return new ArDrawingModule({
     type: ConstToolType.SM_AR_DRAWING,
-    title: getLanguage(GLOBAL.language).ARMap.ARDRAWING,
+    title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
     size: 'large',
-    image: getThemeAssets().ar.icon_tool_ardrawing,
+    // image: getThemeAssets().ar.icon_tool_ardrawing,
+    image: getThemeAssets().functionBar.icon_tool_add,
     getData: ARDrawingData.getData,
-    getHeaderData: ARDrawingData.getHeaderData,
+    // getHeaderData: ARDrawingData.getHeaderData,
     getMenuData: ARDrawingData.getMenuData,
     actions: ARDrawingAction,
   })

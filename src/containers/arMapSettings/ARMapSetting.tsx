@@ -7,9 +7,9 @@ import { Container } from '../../components'
 import { scaleSize } from '../../utils'
 import { color, size } from '../../styles'
 import { getLanguage } from '../../language'
+import { MapToolbar } from '../workspace/components'
 
 type Props = ReduxProps
-
 
 class ARMapSetting extends React.Component<Props> {
   constructor(props: Props) {
@@ -39,14 +39,28 @@ class ARMapSetting extends React.Component<Props> {
     )
   }
 
+  renderToolBar = () => {
+    return (
+      <MapToolbar
+        navigation={this.props.navigation}
+        type={GLOBAL.Type}
+        initIndex={2}
+        mapModules={this.props.mapModules}
+        ARView={true}
+      />
+    )
+  }
+
   render() {
     return(
       <Container
         style={styles.conatiner}
         headerProps={{
+          withoutBack: true,
           title: getLanguage(GLOBAL.language).Map_Label.SETTING,
           navigation: this.props.navigation,
         }}
+        bottomBar={this.renderToolBar()}
       >
         {this.renderCommonSettings()}
       </Container>
@@ -55,6 +69,7 @@ class ARMapSetting extends React.Component<Props> {
 }
 
 const mapStateToProp = (state: any) => ({
+  mapModules: state.mapModules.toJS(),
 })
 
 const mapDispatch = {

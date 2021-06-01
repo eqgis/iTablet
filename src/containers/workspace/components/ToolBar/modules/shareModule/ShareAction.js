@@ -143,7 +143,9 @@ function isNeedToSave(cb = () => {}) {
     isAnyMapOpened = await SMap.isAnyMapOpened()
     if (isAnyMapOpened && result) {
       if (!ToolbarModule.getParams().setSaveViewVisible) return
-      GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(true, null, cb)
+      GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(true, {
+        cb,
+      })
     } else {
       cb()
     }

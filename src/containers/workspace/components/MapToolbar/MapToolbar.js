@@ -15,8 +15,6 @@ export default class MapToolbar extends React.Component {
     type: PropTypes.string,
     navigation: PropTypes.object,
     initIndex: PropTypes.number,
-    POP_List: PropTypes.func,
-    layerManager: PropTypes.func,
     style: PropTypes.any,
     mapModules: PropTypes.object,
     ARView: PropTypes.bool,
@@ -33,7 +31,6 @@ export default class MapToolbar extends React.Component {
     super(props)
 
     this.show = false
-    this.type = ''
     const data = this.getToolbar(props.type)
 
     let current = 0
@@ -53,15 +50,54 @@ export default class MapToolbar extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      this.props.ARView !== nextProps.ARView ||
+      this.props.type !== nextProps.type ||
+      this.props.language !== nextProps.language ||
+      this.props.initIndex !== nextProps.initIndex ||
+      JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
+      JSON.stringify(this.props.mapModules) !== JSON.stringify(nextProps.mapModules) ||
+      JSON.stringify(this.state) !== JSON.stringify(nextState)
+    ) {
+      return true
+    }
+    return false
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.ARView !== prevProps.ARView ||
+      this.props.type !== prevProps.type ||
+      this.props.language !== prevProps.language ||
+      JSON.stringify(this.props.mapModules) !== JSON.stringify(prevProps.mapModules)
+    ) {
+      const data = this.getToolbar(this.props.type)
+      this.setState({
+        data: data,
+      })
+    }
+  }
+
   getToolbar = type => {
     let list = []
     if (type === '') return list
-    const tabModules = this.props.mapModules.modules[
+    // let tabModules = this.props.mapModules.modules[
+    //   this.props.mapModules.currentMapModule
+    // ].tabModules
+    const module = this.props.mapModules.modules[
       this.props.mapModules.currentMapModule
-    ].tabModules
+    ]
 
-    for (let i = 0; i < tabModules.length; i++) {
-      switch (tabModules[i]) {
+    let tabModules = []
+    if (module.getTabModules) {
+      tabModules = module.getTabModules(this.props.ARView ? 'ar' : 'map')
+    } else {
+      tabModules = module.tabModules
+    }
+
+    for (let module of tabModules) {
+      switch (module) {
         case MapTabs.MapView:
           list.push({
             key: MapTabs.MapView,
@@ -80,21 +116,22 @@ export default class MapToolbar extends React.Component {
           })
           break
         case MapTabs.LayerManager:
+        case MapTabs.ARLayerManager:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.LAYER,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
             btnClick: () => {
               this.props.navigation &&
-                this.props.navigation.navigate('LayerManager', { type })
+                this.props.navigation.navigate(module, { type })
             },
           })
           break
         case MapTabs.LayerAttribute:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
@@ -106,15 +143,16 @@ export default class MapToolbar extends React.Component {
           })
           break
         case MapTabs.MapSetting:
+        case MapTabs.ARMapSetting:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.SETTING,
             //'设置',
             image: getThemeAssets().tabBar.tab_setting,
             selectedImage: getThemeAssets().tabBar.tab_setting_selected,
             btnClick: () => {
               this.props.navigation &&
-                this.props.navigation.navigate('MapSetting', { type })
+                this.props.navigation.navigate(module, { type })
             },
           })
           break
@@ -135,7 +173,7 @@ export default class MapToolbar extends React.Component {
           break
         case MapTabs.Layer3DManager:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.LAYER,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
@@ -150,7 +188,7 @@ export default class MapToolbar extends React.Component {
           break
         case MapTabs.LayerAttribute3D:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
@@ -165,7 +203,7 @@ export default class MapToolbar extends React.Component {
           break
         case MapTabs.Map3DSetting:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.SETTING,
             //'设置',
             image: getThemeAssets().tabBar.tab_setting,

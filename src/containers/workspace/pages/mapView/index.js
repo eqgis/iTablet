@@ -56,7 +56,7 @@ import { setAnalystParams } from '../../../../redux/models/analyst'
 import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
-import { createARMap } from '../../../../redux/models/armap'
+import { createARMap, openARMap, saveARMap, closeARMap } from '../../../../redux/models/armap'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -156,6 +156,9 @@ const mapDispatchToProps = {
   setCurrentARLayer,
   getARLayers,
   createARMap,
+  openARMap,
+  saveARMap,
+  closeARMap,
 }
 
 export default connect(

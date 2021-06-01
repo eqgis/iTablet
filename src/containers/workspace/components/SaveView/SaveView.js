@@ -37,6 +37,8 @@ export default class SaveView extends React.Component {
       position: {},
     }
     this.cb = () => {}
+    this.customSave = undefined
+    this.customNotSave = undefined
   }
 
   setTitle = (title, save_yes, save_no, cancel) => {
@@ -54,7 +56,9 @@ export default class SaveView extends React.Component {
   save = () => {
     (async function() {
       let result
-      if (this.props.save) {
+      if (this.customSave) {
+        result = await this.customSave()
+      } else if (this.props.save) {
         result = await this.props.save()
       }
       this.setVisible(false)
@@ -62,6 +66,8 @@ export default class SaveView extends React.Component {
         this.cb && typeof this.cb === 'function' && this.cb()
         this.cb = null
       }
+      this.customSave = undefined
+      this.customNotSave = undefined
     }.bind(this)())
   }
 
@@ -70,11 +76,17 @@ export default class SaveView extends React.Component {
    */
   notSave = () => {
     (async function() {
-      this.props.notSave && this.props.notSave()
+      if (this.customNotSave) {
+        this.customNotSave()
+      } else if (this.props.notSave) {
+        this.props.notSave()
+      }
       this.setVisible(false)
 
       this.cb && typeof this.cb === 'function' && this.cb()
       this.cb = null
+      this.customSave = undefined
+      this.customNotSave = undefined
     }.bind(this)())
   }
 
@@ -85,6 +97,8 @@ export default class SaveView extends React.Component {
     this.props.cancel && this.props.cancel()
     // this.setVisible(false)
     this.cb = null
+    this.customSave = undefined
+    this.customNotSave = undefined
   }
 
   /**
@@ -94,13 +108,25 @@ export default class SaveView extends React.Component {
    * @param {() => void} cb 保存和不保存事件之后的回调
    * @param {{left: number, right: number, top: number, bottom: number}} position 提示框位置
    */
-  setVisible = (visible, setLoading, cb, position) => {
+  setVisible = (visible, params = {
+    setLoading: undefined,
+    cb: undefined,
+    position: undefined,
+    customSave: undefined,
+    customNotSave: undefined,
+  }) => {
     // if (this.state.visible === visible) return
-    if (setLoading && typeof setLoading === 'function') {
-      this._setLoading = setLoading
+    if (params?.setLoading && typeof params.setLoading === 'function') {
+      this._setLoading = params.setLoading
     }
-    this.menu.setVisible(visible, position)
-    this.cb = cb || this.cb
+    if (params?.customSave && typeof params.customSave === 'function') {
+      this.customSave = params.customSave
+    }
+    if (params?.customNotSave && typeof params.customNotSave === 'function') {
+      this.customNotSave = params.customNotSave
+    }
+    this.menu.setVisible(visible, params?.position)
+    this.cb = params?.cb || this.cb
   }
 
   /**

@@ -640,7 +640,9 @@ export default class MT_layerManager extends React.Component {
 
   setSaveViewVisible = visible => {
     GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, this.setLoading)
+      GLOBAL.SaveMapView.setVisible(visible, {
+        setLoading: this.setLoading,
+      })
   }
 
   getStyleIconByType = item => {

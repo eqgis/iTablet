@@ -18,6 +18,7 @@ import { arDrawingModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
 import NavigationService from '../NavigationService'
+import { MapToolbar } from '../workspace/components'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -62,6 +63,10 @@ interface Props {
   armap: ARMapState,
   navigation: any,
   device: DEVICE,
+  mapModules: {
+    modules: any[],
+    currentMapModule: number,
+  },
 
   setCurrentARLayer: (layer: ARLayer | undefined) => void,
   getARLayers: () => Promise<ARLayer[]>,
@@ -74,6 +79,7 @@ interface State {
   menuVisible: boolean,
   selectLayer?: ARLayer,
   menuData: Array<any>,
+  type: string,
 }
 
 export default class ARLayerManager extends React.Component<Props, State> {
@@ -82,6 +88,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
+    const { params } = props.navigation.state
     this.state = {
       menuVisible: false,
       menuData: [{
@@ -113,6 +120,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           },
         }],
       }],
+      type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
     }
   }
 
@@ -245,14 +253,14 @@ export default class ARLayerManager extends React.Component<Props, State> {
   _renderHeaderRight = () => {
     if (!this.props.armap.currentMap?.mapName && !this.props.arlayer.layers?.length) return null
     return [
-      this._renderHeaderRightBtn({
-        image: getThemeAssets().publicAssets.icon_cancel,
-        title: getLanguage().ARMap.CLOSE_MAP,
-        action: async () => {
-          await this.props.closeARMap()
-          await this.props.getARLayers()
-        },
-      }),
+      // this._renderHeaderRightBtn({
+      //   image: getThemeAssets().publicAssets.icon_cancel,
+      //   title: getLanguage().ARMap.CLOSE_MAP,
+      //   action: async () => {
+      //     await this.props.closeARMap()
+      //     await this.props.getARLayers()
+      //   },
+      // }),
       this._renderHeaderRightBtn({
         image: getThemeAssets().layer.icon_add_layer,
         title: getLanguage().ARMap.ADD_LAYER,
@@ -264,13 +272,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
           })
         },
       }),
-      this._renderHeaderRightBtn({
-        image: getThemeAssets().start.icon_save,
-        title: getLanguage().ARMap.SAVE,
-        action: () => {
-          this.inputDialog && this.inputDialog.setDialogVisible(true)
-        },
-      }),
+      // this._renderHeaderRightBtn({
+      //   image: getThemeAssets().start.icon_save,
+      //   title: getLanguage().ARMap.SAVE,
+      //   action: () => {
+      //     this.inputDialog && this.inputDialog.setDialogVisible(true)
+      //   },
+      // }),
     ]
   }
 
@@ -337,22 +345,35 @@ export default class ARLayerManager extends React.Component<Props, State> {
     )
   }
 
+  renderToolBar = () => {
+    return (
+      <MapToolbar
+        navigation={this.props.navigation}
+        type={this.state.type}
+        initIndex={1}
+        mapModules={this.props.mapModules}
+        ARView={true}
+      />
+    )
+  }
+
   render() {
     return(
       <Container
         headerProps={{
+          title: this.props.mapModules.modules[
+            this.props.mapModules.currentMapModule
+          ].chunk.title,
           navigation: this.props.navigation,
           withoutBack: true,
-          headerLeft: this._renderHeaderLeft(),
+          // headerLeft: this._renderHeaderLeft(),
           headerRight: this._renderHeaderRight(),
-          headerStyle: {
-            paddingTop: this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && (
-              screen.isIphoneX()
-                ? screen.X_TOP
-                : (Platform.OS === 'ios' ? 20 : 0)
-            ),
+          headerTitleViewStyle: {
+            justifyContent: 'flex-start',
+            marginLeft: scaleSize(90),
           },
         }}
+        bottomBar={this.renderToolBar()}
       >
         {this._renderLayers()}
         {this._renderInputDialog()}

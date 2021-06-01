@@ -17,11 +17,12 @@ async function toolbarBack() {
     buttons: _data.buttons,
   })
   SARMap.clearSelection()
+  SARMap.cancel()
+  SARMap.setAction(ARAction.SELECT)
   ToolbarModule.addData({selectARElement: null})
 }
 
 function menu(type: string, selectKey: string, params = {}) {
-  const _params: any = ToolbarModule.getParams()
 
   let showMenu = false
 
@@ -60,6 +61,7 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 
 function commit() {
   SARMap.clearSelection()
+  SARMap.submit()
   SARMap.setAction(ARAction.NULL)
   return false
 }

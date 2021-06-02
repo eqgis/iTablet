@@ -145,7 +145,7 @@ async function getData(type: string, params: {[name: string]: any}) {
               } else {
                 _type = ARElementType.AR_IMAGE
               }
-  
+
               ARDrawingAction.addMedia(_type)
             }
           },

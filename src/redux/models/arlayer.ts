@@ -3,8 +3,8 @@ import { handleActions } from 'redux-actions'
 import { ARLayer, SARMap } from 'imobile_for_reactnative'
 
 import {
-  NewARMapAction,
   NEW_AR_MAP,
+  NewARMapAction,
   SaveARMapAction,
   CLOSE_AR_MAP,
 } from "./armap"
@@ -72,8 +72,8 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${NEW_AR_MAP}`]: (state: any, { payload }: ARLayerAction<ARLayer[]>) => {
-      return state.setIn(['layers'], fromJS(payload))
+    [`${NEW_AR_MAP}`]: (state: any, { payload }: ARLayerAction<NewARMapAction>) => {
+      return state.setIn(['layers'], fromJS(payload.layers))
         .setIn(['currentLayer'], fromJS(undefined))
     },
     [`${CLOSE_AR_MAP}`]: (state: any, { payload }: ARLayerAction<SaveARMapAction>) => {

@@ -27,6 +27,7 @@ export interface NewARMapAction {
   type: typeof NEW_AR_MAP,
   userName: string,
   layers: Array<ARLayer>,
+  mapName: string,
 }
 
 export interface SaveARMapAction  {
@@ -85,16 +86,20 @@ export const openARMap = (name = '') => async (dispatch: (params: DispatchParams
   }
 }
 
-export const createARMap = () => async (dispatch: (params: DispatchParams) => any, getState: () => any) => {
+export const createARMap = (name = 'DefaultARMap') => async (dispatch: (params: DispatchParams) => any, getState: () => any) => {
   try {
     const userName = getState().user.toJS().currentUser.userName
     const result = await SARMap.close()
     if(result) {
+      const homePath = await FileTools.getHomeDirectory()
+      const mapPath = homePath + ConstPath.RelativePath.ARMap
+      name = await DataHandler.getAvailableFileNameNoExt(mapPath, name, 'arxml')
       dispatch({
         type: NEW_AR_MAP,
         payload: {
           userName: userName,
           layers: [],
+          mapName: name,
         },
       })
     }
@@ -175,6 +180,17 @@ const initialState = fromJS({
 
 export default handleActions(
   {
+    [`${NEW_AR_MAP}`]: (state: any, { payload }: ARMapAction<NewARMapAction>) => {
+      const { maps } = state.toJS()
+      maps.push({
+        userName: payload.userName,
+        mapName: payload.mapName,
+      })
+      return state.setIn(['maps'], fromJS(maps)).setIn(['currentMap'], fromJS({
+        userName: payload.userName,
+        mapName: payload.mapName,
+      }))
+    },
     [`${OPEN_AR_MAP}`]: (state: any, { payload }: ARMapAction<OpenARMapAction>) => {
       const { maps } = state.toJS()
       const usermap = maps.filter((userMap: OpenARMapAction) => {

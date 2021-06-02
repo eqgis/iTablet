@@ -144,6 +144,26 @@ async function _saveMap(name: string) {
 }
 
 /** 保存地图 * */
+async function createMap() {
+  const _params: any = ToolbarModule.getParams()
+  try {
+    NavigationService.navigate('InputPage', {
+      headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.START_NEW_MAP,
+      placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
+      type: 'name',
+      cb: async (value: string) => {
+        let result = await _params.createARMap(value)
+        result && NavigationService.goBack('InputPage')
+      },
+    })
+  } catch (e) {
+    _params.setContainerLoading &&
+      _params.setContainerLoading(false)
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+  }
+}
+
+/** 保存地图 * */
 async function saveMap() {
   const _params: any = ToolbarModule.getParams()
   try {
@@ -157,7 +177,7 @@ async function saveMap() {
       mapName =
         mapName.substr(0, mapName.lastIndexOf('.')) ||
         _params.armap.currentMap.mapName
-        await _saveMap(mapName)
+      await _saveMap(mapName)
     } else {
       NavigationService.navigate('InputPage', {
         headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_MAP,
@@ -236,4 +256,5 @@ export default {
   openMap,
   closeMap,
   saveMap,
+  createMap,
 }

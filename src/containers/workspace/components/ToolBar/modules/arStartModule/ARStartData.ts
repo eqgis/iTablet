@@ -22,13 +22,13 @@ function getData(type: string, params: any) {
           size: 'large',
           image: getThemeAssets().start.icon_open_map,
         },
-        // {
-        //   key: constants.CREATE,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.START_NEW_MAP,
-        //   size: 'large',
-        //   action: () => ARStartAction.isNeedToSave(ARStartAction.create),
-        //   image: getThemeAssets().start.icon_new_map,
-        // },
+        {
+          key: constants.CREATE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_NEW_MAP,
+          size: 'large',
+          action: () => ARStartAction.isNeedToSave(ARStartAction.createMap),
+          image: getThemeAssets().start.icon_new_map,
+        },
         // {
         //   key: constants.HISTORY,
         //   title: getLanguage(GLOBAL.language).Map_Main_Menu.START_RECENT,

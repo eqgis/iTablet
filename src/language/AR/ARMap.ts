@@ -1,6 +1,11 @@
 const ARMap = {// need to translate
   ARDRAWING: 'AR Drawing',
 
+  THREE_D: '3D',
+  VECTOR: 'Vector',
+  MODEL: 'Model',
+  EFFECT: 'Effect',
+
   SUBSTANCE: 'Substance',
   AREA: 'Area',
   LINE: 'Line',

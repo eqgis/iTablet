@@ -1,16 +1,12 @@
 import React from 'react'
-import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import { scaleSize, Toast } from '../../../../../../utils'
+import { ConstToolType } from '../../../../../../constants'
+import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
-import { color } from '../../../../../../styles'
 import ToolbarModule from '../ToolbarModule'
-import ARDrawingAction from './AREditAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolBarSlide from '../../components/ToolBarSlide'
-import NavigationService from '../../../../../NavigationService'
 import { ARElementType, SARMap } from 'imobile_for_reactnative'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
 interface SectionItemData {
   key: string,
@@ -231,7 +227,7 @@ async function getStyleData(type: string) {
 
   const range = {
     scale: [0 , 200],
-    position: [-100, 100],
+    position: [-20, 20],
     rotation: [-180, 180],
   }
 

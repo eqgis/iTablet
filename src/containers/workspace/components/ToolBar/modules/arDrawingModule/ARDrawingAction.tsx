@@ -71,13 +71,6 @@ function addAtPoint() {
 }
 
 async function arVideo() {
-  const params = ToolbarModule.getParams()
-  // let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  // if (!isSupportedARCore) {
-  //   GLOBAL.ARDeviceListDialog.setVisible(true)
-  //   return
-  // }
-
   openSourcePicker('Videos', data => {
     if (data && data.length > 0) {
       let path = data[0].uri
@@ -87,12 +80,6 @@ async function arVideo() {
 }
 
 async function arImage() {
-  // let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  // if (!isSupportedARCore) {
-  //   GLOBAL.ARDeviceListDialog.setVisible(true)
-  //   return
-  // }
-
   openSourcePicker('Photos', data => {
     if (data && data.length > 0) {
       let path = data[0].uri
@@ -102,12 +89,6 @@ async function arImage() {
 }
 
 async function arWebView() {
-  // let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  // if (!isSupportedARCore) {
-  //   GLOBAL.ARDeviceListDialog.setVisible(true)
-  //   return
-  // }
-
   NavigationService.navigate('InputPage', {
     type: 'http',
     headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
@@ -121,20 +102,16 @@ async function arWebView() {
 }
 
 async function arText() {
-  // let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  // if (!isSupportedARCore) {
-  //   GLOBAL.ARDeviceListDialog.setVisible(true)
-  //   return
-  // }
-
-  if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = false
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-  }
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-  GLOBAL.EnterDatumPointType = 'arText'
-  // NavigationService.navigate('EnterDatumPoint')
-  // NavigationService.navigate('ARTextView')
+  NavigationService.navigate('InputPage', {
+    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
+    type: 'name',
+    cb: async (value: string) => {
+      if (value !== '') {
+        setARToolbar(ConstToolType.SM_AR_DRAWING_TEXT, { arContent: value })
+        NavigationService.goBack('InputPage')
+      }
+    },
+  })
 }
 
 async function ar3D(path: string) {
@@ -177,7 +154,7 @@ export async function addARScene() {
     try {
       const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
       if(list.length == 0) return
-      await SARMap.addScene(datasourceName, datasetName, homePath + list[0].path)
+      await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path)
       if(result){
         await _params.getARLayers()
       }
@@ -200,9 +177,7 @@ export async function addARModel() {
   await checkARLayer(ARLayerType.AR_MODEL_LAYER)
   const layer = _params.arlayer.currentLayer
   if(layer){
-    SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arModelPath, 0).then(() => {
-      // AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ADD')
-    })
+    SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arModelPath, 0)
   }
 }
 
@@ -216,9 +191,18 @@ async function addMedia(type: TARElementType) {
     if((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
       content = content.substring(7)
     }
-    SARMap.addARMedia(layer.name, type, content).then(() => {
-      // AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ADD')
-    })
+    SARMap.addARMedia(layer.name, type, content)
+  }
+}
+
+async function addText() {
+  await checkARLayer(ARLayerType.AR_TEXT_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  let content = _data.arContent
+  const layer = _params.arlayer.currentLayer
+  if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
+    SARMap.addARText(layer.name, content)
   }
 }
 
@@ -295,12 +279,6 @@ async function toolbarBack() {
   SARMap.clearSelection()
   SARMap.cancel()
   const _params: any = ToolbarModule.getParams()
-  // if (
-  //   _params.type === ConstToolType.SM_AR_DRAWING_EDIT ||
-  //   _params.type === ConstToolType.SM_AR_DRAWING_VIDEO ||
-  //   _params.type === ConstToolType.SM_AR_DRAWING_IMAGE ||
-  //   _params.type === ConstToolType.SM_AR_DRAWING_WEB
-  // ) {
   const _data = await ARDrawingData.getData(ConstToolType.SM_AR_DRAWING, _params)
   _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING, {
     isFullScreen: false,
@@ -314,12 +292,8 @@ async function toolbarBack() {
       )
     },
   })
-  // if (_params.type === ConstToolType.SM_AR_DRAWING_EDIT) {
-  // 从编辑返回上一界面，取消当前选择的对象
   SARMap.clearSelection()
   ToolbarModule.addData({selectARElement: null})
-  // }
-  // }
 }
 
 async function tableAction(type: string, params: { key: any; layerName: any; action: (arg0: any) => void }) {
@@ -408,6 +382,7 @@ export default {
   arImage,
   arWebView,
   arText,
+  addText,
   ar3D,
   addARScene,
   arModel,

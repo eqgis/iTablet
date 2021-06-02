@@ -1,6 +1,11 @@
 const ARMap = {
   ARDRAWING: 'AR制图',
 
+  THREE_D: '三维',
+  VECTOR: '矢量',
+  MODEL: '模型',
+  EFFECT: '特效',
+
   SUBSTANCE: '体',
   AREA: '面',
   LINE: '线',

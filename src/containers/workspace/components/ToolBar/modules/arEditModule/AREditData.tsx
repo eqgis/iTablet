@@ -6,7 +6,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolBarSlide from '../../components/ToolBarSlide'
-import { ARElementType, SARMap } from 'imobile_for_reactnative'
+import { ARElementType, SARMap ,ARAction} from 'imobile_for_reactnative'
 
 interface SectionItemData {
   key: string,
@@ -146,6 +146,7 @@ const ARStyleItems = (language: string) => {
     {
       key: getLanguage(language).ARMap.SCALE,
       action: () => {
+        SARMap.setAction(ARAction.SCALE)
         showSlideToolbar(ConstToolType.SM_AR_EDIT_SCALE, language, {
           selectName: getLanguage(language).ARMap.SCALE,
           selectKey: getLanguage(language).ARMap.SCALE,
@@ -157,6 +158,7 @@ const ARStyleItems = (language: string) => {
     {
       key: getLanguage(language).ARMap.POSITION,
       action: () => {
+        SARMap.setAction(ARAction.MOVE)
         showSlideToolbar(ConstToolType.SM_AR_EDIT_POSITION, language, {
           selectName: getLanguage(language).ARMap.POSITION,
           selectKey: getLanguage(language).ARMap.POSITION,
@@ -168,6 +170,7 @@ const ARStyleItems = (language: string) => {
     {
       key: getLanguage(language).ARMap.ROTATION,
       action: () => {
+        SARMap.setAction(ARAction.ROTATE)
         showSlideToolbar(ConstToolType.SM_AR_EDIT_ROTATION, language, {
           selectName: getLanguage(language).ARMap.ROTATION,
           selectKey: getLanguage(language).ARMap.ROTATION,

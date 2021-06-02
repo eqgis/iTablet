@@ -9,6 +9,7 @@ import {
   ARElementLayer,
   ARAction,
   FileTools,
+  ARLayer,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
@@ -120,49 +121,53 @@ async function ar3D(path: string) {
 
 /** 打开三维场景 */
 export async function addARScene() {
-  const _params: any = ToolbarModule.getParams()
-  const _data: any = ToolbarModule.getData()
-  let newDatasource = false
-  const mapInfo = _params.arMapInfo
-  ToolbarModule.addData({
-    addNewDSourceWhenCreate: false,
-    addNewDsetWhenCreate: false,
-  })
-  if(!mapInfo){
-    await _params.createARMap()
-    newDatasource = true
-  }
-
-  let datasourceName = DataHandler.getARRawDatasource()
-  let datasetName = 'scene'
-  const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
-  if(result.success) {
-    datasourceName = result.datasourceName
-    datasetName = result.datasetName
-    if(newDatasource) {
-      DataHandler.setARRawDatasource(datasourceName)
+  try {
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    let newDatasource = false
+    const mapName = _params.armap.currentMap?.mapName
+    ToolbarModule.addData({
+      addNewDSourceWhenCreate: false,
+      addNewDsetWhenCreate: false,
+    })
+    if(!mapName){
+      await _params.createARMap()
+      newDatasource = true
     }
 
-    const homePath = await FileTools.getHomeDirectory()
-    let path = _data.arScenePath
-    if(!path) {
-      Toast.show('未选择场景！')
-      return
-    }
-    path = homePath + path
-    // 得到的是工作空间所在目录 需要去找到sxwu文件路径
-    try {
-      const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
-      if(list.length == 0) return
-      await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path)
-      if(result){
-        await _params.getARLayers()
+    let datasourceName = DataHandler.getARRawDatasource()
+    let datasetName = 'scene'
+    const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
+    if(result.success) {
+      datasourceName = result.datasourceName
+      datasetName = result.datasetName
+      if(newDatasource) {
+        DataHandler.setARRawDatasource(datasourceName)
       }
-    } catch(e){
-      console.warn(e)
-    } finally {
-      // AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ADD')
+
+      const homePath = await FileTools.getHomeDirectory()
+      let path = _data.arScenePath
+      if(!path) {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SCENE_SELECTED)
+        return
+      }
+      path = homePath + path
+      // 得到的是工作空间所在目录 需要去找到sxwu文件路径
+      try {
+        const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
+        if(list.length == 0) return
+        await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path)
+        if(result){
+          await _params.getARLayers()
+        }
+      } catch(e){
+        console.warn(e)
+      } finally {
+        // AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ADD')
+      }
     }
+  } catch (error) {
+    Toast.show(error)
   }
 }
 
@@ -172,37 +177,75 @@ async function arModel(path: string) {
 
 /** 添加模型 */
 export async function addARModel() {
-  const _params: any = ToolbarModule.getParams()
-  const _data: any = ToolbarModule.getData()
-  await checkARLayer(ARLayerType.AR_MODEL_LAYER)
-  const layer = _params.arlayer.currentLayer
-  if(layer){
-    SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arModelPath, 0)
+  try {
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    await checkARLayer(ARLayerType.AR_MODEL_LAYER)
+    const layer = _params.arlayer.currentLayer
+    if(layer){
+      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arModelPath, 0)
+    }
+  } catch (error) {
+    Toast.show(error)
   }
 }
 
 async function addMedia(type: TARElementType) {
-  await checkARLayer(ARLayerType.AR_MEDIA_LAYER)
-  const _params: any = ToolbarModule.getParams()
-  const _data: any = ToolbarModule.getData()
-  let content = _data.arContent
-  const layer = _params.arlayer.currentLayer
-  if(content && layer && layer.type === ARLayerType.AR_MEDIA_LAYER) {
-    if((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
-      content = content.substring(7)
+  try {
+    await checkARLayer(ARLayerType.AR_MEDIA_LAYER)
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    let content = _data.arContent
+    const layer = _params.arlayer.currentLayer
+    if(content && layer && layer.type === ARLayerType.AR_MEDIA_LAYER) {
+      if((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
+        content = content.substring(7)
+      }
+      SARMap.addARMedia(layer.name, type, content)
     }
-    SARMap.addARMedia(layer.name, type, content)
+  } catch (error) {
+    Toast.show(error)
   }
 }
 
 async function addText() {
-  await checkARLayer(ARLayerType.AR_TEXT_LAYER)
-  const _params: any = ToolbarModule.getParams()
-  const _data: any = ToolbarModule.getData()
-  let content = _data.arContent
-  const layer = _params.arlayer.currentLayer
-  if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-    SARMap.addARText(layer.name, content)
+  try {
+    await checkARLayer(ARLayerType.AR_TEXT_LAYER)
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    let content = _data.arContent
+    const layer = _params.arlayer.currentLayer
+    if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
+      SARMap.addARText(layer.name, content)
+    }
+  } catch (error) {
+    Toast.show(error)
+  }
+}
+
+async function addAREffect(fileName: string, filePath: string) {
+  try {
+    const homePath = await FileTools.getHomeDirectory()
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    const mapName = _params.armap.currentMap?.mapName
+
+    if(!mapName){
+      await _params.createARMap()
+    }
+    const layerName = fileName.substring(0, fileName.lastIndexOf('.'))
+    const addLayerName = await SARMap.addEffectLayer(layerName, homePath + filePath)
+    if(addLayerName !== '') {
+      const layers = await _params.getARLayers()
+      const defaultLayer = layers.find((item: ARLayer) => {
+        return item.type === ARLayerType.EFFECT_LAYER
+      })
+      if(defaultLayer) {
+        _params.setCurrentARLayer(defaultLayer)
+      }
+    }
+  } catch (e) {
+    Toast.show(e)
   }
 }
 
@@ -269,7 +312,7 @@ async function checkARLayer(type: TARLayerType) {
         _params.setCurrentARLayer(defaultLayer)
       }
     } else {
-      // AppLog.error(result.error)
+      Toast.show(result.error)
     }
   }
 }
@@ -292,7 +335,6 @@ async function toolbarBack() {
       )
     },
   })
-  SARMap.clearSelection()
   ToolbarModule.addData({selectARElement: null})
 }
 
@@ -327,14 +369,6 @@ function menu(type: string, selectKey: string, params = {}) {
       selectName: selectKey,
     })
   }
-
-
-  // _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_EDIT, {
-  //   isFullScreen: showMenu,
-  //   showMenuDialog: showMenu,
-  //   selectKey: selectKey,
-  //   selectName: selectKey,
-  // })
 }
 
 function showMenuBox(type: string, selectKey: string, params: any) {
@@ -387,4 +421,5 @@ export default {
   addARScene,
   arModel,
   addARModel,
+  addAREffect,
 }

@@ -5,7 +5,7 @@
 */
 
 import * as React from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, View, Dimensions } from 'react-native'
 import styles from './styles'
 
 /**
@@ -26,6 +26,7 @@ export default class TableList extends React.Component {
     isAutoType?: Boolean, // 是否根据个数，自适应滚动或固定表格
     column?: number, // 列数
     numberOfRows?: number, // 行数限制
+    horizontal?: Boolean, // 是否是横向滚动
   }
 
   static defaultProps = {
@@ -35,6 +36,7 @@ export default class TableList extends React.Component {
     type: 'table', // normal | scroll
     lineSeparator: 5,
     isAutoType: true,
+    horizontal: false,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -62,10 +64,15 @@ export default class TableList extends React.Component {
   }
 
   renderRows = () => {
-    // this.getDeviceWidth()
-    // console.log(this.props)
     let rows = [],
       rowsView = []
+    const isHorizontalScroll = this.props.horizontal && (this.props.column < this.props.data.length)
+    if (isHorizontalScroll) {
+      this.props.data.forEach((item, index) => {
+        rows.push(this.renderCell(item, 0, index))
+      })
+      return rows
+    }
     this.props.data.forEach((item, index) => {
       let column = this.props.column
       let orientation = this.getOrientation()
@@ -128,13 +135,15 @@ export default class TableList extends React.Component {
 
   renderCell = (item, rowIndex, cellIndex) => {
     if (!this.props.renderCell) throw new Error('Please render cell')
+    const isHorizontalScroll = this.props.horizontal && (this.props.column < this.props.data.length)
+    const width = isHorizontalScroll ? Math.min(Dimensions.get('window').width / this.props.column, 100) : (100 / this.props.column + '%')
     let size = {
       justifyContent: 'flex-start',
-      width: 100 / this.props.column + '%',
+      width: width,
     }
     return (
       <View
-        style={[size, this.props.cellStyle]}
+        style={[size, this.props.cellStyle, {backgroundColor: 'transparent'}]}
         key={rowIndex + '-' + cellIndex}
       >
         {this.props.renderCell({ item, rowIndex, cellIndex })}
@@ -144,8 +153,21 @@ export default class TableList extends React.Component {
 
   render() {
     if (this.getType() === 'scrollTable') {
+      const isHorizontalScroll = this.props.horizontal && (this.props.column < this.props.data.length)
       return (
-        <ScrollView style={[styles.scrollContainer, this.props.style]}>
+        <ScrollView
+          horizontal={this.props.horizontal}
+          style={[
+            styles.scrollContainer,
+            isHorizontalScroll && {
+              flexDirection: 'row',
+            },
+            this.props.style,
+          ]}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          // contentContainerStyle={{width: 375, backgroundColor: 'transparent'}}
+        >
           {this.renderRows()}
         </ScrollView>
       )

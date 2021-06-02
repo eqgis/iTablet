@@ -61,6 +61,7 @@ const Prompt: typeof CN.Prompt = {
   OPEN_MAP_FAILED: 'Failed to open the map',
   THE_SCENE_IS_OPENED: 'The scene has been opened',
   NO_SCENE_LIST: 'No data',
+  NO_SCENE_SELECTED: 'No scene has been selected',
   SWITCHING: 'Switching',
   CLOSING: 'Closing',
   CLOSING_3D: 'Closing',

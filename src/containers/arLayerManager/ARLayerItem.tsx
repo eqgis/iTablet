@@ -66,9 +66,7 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
 
   render() {
     const typeIcon = getARLayerAssets(this.props.layer.type)
-    const visibleIcon = this.props.layer.isVisible
-      ? getPublicAssets().common.icon_select
-      : getPublicAssets().common.icon_none
+    let visibleIcon
     const isCurrentLayer = this.props.currentLayer?.name === this.props.layer.name
     let ItemStyle: ViewStyle = {}, textStyle: TextStyle = {}, moreImg: any
     if(isCurrentLayer) {
@@ -79,8 +77,14 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
         color:  color.white,
       }
       moreImg = getThemeAssets().publicAssets.icon_move_selected
+      visibleIcon = this.props.layer.isVisible
+        ? getPublicAssets().common.icon_disable_select
+        : getPublicAssets().common.icon_disable_none
     } else {
       moreImg = getThemeAssets().publicAssets.icon_move
+      visibleIcon = this.props.layer.isVisible
+        ? getPublicAssets().common.icon_select
+        : getPublicAssets().common.icon_none
     }
     return (
       <>

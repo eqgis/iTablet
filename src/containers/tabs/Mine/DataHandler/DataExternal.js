@@ -14,7 +14,7 @@ const iconv = require('iconv-lite')
  * 3.3维工作空间 sxwu和关联文件夹，符号库
  * 4.其他udb，符号等
  */
-async function getExternalData(path, uncheckedChildFileList = []) {
+async function getExternalData(path, types = [], uncheckedChildFileList = []) {
   let resultList = []
   try {
     const contentList = await _getDirectoryContentDeep(path)
@@ -37,17 +37,40 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     let SYMBOL = []
     let AIMODEL = []
     let ARMAP = []
+    let AREFFECT = []
 
     // 专题制图导出的xml
     let Xml_Template = []
     // 过滤临时文件： ~[0]@xxxx
     _checkTempFile(contentList)
 
-    ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
+    if(types.length === 0 || types.indexOf('armap') > -1) {
+      ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('workspace') > -1) {
+      WS = await getWSList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('workspace3d') > -1) {
+      WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('datasource') > -1) {
+      DS = getDSList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('symbol') > -1) {
+      SYMBOL = getSymbolList(path, contentList)
+    }
+    if(types.length === 0 || types.indexOf('aimodel') > -1) {
+      AIMODEL = getAIModelList(path, contentList)
+    }
+    if(types.length === 0 || types.indexOf('areffect') > -1) {
+      AREFFECT = getAREffectList(path, contentList)
+    }
+
+    // ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
     PL = await getPLList(path, contentList)
-    WS = await getWSList(path, contentList, uncheckedChildFileList)
-    WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
-    DS = getDSList(path, contentList, uncheckedChildFileList)
+    // WS = await getWSList(path, contentList, uncheckedChildFileList)
+    // WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
+    // DS = getDSList(path, contentList, uncheckedChildFileList)
     SCI = getSCIDSList(path, contentList, uncheckedChildFileList)
     TIF = getTIFList(path, contentList, uncheckedChildFileList)
     SHP = getSHPList(path, contentList, uncheckedChildFileList)
@@ -61,8 +84,8 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     GPX = getGPXList(path, contentList, uncheckedChildFileList)
     IMG = getIMGList(path, contentList, uncheckedChildFileList)
     COLOR = getColorList(path, contentList)
-    SYMBOL = getSymbolList(path, contentList)
-    AIMODEL = getAIModelList(path, contentList)
+    // SYMBOL = getSymbolList(path, contentList)
+    // AIMODEL = getAIModelList(path, contentList)
 
     Xml_Template = await getXmlTemplateList(path, contentList)
     resultList = resultList
@@ -85,6 +108,7 @@ async function getExternalData(path, uncheckedChildFileList = []) {
       .concat(AIMODEL)
       .concat(Xml_Template)
       .concat(ARMAP)
+      .concat(AREFFECT)
     return resultList
   } catch (e) {
     // console.log(e)
@@ -728,6 +752,29 @@ function getAIModelList(path, contentList) {
   }
 }
 
+function getAREffectList (path, contentList) {
+  let AREFFECT = []
+  try {
+    for(let item of contentList) {
+      if(item.check) continue
+      if(item.type === 'file' && _isAREffect(item.name)) {
+        item.check = true
+        AREFFECT.push({
+          directory: path,
+          fileName: item.name,
+          filePath: `${path}/${item.name}`,
+          fileType: 'areffect',
+        })
+      } else if(item.type === 'directory') {
+        AREFFECT = AREFFECT.concat(getAREffectList(`${path}/${item.name}`, item.contentList))
+      }
+    }
+    return AREFFECT
+  } catch(err){
+    return AREFFECT
+  }
+}
+
 /** 获取AR地图 */
 async function getARMAPList(path, contentList, uncheckedChildFileList) {
   let DATA = []
@@ -1133,6 +1180,10 @@ function _isAIModel(name) {
 
 function _isSubAIModel(name) {
   return _isType(name, ['txt', 'json'])
+}
+
+function _isAREffect(name) {
+  return _isType(name, ['areffect'])
 }
 
 function _isRelatedAIModel(name, checkName) {

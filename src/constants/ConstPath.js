@@ -38,6 +38,7 @@ const RelativePath = {
   Temp: `${Data}Temp/`, // 临时文件
   AIModel: `${Data}AIModel/`,
   ARModel: `${Data}ARModel/`,
+  AREffect: `${Data}AREffect/`,
   // ARScene: `${Data}ARScene/`,
 }
 

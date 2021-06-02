@@ -61,6 +61,7 @@ const Prompt: typeof CN.Prompt = {
   OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: 'La scène est ouverte',
   NO_SCENE_LIST: 'Aucune donnée',
+  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
   SWITCHING: 'Commutation',
   CLOSING: 'Clôture',
   CLOSING_3D: 'Clôture',

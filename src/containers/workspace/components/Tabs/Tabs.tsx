@@ -86,6 +86,7 @@ export default class Tabs extends React.Component<Props> {
           device={this.props.device}
           isAutoType={false}
           cellStyle={styles.cellStyle}
+          horizontal={true}
           // rowStyle={{height: scaleSize(200)}}
         />
         , {tabLabel: tabLabel})

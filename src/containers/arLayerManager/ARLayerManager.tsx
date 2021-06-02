@@ -282,23 +282,6 @@ export default class ARLayerManager extends React.Component<Props, State> {
     ]
   }
 
-  // renderMenu = () => {
-  //   if(this.state.selectLayer) {
-  //     return (
-  //       <ARLayerMenu
-  //         navigation={this.props.navigation}
-  //         selectLayer={this.state.selectLayer}
-  //         arMapInfo={this.props.arMapInfo}
-  //         onClose={() => {
-  //           this.setState({
-  //             menuVisible: false
-  //           })
-  //         }}
-  //       />
-  //     )
-  //   }
-  // }
-
   _renderInputDialog = () => {
     return (
       <InputDialog

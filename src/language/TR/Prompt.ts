@@ -61,6 +61,7 @@ const Prompt: typeof CN.Prompt = {
   OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: 'Manzara açıldı',
   NO_SCENE_LIST: 'Veri Yok',
+  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
   SWITCHING: 'Değiştiriliyor',
   CLOSING: 'Kapatılıyor',
   CLOSING_3D: 'Kapatılıyor',

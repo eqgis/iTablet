@@ -40,6 +40,9 @@ async function importExternalData(user, item) {
     case 'armodel':
       result = await importARModel(user, item)
       break
+    case 'areffect':
+      result = await importAREffect(user, item)
+      break
     default:
       break
   }
@@ -244,6 +247,12 @@ async function importARMap(item) {
 async function importARModel(user, item) {
   const homePath = await FileTools.getHomeDirectory()
   const targetPath = homePath + ConstPath.UserPath + user.userName + ConstPath.RelativeFilePath.ARModel
+  return await _copyFile(item, targetPath)
+}
+
+async function importAREffect(user, item) {
+  const homePath = await FileTools.getHomeDirectory()
+  const targetPath = homePath + ConstPath.UserPath + user.userName + ConstPath.RelativeFilePath.AREffect
   return await _copyFile(item, targetPath)
 }
 

@@ -59,6 +59,7 @@ const Prompt = {
   OPEN_MAP_FAILED: '打开地图失败',
   THE_SCENE_IS_OPENED: '该场景已打开',
   NO_SCENE_LIST: '无场景列表',
+  NO_SCENE_SELECTED: '未选择场景',
   SWITCHING: '正在切换地图',
   CLOSING: '正在关闭地图',
   CLOSING_3D: '正在关闭地图',

@@ -154,20 +154,15 @@ export const closeARMap = () => async (dispatch: (params: DispatchParams) => any
   }
 }
 
-export const setCurrentARMap = () => async (dispatch: (params: DispatchParams) => any, getState: () => any) => {
+export const setCurrentARMap = (mapInfo: UserMapInfo) => async (dispatch: (params: DispatchParams) => any, getState: () => any) => {
   try {
-    const user = getState().user.toJS().currentUser
-    const result = await SARMap.close()
-    if(result) {
-      await DataHandler.closeARRawDatasource()
-      dispatch({
-        type: SET_CURRENT_AR_MAP,
-        payload: {
-          userName: user.userName,
-        },
-      })
-    }
-    return result
+    dispatch({
+      type: SET_CURRENT_AR_MAP,
+      payload: {
+        mapInfo: mapInfo,
+      },
+    })
+    return true
   } catch (e) {
     return false
   }
@@ -232,6 +227,12 @@ export default handleActions(
         }
       }
       return state.setIn(['maps'], fromJS(maps)).setIn(['currentMap'], fromJS(undefined))
+    },
+    [`${SET_CURRENT_AR_MAP}`]: (state: any, { payload }: ARMapAction<UserMapInfo>) => {
+      return state.setIn(['currentMap'], fromJS({
+        userName: payload.userName,
+        mapName: payload.mapName,
+      }))
     },
     [REHYDRATE]: (state: any, { payload }: ARMapAction<ARMapState>) => {
       if (payload?.maps) {

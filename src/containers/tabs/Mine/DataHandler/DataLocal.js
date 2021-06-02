@@ -12,6 +12,7 @@ async function getLocalData(user, type) {
     case 'SYMBOL':
     case 'ARMAP':
     case 'ARMODEL':
+    case 'AREFFECT':
     case 'WORKSPACE3D':
       dataList = await _getListByFilter(user, type)
       break
@@ -104,6 +105,13 @@ async function _getListByFilter(user, type) {
       path = userPath + ConstPath.RelativePath.Scene
       filter = {
         type: 'Directory',
+      }
+      break
+    case 'AREFFECT':
+      path = userPath + ConstPath.RelativePath.AREffect
+      filter = {
+        type: 'AREFFECT',
+        extension: 'areffect',
       }
       break
   }

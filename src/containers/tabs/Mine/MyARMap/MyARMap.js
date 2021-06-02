@@ -64,7 +64,7 @@ class MyARMap extends MyDataPage {
       text: getLanguage(GLOBAL.language).Prompt.OPEN_MAP_CONFIRM,
       confirmAction: () => {
         const mapName = item.name.substring(0, item.name.lastIndexOf('.'))
-        if(this.props.arMapInfo?.map.name === mapName) {
+        if(this.props.armap.currentMap?.mapName === mapName) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.THE_MAP_IS_OPENED)
         } else {
           this.openMap(item).then(result => {

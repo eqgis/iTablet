@@ -61,6 +61,7 @@ const Prompt: typeof CN.Prompt = {
   OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: '当シーンは開いています',
   NO_SCENE_LIST: 'シーンリストはありません',
+  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
   SWITCHING: 'マップ切り替え中',
   CLOSING: 'マップを閉じています',
   CLOSING_3D: 'マップを閉じています',

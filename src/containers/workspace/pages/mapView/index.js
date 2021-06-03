@@ -40,6 +40,8 @@ import {
   setOpenOnlineMap,
   setNavigationHistory,
   setNavBarDisplay,
+  setDatumPoint,
+  showAR,
 } from '../../../../redux/models/setting'
 import { setMapSearchHistory } from '../../../../redux/models/histories'
 import { setSharing } from '../../../../redux/models/online'
@@ -94,6 +96,8 @@ const mapStateToProps = state => ({
   mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
   navBarDisplay: state.setting.toJS().navBarDisplay,
   laboratory: state.setting.toJS().laboratory,
+  showDatumPoint: state.setting.toJS().showDatumPoint,
+  isAR: state.setting.toJS().isAR,
   backActions: state.backActions.toJS(),
   isClassifyView: state.ar.toJS().isClassifyView,
   mapArGuide: state.ar.toJS().mapArGuide,
@@ -159,6 +163,8 @@ const mapDispatchToProps = {
   openARMap,
   saveARMap,
   closeARMap,
+  setDatumPoint,
+  showAR,
 }
 
 export default connect(

@@ -4,6 +4,7 @@ import MapToolbar from './MapToolbar'
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   device: state.device.toJS().device,
+  isAR: state.setting.toJS().isAR,
 })
 
 const mapDispatchToProps = {}

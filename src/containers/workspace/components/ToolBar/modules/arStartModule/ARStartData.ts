@@ -12,6 +12,7 @@ function getData(type: string, params: any) {
   ToolbarModule.setParams(params)
   let data: DATA_ITEM[] = []
   const buttons: string[] = []
+  
   switch (type) {
     case ConstToolType.SM_AR_START:
       data = [
@@ -50,14 +51,16 @@ function getData(type: string, params: any) {
         //   action: ARStartAction.saveMapAs,
         //   image: getThemeAssets().start.icon_save_as,
         // },
-        {
+      ]
+      if (params.armap.currentMap?.mapName) {
+        data.push({
           key: constants.CLOSE,
           title: getLanguage(GLOBAL.language).ARMap.CLOSE_MAP,
           size: 'large',
           action: () => ARStartAction.isNeedToSave(ARStartAction.closeMap),
           image: getThemeAssets().publicAssets.icon_cancel,
-        },
-      ]
+        })
+      }
       break
   }
   return { data, buttons }

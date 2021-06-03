@@ -18,6 +18,7 @@ export default class MapToolbar extends React.Component {
     style: PropTypes.any,
     mapModules: PropTypes.object,
     ARView: PropTypes.bool,
+    isAR: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -52,7 +53,7 @@ export default class MapToolbar extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (
-      this.props.ARView !== nextProps.ARView ||
+      this.props.isAR !== nextProps.isAR ||
       this.props.type !== nextProps.type ||
       this.props.language !== nextProps.language ||
       this.props.initIndex !== nextProps.initIndex ||
@@ -67,7 +68,7 @@ export default class MapToolbar extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (
-      this.props.ARView !== prevProps.ARView ||
+      this.props.isAR !== prevProps.isAR ||
       this.props.type !== prevProps.type ||
       this.props.language !== prevProps.language ||
       JSON.stringify(this.props.mapModules) !== JSON.stringify(prevProps.mapModules)
@@ -91,7 +92,7 @@ export default class MapToolbar extends React.Component {
 
     let tabModules = []
     if (module.getTabModules) {
-      tabModules = module.getTabModules(this.props.ARView ? 'ar' : 'map')
+      tabModules = module.getTabModules(this.props.isAR ? 'ar' : 'map')
     } else {
       tabModules = module.tabModules
     }
@@ -102,12 +103,12 @@ export default class MapToolbar extends React.Component {
           list.push({
             key: MapTabs.MapView,
             title:
-              type === ChunkType.MAP_AR
+              this.props.isAR
                 ? getLanguage(GLOBAL.language).Map_Label.ARMAP
                 : getLanguage(GLOBAL.language).Map_Label.MAP,
             //'地图',
-            image: getThemeAssets().tabBar.tab_map,
-            selectedImage: getThemeAssets().tabBar.tab_map_selected,
+            image: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene : getThemeAssets().tabBar.tab_map,
+            selectedImage: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene_selected : getThemeAssets().tabBar.tab_map_selected,
             btnClick: () => {
               GLOBAL.ToolBar.existFullMap()
               this.props.navigation &&
@@ -221,11 +222,11 @@ export default class MapToolbar extends React.Component {
 
   _renderItem = ({ item, index }) => {
     let title
-    if (item.key === MapTabs.MapView) {
-      title = this.props.ARView
-        ? getLanguage(GLOBAL.language).Map_Label.ARMAP
-        : getLanguage(GLOBAL.language).Map_Label.MAP
-    }
+    // if (item.key === MapTabs.MapView) {
+    //   title = this.props.isAR
+    //     ? getLanguage(GLOBAL.language).Map_Label.ARMAP
+    //     : getLanguage(GLOBAL.language).Map_Label.MAP
+    // }
     return (
       <MTBtn
         key={item.key}

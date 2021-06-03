@@ -128,8 +128,7 @@ import Header from '../../../../components/Header'
 import DatumPointCalibration from '../../../arDatumPointCalibration/'
 
 GLOBAL.markerTag = 118082
-const SMeasureViewiOS = NativeModules.SMeasureAreaView
-// const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
+
 const TOP_DEFAULT = Platform.select({
   android: screen.getHeaderHeight('PORTRAIT') + scaleSize(8),
   // ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
@@ -188,6 +187,11 @@ export default class MapView extends React.Component {
     currentTask: PropTypes.object,
     coworkMessages: PropTypes.object,
     currentGroup: PropTypes.object,
+
+    showDatumPoint: PropTypes.bool,
+    isAR: PropTypes.bool,
+    setDatumPoint: PropTypes.func,
+    showAR: PropTypes.func,
 
     setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
@@ -291,15 +295,10 @@ export default class MapView extends React.Component {
     this.state = {
       showMap: false, // 控制地图初始化显示
       data: params ? params.data : [],
-      popShow: false, //  一级popView显示控制
-      popType: '',
       mapTitle: this.mapTitle,
       // wsName: wsName,
       measureShow: false,
       measureResult: 0,
-      editLayer: {},
-      showMapMenu: false,
-      // changeLayerBtnBottom: scaleSize(200),
       canBeUndo: false,
       canBeRedo: false,
       showAIDetect:
@@ -307,7 +306,6 @@ export default class MapView extends React.Component {
         GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
         GLOBAL.Type === ChunkType.MAP_AR_MAPPING,
       bGoneAIDetect: false,
-      showRoadView: true,
       showArModeIcon: true,
       showIncrement: false,
       speechContent: '',
@@ -334,13 +332,14 @@ export default class MapView extends React.Component {
       is_showLog: false,
       showCurrentHeightView : false,
       measureType: '',
-      isAR:true,
-      showDatumPoint: GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? true : false,
+      // isAR:true,
       isCollect:false,
       isnew:true,
       showGenera:false,
       isTrack:false,
     }
+    this.props.setDatumPoint(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? true : false)
+    this.props.showAR(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS  ? true : false)
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
     //导航  地图选点界面的搜索按钮被点击,当前设置按钮title
@@ -1774,7 +1773,7 @@ export default class MapView extends React.Component {
         // 开始协作
         await this.startCowork()
 
-        if (this.state.isAR) {
+        if (this.props.isAR) {
           await SARMap.resetARMapWorkspace()
         }
 
@@ -2071,7 +2070,7 @@ export default class MapView extends React.Component {
         mapModules={this.props.mapModules}
         initIndex={0}
         type={this.type}
-        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.state.isAR :this.state.showAIDetect}
+        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR :this.state.showAIDetect}
       />
     )
   }
@@ -2202,7 +2201,7 @@ export default class MapView extends React.Component {
         online={this.props.online}
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.mapModules}
-        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.state.isAR :this.state.showAIDetect}
+        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR :this.state.showAIDetect}
       />
     )
   }
@@ -2895,7 +2894,7 @@ export default class MapView extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.props.analyst.params || GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect)
+    if (this.props.analyst.params || GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.props.isAR :this.state.showAIDetect)
       return null
     let itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
@@ -3138,7 +3137,7 @@ export default class MapView extends React.Component {
    */
   switchAr = showAIDetect => {
     if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
-      let _isAR = this.state.isAR
+      let _isAR = this.props.isAR
       if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
         if (showAIDetect !== _isAR) {
           _isAR = showAIDetect
@@ -3148,12 +3147,13 @@ export default class MapView extends React.Component {
       } else {
         _isAR = !_isAR
       }
-      this.setState({isAR:_isAR})
+      // this.setState({isAR:_isAR})
+      this.props.showAR(_isAR)
       _isAR
         ? Orientation.lockToPortrait()
         : Orientation.unlockAllOrientations()
 
-      if (this.state.isAR) {
+      if (this.props.isAR) {
         // if (Platform.OS === 'android') {
         SARMap.onPause()
         // } else {
@@ -3183,6 +3183,7 @@ export default class MapView extends React.Component {
     this.setState({
       showAIDetect: _showAIDetect,
     })
+    this.props.showAR(_showAIDetect)
     GLOBAL.showAIDetect = _showAIDetect
     SMap.setDynamicviewsetVisible(!_showAIDetect)
     _showAIDetect
@@ -3209,7 +3210,7 @@ export default class MapView extends React.Component {
 
   /** AR和二维地图切换图标 */
   _renderArModeIcon = () => {
-    let show = GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect
+    let show = GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.props.isAR :this.state.showAIDetect
     let right
     if (
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
@@ -4037,7 +4038,7 @@ export default class MapView extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>)}
-        {this.isDrawing && (
+        {/* {this.isDrawing && ( */}
           <TouchableOpacity
             onPress={() => {
               this.setting()
@@ -4047,7 +4048,7 @@ export default class MapView extends React.Component {
               height: scaleSize(60),
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
             }}
           >
             <Image
@@ -4057,7 +4058,7 @@ export default class MapView extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>
-        )}
+        {/* )} */}
         {this.isCollect && (
           <TouchableOpacity
             onPress={() => {
@@ -4118,9 +4119,7 @@ export default class MapView extends React.Component {
       showType: 'newDatumPoint', // 新的位置校准界面
       reshowDatumPoint: () => {
         NavigationService.goBack()
-        this.setState({
-          showDatumPoint: true,
-        })
+        this.props.setDatumPoint(true)
       },
       isSnap: isSnap,
       tole: tole,
@@ -4153,9 +4152,7 @@ export default class MapView extends React.Component {
       },
       reshowDatumPoint: ()=>{
         NavigationService.goBack()
-        this.setState({
-          showDatumPoint: true,
-        })
+        this.props.setDatumPoint(true)
       },
       collectScene: true,
     })
@@ -4195,9 +4192,7 @@ export default class MapView extends React.Component {
     // if (Platform.OS === 'android') {
     //   SCollectSceneFormView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
     // }
-    this.setState({
-      showDatumPoint: false,
-    })
+    this.props.setDatumPoint(false)
   }
 
   ARMappingHeaderBack = () => {
@@ -4399,7 +4394,7 @@ export default class MapView extends React.Component {
               paddingBottom: screen.getIphonePaddingBottom(),
             }
           }
-          customStyle={this.state.isAR ? null : styles.hidden}
+          customStyle={this.props.isAR ? null : styles.hidden}
           ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
           onARElementTouch={element => {
@@ -4481,7 +4476,7 @@ export default class MapView extends React.Component {
                 GLOBAL.Type === ChunkType.MAP_AR_MAPPING ||
                 GLOBAL.Type === ChunkType.MAP_AR
               ) &&
-              this.state.isAR && { left: 9999 },
+              this.props.isAR && { left: 9999 },
           ]}>
             <SMMapView
               ref={ref => (GLOBAL.mapView = ref)}
@@ -4493,7 +4488,7 @@ export default class MapView extends React.Component {
 
         {this._renderMeasureAreaView()}
 
-        {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? !this.state.isAR : true)&&
+        {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? !this.props.isAR : true)&&
           GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
@@ -4533,7 +4528,7 @@ export default class MapView extends React.Component {
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
           orientation={this.props.device.orientation}
         />
-        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect) && this.renderMapController()}
+        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR : this.state.showAIDetect) && this.renderMapController()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}
@@ -4578,7 +4573,7 @@ export default class MapView extends React.Component {
           this._renderArModeIcon()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}
         {/*{!this.isExample && this.renderMapNavMenu()}*/}
-        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect) && this.state.showScaleView && (
+        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.props.isAR :this.state.showAIDetect) && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}
             device={this.props.device}
@@ -4679,7 +4674,6 @@ export default class MapView extends React.Component {
   }
 
   render() {
-    const { showDatumPoint } = this.state
     return (
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
@@ -4692,7 +4686,7 @@ export default class MapView extends React.Component {
         {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_THEME) && this.props.themeGuide && this.renderMapThemeGuideView()}
         {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_COLLECTION) && this.props.collectGuide && this.renderMapCollectGuideView()}
         {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_EDIT) && this.props.mapEditGuide && this.renderMapEditGuideView()}
-        {showDatumPoint && <DatumPointCalibration routeName="MapView"
+        {this.props.showDatumPoint && <DatumPointCalibration routeName="MapView"
           routeData={{
             measureType: this.measureType,
           }}

@@ -7,7 +7,9 @@ import { Container } from '../../components'
 import { scaleSize } from '../../utils'
 import { color, size } from '../../styles'
 import { getLanguage } from '../../language'
+import { setDatumPoint } from '../../redux/models/setting'
 import { MapToolbar } from '../workspace/components'
+import NavigationService from '../NavigationService'
 
 type Props = ReduxProps
 
@@ -21,10 +23,8 @@ class ARMapSetting extends React.Component<Props> {
       <View style={styles.settingView}>
         <TouchableOpacity style={styles.settingItem}
           onPress={() => {
-            // AppToolBar.addData({
-            //   scanBackRoute: 'ARMapSetting',
-            // })
-            // AppToolBar.getProps()?.navigation.navigate('Calibration')
+            NavigationService.navigate('MapView')
+            this.props.setDatumPoint(true)
           }}
         >
           <Text style={styles.itemText}>
@@ -73,7 +73,7 @@ const mapStateToProp = (state: any) => ({
 })
 
 const mapDispatch = {
-
+  setDatumPoint,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

@@ -154,6 +154,8 @@ async function createMap() {
       cb: async (value: string) => {
         let result = await _params.createARMap(value)
         result && NavigationService.goBack('InputPage')
+        _params.setContainerLoading &&
+          _params.setContainerLoading(false)
       },
     })
   } catch (e) {

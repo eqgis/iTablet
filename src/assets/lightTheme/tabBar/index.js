@@ -18,6 +18,8 @@ const tab_attribute = require('./icon_bar_attribute.png')
 const tab_attribute_selected = require('./icon_bar_attribute_selected.png')
 const tab_setting = require('./icon_bar_setting.png')
 const tab_setting_selected = require('./icon_bar_setting_selected.png')
+const tab_ar_scene = require('./icon_scene.png')
+const tab_ar_scene_selected = require('./icon_scene_selected.png')
 
 export default {
   // Tabs
@@ -42,4 +44,6 @@ export default {
   tab_attribute_selected,
   tab_setting,
   tab_setting_selected,
+  tab_ar_scene,
+  tab_ar_scene_selected,
 }

@@ -186,7 +186,7 @@ export default class Mine extends Component {
         case 'ARMAP':
           data.push({
             title: getLanguage(this.props.language).Profile.ARMAP,
-            image: getThemeAssets().mine.my_map,
+            image: getThemeAssets().mine.my_armap,
             onClick: () =>
               this.goToMyARMap(getLanguage(this.props.language).Profile.ARMAP),
           })

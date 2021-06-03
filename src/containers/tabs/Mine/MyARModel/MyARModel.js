@@ -25,14 +25,13 @@ class MyARModel extends MyDataPage {
     if(this.props.navigation.state.params?.showMode) {
       this.showMode = this.props.navigation.state.params.showMode
     }
+    let title = title = getLanguage(this.props.language).Profile.ARMODEL
     if(this.props.navigation.state.params?.title) {
-      this.title = this.props.navigation.state.params.title
-    } else {
-      this.title = getLanguage(this.props.language).Profile.ARMODEL
+      title = this.props.navigation.state.params.title
     }
     this.state = {
       ...this.state,
-      title: getLanguage(GLOBAL.language).Profile.ARMAP,
+      title: title,
       shareToLocal: true,
       shareToOnline: true,
       shareToIPortal: true,

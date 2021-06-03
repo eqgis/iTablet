@@ -93,6 +93,7 @@ export default class MyDataPage extends Component {
     applet: 'APPLETS',
     aimodel: 'AIMODEL',
     armodel: 'ARMODEL',
+    armap: 'ARMAP',
   }
 
   componentDidMount() {
@@ -951,6 +952,9 @@ export default class MyDataPage extends Component {
           break
         case this.types.armodel:
           img = getThemeAssets().mine.my_dynamic_model
+          break
+        case this.types.armap:
+          img = getThemeAssets().mine.my_armap
           break
         default:
           if (info.item.img) {

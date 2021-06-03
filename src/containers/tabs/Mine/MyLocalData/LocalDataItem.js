@@ -71,7 +71,10 @@ export default class LocalDataItem extends Component {
         img = getThemeAssets().mine.my_symbol
         break
       case 'armap':
-        img = getThemeAssets().mine.my_map
+        img = getThemeAssets().mine.my_armap
+        break
+      case 'armodel':
+        img = getThemeAssets().mine.my_dynamic_model
         break
       default:
         img = require('../../../../assets/Mine/mine_my_import_local_light.png')

@@ -27,7 +27,7 @@ class MyARMap extends MyDataPage {
   constructor(props) {
     super(props)
     const { params } = this.props.navigation.state
-    this.type = this.types.map
+    this.type = this.types.armap
     this.showMore = !!params?.showMore
     this.state = {
       ...this.state,

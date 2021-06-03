@@ -36,6 +36,7 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
     let COLOR = []
     let SYMBOL = []
     let AIMODEL = []
+    let ARMODEL = []
     let ARMAP = []
     let AREFFECT = []
 
@@ -61,6 +62,9 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
     }
     if(types.length === 0 || types.indexOf('aimodel') > -1) {
       AIMODEL = getAIModelList(path, contentList)
+    }
+    if(types.length === 0 || types.indexOf('armodel') > -1) {
+      ARMODEL = getARModelList(path, contentList)
     }
     if(types.length === 0 || types.indexOf('areffect') > -1) {
       AREFFECT = getAREffectList(path, contentList)
@@ -109,6 +113,7 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
       .concat(Xml_Template)
       .concat(ARMAP)
       .concat(AREFFECT)
+      .concat(ARMODEL)
     return resultList
   } catch (e) {
     // console.log(e)
@@ -772,6 +777,29 @@ function getAREffectList (path, contentList) {
     return AREFFECT
   } catch(err){
     return AREFFECT
+  }
+}
+
+function getARModelList(path, contentList) {
+  let ARMODEL = []
+  try {
+    for(let item of contentList) {
+      if(item.check) continue
+      if(item.type === 'file' && _isType(item.name, ['glb'])) {
+        item.check = true
+        ARMODEL.push({
+          directory: path,
+          fileName: item.name,
+          filePath: `${path}/${item.name}`,
+          fileType: 'armodel',
+        })
+      } else if(item.type === 'directory') {
+        ARMODEL = ARMODEL.concat(getARModelList(`${path}/${item.name}`, item.contentList))
+      }
+    }
+    return ARMODEL
+  } catch(err){
+    return ARMODEL
   }
 }
 

@@ -140,17 +140,17 @@ function isNeedToSave(cb = () => {}) {
 
 /** 打开模板 * */
 function openTemplateList() {
-  if (!ToolbarModule.getParams().setToolbarVisible) return
-  ToolbarModule.getParams().showFullMap &&
-    ToolbarModule.getParams().showFullMap(true)
-    
+  const _params = ToolbarModule.getParams()
+  if (!_params.setToolbarVisible) return
+  _params.showFullMap &&
+    _params.showFullMap(true)
+
   NativeMethod.getTemplates(
-    ToolbarModule.getParams().user.currentUser.userName,
+    _params.user.currentUser.userName,
     ConstPath.Module.Collection,
   ).then(async templateList => {
     const tpList = []
-    for (let i = 0; i < templateList.length; i++) {
-      const item = templateList[i]
+    for (let item of templateList) {
       const path = await FileTools.appendingHomeDirectory(item.path)
       const is3D = await SScene.is3DWorkspace({ server: path })
       if (!is3D) {
@@ -169,7 +169,7 @@ function openTemplateList() {
         data: tpList,
       },
     ]
-    ToolbarModule.getParams().setToolbarVisible(
+    _params.setToolbarVisible(
       true,
       ConstToolType.SM_MAP_START_TEMPLATE,
       {

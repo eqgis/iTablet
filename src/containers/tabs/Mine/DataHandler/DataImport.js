@@ -246,13 +246,13 @@ async function importARMap(item) {
 
 async function importARModel(user, item) {
   const homePath = await FileTools.getHomeDirectory()
-  const targetPath = homePath + ConstPath.UserPath + user.userName + ConstPath.RelativeFilePath.ARModel
+  const targetPath = homePath + ConstPath.UserPath + user.userName + '/' + ConstPath.RelativePath.ARModel
   return await _copyFile(item, targetPath)
 }
 
 async function importAREffect(user, item) {
   const homePath = await FileTools.getHomeDirectory()
-  const targetPath = homePath + ConstPath.UserPath + user.userName + ConstPath.RelativeFilePath.AREffect
+  const targetPath = homePath + ConstPath.UserPath + user.userName + '/' + ConstPath.RelativePath.AREffect
   return await _copyFile(item, targetPath)
 }
 

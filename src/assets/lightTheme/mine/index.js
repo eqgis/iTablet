@@ -13,6 +13,7 @@ const my_color = require('./icon_my_color.png')
 const my_applets = require('./icon_my_applets.png')
 const my_applets_default = require('./icon_default_applet.png')
 const my_ai = require('./icon_my_ai.png')
+const my_armap = require('./icon_my_armap.png')
 const icon_my_setting = require('./icon_my_setting.png')
 const my_dynamic_model = require('./icon_my_dynamic_model.png')
 
@@ -52,6 +53,7 @@ export default {
   my_applets,
   my_applets_default,
   my_ai,
+  my_armap,
   icon_my_setting,
   my_dynamic_model,
 

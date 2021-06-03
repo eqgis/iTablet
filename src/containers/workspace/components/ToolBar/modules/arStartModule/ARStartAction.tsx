@@ -48,9 +48,7 @@ function openMap() {
         const { name } = item
         item.title = name
         item.name = name.split('.')[0]
-        item.image = item.isTemplate
-          ? getThemeAssets().dataType.icon_map_template
-          : getThemeAssets().dataType.icon_mapdata
+        item.image = getThemeAssets().mine.my_armap
         item.info = {
           infoType: 'mtime',
           lastModifiedDate: item.mtime,
@@ -94,7 +92,7 @@ function openMap() {
     }
     data.push({
       title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN_MAP,
-      image: getThemeAssets().dataType.icon_map,
+      image: getThemeAssets().mine.my_armap,
       data: userFileList || [],
     })
     _params.setToolbarVisible(true, ConstToolType.SM_AR_START_OPEN_MAP, {
@@ -156,6 +154,7 @@ async function createMap() {
         result && NavigationService.goBack('InputPage')
         _params.setContainerLoading &&
           _params.setContainerLoading(false)
+        _params.setToolbarVisible(false)
       },
     })
   } catch (e) {

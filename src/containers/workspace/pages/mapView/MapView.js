@@ -1456,6 +1456,12 @@ export default class MapView extends React.Component {
         return
       }
 
+      // AR测图-测量/测图界面返回
+      if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton) {
+        this.ARMappingHeaderBack()
+        return
+      }
+
       // 优先处理其他界面跳转到MapView传来的返回事件
       if (this.backAction && typeof this.backAction === 'function') {
         this.backAction({

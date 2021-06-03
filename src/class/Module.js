@@ -58,8 +58,10 @@ export default class Module {
       }
     }
 
+    /** 获取地图底部Tabs */
     this.getTabModules = undefined
 
+    /** 获取地图侧边栏 */
     this.getFunctionModules = undefined
   }
 

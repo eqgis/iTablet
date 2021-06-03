@@ -19,15 +19,29 @@ export default class MapARAnalysis extends Module {
   constructor() {
     super({
       key: MapARAnalysis.key,
-      functionModules: [
-        startModule,
-        addModule,
-        markModule,
-        aiModule,
-        toolModule,
-      ],
       mapType: Module.MapType.MAP,
     })
+    this.functionModules = this.getFunctionModules('ar')
+  }
+
+  getFunctionModules = (type = 'map') => {
+    let modules = []
+    switch(type) {
+      case 'ar':
+        modules = [
+          aiModule,
+        ]
+        break
+      case 'map':
+        modules = [
+          startModule,
+          addModule,
+          markModule,
+          toolModule,
+        ]
+        break
+    }
+    return modules
   }
 
   getChunk = language => {

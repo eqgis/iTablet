@@ -198,7 +198,7 @@ class SymbolTabs extends React.Component {
         onChangeTab={({ i }) => this.goToPage(i)}
         renderTabBar={() => (
           <DefaultTabBar
-            activeBackgroundColor={color.white}
+            activeBackgroundColor={'transparent'}
             activeTextColor={color.themeText2}
             inactiveTextColor={color.white}
             textStyle={styles.tabTextStyle}
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
   },
   tabTextStyle: {
     fontSize: setSpText(22),
-    backgroundColor: color.white,
+    backgroundColor: 'transparent',
     color: color.fontColorBlack,
   },
   tabStyle: {

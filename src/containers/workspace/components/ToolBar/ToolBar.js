@@ -1,5 +1,6 @@
 import React from 'react'
 import { screen } from '../../../../utils'
+import { Header } from '../../../../components'
 import {
   ConstToolType,
   TouchType,
@@ -10,7 +11,7 @@ import {
 import TouchProgress from '../TouchProgress'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModuleDefault, { getToolbarModule } from './modules/ToolbarModule'
-import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
+import { View, Animated, Platform, TouchableOpacity, Image } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
@@ -157,6 +158,8 @@ export default class ToolBar extends React.Component {
       selectName: '',
       selectKey: '',
       hasSoftMenuBottom: false,
+      showCustomHeader: false,
+      customView: null,
     }
     this.height = 0
     this.isShow = false
@@ -376,6 +379,7 @@ export default class ToolBar extends React.Component {
         } else if (!params || params.height === undefined) {
           let _size = this.ToolbarModule.getToolbarSize(containerType, {
             data,
+            type,
           })
           newHeight = _size.height
         }
@@ -818,6 +822,59 @@ export default class ToolBar extends React.Component {
     )
   }
 
+  renderCustomHeaderRight = () => {
+    const rightButtons = []
+    const headerData = this.ToolbarModule.getHeaderData(this.state.type)
+    if (!headerData || !headerData.headerRight) return null
+    headerData.headerRight.forEach(item => {
+      rightButtons.push(
+        <TouchableOpacity
+          key={item.key}
+          onPress={() => {
+            if (item.action && typeof item.action === 'function') {
+              item.action()
+            }
+          }}
+          style={styles.headerRightView}
+        >
+          <Image
+            resizeMode={'contain'}
+            // source={getThemeAssets().ar.toolbar.ai_setting}
+            source={item.image}
+            style={styles.headerRightImg}
+          />
+        </TouchableOpacity>
+      )
+    })
+    return rightButtons
+  }
+
+  customHeaderBack = () => {
+    const headerData = this.ToolbarModule.getHeaderData(this.state.type)
+    if (headerData && headerData.backAction) {
+      headerData.backAction()
+    } else {
+      this.setVisible(false)
+    }
+  }
+
+  /** 自定义Header */
+  renderCustomHeader = () => {
+    // if (!this.state.showCustomHeader) return null
+    const headerData = this.ToolbarModule.getHeaderData(this.state.type)
+    if (!headerData) return null
+    return (
+      <Header
+        ref={ref => (this.containerHeader = ref)}
+        backAction={this.customHeaderBack}
+        title={headerData.title}
+        type={'fix'}
+        headerRight={this.renderCustomHeaderRight()}
+        headerTitleViewStyle={headerData.headerTitleViewStyle}
+      />
+    )
+  }
+
   render() {
     let containerStyle =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -840,70 +897,73 @@ export default class ToolBar extends React.Component {
     let showContainerRadius = !(this.state.isTouchProgress && this.state.isFullScreen) &&
       this.props.device.orientation.indexOf('LANDSCAPE') < 0
     return (
-      <Animated.View
-        style={[
-          containerStyle,
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? { right: this.state.right, height: '100%' }
-            : { bottom: this.state.bottom, width: '100%' },
-          (this.state.isFullScreen || this.state.isTouchProgress) &&
-            this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
-            paddingTop: screen.isIphoneX()
-              ? screen.X_TOP + screen.X_BOTTOM
-              : Platform.OS === 'ios'
-                ? 20
-                : 0,
-          },
-          size,
-        ]}
-        pointerEvents={'box-none'}
-      >
-        {!this.state.isTouchProgress && !this.state.showMenuDialog && (
-          <View style={styles.themeoverlay} pointerEvents={'box-none'} />
-        )}
-        {this.state.isTouchProgress && this.state.isFullScreen && (
-          <TouchProgress
-            device={this.props.device}
-            selectName={this.state.selectName}
-            showMenu={() => {
-              // 智能配图选择器，唤起选择器菜单
-              if (
-                this.state.type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER
-              ) {
-                this.showPicker()
-                return
-              } else {
-                this.menu()
-              }
-            }}
-          />
-        )}
-        {this.state.showMenuDialog && this.renderMenuDialog()}
-        <View
-          style={
-            (
-              !(this.state.isTouchProgress && this.state.isFullScreen) ||
-              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-            ) &&
-            !this.state.customView && [styles.containerRadius, styles.containerShadow]
-          }
+      <>
+        {this.renderCustomHeader()}
+        <Animated.View
+          style={[
+            containerStyle,
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0
+              ? { right: this.state.right, height: '100%' }
+              : { bottom: this.state.bottom, width: '100%' },
+            (this.state.isFullScreen || this.state.isTouchProgress) &&
+              this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
+              paddingTop: screen.isIphoneX()
+                ? screen.X_TOP + screen.X_BOTTOM
+                : Platform.OS === 'ios'
+                  ? 20
+                  : 0,
+            },
+            size,
+          ]}
           pointerEvents={'box-none'}
         >
+          {!this.state.isTouchProgress && !this.state.showMenuDialog && (
+            <View style={styles.themeoverlay} pointerEvents={'box-none'} />
+          )}
+          {this.state.isTouchProgress && this.state.isFullScreen && (
+            <TouchProgress
+              device={this.props.device}
+              selectName={this.state.selectName}
+              showMenu={() => {
+                // 智能配图选择器，唤起选择器菜单
+                if (
+                  this.state.type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER
+                ) {
+                  this.showPicker()
+                  return
+                } else {
+                  this.menu()
+                }
+              }}
+            />
+          )}
+          {this.state.showMenuDialog && this.renderMenuDialog()}
           <View
-            style={[
-              this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                ? styles.containersLandscape
-                : styles.containers,
-              !this.state.customView && showContainerRadius && styles.containerRadius,
-              !this.state.customView && styles.hidden,
-            ]}
+            style={
+              (
+                !(this.state.isTouchProgress && this.state.isFullScreen) ||
+                this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+              ) &&
+              !this.state.customView && [styles.containerRadius, styles.containerShadow]
+            }
             pointerEvents={'box-none'}
           >
-            {this.renderView()}
-            {this.renderBottomBtns()}
+            <View
+              style={[
+                this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                  ? styles.containersLandscape
+                  : styles.containers,
+                !this.state.customView && showContainerRadius && styles.containerRadius,
+                !this.state.customView && styles.hidden,
+              ]}
+              pointerEvents={'box-none'}
+            >
+              {this.renderView()}
+              {this.renderBottomBtns()}
+            </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </>
     )
   }
 }

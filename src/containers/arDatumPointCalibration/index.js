@@ -1,3 +1,3 @@
-import DatumPointCalibration  from './arDatumPointCalibration.tsx'
+import DatumPointCalibration  from './arDatumPointCalibration'
 
 export default DatumPointCalibration

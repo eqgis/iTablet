@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { getThemeAssets } from '../../../../../../assets'
 import NavigationService from '../../../../../NavigationService'
@@ -143,6 +143,7 @@ export default class ToolbarBottomButtons extends React.Component {
         style={styles.button}
       >
         <Image style={styles.img} resizeMode={'contain'} source={item.image} />
+        {item.title && <Text style={styles.btnText}>{item.title}</Text>}
       </TouchableOpacity>
     )
   }
@@ -152,11 +153,12 @@ export default class ToolbarBottomButtons extends React.Component {
     if (this.props.buttons.length === 0) return null
     this.props.buttons.forEach((item, index) => {
       if (!item || (item instanceof Object && !item.type)) return
-      let type, image, action
+      let type, image, action, title
       if (item instanceof Object) {
         // 自定义Button
         type = item.type
         image = item.image
+        title = item.title
         action = item.action
       } else {
         // 常用按钮
@@ -272,6 +274,7 @@ export default class ToolbarBottomButtons extends React.Component {
               {
                 key: type,
                 image: image,
+                title: title,
                 action: () => action && action(this.props.type),
               },
               index,
@@ -287,6 +290,7 @@ export default class ToolbarBottomButtons extends React.Component {
               {
                 key: type,
                 image: image,
+                title: title,
                 action: () => action && action(this.props.type),
               },
               index,
@@ -329,6 +333,7 @@ const styles = StyleSheet.create({
   },
   button: {
     // flex: 1,
+    flexDirection: 'column',
     height: scaleSize(60),
     width: scaleSize(60),
     alignItems: 'center',

@@ -173,7 +173,9 @@ export default class LayerAttributeSearch extends React.Component {
 
   setSaveViewVisible = visible => {
     GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, this.setLoading)
+      GLOBAL.SaveMapView.setVisible(visible, {
+        setLoading: this.setLoading,
+      })
   }
 
   /** 修改表格中的值的回调 **/

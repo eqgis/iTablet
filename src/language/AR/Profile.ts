@@ -8,6 +8,8 @@ const Profile: typeof CN.Profile = {
   DATA: 'البيانات',
   MARK: 'علامة',
   MAP: 'خريطة',
+  ARMAP: 'AR Map', // need to translate
+  ARMODEL: 'AR Modal', // need to translate
   SCENE: 'مشهد',
   BASEMAP: 'خريطة الأساس',
   SYMBOL: 'رمز',

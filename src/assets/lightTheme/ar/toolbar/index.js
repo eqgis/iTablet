@@ -23,6 +23,7 @@ const line_3d = require('./layer_type_3dline.png')
 const point = require('./layer_point.png')
 const line = require('./layer_line.png')
 const region = require('./layer_region.png')
+const icon_ar_edit = require('./icon_ar_edit.png')
 
 const icon_save_region = require('./icon_toolbar_region.png')
 const icon_save_line = require('./icon_toolbar_saveline.png')
@@ -65,4 +66,5 @@ export default {
   icon_newdata,
   icon_toolbar_switch,
   icon_mapdata,
+  icon_ar_edit,
 }

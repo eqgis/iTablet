@@ -127,7 +127,7 @@ declare namespace GLOBAL {
   /** TODO 待用Toolbar替换。地图界面-工具栏 MapView.js Toolbar */
   let toolBox: any             
   /** 地图界面-工具栏 MapView.js Toolbar */        
-  let Toolbar: any           
+  let ToolBar: any           
   /** 地图界面-目标识别header MapView.js MapSelectPoint */
   let AIDETECTCHANGE: any             
   /** 地图界面-地图选点header MapView.js MapSelectPoint */

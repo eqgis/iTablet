@@ -14,6 +14,7 @@ const my_applets = require('./icon_my_applets.png')
 const my_applets_default = require('./icon_default_applet.png')
 const my_ai = require('./icon_my_ai.png')
 const icon_my_setting = require('./icon_my_setting.png')
+const my_dynamic_model = require('./icon_my_dynamic_model.png')
 
 const my_import_plot = require('./mine_import_plot_light.png')
 const my_import_ws = require('./mine_import_smwu_light.png')
@@ -52,6 +53,7 @@ export default {
   my_applets_default,
   my_ai,
   icon_my_setting,
+  my_dynamic_model,
 
   my_import_plot,
   my_import_ws,

@@ -36,6 +36,7 @@ const lightTheme = {
   bgW2: '#E1E1E1',
   bgG: '#A0A0A0',
   bgG2: '#F3F4F8',
+  bgG3: '#F6F7F8',
   switch: '#4680DF',
   selected_blue: '#007AFF',
   // selected: '#4680DF',
@@ -52,6 +53,7 @@ const lightTheme = {
   itemColorGray: '#505050',
   itemColorGray2: '#EFEFEF',
   itemColorGray3: '#D6D6D6',
+  itemColorGray4: '#E5E5E5',
 
   contentColorWhite: '#FBFBFB',
   contentWhite: '#FBFBFB',
@@ -74,20 +76,11 @@ const lightTheme = {
   modalBgColor: 'rgba(0, 0, 0, 0.5)',
 }
 
-let styles
-switch (GLOBAL.ThemeType) {
-  case ThemeType.DARK_THEME:
-    styles = darkTheme
-    break
-  case ThemeType.LIGHT_THEME:
-  default:
-    styles = lightTheme
-    break
+type Styles = {
+  [name: string]: string
 }
 
-export default {
-  ...styles,
-
+const defaultStyles: Styles = {
   white: '#FFFFFF',
   red: '#FF0000',
   yellow: '#FFFF00',
@@ -154,3 +147,135 @@ export default {
   success: '#88C148',
   error: '#D96C6C',
 }
+
+
+const colors = [
+  '#FFFFFF',
+  '#000000',
+  '#F0EDE1',
+  '#1E477C',
+  '#4982BC',
+  '#00A1E9',
+  '#803000',
+  '#BD5747',
+  '#36E106',
+  '#9CBB58',
+  '#8364A1',
+  '#4AADC7',
+  '#F89746',
+  '#E7A700',
+  '#E7E300',
+  '#D33248',
+  '#F1F1F1',
+  '#7D7D7D',
+  '#DDD9C3',
+  '#C9DDF0',
+  '#DBE4F3',
+  '#BCE8FD',
+  '#E5C495',
+  '#F4DED9',
+  '#DBE9CE',
+  '#EBF4DE',
+  '#E5E1ED',
+  '#DDF0F3',
+  '#FDECDC',
+  '#FFE7C4',
+  '#FDFACA',
+  '#F09CA0',
+  '#D7D7D7',
+  '#585858',
+  '#C6B797',
+  '#8CB4EA',
+  '#C1CCE4',
+  '#7ED2F6',
+  '#B1894F',
+  '#E7B8B8',
+  '#B0D59A',
+  '#D7E3BD',
+  '#CDC1D9',
+  '#B7DDE9',
+  '#FAD6B1',
+  '#F5CE88',
+  '#FFF55A',
+  '#EF6C78',
+  '#BFBFBF',
+  '#3E3E3E',
+  '#938953',
+  '#548ED4',
+  '#98B7D5',
+  '#00B4F0',
+  '#9A6C34',
+  '#D79896',
+  '#7EC368',
+  '#C5DDA5',
+  '#B1A5C6',
+  '#93CDDD',
+  '#F9BD8D',
+  '#F7B550',
+  '#FFF100',
+  '#E80050',
+  '#A6A6A7',
+  '#2D2D2B',
+  '#494428',
+  '#1D3A5F',
+  '#376192',
+  '#00A1E9',
+  '#825320',
+  '#903635',
+  '#13B044',
+  '#76933C',
+  '#5E467C',
+  '#31859D',
+  '#E46C07',
+  '#F39900',
+  '#B7AB00',
+  '#A50036',
+  '#979D99',
+  '#0C0C0C',
+  '#1C1A10',
+  '#0C263D',
+  '#1D3A5F',
+  '#005883',
+  '#693904',
+  '#622727',
+  '#005E14',
+  '#4F6028',
+  '#3E3050',
+  '#245B66',
+  '#974805',
+  '#AD6A00',
+  '#8B8100',
+  '#7C0022',
+  '#F0DCBE',
+  '#F2B1CF',
+  '#D3FFBF',
+  '#00165F',
+  '#6673CB',
+  '#006EBF',
+  '#89CF66',
+  '#70A900',
+  '#13B044',
+  '#93D150',
+  '#70319F',
+  '#00B4F0',
+  '#D38968',
+  '#FFBF00',
+  '#FFFF00',
+  '#C10000',
+  '#F0F1A6',
+  '#FF0000',
+]
+
+let customStyles: Styles
+switch (GLOBAL.ThemeType) {
+  case ThemeType.DARK_THEME:
+    customStyles = darkTheme
+    break
+  case ThemeType.LIGHT_THEME:
+  default:
+    customStyles = lightTheme
+    break
+}
+const styles = Object.assign({colors}, defaultStyles, customStyles)
+
+export default styles

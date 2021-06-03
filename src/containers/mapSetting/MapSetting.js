@@ -104,7 +104,9 @@ export default class MapSetting extends Component {
 
   setSaveViewVisible = visible => {
     GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, this.setLoading)
+      GLOBAL.SaveMapView.setVisible(visible, {
+        setLoading: this.setLoading,
+      })
   }
 
   _renderItemSeparatorComponent = () => {

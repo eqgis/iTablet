@@ -77,7 +77,7 @@ import {
 
 import LaunchGuidePage from './src/components/guide'
 import LaunchGuide from './configs/guide'
-import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
+// import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -258,6 +258,7 @@ class AppRoot extends Component {
           await FileTools.initUserDefaultData(userName)
         }
       }
+      await AppInfo.setUserName(userName)
       await this.getUserApplets(userName)
     } catch (e) {
 
@@ -359,7 +360,7 @@ class AppRoot extends Component {
     return bLogin
   }
 
-  login = async (appState) => {
+  login = async appState => {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
@@ -715,6 +716,7 @@ class AppRoot extends Component {
   // 初始化文件目录
   initDirectories = async () => {
     try {
+      await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
       let paths = Object.keys(ConstPath)
       let isCreate = true, absolutePath = ''
       for (let i = 0; i < paths.length; i++) {

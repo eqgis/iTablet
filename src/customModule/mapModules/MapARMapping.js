@@ -20,16 +20,30 @@ export default class MapARMapping extends Module {
   constructor() {
     super({
       key: MapARMapping.key,
-      functionModules: [
-        startModule,
-        addModule,
-        markModule,
-        arMeasureModule,
-        arMappingModule,
-        toolModule,
-      ],
       mapType: Module.MapType.MAP,
     })
+    this.functionModules = this.getFunctionModules('ar')
+  }
+
+  getFunctionModules = (type = 'map') => {
+    let modules = []
+    switch(type) {
+      case 'ar':
+        modules = [
+          arMeasureModule,
+          arMappingModule,
+        ]
+        break
+      case 'map':
+        modules = [
+          startModule,
+          addModule,
+          markModule,
+          toolModule,
+        ]
+        break
+    }
+    return modules
   }
 
   getChunk = language => {

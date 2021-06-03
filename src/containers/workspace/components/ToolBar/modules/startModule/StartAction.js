@@ -384,7 +384,9 @@ function showHistory() {
 
 function setSaveViewVisible(visible, cb) {
   if (!ToolbarModule.getParams().setSaveViewVisible) return
-  GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, null, cb)
+  GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, {
+    cb,
+  })
 }
 
 /** 保存地图 * */

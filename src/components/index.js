@@ -1,5 +1,6 @@
 import CheckBox from './CheckBox'
 import Header from './Header'
+import BackButton from './Header/BackButton'
 import TextBtn from './TextBtn'
 import UsualTitle from './UsualTitle'
 import UsualInput from './UsualInput'
@@ -60,12 +61,14 @@ import ColorScheme from './ColorScheme'
 import BottomBar from './BottomBar'
 import MyToast from './MyToast'
 import RedDot from './RedDot'
+import SlideBar from './SlideBar'
 export {
   Container,
   BtnOne,
   BtnTwo,
   CheckBox,
   Header,
+  BackButton,
   TextBtn,
   UsualTitle,
   UsualInput,
@@ -133,4 +136,5 @@ export {
   BottomBar,
   MyToast,
   RedDot,
+  SlideBar,
 }

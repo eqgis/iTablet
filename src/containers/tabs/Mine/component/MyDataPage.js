@@ -92,6 +92,7 @@ export default class MyDataPage extends Component {
     color: 'COLOR_SCHEME',
     applet: 'APPLETS',
     aimodel: 'AIMODEL',
+    armodel: 'ARMODEL',
   }
 
   componentDidMount() {
@@ -147,7 +148,7 @@ export default class MyDataPage extends Component {
     let relativeExportTemplatePath =
     ConstPath.ExternalData + '/' +
     'Collection/'
-  return relativeExportTemplatePath
+    return relativeExportTemplatePath
   }
 
   //页面popup选项，不会合并公共选项
@@ -947,6 +948,9 @@ export default class MyDataPage extends Component {
           break
         case this.types.template:
           img = require('../../../../assets/mapToolbar/list_type_map_black.png')
+          break
+        case this.types.armodel:
+          img = getThemeAssets().mine.my_dynamic_model
           break
         default:
           if (info.item.img) {

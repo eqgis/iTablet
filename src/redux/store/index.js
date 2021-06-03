@@ -19,6 +19,7 @@ const persistConfig = {
     'cowork',
     'home',
     'ar',
+    'armap',
   ],
   blacklist: [
     'nav',
@@ -26,6 +27,7 @@ const persistConfig = {
     'collection',
     'down',
     'layers',
+    'arlayer',
     'online',
     'device',
     'backActions',

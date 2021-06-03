@@ -86,6 +86,20 @@ export default class Mine extends Component {
     })
   }
 
+  goToMyARMap = title => {
+    NavigationService.navigate('MyARMap', {
+      title,
+      showMore: true,
+    })
+  }
+
+  goToMyARModel = title => {
+    NavigationService.navigate('MyARModel', {
+      title,
+      showMore: true,
+    })
+  }
+
   goToMyDatasource = title => {
     NavigationService.navigate('MyDatasource', {
       title,
@@ -126,8 +140,8 @@ export default class Mine extends Component {
 
   _getItems = () => {
     let data = []
-    for (let i = 0; i < this.props.mineModules.length; i++) {
-      switch (this.props.mineModules[i].key) {
+    for (let module of this.props.mineModules) {
+      switch (module.key) {
         case 'IMPORT':
           data.push({
             title: getLanguage(this.props.language).Profile.IMPORT,
@@ -167,6 +181,22 @@ export default class Mine extends Component {
             image: getThemeAssets().mine.my_map,
             onClick: () =>
               this.goToMyMap(getLanguage(this.props.language).Profile.MAP),
+          })
+          break
+        case 'ARMAP':
+          data.push({
+            title: getLanguage(this.props.language).Profile.ARMAP,
+            image: getThemeAssets().mine.my_map,
+            onClick: () =>
+              this.goToMyARMap(getLanguage(this.props.language).Profile.ARMAP),
+          })
+          break
+        case 'ARMODEL':
+          data.push({
+            title: getLanguage(this.props.language).Profile.ARMODEL,
+            image: getThemeAssets().mine.my_dynamic_model,
+            onClick: () =>
+              this.goToMyARModel(getLanguage(this.props.language).Profile.ARMODEL),
           })
           break
         case 'SCENE':

@@ -132,11 +132,11 @@ export default class MapNavMenu extends React.Component {
           .tabModules) ||
       []
 
-    for (let i = 0; i < tabModules.length; i++) {
-      switch (tabModules[i]) {
+    for (let module of tabModules) {
+      switch (module) {
         case MapTabs.MapView:
           list.push({
-            key: MapTabs.MapView,
+            key: module,
             title:
               type === ChunkType.MAP_AR
                 ? getLanguage(GLOBAL.language).Map_Label.ARMAP
@@ -151,21 +151,22 @@ export default class MapNavMenu extends React.Component {
           })
           break
         case MapTabs.LayerManager:
+        case MapTabs.ARLayerManager:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.LAYER,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
             btnClick: () => {
               this.props.navigation &&
-                this.props.navigation.navigate('LayerManager', { type })
+                this.props.navigation.navigate(module, { type })
             },
           })
           break
         case MapTabs.LayerAttribute:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
@@ -177,21 +178,22 @@ export default class MapNavMenu extends React.Component {
           })
           break
         case MapTabs.MapSetting:
+        case MapTabs.ARMapSetting:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.SETTING,
             //'设置',
             image: getThemeAssets().tabBar.tab_setting,
             selectedImage: getThemeAssets().tabBar.tab_setting_selected,
             btnClick: () => {
               this.props.navigation &&
-                this.props.navigation.navigate('MapSetting', { type })
+                this.props.navigation.navigate(module, { type })
             },
           })
           break
         case MapTabs.Scene:
           list.push({
-            key: MapTabs.Scene,
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.SCENE,
             //'场景',
             image: getThemeAssets().tabBar.tab_scene,
@@ -206,7 +208,7 @@ export default class MapNavMenu extends React.Component {
           break
         case MapTabs.Layer3DManager:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.LAYER,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
@@ -221,7 +223,7 @@ export default class MapNavMenu extends React.Component {
           break
         case MapTabs.LayerAttribute3D:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
@@ -236,7 +238,7 @@ export default class MapNavMenu extends React.Component {
           break
         case MapTabs.Map3DSetting:
           list.push({
-            key: tabModules[i],
+            key: module,
             title: getLanguage(GLOBAL.language).Map_Label.SETTING,
             //'设置',
             image: getThemeAssets().tabBar.tab_setting,

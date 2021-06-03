@@ -50,7 +50,7 @@ export default StyleSheet.create({
   backBtn: {
     position: 'absolute',
     zIndex: zIndexLevel.FOUR + 1,
-    width: 60,
+    // width: 60,
     padding: 5,
     marginLeft: scaleSize(20),
     justifyContent: 'center',
@@ -80,8 +80,8 @@ export default StyleSheet.create({
   headerLeftView: {
     position: 'absolute',
     zIndex: zIndexLevel.FOUR + 1,
-    width: 60,
-    marginLeft: scaleSize(35),
+    // width: 60,
+    marginLeft: scaleSize(20),
     alignItems: 'flex-start',
     justifyContent: 'center',
     backgroundColor: 'transparent',

@@ -12,6 +12,8 @@ import {
   ScanOnlineMap,
   MyLocalData,
   MyMap,
+  MyARMap,
+  MyARModel,
   MyScene,
   MyDatasource,
   MySymbol,
@@ -175,6 +177,8 @@ import AppletManagement from './applet/appletManagement'
 import AppletList from './applet/appletList'
 import SampleMap from './sampleMap'
 import SelectLocation from './workspace/pages/SelectLocation'
+import ARLayerManager from './arLayerManager'
+import ARMapSetting from './arMapSettings/ARMapSetting'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -524,6 +528,19 @@ export default function(appConfig) {
         navigationOptions: {
           header: null,
           // gesturesEnabled: true,
+        },
+      },
+      MyARMap: {
+        screen: MyARMap,
+        navigationOptions: {
+          header: null,
+          // gesturesEnabled: true,
+        },
+      },
+      MyARModel: {
+        screen: MyARModel,
+        navigationOptions: {
+          header: null,
         },
       },
       MyScene: {
@@ -1255,6 +1272,18 @@ export default function(appConfig) {
       },
       CustomModePage: {
         screen: CustomModePage,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      ARLayerManager: {
+        screen: ARLayerManager,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      ARMapSetting: {
+        screen: ARMapSetting,
         navigationOptions: {
           header: null,
         },

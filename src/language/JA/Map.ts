@@ -429,6 +429,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Area',//need to translate
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'ライン',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'ポイント',
+  MAP_AR_AI_ASSISTANT_SAVE_TEXT: 'テキスト',
   MAP_AR_AI_SAVE_SUCCESS: '保存に成功',
   MAP_AR_AI_SAVE_POINT: 'ポイントの保存',
   MAP_AR_AI_SAVE_LINE: 'ラインの保存',

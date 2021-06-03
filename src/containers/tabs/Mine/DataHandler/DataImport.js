@@ -1,4 +1,4 @@
-import { SMap, EngineType,SScene } from 'imobile_for_reactnative'
+import { SMap, EngineType, SScene, SARMap } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
 
@@ -33,6 +33,15 @@ async function importExternalData(user, item) {
       break
     case 'xmltemplate':
       result = await importXmlTemplate(user,item)
+      break
+    case 'armap':
+      result = await importARMap(item)
+      break
+    case 'armodel':
+      result = await importARModel(user, item)
+      break
+    case 'areffect':
+      result = await importAREffect(user, item)
       break
     default:
       break
@@ -167,7 +176,6 @@ async function importWorkspace3D(user, item) {
     // }
     return true
   } catch (error) {
-    debugger
     return false
   }
 }
@@ -230,6 +238,22 @@ async function importWorkspace3DAR(user, item) {
   } catch (error) {
     return false
   }
+}
+
+async function importARMap(item) {
+  return await SARMap.importMap(item.filePath)
+}
+
+async function importARModel(user, item) {
+  const homePath = await FileTools.getHomeDirectory()
+  const targetPath = homePath + ConstPath.UserPath + user.userName + ConstPath.RelativeFilePath.ARModel
+  return await _copyFile(item, targetPath)
+}
+
+async function importAREffect(user, item) {
+  const homePath = await FileTools.getHomeDirectory()
+  const targetPath = homePath + ConstPath.UserPath + user.userName + ConstPath.RelativeFilePath.AREffect
+  return await _copyFile(item, targetPath)
 }
 
 async function importDatasource(user, item) {

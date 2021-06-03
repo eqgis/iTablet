@@ -31,6 +31,7 @@ async function getData(type: string, params: {[name: string]: any}) {
   } else {
     buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
   }
+  let customView: (() => React.ReactElement) | undefined = undefined
   switch (type) {
     case ConstToolType.SM_AR_EDIT:
       data = [
@@ -85,6 +86,7 @@ async function getData(type: string, params: {[name: string]: any}) {
       //   ToolbarBtnType.TOOLBAR_COMMIT,
       // ]
       break
+    case ConstToolType.SM_AR_EDIT_SCALE:
     case ConstToolType.SM_AR_EDIT_ROTATION:
     case ConstToolType.SM_AR_EDIT_POSITION: {
       const _data = await getStyleData(type)
@@ -95,7 +97,7 @@ async function getData(type: string, params: {[name: string]: any}) {
       break
     }
   }
-  return { data, buttons }
+  return { data, buttons, customView: customView }
 }
 
 /**
@@ -253,7 +255,12 @@ async function getStyleData(type: string) {
   ) {
     Object.assign(transformData, _data.transformData)
   }
-  const buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
+  const buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+    ToolbarBtnType.MENU,
+    ToolbarBtnType.MENU_FLEX,
+    ToolbarBtnType.TOOLBAR_COMMIT,
+  ]
   let data: any[] = []
   switch(type) {
     case ConstToolType.SM_AR_EDIT_ROTATION:

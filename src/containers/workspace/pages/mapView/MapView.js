@@ -4038,7 +4038,7 @@ export default class MapView extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>)}
-        {/* {this.isDrawing && ( */}
+        {this.isDrawing && (
           <TouchableOpacity
             onPress={() => {
               this.setting()
@@ -4058,7 +4058,7 @@ export default class MapView extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>
-        {/* )} */}
+        )}
         {this.isCollect && (
           <TouchableOpacity
             onPress={() => {

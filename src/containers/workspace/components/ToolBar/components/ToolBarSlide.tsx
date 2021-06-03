@@ -10,6 +10,7 @@ export interface ToolBarSlideOption {
 }
 
 export interface ToolBarSlideItem {
+  key: string,
   title: string,
   unit?: string,
   defaultValue: number,
@@ -45,7 +46,7 @@ class ToolBarSlide extends React.Component<Props> {
           {item.leftImage && <Image style={styles.slideImg} source={item.leftImage} />}
         </View>
         <SlideItem
-          key={index}
+          key={item.key}
           item={item}
         />
         {
@@ -142,6 +143,7 @@ class SlideItem extends React.Component<ItemProps, ItemState> {
           {this.props.item.title}
         </Text> */}
         <SlideBar
+          key={this.props.item.key}
           style={{
             width: this.dimensions.width - scaleSize(160),
           }}

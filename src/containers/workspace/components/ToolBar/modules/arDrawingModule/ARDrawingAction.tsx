@@ -22,6 +22,7 @@ import ToolbarModule from '../ToolbarModule'
 import Tabs from '../../../Tabs'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import ARDrawingData from './ARDrawingData'
+import LegendData from '../legendModule/LegendData'
 
 interface AssetType {
   Photos: 'Photos',
@@ -265,7 +266,7 @@ async function checkARLayer(type: TARLayerType) {
   const _params: any = ToolbarModule.getParams()
   const _data: any = ToolbarModule.getData()
   let newDatasource = _data.addNewDSourceWhenCreate === true
-  const newDataset = _data.addNewDsetWhenCreate === true
+  let newDataset = _data.addNewDsetWhenCreate === true
   ToolbarModule.addData({
     addNewDSourceWhenCreate: false,
     addNewDsetWhenCreate: false,
@@ -276,7 +277,13 @@ async function checkARLayer(type: TARLayerType) {
   if(currentLayer) {
     if(!newDataset && currentLayer && currentLayer.type === type) {
       satisfy = true
+    } else {
+      newDataset = true
     }
+    DataHandler.setARRawDatasource(currentLayer.datasourceAlias)
+    newDatasource = false
+  } else if (_params.armap.currentMap?.mapName) { // 已有地图，没有选择/没有 当前图层
+    newDatasource = true
   } else {
     await _params.createARMap()
     newDatasource = true
@@ -315,7 +322,7 @@ async function checkARLayer(type: TARLayerType) {
         return false
       })
       if(defaultLayer) {
-        _params.setCurrentARLayer(defaultLayer)
+        await _params.setCurrentARLayer(defaultLayer)
       }
     } else {
       Toast.show(result.error)

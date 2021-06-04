@@ -92,7 +92,7 @@ export const createARMap = (name = 'DefaultARMap') => async (dispatch: (params: 
     const result = await SARMap.close()
     if(result) {
       const homePath = await FileTools.getHomeDirectory()
-      const mapPath = homePath + ConstPath.RelativePath.ARMap
+      const mapPath = homePath + ConstPath.UserPath + userName + '/' + ConstPath.RelativePath.ARMap
       name = await DataHandler.getAvailableFileNameNoExt(mapPath, name, 'arxml')
       dispatch({
         type: NEW_AR_MAP,

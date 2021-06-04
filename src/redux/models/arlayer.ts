@@ -5,8 +5,9 @@ import { ARLayer, SARMap } from 'imobile_for_reactnative'
 import {
   NEW_AR_MAP,
   NewARMapAction,
-  SaveARMapAction,
   CLOSE_AR_MAP,
+  OPEN_AR_MAP,
+  OpenARMapAction,
 } from "./armap"
 
 const GET_AR_LAYERS = 'GET_AR_LAYERS'
@@ -72,13 +73,6 @@ export default handleActions(
       return state.setIn(['layers'], fromJS(payload.layers))
         .setIn(['currentLayer'], fromJS(undefined))
     },
-    [`${CLOSE_AR_MAP}`]: (state: any, { payload }: ARLayerAction<SaveARMapAction>) => {
-      if(state.mapInfo && payload.mapName !== '') {
-        return state.setIn(['layers'], fromJS(undefined))
-          .setIn(['currentLayer'], fromJS(undefined))
-      }
-      return state
-    },
     [`${GET_AR_LAYERS}`]: (state: any, { payload }: ARLayerAction<ARLayer[]>) => {
       return state.setIn(['layers'], fromJS(payload))
     },
@@ -86,7 +80,14 @@ export default handleActions(
       return state.setIn(['currentLayer'], fromJS(payload))
     },
     [`${CLOSE_AR_MAP}`]: (state: any) => {
-      return state.setIn(['currentLayer'], fromJS(undefined))
+      return state.setIn(['layers'], fromJS(undefined)).setIn(['currentLayer'], fromJS(undefined))
+    },
+    [`${OPEN_AR_MAP}`]: (state: any, { payload }: ARLayerAction<OpenARMapAction>) => {
+      let currentLayer: ARLayer | undefined
+      if (payload.layers?.length > 0) {
+        currentLayer = payload.layers[0]
+      }
+      return state.setIn(['layers'], fromJS(payload.layers)).setIn(['currentLayer'], fromJS(currentLayer))
     },
     // [REHYDRATE]: (state: any, { payload }: ARLayerAction<ARMapInfo>) => {
     //   return state

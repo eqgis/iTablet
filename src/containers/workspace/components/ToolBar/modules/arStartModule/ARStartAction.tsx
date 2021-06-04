@@ -168,25 +168,33 @@ async function createMap() {
 async function saveMap() {
   const _params: any = ToolbarModule.getParams()
   try {
-    _params.setContainerLoading &&
+    if (_params.armap.currentMap?.mapName) {
+      _params.setContainerLoading &&
       _params.setContainerLoading(
         true,
         getLanguage(GLOBAL.language).Prompt.SAVING,
       )
-    if (_params.armap.currentMap?.mapName) {
       let mapName = _params.armap.currentMap.mapName
       mapName =
         mapName.substr(0, mapName.lastIndexOf('.')) ||
         _params.armap.currentMap.mapName
-      await _saveMap(mapName)
+      const result = await _saveMap(mapName)
+      _params.setContainerLoading && _params.setContainerLoading(false)
+      Toast.show(result ? getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
     } else {
       NavigationService.navigate('InputPage', {
         headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_MAP,
         placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
         type: 'name',
         cb: async (value: string) => {
+          _params.setContainerLoading &&
+          _params.setContainerLoading(
+            true,
+            getLanguage(GLOBAL.language).Prompt.SAVING,
+          )
           const result = await _saveMap(value)
           result && NavigationService.goBack('InputPage')
+          Toast.show(result ? getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
         },
       })
     }
@@ -213,12 +221,14 @@ async function changeMap(item: ListData) {
     )
     await SARMap.close()
     await DataHandler.closeARRawDatasource()
-    // const mapName = item.name.substring(0, item.name.lastIndexOf('.'))
     const result = await params.openARMap(item.name)
     if(result) {
-      await params.getARLayers()
+      const layers = await params.getARLayers()
+      if (layers.length > 0) {
+        await params.setCurrentARLayer(layers[0])
+      }
       ToolbarModule.addData({
-        addNewDSourceWhenCreate: true,
+        addNewDSourceWhenCreate: false,
       })
       params.setContainerLoading(false)
       Toast.show(getLanguage(params.language).Prompt.SWITCHING_SUCCESS)
@@ -227,7 +237,6 @@ async function changeMap(item: ListData) {
       params.setContainerLoading(false)
       Toast.show(getLanguage(params.language).Prompt.THE_MAP_IS_NOTEXIST)
     }
-    // })
   } catch (e) {
     Toast.show(getLanguage(params.language).Prompt.THE_MAP_IS_NOTEXIST)
     params.setContainerLoading(false)

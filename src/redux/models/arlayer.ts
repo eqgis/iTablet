@@ -39,18 +39,14 @@ interface DispatchParams {
 // Actions
 // --------------------------------------------------
 
-export const getARLayers = () => async (dispatch: (params: DispatchParams) => any, getState: () => any) => {
+export const getARLayers = () => async (dispatch: (params: DispatchParams) => any) => {
   try {
-    // const mapInfo = getState().arlayer.mapInfo
-    // if(mapInfo) {
     const layers = await SARMap.getLayers()
     dispatch({
       type: GET_AR_LAYERS,
       payload: layers,
     })
     return layers
-    // }
-    // return []
   } catch(e) {
     return []
   }

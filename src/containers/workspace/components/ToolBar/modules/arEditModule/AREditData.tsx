@@ -6,7 +6,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolBarSlide from '../../components/ToolBarSlide'
-import { ARElementType, SARMap ,ARAction} from 'imobile_for_reactnative'
+import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
 
 interface SectionItemData {
   key: string,
@@ -200,6 +200,10 @@ function getMenuData() {
         data = ARStyleItems(_params.language)
         break
     }
+  } else {
+    if (_params.arlayer.currentLayer.type === ARLayerType.AR_SCENE_LAYER) {
+      data = ARStyleItems(_params.language)
+    }
   }
   return data
 }
@@ -220,15 +224,16 @@ export interface IARTransform {
 
 async function getStyleData(type: string) {
   const _data: any = ToolbarModule.getData()
+  const _params: any = ToolbarModule.getParams()
   const element = _data.selectARElement
-  if(!element)  {
-    Toast.show('未选中对象！')
+  const currentLayer = _params.arlayer.currentLayer
+
+  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER)  {
+    Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)
     return
   }
-  // SARMap.clearSelection()
-  // SARMap.appointEditElement(element.id, element.layerName)
-
-  // option.bottomData = poiEditBottom
+  const layerName = element?.layerName || currentLayer?.name
+  const id = element?.id || 0
 
   const range = {
     scale: [0 , 200],
@@ -237,8 +242,8 @@ async function getStyleData(type: string) {
   }
 
   let transformData: IARTransform = {
-    layerName: element.layerName,
-    id: element.id,
+    layerName: layerName,
+    id: id,
     type: 'position',
     positionX: 0,
     positionY: 0,
@@ -250,8 +255,8 @@ async function getStyleData(type: string) {
   }
   if (
     _data?.transformData &&
-    _data?.transformData.layerName === element.layerName &&
-    _data?.transformData.id === element.id
+    _data?.transformData.layerName === layerName &&
+    _data?.transformData.id === id
   ) {
     Object.assign(transformData, _data.transformData)
   }

@@ -104,7 +104,8 @@ async function _getListByFilter(user, type) {
     case 'WORKSPACE3D':
       path = userPath + ConstPath.RelativePath.Scene
       filter = {
-        type: 'Directory',
+        type: 'file',
+        extension: 'pxp',
       }
       break
     case 'AREFFECT':

@@ -7,7 +7,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { SARMap } from 'imobile_for_reactnative'
+import { SARMap, ARLayerType } from 'imobile_for_reactnative'
 
 class ArStyleModule extends FunctionModule {
   constructor(props) {
@@ -36,6 +36,13 @@ class ArStyleModule extends FunctionModule {
     if (!_params.arlayer.currentLayer) {
       Toast.show(getLanguage(_params.language).Prompt.CHOOSE_LAYER)
       NavigationService.navigate('ARLayerManager')
+      return
+    }
+    if (
+      _params.arlayer.currentLayer.type === ARLayerType.AR_SCENE_LAYER ||
+      _params.arlayer.currentLayer.type === ARLayerType.AR_MODEL_LAYER
+    ) {
+      Toast.show(getLanguage(_params.language).ARMap.AR_LAYER_NOT_SUPPORT_STYLE)
       return
     }
     const _data = await ARStyleData.getData(this.type, _params)

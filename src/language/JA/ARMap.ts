@@ -27,6 +27,8 @@ const ARMap = {// need to translate
   DOWN: 'Down',
   FRONT: 'Front',
   BACK: 'Back',
+
+  AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing', // need to translate
 }
 
 export {

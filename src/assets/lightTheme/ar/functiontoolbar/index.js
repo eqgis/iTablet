@@ -21,6 +21,8 @@ const ar_sandtable = require('./icon_ar_sandtable.png')
 const ar_bodyposture = require('./icon_ar_body_posture.png')
 const ar_text = require('./icon_ar_written_words.png')
 const ar_pipeline = require('./icon_ar_pipeline.png')
+const ar_terrain = require('./icon_ar_terrain.png')
+const ar_3d_model = require('./icon_ar_3dmodle.png')
 const icon_ar_measure_depth = require('./icon_ar_measure_depth.png')
 const icon_ar_measure_level = require('./icon_ar_measure_level.png')
 const icon_ar_gesture = require('./icon_ar_gesture.png')
@@ -66,6 +68,8 @@ export default {
   ar_bodyposture,
   ar_text,
   ar_pipeline,
+  ar_terrain,
+  ar_3d_model,
   /** 测景深 */
   icon_ar_measure_depth,
   /** 水平仪 */

@@ -412,6 +412,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: 'Please move your phone slowly. Click on your screen to add a scene after recognizing a plane',
   IDENTIFY_TIMEOUT: 'The image recognition fails because of a timeout. Do you want to try again?',
   TRACKING_LOADING: 'Tracking...',
+  UNSELECTED_OBJECT: 'Unselected object!',
 
   // 专题制图加载/输出xml
   SUCCESS: 'Successfully operated',

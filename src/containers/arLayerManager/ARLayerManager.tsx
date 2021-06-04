@@ -1,13 +1,11 @@
 import { ARLayer, SARMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
-// import ARLayers from './Home/component/ARLayers'
 import { getLanguage } from '../../language'
-import { Image, Text, TouchableOpacity, FlatList, Platform, StyleSheet, ListRenderItemInfo, View } from 'react-native'
-import { scaleSize, screen, Toast } from '../../utils'
+import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo, View } from 'react-native'
+import { scaleSize, Toast } from '../../utils'
 import { getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
-import { ConstToolType } from '../../constants'
 import { UserInfo } from '../../redux/models/user'
 import { ARMapInfo } from '../../redux/models/arlayer'
 import { ARMapState } from '../../redux/models/armap'
@@ -17,7 +15,6 @@ import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule
 import { arDrawingModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
-import NavigationService from '../NavigationService'
 import { MapToolbar } from '../workspace/components'
 
 const styles = StyleSheet.create({
@@ -93,32 +90,35 @@ export default class ARLayerManager extends React.Component<Props, State> {
       menuVisible: false,
       menuData: [{
         title: '',
-        data: [{
-          title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_LAYER_STYLE,
-          image: getThemeAssets().layer.icon_layer_style,
-          action: async () => {
-            if (this.props.arlayer.currentLayer) {
-              const _params: any = ToolbarModule.getParams()
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_STYLE, {
-                isFullScreen: true,
-                showMenuDialog: true,
-              })
-              NavigationService.goBack('ARLayerManager', null)
-            }
+        data: [
+          // {
+          //   title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_LAYER_STYLE,
+          //   image: getThemeAssets().layer.icon_layer_style,
+          //   action: async () => {
+          //     if (this.props.arlayer.currentLayer) {
+          //       const _params: any = ToolbarModule.getParams()
+          //       _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_STYLE, {
+          //         isFullScreen: true,
+          //         showMenuDialog: true,
+          //       })
+          //       NavigationService.goBack('ARLayerManager', null)
+          //     }
+          //   },
+          // },
+          {
+            title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
+            image: getThemeAssets().layer.icon_remove_layer,
+            action: async () => {
+              if (this.props.arlayer.currentLayer) {
+                await SARMap.removeARLayer(this.props.arlayer.currentLayer.name)
+                await this.props.getARLayers()
+                this.setState({
+                  menuVisible: false,
+                })
+              }
+            },
           },
-        }, {
-          title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
-          image: getThemeAssets().layer.icon_remove_layer,
-          action: async () => {
-            if (this.props.arlayer.currentLayer) {
-              await SARMap.removeARLayer(this.props.arlayer.currentLayer.name)
-              await this.props.getARLayers()
-              this.setState({
-                menuVisible: false,
-              })
-            }
-          },
-        }],
+        ],
       }],
       type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
     }

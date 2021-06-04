@@ -247,6 +247,20 @@ function getARLayerAssets(type: TARLayerType): any {
   }
 }
 
+/** 根据AR场景类型获取对应图片 */
+function getARSceneAssets(type: number) {
+  switch(type) {
+    case 1:
+      return getThemeAssets().ar.functiontoolbar.ar_pipeline
+    case 2:
+      return getThemeAssets().ar.functiontoolbar.ar_terrain
+    case 3:
+      return getThemeAssets().ar.functiontoolbar.ar_3d_model
+    default:
+      return getThemeAssets().mine.my_scene
+  }
+}
+
 export {
   getThemeAssets,
   getPublicAssets,
@@ -255,4 +269,5 @@ export {
   getLayerIconByType,
   getLayerWhiteIconByType,
   getARLayerAssets,
+  getARSceneAssets,
 }

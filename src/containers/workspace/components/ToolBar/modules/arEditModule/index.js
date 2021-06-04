@@ -5,7 +5,7 @@ import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { SARMap, ARAction } from 'imobile_for_reactnative'
+import { SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
 
 class ArEditModule extends FunctionModule {
   constructor(props) {
@@ -34,7 +34,17 @@ class ArEditModule extends FunctionModule {
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
     const _data = await AREditData.getData(this.type, params)
+
     params.showFullMap && params.showFullMap(true)
+    if (params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER) {
+      SARMap.setAction(ARAction.MOVE)
+      params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
+        isFullScreen: false,
+        showMenuDialog: true,
+      })
+      return
+    }
+
     params.setToolbarVisible(true, this.type, {
       isFullScreen: false,
       buttons: _data.buttons,

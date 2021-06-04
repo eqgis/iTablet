@@ -410,6 +410,7 @@ const Prompt = {
   MOVE_PHONE_ADD_SCENE: '请缓慢移动手机，识别出平面后点击屏幕添加场景',
   IDENTIFY_TIMEOUT: '识别图片超时，是否重试？',
   TRACKING_LOADING: '识别中...',
+  UNSELECTED_OBJECT: '未选中对象！',
 
   // 专题制图加载/输出xml
   SUCCESS: '操作成功',

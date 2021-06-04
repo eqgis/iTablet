@@ -146,7 +146,7 @@ export async function addARScene() {
       }
 
       const homePath = await FileTools.getHomeDirectory()
-      let path = _data.arScenePath
+      let path = _data.arScenePath.substring(0, _data.arScenePath.lastIndexOf('.'))
       if(!path) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SCENE_SELECTED)
         return
@@ -156,9 +156,15 @@ export async function addARScene() {
       try {
         const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
         if(list.length == 0) return
-        await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path)
-        if(result){
-          await _params.getARLayers()
+        const addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path)
+        if(addLayerName !== ''){
+          const layers: ARLayer[] = await _params.getARLayers()
+          const defaultLayer = layers.find(item => {
+            return item.type === ARLayerType.AR_SCENE_LAYER
+          })
+          if(defaultLayer) {
+            _params.setCurrentARLayer(defaultLayer)
+          }
         }
       } catch(e){
         console.warn(e)

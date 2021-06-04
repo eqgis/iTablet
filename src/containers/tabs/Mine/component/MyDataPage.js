@@ -28,7 +28,7 @@ import { DatasetType, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language/index'
 import { MsgConstant, SimpleDialog } from '../../Friend'
 import { MineItem, BatchHeadBar } from '../component'
-import { getThemeAssets, getPublicAssets } from '../../../../assets'
+import { getThemeAssets, getPublicAssets, getARSceneAssets } from '../../../../assets'
 import RNFS from 'react-native-fs'
 import styles from './styles'
 
@@ -945,7 +945,8 @@ export default class MyDataPage extends Component {
           }
           break
         case this.types.scene:
-          img = require('../../../../assets/mapTools/icon_scene.png')
+          img = getARSceneAssets(info.item.Type)
+          // img = require('../../../../assets/mapTools/icon_scene.png')
           break
         case this.types.template:
           img = require('../../../../assets/mapToolbar/list_type_map_black.png')

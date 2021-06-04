@@ -414,6 +414,7 @@ const Prompt: typeof CN.Prompt = {
 
   IDENTIFY_TIMEOUT: 'انتهاء مهلة تتبع الصورة ، حاول مرة أخرى؟',
   TRACKING_LOADING: 'تتبع...',
+  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
 
   // 专题制图加载/输出xml
   SUCCESS: 'عملية ناجحة',

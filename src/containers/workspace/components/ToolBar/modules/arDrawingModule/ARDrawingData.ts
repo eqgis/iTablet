@@ -1,12 +1,11 @@
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { getThemeAssets } from '../../../../../../assets'
+import { getThemeAssets, getARSceneAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { ARElementType } from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
-import NavigationService from '../../../../../NavigationService'
 
 interface SectionItemData {
   key: string,
@@ -169,18 +168,15 @@ async function getData(type: string, params: {[name: string]: any}) {
 async function get3DData() {
   const _params: any = ToolbarModule.getParams()
   const data3DTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'WORKSPACE3D')
-  const data3D: any[] = []
-  for (let item of data3DTemp) {
-    data3D.push({
+  return data3DTemp.filter(item => item.Type !== undefined).map(item => {
+    return {
       key: item.name,
-      image: require('../../../../../../assets/mapTools/icon_scene.png'),
-      // selectedImage: any,
-      title: item.name,
+      image: getARSceneAssets(item.Type),
+      title: item.name.substring(0, item.name.lastIndexOf('.')),
       data: item,
       action: () => ARDrawingAction.ar3D(item.path),
-    })
-  }
-  return data3D
+    }
+  })
 }
 
 /** 获取AR模型数据 */

@@ -27,6 +27,8 @@ const ARMap = {
   DOWN: '下',
   FRONT: '前',
   BACK: '后',
+
+  AR_LAYER_NOT_SUPPORT_STYLE: '当前图层不支持风格编辑',
 }
 
 export {

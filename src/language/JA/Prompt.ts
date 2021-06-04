@@ -412,6 +412,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: '携帯電話をゆっくり移動してください 平面を認識してからスクリーンをクリックしてシーンを追加してください',
   IDENTIFY_TIMEOUT: 'タイムアウト、再度実行しますか?',
   TRACKING_LOADING: 'トラキング...',
+  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
 
   // 专题制图加载/输出xml
   SUCCESS: '操作に成功しました',

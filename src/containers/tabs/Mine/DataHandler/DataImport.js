@@ -126,55 +126,7 @@ async function importWorkspace(item) {
  */
 async function importWorkspace3D(user, item) {
   try {
-  
-    //使用原生接口，已经实现的接口，就不要再重复实现 add xiezhy
-    await SScene.import3DWorkspace({server:item.filePath})
-    // const userPath = await FileTools.appendingHomeDirectory(
-    //   `${ConstPath.UserPath + user.userName}/Data/Scene`,
-    // )
-
-    // const contentList = await FileTools.getDirectoryContent(userPath)
-
-    // const workspaceName = item.fileName.substring(
-    //   0,
-    //   item.fileName.lastIndexOf('.'),
-    // )
-    // const workspaceFolder = _getAvailableName(
-    //   workspaceName,
-    //   contentList,
-    //   'directory',
-    // )
-    // const workspaceInfo = {
-    //   type: `${_getWorkspaceType(item.fileName)}`,
-    //   server: `${workspaceFolder}/${item.fileName}`,
-    // }
-
-    // for (let i = 0; i < item.wsInfo.scenes.length; i++) {
-    //   const scene = item.wsInfo.scenes[i]
-    //   const pxp = _getAvailableName(scene, contentList, 'file', 'pxp')
-    //   const pxpInfo = {
-    //     Name: scene,
-    //     Workspace: workspaceInfo,
-    //   }
-    //   await FileTools.writeFile(`${userPath}/${pxp}`, JSON.stringify(pxpInfo))
-
-    //   const absoluteWorkspacePath = `${userPath}/${workspaceFolder}`
-    //   await FileTools.createDirectory(absoluteWorkspacePath)
-    //   await FileTools.copyFile(
-    //     item.filePath,
-    //     `${absoluteWorkspacePath}/${item.fileName}`,
-    //   )
-
-    //   for (let i = 0; i < item.relatedFiles.length; i++) {
-    //     const filePath = item.relatedFiles[i]
-    //     const fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
-    //     await FileTools.copyFile(
-    //       filePath,
-    //       `${absoluteWorkspacePath}/${fileName}`,
-    //     )
-    //   }
-    // }
-    return true
+    return await SScene.import3DWorkspace({server:item.filePath})
   } catch (error) {
     return false
   }

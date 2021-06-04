@@ -412,6 +412,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
   IDENTIFY_TIMEOUT: 'İzleme görüntüsü zaman aşımı, tekrar denemek ister misiniz?',
   TRACKING_LOADING: 'İzleniyor...',
+  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
 
   // 专题制图加载/输出xml
   SUCCESS: 'Başarılı işlem',

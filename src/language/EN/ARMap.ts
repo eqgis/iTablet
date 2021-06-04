@@ -27,6 +27,8 @@ const ARMap = {
   DOWN: 'Down',
   FRONT: 'Front',
   BACK: 'Back',
+
+  AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing',
 }
 
 export {

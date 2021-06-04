@@ -27,6 +27,7 @@ interface Props {
 }
 
 class ToolBarSlide extends React.Component<Props> {
+  dimensions = Dimensions.get('screen')
 
   constructor(props: Props) {
     super(props)
@@ -39,6 +40,12 @@ class ToolBarSlide extends React.Component<Props> {
   }
 
   renderItem = (item: ToolBarSlideItem, index: number) => {
+    let itemsWidth = (item.leftText ? styles.slideText.width : 0)
+      + (item.leftImage ? styles.slideText.width : 0)
+      + (item.rightText ? styles.slideText.width : 0)
+      + (item.rightImage ? styles.slideText.width : 0)
+      + scaleSize(15) * 4 // slideSide marginHorizontal
+      + scaleSize(90)     // SlideItem right text
     return (
       <View style={styles.slideItem}>
         <View style={styles.slideSide}>
@@ -46,6 +53,7 @@ class ToolBarSlide extends React.Component<Props> {
           {item.leftImage && <Image style={styles.slideImg} source={item.leftImage} />}
         </View>
         <SlideItem
+          width={this.dimensions.width - itemsWidth}
           key={item.key}
           item={item}
         />
@@ -88,7 +96,8 @@ class ToolBarSlide extends React.Component<Props> {
 }
 
 interface ItemProps {
-  item: ToolBarSlideItem
+  item: ToolBarSlideItem,
+  width: number,
 }
 
 interface ItemState {
@@ -96,7 +105,6 @@ interface ItemState {
 }
 
 class SlideItem extends React.Component<ItemProps, ItemState> {
-  dimensions = Dimensions.get('screen')
 
   constructor(props: ItemProps) {
     super(props)
@@ -145,7 +153,7 @@ class SlideItem extends React.Component<ItemProps, ItemState> {
         <SlideBar
           key={this.props.item.key}
           style={{
-            width: this.dimensions.width - scaleSize(160),
+            width: this.props.width,
           }}
           onMove={loc => {
             this.props.item.onMove(loc)
@@ -160,8 +168,8 @@ class SlideItem extends React.Component<ItemProps, ItemState> {
         <Text
           numberOfLines={1}
           style={{
-            width: scaleSize(100),
-            paddingRight: scaleSize(20),
+            width: scaleSize(80),
+            // paddingRight: scaleSize(10),
             textAlign: 'right',
             fontSize: size.fontSize.fontSizeSm,
           }}
@@ -197,7 +205,7 @@ const styles = StyleSheet.create({
     paddingVertical: scaleSize(10),
   },
   slideSide: {
-    width: scaleSize(40),
+    // width: scaleSize(40),
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: scaleSize(15),

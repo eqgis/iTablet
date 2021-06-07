@@ -68,7 +68,7 @@ class StyleModule extends FunctionModule {
   }
 }
 
-export default function(action) {
+export default function() {
   return new StyleModule({
     type: ConstToolType.SM_MAP_STYLE,
     title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,

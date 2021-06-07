@@ -1,13 +1,17 @@
 import functionExample from './FunctionExample'
+import CustomFunctionModule from '../../src/class/CustomFunctionModule'
 // import Tour from './Tour'
 
-const CustomModules = {
+const CustomModules: {
+  [name: string]: (type?: string) => CustomFunctionModule,
+} = {
   functionExample,
   // Tour,
 }
 
-function getModule (type) {
+function getModule (type: string) {
   let module = {}
+  if (typeof type !== 'string') return null
   for (let key in CustomModules) {
     let item = CustomModules[key]()
     // 严格按照命名规范，type名称SM_yyy_zzz（SM_ 为系统字段，自定义不可使用）

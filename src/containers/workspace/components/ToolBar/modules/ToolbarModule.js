@@ -46,37 +46,45 @@ class ToolbarModule {
 
   /** 获取Toolbar 高度、行数、列数 **/
   getToolbarSize(type, additional = {}) {
-    const params = this.getParams()
-    let toolbarSize = {}
-    let data = this.getData()
-    let orientation
-    if (params && params.device && params.device.orientation) {
-      orientation = params.device.orientation
-    } else {
-      orientation = screen.getOrientation()
+    try {
+      const params = this.getParams()
+      let toolbarSize = {}
+      let data = this.getData()
+      let orientation
+      if (params && params.device && params.device.orientation) {
+        orientation = params.device.orientation
+      } else {
+        orientation = screen.getOrientation()
+      }
+      // 找当前模块下自定义的getToolbarSize，如果返回false，则去ToolBarHeight中去获取对应类型高度
+      if (data && data.getToolbarSize) {
+        toolbarSize = data.getToolbarSize(type, orientation, additional)
+      }
+      if (!toolbarSize || Object.keys(toolbarSize).length === 0) {
+        toolbarSize = ToolBarHeight.getToolbarSize(type, orientation, additional)
+      }
+      return toolbarSize
+    } catch (error) {
+      return {}
     }
-    // 找当前模块下自定义的getToolbarSize，如果返回false，则去ToolBarHeight中去获取对应类型高度
-    if (data && data.getToolbarSize) {
-      toolbarSize = data.getToolbarSize(type, orientation, additional)
-    }
-    if (!toolbarSize || Object.keys(toolbarSize).length === 0) {
-      toolbarSize = ToolBarHeight.getToolbarSize(type, orientation, additional)
-    }
-    return toolbarSize
   }
 
   _modules = new Array()
 
   getModules() {
-    if (this._modules.length === 0) {
-      for (let key in Modules) {
-        // eslint-disable-next-line import/namespace
-        let item = Modules[key]()
-        item.setToolbarModule && item.setToolbarModule(this)
-        this._modules.push(item)
+    try {
+      if (this._modules.length === 0) {
+        for (let key in Modules) {
+          // eslint-disable-next-line import/namespace
+          let item = Modules[key]()
+          item.setToolbarModule && item.setToolbarModule(this)
+          this._modules.push(item)
+        }
       }
+      return this._modules
+    } catch (error) {
+      return []
     }
-    return this._modules
   }
 
   add(param) {
@@ -86,21 +94,25 @@ class ToolbarModule {
   }
 
   getModule(type, params = {}) {
-    let module
-    let modules = this.getModules()
-    // SM_ 开头的为系统字段
-    if (type.indexOf('SM_') === 0) {
-      modules.map(item => {
-        if (type.indexOf(item.type) === 0) {
-          module = item
-        }
-      })
-    } else if (type !== '') {
-      // 自定义FunctionModule
-      module = mapFunctionModules.getModule(type, params)
+    try {
+      let module
+      let modules = this.getModules()
+      if (typeof type !== 'string') return null // 防止type不为字符串
+      // SM_ 开头的为系统字段
+      if (type.indexOf('SM_') === 0) {
+        modules.map(item => {
+          if (type.indexOf(item.type) === 0) {
+            module = item
+          }
+        })
+      } else if (type !== '') {
+        // 自定义FunctionModule
+        module = mapFunctionModules.getModule(type, params)
+      }
+      return module
+    } catch (error) {
+      return []
     }
-
-    return module
   }
 
   /**
@@ -115,12 +127,15 @@ class ToolbarModule {
       buttons: [],
     }
 
-    let module = this.getModule(type, params)
-    if (module && module.getData) {
-      toolBarData = await module.getData(type, params)
+    try {
+      let module = this.getModule(type, params)
+      if (module && module.getData) {
+        toolBarData = await module.getData(type, params)
+      }
+      return toolBarData
+    } catch(e) {
+      return toolBarData
     }
-
-    return toolBarData
   }
 
   async setToolBarData(type, params = {}) {
@@ -137,9 +152,13 @@ class ToolbarModule {
    * @returns {Array}
    */
   getMenuDialogData(type, ...others) {
-    let module = this.getModule(type)
-    let data = (module.getMenuData && module.getMenuData(type, ...others)) || []
-    return data
+    try {
+      let module = this.getModule(type)
+      let data = (module?.getMenuData && module.getMenuData(type, ...others)) || []
+      return data
+    } catch(e) {
+      return []
+    }
   }
 
   /**
@@ -149,10 +168,14 @@ class ToolbarModule {
    * @returns {Array}
    */
   getHeaderData(type, ...others) {
-    if (!type) return null
-    let module = this.getModule(type)
-    let data = (module?.getHeaderData && module.getHeaderData(type, ...others)) || undefined
-    return data
+    try {
+      if (!type) return null
+      let module = this.getModule(type)
+      let data = (module?.getHeaderData && module.getHeaderData(type, ...others)) || undefined
+      return data
+    } catch(e) {
+      return null
+    }
   }
 }
 

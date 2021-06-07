@@ -18,6 +18,9 @@ const ar_light = require('./icon_ar_light.png')
 const ar_play = require('./icon_ar_play.png')
 const ar_distance = require('./icon_ar_distance.png')
 
+const ar_add_location = require('./icon_ar_add_location.png')
+const ar_add_point = require('./icon_ar_add_point.png')
+
 export default {
   ar_poi,
   ar_3d,
@@ -36,4 +39,6 @@ export default {
   ar_light,
   ar_play,
   ar_distance,
+  ar_add_location,
+  ar_add_point,
 }

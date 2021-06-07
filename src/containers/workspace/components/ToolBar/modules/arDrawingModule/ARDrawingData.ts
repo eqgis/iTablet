@@ -4,7 +4,7 @@ import { getThemeAssets, getARSceneAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { ARElementType } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
 interface SectionItemData {
@@ -125,39 +125,32 @@ async function getData(type: string, params: {[name: string]: any}) {
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         {
-          type: ToolbarBtnType.ANALYST,
-          image: require('../../../../../../assets/mapTools/icon_point_black.png'),
-          // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ADD_TO_CURRENT_POSITION,
-          action: () => {
-            if (type === ConstToolType.SM_AR_DRAWING_SCENE) {
-              ARDrawingAction.addARScene()
-            } else if (type === ConstToolType.SM_AR_DRAWING_MODAL) {
-              ARDrawingAction.addARModel()
-            } else if (type === ConstToolType.SM_AR_DRAWING_TEXT) {
-              ARDrawingAction.addText()
-            } else {
-              let _type
-              if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
-                _type = ARElementType.AR_VIDEO
-              } else if (type === ConstToolType.SM_AR_DRAWING_WEB) {
-                _type = ARElementType.AR_WEBVIEW
-              } else {
-                _type = ARElementType.AR_IMAGE
-              }
-
-              ARDrawingAction.addMedia(_type)
+          type: 'ADD_LOCATION',
+          image: getThemeAssets().ar.armap.ar_add_location,
+          action: () => ARDrawingAction.addAtCurrent(type),
+        },
+        {
+          type: 'ADD_POINT',
+          image: getThemeAssets().ar.armap.ar_add_point,
+          action: () => ARDrawingAction.addAtPoint(type),
+        },
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.SM_AR_DRAWING_ADD_POINT:
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        {
+          type: ToolbarBtnType.TOOLBAR_COMMIT,
+          // image: getThemeAssets().ar.armap.ar_add_point,
+          action: async () => {
+            const translation = await SARMap.getCurrentCenterHitPoint()
+            const _data: any = ToolbarModule.getData()
+            if(translation && _data.prevType) {
+              ARDrawingAction.addAtCurrent(_data.prevType, translation)
             }
           },
         },
-        // {
-        //   type: ToolbarBtnType.ANALYST,
-        //   image: getThemeAssets().mapTools.icon_tool_click,
-        //   // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ADD_TO_PLANE,
-        //   action: () => {
-
-        //   },
-        // },
-        ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
   }

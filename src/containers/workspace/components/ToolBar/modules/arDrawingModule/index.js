@@ -24,23 +24,8 @@ class ArDrawingModule extends FunctionModule {
       case ConstToolType.SM_AR_DRAWING_MODAL:
         data.height = 0
         break
-      case ConstToolType.SM_AR_DRAWING_EDIT:
-        data.height = ConstToolType.TOOLBAR_HEIGHT[0]
-        break
-      case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_COLOR:
-        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 4
-        break
       case ConstToolType.SM_AR_DRAWING:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 5 / 2
-        break
-      case ConstToolType.SM_AR_DRAWING_STYLE_TRANSFROM:
-      case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_WIDTH:
-      case ConstToolType.SM_AR_DRAWING_STYLE_SCALE:
-        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
-        break
-      case ConstToolType.SM_AR_DRAWING_STYLE_POSITION:
-      case ConstToolType.SM_AR_DRAWING_STYLE_ROTATION:
-        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3
         break
       default:
         data.height = 0

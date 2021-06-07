@@ -11,6 +11,7 @@ import {
   FileTools,
   ARLayer,
 } from 'imobile_for_reactnative'
+import { IVector3 } from "imobile_for_reactnative/types/interface/ar"
 import {
   ConstToolType,
 } from '../../../../../../constants'
@@ -40,7 +41,7 @@ function openSourcePicker(assetType: keyof AssetType, callback: (data: any) => v
   })
 }
 
-function setARToolbar(type: string, data: {[name: string]: any}) {
+function setARToolbar(type: string, data?: {[name: string]: any}) {
   const _params: any = ToolbarModule.getParams()
   // const _data: any = ToolbarModule.getData()
   ToolbarModule.addData({
@@ -52,24 +53,48 @@ function setARToolbar(type: string, data: {[name: string]: any}) {
   })
 }
 
-function addAtCurrent() {
-  // let { path } = ToolbarModule.getData()
-  // SARImage.addAtCurrentPosition(path)
-  // ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARIMAGEMODULE')
+/**
+ * 添加到当前位置
+ * @param type
+ */
+async function addAtCurrent(type: string, location?: IVector3) {
+  const _params: any = ToolbarModule.getParams()
+  if (type === ConstToolType.SM_AR_DRAWING_SCENE) {
+    await addARScene(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_MODAL) {
+    await addARModel(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_TEXT) {
+    await addText(location)
+  } else {
+    let _type
+    if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
+      _type = ARElementType.AR_VIDEO
+    } else if (type === ConstToolType.SM_AR_DRAWING_WEB) {
+      _type = ARElementType.AR_WEBVIEW
+    } else {
+      _type = ARElementType.AR_IMAGE
+    }
+
+    await addMedia(_type, location)
+  }
 }
 
-function addAtPoint() {
-  // let { path } = ToolbarModule.getData()
-  // SARImage.setTapAction('ADD')
-  // SARImage.setImagePath(path)
-  // SARImage.setPlaneVisible(true)
-  // SARImage.setOnAddListener(() => {
-  //   ToolbarModule.getParams().setToolbarVisible(true, 'SM_ARIMAGEMODULE')
+/**
+ * 添加到指定位置
+ * @param type
+ */
+async function addAtPoint(type: string) {
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  SARMap.setCenterHitTest(true)
+  // _params.setToolbarVisible && _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_POINT, {
+  //   isFullScreen: false,
   // })
-  // ToolbarModule.getParams().setToolbarVisible(
-  //   true,
-  //   'SM_ARIMAGEMODULE_addAtPlane',
-  // )
+  setARToolbar(ConstToolType.SM_AR_DRAWING_ADD_POINT, { prevType: type })
+  // ToolbarModule.addData({
+  //   prevType: type,
+  //   prevArContent: _data.arContent,
+  // })
 }
 
 async function arVideo() {
@@ -117,11 +142,11 @@ async function arText() {
 }
 
 async function ar3D(path: string) {
-  setARToolbar(ConstToolType.SM_AR_DRAWING_SCENE, { arScenePath: path })
+  setARToolbar(ConstToolType.SM_AR_DRAWING_SCENE, { arContent: path })
 }
 
 /** 打开三维场景 */
-export async function addARScene() {
+export async function addARScene(location?: IVector3) {
   try {
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
@@ -147,7 +172,7 @@ export async function addARScene() {
       }
 
       const homePath = await FileTools.getHomeDirectory()
-      let path = _data.arScenePath.substring(0, _data.arScenePath.lastIndexOf('.'))
+      let path = _data.arContent.substring(0, _data.arContent.lastIndexOf('.'))
       if(!path) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SCENE_SELECTED)
         return
@@ -157,7 +182,7 @@ export async function addARScene() {
       try {
         const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
         if(list.length == 0) return
-        const addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path)
+        const addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path, location)
         if(addLayerName !== ''){
           const layers: ARLayer[] = await _params.getARLayers()
           const defaultLayer = layers.find(item => {
@@ -179,25 +204,25 @@ export async function addARScene() {
 }
 
 async function arModel(path: string) {
-  setARToolbar(ConstToolType.SM_AR_DRAWING_MODAL, { arModelPath: path })
+  setARToolbar(ConstToolType.SM_AR_DRAWING_MODAL, { arContent: path })
 }
 
 /** 添加模型 */
-export async function addARModel() {
+export async function addARModel(location?: IVector3) {
   try {
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
     await checkARLayer(ARLayerType.AR_MODEL_LAYER)
     const layer = _params.arlayer.currentLayer
     if(layer){
-      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arModelPath, 0)
+      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
     }
   } catch (error) {
     Toast.show(error)
   }
 }
 
-async function addMedia(type: TARElementType) {
+async function addMedia(type: TARElementType, location?: IVector3) {
   try {
     await checkARLayer(ARLayerType.AR_MEDIA_LAYER)
     const _params: any = ToolbarModule.getParams()
@@ -208,14 +233,15 @@ async function addMedia(type: TARElementType) {
       if((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
         content = content.substring(7)
       }
-      SARMap.addARMedia(layer.name, type, content)
+      return await SARMap.addARMedia(layer.name, type, content, location)
     }
+    return false
   } catch (error) {
     Toast.show(error)
   }
 }
 
-async function addText() {
+async function addText(location?: IVector3) {
   try {
     await checkARLayer(ARLayerType.AR_TEXT_LAYER)
     const _params: any = ToolbarModule.getParams()
@@ -223,7 +249,7 @@ async function addText() {
     let content = _data.arContent
     const layer = _params.arlayer.currentLayer
     if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-      SARMap.addARText(layer.name, content)
+      SARMap.addARText(layer.name, content, location)
     }
   } catch (error) {
     Toast.show(error)
@@ -331,79 +357,35 @@ async function checkARLayer(type: TARLayerType) {
 }
 
 async function toolbarBack() {
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+
+  if (_params.type === ConstToolType.SM_AR_DRAWING_ADD_POINT) {
+    // 点选添加对象界面，返回上一级
+    setARToolbar(_data.prevType, { arContent: _data.arContent })
+    ToolbarModule.addData({
+      prevType: null,
+    })
+    SARMap.setCenterHitTest(false)
+    return
+  }
   SARMap.setAction(ARAction.SELECT)
   SARMap.clearSelection()
   SARMap.cancel()
-  const _params: any = ToolbarModule.getParams()
-  const _data = await ARDrawingData.getData(ConstToolType.SM_AR_DRAWING, _params)
+  const data = await ARDrawingData.getData(ConstToolType.SM_AR_DRAWING, _params)
   _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING, {
     isFullScreen: false,
-    buttons: _data.buttons,
+    buttons: data.buttons,
     customView: () => {
       return (
         <Tabs
-          data={_data.data}
+          data={data.data}
           device={_params.device}
         />
       )
     },
   })
   ToolbarModule.addData({selectARElement: null})
-}
-
-async function tableAction(type: string, params: { key: any; layerName: any; action: (arg0: any) => void }) {
-  let result = false
-  const _params: any = ToolbarModule.getParams()
-  switch (type) {
-    case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_COLOR:
-      result = await SARMap.setLayerBorderColor(_params.arlayer.currentLayer.name, params.key)
-      break
-  }
-  if (!result && params.action) {
-    params.action(params)
-  }
-}
-
-function menu(type: string, selectKey: string, params = {}) {
-  const _params: any = ToolbarModule.getParams()
-
-  let showMenu = false
-
-  if (GLOBAL.ToolBar) {
-    if (GLOBAL.ToolBar.state.showMenuDialog) {
-      showMenu = false
-    } else {
-      showMenu = true
-    }
-    GLOBAL.ToolBar.setState({
-      isFullScreen: showMenu,
-      showMenuDialog: showMenu,
-      selectKey: selectKey,
-      selectName: selectKey,
-    })
-  }
-}
-
-function showMenuBox(type: string, selectKey: string, params: any) {
-  switch(type) {
-    case ConstToolType.SM_AR_DRAWING_STYLE_ROTATION:
-    case ConstToolType.SM_AR_DRAWING_STYLE_POSITION:
-    case ConstToolType.SM_AR_DRAWING_VISIBLE_DISTANCE:
-    case ConstToolType.SM_AR_DRAWING_STYLE_SCALE:
-    case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_COLOR:
-    case ConstToolType.SM_AR_DRAWING_STYLE_BORDER_WIDTH:
-    case ConstToolType.SM_AR_DRAWING_STYLE_TRANSFROM:
-      if (!GLOBAL.ToolBar.state.showMenuDialog) {
-        params.showBox && params.showBox()
-      } else {
-        params.setData && params.setData({
-          showMenuDialog: false,
-          isFullScreen: false,
-        })
-        params.showBox && params.showBox()
-      }
-      break
-  }
 }
 
 function commit() {
@@ -416,9 +398,6 @@ function commit() {
 
 export default {
   toolbarBack,
-  tableAction,
-  menu,
-  showMenuBox,
   commit,
 
   addAtCurrent,

@@ -1299,6 +1299,11 @@ export default class MapView extends React.Component {
   /** 地图保存 */
   saveMap = async () => {
     try {
+      // if(GLOBAL.Type === ChunkType.MAP_AR){
+      //   console.warn(1111)
+      //   await this.props.closeARMap()
+      //   await this.props.setCurrentARLayer()
+      // }
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         //这里先处理下异常 add xiezhy
         try {
@@ -1357,8 +1362,8 @@ export default class MapView extends React.Component {
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
       await this.closeMap()
       if (GLOBAL.Type === ChunkType.MAP_AR) {
-        this.props.closeARMap()
-        this.props.setCurrentARLayer()
+        await this.props.closeARMap()
+        await this.props.setCurrentARLayer()
       }
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
@@ -1513,6 +1518,7 @@ export default class MapView extends React.Component {
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()
           }
+          await this.closeMapHandler(params?.baskFrom)
           GLOBAL.clickWait = false
           if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
             if (Platform.OS === 'android') {

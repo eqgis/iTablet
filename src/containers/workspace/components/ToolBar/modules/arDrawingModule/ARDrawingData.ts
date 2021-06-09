@@ -6,6 +6,7 @@ import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { SARMap } from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import { Platform } from 'react-native'
 
 interface SectionItemData {
   key: string,
@@ -114,6 +115,45 @@ async function getData(type: string, params: {[name: string]: any}) {
           data: arEffect,
         },
       ]
+      if (Platform.OS === 'ios') {
+        data = [
+          {
+            title: getLanguage(GLOBAL.language).Prompt.POI,
+            data: [{
+              key: ConstToolType.SM_AR_DRAWING_IMAGE,
+              image: getThemeAssets().ar.functiontoolbar.ar_picture,
+              title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_IMAGE,
+              action: ARDrawingAction.arImage,
+            }, {
+              key: ConstToolType.SM_AR_DRAWING_VIDEO,
+              image: getThemeAssets().ar.functiontoolbar.ar_video,
+              title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_VIDEO,
+              action: ARDrawingAction.arVideo,
+            }, {
+              key: ConstToolType.SM_AR_DRAWING_WEB,
+              image: getThemeAssets().ar.functiontoolbar.ar_webpage,
+              title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
+              action: ARDrawingAction.arWebView,
+            }],
+          },
+          {
+            title: getLanguage(GLOBAL.language).ARMap.VECTOR,
+            data: [
+              {
+                key: ConstToolType.SM_AR_DRAWING_TEXT,
+                image: getThemeAssets().layerType.layer_text,
+                // selectedImage: any,
+                title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
+                action: ARDrawingAction.arText,
+              },
+            ],
+          },
+          {
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
+            data: arEffect,
+          },
+        ]
+      }
       break
     }
     case ConstToolType.SM_AR_DRAWING_IMAGE:

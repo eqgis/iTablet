@@ -115,9 +115,13 @@ function isNeedToSave(cb: () => void) {
 function setSaveViewVisible(visible: boolean, cb: () => void) {
   const _params: any = ToolbarModule.getParams()
   if (!_params.setSaveViewVisible) return
+  let mapName = _params.armap.currentMap.mapName
+  mapName =
+    mapName.substr(0, mapName.lastIndexOf('.')) ||
+    _params.armap.currentMap.mapName
   GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, {
     cb,
-    customSave: _saveMap,
+    customSave: async ()=>await _saveMap(mapName),
   })
 }
 

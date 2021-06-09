@@ -170,6 +170,7 @@ export default class GuideViewMapEditModel extends React.Component {
           position: 'absolute',
           width: '100%',
           height: '100%',
+          zIndex: 1e6,
         }}>
 
         {this.state.start && this.renderStartGuide()}

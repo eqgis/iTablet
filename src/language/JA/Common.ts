@@ -16,6 +16,9 @@ const Common: typeof CN.Common = {
 
   PARAMETER: 'パラメータ',
   CONFIRM: 'OK',
+
+  ADD: '追加',
+  NONE: 'なし',
 }
 
 export { Protocol, Common }

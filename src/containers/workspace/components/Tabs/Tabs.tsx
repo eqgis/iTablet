@@ -9,6 +9,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TableItem from './TableItem'
 import { TableItemType } from './types'
 import { ToolbarTableList } from '../ToolBar/components'
+import { ToolBarSlide } from '../ToolBar/components'
 
 interface Props {
   data: any[],
@@ -17,7 +18,11 @@ interface Props {
   style?: {[name: string]: any},
 }
 
-export default class Tabs extends React.Component<Props> {
+interface State {
+  currentPage: number,
+}
+
+export default class Tabs extends React.Component<Props, State> {
 
   static defaultProps = {
     column: 5,
@@ -26,7 +31,7 @@ export default class Tabs extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      currentPage: 1,
+      currentPage: 0,
     }
   }
 
@@ -34,22 +39,15 @@ export default class Tabs extends React.Component<Props> {
     
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (
-  //     JSON.stringify(prevProps.map.currentMap) !==
-  //       JSON.stringify(this.props.map.currentMap) &&
-  //     this.props.map.currentMap.name
-  //   ) {
-  //     if (this.props.map.currentMap && this.props.map.currentMap.Template) {
-  //       this.initTemplate()
-  //     } else {
-  //       this.initSymbols()
-  //     }
-  //   }
-  // }
+  componentDidUpdate(prevProps: Props) {
+    if (
+      JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)
+    ) {
+      this.goToPage(0)
+    }
+  }
 
   goToPage = (index: number) => {
-    // this.scrollTab.goToPage(index)
     this.state.currentPage !== index &&
       this.setState({
         currentPage: index,
@@ -74,9 +72,19 @@ export default class Tabs extends React.Component<Props> {
     )
   }
 
-  _renderTab = (tabLabel: string, data: any) => {
-    return (
-      React.cloneElement(
+  _renderTab = (tabLabel: string, data: any, type?: string) => {
+    let tab
+    if (data.customView) {
+      tab = data.customView
+    } else if (type) {
+      switch(type) {
+        case ToolbarType.slider:
+          tab = <ToolBarSlide data={data}/>
+          break
+      }
+    }
+    if (!tab) {
+      tab = (
         <TableList
           style={styles.table}
           data={data}
@@ -89,30 +97,34 @@ export default class Tabs extends React.Component<Props> {
           horizontal={true}
           // rowStyle={{height: scaleSize(200)}}
         />
-        , {tabLabel: tabLabel})
-    )
+      )
+    }
+    return React.cloneElement(tab, {tabLabel: tabLabel})
   }
 
   _renderTabs = () => {
     const data: any[] = []
     this.props.data.forEach(item => {
-      data.push(this._renderTab(item.title, item.data))
+      data.push(this._renderTab(item.title, item.data, item.type))
     })
     return data
   }
 
   render() {
+    if (!this.props.data || this.props.data.length === 0) {
+      return null
+    }
     return (
       <ScrollableTabView
         // ref={ref => (this.scrollTab = ref)}
         style={[styles.container, this.props.style]}
         initialPage={0}
-        // page={this.state.currentPage}
-        // onChangeTab={(data: {
-        //   i: number,
-        //   ref: typeof TableList,
-        //   from: number,
-        // }) => this.goToPage(data.i)}
+        page={this.state.currentPage}
+        onChangeTab={(data: {
+          i: number,
+          ref: typeof TableList,
+          from: number,
+        }) => this.goToPage(data.i)}
         locked={true}
         renderTabBar={(props: {[name: string]: any}) => (
           <DefaultTabBar

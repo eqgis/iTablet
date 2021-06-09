@@ -1,12 +1,10 @@
-import React from 'react'
 import ARDrawingData from './ARDrawingData'
 import ARDrawingAction from './ARDrawingAction'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import Tabs from '../../../Tabs'
 import { SARMap } from 'imobile_for_reactnative'
 
 class ArDrawingModule extends FunctionModule {
@@ -37,23 +35,13 @@ class ArDrawingModule extends FunctionModule {
   action = async () => {
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
-    const _data = await ARDrawingData.getData(this.type, params)
     params.showFullMap && params.showFullMap(true)
     params.setToolbarVisible(true, this.type, {
+      containerType: ToolbarType.tableTabs,
       isFullScreen: false,
-      buttons: _data.buttons,
-      customView: () => {
-        return (
-          <Tabs
-            data={_data.data}
-            device={params.device}
-          />
-        )
-      },
     })
 
     SARMap.clearSelection()
-    // SARMap.setAction(ARAction.SELECT)
   }
 }
 

@@ -11,6 +11,8 @@ const ar_text = require('./icon_ar_written_words_Temp.png')
 
 const ar_move = require('./icon_ar_translation.png')
 const ar_rotate = require('./icon_ar_rotate.png')
+const ar_translation = require('./icon_ar_translation.png')
+const ar_animation_none = require('./icon_ar_nothing.png')
 const ar_scale = require('./icon_ar_zoom.png')
 const ar_opacity = require('./icon_ar_opacity.png')
 const ar_border_width = require('./icon_ar_border_width.png')
@@ -33,6 +35,8 @@ export default {
   ar_text,
   ar_move,
   ar_rotate,
+  ar_translation,
+  ar_animation_none,
   ar_scale,
   ar_opacity,
   ar_border_width,

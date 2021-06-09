@@ -27,6 +27,14 @@ const ARMap = {// need to translate
   DOWN: 'Down',
   FRONT: 'Front',
   BACK: 'Back',
+  DIRECTION: '方向',
+  DISTANCE: '距離',
+  RATATION_AXIS: '回転軸',
+  CLOCKWISE: '時周り',
+  COUNTER_CLOCKWISE: '逆時周り',
+
+  ANIMATION: 'アニメーション',
+  ANIMATION_TYPE: 'アニメーションタイプ',
 
   AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing', // need to translate
 }

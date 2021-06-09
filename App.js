@@ -39,14 +39,14 @@ import {
 } from './src/redux/models/template'
 import { setModules } from './src/redux/models/appConfig'
 import { setMapModule } from './src/redux/models/mapModules'
-import { Dialog, Loading, MyToast } from './src/components'
+import { Dialog, Loading, MyToast, InputDialog } from './src/components'
 import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
 import { setShow } from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
 import { FileTools, SplashScreen } from './src/native'
 import ConfigStore from './src/redux/store'
-import { scaleSize, Toast, screen, OnlineServicesUtils } from './src/utils'
+import { scaleSize, Toast, screen, OnlineServicesUtils, DialogUtils } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
 import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
@@ -1174,6 +1174,25 @@ class AppRoot extends Component {
     )
   }
 
+  renderInputDialog = () => {
+    return (
+      <InputDialog
+        ref={ref => DialogUtils.setInputDialog(ref)}
+        // title={
+        //   getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_NAME
+        // }
+        // confirmAction={async value => {
+        //   await this.goBack({
+        //     title: value,
+        //   })
+        //   this.dialog.setDialogVisible(false)
+        // }}
+        // confirmBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
+        // cancelBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CANCEL}
+      />
+    )
+  }
+
   render() {
     return (
       <>
@@ -1216,6 +1235,7 @@ class AppRoot extends Component {
         ))}
         {this.renderSimpleDialog()}
         {this.renderGuidePage()}
+        {this.renderInputDialog()}
       </>
     )
   }

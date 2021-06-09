@@ -38,7 +38,7 @@ export default StyleSheet.create({
   title: {
     fontSize: size.fontSize.fontSizeLg,
     backgroundColor: 'transparent',
-    marginVertical: scaleSize(20),
+    marginTop: scaleSize(20),
     textAlign: 'center',
     color: color.themeText2,
   },
@@ -46,7 +46,7 @@ export default StyleSheet.create({
     // marginTop: scaleSize(20),
     fontSize: size.fontSize.fontSizeXl,
     backgroundColor: 'transparent',
-    marginVertical: scaleSize(20),
+    marginTop: scaleSize(20),
     marginHorizontal: scaleSize(20),
     textAlign: 'center',
     color: color.themeText2,

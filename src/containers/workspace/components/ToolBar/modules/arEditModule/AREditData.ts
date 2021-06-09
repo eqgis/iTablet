@@ -1,12 +1,13 @@
-import React from 'react'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import ToolBarSlide from '../../components/ToolBarSlide'
 import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
+import AREditAction from './AREditAction'
+import NavigationService from '../../../../../NavigationService'
+import { DATA_ITEM } from '../types'
 
 interface SectionItemData {
   key: string,
@@ -24,67 +25,16 @@ interface SectionData {
 
 async function getData(type: string, params: {[name: string]: any}) {
   ToolbarModule.setParams(params)
-  let data: SectionData[] | SectionItemData[] | string[] = []
+  let data: SectionData[] | SectionData | SectionItemData[] | string[] = []
   let buttons: any[]
   if (type === ConstToolType.SM_AR_EDIT) {
-    buttons = [ToolbarBtnType.PLACEHOLDER, ToolbarBtnType.TOOLBAR_COMMIT]
+    buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
   } else {
     buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
   }
-  let customView: (() => React.ReactElement) | undefined = undefined
+  // let customView: (() => React.ReactElement) | undefined = undefined
   switch (type) {
     case ConstToolType.SM_AR_EDIT:
-      data = [
-        // {
-        //   key: 'edit',
-        //   image: getThemeAssets().ar.toolbar.icon_ar_edit,
-        //   // selectedImage: any,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
-        //   action: () => {
-        //     params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
-        //       isFullScreen: true,
-        //       showMenuDialog: true,
-        //     })
-        //   },
-        // },
-        // {
-        //   key: 'undo',
-        //   image: getThemeAssets().toolbar.icon_toolbar_undo,
-        //   // selectedImage: any,
-        //   title: getLanguage(GLOBAL.language).Prompt.UNDO,
-        //   action: data => {},
-        // },
-        // // {
-        // //   key: ConstToolType.SM_AR_REGION,
-        // //   image: getThemeAssets().toolbar.icon_toolbar_region,
-        // //   // selectedImage: any,
-        // //   title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_AEREA,
-        // //   action: data => {},
-        // // },
-        // {
-        //   key: 'delete',
-        //   image: getThemeAssets().edit.icon_delete,
-        //   // selectedImage: any,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-        //   action: data => {},
-        // },
-      ]
-      // buttons = [
-      //   ToolbarBtnType.TOOLBAR_BACK,
-      //   {
-      //     key: 'addAtCurrent',
-      //     title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ADD_TO_CURRENT_POSITION,
-      //     image: require('../../../../../../assets/mapTools/icon_point_black.png'),
-      //     action: ARDrawingAction.addAtCurrent,
-      //   },
-      //   {
-      //     key: 'addAtPlane',
-      //     title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_ADD_TO_PLANE,
-      //     image: getThemeAssets().mapTools.icon_tool_click,
-      //     action: ARDrawingAction.addAtPoint,
-      //   },
-      //   ToolbarBtnType.TOOLBAR_COMMIT,
-      // ]
       break
     case ConstToolType.SM_AR_EDIT_SCALE:
     case ConstToolType.SM_AR_EDIT_ROTATION:
@@ -96,8 +46,20 @@ async function getData(type: string, params: {[name: string]: any}) {
       }
       break
     }
+    case ConstToolType.SM_AR_EDIT_ANIMATION_TYPE:
+    case ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION:
+    case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION:
+    case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION_AXIS:
+    case ConstToolType.SM_AR_EDIT_ANIMATION: {
+      const _data = await getAnimationData(type)
+      if (_data) {
+        data = _data.data
+        buttons = _data.buttons
+      }
+      break
+    }
   }
-  return { data, buttons, customView: customView }
+  return { data, buttons }
 }
 
 /**
@@ -107,44 +69,17 @@ async function getData(type: string, params: {[name: string]: any}) {
  * @param params Toolbar setVisible中的params
  */
 async function showSlideToolbar(type: string, language: string, params: any) {
-  let _data: { buttons: string[]; data: any[] } | undefined
-  // switch (type) {
-  //   case ConstToolType.SM_AR_STYLE:
-  //   case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
-  //   case ConstToolType.SM_AR_STYLE_TRANSFROM:
-  //   case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
-  //     _data = await getLayerStyleData(type)
-  //     break
-  //   default:
-  //     _data = await getStyleData(type)
-  // }
-  _data = await getStyleData(type)
   GLOBAL.toolBox &&
   GLOBAL.toolBox.setVisible(true, type, {
+    containerType: ToolbarType.slider,
     isFullScreen: false,
     showMenuDialog: false,
-    buttons: [
-      ToolbarBtnType.TOOLBAR_BACK,
-      ToolbarBtnType.MENU,
-      ToolbarBtnType.MENU_FLEX,
-      ToolbarBtnType.TOOLBAR_COMMIT,
-    ],
-    customView: () => {
-      return (
-        <ToolBarSlide
-          data={{
-            title: params.selectName || '',
-            data: _data?.data || [],
-          }}
-        />
-      )
-    },
     ...params,
   })
 }
 
 const ARStyleItems = (language: string) => {
-  return [
+  const items = [
     {
       key: getLanguage(language).ARMap.SCALE,
       action: () => {
@@ -182,6 +117,16 @@ const ARStyleItems = (language: string) => {
       selectKey: getLanguage(language).ARMap.ROTATION,
     },
   ]
+  const _data: any = ToolbarModule.getData()
+  // 只有模型才能用动画
+  if (_data?.selectARElement?.type === ARElementType.AR_MODEL) {
+    items.push({
+      key: getLanguage(language).ARMap.ANIMATION,
+      action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION),
+      selectKey: getLanguage(language).ARMap.ANIMATION,
+    })
+  }
+  return items
 }
 
 function getMenuData() {
@@ -267,6 +212,10 @@ async function getStyleData(type: string) {
     ToolbarBtnType.TOOLBAR_COMMIT,
   ]
   let data: any[] = []
+  const allData: {
+    title: string,
+    data: typeof data,
+  }[] = []
   switch(type) {
     case ConstToolType.SM_AR_EDIT_ROTATION:
       data = [
@@ -319,6 +268,10 @@ async function getStyleData(type: string) {
           unit: '°',
         },
       ]
+      allData.push({
+        title: getLanguage(_params.language).ARMap.ROTATION,
+        data: data,
+      })
       break
     case ConstToolType.SM_AR_EDIT_POSITION:
       data = [
@@ -377,6 +330,10 @@ async function getStyleData(type: string) {
           range: range.position,
         },
       ]
+      allData.push({
+        title: getLanguage(_params.language).ARMap.POSITION,
+        data: data,
+      })
       break
     // case ConstToolType.SM_AR_VISIBLE_DISTANCE:
     //   data = []
@@ -401,13 +358,195 @@ async function getStyleData(type: string) {
         defaultValue: Math.ceil(_defaultValue),
         range: range.scale,
       }]
+      allData.push({
+        title: getLanguage(_params.language).ARMap.SCALE,
+        data: data,
+      })
       break
     }
   }
   return {
     buttons,
-    data,
+    data: allData,
   }
+}
+
+/**
+ * 获取AR动画编辑数据
+ * @param type
+ * @returns
+ */
+async function getAnimationData(type: string) {
+  const _data: any = ToolbarModule.getData()
+  const _params: any = ToolbarModule.getParams()
+  const element = _data.selectARElement
+  const currentLayer = _params.arlayer.currentLayer
+
+  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER)  {
+    Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)
+    return
+  }
+  // const layerName = element?.layerName || currentLayer?.name
+  // const id = element?.id || 0
+
+  const buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+    ToolbarBtnType.MENU,
+    ToolbarBtnType.MENU_FLEX,
+    ToolbarBtnType.TOOLBAR_COMMIT,
+  ]
+  let data: any[] = []
+  const allData: {
+    title: string,
+    type?: string,
+    data: typeof data,
+  }[] = []
+  switch(type) {
+    /** 一级 动画 */
+    case ConstToolType.SM_AR_EDIT_ANIMATION: {
+      data = [
+        {
+          key: 'add',
+          image: getThemeAssets().functionBar.icon_tool_add,
+          title: getLanguage(GLOBAL.language).Common.ADD,
+          action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_TYPE),
+        },
+        {
+          key: 'none',
+          image: getThemeAssets().ar.armap.ar_animation_none,
+          title: getLanguage(GLOBAL.language).Common.NONE,
+          action: () => {
+            if(element) {
+              SARMap.removeAnimation(element.layerName, element.id)
+            }
+          },
+        },
+      ]
+      const animation = await SARMap.getAnimationList()
+      const animationData: DATA_ITEM[] = []
+      for (let i = animation.length - 1; i >= 0; i--) {
+        const item = animation[i]
+        animationData.push({
+          key: 'none',
+          image: item.type === 'rotation'
+            ? getThemeAssets().ar.armap.ar_rotate
+            : getThemeAssets().ar.armap.ar_translation,
+          title: item.name,
+          action: async () => {
+            if(element) {
+              await SARMap.removeAnimation(element.layerName, element.id)
+              SARMap.setAnimation(element.layerName, element.id, item.id)
+            }
+          },
+        })
+      }
+
+      allData.push({
+        title: getLanguage(_params.language).ARMap.ANIMATION,
+        data: data.concat(animationData),
+      })
+      break
+    }
+    /** 二级 动画类型 */
+    case ConstToolType.SM_AR_EDIT_ANIMATION_TYPE:
+      data = [
+        {
+          key: ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION,
+          image: getThemeAssets().ar.armap.ar_translation,
+          title: getLanguage(GLOBAL.language).ARMap.POSITION,
+          action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION),
+        },
+        {
+          key: ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION,
+          image: getThemeAssets().ar.armap.ar_rotate,
+          title: getLanguage(GLOBAL.language).ARMap.ROTATION,
+          action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION),
+        },
+      ]
+      allData.push({
+        title: getLanguage(_params.language).ARMap.ANIMATION_TYPE,
+        data: data,
+      })
+      break
+    /** 三级 位移 */
+    case ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION:
+      allData.push({
+        title: getLanguage(_params.language).ARMap.DIRECTION,
+        data: [{
+          key: 'x',
+          image: getThemeAssets().ar.armap.ar_translation,
+          title: 'x',
+          action: () => AREditAction.createAnimation({ direction: 'x' }),
+        }, {
+          key: 'y',
+          image: getThemeAssets().ar.armap.ar_translation,
+          title: 'y',
+          action: () => AREditAction.createAnimation({ direction: 'y' }),
+        }, {
+          key: 'z',
+          image: getThemeAssets().ar.armap.ar_translation,
+          title: 'z',
+          action: () => AREditAction.createAnimation({ direction: 'z' }),
+        }],
+      })
+      allData.push({
+        title: getLanguage(_params.language).ARMap.DISTANCE,
+        type: ToolbarType.slider,
+        data: [{
+          // title: getLanguage(GLOBAL.language).ARMap.DISTANCE,
+          type: ToolbarType.slider,
+          data: [{
+            onMove: (loc: number) => {
+              if (_data.animationParam) {
+                _data.animationParam.distance = loc
+              }
+              // AREditAction.createAnimation({ distance: loc })
+            },
+            defaultValue: 1,
+            range: [-5, 5],
+            unit: getLanguage(GLOBAL.language).Map_Main_Menu.METERS,
+          }],
+        }],
+      })
+      break
+    /** 三级 旋转 */
+    case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION:
+      allData.push({
+        title: getLanguage(_params.language).ARMap.DIRECTION,
+        data: [{
+          key: 'x',
+          image: getThemeAssets().ar.armap.ar_rotate,
+          title: 'x',
+          action: () => AREditAction.createAnimation({ rotationAxis:  {x: 1, y: 0, z: 0} }),
+        }, {
+          key: 'y',
+          image: getThemeAssets().ar.armap.ar_rotate,
+          title: 'y',
+          action: () => AREditAction.createAnimation({ rotationAxis:  {x: 0, y: 1, z: 0} }),
+        }, {
+          key: 'z',
+          image: getThemeAssets().ar.armap.ar_rotate,
+          title: 'z',
+          action: () => AREditAction.createAnimation({ rotationAxis:  {x: 0, y: 0, z: 1} }),
+        }],
+      })
+      allData.push({
+        title: getLanguage(_params.language).ARMap.DISTANCE,
+        data: [{
+          key: 'axis_x',
+          image: getThemeAssets().ar.armap.ar_rotate,
+          title: getLanguage(_params.language).ARMap.CLOCKWISE,
+          action: () => AREditAction.createAnimation({ clockwise: true }),
+        }, {
+          key: 'axis_y',
+          image: getThemeAssets().ar.armap.ar_rotate,
+          title: getLanguage(_params.language).ARMap.COUNTER_CLOCKWISE,
+          action: () => AREditAction.createAnimation({ clockwise: false }),
+        }],
+      })
+      break
+  }
+  return { buttons, data: allData }
 }
 
 export default {

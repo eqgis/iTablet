@@ -1,7 +1,7 @@
 export interface DATA_ITEM {
   key: string,
-  title: string,
+  title?: string,
   action: () => void,
-  size: 'large' | 'small',
+  size?: 'large' | 'small',
   image: any,
 }

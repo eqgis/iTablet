@@ -12,6 +12,8 @@ const animationNode = 'animationNode' // 态势推演
 const picker = 'picker' // 选择器
 const multiPicker = 'multiPicker' // 选择器 多选
 const colorPicker = 'colorPicker' //颜色选择器 色盘
+const slider = 'slider' // 滚动条，可多个
+const tableTabs = 'tableTabs' // 卡片表格
 const typeNull = 'typeNull' //无状态 高度始终为0
 const arMeasure = 'arMeasure'//ar测量新增 同级界面弹出二级菜单
 export default {
@@ -28,6 +30,8 @@ export default {
   picker,
   multiPicker,
   colorPicker,
+  slider,
+  tableTabs,
   typeNull,
   arMeasure,
 }

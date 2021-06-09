@@ -27,6 +27,14 @@ const ARMap = {
   DOWN: '下',
   FRONT: '前',
   BACK: '后',
+  DIRECTION: '方向',
+  DISTANCE: '距离',
+  RATATION_AXIS: '旋转轴',
+  CLOCKWISE: '顺时针',
+  COUNTER_CLOCKWISE: '逆时针',
+
+  ANIMATION: '动画',
+  ANIMATION_TYPE: '动画类型',
 
   AR_LAYER_NOT_SUPPORT_STYLE: '当前图层不支持风格编辑',
 }

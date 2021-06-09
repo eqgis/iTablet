@@ -27,6 +27,14 @@ const ARMap = {// need to translate
   DOWN: 'Down',
   FRONT: 'Front',
   BACK: 'Back',
+  DIRECTION: 'Direction', //to be translated
+  DISTANCE: 'Distance', //to be translated
+  RATATION_AXIS: 'Ratation Axis', //to be translated
+  CLOCKWISE: 'closewise', //to be translated
+  COUNTER_CLOCKWISE: 'couterclockwise', //to be translated
+
+  ANIMATION: 'Aniamtion', //to be translated
+  ANIMATION_TYPE: 'Animation Type', //to be translated
 
   AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing', // need to translate
 }

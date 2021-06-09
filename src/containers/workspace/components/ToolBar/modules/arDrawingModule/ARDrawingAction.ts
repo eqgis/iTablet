@@ -1,5 +1,4 @@
 /* global GLOBAL */
-import React from 'react'
 import {
   ARLayerType,
   TARLayerType,
@@ -14,16 +13,14 @@ import {
 import { IVector3 } from "imobile_for_reactnative/types/interface/ar"
 import {
   ConstToolType,
+  ToolbarType,
 } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
 import ToolbarModule from '../ToolbarModule'
-import Tabs from '../../../Tabs'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
-import ARDrawingData from './ARDrawingData'
-import LegendData from '../legendModule/LegendData'
 
 interface AssetType {
   Photos: 'Photos',
@@ -372,18 +369,9 @@ async function toolbarBack() {
   SARMap.setAction(ARAction.SELECT)
   SARMap.clearSelection()
   SARMap.cancel()
-  const data = await ARDrawingData.getData(ConstToolType.SM_AR_DRAWING, _params)
   _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING, {
+    containerType: ToolbarType.list,
     isFullScreen: false,
-    buttons: data.buttons,
-    customView: () => {
-      return (
-        <Tabs
-          data={data.data}
-          device={_params.device}
-        />
-      )
-    },
   })
   ToolbarModule.addData({selectARElement: null})
 }

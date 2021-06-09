@@ -27,6 +27,14 @@ const ARMap = {
   DOWN: 'Down',
   FRONT: 'Front',
   BACK: 'Back',
+  DIRECTION: 'Direction',
+  DISTANCE: 'Distance',
+  RATATION_AXIS: 'Ratation Axis',
+  CLOCKWISE: 'closewise',
+  COUNTER_CLOCKWISE: 'couterclockwise',
+
+  ANIMATION: 'Aniamtion',
+  ANIMATION_TYPE: 'Animation Type',
 
   AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing',
 }

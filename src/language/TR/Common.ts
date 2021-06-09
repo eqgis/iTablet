@@ -16,6 +16,9 @@ const Common: typeof CN.Common = {
 
   PARAMETER: 'Parametre',
   CONFIRM: 'Onayla',
+
+  ADD: 'Ekle',
+  NONE: 'hayır',
 }
 
 export { Protocol, Common }

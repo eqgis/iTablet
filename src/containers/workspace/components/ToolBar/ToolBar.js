@@ -328,113 +328,117 @@ export default class ToolBar extends React.Component {
    * }
    **/
   setVisible = (isShow, type = '', params = {}) => {
-    if (params.measureType){
-      this.measure(params)
-    }
-    if (params.touchType) {
-      GLOBAL.TouchType = params.touchType
-    } else {
-      if (isShow) {
-        GLOBAL.TouchType = TouchType.NULL
-        GLOBAL.bubblePane && GLOBAL.bubblePane.reset() // 重置气泡提示
-      } else if (!isShow) {
-        GLOBAL.TouchType = TouchType.NORMAL
+    try {
+      if (params.measureType){
+        this.measure(params)
       }
-    }
-    if (
-      this.isShow !== isShow ||
-      this.state.type !== type ||
-      params.isFullScreen !== this.state.isFullScreen ||
-      params.height !== this.getContentViewHeight() ||
-      params.buttons !== this.state.buttons ||
-      params.selectKey !== this.state.selectKey ||
-      params.isTouchProgress !== this.state.isTouchProgress
-    ) {
-      (async function() {
-        let data = params.data
-        let buttons = params.buttons
-        let customView = params.customView
-        let pageAction = params.pageAction
-        if (data === undefined || buttons === undefined) {
-          let _data = await this.getData(type)
-          data = data || _data.data
-          buttons = buttons || _data.buttons
-          customView = customView || _data.customView
-          pageAction = pageAction || _data.pageAction
+      if (params.touchType) {
+        GLOBAL.TouchType = params.touchType
+      } else {
+        if (isShow) {
+          GLOBAL.TouchType = TouchType.NULL
+          GLOBAL.bubblePane && GLOBAL.bubblePane.reset() // 重置气泡提示
+        } else if (!isShow) {
+          GLOBAL.TouchType = TouchType.NORMAL
         }
-        if (pageAction) {
-          pageAction()
-        }
-        // 每次type改变，设置ToolbarModule当前数据，以便调用当前模块中的方法和数据
-        if (this.state.type !== type && params.resetToolModuleData) {
-          await this.ToolbarModule.setToolBarData(type)
-        }
-        let containerType =
-          (params && params.containerType) || ToolbarType.table
-        let newHeight = this.getContentViewHeight()
-        if (!isShow) {
-          newHeight = 0
-        } else if (params && typeof params.height === 'number') {
-          newHeight = params.height
-        } else if (!params || params.height === undefined) {
-          let _size = this.ToolbarModule.getToolbarSize(containerType, {
-            data,
-            type,
-          })
-          newHeight = _size.height
-        }
-        this.shareTo = params.shareTo || ''
+      }
+      if (
+        this.isShow !== isShow ||
+        this.state.type !== type ||
+        params.isFullScreen !== this.state.isFullScreen ||
+        params.height !== this.getContentViewHeight() ||
+        params.buttons !== this.state.buttons ||
+        params.selectKey !== this.state.selectKey ||
+        params.isTouchProgress !== this.state.isTouchProgress
+      ) {
+        (async function() {
+          let data = params.data
+          let buttons = params.buttons
+          let customView = params.customView
+          let pageAction = params.pageAction
+          if (data === undefined || buttons === undefined) {
+            let _data = await this.getData(type)
+            data = data || _data.data
+            buttons = buttons || _data.buttons
+            customView = customView || _data.customView
+            pageAction = pageAction || _data.pageAction
+          }
+          if (pageAction) {
+            pageAction()
+          }
+          // 每次type改变，设置ToolbarModule当前数据，以便调用当前模块中的方法和数据
+          if (this.state.type !== type && params.resetToolModuleData) {
+            await this.ToolbarModule.setToolBarData(type)
+          }
+          let containerType =
+            (params && params.containerType) || ToolbarType.table
+          let newHeight = this.getContentViewHeight()
+          if (!isShow) {
+            newHeight = 0
+          } else if (params && typeof params.height === 'number') {
+            newHeight = params.height
+          } else if (!params || params.height === undefined) {
+            let _size = this.ToolbarModule.getToolbarSize(containerType, {
+              data,
+              type,
+            })
+            newHeight = _size.height
+          }
+          this.shareTo = params.shareTo || ''
 
-        this.setState(
-          {
-            showMenuDialog: params.showMenuDialog || false,
-            type: type,
-            data: params.data || data,
-            secdata: params.secdata || [],
-            customView: customView,
-            buttons: params.buttons || buttons,
-            isTouchProgress: params.isTouchProgress || false,
-            isFullScreen:
-              params && params.isFullScreen !== undefined
-                ? params.isFullScreen
-                : DEFAULT_FULL_SCREEN,
-            containerType,
-            themeType:
-              params && params.themeType
-                ? params.themeType
-                : isShow
-                  ? this.state.themeType
-                  : '',
-            selectKey: params && params.selectKey ? params.selectKey : '',
-            selectName: params && params.selectName ? params.selectName : '',
-          },
-          () => {
-            // if (!showViewFirst) {
-            if (!isNaN(newHeight)) this.setContentViewHeight(newHeight)
-            if (!isNaN(params.column)) this.column = params.column
-            if (!isNaN(params.row)) this.row = params.row
-            this.showToolbarAndBox(isShow, type)
-            // setVisible之后是否退出全屏
-            const { isExistFullMap = true } = params
-            !isShow && isExistFullMap && this.props.existFullMap && this.props.existFullMap()
-            // }
-            if (params.cb) {
-              setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
-            }
-            this.updateOverlayView()
-          },
-        )
-      }.bind(this)())
-    } else {
-      this.showToolbarAndBox(isShow)
-      if (params.cb) {
-        setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
+          this.setState(
+            {
+              showMenuDialog: params.showMenuDialog || false,
+              type: type,
+              data: params.data || data,
+              secdata: params.secdata || [],
+              customView: customView,
+              buttons: params.buttons || buttons,
+              isTouchProgress: params.isTouchProgress || false,
+              isFullScreen:
+                params && params.isFullScreen !== undefined
+                  ? params.isFullScreen
+                  : DEFAULT_FULL_SCREEN,
+              containerType,
+              themeType:
+                params && params.themeType
+                  ? params.themeType
+                  : isShow
+                    ? this.state.themeType
+                    : '',
+              selectKey: params && params.selectKey ? params.selectKey : '',
+              selectName: params && params.selectName ? params.selectName : '',
+            },
+            () => {
+              // if (!showViewFirst) {
+              if (!isNaN(newHeight)) this.setContentViewHeight(newHeight)
+              if (!isNaN(params.column)) this.column = params.column
+              if (!isNaN(params.row)) this.row = params.row
+              this.showToolbarAndBox(isShow, type)
+              // setVisible之后是否退出全屏
+              const { isExistFullMap = true } = params
+              !isShow && isExistFullMap && this.props.existFullMap && this.props.existFullMap()
+              // }
+              if (params.cb) {
+                setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
+              }
+              this.updateOverlayView()
+            },
+          )
+        }.bind(this)())
+      } else {
+        this.showToolbarAndBox(isShow)
+        if (params.cb) {
+          setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
+        }
+        !isShow &&
+          this.state.selectPointType !== 'selectPoint' &&
+          this.props.existFullMap &&
+          this.props.existFullMap()
+        this.updateOverlayView()
       }
-      !isShow &&
-        this.state.selectPointType !== 'selectPoint' &&
-        this.props.existFullMap &&
-        this.props.existFullMap()
-      this.updateOverlayView()
+    } catch (error) {
+      console.warn(e)
     }
   }
 
@@ -485,12 +489,16 @@ export default class ToolBar extends React.Component {
   }
 
   back = type => {
-    if (
-      this.ToolbarModule.getData().actions &&
-      this.ToolbarModule.getData().actions.toolbarBack
-    ) {
-      this.ToolbarModule.getData().actions.toolbarBack(type)
-      return
+    try {
+      if (
+        this.ToolbarModule.getData().actions &&
+        this.ToolbarModule.getData().actions.toolbarBack
+      ) {
+        this.ToolbarModule.getData().actions.toolbarBack(type)
+        return
+      }
+    } catch (e) {
+      console.warn(e)
     }
   }
 
@@ -517,7 +525,7 @@ export default class ToolBar extends React.Component {
     this.setContentViewHeight(0)
     SMap.setAction(Action.PAN)
 
-    this.updateOverlayView()
+    // this.updateOverlayView()
     GLOBAL.TouchType = TouchType.NORMAL
   }
 
@@ -526,28 +534,32 @@ export default class ToolBar extends React.Component {
   }
 
   menu = (params = {}) => {
-    if (
-      this.ToolbarModule.getData().actions &&
-      this.ToolbarModule.getData().actions.menu
-    ) {
-      this.ToolbarModule.getData().actions.menu(
-        params.type || this.state.type,
-        params.selectKey || this.state.selectKey,
-        {
-          showBox: height => {
-            if (height !== undefined) this.getContentViewHeight(height)
-            this.contentView &&
-              this.contentView.changeHeight(
-                this.state.showMenuDialog ? this.getContentViewHeight() : 0,
-              )
+    try {
+      if (
+        this.ToolbarModule.getData().actions &&
+        this.ToolbarModule.getData().actions.menu
+      ) {
+        this.ToolbarModule.getData().actions.menu(
+          params.type || this.state.type,
+          params.selectKey || this.state.selectKey,
+          {
+            showBox: height => {
+              if (height !== undefined) this.getContentViewHeight(height)
+              this.contentView &&
+                this.contentView.changeHeight(
+                  this.state.showMenuDialog ? this.getContentViewHeight() : 0,
+                )
+            },
+            setData: params => {
+              this.setState(params, () => {
+                this.updateOverlayView()
+              })
+            },
           },
-          setData: params => {
-            this.setState(params, () => {
-              this.updateOverlayView()
-            })
-          },
-        },
-      )
+        )
+      }
+    } catch (error) {
+      console.warn(e)
     }
   }
 
@@ -944,7 +956,7 @@ export default class ToolBar extends React.Component {
                 !(this.state.isTouchProgress && this.state.isFullScreen) ||
                 this.props.device.orientation.indexOf('LANDSCAPE') >= 0
               ) &&
-              !this.state.customView && [styles.containerRadius, styles.containerShadow]
+              !this.state.customView && [styles.containerRadius, this.state.data.length > 0 && styles.containerShadow]
             }
             pointerEvents={'box-none'}
           >

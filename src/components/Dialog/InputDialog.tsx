@@ -10,28 +10,49 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ReturnKeyTypeOptions,
 } from 'react-native'
 import Dialog from './Dialog'
 import { color } from '../../styles'
 import styles from './styles'
 import { scaleSize, dataUtil } from '../../utils'
 
-export default class InputDialog extends PureComponent {
-  props: {
-    confirmAction?: (data?: any) => void,
-    cancelAction?: (data?: any) => void,
-    placeholder?: string,
-    title?: string,
-    label?: string,
-    value?: string,
-    defaultValue?: string,
-    keyboardAppearance?: string,
-    returnKeyType?: string,
-    confirmBtnTitle?: string,
-    cancelBtnTitle?: string,
-    legalCheck?: boolean,
-    multiline?: boolean,
-  }
+interface Props {
+  confirmAction?: (data?: any) => void,
+  cancelAction?: (data?: any) => void,
+  placeholder: string,
+  title?: string,
+  label: string,
+  value: string,
+  defaultValue?: string,
+  keyboardAppearance?: 'default' | 'light' | 'dark',
+  returnKeyType?: ReturnKeyTypeOptions,
+  confirmBtnTitle?: string,
+  cancelBtnTitle?: string,
+  legalCheck: boolean,
+  multiline?: boolean,
+}
+
+interface State {
+  title?: string,
+  value: string,
+  placeholder: string,
+  isLegalName: boolean,
+  legalCheck: boolean,
+  errorInfo?: string,
+}
+
+export interface TempData {
+  title?: string,
+  label?: string,
+  value?: string,
+  placeholder?: string,
+  legalCheck?: boolean,
+  confirmAction?: (data?: any) => void,
+  cancelAction?: (data?: any) => void,
+}
+
+export default class InputDialog extends PureComponent<Props, State> {
 
   static defaultProps = {
     label: '',
@@ -45,7 +66,10 @@ export default class InputDialog extends PureComponent {
     multiline: false,
   }
 
-  constructor(props) {
+  params: TempData = {} // 临时数据
+  dialog: Dialog | undefined | null
+
+  constructor(props: Props) {
     super(props)
     let { result, error } = dataUtil.isLegalName(props.value, GLOBAL.language)
     this.state = {
@@ -53,11 +77,12 @@ export default class InputDialog extends PureComponent {
       placeholder: props.placeholder,
       isLegalName: result,
       errorInfo: error,
+      title: props.title,
+      legalCheck: props.legalCheck,
     }
-    this.params = {} // 临时数据
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (
       JSON.stringify(prevProps.value) !== JSON.stringify(this.props.value) ||
       prevProps.placeholder !== this.props.placeholder
@@ -69,22 +94,24 @@ export default class InputDialog extends PureComponent {
     }
   }
 
-  setDialogVisible(visible, params = {}) {
-    this.dialog && this.dialog.setDialogVisible(visible, params)
+  setDialogVisible(visible: boolean, params: TempData = {}) {
+    this.dialog && this.dialog.setDialogVisible(visible)
     if (!visible) {
       this.params = {}
-      if (this.state.value !== '' || this.state.placeholder !== '') {
+      if (this.state.value !== '' || this.state.placeholder !== '' || this.state.title !== undefined) {
         this.setState({
           value: '',
           placeholder: '',
+          title: undefined,
         })
       }
     } else {
       this.params = params
-      if (params.value !== undefined || params.placeholder !== undefined) {
+      if (params.value !== undefined || params.placeholder !== undefined || params.title !== this.state.title) {
         this.setState({
           value: params.value || '',
           placeholder: params.placeholder || '',
+          title: params.title,
         })
       }
     }
@@ -151,7 +178,7 @@ export default class InputDialog extends PureComponent {
     return (
       <Dialog
         ref={ref => (this.dialog = ref)}
-        title={this.props.title}
+        title={this.state.title}
         // style={{ height: scaleSize(250) }}
         // opacityStyle={{ height: scaleSize(250) }}
         confirmAction={this.confirm}
@@ -161,12 +188,13 @@ export default class InputDialog extends PureComponent {
         confirmBtnDisable={this.props.legalCheck && !this.state.isLegalName}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' && 'padding'}
+          style={{ marginTop: scaleSize(20) }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
           enabled
         >
           {this.renderInput()}
           <View style={styles.errorView}>
-            { this.props.legalCheck && !this.state.isLegalName && this.state.errorInfo && (
+            { this.state.legalCheck && !this.state.isLegalName && this.state.errorInfo && (
               <Text numberOfLines={2} style={styles.errorInfo}>
                 {this.state.errorInfo}
               </Text>

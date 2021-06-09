@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Animated, Text, FlatList, Image ,TouchableOpacity} from 'react-native'
+import { View, Animated, Text, FlatList } from 'react-native'
 import {
   ToolbarType,
   ConstToolType,
@@ -7,7 +7,7 @@ import {
   Height,
 } from '../../../../../../constants'
 import { color } from '../../../../../../styles'
-import { scaleSize, setSpText } from '../../../../../../utils'
+import { setSpText } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { ColorTable } from '../../../../../mapSetting/secondMapSettings/components'
 import { Row, MTBtn, Picker } from '../../../../../../components'
@@ -18,7 +18,8 @@ import ToolbarTableList from '../ToolbarTableList'
 import ToolbarModule from '../../modules/ToolbarModule'
 import styles from './styles'
 import ToolbarArMeasure from '../ToolbarArMeasure'
-import ARMeasureData from '../../modules/arMeasure/ARMeasureData'
+import ToolBarSlide from '../ToolBarSlide'
+import Tabs from '../../../Tabs'
 
 export default class ToolbarContentView extends React.Component {
   props: {
@@ -331,6 +332,28 @@ export default class ToolbarContentView extends React.Component {
     )
   }
 
+  /***************************************** slider ***************************************/
+  renderSlider = () => {
+    return (
+      <ToolBarSlide
+        data={this.props.data}
+      />
+    )
+  }
+
+  /***************************************** Table Tabs ***************************************/
+  renderTableTabs = () => {
+    if (this.props.data.length === 0) {
+      return null
+    }
+    return (
+      <Tabs
+        data={this.props.data}
+        device={this.props.device}
+      />
+    )
+  }
+
   /***************************************** Table ***************************************/
   renderTable = () => {
     return (
@@ -507,6 +530,12 @@ export default class ToolbarContentView extends React.Component {
           break
         case ToolbarType.arMeasure:
           box = this.renderMeasure()
+          break
+        case ToolbarType.slider:
+          box = this.renderSlider()
+          break
+        case ToolbarType.tableTabs:
+          box = this.renderTableTabs()
           break
         case ToolbarType.table:
         default:

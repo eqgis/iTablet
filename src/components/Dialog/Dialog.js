@@ -54,6 +54,7 @@ export default class Dialog extends PureComponent {
 
   static defaultProps = {
     type: 'non_modal',
+    title: undefined,
     activeOpacity: 0.8,
     cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
     confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,

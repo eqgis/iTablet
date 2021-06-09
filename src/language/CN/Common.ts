@@ -14,6 +14,9 @@ const Common = {
 
   PARAMETER: '参数',
   CONFIRM: '确认',
+
+  ADD: '添加',
+  NONE: '无',
 }
 
 export { Protocol, Common }

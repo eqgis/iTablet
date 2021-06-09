@@ -23,11 +23,15 @@ export interface ToolBarSlideItem {
 }
 
 interface Props {
-  data: ToolBarSlideOption,
+  data: ToolBarSlideOption[],
 }
 
 class ToolBarSlide extends React.Component<Props> {
   dimensions = Dimensions.get('screen')
+
+  static defaultProps = {
+    data: [],
+  }
 
   constructor(props: Props) {
     super(props)
@@ -39,7 +43,7 @@ class ToolBarSlide extends React.Component<Props> {
     )
   }
 
-  renderItem = (item: ToolBarSlideItem, index: number) => {
+  renderItem = (item: ToolBarSlideItem) => {
     let itemsWidth = (item.leftText ? styles.slideText.width : 0)
       + (item.leftImage ? styles.slideText.width : 0)
       + (item.rightText ? styles.slideText.width : 0)
@@ -71,25 +75,23 @@ class ToolBarSlide extends React.Component<Props> {
   // eslint-disable-next-line no-undef
   renderItems = (): JSX.Element[] => {
     const items = []
-    for(let i = 0; i < this.props.data.data.length; i++) {
-      items.push(this.renderItem(this.props.data.data[i], i))
+    for(let item of this.props.data) {
+      item.title && items.push(
+        <Text style={styles.title}>
+          {item.title}
+        </Text>
+      )
+      for (let dataItem of item.data) {
+        items.push(this.renderItem(dataItem))
+      }
     }
     return items
   }
 
   render() {
     return(
-      <View
-        style={styles.container}
-      >
-        {this.props.data.title && (
-          <Text style={styles.title}>
-            {this.props.data.title }
-          </Text>
-        )}
-        <View style={styles.items}>
-          {this.renderItems()}
-        </View>
+      <View style={styles.container}>
+        {this.renderItems()}
       </View>
     )
   }
@@ -185,18 +187,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.white,
-    paddingTop: scaleSize(20),
-    borderTopLeftRadius: scaleSize(40),
-    borderTopRightRadius: scaleSize(40),
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     textAlign: 'center',
-  },
-  items: {
-    marginTop: scaleSize(10),
-    alignItems: 'center',
-    justifyContent: 'space-around',
   },
   slideItem: {
     flexDirection: 'row',
@@ -205,7 +200,6 @@ const styles = StyleSheet.create({
     paddingVertical: scaleSize(10),
   },
   slideSide: {
-    // width: scaleSize(40),
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: scaleSize(15),

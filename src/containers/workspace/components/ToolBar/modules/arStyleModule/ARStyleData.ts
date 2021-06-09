@@ -1,4 +1,3 @@
-import React from 'react'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
@@ -6,7 +5,6 @@ import { getThemeAssets } from '../../../../../../assets'
 import { color } from '../../../../../../styles'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import ToolBarSlide from '../../components/ToolBarSlide'
 import { SARMap } from 'imobile_for_reactnative'
 
 interface SectionItemData {
@@ -25,10 +23,16 @@ interface SectionData {
 
 async function getData(type: string, params: {[name: string]: any}) {
   ToolbarModule.setParams(params)
-  let data: SectionData[] | SectionItemData[] | string[] = []
-  let buttons: any[] = []
+  let data: SectionData[] | SectionData | SectionItemData[] | string[] = []
+  let buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+    ToolbarBtnType.MENU,
+    ToolbarBtnType.MENU_FLEX,
+    ToolbarBtnType.TOOLBAR_COMMIT,
+  ]
   switch (type) {
-    case ConstToolType.SM_AR_STYLE: {
+    case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
+    case ConstToolType.SM_AR_STYLE_TRANSFROM: {
       const _data = await getLayerStyleData(type)
       if (_data) {
         data = _data.data
@@ -50,35 +54,11 @@ async function getData(type: string, params: {[name: string]: any}) {
  * @param params Toolbar setVisible中的params
  */
 async function showSlideToolbar(type: string, language: string, params: any) {
-  let _data: { buttons: string[]; data: any[] } | undefined
-  switch (type) {
-    case ConstToolType.SM_AR_STYLE:
-    case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
-    case ConstToolType.SM_AR_STYLE_TRANSFROM:
-    case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
-      _data = await getLayerStyleData(type)
-      break
-  }
   GLOBAL.toolBox &&
   GLOBAL.toolBox.setVisible(true, type, {
+    containerType: ToolbarType.slider,
     isFullScreen: false,
     showMenuDialog: false,
-    buttons: [
-      ToolbarBtnType.TOOLBAR_BACK,
-      ToolbarBtnType.MENU,
-      ToolbarBtnType.MENU_FLEX,
-      ToolbarBtnType.TOOLBAR_COMMIT,
-    ],
-    customView: () => {
-      return (
-        <ToolBarSlide
-          data={{
-            title: params.selectName || '',
-            data: _data?.data || [],
-          }}
-        />
-      )
-    },
     ...params,
   })
 }
@@ -166,6 +146,10 @@ async function getLayerStyleData(type: string) {
     ToolbarBtnType.TOOLBAR_COMMIT,
   ]
   let data: any[] = []
+  const allData: {
+    title: string,
+    data: typeof data,
+  }[] = []
   switch(type) {
     case ConstToolType.SM_AR_STYLE_BORDER_WIDTH: {
       const borderWidth = await SARMap.getLayerBorderWidth(layer.name)
@@ -179,6 +163,10 @@ async function getLayerStyleData(type: string) {
         defaultValue: borderWidth,
         range: range.borderWidth,
       }]
+      allData.push({
+        data: data,
+        title: getLanguage(_params.language).ARMap.BORDER_WIDTH,
+      })
       break
     }
     case ConstToolType.SM_AR_STYLE_TRANSFROM: {
@@ -195,12 +183,16 @@ async function getLayerStyleData(type: string) {
         },
         defaultValue: parseInt((opacity * 100).toFixed()),
       }]
+      allData.push({
+        data: data,
+        title: getLanguage(_params.language).Map_Main_Menu.STYLE_TRANSPARENCY,
+      })
       break
     }
   }
   return {
     buttons,
-    data,
+    data: allData,
   }
 }
 

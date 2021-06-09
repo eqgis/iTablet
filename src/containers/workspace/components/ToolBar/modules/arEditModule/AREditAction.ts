@@ -87,19 +87,19 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 }
 
 function commit() {
-  const _params: any = ToolbarModule.getParams()
-  const _data: any = ToolbarModule.getData()
-  if (
-    (
-      _params.type === ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION ||
-      _params.type === ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION
-    ) &&
-    _data.animationParam
-  ) {
-    // 添加AR动画,并返回上一个界面
-    createAnimation()
-    return true
-  }
+  // const _params: any = ToolbarModule.getParams()
+  // const _data: any = ToolbarModule.getData()
+  // if (
+  //   (
+  //     _params.type === ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION ||
+  //     _params.type === ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION
+  //   ) &&
+  //   _data.animationParam
+  // ) {
+  //   // 添加AR动画,并返回上一个界面
+  //   createAnimation()
+  //   return true
+  // }
   SARMap.clearSelection()
   SARMap.submit()
   SARMap.setAction(ARAction.NULL)

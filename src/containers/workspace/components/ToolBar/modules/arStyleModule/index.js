@@ -1,7 +1,7 @@
 import ARStyleData from './ARStyleData'
 import ARStyleAction from './ARStyleAction'
 import ToolbarModule from '../ToolbarModule'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import { Toast } from '../../../../../../utils'
@@ -24,6 +24,9 @@ class ArStyleModule extends FunctionModule {
       case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
         break
+      case ConstToolType.SM_AR_STYLE_EFFECT:
+        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 5 / 2
+        break
       default:
         data.height = 0
         break
@@ -45,9 +48,18 @@ class ArStyleModule extends FunctionModule {
       Toast.show(getLanguage(_params.language).ARMap.AR_LAYER_NOT_SUPPORT_STYLE)
       return
     }
-    const _data = await ARStyleData.getData(this.type, _params)
     this.setModuleData(this.type)
     _params.showFullMap && _params.showFullMap(true)
+
+    if (_params.arlayer.currentLayer.type === ARLayerType.EFFECT_LAYER) {
+      _params.setToolbarVisible(true, ConstToolType.SM_AR_STYLE_EFFECT, {
+        containerType: ToolbarType.tableTabs,
+        isFullScreen: false,
+      })
+      return
+    }
+
+    const _data = await ARStyleData.getData(this.type, _params)
     _params.setToolbarVisible(true, this.type, {
       isFullScreen: true,
       showMenuDialog: true,

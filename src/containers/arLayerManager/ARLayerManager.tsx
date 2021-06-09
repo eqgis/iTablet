@@ -265,7 +265,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         image: getThemeAssets().layer.icon_add_layer,
         title: getLanguage().ARMap.ADD_LAYER,
         action: () => {
-          this.props.navigation.goBack()
+          this.props.navigation.navigate('MapView')
           arDrawingModule().action()
           ToolbarModule.addData({
             addNewDsetWhenCreate: true,

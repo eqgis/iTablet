@@ -536,12 +536,18 @@ async function getAnimationData(type: string) {
           key: 'axis_x',
           image: getThemeAssets().ar.armap.ar_rotate,
           title: getLanguage(_params.language).ARMap.CLOCKWISE,
-          action: () => AREditAction.createAnimation({ clockwise: true }),
+          action: () => {
+            _data.animationParam.clockwise = true
+            // AREditAction.createAnimation({ clockwise: true })
+          },
         }, {
           key: 'axis_y',
           image: getThemeAssets().ar.armap.ar_rotate,
           title: getLanguage(_params.language).ARMap.COUNTER_CLOCKWISE,
-          action: () => AREditAction.createAnimation({ clockwise: false }),
+          action: () => {
+            _data.animationParam.clockwise = false
+            // AREditAction.createAnimation({ clockwise: false })
+          },
         }],
       })
       break

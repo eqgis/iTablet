@@ -198,7 +198,7 @@ async function getAREffect() {
   for (let item of arEffectTemp) {
     arEffect.push({
       key: item.name,
-      image: getThemeAssets().ar.armap.ar_3d,
+      image: getThemeAssets().ar.armap.ar_effect,
       // selectedImage: any,
       title: item.name,
       data: item,
@@ -211,4 +211,6 @@ async function getAREffect() {
 
 export default {
   getData,
+
+  getAREffect,
 }

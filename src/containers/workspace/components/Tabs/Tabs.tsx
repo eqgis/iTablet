@@ -174,9 +174,9 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     // backgroundColor: color.subTheme,
-    marginTop: scaleSize(20),
+    // marginTop: scaleSize(20),
     backgroundColor: color.white,
-    height: scaleSize(40),
+    // height: scaleSize(40),
   },
   table: {
     flex: 1,

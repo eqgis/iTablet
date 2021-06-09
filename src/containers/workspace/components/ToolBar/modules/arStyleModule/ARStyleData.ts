@@ -6,12 +6,16 @@ import { color } from '../../../../../../styles'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { SARMap } from 'imobile_for_reactnative'
+import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import ARDrawingAction from '../arDrawingModule/ARDrawingAction'
+import ARDrawingData from '../arDrawingModule/ARDrawingData'
 
 interface SectionItemData {
   key: string,
   image: any,
   // selectedImage: any,
-  title: string,
+  title?: string,
+  data?: any,
   action: (data: any) => void,
 }
 
@@ -43,6 +47,19 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
       data = color.colors
       break
+    case ConstToolType.SM_AR_STYLE_EFFECT: {
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU_FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      const effectData: SectionItemData[] = await ARDrawingData.getAREffect()
+      data.push({
+        title: getLanguage(GLOBAL.language).ARMap.EFFECT,
+        data: effectData,
+      })
+      break
+    }
   }
   return { data, buttons }
 }

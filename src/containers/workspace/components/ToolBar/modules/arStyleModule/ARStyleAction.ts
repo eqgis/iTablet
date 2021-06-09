@@ -57,20 +57,30 @@ function menu(type: string, selectKey: string, params = {}) {
 }
 
 function showMenuBox(type: string, selectKey: string, params: any) {
-  switch(type) {
-    case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
-    case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
-    case ConstToolType.SM_AR_STYLE_TRANSFROM:
-      if (!GLOBAL.ToolBar.state.showMenuDialog) {
-        params.showBox && params.showBox()
-      } else {
-        params.setData && params.setData({
-          showMenuDialog: false,
-          isFullScreen: false,
-        })
-        params.showBox && params.showBox()
-      }
-      break
+  // switch(type) {
+  //   case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
+  //   case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
+  //   case ConstToolType.SM_AR_STYLE_TRANSFROM:
+  //   case ConstToolType.SM_AR_STYLE_EFFECT:
+  //     if (!GLOBAL.ToolBar.state.showMenuDialog) {
+  //       params.showBox && params.showBox()
+  //     } else {
+  //       params.setData && params.setData({
+  //         showMenuDialog: false,
+  //         isFullScreen: false,
+  //       })
+  //       params.showBox && params.showBox()
+  //     }
+  //     break
+  // }
+  if (!GLOBAL.ToolBar.state.showMenuDialog) {
+    params.showBox && params.showBox()
+  } else {
+    params.setData && params.setData({
+      showMenuDialog: false,
+      isFullScreen: false,
+    })
+    params.showBox && params.showBox()
   }
 }
 

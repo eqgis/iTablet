@@ -253,13 +253,32 @@ async function addText(location?: IVector3) {
   }
 }
 
+/**
+ * 添加/修改AR特效
+ * @param fileName
+ * @param filePath
+ * @returns
+ */
 async function addAREffect(fileName: string, filePath: string) {
   try {
-    const homePath = await FileTools.getHomeDirectory()
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
+    const homePath = await FileTools.getHomeDirectory()
+    const layers = _params.arlayer.layers
+    let effectLayer: ARLayer | undefined = undefined
+    if(layers) {
+      effectLayer = layers.find((item: ARLayer) => item.type === ARLayerType.EFFECT_LAYER)
+    }
+    // 若已有特效图层，则替换
+    if(effectLayer) {
+      const homePath = await FileTools.getHomeDirectory()
+      SARMap.setAREffect(effectLayer.name, homePath + filePath)
+      return
+    }
+
     const mapName = _params.armap.currentMap?.mapName
 
+    // 若无当前地图，则新建地图
     if(!mapName){
       await _params.createARMap()
     }
@@ -370,7 +389,7 @@ async function toolbarBack() {
   SARMap.clearSelection()
   SARMap.cancel()
   _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING, {
-    containerType: ToolbarType.list,
+    containerType: ToolbarType.tableTabs,
     isFullScreen: false,
   })
   ToolbarModule.addData({selectARElement: null})

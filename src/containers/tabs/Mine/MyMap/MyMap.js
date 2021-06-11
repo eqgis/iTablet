@@ -59,7 +59,7 @@ class MyMap extends MyDataPage {
     return result
   }
 
-  //新增参数template判断导出地图是否为模版
+  //新增参数template判断导出地图是否为模板
   exportData = async (name, exportToTemp = true, template = false) => {
     if (!this.itemInfo) return false
     let mapPath = await FileTools.appendingHomeDirectory(
@@ -71,7 +71,7 @@ class MyMap extends MyDataPage {
     let infoJson = JSON.parse(info)
     let Teminfo = infoJson.Template
 
-    // 存放模版的文件目录
+    // 存放模板的文件目录
     let collectionDirName = name
 
     if (Teminfo) {
@@ -85,7 +85,7 @@ class MyMap extends MyDataPage {
         let collectionPath = `${homePath + ConstPath.ExternalData}/Collection/`
         let tempName = name
         let postfix = 0
-        // 模版文件目录重名处理
+        // 模板文件目录重名处理
         while(await FileTools.fileIsExist(collectionPath + tempName)){
           tempName = name + '_' + (++postfix)
         }

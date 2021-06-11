@@ -1012,7 +1012,7 @@ export default class MT_layerManager extends React.Component {
           getLanguage(this.props.language).Prompt.FAILED)
       })
     }else {
-      // 打开加载xml到地图的xml模版列表
+      // 打开加载xml到地图的xml模板列表
       const data = await getXmlTemplateData()
       if(data[0].data.length === 0){
         Toast.show(getLanguage(GLOBAL.language).Prompt.NO_TEMPLATE)

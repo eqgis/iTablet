@@ -120,7 +120,7 @@ if (deviceWidth > deviceHeight) {
 
 /**
  * 设置尺寸的大小
- * @param size: 单位：px （720*1080为模版标记的原始像素值）
+ * @param size: 单位：px （720*1080为模板标记的原始像素值）
  * return number dp
  */
 export function scaleSize(size) {

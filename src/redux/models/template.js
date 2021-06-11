@@ -24,7 +24,7 @@ export const SET_CURRENT_PLOT_SYMBOL_LIST = 'SET_CURRENT_PLOT_SYMBOL_LIST'
 
 // Actions
 // --------------------------------------------------
-// 导入模版
+// 导入模板
 // export const openTemplate = (params, cb = () => {}) => async (
 //   dispatch,
 //   getState,
@@ -172,7 +172,7 @@ export const importPlotLib = (params, cb = () => {}) => async () => {
   return { result }
 }
 
-// 导入模版
+// 导入模板
 // export const importTemplate = (params, cb = () => {}) => async dispatch => {
 //   // 关闭所有地图
 //   await SMap.closeMap()
@@ -196,7 +196,7 @@ export const importPlotLib = (params, cb = () => {}) => async () => {
 //   return result
 // }
 
-// 设置模版
+// 设置模板
 export const setTemplate = (params, cb = () => {}) => async dispatch => {
   await dispatch({
     type: SET_TEMPLATE,

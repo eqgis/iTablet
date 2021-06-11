@@ -285,7 +285,7 @@ async function getFilterFiles(
 }
 
 /**
- * 获取指定路径下的地图（xml），含是否是模版地图
+ * 获取指定路径下的地图（xml），含是否是模板地图
  * @param path
  * @param filter
  * @returns {Promise.<*>}

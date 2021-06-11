@@ -49,7 +49,7 @@ async function getData(type: string, params: {[name: string]: any}) {
       break
     case ConstToolType.SM_AR_STYLE_EFFECT: {
       buttons = [
-        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.CANCEL,
         ToolbarBtnType.MENU_FLEX,
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]

@@ -1,30 +1,38 @@
 import * as React from 'react'
 import { StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native'
 import { color } from '../../../../styles'
-import { scaleSize, setSpText } from '../../../../utils'
+import { scaleSize, setSpText, AppProgress } from '../../../../utils'
 import { TableItemType } from './types'
 
 interface Props {
   data: TableItemType,
   isSelected?: boolean,
   rowIndex: number,
-  cellIndex: number
+  cellIndex: number,
+  getData?: () => void,
 }
 
 interface State {
-  // selected: boolean,
+  /** 显示下载进度 */
+  showProgress: boolean,
+  /** 监听的下载个数 */
+  downloadCount: number,
+  /** 当前下载任务中进度最快的任务的进度 */
+  currentProgress: number,
 }
 
-export default class Tabs extends React.Component<Props, State> {
+export default class TableItem extends React.Component<Props, State> {
   static defaultProps = {
     isSelected: false,
   }
 
   constructor(props: Props) {
     super(props)
-    // this.state = {
-    //   selected: false,
-    // }
+    this.state = {
+      showProgress: false,
+      downloadCount: 0,
+      currentProgress: 0,
+    }
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -32,6 +40,93 @@ export default class Tabs extends React.Component<Props, State> {
       JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     )
+  }
+
+  componentDidMount() {
+    this.updateProgressState()
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if(JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateProgressState()
+    }
+  }
+
+  componentWillUnmount() {
+    if(this.props.data.downloadKeys) {
+      for(let i = 0; i < this.props.data.downloadKeys.length; i++) {
+        AppProgress.removeProgressListener(this.props.data.downloadKeys[i])
+      }
+    }
+  }
+
+  /** 更新下载个数和进度 */
+  updateProgressState = () => {
+    let count = 0
+    let hasDownloading = false
+    if(this.props.data.downloadKeys) {
+      for(let key of this.props.data.downloadKeys) {
+        if(AppProgress.isInProgress(key)) {
+          hasDownloading = true
+        }
+        if(AppProgress.isProgressEnd(key)) {
+          count++
+        } else {
+          AppProgress.addProgressListener(
+            key,
+            this.updateProgerss,
+            () => {
+              this.onProgressEnd(key)
+            },
+          )
+        }
+      }
+      this.setState({
+        showProgress: hasDownloading,
+        downloadCount: count,
+        currentProgress: 0,
+      })
+    } else if (this.state.showProgress) {
+      // 下载完毕后，只有一个数据，原来showProgress为true，不能更新title
+      // 需要重新setState showProgress的值
+      this.setState({
+        showProgress: false,
+        downloadCount: count,
+        currentProgress: 0,
+      })
+    }
+  }
+
+  updateProgerss = (progress: number) => {
+    if(this.state.currentProgress < progress) {
+      this.setState({
+        showProgress: true,
+        currentProgress: progress,
+      })
+    }
+  }
+
+  onProgressEnd = (key: string | undefined) => {
+    const totolDownloadCount = this.props.data.downloadKeys?.length
+    if(totolDownloadCount && this.state.downloadCount + 1 < totolDownloadCount) {
+      this.setState({
+        downloadCount: this.state.downloadCount + 1,
+      }, () => {
+        this.props.getData && this.props.getData()
+        if(key) {
+          // 下载完成后，删除监听和下载进程
+          AppProgress.removeProgressListener(key)
+          AppProgress.removeProgress(key)
+        }
+      })
+    } else {
+      this.props.getData && this.props.getData()
+      if(key) {
+        // 下载完成后，删除监听和下载进程
+        AppProgress.removeProgressListener(key)
+        AppProgress.removeProgress(key)
+      }
+    }
   }
 
   _action = () => {
@@ -47,6 +142,14 @@ export default class Tabs extends React.Component<Props, State> {
     } else {
       icon = this.props.data.image
     }
+    const item = this.props.data
+    let progress: string
+    const totolDownloadCount = item.downloadKeys?.length
+    if(totolDownloadCount && totolDownloadCount> 1) {
+      progress = this.state.currentProgress + '%' + `(${this.state.downloadCount + 1}/${totolDownloadCount})`
+    } else {
+      progress = this.state.currentProgress + '%'
+    }
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity
@@ -61,7 +164,7 @@ export default class Tabs extends React.Component<Props, State> {
         </TouchableOpacity>
 
         <Text style={styles.title}>
-          {this.props.data.title}
+          {this.state.showProgress ? progress : this.props.data.title}
         </Text>
       </View>
     )
@@ -95,5 +198,6 @@ const styles = StyleSheet.create({
     fontSize: setSpText(15),
     backgroundColor: 'transparent',
     textAlign: 'center',
+    paddingVertical: 0,
   },
 })

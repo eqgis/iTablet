@@ -3,4 +3,5 @@ export type TableItemType = {
   selectedImage?: any,
   title: string,
   action: (data: TableItemType) => void,
+  downloadKeys?: string[],
 }

@@ -14,12 +14,14 @@ export type IDownloadProps  = {
   key: string,
 } & DownloadFileOptions
 
-/** downloads结构 */
-export type Downloads = Array<{
+export type Download = {
   id: string,
   progress: number,
-  downloaded: boolean,  
-}>
+  downloaded: boolean,
+}
+
+/** downloads结构 */
+export type Downloads = Array<Download>
 
 export const setDownInformation = (
   params = {},

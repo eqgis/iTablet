@@ -237,14 +237,22 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
           // 过滤2维工作空间后，剩下的都是3维工作空间或包含3维的工作空间
           contentList[i].check = true
           // 过滤udb
-          const relatedDatasources = contentList[i].wsInfo.datasources
-          _checkDatasources(
-            relatedFiles,
-            relatedDatasources,
-            path,
-            contentList,
-            uncheckedChildFileList,
-          )
+          const wsInfo = contentList[i].wsInfo
+          if(wsInfo) {
+            _checkDatasources(
+              relatedFiles,
+              wsInfo.datasources,
+              path,
+              contentList,
+              uncheckedChildFileList,
+            )
+            _checkRelated3DSymbols(
+              relatedFiles,
+              wsInfo.scenes,
+              path,
+              contentList,
+            )
+          }
 
           //三维图层不再过滤 add xiezhy
           // 获取3维缓存图层的信息
@@ -259,12 +267,6 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
           //   contentList,
           //   uncheckedChildFileList,
           // )
-          _checkRelated3DSymbols(
-            relatedFiles,
-            contentList[i].wsInfo.scenes,
-            path,
-            contentList,
-          )
           _checkFlyingFiles(relatedFiles, path, contentList)
           //if (layerInfo.length !== 0)
           _checkWS3DKML(relatedFiles, path, contentList)

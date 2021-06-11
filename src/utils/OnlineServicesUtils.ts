@@ -66,6 +66,31 @@ export interface OnlineDataType {
   WORKSPACE: 'WORKSPACE'               //工作空间 sxwu, smwu, sxw, smw 
 }
 
+export interface SMOnlineData {
+  "lastModfiedTime": number,
+  "fileName": string,
+  "thumbnail": string,
+  "dataItemServices": [],
+  "dataCheckResult": null,
+  "publishInfo": null,
+  "authorizeSetting": [],
+  "description": null,
+  "userName": string,
+  "type": keyof OnlineDataType,
+  "tags": string[],
+  "coordType": null,
+  "size": number,
+  "createTime": number,
+  "serviceStatus": string //"UNPUBLISHED",
+  "nickname": string,
+  "id": number,
+  "serviceId": null,
+  "downloadCount": 1,
+  "storageId": "51ab7b53_618a_416c_8082_58657a3b59a8",
+  "status": "OK",
+  "MD5": "DA460531CBE2A023643B36C4F9F7AEF2"
+}
+
 export default class OnlineServicesUtils {
   /** iportal还是online */
   type: 'iportal' | 'online'
@@ -422,7 +447,7 @@ export default class OnlineServicesUtils {
    * @param {*} userName 用户id
    * @param {*} fileName 文件名
    */
-  async getPublicDataByName(userName: string, fileName: string): Promise<object|boolean> {
+  async getPublicDataByName(userName: string, fileName: string): Promise<SMOnlineData|false> {
     let url =
       this.serverUrl + `/datas.rjson?userName=${userName}&fileName=${fileName}`
 

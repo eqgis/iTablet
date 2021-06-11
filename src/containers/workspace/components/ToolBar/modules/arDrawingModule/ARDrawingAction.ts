@@ -14,14 +14,17 @@ import { IVector3 } from "imobile_for_reactnative/types/interface/ar"
 import {
   ConstToolType,
   ToolbarType,
+  ConstPath,
 } from '../../../../../../constants'
-import { Toast } from '../../../../../../utils'
+import { Toast, AppProgress } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
 import ToolbarModule from '../ToolbarModule'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
-
+import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffectExample3, AREffectExample4, ExampleData } from '../../../../../tabs/Mine/DataHandler/DataExample'
+import { ExternalDataType, ToolBarListItem } from '../types'
+import { Downloads, Download } from '../../../../../../redux/models/down'
 interface AssetType {
   Photos: 'Photos',
   Videos: 'Videos',
@@ -402,6 +405,111 @@ function commit() {
   return false
 }
 
+export async function download3DExample() {
+  _downloadExample('workspace3d', AR3DExample)
+}
+
+export async function downloadModelExample() {
+  _downloadExample('armodel', ARModelExample)
+}
+
+export async function downloadEffectlExample() {
+  _downloadExamples('areffect', [AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4])
+}
+
+async function _downloadExamples(type: ExternalDataType, examples: ExampleData[]) {
+  for(const example of examples) {
+    const downloadKey = example.userName + '_' + example.downloadName
+    // const downloadData: Download | undefined = _getDownload(downloadKey)
+    // if(downloadData && downloadData.progress < 100) {
+    if(AppProgress.isInProgress(downloadKey)) {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+      return
+    }
+  }
+
+  for(let i = 0; i < examples.length; i++) {
+    await _downloadExample(type, examples[i])
+  }
+}
+
+// function _getDownload(id: string) {
+//   const _data: any = ToolbarModule.getData()
+//   const _allProgress: Downloads = _data.downloads
+//   if (!_allProgress) return undefined
+//   for(const item of _allProgress) {
+//     if (item.id === id) {
+//       return item
+//     }
+//   }
+// }
+
+async function _downloadExample(type: ExternalDataType, exampleData: ExampleData) {
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const downloadKey = exampleData.userName + '_' + exampleData.downloadName
+  // const downloadData: Download | undefined = _getDownload(downloadKey)
+  // if(downloadData && downloadData.progress < 100) {
+  //   Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+  //   return false
+  // }
+  if(AppProgress.isInProgress(downloadKey)) {
+    Toast.show(getLanguage().Prompt.DOWNLOADING)
+    return false
+  }
+  const homePath = await FileTools.getHomeDirectory()
+  let result: boolean = false
+  //尝试读取以前下载的示范数据
+  const items = await DataHandler.getExternalData(homePath + ConstPath.Common + exampleData.dir, [type])
+  if(items.length === 0) {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+    AppProgress.addProgress(downloadKey)
+    result = await DataHandler.downloadExampleData(exampleData, progress => {
+      AppProgress.updateProgress(downloadKey, progress)
+    })
+    // const downloadOption = await DataHandler.getDataDownloadOption(exampleData)
+    // if (downloadOption) {
+    //   const downloadOptions = {
+    //     fromUrl: downloadOption.fromUrl,
+    //     toFile: downloadOption.toFile,
+    //     background: true,
+    //     fileName: downloadOption.fileName,
+    //     progressDivider: 1,
+    //     key: downloadOption.id,
+    //     // key: downloadKey,
+    //     module: GLOBAL.Type,
+    //   }
+    //   result = await _params.downloadFile(downloadOptions)
+
+    //   if(result) {
+    //     result = await FileTools.unZipFile(downloadOption.toFile, downloadOption.toFile.substring(0, downloadOption.toFile.lastIndexOf('/')))
+    //     result && FileTools.deleteFile(downloadOption.toFile)
+    //   }
+    // }
+    if(result) {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING)
+      const items = await DataHandler.getExternalData(homePath + ConstPath.Common + exampleData.dir, [type])
+      if(items.length > 0) {
+        //TODO 导入所有数据
+        result = await DataHandler.importExternalData(_params.user.currentUser, items[0])
+        // result && AppToolBar.resetTabData()
+        Toast.show(result ? getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS : getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
+      } else {
+        Toast.show('没有数据')
+      }
+    } else {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+    }
+    AppProgress.onProgressEnd(downloadKey)
+  } else {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING)
+    result = await DataHandler.importExternalData(_params.user.currentUser, items[0])
+    // result && AppToolBar.resetTabData()
+    AppProgress.onProgressEnd(downloadKey)
+    Toast.show(result ? getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS : getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
+  }
+}
+
 
 export default {
   toolbarBack,
@@ -421,4 +529,8 @@ export default {
   arModel,
   addARModel,
   addAREffect,
+
+  download3DExample,
+  downloadModelExample,
+  downloadEffectlExample,
 }

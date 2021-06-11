@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { color } from '../../../../styles'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import { Height, ToolbarType } from '../../../../constants'
+import { DEVICE } from '../../../../redux/models/device'
 import { TableList } from '../../../../components'
 import DefaultTabBar from './DefaultTabBar'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
@@ -13,7 +14,7 @@ import { ToolBarSlide } from '../ToolBar/components'
 
 interface Props {
   data: any[],
-  device: any,
+  device: DEVICE,
   column?: number,
   style?: {[name: string]: any},
 }
@@ -22,10 +23,19 @@ interface State {
   currentPage: number,
 }
 
+interface TableData {
+  title: string,
+  data: any,
+  type?: string,
+  getData?: () => Promise<any>,
+}
+
+
 export default class Tabs extends React.Component<Props, State> {
 
   static defaultProps = {
     column: 5,
+    data: [],
   }
 
   constructor(props: Props) {
@@ -36,14 +46,16 @@ export default class Tabs extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    
+
   }
 
   componentDidUpdate(prevProps: Props) {
     if (
       JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)
     ) {
-      this.goToPage(0)
+      if (this.props.data.length > 0) {
+        this.goToPage(0)
+      }
     }
   }
 
@@ -62,50 +74,60 @@ export default class Tabs extends React.Component<Props, State> {
     return width
   }
 
-  _renderItem = (data: { item: TableItemType, rowIndex: number, cellIndex: number }) => {
-    return(
-      <TableItem
-        data={data.item}
-        rowIndex={data.rowIndex}
-        cellIndex={data.cellIndex}
-      />
-    )
-  }
+  // _renderItem = (data: { item: TableItemType, rowIndex: number, cellIndex: number }) => {
+  //   return(
+  //     <TableItem
+  //       data={data.item}
+  //       rowIndex={data.rowIndex}
+  //       cellIndex={data.cellIndex}
+  //     />
+  //   )
+  // }
 
-  _renderTab = (tabLabel: string, data: any, type?: string) => {
-    let tab
-    if (data.customView) {
-      tab = data.customView
-    } else if (type) {
-      switch(type) {
-        case ToolbarType.slider:
-          tab = <ToolBarSlide data={data}/>
-          break
+  _renderTab = (item: TableData) => {
+    let tab, data = item.data
+    if (data) {
+      if (data.customView) {
+        tab = data.customView
+      } else if (item.type) {
+        switch(item.type) {
+          case ToolbarType.slider:
+            tab = <ToolBarSlide data={data}/>
+            break
+        }
       }
     }
     if (!tab) {
       tab = (
-        <TableList
-          style={styles.table}
-          data={data}
-          type={ToolbarType.scrollTable}
-          column={data.length < 5 ? data.length : this.props.column}
-          renderCell={this._renderItem}
+        <Table
+          data={item.data}
+          getData={item.getData}
+          column={data?.length < 5 ? data?.length : this.props.column}
           device={this.props.device}
-          isAutoType={false}
-          cellStyle={styles.cellStyle}
-          horizontal={true}
-          // rowStyle={{height: scaleSize(200)}}
         />
       )
+      // tab = (
+      //   <TableList
+      //     style={styles.table}
+      //     data={data}
+      //     type={ToolbarType.scrollTable}
+      //     column={data.length < 5 ? data.length : this.props.column}
+      //     renderCell={this._renderItem}
+      //     device={this.props.device}
+      //     isAutoType={false}
+      //     cellStyle={styles.cellStyle}
+      //     horizontal={true}
+      //     // rowStyle={{height: scaleSize(200)}}
+      //   />
+      // )
     }
-    return React.cloneElement(tab, {tabLabel: tabLabel})
+    return React.cloneElement(tab, {tabLabel: item.title})
   }
 
   _renderTabs = () => {
     const data: any[] = []
     this.props.data.forEach(item => {
-      data.push(this._renderTab(item.title, item.data, item.type))
+      data.push(this._renderTab(item))
     })
     return data
   }
@@ -143,6 +165,103 @@ export default class Tabs extends React.Component<Props, State> {
       >
         {this._renderTabs()}
       </ScrollableTabView>
+    )
+  }
+}
+
+interface TableItemData {
+  item: TableItemType,
+  rowIndex: number,
+  cellIndex: number,
+}
+
+interface TableProps {
+  data: TableItemData[],
+  device: DEVICE,
+  column: number,
+  getData?: () => Promise<any>,
+}
+interface TableState {
+  data: TableItemData[],
+}
+class Table extends React.Component<TableProps, TableState> {
+  static defaultProps = {
+    data: [],
+    column: 5,
+  }
+
+  constructor(props: TableProps) {
+    super(props)
+    this.state = {
+      data: props.data,
+    }
+  }
+
+  shouldComponentUpdate(nextProps: TableProps, nextState: TableState) {
+    if (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
+  }
+
+  componentDidMount() {
+    this.getData()
+  }
+
+  async componentDidUpdate(prevProps: TableProps, prevState: TableState) {
+    if (
+      JSON.stringify(prevProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(prevState) !== JSON.stringify(this.state)
+    ) {
+      if (this.props.getData) {
+        this.getData()
+      } else if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
+        this.setState({
+          data: this.props.data,
+        })
+      }
+    }
+  }
+
+  getData = async () => {
+    if (this.props.getData) {
+      const data = await this.props.getData()
+      this.setState({
+        data: data,
+      })
+    }
+  }
+
+  _renderItem = (data: { item: TableItemType, rowIndex: number, cellIndex: number }) => {
+    return(
+      <View style={{flex: 1}}>
+        <TableItem
+          data={data.item}
+          rowIndex={data.rowIndex}
+          cellIndex={data.cellIndex}
+          getData={this.getData}
+        />
+      </View>
+    )
+  }
+
+  render() {
+    return (
+      <TableList
+        style={styles.table}
+        data={this.state.data}
+        type={ToolbarType.scrollTable}
+        column={this.state.data.length < 5 ? this.state.data.length : this.props.column}
+        renderCell={this._renderItem}
+        device={this.props.device}
+        isAutoType={false}
+        cellStyle={styles.cellStyle}
+        horizontal={true}
+        // rowStyle={{height: scaleSize(200)}}
+      />
     )
   }
 }

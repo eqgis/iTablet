@@ -10,6 +10,7 @@ const Profile: typeof CN.Profile = {
   MAP: 'Carte',
   ARMAP: 'AR Map', // need to translate
   ARMODEL: 'AR Modal', // need to translate
+  AREFFECT: 'AR Effect', // need to translate
   SCENE: 'Scène',
   BASEMAP: 'Carte de base',
   SYMBOL: 'Symbole',

@@ -5,7 +5,7 @@ import DataHandler from '../DataHandler'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
 
-class MyARModel extends MyDataPage {
+class MyAREffect extends MyDataPage {
   props: {
     language: string,
     user: {
@@ -20,8 +20,8 @@ class MyARModel extends MyDataPage {
 
   constructor(props){
     super(props)
-    this.dataType = 'ARMODEL'
-    this.type = this.types.armodel
+    this.dataType = 'AREFFECT'
+    this.type = this.types.areffect
     if(this.props.navigation.state.params?.showMode) {
       this.showMode = this.props.navigation.state.params.showMode
     }
@@ -44,12 +44,12 @@ class MyARModel extends MyDataPage {
   getData = async () => {
     let data = await DataHandler.getLocalData(
       this.props.user.currentUser,
-      'ARMODEL',
+      this.dataType,
     )
 
     let sectionData = []
     sectionData.push({
-      title: 'ARMODEL',
+      title: this.dataType,
       data: data || [],
       isShowItem: true,
     })
@@ -101,4 +101,4 @@ const mapDispatch = {}
 
 const connector = connect(mapStateToProp, mapDispatch)
 
-export default connector(MyARModel)
+export default connector(MyAREffect)

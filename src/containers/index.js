@@ -14,6 +14,7 @@ import {
   MyMap,
   MyARMap,
   MyARModel,
+  MyAREffect,
   MyScene,
   MyDatasource,
   MySymbol,
@@ -539,6 +540,12 @@ export default function(appConfig) {
       },
       MyARModel: {
         screen: MyARModel,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      MyAREffect: {
+        screen: MyAREffect,
         navigationOptions: {
           header: null,
         },

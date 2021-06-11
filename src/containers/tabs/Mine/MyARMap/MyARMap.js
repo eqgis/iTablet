@@ -36,7 +36,7 @@ class MyARMap extends MyDataPage {
       shareToOnline: true,
       shareToIPortal: true,
       shareToWechat: true,
-      shareToFriend: true,
+      // shareToFriend: true,
       showFullInMap: true,
     }
     if (!this.showMore) {
@@ -108,11 +108,10 @@ class MyARMap extends MyDataPage {
     return result
   }
 
-  //新增参数template判断导出地图是否为模版
-  exportData = async (name, exportToTemp = true, template = false) => {
+  exportData = async name => {
     if (!this.itemInfo) return false
     const homePath = await FileTools.appendingHomeDirectory()
-    let path = `${homePath + ConstPath.ExternalData}`
+    let path = `${homePath + ConstPath.ExternalData}/`
 
     const availableName = await DataHandler.getAvailableFileName(
       path,
@@ -120,7 +119,9 @@ class MyARMap extends MyDataPage {
       'zip'
     )
 
-    const exportResult = await DataHandler.exportARMap(this.itemInfo.item.name, path + '/' + availableName)
+    this.exportPath = path + availableName
+
+    const exportResult = await DataHandler.exportARMap(this.itemInfo.item.name, path + availableName)
 
     return exportResult
   }

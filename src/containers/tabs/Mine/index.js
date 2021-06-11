@@ -25,6 +25,7 @@ import MyApplet from './MyApplet'
 import MyAIModel from './MyAIModel'
 import MyARMap from './MyARMap'
 import MyARModel from './MyARModel'
+import MyAREffect from './MyAREffect'
 // import LoadServer from './MyBaseMap'
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -68,4 +69,5 @@ export {
   MyAIModel,
   MyARMap,
   MyARModel,
+  MyAREffect,
 }

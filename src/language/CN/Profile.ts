@@ -8,6 +8,7 @@ const Profile = {
   MAP: '地图',
   ARMAP: 'AR地图',
   ARMODEL: 'AR模型',
+  AREFFECT: 'AR特效',
   SCENE: '场景',
   BASEMAP: '底图',
   SYMBOL: '符号',

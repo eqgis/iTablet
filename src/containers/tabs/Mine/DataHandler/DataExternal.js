@@ -806,7 +806,7 @@ function getARModelList(path, contentList) {
 }
 
 /** 获取AR地图 */
-async function getARMAPList(path, contentList, uncheckedChildFileList) {
+function getARMAPList(path, contentList, uncheckedChildFileList) {
   let DATA = []
   const relatedFiles = []
   try {
@@ -816,7 +816,7 @@ async function getARMAPList(path, contentList, uncheckedChildFileList) {
         if (_isARMap(item.name)) {
           item.check = true
           // 获取数据源
-          await _checkRelatedARDS(relatedFiles, item.name, path, contentList)
+          _checkARDatasource(relatedFiles, path, contentList)
           // 获取resource
           _checkARResource(relatedFiles, path, contentList)
           DATA.push({
@@ -829,7 +829,7 @@ async function getARMAPList(path, contentList, uncheckedChildFileList) {
         }
       } else if (!item.check && item.type === 'directory') {
         DATA = DATA.concat(
-          await getARMAPList(
+          getARMAPList(
             `${path}/${item.name}`,
             item.contentList,
             uncheckedChildFileList,
@@ -892,6 +892,16 @@ async function _checkRelatedARDS(relatedFiles, name, path, contentList) {
     }
   } catch(e) {
     // console.warn(e)
+  }
+}
+
+function _checkARDatasource(relatedFiles, path, contentList) {
+  for (let i = 0; i < contentList.length; i++) {
+    if (!contentList[i].check && contentList[i].type === 'directory' && contentList[i].name === 'Datasource') {
+      contentList[i].check = true
+      relatedFiles.push(`${path}/${contentList[i].name}`)
+      break
+    }
   }
 }
 

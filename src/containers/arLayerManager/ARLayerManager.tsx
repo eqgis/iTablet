@@ -65,7 +65,7 @@ interface Props {
     currentMapModule: number,
   },
 
-  setCurrentARLayer: (layer: ARLayer | undefined) => void,
+  setCurrentARLayer: (layer?: ARLayer) => void,
   getARLayers: () => Promise<ARLayer[]>,
   createARMap: () => Promise<boolean>,
   saveARMap: (name?: string) => Promise<boolean>,
@@ -132,6 +132,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
             action: async () => {
               if (this.props.arlayer.currentLayer) {
                 await SARMap.removeARLayer(this.props.arlayer.currentLayer.name)
+                this.props.setCurrentARLayer()
                 await this.props.getARLayers()
                 this.setState({
                   menuVisible: false,

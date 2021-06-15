@@ -276,6 +276,9 @@ async function addAREffect(fileName: string, filePath: string) {
     if(effectLayer) {
       const homePath = await FileTools.getHomeDirectory()
       SARMap.setAREffect(effectLayer.name, homePath + filePath)
+      const layerName = fileName.substring(0, fileName.lastIndexOf('.'))
+      await SARMap.setLayerCaption(effectLayer.name, layerName)
+      await _params.getARLayers()
       return
     }
 

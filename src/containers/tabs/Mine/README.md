@@ -6,7 +6,7 @@
  >* MyData            (数据页面)
  >* MyLabel           (标注页面)
  >* MyLocalData       (导入页面)
- >* MyModule          (模版页面)
+ >* MyModule          (模板页面)
  >* MyService         (服务页面)
  >* Personal          (个人页面)
  >* Register          (注册页面)

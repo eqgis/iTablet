@@ -1,5 +1,5 @@
-import InputDialog, { TempData } from '../components/InputDialog'
-type InputDialogType = typeof InputDialog | null
+import InputDialog, { TempData } from '../components/Dialog/InputDialog'
+type InputDialogType = InputDialog | null
 let inputDialog: InputDialogType = null
 
 function setInputDialog(ref: InputDialogType) {
@@ -11,11 +11,11 @@ function getInputDialog(): InputDialogType {
 }
 
 function showInputDailog(option: TempData) {
-  inputDialog.setDialogVisible(true, option)
+  inputDialog?.setDialogVisible(true, option)
 }
 
 function hideInputDailog() {
-  inputDialog.setDialogVisible(false)
+  inputDialog?.setDialogVisible(false)
 }
 
 export default {

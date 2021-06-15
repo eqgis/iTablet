@@ -27,7 +27,7 @@ export default {
   OPEN_MAP_TO: '已为您打开',
   MAP_CREATING: '正在新建地图',
 
-  TEMPLATE_LIST_LOADING: '正在加载模版列表',
+  TEMPLATE_LIST_LOADING: '正在加载模板列表',
   TEMPLATE_CREATING: '正在新建模板',
   TEMPLATE_READING: '正在读取模板',
   TEMPLATE_CHANGE_SUCCESS: '已为您切换模板',

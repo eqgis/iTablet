@@ -1,12 +1,13 @@
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { getThemeAssets, getARSceneAssets } from '../../../../../../assets'
+import { getThemeAssets, getARSceneAssets, getPublicAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { SARMap ,ARAction} from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { Platform } from 'react-native'
+import { AR3DExample, ARModelExample, AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4 } from '../../../../../tabs/Mine/DataHandler/DataExample'
 
 interface SectionItemData {
   key: string,
@@ -19,7 +20,8 @@ interface SectionItemData {
 interface SectionData {
   title: string,
   containerType?: string,
-  data: SectionItemData[]
+  data?: SectionItemData[],
+  getData?: () => Promise<SectionItemData[]>,
 }
 
 async function getData(type: string, params: {[name: string]: any}) {
@@ -39,9 +41,6 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_VECTOR:
     case ConstToolType.SM_AR_DRAWING_EFFECT: {
       SARMap.setAction(ARAction.NULL)
-      const data3D = await get3DData()
-      const arModel = await getARModel()
-      const arEffect = await getAREffect()
       data = [
         {
           title: getLanguage(GLOBAL.language).Prompt.POI,
@@ -65,7 +64,7 @@ async function getData(type: string, params: {[name: string]: any}) {
         {
           title: getLanguage(GLOBAL.language).ARMap.THREE_D,
           containerType: 'list',
-          data: data3D,
+          getData: get3DData,
         },
         {
           title: getLanguage(GLOBAL.language).ARMap.VECTOR,
@@ -109,11 +108,11 @@ async function getData(type: string, params: {[name: string]: any}) {
         },
         {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
-          data: arModel,
+          getData: getARModel,
         },
         {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
-          data: arEffect,
+          getData: getAREffect,
         },
       ]
       if (Platform.OS === 'ios') {
@@ -143,7 +142,6 @@ async function getData(type: string, params: {[name: string]: any}) {
               {
                 key: ConstToolType.SM_AR_DRAWING_TEXT,
                 image: getThemeAssets().layerType.layer_text,
-                // selectedImage: any,
                 title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
                 action: ARDrawingAction.arText,
               },
@@ -151,7 +149,7 @@ async function getData(type: string, params: {[name: string]: any}) {
           },
           {
             title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
-            data: arEffect,
+            getData: getAREffect,
           },
         ]
       }
@@ -202,7 +200,19 @@ async function getData(type: string, params: {[name: string]: any}) {
 async function get3DData() {
   const _params: any = ToolbarModule.getParams()
   const data3DTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'WORKSPACE3D')
-  return data3DTemp.filter(item => item.Type !== undefined).map(item => {
+  const items: any[] = []
+  const downloadKeys = [AR3DExample.userName + '_' + AR3DExample.downloadName]
+  //检查用户是否已有数据，没有则添加下载选项
+  if(data3DTemp.filter(item => item.Type !== undefined).length === 0) {
+    items.push({
+      key: AR3DExample.downloadName,
+      image: getPublicAssets().common.icon_download,
+      title: getLanguage(_params.language).Prompt.DOWNLOAD,
+      action: ARDrawingAction.download3DExample,
+      downloadKeys,
+    })
+  }
+  return items.concat(data3DTemp.filter(item => item.Type !== undefined).map(item => {
     return {
       key: item.name,
       image: getARSceneAssets(item.Type),
@@ -210,43 +220,71 @@ async function get3DData() {
       data: item,
       action: () => ARDrawingAction.ar3D(item.path),
     }
-  })
+  }))
 }
 
 /** 获取AR模型数据 */
 async function getARModel() {
   const _params: any = ToolbarModule.getParams()
   const arModelTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'ARMODEL')
-  const arModel: any[] = []
-  for (let item of arModelTemp) {
-    arModel.push({
-      key: item.name,
-      image: getThemeAssets().ar.armap.ar_3d,
-      // selectedImage: any,
-      title: item.name,
-      data: item,
-      action: () => ARDrawingAction.arModel(item.path),
+  const items: any[] = []
+  const downloadKeys = [ARModelExample.userName + '_' + ARModelExample.downloadName]
+  if(arModelTemp.length === 0) {
+    items.push({
+      key: AR3DExample.downloadName,
+      image: getPublicAssets().common.icon_download,
+      title: getLanguage(_params.language).Prompt.DOWNLOAD,
+      action: ARDrawingAction.downloadModelExample,
+      downloadKeys,
     })
   }
-  return arModel
+  return items.concat(arModelTemp.map(item => {
+    return {
+      key: item.name,
+      image: getThemeAssets().ar.armap.ar_3d,
+      title: item.name.substring(0, item.name.lastIndexOf('.')),
+      data: item,
+      action: () => ARDrawingAction.arModel(item.path),
+    }
+  }))
 }
 
 /** 获取AR特效数据 */
 async function getAREffect() {
   const _params: any = ToolbarModule.getParams()
   const arEffectTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'AREFFECT')
-  const arEffect: any[] = []
-  for (let item of arEffectTemp) {
-    arEffect.push({
-      key: item.name,
-      image: getThemeAssets().ar.armap.ar_effect,
-      // selectedImage: any,
-      title: item.name,
-      data: item,
-      action: () => ARDrawingAction.addAREffect(item.name, item.path),
+  const downloadKeys: string[] = []
+  const items: any[] = []
+  if(arEffectTemp.findIndex(item => item.name === AREffectExample.toName) < 0) {
+    downloadKeys.push(AREffectExample.userName + '_' + AREffectExample.downloadName)
+  }
+  if(arEffectTemp.findIndex(item => item.name === AREffectExample2.toName) < 0) {
+    downloadKeys.push(AREffectExample2.userName + '_' + AREffectExample2.downloadName)
+  }
+  if(arEffectTemp.findIndex(item => item.name === AREffectExample3.toName) < 0) {
+    downloadKeys.push(AREffectExample3.userName + '_' + AREffectExample3.downloadName)
+  }
+  if(arEffectTemp.findIndex(item => item.name === AREffectExample4.toName) < 0) {
+    downloadKeys.push(AREffectExample4.userName + '_' + AREffectExample4.downloadName)
+  }
+  if(downloadKeys.length > 0) {
+    items.push({
+      key: AR3DExample.downloadName,
+      image: getPublicAssets().common.icon_download,
+      title: getLanguage(_params.language).Prompt.DOWNLOAD,
+      action: () => ARDrawingAction.downloadEffectlExample(downloadKeys),
+      downloadKeys,
     })
   }
-  return arEffect
+  return items.concat(arEffectTemp.map(item => {
+    return {
+      key: item.name,
+      image: getThemeAssets().ar.armap.ar_effect,
+      title: item.name.substring(0, item.name.lastIndexOf('.')),
+      data: item,
+      action: () => ARDrawingAction.addAREffect(item.name, item.path),
+    }
+  }))
 }
 
 

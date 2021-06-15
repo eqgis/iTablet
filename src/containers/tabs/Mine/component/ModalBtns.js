@@ -17,7 +17,7 @@ export default class ModalBtns extends Component {
     actionOfFriend?: () => void,
     showCancel?: Boolean,
     style?: Object,
-    actionOftemplateLocal?: () => void, //分享地图模版 add jiakai
+    actionOftemplateLocal?: () => void, //分享地图模板 add jiakai
     type?: Object,
   }
   constructor(props) {
@@ -25,7 +25,7 @@ export default class ModalBtns extends Component {
     this.showCancel =
       this.props.showCancel !== undefined ? this.props.showCancel : true
     this.state = {
-      shareMap: true,//分享地图分为地图和模版两种 add jiakai
+      shareMap: true,//分享地图分为地图和模板两种 add jiakai
     }
   }
 

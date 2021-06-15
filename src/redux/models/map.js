@@ -278,7 +278,7 @@ export const setCurrentMap = (params, extData, cb = () => { }) => async dispatch
   cb && cb()
 }
 
-// 导出模版
+// 导出模板
 export const exportWorkspace = (params, cb = () => { }) => async (
   dispatch,
   getState,

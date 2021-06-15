@@ -911,7 +911,7 @@ async function openTemplate(item) {
               )
               await params.getSymbolTemplates(null)
 
-              // 保存新建模版地图，若不保存，再次进入地图则没有底图
+              // 保存新建模板地图，若不保存，再次进入地图则没有底图
               await params.saveMap({
                 mapName: mapsInfo[0],
               })

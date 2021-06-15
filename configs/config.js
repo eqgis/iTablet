@@ -24,6 +24,7 @@ export default {
     {key: 'MAP'},
     {key: 'ARMAP'},
     {key: 'ARMODEL'},
+    {key: 'AREFFECT'},
     {key: 'SCENE'},
     {key: 'BASE_MAP'},
     {key: 'SYMBOL'},

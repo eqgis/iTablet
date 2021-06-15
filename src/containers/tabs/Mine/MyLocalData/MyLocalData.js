@@ -413,6 +413,7 @@ export default class MyLocalData extends Component {
         fileType === 'aimodel' ||
         fileType === 'armap' ||
         fileType === 'armodel' ||
+        fileType === 'areffect' ||
         fileType === 'xmltemplate'
       ) {
         this._onImportExternalData(this.itemInfo.item)

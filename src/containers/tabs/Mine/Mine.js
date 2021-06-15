@@ -100,6 +100,13 @@ export default class Mine extends Component {
     })
   }
 
+  goToMyAREffect = title => {
+    NavigationService.navigate('MyAREffect', {
+      title,
+      showMore: true,
+    })
+  }
+
   goToMyDatasource = title => {
     NavigationService.navigate('MyDatasource', {
       title,
@@ -197,6 +204,14 @@ export default class Mine extends Component {
             image: getThemeAssets().mine.my_dynamic_model,
             onClick: () =>
               this.goToMyARModel(getLanguage(this.props.language).Profile.ARMODEL),
+          })
+          break
+        case 'AREFFECT':
+          data.push({
+            title: getLanguage(this.props.language).Profile.AREFFECT,
+            image: getThemeAssets().ar.armap.ar_effect,
+            onClick: () =>
+              this.goToMyAREffect(getLanguage(this.props.language).Profile.ARMODEL),
           })
           break
         case 'SCENE':

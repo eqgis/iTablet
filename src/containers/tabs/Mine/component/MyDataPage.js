@@ -93,6 +93,7 @@ export default class MyDataPage extends Component {
     applet: 'APPLETS',
     aimodel: 'AIMODEL',
     armodel: 'ARMODEL',
+    areffect: 'AREFFECT',
     armap: 'ARMAP',
   }
 
@@ -375,13 +376,14 @@ export default class MyDataPage extends Component {
 
       if (result !== undefined) {
         if (result) {
-          Toast.show(
-            type === 'local' || type === 'template'
-              ? getLanguage(GLOBAL.language).Prompt.EXPORT_SUCCESS
-              : getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
-          )
           if (this.exportPath !== '') {
             this.showExportPathDialog()
+          } else {
+            Toast.show(
+              type === 'local' || type === 'template'
+                ? getLanguage(GLOBAL.language).Prompt.EXPORT_SUCCESS
+                : getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
+            )
           }
         } else {
           if(type === 'template'){
@@ -444,9 +446,9 @@ export default class MyDataPage extends Component {
   shareToOnline = async fileName => {
     await this.exportData(fileName)
     let path = this.exportPath
-    this.exportPath = ''
     let result
     let { ext, onlineDataType } = this._getUploadType()
+    this.exportPath = ''
     if (ext && onlineDataType) {
       result = await JSOnlineService.uploadFile(
         path,
@@ -464,9 +466,9 @@ export default class MyDataPage extends Component {
   shareToIPortal = async fileName => {
     await this.exportData(fileName)
     let path = this.exportPath
-    this.exportPath = ''
     let result
     let { ext, onlineDataType } = this._getUploadType()
+    this.exportPath = ''
     if (ext && onlineDataType) {
       result = await JSIPortalServce.uploadFile({
         filePath: path,
@@ -552,6 +554,9 @@ export default class MyDataPage extends Component {
         onlineDataType = 'FILLSYMBOL'
       }
     } else if (this.type === this.types.template) {
+      ext = 'zip'
+      onlineDataType = 'UDB'
+    } else if (this.exportPath.endsWith('.zip')) {
       ext = 'zip'
       onlineDataType = 'UDB'
     }
@@ -956,6 +961,9 @@ export default class MyDataPage extends Component {
           break
         case this.types.armap:
           img = getThemeAssets().mine.my_armap
+          break
+        case this.types.areffect:
+          img = getThemeAssets().ar.armap.ar_effect
           break
         default:
           if (info.item.img) {

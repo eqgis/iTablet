@@ -25,7 +25,7 @@ class MyAREffect extends MyDataPage {
     if(this.props.navigation.state.params?.showMode) {
       this.showMode = this.props.navigation.state.params.showMode
     }
-    let title = title = getLanguage(this.props.language).Profile.ARMODEL
+    let title = title = getLanguage(this.props.language).Profile.AREFFECT
     if(this.props.navigation.state.params?.title) {
       title = this.props.navigation.state.params.title
     }

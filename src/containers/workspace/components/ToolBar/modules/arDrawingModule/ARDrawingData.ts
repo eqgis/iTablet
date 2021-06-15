@@ -271,7 +271,7 @@ async function getAREffect() {
       key: AR3DExample.downloadName,
       image: getPublicAssets().common.icon_download,
       title: getLanguage(_params.language).Prompt.DOWNLOAD,
-      action: ARDrawingAction.downloadEffectlExample,
+      action: () => ARDrawingAction.downloadEffectlExample(downloadKeys),
       downloadKeys,
     })
   }

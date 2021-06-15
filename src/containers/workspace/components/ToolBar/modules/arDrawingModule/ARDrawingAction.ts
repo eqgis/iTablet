@@ -416,8 +416,22 @@ export async function downloadModelExample() {
   _downloadExample('armodel', ARModelExample)
 }
 
-export async function downloadEffectlExample() {
-  _downloadExamples('areffect', [AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4])
+export async function downloadEffectlExample(downloadKeys?: string[]) {
+  const defaultData = [AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4]
+  let downloadData = []
+  if (downloadKeys && downloadKeys.length > 0) {
+    for (const key of downloadKeys) {
+      for (const item of defaultData) {
+        if (key === `${item.userName}_${item.downloadName}`) {
+          downloadData.push(item)
+        }
+      }
+    }
+  }
+  if (downloadData.length === 0) {
+    downloadData = downloadData.concat(defaultData)
+  }
+  _downloadExamples('areffect', downloadData)
 }
 
 async function _downloadExamples(type: ExternalDataType, examples: ExampleData[]) {

@@ -3,7 +3,7 @@ import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
 import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo, View } from 'react-native'
-import { scaleSize, Toast } from '../../utils'
+import { scaleSize, Toast, DialogUtils } from '../../utils'
 import { getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
 import { UserInfo } from '../../redux/models/user'
@@ -105,6 +105,27 @@ export default class ARLayerManager extends React.Component<Props, State> {
           //     }
           //   },
           // },
+          {
+            title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
+            image: getThemeAssets().layer.icon_layer_style,
+            action: async () => {
+              if (this.props.arlayer.currentLayer) {
+                DialogUtils.showInputDailog({
+                  value: this.props.arlayer.currentLayer.caption,
+                  confirmAction: async (name: string) => {
+                    if (this.props.arlayer.currentLayer) {
+                      await SARMap.setLayerCaption(this.props.arlayer.currentLayer.name, name)
+                      await this.props.getARLayers()
+                      DialogUtils.hideInputDailog()
+                      this.setState({
+                        menuVisible: false,
+                      })
+                    }
+                  },
+                })
+              }
+            },
+          },
           {
             title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
             image: getThemeAssets().layer.icon_remove_layer,

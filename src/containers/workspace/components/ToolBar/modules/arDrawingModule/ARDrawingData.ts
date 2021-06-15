@@ -4,7 +4,7 @@ import { getThemeAssets, getARSceneAssets, getPublicAssets } from '../../../../.
 import ToolbarModule from '../ToolbarModule'
 import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { SARMap } from 'imobile_for_reactnative'
+import { SARMap ,ARAction} from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { Platform } from 'react-native'
 import { AR3DExample, ARModelExample, AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4 } from '../../../../../tabs/Mine/DataHandler/DataExample'
@@ -40,6 +40,7 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_3D:
     case ConstToolType.SM_AR_DRAWING_VECTOR:
     case ConstToolType.SM_AR_DRAWING_EFFECT: {
+      SARMap.setAction(ARAction.NULL)
       data = [
         {
           title: getLanguage(GLOBAL.language).Prompt.POI,

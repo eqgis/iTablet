@@ -10,6 +10,8 @@ import DataHandler from '../DataHandler'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
+import RNFS from 'react-native-fs'
+import cheerio from 'react-native-cheerio'
 
 class MyARMap extends MyDataPage {
   props: {
@@ -99,31 +101,57 @@ class MyARMap extends MyDataPage {
   }
 
   deleteData = async () => {
-    if (!this.itemInfo) return false
-    let mapPath = await FileTools.appendingHomeDirectory(
-      this.itemInfo.item.path,
-    )
-    let result = await FileTools.deleteFile(mapPath)
+    try {
+      if (!this.itemInfo) return false
+      let mapPath = await FileTools.appendingHomeDirectory(
+        this.itemInfo.item.path,
+      )
 
-    return result
+      const mapXml = await RNFS.readFile(mapPath)
+      const $ = cheerio.load(mapXml)
+      const nodes = $('DatasourceServer')
+      const datasourceArr = []
+      for(let i = 0; i < nodes.length; i++) {
+        const datasourceNode = nodes[i].children[0]
+        const datasource = datasourceNode
+        const udbPath = datasource.nodeValue
+        datasourceArr.push(udbPath)
+        const uddPath = udbPath.slice(0, udbPath.length - 1) + 'd'
+        datasourceArr.push(uddPath)
+      }
+      let result = await FileTools.deleteFile(mapPath)
+      if(result) {
+        datasourceArr.map(item => {
+          FileTools.deleteFile(item)
+        })
+      }
+
+      return result
+    } catch (error) {
+      return false
+    }
   }
 
   exportData = async name => {
-    if (!this.itemInfo) return false
-    const homePath = await FileTools.appendingHomeDirectory()
-    let path = `${homePath + ConstPath.ExternalData}/`
+    try {
+      if (!this.itemInfo) return false
+      const homePath = await FileTools.appendingHomeDirectory()
+      let path = `${homePath + ConstPath.ExternalData}/`
 
-    const availableName = await DataHandler.getAvailableFileName(
-      path,
-      name,
-      'zip'
-    )
+      const availableName = await DataHandler.getAvailableFileName(
+        path,
+        name,
+        'zip'
+      )
 
-    this.exportPath = path + availableName
+      this.exportPath = path + availableName
 
-    const exportResult = await DataHandler.exportARMap(this.itemInfo.item.name, path + availableName)
+      const exportResult = await DataHandler.exportARMap(this.itemInfo.item.name, path + availableName)
 
-    return exportResult
+      return exportResult
+    } catch (error) {
+      return false
+    }
   }
 }
 

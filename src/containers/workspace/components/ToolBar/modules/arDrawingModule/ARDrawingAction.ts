@@ -161,7 +161,7 @@ export async function addARScene(location?: IVector3) {
       newDatasource = true
     }
 
-    let datasourceName = DataHandler.getARRawDatasource()
+    let datasourceName = _params.armap.currentMap?.mapName || DataHandler.getARRawDatasource()
     let datasetName = 'scene'
     const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
     if(result.success) {
@@ -338,7 +338,7 @@ async function checkARLayer(type: TARLayerType) {
   }
 
   if(!satisfy) {
-    let datasourceName = DataHandler.getARRawDatasource()
+    let datasourceName = _params.armap.currentMap?.mapName || DataHandler.getARRawDatasource()
     let datasetName: string
     switch(type) {
       case ARLayerType.AR_MEDIA_LAYER:

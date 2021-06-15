@@ -4,7 +4,7 @@ import { getThemeAssets, getARSceneAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { SARMap } from 'imobile_for_reactnative'
+import { SARMap ,ARAction} from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { Platform } from 'react-native'
 
@@ -38,6 +38,7 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_3D:
     case ConstToolType.SM_AR_DRAWING_VECTOR:
     case ConstToolType.SM_AR_DRAWING_EFFECT: {
+      SARMap.setAction(ARAction.NULL)
       const data3D = await get3DData()
       const arModel = await getARModel()
       const arEffect = await getAREffect()

@@ -58,7 +58,7 @@ async function exportARMap(fileName: string, targetPath: string): Promise<boolea
 
   let result = false
   result = await SARMap.exportMap(fileName, tempDir)
-  result = result && (await FileTools.zipFiles([tempDir], targetPath))
+  result = result && (await FileTools.zipFile(tempDir, targetPath))
   result && FileTools.deleteFile(tempDir)
   return result
 }

@@ -16,15 +16,14 @@ import {
   ToolbarType,
   ConstPath,
 } from '../../../../../../constants'
-import { Toast, AppProgress } from '../../../../../../utils'
+import { Toast, AppProgress, DialogUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
 import ToolbarModule from '../ToolbarModule'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffectExample3, AREffectExample4, ExampleData } from '../../../../../tabs/Mine/DataHandler/DataExample'
-import { ExternalDataType, ToolBarListItem } from '../types'
-import { Downloads, Download } from '../../../../../../redux/models/down'
+import { ExternalDataType } from '../types'
 interface AssetType {
   Photos: 'Photos',
   Videos: 'Videos',
@@ -116,27 +115,22 @@ async function arImage() {
 }
 
 async function arWebView() {
-  NavigationService.navigate('InputPage', {
+  DialogUtils.showInputDailog({
+    value: 'http://',
     type: 'http',
-    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
-    cb: async (value: string) => {
-      if (value !== '') {
-        setARToolbar(ConstToolType.SM_AR_DRAWING_WEB, { arContent: value })
-        NavigationService.goBack('InputPage', null)
-      }
+    confirmAction: async (value: string) => {
+      setARToolbar(ConstToolType.SM_AR_DRAWING_WEB, { arContent: value })
+      DialogUtils.hideInputDailog()
     },
   })
 }
 
 async function arText() {
-  NavigationService.navigate('InputPage', {
-    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
-    type: 'name',
-    cb: async (value: string) => {
-      if (value !== '') {
-        setARToolbar(ConstToolType.SM_AR_DRAWING_TEXT, { arContent: value })
-        NavigationService.goBack('InputPage')
-      }
+  DialogUtils.showInputDailog({
+    value: '',
+    confirmAction: async (value: string) => {
+      setARToolbar(ConstToolType.SM_AR_DRAWING_TEXT, { arContent: value })
+      DialogUtils.hideInputDailog()
     },
   })
 }
@@ -215,7 +209,7 @@ export async function addARModel(location?: IVector3) {
     await checkARLayer(ARLayerType.AR_MODEL_LAYER)
     const layer = _params.arlayer.currentLayer
     if(layer){
-      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
+      await SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
     }
   } catch (error) {
     Toast.show(error)
@@ -249,7 +243,7 @@ async function addText(location?: IVector3) {
     let content = _data.arContent
     const layer = _params.arlayer.currentLayer
     if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-      SARMap.addARText(layer.name, content, location)
+      await SARMap.addARText(layer.name, content, location)
     }
   } catch (error) {
     Toast.show(error)
@@ -275,7 +269,7 @@ async function addAREffect(fileName: string, filePath: string) {
     // 若已有特效图层，则替换
     if(effectLayer) {
       const homePath = await FileTools.getHomeDirectory()
-      SARMap.setAREffect(effectLayer.name, homePath + filePath)
+      await SARMap.setAREffect(effectLayer.name, homePath + filePath)
       const layerName = fileName.substring(0, fileName.lastIndexOf('.'))
       await SARMap.setLayerCaption(effectLayer.name, layerName)
       await _params.getARLayers()

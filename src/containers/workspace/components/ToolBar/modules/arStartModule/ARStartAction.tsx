@@ -11,7 +11,7 @@ import {
   ConstToolType,
   ToolbarType,
 } from '../../../../../../constants'
-import { Toast, scaleSize } from '../../../../../../utils'
+import { Toast, scaleSize, DialogUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
@@ -149,13 +149,13 @@ async function _saveMap(name: string) {
 async function createMap() {
   const _params: any = ToolbarModule.getParams()
   try {
-    NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.START_NEW_MAP,
-      placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
+    DialogUtils.showInputDailog({
+      value: '',
       type: 'name',
-      cb: async (value: string) => {
+      placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
+      confirmAction: async (value: string) => {
         let result = await _params.createARMap(value)
-        result && NavigationService.goBack('InputPage')
+        result && DialogUtils.hideInputDailog()
         _params.setContainerLoading &&
           _params.setContainerLoading(false)
         _params.setToolbarVisible(false)
@@ -186,18 +186,18 @@ async function saveMap() {
       _params.setContainerLoading && _params.setContainerLoading(false)
       Toast.show(result ? getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
     } else {
-      NavigationService.navigate('InputPage', {
-        headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_MAP,
-        placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
+      DialogUtils.showInputDailog({
+        value: '',
         type: 'name',
-        cb: async (value: string) => {
+        placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
+        confirmAction: async (value: string) => {
           _params.setContainerLoading &&
           _params.setContainerLoading(
             true,
             getLanguage(GLOBAL.language).Prompt.SAVING,
           )
           const result = await _saveMap(value)
-          result && NavigationService.goBack('InputPage')
+          result && DialogUtils.hideInputDailog()
           Toast.show(result ? getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
         },
       })

@@ -23,34 +23,34 @@ const popTypes = {
   Semivariogram: 'Semivariogram',
 }
 
-const defaultState = {
-  // Settings
-  radius: 0,
-  pointCount: 12, // 2 - 12
-  maxPointCountForInterpolation: 20, // 块查找
-  maxPointCountInNode: 5, // 块查找
-  // Others
-  // IDW
-  power: 2,
-  // RBF
-  tension: 40,
-  smoothness: 0.1,
-  // KRIGING
-  semivariogram: interpolationDetailParamsData.getSemivariogram(
-    GLOBAL.language,
-  )[0],
-  rotation: 0,
-  sill: 0,
-  range: 0,
-  nuggetEffect: 0,
-  mean: 23, // Simple KRIGING
-  exponent: 1, // Universal KRIGING
-
-  // 弹出框数据
-  popData: [],
-  currentPopData: null,
-
-  canBeAnalyst: true,
+function getDefaultState(language = GLOBAL.language) {
+  return {
+    // Settings
+    radius: 0,
+    pointCount: 12, // 2 - 12
+    maxPointCountForInterpolation: 20, // 块查找
+    maxPointCountInNode: 5, // 块查找
+    // Others
+    // IDW
+    power: 2,
+    // RBF
+    tension: 40,
+    smoothness: 0.1,
+    // KRIGING
+    semivariogram: interpolationDetailParamsData.getSemivariogram(language)[0],
+    rotation: 0,
+    sill: 0,
+    range: 0,
+    nuggetEffect: 0,
+    mean: 23, // Simple KRIGING
+    exponent: 1, // Universal KRIGING
+  
+    // 弹出框数据
+    popData: [],
+    currentPopData: null,
+  
+    canBeAnalyst: true,
+  }
 }
 
 export default class InterpolationAnalystDetailView extends Component {
@@ -68,7 +68,7 @@ export default class InterpolationAnalystDetailView extends Component {
     this.data = (params && params.data) || {}
     this.state = {
       title: (params && params.title) || '',
-      ...defaultState,
+      ...getDefaultState(),
       searchMethod: interpolationDetailParamsData.getSearchMethod(
         GLOBAL.language,
         params && params.title,
@@ -216,7 +216,7 @@ export default class InterpolationAnalystDetailView extends Component {
 
   // 重置页面数据
   reset = () => {
-    this.setState(Object.assign({}, this.state, defaultState))
+    this.setState(Object.assign({}, this.state, getDefaultState()))
     this.currentPop = ''
   }
 
@@ -301,20 +301,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={numberRange1}
         onChangeText={text => {
           this.setState({
-            radius: text,
+            radius: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.radius) {
             this.setState({
-              radius: text,
+              radius: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.radius) {
             this.setState({
-              radius: text,
+              radius: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -331,20 +331,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={numberRange2}
         onChangeText={text => {
           this.setState({
-            pointCount: text,
+            pointCount: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.pointCount) {
             this.setState({
-              pointCount: text,
+              pointCount: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.pointCount) {
             this.setState({
-              pointCount: text,
+              pointCount: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -367,20 +367,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={'[4, 2147483647]'}
         onChangeText={text => {
           this.setState({
-            maxPointCountForInterpolation: text,
+            maxPointCountForInterpolation: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.maxPointCountForInterpolation) {
             this.setState({
-              maxPointCountForInterpolation: text,
+              maxPointCountForInterpolation: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.maxPointCountForInterpolation) {
             this.setState({
-              maxPointCountForInterpolation: text,
+              maxPointCountForInterpolation: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -397,20 +397,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={'[1, 2147483647]'}
         onChangeText={text => {
           this.setState({
-            maxPointCountInNode: text,
+            maxPointCountInNode: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.maxPointCountInNode) {
             this.setState({
-              maxPointCountInNode: text,
+              maxPointCountInNode: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.maxPointCountInNode) {
             this.setState({
-              maxPointCountInNode: text,
+              maxPointCountInNode: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -460,20 +460,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={'[0, 100]'}
         onChangeText={text => {
           this.setState({
-            power: text,
+            power: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.power) {
             this.setState({
-              power: text,
+              power: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.power) {
             this.setState({
-              power: text,
+              power: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -496,20 +496,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={'[0, ]'}
         onChangeText={text => {
           this.setState({
-            tension: text,
+            tension: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.tension) {
             this.setState({
-              tension: text,
+              tension: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.tension) {
             this.setState({
-              tension: text,
+              tension: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -526,20 +526,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={'[0, 1]'}
         onChangeText={text => {
           this.setState({
-            smoothness: text,
+            smoothness: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.smoothness) {
             this.setState({
-              smoothness: text,
+              smoothness: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.smoothness) {
             this.setState({
-              smoothness: text,
+              smoothness: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -585,20 +585,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={'[0, 360]'}
         onChangeText={text => {
           this.setState({
-            rotation: text,
+            rotation: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.rotation) {
             this.setState({
-              rotation: text,
+              rotation: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.rotation) {
             this.setState({
-              rotation: text,
+              rotation: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -620,14 +620,14 @@ export default class InterpolationAnalystDetailView extends Component {
         onSubmitEditing={text => {
           if (text !== this.state.sill) {
             this.setState({
-              sill: text === '' || isNaN(text) ? 0 : text,
+              sill: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.sill) {
             this.setState({
-              sill: text === '' || isNaN(text) ? 0 : text,
+              sill: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -644,20 +644,20 @@ export default class InterpolationAnalystDetailView extends Component {
         numberRange={'[0, ]'}
         onChangeText={text => {
           this.setState({
-            range: text,
+            range: text === '' ? '' : parseFloat(text),
           })
         }}
         onSubmitEditing={text => {
           if (text !== this.state.range) {
             this.setState({
-              range: text,
+              range: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
         onBlur={text => {
           if (text !== this.state.range) {
             this.setState({
-              range: text,
+              range: text === '' || isNaN(text) ? 0 : parseFloat(text),
             })
           }
         }}
@@ -771,7 +771,7 @@ export default class InterpolationAnalystDetailView extends Component {
             case popTypes.SearchMethod:
               Object.assign(
                 newStateData,
-                { ...defaultState },
+                { ...getDefaultState() },
                 { searchMethod: data },
               )
               break

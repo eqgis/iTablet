@@ -27,29 +27,31 @@ const popTypes = {
   PixelFormat: 'PixelFormat',
 }
 
-const defaultState = {
-  method: InterpolationParamsData.getInterpolationMethod(GLOBAL.language)[0],
-  // 源数据
-  dataSource: null,
-  dataSet: null,
-  interpolationField: null,
-  scale: 1,
-  // 结果数据
-  resultDataSource: null,
-  resultDataSet: null,
-  resolution: 500,
-  pixelFormat: InterpolationParamsData.getPixelFormat(GLOBAL.language)[2],
-  // 插值范围
-  left: 0,
-  bottom: 0,
-  right: 0,
-  top: 0,
+function getDefaultState(language = GLOBAL.language) {
+  return {
+    method: InterpolationParamsData.getInterpolationMethod(language)[0],
+    // 源数据
+    dataSource: null,
+    dataSet: null,
+    interpolationField: null,
+    scale: 1,
+    // 结果数据
+    resultDataSource: null,
+    resultDataSet: null,
+    resolution: 500,
+    pixelFormat: InterpolationParamsData.getPixelFormat(language)[2],
+    // 插值范围
+    left: 0,
+    bottom: 0,
+    right: 0,
+    top: 0,
 
-  // 弹出框数据
-  popData: [],
-  currentPopData: null,
+    // 弹出框数据
+    popData: [],
+    currentPopData: null,
 
-  btnAvailable: false,
+    btnAvailable: false,
+  }
 }
 
 export default class InterpolationAnalystView extends Component {
@@ -67,7 +69,7 @@ export default class InterpolationAnalystView extends Component {
     this.cb = params && params.cb
     this.state = {
       title: (params && params.title) || '',
-      ...defaultState,
+      ...getDefaultState(),
     }
 
     this.currentPop = ''
@@ -200,7 +202,7 @@ export default class InterpolationAnalystView extends Component {
 
   // 重置页面数据
   reset = () => {
-    this.setState(Object.assign({}, this.state, defaultState))
+    this.setState(Object.assign({}, this.state, getDefaultState()))
     this.currentPop = ''
   }
 

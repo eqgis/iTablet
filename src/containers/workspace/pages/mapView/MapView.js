@@ -106,7 +106,6 @@ import {
   AppState,
   StyleSheet,
   PanResponder,
-  NativeModules,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -493,7 +492,9 @@ export default class MapView extends React.Component {
       GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
     }
 
-    
+    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR) {
+      this.showFullMap(true)
+    }
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
 
     if (GLOBAL.isLicenseValid) {
@@ -711,6 +712,8 @@ export default class MapView extends React.Component {
       JSON.stringify(this.props.mapNavigation)
     ) {
       this.showFullMap(this.props.mapNavigation.isShow)
+    } else if (this.props.showDatumPoint !== prevProps.showDatumPoint) {
+      this.showFullMap(this.props.showDatumPoint)
     }
     // if (
     //   JSON.stringify(prevProps.editLayer) !==

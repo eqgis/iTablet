@@ -1,4 +1,4 @@
-import { ARLayer, SARMap } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
@@ -16,6 +16,7 @@ import { arDrawingModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
 import { MapToolbar } from '../workspace/components'
+import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -169,11 +170,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }
   }
 
-  _renderLayerItem = ({item}: ListRenderItemInfo<ARLayer>) => {
+  _renderLayers = () => {
+    if(!this.props.arlayer.layers) return null
     return (
-      <ARLayerItem
-        layer={item}
+      <ARLayers
+        layers={this.props.arlayer.layers}
         currentLayer={this.props.arlayer.currentLayer}
+        setCurrentARLayer={this.props.setCurrentARLayer}
         onPress={layer => {
           this.props.setCurrentARLayer(layer)
         }}
@@ -184,21 +187,6 @@ export default class ARLayerManager extends React.Component<Props, State> {
             selectLayer: layer,
           })
         }}
-      />)
-  }
-
-  _renderSeperator = () => {
-    return <ListSeparator color={color.bgW2} style={styles.separator} />
-  }
-
-  _renderLayers = () => {
-    if(!this.props.arlayer.layers) return null
-    return (
-      <FlatList
-        data={this.props.arlayer.layers}
-        renderItem={this._renderLayerItem}
-        keyExtractor={item => item.name}
-        ItemSeparatorComponent={this._renderSeperator}
       />
     )
   }
@@ -384,6 +372,47 @@ export default class ARLayerManager extends React.Component<Props, State> {
         {this._renderInputDialog()}
         {this._renderList()}
       </Container>
+    )
+  }
+}
+interface ARLayersProps {
+  layers: ARLayer[],
+  currentLayer?: ARLayer,
+  setCurrentARLayer: (layer?: ARLayer) => void,
+  onPress: (layer: ARLayer) => void,
+  onPressMore: (layer: ARLayer) => void,
+}
+
+export class ARLayers extends React.Component<ARLayersProps> {
+
+  _renderLayerItem = ({item}: ListRenderItemInfo<ARLayer>) => {
+    return (
+      <ARLayerItem
+        layer={item}
+        currentLayer={this.props.currentLayer}
+        onPress={layer => {
+          this.props.onPress(layer)
+        }}
+        onPressMore={layer => {
+          this.props.onPressMore(layer)
+        }}
+        setCurrentARLayer={this.props.setCurrentARLayer}
+      />)
+  }
+
+  _renderSeperator = () => {
+    return <ListSeparator color={color.bgW2} style={styles.separator} />
+  }
+
+  render() {
+    if(!this.props.layers) return null
+    return (
+      <FlatList
+        data={this.props.layers}
+        renderItem={this._renderLayerItem}
+        keyExtractor={item => item.name}
+        ItemSeparatorComponent={this._renderSeperator}
+      />
     )
   }
 }

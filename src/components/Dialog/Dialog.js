@@ -293,8 +293,10 @@ export default class Dialog extends PureComponent {
             }
           }}
           activeOpacity={1}
-          style={[styles.container, this.props.backgroundStyle]}
+          style={[this.props.backgroundStyle, {backgroundColor: 'yellow'}]}
         >
+        </TouchableOpacity>
+        <View style={styles.container}>
           {this.props.header}
           {this.props.opacity ? (
             <View
@@ -326,7 +328,7 @@ export default class Dialog extends PureComponent {
               {this.renderBtns()}
             </View>
           </KeyboardAvoidingView>
-        </TouchableOpacity>
+        </View>
       </Modal>
     )
   }

@@ -211,7 +211,7 @@ export default class Mine extends Component {
             title: getLanguage(this.props.language).Profile.AREFFECT,
             image: getThemeAssets().ar.armap.ar_effect,
             onClick: () =>
-              this.goToMyAREffect(getLanguage(this.props.language).Profile.ARMODEL),
+              this.goToMyAREffect(getLanguage(this.props.language).Profile.AREFFECT),
           })
           break
         case 'SCENE':

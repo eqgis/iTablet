@@ -197,7 +197,7 @@ export default class MeasureAreaView extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
         action: ()=>{
-          SMeasureAreaView.setMeasureMode('DRAW_AREA_RECTANGLE')
+          SMeasureAreaView.setMeasureMode('DRAW_RECTANGLE')
           this.setState({
             showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
               GLOBAL.language,
@@ -213,7 +213,7 @@ export default class MeasureAreaView extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
         action: ()=>{
-          SMeasureAreaView.setMeasureMode('DRAW_AREA_CIRCLE')
+          SMeasureAreaView.setMeasureMode('DRAW_CIRCLE')
           this.setState({ showSave: false,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
             GLOBAL.language,
           ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,

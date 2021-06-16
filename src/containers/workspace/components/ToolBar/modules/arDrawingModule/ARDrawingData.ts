@@ -253,6 +253,15 @@ async function getARModel() {
 async function getAREffect() {
   const _params: any = ToolbarModule.getParams()
   const arEffectTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'AREFFECT')
+  arEffectTemp.sort((a: any, b: any) => {
+    if (a.name > b.name) {
+      return 1
+    } else if (a.name < b.name) {
+      return -1
+    } else {
+      return 0
+    }
+  })
   const downloadKeys: string[] = []
   const items: any[] = []
   if(arEffectTemp.findIndex(item => item.name === AREffectExample.toName) < 0) {

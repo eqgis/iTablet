@@ -204,9 +204,9 @@ async function arModel(path: string) {
 /** 添加模型 */
 export async function addARModel(location?: IVector3) {
   try {
+    await checkARLayer(ARLayerType.AR_MODEL_LAYER)
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
-    await checkARLayer(ARLayerType.AR_MODEL_LAYER)
     const layer = _params.arlayer.currentLayer
     if(layer){
       await SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)

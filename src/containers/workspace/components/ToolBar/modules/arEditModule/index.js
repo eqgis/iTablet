@@ -43,7 +43,10 @@ class ArEditModule extends FunctionModule {
     const _data = await AREditData.getData(this.type, params)
 
     params.showFullMap && params.showFullMap(true)
-    if (params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER) {
+    if (
+      params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
+      params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
+    ) {
       SARMap.setAction(ARAction.MOVE)
       params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
         isFullScreen: false,

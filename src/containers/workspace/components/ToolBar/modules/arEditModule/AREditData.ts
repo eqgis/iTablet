@@ -146,7 +146,10 @@ function getMenuData() {
         break
     }
   } else {
-    if (_params.arlayer.currentLayer.type === ARLayerType.AR_SCENE_LAYER) {
+    if (
+      _params.arlayer.currentLayer.type === ARLayerType.AR_SCENE_LAYER ||
+      _params.arlayer.currentLayer.type === ARLayerType.AR3D_LAYER
+    ) {
       data = ARStyleItems(_params.language)
     }
   }
@@ -173,7 +176,7 @@ async function getStyleData(type: string) {
   const element = _data.selectARElement
   const currentLayer = _params.arlayer.currentLayer
 
-  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER)  {
+  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER && currentLayer?.type !== ARLayerType.AR3D_LAYER)  {
     Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)
     return
   }
@@ -382,7 +385,7 @@ async function getAnimationData(type: string) {
   const element = _data.selectARElement
   const currentLayer = _params.arlayer.currentLayer
 
-  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER)  {
+  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER && currentLayer?.type !== ARLayerType.AR3D_LAYER)  {
     Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)
     return
   }

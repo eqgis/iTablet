@@ -110,12 +110,15 @@ export default class ARLayerManager extends React.Component<Props, State> {
             title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
             image: getThemeAssets().layer.icon_layer_style,
             action: async () => {
-              if (this.props.arlayer.currentLayer) {
+              let layer = this.state.selectLayer
+              // if (this.props.arlayer.currentLayer) {
+              if (layer) {
                 DialogUtils.showInputDailog({
-                  value: this.props.arlayer.currentLayer.caption,
+                  // value: this.props.arlayer.currentLayer.caption,
+                  value: layer.caption,
                   confirmAction: async (name: string) => {
-                    if (this.props.arlayer.currentLayer) {
-                      await SARMap.setLayerCaption(this.props.arlayer.currentLayer.name, name)
+                    if (layer) {
+                      await SARMap.setLayerCaption(layer.name, name)
                       await this.props.getARLayers()
                       DialogUtils.hideInputDailog()
                       this.setState({
@@ -131,8 +134,9 @@ export default class ARLayerManager extends React.Component<Props, State> {
             title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
             image: getThemeAssets().layer.icon_remove_layer,
             action: async () => {
-              if (this.props.arlayer.currentLayer) {
-                await SARMap.removeARLayer(this.props.arlayer.currentLayer.name)
+              let layer = this.state.selectLayer
+              if (layer) {
+                await SARMap.removeARLayer(layer.name)
                 this.props.setCurrentARLayer()
                 await this.props.getARLayers()
                 this.setState({
@@ -181,7 +185,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           this.props.setCurrentARLayer(layer)
         }}
         onPressMore={layer => {
-          this.props.setCurrentARLayer(layer)
+          // this.props.setCurrentARLayer(layer)
           this.setState({
             menuVisible: true,
             selectLayer: layer,

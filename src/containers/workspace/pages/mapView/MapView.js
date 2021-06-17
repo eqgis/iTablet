@@ -1514,8 +1514,9 @@ export default class MapView extends React.Component {
 
       if (GLOBAL.clickWait) return true
       GLOBAL.clickWait = true
-      let result = await SMap.mapIsModified()
-      if (result && !this.isExample) {
+      let result = await SMap.mapIsModified() // 是否保存普通地图
+      const needSaveARMap = GLOBAL.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
+      if ((result || needSaveARMap) && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {
           await this.props.setCurrentAttribute({})
           // this.setState({ showScaleView: false })

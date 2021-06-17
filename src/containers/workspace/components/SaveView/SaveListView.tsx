@@ -25,7 +25,7 @@ interface Props {
   save?: () => boolean,
   notSave?: () => void,
   cancel?: () => void,
-  saveMap: (data: { mapTitle: string, nModule: string, addition?: {Template?: string} }) => boolean,
+  saveMap: (data: { mapName: string, nModule: string, addition?: {Template?: string} }) => boolean,
   saveARMap: (name: string) => boolean,
 
   getMaps: () => Promise<MapInfo[]>,
@@ -148,7 +148,7 @@ export default class SaveListView extends React.Component<Props, State> {
       }
       let mapName = name
       // 导出(保存)工作空间中地图到模块
-      let result = await this.props.saveMap({ mapTitle: mapName, nModule: '', addition })
+      let result = await this.props.saveMap({ mapName: mapName, nModule: '', addition })
       return result
     } catch (e) {
       GLOBAL.clickWait = false

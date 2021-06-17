@@ -25,6 +25,7 @@ import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffectExample3, AREffectExample4, ExampleData } from '../../../../../tabs/Mine/DataHandler/DataExample'
 import { ExternalDataType, ToolBarListItem } from '../types'
 import { Downloads, Download } from '../../../../../../redux/models/down'
+import { Platform } from 'react-native'
 interface AssetType {
   Photos: 'Photos',
   Videos: 'Videos',
@@ -275,7 +276,13 @@ async function addAREffect(fileName: string, filePath: string) {
     // 若已有特效图层，则替换
     if(effectLayer) {
       const homePath = await FileTools.getHomeDirectory()
-      SARMap.setAREffect(effectLayer.name, homePath + filePath)
+      if (Platform.OS === 'ios') {
+        let targetPath = filePath.replace('.areffect','.mp4')
+        await FileTools.copyFile(homePath+filePath, homePath+targetPath)
+        SARMap.setAREffect(effectLayer.name, homePath + targetPath)
+      }else{
+        SARMap.setAREffect(effectLayer.name, homePath + filePath)
+      }
       const layerName = fileName.substring(0, fileName.lastIndexOf('.'))
       await SARMap.setLayerCaption(effectLayer.name, layerName)
       await _params.getARLayers()
@@ -289,7 +296,14 @@ async function addAREffect(fileName: string, filePath: string) {
       await _params.createARMap()
     }
     const layerName = fileName.substring(0, fileName.lastIndexOf('.'))
-    const addLayerName = await SARMap.addEffectLayer(layerName, homePath + filePath)
+    let addLayerName 
+    if (Platform.OS === 'ios') {
+      let targetPath = filePath.replace('.areffect','.mp4')
+      await FileTools.copyFile(homePath+filePath, homePath+targetPath)
+      addLayerName = await SARMap.addEffectLayer(layerName, homePath + targetPath)
+    }else{
+      addLayerName = await SARMap.addEffectLayer(layerName, homePath + filePath)
+    }
     if(addLayerName !== '') {
       const layers = await _params.getARLayers()
       const defaultLayer = layers.find((item: ARLayer) => {

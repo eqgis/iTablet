@@ -114,7 +114,11 @@ class MyARMap extends MyDataPage {
       for(let i = 0; i < nodes.length; i++) {
         const datasourceNode = nodes[i].children[0]
         const datasource = datasourceNode
-        const udbPath = datasource.nodeValue
+        let udbPath = datasource.nodeValue
+        // 若是相对路径，则补全绝对路径
+        if ((udbPath + '').startsWith(ConstPath.AppPath)) {
+          udbPath = await FileTools.appendingHomeDirectory(udbPath)
+        }
         datasourceArr.push(udbPath)
         const uddPath = udbPath.slice(0, udbPath.length - 1) + 'd'
         datasourceArr.push(uddPath)

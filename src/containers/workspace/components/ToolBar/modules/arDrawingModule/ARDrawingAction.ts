@@ -348,7 +348,7 @@ async function checkARLayer(type: TARLayerType) {
   }
 
   if(!satisfy) {
-    let datasourceName = _params.armap.currentMap?.mapName || DataHandler.getARRawDatasource()
+    let datasourceName = DataHandler.getARRawDatasource()
     let datasetName: string
     switch(type) {
       case ARLayerType.AR_MEDIA_LAYER:

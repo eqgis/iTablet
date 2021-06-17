@@ -126,6 +126,7 @@ import ArMappingButton from '../../components/ArMappingButton'
 import ImageButton from '../../../../components/ImageButton'
 import Header from '../../../../components/Header'
 import DatumPointCalibration from '../../../arDatumPointCalibration/'
+import DataHandler from '../../../tabs/Mine/DataHandler'
 
 GLOBAL.markerTag = 118082
 
@@ -3970,8 +3971,16 @@ export default class MapView extends React.Component {
                 // 获取MapControl中的地图名称
                 mapName = mapInfo.name
               } else if (this.props.layers.layers.length > 0) {
-                // 获取数据源名称作为地图名称
-                mapName = 'DefaultMap'
+                // 若无参数，打开默认工作空间。分析模块使用
+                let userPath = ConstPath.CustomerPath
+                if (
+                  this.props.user.currentUser &&
+                  this.props.user.currentUser.userName
+                ) {
+                  userPath =
+                    ConstPath.UserPath + this.props.user.currentUser.userName + '/'
+                }
+                mapName = await DataHandler.getAvailableFileNameNoExt(await FileTools.appendingHomeDirectory(userPath + ConstPath.RelativePath.Map), 'DefaultMap', 'xml')
               }
             }
             if (mapName) {

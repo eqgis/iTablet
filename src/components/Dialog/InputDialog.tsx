@@ -11,11 +11,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   ReturnKeyTypeOptions,
+  KeyboardTypeOptions,
 } from 'react-native'
 import Dialog from './Dialog'
 import { color } from '../../styles'
 import styles from './styles'
 import { scaleSize, dataUtil } from '../../utils'
+import { getLanguage } from '../../language'
+
+type ValueType = 'default' | 'http' | 'number' | 'name'
 
 interface Props {
   confirmAction?: (data?: any) => void,
@@ -39,7 +43,8 @@ interface State {
   placeholder: string,
   isLegalName: boolean,
   legalCheck: boolean,
-  errorInfo?: string,
+  errorInfo?: string | null,
+  type?: ValueType,
 }
 
 export interface TempData {
@@ -48,6 +53,7 @@ export interface TempData {
   value?: string,
   placeholder?: string,
   legalCheck?: boolean,
+  type?: ValueType,
   confirmAction?: (data?: any) => void,
   cancelAction?: (data?: any) => void,
 }
@@ -71,7 +77,7 @@ export default class InputDialog extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    let { result, error } = dataUtil.isLegalName(props.value, GLOBAL.language)
+    let { result, error } = this.checkValue(props.value, 'default')
     this.state = {
       value: props.value,
       placeholder: props.placeholder,
@@ -79,6 +85,7 @@ export default class InputDialog extends PureComponent<Props, State> {
       errorInfo: error,
       title: props.title,
       legalCheck: props.legalCheck,
+      type: 'default',
     }
   }
 
@@ -107,11 +114,17 @@ export default class InputDialog extends PureComponent<Props, State> {
       }
     } else {
       this.params = params
-      if (params.value !== undefined || params.placeholder !== undefined || params.title !== this.state.title) {
+      if (params.value !== undefined || params.placeholder !== undefined || params.title !== this.state.title|| params.type !== this.state.type) {
+        let _value = params.value || ''
+        let _type = params.type || 'default'
+        let { result, error } = this.checkValue(_value, _type)
         this.setState({
-          value: params.value || '',
+          value: _value,
           placeholder: params.placeholder || '',
           title: params.title,
+          isLegalName: result,
+          errorInfo: error,
+          type: _type,
         })
       }
     }
@@ -136,6 +149,51 @@ export default class InputDialog extends PureComponent<Props, State> {
     this.setDialogVisible(false)
   }
 
+  getKeyboardType = (): KeyboardTypeOptions => {
+    let keyboardType: KeyboardTypeOptions
+    switch (this.state.type) {
+      case 'number':
+        keyboardType = 'numeric'
+        break
+      case 'name':
+      case 'http':
+      default:
+        keyboardType = 'default'
+        break
+    }
+    return keyboardType
+  }
+
+  checkValue = (text: string, type = this.state.type) => {
+    let res
+    switch (type) {
+      case 'number': {
+        let isNumber = text !== '' && !isNaN(text) && text !== undefined
+        res = {
+          result: isNumber,
+          error: isNumber
+            ? null
+            : getLanguage(GLOBAL.language).Prompt.ERROR_INFO_NOT_A_NUMBER,
+        }
+        break
+      }
+      case 'name':
+        res = dataUtil.isLegalName(text, GLOBAL.language)
+        break
+      case 'http':
+        if (text === '') {
+          res = { result: true }
+        } else {
+          res = dataUtil.isLegalURL(text, GLOBAL.language)
+        }
+        break
+      default:
+        res = { result: text !== '', error: text === '' ? getLanguage(GLOBAL.language).Prompt.ERROR_INFO_EMPTY : '' }
+        break
+    }
+    return res
+  }
+
   renderInput = () => {
     return (
       <View style={styles.inputDialogContainer}>
@@ -155,7 +213,7 @@ export default class InputDialog extends PureComponent<Props, State> {
           value={this.state.value + ''}
           onChangeText={text => {
             if (this.props.legalCheck) {
-              let { result, error } = dataUtil.isLegalName(text, GLOBAL.language)
+              let { result, error } = this.checkValue(text)
               this.setState({
                 isLegalName: result,
                 errorInfo: error,
@@ -168,6 +226,7 @@ export default class InputDialog extends PureComponent<Props, State> {
             }
           }}
           keyboardAppearance={this.props.keyboardAppearance}
+          keyboardType={this.getKeyboardType()}
           returnKeyType={this.props.multiline ? 'next' : this.props.returnKeyType}
         />
       </View>

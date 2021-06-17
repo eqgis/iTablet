@@ -3,14 +3,19 @@ import { StyleSheet, Image, Text, TextStyle, TouchableOpacity, View, ViewStyle }
 import { scaleSize, setSpText } from '../../utils'
 import { color, size } from '../../styles'
 import { getARLayerAssets, getPublicAssets, getThemeAssets } from '../../assets'
-import { SARMap, ARLayer } from 'imobile_for_reactnative'
-
+import { SARMap, ARLayerType } from 'imobile_for_reactnative'
+import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
+import { ARLayers } from './ARLayerManager'
 const styles = StyleSheet.create({
   rowOne: {
     height: scaleSize(98),
     paddingHorizontal: scaleSize(20),
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  arrowImg: {
+    height: size.imageSize.middle,
+    width: size.imageSize.middle,
   },
   btn: {
     height: scaleSize(50),
@@ -21,8 +26,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btn_image: {
-    height: scaleSize(44),
-    width: scaleSize(44),
+    height: size.imageSize.middle,
+    width: size.imageSize.middle,
   },
   text: {
     fontSize: setSpText(24),
@@ -40,10 +45,12 @@ interface ItemProps {
   onPress: (layer: ARLayer) => void,
   onPressMore: (layer: ARLayer) => void,
   currentLayer?: ARLayer,
+  setCurrentARLayer: (layer?: ARLayer) => void,
 }
 
 interface ItemState {
-  visible: boolean
+  visible: boolean,
+  showChildGroup: boolean,
 }
 
 export default class LayerItem extends React.Component<ItemProps, ItemState> {
@@ -52,6 +59,7 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
 
     this.state = {
       visible: this.props.layer.isVisible,
+      showChildGroup: false,
     }
   }
 
@@ -64,11 +72,29 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
     })
   }
 
+  _renderSubLayers = () => {
+    if(!this.props.layer.ar3DLayers) return null
+    return (
+      <ARLayers
+        layers={this.props.layer.ar3DLayers}
+        currentLayer={this.props.currentLayer}
+        setCurrentARLayer={this.props.setCurrentARLayer}
+        onPress={layer => {
+          this.props.onPress(layer)
+        }}
+        onPressMore={layer => {
+          this.props.onPressMore(layer)
+        }}
+      />
+    )
+  }
+
   render() {
     const typeIcon = getARLayerAssets(this.props.layer.type)
     let visibleIcon
     const isCurrentLayer = this.props.currentLayer?.name === this.props.layer.name
-    let ItemStyle: ViewStyle = {}, textStyle: TextStyle = {}, moreImg: any
+    let ItemStyle: ViewStyle = {}, textStyle: TextStyle = {}, moreImg: any, arrowImg: any
+
     if(isCurrentLayer) {
       ItemStyle = {
         backgroundColor: color.item_selected_bg,
@@ -80,11 +106,17 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
       visibleIcon = this.props.layer.isVisible
         ? getPublicAssets().common.icon_disable_select
         : getPublicAssets().common.icon_disable_none
+      arrowImg = this.state.showChildGroup
+        ? getThemeAssets().publicAssets.icon_dropdown_selected
+        : getThemeAssets().publicAssets.icon_dropup_selected
     } else {
       moreImg = getThemeAssets().publicAssets.icon_move
       visibleIcon = this.props.layer.isVisible
         ? getPublicAssets().common.icon_select
         : getPublicAssets().common.icon_none
+      arrowImg = this.state.showChildGroup
+        ? getThemeAssets().publicAssets.icon_drop_down
+        : getThemeAssets().publicAssets.icon_drop_up
     }
     return (
       <>
@@ -101,6 +133,18 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
+            {this.props.layer.type === ARLayerType.AR_SCENE_LAYER &&
+            <TouchableOpacity onPress={() => {
+              this.setState({
+                showChildGroup: !this.state.showChildGroup,
+              })
+            }}>
+              <Image
+                style={[styles.arrowImg, {marginHorizontal: scaleSize(8)}]}
+                source={arrowImg}
+              />
+            </TouchableOpacity>
+            }
             <TouchableOpacity
               style={styles.btn}
               onPress={this.setVisible}>
@@ -137,6 +181,10 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
             />
           </TouchableOpacity>
         </TouchableOpacity>
+        {
+          this.state.showChildGroup && this.props.layer.type === ARLayerType.AR_SCENE_LAYER &&
+          this._renderSubLayers()
+        }
       </>
     )
   }

@@ -54,7 +54,7 @@ export const getARLayers = () => async (dispatch: (params: DispatchParams) => an
 }
 
 export const setCurrentARLayer = (
-  layer: ARLayer | undefined
+  layer?: ARLayer
 ) => (dispatch: (params: DispatchParams) => any) => {
   dispatch({
     type: SET_CURRENT_AR_LAYER,

@@ -16,7 +16,7 @@ import {
   ToolbarType,
   ConstPath,
 } from '../../../../../../constants'
-import { Toast, AppProgress } from '../../../../../../utils'
+import { Toast, AppProgress, DialogUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
@@ -26,6 +26,7 @@ import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffec
 import { ExternalDataType, ToolBarListItem } from '../types'
 import { Downloads, Download } from '../../../../../../redux/models/down'
 import { Platform } from 'react-native'
+
 interface AssetType {
   Photos: 'Photos',
   Videos: 'Videos',
@@ -117,27 +118,22 @@ async function arImage() {
 }
 
 async function arWebView() {
-  NavigationService.navigate('InputPage', {
+  DialogUtils.showInputDailog({
+    value: 'http://',
     type: 'http',
-    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
-    cb: async (value: string) => {
-      if (value !== '') {
-        setARToolbar(ConstToolType.SM_AR_DRAWING_WEB, { arContent: value })
-        NavigationService.goBack('InputPage', null)
-      }
+    confirmAction: async (value: string) => {
+      setARToolbar(ConstToolType.SM_AR_DRAWING_WEB, { arContent: value })
+      DialogUtils.hideInputDailog()
     },
   })
 }
 
 async function arText() {
-  NavigationService.navigate('InputPage', {
-    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
-    type: 'name',
-    cb: async (value: string) => {
-      if (value !== '') {
-        setARToolbar(ConstToolType.SM_AR_DRAWING_TEXT, { arContent: value })
-        NavigationService.goBack('InputPage')
-      }
+  DialogUtils.showInputDailog({
+    value: '',
+    confirmAction: async (value: string) => {
+      setARToolbar(ConstToolType.SM_AR_DRAWING_TEXT, { arContent: value })
+      DialogUtils.hideInputDailog()
     },
   })
 }
@@ -211,12 +207,12 @@ async function arModel(path: string) {
 /** 添加模型 */
 export async function addARModel(location?: IVector3) {
   try {
+    await checkARLayer(ARLayerType.AR_MODEL_LAYER)
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
-    await checkARLayer(ARLayerType.AR_MODEL_LAYER)
     const layer = _params.arlayer.currentLayer
     if(layer){
-      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
+      await SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
     }
   } catch (error) {
     Toast.show(error)
@@ -250,7 +246,7 @@ async function addText(location?: IVector3) {
     let content = _data.arContent
     const layer = _params.arlayer.currentLayer
     if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-      SARMap.addARText(layer.name, content, location)
+      await SARMap.addARText(layer.name, content, location)
     }
   } catch (error) {
     Toast.show(error)

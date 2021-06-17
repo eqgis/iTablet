@@ -54,6 +54,7 @@ import {
   PreviewHeader,
   IncrementRoadDialog,
   SaveView,
+  SaveListView,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { shareModule } from '../../components/ToolBar/modules'
@@ -105,7 +106,6 @@ import {
   AppState,
   StyleSheet,
   PanResponder,
-  NativeModules,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -492,7 +492,9 @@ export default class MapView extends React.Component {
       GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
     }
 
-    
+    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR) {
+      this.showFullMap(true)
+    }
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
 
     if (GLOBAL.isLicenseValid) {
@@ -710,6 +712,8 @@ export default class MapView extends React.Component {
       JSON.stringify(this.props.mapNavigation)
     ) {
       this.showFullMap(this.props.mapNavigation.isShow)
+    } else if (this.props.showDatumPoint !== prevProps.showDatumPoint) {
+      this.showFullMap(this.props.showDatumPoint)
     }
     // if (
     //   JSON.stringify(prevProps.editLayer) !==
@@ -1347,7 +1351,8 @@ export default class MapView extends React.Component {
         )
         return true
       } else {
-        this.setSaveMapViewLoading(false)
+        this.setLoading(false)
+        // this.setSaveMapViewLoading(false)
         return false
       }
     } catch (e) {
@@ -3938,6 +3943,53 @@ export default class MapView extends React.Component {
    * 退出地图保存提示框
    */
   _renderExitSaveView = () => {
+    if (GLOBAL.Type === ChunkType.MAP_AR) {
+      return (
+        <SaveListView
+          ref={ref => GLOBAL.SaveMapView = ref}
+          getMaps={async () => {
+            const maps = []
+            if (this.props.armap.currentMap?.mapName) {
+              maps.push({
+                name: this.props.armap.currentMap.mapName,
+                // path: this.props.armap.currentMap.path,
+                mapType: 'ar',
+              })
+            }
+            let mapName = ''
+            if (this.props.map.currentMap.name) {
+              // 获取当前打开的地图xml的名称
+              mapName = this.props.map.currentMap.name
+              mapName =
+                mapName.substr(0, mapName.lastIndexOf('.')) ||
+                this.props.map.currentMap.name
+            } else {
+              let mapInfo = await SMap.getMapInfo()
+              if (mapInfo && mapInfo.name) {
+                // 获取MapControl中的地图名称
+                mapName = mapInfo.name
+              } else if (this.props.layers.layers.length > 0) {
+                // 获取数据源名称作为地图名称
+                mapName = 'DefaultMap'
+              }
+            }
+            if (mapName) {
+              maps.push({
+                name: mapName,
+                // path: this.props.map.currentMap.path,
+                mapType: 'map',
+              })
+            }
+            return maps
+          }}
+          cancel={() => {
+            GLOBAL.clickWait = false
+          }}
+          saveMap={this.props.saveMap}
+          saveARMap={this.props.saveARMap}
+        />
+      )
+    }
     return (
       <SaveView
         ref={ref => (GLOBAL.SaveMapView = ref)}
@@ -4434,7 +4486,7 @@ export default class MapView extends React.Component {
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderBottomBtns()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showCurrentHeightView && this.renderCurrentHeightChangeView()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.showADDPoint && this.state.isnew && !this.state.isTrack && this.renderADDPoint()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.showADD && this.state.isnew && !this.state.isTrack && this.renderCenterBtn()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showADD && this.state.isnew && !this.state.isTrack && this.renderCenterBtn()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.is_showLog && this.state.showLog && this.renderDioLog()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showGenera && (this.isDrawing || this.isCollect) && this.renderGeneralView()}
       </>
@@ -4683,7 +4735,6 @@ export default class MapView extends React.Component {
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
-        {this._renderExitSaveView()}
       </Container>
     )
   }
@@ -4706,6 +4757,7 @@ export default class MapView extends React.Component {
             measureType: this.measureType,
           }}
           startScan={this._startScan} onClose={this._onDatumPointClose} />}
+        {this._renderExitSaveView()}
       </View>
     )
   }

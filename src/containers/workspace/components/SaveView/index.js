@@ -1,4 +1,5 @@
 import SaveView from './SaveView'
+import SaveListView from './SaveListView'
 // import { connect } from 'react-redux'
 // const mapStateToProps = state => ({
 //     language: state.setting.toJS().language
@@ -9,4 +10,7 @@ import SaveView from './SaveView'
 //     mapStateToProps,
 //     mapDispatchToProps,
 //   )(SaveView)
-export default SaveView
+export {
+  SaveView,
+  SaveListView,
+}

@@ -857,7 +857,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_AREA_RECTANGLE')
+    SARMap.setMeasureMode('DRAW_RECTANGLE')
     this.setState({
       isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
@@ -922,7 +922,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_AREA_CIRCLE')
+    SARMap.setMeasureMode('DRAW_CIRCLE')
     this.setState({
       isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,

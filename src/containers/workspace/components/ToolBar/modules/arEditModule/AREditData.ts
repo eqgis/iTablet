@@ -420,7 +420,7 @@ async function getAnimationData(type: string) {
           title: getLanguage(GLOBAL.language).Common.NONE,
           action: () => {
             if(element) {
-              SARMap.removeAnimation(element.layerName, element.id)
+              SARMap.clearAnimation(element.layerName, element.id)
             }
           },
         },
@@ -437,7 +437,7 @@ async function getAnimationData(type: string) {
           title: item.name,
           action: async () => {
             if(element) {
-              await SARMap.removeAnimation(element.layerName, element.id)
+              await SARMap.clearAnimation(element.layerName, element.id)
               SARMap.setAnimation(element.layerName, element.id, item.id)
             }
           },

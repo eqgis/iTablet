@@ -234,7 +234,7 @@ export default class LayerAttribute extends React.Component {
 
   /** 加载更多 **/
   loadMore = (cb = () => { }) => {
-    if (this.isLoading || !!this.props.currentLayer.name) return
+    if (this.isLoading || !this.props.currentLayer.name) return
     if (this.noMore) {
       cb && cb()
       return
@@ -477,7 +477,6 @@ export default class LayerAttribute extends React.Component {
       this.canBeRefresh = true
     }
     this.noMore = true
-
     this.getAttribute(
       {
         type: 'reset',
@@ -780,15 +779,19 @@ export default class LayerAttribute extends React.Component {
 
   /** 删除事件 **/
   deleteAction = async () => {
+    let index = this.state.currentIndex
+    if (this.state.currentIndex > this.state.attributes.data.length) {
+      index = this.state.attributes.data.length - (this.total - this.state.currentIndex)
+    }
     let smID = -1, // 用于找到删除的对象
       hasMedia = false // 是否包含多媒体图片
-    for (let i = 0; i < this.state.attributes.data[this.state.currentIndex].length; i++) {
-      if (this.state.attributes.data[this.state.currentIndex][i].name === 'SmID') {
-        smID = this.state.attributes.data[this.state.currentIndex][i].value
+    for (let i = 0; i < this.state.attributes.data[index].length; i++) {
+      if (this.state.attributes.data[index][i].name === 'SmID') {
+        smID = this.state.attributes.data[index][i].value
         if (smID >= 0 && hasMedia) break
       } else if (
-        this.state.attributes.data[this.state.currentIndex][i].name === 'MediaFilePaths' &&
-        this.state.attributes.data[this.state.currentIndex][i].value != ''
+        this.state.attributes.data[index][i].name === 'MediaFilePaths' &&
+        this.state.attributes.data[index][i].value != ''
       ) {
         hasMedia = true
         if (smID >= 0 && hasMedia) break

@@ -338,8 +338,10 @@ async function checkARLayer(type: TARLayerType) {
     } else {
       newDataset = true
     }
-    DataHandler.setARRawDatasource(currentLayer.datasourceAlias)
-    newDatasource = false
+    if (currentLayer.datasourceAlias) {
+      DataHandler.setARRawDatasource(currentLayer.datasourceAlias)
+      newDatasource = false
+    }
   } else if (_params.armap.currentMap?.mapName) { // 已有地图，没有选择/没有 当前图层
     newDatasource = true
   } else {
@@ -349,6 +351,7 @@ async function checkARLayer(type: TARLayerType) {
 
   if(!satisfy) {
     let datasourceName = DataHandler.getARRawDatasource()
+    let datasourceName = DataHandler.getARRawDatasource() || _params.armap.currentMap?.mapName || 'ARMAP_DEFAULT'
     let datasetName: string
     switch(type) {
       case ARLayerType.AR_MEDIA_LAYER:

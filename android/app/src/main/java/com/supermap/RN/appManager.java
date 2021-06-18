@@ -127,7 +127,7 @@ public class appManager {
         return iwxapi.isWXAppInstalled();
     }
 
-    public Boolean sendFileOfWechat(Map map) {
+    public Boolean sendFileOfWechat(Map map) throws Exception {
         Boolean result = false;
         WXMediaMessage msg = new WXMediaMessage();
         SendMessageToWX.Req req = new SendMessageToWX.Req();
@@ -143,7 +143,8 @@ public class appManager {
                 FileInputStream fis=new FileInputStream(file);
                 long size=fis.available();
                 if(size>10485760){
-                    return false;
+//                    return false;
+                    throw new Exception("File size cannot exceeds 10M");
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

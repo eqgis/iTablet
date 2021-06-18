@@ -208,6 +208,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'Paylaşım Başarısız',
   SHARE_PREPARE: 'Paylaşım için Hazırlanıyor',
   SHARE_START: 'Paylaşmaya Başla',
+  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
 
   EXPORTING: 'Dışarı Aktarılıyor',
   EXPORT_SUCCESS: 'Başarıyla Dışarı Aktarıldı',

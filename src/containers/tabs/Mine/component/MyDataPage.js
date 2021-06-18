@@ -409,38 +409,44 @@ export default class MyDataPage extends Component {
   }
 
   shareToWechat = async fileName => {
-    let result
-    let isInstalled
-    if (Platform.OS === 'ios') {
-      isInstalled = true
-    } else {
-      isInstalled = await appUtilsModule.isWXInstalled()
-    }
-    // let isInstalled = await appUtilsModule.isWXInstalled()
-    if (isInstalled) {
-      await this.exportData(fileName)
-      let path = this.exportPath
-      this.exportPath = ''
-      let copyPath
-      if (Platform.OS === 'android') {
-        copyPath =
-          GLOBAL.homePath + this.getRelativeTempPath() + 'MyExportWX.zip'
-        await FileTools.copyFile(path, copyPath, true)
+    try {
+      let result
+      let isInstalled
+      if (Platform.OS === 'ios') {
+        isInstalled = true
+      } else {
+        isInstalled = await appUtilsModule.isWXInstalled()
       }
-      result = await appUtilsModule.sendFileOfWechat({
-        filePath: Platform.OS === 'ios' ? path : copyPath,
-        title: fileName + '.zip',
-        description: 'SuperMap iTablet',
-      })
-      await FileTools.deleteFile(path)
-      if (!result) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.WX_SHARE_FAILED)
-        return undefined
+      // let isInstalled = await appUtilsModule.isWXInstalled()
+      if (isInstalled) {
+        await this.exportData(fileName)
+        let path = this.exportPath
+        this.exportPath = ''
+        let copyPath
+        if (Platform.OS === 'android') {
+          copyPath =
+            GLOBAL.homePath + this.getRelativeTempPath() + 'MyExportWX.zip'
+          await FileTools.copyFile(path, copyPath, true)
+        }
+        result = await appUtilsModule.sendFileOfWechat({
+          filePath: Platform.OS === 'ios' ? path : copyPath,
+          title: fileName + '.zip',
+          description: 'SuperMap iTablet',
+        })
+        await FileTools.deleteFile(path)
+        if (!result) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.WX_SHARE_FAILED)
+          return undefined
+        }
+      } else {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.WX_NOT_INSTALLED)
       }
-    } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.WX_NOT_INSTALLED)
+      return result === false ? result : undefined
+    } catch (error) {
+      if (error.message.includes('File size cannot exceeds 10M')) {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+      }
     }
-    return result === false ? result : undefined
   }
 
   shareToOnline = async fileName => {

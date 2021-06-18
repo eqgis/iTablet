@@ -3,7 +3,7 @@ import Toast from 'react-native-root-toast'
 
 function show(msg, option = null) {
   const op = {
-    duration: DURATION.TOAST_SHOT,
+    duration: DURATION.TOAST_LONG,
     position: POSITION.TOP,
     shadow: true,
     animation: true,

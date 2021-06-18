@@ -18,13 +18,16 @@ import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
 import NavigationService from '../../containers/NavigationService'
 import MapSelectPointLatitudeAndLongitude from '../workspace/components/MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
-
-export default class CollectSceneFormSet extends Component {
+import { setShowARSceneNotify } from '../../redux/models/setting'
+import { connect } from 'react-redux'
+class CollectSceneFormSet extends Component {
   props: {
     navigation: Object,
     fixedPositions: Function,
     autoCatch: Function,//AR测量等方法调用开启捕捉 add jiakai
     setTolerance: Function,//AR测量等方法设置捕捉容限 add jiakai
+    showARSceneNotify: boolean,
+    setShowARSceneNotify(value: boolean): Promise<void>,
   }
 
   constructor(props) {
@@ -346,6 +349,37 @@ export default class CollectSceneFormSet extends Component {
     )
   }
 
+  /**
+   * ar场景提示
+   */
+  _renderShowToast = () => {
+    return (
+      <View style={{ backgroundColor: color.background }}>
+        <View style={styles.separateLine} />
+        <View style={styles.item}>
+          <Text style={styles.itemtitle}>
+            {getLanguage(GLOBAL.language).Prompt.SHOW_AR_SCENE_NOTIFY}
+          </Text>
+
+          <View style={styles.switchItem}>
+
+            <Switch
+              trackColor={{ false: color.bgG, true: color.switch }}
+              thumbColor={color.bgW}
+              ios_backgroundColor={
+                this.props.showARSceneNotify ? color.switch : color.bgG
+              }
+              value={this.props.showARSceneNotify}
+              onValueChange={value => {
+                this.props.setShowARSceneNotify(value)
+              }}
+            />
+          </View>
+        </View>
+      </View>
+    )
+  }
+
   renderContent() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: color.background }}>
@@ -357,6 +391,7 @@ export default class CollectSceneFormSet extends Component {
           {this.autoCatch&&this.renderSwitch()}
           {this.autoCatch&&this.state.isSnap&&this.renderSnapTolerance()}
           {!this.collectScene&&!this.isMeasure&&this.renderShowGenera()}
+          {this._renderShowToast()}
         </View>
       </ScrollView>
     )
@@ -377,6 +412,21 @@ export default class CollectSceneFormSet extends Component {
     )
   }
 }
+
+
+const mapStateToProps = state => ({
+  showARSceneNotify: state.setting.toJS().showARSceneNotify,
+})
+
+
+const mapDispatchToProps = {
+  setShowARSceneNotify,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CollectSceneFormSet)
 
 const styles = StyleSheet.create({
   container: {

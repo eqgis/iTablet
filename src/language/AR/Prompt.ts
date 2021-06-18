@@ -422,6 +422,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: 'لا توجد قوالب متاحة',
   CONFIRM_LOAD_TEMPLATE: 'هل أنت متأكد من تحميل النموذج؟',
   CONFIRM_OUTPUT_TEMPLATE: 'هل أنت متأكد من إخراج الخريطة؟',
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

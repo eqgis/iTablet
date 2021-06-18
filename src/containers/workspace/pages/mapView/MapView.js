@@ -239,6 +239,7 @@ export default class MapView extends React.Component {
     downloadFile: PropTypes.func,
     deleteDownloadFile: PropTypes.func,
     setToolbarStatus: PropTypes.func,
+    showARSceneNotify: PropTypes.bool,
   }
 
   /** 是否导航中 */
@@ -2516,7 +2517,12 @@ export default class MapView extends React.Component {
   measure = params => {
     this.listeners = SARMap.addMeasureStatusListeners({
       infoListener: result => {
-        this.onshowLog(result)
+        if(result.none) {
+          this.onshowLog(result)
+        }
+        if(this.props.showARSceneNotify) {
+          this.onshowLog(result)
+        }
       },
       addListener: async result => {
         if (result) {

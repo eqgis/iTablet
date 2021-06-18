@@ -420,6 +420,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: 'No templates are available',
   CONFIRM_LOAD_TEMPLATE: 'Are you sure you want to load the template?',
   CONFIRM_OUTPUT_TEMPLATE: 'Are you sure you want to output the map?',
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

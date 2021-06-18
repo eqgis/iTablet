@@ -17,6 +17,9 @@ const Common = {
 
   ADD: '添加',
   NONE: '无',
+
+  DELETE_CURRENT_OBJ_CONFIRM: '是否删除当前对象？',
+  NO_SELECTED_OBJ: '没有选中对象',
 }
 
 export { Protocol, Common }

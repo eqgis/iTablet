@@ -280,6 +280,7 @@ class NavigationHeader extends Component {
     }
 
     let padding = { paddingTop: screen.getIphonePaddingTop() }
+    let hasBorderBottomWidth = type !== 'floatNoTitle'
 
     return (
       <Animated.View
@@ -287,7 +288,7 @@ class NavigationHeader extends Component {
           currentHeaderStyle,
           {
             height: this.state.headerHeight,
-            borderBottomWidth: 2,
+            borderBottomWidth: hasBorderBottomWidth ? 2 : 0,
             borderBottomColor: color.itemColorGray2,
           },
           headerStyle,

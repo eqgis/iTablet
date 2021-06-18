@@ -1,8 +1,7 @@
-import { ChunkType, MapTabs, ConstToolType } from '../../constants'
+import { ChunkType, MapTabs } from '../../constants'
 import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
-import FunctionModule from '../../class/FunctionModule'
 import Toast from '../../utils/Toast'
 import { SAIDetectView, SMap } from 'imobile_for_reactnative'
 import {
@@ -15,33 +14,11 @@ import {
   toolModule,
   arDrawingModule,
   arStartModule,
-  arEditModule,
+  // arEditModule,
   arStyleModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
-import NavigationService from '../../containers/NavigationService'
-
-// class ARStartModule extends FunctionModule {
-//   constructor(props) {
-//     super(props)
-//   }
-
-//   action = () => {
-//     NavigationService.navigate('MyARMap', {
-//       showMode: 'tap',
-//     })
-//   }
-// }
-
-// function arStartModule() {
-//   return new ARStartModule({
-//     type: ConstToolType.SM_AR_DRAWING_START,
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.START,
-//     size: 'large',
-//     image: getThemeAssets().functionBar.icon_tool_start,
-//   })
-// }
 
 export default class MapARConfig extends Module {
   static key = ChunkType.MAP_AR
@@ -95,7 +72,7 @@ export default class MapARConfig extends Module {
         modules = [
           arStartModule,
           arDrawingModule,
-          arEditModule,
+          // arEditModule,
           arStyleModule,
         ]
         break

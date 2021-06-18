@@ -1,12 +1,12 @@
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
-import { Toast } from '../../../../../../utils'
+import { scaleSize, Toast } from '../../../../../../utils'
+import { color } from '../../../../../../styles'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
 import AREditAction from './AREditAction'
-import NavigationService from '../../../../../NavigationService'
 import { DATA_ITEM } from '../types'
 
 interface SectionItemData {
@@ -35,7 +35,6 @@ async function getData(type: string, params: {[name: string]: any}) {
   // let customView: (() => React.ReactElement) | undefined = undefined
   switch (type) {
     case ConstToolType.SM_AR_EDIT:
-      break
     case ConstToolType.SM_AR_EDIT_SCALE:
     case ConstToolType.SM_AR_EDIT_ROTATION:
     case ConstToolType.SM_AR_EDIT_POSITION: {
@@ -74,6 +73,8 @@ async function showSlideToolbar(type: string, language: string, params: any) {
     containerType: ToolbarType.slider,
     isFullScreen: false,
     showMenuDialog: false,
+    // showBox: false,
+    height: 0,
     ...params,
   })
 }
@@ -208,12 +209,22 @@ async function getStyleData(type: string) {
   ) {
     Object.assign(transformData, _data.transformData)
   }
-  const buttons = [
-    ToolbarBtnType.TOOLBAR_BACK,
-    ToolbarBtnType.MENU,
-    ToolbarBtnType.MENU_FLEX,
-    ToolbarBtnType.TOOLBAR_COMMIT,
-  ]
+  let buttons
+  if (type === ConstToolType.SM_AR_EDIT) {
+    buttons = [
+      ToolbarBtnType.TOOLBAR_BACK,
+      ToolbarBtnType.MENU,
+      ToolbarBtnType.TOOLBAR_COMMIT,
+    ]
+  } else {
+    buttons = [
+      ToolbarBtnType.TOOLBAR_BACK,
+      ToolbarBtnType.MENU,
+      ToolbarBtnType.MENU_FLEX,
+      ToolbarBtnType.TOOLBAR_COMMIT,
+    ]
+  }
+
   let data: any[] = []
   const allData: {
     title: string,
@@ -558,7 +569,37 @@ async function getAnimationData(type: string) {
   return { buttons, data: allData }
 }
 
+function getHeaderData(type: string) {
+  let headerData: any
+  if (
+    type === ConstToolType.SM_AR_EDIT ||
+    type === ConstToolType.SM_AR_EDIT_SCALE ||
+    type === ConstToolType.SM_AR_EDIT_ROTATION ||
+    type === ConstToolType.SM_AR_EDIT_POSITION
+  ) {
+    headerData = {
+      withoutBack: true,
+      type: 'floatNoTitle',
+      headerRight: [{
+        key: 'delete',
+        // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+        action: AREditAction.deleteARElement,
+        size: 'large',
+        image: getThemeAssets().ar.toolbar.icon_delete,
+        style: {
+          width: scaleSize(60),
+          height: scaleSize(60),
+          borderRadius: scaleSize(8),
+          backgroundColor: color.white,
+        },
+      }],
+    }
+  }
+  return headerData
+}
+
 export default {
   getData,
   getMenuData,
+  getHeaderData,
 }

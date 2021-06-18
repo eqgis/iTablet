@@ -1,4 +1,4 @@
-import { SARMap } from 'imobile_for_reactnative'
+import { SARMap, ARLayerType } from 'imobile_for_reactnative'
 import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
@@ -12,11 +12,12 @@ import { ARMapState } from '../../redux/models/armap'
 import { DEVICE } from '../../redux/models/device'
 import ARLayerItem from './ARLayerItem'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
-import { arDrawingModule } from '../workspace/components/ToolBar/modules'
+import { arDrawingModule, arEditModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
 import { MapToolbar } from '../workspace/components'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
+import NavigationService from '../NavigationService'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -76,7 +77,6 @@ interface Props {
 interface State {
   menuVisible: boolean,
   selectLayer?: ARLayer,
-  menuData: Array<any>,
   type: string,
 }
 
@@ -89,64 +89,6 @@ export default class ARLayerManager extends React.Component<Props, State> {
     const { params } = props.navigation.state
     this.state = {
       menuVisible: false,
-      menuData: [{
-        title: '',
-        data: [
-          // {
-          //   title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_LAYER_STYLE,
-          //   image: getThemeAssets().layer.icon_layer_style,
-          //   action: async () => {
-          //     if (this.props.arlayer.currentLayer) {
-          //       const _params: any = ToolbarModule.getParams()
-          //       _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_STYLE, {
-          //         isFullScreen: true,
-          //         showMenuDialog: true,
-          //       })
-          //       NavigationService.goBack('ARLayerManager', null)
-          //     }
-          //   },
-          // },
-          {
-            title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
-            image: getThemeAssets().layer.icon_layer_style,
-            action: async () => {
-              let layer = this.state.selectLayer
-              // if (this.props.arlayer.currentLayer) {
-              if (layer) {
-                DialogUtils.showInputDailog({
-                  // value: this.props.arlayer.currentLayer.caption,
-                  value: layer.caption,
-                  confirmAction: async (name: string) => {
-                    if (layer) {
-                      await SARMap.setLayerCaption(layer.name, name)
-                      await this.props.getARLayers()
-                      DialogUtils.hideInputDailog()
-                      this.setState({
-                        menuVisible: false,
-                      })
-                    }
-                  },
-                })
-              }
-            },
-          },
-          {
-            title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
-            image: getThemeAssets().layer.icon_remove_layer,
-            action: async () => {
-              let layer = this.state.selectLayer
-              if (layer) {
-                await SARMap.removeARLayer(layer.name)
-                this.props.setCurrentARLayer()
-                await this.props.getARLayers()
-                this.setState({
-                  menuVisible: false,
-                })
-              }
-            },
-          },
-        ],
-      }],
       type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
     }
   }
@@ -164,6 +106,84 @@ export default class ARLayerManager extends React.Component<Props, State> {
       JSON.stringify(this.props.device.orientation) !== JSON.stringify(nextProps.device.orientation) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     )
+  }
+
+  _getMenuData = () => {
+    let menuData = [{
+      title: '',
+      data: [
+        // {
+        //   title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_LAYER_STYLE,
+        //   image: getThemeAssets().layer.icon_layer_style,
+        //   action: async () => {
+        //     if (this.props.arlayer.currentLayer) {
+        //       const _params: any = ToolbarModule.getParams()
+        //       _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_STYLE, {
+        //         isFullScreen: true,
+        //         showMenuDialog: true,
+        //       })
+        //       NavigationService.goBack('ARLayerManager', null)
+        //     }
+        //   },
+        // },
+        {
+          title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
+          image: getThemeAssets().layer.icon_layer_style,
+          action: async () => {
+            let layer = this.state.selectLayer
+            // if (this.props.arlayer.currentLayer) {
+            if (layer) {
+              DialogUtils.showInputDailog({
+                // value: this.props.arlayer.currentLayer.caption,
+                value: layer.caption,
+                confirmAction: async (name: string) => {
+                  if (layer) {
+                    await SARMap.setLayerCaption(layer.name, name)
+                    await this.props.getARLayers()
+                    DialogUtils.hideInputDailog()
+                    this.setState({
+                      menuVisible: false,
+                    })
+                  }
+                },
+              })
+            }
+          },
+        },
+        {
+          title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
+          image: getThemeAssets().layer.icon_remove_layer,
+          action: async () => {
+            let layer = this.state.selectLayer
+            if (layer) {
+              await SARMap.removeARLayer(layer.name)
+              this.props.setCurrentARLayer()
+              await this.props.getARLayers()
+              this.setState({
+                menuVisible: false,
+              })
+            }
+          },
+        },
+      ],
+    }]
+    // 三维图层编辑功能
+    if (
+      this.state.selectLayer?.type === ARLayerType.AR3D_LAYER ||
+      this.state.selectLayer?.type === ARLayerType.AR_SCENE_LAYER
+    ) {
+      menuData[0].data.unshift({
+        title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
+        image: getThemeAssets().layer.icon_layer_style,
+        action: async () => {
+          if (this.props.arlayer.currentLayer) {
+            arEditModule().action()
+            NavigationService.navigate('MapView')
+          }
+        },
+      })
+    }
+    return menuData
   }
 
   _getLayer = async () => {
@@ -191,6 +211,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
             selectLayer: layer,
           })
         }}
+        getARLayers={this.props.getARLayers}
       />
     )
   }
@@ -321,7 +342,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
   }
 
   _renderList = () => {
-    if (!this.state.menuVisible || this.state.menuData.length === 0) return
+    if (!this.state.menuVisible || this._getMenuData().length === 0) return
     return (
       <>
         <TouchableOpacity
@@ -334,7 +355,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           style={styles.overlay}
         />
         <ToolBarSectionList
-          sections={this.state.menuData}
+          sections={this._getMenuData()}
           device={this.props.device}
           renderItem={this._renderListItem}
         />
@@ -385,6 +406,7 @@ interface ARLayersProps {
   setCurrentARLayer: (layer?: ARLayer) => void,
   onPress: (layer: ARLayer) => void,
   onPressMore: (layer: ARLayer) => void,
+  getARLayers: () => Promise<ARLayer[]>,
 }
 
 export class ARLayers extends React.Component<ARLayersProps> {
@@ -401,6 +423,7 @@ export class ARLayers extends React.Component<ARLayersProps> {
           this.props.onPressMore(layer)
         }}
         setCurrentARLayer={this.props.setCurrentARLayer}
+        getARLayers={this.props.getARLayers}
       />)
   }
 

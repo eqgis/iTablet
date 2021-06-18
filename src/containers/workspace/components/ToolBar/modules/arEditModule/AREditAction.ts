@@ -3,15 +3,14 @@ import {
   SARMap,
   ARAction,
 } from 'imobile_for_reactnative'
-import { ARElement, IAnimationParam, IVector3 } from "imobile_for_reactnative/types/interface/ar"
+import { IAnimationParam, IVector3 } from "imobile_for_reactnative/types/interface/ar"
 import {
   ConstToolType,
   ToolbarType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { DialogUtils } from '../../../../../../utils'
+import { DialogUtils, Toast } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
-import NavigationService from '../../../../../NavigationService'
 
 async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
@@ -33,10 +32,13 @@ async function toolbarBack() {
   ) {
     showAnimationAction(prevType)
   } else {
-    _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
-      isFullScreen: false,
-      // buttons: _data.buttons,
-    })
+    if (prevType === undefined) {
+      _params.setToolbarVisible(false)
+    } else {
+      _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
+        isFullScreen: false,
+      })
+    }
     SARMap.clearSelection()
     SARMap.cancel()
     SARMap.setAction(ARAction.SELECT)
@@ -102,7 +104,8 @@ function commit() {
   // }
   SARMap.clearSelection()
   SARMap.submit()
-  SARMap.setAction(ARAction.NULL)
+  // SARMap.setAction(ARAction.NULL)
+  SARMap.setAction(ARAction.SELECT)
   return false
 }
 
@@ -183,6 +186,27 @@ function createAnimation(params?: IAnimation) {
   })
 }
 
+function deleteARElement() {
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+
+  const element = _data.selectARElement
+  if(element) {
+    GLOBAL.SimpleDialog.set({
+      text: getLanguage(GLOBAL.language).Common.DELETE_CURRENT_OBJ_CONFIRM,
+      confirmAction: () => {
+        SARMap.clearSelection()
+        SARMap.removeEditElement()
+
+        _params.setToolbarVisible(false)
+      },
+    })
+    GLOBAL.SimpleDialog.setVisible(true)
+  } else {
+    Toast.show(getLanguage(GLOBAL.language).Common.NO_SELECTED_OBJ)
+  }
+}
+
 export default {
   toolbarBack,
   menu,
@@ -192,4 +216,5 @@ export default {
 
   showAnimationAction,
   createAnimation,
+  deleteARElement,
 }

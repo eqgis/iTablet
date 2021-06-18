@@ -86,7 +86,8 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 
 function commit() {
   SARMap.clearSelection()
-  SARMap.setAction(ARAction.NULL)
+  // SARMap.setAction(ARAction.NULL)
+  SARMap.setAction(ARAction.SELECT)
   return false
 }
 

@@ -847,7 +847,7 @@ export default class ToolBar extends React.Component {
               item.action()
             }
           }}
-          style={styles.headerRightView}
+          style={[styles.headerRightView, item.style]}
         >
           <Image
             resizeMode={'contain'}
@@ -879,8 +879,9 @@ export default class ToolBar extends React.Component {
       <Header
         ref={ref => (this.containerHeader = ref)}
         backAction={this.customHeaderBack}
+        withoutBack={headerData.withoutBack}
         title={headerData.title}
-        type={'fix'}
+        type={headerData.type}
         headerRight={this.renderCustomHeaderRight()}
         headerTitleViewStyle={headerData.headerTitleViewStyle}
       />

@@ -60,8 +60,8 @@ class ArEditModule extends FunctionModule {
       buttons: _data.buttons,
     })
 
-    SARMap.clearSelection()
-    SARMap.setAction(ARAction.SELECT)
+    // SARMap.clearSelection()
+    SARMap.setAction(ARAction.MOVE)
   }
 }
 
@@ -72,7 +72,7 @@ export default function() {
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_edit,
     getData: AREditData.getData,
-    // getHeaderData: AREditData.getHeaderData,
+    getHeaderData: AREditData.getHeaderData,
     getMenuData: AREditData.getMenuData,
     actions: AREditAction,
   })

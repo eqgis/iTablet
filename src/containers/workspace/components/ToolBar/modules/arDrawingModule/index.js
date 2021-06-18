@@ -53,7 +53,7 @@ export default function() {
     // image: getThemeAssets().ar.icon_tool_ardrawing,
     image: getThemeAssets().functionBar.icon_tool_add,
     getData: ARDrawingData.getData,
-    // getHeaderData: ARDrawingData.getHeaderData,
+    getHeaderData: ARDrawingData.getHeaderData,
     getMenuData: ARDrawingData.getMenuData,
     actions: ARDrawingAction,
   })

@@ -296,7 +296,6 @@ async function getAREffect() {
   }))
 }
 
-
 export default {
   getData,
 

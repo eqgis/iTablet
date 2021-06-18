@@ -46,6 +46,7 @@ interface ItemProps {
   onPressMore: (layer: ARLayer) => void,
   currentLayer?: ARLayer,
   setCurrentARLayer: (layer?: ARLayer) => void,
+  getARLayers: () => Promise<ARLayer[]>,
 }
 
 interface ItemState {
@@ -70,6 +71,7 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
     this.setState({
       visible: !layer.isVisible,
     })
+    this.props.getARLayers()
   }
 
   _renderSubLayers = () => {
@@ -85,6 +87,7 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
         onPressMore={layer => {
           this.props.onPressMore(layer)
         }}
+        getARLayers={this.props.getARLayers}
       />
     )
   }

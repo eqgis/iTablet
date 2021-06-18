@@ -350,7 +350,6 @@ async function checkARLayer(type: TARLayerType) {
   }
 
   if(!satisfy) {
-    let datasourceName = DataHandler.getARRawDatasource()
     let datasourceName = DataHandler.getARRawDatasource() || _params.armap.currentMap?.mapName || 'ARMAP_DEFAULT'
     let datasetName: string
     switch(type) {
@@ -415,10 +414,20 @@ async function toolbarBack() {
 }
 
 function commit() {
-  SARMap.setAction(ARAction.NULL)
+  // SARMap.setAction(ARAction.NULL)
+  SARMap.setAction(ARAction.SELECT)
   SARMap.clearSelection()
   SARMap.submit()
   return false
+}
+
+function close() {
+  const _params: any = ToolbarModule.getParams()
+  SARMap.clearSelection()
+  SARMap.setAction(ARAction.SELECT)
+  ToolbarModule.addData({selectARElement: null})
+  _params.setToolbarVisible(false)
+  return true
 }
 
 export async function download3DExample() {
@@ -544,6 +553,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
 export default {
   toolbarBack,
   commit,
+  close,
 
   addAtCurrent,
   addAtPoint,

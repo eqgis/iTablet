@@ -57,7 +57,7 @@ import {
   SaveListView,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
-import { shareModule } from '../../components/ToolBar/modules'
+import { shareModule, arEditModule } from '../../components/ToolBar/modules'
 import {
   Container,
   MTBtn,
@@ -860,6 +860,14 @@ export default class MapView extends React.Component {
       this.setState({
         selectPointType: this.props.navigation.state.params.selectPointType,
       })
+    }
+
+    if (
+      GLOBAL.Type === ChunkType.MAP_AR &&
+      JSON.stringify(prevProps.armap.currentMap) !== JSON.stringify(this.props.armap.currentMap) &&
+      this.props.armap.currentMap?.mapName
+    ) {
+      SARMap.setAction(ARAction.SELECT)
     }
   }
 
@@ -4482,13 +4490,14 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_TEXT
               || element.type === ARElementType.AR_MODEL
             ) {
+              arEditModule().setModuleData(ConstToolType.SM_AR_EDIT)
+              ToolbarModule.addData({selectARElement: element})
               SARMap.appointEditElement(element.id, element.layerName)
               SARMap.setAction(ARAction.MOVE)
+              this.showFullMap(true)
               this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT, {
                 isFullScreen: false,
-                showMenuDialog: true,
               })
-              ToolbarModule.addData({selectARElement: element})
             }
           }}
         />

@@ -38,6 +38,7 @@ export const TOGGLE_FIND_ITEM = 'TOGGLE_FIND_ITEM'
 export const TOGGLE_LABORATORY_ITEM = 'TOGGLE_LABORATORY_ITEM'
 export const SHOW_DATUM_POINT = 'SHOW_DATUM_POINT'
 export const SHOW_AR = 'SHOW_AR'
+export const SHOW_AR_SCENE_NOTIFY = 'SHOW_AR_SCENE_NOTIFY'
 // Actions
 // --------------------------------------------------
 export const setBufferSetting = (params, cb = () => {}) => async dispatch => {
@@ -271,6 +272,14 @@ export const showAR = (show = false) => async dispatch => {
   })
 }
 
+/** AR场景提示 */
+export const setShowARSceneNotify = show => async dispatch => {
+  await dispatch({
+    type: SHOW_AR_SCENE_NOTIFY,
+    payload: show,
+  })
+}
+
 let defaultMapLegend = (() => {
   let _mapLegend = {}
   let legendConfig = {
@@ -345,6 +354,8 @@ const initialState = fromJS({
   /** 显示AR位置定位 */
   showDatumPoint: false,
   isAR: false,
+  /** AR场景提示 */
+  showARSceneNotify: true,
 })
 
 export default handleActions(
@@ -503,6 +514,9 @@ export default handleActions(
     },
     [`${SHOW_AR}`]: (state, { payload }) => {
       return state.setIn(['isAR'], fromJS(payload))
+    },
+    [`${SHOW_AR_SCENE_NOTIFY}`]: (state, { payload }) => {
+      return state.setIn(['showARSceneNotify'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       let data = ModelUtils.checkModel(

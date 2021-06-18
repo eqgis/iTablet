@@ -418,6 +418,8 @@ const Prompt = {
   NO_TEMPLATE: '没有可用模板',
   CONFIRM_LOAD_TEMPLATE: '确定加载地图模板？',
   CONFIRM_OUTPUT_TEMPLATE: '确定输出地图模板？',
+
+  SHOW_AR_SCENE_NOTIFY: '显示场景检测提示',
 }
 
 export { Prompt }

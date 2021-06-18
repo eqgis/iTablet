@@ -420,6 +420,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: '使用可能なテンプレートはありません',
   CONFIRM_LOAD_TEMPLATE: 'テンプレートをロードしますか?',
   CONFIRM_OUTPUT_TEMPLATE: 'マップを出力しますか?',
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

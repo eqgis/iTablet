@@ -420,6 +420,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: 'Kullanılabilir şablon yok',
   CONFIRM_LOAD_TEMPLATE: 'Şablonu yükleyeceğinizden emin misiniz?',
   CONFIRM_OUTPUT_TEMPLATE: 'Haritanın çıktısını alacağınızdan emin misiniz?',
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

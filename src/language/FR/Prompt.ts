@@ -419,6 +419,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: 'Aucun modèle disponible',
   CONFIRM_LOAD_TEMPLATE: 'Êtes-vous sûr de charger le modèle?',
   CONFIRM_OUTPUT_TEMPLATE: "Êtes-vous sûr d'exporter la carte?",
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

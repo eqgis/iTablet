@@ -110,6 +110,7 @@ const mapStateToProps = state => ({
   collectGuide: state.home.toJS().collectGuide,
   mapEditGuide: state.home.toJS().mapEditGuide,
   currentGroup: state.cowork.toJS().currentGroup,
+  showARSceneNotify: state.setting.toJS().showARSceneNotify,
 })
 
 const mapDispatchToProps = {

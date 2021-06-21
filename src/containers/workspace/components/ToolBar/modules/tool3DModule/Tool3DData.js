@@ -173,7 +173,7 @@ async function getClipData(type) {
   const clipSetting = params.getClipSetting && params.getClipSetting()
   const isClipInner = clipSetting.clipInner
   let customView
-  const data = clipSetting.layers
+  const data = clipSetting.layers || []
   switch (type) {
     case ConstToolType.SM_MAP3D_TOOL_CLIP_SHOW:
       if (data[0].selected === undefined) {

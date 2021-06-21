@@ -135,6 +135,9 @@ export default class BaseMapItem extends Component {
             'https://www.supermapol.com/services/../services/../services/../services/../resources/thumbnail/data/data3255.png',
         }
         break
+      case 'GaoDe':
+        Img = require('../../../../assets/public/gaode.jpg')
+        break
       default:
         Img = require('../../../../assets/public/mapLoad.png')
         break

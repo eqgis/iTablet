@@ -390,7 +390,7 @@ export default class ToolBar extends React.Component {
             {
               showMenuDialog: params.showMenuDialog || false,
               type: type,
-              data: params.data || data,
+              data: params.data || data || [],
               secdata: params.secdata || [],
               customView: customView,
               buttons: params.buttons || buttons,

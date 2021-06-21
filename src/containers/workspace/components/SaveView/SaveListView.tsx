@@ -13,6 +13,7 @@ import { ChunkType } from '../../../../constants'
 import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
 import { size, color } from '../../../../styles'
+import { getThemeAssets } from '../../../../assets'
 import { SMap } from 'imobile_for_reactnative'
 
 interface MapInfo {
@@ -38,19 +39,26 @@ interface State {
 
 const styles = StyleSheet.create({
   checkBox: {
-    height: scaleSize(30),
-    width: scaleSize(30),
+    height: scaleSize(44),
+    width: scaleSize(44),
   },
   dialogStyle: {
-    width: scaleSize(400),
+    width: scaleSize(567),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
     paddingHorizontal: scaleSize(20),
   },
+  items: {
+    width: '100%',
+    flexDirection: 'column',
+    paddingLeft: scaleSize(40),
+    marginTop: scaleSize(30),
+    marginBottom: scaleSize(20),
+  },
   item: {
     width: '100%',
-    height: scaleSize(80),
+    height: scaleSize(90),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -58,10 +66,13 @@ const styles = StyleSheet.create({
   itemTitle: {
     marginLeft: scaleSize(8),
     textAlign: 'left',
-    fontSize: size.fontSize.fontSizeMd,
+    fontSize: size.fontSize.fontSizeLg,
     color: color.fontColorGray3,
     padding: 0,
     backgroundColor: 'transparent',
+  },
+  confirmTitleStyle: {
+    color: color.item_selected_bg,
   },
 })
 
@@ -270,6 +281,9 @@ export default class SaveListView extends React.Component<Props, State> {
               return { selectedData: selected }
             })
           }}
+          checkedImg={getThemeAssets().publicAssets.icon_check_in}
+          unCheckedImg={getThemeAssets().publicAssets.icon_check}
+          imgStyle={styles.checkBox}
         />
         <Text style={styles.itemTitle} numberOfLines={2}>
           {item.name}
@@ -285,7 +299,11 @@ export default class SaveListView extends React.Component<Props, State> {
         items.push(this.renderItem(map))
       }
     }
-    return items
+    return (
+      <View style={styles.items}>
+        {items}
+      </View>
+    )
   }
 
   render() {
@@ -302,6 +320,7 @@ export default class SaveListView extends React.Component<Props, State> {
         info={getLanguage(GLOBAL.language).Prompt.SAVE_TITLE}
         confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.SAVE_YES}
         cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.SAVE_NO}
+        confirmTitleStyle={styles.confirmTitleStyle}
       >
         {this.renderItems()}
       </Dialog>

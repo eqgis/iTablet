@@ -294,13 +294,13 @@ export default class Map3D extends React.Component {
           this.container.setLoading(false)
           // Toast.show('无场景显示')
         }, 1500)
-        this.props.refreshLayer3dList && this.props.refreshLayer3dList()
         this.mapLoaded = true
         // 只有是球面场景时才添加底图 add jiakai
         if (await SScene.isEarthScene()) {
-          SScene.changeBaseLayer(1)
+          await SScene.changeBaseLayer(1)
         }
         this.getLayers()
+        this.props.refreshLayer3dList && this.props.refreshLayer3dList()
       }).catch(() =>{
         //reject异常处理 zhangxt
         setTimeout(() => {

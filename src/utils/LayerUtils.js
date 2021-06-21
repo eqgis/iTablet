@@ -234,6 +234,8 @@ const baseMapsOrigin = [
   'eia@tiandituImgEN',
   'ter@tiandituTer',
   'cta@tiandituTerCN',
+  'roadmap@GaoDeMap',
+  'satellite@GaoDeMap',
 ]
 let baseMaps = [...baseMapsOrigin]
 function isBaseLayer(layer) {

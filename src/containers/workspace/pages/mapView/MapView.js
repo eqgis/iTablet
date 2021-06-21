@@ -2552,6 +2552,9 @@ export default class MapView extends React.Component {
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE
       } else if (this.measureType === 'measureLength') {
         SARMap.setMeasureMode('MEASURE_LINE')
+        this.setState({
+          showCurrentHeightView: true,
+        })
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_LENGTH

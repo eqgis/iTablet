@@ -3246,15 +3246,21 @@ export default class MapView extends React.Component {
 
   /** AR和二维地图切换图标 */
   _renderArModeIcon = () => {
-    let show = GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.props.isAR :this.state.showAIDetect
+    let show = GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR :this.state.showAIDetect
     let right
     if (
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
       !show
     ) {
-      right = { right: scaleSize(100) }
+      right = {
+        right: scaleSize(120),
+        bottom: scaleSize(26),
+      }
     } else {
-      right = { right: scaleSize(20) }
+      right = {
+        right: scaleSize(20),
+        bottom: scaleSize(135),
+      }
     }
     return (
       <View

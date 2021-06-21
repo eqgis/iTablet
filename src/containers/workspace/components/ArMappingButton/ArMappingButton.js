@@ -1209,7 +1209,7 @@ export default class ArMappingButton extends React.Component {
             <Image
               resizeMode={'contain'}
               // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
-              source={getThemeAssets().toolbar.icon_toolbar_delete}
+              source={getThemeAssets().toolbar.icon_toolbar_cancel}
               style={styles.smallIcon}
             />
           </TouchableOpacity>

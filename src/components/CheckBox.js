@@ -16,6 +16,12 @@ export default class CheckBox extends React.Component {
     disable?: boolean,
     checked?: boolean,
     type?: string,
+    type?: string,
+    type?: string,
+    checkedImg?: any,
+    unCheckedImg?: any,
+    checkedDisableImg?: any,
+    unCheckedDisableImg?: any,
   }
 
   static defaultProps = {
@@ -79,30 +85,45 @@ export default class CheckBox extends React.Component {
 
   getIcon = () => {
     let icon
-    switch(this.props.type) {
-      case 'circle':
-        if (!this.props.disable) {
-          icon = this.state.checked
-            ? getPublicAssets().common.icon_select
-            : getPublicAssets().common.icon_none
-        } else {
-          icon = this.state.checked
-            ? getPublicAssets().common.icon_disable_select
-            : getPublicAssets().common.icon_disable_none
-        }
-        break
-      case 'square':
-      default:
-        if (!this.props.disable) {
-          icon = this.state.checked
-            ? getPublicAssets().common.icon_check
-            : getPublicAssets().common.icon_uncheck
-        } else {
-          icon = this.state.checked
-            ? getPublicAssets().common.icon_check_disable
-            : getPublicAssets().common.icon_uncheck_disable
-        }
-        break
+    if (this.state.checked) {
+      if (this.props.checkedImg && !this.props.disable) {
+        icon = this.props.checkedImg
+      } else if (this.props.checkedDisableImg && this.props.disable) {
+        icon = this.props.checkedDisableImg
+      }
+    } else {
+      if (this.props.unCheckedImg && !this.props.disable) {
+        icon = this.props.unCheckedImg
+      } else if (this.props.unCheckedDisableImg && this.props.disable) {
+        icon = this.props.unCheckedDisableImg
+      }
+    }
+    if (!icon) {
+      switch(this.props.type) {
+        case 'circle':
+          if (!this.props.disable) {
+            icon = this.state.checked
+              ? getPublicAssets().common.icon_select
+              : getPublicAssets().common.icon_none
+          } else {
+            icon = this.state.checked
+              ? getPublicAssets().common.icon_disable_select
+              : getPublicAssets().common.icon_disable_none
+          }
+          break
+        case 'square':
+        default:
+          if (!this.props.disable) {
+            icon = this.state.checked
+              ? getPublicAssets().common.icon_check
+              : getPublicAssets().common.icon_uncheck
+          } else {
+            icon = this.state.checked
+              ? getPublicAssets().common.icon_check_disable
+              : getPublicAssets().common.icon_uncheck_disable
+          }
+          break
+      }
     }
     return icon
   }

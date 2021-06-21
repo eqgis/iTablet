@@ -452,6 +452,7 @@ const initialState = fromJS({
   workspace: {},
   baseMaps: {
     default: [
+      ConstOnline.GAODE,
       ConstOnline.BingMap,
       ConstOnline.Baidu,
       ConstOnline.Google,

@@ -238,6 +238,22 @@ function layerManagerData() {
       themeType: -1,
     },
     {
+      title: 'GaoDe',
+      action: () => OpenData(ConstOnline.GAODE, 0),
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'GaoDe Image',
+      action: () => OpenData(ConstOnline.GAODE, 1),
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
       title: 'BingMap',
       action: () => OpenData(ConstOnline.BingMap, 0),
       data: [],

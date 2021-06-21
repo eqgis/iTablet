@@ -197,6 +197,7 @@ function deleteARElement() {
       confirmAction: () => {
         SARMap.clearSelection()
         SARMap.removeEditElement()
+        SARMap.setAction(ARAction.SELECT)
 
         _params.setToolbarVisible(false)
       },

@@ -43,7 +43,9 @@
       NSString* filePath = [infoDic objectForKey:@"filePath"];
       NSFileManager *filemanager = [NSFileManager defaultManager];
       if([[filemanager attributesOfItemAtPath:filePath error:nil] fileSize] > 10*1024*1024){
-        return NO;
+        NSException *ex = [[NSException alloc] initWithName:@"WXFileException" reason:@"File size cannot exceeds 10M" userInfo:nil];
+
+        @throw(ex);
       }
       WXFileObject *ext = [WXFileObject object];
       ext.fileExtension = @"zip";

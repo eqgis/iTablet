@@ -1,3 +1,5 @@
+const tiandituToken = "06251553ded6308d9a5fce2b89270327"
+
 export default {
   TD: [
     {
@@ -155,7 +157,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/vec_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+        `http://t0.tianditu.com/vec_w/wmts?dpi=96&tk=${tiandituToken}`,
       engineType: 23,
       driver: 'WMTS',
       alias: 'tianditu',
@@ -167,7 +169,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/cva_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+        `http://t0.tianditu.com/cva_w/wmts?dpi=96&tk=${tiandituToken}`,
       engineType: 23,
       driver: 'WMTS',
       alias: 'tiandituCN',
@@ -179,7 +181,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/eva_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+        `http://t0.tianditu.com/eva_w/wmts?dpi=96&tk=${tiandituToken}`,
       engineType: 23,
       driver: 'WMTS',
       alias: 'tiandituEN',
@@ -191,7 +193,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/img_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+        `http://t0.tianditu.com/img_w/wmts?dpi=96&tk=${tiandituToken}`,
       engineType: 23,
       driver: 'WMTS',
       alias: 'tiandituImg',
@@ -203,7 +205,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/cia_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+        `http://t0.tianditu.com/cia_w/wmts?dpi=96&tk=${tiandituToken}`,
       engineType: 23,
       driver: 'WMTS',
       alias: 'tiandituImgCN',
@@ -215,7 +217,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/eia_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+        `http://t0.tianditu.com/eia_w/wmts?dpi=96&tk=${tiandituToken}`,
       engineType: 23,
       driver: 'WMTS',
       alias: 'tiandituImgEN',
@@ -227,7 +229,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/ter_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+        `http://t0.tianditu.com/ter_w/wmts?dpi=96&tk=${tiandituToken}`,
       engineType: 23,
       driver: 'WMTS',
       alias: 'tiandituTer',
@@ -239,7 +241,7 @@ export default {
     type: 'Datasource',
     DSParams: {
       server:
-        'http://t0.tianditu.com/cta_w/wmts?dpi=96&tk=ee1a36d71fda193082a10bea9661c811',
+        `http://t0.tianditu.com/cta_w/wmts?dpi=96&tk=${tiandituToken}`,
       engineType: 23,
       driver: 'WMTS',
       alias: 'tiandituTerCN',

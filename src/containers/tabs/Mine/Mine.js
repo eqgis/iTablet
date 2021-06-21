@@ -4,7 +4,7 @@
   E-mail: 756355668@qq.com
 */
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ScrollView, Platform } from 'react-native'
 import { Container } from '../../../components'
 import { FileTools } from '../../../native'
 import NavigationService from '../../NavigationService'
@@ -148,6 +148,9 @@ export default class Mine extends Component {
   _getItems = () => {
     let data = []
     for (let module of this.props.mineModules) {
+      if (Platform.OS === 'ios' && module.key === 'ARMODEL') {
+        continue
+      }
       switch (module.key) {
         case 'IMPORT':
           data.push({

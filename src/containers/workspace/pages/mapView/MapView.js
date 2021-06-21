@@ -4476,7 +4476,7 @@ export default class MapView extends React.Component {
 
   //ar测图界面
   _renderMeasureAreaView = () =>{
-    if (GLOBAL.Type !== ChunkType.MAP_AR_MAPPING && GLOBAL.Type !== ChunkType.MAP_AR && !this.isExample) return null
+    if (GLOBAL.Type !== ChunkType.MAP_AR_MAPPING && GLOBAL.Type !== ChunkType.MAP_AR || this.isExample) return null
     return(
       <>
         <SMARMapView

@@ -457,7 +457,7 @@ const initialState = fromJS({
       ConstOnline.Baidu,
       ConstOnline.Google,
       ConstOnline.OSM,
-      ConstOnline.tianditu,
+      ConstOnline.tianditu(),
     ],
   },
 })

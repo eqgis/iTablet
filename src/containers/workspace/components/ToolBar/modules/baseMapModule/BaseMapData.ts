@@ -69,14 +69,14 @@ async function getDatasources(params = {}) {
     switch (_data.mapName) {
       case 'tianditu':
         datasources = [
-          ConstOnline.tianditu,
-          ConstOnline.tiandituCN,
-          ConstOnline.tiandituEN,
-          ConstOnline.tiandituImg,
-          ConstOnline.tiandituImgCN,
-          ConstOnline.tiandituImgEN,
-          ConstOnline.tiandituTer,
-          ConstOnline.tiandituTerCN,
+          ConstOnline.tianditu(),
+          ConstOnline.tiandituCN(),
+          ConstOnline.tiandituEN(),
+          ConstOnline.tiandituImg(),
+          ConstOnline.tiandituImgCN(),
+          ConstOnline.tiandituImgEN(),
+          ConstOnline.tiandituTer(),
+          ConstOnline.tiandituTerCN(),
         ]
         break
     }

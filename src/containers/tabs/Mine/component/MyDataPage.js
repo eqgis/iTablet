@@ -512,6 +512,12 @@ export default class MyDataPage extends Component {
           let type
           if (this.type === this.types.map) {
             type = MsgConstant.MSG_MAP
+          } else if (this.type === this.types.armap) {
+            type = MsgConstant.MSG_ARMAP
+          } else if (this.type === this.types.areffect) {
+            type = MsgConstant.MSG_AREFFECT
+          } else if (this.type === this.types.armodel) {
+            type = MsgConstant.MSG_ARMODAL
           }
           let action = [
             {

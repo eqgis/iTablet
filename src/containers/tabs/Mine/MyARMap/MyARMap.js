@@ -38,7 +38,7 @@ class MyARMap extends MyDataPage {
       shareToOnline: true,
       shareToIPortal: true,
       shareToWechat: true,
-      // shareToFriend: true,
+      shareToFriend: true,
       showFullInMap: true,
     }
     if (!this.showMore) {

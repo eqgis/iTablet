@@ -97,7 +97,10 @@ export default class CustomView extends React.Component {
      * 文件下载通知消息，包括图层，数据集等
      */
     if (
-      type === MSGConstant.MSG_MAP 
+      type === MSGConstant.MSG_MAP ||
+      type === MSGConstant.MSG_AREFFECT ||
+      type === MSGConstant.MSG_ARMODAL ||
+      type === MSGConstant.MSG_ARMAP
       // ||
       // type === MSGConstant.MSG_LAYER ||
       // type === MSGConstant.MSG_DATASET
@@ -127,6 +130,15 @@ export default class CustomView extends React.Component {
           break
         case MSGConstant.MSG_DATASET:
           typeText = 'Dataset'
+          break
+        case MSGConstant.MSG_ARMAP:
+          typeText = 'ARMap'
+          break
+        case MSGConstant.MSG_AREFFECT:
+          typeText = 'AREffect'
+          break
+        case MSGConstant.MSG_ARMODAL:
+          typeText = 'ARModal'
           break
       }
       return (
@@ -250,7 +262,7 @@ const styles = StyleSheet.create({
   },
   fileContainer: {
     // backgroundColor: 'white',
-    width: scaleSize(240),
+    width: scaleSize(300),
     justifyContent: 'flex-start',
   },
   fileContainerLeft: {

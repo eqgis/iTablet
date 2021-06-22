@@ -36,7 +36,7 @@ class MyARModel extends MyDataPage {
       shareToOnline: true,
       shareToIPortal: true,
       shareToWechat: true,
-      // shareToFriend: true,
+      shareToFriend: true,
       showFullInMap: true,
     }
   }

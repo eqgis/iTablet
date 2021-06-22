@@ -1427,7 +1427,13 @@ export default class CollectSceneFormView extends React.Component {
     return SCollectSceneFormView.startScan()
   }
 
-  _onDatumPointClose = point => {
+  _onDatumPointClose = () => {
+    this.setState({
+      showDatumPoint: false,
+    })
+  }
+
+  _onDatumPointConfirm = point => {
     SCollectSceneFormView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
     this.setState({
       showDatumPoint: false,
@@ -1470,7 +1476,7 @@ export default class CollectSceneFormView extends React.Component {
             </>
           }
         </Container>
-        { showDatumPoint && <DatumPointCalibration startScan={this._startScan} onClose={this._onDatumPointClose}
+        { showDatumPoint && <DatumPointCalibration startScan={this._startScan} onClose={this._onDatumPointClose} onConfirm={this._onDatumPointConfirm}
           routeName={'CollectSceneFormView'}/>}
       </>
     )

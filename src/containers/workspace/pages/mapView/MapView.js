@@ -4287,11 +4287,11 @@ export default class MapView extends React.Component {
   }
 
   _onDatumPointClose = point => {
+    this.props.setDatumPoint(false)
+  }
+
+  _onDatumPointConfirm = point => {
     SARMap.setPosition(Number(point.x), Number(point.y))
-    // SMeasureAreaView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
-    // if (Platform.OS === 'android') {
-    //   SCollectSceneFormView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
-    // }
     this.props.setDatumPoint(false)
   }
 
@@ -4790,7 +4790,10 @@ export default class MapView extends React.Component {
           routeData={{
             measureType: this.measureType,
           }}
-          startScan={this._startScan} onClose={this._onDatumPointClose} />}
+          startScan={this._startScan}
+          onClose={this._onDatumPointClose}
+          onConfirm={this._onDatumPointConfirm}
+        />}
         {this._renderExitSaveView()}
       </View>
     )

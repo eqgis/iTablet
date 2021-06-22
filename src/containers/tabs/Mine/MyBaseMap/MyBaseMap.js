@@ -63,7 +63,7 @@ export default class MyBaseMap extends Component {
       ConstOnline.Baidu,
       ConstOnline.Google,
       ConstOnline.OSM,
-      ConstOnline.tianditu,
+      ConstOnline.tianditu(),
     ]
   }
 

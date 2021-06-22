@@ -29,6 +29,17 @@ export default class Login extends React.Component {
     navigation: Object,
     user: Object,
     setUser: () => {},
+    loginIPortal: (
+      userName: string,
+      password: string,
+      type: 'EMAIL_TYPE' | 'PHONE_TYPE',
+    ) => Promise<boolean>,
+    loginOnline: (
+      url: string,
+      userName: string,
+      password: string,
+      remember: boolean,
+    ) => Promise<boolean>,
     appConfig: Object,
   }
 
@@ -161,33 +172,7 @@ export default class Login extends React.Component {
           Toast.show(getLanguage(GLOBAL.language).Profile.LOGIN_CURRENT)
           return
         }
-        let startLogin = async () => {
-          let loginResult
-          if (isEmail) {
-            loginResult = await JSOnlineService.login(
-              userName,
-              password,
-              'EMAIL_TYPE',
-            )
-            if (loginResult === true) {
-              loginResult = await SOnlineService.login(userName, password)
-            }
-          } else {
-            loginResult = await JSOnlineService.login(
-              userName,
-              password,
-              'PHONE_TYPE',
-            )
-            if (loginResult === true) {
-              loginResult = await SOnlineService.loginWithPhoneNumber(
-                userName,
-                password,
-              )
-            }
-          }
-          return loginResult
-        }
-        result = startLogin()
+        result = await this.props.loginOnline(userName, password, isEmail ? 'EMAIL_TYPE' : 'PHONE_TYPE')
       } else {
         Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
         return
@@ -302,25 +287,11 @@ export default class Login extends React.Component {
       //   getLanguage(this.props.language).Prompt.LOG_IN,
       // )
 
-      let result = await SIPortalService.login(url, userName, password, true)
-      if (typeof result === 'boolean' && result) {
-        let info = await SIPortalService.getMyAccount()
-        if (info) {
-          let userInfo = JSON.parse(info)
-          await this.initUserDirectories(userInfo.name)
-          this.props.setUser({
-            serverUrl: url,
-            userName: userInfo.name,
-            password: password,
-            nickname: userInfo.nickname,
-            email: userInfo.email,
-            userType: UserType.IPORTAL_COMMON_USER,
-          })
-        }
+      let result = await this.props.loginIPortal(url, userName, password, true)
+
+      if (result === true) {
         this.iportalLogin.loginResult()
         this.setState({covered:false})
-        
-        // this.container.setLoading(false)
         NavigationService.popToTop()
       } else {
         this.iportalLogin.loginResult()
@@ -346,7 +317,7 @@ export default class Login extends React.Component {
     }
   }
 
-  _connect = (value)  => {
+  _connect = value  => {
     this.setState({covered:value})
   }
 

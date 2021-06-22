@@ -1077,7 +1077,7 @@ export default class ArMappingButton extends React.Component {
   /** 清除 **/
   clearAll = async () => {
     await SARMap.clearMeasure()
-    if (this.measureType === 'arMeasureHeight') {
+    if (this.measureType === 'arMeasureHeight'||this.measureType === 'measureLength') {
       this.props.setCurrentHeight('0m')
       // this.setState({
       //   currentHeight: '0m',

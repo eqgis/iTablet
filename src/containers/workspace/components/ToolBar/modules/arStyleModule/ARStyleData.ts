@@ -245,7 +245,7 @@ async function getLayerStyleData(type: string) {
   SARMap.clearSelection()
 
   const range = {
-    borderWidth: [0 , 200],
+    borderWidth: [0 , 100],
   }
   const buttons = [
     ToolbarBtnType.TOOLBAR_BACK,
@@ -267,10 +267,10 @@ async function getLayerStyleData(type: string) {
         unit: 'mm',
         onMove: (loc: number) => {
           if(layer.name) {
-            SARMap.setLayerStyle(layer.name, {borderWidth: loc})
+            SARMap.setLayerStyle(layer.name, {borderWidth: loc / 100})
           }
         },
-        defaultValue: layerStyle?.borderWidth || 0,
+        defaultValue: layerStyle && layerStyle.borderWidth * 100 || 0,
         range: range.borderWidth,
       }]
       allData.push({

@@ -37,6 +37,12 @@ const ARMap = {
   ANIMATION_TYPE: '动画类型',
 
   AR_LAYER_NOT_SUPPORT_STYLE: '当前图层不支持风格编辑',
+
+  TEXT_OPACITY: '透明度',
+  TEXT_COLOR: '颜色',
+  TEXT_SIZE: '字号',
+  BACKGROUND_OPACITY: '背景透明度',
+  BACKGROUND_COLOR: '背景色',
 }
 
 export {

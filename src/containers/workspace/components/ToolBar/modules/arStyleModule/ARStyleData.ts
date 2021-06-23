@@ -5,9 +5,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import { color } from '../../../../../../styles'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { SARMap } from 'imobile_for_reactnative'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
-import ARDrawingAction from '../arDrawingModule/ARDrawingAction'
+import { SARMap, ARLayerType } from 'imobile_for_reactnative'
 import ARDrawingData from '../arDrawingModule/ARDrawingData'
 
 interface SectionItemData {
@@ -35,6 +33,9 @@ async function getData(type: string, params: {[name: string]: any}) {
     ToolbarBtnType.TOOLBAR_COMMIT,
   ]
   switch (type) {
+    case ConstToolType.SM_AR_STYLE_TEXT_SIZE:
+    case ConstToolType.SM_AR_STYLE_TEXT_OPACITY:
+    case ConstToolType.SM_AR_STYLE_BACKGROUND_OPACITY:
     case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
     case ConstToolType.SM_AR_STYLE_TRANSFROM: {
       const _data = await getLayerStyleData(type)
@@ -45,6 +46,8 @@ async function getData(type: string, params: {[name: string]: any}) {
       break
     }
     case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
+    case ConstToolType.SM_AR_STYLE_BACKGROUND_COLOR:
+    case ConstToolType.SM_AR_STYLE_TEXT_COLOR:
       data = color.colors
       break
     case ConstToolType.SM_AR_STYLE_EFFECT: {
@@ -123,17 +126,105 @@ const ARLayerStyleItems = (language: string) => {
   ]
 }
 
+
+const ARTextStyleItems = (language: string) => {
+  return [
+    {
+      key: getLanguage(language).ARMap.TEXT_OPACITY,
+      action: () => {
+        showSlideToolbar(ConstToolType.SM_AR_STYLE_TEXT_OPACITY, language, {
+          selectName: getLanguage(language).ARMap.TEXT_OPACITY,
+          selectKey: getLanguage(language).ARMap.TEXT_OPACITY,
+          // isTouchProgress: true,
+        })
+      },
+      selectKey: getLanguage(language).ARMap.TEXT_OPACITY,
+    },
+    {
+      key: getLanguage(language).ARMap.TEXT_COLOR,
+      action: () => {
+        GLOBAL.toolBox && GLOBAL.toolBox.menu({
+          type: ConstToolType.SM_AR_STYLE_TEXT_COLOR,
+          selectKey: getLanguage(language).ARMap.TEXT_COLOR,
+        })
+        showSlideToolbar(ConstToolType.SM_AR_STYLE_TEXT_COLOR, language, {
+          containerType: ToolbarType.colorTable,
+          selectName: getLanguage(language).ARMap.TEXT_COLOR,
+          selectKey: getLanguage(language).ARMap.TEXT_COLOR,
+          customView: null,
+        })
+      },
+      selectKey: getLanguage(language).ARMap.TEXT_COLOR,
+    },
+    {
+      key: getLanguage(language).ARMap.TEXT_SIZE,
+      action: () => {
+        showSlideToolbar(ConstToolType.SM_AR_STYLE_TEXT_SIZE, language, {
+          selectName: getLanguage(language).ARMap.TEXT_SIZE,
+          selectKey: getLanguage(language).ARMap.TEXT_SIZE,
+          // isTouchProgress: true,
+        })
+      },
+      selectKey: getLanguage(language).ARMap.TEXT_SIZE,
+    },
+    {
+      key: getLanguage(language).ARMap.BACKGROUND_OPACITY,
+      action: () => {
+        showSlideToolbar(ConstToolType.SM_AR_STYLE_BACKGROUND_OPACITY, language, {
+          selectName: getLanguage(language).ARMap.BACKGROUND_OPACITY,
+          selectKey: getLanguage(language).ARMap.BACKGROUND_OPACITY,
+          // isTouchProgress: true,
+        })
+      },
+      selectKey: getLanguage(language).ARMap.BACKGROUND_OPACITY,
+    },
+    {
+      key: getLanguage(language).ARMap.BACKGROUND_COLOR,
+      action: () => {
+        GLOBAL.toolBox && GLOBAL.toolBox.menu({
+          type: ConstToolType.SM_AR_STYLE_BACKGROUND_COLOR,
+          selectKey: getLanguage(language).ARMap.BACKGROUND_COLOR,
+        })
+        showSlideToolbar(ConstToolType.SM_AR_STYLE_BACKGROUND_COLOR, language, {
+          containerType: ToolbarType.colorTable,
+          selectName: getLanguage(language).ARMap.BACKGROUND_COLOR,
+          selectKey: getLanguage(language).ARMap.BACKGROUND_COLOR,
+          customView: null,
+        })
+      },
+      selectKey: getLanguage(language).ARMap.BACKGROUND_COLOR,
+    },
+  ]
+}
+
+
 function getMenuData() {
   const _params: any = ToolbarModule.getParams()
 
   let data: { key: string; action: () => void; selectKey: string }[] = []
 
-  switch (_params.type) {
+  let _type = _params.type
+  if (
+    _type === ConstToolType.SM_AR_STYLE &&
+    _params.arlayer.currentLayer.type === ARLayerType.AR_TEXT_LAYER
+  ) {
+    _type = ConstToolType.SM_AR_STYLE_TEXT
+  }
+
+  switch (_type) {
     case ConstToolType.SM_AR_STYLE:
     case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
     case ConstToolType.SM_AR_STYLE_TRANSFROM:
     case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
       data = ARLayerStyleItems(_params.language)
+      break
+    case ConstToolType.SM_AR_STYLE_TEXT:
+    case ConstToolType.SM_AR_STYLE_TEXT_OPACITY:
+    case ConstToolType.SM_AR_STYLE_TEXT_COLOR:
+    case ConstToolType.SM_AR_STYLE_TEXT_SIZE:
+    case ConstToolType.SM_AR_STYLE_BACKGROUND_OPACITY:
+    case ConstToolType.SM_AR_STYLE_BACKGROUND_COLOR:
+      data = ARTextStyleItems(_params.language)
       break
   }
   return data
@@ -167,17 +258,19 @@ async function getLayerStyleData(type: string) {
     title: string,
     data: typeof data,
   }[] = []
+  const layerStyle = await SARMap.getLayerStyle(layer.name)
   switch(type) {
     case ConstToolType.SM_AR_STYLE_BORDER_WIDTH: {
-      const borderWidth = await SARMap.getLayerBorderWidth(layer.name)
       data = [{
         key: 'borderWidth',
         leftImage: getThemeAssets().ar.armap.ar_border_width,
         unit: 'mm',
         onMove: (loc: number) => {
-          SARMap.setLayerBorderWidth(layer.name, loc)
+          if(layer.name) {
+            SARMap.setLayerStyle(layer.name, {borderWidth: loc})
+          }
         },
-        defaultValue: borderWidth,
+        defaultValue: layerStyle?.borderWidth || 0,
         range: range.borderWidth,
       }]
       allData.push({
@@ -187,7 +280,6 @@ async function getLayerStyleData(type: string) {
       break
     }
     case ConstToolType.SM_AR_STYLE_TRANSFROM: {
-      const opacity = await SARMap.getLayerOpacity(layer.name)
       data = [{
         key: 'transfrom',
         leftImage: getThemeAssets().ar.armap.ar_opacity,
@@ -195,14 +287,71 @@ async function getLayerStyleData(type: string) {
         range: [0,100],
         onMove: (loc: number) => {
           if(layer.name) {
-            SARMap.setLayerOpacity(layer.name, loc / 100)
+            SARMap.setLayerStyle(layer.name, {opacity: loc / 100})
           }
         },
-        defaultValue: parseInt((opacity * 100).toFixed()),
+        defaultValue: layerStyle ? layerStyle.opacity * 100 : 0,
       }]
       allData.push({
         data: data,
         title: getLanguage(_params.language).Map_Main_Menu.STYLE_TRANSPARENCY,
+      })
+      break
+    }
+    case ConstToolType.SM_AR_STYLE_TEXT_SIZE: {
+      data = [{
+        key: 'transfrom',
+        leftImage: getThemeAssets().ar.armap.ar_distance,
+        unit: '%',
+        range: [0,100],
+        onMove: (loc: number) => {
+          if(layer.name) {
+            SARMap.setLayerStyle(layer.name, {textSize: loc})
+          }
+        },
+        defaultValue: layerStyle?.textSize || 1,
+      }]
+      allData.push({
+        data: data,
+        title: getLanguage(_params.language).ARMap.TEXT_SIZE,
+      })
+      break
+    }
+    case ConstToolType.SM_AR_STYLE_TEXT_OPACITY: {
+      data = [{
+        key: 'transfrom',
+        leftImage: getThemeAssets().ar.armap.ar_opacity,
+        unit: '%',
+        range: [0,100],
+        onMove: (loc: number) => {
+          if(layer.name) {
+            SARMap.setLayerStyle(layer.name, {strokeOpacity: loc / 100})
+          }
+        },
+        defaultValue: layerStyle ? layerStyle.strokeOpacity * 100 : 0,
+      }]
+      allData.push({
+        data: data,
+        title: getLanguage(_params.language).ARMap.TEXT_OPACITY,
+      })
+      break
+    }
+    case ConstToolType.SM_AR_STYLE_BACKGROUND_OPACITY: {
+      data = [{
+        key: 'transfrom',
+        leftImage: getThemeAssets().ar.armap.ar_opacity,
+        unit: '%',
+        range: [0,100],
+        onMove: (loc: number) => {
+          if(layer.name) {
+            SARMap.setLayerStyle(layer.name, {fillOpacity: loc / 100})
+          }
+        },
+        defaultValue: layerStyle ? layerStyle.fillOpacity * 100 : 0,
+      }]
+      allData.push({
+        data: data,
+        title: getLanguage(_params.language).ARMap.BACKGROUND_OPACITY,
       })
       break
     }

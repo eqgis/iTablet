@@ -18,10 +18,15 @@ class ArStyleModule extends FunctionModule {
     let data = {}
     switch (additional.type) {
       case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
+      case ConstToolType.SM_AR_STYLE_TEXT_COLOR:
+      case ConstToolType.SM_AR_STYLE_BACKGROUND_COLOR:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 4
         break
       case ConstToolType.SM_AR_STYLE_TRANSFROM:
       case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
+      case ConstToolType.SM_AR_STYLE_TEXT_OPACITY:
+      case ConstToolType.SM_AR_STYLE_TEXT_SIZE:
+      case ConstToolType.SM_AR_STYLE_BACKGROUND_OPACITY:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
         break
       case ConstToolType.SM_AR_STYLE_EFFECT:

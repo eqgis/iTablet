@@ -33,6 +33,8 @@ class BackButton extends PureComponent<Props> {
         style={[{
           width: scaleSize(60),
           height: scaleSize(60),
+          justifyContent: 'center',
+          alignContent: 'center',
         }, this.props.style]}
         activeOpacity={this.props.activeOpacity}
         onPress={event => {

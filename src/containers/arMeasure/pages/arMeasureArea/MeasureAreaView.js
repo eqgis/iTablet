@@ -1496,7 +1496,13 @@ export default class MeasureAreaView extends React.Component {
     return SMeasureAreaView.startScan()
   }
 
-  _onDatumPointClose = point => {
+  _onDatumPointClose = () => {
+    this.setState({
+      showDatumPoint: false,
+    })
+  }
+
+  _onDatumPointConfirm = point => {
     SMeasureAreaView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
     this.setState({
       showDatumPoint: false,
@@ -1547,6 +1553,7 @@ export default class MeasureAreaView extends React.Component {
           routeData={{
             measureType: this.measureType,
           }}
+          onConfirm={this._onDatumPointConfirm}
           startScan={this._startScan} onClose={this._onDatumPointClose}/>}
       </>
     )

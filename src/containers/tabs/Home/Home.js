@@ -248,7 +248,7 @@ export default class Home extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-          GLOBAL.language === 'CN' ? 'CN' : 'EN'
+            GLOBAL.language === 'CN' ? 'CN' : 'EN'
           ],
         )
         this.props.deleteUser(this.props.user.currentUser)

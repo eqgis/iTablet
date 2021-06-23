@@ -46,8 +46,7 @@ async function toolbarBack() {
   }
 }
 
-function menu(type: string, selectKey: string, params = {}) {
-
+function menu(type: string, selectKey: string, params: any) {
   let showMenu = false
 
   if (GLOBAL.ToolBar) {
@@ -56,6 +55,7 @@ function menu(type: string, selectKey: string, params = {}) {
     } else {
       showMenu = true
     }
+    params.showBox && params.showBox()
     GLOBAL.ToolBar.setState({
       isFullScreen: showMenu,
       showMenuDialog: showMenu,

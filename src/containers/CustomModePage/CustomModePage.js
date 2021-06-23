@@ -19,7 +19,7 @@ import {
 import { SThemeCartography, SMap } from 'imobile_for_reactnative'
 import { Container } from '../../components'
 import { color } from '../../styles'
-import { scaleSize, setSpText, Toast } from '../../utils'
+import { scaleSize, setSpText, Toast, screen } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstToolType, ToolbarType, TouchType } from '../../constants'
 import { getLanguage } from '../../language'
@@ -414,7 +414,10 @@ export default class CustomModePage extends Component {
           backAction: this._back,
           navigation: this.props.navigation,
           headerRight: this._renderRight(),
-          type: 'flex',
+          headerTitleViewStyle: {
+            marginLeft: scaleSize(90),
+            textAlign: 'left',
+          },
         }}
       >
         <View style={styles.pageContainer}>

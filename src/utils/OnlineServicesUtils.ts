@@ -11,59 +11,59 @@ import { UserType } from '../constants'
 /** 上传回调 */
 interface UploadCallBack {
   /** 开始回调 */
-  onBegin?: (res: any) => void
+  onBegin?: (res: any) => void,
   /** 进度回调 */
-  onProgress?: (res: number) => void
+  onProgress?: (res: number) => void,
 }
 
 /** 数据查询参数 */
 interface QueryParam {
-  orderBy?: string
-  orderType?: string
-  pageSize?: number
-  currentPage?: number
-  keywords?: string
+  orderBy?: string,
+  orderType?: string,
+  pageSize?: number,
+  currentPage?: number,
+  keywords?: string,
 }
 
 interface CommonUserInfo {
-  nickname: string
-  name: string
-  email: string
+  nickname: string,
+  name: string,
+  email: string,
   /** iportal或online用户 */
-  userType: string
+  userType: string,
 }
 
 /** online / iportal 上的数据类型 */
 export interface OnlineDataType {
-  AUDIO: 'AUDIO'                       //音频文件 
-  COLOR: 'COLOR'                       //Color 颜色 
-  COLORSCHEME: 'COLORSCHEME'           //ColorScheme 颜色方案 
-  CSV: 'CSV'                           //csv数据 
-  EXCEL: 'EXCEL'                       //excel数据 
-  FILLSYMBOL: 'FILLSYMBOL'             //FillSymbol 填充符号库 
-  GEOJSON: 'GEOJSON'                   //geojson数据。 
-  HDFS: 'HDFS'
-  IMAGE: 'IMAGE'                       //图片类型 
-  JSON: 'JSON'                         //json数据，可以是普通json串。 
-  LAYERTEMPLATE: 'LAYERTEMPLATE'       //LayerTemplate 图层模板 
-  LAYOUTTEMPLATE: 'LAYOUTTEMPLATE'     //LayoutTemplate 布局模板 
-  LINESYMBOL: 'LINESYMBOL'             //LineSymbol 线符号库 
-  MAPTEMPLATE: 'MAPTEMPLATE'           //MapTemplate 地图模板 
-  MARKERSYMBOL: 'MARKERSYMBOL'         //MarkerSymbol 点符号库 
-  MBTILES: 'MBTILES'                   //mbtiles 
-  PHOTOS: 'PHOTOS'                     //照片 
-  SHP: 'SHP'                           //shp空间数据 
-  SMTILES: 'SMTILES'                   //smtiles 
-  SVTILES: 'SVTILES'                   //svtiles 
-  THEMETEMPLATE: 'THEMETEMPLATE'       //ThemeTemplate 专题图模板 
-  TPK: 'TPK'                           //tpk 
-  UDB: 'UDB'                           //udb 数据源 
-  UGCV5: 'UGCV5'                       //ugc v5 
-  UGCV5_MVT: 'UGCV5_MVT'
-  UNKNOWN: 'UNKNOWN'                   //其他类型（普通文件） 
-  VIDEO: 'VIDEO'                       //视频文件 
-  WORKENVIRONMENT: 'WORKENVIRONMENT'   //WorkEnvironment 工作环境 
-  WORKSPACE: 'WORKSPACE'               //工作空间 sxwu, smwu, sxw, smw 
+  AUDIO: 'AUDIO',                       //音频文件 
+  COLOR: 'COLOR',                       //Color 颜色 
+  COLORSCHEME: 'COLORSCHEME',           //ColorScheme 颜色方案 
+  CSV: 'CSV',                           //csv数据 
+  EXCEL: 'EXCEL',                       //excel数据 
+  FILLSYMBOL: 'FILLSYMBOL',             //FillSymbol 填充符号库 
+  GEOJSON: 'GEOJSON',                   //geojson数据。 
+  HDFS: 'HDFS',
+  IMAGE: 'IMAGE',                       //图片类型 
+  JSON: 'JSON',                         //json数据，可以是普通json串。 
+  LAYERTEMPLATE: 'LAYERTEMPLATE',       //LayerTemplate 图层模板 
+  LAYOUTTEMPLATE: 'LAYOUTTEMPLATE',     //LayoutTemplate 布局模板 
+  LINESYMBOL: 'LINESYMBOL',             //LineSymbol 线符号库 
+  MAPTEMPLATE: 'MAPTEMPLATE',           //MapTemplate 地图模板 
+  MARKERSYMBOL: 'MARKERSYMBOL',         //MarkerSymbol 点符号库 
+  MBTILES: 'MBTILES',                   //mbtiles 
+  PHOTOS: 'PHOTOS',                     //照片 
+  SHP: 'SHP',                           //shp空间数据 
+  SMTILES: 'SMTILES',                   //smtiles 
+  SVTILES: 'SVTILES',                   //svtiles 
+  THEMETEMPLATE: 'THEMETEMPLATE',       //ThemeTemplate 专题图模板 
+  TPK: 'TPK',                           //tpk 
+  UDB: 'UDB',                           //udb 数据源 
+  UGCV5: 'UGCV5',                       //ugc v5 
+  UGCV5_MVT: 'UGCV5_MVT',
+  UNKNOWN: 'UNKNOWN',                   //其他类型（普通文件） 
+  VIDEO: 'VIDEO',                       //视频文件 
+  WORKENVIRONMENT: 'WORKENVIRONMENT',   //WorkEnvironment 工作环境 
+  WORKSPACE: 'WORKSPACE',               //工作空间 sxwu, smwu, sxw, smw 
 }
 
 export interface SMOnlineData {
@@ -89,6 +89,13 @@ export interface SMOnlineData {
   "storageId": "51ab7b53_618a_416c_8082_58657a3b59a8",
   "status": "OK",
   "MD5": "DA460531CBE2A023643B36C4F9F7AEF2"
+}
+
+export interface UserInfo {
+  userId: string,
+  nickname: string,
+  phoneNumber: string,
+  email: string | null,
 }
 
 export default class OnlineServicesUtils {
@@ -602,7 +609,7 @@ export default class OnlineServicesUtils {
    * @param userName nickname或email
    * @param isEmail 通过手机号查找已被禁止，请设置为true
    */
-  getUserInfo = async (userName: string, isEmail: boolean): Promise<object|false> => {
+  getUserInfo = async (userName: string, isEmail: boolean): Promise<UserInfo|false> => {
     try {
       let url
       //仅支持邮箱，用户名 zhangxt

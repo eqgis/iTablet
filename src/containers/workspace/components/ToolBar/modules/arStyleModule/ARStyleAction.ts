@@ -28,9 +28,16 @@ async function toolbarBack() {
 async function tableAction(type: string, params: { key: any; layerName: any; action: (arg0: any) => void }) {
   let result = false
   const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
   switch (type) {
     case ConstToolType.SM_AR_STYLE_BORDER_COLOR:
-      result = await SARMap.setLayerBorderColor(_params.arlayer.currentLayer.name, params.key)
+      SARMap.setLayerStyle(layer.name, {borderColor: params.key})
+      break
+    case ConstToolType.SM_AR_STYLE_TEXT_COLOR:
+      SARMap.setLayerStyle(layer.name, {strokeColor: params.key})
+      break
+    case ConstToolType.SM_AR_STYLE_BACKGROUND_COLOR:
+      SARMap.setLayerStyle(layer.name, {fillColor: params.key})
       break
   }
   if (!result && params.action) {
@@ -38,7 +45,7 @@ async function tableAction(type: string, params: { key: any; layerName: any; act
   }
 }
 
-function menu(type: string, selectKey: string, params = {}) {
+function menu(type: string, selectKey: string, params: any) {
   let showMenu = false
 
   if (GLOBAL.ToolBar) {
@@ -47,6 +54,7 @@ function menu(type: string, selectKey: string, params = {}) {
     } else {
       showMenu = true
     }
+    params.showBox && params.showBox()
     GLOBAL.ToolBar.setState({
       isFullScreen: showMenu,
       showMenuDialog: showMenu,

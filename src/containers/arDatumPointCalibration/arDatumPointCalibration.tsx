@@ -73,8 +73,8 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   _onConfirm = () => {
     // 定义确定使用修改过的值定位
     const { longitude, latitude, height } = this.state
-    const { onClose } = this.props
-    onClose && onClose({
+    const { onConfirm } = this.props
+    onConfirm && onConfirm({
       x: longitude,
       y: latitude,
       h: height,

@@ -2669,7 +2669,8 @@ export default class MapView extends React.Component {
         this.measureType === 'drawLine' ||
         this.measureType === 'arDrawArea' ||
         this.measureType === 'arDrawRectangle' ||
-        this.measureType === 'arDrawCircular'
+        this.measureType === 'arDrawCircular' ||
+        this.measureType === 'arDrawPoint'
       ) {
         this.showSave = true
       }

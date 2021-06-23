@@ -663,7 +663,7 @@ export default class ArMappingButton extends React.Component {
     this.isDrawing = true
     SARMap.setMeasureMode('DRAW_POINT')
     this.setState({
-      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+      isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
     })
@@ -859,7 +859,7 @@ export default class ArMappingButton extends React.Component {
     this.isDrawing = true
     SARMap.setMeasureMode('DRAW_RECTANGLE')
     this.setState({
-      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+      isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
     })
@@ -924,7 +924,7 @@ export default class ArMappingButton extends React.Component {
     this.isDrawing = true
     SARMap.setMeasureMode('DRAW_CIRCLE')
     this.setState({
-      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+      isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
     })
@@ -1110,6 +1110,8 @@ export default class ArMappingButton extends React.Component {
       }else if(this.saveType === 'saveRegion'){
         Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
       }
+    }else{
+      this.saveLog()
     }
   }
 

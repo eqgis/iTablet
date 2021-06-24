@@ -22,6 +22,7 @@ const ar_distance = require('./icon_ar_distance.png')
 
 const ar_add_location = require('./icon_ar_add_location.png')
 const ar_add_point = require('./icon_ar_add_point.png')
+const icon_add_to = require('./icon_add_to.png')
 
 export default {
   ar_poi,
@@ -45,4 +46,5 @@ export default {
   ar_distance,
   ar_add_location,
   ar_add_point,
+  icon_add_to,
 }

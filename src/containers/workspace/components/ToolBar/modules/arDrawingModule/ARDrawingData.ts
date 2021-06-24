@@ -181,7 +181,7 @@ async function getData(type: string, params: {[name: string]: any}) {
         ToolbarBtnType.TOOLBAR_BACK,
         {
           type: 'ADD_POINT',
-          image: getThemeAssets().ar.armap.ar_add_point,
+          image: getThemeAssets().ar.armap.icon_add_to,
           action: async () => {
             const translation = await SARMap.getCurrentCenterHitPoint()
             const _data: any = ToolbarModule.getData()

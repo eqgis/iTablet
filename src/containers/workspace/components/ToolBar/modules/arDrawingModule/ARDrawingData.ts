@@ -180,8 +180,8 @@ async function getData(type: string, params: {[name: string]: any}) {
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         {
-          type: ToolbarBtnType.TOOLBAR_COMMIT,
-          // image: getThemeAssets().ar.armap.ar_add_point,
+          type: 'ADD_POINT',
+          image: getThemeAssets().ar.armap.ar_add_point,
           action: async () => {
             const translation = await SARMap.getCurrentCenterHitPoint()
             const _data: any = ToolbarModule.getData()
@@ -190,6 +190,7 @@ async function getData(type: string, params: {[name: string]: any}) {
             }
           },
         },
+        ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
   }

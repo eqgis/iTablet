@@ -20,11 +20,23 @@ export const AR3DExample: ExampleData = {
   dir: '3Dpipe_EXAMPLE',
 }
 
-export const ARModelExample: ExampleData = {
+export const ARModelExample: ExampleData[] = [{
   userName: '927528',
   downloadName: 'ARModel_EXAMPLE.zip',
   dir: 'ARModel',
-}
+}, {
+  userName: '927528',
+  downloadName: 'ARModel_EXAMPLE2.zip',
+  dir: 'ARModel_EXAMPLE2',
+}, {
+  userName: '927528',
+  downloadName: 'ARModel_EXAMPLE3.zip',
+  dir: 'ARModel_EXAMPLE3',
+}, {
+  userName: '927528',
+  downloadName: 'ARModel_EXAMPLE4.zip',
+  dir: 'ARModel_EXAMPLE4',
+}]
 
 export const AREffectExample: ExampleData = {
   userName: '927528',

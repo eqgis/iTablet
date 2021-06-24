@@ -206,7 +206,7 @@ async function get3DData() {
   //检查用户是否已有数据，没有则添加下载选项
   if(data3DTemp.filter(item => item.Type !== undefined).length === 0) {
     items.push({
-      key: AR3DExample.downloadName,
+      key: 'download',
       image: getPublicAssets().common.icon_download,
       title: getLanguage(_params.language).Prompt.DOWNLOAD,
       action: ARDrawingAction.download3DExample,
@@ -229,10 +229,15 @@ async function getARModel() {
   const _params: any = ToolbarModule.getParams()
   const arModelTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'ARMODEL')
   const items: any[] = []
-  const downloadKeys = [ARModelExample.userName + '_' + ARModelExample.downloadName]
-  if(arModelTemp.length === 0) {
+  const downloadKeys = []
+  for (const item of ARModelExample) {
+    if(arModelTemp.findIndex(item2 => item2.name === item.toName) < 0) {
+      downloadKeys.push(item.userName + '_' + item.downloadName)
+    }
+  }
+  if(downloadKeys.length > 0) {
     items.push({
-      key: AR3DExample.downloadName,
+      key: 'download',
       image: getPublicAssets().common.icon_download,
       title: getLanguage(_params.language).Prompt.DOWNLOAD,
       action: ARDrawingAction.downloadModelExample,
@@ -279,7 +284,7 @@ async function getAREffect() {
   }
   if(downloadKeys.length > 0) {
     items.push({
-      key: AR3DExample.downloadName,
+      key: 'download',
       image: getPublicAssets().common.icon_download,
       title: getLanguage(_params.language).Prompt.DOWNLOAD,
       action: () => ARDrawingAction.downloadEffectlExample(downloadKeys),

@@ -434,8 +434,21 @@ export async function download3DExample() {
   _downloadExample('workspace3d', AR3DExample)
 }
 
-export async function downloadModelExample() {
-  _downloadExample('armodel', ARModelExample)
+export async function downloadModelExample(downloadKeys?: string[]) {
+  let downloadData = []
+  if (downloadKeys && downloadKeys.length > 0) {
+    for (const key of downloadKeys) {
+      for (const item of ARModelExample) {
+        if (key === `${item.userName}_${item.downloadName}`) {
+          downloadData.push(item)
+        }
+      }
+    }
+  }
+  if (downloadData.length === 0) {
+    downloadData = downloadData.concat(ARModelExample)
+  }
+  _downloadExamples('armodel', ARModelExample)
 }
 
 export async function downloadEffectlExample(downloadKeys?: string[]) {

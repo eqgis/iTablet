@@ -1,16 +1,12 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import { OnlineServicesUtils, Toast } from '../../utils'
-import { ConstPath, UserType } from '../../constants'
-import { FileTools } from '../../native'
-import { ConfigUtils, AppInfo, SOnlineService, SIPortalService } from 'imobile_for_reactnative'
+import { } from '../../utils'
+import { ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 // Constants
 // --------------------------------------------------
 export const USER_SET = 'USER_SET'
 export const USERS_SET = 'USERS_SET'
 export const USER_DELETE = 'USER_DELETE'
-
-const JSOnlineService = new OnlineServicesUtils('online')
 
 /** 用户信息参数 */
 export interface UserInfoParams {
@@ -19,23 +15,23 @@ export interface UserInfoParams {
    * iportal为注册时使用的字符串
    * online为系统分配的数字的字符串，即id
    */
-  userName: string,
+  userName: string
   /** 昵称，用户可修改 */
-  nickname?: string,
+  nickname?: string
   /** 邮箱地址，用户可修改 */
-  email?: string,
+  email?: string
   /** 电话号码，用户可修改 */
-  phoneNumber?: number,
+  phoneNumber?: number
   /** 密码 */
-  password?: string,
+  password?: string
   /** 用户类型，详见UserType */
-  userType: string,
+  userType: string
   /** iportal用户所使用的服务器地址 */
-  serverUrl?: string,
+  serverUrl?: string
   /** @deprecated 同userName */
-  userId?: string,
+  userId?: string
   /** @deprecated 是否为邮箱登录 */
-  isEmail?: string,
+  isEmail?: string
 }
 /** 用户信息 */
 export interface UserInfo {
@@ -44,23 +40,23 @@ export interface UserInfo {
    * iportal为注册时使用的字符串
    * online为系统分配的数字的字符串，即id
    */
-  userName: string,
+  userName: string
   /** 昵称，用户可修改 */
-  nickname: string,
+  nickname: string
   /** 邮箱地址，用户可修改 */
-  email: string,
+  email: string
   /** 电话号码，用户可修改 */
-  phoneNumber: number,
+  phoneNumber: number
   /** 密码 */
-  password?: string,
+  password?: string
   /** 用户类型，详见UserType */
-  userType: string,
+  userType: string
   /** iportal用户所使用的服务器地址 */
-  serverUrl: string,
+  serverUrl: string
   /** @deprecated 同userName */
-  userId: string,
+  userId: string
   /** @deprecated 是否为邮箱登录 */
-  isEmail: string,
+  isEmail: string
 }
 
 export interface Users {
@@ -95,134 +91,6 @@ export const deleteUser = (params: UserInfoParams, cb = () => {}) => async (disp
     payload: params,
   })
   cb && cb()
-}
-
-// 初始用户化文件目录
-async function initUserDirectories(userName: string) {
-  try {
-    let paths = Object.keys(ConstPath.RelativePath)
-    let isCreate = true,
-      absolutePath = ''
-    for (let path of paths) {
-      let _path =
-        ConstPath.UserPath + userName + '/' + ConstPath.RelativePath[path]
-      absolutePath = await FileTools.appendingHomeDirectory(_path)
-      let exist = await FileTools.fileIsExistInHomeDirectory(_path)
-      let fileCreated =
-        exist || (await FileTools.createDirectory(absolutePath))
-      isCreate = fileCreated && isCreate
-    }
-    if (isCreate) {
-      let result = await FileTools.initUserDefaultData(userName)
-      !result && Toast.show('初始化用户数据失败')
-    } else {
-      Toast.show('创建用户目录失败')
-    }
-  } catch (e) {
-    Toast.show('创建用户目录失败')
-  }
-}
-
-let isLogging = false
-/**
- * Online登录
- * @param userName
- * @param password
- * @param type
- * @returns
- */
-export const loginOnline = (
-  userName: string,
-  password: string,
-  type: 'EMAIL_TYPE' | 'PHONE_TYPE',
-) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
-  try {
-    if (isLogging) return false
-    isLogging = true
-    let loginResult: boolean | string = await JSOnlineService.login(
-      userName,
-      password,
-      type,
-    )
-    if (loginResult === true) {
-      if (type === 'EMAIL_TYPE') {
-        loginResult = await SOnlineService.login(userName, password)
-      } else {
-        loginResult = await SOnlineService.loginWithPhoneNumber(
-          userName,
-          password,
-        )
-      }
-    }
-    isLogging = false
-
-    if (loginResult) {
-      const userInfo = await JSOnlineService.getUserInfo(userName, type === 'EMAIL_TYPE')
-      if (typeof userInfo === 'object') {
-        await dispatch({
-          type: USER_SET,
-          payload: {
-            userName: userInfo.userId,
-            password: password,
-            nickname: userInfo.nickname,
-            email: userInfo.email,
-            phoneNumber: userInfo.phoneNumber,
-            userId: userInfo.userId,
-            isEmail: type === 'EMAIL_TYPE',
-            userType: UserType.COMMON_USER,
-          },
-        })
-      }
-    }
-    return loginResult
-  } catch (error) {
-    isLogging = false
-    return false
-  }
-}
-
-/**
- * iPortal登录
- * @param url
- * @param userName
- * @param password
- * @param remember
- * @returns
- */
-export const loginIPortal = (
-  url: string,
-  userName: string,
-  password: string,
-  remember: boolean,
-) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
-  try {
-    if (isLogging) return false
-    isLogging = true
-    let loginResult = await SIPortalService.login(url, userName, password, remember)
-    if (loginResult === true) {
-      let info = await SIPortalService.getMyAccount()
-      if (info) {
-        let userInfo = JSON.parse(info)
-        await initUserDirectories(userInfo.name)
-        await dispatch({
-          type: USER_SET,
-          payload: {
-            serverUrl: url,
-            userName: userInfo.name,
-            password: password,
-            nickname: userInfo.nickname,
-            email: userInfo.email,
-            userType: UserType.IPORTAL_COMMON_USER,
-          },
-        })
-      }
-    }
-    isLogging = false
-    return loginResult
-  } catch (error) {
-    isLogging = false
-    return false
-  }
 }
 
 const initialState = fromJS({

@@ -19,12 +19,7 @@ import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './src/redux/models/nav'
-import {
-  setUser,
-  setUsers,
-  loginOnline,
-  loginIPortal,
-} from './src/redux/models/user'
+import { setUser, setUsers } from './src/redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting } from './src/redux/models/setting'
 import {
   setEditLayer,
@@ -168,8 +163,6 @@ class AppRoot extends Component {
     setNav: PropTypes.func,
     setUser: PropTypes.func,
     setUsers: PropTypes.func,
-    loginOnline: PropTypes.func,
-    loginIPortal: PropTypes.func,
     openWorkspace: PropTypes.func,
     setShow: PropTypes.func,
     closeMap: PropTypes.func,
@@ -242,10 +235,10 @@ class AppRoot extends Component {
 
   /** 初始化用户数据 **/
   initUser = async () => {
-    let userName = 'Customer'
     try {
       // 获取用户登录记录
       let users = await ConfigUtils.getUsers()
+      let userName = 'Customer'
       // 创建游客目录
       if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
         await FileTools.initUserDefaultData(userName)
@@ -268,14 +261,7 @@ class AppRoot extends Component {
       await AppInfo.setUserName(userName)
       await this.getUserApplets(userName)
     } catch (e) {
-      userName = 'Customer'
-      this.props.setUser({
-        userName: userName,
-        userId: userName,
-        userType: UserType.PROBATION_USER,
-      })
-      await AppInfo.setUserName(userName)
-      await this.getUserApplets(userName)
+
     }
   }
 
@@ -362,11 +348,15 @@ class AppRoot extends Component {
   }
 
   loginOnline = async () => {
+    // let isEmail = this.props.user.currentUser.isEmail
     let nickname = this.props.user.currentUser.nickname
     let password = this.props.user.currentUser.password
     let bLogin = false
-    bLogin = await this.props.loginOnline(nickname, password, 'EMAIL_TYPE')
-
+    // if (isEmail === true) {
+    bLogin = await SOnlineService.login(nickname, password)
+    // } else if (isEmail === false) {
+    //   bLogin = await SOnlineService.loginWithPhoneNumber(userName, password)
+    // }
     return bLogin
   }
 
@@ -376,15 +366,33 @@ class AppRoot extends Component {
       result = await this.loginOnline()
       if (result === true) {
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
+      } else {
+        // iOS防止第一次登录timeout
+        result = await this.loginOnline()
       }
       if(result === true){
+        let JSOnlineservice = new OnlineServicesUtils('online')
+        //登录后更新用户信息 zhangxt
+        let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
+        let user = {
+          userName: userInfo.userId,
+          password: this.props.user.currentUser.password,
+          nickname: userInfo.nickname,
+          email: userInfo.email,
+          phoneNumber: userInfo.phoneNumber,
+          userId: userInfo.userId,
+          isEmail: true,
+          userType: UserType.COMMON_USER,
+        }
+        this.props.setUser(user)
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
         if(appState !== true){
           GLOBAL.getFriend().onUserLoggedin()
         }
+        
       } else {
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
-        if(appState !== true){
+        if(bResetMsgService !== true){
           GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
         }
       }
@@ -392,9 +400,22 @@ class AppRoot extends Component {
       let url = this.props.user.currentUser.serverUrl
       let userName = this.props.user.currentUser.userName
       let password = this.props.user.currentUser.password
-      let result = await this.props.loginIPortal(url, userName, password, true)
-
+      SIPortalService.init()
+      let result = await SIPortalService.login(url, userName, password, true)
       if (typeof result === 'boolean' && result) {
+        //登录后更新用户信息 zhangxt
+        let info = await SIPortalService.getMyAccount()
+        if (info) {
+          let userInfo = JSON.parse(info)
+          this.props.setUser({
+            serverUrl: url,
+            userName: userInfo.name,
+            password: password,
+            nickname: userInfo.nickname,
+            email: userInfo.email,
+            userType: UserType.IPORTAL_COMMON_USER,
+          })
+        }
         this.container.setLoading(false)
         NavigationService.popToTop()
       }
@@ -1244,8 +1265,6 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setNav,
   setUser,
   setUsers,
-  loginOnline,
-  loginIPortal,
   openWorkspace,
   setShow,
   closeMap,

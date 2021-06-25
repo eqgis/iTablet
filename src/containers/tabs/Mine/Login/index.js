@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Login from './Login'
-import { setUser, loginIPortal, loginOnline } from '../../../../redux/models/user'
+import { setUser } from '../../../../redux/models/user'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -10,8 +10,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   setUser,
-  loginIPortal,
-  loginOnline,
 }
 
 export default connect(

@@ -1362,6 +1362,8 @@ class Chat extends React.Component {
             this.onSendLocation(value)
           } else if (type === 2) {
             this.onSendPicture(value)
+          } else if (type === 4) {
+            this.onSendFile(MSGConstant.MSG_ARMAP, value, fileName)
           }
         }}
       />

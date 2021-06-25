@@ -29,6 +29,7 @@ export default class LocalAnalystView extends Component {
     device: Object,
     userUdbAndDs: Array,
     getLayers: () => {},
+    setCurrentLayer: () => void,
     setAnalystParams: () => {},
     getUdbAndDs: () => {},
     closeMap: () => {},
@@ -148,6 +149,7 @@ export default class LocalAnalystView extends Component {
         )
 
         this.props.closeMap(async () => {
+          this.props.setCurrentLayer()
           let res
           // if (this.type === ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS) {
           //   res = await this.loadFacility({ parent, item })
@@ -179,6 +181,7 @@ export default class LocalAnalystView extends Component {
               isFullScreen: false,
               // height: ConstToolType.HEIGHT[0],
             })
+
             await AnalystTools.clear(this.type)
             await this.props.getLayers()
             this.setLoading(false)

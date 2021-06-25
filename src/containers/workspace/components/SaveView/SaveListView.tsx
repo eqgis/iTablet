@@ -320,7 +320,7 @@ export default class SaveListView extends React.Component<Props, State> {
         info={getLanguage(GLOBAL.language).Prompt.SAVE_TITLE}
         confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.SAVE_YES}
         cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.SAVE_NO}
-        confirmTitleStyle={styles.confirmTitleStyle}
+        confirmTitleStyle={[styles.confirmTitleStyle, this.state.selectedData.size === 0 && {color: color.fontColorGray}]}
       >
         {this.renderItems()}
       </Dialog>

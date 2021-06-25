@@ -415,6 +415,7 @@ async function toolbarBack() {
 
 function commit() {
   // SARMap.setAction(ARAction.NULL)
+  SARMap.setCenterHitTest(false)
   SARMap.setAction(ARAction.SELECT)
   SARMap.clearSelection()
   SARMap.submit()
@@ -424,6 +425,7 @@ function commit() {
 function close() {
   const _params: any = ToolbarModule.getParams()
   SARMap.clearSelection()
+  SARMap.setCenterHitTest(false)
   SARMap.setAction(ARAction.SELECT)
   ToolbarModule.addData({selectARElement: null})
   _params.setToolbarVisible(false)

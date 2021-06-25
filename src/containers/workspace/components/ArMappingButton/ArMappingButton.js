@@ -1111,7 +1111,7 @@ export default class ArMappingButton extends React.Component {
         Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
       }
     }else{
-      this.saveLog()
+      // this.saveLog()
     }
   }
 

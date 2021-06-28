@@ -39,6 +39,7 @@ const Prompt = {
 
   DELETE_STOP: '确认删除站点？',
   DELETE_OBJECT: '确定要永久删除该对象吗?',
+  DELETE_LAYER: '删除图层后，数据无法恢复，确认删除?',
   PLEASE_ADD_STOP: '请添加站点',
 
   CONFIRM: '确定',

@@ -41,6 +41,7 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'Durdurmayı silmek istediğinizden emin misiniz?',
   DELETE_OBJECT: 'Nesneyi silmek istediğinizden emin misiniz?',
+  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: 'Lütfen Stop Ekleyin',
 
   CONFIRM: 'Onayla',

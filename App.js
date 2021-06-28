@@ -19,7 +19,7 @@ import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './src/redux/models/nav'
-import { setUser, setUsers } from './src/redux/models/user'
+import { setUser, setUsers, deleteUser } from './src/redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting } from './src/redux/models/setting'
 import {
   setEditLayer,
@@ -31,6 +31,7 @@ import {
   closeMap,
   setCurrentMap,
   saveMap,
+  closeWorkspace,
 } from './src/redux/models/map'
 import {
   setCurrentTemplateInfo,
@@ -162,11 +163,13 @@ class AppRoot extends Component {
 
     setNav: PropTypes.func,
     setUser: PropTypes.func,
+    deleteUser: PropTypes.func,
     setUsers: PropTypes.func,
     openWorkspace: PropTypes.func,
     setShow: PropTypes.func,
     closeMap: PropTypes.func,
     setCurrentMap: PropTypes.func,
+    closeWorkspace: PropTypes.func,
 
     setEditLayer: PropTypes.func,
     setSelection: PropTypes.func,
@@ -360,7 +363,7 @@ class AppRoot extends Component {
     return bLogin
   }
 
-  login = async appState => {
+  login = async bResetMsgService => {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
@@ -386,14 +389,15 @@ class AppRoot extends Component {
         }
         this.props.setUser(user)
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
-        if(appState !== true){
-          GLOBAL.getFriend().onUserLoggedin()
+        if(bResetMsgService !== true){
+          //TODO 处理app加载流程，确保登录后再更新消息服务
+          GLOBAL.getFriend?.().onUserLoggedin()
         }
-        
+
       } else {
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
         if(bResetMsgService !== true){
-          GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+          this.logoutOnline()
         }
       }
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
@@ -429,6 +433,34 @@ class AppRoot extends Component {
         this.loginTimer = undefined
       }
       this.loginTimer = setInterval(this.loginOnline, 60000)
+    }
+  }
+
+  logoutOnline = () => {
+    try {
+      if (this.props.user.userType !== UserType.PROBATION_USER) {
+        SOnlineService.logout()
+      }
+      this.props.closeWorkspace(async () => {
+        SOnlineService.removeCookie()
+        let customPath = await FileTools.appendingHomeDirectory(
+          ConstPath.CustomerPath +
+          ConstPath.RelativeFilePath.Workspace[
+            this.props.language === 'CN' ? 'CN' : 'EN'
+          ],
+        )
+        this.props.deleteUser(this.props.user.currentUser)
+        this.props.setUser({
+          userName: 'Customer',
+          nickname: 'Customer',
+          userType: UserType.PROBATION_USER,
+        })
+        NavigationService.popToTop('Tabs')
+        this.props.openWorkspace({ server: customPath })
+        Toast.show(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+      })
+    } catch (e) {
+      //
     }
   }
 
@@ -1289,6 +1321,8 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setMapArGuide,
   setMapArMappingGuide,
   setMapAnalystGuide,
+  deleteUser,
+  closeWorkspace,
 })(AppRoot)
 
 const App = () =>

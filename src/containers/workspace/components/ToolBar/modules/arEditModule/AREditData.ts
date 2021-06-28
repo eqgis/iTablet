@@ -73,8 +73,6 @@ async function showSlideToolbar(type: string, language: string, params: any) {
     containerType: ToolbarType.slider,
     isFullScreen: false,
     showMenuDialog: false,
-    // showBox: false,
-    height: 0,
     ...params,
   })
 }

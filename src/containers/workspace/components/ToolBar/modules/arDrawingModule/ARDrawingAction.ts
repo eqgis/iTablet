@@ -450,7 +450,7 @@ export async function downloadModelExample(downloadKeys?: string[]) {
   if (downloadData.length === 0) {
     downloadData = downloadData.concat(ARModelExample)
   }
-  _downloadExamples('armodel', ARModelExample)
+  _downloadExamples('armodel', downloadData)
 }
 
 export async function downloadEffectlExample(downloadKeys?: string[]) {
@@ -545,7 +545,9 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
       const items = await DataHandler.getExternalData(homePath + ConstPath.Common + exampleData.dir, [type])
       if(items.length > 0) {
         //TODO 导入所有数据
-        result = await DataHandler.importExternalData(_params.user.currentUser, items[0])
+        for (const item of items) {
+          result = await DataHandler.importExternalData(_params.user.currentUser, item) && result
+        }
         // result && AppToolBar.resetTabData()
         Toast.show(result ? getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS : getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
       } else {
@@ -557,7 +559,10 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
     AppProgress.onProgressEnd(downloadKey)
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING)
-    result = await DataHandler.importExternalData(_params.user.currentUser, items[0])
+    // result = await DataHandler.importExternalData(_params.user.currentUser, items[0])
+    for (const item of items) {
+      result = await DataHandler.importExternalData(_params.user.currentUser, item) && result
+    }
     // result && AppToolBar.resetTabData()
     AppProgress.onProgressEnd(downloadKey)
     Toast.show(result ? getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS : getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)

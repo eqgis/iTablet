@@ -181,7 +181,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
     ) {
       menuData[0].data.unshift({
         title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
-        image: getThemeAssets().layer.icon_layer_style,
+        image: getThemeAssets().functionBar.icon_tool_edit,
         action: async () => {
           if (this.props.arlayer.currentLayer?.name !== this.state.selectLayer?.name) {
             await this.props.setCurrentARLayer(this.state.selectLayer)

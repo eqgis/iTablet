@@ -512,7 +512,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
     return false
   }
   const homePath = await FileTools.getHomeDirectory()
-  let result: boolean = false
+  let result: boolean = true
   //尝试读取以前下载的示范数据
   const items = await DataHandler.getExternalData(homePath + ConstPath.Common + exampleData.dir, [type])
   if(items.length === 0) {

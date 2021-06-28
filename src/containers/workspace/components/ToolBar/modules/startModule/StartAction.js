@@ -109,7 +109,7 @@ function openMap() {
       // '我的地图',
       image: getThemeAssets().dataType.icon_map,
       data: userFileList || [],
-      extraData: {
+      extraData: !GLOBAL.Type.startsWith('MAP_AR') && {
         title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
         action: () => {
           NavigationService.navigate('SampleMap', {

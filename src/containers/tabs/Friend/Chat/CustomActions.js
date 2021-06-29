@@ -239,9 +239,9 @@ export default class CustomActions extends React.Component {
                   key={i}
                   style={[
                     modalStyles.itemView,
-                    {
-                      marginRight: (i + 1) % 4 === 0 ? 0 : scaleSize(40),
-                    },
+                    // {
+                    //   marginRight: (i + 1) % 4 === 0 ? 0 : scaleSize(40),
+                    // },
                   ]}
                 >
                   <TouchableOpacity onPress={() => v.onPress(this)}>
@@ -283,15 +283,15 @@ const modalStyles = StyleSheet.create({
     padding: scaleSize(5),
     flexWrap: 'wrap',
     flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   itemView: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: scaleSize(20),
-    marginLeft: scaleSize(20),
-    width: scaleSize(110),
-    height: scaleSize(90),
+    width: scaleSize(120),
+    height: scaleSize(120),
   },
   textStyle: {
     color: 'black',

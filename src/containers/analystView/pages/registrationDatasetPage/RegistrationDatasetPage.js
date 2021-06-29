@@ -216,13 +216,13 @@ export default class RegistrationDatasetPage extends Component {
         backgroundStyle:{opacity: 0.8}
       })
     } else {
-      NavigationService.goBack()
+      // NavigationService.goBack()
       this.props.setMapAnalystGuide(false)
     }
   }
 
   skip = () => {
-    NavigationService.goBack()
+    // NavigationService.goBack()
     this.props.setMapAnalystGuide(false)
   }
 

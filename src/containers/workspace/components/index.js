@@ -10,7 +10,7 @@ import BackgroundOverlay from './BackgroundOverlay'
 import MapController from './MapController'
 import ToolBar from './ToolBar'
 import SymbolTabs from './SymbolTabs'
-import SaveView from './SaveView'
+import { SaveView, SaveListView } from './SaveView'
 import OverlayView from './OverlayView'
 import NavigationView from './NavigationView'
 import FloorListView from './FloorListView'
@@ -52,6 +52,7 @@ export {
   ToolBar,
   SymbolTabs,
   SaveView,
+  SaveListView,
   constants,
   OverlayView,
   AnalystMapButtons,

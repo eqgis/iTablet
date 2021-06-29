@@ -11,6 +11,10 @@ import { SMap, Action } from 'imobile_for_reactnative'
 
 const styles = StyleSheet.create({
   buttons: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
     height: Const.BOTTOM_HEIGHT,
     paddingHorizontal: scaleSize(20),

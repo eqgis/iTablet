@@ -129,4 +129,17 @@ export default StyleSheet.create({
     minWidth: scaleSize(100),
     width: scaleSize(300),
   },
+
+  // Custom Header
+  headerRightView: {
+    width: scaleSize(60),
+    height: scaleSize(60),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  headerRightImg: {
+    width: scaleSize(50),
+    height: scaleSize(50),
+  },
 })

@@ -429,6 +429,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Alan',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'Çizgi',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'Nokta',
+  MAP_AR_AI_ASSISTANT_SAVE_TEXT: 'Metin',
   MAP_AR_AI_SAVE_SUCCESS: 'Kayıt Başarılı',
   MAP_AR_AI_SAVE_POINT: 'Nokta Kaydet',
   MAP_AR_AI_SAVE_LINE: 'Çizgi Kaydet',

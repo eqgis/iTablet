@@ -26,6 +26,9 @@ export default {
   MSG_DATASET: 8, // 数据集
   MSG_LAYER: 9, // 图层
   MSG_LOCATION: 10, // 位置
+  MSG_ARMAP: 11, // AR地图
+  MSG_ARMODAL: 12, // AR模型
+  MSG_AREFFECT: 13, // AR特效
   MSG_INVITE_COWORK: 21, // 协作邀请
 
   // MSG_COWORK 中的message的type

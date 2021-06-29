@@ -66,6 +66,9 @@ public class NativeMethod extends ReactContextBaseJavaModule {
                             String tempFileName = tempArray[j].getName();
                             String suffix = tempFileName.substring(tempFileName.lastIndexOf(".") + 1).toLowerCase();
                             if (suffix.equals("smw") || suffix.equals("sxwu") || suffix.equals("sxw") || suffix.equals("smwu")) {
+                                if (tempFileName.startsWith("~[")) { // 防止错误的工作空间文件
+                                    continue;
+                                }
                                 String tempName = tempFileName.substring(0, tempFileName.lastIndexOf("."));
                                 tempInfo.putString("name", tempName);
                                 tempInfo.putString("path", tempArray[j].getAbsolutePath());

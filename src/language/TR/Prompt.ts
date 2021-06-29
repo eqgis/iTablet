@@ -41,6 +41,7 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'Durdurmayı silmek istediğinizden emin misiniz?',
   DELETE_OBJECT: 'Nesneyi silmek istediğinizden emin misiniz?',
+  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: 'Lütfen Stop Ekleyin',
 
   CONFIRM: 'Onayla',
@@ -55,10 +56,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'SuperMap iTabletten çık?',
   MAP_LOADING: 'Yükleniyor',
   LOADING: 'Yükleniyor',
+  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: 'Harita açıldı',
   THE_MAP_IS_NOTEXIST: 'Harita mevcut değil',
+  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: 'Manzara açıldı',
   NO_SCENE_LIST: 'Veri Yok',
+  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
   SWITCHING: 'Değiştiriliyor',
   CLOSING: 'Kapatılıyor',
   CLOSING_3D: 'Kapatılıyor',
@@ -102,6 +106,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'Aç',
   CREATE_FAILED: 'Oluşturma Başarısız',
   INVALID_DATASET_NAME: 'Geçersiz verikümesi adı ya da ad mevcutta kullanılıyor',
+  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
+  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
+  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
 
   PLEASE_CHOOSE_POINT_LAYER: 'Lütfen Nokta Katmanını Seçiniz',
   PLEASE_CHOOSE_LINE_LAYER: 'Lütfen Çizgi Katmanını Seçiniz',
@@ -202,12 +209,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'Paylaşım Başarısız',
   SHARE_PREPARE: 'Paylaşım için Hazırlanıyor',
   SHARE_START: 'Paylaşmaya Başla',
+  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
 
   EXPORTING: 'Dışarı Aktarılıyor',
   EXPORT_SUCCESS: 'Başarıyla Dışarı Aktarıldı',
   EXPORT_FAILED: 'Dışa Aktarma Başarısız',
   EXPORT_TO: 'Veri şu konuma dışarı aktarıldı: ',
   REQUIRE_PRJ_1984: 'Verikümesinin PrjCoordSys WGS_1984 olmalıdır',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: 'Geri alma başarısız',
   REDO_FAILED: 'Yeniden yapma başarısız',
@@ -405,6 +414,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
   IDENTIFY_TIMEOUT: 'İzleme görüntüsü zaman aşımı, tekrar denemek ister misiniz?',
   TRACKING_LOADING: 'İzleniyor...',
+  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
 
   // 专题制图加载/输出xml
   SUCCESS: 'Başarılı işlem',
@@ -412,6 +422,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: 'Kullanılabilir şablon yok',
   CONFIRM_LOAD_TEMPLATE: 'Şablonu yükleyeceğinizden emin misiniz?',
   CONFIRM_OUTPUT_TEMPLATE: 'Haritanın çıktısını alacağınızdan emin misiniz?',
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

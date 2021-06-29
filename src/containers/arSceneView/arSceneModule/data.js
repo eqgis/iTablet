@@ -48,7 +48,7 @@ async function getData(type) {
           // {
           //   type: ToolbarBtnType.PLACEHOLDER,
           // },
-          trackData,
+          // trackData,
           {
             type: 'add',
             image: getThemeAssets().ar.toolbar.icon_newdata,

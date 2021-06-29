@@ -40,22 +40,22 @@ class MyTemplate extends MyDataPage {
   }
 
   deleteData = async () => {
-    let filePath
-    if (
-      this.itemInfo.section.title ===
-      getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE
-    ) {
-      filePath = this.itemInfo.item.path.substring(
-        0,
-        this.itemInfo.item.path.lastIndexOf('/'),
-      )
-    } else if (
-      this.itemInfo.section.title ===
-      getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE
-    ) {
-      filePath = this.itemInfo.item.path
-    }
-    let result = await FileTools.deleteFile(filePath)
+    // let filePath
+    // if (
+    //   this.itemInfo.section.title ===
+    //   getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE
+    // ) {
+    //   filePath = this.itemInfo.item.path.substring(
+    //     0,
+    //     this.itemInfo.item.path.lastIndexOf('/'),
+    //   )
+    // } else if (
+    //   this.itemInfo.section.title ===
+    //   getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE
+    // ) {
+    //   filePath = this.itemInfo.item.path
+    // }
+    let result = await FileTools.deleteFile(this.itemInfo.item.path)
     return result
   }
 

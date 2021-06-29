@@ -28,7 +28,7 @@ import { DatasetType, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language/index'
 import { MsgConstant, SimpleDialog } from '../../Friend'
 import { MineItem, BatchHeadBar } from '../component'
-import { getThemeAssets, getPublicAssets } from '../../../../assets'
+import { getThemeAssets, getPublicAssets, getARSceneAssets } from '../../../../assets'
 import RNFS from 'react-native-fs'
 import styles from './styles'
 
@@ -92,6 +92,9 @@ export default class MyDataPage extends Component {
     color: 'COLOR_SCHEME',
     applet: 'APPLETS',
     aimodel: 'AIMODEL',
+    armodel: 'ARMODEL',
+    areffect: 'AREFFECT',
+    armap: 'ARMAP',
   }
 
   componentDidMount() {
@@ -147,7 +150,7 @@ export default class MyDataPage extends Component {
     let relativeExportTemplatePath =
     ConstPath.ExternalData + '/' +
     'Collection/'
-  return relativeExportTemplatePath
+    return relativeExportTemplatePath
   }
 
   //页面popup选项，不会合并公共选项
@@ -373,20 +376,25 @@ export default class MyDataPage extends Component {
 
       if (result !== undefined) {
         if (result) {
-          Toast.show(
-            type === 'local' || type === 'template'
-              ? getLanguage(GLOBAL.language).Prompt.EXPORT_SUCCESS
-              : getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
-          )
           if (this.exportPath !== '') {
             this.showExportPathDialog()
+          } else {
+            Toast.show(
+              type === 'local' || type === 'template'
+                ? getLanguage(GLOBAL.language).Prompt.EXPORT_SUCCESS
+                : getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
+            )
           }
         } else {
-          Toast.show(
-            type === 'local' || type === 'template'
-              ? getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED
-              : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
-          )
+          if(type === 'template'){
+            Toast.show( getLanguage(GLOBAL.language).Prompt.EXPORT_TEMP_FAILED )
+          } else {
+            Toast.show(
+              type === 'local'
+                ? getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED
+                : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
+            )
+          }
         }
       }
     } catch (error) {
@@ -401,46 +409,52 @@ export default class MyDataPage extends Component {
   }
 
   shareToWechat = async fileName => {
-    let result
-    let isInstalled
-    if (Platform.OS === 'ios') {
-      isInstalled = true
-    } else {
-      isInstalled = await appUtilsModule.isWXInstalled()
-    }
-    // let isInstalled = await appUtilsModule.isWXInstalled()
-    if (isInstalled) {
-      await this.exportData(fileName)
-      let path = this.exportPath
-      this.exportPath = ''
-      let copyPath
-      if (Platform.OS === 'android') {
-        copyPath =
-          GLOBAL.homePath + this.getRelativeTempPath() + 'MyExportWX.zip'
-        await FileTools.copyFile(path, copyPath, true)
+    try {
+      let result
+      let isInstalled
+      if (Platform.OS === 'ios') {
+        isInstalled = true
+      } else {
+        isInstalled = await appUtilsModule.isWXInstalled()
       }
-      result = await appUtilsModule.sendFileOfWechat({
-        filePath: Platform.OS === 'ios' ? path : copyPath,
-        title: fileName + '.zip',
-        description: 'SuperMap iTablet',
-      })
-      await FileTools.deleteFile(path)
-      if (!result) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.WX_SHARE_FAILED)
-        return undefined
+      // let isInstalled = await appUtilsModule.isWXInstalled()
+      if (isInstalled) {
+        await this.exportData(fileName)
+        let path = this.exportPath
+        this.exportPath = ''
+        let copyPath
+        if (Platform.OS === 'android') {
+          copyPath =
+            GLOBAL.homePath + this.getRelativeTempPath() + 'MyExportWX.zip'
+          await FileTools.copyFile(path, copyPath, true)
+        }
+        result = await appUtilsModule.sendFileOfWechat({
+          filePath: Platform.OS === 'ios' ? path : copyPath,
+          title: fileName + '.zip',
+          description: 'SuperMap iTablet',
+        })
+        await FileTools.deleteFile(path)
+        if (!result) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.WX_SHARE_FAILED)
+          return undefined
+        }
+      } else {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.WX_NOT_INSTALLED)
       }
-    } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.WX_NOT_INSTALLED)
+      return result === false ? result : undefined
+    } catch (error) {
+      if (error.message.includes('File size cannot exceeds 10M')) {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+      }
     }
-    return result === false ? result : undefined
   }
 
   shareToOnline = async fileName => {
     await this.exportData(fileName)
     let path = this.exportPath
-    this.exportPath = ''
     let result
     let { ext, onlineDataType } = this._getUploadType()
+    this.exportPath = ''
     if (ext && onlineDataType) {
       result = await JSOnlineService.uploadFile(
         path,
@@ -458,9 +472,9 @@ export default class MyDataPage extends Component {
   shareToIPortal = async fileName => {
     await this.exportData(fileName)
     let path = this.exportPath
-    this.exportPath = ''
     let result
     let { ext, onlineDataType } = this._getUploadType()
+    this.exportPath = ''
     if (ext && onlineDataType) {
       result = await JSIPortalServce.uploadFile(
         path,
@@ -498,6 +512,12 @@ export default class MyDataPage extends Component {
           let type
           if (this.type === this.types.map) {
             type = MsgConstant.MSG_MAP
+          } else if (this.type === this.types.armap) {
+            type = MsgConstant.MSG_ARMAP
+          } else if (this.type === this.types.areffect) {
+            type = MsgConstant.MSG_AREFFECT
+          } else if (this.type === this.types.armodel) {
+            type = MsgConstant.MSG_ARMODAL
           }
           let action = [
             {
@@ -546,6 +566,9 @@ export default class MyDataPage extends Component {
         onlineDataType = 'FILLSYMBOL'
       }
     } else if (this.type === this.types.template) {
+      ext = 'zip'
+      onlineDataType = 'UDB'
+    } else if (this.exportPath.endsWith('.zip')) {
       ext = 'zip'
       onlineDataType = 'UDB'
     }
@@ -939,10 +962,20 @@ export default class MyDataPage extends Component {
           }
           break
         case this.types.scene:
-          img = require('../../../../assets/mapTools/icon_scene.png')
+          img = getARSceneAssets(info.item.Type)
+          // img = require('../../../../assets/mapTools/icon_scene.png')
           break
         case this.types.template:
           img = require('../../../../assets/mapToolbar/list_type_map_black.png')
+          break
+        case this.types.armodel:
+          img = getThemeAssets().mine.my_dynamic_model
+          break
+        case this.types.armap:
+          img = getThemeAssets().mine.my_armap
+          break
+        case this.types.areffect:
+          img = getThemeAssets().ar.armap.ar_effect
           break
         default:
           if (info.item.img) {

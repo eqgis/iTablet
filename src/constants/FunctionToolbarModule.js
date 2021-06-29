@@ -238,6 +238,22 @@ function layerManagerData() {
       themeType: -1,
     },
     {
+      title: 'GaoDe',
+      action: () => OpenData(ConstOnline.GAODE, 0),
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'GaoDe Image',
+      action: () => OpenData(ConstOnline.GAODE, 1),
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
       title: 'BingMap',
       action: () => OpenData(ConstOnline.BingMap, 0),
       data: [],
@@ -255,14 +271,14 @@ function layerManagerData() {
           confirmAction: () => {
             let data = []
             if (GLOBAL.language === 'CN') {
-              data.push(ConstOnline.tiandituCN)
+              data.push(ConstOnline.tiandituCN())
             } else {
-              data.push(ConstOnline.tiandituEN)
+              data.push(ConstOnline.tiandituEN())
             }
-            data.push(ConstOnline.tianditu)
+            data.push(ConstOnline.tianditu())
             OpenData(data, 0, callback)
           },
-          cancelAction: () => OpenData(ConstOnline.tianditu, 0, callback),
+          cancelAction: () => OpenData(ConstOnline.tianditu(), 0, callback),
         })
         GLOBAL.SimpleDialog.setVisible(true)
       },
@@ -281,14 +297,14 @@ function layerManagerData() {
           confirmAction: () => {
             let data = []
             if (GLOBAL.language === 'CN') {
-              data.push(ConstOnline.tiandituImgCN)
+              data.push(ConstOnline.tiandituImgCN())
             } else {
-              data.push(ConstOnline.tiandituImgEN)
+              data.push(ConstOnline.tiandituImgEN())
             }
-            data.push(ConstOnline.tiandituImg)
+            data.push(ConstOnline.tiandituImg())
             OpenData(data, 0, callback)
           },
-          cancelAction: () => OpenData(ConstOnline.tiandituImg, 0, callback),
+          cancelAction: () => OpenData(ConstOnline.tiandituImg(), 0, callback),
         })
         GLOBAL.SimpleDialog.setVisible(true)
       },
@@ -306,11 +322,11 @@ function layerManagerData() {
           cancelText: getLanguage(GLOBAL.language).Prompt.NO,
           confirmAction: () => {
             let data = []
-            data.push(ConstOnline.tiandituTerCN)
-            data.push(ConstOnline.tiandituTer)
+            data.push(ConstOnline.tiandituTerCN())
+            data.push(ConstOnline.tiandituTer())
             OpenData(data, 0, callback)
           },
-          cancelAction: () => OpenData(ConstOnline.tiandituTer, 0, callback),
+          cancelAction: () => OpenData(ConstOnline.tiandituTer(), 0, callback),
         })
         GLOBAL.SimpleDialog.setVisible(true)
       },

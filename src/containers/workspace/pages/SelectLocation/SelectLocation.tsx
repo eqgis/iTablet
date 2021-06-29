@@ -8,26 +8,25 @@ import {
   StyleSheet,
   NativeModules,
   NativeEventEmitter,
+  TouchableOpacity,
 } from 'react-native'
 import { MapController } from '../../components'
 import {
   Container,
-  Button, 
+  Input,
 } from '../../../../components'
-import { SMMapView2, SMap2 ,SMap} from 'imobile_for_reactnative'
+import { SMMapView2, SMap2, SMap } from 'imobile_for_reactnative'
 import {
   scaleSize,
   Toast,
 } from '../../../../utils'
-import  AppStyle  from './AppStyle'
-import  OnlineDS  from './OnlineDS'
 import { getLanguage } from '../../../../language/index'
-import Input from '../../../../components/Input'
+import { ConstOnline } from '../../../../constants'
 import { getThemeAssets } from '../../../../assets'
 
 interface Props {
   navigation: any,
-  device:any,
+  device: any,
 }
 
 interface State {
@@ -54,7 +53,7 @@ export default class SelectLocation extends React.Component<Props, State>{
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       SMap2.removeLocationCallout()
-    }else{
+    } else {
       iOSEventEmi.removeListener(
         'com.supermap.RN.Mapcontrol.single_tap_event_two',
         this.onSingleTap,
@@ -81,27 +80,28 @@ export default class SelectLocation extends React.Component<Props, State>{
       SMap2.addLocationCallout(event.mapPoint)
     }
 
-    if(point) {
+    if (point) {
       this.setState({
         x: point.x,
         y: point.y,
       })
-      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(this.state.x), y: Number(this.state.y)}
+      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(this.state.x), y: Number(this.state.y) }
     }
   }
 
   openMap = async () => {
+    const map = ConstOnline.tianditu()
     if (Platform.OS === 'android') {
       //刚初始化完mapview后添加会导致第一次的地图范围不对，设置个延时
       setTimeout(() => {
-        SMap2.addToMap(OnlineDS.tianditu.alias, 0)
+        SMap2.addToMap(map.DSParams.alias, map.layerIndex)
       }, 1)
-    }else{
+    } else {
       let datasourceParams = {
-        server:OnlineDS.tianditu.server,
-        engineType: OnlineDS.tianditu.engineType,
-        alias:OnlineDS.tianditu.alias,
-        driver:OnlineDS.tianditu.driver,
+        server: map.DSParams.server,
+        engineType: map.DSParams.engineType,
+        alias: map.DSParams.alias,
+        driver: map.DSParams.driver,
       }
       SMap.addToMap(datasourceParams, 0)
     }
@@ -140,37 +140,61 @@ export default class SelectLocation extends React.Component<Props, State>{
 
   back = () => {
     this.props.navigation.goBack()
-    this.cb && this.cb()
-    if (Platform.OS === 'ios') {
-      SMap.closeMapControl2()
-    }
   }
 
-  location = () =>{
+  location = async () => {
+    let point
     if (Platform.OS === 'ios') {
       SMap.moveToCurrent2().then(result => {
         !result &&
           Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
       })
-    }else{
+      point = await SMap.getCurrentPoint2()
+    } else {
       SMap2.moveToCurrent()
+      point = await SMap2.getCurrentPoint()
     }
+    this.setState({
+      x: point.x,
+      y: point.y,
+    })
+    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(this.state.x), y: Number(this.state.y) }
   }
 
-  zoomin = () =>{
+  zoomin = () => {
     if (Platform.OS === 'ios') {
       SMap.zoom2(2)
-    }else{
+    } else {
       SMap2.zoom(2)
     }
   }
 
-  zoomout = () =>{
+  zoomout = () => {
     if (Platform.OS === 'ios') {
       SMap.zoom2(0.5)
-    }else{
+    } else {
       SMap2.zoom(0.5)
     }
+  }
+
+  /** 地图选点header右边确定view */
+  renderHeaderRight = () => {
+    return (
+      <TouchableOpacity
+        key={'search'}
+        onPress={async () => {
+          this.props.navigation.goBack()
+          this.cb && this.cb()
+          if (Platform.OS === 'ios') {
+            SMap.closeMapControl2()
+          }
+        }}
+      >
+        <Text style={styles.textConfirm}>
+          {getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
+        </Text>
+      </TouchableOpacity>
+    )
   }
 
   render() {
@@ -179,17 +203,17 @@ export default class SelectLocation extends React.Component<Props, State>{
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          title:getLanguage().Common.LOCATION_FROM_MAP,
+          title: getLanguage().Profile.MAP_AR_DATUM_MAP_SELECT_POINT,
           backAction: () => {
             this.back()
           },
-          // headerRight: this.renderHeaderRight(),
+          headerRight: this.renderHeaderRight(),
         }}
       >
         <SMMapView2
           onLoad={this.openMap}
           workspace={{
-            datasource: OnlineDS.tianditu,
+            datasource: ConstOnline.tianditu().DSParams,
           }}
           onSingleTap={this.onSingleTap}
         />
@@ -235,5 +259,10 @@ const styles = StyleSheet.create({
     height: 1,
     alignSelf: 'flex-end',
     backgroundColor: '#f2f2f2',
+  },
+  textConfirm: {
+    fontSize: scaleSize(25),
+    color: 'black',
+    padding: scaleSize(10),
   },
 })

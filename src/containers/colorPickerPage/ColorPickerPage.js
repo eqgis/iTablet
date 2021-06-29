@@ -36,7 +36,6 @@ export default class ColorPickerPage extends React.Component {
     this.lastValidColor = this.defaultColor // 记录上一次正确格式的十六进制颜色
     this.colorViewType = params && params.colorViewType
     this.state = {
-      InputText: '',
       color: this.defaultColor,
       colorHex: colorHex,
     }
@@ -46,6 +45,14 @@ export default class ColorPickerPage extends React.Component {
     if (this.colorWheel) {
       this.colorWheel.resetPanHandler()
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+      JSON.stringify(this.state.colorHex) !== JSON.stringify(nextState.colorHex) ||
+      this.state.color !== nextState.color
+    )
   }
 
   onColorChange = color => {
@@ -87,20 +94,24 @@ export default class ColorPickerPage extends React.Component {
               return
             }
             let val
-            if (text === '') {
-              val = 0
-            } else {
-              val = parseInt(text)
-            }
-            if (isNaN(val) || val < 0 || val > 255) {
+            if (text !== '' && (isNaN(parseInt(text)) || val < 0 || val > 255)) {
               return
+            }
+            if (text !== '') {
+              val = parseInt(text)
             }
             let newColor = this.state.colorHex
             Object.assign(newColor, { [key]: val })
+            const _colorHex = text === '' ? Object.assign({}, newColor, { [key]: '' }) : newColor
+            const _color = dataUtil.colorHex(newColor)
+            if (dataUtil.checkColor(_color)) this.lastValidColor = _color
             this.setState({
-              colorHex: newColor,
-              color: dataUtil.colorHex(newColor),
+              colorHex: _colorHex,
+              color: this.lastValidColor,
             })
+          }}
+          onBlur={() => {
+            this.colorWheel && this.colorWheel.forceUpdate(this.lastValidColor)
           }}
           style={styles.input}
           underlineColorAndroid="transparent"
@@ -142,6 +153,8 @@ export default class ColorPickerPage extends React.Component {
     this.setState({
       color: this.defaultColor,
       colorHex: dataUtil.colorRgba(this.defaultColor),
+    }, () => {
+      this.colorWheel && this.colorWheel.forceUpdate(this.state.color)
     })
   }
 
@@ -175,8 +188,9 @@ export default class ColorPickerPage extends React.Component {
             this.setState({
               color: color,
               colorHex: dataUtil.colorRgba(color),
+            }, () => {
+              this.colorWheel && this.colorWheel.forceUpdate(this.state.color)
             })
-            this.colorWheel && this.colorWheel.forceUpdate(color)
           }}
         />
         {this.colorViewType === 'ColorWheel' ? (
@@ -184,6 +198,7 @@ export default class ColorPickerPage extends React.Component {
             <ColorWheel
               ref={ref => (this.colorWheel = ref)}
               initialColor={this.defaultColor}
+              thumbSize={scaleSize(30)}
               onColorChange={color => {
                 this.setState({
                   color: colorsys.hsv2Hex(color),

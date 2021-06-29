@@ -429,6 +429,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Area',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'Line',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'Point',
+  MAP_AR_AI_ASSISTANT_SAVE_TEXT: 'text',
   MAP_AR_AI_SAVE_SUCCESS: 'Saved',
   MAP_AR_AI_SAVE_POINT: 'Save Point',
   MAP_AR_AI_SAVE_LINE: 'Save Line',

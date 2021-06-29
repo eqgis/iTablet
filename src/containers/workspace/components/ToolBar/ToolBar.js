@@ -1,5 +1,6 @@
 import React from 'react'
 import { screen } from '../../../../utils'
+import { Header } from '../../../../components'
 import {
   ConstToolType,
   TouchType,
@@ -10,7 +11,7 @@ import {
 import TouchProgress from '../TouchProgress'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModuleDefault, { getToolbarModule } from './modules/ToolbarModule'
-import { View, Animated, Platform, KeyboardAvoidingView } from 'react-native'
+import { View, Animated, Platform, TouchableOpacity, Image } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
@@ -157,6 +158,8 @@ export default class ToolBar extends React.Component {
       selectName: '',
       selectKey: '',
       hasSoftMenuBottom: false,
+      showCustomHeader: false,
+      customView: null,
     }
     this.height = 0
     this.isShow = false
@@ -325,112 +328,117 @@ export default class ToolBar extends React.Component {
    * }
    **/
   setVisible = (isShow, type = '', params = {}) => {
-    if (params.measureType){
-      this.measure(params)
-    }
-    if (params.touchType) {
-      GLOBAL.TouchType = params.touchType
-    } else {
-      if (isShow) {
-        GLOBAL.TouchType = TouchType.NULL
-        GLOBAL.bubblePane && GLOBAL.bubblePane.reset() // 重置气泡提示
-      } else if (!isShow) {
-        GLOBAL.TouchType = TouchType.NORMAL
+    try {
+      if (params.measureType){
+        this.measure(params)
       }
-    }
-    if (
-      this.isShow !== isShow ||
-      this.state.type !== type ||
-      params.isFullScreen !== this.state.isFullScreen ||
-      params.height !== this.getContentViewHeight() ||
-      params.buttons !== this.state.buttons ||
-      params.selectKey !== this.state.selectKey ||
-      params.isTouchProgress !== this.state.isTouchProgress
-    ) {
-      (async function() {
-        let data = params.data
-        let buttons = params.buttons
-        let customView = params.customView
-        let pageAction = params.pageAction
-        if (data === undefined || buttons === undefined) {
-          let _data = await this.getData(type)
-          data = data || _data.data
-          buttons = buttons || _data.buttons
-          customView = customView || _data.customView
-          pageAction = pageAction || _data.pageAction
+      if (params.touchType) {
+        GLOBAL.TouchType = params.touchType
+      } else {
+        if (isShow) {
+          GLOBAL.TouchType = TouchType.NULL
+          GLOBAL.bubblePane && GLOBAL.bubblePane.reset() // 重置气泡提示
+        } else if (!isShow) {
+          GLOBAL.TouchType = TouchType.NORMAL
         }
-        if (pageAction) {
-          pageAction()
-        }
-        // 每次type改变，设置ToolbarModule当前数据，以便调用当前模块中的方法和数据
-        if (this.state.type !== type && params.resetToolModuleData) {
-          await this.ToolbarModule.setToolBarData(type)
-        }
-        let containerType =
-          (params && params.containerType) || ToolbarType.table
-        let newHeight = this.getContentViewHeight()
-        if (!isShow) {
-          newHeight = 0
-        } else if (params && typeof params.height === 'number') {
-          newHeight = params.height
-        } else if (!params || params.height === undefined) {
-          let _size = this.ToolbarModule.getToolbarSize(containerType, {
-            data,
-          })
-          newHeight = _size.height
-        }
-        this.shareTo = params.shareTo || ''
+      }
+      if (
+        this.isShow !== isShow ||
+        this.state.type !== type ||
+        params.isFullScreen !== this.state.isFullScreen ||
+        params.height !== this.getContentViewHeight() ||
+        params.buttons !== this.state.buttons ||
+        params.selectKey !== this.state.selectKey ||
+        params.isTouchProgress !== this.state.isTouchProgress
+      ) {
+        (async function() {
+          let data = params.data
+          let buttons = params.buttons
+          let customView = params.customView
+          let pageAction = params.pageAction
+          if (data === undefined || buttons === undefined) {
+            let _data = await this.getData(type)
+            data = data || _data.data
+            buttons = buttons || _data.buttons
+            customView = customView || _data.customView
+            pageAction = pageAction || _data.pageAction
+          }
+          if (pageAction) {
+            pageAction()
+          }
+          // 每次type改变，设置ToolbarModule当前数据，以便调用当前模块中的方法和数据
+          if (this.state.type !== type && params.resetToolModuleData) {
+            await this.ToolbarModule.setToolBarData(type)
+          }
+          let containerType =
+            (params && params.containerType) || ToolbarType.table
+          let newHeight = this.getContentViewHeight()
+          if (!isShow) {
+            newHeight = 0
+          } else if (params && typeof params.height === 'number') {
+            newHeight = params.height
+          } else if (!params || params.height === undefined) {
+            let _size = this.ToolbarModule.getToolbarSize(containerType, {
+              data,
+              type,
+            })
+            newHeight = _size.height
+          }
+          this.shareTo = params.shareTo || ''
 
-        this.setState(
-          {
-            showMenuDialog: params.showMenuDialog || false,
-            type: type,
-            data: params.data || data,
-            secdata: params.secdata || [],
-            customView: customView,
-            buttons: params.buttons || buttons,
-            isTouchProgress: params.isTouchProgress || false,
-            isFullScreen:
-              params && params.isFullScreen !== undefined
-                ? params.isFullScreen
-                : DEFAULT_FULL_SCREEN,
-            containerType,
-            themeType:
-              params && params.themeType
-                ? params.themeType
-                : isShow
-                  ? this.state.themeType
-                  : '',
-            selectKey: params && params.selectKey ? params.selectKey : '',
-            selectName: params && params.selectName ? params.selectName : '',
-          },
-          () => {
-            // if (!showViewFirst) {
-            if (!isNaN(newHeight)) this.setContentViewHeight(newHeight)
-            if (!isNaN(params.column)) this.column = params.column
-            if (!isNaN(params.row)) this.row = params.row
-            this.showToolbarAndBox(isShow, type)
-            // setVisible之后是否退出全屏
-            const { isExistFullMap = true } = params
-            !isShow && isExistFullMap && this.props.existFullMap && this.props.existFullMap()
-            // }
-            if (params.cb) {
-              setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
-            }
-            this.updateOverlayView()
-          },
-        )
-      }.bind(this)())
-    } else {
-      this.showToolbarAndBox(isShow)
-      if (params.cb) {
-        setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
+          this.setState(
+            {
+              showMenuDialog: params.showMenuDialog || false,
+              type: type,
+              data: params.data || data || [],
+              secdata: params.secdata || [],
+              customView: customView,
+              buttons: params.buttons || buttons,
+              isTouchProgress: params.isTouchProgress || false,
+              isFullScreen:
+                params && params.isFullScreen !== undefined
+                  ? params.isFullScreen
+                  : DEFAULT_FULL_SCREEN,
+              containerType,
+              themeType:
+                params && params.themeType
+                  ? params.themeType
+                  : isShow
+                    ? this.state.themeType
+                    : '',
+              selectKey: params && params.selectKey ? params.selectKey : '',
+              selectName: params && params.selectName ? params.selectName : '',
+            },
+            () => {
+              // if (!showViewFirst) {
+              if (!isNaN(newHeight)) this.setContentViewHeight(newHeight)
+              if (!isNaN(params.column)) this.column = params.column
+              if (!isNaN(params.row)) this.row = params.row
+              this.showToolbarAndBox(isShow, type)
+              // setVisible之后是否退出全屏
+              const { isExistFullMap = true } = params
+              !isShow && isExistFullMap && this.props.existFullMap && this.props.existFullMap()
+              // }
+              if (params.cb) {
+                setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
+              }
+              this.updateOverlayView()
+            },
+          )
+        }.bind(this)())
+      } else {
+        this.showToolbarAndBox(isShow)
+        if (params.cb) {
+          setTimeout(() => params.cb(), Const.ANIMATED_DURATION_2)
+        }
+        !isShow &&
+          this.state.selectPointType !== 'selectPoint' &&
+          this.props.existFullMap &&
+          this.props.existFullMap()
+        this.updateOverlayView()
       }
-      !isShow &&
-        this.state.selectPointType !== 'selectPoint' &&
-        this.props.existFullMap &&
-        this.props.existFullMap()
-      this.updateOverlayView()
+    } catch (error) {
+      console.warn(e)
     }
   }
 
@@ -481,12 +489,16 @@ export default class ToolBar extends React.Component {
   }
 
   back = type => {
-    if (
-      this.ToolbarModule.getData().actions &&
-      this.ToolbarModule.getData().actions.toolbarBack
-    ) {
-      this.ToolbarModule.getData().actions.toolbarBack(type)
-      return
+    try {
+      if (
+        this.ToolbarModule.getData().actions &&
+        this.ToolbarModule.getData().actions.toolbarBack
+      ) {
+        this.ToolbarModule.getData().actions.toolbarBack(type)
+        return
+      }
+    } catch (e) {
+      console.warn(e)
     }
   }
 
@@ -513,7 +525,7 @@ export default class ToolBar extends React.Component {
     this.setContentViewHeight(0)
     SMap.setAction(Action.PAN)
 
-    this.updateOverlayView()
+    // this.updateOverlayView()
     GLOBAL.TouchType = TouchType.NORMAL
   }
 
@@ -522,28 +534,32 @@ export default class ToolBar extends React.Component {
   }
 
   menu = (params = {}) => {
-    if (
-      this.ToolbarModule.getData().actions &&
-      this.ToolbarModule.getData().actions.menu
-    ) {
-      this.ToolbarModule.getData().actions.menu(
-        params.type || this.state.type,
-        params.selectKey || this.state.selectKey,
-        {
-          showBox: height => {
-            if (height !== undefined) this.getContentViewHeight(height)
-            this.contentView &&
-              this.contentView.changeHeight(
-                this.state.showMenuDialog ? this.getContentViewHeight() : 0,
-              )
+    try {
+      if (
+        this.ToolbarModule.getData().actions &&
+        this.ToolbarModule.getData().actions.menu
+      ) {
+        this.ToolbarModule.getData().actions.menu(
+          params.type || this.state.type,
+          params.selectKey || this.state.selectKey,
+          {
+            showBox: height => {
+              if (height !== undefined) this.getContentViewHeight(height)
+              this.contentView &&
+                this.contentView.changeHeight(
+                  this.state.showMenuDialog ? this.getContentViewHeight() : 0,
+                )
+            },
+            setData: params => {
+              this.setState(params, () => {
+                this.updateOverlayView()
+              })
+            },
           },
-          setData: params => {
-            this.setState(params, () => {
-              this.updateOverlayView()
-            })
-          },
-        },
-      )
+        )
+      }
+    } catch (error) {
+      console.warn(e)
     }
   }
 
@@ -818,6 +834,60 @@ export default class ToolBar extends React.Component {
     )
   }
 
+  renderCustomHeaderRight = () => {
+    const rightButtons = []
+    const headerData = this.ToolbarModule.getHeaderData(this.state.type)
+    if (!headerData || !headerData.headerRight) return null
+    headerData.headerRight.forEach(item => {
+      rightButtons.push(
+        <TouchableOpacity
+          key={item.key}
+          onPress={() => {
+            if (item.action && typeof item.action === 'function') {
+              item.action()
+            }
+          }}
+          style={[styles.headerRightView, item.style]}
+        >
+          <Image
+            resizeMode={'contain'}
+            // source={getThemeAssets().ar.toolbar.ai_setting}
+            source={item.image}
+            style={styles.headerRightImg}
+          />
+        </TouchableOpacity>
+      )
+    })
+    return rightButtons
+  }
+
+  customHeaderBack = () => {
+    const headerData = this.ToolbarModule.getHeaderData(this.state.type)
+    if (headerData && headerData.backAction) {
+      headerData.backAction()
+    } else {
+      this.setVisible(false)
+    }
+  }
+
+  /** 自定义Header */
+  renderCustomHeader = () => {
+    // if (!this.state.showCustomHeader) return null
+    const headerData = this.ToolbarModule.getHeaderData(this.state.type)
+    if (!headerData) return null
+    return (
+      <Header
+        ref={ref => (this.containerHeader = ref)}
+        backAction={this.customHeaderBack}
+        withoutBack={headerData.withoutBack}
+        title={headerData.title}
+        type={headerData.type}
+        headerRight={this.renderCustomHeaderRight()}
+        headerTitleViewStyle={headerData.headerTitleViewStyle}
+      />
+    )
+  }
+
   render() {
     let containerStyle =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
@@ -840,70 +910,73 @@ export default class ToolBar extends React.Component {
     let showContainerRadius = !(this.state.isTouchProgress && this.state.isFullScreen) &&
       this.props.device.orientation.indexOf('LANDSCAPE') < 0
     return (
-      <Animated.View
-        style={[
-          containerStyle,
-          this.props.device.orientation.indexOf('LANDSCAPE') === 0
-            ? { right: this.state.right, height: '100%' }
-            : { bottom: this.state.bottom, width: '100%' },
-          (this.state.isFullScreen || this.state.isTouchProgress) &&
-            this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
-            paddingTop: screen.isIphoneX()
-              ? screen.X_TOP + screen.X_BOTTOM
-              : Platform.OS === 'ios'
-                ? 20
-                : 0,
-          },
-          size,
-        ]}
-        pointerEvents={'box-none'}
-      >
-        {!this.state.isTouchProgress && !this.state.showMenuDialog && (
-          <View style={styles.themeoverlay} pointerEvents={'box-none'} />
-        )}
-        {this.state.isTouchProgress && this.state.isFullScreen && (
-          <TouchProgress
-            device={this.props.device}
-            selectName={this.state.selectName}
-            showMenu={() => {
-              // 智能配图选择器，唤起选择器菜单
-              if (
-                this.state.type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER
-              ) {
-                this.showPicker()
-                return
-              } else {
-                this.menu()
-              }
-            }}
-          />
-        )}
-        {this.state.showMenuDialog && this.renderMenuDialog()}
-        <View
-          style={
-            (
-              !(this.state.isTouchProgress && this.state.isFullScreen) ||
-              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-            ) &&
-            !this.state.customView && [styles.containerRadius, styles.containerShadow]
-          }
+      <>
+        {this.renderCustomHeader()}
+        <Animated.View
+          style={[
+            containerStyle,
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0
+              ? { right: this.state.right, height: '100%' }
+              : { bottom: this.state.bottom, width: '100%' },
+            (this.state.isFullScreen || this.state.isTouchProgress) &&
+              this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
+              paddingTop: screen.isIphoneX()
+                ? screen.X_TOP + screen.X_BOTTOM
+                : Platform.OS === 'ios'
+                  ? 20
+                  : 0,
+            },
+            size,
+          ]}
           pointerEvents={'box-none'}
         >
+          {!this.state.isTouchProgress && !this.state.showMenuDialog && (
+            <View style={styles.themeoverlay} pointerEvents={'box-none'} />
+          )}
+          {this.state.isTouchProgress && this.state.isFullScreen && (
+            <TouchProgress
+              device={this.props.device}
+              selectName={this.state.selectName}
+              showMenu={() => {
+                // 智能配图选择器，唤起选择器菜单
+                if (
+                  this.state.type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER
+                ) {
+                  this.showPicker()
+                  return
+                } else {
+                  this.menu()
+                }
+              }}
+            />
+          )}
+          {this.state.showMenuDialog && this.renderMenuDialog()}
           <View
-            style={[
-              this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                ? styles.containersLandscape
-                : styles.containers,
-              !this.state.customView && showContainerRadius && styles.containerRadius,
-              !this.state.customView && styles.hidden,
-            ]}
+            style={
+              (
+                !(this.state.isTouchProgress && this.state.isFullScreen) ||
+                this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+              ) &&
+              !this.state.customView && [styles.containerRadius, this.state.data.length > 0 && styles.containerShadow]
+            }
             pointerEvents={'box-none'}
           >
-            {this.renderView()}
-            {this.renderBottomBtns()}
+            <View
+              style={[
+                this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                  ? styles.containersLandscape
+                  : styles.containers,
+                !this.state.customView && showContainerRadius && styles.containerRadius,
+                !this.state.customView && styles.hidden,
+              ]}
+              pointerEvents={'box-none'}
+            >
+              {this.renderView()}
+              {this.renderBottomBtns()}
+            </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </>
     )
   }
 }

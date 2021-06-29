@@ -59,13 +59,14 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
+    const recourceName = this.props.data.resource.resourceName.replace('.zip', `_${this.props.data.id}.zip`)
     this.path =
       (await FileTools.getHomeDirectory()) +
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
       ConstPath.RelativePath.Temp +
-      this.props.data.resource.resourceName
+      recourceName
 
     this.downloadingPath =
       (await FileTools.getHomeDirectory()) +
@@ -214,12 +215,21 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             })
           }
         })
-        .catch(() => {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+        .catch(e => {
           FileTools.deleteFile(this.path)
+          FileTools.deleteFile(this.path + '_tmp') // 删除下载的临时文件
           FileTools.deleteFile(this.downloadingPath + '_')
           this.setState({
             isDownloading: false,
+          }, () => {
+            if (
+              e.message.includes('no such file or directory') || // Android提示
+              e.message.includes('Failed to open target resource') // iOS提示
+            ) {
+              Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_NOT_EXIST)
+            } else {
+              Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+            }
           })
         })
     } catch (e) {

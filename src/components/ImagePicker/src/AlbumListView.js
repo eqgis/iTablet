@@ -43,6 +43,7 @@ export default class AlbumListView extends React.PureComponent {
     autoConvertPath: false,
     assetType: 'Photos',
     groupTypes: 'All',
+    showDialog: false,
   }
 
   constructor(props) {
@@ -61,18 +62,6 @@ export default class AlbumListView extends React.PureComponent {
         this.dialog.setDialogVisible(this.props.showDialog)
       let data
 
-      let homePath = await FileTools.appendingHomeDirectory()
-      let imgPath = homePath + ConstPath.Images
-      let images = await FileTools.getPathListByFilterDeep(
-        imgPath,
-        'png, jpg, jpeg',
-      )
-      images.map(item => {
-        item.filename = item.name
-        item.uri = item.path
-        delete item.name
-        delete item.path
-      })
       if (Platform.OS === 'android' && this.props.assetType === 'All') {
         let photos = await this.getPhotos('Photos')
         let videos = await this.getPhotos('Videos')
@@ -92,10 +81,24 @@ export default class AlbumListView extends React.PureComponent {
             data.push(photoDir)
           }
         })
+      } else if (this.props.assetType === 'Videos') {
+        data = await this.getPhotos('Videos')
       } else {
         data = await this.getPhotos(this.props.assetType)
       }
       if (this.props.assetType !== 'Videos') {
+        let homePath = await FileTools.appendingHomeDirectory()
+        let imgPath = homePath + ConstPath.Images
+        let images = await FileTools.getPathListByFilterDeep(
+          imgPath,
+          'png, jpg, jpeg',
+        )
+        images.map(item => {
+          item.filename = item.name
+          item.uri = item.path
+          delete item.name
+          delete item.path
+        })
         data.unshift({
           name: 'iTablet',
           value: images,

@@ -14,6 +14,8 @@ import StyleUtils from './StyleUtils'
 import OnlineServicesUtils from './OnlineServicesUtils'
 import Audio from './Audio'
 import ResultInfo from './ResultInfo'
+import DialogUtils from './DialogUtils'
+import AppProgress from './AppProgress'
 
 export {
   screen,
@@ -39,4 +41,6 @@ export {
   OnlineServicesUtils,
   Audio,
   ResultInfo,
+  DialogUtils,
+  AppProgress,
 }

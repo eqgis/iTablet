@@ -10,6 +10,7 @@ import * as Map from './Map'
 import { Prompt } from './Prompt'
 import * as Common from './Common'
 import * as Error from './Error'
+import * as ARMap from './ARMap'
 
 export default {
   Navigator_Label,
@@ -23,4 +24,5 @@ export default {
   ...Unit,
   ...Common,
   ...Error,
+  ...ARMap,
 }

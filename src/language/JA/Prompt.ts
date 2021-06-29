@@ -41,6 +41,7 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: '目標ポイントを削除しますか?',
   DELETE_OBJECT: '当オブジェクトを削除しますか?',
+  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: '目標ポイントを追加してください',
 
   NO_PERMISSION_ALERT: '実行に必要な権限はありません',
@@ -55,10 +56,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'SuperMap iTabletを閉じますか?',
   MAP_LOADING: 'マップロード中',
   LOADING: 'ロード中',
+  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: '当マップは開いています',
   THE_MAP_IS_NOTEXIST: '当マップは存在しません',
+  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: '当シーンは開いています',
   NO_SCENE_LIST: 'シーンリストはありません',
+  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
   SWITCHING: 'マップ切り替え中',
   CLOSING: 'マップを閉じています',
   CLOSING_3D: 'マップを閉じています',
@@ -102,6 +106,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'はい',
   CREATE_FAILED: '作成に失敗',
   INVALID_DATASET_NAME: 'データセット名は無効で、または存在します',
+  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
+  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
+  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
 
   PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
   PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
@@ -202,12 +209,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'シェアに失敗',
   SHARE_PREPARE: 'シェア準備',
   SHARE_START: 'シェア開始',
+  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
 
   EXPORTING: 'エクスポート中',
   EXPORT_SUCCESS: 'エクスポートに成功',
   EXPORT_FAILED: 'エクスポートに失敗',
   EXPORT_TO: 'データエクスポート先：',
   REQUIRE_PRJ_1984: 'データセットの投影座標系はWGS_1984に設定する必要があります',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: '取り消すに失敗',
   REDO_FAILED: 'やり直すに失敗',
@@ -405,6 +414,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: '携帯電話をゆっくり移動してください 平面を認識してからスクリーンをクリックしてシーンを追加してください',
   IDENTIFY_TIMEOUT: 'タイムアウト、再度実行しますか?',
   TRACKING_LOADING: 'トラキング...',
+  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
 
   // 专题制图加载/输出xml
   SUCCESS: '操作に成功しました',
@@ -412,6 +422,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: '使用可能なテンプレートはありません',
   CONFIRM_LOAD_TEMPLATE: 'テンプレートをロードしますか?',
   CONFIRM_OUTPUT_TEMPLATE: 'マップを出力しますか?',
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

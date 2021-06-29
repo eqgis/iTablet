@@ -34,6 +34,10 @@ import baseMapModule from './baseMapModule'
 
 import serviceModule from './serviceModule'
 
+import arDrawingModule from './arDrawingModule'
+import arStartModule from './arStartModule'
+import arEditModule from './arEditModule'
+import arStyleModule from './arStyleModule'
 export {
   startModule,
   start3DModule,
@@ -70,4 +74,9 @@ export {
   baseMapModule,
 
   serviceModule,
+
+  arDrawingModule,
+  arStartModule,
+  arEditModule,
+  arStyleModule,
 }

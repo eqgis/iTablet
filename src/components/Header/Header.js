@@ -9,6 +9,7 @@ import styles from './styles'
 import { scaleSize, setSpText, screen } from '../../utils'
 import { getPublicAssets } from '../../assets'
 import { color } from '../../styles'
+import BackButton from './BackButton'
 
 class NavigationHeader extends Component {
   props: {
@@ -146,26 +147,39 @@ class NavigationHeader extends Component {
 
     let backBtnSource = backImg || getPublicAssets().common.icon_back
     let backBtn = (
-      <TouchableOpacity
-        accessible={true}
-        accessibilityLabel={'返回'}
-        style={this.props.isResponseHeader ? {} : backStyle}
+      <BackButton
+        // style={this.props.isResponseHeader ? {} : backStyle}
+        count={count}
+        darkBackBtn={darkBackBtn}
+        image={backBtnSource}
+        imageStyle={[styles.backIcon, { width: imgSize, height: imgSize }]}
         activeOpacity={activeOpacity}
         onPress={event => {
           this.handleBack(navigation, event)
         }}
-      >
-        {count ? <Text style={styles.count}>({count})</Text> : null}
-        <View
-          style={[styles.iconBtnBg, darkBackBtn && styles.iconBtnBgDarkColor]}
-        >
-          <Image
-            source={backBtnSource}
-            style={[styles.backIcon, { width: imgSize, height: imgSize }]}
-          />
-        </View>
-      </TouchableOpacity>
+      />
     )
+    // let backBtn = (
+    //   <TouchableOpacity
+    //     accessible={true}
+    //     accessibilityLabel={'返回'}
+    //     style={this.props.isResponseHeader ? {} : backStyle}
+    //     activeOpacity={activeOpacity}
+    //     onPress={event => {
+    //       this.handleBack(navigation, event)
+    //     }}
+    //   >
+    //     {count ? <Text style={styles.count}>({count})</Text> : null}
+    //     <View
+    //       style={[styles.iconBtnBg, darkBackBtn && styles.iconBtnBgDarkColor]}
+    //     >
+    //       <Image
+    //         source={backBtnSource}
+    //         style={[styles.backIcon, { width: imgSize, height: imgSize }]}
+    //       />
+    //     </View>
+    //   </TouchableOpacity>
+    // )
     let titleView = null
     if (type !== 'floatNoTitle') {
       titleView = (
@@ -198,7 +212,9 @@ class NavigationHeader extends Component {
             {headerLeft}
           </View>
         ) : (
-          !withoutBack && backBtn
+          <View style={styles.headerLeftView}>
+            {!withoutBack && backBtn}
+          </View>
         )}
         {titleView}
         {headerRight && <View style={rightStyle}>{headerRight}</View>}
@@ -264,6 +280,7 @@ class NavigationHeader extends Component {
     }
 
     let padding = { paddingTop: screen.getIphonePaddingTop() }
+    let hasBorderBottomWidth = type !== 'floatNoTitle'
 
     return (
       <Animated.View
@@ -271,7 +288,7 @@ class NavigationHeader extends Component {
           currentHeaderStyle,
           {
             height: this.state.headerHeight,
-            borderBottomWidth: 2,
+            borderBottomWidth: hasBorderBottomWidth ? 2 : 0,
             borderBottomColor: color.itemColorGray2,
           },
           headerStyle,

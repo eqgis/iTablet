@@ -2,7 +2,7 @@
  * 多媒体编辑界面
  */
 import * as React from 'react'
-import { ScrollView, TouchableOpacity, Text, Platform } from 'react-native'
+import { ScrollView, TouchableOpacity, Text, Platform, View } from 'react-native'
 import {
   Container,
   TextBtn,
@@ -56,6 +56,7 @@ export default class MediaEdit extends React.Component {
       ...this.showInfo,
       paths,
       showDelete: false,
+      showBg: false,
     }
     this.mediaItemRef = []
     this.modifiedData = {} // 修改的信息
@@ -569,7 +570,7 @@ export default class MediaEdit extends React.Component {
           ',' +
           this.state.coordinate.y.toFixed(6)
         : ''
-    return (
+    return (<>
       <Container
         ref={ref => (this.container = ref)}
         style={styles.container}
@@ -680,9 +681,17 @@ export default class MediaEdit extends React.Component {
           withBackBtn
           isModal
           device={this.props.device}
+          onVisibleChange={visible => {
+            this.setState({
+              showBg: visible,
+            })
+          }}
         />
         {this.renderDeleteDialog()}
       </Container>
-    )
+      {/* 部分安卓设备竖屏进入MediaPager切换横屏 状态栏把MediaPager往下挤 看到底图 所以打开时显示个背景 zcj */}
+      {Platform.OS === 'android' && this.state.showBg &&
+        <View style={{width: '100%', height: '100%', position: 'absolute', backgroundColor: '#000'}}></View>}
+    </>)
   }
 }

@@ -371,6 +371,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sliderText: {
+    width: scaleSize(40),
     fontSize: setSpText(16),
   },
   leftIcon: {

@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
   Image,
+  BackHandler,
+  Platform,
 } from 'react-native'
 import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
@@ -82,6 +84,7 @@ export default class Camera extends React.Component {
     }
     SMap.setDynamicviewsetVisible(true)
     GLOBAL.isPad && Orientation.unlockAllOrientations()
+    Platform.OS === 'android' && BackHandler.removeEventListener('hardwareBackPress', this.back)
   }
 
   componentDidMount() {
@@ -93,7 +96,13 @@ export default class Camera extends React.Component {
           ConstPath.RelativeFilePath.Media,
       )
       SMediaCollector.initMediaCollector(targetPath)
+      Platform.OS === 'android' &&
+        BackHandler.addEventListener('hardwareBackPress', this.back)
     }.bind(this)())
+  }
+
+  back = () => {
+    NavigationService.goBack('Camera')
   }
 
   /** 照相 **/

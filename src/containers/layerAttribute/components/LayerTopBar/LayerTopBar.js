@@ -190,7 +190,19 @@ export default class LayerTopBar extends React.Component {
         action: this.deleteAction,
         enabled: this.props.canDelete,
       },
-      {
+      // {
+      //   icon: this.props.canRelated
+      //     ? getThemeAssets().mapTools.icon_tool_multi_media
+      //     : getThemeAssets().mapTools.icon_tool_multi_media_ash,
+      //   key: '拍照',
+      //   title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+      //   action: this.captureImage,
+      //   enabled: this.props.canRelated,
+      // },
+    ]
+
+    if (!GLOBAL.showAIDetect) {
+      data.push({
         icon: this.props.canRelated
           ? getThemeAssets().mapTools.icon_tool_multi_media
           : getThemeAssets().mapTools.icon_tool_multi_media_ash,
@@ -198,8 +210,9 @@ export default class LayerTopBar extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
         action: this.captureImage,
         enabled: this.props.canRelated,
-      },
-    ]
+      })
+    }
+
 
     if (this.props.selectionAttribute) {
       data = [

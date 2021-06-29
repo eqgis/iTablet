@@ -115,8 +115,8 @@ android {
         applicationId "com.supermap.itablet"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 50
-        versionName "10.1.9"
+        versionCode 70
+        versionName "10.9.0"
         manifestPlaceholders = [
                 JPUSH_APPKEY: "7d2470baad20e273cd6e53cc",
                 APP_CHANNEL : "default"

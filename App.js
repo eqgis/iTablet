@@ -19,7 +19,7 @@ import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './src/redux/models/nav'
-import { setUser, setUsers } from './src/redux/models/user'
+import { setUser, setUsers, deleteUser } from './src/redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting } from './src/redux/models/setting'
 import {
   setEditLayer,
@@ -31,6 +31,7 @@ import {
   closeMap,
   setCurrentMap,
   saveMap,
+  closeWorkspace,
 } from './src/redux/models/map'
 import {
   setCurrentTemplateInfo,
@@ -39,14 +40,14 @@ import {
 } from './src/redux/models/template'
 import { setModules } from './src/redux/models/appConfig'
 import { setMapModule } from './src/redux/models/mapModules'
-import { Dialog, Loading, MyToast } from './src/components'
+import { Dialog, Loading, MyToast, InputDialog } from './src/components'
 import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
 import { setShow } from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
 import { FileTools, SplashScreen } from './src/native'
 import ConfigStore from './src/redux/store'
-import { scaleSize, Toast, screen, OnlineServicesUtils } from './src/utils'
+import { scaleSize, Toast, screen, OnlineServicesUtils, DialogUtils } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
 import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
@@ -77,7 +78,7 @@ import {
 
 import LaunchGuidePage from './src/components/guide'
 import LaunchGuide from './configs/guide'
-import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
+// import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -162,11 +163,13 @@ class AppRoot extends Component {
 
     setNav: PropTypes.func,
     setUser: PropTypes.func,
+    deleteUser: PropTypes.func,
     setUsers: PropTypes.func,
     openWorkspace: PropTypes.func,
     setShow: PropTypes.func,
     closeMap: PropTypes.func,
     setCurrentMap: PropTypes.func,
+    closeWorkspace: PropTypes.func,
 
     setEditLayer: PropTypes.func,
     setSelection: PropTypes.func,
@@ -258,6 +261,7 @@ class AppRoot extends Component {
           await FileTools.initUserDefaultData(userName)
         }
       }
+      await AppInfo.setUserName(userName)
       await this.getUserApplets(userName)
     } catch (e) {
 
@@ -359,7 +363,7 @@ class AppRoot extends Component {
     return bLogin
   }
 
-  login = async () => {
+  login = async bResetMsgService => {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
@@ -384,9 +388,17 @@ class AppRoot extends Component {
           userType: UserType.COMMON_USER,
         }
         this.props.setUser(user)
-        GLOBAL.getFriend().onUserLoggedin()
+        //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
+        if(bResetMsgService !== true){
+          //TODO 处理app加载流程，确保登录后再更新消息服务
+          GLOBAL.getFriend?.().onUserLoggedin()
+        }
+
       } else {
-        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
+        if(bResetMsgService !== true){
+          this.logoutOnline()
+        }
       }
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       let url = this.props.user.currentUser.serverUrl
@@ -424,6 +436,34 @@ class AppRoot extends Component {
         this.loginTimer = undefined
       }
       this.loginTimer = setInterval(this.loginOnline, 60000)
+    }
+  }
+
+  logoutOnline = () => {
+    try {
+      if (this.props.user.userType !== UserType.PROBATION_USER) {
+        SOnlineService.logout()
+      }
+      this.props.closeWorkspace(async () => {
+        SOnlineService.removeCookie()
+        let customPath = await FileTools.appendingHomeDirectory(
+          ConstPath.CustomerPath +
+          ConstPath.RelativeFilePath.Workspace[
+            this.props.language === 'CN' ? 'CN' : 'EN'
+          ],
+        )
+        this.props.deleteUser(this.props.user.currentUser)
+        this.props.setUser({
+          userName: 'Customer',
+          nickname: 'Customer',
+          userType: UserType.PROBATION_USER,
+        })
+        NavigationService.popToTop('Tabs')
+        this.props.openWorkspace({ server: customPath })
+        Toast.show(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+      })
+    } catch (e) {
+      //
     }
   }
 
@@ -597,7 +637,7 @@ class AppRoot extends Component {
   handleStateChange = async appState => {
     if (appState === 'active') {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
-        this.login()
+        this.login(true)
         this.reCircleLogin()
       }
       // if (!this.props.nav.key && this.props.map.currentMap.name) {
@@ -711,6 +751,7 @@ class AppRoot extends Component {
   // 初始化文件目录
   initDirectories = async () => {
     try {
+      await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
       let paths = Object.keys(ConstPath)
       let isCreate = true, absolutePath = ''
       for (let i = 0; i < paths.length; i++) {
@@ -1168,6 +1209,25 @@ class AppRoot extends Component {
     )
   }
 
+  renderInputDialog = () => {
+    return (
+      <InputDialog
+        ref={ref => DialogUtils.setInputDialog(ref)}
+        // title={
+        //   getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_NAME
+        // }
+        // confirmAction={async value => {
+        //   await this.goBack({
+        //     title: value,
+        //   })
+        //   this.dialog.setDialogVisible(false)
+        // }}
+        // confirmBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
+        // cancelBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CANCEL}
+      />
+    )
+  }
+
   render() {
     return (
       <>
@@ -1210,6 +1270,7 @@ class AppRoot extends Component {
         ))}
         {this.renderSimpleDialog()}
         {this.renderGuidePage()}
+        {this.renderInputDialog()}
       </>
     )
   }
@@ -1263,6 +1324,8 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setMapArGuide,
   setMapArMappingGuide,
   setMapAnalystGuide,
+  deleteUser,
+  closeWorkspace,
 })(AppRoot)
 
 const App = () =>

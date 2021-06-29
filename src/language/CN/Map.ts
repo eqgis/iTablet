@@ -426,6 +426,7 @@ const Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SAVE_AEREA: '面',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: '线',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: '点',
+  MAP_AR_AI_ASSISTANT_SAVE_TEXT: '文本',
   MAP_AR_AI_SAVE_SUCCESS: '保存成功',
   MAP_AR_AI_SAVE_POINT: '保存点',
   MAP_AR_AI_SAVE_LINE: '保存线',
@@ -949,7 +950,7 @@ const Template = {
   ELEMENT_STORAGE: '要素储存',
   ATTRIBUTE_SETTINGS: '属性设置',
   CURRENT_TEMPLATE: '当前模板',
-  DEFAULT_TEMPLATE: '默认模版',
+  DEFAULT_TEMPLATE: '默认模板',
 
   ELEMENT_NAME: '要素名称',
   ELEMENT_CODE: '要素编码',

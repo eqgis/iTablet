@@ -454,11 +454,17 @@ export default class LayerManager_tolbar extends React.Component {
   listAction = ({ section, type }) => {
     if (section.action) {
       (async function() {
-        await section.action({ layerData: this.state.layerData, section, type, callback: () => {
-          this.props.getLayers()
-        }})
-        this.props.getLayers()
-        this.setVisible(false)
+        try {
+          GLOBAL.Loading?.setLoading(true)
+          await section.action(() => {
+            this.props.getLayers()
+          })
+          await this.props.getLayers()
+          this.setVisible(false)
+          GLOBAL.Loading?.setLoading(false)
+        } catch (error) {
+          GLOBAL.Loading?.setLoading(false)
+        }
       }.bind(this)())
     }
     if (
@@ -1319,21 +1325,19 @@ export default class LayerManager_tolbar extends React.Component {
           { height: this.props.device.height, bottom: this.state.bottom },
         ]}
       >
-        {
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              this.setVisible(false)
-              let overlayView = this.props.getOverlayView
-                ? this.props.getOverlayView()
-                : null
-              if (overlayView) {
-                overlayView.setVisible(false)
-              }
-            }}
-            style={styles.overlay}
-          />
-        }
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            this.setVisible(false)
+            let overlayView = this.props.getOverlayView
+              ? this.props.getOverlayView()
+              : null
+            if (overlayView) {
+              overlayView.setVisible(false)
+            }
+          }}
+          style={styles.overlay}
+        />
         <View style={styles.containers}>{this.renderView()}</View>
         {/*{this.renderDialog()}*/}
       </Animated.View>

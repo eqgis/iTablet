@@ -14,6 +14,7 @@ export default class TouchableItem extends React.Component {
     children: any,
     pressColor: any,
     borderless: any,
+    onPress?: () => void,
   }
 
   static defaultProps = {

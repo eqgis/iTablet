@@ -39,6 +39,7 @@ const Prompt = {
 
   DELETE_STOP: '确认删除站点？',
   DELETE_OBJECT: '确定要永久删除该对象吗?',
+  DELETE_LAYER: '删除图层后，数据无法恢复，确认删除?',
   PLEASE_ADD_STOP: '请添加站点',
 
   CONFIRM: '确定',
@@ -53,10 +54,13 @@ const Prompt = {
   QUIT: '确认退出SuperMap iTablet?',
   MAP_LOADING: '地图加载中',
   LOADING: '加载中',
+  OPEN_MAP_CONFIRM: '已打开此地图',
   THE_MAP_IS_OPENED: '该地图已打开',
   THE_MAP_IS_NOTEXIST: '该地图不存在',
+  OPEN_MAP_FAILED: '打开地图失败',
   THE_SCENE_IS_OPENED: '该场景已打开',
   NO_SCENE_LIST: '无场景列表',
+  NO_SCENE_SELECTED: '未选择场景',
   SWITCHING: '正在切换地图',
   CLOSING: '正在关闭地图',
   CLOSING_3D: '正在关闭地图',
@@ -100,6 +104,9 @@ const Prompt = {
   TURN_ON: '是',
   CREATE_FAILED: '创建失败',
   INVALID_DATASET_NAME: '数据集名称不合法或重名',
+  SAVE_FAIL_POINT:'非法点集合长度,点集合对象长度必须大于等于1',
+  SAVE_LINE_FAIL: '非法点集合长度,点集合对象长度必须大于等于2',
+  SAVE_REGION_FAIL: '非法点集合长度,点集合对象长度必须大于等于3',
 
   PLEASE_CHOOSE_POINT_LAYER: '请先选择点图层采集',
   PLEASE_CHOOSE_LINE_LAYER: '请先选择线图层采集',
@@ -200,12 +207,14 @@ const Prompt = {
   SHARE_FAILED: '分享失败',
   SHARE_PREPARE: '准备分享',
   SHARE_START: '开始分享',
+  SHARE_WX_FILE_SIZE_LIMITE: '文件大小不超过10M',
 
   EXPORTING: '导出中',
   EXPORT_SUCCESS: '导出成功',
   EXPORT_FAILED: '导出失败',
   EXPORT_TO: '数据已导出到：',
   REQUIRE_PRJ_1984: '数据集投影坐标系必须为WGS_1984',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',
 
   UNDO_FAILED: '撤销失败',
   REDO_FAILED: '恢复失败',
@@ -403,13 +412,16 @@ const Prompt = {
   MOVE_PHONE_ADD_SCENE: '请缓慢移动手机，识别出平面后点击屏幕添加场景',
   IDENTIFY_TIMEOUT: '识别图片超时，是否重试？',
   TRACKING_LOADING: '识别中...',
+  UNSELECTED_OBJECT: '未选中对象！',
 
   // 专题制图加载/输出xml
   SUCCESS: '操作成功',
   FAILED: '操作失败',
-  NO_TEMPLATE: '没有可用模版',
-  CONFIRM_LOAD_TEMPLATE: '确定加载地图模版？',
-  CONFIRM_OUTPUT_TEMPLATE: '确定输出地图模版？',
+  NO_TEMPLATE: '没有可用模板',
+  CONFIRM_LOAD_TEMPLATE: '确定加载地图模板？',
+  CONFIRM_OUTPUT_TEMPLATE: '确定输出地图模板？',
+
+  SHOW_AR_SCENE_NOTIFY: '显示场景检测提示',
 }
 
 export { Prompt }

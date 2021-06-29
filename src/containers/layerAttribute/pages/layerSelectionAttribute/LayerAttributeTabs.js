@@ -138,7 +138,8 @@ export default class LayerAttributeTabs extends React.Component {
       canBeRevert: false,
 
       isShowSystemFields: true,
-      isCollection: params && params.isCollection ? params.isCollection : false,
+      //采集标注后属性为true 默认false add jiakai
+      isCollection: params && params.isCollection ? params.isCollection : false, // Selection为空，查询最后一条
     }
 
     // 选择集中当前选中的属性
@@ -163,16 +164,18 @@ export default class LayerAttributeTabs extends React.Component {
         await this.preAction()
       }
       if (this.state.isCollection) {
-        let id = await SMap.getCurrentGeometryID(GLOBAL.currentLayer.name)
+        // const layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
+        let id = await SMap.getCurrentGeometryID(this.props.currentLayer.path)
+        // let id = await SMap.getCurrentGeometryID(GLOBAL.currentLayer.name)
         this.props.setSelection && this.props.setSelection([{
           layerInfo: {
-            path: GLOBAL.currentLayer.name,
+            path: this.props.currentLayer.path,
             type: 149,
             selectTable: true,
             Visible: true,
             editable: false,
-            caption: GLOBAL.currentLayer.name,
-            name: GLOBAL.currentLayer.name,
+            caption: this.props.currentLayer.caption,
+            name: this.props.currentLayer.name,
           },
           ids: [id],
         }])
@@ -431,12 +434,22 @@ export default class LayerAttributeTabs extends React.Component {
       }
     }
     let result
+    let layerInfo
+    if (this.state.isCollection) {
+      layerInfo = this.props.currentLayer
+    } else {
+      layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
+    }
     // 若包含多媒体图片，则删除
     if (hasMedia && smID >= 0) {
-      result = await SMediaCollector.deleteMedia(GLOBAL.SelectedSelectionAttribute.layerInfo.path, smID)
-    } else {
+      result = await SMediaCollector.deleteMedia(layerInfo.path, smID)
+    } else if (this.state.isCollection) { // 删除当前图层中的最后一条数据，用于绘图后立即查看属性
       result = await LayerUtils.deleteAttributeByLayer(
-        GLOBAL.SelectedSelectionAttribute.layerInfo.path,
+        layerInfo.path,
+        this.state.currentIndex, this.state.isCollection)
+    } else { // 删除选择集中指定位置的对象，用于点选/框选
+      result = await LayerUtils.deleteSelectionAttributeByLayer(
+        layerInfo.path,
         this.state.currentIndex, this.state.isCollection)
     }
     if (result) {
@@ -770,6 +783,7 @@ export default class LayerAttributeTabs extends React.Component {
         isShowSystemFields={this.state.isShowSystemFields}
         navigation={this.props.navigation}
         selection={this.props.selection}
+        refreshCurrent={()=>{this.setState({currentIndex:-1})}}
       />
     )
   }

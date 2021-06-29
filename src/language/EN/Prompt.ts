@@ -41,6 +41,7 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'Are you sure you want to delete the stop?',
   DELETE_OBJECT: 'Are you sure you want to permanently delete the object?',
+  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?',
   PLEASE_ADD_STOP: 'Please add a stop',
 
   CONFIRM: 'Confirm',
@@ -55,10 +56,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'Quit SuperMap iTablet?',
   MAP_LOADING: 'Map Loading',
   LOADING: 'Loading',
+  OPEN_MAP_CONFIRM: 'Whether to open the map',
   THE_MAP_IS_OPENED: 'The map is opened',
   THE_MAP_IS_NOTEXIST: 'The map doesn\'t exist',
+  OPEN_MAP_FAILED: 'Failed to open the map',
   THE_SCENE_IS_OPENED: 'The scene has been opened',
   NO_SCENE_LIST: 'No data',
+  NO_SCENE_SELECTED: 'No scene has been selected',
   SWITCHING: 'Switching',
   CLOSING: 'Closing',
   CLOSING_3D: 'Closing',
@@ -102,6 +106,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'Yes',
   CREATE_FAILED: 'Failed to create',
   INVALID_DATASET_NAME: 'Invalid dataset name or the name already existed',
+  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
+  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
+  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
 
   PLEASE_CHOOSE_POINT_LAYER: 'Please select a point layer first',
   PLEASE_CHOOSE_LINE_LAYER: 'Please select a line layer',
@@ -202,12 +209,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'Failed to share',
   SHARE_PREPARE: 'Preparing for sharing',
   SHARE_START: 'Start sharing',
+  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M',
 
   EXPORTING: 'Exporting',
   EXPORT_SUCCESS: 'Exported',
   EXPORT_FAILED: 'Failed to export',
   EXPORT_TO: 'Data have been exported to:',
   REQUIRE_PRJ_1984: 'PrjCoordSys of the dataset must be WGS_1984',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: 'Failed to undo',
   REDO_FAILED: 'Failed to redo',
@@ -405,6 +414,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: 'Please move your phone slowly. Click on your screen to add a scene after recognizing a plane',
   IDENTIFY_TIMEOUT: 'The image recognition fails because of a timeout. Do you want to try again?',
   TRACKING_LOADING: 'Tracking...',
+  UNSELECTED_OBJECT: 'Unselected object!',
 
   // 专题制图加载/输出xml
   SUCCESS: 'Successfully operated',
@@ -412,6 +422,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: 'No templates are available',
   CONFIRM_LOAD_TEMPLATE: 'Are you sure you want to load the template?',
   CONFIRM_OUTPUT_TEMPLATE: 'Are you sure you want to output the map?',
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

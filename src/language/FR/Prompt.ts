@@ -41,6 +41,7 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'Êtes-vous sûr de vouloir supprimer stop?',
   DELETE_OBJECT: "Êtes-vous sûr de vouloir supprimer définitivement l'objet?",
+  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: 'Veuillez ajouter un arrêt',
 
   CONFIRM: 'Confirmer',
@@ -55,10 +56,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'Quitter SuperMap iTablet',
   MAP_LOADING: 'Chargement',
   LOADING: 'Chargement',
+  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: 'La carte est ouverte',
   THE_MAP_IS_NOTEXIST: "La carte n'existe pas",
+  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: 'La scène est ouverte',
   NO_SCENE_LIST: 'Aucune donnée',
+  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
   SWITCHING: 'Commutation',
   CLOSING: 'Clôture',
   CLOSING_3D: 'Clôture',
@@ -102,6 +106,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'Activer',
   CREATE_FAILED: 'Échec de la création',
   INVALID_DATASET_NAME: 'Nom de jeu de données non valide ou le nom existe déjà',
+  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
+  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
+  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
 
   PLEASE_CHOOSE_POINT_LAYER: 'Veuillez choisir la couche de points',
   PLEASE_CHOOSE_LINE_LAYER: 'Veuillez choisir la couche ligne',
@@ -202,12 +209,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'Échec du partage',
   SHARE_PREPARE: 'Préparation du partage',
   SHARE_START: 'Commencer le partage',
+  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
 
   EXPORTING: 'Exportation',
   EXPORT_SUCCESS: 'Exporté avec succès',
   EXPORT_FAILED: "Échec de l'exportation",
   EXPORT_TO: 'Les données ont été exportées vers: ',
   REQUIRE_PRJ_1984: "PrjCoordSys de l'ensemble de données doit être WGS_1984'",
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: "Échec de l'annulation",
   REDO_FAILED: 'Échec de la restauration',
@@ -404,6 +413,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
   IDENTIFY_TIMEOUT: "Délai d'expiration de l'image de suivi, réessayez?",
   TRACKING_LOADING: 'Suivi...',
+  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
 
   // 专题制图加载/输出xml
   SUCCESS: 'Opération réussie',
@@ -411,6 +421,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: 'Aucun modèle disponible',
   CONFIRM_LOAD_TEMPLATE: 'Êtes-vous sûr de charger le modèle?',
   CONFIRM_OUTPUT_TEMPLATE: "Êtes-vous sûr d'exporter la carte?",
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

@@ -119,6 +119,8 @@ export default class Friend extends Component {
   componentDidMount() {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       FriendListFileHandle.initLocalFriendList(this.props.user.currentUser)
+      //TODO 临时处理，app加载流程修改后在此处进行第一次连接服务
+      this.updateServices()
     }
   }
 
@@ -140,6 +142,7 @@ export default class Friend extends Component {
       JSON.stringify(prevProps.user.currentUser.userName) !==
       JSON.stringify(this.props.user.currentUser.userName)
     ) {
+      
       this.updateServices()
     }
   }
@@ -329,7 +332,9 @@ export default class Friend extends Component {
         if (appState === 'active') {
           this.restartService()
         } else if (appState === 'background') {
-          this.disconnectService()
+          //切后台延迟断开，应对频繁切后台操作
+          
+           this.disconnectService(false,true)
         }
       }
     }
@@ -401,7 +406,10 @@ export default class Friend extends Component {
    * 3.用户切换：断开连接，新建连接，更新推送
    */
   updateServices = async () => {
-    g_connectService && (await this.disconnectService())
+    if(g_connectService){
+      
+      await this.disconnectService()
+    }
     this.restartService()
     JPushService.init(this.props.user.currentUser.userName)
     if (this.props.user.currentUser.userName === undefined) {
@@ -417,22 +425,31 @@ export default class Friend extends Component {
     }
     //正在断开连接，等待完成
     if (this.disconnecting) {
+      //如果断开中断，就不再重启
+      if(this.disconnectBreak){
+        return
+      }
       setTimeout(this.restartService, 3000)
     } else {
       this.restarting = true
-      g_connectService && (await this.disconnectService(true))
+      if(g_connectService){
+        
+        (await this.disconnectService(true))
+      }
+
       await this.connectService()
       this.restarting = false
     }
   }
 
-  disconnectService = async fromRestarting => {
+  disconnectService = async (fromRestarting,bDelay) => {
     //重复调用，退出
     if (this.disconnecting) {
       return
     }
     //重启中，等待重启完成
     if (!fromRestarting && this.restarting) {
+      
       setTimeout(this.disconnectService, 3000)
     } else {
       if (!g_connectService) {
@@ -440,10 +457,30 @@ export default class Friend extends Component {
       }
       this.disconnecting = true
       this.endCheckAvailability()
-      await SMessageService.stopReceiveMessage()
-      await SMessageService.disconnectionService()
-      g_connectService = false
-      this.disconnecting = false
+      if(bDelay){
+        setTimeout(async ()=>{
+          
+          if (this.prevAppstate === 'background') {
+            
+              
+              
+              await SMessageService.stopReceiveMessage()
+              await SMessageService.disconnectionService()
+              g_connectService = false
+              this.disconnecting = false
+          }else if (this.prevAppstate === 'active'){
+            
+            this.disconnectBreak = true
+          }
+        }, 1000*20)
+      }else{
+        
+        await SMessageService.stopReceiveMessage()
+        await SMessageService.disconnectionService()
+        g_connectService = false
+        this.disconnecting = false
+      }
+
     }
   }
 
@@ -460,6 +497,7 @@ export default class Friend extends Component {
           this.props.user.currentUser.userName,
         )
         if (!res) {
+          
           Toast.show(
             getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           )
@@ -509,6 +547,7 @@ export default class Friend extends Component {
           g_connectService = true
         }
       } catch (error) {
+        
         Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
         this.disconnectService()
       }
@@ -1165,19 +1204,23 @@ export default class Friend extends Component {
       let queueExist = true
       if (this.isGroupMsg(messageObj)) {
         let members = FriendListFileHandle.readGroupMemberList(talkId)
-        // await SMessageService.declareSession(members, talkId)
+        await SMessageService.declareSession(members, talkId)
         for (let key = 0; key < members.length; key++) {
           talkIds.push(members[key].id)
         }
         queueExist = await SMessageServiceHTTP.declareSession(talkId, members, true)
+        
       } else if (messageObj.type !== MSGConstant.MSG_COWORK) {
         talkIds.push(talkId)
         queueExist = await SMessageServiceHTTP.declare('Message_' + talkId, true)
+        
       } else if (talkId.includes('Group_Task_') && GLOBAL.coworkMode) {
         let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
         queueExist = currentTaskInfo.members && await SMessageServiceHTTP.declareSession(talkId, currentTaskInfo.members, true)
+        
       }
       if (!queueExist) {
+        
         Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
         return
       }
@@ -1214,6 +1257,7 @@ export default class Friend extends Component {
               ? { position: 0 }
               : null
         }
+        
         Toast.show(
           getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           option,
@@ -1231,7 +1275,8 @@ export default class Friend extends Component {
               ? { position: 0 }
               : null
         }
-        Toast.show(
+        
+        Toast.show(  
           getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           option,
         )

@@ -14,7 +14,7 @@ const iconv = require('iconv-lite')
  * 3.3维工作空间 sxwu和关联文件夹，符号库
  * 4.其他udb，符号等
  */
-async function getExternalData(path, uncheckedChildFileList = []) {
+async function getExternalData(path, types = [], uncheckedChildFileList = []) {
   let resultList = []
   try {
     const contentList = await _getDirectoryContentDeep(path)
@@ -36,16 +36,45 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     let COLOR = []
     let SYMBOL = []
     let AIMODEL = []
+    let ARMODEL = []
+    let ARMAP = []
+    let AREFFECT = []
 
     // 专题制图导出的xml
     let Xml_Template = []
     // 过滤临时文件： ~[0]@xxxx
     _checkTempFile(contentList)
 
+    if(types.length === 0 || types.indexOf('armap') > -1) {
+      ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('workspace') > -1) {
+      WS = await getWSList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('workspace3d') > -1) {
+      WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('datasource') > -1) {
+      DS = getDSList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('symbol') > -1) {
+      SYMBOL = getSymbolList(path, contentList)
+    }
+    if(types.length === 0 || types.indexOf('aimodel') > -1) {
+      AIMODEL = getAIModelList(path, contentList)
+    }
+    if(types.length === 0 || types.indexOf('armodel') > -1) {
+      ARMODEL = getARModelList(path, contentList)
+    }
+    if(types.length === 0 || types.indexOf('areffect') > -1) {
+      AREFFECT = getAREffectList(path, contentList)
+    }
+
+    // ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
     PL = await getPLList(path, contentList)
-    WS = await getWSList(path, contentList, uncheckedChildFileList)
-    WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
-    DS = getDSList(path, contentList, uncheckedChildFileList)
+    // WS = await getWSList(path, contentList, uncheckedChildFileList)
+    // WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
+    // DS = getDSList(path, contentList, uncheckedChildFileList)
     SCI = getSCIDSList(path, contentList, uncheckedChildFileList)
     TIF = getTIFList(path, contentList, uncheckedChildFileList)
     SHP = getSHPList(path, contentList, uncheckedChildFileList)
@@ -59,8 +88,8 @@ async function getExternalData(path, uncheckedChildFileList = []) {
     GPX = getGPXList(path, contentList, uncheckedChildFileList)
     IMG = getIMGList(path, contentList, uncheckedChildFileList)
     COLOR = getColorList(path, contentList)
-    SYMBOL = getSymbolList(path, contentList)
-    AIMODEL = getAIModelList(path, contentList)
+    // SYMBOL = getSymbolList(path, contentList)
+    // AIMODEL = getAIModelList(path, contentList)
 
     Xml_Template = await getXmlTemplateList(path, contentList)
     resultList = resultList
@@ -82,6 +111,9 @@ async function getExternalData(path, uncheckedChildFileList = []) {
       .concat(SYMBOL)
       .concat(AIMODEL)
       .concat(Xml_Template)
+      .concat(ARMAP)
+      .concat(AREFFECT)
+      .concat(ARMODEL)
     return resultList
   } catch (e) {
     // console.log(e)
@@ -205,14 +237,22 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
           // 过滤2维工作空间后，剩下的都是3维工作空间或包含3维的工作空间
           contentList[i].check = true
           // 过滤udb
-          const relatedDatasources = contentList[i].wsInfo.datasources
-          _checkDatasources(
-            relatedFiles,
-            relatedDatasources,
-            path,
-            contentList,
-            uncheckedChildFileList,
-          )
+          const wsInfo = contentList[i].wsInfo
+          if(wsInfo) {
+            _checkDatasources(
+              relatedFiles,
+              wsInfo.datasources,
+              path,
+              contentList,
+              uncheckedChildFileList,
+            )
+            _checkRelated3DSymbols(
+              relatedFiles,
+              wsInfo.scenes,
+              path,
+              contentList,
+            )
+          }
 
           //三维图层不再过滤 add xiezhy
           // 获取3维缓存图层的信息
@@ -227,12 +267,6 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
           //   contentList,
           //   uncheckedChildFileList,
           // )
-          _checkRelated3DSymbols(
-            relatedFiles,
-            contentList[i].wsInfo.scenes,
-            path,
-            contentList,
-          )
           _checkFlyingFiles(relatedFiles, path, contentList)
           //if (layerInfo.length !== 0)
           _checkWS3DKML(relatedFiles, path, contentList)
@@ -725,6 +759,90 @@ function getAIModelList(path, contentList) {
   }
 }
 
+function getAREffectList (path, contentList) {
+  let AREFFECT = []
+  try {
+    for(let item of contentList) {
+      if(item.check) continue
+      if(item.type === 'file' && _isAREffect(item.name)) {
+        item.check = true
+        AREFFECT.push({
+          directory: path,
+          fileName: item.name,
+          filePath: `${path}/${item.name}`,
+          fileType: 'areffect',
+        })
+      } else if(item.type === 'directory') {
+        AREFFECT = AREFFECT.concat(getAREffectList(`${path}/${item.name}`, item.contentList))
+      }
+    }
+    return AREFFECT
+  } catch(err){
+    return AREFFECT
+  }
+}
+
+function getARModelList(path, contentList) {
+  let ARMODEL = []
+  try {
+    for(let item of contentList) {
+      if(item.check) continue
+      if(item.type === 'file' && _isType(item.name, ['glb'])) {
+        item.check = true
+        ARMODEL.push({
+          directory: path,
+          fileName: item.name,
+          filePath: `${path}/${item.name}`,
+          fileType: 'armodel',
+        })
+      } else if(item.type === 'directory') {
+        ARMODEL = ARMODEL.concat(getARModelList(`${path}/${item.name}`, item.contentList))
+      }
+    }
+    return ARMODEL
+  } catch(err){
+    return ARMODEL
+  }
+}
+
+/** 获取AR地图 */
+function getARMAPList(path, contentList, uncheckedChildFileList) {
+  let DATA = []
+  const relatedFiles = []
+  try {
+    _checkUncheckedFile(path, contentList, uncheckedChildFileList)
+    for (let item of contentList) {
+      if (!item.check && item.type === 'file') {
+        if (_isARMap(item.name)) {
+          item.check = true
+          // 获取数据源
+          _checkARDatasource(relatedFiles, path, contentList)
+          // 获取resource
+          _checkARResource(relatedFiles, path, contentList)
+          DATA.push({
+            directory: path,
+            fileName: item.name,
+            filePath: `${path}/${item.name}`,
+            fileType: 'armap',
+            relatedFiles,
+          })
+        }
+      } else if (!item.check && item.type === 'directory') {
+        DATA = DATA.concat(
+          getARMAPList(
+            `${path}/${item.name}`,
+            item.contentList,
+            uncheckedChildFileList,
+          ),
+        )
+      }
+    }
+    return DATA
+  } catch(e) {
+    return DATA
+  }
+}
+
 /** 标绘模版 */
 async function _getPlottingList(path) {
   const arrFile = []
@@ -744,6 +862,57 @@ async function _getPlottingList(path) {
     }
   }
   return arrFile
+}
+
+async function _checkRelatedARDS(relatedFiles, name, path, contentList) {
+  try {
+    const mapXml = await RNFS.readFile(`${path}/${name}`)
+    const $ = cheerio.load(mapXml)
+    const nodes = $('DatasourceServer')
+    const datasourceArr = []
+    for(let i = 0; i < nodes.length; i++) {
+      const datasourceNode = nodes[i].children[0]
+      const datasource = datasourceNode
+      datasourceArr.push(datasource.nodeValue)
+    }
+    for (let i = 0; i < contentList.length; i++) {
+      if (!contentList[i].check && contentList[i].type === 'file') {
+        for(let n = 0; n < datasourceArr.length; n ++) {
+          const index = contentList[i].name.lastIndexOf('.')
+          let nameNoExt =  contentList[i].name
+          if(index > 0) {
+            nameNoExt = contentList[i].name.substring(0, index)
+          }
+          if(datasourceArr[n].indexOf(nameNoExt) === 0) {
+            contentList[i].check = true
+            relatedFiles.push(`${path}/${contentList[i].name}`)
+          }
+        }
+      }
+    }
+  } catch(e) {
+    // console.warn(e)
+  }
+}
+
+function _checkARDatasource(relatedFiles, path, contentList) {
+  for (let i = 0; i < contentList.length; i++) {
+    if (!contentList[i].check && contentList[i].type === 'directory' && contentList[i].name === 'Datasource') {
+      contentList[i].check = true
+      relatedFiles.push(`${path}/${contentList[i].name}`)
+      break
+    }
+  }
+}
+
+function _checkARResource(relatedFiles, path, contentList) {
+  for (let i = 0; i < contentList.length; i++) {
+    if (!contentList[i].check && contentList[i].type === 'directory' && contentList[i].name === 'Resource') {
+      contentList[i].check = true
+      relatedFiles.push(`${path}/${contentList[i].name}`)
+      break
+    }
+  }
 }
 
 /**
@@ -946,6 +1115,10 @@ function _isWorkspace(name) {
  * @param {*} name
  */
 
+function _isARMap(name) {
+  return _isType(name, ['arxml'])
+}
+
 function _isSCIDatasource(name) {
   return _isType(name, ['SCI', 'sci'])
 }
@@ -1047,6 +1220,10 @@ function _isAIModel(name) {
 
 function _isSubAIModel(name) {
   return _isType(name, ['txt', 'json'])
+}
+
+function _isAREffect(name) {
+  return _isType(name, ['areffect'])
 }
 
 function _isRelatedAIModel(name, checkName) {

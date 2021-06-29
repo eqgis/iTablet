@@ -58,11 +58,12 @@ export default class MyBaseMap extends Component {
    */
   getCommonBaseMap = () => {
     return [
+      ConstOnline.GAODE,
       ConstOnline.BingMap,
       ConstOnline.Baidu,
       ConstOnline.Google,
       ConstOnline.OSM,
-      ConstOnline.tianditu,
+      ConstOnline.tianditu(),
     ]
   }
 

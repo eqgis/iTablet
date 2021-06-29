@@ -20,9 +20,11 @@ import {
   SMARMapView,
   SARMap,
   SMMeasureARGeneraView,
-  SMeasureAreaView,
+  // SMeasureAreaView,
   DatasetType,
-  SCollectSceneFormView,
+  // SCollectSceneFormView,
+  ARElementType,
+  ARAction,
 } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import {
@@ -52,9 +54,10 @@ import {
   PreviewHeader,
   IncrementRoadDialog,
   SaveView,
+  SaveListView,
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
-import { shareModule } from '../../components/ToolBar/modules'
+import { shareModule, arEditModule } from '../../components/ToolBar/modules'
 import {
   Container,
   MTBtn,
@@ -104,9 +107,6 @@ import {
   AppState,
   StyleSheet,
   PanResponder,
-  NativeModules,
-  NativeEventEmitter,
-  DeviceEventEmitter,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -127,10 +127,10 @@ import ArMappingButton from '../../components/ArMappingButton'
 import ImageButton from '../../../../components/ImageButton'
 import Header from '../../../../components/Header'
 import DatumPointCalibration from '../../../arDatumPointCalibration/'
+import DataHandler from '../../../tabs/Mine/DataHandler'
 
 GLOBAL.markerTag = 118082
-const SMeasureViewiOS = NativeModules.SMeasureAreaView
-const iOSEventEmi = new NativeEventEmitter(SMeasureViewiOS)
+
 const TOP_DEFAULT = Platform.select({
   android: screen.getHeaderHeight('PORTRAIT') + scaleSize(8),
   // ios: screen.isIphoneX() ? screen.X_TOP : screen.IOS_TOP,
@@ -190,6 +190,11 @@ export default class MapView extends React.Component {
     coworkMessages: PropTypes.object,
     currentGroup: PropTypes.object,
 
+    showDatumPoint: PropTypes.bool,
+    isAR: PropTypes.bool,
+    setDatumPoint: PropTypes.func,
+    showAR: PropTypes.func,
+
     setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
     setSelection: PropTypes.func,
@@ -235,6 +240,7 @@ export default class MapView extends React.Component {
     downloadFile: PropTypes.func,
     deleteDownloadFile: PropTypes.func,
     setToolbarStatus: PropTypes.func,
+    showARSceneNotify: PropTypes.bool,
   }
 
   /** 是否导航中 */
@@ -292,15 +298,10 @@ export default class MapView extends React.Component {
     this.state = {
       showMap: false, // 控制地图初始化显示
       data: params ? params.data : [],
-      popShow: false, //  一级popView显示控制
-      popType: '',
       mapTitle: this.mapTitle,
       // wsName: wsName,
       measureShow: false,
       measureResult: 0,
-      editLayer: {},
-      showMapMenu: false,
-      // changeLayerBtnBottom: scaleSize(200),
       canBeUndo: false,
       canBeRedo: false,
       showAIDetect:
@@ -308,7 +309,6 @@ export default class MapView extends React.Component {
         GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ||
         GLOBAL.Type === ChunkType.MAP_AR_MAPPING,
       bGoneAIDetect: false,
-      showRoadView: true,
       showArModeIcon: true,
       showIncrement: false,
       speechContent: '',
@@ -327,6 +327,7 @@ export default class MapView extends React.Component {
       showADDPoint: false,
       isfirst: true,
       isDrawing: false,
+      isMeasure:false,
       currentHeight: '0m',
       showADD: true,//默认先显示
       showLog: false,
@@ -334,13 +335,14 @@ export default class MapView extends React.Component {
       is_showLog: false,
       showCurrentHeightView : false,
       measureType: '',
-      isAR:true,
-      showDatumPoint:GLOBAL.Type === ChunkType.MAP_AR_MAPPING?true:false,
+      // isAR:true,
       isCollect:false,
       isnew:true,
       showGenera:false,
       isTrack:false,
     }
+    this.props.setDatumPoint(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? true : false)
+    this.props.showAR(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS  ? true : false)
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
     //导航  地图选点界面的搜索按钮被点击,当前设置按钮title
@@ -493,6 +495,9 @@ export default class MapView extends React.Component {
       GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
     }
 
+    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR) {
+      this.showFullMap(true)
+    }
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
 
     if (GLOBAL.isLicenseValid) {
@@ -601,48 +606,48 @@ export default class MapView extends React.Component {
       })
       GLOBAL.SimpleDialog.setVisible(true)
     }
-
-    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
+    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR) {
       (async function () {
         //提供测量等界面添加按钮及提示语的回调方法 add jiakai
-        if (Platform.OS === 'ios') {
-          iOSEventEmi.addListener(
-            'com.supermap.RN.SMeasureAreaView.ADD',
-            this.onAdd,
-          )
-          iOSEventEmi.addListener(
-            'com.supermap.RN.SMeasureAreaView.CLOSE',
-            this.onshowLog,
-          )
-          iOSEventEmi.addListener(
-            'onCurrentHeightChanged',
-            this.onCurrentHeightChanged,
-          )
-        } else {
-          SMeasureAreaView.setAddListener({
-            callback: async result => {
-              if (result) {
-                // Toast.show("add******")
-                if (this.state.isfirst) {
-                  this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
-                } else {
-                  this.setState({ showADD: true })
-                }
-              } else {
-                this.setState({ showADD: false, showADDPoint: false })
-              }
-            },
-          })
+        // if (Platform.OS === 'ios') {
+        // iOSEventEmi.addListener(
+        //   'com.supermap.RN.SMeasureAreaView.ADD',
+        //   this.onAdd,
+        // )
+        // iOSEventEmi.addListener(
+        //   'com.supermap.RN.SMeasureAreaView.CLOSE',
+        //   this.onshowLog,
+        // )
+        // iOSEventEmi.addListener(
+        //   'onCurrentHeightChanged',
+        //   this.onCurrentHeightChanged,
+        // )
+      // } else {
 
-          SARMap.addOnHeightChangeListener({
-            onHeightChange: height => {
-              height = height.toFixed(2)
-              this.setState({
-                currentHeight: height+'m',
-              })
-            },
-          })
-        }
+        // SMeasureAreaView.setAddListener({
+        //   callback: async result => {
+        //     if (result) {
+        //       // Toast.show("add******")
+        //       if (this.state.isfirst) {
+        //         this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
+        //       } else {
+        //         this.setState({ showADD: true })
+        //       }
+        //     } else {
+        //       this.setState({ showADD: false, showADDPoint: false })
+        //     }
+        //   },
+        // })
+
+        SARMap.addOnHeightChangeListener({
+          onHeightChange: height => {
+            height = height.toFixed(2)
+            this.setState({
+              currentHeight: height+'m',
+            })
+          },
+        })
+        // }
 
         //没有动画回调的话提示语默认5秒后开启
         if (!this.state.is_showLog) {
@@ -705,19 +710,14 @@ export default class MapView extends React.Component {
     }
   }
 
-  /**高度变化 */
-  onCurrentHeightChanged = params => {
-    this.setState({
-      currentHeight: params.currentHeight,
-    })
-  }
-
   componentDidUpdate(prevProps) {
     if (
       JSON.stringify(prevProps.mapNavigation) !==
       JSON.stringify(this.props.mapNavigation)
     ) {
       this.showFullMap(this.props.mapNavigation.isShow)
+    } else if (this.props.showDatumPoint !== prevProps.showDatumPoint) {
+      this.showFullMap(this.props.showDatumPoint)
     }
     // if (
     //   JSON.stringify(prevProps.editLayer) !==
@@ -864,6 +864,14 @@ export default class MapView extends React.Component {
         selectPointType: this.props.navigation.state.params.selectPointType,
       })
     }
+
+    if (
+      GLOBAL.Type === ChunkType.MAP_AR &&
+      JSON.stringify(prevProps.armap.currentMap) !== JSON.stringify(this.props.armap.currentMap) &&
+      this.props.armap.currentMap?.mapName
+    ) {
+      SARMap.setAction(ARAction.SELECT)
+    }
   }
 
   componentWillUnmount() {
@@ -927,21 +935,21 @@ export default class MapView extends React.Component {
 
     if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
       //移除监听
-      DeviceEventEmitter.removeListener(
-        'onCurrentHeightChanged',
-        this.onCurrentHeightChanged,
-      )
+      // DeviceEventEmitter.removeListener(
+      //   'onCurrentHeightChanged',
+      //   this.onCurrentHeightChanged,
+      // )
 
-      if (Platform.OS === 'ios') {
-        iOSEventEmi.removeListener(
-          'com.supermap.RN.SMeasureAreaView.ADD',
-          this.onAdd,
-        )
-        iOSEventEmi.removeListener(
-          'com.supermap.RN.SMeasureAreaView.CLOSE',
-          this.onshowLog,
-        )
-      }
+      // if (Platform.OS === 'ios') {
+      //   iOSEventEmi.removeListener(
+      //     'com.supermap.RN.SMeasureAreaView.ADD',
+      //     this.onAdd,
+      //   )
+      //   iOSEventEmi.removeListener(
+      //     'com.supermap.RN.SMeasureAreaView.CLOSE',
+      //     this.onshowLog,
+      //   )
+      // }
     }
   }
 
@@ -1169,13 +1177,13 @@ export default class MapView extends React.Component {
   }
 
   _onLoad = async () => {
-    if (Platform.OS === 'ios') {
-      SMeasureAreaView.setMeasureMode('arCollect')
-    }else{
-      SARMap.showMeasureView(false)
-      SARMap.showTrackView(false)
-      SARMap.showPointCloud(false)
-    }
+    // if (Platform.OS === 'ios') {
+    //   SARMap.setMeasureMode('arCollect')
+    // }else{
+    SARMap.showMeasureView(false)
+    SARMap.showTrackView(false)
+    SARMap.showPointCloud(false)
+    // }
   }
 
   /**
@@ -1307,6 +1315,11 @@ export default class MapView extends React.Component {
   /** 地图保存 */
   saveMap = async () => {
     try {
+      // if(GLOBAL.Type === ChunkType.MAP_AR){
+      //   console.warn(1111)
+      //   await this.props.closeARMap()
+      //   await this.props.setCurrentARLayer()
+      // }
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         //这里先处理下异常 add xiezhy
         try {
@@ -1350,7 +1363,8 @@ export default class MapView extends React.Component {
         )
         return true
       } else {
-        this.setSaveMapViewLoading(false)
+        this.setLoading(false)
+        // this.setSaveMapViewLoading(false)
         return false
       }
     } catch (e) {
@@ -1364,6 +1378,10 @@ export default class MapView extends React.Component {
     try {
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
       await this.closeMap()
+      if (GLOBAL.Type === ChunkType.MAP_AR) {
+        await this.props.closeARMap()
+        await this.props.setCurrentARLayer()
+      }
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
 
@@ -1376,7 +1394,6 @@ export default class MapView extends React.Component {
 
   closeMap = async () => {
     try {
-      await this.props.closeMap()
       await this._removeGeometrySelectedListener()
       await this.props.setCurrentAttribute({})
       // this.setState({ showScaleView: false })
@@ -1394,6 +1411,7 @@ export default class MapView extends React.Component {
         GLOBAL.getFriend().setCurMod(undefined)
         // NavigationService.goBack('CoworkTabs')
       }
+      await this.props.closeMap()
     } catch (e) {
       GLOBAL.clickWait = false
     }
@@ -1460,6 +1478,12 @@ export default class MapView extends React.Component {
         return
       }
 
+      // AR测图-测量/测图界面返回
+      if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton) {
+        this.ARMappingHeaderBack()
+        return
+      }
+
       // 优先处理其他界面跳转到MapView传来的返回事件
       if (this.backAction && typeof this.backAction === 'function') {
         this.backAction({
@@ -1502,46 +1526,48 @@ export default class MapView extends React.Component {
 
       if (GLOBAL.clickWait) return true
       GLOBAL.clickWait = true
-      let result = await SMap.mapIsModified()
-      if (result && !this.isExample) {
+      let result = await SMap.mapIsModified() // 是否保存普通地图
+      const needSaveARMap = GLOBAL.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
+      if ((result || needSaveARMap) && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {
-          this.props.setCurrentAttribute({})
+          await this.props.setCurrentAttribute({})
           // this.setState({ showScaleView: false })
-          this._removeGeometrySelectedListener()
+          await this._removeGeometrySelectedListener()
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-            this._removeNavigationListeners()
+            await this._removeNavigationListeners()
           }
           await this.closeMapHandler(params?.baskFrom)
           GLOBAL.clickWait = false
-          if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+          if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
             if (Platform.OS === 'android') {
-              SARMap.showMeasureView(false)
-              SARMap.showTrackView(false)
-              SARMap.showPointCloud(false)
-              SARMap.dispose()
+              await SARMap.showMeasureView(false)
+              await SARMap.showTrackView(false)
+              await SARMap.showPointCloud(false)
+              await SARMap.dispose()
             }
-            SMeasureAreaView.dispose()
+            await SARMap.dispose()
           }
+          await this.closeMapHandler(params?.baskFrom)
         })
       } else {
         try {
           this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-            this._removeNavigationListeners().then(() => {
-              SMap.clearPoint()
-              SMap.stopGuide()
-            })
+            await this._removeNavigationListeners()
+            await SMap.clearPoint()
+            await SMap.stopGuide()
           }
           await this.closeMapHandler(params?.baskFrom)
-          if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+          if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
             if (Platform.OS === 'android') {
-              SARMap.showMeasureView(false)
-              SARMap.showTrackView(false)
-              SARMap.showPointCloud(false)
-              SARMap.dispose()
+              await SARMap.showMeasureView(false)
+              await SARMap.showTrackView(false)
+              await SARMap.showPointCloud(false)
+              await SARMap.dispose()
             }
-            SMeasureAreaView.dispose()
+            await SARMap.dispose()
           }
+          await this.closeMapHandler(params?.baskFrom)
         } catch (e) {
           GLOBAL.clickWait = false
           this.setLoading(false)
@@ -1620,7 +1646,7 @@ export default class MapView extends React.Component {
             homePath +
             userPath +
             ConstPath.RelativeFilePath.Workspace[
-            GLOBAL.language === 'CN' ? 'CN' : 'EN'
+              GLOBAL.language === 'CN' ? 'CN' : 'EN'
             ]
           await this._openWorkspace({
             DSParams: { server: wsPath },
@@ -1762,7 +1788,6 @@ export default class MapView extends React.Component {
         }
 
 
-        this.setLoading(false)
         //切换地图完成后重置导航选择的数据
         this.selectedData = {
           selectedDatasources: [], //选中的数据源
@@ -1777,11 +1802,15 @@ export default class MapView extends React.Component {
         // 开始协作
         await this.startCowork()
 
+        if (this.props.isAR) {
+          await SARMap.resetARMapWorkspace()
+        }
 
         //地图打开后显示比例尺，获取图例数据
         this.setState({ showScaleView: true, mapLoaded: true })
         GLOBAL.legend && GLOBAL.legend.getLegendData()
         // this.mapLoaded = true
+        this.setLoading(false)
       } catch (e) {
         this.setLoading(false)
         this.setState({ mapLoaded: true })
@@ -1981,8 +2010,10 @@ export default class MapView extends React.Component {
     GLOBAL.SaveMapView &&
       GLOBAL.SaveMapView.setVisible(
         visible,
-        loadingAction,
-        cb,
+        {
+          setLoading: loadingAction,
+          cb,
+        }
         // this.backPositon,
       )
   }
@@ -2069,7 +2100,7 @@ export default class MapView extends React.Component {
         mapModules={this.props.mapModules}
         initIndex={0}
         type={this.type}
-        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect}
+        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR :this.state.showAIDetect}
       />
     )
   }
@@ -2201,7 +2232,7 @@ export default class MapView extends React.Component {
         online={this.props.online}
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.mapModules}
-        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect}
+        ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR :this.state.showAIDetect}
       />
     )
   }
@@ -2487,18 +2518,28 @@ export default class MapView extends React.Component {
   }
 
   measure = params => {
-    if (Platform.OS === 'android') {
-      SARMap.addMeasureStatusListeners({
-        infoListener: async result => {
+    this.listeners = SARMap.addMeasureStatusListeners({
+      infoListener: result => {
+        if(result.none) {
           this.onshowLog(result)
-        },
-      })
-    }else{
-      // iOSEventEmi.addListener(
-      //   'com.supermap.RN.SMeasureAreaView.CLOSE',
-      //   this.onshowLog,
-      // )
-    }
+        }
+        if(this.props.showARSceneNotify) {
+          this.onshowLog(result)
+        }
+      },
+      addListener: async result => {
+        if (result) {
+          if (this.state.isfirst) {
+            this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
+          } else {
+            this.setState({ showADD: true })
+          }
+        } else {
+          this.setState({ showADD: false, showADDPoint: false })
+        }
+      },
+    })
+       
     this.isMeasure = false
     this.isDrawing = false
     this.isCollect = false
@@ -2508,32 +2549,35 @@ export default class MapView extends React.Component {
     this.measureType = params.measureType
     if (this.measureType) {
       if (this.measureType === 'measureArea') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA')
+        SARMap.setMeasureMode('MEASURE_AREA')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE
       } else if (this.measureType === 'measureLength') {
-        SMeasureAreaView.setMeasureMode('MEASURE_LINE')
+        SARMap.setMeasureMode('MEASURE_LINE')
+        this.setState({
+          showCurrentHeightView: true,
+        })
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_LENGTH
       } else if (this.measureType === 'drawLine') {
-        SMeasureAreaView.setMeasureMode('DRAW_LINE')
+        SARMap.setMeasureMode('DRAW_LINE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
       } else if (this.measureType === 'arDrawArea') {
-        SMeasureAreaView.setMeasureMode('DRAW_AREA')
+        SARMap.setMeasureMode('DRAW_AREA')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
       } else if (this.measureType === 'arDrawPoint') {
-        SMeasureAreaView.setMeasureMode('DRAW_POINT')
+        SARMap.setMeasureMode('DRAW_POINT')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
       } else if (this.measureType === 'arMeasureHeight') {
-        SMeasureAreaView.setMeasureMode('MEASURE_HEIGHT')
+        SARMap.setMeasureMode('MEASURE_HEIGHT')
         this.setState({
           showCurrentHeightView: true,
         })
@@ -2541,27 +2585,27 @@ export default class MapView extends React.Component {
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
       } else if (this.measureType === 'arMeasureCircle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_CIRCLE')
+        SARMap.setMeasureMode('MEASURE_AREA_CIRCLE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE
       } else if (this.measureType === 'arMeasureRectangle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_RECTANGLE')
+        SARMap.setMeasureMode('MEASURE_AREA_RECTANGLE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE
       } else if (this.measureType === 'measureAngle') {
-        SMeasureAreaView.setMeasureMode('MEASURE_AREA_ANGLE')
+        SARMap.setMeasureMode('MEASURE_AREA_ANGLE')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_ANGLE
       } else if (this.measureType === 'arMeasureCuboid') {
-        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CUBOID')
+        SARMap.setMeasureMode('MEASURE_VOLUME_CUBOID')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE
       } else if (this.measureType === 'arMeasureCylinder') {
-        SMeasureAreaView.setMeasureMode('MEASURE_VOLUME_CYLINDER')
+        SARMap.setMeasureMode('MEASURE_VOLUME_CYLINDER')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE
@@ -2584,7 +2628,9 @@ export default class MapView extends React.Component {
         this.measureType === 'measureArea' ||
         this.measureType === 'measureAngle' ||
         this.measureType === 'arMeasureCuboid' ||
-        this.measureType === 'arMeasureCylinder') {
+        this.measureType === 'arMeasureCylinder' ||
+        this.measureType === 'arMeasureCircle' ||
+        this.measureType === 'arMeasureRectangle') {
         this.isMeasure = true
       }
 
@@ -2610,23 +2656,24 @@ export default class MapView extends React.Component {
         if (Platform.OS === 'android') {
           SARMap.showMeasureView(false)
           SARMap.showTrackView(true)
-          SARMap.showPointCloud(true)
-        }else{
-          SMeasureAreaView.setMeasureMode('arCollect')
+        } else {
+          SARMap.setMeasureMode('arCollect')
         }
-      }else{
+      } else {
         if (Platform.OS === 'android') {
-          SARMap.showMeasureView(true)
           SARMap.showTrackView(false)
-          SARMap.showPointCloud(true)
+          SARMap.showMeasureView(true)
         }
       }
+
+      SARMap.showPointCloud(true)
 
       if (
         this.measureType === 'drawLine' ||
         this.measureType === 'arDrawArea' ||
         this.measureType === 'arDrawRectangle' ||
-        this.measureType === 'arDrawCircular'
+        this.measureType === 'arDrawCircular' ||
+        this.measureType === 'arDrawPoint'
       ) {
         this.showSave = true
       }
@@ -2639,30 +2686,32 @@ export default class MapView extends React.Component {
         this.canContinuousDraw = true
       }
 
-      if (this.isDrawing) {
-        SMeasureAreaView.initMeasureCollector(
-          this.datasourceAlias,
-          this.datasetName,
-        )
-      }
+      // if (this.isDrawing) {
+      //   SMeasureAreaView.initMeasureCollector(
+      //     this.datasourceAlias,
+      //     this.datasetName,
+      //   )
+      // }
 
       if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
       let datasourceAlias = this.props.currentLayer.datasourceAlias
       let datasetName = this.props.currentLayer.datasetName
       if (this.props.currentLayer.themeType !== 0 || (
-        this.props.currentLayer.type !== DatasetType.CAD &&
-        (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
-        (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
-        (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT) ||
-        (this.measureType === 'arDrawRectangle' && this.props.currentLayer.type !== DatasetType.REGION) ||
-        (this.measureType === 'arDrawCircular' && this.props.currentLayer.type !== DatasetType.REGION)
+        this.props.currentLayer.type !== DatasetType.CAD && (
+          // 后面的判断应该是一个整体 不然永真 add zcj
+          (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+          (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+          (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT) ||
+          (this.measureType === 'arDrawRectangle' && this.props.currentLayer.type !== DatasetType.REGION) ||
+          (this.measureType === 'arDrawCircular' && this.props.currentLayer.type !== DatasetType.REGION)
+        )
       )) {
         datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
         datasetName = 'Default_Tagging'
       }
-      SMeasureAreaView.setSavePath(datasourceAlias, datasetName)
+      SARMap.setMeasurePath(datasourceAlias, datasetName)
 
-      this.setState({ showArMappingButton: true, showSave: this.showSave, isfirst: true, showGenera: true, isDrawing: this.isDrawing,isCollect:this.isCollect, isnew:this.isnew,canContinuousDraw: this.canContinuousDraw,measureType:this.measureType })
+      this.setState({ showArMappingButton: true, showSave: this.showSave, isfirst: true, showGenera: true, isDrawing: this.isDrawing,isCollect:this.isCollect, isnew:this.isnew,canContinuousDraw: this.canContinuousDraw,measureType:this.measureType ,isMeasure:this.isMeasure})
     }
   }
 
@@ -2887,7 +2936,7 @@ export default class MapView extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.props.analyst.params || GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect)
+    if (this.props.analyst.params || GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.props.isAR :this.state.showAIDetect)
       return null
     let itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
@@ -2900,11 +2949,11 @@ export default class MapView extends React.Component {
     let buttonInfos = GLOBAL.coworkMode && [
       MapHeaderButton.CoworkChat,
     ] || (currentMapModule && currentMapModule.headerButtons) || [
-        MapHeaderButton.Share,
-        MapHeaderButton.Search,
-        MapHeaderButton.Undo,
-        MapHeaderButton.Audio,
-      ]
+      MapHeaderButton.Share,
+      MapHeaderButton.Search,
+      MapHeaderButton.Undo,
+      MapHeaderButton.Audio,
+    ]
     let buttons = []
     if (this.isExample) {
       return (
@@ -3129,16 +3178,39 @@ export default class MapView extends React.Component {
    * @param {boolean} showAIDetect 是否隐藏AR相机页面
    */
   switchAr = showAIDetect => {
-    if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
-      if(this.state.isAR){
-        this.setState({isAR:false})
-        Orientation.unlockAllOrientations()
-        return false
-      }else{
-        this.setState({isAR:true})
-        Orientation.lockToPortrait()
-        return true
-      }  
+    if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
+      let _isAR = this.props.isAR
+      if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
+        if (showAIDetect !== _isAR) {
+          _isAR = showAIDetect
+        } else {
+          return
+        }
+      } else {
+        _isAR = !_isAR
+      }
+      // this.setState({isAR:_isAR})
+      this.props.showAR(_isAR)
+      GLOBAL.showAIDetect = _isAR
+      _isAR
+        ? Orientation.lockToPortrait()
+        : Orientation.unlockAllOrientations()
+
+      if (this.props.isAR) {
+        // if (Platform.OS === 'android') {
+        SARMap.onPause()
+        // } else {
+        //   SMeasureAreaView.onPause()
+        // }
+      } else {
+        // if (Platform.OS === 'android') {
+        SARMap.onResume()
+        // } else {
+        //   SMeasureAreaView.onResume()
+        // }
+      }
+
+      return _isAR
     }
 
     let _showAIDetect = this.state.showAIDetect
@@ -3154,6 +3226,7 @@ export default class MapView extends React.Component {
     this.setState({
       showAIDetect: _showAIDetect,
     })
+    this.props.showAR(_showAIDetect)
     GLOBAL.showAIDetect = _showAIDetect
     SMap.setDynamicviewsetVisible(!_showAIDetect)
     _showAIDetect
@@ -3180,15 +3253,21 @@ export default class MapView extends React.Component {
 
   /** AR和二维地图切换图标 */
   _renderArModeIcon = () => {
-    let show = GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect
+    let show = GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR :this.state.showAIDetect
     let right
     if (
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
       !show
     ) {
-      right = { right: scaleSize(100) }
+      right = {
+        right: scaleSize(120),
+        bottom: scaleSize(26),
+      }
     } else {
-      right = { right: scaleSize(20) }
+      right = {
+        right: scaleSize(20),
+        bottom: scaleSize(135),
+      }
     }
     return (
       <View
@@ -3893,6 +3972,61 @@ export default class MapView extends React.Component {
    * 退出地图保存提示框
    */
   _renderExitSaveView = () => {
+    if (GLOBAL.Type === ChunkType.MAP_AR) {
+      return (
+        <SaveListView
+          ref={ref => GLOBAL.SaveMapView = ref}
+          getMaps={async () => {
+            const maps = []
+            if (this.props.armap.currentMap?.mapName) {
+              maps.push({
+                name: this.props.armap.currentMap.mapName,
+                // path: this.props.armap.currentMap.path,
+                mapType: 'ar',
+              })
+            }
+            let mapName = ''
+            if (this.props.map.currentMap.name) {
+              // 获取当前打开的地图xml的名称
+              mapName = this.props.map.currentMap.name
+              mapName =
+                mapName.substr(0, mapName.lastIndexOf('.')) ||
+                this.props.map.currentMap.name
+            } else {
+              let mapInfo = await SMap.getMapInfo()
+              if (mapInfo && mapInfo.name) {
+                // 获取MapControl中的地图名称
+                mapName = mapInfo.name
+              } else if (this.props.layers.layers.length > 0) {
+                // 若无参数，打开默认工作空间。分析模块使用
+                let userPath = ConstPath.CustomerPath
+                if (
+                  this.props.user.currentUser &&
+                  this.props.user.currentUser.userName
+                ) {
+                  userPath =
+                    ConstPath.UserPath + this.props.user.currentUser.userName + '/'
+                }
+                mapName = await DataHandler.getAvailableFileNameNoExt(await FileTools.appendingHomeDirectory(userPath + ConstPath.RelativePath.Map), 'DefaultMap', 'xml')
+              }
+            }
+            if (mapName) {
+              maps.push({
+                name: mapName,
+                // path: this.props.map.currentMap.path,
+                mapType: 'map',
+              })
+            }
+            return maps
+          }}
+          cancel={() => {
+            GLOBAL.clickWait = false
+          }}
+          saveMap={this.props.saveMap}
+          saveARMap={this.props.saveARMap}
+        />
+      )
+    }
     return (
       <SaveView
         ref={ref => (GLOBAL.SaveMapView = ref)}
@@ -4018,7 +4152,7 @@ export default class MapView extends React.Component {
               height: scaleSize(60),
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
             }}
           >
             <Image
@@ -4077,8 +4211,8 @@ export default class MapView extends React.Component {
 
   /** 设置 */
   setting = async () => {
-    let isSnap = await SMeasureAreaView.getIsSnapRange()
-    let tole = await SMeasureAreaView.getSnapTolerance()
+    let isSnap = await SARMap.getIsSnapRange()
+    let tole = await SARMap.getSnapTolerance()
     let showGenera = this.state.showGenera
     NavigationService.navigate('CollectSceneFormSet', {
       point: this.point,
@@ -4089,15 +4223,13 @@ export default class MapView extends React.Component {
       showType: 'newDatumPoint', // 新的位置校准界面
       reshowDatumPoint: () => {
         NavigationService.goBack()
-        this.setState({
-          showDatumPoint: true,
-        })
+        this.props.setDatumPoint(true)
       },
       isSnap: isSnap,
       tole: tole,
       showGenera: showGenera,
       autoCatch: value => {
-        SMeasureAreaView.setIsSnapRange(value)
+        SARMap.setIsSnapRange(value)
       },
       setTolerance: value => {
         if (value > 100) {
@@ -4106,7 +4238,7 @@ export default class MapView extends React.Component {
         if (value < 0) {
           value = 0
         }
-        SMeasureAreaView.setSnapTolerance(value)
+        SARMap.setSnapTolerance(value)
       },
       showGeneracb: value => {
         this.setState({ showGenera: value })
@@ -4124,9 +4256,7 @@ export default class MapView extends React.Component {
       },
       reshowDatumPoint: ()=>{
         NavigationService.goBack()
-        this.setState({
-          showDatumPoint: true,
-        })
+        this.props.setDatumPoint(true)
       },
       collectScene: true,
     })
@@ -4134,14 +4264,14 @@ export default class MapView extends React.Component {
 
   /** 量算的设置（界面传入数据有区别）add jiakai */
   Measuresetting = async () => {
-    let isSnap = await SMeasureAreaView.getIsSnapRange()
-    let tole = await SMeasureAreaView.getSnapTolerance()
+    let isSnap = await SARMap.getIsSnapRange()
+    let tole = await SARMap.getSnapTolerance()
     NavigationService.navigate('CollectSceneFormSet', {
       isMeasure: true,
       isSnap: isSnap,
       tole: tole,
       autoCatch: value => {
-        SMeasureAreaView.setIsSnapRange(value)
+        SARMap.setIsSnapRange(value)
       },
       setTolerance: value => {
         NavigationService.goBack()
@@ -4151,42 +4281,45 @@ export default class MapView extends React.Component {
         if (value < 0) {
           value = 0
         }
-        SMeasureAreaView.setSnapTolerance(value)
+        SARMap.setSnapTolerance(value)
       },
     })
   }
 
   _startScan = () => {
-    return SMeasureAreaView.startScan()
+    return SARMap.startScan()
   }
 
   _onDatumPointClose = point => {
-    SMeasureAreaView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
-    if (Platform.OS === 'android') {
-      SCollectSceneFormView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
-    }
-    this.setState({
-      showDatumPoint: false,
-    })
+    this.props.setDatumPoint(false)
+  }
+
+  _onDatumPointConfirm = point => {
+    SARMap.setPosition(Number(point.x), Number(point.y))
+    this.props.setDatumPoint(false)
   }
 
   ARMappingHeaderBack = () => {
-    SMeasureAreaView.cancelCurrent()
+    SARMap.stopLocation()
+    SARMap.cancelCurrent()
     SARMap.clearMeasure()
-    if (Platform.OS === 'ios') {
-      SMeasureAreaView.setMeasureMode('arCollect')
-      // iOSEventEmi.removeListener(
-      //   'com.supermap.RN.SMeasureAreaView.CLOSE',
-      //   this.onshowLog,
-      // )
-    }else{
-      SARMap.removeOnHeightChangeListeners()
-      SARMap.removeMeasureStatusListeners()
-      SARMap.showMeasureView(false)
-      SARMap.showTrackView(false)
-      SARMap.showPointCloud(false)
+    // SARMap.removeOnHeightChangeListeners()
+    // if (Platform.OS === 'ios') {
+    //   SMeasureAreaView.setMeasureMode('arCollect')
+    //   // iOSEventEmi.removeListener(
+    //   //   'com.supermap.RN.SMeasureAreaView.CLOSE',
+    //   //   this.onshowLog,
+    //   // )
+    // }else{
+    this.listeners && this.listeners.infoListener.remove()
+    this.listeners && this.listeners.addListener.remove()
+    SARMap.showMeasureView(false)
+    SARMap.showTrackView(false)
+    SARMap.showPointCloud(false)
+    if (Platform.OS === 'android') {
       SARMap.stopTracking()
     }
+    // }
     this.setState({ showArMappingButton: false ,isTrack:false,showCurrentHeightView:false})
     this.showFullMap(false)
   }
@@ -4197,12 +4330,14 @@ export default class MapView extends React.Component {
         isCollect={this.state.isCollect}
         showSave={this.state.showSave}
         isDrawing={this.state.isDrawing}
+        isMeasure={this.state.isMeasure}
         measureType={this.state.measureType}
         canContinuousDraw={this.state.canContinuousDraw}
         showSwitch={show => { this.setState({ showSwitch: show }) }}
         setCurrentHeight={height => { this.setState({ currentHeight:height })}}
         isnew={() => { this.setState({isnew:true})} }
         isTrack={ is => { this.setState({isTrack:is}) } }
+        showCurrentHeightView={ show => { this.setState({showCurrentHeightView:show}) } }
       />
     )
   }
@@ -4255,13 +4390,13 @@ export default class MapView extends React.Component {
   addNewRecord = async () => {
     if(this.state.isCollect){
       if (Platform.OS === 'ios') {
-        await SMeasureAreaView.addNewRecord()
+        await SARMap.draw()
       }else{
         SARMap.addTrackPoint()
       }
       this.setState({ showADDPoint: false, isfirst: false })
     }else{
-      await SMeasureAreaView.addNewRecord()
+      SARMap.draw()
       this.setState({ showADDPoint: false, isfirst: false })
     }
   }
@@ -4354,29 +4489,43 @@ export default class MapView extends React.Component {
 
   //ar测图界面
   _renderMeasureAreaView = () =>{
+    if (GLOBAL.Type !== ChunkType.MAP_AR_MAPPING && GLOBAL.Type !== ChunkType.MAP_AR || this.isExample) return null
     return(
       <>
-        {!this.isExample &&
-          GLOBAL.Type === ChunkType.MAP_AR_MAPPING &&
-          (
-            <SMARMapView
-              style={
-                screen.isIphoneX() && {
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                }
-              }
-              customStyle={this.state.isAR ? null : styles.hidden}
-              ref={ref => (this.SMMeasureAreaView = ref)}
-              onLoad={this._onLoad}
-            />
-          )
-        }
+        <SMARMapView
+          style={
+            screen.isIphoneX() && {
+              paddingBottom: screen.getIphonePaddingBottom(),
+            }
+          }
+          customStyle={this.props.isAR ? null : styles.hidden}
+          ref={ref => (this.SMMeasureAreaView = ref)}
+          onLoad={this._onLoad}
+          onARElementTouch={element => {
+            if(
+              element.type === ARElementType.AR_IMAGE
+              || element.type === ARElementType.AR_VIDEO
+              || element.type === ARElementType.AR_WEBVIEW
+              || element.type === ARElementType.AR_TEXT
+              || element.type === ARElementType.AR_MODEL
+            ) {
+              arEditModule().setModuleData(ConstToolType.SM_AR_EDIT)
+              ToolbarModule.addData({selectARElement: element})
+              SARMap.appointEditElement(element.id, element.layerName)
+              SARMap.setAction(ARAction.MOVE)
+              this.showFullMap(true)
+              this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT, {
+                isFullScreen: false,
+              })
+            }
+          }}
+        />
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderHeader()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderBottomBtns()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showCurrentHeightView && this.renderCurrentHeightChangeView()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.showADDPoint && this.state.isnew && !this.state.isTrack && this.renderADDPoint()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.showADD && this.state.isnew && !this.state.isTrack && this.renderCenterBtn()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.is_showLog && this.state.showLog && this.renderDioLog()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showADD && this.state.isnew && !this.state.isTrack && this.renderCenterBtn()}
+        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.is_showLog && this.state.showLog && this.props.showARSceneNotify && this.renderDioLog()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showGenera && (this.isDrawing || this.isCollect) && this.renderGeneralView()}
       </>
     )
@@ -4427,7 +4576,12 @@ export default class MapView extends React.Component {
         {this.state.showMap && (
           <View style={[
             StyleSheet.absoluteFill,
-            Platform.OS === 'android' && GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.isAR && { left: 9999 },
+            Platform.OS === 'android' &&
+              (
+                GLOBAL.Type === ChunkType.MAP_AR_MAPPING ||
+                GLOBAL.Type === ChunkType.MAP_AR
+              ) &&
+              this.props.isAR && { left: 9999 },
           ]}>
             <SMMapView
               ref={ref => (GLOBAL.mapView = ref)}
@@ -4439,7 +4593,8 @@ export default class MapView extends React.Component {
 
         {this._renderMeasureAreaView()}
 
-        {GLOBAL.Type &&
+        {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? !this.props.isAR : true)&&
+          GLOBAL.Type &&
           this.props.mapLegend[GLOBAL.Type] &&
           this.props.mapLegend[GLOBAL.Type].isShow &&
           !this.noLegend && (
@@ -4457,9 +4612,9 @@ export default class MapView extends React.Component {
         {!this.isExample &&
           GLOBAL.isLicenseValid &&
           GLOBAL.Type &&
-          GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
+          // GLOBAL.Type.indexOf(ChunkType.MAP_AR) === 0 &&
           !this.state.bGoneAIDetect &&
-          GLOBAL.Type !== ChunkType.MAP_AR_MAPPING &&
+          GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS &&
           (
             <SMAIDetectView
               style={
@@ -4478,7 +4633,7 @@ export default class MapView extends React.Component {
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
           orientation={this.props.device.orientation}
         />
-        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect) && this.renderMapController()}
+        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR : this.state.showAIDetect) && this.renderMapController()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}
@@ -4523,7 +4678,7 @@ export default class MapView extends React.Component {
           this._renderArModeIcon()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}
         {/*{!this.isExample && this.renderMapNavMenu()}*/}
-        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.state.isAR :this.state.showAIDetect) && this.state.showScaleView && (
+        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.props.isAR :this.state.showAIDetect) && this.state.showScaleView && (
           <ScaleView
             mapNavigation={this.props.mapNavigation}
             device={this.props.device}
@@ -4618,13 +4773,11 @@ export default class MapView extends React.Component {
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
-        {this._renderExitSaveView()}
       </Container>
     )
   }
 
   render() {
-    const { showDatumPoint } = this.state
     return (
       <View style={{ flex: 1 }}>
         {this.renderContainer()}
@@ -4637,11 +4790,15 @@ export default class MapView extends React.Component {
         {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_THEME) && this.props.themeGuide && this.renderMapThemeGuideView()}
         {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_COLLECTION) && this.props.collectGuide && this.renderMapCollectGuideView()}
         {!this.props.currentGroup.id && (GLOBAL.Type === ChunkType.MAP_EDIT) && this.props.mapEditGuide && this.renderMapEditGuideView()}
-        {showDatumPoint && <DatumPointCalibration routeName="MapView"
+        {this.props.showDatumPoint && <DatumPointCalibration routeName="MapView"
           routeData={{
             measureType: this.measureType,
           }}
-          startScan={this._startScan} onClose={this._onDatumPointClose} />}
+          startScan={this._startScan}
+          onClose={this._onDatumPointClose}
+          onConfirm={this._onDatumPointConfirm}
+        />}
+        {this._renderExitSaveView()}
       </View>
     )
   }

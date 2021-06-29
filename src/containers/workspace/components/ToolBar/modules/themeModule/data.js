@@ -2221,12 +2221,20 @@ function getRangeColorScheme() {
  * 单值专题图颜色方案
  */
 function getUniqueColorScheme() {
+  const list = this.getGridUniqueColorScheme()
+  list.unshift({
+    key: 'USER_DEFINE',
+    colorSchemeName: getLanguage(GLOBAL.language).Map_Main_Menu.USER_DEFINE,
+    colorScheme: require('../../../../../../assets/uniqueColorScheme/USER_DEFINE.png'),
+  })
+  return list
+}
+
+/**
+ * 栅格单值专题图颜色方案
+ */
+function getGridUniqueColorScheme() {
   const list = [
-    {
-      key: 'USER_DEFINE',
-      colorSchemeName: getLanguage(GLOBAL.language).Map_Main_Menu.USER_DEFINE,
-      colorScheme: require('../../../../../../assets/uniqueColorScheme/USER_DEFINE.png'),
-    },
     {
       key: 'BA_Blue',
       colorSchemeName: 'BA_Blue',
@@ -3903,7 +3911,7 @@ const gridUniqueMenuInfo = param => [
     selectKey: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     btnTitle: getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
     action: () => {
-      ThemeAction.getUniqueColorScheme(
+      ThemeAction.getGridUniqueColorScheme(
         ConstToolType.SM_MAP_THEME_PARAM_GRID_UNIQUE_COLOR,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
         getLanguage(param).Map_Main_Menu.THEME_COLOR_SCHEME,
@@ -4089,6 +4097,7 @@ export default {
   getThemeMapParam,
   getRangeColorScheme,
   getUniqueColorScheme,
+  getGridUniqueColorScheme,
   getThemeFiveMenu,
   getThemeGraphType,
   getGraphThemeGradutedMode,

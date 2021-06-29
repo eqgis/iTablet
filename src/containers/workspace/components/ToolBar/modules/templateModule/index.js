@@ -1,7 +1,6 @@
 import TempletData from './TemplateData'
 import TempletAction from './TemplateAction'
-import ToolbarModule from '../ToolbarModule'
-import { ToolbarType, ConstToolType } from '../../../../../../constants'
+import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import NavigationService from '../../../../../NavigationService'

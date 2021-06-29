@@ -1,5 +1,6 @@
 import functiontoolbar from './functiontoolbar'
 import toolbar from './toolbar'
+import armap from './armap'
 
 const icon_ar = require('./icon_ar.png')
 // const icon_ai_assistant = require('./icon_ai_assistant.png')
@@ -32,10 +33,12 @@ const icon_tips_slow_down = require('./icon_tips_slow_down.png')
 const icon_tips_lighting = require('./icon_tips_lighting.png')
 const icon_tips_approach = require('./icon_tips_approach.png')
 const icon_tips_move_away = require('./icon_tips_move_away.png')
+const icon_tool_ardrawing = require('./icon_tool_ardrawing.png')
 
 export default {
   functiontoolbar,
   toolbar,
+  armap,
   icon_ar,
   icon_ai_assistant,
   icon_ar_measure_cancel,
@@ -66,4 +69,5 @@ export default {
   icon_tips_lighting,
   icon_tips_approach,
   icon_tips_move_away,
+  icon_tool_ardrawing,
 }

@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { } from '../../utils'
-import { ConfigUtils } from 'imobile_for_reactnative'
+import { ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 // Constants
 // --------------------------------------------------
 export const USER_SET = 'USER_SET'
@@ -116,6 +116,7 @@ export default handleActions(
         users.unshift(payload)
       }
       ConfigUtils.recordUsers(users)
+      AppInfo.setUserName(payload.userName)
       return state
         .setIn(['currentUser'], fromJS(payload))
         .setIn(['users'], fromJS(users))
@@ -123,6 +124,7 @@ export default handleActions(
     [`${USERS_SET}`]: (state: { setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       if (payload.length > 0) {
         state = state.setIn(['currentUser'], fromJS(payload[0]))
+        AppInfo.setUserName(payload[0].userName)
       }
       return state.setIn(['users'], fromJS(payload))
     },

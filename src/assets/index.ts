@@ -1,4 +1,4 @@
-import { SMap, DatasetType, ThemeType, TThemeType } from 'imobile_for_reactnative'
+import { SMap, DatasetType, ThemeType, TThemeType, TARLayerType, ARLayerType } from 'imobile_for_reactnative'
 import { ThemeType as AppThemeType } from '../constants'
 import LightTheme from './lightTheme'
 import PublicTheme from './publicTheme'
@@ -224,6 +224,43 @@ function getLayerWhiteIconByType(type: SMap.LayerInfo['type'] | string) {
   return icon
 }
 
+/** 根据AR图层类型获取相应图片 */
+function getARLayerAssets(type: TARLayerType): any {
+  switch (type) {
+    case ARLayerType.EFFECT_LAYER:
+      return getThemeAssets().ar.armap.ar_effect
+    case ARLayerType.AR_MEDIA_LAYER:
+      return getThemeAssets().ar.armap.ar_poi
+    case ARLayerType.AR3D_LAYER:
+      return getThemeAssets().ar.armap.ar_3d
+    case ARLayerType.AR_SCENE_LAYER:
+      return getThemeAssets().ar.armap.ar_3d
+    case ARLayerType.AR_MODEL_LAYER:
+      return getThemeAssets().ar.armap.ar_model
+    case ARLayerType.AR_TEXT_LAYER:
+    case ARLayerType.AR_POINT_LAYER:
+    case ARLayerType.AR_LINE_LAYER:
+    case ARLayerType.AR_REGION_LAYER:
+      return getThemeAssets().ar.armap.ar_vector
+    default:
+      return getThemeAssets().layerType.icon_unknown
+  }
+}
+
+/** 根据AR场景类型获取对应图片 */
+function getARSceneAssets(type: number) {
+  switch(type) {
+    case 1:
+      return getThemeAssets().ar.functiontoolbar.ar_pipeline
+    case 2:
+      return getThemeAssets().ar.functiontoolbar.ar_terrain
+    case 3:
+      return getThemeAssets().ar.functiontoolbar.ar_3d_model
+    default:
+      return getThemeAssets().mine.my_scene
+  }
+}
+
 export {
   getThemeAssets,
   getPublicAssets,
@@ -231,4 +268,6 @@ export {
   getThemeWhiteIconByType,
   getLayerIconByType,
   getLayerWhiteIconByType,
+  getARLayerAssets,
+  getARSceneAssets,
 }

@@ -218,6 +218,21 @@ class MyDataset extends MyDataPage {
     this.SimpleDialog.setVisible(true)
   }
 
+  getItemPopupData = () => {
+    if(this.itemInfo && this.itemInfo.item.datasetType === DatasetType.TEXT) {
+      let customedata = this.getCustomItemPopupData()
+      return customedata.concat([
+        {
+          title:
+            getLanguage(GLOBAL.language).Profile[`DELETE_${this.type}`] ||
+            getLanguage(GLOBAL.language).Profile.DELETE_DATA,
+          action: this._onDeleteData,
+        },
+      ])
+    }
+    return []
+  }
+
   getCustomItemPopupData = () => {
     let data = [
       {

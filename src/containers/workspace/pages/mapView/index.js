@@ -40,6 +40,8 @@ import {
   setOpenOnlineMap,
   setNavigationHistory,
   setNavBarDisplay,
+  setDatumPoint,
+  showAR,
 } from '../../../../redux/models/setting'
 import { setMapSearchHistory } from '../../../../redux/models/histories'
 import { setSharing } from '../../../../redux/models/online'
@@ -55,6 +57,8 @@ import {
 import { setAnalystParams } from '../../../../redux/models/analyst'
 import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
+import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
+import { createARMap, openARMap, saveARMap, closeARMap } from '../../../../redux/models/armap'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -64,6 +68,8 @@ const mapStateToProps = state => ({
   selection: state.layers.toJS().selection,
   latestMap: state.map.toJS().latestMap,
   map: state.map.toJS(),
+  armap: state.armap.toJS(),
+  arlayer: state.arlayer.toJS(),
   bufferSetting: state.setting.toJS().buffer,
   overlaySetting: state.setting.toJS().overlay,
   symbol: state.symbol.toJS(),
@@ -90,6 +96,8 @@ const mapStateToProps = state => ({
   mapColumnNavBar: state.setting.toJS().mapColumnNavBar,
   navBarDisplay: state.setting.toJS().navBarDisplay,
   laboratory: state.setting.toJS().laboratory,
+  showDatumPoint: state.setting.toJS().showDatumPoint,
+  isAR: state.setting.toJS().isAR,
   backActions: state.backActions.toJS(),
   isClassifyView: state.ar.toJS().isClassifyView,
   mapArGuide: state.ar.toJS().mapArGuide,
@@ -102,6 +110,7 @@ const mapStateToProps = state => ({
   collectGuide: state.home.toJS().collectGuide,
   mapEditGuide: state.home.toJS().mapEditGuide,
   currentGroup: state.cowork.toJS().currentGroup,
+  showARSceneNotify: state.setting.toJS().showARSceneNotify,
 })
 
 const mapDispatchToProps = {
@@ -149,6 +158,14 @@ const mapDispatchToProps = {
   deleteDownloadFile,
   setToolbarStatus,
   setNavBarDisplay,
+  setCurrentARLayer,
+  getARLayers,
+  createARMap,
+  openARMap,
+  saveARMap,
+  closeARMap,
+  setDatumPoint,
+  showAR,
 }
 
 export default connect(

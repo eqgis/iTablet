@@ -20,7 +20,6 @@ import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 import { getThemeAssets } from '../../../../assets'
 import {
-  SMeasureAreaView,
   SMap,
   DatasetType,
   SARMap,
@@ -28,6 +27,7 @@ import {
 import { color } from '../../../../styles'
 import NavigationService from '../../../../containers/NavigationService'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
+import ARMeasureAction from '../ToolBar/modules/arMeasure/ARMeasureAction'
 
 
 //ar测量底部按钮
@@ -38,6 +38,7 @@ export default class ArMappingButton extends React.Component {
     showSave: any,
     showSwitch: () => {},//控制二级菜单弹起时是否显示添加按钮等
     isDrawing: any,
+    isMeasure: any,
     isCollect: any,
     canContinuousDraw: any,
     user: Object,
@@ -47,6 +48,7 @@ export default class ArMappingButton extends React.Component {
     setCurrentHeight: () => {},
     isnew: () => {},//判断是否新建采集
     isTrack: () => {},//判断是轨迹采集还是打点采集
+    showCurrentHeightView: () => {},
   }
 
 
@@ -72,6 +74,7 @@ export default class ArMappingButton extends React.Component {
     }
 
     this.isDrawing = this.props.isDrawing
+    this.isMeasure = this.props.isMeasure
     this.canContinuousDraw = this.props.canContinuousDraw
     this.measureType = this.props.measureType
     this.isCollect = this.props.isCollect
@@ -194,9 +197,9 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
         action: async () => {
-          let is = await SMeasureAreaView.isMeasuring()
+          let is = await SARMap.isMeasuring()
           if (is) {
-            SMeasureAreaView.cancelCurrent()
+            SARMap.cancelCurrent()
           }
           if (!disablePoint) {
             this.drawPoint()
@@ -213,9 +216,9 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_LINE,
         action: async () => {
-          let is = await SMeasureAreaView.isMeasuring()
+          let is = await SARMap.isMeasuring()
           if (is) {
-            SMeasureAreaView.cancelCurrent()
+            SARMap.cancelCurrent()
           }
           if (!disbaleLine) {
             this.drawLine()
@@ -232,9 +235,9 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_AEREA,
         action: async () => {
-          let is = await SMeasureAreaView.isMeasuring()
+          let is = await SARMap.isMeasuring()
           if (is) {
-            SMeasureAreaView.cancelCurrent()
+            SARMap.cancelCurrent()
           }
           if (!disableArea) {
             this.setState({ data: this.areadata })
@@ -292,6 +295,199 @@ export default class ArMappingButton extends React.Component {
       },
     ]
 
+    this.measureAreadata = [
+      {
+        //AR面积 多边形
+        key: 'polygon',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON,
+        action: () => {
+          this.canContinuousDraw = true
+          this.continuousDraw()
+          ARMeasureAction.arMeasurePolygon()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_polygon,
+      },
+      {
+        //AR面积 矩形
+        key: 'rectangle',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureRectanglet()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_rectangle,
+      },
+      {
+        //AR面积 圆
+        key: 'circular',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureCircular()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_circular,
+      },
+    ]
+
+    this.measureAreadata1 = [
+      {
+        //AR体积 长方体
+        key: 'cuboid',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureCuboid()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_cuboid,
+      },
+      {
+        //AR体积 圆柱体
+        key: 'cylinder',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureCylinder()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_cylinder,
+      },
+      {
+        //占位
+        key: 'replease',
+        title: '',
+        action: ()=>{},
+        size: 'large',
+      },
+      {
+        //占位
+        key: 'replease',
+        title: '',
+        action: ()=>{},
+        size: 'large',
+      },
+    ]
+
+    this.measuredata = [
+      {
+        //AR测距
+        key: 'arMeasureArea',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
+        action: () => {
+          this.canContinuousDraw = true
+          this.continuousDraw()
+          ARMeasureAction.arMeasureLength()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.ar_analyst_length,
+      },
+      {
+        //AR测高
+        key: 'arMeasureHeitht',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
+        action: () => {
+          this.canContinuousDraw = false
+          this.continuousDraw()
+          ARMeasureAction.arMeasureHeight()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_altimetry_select,
+      },
+      {
+        //AR面积
+        key: 'arMeasureArea',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
+        action: () => {
+          this.setState({
+            data:this.measureAreadata,
+          })
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.ar_analyst_area,
+      },
+      {
+        //AR测量角度
+        key: 'arMeasureAngle',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
+        action: () => {
+          this.canContinuousDraw = true
+          this.continuousDraw()
+          ARMeasureAction.arMeasureAngle()
+          this.setState({
+            showSwitch: false, toolbar: { height: scaleSize(96) },
+          })
+          this.props.showSwitch(false)
+          this.props.showCurrentHeightView(false)
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.ar_analyst_angle,
+      },
+      {
+        //体积测量
+        key: 'arMeasureAngle',
+        title: getLanguage(GLOBAL.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_MEASURE_VOLUME,
+        action: () => {
+          this.setState({
+            data:this.measureAreadata1,
+          })
+        },
+        size: 'large',
+        image: getThemeAssets().ar.functiontoolbar.icon_ar_volume_select,
+      },
+    ]
+
+
 
     this.state = {
       currentLength: 0,
@@ -323,18 +519,26 @@ export default class ArMappingButton extends React.Component {
   }
 
   componentDidMount() {
-
+    SARMap.addMeasureSaveListeners({
+      onSave: () => {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+      }
+    })
   }
 
   componentWillUnmount() {
+    SARMap.removeMeasureSaveListeners()
+  }
 
+  saveLog = () => {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
   }
 
   switchStatus = () => {
     if (Platform.OS === 'android') {
       SARMap.startTracking()
     }else{
-      SMeasureAreaView.addNewRecord()
+      SARMap.draw()
     }
     this.props.isnew()
     Toast.show(
@@ -354,6 +558,7 @@ export default class ArMappingButton extends React.Component {
   saveline = async () => {
     try {
       if (Platform.OS === 'ios') {
+        this.saveType = 'saveline'
         this.save()
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
@@ -370,13 +575,14 @@ export default class ArMappingButton extends React.Component {
   savepoint = async () => {
     try {
       if (Platform.OS === 'ios') {
+        this.saveType = 'savepoint'
         this.save()
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingPoint()
         Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
-      } 
+      }
     } catch (e) {
       GLOBAL.Loading.setLoading(false)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
@@ -385,10 +591,15 @@ export default class ArMappingButton extends React.Component {
 
   saveRegion = async () => {
     try {
-      await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
-        this.props.currentLayer.datasetName)
-      let result = await SARMap.saveTrackingRegion()
-      Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      if (Platform.OS === 'ios') {
+        this.saveType = 'saveRegion'
+        this.save()
+      } else {
+        await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
+          this.props.currentLayer.datasetName)
+        let result = await SARMap.saveTrackingRegion()
+        Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      }
     } catch (e) {
       GLOBAL.Loading.setLoading(false)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
@@ -401,7 +612,7 @@ export default class ArMappingButton extends React.Component {
       if (Platform.OS === 'android') {
         SARMap.changeTrackingMode(0)
       } else {
-        SMeasureAreaView.setMeasureMode('arCollect_auto')
+        SARMap.setMeasureMode('arCollect_auto')
       }
       this.props.isTrack(true)
       this.setState({ data: this.collectdata })
@@ -416,7 +627,7 @@ export default class ArMappingButton extends React.Component {
       if (Platform.OS === 'android') {
         SARMap.changeTrackingMode(1)
       }else{
-        SMeasureAreaView.setMeasureMode('arCollect')
+        SARMap.setMeasureMode('arCollect')
       }
       this.props.isTrack(false)
       this.setState({data:this.collectdata})
@@ -440,16 +651,19 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPoint = async () => {
-    SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_POINT')
+    SARMap.setMeasureMode('DRAW_POINT')
     this.setState({
-      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+      isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
     })
@@ -502,14 +716,17 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawLine = async () => {
-    SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_LINE')
+    SARMap.setMeasureMode('DRAW_LINE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
@@ -564,14 +781,17 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPolygon = async () => {
-    SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_AREA')
+    SARMap.setMeasureMode('DRAW_AREA')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
@@ -627,16 +847,19 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawRectangle = async () => {
-    SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_AREA_RECTANGLE')
+    SARMap.setMeasureMode('DRAW_RECTANGLE')
     this.setState({
-      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+      isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
     })
@@ -689,16 +912,19 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawCircular = async () => {
-    SARMap.clearAllTracking()
+    if(this.measureType==='arCollect'){
+      SARMap.clearAllTracking()
+    }
+    SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
       SARMap.showTrackView(false)
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SMeasureAreaView.setMeasureMode('DRAW_AREA_CIRCLE')
+    SARMap.setMeasureMode('DRAW_CIRCLE')
     this.setState({
-      isCollect:false, showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
+      isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         GLOBAL.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
     })
@@ -816,10 +1042,14 @@ export default class ArMappingButton extends React.Component {
       } else {
         this.setState({ data: this.data })
       }
-    }else{
+    } else {
       if (!this.state.showSwitch) {
-        this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) }})
         this.props.showSwitch(true)
+        if (this.isMeasure) {
+          this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) }, data: this.measuredata })
+        } else {
+          this.setState({ showSwitch: true, toolbar: { height: scaleSize(250) } })
+        }
       } else {
         this.setState({ showSwitch: false, toolbar: { height: scaleSize(96) }, data: this.data })
         this.props.showSwitch(false)
@@ -829,9 +1059,9 @@ export default class ArMappingButton extends React.Component {
 
   /** 撤销 **/
   undo = async () => {
-    await SMeasureAreaView.undoDraw()
+    await SARMap.undoDraw()
     if (this.measureType === 'arMeasureHeight') {
-      let height = await SMeasureAreaView.getCurrentHeight()
+      let height = await SARMap.getCurrentHeight()
       // this.setState({
       //   currentHeight: height + 'm',
       // })
@@ -841,13 +1071,13 @@ export default class ArMappingButton extends React.Component {
 
   /** 连续测量 **/
   continuousDraw = async () => {
-    await SMeasureAreaView.continuousDraw()
+    await SARMap.endCurrentDraw()
   }
 
   /** 清除 **/
   clearAll = async () => {
-    await SMeasureAreaView.clearAll()
-    if (this.measureType === 'arMeasureHeight') {
+    await SARMap.clearMeasure()
+    if (this.measureType === 'arMeasureHeight'||this.measureType === 'measureLength') {
       this.props.setCurrentHeight('0m')
       // this.setState({
       //   currentHeight: '0m',
@@ -869,13 +1099,19 @@ export default class ArMappingButton extends React.Component {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
       datasetName = 'Default_Tagging'
     }
-    let result = await SMeasureAreaView.saveDataset(
-      datasourceAlias,
-      datasetName
-    )
-    if (result) {
+    SARMap.setMeasurePath(datasourceAlias, datasetName)
+    let result = await SARMap.saveMeasureData(datasourceAlias, datasetName)
+    if (!result) {
       //await SMeasureAreaView.clearAll()
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+      if(this.saveType === 'savepoint'){
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAIL_POINT)
+      }else if(this.saveType === 'saveline'){
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_LINE_FAIL)
+      }else if(this.saveType === 'saveRegion'){
+        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
+      }
+    }else{
+      // this.saveLog()
     }
   }
 
@@ -975,7 +1211,7 @@ export default class ArMappingButton extends React.Component {
             <Image
               resizeMode={'contain'}
               // source={getThemeAssets().ar.toolbar.icon_ar_toolbar_delete}
-              source={getThemeAssets().toolbar.icon_toolbar_delete}
+              source={getThemeAssets().toolbar.icon_toolbar_cancel}
               style={styles.smallIcon}
             />
           </TouchableOpacity>
@@ -1014,7 +1250,7 @@ export default class ArMappingButton extends React.Component {
               />
             </TouchableOpacity>
           )}
-          {this.isDrawing && (
+          {(this.isMeasure||this.isDrawing) && (
             <TouchableOpacity
               onPress={() => this.switch()}
               style={styles.iconView}

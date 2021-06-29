@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import LocalAnalystView from './LocalAnalystView'
-import { getLayers } from '../../../../redux/models/layers'
+import { getLayers, setCurrentLayer } from '../../../../redux/models/layers'
 import { setAnalystParams } from '../../../../redux/models/analyst'
 import { getUdbAndDs } from '../../../../redux/models/localData'
 import { closeMap } from '../../../../redux/models/map'
@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getLayers,
+  setCurrentLayer,
   setAnalystParams,
   getUdbAndDs,
   closeMap,

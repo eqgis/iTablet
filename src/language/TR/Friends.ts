@@ -234,6 +234,7 @@ const Friends: typeof CN.Friends = {
   RESOURCE_DELETE_INFO: 'Seçili verileri silmek istediğinizden emin misiniz?',
   RESOURCE_SELECT_MODULE: 'Lütfen bir şablon seçin',
   RESOURCE_DOWNLOAD_INFO: 'Lütfen görevi indirin',
+  RESOURCE_NOT_EXIST: 'Resource doesn\'t exist', // need to translate
 
   TASK_DOWNLOAD: 'Görevi indir',
   TASK_DOWNLOADING: 'İndiliyor...',

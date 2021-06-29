@@ -55,10 +55,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'الخروج من سوبر ماب تابلت',
   MAP_LOADING: 'تحميل',
   LOADING: 'تحميل',
+  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
   THE_MAP_IS_OPENED: 'تم فتح الخريطة',
   THE_MAP_IS_NOTEXIST: 'الخريطة غير موجودة',
+  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
   THE_SCENE_IS_OPENED: 'تم فتح المشهد',
   NO_SCENE_LIST: 'لاتوجد بيانات',
+  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
   SWITCHING: 'تبديل',
   CLOSING: 'إغلاق',
   CLOSING_3D: 'إغلاق',
@@ -102,6 +105,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'شغل',
   CREATE_FAILED: 'فشل إنشاء',
   INVALID_DATASET_NAME: 'اسم مجموعة بيانات غير صالح أو الاسم موجود بالفعل',
+  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
+  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
+  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
 
   PLEASE_CHOOSE_POINT_LAYER: 'الرجاء اختيار طبقة',
   PLEASE_CHOOSE_LINE_LAYER: 'اختر خط طبقة',
@@ -202,12 +208,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'فشل فى المشاركة',
   SHARE_PREPARE: 'جارى التجهيز للمشاركة',
   SHARE_START: 'بدء المشاركة',
+  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
 
   EXPORTING: 'جارى التصدير',
   EXPORT_SUCCESS: 'تم التصدير بنجاح',
   EXPORT_FAILED: 'فشل التصدير',
   EXPORT_TO: 'تم تصدير البيانات إلى',
   REQUIRE_PRJ_1984: 'يجب أن يكون نظام إحداثيات مجموعة البيانات هو WGS_1984',
+  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
 
   UNDO_FAILED: 'فشل التراجع',
   REDO_FAILED: 'فشل الإعادة',
@@ -407,6 +415,7 @@ const Prompt: typeof CN.Prompt = {
 
   IDENTIFY_TIMEOUT: 'انتهاء مهلة تتبع الصورة ، حاول مرة أخرى؟',
   TRACKING_LOADING: 'تتبع...',
+  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
 
   // 专题制图加载/输出xml
   SUCCESS: 'عملية ناجحة',
@@ -414,6 +423,8 @@ const Prompt: typeof CN.Prompt = {
   NO_TEMPLATE: 'لا توجد قوالب متاحة',
   CONFIRM_LOAD_TEMPLATE: 'هل أنت متأكد من تحميل النموذج؟',
   CONFIRM_OUTPUT_TEMPLATE: 'هل أنت متأكد من إخراج الخريطة؟',
+
+  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
 }
 
 export { Prompt }

@@ -7,6 +7,8 @@ const Scene = 'Scene' // 我的
 const Layer3DManager = 'Layer3DManager' // 三维图层管理
 const LayerLayerAttribute3D = 'LayerLayerAttribute3D' // 三维属性
 const Map3DSetting = 'Map3DSetting' // 三维我的
+const ARLayerManager = 'ARLayerManager' // AR图层
+const ARMapSetting = 'ARMapSetting' // AR设置
 
 export default {
   MapView,
@@ -17,4 +19,6 @@ export default {
   Layer3DManager,
   LayerLayerAttribute3D,
   Map3DSetting,
+  ARLayerManager,
+  ARMapSetting,
 }

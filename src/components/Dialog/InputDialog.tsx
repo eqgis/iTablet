@@ -10,28 +10,55 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ReturnKeyTypeOptions,
+  KeyboardTypeOptions,
 } from 'react-native'
 import Dialog from './Dialog'
 import { color } from '../../styles'
 import styles from './styles'
 import { scaleSize, dataUtil } from '../../utils'
+import { getLanguage } from '../../language'
 
-export default class InputDialog extends PureComponent {
-  props: {
-    confirmAction?: (data?: any) => void,
-    cancelAction?: (data?: any) => void,
-    placeholder?: string,
-    title?: string,
-    label?: string,
-    value?: string,
-    defaultValue?: string,
-    keyboardAppearance?: string,
-    returnKeyType?: string,
-    confirmBtnTitle?: string,
-    cancelBtnTitle?: string,
-    legalCheck?: boolean,
-    multiline?: boolean,
-  }
+type ValueType = 'default' | 'http' | 'number' | 'name'
+
+interface Props {
+  confirmAction?: (data?: any) => void,
+  cancelAction?: (data?: any) => void,
+  placeholder: string,
+  title?: string,
+  label: string,
+  value: string,
+  defaultValue?: string,
+  keyboardAppearance?: 'default' | 'light' | 'dark',
+  returnKeyType?: ReturnKeyTypeOptions,
+  confirmBtnTitle?: string,
+  cancelBtnTitle?: string,
+  legalCheck: boolean,
+  multiline?: boolean,
+}
+
+interface State {
+  title?: string,
+  value: string,
+  placeholder: string,
+  isLegalName: boolean,
+  legalCheck: boolean,
+  errorInfo?: string | null,
+  type?: ValueType,
+}
+
+export interface TempData {
+  title?: string,
+  label?: string,
+  value?: string,
+  placeholder?: string,
+  legalCheck?: boolean,
+  type?: ValueType,
+  confirmAction?: (data?: any) => void,
+  cancelAction?: (data?: any) => void,
+}
+
+export default class InputDialog extends PureComponent<Props, State> {
 
   static defaultProps = {
     label: '',
@@ -45,19 +72,24 @@ export default class InputDialog extends PureComponent {
     multiline: false,
   }
 
-  constructor(props) {
+  params: TempData = {} // 临时数据
+  dialog: Dialog | undefined | null
+
+  constructor(props: Props) {
     super(props)
-    let { result, error } = dataUtil.isLegalName(props.value, GLOBAL.language)
+    let { result, error } = this.checkValue(props.value, 'default')
     this.state = {
       value: props.value,
       placeholder: props.placeholder,
       isLegalName: result,
       errorInfo: error,
+      title: props.title,
+      legalCheck: props.legalCheck,
+      type: 'default',
     }
-    this.params = {} // 临时数据
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (
       JSON.stringify(prevProps.value) !== JSON.stringify(this.props.value) ||
       prevProps.placeholder !== this.props.placeholder
@@ -69,22 +101,30 @@ export default class InputDialog extends PureComponent {
     }
   }
 
-  setDialogVisible(visible, params = {}) {
-    this.dialog && this.dialog.setDialogVisible(visible, params)
+  setDialogVisible(visible: boolean, params: TempData = {}) {
+    this.dialog && this.dialog.setDialogVisible(visible)
     if (!visible) {
       this.params = {}
-      if (this.state.value !== '' || this.state.placeholder !== '') {
+      if (this.state.value !== '' || this.state.placeholder !== '' || this.state.title !== undefined) {
         this.setState({
           value: '',
           placeholder: '',
+          title: undefined,
         })
       }
     } else {
       this.params = params
-      if (params.value !== undefined || params.placeholder !== undefined) {
+      if (params.value !== undefined || params.placeholder !== undefined || params.title !== this.state.title|| params.type !== this.state.type) {
+        let _value = params.value || ''
+        let _type = params.type || 'default'
+        let { result, error } = this.checkValue(_value, _type)
         this.setState({
-          value: params.value || '',
+          value: _value,
           placeholder: params.placeholder || '',
+          title: params.title,
+          isLegalName: result,
+          errorInfo: error,
+          type: _type,
         })
       }
     }
@@ -109,6 +149,51 @@ export default class InputDialog extends PureComponent {
     this.setDialogVisible(false)
   }
 
+  getKeyboardType = (): KeyboardTypeOptions => {
+    let keyboardType: KeyboardTypeOptions
+    switch (this.state.type) {
+      case 'number':
+        keyboardType = 'numeric'
+        break
+      case 'name':
+      case 'http':
+      default:
+        keyboardType = 'default'
+        break
+    }
+    return keyboardType
+  }
+
+  checkValue = (text: string, type = this.state.type) => {
+    let res
+    switch (type) {
+      case 'number': {
+        let isNumber = text !== '' && !isNaN(text) && text !== undefined
+        res = {
+          result: isNumber,
+          error: isNumber
+            ? null
+            : getLanguage(GLOBAL.language).Prompt.ERROR_INFO_NOT_A_NUMBER,
+        }
+        break
+      }
+      case 'name':
+        res = dataUtil.isLegalName(text, GLOBAL.language)
+        break
+      case 'http':
+        if (text === '') {
+          res = { result: true }
+        } else {
+          res = dataUtil.isLegalURL(text, GLOBAL.language)
+        }
+        break
+      default:
+        res = { result: text !== '', error: text === '' ? getLanguage(GLOBAL.language).Prompt.ERROR_INFO_EMPTY : '' }
+        break
+    }
+    return res
+  }
+
   renderInput = () => {
     return (
       <View style={styles.inputDialogContainer}>
@@ -128,7 +213,7 @@ export default class InputDialog extends PureComponent {
           value={this.state.value + ''}
           onChangeText={text => {
             if (this.props.legalCheck) {
-              let { result, error } = dataUtil.isLegalName(text, GLOBAL.language)
+              let { result, error } = this.checkValue(text)
               this.setState({
                 isLegalName: result,
                 errorInfo: error,
@@ -141,6 +226,7 @@ export default class InputDialog extends PureComponent {
             }
           }}
           keyboardAppearance={this.props.keyboardAppearance}
+          keyboardType={this.getKeyboardType()}
           returnKeyType={this.props.multiline ? 'next' : this.props.returnKeyType}
         />
       </View>
@@ -151,7 +237,7 @@ export default class InputDialog extends PureComponent {
     return (
       <Dialog
         ref={ref => (this.dialog = ref)}
-        title={this.props.title}
+        title={this.state.title}
         // style={{ height: scaleSize(250) }}
         // opacityStyle={{ height: scaleSize(250) }}
         confirmAction={this.confirm}
@@ -161,12 +247,13 @@ export default class InputDialog extends PureComponent {
         confirmBtnDisable={this.props.legalCheck && !this.state.isLegalName}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' && 'padding'}
+          style={{ marginTop: scaleSize(20) }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
           enabled
         >
           {this.renderInput()}
           <View style={styles.errorView}>
-            { this.props.legalCheck && !this.state.isLegalName && this.state.errorInfo && (
+            { this.state.legalCheck && !this.state.isLegalName && this.state.errorInfo && (
               <Text numberOfLines={2} style={styles.errorInfo}>
                 {this.state.errorInfo}
               </Text>

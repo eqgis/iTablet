@@ -278,7 +278,7 @@ export const setCurrentMap = (params, extData, cb = () => { }) => async dispatch
   cb && cb()
 }
 
-// 导出模版
+// 导出模板
 export const exportWorkspace = (params, cb = () => { }) => async (
   dispatch,
   getState,
@@ -452,11 +452,12 @@ const initialState = fromJS({
   workspace: {},
   baseMaps: {
     default: [
+      ConstOnline.GAODE,
       ConstOnline.BingMap,
       ConstOnline.Baidu,
       ConstOnline.Google,
       ConstOnline.OSM,
-      ConstOnline.tianditu,
+      ConstOnline.tianditu(),
     ],
   },
 })

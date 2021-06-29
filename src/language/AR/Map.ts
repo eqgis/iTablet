@@ -431,6 +431,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SAVE_AEREA:'مضلع',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'خط',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'نقطة',
+  MAP_AR_AI_ASSISTANT_SAVE_TEXT: 'نص',
   MAP_AR_AI_SAVE_SUCCESS: 'حفظ بنجاح',
   MAP_AR_AI_SAVE_POINT: 'حفظ النقطة',
   MAP_AR_AI_SAVE_LINE: 'حفظ الخط',

@@ -216,7 +216,6 @@ export default class Map3D extends React.Component {
     let cutLayers = layerlist.map(layer => {
       layer.selected = true
     })
-    console.warn(layerlist.length)
     this.setState({
       layerlist,
       cutLayers,
@@ -295,13 +294,13 @@ export default class Map3D extends React.Component {
           this.container.setLoading(false)
           // Toast.show('无场景显示')
         }, 1500)
-        this.props.refreshLayer3dList && this.props.refreshLayer3dList()
         this.mapLoaded = true
         // 只有是球面场景时才添加底图 add jiakai
         if (await SScene.isEarthScene()) {
-          SScene.changeBaseLayer(1)
+          await SScene.changeBaseLayer(1)
         }
         this.getLayers()
+        this.props.refreshLayer3dList && this.props.refreshLayer3dList()
       }).catch(() =>{
         //reject异常处理 zhangxt
         setTimeout(() => {
@@ -462,16 +461,16 @@ export default class Map3D extends React.Component {
           getLanguage(this.props.language).Prompt.CLOSING_3D,
           //'正在关闭'
         )
-      if (GLOBAL.openWorkspace) {
+      // if (GLOBAL.openWorkspace) {
         // this.SaveDialog && this.SaveDialog.setDialogVisible(true)
         // await SScene.saveWorkspace()
-        await SScene.closeWorkspace()
-        this.container && this.container.setLoading(false)
-        NavigationService.goBack()
-      } else {
-        this.container && this.container.setLoading(false)
-        NavigationService.goBack()
-      }
+      await SScene.closeWorkspace()
+      this.container && this.container.setLoading(false)
+      NavigationService.goBack()
+      // } else {
+      //   this.container && this.container.setLoading(false)
+      //   NavigationService.goBack()
+      // }
     } catch (e) {
       this.container && this.container.setLoading(false)
       NavigationService.goBack()

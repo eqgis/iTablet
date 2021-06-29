@@ -338,6 +338,37 @@ async function getUniqueColorScheme(type, key = '', name = '') {
   })
 }
 
+// 栅格单值专题图颜色方案列表
+async function getGridUniqueColorScheme(type, key = '', name = '') {
+  const getData = async function() {
+    let data = [
+      {
+        title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
+          .THEME_COLOR_SCHEME,
+        // '颜色方案',
+        data: await ThemeMenuData.getGridUniqueColorScheme(),
+      },
+    ]
+    await _appendMyColor(data)
+    return data
+  }
+
+  dealData({
+    // heights: [ConstToolType.THEME_HEIGHT[3], ConstToolType.THEME_HEIGHT[5]],
+    getData,
+    state: {
+      isFullScreen: false,
+      isTouchProgress: false,
+      showMenuDialog: false,
+      containerType: ToolbarType.list,
+      type,
+      buttons: ThemeMenuData.getThemeFourMenu(),
+      selectName: name || key,
+      selectKey: key,
+    },
+  })
+}
+
 async function getRangeColorScheme(type, key = '', name = '') {
   const getData = async function() {
     let data = [
@@ -711,14 +742,11 @@ async function listSelectableAction({ selectList }) {
   const _params = ToolbarModule.getParams()
   let list = []
 
-  for (const key in selectList) {
-    // let arr = selectList[key]
-    // for (let i = 0, l = arr.length; i < l; i++) {
-    //   for (let expression in arr[i]) {
-    //     if (arr[i][expression] === false) list.push(expression)
-    //   }
-    // }
-    list = list.concat(selectList[key])
+  const keys = Object.keys(selectList)
+  for (const key of keys) {
+    if (selectList[key]) {
+      list = list.concat(selectList[key])
+    }
   }
 
   ToolbarModule.addData({ selectList })
@@ -1893,6 +1921,7 @@ const actions = {
   getGraphThemeColorScheme,
   changeGraphType,
   getUniqueColorScheme,
+  getGridUniqueColorScheme,
   getRangeColorScheme,
   getAggregationColorScheme,
   getColorGradientType,

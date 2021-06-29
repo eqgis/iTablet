@@ -14,6 +14,7 @@ export default class FunctionModule {
     // 模块相关数据
     this.getData = this.props.getData
     this.getMenuData = this.props.getMenuData
+    this.getHeaderData = this.props.getHeaderData
     // 整合默认事件和自定义事件
     this.actions = Object(this.props.actions || {}, Actions)
   }
@@ -29,7 +30,7 @@ export default class FunctionModule {
     // let height = 0,
     //   column = -1,
     //   row = -1
-    // return { height, column, row }
+    // return { height, column, row, autoShowBox }
   }
 
   getTitle = () => this.title

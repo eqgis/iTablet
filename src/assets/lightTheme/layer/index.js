@@ -16,6 +16,7 @@ const icon_layer_set_current = require('./icon_layer_set_current.png')
 const icon_remove_layer = require('./icon_remove_layer.png')
 const icon_visible = require('./icon_visible.png')
 const icon_invisible = require('./icon_invisible.png')
+const icon_add_layer = require('./icon_add_layer.png')
 
 export default {
   icon_layer_uneditable,
@@ -34,6 +35,7 @@ export default {
   icon_layer_visible_scale,
   icon_layer_set_current,
   icon_remove_layer,
+  icon_add_layer,
 
   icon_visible,
   icon_invisible,

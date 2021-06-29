@@ -21,6 +21,8 @@ import license from './license'
 import cowork from './cowork'
 import mapModules from './mapModules'
 import ar from './ar'
+import armap from './armap'
+import arlayer from './arlayer'
 import home from './home'
 
 export {
@@ -47,5 +49,7 @@ export {
   cowork,
   mapModules,
   ar,
+  armap,
+  arlayer,
   home,
 }

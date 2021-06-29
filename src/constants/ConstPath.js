@@ -32,9 +32,14 @@ const RelativePath = {
   Attribute: `${Data}Attribute/`,
   Workspace: `${Data}Workspace/`,
   Map: `${Data}Map/`,
+  ARMap: `${Data}ARMap/`,
+  ARDatasource: `${Data}ARDatasource/`,
   Color: `${Data}Color/`,
   Temp: `${Data}Temp/`, // 临时文件
   AIModel: `${Data}AIModel/`,
+  ARModel: `${Data}ARModel/`,
+  AREffect: `${Data}AREffect/`,
+  // ARScene: `${Data}ARScene/`,
 }
 
 const RelativeFilePath = {

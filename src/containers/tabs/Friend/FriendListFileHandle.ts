@@ -9,8 +9,10 @@ import { SOnlineService } from 'imobile_for_reactnative'
 import { FileTools } from '../../../native'
 import ConstPath from '../../../constants/ConstPath'
 import { OnlineServicesUtils } from '../../../utils'
+import { UserInfo } from '../../../redux/models/user'
+import { UserType } from '../../../constants'
 
-function isJSON(str) {
+function isJSON(str: string) {
   if (typeof str === 'string') {
     try {
       var obj = JSON.parse(str)
@@ -24,11 +26,42 @@ function isJSON(str) {
     }
   }
 }
+
+interface FriendListInfo {
+  /** 文件版本 */
+  rev: number,
+  /** 文件所有人的 userName */
+  user: string,
+  /** 好友列表 */
+  userInfo: Friend[],
+  /** 群组列表 */
+  groupInfo: Group[],
+}
+
+interface Friend {
+  markName: string,
+  name: string,
+  id: string,
+  info: {
+    isFriend: 0 | 1 | 2
+  }
+}
+
+interface Group {
+  id: string,
+  groupName: string,
+  masterID: string,
+  members: Array<{
+    id: string,
+    name: string,
+  }>,
+}
+
 export default class FriendListFileHandle {
-  static user = undefined
-  static friends = undefined
-  static refreshCallback = undefined
-  static refreshMessageCallback = undefined
+  static user: UserInfo
+  static friends: FriendListInfo | undefined = undefined
+  static refreshCallback:( () => void ) | undefined = undefined
+  static refreshMessageCallback:( () => void ) | undefined = undefined
   static friendListFile = ''
   static friendListFile_ol = ''
   static uploading = false
@@ -38,16 +71,15 @@ export default class FriendListFileHandle {
    * 初始化friendlist路径
    * @param {*} user currentUser
    */
-  static async init(user) {
-    FriendListFileHandle.user = undefined
+  static async init(user: UserInfo) {
+    FriendListFileHandle.user = user
     FriendListFileHandle.friends = undefined
     FriendListFileHandle.friendListFile = ''
     FriendListFileHandle.friendListFile_ol = ''
 
-    if (user.userId === undefined) {
+    if (!UserType.isOnlineUser(user)) {
       return
     }
-    FriendListFileHandle.user = user
 
     let userPath = await FileTools.appendingHomeDirectory(
       ConstPath.UserPath + user.userName + '/Data/Temp',
@@ -64,7 +96,7 @@ export default class FriendListFileHandle {
    * 初始化后读取本地列表
    * @param {*} user currentUser
    */
-  static async initLocalFriendList(user) {
+  static async initLocalFriendList(user: UserInfo) {
     await FriendListFileHandle.init(user)
     //读取本地文件并刷新
     FriendListFileHandle.getLocalFriendList()
@@ -74,7 +106,7 @@ export default class FriendListFileHandle {
    * 初始化后读取本地列表，再读取online列表
    * @param {*} user currentUser
    */
-  static async initFriendList(user) {
+  static async initFriendList(user: UserInfo) {
     await FriendListFileHandle.init(user)
     //读取本地文件并刷新
     await FriendListFileHandle.getLocalFriendList()
@@ -100,8 +132,8 @@ export default class FriendListFileHandle {
     }
 
     FriendListFileHandle.checkFriendList()
-    FriendListFileHandle.refreshCallback()
-    FriendListFileHandle.refreshMessageCallback()
+    FriendListFileHandle.refreshCallback?.()
+    FriendListFileHandle.refreshMessageCallback?.()
     return FriendListFileHandle.friends
   }
 
@@ -127,24 +159,29 @@ export default class FriendListFileHandle {
                   let value = await RNFS.readFile(
                     FriendListFileHandle.friendListFile_ol,
                   )
-                  let onlineVersion = JSON.parse(value)
-                  if (
-                    !FriendListFileHandle.friends ||
-                    onlineVersion.rev > FriendListFileHandle.friends.rev
-                  ) {
-                    //没有本地friendlist或online的版本较新，更新本地文件
-                    FriendListFileHandle.friends = onlineVersion
-                    await RNFS.writeFile(
-                      FriendListFileHandle.friendListFile,
-                      value,
-                    )
-                    FriendListFileHandle.checkFriendList()
-                    FriendListFileHandle.refreshCallback()
-                    FriendListFileHandle.refreshMessageCallback()
-                  } else if (
-                    onlineVersion.rev < FriendListFileHandle.friends.rev
-                  ) {
-                    //本地版本较新，将本地文件更新到online
+                  let onlineVersion: FriendListInfo = JSON.parse(value)
+                  //确保是当前用户的好友列表
+                  if(onlineVersion.user && onlineVersion.user === FriendListFileHandle.user?.userName) {
+                    if (
+                      !FriendListFileHandle.friends ||
+                      onlineVersion.rev > FriendListFileHandle.friends.rev
+                    ) {
+                      //没有本地friendlist或online的版本较新，更新本地文件
+                      FriendListFileHandle.friends = onlineVersion
+                      await RNFS.writeFile(
+                        FriendListFileHandle.friendListFile,
+                        value,
+                      )
+                      FriendListFileHandle.checkFriendList()
+                      FriendListFileHandle.refreshCallback?.()
+                      FriendListFileHandle.refreshMessageCallback?.()
+                    } else if (
+                      onlineVersion.rev < FriendListFileHandle.friends.rev
+                    ) {
+                      //本地版本较新，将本地文件更新到online
+                      await FriendListFileHandle.upload()
+                    }
+                  } else if(FriendListFileHandle.friends){
                     await FriendListFileHandle.upload()
                   }
                   await RNFS.unlink(FriendListFileHandle.friendListFile_ol)
@@ -177,18 +214,22 @@ export default class FriendListFileHandle {
   }
 
   static checkFriendList() {
+    if(!UserType.isOnlineUser(FriendListFileHandle.user)) {
+      FriendListFileHandle.friends = undefined
+      return
+    }
     let fl = FriendListFileHandle.friends
     if (!fl) {
       return
     }
 
     if (fl.user !== undefined) {
-      if (fl.user !== FriendListFileHandle.user.userId) {
+      if (fl.user !== FriendListFileHandle.user?.userName) {
         FriendListFileHandle.friends = undefined
         return
       }
     } else {
-      fl.user = FriendListFileHandle.user.userId
+      fl.user = FriendListFileHandle.user.userName
     }
 
     if (fl.rev === undefined || typeof fl.rev !== 'number') {
@@ -324,30 +365,31 @@ export default class FriendListFileHandle {
     return promise
   }
 
-  static async saveHelper(friendsStr, callback) {
+  static async saveHelper(friendsStr: string) {
     if (await FileTools.fileIsExist(FriendListFileHandle.friendListFile)) {
       await RNFS.unlink(FriendListFileHandle.friendListFile)
     }
     await RNFS.writeFile(FriendListFileHandle.friendListFile, friendsStr)
     if (FriendListFileHandle.refreshCallback) {
-      FriendListFileHandle.refreshCallback(true)
+      FriendListFileHandle.refreshCallback()
     }
     await FriendListFileHandle.upload()
-    if (callback) {
-      callback(true)
-    }
+    // if (callback) {
+    //   callback(true)
+    // }
   }
 
-  static async addToFriendList(obj) {
+  static async addToFriendList(obj: Friend) {
     let bFound = FriendListFileHandle.findFromFriendList(obj.id)
 
     if (!bFound) {
       if (!FriendListFileHandle.friends) {
-        FriendListFileHandle.friends = {}
-        FriendListFileHandle.friends['rev'] = 1
-        FriendListFileHandle.friends['user'] = FriendListFileHandle.user.userId
-        FriendListFileHandle.friends['userInfo'] = []
-        FriendListFileHandle.friends['groupInfo'] = []
+        FriendListFileHandle.friends = {
+          rev: 1,
+          user: FriendListFileHandle.user.userName,
+          userInfo: [],
+          groupInfo: [],
+        }
       } else {
         FriendListFileHandle.friends['rev'] += 1
       }
@@ -358,7 +400,8 @@ export default class FriendListFileHandle {
   }
 
   //管理关系
-  static async modifyIsFriend(id, isFriend) {
+  static async modifyIsFriend(id: string, isFriend: 0 | 1 | 2) {
+    if(!FriendListFileHandle.friends) return
     for (
       let key = 0;
       key < FriendListFileHandle.friends.userInfo.length;
@@ -376,7 +419,11 @@ export default class FriendListFileHandle {
     }
   }
 
-  static async modifyFriendList(id, name) {
+  /**
+   * 修改备注名
+   */
+  static async modifyFriendList(id: string, name: string) {
+    if(!FriendListFileHandle.friends) return
     for (
       let key = 0;
       key < FriendListFileHandle.friends.userInfo.length;
@@ -389,18 +436,17 @@ export default class FriendListFileHandle {
         } else {
           friend.markName = friend.name
         }
+        FriendListFileHandle.friends['rev'] += 1
+        let friendsStr = JSON.stringify(FriendListFileHandle.friends)
+        await FriendListFileHandle.saveHelper(friendsStr)
         break
       }
     }
 
-    FriendListFileHandle.friends['rev'] += 1
-
-    let friendsStr = JSON.stringify(FriendListFileHandle.friends)
-    await FriendListFileHandle.saveHelper(friendsStr)
   }
 
-  // eslint-disable-next-line
-  static async delFromFriendList(id, callback) {
+  static async delFromFriendList(id: string) {
+    if(!FriendListFileHandle.friends) return
     for (
       let key = 0;
       key < FriendListFileHandle.friends.userInfo.length;
@@ -409,17 +455,15 @@ export default class FriendListFileHandle {
       let friend = FriendListFileHandle.friends.userInfo[key]
       if (id === friend.id) {
         FriendListFileHandle.friends.userInfo.splice(key, 1)
+        FriendListFileHandle.friends['rev'] += 1
+        let friendsStr = JSON.stringify(FriendListFileHandle.friends)
+        await FriendListFileHandle.saveHelper(friendsStr)
         break
       }
     }
-
-    FriendListFileHandle.friends['rev'] += 1
-
-    let friendsStr = JSON.stringify(FriendListFileHandle.friends)
-    await FriendListFileHandle.saveHelper(friendsStr)
   }
 
-  static findFromFriendList(id) {
+  static findFromFriendList(id: string) {
     let bFound
     if (FriendListFileHandle.friends) {
       for (
@@ -439,7 +483,7 @@ export default class FriendListFileHandle {
   }
 
   //判断是否是好友，以后可能会改变判断逻辑
-  static isFriend(id) {
+  static isFriend(id: string) {
     let isFriend = FriendListFileHandle.getIsFriend(id)
     if (isFriend === 1) {
       return true
@@ -447,7 +491,7 @@ export default class FriendListFileHandle {
     return false
   }
 
-  static getFriend(id) {
+  static getFriend(id: string) {
     if (FriendListFileHandle.friends) {
       for (
         let key = 0;
@@ -470,7 +514,7 @@ export default class FriendListFileHandle {
    * 1：互相是好友关系
    * 2: 已添加好友，等待对方同意
    */
-  static getIsFriend(id) {
+  static getIsFriend(id: string) {
     if (FriendListFileHandle.friends) {
       for (
         let key = 0;
@@ -485,7 +529,7 @@ export default class FriendListFileHandle {
     return undefined
   }
 
-  static findFromGroupList(id) {
+  static findFromGroupList(id: string) {
     let bFound
     if (FriendListFileHandle.friends) {
       for (
@@ -503,7 +547,7 @@ export default class FriendListFileHandle {
     return bFound
   }
 
-  static getGroup(id) {
+  static getGroup(id: string) {
     if (FriendListFileHandle.friends) {
       for (
         let key = 0;
@@ -518,8 +562,9 @@ export default class FriendListFileHandle {
     return undefined
   }
 
-  static getGroupMember(groupId, userId) {
+  static getGroupMember(groupId: string, userId: string) {
     let group = FriendListFileHandle.getGroup(groupId)
+    if(!group) return undefined
     for (let key = 0; key < group.members.length; key++) {
       if (group.members[key].id === userId) {
         return group.members[key]
@@ -528,12 +573,12 @@ export default class FriendListFileHandle {
     return undefined
   }
 
-  static readGroupMemberList(groupId) {
+  static readGroupMemberList(groupId: string) {
     let members = JSON.stringify(FriendListFileHandle.getGroup(groupId)?.members || [])
     return JSON.parse(members)
   }
 
-  static isInGroup(groupId, userId) {
+  static isInGroup(groupId: string, userId: string) {
     let group = FriendListFileHandle.getGroup(groupId)
     if (group) {
       for (let key = 0; key < group.members.length; key++) {
@@ -546,16 +591,17 @@ export default class FriendListFileHandle {
   }
 
   // 添加群
-  static async addToGroupList(obj) {
+  static async addToGroupList(obj: Group) {
     let bFound = FriendListFileHandle.findFromGroupList(obj.id)
 
     if (!bFound) {
       if (!FriendListFileHandle.friends) {
-        FriendListFileHandle.friends = {}
-        FriendListFileHandle.friends['rev'] = 1
-        FriendListFileHandle.friends['user'] = FriendListFileHandle.user.userId
-        FriendListFileHandle.friends['userInfo'] = []
-        FriendListFileHandle.friends['groupInfo'] = []
+        FriendListFileHandle.friends = {
+          rev: 1,
+          user: FriendListFileHandle.user.userName,
+          userInfo: [],
+          groupInfo: [],
+        }
       } else {
         FriendListFileHandle.friends['rev'] += 1
       }
@@ -565,7 +611,8 @@ export default class FriendListFileHandle {
     }
   }
   // 删除群
-  static async delFromGroupList(id, callback) {
+  static async delFromGroupList(id: string, callback: () => void) {
+    if(!FriendListFileHandle.friends) return
     for (
       let key = 0;
       key < FriendListFileHandle.friends.groupInfo.length;
@@ -574,19 +621,17 @@ export default class FriendListFileHandle {
       let friend = FriendListFileHandle.friends.groupInfo[key]
       if (id === friend.id) {
         FriendListFileHandle.friends.groupInfo.splice(key, 1)
+        FriendListFileHandle.friends['rev'] += 1
+        let friendsStr = JSON.stringify(FriendListFileHandle.friends)
+        await FriendListFileHandle.saveHelper(friendsStr)
         break
       }
     }
-
-    FriendListFileHandle.friends['rev'] += 1
-
-    let friendsStr = JSON.stringify(FriendListFileHandle.friends)
-    await FriendListFileHandle.saveHelper(friendsStr)
-
     callback && callback()
   }
   //更改群名
-  static async modifyGroupList(id, name) {
+  static async modifyGroupList(id: string, name: string) {
+    if(!FriendListFileHandle.friends) return
     for (
       let key = 0;
       key < FriendListFileHandle.friends.groupInfo.length;
@@ -596,18 +641,17 @@ export default class FriendListFileHandle {
       if (id === friend.id) {
         if (name !== '') {
           friend.groupName = name
+          FriendListFileHandle.friends['rev'] += 1
+          let friendsStr = JSON.stringify(FriendListFileHandle.friends)
+          await FriendListFileHandle.saveHelper(friendsStr)
         }
         break
       }
     }
-
-    FriendListFileHandle.friends['rev'] += 1
-
-    let friendsStr = JSON.stringify(FriendListFileHandle.friends)
-    await FriendListFileHandle.saveHelper(friendsStr)
   }
 
-  static async addGroupMember(groupId, members) {
+  static async addGroupMember(groupId: string, members: {id: string, name: string}[]) {
+    if(!FriendListFileHandle.friends) return
     let group = FriendListFileHandle.getGroup(groupId)
     if (group) {
       for (let key = 0; key < members.length; key++) {
@@ -621,7 +665,8 @@ export default class FriendListFileHandle {
     }
   }
 
-  static async removeGroupMember(groupId, members) {
+  static async removeGroupMember(groupId: string, members: {id: string, name: string}[]) {
+    if(!FriendListFileHandle.friends) return
     let group = FriendListFileHandle.getGroup(groupId)
     if (group) {
       for (let member = 0; member < members.length; member++) {

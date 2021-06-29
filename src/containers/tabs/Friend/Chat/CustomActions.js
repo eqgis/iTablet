@@ -22,6 +22,7 @@ import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
 import { SimpleDialog } from '../Component'
 import { Toast } from '../../../../utils'
+import { getThemeAssets } from '../../../../assets'
 import { ImagePicker } from '../../../../components'
 let AppUtils = NativeModules.AppUtils
 
@@ -42,6 +43,20 @@ const ICONS = context => [
         title: getLanguage(GLOBAL.language).Profile.MAP,
         chatCallback: (_path, fileName) => {
           context.props.sendCallBack(1, _path, fileName)
+        },
+      })
+      context.setModalVisible()
+    },
+  },
+  {
+    name: getThemeAssets().mine.my_armap,
+    type: 'ionicon',
+    text: getLanguage(GLOBAL.language).Profile.ARMAP,
+    onPress: () => {
+      NavigationService.navigate('MyARMap', {
+        title: getLanguage(GLOBAL.language).Profile.ARMAP,
+        chatCallback: (_path, fileName) => {
+          context.props.sendCallBack(4, _path, fileName)
         },
       })
       context.setModalVisible()

@@ -21,6 +21,8 @@ import MapSetting from '../mapSetting'
 import { Chat } from '../tabs'
 import { LayerAttribute } from '../layerAttribute'
 import TabNavigationService from '../TabNavigationService'
+import ARLayerManager from '../arLayerManager'
+import ARMapSetting from '../arMapSettings/ARMapSetting'
 
 function compose(Component) {
   class Tab extends Component {
@@ -120,6 +122,32 @@ const MapStack = compose(
       MapSetting: {
         screen: MapSetting,
       },
+      ARLayerManager: {
+        screen: ARLayerManager,
+      },
+      ARMapSetting: {
+        screen: ARMapSetting,
+      },
+    },
+    stackOption,
+  ),
+)
+
+const ARMapStack = compose(
+  createStackNavigator(
+    {
+      ARMapView: {
+        screen: MapView,
+      },
+      ARLayerManager: {
+        screen: ARLayerManager,
+      },
+      // LayerAttribute: {
+      //   screen: LayerAttribute,
+      // },
+      ARMapSetting: {
+        screen: ARMapSetting,
+      },
     },
     stackOption,
   ),
@@ -178,4 +206,4 @@ const Map3DStack = createStackNavigator(
   stackOption,
 )
 
-export { CoworkTabs, MapView, MapStack, Map3DStack }
+export { CoworkTabs, MapView, MapStack, Map3DStack, ARMapStack }

@@ -430,6 +430,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: 'Substance',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'Ligne',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'Point',
+  MAP_AR_AI_ASSISTANT_SAVE_TEXT: 'texte',
   MAP_AR_AI_SAVE_SUCCESS: 'Enregistré succès',
   MAP_AR_AI_SAVE_POINT: 'Enregistrer le point',
   MAP_AR_AI_SAVE_LINE: 'Enregistrer la ligne',

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Animated, Text, FlatList, Image ,TouchableOpacity} from 'react-native'
+import { View, Animated, Text, FlatList } from 'react-native'
 import {
   ToolbarType,
   ConstToolType,
@@ -7,7 +7,7 @@ import {
   Height,
 } from '../../../../../../constants'
 import { color } from '../../../../../../styles'
-import { scaleSize, setSpText } from '../../../../../../utils'
+import { setSpText } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { ColorTable } from '../../../../../mapSetting/secondMapSettings/components'
 import { Row, MTBtn, Picker } from '../../../../../../components'
@@ -18,7 +18,8 @@ import ToolbarTableList from '../ToolbarTableList'
 import ToolbarModule from '../../modules/ToolbarModule'
 import styles from './styles'
 import ToolbarArMeasure from '../ToolbarArMeasure'
-import ARMeasureData from '../../modules/arMeasure/ARMeasureData'
+import ToolBarSlide from '../ToolBarSlide'
+import Tabs from '../../../Tabs'
 
 export default class ToolbarContentView extends React.Component {
   props: {
@@ -54,6 +55,7 @@ export default class ToolbarContentView extends React.Component {
     this.ToolbarModule = this.props.getToolbarModule()
     const data = this.ToolbarModule.getToolbarSize(props.containerType, {
       data: props.data,
+      type: props.type,
     })
     this.height = this.props.customView ? 0 : data.height // ToolbarContentView当前类型，未收缩前的高度
     this.isBoxShow = false
@@ -95,6 +97,7 @@ export default class ToolbarContentView extends React.Component {
     ) {
       let _data = this.ToolbarModule.getToolbarSize(this.props.containerType, {
         data: this.props.data,
+        type: this.props.type,
       })
       this.height = this.props.customView ? 0 : _data.height
       // 若转动屏幕前后，ContentView高度为0，为不显示状态，则不调用改变高度
@@ -109,7 +112,7 @@ export default class ToolbarContentView extends React.Component {
           row: _data.row,
         })
       } else {
-        this.onChangeHeight(_data)
+        _data.autoShowBox !== false && this.onChangeHeight(_data)
       }
     }
   }
@@ -329,6 +332,28 @@ export default class ToolbarContentView extends React.Component {
     )
   }
 
+  /***************************************** slider ***************************************/
+  renderSlider = () => {
+    return (
+      <ToolBarSlide
+        data={this.props.data}
+      />
+    )
+  }
+
+  /***************************************** Table Tabs ***************************************/
+  renderTableTabs = () => {
+    if (this.props.data.length === 0) {
+      return null
+    }
+    return (
+      <Tabs
+        data={this.props.data}
+        device={this.props.device}
+      />
+    )
+  }
+
   /***************************************** Table ***************************************/
   renderTable = () => {
     return (
@@ -505,6 +530,12 @@ export default class ToolbarContentView extends React.Component {
           break
         case ToolbarType.arMeasure:
           box = this.renderMeasure()
+          break
+        case ToolbarType.slider:
+          box = this.renderSlider()
+          break
+        case ToolbarType.tableTabs:
+          box = this.renderTableTabs()
           break
         case ToolbarType.table:
         default:

@@ -103,12 +103,12 @@ export default class MeasureAreaView extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
         action: async ()=>{
-          let is = await SMeasureAreaView.isMeasuring()
+          let is = await SARMap.isMeasuring()
           if(is){
-            SMeasureAreaView.cancelCurrent()
+            SARMap.cancelCurrent()
           }
           if (!disablePoint) {
-            SMeasureAreaView.setMeasureMode('DRAW_POINT'), this.setState({
+            SARMap.setMeasureMode('DRAW_POINT'), this.setState({
               showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
                 GLOBAL.language,
               ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
@@ -197,7 +197,7 @@ export default class MeasureAreaView extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
         action: ()=>{
-          SMeasureAreaView.setMeasureMode('DRAW_AREA_RECTANGLE')
+          SMeasureAreaView.setMeasureMode('DRAW_RECTANGLE')
           this.setState({
             showSave: false, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
               GLOBAL.language,
@@ -213,7 +213,7 @@ export default class MeasureAreaView extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
         action: ()=>{
-          SMeasureAreaView.setMeasureMode('DRAW_AREA_CIRCLE')
+          SMeasureAreaView.setMeasureMode('DRAW_CIRCLE')
           this.setState({ showSave: false,showSwitch: false, toolbar: { height: scaleSize(96) },title:getLanguage(
             GLOBAL.language,
           ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
@@ -1496,7 +1496,13 @@ export default class MeasureAreaView extends React.Component {
     return SMeasureAreaView.startScan()
   }
 
-  _onDatumPointClose = point => {
+  _onDatumPointClose = () => {
+    this.setState({
+      showDatumPoint: false,
+    })
+  }
+
+  _onDatumPointConfirm = point => {
     SMeasureAreaView.fixedPosition(false, Number(point.x), Number(point.y), Number(point.h))
     this.setState({
       showDatumPoint: false,
@@ -1547,6 +1553,7 @@ export default class MeasureAreaView extends React.Component {
           routeData={{
             measureType: this.measureType,
           }}
+          onConfirm={this._onDatumPointConfirm}
           startScan={this._startScan} onClose={this._onDatumPointClose}/>}
       </>
     )

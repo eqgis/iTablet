@@ -109,7 +109,7 @@ function openMap() {
       // '我的地图',
       image: getThemeAssets().dataType.icon_map,
       data: userFileList || [],
-      extraData: {
+      extraData: !GLOBAL.Type.startsWith('MAP_AR') && {
         title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
         action: () => {
           NavigationService.navigate('SampleMap', {
@@ -140,17 +140,17 @@ function isNeedToSave(cb = () => {}) {
 
 /** 打开模板 * */
 function openTemplateList() {
-  if (!ToolbarModule.getParams().setToolbarVisible) return
-  ToolbarModule.getParams().showFullMap &&
-    ToolbarModule.getParams().showFullMap(true)
-    
+  const _params = ToolbarModule.getParams()
+  if (!_params.setToolbarVisible) return
+  _params.showFullMap &&
+    _params.showFullMap(true)
+
   NativeMethod.getTemplates(
-    ToolbarModule.getParams().user.currentUser.userName,
+    _params.user.currentUser.userName,
     ConstPath.Module.Collection,
   ).then(async templateList => {
     const tpList = []
-    for (let i = 0; i < templateList.length; i++) {
-      const item = templateList[i]
+    for (let item of templateList) {
       const path = await FileTools.appendingHomeDirectory(item.path)
       const is3D = await SScene.is3DWorkspace({ server: path })
       if (!is3D) {
@@ -169,7 +169,7 @@ function openTemplateList() {
         data: tpList,
       },
     ]
-    ToolbarModule.getParams().setToolbarVisible(
+    _params.setToolbarVisible(
       true,
       ConstToolType.SM_MAP_START_TEMPLATE,
       {
@@ -384,7 +384,9 @@ function showHistory() {
 
 function setSaveViewVisible(visible, cb) {
   if (!ToolbarModule.getParams().setSaveViewVisible) return
-  GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, null, cb)
+  GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, {
+    cb,
+  })
 }
 
 /** 保存地图 * */
@@ -909,21 +911,21 @@ async function openTemplate(item) {
               )
               await params.getSymbolTemplates(null)
 
-              // 保存新建模版地图，若不保存，再次进入地图则没有底图
+              // 保存新建模板地图，若不保存，再次进入地图则没有底图
               await params.saveMap({
                 mapName: mapsInfo[0],
               })
 
               params.setToolbarVisible(false)
               params.setContainerLoading && params.setContainerLoading(false)
-              Toast.show(getLanguage(params.language).Prompt.SWITCHED_TEMPLATE)
+              Toast.show(getLanguage(params.language).Prompt.CREATE_SUCCESSFULLY)
             } else {
               params.setContainerLoading && params.setContainerLoading(false)
-              Toast.show(ConstInfo.TEMPLATE_CHANGE_FAILED)
+              Toast.show(ConstInfo.CREATE_FAILED)
             }
           })
       } catch (error) {
-        Toast.show(ConstInfo.TEMPLATE_CHANGE_FAILED)
+        Toast.show(ConstInfo.CREATE_FAILED)
         params.setContainerLoading && params.setContainerLoading(false)
       }
       NavigationService.goBack()

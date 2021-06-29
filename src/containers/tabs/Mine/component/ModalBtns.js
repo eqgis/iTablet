@@ -9,23 +9,23 @@ import { SimpleDialog } from '../../Friend'
 
 export default class ModalBtns extends Component {
   props: {
-    actionOfLocal: () => {},
-    actionOfOnline: () => {},
-    actionOfIPortal: () => {},
-    cancel: () => {},
-    actionOfWechat: () => {},
-    actionOfFriend: () => {},
-    showCancel: Boolean,
-    style: Object,
-    actionOftemplateLocal: () => {}, //分享地图模版 add jiakai
-    type: Object,
+    actionOfLocal?: () => void,
+    actionOfOnline?: () => void,
+    actionOfIPortal?: () => void,
+    cancel?: () => void,
+    actionOfWechat?: () => void,
+    actionOfFriend?: () => void,
+    showCancel?: Boolean,
+    style?: Object,
+    actionOftemplateLocal?: () => void, //分享地图模板 add jiakai
+    type?: Object,
   }
   constructor(props) {
     super(props)
     this.showCancel =
       this.props.showCancel !== undefined ? this.props.showCancel : true
     this.state = {
-      shareMap: true,//分享地图分为地图和模版两种 add jiakai
+      shareMap: true,//分享地图分为地图和模板两种 add jiakai
     }
   }
 

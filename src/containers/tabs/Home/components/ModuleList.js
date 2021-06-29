@@ -5,7 +5,7 @@ import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { Module } from '../../../../class'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap ,SMeasureView } from 'imobile_for_reactnative'
 import {
   downloadFile,
   deleteDownloadFile,
@@ -295,6 +295,14 @@ class ModuleList extends Component {
 
   itemAction = async (language, { item, index }) => {
     try {
+      if (item.key === ChunkType.MAP_AR_MAPPING) {
+        const isSupportedARCore = await SMeasureView.isSupportedARCore()
+        if (!isSupportedARCore) {
+          GLOBAL.ARDeviceListDialog.setVisible(true)
+          return
+        }
+      }
+
       item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(true)
       let tmpCurrentUser = this.props.currentUser
       let currentUserName = tmpCurrentUser.userName

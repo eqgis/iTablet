@@ -234,6 +234,8 @@ const baseMapsOrigin = [
   'eia@tiandituImgEN',
   'ter@tiandituTer',
   'cta@tiandituTerCN',
+  'roadmap@GaoDeMap',
+  'satellite@GaoDeMap',
 ]
 let baseMaps = [...baseMapsOrigin]
 function isBaseLayer(layer) {
@@ -344,7 +346,7 @@ async function openDefaultBaseMap() {
 
 function getDefaultBaseMapData(language = GLOBAL.language) {
   if (language === 'CN') {
-    return [ConstOnline.tiandituImgCN, ConstOnline.tiandituImg]
+    return [ConstOnline.tiandituImgCN(), ConstOnline.tiandituImg()]
   } else {
     return { ...ConstOnline.Google, layerIndex: 1 }
   }

@@ -255,30 +255,41 @@ function openOnlineScene(item) {
     // '场景已打开,请勿重复打开场景')
     return
   }
-  SScene.openOnlineScene(item.name, item.server).then(result => {
-    // SScene.openOnlineScene(name,server).then((result) => {
-
-    if (!result) {
-      Toast.show(getLanguage(_params.language).Prompt.NO_SCENE)
-      return
-    }
-
-    SScene.setNavigationControlVisible(false)
-    SScene.setListener()
-    SScene.getAttribute()
-    SScene.setCircleFly()
-    SScene.setAction('PAN3D')
-    SScene.changeBaseLayer(1)
-    GLOBAL.action3d = 'PAN3D'
-    GLOBAL.openWorkspace = true
-    GLOBAL.sceneName = item.name
-    _params.refreshLayer3dList && _params.refreshLayer3dList()
-    _params.existFullMap && _params.existFullMap(true)
-    _params.setToolbarVisible(false)
-    GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(false)
-
-    _params.changeLayerList && _params.changeLayerList()
-  })
+  try {
+    _params.setContainerLoading && _params.setContainerLoading(
+      true,
+      getLanguage(_params.language).Prompt.LOADING,
+    )
+    SScene.openOnlineScene(item.name, item.server).then(async result => {
+      // SScene.openOnlineScene(name,server).then((result) => {
+  
+      if (!result) {
+        _params.setContainerLoading && _params.setContainerLoading(false)
+        Toast.show(getLanguage(_params.language).Prompt.NO_SCENE)
+        return
+      }
+  
+      await SScene.setNavigationControlVisible(false)
+      await SScene.setListener()
+      await SScene.getAttribute()
+      await SScene.setCircleFly()
+      await SScene.setAction('PAN3D')
+      await SScene.changeBaseLayer(1)
+      GLOBAL.action3d = 'PAN3D'
+      GLOBAL.openWorkspace = true
+      GLOBAL.sceneName = item.name
+      _params.refreshLayer3dList && await _params.refreshLayer3dList()
+      GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(false)
+  
+      _params.changeLayerList && await _params.changeLayerList()
+  
+      _params.existFullMap && _params.existFullMap(true)
+      _params.setToolbarVisible(false)
+      _params.setContainerLoading && _params.setContainerLoading(false)
+    })
+  } catch (error) {
+    _params.setContainerLoading && _params.setContainerLoading(false)
+  }
 }
 
 async function listAction(type, params = {}) {

@@ -128,7 +128,7 @@ export default class LayerAttributeSearch extends React.Component {
           this.noMore = true
         }
 
-        if (attributes.data.length === 1) {
+        if (this.total === 1 && attributes.data.length === 1) {
           this.setState({
             showTable: true,
             attributes,
@@ -185,7 +185,7 @@ export default class LayerAttributeSearch extends React.Component {
       typeof this.props.setLayerAttributes === 'function'
     ) {
       // 单个对象属性和多个对象属性数据有区别
-      let isSingleData = this.state.attributes.data.length === 1
+      let isSingleData = this.total === 1 && this.state.attributes.data.length === 1
       this.props.setLayerAttributes([
         {
           mapName: this.props.map.currentMap.name,
@@ -227,6 +227,7 @@ export default class LayerAttributeSearch extends React.Component {
       this.state.attributes.data.length === 0
     )
       return null
+    const isSingle = this.total === 1 && this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}
@@ -245,16 +246,16 @@ export default class LayerAttributeSearch extends React.Component {
               //'属性值'
             ]
         }
-        widthArr={this.state.attributes.data.length === 1 && [100, 100]}
+        widthArr={isSingle && [100, 100]}
         type={
-          this.state.attributes.data.length === 1
+          isSingle
             ? LayerAttributeTable.Type.SINGLE_DATA
             : LayerAttributeTable.Type.MULTI_DATA
         }
         // indexColumn={this.state.attributes.data.length > 1 ? 0 : -1}
         indexColumn={0}
         startIndex={
-          this.state.attributes.data.length === 1
+          isSingle
             ? -1
             : this.state.startIndex + 1
         }

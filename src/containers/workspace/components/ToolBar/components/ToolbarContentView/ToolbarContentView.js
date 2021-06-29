@@ -112,7 +112,7 @@ export default class ToolbarContentView extends React.Component {
           row: _data.row,
         })
       } else {
-        this.onChangeHeight(_data)
+        _data.autoShowBox !== false && this.onChangeHeight(_data)
       }
     }
   }

@@ -85,10 +85,10 @@ export default class LayerAttributeTable extends React.Component {
     const titles =
       props.tableTitle && props.tableTitle.length > 0 ? props.tableTitle : this.getTitle(props.data)
 
-    const isMultiData =
-      this.props.data instanceof Array &&
-      (this.props.data.length === 0 ||
-        (this.props.data.length > 1 && this.props.data[0] instanceof Array))
+    const isMultiData = this.props.type === 'MULTI_DATA'
+    // this.props.data instanceof Array &&
+    // (this.props.data.length === 0 ||
+    //   (this.props.data.length > 1 && this.props.data[0] instanceof Array))
 
     this.state = {
       colHeight: COL_HEIGHT,
@@ -135,10 +135,10 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const isMultiData =
-      this.props.data instanceof Array &&
-      (this.props.data.length === 0 ||
-        (this.props.data.length > 1 && this.props.data[0] instanceof Array))
+    const isMultiData = this.props.type === 'MULTI_DATA'
+    // this.props.data instanceof Array &&
+    // (this.props.data.length === 0 ||
+    //   (this.props.data.length > 1 && this.props.data[0] instanceof Array))
     if (
       JSON.stringify(prevProps.tableTitle) !==
         JSON.stringify(this.props.tableTitle) ||

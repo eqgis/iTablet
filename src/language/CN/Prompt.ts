@@ -63,7 +63,7 @@ const Prompt = {
   NO_SCENE_SELECTED: '未选择场景',
   SWITCHING: '正在切换地图',
   CLOSING: '正在关闭地图',
-  CLOSING_3D: '正在关闭地图',
+  CLOSING_3D: '正在关闭场景',
   SAVING: '正在保存地图',
   SWITCHING_SUCCESS: '切换成功',
   ADD_SUCCESS: '添加成功',

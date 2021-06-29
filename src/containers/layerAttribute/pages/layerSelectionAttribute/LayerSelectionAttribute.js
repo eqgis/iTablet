@@ -623,7 +623,7 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   selectRow = ({ data, index = -1 }) => {
-    if (this.state.attributes.data.length === 1) return
+    if (this.total === 1 && this.state.attributes.data.length === 1) return
     // if (!data || index < 0) return
     // this.currentFieldInfo = data || []
     // this.currentFieldIndex = index >= 0 ? index : -1
@@ -650,7 +650,7 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   getSelection = () => {
-    if (this.state.attributes.data.length === 1) {
+    if (this.total === 1 && this.state.attributes.data.length === 1) {
       return {
         data: this.state.attributes.data[0],
         index: 0,
@@ -808,7 +808,7 @@ export default class LayerSelectionAttribute extends React.Component {
       typeof this.props.setLayerAttributes === 'function'
     ) {
       // 单个对象属性和多个对象属性数据有区别
-      let isSingleData = this.state.attributes.data.length === 1
+      let isSingleData = this.total === 1 && this.state.attributes.data.length === 1
       // 单个对象属性 在 隐藏系统字段下，要重新计算index
       if (isSingleData && !this.state.isShowSystemFields) {
         for (let index in this.state.attributes.data[0]) {
@@ -1043,29 +1043,28 @@ export default class LayerSelectionAttribute extends React.Component {
         })
       },
     ] : []
+    const isSingle = this.total === 1 && this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}
         data={
-          this.state.attributes.data.length > 1
-            ? this.state.attributes.data
-            : this.state.attributes.data[0]
+          isSingle
+            ? this.state.attributes.data[0]
+            : this.state.attributes.data
         }
         tableHead={
-          this.state.attributes.data.length > 1
-            ? this.state.attributes.head
-            : [
-              getLanguage(GLOBAL.language).Map_Label.NAME,
-              getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
-              //'名称'
-              //'属性值'
+          isSingle
+            ? [
+              getLanguage(this.props.language).Map_Label.NAME,
+              getLanguage(this.props.language).Map_Label.ATTRIBUTE,
             ]
+            : this.state.attributes.head
         }
-        widthArr={this.state.attributes.data.length === 1 && [100, 100]}
+        widthArr={isSingle && [100, 100]}
         type={
-          this.state.attributes.data.length > 1
-            ? LayerAttributeTable.Type.MULTI_DATA
-            : LayerAttributeTable.Type.SINGLE_DATA
+          isSingle
+            ? LayerAttributeTable.Type.SINGLE_DATA
+            : LayerAttributeTable.Type.MULTI_DATA
         }
         refresh={cb => this.refresh(cb)}
         loadMore={cb => this.loadMore(cb)}
@@ -1074,7 +1073,7 @@ export default class LayerSelectionAttribute extends React.Component {
         indexColumn={0}
         hasIndex={this.state.attributes.data.length > 1}
         startIndex={
-          this.state.attributes.data.length === 1
+          isSingle
             ? -1
             : this.state.startIndex + 1
         }

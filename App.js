@@ -420,7 +420,7 @@ class AppRoot extends Component {
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
           })
-          await this.initDirectories(user.userName)
+          await this.initDirectories(userInfo.name)
         }
         GLOBAL.getFriend().onUserLoggedin()
         this.container.setLoading(false)

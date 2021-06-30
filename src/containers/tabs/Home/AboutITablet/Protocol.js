@@ -272,12 +272,12 @@ class Protocol extends Component {
         if (GLOBAL.language === 'CN') {
           source = {
             uri:
-              'https://sso.supermap.com/agreement.html?service=https://www.supermapol.com',
+              'https://sso.supermap.com/agreement.jsp?service=https://www.supermapol.com',
           }
         } else {
           source = {
             uri:
-              'https://sso.supermap.com/agreement_en.html?service=http://www.supermapol.com',
+              'https://sso.supermap.com/agreement_en.jsp?service=http://www.supermapol.com',
           }
         }
         title = getLanguage(GLOBAL.language).Profile.SERVICE_AGREEMENT

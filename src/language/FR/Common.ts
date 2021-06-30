@@ -18,10 +18,10 @@ const Common: typeof CN.Common = {
   CONFIRM: 'confirmer',
 
   ADD: 'Ajouter',
-  NONE: 'None',
+  NONE: 'Aucun',
 
-  DELETE_CURRENT_OBJ_CONFIRM: 'Do you want to delete current object?',  //to be translated
-  NO_SELECTED_OBJ: 'No selected object',  //to be translated
+  DELETE_CURRENT_OBJ_CONFIRM: "Voulez-vous supprimer l'objet actuel ?",
+  NO_SELECTED_OBJ: 'Aucun objet sélectionné',
 }
 
 export { Protocol, Common }

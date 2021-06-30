@@ -1,32 +1,34 @@
-const ARMap = {// need to translate
-  ARDRAWING: 'AR Drawing',
+import CN from '../CN'
+
+const ARMap: typeof CN.ARMap = {// need to translate
+  ARDRAWING: 'AR 編集',
 
   THREE_D: '3D',
   VECTOR: 'ベクタ',
   MODEL: 'モデル',
   EFFECT: '特殊効果',
 
-  SUBSTANCE: 'Substance',
-  AREA: 'Area',
-  LINE: 'Line',
-  POINT: 'Point',
+  SUBSTANCE: '体',
+  AREA: 'ポリゴン',
+  LINE: 'ライン',
+  POINT: 'ポイント',
 
-  OPEN_MAP: 'Open Map',
-  UNTITLED_MAP: 'Untitled Map',
-  CLOSE_MAP: 'Close Map',
-  ADD_LAYER: 'Add Layer',
-  SAVE: 'Save',
+  OPEN_MAP: 'マップを開く',
+  UNTITLED_MAP: '新規マップ',
+  CLOSE_MAP: 'マップを閉じる',
+  ADD_LAYER: 'レイヤーの追加',
+  SAVE: '保存',
 
-  BORDER_WIDTH: 'BorderW idth',
-  POSITION: 'Position',
-  ROTATION: 'Rotation',
-  SCALE: 'Scale',
-  LEFT: 'Left',
-  RIGHT: 'Right',
-  UP: 'Up',
-  DOWN: 'Down',
-  FRONT: 'Front',
-  BACK: 'Back',
+  BORDER_WIDTH: 'ボーダー幅',
+  POSITION: '位置',
+  ROTATION: '回転',
+  SCALE: 'サイズ',
+  LEFT: '左',
+  RIGHT: '右',
+  UP: '上',
+  DOWN: '下',
+  FRONT: '前',
+  BACK: '後',
   DIRECTION: '方向',
   DISTANCE: '距離',
   RATATION_AXIS: '回転軸',
@@ -36,7 +38,7 @@ const ARMap = {// need to translate
   ANIMATION: 'アニメーション',
   ANIMATION_TYPE: 'アニメーションタイプ',
 
-  AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing', // need to translate
+  AR_LAYER_NOT_SUPPORT_STYLE: '現在レイヤーはスタイル編集をサポートしません',
 
   TEXT_OPACITY: 'Text Opacity', // to be translated
   TEXT_COLOR: 'Text Color', // to be translated

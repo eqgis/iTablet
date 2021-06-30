@@ -56,13 +56,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'Quitter SuperMap iTablet',
   MAP_LOADING: 'Chargement',
   LOADING: 'Chargement',
-  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
+  OPEN_MAP_CONFIRM: 'Ouverture de la carte ou non',
   THE_MAP_IS_OPENED: 'La carte est ouverte',
   THE_MAP_IS_NOTEXIST: "La carte n'existe pas",
-  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
+  OPEN_MAP_FAILED: "Impossible d'ouvrir la carte",
   THE_SCENE_IS_OPENED: 'La scène est ouverte',
   NO_SCENE_LIST: 'Aucune donnée',
-  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
+  NO_SCENE_SELECTED: "Aucune scène n'a été sélectionnée",
   SWITCHING: 'Commutation',
   CLOSING: 'Clôture',
   CLOSING_3D: 'Clôture',
@@ -106,9 +106,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'Activer',
   CREATE_FAILED: 'Échec de la création',
   INVALID_DATASET_NAME: 'Nom de jeu de données non valide ou le nom existe déjà',
-  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
-  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
-  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
+  SAVE_FAIL_POINT:"Longueur de l'ensemble de points non valide, la longueur de l'objet de l'ensemble de points doit être supérieure ou égale à 1",
+  SAVE_LINE_FAIL: "Longueur de l'ensemble de points non valide, la longueur de l'objet de l'ensemble de points doit être supérieure ou égale à 2",
+  SAVE_REGION_FAIL: "Longueur de l'ensemble de points non valide, la longueur de l'objet de l'ensemble de points doit être supérieure ou égale à 3",
 
   PLEASE_CHOOSE_POINT_LAYER: 'Veuillez choisir la couche de points',
   PLEASE_CHOOSE_LINE_LAYER: 'Veuillez choisir la couche ligne',
@@ -137,7 +137,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'Recueillir le succès',
 
   SELECT_TWO_MEDIAS_AT_LEAST: 'Vous devez sélectionner au moins deux médias',
-  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: "Cet objet n'a pas de fichier multimédia. Voulez-vous le supprimer ?",
 
   NETWORK_REQUEST_FAILED: 'Échec de la demande réseau',
 
@@ -209,14 +209,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'Échec du partage',
   SHARE_PREPARE: 'Préparation du partage',
   SHARE_START: 'Commencer le partage',
-  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
+  SHARE_WX_FILE_SIZE_LIMITE: 'La taille du fichier ne doit pas dépasser 10M',
 
   EXPORTING: 'Exportation',
   EXPORT_SUCCESS: 'Exporté avec succès',
   EXPORT_FAILED: "Échec de l'exportation",
   EXPORT_TO: 'Les données ont été exportées vers: ',
   REQUIRE_PRJ_1984: "PrjCoordSys de l'ensemble de données doit être WGS_1984'",
-  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
+  EXPORT_TEMP_FAILED: "L'exportation vers des modèles n'est pas possible pour les cartes normales",
 
   UNDO_FAILED: "Échec de l'annulation",
   REDO_FAILED: 'Échec de la restauration',
@@ -413,7 +413,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
   IDENTIFY_TIMEOUT: "Délai d'expiration de l'image de suivi, réessayez?",
   TRACKING_LOADING: 'Suivi...',
-  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
+  UNSELECTED_OBJECT: 'Objet non sélectionné !',
 
   // 专题制图加载/输出xml
   SUCCESS: 'Opération réussie',
@@ -422,7 +422,7 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM_LOAD_TEMPLATE: 'Êtes-vous sûr de charger le modèle?',
   CONFIRM_OUTPUT_TEMPLATE: "Êtes-vous sûr d'exporter la carte?",
 
-  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
+  SHOW_AR_SCENE_NOTIFY: 'Afficher les astuces de détection de scène RA',
 }
 
 export { Prompt }

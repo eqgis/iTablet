@@ -41,6 +41,7 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'هل أنت متأكد أنك تريد حذف التوقف؟',
   DELETE_OBJECT: 'هل أنت متأكد من أنك تريد حذف الكائن نهائيًا؟',
+  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: 'الرجاء إضافة نقطة',
 
   CONFIRM: 'تأكيد',
@@ -55,13 +56,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'الخروج من سوبر ماب تابلت',
   MAP_LOADING: 'تحميل',
   LOADING: 'تحميل',
-  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
+  OPEN_MAP_CONFIRM: 'فتح الخريطة',
   THE_MAP_IS_OPENED: 'تم فتح الخريطة',
   THE_MAP_IS_NOTEXIST: 'الخريطة غير موجودة',
-  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
+  OPEN_MAP_FAILED: 'فشل في فتح الخريطة',
   THE_SCENE_IS_OPENED: 'تم فتح المشهد',
   NO_SCENE_LIST: 'لاتوجد بيانات',
-  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
+  NO_SCENE_SELECTED: 'لا مشاهد مختارة',
   SWITCHING: 'تبديل',
   CLOSING: 'إغلاق',
   CLOSING_3D: 'إغلاق',
@@ -105,9 +106,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'شغل',
   CREATE_FAILED: 'فشل إنشاء',
   INVALID_DATASET_NAME: 'اسم مجموعة بيانات غير صالح أو الاسم موجود بالفعل',
-  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
-  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
-  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
+  SAVE_FAIL_POINT:'غير نقطة مجموعة طول ، طول نقطة مجموعة كائن يجب أن يكون أكبر من أو يساوي 1',
+  SAVE_LINE_FAIL: 'غير نقطة مجموعة طول ، طول نقطة مجموعة كائن يجب أن يكون أكبر من أو يساوي 2',
+  SAVE_REGION_FAIL: 'غير نقطة مجموعة طول ، طول الجسم يجب أن يكون أكبر من أو يساوي 3',
 
   PLEASE_CHOOSE_POINT_LAYER: 'الرجاء اختيار طبقة',
   PLEASE_CHOOSE_LINE_LAYER: 'اختر خط طبقة',
@@ -136,7 +137,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'جمع ناجح',
 
   SELECT_TWO_MEDIAS_AT_LEAST: 'يجب عليك اختيار وسيلتين على الأقل',
-  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'هذا الكائن لا يملك ملفات الوسائط .هل تريد حذفه ؟',
 
   NETWORK_REQUEST_FAILED: 'فشل طلب الشبكة',
 
@@ -208,14 +209,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'فشل فى المشاركة',
   SHARE_PREPARE: 'جارى التجهيز للمشاركة',
   SHARE_START: 'بدء المشاركة',
-  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
+  SHARE_WX_FILE_SIZE_LIMITE: 'حجم الملف لا يمكن أن يتجاوز 10 م',
 
   EXPORTING: 'جارى التصدير',
   EXPORT_SUCCESS: 'تم التصدير بنجاح',
   EXPORT_FAILED: 'فشل التصدير',
   EXPORT_TO: 'تم تصدير البيانات إلى',
   REQUIRE_PRJ_1984: 'يجب أن يكون نظام إحداثيات مجموعة البيانات هو WGS_1984',
-  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
+  EXPORT_TEMP_FAILED: 'الخريطة العادية لا تدعم التصدير إلى قالب',
 
   UNDO_FAILED: 'فشل التراجع',
   REDO_FAILED: 'فشل الإعادة',
@@ -415,7 +416,7 @@ const Prompt: typeof CN.Prompt = {
 
   IDENTIFY_TIMEOUT: 'انتهاء مهلة تتبع الصورة ، حاول مرة أخرى؟',
   TRACKING_LOADING: 'تتبع...',
-  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
+  UNSELECTED_OBJECT: 'لا شيء !',
 
   // 专题制图加载/输出xml
   SUCCESS: 'عملية ناجحة',
@@ -424,7 +425,7 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM_LOAD_TEMPLATE: 'هل أنت متأكد من تحميل النموذج؟',
   CONFIRM_OUTPUT_TEMPLATE: 'هل أنت متأكد من إخراج الخريطة؟',
 
-  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
+  SHOW_AR_SCENE_NOTIFY: 'عرض ع المشهد كشف تلميح',
 }
 
 export { Prompt }

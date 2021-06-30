@@ -8,9 +8,9 @@ const Profile: typeof CN.Profile = {
   DATA: 'Données',
   MARK: 'Marque',
   MAP: 'Carte',
-  ARMAP: 'AR Map', // need to translate
-  ARMODEL: 'AR Modal', // need to translate
-  AREFFECT: 'AR Effect', // need to translate
+  ARMAP: 'Carte RA',
+  ARMODEL: 'Modèle RA',
+  AREFFECT: 'Effet RA',
   SCENE: 'Scène',
   BASEMAP: 'Carte de base',
   SYMBOL: 'Symbole',

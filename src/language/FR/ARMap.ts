@@ -1,42 +1,44 @@
-const ARMap = {// need to translate
-  ARDRAWING: 'AR Drawing',
+import CN from '../CN'
+
+const ARMap: typeof CN.ARMap = {// need to translate
+  ARDRAWING: 'Dessin RA',
 
   THREE_D: '3D',
-  VECTOR: 'Vector',
-  MODEL: 'Model',
-  EFFECT: 'Effect',
+  VECTOR: 'Vecteur',
+  MODEL: 'Modèle',
+  EFFECT: 'Effet',
 
   SUBSTANCE: 'Substance',
-  AREA: 'Area',
-  LINE: 'Line',
+  AREA: 'Zone',
+  LINE: 'Ligne',
   POINT: 'Point',
 
-  OPEN_MAP: 'Open Map',
-  UNTITLED_MAP: 'Untitled Map',
-  CLOSE_MAP: 'Close Map',
-  ADD_LAYER: 'Add Layer',
-  SAVE: 'Save',
+  OPEN_MAP: 'Ouvrir la carte',
+  UNTITLED_MAP: 'Carte sans titre',
+  CLOSE_MAP: 'Fermer la carte',
+  ADD_LAYER: 'Ajouter une couche',
+  SAVE: 'Enregistrer',
 
-  BORDER_WIDTH: 'BorderW idth',
+  BORDER_WIDTH: 'Largeur de la bordure',
   POSITION: 'Position',
   ROTATION: 'Rotation',
-  SCALE: 'Scale',
-  LEFT: 'Left',
-  RIGHT: 'Right',
-  UP: 'Up',
-  DOWN: 'Down',
-  FRONT: 'Front',
-  BACK: 'Back',
-  DIRECTION: 'Direction', //to be translated
-  DISTANCE: 'Distance', //to be translated
-  RATATION_AXIS: 'Ratation Axis', //to be translated
-  CLOCKWISE: 'closewise', //to be translated
-  COUNTER_CLOCKWISE: 'couterclockwise', //to be translated
+  SCALE: 'Échelle',
+  LEFT: 'Gauche',
+  RIGHT: 'Droit',
+  UP: 'Haut',
+  DOWN: 'En bas',
+  FRONT: 'Avant',
+  BACK: 'Retour',
+  DIRECTION: 'Direction',
+  DISTANCE: 'Distance',
+  RATATION_AXIS: 'Axe de rotation',
+  CLOCKWISE: "dans le sens des aiguilles d'une montre",
+  COUNTER_CLOCKWISE: "sens inverse des aiguilles d'une montre",
 
-  ANIMATION: 'Aniamtion', //to be translated
-  ANIMATION_TYPE: 'Animation Type', //to be translated
+  ANIMATION: 'Animation',
+  ANIMATION_TYPE: "Type d'animation",
 
-  AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing', // need to translate
+  AR_LAYER_NOT_SUPPORT_STYLE: "La couche actuelle ne supporte pas l'édition de style",
 
   TEXT_OPACITY: 'Text Opacity', // to be translated
   TEXT_COLOR: 'Text Color', // to be translated

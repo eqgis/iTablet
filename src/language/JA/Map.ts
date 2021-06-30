@@ -425,8 +425,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY: '履歴データはありません',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: 'レコードを開始',
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: 'レコードを一時停止',
-  MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: 'Substance',//need to translate
-  MAP_AR_AI_ASSISTANT_SAVE_AEREA:'Area',//need to translate
+  MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: '体',
+  MAP_AR_AI_ASSISTANT_SAVE_AEREA:'ポリゴン',
   MAP_AR_AI_ASSISTANT_SAVE_LINE: 'ライン',
   MAP_AR_AI_ASSISTANT_SAVE_POINT: 'ポイント',
   MAP_AR_AI_ASSISTANT_SAVE_TEXT: 'テキスト',
@@ -493,9 +493,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   ARRIVE_AT_THE_DESTINATION: '終点に到達',
   START_NAVIGATION: 'ナビ',
   SIMULATED_NAVIGATION: 'シミュレーションナビ',
-  WALK_NAVIGATION: 'Walk Navi', //need to be translated
-  CAR_NAVIGATION: 'Car Navi', //need to be translated
-  CRUISE_NAVIGATION: 'Cruise', //need to be translated
+  WALK_NAVIGATION: '歩く',
+  CAR_NAVIGATION: '車',
+  CRUISE_NAVIGATION: 'クルーズ',
   GO_STRAIGHT: '直進',
   SELECT_START_POINT: '起点の選択',
   SELECT_DESTINATION: '終点の選択',

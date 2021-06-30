@@ -24,15 +24,14 @@ import {
   setSpText,
 } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
-import { ConstOnline } from '../../../../constants'
 import { getThemeAssets } from '../../../../assets'
 import ToolBarSectionList from '../../../workspace/components/ToolBar/components/ToolBarSectionList'
 import {
   layerManagerData,
   ConstToolType,
   OpenData2,
+  ConstOnline,
 } from '../../../../constants'
-import ConstOnline from '../../../../constants/ConstOnline'
 
 interface Props {
   navigation: any,

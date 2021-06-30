@@ -8,9 +8,9 @@ const Profile: typeof CN.Profile = {
   DATA: 'Veri',
   MARK: 'İşaretle',
   MAP: 'Harita',
-  ARMAP: 'AR Map', // need to translate
-  ARMODEL: 'AR Modal', // need to translate
-  AREFFECT: 'AR Effect', // need to translate
+  ARMAP: 'AR Harita',
+  ARMODEL: 'AR Modeli',
+  AREFFECT: 'AR Effect',
   SCENE: 'Manzara',
   BASEMAP: 'Altlık Harita',
   SYMBOL: 'Sembol',
@@ -373,7 +373,7 @@ const Profile: typeof CN.Profile = {
   MAP_AR_DATUM_POSITION: 'Taban noktası koordinatları',
   MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: 'Otomatik konumlandırma başarılı',
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: 'Harita başarıyla seçildi',
-  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'Lütfen cep telefonunuzu kuzeye bakacak şekilde yerleştirin.', 
+  MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: 'Lütfen cep telefonunuzu kuzeye bakacak şekilde yerleştirin.',
   MAP_AR_DATUM_SETTING: 'Kurulum',
   X_COORDINATE: 'X Koordinatı',
   Y_COORDINATE: 'Y Koordinatı',
@@ -381,16 +381,16 @@ const Profile: typeof CN.Profile = {
   MAP_AR_DATUM_AUTO_CATCH_TOLERANCE: 'Tolerans',
   MAP_AR_DRAW_WINDOW: 'Çizim Penceresi',
 
-  MAR_AR_DATUM_PICTURE_LOCATION: 'QR konumu', 
-  MAR_AR_POSITION_CORRECT: 'Pozisyon kalibrasyonu', 
-  MAP_AR_TOWARDS_NORTH: 'Telefonun arkasındaki kamera kuzeye bakıyor', 
-  MAP_AR_SCAN_TIP: 'QR kodunun yalnızca tarama kutusunu doldurduğundan emin olun', 
-  MAP_AR_SCAN_IT: 'Tara', 
-  MAP_AR_DATUM_HEIGHT: 'Yükseklik', 
-  MAP_AR_DATUM_DIRECTION: 'Yön', 
-  MAR_AR_DATUM_NORTH: 'Kuzey', 
-  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR konumu başarılı', 
-  MAR_AR_QR_INVALID: 'QR kodu bilgisi tanınmadı', 
+  MAR_AR_DATUM_PICTURE_LOCATION: 'QR konumu',
+  MAR_AR_POSITION_CORRECT: 'Pozisyon kalibrasyonu',
+  MAP_AR_TOWARDS_NORTH: 'Telefonun arkasındaki kamera kuzeye bakıyor',
+  MAP_AR_SCAN_TIP: 'QR kodunun yalnızca tarama kutusunu doldurduğundan emin olun',
+  MAP_AR_SCAN_IT: 'Tara',
+  MAP_AR_DATUM_HEIGHT: 'Yükseklik',
+  MAP_AR_DATUM_DIRECTION: 'Yön',
+  MAR_AR_DATUM_NORTH: 'Kuzey',
+  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR konumu başarılı',
+  MAR_AR_QR_INVALID: 'QR kodu bilgisi tanınmadı',
 
   // ar地图
   COLLECT_SCENE_RENAME: 'Yeniden adlandırma',

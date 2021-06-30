@@ -56,13 +56,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'SuperMap iTabletten çık?',
   MAP_LOADING: 'Yükleniyor',
   LOADING: 'Yükleniyor',
-  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
+  OPEN_MAP_CONFIRM: 'Haritayı açacak mı?',
   THE_MAP_IS_OPENED: 'Harita açıldı',
   THE_MAP_IS_NOTEXIST: 'Harita mevcut değil',
-  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
+  OPEN_MAP_FAILED: 'Haritayı açılamadı',
   THE_SCENE_IS_OPENED: 'Manzara açıldı',
   NO_SCENE_LIST: 'Veri Yok',
-  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
+  NO_SCENE_SELECTED: 'Sahne seçilmedi',
   SWITCHING: 'Değiştiriliyor',
   CLOSING: 'Kapatılıyor',
   CLOSING_3D: 'Kapatılıyor',
@@ -106,9 +106,9 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'Aç',
   CREATE_FAILED: 'Oluşturma Başarısız',
   INVALID_DATASET_NAME: 'Geçersiz verikümesi adı ya da ad mevcutta kullanılıyor',
-  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
-  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
-  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
+  SAVE_FAIL_POINT:"Yasadışı nokta ayarlı uzunluğu, nokta ayarlı nesne uzunluğu 1'den daha büyük veya eşit olmalı.",
+  SAVE_LINE_FAIL: "Yasadışı nokta ayarlı uzunluğu, nokta ayarlı nesne uzunluğu 2'den daha büyük veya eşit olmalı.",
+  SAVE_REGION_FAIL: "Yasadışı nokta ayarlı uzunluğu, nokta ayarlı nesne uzunluğu 3'den daha büyük veya eşit olmalı.",
 
   PLEASE_CHOOSE_POINT_LAYER: 'Lütfen Nokta Katmanını Seçiniz',
   PLEASE_CHOOSE_LINE_LAYER: 'Lütfen Çizgi Katmanını Seçiniz',
@@ -129,7 +129,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: 'Desteklenen cihaz listesini gör',
   PLEASE_NEW_PLOT_LAYER: 'Lütfen Yeni Çizim Katmanı Oluşturun',
   DOWNLOADING_PLEASE_WAIT: 'İndiriliyor, lütfen bekleyin',
-  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Lütfen diğer dosyalar indirilirken bekleyin', 
+  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Lütfen diğer dosyalar indirilirken bekleyin',
   SELECT_DELETE_BY_RECTANGLE: 'Lütfen öğeyi dikdörtgen seçerek sili seçin',
 
   CHOOSE_LAYER: 'Katman Seç',
@@ -137,7 +137,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'Başarıyla Toplandı',
 
   SELECT_TWO_MEDIAS_AT_LEAST: 'Lütfen en az iki medya seçin',
-  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'Bu nesne medi dosyaları yok.Silmek ister misiniz?',
 
   NETWORK_REQUEST_FAILED: 'Ağ İsteği Başarısız',
 
@@ -181,11 +181,11 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_SYMBOL: 'Lütfen çizim sembolü seçin',
 
   ENTER_NAME: 'Lütfen adı girin',
-  ENTER_CAPTION: 'Lütfen başlık girin', 
-  CHOICE_TYPE: 'Lütfen türü seçin', 
-  INPUT_LENGTH: 'Lütfen maksimum uzunluğu girin', 
-  DEFAULT_VALUE_EROROR: 'Varsayılan değer giriş hatası', 
-  SELECT_REQUIRED: 'Lütfen gerekli olanları seçin', 
+  ENTER_CAPTION: 'Lütfen başlık girin',
+  CHOICE_TYPE: 'Lütfen türü seçin',
+  INPUT_LENGTH: 'Lütfen maksimum uzunluğu girin',
+  DEFAULT_VALUE_EROROR: 'Varsayılan değer giriş hatası',
+  SELECT_REQUIRED: 'Lütfen gerekli olanları seçin',
 
   CLIPPING: 'Kırpılıyor',
   CLIPPED_SUCCESS: 'Başarıyla Kırpıldı',
@@ -209,14 +209,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'Paylaşım Başarısız',
   SHARE_PREPARE: 'Paylaşım için Hazırlanıyor',
   SHARE_START: 'Paylaşmaya Başla',
-  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
+  SHARE_WX_FILE_SIZE_LIMITE: "Dosya boyutu 10M'den fazla geçemez",
 
   EXPORTING: 'Dışarı Aktarılıyor',
   EXPORT_SUCCESS: 'Başarıyla Dışarı Aktarıldı',
   EXPORT_FAILED: 'Dışa Aktarma Başarısız',
   EXPORT_TO: 'Veri şu konuma dışarı aktarıldı: ',
   REQUIRE_PRJ_1984: 'Verikümesinin PrjCoordSys WGS_1984 olmalıdır',
-  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
+  EXPORT_TEMP_FAILED: 'Normal haritalar örnek olarak dışarı aktarmayı desteklemez',
 
   UNDO_FAILED: 'Geri alma başarısız',
   REDO_FAILED: 'Yeniden yapma başarısız',
@@ -414,7 +414,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: 'Please move phone slowly,identify the plane click on the screen to add scene',
   IDENTIFY_TIMEOUT: 'İzleme görüntüsü zaman aşımı, tekrar denemek ister misiniz?',
   TRACKING_LOADING: 'İzleniyor...',
-  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
+  UNSELECTED_OBJECT: 'Seçilmemiş nesne',
 
   // 专题制图加载/输出xml
   SUCCESS: 'Başarılı işlem',
@@ -423,7 +423,7 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM_LOAD_TEMPLATE: 'Şablonu yükleyeceğinizden emin misiniz?',
   CONFIRM_OUTPUT_TEMPLATE: 'Haritanın çıktısını alacağınızdan emin misiniz?',
 
-  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
+  SHOW_AR_SCENE_NOTIFY: 'AR Scene keşfetme tiplerini göster',
 }
 
 export { Prompt }

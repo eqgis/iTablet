@@ -20,8 +20,8 @@ const Common: typeof CN.Common = {
   ADD: 'Ekle',
   NONE: 'hayır',
 
-  DELETE_CURRENT_OBJ_CONFIRM: 'Do you want to delete current object?',  //to be translated
-  NO_SELECTED_OBJ: 'No selected object',  //to be translated
+  DELETE_CURRENT_OBJ_CONFIRM: 'Ağımdaki nesni silmek ister misiniz?',
+  NO_SELECTED_OBJ: 'Seçili nesne yok',
 }
 
 export { Protocol, Common }

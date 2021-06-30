@@ -8,9 +8,9 @@ const Profile: typeof CN.Profile = {
   DATA: 'データ',
   MARK: 'マーク',
   MAP: 'マップ',
-  ARMAP: 'AR Map', // need to translate
-  ARMODEL: 'AR Modal', // need to translate
-  AREFFECT: 'AR Effect', // need to translate
+  ARMAP: 'AR マップ',
+  ARMODEL: 'AR モデル',
+  AREFFECT: 'AR 効果',
   SCENE: 'シーン',
   BASEMAP: 'ベースマップ',
   SYMBOL: 'シンボル',
@@ -46,16 +46,16 @@ const Profile: typeof CN.Profile = {
   SELECT_DATASET:'「チェック」してデータセットを追加します',
   ADD_SELECT_DATASET:'データを追加',
   MOVE_BROWSING:'左右に移動して完全な情報を閲覧する',
-  ADD_THEME_DATA:'1.Add Theme Data',//need to translate
-  CHOOSE_THEME_TYPE:'2.Choose Theme Type',//need to translate
-  CHANGE_THEME_STYLE:'3.Change Theme Style',//need to translate
-  START_COLLECT:'1.New collection map based on template',//need to translate
-  CHOOSE_COLLECT:'2.Select symbols for data acquisition',//need to translate
-  EDIT_COLLECT:'3.Edit the collected data',//need to translate
-  MAP_BROWSE:'Click to open the map',//need to translate
-  MAP_TAGGINGL:'Click to select the marking method to mark',//need to translate
-  SCENE_BROWSE:'Click to open the scene',//need to translate
-  SCENE_FLY:'Click Set flight route to automatically browse the scene from different angles',//need to translate
+  ADD_THEME_DATA:'1.主題図データを追加',
+  CHOOSE_THEME_TYPE:'2.主題図タイプを選択',
+  CHANGE_THEME_STYLE:'3.主題図スタイルを選択',
+  START_COLLECT:'1.テンプレートに基づいて、フィールドマップを作成',
+  CHOOSE_COLLECT:'2.シンボルを選択',
+  EDIT_COLLECT:'3.フィールドデータを編集',
+  MAP_BROWSE:'マップを開き',
+  MAP_TAGGINGL:'マーク方式を選択',
+  SCENE_BROWSE:'シーンを開き',
+  SCENE_FLY:'飛行ルートを設定',
 
   // 我的——登录
   LOGIN: 'ログイン',
@@ -242,7 +242,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_DEVICE: 'デバイスにポジショニング',
   SETTING_LOCATION_LOCAL: '当デバイス',
   SETTING_CLEAR_CACHE: 'キャッシュのクリア',
-  SETTING_CLEAR_CACHE_SUCCESS:'Clear Success',//need to translate
+  SETTING_CLEAR_CACHE_SUCCESS:'クリアに成功',
 
   // ライセンス
   LICENSE: 'ライセンス',
@@ -382,15 +382,15 @@ const Profile: typeof CN.Profile = {
   MAP_AR_DRAW_WINDOW: 'プレビューウィンドウ',
 
   MAR_AR_DATUM_PICTURE_LOCATION: 'QR ロケーション',
-  MAR_AR_POSITION_CORRECT: '位置補正', 
-  MAP_AR_TOWARDS_NORTH: '背面カメラは北を向いてください', 
+  MAR_AR_POSITION_CORRECT: '位置補正',
+  MAP_AR_TOWARDS_NORTH: '背面カメラは北を向いてください',
   MAP_AR_SCAN_TIP: 'QRコードがスキャンボックスを埋めていることを確認してください',
-  MAP_AR_SCAN_IT: 'スキャン', 
-  MAP_AR_DATUM_HEIGHT: '高さ', 
-  MAP_AR_DATUM_DIRECTION: '方向', 
-  MAR_AR_DATUM_NORTH: '北', 
-  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR ロケショーンに成功しました', 
-  MAR_AR_QR_INVALID: 'QR コード情報を見つかりませんでした', 
+  MAP_AR_SCAN_IT: 'スキャン',
+  MAP_AR_DATUM_HEIGHT: '高さ',
+  MAP_AR_DATUM_DIRECTION: '方向',
+  MAR_AR_DATUM_NORTH: '北',
+  MAR_AR_PICTURE_LOCATION_SUCCEED: 'QR ロケショーンに成功しました',
+  MAR_AR_QR_INVALID: 'QR コード情報を見つかりませんでした',
 
   // ar地图
   COLLECT_SCENE_RENAME: '名前変更',

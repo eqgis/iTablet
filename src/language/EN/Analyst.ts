@@ -327,7 +327,7 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SQUARE_ROOT_INTERVAL: 'Square Root Interval',
   STANDARD_DEVIATION_INTERVAL: 'Standard Deviation Interval',
 
-  // Units of length 
+  // Units of length
   METER: 'm',
   KILOMETER: 'km',
   YARD: 'yd',

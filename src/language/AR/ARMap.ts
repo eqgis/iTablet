@@ -1,42 +1,44 @@
-const ARMap = {// need to translate
-  ARDRAWING: 'AR Drawing',
+import CN from '../CN'
+
+const ARMap: typeof CN.ARMap = {// need to translate
+  ARDRAWING: 'رسومات',
 
   THREE_D: '3D',
-  VECTOR: 'Vector',
-  MODEL: 'Model',
-  EFFECT: 'Effect',
+  VECTOR: 'ناقل',
+  MODEL: 'نموذج .',
+  EFFECT: 'أثر',
 
-  SUBSTANCE: 'Substance',
-  AREA: 'Area',
-  LINE: 'Line',
-  POINT: 'Point',
+  SUBSTANCE: 'مادة',
+  AREA: 'منطقة',
+  LINE: 'خط',
+  POINT: 'نقطة .',
 
-  OPEN_MAP: 'Open Map',
-  UNTITLED_MAP: 'Untitled Map',
-  CLOSE_MAP: 'Close Map',
-  ADD_LAYER: 'Add Layer',
-  SAVE: 'Save',
+  OPEN_MAP: 'فتح الخريطة',
+  UNTITLED_MAP: 'خريطة بدون عنوان',
+  CLOSE_MAP: 'إغلاق الخريطة',
+  ADD_LAYER: 'إضافة طبقة',
+  SAVE: 'حفظ .',
 
-  BORDER_WIDTH: 'BorderW idth',
-  POSITION: 'Position',
-  ROTATION: 'Rotation',
-  SCALE: 'Scale',
-  LEFT: 'Left',
-  RIGHT: 'Right',
-  UP: 'Up',
-  DOWN: 'Down',
-  FRONT: 'Front',
-  BACK: 'Back',
-  DIRECTION: 'Direction', //to be translated
-  DISTANCE: 'Distance', //to be translated
-  RATATION_AXIS: 'Ratation Axis', //to be translated
-  CLOCKWISE: 'closewise', //to be translated
-  COUNTER_CLOCKWISE: 'couterclockwise', //to be translated
+  BORDER_WIDTH: 'عرض الحدود',
+  POSITION: 'موقع',
+  ROTATION: 'استدارة',
+  SCALE: 'مقياس',
+  LEFT: 'يسار .',
+  RIGHT: 'رايت ›',
+  UP: 'صاعد',
+  DOWN: 'نزولا',
+  FRONT: 'أمامي',
+  BACK: 'ظهر',
+  DIRECTION: 'الاتجاه',
+  DISTANCE: 'المسافة',
+  RATATION_AXIS: 'محور الدوران',
+  CLOCKWISE: 'مسافة قريبة',
+  COUNTER_CLOCKWISE: 'عكس اتجاه عقارب الساعة',
 
-  ANIMATION: 'Aniamtion', //to be translated
-  ANIMATION_TYPE: 'Animation Type', //to be translated
+  ANIMATION: 'أنمي',
+  ANIMATION_TYPE: 'أنواع الرسوم المتحركة',
 
-  AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing', // need to translate
+  AR_LAYER_NOT_SUPPORT_STYLE: 'تحرير نمط غير معتمد في الطبقة الحالية',
 
   TEXT_OPACITY: 'Text Opacity', // to be translated
   TEXT_COLOR: 'Text Color', // to be translated

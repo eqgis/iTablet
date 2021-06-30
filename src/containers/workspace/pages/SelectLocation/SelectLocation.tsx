@@ -9,6 +9,8 @@ import {
   NativeModules,
   NativeEventEmitter,
   TouchableOpacity,
+  Animated,
+  TouchableHighlight,
 } from 'react-native'
 import { MapController } from '../../components'
 import {
@@ -19,12 +21,20 @@ import { SMMapView2, SMap2, SMap } from 'imobile_for_reactnative'
 import {
   scaleSize,
   Toast,
+  setSpText,
 } from '../../../../utils'
 import AppStyle from './AppStyle'
 import OnlineDS from './OnlineDS'
 import { getLanguage } from '../../../../language/index'
 import Input from '../../../../components/Input'
 import { getThemeAssets } from '../../../../assets'
+import ToolBarSectionList from '../../../workspace/components/ToolBar/components/ToolBarSectionList'
+import {
+  layerManagerData,
+  ConstToolType,
+  OpenData2,
+} from '../../../../constants'
+import ConstOnline from '../../../../constants/ConstOnline'
 
 interface Props {
   navigation: any,
@@ -41,6 +51,7 @@ const iOSEventEmi = new NativeEventEmitter(NativeModules.SMap)
 export default class SelectLocation extends React.Component<Props, State>{
   homePath: string
   cb: () => void
+  isShow: boolean
 
   constructor(props: Props) {
     super(props)
@@ -48,8 +59,12 @@ export default class SelectLocation extends React.Component<Props, State>{
     this.state = {
       x: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.x,
       y: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.y,
+      bottom: new Animated.Value(
+        -Math.max(this.props.device.height, this.props.device.width),
+      ),
     }
     this.cb = this.props.navigation?.state?.params?.cb
+    this.isShow = false
   }
 
   componentWillUnmount() {
@@ -180,25 +195,189 @@ export default class SelectLocation extends React.Component<Props, State>{
 
   /** 地图选点header右边确定view */
   renderHeaderRight = () => {
+    let moreImg = getThemeAssets().publicAssets.icon_move
     return (
-      <TouchableOpacity
-        key={'search'}
-        onPress={async () => {
-          this.props.navigation.goBack()
-          this.cb && this.cb()
-          if (Platform.OS === 'ios') {
-            SMap.closeMapControl2()
-          }
-        }}
+      <View
+        style={{flexDirection: 'row'}}
       >
-        <Text style={styles.textConfirm}>
-          {getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: scaleSize(50),
+            width: scaleSize(60),
+            marginLeft: scaleSize(6),
+            marginRight: scaleSize(6),
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            this.showToolbarAndBox(true)
+          }}
+        >
+          <Image
+            resizeMode={'contain'}
+            style={{height:scaleSize(40),width:scaleSize(40)}}
+            source={moreImg}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          key={'search'}
+          onPress={async () => {
+            this.props.navigation.goBack()
+            this.cb && this.cb()
+            if (Platform.OS === 'ios') {
+              SMap.closeMapControl2()
+            }
+          }}
+        >
+          <Text style={styles.textConfirm}>
+            {getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
+          </Text>
+        </TouchableOpacity>
+      </View>
     )
   }
 
+  showToolbarAndBox = isShow => {
+    // Toolbar的显示和隐藏
+    if (this.isShow !== isShow) {
+      isShow = isShow === undefined ? true : isShow
+      Animated.timing(this.state.bottom, {
+        toValue: isShow
+          ? 0
+          : -Math.max(this.props.device.height, this.props.device.width),
+        duration: 300,
+      }).start()
+      this.isShow = isShow
+    }
+  }
+
+  renderList = () => {
+    let layerManagerDataArr = [...layerManagerData()]
+    let data= [
+      {
+        title: '',
+        data: layerManagerDataArr,
+      },
+    ]
+    return (
+      <ToolBarSectionList
+        sections={data}
+        device={this.props.device}
+        renderItem={this.renderItem}
+      />
+    )
+  }
+  
+
+  renderItem = data => {
+    const { item, section:{ type } } = data
+    return (
+      <View>
+        <TouchableHighlight
+          onPress={() => {
+            this.listAction({ section: item, type })
+          }}
+          underlayColor={color.headerBackground}
+        >
+          <View
+            style={{
+              height: scaleSize(86),
+              backgroundColor: color.content_white,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            {item.image && (
+              <Image
+                resizeMode={'contain'}
+                style={{
+                  marginLeft: scaleSize(60),
+                  height: scaleSize(40),
+                  width: scaleSize(40),
+                }}
+                source={item.image}
+              />
+            )}
+            <Text
+              style={{
+                fontSize: setSpText(24),
+                marginLeft: scaleSize(60),
+                textAlign: 'center',
+                backgroundColor: 'transparent',
+              }}
+            >
+              {item.title}
+            </Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+    )
+  }
+
+
+  listAction = ({ section, type }) => {
+    if (section.action) {
+      try {
+        switch (section.title) {
+          case 'Google labelmap':
+            OpenData2(ConstOnline.Google, 4)
+            break
+          case 'GaoDe':
+            OpenData2(ConstOnline.GAODE, 0)
+            break
+          case 'GaoDe Image':
+            OpenData2(ConstOnline.GAODE, 1)
+            break
+          case 'BingMap':
+            OpenData2(ConstOnline.BingMap, 0)
+            break
+          case 'Tianditu':
+            {
+              let data = []
+              if (GLOBAL.language === 'CN') {
+                data.push(ConstOnline.tiandituCN())
+              } else {
+                data.push(ConstOnline.tiandituEN())
+              }
+              data.push(ConstOnline.tianditu())
+              OpenData2(data, 0)
+            }
+            break
+          case 'Tianditu Image':
+            {
+              let data = []
+              if (GLOBAL.language === 'CN') {
+                data.push(ConstOnline.tiandituImgCN())
+              } else {
+                data.push(ConstOnline.tiandituImgEN())
+              }
+              data.push(ConstOnline.tiandituImg())
+              OpenData2(data, 0)
+            }
+            break
+          case 'Tianditu Terrain':
+            {
+              let data = []
+              data.push(ConstOnline.tiandituTerCN())
+              data.push(ConstOnline.tiandituTer())
+              OpenData2(data, 0)
+            }
+            break
+          case 'OSM':
+            OpenData2(ConstOnline.OSM, 0)
+            break
+        }
+      } catch (error) {
+        console
+      }
+      this.showToolbarAndBox(false)
+    }
+  }
+
+
   render() {
+    let containerStyle = styles.fullContainer
     return (
       <Container
         showFullInMap={true}
@@ -226,11 +405,30 @@ export default class SelectLocation extends React.Component<Props, State>{
           device={this.props.device}
         />
         {this.renderBottom()}
+
+        <Animated.View
+          style={[
+            containerStyle,
+            { height: this.props.device.height, bottom: this.state.bottom },
+          ]}
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              this.showToolbarAndBox(false)
+            }}
+            style={styles.overlay}
+          />
+          <View style={styles.containers}>{this.renderList()}</View>
+          {/*{this.renderDialog()}*/}
+        </Animated.View>
       </Container>
     )
   }
 }
-
+import { color } from '../../../../styles'
+// 地图按钮栏默认高度
+const BUTTON_HEIGHT = scaleSize(80)
 const styles = StyleSheet.create({
   inputView: {
     width: scaleSize(656),
@@ -265,5 +463,24 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(25),
     color: 'black',
     padding: scaleSize(10),
+  },
+  fullContainer: {
+    flexDirection: 'column',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    backgroundColor: color.gray,
+    zIndex: 1e4,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    // zIndex: zIndexLevel.FOUR,
+  },
+  containers: {
+    flexDirection: 'column',
+    maxHeight: ConstToolType.HEIGHT[3] + BUTTON_HEIGHT,
+    minHeight: BUTTON_HEIGHT,
+    backgroundColor: color.content_white,
   },
 })

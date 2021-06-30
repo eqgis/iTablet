@@ -1380,6 +1380,14 @@ export default class MapView extends React.Component {
         await this.props.closeARMap()
         await this.props.setCurrentARLayer()
       }
+      if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
+        if (Platform.OS === 'android') {
+          await SARMap.showMeasureView(false)
+          await SARMap.showTrackView(false)
+          await SARMap.showPointCloud(false)
+        }
+        await SARMap.dispose()
+      }
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
 
@@ -1535,15 +1543,6 @@ export default class MapView extends React.Component {
             await this._removeNavigationListeners()
           }
           GLOBAL.clickWait = false
-          if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
-            if (Platform.OS === 'android') {
-              await SARMap.showMeasureView(false)
-              await SARMap.showTrackView(false)
-              await SARMap.showPointCloud(false)
-              await SARMap.dispose()
-            }
-            await SARMap.dispose()
-          }
           await this.closeMapHandler(params?.baskFrom)
         })
       } else {
@@ -1553,15 +1552,6 @@ export default class MapView extends React.Component {
             await this._removeNavigationListeners()
             await SMap.clearPoint()
             await SMap.stopGuide()
-          }
-          if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
-            if (Platform.OS === 'android') {
-              await SARMap.showMeasureView(false)
-              await SARMap.showTrackView(false)
-              await SARMap.showPointCloud(false)
-              await SARMap.dispose()
-            }
-            await SARMap.dispose()
           }
           await this.closeMapHandler(params?.baskFrom)
         } catch (e) {

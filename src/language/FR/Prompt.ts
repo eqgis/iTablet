@@ -41,6 +41,7 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'Êtes-vous sûr de vouloir supprimer stop?',
   DELETE_OBJECT: "Êtes-vous sûr de vouloir supprimer définitivement l'objet?",
+  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: 'Veuillez ajouter un arrêt',
 
   CONFIRM: 'Confirmer',

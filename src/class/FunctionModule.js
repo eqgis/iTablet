@@ -30,7 +30,7 @@ export default class FunctionModule {
     // let height = 0,
     //   column = -1,
     //   row = -1
-    // return { height, column, row }
+    // return { height, column, row, autoShowBox }
   }
 
   getTitle = () => this.title

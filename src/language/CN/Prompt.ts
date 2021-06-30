@@ -39,6 +39,7 @@ const Prompt = {
 
   DELETE_STOP: '确认删除站点？',
   DELETE_OBJECT: '确定要永久删除该对象吗?',
+  DELETE_LAYER: '删除图层后，数据无法恢复，确认删除?',
   PLEASE_ADD_STOP: '请添加站点',
 
   CONFIRM: '确定',
@@ -62,7 +63,7 @@ const Prompt = {
   NO_SCENE_SELECTED: '未选择场景',
   SWITCHING: '正在切换地图',
   CLOSING: '正在关闭地图',
-  CLOSING_3D: '正在关闭地图',
+  CLOSING_3D: '正在关闭场景',
   SAVING: '正在保存地图',
   SWITCHING_SUCCESS: '切换成功',
   ADD_SUCCESS: '添加成功',

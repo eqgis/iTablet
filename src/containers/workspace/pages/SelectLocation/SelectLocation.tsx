@@ -15,7 +15,7 @@ import {
 import { MapController } from '../../components'
 import {
   Container,
-  Button,
+  Input,
 } from '../../../../components'
 import { SMMapView2, SMap2, SMap } from 'imobile_for_reactnative'
 import {
@@ -23,10 +23,8 @@ import {
   Toast,
   setSpText,
 } from '../../../../utils'
-import AppStyle from './AppStyle'
-import OnlineDS from './OnlineDS'
 import { getLanguage } from '../../../../language/index'
-import Input from '../../../../components/Input'
+import { ConstOnline } from '../../../../constants'
 import { getThemeAssets } from '../../../../assets'
 import ToolBarSectionList from '../../../workspace/components/ToolBar/components/ToolBarSectionList'
 import {
@@ -107,17 +105,18 @@ export default class SelectLocation extends React.Component<Props, State>{
   }
 
   openMap = async () => {
+    const map = ConstOnline.tianditu()
     if (Platform.OS === 'android') {
       //刚初始化完mapview后添加会导致第一次的地图范围不对，设置个延时
       setTimeout(() => {
-        SMap2.addToMap(OnlineDS.tianditu.alias, 0)
+        SMap2.addToMap(map.DSParams.alias, map.layerIndex)
       }, 1)
     } else {
       let datasourceParams = {
-        server: OnlineDS.tianditu.server,
-        engineType: OnlineDS.tianditu.engineType,
-        alias: OnlineDS.tianditu.alias,
-        driver: OnlineDS.tianditu.driver,
+        server: map.DSParams.server,
+        engineType: map.DSParams.engineType,
+        alias: map.DSParams.alias,
+        driver: map.DSParams.driver,
       }
       SMap.addToMap(datasourceParams, 0)
     }
@@ -393,7 +392,7 @@ export default class SelectLocation extends React.Component<Props, State>{
         <SMMapView2
           onLoad={this.openMap}
           workspace={{
-            datasource: OnlineDS.tianditu,
+            datasource: ConstOnline.tianditu().DSParams,
           }}
           onSingleTap={this.onSingleTap}
         />

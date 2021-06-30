@@ -17,53 +17,53 @@ export interface ExampleData {
 export const AR3DExample: ExampleData = {
   userName: '927528',
   downloadName: '3Dpipe_EXAMPLE.zip',
-  dir: '3Dpipe_EXAMPLE',
+  dir: 'AR3D/3Dpipe_EXAMPLE',
 }
 
 export const ARModelExample: ExampleData[] = [{
   userName: '927528',
-  downloadName: 'ARModel_EXAMPLE.zip',
-  dir: 'ARModel',
+  downloadName: 'flag.zip',
+  dir: 'ARModal/flag',
 }, {
   userName: '927528',
-  downloadName: 'ARModel_EXAMPLE2.zip',
-  dir: 'ARModel_EXAMPLE2',
+  downloadName: 'Airplane.zip',
+  dir: 'ARModal/Airplane',
 }, {
   userName: '927528',
-  downloadName: 'ARModel_EXAMPLE3.zip',
-  dir: 'ARModel_EXAMPLE3',
+  downloadName: 'terrain.zip',
+  dir: 'ARModal/terrain',
 }, {
   userName: '927528',
-  downloadName: 'ARModel_EXAMPLE4.zip',
-  dir: 'ARModel_EXAMPLE4',
+  downloadName: 'earth.zip',
+  dir: 'ARModal/earth',
 }]
 
 export const AREffectExample: ExampleData = {
   userName: '927528',
   downloadName: 'SpringFlower.mp4',
   toName: 'SpringFlower.areffect',
-  dir: 'SpringFlower',
+  dir: 'AREffect/SpringFlower',
 }
 
 export const AREffectExample2: ExampleData = {
   userName: '927528',
   downloadName: 'CloudLightening.mp4',
   toName: 'CloudLightening.areffect',
-  dir: 'CloudLightening',
+  dir: 'AREffect/CloudLightening',
 }
 
 export const AREffectExample3: ExampleData = {
   userName: '927528',
   downloadName: 'AutumnLeave.mp4',
   toName: 'AutumnLeave.areffect',
-  dir: 'AutumnLeave',
+  dir: 'AREffect/AutumnLeave',
 }
 
 export const AREffectExample4: ExampleData = {
   userName: '927528',
   downloadName: 'Snow.mp4',
   toName: 'Snow.areffect',
-  dir: 'Snow',
+  dir: 'AREffect/Snow',
 }
 
 async function downloadExampleData(exampleData: ExampleData, onProgress: (progress: number) => void): Promise<boolean> {
@@ -97,8 +97,8 @@ async function getDataDownloadOption(data: ExampleData): Promise<DownloadFileOpt
 
   const onlineService = new OnlineServicesUtils('online')
   const result = await onlineService.getPublicDataByName(data.userName, data.downloadName)
-  const dir = _isZipData(data) ? '' : (data.dir + '/')
-  const downloadPath = homePath + commonPath + dir
+  // const dir = _isZipData(data) ? '' : (data.dir + '/')
+  const downloadPath = homePath + commonPath + data.dir + (data.dir.endsWith('/') ? '' : '/')
   if(!await RNFS.exists(downloadPath)) {
     await RNFS.mkdir(downloadPath)
   }

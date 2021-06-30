@@ -294,7 +294,7 @@ export default class LayerAttribute extends React.Component {
         //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
         //   attributes.data.length < PAGE_SIZE
 
-        if (attributes.data.length === 1) {
+        if (this.total === 1 && attributes.data.length === 1) {
           this.setState({
             showTable: true,
             attributes,
@@ -629,7 +629,7 @@ export default class LayerAttribute extends React.Component {
   }
 
   selectRow = ({ data, index }) => {
-    if (!data || index < 0 || this.state.attributes.data.length === 1) return
+    if (!data || index < 0 || this.total === 1 && this.state.attributes.data.length === 1) return
 
     if (this.state.relativeIndex !== index) {
       this.setState({
@@ -961,7 +961,7 @@ export default class LayerAttribute extends React.Component {
       typeof this.props.setLayerAttributes === 'function'
     ) {
       // 单个对象属性和多个对象属性数据有区别，单个属性cellData是值
-      let isSingleData = this.state.attributes.data.length === 1
+      let isSingleData = this.total === 1 && this.state.attributes.data.length === 1
       // 单个对象属性 在 隐藏系统字段下，要重新计算index
       if (isSingleData && !this.state.isShowSystemFields) {
         for (let index in this.state.attributes.data[0]) {
@@ -1279,7 +1279,7 @@ export default class LayerAttribute extends React.Component {
       async data => {
         let layerName = this.props.currentLayer.name,
           geoID = data.rowData[1].value
-        if(this.state.attributes.data.length === 1){
+        if(this.total === 1 && this.state.attributes.data.length === 1){
           geoID = data.rowData[0].value
         }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
@@ -1310,7 +1310,7 @@ export default class LayerAttribute extends React.Component {
               for (let i = 0; i < _data.length; i++) {
                 if (_data[i].name !== 'MediaName') continue
                 if (_data[i].value === mData[j].value) break
-                let isSingle = this.state.attributes.data.length === 1
+                let isSingle = this.total === 1 && this.state.attributes.data.length === 1
                 let params = {}
                 if (isSingle) {
                   params = {
@@ -1340,27 +1340,26 @@ export default class LayerAttribute extends React.Component {
         })
       },
     ] : []
+    const isSingle = this.total === 1 && this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}
         data={
-          this.state.attributes.data.length === 1
+          isSingle
             ? this.state.attributes.data[0]
             : this.state.attributes.data
         }
         tableHead={
-          this.state.attributes.data.length === 1
+          isSingle
             ? [
               getLanguage(this.props.language).Map_Label.NAME,
               getLanguage(this.props.language).Map_Label.ATTRIBUTE,
-              //'名称'
-              //'属性值'
             ]
             : this.state.attributes.head
         }
-        widthArr={this.state.attributes.data.length === 1 && [100, 100]}
+        widthArr={isSingle && [100, 100]}
         type={
-          this.state.attributes.data.length === 1
+          isSingle
             ? LayerAttributeTable.Type.SINGLE_DATA
             : LayerAttributeTable.Type.MULTI_DATA
         }
@@ -1368,7 +1367,7 @@ export default class LayerAttribute extends React.Component {
         indexColumn={0}
         hasIndex={this.state.attributes.data.length > 1}
         startIndex={
-          this.state.attributes.data.length === 1
+          isSingle
             ? -1
             : this.state.startIndex + 1
         }

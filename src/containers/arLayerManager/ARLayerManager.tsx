@@ -154,15 +154,22 @@ export default class ARLayerManager extends React.Component<Props, State> {
           title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
           image: getThemeAssets().layer.icon_remove_layer,
           action: async () => {
-            let layer = this.state.selectLayer
-            if (layer) {
-              await SARMap.removeARLayer(layer.name)
-              this.props.setCurrentARLayer()
-              await this.props.getARLayers()
-              this.setState({
-                menuVisible: false,
-              })
-            }
+            GLOBAL.SimpleDialog.set({
+              text: getLanguage(GLOBAL.language).Prompt.DELETE_LAYER,
+              confirmText: getLanguage(GLOBAL.language).Prompt.DELETE,
+              cancelText: getLanguage(GLOBAL.language).Prompt.CANCEL,
+              confirmAction: async () => {
+                if (this.state.selectLayer) {
+                  await SARMap.removeARLayer(this.state.selectLayer.name)
+                  this.props.setCurrentARLayer()
+                  await this.props.getARLayers()
+                  this.setState({
+                    menuVisible: false,
+                  })
+                }
+              },
+            })
+            GLOBAL.SimpleDialog.setVisible(true)
           },
         },
       ],
@@ -174,12 +181,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
     ) {
       menuData[0].data.unshift({
         title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
-        image: getThemeAssets().layer.icon_layer_style,
+        image: getThemeAssets().functionBar.icon_tool_edit,
         action: async () => {
-          if (this.props.arlayer.currentLayer) {
-            arEditModule().action()
-            NavigationService.navigate('MapView')
+          if (this.props.arlayer.currentLayer?.name !== this.state.selectLayer?.name) {
+            await this.props.setCurrentARLayer(this.state.selectLayer)
           }
+          arEditModule().action()
+          NavigationService.navigate('MapView')
         },
       })
     }

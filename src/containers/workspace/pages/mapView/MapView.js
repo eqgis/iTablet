@@ -1534,7 +1534,6 @@ export default class MapView extends React.Component {
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()
           }
-          await this.closeMapHandler(params?.baskFrom)
           GLOBAL.clickWait = false
           if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
             if (Platform.OS === 'android') {
@@ -1555,7 +1554,6 @@ export default class MapView extends React.Component {
             await SMap.clearPoint()
             await SMap.stopGuide()
           }
-          await this.closeMapHandler(params?.baskFrom)
           if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR){
             if (Platform.OS === 'android') {
               await SARMap.showMeasureView(false)

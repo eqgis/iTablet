@@ -229,9 +229,9 @@ async function getARModel() {
   const _params: any = ToolbarModule.getParams()
   const arModelTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'ARMODEL')
   const items: any[] = []
-  const downloadKeys = []
+  const downloadKeys: string[] = []
   for (const item of ARModelExample) {
-    if(arModelTemp.findIndex(item2 => item2.name === item.toName) < 0) {
+    if(arModelTemp.findIndex(item2 => item2.name.replace('.glb', '') === item.downloadName.replace('.zip', '')) < 0) {
       downloadKeys.push(item.userName + '_' + item.downloadName)
     }
   }
@@ -240,7 +240,7 @@ async function getARModel() {
       key: 'download',
       image: getPublicAssets().common.icon_download,
       title: getLanguage(_params.language).Prompt.DOWNLOAD,
-      action: ARDrawingAction.downloadModelExample,
+      action: () => ARDrawingAction.downloadModelExample(downloadKeys),
       downloadKeys,
     })
   }

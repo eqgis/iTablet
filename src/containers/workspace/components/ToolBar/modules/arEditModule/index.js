@@ -34,6 +34,7 @@ class ArEditModule extends FunctionModule {
         data.height = 0
         break
     }
+    data.autoShowBox = false
     return data
   }
 

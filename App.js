@@ -19,7 +19,7 @@ import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './src/redux/models/nav'
-import { setUser, setUsers } from './src/redux/models/user'
+import { setUser, setUsers, deleteUser } from './src/redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting } from './src/redux/models/setting'
 import {
   setEditLayer,
@@ -31,6 +31,7 @@ import {
   closeMap,
   setCurrentMap,
   saveMap,
+  closeWorkspace,
 } from './src/redux/models/map'
 import {
   setCurrentTemplateInfo,
@@ -162,11 +163,13 @@ class AppRoot extends Component {
 
     setNav: PropTypes.func,
     setUser: PropTypes.func,
+    deleteUser: PropTypes.func,
     setUsers: PropTypes.func,
     openWorkspace: PropTypes.func,
     setShow: PropTypes.func,
     closeMap: PropTypes.func,
     setCurrentMap: PropTypes.func,
+    closeWorkspace: PropTypes.func,
 
     setEditLayer: PropTypes.func,
     setSelection: PropTypes.func,
@@ -360,7 +363,7 @@ class AppRoot extends Component {
     return bLogin
   }
 
-  login = async appState => {
+  login = async bResetMsgService => {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
@@ -384,16 +387,18 @@ class AppRoot extends Component {
           isEmail: true,
           userType: UserType.COMMON_USER,
         }
-        this.props.setUser(user)
+        await this.props.setUser(user)
+        await this.initDirectories(user.userName)
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
-        if(appState !== true){
-          GLOBAL.getFriend().onUserLoggedin()
+        if(bResetMsgService !== true){
+          //TODO 处理app加载流程，确保登录后再更新消息服务
+          GLOBAL.getFriend?.().onUserLoggedin()
         }
-        
+
       } else {
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
         if(bResetMsgService !== true){
-          GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+          this.logoutOnline()
         }
       }
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
@@ -407,7 +412,7 @@ class AppRoot extends Component {
         let info = await SIPortalService.getMyAccount()
         if (info) {
           let userInfo = JSON.parse(info)
-          this.props.setUser({
+          await this.props.setUser({
             serverUrl: url,
             userName: userInfo.name,
             password: password,
@@ -415,6 +420,7 @@ class AppRoot extends Component {
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
           })
+          await this.initDirectories(userInfo.name)
         }
         this.container.setLoading(false)
         NavigationService.popToTop()
@@ -429,6 +435,34 @@ class AppRoot extends Component {
         this.loginTimer = undefined
       }
       this.loginTimer = setInterval(this.loginOnline, 60000)
+    }
+  }
+
+  logoutOnline = () => {
+    try {
+      if (this.props.user.userType !== UserType.PROBATION_USER) {
+        SOnlineService.logout()
+      }
+      this.props.closeWorkspace(async () => {
+        SOnlineService.removeCookie()
+        let customPath = await FileTools.appendingHomeDirectory(
+          ConstPath.CustomerPath +
+          ConstPath.RelativeFilePath.Workspace[
+            this.props.language === 'CN' ? 'CN' : 'EN'
+          ],
+        )
+        this.props.deleteUser(this.props.user.currentUser)
+        this.props.setUser({
+          userName: 'Customer',
+          nickname: 'Customer',
+          userType: UserType.PROBATION_USER,
+        })
+        NavigationService.popToTop('Tabs')
+        this.props.openWorkspace({ server: customPath })
+        Toast.show(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+      })
+    } catch (e) {
+      //
     }
   }
 
@@ -714,7 +748,7 @@ class AppRoot extends Component {
   }
 
   // 初始化文件目录
-  initDirectories = async () => {
+  initDirectories = async (userName = 'Customer') => {
     try {
       await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
       let paths = Object.keys(ConstPath)
@@ -727,7 +761,7 @@ class AppRoot extends Component {
         let fileCreated = exist || await FileTools.createDirectory(absolutePath)
         isCreate = fileCreated && isCreate
       }
-      isCreate = this.initCustomerDirectories() && isCreate
+      isCreate = this.initUserDirectories(userName) && isCreate
       if (!isCreate) {
         Toast.show('创建文件目录失败')
       }
@@ -737,15 +771,15 @@ class AppRoot extends Component {
   }
 
   // 初始化游客用户文件目录
-  initCustomerDirectories = async () => {
+  initUserDirectories = async (userName = 'Customer') => {
     try {
       let paths = Object.keys(ConstPath.RelativePath)
       let isCreate = true, absolutePath = ''
       for (let i = 0; i < paths.length; i++) {
         let path = ConstPath.RelativePath[paths[i]]
         if (typeof path !== 'string') continue
-        absolutePath = await FileTools.appendingHomeDirectory(ConstPath.CustomerPath + path)
-        let exist = await FileTools.fileIsExistInHomeDirectory(ConstPath.CustomerPath + path)
+        absolutePath = await FileTools.appendingHomeDirectory(ConstPath.UserPath + userName + '/' + path)
+        let exist = await FileTools.fileIsExistInHomeDirectory(ConstPath.UserPath + userName + '/' + path)
         let fileCreated = exist || await FileTools.createDirectory(absolutePath)
         isCreate = fileCreated && isCreate
       }
@@ -1289,6 +1323,8 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setMapArGuide,
   setMapArMappingGuide,
   setMapAnalystGuide,
+  deleteUser,
+  closeWorkspace,
 })(AppRoot)
 
 const App = () =>

@@ -119,6 +119,8 @@ export default class Friend extends Component {
   componentDidMount() {
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       FriendListFileHandle.initLocalFriendList(this.props.user.currentUser)
+      //TODO 临时处理，app加载流程修改后在此处进行第一次连接服务
+      this.updateServices()
     }
   }
 

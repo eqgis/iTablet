@@ -40,11 +40,11 @@ const ARMap: typeof CN.ARMap = {// need to translate
 
   AR_LAYER_NOT_SUPPORT_STYLE: '現在レイヤーはスタイル編集をサポートしません',
 
-  TEXT_OPACITY: 'Text Opacity', // to be translated
-  TEXT_COLOR: 'Text Color', // to be translated
-  TEXT_SIZE: 'Text Size', // to be translated
-  BACKGROUND_OPACITY: 'Background Opacity', // to be translated
-  BACKGROUND_COLOR: 'Background Color', // to be translated
+  TEXT_OPACITY: '透明度',
+  TEXT_COLOR: 'カラー',
+  TEXT_SIZE: 'フォントサイズ',
+  BACKGROUND_OPACITY: '背景透明度',
+  BACKGROUND_COLOR: '背景色',
 }
 
 export {

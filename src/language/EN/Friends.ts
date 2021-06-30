@@ -156,7 +156,7 @@ const Friends: typeof CN.Friends = {
   ADDED: 'Added',
 
   // 创建群组
-  JOIN: 'Join', // need to be translated
+  JOIN: 'Join',
   VIEW_MORE_MEMBERS: 'View more members',
   MY_GROUPS: 'My Groups',
   JOINED_GROUPS: 'Joined Groups',

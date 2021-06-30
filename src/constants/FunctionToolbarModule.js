@@ -61,6 +61,37 @@ async function OpenData(data, index, callback) {
   return true
 }
 
+async function OpenData2(data, index, callback) {
+  let isOpen
+  if (data instanceof Array) {
+    for (let i = 0; i < data.length; i++) {
+      isOpen = await SMap.isDatasourceOpen2(data[i].DSParams)
+    }
+  } else {
+    isOpen = await SMap.isDatasourceOpen2(data.DSParams)
+  }
+  // Layer index = 0 为顶层
+  if (isOpen) {
+    await SMap.closeAllDatasource()
+    if (data instanceof Array) {
+      for (let i = 0; i < data.length; i++) {
+        await SMap.openDatasourceWithIndex2(data[i].DSParams, index, false)
+      }
+      if (callback && typeof callback === 'function') {
+        callback()
+      }
+    } else {
+      await SMap.openDatasourceWithIndex2(data.DSParams, index, false)
+      if (callback && typeof callback === 'function') {
+        callback()
+      }
+    }
+  } else {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
+  }
+  return true
+}
+
 const layerAdd = [
   {
     title: '选择数据源',
@@ -700,5 +731,6 @@ export {
   OpenData,
   legendMenuInfo,
   legendMenuInfoNotVisible,
+  OpenData2,
   // smartCartography,
 }

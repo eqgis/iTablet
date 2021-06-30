@@ -238,7 +238,7 @@ const Friends: typeof CN.Friends = {
   RESOURCE_DELETE_INFO: 'هل أنت متأكد أنك تريد حذف البيانات المحددة',
   RESOURCE_SELECT_MODULE: 'الرجاء تحديد قالب',
   RESOURCE_DOWNLOAD_INFO: 'الرجاء تنزيل المهمة',
-  RESOURCE_NOT_EXIST: 'Resource doesn\'t exist', // need to translate
+  RESOURCE_NOT_EXIST: 'الموارد غير موجودة',
 
   TASK_DOWNLOAD: 'تنزيل المهمة',
   TASK_DOWNLOADING: 'تنزيل',

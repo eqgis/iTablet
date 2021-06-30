@@ -1,42 +1,44 @@
-const ARMap = {// need to translate
-  ARDRAWING: 'AR Drawing',
+import CN from '../CN'
+
+const ARMap: typeof CN.ARMap = {// need to translate
+  ARDRAWING: 'AR Çizim',
 
   THREE_D: '3D',
-  VECTOR: 'Vector',
+  VECTOR: 'Vektor',
   MODEL: 'Model',
-  EFFECT: 'Effect',
+  EFFECT: 'Efekt',
 
   SUBSTANCE: 'Substance',
-  AREA: 'Area',
-  LINE: 'Line',
-  POINT: 'Point',
+  AREA: 'Bölge',
+  LINE: 'Hat',
+  POINT: 'Doğru',
 
-  OPEN_MAP: 'Open Map',
-  UNTITLED_MAP: 'Untitled Map',
-  CLOSE_MAP: 'Close Map',
-  ADD_LAYER: 'Add Layer',
-  SAVE: 'Save',
+  OPEN_MAP: 'Harita Aç',
+  UNTITLED_MAP: 'Adsız Harita',
+  CLOSE_MAP: 'Haritayı kapat',
+  ADD_LAYER: 'Düzeni Ekle',
+  SAVE: 'Kaydet',
 
-  BORDER_WIDTH: 'BorderW idth',
-  POSITION: 'Position',
-  ROTATION: 'Rotation',
-  SCALE: 'Scale',
-  LEFT: 'Left',
-  RIGHT: 'Right',
-  UP: 'Up',
-  DOWN: 'Down',
+  BORDER_WIDTH: 'Sınır genişliği',
+  POSITION: 'Konum',
+  ROTATION: 'Döndürme',
+  SCALE: 'Ölçü',
+  LEFT: 'Sol',
+  RIGHT: 'Sağ',
+  UP: 'Yukarı',
+  DOWN: 'Aşağı',
   FRONT: 'Front',
-  BACK: 'Back',
-  DIRECTION: 'Direction', //to be translated
-  DISTANCE: 'Distance', //to be translated
-  RATATION_AXIS: 'Ratation Axis', //to be translated
-  CLOCKWISE: 'closewise', //to be translated
-  COUNTER_CLOCKWISE: 'couterclockwise', //to be translated
+  BACK: 'Geri',
+  DIRECTION: 'Doğru',
+  DISTANCE: 'Distance',
+  RATATION_AXIS: 'Rotation Axis',
+  CLOCKWISE: 'Saat yönünde',
+  COUNTER_CLOCKWISE: 'anti-clockwise',
 
-  ANIMATION: 'Aniamtion', //to be translated
-  ANIMATION_TYPE: 'Animation Type', //to be translated
+  ANIMATION: 'Animasyon',
+  ANIMATION_TYPE: 'Animasyon Türü',
 
-  AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing', // need to translate
+  AR_LAYER_NOT_SUPPORT_STYLE: 'Ağımdaki katı stil düzenlemesini desteklemez',
 
   TEXT_OPACITY: 'Text Opacity', // to be translated
   TEXT_COLOR: 'Text Color', // to be translated

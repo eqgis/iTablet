@@ -40,7 +40,7 @@ const Friends: typeof CN.Friends = {
   INPUT_INVALID: 'Geçersiz giriş, lütfen tekrar giriş yapın',
   // InformMessage
   TITLE_NOTIFICATION: 'Bildirim',
-  
+
   FRIEND_RESPOND: 'Bu arkadaşlık isteğini kabul et?',
   // CreateGroupChat
   CONFIRM2: 'Tamam',
@@ -234,7 +234,7 @@ const Friends: typeof CN.Friends = {
   RESOURCE_DELETE_INFO: 'Seçili verileri silmek istediğinizden emin misiniz?',
   RESOURCE_SELECT_MODULE: 'Lütfen bir şablon seçin',
   RESOURCE_DOWNLOAD_INFO: 'Lütfen görevi indirin',
-  RESOURCE_NOT_EXIST: 'Resource doesn\'t exist', // need to translate
+  RESOURCE_NOT_EXIST: 'Kaynak yok.',
 
   TASK_DOWNLOAD: 'Görevi indir',
   TASK_DOWNLOADING: 'İndiliyor...',

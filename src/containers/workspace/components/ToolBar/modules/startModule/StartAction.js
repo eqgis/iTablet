@@ -441,7 +441,6 @@ function saveMap() {
       // }
       const isMapFromXML = GLOBAL.IS_MAP_FROM_XML
       GLOBAL.IS_MAP_FROM_XML = false
-      console.log(isMapFromXML,'xxx')
       const result = await ToolbarModule.getParams().saveMap({
         mapName,
         addition,

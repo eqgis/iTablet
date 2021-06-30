@@ -56,13 +56,13 @@ const Prompt: typeof CN.Prompt = {
   QUIT: 'SuperMap iTabletを閉じますか?',
   MAP_LOADING: 'マップロード中',
   LOADING: 'ロード中',
-  OPEN_MAP_CONFIRM: 'Whether to open the map', // need to translate
+  OPEN_MAP_CONFIRM: 'マップを開くかどうか',
   THE_MAP_IS_OPENED: '当マップは開いています',
   THE_MAP_IS_NOTEXIST: '当マップは存在しません',
-  OPEN_MAP_FAILED: 'Failed to open the map', // need to translate
+  OPEN_MAP_FAILED: 'マップを開きのに失敗しました',
   THE_SCENE_IS_OPENED: '当シーンは開いています',
   NO_SCENE_LIST: 'シーンリストはありません',
-  NO_SCENE_SELECTED: 'No scene has been selected', // need to translate
+  NO_SCENE_SELECTED: '選択中のシーンはありません',
   SWITCHING: 'マップ切り替え中',
   CLOSING: 'マップを閉じています',
   CLOSING_3D: 'マップを閉じています',
@@ -81,7 +81,7 @@ const Prompt: typeof CN.Prompt = {
   OVERWRITE: '上書き',
   CHOOSE_DATASET: 'データセットを選択してください',
 
-  PLEASE_SUBMIT_EDIT_GEOMETRY: 'Please Submit Current Geometry',//need to translate
+  PLEASE_SUBMIT_EDIT_GEOMETRY: '現在幾何オブジェクトをサブミットしてください',
 
   SET_ALL_MAP_VISIBLE: 'すべて表示',
   SET_ALL_MAP_INVISIBLE: 'すべて非表示',
@@ -93,7 +93,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: 'SuperMap Group',
   INSTRUCTION_MANUAL: 'ヘルプ',
   THE_CURRENT_LAYER: '現在レイヤー',
-  NO_BASE_MAP: 'No base map can be removed', // need to translate
+  NO_BASE_MAP: 'ベースマップを削除できません',
   ENTER_KEY_WORDS: '検索キーワード入力してください',
   SEARCHING: '検索中',
   SEARCHING_DEVICE_NOT_FOUND: '外部デバイスは検出されませんでした',
@@ -106,13 +106,13 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'はい',
   CREATE_FAILED: '作成に失敗',
   INVALID_DATASET_NAME: 'データセット名は無効で、または存在します',
-  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
-  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
-  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
+  SAVE_FAIL_POINT:'無効なポイントセットの長さ、1以上に設定してください',
+  SAVE_LINE_FAIL: '無効なポイントセットの長さ、2以上に設定してください ',
+  SAVE_REGION_FAIL: '無効なポイントセットの長さ、3以上に設定してください',
 
-  PLEASE_CHOOSE_POINT_LAYER: 'Please Choose Point Layer',//need to translate
-  PLEASE_CHOOSE_LINE_LAYER: 'Please Choose Line Layer',//need to translate
-  PLEASE_CHOOSE_REGION_LAYER: 'Please Choose Region Layer',//need to translate
+  PLEASE_CHOOSE_POINT_LAYER: 'ポイントレイヤーを選択してください',
+  PLEASE_CHOOSE_LINE_LAYER: 'ラインレイヤーを選択してください',
+  PLEASE_CHOOSE_REGION_LAYER: 'ポリゴンレイヤーを選択してください',
 
   NO_PLOTTING_DEDUCTION: '現在マップに展開リストはありません',
   NO_FLY: '現在シーンに飛行ルートはありません',
@@ -129,7 +129,7 @@ const Prompt: typeof CN.Prompt = {
   GET_SUPPORTED_DEVICE_LIST: '対応しているデバイスのリストを表示',
   PLEASE_NEW_PLOT_LAYER: '新規マークレイヤーを作成しますか',
   DOWNLOADING_PLEASE_WAIT: 'ダウンロード中、お待ちください',
-  DOWNLOADING_OTHERS_PLEASE_WAIT: 'Please wait while other files are being downloaded', // need to translate
+  DOWNLOADING_OTHERS_PLEASE_WAIT: '他のファイルはダウンロード中、お待ちください',
   SELECT_DELETE_BY_RECTANGLE: '削除オブジェクトを選択してください',
 
   CHOOSE_LAYER: '選択レイヤー',
@@ -137,7 +137,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'コレクションに成功',
 
   SELECT_TWO_MEDIAS_AT_LEAST: '少なくとも2つのメディアファイルを選択してください',
-  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: '当オブジェクトにメディアファイルはありません。削除しますか?',
 
   NETWORK_REQUEST_FAILED: 'ネットワークリクエストに失敗しました',
 
@@ -181,11 +181,11 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_SYMBOL: 'アニメシンボルシンボルを選択してください',
 
   ENTER_NAME: '名称を入力してください',
-  ENTER_CAPTION: 'Please input caption', // need to translate
-  CHOICE_TYPE: 'Please choice type', // need to translate
-  INPUT_LENGTH: 'Please input max length', // need to translate
-  DEFAULT_VALUE_EROROR: 'Default value input error', // need to translate
-  SELECT_REQUIRED: 'Please select required', // need to translate
+  ENTER_CAPTION: '識別名を入力してください',
+  CHOICE_TYPE: 'タイプを選択してください',
+  INPUT_LENGTH: '最大長さを入力してください',
+  DEFAULT_VALUE_EROROR: 'デフォルト値の入力は無効',
+  SELECT_REQUIRED: '必須かどうかを選択してください',
 
   CLIPPING: 'マップクリップ中',
   CLIPPED_SUCCESS: 'クリップに成功',
@@ -209,14 +209,14 @@ const Prompt: typeof CN.Prompt = {
   SHARE_FAILED: 'シェアに失敗',
   SHARE_PREPARE: 'シェア準備',
   SHARE_START: 'シェア開始',
-  SHARE_WX_FILE_SIZE_LIMITE: 'File size cannot exceeds 10M', // need to translate
+  SHARE_WX_FILE_SIZE_LIMITE: 'ファイルサイズは10Mを超えません',
 
   EXPORTING: 'エクスポート中',
   EXPORT_SUCCESS: 'エクスポートに成功',
   EXPORT_FAILED: 'エクスポートに失敗',
   EXPORT_TO: 'データエクスポート先：',
   REQUIRE_PRJ_1984: 'データセットの投影座標系はWGS_1984に設定する必要があります',
-  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
+  EXPORT_TEMP_FAILED: '普通のマップをテンプレートにエクスポートできません',
 
   UNDO_FAILED: '取り消すに失敗',
   REDO_FAILED: 'やり直すに失敗',
@@ -251,7 +251,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_LICATION_INFORMATION: 'ポジショニング情報を選択してください',
   OUT_OF_MAP_BOUNDS: 'マップ範囲内にありません',
   CANT_USE_TRACK_TO_INCREMENT_ROAD: '現在位置は道路ネットワークデータセット内にありません。トラックインクリメント道路ネットワークを使用できません。',
-  AFTER_COLLECT: 'Please collect before viewing',//need to be translated
+  AFTER_COLLECT: '表示前に、まずフィールドしてください',
 
   POI: 'POI',
 
@@ -402,8 +402,8 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'デフォルト値は空です',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: '主題図レイヤーはコレクションできません',
-  CANNOT_COLLECT_IN_CAD_LAYERS: '複合レイヤーはコレクションできません', 
-  CANNOT_COLLECT_IN_TEXT_LAYERS: 'テキストレイヤーはコレクションできません', 
+  CANNOT_COLLECT_IN_CAD_LAYERS: '複合レイヤーはコレクションできません',
+  CANNOT_COLLECT_IN_TEXT_LAYERS: 'テキストレイヤーはコレクションできません',
   HEAT_MAP_DATASET_TYPE_ERROR: 'ポイントデータセットしか作成できません',
 
   INVALID_DATA_SET_FAILED: 'データタイプは無効です。設定に失敗しました。', // ｊｐ0917
@@ -414,7 +414,7 @@ const Prompt: typeof CN.Prompt = {
   MOVE_PHONE_ADD_SCENE: '携帯電話をゆっくり移動してください 平面を認識してからスクリーンをクリックしてシーンを追加してください',
   IDENTIFY_TIMEOUT: 'タイムアウト、再度実行しますか?',
   TRACKING_LOADING: 'トラキング...',
-  UNSELECTED_OBJECT: 'Unselected object!', // need to translate
+  UNSELECTED_OBJECT: 'オブジェクトは選択されません',
 
   // 专题制图加载/输出xml
   SUCCESS: '操作に成功しました',
@@ -423,7 +423,7 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM_LOAD_TEMPLATE: 'テンプレートをロードしますか?',
   CONFIRM_OUTPUT_TEMPLATE: 'マップを出力しますか?',
 
-  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
+  SHOW_AR_SCENE_NOTIFY: 'ARシーン検知ヒントの表示',
 }
 
 export { Prompt }

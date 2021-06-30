@@ -1,5 +1,7 @@
-const ARMap = {
-  ARDRAWING: 'AR Drawing',// need to translate
+import CN from '../CN'
+
+const ARMap: typeof CN.ARMap = {
+  ARDRAWING: 'AR Mapping',
 
   THREE_D: '3D',
   VECTOR: 'Vector',

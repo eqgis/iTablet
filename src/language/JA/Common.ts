@@ -20,8 +20,8 @@ const Common: typeof CN.Common = {
   ADD: '追加',
   NONE: 'なし',
 
-  DELETE_CURRENT_OBJ_CONFIRM: 'Do you want to delete current object?',  //to be translated
-  NO_SELECTED_OBJ: 'No selected object',  //to be translated
+  DELETE_CURRENT_OBJ_CONFIRM: '現在オブジェクトを削除しますか?',
+  NO_SELECTED_OBJ: '選択中のオブジェクトはありません',
 }
 
 export { Protocol, Common }

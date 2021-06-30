@@ -48,7 +48,7 @@ const Prompt: typeof CN.Prompt = {
   COMPLETE: 'Complete',
 
   NO_PERMISSION_ALERT: 'Doesn\'t have permission to run the application',
-  EXIT: 'Exit', 
+  EXIT: 'Exit',
   REQUEST_PERMISSION: 'Request Permission',
 
   OPENING: 'Opening',
@@ -106,12 +106,12 @@ const Prompt: typeof CN.Prompt = {
   TURN_ON: 'Yes',
   CREATE_FAILED: 'Failed to create',
   INVALID_DATASET_NAME: 'Invalid dataset name or the name already existed',
-  SAVE_FAIL_POINT:'Illegal point set length, point set object length must be greater than or equal to 1',//need to translate
-  SAVE_LINE_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 2',//need to translate
-  SAVE_REGION_FAIL: 'Illegal point set length, point set object length must be greater than or equal to 3',//need to translate
+  SAVE_FAIL_POINT:'Length of an illegal point set. The value should be equal or bigger than 1',
+  SAVE_LINE_FAIL: 'Length of an illegal point set. The value should be equal or bigger than 2',
+  SAVE_REGION_FAIL: 'Length of an illegal point set. The value should be equal or bigger than 3',
 
   PLEASE_CHOOSE_POINT_LAYER: 'Please select a point layer first',
-  PLEASE_CHOOSE_LINE_LAYER: 'Please select a line layer',
+  PLEASE_CHOOSE_LINE_LAYER: 'Please select a line layer first',
   PLEASE_CHOOSE_REGION_LAYER: 'Please select a region layer first',
 
   NO_PLOTTING_DEDUCTION: 'No plotting list in the current map',
@@ -137,7 +137,7 @@ const Prompt: typeof CN.Prompt = {
   COLLECT_SUCCESS: 'Collected',
 
   SELECT_TWO_MEDIAS_AT_LEAST: 'You have to select two multi-media files at least',
-  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no media files. Do you want to delete it?', // need to translate
+  DELETE_OBJ_WITHOUT_MEDIA_TIPS: 'This object has no multi-media files. Do you want to delete it?',
 
   NETWORK_REQUEST_FAILED: 'Failed to request network',
 
@@ -216,7 +216,7 @@ const Prompt: typeof CN.Prompt = {
   EXPORT_FAILED: 'Failed to export',
   EXPORT_TO: 'Data have been exported to:',
   REQUIRE_PRJ_1984: 'PrjCoordSys of the dataset must be WGS_1984',
-  EXPORT_TEMP_FAILED: '普通地图不支持导出为模板',//need to translate
+  EXPORT_TEMP_FAILED: 'A normal map could not be output as a template',
 
   UNDO_FAILED: 'Failed to undo',
   REDO_FAILED: 'Failed to redo',
@@ -402,7 +402,7 @@ const Prompt: typeof CN.Prompt = {
   ATTRIBUTE_DEFAULT_VALUE_IS_NULL: 'Default value is null',
 
   CANNOT_COLLECT_IN_THEMATIC_LAYERS: 'Cannot collect data on a thematic layer',
-  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect data on a CAD layer', 
+  CANNOT_COLLECT_IN_CAD_LAYERS: 'Cannot collect data on a CAD layer',
   CANNOT_COLLECT_IN_TEXT_LAYERS: 'Cannot collect data on a Text layer',
   HEAT_MAP_DATASET_TYPE_ERROR: 'Only the point dataset can be created',
 
@@ -423,7 +423,7 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM_LOAD_TEMPLATE: 'Are you sure you want to load the template?',
   CONFIRM_OUTPUT_TEMPLATE: 'Are you sure you want to output the map?',
 
-  SHOW_AR_SCENE_NOTIFY: 'Show AR Scene detect tips', //to be translated
+  SHOW_AR_SCENE_NOTIFY: 'Show Tips of AR Scene Detection',
 }
 
 export { Prompt }

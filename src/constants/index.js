@@ -22,6 +22,7 @@ import {
   layerManagerData,
   legendMenuInfo,
   legendMenuInfoNotVisible,
+  OpenData2,
 } from './FunctionToolbarModule'
 
 import {
@@ -52,6 +53,7 @@ export {
   Map3DBaseMapList,
   ConstInfo,
   OpenData,
+  OpenData2,
   pointColorSet,
   regionBeforeColorSet,
   regionBorderColorSet,

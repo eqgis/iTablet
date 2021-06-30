@@ -339,7 +339,7 @@ async function checkARLayer(type: TARLayerType) {
       newDataset = true
     }
     if (currentLayer.datasourceAlias) {
-      DataHandler.setARRawDatasource(currentLayer.datasourceAlias)
+      // DataHandler.setARRawDatasource(currentLayer.datasourceAlias)
       newDatasource = false
     }
   } else if (_params.armap.currentMap?.mapName) { // 已有地图，没有选择/没有 当前图层

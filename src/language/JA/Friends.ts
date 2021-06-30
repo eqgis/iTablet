@@ -74,7 +74,7 @@ const Friends: typeof CN.Friends = {
   WAIT_DOWNLOADING: 'データダウンロード完了を待ってください',
   DATA_NOT_FOUND: 'ファイルを見つかりません。再度ダウンロードしますか?',
   LOAD_ORIGIN_PIC: '原図のロード',
-  UNSUPPORTED_MESSAGE: 'Unsupported Message', //to be translated
+  UNSUPPORTED_MESSAGE: 'サポートしていないメッセージ',
   // CustomActions
   MAP: 'マップ',
   TEMPLATE: 'テンプレート',
@@ -157,7 +157,7 @@ const Friends: typeof CN.Friends = {
   ADDED: '追加済',
 
   // 创建群组
-  JOIN: '加入', // need to be translated
+  JOIN: '参加',
   VIEW_MORE_MEMBERS: 'もっと',
   MY_GROUPS: 'マイグループ',
   JOINED_GROUPS: '参加グループ',
@@ -234,8 +234,7 @@ const Friends: typeof CN.Friends = {
   RESOURCE_DELETE_INFO: '選択したデータを削除しますか',
   RESOURCE_SELECT_MODULE: 'テンプレートを選択してください',
   RESOURCE_DOWNLOAD_INFO: 'タスクをダウンロードしてください',
-  RESOURCE_NOT_EXIST: 'Resource doesn\'t exist', // need to translate
-
+  RESOURCE_NOT_EXIST: 'リソースは存在しません',
   TASK_DOWNLOAD: 'タスクのダウンロード',
   TASK_DOWNLOADING: 'ダウンロード中',
   TASK_TITLE: 'コラボレーションタスク',
@@ -249,9 +248,9 @@ const Friends: typeof CN.Friends = {
   // 提示消息
   GROUP_EXIST_INFO: 'グループから脱退しますか?',
   GROUP_DELETE_INFO: 'グループを解除しますか?',
-  GROUP_DELETE_INFO2: 'The current group has been disbanded', // need to be translated
+  GROUP_DELETE_INFO2: '現在グループは解散されました',
   GROUP_MEMBER_DELETE_INFO: '選択したメンバーを削除しますか?',
-  GROUP_MEMBER_DELETE_INFO2: 'You have been kicked out of the current group', // need to be translated
+  GROUP_MEMBER_DELETE_INFO2: '現在グループから削除されました',
   GROUP_TASK_DELETE_INFO: 'タスクを削除しますか?',
 
 

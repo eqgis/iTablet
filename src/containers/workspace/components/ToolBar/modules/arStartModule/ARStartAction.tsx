@@ -212,10 +212,8 @@ async function saveMap() {
 /** 切换地图 * */
 async function changeMap(item: ListData) {
   const params: any = ToolbarModule.getParams()
-  // 不是从xml加载地图
-  GLOBAL.IS_MAP_FROM_XML = false
   try {
-    if (params.armap.currentMap && params.armap.currentMap.mapName === item.title) {
+    if (params.armap.currentMap && params.armap.currentMap.mapName === item.title.replace('.arxml', '')) {
       Toast.show(getLanguage(params.language).Prompt.THE_MAP_IS_OPENED)
       return
     }

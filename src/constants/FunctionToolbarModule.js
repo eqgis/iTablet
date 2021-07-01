@@ -1,4 +1,4 @@
-import { SMap, DatasetType, SMediaCollector } from 'imobile_for_reactnative'
+import { SMap, DatasetType, SMediaCollector ,SMap2} from 'imobile_for_reactnative'
 import ConstOnline from './ConstOnline'
 import ConstToolType from './ConstToolType'
 import ToolbarType from './ToolbarType'
@@ -6,6 +6,9 @@ import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBt
 import { getLanguage } from '../language/index'
 import { Toast, LayerUtils } from '../utils'
 import { getThemeAssets } from '../assets'
+import {
+  Platform,
+} from 'react-native'
 
 async function OpenData(data, index, callback) {
   const layers = await SMap.getLayersByType()
@@ -65,23 +68,43 @@ async function OpenData2(data, index, callback) {
   let isOpen
   if (data instanceof Array) {
     for (let i = 0; i < data.length; i++) {
-      isOpen = await SMap.isDatasourceOpen2(data[i].DSParams)
+      if (Platform.OS === 'ios') {
+        isOpen = await SMap.isDatasourceOpen2(data[i].DSParams)
+      }else{
+        isOpen = await SMap2.isDatasourceOpen(data[i].DSParams)
+      }
     }
   } else {
-    isOpen = await SMap.isDatasourceOpen2(data.DSParams)
+    if (Platform.OS === 'ios') {
+      isOpen = await SMap.isDatasourceOpen2(data.DSParams)
+    } else {
+      isOpen = await SMap2.isDatasourceOpen(data.DSParams)
+    }
   }
   // Layer index = 0 为顶层
   if (isOpen) {
-    await SMap.closeAllDatasource()
+    if (Platform.OS === 'ios') {
+      await SMap.closeAllDatasource()
+    } else {
+      await SMap2.closeAllDatasource()
+    }
     if (data instanceof Array) {
       for (let i = 0; i < data.length; i++) {
-        await SMap.openDatasourceWithIndex2(data[i].DSParams, index, false)
+        if (Platform.OS === 'ios') {
+          await SMap.openDatasourceWithIndex2(data[i].DSParams, index, false)
+        } else {
+          await SMap2.openDatasourceWithIndex(data[i].DSParams, index, false)
+        }
       }
       if (callback && typeof callback === 'function') {
         callback()
       }
     } else {
-      await SMap.openDatasourceWithIndex2(data.DSParams, index, false)
+      if (Platform.OS === 'ios') {
+        await SMap.openDatasourceWithIndex2(data.DSParams, index, false)
+      } else {
+        await SMap2.openDatasourceWithIndex(data.DSParams, index, false)
+      }
       if (callback && typeof callback === 'function') {
         callback()
       }

@@ -35,6 +35,9 @@ const icon_placeholder_s = require('./img_placeholder_s.png')
 const icon_check = require('./icon_check.png')
 const icon_check_in = require('./icon_check_in.png')
 
+const icon_ignore = require('./icon_ignore.png')
+const icon_add = require('./icon_add.png')
+
 export default {
   icon_undo,
   icon_redo,
@@ -72,4 +75,7 @@ export default {
   icon_placeholder_s,
   icon_check,
   icon_check_in,
+
+  icon_ignore,
+  icon_add,
 }

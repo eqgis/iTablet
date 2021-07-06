@@ -358,12 +358,12 @@ export default class FunctionToolbar extends React.Component {
                     if (GLOBAL.coworkMode) {
                       let resourceIds = [],
                         _mediaPaths = [] // 保存修改名称后的图片地址
-                      for (let i = 0 ; i < mediaPaths.length; i++) {
-                        let name = mediaPaths[i].substr(mediaPaths[i].lastIndexOf('/') + 1)
-                        let suffix = mediaPaths[i].substr(mediaPaths[i].lastIndexOf('.') + 1)
+                      for (let mediaPath of mediaPaths) {
+                        let name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
+                        let suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
                         //获取缩略图
                         // let resizedImageUri = await ImageResizer.createResizedImage(
-                        //   mediaPaths[i],
+                        //   mediaPath,
                         //   60,
                         //   100,
                         //   'PNG',
@@ -372,7 +372,7 @@ export default class FunctionToolbar extends React.Component {
                         //   userPath,
                         // )
                         let resourceId = await this.onlineServicesUtils.uploadFile(
-                          mediaPaths[i],
+                          mediaPath,
                           name,
                           'PHOTOS',
                         )
@@ -380,7 +380,7 @@ export default class FunctionToolbar extends React.Component {
                         // TODO是否删除原图
                         resourceIds.push(resourceId)
 
-                        let _newPath = `${mediaPaths[i].replace(name, resourceId)}.${suffix}`
+                        let _newPath = `${mediaPath.replace(name, resourceId)}.${suffix}`
                         _mediaPaths.push(_newPath)
                       }
                       let result = await SMediaCollector.addMedia({

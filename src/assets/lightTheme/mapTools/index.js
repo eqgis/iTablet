@@ -71,6 +71,8 @@ const icon_suspend = require('./icon_suspend.png')
 const icon_tool_clip_in = require('./icon_tool_clip_in.png')
 const icon_tool_clip_out = require('./icon_tool_clip_out.png')
 
+const icon_submitdata = require('./icon_submitdata.png')
+
 export default {
   icon_free_line_disable,
   icon_text_disable,
@@ -139,4 +141,6 @@ export default {
   icon_suspend,
   icon_tool_clip_in,
   icon_tool_clip_out,
+
+  icon_submitdata,
 }

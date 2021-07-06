@@ -556,7 +556,7 @@ export default class MapView extends React.Component {
         GLOBAL.toolBox = this.toolBox
       }
       // })
-      SMediaCollector.setMediaService(this.props.user.currentUser.serverUrl)
+      // SMediaCollector.setMediaService(this.props.user.currentUser.serverUrl)
 
       this.unsubscribeFocus = this.props.navigation.addListener(
         'willFocus',

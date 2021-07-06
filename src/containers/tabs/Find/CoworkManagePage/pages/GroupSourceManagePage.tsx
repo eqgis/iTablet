@@ -3,7 +3,7 @@
  * @description 群组资源管理界面
  */
 import React, { Component } from 'react'
-import { StyleSheet, FlatList, RefreshControl, Text, View, Image } from 'react-native'
+import { StyleSheet, FlatList, RefreshControl, Text, View, Image, GestureResponderEvent } from 'react-native'
 import { Container, PopMenu, ListSeparator, ImageButton, TextBtn, Dialog } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { scaleSize, Toast, screen, ResultInfo } from '../../../../../utils'
@@ -14,7 +14,7 @@ import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
 import { connect } from 'react-redux'
 import { SCoordination, GroupType } from 'imobile_for_reactnative'
-import { SourceItem } from '../components'
+import SourceItem, { MoreParams, ItemData } from '../components/SourceItem'
 import BatchHeadBar from '../../../Mine/component/BatchHeadBar'
 import ModalDropdown from 'react-native-modal-dropdown'
 
@@ -84,10 +84,28 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeLg,
     color: color.fontColorGray3,
   },
+  bottomView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderTopLeftRadius: scaleSize(40),
+    borderTopRightRadius: scaleSize(40),
+    height: scaleSize(160),
+    backgroundColor: 'white',
+    elevation: 1,
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOpacity: 1,
+    shadowRadius: 2,
+  },
+  btnStyle: {
+    color: '#1D1D1D',
+    fontSize: size.fontSize.fontSizeMd,
+  },
 })
 
 interface Props {
-  navigation: Object,
+  navigation: any,
   user: Users,
   language: string,
   device: any,
@@ -95,12 +113,18 @@ interface Props {
   currentGroup: GroupType,
 }
 
+type SelectedData =  {
+  download?: () => Promise<void>
+} & ItemData
+
+
 interface State {
-  data: Array<any>,
+  data: Array<ItemData>,
   isRefresh: boolean,
   firstLoad: boolean,
-  isDelete: boolean, // 是否是删除模式
-  selectedData: Map<string, any>,
+  // isDelete: boolean, // 是否是删除模式
+  isMutiChoice: boolean, // 多选模式
+  selectedData: Map<string, SelectedData>,
   currentModule: any,
   currentModuleIndex: number,
 }
@@ -110,7 +134,9 @@ class GroupSourceManagePage extends Component<Props, State> {
   title: string
   servicesUtils: SCoordination | undefined
   popData: Array<any>
+  popSourceData: Array<any>
   pagePopModal: PopMenu | null | undefined
+  sourcePopModal: PopMenu | null | undefined
   container: any
   pageSize: number
   currentPage: number
@@ -122,6 +148,8 @@ class GroupSourceManagePage extends Component<Props, State> {
   deleteDialog: Dialog | undefined | null
   dropdown: ModalDropdown
   modules: Array<any>
+
+  currentSelectData: MoreParams | undefined | null
 
   constructor(props: Props) {
     super(props)
@@ -151,8 +179,8 @@ class GroupSourceManagePage extends Component<Props, State> {
       data: [],
       firstLoad: true,
       isRefresh: false,
-      selectedData: new Map<string, Object>(),
-      isDelete: false,
+      selectedData: new Map<string, SelectedData>(),
+      isMutiChoice: false,
       currentModuleIndex: 0,
       currentModule: this.modules.length > 0 ? this.modules[0] : null,
     }
@@ -179,7 +207,33 @@ class GroupSourceManagePage extends Component<Props, State> {
       },
       {
         title: getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE_DELETE,
-        action: () => this._setDelete(true),
+        action: () => this._setMutiChoice(true),
+      },
+    ]
+
+    this.popSourceData = [
+      {
+        title: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+        action: () => this.currentSelectData?.download?.(),
+      },
+      {
+        title: getLanguage(GLOBAL.language).Cowork.PUBLISH,
+        action: () => {
+        },
+      },
+      {
+        title: getLanguage(GLOBAL.language).Prompt.DELETE,
+        action: () => {
+          this.currentSelectData?.data.resourceId && this._delete([this.currentSelectData?.data.resourceId])
+        },
+      },
+      // {
+      //   title: getLanguage(GLOBAL.language).Prompt.RENAME,
+      //   action: () => {
+      //   },
+      // },
+      {
+        title: getLanguage(GLOBAL.language).Prompt.CANCEL,
       },
     ]
   }
@@ -271,25 +325,25 @@ class GroupSourceManagePage extends Component<Props, State> {
     })
   }
 
-  _setDelete = (isDelete?: boolean, resetSelectData?: boolean) => {
-    if (isDelete === undefined) {
-      isDelete = !this.state.isDelete
+  _setMutiChoice = (isMutiChoice?: boolean, resetSelectData?: boolean) => {
+    if (isMutiChoice === undefined) {
+      isMutiChoice = !this.state.isMutiChoice
     }
     if (resetSelectData) {
       this.setState(state => {
         const selected = new Map(state.selectedData)
         selected.clear()
-        return { selectedData: selected, isDelete }
+        return { selectedData: selected, isMutiChoice }
       })
     } else {
       this.setState({
-        isDelete: isDelete,
+        isMutiChoice: isMutiChoice,
       })
     }
   }
 
   _selectAll = () => {
-    const selected = new Map<string, Object>()
+    const selected = new Map<string, SelectedData>()
     if (this.state.data.length > this.state.selectedData.size) {
       this.state.data.forEach(item => {
         selected.set(item.resourceId, item)
@@ -306,10 +360,15 @@ class GroupSourceManagePage extends Component<Props, State> {
       groupResourceType: 'DATA',
     }).then(async result => {
       if (result.succeed) {
+        this.setState(state => {
+          const selected = new Map(state.selectedData)
+          selected.clear()
+          return { selectedData: selected }
+        })
         this.getGroupResources({
           pageSize: this.pageSize,
           currentPage: 1,
-          cb: this._setDelete,
+          // cb: () => this._setMutiChoice(false),
         })
       } else {
         if (result.error?.errorMsg !== undefined) {
@@ -320,7 +379,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   }
 
   _deleteSource = () => {
-    if (this.state.isDelete) {
+    if (this.state.isMutiChoice) {
       if (this.state.selectedData.size === 0) {
         Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
         return false
@@ -348,7 +407,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   }
 
   _renderBatchHead = () => {
-    if (!this.state.isDelete) return null
+    if (!this.state.isMutiChoice) return null
     return (
       <BatchHeadBar
         select={this.state.selectedData.size}
@@ -370,11 +429,22 @@ class GroupSourceManagePage extends Component<Props, State> {
     )
   }
 
+  _renderSourcePopup = () => {
+    return (
+      <PopMenu
+        ref={ref => (this.sourcePopModal = ref)}
+        data={this.popSourceData}
+        device={this.props.device}
+        hasCancel={false}
+      />
+    )
+  }
+
   renderRight = () => {
     return (
       <ImageButton
         icon={getThemeAssets().cowork.icon_nav_set}
-        onPress={(event: any) => {
+        onPress={(event: GestureResponderEvent) => {
           this.pagePopModal && this.pagePopModal.setVisible(true, {
             x: event.nativeEvent.pageX,
             y: event.nativeEvent.pageY,
@@ -404,32 +474,60 @@ class GroupSourceManagePage extends Component<Props, State> {
         />
       )
     }
-    if (this.state.isDelete) {
-      return (
-        <TextBtn
-          btnText={getLanguage(this.props.language).Prompt.DELETE}
-          textStyle={[styles.headerBtnTitle, this.state.isDelete && { color: 'red' }]}
-          btnClick={() => {
-            if (this.state.selectedData.size > 0) {
-              this.deleteDialog?.setDialogVisible(true)
-            }
+    return (
+      <>
+        <ImageButton
+          // containerStyle={{marginRight: scaleSize(6)}}
+          icon={getThemeAssets().nav.icon_nav_batch_operation}
+          onPress={() => {
+            this._setMutiChoice()
           }}
         />
-      )
-    } else {
-      return (
         <ImageButton
-          containerStyle={{marginRight: scaleSize(6)}}
-          icon={getThemeAssets().cowork.icon_nav_set}
-          onPress={(event: any) => {
-            this.pagePopModal?.setVisible(true, {
-              x: event.nativeEvent.pageX,
-              y: event.nativeEvent.pageY,
+          containerStyle={{
+            marginRight: scaleSize(6),
+            marginLeft: scaleSize(30),
+          }}
+          icon={getThemeAssets().cowork.icon_nav_export}
+          onPress={() => {
+            NavigationService.navigate('GroupSourceUploadPage', {
+              cb: () => {
+                this.getGroupResources({
+                  pageSize: this.pageSize,
+                  currentPage: 1,
+                })
+              },
             })
           }}
         />
-      )
-    }
+      </>
+    )
+    // if (this.state.isMutiChoice) {
+    //   return (
+    //     <TextBtn
+    //       btnText={getLanguage(this.props.language).Prompt.DELETE}
+    //       textStyle={[styles.headerBtnTitle, this.state.isMutiChoice && { color: 'red' }]}
+    //       btnClick={() => {
+    //         if (this.state.selectedData.size > 0) {
+    //           this.deleteDialog?.setDialogVisible(true)
+    //         }
+    //       }}
+    //     />
+    //   )
+    // } else {
+    //   return (
+    //     <ImageButton
+    //       containerStyle={{marginRight: scaleSize(6)}}
+    //       icon={getThemeAssets().cowork.icon_nav_set}
+    //       onPress={(event: any) => {
+    //         this.pagePopModal?.setVisible(true, {
+    //           x: event.nativeEvent.pageX,
+    //           y: event.nativeEvent.pageY,
+    //         })
+    //       }}
+    //     />
+    //   )
+    // }
   }
 
   _renderHeaderLeft = () => {
@@ -437,37 +535,44 @@ class GroupSourceManagePage extends Component<Props, State> {
       <TextBtn
         btnText={getLanguage(this.props.language).Friends.CANCEL}
         textStyle={[styles.headerBtnTitle]}
-        btnClick={() => this._setDelete(false, true)}
+        btnClick={() => this._setMutiChoice(false, true)}
       />
     )
   }
 
-  _renderItem = ({ item }: any) => {
+  _renderItem = ({ item }: { item: ItemData }) => {
     return (
       <SourceItem
         user={this.props.user}
         data={item}
         onPress={this._onPress}
-        openCheckBox={this.state.isDelete}
-        hasDownload={this.hasDownload}
+        openCheckBox={this.state.isMutiChoice}
+        // hasDownload={this.hasDownload}
         checked={!!this.state.selectedData.get(item.resourceId)}
-        checkAction={value => {
+        checkAction={({value, data, download}) => {
           this.setState(state => {
             const selected = new Map(state.selectedData)
-            const isSelected = selected.has(item.resourceId)
+            const isSelected = selected.has(data.resourceId)
             if (value && !isSelected) {
-              selected.set(item.resourceId, item)
+              selected.set(data.resourceId, {...data, download: download})
             } else {
-              selected.delete(item.resourceId)
+              selected.delete(data.resourceId)
             }
             return { selectedData: selected }
+          })
+        }}
+        onMoreAction={({event, data, download}) => {
+          this.currentSelectData = {event, data, download}
+          this.sourcePopModal?.setVisible(true, {
+            x: event.nativeEvent.pageX,
+            y: event.nativeEvent.pageY,
           })
         }}
       />
     )
   }
 
-  _keyExtractor = (item: object, index: number): string => index + ''
+  _keyExtractor = (item: ItemData, index: number): string => index + ''
 
   _renderItemSeparatorComponent = () => {
     return <ListSeparator color={'transparent'} height={scaleSize(20)} />
@@ -496,6 +601,39 @@ class GroupSourceManagePage extends Component<Props, State> {
         onEndReachedThreshold={0.5}
         onEndReached={this.loadMore}
       />
+    )
+  }
+
+  _renderMutiChoiceButtons = () => {
+    if (!this.state.isMutiChoice) return null
+    return (
+      <View style={styles.bottomView}>
+        <ImageButton
+          key={'download'}
+          icon={getThemeAssets().cowork.icon_nav_import}
+          title={getLanguage(GLOBAL.language).Prompt.DOWNLOAD}
+          titleStyle={styles.btnStyle}
+          onPress={() => {
+            if (this.state.selectedData.size > 0) {
+              const keys = this.state.selectedData.keys()
+              for(let key of keys) {
+                this.state.selectedData.get(key)?.download?.()
+              }
+            }
+          }}
+        />
+        <ImageButton
+          key={'delete'}
+          icon={getThemeAssets().edit.icon_delete}
+          title={getLanguage(GLOBAL.language).Prompt.DELETE}
+          titleStyle={styles.btnStyle}
+          onPress={() => {
+            if (this.state.selectedData.size > 0) {
+              this.deleteDialog?.setDialogVisible(true)
+            }
+          }}
+        />
+      </View>
     )
   }
 
@@ -572,7 +710,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   }
 
   _closeDelete = () => {
-    this._setDelete(false)
+    this._setMutiChoice(false)
   }
 
   render() {
@@ -584,8 +722,8 @@ class GroupSourceManagePage extends Component<Props, State> {
           title: this.title,
           navigation: this.props.navigation,
           headerRight: this._renderHeaderRight(),
-          // headerLeft: this.state.isDelete && this._renderHeaderLeft(),
-          backAction: this.state.isDelete && this._closeDelete,
+          // headerLeft: this.state.isMutiChoice && this._renderHeaderLeft(),
+          // backAction: this.state.isMutiChoice && this._closeDelete,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
@@ -597,7 +735,9 @@ class GroupSourceManagePage extends Component<Props, State> {
         {this._renderBatchHead()}
         {this.state.data.length === 0 && !this.state.firstLoad && this._renderNull()}
         {this._renderGroupList()}
+        {this._renderMutiChoiceButtons()}
         {this._renderPagePopup()}
+        {this._renderSourcePopup()}
         {this._renderDeleteDialog()}
       </Container>
     )

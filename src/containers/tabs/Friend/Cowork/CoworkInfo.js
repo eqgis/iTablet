@@ -4,6 +4,7 @@ import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
+import { serviceModule } from '../../../workspace/components/ToolBar/modules'
 
 export default class CoworkInfo {
   static coworkId = ''
@@ -145,6 +146,10 @@ export default class CoworkInfo {
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&
           Toast.show(getLanguage(GLOBAL.language).Friends.ADD_DELETE_ERROR)
+      } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE) {
+        let url = message.message.serviceUrl
+        result = await serviceModule().actions.downloadToLocal(url)
+        result && this.consumeMessage(message.messageID)
       }
       return result
     } catch (error) {
@@ -228,6 +233,10 @@ export default class CoworkInfo {
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         //TODO 处理删除
         result = true
+        result && this.consumeMessage(message.messageID)
+      } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE) {
+        let url = message.message.serviceUrl
+        result = await serviceModule().actions.updateToLocal({ url })
         result && this.consumeMessage(message.messageID)
       }
       return result

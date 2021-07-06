@@ -460,7 +460,6 @@ export default class OnlineServicesUtils {
         }),
       })
       let result = await response.json()
-      console.warn(JSON.stringify(result))
       if (result.childID) {
         return result.childID
       } else {

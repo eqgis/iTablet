@@ -1,16 +1,17 @@
 /**
  * 获取地图工具数据
  */
-import { SMap, Action, SCoordination } from 'imobile_for_reactnative'
-import { ConstToolType, ToolbarType, UserType } from '../../../../../../constants'
-import { getPublicAssets, getThemeAssets } from '../../../../../../assets'
-import { LayerUtils } from '../../../../../../utils'
+import { SMap } from 'imobile_for_reactnative'
+import { ConstToolType } from '../../../../../../constants'
+import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
+import { LayerUtils } from '../../../../../../utils'
+import * as Type from '../../../../../../types'
 import ToolbarModule from '../ToolbarModule'
 import ServiceAction from './ServiceAction'
 
-const datasetUrl = 'http://192.168.11.206:8090/iserver/services/data_potdensity_1/rest/data/datasources/datasourceName643053088/datasets/PotDensity_1'
-const datasetUrl_Online = 'https://www.supermapol.com/proxy/iserver/services/data_potdensity_1_884a1jfk/rest/data/datasources/datasourceName2059137087/datasets/PotDensity_1'
+// const datasetUrl = 'http://192.168.11.206:8090/iserver/services/data_potdensity_1/rest/data/datasources/datasourceName643053088/datasets/PotDensity_1'
+// const datasetUrl_Online = 'https://www.supermapol.com/proxy/iserver/services/data_potdensity_1_884a1jfk/rest/data/datasources/datasourceName2059137087/datasets/PotDensity_1'
 
 // const serviceId = 1269024791
 // const _datasourceName = 'PopulationHubei'
@@ -75,89 +76,93 @@ const datasetUrl_Online = 'https://www.supermapol.com/proxy/iserver/services/dat
 //   },
 // })
 
-let serviceInfo2 = {
-  "metadata": {
-    "mdLang": null,
-    "mdContact": null,
-    "contInfo": null,
-    "spatRepInfo": null,
-    "mdDateSt": null,
-    "dqInfo": null,
-    "mdStanVer": null,
-    "dataIdInfo": {
-      "serIdent": null,
-      "dataIdent": {
-        "dsFormat": null,
-        "idAbs": "自动注册用户数据发布的服务",
-        "dataScale": null,
-        "resType": null,
-        "dataLang": null,
-        "idPurp": null,
-        "graphOver": null,
-        "refTheme": null,
-        "tpCat": null,
-        "resSubType": null,
-        "idStatus": null,
-        "dataExt": null,
-        "idCitation": {
-          "resRefDate": null,
-          "resTitle": "data_hunan_tgni8phr",
-          "resEd": null
-        },
-        "spatRpType": null,
-        "dataChar": null,
-        "keyword": null,
-        "aggrInfo": null,
-        "idPoC": null,
-        "resConst": null
-      }
-    },
-    "refSysInfo": null,
-    "mdChar": null,
-    "distInfo": {
-      "onLineSrc": {
-        "orFunct": null,
-        "orDesc": null,
-        "linkage": "https://www.supermapol.com/proxy/iserver/services/data_hunan_tgni8phr/rest"
-      },
-      "distFormat": null,
-      "distributor": null
-    },
-    "mdFileID": "445802437",
-    "createdBy": null,
-    "mdStanName": null
-  },
-  "thumbnail": "https://www.supermapol.com/services/../web/static/portal/img/map/cloud.png",
-  "authorizeSetting": [{
-    "permissionType": "DELETE",
-    "aliasName": "ysl0917",
-    "entityRoles": [],
-    "entityType": "USER",
-    "entityName": "870694",
-    "entityId": null
-  }, {
-    "permissionType": "READWRITE",
-    "aliasName": null,
-    "entityRoles": [],
-    "entityType": "IPORTALGROUP",
-    "entityName": "test_online2",
-    "entityId": 890773284
-  }, {
-    "permissionType": "READWRITE",
-    "aliasName": null,
-    "entityRoles": [],
-    "entityType": "IPORTALGROUP",
-    "entityName": "GroupYSL",
-    "entityId": 1940910328
-  }, {
-    "permissionType": "READWRITE",
-    "aliasName": null,
-    "entityRoles": [],
-    "entityType": "IPORTALGROUP",
-    "entityName": "iTablet产品组",
-    "entityId": 2010361101
-  }],
-  "tags": ["托管服务"],
+// let serviceInfo2 = {
+//   "metadata": {
+//     "mdLang": null,
+//     "mdContact": null,
+//     "contInfo": null,
+//     "spatRepInfo": null,
+//     "mdDateSt": null,
+//     "dqInfo": null,
+//     "mdStanVer": null,
+//     "dataIdInfo": {
+//       "serIdent": null,
+//       "dataIdent": {
+//         "dsFormat": null,
+//         "idAbs": "自动注册用户数据发布的服务",
+//         "dataScale": null,
+//         "resType": null,
+//         "dataLang": null,
+//         "idPurp": null,
+//         "graphOver": null,
+//         "refTheme": null,
+//         "tpCat": null,
+//         "resSubType": null,
+//         "idStatus": null,
+//         "dataExt": null,
+//         "idCitation": {
+//           "resRefDate": null,
+//           "resTitle": "data_hunan_tgni8phr",
+//           "resEd": null
+//         },
+//         "spatRpType": null,
+//         "dataChar": null,
+//         "keyword": null,
+//         "aggrInfo": null,
+//         "idPoC": null,
+//         "resConst": null
+//       }
+//     },
+//     "refSysInfo": null,
+//     "mdChar": null,
+//     "distInfo": {
+//       "onLineSrc": {
+//         "orFunct": null,
+//         "orDesc": null,
+//         "linkage": "https://www.supermapol.com/proxy/iserver/services/data_hunan_tgni8phr/rest"
+//       },
+//       "distFormat": null,
+//       "distributor": null
+//     },
+//     "mdFileID": "445802437",
+//     "createdBy": null,
+//     "mdStanName": null
+//   },
+//   "thumbnail": "https://www.supermapol.com/services/../web/static/portal/img/map/cloud.png",
+//   "authorizeSetting": [{
+//     "permissionType": "DELETE",
+//     "aliasName": "ysl0917",
+//     "entityRoles": [],
+//     "entityType": "USER",
+//     "entityName": "870694",
+//     "entityId": null
+//   }, {
+//     "permissionType": "READWRITE",
+//     "aliasName": null,
+//     "entityRoles": [],
+//     "entityType": "IPORTALGROUP",
+//     "entityName": "test_online2",
+//     "entityId": 890773284
+//   }, {
+//     "permissionType": "READWRITE",
+//     "aliasName": null,
+//     "entityRoles": [],
+//     "entityType": "IPORTALGROUP",
+//     "entityName": "GroupYSL",
+//     "entityId": 1940910328
+//   }, {
+//     "permissionType": "READWRITE",
+//     "aliasName": null,
+//     "entityRoles": [],
+//     "entityType": "IPORTALGROUP",
+//     "entityName": "iTablet产品组",
+//     "entityId": 2010361101
+//   }],
+//   "tags": ["托管服务"],
+// }
+
+interface ActionParams {
+  layerData: SMap.LayerInfo,
 }
 
 /**
@@ -166,17 +171,17 @@ let serviceInfo2 = {
  * @param params
  * @returns {{data: Array, buttons: Array}}
  */
-function getData(type, params) {
-  let data = []
-  let buttons = []
+function getData(type: string, params: any) {
+  let data: Type.ListItem[] = []
+  let buttons: Type.ToolbarBottomButton[] = []
   let customView = null
   params && ToolbarModule.setParams(params)
-  let layerType = ''
+  // let layerType = ''
   switch (type) {
     case ConstToolType.SM_MAP_SERVICE:
-      layerType = LayerUtils.getLayerType(
-        ToolbarModule.getParams().currentLayer,
-      )
+      // layerType = LayerUtils.getLayerType(
+      //   ToolbarModule.getParams().currentLayer,
+      // )
       data = [
         // {
         //   key: 'distanceComput',
@@ -221,48 +226,34 @@ function getData(type, params) {
         //   image: getThemeAssets().mapTools.icon_tool_horizontal_distance,
         // },
         {
-          key: 'coverComput',
-          title: '更新本地服务',
-          action: ({ layerData }) => {
-            const _params = ToolbarModule.getParams()
-            let url = datasetUrl_Online
-            if (UserType.isIPortalUser(_params.user.currentUser)) {
-              url = datasetUrl
+          key: 'update_local_service',
+          title: getLanguage(GLOBAL.language).Cowork.UPDATE_LOCAL_SERVICE,
+          action: ({ layerData }: ActionParams) => {
+            const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+            if (datasetDescription.type !== 'onlineService') {
+              return
             }
-            ServiceAction.updateToLocal(url, {
-              ...layerData,
-              datasourceAlias: `Label_${
-                _params.user.currentUser.userName
-              }#`,
-              // datasourceAlias: _datasourceName,
-              // datasetName: _datasetName,
-              datasetName: url.substr(url.lastIndexOf('/') + 1),
+            ServiceAction.updateToLocal({
+              url: datasetDescription.url,
+              datasetName: layerData.datasetName,
             })
           },
           size: 'large',
-          image: getThemeAssets().mapTools.icon_tool_area_measurement,
+          image: getThemeAssets().edit.icon_redo,
         },
         {
-          key: 'pointSelect',
-          title: '提交服务',
-          action: ({ layerData }) => {
-            const _params = ToolbarModule.getParams()
-            let url = datasetUrl_Online
-            if (UserType.isIPortalUser(_params.user.currentUser)) {
-              url = datasetUrl
+          key: 'submit_service',
+          title: getLanguage(GLOBAL.language).Cowork.SUBMIT_SERVICE,
+          action: ({ layerData }: ActionParams) => {
+            const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+            if (datasetDescription.type !== 'onlineService') {
+              return
             }
-            ServiceAction.uploadToService(url, {
-              ...layerData,
-              datasourceAlias: `Label_${
-                _params.user.currentUser.userName
-              }#`,
-              // datasourceAlias: _datasourceName,
-              // datasetName: _datasetName,
-              datasetName: url.substr(url.lastIndexOf('/') + 1),
+            ServiceAction.uploadToService({
+              url: datasetDescription.url,
             })
           },
-          size: 'large',
-          image: getThemeAssets().mapTools.icon_tool_click,
+          image: getThemeAssets().mapTools.icon_submitdata,
         },
         // {
         //   key: 'azimuthComput',

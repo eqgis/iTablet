@@ -12,30 +12,11 @@ import FunctionModule from '../../../../../../class/FunctionModule'
 class ServiceModule extends FunctionModule {
   constructor(props) {
     super(props)
-    ServiceAction.setServiceType(props.serviceType)
+    // ServiceAction.setServiceType(props.serviceType)
   }
 
   action = async () => {
     this.setModuleData(this.type)
-    // const containerType = ToolbarType.table
-    // const data = ToolbarModule.getToolbarSize(containerType, {
-    //   data: _data.data,
-    // })
-    // this.setModuleData(this.type)
-    // params.showFullMap && params.showFullMap(true)
-    // params.setToolbarVisible(true, 'SM_MAP_SERVICE', {
-    //   containerType,
-    //   isFullScreen: true,
-    //   ...data,
-    //   ..._data,
-    // })
-    // // 重置canUndo和canRedo
-    // if (params.toolbarStatus.canUndo || params.toolbarStatus.canRedo) {
-    //   params.setToolbarStatus({
-    //     canUndo: false,
-    //     canRedo: false,
-    //   })
-    // }
 
     const params = ToolbarModule.getParams()
     ServiceData.getData(this.type, params)

@@ -130,4 +130,11 @@ export default StyleSheet.create({
     borderRadius: scaleSize(10),
     backgroundColor: color.gray,
   },
+  cornerMark: {
+    position: 'absolute',
+    right: scaleSize(-8),
+    top: scaleSize(-8),
+    width: scaleSize(32),
+    height: scaleSize(32),
+  },
 })

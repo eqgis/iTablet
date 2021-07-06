@@ -45,6 +45,7 @@ export default class LayerManager_item extends React.Component {
     index: number,
     layers: Object,
     hasBaseMap: boolean,
+    cornerMarkImage: any,
 
     setLayerVisible: () => {},
     onArrowPress: () => {},
@@ -585,6 +586,30 @@ export default class LayerManager_item extends React.Component {
       }
     })
   }
+
+  renderCornerMark = () => {
+    let cornerMark
+    if (this.props.cornerMarkImage) {
+      cornerMark = this.props.cornerMarkImage
+    } else {
+      const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.state.data)
+      if (!dsDescription) return null
+      switch(dsDescription.type) {
+        case 'onlineService':
+          cornerMark = GLOBAL.coworkMode ? getThemeAssets().cowork.icon_state_published : null
+          break
+      }
+    }
+    if (!cornerMark) return null
+    return (
+      <Image
+        resizeMode={'contain'}
+        style={styles.cornerMark}
+        source={cornerMark}
+      />
+    )
+  }
+
   renderItem = () => {
     let name = this.state.data.caption
     const visibleImgWhite = this.state.visible
@@ -620,7 +645,6 @@ export default class LayerManager_item extends React.Component {
         ? getThemeAssets().publicAssets.icon_drop_down
         : getThemeAssets().publicAssets.icon_drop_up
     }
-
     let iTemView
     return (
       <TouchableOpacity
@@ -670,6 +694,7 @@ export default class LayerManager_item extends React.Component {
               ]}
               source={image}
             />
+            {this.renderCornerMark()}
           </TouchableOpacity>
         </View>
         <View style={styles.text_container}>

@@ -270,7 +270,7 @@ async function getLayerStyleData(type: string) {
             SARMap.setLayerStyle(layer.name, {borderWidth: loc / 100})
           }
         },
-        defaultValue: layerStyle && layerStyle.borderWidth * 100 || 0,
+        defaultValue: layerStyle && Math.round(layerStyle.borderWidth * 100) || 0,
         range: range.borderWidth,
       }]
       allData.push({

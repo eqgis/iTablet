@@ -328,15 +328,6 @@ class ModuleList extends Component {
         return
       }
 
-      //实验室未打开AR管线，不下载示范数据 add jiakai
-      if (item.key === ChunkType.MAP_AR && !this.props.laboratory.arPipe) {
-        this.props.setCurrentMapModule(index).then(async () => {
-          item.action && (await item.action(tmpCurrentUser, latestMap))
-          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
-        })
-        return
-      }
-
       let downloadData = this.getDownloadData(language, item, index)
 
       // let moduleKey = await this.checkData(index)

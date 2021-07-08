@@ -14,6 +14,7 @@ class ArEditModule extends FunctionModule {
 
   getToolbarSize = (containerType, orientation, additional) => {
     let data = {}
+    data.autoShowBox = false
     switch (additional.type) {
       case ConstToolType.SM_AR_EDIT_SCALE:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
@@ -32,9 +33,9 @@ class ArEditModule extends FunctionModule {
       case ConstToolType.SM_AR_EDIT:
       default:
         data.height = 0
+        data.autoShowBox = true
         break
     }
-    data.autoShowBox = false
     return data
   }
 

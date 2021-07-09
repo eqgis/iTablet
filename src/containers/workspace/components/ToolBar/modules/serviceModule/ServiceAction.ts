@@ -3,19 +3,26 @@ import {
   SCoordination,
   SMediaCollector,
   SMap,
+  AuthorizeSetting,
+  PermissionType,
+  EntityType,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
   ToolbarType,
   MsgConstant,
+  ConstPath,
+  UserType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast } from '../../../../../../utils'
+import { Toast, OnlineServicesUtils } from '../../../../../../utils'
 import * as Type from '../../../../../../types'
 import { getThemeAssets } from '../../../../../../assets'
+import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
+import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
 const _SCoordination = new SCoordination()
 
@@ -317,12 +324,108 @@ function getUserServices() {
 async function getGroupServices(groupID: string) {
   return _SCoordination.getGroupResources({
     groupId: groupID,
-    // resourceCreator: this.props.user.currentUser.userId,
+    // resourceCreator: _params.user.currentUser.userId,
     currentPage: 1,
     pageSize: 10000,
     orderType: 'DESC',
+    orderBy: 'UPDATETIME',
     groupResourceType: 'SERVICE',
   })
+}
+
+async function exportData(name: string, datasets: string[]) {
+  const _params: any = ToolbarModule.getParams()
+  let homePath = await FileTools.appendingHomeDirectory()
+  let userPath =
+    homePath + ConstPath.UserPath + _params.user.currentUser.userName + '/'
+  let datasourcePath =
+    userPath +
+    ConstPath.RelativePath.Label +
+    'Label_' +
+    _params.user.currentUser.userName +
+    '#.udb'
+
+  let todatasourcePath =
+    userPath + ConstPath.RelativePath.Temp + name + '/' + name + '.udb'
+
+  let archivePath, targetPath = '', availableName = name
+  archivePath = userPath + ConstPath.RelativePath.Temp + name
+  if (await FileTools.fileIsExist(archivePath)) {
+    FileTools.deleteFile(archivePath)
+  }
+
+  let result = await DataHandler.createDatasourceFile(
+    _params.user.currentUser,
+    todatasourcePath,
+  )
+  if (result) {
+    let tempPath = homePath + ConstPath.ExternalData + '/' + ConstPath.RelativeFilePath.ExportData
+    availableName = await FileTools.getAvailableFileName(
+      tempPath,
+      name,
+      'zip',
+    )
+    targetPath = tempPath + availableName
+
+    await SMap.copyDataset(datasourcePath, todatasourcePath, datasets)
+    result = await FileTools.zipFile(archivePath, targetPath)
+    FileTools.deleteFile(archivePath)
+  }
+  return {
+    result,
+    availableName,
+    targetPath,
+  }
+}
+
+async function publishServiceToGroup(fileName: string, datasets: string[], groups: {groupId: number, groupName: string, entityType?: keyof EntityType, permissionType?: keyof PermissionType}[]) {
+  if (!fileName || datasets.length === 0) return
+  const _params: any = ToolbarModule.getParams()
+  let Service: OnlineServicesUtils
+  if (UserType.isProbationUser(_params.user.currentUser)) return
+  if (UserType.isIPortalUser(_params.user.currentUser)) {
+    Service = new OnlineServicesUtils('iportal')
+  } else {
+    Service = new OnlineServicesUtils('online')
+  }
+  let { result, targetPath } = await exportData(fileName, datasets)
+  if (result) {
+    let uploadResult
+    uploadResult = await Service.uploadFile(
+      targetPath,
+      fileName + '.zip',
+      'UDB',
+    )
+    const entities: AuthorizeSetting[] = []
+    for (const group of groups) {
+      entities.push({
+        entityId: group.groupId,
+        entityName: group.groupName,
+        entityType: group.entityType || 'IPORTALGROUP',
+        permissionType: group.permissionType || 'READ',
+      })
+    }
+    if(uploadResult) {
+      const publishResult = await Service.publishService(uploadResult, 'UDB')
+      result = publishResult.succeed
+      if (publishResult.succeed && publishResult.customResult) {
+        const service = await _SCoordination.getUserServices({keywords: [publishResult.customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
+        // const service = await _SCoordination.getUserServices({})
+        if (service.content.length > 0) {
+          let shareResult = await _SCoordination.shareServiceToGroup({
+            ids: [service.content[0].id],
+            entities: entities,
+          })
+          result = shareResult.succeed
+        } else {
+          result = false
+        }
+      }
+    }
+    await FileTools.deleteFile(targetPath)
+  }
+  
+  return result
 }
 
 export default {
@@ -337,4 +440,5 @@ export default {
   getAllService,
   getUserServices,
   getGroupServices,
+  publishServiceToGroup,
 }

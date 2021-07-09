@@ -188,7 +188,7 @@ export default class OnlineServicesUtils {
    * @param id 数据id
    * @param dataType 数据的类型
    */
-  async publishService(id: string, dataType: keyof OnlineDataType): Promise<boolean> {
+  async publishService(id: string, dataType: keyof OnlineDataType): Promise<{succeed: boolean, customResult?: string, error?: any}> {
     let url: string
     if(dataType === 'UDB') {
       url =
@@ -199,7 +199,7 @@ export default class OnlineServicesUtils {
         this.serverUrl +
         `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTMAP,RESTDATA`
     } else {
-      return false
+      return { succeed: false }
     }
     let headers = {}
     let cookie = await this.getCookie()
@@ -212,7 +212,7 @@ export default class OnlineServicesUtils {
       headers: headers,
       body: true,
     })
-    return result.succeed
+    return result
   }
 
   /**

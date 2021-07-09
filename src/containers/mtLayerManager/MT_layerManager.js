@@ -398,17 +398,6 @@ export default class MT_layerManager extends React.Component {
   }
 
   taggingTool = async ({ data, index }) => {
-    if (
-      GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
-      this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.messages
-    ) {
-      const currentCoworkMessage = this.props.cowork.coworkInfo[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id].messages
-      for (const message of currentCoworkMessage) {
-        console.warn(JSON.stringify(message))
-      }
-      // cornerMarkImage
-    }
-    console.warn('---', JSON.stringify(data))
     this.toolBox.setVisible(true, ConstToolType.SM_MAP_EDIT_TAGGING, {
       height: ConstToolType.TOOLBAR_HEIGHT[0],
       layerData: data,

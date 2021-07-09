@@ -183,6 +183,7 @@ const Profile = {
   SET_AS_PRIVATE_DATA: '设为私有数据',
   SET_AS_PUBLIC_DATA: '设为公有数据',
   NO_SERVICE: '没有服务',
+  SHARE_TO_GROUP: '分享到群组',
 
   GET_DATA_FAILED: '数据获取失败',
 

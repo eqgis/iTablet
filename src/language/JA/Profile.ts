@@ -174,6 +174,7 @@ const Profile: typeof CN.Profile = {
   SET_AS_PRIVATE_DATA: 'プライベートデータに設定',
   SET_AS_PUBLIC_DATA: 'パブリックデータに設定',
   NO_SERVICE: 'サービス無し',
+  SHARE_TO_GROUP: 'Share to group', // need to translate
 
   GET_DATA_FAILED: 'データの取得に失敗しました',
 

@@ -5,7 +5,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { ConstToolType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
-import { LayerUtils } from '../../../../../../utils'
+import { LayerUtils, DialogUtils, Toast } from '../../../../../../utils'
 import * as Type from '../../../../../../types'
 import ToolbarModule from '../ToolbarModule'
 import ServiceAction from './ServiceAction'
@@ -176,55 +176,9 @@ function getData(type: string, params: any) {
   let buttons: Type.ToolbarBottomButton[] = []
   let customView = null
   params && ToolbarModule.setParams(params)
-  // let layerType = ''
   switch (type) {
     case ConstToolType.SM_MAP_SERVICE:
-      // layerType = LayerUtils.getLayerType(
-      //   ToolbarModule.getParams().currentLayer,
-      // )
       data = [
-        // {
-        //   key: 'distanceComput',
-        //   title: '下载服务',
-        //   // action: ({ layerData }) => ServiceAction.downloadToLocal(datasetUrl, {
-        //   //   datasourceAlias: `Label_${
-        //   //     params.user.currentUser.userName
-        //   //   }#`,
-        //   //   // datasourceAlias: _datasourceName,
-        //   // }),
-        //   action: async ({ layerData }) => {
-        //     const _params = ToolbarModule.getParams()
-        //     const result = await ServiceAction.getGroupServices(_params.currentTask.groupID)
-
-        //     let _data = []
-        //     if (result?.content?.length > 0) {
-        //       let services = []
-        //       result.content.forEach(item => {
-        //         services.push({
-        //           key: item.resourceId,
-        //           title: item.resourceName,
-        //           subTitle: item.linkPage,
-        //           data: item,
-        //           size: 'large',
-        //           image: getThemeAssets().dataType.icon_data_source,
-        //         })
-        //       })
-        //       _data.push({
-        //         title: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
-        //         image: getThemeAssets().mine.my_service,
-        //         data: services || [],
-        //       })
-        //     }
-        //     _params.setToolbarVisible(true, ConstToolType.SM_MAP_SERVICE_LIST, {
-        //       data: _data,
-        //       buttons: [],
-        //       containerType: ToolbarType.list,
-        //       isFullScreen: true,
-        //     })
-        //   },
-        //   size: 'large',
-        //   image: getThemeAssets().mapTools.icon_tool_horizontal_distance,
-        // },
         {
           key: 'update_local_service',
           title: getLanguage(GLOBAL.language).Cowork.UPDATE_LOCAL_SERVICE,
@@ -255,40 +209,44 @@ function getData(type: string, params: any) {
           },
           image: getThemeAssets().mapTools.icon_submitdata,
         },
-        // {
-        //   key: 'azimuthComput',
-        //   title: '修改服务',
-        //   action: ({ layerData }) => ServiceAction.getAllService(serviceId, serviceInfo2),
-        //   size: 'large',
-        //   image: getThemeAssets().mapTools.icon_tool_azimuth,
-        // },
-        // {
-        //   key: 'selectByRectangle',
-        //   title: '所有服务',
-        //   action: ServiceAction.getAllService,
-        //   size: 'large',
-        //   image: getThemeAssets().mapTools.icon_tool_frame,
-        // },
-        // {
-        //   key: 'userService',
-        //   title: '用户服务',
-        //   action: () => ServiceAction.getUserServices(),
-        //   size: 'large',
-        //   image: getThemeAssets().mapTools.icon_tool_full,
-        // },
-        // {
-        //   key: 'groupService',
-        //   title: '群组服务',
-        //   // action: () => ServiceAction.getUserServices(),
-        //   action: () => {
-        //     const params = ToolbarModule.getParams()
-        //     ServiceAction.getGroupServices(params.currentTask.groupID)
-        //   },
-        //   size: 'large',
-        //   image: getThemeAssets().mapTools.icon_tool_full,
-        // },
       ]
       break
+    // case ConstToolType.SM_MAP_SERVICE_UPLOAD:
+    //   data = [
+    //     {
+    //       key: 'upload_service',
+    //       title: getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE,
+    //       action: ({ layerData }: ActionParams) => {
+    //         DialogUtils.showInputDailog({
+    //           type: 'name',
+    //           value: layerData.datasetName,
+    //           placeholder: getLanguage(GLOBAL.language).Cowork.PLEASE_ENTER_SERCICE_NAME,
+    //           confirmAction: async name => {
+    //             if (!name) return
+    //             const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+    //             if (datasetDescription.type === 'onlineService') {
+    //               return
+    //             }
+    //             if (!layerData.datasetName) return
+    //             DialogUtils.hideInputDailog()
+    //             const _params: any = ToolbarModule.getParams()
+    //             _params.setContainerLoading?.(true, getLanguage(_params.language).Prompt.PUBLISHING)
+    //             const result = await ServiceAction.publishServiceToGroup(name, [layerData.datasetName], [{
+    //               groupId: _params.currentGroup.id,
+    //               groupName: _params.currentGroup.groupName,
+    //             }])
+    //             _params.setContainerLoading?.(false)
+    //             if (result) {
+    //               Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
+    //             } else {
+    //               Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+    //             }
+    //           },
+    //         })
+    //       },
+    //       image: getThemeAssets().cowork.icon_nav_export,
+    //     },
+    //   ]
   }
   return { data, buttons, customView }
 }

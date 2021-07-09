@@ -271,6 +271,9 @@ export default class LayerManager_tolbar extends React.Component {
       if (dsDescription?.type === 'onlineService') {
         let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE)
         data[0]?.data?.unshift(...serviceData.data)
+      } else if (layerData.datasourceAlias.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0) {
+        let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
+        data[0]?.data?.unshift(...serviceData.data)
       }
     }
     return data

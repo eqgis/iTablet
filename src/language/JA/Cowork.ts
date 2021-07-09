@@ -11,6 +11,11 @@ const Cowork = {
   PUBLISH: 'Publish', // need to translate
 
   ERROR_SERVICE_DATA_LOSE_URL: 'Online Data URL lost', // need to translate
+
+  PLEASE_ENTER_SERCICE_NAME: 'Please enter a service name', // need to translate
+  SERVICE_SHARING_SETTINGS: 'Service sharing settings', // need to translate
+  SEARCHABLE: 'Searchable', // need to translate
+  READABLE: 'Readable', // need to translate
 }
 
 export { Cowork }

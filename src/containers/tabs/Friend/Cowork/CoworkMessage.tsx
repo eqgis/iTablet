@@ -99,7 +99,6 @@ class CoworkMessage extends Component<Props, State> {
           const coworkMessages = this.props.cowork.coworkInfo?.[this.props.currentUser.userName]?.[this.props.cowork.currentTask?.groupID]?.[this.props.cowork.currentTask?.id]?.messages || []
           if (coworkMessages.length > 0) {
             const serviceUrl = coworkMessages[messageID]?.message?.serviceUrl
-            console.warn(serviceUrl)
             for (const message of coworkMessages) {
               if (message.message?.serviceUrl === serviceUrl && message.status === 0) {
                 CoworkInfo.consumeMessage(message.messageID)

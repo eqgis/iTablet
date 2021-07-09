@@ -8,6 +8,7 @@ import { scaleSize } from '../../../../utils'
 export default class RenderServiceItem extends PureComponent {
   props: {
     onItemPress: () => {},
+    data: any,
     imageUrl: string,
     restTitle: string,
     itemId: string,
@@ -82,6 +83,7 @@ export default class RenderServiceItem extends PureComponent {
                   this.props.restTitle,
                   this.props.index,
                   event,
+                  this.props.data,
                 )
               }
             }}

@@ -180,6 +180,7 @@ import SampleMap from './sampleMap'
 import SelectLocation from './workspace/pages/SelectLocation'
 import ARLayerManager from './arLayerManager'
 import ARMapSetting from './arMapSettings/ARMapSetting'
+import ServiceShareSettings from './serviceShareSettings'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -1291,6 +1292,12 @@ export default function(appConfig) {
       },
       ARMapSetting: {
         screen: ARMapSetting,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      ServiceShareSettings: {
+        screen: ServiceShareSettings,
         navigationOptions: {
           header: null,
         },

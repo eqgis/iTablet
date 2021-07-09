@@ -33,7 +33,7 @@ class ServiceModule extends FunctionModule {
         services.push({
           key: item.resourceId,
           title: item.resourceName,
-          subTitle: item.linkPage,
+          subTitle: new Date(item.createTime).Format("yyyy-MM-dd hh:mm:ss"),
           data: item,
           size: 'large',
           image: getThemeAssets().dataType.icon_data_source,

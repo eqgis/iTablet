@@ -323,6 +323,7 @@ export default class MapCut extends React.Component {
     this.setState({
       saveAsName: text,
       isLegalName: result,
+      text:text,
     })
   }
 

@@ -870,7 +870,7 @@ export default class MapView extends React.Component {
       JSON.stringify(prevProps.armap.currentMap) !== JSON.stringify(this.props.armap.currentMap) &&
       this.props.armap.currentMap?.mapName
     ) {
-      SARMap.setAction(ARAction.SELECT)
+      SARMap.setAction(ARAction.NULL)
     }
   }
 
@@ -4497,13 +4497,17 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_TEXT
               || element.type === ARElementType.AR_MODEL
             ) {
-              arEditModule().setModuleData(ConstToolType.SM_AR_EDIT)
+              arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
               ToolbarModule.addData({selectARElement: element})
               SARMap.appointEditElement(element.id, element.layerName)
               SARMap.setAction(ARAction.MOVE)
               this.showFullMap(true)
-              this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT, {
+              this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+                containerType: ToolbarType.slider,
                 isFullScreen: false,
+                showMenuDialog: false,
+                selectName: getLanguage(this.props.language).ARMap.POSITION,
+                selectKey: getLanguage(this.props.language).ARMap.POSITION,
               })
             }
           }}

@@ -63,7 +63,8 @@ class ArEditModule extends FunctionModule {
     })
 
     // SARMap.clearSelection()
-    SARMap.setAction(ARAction.MOVE)
+    // SARMap.setAction(ARAction.MOVE)
+    SARMap.setAction(ARAction.SELECT)
   }
 }
 

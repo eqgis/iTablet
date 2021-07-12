@@ -23,6 +23,11 @@ async function toolbarBack() {
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION:
       prevType = ConstToolType.SM_AR_EDIT_ANIMATION_TYPE
       break
+    case ConstToolType.SM_AR_EDIT_ROTATION:
+    case ConstToolType.SM_AR_EDIT_POSITION:
+    case ConstToolType.SM_AR_EDIT_SCALE:
+      prevType = ConstToolType.SM_AR_EDIT
+      break
     default:
       // const _data = await AREditData.getData(prevType, _params)
   }
@@ -89,37 +94,26 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 }
 
 function commit() {
-  // const _params: any = ToolbarModule.getParams()
-  // const _data: any = ToolbarModule.getData()
-  // if (
-  //   (
-  //     _params.type === ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION ||
-  //     _params.type === ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION
-  //   ) &&
-  //   _data.animationParam
-  // ) {
-  //   // 添加AR动画,并返回上一个界面
-  //   createAnimation()
-  //   return true
-  // }
   SARMap.clearSelection()
   SARMap.submit()
-  // SARMap.setAction(ARAction.NULL)
-  SARMap.setAction(ARAction.SELECT)
+  SARMap.setAction(ARAction.NULL)
+  // SARMap.setAction(ARAction.SELECT)
   return false
 }
 
 function close() {
   const _params: any = ToolbarModule.getParams()
-  const _data: any = ToolbarModule.getData()
-  if (_params.type === ConstToolType.SM_AR_EDIT && _data.selectARElement) {
+  // const _data: any = ToolbarModule.getData()
+  // if (_params.type === ConstToolType.SM_AR_EDIT && _data.selectARElement) {
+  if (_params.type === ConstToolType.SM_AR_EDIT) {
     SARMap.clearSelection()
-    SARMap.setAction(ARAction.SELECT)
+    SARMap.setAction(ARAction.NULL)
+    // SARMap.setAction(ARAction.SELECT)
     ToolbarModule.addData({selectARElement: null})
-    _params.setToolbarVisible(true, _params.type, {
-      isFullScreen: false,
-    })
-    return true
+    // _params.setToolbarVisible(true, _params.type, {
+    //   isFullScreen: false,
+    // })
+    // return true
   }
   return false
 }
@@ -199,7 +193,10 @@ function deleteARElement() {
         SARMap.removeEditElement()
         SARMap.setAction(ARAction.SELECT)
 
-        _params.setToolbarVisible(false)
+        // _params.setToolbarVisible(false)
+        _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
+          isFullScreen: false,
+        })
       },
     })
     GLOBAL.SimpleDialog.setVisible(true)

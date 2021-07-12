@@ -294,7 +294,7 @@ export default class SMessageServiceHTTP {
       for (let i = 0; i < targetIds.length; i++) {
         if (targetIds[i].includes('Group_')) continue
         let _queue
-        if (targetIds[i] && queues.length > 0) {
+        if (targetIds[i]) {
           let _id = 'Message_' + targetIds[i]
           for (let queue of queues) {
             if (queue.routing_key === _id) {

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { TouchableOpacity, Text, Image, View, Platform } from 'react-native'
-import { getPublicAssets } from '../../assets'
+import { getPublicAssets, getThemeAssets } from '../../assets'
 import styles from './styles'
 import { FileTools } from '../../native'
 
@@ -170,7 +170,7 @@ export default class MediaItem extends React.Component<Props, State> {
         imgPath = 'file://' + imgPath
       }
 
-      image = this.state.imageExist ? { uri: imgPath } : getPublicAssets().common.icon_audio
+      image = this.state.imageExist ? { uri: imgPath } : getThemeAssets().publicAssets.icon_placeholder_s
     }
 
     return (

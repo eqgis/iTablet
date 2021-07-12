@@ -101,7 +101,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   }
 
   createTask = () => {
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+    if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser) ) {
       NavigationService.navigate('SelectModulePage', {
         callBack: (moduleData: {module: any, index: number}) => {
           NavigationService.navigate('GroupSourceManagePage', {
@@ -178,9 +178,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
         },
       })
     } else {
-      NavigationService.navigate('Login', {
-        show: ['Online'],
-      })
+      NavigationService.navigate('Login')
     }
   }
 

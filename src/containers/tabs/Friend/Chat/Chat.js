@@ -392,7 +392,7 @@ class Chat extends React.Component {
   onSendLocation(value) {
     let positionStr = value.address
     let bGroup = 1
-    let groupID = this.curUser.userId
+    let groupID = this.curUser.userName
     let groupName = ''
     if (this.targetUser.id.indexOf('Group_') != -1) {
       bGroup = 2
@@ -413,7 +413,7 @@ class Chat extends React.Component {
       type: bGroup,
       user: {
         name: this.curUser.nickname,
-        id: this.curUser.userId,
+        id: this.curUser.userName,
         groupID: groupID,
         groupName: groupName,
       },
@@ -444,7 +444,7 @@ class Chat extends React.Component {
 
   async onSendFile(type, filePath, fileName, extraInfo) {
     let bGroup = 1
-    let groupID = this.curUser.userId
+    let groupID = this.curUser.userName
     let groupName = ''
     if (this.targetUser.id.indexOf('Group_') != -1) {
       bGroup = 2
@@ -458,7 +458,7 @@ class Chat extends React.Component {
     //   type: bGroup,
     //   user: {
     //     name: this.curUser.nickname,
-    //     id: this.curUser.userId,
+    //     id: this.curUser.userName,
     //     groupID: groupID,
     //     groupName: groupName,
     //   },
@@ -481,7 +481,7 @@ class Chat extends React.Component {
       time: time,
       user: {
         name: this.curUser.nickname,
-        id: this.curUser.userId,
+        id: this.curUser.userName,
         groupID: groupID,
         groupName: groupName,
       },
@@ -602,7 +602,7 @@ class Chat extends React.Component {
     }
 
     let bGroup = 1
-    let groupID = this.curUser.userId
+    let groupID = this.curUser.userName
     let groupName = ''
     if (this.targetUser.id.indexOf('Group_') != -1) {
       bGroup = 2
@@ -617,7 +617,7 @@ class Chat extends React.Component {
       type: bGroup,
       user: {
         name: this.curUser.nickname,
-        id: this.curUser.userId,
+        id: this.curUser.userName,
         groupID: groupID,
         groupName: groupName,
       },
@@ -874,7 +874,7 @@ class Chat extends React.Component {
     let userPath = ConstPath.UserPath + this.curUser.userName
     let receivePath = userPath + '/ReceivedFiles'
 
-    if (message.user._id !== this.curUser.userId) {
+    if (message.user._id !== this.curUser.userName) {
       if (message.downloading) {
         Toast.show(getLanguage(GLOBAL.language).Friends.WAIT_DOWNLOADING)
       } else if (message.originMsg.message.message.progress !== 100) {
@@ -1239,7 +1239,7 @@ class Chat extends React.Component {
               this.targetUser.id.indexOf('Group_') === -1 ||
               FriendListFileHandle.isInGroup(
                 this.targetUser.id,
-                this.curUser.userId,
+                this.curUser.userName,
               ) ? (
                 /* eslint-disable*/
                 <TouchableOpacity
@@ -1299,7 +1299,7 @@ class Chat extends React.Component {
             showUserAvatar={this.state.showUserAvatar}
             renderAvatarOnTop={false}
             user={{
-              _id: this.curUser.userId, // sent messages should have same user._id
+              _id: this.curUser.userName, // sent messages should have same user._id
               name: this.curUser.nickname,
             }}
             renderActions={this.renderCustomActions}
@@ -1310,7 +1310,7 @@ class Chat extends React.Component {
                 this.targetUser.id.indexOf('Group_') === -1 ||   // 普通聊天群
                   FriendListFileHandle.isInGroup(
                     this.targetUser.id,
-                    this.curUser.userId,
+                    this.curUser.userName,
                   )
               ) {
                 return (
@@ -1510,7 +1510,7 @@ class Chat extends React.Component {
         <View style={styles.tickView}>
           <Text
             style={
-              currentMessage.user._id !== this.curUser.userId
+              currentMessage.user._id !== this.curUser.userName
                 ? styles.tickLeft
                 : [styles.tickLeft, styles.tickRight]
             }

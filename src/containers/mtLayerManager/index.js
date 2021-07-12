@@ -21,6 +21,7 @@ const mapStateToProps = state => ({
   baseMaps: state.map.toJS().baseMaps,
   appConfig: state.appConfig.toJS(),
   mapModules: state.mapModules.toJS(),
+  cowork: state.cowork.toJS(),
 })
 
 const mapDispatchToProps = {

@@ -215,7 +215,11 @@ export default class Camera extends React.Component {
       result = await SMediaCollector.updateTour(this.props.currentLayer.name)
     }
     if(this.atcb){
-      this.atcb()
+      this.atcb({
+        datasourceName: this.datasourceAlias,
+        datasetName: this.datasetName,
+        mediaPaths,
+      })
     }
     return result
   }
@@ -228,7 +232,11 @@ export default class Camera extends React.Component {
       let result = false
       if (this.cb && typeof this.cb === 'function') {
         result = true
-        this.cb([sourcePath])
+        this.cb({
+          datasourceName: this.datasourceAlias,
+          datasetName: this.datasetName,
+          mediaPaths: [sourcePath],
+        })
       } else {
         result = await this.addMedia([sourcePath])
       }
@@ -260,7 +268,11 @@ export default class Camera extends React.Component {
             mediaPaths.push(item.uri)
           })
           if (this.cb && typeof this.cb === 'function') {
-            this.cb(mediaPaths)
+            this.cb({
+              datasourceName: this.datasourceAlias,
+              datasetName: this.datasetName,
+              mediaPaths: mediaPaths,
+            })
             NavigationService.goBack()
           } else {
             let result = await this.addMedia(mediaPaths)

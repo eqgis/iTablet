@@ -25,7 +25,6 @@ import {
 } from '../../constants'
 import { color } from '../../styles'
 import {
-  getPublicAssets,
   getThemeAssets,
   getLayerIconByType,
   getThemeIconByType,
@@ -64,6 +63,7 @@ export default class MT_layerManager extends React.Component {
     baseMaps: Object,
     appConfig: Object,
     mapModules: Object,
+    cowork: any,
   }
 
   constructor(props) {
@@ -741,6 +741,29 @@ export default class MT_layerManager extends React.Component {
         ) {
           action = this.taggingTool
         }
+        // 类型图标角标
+        let cornerMarkImage
+        try {
+          if (
+            GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
+            this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.messages
+          ) {
+            const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
+            if (dsDescription.url && dsDescription?.type === 'onlineService') {
+              const currentCoworkMessage = this.props.cowork.coworkInfo[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id].messages
+              if (currentCoworkMessage?.length > 0) {
+                for (const message of currentCoworkMessage) {
+                  if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
+                    cornerMarkImage = getThemeAssets().cowork.icon_state_update
+                    break
+                  }
+                }
+              }
+            }
+          }
+        } catch (error) {
+          cornerMarkImage = null
+        }
         return (
           <LayerManager_item
             key={item.name}
@@ -783,6 +806,7 @@ export default class MT_layerManager extends React.Component {
               })
             }}
             hasBaseMap={this.hasBaseMap()}
+            cornerMarkImage={cornerMarkImage}
           />
         )
       } else {

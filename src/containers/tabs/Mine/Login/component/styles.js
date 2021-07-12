@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputBackgroud: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: color.itemColorGray2,
     height: scaleSize(90),
     borderRadius: scaleSize(40),
     paddingHorizontal: scaleSize(10),
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
   },
   registerContainerStyle: {
     position: 'absolute',
@@ -50,26 +51,58 @@ const styles = StyleSheet.create({
 
   // iPortalLogin
   loginSectionView: {
+    flex: 1,
     flexDirection: 'row',
     width: '100%',
     marginTop: scaleSize(10),
   },
   sectionViewStyle: {
+    flex: 1,
     width: '100%',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   inpuViewStyle: {
     width: '75%',
+    alignSelf: 'center',
   },
   textStyle: {
     fontSize: scaleSize(24),
     color: '#A0A0A0',
     marginTop: scaleSize(10),
-    marginLeft: scaleSize(40),
+    marginLeft: scaleSize(30),
   },
   customInputStyle: {
     fontSize: scaleSize(28),
     paddingLeft: scaleSize(52),
+  },
+  sectionTitleStyle: {
+    fontSize: scaleSize(30),
+    color: color.fontColorGray3,
+    marginLeft: scaleSize(30),
+  },
+
+  settingsView: {
+    marginTop: scaleSize(30),
+    // paddingVertical: scaleSize(20),
+    width: '75%',
+    borderRadius: scaleSize(40),
+    backgroundColor: color.itemColorGray2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: scaleSize(10),
+  },
+  settingHeader: {
+    height: scaleSize(70),
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: '5%',
+  },
+  arrowImg: {
+    height: scaleSize(40),
+    width: scaleSize(40),
   },
 })
 export default styles

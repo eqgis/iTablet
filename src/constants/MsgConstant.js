@@ -39,6 +39,7 @@ export default {
   MSG_COWORK_ADD: 12, // 添加对象
   MSG_COWORK_DELETE: 13, // 删除对象
   MSG_COWORK_UPDATE: 14, // 更新对象
+  MSG_COWORK_SERVICE_UPDATE: 15, // 数据服务更新
 
   // MSG_ONLINE_GROUP 中message的type
   /** 群组申请消息 */

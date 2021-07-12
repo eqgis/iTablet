@@ -483,6 +483,17 @@ function isMediaData(fieldInfo) {
   }
 }
 
+/**
+ * 获取图层对应数据集中的描述信息
+ * 通常含有数据特殊类型（例如：旅行轨迹图层，数据服务图层等），以及其他特殊信息
+ * @param {*} layer
+ * @returns
+ */
+function getDatasetDescriptionByLayer(layer) {
+  if (!layer.datasetDescription || layer.datasetDescription === 'NULL') return null
+  return JSON.parse(layer.datasetDescription)
+}
+
 export default {
   getLayerAttribute,
   searchLayerAttribute,
@@ -501,6 +512,7 @@ export default {
   getDefaultBaseMapData,
   getLayerType,
   getFieldTypeText,
+  getDatasetDescriptionByLayer,
 
   setLayersSelectable,
 

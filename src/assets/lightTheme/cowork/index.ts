@@ -10,8 +10,14 @@ const icon_group_agree = require('./icon_group_agree.png')
 const icon_group_join = require('./icon_group_join.png')
 const icon_group_all = require('./icon_group_all.png')
 const icon_group_creator = require('./icon_group_creator.png')
-const icon_img_zip = require('./icon_img_zip.png')
 const icon_currency_open = require('./icon_currency_open.png')
+
+const icon_img_data = require('./icon_img_data.png')
+const icon_img_label = require('./icon_img_label.png')
+const icon_img_zip = require('./icon_img_zip.png')
+
+const icon_state_published = require('./icon_state_published.png')
+const icon_state_update = require('./icon_state_update.png')
 
 const bg_photo_data = require('./bg_photo_data.png')
 const bg_photo_news = require('./bg_photo_news.png')
@@ -30,8 +36,14 @@ export default {
   icon_group_join,
   icon_group_all,
   icon_group_creator,
-  icon_img_zip,
   icon_currency_open,
+
+  icon_img_data,
+  icon_img_label,
+  icon_img_zip,
+
+  icon_state_published,
+  icon_state_update,
 
   bg_photo_data,
   bg_photo_news,

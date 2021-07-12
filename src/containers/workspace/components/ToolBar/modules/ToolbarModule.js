@@ -177,6 +177,19 @@ class ToolbarModule {
       return null
     }
   }
+
+  /**
+   * 获取菜单弹框数据
+   * @param type
+   * @param others {themeType}
+   * @returns {Array}
+   */
+  getHeaderData(type, ...others) {
+    if (!type) return null
+    let module = this.getModule(type)
+    let data = (module?.getHeaderData && module.getHeaderData(type, ...others)) || undefined
+    return data
+  }
 }
 
 let defaultModule = new ToolbarModule()

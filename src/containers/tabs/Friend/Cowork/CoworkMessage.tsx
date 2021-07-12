@@ -1,9 +1,9 @@
 import React, { Component, PureComponent } from 'react'
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
-import { Container } from '../../../../components'
+import { Container, MTBtn } from '../../../../components'
 import { getLanguage } from '../../../../language/index'
-import { scaleSize, Toast } from '../../../../utils'
-import { getPublicAssets } from '../../../../assets'
+import { scaleSize, setSpText, Toast } from '../../../../utils'
+import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { color } from '../../../../styles'
 import CoworkInfo from './CoworkInfo'
 import { connect } from 'react-redux'
@@ -96,6 +96,15 @@ class CoworkMessage extends Component<Props, State> {
             selection.splice(i, 1)
             await CoworkInfo.ignore(messageID)
           }
+          const coworkMessages = this.props.cowork.coworkInfo?.[this.props.currentUser.userName]?.[this.props.cowork.currentTask?.groupID]?.[this.props.cowork.currentTask?.id]?.messages || []
+          if (coworkMessages.length > 0) {
+            const serviceUrl = coworkMessages[messageID]?.message?.serviceUrl
+            for (const message of coworkMessages) {
+              if (message.message?.serviceUrl === serviceUrl && message.status === 0) {
+                CoworkInfo.consumeMessage(message.messageID)
+              }
+            }
+          }
         }
         result && NavigationService.goBack('CoworkMessage', null)
         this.getMessage(selection)
@@ -111,77 +120,57 @@ class CoworkMessage extends Component<Props, State> {
     }
   }
 
-  renderButtoms = () => {
+  _renderButton = (item: {title: string, image: any, action: () => void}) => {
+    return (
+      <MTBtn
+        key={item.title}
+        style={{
+          backgroundColor: 'white',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        title={item.title}
+        textColor={'#1D1D1D'}
+        textStyle={{ fontSize: setSpText(20) }}
+        image={item.image}
+        onPress={async () => {
+          if (item.action) {
+            item.action()
+          }
+        }}
+      />
+    )
+  }
+
+  renderButtons = () => {
     return (
       <View
         style={{
-          position: 'absolute',
           width: '100%',
-          height: scaleSize(120),
-          bottom: 0,
+          height: scaleSize(160),
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-around',
-          backgroundColor: 'rgba(240,240,240,1.0)',
+          backgroundColor: 'white',
+          borderTopRightRadius: scaleSize(40),
+          borderTopLeftRadius: scaleSize(40),
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            this.onButtomPress('update')
-          }}
-          style={{
-            backgroundColor: 'white',
-            width: scaleSize(160),
-            height: scaleSize(80),
-            borderRadius: 2,
-            borderWidth: 1,
-            borderColor: '#4680DF',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text style={{ fontSize: scaleSize(26), color: '#4680DF' }}>
-            {getLanguage(GLOBAL.language).Friends.COWORK_UPDATE}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            this.onButtomPress('add')
-          }}
-          style={{
-            backgroundColor: 'white',
-            width: scaleSize(160),
-            height: scaleSize(80),
-            borderRadius: 2,
-            borderWidth: 1,
-            borderColor: '#4680DF',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text style={{ fontSize: scaleSize(26), color: '#4680DF' }}>
-            {getLanguage(GLOBAL.language).Friends.COWORK_ADD}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            this.onButtomPress('ignore')
-          }}
-          style={{
-            backgroundColor: 'white',
-            width: scaleSize(160),
-            height: scaleSize(80),
-            borderRadius: 2,
-            borderWidth: 1,
-            borderColor: 'red',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text style={{ fontSize: scaleSize(26), color: 'red' }}>
-            {getLanguage(GLOBAL.language).Friends.COWORK_IGNORE}
-          </Text>
-        </TouchableOpacity>
+        {this._renderButton({
+          title: getLanguage(GLOBAL.language).Friends.COWORK_UPDATE,
+          image: getThemeAssets().edit.icon_redo,
+          action: () => this.onButtomPress('update'),
+        })}
+        {this._renderButton({
+          title: getLanguage(GLOBAL.language).Friends.COWORK_ADD,
+          image: getThemeAssets().publicAssets.icon_add,
+          action: () => this.onButtomPress('add'),
+        })}
+        {this._renderButton({
+          title: getLanguage(GLOBAL.language).Friends.COWORK_IGNORE,
+          image: getThemeAssets().publicAssets.icon_ignore,
+          action: () => this.onButtomPress('ignore'),
+        })}
       </View>
     )
   }
@@ -229,13 +218,12 @@ class CoworkMessage extends Component<Props, State> {
         }}
       >
         <FlatList
-          style={{ marginBottom: scaleSize(120) }}
           data={this.state.messages}
           keyExtractor={(item, index) => index.toString()}
           renderItem={this.renderItem}
           extraData={this.state.selected}
         />
-        {this.renderButtoms()}
+        {this.renderButtons()}
       </Container>
     )
   }
@@ -289,22 +277,29 @@ class CoworkMessageItem extends PureComponent<ItemProps, {}> {
         action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED
         actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
         break
+      case MsgConstant.MSG_COWORK_SERVICE_UPDATE:
+        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED + ' ' + getLanguage(GLOBAL.language).Profile.SERVICE
+        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
+        geoType = message.message.datasetName
+        break
     }
-    switch (message.message.geoType) {
-      case GeometryType.GEOPOINT:
-        geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_POINT
-        break
-      case GeometryType.GEOLINE:
-        geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_LINE
-        break
-      case GeometryType.GEOREGION:
-        geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_REGION
-        break
-      case GeometryType.GEOTEXT:
-        geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_TEXT
-        break
-      case GeometryType.GEOGRAPHICOBJECT:
-        geoType = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING
+    if (!geoType) {
+      switch (message.message.geoType) {
+        case GeometryType.GEOPOINT:
+          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_POINT
+          break
+        case GeometryType.GEOLINE:
+          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_LINE
+          break
+        case GeometryType.GEOREGION:
+          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_REGION
+          break
+        case GeometryType.GEOTEXT:
+          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_TEXT
+          break
+        case GeometryType.GEOGRAPHICOBJECT:
+          geoType = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING
+      }
     }
     if (!geoType && message.message.themeType) {
       geoType = getLanguage(GLOBAL.language).Map_Main_Menu.THEME

@@ -317,7 +317,7 @@ function layerManagerData() {
     },
     {
       title: 'Tianditu',
-      action: callback => {
+      action: ({callback}) => {
         GLOBAL.SimpleDialog.set({
           text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
           confirmText: getLanguage(GLOBAL.language).Prompt.YES,
@@ -343,7 +343,7 @@ function layerManagerData() {
     },
     {
       title: 'Tianditu Image',
-      action: callback => {
+      action: ({callback}) => {
         GLOBAL.SimpleDialog.set({
           text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
           confirmText: getLanguage(GLOBAL.language).Prompt.YES,
@@ -369,7 +369,7 @@ function layerManagerData() {
     },
     {
       title: 'Tianditu Terrain',
-      action: callback => {
+      action: ({callback}) => {
         GLOBAL.SimpleDialog.set({
           text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
           confirmText: getLanguage(GLOBAL.language).Prompt.YES,

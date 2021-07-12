@@ -80,6 +80,7 @@ import {
   FetchUtils,
   screen,
   Audio,
+  OnlineServicesUtils,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -555,6 +556,7 @@ export default class MapView extends React.Component {
         GLOBAL.toolBox = this.toolBox
       }
       // })
+      // SMediaCollector.setMediaService(this.props.user.currentUser.serverUrl)
 
       this.unsubscribeFocus = this.props.navigation.addListener(
         'willFocus',
@@ -2211,6 +2213,7 @@ export default class MapView extends React.Component {
         symbol={this.props.symbol}
         getLayers={this.props.getLayers}
         currentLayer={this.props.currentLayer}
+        currentTask={this.props.currentTask}
         addGeometrySelectedListener={this._addGeometrySelectedListener}
         removeGeometrySelectedListener={this._removeGeometrySelectedListener}
         device={this.props.device}

@@ -24,6 +24,7 @@ import Toast from '../../../../utils/Toast'
 import { scaleSize, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { UserType } from '../../../../constants'
+import NavigationService from '../../../NavigationService'
 
 /**
  * 变量命名规则：私有为_XXX, 若变量为一个对象，则命名为 objXXX,若为一个数组，则命名为 arrXXX,...
@@ -141,8 +142,7 @@ export default class MyService extends Component {
           }
 
           let objArrServiceContent = objServiceList.content
-          for (let i = 0; i < objArrServiceContent.length; i++) {
-            let objContent = objArrServiceContent[i]
+          for (let objContent of objArrServiceContent) {
             let arrScenes = objContent.scenes
             let arrMapInfos = objContent.mapInfos
             let strThumbnail = objContent.thumbnail
@@ -150,8 +150,9 @@ export default class MyService extends Component {
             let strID = objContent.id
             let bIsPublish = false
             let objArrAuthorizeSetting = objContent.authorizeSetting
-            for (let j = 0; j < objArrAuthorizeSetting.length; j++) {
-              let strPermissionType = objArrAuthorizeSetting[j].permissionType
+            let authorizeSetting = objContent.authorizeSetting
+            for (let strPermission of objArrAuthorizeSetting) {
+              let strPermissionType = strPermission.permissionType
               if (strPermissionType === 'READ') {
                 bIsPublish = true
                 break
@@ -170,6 +171,8 @@ export default class MyService extends Component {
               JSON.stringify(arrMapInfos) +
               ',"isPublish":' +
               bIsPublish +
+              ',"authorizeSetting":' +
+              JSON.stringify(authorizeSetting) +
               '}'
             let objSectionsData = JSON.parse(strSectionsData)
             if (bIsPublish) {
@@ -358,6 +361,7 @@ export default class MyService extends Component {
       let mapInfos = info.item.mapInfos
       return (
         <RenderServiceItem
+          data={info.item}
           display={display}
           onItemPress={this._onItemPress}
           imageUrl={imageUri}
@@ -392,7 +396,7 @@ export default class MyService extends Component {
     return item.id
   }
 
-  _onItemPress = (isPublish, itemId, restTitle, index, event) => {
+  _onItemPress = (isPublish, itemId, restTitle, index, event, data) => {
     this.onClickItemId = itemId
     this.onClickItemRestTitle = restTitle
     this.onClickItemIsPublish = isPublish
@@ -401,10 +405,18 @@ export default class MyService extends Component {
       x: event.nativeEvent.pageX,
       y: event.nativeEvent.pageY,
     })
+    this.currentData = data
   }
 
   _onCloseModal = () => {
     this.popMenu.setVisible(false)
+  }
+
+  _shareToGroup = () => {
+    NavigationService.navigate('ServiceShareSettings', {
+      data: this.currentData,
+      cb: this._onRefresh,
+    })
   }
 
   _getPopMenuData = () => {
@@ -414,6 +426,10 @@ export default class MyService extends Component {
           ? getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_SERVICE
           : getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_SERVICE,
         action: this._publishService,
+      },
+      {
+        title: getLanguage(GLOBAL.language).Cowork.SERVICE_SHARING_SETTINGS,
+        action: this._shareToGroup,
       },
       {
         title: getLanguage(GLOBAL.language).Profile.DELETE,
@@ -448,6 +464,7 @@ export default class MyService extends Component {
           let strID = objPublishList.id
           let arrScenes = objPublishList.scenes
           let arrMapInfos = objPublishList.mapInfos
+          let authorizeSetting = objPublishList.authorizeSetting
           let bIsPublish = false
           let strSectionsData =
             '{"restTitle":"' +
@@ -462,6 +479,8 @@ export default class MyService extends Component {
             JSON.stringify(arrMapInfos) +
             ',"isPublish":' +
             bIsPublish +
+            ',"authorizeSetting":' +
+            JSON.stringify(authorizeSetting) +
             '}'
           let objPrivateList = JSON.parse(strSectionsData)
           if (
@@ -486,6 +505,7 @@ export default class MyService extends Component {
           let strID = objPrivateList.id
           let arrScenes = objPrivateList.scenes
           let arrMapInfos = objPrivateList.mapInfos
+          let authorizeSetting = objPrivateList.authorizeSetting
           let bIsPublish = true
           let strSectionsData =
             '{"restTitle":"' +
@@ -500,6 +520,8 @@ export default class MyService extends Component {
             JSON.stringify(arrMapInfos) +
             ',"isPublish":' +
             bIsPublish +
+            ',"authorizeSetting":' +
+            JSON.stringify(authorizeSetting) +
             '}'
           let objPublishList = JSON.parse(strSectionsData)
           if (

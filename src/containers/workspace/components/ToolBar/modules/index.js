@@ -31,6 +31,9 @@ import arToolModule from './arTool'
 import arEffecModule from './arEffect'
 import arMappingModule from './arMapping'
 import baseMapModule from './baseMapModule'
+
+import serviceModule from './serviceModule'
+
 import arDrawingModule from './arDrawingModule'
 import arStartModule from './arStartModule'
 import arEditModule from './arEditModule'
@@ -69,6 +72,9 @@ export {
   arEffecModule,
   arMappingModule,
   baseMapModule,
+
+  serviceModule,
+
   arDrawingModule,
   arStartModule,
   arEditModule,

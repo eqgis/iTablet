@@ -120,6 +120,7 @@ interface Props {
   currentTask: any,
   coworkMessages: any,
   mapModules: any,
+  language: string,
   createTask: () => void,
   setCurrentMapModule: (index: number) => void,
   addCoworkMsg: (params: any, cb?: () => {}) => void,
@@ -197,9 +198,9 @@ class TaskManage extends React.Component<Props, State> {
     if (JSON.stringify(prevProps.tasks) !== JSON.stringify(this.props.tasks)) {
       // 当有新增数据时，自动滚动到首位
       if (
-        prevProps.tasks[this.props.user.currentUser.userId] !== this.props.tasks[this.props.user.currentUser.userId] ||
-        prevProps.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]?.length <
-        this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]?.length
+        prevProps.tasks[this.props.user.currentUser.userName] !== this.props.tasks[this.props.user.currentUser.userName] ||
+        prevProps.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]?.length <
+        this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]?.length
       ) {
         // this.refresh()
         // this.list && this.list.scrollToEnd({
@@ -210,9 +211,9 @@ class TaskManage extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userId]
-      && this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
-      ? this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
+    let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userName]
+      && this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]
+      ? this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]
       : []
     // 若redux中数据为空，则从Online下载的cowork文件中读取是否有文件
     if (data.length === 0) {
@@ -451,7 +452,7 @@ class TaskManage extends React.Component<Props, State> {
       }
       CoworkInfo.setId(targetId)
       // CoworkInfo.setId(this.props.groupInfo.id + '')
-      // CoworkInfo.setId(this.props.user.currentUser.userId + '')
+      // CoworkInfo.setId(this.props.user.currentUser.userName + '')
       GLOBAL.getFriend().setCurMod(module)
       this.props.setCurrentMapModule(index).then(() => {
         module.action(this.props.user.currentUser, map)
@@ -505,11 +506,11 @@ class TaskManage extends React.Component<Props, State> {
             <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
             <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_TASK_NULL}</Text>
             {
-              this.props.groupInfo.creator === this.props.user.currentUser.userId &&
+              this.props.groupInfo.creator === this.props.user.currentUser.userName &&
               <Text style={styles.nullSubTitle}>{getLanguage(GLOBAL.language).Friends.CREATE_FIRST_GROUP_TASK}</Text>
             }
             {
-              this.props.groupInfo.creator === this.props.user.currentUser.userId &&
+              this.props.groupInfo.creator === this.props.user.currentUser.userName &&
               // <View style={styles.newTaskBtn}/>
               <ImageButton
                 icon={getThemeAssets().cowork.icon_group_join}
@@ -584,9 +585,9 @@ class TaskManage extends React.Component<Props, State> {
   }
 
   render() {
-    let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userId]
-      && this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
-      ? this.props.tasks[this.props.user.currentUser.userId][this.props.groupInfo.id]
+    let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userName]
+      && this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]
+      ? this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]
       : []
     return (
       <View style={{flex: 1}}>

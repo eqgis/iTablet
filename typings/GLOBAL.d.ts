@@ -177,7 +177,7 @@ declare namespace GLOBAL {
   function clearMapData(): boolean   
   // 待移除方法
   /** 获取通讯录类 Friend.js*/
-  function getFriend(): boolean           
+  function getFriend(): any           
   /** 许可获取事件 LicensePage.js */
   function recycleCloudLicense(): number  
 }

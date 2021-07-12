@@ -1252,7 +1252,7 @@ async function commit(type) {
     }
     result &&
       _params.getLayers(-1, layers => {
-        _params.setCurrentLayer(layers.length > 0 && layers[0])
+        _params.setCurrentLayer(layers.length > 0 && layers[layers.length - 1])
       })
     if (result) {
       _params.setToolbarVisible(false)
@@ -1277,7 +1277,7 @@ async function commit(type) {
     }
     result &&
       _params.getLayers(-1, layers => {
-        _params.setCurrentLayer(layers.length > 0 && layers[0])
+        _params.setCurrentLayer(layers.length > 0 && layers[layers.length - 1])
       })
     if (result) {
       _params.setToolbarVisible(false)

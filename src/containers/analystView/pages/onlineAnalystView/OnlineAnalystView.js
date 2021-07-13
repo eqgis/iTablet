@@ -356,6 +356,7 @@ export default class OnlineAnalystView extends Component {
             clearPopSelected={() =>
               this.popModal && this.popModal.clearMultiSelected()
             }
+            datasets={this.state.datasets}
           />
         )
       case AnalystEntryData.onlineAnalysisTypes.DENSITY:

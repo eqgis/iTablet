@@ -121,6 +121,7 @@ const Analyst_Labels = {
   STATISTIC_MODE: '统计模式',
   NUMERIC_PRECISION: '数字精度',
   AGGREGATE_TYPE: '聚合类型',
+  AGGREGATE_DATASET: '聚合面数据集',
 
   THEMATIC_PARAMS: '专题图参数',
   INTERVAL_MODE: '分段模式',

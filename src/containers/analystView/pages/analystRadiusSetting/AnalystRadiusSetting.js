@@ -284,6 +284,13 @@ export default class AnalystRadiusSetting extends React.Component {
               getLanguage(this.props.language).Analyst_Labels.RANGE_COUNT,
             )
           }
+          onSubmitEditing={value => {
+            let _value = parseFloat(value)
+            if (_value <= 0)
+              this.setState({
+                segments: _value <= 0 ? this.state.segments : _value,
+              })
+          }}
           onBlur={value => {
             if (isNaN(value) && value !== '') {
               value = this.state.segments
@@ -292,7 +299,7 @@ export default class AnalystRadiusSetting extends React.Component {
               segments: value,
             })
           }}
-          onRadiusPress={text => {
+          onChangeText={text => {
             if (text === '') {
               this.setState({
                 segments: '',

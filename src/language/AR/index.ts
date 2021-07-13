@@ -11,6 +11,7 @@ import { Prompt } from './Prompt'
 import * as Common from './Common'
 import * as Error from './Error'
 import * as ARMap from './ARMap'
+import * as Cowork from './Cowork'
 
 export default {
   Navigator_Label,
@@ -25,4 +26,5 @@ export default {
   ...Common,
   ...Error,
   ...ARMap,
+  ...Cowork,
 }

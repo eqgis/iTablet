@@ -80,6 +80,7 @@ import {
   FetchUtils,
   screen,
   Audio,
+  OnlineServicesUtils,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -555,6 +556,7 @@ export default class MapView extends React.Component {
         GLOBAL.toolBox = this.toolBox
       }
       // })
+      // SMediaCollector.setMediaService(this.props.user.currentUser.serverUrl)
 
       this.unsubscribeFocus = this.props.navigation.addListener(
         'willFocus',
@@ -868,7 +870,7 @@ export default class MapView extends React.Component {
       JSON.stringify(prevProps.armap.currentMap) !== JSON.stringify(this.props.armap.currentMap) &&
       this.props.armap.currentMap?.mapName
     ) {
-      SARMap.setAction(ARAction.SELECT)
+      SARMap.setAction(ARAction.NULL)
     }
   }
 
@@ -2211,6 +2213,7 @@ export default class MapView extends React.Component {
         symbol={this.props.symbol}
         getLayers={this.props.getLayers}
         currentLayer={this.props.currentLayer}
+        currentTask={this.props.currentTask}
         addGeometrySelectedListener={this._addGeometrySelectedListener}
         removeGeometrySelectedListener={this._removeGeometrySelectedListener}
         device={this.props.device}
@@ -4494,13 +4497,17 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_TEXT
               || element.type === ARElementType.AR_MODEL
             ) {
-              arEditModule().setModuleData(ConstToolType.SM_AR_EDIT)
+              arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
               ToolbarModule.addData({selectARElement: element})
               SARMap.appointEditElement(element.id, element.layerName)
               SARMap.setAction(ARAction.MOVE)
               this.showFullMap(true)
-              this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT, {
+              this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+                containerType: ToolbarType.slider,
                 isFullScreen: false,
+                showMenuDialog: false,
+                selectName: getLanguage(this.props.language).ARMap.POSITION,
+                selectKey: getLanguage(this.props.language).ARMap.POSITION,
               })
             }
           }}

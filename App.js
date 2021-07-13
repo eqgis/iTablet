@@ -422,8 +422,11 @@ class AppRoot extends Component {
           })
           await this.initDirectories(userInfo.name)
         }
+        GLOBAL.getFriend().onUserLoggedin()
         this.container.setLoading(false)
         NavigationService.popToTop()
+      } else {
+        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
       }
     }
   }

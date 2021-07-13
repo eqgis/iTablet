@@ -174,6 +174,7 @@ const Profile: typeof CN.Profile = {
   SET_AS_PRIVATE_DATA: 'Özel Veri olarak ayarlaa',
   SET_AS_PUBLIC_DATA: 'Halka Açık Veri olarak ayarla',
   NO_SERVICE: 'Servis Yok',
+  SHARE_TO_GROUP: 'Share to group', // need to translate
 
   GET_DATA_FAILED: 'Veri alınamadı',
 

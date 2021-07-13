@@ -190,7 +190,7 @@ export default class Dialog extends PureComponent {
       return this.renderListBtns()
     }
     let btnViewStyle = this.props.onlyOneBtn ? styles.oneBtn : styles.btns
-    if (this.props.buttonMode === 'row') {
+    if (this.props.buttonMode === 'row' || !this.props.children) {
       //SimpleDialog使用
       btnViewStyle = [btnViewStyle, { marginTop: scaleSize(50) }]
     }
@@ -352,7 +352,7 @@ export default class Dialog extends PureComponent {
               }
             }}
             activeOpacity={1}
-            pointerEvent={'box-none'}
+            pointerEvents={'box-none'}
           />
           {this.props.header}
           <KeyboardAvoidingView

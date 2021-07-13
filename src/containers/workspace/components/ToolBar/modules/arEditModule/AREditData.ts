@@ -34,7 +34,7 @@ async function getData(type: string, params: {[name: string]: any}) {
   }
   // let customView: (() => React.ReactElement) | undefined = undefined
   switch (type) {
-    case ConstToolType.SM_AR_EDIT:
+    // case ConstToolType.SM_AR_EDIT:
     case ConstToolType.SM_AR_EDIT_SCALE:
     case ConstToolType.SM_AR_EDIT_ROTATION:
     case ConstToolType.SM_AR_EDIT_POSITION: {
@@ -210,7 +210,7 @@ async function getStyleData(type: string) {
   let buttons
   if (type === ConstToolType.SM_AR_EDIT) {
     buttons = [
-      ToolbarBtnType.TOOLBAR_BACK,
+      ToolbarBtnType.CANCEL,
       ToolbarBtnType.MENU,
       ToolbarBtnType.TOOLBAR_COMMIT,
     ]

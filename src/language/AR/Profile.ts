@@ -176,6 +176,7 @@ const Profile: typeof CN.Profile = {
   SET_AS_PRIVATE_DATA: 'تعييت كبياناتخاصة',
   SET_AS_PUBLIC_DATA: 'تعيين كبيانات عامة',
   NO_SERVICE: 'لاتوجد خدمة',
+  SHARE_TO_GROUP: 'Share to group', // need to translate
 
   GET_DATA_FAILED: 'فشل الحصول على البيانات',
 

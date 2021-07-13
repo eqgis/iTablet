@@ -6,9 +6,9 @@
 import * as React from 'react'
 import { View, Animated, FlatList, TouchableOpacity, Platform } from 'react-native'
 import { MTBtn } from '../../../../components'
-import { ConstToolType, Const, ChunkType, Height } from '../../../../constants'
-import { scaleSize, Toast, screen, LayerUtils } from '../../../../utils'
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { ConstToolType, Const, ChunkType, Height, UserType } from '../../../../constants'
+import { scaleSize, Toast, screen, LayerUtils, OnlineServicesUtils } from '../../../../utils'
+import { SMap, DatasetType, SCoordination, SMediaCollector } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Bar } from 'react-native-progress'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -22,6 +22,8 @@ import styles, {
   BOTTOM_LANDSCAPE,
   PADDING_L,
 } from './styles'
+import ImageResizer from 'react-native-image-resizer'
+import { serviceModule } from '../../../workspace/components/ToolBar/modules'
 
 const COLLECTION = 'COLLECTION'
 const NETWORK = 'NETWORK'
@@ -63,6 +65,7 @@ export default class FunctionToolbar extends React.Component {
     type: string,
     data?: Array,
     currentLayer: PropTypes.object,
+    currentTask: PropTypes.object,
     getLayers?: () => {},
     getToolRef: () => {},
     getMenuAlertDialogRef: () => {},
@@ -106,10 +109,25 @@ export default class FunctionToolbar extends React.Component {
     this.onNext = true
     this.previousOpacity = new Animated.Value(0)
     this.nextOpacity = new Animated.Value(0)
+
+    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        this.servicesUtils = new SCoordination('online')
+        this.onlineServicesUtils = new OnlineServicesUtils('online')
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)){
+        this.servicesUtils = new SCoordination('iportal')
+        this.onlineServicesUtils = new OnlineServicesUtils('iportal')
+      }
+    }
   }
 
   componentDidMount() {
     setTimeout(this.handlePosition, 2000)
+  }
+
+  componentWillUnmount() {
+    this.servicesUtils = null
+    this.onlineServicesUtils = null
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -296,7 +314,7 @@ export default class FunctionToolbar extends React.Component {
       if (
         !GLOBAL.coworkMode ||
         GLOBAL.coworkMode &&
-        _item.type !== ConstToolType.SM_MAP_ADD &&
+        // _item.type !== ConstToolType.SM_MAP_ADD &&
         _item.type !== ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE &&
         _item.type !== ConstToolType.SM_MAP_NAVIGATION_MODULE &&
         _item.type !== ConstToolType.SM_MAP_PLOT_ANIMATION
@@ -306,6 +324,7 @@ export default class FunctionToolbar extends React.Component {
     })
     // 在线协作非三维模块，侧边栏新增多媒体采集
     if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0) {
+      data.push(serviceModule(UserType.isIPortalUser(this.props.user.currentUser) ? 'iportal' : 'online'))
       data.push({
         type: ConstToolType.SM_MAP_MEDIA,
         getTitle: () => getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
@@ -314,6 +333,13 @@ export default class FunctionToolbar extends React.Component {
         disableImage: getThemeAssets().mapTools.icon_tool_multi_media_ash,
         action: () => {
           if (this.props.currentLayer) {
+            if (this.props.currentLayer.themeType) {
+              Toast.show(
+                getLanguage(this.props.language).Prompt
+                  .CANNOT_COLLECT_IN_THEMATIC_LAYERS,
+              )
+              return
+            }
             const layerType = LayerUtils.getLayerType(this.props.currentLayer)
             const isTaggingLayer = layerType === 'TAGGINGLAYER'
             if (isTaggingLayer) {
@@ -322,6 +348,73 @@ export default class FunctionToolbar extends React.Component {
               NavigationService.navigate('Camera', {
                 datasourceAlias,
                 datasetName,
+                cb: async ({
+                  datasourceName,
+                  datasetName,
+                  mediaPaths,
+                }) => {
+                // cb: async mediaPaths => {
+                  try {
+                    if (GLOBAL.coworkMode) {
+                      let resourceIds = [],
+                        _mediaPaths = [] // 保存修改名称后的图片地址
+                      for (let mediaPath of mediaPaths) {
+                        let name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
+                        let suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
+                        //获取缩略图
+                        // let resizedImageUri = await ImageResizer.createResizedImage(
+                        //   mediaPath,
+                        //   60,
+                        //   100,
+                        //   'PNG',
+                        //   1,
+                        //   0,
+                        //   userPath,
+                        // )
+                        let resourceId = await this.onlineServicesUtils.uploadFile(
+                          mediaPath,
+                          name,
+                          'PHOTOS',
+                        )
+                        // await RNFS.unlink(resizedImageUri.path)
+                        // TODO是否删除原图
+                        resourceIds.push(resourceId)
+
+                        let _newPath = `${mediaPath.replace(name, resourceId)}.${suffix}`
+                        _mediaPaths.push(_newPath)
+                      }
+                      let result = await SMediaCollector.addMedia({
+                        datasourceName,
+                        datasetName,
+                        mediaPaths,
+                        mediaIds: resourceIds,
+                      })
+                      // if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)) {
+                      //   result = await SMediaCollector.updateTour(this.props.currentLayer.name)
+                      // }
+                      // 分享到群组中
+                      if (resourceIds.length > 0 && this.props.currentTask.groupID) {
+                        this.servicesUtils?.shareDataToGroup({
+                          groupId: this.props.currentTask.groupID,
+                          ids: resourceIds,
+                        }).then(result => {
+                          if (result.succeed) {
+                            Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_SUCCESS)
+                            this.cb && this.cb()
+                          } else {
+                            Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
+                          }
+                        }).catch(() => {
+                          Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
+                        })
+                      }
+                    } else {
+                      console.warn(GLOBAL.coworkMode)
+                    }
+                  } catch (e) {
+                    console.warn('error')
+                  }
+                },
               })
             }
           } else {
@@ -331,7 +424,7 @@ export default class FunctionToolbar extends React.Component {
             )
             NavigationService.navigate('LayerManager')
           }
-        }
+        },
         // getData: MediaData.getData,
         // actions: MediaAction,
       })

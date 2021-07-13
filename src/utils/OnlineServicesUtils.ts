@@ -11,9 +11,9 @@ import { UserType } from '../constants'
 /** 上传回调 */
 interface UploadCallBack {
   /** 开始回调 */
-  onBegin?: (res: any) => void
+  onBegin?: (res: RNFS.DownloadBeginCallbackResult) => void,
   /** 进度回调 */
-  onProgress?: (res: number) => void
+  onProgress?: (res: RNFS.DownloadBeginCallbackResult) => void,
 }
 
 /** 数据查询参数 */
@@ -141,7 +141,7 @@ export default class OnlineServicesUtils {
       cookie = await SOnlineService.getAndroidSessionID()
     }
 
-    this.cookie = cookie
+    this.cookie = cookie || ''
     return cookie
   }
 
@@ -188,7 +188,7 @@ export default class OnlineServicesUtils {
    * @param id 数据id
    * @param dataType 数据的类型
    */
-  async publishService(id: string, dataType: keyof OnlineDataType): Promise<boolean> {
+  async publishService(id: string, dataType: keyof OnlineDataType): Promise<{succeed: boolean, customResult?: string, error?: any}> {
     let url: string
     if(dataType === 'UDB') {
       url =
@@ -199,7 +199,7 @@ export default class OnlineServicesUtils {
         this.serverUrl +
         `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTMAP,RESTDATA`
     } else {
-      return false
+      return { succeed: false }
     }
     let headers = {}
     let cookie = await this.getCookie()
@@ -212,7 +212,7 @@ export default class OnlineServicesUtils {
       headers: headers,
       body: true,
     })
-    return result.succeed
+    return result
   }
 
   /**
@@ -402,6 +402,36 @@ export default class OnlineServicesUtils {
         return false
       }
     } catch (error) {
+      return false
+    }
+  }
+
+  /**
+   * 下载文件
+   * @param url
+   * @param toPath
+   * @param callback
+   * @returns 
+   */
+  async downloadFile(url: string, toPath: string, callback?: UploadCallBack): Promise<RNFS.DownloadResult | boolean>{
+    try {
+      const downloadOptions: RNFS.DownloadFileOptions = {
+        ...Platform.select({
+          android: {
+            headers: {
+              cookie: await this.getCookie() || '',
+            },
+          },
+        }),
+        fromUrl: url,
+        toFile: toPath || '',
+        background: true,
+        ...callback,
+      }
+  
+      const result = RNFS.downloadFile(downloadOptions).promise
+      return result
+    } catch (e) {
       return false
     }
   }

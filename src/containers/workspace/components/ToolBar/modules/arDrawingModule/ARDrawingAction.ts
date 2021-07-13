@@ -403,7 +403,8 @@ async function toolbarBack() {
     SARMap.setCenterHitTest(false)
     return
   }
-  SARMap.setAction(ARAction.SELECT)
+  // SARMap.setAction(ARAction.SELECT)
+  SARMap.setAction(ARAction.NULL)
   SARMap.clearSelection()
   SARMap.cancel()
   _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING, {
@@ -414,9 +415,9 @@ async function toolbarBack() {
 }
 
 function commit() {
-  // SARMap.setAction(ARAction.NULL)
   SARMap.setCenterHitTest(false)
-  SARMap.setAction(ARAction.SELECT)
+  // SARMap.setAction(ARAction.SELECT)
+  SARMap.setAction(ARAction.NULL)
   SARMap.clearSelection()
   SARMap.submit()
   return false
@@ -426,7 +427,8 @@ function close() {
   const _params: any = ToolbarModule.getParams()
   SARMap.clearSelection()
   SARMap.setCenterHitTest(false)
-  SARMap.setAction(ARAction.SELECT)
+  // SARMap.setAction(ARAction.SELECT)
+  SARMap.setAction(ARAction.NULL)
   ToolbarModule.addData({selectARElement: null})
   _params.setToolbarVisible(false)
   return true

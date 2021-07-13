@@ -357,6 +357,27 @@ async function getThumbnail(path = '') {
   }
 }
 
+/**
+ * 获取文件可用名字
+ */
+async function getAvailableFileName(path, name, ext) {
+  let result = await FileTools.fileIsExist(path)
+  if (!result) {
+    await FileTools.createDirectory(path)
+  }
+  let availableName = name + '.' + ext
+  if (await FileTools.fileIsExist(path + '/' + availableName)) {
+    for (let i = 1; ; i++) {
+      availableName = name + '_' + i + '.' + ext
+      if (!(await FileTools.fileIsExist(path + '/' + availableName))) {
+        return availableName
+      }
+    }
+  } else {
+    return availableName
+  }
+}
+
 export default {
   getHomeDirectory,
   appendingHomeDirectory,
@@ -389,4 +410,5 @@ export default {
   getImportState,
   getThumbnail,
   getPathListByFilterDeep,
+  getAvailableFileName,
 }

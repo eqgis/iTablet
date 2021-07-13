@@ -613,6 +613,7 @@ export default class LayerAttributeTable extends React.Component {
         ref={ref => (this.horizontalTable = ref)}
         style={[{ flex: 1 }, this.props.contentContainerStyle]}
         horizontal={true}
+        showsHorizontalScrollIndicator={false}
         contentContainerStyle={[{paddingHorizontal: scaleSize(40)}, this.props.contentContainerStyle]}
       >
         <SectionList
@@ -630,6 +631,8 @@ export default class LayerAttributeTable extends React.Component {
           getItemLayout={this.getItemLayout}
           extraData={this.state}
           stickySectionHeadersEnabled={this.props.stickySectionHeadersEnabled}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           renderSectionFooter={this.renderFooter}
           onScroll={() => (this.canBeLoadMore = true)}
           // removeClippedSubviews={true} // ios使用后，底部有一行被透明行覆盖，无法选中

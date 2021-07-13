@@ -47,6 +47,8 @@ async function getUDBsAndMaps() {
     }
   })
 
+  let labelDatasets = await DataHandler.getLocalData(user, 'LABEL')
+
   let mapData = await DataHandler.getLocalData(user, 'MAP')
   mapData.forEach(item => {
     item.image = item.isTemplate
@@ -123,6 +125,11 @@ async function getUDBsAndMaps() {
           })
         },
       },
+    },
+    {
+      title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu.PLOTS,
+      image: getThemeAssets().dataType.icon_data_set,
+      data: labelDatasets,
     },
     {
       title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu

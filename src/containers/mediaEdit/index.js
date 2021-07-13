@@ -6,6 +6,7 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   user: state.user.toJS(),
   device: state.device.toJS().device,
+  currentTask: state.cowork.toJS().currentTask,
 })
 
 export default connect(

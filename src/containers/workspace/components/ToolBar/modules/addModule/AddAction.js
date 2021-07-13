@@ -1,4 +1,4 @@
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import { Toast, LayerUtils } from '../../../../../../utils'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
@@ -107,6 +107,20 @@ async function listAction(type, params = {}) {
       _params.setToolbarVisible(true, ConstToolType.SM_MAP_ADD_SYMBOL_PATH, {
         containerType: ToolbarType.list,
       })
+    } else if (
+      params.section.title ===
+        getLanguage(_params.language).Map_Main_Menu.PLOTS
+    ) {
+      const labelUDB = `Label_${_params.user.currentUser.userName}#`
+      const resultArr = await SMap.addLayers([params.item.name], labelUDB)
+      if (resultArr.length > 0) {
+        SMap.refreshMap()
+        SMediaCollector.showMedia(resultArr[0].layerName, false)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
+        _params.setToolbarVisible(false)
+      } else {
+        SMap.refreshMap(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+      }
     }
   } else if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     // 数据集列表点击事件

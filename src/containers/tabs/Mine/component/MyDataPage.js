@@ -476,11 +476,11 @@ export default class MyDataPage extends Component {
     let { ext, onlineDataType } = this._getUploadType()
     this.exportPath = ''
     if (ext && onlineDataType) {
-      result = await JSIPortalServce.uploadFile({
-        filePath: path,
-        fileName: fileName + '.' + ext,
-        fileType: onlineDataType,
-      })
+      result = await JSIPortalServce.uploadFile(
+        path,
+        fileName + '.' + ext,
+        onlineDataType,
+      )
       result && JSIPortalServce.setDatasShareConfig(result, true)
     } else {
       result = false

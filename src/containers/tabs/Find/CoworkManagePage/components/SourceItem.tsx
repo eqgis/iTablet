@@ -4,8 +4,8 @@
   E-mail: 756355668@qq.com
 */
 import React, { Component } from 'react'
-import { Image, Text, TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
-import { Toast, scaleSize } from '../../../../../utils'
+import { Image, Text, TouchableOpacity, View, StyleSheet, Platform, GestureResponderEvent } from 'react-native'
+import { Toast, scaleSize, OnlineServicesUtils } from '../../../../../utils'
 import { CheckBox, ListSeparator, Progress } from '../../../../../components'
 import RNFS from 'react-native-fs'
 import { FileTools } from '../../../../../native'
@@ -15,7 +15,6 @@ import { UserType, ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import DataHandler from '../../../Mine/DataHandler'
-import { SOnlineService } from 'imobile_for_reactnative'
 
 const styles = StyleSheet.create({
   rowContainer: {
@@ -24,39 +23,36 @@ const styles = StyleSheet.create({
     paddingLeft: scaleSize(30),
     paddingVertical: scaleSize(24),
     height: scaleSize(160),
-    // backgroundColor: 'yellow',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   itemImage: {
     height: scaleSize(80),
     width: scaleSize(80),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   contentView: {
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   contentSubView: {
-    // flex: 1,
     flexDirection: 'column',
     marginLeft: scaleSize(40),
-    // justifyContent: 'space-between',
+    width: '100%',
   },
   restTitleTextStyle: {
-    width: '100%',
+    width: '80%',
     fontSize: size.fontSize.fontSizeXXl,
     fontWeight: 'bold',
-    // color: 'white',
     textAlign: 'left',
     flexWrap: 'wrap',
-    // marginRight: 100,
+    color: color.fontColorBlack,
   },
 
   viewStyle2: {
-    // width: '100%',
-    // height: 20,
     flexDirection: 'row',
-    // marginTop: 10,
-    // marginRight: 100,
   },
   imageStyle2: {
     width: 20,
@@ -64,8 +60,6 @@ const styles = StyleSheet.create({
   },
   textStyle2: {
     textAlign: 'left',
-    // color: 'white',
-    // lineHeight: 20,
     padding: 0,
     fontSize: size.fontSize.fontSizeLg,
     paddingLeft: 5,
@@ -75,6 +69,19 @@ const styles = StyleSheet.create({
     height: 2,
   },
 })
+
+export interface ItemData {
+  resourceId: string,
+  resourceName: string,
+  nickname: string,
+  updateTime: string,
+}
+
+export interface MoreParams {
+  event: GestureResponderEvent,
+  data: ItemData,
+  download: () => Promise<void>,
+}
 
 interface State {
   // progress: number | string,
@@ -86,15 +93,16 @@ interface State {
 interface Props {
   user: Users,
   // [name: string]: any,
-  data: any,
+  data: ItemData,
   /** 打开CheckBox选择框 */
   openCheckBox?: boolean,
   /** CheckBox是否被选中 */
   checked?: boolean,
-  checkAction?: (value: boolean) => void,
+  checkAction?: (checkParams: {value: boolean, data: ItemData, download: () => Promise<void>}) => void,
+  onMoreAction?: (data: MoreParams) => void,
   onPress?: (item?: any) => void,
   /** 是否可以下载 */
-  hasDownload?: boolean,
+  // hasDownload?: boolean,
 }
 
 export default class SourceItem extends Component<Props, State> {
@@ -106,7 +114,7 @@ export default class SourceItem extends Component<Props, State> {
   itemProgress: Progress | undefined | null
 
   static defaultProps = {
-    hasDownload: true,
+    // hasDownload: true,
   }
 
   constructor(props: Props) {
@@ -203,14 +211,24 @@ export default class SourceItem extends Component<Props, State> {
       RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
 
       let dataId = this.props.data.resourceId
-      let dataUrl =
-        'https://www.supermapol.com/web/datas/' + dataId + '/download'
+      let dataUrl, onlineServicesUtils
+      if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        let url = this.props.user.currentUser.serverUrl
+        if (url.indexOf('http') !== 0) {
+          url = 'http://' + url
+        }
+        dataUrl = `${url}/datas/${dataId}/download`
+        onlineServicesUtils = new OnlineServicesUtils('iportal')
+      } else {
+        dataUrl = 'https://www.supermapol.com/web/datas/' + dataId + '/download'
+        onlineServicesUtils = new OnlineServicesUtils('online')
+      }
       const downloadOptions = {
         // Android 访问online私有数据，需要冲抵cookie
         ...Platform.select({
           android: {
             headers: {
-              cookie: await SOnlineService.getAndroidSessionID(),
+              cookie: await onlineServicesUtils.getCookie(),
             },
           },
         }),
@@ -304,7 +322,7 @@ export default class SourceItem extends Component<Props, State> {
   }
 
   _checkAction = (value: boolean) => {
-    this.props.checkAction && this.props.checkAction(value)
+    this.props.checkAction && this.props.checkAction({value, data: this.props.data, download: this._downloadFile})
   }
 
   _renderProgress = () => {
@@ -327,7 +345,7 @@ export default class SourceItem extends Component<Props, State> {
   }
 
   _renderDownload = () => {
-    if (!this.props.hasDownload) return null
+    if (!this.props.onMoreAction) return null
     return (
       <View
         style={{
@@ -345,13 +363,14 @@ export default class SourceItem extends Component<Props, State> {
             alignItems: 'center',
             // backgroundColor: 'yellow',
           }}
-          onPress={() => {
-            this._downloadFile()
+          onPress={event => {
+            this.props.onMoreAction?.({event, data: this.props.data, download: this._downloadFile})
           }}
         >
           <Image
             style={{ width: scaleSize(50), height: scaleSize(50), tintColor: color.fontColorGray }}
-            source={getThemeAssets().cowork.icon_nav_import}
+            // source={getThemeAssets().cowork.icon_nav_import}
+            source={getThemeAssets().publicAssets.icon_move}
           />
         </TouchableOpacity>
       </View>
@@ -362,8 +381,8 @@ export default class SourceItem extends Component<Props, State> {
     return (
       <View style={styles.contentSubView}>
         <Text
-          style={[styles.restTitleTextStyle, { color: color.fontColorBlack }]}
-          numberOfLines={2}
+          style={styles.restTitleTextStyle}
+          numberOfLines={1}
         >
           {this.props.data.resourceName.replace('.zip', '')}
         </Text>
@@ -405,7 +424,7 @@ export default class SourceItem extends Component<Props, State> {
             this.props.openCheckBox &&
             <CheckBox
               style={{
-                marginLeft: scaleSize(15),
+                marginLeft: scaleSize(20),
                 marginRight: scaleSize(32),
                 height: scaleSize(30),
                 width: scaleSize(30),

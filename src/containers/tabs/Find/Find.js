@@ -316,14 +316,12 @@ export default class Find extends Component {
               leftImagePath: getThemeAssets().find.onlineCowork,
               isInformSpot: (applyMessagesUnread + inviteMessagesUnread) > 0,
               onClick: () => {
-                if (UserType.isOnlineUser(this.props.user.currentUser)) {
+                if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
                   NavigationService.navigate('GroupSelectPage', {
                     showType: 'group',
                   })
                 } else {
-                  NavigationService.navigate('Login', {
-                    show: ['Online'],
-                  })
+                  NavigationService.navigate('Login')
                 }
               },
             })}

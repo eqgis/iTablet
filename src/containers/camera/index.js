@@ -1,5 +1,9 @@
 import { connect } from 'react-redux'
 import Camera from './Camera'
+import {
+  setBackAction,
+  removeBackAction,
+} from '../../redux/models/backActions'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),
@@ -10,5 +14,8 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  [],
+  [
+    setBackAction,
+    removeBackAction,
+  ],
 )(Camera)

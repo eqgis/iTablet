@@ -41,7 +41,7 @@ import styles from './styles'
 import { SMap, DatasetType, SMCollectorType } from 'imobile_for_reactnative'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
-import { Toast, scaleSize, setSpText, dataUtil } from '../../../../utils'
+import { Toast, scaleSize, setSpText, dataUtil, LayerUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { FileTools } from '../../../../../src/native'
 import { MsgConstant } from '../../../../containers/tabs/Friend'
@@ -58,6 +58,7 @@ import {
   getLayerIconByType,
 } from '../../../../assets'
 import { stat } from 'react-native-fs'
+import ServiceData from '../../../workspace/components/ToolBar/modules/serviceModule/ServiceData'
 
 /** 工具栏类型 **/
 const list = 'list'
@@ -84,7 +85,6 @@ export default class LayerManager_tolbar extends React.Component {
     // layers: Object,
     user: Object,
     navigation: Object,
-    currentLayer: Object,
     curUserBaseMaps: Array,
     currentScale: Number,
     mapFromXml?: () => {}
@@ -265,6 +265,15 @@ export default class LayerManager_tolbar extends React.Component {
             data[i].data.splice(j, 1)
           }
         }
+      }
+
+      const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+      if (dsDescription?.type === 'onlineService') {
+        let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE)
+        data[0]?.data?.unshift(...serviceData.data)
+      } else if (layerData.datasourceAlias.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0) {
+        let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
+        data[0]?.data?.unshift(...serviceData.data)
       }
     }
     return data
@@ -456,9 +465,7 @@ export default class LayerManager_tolbar extends React.Component {
       (async function() {
         try {
           GLOBAL.Loading?.setLoading(true)
-          await section.action(() => {
-            this.props.getLayers()
-          })
+          await section.action({layerData: this.state.layerData})
           await this.props.getLayers()
           this.setVisible(false)
           GLOBAL.Loading?.setLoading(false)

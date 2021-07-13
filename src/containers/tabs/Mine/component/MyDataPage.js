@@ -568,7 +568,8 @@ export default class MyDataPage extends Component {
     } else if (this.type === this.types.template) {
       ext = 'zip'
       onlineDataType = 'UDB'
-    } else if (this.exportPath.endsWith('.zip')) {
+    // } else if (this.exportPath.endsWith('.zip')) { // release含中文时，endsWith返回false
+    } else if (this.exportPath.indexOf('.zip', this.exportPath.length - '.zip'.length) !== -1) {
       ext = 'zip'
       onlineDataType = 'UDB'
     }

@@ -258,7 +258,7 @@ export default class BufferAnalystViewTab extends Component {
 
   getDataSets = async info => {
     let dss = []
-    let dataSets = await SMap.getDatasetsByDatasource(info, true)
+    let dataSets = await SMap.getDatasetsByDatasource(info, true,{mode:'analyst'})
     dataSets.list.forEach(item => {
       item.key = item.datasetName
       item.value = item.key

@@ -260,12 +260,12 @@ const getDetectTypesSettings = () => [
     value: false,
     iconType: 'switch',
   },
-  {
-    key: '笔记本电脑',
-    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_LAPTOP,
-    value: false,
-    iconType: 'switch',
-  },
+  // {
+  //   key: '笔记本电脑',
+  //   title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_LAPTOP,
+  //   value: false,
+  //   iconType: 'switch',
+  // },
   {
     key: '手机',
     title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CELLPHONE,
@@ -290,12 +290,12 @@ const getDetectTypesSettings = () => [
     value: false,
     iconType: 'switch',
   },
-  {
-    key: '交通信号灯',
-    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TRAFFICLIGHT,
-    value: false,
-    iconType: 'switch',
-  },
+  // {
+  //   key: '交通信号灯',
+  //   title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TRAFFICLIGHT,
+  //   value: false,
+  //   iconType: 'switch',
+  // },
   {
     key: '消防栓',
     title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_FIREHYDRANT,

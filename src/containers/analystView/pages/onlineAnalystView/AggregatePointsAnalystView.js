@@ -14,6 +14,7 @@ export default class AggregatePointsAnalystView extends Component {
     device: Object,
     currentUser: Object,
     setModalVisible: () => {},
+    datasets: Array,
   }
 
   constructor(props) {
@@ -46,6 +47,7 @@ export default class AggregatePointsAnalystView extends Component {
       colorGradientType: onlineParamsData.getColorGradientType(
         this.props.language,
       )[0],
+      aggregateDataset: '',
     }
   }
 
@@ -93,6 +95,7 @@ export default class AggregatePointsAnalystView extends Component {
     data.rangeMode = this.state.rangeMode.value
     data.rangeCount = this.state.rangeCount
     data.colorGradientType = this.state.colorGradientType.value
+    data.regionDataset = this.state.aggregateDataset
     return data
   }
 
@@ -117,6 +120,9 @@ export default class AggregatePointsAnalystView extends Component {
       case AggregatePointParams.COLOR_GRADIENT_TYPE:
         newStateData = { colorGradientType: data }
         break
+      case AggregatePointParams.AGGREGATE_DATASET:
+        newStateData = { aggregateDataset: data.value}
+        break
     }
     this.setState(newStateData, () => {
       cb && cb()
@@ -139,6 +145,7 @@ export default class AggregatePointsAnalystView extends Component {
       colorGradientType: onlineParamsData.getColorGradientType(
         this.props.language,
       )[0],
+      aggregateDataset:'',
     })
   }
 
@@ -184,7 +191,7 @@ export default class AggregatePointsAnalystView extends Component {
             )
           }}
         />
-        <AnalystItem
+        {this.state.aggregateType.key === onlineParamsData.getAggregateType(this.props.language)[0].key && <AnalystItem
           title={getLanguage(this.props.language).Analyst_Labels.Mesh_Type}
           value={(this.state.meshType && this.state.meshType.key) || ''}
           onPress={async () => {
@@ -193,8 +200,24 @@ export default class AggregatePointsAnalystView extends Component {
               currentPopData: this.state.meshType,
             })
           }}
-        />
-        <AnalystItem
+        />}
+        {this.state.aggregateType.key === onlineParamsData.getAggregateType(this.props.language)[1].key && <AnalystItem
+          title={getLanguage(this.props.language).Analyst_Labels.AGGREGATE_DATASET}
+          value={
+            this.state.aggregateDataset
+          }
+          onPress={async () => {
+            this.props.setModalVisible(
+              true,
+              AggregatePointParams.AGGREGATE_DATASET,
+              {
+                popData: this.props.datasets,
+                currentPopData: this.state.aggregateDataset,
+              },
+            )
+          }}
+        />}
+        {this.state.aggregateType.key === onlineParamsData.getAggregateType(this.props.language)[0].key && <AnalystItem
           title={
             getLanguage(this.props.language).Analyst_Labels.ANALYSIS_BOUNDS
           }
@@ -211,8 +234,8 @@ export default class AggregatePointsAnalystView extends Component {
               },
             })
           }}
-        />
-        <AnalystItem
+        />}
+        {this.state.aggregateType.key === onlineParamsData.getAggregateType(this.props.language)[0].key && <AnalystItem
           title={getLanguage(this.props.language).Analyst_Labels.MESH_SIZE}
           value={this.state.meshSize + this.state.meshSizeUnit}
           onPress={async () => {
@@ -232,7 +255,7 @@ export default class AggregatePointsAnalystView extends Component {
               },
             })
           }}
-        />
+        />}
         <AnalystItem
           title={getLanguage(this.props.language).Analyst_Labels.WEIGHT_FIELD}
           // value={this.state.weight === 1 ? '' : this.state.weight}

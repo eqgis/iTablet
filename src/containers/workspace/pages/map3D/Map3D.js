@@ -464,6 +464,7 @@ export default class Map3D extends React.Component {
       // if (GLOBAL.openWorkspace) {
         // this.SaveDialog && this.SaveDialog.setDialogVisible(true)
         // await SScene.saveWorkspace()
+      this.mapController?.stopCompass()
       await SScene.closeWorkspace()
       this.container && this.container.setLoading(false)
       NavigationService.goBack()

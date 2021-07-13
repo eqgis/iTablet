@@ -110,6 +110,13 @@ export default class MapController extends React.Component {
     Animated.sequence(animatedList).start()
   }
 
+  stopCompass = () => {
+    if (this.compassInterval) {
+      clearInterval(this.compassInterval)
+      this.compassInterval = null
+    }
+  }
+
   /**
    * 设置导航状态
    * @param isGuiding

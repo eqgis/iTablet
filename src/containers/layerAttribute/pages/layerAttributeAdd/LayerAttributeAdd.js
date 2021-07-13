@@ -19,7 +19,7 @@ import styles from './styles'
 import { color } from '../../../../styles'
 let typeStr = [
   ['布尔型', 'BOOLEAN', 1, 1],
-  // ['字节型', 'BYTE', 2,1],
+  ['字节型', 'BYTE', 2,1],
   ['16位整型', 'INT16', 3, 2],
   ['32位整型', 'INT32', 4, 4],
   ['64位整型', 'INT64', 16, 8],
@@ -28,7 +28,7 @@ let typeStr = [
   // ['日期型', 'DATETIME', 23,8],
   // ['二进制型', 'LONGBINARY', 11,0],
   ['文本型', 'TEXT', 10, 255],
-  // ['字符型', 'CHAR', 118,1],
+  ['字符型', 'CHAR', 18,1],
   // ['宽字符型', 'WTEXT', 127,255],
 ]
 

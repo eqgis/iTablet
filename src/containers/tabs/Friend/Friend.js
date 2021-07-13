@@ -207,7 +207,7 @@ export default class Friend extends Component {
       let servicesUtils = new OnlineServicesUtils(type)
       let data
       let Info
-      if (this.props.appConfig.messageServer) {
+      if (type === 'iportal' && this.props.appConfig.messageServer) {
         data = this.props.appConfig.messageServer
         if (
           data.MSG_IP &&

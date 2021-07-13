@@ -50,12 +50,14 @@ RCT_REMAP_METHOD(isWXInstalled, installedResolver:(RCTPromiseResolveBlock)resolv
 }
 
 RCT_REMAP_METHOD(sendFileOfWechat, sendFileOfWechat:(NSDictionary*)data resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
-  @try {
-    BOOL result = [WeiXinUtils sendFileContent:data];
-    resolve(@(result));
-  } @catch (NSException *exception) {
-    reject(@"AppUtils", exception.reason, nil);
-  }
+  dispatch_async(dispatch_get_main_queue(), ^{
+    @try {
+      BOOL result = [WeiXinUtils sendFileContent:data];
+      resolve(@(result));
+    } @catch (NSException *exception) {
+      reject(@"AppUtils", exception.reason, nil);
+    }
+  });
 }
 RCT_REMAP_METHOD(isLocationOpen, LocationOpenWithresolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
   @try {

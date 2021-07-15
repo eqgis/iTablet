@@ -105,20 +105,10 @@ export default class SelectLocation extends React.Component<Props, State>{
 
   openMap = async () => {
     const map = ConstOnline.tianditu()
-    if (Platform.OS === 'android') {
-      //刚初始化完mapview后添加会导致第一次的地图范围不对，设置个延时
-      setTimeout(() => {
-        SMap2.addToMap(map.DSParams.alias, map.layerIndex)
-      }, 1)
-    } else {
-      let datasourceParams = {
-        server: map.DSParams.server,
-        engineType: map.DSParams.engineType,
-        alias: map.DSParams.alias,
-        driver: map.DSParams.driver,
-      }
-      SMap.addToMap(datasourceParams, 0)
-    }
+    //刚初始化完mapview后添加会导致第一次的地图范围不对，设置个延时
+    setTimeout(() => {
+      SMap2.addToMap(map.DSParams, map.layerIndex)
+    }, 1)
   }
 
   renderBottom() {
@@ -390,9 +380,6 @@ export default class SelectLocation extends React.Component<Props, State>{
       >
         <SMMapView2
           onLoad={this.openMap}
-          workspace={{
-            datasource: ConstOnline.tianditu().DSParams,
-          }}
           onSingleTap={this.onSingleTap}
         />
         <MapController

@@ -256,7 +256,7 @@ export default class SelectLocation extends React.Component<Props, State>{
       />
     )
   }
-  
+
 
   renderItem = data => {
     const { item, section:{ type } } = data
@@ -363,9 +363,21 @@ export default class SelectLocation extends React.Component<Props, State>{
     }
   }
 
-
+  //这里外面新增的view styl是因为android全面屏手机必须留一点空间，不然会导致底部工具栏刷新不全
+  //ios必须铺满屏幕不然会有一直刷新崩溃问题
   render() {
     let containerStyle = styles.fullContainer
+    let styl
+    if (Platform.OS === 'android') {
+      styl = {
+        width:'100%',
+        height:'90%',
+      }
+    }else{
+      styl =  {
+        flex: 1,
+      }
+    }
     return (
       <Container
         showFullInMap={true}
@@ -378,10 +390,12 @@ export default class SelectLocation extends React.Component<Props, State>{
           headerRight: this.renderHeaderRight(),
         }}
       >
-        <SMMapView2
-          onLoad={this.openMap}
-          onSingleTap={this.onSingleTap}
-        />
+        <View style={styl}>
+          <SMMapView2
+            onLoad={this.openMap}
+            onSingleTap={this.onSingleTap}
+          />
+        </View>
         <MapController
           bottomHeight={scaleSize(200)}
           selectLocation={this.location}

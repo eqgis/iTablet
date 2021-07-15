@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator ,Switch,TextInput} from 'react-native'
 import { SLocation } from 'imobile_for_reactnative'
 import Container from '../../components/Container'
-import { scaleSize } from '../../utils'
+import { scaleSize ,Toast} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
+import color from '../../styles/color'
+import {size } from '../../styles'
 
 const radio_on = require('../../assets/public/radio_select.png')
 const radio_off = require('../../assets/public/radio_select_no.png')
@@ -24,6 +26,10 @@ class LocationSetting extends React.Component {
       currentOption: this.prevOption,
       showSearch: true,
       searchNotify: getLanguage(GLOBAL.language).Prompt.SEARCHING,
+      distanceLocation: false,
+      timeLocation:false,
+      distanceLocationText: "",
+      timeLocationText: "",
     }
   }
 
@@ -31,6 +37,7 @@ class LocationSetting extends React.Component {
     this.addListener()
     SLocation.searchDevice(true)
     this.startShowSearching()
+    this.getLocationType()
   }
 
   componentWillUnmount() {
@@ -49,6 +56,36 @@ class LocationSetting extends React.Component {
   }
 
   changeDevice = async () => {
+    if(this.state.distanceLocation){
+      SLocation.setDistanceLocation(true)
+      SLocation.setTimeLocation(false)
+      if(this.state.distanceLocationText === ""){
+        SLocation.setLocationDistance(0+"")
+      }else{
+        if(isNaN(this.state.distanceLocationText)){
+          Toast.show(getLanguage(GLOBAL.language).Profile.INPUT_NUMBER)
+          return
+        }else{
+          SLocation.setLocationDistance(this.state.distanceLocationText)
+        }
+      }
+    }else if(this.state.timeLocation){
+      SLocation.setTimeLocation(true)
+      SLocation.setDistanceLocation(false)
+      if(this.state.timeLocationText === ""){
+        SLocation.setLocationTime(0+"")
+      }else{
+        if(isNaN(this.state.timeLocationText)){
+          Toast.show(getLanguage(GLOBAL.language).Profile.INPUT_NUMBER)
+          return
+        }else{
+          SLocation.setLocationTime(this.state.timeLocationText)
+        }
+      }
+    }else{
+      SLocation.setDistanceLocation(false)
+      SLocation.setTimeLocation(false)
+    }
     let currentOption = this.state.currentOption
     this.props.setDevice(currentOption)
     SLocation.changeDevice(currentOption)
@@ -65,6 +102,17 @@ class LocationSetting extends React.Component {
       this.setState({ searchNotify: getLanguage(GLOBAL.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
     } else if(this.state.devices.length > 1) {
       this.setState({ showSearch: false})
+    }
+  }
+
+  getLocationType = async () => {
+    if (await SLocation.getTimeLocation()) {
+      let time = await SLocation.getLocationTime()
+      this.setState({ timeLocation: true , timeLocationText:""+time})
+    }
+    if (await SLocation.getDistanceLocation()) {
+      let distance = await SLocation.getLocationDistance()
+      this.setState({ distanceLocation: true , distanceLocationText: ""+distance})
     }
   }
 
@@ -110,21 +158,76 @@ class LocationSetting extends React.Component {
     return <View style={{ flexDirection: 'column' }}>{this.renderItems()}</View>
   }
 
+  renderLocation = () => {
+    return(
+      <View style={{ flexDirection: 'column' }}>
+        <View style={styles.itemView}>
+          <Text style={styles.text}>{'距离定位'}</Text>
+          {this.state.distanceLocation && !this.state.timeLocation && <TextInput
+            value={this.state.distanceLocationText}
+            placeholder={getLanguage(GLOBAL.language).Profile.DISTANCE}
+            keyboardType="numeric"
+            placeholderTextColor={color.fontColorGray}
+            style={styles.textInput}
+            onChangeText={text => this.setState({ distanceLocationText: text })}
+            returnKeyLabel={'完成'}
+            returnKeyType={'done'}
+          />}
+          <Switch
+            // style={styles.switch}
+            trackColor={{ false: color.bgG, true: color.switch }}
+            thumbColor={this.state.distanceLocation ? color.bgW : color.bgW}
+            ios_backgroundColor={this.state.distanceLocation ? color.switch : color.bgG}
+            value={this.state.distanceLocation}
+            onValueChange={value => {
+              this.setState({ distanceLocation: value ,timeLocation:false})
+            }}
+          />
+        </View>
+        {this.renderSeperator()}
+        <View style={styles.itemView}>
+          <Text style={styles.text}>{'时间定位'}</Text>
+          {this.state.timeLocation && !this.state.distanceLocation && <TextInput
+            value={this.state.timeLocationText}
+            placeholder={getLanguage(GLOBAL.language).Profile.TIME}
+            keyboardType="numeric"
+            placeholderTextColor={color.fontColorGray}
+            style={styles.textInput}
+            onChangeText={text => this.setState({ timeLocationText: text })}
+            returnKeyLabel={'完成'}
+            returnKeyType={'done'}
+          />}
+          <Switch
+            // style={styles.switch}
+            trackColor={{ false: color.bgG, true: color.switch }}
+            thumbColor={this.state.timeLocation ? color.bgW : color.bgW}
+            ios_backgroundColor={this.state.timeLocation ? color.switch : color.bgG}
+            value={this.state.timeLocation}
+            onValueChange={value => {
+              this.setState({ timeLocation: value ,distanceLocation:false})
+            }}
+          />
+        </View>
+        {this.renderSeperator()}
+      </View>
+    )
+  }
+
   renderSeperator = () => {
     return <View style={styles.seperator} />
   }
 
   renderRight = () => {
     let textColor
-    if (this.state.currentOption === this.prevOption) {
-      textColor = '#A0A0A0'
-    } else {
-      textColor = '#FFFFFF'
-    }
+    // if (this.state.currentOption === this.prevOption) {
+    // textColor = '#A0A0A0'
+    // } else {
+    textColor = 'black'
+    // }
     return (
       <View>
         <TouchableOpacity
-          disabled={this.state.currentOption === this.prevOption}
+          // disabled={this.state.currentOption === this.prevOption}
           onPress={this.changeDevice}
         >
           <Text style={[styles.headerRightText, { color: textColor }]}>
@@ -161,6 +264,7 @@ class LocationSetting extends React.Component {
       >
         <View style={styles.container}>
           {this.renderList()}
+          {this.renderLocation()}
           {this.state.showSearch && this.renderSearch()}
         </View>
       </Container>
@@ -178,7 +282,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: scaleSize(20),
-    marginVertical: scaleSize(10),
+    height:scaleSize(80),
+    // marginVertical: scaleSize(20),
   },
   searchItem: {
     flexDirection: 'row',
@@ -204,6 +309,14 @@ const styles = StyleSheet.create({
   },
   headerRightText: {
     fontSize: scaleSize(26),
+  },
+  textInput: {
+    fontSize: scaleSize(20),
+    marginLeft: scaleSize(200),
+    height: scaleSize(60),
+    width: scaleSize(150),
+    borderWidth: 0.5,
+    borderColor: color.bgG,
   },
 })
 export default LocationSetting

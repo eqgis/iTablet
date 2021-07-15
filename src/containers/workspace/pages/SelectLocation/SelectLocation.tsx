@@ -105,20 +105,10 @@ export default class SelectLocation extends React.Component<Props, State>{
 
   openMap = async () => {
     const map = ConstOnline.tianditu()
-    if (Platform.OS === 'android') {
-      //刚初始化完mapview后添加会导致第一次的地图范围不对，设置个延时
-      setTimeout(() => {
-        SMap2.addToMap(map.DSParams.alias, map.layerIndex)
-      }, 1)
-    } else {
-      let datasourceParams = {
-        server: map.DSParams.server,
-        engineType: map.DSParams.engineType,
-        alias: map.DSParams.alias,
-        driver: map.DSParams.driver,
-      }
-      SMap.addToMap(datasourceParams, 0)
-    }
+    //刚初始化完mapview后添加会导致第一次的地图范围不对，设置个延时
+    setTimeout(() => {
+      SMap2.addToMap(map.DSParams, map.layerIndex)
+    }, 1)
   }
 
   renderBottom() {
@@ -266,7 +256,7 @@ export default class SelectLocation extends React.Component<Props, State>{
       />
     )
   }
-  
+
 
   renderItem = data => {
     const { item, section:{ type } } = data
@@ -373,9 +363,21 @@ export default class SelectLocation extends React.Component<Props, State>{
     }
   }
 
-
+  //这里外面新增的view styl是因为android全面屏手机必须留一点空间，不然会导致底部工具栏刷新不全
+  //ios必须铺满屏幕不然会有一直刷新崩溃问题
   render() {
     let containerStyle = styles.fullContainer
+    let styl
+    if (Platform.OS === 'android') {
+      styl = {
+        width:'100%',
+        height:'90%',
+      }
+    }else{
+      styl =  {
+        flex: 1,
+      }
+    }
     return (
       <Container
         showFullInMap={true}
@@ -388,13 +390,12 @@ export default class SelectLocation extends React.Component<Props, State>{
           headerRight: this.renderHeaderRight(),
         }}
       >
-        <SMMapView2
-          onLoad={this.openMap}
-          workspace={{
-            datasource: ConstOnline.tianditu().DSParams,
-          }}
-          onSingleTap={this.onSingleTap}
-        />
+        <View style={styl}>
+          <SMMapView2
+            onLoad={this.openMap}
+            onSingleTap={this.onSingleTap}
+          />
+        </View>
         <MapController
           bottomHeight={scaleSize(200)}
           selectLocation={this.location}

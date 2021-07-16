@@ -244,6 +244,9 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: 'Cet appareil',
   SETTING_CLEAR_CACHE: 'Vider le cache',
   SETTING_CLEAR_CACHE_SUCCESS:'Suppression réussie',
+  DISTANCE:'Distance(m)',//need to translate
+  TIME:'Time(s)',//need to translate
+  INPUT_NUMBER:"Please Input Number",//need to translate
 
   // 许可
   LICENSE: 'License',

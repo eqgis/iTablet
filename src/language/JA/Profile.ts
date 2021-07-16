@@ -244,6 +244,9 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: '当デバイス',
   SETTING_CLEAR_CACHE: 'キャッシュのクリア',
   SETTING_CLEAR_CACHE_SUCCESS:'クリアに成功',
+  DISTANCE:'Distance(m)',//need to translate
+  TIME:'Time(s)',//need to translate
+  INPUT_NUMBER:"Please Input Number",//need to translate
 
   // ライセンス
   LICENSE: 'ライセンス',

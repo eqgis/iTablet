@@ -80,7 +80,7 @@ import {
   FetchUtils,
   screen,
   Audio,
-  OnlineServicesUtils,
+  SCoordinationUtils,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -189,6 +189,8 @@ export default class MapView extends React.Component {
     currentTask: PropTypes.object,
     coworkMessages: PropTypes.object,
     currentGroup: PropTypes.object,
+    currentTaskServices: PropTypes.object,
+    setCoworkService: PropTypes.func,
 
     showDatumPoint: PropTypes.bool,
     isAR: PropTypes.bool,
@@ -2220,6 +2222,7 @@ export default class MapView extends React.Component {
         online={this.props.online}
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.mapModules}
+        currentTaskServices={this.props.currentTaskServices}
         ARView={GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR :this.state.showAIDetect}
       />
     )

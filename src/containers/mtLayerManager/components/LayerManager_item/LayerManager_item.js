@@ -7,7 +7,7 @@
 import * as React from 'react'
 //eslint-disable-next-line
 import { ActionPopover } from 'teaset'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Animated, Easing } from 'react-native'
 import { DatasetType, ThemeType, SMap } from 'imobile_for_reactnative'
 import { Toast, scaleSize, LayerUtils, screen } from '../../../../utils'
 import SwipeOut from 'react-native-swipeout'
@@ -22,39 +22,39 @@ import {
   getPublicAssets,
 } from '../../../../assets'
 import { getLanguage } from '../../../../language'
+import PropTypes from 'prop-types'
 
 const LAYER_GROUP = 'layerGroup'
 
 export default class LayerManager_item extends React.Component {
-  props: {
-    user: Object,
-    data: Object,
-    parentData?: Object,
-    isClose: boolean,
-    swipeEnabled: boolean,
-    hasSelected: boolean, // 是否有选择Radio
-    selected: boolean, // 选择Radio
-    operable: boolean,
-    // showRenameDialog: () => {},
-    // showRemoveDialog: () => {},
-    // setEditable: () => {},
-    child: Array,
-    sectionID: number,
-    rowID: number,
-    isSelected: boolean,
-    index: number,
-    layers: Object,
-    hasBaseMap: boolean,
-    cornerMarkImage: any,
+  static propTypes = {
+    user: PropTypes.object,
+    device: PropTypes.object,
+    data: PropTypes.object,
+    parentData: PropTypes.object,
+    isClose: PropTypes.bool,
+    swipeEnabled: PropTypes.bool,
+    hasSelected: PropTypes.bool, // 是否有选择Radio
+    selected: PropTypes.bool, // 选择Radio
+    operable: PropTypes.bool,
+    child: PropTypes.array,
+    sectionID: PropTypes.number,
+    rowID: PropTypes.number,
+    isSelected: PropTypes.bool,
+    index: PropTypes.number,
+    layers: PropTypes.object,
+    hasBaseMap: PropTypes.bool,
+    cornerMarkImage: PropTypes.any,
+    isLoading: PropTypes.bool,
 
-    setLayerVisible: () => {},
-    onArrowPress: () => {},
-    onPress: () => {},
-    onAllPress: () => {},
-    onToolPress: () => {},
-    onOpen: () => {},
-    getLayers: () => {},
-    refreshParent: () => {},
+    setLayerVisible: PropTypes.func,
+    onArrowPress: PropTypes.func,
+    onPress: PropTypes.func,
+    onAllPress: PropTypes.func,
+    onToolPress: PropTypes.func,
+    onOpen: PropTypes.func,
+    getLayers: PropTypes.func,
+    refreshParent: PropTypes.func,
   }
 
   static defaultProps = {
@@ -89,6 +89,7 @@ export default class LayerManager_item extends React.Component {
       child: props.child,
       sectionID: props.sectionID || 0,
       rowID: props.rowID || 0,
+      loading: new Animated.Value(0),
     }
     this.popKey = ''
   }
@@ -110,6 +111,11 @@ export default class LayerManager_item extends React.Component {
     if (this.props.device.orientation !== prevProps.device.orientation && this.popKey) {
       ActionPopover.hide(this.popKey)
       this.popKey = ''
+    }
+    // 加载图标
+    if (this.props.isLoading !== prevProps.isLoading && this.props.isLoading) {
+      this.aniMotion = null
+      this.loading()
     }
   }
 
@@ -587,7 +593,36 @@ export default class LayerManager_item extends React.Component {
     })
   }
 
+  loading = () => {
+    if (!this.aniMotion && this.props.isLoading) {
+      this.state.loading.setValue(0)
+      this.aniMotion = Animated.timing(this.state.loading,{
+        toValue: this.state.loading._value === 0 ? 1 : 0,
+        duration: 800,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+      Animated.loop(this.aniMotion).start()
+    }
+  }
+
   renderCornerMark = () => {
+    if (this.props.isLoading) {
+      return (
+        <Animated.Image
+          resizeMode={'contain'}
+          style={[
+            styles.cornerMark,
+            {
+              transform: [{rotate: this.state.loading
+                .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']}),
+              }],
+            },
+          ]}
+          source={getPublicAssets().common.icon_downloading}
+        />
+      )
+    }
     let cornerMark
     if (this.props.cornerMarkImage) {
       cornerMark = this.props.cornerMarkImage

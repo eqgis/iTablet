@@ -106,7 +106,7 @@ export default class GroupList extends Component<Props, State> {
     })
   }
 
-  getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC', keywords = '', joinTypes = []}) => {
+  getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC', keywords = [], joinTypes = []}) => {
     try {
       let getDataFunc, _joinTypes: Array<string> | undefined = joinTypes
       if (!_joinTypes || _joinTypes.length === 0) {

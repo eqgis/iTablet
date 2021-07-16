@@ -37,6 +37,9 @@ export const COWORK_TASK_INFO_MEMBER_LOCATION_ADD = 'COWORK_TASK_INFO_MEMBER_LOC
 /** 设置成员是否显示轨迹和位置 */
 export const COWORK_TASK_INFO_MEMBER_LOCATION_SHOW = 'COWORK_TASK_INFO_MEMBER_LOCATION_SHOW'
 
+/** 协作群组数据服务添加/修改 */
+export const COWORK_SERVICE_SET = 'COWORK_SERVICE_SET'
+
 // export interface Task {
 // }
 
@@ -131,6 +134,22 @@ export interface ReadMsgParams {
   },
   type: number,
 }
+
+export interface ServiceInfo {
+  layerName: string,
+  datasetUrl?: string,
+  datasourceName?: string,
+  datasetName?: string,
+  status?: 'publish' | 'update' | 'upload' | 'download' | 'done',
+  progress?: number,
+}
+
+export interface ServiceParams {
+  groupId: string,
+  taskId: string,
+  service: ServiceInfo,
+}
+
 
 let adding = false // 防止重复添加消息
 
@@ -371,6 +390,16 @@ export const deleteTaskMembers = (params: TaskMemberDeleteParams) => async (disp
   const userId = getState().user.toJS().currentUser.userName || 'Customer'
   let result = await dispatch({
     type: COWORK_TASK_MEMBERS_DELETE,
+    payload: params,
+    userId: userId,
+  })
+  return result
+}
+
+export const setCoworkService = (params: ServiceParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
+  let result = await dispatch({
+    type: COWORK_SERVICE_SET,
     payload: params,
     userId: userId,
   })
@@ -916,6 +945,23 @@ const initialState = fromJS({
    * }
    */
   coworkInfo: {},
+  /** services
+   * {
+   *    userId: {
+   *      groupId: {
+   *        taskId: [{
+   *          layerName: '',
+   *          datasetUrl: '',
+   *          datasourceName: '',
+   *          datasetName: '',
+   *          status: 'publish' | 'update' | 'upload' | 'download' | 'done',
+   *          progress: 0,
+   *        }]
+   *      }
+   *    }
+   * }
+   */
+  services: {},
 })
 
 /*************************************** Actions *******************************************/
@@ -1359,6 +1405,39 @@ export default handleActions(
         // CoworkInfo.setMembers(taskInfoMembers)
       }
       return state.setIn(['coworkInfo'], fromJS(coworkInfo))
+    },
+    [`${COWORK_SERVICE_SET}`]: (state: any, { payload, userId }: {payload: ServiceParams, userId: string}) => {
+      if (!payload.service) return state
+      let services = state.toJS().services
+      let taskServices = services?.[userId]?.[payload.groupId]?.[payload.taskId]
+      let targetService
+      if (taskServices && taskServices.length > 0) {
+        for (let i = 0; i < taskServices.length; i ++) {
+          let service = taskServices[i]
+          if (
+            service.layerName === payload.service.layerName ||
+            service.datasetUrl === payload.service.datasetUrl
+          ) {
+            targetService = Object.assign(service, payload.service)
+            // 若完成，则删除记录
+            if (service.status === 'done') {
+              taskServices.splice(i, 1)
+              services[userId][payload.groupId][payload.taskId] = taskServices
+            }
+            break
+          }
+        }
+      }
+      // 若服务不存在，则添加；若完成，则不添加
+      if (!targetService && payload.service.status !== 'done') {
+        if (!services[userId]) services[userId] = {}
+        if (!services[userId][payload.groupId]) services[userId][payload.groupId] = {}
+        if (!services[userId][payload.groupId][payload.taskId]) services[userId][payload.groupId][payload.taskId] = []
+        if (!taskServices) taskServices = []
+        taskServices.push(payload.service)
+        services[userId][payload.groupId][payload.taskId] = taskServices
+      }
+      return state.setIn(['services'], fromJS(services))
     },
     [REHYDRATE]: (state: any, { payload }: any) => {
       const _data = ModelUtils.checkModel(state, payload && payload.cowork).toJSON()

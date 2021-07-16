@@ -216,11 +216,11 @@ class GroupSourceManagePage extends Component<Props, State> {
         title: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
         action: () => this.currentSelectData?.download?.(),
       },
-      {
-        title: getLanguage(GLOBAL.language).Cowork.PUBLISH,
-        action: () => {
-        },
-      },
+      // {
+      //   title: getLanguage(GLOBAL.language).Cowork.PUBLISH,
+      //   action: () => {
+      //   },
+      // },
       {
         title: getLanguage(GLOBAL.language).Prompt.DELETE,
         action: () => {

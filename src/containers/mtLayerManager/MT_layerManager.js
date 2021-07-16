@@ -700,6 +700,52 @@ export default class MT_layerManager extends React.Component {
     return hasBaseMap
   }
 
+  _renderCornerMark = item => {
+    // 类型图标角标
+    let cornerMarkImage = null
+    try {
+      if (
+        GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
+        this.props.cowork.services?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.length > 0
+      ) {
+        const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
+        if (dsDescription.url && dsDescription?.type === 'onlineService') {
+          const services = this.props.cowork.services[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]
+          if (services?.length > 0) {
+            for (const service of services) {
+              if ((
+                service.datasetUrl === dsDescription.url ||
+                service.layerName === item.name
+              ) && service.status !== 'done') {
+                return true
+              }
+            }
+          }
+        }
+      }
+      if (
+        cornerMarkImage === null &&
+        GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
+        this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.messages
+      ) {
+        const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
+        if (dsDescription.url && dsDescription?.type === 'onlineService') {
+          const currentCoworkMessage = this.props.cowork.coworkInfo[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id].messages
+          if (currentCoworkMessage?.length > 0) {
+            for (const message of currentCoworkMessage) {
+              if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
+                cornerMarkImage = getThemeAssets().cowork.icon_state_update
+                return cornerMarkImage
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      cornerMarkImage = null
+    }
+  }
+
   _renderItem = ({ item, section, index, parentData }) => {
     // sectionID = sectionID || 0
     item.index = index //记录位置用于上下移动
@@ -741,28 +787,12 @@ export default class MT_layerManager extends React.Component {
         ) {
           action = this.taggingTool
         }
-        // 类型图标角标
-        let cornerMarkImage
-        try {
-          if (
-            GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
-            this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.messages
-          ) {
-            const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
-            if (dsDescription.url && dsDescription?.type === 'onlineService') {
-              const currentCoworkMessage = this.props.cowork.coworkInfo[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id].messages
-              if (currentCoworkMessage?.length > 0) {
-                for (const message of currentCoworkMessage) {
-                  if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
-                    cornerMarkImage = getThemeAssets().cowork.icon_state_update
-                    break
-                  }
-                }
-              }
-            }
-          }
-        } catch (error) {
-          cornerMarkImage = null
+        let cornerMark = this._renderCornerMark(item)
+        let cornerMarkImage, isLoading = false
+        if (cornerMark !== true) {
+          cornerMarkImage = cornerMark
+        } else {
+          isLoading = cornerMark
         }
         return (
           <LayerManager_item
@@ -807,6 +837,7 @@ export default class MT_layerManager extends React.Component {
             }}
             hasBaseMap={this.hasBaseMap()}
             cornerMarkImage={cornerMarkImage}
+            isLoading={isLoading}
           />
         )
       } else {

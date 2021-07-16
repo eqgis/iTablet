@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 import * as React from 'react'
-import { View, Animated, FlatList, TouchableOpacity, Platform } from 'react-native'
+import { View, Animated, FlatList, TouchableOpacity, Platform, Easing } from 'react-native'
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType, Height, UserType } from '../../../../constants'
 import { scaleSize, Toast, screen, LayerUtils, OnlineServicesUtils } from '../../../../utils'
@@ -83,6 +83,7 @@ export default class FunctionToolbar extends React.Component {
     map: Object,
     openOnlineMap: boolean,
     ARView: Boolean,
+    currentTaskServices: Object,
   }
 
   static defaultProps = {
@@ -101,6 +102,8 @@ export default class FunctionToolbar extends React.Component {
       top: new Animated.Value(TOP + screen.getIphonePaddingTop()),
       right: new Animated.Value(RIGHT),
       bottom: new Animated.Value(BOTTOM_LANDSCAPE),
+      isServiceLoading: false,
+      serviceLoading: new Animated.Value(0),
     }
     this.visible = true
     this.offset = 0
@@ -134,6 +137,8 @@ export default class FunctionToolbar extends React.Component {
     if (
       JSON.stringify(this.props.online.share) !==
         JSON.stringify(nextProps.online.share) ||
+      JSON.stringify(this.props.currentTaskServices) !==
+        JSON.stringify(nextProps.currentTaskServices) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
       JSON.stringify(this.props.device) !== JSON.stringify(nextProps.device) ||
       this.props.ARView !== nextProps.ARView
@@ -150,6 +155,33 @@ export default class FunctionToolbar extends React.Component {
     if (this.props.ARView !== prevProps.ARView) {
       const data = this.getData(this.props.type)
       this.setState({data: data})
+    }
+    if (GLOBAL.coworkMode) {
+      // 数据服务下载动画
+      if (
+        this.props.currentTask?.groupID &&
+        this.props.currentTaskServices?.[this.props.user.currentUser.userName]?.[this.props.currentTask?.groupID]?.[this.props.currentTask?.id]
+      ) {
+        const services = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
+        if (services?.length > 0) {
+          for (const service of services) {
+            const isLoading = service.status === 'download'
+            if (this.state.isServiceLoading !== isLoading) {
+              this.setState({
+                isServiceLoading: isLoading,
+              }, () => {
+                this.aniMotion = null
+                isLoading && this.loading()
+              })
+            }
+            break
+          }
+        } else if (this.state.isServiceLoading) {
+          this.setState({
+            isServiceLoading: false,
+          })
+        }
+      }
     }
   }
 
@@ -324,7 +356,10 @@ export default class FunctionToolbar extends React.Component {
     })
     // 在线协作非三维模块，侧边栏新增多媒体采集
     if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0) {
-      data.push(serviceModule(UserType.isIPortalUser(this.props.user.currentUser) ? 'iportal' : 'online'))
+      data.push({
+        isLoading: false,
+        ...serviceModule(UserType.isIPortalUser(this.props.user.currentUser) ? 'iportal' : 'online'),
+      })
       data.push({
         type: ConstToolType.SM_MAP_MEDIA,
         getTitle: () => getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
@@ -478,6 +513,43 @@ export default class FunctionToolbar extends React.Component {
     }
   }
 
+  loading = () => {
+    if (!this.aniMotion && this.state.isServiceLoading) {
+      this.state.serviceLoading.setValue(0)
+      this.aniMotion = Animated.timing(this.state.serviceLoading, {
+        toValue: this.state.serviceLoading._value === 0 ? 1 : 0,
+        duration: 800,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+      Animated.loop(this.aniMotion).start()
+    }
+  }
+
+  /**
+   * 服务下载Loading
+   * @param {*} param
+   * @returns
+   */
+  _renderLoading = ({ item, index }) => {
+    if (this.state.isServiceLoading && item.type === ConstToolType.SM_MAP_SERVICE) {
+      return (
+        <Animated.Image
+          resizeMode={'contain'}
+          style={[
+            styles.cornerMark,
+            {
+              transform: [{rotate: this.state.serviceLoading
+                .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']}),
+              }],
+            },
+          ]}
+          source={getPublicAssets().common.icon_downloading}
+        />
+      )
+    }
+  }
+
   _renderItem = ({ item, index }) => {
     return (
       <View
@@ -515,6 +587,7 @@ export default class FunctionToolbar extends React.Component {
             width={scaleSize(60)}
           />
         )}
+        {this._renderLoading({ item, index })}
         {/*{item.title === '分享' &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1] &&*/}
         {/*GLOBAL.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}

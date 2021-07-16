@@ -110,4 +110,11 @@ export default StyleSheet.create({
     bottom: scaleSize(4),
     borderWidth: 0,
   },
+  cornerMark: {
+    position: 'absolute',
+    right: scaleSize(0),
+    top: scaleSize(0),
+    width: scaleSize(32),
+    height: scaleSize(32),
+  },
 })

@@ -16,6 +16,7 @@ import Audio from './Audio'
 import ResultInfo from './ResultInfo'
 import DialogUtils from './DialogUtils'
 import AppProgress from './AppProgress'
+import SCoordinationUtils from './SCoordinationUtils'
 
 export {
   screen,
@@ -43,4 +44,5 @@ export {
   ResultInfo,
   DialogUtils,
   AppProgress,
+  SCoordinationUtils,
 }

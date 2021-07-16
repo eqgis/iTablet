@@ -189,13 +189,13 @@ export default class OnlineServicesUtils {
    * @param dataType 数据的类型
    */
   async publishService(id: string, dataType: keyof OnlineDataType): Promise<{succeed: boolean, customResult?: string, error?: any}> {
-    let url: string
+    let publishUrl: string
     if(dataType === 'UDB') {
-      url =
+      publishUrl =
         this.serverUrl +
         `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTDATA`
     } else if(dataType === 'WORKSPACE') {
-      url =
+      publishUrl =
         this.serverUrl +
         `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTMAP,RESTDATA`
     } else {
@@ -208,11 +208,23 @@ export default class OnlineServicesUtils {
         cookie: cookie,
       }
     }
-    let result = await request(url, 'PUT', {
+    let result = await request(publishUrl, 'PUT', {
       headers: headers,
       body: true,
     })
-    return result
+
+    if (result.succeed && result.customResult) {
+      let publishResultUrl = this.serverUrl + `/mycontent/datas/${id}/publishstatus.rjson?dataServiceId=${result.customResult}&forPublish=true`
+      let publishResult = await request(publishResultUrl, 'GET', {
+        headers: headers,
+        body: null,
+      })
+      publishResult.customResult = result.customResult
+
+      return publishResult
+    } else {
+      return result
+    }
   }
 
   /**

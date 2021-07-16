@@ -253,6 +253,9 @@ const Profile = {
   SETTING_LOCATION_LOCAL: '此设备',
   SETTING_CLEAR_CACHE: '清除缓存',
   SETTING_CLEAR_CACHE_SUCCESS:'清除成功',
+  DISTANCE:'距离(单位m)',
+  TIME:'时间(单位s)',
+  INPUT_NUMBER:"请输入数字",
 
   // 许可
   LICENSE: '许可',

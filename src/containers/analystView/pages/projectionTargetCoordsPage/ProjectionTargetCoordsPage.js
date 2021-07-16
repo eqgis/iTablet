@@ -215,7 +215,7 @@ export default class ProjectionTargetCoordsPage extends Component {
             case popTypes.DataSet: {
               let _coordSysSelectItem = {
                 title: data.coordParams.coordName,
-                value: data.coordParams.priCoordSysType,
+                value: data.coordParams.coordParamsXML,
               }
               newStateData = {
                 dataSet: data,

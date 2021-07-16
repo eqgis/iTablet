@@ -154,7 +154,7 @@ class MyDataset extends MyDataPage {
         result = await SProcess.setPrjCoordSys(
           this.state.title,
           datasetName,
-          parseInt(targetCoords.value),
+          targetCoords.value,
         )
         GLOBAL.Loading.setLoading(false)
         if (result) {

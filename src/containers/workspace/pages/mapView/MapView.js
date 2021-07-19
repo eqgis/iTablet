@@ -718,7 +718,7 @@ export default class MapView extends React.Component {
       JSON.stringify(this.props.mapNavigation)
     ) {
       this.showFullMap(this.props.mapNavigation.isShow)
-    } else if (this.props.showDatumPoint !== prevProps.showDatumPoint) {
+    } else if (this.props.showDatumPoint !== prevProps.showDatumPoint && this.measureType !== 'arCollect') {
       this.showFullMap(this.props.showDatumPoint)
     }
     // if (

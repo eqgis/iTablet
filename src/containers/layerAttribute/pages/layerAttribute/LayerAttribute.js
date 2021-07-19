@@ -144,6 +144,7 @@ export default class LayerAttribute extends React.Component {
       this.setState({
         attributes: prevProps.attributes,
       })
+      this.total = prevProps.attributes.data.length
       // console.log(prevProps)
     } else if (
       prevProps.currentLayer &&
@@ -190,11 +191,13 @@ export default class LayerAttribute extends React.Component {
   }
 
   getMap3DAttribute = async (cb = () => { }) => {
-    !this.state.showTable &&
+    if (!this.state.showTable) {
       this.setState({
         showTable: true,
         attributes: this.props.attributes,
       })
+      this.total = this.props.attributes.data.length
+    }
     cb && cb()
   }
 

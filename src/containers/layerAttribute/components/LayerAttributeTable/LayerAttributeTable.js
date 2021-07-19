@@ -653,7 +653,7 @@ export default class LayerAttributeTable extends React.Component {
         renderItem={this._renderItem}
         keyExtractor={this._keyExtractor}
         renderSectionHeader={this._renderSectionHeader}
-        // onRefresh={this.refresh}
+        onRefresh={this.refresh}
         // onEndReachedThreshold={0.5}
         // onEndReached={this.loadMore}
         extraData={this.state}

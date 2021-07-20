@@ -570,13 +570,13 @@ export default class MyLocalData extends Component {
     this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(false)
     try {
       let dataId = this.itemInfo.id + ''
-      let publishResult
+      let publishResults
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
-        publishResult = await JSOnlineservice.publishService(dataId, this.itemInfo.type)
+        publishResults = await JSOnlineservice.publishService(dataId, this.itemInfo.type)
       } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
-        publishResult = await JSIPortalService.publishService(dataId, this.itemInfo.type)
+        publishResults = await JSIPortalService.publishService(dataId, this.itemInfo.type)
       }
-      if (typeof publishResult.succeed === 'boolean' && publishResult.succeed) {
+      if (typeof publishResults[0].succeed === 'boolean' && publishResults[0].succeed) {
         let sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
         let oldOnline = sectionData[sectionData.length - 1]
         let oldData = oldOnline.data

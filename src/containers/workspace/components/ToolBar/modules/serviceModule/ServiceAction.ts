@@ -519,10 +519,10 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
         })
       }
       if(uploadResult) {
-        const publishResult = await Service.publishService(uploadResult, 'UDB')
-        result = publishResult.succeed
-        if (publishResult.succeed && publishResult.customResult) {
-          const service = await _SCoordination.getUserServices({keywords: [publishResult.customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
+        const publishResults = await Service.publishService(uploadResult, 'UDB')
+        result = publishResults[0].succeed
+        if (publishResults[0].succeed && publishResults[0].customResult) {
+          const service = await _SCoordination.getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
           // const service = await _SCoordination.getUserServices({})
           if (service.content.length > 0) {
             content = service.content

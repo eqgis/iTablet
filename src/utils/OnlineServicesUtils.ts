@@ -158,6 +158,7 @@ export default class OnlineServicesUtils {
         }
       }
 
+      url = encodeURI(url)
       let response = fetch(url, {
         headers: headers,
       })
@@ -188,7 +189,7 @@ export default class OnlineServicesUtils {
    * @param id 数据id
    * @param dataType 数据的类型
    */
-  async publishService(id: string, dataType: keyof OnlineDataType): Promise<{succeed: boolean, customResult?: string, error?: any}> {
+  async publishService(id: string, dataType: keyof OnlineDataType): Promise<{succeed: boolean, customResult?: string, error?: any}[]> {
     let publishUrl: string
     if(dataType === 'UDB') {
       publishUrl =
@@ -199,7 +200,7 @@ export default class OnlineServicesUtils {
         this.serverUrl +
         `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTMAP,RESTDATA`
     } else {
-      return { succeed: false }
+      return [{ succeed: false }]
     }
     let headers = {}
     let cookie = await this.getCookie()
@@ -208,20 +209,25 @@ export default class OnlineServicesUtils {
         cookie: cookie,
       }
     }
-    let result = await request(publishUrl, 'PUT', {
+    let result = await request(encodeURI(publishUrl), 'PUT', {
       headers: headers,
       body: true,
     })
 
+    let publishResults = []
     if (result.succeed && result.customResult) {
-      let publishResultUrl = this.serverUrl + `/mycontent/datas/${id}/publishstatus.rjson?dataServiceId=${result.customResult}&forPublish=true`
-      let publishResult = await request(publishResultUrl, 'GET', {
-        headers: headers,
-        body: null,
-      })
-      publishResult.customResult = result.customResult
+      let dataServiceIds = result.customResult.split(',')
+      for (const dataServiceId of dataServiceIds) {
+        let publishResultUrl = this.serverUrl + `/mycontent/datas/${id}/publishstatus.rjson?dataServiceId=${dataServiceId}&forPublish=true`
+        let publishResult = await request(encodeURI(publishResultUrl), 'GET', {
+          headers: headers,
+          body: null,
+        })
+        publishResult.customResult = dataServiceId
+        publishResults.push(publishResult)
+      }
 
-      return publishResult
+      return publishResults
     } else {
       return result
     }
@@ -231,12 +237,12 @@ export default class OnlineServicesUtils {
    * 根据数据名发布服务
    * @param dataName 数据名
    */
-  async publishServiceByName(dataName: string, dataType: keyof OnlineDataType): Promise<boolean> {
+  async publishServiceByName(dataName: string, dataType: keyof OnlineDataType): Promise<{succeed: boolean, customResult?: string, error?: any}[]> {
     let id = await this.getDataIdByName(dataName)
     if (id) {
       return await this.publishService(id, dataType)
     } else {
-      return false
+      return []
     }
   }
 
@@ -253,6 +259,7 @@ export default class OnlineServicesUtils {
         cookie: cookie,
       }
     }
+    url = encodeURI(url)
     let result = await request(url, 'GET', {
       headers: headers,
     })
@@ -276,6 +283,7 @@ export default class OnlineServicesUtils {
       }
     }
 
+    url = encodeURI(url)
     let result = await request(url, 'GET', {
       headers: headers,
     })
@@ -311,6 +319,7 @@ export default class OnlineServicesUtils {
     } else {
       entities = []
     }
+    url = encodeURI(url)
     let result = await request(url, 'PUT', {
       headers: headers,
       body: {
@@ -347,6 +356,7 @@ export default class OnlineServicesUtils {
     } else {
       entities = []
     }
+    url = encodeURI(url)
     let result = await request(url, 'PUT', {
       headers: headers,
       body: {
@@ -378,6 +388,7 @@ export default class OnlineServicesUtils {
             cookie: cookie,
           }
         }
+        url = encodeURI(url)
         let uploadParams = {
           toUrl: url,
           headers: headers,
@@ -427,6 +438,7 @@ export default class OnlineServicesUtils {
    */
   async downloadFile(url: string, toPath: string, callback?: UploadCallBack): Promise<RNFS.DownloadResult | boolean>{
     try {
+      url = encodeURI(url)
       const downloadOptions: RNFS.DownloadFileOptions = {
         ...Platform.select({
           android: {
@@ -463,6 +475,7 @@ export default class OnlineServicesUtils {
           cookie: cookie,
         }
       }
+      url = encodeURI(url)
       let response = await fetch(url, {
         method: 'POST',
         headers: headers,
@@ -493,6 +506,7 @@ export default class OnlineServicesUtils {
     let url =
       this.serverUrl + `/datas.rjson?userName=${userName}&fileName=${fileName}`
 
+    url = encodeURI(url)
     let response = await fetch(url)
     let responseObj = await response.json()
 
@@ -531,6 +545,7 @@ export default class OnlineServicesUtils {
       url += `&keywords=${keywords}`
     }
 
+    url = encodeURI(url)
     let response = await fetch(url)
     let responseObj = await response.json()
 
@@ -557,7 +572,7 @@ export default class OnlineServicesUtils {
 
         await CookieManager.clearAll()
         //请求登陆页面
-        let response = await axios.get(url)
+        let response = await axios.get(encodeURI(url))
         let $ = cheerio.load(response.data)
         let cookie
         if (response.headers['set-cookie']) {
@@ -580,7 +595,7 @@ export default class OnlineServicesUtils {
         } else {
           paramStr = this._obj2params(paramObj)
         }
-        let result = await SOnlineService.loginWithParam(url, cookie, paramStr)
+        let result = await SOnlineService.loginWithParam(encodeURI(url), cookie, paramStr)
         this.cookie = await SOnlineService.getCookie()
 
         return result
@@ -623,6 +638,7 @@ export default class OnlineServicesUtils {
           cookie: cookie,
         }
       }
+      url = encodeURI(url)
       let response = fetch(url, {
         headers: headers,
       })
@@ -666,6 +682,7 @@ export default class OnlineServicesUtils {
         }
       }
 
+      url = encodeURI(url)
       let response = fetch(url, {
         headers: headers,
       })
@@ -705,6 +722,7 @@ export default class OnlineServicesUtils {
       let url =
         'https://sso.supermap.com/phoneregister?service=http://www.supermapol.com'
       await CookieManager.clearAll()
+      url = encodeURI(url)
       let response = await axios.get(url)
       let registerPage = cheerio.load(response.data)
       let cookie
@@ -743,6 +761,7 @@ export default class OnlineServicesUtils {
       if (this.registerCookie) {
         headers.Cookie = this.registerCookie
       }
+      url = encodeURI(url)
       let registerResponse = await fetch(url, {
         method: 'POST',
         headers,
@@ -802,6 +821,7 @@ export default class OnlineServicesUtils {
         if (this.registerCookie) {
           headers.Cookie = this.registerCookie
         }
+        url = encodeURI(url)
         let registerResponse = await fetch(url, {
           method: 'POST',
           headers,

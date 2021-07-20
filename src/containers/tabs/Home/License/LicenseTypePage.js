@@ -47,16 +47,22 @@ class LicenseTypePage extends Component {
   }
 
   getType = () => {
-    
-    let data = [
-      {
-        title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
-        type: LicenseType.local,
-        onPress: this.joinLicense,
-      },
-    ]
-    if (UserType.isOnlineUser(this.props.currentUser)) {
-      data.push(
+    let data = []
+    if (UserType.isIPortalUser(this.props.currentUser)) {
+      data = [
+        {
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
+          type: LicenseType.local,
+          onPress: this.joinLicense,
+        },
+      ]
+    } else {
+      data = [
+        {
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
+          type: LicenseType.local,
+          onPress: this.joinLicense,
+        },
         {
           title: getLanguage(GLOBAL.language).Profile.LICENSE_CLOUD,
           type: LicenseType.clould,
@@ -76,7 +82,7 @@ class LicenseTypePage extends Component {
           title: getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL,
           type: LicenseType.trial,
         },
-      )
+      ]
     }
     // if (Platform.OS === 'ios') {
     //   data.splice(3, 1)

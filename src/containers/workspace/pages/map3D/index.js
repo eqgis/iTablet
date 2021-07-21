@@ -19,6 +19,7 @@ import {
   removeBackAction,
 } from '../../../../redux/models/backActions'
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
+import { setSampleDataShow} from '../../../../redux/models/down'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -39,6 +40,7 @@ const mapStateToProps = state => ({
   navBarDisplay: state.setting.toJS().navBarDisplay,
   backActions: state.backActions.toJS(),
   mapSceneGuide: state.home.toJS().mapSceneGuide,
+  showSampleData: state.down.toJS().showSampleData,
 })
 
 const mapDispatchToProps = {
@@ -55,6 +57,7 @@ const mapDispatchToProps = {
   removeBackAction,
   setToolbarStatus,
   setNavBarDisplay,
+  setSampleDataShow,
 }
 
 export default connect(

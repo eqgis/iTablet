@@ -7,6 +7,7 @@ export const DOWN_SET = 'DOWN_SET'
 export const DOWNLOADING_FILE = 'DOWNLOADING_FILE'
 export const DOWNLOADED_FILE_DELETE = 'DOWNLOADED_FILE_DELETE'
 export const DOWNLOADED_SET_IGNORE = 'DOWNLOADED_SET_IGNORE'
+export const SAMPLE_DATA_SHOW = 'SAMPLE_DATA_SHOW'
 // Actions
 // ---------------------------------.3-----------------
 /** 下载参数 */
@@ -22,6 +23,17 @@ export type Download = {
 
 /** downloads结构 */
 export type Downloads = Array<Download>
+
+export const setSampleDataShow = (
+  params = {},
+  cb = () => {},
+) => async (dispatch: (arg0: any) => any) => {
+  await dispatch({
+    type: SAMPLE_DATA_SHOW,
+    payload: params,
+  })
+  cb && cb()
+}
 
 export const setDownInformation = (
   params = {},
@@ -132,10 +144,14 @@ const initialState = fromJS({
   downloads: [],
   downloadInfos: [],
   ignoreDownloads: [],
+  showSampleData: false,
 })
 
 export default handleActions(
   {
+    [`${SAMPLE_DATA_SHOW}`]: (state: any, { payload }: any) => {
+      return state.setIn(['showSampleData'], fromJS(payload))
+    },
     [`${DOWN_SET}`]: (state: { toJS: () => { downList: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { downList } = state.toJS()
       if (payload.index) {

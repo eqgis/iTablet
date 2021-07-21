@@ -4,6 +4,7 @@ const icon_open_map = require('./icon_open_map.png')
 const icon_save_as = require('./icon_save_as.png')
 const icon_save = require('./icon_save.png')
 const icon_open_scene = require('./icon_open_scene.png')
+const icon_tool_map = require('./icon_tool_map.png')
 
 export default {
   icon_historical_records,
@@ -12,4 +13,5 @@ export default {
   icon_open_scene,
   icon_save_as,
   icon_save,
+  icon_tool_map,
 }

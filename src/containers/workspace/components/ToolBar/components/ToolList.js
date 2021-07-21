@@ -263,7 +263,11 @@ export default class ToolList extends React.Component {
       return
     }
     if (item.action) {
-      item.action && item.action()
+      if(this.props.type === ConstToolType.SM_MAP_LAYER_BASE_CHANGE){
+        item.action && item.action({type:'tiandt'})
+      }else{
+        item.action && item.action()
+      }
     }
   }
 

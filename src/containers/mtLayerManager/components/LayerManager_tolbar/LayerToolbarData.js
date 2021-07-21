@@ -415,10 +415,10 @@ function layereditsetting(language) {
     {
       title: '',
       data: [
-        {
-          title: getLanguage(language).Map_Layer.BASEMAP_SWITH,
-          image: getThemeAssets().start.icon_open_map,
-        },
+        // {
+        //   title: getLanguage(language).Map_Layer.BASEMAP_SWITH,
+        //   image: getThemeAssets().start.icon_open_map,
+        // },
         {
           title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
           // '移除',

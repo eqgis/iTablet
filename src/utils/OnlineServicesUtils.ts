@@ -630,7 +630,8 @@ export default class OnlineServicesUtils {
   getLoginUserName = async (): Promise<string> => {
     let username = ''
     try {
-      let url = 'https://www.supermapol.com/web/mycontent/cloud/account'
+      // let url = 'https://www.supermapol.com/web/mycontent/cloud/account'
+      let url = 'https://www.supermapol.com/web/config/userprofile.json'
       let cookie = await this.getCookie()
       let headers = {}
       if (cookie) {
@@ -648,8 +649,12 @@ export default class OnlineServicesUtils {
       }
 
       let text = await result.text()
-      let page = cheerio.load(text)
-      username = page('div[class="col-xs-8 userInfo"]').children().first().attr('title')
+      // let page = cheerio.load(text)
+      // username = page('div[class="col-xs-8 userInfo"]').children().first().attr('title')
+      const resultObj = JSON.parse(text)
+      if (resultObj?.nickName != undefined) {
+        username = resultObj.nickName
+      }
     } catch(e) { /** */}
     return username
   }

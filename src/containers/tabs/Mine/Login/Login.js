@@ -210,22 +210,22 @@ export default class Login extends React.Component {
         result = res
       }
 
-      userInfo = await JSOnlineService.getUserInfo(userName, true)
-      //手机登录通过下面接口获取用户名后再次查询 zhangxt
-      if(!userInfo) {
-        let username =  await JSOnlineService.getLoginUserName()
-        if(username !== '') {
-          userInfo = await JSOnlineService.getUserInfo(username, true)
-        }
-        //手机登录后再检查是否是当前登录用户
-        if (
-          userInfo !== false &&
-          userInfo.userId === this.props.user.currentUser.userId
-        ) {
-          Toast.show(getLanguage(global.language).Profile.LOGIN_CURRENT)
-          return
-        }
+      // userInfo = await JSOnlineService.getUserInfo(userName, true)
+      // //手机登录通过下面接口获取用户名后再次查询 zhangxt
+      // if(!userInfo) {
+      let username =  await JSOnlineService.getLoginUserName()
+      if(username !== '') {
+        userInfo = await JSOnlineService.getUserInfo(username, true)
       }
+      //手机登录后再检查是否是当前登录用户
+      if (
+        userInfo !== false &&
+        userInfo.userId === this.props.user.currentUser.userId
+      ) {
+        Toast.show(getLanguage(global.language).Profile.LOGIN_CURRENT)
+        return
+      }
+      // }
 
       if (typeof result === 'boolean' && result && userInfo !== false) {
         await this.initUserDirectories(userInfo.userId)

@@ -134,6 +134,10 @@ export default class LayerAttributeTable extends React.Component {
     return false
   }
 
+  componentDidMount() {
+    this.scrollToLocation({}) // 防止初始化iOS顶部显示RefreshControl空白高度
+  }
+
   componentDidUpdate(prevProps) {
     const isMultiData = this.props.type === 'MULTI_DATA'
     // this.props.data instanceof Array &&

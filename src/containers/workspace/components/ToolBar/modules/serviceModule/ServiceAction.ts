@@ -6,6 +6,7 @@ import {
   AuthorizeSetting,
   PermissionType,
   EntityType,
+  ServiceData,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
@@ -50,7 +51,16 @@ _SCoordination.addDataServiceLitsener({
     if (!res.content) return
     let _datasetUrl = res.content.urlDataset
     let datasetName = _datasetUrl.substring(_datasetUrl.lastIndexOf('/') + 1).replace('.json', '').replace('.rjson', '')
-
+    const params: any = ToolbarModule.getParams()
+    // 上传完成
+    res.content && params.setCoworkService({
+      groupId: params.currentTask.groupID,
+      taskId: params.currentTask.id,
+      service: {
+        datasetUrl: res.content?.urlDataset,
+        status: 'done',
+      },
+    })
     if (res.result) {
       addServiceLayer(datasetName)
     } else if (res.error?.reason?.includes('exist')) {
@@ -71,8 +81,17 @@ _SCoordination.addDataServiceLitsener({
   },
   updateHandler: async res => {
     Toast.show(res.result ? getLanguage(GLOBAL.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED)
+    const params: any = ToolbarModule.getParams()
+    // 上传完成
+    res.content && params.setCoworkService({
+      groupId: params.currentTask.groupID,
+      taskId: params.currentTask.id,
+      service: {
+        datasetUrl: res.content?.urlDataset,
+        status: 'done',
+      },
+    })
     if (res.result && res.content?.dataset) {
-      const params: any = ToolbarModule.getParams()
       for (let layer of params.layers.layers) {
         if (layer.datasetName === res.content.dataset) {
           await SMediaCollector.hideMedia(layer.name)
@@ -95,6 +114,16 @@ _SCoordination.addDataServiceLitsener({
   uploadHandler: async res => {
     // 发送消息给其他组员
     Toast.show(res.result ? getLanguage(GLOBAL.language).Cowork.UPLOAD_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED)
+    const params: any = ToolbarModule.getParams()
+    // 上传完成
+    res.content && params.setCoworkService({
+      groupId: params.currentTask.groupID,
+      taskId: params.currentTask.id,
+      service: {
+        datasetUrl: res.content?.urlDataset,
+        status: 'done',
+      },
+    })
     if (res.result && res.content) {
       if (!res.result) return
       const _params: any = ToolbarModule.getParams()
@@ -112,7 +141,6 @@ _SCoordination.addDataServiceLitsener({
         },
         message: {
           type: MsgConstant.MSG_COWORK_SERVICE_UPDATE,
-          // layerName: res.content.layerName,
           datasetName: res.content.dataset,
           serviceUrl: res.content.urlDataset,
         },
@@ -210,6 +238,14 @@ async function listAction(type: string, params: any = {}) {
           _params.user.currentUser.userName
         }#`
       }
+      _params.setCoworkService({
+        groupId: _params.currentTask.groupID,
+        taskId: _params.currentTask.id,
+        service: {
+          datasetUrl: url,
+          status: 'download',
+        },
+      })
       _SCoordination.downloadToLocal(url, datasourceName).then(() => {
         _params.setToolbarVisible(false)
         _params.showFullMap && _params.showFullMap(false)
@@ -265,22 +301,44 @@ async function updateToLocal (layerData: {
     Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
     return
   }
-  const datasourceAlias = layerData.datasourceAlias || `Label_${
-    _params.user.currentUser.userName
-  }#`
-  const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
-  const params: any = ToolbarModule.getParams()
-  let isAdded = false
-  for (let layer of params.layers.layers) {
-    if (layer.datasetName === datasetName) {
-      isAdded = true
-      break
+  let result = false
+  try {
+    _params.setCoworkService({
+      groupId: _params.currentTask.groupID,
+      taskId: _params.currentTask.id,
+      service: {
+        datasetUrl: layerData.url,
+        status: 'update',
+      },
+    })
+    const datasourceAlias = layerData.datasourceAlias || `Label_${
+      _params.user.currentUser.userName
+    }#`
+    const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
+    const params: any = ToolbarModule.getParams()
+    let isAdded = false
+    for (let layer of params.layers.layers) {
+      if (layer.datasetName === datasetName) {
+        isAdded = true
+        break
+      }
     }
+    if (!isAdded) {
+      result = await _SCoordination.downloadToLocal(layerData.url, datasourceAlias)
+    }
+    result = await _SCoordination.updateToLocal(layerData.url, datasourceAlias, datasetName)
+  } catch (error) {
+    _params.setCoworkService({
+      groupId: _params.currentTask.groupID,
+      taskId: _params.currentTask.id,
+      service: {
+        datasetUrl: layerData.url,
+        status: 'done',
+      },
+    })
+  } finally {
+    return result
   }
-  if (!isAdded) {
-    return _SCoordination.downloadToLocal(layerData.url, datasourceAlias)
-  }
-  return _SCoordination.updateToLocal(layerData.url, datasourceAlias, datasetName)
 }
 
 /**
@@ -289,18 +347,40 @@ async function updateToLocal (layerData: {
  * @returns
  */
 async function uploadToService(layerData: {
-  url: string, datasourceAlias?: string, datasetName?: string,
+  url: string, datasourceAlias?: string, datasetName?: string, onlineDatasourceAlias: string
 }) {
   const _params: any = ToolbarModule.getParams()
   if (!layerData.url) {
     Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
     return
   }
-  const datasourceAlias = layerData.datasourceAlias || `Label_${
-    _params.user.currentUser.userName
-  }#`
-  const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
-  return _SCoordination.uploadToService(layerData.url, datasourceAlias, datasetName)
+  let result = false
+  try {
+    _params.setCoworkService({
+      groupId: _params.currentTask.groupID,
+      taskId: _params.currentTask.id,
+      service: {
+        datasetUrl: layerData.url,
+        status: 'upload',
+      },
+    })
+    const datasourceAlias = layerData.datasourceAlias || `Label_${
+      _params.user.currentUser.userName
+    }#`
+    const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
+    result = await _SCoordination.uploadToService(layerData.url, datasourceAlias, datasetName)
+  } catch (error) {
+    _params.setCoworkService({
+      groupId: _params.currentTask.groupID,
+      taskId: _params.currentTask.id,
+      service: {
+        datasetUrl: layerData.url,
+        status: 'done',
+      },
+    })
+  } finally {
+    return result
+  }
 }
 
 function putService(serviceId: string, serviceInfo2: any) {
@@ -321,9 +401,10 @@ function getUserServices() {
   })
 }
 
-async function getGroupServices(groupID: string) {
+async function getGroupServices(groupID: string, keywords?: string[]) {
   return _SCoordination.getGroupResources({
     groupId: groupID,
+    keywords: keywords,
     // resourceCreator: _params.user.currentUser.userId,
     currentPage: 1,
     pageSize: 10000,
@@ -333,17 +414,17 @@ async function getGroupServices(groupID: string) {
   })
 }
 
-async function exportData(name: string, datasets: string[]) {
+async function exportData(name: string, datasourcePath: string, datasets: string[]) {
   const _params: any = ToolbarModule.getParams()
   let homePath = await FileTools.appendingHomeDirectory()
   let userPath =
     homePath + ConstPath.UserPath + _params.user.currentUser.userName + '/'
-  let datasourcePath =
-    userPath +
-    ConstPath.RelativePath.Label +
-    'Label_' +
-    _params.user.currentUser.userName +
-    '#.udb'
+  // let datasourcePath =
+  //   userPath +
+  //   ConstPath.RelativePath.Label +
+  //   'Label_' +
+  //   _params.user.currentUser.userName +
+  //   '#.udb'
 
   let todatasourcePath =
     userPath + ConstPath.RelativePath.Temp + name + '/' + name + '.udb'
@@ -378,54 +459,147 @@ async function exportData(name: string, datasets: string[]) {
   }
 }
 
-async function publishServiceToGroup(fileName: string, datasets: string[], groups: {groupId: number, groupName: string, entityType?: keyof EntityType, permissionType?: keyof PermissionType}[]) {
-  if (!fileName || datasets.length === 0) return
+export interface publishData {
+  layerName: string,
+  datasourceAlias: string,
+  datasourcePath: string,
+  datasets: string[],
+}
+
+export interface publishGroup {
+  groupId: number,
+  groupName: string,
+  entityType?: keyof EntityType,
+  permissionType?: keyof PermissionType,
+}
+
+async function publishServiceToGroup(fileName: string, publishData: publishData, groups: publishGroup[]): Promise<{
+  result: boolean,
+  content?: any[],
+} | undefined> {
   const _params: any = ToolbarModule.getParams()
-  let Service: OnlineServicesUtils
-  if (UserType.isProbationUser(_params.user.currentUser)) return
-  if (UserType.isIPortalUser(_params.user.currentUser)) {
-    Service = new OnlineServicesUtils('iportal')
-  } else {
-    Service = new OnlineServicesUtils('online')
-  }
-  let { result, targetPath } = await exportData(fileName, datasets)
-  if (result) {
-    let uploadResult
-    uploadResult = await Service.uploadFile(
-      targetPath,
-      fileName + '.zip',
-      'UDB',
-    )
-    const entities: AuthorizeSetting[] = []
-    for (const group of groups) {
-      entities.push({
-        entityId: group.groupId,
-        entityName: group.groupName,
-        entityType: group.entityType || 'IPORTALGROUP',
-        permissionType: group.permissionType || 'READ',
-      })
+  let result = false
+  let content: any[] | undefined
+  try {
+    const { datasourceAlias, datasourcePath, datasets } = publishData
+    if (!fileName || datasets.length === 0) return
+    let Service: OnlineServicesUtils
+    if (UserType.isProbationUser(_params.user.currentUser)) return
+    if (UserType.isIPortalUser(_params.user.currentUser)) {
+      Service = new OnlineServicesUtils('iportal')
+    } else {
+      Service = new OnlineServicesUtils('online')
     }
-    if(uploadResult) {
-      const publishResult = await Service.publishService(uploadResult, 'UDB')
-      result = publishResult.succeed
-      if (publishResult.succeed && publishResult.customResult) {
-        const service = await _SCoordination.getUserServices({keywords: [publishResult.customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
-        // const service = await _SCoordination.getUserServices({})
-        if (service.content.length > 0) {
-          let shareResult = await _SCoordination.shareServiceToGroup({
-            ids: [service.content[0].id],
-            entities: entities,
-          })
-          result = shareResult.succeed
-        } else {
-          result = false
+    // 设置开始发布
+    // _params.setCoworkService({
+    //   groupId: _params.currentTask.groupID,
+    //   taskId: _params.currentTask.id,
+    //   service: {
+    //     layerName: publishData.layerName,
+    //     status: 'publish',
+    //   },
+    // })
+    let exportResult = await exportData(fileName, datasourcePath, datasets)
+    result = exportResult.result
+    const targetPath = exportResult.targetPath
+    if (result) {
+      let uploadResult
+      uploadResult = await Service.uploadFile(
+        targetPath,
+        fileName + '.zip',
+        'UDB',
+      )
+      const entities: AuthorizeSetting[] = []
+      for (const group of groups) {
+        entities.push({
+          entityId: group.groupId,
+          entityName: group.groupName,
+          entityType: group.entityType || 'IPORTALGROUP',
+          permissionType: group.permissionType || 'READ',
+        })
+      }
+      if(uploadResult) {
+        const publishResults = await Service.publishService(uploadResult, 'UDB')
+        result = publishResults[0].succeed
+        if (publishResults[0].succeed && publishResults[0].customResult) {
+          const service = await _SCoordination.getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
+          // const service = await _SCoordination.getUserServices({})
+          if (service.content.length > 0) {
+            content = service.content
+            let ids: string[] = []
+            service.content.forEach(item => {
+              ids.push(item.id)
+            })
+            let shareResult = await _SCoordination.shareServiceToGroup({
+              ids: ids,
+              entities: entities,
+            })
+            result = shareResult.succeed
+          } else {
+            result = false
+          }
+        }
+      }
+      await FileTools.deleteFile(targetPath)
+    }
+  } catch (error) {
+    //发布完成
+    _params.setCoworkService({
+      groupId: _params.currentTask.groupID,
+      taskId: _params.currentTask.id,
+      service: {
+        layerName: publishData.layerName,
+        status: 'done',
+      },
+    })
+  } finally {
+    return {
+      result,
+      content,
+    }
+  }
+}
+
+export interface DataServiceUrlParams {
+  id: string | number,
+  datasourceAlias: string,
+  datasetName: string,
+  // datasetUrl: string,
+}
+
+async function setDataService(params: {
+  groupID: string,
+  keywords?: string[],
+  content: DataServiceUrlParams[],
+}) {
+  let result = false
+  try {
+    const { groupID, keywords, content } = params
+    const services = await getGroupServices(groupID, keywords)
+    if (services?.content?.length > 0) {
+      for (const item of services.content) {
+        for (const item2 of content) {
+          if (item.resourceId === item2.id) {
+            let serviceData1 = await _SCoordination.getServiceData(item.linkPage)
+            console.warn(JSON.stringify(serviceData1))
+            if (serviceData1.datasourceNames.length === 0) return false
+            const datasetUrl = `${item.proxiedUrl}/data/datasources/${serviceData1.datasourceNames[0]}/datasets/${item2.datasetName}`
+            const serviceData: ServiceData = {
+              url: datasetUrl,
+              datasourceAlias: serviceData1.datasourceNames[0],
+              dataset: item2.datasetName,
+            }
+            result = await _SCoordination.setDataService(item2.datasourceAlias, item2.datasetName, serviceData)
+            break
+          }
         }
       }
     }
-    await FileTools.deleteFile(targetPath)
+  } catch (error) {
+    
+  } finally {
+    return result
   }
-  
-  return result
 }
 
 export default {
@@ -441,4 +615,5 @@ export default {
   getUserServices,
   getGroupServices,
   publishServiceToGroup,
+  setDataService,
 }

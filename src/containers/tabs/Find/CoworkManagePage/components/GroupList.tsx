@@ -22,7 +22,7 @@ import { getThemeAssets } from '../../../../../assets'
 // import { ActionPopover } from 'teaset'
 import { getLanguage } from '../../../../../language'
 import { UserType } from '../../../../../constants'
-import { SCoordination } from 'imobile_for_reactnative'
+import { SCoordination, QueryParam } from 'imobile_for_reactnative'
 import { UserInfo, Users } from '../../../../../redux/models/user'
 
 interface Props {
@@ -106,7 +106,7 @@ export default class GroupList extends Component<Props, State> {
     })
   }
 
-  getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC', keywords = '', joinTypes = []}) => {
+  getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC', keywords = '', joinTypes = []}: QueryParam) => {
     try {
       let getDataFunc, _joinTypes: Array<string> | undefined = joinTypes
       if (!_joinTypes || _joinTypes.length === 0) {

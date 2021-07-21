@@ -4,9 +4,11 @@ import { connect } from 'react-redux'
 import { setLicenseInfo } from '../../../../redux/models/license'
 import Container from '../../../../components/Container'
 import { color } from '../../../../styles'
+import { UserType } from '../../../../constants'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
+import PropTypes from 'prop-types'
 
 const LicenseType = {
   local: 0,
@@ -17,10 +19,11 @@ const LicenseType = {
 }
 
 class LicenseTypePage extends Component {
-  props: {
-    navigation: Object,
-    licenseInfo: Object,
-    setLicenseInfo: () => {},
+  static propTypes = {
+    navigation: PropTypes.object,
+    licenseInfo: PropTypes.object,
+    currentUser: PropTypes.object,
+    setLicenseInfo: PropTypes.func,
   }
 
   constructor(props) {
@@ -44,32 +47,43 @@ class LicenseTypePage extends Component {
   }
 
   getType = () => {
-    let data = [
-      {
-        title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
-        type: LicenseType.local,
-        onPress: this.joinLicense,
-      },
-      {
-        title: getLanguage(GLOBAL.language).Profile.LICENSE_CLOUD,
-        type: LicenseType.clould,
-        onPress: this.joinCloud,
-      },
-      {
-        title: getLanguage(GLOBAL.language).Profile.LICENSE_PRIVATE_CLOUD,
-        type: LicenseType.privateClould,
-        onPress: this.joinPrivateCloud,
-      },
-      {
-        title: getLanguage(GLOBAL.language).Profile.LICENSE_EDUCATION,
-        type: LicenseType.education,
-        onPress: this.joinEducationLicense,
-      },
-      {
-        title: getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL,
-        type: LicenseType.trial,
-      },
-    ]
+    let data = []
+    if (UserType.isIPortalUser(this.props.currentUser)) {
+      data = [
+        {
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
+          type: LicenseType.local,
+          onPress: this.joinLicense,
+        },
+      ]
+    } else {
+      data = [
+        {
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
+          type: LicenseType.local,
+          onPress: this.joinLicense,
+        },
+        {
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_CLOUD,
+          type: LicenseType.clould,
+          onPress: this.joinCloud,
+        },
+        {
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_PRIVATE_CLOUD,
+          type: LicenseType.privateClould,
+          onPress: this.joinPrivateCloud,
+        },
+        {
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_EDUCATION,
+          type: LicenseType.education,
+          onPress: this.joinEducationLicense,
+        },
+        {
+          title: getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL,
+          type: LicenseType.trial,
+        },
+      ]
+    }
     // if (Platform.OS === 'ios') {
     //   data.splice(3, 1)
     // }
@@ -172,6 +186,7 @@ class LicenseTypePage extends Component {
 
 const mapStateToProps = state => ({
   licenseInfo: state.license.toJS().licenseInfo,
+  currentUser: state.user.toJS().currentUser,
 })
 
 const mapDispatchToProps = {

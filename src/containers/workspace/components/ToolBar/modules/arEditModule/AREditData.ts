@@ -28,7 +28,7 @@ async function getData(type: string, params: {[name: string]: any}) {
   let data: SectionData[] | SectionData | SectionItemData[] | string[] = []
   let buttons: any[]
   if (type === ConstToolType.SM_AR_EDIT) {
-    buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
+    buttons = [ToolbarBtnType.CANCEL]
   } else {
     buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
   }
@@ -570,7 +570,7 @@ async function getAnimationData(type: string) {
 function getHeaderData(type: string) {
   let headerData: any
   if (
-    type === ConstToolType.SM_AR_EDIT ||
+    // type === ConstToolType.SM_AR_EDIT ||
     type === ConstToolType.SM_AR_EDIT_SCALE ||
     type === ConstToolType.SM_AR_EDIT_ROTATION ||
     type === ConstToolType.SM_AR_EDIT_POSITION

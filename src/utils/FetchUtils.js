@@ -6,6 +6,7 @@ export default class FetchUtils {
    *获取url的json串对象
    */
   static getObjJson = (url, timeout) => {
+    url = encodeURI(url)
     try {
       if (!timeout) {
         return new Promise((resolve, reject) => {

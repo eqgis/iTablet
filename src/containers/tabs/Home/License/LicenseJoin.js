@@ -423,6 +423,7 @@ const styles = StyleSheet.create({
     height: scaleSize(60),
     fontSize: scaleSize(18),
     textAlignVertical: 'center',
+    textAlign: 'center',
 
     backgroundColor: color.white,
   },

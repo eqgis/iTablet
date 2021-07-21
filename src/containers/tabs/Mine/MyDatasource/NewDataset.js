@@ -230,7 +230,7 @@ class NewDataset extends Component {
               await SProcess.setPrjCoordSys(
                 this.state.title,
                 newDatasets[i].datasetName,
-                Number(newDatasets[i].datasetPrjValue))
+                newDatasets[i].datasetPrjValue+"")
             }
           }
           setTimeout(async () => {

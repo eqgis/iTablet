@@ -15,7 +15,7 @@ import { SCoordination, SMessageService } from 'imobile_for_reactnative'
 import { GroupMessageType } from '../types'
 
 interface Props {
-  navigation: Object,
+  navigation: any,
   user: Users,
   language: string,
   device: any,
@@ -64,7 +64,7 @@ class GroupApplyPage extends Component<Props, State> {
   }
 
   _itemPress = (groupInfo: any) => {
-    if (groupInfo.creator === this.props.user.currentUser.userId) {
+    if (groupInfo.creator === this.props.user.currentUser.userName) {
       Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_ALREADY_JOINED)
       return
     }

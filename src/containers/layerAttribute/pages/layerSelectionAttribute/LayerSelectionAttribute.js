@@ -72,12 +72,12 @@ export default class LayerSelectionAttribute extends React.Component {
 
   componentDidMount() {
     this.isInit = true
-    SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name).then(result => {
-      this.isMediaLayer = result
-      this.getAttribute()
-    }).catch(() =>{
-      this.getAttribute()
-    })
+    // SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name).then(result => {
+    //   this.isMediaLayer = result
+    //   this.getAttribute()
+    // }).catch(() =>{
+    //   this.getAttribute()
+    // })
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -146,6 +146,7 @@ export default class LayerSelectionAttribute extends React.Component {
     if (!this.state.isCollection&&(!this.props.layerSelection.layerInfo.path || params.currentPage < 0))
       return
     let { currentPage, pageSize, type, ...others } = params
+    // this.isLoading = true
     // ;(async function() {
     try {
       let result
@@ -190,6 +191,7 @@ export default class LayerSelectionAttribute extends React.Component {
           ...others,
         })
         this.setLoading(false)
+        this.isLoading = false
         this.props.onGetAttribute && this.props.onGetAttribute(attributes)
       } else {
         let newAttributes = JSON.parse(JSON.stringify(attributes))
@@ -270,6 +272,7 @@ export default class LayerSelectionAttribute extends React.Component {
                     viewPosition: 1,
                   })
               }
+              this.isLoading = false
               this.setLoading(false)
               this.props.onGetAttribute &&
                 this.props.onGetAttribute(attributes)
@@ -326,7 +329,11 @@ export default class LayerSelectionAttribute extends React.Component {
       return
     }
     this.isLoading = true
-    this.currentPage += 1
+    if (this.state.attributes.data.length === 0) {
+      this.currentPage = 0
+    } else {
+      this.currentPage += 1
+    }
     this.getAttribute(
       {
         type: 'loadMore',
@@ -623,7 +630,7 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   selectRow = ({ data, index = -1 }) => {
-    if (this.total === 1 && this.state.attributes.data.length === 1) return
+    if (this.state.attributes.data.length === 1) return
     // if (!data || index < 0) return
     // this.currentFieldInfo = data || []
     // this.currentFieldIndex = index >= 0 ? index : -1
@@ -650,7 +657,7 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   getSelection = () => {
-    if (this.total === 1 && this.state.attributes.data.length === 1) {
+    if (this.state.attributes.data.length === 1) {
       return {
         data: this.state.attributes.data[0],
         index: 0,
@@ -808,7 +815,7 @@ export default class LayerSelectionAttribute extends React.Component {
       typeof this.props.setLayerAttributes === 'function'
     ) {
       // 单个对象属性和多个对象属性数据有区别
-      let isSingleData = this.total === 1 && this.state.attributes.data.length === 1
+      let isSingleData = this.state.attributes.data.length === 1
       // 单个对象属性 在 隐藏系统字段下，要重新计算index
       if (isSingleData && !this.state.isShowSystemFields) {
         for (let index in this.state.attributes.data[0]) {
@@ -1043,7 +1050,7 @@ export default class LayerSelectionAttribute extends React.Component {
         })
       },
     ] : []
-    const isSingle = this.total === 1 && this.state.attributes.data.length === 1
+    const isSingle = this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}

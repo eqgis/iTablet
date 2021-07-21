@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { SectionList, View, TouchableOpacity, Image, Text, StyleSheet, RefreshControl } from 'react-native'
 import { Container, PopMenu, ImageButton, ListSeparator, Dialog, RedDot } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
-import { Toast, scaleSize } from '../../../../../utils'
+import { Toast, scaleSize, SCoordinationUtils } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
 import { UserType } from '../../../../../constants'
@@ -56,10 +56,13 @@ class GroupSelectPage extends Component<Props, State> {
     super(props)
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      this.servicesUtils = new SCoordination('online')
+      // this.servicesUtils = new SCoordination('online')
+      SCoordinationUtils.setScoordiantion('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
-      this.servicesUtils = new SCoordination('iportal')
+      // this.servicesUtils = new SCoordination('iportal')
+      SCoordinationUtils.setScoordiantion('iportal')
     }
+    this.servicesUtils = SCoordinationUtils.getScoordiantion()
 
     let sectionMap = new Map()
     sectionMap.set(getLanguage(GLOBAL.language).Friends.MY_GROUPS, true)

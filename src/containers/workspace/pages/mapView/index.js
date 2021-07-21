@@ -59,6 +59,7 @@ import { downloadFile, deleteDownloadFile ,setSampleDataShow} from '../../../../
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
 import { createARMap, openARMap, saveARMap, closeARMap } from '../../../../redux/models/armap'
+import { setCoworkService } from '../../../../redux/models/cowork'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -110,6 +111,7 @@ const mapStateToProps = state => ({
   collectGuide: state.home.toJS().collectGuide,
   mapEditGuide: state.home.toJS().mapEditGuide,
   currentGroup: state.cowork.toJS().currentGroup,
+  currentTaskServices: state.cowork.toJS().services,
   showARSceneNotify: state.setting.toJS().showARSceneNotify,
   showSampleData: state.down.toJS().showSampleData,
   baseMaps: state.map.toJS().baseMaps,
@@ -169,6 +171,7 @@ const mapDispatchToProps = {
   setDatumPoint,
   showAR,
   setSampleDataShow,
+  setCoworkService,
 }
 
 export default connect(

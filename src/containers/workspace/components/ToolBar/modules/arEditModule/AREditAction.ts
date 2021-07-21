@@ -94,11 +94,11 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 }
 
 function commit() {
-  SARMap.clearSelection()
+  // SARMap.clearSelection()
   SARMap.submit()
-  SARMap.setAction(ARAction.NULL)
+  // SARMap.setAction(ARAction.NULL)
   // SARMap.setAction(ARAction.SELECT)
-  return false
+  return true
 }
 
 function close() {

@@ -12,6 +12,8 @@ import {
   Text,
   TextInput,
   BackHandler,
+  TouchableOpacity,
+  Animated,
 } from 'react-native'
 import { SMSceneView, Point3D, Camera, SScene } from 'imobile_for_reactnative'
 import {
@@ -35,7 +37,7 @@ import {
   BackgroundOverlay,
 } from '../../components'
 import { MapHeaderButton } from '../../../../constants'
-import { getPublicAssets } from '../../../../assets'
+import { getPublicAssets ,getThemeAssets} from '../../../../assets'
 import { Toast, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import { share3DModule, tool3DModule } from '../../components/ToolBar/modules'
@@ -73,6 +75,8 @@ export default class Map3D extends React.Component {
     removeBackAction: () => {},
     setToolbarStatus: () => {},
     mapSceneGuide: Object,
+    showSampleData: Object,
+    setSampleDataShow: () => {},
   }
 
   constructor(props) {
@@ -94,6 +98,7 @@ export default class Map3D extends React.Component {
       clipSetting: {}, //裁剪数据
       cutLayers: [], //三维裁剪的图层数组
       tips: '', //裁剪数值信息
+      samplescale:new Animated.Value(0.1),
     }
     this.selectKey = '' //裁剪选中的key
     this.changeLength = 0 //总的位移
@@ -353,6 +358,23 @@ export default class Map3D extends React.Component {
     // }
 
     // this._addScene()
+    if (this.props.showSampleData) {
+      let animatedList = []
+
+      animatedList.push(
+        Animated.timing(this.state.samplescale, {
+          toValue: 1.2,
+          duration: 500,
+        })
+      )
+      animatedList.push(
+        Animated.timing(this.state.samplescale, {
+          toValue: 1,
+          duration: 500,
+        })
+      )
+      Animated.sequence(animatedList).start()
+    }
   }
 
   _pop_list = (show, type) => {
@@ -1085,6 +1107,62 @@ export default class Map3D extends React.Component {
       )
     }
 
+  //隐藏示范数据按钮
+  closeSample = () =>{
+    this.props.setSampleDataShow(false)
+  }
+
+    /** 示范数据 */
+    _renderSampleData = () => {
+      let right
+      if (
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+      ) {
+        right = {
+          right: scaleSize(120),
+          bottom: scaleSize(26),
+        }
+      } else {
+        right = {
+          right: scaleSize(20),
+          bottom: scaleSize(135),
+        }
+      }
+      return (
+        <View
+          style={[styles.iconSap, right]}
+        >
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              // this.closeSample()
+              NavigationService.navigate('SampleMap')
+            }}
+          >
+            <Animated.Image
+              style={{ width: scaleSize(120), height: scaleSize(120) ,transform:[{scale:this.state.samplescale}]}}
+              resizeMode={'contain'}
+              source={getThemeAssets().publicAssets.icon_tool_download}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={{
+              position: 'absolute',
+              width: scaleSize(40),
+              height: scaleSize(35),
+              right: 0,
+              top: 0,
+            }}
+            onPress={() => {
+              this.closeSample()
+            }}
+          ></TouchableOpacity>
+        </View>
+      )
+    }
+
   renderContainer = () => {
     return (
       <Container
@@ -1131,6 +1209,7 @@ export default class Map3D extends React.Component {
         {this.state.measureShow && this.renderMeasureLabel()}
         {this.state.showMenuDialog && this.renderMenuDialog()}
         {this.state.showPanResponderView && this.renderPanResponderView()}
+        {this.props.showSampleData && this._renderSampleData()}
         {/*{this.renderMapNavIcon()}*/}
         {/*{this.renderMapNavMenu()}*/}
         {this.renderBackgroundOverlay()}

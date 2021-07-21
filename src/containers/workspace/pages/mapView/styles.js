@@ -146,6 +146,12 @@ export default StyleSheet.create({
     // backgroundColor: 'transparent',
     backgroundColor: color.white,
   },
+  iconSap: {
+    position: 'absolute',
+    right: scaleSize(20),
+    borderRadius: scaleSize(60),
+    bottom: scaleSize(135),
+  },
   btn: {
     backgroundColor: 'white',
     borderRadius: scaleSize(4),

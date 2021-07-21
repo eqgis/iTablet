@@ -10,6 +10,7 @@ import {
   downloadFile,
   deleteDownloadFile,
   setIgnoreDownload,
+  setSampleDataShow,
 } from '../../../../redux/models/down'
 import { setOldMapModule } from '../../../../redux/models/appConfig'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
@@ -51,6 +52,7 @@ class ModuleList extends Component {
     setCurrentMapModule: () => {},
     setOldMapModule: () => {},
     setIgnoreDownload: () => {},
+    setSampleDataShow: () => {},
   }
 
   constructor(props) {
@@ -140,7 +142,8 @@ class ModuleList extends Component {
           // ref.getDialogCheck(),
           this.props.ignoreDownloads.indexOf(downloadData.key) >= 0,
         )
-      this.props.showDialog && this.props.showDialog(true)
+      // this.props.showDialog && this.props.showDialog(true)
+      this.props.setSampleDataShow(true)
     }.bind(this)())
   }
 
@@ -640,6 +643,7 @@ const mapDispatchToProps = {
   setCurrentMapModule,
   setOldMapModule,
   setIgnoreDownload,
+  setSampleDataShow,
 }
 export default connect(
   mapStateToProps,

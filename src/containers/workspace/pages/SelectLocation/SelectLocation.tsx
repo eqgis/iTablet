@@ -127,18 +127,42 @@ export default class SelectLocation extends React.Component<Props, State>{
       >
         <View style={styles.inputView}>
           <View style={styles.inputBox}>
-            <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location} />
-            <Text>{GLOBAL.language === 'CN' ? getLanguage(GLOBAL.language).Profile.X_COORDINATE : 'X'}</Text>
+            <Image style={styles.inputIcon} source={getThemeAssets().collection.icon_lines} />
+            <Text style={{marginLeft:scaleSize(10)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LONGITUDE + ': '}</Text>
             <Input style={styles.input} editable={false} showClear={false} value={this.state.x} textAlign="left" />
           </View>
           <View style={styles.line}></View>
           <View style={styles.inputBox}>
-            <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location} />
-            <Text>{GLOBAL.language === 'CN' ? getLanguage(GLOBAL.language).Profile.Y_COORDINATE : 'Y'}</Text>
+            <Image style={styles.inputIcon} source={getThemeAssets().collection.icon_latitudes} />
+            <Text style={{marginLeft:scaleSize(10)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LATITUDE + ': '}</Text>
             <Input style={styles.input} editable={false} showClear={false} value={this.state.y} textAlign="left" />
           </View>
         </View>
       </View>
+    )
+  }
+
+  renderChangeMap = () => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={{
+          position: 'absolute',
+          right: scaleSize(20),
+          borderRadius: scaleSize(60),
+          top: scaleSize(150),
+        }}
+        onPress={() => {
+          // this.closeSample()
+          this.showToolbarAndBox(true)
+        }}
+      >
+        <Image
+          style={{ width: scaleSize(120), height: scaleSize(120) }}
+          resizeMode={'contain'}
+          source={getThemeAssets().publicAssets.icon_tool_switch}
+        />
+      </TouchableOpacity>
     )
   }
 
@@ -183,12 +207,12 @@ export default class SelectLocation extends React.Component<Props, State>{
 
   /** 地图选点header右边确定view */
   renderHeaderRight = () => {
-    let moreImg = getThemeAssets().publicAssets.icon_move
+    // let moreImg = getThemeAssets().publicAssets.icon_move
     return (
       <View
         style={{flexDirection: 'row'}}
       >
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             height: scaleSize(50),
             width: scaleSize(60),
@@ -206,7 +230,7 @@ export default class SelectLocation extends React.Component<Props, State>{
             style={{height:scaleSize(40),width:scaleSize(40)}}
             source={moreImg}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           key={'search'}
@@ -404,6 +428,7 @@ export default class SelectLocation extends React.Component<Props, State>{
           device={this.props.device}
         />
         {this.renderBottom()}
+        {this.renderChangeMap()}
 
         <Animated.View
           style={[
@@ -443,6 +468,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft:scaleSize(10),
   },
   inputIcon: {
     width: scaleSize(44),

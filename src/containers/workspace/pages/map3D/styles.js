@@ -107,4 +107,10 @@ export default StyleSheet.create({
     height: scaleSize(70),
     justifyContent: 'center',
   },
+  iconSap: {
+    position: 'absolute',
+    right: scaleSize(20),
+    borderRadius: scaleSize(60),
+    bottom: scaleSize(135),
+  },
 })

@@ -88,6 +88,8 @@ import { FileTools } from '../../../../native'
 import {
   ConstPath,
   ConstToolType,
+  layerManagerData,
+  OpenData,
   TouchType,
   ToolbarType,
   ChunkType,
@@ -107,6 +109,7 @@ import {
   AppState,
   StyleSheet,
   PanResponder,
+  Animated,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -192,6 +195,8 @@ export default class MapView extends React.Component {
     currentTaskServices: PropTypes.object,
     setCoworkService: PropTypes.func,
 
+    baseMaps: PropTypes.object,
+
     showDatumPoint: PropTypes.bool,
     isAR: PropTypes.bool,
     setDatumPoint: PropTypes.func,
@@ -243,6 +248,8 @@ export default class MapView extends React.Component {
     deleteDownloadFile: PropTypes.func,
     setToolbarStatus: PropTypes.func,
     showARSceneNotify: PropTypes.bool,
+    showSampleData: PropTypes.bool,
+    setSampleDataShow: PropTypes.func,
   }
 
   /** 是否导航中 */
@@ -297,6 +304,13 @@ export default class MapView extends React.Component {
       params && params.path ? !params.path.endsWith('.smwu') : true
     /** 自定义返回事件 */
     this.backAction = (params && params.backAction) || null
+    //底图
+    this.curUserBaseMaps = this.props.baseMaps[
+      this.props.user.currentUser.userId
+    ]
+    if (!this.curUserBaseMaps) {
+      this.curUserBaseMaps = this.props.baseMaps['default'] || []
+    }
     this.state = {
       showMap: false, // 控制地图初始化显示
       data: params ? params.data : [],
@@ -342,6 +356,7 @@ export default class MapView extends React.Component {
       isnew:true,
       showGenera:false,
       isTrack:false,
+      samplescale:new Animated.Value(0.1),
     }
     this.props.setDatumPoint(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? true : false)
     this.props.showAR(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS  ? true : false)
@@ -1395,6 +1410,7 @@ export default class MapView extends React.Component {
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
 
+      this.closeSample()
       // GLOBAL.clickWait = false
     } catch (e) {
       GLOBAL.clickWait = false
@@ -1801,6 +1817,25 @@ export default class MapView extends React.Component {
         GLOBAL.legend && GLOBAL.legend.getLegendData()
         // this.mapLoaded = true
         this.setLoading(false)
+
+        if (this.props.showSampleData) {
+          let animatedList = []
+
+          animatedList.push(
+            Animated.timing(this.state.samplescale, {
+              toValue: 1.2,
+              duration: 500,
+            })
+          )
+          animatedList.push(
+            Animated.timing(this.state.samplescale, {
+              toValue: 1,
+              duration: 500,
+            })
+          )
+          Animated.sequence(animatedList).start()
+        }
+
       } catch (e) {
         this.setLoading(false)
         this.setState({ mapLoaded: true })
@@ -2940,6 +2975,7 @@ export default class MapView extends React.Component {
     let buttonInfos = GLOBAL.coworkMode && [
       MapHeaderButton.CoworkChat,
     ] || (currentMapModule && currentMapModule.headerButtons) || [
+      MapHeaderButton.BaseMap,
       MapHeaderButton.Share,
       MapHeaderButton.Search,
       MapHeaderButton.Undo,
@@ -2974,6 +3010,52 @@ export default class MapView extends React.Component {
         let info
         if (typeof buttonInfos[i] === 'string') {
           switch (buttonInfos[i]) {
+            case MapHeaderButton.BaseMap:
+              info = {
+                key: MapHeaderButton.BaseMap,
+                image: getThemeAssets().start.icon_tool_map,
+                action: () => {
+                  let data
+                  let layerManagerDataArr = [...layerManagerData()]
+                  for (let i = 0, n = this.curUserBaseMaps.length; i < n; i++) {
+                    let baseMap = this.curUserBaseMaps[i]
+                    //只保留用户添加的 zhangxt
+                    if (
+                      baseMap.DSParams.engineType === 227 ||
+                      baseMap.DSParams.engineType === 223 ||
+                      !baseMap.userAdd
+                    ) {
+                      continue
+                    }
+                    let layerManagerData = {
+                      title: baseMap.mapName,
+                      action: () => {
+                        return OpenData(baseMap, baseMap.layerIndex)
+                      },
+                      data: [],
+                      image: getThemeAssets().layerType.layer_image,
+                      type: DatasetType.IMAGE,
+                      themeType: -1,
+                    }
+                    layerManagerDataArr.push(layerManagerData)
+                  }
+                  data = [
+                    {
+                      title: '',
+                      data: layerManagerDataArr,
+                    },
+                  ]
+                  //'切换底图') {
+                  this.showFullMap(true)
+                  this.toolBox?.setVisible(true, ConstToolType.SM_MAP_LAYER_BASE_CHANGE, {
+                    height: ConstToolType.TOOLBAR_HEIGHT[5],
+                    containerType:'list',
+                    data:data,
+                    isFullScreen: true,
+                  })
+                },
+              }
+              break
             case MapHeaderButton.Share:
               info = {
                 key: MapHeaderButton.Share,
@@ -3302,6 +3384,62 @@ export default class MapView extends React.Component {
       </View>
     )
   }
+
+  //隐藏示范数据按钮
+  closeSample = () =>{
+    this.props.setSampleDataShow(false)
+  }
+
+    /** 示范数据 */
+    _renderSampleData = () => {
+      let right
+      if (
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0
+      ) {
+        right = {
+          right: scaleSize(120),
+          bottom: scaleSize(26),
+        }
+      } else {
+        right = {
+          right: scaleSize(20),
+          bottom: scaleSize(135),
+        }
+      }
+      return (
+        <View
+          style={[styles.iconSap, right]}
+        >
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              // this.closeSample()
+              NavigationService.navigate('SampleMap')
+            }}
+          >
+            <Animated.Image
+              style={{ width: scaleSize(120), height: scaleSize(120) ,transform:[{scale:this.state.samplescale}]}}
+              resizeMode={'contain'}
+              source={getThemeAssets().publicAssets.icon_tool_download}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={{
+              position: 'absolute',
+              width: scaleSize(40),
+              height: scaleSize(35),
+              right: 0,
+              top: 0,
+            }}
+            onPress={() => {
+              this.closeSample()
+            }}
+          ></TouchableOpacity>
+        </View>
+      )
+    }
 
   _renderLocationIcon = () => {
     return (
@@ -4671,6 +4809,7 @@ export default class MapView extends React.Component {
             GLOBAL.Type === ChunkType.MAP_AR_MAPPING) &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
+        {!this.isExample && this.props.showSampleData && this._renderSampleData()}
         {/*{!this.isExample && this.renderMapNavIcon()}*/}
         {/*{!this.isExample && this.renderMapNavMenu()}*/}
         {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.props.isAR :this.state.showAIDetect) && this.state.showScaleView && (

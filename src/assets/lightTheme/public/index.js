@@ -38,6 +38,9 @@ const icon_check_in = require('./icon_check_in.png')
 const icon_ignore = require('./icon_ignore.png')
 const icon_add = require('./icon_add.png')
 
+const icon_tool_download = require('./icon_tool_download.png')
+const icon_tool_switch = require('./icon_tool_switch.png')
+
 export default {
   icon_undo,
   icon_redo,
@@ -78,4 +81,6 @@ export default {
 
   icon_ignore,
   icon_add,
+  icon_tool_download,
+  icon_tool_switch,
 }

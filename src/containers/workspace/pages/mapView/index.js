@@ -55,7 +55,7 @@ import {
   removeBackAction,
 } from '../../../../redux/models/backActions'
 import { setAnalystParams } from '../../../../redux/models/analyst'
-import { downloadFile, deleteDownloadFile } from '../../../../redux/models/down'
+import { downloadFile, deleteDownloadFile ,setSampleDataShow} from '../../../../redux/models/down'
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
 import { createARMap, openARMap, saveARMap, closeARMap } from '../../../../redux/models/armap'
@@ -113,6 +113,8 @@ const mapStateToProps = state => ({
   currentGroup: state.cowork.toJS().currentGroup,
   currentTaskServices: state.cowork.toJS().services,
   showARSceneNotify: state.setting.toJS().showARSceneNotify,
+  showSampleData: state.down.toJS().showSampleData,
+  baseMaps: state.map.toJS().baseMaps,
 })
 
 const mapDispatchToProps = {
@@ -168,6 +170,7 @@ const mapDispatchToProps = {
   closeARMap,
   setDatumPoint,
   showAR,
+  setSampleDataShow,
   setCoworkService,
 }
 

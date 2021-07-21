@@ -4,6 +4,7 @@ const Undo = 'undo' // 通讯录
 const Search = 'search' // 发现
 const Share = 'share' // 分享
 const CoworkChat = 'coworkChat' // 协作聊天
+const BaseMap = 'BaseMap' // 底图切换
 
 export default {
   Audio,
@@ -11,4 +12,5 @@ export default {
   Search,
   Share,
   CoworkChat,
+  BaseMap,
 }

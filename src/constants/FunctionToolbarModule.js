@@ -58,6 +58,9 @@ async function OpenData(data, index, callback) {
         await SMediaCollector.showMedia(_layer.name)
       }
     }
+
+    SMap.viewEntire()
+    Toast.show(getLanguage(GLOBAL.language).Prompt.CHANGE_SUCCESS)
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
   }

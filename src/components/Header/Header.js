@@ -235,7 +235,7 @@ class NavigationHeader extends Component {
                 style={{
                   ...styles.headerTitle,
                   fontSize: fontSize, textAlign:'left' ,
-                  paddingLeft: scaleSize(withoutBack ? 70 : 30),
+                  paddingLeft: scaleSize(withoutBack ? 70 : 0),
                   ...responseHeaderTitleStyle,
                 }}
                 ellipsizeMode="tail"

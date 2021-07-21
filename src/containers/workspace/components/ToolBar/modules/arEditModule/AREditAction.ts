@@ -95,9 +95,12 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 
 function commit() {
   // SARMap.clearSelection()
-  SARMap.submit()
-  // SARMap.setAction(ARAction.NULL)
+  // SARMap.submit()
   // SARMap.setAction(ARAction.SELECT)
+  SARMap.submit().then(() => {
+    const _data: any = ToolbarModule.getData()
+    SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
+  })
   return true
 }
 

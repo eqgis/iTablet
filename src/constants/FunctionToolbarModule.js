@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 
 async function OpenData(data, index, callback) {
+  GLOBAL.Loading?.setLoading(true)
   const layers = await SMap.getLayersByType()
   let isOpen
   if (data instanceof Array) {
@@ -64,6 +65,7 @@ async function OpenData(data, index, callback) {
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
   }
+  GLOBAL.Loading?.setLoading(false)
   return true
 }
 

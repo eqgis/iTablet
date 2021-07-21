@@ -3013,7 +3013,7 @@ export default class MapView extends React.Component {
             case MapHeaderButton.BaseMap:
               info = {
                 key: MapHeaderButton.BaseMap,
-                image: getThemeAssets().start.icon_tool_map,
+                image: getThemeAssets().publicAssets.icon_tool_switch,
                 action: () => {
                   let data
                   let layerManagerDataArr = [...layerManagerData()]

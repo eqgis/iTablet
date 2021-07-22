@@ -65,35 +65,35 @@ export default class SelectLocation extends React.Component<Props, State>{
   }
 
   componentWillUnmount() {
-    if (Platform.OS === 'android') {
-      SMap2.removeLocationCallout()
-    } else {
-      iOSEventEmi.removeListener(
-        'com.supermap.RN.Mapcontrol.single_tap_event_two',
-        this.onSingleTap,
-      )
-    }
+    SMap2.removeLocationCallout()
+    // else {
+    //   iOSEventEmi.removeListener(
+    //     "com.supermap.RN.Mapcontrol.single_tap_event_two",
+    //     this.onSingleTap,
+    //   )
+    // }
   }
 
   componentDidMount() {
-    if (Platform.OS === 'ios') {
-      iOSEventEmi.addListener(
-        'com.supermap.RN.Mapcontrol.single_tap_event_two',
-        this.onSingleTap,
-      )
-    }
+    // if (Platform.OS === 'ios') {
+    //   debugger
+    //   iOSEventEmi.addListener(
+    //     "com.supermap.RN.Mapcontrol.single_tap_event_two",
+    //     this.onSingleTap,
+    //   )
+    // }
   }
 
   onSingleTap = async (event: SMap2.ITouchEvent) => {
     let point
     if (Platform.OS === 'ios') {
       point = event.LLPoint
-      SMap.addSelectPoint(event.mapPoint)
+      // SMap.addSelectPoint(event.mapPoint)
     } else {
       point = await SMap2.pixelToLL(event.screenPoint)
-      SMap2.addLocationCallout(event.mapPoint)
+      // SMap2.addLocationCallout(event.mapPoint)
     }
-
+    SMap2.addLocationCallout(event.mapPoint)
     if (point) {
       this.setState({
         x: point.x,
@@ -172,13 +172,14 @@ export default class SelectLocation extends React.Component<Props, State>{
 
   location = async () => {
     let point
-    if (Platform.OS === 'ios') {
-      SMap.moveToCurrent2().then(result => {
-        !result &&
-          Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
-      })
-      point = await SMap.getCurrentPoint2()
-    } else {
+    // if (Platform.OS === 'ios') {
+    //   SMap.moveToCurrent2().then(result => {
+    //     !result &&
+    //       Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
+    //   })
+    //   point = await SMap.getCurrentPoint2()
+    // } else 
+    {
       SMap2.moveToCurrent()
       point = await SMap2.getCurrentPoint()
     }
@@ -190,17 +191,19 @@ export default class SelectLocation extends React.Component<Props, State>{
   }
 
   zoomin = () => {
-    if (Platform.OS === 'ios') {
-      SMap.zoom2(2)
-    } else {
+    // if (Platform.OS === 'ios') {
+    //   SMap.zoom2(2)
+    // } else 
+    {
       SMap2.zoom(2)
     }
   }
 
   zoomout = () => {
-    if (Platform.OS === 'ios') {
-      SMap.zoom2(0.5)
-    } else {
+    // if (Platform.OS === 'ios') {
+    //   SMap.zoom2(0.5)
+    // } else 
+    {
       SMap2.zoom(0.5)
     }
   }
@@ -237,9 +240,9 @@ export default class SelectLocation extends React.Component<Props, State>{
           onPress={async () => {
             this.props.navigation.goBack()
             this.cb && this.cb()
-            if (Platform.OS === 'ios') {
-              SMap.closeMapControl2()
-            }
+            // if (Platform.OS === 'ios') {
+            //   SMap.closeMapControl2()
+            // }
           }}
         >
           <Text style={styles.textConfirm}>

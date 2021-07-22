@@ -282,6 +282,23 @@ export default class Map3D extends React.Component {
         // initNoScene() 里设置了isRender 需要closeWorkspace里设置
         GLOBAL.openWorkspace = true
       }
+
+      if (this.props.showSampleData) {
+        let animatedList = []
+        animatedList.push(
+          Animated.timing(this.state.samplescale, {
+            toValue: 1.2,
+            duration: 500,
+          })
+        )
+        animatedList.push(
+          Animated.timing(this.state.samplescale, {
+            toValue: 1,
+            duration: 500,
+          })
+        )
+        Animated.sequence(animatedList).start()
+      }
       return
     }
     try {
@@ -314,6 +331,23 @@ export default class Map3D extends React.Component {
           this.mapLoaded = true
         }, 1500)
       })
+
+      if (this.props.showSampleData) {
+        let animatedList = []
+        animatedList.push(
+          Animated.timing(this.state.samplescale, {
+            toValue: 1.2,
+            duration: 500,
+          })
+        )
+        animatedList.push(
+          Animated.timing(this.state.samplescale, {
+            toValue: 1,
+            duration: 500,
+          })
+        )
+        Animated.sequence(animatedList).start()
+      }
     } catch (e) {
       setTimeout(() => {
         this.container.setLoading(false)
@@ -358,23 +392,6 @@ export default class Map3D extends React.Component {
     // }
 
     // this._addScene()
-    if (this.props.showSampleData) {
-      let animatedList = []
-
-      animatedList.push(
-        Animated.timing(this.state.samplescale, {
-          toValue: 1.2,
-          duration: 500,
-        })
-      )
-      animatedList.push(
-        Animated.timing(this.state.samplescale, {
-          toValue: 1,
-          duration: 500,
-        })
-      )
-      Animated.sequence(animatedList).start()
-    }
   }
 
   _pop_list = (show, type) => {

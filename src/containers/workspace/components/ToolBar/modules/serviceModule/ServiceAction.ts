@@ -16,7 +16,7 @@ import {
   UserType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast, OnlineServicesUtils } from '../../../../../../utils'
+import { Toast, OnlineServicesUtils, request } from '../../../../../../utils'
 import * as Type from '../../../../../../types'
 import { getThemeAssets } from '../../../../../../assets'
 import { FileTools } from '../../../../../../native'
@@ -63,7 +63,10 @@ _SCoordination.addDataServiceLitsener({
     })
     if (res.result) {
       addServiceLayer(datasetName)
-    } else if (res.error?.reason?.includes('exist')) {
+    } else if (
+      res.error?.reason?.includes('exist') ||
+      res.error?.reason?.includes('failed to create local dataset according to the web dataset resource') // iOS
+    ) {
       const params: any = ToolbarModule.getParams()
       let isAdded = false
       for (let layer of params.layers.layers) {
@@ -233,7 +236,7 @@ async function listAction(type: string, params: any = {}) {
     case ConstToolType.SM_MAP_SERVICE_DATASET: {
       const url = params.item.data
       let datasourceName = params.item.title
-      if (url.includes('/datasourceName')) {
+      if (url.includes('/datasources')) {
         datasourceName = `Label_${
           _params.user.currentUser.userName
         }#`
@@ -538,6 +541,26 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
           } else {
             result = false
           }
+          // let msgObj = {
+          //   type: MsgConstant.MSG_COWORK,
+          //   time: new Date().getTime(),
+          //   user: {
+          //     name: _params.user.currentUser.nickname,
+          //     id: _params.user.currentUser.userName,
+          //     groupID: _params.currentTask.id,     // 任务群组
+          //     groupName: '',
+          //     coworkGroupId: _params.currentTask.groupID,     // online协作群组
+          //     coworkGroupName: _params.currentTask.groupName,
+          //     taskId: _params.currentTask.id,
+          //   },
+          //   message: {
+          //     type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
+          //     datasetName: publishResults[0].customResult,
+          //     serviceUrl: res.content.urlDataset,
+          //   },
+          // }
+          // let msgStr = JSON.stringify(msgObj)
+          // await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
         }
       }
       await FileTools.deleteFile(targetPath)
@@ -581,13 +604,14 @@ async function setDataService(params: {
         for (const item2 of content) {
           if (item.resourceId === item2.id) {
             let serviceData1 = await _SCoordination.getServiceData(item.linkPage)
-            console.warn(JSON.stringify(serviceData1))
             if (serviceData1.datasourceNames.length === 0) return false
-            const datasetUrl = `${item.proxiedUrl}/data/datasources/${serviceData1.datasourceNames[0]}/datasets/${item2.datasetName}`
+            let serviceData2 = await _SCoordination.getServiceData(item.linkPage, serviceData1.datasourceNames[0])
+            if (serviceData2.childUriList.length === 0) return false
+            const datasetUrl = serviceData2.childUriList[0]
             const serviceData: ServiceData = {
               url: datasetUrl,
               datasourceAlias: serviceData1.datasourceNames[0],
-              dataset: item2.datasetName,
+              dataset: serviceData2.datasetNames[0],
             }
             result = await _SCoordination.setDataService(item2.datasourceAlias, item2.datasetName, serviceData)
             break
@@ -596,7 +620,6 @@ async function setDataService(params: {
       }
     }
   } catch (error) {
-    
   } finally {
     return result
   }

@@ -2,7 +2,7 @@
  * 管理下载，导入等进度
  * 通过唯一的 key 来区分任务
  */
-import Toast from "./Toast"
+// import Toast from "./Toast"
 
 
 const _progressList: Array<{key: string, progress: number, downloaded: boolean}> = []
@@ -12,7 +12,7 @@ const _progressListeners: Array<{key: string, onProgress(progers: number): void,
 
 function addProgress(key: string) {
   if(_progressList.some(item => item.key === key)) {
-    Toast.show('id or key is dupiliacateed')
+    // Toast.show('id or key is dupiliacateed')
   } else {
     _progressList.push({key, progress: 0, downloaded: false})
   }
@@ -25,7 +25,7 @@ function updateProgress(key: string, progress: number) {
     const listener = _progressListeners.find(item => item.key === key)
     listener && listener.onProgress(progress)
   } else {
-    Toast.show('cannot find the progress')
+    // Toast.show('cannot find the progress')
   }
 }
 

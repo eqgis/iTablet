@@ -1,4 +1,8 @@
-export default function request(url, method = 'GET', { body, headers }) {
+interface RequestParams {
+  body?: {[name: string]: any},
+  headers?: {[name: string]: any},
+}
+export default function request(url: string, method = 'GET', { body, headers }: RequestParams) {
   let extraData = {
     headers: {
       Accept: 'application/json',

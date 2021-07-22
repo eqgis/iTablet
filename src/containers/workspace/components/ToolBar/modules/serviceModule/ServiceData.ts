@@ -53,7 +53,7 @@ function getData(type: string, params: any) {
               return
             }
             ServiceAction.uploadToService({
-              layerName: layerData.name,
+              // layerName: layerData.name,
               url: datasetDescription.url,
               datasourceAlias: layerData.datasourceAlias,
               datasetName: layerData.datasetName,

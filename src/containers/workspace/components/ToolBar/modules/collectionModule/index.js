@@ -31,7 +31,7 @@ class CollectionModule extends FunctionModule {
       if (params.currentTask.id) {
         // 若没有当前图层或者当前图层不是我的图层
         let layerType = LayerUtils.getLayerType(params.currentLayer)
-        if (layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'TEXTLAYER' ) {
+        if (layerType === '' || layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'TEXTLAYER' ) {
           let info = ''
           switch(layerType) {
             case 'TAGGINGLAYER':
@@ -42,6 +42,9 @@ class CollectionModule extends FunctionModule {
               break
             case 'TEXTLAYER':
               info = getLanguage(params.language).Prompt.CANNOT_COLLECT_IN_TEXT_LAYERS
+              break
+            case '':
+              info = getLanguage(params.language).Prompt.CHOOSE_LAYER
               break
           }
           NavigationService.navigate('LayerManager')

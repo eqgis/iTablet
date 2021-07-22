@@ -191,14 +191,6 @@ async function commit(type) {
             //提交标注后 需要刷新属性表
             GLOBAL.NEEDREFRESHTABLE = true
             if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-              let dsDescription = JSON.parse(_params.currentLayer.datasetDescription)
-              if (dsDescription.type === 'onlineservice') {
-                let serviceName = dsDescription.url.substring(dsDescription.url.indexOf('/services/') + 10, dsDescription.url.indexOf('/rest/'))
-                let datasourceName = dsDescription.url.substring(dsDescription.url.indexOf('/datasources/') + 13, dsDescription.url.indexOf('/datasets/'))
-                let datasetName = dsDescription.url.substring(dsDescription.url.indexOf('/datasets/') + 10)
-                let ID = SMap.get
-                SCoordinationUtils.getScoordiantion().addFeature(dsDescription.url, serviceName, datasourceName, datasetName, )
-              }
               let layerType = LayerUtils.getLayerType(currentLayer)
               if (layerType !== 'TAGGINGLAYER') {
                 let friend = GLOBAL.getFriend()

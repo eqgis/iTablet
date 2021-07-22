@@ -451,6 +451,13 @@ export default class FunctionToolbar extends React.Component {
                   }
                 },
               })
+            } else {
+              Toast.show(
+                getLanguage(this.props.language).Prompt
+                  .PLEASE_SELECT_PLOT_LAYER,
+              )
+              NavigationService.navigate('LayerManager')
+              return
             }
           } else {
             Toast.show(

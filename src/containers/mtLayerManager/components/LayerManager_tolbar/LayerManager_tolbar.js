@@ -582,8 +582,8 @@ export default class LayerManager_tolbar extends React.Component {
         }
         this.props.setCurrentLayer &&
           this.props.setCurrentLayer(this.state.layerData)
-        ToolbarModule.setData() // 清除之前ToolbarModule中的数据
-        collectionModule().actions.showCollection(
+        ToolbarModule.setData(collectionModule())
+        ToolbarModule.getData().actions.showCollection(
           type,
           this.state.layerData.name,
         )

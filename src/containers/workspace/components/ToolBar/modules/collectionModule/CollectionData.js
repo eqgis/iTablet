@@ -17,6 +17,12 @@ function getData(type) {
   let buttons = []
   let isCollection = false
 
+
+  if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
+    buttons = [ToolbarBtnType.CANCEL]
+    return { data, buttons }
+  }
+
   if (
     type === ConstToolType.SM_MAP_COLLECTION_POINT ||
     type === ConstToolType.SM_MAP_COLLECTION_LINE ||

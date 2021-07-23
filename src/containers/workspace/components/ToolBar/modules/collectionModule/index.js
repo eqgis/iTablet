@@ -76,7 +76,6 @@ class CollectionModule extends FunctionModule {
             type = SMCollectorType.REGION_HAND_POINT
             break
         }
-        ToolbarModule.setData() // 清除之前ToolbarModule中的数据
         CollectionAction.showCollection(
           type,
           params.currentLayer.name,

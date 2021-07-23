@@ -40,7 +40,8 @@ async function showAttribute() {
     Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
     if(GLOBAL.HAVEATTRIBUTE){
-      NavigationService.navigate('LayerSelectionAttribute',{isCollection:true})
+      const _params = ToolbarModule.getParams()
+      NavigationService.navigate('LayerSelectionAttribute',{isCollection:true, preType: _params.type})
     }
   }
   return true

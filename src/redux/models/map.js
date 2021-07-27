@@ -411,17 +411,19 @@ export const exportmap3DWorkspace = (params, cb = () => { }) => async (
 }
 // 导入三维工作空间
 export const importSceneWorkspace = params => async (dispatch, getState) => {
-  const userName = getState().user.toJS().currentUser.userName || 'Customer'
-  // return
-  if (userName !== 'Customer') {
-    const path = await FileTools.appendingHomeDirectory(
-      ConstPath.UserPath + userName,
-    )
-    await SScene.setCustomerDirectory(path)
-  }
+  // const userName = getState().user.toJS().currentUser.userName || 'Customer'
+  // // return
+  // if (userName !== 'Customer') {
+  //   const path = await FileTools.appendingHomeDirectory(
+  //     ConstPath.UserPath + userName,
+  //   )
+  //   await SScene.setCustomerDirectory(path)
+  // }
   if (params.server) {
+    debugger
     const result = await SScene.is3DWorkspace({ server: params.server })
     if (result) {
+      debugger
       const result2 = await SScene.import3DWorkspace({ server: params.server })
       if (result2) {
         // Toast.show('导入成功')

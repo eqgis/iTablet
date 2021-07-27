@@ -558,8 +558,11 @@ export default class ArMappingButton extends React.Component {
   saveline = async () => {
     try {
       if (Platform.OS === 'ios') {
-        this.saveType = 'saveline'
-        this.save()
+        // this.save()
+        let result = await SARMap.saveTrackingLine()
+        if (!result) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_LINE_FAIL)
+        }
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
@@ -575,8 +578,11 @@ export default class ArMappingButton extends React.Component {
   savepoint = async () => {
     try {
       if (Platform.OS === 'ios') {
-        this.saveType = 'savepoint'
-        this.save()
+        // this.save()
+        let result = await SARMap.saveTrackingPoint()
+        if (!result) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAIL_POINT)
+        }
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
@@ -592,8 +598,11 @@ export default class ArMappingButton extends React.Component {
   saveRegion = async () => {
     try {
       if (Platform.OS === 'ios') {
-        this.saveType = 'saveRegion'
-        this.save()
+        // this.save()
+        let result = await SARMap.saveTrackingRegion()
+        if (!result) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
+        }
       } else {
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
@@ -1100,19 +1109,19 @@ export default class ArMappingButton extends React.Component {
       datasetName = 'Default_Tagging'
     }
     SARMap.setMeasurePath(datasourceAlias, datasetName)
-    let result = await SARMap.saveMeasureData(datasourceAlias, datasetName)
-    if (!result) {
-      //await SMeasureAreaView.clearAll()
-      if(this.saveType === 'savepoint'){
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAIL_POINT)
-      }else if(this.saveType === 'saveline'){
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_LINE_FAIL)
-      }else if(this.saveType === 'saveRegion'){
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
-      }
-    }else{
-      // this.saveLog()
-    }
+    SARMap.saveMeasureData(datasourceAlias, datasetName)
+    // if (!result) {
+    //   //await SMeasureAreaView.clearAll()
+    //   if(this.saveType === 'savepoint'){
+    //     Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAIL_POINT)
+    //   }else if(this.saveType === 'saveline'){
+    //     Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_LINE_FAIL)
+    //   }else if(this.saveType === 'saveRegion'){
+    //     Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
+    //   }
+    // }else{
+    //   // this.saveLog()
+    // }
   }
 
   renderBottomBtn() {

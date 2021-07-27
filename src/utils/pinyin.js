@@ -648,7 +648,7 @@ export function isChinese(str) {
  * @returns {string} 结果
  */
 export function getPinYin(str, split, uppercase) {
-  split = split || ' '
+  split = split !== undefined || split !== null ? split : ' '
   uppercase = uppercase || false
   const l2 = str.length
   let result = ''

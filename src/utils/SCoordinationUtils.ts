@@ -1,6 +1,6 @@
 import { SCoordination } from 'imobile_for_reactnative'
 
-let _SCoordination: SCoordination
+let _SCoordination: SCoordination | null
 
 function setScoordiantion(type: 'online' | 'iportal') {
   if (_SCoordination) {
@@ -15,7 +15,8 @@ function setScoordiantion(type: 'online' | 'iportal') {
 }
 
 function getScoordiantion(type?: 'online' | 'iportal') {
-  if (!_SCoordination) {
+  if (!_SCoordination || type && _SCoordination.type !== type) {
+    _SCoordination = null
     if (type === 'iportal') {
       _SCoordination = new SCoordination('iportal')
     } else {
@@ -31,7 +32,7 @@ function getInfoFromDescription(datasetDescription: string) {
   let serviceName = dsDescription.url.substring(dsDescription.url.indexOf('/services/') + 10, dsDescription.url.indexOf('/rest/'))
   let datasourceName = dsDescription.url.substring(dsDescription.url.indexOf('/datasources/') + 13, dsDescription.url.indexOf('/datasets/'))
   let datasetName = dsDescription.url.substring(dsDescription.url.indexOf('/datasets/') + 10)
-  
+
   return {serviceName, datasourceName, datasetName}
 }
 

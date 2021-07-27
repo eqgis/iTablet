@@ -1,6 +1,5 @@
 /* global GLOBAL */
 import {
-  SCoordination,
   SMediaCollector,
   SMap,
   AuthorizeSetting,
@@ -16,7 +15,7 @@ import {
   UserType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast, OnlineServicesUtils, request } from '../../../../../../utils'
+import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin } from '../../../../../../utils'
 import * as Type from '../../../../../../types'
 import { getThemeAssets } from '../../../../../../assets'
 import { FileTools } from '../../../../../../native'
@@ -24,8 +23,6 @@ import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
-
-const _SCoordination = new SCoordination()
 
 async function addServiceLayer(datasetName: string) {
   const _params: any = ToolbarModule.getParams()
@@ -46,7 +43,7 @@ async function addServiceLayer(datasetName: string) {
 /**
  * 数据服务回调监听
  */
-_SCoordination.addDataServiceLitsener({
+ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   downloadHandler: async res => {
     if (!res.content) return
     let _datasetUrl = res.content.urlDataset
@@ -76,7 +73,7 @@ _SCoordination.addDataServiceLitsener({
         }
       }
       if (isAdded) {
-        _SCoordination.updateToLocal(_datasetUrl.replace('.json', '').replace('.rjson', ''), res.content.datasource, datasetName)
+        SCoordinationUtils.getScoordiantion().updateToLocal(_datasetUrl.replace('.json', '').replace('.rjson', ''), res.content.datasource, datasetName)
       } else {
         addServiceLayer(datasetName)
       }
@@ -155,7 +152,7 @@ _SCoordination.addDataServiceLitsener({
 })
 
 // function setServiceType(type = 'online') {
-//   _SCoordination.setCoordinationType(type)
+//   SCoordinationUtils.getScoordiantion().setCoordinationType(type)
 // }
 
 async function listAction(type: string, params: any = {}) {
@@ -164,7 +161,7 @@ async function listAction(type: string, params: any = {}) {
     case ConstToolType.SM_MAP_SERVICE_LIST: {
       let data = params.item.data
 
-      let result = await _SCoordination.getServiceData(data.linkPage)
+      let result = await SCoordinationUtils.getScoordiantion().getServiceData(data.linkPage)
 
       if (result.errorMsg) {
         Toast.show(result.errorMsg)
@@ -206,7 +203,7 @@ async function listAction(type: string, params: any = {}) {
       const data = params.item.data
       const datasourceName = params.item.title
 
-      let result = await _SCoordination.getServiceData(data.linkPage, datasourceName)
+      let result = await SCoordinationUtils.getScoordiantion().getServiceData(data.linkPage, datasourceName)
 
       let _subData: Type.ListItem[] = []
       result.childUriList.forEach((item: string) => {
@@ -249,7 +246,7 @@ async function listAction(type: string, params: any = {}) {
           status: 'download',
         },
       })
-      _SCoordination.downloadToLocal(url, datasourceName).then(() => {
+      SCoordinationUtils.getScoordiantion().downloadToLocal(url, datasourceName).then(() => {
         _params.setToolbarVisible(false)
         _params.showFullMap && _params.showFullMap(false)
       })
@@ -288,7 +285,7 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
   const _datasourceAlias = datasourceAlias || `Label_${
     _params.user.currentUser.userName
   }#`
-  return _SCoordination.downloadToLocal(datasetUrl, _datasourceAlias || '')
+  return SCoordinationUtils.getScoordiantion().downloadToLocal(datasetUrl, _datasourceAlias || '')
 }
 
 /**
@@ -327,9 +324,9 @@ async function updateToLocal (layerData: {
       }
     }
     if (!isAdded) {
-      result = await _SCoordination.downloadToLocal(layerData.url, datasourceAlias)
+      result = await SCoordinationUtils.getScoordiantion().downloadToLocal(layerData.url, datasourceAlias)
     }
-    result = await _SCoordination.updateToLocal(layerData.url, datasourceAlias, datasetName)
+    result = await SCoordinationUtils.getScoordiantion().updateToLocal(layerData.url, datasourceAlias, datasetName)
   } catch (error) {
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
@@ -371,7 +368,7 @@ async function uploadToService(layerData: {
       _params.user.currentUser.userName
     }#`
     const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
-    result = await _SCoordination.uploadToService(layerData.url, datasourceAlias, datasetName)
+    result = await SCoordinationUtils.getScoordiantion().uploadToService(layerData.url, datasourceAlias, datasetName)
   } catch (error) {
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
@@ -387,25 +384,25 @@ async function uploadToService(layerData: {
 }
 
 function putService(serviceId: string, serviceInfo2: any) {
-  _SCoordination.putService(serviceId, serviceInfo2)
+  SCoordinationUtils.getScoordiantion().putService(serviceId, serviceInfo2)
 }
 
 function getAllService() {
-  _SCoordination.getAllService({
+  SCoordinationUtils.getScoordiantion().getAllService({
     pageSize: 10000,
     currentPage: 1,
   })
 }
 
 function getUserServices() {
-  _SCoordination.getUserServices({
+  SCoordinationUtils.getScoordiantion().getUserServices({
     pageSize: 10000,
     currentPage: 1,
   })
 }
 
 async function getGroupServices(groupID: string, keywords?: string[]) {
-  return _SCoordination.getGroupResources({
+  return SCoordinationUtils.getScoordiantion().getGroupResources({
     groupId: groupID,
     keywords: keywords,
     // resourceCreator: _params.user.currentUser.userId,
@@ -455,6 +452,30 @@ async function exportData(name: string, datasourcePath: string, datasets: string
     result = await FileTools.zipFile(archivePath, targetPath)
     FileTools.deleteFile(archivePath)
   }
+
+  // let {result, path} = await _params.exportWorkspace({
+  //   maps: [_params.map.currentMap.name],
+  //   // extra: {
+  //   //   notExport,
+  //   // },
+  // })
+  // let availableName = await FileTools.getAvailableFileName(
+  //   path,
+  //   _params.map.currentMap.name,
+  //   'zip',
+  // )
+  // if (!result) {
+  //   _params.setSharing({
+  //     progress: undefined,
+  //   })
+  //   Toast.show(ConstInfo.EXPORT_WORKSPACE_FAILED)
+  //   return
+  // }
+  // let targetPath = path + availableName
+  // // 分享
+  // const fileName = path.substr(path.lastIndexOf('/') + 1)
+  // const dataName = name || fileName.substr(0, fileName.lastIndexOf('.'))
+  
   return {
     result,
     availableName,
@@ -479,29 +500,23 @@ export interface publishGroup {
 async function publishServiceToGroup(fileName: string, publishData: publishData, groups: publishGroup[]): Promise<{
   result: boolean,
   content?: any[],
-} | undefined> {
+}> {
   const _params: any = ToolbarModule.getParams()
   let result = false
   let content: any[] | undefined
   try {
     const { datasourceAlias, datasourcePath, datasets } = publishData
-    if (!fileName || datasets.length === 0) return
+    if (!fileName || datasets.length === 0 || UserType.isProbationUser(_params.user.currentUser)) return {
+      result,
+      content,
+    }
     let Service: OnlineServicesUtils
-    if (UserType.isProbationUser(_params.user.currentUser)) return
     if (UserType.isIPortalUser(_params.user.currentUser)) {
       Service = new OnlineServicesUtils('iportal')
     } else {
       Service = new OnlineServicesUtils('online')
     }
-    // 设置开始发布
-    // _params.setCoworkService({
-    //   groupId: _params.currentTask.groupID,
-    //   taskId: _params.currentTask.id,
-    //   service: {
-    //     layerName: publishData.layerName,
-    //     status: 'publish',
-    //   },
-    // })
+    fileName = pinyin.getPinYin(fileName, '', false)
     let exportResult = await exportData(fileName, datasourcePath, datasets)
     result = exportResult.result
     const targetPath = exportResult.targetPath
@@ -525,15 +540,15 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
         const publishResults = await Service.publishService(uploadResult, 'UDB')
         result = publishResults[0].succeed
         if (publishResults[0].succeed && publishResults[0].customResult) {
-          const service = await _SCoordination.getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
-          // const service = await _SCoordination.getUserServices({})
+          const service = await SCoordinationUtils.getScoordiantion().getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
+          // const service = await SCoordinationUtils.getScoordiantion().getUserServices({})
           if (service.content.length > 0) {
             content = service.content
             let ids: string[] = []
             service.content.forEach(item => {
               ids.push(item.id)
             })
-            let shareResult = await _SCoordination.shareServiceToGroup({
+            let shareResult = await SCoordinationUtils.getScoordiantion().shareServiceToGroup({
               ids: ids,
               entities: entities,
             })
@@ -567,6 +582,16 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
     }
   } catch (error) {
     //发布完成
+    // _params.setCoworkService({
+    //   groupId: _params.currentTask.groupID,
+    //   taskId: _params.currentTask.id,
+    //   service: {
+    //     layerName: publishData.layerName,
+    //     status: 'done',
+    //   },
+    // })
+  } finally {
+    //发布完成
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,
@@ -575,7 +600,6 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
         status: 'done',
       },
     })
-  } finally {
     return {
       result,
       content,
@@ -603,9 +627,9 @@ async function setDataService(params: {
       for (const item of services.content) {
         for (const item2 of content) {
           if (item.resourceId === item2.id) {
-            let serviceData1 = await _SCoordination.getServiceData(item.linkPage)
+            let serviceData1 = await SCoordinationUtils.getScoordiantion().getServiceData(item.linkPage)
             if (serviceData1.datasourceNames.length === 0) return false
-            let serviceData2 = await _SCoordination.getServiceData(item.linkPage, serviceData1.datasourceNames[0])
+            let serviceData2 = await SCoordinationUtils.getScoordiantion().getServiceData(item.linkPage, serviceData1.datasourceNames[0])
             if (serviceData2.childUriList.length === 0) return false
             const datasetUrl = serviceData2.childUriList[0]
             const serviceData: ServiceData = {
@@ -613,7 +637,7 @@ async function setDataService(params: {
               datasourceAlias: serviceData1.datasourceNames[0],
               dataset: serviceData2.datasetNames[0],
             }
-            result = await _SCoordination.setDataService(item2.datasourceAlias, item2.datasetName, serviceData)
+            result = await SCoordinationUtils.getScoordiantion().setDataService(item2.datasourceAlias, item2.datasetName, serviceData)
             break
           }
         }

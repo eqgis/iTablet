@@ -420,10 +420,8 @@ export const importSceneWorkspace = params => async (dispatch, getState) => {
   //   await SScene.setCustomerDirectory(path)
   // }
   if (params.server) {
-    debugger
     const result = await SScene.is3DWorkspace({ server: params.server })
     if (result) {
-      debugger
       const result2 = await SScene.import3DWorkspace({ server: params.server })
       if (result2) {
         // Toast.show('导入成功')

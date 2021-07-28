@@ -424,6 +424,11 @@ const basicSettings = () => [
     value: true,
     iconType: 'switch',
   },
+  {
+    title: getLanguage().Map_Settings.SHOW_COMPASS,
+    value: false,
+    iconType: 'switch',
+  },
 ]
 // 范围设置
 const rangeSettings = () => [

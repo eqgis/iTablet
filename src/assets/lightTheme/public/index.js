@@ -41,6 +41,8 @@ const icon_add = require('./icon_add.png')
 const icon_tool_download = require('./icon_tool_download.png')
 const icon_tool_switch = require('./icon_tool_switch.png')
 
+const compass = require('./navi_over_data_yaw_icon.png')
+
 export default {
   icon_undo,
   icon_redo,
@@ -83,4 +85,5 @@ export default {
   icon_add,
   icon_tool_download,
   icon_tool_switch,
+  compass,
 }

@@ -830,6 +830,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'Map Name',
   SHOW_SCALE: 'Show Scale',
   SHOW_LOCATION: 'Show Location',
+  SHOW_COMPASS: 'Show Compass', // to be translated
   ROTATION_GESTURE: 'Rotation Gesture',
   PITCH_GESTURE: 'Pitch Gesture',
   ROTATION_ANGLE: 'Rotation Angle',

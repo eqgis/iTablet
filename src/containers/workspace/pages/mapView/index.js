@@ -115,6 +115,7 @@ const mapStateToProps = state => ({
   showARSceneNotify: state.setting.toJS().showARSceneNotify,
   showSampleData: state.down.toJS().showSampleData,
   baseMaps: state.map.toJS().baseMaps,
+  isShowCompass: state.setting.toJS().isShowCompass,
 })
 
 const mapDispatchToProps = {

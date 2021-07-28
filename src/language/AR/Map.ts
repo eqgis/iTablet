@@ -835,6 +835,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'اسم الخريطة',
   SHOW_SCALE: 'عرض المقياس',
   SHOW_LOCATION: 'اعرض الموقع',
+  SHOW_COMPASS: 'Show Compass', // to be translated
   ROTATION_GESTURE: 'إيماءة الدوران',
   PITCH_GESTURE: 'إيماءة الاهتزاز',
   ROTATION_ANGLE: 'زاوية الدوران',

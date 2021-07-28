@@ -59,6 +59,8 @@ export default class SecondMapSettings extends Component {
     device: Object,
     setMapScaleView: () => {},
     renderItem?: () => {},
+    showCompass: () => {},
+    isShowCompass: boolean
   }
   constructor(props) {
     super(props)
@@ -281,6 +283,7 @@ export default class SecondMapSettings extends Component {
     data[11].value = await SMap.isOverlapDisplayed()
     data[12].value = await SMap.isMagnifierEnabled()
     data[13].value = SMap.isShowLocation()
+    data[14].value = this.props.isShowCompass
     data.splice(1,1)
     return data
   }
@@ -355,6 +358,9 @@ export default class SecondMapSettings extends Component {
   _onValueChange = async ({ value, item, index }) => {
     let data = this.state.data.concat()
     switch (item.title) {
+      case getLanguage().Map_Settings.SHOW_COMPASS:
+        this.props.showCompass(value)
+        break
       case getLanguage(GLOBAL.language).Map_Settings.SHOW_LOCATION:
         await SMap.setShowLocation(value)
         break

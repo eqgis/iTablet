@@ -23,6 +23,7 @@ const bg_scan_frame = require('./bg_scancode_frame.png')
 const icon_ar_scan_back = require('./icon_ar_scan_back.png')
 const icon_ar_height = require('./icon_height.png')
 const icon_point_black = require('./icon_point_black.png')
+const scan_tip = require('./img_scan.png')
 export default {
   icon_collection_change,
   icon_symbol,
@@ -51,4 +52,5 @@ export default {
   icon_ar_scan_back,
   icon_ar_height,
   icon_point_black,
+  scan_tip,
 }

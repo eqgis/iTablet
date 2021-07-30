@@ -28,6 +28,7 @@ interface Props {
 
 class ToolBarSlide extends React.Component<Props> {
   dimensions = Dimensions.get('screen')
+  sliderBars: Map<string, SlideItem> | null | undefined
 
   static defaultProps = {
     data: [],
@@ -35,12 +36,28 @@ class ToolBarSlide extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props)
+    this.sliderBars = new Map<string, SlideItem>()
   }
 
   shouldComponentUpdate(nextProps: Props) {
     return (
       JSON.stringify(nextProps) !== JSON.stringify(this.props)
     )
+  }
+
+  componentWillUnmount() {
+    if (this.sliderBars && this.sliderBars.size > 0) {
+      this.sliderBars.clear()
+      this.sliderBars = null
+    }
+  }
+
+  reset = () => {
+    if (this.sliderBars?.size) {
+      this.sliderBars.forEach(itemRef => {
+        itemRef?.reset()
+      })
+    }
   }
 
   renderItem = (item: ToolBarSlideItem) => {
@@ -57,6 +74,7 @@ class ToolBarSlide extends React.Component<Props> {
           {item.leftImage && <Image style={styles.slideImg} source={item.leftImage} />}
         </View>
         <SlideItem
+          ref={ref => ref && this.sliderBars?.set(item.key, ref)}
           width={this.dimensions.width - itemsWidth}
           key={item.key}
           item={item}
@@ -108,6 +126,8 @@ interface ItemState {
 
 class SlideItem extends React.Component<ItemProps, ItemState> {
 
+  sliderBar: SlideBar | null | undefined
+
   constructor(props: ItemProps) {
     super(props)
 
@@ -134,6 +154,14 @@ class SlideItem extends React.Component<ItemProps, ItemState> {
     }
   }
 
+  reset = () => {
+    this.setState({
+      currentValue: this.props.item.defaultValue,
+    }, () => {
+      this.sliderBar?.reset()
+    })
+  }
+
   render() {
     return (
       <View style={{
@@ -153,6 +181,7 @@ class SlideItem extends React.Component<ItemProps, ItemState> {
           {this.props.item.title}
         </Text> */}
         <SlideBar
+          ref={ref => this.sliderBar = ref}
           key={this.props.item.key}
           style={{
             width: this.props.width,

@@ -76,6 +76,14 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
     }
   }
 
+  reset = () => {
+    this.prevLeft = this.getLocation(this.props.defaultValue)
+    this.setState({
+      left: this.prevLeft,
+    })
+    this.lastestLeft = 0
+  }
+
   //根据位置获取值
   getValue = (location: number) => {
     return (

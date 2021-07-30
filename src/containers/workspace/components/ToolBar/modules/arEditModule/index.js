@@ -15,6 +15,7 @@ class ArEditModule extends FunctionModule {
   getToolbarSize = (containerType, orientation, additional) => {
     let data = {}
     data.autoShowBox = false
+    const params = ToolbarModule.getParams()
     switch (additional.type) {
       case ConstToolType.SM_AR_EDIT_SCALE:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
@@ -36,6 +37,12 @@ class ArEditModule extends FunctionModule {
         data.autoShowBox = true
         break
     }
+    if (
+      params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
+      params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
+    ) {
+      data.autoShowBox = true
+    }
     return data
   }
 
@@ -50,6 +57,9 @@ class ArEditModule extends FunctionModule {
       params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
     ) {
       SARMap.setAction(ARAction.MOVE)
+
+      ToolbarModule.addData({selectARElement: params.arlayer.currentLayer.name})
+      SARMap.appointEditAR3DLayer(params.arlayer.currentLayer.name)
       params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
         isFullScreen: false,
         showMenuDialog: true,

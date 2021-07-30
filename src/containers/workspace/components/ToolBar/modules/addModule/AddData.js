@@ -1,7 +1,7 @@
 /**
  * 添加 数据
  */
-import { SThemeCartography, SMap, SMSymbolTable } from 'imobile_for_reactnative'
+import { SThemeCartography, SMap, SMSymbolTable, DatasetType } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import { dataUtil, scaleSize, Toast } from '../../../../../../utils'
@@ -47,7 +47,13 @@ async function getUDBsAndMaps() {
     }
   })
 
-  let labelDatasets = await DataHandler.getLocalData(user, 'LABEL')
+  let _labelDatasets = await DataHandler.getLocalData(user, 'LABEL')
+  let labelDatasets = []
+  _labelDatasets.forEach(item => {
+    if (item.type !== DatasetType.TABULAR) {
+      labelDatasets.push(item)
+    }
+  })
 
   let mapData = await DataHandler.getLocalData(user, 'MAP')
   mapData.forEach(item => {

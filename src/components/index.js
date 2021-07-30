@@ -62,6 +62,8 @@ import BottomBar from './BottomBar'
 import MyToast from './MyToast'
 import RedDot from './RedDot'
 import SlideBar from './SlideBar'
+import CompassView from './CompassView'
+
 export {
   Container,
   BtnOne,
@@ -137,4 +139,5 @@ export {
   MyToast,
   RedDot,
   SlideBar,
+  CompassView,
 }

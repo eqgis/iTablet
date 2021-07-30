@@ -109,8 +109,8 @@ class GroupSelectPage extends Component<Props, State> {
     CoworkInfo.setGroupGetHandle(() => this.refresh(false))
   }
 
-  componentDidMount() {
-    CoworkFileHandle.initCoworkList(this.props.user.currentUser)
+  async componentDidMount() {
+    await CoworkFileHandle.initCoworkList(this.props.user.currentUser)
     this.refresh(false)
   }
 

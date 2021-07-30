@@ -397,7 +397,7 @@ const Profile = {
   MAR_AR_DATUM_PICTURE_LOCATION: '图片定位',
   MAR_AR_POSITION_CORRECT: '位置校准',
   MAP_AR_TOWARDS_NORTH: '手机后摄像头朝北',
-  MAP_AR_SCAN_TIP: '确保二维码刚好填满扫描框',
+  MAP_AR_SCAN_TIP: '确保扫描时正对二维码且完全填充扫描框',
   MAP_AR_SCAN_IT: '扫一扫',
   MAP_AR_DATUM_HEIGHT: '高度',
   MAP_AR_DATUM_DIRECTION: '方向',

@@ -829,6 +829,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'マップ名',
   SHOW_SCALE: '表示スケール',
   SHOW_LOCATION: 'ロケーションの表示',
+  SHOW_COMPASS: 'Show Compass', // to be translated
   ROTATION_GESTURE: 'ジェスチャー回転',
   PITCH_GESTURE: 'ジェスチャー俯仰',
   ROTATION_ANGLE: '回転角度',

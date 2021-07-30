@@ -17,6 +17,7 @@ import ResultInfo from './ResultInfo'
 import DialogUtils from './DialogUtils'
 import AppProgress from './AppProgress'
 import SCoordinationUtils from './SCoordinationUtils'
+import * as pinyin from './pinyin'
 
 export {
   screen,
@@ -45,4 +46,5 @@ export {
   DialogUtils,
   AppProgress,
   SCoordinationUtils,
+  pinyin,
 }

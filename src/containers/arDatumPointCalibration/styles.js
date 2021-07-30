@@ -95,8 +95,12 @@ export default StyleSheet.create({
   scanTip: {
     color: '#ffffff',
     textAlign: 'center',
-    position: 'absolute',
-    top: scaleSize(10),
+    marginTop: scaleSize(40),
+    marginBottom: scaleSize(60),
+  },
+  scanTipImg: {
+    width: scaleSize(160),
+    height: scaleSize(160),
   },
   scanButton: {
     position: 'absolute',

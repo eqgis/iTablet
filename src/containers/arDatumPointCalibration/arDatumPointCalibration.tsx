@@ -450,7 +450,10 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     })
     return (
       <View style={styles.scanContainer}>
-        <View style={styles.scanMask}></View>
+        <View style={styles.scanMask}>
+          <Image source={getThemeAssets().collection.scan_tip} style={styles.scanTipImg} />
+          <Text style={styles.scanTip}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_TIP}</Text>
+        </View>
         <View style={styles.scanMaskCenter}>
           <View style={styles.scanMask}></View>
           <View style={styles.scanWindow}>
@@ -469,7 +472,6 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <View style={styles.scanMask}></View>
         </View>
         <View style={styles.scanMask}>
-          <Text style={styles.scanTip}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_TIP}</Text>
           {!scanning && <TouchableOpacity style={styles.scanButton} onPress={this._onScanClick}>
             <Image source={getThemeAssets().collection.icon_scanit} style={styles.scanButtonImg} />
             <Text style={{color: '#ffffff', textAlign: 'center'}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_IT}</Text>

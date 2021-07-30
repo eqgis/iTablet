@@ -1541,6 +1541,7 @@ export default class LayerAttribute extends React.Component {
       this.state.attributes.head &&
       this.state.attributes.head.length > 0
 
+    const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.props.currentLayer)
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -1570,6 +1571,7 @@ export default class LayerAttribute extends React.Component {
             canRelated={this.state.currentIndex >= 0}
             canDelete={this.state.currentIndex >= 0}
             canAddField={
+              !(dsDescription?.url && dsDescription?.type === 'onlineService') &&
               this.props.currentLayer.name !== undefined &&
               this.props.currentLayer.name !== '' &&
               this.props.currentLayer.type !== DatasetType.IMAGE &&

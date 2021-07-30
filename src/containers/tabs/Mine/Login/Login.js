@@ -10,7 +10,7 @@ import {
 import { Toast, OnlineServicesUtils, scaleSize } from '../../../../utils/index'
 import { Container } from '../../../../components'
 import { FileTools } from '../../../../native'
-import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
+import { SOnlineService, SIPortalService, AppInfo } from 'imobile_for_reactnative'
 import ConstPath from '../../../../constants/ConstPath'
 import NavigationService from '../../../NavigationService'
 import UserType from '../../../../constants/UserType'
@@ -248,6 +248,7 @@ export default class Login extends React.Component {
         } else if (result) {
           GLOBAL.isLogging = true
           this.props.setUser(user)
+          AppInfo.setServiceUrl('https://www.supermapol.com/web/')
           NavigationService.popToTop('Tabs')
         } else {
           Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
@@ -317,6 +318,8 @@ export default class Login extends React.Component {
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
           })
+
+          AppInfo.setServiceUrl(url)
         }
         this.iportalLogin.loginResult()
         this.setState({covered:false})

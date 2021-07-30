@@ -83,6 +83,15 @@ function getData(type: string, params: any) {
                 if (!layerData.datasetName) return
                 DialogUtils.hideInputDailog()
                 const _params: any = ToolbarModule.getParams()
+                // 设置开始发布
+                await _params.setCoworkService({
+                  groupId: _params.currentTask.groupID,
+                  taskId: _params.currentTask.id,
+                  service: {
+                    layerName: layerData.name,
+                    status: 'publish',
+                  },
+                })
                 // _params.setContainerLoading?.(true, getLanguage(_params.language).Prompt.PUBLISHING)
 
                 let datasourcePath = await FileTools.appendingHomeDirectory(
@@ -103,7 +112,7 @@ function getData(type: string, params: any) {
                     groupName: _params.currentGroup.groupName,
                   }])
                   // _params.setContainerLoading?.(false)
-                
+
                   if (result) {
                     let keywords: string[] = []
                     let _content: DataServiceUrlParams[] = []

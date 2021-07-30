@@ -70,6 +70,7 @@ import {
   CustomInputDialog,
   CustomAlertDialog,
   RedDot,
+  CompassView,
 } from '../../../../components'
 import {
   Toast,
@@ -250,6 +251,7 @@ export default class MapView extends React.Component {
     showARSceneNotify: PropTypes.bool,
     showSampleData: PropTypes.bool,
     setSampleDataShow: PropTypes.func,
+    isShowCompass: PropTypes.bool,
   }
 
   /** 是否导航中 */
@@ -4664,6 +4666,20 @@ export default class MapView extends React.Component {
     )
   }
 
+  renderCompass = () => {
+    if(!this.props.isShowCompass) return null
+    return (
+      <CompassView
+        style={{
+          position: 'absolute',
+          top: scaleSize(this.type === 'MAP_NAVIGATION' ? 240 : 180),
+          left: scaleSize(10),
+        }}
+        orientation={this.props.device.orientation}
+      />
+    )
+  }
+
 
   renderContainer = () => {
     return (
@@ -4723,6 +4739,7 @@ export default class MapView extends React.Component {
             />
           </View>
         )}
+        {this.renderCompass()}
 
         {this._renderMeasureAreaView()}
 

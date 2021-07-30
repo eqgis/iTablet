@@ -709,19 +709,19 @@ export default class MT_layerManager extends React.Component {
         this.props.cowork.services?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.length > 0
       ) {
         const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
-        if (dsDescription.url && dsDescription?.type === 'onlineService') {
-          const services = this.props.cowork.services[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]
-          if (services?.length > 0) {
-            for (const service of services) {
-              if ((
-                service.datasetUrl === dsDescription.url ||
-                service.layerName === item.name
-              ) && service.status !== 'done') {
-                return true
-              }
+        // if (dsDescription.url && dsDescription?.type === 'onlineService') {
+        const services = this.props.cowork.services[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]
+        if (services?.length > 0) {
+          for (const service of services) {
+            if ((
+              dsDescription.url && service.datasetUrl === dsDescription.url ||
+              service.layerName === item.name
+            ) && service.status !== 'done') {
+              return true
             }
           }
         }
+        // }
       }
       if (
         cornerMarkImage === null &&

@@ -829,6 +829,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'Harita Adı',
   SHOW_SCALE: 'Ölçeği Göster',
   SHOW_LOCATION: 'Konumu Göster',
+  SHOW_COMPASS: 'Show Compass', // to be translated
   ROTATION_GESTURE: 'Dönme Hareketi',
   PITCH_GESTURE: 'Saha Hareketi',
   ROTATION_ANGLE: 'Dönme Açısı',

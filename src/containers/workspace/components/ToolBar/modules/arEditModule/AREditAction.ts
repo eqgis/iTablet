@@ -2,6 +2,7 @@
 import {
   SARMap,
   ARAction,
+  ARLayerType,
 } from 'imobile_for_reactnative'
 import { IAnimationParam, IVector3 } from "imobile_for_reactnative/types/interface/ar"
 import {
@@ -94,12 +95,17 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 }
 
 function commit() {
-  // SARMap.clearSelection()
-  // SARMap.submit()
-  // SARMap.setAction(ARAction.SELECT)
   SARMap.submit().then(() => {
     const _data: any = ToolbarModule.getData()
-    SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
+    const _params: any = ToolbarModule.getParams()
+    if (
+      _params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
+      _params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
+    ) {
+      SARMap.appointEditAR3DLayer(_params.arlayer.currentLayer.name)
+    } else if (!_data.selectARElement) {
+      SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
+    }
   })
   return true
 }

@@ -118,7 +118,7 @@ const ARStyleItems = (language: string) => {
   ]
   const _data: any = ToolbarModule.getData()
   // 只有模型才能用动画
-  if (_data?.selectARElement?.type === ARElementType.AR_MODEL) {
+  if (typeof _data?.selectARElement !== 'string' && _data?.selectARElement?.type === ARElementType.AR_MODEL) {
     items.push({
       key: getLanguage(language).ARMap.ANIMATION,
       action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION),
@@ -134,7 +134,7 @@ function getMenuData() {
 
   let data: { key: string; action: () => void; selectKey: string }[] = []
 
-  if (_data.selectARElement) {
+  if (_data.selectARElement && typeof _data.selectARElement !== 'string') {
     switch (_data.selectARElement.type) {
       case ARElementType.AR_IMAGE:
       case ARElementType.AR_VIDEO:
@@ -428,7 +428,7 @@ async function getAnimationData(type: string) {
           image: getThemeAssets().ar.armap.ar_animation_none,
           title: getLanguage(GLOBAL.language).Common.NONE,
           action: () => {
-            if(element) {
+            if(element && typeof element !== 'string') {
               SARMap.clearAnimation(element.layerName, element.id)
             }
           },
@@ -445,7 +445,7 @@ async function getAnimationData(type: string) {
             : getThemeAssets().ar.armap.ar_translation,
           title: item.name,
           action: async () => {
-            if(element) {
+            if(element && typeof element !== 'string') {
               await SARMap.clearAnimation(element.layerName, element.id)
               SARMap.setAnimation(element.layerName, element.id, item.id)
             }
@@ -569,6 +569,13 @@ async function getAnimationData(type: string) {
 
 function getHeaderData(type: string) {
   let headerData: any
+  const _params: any = ToolbarModule.getParams()
+  if (
+    _params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
+    _params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
+  ) {
+    return headerData
+  }
   if (
     // type === ConstToolType.SM_AR_EDIT ||
     type === ConstToolType.SM_AR_EDIT_SCALE ||

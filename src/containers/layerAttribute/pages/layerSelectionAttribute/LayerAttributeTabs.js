@@ -909,6 +909,7 @@ export default class LayerAttributeTabs extends React.Component {
   }
 
   render() {
+    const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.props.currentLayer)
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -935,7 +936,7 @@ export default class LayerAttributeTabs extends React.Component {
           relateAction={this.relateAction}
           deleteAction={this.deleteAction}
           locateAction={this.showLocationView}
-          canAddField={true}
+          canAddField={!(dsDescription?.url && dsDescription?.type === 'onlineService')}
           addFieldAction={() => this.showLayerAddView(true)}
           attributesData={this.state.attributes.head}
           currentIndex={this.state.currentIndex}

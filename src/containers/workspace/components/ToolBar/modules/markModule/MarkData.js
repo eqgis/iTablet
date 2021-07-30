@@ -60,11 +60,12 @@ async function getData(type, params) {
         },
       ]
       break
-    case ConstToolType.SM_MAP_MARKS:
+    case ConstToolType.SM_MAP_MARKS: {
       layerType = LayerUtils.getLayerType(
         ToolbarModule.getParams().currentLayer,
       )
       isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
+      const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(ToolbarModule.getParams().currentLayer)
       data = [
         {
           key: constants.POINT,
@@ -93,11 +94,13 @@ async function getData(type, params) {
           size: 'large',
           action: MarkAction.words,
           disable:
+            datasetDescription.type === 'onlineService' || // 数据服务图层不支持文字
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
             layerType !== 'TEXTLAYER' ||
             isTourLayer,
           image:
+            datasetDescription.type === 'onlineService' || // 数据服务图层不支持文字
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
             layerType !== 'TEXTLAYER' ||
@@ -191,6 +194,7 @@ async function getData(type, params) {
         },
       ]
       break
+    }
     case ConstToolType.SM_MAP_MARKS_TAGGING_SELECT:
       buttons = [ToolbarBtnType.CANCEL]
       break

@@ -282,23 +282,22 @@ export default class Map3D extends React.Component {
         // initNoScene() 里设置了isRender 需要closeWorkspace里设置
         GLOBAL.openWorkspace = true
       }
-
-      if (this.props.showSampleData) {
-        let animatedList = []
-        animatedList.push(
-          Animated.timing(this.state.samplescale, {
-            toValue: 1.2,
-            duration: 500,
-          })
-        )
-        animatedList.push(
-          Animated.timing(this.state.samplescale, {
-            toValue: 1,
-            duration: 500,
-          })
-        )
-        Animated.sequence(animatedList).start()
-      }
+      // if (this.props.showSampleData) {
+      let animatedList = []
+      animatedList.push(
+        Animated.timing(this.state.samplescale, {
+          toValue: 1.2,
+          duration: 500,
+        })
+      )
+      animatedList.push(
+        Animated.timing(this.state.samplescale, {
+          toValue: 1,
+          duration: 500,
+        })
+      )
+      Animated.sequence(animatedList).start()
+      // }
       return
     }
     try {
@@ -332,22 +331,22 @@ export default class Map3D extends React.Component {
         }, 1500)
       })
 
-      if (this.props.showSampleData) {
-        let animatedList = []
-        animatedList.push(
-          Animated.timing(this.state.samplescale, {
-            toValue: 1.2,
-            duration: 500,
-          })
-        )
-        animatedList.push(
-          Animated.timing(this.state.samplescale, {
-            toValue: 1,
-            duration: 500,
-          })
-        )
-        Animated.sequence(animatedList).start()
-      }
+      // if (this.props.showSampleData) {
+      let animatedList = []
+      animatedList.push(
+        Animated.timing(this.state.samplescale, {
+          toValue: 1.2,
+          duration: 500,
+        })
+      )
+      animatedList.push(
+        Animated.timing(this.state.samplescale, {
+          toValue: 1,
+          duration: 500,
+        })
+      )
+      Animated.sequence(animatedList).start()
+      // }
     } catch (e) {
       setTimeout(() => {
         this.container.setLoading(false)
@@ -506,6 +505,7 @@ export default class Map3D extends React.Component {
       this.mapController?.stopCompass()
       await SScene.closeWorkspace()
       this.container && this.container.setLoading(false)
+      this.closeSample()
       NavigationService.goBack()
       // } else {
       //   this.container && this.container.setLoading(false)

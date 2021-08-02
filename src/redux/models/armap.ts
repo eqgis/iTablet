@@ -69,6 +69,7 @@ export const openARMap = (name = '') => async (dispatch: (params: DispatchParams
     const path = mapPath + name + '.arxml'
     const result = await SARMap.open(path)
     if(result) {
+      await SARMap.moveToMapCenter()
       const layers = await SARMap.getLayers()
       dispatch({
         type: OPEN_AR_MAP,

@@ -188,10 +188,10 @@ export default class NavigationStartHead extends React.Component {
           1,
           getLanguage(GLOBAL.language).Map_Main_Menu.SIMULATED_NAVIGATION,
         )}
-        {Platform.OS === 'ios' && this.renderButton(
+        {/* {Platform.OS === 'ios' && this.renderButton(
           4,
           getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION,
-        )}
+        )} */}
       </View>
     )
   }

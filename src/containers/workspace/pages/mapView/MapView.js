@@ -3048,6 +3048,7 @@ export default class MapView extends React.Component {
                     },
                   ]
                   //'切换底图') {
+                  ToolbarModule.setData({type:ConstToolType.SM_MAP_LAYER_BASE_CHANGE}) //切换底图前先清空一下module数据避免点击方法调用错误 add jiakai
                   this.showFullMap(true)
                   this.toolBox?.setVisible(true, ConstToolType.SM_MAP_LAYER_BASE_CHANGE, {
                     height: ConstToolType.TOOLBAR_HEIGHT[5],
@@ -4672,7 +4673,7 @@ export default class MapView extends React.Component {
       <CompassView
         style={{
           position: 'absolute',
-          top: scaleSize(this.type === 'MAP_NAVIGATION' ? 240 : 180),
+          top: scaleSize(this.type === 'MAP_NAVIGATION' ? 300 : 180),
           left: scaleSize(10),
         }}
         orientation={this.props.device.orientation}

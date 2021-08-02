@@ -4673,7 +4673,7 @@ export default class MapView extends React.Component {
       <CompassView
         style={{
           position: 'absolute',
-          top: scaleSize(this.type === 'MAP_NAVIGATION' ? 240 : 180),
+          top: scaleSize(this.type === 'MAP_NAVIGATION' ? 300 : 180),
           left: scaleSize(10),
         }}
         orientation={this.props.device.orientation}

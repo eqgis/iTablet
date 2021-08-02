@@ -16,6 +16,7 @@ import {
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin } from '../../../../../../utils'
+import { OnlineDataType } from '../../../../../../utils/OnlineServicesUtils'
 import * as Type from '../../../../../../types'
 import { getThemeAssets } from '../../../../../../assets'
 import { FileTools } from '../../../../../../native'
@@ -414,17 +415,11 @@ async function getGroupServices(groupID: string, keywords?: string[]) {
   })
 }
 
-async function exportData(name: string, datasourcePath: string, datasets: string[]) {
+async function exportData(name: string, datasourcePath: string, datasets: string[], dataType?: keyof OnlineDataType) {
   const _params: any = ToolbarModule.getParams()
   let homePath = await FileTools.appendingHomeDirectory()
   let userPath =
     homePath + ConstPath.UserPath + _params.user.currentUser.userName + '/'
-  // let datasourcePath =
-  //   userPath +
-  //   ConstPath.RelativePath.Label +
-  //   'Label_' +
-  //   _params.user.currentUser.userName +
-  //   '#.udb'
 
   let todatasourcePath =
     userPath + ConstPath.RelativePath.Temp + name + '/' + name + '.udb'
@@ -448,33 +443,16 @@ async function exportData(name: string, datasourcePath: string, datasets: string
     )
     targetPath = tempPath + availableName
 
-    await SMap.copyDataset(datasourcePath, todatasourcePath, datasets)
-    result = await FileTools.zipFile(archivePath, targetPath)
-    FileTools.deleteFile(archivePath)
-  }
+    if (dataType === 'WORKSPACE') {
+      let workspaceServer = userPath + ConstPath.RelativePath.Temp + name + '/' + name + '.smwu'
+      result = await SMap.copyDatasetToNewWorkspace(datasourcePath, todatasourcePath, datasets, workspaceServer)
+    } else {
+      result = await SMap.copyDataset(datasourcePath, todatasourcePath, datasets)
+    }
 
-  // let {result, path} = await _params.exportWorkspace({
-  //   maps: [_params.map.currentMap.name],
-  //   // extra: {
-  //   //   notExport,
-  //   // },
-  // })
-  // let availableName = await FileTools.getAvailableFileName(
-  //   path,
-  //   _params.map.currentMap.name,
-  //   'zip',
-  // )
-  // if (!result) {
-  //   _params.setSharing({
-  //     progress: undefined,
-  //   })
-  //   Toast.show(ConstInfo.EXPORT_WORKSPACE_FAILED)
-  //   return
-  // }
-  // let targetPath = path + availableName
-  // // 分享
-  // const fileName = path.substr(path.lastIndexOf('/') + 1)
-  // const dataName = name || fileName.substr(0, fileName.lastIndexOf('.'))
+    result = result && await FileTools.zipFile(archivePath, targetPath)
+    // FileTools.deleteFile(archivePath)
+  }
   
   return {
     result,
@@ -517,7 +495,13 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
       Service = new OnlineServicesUtils('online')
     }
     fileName = pinyin.getPinYin(fileName, '', false)
-    let exportResult = await exportData(fileName, datasourcePath, datasets)
+
+    let publishDataType: keyof OnlineDataType = 'UDB'
+    if (UserType.isOnlineUser(_params.user.currentUser)) {
+      publishDataType = 'WORKSPACE'
+    }
+
+    let exportResult = await exportData(fileName, datasourcePath, datasets, publishDataType)
     result = exportResult.result
     const targetPath = exportResult.targetPath
     if (result) {
@@ -525,7 +509,7 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
       uploadResult = await Service.uploadFile(
         targetPath,
         fileName + '.zip',
-        'UDB',
+        publishDataType,
       )
       const entities: AuthorizeSetting[] = []
       for (const group of groups) {
@@ -537,7 +521,7 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
         })
       }
       if(uploadResult) {
-        const publishResults = await Service.publishService(uploadResult, 'UDB')
+        const publishResults = await Service.publishService(uploadResult, publishDataType, 'RESTDATA')
         result = publishResults[0].succeed
         if (publishResults[0].succeed && publishResults[0].customResult) {
           const service = await SCoordinationUtils.getScoordiantion().getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
@@ -629,16 +613,20 @@ async function setDataService(params: {
           if (item.resourceId === item2.id) {
             let serviceData1 = await SCoordinationUtils.getScoordiantion().getServiceData(item.linkPage)
             if (serviceData1.datasourceNames.length === 0) return false
-            let serviceData2 = await SCoordinationUtils.getScoordiantion().getServiceData(item.linkPage, serviceData1.datasourceNames[0])
-            if (serviceData2.childUriList.length === 0) return false
-            const datasetUrl = serviceData2.childUriList[0]
-            const serviceData: ServiceData = {
-              url: datasetUrl,
-              datasourceAlias: serviceData1.datasourceNames[0],
-              dataset: serviceData2.datasetNames[0],
+            for (const datasourceName of serviceData1.datasourceNames) {
+              let serviceData2 = await SCoordinationUtils.getScoordiantion().getServiceData(item.linkPage, datasourceName)
+              if (serviceData2.datasetNames.length === 0) continue
+              for (let index in serviceData2.datasetNames) {
+                if (item2.datasetName !== serviceData2.datasetNames[index]) continue
+                const serviceData: ServiceData = {
+                  url: serviceData2.childUriList[index],
+                  datasourceAlias: datasourceName,
+                  dataset: serviceData2.datasetNames[index],
+                }
+                result = await SCoordinationUtils.getScoordiantion().setDataService(item2.datasourceAlias, item2.datasetName, serviceData)
+                break
+              }
             }
-            result = await SCoordinationUtils.getScoordiantion().setDataService(item2.datasourceAlias, item2.datasetName, serviceData)
-            break
           }
         }
       }

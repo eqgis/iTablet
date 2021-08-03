@@ -208,7 +208,8 @@ async function listAction(type: string, params: any = {}) {
 
       let _subData: Type.ListItem[] = []
       result.childUriList.forEach((item: string) => {
-        if (!item.endsWith('_Table')) {
+        // if (!item.endsWith('_Table')) {
+        if (item.indexOf('_Table', item.length - '_Table'.length) === -1) {
           _subData.push({
             key: item,
             title: item.substr(item.lastIndexOf('/') + 1),

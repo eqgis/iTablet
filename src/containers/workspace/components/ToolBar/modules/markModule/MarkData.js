@@ -94,13 +94,13 @@ async function getData(type, params) {
           size: 'large',
           action: MarkAction.words,
           disable:
-            datasetDescription.type === 'onlineService' || // 数据服务图层不支持文字
+            datasetDescription?.type === 'onlineService' || // 数据服务图层不支持文字
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
             layerType !== 'TEXTLAYER' ||
             isTourLayer,
           image:
-            datasetDescription.type === 'onlineService' || // 数据服务图层不支持文字
+            datasetDescription?.type === 'onlineService' || // 数据服务图层不支持文字
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
             layerType !== 'TEXTLAYER' ||

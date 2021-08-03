@@ -181,6 +181,8 @@ import SelectLocation from './workspace/pages/SelectLocation'
 import ARLayerManager from './arLayerManager'
 import ARMapSetting from './arMapSettings/ARMapSetting'
 import ServiceShareSettings from './serviceShareSettings'
+import NavigationView2D from './workspace/components/ArNavigation/NavigationView2D'
+import RoadNet from './workspace/components/ArNavigation/RoadNet'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -1298,6 +1300,18 @@ export default function(appConfig) {
       },
       ServiceShareSettings: {
         screen: ServiceShareSettings,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      NavigationView2D: {
+        screen: NavigationView2D,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      RoadNet: {
+        screen: RoadNet,
         navigationOptions: {
           header: null,
         },

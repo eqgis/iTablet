@@ -21,6 +21,9 @@ class MyDatasource extends MyDataPage {
     }
     this.from = params.from
     this.showMore = this.from === 'MapView' ? false : undefined
+    if(params.showMode) {
+      this.showMode = params.showMode
+    }
   }
 
   getData = async () => {
@@ -132,6 +135,13 @@ class MyDatasource extends MyDataPage {
   ]
 
   onItemPress = info => {
+    if (this.showMode === 'tap') {
+      if(this.props.navigation.state.params?.callback) {
+        this.props.navigation.state.params.callback(info)
+        this.props.navigation.goBack()
+      }
+      return
+    }
     if (info?.item.isDirectory) {
       Toast.show(GLOBAL.language === 'CN' ? 'not UDB data source' : '')
       return

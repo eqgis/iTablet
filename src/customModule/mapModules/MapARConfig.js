@@ -16,6 +16,7 @@ import {
   arStartModule,
   arEditModule,
   arStyleModule,
+  arNaviModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
@@ -62,6 +63,7 @@ export default class MapARConfig extends Module {
           arDrawingModule,
           arEditModule,
           arStyleModule,
+          arNaviModule,
         ]
         break
       case 'map':

@@ -122,6 +122,9 @@ export default class ToolBar extends React.Component {
 
     getOverlay: () => {},
     toolbarModuleKey: String,
+
+    showArNavi: () => {},
+    showNavigation: () => {},
   }
 
   static defaultProps = {

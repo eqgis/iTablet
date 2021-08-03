@@ -23,6 +23,7 @@ const icon_toolbar_savespot = require('./icon_toolbar_savespot.png')
 const icon_toolbar_saveline = require('./icon_toolbar_saveline.png')
 const icon_toolbar_region = require('./icon_toolbar_region.png')
 const icon_toolbar_substance_selected = require('./icon_toolbar_substance_selected.png')
+const back = require('./icon_return.png')
 
 export default {
   icon_toolbar_add,
@@ -50,4 +51,5 @@ export default {
   icon_toolbar_saveline,
   icon_toolbar_region,
   icon_toolbar_substance_selected,
+  back,
 }

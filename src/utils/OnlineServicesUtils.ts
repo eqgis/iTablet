@@ -36,35 +36,35 @@ interface CommonUserInfo {
 
 /** online / iportal 上的数据类型 */
 export interface OnlineDataType {
-  AUDIO: 'AUDIO'                       //音频文件 
-  COLOR: 'COLOR'                       //Color 颜色 
-  COLORSCHEME: 'COLORSCHEME'           //ColorScheme 颜色方案 
-  CSV: 'CSV'                           //csv数据 
-  EXCEL: 'EXCEL'                       //excel数据 
-  FILLSYMBOL: 'FILLSYMBOL'             //FillSymbol 填充符号库 
-  GEOJSON: 'GEOJSON'                   //geojson数据。 
-  HDFS: 'HDFS'
-  IMAGE: 'IMAGE'                       //图片类型 
-  JSON: 'JSON'                         //json数据，可以是普通json串。 
-  LAYERTEMPLATE: 'LAYERTEMPLATE'       //LayerTemplate 图层模板 
-  LAYOUTTEMPLATE: 'LAYOUTTEMPLATE'     //LayoutTemplate 布局模板 
-  LINESYMBOL: 'LINESYMBOL'             //LineSymbol 线符号库 
-  MAPTEMPLATE: 'MAPTEMPLATE'           //MapTemplate 地图模板 
-  MARKERSYMBOL: 'MARKERSYMBOL'         //MarkerSymbol 点符号库 
-  MBTILES: 'MBTILES'                   //mbtiles 
-  PHOTOS: 'PHOTOS'                     //照片 
-  SHP: 'SHP'                           //shp空间数据 
-  SMTILES: 'SMTILES'                   //smtiles 
-  SVTILES: 'SVTILES'                   //svtiles 
-  THEMETEMPLATE: 'THEMETEMPLATE'       //ThemeTemplate 专题图模板 
-  TPK: 'TPK'                           //tpk 
-  UDB: 'UDB'                           //udb 数据源 
-  UGCV5: 'UGCV5'                       //ugc v5 
-  UGCV5_MVT: 'UGCV5_MVT'
-  UNKNOWN: 'UNKNOWN'                   //其他类型（普通文件） 
-  VIDEO: 'VIDEO'                       //视频文件 
-  WORKENVIRONMENT: 'WORKENVIRONMENT'   //WorkEnvironment 工作环境 
-  WORKSPACE: 'WORKSPACE'               //工作空间 sxwu, smwu, sxw, smw 
+  AUDIO: 'AUDIO',                       //音频文件 
+  COLOR: 'COLOR',                       //Color 颜色 
+  COLORSCHEME: 'COLORSCHEME',           //ColorScheme 颜色方案 
+  CSV: 'CSV',                           //csv数据 
+  EXCEL: 'EXCEL',                       //excel数据 
+  FILLSYMBOL: 'FILLSYMBOL',             //FillSymbol 填充符号库 
+  GEOJSON: 'GEOJSON',                   //geojson数据。 
+  HDFS: 'HDFS',
+  IMAGE: 'IMAGE',                       //图片类型 
+  JSON: 'JSON',                         //json数据，可以是普通json串。 
+  LAYERTEMPLATE: 'LAYERTEMPLATE',       //LayerTemplate 图层模板 
+  LAYOUTTEMPLATE: 'LAYOUTTEMPLATE',     //LayoutTemplate 布局模板 
+  LINESYMBOL: 'LINESYMBOL',             //LineSymbol 线符号库 
+  MAPTEMPLATE: 'MAPTEMPLATE',           //MapTemplate 地图模板 
+  MARKERSYMBOL: 'MARKERSYMBOL',         //MarkerSymbol 点符号库 
+  MBTILES: 'MBTILES',                   //mbtiles 
+  PHOTOS: 'PHOTOS',                     //照片 
+  SHP: 'SHP',                           //shp空间数据 
+  SMTILES: 'SMTILES',                   //smtiles 
+  SVTILES: 'SVTILES',                   //svtiles 
+  THEMETEMPLATE: 'THEMETEMPLATE',       //ThemeTemplate 专题图模板 
+  TPK: 'TPK',                           //tpk 
+  UDB: 'UDB',                           //udb 数据源 
+  UGCV5: 'UGCV5',                       //ugc v5 
+  UGCV5_MVT: 'UGCV5_MVT',
+  UNKNOWN: 'UNKNOWN',                   //其他类型（普通文件） 
+  VIDEO: 'VIDEO',                       //视频文件 
+  WORKENVIRONMENT: 'WORKENVIRONMENT',   //WorkEnvironment 工作环境 
+  WORKSPACE: 'WORKSPACE',               //工作空间 sxwu, smwu, sxw, smw 
 }
 export interface SMOnlineData {
   "lastModfiedTime": number,
@@ -222,16 +222,14 @@ export default class OnlineServicesUtils {
    * @param id 数据id
    * @param dataType 数据的类型
    */
-  async publishService(id: string, dataType: keyof OnlineDataType): Promise<{succeed: boolean, customResult?: string, error?: any}[]> {
-    let publishUrl: string
-    if(dataType === 'UDB') {
-      publishUrl =
-        this.serverUrl +
-        `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTDATA`
+  async publishService(id: string, dataType: keyof OnlineDataType, serviceType?: string): Promise<{succeed: boolean, customResult?: string, error?: any}[]> {
+    let publishUrl: string = this.serverUrl + `/mycontent/datas/${id}/publishstatus.rjson?serviceType=`
+    if (serviceType) {
+      publishUrl += serviceType
+    } else if(dataType === 'UDB') {
+      publishUrl += 'RESTDATA'
     } else if(dataType === 'WORKSPACE') {
-      publishUrl =
-        this.serverUrl +
-        `/mycontent/datas/${id}/publishstatus.rjson?serviceType=RESTMAP,RESTDATA`
+      publishUrl += 'RESTMAP,RESTDATA'
     } else {
       return [{ succeed: false }]
     }

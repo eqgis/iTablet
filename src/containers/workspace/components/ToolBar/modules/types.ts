@@ -18,3 +18,17 @@ export interface ToolBarListItem {
   /** 点击后下载识别key，用以监听进度 */
   downloadKeys?: string[],
 }
+
+/** AR变换信息 */
+export interface IARTransform {
+  type: 'position' | 'rotation' | 'scale',
+  id: number,
+  layerName: string,
+  positionX: number,
+  positionY: number,
+  positionZ: number,
+  scale: number,
+  rotationX: number,
+  rotationY: number,
+  rotationZ: number,
+}

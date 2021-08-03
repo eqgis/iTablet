@@ -445,6 +445,12 @@ export default class ToolBar extends React.Component {
     }
   }
 
+  resetContentView = () => {
+    if (this.contentView) {
+      this.contentView.resetContent()
+    }
+  }
+
   getState = () => {
     return {
       type: this.state.type, // 当前传入的类型

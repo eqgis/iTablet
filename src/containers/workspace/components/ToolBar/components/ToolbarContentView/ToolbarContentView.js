@@ -67,6 +67,7 @@ export default class ToolbarContentView extends React.Component {
       clipSetting: {},
       isShow: true, // 是否显示Content
     }
+    this.currentContentView = null
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -114,6 +115,12 @@ export default class ToolbarContentView extends React.Component {
       } else {
         _data.autoShowBox !== false && this.onChangeHeight(_data)
       }
+    }
+  }
+
+  resetContent = () => {
+    if (this.currentContentView) {
+      this.currentContentView?.reset?.()
     }
   }
 
@@ -275,7 +282,7 @@ export default class ToolbarContentView extends React.Component {
     if (this.props.data.length === 0) return
     return (
       <ToolList
-        ref={ref => (this.toolBarSectionList = ref)}
+        ref={ref => (this.currentContentView = ref)}
         type={this.props.type}
         data={this.props.data}
         containerType={this.props.containerType}
@@ -295,6 +302,7 @@ export default class ToolbarContentView extends React.Component {
   renderTabs = () => {
     return (
       <SymbolTabs
+        ref={ref => (this.currentContentView = ref)}
         style={styles.tabsView}
         showToolbar={this.props.setVisible}
         showBox={this.props.showBox}
@@ -306,6 +314,7 @@ export default class ToolbarContentView extends React.Component {
   renderSymbol = () => {
     return (
       <SymbolList
+        ref={ref => (this.currentContentView = ref)}
         device={this.props.device}
         layerData={this.props.currentLayer}
         type={this.props.type}
@@ -319,6 +328,7 @@ export default class ToolbarContentView extends React.Component {
   renderMeasure = () => {
     return (
       <ToolbarArMeasure
+        ref={ref => (this.currentContentView = ref)}
         data={this.props.data}
         secdata={this.props.secdata}
         type={this.props.type}
@@ -336,6 +346,7 @@ export default class ToolbarContentView extends React.Component {
   renderSlider = () => {
     return (
       <ToolBarSlide
+        ref={ref => (this.currentContentView = ref)}
         data={this.props.data}
       />
     )
@@ -348,6 +359,7 @@ export default class ToolbarContentView extends React.Component {
     }
     return (
       <Tabs
+        ref={ref => (this.currentContentView = ref)}
         data={this.props.data}
         device={this.props.device}
       />
@@ -358,6 +370,7 @@ export default class ToolbarContentView extends React.Component {
   renderTable = () => {
     return (
       <ToolbarTableList
+        ref={ref => (this.currentContentView = ref)}
         data={this.props.data}
         type={this.props.type}
         containerType={this.props.containerType}
@@ -376,6 +389,7 @@ export default class ToolbarContentView extends React.Component {
     const isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     return (
       <FlatList
+        ref={ref => (this.currentContentView = ref)}
         key={this.props.device.orientation + '_ScrollView'}
         renderItem={({ item, index }) => {
           return (
@@ -430,6 +444,7 @@ export default class ToolbarContentView extends React.Component {
   renderColorTable = () => {
     return (
       <ColorTable
+        ref={ref => (this.currentContentView = ref)}
         language={this.props.language}
         data={this.props.data}
         device={this.props.device}
@@ -468,7 +483,7 @@ export default class ToolbarContentView extends React.Component {
   renderPicker = () => {
     return (
       <Picker
-        ref={ref => (this.picker = ref)}
+        ref={ref => (this.currentContentView = ref)}
         language={GLOBAL.language}
         confirm={data => {
           if (

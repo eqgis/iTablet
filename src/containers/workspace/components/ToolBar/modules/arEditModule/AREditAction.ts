@@ -12,6 +12,8 @@ import {
 import { getLanguage } from '../../../../../../language'
 import { DialogUtils, Toast } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
+import { IARTransform } from '../types'
+import AREditData from './AREditData'
 
 async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
@@ -95,17 +97,41 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 }
 
 function commit() {
-  SARMap.submit().then(() => {
+  SARMap.submit().then(async () => {
     const _data: any = ToolbarModule.getData()
     const _params: any = ToolbarModule.getParams()
+    let id = 0
     if (
       _params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
       _params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
     ) {
       SARMap.appointEditAR3DLayer(_params.arlayer.currentLayer.name)
     } else if (!_data.selectARElement) {
+      id = _data.selectARElement.id
       SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
     }
+    let transformData: IARTransform = {
+      layerName: _params.arlayer.currentLayer.name,
+      id,
+      type: 'position',
+      positionX: 0,
+      positionY: 0,
+      positionZ: 0,
+      rotationX: 0,
+      rotationY: 0,
+      rotationZ: 0,
+      scale: 0,
+    }
+    ToolbarModule.addData({transformData})
+    const data = await AREditData.getData(_params.type, _params)
+    // GLOBAL.ToolBar.setState({
+    //   data: data.data,
+    //   // isFullScreen: false,
+    //   // showMenuDialog: false,
+    //   // selectName: GLOBAL.ToolBar.state.selectName,
+    //   // selectKey: GLOBAL.ToolBar.state.selectKey,
+    // })
+    GLOBAL.ToolBar.resetContentView()
   })
   return true
 }

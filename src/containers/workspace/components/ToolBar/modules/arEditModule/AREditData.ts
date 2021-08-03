@@ -7,7 +7,7 @@ import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
 import AREditAction from './AREditAction'
-import { DATA_ITEM } from '../types'
+import { DATA_ITEM, IARTransform } from '../types'
 
 interface SectionItemData {
   key: string,
@@ -155,20 +155,6 @@ function getMenuData() {
   return data
 }
 
-/** AR变换信息 */
-export interface IARTransform {
-  type: 'position' | 'rotation' | 'scale',
-  id: number,
-  layerName: string,
-  positionX: number,
-  positionY: number,
-  positionZ: number,
-  scale: number,
-  rotationX: number,
-  rotationY: number,
-  rotationZ: number,
-}
-
 async function getStyleData(type: string) {
   const _data: any = ToolbarModule.getData()
   const _params: any = ToolbarModule.getParams()
@@ -232,6 +218,7 @@ async function getStyleData(type: string) {
     case ConstToolType.SM_AR_EDIT_ROTATION:
       data = [
         {
+          key: 'x',
           leftText: 'x',
           onMove: (loc: number) => {
             transformData = {
@@ -248,6 +235,7 @@ async function getStyleData(type: string) {
           unit: '°',
         },
         {
+          key: 'y',
           leftText: 'y',
           onMove: (loc: number) => {
             transformData = {
@@ -264,6 +252,7 @@ async function getStyleData(type: string) {
           unit: '°',
         },
         {
+          key: 'z',
           leftText: 'z',
           onMove: (loc: number) => {
             transformData = {

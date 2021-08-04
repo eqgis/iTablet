@@ -22,10 +22,18 @@ export default class MapCollectionConfig extends Module {
             name: '地理国情普查',
             mapName: '国情普查_示范数据',
           },
+          {
+            name: '土地规划分类',
+            mapName: '土地规划分类',
+          },
         ],
         JA: {
           name: 'KibanchizuKihonMinato',
           mapName: '基盤地図情報_基本項目',
+        },
+        EN: {
+          name: 'LandCover',
+          mapName: 'LandCover',
         },
       },
       functionModules: [

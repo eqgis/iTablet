@@ -38,6 +38,8 @@ const bg_my_transverse = require('./bg_my_transverse.png')
 
 const icon_gesture = require('./icon_gesture.png')
 
+const ar_navigation = require('./icon_tool_ar_navigation.png')
+
 export default {
   mine_my_plot_new,
   my_import,
@@ -77,4 +79,6 @@ export default {
   bg_my_transverse,
 
   icon_gesture,
+
+  ar_navigation,
 }

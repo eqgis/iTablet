@@ -38,6 +38,7 @@ import arDrawingModule from './arDrawingModule'
 import arStartModule from './arStartModule'
 import arEditModule from './arEditModule'
 import arStyleModule from './arStyleModule'
+import arNaviModule from './arNaviModule'
 export {
   startModule,
   start3DModule,
@@ -79,4 +80,5 @@ export {
   arStartModule,
   arEditModule,
   arStyleModule,
+  arNaviModule,
 }

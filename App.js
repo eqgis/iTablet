@@ -499,9 +499,9 @@ class AppRoot extends Component {
   }
 
   init = async () => {
-    if (Platform.OS === 'android') {
-      await SMap.initEnvironment('iTablet')
-    }
+    // if (Platform.OS === 'android') {
+    await SMap.initEnvironment('iTablet')
+    // }
     SLocation.openGPS()
     this.inspectEnvironment()
     this.reCircleLogin()

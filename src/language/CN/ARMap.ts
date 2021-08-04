@@ -43,6 +43,41 @@ const ARMap = {
   TEXT_SIZE: '字号',
   BACKGROUND_OPACITY: '背景透明度',
   BACKGROUND_COLOR: '背景色',
+
+
+
+  FOOD: '餐饮',
+  SCENE: '景点',
+  BANK: '银行',
+  SUPERMARKET: '超市',
+  HOTEL: '酒店',
+  TOILET: '厕所',
+  BUS_STOP: '公交站',
+  PARKING_LOT: '停车场',
+  HOSPITAL: '医院',
+  GAS_STATION: '加油站',
+  MARKET: '商场',
+  SUBWAY: '地铁',
+
+  SEARCHING: '搜索中',
+  NO_SEARCH_RESULT: '没有搜索结果',
+  PLEASE_INPUT_KEYWORD: '请输入关键字',
+
+  FAILED_TO_ANALYZE_PATH: '路径分析失败',
+  FAILED_TO_GET_LOCATION: '位置获取失败',
+
+  CLEAR_SEARCH_HISOTORY: '清空搜索历史',
+
+  ROUTE: '路线',
+  REMAIN: '剩余',
+  MAP_NAVI: '地图导航',
+  NAVIGATION: '导航',
+  ROUTE_NAVI: '路径导航',
+
+  ROADNET_DATA: '路网数据',
+  HEIGHT: '高度',
+
+  DURATION: '时长',
 }
 
 export {

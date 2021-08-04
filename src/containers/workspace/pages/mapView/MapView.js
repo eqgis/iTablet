@@ -111,6 +111,7 @@ import {
   StyleSheet,
   PanResponder,
   Animated,
+  Dimensions,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -132,6 +133,9 @@ import ImageButton from '../../../../components/ImageButton'
 import Header from '../../../../components/Header'
 import DatumPointCalibration from '../../../arDatumPointCalibration/'
 import DataHandler from '../../../tabs/Mine/DataHandler'
+import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
+import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
+// import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 GLOBAL.markerTag = 118082
 
@@ -359,6 +363,8 @@ export default class MapView extends React.Component {
       showGenera:false,
       isTrack:false,
       samplescale:new Animated.Value(0.1),
+      showPoiSearch:false,
+      showNavigation:false,
     }
     this.props.setDatumPoint(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? true : false)
     this.props.showAR(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS  ? true : false)
@@ -512,6 +518,10 @@ export default class MapView extends React.Component {
     if (!GLOBAL.isLicenseValid) {
       let licenseStatus = await SMap.getEnvironmentStatus()
       GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+    }
+
+    if (GLOBAL.Type === ChunkType.MAP_AR){
+      Dimensions.addEventListener('change', this.onChange)
     }
 
     if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR) {
@@ -894,6 +904,9 @@ export default class MapView extends React.Component {
   }
 
   componentWillUnmount() {
+    if (GLOBAL.Type === ChunkType.MAP_AR){
+      Dimensions.removeEventListener('change', this.onChange)
+    }
     GLOBAL.clickWait = false // MapView Unmount后将GLOBAL.clickWait设置为false，防止多次返回或返回到首页后闪现保存提示框
     SMap.setCurrentModule(0)
     if (
@@ -1203,6 +1216,26 @@ export default class MapView extends React.Component {
     SARMap.showTrackView(false)
     SARMap.showPointCloud(false)
     // }
+    this.initBaseMapPosistion(Dimensions.get('screen'))
+  }
+
+  onChange = event => {
+    this.initBaseMapPosistion(event.screen)
+  }
+
+  initBaseMapPosistion = screenSize => {
+    let width = scaleSize(300)
+    //android宽度固定，详见原生初始化
+    if (Platform.OS === 'android') {
+      width = Math.min(Math.min(screenSize.height, screenSize.width)*0.4, 200)
+    }
+    // const safeBottom = useSafeAreaInsets()?.bottom || 0
+    SARMap.setNaviBaseMapPosition({
+      x: screenSize.width - width/2 - scaleSize(30),
+      y: screenSize.height - width/2 - scaleSize(200),
+      width: width,
+      autoAdapt: true,
+    })
   }
 
   /**
@@ -2541,6 +2574,8 @@ export default class MapView extends React.Component {
         selectPointType={this.state.selectPointType}
         {...this.props}
         measure={params => { this.measure(params) }}
+        showArNavi={show=>{this.setState({showPoiSearch:show})}}
+        showNavigation={show=>{this.setState({showNavigation:show})}}
       />
     )
   }
@@ -4655,6 +4690,12 @@ export default class MapView extends React.Component {
               })
             }
           }}
+          onCalloutTouch={tag => {
+            this.poiSearch.onPoiSelect(tag)
+          }}
+          onNaviLocationChange={(location, remian) => {
+            this.arNavi.onLocationChange(remian)
+          }}
         />
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderHeader()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderBottomBtns()}
@@ -4677,6 +4718,26 @@ export default class MapView extends React.Component {
           left: scaleSize(10),
         }}
         orientation={this.props.device.orientation}
+      />
+    )
+  }
+
+  _renderPoiSearchView = () => {
+    return (
+      <ARPoiSearchView
+        ref={ref => (this.poiSearch = ref)}
+        toolbarVisible={this.state.showPoiSearch}
+        visible={this.state.showPoiSearch}
+      />
+    )
+  }
+
+  _renderArNavigationView = () => {
+    return (
+      <ARNavigationView
+        ref={ref => (this.arNavi = ref)}
+        toolbarVisible={this.state.showNavigation}
+        visible={this.state.showNavigation}
       />
     )
   }
@@ -4743,6 +4804,8 @@ export default class MapView extends React.Component {
         {this.renderCompass()}
 
         {this._renderMeasureAreaView()}
+        {this._renderPoiSearchView()}
+        {this._renderArNavigationView()}
 
         {(GLOBAL.Type === ChunkType.MAP_AR_MAPPING? !this.props.isAR : true)&&
           GLOBAL.Type &&

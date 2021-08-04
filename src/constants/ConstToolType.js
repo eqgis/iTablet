@@ -528,6 +528,10 @@ const AR_STYLE_CONST = {
   SM_AR_STYLE_BACKGROUND_COLOR: 'SM_AR_STYLE_BACKGROUND_COLOR',
 }
 
+const AR_NAVI_CONST = {
+  SM_AR_NAVI: 'SM_AR_NAVI',
+}
+
 export default {
   ...LEGEND_CONST,
   ...NAVIGATION_CONST,
@@ -568,6 +572,8 @@ export default {
   ...AR_START_CONST,
   ...AR_EDIT_CONST,
   ...AR_STYLE_CONST,
+
+  ...AR_NAVI_CONST,
 
   ...AR_DRAWING_CONST,
 

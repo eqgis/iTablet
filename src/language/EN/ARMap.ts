@@ -45,6 +45,39 @@ const ARMap: typeof CN.ARMap = {
   TEXT_SIZE: 'Text Size', // to be translated
   BACKGROUND_OPACITY: 'Background Opacity', // to be translated
   BACKGROUND_COLOR: 'Background Color', // to be translated
+
+  FOOD: 'Food',
+  SCENE: 'Scenic',
+  BANK: 'Bank',
+  SUPERMARKET: 'Market',
+  HOTEL: 'Hotel',
+  TOILET: 'Toilet',
+  BUS_STOP: 'Bus',
+  PARKING_LOT: 'Park',
+  HOSPITAL: 'Hospital',
+  GAS_STATION: 'Gas station',
+  MARKET: 'Mall',
+  SUBWAY: 'Subway',
+
+  SEARCHING: 'Searching', //to be translated
+  NO_SEARCH_RESULT: 'No search result', //to be translated
+  PLEASE_INPUT_KEYWORD: 'Please input keyword', //to be translated
+
+  FAILED_TO_ANALYZE_PATH: 'Failed to analyze path', //to be translated
+  FAILED_TO_GET_LOCATION: 'Failed to get current location', //to be translated
+
+  CLEAR_SEARCH_HISOTORY: 'Clear Search History', //to be translated
+
+  ROUTE: 'Route', //to be translated
+  REMAIN: 'Remain', //to be translated
+  MAP_NAVI: 'Map Navigation', //to be translated
+  NAVIGATION: 'Navigation', //to be translated
+  ROUTE_NAVI: 'Route Navigation', //to be translated
+
+  ROADNET_DATA: 'Road Net Data',  //to be translated
+  HEIGHT: 'Height',
+
+  DURATION: 'Duration', //to be translated
 }
 
 export {

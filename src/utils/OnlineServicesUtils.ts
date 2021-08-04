@@ -7,6 +7,7 @@ import axios from 'axios'
 import CookieManager from 'react-native-cookies'
 import RNFS from 'react-native-fs'
 import { UserType } from '../constants'
+import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
 
 /** 上传回调 */
 interface UploadCallBack {
@@ -65,7 +66,6 @@ export interface OnlineDataType {
   WORKENVIRONMENT: 'WORKENVIRONMENT',   //WorkEnvironment 工作环境 
   WORKSPACE: 'WORKSPACE',               //工作空间 sxwu, smwu, sxw, smw 
 }
-
 export interface SMOnlineData {
   "lastModfiedTime": number,
   "fileName": string,
@@ -90,6 +90,39 @@ export interface SMOnlineData {
   "status": "OK",
   "MD5": "DA460531CBE2A023643B36C4F9F7AEF2"
 }
+
+/** poi搜索参数 */
+export interface POISearchParamOnline {
+  /** 搜索关键字，需要检索的POI关键字，如输入多个关键字，请使用空格隔开 */
+  keywords: string
+  /** POI查询中心点 */
+  location: {x: number, y: number}
+  /** POI查询半径，单位为米 */
+  radius: number
+  /**
+   * 4326	GPS经纬度
+   *
+   *  3857	GPS墨卡托
+   *
+   * 910113	搜狗墨卡托
+   *
+   * 910102	百度经纬度
+   *
+   * 910112	百度墨卡托
+   *
+   * 910101	四维、高德经纬度。 GCJ02是由中国国家测绘局指定的地理信息系统的坐标系统，俗称火星坐标。它是一种对标准经纬度数据的加密算法，即加入了随机的偏差。腾讯、Google Map、高德、四维等图商用的都是此坐标系统。
+   *
+   * 910111	四维、高德墨卡托
+   */
+   to?: 4326 | 3857 | 910113 | 910102 | 910112 | 910101 | 910111
+}
+
+/** online 在线请求失败结果 */
+interface OnlineRequestError {
+  error: {code: number, errorMsg: string | null}
+  succeed: false
+}
+
 
 export default class OnlineServicesUtils {
   /** iportal还是online */
@@ -604,23 +637,27 @@ export default class OnlineServicesUtils {
     return false
   }
 
-  /**
+   /**
    * 将对象转换为网址参数格式的字符串
-   * @param obj 
+   * @param obj
    */
-  _obj2params(obj: any): string {
-    var result = ''
-    var item
-    for (item in obj) {
-      result += '&' + item + '=' + encodeURIComponent(obj[item])
+    _obj2params(obj: any): string {
+      let result = ''
+      let item
+      for (item in obj) {
+        if(typeof obj[item] === 'object') {
+          result += '&' + item + '=' + encodeURIComponent(JSON.stringify(obj[item]))
+        } else {
+          result += '&' + item + '=' + encodeURIComponent(obj[item])
+        }
+      }
+  
+      if (result) {
+        result = result.slice(1)
+      }
+  
+      return result
     }
-
-    if (result) {
-      result = result.slice(1)
-    }
-
-    return result
-  }
 
   /**
    *  登录后获取用户名 online禁止手机号查找用户后需要此接口来获取手机登录用户的用户名，再根据用户名获取其他信息
@@ -848,6 +885,57 @@ export default class OnlineServicesUtils {
       return false
     }
   }
+
+  // online 公共服务api
+
+  /** poi 在线搜索 */
+  searchPoi = async (params: POISearchParamOnline): Promise<POISearchResultOnline | null> => {
+    try {
+      let url = 'https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?'
+      url +=  this._obj2params(params) + '&key=fvV2osxwuZWlY0wJb8FEb2i5'
+
+      const response = await fetch(url)
+      if(response.status === 200) {
+        const result: OnlineRequestError | POISearchResultOnline = await response.json()
+        if('error' in result) {
+          // AppLog.error(result)
+          return null
+        } else {
+          return result
+        }
+      }
+      return null
+    } catch (e) {
+      // AppLog.error(e)
+      return null
+    }
+  }
+
+  /** 在线路径分析 */
+  routeAnalyze = async (params: OnlineRouteAnalyzeParam): Promise<RouteAnalyzeResult | null> => {
+    try {
+      let url = 'https://www.supermapol.com/iserver/services/navigation/rest/navigationanalyst/China/pathanalystresults.json?'
+      url +=  this._obj2params({pathAnalystParameters: [params]}) + '&key=fvV2osxwuZWlY0wJb8FEb2i5'
+
+      const response = await fetch(url)
+      if(response.status === 200) {
+        const result: OnlineRequestError | RouteAnalyzeResult[] = await response.json()
+        if('error' in result) {
+          // AppLog.error(result)
+          return null
+        } else if(result.length > 0) {
+          return result[0]
+        } else {
+          return null
+        }
+      }
+      return null
+    } catch (e) {
+      // AppLog.error(e)
+      return null
+    }
+  }
+
 }
 
 /**

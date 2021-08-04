@@ -63,7 +63,6 @@ async function OpenData(data, index, callback) {
     SMap.viewEntire()
     Toast.show(getLanguage(GLOBAL.language).Prompt.CHANGE_SUCCESS)
   } else {
-    debugger
     Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
   }
   GLOBAL.Loading?.setLoading(false)

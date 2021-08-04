@@ -424,6 +424,24 @@ async function createARElementDatasource(
   }
 }
 
+async function createPoiSearchDatasource(
+  user,
+) {
+  try {
+    const homePath = await FileTools.getHomeDirectory()
+    const datasourcePath = homePath + ConstPath.UserPath + user.userName + '/' + ConstPath.RelativePath.Temp
+    const datasourceName = 'naviDatasource'
+    const datasetName = 'naviDataset'
+
+    return await createDefaultDatasource(datasourcePath, datasourceName, datasetName, DatasetType.PointZ, false, false)
+  } catch (e) {
+    return {
+      success: false,
+      error: e,
+    }
+  }
+}
+
 export default {
   getLocalData,
   createDatasourceFile,
@@ -431,4 +449,5 @@ export default {
   getAvailableFileNameNoExt,
   createDefaultDatasource,
   createARElementDatasource,
+  createPoiSearchDatasource,
 }

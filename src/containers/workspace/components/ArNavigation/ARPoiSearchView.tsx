@@ -567,6 +567,16 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
             })
           }}]}
         />
+        <FloatBar
+          style={{borderRadius: scaleSize(20), marginTop: scaleSize(40), width: scaleSize(80), height: scaleSize(80), justifyContent: 'center'}}
+          imageStyle={{width: scaleSize(40), height: scaleSize(40)}}
+          textStyle={{fontSize: scaleSize(18)}}
+          data={[{title:getLanguage(GLOBAL.language).Map_Label.SETTING,image: getThemeAssets().nav.setting, key: 'setting', action: () => {
+            NavigationService.navigate('ARMapSetting',{
+              poiSearch:true,
+            })
+          }}]}
+        />
       </View>
     )
   }

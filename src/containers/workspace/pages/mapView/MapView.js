@@ -135,7 +135,6 @@ import DatumPointCalibration from '../../../arDatumPointCalibration/'
 import DataHandler from '../../../tabs/Mine/DataHandler'
 import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
-// import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 GLOBAL.markerTag = 118082
 
@@ -203,9 +202,11 @@ export default class MapView extends React.Component {
     baseMaps: PropTypes.object,
 
     showDatumPoint: PropTypes.bool,
+    poiSearch: PropTypes.bool,
     isAR: PropTypes.bool,
     setDatumPoint: PropTypes.func,
     showAR: PropTypes.func,
+    arPoiSearch:PropTypes.func,
 
     setNavBarDisplay: PropTypes.func,
     setEditLayer: PropTypes.func,
@@ -746,7 +747,13 @@ export default class MapView extends React.Component {
     ) {
       this.showFullMap(this.props.mapNavigation.isShow)
     } else if (this.props.showDatumPoint !== prevProps.showDatumPoint && this.measureType !== 'arCollect') {
-      this.showFullMap(this.props.showDatumPoint)
+      if(this.props.poiSearch){
+        if(!this.props.showDatumPoint){
+          this.props.arPoiSearch(false)
+        }
+      }else{
+        this.showFullMap(this.props.showDatumPoint)
+      }
     }
     // if (
     //   JSON.stringify(prevProps.editLayer) !==
@@ -1224,15 +1231,16 @@ export default class MapView extends React.Component {
   }
 
   initBaseMapPosistion = screenSize => {
-    let width = scaleSize(300)
+    let width = scaleSize(250)
+    let size = scaleSize(20)
     //android宽度固定，详见原生初始化
     if (Platform.OS === 'android') {
       width = Math.min(Math.min(screenSize.height, screenSize.width)*0.4, 200)
+      size = scaleSize(80)
     }
-    // const safeBottom = useSafeAreaInsets()?.bottom || 0
     SARMap.setNaviBaseMapPosition({
       x: screenSize.width - width/2 - scaleSize(30),
-      y: screenSize.height - width/2 - scaleSize(200),
+      y: screen.getScreenSafeHeight() - width - size,
       width: width,
       autoAdapt: true,
     })

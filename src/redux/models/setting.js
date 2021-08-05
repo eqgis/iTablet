@@ -40,6 +40,7 @@ export const SHOW_DATUM_POINT = 'SHOW_DATUM_POINT'
 export const SHOW_AR = 'SHOW_AR'
 export const SHOW_AR_SCENE_NOTIFY = 'SHOW_AR_SCENE_NOTIFY'
 const SHOW_COMPASS = 'SHOW_COMPASS'
+export const ARPOISEARCH_VIEW = 'ARPOISEARCH_VIEW'
 // Actions
 // --------------------------------------------------
 export const setBufferSetting = (params, cb = () => {}) => async dispatch => {
@@ -265,6 +266,14 @@ export const setDatumPoint = (show = false) => async dispatch => {
   })
 }
 
+/** ar导航进入设置界面 */
+export const arPoiSearch = (show = false) => async dispatch => {
+  await dispatch({
+    type: ARPOISEARCH_VIEW,
+    payload: show,
+  })
+}
+
 /** 显示AR界面 */
 export const showAR = (show = false) => async dispatch => {
   await dispatch({
@@ -367,6 +376,8 @@ const initialState = fromJS({
   showARSceneNotify: true,
   /** 指南针 */
   isShowCompass: false,
+  /** ar导航设置跳转 */
+  poiSearch:false,
 })
 
 export default handleActions(
@@ -523,6 +534,9 @@ export default handleActions(
     [`${SHOW_DATUM_POINT}`]: (state, { payload }) => {
       return state.setIn(['showDatumPoint'], fromJS(payload))
     },
+    [`${ARPOISEARCH_VIEW}`]: (state, { payload }) => {
+      return state.setIn(['poiSearch'], fromJS(payload))
+    },
     [`${SHOW_AR}`]: (state, { payload }) => {
       return state.setIn(['isAR'], fromJS(payload))
     },
@@ -551,6 +565,7 @@ export default handleActions(
       }
       data.showDatumPoint = false
       data.isAR = false
+      data.poiSearch = false
       return fromJS(data)
     },
   },

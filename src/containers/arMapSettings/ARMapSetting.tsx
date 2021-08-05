@@ -7,15 +7,21 @@ import { Container } from '../../components'
 import { scaleSize } from '../../utils'
 import { color, size } from '../../styles'
 import { getLanguage } from '../../language'
-import { setDatumPoint } from '../../redux/models/setting'
+import { setDatumPoint , arPoiSearch } from '../../redux/models/setting'
 import { MapToolbar } from '../workspace/components'
 import NavigationService from '../NavigationService'
 
 type Props = ReduxProps
 
-class ARMapSetting extends React.Component<Props> {
+interface State {
+  poiSearch?: boolean
+}
+class ARMapSetting extends React.Component<Props,State> {
   constructor(props: Props) {
     super(props)
+    this.state = {
+      poiSearch: this.props.navigation?.state?.params?.poiSearch
+    }
   }
 
   renderCommonSettings = () => {
@@ -25,6 +31,9 @@ class ARMapSetting extends React.Component<Props> {
           onPress={() => {
             NavigationService.navigate('MapView')
             this.props.setDatumPoint(true)
+            if(this.state.poiSearch){
+              this.props.arPoiSearch(true)
+            }
           }}
         >
           <Text style={styles.itemText}>
@@ -56,11 +65,11 @@ class ARMapSetting extends React.Component<Props> {
       <Container
         style={styles.conatiner}
         headerProps={{
-          withoutBack: true,
+          withoutBack: !this.state.poiSearch,
           title: getLanguage(GLOBAL.language).Map_Label.SETTING,
           navigation: this.props.navigation,
         }}
-        bottomBar={this.renderToolBar()}
+        bottomBar={!this.state.poiSearch && this.renderToolBar()}
       >
         {this.renderCommonSettings()}
       </Container>
@@ -74,6 +83,7 @@ const mapStateToProp = (state: any) => ({
 
 const mapDispatch = {
   setDatumPoint,
+  arPoiSearch,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

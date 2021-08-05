@@ -34,6 +34,8 @@ const my_data = require('./icon_my_data.png')
 const radio_none = require('./icon_none.png')
 const radio_check = require('./icon_single_check.png')
 const network = require('./icon_layer_network_Temp.png')
+const setting = require('./icon_install.png')
+const my_armap = require('./icon_my_armap.png')
 
 export default {
   icon_back,
@@ -72,4 +74,6 @@ export default {
   radio_none,
   radio_check,
   network,
+  setting,
+  my_armap,
 }

@@ -115,6 +115,27 @@ class RoadNet extends React.Component<Props, State> {
             justifyContent: 'center',
           }}
           onPress={async ()=>{
+            this.props.navigation.navigate('MyARMap', {
+              showMode: 'tap',
+              moveToMapCenter: false,
+            })
+          }}
+        >
+          <Image
+            source={getThemeAssets().nav.my_armap}
+            style={{
+              width: scaleSize(50),
+              height: scaleSize(50),
+            }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            marginHorizontal: scaleSize(10),
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={async ()=>{
             this.props.navigation.navigate('MyDatasource', {
               showMode: 'tap',
               callback: async info => {

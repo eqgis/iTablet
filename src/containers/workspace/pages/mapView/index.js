@@ -42,6 +42,7 @@ import {
   setNavBarDisplay,
   setDatumPoint,
   showAR,
+  arPoiSearch,
 } from '../../../../redux/models/setting'
 import { setMapSearchHistory } from '../../../../redux/models/histories'
 import { setSharing } from '../../../../redux/models/online'
@@ -98,6 +99,7 @@ const mapStateToProps = state => ({
   navBarDisplay: state.setting.toJS().navBarDisplay,
   laboratory: state.setting.toJS().laboratory,
   showDatumPoint: state.setting.toJS().showDatumPoint,
+  poiSearch: state.setting.toJS().poiSearch,
   isAR: state.setting.toJS().isAR,
   backActions: state.backActions.toJS(),
   isClassifyView: state.ar.toJS().isClassifyView,
@@ -173,6 +175,7 @@ const mapDispatchToProps = {
   showAR,
   setSampleDataShow,
   setCoworkService,
+  arPoiSearch,
 }
 
 export default connect(

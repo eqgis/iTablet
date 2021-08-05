@@ -150,8 +150,8 @@ const styles = StyleSheet.create({
     marginBottom: scaleSize(20),
     width: '90%',
     backgroundColor: '#F6F7F8',
-    paddingHorizontal: scaleSize(20),
-    paddingVertical: scaleSize(10),
+    paddingHorizontal: scaleSize(25),
+    paddingVertical: scaleSize(15),
   },
   item: {
     justifyContent: 'center',

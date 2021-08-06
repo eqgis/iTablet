@@ -1,21 +1,23 @@
-import { ARAction, SARMap, SMap, SMARInterestView } from 'imobile_for_reactnative'
+import { ARAction, SARMap, SMap, SMARInterestView ,SSpeechRecognizer} from 'imobile_for_reactnative'
 import { POIInfo, POIInfoOnline, POISearchResult, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
 import { Point } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
 import { Dimensions, FlatList, Image, ListRenderItemInfo, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { getThemeAssets } from '../../../../assets'
+import { getThemeAssets ,getPublicAssets} from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import { ARNaviModule } from '../ArNavigationModule'
-import { scaleSize, Toast, OnlineServicesUtils } from '../../../../../src/utils'
+import { scaleSize, Toast, OnlineServicesUtils ,screen ,Audio} from '../../../../../src/utils'
 import Button from './Button'
 import FloatBar from './FloatBar'
 import DataHandler from '../../../../../src/containers/tabs/Mine/DataHandler'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import NavigationService from '../../../../containers/NavigationService'
+import BackButton from '../../../../components/Header/BackButton'
 
 interface Props {
   toolbarVisible: boolean
   visible: boolean
+  device:any
 }
 
 interface State {
@@ -39,8 +41,6 @@ const OnlineService = new OnlineServicesUtils('online')
 class ARPoiSearchView extends React.PureComponent<Props, State> {
   textInput : TextInput | null = null
 
-  searchKey = ''
-
   currentLocation? : {ll: Point, mercator: Point} | null
 
   datasourceAdded = false
@@ -54,6 +54,12 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
       results: [],
       history: [],
       searchRadius: 5000,
+      searchKey:'',
+    }
+    if (GLOBAL.language === 'CN') {
+      SSpeechRecognizer.setParameter('language', 'zh_cn')
+    } else {
+      SSpeechRecognizer.setParameter('language', 'en_us ')
     }
   }
 
@@ -126,6 +132,9 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         results: [],
       })
       ARNaviModule.exit()
+    }
+    if (Audio.isShow()) {
+      Audio.hideAudio()
     }
   }
 
@@ -222,9 +231,9 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
   /** 清除输入框 */
   clear = () => {
     this.textInput?.clear()
-    this.searchKey = ''
     this.setState({
-      selectedPoi: undefined
+      selectedPoi: undefined,
+      searchKey:'',
     })
   }
 
@@ -376,12 +385,13 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           ref={ref => this.textInput = ref}
           style={styles.textInput}
           returnKeyType={'search'}
+          defaultValue={this.state.searchKey}
           onFocus={() => this.setState({isInputing: true})}
           // onBlur={() => this.setState({isInputing: false})}
-          onChangeText={text => {this.searchKey = text}}
-          onSubmitEditing={() => this.search(this.searchKey)}
+          onChangeText={text => {this.setState({searchKey:text})}}
+          onSubmitEditing={() => this.search(this.state.searchKey)}
         />
-        <TouchableOpacity
+        {!this.state.isInputing&&<TouchableOpacity
           onPress={this.clear}
         >
           <Image
@@ -391,16 +401,34 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
               height: scaleSize(40), tintColor: '#959595'
             }}
           />
-        </TouchableOpacity>
-        <View style={styles.searchSep}/>
-        <TouchableOpacity
-          onPress={() => this.search(this.searchKey)}
+        </TouchableOpacity>}
+        {this.state.isInputing&&<TouchableOpacity
+          onPress={() => this.search(this.state.searchKey)}
         >
           <Image
             source={getThemeAssets().nav.poi_search}
             style={{
               width: scaleSize(50),
               height: scaleSize(50),
+            }}
+          />
+        </TouchableOpacity>}
+        <View style={styles.searchSep} />
+        <TouchableOpacity
+          onPress={() => Audio.showAudio('top', {
+            device: this.props.device, arSearch: true,
+            cb: info => {
+              this.setState({ searchKey: info })
+              this.search(this.state.searchKey)
+            }
+          })}
+        >
+          <Image
+            source={getThemeAssets().nav.icon_nav_voice}
+            style={{
+              width: scaleSize(50),
+              height: scaleSize(50),
+              marginRight: scaleSize(10),
             }}
           />
         </TouchableOpacity>
@@ -411,7 +439,21 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
   renderHeader = () => {
     return (
       <View style={styles.header}>
-        <FloatBar
+        <BackButton
+          image={getPublicAssets().common.icon_back}
+          imageStyle={{
+            width: scaleSize(60),
+            height: scaleSize(60),
+            backgroundColor: '#rgba(255, 255, 255, 0)',
+            marginLeft:scaleSize(40),
+            // marginRight: 3,
+          }}
+          onPress={event => {
+            this.back()
+          }}
+        />
+
+        {/* <FloatBar
           style={{
             width: scaleSize(80),
             height: scaleSize(80),
@@ -429,7 +471,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
               action: this.back,
             }
           ]}
-        />
+        /> */}
         {this.renderSearch()}
       </View>
     )
@@ -647,15 +689,17 @@ const GRAY = '#505050'
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    paddingHorizontal: scaleSize(40),
-    marginTop: scaleSize(55)
+    height:screen.getHeaderHeight(),
+    backgroundColor:'white',
+    alignItems: 'center',
+    paddingTop: screen.getIphonePaddingTop()
   },
   search: {
-    flex: 1,
     backgroundColor: '#F6F7F8',
     height: scaleSize(80),
+    width: scaleSize(580),
     borderRadius: scaleSize(35),
-    paddingHorizontal: scaleSize(30),
+    // paddingHorizontal: scaleSize(30),
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: scaleSize(25),

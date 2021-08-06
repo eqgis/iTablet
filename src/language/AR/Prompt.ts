@@ -391,6 +391,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: 'يمكنك أن تقول',
   SPEECH_ERROR: 'التعرف على الخطأ ، يرجى المحاولة مرة أخرى في وقت لاحق',
   SPEECH_NONE: 'لا يبدو أنك تتحدث أي شيء',
+  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
 
   NOT_SUPPORT_STATISTIC: 'الحقل لا يدعم الإحصاء',
   ATTRIBUTE_DELETE_CONFIRM: 'هل تريد بالتأكيد حذف حقل البيانات  هذا؟',

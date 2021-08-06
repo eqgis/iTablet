@@ -391,6 +391,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: "You may say:\n'Zoom in'，'Zoom out'，'Locate'，'Close',\n 'Search' or any Address",
   SPEECH_ERROR: 'Recognize error, please try again later',
   SPEECH_NONE: "You didn't seem to speak anything",
+  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
 
   NOT_SUPPORT_STATISTIC: 'The field can not be counted',
   ATTRIBUTE_DELETE_CONFIRM: 'Are you sure you want to delete this attribute field?',

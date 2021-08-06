@@ -391,6 +391,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: '使用可能語句：\n"拡大"、"縮小"、"ポジショニング"、"閉じる"',
   SPEECH_ERROR: '識別に異常が発生します。後で再度試してください。',
   SPEECH_NONE: 'お話していないようですね',
+  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
 
   NOT_SUPPORT_STATISTIC: '当フィールドを統計をサポートしません',
   ATTRIBUTE_DELETE_CONFIRM: '選択フィールドを削除しますか？',

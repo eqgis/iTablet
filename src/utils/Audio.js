@@ -8,6 +8,10 @@ import { getLanguage } from '../language/index'
 let elements = [], AudioDialogRef
 function showAudio(type = 'top', audioProps = {}) {
   let sibling = new RootSiblings()
+  let defaultText = getLanguage(GLOBAL.language).Prompt.SPEECH_TIP
+  if(audioProps.arSearch){
+    defaultText = getLanguage(GLOBAL.language).Prompt.SPEECH_KEYWORD
+  }
   sibling.update(
     <TouchableOpacity
       activeOpacity={1}
@@ -28,7 +32,7 @@ function showAudio(type = 'top', audioProps = {}) {
       <AudioDialog
         ref={ref => (AudioDialogRef = ref)}
         type={type}
-        defaultText={getLanguage(GLOBAL.language).Prompt.SPEECH_TIP}
+        defaultText={defaultText}
         // device={this.props.device}
         language={GLOBAL.language}
         close={hideAudio}

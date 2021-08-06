@@ -68,6 +68,9 @@ class ARMapSetting extends React.Component<Props,State> {
           withoutBack: !this.state.poiSearch,
           title: getLanguage(GLOBAL.language).Map_Label.SETTING,
           navigation: this.props.navigation,
+          headerTitleViewStyle: {
+            textAlign: 'left',
+          },
         }}
         bottomBar={!this.state.poiSearch && this.renderToolBar()}
       >

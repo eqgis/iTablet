@@ -188,6 +188,9 @@ class RoadNet extends React.Component<Props, State> {
           backAction: () => {
             this.props.navigation.goBack()
           },
+          headerTitleViewStyle: {
+            textAlign: 'left',
+          },
         }}
       >
         {this.renderDatasource()}

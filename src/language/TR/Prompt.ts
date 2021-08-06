@@ -391,6 +391,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: "Aşağıdakileri seçebilirsiniz: \n'Yaklaş'，'Uzaklaş'，'Yerleştir'，'Kapat',\n 'Ara' ya da herhangi bir Adres",
   SPEECH_ERROR: 'Tanımlı hata, lütfen daha sonra tekrar deneyiniz',
   SPEECH_NONE: 'Hiçbir şey konuşmadınız gibi görünüyor',
+  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
 
   NOT_SUPPORT_STATISTIC: 'Alan, istatistiği desteklemiyor',
   ATTRIBUTE_DELETE_CONFIRM: 'Bu öznitelik alanı silinsin mi?',

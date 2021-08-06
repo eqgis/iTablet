@@ -390,6 +390,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: "You may say \n'Agrandir'，'Dézoomer'，'Localiser'，'Proche',\n 'Rechercher 'ou n'importe quelle adresse",
   SPEECH_ERROR: "Reconnaître l'erreur, veuillez réessayer plus tard",
   SPEECH_NONE: 'Vous ne sembliez rien dire',
+  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
 
   NOT_SUPPORT_STATISTIC: 'Le champ ne prend pas en charge les statistiques',
   ATTRIBUTE_DELETE_CONFIRM: "Bien sûr, supprimer ce champ d'attribut?",

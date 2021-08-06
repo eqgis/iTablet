@@ -4736,6 +4736,7 @@ export default class MapView extends React.Component {
         ref={ref => (this.poiSearch = ref)}
         toolbarVisible={this.state.showPoiSearch}
         visible={this.state.showPoiSearch}
+        device={this.props.device}
       />
     )
   }

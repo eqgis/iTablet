@@ -389,6 +389,7 @@ const Prompt = {
   SPEECH_TIP: '您可以说:\n"放大"，"缩小"，"定位"，"关闭"，"搜索"或者地名',
   SPEECH_ERROR: '识别出错，请稍后再试',
   SPEECH_NONE: '您好像没有说话哦',
+  SPEECH_KEYWORD: '您可以说:\n"地名","特征"等关键字',
 
   NOT_SUPPORT_STATISTIC: '该字段不支持统计',
   ATTRIBUTE_DELETE_CONFIRM: '确定删除所选字段？',

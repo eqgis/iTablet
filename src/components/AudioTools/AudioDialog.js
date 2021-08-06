@@ -27,6 +27,8 @@ export default class AudioDialog extends PureComponent {
     defaultText?: string,
     device: Object,
     close: () => {},
+    arSearch?: boolean,
+    cb?: () => {},
   }
 
   static defaultProps = {
@@ -72,11 +74,15 @@ export default class AudioDialog extends PureComponent {
           },
           onResult: ({ info, isLast }) => {
             if (isLast) return
-            this.setState({ content: info }, () => {
-              setTimeout(() => {
-                AudioAnalyst.analyst(info)
-              }, 1000)
-            })
+            if(this.props.arSearch){
+              this.props.cb(info)
+            }else{
+              this.setState({ content: info }, () => {
+                setTimeout(() => {
+                  AudioAnalyst.analyst(info)
+                }, 1000)
+              })
+            }
           },
         })
         await this.startRecording()

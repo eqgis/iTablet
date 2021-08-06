@@ -7,6 +7,7 @@ import {
   addModule,
   markModule,
   toolModule,
+  changeMapModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -46,7 +47,7 @@ export default class MapEditConfig extends Module {
           mapName: 'yamanashi',
         },
       },
-      functionModules: [startModule, addModule, markModule, toolModule],
+      functionModules: [startModule, changeMapModule,addModule, markModule, toolModule],
       mapType: Module.MapType.MAP,
     })
   }

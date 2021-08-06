@@ -10,6 +10,7 @@ import {
   roadNetModule,
   incrementModule,
   toolModule,
+  changeMapModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -26,6 +27,7 @@ export default class MapNavigationConfig extends Module {
       },
       functionModules: [
         startModule,
+        changeMapModule,
         addModule,
         markModule,
         navigationModule,

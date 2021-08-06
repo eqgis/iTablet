@@ -311,13 +311,6 @@ export default class MapView extends React.Component {
       params && params.path ? !params.path.endsWith('.smwu') : true
     /** 自定义返回事件 */
     this.backAction = (params && params.backAction) || null
-    //底图
-    this.curUserBaseMaps = this.props.baseMaps[
-      this.props.user.currentUser.userId
-    ]
-    if (!this.curUserBaseMaps) {
-      this.curUserBaseMaps = this.props.baseMaps['default'] || []
-    }
     this.state = {
       showMap: false, // 控制地图初始化显示
       data: params ? params.data : [],
@@ -2584,6 +2577,7 @@ export default class MapView extends React.Component {
         measure={params => { this.measure(params) }}
         showArNavi={show=>{this.setState({showPoiSearch:show})}}
         showNavigation={show=>{this.setState({showNavigation:show})}}
+        baseMaps={this.props.baseMaps}
       />
     )
   }
@@ -3020,7 +3014,7 @@ export default class MapView extends React.Component {
     let buttonInfos = GLOBAL.coworkMode && [
       MapHeaderButton.CoworkChat,
     ] || (currentMapModule && currentMapModule.headerButtons) || [
-      MapHeaderButton.BaseMap,
+      // MapHeaderButton.BaseMap,
       MapHeaderButton.Share,
       MapHeaderButton.Search,
       MapHeaderButton.Undo,
@@ -3055,53 +3049,53 @@ export default class MapView extends React.Component {
         let info
         if (typeof buttonInfos[i] === 'string') {
           switch (buttonInfos[i]) {
-            case MapHeaderButton.BaseMap:
-              info = {
-                key: MapHeaderButton.BaseMap,
-                image: getThemeAssets().start.icon_tool_map,
-                action: () => {
-                  let data
-                  let layerManagerDataArr = [...layerManagerData()]
-                  for (let i = 0, n = this.curUserBaseMaps.length; i < n; i++) {
-                    let baseMap = this.curUserBaseMaps[i]
-                    //只保留用户添加的 zhangxt
-                    if (
-                      baseMap.DSParams.engineType === 227 ||
-                      baseMap.DSParams.engineType === 223 ||
-                      !baseMap.userAdd
-                    ) {
-                      continue
-                    }
-                    let layerManagerData = {
-                      title: baseMap.mapName,
-                      action: () => {
-                        return OpenData(baseMap, baseMap.layerIndex)
-                      },
-                      data: [],
-                      image: getThemeAssets().layerType.layer_image,
-                      type: DatasetType.IMAGE,
-                      themeType: -1,
-                    }
-                    layerManagerDataArr.push(layerManagerData)
-                  }
-                  data = [
-                    {
-                      title: '',
-                      data: layerManagerDataArr,
-                    },
-                  ]
-                  //'切换底图') {
-                  ToolbarModule.setData({type:ConstToolType.SM_MAP_LAYER_BASE_CHANGE}) //切换底图前先清空一下module数据避免点击方法调用错误 add jiakai
-                  this.showFullMap(true)
-                  this.toolBox?.setVisible(true, ConstToolType.SM_MAP_LAYER_BASE_CHANGE, {
-                    height: ConstToolType.TOOLBAR_HEIGHT[5],
-                    containerType:'list',
-                    data:data,
-                    isFullScreen: true,
-                  })
-                },
-              }
-              break
+            // case MapHeaderButton.BaseMap:
+            //   info = {
+            //     key: MapHeaderButton.BaseMap,
+            //     image: getThemeAssets().start.icon_tool_map,
+            //     action: () => {
+            //       let data
+            //       let layerManagerDataArr = [...layerManagerData()]
+            //       for (let i = 0, n = this.curUserBaseMaps.length; i < n; i++) {
+            //         let baseMap = this.curUserBaseMaps[i]
+            //         //只保留用户添加的 zhangxt
+            //         if (
+            //           baseMap.DSParams.engineType === 227 ||
+            //           baseMap.DSParams.engineType === 223 ||
+            //           !baseMap.userAdd
+            //         ) {
+            //           continue
+            //         }
+            //         let layerManagerData = {
+            //           title: baseMap.mapName,
+            //           action: () => {
+            //             return OpenData(baseMap, baseMap.layerIndex)
+            //           },
+            //           data: [],
+            //           image: getThemeAssets().layerType.layer_image,
+            //           type: DatasetType.IMAGE,
+            //           themeType: -1,
+            //         }
+            //         layerManagerDataArr.push(layerManagerData)
+            //       }
+            //       data = [
+            //         {
+            //           title: '',
+            //           data: layerManagerDataArr,
+            //         },
+            //       ]
+            //       //'切换底图') {
+            //       ToolbarModule.setData({type:ConstToolType.SM_MAP_LAYER_BASE_CHANGE}) //切换底图前先清空一下module数据避免点击方法调用错误 add jiakai
+            //       this.showFullMap(true)
+            //       this.toolBox?.setVisible(true, ConstToolType.SM_MAP_LAYER_BASE_CHANGE, {
+            //         height: ConstToolType.TOOLBAR_HEIGHT[5],
+            //         containerType:'list',
+            //         data:data,
+            //         isFullScreen: true,
+            //       })
+            //     },
+            //   }
+            //   break
             case MapHeaderButton.Share:
               info = {
                 key: MapHeaderButton.Share,

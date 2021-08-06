@@ -9,6 +9,7 @@ import {
   plotModule,
   editModule,
   toolModule,
+  changeMapModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -31,6 +32,7 @@ export default class MapPlottingConfig extends Module {
       },
       functionModules: [
         startModule,
+        changeMapModule,
         addModule,
         markModule,
         () => plotModule(ConstToolType.SM_MAP_PLOT),

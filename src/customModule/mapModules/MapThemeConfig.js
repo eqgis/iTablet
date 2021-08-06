@@ -9,6 +9,7 @@ import {
   themeModule,
   styleModule,
   toolModule,
+  changeMapModule,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils } from '../../utils'
 
@@ -75,6 +76,7 @@ export default class MapThemeConfig extends Module {
       },
       functionModules: [
         startModule,
+        changeMapModule,
         addModule,
         markModule,
         themeModule,

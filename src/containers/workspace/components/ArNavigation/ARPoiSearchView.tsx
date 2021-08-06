@@ -37,7 +37,7 @@ interface DefaultPOI {
 }
 
 const OnlineService = new OnlineServicesUtils('online')
-
+const dismissKeyboard = require('dismissKeyboard')
 class ARPoiSearchView extends React.PureComponent<Props, State> {
   textInput : TextInput | null = null
 
@@ -152,7 +152,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_GET_LOCATION)
         return
       }
-      GLOBAL.Loading?.setLoading(true)
+      GLOBAL.Loading?.setLoading(true,getLanguage(GLOBAL.language).ARMap.SEARCHING)
       //TODO radius由小到大多次分析
       const searchRadius = this.state.searchRadius
       //在线搜索
@@ -420,6 +420,10 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
             cb: info => {
               this.setState({ searchKey: info })
               this.search(this.state.searchKey)
+              if (Audio.isShow()) {
+                Audio.hideAudio()
+              }
+              dismissKeyboard()
             }
           })}
         >

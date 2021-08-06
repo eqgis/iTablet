@@ -62,11 +62,6 @@ async function getData(type: string, params: {[name: string]: any}) {
           }],
         },
         {
-          title: getLanguage(GLOBAL.language).ARMap.THREE_D,
-          containerType: 'list',
-          getData: get3DData,
-        },
-        {
           title: getLanguage(GLOBAL.language).ARMap.VECTOR,
           data: [
             // {
@@ -107,6 +102,11 @@ async function getData(type: string, params: {[name: string]: any}) {
           ],
         },
         {
+          title: getLanguage(GLOBAL.language).ARMap.THREE_D,
+          containerType: 'list',
+          getData: get3DData,
+        },
+        {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
           getData: getARModel,
         },
@@ -116,42 +116,7 @@ async function getData(type: string, params: {[name: string]: any}) {
         },
       ]
       if (Platform.OS === 'ios') {
-        data = [
-          {
-            title: getLanguage(GLOBAL.language).Prompt.POI,
-            data: [{
-              key: ConstToolType.SM_AR_DRAWING_IMAGE,
-              image: getThemeAssets().ar.functiontoolbar.ar_picture,
-              title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_IMAGE,
-              action: ARDrawingAction.arImage,
-            }, {
-              key: ConstToolType.SM_AR_DRAWING_VIDEO,
-              image: getThemeAssets().ar.functiontoolbar.ar_video,
-              title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_VIDEO,
-              action: ARDrawingAction.arVideo,
-            }, {
-              key: ConstToolType.SM_AR_DRAWING_WEB,
-              image: getThemeAssets().ar.functiontoolbar.ar_webpage,
-              title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
-              action: ARDrawingAction.arWebView,
-            }],
-          },
-          {
-            title: getLanguage(GLOBAL.language).ARMap.VECTOR,
-            data: [
-              {
-                key: ConstToolType.SM_AR_DRAWING_TEXT,
-                image: getThemeAssets().layerType.layer_text,
-                title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
-                action: ARDrawingAction.arText,
-              },
-            ],
-          },
-          {
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
-            getData: getAREffect,
-          },
-        ]
+        data.splice(3, 1)
       }
       break
     }

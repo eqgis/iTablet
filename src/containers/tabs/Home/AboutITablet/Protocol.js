@@ -55,7 +55,7 @@ class Protocol extends Component {
     this.preLoad()
   }
 
-  userHelpPath = '/iTablet/Common/iTablet_help_1011/iTablet_1011.htm'
+  userHelpPath = '/iTablet/Common/iTablet_help_11i(2021)/SuperMap iTablet 11i(2021) help.html'
 
   preLoad = async () => {
     if (this.type === 'userHelp') {
@@ -84,7 +84,7 @@ class Protocol extends Component {
       let JSOnlineService = new OnlineServicesUtils('online')
       let data = await JSOnlineService.getPublicDataByName(
         '927528',
-        'iTablet_help_1011.zip',
+        'iTablet_help_11i(2021).zip',
       )
       let url = `https://www.supermapol.com/web/datas/${data.id}/download`
 

@@ -223,6 +223,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         Toast.show(getLanguage(GLOBAL.language).ARMap.NO_SEARCH_RESULT)
       }
       GLOBAL.Loading?.setLoading(false)
+      dismissKeyboard()
     } else {
       Toast.show(getLanguage(GLOBAL.language).ARMap.PLEASE_INPUT_KEYWORD)
     }
@@ -423,7 +424,6 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
               if (Audio.isShow()) {
                 Audio.hideAudio()
               }
-              dismissKeyboard()
             }
           })}
         >

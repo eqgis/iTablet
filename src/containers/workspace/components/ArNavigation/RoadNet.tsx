@@ -190,6 +190,7 @@ class RoadNet extends React.Component<Props, State> {
           },
           headerTitleViewStyle: {
             textAlign: 'left',
+            marginLeft: scaleSize(80)
           },
         }}
       >

@@ -14,7 +14,6 @@ class changeMapModule extends FunctionModule {
 
   action = async () => {
     const _params = ToolbarModule.getParams()
-    console.warn(_params.user)
     //底图
     this.curUserBaseMaps = _params.baseMaps && _params.baseMaps[
       _params.user.currentUser.userId

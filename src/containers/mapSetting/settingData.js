@@ -308,12 +308,12 @@ const getDetectTypesSettings = () => [
     value: false,
     iconType: 'switch',
   },
-  {
-    key: '显示器',
-    title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TV,
-    value: false,
-    iconType: 'switch',
-  },
+  // {
+  //   key: '显示器',
+  //   title: getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TV,
+  //   value: false,
+  //   iconType: 'switch',
+  // },
 ]
 // 识别框风格设置
 const getDetectStyleSettings = () => [

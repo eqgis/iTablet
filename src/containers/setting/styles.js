@@ -18,7 +18,7 @@ export default StyleSheet.create({
   row: {
     flex: 1,
     flexDirection: 'row',
-    height: scaleSize(114),
+    height: scaleSize(80),
     backgroundColor: color.bgW,
     paddingHorizontal: scaleSize(50),
     alignItems: 'center',
@@ -29,16 +29,16 @@ export default StyleSheet.create({
     height: scaleSize(60),
   },
   sectionsTitle: {
-    color: color.fontColorBlack,
+    color: '#505050',
     fontSize: setSpText(26),
     marginLeft: scaleSize(46),
   },
   itemName: {
-    color: '#303030',
+    color: '#505050',
     fontSize: setSpText(26),
   },
   switchText: {
-    color: '#303030',
+    color: '#505050',
     fontSize: setSpText(26),
   },
   itemValue: {

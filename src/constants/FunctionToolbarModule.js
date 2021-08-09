@@ -60,7 +60,7 @@ async function OpenData(data, index, callback) {
       }
     }
 
-    SMap.viewEntire()
+    // SMap.viewEntire()
     Toast.show(getLanguage(GLOBAL.language).Prompt.CHANGE_SUCCESS)
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)

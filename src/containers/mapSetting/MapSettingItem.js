@@ -14,26 +14,29 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     width: '100%',
-    height: scaleSize(112),
+    height: scaleSize(80),
     alignItems: 'center',
     paddingLeft: scaleSize(50),
     paddingRight: scaleSize(50),
   },
   icon: {
-    width: scaleSize(60),
-    height: scaleSize(60),
+    width: scaleSize(48),
+    height: scaleSize(48),
+    // marginRight: scaleSize(30),
   },
   itemText: {
     // lineHeight: scaleSize(28),
     padding: 0,
     flex: 1,
     textAlign: 'left',
-    fontSize: size.fontSize.fontSizeXl,
-    color: color.itemColorGray,
+    // fontSize: size.fontSize.fontSizeXl,
+    // color: color.itemColorGray,
+    fontSize: scaleSize(26),
+    color: '#505050',
   },
   arrowImg: {
-    width: scaleSize(44),
-    height: scaleSize(44),
+    width: scaleSize(40),
+    height: scaleSize(40),
   },
 })
 
@@ -102,7 +105,7 @@ export default class MapSettingItem extends PureComponent {
         <Text
           style={[
             styles.itemText,
-            this.props.leftImage && { marginLeft: scaleSize(46) },
+            this.props.leftImage && { marginLeft: scaleSize(40) },
           ]}
           numberOfLines={2}
           ellipsizeMode="tail"

@@ -49,6 +49,6 @@ export default StyleSheet.create({
   itemSeparator: {
     height: scaleSize(2),
     backgroundColor: color.itemColorGray2,
-    marginLeft: scaleSize(150),
+    marginLeft: scaleSize(140),
   },
 })

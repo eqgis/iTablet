@@ -49,6 +49,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_PERMISSION_ALERT: 'التطبيق ليس لديه أذونات كافية للتشغيل',
   EXIT: 'خروج',
+  CONTINUE: 'Continue',// need to translate
   REQUEST_PERMISSION: 'طلب',
 
   OPENING: 'جارى الفتح',

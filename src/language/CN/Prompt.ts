@@ -45,8 +45,9 @@ const Prompt = {
   CONFIRM: '确定',
   COMPLETE: '完成',
 
-  NO_PERMISSION_ALERT: '应用缺少运行所需的权限！',
+  NO_PERMISSION_ALERT: '应用缺少运行所需的权限,\n会导致部分功能不能正常使用！',
   EXIT: '退出',
+  CONTINUE: '继续',
   REQUEST_PERMISSION: '申请权限',
 
   OPENING: '正在打开',

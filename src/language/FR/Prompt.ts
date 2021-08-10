@@ -49,6 +49,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_PERMISSION_ALERT: "L’application n’a pas les autorisations nécessaires pour s’exécuter",
   EXIT: 'Sortie',
+  CONTINUE: 'Continue',// need to translate
   REQUEST_PERMISSION: 'Demande',
 
   OPENING: 'Ouverture',

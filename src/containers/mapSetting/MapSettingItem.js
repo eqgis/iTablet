@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
     padding: 0,
     flex: 1,
     textAlign: 'left',
-    // fontSize: size.fontSize.fontSizeXl,
+    fontSize: size.fontSize.fontSizeXl,
     // color: color.itemColorGray,
-    fontSize: scaleSize(26),
+    // fontSize: setSpText(26),
     color: '#505050',
   },
   arrowImg: {

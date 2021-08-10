@@ -23,6 +23,7 @@ async function OpenData(data, index, callback) {
   }
   // Layer index = 0 为顶层
   if (isOpen) {
+    let info = await SMap.getMapInfo()
     if (layers.length > 0) {
       let baseMap = layers.filter(layer => {
         return LayerUtils.isBaseLayer(layer)
@@ -59,6 +60,9 @@ async function OpenData(data, index, callback) {
         await SMediaCollector.showMedia(_layer.name)
       }
     }
+
+    //切换底图后设置比例尺中心点等 add jiakai
+    SMap.setMapInfo({scale:info.scale,centerx:info.center.x,centery:info.center.y,prjCoordSys:info.prjCoordSys})
 
     // SMap.viewEntire()
     Toast.show(getLanguage(GLOBAL.language).Prompt.CHANGE_SUCCESS)

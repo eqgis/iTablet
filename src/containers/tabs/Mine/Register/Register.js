@@ -35,7 +35,7 @@ export default class Register extends React.Component {
     super(props)
     this.state = {
       verifyTime: 0,
-      readProtocal: true,
+      readProtocal: false,
       behavior: 'padding',
     }
     this.telArea = '86'

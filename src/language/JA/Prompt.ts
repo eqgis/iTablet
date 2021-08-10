@@ -46,6 +46,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_PERMISSION_ALERT: '実行に必要な権限はありません',
   EXIT: '閉じる',
+  CONTINUE: 'Continue',// need to translate
   REQUEST_PERMISSION: '権限の申請',
 
   CONFIRM: 'OK',

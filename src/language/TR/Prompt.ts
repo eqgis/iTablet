@@ -49,6 +49,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_PERMISSION_ALERT: 'İzin Yok',
   EXIT: 'Çıkış',
+  CONTINUE: 'Continue',// need to translate
   REQUEST_PERMISSION: 'İstek',
 
   OPENING: 'Açılıyor',

@@ -489,8 +489,8 @@ class AppRoot extends Component {
     } else {
       GLOBAL.SimpleDialog.set({
         text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
-        cancelText: getLanguage(this.props.language).Prompt.EXIT,
-        cancelAction: AppUtils.AppExit,
+        cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
+        cancelAction: /*AppUtils.AppExit*/this.init(),
         confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
         confirmAction: this.requestPermission,
       })

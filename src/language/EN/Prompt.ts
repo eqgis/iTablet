@@ -49,6 +49,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_PERMISSION_ALERT: 'Doesn\'t have permission to run the application',
   EXIT: 'Exit',
+  CONTINUE: 'Continue',
   REQUEST_PERMISSION: 'Request Permission',
 
   OPENING: 'Opening',

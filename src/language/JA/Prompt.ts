@@ -44,6 +44,7 @@ const Prompt: typeof CN.Prompt = {
   DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: '目標ポイントを追加してください',
 
+  NO_PERMISSION: 'Doesn\'t have permission',// need to translate
   NO_PERMISSION_ALERT: '実行に必要な権限はありません',
   EXIT: '閉じる',
   CONTINUE: 'Continue',// need to translate

@@ -135,19 +135,19 @@ class Report extends Component {
           onPress={() => {
             GLOBAL.Loading?.setLoading(true,getLanguage(this.language).Friends.SENDING)
             this.timer = setTimeout(() => {
-              SMessageServiceHTTP.sendMessage(
-                {
-                  "message": this.state.selectedData,
-                  "type": 1,
-                  "user": {
-                    "name": this.props.navigation.getParam('user').userName,
-                    "id": this.props.navigation.getParam('user').userId,
-                    "groupID": this.props.navigation.getParam('user').userId,
-                  },
-                  "time": new Date().getTime(),
-                },
-                ["927528"],
-              )
+              // SMessageServiceHTTP.sendMessage(
+              //   {
+              //     "message": this.state.selectedData,
+              //     "type": 1,
+              //     "user": {
+              //       "name": this.props.navigation.getParam('user').userName,
+              //       "id": this.props.navigation.getParam('user').userId,
+              //       "groupID": this.props.navigation.getParam('user').userId,
+              //     },
+              //     "time": new Date().getTime(),
+              //   },
+              //   ["927528"],
+              // )
               Toast.show(
                 getLanguage(this.language).Friends.REPORT_SUCCESS
               )

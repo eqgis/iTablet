@@ -94,6 +94,7 @@ const Profile: typeof CN.Profile = {
 
   SWITCH_ACCOUNT: 'アカウントの切替',
   LOG_OUT: 'ログアウト',
+  CANCELLATION:'Cancellation',//need to translate
 
   SWITCH: '切替',
   SWITCH_CURRENT: '現在ユーザーを使用中、切替できません',

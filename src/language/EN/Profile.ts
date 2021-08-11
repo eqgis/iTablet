@@ -94,6 +94,7 @@ const Profile: typeof CN.Profile = {
 
   SWITCH_ACCOUNT: 'Switch Account',
   LOG_OUT: 'Log out',
+  CANCELLATION:'Cancellation',//need to translate
 
   SWITCH: 'Switch',
   SWITCH_CURRENT: 'You are already logged in with this account',

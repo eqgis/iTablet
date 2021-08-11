@@ -47,6 +47,7 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM: 'تأكيد',
   COMPLETE: 'اكتمال',
 
+  NO_PERMISSION: 'Doesn\'t have permission',// need to translate
   NO_PERMISSION_ALERT: 'التطبيق ليس لديه أذونات كافية للتشغيل',
   EXIT: 'خروج',
   CONTINUE: 'Continue',// need to translate

@@ -47,6 +47,7 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM: 'Onayla',
   COMPLETE: 'Tamamla',
 
+  NO_PERMISSION: 'Doesn\'t have permission',// need to translate
   NO_PERMISSION_ALERT: 'İzin Yok',
   EXIT: 'Çıkış',
   CONTINUE: 'Continue',// need to translate

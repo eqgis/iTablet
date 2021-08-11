@@ -8,7 +8,7 @@ import UserType from '../../../../constants/UserType'
 import NavigationService from '../../../NavigationService'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import styles from './styles'
-import { scaleSize } from '../../../../utils'
+import { scaleSize ,OnlineServicesUtils} from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { SimpleDialog } from '../../Friend'
 import { getPublicAssets } from '../../../../assets'
@@ -234,6 +234,34 @@ export default class Personal extends Component {
     )
   }
 
+  _renderCancelLog = () => {
+    return (
+      <TouchableOpacity
+        accessible={true}
+        accessibilityLabel={''}
+        activeOpacity={0.8}
+        style={styles.item2}
+        onPress={async () => {
+          const JSOnlineService = new OnlineServicesUtils('online')
+          const currentUser = this.props.user.currentUser
+          SOnlineService.removeCookie()
+          await JSOnlineService.cancellation(currentUser.nickname, currentUser.password)
+          this.props.navigation.navigate('WebView')
+        }}
+      >
+        <Text
+          style={{
+            fontSize: size.fontSize.fontSizeXl,
+            color: color.fontColorBlack,
+          }}
+        >
+          {getLanguage(GLOBAL.language).Profile.CANCELLATION}
+          {/* 注销 */}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
   _renderLogout = () => {
     return (
       <TouchableOpacity
@@ -277,6 +305,8 @@ export default class Personal extends Component {
           {this.renderHeader()}
           {this._renderLine()}
           {this._renderToggleAccount()}
+          {this._renderLine()}
+          {this._renderCancelLog()}
           {this._renderLine()}
           {this._renderLogout()}
           {this._renderSimpleDialog()}

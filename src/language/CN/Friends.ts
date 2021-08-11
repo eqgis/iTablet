@@ -266,5 +266,17 @@ const Friends = {
   INVITE_GROUP_MEMBERS_ERROR_2: '群组已经邀请过该用户',
 
   REPORT: '举报',
+  SENDING: '发送中',
+  REPORT_SUCCESS: '举报成功',
+  PRIVATE_REPORT: '私信举报',
+
+  INAPPROPRIATE: '发布不适当内容对我造成骚扰',
+  ADVERTISING: '垃圾广告、售卖假货等',
+  PORNOGRAPHIC: '色情低俗',
+  ILLEGAL: '违法犯罪',
+  INFORMATION: '时政不实信息',
+  MINOR:'未成年相关',
+  SUSPECTED:'涉嫌诈骗',
+  EMBEZZLED:'此账号可能被盗用',
 }
 export { Friends }

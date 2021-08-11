@@ -163,9 +163,13 @@ class ManageFriend extends Component {
         <TouchableItemView
           //举报
           image={getThemeAssets().friend.friend_report}
+          imageStyle={{
+            width: scaleSize(40),
+            height: scaleSize(40),
+          }}
           text={getLanguage(this.language).Friends.REPORT}
           onPress={() => {
-            NavigationService.navigate('Report')
+            NavigationService.navigate('Report',{user: this.user})
           }}
         />
         {/* {删除好友} */}

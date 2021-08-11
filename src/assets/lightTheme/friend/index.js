@@ -14,6 +14,7 @@ const add_friends = require('./icon_nav_add_friends.png')
 const contact_photo = require('./icon_contact_photo.png')
 const new_chat = require('./contact_new_chat_light.png')
 const icon_notice = require('./icon_notice.png')
+const friend_report = require('./friend_report.png')
 
 export default {
   friend_addMenu,
@@ -32,4 +33,5 @@ export default {
   contact_photo,
   new_chat,
   icon_notice,
+  friend_report,
 }

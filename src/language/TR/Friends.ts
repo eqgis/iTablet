@@ -267,5 +267,7 @@ const Friends: typeof CN.Friends = {
   INVITE_GROUP_MEMBERS_INFO: 'Üyeler hemen davet edilsin mi?',
   INVITE_GROUP_MEMBERS_ERROR_1: 'Kullanıcı zaten mevcut',
   INVITE_GROUP_MEMBERS_ERROR_2: 'Grup, kullanıcıyı davet etti',
+
+  REPORT: 'report',//need to translate
 }
 export { Friends }

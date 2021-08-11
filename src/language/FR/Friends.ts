@@ -266,5 +266,7 @@ const Friends: typeof CN.Friends = {
   INVITE_GROUP_MEMBERS_INFO: 'Inviter les membres immédiatement?',
   INVITE_GROUP_MEMBERS_ERROR_1: "L'utilisateur existe déjà",
   INVITE_GROUP_MEMBERS_ERROR_2: 'Le groupe a invité un utilisateur',
+
+  REPORT: 'report',//need to translate
 }
 export { Friends }

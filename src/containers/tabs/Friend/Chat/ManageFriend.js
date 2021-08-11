@@ -160,6 +160,14 @@ class ManageFriend extends Component {
             })
           }}
         />
+        <TouchableItemView
+          //举报
+          image={getThemeAssets().friend.friend_report}
+          text={getLanguage(this.language).Friends.REPORT}
+          onPress={() => {
+            NavigationService.navigate('Report')
+          }}
+        />
         {/* {删除好友} */}
         <TouchableOpacity
           style={{ alignItems: 'center', paddingVertical: scaleSize(20) }}

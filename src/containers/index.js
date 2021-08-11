@@ -183,6 +183,7 @@ import ARMapSetting from './arMapSettings/ARMapSetting'
 import ServiceShareSettings from './serviceShareSettings'
 import NavigationView2D from './workspace/components/ArNavigation/NavigationView2D'
 import RoadNet from './workspace/components/ArNavigation/RoadNet'
+import Report from '../containers/tabs/Friend/Chat/Report'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -1312,6 +1313,12 @@ export default function(appConfig) {
       },
       RoadNet: {
         screen: RoadNet,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      Report: {
+        screen: Report,
         navigationOptions: {
           header: null,
         },

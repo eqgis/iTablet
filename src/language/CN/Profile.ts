@@ -103,6 +103,7 @@ const Profile = {
 
   SWITCH_ACCOUNT: '切换账号',
   LOG_OUT: '退出登录',
+  CANCELLATION:'注销',
 
   SWITCH: '切换',
   SWITCH_CURRENT: '处于当前用户下，不可切换',

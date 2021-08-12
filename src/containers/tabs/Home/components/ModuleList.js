@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, NetInfo, ScrollView } from 'react-native'
+import { View, StyleSheet, NetInfo, ScrollView ,  PermissionsAndroid ,NativeModules ,Platform} from 'react-native'
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { Module } from '../../../../class'
@@ -21,6 +21,7 @@ import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import SizeUtil from '../SizeUtil'
+let AppUtils = NativeModules.AppUtils
 
 async function composeWaiting(action) {
   if (GLOBAL.clickWait) return
@@ -53,6 +54,7 @@ class ModuleList extends Component {
     setOldMapModule: () => {},
     setIgnoreDownload: () => {},
     setSampleDataShow: () => {},
+    itemAction: () =>{},
   }
 
   constructor(props) {
@@ -298,6 +300,29 @@ class ModuleList extends Component {
 
   itemAction = async (language, { item, index }) => {
     try {
+      if (Platform.OS === 'android') {
+        const results = await PermissionsAndroid.requestMultiple([
+          'android.permission.READ_PHONE_STATE',
+          'android.permission.ACCESS_FINE_LOCATION',
+          'android.permission.READ_EXTERNAL_STORAGE',
+          'android.permission.WRITE_EXTERNAL_STORAGE',
+          'android.permission.CAMERA',
+          'android.permission.RECORD_AUDIO',
+        ])
+        let isAllGranted = true
+        for (let key in results) {
+          isAllGranted = results[key] === 'granted' && isAllGranted
+        }
+        //申请 android 11 读写权限
+        let permisson11 = await AppUtils.requestStoragePermissionR()
+        if (isAllGranted && permisson11) {
+          // this.init()
+        } else {
+          this.props.itemAction()
+          return
+        }
+      }
+
       if (item.key === ChunkType.MAP_AR_MAPPING) {
         const isSupportedARCore = await SMeasureView.isSupportedARCore()
         if (!isSupportedARCore) {

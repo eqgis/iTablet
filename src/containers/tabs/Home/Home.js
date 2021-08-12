@@ -9,6 +9,7 @@ import {
   Platform,
   NetInfo,
   ScrollView,
+  PermissionsAndroid,
 } from 'react-native'
 import { Container, Dialog, PopMenu, Button } from '../../../components'
 import { ModuleList } from './components'
@@ -1051,6 +1052,36 @@ export default class Home extends Component {
     return <TabBar navigation={this.props.navigation} />
   }
 
+  requestPermission = async () => {
+    const results = await PermissionsAndroid.requestMultiple([
+      'android.permission.READ_PHONE_STATE',
+      'android.permission.ACCESS_FINE_LOCATION',
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+      'android.permission.CAMERA',
+      'android.permission.RECORD_AUDIO',
+    ])
+    let isAllGranted = true
+    for (let key in results) {
+      isAllGranted = results[key] === 'granted' && isAllGranted
+    }
+    //申请 android 11 读写权限
+    let permisson11 = await appUtilsModule.requestStoragePermissionR()
+    if (isAllGranted && permisson11) {
+      // this.init()
+    } else {
+      this._closeModal()
+      this.SimpleDialog.set({
+        text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
+        cancelText: getLanguage(this.props.language).Prompt.CANCEL,
+        cancelAction: this.SimpleDialog.setVisible(false),
+        confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
+        confirmAction: this.requestPermission,
+      })
+      this.SimpleDialog.setVisible(true)
+    }
+  }
+
   render() {
     this.width = screen.getScreenWidth(this.props.device.orientation) - screen.getScreenWidth(this.props.device.orientation) / 6
     this.height = scaleSize(600)
@@ -1096,6 +1127,17 @@ export default class Home extends Component {
               latestMap={this.props.latestMap}
               oldMapModules={this.props.appConfig.oldMapModules}
               mapModules={this.props.mapModules}
+              itemAction={() => {
+                this._closeModal()
+                this.SimpleDialog.set({
+                  text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
+                  cancelText: getLanguage(this.props.language).Prompt.CANCEL,
+                  cancelAction: this.SimpleDialog.setVisible(false),
+                  confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
+                  confirmAction: this.requestPermission,
+                })
+                this.SimpleDialog.setVisible(true)
+              }}
             />
             {this.renderPopMenu()}
             {this.renderDialog()}

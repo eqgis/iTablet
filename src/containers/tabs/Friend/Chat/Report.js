@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import LocalDataItem from './LocalDataItem'
 import { getLanguage } from '../../../../language/index'
 import { scaleSize ,setSpText,Toast} from '../../../../utils'
+import SMessageServiceHTTP from '../SMessageServiceHTTP'
 
 // let AppUtils = NativeModules.AppUtils
 
@@ -23,28 +24,28 @@ class Report extends Component {
     this.state = {
       data: [
         {
-          name: '发布不是当内容对我造成骚扰',
+          name: getLanguage(this.language).Friends.INAPPROPRIATE,
         },
         {
-          name: '垃圾广告、售卖假货等',
+          name: getLanguage(this.language).Friends.ADVERTISING,
         },
         {
-          name: '色情低俗',
+          name: getLanguage(this.language).Friends.PORNOGRAPHIC,
         },
         {
-          name: '违法犯罪',
+          name: getLanguage(this.language).Friends.ILLEGAL,
         },
         {
-          name: '时政不实信息',
+          name: getLanguage(this.language).Friends.INFORMATION,
         },
         {
-          name: '未成年相关',
+          name: getLanguage(this.language).Friends.MINOR,
         },
         {
-          name: '涉嫌诈骗',
+          name: getLanguage(this.language).Friends.SUSPECTED,
         },
         {
-          name: '此账号可能被盗用',
+          name: getLanguage(this.language).Friends.EMBEZZLED,
         },
       ],
       selectedData:[],
@@ -110,7 +111,7 @@ class Report extends Component {
         headerProps={{
           withoutBack: false,
           navigation: this.props.navigation,
-          title:'私信举报',
+          title:getLanguage(this.language).Friends.PRIVATE_REPORT,
           headerTitleViewStyle: {
             textAlign: 'left',
             marginLeft: scaleSize(80),
@@ -132,10 +133,23 @@ class Report extends Component {
             backgroundColor: backgroundColor,
           }}
           onPress={() => {
-            GLOBAL.Loading?.setLoading(true)
+            GLOBAL.Loading?.setLoading(true,getLanguage(this.language).Friends.SENDING)
             this.timer = setTimeout(() => {
+              // SMessageServiceHTTP.sendMessage(
+              //   {
+              //     "message": this.state.selectedData,
+              //     "type": 1,
+              //     "user": {
+              //       "name": this.props.navigation.getParam('user').userName,
+              //       "id": this.props.navigation.getParam('user').userId,
+              //       "groupID": this.props.navigation.getParam('user').userId,
+              //     },
+              //     "time": new Date().getTime(),
+              //   },
+              //   ["927528"],
+              // )
               Toast.show(
-                "举报成功"
+                getLanguage(this.language).Friends.REPORT_SUCCESS
               )
               GLOBAL.Loading?.setLoading(false)
               clearTimeout(this.timer)

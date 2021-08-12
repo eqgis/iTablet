@@ -184,6 +184,7 @@ import ServiceShareSettings from './serviceShareSettings'
 import NavigationView2D from './workspace/components/ArNavigation/NavigationView2D'
 import RoadNet from './workspace/components/ArNavigation/RoadNet'
 import Report from '../containers/tabs/Friend/Chat/Report'
+import WebView from '../components/WebView'
 
 export default function(appConfig) {
   return createStackNavigator(
@@ -668,6 +669,13 @@ export default function(appConfig) {
       },
       SampleMap: {
         screen: SampleMap,
+        navigationOptions: {
+          header: null,
+          // gesturesEnabled: true,
+        },
+      },
+      WebView: {
+        screen: WebView,
         navigationOptions: {
           header: null,
           // gesturesEnabled: true,

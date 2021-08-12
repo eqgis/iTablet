@@ -47,6 +47,7 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM: 'Confirm',
   COMPLETE: 'Complete',
 
+  NO_PERMISSION: 'Doesn\'t have permission',
   NO_PERMISSION_ALERT: 'Doesn\'t have permission to run the application',
   EXIT: 'Exit',
   CONTINUE: 'Continue',

@@ -94,6 +94,7 @@ const Profile: typeof CN.Profile = {
 
   SWITCH_ACCOUNT: 'Hesap Değiştir',
   LOG_OUT: 'Oturumu Kapat',
+  CANCELLATION:'Cancellation',//need to translate
 
   SWITCH: 'Değiştir',
   SWITCH_CURRENT: 'Bu kullanıcı ile zaten giriş yaptınız',

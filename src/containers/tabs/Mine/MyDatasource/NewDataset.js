@@ -272,7 +272,7 @@ class NewDataset extends Component {
     // 设置投影坐标系
     _setProjection = (item, index) => {
       NavigationService.navigate('ProjectionTargetCoordsPage',{
-        title: getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS,
+        title: getLanguage(GLOBAL.language).Analyst_Labels.COORDSYS,
         // 投影坐标系选择界面确定时回调
         cb: targetCoords =>{
           NavigationService.goBack()
@@ -355,7 +355,7 @@ class NewDataset extends Component {
         {/* 设置数据集投影 */}
         <View style={{marginBottom:scaleSize(10)}}>
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS}
+            {getLanguage(GLOBAL.language).Analyst_Labels.COORDSYS}
           </Text>
           <TouchableOpacity onPress={()=>{
             this._setProjection(item,index)

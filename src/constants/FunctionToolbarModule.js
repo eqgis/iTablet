@@ -57,7 +57,7 @@ async function OpenData(data, index, callback) {
       let isMediaLayer = await SMediaCollector.isMediaLayer(_layer.name)
       if (_layer.isVisible && isMediaLayer) {
         await SMediaCollector.hideMedia(_layer.name)
-        await SMediaCollector.showMedia(_layer.name)
+        await SMediaCollector.showMedia(_layer.name,false)
       }
     }
 

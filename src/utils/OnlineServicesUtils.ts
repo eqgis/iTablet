@@ -1,4 +1,5 @@
 import { request } from './index'
+// import {cheerio as ch }from 'cheerio'
 import cheerio from 'react-native-cheerio'
 import { SOnlineService, SIPortalService ,SMap} from 'imobile_for_reactnative'
 import { Platform } from 'react-native'
@@ -250,12 +251,19 @@ export default class OnlineServicesUtils {
       let dataServiceIds = result.customResult.split(',')
       for (const dataServiceId of dataServiceIds) {
         let publishResultUrl = this.serverUrl + `/mycontent/datas/${id}/publishstatus.rjson?dataServiceId=${dataServiceId}&forPublish=true`
-        let publishResult = await request(encodeURI(publishResultUrl), 'GET', {
-          headers: headers,
-          body: null,
-        })
-        publishResult.customResult = dataServiceId
-        publishResults.push(publishResult)
+        let publishResult
+        let overTime = 0 // 防止发布服务获取结果超时,返回undefined
+        while (!publishResult && overTime < 3) {
+          publishResult = await request(encodeURI(publishResultUrl), 'GET', {
+            headers: headers,
+            // body: null,
+          })
+          overTime++
+        }
+        if (publishResult) {
+          publishResult.customResult = dataServiceId
+          publishResults.push(publishResult)
+        }
       }
 
       return publishResults
@@ -597,20 +605,21 @@ export default class OnlineServicesUtils {
    async cancellation(userName: string, password: string): Promise<string> {
      try {
        let url =
-         // 'https://sso.supermap.com/account/manager/manager.do?manager=accountInfo'
+        //  'https://sso.supermap.com/account/manager/manager.do?manager=accountInfo'
          'https://sso.supermap.com/login?service=https%3A%2F%2Fsso.supermap.com%2Faccount%2Fmanager%2Fmanager.do%3Fmanager%3DaccountInfo'
 
        await CookieManager.clearAll()
        //请求登陆页面
        let response = await axios.get(encodeURI(url))
        let $ = cheerio.load(response.data)
+
        let cookie
        if (response.headers['set-cookie']) {
          cookie = response.headers['set-cookie'][0]
          cookie = cookie.substr(0, cookie.indexOf(';'))
        }
-
        let paramObj = {
+         loginType: '',
          username: userName,
          password: password,
          lt: $('input[name=lt]').attr().value,
@@ -630,7 +639,7 @@ export default class OnlineServicesUtils {
 
        return this.cookie
      } catch (e) {
-      console.warn(e)
+      // console.warn(e)
        return 'false'
      }
 

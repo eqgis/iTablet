@@ -414,6 +414,24 @@ async function getAvailableFileName(path, name, ext) {
   }
 }
 
+/**
+ * 获取url中指定参数
+ * @param {*} url
+ * @param {*} key
+ * @returns string
+ */
+function getUrlQueryVariable(url, key) {
+  let varStr = url.split("?")[1]
+  let vars = varStr.split("&")
+  for (const item of vars) {
+    let pair = item.split("=")
+    if(pair[0] == key) {
+      return pair[1]
+    }
+  }
+  return ''
+}
+
 export default {
   sortByPinYin,
   pySegSort,
@@ -441,4 +459,6 @@ export default {
   xml2js,
 
   deepClone,
+
+  getUrlQueryVariable,
 }

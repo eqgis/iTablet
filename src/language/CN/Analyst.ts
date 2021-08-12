@@ -256,6 +256,7 @@ const Analyst_Labels = {
   CONVERT_SUCCESS: '转换成功',
   CONVERT_FAILED: '转换失败',
   ARITHMETIC: '算法',
+  COORDSYS:'坐标系',
 }
 
 const Convert_Unit = {

@@ -64,7 +64,7 @@ const RelativeFilePath = {
   Animation: `${Data}Animation/`,
   Rectify: `${Data}Rectify/`,
   NaviWorkspace: `${Data}Workspace/`,
-  Image: `${Data}Workspace/`,
+  Image: `${Data}Image/`,
 }
 
 // 默认创建的目录

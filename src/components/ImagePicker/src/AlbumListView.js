@@ -93,16 +93,18 @@ export default class AlbumListView extends React.PureComponent {
           imgPath,
           'png, jpg, jpeg',
         )
-        images.map(item => {
-          item.filename = item.name
-          item.uri = item.path
-          delete item.name
-          delete item.path
-        })
-        data.unshift({
-          name: 'iTablet',
-          value: images,
-        })
+        if (images.length) {
+          images.map(item => {
+            item.filename = item.name
+            item.uri = item.path
+            delete item.name
+            delete item.path
+          })
+          images.length && data.unshift({
+            name: 'iTablet',
+            value: images,
+          })
+        }
       }
       this.setState({ data })
     }.bind(this)())

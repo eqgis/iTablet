@@ -250,12 +250,19 @@ export default class OnlineServicesUtils {
       let dataServiceIds = result.customResult.split(',')
       for (const dataServiceId of dataServiceIds) {
         let publishResultUrl = this.serverUrl + `/mycontent/datas/${id}/publishstatus.rjson?dataServiceId=${dataServiceId}&forPublish=true`
-        let publishResult = await request(encodeURI(publishResultUrl), 'GET', {
-          headers: headers,
-          body: null,
-        })
-        publishResult.customResult = dataServiceId
-        publishResults.push(publishResult)
+        let publishResult
+        let overTime = 0 // 防止发布服务获取结果超时,返回undefined
+        while (!publishResult && overTime < 3) {
+          publishResult = await request(encodeURI(publishResultUrl), 'GET', {
+            headers: headers,
+            // body: null,
+          })
+          overTime++
+        }
+        if (publishResult) {
+          publishResult.customResult = dataServiceId
+          publishResults.push(publishResult)
+        }
       }
 
       return publishResults

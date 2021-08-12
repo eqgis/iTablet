@@ -6,8 +6,8 @@
 import * as React from 'react'
 import { View, Animated, FlatList, TouchableOpacity, Platform, Easing } from 'react-native'
 import { MTBtn } from '../../../../components'
-import { ConstToolType, Const, ChunkType, Height, UserType } from '../../../../constants'
-import { scaleSize, Toast, screen, LayerUtils, OnlineServicesUtils } from '../../../../utils'
+import { ConstToolType, Const, ChunkType, Height, UserType, ConstPath } from '../../../../constants'
+import { scaleSize, Toast, screen, LayerUtils, OnlineServicesUtils, dataUtil } from '../../../../utils'
 import { SMap, DatasetType, SCoordination, SMediaCollector } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Bar } from 'react-native-progress'
@@ -24,6 +24,8 @@ import styles, {
 } from './styles'
 import ImageResizer from 'react-native-image-resizer'
 import { serviceModule } from '../../../workspace/components/ToolBar/modules'
+import * as RNFS from 'react-native-fs'
+import { FileTools } from '../../../../native'
 
 const COLLECTION = 'COLLECTION'
 const NETWORK = 'NETWORK'
@@ -393,9 +395,26 @@ export default class FunctionToolbar extends React.Component {
                     if (GLOBAL.coworkMode) {
                       let resourceIds = [],
                         _mediaPaths = [] // 保存修改名称后的图片地址
+                      let name = '', suffix = ''
                       for (let mediaPath of mediaPaths) {
-                        let name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
-                        let suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
+                        let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+                        if (mediaPath.indexOf('assets-library://') === 0) { // 处理iOS相册文件
+                          suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext')?.toLowerCase() || ''
+                          name = dataUtil.getUrlQueryVariable(mediaPath, 'id')?.toLowerCase() || ''
+                          dest += `${name}.${suffix}`
+                          mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
+                        } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件
+                          let filePath = await FileTools.getContentAbsolutePathAndroid(mediaPath)
+                          name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'))
+                          suffix = filePath.substr(filePath.lastIndexOf('.') + 1)
+                          dest += `${name}.${suffix}`
+                          await RNFS.copyFile(filePath, dest)
+                          mediaPath = dest
+                        } else { // 处理文件目录中的文件
+                          name = mediaPath.substring(mediaPath.lastIndexOf('/') + 1, mediaPath.lastIndexOf('.'))
+                          suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
+                          dest += `${name}.${suffix}`
+                        }
                         //获取缩略图
                         // let resizedImageUri = await ImageResizer.createResizedImage(
                         //   mediaPath,
@@ -408,22 +427,28 @@ export default class FunctionToolbar extends React.Component {
                         // )
                         let resourceId = await this.onlineServicesUtils.uploadFile(
                           mediaPath,
-                          name,
+                          `${name}.${suffix}`,
                           'PHOTOS',
                         )
                         // await RNFS.unlink(resizedImageUri.path)
                         // TODO是否删除原图
-                        resourceIds.push(resourceId)
-
-                        let _newPath = `${mediaPath.replace(name, resourceId)}.${suffix}`
-                        _mediaPaths.push(_newPath)
+                        if (resourceId) {
+                          resourceIds.push(resourceId)
+  
+                          let _newPath = `${mediaPath.replace(name, resourceId)}`
+                          _mediaPaths.push(_newPath)
+                        }
                       }
-                      let result = await SMediaCollector.addMedia({
-                        datasourceName,
-                        datasetName,
-                        mediaPaths,
-                        mediaIds: resourceIds,
-                      })
+                      if (resourceIds.length > 0) {
+                        let result = await SMediaCollector.addMedia({
+                          datasourceName,
+                          datasetName,
+                          mediaPaths,
+                          mediaIds: resourceIds,
+                        })
+                      } else {
+                        Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
+                      }
                       // if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)) {
                       //   result = await SMediaCollector.updateTour(this.props.currentLayer.name)
                       // }
@@ -443,8 +468,6 @@ export default class FunctionToolbar extends React.Component {
                           Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
                         })
                       }
-                    } else {
-                      console.warn(GLOBAL.coworkMode)
                     }
                   } catch (e) {
                     console.warn('error')

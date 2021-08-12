@@ -167,6 +167,7 @@ class ManageFriend extends Component {
             width: scaleSize(40),
             height: scaleSize(40),
           }}
+          itemStyle={{paddingLeft: scaleSize(8)}}
           text={getLanguage(this.language).Friends.REPORT}
           onPress={() => {
             NavigationService.navigate('Report',{user: this.user})

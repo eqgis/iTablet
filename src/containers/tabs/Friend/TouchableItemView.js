@@ -19,6 +19,7 @@ export default class TouchableItemView extends Component {
     imageStyle: {},
     textStyle: {},
     seperatorStyle: {},
+    itemStyle: {},
   }
 
   constructor(props) {
@@ -80,7 +81,7 @@ export default class TouchableItemView extends Component {
             ? false
             : this.props.disableTouch
         }
-        style={styles.touchView}
+        style={[styles.touchView,this.props.itemStyle]}
         onPress={this.props.onPress}
       >
         {this.renderImage()}

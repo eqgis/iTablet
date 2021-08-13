@@ -19,6 +19,7 @@ export default class SimpleDialog extends PureComponent {
     buttonMode?: String,
     confirmTitleStyle?: Object,
     cancelTitleStyle?: Object,
+    cancelBtnVisible?:boolean,
   }
 
   static defaultProps = {
@@ -175,6 +176,7 @@ export default class SimpleDialog extends PureComponent {
         // ]}
         disableBackTouch={this.state.disableBackTouch}
         buttonMode={this.state.buttonMode}
+        cancelBtnVisible={this.props.cancelBtnVisible}
       >
         {this.state.renderCustomeView ? (
           this.state.renderCustomeView()

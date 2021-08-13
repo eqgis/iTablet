@@ -531,7 +531,12 @@ export default class Home extends Component {
   }
 
   _renderSimpleDialog = () => {
-    return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
+    return (
+      <SimpleDialog
+        ref={ref => (this.SimpleDialog = ref)}
+        cancelBtnVisible={false}
+      />
+    )
   }
 
   //首页新手引导 add jiakai
@@ -1132,10 +1137,10 @@ export default class Home extends Component {
                 this._closeModal()
                 this.SimpleDialog.set({
                   text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
-                  cancelText: getLanguage(this.props.language).Prompt.CANCEL,
-                  cancelAction: this.SimpleDialog.setVisible(false),
-                  confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
-                  confirmAction: this.requestPermission,
+                  // cancelText: getLanguage(this.props.language).Prompt.CANCEL,
+                  // cancelAction: this.SimpleDialog.setVisible(false),
+                  confirmText: getLanguage(this.props.language).Prompt.CONFIRM,
+                  confirmAction: this.SimpleDialog.setVisible(false),
                 })
                 this.SimpleDialog.setVisible(true)
               }}

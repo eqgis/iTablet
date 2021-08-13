@@ -320,6 +320,7 @@ class ModuleList extends Component {
           // this.init()
         } else {
           this.props.itemAction()
+          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
           return
         }
       }

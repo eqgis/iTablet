@@ -1115,6 +1115,57 @@ class AppRoot extends Component {
           this.props.setGuideShow(true)
           this.props.setVersion(GLOBAL.GUIDE_VERSION)
         }}
+        cancel={() =>{
+          this.protocolDialog.setVisible(false)
+          GLOBAL.SimpleDialog.set({
+            renderCustomeView:()=>{
+              return (
+                <View
+                  style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // height: scaleSize(200),
+                    marginTop: scaleSize(10),
+                    width: '100%',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: scaleSize(35),
+                      lineHeight: scaleSize(50),
+                      marginTop: scaleSize(10),
+                      color: color.theme_white,
+                      marginHorizontal: scaleSize(10),
+                      textAlign: 'center',
+                    }}
+                  >
+                    {getLanguage(this.props.language).Protocol.REMINDER}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: scaleSize(24),
+                      lineHeight: scaleSize(32),
+                      color: color.theme_white,
+                      marginTop: scaleSize(20),
+                      marginHorizontal: scaleSize(20),
+                      textAlign: 'left',
+                    }}
+                  >
+                    {getLanguage(this.props.language).Protocol.AGREEMENT}
+                  </Text>
+                </View>
+              )
+
+            },
+            cancelText: getLanguage(this.props.language).Protocol.AGAIN,
+            cancelAction: () => { this.protocolDialog.setVisible(true) },
+            confirmText: getLanguage(this.props.language).Protocol.CONFIRM_EXIT,
+            confirmAction: () => { this.exitApp() },
+          })
+          GLOBAL.SimpleDialog.setVisible(true)
+        }
+        }
       />
     )
   }

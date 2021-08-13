@@ -1,5 +1,5 @@
 interface RequestParams {
-  body?: {[name: string]: any},
+  body?: {[name: string]: any} | boolean | null,
   headers?: {[name: string]: any},
 }
 export default function request(url: string, method = 'GET', { body, headers }: RequestParams) {

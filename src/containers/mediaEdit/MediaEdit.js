@@ -101,6 +101,8 @@ export default class MediaEdit extends React.Component {
    * 检测数据服务的图片是否存在，不存在则下载
    */
   checkMedia = async (paths = []) => {
+    // 若没有在线图片,则不下载
+    if (this.info.mediaServiceIds.length === 0) return
     // 图片数量和图片id数量保持一致
     // if (paths.length !== this.info.mediaServiceIds.length) return
     const URL = this.onlineServicesUtils.serverUrl + '/datas/%@/download'
@@ -328,9 +330,18 @@ export default class MediaEdit extends React.Component {
         }
       }
       let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : true
-      // 若原本有图片，并有callout则不添加到地图上
+      // 若原本有图片,且修改后的图片第一张与修改前一致,或者所有图片都被清除,并有callout则不添加到地图上
       if (this.info.mediaFilePaths.length > 0) {
-        addToMap = false
+        for (const item of modifiedData) {
+          if (
+            item.name === 'mediaFilePaths' && (
+              item.value.length > 0 && item.value[0] === this.info.mediaFilePaths[0] || // 修改图片,且第一张图片没有变化
+              item.value.length === 0 // 删除所有图片
+            )) {
+            addToMap = false
+            break
+          }
+        }
       }
       let result = await SMediaCollector.saveMediaByDataset(
         this.info.layerName,

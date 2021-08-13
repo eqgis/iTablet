@@ -1068,6 +1068,7 @@ export default class Home extends Component {
     //申请 android 11 读写权限
     let permisson11 = await appUtilsModule.requestStoragePermissionR()
     if (isAllGranted && permisson11) {
+      SMap.setPermisson(true)
       // this.init()
     } else {
       this._closeModal()

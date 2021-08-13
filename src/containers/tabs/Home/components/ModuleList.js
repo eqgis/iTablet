@@ -316,6 +316,7 @@ class ModuleList extends Component {
         //申请 android 11 读写权限
         let permisson11 = await AppUtils.requestStoragePermissionR()
         if (isAllGranted && permisson11) {
+          SMap.setPermisson(true)
           // this.init()
         } else {
           this.props.itemAction()

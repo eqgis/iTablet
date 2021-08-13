@@ -330,10 +330,14 @@ export default class MediaEdit extends React.Component {
         }
       }
       let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : true
-      // 若原本有图片,且修改后的图片第一张与修改前一致，并有callout则不添加到地图上
+      // 若原本有图片,且修改后的图片第一张与修改前一致,或者所有图片都被清除,并有callout则不添加到地图上
       if (this.info.mediaFilePaths.length > 0) {
         for (const item of modifiedData) {
-          if (item.name === 'mediaFilePaths' && item.value.length > 0 && item.value[0] === this.info.mediaFilePaths[0]) {
+          if (
+            item.name === 'mediaFilePaths' && (
+              item.value.length > 0 && item.value[0] === this.info.mediaFilePaths[0] || // 修改图片,且第一张图片没有变化
+              item.value.length === 0 // 删除所有图片
+            )) {
             addToMap = false
             break
           }

@@ -825,7 +825,6 @@ export default class LayerAttribute extends React.Component {
     try {
       if (this.props.currentLayer.name) {
         this.isMediaLayer = await SMediaCollector.isMediaLayer(this.props.currentLayer.name)
-        this.isMediaLayer && await SMediaCollector.showMedia(this.props.currentLayer.name)
         this.refresh()
       } else {
         this.refresh()

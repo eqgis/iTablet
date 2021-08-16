@@ -98,12 +98,23 @@ export default class JPushService {
     }
     let notification = {
       buildId: 0,
-      id: parseInt(messageObj.user.id),
+      // id: parseInt(messageObj.user.id),
       title: titleText,
       content: messageText,
       extra: {},
     }
-
+    if (messageObj.user.id !== null && messageObj.user.id !== undefined) {
+      // 若id为字符串,则转为ASCII
+      if (isNaN(messageObj.user.id)) {
+        let tempID = ''
+        for (const c of messageObj.user.id) {
+          tempID += c.charCodeAt() + ''
+        }
+        notification.id = parseInt(tempID)
+      } else  {
+        notification.id = parseInt(messageObj.user.id)
+      }
+    }
     if (Platform.OS === 'ios') {
       notification.subtitle = ''
       notification.badge = 1

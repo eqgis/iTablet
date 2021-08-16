@@ -10,9 +10,36 @@ let deviceSafeHeight // 设备安全高度
 // const defaultPixel = 2.25
 // const fontScale = PixelRatio.getFontScale()
 
-/** RN原本的单位 */
+
+const screenWidth = Math.min(
+  Dimensions.get('window').width,
+  Dimensions.get('window').height,
+)
+
+// eslint-disable-next-line no-unused-vars
+const screenHeight = Math.max(
+  Dimensions.get('window').width,
+  Dimensions.get('window').height,
+)
+
+/**
+ * 适配宽度 392.72dp 设备的大小
+ *
+ * 其他大小设备按宽度等比缩放
+ */
 export function dp(size) {
-  return size
+  return size * getDpRatio()
+}
+
+function getDpRatio() {
+  //TODO 范围有待调整
+  if(screenWidth < 500) {
+    return screenWidth / 392.72
+  }
+  if(screenWidth < 1000) {
+    return 1.25
+  }
+  return 1.36
 }
 
 function getScreenWidth(orientation) {

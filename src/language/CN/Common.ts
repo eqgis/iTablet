@@ -1,7 +1,11 @@
 const Protocol = {
-  PROTOCOL: '超图用户服务协议',
+  PROTOCOL: '超图隐私保护提示',
   AGREE: '同意',
   READ_AND_AGREE: '我已阅读并同意上述条款',
+  AGAIN:'再次查看',
+  CONFIRM_EXIT:'退出应用',
+  REMINDER:'温馨提示',
+  AGREEMENT:'我们非常重视对您个人信息的保护，承诺严格按照超图隐私权政策保护及处理您的信息，如不同意该政策，很遗憾我们将无法提供服务',
 }
 
 const Common = {

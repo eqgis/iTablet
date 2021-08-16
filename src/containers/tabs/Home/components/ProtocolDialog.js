@@ -18,6 +18,7 @@ export default class ProtocolDialog extends Component {
     device: Object,
     confirm: () => {},
     setLanguage: () => {},
+    cancel: () => {},
   }
 
   constructor(props) {
@@ -34,6 +35,12 @@ export default class ProtocolDialog extends Component {
   confirm = () => {
     if (this.props.confirm && typeof this.props.confirm === 'function') {
       this.props.confirm(!this.state.confirmBtnDisable)
+    }
+  }
+
+  cancel = () => {
+    if (this.props.cancel && typeof this.props.cancel === 'function') {
+      this.props.cancel()
     }
   }
 
@@ -139,7 +146,9 @@ export default class ProtocolDialog extends Component {
         opacityStyle={{ height: fixedSize(700) }}
         confirmAction={this.confirm}
         confirmBtnTitle={getLanguage(this.props.language).Protocol.AGREE}
-        cancelBtnVisible={false}
+        // cancelBtnVisible={false}
+        cancelAction={this.cancel}
+        cancelBtnTitle={getLanguage(this.props.language).Friends.GROUP_APPLY_DISAGREE}
         defaultVisible={true}
         confirmBtnDisable={this.state.confirmBtnDisable}
         type={Dialog.Type.NON_MODAL}

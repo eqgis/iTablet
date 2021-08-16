@@ -14,10 +14,10 @@ import ARLayerItem from './ARLayerItem'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { arDrawingModule, arEditModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
-import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
 import { MapToolbar } from '../workspace/components'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
 import NavigationService from '../NavigationService'
+import ARLayerMenu from './ARLayerMenu'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -350,7 +350,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
   }
 
   _renderList = () => {
-    if (!this.state.menuVisible || this._getMenuData().length === 0) return
+    if (!this.state.selectLayer || !this.state.menuVisible || this._getMenuData().length === 0) return
     return (
       <>
         <TouchableOpacity
@@ -362,10 +362,11 @@ export default class ARLayerManager extends React.Component<Props, State> {
           }}
           style={styles.overlay}
         />
-        <ToolBarSectionList
+        <ARLayerMenu
           sections={this._getMenuData()}
           device={this.props.device}
           renderItem={this._renderListItem}
+          layer={this.state.selectLayer}
         />
       </>
     )

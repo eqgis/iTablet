@@ -75,7 +75,7 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
   }
 
   _renderSubLayers = () => {
-    if(!this.props.layer.ar3DLayers) return null
+    if(!("ar3DLayers" in this.props.layer)) return null
     return (
       <ARLayers
         layers={this.props.layer.ar3DLayers}

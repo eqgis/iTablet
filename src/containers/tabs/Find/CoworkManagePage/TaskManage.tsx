@@ -283,7 +283,7 @@ class TaskManage extends React.Component<Props, State> {
           // )
           temp.push(member.id)
         }
-        SMessageServiceHTTP.sendMessage(
+        await SMessageServiceHTTP.sendMessage(
           currentTask,
           temp,
         )

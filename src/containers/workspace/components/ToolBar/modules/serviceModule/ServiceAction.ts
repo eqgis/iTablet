@@ -497,10 +497,11 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
     }
     fileName = pinyin.getPinYin(fileName, '', false)
 
-    let publishDataType: keyof OnlineDataType = 'UDB'
-    if (UserType.isOnlineUser(_params.user.currentUser)) {
-      publishDataType = 'WORKSPACE'
-    }
+    let publishDataType: keyof OnlineDataType = 'WORKSPACE'
+    // let publishDataType: keyof OnlineDataType = 'UDB'
+    // if (UserType.isOnlineUser(_params.user.currentUser)) {
+    //   publishDataType = 'WORKSPACE'
+    // }
 
     let exportResult = await exportData(fileName, datasourcePath, datasets, publishDataType)
     result = exportResult.result

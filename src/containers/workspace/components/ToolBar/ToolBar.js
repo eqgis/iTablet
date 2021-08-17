@@ -953,7 +953,7 @@ export default class ToolBar extends React.Component {
                 ) {
                   this.showPicker()
                   return
-                } else {
+                } else if(this.state.type !== ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
                   this.menu()
                 }
               }}

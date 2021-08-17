@@ -638,6 +638,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_LAYER_STYLE: 'Layer Style',
   LAYERS_FULL_EXTENT: 'Full Extent',
   LAYERS_SET_VISIBLE_SCALE: 'Set Visible Scale',
+  LAYERS_VISIBLE_DISTANCE: 'Visible Distance',
   LAYERS_RENAME: 'Rename',
   LAYERS_COPY: 'Copy',
   LAYERS_PASTE: 'Paste',

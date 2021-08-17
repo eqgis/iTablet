@@ -4,7 +4,7 @@ import {
   ARAction,
   ARLayerType,
 } from 'imobile_for_reactnative'
-import { IAnimationParam, IVector3 } from "imobile_for_reactnative/types/interface/ar"
+import { IAnimationParam, IVector3, ARElementLayer } from "imobile_for_reactnative/types/interface/ar"
 import {
   ConstToolType,
   ToolbarType,
@@ -97,42 +97,52 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 }
 
 function commit() {
-  SARMap.submit().then(async () => {
-    const _data: any = ToolbarModule.getData()
+  const _params: any = ToolbarModule.getParams()
+  if(_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
+    const data: any  = ToolbarModule.getData()
     const _params: any = ToolbarModule.getParams()
-    let id = 0
-    if (
-      _params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
-      _params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
-    ) {
-      SARMap.appointEditAR3DLayer(_params.arlayer.currentLayer.name)
-    } else if (!_data.selectARElement) {
-      id = _data.selectARElement.id
-      SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
-    }
-    let transformData: IARTransform = {
-      layerName: _params.arlayer.currentLayer.name,
-      id,
-      type: 'position',
-      positionX: 0,
-      positionY: 0,
-      positionZ: 0,
-      rotationX: 0,
-      rotationY: 0,
-      rotationZ: 0,
-      scale: 0,
-    }
-    ToolbarModule.addData({transformData})
-    const data = await AREditData.getData(_params.type, _params)
-    // GLOBAL.ToolBar.setState({
-    //   data: data.data,
-    //   // isFullScreen: false,
-    //   // showMenuDialog: false,
-    //   // selectName: GLOBAL.ToolBar.state.selectName,
-    //   // selectKey: GLOBAL.ToolBar.state.selectKey,
-    // })
-    GLOBAL.ToolBar.resetContentView()
-  })
+    const layer: ARElementLayer = data.selectARElementLayer
+    const ARElementLayerVisibleBounds: number = data.ARElementLayerVisibleBounds
+    SARMap.setLayerVisibleBounds(layer.name, ARElementLayerVisibleBounds)
+    _params.setToolbarVisible(false)
+  } else{
+    SARMap.submit().then(async () => {
+      const _data: any = ToolbarModule.getData()
+      const _params: any = ToolbarModule.getParams()
+      let id = 0
+      if (
+        _params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
+        _params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
+      ) {
+        SARMap.appointEditAR3DLayer(_params.arlayer.currentLayer.name)
+      } else if (!_data.selectARElement) {
+        id = _data.selectARElement.id
+        SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
+      }
+      let transformData: IARTransform = {
+        layerName: _params.arlayer.currentLayer.name,
+        id,
+        type: 'position',
+        positionX: 0,
+        positionY: 0,
+        positionZ: 0,
+        rotationX: 0,
+        rotationY: 0,
+        rotationZ: 0,
+        scale: 0,
+      }
+      ToolbarModule.addData({transformData})
+      const data = await AREditData.getData(_params.type, _params)
+      // GLOBAL.ToolBar.setState({
+      //   data: data.data,
+      //   // isFullScreen: false,
+      //   // showMenuDialog: false,
+      //   // selectName: GLOBAL.ToolBar.state.selectName,
+      //   // selectKey: GLOBAL.ToolBar.state.selectKey,
+      // })
+      GLOBAL.ToolBar.resetContentView()
+    })
+  }
   return true
 }
 
@@ -240,12 +250,36 @@ function deleteARElement() {
   }
 }
 
+async function getTouchProgressInfo(title: string) {
+  const data: any  = ToolbarModule.getData()
+  const ARElementLayerVisibleBounds: number = data.ARElementLayerVisibleBounds
+  let tips = ''
+  let range = [1, 100]
+  let value = ARElementLayerVisibleBounds
+  let step = 1
+  let unit = getLanguage().Convert_Unit.METER
+  let _title = getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE
+
+  return { title: _title, value, tips, range, step, unit }
+}
+
+
+function setTouchProgressInfo(title: string, value: number) {
+  let range = [1, 100]
+  if (value > range[1]) value = range[1]
+  else if (value <= range[0]) value = range[0]
+
+  ToolbarModule.addData({ARElementLayerVisibleBounds: value})
+}
+
 export default {
   toolbarBack,
   menu,
   showMenuBox,
   commit,
   close,
+  getTouchProgressInfo,
+  setTouchProgressInfo,
 
   showAnimationAction,
   createAnimation,

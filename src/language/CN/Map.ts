@@ -635,6 +635,7 @@ const Map_Layer = {
   LAYERS_LAYER_STYLE: '图层风格',
   LAYERS_FULL_EXTENT: '全幅显示本图层',
   LAYERS_SET_VISIBLE_SCALE: '可见比例尺范围',
+  LAYERS_VISIBLE_DISTANCE: '可见距离',
   LAYERS_RENAME: '重命名',
   LAYERS_COPY: '复制',
   LAYERS_PASTE: '插入复制的图层',

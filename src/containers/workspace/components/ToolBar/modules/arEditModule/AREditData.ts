@@ -57,6 +57,12 @@ async function getData(type: string, params: {[name: string]: any}) {
       }
       break
     }
+    case ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS:
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
   }
   return { data, buttons }
 }

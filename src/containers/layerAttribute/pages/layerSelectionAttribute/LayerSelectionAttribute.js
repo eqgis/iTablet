@@ -39,6 +39,8 @@ export default class LayerSelectionAttribute extends React.Component {
     isShowSystemFields: boolean,
     selection: Object,
     refreshCurrent: () => {},
+    type?: String,
+    datasetName?:String,
   }
 
   constructor(props) {
@@ -143,14 +145,23 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   getAttribute = async (params = {}, cb = () => {}, resetCurrent = false) => {
-    if (!this.state.isCollection&&(!this.props.layerSelection.layerInfo.path || params.currentPage < 0))
+    if (this.props.type !== 'MY_DATA' && !this.state.isCollection&&(!this.props.layerSelection.layerInfo.path || params.currentPage < 0))
       return
     let { currentPage, pageSize, type, ...others } = params
     // this.isLoading = true
     // ;(async function() {
     try {
       let result
-      if(this.state.isCollection){
+      if(this.props.type === 'MY_DATA'){
+        result = await LayerUtils.getSelectionAttributeByData(
+          JSON.parse(JSON.stringify(this.state.attributes)),
+          this.props.datasetName,
+          currentPage,
+          pageSize !== undefined ? pageSize : PAGE_SIZE,
+          type,
+          true,
+        )
+      }else if(this.state.isCollection){
         result = await LayerUtils.getSelectionAttributeByLayer(
           JSON.parse(JSON.stringify(this.state.attributes)),
           GLOBAL.currentLayer.name,
@@ -172,7 +183,10 @@ export default class LayerSelectionAttribute extends React.Component {
       this.total = result.total || 0
       let attributes = result.attributes || []
 
-      this.isMediaLayer = await SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name)
+      //我的里面进入查看属性，没有选择图层
+      if(this.props.type !== 'MY_DATA'){
+        this.isMediaLayer = await SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name)
+      }
 
       if (!attributes.data || attributes.data.length === 1) {
         if (!attributes.data) {

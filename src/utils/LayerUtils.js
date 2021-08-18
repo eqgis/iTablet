@@ -86,12 +86,29 @@ async function getSelectionAttributeByLayer(
   return dealData(attributes, data, page, type)
 }
 
+async function getSelectionAttributeByData(
+  attributes,
+  name,
+  page,
+  size,
+  type = 'loadMore',
+) {
+  const data = await SMap.getSelectionAttributeByData(name, page, size)
+
+  return dealData(attributes, data, page, type)
+}
+
+
 async function deleteSelectionAttributeByLayer(path,index,isCollection) {
   return await SMap.deleteSelectionAttributeByLayer(path,index,isCollection)
 }
 
 async function deleteAttributeByLayer(path, smID, isCollection) {
   return await SMap.deleteAttributeByLayer(path, smID, isCollection)
+}
+
+async function deleteAttributeByData(name, smID) {
+  return await SMap.deleteAttributeByData(name, smID)
 }
 
 async function getCurrentGeometryID(path) {
@@ -519,4 +536,7 @@ export default {
   getCurrentGeometryID,
 
   isMediaData,
+
+  getSelectionAttributeByData,
+  deleteAttributeByData,
 }

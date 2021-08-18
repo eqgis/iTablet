@@ -41,6 +41,7 @@ export default class LayerTopBar extends React.Component {
     selectionAttribute?: Object,//判断是否为采集或标注功能跳转属性
     islayerSelection?: Object,//当前属性拦选中的属性的图层名
     layerAttribute?:Object,//是否为地图界面跳转属性
+    type?:String,//我的里面会传一个type过来
   }
 
   static defaultProps = {
@@ -211,6 +212,41 @@ export default class LayerTopBar extends React.Component {
         action: this.captureImage,
         enabled: this.props.canRelated,
       })
+    }
+
+    if(this.props.type === 'MY_DATA'){
+      data = [
+        {
+          icon: this.props.canAddField
+            ? getPublicAssets().common.icon_plus
+            : getPublicAssets().common.icon_plus_gray,
+          key: '添加',
+          title: getLanguage(GLOBAL.language).Map_Attribute
+            .ATTRIBUTE_FIELD_ADD,
+          action: this.addAttributeFieldAction,
+          enabled: this.props.canAddField,
+        },
+        {
+          icon: this.props.canLocated
+            ? getThemeAssets().attribute.icon_location
+            : getThemeAssets().attribute.icon_unlocation,
+          key: '定位',
+          title: getLanguage(GLOBAL.language).Map_Attribute
+            .ATTRIBUTE_LOCATION,
+          action: this.locateAction,
+          enabled: this.props.canLocated,
+        },
+        {
+          icon: this.props.canDelete
+            ? getThemeAssets().attribute.icon_delete_select
+            : getThemeAssets().attribute.icon_delete_un_select,
+          key: '删除',
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .EDIT_DELETE,
+          action: this.deleteAction,
+          enabled: this.props.canDelete,
+        },
+      ]
     }
 
 

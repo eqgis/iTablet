@@ -139,6 +139,11 @@ class MyDataset extends MyDataPage {
     return result
   }
 
+  showAttribute = () => {
+    GLOBAL.NEEDREFRESHTABLE = true
+    NavigationService.navigate('LayerSelectionAttribute',{type:'MY_DATA',datasetName:this.itemInfo.item.datasetName})
+  }
+
   setProjection = () => {
     NavigationService.navigate('ProjectionTargetCoordsPage', {
       title: getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS,
@@ -235,6 +240,10 @@ class MyDataset extends MyDataPage {
 
   getCustomItemPopupData = () => {
     let data = [
+      {
+        title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
+        action: this.showAttribute,
+      },
       {
         title: getLanguage(GLOBAL.language).Profile.SET_PROJECTION,
         action: this.setProjection,

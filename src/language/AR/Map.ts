@@ -643,6 +643,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_LAYER_STYLE: 'شكل الطبقة',
   LAYERS_FULL_EXTENT: 'المدى الكامل',
   LAYERS_SET_VISIBLE_SCALE: 'تعيين مقياس مرئي',
+  LAYERS_VISIBLE_DISTANCE: 'Visible Distance', //to be translated
   LAYERS_RENAME: 'اعادة تسمية',
   LAYERS_COPY: 'نسخ',
   LAYERS_PASTE: 'لصق',

@@ -18,6 +18,7 @@ import { MapToolbar } from '../workspace/components'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
 import NavigationService from '../NavigationService'
 import ARLayerMenu from './ARLayerMenu'
+import { ConstToolType } from '../../constants'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -126,6 +127,25 @@ export default class ARLayerManager extends React.Component<Props, State> {
         //     }
         //   },
         // },
+        {
+          title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
+          image: getThemeAssets().layer.icon_layer_visible_scale,
+          action: async () => {
+            let layer = this.state.selectLayer
+            if (layer && 'visibleBounds' in layer) {
+              const _params: any = ToolbarModule.getParams()
+              arEditModule().setModuleData()
+              _params.showFullMap(true)
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS, {
+                isTouchProgress: true,
+                showMenuDialog: false,
+                isFullScreen: true,
+              })
+              ToolbarModule.addData({selectARElementLayer: layer, ARElementLayerVisibleBounds: layer.visibleBounds})
+              NavigationService.goBack()
+            }
+          },
+        },
         {
           title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
           image: getThemeAssets().layer.icon_layer_style,

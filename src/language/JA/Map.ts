@@ -637,6 +637,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_LAYER_STYLE: 'レイヤースタイル',
   LAYERS_FULL_EXTENT: '当レイヤーを全体表示',
   LAYERS_SET_VISIBLE_SCALE: '表示スケール範囲',
+  LAYERS_VISIBLE_DISTANCE: 'Visible Distance', //to be translated
   LAYERS_RENAME: '名前変更',
   LAYERS_COPY: 'コピー',
   LAYERS_PASTE: 'コピーするレイヤーを挿入',

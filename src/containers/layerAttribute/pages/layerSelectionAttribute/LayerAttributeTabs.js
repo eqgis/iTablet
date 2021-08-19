@@ -98,6 +98,8 @@ export default class LayerAttributeTabs extends React.Component {
 
     this.preAction = params && params.preAction
     this.preToolbarType = params?.preType
+    this.type = params?.type //我的里面会传一个type进来区分
+    this.datasetName = params?.datasetName
     // 初始化选择的图层和属性（关联后返回属性界面，找到对应的图层属性）
     const selectionAttribute = params && params.selectionAttribute
     if (
@@ -178,6 +180,21 @@ export default class LayerAttributeTabs extends React.Component {
             name: this.props.currentLayer.name,
           },
           ids: [id],
+        }])
+      }
+      if (this.type === 'MY_DATA') {
+        let id = await SMap.getDatasetGeometryID(this.datasetName)
+        this.props.setSelection && this.props.setSelection([{
+          layerInfo: {
+            path: this.datasetName,
+            type: 149,
+            selectTable: true,
+            Visible: true,
+            editable: false,
+            caption: this.datasetName,
+            name: this.datasetName,
+          },
+          ids: id,
         }])
       }
       this.setState({
@@ -393,7 +410,12 @@ export default class LayerAttributeTabs extends React.Component {
         return
       let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
         .layerSelection.layerInfo.path
-      let result = await SMap.addAttributeFieldInfo(layerPath, true, fieldInfo)
+      let result
+      if(this.type === 'MY_DATA'){
+        result = await SMap.addAttributeFieldInfoByData(layerPath, fieldInfo)
+      }else{
+        result = await SMap.addAttributeFieldInfo(layerPath, true, fieldInfo)
+      }
       if (result) {
         Toast.show(
           getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_SUCCESS,
@@ -447,6 +469,10 @@ export default class LayerAttributeTabs extends React.Component {
       result = await LayerUtils.deleteAttributeByLayer(
         layerInfo.path,
         this.state.currentIndex, this.state.isCollection)
+    }else if(this.type === 'MY_DATA'){
+      result = await LayerUtils.deleteAttributeByData(
+        layerInfo.path,
+        this.state.currentIndex)
     } else { // 删除选择集中指定位置的对象，用于点选/框选
       result = await LayerUtils.deleteSelectionAttributeByLayer(
         layerInfo.path,
@@ -651,11 +677,22 @@ export default class LayerAttributeTabs extends React.Component {
           this.deleteFieldDialog.setDialogVisible(false)
           let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
             .layerSelection.layerInfo.path
-          let result = await SMap.removeRecordsetFieldInfo(
-            layerPath,
-            false,
-            this.deleteFieldData.name,
-          )
+
+          let result
+
+          if (this.type === 'MY_DATA') {
+            result = await SMap.removeRecordsetFieldInfoByData(
+              layerPath,
+              this.deleteFieldData.name,
+            )
+          } else {
+            result = await SMap.removeRecordsetFieldInfo(
+              layerPath,
+              false,
+              this.deleteFieldData.name,
+            )
+          }
+
           if (result) {
             Toast.show(
               getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_SUCCESS,
@@ -784,6 +821,8 @@ export default class LayerAttributeTabs extends React.Component {
         navigation={this.props.navigation}
         selection={this.props.selection}
         refreshCurrent={()=>{this.setState({currentIndex:-1})}}
+        type={this.type}
+        datasetName={this.datasetName}
       />
     )
   }
@@ -873,6 +912,9 @@ export default class LayerAttributeTabs extends React.Component {
             onPress={this.goToSearch}
           />,
         ]
+        if(this.type === 'MY_DATA'){
+          buttons.splice(1,1)
+        }
       } else {
         buttons = [
           <MTBtn
@@ -943,6 +985,7 @@ export default class LayerAttributeTabs extends React.Component {
           refreshAction={this.refreshAction}
           selectionAttribute={this.state.isCollection}
           islayerSelection={true}
+          type={this.type}
         />
         {this.state.isShowView && (
           <View

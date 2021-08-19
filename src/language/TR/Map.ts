@@ -637,6 +637,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_LAYER_STYLE: 'Katman Stili',
   LAYERS_FULL_EXTENT: 'Katman Stili',
   LAYERS_SET_VISIBLE_SCALE: 'Görünürlük Ölçeğini Ayarla',
+  LAYERS_VISIBLE_DISTANCE: 'Visible Distance', //to be translated
   LAYERS_RENAME: 'Yeniden Adlandır',
   LAYERS_COPY: 'Kopyala',
   LAYERS_PASTE: 'Yapıştır',

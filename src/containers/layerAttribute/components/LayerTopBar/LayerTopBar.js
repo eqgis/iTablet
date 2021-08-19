@@ -361,6 +361,7 @@ export default class LayerTopBar extends React.Component {
     return (
       <View style={styles.container}>
         {this.props.hasTabBtn &&
+          this.props.type !== 'MY_DATA' &&
           this.renderTabBtn({
             icon: this.props.canTabs
               ? getThemeAssets().attribute.rightbar_tool_select_layerlist

@@ -677,11 +677,22 @@ export default class LayerAttributeTabs extends React.Component {
           this.deleteFieldDialog.setDialogVisible(false)
           let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
             .layerSelection.layerInfo.path
-          let result = await SMap.removeRecordsetFieldInfo(
-            layerPath,
-            false,
-            this.deleteFieldData.name,
-          )
+
+          let result
+
+          if (this.type === 'MY_DATA') {
+            result = await SMap.removeRecordsetFieldInfoByData(
+              layerPath,
+              this.deleteFieldData.name,
+            )
+          } else {
+            result = await SMap.removeRecordsetFieldInfo(
+              layerPath,
+              false,
+              this.deleteFieldData.name,
+            )
+          }
+
           if (result) {
             Toast.show(
               getLanguage(this.props.language).Prompt.ATTRIBUTE_DELETE_SUCCESS,

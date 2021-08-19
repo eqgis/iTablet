@@ -62,31 +62,50 @@ export default class MediaItem extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.data.uri === '+') return
-    let newState: any = {}, path = this.props.data.uri
-    if (prevProps.data.uri !== path) {
-      newState.image = { uri: path }
+    if (this.props.data.uri === '+') {
+      if (prevProps.data.uri !== this.props.data.uri) {
+        this.setState({
+          uri: this.props.data.uri,
+        })
+      }
+      return
     }
-    FileTools.fileIsExist(path).then(result => {
-      if (this.state.imageExist !== result) {
-        newState.imageExist = result
-      }
-      if (Object.keys(newState).length > 0) {
-        this.setState(newState)
-      }
-    })
+    // let newState: any = {}, path = this.props.data.uri
+    // if (prevProps.data.uri !== path) {
+    //   newState.image = { uri: path }
+    // }
+    // FileTools.fileIsExist(path).then(result => {
+    //   if (this.state.imageExist !== result) {
+    //     newState.imageExist = result
+    //   }
+    //   if (Object.keys(newState).length > 0) {
+    //     this.setState(newState)
+    //   }
+    // })
+    this.checkImageExist(this.props.data.uri)
   }
 
   checkImageExist = (path: string) => {
-    if (!path) return
-    FileTools.fileIsExist(path).then(result => {
-      if (this.state.imageExist !== result) {
+    if (!path || path === '+') return
+    if (path.indexOf('content://') === 0 || path.indexOf('assets-library://') === 0) {
+      // 相册中获取的图片
+      if (!this.state.imageExist && this.state.image.uri !== path) {
         this.setState({
-          imageExist: result,
+          imageExist: true,
           image: { uri: path },
         })
       }
-    })
+    } else {
+      // 文件目录中获取的图片
+      FileTools.fileIsExist(path).then(result => {
+        if (this.state.imageExist !== result || this.state.image.uri !== path) {
+          this.setState({
+            imageExist: result,
+            image: { uri: path },
+          })
+        }
+      })
+    }
   }
 
   _onPress = () => {
@@ -187,7 +206,7 @@ export default class MediaItem extends React.Component<Props, State> {
           delayPressIn={1000}
         >
           <Image style={styles.image} resizeMode={'cover'} source={image} />
-          {this.props.data.uri !== '+' && this.props.data.duration && this.props.data.duration >= 0 &&
+          {this.props.data.uri !== '+' && this.props.data.duration !== undefined && this.props.data.duration >= 0 &&
             this.props.data.type === 'video' &&
             this.renderDuration(this.props.data.duration)}
         </TouchableOpacity>

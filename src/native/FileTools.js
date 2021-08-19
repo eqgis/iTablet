@@ -164,6 +164,11 @@ function copyFile(fromPath, toPath, override = false) {
   return FileTools.copyFile(fromPath, toPath, override)
 }
 
+function copyFiles(fromPaths, toPath, override = false) {
+  if (!fromPaths || fromPaths.length === 0 || !toPath) return
+  return FileTools.copyFiles(fromPaths, toPath, override)
+}
+
 function copydir(fromPath, toPath) {
   if (!fromPath || !toPath) return
   return FileTools.copydir(fromPath, toPath)
@@ -396,6 +401,7 @@ export default {
   unZipFile,
   deleteFile,
   copyFile,
+  copyFiles,
   copydir,
   initUserDefaultData,
   getFilterFiles,

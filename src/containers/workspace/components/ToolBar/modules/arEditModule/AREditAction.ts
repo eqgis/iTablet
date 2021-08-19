@@ -115,7 +115,7 @@ function commit() {
         _params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
       ) {
         SARMap.appointEditAR3DLayer(_params.arlayer.currentLayer.name)
-      } else if (!_data.selectARElement) {
+      } else if (_data.selectARElement) {
         id = _data.selectARElement.id
         SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
       }

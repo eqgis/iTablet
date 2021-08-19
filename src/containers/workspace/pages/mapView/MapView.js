@@ -748,6 +748,30 @@ export default class MapView extends React.Component {
         this.showFullMap(this.props.showDatumPoint)
       }
     }
+
+    if (
+      JSON.stringify(prevProps.showSampleData) !==
+      JSON.stringify(this.props.showSampleData)
+    ) {
+      if (this.props.showSampleData) {
+        let animatedList = []
+
+        animatedList.push(
+          Animated.timing(this.state.samplescale, {
+            toValue: 1.2,
+            duration: 500,
+          })
+        )
+        animatedList.push(
+          Animated.timing(this.state.samplescale, {
+            toValue: 1,
+            duration: 500,
+          })
+        )
+        Animated.sequence(animatedList).start()
+      }
+    }
+
     // if (
     //   JSON.stringify(prevProps.editLayer) !==
     //     JSON.stringify(this.props.editLayer) &&
@@ -1853,28 +1877,13 @@ export default class MapView extends React.Component {
         GLOBAL.legend && GLOBAL.legend.getLegendData()
         // this.mapLoaded = true
         this.setLoading(false)
-
-        if (this.props.showSampleData) {
-          let animatedList = []
-
-          animatedList.push(
-            Animated.timing(this.state.samplescale, {
-              toValue: 1.2,
-              duration: 500,
-            })
-          )
-          animatedList.push(
-            Animated.timing(this.state.samplescale, {
-              toValue: 1,
-              duration: 500,
-            })
-          )
-          Animated.sequence(animatedList).start()
-        }
-
       } catch (e) {
         this.setLoading(false)
         this.setState({ mapLoaded: true })
+      }
+
+      if (this.isExample) {
+        SMap.viewEntire()
       }
     }.bind(this)())
   }

@@ -1111,9 +1111,9 @@ export default class MT_layerManager extends React.Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.props.mapModules.modules[
+          title: this.props.mapModules?.modules?.[
             this.props.mapModules.currentMapModule
-          ].chunk.title,
+          ]?.chunk?.title || getLanguage(GLOBAL.language).Map_Label.LAYER,
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../assets/mapTools/icon_close.png'),

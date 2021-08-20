@@ -157,7 +157,7 @@ export default class LayerAttribute extends React.Component {
       this.total = 0 // 属性总数
       this.canBeRefresh = false
       this.noMore = false
-      SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
+      this.props.currentLayer?.name && SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
         this.isMediaLayer = result
       })
       this.refresh(null, true)
@@ -823,7 +823,7 @@ export default class LayerAttribute extends React.Component {
   /** 拍照后刷新事件 **/
   refreshAction = async () => {
     try {
-      if (this.props.currentLayer.name) {
+      if (this.props.currentLayer?.name) {
         this.isMediaLayer = await SMediaCollector.isMediaLayer(this.props.currentLayer.name)
         this.refresh()
       } else {

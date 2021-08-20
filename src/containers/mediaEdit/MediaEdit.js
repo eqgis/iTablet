@@ -23,6 +23,7 @@ import NavigationService from '../../containers/NavigationService'
 // import ImagePicker from 'react-native-image-crop-picker'
 import { SMediaCollector, SOnlineService, SMap, SCoordination } from 'imobile_for_reactnative'
 import * as RNFS from 'react-native-fs'
+import ImageResizer from 'react-native-image-resizer'
 
 const COLUMNS = 3
 const MAX_FILES = 9
@@ -180,7 +181,7 @@ export default class MediaEdit extends React.Component {
           // let suffix = mediaFilePaths[i].substr(mediaFilePaths[i].lastIndexOf('.') + 1)
           //获取缩略图
           // let resizedImageUri = await ImageResizer.createResizedImage(
-          //   mediaPaths[i],
+          //   mediaFilePaths[i],
           //   60,
           //   100,
           //   'PNG',
@@ -208,7 +209,7 @@ export default class MediaEdit extends React.Component {
           })
           if (result.succeed) {
             Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_SUCCESS)
-            this.cb && this.cb()
+            this.cb && typeof this.cb === 'function' && this.cb()
           } else {
             Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
           }
@@ -315,8 +316,10 @@ export default class MediaEdit extends React.Component {
       )
       // 在线协作，上传到服务器
       if (GLOBAL.coworkMode) {
+        const newPaths = await FileTools.copyFiles(this._newMediaFiles, targetPath)
         if (this._newMediaFiles.length > 0) {
-          let _newIds = await this.uploadMedia(this._newMediaFiles)
+          // let _newIds = await this.uploadMedia(this._newMediaFiles)
+          let _newIds = await this.uploadMedia(newPaths)
           this._ids = this._ids.concat(_newIds)
           modifiedData.push({
             name: 'MediaServiceIds',
@@ -351,9 +354,11 @@ export default class MediaEdit extends React.Component {
         addToMap,
         isDelete,
       )
+      let newState = {}
       if (GLOBAL.coworkMode && result) {
         this.info.mediaServiceIds = this._ids
-        this.setState({mediaServiceIds: this._ids})
+        newState.mediaServiceIds = this._ids
+        // this.setState({mediaServiceIds: this._ids})
       }
       if (
         result &&
@@ -362,6 +367,29 @@ export default class MediaEdit extends React.Component {
       ) {
         this.deleteDialog && this.deleteDialog.setVisible(false)
         this.cb(modifiedData)
+      }
+      if (result) {
+        let info = await SMediaCollector.getMediaInfo(this.info.layerName, this.info.geoID)
+
+        this.showInfo = {
+          mediaName: info.mediaName || '',
+          coordinate: info.coordinate || '',
+          modifiedDate: info.modifiedDate || '',
+          description: info.description || '',
+          httpAddress: info.httpAddress || '',
+          mediaFilePaths: info.mediaFilePaths || [],
+          mediaServiceIds: info.mediaServiceIds || [],
+        }
+        Object.assign(newState, this.showInfo)
+
+        // 保存成功,清除临时数据
+        this.modifiedData = {}
+        this._newMediaFiles = []
+        this._ids = []
+      }
+
+      if (Object.keys(newState).length > 0) {
+        this.setState(newState)
       }
       Toast.show(
         result
@@ -383,6 +411,7 @@ export default class MediaEdit extends React.Component {
       maxSize: maxFiles,
       callback: async data => {
         if (data.length > 0) {
+          console.warn(JSON.stringify(data))
           this.addMediaFiles({mediaPaths: data})
         }
       },

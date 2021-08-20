@@ -164,7 +164,7 @@ export default class MergeDatasetView extends Component {
       _params.setContainerLoading(false)
       if (result instanceof Array) {
         let str = result.reduce(
-          (preValue, curValue) => preValue + '、' + curValue,
+          (preValue, curValue) => (preValue!=='' ? preValue + '、' : '')+ curValue.datasetName,
           '',
         )
         Toast.show(

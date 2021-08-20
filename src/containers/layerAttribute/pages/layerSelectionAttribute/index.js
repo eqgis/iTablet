@@ -3,6 +3,7 @@ import LayerAttributeTabs from './LayerAttributeTabs'
 import {
   setCurrentAttribute,
   setLayerAttributes,
+  setDataAttributes,
   setAttributeHistory,
   clearAttributeHistory,
   setSelection,
@@ -26,6 +27,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setCurrentAttribute,
   setLayerAttributes,
+  setDataAttributes,
   setAttributeHistory,
   clearAttributeHistory,
   setBackAction,

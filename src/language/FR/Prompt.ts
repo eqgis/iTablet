@@ -340,6 +340,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'Veuillez sélectionner le sol où se trouve la couche',
   LONG_PRESS_ADD_START: 'Veuillez appuyer longuement pour ajouter un point de départ',
   LONG_PRESS_ADD_END: 'Veuillez appuyer longuement pour ajouter une destination',
+  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
   ROUTE_ANALYSING: 'Analyse',
   DISTANCE_ERROR: 'La destination est trop proche du point de départ, veuillez resélectionner!',
   USE_ONLINE_ROUTE_ANALYST: "Les points sont en dehors des limites de l'ensemble de données ou il n'y a aucun ensemble de données autour des points, voulez-vous utiliser l'analyste d'itinéraire en ligne?",

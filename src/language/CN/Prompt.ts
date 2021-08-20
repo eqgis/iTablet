@@ -339,6 +339,7 @@ const Prompt = {
   SELECT_THE_FLOOR: '请选择图层所在楼层',
   LONG_PRESS_ADD_START: '请长按添加起点',
   LONG_PRESS_ADD_END: '请长按添加终点',
+  TOUCH_TO_ADD_END: '请点击添加终点',
   ROUTE_ANALYSING: '路径分析中',
   DISTANCE_ERROR: '当前起始点距离太近，请重新选点',
   USE_ONLINE_ROUTE_ANALYST: '起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？',

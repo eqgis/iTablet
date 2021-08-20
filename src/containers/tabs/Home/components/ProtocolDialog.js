@@ -32,6 +32,10 @@ export default class ProtocolDialog extends Component {
     this.dialog && this.dialog.setDialogVisible(visible)
   }
 
+  setconfirmBtnDisable = disable => {
+    this.setState({confirmBtnDisable:disable})
+  }
+
   confirm = () => {
     if (this.props.confirm && typeof this.props.confirm === 'function') {
       this.props.confirm(!this.state.confirmBtnDisable)

@@ -341,6 +341,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'Please select the floor where the layer is located',
   LONG_PRESS_ADD_START: 'Please long press to add a starting point',
   LONG_PRESS_ADD_END: 'Please long press to add a destination',
+  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
   ROUTE_ANALYSING: 'Analyzing',
   DISTANCE_ERROR: 'The destination is too close to the start point. Please reselect!',
   USE_ONLINE_ROUTE_ANALYST: "Points are out of the bounds of the network dataset. Or, there are no road nets around points. Do you want to use online route analyst?",

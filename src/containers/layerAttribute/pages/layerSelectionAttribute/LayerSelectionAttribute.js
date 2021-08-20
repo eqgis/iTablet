@@ -29,6 +29,7 @@ export default class LayerSelectionAttribute extends React.Component {
     attributesHistory: Array,
     setCurrentAttribute: () => {},
     setLayerAttributes: () => {},
+    setDataAttributes: () => {},
     setLoading: () => {},
     selectAction: () => {},
     setAttributeHistory: () => {},
@@ -838,65 +839,125 @@ export default class LayerSelectionAttribute extends React.Component {
           }
         }
       }
-      this.props
-        .setLayerAttributes([
-          {
-            mapName: this.props.map.currentMap.name,
-            layerPath: this.props.layerSelection.layerInfo.path,
-            fieldInfo: [
-              {
-                name: isSingleData ? data.rowData.name : data.cellData.name,
-                value: data.value,
-                index: data.index,
-                columnIndex: data.columnIndex,
-                smID: isSingleData
-                  ? this.state.attributes.data[0][0].value
-                  : data.rowData[1].value,
-              },
-            ],
-            prevData: [
-              {
-                name: isSingleData ? data.rowData.name : data.cellData.name,
-                value: isSingleData ? data.rowData.value : data.cellData.value,
-                index: data.index,
-                columnIndex: data.columnIndex,
-                smID: isSingleData
-                  ? this.state.attributes.data[0][0].value
-                  : data.rowData[1].value,
-              },
-            ],
-            params: {
-              // index: int,      // 当前对象所在记录集中的位置
-              filter: `SmID=${
-                isSingleData
+      if(this.props.type === 'MY_DATA'){
+        this.props
+          .setDataAttributes([
+            {
+              mapName: this.props.map.currentMap.name,
+              layerPath: this.props.layerSelection.layerInfo.path,
+              fieldInfo: [
+                {
+                  name: isSingleData ? data.rowData.name : data.cellData.name,
+                  value: data.value,
+                  index: data.index,
+                  columnIndex: data.columnIndex,
+                  smID: isSingleData
+                    ? this.state.attributes.data[0][0].value
+                    : data.rowData[1].value,
+                },
+              ],
+              prevData: [
+                {
+                  name: isSingleData ? data.rowData.name : data.cellData.name,
+                  value: isSingleData ? data.rowData.value : data.cellData.value,
+                  index: data.index,
+                  columnIndex: data.columnIndex,
+                  smID: isSingleData
+                    ? this.state.attributes.data[0][0].value
+                    : data.rowData[1].value,
+                },
+              ],
+              params: {
+                // index: int,      // 当前对象所在记录集中的位置
+                filter: `SmID=${isSingleData
                   ? this.state.attributes.data[0][0].value
                   : data.rowData[1].value // 0为序号
-              }`, // 过滤条件
-              cursorType: 2, // 2: DYNAMIC, 3: STATIC
+                }`, // 过滤条件
+                cursorType: 2, // 2: DYNAMIC, 3: STATIC
+              },
             },
-          },
-        ])
-        .then(result => {
-          // 成功修改属性后，更新数据
-          let attributes = JSON.parse(JSON.stringify(this.state.attributes))
-          // 如果有序号，column.index要 -1
-          // let column = this.state.attributes.data.length > 1 ? (data.columnIndex - 1) : data.columnIndex
-          if (result) {
-            if (this.state.attributes.data.length > 1) {
-              attributes.data[data.index][data.columnIndex - 1].value =
-                data.value
+          ])
+          .then(result => {
+            // 成功修改属性后，更新数据
+            let attributes = JSON.parse(JSON.stringify(this.state.attributes))
+            // 如果有序号，column.index要 -1
+            // let column = this.state.attributes.data.length > 1 ? (data.columnIndex - 1) : data.columnIndex
+            if (result) {
+              if (this.state.attributes.data.length > 1) {
+                attributes.data[data.index][data.columnIndex - 1].value =
+                  data.value
+              } else {
+                attributes.data[0][data.index].value = data.value
+              }
             } else {
-              attributes.data[0][data.index].value = data.value
+              Toast.show(getLanguage(this.props.language).Prompt.INVALID_DATA_SET_FAILED)
             }
-          } else {
-            Toast.show(getLanguage(this.props.language).Prompt.INVALID_DATA_SET_FAILED)
-          }
 
-          this.checkToolIsViable()
-          this.setState({
-            attributes,
+            this.checkToolIsViable()
+            this.setState({
+              attributes,
+            })
           })
-        })
+      }else{
+        this.props
+          .setLayerAttributes([
+            {
+              mapName: this.props.map.currentMap.name,
+              layerPath: this.props.layerSelection.layerInfo.path,
+              fieldInfo: [
+                {
+                  name: isSingleData ? data.rowData.name : data.cellData.name,
+                  value: data.value,
+                  index: data.index,
+                  columnIndex: data.columnIndex,
+                  smID: isSingleData
+                    ? this.state.attributes.data[0][0].value
+                    : data.rowData[1].value,
+                },
+              ],
+              prevData: [
+                {
+                  name: isSingleData ? data.rowData.name : data.cellData.name,
+                  value: isSingleData ? data.rowData.value : data.cellData.value,
+                  index: data.index,
+                  columnIndex: data.columnIndex,
+                  smID: isSingleData
+                    ? this.state.attributes.data[0][0].value
+                    : data.rowData[1].value,
+                },
+              ],
+              params: {
+                // index: int,      // 当前对象所在记录集中的位置
+                filter: `SmID=${isSingleData
+                  ? this.state.attributes.data[0][0].value
+                  : data.rowData[1].value // 0为序号
+                }`, // 过滤条件
+                cursorType: 2, // 2: DYNAMIC, 3: STATIC
+              },
+            },
+          ])
+          .then(result => {
+            // 成功修改属性后，更新数据
+            let attributes = JSON.parse(JSON.stringify(this.state.attributes))
+            // 如果有序号，column.index要 -1
+            // let column = this.state.attributes.data.length > 1 ? (data.columnIndex - 1) : data.columnIndex
+            if (result) {
+              if (this.state.attributes.data.length > 1) {
+                attributes.data[data.index][data.columnIndex - 1].value =
+                  data.value
+              } else {
+                attributes.data[0][data.index].value = data.value
+              }
+            } else {
+              Toast.show(getLanguage(this.props.language).Prompt.INVALID_DATA_SET_FAILED)
+            }
+
+            this.checkToolIsViable()
+            this.setState({
+              attributes,
+            })
+          })
+      }
     }
   }
 

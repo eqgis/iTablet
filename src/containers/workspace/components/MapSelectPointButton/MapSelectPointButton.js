@@ -93,7 +93,7 @@ export default class MapSelectPointButton extends React.Component {
           this.routeAnalyst()
         }
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.LONG_PRESS_ADD_END)
+        Toast.show(getLanguage(GLOBAL.language).Prompt.TOUCH_TO_ADD_END)
       }
     }
   }

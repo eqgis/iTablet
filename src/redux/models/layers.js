@@ -190,6 +190,49 @@ export const setLayerAttributes = (
   }
 }
 
+/**
+ * 修改对象属性
+ * @param params
+ *  {
+ *    mapName:   String 地图名称,
+ *    layerPath: String 图层路径,
+ *    fieldInfo: Array  修改的属性，
+ *    params:    Object 查询信息,
+ *      {
+           index: int,      // 当前对象所在记录集中的位置
+           filter: string,  // 过滤条件
+           cursorType: int, // 2: DYNAMIC, 3: STATIC
+         }
+ *  }
+ * @param cb
+ */
+export const setDataAttributes = (
+  params = [],
+  cb = () => { },
+) => async dispatch => {
+  let bRes = false
+  try {
+    if (params && params.length > 0) {
+      for (let i = 0; i < params.length; i++) {
+        bRes = await SMap.setDataFieldInfo(
+          params[i].layerPath,
+          params[i].fieldInfo,
+          params[i].params,
+        )
+      }
+    }
+
+    // await dispatch({
+    //   type: ADD_ATTRIBUTE_HISTORY,
+    //   payload: params || [],
+    // })
+    cb && cb(bRes)
+    return bRes
+  } catch (e) {
+    return false
+  }
+}
+
 export const setAttributeHistory = (params = {}, cb = () => {}) => async (
   dispatch,
   getState,

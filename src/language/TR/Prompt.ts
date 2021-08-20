@@ -341,6 +341,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'Lütfen katmanın konumlandığı katı seçin',
   LONG_PRESS_ADD_START: 'Lütfen başlangıç noktası eklemek için uzun basın',
   LONG_PRESS_ADD_END: 'Lütfen hedef eklemek için uzun basın',
+  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
   ROUTE_ANALYSING: 'Analiz yapılıyor',
   DISTANCE_ERROR: 'Hedef başlangıç noktasına çok yakın, lütfen yeniden seçin!',
   USE_ONLINE_ROUTE_ANALYST: 'Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?',

@@ -341,6 +341,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'レイヤーがある階を選択してください',
   LONG_PRESS_ADD_START: '長押し起点を追加してください',
   LONG_PRESS_ADD_END: '長押し終点を追加してください',
+  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
   ROUTE_ANALYSING: 'ルート解析中',
   DISTANCE_ERROR: '現在開始ポイントの距離は近すぎです、再度選択してください',
   USE_ONLINE_ROUTE_ANALYST: '起始ポイントは道路ネットワークデータセット範囲内にありません、または開始ポイント近くに道路ネットワークはありません。オンラインルート解析を使用しますか？',

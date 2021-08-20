@@ -341,6 +341,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'يرجى تحديد الطابق التي تقع فيها الطبقة',
   LONG_PRESS_ADD_START: 'يرجى الضغط لفترة طويلة لإضافة نقطة البداية',
   LONG_PRESS_ADD_END: 'يرجى الضغط لفترة طويلة لإضافة وجهة',
+  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
   ROUTE_ANALYSING: 'جارى التحليل',
   DISTANCE_ERROR: 'الوجهة قريبة جدًا من نقطة البداية ، يرجى إعادة التحديد',
   USE_ONLINE_ROUTE_ANALYST: 'النقاط خارج حدود مجموعة البيانات أو لا توجد مجموعة بيانات حول النقاط ، هل تريد استخدام محلل المسار عبر الإنترنت؟',

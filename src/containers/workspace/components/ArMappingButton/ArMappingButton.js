@@ -572,6 +572,7 @@ export default class ArMappingButton extends React.Component {
     try {
       if (Platform.OS === 'ios') {
         // this.save()
+        SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingLine()
         if (!result) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_LINE_FAIL)
@@ -592,6 +593,7 @@ export default class ArMappingButton extends React.Component {
     try {
       if (Platform.OS === 'ios') {
         // this.save()
+        SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingPoint()
         if (!result) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAIL_POINT)
@@ -612,6 +614,7 @@ export default class ArMappingButton extends React.Component {
     try {
       if (Platform.OS === 'ios') {
         // this.save()
+        SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingRegion()
         if (!result) {
           Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)

@@ -99,6 +99,7 @@ interface Props {
   /** CheckBox是否被选中 */
   checked?: boolean,
   checkAction?: (checkParams: {value: boolean, data: ItemData, download: () => Promise<void>}) => void,
+  onChecked?: (checkParams: {value: boolean, data: ItemData, download: () => Promise<void>}) => void,
   onMoreAction?: (data: MoreParams) => void,
   onPress?: (item?: any) => void,
   /** 是否可以下载 */
@@ -188,6 +189,22 @@ export default class SourceItem extends Component<Props, State> {
     }
   }
 
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    if (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.checked !== this.props.checked && typeof this.props.onChecked === 'function') {
+      this.props.onChecked({value: this.props.checked, data: this.props.data, download: this._downloadFile})
+    }
+  }
+
   _downloadFile = async () => {
     if (this.state.exist) {
       await this.unZipFile()
@@ -246,18 +263,25 @@ export default class SourceItem extends Component<Props, State> {
         const ret = RNFS.downloadFile(downloadOptions)
         ret.promise
           .then(async () => {
-            let { result, path } = await this.unZipFile()
+            let result, path
+            if (this.path?.endsWith('.zip')) {
+              const zipResult = await this.unZipFile()
+              result = zipResult.result
+              path = zipResult.path
 
-            if (result) {
-              let dataList = await DataHandler.getExternalData(path)
-              let results = []
-              for (let i = 0; i < dataList.length; i++) {
-                results.push(
-                  await DataHandler.importExternalData(this.props.user.currentUser, dataList[i]),
-                )
+              if (result) {
+                let dataList = await DataHandler.getExternalData(path)
+                let results = []
+                for (let dataItem of dataList) {
+                  results.push(
+                    await DataHandler.importExternalData(this.props.user.currentUser, dataItem),
+                  )
+                }
+                result = results.some(value => value === true)
+                FileTools.deleteFile(this.path)
               }
-              result = results.some(value => value === true)
-              FileTools.deleteFile(this.path)
+            } else {
+              result = true // 非zip压缩包
             }
 
             if (result === false) {

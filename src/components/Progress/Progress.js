@@ -25,7 +25,7 @@ export default class Progress extends Component {
     //buffer动画时长
     bufferAniDuration: PropTypes.number,
     //进度条高度
-    height: PropTypes.number,
+    height: PropTypes.number | PropTypes.string,
   }
 
   static defaultProps = {

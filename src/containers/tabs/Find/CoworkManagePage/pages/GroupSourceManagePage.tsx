@@ -148,6 +148,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   deleteDialog: Dialog | undefined | null
   dropdown: ModalDropdown
   modules: Array<any>
+  tempSelectedData: Map
 
   currentSelectData: MoreParams | undefined | null
 
@@ -188,7 +189,7 @@ class GroupSourceManagePage extends Component<Props, State> {
     this.currentPage = 1
     this.isLoading = false // 防止同时重复加载多次
     this.isNoMore = false // 是否能加载更多
-
+    this.tempSelectedData = new Map<string, SelectedData>()
 
     this.popData = [
       {
@@ -549,6 +550,21 @@ class GroupSourceManagePage extends Component<Props, State> {
         openCheckBox={this.state.isMutiChoice}
         // hasDownload={this.hasDownload}
         checked={!!this.state.selectedData.get(item.resourceId)}
+        onChecked={({value, data, download}) => {
+          let selected = new Map(this.tempSelectedData)
+          const isSelected = selected.has(data.resourceId)
+          if (isSelected) {
+            const item = selected.get(data.resourceId)
+            if (!item?.download) {
+              selected.set(data.resourceId, {...data, download: download})
+              this.setState({selectedData: selected})
+            }
+          } else if (value) {
+            selected.set(data.resourceId, {...data, download: download})
+            this.setState({selectedData: selected})
+          }
+          this.tempSelectedData = selected
+        }}
         checkAction={({value, data, download}) => {
           this.setState(state => {
             const selected = new Map(state.selectedData)
@@ -558,6 +574,7 @@ class GroupSourceManagePage extends Component<Props, State> {
             } else {
               selected.delete(data.resourceId)
             }
+            this.tempSelectedData = selected
             return { selectedData: selected }
           })
         }}
@@ -617,7 +634,11 @@ class GroupSourceManagePage extends Component<Props, State> {
             if (this.state.selectedData.size > 0) {
               const keys = this.state.selectedData.keys()
               for(let key of keys) {
-                this.state.selectedData.get(key)?.download?.()
+                const item = this.state.selectedData.get(key)
+                if (typeof item.download === 'function') {
+                  item.download()
+                }
+                // this.state.selectedData.get(key)?.download?.()
               }
             }
           }}

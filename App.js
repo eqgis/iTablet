@@ -1160,7 +1160,7 @@ class AppRoot extends Component {
 
             },
             cancelText: getLanguage(this.props.language).Protocol.AGAIN,
-            cancelAction: () => { this.protocolDialog.setVisible(true) },
+            cancelAction: () => { this.protocolDialog.setVisible(true) ,this.protocolDialog.setconfirmBtnDisable(true)},
             confirmText: getLanguage(this.props.language).Protocol.CONFIRM_EXIT,
             confirmAction: () => { this.exitApp() },
           })

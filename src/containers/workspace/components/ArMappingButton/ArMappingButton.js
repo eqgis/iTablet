@@ -55,24 +55,6 @@ export default class ArMappingButton extends React.Component {
   constructor(props) {
     super(props)
 
-    const layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
-    let disablePoint = true,
-      disableArea = true,
-      disbaleLine = true
-    // 如果当前没有图层或类型不满足，不能绘制
-    // 如果是CAD或者标注图层，则可以绘制点线面 by zcj
-    if (["CADLAYER", "TAGGINGLAYER"].indexOf(layerType) != -1) {
-      disablePoint = false
-      disbaleLine = false
-      disableArea = false
-    } else if (layerType === "POINTLAYER") {
-      disablePoint = false
-    } else if (layerType === "REGIONLAYER") {
-      disableArea = false
-    } else if (layerType === "LINELAYER") {
-      disbaleLine = false
-    }
-
     this.isDrawing = this.props.isDrawing
     this.isMeasure = this.props.isMeasure
     this.canContinuousDraw = this.props.canContinuousDraw
@@ -102,7 +84,8 @@ export default class ArMappingButton extends React.Component {
         key: 'line',
         title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
         action: () => {
-          if (!disbaleLine) {
+          this.getLayerType()
+          if (!this.disbaleLine) {
             this.saveline()
           } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
@@ -117,7 +100,8 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_SAVE_POINT,
         action: () => {
-          if (!disablePoint) {
+          this.getLayerType()
+          if (!this.disablePoint) {
             this.savepoint()
           } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
@@ -132,7 +116,8 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(GLOBAL.language).Map_Main_Menu
           .MAP_AR_AI_SAVE_REGION,
         action: () => {
-          if (!disableArea) {
+          this.getLayerType()
+          if (!this.disableArea) {
             this.saveRegion()
           } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
@@ -201,7 +186,8 @@ export default class ArMappingButton extends React.Component {
           if (is) {
             SARMap.cancelCurrent()
           }
-          if (!disablePoint) {
+          this.getLayerType()
+          if (!this.disablePoint) {
             this.drawPoint()
           } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
@@ -220,7 +206,8 @@ export default class ArMappingButton extends React.Component {
           if (is) {
             SARMap.cancelCurrent()
           }
-          if (!disbaleLine) {
+          this.getLayerType()
+          if (!this.disbaleLine) {
             this.drawLine()
           } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
@@ -239,7 +226,8 @@ export default class ArMappingButton extends React.Component {
           if (is) {
             SARMap.cancelCurrent()
           }
-          if (!disableArea) {
+          this.getLayerType()
+          if (!this.disableArea) {
             this.setState({ data: this.areadata })
           } else {
             Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
@@ -487,7 +475,9 @@ export default class ArMappingButton extends React.Component {
       },
     ]
 
-
+    this.disablePoint = true
+    this.disableArea = true
+    this.disbaleLine = true
 
     this.state = {
       currentLength: 0,
@@ -528,6 +518,29 @@ export default class ArMappingButton extends React.Component {
 
   componentWillUnmount() {
     SARMap.removeMeasureSaveListeners()
+  }
+
+  getLayerType = () =>{
+    const layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+    let disablePoint = true,
+      disableArea = true,
+      disbaleLine = true
+    // 如果当前没有图层或类型不满足，不能绘制
+    // 如果是CAD或者标注图层，则可以绘制点线面 by zcj
+    if (["CADLAYER", "TAGGINGLAYER"].indexOf(layerType) != -1) {
+      disablePoint = false
+      disbaleLine = false
+      disableArea = false
+    } else if (layerType === "POINTLAYER") {
+      disablePoint = false
+    } else if (layerType === "REGIONLAYER") {
+      disableArea = false
+    } else if (layerType === "LINELAYER") {
+      disbaleLine = false
+    }
+    this.disablePoint = disablePoint
+    this.disableArea = disableArea
+    this.disbaleLine = disbaleLine
   }
 
   saveLog = () => {

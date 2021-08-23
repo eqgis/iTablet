@@ -1276,8 +1276,7 @@ export default class LayerAttribute extends React.Component {
   }
 
   renderMapLayerAttribute = () => {
-    // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds'] : [], // 属性表cell显示 查看 按钮
-    let buttonNameFilter = this.isMediaLayer ? ['MediaName'] : [], // 属性表cell显示 查看 按钮
+    let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds'] : [], // 属性表cell显示 查看 按钮
       buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
     let buttonActions = this.isMediaLayer ? [
       async data => {

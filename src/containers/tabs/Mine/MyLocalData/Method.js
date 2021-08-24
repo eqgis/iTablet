@@ -6,6 +6,7 @@ import {
 import { UserType } from '../../../../constants'
 import { FileTools } from '../../../../native'
 import Toast from '../../../../utils/Toast'
+import { getLanguage } from '../../../../language'
 
 
 async function _getHomePath() {
@@ -48,7 +49,7 @@ async function getOnlineData(
   } catch (e) {
     const result = await NetInfo.getConnectionInfo()
     if (result.type === 'unknown' || result.type === 'none') {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     } else {
       // Toast.show('登录失效，请重新登录')
     }

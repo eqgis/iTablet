@@ -118,7 +118,7 @@ export default class MyOnlineMap extends Component {
         }
       }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     } finally {
       this.setState({ isLoadingProgressView: false })
       this._clearInterval()

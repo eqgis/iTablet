@@ -66,9 +66,13 @@ class CoworkMessage extends Component<Props, State> {
     if (this.state.messages.length !== 0) {
       let selected = []
       if (this.state.messages.length !== this.state.selected.length) {
-        for (let i = 0; i < this.state.messages.length; i++) {
-          if (this.state.messages[i].status === 2 || this.state.selected.includes(this.state.messages[i].messageID)) continue
-          selected.push(this.state.messages[i].messageID)
+        for (let message of this.state.messages) {
+          if (message.status === 2 || this.state.selected.includes(message.messageID)) continue
+          selected.push(message.messageID)
+        }
+        // selected不为空,则表示之前没有全部选中,则加上原来被选中的ID
+        if (selected.length > 0) {
+          selected = selected.concat(this.state.selected)
         }
       }
       this.setState({ selected })

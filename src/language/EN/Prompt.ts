@@ -168,6 +168,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISHING: 'Publishing',
   PUBLISH_SUCCESS: 'Published',
   PUBLISH_FAILED: 'Failed to publish',
+  PUBLISH_FAILED_INFO_1: 'The service has been published',
   DELETE_CONFIRM: 'Are you sure you want to delete data?',
   BATCH_DELETE_CONFIRM: 'Are you sure you want to delete the selected data?',
 

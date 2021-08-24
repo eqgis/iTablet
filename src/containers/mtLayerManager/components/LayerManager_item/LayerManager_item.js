@@ -96,6 +96,7 @@ export default class LayerManager_item extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (
+      nextProps.isLoading && !this.aniMotion ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
       JSON.stringify(this.props) !== JSON.stringify(nextProps)
     ) {
@@ -113,7 +114,7 @@ export default class LayerManager_item extends React.Component {
       this.popKey = ''
     }
     // 加载图标
-    if (this.props.isLoading !== prevProps.isLoading && this.props.isLoading) {
+    if ((this.props.isLoading !== prevProps.isLoading || !this.aniMotion) && this.props.isLoading) {
       this.aniMotion = null
       this.loading()
     }

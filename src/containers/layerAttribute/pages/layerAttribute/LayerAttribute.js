@@ -100,6 +100,7 @@ export default class LayerAttribute extends React.Component {
       canBeRevert: checkData.canBeRevert,
 
       isShowSystemFields: true,
+      descending:false, //属性排列倒序时为true add jiakai
     }
 
     this.currentPage = 0
@@ -684,6 +685,7 @@ export default class LayerAttribute extends React.Component {
             currentPage: 0,
             startIndex: 0,
           })
+          this.setState({descending:false})
         },
       })
       items.push({
@@ -696,6 +698,7 @@ export default class LayerAttribute extends React.Component {
             currentPage: 0,
             startIndex: 0,
           })
+          this.setState({descending:true})
         },
       })
     }
@@ -805,7 +808,14 @@ export default class LayerAttribute extends React.Component {
     if (hasMedia && smID >= 0) {
       result = await SMediaCollector.deleteMedia(this.props.currentLayer.path, smID)
     } else {
-      result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, this.state.currentIndex, false)
+      //此处计算数据倒序时后实际上的数据index add jiakai
+      let index
+      if(this.state.descending){
+        index = this.total - this.state.currentIndex -1
+      }else{
+        index = this.state.currentIndex
+      }
+      result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, index, false)
     }
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
@@ -1542,6 +1552,15 @@ export default class LayerAttribute extends React.Component {
       this.state.attributes.head.length > 0
 
     const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.props.currentLayer)
+
+    //此处计算数据倒序时后实际上的数据index add jiakai
+    let index
+    if(this.state.descending){
+      index = this.total - this.state.currentIndex -1
+    }else{
+      index = this.state.currentIndex
+    }
+
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -1582,7 +1601,7 @@ export default class LayerAttribute extends React.Component {
             addFieldAction={this.showLayerAddView}
             deleteAction={this.deleteAction}
             attributesData={this.state.attributes.head}
-            currentIndex={this.state.currentIndex}
+            currentIndex={index}
             refreshAction={this.refreshAction}
             layerAttribute={true}
           />

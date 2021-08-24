@@ -576,7 +576,7 @@ export default class MyLocalData extends Component {
       } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
         publishResults = await JSIPortalService.publishService(dataId, this.itemInfo.type)
       }
-      if (typeof publishResults[0].succeed === 'boolean' && publishResults[0].succeed) {
+      if (publishResults instanceof Array && typeof publishResults[0].succeed === 'boolean' && publishResults[0].succeed) {
         let sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
         let oldOnline = sectionData[sectionData.length - 1]
         let oldData = oldOnline.data
@@ -588,10 +588,14 @@ export default class MyLocalData extends Component {
         this.setState({ sectionData: sectionData })
         Toast.show(getLanguage(this.props.language).Prompt.PUBLISH_SUCCESS)
       } else {
-        Toast.show(getLanguage(this.props.language).Prompt.PUBLISH_FAILED)
+        if (publishResults.error?.errorMsg?.indexOf('已发布') === 0) {
+          Toast.show(getLanguage(this.props.language).Prompt.PUBLISH_FAILED_INFO_1)
+        } else {
+          Toast.show(getLanguage(this.props.language).Prompt.PUBLISH_FAILED)
+        }
       }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     } finally {
       this.setLoading(false)
     }
@@ -645,7 +649,7 @@ export default class MyLocalData extends Component {
         //'服务删除失败')
       }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     } finally {
       // this.setLoading(false)
     }
@@ -746,7 +750,7 @@ export default class MyLocalData extends Component {
         //'设置失败')
       }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
     } finally {
       this.setLoading(false)
     }

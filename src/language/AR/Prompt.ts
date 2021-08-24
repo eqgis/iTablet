@@ -168,6 +168,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISHING: 'جارى النشر',
   PUBLISH_SUCCESS: 'تم النشر بنجاج',
   PUBLISH_FAILED: 'فشل النشر',
+  PUBLISH_FAILED_INFO_1: 'The service has been published', // need to translate
   DELETE_CONFIRM: 'هل أنت متأكد أنك تريد حذف العنصر؟',
   BATCH_DELETE_CONFIRM: 'هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟',
 

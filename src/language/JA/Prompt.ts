@@ -168,6 +168,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISHING: '配信サービス中',
   PUBLISH_SUCCESS: '配信に成功',
   PUBLISH_FAILED: '配信に失敗',
+  PUBLISH_FAILED_INFO_1: 'The service has been published', // need to translate
   DELETE_CONFIRM: '現在データを削除しますか？',
   BATCH_DELETE_CONFIRM: '現在の選択データを削除しますか？',
 

@@ -8,6 +8,7 @@ import Container from '../../components/Container'
 import { View, Text, FlatList, RefreshControl, Dimensions } from 'react-native'
 import RenderFindItem from './RenderFindItem'
 import { Toast, scaleSize } from '../../utils'
+import { getLanguage } from '../../language'
 // import { InfoView } from '../../components'
 import styles from './Styles'
 import color from '../../styles/color'
@@ -279,7 +280,7 @@ export default class FriendMap extends Component {
         this.setState({ data: this.flatListData })
       }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
       this.setState({ data: arrObjContent })
     }
     return arrObjContent
@@ -302,7 +303,7 @@ export default class FriendMap extends Component {
         })
       }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
       this.setState({ isRefresh: false })
     }
   }
@@ -317,7 +318,7 @@ export default class FriendMap extends Component {
         this.setState({ isRefresh: false, data: this.flatListData })
       }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
       this.setState({ isRefresh: false })
     }
   }
@@ -337,7 +338,7 @@ export default class FriendMap extends Component {
       // this.setState({ data: newData, isLoadingData: false })
       // }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
       this.setState({ isLoadingData: false })
     }
   }
@@ -351,7 +352,7 @@ export default class FriendMap extends Component {
         this.setState({ data: this.flatListData, isLoadingData: false })
       }
     } catch (e) {
-      Toast.show('网络错误')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
       this.setState({ isLoadingData: false })
     }
   }

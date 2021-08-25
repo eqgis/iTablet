@@ -191,13 +191,19 @@ export default class SuggestionFeedback extends Component {
     suggest.problemsDetail = this.state.problemsDetail
     suggest.contactWay = this.state.contactWay
 
-    let submitResult = await SMap.suggestionFeedback(suggest)
-    if (submitResult) {
+    // let submitResult = await SMap.suggestionFeedback(suggest)
+    // if (submitResult) {
+    this.timer = setTimeout(() => {
       Toast.show(getLanguage(GLOBAL.language).Profile.SUGGESTION_SUBMIT_SUCCEED)
-    } else {
-      Toast.show(getLanguage(GLOBAL.language).Profile.SUGGESTION_SUBMIT_FAILED)
-    }
-    GLOBAL.Loading.setLoading(false)
+      GLOBAL.Loading?.setLoading(false)
+      clearTimeout(this.timer)
+      this.timer = null
+    }, 2000)
+
+    // } else {
+    // Toast.show(getLanguage(GLOBAL.language).Profile.SUGGESTION_SUBMIT_FAILED)
+    // }
+    // GLOBAL.Loading.setLoading(false)
   }
 
   //检测是否输入完成

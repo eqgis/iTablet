@@ -4681,6 +4681,7 @@ export default class MapView extends React.Component {
           onLoad={this._onLoad}
           onARElementTouch={element => {
             if(
+              !this.state.showPoiSearch &&
               element.type === ARElementType.AR_IMAGE
               || element.type === ARElementType.AR_VIDEO
               || element.type === ARElementType.AR_WEBVIEW

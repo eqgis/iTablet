@@ -151,7 +151,7 @@ export default class RenderFindItem extends Component {
 
   _downloadFile = async () => {
     if (this.exist) {
-      await this.unZipFile()
+      // await this.unZipFile()
       Toast.show(getLanguage(GLOBAL.language).Find.DOWNLOADED)
       // Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return

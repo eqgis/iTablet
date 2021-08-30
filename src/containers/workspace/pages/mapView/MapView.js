@@ -360,7 +360,7 @@ export default class MapView extends React.Component {
       showPoiSearch:false,
       showNavigation:false,
     }
-    this.props.setDatumPoint(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? true : false)
+    this.props.setDatumPoint(GLOBAL.Type === ChunkType.MAP_AR ? true : false)
     this.props.showAR(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS  ? true : false)
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
@@ -518,7 +518,7 @@ export default class MapView extends React.Component {
       Dimensions.addEventListener('change', this.onChange)
     }
 
-    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR) {
+    if (GLOBAL.Type === ChunkType.MAP_AR) {
       this.showFullMap(true)
     }
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
@@ -2640,16 +2640,19 @@ export default class MapView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
+        this.props.setDatumPoint(true)
       } else if (this.measureType === 'arDrawArea') {
         SARMap.setMeasureMode('DRAW_AREA')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
+        this.props.setDatumPoint(true)
       } else if (this.measureType === 'arDrawPoint') {
         SARMap.setMeasureMode('DRAW_POINT')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
+        this.props.setDatumPoint(true)
       } else if (this.measureType === 'arMeasureHeight') {
         SARMap.setMeasureMode('MEASURE_HEIGHT')
         this.setState({
@@ -2687,6 +2690,7 @@ export default class MapView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT
+        this.props.setDatumPoint(true)
       }else if (this.measureType === 'arDrawRectangle') {
         this.title = getLanguage(
           GLOBAL.language,

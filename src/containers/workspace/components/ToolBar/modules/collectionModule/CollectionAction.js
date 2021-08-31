@@ -328,6 +328,7 @@ function redo(type) {
 }
 
 async function close(type) {
+  GLOBAL.HAVEATTRIBUTE = false
   const params = ToolbarModule.getParams()
   // 当前为采集状态
   if (

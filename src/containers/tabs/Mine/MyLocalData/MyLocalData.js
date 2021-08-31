@@ -692,6 +692,7 @@ export default class MyLocalData extends Component {
     } catch (e) {
       // this.deleteDataing = false
       this.setLoading(false)
+      this.getData()
       Toast.show(getLanguage(this.props.language).Prompt.NETWORK_ERROR)
     } finally {
       // this.setLoading(false)

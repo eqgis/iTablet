@@ -9,8 +9,9 @@ import { SOnlineService } from 'imobile_for_reactnative'
 import { FileTools } from '../../../native'
 import ConstPath from '../../../constants/ConstPath'
 import { OnlineServicesUtils } from '../../../utils'
-import { UserInfo } from '../../../redux/models/user'
 import { UserType } from '../../../constants'
+import { UserInfo } from '../../../types'
+
 
 function isJSON(str: string) {
   if (typeof str === 'string') {

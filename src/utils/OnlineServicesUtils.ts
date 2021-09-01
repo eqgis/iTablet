@@ -9,13 +9,16 @@ import CookieManager from 'react-native-cookies'
 import RNFS from 'react-native-fs'
 import { UserType } from '../constants'
 import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
+import RNFetchBlob from 'rn-fetch-blob'
+import { TLoginUserType } from '../constants/UserType'
+import { UserInfo } from '../types'
 
 /** 上传回调 */
 interface UploadCallBack {
   /** 开始回调 */
-  onBegin?: (res: RNFS.DownloadBeginCallbackResult) => void,
+  onBegin?: (res: unknown) => void,
   /** 进度回调 */
-  onProgress?: (res: RNFS.DownloadBeginCallbackResult) => void,
+  onProgress?: (res: number) => void,
 }
 
 /** 数据查询参数 */
@@ -32,7 +35,24 @@ interface CommonUserInfo {
   name: string
   email: string
   /** iportal或online用户 */
-  userType: string
+  userType: TLoginUserType
+}
+
+interface ILoginResult {
+  userInfo?: UserInfo,
+  errorInfo: string,
+}
+
+interface UserProfile {
+  nickName: string
+  userName: string
+}
+
+interface OnlineUserInfo {
+  userId: string,
+  nickname: string,
+  phoneNumber: string,
+  email: string | null
 }
 
 /** online / iportal 上的数据类型 */
@@ -127,15 +147,20 @@ interface OnlineRequestError {
 
 export default class OnlineServicesUtils {
   /** iportal还是online */
-  type: 'iportal' | 'online'
+  type: 'iportal' | 'online' | 'OnlineJP'
   /** iportal服务器地址或online地址 */
   serverUrl: string
+  onlineUrl: string
+  /** online 登录地址 */
+  ssoURL: string
   /** android only - 登录后的用户凭证 */
   cookie: string
 
-  constructor(type: 'iportal' | 'online') {
+  constructor(type: 'iportal' | 'online' | 'OnlineJP') {
     this.type = type
     this.serverUrl = ''
+    this.onlineUrl = ''
+    this.ssoURL = ''
     this.cookie = ''
     if (type === 'iportal') {
       let url = SIPortalService.getIPortalUrl()
@@ -150,20 +175,36 @@ export default class OnlineServicesUtils {
           })
         }
       }
-    } else {
+    } else if(type === 'OnlineJP') {
+      this.serverUrl = 'https://online.supermap.jp/web'
+      this.onlineUrl = 'https://online.suermap.jp'
+      this.ssoURL = 'https://sso.supermap.jp'
+      this.ssoURL = 'https://sso.supermap.com'
+      SOnlineService.getCookie().then((cookie: string )=> {
+        this.cookie = cookie
+      })
+    } else if(type === 'online'){
       this.serverUrl = 'https://www.supermapol.com/web'
-      if (Platform.OS === 'android') {
-        SOnlineService.getAndroidSessionID().then((cookie: string )=> {
-          this.cookie = cookie
-        })
-      }
+      this.onlineUrl = 'https://www.supermapol.com'
+      this.ssoURL = 'https://sso.supermap.com'
+      SOnlineService.getCookie().then((cookie: string )=> {
+        this.cookie = cookie
+      })
+    }
+  }
+
+  _getUserType(): TLoginUserType {
+    switch (this.type) {
+      case 'online':
+        return UserType.COMMON_USER
+      case 'iportal':
+        return UserType.IPORTAL_COMMON_USER
+      case 'OnlineJP': 
+      return UserType.COMMON_USER_JP
     }
   }
 
   getCookie = async (): Promise<string|undefined> => {
-    if (Platform.OS === 'ios') {
-      return undefined
-    }
     if (this.cookie) {
       return this.cookie
     }
@@ -171,8 +212,8 @@ export default class OnlineServicesUtils {
     let cookie = undefined
     if (this.type === 'iportal') {
       cookie = await SIPortalService.getIPortalCookie()
-    } else if (this.type === 'online') {
-      cookie = await SOnlineService.getAndroidSessionID()
+    } else if (this.type === 'online' || this.type === 'OnlineJP') {
+      cookie = await SOnlineService.getCookie()
     }
 
     this.cookie = cookie || ''
@@ -193,22 +234,20 @@ export default class OnlineServicesUtils {
       }
 
       url = encodeURI(url)
-      let response = fetch(url, {
-        headers: headers,
-      })
+      const response = RNFetchBlob.config({trusty:true}).fetch('GET', url, headers)
       let result = await Promise.race([response, timeout(10)])
       if (result === 'timeout') {
         return false
       }
 
-      if (result.status === 200) {
+      if (result.respInfo.status === 200) {
         let info = await result.json()
 
         return {
           name: info.name,
           nickname: info.nickname,
           email: info.email,
-          userType: this.type === 'iportal' ? UserType.IPORTAL_COMMON_USER : UserType.COMMON_USER,
+          userType: this._getUserType()
         }
       } else {
         return false
@@ -649,48 +688,41 @@ export default class OnlineServicesUtils {
    * 登录online
    * @param userName 用户昵称
    * @param password 用户密码
-   * @param loginType 已弃用
    */
-  async login(userName: string, password: string, loginType: string): Promise<boolean> {
-    if (this.type === 'online') {
-      try {
-        let url =
-          'https://sso.supermap.com/login?service=https://www.supermapol.com/shiro-cas'
+   async login(userName: string, password: string): Promise<ILoginResult> {
 
-        await CookieManager.clearAll()
-        //请求登陆页面
-        let response = await axios.get(encodeURI(url))
-        let $ = cheerio.load(response.data)
-        let cookie
-        if (response.headers['set-cookie']) {
-          cookie = response.headers['set-cookie'][0]
-          cookie = cookie.substr(0, cookie.indexOf(';'))
-        }
-
-        let paramObj = {
-          loginType: loginType,
-          username: userName,
-          password: password,
-          lt: $('input[name=lt]').attr().value,
-          execution: $('input[name=execution]').attr().value,
-          _eventId: $('input[name=_eventId]').attr().value,
-          // submit: '登录',
-        }
-        let paramStr
-        if (Platform.OS === 'android') {
-          paramStr = JSON.stringify(paramObj)
-        } else {
-          paramStr = this._obj2params(paramObj)
-        }
-        let result = await SOnlineService.loginWithParam(encodeURI(url), cookie, paramStr)
-        this.cookie = await SOnlineService.getCookie()
-
-        return result
-      } catch (e) {
-        return false
-      }
+    if(this.type === 'online') {
+      await SOnlineService.setOnlineServiceSite('DEFAULT')
+    } else if(this.type === 'OnlineJP') {
+      await  SOnlineService.setOnlineServiceSite('JP')
     }
-    return false
+
+    const res = await Promise.race([SOnlineService.login(userName, password), timeout(40)])
+    const result: ILoginResult = {
+      userInfo: undefined,
+      errorInfo: ''
+    }
+
+    if(typeof res === 'string') {
+      result.errorInfo = res
+    } else if(res) {
+      this.cookie = await SOnlineService.getCookie()
+      const myInfo = await this.getLoginUserInfo()
+      if(myInfo) {
+        result.userInfo = {
+          userName: myInfo.name,
+          password: password,
+          nickname: myInfo.nickname,
+          email: myInfo.email,
+          userType: this._getUserType(),
+        }
+      } else {
+        result.errorInfo = '获取信息失败'
+      }
+    } else {
+      result.errorInfo = '登录失败'
+    }
+    return result
   }
 
    /**
@@ -756,7 +788,7 @@ export default class OnlineServicesUtils {
    * @param userName nickname或email
    * @param isEmail 通过手机号查找已被禁止，请设置为true
    */
-  getUserInfo = async (userName: string, isEmail: boolean): Promise<object|false> => {
+  getUserInfo = async (userName: string, isEmail = true): Promise<OnlineUserInfo|false> => {
     try {
       let url
       //仅支持邮箱，用户名 zhangxt
@@ -779,15 +811,13 @@ export default class OnlineServicesUtils {
       }
 
       url = encodeURI(url)
-      let response = fetch(url, {
-        headers: headers,
-      })
+      const response = RNFetchBlob.config({trusty:true}).fetch('GET', url, headers)
       let result = await Promise.race([response, timeout(10)])
       if (result === 'timeout') {
         return false
       }
 
-      if (result.status === 200) {
+      if (result.respInfo.status === 200) {
         let info = await result.json()
 
         return {

@@ -2,35 +2,27 @@
  *  游客用户
  *
  */
-const PROBATION_USER = 'probation_user'
+const PROBATION_USER: 'probation_user' = 'probation_user'
 /**
  *  普通用户
  *
  */
-const COMMON_USER = 'common_user'
-/**
- *  所有模块vip用户
- *
- */
-const ALL_MODULE_VIP_USER = 'all_module_vip_user'
-
-/**
- *  采集vip用户
- *
- */
-const COLLECTION_IVP_USER = 'collection_vip_user'
-/**
- *  专题制图vip用户
- *
- */
-const THEME_MAP_VIP_USER = 'theme_map_vip_user'
+const COMMON_USER: 'common_user' = 'common_user'
 /**
  *  iPortal用户
  *
  */
-const IPORTAL_COMMON_USER = 'iPortal_common_user'
+const IPORTAL_COMMON_USER: 'iPortal_common_user' = 'iPortal_common_user'
+/**
+ * online 日本站点用户
+ */
+const COMMON_USER_JP: 'COMMON_USER_JP' = 'COMMON_USER_JP'
 
-function isProbationUser(user) {
+export type TLoginUserType =typeof COMMON_USER | typeof IPORTAL_COMMON_USER | typeof COMMON_USER_JP
+
+export type TUserType = typeof PROBATION_USER | TLoginUserType
+
+function isProbationUser(user: any) {
   if (user === undefined) {
     return false
   }
@@ -44,7 +36,7 @@ function isProbationUser(user) {
   return false
 }
 
-function isOnlineUser(user) {
+function isOnlineUser(user:any) {
   if (user === undefined) {
     return false
   }
@@ -54,16 +46,14 @@ function isOnlineUser(user) {
   const type = user.userType
   if (
     type === COMMON_USER ||
-    type === ALL_MODULE_VIP_USER ||
-    type === COLLECTION_IVP_USER ||
-    type === THEME_MAP_VIP_USER
+    type === COMMON_USER_JP
   ) {
     return true
   }
   return false
 }
 
-function isIPortalUser(user) {
+function isIPortalUser(user:any) {
   if (user === undefined) {
     return false
   }
@@ -80,9 +70,7 @@ function isIPortalUser(user) {
 export default {
   PROBATION_USER,
   COMMON_USER,
-  ALL_MODULE_VIP_USER,
-  COLLECTION_IVP_USER,
-  THEME_MAP_VIP_USER,
+  COMMON_USER_JP,
   IPORTAL_COMMON_USER,
   isProbationUser,
   isOnlineUser,

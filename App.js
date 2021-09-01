@@ -354,6 +354,14 @@ class AppRoot extends Component {
     // let isEmail = this.props.user.currentUser.isEmail
     let nickname = this.props.user.currentUser.nickname
     let password = this.props.user.currentUser.password
+    let userType = this.props.user.currentUser.userType
+
+    if(userType === UserType.COMMON_USER) {
+      await SOnlineService.setOnlineServiceSite('DEFAULT')
+    } else {
+      await SOnlineService.setOnlineServiceSite('JP')
+    }
+
     let bLogin = false
     // if (isEmail === true) {
     bLogin = await SOnlineService.login(nickname, password)
@@ -374,7 +382,8 @@ class AppRoot extends Component {
         result = await this.loginOnline()
       }
       if(result === true){
-        let JSOnlineservice = new OnlineServicesUtils('online')
+        let userType = this.props.user.currentUser.userType
+        let JSOnlineservice = new OnlineServicesUtils(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
         //登录后更新用户信息 zhangxt
         let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
         let user = {

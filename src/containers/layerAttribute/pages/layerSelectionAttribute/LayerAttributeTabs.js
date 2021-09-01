@@ -403,41 +403,41 @@ export default class LayerAttributeTabs extends React.Component {
 
   /** 添加属性字段 **/
   addAttributeField = async fieldInfo => {
-    if (this.state.attributes.data.length > 0) {
-      if (
-        this.state.currentTabIndex >= this.currentTabRefs.length &&
-        !this.currentTabRefs[this.state.currentTabIndex]
-      )
-        return
-      let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
-        .layerSelection.layerInfo.path
-      let result
-      if(this.type === 'MY_DATA'){
-        result = await SMap.addAttributeFieldInfoByData(layerPath, fieldInfo)
-      }else{
-        result = await SMap.addAttributeFieldInfo(layerPath, true, fieldInfo)
-      }
-      if (result) {
-        Toast.show(
-          getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_SUCCESS,
-        )
-        this.currentTabRefs[this.state.currentTabIndex].getAttribute(
-          {
-            type: 'reset',
-            currentPage: this.currentTabRefs[this.state.currentTabIndex]
-              .currentPage,
-            startIndex: 0,
-            relativeIndex: 0,
-            currentIndex: 0,
-          },
-          () => { },
-        )
-      } else {
-        Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_FAILED)
-      }
-      return result
+    // if (this.state.attributes.data.length > 0) {
+    if (
+      this.state.currentTabIndex >= this.currentTabRefs.length &&
+      !this.currentTabRefs[this.state.currentTabIndex]
+    )
+      return
+    let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
+      .layerSelection.layerInfo.path
+    let result
+    if (this.type === 'MY_DATA') {
+      result = await SMap.addAttributeFieldInfoByData(layerPath, fieldInfo)
+    } else {
+      result = await SMap.addAttributeFieldInfo(layerPath, true, fieldInfo)
     }
-    return false
+    if (result) {
+      Toast.show(
+        getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_SUCCESS,
+      )
+      this.currentTabRefs[this.state.currentTabIndex].getAttribute(
+        {
+          type: 'reset',
+          currentPage: this.currentTabRefs[this.state.currentTabIndex]
+            .currentPage,
+          startIndex: 0,
+          relativeIndex: 0,
+          currentIndex: 0,
+        },
+        () => { },
+      )
+    } else {
+      Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_FAILED)
+    }
+    return result
+    // }
+    // return false
   }
 
   /** 删除事件 **/

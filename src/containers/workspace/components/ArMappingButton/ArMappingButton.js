@@ -672,7 +672,7 @@ export default class ArMappingButton extends React.Component {
     this.props.showSwitch(false)
     this.setState({ isCollect: true, data: this.collectdata, showSwitch: true })
     this.isDrawing = false
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({ isExistFullMap: false, measureType: 'arCollect' })
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({ isExistFullMap: false, measureType: 'arCollect' ,haslocation:true})
   }
 
   drawPoint = async () => {
@@ -737,7 +737,7 @@ export default class ArMappingButton extends React.Component {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
     GLOBAL.MeasureCollectData.measureType = 'arDrawPoint'
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName,haslocation:true})
   }
 
   drawLine = async () => {
@@ -802,7 +802,7 @@ export default class ArMappingButton extends React.Component {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
     GLOBAL.MeasureCollectData.measureType = 'drawLine'
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName,haslocation:true})
   }
 
   drawPolygon = async () => {
@@ -868,7 +868,7 @@ export default class ArMappingButton extends React.Component {
     let point = { x: _point.longitude, y: _point.latitude }
     GLOBAL.MeasureCollectData.point = point
     GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName,haslocation:true})
   }
 
   drawRectangle = async () => {

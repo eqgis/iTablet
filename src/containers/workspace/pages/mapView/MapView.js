@@ -745,7 +745,9 @@ export default class MapView extends React.Component {
           this.props.arPoiSearch(false)
         }
       }else{
-        this.showFullMap(this.props.showDatumPoint)
+        if(GLOBAL.Type === ChunkType.MAP_AR){
+          this.showFullMap(this.props.showDatumPoint)
+        }
       }
     }
 
@@ -2640,19 +2642,25 @@ export default class MapView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
-        this.props.setDatumPoint(true)
+        if(!params.haslocation){
+          this.props.setDatumPoint(true)
+        }
       } else if (this.measureType === 'arDrawArea') {
         SARMap.setMeasureMode('DRAW_AREA')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
-        this.props.setDatumPoint(true)
+        if(!params.haslocation){
+          this.props.setDatumPoint(true)
+        }
       } else if (this.measureType === 'arDrawPoint') {
         SARMap.setMeasureMode('DRAW_POINT')
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
-        this.props.setDatumPoint(true)
+        if(!params.haslocation){
+          this.props.setDatumPoint(true)
+        }
       } else if (this.measureType === 'arMeasureHeight') {
         SARMap.setMeasureMode('MEASURE_HEIGHT')
         this.setState({
@@ -2690,7 +2698,9 @@ export default class MapView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT
-        this.props.setDatumPoint(true)
+        if(!params.haslocation){
+          this.props.setDatumPoint(true)
+        }
       }else if (this.measureType === 'arDrawRectangle') {
         this.title = getLanguage(
           GLOBAL.language,
@@ -2732,14 +2742,14 @@ export default class MapView extends React.Component {
         this.isCollect = true
         this.isnew = false
         if (Platform.OS === 'android') {
-          SARMap.showMeasureView(false)
+          SARMap.showMeasureView(true)
           SARMap.showTrackView(true)
         } else {
           SARMap.setMeasureMode('arCollect')
         }
       } else {
         if (Platform.OS === 'android') {
-          SARMap.showTrackView(false)
+          SARMap.showTrackView(true)
           SARMap.showMeasureView(true)
         }
       }

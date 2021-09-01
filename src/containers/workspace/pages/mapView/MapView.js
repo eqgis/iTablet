@@ -2742,6 +2742,7 @@ export default class MapView extends React.Component {
         this.isCollect = true
         this.isnew = false
         if (Platform.OS === 'android') {
+          SARMap.setMeasureMode('NULL')
           SARMap.showMeasureView(true)
           SARMap.showTrackView(true)
         } else {

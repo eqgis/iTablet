@@ -662,9 +662,10 @@ export default class ArMappingButton extends React.Component {
   }
 
   arCollect = () => {
-    SARMap.clearMeasure()
+    // SARMap.clearMeasure()
     if (Platform.OS === 'android') {
-      SARMap.showMeasureView(false)
+      SARMap.setMeasureMode('NULL')
+      SARMap.showMeasureView(true)
       SARMap.showTrackView(true)
       SARMap.changeTrackingMode(1)
     }
@@ -682,7 +683,7 @@ export default class ArMappingButton extends React.Component {
     SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
-      SARMap.showTrackView(false)
+      SARMap.showTrackView(true)
     }
     this.props.isTrack(false)
     this.isDrawing = true
@@ -747,7 +748,7 @@ export default class ArMappingButton extends React.Component {
     SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
-      SARMap.showTrackView(false)
+      SARMap.showTrackView(true)
     }
     this.props.isTrack(false)
     this.isDrawing = true
@@ -812,7 +813,7 @@ export default class ArMappingButton extends React.Component {
     SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
-      SARMap.showTrackView(false)
+      SARMap.showTrackView(true)
     }
     this.props.isTrack(false)
     this.isDrawing = true
@@ -878,7 +879,7 @@ export default class ArMappingButton extends React.Component {
     SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
-      SARMap.showTrackView(false)
+      SARMap.showTrackView(true)
     }
     this.props.isTrack(false)
     this.isDrawing = true
@@ -943,7 +944,7 @@ export default class ArMappingButton extends React.Component {
     SARMap.stopLocation()
     if (Platform.OS === 'android') {
       SARMap.showMeasureView(true)
-      SARMap.showTrackView(false)
+      SARMap.showTrackView(true)
     }
     this.props.isTrack(false)
     this.isDrawing = true

@@ -10,7 +10,7 @@ import {
 import { Toast, OnlineServicesUtils, scaleSize } from '../../../../utils/index'
 import { Container } from '../../../../components'
 import { FileTools } from '../../../../native'
-import { SOnlineService, SIPortalService, AppInfo } from 'imobile_for_reactnative'
+import { SIPortalService, AppInfo } from 'imobile_for_reactnative'
 import ConstPath from '../../../../constants/ConstPath'
 import NavigationService from '../../../NavigationService'
 import UserType from '../../../../constants/UserType'
@@ -133,8 +133,6 @@ export default class Login extends React.Component {
   }
 
   _loginOnline = async ({ isEmail, userName, password }) => {
-    let result
-
     try {
       if (!userName) {
         Toast.show(getLanguage(this.props.language).Profile.ENTER_USERNAME_ALL)
@@ -145,55 +143,14 @@ export default class Login extends React.Component {
         return
       }
 
-      let userInfo
       let isConnected = await NetInfo.isConnected.fetch()
-      if (isConnected) {
-        this.onlineLogin.logining()
-        this.setState({covered:true})
-        // this.container.setLoading(
-        //   true,
-        //   getLanguage(this.props.language).Prompt.LOG_IN,
-        // )
-        userInfo = await JSOnlineService.getUserInfo(userName, isEmail)
-        if (
-          userInfo !== false &&
-          userInfo.userId === this.props.user.currentUser.userId
-        ) {
-          Toast.show(getLanguage(GLOBAL.language).Profile.LOGIN_CURRENT)
-          return
-        }
-        let startLogin = async () => {
-          let loginResult
-          if (isEmail) {
-            loginResult = await JSOnlineService.login(
-              userName,
-              password,
-              'EMAIL_TYPE',
-            )
-            if (loginResult === true) {
-              loginResult = await SOnlineService.login(userName, password)
-            }
-          } else {
-            loginResult = await JSOnlineService.login(
-              userName,
-              password,
-              'PHONE_TYPE',
-            )
-            if (loginResult === true) {
-              loginResult = await SOnlineService.loginWithPhoneNumber(
-                userName,
-                password,
-              )
-            }
-          }
-          return loginResult
-        }
-        result = startLogin()
-      } else {
+      if(!isConnected) {
         Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
         return
       }
 
+      this.onlineLogin.logining()
+      this.setState({covered:true})
       let timeout = sec => {
         return new Promise(resolve => {
           setTimeout(() => {
@@ -202,47 +159,39 @@ export default class Login extends React.Component {
         })
       }
 
-      let res = await new Promise.race([result, timeout(40)])
-      if (res === 'timeout') {
-        Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
-        return
-      } else {
-        result = res
-      }
-
-      // userInfo = await JSOnlineService.getUserInfo(userName, true)
-      // //手机登录通过下面接口获取用户名后再次查询 zhangxt
-      // if(!userInfo) {
-      let username =  await JSOnlineService.getLoginUserName()
-      if(username !== '') {
-        userInfo = await JSOnlineService.getUserInfo(username, true)
-      }
-      //手机登录后再检查是否是当前登录用户
+      //使用邮箱或昵称登录的用户可以在此处检查是否已经登录
+      const userInfo = await JSOnlineService.getUserInfo(userName)
       if (
         userInfo !== false &&
-        userInfo.userId === this.props.user.currentUser.userId
+          userInfo.userId === this.props.user.currentUser.userId
       ) {
-        Toast.show(getLanguage(global.language).Profile.LOGIN_CURRENT)
+        Toast.show(getLanguage().User.USER_ALREADY_LOGGEDIN)
         return
       }
-      // }
 
-      if (typeof result === 'boolean' && result && userInfo !== false) {
-        await this.initUserDirectories(userInfo.userId)
+      const loginResult = await JSOnlineService.login(userName, password)
+
+      if (loginResult.userInfo) {
+        const loginUser = loginResult.userInfo
+        if(loginUser.userName === this.props.user.currentUser.userId) {
+          Toast.show(getLanguage().User.USER_ALREADY_LOGGEDIN)
+          return
+        }
+        await this.initUserDirectories(loginUser.userName)
 
         let user = {
-          userName: userInfo.userId,
+          userName: loginUser.userName,
           password: password,
-          nickname: userInfo.nickname,
-          email: userInfo.email,
-          phoneNumber: userInfo.phoneNumber,
-          userId: userInfo.userId,
+          nickname: loginUser.nickname,
+          email: loginUser.email,
+          phoneNumber: loginUser.phoneNumber,
+          userId: loginUser.userName,
           isEmail: isEmail,
-          userType: UserType.COMMON_USER,
+          userType: loginUser.userType,
         }
         let friendListResult = FriendListFileHandle.initFriendList(user)
         // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
-        result = await new Promise.race([friendListResult, timeout(15)])
+        const result = await new Promise.race([friendListResult, timeout(15)])
         if (result === 'timeout') {
           Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         } else if (result) {
@@ -254,18 +203,16 @@ export default class Login extends React.Component {
           Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
         }
       } else {
+        const errorInfo = loginResult.errorInfo
         if (
-          result === '用户名或用户密码错误' ||
-          result === 'account not exist or password error'
+          errorInfo === '用户名或用户密码错误' ||
+          errorInfo === 'account not exist or password error'
         ) {
           Toast.show(
             getLanguage(this.props.language).Prompt.INCORRECT_USER_INFO,
           )
-        } else if (
-          result === '无网络连接' ||
-          result === 'The Internet connection appears to be offline.'
-        ) {
-          Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
+        } else if (errorInfo === 'timeout') {
+          Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         } else Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
         //'登录失败')
       }

@@ -6,6 +6,7 @@ import com.beefe.picker.PickerViewPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactInstanceManagerBuilder;
 import com.facebook.react.ReactNativeHost;
@@ -53,6 +54,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNFetchBlobPackage(),
             new CookieManagerPackage(),
             new ImageResizerPackage(),
             new PhotoViewPackage(),

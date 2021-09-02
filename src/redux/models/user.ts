@@ -2,62 +2,29 @@ import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { } from '../../utils'
 import { ConfigUtils, AppInfo } from 'imobile_for_reactnative'
+import { UserInfo } from '../../types'
 // Constants
 // --------------------------------------------------
 export const USER_SET = 'USER_SET'
 export const USERS_SET = 'USERS_SET'
 export const USER_DELETE = 'USER_DELETE'
 
-/** 用户信息参数 */
-export interface UserInfoParams {
-  /**
-   * 用户名，用户注册后不可改变
-   * iportal为注册时使用的字符串
-   * online为系统分配的数字的字符串，即id
-   */
-  userName: string
-  /** 昵称，用户可修改 */
-  nickname?: string
-  /** 邮箱地址，用户可修改 */
-  email?: string
-  /** 电话号码，用户可修改 */
-  phoneNumber?: number
-  /** 密码 */
-  password?: string
-  /** 用户类型，详见UserType */
-  userType: string
-  /** iportal用户所使用的服务器地址 */
-  serverUrl?: string
-  /** @deprecated 同userName */
-  userId?: string
-  /** @deprecated 是否为邮箱登录 */
-  isEmail?: string
+interface SetUserAction {
+  type: typeof USER_SET,
+  userInfo: UserInfo,
 }
-/** 用户信息 */
-export interface UserInfo {
-  /**
-   * 用户名，用户注册后不可改变
-   * iportal为注册时使用的字符串
-   * online为系统分配的数字的字符串，即id
-   */
-  userName: string
-  /** 昵称，用户可修改 */
-  nickname: string
-  /** 邮箱地址，用户可修改 */
-  email: string
-  /** 电话号码，用户可修改 */
-  phoneNumber: number
-  /** 密码 */
-  password?: string
-  /** 用户类型，详见UserType */
-  userType: string
-  /** iportal用户所使用的服务器地址 */
-  serverUrl: string
-  /** @deprecated 同userName */
-  userId: string
-  /** @deprecated 是否为邮箱登录 */
-  isEmail: string
+
+interface SetUsersAction {
+  type: typeof USERS_SET,
+  users: UserInfo[]
 }
+
+interface DeleteUserAction {
+  type: typeof USER_DELETE,
+  userInfo: UserInfo,
+}
+
+type UserActions = SetUserAction | SetUsersAction | DeleteUserAction
 
 export interface Users {
   currentUser: UserInfo,
@@ -67,7 +34,7 @@ export interface Users {
 
 // Actions
 // ---------------------------------.3-----------------
-export const setUser = (params: UserInfoParams, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   GLOBAL.currentUser = params
   await dispatch({
     type: USER_SET,
@@ -76,7 +43,7 @@ export const setUser = (params: UserInfoParams, cb = () => {}) => async (dispatc
   cb && cb()
 }
 
-export const setUsers = (params: UserInfoParams[], cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const setUsers = (params: UserInfo[], cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   GLOBAL.currentUser = params[0]
   await dispatch({
     type: USERS_SET,
@@ -85,7 +52,7 @@ export const setUsers = (params: UserInfoParams[], cb = () => {}) => async (disp
   cb && cb()
 }
 
-export const deleteUser = (params: UserInfoParams, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const deleteUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   await dispatch({
     type: USER_DELETE,
     payload: params,

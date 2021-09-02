@@ -241,54 +241,63 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
   }
 
   analyzeRoute = async (): Promise<RouteAnalyzeResult | null> => {
-    if(this.state.selectedPoi) {
-      ARNaviModule.setData({
-        currentPOI: this.state.selectedPoi
-      })
-      const currentLocation = await SARMap.getCurrentLocation()
-      if(currentLocation) {
-        const roadNetDataset = ARNaviModule.getData().naviDatasetInfo
-        let result: RouteAnalyzeResult | null = null
-        if('address' in this.state.selectedPoi) {
-          result = await OnlineService.routeAnalyze({
-            startPoint: currentLocation.ll,
-            endPoint: await SMap.mercatorToLL(this.state.selectedPoi.location),
-            to: 910111
-          })
-        } else if(roadNetDataset) {
-          result = await SARMap.routeAnalyze({
-            datasourcAlias: roadNetDataset.datasourceAlias,
-            datasetName: roadNetDataset.datasetName,
-            modelFileName: roadNetDataset.modelFileName,
-            startPoint: currentLocation.ll,
-            endPoint: await SMap.mercatorToLL(this.state.selectedPoi.location),
-            to: 2
-          })
-        }
+    try {
+      if(this.state.selectedPoi) {
         ARNaviModule.setData({
-          currentRoute: result
+          currentPOI: this.state.selectedPoi
         })
-        return result
+        const currentLocation = await SARMap.getCurrentLocation()
+        if(currentLocation) {
+          const roadNetDataset = ARNaviModule.getData().naviDatasetInfo
+          let result: RouteAnalyzeResult | null = null
+          if('address' in this.state.selectedPoi) {
+            result = await OnlineService.routeAnalyze({
+              startPoint: currentLocation.ll,
+              endPoint: await SMap.mercatorToLL(this.state.selectedPoi.location),
+              to: 910111
+            })
+          } else if(roadNetDataset) {
+            result = await SARMap.routeAnalyze({
+              datasourcAlias: roadNetDataset.datasourceAlias,
+              datasetName: roadNetDataset.datasetName,
+              modelFileName: roadNetDataset.modelFileName,
+              startPoint: currentLocation.ll,
+              endPoint: await SMap.mercatorToLL(this.state.selectedPoi.location),
+              to: 2
+            })
+          }
+          ARNaviModule.setData({
+            currentRoute: result
+          })
+          return result
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_GET_LOCATION)
+          return null
+        }
       } else {
-        Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_GET_LOCATION)
         return null
       }
-    } else {
+    } catch(e) {
       return null
     }
   }
 
   /** 进入AR导航 */
   onNavi = async () => {
-    const result = await this.analyzeRoute()
-    if(result) {
-      await SARMap.startNavigation(result)
-      const _params: any = ToolbarModule.getParams()
-      _params.showArNavi && _params.showArNavi(false)
-      _params.showNavigation && _params.showNavigation(true)
-    } else {
-      Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_ANALYZE_PATH)
+    try {
+      const result = await this.analyzeRoute()
+      if(result) {
+        await SARMap.startNavigation(result)
+        const _params: any = ToolbarModule.getParams()
+        _params.showArNavi && _params.showArNavi(false)
+        _params.showNavigation && _params.showNavigation(true)
+      } else {
+        Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_ANALYZE_PATH)
+      }
+    } catch(e) {
+      //
     }
+   
   }
 
   /** 查看路线 */

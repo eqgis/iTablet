@@ -429,6 +429,8 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM_OUTPUT_TEMPLATE: 'Haritanın çıktısını alacağınızdan emin misiniz?',
 
   SHOW_AR_SCENE_NOTIFY: 'AR Scene keşfetme tiplerini göster',
+
+  CANT_PICTURE:'Unable to continue collection, up to 9 pictures can be added', //need to translate
 }
 
 export { Prompt }

@@ -1468,7 +1468,7 @@ export default class MapView extends React.Component {
           await SARMap.showPointCloud(false)
         }
         await SARMap.dispose()
-        this.props.showAR(false)
+        // this.props.showAR(false)
       }
       this.setLoading(false)
       NavigationService.goBack(baskFrom)

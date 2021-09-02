@@ -431,6 +431,8 @@ const Prompt: typeof CN.Prompt = {
   CONFIRM_OUTPUT_TEMPLATE: 'هل أنت متأكد من إخراج الخريطة؟',
 
   SHOW_AR_SCENE_NOTIFY: 'عرض ع المشهد كشف تلميح',
+
+  CANT_PICTURE:'Unable to continue collection, up to 9 pictures can be added', //need to translate
 }
 
 export { Prompt }

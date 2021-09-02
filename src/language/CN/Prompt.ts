@@ -427,6 +427,8 @@ const Prompt = {
   CONFIRM_OUTPUT_TEMPLATE: '确定输出地图模板？',
 
   SHOW_AR_SCENE_NOTIFY: '显示场景检测提示',
+
+  CANT_PICTURE:'无法继续采集，最多可添加9张图片',
 }
 
 export { Prompt }

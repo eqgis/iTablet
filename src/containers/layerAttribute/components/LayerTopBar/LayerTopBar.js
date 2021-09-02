@@ -10,11 +10,12 @@ import { ImageButton } from '../../../../components'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
-import { screen, scaleSize, LayerUtils } from '../../../../utils'
+import { screen, scaleSize, LayerUtils ,  Toast} from '../../../../utils'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import NavigationService from '../../../NavigationService'
 import {
   SMap,
+  SMediaCollector,
 } from 'imobile_for_reactnative'
 
 const itemGap = scaleSize(20)
@@ -42,6 +43,8 @@ export default class LayerTopBar extends React.Component {
     islayerSelection?: Object,//当前属性拦选中的属性的图层名
     layerAttribute?:Object,//是否为地图界面跳转属性
     type?:String,//我的里面会传一个type过来
+    attributes?:Object,
+    layerName?:String,
   }
 
   static defaultProps = {
@@ -106,6 +109,22 @@ export default class LayerTopBar extends React.Component {
 
   // 多媒体采集
   captureImage = async ()=> {
+    let smID = -1
+    for (let i = 0; i < this.props.attributes.data[this.props.currentIndex].length; i++) {
+      if (this.props.attributes.data[this.props.currentIndex][i].name === 'SmID') {
+        smID = this.props.attributes.data[this.props.currentIndex][i].value
+      } else if (
+        this.props.attributes.data[this.props.currentIndex][i].name === 'MediaFilePaths' &&
+        this.props.attributes.data[this.props.currentIndex][i].value != ''
+      ) {
+        let info = await SMediaCollector.getMediaInfo(this.props.layerName, smID)
+        let maxFiles = 9 - info.mediaFilePaths.length
+        if(maxFiles === 0){
+          Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_PICTURE)
+          return
+        }
+      }
+    }
     const selectionAttribute = this.props.selectionAttribute
     const index = this.props.currentIndex
     const _params = ToolbarModule.getParams()

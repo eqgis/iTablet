@@ -397,7 +397,7 @@ export default class MediaEdit extends React.Component {
           : getLanguage(this.props.language).Prompt.SAVE_FAILED,
       )
     } catch (e) {
-      Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
+      Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
     }
   }
 

@@ -134,14 +134,19 @@ class NavigationView2D extends React.Component<Props, State> {
         <Button
           title={getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION}
           style={{ width: scaleSize(150), height: scaleSize(80), paddingHorizontal: scaleSize(20) ,borderRadius: scaleSize(50)}}
-          onPress={() => {
-            if (this.state.result) {
-              SARMap.startNavigation(this.state.result)
-              const _params: any = ToolbarModule.getParams()
-              _params.showArNavi && _params.showArNavi(false)
-              _params.showNavigation && _params.showNavigation(true)
-              this.props.navigation.goBack()
+          onPress={async () => {
+            try {
+              if (this.state.result) {
+                await SARMap.startNavigation(this.state.result)
+                const _params: any = ToolbarModule.getParams()
+                _params.showArNavi && _params.showArNavi(false)
+                _params.showNavigation && _params.showNavigation(true)
+                this.props.navigation.goBack()
+              }
+            } catch(e) {
+              //
             }
+           
           }}
         />
       </View>

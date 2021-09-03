@@ -212,7 +212,7 @@ export async function addARModel(location?: IVector3) {
     const _data: any = ToolbarModule.getData()
     const layer = _params.arlayer.currentLayer
     if(layer){
-      await SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
+      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
     }
   } catch (error) {
     Toast.show(error)
@@ -230,7 +230,7 @@ async function addMedia(type: TARElementType, location?: IVector3) {
       if((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
         content = content.substring(7)
       }
-      return await SARMap.addARMedia(layer.name, type, content, location)
+      SARMap.addARMedia(layer.name, type, content, location)
     }
     return false
   } catch (error) {
@@ -246,7 +246,7 @@ async function addText(location?: IVector3) {
     let content = _data.arContent
     const layer = _params.arlayer.currentLayer
     if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-      await SARMap.addARText(layer.name, content, location)
+      SARMap.addARText(layer.name, content, location)
     }
   } catch (error) {
     Toast.show(error)

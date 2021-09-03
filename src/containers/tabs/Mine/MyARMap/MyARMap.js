@@ -137,25 +137,21 @@ class MyARMap extends MyDataPage {
   }
 
   exportData = async name => {
-    try {
-      if (!this.itemInfo) return false
-      const homePath = await FileTools.appendingHomeDirectory()
-      let path = `${homePath + ConstPath.ExternalData}/`
+    if (!this.itemInfo) return false
+    const homePath = await FileTools.appendingHomeDirectory()
+    let path = `${homePath + ConstPath.ExternalData}/`
 
-      const availableName = await DataHandler.getAvailableFileName(
-        path,
-        name,
-        'zip'
-      )
+    const availableName = await DataHandler.getAvailableFileName(
+      path,
+      name,
+      'zip'
+    )
 
-      this.exportPath = path + availableName
+    this.exportPath = path + availableName
 
-      const exportResult = await DataHandler.exportARMap(this.itemInfo.item.name, path + availableName)
+    const exportResult = await DataHandler.exportARMap(this.itemInfo.item.name, path + availableName)
 
-      return exportResult
-    } catch (error) {
-      return false
-    }
+    return exportResult
   }
 }
 

@@ -398,6 +398,12 @@ export default class OnlineServicesUtils {
       entities = []
     }
     url = encodeURI(url)
+    // let response = await RNFetchBlob.config({trusty:true}).fetch('PUT', url, headers, 
+    // JSON.stringify({
+    //   ids: [id],
+    //   entities: entities,
+    // }))
+    // let result = await response.json()
     let result = await request(url, 'PUT', {
       headers: headers,
       body: {
@@ -420,6 +426,8 @@ export default class OnlineServicesUtils {
     if (cookie) {
       headers = {
         cookie: cookie,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       }
     }
     let entities: any[]
@@ -435,13 +443,19 @@ export default class OnlineServicesUtils {
       entities = []
     }
     url = encodeURI(url)
-    let result = await request(url, 'PUT', {
-      headers: headers,
-      body: {
-        ids: [id],
-        entities: entities,
-      },
-    })
+    let response = await RNFetchBlob.config({trusty:true}).fetch('PUT', url, headers, 
+    JSON.stringify({
+      ids: [id],
+      entities: entities,
+    }))
+    let result = await response.json()
+    // let result = await request(url, 'PUT', {
+    //   headers: headers,
+    //   body: {
+    //     ids: [id],
+    //     entities: entities,
+    //   },
+    // })
     return result.succeed
   }
 

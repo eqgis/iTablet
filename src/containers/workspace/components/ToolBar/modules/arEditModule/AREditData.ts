@@ -284,8 +284,8 @@ async function getStyleData(type: string) {
       data = [
         {
           key: 'left-right',
-          leftText:  getLanguage(GLOBAL.language).ARMap.LEFT,
-          rightText:  getLanguage(GLOBAL.language).ARMap.RIGHT,
+          leftText:  getLanguage(GLOBAL.language).ARMap.WEST,
+          rightText:  getLanguage(GLOBAL.language).ARMap.EAST,
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {
@@ -320,8 +320,8 @@ async function getStyleData(type: string) {
         },
         {
           key: 'back-front',
-          leftText:  getLanguage(GLOBAL.language).ARMap.BACK,
-          rightText:  getLanguage(GLOBAL.language).ARMap.FRONT,
+          leftText:  getLanguage(GLOBAL.language).ARMap.SOUTH,
+          rightText:  getLanguage(GLOBAL.language).ARMap.NORTH,
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {

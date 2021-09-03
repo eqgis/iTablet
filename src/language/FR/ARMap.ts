@@ -34,6 +34,10 @@ const ARMap: typeof CN.ARMap = {// need to translate
   RATATION_AXIS: 'Axe de rotation',
   CLOCKWISE: "dans le sens des aiguilles d'une montre",
   COUNTER_CLOCKWISE: "sens inverse des aiguilles d'une montre",
+  WEST: 'W', // to be translated
+  EAST: 'E', // to be translated
+  SOUTH: 'S', // to be translated
+  NORTH: 'N', // to be translated
 
   ANIMATION: 'Animation',
   ANIMATION_TYPE: "Type d'animation",

@@ -34,6 +34,10 @@ const ARMap: typeof CN.ARMap = {
   RATATION_AXIS: 'Ratation Axis',
   CLOCKWISE: 'closewise',
   COUNTER_CLOCKWISE: 'couterclockwise',
+  WEST: 'W',
+  EAST: 'E',
+  SOUTH: 'S',
+  NORTH: 'N',
 
   ANIMATION: 'Aniamtion',
   ANIMATION_TYPE: 'Animation Type',

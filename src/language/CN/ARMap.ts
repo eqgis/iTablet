@@ -32,6 +32,10 @@ const ARMap = {
   RATATION_AXIS: '旋转轴',
   CLOCKWISE: '顺时针',
   COUNTER_CLOCKWISE: '逆时针',
+  WEST: '西',
+  EAST: '东',
+  SOUTH: '南',
+  NORTH: '北',
 
   ANIMATION: '动画',
   ANIMATION_TYPE: '动画类型',

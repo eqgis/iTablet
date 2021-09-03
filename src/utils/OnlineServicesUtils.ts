@@ -554,14 +554,11 @@ export default class OnlineServicesUtils {
         }
       }
       url = encodeURI(url)
-      let response = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify({
-          fileName: fileName,
-          type: fileType,
-        }),
-      })
+      let response = await RNFetchBlob.config({trusty:true}).fetch('POST', url, headers, 
+      JSON.stringify({
+        fileName: fileName,
+        type: fileType,
+      }))
       let result = await response.json()
       if (result.childID) {
         return result.childID

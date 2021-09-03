@@ -333,7 +333,6 @@ export const exportWorkspace = (params, cb = () => { }) => async (
         )
       }
     }
-    // console.warn(exportResult)
     if (!template) {
       // 压缩工作空间
       if (exportResult) {

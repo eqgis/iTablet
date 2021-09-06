@@ -1619,6 +1619,7 @@ export default class MapView extends React.Component {
       const needSaveARMap = GLOBAL.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
       if ((result || needSaveARMap) && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {
+          this.props.showAR(false)
           await this.props.setCurrentAttribute({})
           // this.setState({ showScaleView: false })
           await this._removeGeometrySelectedListener()
@@ -1630,6 +1631,7 @@ export default class MapView extends React.Component {
         })
       } else {
         try {
+          this.props.showAR(false)
           this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()

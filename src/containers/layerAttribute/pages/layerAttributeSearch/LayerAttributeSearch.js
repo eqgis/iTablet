@@ -13,6 +13,7 @@ import { LayerAttributeTable } from '../../components'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
+import { FileTools } from '../../../../native'
 import NavigationService from '../../../NavigationService'
 import { SMediaCollector } from 'imobile_for_reactnative'
 
@@ -230,8 +231,8 @@ export default class LayerAttributeSearch extends React.Component {
     )
       return null
 
-    let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
+    let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds', 'MediaData'], // 属性表cell显示 查看 按钮
+      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
       async data => {
         let layerName = this.props.currentLayer.name,
@@ -252,9 +253,65 @@ export default class LayerAttributeSearch extends React.Component {
         }else{
           Object.assign(info, { addToMap: false })
         }
-        NavigationService.navigate('MediaEdit', {
-          info,
-        })
+        let refresh = mData => {
+          let _data = this.state.attributes.data[data.rowIndex]
+          let isDelete = false
+          for (let _mData of mData) {
+            if (_mData.name === 'mediaFilePaths' && _mData.value.length === 0) {
+              isDelete = true
+              break
+            }
+            for (let i = 0; i < _data.length; i++) {
+              if (_data[i].name !== _mData.name) continue
+              if (_data[i].value === _mData.value) break
+              let isSingle = this.total === 1 && this.state.attributes.data.length === 1
+              let params = {}
+              if (isSingle) {
+                params = {
+                  cellData: _data[i].value,
+                  columnIndex: 1,
+                  rowData: data.rowData[i],
+                  index: i,
+                  value: _mData.value,
+                }
+              } else {
+                params = {
+                  cellData: _data[i],
+                  columnIndex: i + 1,
+                  rowData: data.rowData,
+                  index: data.rowIndex,
+                  value: _mData.value,
+                }
+              }
+              this.changeAction(params)
+            }
+          }
+          if (isDelete) {
+            this.setState({currentIndex:-1})
+            this.refresh()
+          }
+        }
+
+        const mediaData = info.mediaData && JSON.parse(info.mediaData)
+        if (mediaData?.type === 'AI_CLASSIFY') {
+          NavigationService.navigate('ClassifyResultEditView', {
+            layerName: layerName,
+            geoID: geoID,
+            datasourceAlias: this.props.currentLayer.datasourceAlias,
+            datasetName: this.props.currentLayer.datasetName,
+            imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+            mediaName: mediaData.mediaName,
+            classifyTime: info.modifiedDate,
+            description: info.description,
+            cb: refresh,
+          })
+        } else {
+          NavigationService.navigate('MediaEdit', {
+            info,
+            layerInfo: this.props.currentLayer,
+            cb: refresh,
+          })
+        }
       },
     ]
     return (

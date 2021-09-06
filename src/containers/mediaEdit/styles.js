@@ -43,7 +43,7 @@ export default StyleSheet.create({
   plusImageView: {
     width: IMAGE_SIZE,
     height: IMAGE_SIZE,
-    borderRadius: scaleSize(8),
+    // borderRadius: scaleSize(8),
     borderWidth: 1,
     borderColor: color.borderLight,
     backgroundColor: 'transparent',
@@ -51,13 +51,13 @@ export default StyleSheet.create({
   imageView: {
     width: IMAGE_SIZE,
     height: IMAGE_SIZE,
-    borderRadius: scaleSize(8),
+    // borderRadius: scaleSize(8),
     backgroundColor: 'transparent',
   },
   image: {
     width: IMAGE_SIZE,
     height: IMAGE_SIZE,
-    borderRadius: scaleSize(8),
+    // borderRadius: scaleSize(8),
     backgroundColor: 'transparent',
   },
   deleteOverlay: {
@@ -67,7 +67,7 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#rgba(255, 255, 255, 0.3)',
-    borderRadius: scaleSize(8),
+    // borderRadius: scaleSize(8),
   },
   deleteView: {
     position: 'absolute',
@@ -91,5 +91,26 @@ export default StyleSheet.create({
     right: scaleSize(8),
     color: 'white',
     fontSize: 14,
+  },
+  title: {
+    color: color.itemColorBlack,
+    fontSize: size.fontSize.fontSizeXl,
+    marginLeft: scaleSize(30),
+  },
+  itemView: {
+    flexDirection: 'row',
+    height: scaleSize(90),
+    alignItems: 'center',
+    marginHorizontal: scaleSize(30),
+  },
+  locationImg: {
+    width: scaleSize(44),
+    height: scaleSize(44),
+    marginLeft: scaleSize(30),
+  },
+  locationTitle: {
+    color: color.contentColorGray,
+    fontSize: size.fontSize.fontSizeXl,
+    marginLeft: scaleSize(10),
   },
 })

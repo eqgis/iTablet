@@ -142,6 +142,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_PICTURES: 'Pictures',
   COLLECT_TIME: 'Time',
   COORDINATE: 'Coordinate',
+  BASIC_INFO: 'Basic Information',
 
   // 裁剪
   TOOLS_RECTANGLE_CLIP: 'Rectangle Clip',

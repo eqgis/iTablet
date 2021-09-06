@@ -15,23 +15,23 @@ export interface UserInfoParams {
    * iportal为注册时使用的字符串
    * online为系统分配的数字的字符串，即id
    */
-  userName: string
+  userName: string,
   /** 昵称，用户可修改 */
-  nickname?: string
+  nickname?: string,
   /** 邮箱地址，用户可修改 */
-  email?: string
+  email?: string,
   /** 电话号码，用户可修改 */
-  phoneNumber?: number
+  phoneNumber?: number,
   /** 密码 */
-  password?: string
+  password?: string,
   /** 用户类型，详见UserType */
-  userType: string
+  userType: string,
   /** iportal用户所使用的服务器地址 */
-  serverUrl?: string
+  serverUrl?: string,
   /** @deprecated 同userName */
-  userId?: string
+  userId?: string,
   /** @deprecated 是否为邮箱登录 */
-  isEmail?: string
+  isEmail?: string,
 }
 /** 用户信息 */
 export interface UserInfo {
@@ -40,23 +40,23 @@ export interface UserInfo {
    * iportal为注册时使用的字符串
    * online为系统分配的数字的字符串，即id
    */
-  userName: string
+  userName: string,
   /** 昵称，用户可修改 */
-  nickname: string
+  nickname: string,
   /** 邮箱地址，用户可修改 */
-  email: string
+  email: string,
   /** 电话号码，用户可修改 */
-  phoneNumber: number
+  phoneNumber: number,
   /** 密码 */
-  password?: string
+  password?: string,
   /** 用户类型，详见UserType */
-  userType: string
+  userType: string,
   /** iportal用户所使用的服务器地址 */
-  serverUrl: string
+  serverUrl: string,
   /** @deprecated 同userName */
-  userId: string
+  userId: string,
   /** @deprecated 是否为邮箱登录 */
-  isEmail: string
+  isEmail: string,
 }
 
 export interface Users {
@@ -131,8 +131,8 @@ export default handleActions(
     [`${USER_DELETE}`]: (state: { toJS: () => { users: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { users } = state.toJS()
       for (let i = 0; i < users.length; i++) {
-       //判断类型后有id判断id，没有id判断userName
-       if (users[i].userType === payload.userType &&
+        //判断类型后有id判断id，没有id判断userName
+        if (users[i].userType === payload.userType &&
         ((users[i].userId !== undefined &&  payload.userId !== undefined && users[i].userId === payload.userId) ||
           users[i].userName === payload.userName))  {
           users.splice(i, 1)

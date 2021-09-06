@@ -23,7 +23,12 @@ const icon_toolbar_savespot = require('./icon_toolbar_savespot.png')
 const icon_toolbar_saveline = require('./icon_toolbar_saveline.png')
 const icon_toolbar_region = require('./icon_toolbar_region.png')
 const icon_toolbar_substance_selected = require('./icon_toolbar_substance_selected.png')
+const icon_tool_recognise = require('./icon_tool_recognise.png')
+const icon_tool_submit = require('./icon_tool_submit.png')
+const icon_tool_cancel = require('./icon_tool_cancel.png')
 const back = require('./icon_return.png')
+const icon_photo_picture = require('./icon_photo_picture.png')
+const icon_tool_photograph = require('./icon_tool_photograph.png')
 
 export default {
   icon_toolbar_add,
@@ -51,5 +56,10 @@ export default {
   icon_toolbar_saveline,
   icon_toolbar_region,
   icon_toolbar_substance_selected,
+  icon_tool_recognise,
+  icon_tool_submit,
+  icon_tool_cancel,
   back,
+  icon_photo_picture,
+  icon_tool_photograph,
 }

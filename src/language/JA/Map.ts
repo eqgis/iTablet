@@ -142,6 +142,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_PICTURES: '画像',
   COLLECT_TIME: 'コレクション時間',
   COORDINATE: '経度緯度',
+  BASIC_INFO: 'Basic Information', // need to translate
 
   // 裁剪
   TOOLS_RECTANGLE_CLIP: '矩形クリップ',

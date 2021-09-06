@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { View, InteractionManager } from 'react-native'
+import { View } from 'react-native'
 import NavigationService from '../../../NavigationService'
 import {
   Container,
@@ -30,6 +30,7 @@ import {
   LocationView,
 } from '../../components'
 import { getThemeAssets } from '../../../../assets'
+import { FileTools } from '../../../../native'
 import styles from './styles'
 import {
   SMap,
@@ -1276,8 +1277,8 @@ export default class LayerAttribute extends React.Component {
   }
 
   renderMapLayerAttribute = () => {
-    let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
+      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.currentLayer.name,
@@ -1299,48 +1300,65 @@ export default class LayerAttribute extends React.Component {
           Object.assign(info, { addToMap: false })
         }
 
-        NavigationService.navigate('MediaEdit', {
-          info,
-          cb: mData => {
-            let _data = this.state.attributes.data[data.rowIndex]
-            let isDelete = false
-            for (let j = 0; j < mData.length; j++) {
-              if (mData[j].name === 'mediaFilePaths' && mData[j].value.length === 0) {
-                isDelete = true
-                break
-              }
-              if (mData[j].name !== 'mediaName') continue
-              for (let i = 0; i < _data.length; i++) {
-                if (_data[i].name !== 'MediaName') continue
-                if (_data[i].value === mData[j].value) break
-                let isSingle = this.total === 1 && this.state.attributes.data.length === 1
-                let params = {}
-                if (isSingle) {
-                  params = {
-                    cellData: _data[i].value,
-                    columnIndex: 1,
-                    rowData: data.rowData[i],
-                    index: i,
-                    value: mData[j].value,
-                  }
-                } else {
-                  params = {
-                    cellData: _data[i],
-                    columnIndex: i + 1,
-                    rowData: data.rowData,
-                    index: data.rowIndex,
-                    value: mData[j].value,
-                  }
+        let refresh = mData => {
+          let _data = this.state.attributes.data[data.rowIndex]
+          let isDelete = false
+          for (let _mData of mData) {
+            if (_mData.name === 'mediaFilePaths' && _mData.value.length === 0) {
+              isDelete = true
+              break
+            }
+            for (let i = 0; i < _data.length; i++) {
+              if (_data[i].name !== _mData.name) continue
+              if (_data[i].value === _mData.value) break
+              let isSingle = this.total === 1 && this.state.attributes.data.length === 1
+              let params = {}
+              if (isSingle) {
+                params = {
+                  cellData: _data[i].value,
+                  columnIndex: 1,
+                  rowData: data.rowData[i],
+                  index: i,
+                  value: _mData.value,
                 }
-                this.changeAction(params)
+              } else {
+                params = {
+                  cellData: _data[i],
+                  columnIndex: i + 1,
+                  rowData: data.rowData,
+                  index: data.rowIndex,
+                  value: _mData.value,
+                }
               }
+              this.changeAction(params)
             }
-            if (isDelete) {
-              this.setState({currentIndex:-1})
-              this.refresh()
-            }
-          },
-        })
+          }
+          if (isDelete) {
+            this.setState({currentIndex:-1})
+            this.refresh()
+          }
+        }
+
+        const mediaData = info.mediaData && JSON.parse(info.mediaData)
+        if (mediaData?.type === 'AI_CLASSIFY') {
+          NavigationService.navigate('ClassifyResultEditView', {
+            layerName: layerName,
+            geoID: geoID,
+            datasourceAlias: this.props.currentLayer.datasourceAlias,
+            datasetName: this.props.currentLayer.datasetName,
+            imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+            mediaName: mediaData.mediaName,
+            classifyTime: info.modifiedDate,
+            description: info.description,
+            cb: refresh,
+          })
+        } else {
+          NavigationService.navigate('MediaEdit', {
+            info,
+            cb: refresh,
+          })
+        }
+
       },
     ] : []
     const isSingle = this.total === 1 && this.state.attributes.data.length === 1

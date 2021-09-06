@@ -81,7 +81,6 @@ import {
   FetchUtils,
   screen,
   Audio,
-  SCoordinationUtils,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -89,8 +88,6 @@ import { FileTools } from '../../../../native'
 import {
   ConstPath,
   ConstToolType,
-  layerManagerData,
-  OpenData,
   TouchType,
   ToolbarType,
   ChunkType,
@@ -466,19 +463,19 @@ export default class MapView extends React.Component {
     return { x, y }
   }
 
-  handleStateChange = async appState => {
-    if (Platform.OS === 'android') {
-      if (!this.props.isClassifyView) {
-        if (appState === 'background') {
-          SAIDetectView.onPause()
-        }
+  // handleStateChange = async appState => {
+  //   if (Platform.OS === 'android') {
+  //     if (!this.props.isClassifyView) {
+  //       if (appState === 'background') {
+  //         SAIDetectView.onPause()
+  //       }
 
-        if (appState === 'active') {
-          SAIDetectView.onResume()
-        }
-      }
-    }
-  }
+  //       if (appState === 'active') {
+  //         SAIDetectView.onResume()
+  //       }
+  //     }
+  //   }
+  // }
 
   /** 添加楼层显隐监听 */
   addFloorHiddenListener = () => {
@@ -568,10 +565,32 @@ export default class MapView extends React.Component {
         action: this.back,
       })
 
-      SMediaCollector.setCalloutTapListener(info => {
-        NavigationService.navigate('MediaEdit', {
-          info,
-        })
+      SMediaCollector.setCalloutTapListener(async info => {
+        const mediaData = info.mediaData && JSON.parse(info.mediaData)
+        let layerInfo
+        for (const layer of this.props.layers.layers) {
+          if (layer.name === info.layerName) {
+            layerInfo = layer
+            break
+          }
+        }
+        if (mediaData?.type === 'AI_CLASSIFY') {
+          NavigationService.navigate('ClassifyResultEditView', {
+            layerName: info.layerName,
+            geoID: info.geoID,
+            datasourceAlias: layerInfo.datasourceAlias,
+            datasetName: layerInfo.datasetName,
+            imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+            mediaName: mediaData.mediaName,
+            classifyTime: info.modifiedDate,
+            description: info.description,
+          })
+        } else {
+          NavigationService.navigate('MediaEdit', {
+            layerInfo,
+            info,
+          })
+        }
       })
 
       this.clearData()
@@ -3392,45 +3411,26 @@ export default class MapView extends React.Component {
       }
     }
     return (
-      <View
-        style={[styles.iconAr, right]}
-        ref={ref => (GLOBAL.ArModeIcon = ref)}
-      >
-        <MTBtn
-          style={{ padding: scaleSize(5) }}
-          size={MTBtn.Size.NORMAL}
-          image={getThemeAssets().ar.switch_ar_light}
-          onPress={() => {
-            this.currentTime = new Date().getTime()
-            // if (this.currentTime - this.lastClickTime < 1500) {
-            //   return
-            // }
-            this.lastClickTime = this.currentTime
-            // this.container.setLoading(
-            //   true,
-            //   getLanguage(this.props.language).Prompt.LOADING,
-            // )
-            // setTimeout(() => {
-            //   this.container.setLoading(
-            //     false,
-            //     getLanguage(this.props.language).Prompt.LOADING,
-            //   )
-            // }, 3000)
-            if (!show) {
-              this.setState({
-                bGoneAIDetect: false,
-              })
-            }
-            let _showAIDetect = this.switchAr()
-            // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
-            setTimeout(() => {
-              _showAIDetect && this.showFullMap(false)
-            }, Const.ANIMATED_DURATION)
-          }}
-          activeOpacity={0.5}
-        // separator={scaleSize(2)}
-        />
-      </View>
+      <ImageButton
+        containerStyle={[styles.iconAr, right]}
+        // iconBtnStyle={[styles.iconAr, right]}
+        iconStyle={styles.switchARImg}
+        icon={getThemeAssets().publicAssets.icon_tool_switch}
+        onPress={() => {
+          this.currentTime = new Date().getTime()
+          this.lastClickTime = this.currentTime
+          if (!show) {
+            this.setState({
+              bGoneAIDetect: false,
+            })
+          }
+          let _showAIDetect = this.switchAr()
+          // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
+          setTimeout(() => {
+            _showAIDetect && this.showFullMap(false)
+          }, Const.ANIMATED_DURATION)
+        }}
+      />
     )
   }
 

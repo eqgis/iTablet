@@ -16,6 +16,10 @@ import tool3DModule from './tool3DModule'
 import navigationModule from './navigationModule'
 import legendModule from './legendModule'
 import aiModule from './aiModule'
+import aiCollection from './aiCollection'
+import aiAggregate from './aiAggregate'
+import aiVehicle from './aiVehicle'
+import aiCategory from './aiCategory'
 import mapSettingModule from './mapSettingModule'
 import roadNetModule from './roadNetModule'
 import markModule from './markModule'
@@ -59,6 +63,10 @@ export {
   navigationModule,
   legendModule,
   aiModule,
+  aiCollection,
+  aiAggregate,
+  aiVehicle,
+  aiCategory,
   mapSettingModule,
   roadNetModule,
   markModule,

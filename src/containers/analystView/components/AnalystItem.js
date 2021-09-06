@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 
   input: {
     // flex: 1,
-    width: scaleSize(120),
+    width: scaleSize(200),
     height: scaleSize(60),
     ...Platform.select({
       android: {

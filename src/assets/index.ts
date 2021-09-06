@@ -139,6 +139,7 @@ function getLayerIconByType(type: SMap.LayerInfo['type'] | string) {
       break
     case DatasetType.MBImage: // 多波段影像
     case DatasetType.IMAGE: // 影像数据集
+    case 'MBIMAGE':
     case 'IMAGE':
       icon = getThemeAssets().layerType.layer_image
       break

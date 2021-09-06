@@ -396,6 +396,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         <TextInput
           ref={ref => this.textInput = ref}
           style={styles.textInput}
+          placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
           returnKeyType={'search'}
           defaultValue={this.state.searchKey}
           onFocus={() => this.setState({isInputing: true})}

@@ -131,7 +131,7 @@ export default class InputPage extends React.Component {
                   ? styles.headerBtnTitle
                   : styles.headerBtnTitleDisable
               }
-              containerStyle={{width:'auto'}}
+              containerStyle={{width:'auto',right:scaleSize(20)}}
               btnClick={this.confirm}
             />
           ),

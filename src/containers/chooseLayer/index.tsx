@@ -39,9 +39,9 @@ class ChooseLayer extends React.Component<Props, State> {
   renderLayer = ({item}:  ListRenderItemInfo<SMap.LayerInfo>) => {
     if(item.themeType === 0 && (
       item.type === DatasetType.CAD ||
-      (item.type === DatasetType.POINT && this.hasPointLayer) ||
-      (item.type === DatasetType.LINE && this.hasLineLayer) ||
-      (item.type === DatasetType.REGION && this.hasRegionLayer))
+      item.type === DatasetType.POINT ||
+      item.type === DatasetType.LINE ||
+      item.type === DatasetType.REGION)
     ) {
       const isCurrent = this.props.currentLayer.name === item.name
       return (

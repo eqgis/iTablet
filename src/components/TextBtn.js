@@ -39,7 +39,7 @@ export default class TextBtn extends React.Component {
       <TouchableOpacity
         accessible={true}
         accessibilityLabel={this.props.btnText}
-        activeOpacity={0.8}
+        activeOpacity={0.5}
         style={[
           styles.container,
           this.props.containerStyle,

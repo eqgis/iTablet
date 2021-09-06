@@ -421,6 +421,7 @@ export default class LayerAttributeTabs extends React.Component {
       Toast.show(
         getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_SUCCESS,
       )
+      this.refreshAction()
       this.currentTabRefs[this.state.currentTabIndex].getAttribute(
         {
           type: 'reset',

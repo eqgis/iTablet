@@ -204,7 +204,14 @@ export default class OnlineServicesUtils {
     }
   }
 
-  getCookie = async (): Promise<string|undefined> => {
+  /**
+   * @param getIOSCookie ios使用 fetch 接口时需设置为 false
+   */
+  getCookie = async (getIOSCookie = false): Promise<string|undefined> => {
+    if(Platform.OS === 'ios' && !getIOSCookie) {
+      return undefined
+    }
+
     if (this.cookie) {
       return this.cookie
     }
@@ -226,7 +233,7 @@ export default class OnlineServicesUtils {
       let url = this.serverUrl + '/mycontent/account.json'
       
       let headers = {}
-      let cookie = await this.getCookie()
+      let cookie = await this.getCookie(true)
       if (cookie) {
         headers = {
           cookie: cookie,
@@ -422,7 +429,7 @@ export default class OnlineServicesUtils {
   async setDatasShareConfig(id: string, isPublic: boolean): Promise<boolean> {
     let url = this.serverUrl + `/mycontent/datas/sharesetting.rjson`
     let headers = {}
-    let cookie = await this.getCookie()
+    let cookie = await this.getCookie(true)
     if (cookie) {
       headers = {
         cookie: cookie,
@@ -561,7 +568,7 @@ export default class OnlineServicesUtils {
     try {
       let url = this.serverUrl + `/mycontent/datas.rjson`
       let headers = {}
-      let cookie = await this.getCookie()
+      let cookie = await this.getCookie(true)
       if (cookie) {
         headers = {
           cookie: cookie,
@@ -814,7 +821,7 @@ export default class OnlineServicesUtils {
           userName
       }
       let headers = {}
-      let cookie = await this.getCookie()
+      let cookie = await this.getCookie(true)
       if (cookie) {
         headers = {
           cookie: cookie,

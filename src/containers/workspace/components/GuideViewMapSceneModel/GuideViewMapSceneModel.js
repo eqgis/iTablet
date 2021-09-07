@@ -54,8 +54,14 @@ export default class GuideViewMapSceneModel extends React.Component {
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       if(this.props.language === 'CN'){
         left = scaleSize(400)
-      }else{
+      }else if(this.props.language === 'JA'){
+        left = scaleSize(380)
+      }else if(this.props.language === 'EN'){
         left = scaleSize(430)
+      }else if(this.props.language === 'AR'){
+        left = scaleSize(410)
+      }else{
+        left = scaleSize(450)
       }
       style = {
         position: 'absolute',
@@ -103,12 +109,19 @@ export default class GuideViewMapSceneModel extends React.Component {
 
 
   renderMarkGuide = () => {
-    let style , arrowstyle
+    let style , arrowstyle ,left
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      if(this.props.language === 'CN'){
+        left = scaleSize(210)
+      }else if(this.props.language === 'JA'){
+        left = scaleSize(150)
+      }else{
+        left = scaleSize(200)
+      }
       style = {
         position: 'absolute',
         backgroundColor: 'transparent',
-        left: screen.getScreenSafeWidth() / 2 - scaleSize(210),
+        left: screen.getScreenSafeWidth() / 2 - left,
         bottom: scaleSize(110),
         flexDirection: 'column',
         justifyContent: 'center',

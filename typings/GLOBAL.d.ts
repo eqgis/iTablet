@@ -102,7 +102,9 @@ declare namespace GLOBAL {
   /** Toolbar是否显示指滑菜单 */
   let showMenu: boolean                    
   /** 场景名字 */
-  let sceneName: string                   
+  let sceneName: string    
+  /** 离线场景 */
+  let offlineScene: boolean                
   /** 专题图-地图是否由xml加载 */
   let IS_MAP_FROM_XML: boolean
   // 组件ref

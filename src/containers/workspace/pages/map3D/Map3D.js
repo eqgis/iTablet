@@ -84,6 +84,7 @@ export default class Map3D extends React.Component {
     GLOBAL.sceneName = ''
     GLOBAL.openWorkspace = false
     GLOBAL.action3d = ''
+    GLOBAL.offlineScene = false
     const params = this.props.navigation.state.params
     this.mapName = params.mapName || null
     this.state = {
@@ -311,6 +312,7 @@ export default class Map3D extends React.Component {
         this.initListener()
         GLOBAL.openWorkspace = true
         GLOBAL.sceneName = this.name
+        GLOBAL.offlineScene = true
         setTimeout(() => {
           this.container.setLoading(false)
           // Toast.show('无场景显示')

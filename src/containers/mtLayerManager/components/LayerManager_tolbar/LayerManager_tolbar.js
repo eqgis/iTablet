@@ -465,7 +465,15 @@ export default class LayerManager_tolbar extends React.Component {
       (async function() {
         try {
           // GLOBAL.Loading?.setLoading(true)
-          await section.action({layerData: this.state.layerData})
+          if (section.title === 'Tianditu' || section.title === 'Tianditu Image' || section.title === 'Tianditu Terrain') {
+            await section.action({
+              callback: async () => {
+                await this.props.getLayers()
+              },
+            })
+          }else{
+            await section.action({layerData: this.state.layerData})
+          }
           await this.props.getLayers()
           this.setVisible(false)
           // GLOBAL.Loading?.setLoading(false)

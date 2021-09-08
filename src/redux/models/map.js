@@ -316,6 +316,7 @@ export const exportWorkspace = (params, cb = () => { }) => async (
     if (params.maps && params.maps.length > 0) {
       const fileReplace =
         params.fileReplace === undefined ? true : params.fileReplace
+      const extra = params.extra || {}
       if (params.isOpenMap) { // isOpenMap需要打开地图后导出
         const isLogin =
           getState().user.toJS().currentUser.userType !==
@@ -323,13 +324,14 @@ export const exportWorkspace = (params, cb = () => { }) => async (
         exportResult = await SMap.exportWorkspaceByMap(params.maps[0], path, {
           Module: '',
           IsPrivate: isLogin,
+          ...extra,
         })
       } else {
         exportResult = await SMap.exportWorkspace(
           params.maps,
           path,
           fileReplace,
-          params.extra,
+          extra,
         )
       }
     }

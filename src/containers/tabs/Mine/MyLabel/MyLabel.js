@@ -99,7 +99,7 @@ class MyLabel extends MyDataPage {
         uploadList = [this.itemInfo.item.name]
       }
 
-      await SMap.copyDataset(datasourcePath, todatasourcePath, uploadList)
+      await SMap.copyDataset(datasourcePath, todatasourcePath, uploadList, true)
       result = await FileTools.zipFile(archivePath, targetPath)
       FileTools.deleteFile(archivePath)
     }

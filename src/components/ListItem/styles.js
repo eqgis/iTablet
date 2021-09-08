@@ -6,14 +6,14 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'column',
     // justifyContent: 'center',
-    // marginHorizontal: '5',
-    height: scaleSize(80),
+    marginHorizontal: scaleSize(30),
+    height: scaleSize(90),
   },
   contentView: {
     flexDirection: 'row',
     alignItems: 'center',
     // marginHorizontal: '5',
-    height: scaleSize(80) - 1,
+    height: scaleSize(90) - 1,
   },
   image: {
     width: scaleSize(30),
@@ -22,21 +22,23 @@ export default StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: size.fontSize.fontSizeLg,
+    fontSize: size.fontSize.fontSizeXl,
     marginLeft: scaleSize(30),
+    color: color.contentColorGray,
   },
   value: {
     flex: 1,
     marginLeft: scaleSize(20),
-    fontSize: size.fontSize.fontSizeLg,
+    fontSize: size.fontSize.fontSizeXl,
     backgroundColor: 'transparent',
     textAlign: 'left',
+    color: color.contentColorGray,
   },
   separator: {
     flex: 1,
     marginLeft: scaleSize(30),
-    marginRight: 0,
+    marginRight: scaleSize(30),
     height: 1,
-    backgroundColor: color.borderLight,
+    backgroundColor: color.separateColorGray3,
   },
 })

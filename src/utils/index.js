@@ -17,6 +17,7 @@ import ResultInfo from './ResultInfo'
 import DialogUtils from './DialogUtils'
 import AppProgress from './AppProgress'
 import SCoordinationUtils from './SCoordinationUtils'
+import DateUtil from './DateUtil'
 import * as pinyin from './pinyin'
 
 export {
@@ -46,5 +47,6 @@ export {
   DialogUtils,
   AppProgress,
   SCoordinationUtils,
+  DateUtil,
   pinyin,
 }

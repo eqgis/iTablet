@@ -10,6 +10,7 @@ import { Toast, LayerUtils, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import { LayerAttributeTable } from '../../components'
 import { getLanguage } from '../../../../language'
+import { FileTools } from '../../../../native'
 import NavigationService from '../../../NavigationService'
 import { SMediaCollector } from 'imobile_for_reactnative'
 //eslint-disable-next-line
@@ -1063,23 +1064,9 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   renderTable = () => {
-    // let data = [],
-    //   head = [],
-    //   type = LayerAttributeTable.Type.MULTI_DATA
-    // // if (!this.state.attributes || this.state.attributes.length === 0) {
-    // //   return <View />
-    // // }
-    // if (this.state.attributes.length > 1) {
-    //   data = this.state.attributes
-    //   head = this.state.tableHead
-    // } else if (this.state.attributes.length === 1) {
-    //   data = this.state.attributes[0]
-    //   head = ['名称', '属性值']
-    //   type = LayerAttributeTable.Type.SINGLE_DATA
-    // }
     GLOBAL.layerSelection = this.props.layerSelection
-    let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
+      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
@@ -1100,29 +1087,66 @@ export default class LayerSelectionAttribute extends React.Component {
         }else{
           Object.assign(info, { addToMap: false })
         }
-        NavigationService.navigate('MediaEdit', {
-          info,
-          cb: mData => {
-            let isDelete = false
-            for (let j = 0; j < mData.length; j++) {
-              if (mData[j].name === 'mediaFilePaths' && mData[j].value.length === 0) {
-                isDelete = true
-                break
+
+        let refresh = mData => {
+          let _data = this.state.attributes.data[data.rowIndex]
+          let isDelete = false
+          for (let _mData of mData) {
+            if (_mData.name === 'mediaFilePaths' && _mData.value.length === 0) {
+              isDelete = true
+              break
+            }
+            for (let i = 0; i < _data.length; i++) {
+              if (_data[i].name !== _mData.name) continue
+              if (_data[i].value === _mData.value) break
+              let isSingle = this.total === 1 && this.state.attributes.data.length === 1
+              let params = {}
+              if (isSingle) {
+                params = {
+                  cellData: _data[i].value,
+                  columnIndex: 1,
+                  rowData: data.rowData[i],
+                  index: i,
+                  value: _mData.value,
+                }
+              } else {
+                params = {
+                  cellData: _data[i],
+                  columnIndex: i + 1,
+                  rowData: data.rowData,
+                  index: data.rowIndex,
+                  value: _mData.value,
+                }
               }
+              this.changeAction(params)
             }
-            if (isDelete) {
-              this.props.refreshCurrent()
-              this.canBeRefresh = true
-              this.getAttribute({
-                type: 'reset',
-                currentPage: 0,
-                startIndex: 0,
-                relativeIndex: 0,
-                currentIndex: 0,
-              })
-            }
-          },
-        })
+          }
+          if (isDelete) {
+            this.setState({currentIndex:-1})
+            this.refresh()
+          }
+        }
+
+        const mediaData = info.mediaData && JSON.parse(info.mediaData)
+        if (mediaData?.type === 'AI_CLASSIFY') {
+          NavigationService.navigate('ClassifyResultEditView', {
+            layerName: layerName,
+            geoID: geoID,
+            datasourceAlias: GLOBAL.currentLayer.datasourceAlias,
+            datasetName: GLOBAL.currentLayer.datasetName,
+            imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+            mediaName: mediaData.mediaName,
+            classifyTime: info.modifiedDate,
+            description: info.description,
+            cb: refresh,
+          })
+        } else {
+          NavigationService.navigate('MediaEdit', {
+            info,
+            layerInfo: GLOBAL.currentLayer,
+            cb: refresh,
+          })
+        }
       },
     ] : []
     const isSingle = this.state.attributes.data.length === 1

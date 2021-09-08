@@ -32,3 +32,19 @@ export interface IARTransform {
   rotationY: number,
   rotationZ: number,
 }
+
+export interface SectionItemData {
+  key: string,
+  image: any,
+  // selectedImage: any,
+  title: string,
+  size?: string,
+  action: (data: any) => void,
+}
+
+export interface SectionData {
+  title: string,
+  containerType?: string,
+  data?: SectionItemData[],
+  getData?: () => Promise<SectionItemData[]>,
+}

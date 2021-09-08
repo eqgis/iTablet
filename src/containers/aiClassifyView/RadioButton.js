@@ -6,7 +6,8 @@
 
 import * as React from 'react'
 import { StyleSheet, TouchableOpacity, Image } from 'react-native'
-import { getThemeAssets } from '../../assets'
+import { getPublicAssets } from '../../assets'
+import { scaleSize } from '../../utils'
 
 export default class RadioButton extends React.Component {
   props: {
@@ -67,12 +68,12 @@ export default class RadioButton extends React.Component {
     let icon
     if (!this.props.disable) {
       icon = this.state.checked
-        ? getThemeAssets().ar.radio_button_on
-        : getThemeAssets().ar.radio_button_off
+        ? getPublicAssets().common.icon_select
+        : getPublicAssets().common.icon_none
     } else {
       icon = this.state.checked
-        ? getThemeAssets().ar.radio_button_on
-        : getThemeAssets().ar.radio_button_off
+        ? getPublicAssets().common.icon_disable_select
+        : getPublicAssets().common.icon_disable_none
     }
     return (
       <TouchableOpacity
@@ -96,13 +97,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 30,
-    width: 30,
+    height: scaleSize(40),
+    width: scaleSize(40),
     borderRadius: 5,
     backgroundColor: 'transparent',
   },
   btn_image: {
-    height: 20,
-    width: 20,
+    height: scaleSize(32),
+    width: scaleSize(32),
   },
 })

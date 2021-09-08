@@ -45,6 +45,7 @@ async function shareMap(type, list = [], name = '') {
           maps: list,
           extra: {
             notExport,
+            exportMedia: true,
           },
         },
         async (result, path) => {

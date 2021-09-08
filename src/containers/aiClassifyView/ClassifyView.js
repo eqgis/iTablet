@@ -21,7 +21,7 @@ import ImageButton from '../../components/ImageButton'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import RadioButton from './RadioButton'
-import { scaleSize, Toast, LayerUtils } from '../../utils'
+import { scaleSize, Toast, LayerUtils, DateUtil } from '../../utils'
 import { RNCamera } from 'react-native-camera'
 import Orientation from 'react-native-orientation'
 // const { ClassifyView }= NativeModules;
@@ -281,13 +281,25 @@ export default class ClassifyView extends React.Component {
         )
         SMediaCollector.initMediaCollector(targetPath)
 
-        let mediaName = this.results[this.checkedItem].Title
-        let classifyTime = this.results[this.checkedItem].Time
-        let imagePath = targetPath + mediaName + '.jpg'
+        let mediaName = this.results[this.checkedItem]?.Title // 目标类别
+        let classifyTime = this.results[this.checkedItem]?.Time
+        let mediaFileName = mediaName // 图片文件名字
+        if (!mediaFileName) {
+          const timeStr = new Date().getTime()
+          mediaFileName = timeStr.toString()
+          classifyTime = DateUtil.formatDate(timeStr, 'yyyy-MM-dd hh:mm:ss')
+        }
+        let imagePath = targetPath + mediaFileName + '.jpg'
+        const mediaData = JSON.stringify({
+          type: 'AI_CLASSIFY',
+          mediaName: mediaFileName,
+        })
         let result = await SMediaCollector.addAIClassifyMedia({
+          layerName: currentLayer.name,
           datasourceName: datasourceAlias,
           datasetName: datasetName,
-          mediaName: mediaName,
+          mediaName: mediaFileName,
+          mediaData: mediaData,
         })
         if (result) {
           // Toast.show(
@@ -314,8 +326,8 @@ export default class ClassifyView extends React.Component {
               //保存后回到地图
               // NavigationService.goBack()
               // NavigationService.goBack()
-              GLOBAL.toolBox.setVisible(false)(await GLOBAL.toolBox) &&
-                GLOBAL.toolBox.switchAr()
+              this.clear()
+              // GLOBAL.Toolbar?.switchAr()
             },
           })
         }
@@ -400,104 +412,85 @@ export default class ClassifyView extends React.Component {
 
   RadioButtonOnChange = index => {
     if (index === 0) {
-      this.FirstRB && this.FirstRB.setChecked(true)
-      this.SecondRB && this.SecondRB.setChecked(false)
-      this.ThridRB && this.ThridRB.setChecked(false)
+      this.FirstRB?.setChecked(true)
+      this.SecondRB?.setChecked(false)
+      this.ThridRB?.setChecked(false)
+      this.FourthRB?.setChecked(false)
     } else if (index === 1) {
-      this.FirstRB && this.FirstRB.setChecked(false)
-      this.SecondRB && this.SecondRB.setChecked(true)
-      this.ThridRB && this.ThridRB.setChecked(false)
+      this.FirstRB?.setChecked(false)
+      this.SecondRB?.setChecked(true)
+      this.ThridRB?.setChecked(false)
+      this.FourthRB?.setChecked(false)
     } else if (index === 2) {
-      this.FirstRB && this.FirstRB.setChecked(false)
-      this.SecondRB && this.SecondRB.setChecked(false)
-      this.ThridRB && this.ThridRB.setChecked(true)
+      this.FirstRB?.setChecked(false)
+      this.SecondRB?.setChecked(false)
+      this.ThridRB?.setChecked(true)
+      this.FourthRB?.setChecked(false)
+    } else if (index === 3) {
+      this.FirstRB?.setChecked(false)
+      this.SecondRB?.setChecked(false)
+      this.ThridRB?.setChecked(false)
+      this.FourthRB?.setChecked(true)
     }
     this.checkedItem = index
   }
 
   renderBottomBtns = () => {
     return (
-      <View style={styles.toolbar}>
-        <View style={styles.buttonView}>
-          {this.state.isClassifyInfoVisible && (
-            <TouchableOpacity
-              onPress={() => this.clear()}
-              style={styles.iconView}
-            >
-              <Image
-                resizeMode={'contain'}
-                source={getThemeAssets().edit.icon_delete}
-                style={styles.smallIcon}
-              />
-            </TouchableOpacity>
-          )}
-          {this.state.isClassifyInfoVisible && (
-            <TouchableOpacity
-              onPress={() => this.save()}
-              style={styles.iconView}
-            >
-              <Image
-                resizeMode={'contain'}
-                source={getThemeAssets().start.icon_save}
-                style={styles.smallIcon}
-              />
-            </TouchableOpacity>
-          )}
-          {!this.state.isClassifyInfoVisible && (
-            <TouchableOpacity
-              //   onPress={
-              //   async () => {
-              //   await NavigationService.navigate('MapView')
-              //   await GLOBAL.CHECKAIDETEC.setVisible(true)
-              //   await GLOBAL.toolBox.showFullMap(true)
-              //   await GLOBAL.toolBox.setVisible(false)}
-              // }
-              style={styles.iconView}
-            >
-              {/*<Image*/}
-              {/*resizeMode={'contain'}*/}
-              {/*source={getThemeAssets().ar.toolbar.ai_tab}*/}
-              {/*style={styles.smallIcon}*/}
-              {/*/>*/}
-            </TouchableOpacity>
-          )}
-          {!this.state.isClassifyInfoVisible && (
-            <TouchableOpacity
-              onPress={this.showClassifySettingsView}
-              style={styles.iconView}
-            >
-              <Image
-                resizeMode={'contain'}
-                // source={getThemeAssets().ar.toolbar.ai_setting}
-                source={getThemeAssets().toolbar.icon_toolbar_setting}
-                style={styles.smallIcon}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
+      <View style={styles.buttonView}>
+        {this.state.isClassifyInfoVisible && (
+          <TouchableOpacity
+            onPress={() => this.clear()}
+            style={styles.iconView}
+          >
+            <Image
+              resizeMode={'contain'}
+              source={getThemeAssets().edit.icon_delete}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        )}
+        {this.state.isClassifyInfoVisible && (
+          <TouchableOpacity
+            onPress={() => this.save()}
+            style={styles.iconView}
+          >
+            <Image
+              resizeMode={'contain'}
+              source={getThemeAssets().start.icon_save}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        )}
       </View>
+    )
+  }
+
+  renderAlbumBtn = () => {
+    return (
+      <ImageButton
+        containerStyle={styles.albumBtn}
+        iconStyle={styles.albumImgBtn}
+        activeOpacity={0.8}
+        icon={getThemeAssets().toolbar.icon_photo_picture}
+        onPress={() => {
+          this.openAlbum()
+        }}
+      />
     )
   }
 
   renderCenterBtn = () => {
     return (
-      <View style={styles.capture}>
-        <ImageButton
-          containerStyle={styles.capture}
-          iconStyle={styles.cameraIconBg}
-          activeOpacity={0.8}
-          icon={getThemeAssets().ar.icon_ar_camera_circle_bg}
-        />
-        <ImageButton
-          containerStyle={styles.capture}
-          iconStyle={styles.cameraIcon}
-          activeOpacity={0.8}
-          icon={getThemeAssets().ar.navi_object_classify_capture}
-          onPress={() => {
-            this.captureImage()
-          }}
-        />
-      </View>
+      <ImageButton
+        containerStyle={styles.capture}
+        iconStyle={styles.cameraIcon}
+        activeOpacity={0.8}
+        icon={getThemeAssets().toolbar.icon_tool_photograph}
+        onPress={() => {
+          this.captureImage()
+        }}
+      />
     )
   }
 
@@ -557,7 +550,7 @@ export default class ClassifyView extends React.Component {
           style={{
             position: 'absolute',
             left: scaleSize(60),
-            bottom: scaleSize(450),
+            bottom: scaleSize(600),
           }}
         >
           <View
@@ -579,7 +572,7 @@ export default class ClassifyView extends React.Component {
           style={{
             position: 'absolute',
             right: scaleSize(61),
-            bottom: scaleSize(449),
+            bottom: scaleSize(599),
             transform: [{ rotate: '-90deg' }],
           }}
         >
@@ -692,17 +685,20 @@ export default class ClassifyView extends React.Component {
             </Text>
           </TouchableOpacity>
         )}
-        {/* {(
+        {(
           <TouchableOpacity
             onPress={() => this.save(this.state.third_result)}
             style={styles.classifyTitleView}
           >
-            <CheckBox onChange={value => {
-              this.firstOnChange(value)
-            }}/>
-            <Text style={styles.titleElse}>{'以上结果都不对'}</Text>
+            <RadioButton
+              ref={ref => (this.FourthRB = ref)}
+              onChange={() => {
+                this.RadioButtonOnChange(3)
+              }}
+            />
+            <Text style={styles.title}>{getLanguage(GLOBAL.language).AI.ALL_WRONG}</Text>
           </TouchableOpacity>
-        )}*/}
+        )}
       </View>
     )
   }
@@ -734,32 +730,51 @@ export default class ClassifyView extends React.Component {
     )
   }
 
+  renderHeaderLeft = () => {
+    return (
+      <MTBtn
+        key={'backTo'}
+        image={getPublicAssets().common.icon_back}
+        style={styles.headerBtn}
+        imageStyle={styles.headerImgBtn}
+        onPress={async() => {
+          NavigationService.goBack()
+          this.props.setIsClassifyView(false)
+          GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+          GLOBAL.toolBox.switchAr()
+          return true
+        }}
+      />
+    )
+  }
+
   render() {
     return (
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
+          type: 'floatNoTitle',
           title: getLanguage(GLOBAL.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_CLASSIFY,
           navigation: this.props.navigation,
-          backAction: this.back,
-          type: 'fix',
+          headerLeft: this.renderHeaderLeft(),
           headerRight: [
             <MTBtn
               key={'settings'}
-              image={getPublicAssets().common.icon_nav_option}
-              imageStyle={[styles.headerBtn, { marginRight: scaleSize(15) }]}
-              onPress={() => this.openAlbum()}
+              style={styles.headerBtn}
+              image={getThemeAssets().toolbar.icon_toolbar_setting}
+              imageStyle={styles.headerImgBtn}
+              onPress={() => this.showClassifySettingsView()}
             />,
           ],
         }}
-        // bottomBar={this.renderBottomBtns()}
         bottomProps={{ type: 'fix' }}
       >
         {this.renderCamera()}
         {!this.state.isCameraVisible && this.renderImgPickerView()}
         {this.state.isCameraVisible && this.renderOverlayPreview()}
-        {this.renderBottomBtns()}
+        {this.state.isClassifyInfoVisible && this.renderBottomBtns()}
+        {!this.state.isClassifyInfoVisible && this.renderAlbumBtn()}
         {!this.state.isClassifyInfoVisible && this.renderCenterBtn()}
         {this.state.isClassifyInfoVisible && this.renderClassifyInfoView()}
         <Loading ref={ref => (this.Loading = ref)} initLoading={false} />

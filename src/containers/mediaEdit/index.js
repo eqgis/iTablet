@@ -1,5 +1,8 @@
 import { connect } from 'react-redux'
 import MediaEdit from './MediaEdit'
+import {
+  setCurrentLayer,
+} from '../../redux/models/layers'
 
 const mapStateToProps = state => ({
   nav: state.nav.toJS(),
@@ -9,7 +12,11 @@ const mapStateToProps = state => ({
   currentTask: state.cowork.toJS().currentTask,
 })
 
+const mapDispatchToProps = {
+  setCurrentLayer,
+}
+
 export default connect(
   mapStateToProps,
-  [],
+  mapDispatchToProps,
 )(MediaEdit)

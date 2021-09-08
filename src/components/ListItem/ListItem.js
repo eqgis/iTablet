@@ -34,7 +34,7 @@ export default class ListItem extends PureComponent {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        style={[styles.container, { width: '100%' }]}
+        style={styles.container}
         onPress={this._onPress}
       >
         <View style={styles.contentView}>

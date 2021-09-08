@@ -142,6 +142,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_PICTURES: 'صور',
   COLLECT_TIME: 'وقت',
   COORDINATE: 'إحداثيات',
+  BASIC_INFO: 'Basic Information', // need to translate
 
   // 裁剪
   TOOLS_RECTANGLE_CLIP: 'قطع مستطيل',

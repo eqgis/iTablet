@@ -7,7 +7,11 @@ import { SAIDetectView, SMap } from 'imobile_for_reactnative'
 import {
   startModule,
   addModule,
-  aiModule,
+  // aiModule,
+  aiCollection,
+  aiAggregate,
+  aiVehicle,
+  aiCategory,
   markModule,
   toolModule,
   changeMapModule,
@@ -30,7 +34,11 @@ export default class MapARAnalysis extends Module {
     switch(type) {
       case 'ar':
         modules = [
-          aiModule,
+          // aiModule,
+          aiCollection, // AI目标识别
+          aiVehicle,
+          aiCategory,
+          aiAggregate, // AI聚合
         ]
         break
       case 'map':

@@ -221,6 +221,7 @@ async function importDatasource(user, item) {
       0,
       item.filePath.lastIndexOf('.'),
     )}.udd`
+    const mediaPath = `${item.directory}/Media`
 
     const datasourceName = item.fileName.substring(
       0,
@@ -241,6 +242,25 @@ async function importDatasource(user, item) {
 
     await FileTools.copyFile(sourceUdb, `${userPath}/${udbName}`)
     await FileTools.copyFile(sourceUdd, `${userPath}/${uddName}`)
+    if (await FileTools.fileIsExist(mediaPath)) {
+      const targetMediaPath = await FileTools.appendingHomeDirectory(
+        `${ConstPath.UserPath + user.userName}/Data/Media`,
+      )
+      const descriptionPath = `${mediaPath}/description.json`
+      if (await FileTools.fileIsExist(descriptionPath)) {
+        const descriptionStr = await FileTools.readFile(descriptionPath)
+        const description = JSON.parse(descriptionStr)
+        const keys = Object.keys(description)
+        for (const key of keys) {
+          const path = description[key]
+          const fromMediaPath = mediaPath + '/' + path.substring(path.lastIndexOf('/') + 1)
+          const toMediaPath = await FileTools.appendingHomeDirectory(path)
+          await FileTools.copyFile(fromMediaPath, toMediaPath)
+        }
+      } else {
+        await FileTools.copydir(mediaPath, targetMediaPath)
+      }
+    }
     return true
   } catch (error) {
     return false

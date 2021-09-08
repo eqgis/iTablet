@@ -476,27 +476,36 @@ function selectLabelToStyle() {
  * 删除标注
  */
 async function deleteLabel() {
-  const _params = ToolbarModule.getParams()
-  const _selection = _params.selection
-  if (_selection.length === 0) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
-    return
-  }
-
-  _selection.forEach(async item => {
-    if (item.ids.length > 0) {
-      await SCollector.removeByIds(item.ids, item.layerInfo.path)
-      await SMediaCollector.removeByIds(item.ids, item.layerInfo.name)
+  try {
+    const _params = ToolbarModule.getParams()
+    const _selection = _params.selection
+    if (_selection.length === 0) {
+      Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
+      return
     }
-  })
-  _params.setSelection()
-  const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
-
-  _params.setToolbarVisible(true, type, {
-    isFullScreen: false,
-    // height: 0,
-    cb: select,
-  })
+    let result = true
+    //使用for循环等待，在forEach里await没有用
+    for (let i = 0; i < _selection.length; i++) {
+      let item = _selection[i]
+      if (item.ids.length > 0) {
+        result = result && (await SCollector.removeByIds(item.ids, item.layerInfo.path))
+        result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
+      }
+    }
+    // _selection.forEach(async item => {
+    // })
+    if(result){
+      _params.setSelection()
+      const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
+      _params.setToolbarVisible(true, type, {
+        isFullScreen: false,
+        // height: 0,
+        cb: select,
+      })
+    }
+  } catch (e) {
+    //
+  }
 }
 function colorAction(params) {
   const { event } = ToolbarModule.getData()

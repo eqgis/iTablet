@@ -288,6 +288,7 @@ const Prompt: typeof CN.Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: 'Koordinat sistemi çoğaltması başarılı',
   COPY_COORD_SYSTEM_FAIL: 'Koordinat sistemi çoğaltması başarısız',
   ILLEGAL_COORDSYS: 'Desteklenen bir koordinat sistemi dosyası değil',
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
 
   TRANSFER_PARAMS: 'Parametre hatası, Lütfen bir numara girin',
   PLEASE_ENTER: 'Lütfen girin ',

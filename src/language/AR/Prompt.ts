@@ -288,6 +288,7 @@ const Prompt: typeof CN.Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: 'تكرار نظام الاحداثيات بنجاح',
   COPY_COORD_SYSTEM_FAIL: 'فشل تكرار نظام الاحداثيات',
   ILLEGAL_COORDSYS: 'لا ندعم ملف نظام الاحداثيات',
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
 
   TRANSFER_PARAMS: 'خطأ قياس! الرجاء إدخال رقم',
   PLEASE_ENTER: 'من فضلك ادخل',

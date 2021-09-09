@@ -288,6 +288,7 @@ const Prompt: typeof CN.Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: '座標系のコピーに成功',
   COPY_COORD_SYSTEM_FAIL: '座標系のコピーに失敗',
   ILLEGAL_COORDSYS: '選択ファイルはサポートする座標系ファイルではありません',
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
 
   TRANSFER_PARAMS: 'パラメータは不正です。1つの数字を入力してください',
   PLEASE_ENTER: '入力してください',

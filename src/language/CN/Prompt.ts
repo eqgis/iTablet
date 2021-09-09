@@ -286,6 +286,7 @@ const Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: '坐标系复制成功',
   COPY_COORD_SYSTEM_FAIL: '坐标系复制失败',
   ILLEGAL_COORDSYS: '所选文件不是支持的坐标系文件',
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: '坐标系复制失败,无可复制坐标系',
 
   TRANSFER_PARAMS: '参数错误!请输入一个数字',
   PLEASE_ENTER: '请输入',

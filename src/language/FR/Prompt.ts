@@ -287,6 +287,7 @@ const Prompt: typeof CN.Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: 'Coordonner la réplication du système avec succès',
   COPY_COORD_SYSTEM_FAIL: 'La réplication du système de coordonnées a échoué',
   ILLEGAL_COORDSYS: 'Pas un fichier de système de coordonnées pris en charge',
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
 
   TRANSFER_PARAMS: 'Erreur de param! Veuillez saisir un nombre',
   PLEASE_ENTER: 'Veuillez saisir',

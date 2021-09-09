@@ -462,45 +462,49 @@ export default class SecondMapSettings extends Component {
 
   //text item 点击事件
   onTextItemPress = async ({ item, title }) => {
-    let prjCoordSysName = ''
-    let toastTip
-    !title && (title = this.state.title)
-    switch (title) {
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASOURCE:
-        prjCoordSysName = await SMap.copyPrjCoordSysFromDatasource(
-          item.server,
-          item.engineType,
-        )
-        toastTip = prjCoordSysName
-          ? getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
-          : getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL
-        break
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASET:
-        prjCoordSysName = await SMap.copyPrjCoordSysFromDataset(
-          item.parentTitle,
-          item.title,
-        )
-        toastTip = prjCoordSysName
-          ? getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
-          : getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL
-        break
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_FILE:
-        prjCoordSysName = await SMap.copyPrjCoordSysFromFile(
-          item.path,
-          item.name.substring(item.name.lastIndexOf('.'), item.name.length),
-        )
-        if (prjCoordSysName.error) {
-          toastTip = getLanguage(GLOBAL.language).Prompt[prjCoordSysName.error]
-        } else {
+    try{
+      let prjCoordSysName = ''
+      let toastTip
+      !title && (title = this.state.title)
+      switch (title) {
+        case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASOURCE:
+          prjCoordSysName = await SMap.copyPrjCoordSysFromDatasource(
+            item.server,
+            item.engineType,
+          )
           toastTip = prjCoordSysName
             ? getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
             : getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL
-        }
-        break
-    }
-    toastTip !== undefined && Toast.show(toastTip)
-    if (this.state.cb !== '') {
-      this.state.cb(prjCoordSysName)
+          break
+        case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASET:
+          prjCoordSysName = await SMap.copyPrjCoordSysFromDataset(
+            item.parentTitle,
+            item.title,
+          )
+          toastTip = prjCoordSysName
+            ? getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
+            : getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL
+          break
+        case getLanguage(GLOBAL.language).Map_Settings.FROM_FILE:
+          prjCoordSysName = await SMap.copyPrjCoordSysFromFile(
+            item.path,
+            item.name.substring(item.name.lastIndexOf('.'), item.name.length),
+          )
+          if (prjCoordSysName.error) {
+            toastTip = getLanguage(GLOBAL.language).Prompt[prjCoordSysName.error]
+          } else {
+            toastTip = prjCoordSysName
+              ? getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
+              : getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL
+          }
+          break
+      }
+      toastTip !== undefined && Toast.show(toastTip)
+      if (this.state.cb !== '') {
+        this.state.cb(prjCoordSysName)
+      }
+    }catch(e){
+      Toast.show(getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL_NO_COORD)
     }
   }
 

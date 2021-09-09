@@ -24,6 +24,7 @@ interface ResParams {
 interface Props {
   data: Data,
   index: number,
+  showDelete?: boolean,
   onPress?: (data: ResParams) => void,
   onDeletePress?: (data: ResParams) => void,
   onLongPress?: (data: ResParams) => void,
@@ -40,8 +41,8 @@ export default class MediaItem extends React.Component<Props, State> {
     super(props)
     this.state = {
       imageExist: false,
-      image: props.data.uri === '+' ? getPublicAssets().common.icon_plus_gray : { uri: props.data.uri },
-      showDelete: false,
+      image: props.data.uri === '+' ? getThemeAssets().publicAssets.icon_placeholder_s : { uri: props.data.uri },
+      showDelete: !!this.props.showDelete,
     }
   }
 
@@ -65,7 +66,7 @@ export default class MediaItem extends React.Component<Props, State> {
     if (this.props.data.uri === '+') {
       if (prevProps.data.uri !== this.props.data.uri) {
         this.setState({
-          uri: this.props.data.uri,
+          image: getThemeAssets().publicAssets.icon_placeholder_s,
         })
       }
       return
@@ -164,22 +165,22 @@ export default class MediaItem extends React.Component<Props, State> {
   renderDelete = () => {
     if (!this.state.showDelete || this.props.data.uri === '+') return null
     return (
-      <View style={styles.deleteOverlay}>
-        <TouchableOpacity style={styles.deleteView} onPress={this._deletePress}>
-          <Image
-            resizeMode={'contain'}
-            style={styles.deleteImg}
-            source={getPublicAssets().common.icon_delete}
-          />
-        </TouchableOpacity>
-      </View>
+      // <View style={styles.deleteOverlay}>
+      <TouchableOpacity style={styles.deleteView} onPress={this._deletePress}>
+        <Image
+          resizeMode={'contain'}
+          style={styles.deleteImg}
+          source={getThemeAssets().publicAssets.icon_img_close}
+        />
+      </TouchableOpacity>
+      // </View>
     )
   }
 
   render = () => {
     let image
     if (this.props.data.uri === '+') {
-      image = getPublicAssets().common.icon_plus_gray
+      image = getThemeAssets().publicAssets.img_add_upload
     } else {
       let imgPath = this.props.data.path || this.props.data.uri || ''
       if (
@@ -193,11 +194,7 @@ export default class MediaItem extends React.Component<Props, State> {
     }
 
     return (
-      <View
-        style={
-          this.props.data.uri === '+' ? styles.plusImageView : styles.imageView
-        }
-      >
+      <View style={styles.imageView}>
         <TouchableOpacity
           key={this.props.index}
           style={styles.imageView}

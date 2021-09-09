@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize, setSpText } from '../../utils'
+import { color, size } from '../../styles'
 
 export default StyleSheet.create({
   container: {
@@ -29,6 +30,14 @@ export default StyleSheet.create({
     right: 0,
     left: 0,
     bottom: '30%',
+  },
+  headerBtnTitle: {
+    color: color.fontColorBlack,
+    fontSize: size.fontSize.fontSizeXXl,
+  },
+  headerBtnTitleDisable: {
+    color: color.fontColorGray,
+    fontSize: size.fontSize.fontSizeXXl,
   },
   image: {
     position: 'absolute',

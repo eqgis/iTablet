@@ -140,6 +140,7 @@ const Map_Main_Menu = {
   TOOLS_PICTURES: '图片',
   COLLECT_TIME: '采集时间',
   COORDINATE: '经纬度',
+  BASIC_INFO: '基础信息',
 
   // 裁剪
   TOOLS_RECTANGLE_CLIP: '矩形裁剪',

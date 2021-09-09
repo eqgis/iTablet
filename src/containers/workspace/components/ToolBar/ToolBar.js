@@ -892,12 +892,33 @@ export default class ToolBar extends React.Component {
         title={headerData.title}
         type={headerData.type}
         headerRight={this.renderCustomHeaderRight()}
+        headerLeft={headerData.headerLeft}
         headerTitleViewStyle={headerData.headerTitleViewStyle}
       />
     )
   }
 
-  render() {
+  /** 自定义Header */
+  renderCustomView = () => {
+    const CustomView = this.ToolbarModule.getCustomView(this.state.type)
+    if (!CustomView) return null
+    return CustomView
+  }
+
+  /** 自定义Bottom */
+  renderCustomBottom = () => {
+    const bottomView = this.ToolbarModule.getBottomView?.(this.state.type)
+    if (bottomView) {
+      return bottomView
+    }
+    return null
+  }
+
+  renderBottom = () => {
+    const bottomView = this.ToolbarModule.getBottomView?.(this.state.type)
+    if (bottomView) {
+      return bottomView
+    }
     let containerStyle =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? styles.fullContainerLandscape
@@ -919,72 +940,79 @@ export default class ToolBar extends React.Component {
     let showContainerRadius = !(this.state.isTouchProgress && this.state.isFullScreen) &&
       this.props.device.orientation.indexOf('LANDSCAPE') < 0
     return (
-      <>
-        {this.renderCustomHeader()}
-        <Animated.View
-          style={[
-            containerStyle,
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0
-              ? { right: this.state.right, height: '100%' }
-              : { bottom: this.state.bottom, width: '100%' },
-            (this.state.isFullScreen || this.state.isTouchProgress) &&
-              this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
-              paddingTop: screen.isIphoneX()
-                ? screen.X_TOP + screen.X_BOTTOM
-                : Platform.OS === 'ios'
-                  ? 20
-                  : 0,
-            },
-            size,
-          ]}
+      <Animated.View
+        style={[
+          containerStyle,
+          this.props.device.orientation.indexOf('LANDSCAPE') === 0
+            ? { right: this.state.right, height: '100%' }
+            : { bottom: this.state.bottom, width: '100%' },
+          (this.state.isFullScreen || this.state.isTouchProgress) &&
+            this.props.device.orientation.indexOf('LANDSCAPE') !== 0 && {
+            paddingTop: screen.isIphoneX()
+              ? screen.X_TOP + screen.X_BOTTOM
+              : Platform.OS === 'ios'
+                ? 20
+                : 0,
+          },
+          size,
+        ]}
+        pointerEvents={'box-none'}
+      >
+        {!this.state.isTouchProgress && !this.state.showMenuDialog && (
+          <View style={styles.themeoverlay} pointerEvents={'box-none'} />
+        )}
+        {this.state.isTouchProgress && this.state.isFullScreen && (
+          <TouchProgress
+            device={this.props.device}
+            selectName={this.state.selectName}
+            showMenu={() => {
+              // 智能配图选择器，唤起选择器菜单
+              if (
+                this.state.type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER
+              ) {
+                this.showPicker()
+                return
+              } else if(this.state.type !== ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
+                this.menu()
+              }
+            }}
+          />
+        )}
+        {this.state.showMenuDialog && this.renderMenuDialog()}
+        <View
+          style={
+            (
+              !(this.state.isTouchProgress && this.state.isFullScreen) ||
+              this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+            ) &&
+            !this.state.customView && [styles.containerRadius, this.state.data.length > 0 && styles.containerShadow]
+          }
           pointerEvents={'box-none'}
         >
-          {!this.state.isTouchProgress && !this.state.showMenuDialog && (
-            <View style={styles.themeoverlay} pointerEvents={'box-none'} />
-          )}
-          {this.state.isTouchProgress && this.state.isFullScreen && (
-            <TouchProgress
-              device={this.props.device}
-              selectName={this.state.selectName}
-              showMenu={() => {
-                // 智能配图选择器，唤起选择器菜单
-                if (
-                  this.state.type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER
-                ) {
-                  this.showPicker()
-                  return
-                } else if(this.state.type !== ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
-                  this.menu()
-                }
-              }}
-            />
-          )}
-          {this.state.showMenuDialog && this.renderMenuDialog()}
           <View
-            style={
-              (
-                !(this.state.isTouchProgress && this.state.isFullScreen) ||
-                this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-              ) &&
-              !this.state.customView && [styles.containerRadius, this.state.data.length > 0 && styles.containerShadow]
-            }
+            style={[
+              this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? styles.containersLandscape
+                : styles.containers,
+              !this.state.customView && showContainerRadius && styles.containerRadius,
+              !this.state.customView && styles.hidden,
+            ]}
             pointerEvents={'box-none'}
           >
-            <View
-              style={[
-                this.props.device.orientation.indexOf('LANDSCAPE') === 0
-                  ? styles.containersLandscape
-                  : styles.containers,
-                !this.state.customView && showContainerRadius && styles.containerRadius,
-                !this.state.customView && styles.hidden,
-              ]}
-              pointerEvents={'box-none'}
-            >
-              {this.renderView()}
-              {this.renderBottomBtns()}
-            </View>
+            {this.renderView()}
+            {this.renderBottomBtns()}
           </View>
-        </Animated.View>
+        </View>
+      </Animated.View>
+    )
+  }
+
+  render() {
+    return (
+      <>
+        {this.renderCustomHeader()}
+        {this.renderCustomView()}
+        {this.renderBottom()}
       </>
     )
   }

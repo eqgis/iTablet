@@ -34,9 +34,9 @@ export default class Input extends PureComponent {
     textContentType?: string, // iOS输入内容类型，eg：password
     secureTextEntry?: boolean, // 密码
     textAlign?: string,
-    onChangeText?: () => {}, // 输入回调
-    onClear?: () => {}, // 自定义清除事件
-    onFocus?: () => {},
+    onChangeText?: (text: string) => void, // 输入回调
+    onClear?: () => void, // 自定义清除事件
+    onFocus?: () => void,
   }
 
   static defaultProps = {

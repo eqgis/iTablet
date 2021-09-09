@@ -179,16 +179,27 @@ class ToolbarModule {
   }
 
   /**
-   * 获取菜单弹框数据
+   * 获取自定义界面
    * @param type
-   * @param others {themeType}
    * @returns {Array}
    */
-  getHeaderData(type, ...others) {
+  getCustomView(type, ...others) {
     if (!type) return null
     let module = this.getModule(type)
-    let data = (module?.getHeaderData && module.getHeaderData(type, ...others)) || undefined
-    return data
+    let bottomView = (module?.getCustomView && module.getCustomView(type, ...others)) || undefined
+    return bottomView
+  }
+
+  /**
+   * 获取底部自定义界面
+   * @param type
+   * @returns {Array}
+   */
+  getBottomView(type, ...others) {
+    if (!type) return null
+    let module = this.getModule(type)
+    let bottomView = (module?.getBottomView && module.getBottomView(type, ...others)) || undefined
+    return bottomView
   }
 }
 

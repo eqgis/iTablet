@@ -36,7 +36,7 @@ export default StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 100019,
+    zIndex: zIndexLevel.FOUR + 1,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',

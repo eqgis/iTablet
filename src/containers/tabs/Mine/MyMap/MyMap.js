@@ -157,7 +157,9 @@ class MyMap extends MyDataPage {
 
     let exportResult = false
     await this.props.exportWorkspace(
-      { maps: [mapName], outPath: path, isOpenMap: true, zipPath, template: template },
+      { maps: [mapName], outPath: path, isOpenMap: true, zipPath, template: template, extra: {
+        exportMedia: true,
+      } },
       result => {
         exportResult = result
       },

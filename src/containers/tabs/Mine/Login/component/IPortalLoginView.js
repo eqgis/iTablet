@@ -9,9 +9,9 @@ import {
   Dimensions,
   Image,
 } from 'react-native'
-import { Toast, scaleSize  } from '../../../../../utils/index'
+import { Toast, scaleSize, dataUtil  } from '../../../../../utils'
 import styles from './styles'
-import { getLanguage } from '../../../../../language/index'
+import { getLanguage } from '../../../../../language'
 import Input from '../../../../../components/Input'
 import { getThemeAssets } from '../../../../../assets'
 import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
@@ -99,6 +99,82 @@ export default class IPortalLoginView extends React.Component {
     }
   }
 
+  /**
+   * 检查消息服务配置
+   * @returns
+   */
+  checkMessageSettings = () => {
+    if (
+      this.iportalMQIP === '' || this.iportalMQIP === undefined ||
+      this.iportalMQPort === '' || this.iportalMQPort === undefined ||
+      this.iportalMQManagePort === '' || this.iportalMQManagePort === undefined ||
+      this.iportalHostName === '' || this.iportalHostName === undefined ||
+      this.iportalMQAdminName === '' || this.iportalMQAdminName === undefined ||
+      this.iportalMQAdminPassword === '' || this.iportalMQAdminPassword === undefined
+    ) {
+      Toast.show('请检查消息服务配置')
+      return false
+    }
+    return true
+  }
+
+  /**
+   * 检查消息服务配置
+   * @returns
+   */
+  checkFileSettings = async () => {
+    try {
+      if (
+        this.iportalFileUploadURL === '' || this.iportalFileUploadURL === undefined ||
+        this.iportalFileDownloadURL === '' || this.iportalFileDownloadURL === undefined
+      ) {
+        Toast.show('请检查文件服务配置')
+        return false
+      }
+      let iportalFileUploadURL, iportalFileDownloadURL
+      if (this.iportalFileUploadURL.indexOf('http') !== 0) {
+        iportalFileUploadURL = 'http://' + this.iportalFileUploadURL
+      }
+      if (this.iportalFileDownloadURL.indexOf('http') !== 0) {
+        iportalFileDownloadURL = 'http://' + this.iportalFileDownloadURL
+      }
+
+      // let extraData = {
+      //   headers: {
+      //     Accept: 'application/json',
+      //     'Content-Type': 'application/json',
+      //   },
+      //   method: 'POST',
+      // }
+      // let response = await Promise.race([
+      //   fetch(iportalFileUploadURL, extraData),
+      //   new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       reject(new Error('request timeout'))
+      //     }, 10000)
+      //   }),
+      // ])
+      // let response2 = await Promise.race([
+      //   fetch(iportalFileDownloadURL),
+      //   new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       reject(new Error('request timeout'))
+      //     }, 10000)
+      //   }),
+      // ])
+      // let status = response.status
+      // let status2 = response2.status
+      // console.warn(JSON.stringify(status))
+      // console.warn(JSON.stringify(status2))
+      // return status && status2
+      return dataUtil.isLegalURL(iportalFileUploadURL) && dataUtil.isLegalURL(iportalFileDownloadURL)
+    } catch(e) {
+      Toast.show('文件服务配置错误')
+      console.warn('checkFileSettings error:' + e)
+      return false
+    }
+  }
+
   goNext = async () => {
     if (this.iportalAddress) {
       //下一步点击后按钮及提示状态 add jiakai
@@ -127,9 +203,13 @@ export default class IPortalLoginView extends React.Component {
         // console.log(error)
       }
       if (status === 405) {
-        setTimeout(() => {
+        setTimeout(async () => {
           // GLOBAL.Loading.setLoading(false)
           this.props.connect(false)
+          if (!await this.checkMessageSettings() || !await this.checkFileSettings()) {
+            this.setState({connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT})
+            return
+          }
           this.setState({ showServer: false ,connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT})
           Animated.timing(this.state.left, {
             toValue: -this.screenWidth,
@@ -138,9 +218,11 @@ export default class IPortalLoginView extends React.Component {
         }, 1000)
       } else {
         setTimeout(() => {
-          Toast.show(getLanguage(GLOBAL.language).Profile.CONNECT_SERVER_FAIL)
+         
           this.props.connect(false)
-          this.setState({connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT})
+          this.setState({connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT}, () => {
+            Toast.show(getLanguage(GLOBAL.language).Profile.CONNECT_SERVER_FAIL)
+          })
           // GLOBAL.Loading.setLoading(false)
         }, 1000)
       }
@@ -211,7 +293,7 @@ export default class IPortalLoginView extends React.Component {
           <>
             {this._renderInput({
               placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_IP,
-              defaultValue: this.iportalMQIP || '127.0.0.1',
+              defaultValue: this.iportalMQIP || '',
               onChangeText: text => {
                 this.iportalMQIP = text
               },
@@ -229,7 +311,7 @@ export default class IPortalLoginView extends React.Component {
             > */}
               {this._renderInput({
                 placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_PORT,
-                defaultValue: this.iportalMQPort || '5672',
+                defaultValue: this.iportalMQPort || '',
                 onChangeText: text => {
                   this.iportalMQPort = text
                 },
@@ -238,7 +320,7 @@ export default class IPortalLoginView extends React.Component {
               })}
               {this._renderInput({
                 placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_MANAGE_PORT,
-                defaultValue: this.iportalMQManagePort || '15672',
+                defaultValue: this.iportalMQManagePort || '',
                 onChangeText: text => {
                   this.iportalMQManagePort = text
                 },
@@ -248,7 +330,7 @@ export default class IPortalLoginView extends React.Component {
             {/* </View> */}
             {this._renderInput({
               placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_HOST_NAME,
-              defaultValue: this.iportalHostName || '/',
+              defaultValue: this.iportalHostName || '',
               onChangeText: text => {
                 this.iportalHostName = text
               },
@@ -257,7 +339,7 @@ export default class IPortalLoginView extends React.Component {
             })}
             {this._renderInput({
               placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_ADMIN_NAME,
-              defaultValue: this.iportalMQAdminName || 'admin',
+              defaultValue: this.iportalMQAdminName || '',
               onChangeText: text => {
                 this.iportalMQAdminName = text
               },
@@ -266,7 +348,8 @@ export default class IPortalLoginView extends React.Component {
             })}
             {this._renderInput({
               placeholder: getLanguage(this.props.language).Profile.MESSAGE_SERVICE_ADMIN_PASSWORD,
-              defaultValue: '**********************',
+              // defaultValue: '**********************',
+              defaultValue: '',
               onChangeText: text => {
                 this.iportalMQAdminPassword = text
               },

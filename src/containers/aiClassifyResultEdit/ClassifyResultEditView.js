@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {
-  InteractionManager,
   View,
   Image,
   Text,
@@ -8,14 +7,15 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native'
-import NavigationService from '../../containers/NavigationService'
+import NavigationService from '../NavigationService'
 import Orientation from 'react-native-orientation'
 import styles from './styles'
-import { Container } from '../../components'
-import Button from '../../components/Button/Button'
-import { SAIClassifyView,SMap } from 'imobile_for_reactnative'
+import { Container, TextBtn } from '../../components'
+import { SAIClassifyView, SMap, SMediaCollector } from 'imobile_for_reactnative'
 import { Toast } from '../../utils'
 import { getLanguage } from '../../language'
+import { ConstPath } from '../../constants'
+import { FileTools } from '../../native'
 
 /*
  * 分类结果编辑界面
@@ -31,16 +31,17 @@ export default class ClassifyResultEditView extends React.Component {
   constructor(props) {
     super(props)
     const { params } = this.props.navigation.state || {}
+    this.layerName = params.layerName || ''
+    this.geoID = params.geoID || -1 // 有geoID则是修改
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName || ''
     this.imagePath = params.imagePath || ''
     this.classifyTime = params.classifyTime || ''
     this.cb = params && params.cb
 
-    this.remarks = '' //备注
-
     this.state = {
       mediaName: params.mediaName || '',
+      remarks: params.description || '',
     }
   }
 
@@ -50,33 +51,56 @@ export default class ClassifyResultEditView extends React.Component {
     Orientation.lockToPortrait()
   }
 
-  componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      // 初始化数据
-      (async function() {}.bind(this)())
-    })
-  }
-
-  componentWillUnmount() {
-    // Orientation.unlockAllOrientations()
-    //移除监听
-  }
-
   back = () => {
+    this.cb && this.cb()
     NavigationService.goBack()
     return true
   }
 
   save = async () => {
-    let result = await SAIClassifyView.modifyLastItem({
-      datasourceAlias: this.datasourceAlias,
-      datasetName: this.datasetName,
+    const mediaData = JSON.stringify({
+      type: 'AI_CLASSIFY',
       mediaName: this.state.mediaName,
-      remarks: this.remarks,
     })
+    let result = false, modifiedData = []
+    if (this.geoID > -1 && this.layerName) {
+      let targetPath = await FileTools.appendingHomeDirectory(
+        ConstPath.UserPath +
+          this.props.user.currentUser.userName +
+          '/' +
+          ConstPath.RelativeFilePath.Media,
+      )
+      modifiedData = [{
+        name: 'MediaName',
+        value: this.state.mediaName,
+      },{
+        name: 'Description',
+        value: this.state.remarks,
+      },{
+        name: 'MediaData',
+        value: mediaData,
+      }]
+      result = await SMediaCollector.saveMediaByDataset(
+        this.layerName,
+        this.geoID,
+        targetPath,
+        modifiedData,
+        false,
+        true,
+      )
+    } else {
+      result = await SAIClassifyView.modifyLastItem({
+        datasourceAlias: this.datasourceAlias,
+        datasetName: this.datasetName,
+        mediaName: this.state.mediaName,
+        remarks: this.state.remarks,
+        mediaData: mediaData,
+      })
+    }
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY)
-      this.cb && this.cb()
+      this.cb && this.cb(modifiedData)
+      NavigationService.goBack()
     }
   }
 
@@ -104,10 +128,7 @@ export default class ClassifyResultEditView extends React.Component {
         <View style={styles.infocontainer}>
           <View style={styles.classifyTitleView}>
             <Text style={styles.title}>
-              {
-                getLanguage(GLOBAL.language).Map_Main_Menu
-                  .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_NAME
-              }
+              {getLanguage(GLOBAL.language).AI.CATEGORY}
             </Text>
             <TextInput
               underlineColorAndroid={'transparent'}
@@ -137,7 +158,8 @@ export default class ClassifyResultEditView extends React.Component {
               underlineColorAndroid={'transparent'}
               style={styles.edit}
               numberOfLines={2}
-              onChangeText={text => (this.remarks = text)}
+              onChangeText={text => this.setState({ remarks: text })}
+              value={this.state.remarks}
               placeholder={
                 getLanguage(GLOBAL.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_PLEA_REMARKS
@@ -145,17 +167,6 @@ export default class ClassifyResultEditView extends React.Component {
               placeholderTextColor={'#A0A0A0'}
             />
           </View>
-          <Button
-            style={styles.btnSwitchModelsView}
-            titleStyle={styles.txtBtnSwitchModelsView}
-            title={
-              getLanguage(GLOBAL.language).Map_Main_Menu
-                .MAP_AR_AI_ASSISTANT_CLASSIFY_SAVE
-            }
-            type={'BLUE'}
-            activeOpacity={0.8}
-            onPress={() => this.save()}
-          />
         </View>
       </KeyboardAvoidingView>
     )
@@ -171,6 +182,19 @@ export default class ClassifyResultEditView extends React.Component {
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',
+          headerRight: [
+            <TextBtn
+              key={'confirm'}
+              btnText={getLanguage(GLOBAL.language).Common.CONFIRM}
+              textStyle={
+                this.state.mediaName
+                  ? styles.headerBtnTitle
+                  : styles.headerBtnTitleDisable
+              }
+              containerStyle={{width:'auto'}}
+              btnClick={this.save}
+            />,
+          ],
         }}
         bottomProps={{ type: 'fix' }}
       >

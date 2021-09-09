@@ -81,7 +81,13 @@ class MyDatasource extends MyDataPage {
 
     let udbPath = homePath + this.itemInfo.item.path
     let uddPath = udbPath.substring(0, udbPath.lastIndexOf('.')) + '.udd'
-    archivePaths = [udbPath, uddPath]
+    let mediaPath = await SMap.copyMediaByDatasource({
+      server: udbPath,
+      engineType: EngineType.UDB,
+      alias: udbPath.substring(udbPath.lastIndexOf('/') + 1, udbPath.lastIndexOf('.')),
+    })
+
+    archivePaths = [udbPath, uddPath, mediaPath]
 
     let result = await FileTools.zipFiles(archivePaths, targetPath)
     return result

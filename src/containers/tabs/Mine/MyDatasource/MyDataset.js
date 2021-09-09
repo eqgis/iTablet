@@ -367,6 +367,7 @@ class MyDataset extends MyDataPage {
           if (!(await SMap.isPrgCoordSysWGS1984(datasetParams))) {
             this.SimpleDialog.set({
               text: getLanguage(GLOBAL.language).Prompt.REQUIRE_PRJ_1984,
+              cancelBtnVisible:false,
             })
             this.SimpleDialog.setVisible(true)
             return

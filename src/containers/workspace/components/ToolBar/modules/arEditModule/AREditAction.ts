@@ -4,7 +4,8 @@ import {
   ARAction,
   ARLayerType,
 } from 'imobile_for_reactnative'
-import { IAnimationParam, IVector3, ARElementLayer } from "imobile_for_reactnative/types/interface/ar"
+import { IAnimationParam, ARElementLayer } from "imobile_for_reactnative/types/interface/ar"
+import { IVector3 } from "imobile_for_reactnative/types/data"
 import {
   ConstToolType,
   ToolbarType,

@@ -10,7 +10,7 @@ import {
   FileTools,
   ARLayer,
 } from 'imobile_for_reactnative'
-import { IVector3 } from "imobile_for_reactnative/types/interface/ar"
+import { IVector3 } from "imobile_for_reactnative/types/data"
 import {
   ConstToolType,
   ToolbarType,

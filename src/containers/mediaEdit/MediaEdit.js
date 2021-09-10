@@ -737,10 +737,10 @@ export default class MediaEdit extends React.Component {
     }
     return (
       <>
-        {this.renderItem({
+        {/* {this.renderItem({
           title: getLanguage(this.props.language).AI.NUMBER,
           value: 1 + '',
-        })}
+        })} */}
         {this.renderItem({
           title: getLanguage(this.props.language).AI.CATEGORY,
           value: category,
@@ -770,9 +770,9 @@ export default class MediaEdit extends React.Component {
             })
           },
         })}
-        {this.renderItem({
+        {/* {this.renderItem({
           title: getLanguage(this.props.language).AI.MORE,
-          value: this.state.description,
+          value: '',
           type: 'arrow',
           action: () => {
             if (this.layerInfo) {
@@ -784,7 +784,7 @@ export default class MediaEdit extends React.Component {
               NavigationService.navigate('LayerAttribute')
             }
           },
-        })}
+        })} */}
       </>
     )
   }
@@ -918,24 +918,21 @@ export default class MediaEdit extends React.Component {
             })
           },
         })}
-        {this.renderItem({
+        {/* {this.renderItem({
           title: getLanguage(this.props.language).AI.MORE,
           value: '',
           type: 'arrow',
           action: () => {
-            // NavigationService.navigate('InputPage', {
-            //   value: this.state.description,
-            //   headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
-            //     .TOOLS_REMARKS,
-            //   cb: async value => {
-            //     this.setState({
-            //       description: value,
-            //     })
-            //     NavigationService.goBack()
-            //   },
-            // })
+            if (this.layerInfo) {
+              this.props.setCurrentLayer(this.layerInfo, () => {
+                ToolbarModule.getData()?.actions?.close()
+                NavigationService.navigate('LayerAttribute')
+              })
+            } else {
+              NavigationService.navigate('LayerAttribute')
+            }
           },
-        })}
+        })} */}
       </>
     )
   }

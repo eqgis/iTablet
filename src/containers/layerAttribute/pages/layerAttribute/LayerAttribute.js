@@ -1311,6 +1311,7 @@ export default class LayerAttribute extends React.Component {
         }
 
         let refresh = mData => {
+          if (!mData) return
           let _data = this.state.attributes.data[data.rowIndex]
           let isDelete = false
           for (let _mData of mData) {

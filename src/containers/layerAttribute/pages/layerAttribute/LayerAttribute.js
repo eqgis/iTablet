@@ -924,7 +924,7 @@ export default class LayerAttribute extends React.Component {
       })
 
       GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
-      if (GLOBAL.Type === ChunkType.MAP_AR && GLOBAL.showAIDetect) {
+      if ((GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) && GLOBAL.showAIDetect) {
         GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
       }
 

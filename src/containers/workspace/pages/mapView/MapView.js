@@ -3429,27 +3429,55 @@ export default class MapView extends React.Component {
       }
     }
     return (
-      <ImageButton
-        containerStyle={[styles.iconAr, right]}
-        // iconBtnStyle={[styles.iconAr, right]}
-        iconStyle={styles.switchARImg}
-        icon={getThemeAssets().publicAssets.icon_tool_switch}
-        onPress={() => {
-          this.currentTime = new Date().getTime()
-          this.lastClickTime = this.currentTime
-          if (!show) {
-            this.setState({
-              bGoneAIDetect: false,
-            })
-          }
-          let _showAIDetect = this.switchAr()
-          // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
-          setTimeout(() => {
-            _showAIDetect && this.showFullMap(false)
-          }, Const.ANIMATED_DURATION)
-        }}
-      />
+      <View
+        style={[styles.iconAr, right]}
+        ref={ref => (GLOBAL.ArModeIcon = ref)}
+      >
+        <MTBtn
+          style={{ padding: scaleSize(5) }}
+          size={MTBtn.Size.NORMAL}
+          image={getThemeAssets().ar.switch_ar_light}
+          onPress={() => {
+            this.currentTime = new Date().getTime()
+            this.lastClickTime = this.currentTime
+            if (!show) {
+              this.setState({
+                bGoneAIDetect: false,
+              })
+            }
+            let _showAIDetect = this.switchAr()
+            // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
+            setTimeout(() => {
+              _showAIDetect && this.showFullMap(false)
+            }, Const.ANIMATED_DURATION)
+          }}
+          activeOpacity={0.5}
+        // separator={scaleSize(2)}
+        />
+      </View>
     )
+    // return (
+    //   <ImageButton
+    //     containerStyle={[styles.iconAr, right]}
+    //     // iconBtnStyle={[styles.iconAr, right]}
+    //     iconStyle={styles.switchARImg}
+    //     icon={getThemeAssets().publicAssets.icon_tool_switch}
+    //     onPress={() => {
+    //       this.currentTime = new Date().getTime()
+    //       this.lastClickTime = this.currentTime
+    //       if (!show) {
+    //         this.setState({
+    //           bGoneAIDetect: false,
+    //         })
+    //       }
+    //       let _showAIDetect = this.switchAr()
+    //       // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
+    //       setTimeout(() => {
+    //         _showAIDetect && this.showFullMap(false)
+    //       }, Const.ANIMATED_DURATION)
+    //     }}
+    //   />
+    // )
   }
 
   //隐藏示范数据按钮

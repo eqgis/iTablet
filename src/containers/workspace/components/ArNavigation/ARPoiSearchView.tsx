@@ -468,26 +468,6 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
             this.back()
           }}
         />
-
-        {/* <FloatBar
-          style={{
-            width: scaleSize(80),
-            height: scaleSize(80),
-            borderRadius: scaleSize(25),
-            justifyContent: 'center',
-          }}
-          imageStyle={{
-            width: scaleSize(50),
-            height: scaleSize(50),
-          }}
-          data={[
-            {
-              image: getThemeAssets().toolbar.back,
-              key: 'back',
-              action: this.back,
-            }
-          ]}
-        /> */}
         {this.renderSearch()}
       </View>
     )
@@ -711,24 +691,15 @@ const styles = StyleSheet.create({
     paddingTop: screen.getIphonePaddingTop()
   },
   search: {
-    backgroundColor: '#F6F7F8',
     height: scaleSize(80),
-    width: scaleSize(580),
-    borderRadius: scaleSize(35),
-    // paddingHorizontal: scaleSize(30),
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: scaleSize(25),
-    elevation: 3,
-    shadowOffset: { width: 0, height: 0 },
-    shadowColor: '#eee',
-    shadowOpacity: 1,
-    shadowRadius: 2,
   },
   textInput: {
     flex: 1,
-    fontSize: scaleSize(36),
-    color: '#171717',
+    fontSize: scaleSize(32),
   },
   searchSep: {
     backgroundColor: '#EBEBEB',

@@ -4535,8 +4535,8 @@ export default class MapView extends React.Component {
     //   //   this.onshowLog,
     //   // )
     // }else{
-    this.listeners && this.listeners.infoListener.remove()
-    this.listeners && this.listeners.addListener.remove()
+    this.listeners && this.listeners.infoListener?.remove()
+    this.listeners && this.listeners.addListener?.remove()
     SARMap.showMeasureView(false)
     SARMap.showTrackView(false)
     SARMap.showPointCloud(false)

@@ -534,7 +534,6 @@ export default class Home extends Component {
     return (
       <SimpleDialog
         ref={ref => (this.SimpleDialog = ref)}
-        cancelBtnVisible={false}
       />
     )
   }
@@ -1141,6 +1140,7 @@ export default class Home extends Component {
                   // cancelAction: this.SimpleDialog.setVisible(false),
                   confirmText: getLanguage(this.props.language).Prompt.CONFIRM,
                   confirmAction: this.SimpleDialog.setVisible(false),
+                  cancelBtnVisible:false,
                 })
                 this.SimpleDialog.setVisible(true)
               }}

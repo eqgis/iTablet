@@ -19,7 +19,6 @@ export default class SimpleDialog extends PureComponent {
     buttonMode?: String,
     confirmTitleStyle?: Object,
     cancelTitleStyle?: Object,
-    cancelBtnVisible?:boolean,
   }
 
   static defaultProps = {
@@ -47,6 +46,7 @@ export default class SimpleDialog extends PureComponent {
       renderCustomeView: undefined,
       disableBackTouch: this.props.disableBackTouch,
       buttonMode: props.buttonMode,
+      cancelBtnVisible:true,
     }
   }
 
@@ -68,6 +68,7 @@ export default class SimpleDialog extends PureComponent {
     renderCustomeView,
     disableBackTouch,
     buttonMode,
+    cancelBtnVisible,
   }) => {
     let confirm, cancel, dismiss
     if (confirmAction && typeof confirmAction === 'function') {
@@ -105,6 +106,7 @@ export default class SimpleDialog extends PureComponent {
           ? this.props.disableBackTouch
           : disableBackTouch,
       buttonMode: buttonMode ? buttonMode : this.props.buttonMode,
+      cancelBtnVisible: cancelBtnVisible === undefined? true : cancelBtnVisible,
     })
   }
 
@@ -176,7 +178,7 @@ export default class SimpleDialog extends PureComponent {
         // ]}
         disableBackTouch={this.state.disableBackTouch}
         buttonMode={this.state.buttonMode}
-        cancelBtnVisible={this.props.cancelBtnVisible}
+        cancelBtnVisible={this.state.cancelBtnVisible}
       >
         {this.state.renderCustomeView ? (
           this.state.renderCustomeView()

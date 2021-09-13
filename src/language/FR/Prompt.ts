@@ -43,6 +43,7 @@ const Prompt: typeof CN.Prompt = {
   DELETE_OBJECT: "Êtes-vous sûr de vouloir supprimer définitivement l'objet?",
   DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: 'Veuillez ajouter un arrêt',
+  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'The image layer cannot be set to the current layer', // need to translate
 
   CONFIRM: 'Confirmer',
   COMPLETE: 'Complet',

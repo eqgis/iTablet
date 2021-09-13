@@ -41,6 +41,7 @@ const Prompt = {
   DELETE_OBJECT: '确定要永久删除该对象吗?',
   DELETE_LAYER: '删除图层后，数据无法恢复，确认删除?',
   PLEASE_ADD_STOP: '请添加站点',
+  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: '影像图层不能被设为当前图层',
 
   CONFIRM: '确定',
   COMPLETE: '完成',

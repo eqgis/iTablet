@@ -95,6 +95,7 @@ export default class MyLocalData extends Component {
         this.props.user.currentUser,
         this.currentPage,
         this.pageSize,
+        ['WORKSPACE'],
         result => {
           this.dataListTotal = result
         },
@@ -792,6 +793,7 @@ export default class MyLocalData extends Component {
         this.props.user.currentUser,
         this.currentPage,
         10,
+        ['WORKSPACE'],
       )
       if (data.length > 0) {
         let newData = oldData.concat(data)

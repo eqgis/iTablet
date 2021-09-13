@@ -16,17 +16,18 @@ async function getOnlineData(
   currentUser,
   currentPage,
   pageSize,
+  types = [],
   cb = () => {},
 ) {
   const newData = []
   try {
-    let strDataList
+    let objDataList
     if (UserType.isOnlineUser(currentUser)) {
-      strDataList = await SOnlineService.getDataList(currentPage, pageSize)
+      objDataList = await SOnlineService.getMyContentData({currentPage, pageSize, types})
     } else if (UserType.isIPortalUser(currentUser)) {
-      strDataList = await SIPortalService.getMyDatas(currentPage, pageSize)
+      objDataList = await SIPortalService.getMyContentData({currentPage, pageSize, types})
     }
-    const objDataList = JSON.parse(strDataList)
+    // const objDataList = JSON.parse(strDataList)
     if (objDataList.content) {
       // 过滤friendlist
       for (let i = objDataList.content.length - 1; i > -1; i--) {

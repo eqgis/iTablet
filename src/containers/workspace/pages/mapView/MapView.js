@@ -381,7 +381,7 @@ export default class MapView extends React.Component {
     }
     this.floorHiddenListener = null
     GLOBAL.clickWait = false // 防止重复点击，该页面用于关闭地图方法
-    AppState.addEventListener('change', this.handleStateChange)
+    // AppState.addEventListener('change', this.handleStateChange)
     CoworkInfo.closeMapHandle = this.back
 
     this._panResponder = PanResponder.create({
@@ -1008,7 +1008,7 @@ export default class MapView extends React.Component {
     GLOBAL.mapView && SMap.deleteGestureDetector()
 
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
-    AppState.removeEventListener('change', this.handleStateChange)
+    // AppState.removeEventListener('change', this.handleStateChange)
 
     if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
       //移除监听

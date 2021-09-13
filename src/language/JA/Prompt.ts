@@ -43,6 +43,7 @@ const Prompt: typeof CN.Prompt = {
   DELETE_OBJECT: '当オブジェクトを削除しますか?',
   DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: '目標ポイントを追加してください',
+  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'The image layer cannot be set to the current layer', // need to translate
 
   NO_PERMISSION: 'Doesn\'t have permission',// need to translate
   NO_PERMISSION_ALERT: '実行に必要な権限はありません',

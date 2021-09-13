@@ -637,6 +637,47 @@ const mscaleData = [
   },
 ]
 
+function layerImageSetting(language, isGroup = false) {
+  let data = []
+  if (isGroup) {
+    data = getGroupData(language)
+  } else {
+    data = [
+      {
+        title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
+        // '全副显示图层',
+        image: getThemeAssets().mapTools.icon_tool_full,
+      },
+      // {
+      //   title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
+      //   // '设置为当前图层',
+      //   image: getThemeAssets().layer.icon_layer_set_current,
+      // },
+      {
+        title: getLanguage(language).Map_Layer.LAYERS_SET_VISIBLE_SCALE,
+        // '可见比例尺范围',
+        image: getThemeAssets().layer.icon_layer_visible_scale,
+      },
+      {
+        title: getLanguage(language).Map_Layer.LAYERS_RENAME,
+        // '重命名',
+        image: getThemeAssets().layer.icon_layer_rename,
+      },
+      {
+        title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
+        // '移除',
+        image: getThemeAssets().layer.icon_remove_layer,
+      },
+    ]
+  }
+  return [
+    {
+      title: '',
+      data,
+    },
+  ]
+}
+
 export {
   layersetting,
   layerThemeCreateSetting,
@@ -661,4 +702,5 @@ export {
   layerSettingCanSnap,
   layerSettingCanNotSnap,
   getXmlTemplateData,
+  layerImageSetting,
 }

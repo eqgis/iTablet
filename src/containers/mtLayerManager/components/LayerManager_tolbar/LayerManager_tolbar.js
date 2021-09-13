@@ -26,6 +26,7 @@ import {
   layerSettingCanNotEdit,
   layerNavigationSetting,
   getXmlTemplateData,
+  layerImageSetting,
 } from './LayerToolbarData'
 import {
   View,
@@ -178,81 +179,90 @@ export default class LayerManager_tolbar extends React.Component {
     let data = []
     let headerData = layerSettingCanVisit(this.props.language)
     !isGroup && headerData.concat(layerSettingCanSelect(this.props.language))
-    switch (type) {
-      case ConstToolType.SM_MAP_STYLE:
-        data = layersetting(this.props.language, isGroup)
-        data[0].headers = headerData
-        break
-      case ConstToolType.SM_MAP_LAYER_THEME_CREATE:
-        data = layerThemeCreateSetting(this.props.language, isGroup)
-        data[0].headers = headerData
-        break
-      case ConstToolType.SM_MAP_LAYER_THEME_MODIFY:
-        data = layerThemeModifySetting(this.props.language, isGroup)
-        data[0].headers = headerData
-        break
-      case ConstToolType.SM_MAP_PLOT:
-        //如果是cad图层 单独处理，其他图层通采集图层
-        // headerData = headerData
-        // .concat(layerSettingCanEdit(this.props.language))
-        // .concat(layerSettingCanSnap(this.props.language))
-        data = layerPlottingSetting(this.props.language, isGroup)
-        data[0].headers = headerData
-        break
-      case ConstToolType.SM_MAP_LAYER_NAVIGATION:
-        headerData = headerData.concat(layerSettingCanEdit(this.props.language))
-        data = layerNavigationSetting(this.props.language, isGroup)
-        data[0].headers = headerData
-        break
-      case ConstToolType.SM_MAP_COLLECTION:
-        //collection 单独处理
-        headerData = headerData
-          .concat(layerSettingCanEdit(this.props.language))
-          .concat(layerSettingCanSnap(this.props.language))
-        data = layerCollectionSetting(this.props.language, isGroup, layerData)
-        data[0].headers = headerData
-        break
-      case ConstToolType.SM_MAP_LAYER_BASE_DEFAULT:
-        data = layereditsetting(GLOBAL.language)
-        break
-      case ConstToolType.SM_MAP_LAYER_BASE_CHANGE: {
-        let layerManagerDataArr = [...layerManagerData()]
-        for (let i = 0, n = this.props.curUserBaseMaps.length; i < n; i++) {
-          let baseMap = this.props.curUserBaseMaps[i]
-          //只保留用户添加的 zhangxt
-          if (
-            baseMap.DSParams.engineType === 227 ||
-            baseMap.DSParams.engineType === 223 ||
-            !baseMap.userAdd
-          ) {
-            continue
+
+    if (
+      layerData.type === DatasetType.IMAGE ||
+      layerData.type === DatasetType.MBImage
+    ) {
+      data = layerImageSetting(this.props.language)
+      data[0].headers = headerData
+    } else {
+      switch (type) {
+        case ConstToolType.SM_MAP_STYLE:
+          data = layersetting(this.props.language, isGroup)
+          data[0].headers = headerData
+          break
+        case ConstToolType.SM_MAP_LAYER_THEME_CREATE:
+          data = layerThemeCreateSetting(this.props.language, isGroup)
+          data[0].headers = headerData
+          break
+        case ConstToolType.SM_MAP_LAYER_THEME_MODIFY:
+          data = layerThemeModifySetting(this.props.language, isGroup)
+          data[0].headers = headerData
+          break
+        case ConstToolType.SM_MAP_PLOT:
+          //如果是cad图层 单独处理，其他图层通采集图层
+          // headerData = headerData
+          // .concat(layerSettingCanEdit(this.props.language))
+          // .concat(layerSettingCanSnap(this.props.language))
+          data = layerPlottingSetting(this.props.language, isGroup)
+          data[0].headers = headerData
+          break
+        case ConstToolType.SM_MAP_LAYER_NAVIGATION:
+          headerData = headerData.concat(layerSettingCanEdit(this.props.language))
+          data = layerNavigationSetting(this.props.language, isGroup)
+          data[0].headers = headerData
+          break
+        case ConstToolType.SM_MAP_COLLECTION:
+          //collection 单独处理
+          headerData = headerData
+            .concat(layerSettingCanEdit(this.props.language))
+            .concat(layerSettingCanSnap(this.props.language))
+          data = layerCollectionSetting(this.props.language, isGroup, layerData)
+          data[0].headers = headerData
+          break
+        case ConstToolType.SM_MAP_LAYER_BASE_DEFAULT:
+          data = layereditsetting(GLOBAL.language)
+          break
+        case ConstToolType.SM_MAP_LAYER_BASE_CHANGE: {
+          let layerManagerDataArr = [...layerManagerData()]
+          for (let i = 0, n = this.props.curUserBaseMaps.length; i < n; i++) {
+            let baseMap = this.props.curUserBaseMaps[i]
+            //只保留用户添加的 zhangxt
+            if (
+              baseMap.DSParams.engineType === 227 ||
+              baseMap.DSParams.engineType === 223 ||
+              !baseMap.userAdd
+            ) {
+              continue
+            }
+            let layerManagerData = {
+              title: baseMap.mapName,
+              action: () => {
+                return OpenData(baseMap, baseMap.layerIndex)
+              },
+              data: [],
+              image: getThemeAssets().layerType.layer_image,
+              type: DatasetType.IMAGE,
+              themeType: -1,
+            }
+            layerManagerDataArr.push(layerManagerData)
           }
-          let layerManagerData = {
-            title: baseMap.mapName,
-            action: () => {
-              return OpenData(baseMap, baseMap.layerIndex)
+          data = [
+            {
+              title: '',
+              data: layerManagerDataArr,
             },
-            data: [],
-            image: getThemeAssets().layerType.layer_image,
-            type: DatasetType.IMAGE,
-            themeType: -1,
-          }
-          layerManagerDataArr.push(layerManagerData)
+          ]
+          break
         }
-        data = [
-          {
-            title: '',
-            data: layerManagerDataArr,
-          },
-        ]
-        break
+        case ConstToolType.SM_MAP_EDIT_TAGGING:
+          data = taggingData(GLOBAL.language)
+          break
+        case "GET_XML_TEMPLATE":
+          data = await getXmlTemplateData()
+          break
       }
-      case ConstToolType.SM_MAP_EDIT_TAGGING:
-        data = taggingData(GLOBAL.language)
-        break
-      case "GET_XML_TEMPLATE":
-        data = await getXmlTemplateData()
-        break
     }
     // 屏蔽在线协作-移除图层，分享图层
     if (GLOBAL.coworkMode) {

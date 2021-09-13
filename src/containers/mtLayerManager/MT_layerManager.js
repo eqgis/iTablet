@@ -255,6 +255,7 @@ export default class MT_layerManager extends React.Component {
       data.type === DatasetType.MBImage
     ) {
       // 影像图层不能被设为当前图层
+      Toast.show(getLanguage(GLOBAL.language).Prompt.IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER)
       return
     }
     if (this.props.currentLayer.name === data.name) {

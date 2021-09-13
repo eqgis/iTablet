@@ -43,6 +43,7 @@ const Prompt: typeof CN.Prompt = {
   DELETE_OBJECT: 'Nesneyi silmek istediğinizden emin misiniz?',
   DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
   PLEASE_ADD_STOP: 'Lütfen Stop Ekleyin',
+  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'The image layer cannot be set to the current layer', // need to translate
 
   CONFIRM: 'Onayla',
   COMPLETE: 'Tamamla',

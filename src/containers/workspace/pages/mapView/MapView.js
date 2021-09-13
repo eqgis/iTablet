@@ -381,7 +381,6 @@ export default class MapView extends React.Component {
     }
     this.floorHiddenListener = null
     GLOBAL.clickWait = false // 防止重复点击，该页面用于关闭地图方法
-    AppState.addEventListener('change', this.handleStateChange)
     CoworkInfo.closeMapHandle = this.back
 
     this._panResponder = PanResponder.create({

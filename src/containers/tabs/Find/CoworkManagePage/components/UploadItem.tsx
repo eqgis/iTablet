@@ -7,7 +7,7 @@ import React, { Component } from 'react'
 import { Image, Text, TouchableOpacity, View, StyleSheet, Animated, Easing } from 'react-native'
 import { scaleSize } from '../../../../../utils'
 import { CheckBox } from '../../../../../components'
-import { getPublicAssets, getThemeAssets } from '../../../../../assets'
+import { getPublicAssets } from '../../../../../assets'
 import { color } from '../../../../../styles'
 
 const styles = StyleSheet.create({
@@ -118,11 +118,11 @@ export default class UploadItem extends Component<Props, State> {
         duration: 800,
         easing: Easing.linear,
         useNativeDriver: true,
-      });
+      })
       Animated.loop(this.aniMotion).start()
     }
   }
-  
+
   render() {
     let item = this.props.data
     return (
@@ -145,24 +145,25 @@ export default class UploadItem extends Component<Props, State> {
           <Text style={styles.itemTitle}>{item.name.replace('.xml', '')}</Text>
           <View style={styles.contentSubView}>
             {
+              this.props.isUploading &&
               this.props.uploadingInfo &&
               <Text style={styles.itemStatus}>{this.props.uploadingInfo}</Text>
             }
             {
-            this.props.isUploading &&
-            <Animated.Image
-              resizeMode={'contain'}
-              style={[
-                styles.downloadImg,
-                {
-                  transform: [{rotate: this.state.rotateValue
-                    .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']})
-                  }]
-                }
-              ]}
-              source={getPublicAssets().common.icon_downloading}
-            />
-          }
+              this.props.isUploading &&
+              <Animated.Image
+                resizeMode={'contain'}
+                style={[
+                  styles.downloadImg,
+                  {
+                    transform: [{rotate: this.state.rotateValue
+                      .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']}),
+                    }],
+                  },
+                ]}
+                source={getPublicAssets().common.icon_downloading}
+              />
+            }
           </View>
         </View>
       </TouchableOpacity>

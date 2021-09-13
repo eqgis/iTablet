@@ -989,6 +989,8 @@ export default class LayerAttributeTabs extends React.Component {
           selectionAttribute={this.state.isCollection}
           islayerSelection={true}
           type={this.type}
+          attributes={this.state.attributes}
+          layerName={this.props.currentLayer.name}
         />
         {this.state.isShowView && (
           <View

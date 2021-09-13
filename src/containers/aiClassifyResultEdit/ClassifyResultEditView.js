@@ -35,7 +35,14 @@ export default class ClassifyResultEditView extends React.Component {
     this.geoID = params.geoID || -1 // 有geoID则是修改
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName || ''
-    this.imagePath = params.imagePath || ''
+    if (
+      Platform.OS === 'android' &&
+      params.imagePath.toLowerCase().indexOf('content://') !== 0
+    ) {
+      this.imagePath = 'file://' + params.imagePath || ''
+    } else {
+      this.imagePath = params.imagePath || ''
+    }
     this.classifyTime = params.classifyTime || ''
     this.cb = params && params.cb
 

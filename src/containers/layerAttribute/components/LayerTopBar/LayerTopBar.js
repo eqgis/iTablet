@@ -110,6 +110,7 @@ export default class LayerTopBar extends React.Component {
   // 多媒体采集
   captureImage = async ()=> {
     let smID = -1
+    let limit = 9
     for (let i = 0; i < this.props.attributes.data[this.props.currentIndex].length; i++) {
       if (this.props.attributes.data[this.props.currentIndex][i].name === 'SmID') {
         smID = this.props.attributes.data[this.props.currentIndex][i].value
@@ -118,6 +119,7 @@ export default class LayerTopBar extends React.Component {
       ) {
         let info = await SMediaCollector.getMediaInfo(this.props.layerName, smID)
         let maxFiles = 9 - info.mediaFilePaths.length
+        limit = maxFiles
         if(maxFiles <= 0){
           Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_PICTURE)
           return
@@ -145,6 +147,7 @@ export default class LayerTopBar extends React.Component {
         attribute: true,
         selectionAttribute,
         layerAttribute,
+        limit:limit,
         atcb: () => {
           if (
             this.props.refreshAction &&

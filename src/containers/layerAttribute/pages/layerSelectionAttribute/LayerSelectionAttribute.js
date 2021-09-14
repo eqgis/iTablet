@@ -1146,6 +1146,10 @@ export default class LayerSelectionAttribute extends React.Component {
             info,
             layerInfo: GLOBAL.currentLayer,
             cb: refresh,
+            gocb:()=>{
+              NavigationService.goBack()
+              GLOBAL.HAVEATTRIBUTE = false
+            },
           })
         }
       },

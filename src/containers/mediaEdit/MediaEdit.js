@@ -46,6 +46,7 @@ export default class MediaEdit extends React.Component {
     this.info = (params && params.info) || {}
     this.layerInfo = params && params.layerInfo
     this.cb = params && params.cb
+    this.gocb = params && params.gocb
     this.backAction = params && params.backAction
     let paths = []
 
@@ -627,6 +628,9 @@ export default class MediaEdit extends React.Component {
           await this.save(this.modifiedData, true)
           SMap.refreshMap()
           NavigationService.goBack('MediaEdit')
+          if(GLOBAL.HAVEATTRIBUTE){
+            this.gocb && typeof this.gocb === 'function' && this.gocb()
+          }
         }}
         confirmText={getLanguage(this.props.language).Prompt.DELETE}
         cancelAction={() => {

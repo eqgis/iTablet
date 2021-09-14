@@ -90,7 +90,7 @@ export default class MediaItem extends React.Component<Props, State> {
     if (!path || path === '+') return
     if (path.indexOf('content://') === 0 || path.indexOf('assets-library://') === 0) {
       // 相册中获取的图片
-      if (!this.state.imageExist && this.state.image.uri !== path) {
+      if (!this.state.imageExist || this.state.image.uri !== path) {
         this.setState({
           imageExist: true,
           image: { uri: path },

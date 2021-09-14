@@ -611,7 +611,6 @@ export default class MediaEdit extends React.Component {
           await this.save(this.modifiedData, true)
           SMap.refreshMap()
           NavigationService.goBack('MediaEdit')
-          this.cb && typeof this.cb === 'function' && this.cb()
           if(GLOBAL.HAVEATTRIBUTE){
             this.gocb && typeof this.gocb === 'function' && this.gocb()
           }

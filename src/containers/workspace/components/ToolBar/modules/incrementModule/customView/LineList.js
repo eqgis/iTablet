@@ -14,11 +14,8 @@ import {
   FlatList,
   TextInput,
   Platform,
-  Keyboard,
-  Animated,
-  KeyboardAvoidingView,
 } from 'react-native'
-import { scaleSize, setSpText, Toast } from '../../../../../../../utils'
+import { DialogUtils, scaleSize, setSpText, Toast } from '../../../../../../../utils'
 import {
   getLayerIconByType,
   getLayerWhiteIconByType,
@@ -28,7 +25,7 @@ import {
 import { SMap, DatasetType } from 'imobile_for_reactnative'
 import { color } from '../../../../../../../styles'
 import ToolbarModule from '../../ToolbarModule'
-import { Const, ToolbarType, Height } from '../../../../../../../constants'
+import { ToolbarType, Height } from '../../../../../../../constants'
 import IncrementData from '../IncrementData'
 import { getLanguage } from '../../../../../../../language'
 import MergeDatasetView from './MergeDatasetView'
@@ -56,39 +53,6 @@ export default class LineList extends Component {
       /** {datasetName<String>,datasourceName<String>} */
       editingItem: {},
     }
-    this.keyBoardDidShowListener = null
-    this.keyBoardDidHideListener = null
-  }
-  componentDidMount() {
-    if (Platform.OS === 'ios') {
-      this.keyBoardDidShowListener = Keyboard.addListener(
-        'keyboardDidShow',
-        this._keyboardDidShow,
-      )
-      this.keyBoardDidHideListener = Keyboard.addListener(
-        'keyboardDidHide',
-        this._keyboardDidHide,
-      )
-    }
-  }
-  componentWillUnmount() {
-    //安卓不加 用keyboardAvoidingView
-    this.keyBoardDidHideListener && this.keyBoardDidHideListener.remove()
-    this.keyBoardDidShowListener && this.keyBoardDidShowListener.remove()
-  }
-
-  _keyboardDidShow = e => {
-    let { height } = e.startCoordinates
-    Animated.timing(GLOBAL.ToolBar.state.bottom, {
-      toValue: height,
-      duration: Const.ANIMATED_DURATION,
-    }).start()
-  }
-  _keyboardDidHide = () => {
-    Animated.timing(GLOBAL.ToolBar.state.bottom, {
-      toValue: 0,
-      duration: Const.ANIMATED_DURATION,
-    }).start()
   }
 
   /**
@@ -99,7 +63,6 @@ export default class LineList extends Component {
     const preType = ToolbarModule.getData().preType
     const containerType = ToolbarType.table
     const _data = await IncrementData.getData(preType)
-    this._keyboardDidHide()
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
     })
@@ -178,22 +141,18 @@ export default class LineList extends Component {
    * 编辑数据集名称
    * @param {Object} param0.item FlatList的data数组元素 data[]
    */
-  _onEditPress = ({ item }) => {
-    let editingItem = this.state.editingItem
-    if (
-      editingItem.datasetName !== item.datasetName ||
-      editingItem.datasourceName !== item.datasourceName
-    ) {
-      this.setState(
-        {
-          editingItem: item,
-          selectedItem: item,
-        },
-        () => {
-          this.input && this.input.focus()
-        },
-      )
-    }
+  _onEditPress = ({ index, item }) => {
+    DialogUtils.showInputDailog({
+      label: 'input',
+      placeholder: item.datasetName,
+      value: item.datasetName,
+      legalCheck: true,
+      type: 'name',
+      confirmAction: text => {
+        this._endEditing({ index, text })
+        DialogUtils.hideInputDailog()
+      },
+    })
   }
 
   /**
@@ -346,7 +305,7 @@ export default class LineList extends Component {
         <TouchableOpacity
           style={styles.imageWrap}
           onPress={() => {
-            this._onEditPress({ item })
+            this._onEditPress({ index, item })
           }}
         >
           <Image
@@ -408,7 +367,7 @@ export default class LineList extends Component {
       )
     } else {
       return (
-        <KeyboardAvoidingView style={styles.container}>
+        <View style={styles.container}>
           <View style={styles.title}>
             <TouchableOpacity
               style={styles.titleTxtWrap}
@@ -438,7 +397,7 @@ export default class LineList extends Component {
             extraData={this.state}
             renderItem={this._renderItem}
           />
-        </KeyboardAvoidingView>
+        </View>
       )
     }
   }

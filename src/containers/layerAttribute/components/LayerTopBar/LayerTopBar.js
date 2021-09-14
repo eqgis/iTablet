@@ -114,12 +114,11 @@ export default class LayerTopBar extends React.Component {
       if (this.props.attributes.data[this.props.currentIndex][i].name === 'SmID') {
         smID = this.props.attributes.data[this.props.currentIndex][i].value
       } else if (
-        this.props.attributes.data[this.props.currentIndex][i].name === 'MediaFilePaths' &&
-        this.props.attributes.data[this.props.currentIndex][i].value != ''
+        this.props.attributes.data[this.props.currentIndex][i].name === 'MediaFilePaths'
       ) {
         let info = await SMediaCollector.getMediaInfo(this.props.layerName, smID)
         let maxFiles = 9 - info.mediaFilePaths.length
-        if(maxFiles === 0){
+        if(maxFiles <= 0){
           Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_PICTURE)
           return
         }

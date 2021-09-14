@@ -266,6 +266,10 @@ function getPreviewBottomView() {
                 AiCollectionActions.aiDetect()
                 NavigationService.goBack('MediaEdit')
               },
+              cb: () => {
+                AiCollectionActions.aiDetect()
+                NavigationService.goBack('MediaEdit')
+              },
               info: {
                 // id: string,
                 coordinate: _data.location,

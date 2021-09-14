@@ -21,7 +21,6 @@ import styles from './styles'
 import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
-import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 // import ImagePicker from 'react-native-image-crop-picker'
 import { SMediaCollector, SOnlineService, SMap, SCoordination } from 'imobile_for_reactnative'
 import * as RNFS from 'react-native-fs'
@@ -62,10 +61,27 @@ export default class MediaEdit extends React.Component {
         typeof this.info.mediaData === 'string' ? JSON.parse(this.info.mediaData) : this.info.mediaData
       ) || {},
     }
+    let title = params && params.title || ''
+    if (!title && this.showInfo.mediaData.type) {
+      switch (this.showInfo.mediaData.type) {
+        case 'AI_AGGREGATE':
+          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT
+          break
+        case 'AI_DETECT':
+          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT
+          break
+        case 'AI_VEHICLE':
+          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT
+          break
+        case 'AI_CLASSIFY':
+          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CLASSIFY
+          break
+      }
+    }
     this.state = {
       ...this.showInfo,
       paths,
-      title: params && params.title || '',
+      title: title,
       showDelete: false,
       showBg: false,
     }
@@ -285,7 +301,8 @@ export default class MediaEdit extends React.Component {
         }
 
         this.modifiedData = modifiedData
-        if (deleteMedia) {
+        // 有geoID就是修改保存,没有则是添加,不需要删除
+        if (deleteMedia && this.info.geoID) {
           this.deleteDialog && this.deleteDialog.setVisible(true)
         } else {
           this.save(this.modifiedData, false)

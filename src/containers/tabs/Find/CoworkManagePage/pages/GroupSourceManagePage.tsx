@@ -12,6 +12,7 @@ import { UserType } from '../../../../../constants'
 import { getThemeAssets } from '../../../../../assets'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
+import { downloadSourceFile, deleteSourceDownloadFile, IDownloadProps, Download } from '../../../../../redux/models/down'
 import { connect } from 'react-redux'
 import { SCoordination, GroupType } from 'imobile_for_reactnative'
 import SourceItem, { MoreParams, ItemData } from '../components/SourceItem'
@@ -111,6 +112,9 @@ interface Props {
   device: any,
   mapModules: any,
   currentGroup: GroupType,
+  sourceDownloads: Download[],
+  downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
+  deleteSourceDownloadFile: (params: {id: number}) => Promise<any[]>,
 }
 
 type SelectedData =  {
@@ -549,6 +553,9 @@ class GroupSourceManagePage extends Component<Props, State> {
         onPress={this._onPress}
         openCheckBox={this.state.isMutiChoice}
         // hasDownload={this.hasDownload}
+        downloadData={this.props.sourceDownloads}
+        downloadSourceFile={this.props.downloadSourceFile}
+        deleteSourceDownloadFile={this.props.deleteSourceDownloadFile}
         checked={!!this.state.selectedData.get(item.resourceId)}
         onChecked={({value, data, download}) => {
           let selected = new Map(this.tempSelectedData)
@@ -772,9 +779,13 @@ const mapStateToProps = (state: any) => ({
   language: state.setting.toJS().language,
   currentGroup: state.cowork.toJS().currentGroup,
   mapModules: state.mapModules.toJS(),
+  sourceDownloads: state.down.toJS().sourceDownloads,
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  downloadSourceFile,
+  deleteSourceDownloadFile,
+}
 
 export default connect(
   mapStateToProps,

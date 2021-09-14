@@ -15,6 +15,7 @@ import { UserType, ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
 import DataHandler from '../../../Mine/DataHandler'
+import { Download, IDownloadProps } from '../../../../../redux/models/down'
 
 const styles = StyleSheet.create({
   rowContainer: {
@@ -104,6 +105,9 @@ interface Props {
   onPress?: (item?: any) => void,
   /** 是否可以下载 */
   // hasDownload?: boolean,
+  downloadData: Download[],
+  downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
+  deleteSourceDownloadFile: (params: {id: number}) => Promise<any[]>,
 }
 
 export default class SourceItem extends Component<Props, State> {
@@ -203,6 +207,22 @@ export default class SourceItem extends Component<Props, State> {
     if (prevProps.checked !== this.props.checked && typeof this.props.onChecked === 'function') {
       this.props.onChecked({value: this.props.checked, data: this.props.data, download: this._downloadFile})
     }
+    // const preDownload = this.getDownloadData(prevProps.downloadData, this.props.data.resourceId)
+    const download = this.getDownloadData(this.props.downloadData, this.props.data.resourceId)
+    if (this.itemProgress && download) {
+      if (download.progress === 100) {
+        this.props.deleteSourceDownloadFile({id: this.props.data.resourceId})
+      }
+      this.itemProgress.progress = download.progress / 100
+    }
+  }
+
+  getDownloadData = (datas: Download[], id: number | string) => {
+    for (let item of this.props.downloadData) {
+      if (item.id === id) {
+        return item
+      }
+    }
   }
 
   _downloadFile = async () => {
@@ -241,6 +261,7 @@ export default class SourceItem extends Component<Props, State> {
         onlineServicesUtils = new OnlineServicesUtils('online')
       }
       const downloadOptions = {
+        key: dataId,
         // Android 访问online私有数据，需要冲抵cookie
         ...Platform.select({
           android: {
@@ -252,16 +273,61 @@ export default class SourceItem extends Component<Props, State> {
         fromUrl: dataUrl,
         toFile: this.path || '',
         background: true,
-        progress: (res: any) => {
-          let value = ~~res.progress.toFixed(0)
-          if (this.itemProgress) {
-            this.itemProgress.progress = value / 100
-          }
-        },
+        // progress: (res: any) => {
+        //   let value = ~~res.progress.toFixed(0)
+        //   if (this.itemProgress) {
+        //     this.itemProgress.progress = value / 100
+        //   }
+        // },
       }
       try {
-        const ret = RNFS.downloadFile(downloadOptions)
-        ret.promise
+        // const ret = RNFS.downloadFile(downloadOptions)
+        // ret.promise
+        //   .then(async () => {
+        //     let result, path
+        //     if (this.path?.endsWith('.zip')) {
+        //       const zipResult = await this.unZipFile()
+        //       result = zipResult.result
+        //       path = zipResult.path
+
+        //       if (result) {
+        //         let dataList = await DataHandler.getExternalData(path)
+        //         let results = []
+        //         for (let dataItem of dataList) {
+        //           results.push(
+        //             await DataHandler.importExternalData(this.props.user.currentUser, dataItem),
+        //           )
+        //         }
+        //         result = results.some(value => value === true)
+        //         FileTools.deleteFile(this.path)
+        //       }
+        //     } else {
+        //       result = true // 非zip压缩包
+        //     }
+
+        //     if (result === false) {
+        //       this.setState({
+        //         isDownloading: false,
+        //       })
+        //       Toast.show(getLanguage(GLOBAL.language).Prompt.ONLINE_DATA_ERROR)
+        //     } else {
+        //       this.setState({
+        //         exist: true,
+        //         isDownloading: false,
+        //       })
+        //     }
+        //     FileTools.deleteFile(this.downloadingPath)
+        //     RNFS.writeFile(this.downloadingPath + '_', '100%', 'utf8')
+        //   })
+        //   .catch(() => {
+        //     Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+        //     FileTools.deleteFile(this.path)
+        //     FileTools.deleteFile(this.downloadingPath + '_')
+        //     this.setState({
+        //       isDownloading: false,
+        //     })
+        //   })
+        this.props.downloadSourceFile(downloadOptions)
           .then(async () => {
             let result, path
             if (this.path?.endsWith('.zip')) {

@@ -8,15 +8,17 @@ export const DOWNLOADING_FILE = 'DOWNLOADING_FILE'
 export const DOWNLOADED_FILE_DELETE = 'DOWNLOADED_FILE_DELETE'
 export const DOWNLOADED_SET_IGNORE = 'DOWNLOADED_SET_IGNORE'
 export const SAMPLE_DATA_SHOW = 'SAMPLE_DATA_SHOW'
+export const DOWNLOADING_SOURCE_FILE = 'DOWNLOADING_SOURCE_FILE'
+export const DOWNLOADED_SOURCE_FILE_DELETE = 'DOWNLOADED_SOURCE_FILE_DELETE'
 // Actions
 // ---------------------------------.3-----------------
 /** 下载参数 */
 export type IDownloadProps  = {
-  key: string,
+  key?: string,
 } & DownloadFileOptions
 
 export type Download = {
-  id: string,
+  id: string | number,
   progress: number,
   downloaded: boolean,
 }
@@ -114,6 +116,67 @@ export const setIgnoreDownload = (params = {}) => async (dispatch: (arg0: { type
   })
 }
 
+export const downloadSourceFile = (params: IDownloadProps) => async (dispatch: (arg0: { type: string; payload: { id: any; progress: number; downloaded: boolean; params: {} } | { id: any; progress: number; downloaded: boolean; params: {} } }) => any, getState: () => { (): any; new(): any; down: { (): any; new(): any; toJS: { (): { sourceDownloads: any }; new(): any } } }) => {
+  let value = 0
+  let timer = setInterval(async () => {
+    let shouldUpdate = false
+    let isExist = false
+    const { sourceDownloads } = getState().down.toJS()
+    for (let index = 0; index < sourceDownloads.length; index++) {
+      const element = sourceDownloads[index]
+      if (element.id === params.key) {
+        isExist = true
+        shouldUpdate = value > sourceDownloads[index].progress
+        break
+      }
+    }
+    if (!isExist) {
+      shouldUpdate = true
+    }
+
+    if (shouldUpdate && value !== 100) {
+      const data = {
+        id: params.key,
+        progress: value,
+        downloaded: false,
+        params,
+      }
+      await dispatch({
+        type: DOWNLOADING_SOURCE_FILE,
+        payload: data,
+      })
+    }
+    if (value === 100) {
+      clearInterval(timer)
+      // timer = null
+    }
+  }, 200)
+  params.progress = async (res: DownloadProgressCallbackResult) => {
+    value = res.progress >= 0 ? ~~res.progress.toFixed(0) : 0
+    if (value === 100) {
+      const data = {
+        id: params.key,
+        progress: value,
+        downloaded: true,
+        params,
+      }
+      await dispatch({
+        type: DOWNLOADING_SOURCE_FILE,
+        payload: data,
+      })
+    }
+  }
+  const result = RNFS.downloadFile(params)
+  return result.promise
+}
+
+export const deleteSourceDownloadFile = (params = {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+  await dispatch({
+    type: DOWNLOADED_SOURCE_FILE_DELETE,
+    payload: params,
+  })
+}
+
 const initialState = fromJS({
   downList: [
     {
@@ -142,6 +205,7 @@ const initialState = fromJS({
     },
   ],
   downloads: [],
+  sourceDownloads: [],
   downloadInfos: [],
   ignoreDownloads: [],
   showSampleData: false,
@@ -230,6 +294,46 @@ export default handleActions(
         }
       }
       return state.setIn(['ignoreDownloads'], fromJS(ignoreDownloads))
+    },
+    [`${DOWNLOADING_SOURCE_FILE}`]: (state: { toJS: () => { sourceDownloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
+      const { sourceDownloads } = state.toJS()
+      if (payload.id) {
+        if (sourceDownloads.length > 0) {
+          let isItem = false
+          for (let index = 0; index < sourceDownloads.length; index++) {
+            const element = sourceDownloads[index]
+            if (
+              element.id === payload.id &&
+              payload.progress !== sourceDownloads[index].progress
+            ) {
+              isItem = true
+              sourceDownloads[index] = payload
+              break
+            }
+          }
+          if (!isItem) {
+            sourceDownloads.push(payload)
+          }
+        } else {
+          sourceDownloads.push(payload)
+        }
+      }
+      return state.setIn(['sourceDownloads'], fromJS(sourceDownloads))
+    },
+    [`${DOWNLOADED_SOURCE_FILE_DELETE}`]: (state: { toJS: () => { sourceDownloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
+      const { sourceDownloads } = state.toJS()
+      if (payload.id) {
+        if (sourceDownloads.length > 0) {
+          for (let index = 0; index < sourceDownloads.length; index++) {
+            const element = sourceDownloads[index]
+            if (element.id === payload.id) {
+              sourceDownloads.splice(index, 1)
+              break
+            }
+          }
+        }
+      }
+      return state.setIn(['sourceDownloads'], fromJS(sourceDownloads))
     },
     // [REHYDRATE]: () => {
     //   // return payload && payload.down ? fromJS(payload.down) : state

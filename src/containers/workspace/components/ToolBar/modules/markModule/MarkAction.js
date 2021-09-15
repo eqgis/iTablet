@@ -452,7 +452,7 @@ function selectLabelToStyle() {
             StyleUtils.setSingleSelectionStyle(event.layerInfo.path)
             SMap.setLayerEditable(event.layerInfo.path, false)
           }
-          SMap.setAction(Action.PAN)
+          SMap.setAction(Action.SELECT)
         },
       })
   }

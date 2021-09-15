@@ -32,6 +32,7 @@ const Map_Main_Menu = {
   START_SAVE_AS_SENCE: '另存场景',
   PLOT_SAVE_ANIMATION: '保存动画',
   ANIMATION_NODE_NAME: '动画节点名称',
+  OPEN_ONLINE_DATA: '打开在线数据',
 
   PLOT: '标绘',
 

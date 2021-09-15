@@ -113,6 +113,8 @@ const Profile: typeof CN.Profile = {
   PRIVATE_SERVICE: 'Özel Servis',
   PUBLIC_SERVICE: 'Halka Açık Servis',
 
+  INVALID_SERVER_ADDRESS: 'Invalid Server Address', // to be translated
+
   // 个人主页
   MY_ACCOUNT: 'Hesabım',
   PROFILE_PHOTO: 'Profil Fotoğrafı',

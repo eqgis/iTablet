@@ -8,6 +8,7 @@ import { SARMap ,ARAction} from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { Platform } from 'react-native'
 import { AR3DExample, ARModelExample, AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4 } from '../../../../../tabs/Mine/DataHandler/DataExample'
+import { dataUtil, DialogUtils } from '../../../../../../utils'
 
 interface SectionItemData {
   key: string,
@@ -166,7 +167,25 @@ async function getData(type: string, params: {[name: string]: any}) {
 async function get3DData() {
   const _params: any = ToolbarModule.getParams()
   const data3DTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'WORKSPACE3D')
-  const items: any[] = []
+  const items: any[] = [{
+    key: 'open_online',
+    image: require('../../../../../../assets/Mine/mine_my_import_online_light.png'),
+    title: getLanguage().Map_Main_Menu.OPEN_ONLINE_DATA,
+    action: () => {
+      DialogUtils.showInputDailog({
+        title: getLanguage().Profile.ENTER_SERVER_ADDRESS,
+        placeholder: 'http://',
+        checkSpell: dataUtil.checkOnline3DServiceUrl,
+        confirmAction: url => {
+          DialogUtils.hideInputDailog()
+          if(url.indexOf('http') !== 0) {
+            url = 'http://' + url
+          }
+          ARDrawingAction.ar3D(url)
+        },
+      })
+    },
+  }]
   const downloadKeys = [AR3DExample.userName + '_' + AR3DExample.downloadName]
   //检查用户是否已有数据，没有则添加下载选项
   if(data3DTemp.filter(item => item.Type !== undefined).length === 0) {

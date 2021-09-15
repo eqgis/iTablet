@@ -35,6 +35,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   PLOT_SAVE_ANIMATION: 'Animasyonu Kaydet',
   ANIMATION_NODE_NAME: 'Animasyon Nod Adı',
 
+  OPEN_ONLINE_DATA: 'Open Online Data', // to be translated
+
   PLOT: 'Çizim',
 
   // 地图制图及公共 添加

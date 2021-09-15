@@ -257,6 +257,8 @@ const Profile = {
   DISTANCE:'距离(单位m)',
   TIME:'时间(单位s)',
   INPUT_NUMBER:"请输入数字",
+  DISTANCE_LOCATION:'距离定位',
+  TIME_LOCATION:'时间定位',
 
   // 许可
   LICENSE: '许可',

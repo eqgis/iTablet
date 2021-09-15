@@ -162,7 +162,7 @@ class LocationSetting extends React.Component {
     return(
       <View style={{ flexDirection: 'column' }}>
         <View style={styles.itemView}>
-          <Text style={styles.text}>{'距离定位'}</Text>
+          <Text style={styles.text}>{getLanguage(GLOBAL.language).Profile.DISTANCE_LOCATION}</Text>
           {this.state.distanceLocation && !this.state.timeLocation && <TextInput
             value={this.state.distanceLocationText}
             placeholder={getLanguage(GLOBAL.language).Profile.DISTANCE}
@@ -186,7 +186,7 @@ class LocationSetting extends React.Component {
         </View>
         {this.renderSeperator()}
         <View style={styles.itemView}>
-          <Text style={styles.text}>{'时间定位'}</Text>
+          <Text style={styles.text}>{getLanguage(GLOBAL.language).Profile.TIME_LOCATION}</Text>
           {this.state.timeLocation && !this.state.distanceLocation && <TextInput
             value={this.state.timeLocationText}
             placeholder={getLanguage(GLOBAL.language).Profile.TIME}

@@ -248,6 +248,8 @@ const Profile: typeof CN.Profile = {
   DISTANCE:'Distance(m)',//need to translate
   TIME:'Time(s)',//need to translate
   INPUT_NUMBER:"Please Input Number",//need to translate
+  DISTANCE_LOCATION:'Distance Location',//need to translate
+  TIME_LOCATION:'Time Location',//need to translate
 
   // 许可
   LICENSE: 'Lisans',

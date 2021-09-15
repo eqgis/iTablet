@@ -40,9 +40,10 @@ export default class setting extends Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.getData()
-    })
+    //部分手机release版不回走getdata方法先去掉
+    // InteractionManager.runAfterInteractions(() => {
+    this.getData()
+    // })
   }
 
   componentDidUpdate(prevProps) {

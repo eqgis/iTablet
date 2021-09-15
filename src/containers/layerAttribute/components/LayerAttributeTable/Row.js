@@ -67,6 +67,7 @@ export default class Row extends Component {
   props: {
     data: any,
     index: number,
+    dismissIndexes?: Array, // 隐藏的元素
     buttonIndexes?: Array, // Cell 为button的列的index
     buttonActions?: Array, // Cell 为button的列的点击事件
     buttonTitles?: Array, // Cell 为button列对应的title, buttonTitles必须不为空，buttonIndexes才生效
@@ -96,6 +97,7 @@ export default class Row extends Component {
     hasInputText: true,
     isShowSystemFields: true,
     selected: false,
+    dismissIndexes: [],
     buttonIndexes: [],
     buttonActions: [],
     buttonTitles: [],
@@ -318,12 +320,14 @@ export default class Row extends Component {
     if (this.props.data instanceof Array) {
       this.props.data.forEach((item, index) => {
         if (
-          this.props.isShowSystemFields ||
-          typeof item === 'string' ||
-          typeof item === 'number' ||
-          (item.fieldInfo &&
-            !(item.fieldInfo && item.fieldInfo.isSystemField)) ||
-          (item.isSystemField !== undefined && !item.isSystemField)
+          this.props.dismissIndexes.indexOf(index) < 0 && (
+            this.props.isShowSystemFields ||
+            typeof item === 'string' ||
+            typeof item === 'number' ||
+            (item.fieldInfo &&
+              !(item.fieldInfo && item.fieldInfo.isSystemField)) ||
+            (item.isSystemField !== undefined && !item.isSystemField)
+          )
         ) {
           cells.push(this._renderCell(item, index))
         }

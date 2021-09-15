@@ -231,8 +231,10 @@ export default class LayerAttributeSearch extends React.Component {
     )
       return null
 
-    let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds', 'MediaData'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
+    // let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds', 'MediaData'], // 属性表cell显示 查看 按钮
+    //   buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
+    let buttonNameFilter = ['MediaData'], // 属性表cell显示 查看 按钮
+      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
     let buttonActions = [
       async data => {
         let layerName = this.props.currentLayer.name,
@@ -315,6 +317,7 @@ export default class LayerAttributeSearch extends React.Component {
         }
       },
     ]
+    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds']
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}
@@ -354,6 +357,7 @@ export default class LayerAttributeSearch extends React.Component {
         buttonNameFilter={buttonNameFilter}
         buttonActions={buttonActions}
         buttonTitles={buttonTitles}
+        dismissTitles={dismissTitles}
       />
     )
   }

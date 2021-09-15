@@ -3,6 +3,7 @@ const Prompt = {
   YES: '是',
   NO: '否',
   SAVE_TITLE: '是否保存当前地图',
+  SAVE_DATA_TITLE: '是否保存数据?',
   SAVE_YES: '保存',
   SAVE_NO: '不保存',
   CANCEL: '取消',

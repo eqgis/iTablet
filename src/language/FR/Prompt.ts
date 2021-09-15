@@ -5,6 +5,7 @@ const Prompt: typeof CN.Prompt = {
   YES: 'oui',
   NO: 'non',
   SAVE_TITLE: 'Voulez-vous enregistrer les modifications de la carte actuelle?',
+  SAVE_DATA_TITLE: 'Would you like to save data?', // need to translate
   SAVE_YES: 'Oui',
   SAVE_NO: 'Non',
   CANCEL: 'Annuler',

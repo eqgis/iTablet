@@ -5,6 +5,7 @@ const Prompt: typeof CN.Prompt = {
   YES: 'نعم',
   NO: 'لا',
   SAVE_TITLE: 'هل تريد حفظ التغييرات على الخريطة الحالية؟',
+  SAVE_DATA_TITLE: 'Would you like to save data?', // need to translate
   SAVE_YES: 'نعم',
   SAVE_NO: 'لا',
   CANCEL: 'الغاء',

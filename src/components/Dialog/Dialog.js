@@ -283,22 +283,25 @@ export default class Dialog extends PureComponent {
           }
         }}
       >
-        <TouchableOpacity
-          disabled={this.props.disableBackTouch}
-          onPress={() => {
-            if (this.props.dismissAction) {
-              this.props.dismissAction()
-            } else {
-              this.setDialogVisible(false)
-            }
-          }}
-          activeOpacity={1}
-          style={[this.props.backgroundStyle, {backgroundColor: 'yellow'}]}
-        >
-        </TouchableOpacity>
         <View style={styles.container}>
+          <TouchableOpacity
+            disabled={this.props.disableBackTouch}
+            onPress={() => {
+              if (this.props.dismissAction) {
+                this.props.dismissAction()
+              } else {
+                this.setDialogVisible(false)
+              }
+            }}
+            activeOpacity={1}
+            style={[
+              {position: 'absolute', top: 0, bottom: 0, left: 0, right: 0},
+              this.props.backgroundStyle,
+              this.props.opacity > 0 && { opacity: this.props.opacity },
+            ]}
+          />
           {this.props.header}
-          {this.props.opacity ? (
+          {/* {this.props.opacity ? (
             <View
               style={[
                 styles.opacityView,
@@ -308,7 +311,7 @@ export default class Dialog extends PureComponent {
             />
           ) : (
             <View />
-          )}
+          )} */}
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' && 'position'}
           >

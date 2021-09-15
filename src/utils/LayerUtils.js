@@ -507,8 +507,12 @@ function isMediaData(fieldInfo) {
  * @returns
  */
 function getDatasetDescriptionByLayer(layer) {
-  if (!layer.datasetDescription || layer.datasetDescription === 'NULL') return null
-  return JSON.parse(layer.datasetDescription)
+  try{
+    if (!layer.datasetDescription || layer.datasetDescription === 'NULL') return null
+    return JSON.parse(layer.datasetDescription)
+  }catch(e){
+    return null
+  }
 }
 
 export default {

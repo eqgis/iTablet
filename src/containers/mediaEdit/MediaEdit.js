@@ -21,7 +21,6 @@ import styles from './styles'
 import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
-import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 // import ImagePicker from 'react-native-image-crop-picker'
 import { SMediaCollector, SOnlineService, SMap, SCoordination } from 'imobile_for_reactnative'
 import * as RNFS from 'react-native-fs'
@@ -63,10 +62,27 @@ export default class MediaEdit extends React.Component {
         typeof this.info.mediaData === 'string' ? JSON.parse(this.info.mediaData) : this.info.mediaData
       ) || {},
     }
+    let title = params && params.title || ''
+    if (!title && this.showInfo.mediaData.type) {
+      switch (this.showInfo.mediaData.type) {
+        case 'AI_AGGREGATE':
+          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT
+          break
+        case 'AI_DETECT':
+          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT
+          break
+        case 'AI_VEHICLE':
+          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT
+          break
+        case 'AI_CLASSIFY':
+          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CLASSIFY
+          break
+      }
+    }
     this.state = {
       ...this.showInfo,
       paths,
-      title: params && params.title || '',
+      title: title,
       showDelete: false,
       showBg: false,
     }
@@ -238,63 +254,65 @@ export default class MediaEdit extends React.Component {
     }
   }
 
-  saveHandler = () => {
+  saveHandler = async () => {
     if (!this.info.layerName) {
       return
     }
-    (async function() {
-      try {
-        this._newMediaFiles = []
-        this._ids = []
-        let modifiedData = [],
-          deleteMedia = false // 用于删除所有图片后，提示是否删除该对象
-        for (let key in this.info) {
-          if (key === 'mediaServiceIds') { // 后面处理ids
-            this._ids = this.state.mediaServiceIds.concat([])
-            continue
+    try {
+      this.container && this.container.setLoading(true, getLanguage(GLOBAL.language).Prompt.SAVEING)
+      this._newMediaFiles = []
+      this._ids = []
+      let modifiedData = [],
+        deleteMedia = false // 用于删除所有图片后，提示是否删除该对象
+      for (let key in this.info) {
+        if (key === 'mediaServiceIds') { // 后面处理ids
+          this._ids = this.state.mediaServiceIds.concat([])
+          continue
+        }
+        // 找出被修改的的信息,如果geoID没有,对象不存在,则所有信息都被认定为修改信息
+        if (this.showInfo[key] !== this.state[key] || !this.info.geoID) {
+          let _value = this.state[key]
+          // 删除所有图片后，提示是否删除该对象
+          if (key === 'mediaFilePaths' && this.state[key].length === 0) {
+            deleteMedia = true
           }
-          // 找出被修改的的信息,如果geoID没有,对象不存在,则所有信息都被认定为修改信息
-          if (this.showInfo[key] !== this.state[key] || !this.info.geoID) {
-            let _value = this.state[key]
-            // 删除所有图片后，提示是否删除该对象
-            if (key === 'mediaFilePaths' && this.state[key].length === 0) {
-              deleteMedia = true
-            }
-            // mediaData对象需转成string保存
-            if (key === 'mediaData') {
-              _value = JSON.stringify(this.state[key])
-            }
+          // mediaData对象需转成string保存
+          if (key === 'mediaData') {
+            _value = JSON.stringify(this.state[key])
+          }
 
-            if (key === 'mediaFilePaths') {
-              this.state.mediaFilePaths.forEach(item => {
-                if (item.indexOf('/iTablet/User/') !== 0) {
-                  // 把新添加的图片记录下来
-                  // TODO 区分同一张图片删除后重新添加
-                  this._newMediaFiles.push(item)
-                }
-              })
-            }
-            modifiedData.push({
-              name: key,
-              value: _value,
+          if (key === 'mediaFilePaths') {
+            this.state.mediaFilePaths.forEach(item => {
+              if (item.indexOf('/iTablet/User/') !== 0) {
+                // 把新添加的图片记录下来
+                // TODO 区分同一张图片删除后重新添加
+                this._newMediaFiles.push(item)
+              }
             })
           }
+          modifiedData.push({
+            name: key,
+            value: _value,
+          })
         }
-        if (modifiedData.length === 0) {
-          Toast.show(getLanguage(this.props.language).Prompt.NO_NEED_TO_SAVE)
-          return
-        }
-
-        this.modifiedData = modifiedData
-        if (deleteMedia) {
-          this.deleteDialog && this.deleteDialog.setVisible(true)
-        } else {
-          this.save(this.modifiedData, false)
-        }
-      } catch (e) {
-        Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
       }
-    }.bind(this)())
+      if (modifiedData.length === 0) {
+        Toast.show(getLanguage(this.props.language).Prompt.NO_NEED_TO_SAVE)
+        return
+      }
+
+      this.modifiedData = modifiedData
+      // 有geoID就是修改保存,没有则是添加,不需要删除
+      if (deleteMedia && this.info.geoID) {
+        this.deleteDialog && this.deleteDialog.setVisible(true)
+      } else {
+        await this.save(this.modifiedData, false)
+      }
+      this.container && this.container.setLoading(false)
+    } catch (e) {
+      this.container && this.container.setLoading(false)
+      Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
+    }
   }
 
   save = async (modifiedData, isDelete = true) => {
@@ -963,10 +981,29 @@ export default class MediaEdit extends React.Component {
   }
 
   back = () => {
-    if (this.backAction) {
-      this.backAction()
+    function _goBack() {
+      if (this.backAction) {
+        this.backAction()
+      } else {
+        NavigationService.goBack('MediaEdit')
+      }
+    }
+    if (this.info.geoID) {
+      _goBack()
     } else {
-      NavigationService.goBack('MediaEdit')
+      GLOBAL.SimpleDialog?.set({
+        text: getLanguage(GLOBAL.language).Prompt.SAVE_DATA_TITLE,
+        confirmText: getLanguage(GLOBAL.language).Prompt.YES,
+        cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+        disableBackTouch: false,
+        confirmAction: async () => {
+          await this.saveHandler()
+          _goBack()
+        },
+        cancelAction: _goBack,
+        dismissAction: () => GLOBAL.SimpleDialog?.setVisible(false),
+      })
+      GLOBAL.SimpleDialog?.setVisible(true)
     }
   }
 

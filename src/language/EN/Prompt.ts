@@ -5,6 +5,7 @@ const Prompt: typeof CN.Prompt = {
   YES: 'Yes',
   NO: 'No',
   SAVE_TITLE: 'Would you like to save your changes?',
+  SAVE_DATA_TITLE: 'Would you like to save data?',
   SAVE_YES: 'Yes',
   SAVE_NO: "No",
   CANCEL: 'Cancel',

@@ -295,6 +295,10 @@ function getPreviewBottomView() {
                 AiVehicleActions.illegallyParkCollect()
                 NavigationService.goBack('MediaEdit')
               },
+              cb: () => {
+                AiVehicleActions.illegallyParkCollect()
+                NavigationService.goBack('MediaEdit')
+              },
               info: {
                 coordinate: _data.location,
                 layerName: _params.currentLayer.name,

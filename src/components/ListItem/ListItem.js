@@ -46,7 +46,7 @@ export default class ListItem extends PureComponent {
             />
           )}
           <Text style={styles.title}>{this.props.title}</Text>
-          <Text style={styles.value}>{this.props.value}</Text>
+          <Text style={styles.value} numberOfLines={2}>{this.props.value}</Text>
           {this.props.type === 'arrow' &&
             (this.props.onPress ? (
               <Image

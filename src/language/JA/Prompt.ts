@@ -5,6 +5,7 @@ const Prompt: typeof CN.Prompt = {
   YES: 'はい',
   NO: 'いいえ',
   SAVE_TITLE: '現在マップを保存しますか',
+  SAVE_DATA_TITLE: 'Would you like to save data?', // need to translate
   SAVE_YES: '保存',
   SAVE_NO: '保存しない',
   CANCEL: 'キャンセル',

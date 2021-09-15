@@ -256,6 +256,10 @@ function getPreviewBottomView() {
                 AiAggregateActions.polymerizeCollect()
                 NavigationService.goBack('MediaEdit')
               },
+              cb: () => {
+                AiAggregateActions.polymerizeCollect()
+                NavigationService.goBack('MediaEdit')
+              },
               info: {
                 // id: string,
                 coordinate: _data.location,

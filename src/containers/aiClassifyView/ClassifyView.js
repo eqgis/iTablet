@@ -687,7 +687,7 @@ export default class ClassifyView extends React.Component {
         )}
         {(
           <TouchableOpacity
-            onPress={() => this.save(this.state.third_result)}
+            onPress={() => this.RadioButtonOnChange(3)}
             style={styles.classifyTitleView}
           >
             <RadioButton

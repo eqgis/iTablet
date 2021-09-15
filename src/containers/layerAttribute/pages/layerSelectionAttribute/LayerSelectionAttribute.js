@@ -1065,8 +1065,10 @@ export default class LayerSelectionAttribute extends React.Component {
 
   renderTable = () => {
     GLOBAL.layerSelection = this.props.layerSelection
-    let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
+    //   buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    let buttonNameFilter = this.isMediaLayer ? ['MediaData'] : [], // 属性表cell显示 查看 按钮
+      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
@@ -1154,6 +1156,7 @@ export default class LayerSelectionAttribute extends React.Component {
         }
       },
     ] : []
+    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds']
     const isSingle = this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable
@@ -1193,6 +1196,7 @@ export default class LayerSelectionAttribute extends React.Component {
         buttonNameFilter={buttonNameFilter}
         buttonActions={buttonActions}
         buttonTitles={buttonTitles}
+        dismissTitles={dismissTitles}
         isShowSystemFields={this.props.isShowSystemFields}
         onPressHeader={this.onPressHeader}
       />

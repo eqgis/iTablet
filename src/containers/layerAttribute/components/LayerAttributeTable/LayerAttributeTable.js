@@ -11,12 +11,8 @@ import {
   KeyboardAvoidingView,
   SectionList,
   Platform,
-  Keyboard,
-  UIManager,
-  findNodeHandle,
-  TextInput,
 } from 'react-native'
-import { scaleSize, dataUtil, screen } from '../../../../utils'
+import { scaleSize, dataUtil } from '../../../../utils'
 import { IndicatorLoading } from '../../../../components'
 import { color } from '../../../../styles'
 import Row from './Row'
@@ -37,6 +33,7 @@ export default class LayerAttributeTable extends React.Component {
     buttonNameFilter?: Array, // Cell 为button的列的filter
     buttonActions?: Array, // Cell 为button的列的点击事件
     buttonTitles?: Array, // Cell 为button列对应的title, buttonTitles必须不为空，buttonIndexes才生效
+    dismissTitles?: Array, // 隐藏的元素
   
     contentContainerStyle?: Object,
 
@@ -114,6 +111,30 @@ export default class LayerAttributeTable extends React.Component {
     this.canBeLoadMore = true // 控制是否可以加载更多
     this.isScrolling = false // 防止连续定位滚动
     this.itemClickPosition = 0 //当前item点击位置 IOS
+
+    this.setIndexexes(titles)
+  }
+
+  setIndexexes = (titles = []) => {
+    this.dismissIndexes = []
+    this.buttonIndexes = []
+    if (this.props.type === 'MULTI_DATA' && this.state.isMultiData) {
+      for (let index in titles) {
+        if (this.props.dismissTitles && this.props.dismissTitles instanceof Array) {
+          const dismissIndex = this.props.dismissTitles?.indexOf(titles[index].value)
+          if (dismissIndex >= 0) this.dismissIndexes.push(parseInt(index) + 1)
+        }
+        if (this.props.buttonNameFilter && this.props.buttonNameFilter instanceof Array) {
+          const buttonIndex = this.props.buttonNameFilter?.indexOf(titles[index].value)
+          if (buttonIndex >= 0) this.buttonIndexes.push(parseInt(index) + 1)
+        }
+      }
+    } else {
+      for (let index in this.props.data) {
+        const dismissIndex = this.props.dismissTitles.indexOf(this.props.data[index].name)
+        if (dismissIndex >= 0) this.dismissIndexes.push(parseInt(index))
+      }
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -154,6 +175,7 @@ export default class LayerAttributeTable extends React.Component {
     ) {
       let data = []
       const titles = this.getTitle(data)
+      this.setIndexexes(titles)
 
       if (!isMultiData && !this.props.isShowSystemFields) {
         this.props.data.forEach(item => {
@@ -419,6 +441,7 @@ export default class LayerAttributeTable extends React.Component {
         onPress={this.onPressRow}
         onChangeEnd={this.onChangeEnd}
         isShowSystemFields={this.props.isShowSystemFields}
+        dismissTitles={this.props.dismissTitles}
       />
     )
   }
@@ -449,19 +472,20 @@ export default class LayerAttributeTable extends React.Component {
 
     if (this.props.type === 'MULTI_DATA' && this.state.isMultiData) {
       buttonTitles = this.props.buttonTitles
-      if (
-        this.props.buttonNameFilter &&
-        this.props.buttonNameFilter instanceof Array
-      ) {
-        for (let index1 in item) {
-          for (let filter of this.props.buttonNameFilter) {
-            if (item[index1].name === filter) {
-              buttonIndexes.push(parseInt(index1) + 1)
-              break
-            }
-          }
-        }
-      }
+      buttonIndexes = this.buttonIndexes
+      // if (
+      //   this.props.buttonNameFilter &&
+      //   this.props.buttonNameFilter instanceof Array
+      // ) {
+      //   for (let index1 in item) {
+      //     for (let filter of this.props.buttonNameFilter) {
+      //       if (item[index1].name === filter) {
+      //         buttonIndexes.push(parseInt(index1) + 1)
+      //         break
+      //       }
+      //     }
+      //   }
+      // }
       this.props.buttonActions &&
         this.props.buttonActions instanceof Array &&
         this.props.buttonActions.forEach(action => {
@@ -547,6 +571,7 @@ export default class LayerAttributeTable extends React.Component {
         onChangeEnd={this.onChangeEnd}
         buttonIndexes={buttonIndexes}
         buttonActions={buttonActions}
+        dismissIndexes={this.dismissIndexes}
         buttonTitles={buttonTitles}
         isShowSystemFields={this.props.isShowSystemFields}
       />
@@ -590,6 +615,7 @@ export default class LayerAttributeTable extends React.Component {
         hasInputText={false}
         onPress={this.onPressHeader}
         isShowSystemFields={this.props.isShowSystemFields}
+        dismissIndexes={this.dismissIndexes}
       />
     )
   }
@@ -647,12 +673,22 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   renderSingleDataTable = () => {
+    let tableData = []
+    if (this.dismissIndexes.length > 0) {
+      this.dismissIndexes.sort((a, b) => a - b)
+      tableData = JSON.parse(JSON.stringify(this.state.tableData))
+      for (let i = this.dismissIndexes.length - 1; i >= 0; i--) {
+        tableData[0].data.splice(this.dismissIndexes[i], 1)
+      }
+    } else {
+      tableData = this.state.tableData
+    }
     return (
       <SectionList
         ref={ref => (this.table = ref)}
         refreshing={this.state.refreshing}
         style={[styles.listContainer, {marginHorizontal: scaleSize(40)}]}
-        sections={this.state.tableData}
+        sections={tableData}
         // renderItem={this._renderSingleDataItem}
         renderItem={this._renderItem}
         keyExtractor={this._keyExtractor}

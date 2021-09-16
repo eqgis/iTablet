@@ -10,6 +10,7 @@ import {
   FileTools,
   ARLayer,
   SCoordination,
+  IServerService,
 } from 'imobile_for_reactnative'
 import { IVector3, Point3D } from "imobile_for_reactnative/types/data"
 import {
@@ -17,7 +18,7 @@ import {
   ToolbarType,
   ConstPath,
 } from '../../../../../../constants'
-import { Toast, AppProgress, DialogUtils } from '../../../../../../utils'
+import { Toast, AppProgress, DialogUtils, dataUtil } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
@@ -56,11 +57,14 @@ function setARToolbar(type: string, data?: {[name: string]: any}) {
   })
 }
 
+let isAddingARElement: boolean = false
 /**
  * 添加到当前位置
  * @param type
  */
 async function addAtCurrent(type: string, location?: IVector3) {
+  if(isAddingARElement) return
+  isAddingARElement = true
   const _params: any = ToolbarModule.getParams()
   if (type === ConstToolType.SM_AR_DRAWING_SCENE) {
     await addARScene(location)
@@ -80,6 +84,7 @@ async function addAtCurrent(type: string, location?: IVector3) {
 
     await addMedia(_type, location)
   }
+  isAddingARElement = false
 }
 
 /**
@@ -159,6 +164,14 @@ export async function addARScene(location?: IVector3) {
       newDatasource = true
     }
 
+    //若已存在场景图层则先移除
+    const sceneLayers = _params.arlayer?.layers.filter((layer: ARLayer) => {
+      return layer.type === ARLayerType.AR_SCENE_LAYER
+    })
+    if(sceneLayers && sceneLayers.length > 0) {
+      await SARMap.removeARLayer(sceneLayers[0].name)
+    }
+
     let datasourceName = _params.armap.currentMap?.mapName || DataHandler.getARRawDatasource()
     let datasetName = 'scene'
     const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
@@ -179,6 +192,18 @@ export async function addARScene(location?: IVector3) {
       try {
         let addLayerName: string
         if(path.indexOf('http') === 0) {
+          //double check
+          const isValidUrl = dataUtil.checkOnline3DServiceUrl(path) === ''
+          if (!isValidUrl) {
+            Toast.show(getLanguage().Profile.ONLINE_DATA_UNAVAILABLE)
+            return
+          }
+          const iserverSrv = new IServerService()
+          const info = await iserverSrv.getSceneInfo(path)
+          if('error' in info) {
+            Toast.show(getLanguage().Profile.ONLINE_DATA_UNAVAILABLE)
+            return
+          }
           const {serverUrl, sceneName, datasetUrl} = getOnlineSceneFromUrl(path)
           const co = new SCoordination('online')
           const recordinfo = await co.downloadRecordset(datasetUrl, 0 , 1)
@@ -220,7 +245,7 @@ export async function addARScene(location?: IVector3) {
       }
     }
   } catch (error) {
-    Toast.show(error)
+    console.warn(error)
   }
 }
 

@@ -409,6 +409,9 @@ const Profile: typeof CN.Profile = {
 
   CHOOSE_COLOR: '色の選択',
   SET_PROJECTION: '投影を設定する',
+
+  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
+  ONLINE: 'Online', //to be translated
 }
 
 export { Profile }

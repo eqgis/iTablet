@@ -418,6 +418,9 @@ const Profile: typeof CN.Profile = {
 
   CHOOSE_COLOR: 'اختيار اللون',
   SET_PROJECTION: 'تعيين الإسقاط',
+
+  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
+  ONLINE: 'Online', //to be translated
 }
 
 export { Profile }

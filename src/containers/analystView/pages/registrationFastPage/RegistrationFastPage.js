@@ -209,8 +209,7 @@ export default class RegistrationExecutePage extends Component {
         )
       }
       GLOBAL.Loading.setLoading(false)
-      NavigationService.goBack()
-      NavigationService.goBack()
+      NavigationService.goBack('RegistrationDatasetPage')
     } catch {
       GLOBAL.Loading.setLoading(false)
     }

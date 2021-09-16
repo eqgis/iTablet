@@ -57,11 +57,14 @@ function setARToolbar(type: string, data?: {[name: string]: any}) {
   })
 }
 
+let isAddingARElement: boolean = false
 /**
  * 添加到当前位置
  * @param type
  */
 async function addAtCurrent(type: string, location?: IVector3) {
+  if(isAddingARElement) return
+  isAddingARElement = true
   const _params: any = ToolbarModule.getParams()
   if (type === ConstToolType.SM_AR_DRAWING_SCENE) {
     await addARScene(location)
@@ -81,6 +84,7 @@ async function addAtCurrent(type: string, location?: IVector3) {
 
     await addMedia(_type, location)
   }
+  isAddingARElement = false
 }
 
 /**

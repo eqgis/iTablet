@@ -97,8 +97,12 @@ export default class MediaItem extends React.Component<Props, State> {
         })
       }
     } else {
+      let _path = path
+      if (path.indexOf('file://') === 0) {
+        _path = _path.replace('file://', '')
+      }
       // 文件目录中获取的图片
-      FileTools.fileIsExist(path).then(result => {
+      FileTools.fileIsExist(_path).then(result => {
         if (this.state.imageExist !== result || this.state.image.uri !== path) {
           this.setState({
             imageExist: result,
@@ -185,7 +189,8 @@ export default class MediaItem extends React.Component<Props, State> {
       let imgPath = this.props.data.path || this.props.data.uri || ''
       if (
         Platform.OS === 'android' &&
-        imgPath.toLowerCase().indexOf('content://') !== 0
+        imgPath.toLowerCase().indexOf('content://') !== 0 &&
+        imgPath.toLowerCase().indexOf('file://') !== 0
       ) {
         imgPath = 'file://' + imgPath
       }

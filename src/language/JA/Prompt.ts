@@ -191,6 +191,7 @@ const Prompt: typeof CN.Prompt = {
   INPUT_LENGTH: '最大長さを入力してください',
   DEFAULT_VALUE_EROROR: 'デフォルト値の入力は無効',
   SELECT_REQUIRED: '必須かどうかを選択してください',
+  DEFAULT_NAMING_SS: 'The name cannot start with SS_', // need to translate
 
   CLIPPING: 'マップクリップ中',
   CLIPPED_SUCCESS: 'クリップに成功',

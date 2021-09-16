@@ -387,6 +387,7 @@ export default class MediaEdit extends React.Component {
           location: this.info.location,
           description: description,
           mediaData: JSON.stringify(this.state.mediaData),
+          mediaType: this.showInfo.mediaData.type || '',
         })
       }
       let newState = {}
@@ -434,7 +435,7 @@ export default class MediaEdit extends React.Component {
           : getLanguage(this.props.language).Prompt.SAVE_FAILED,
       )
     } catch (e) {
-      Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
+      Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
     }
   }
 
@@ -540,7 +541,8 @@ export default class MediaEdit extends React.Component {
             let imgPath = itemInfo.uri
             if (
               Platform.OS === 'android' &&
-              imgPath.toLowerCase().indexOf('content://') !== 0
+              imgPath.toLowerCase().indexOf('content://') !== 0 &&
+              imgPath.toLowerCase().indexOf('file://') !== 0
             ) {
               imgPath = 'file://' + imgPath
             }

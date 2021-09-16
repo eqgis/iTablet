@@ -182,7 +182,7 @@ export default class Row extends Component {
         editable = false
       } else {
         let isHead = this.props.data.fieldInfo === undefined
-        editable = !isHead && !this.props.data.fieldInfo.isSystemField
+        editable = !isHead && !this.props.data.fieldInfo.isSystemField && this.props.data.fieldInfo.name?.indexOf('SS_') !== 0
         isRequired = !isHead && this.props.data.fieldInfo.isRequired
         defaultValue =
           !isHead && this.props.data.fieldInfo.defaultValue !== undefined
@@ -190,7 +190,7 @@ export default class Row extends Component {
             : ''
       }
     } else {
-      editable = item.fieldInfo && !item.fieldInfo.isSystemField
+      editable = item.fieldInfo && !item.fieldInfo.isSystemField && item.fieldInfo.name?.indexOf('SS_') !== 0
       isRequired = item.fieldInfo && item.fieldInfo.isRequired
       defaultValue =
         item.fieldInfo && item.fieldInfo.defaultValue !== undefined

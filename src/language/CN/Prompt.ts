@@ -189,6 +189,7 @@ const Prompt = {
   INPUT_LENGTH: '请输入长度',
   DEFAULT_VALUE_EROROR: '缺省值输入错误',
   SELECT_REQUIRED: '请选择是否必选',
+  DEFAULT_NAMING_SS: '不能以SS_开头命名',
 
   CLIPPING: '地图裁剪中',
   CLIPPED_SUCCESS: '裁剪成功',

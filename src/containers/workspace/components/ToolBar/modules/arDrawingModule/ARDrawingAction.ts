@@ -164,6 +164,14 @@ export async function addARScene(location?: IVector3) {
       newDatasource = true
     }
 
+    //若已存在场景图层则先移除
+    const sceneLayers = _params.arlayer?.layers.filter((layer: ARLayer) => {
+      return layer.type === ARLayerType.AR_SCENE_LAYER
+    })
+    if(sceneLayers && sceneLayers.length > 0) {
+      await SARMap.removeARLayer(sceneLayers[0].name)
+    }
+
     let datasourceName = _params.armap.currentMap?.mapName || DataHandler.getARRawDatasource()
     let datasetName = 'scene'
     const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
@@ -237,7 +245,7 @@ export async function addARScene(location?: IVector3) {
       }
     }
   } catch (error) {
-    Toast.show(error)
+    console.warn(error)
   }
 }
 

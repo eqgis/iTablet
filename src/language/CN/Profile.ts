@@ -115,6 +115,7 @@ const Profile = {
   MAP_NAME: '地图名称',
   ENTER_SERVICE_ADDRESS: '请输入服务地址',
   SAVE: '保存',
+  INVALID_SERVER_ADDRESS: '无效的服务地址',
 
   // 我的服务
   SERVICE: '服务',
@@ -415,6 +416,9 @@ const Profile = {
 
   CHOOSE_COLOR: '选择颜色',
   SET_PROJECTION: '设置投影',
+
+  ONLINE_DATA_UNAVAILABLE: '在线资源不可访问',
+  ONLINE: '在线',
 }
 
 export { Profile }

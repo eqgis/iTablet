@@ -113,6 +113,8 @@ const Profile: typeof CN.Profile = {
   PRIVATE_SERVICE: 'Private Service',
   PUBLIC_SERVICE: 'Public Service',
 
+  INVALID_SERVER_ADDRESS: 'Invalid Server Address',
+
   // 个人主页
   MY_ACCOUNT: 'My Account',
   PROFILE_PHOTO: 'Profile Photo',
@@ -392,7 +394,7 @@ const Profile: typeof CN.Profile = {
   MAR_AR_POSITION_CORRECT: 'Calibrate Position',
   MAP_AR_TOWARDS_NORTH: 'Face the rear-facing camera north',
   MAP_AR_SCAN_TIP: 'Please fill the QR code in the scan box',
-  MAP_AR_SCAN_IT: 'Scan', 
+  MAP_AR_SCAN_IT: 'Scan',
   MAP_AR_DATUM_HEIGHT: 'Height',
   MAP_AR_DATUM_DIRECTION: 'Orientation',
   MAR_AR_DATUM_NORTH: 'North',
@@ -407,6 +409,9 @@ const Profile: typeof CN.Profile = {
 
   CHOOSE_COLOR: 'Choose Color',
   SET_PROJECTION: 'Set Projection',
+
+  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
+  ONLINE: 'Online', //to be translated
 }
 
 export { Profile }

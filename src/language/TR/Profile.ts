@@ -113,6 +113,8 @@ const Profile: typeof CN.Profile = {
   PRIVATE_SERVICE: 'Özel Servis',
   PUBLIC_SERVICE: 'Halka Açık Servis',
 
+  INVALID_SERVER_ADDRESS: 'Invalid Server Address', // to be translated
+
   // 个人主页
   MY_ACCOUNT: 'Hesabım',
   PROFILE_PHOTO: 'Profil Fotoğrafı',
@@ -407,6 +409,9 @@ const Profile: typeof CN.Profile = {
 
   CHOOSE_COLOR: 'Renk Seç',
   SET_PROJECTION: 'Projeksiyonu ayarla',
+
+  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
+  ONLINE: 'Online', //to be translated
 }
 
 export { Profile }

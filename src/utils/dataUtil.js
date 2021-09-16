@@ -329,6 +329,41 @@ function isLegalURL(URL, language = GLOBAL.language) {
   }
 }
 
+/**
+ * 检查是否为合法的url
+ */
+function checkUrl(text, checkProtocal = true) {
+  let error = ''
+  let pattern
+  if(checkProtocal) {
+    pattern = /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/
+  } else{
+    pattern = /[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/
+  }
+  if(!pattern.test(text)) {
+    error = getLanguage().Prompt.ERROR_INFO_INVALID_URL
+  }
+  return error
+}
+
+
+/**
+ * 检查是否为合法的在线3维场景服务地址
+ * 格式： http://192.168.11.117:8090/iserver/services/3D-pipe3D/rest/realspace/scenes/pipe3D
+ */
+function checkOnline3DServiceUrl(text) {
+  let error = ''
+  error = checkUrl(text, false)
+  if(error === '') {
+    const pattern = /(.+\/rest\/realspace)\/scenes\/(.+)/
+    if(!pattern.test(text)) {
+      error = getLanguage().Profile.INVALID_SERVER_ADDRESS
+    }
+  }
+
+  return error
+}
+
 function getNameByURL(str) {
   let idx = str.lastIndexOf('/')
   idx = idx > -1 ? idx : str.lastIndexOf('\\')
@@ -461,4 +496,6 @@ export default {
   deepClone,
 
   getUrlQueryVariable,
+
+  checkOnline3DServiceUrl,
 }

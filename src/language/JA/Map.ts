@@ -35,6 +35,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   PLOT_SAVE_ANIMATION: 'アニメーションの保存',
   ANIMATION_NODE_NAME: 'アニメーションノード名',
 
+  OPEN_ONLINE_DATA: 'Open Online Data', // to be translated
+
   PLOT: 'アニメシンボル',
 
   // 地图制图及公共 添加

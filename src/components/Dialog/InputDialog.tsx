@@ -56,6 +56,8 @@ export interface TempData {
   type?: ValueType,
   confirmAction?: (data?: any) => void,
   cancelAction?: (data?: any) => void,
+  /** 检查输入是否有错并返回错误提示，无错误返回空字符串 */
+  checkSpell?: (text: string) => string
 }
 
 export default class InputDialog extends PureComponent<Props, State> {
@@ -164,8 +166,12 @@ export default class InputDialog extends PureComponent<Props, State> {
     return keyboardType
   }
 
-  checkValue = (text: string, type = this.state.type) => {
+  checkValue = (text: string, type = this.state.type): {result: boolean, error?: string | null} => {
     let res
+    if(this.params.checkSpell) {
+      const info = this.params.checkSpell(text)
+      return { result: info === '', error: info === '' ? null : info}
+    }
     switch (type) {
       case 'number': {
         let isNumber = text !== '' && !isNaN(text) && text !== undefined

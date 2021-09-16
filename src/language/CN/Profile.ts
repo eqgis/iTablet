@@ -115,6 +115,7 @@ const Profile = {
   MAP_NAME: '地图名称',
   ENTER_SERVICE_ADDRESS: '请输入服务地址',
   SAVE: '保存',
+  INVALID_SERVER_ADDRESS: '无效的服务地址',
 
   // 我的服务
   SERVICE: '服务',

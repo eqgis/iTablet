@@ -36,6 +36,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   PLOT_SAVE_ANIMATION: "Enregistrer l'animation",
   ANIMATION_NODE_NAME: "Nom du nœud d'animation",
 
+  OPEN_ONLINE_DATA: 'Open Online Data', // to be translated
+
   PLOT: 'Traçage',
 
   // 地图制图及公共 添加

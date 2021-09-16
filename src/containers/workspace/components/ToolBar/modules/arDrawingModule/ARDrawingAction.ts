@@ -9,8 +9,9 @@ import {
   ARAction,
   FileTools,
   ARLayer,
+  SCoordination,
 } from 'imobile_for_reactnative'
-import { IVector3 } from "imobile_for_reactnative/types/data"
+import { IVector3, Point3D } from "imobile_for_reactnative/types/data"
 import {
   ConstToolType,
   ToolbarType,
@@ -169,17 +170,40 @@ export async function addARScene(location?: IVector3) {
       }
 
       const homePath = await FileTools.getHomeDirectory()
-      let path = _data.arContent.substring(0, _data.arContent.lastIndexOf('.'))
+      let path = _data.arContent
       if(!path) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SCENE_SELECTED)
         return
       }
-      path = homePath + path
-      // 得到的是工作空间所在目录 需要去找到sxwu文件路径
+
       try {
-        const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
-        if(list.length == 0) return
-        const addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path, location)
+        let addLayerName: string
+        if(path.indexOf('http') === 0) {
+          const {serverUrl, sceneName, datasetUrl} = getOnlineSceneFromUrl(path)
+          const co = new SCoordination('online')
+          const recordinfo = await co.downloadRecordset(datasetUrl, 0 , 1)
+          const sceneOffset: Point3D = {x: 0, y: 0, z: 0}
+          if(recordinfo.length > 0) {
+            recordinfo[0].featureInfo.forEach(feature => {
+              if(feature.name === 'AR_SCENE_X') {
+                sceneOffset.x = feature.value as number
+              }
+              if(feature.name === 'AR_SCENE_Y') {
+                sceneOffset.y = feature.value as number
+              }
+              if(feature.name === 'AR_SCENE_Z') {
+                sceneOffset.z = feature.value as number
+              }
+            })
+          }
+          addLayerName = await SARMap.addSceneLayerOnline(datasourceName, datasetName, serverUrl, sceneName, location, sceneOffset)
+        } else {
+          path = homePath + _data.arContent.substring(0, _data.arContent.lastIndexOf('.'))
+          // 得到的是工作空间所在目录 需要去找到sxwu文件路径
+          const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
+          if(list.length == 0) return
+          addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path, location)
+        }
         if(addLayerName !== ''){
           const layers: ARLayer[] = await _params.getARLayers()
           const defaultLayer = layers.find(item => {
@@ -197,6 +221,31 @@ export async function addARScene(location?: IVector3) {
     }
   } catch (error) {
     Toast.show(error)
+  }
+}
+
+function getOnlineSceneFromUrl(url: string):  {serverUrl: string, datasetUrl: string, sceneName: string} {
+  const pattern = /(.+\/services)\/3D-(.+)\/rest\/realspace\/scenes\/(.+)/
+  const result = url.match(pattern)
+  let servicesUrl = ''
+  let workspaceName = ''
+  let sceneName = ''
+  if (result) {
+    servicesUrl = result[1]
+    workspaceName = result[2]
+    sceneName = result[3]
+    const pat2 = /(.+)\.openrealspace$/
+    const result2 = sceneName.match(pat2)
+    if (result2) {
+      sceneName = result2[1]
+    }
+  }
+  return {
+    //http://192.168.11.117:8090/iserver/services/3D-pipe3D/rest/realspace
+    serverUrl: servicesUrl + `/3D-${workspaceName}/rest/realspace`,
+    //http://192.168.11.117:8090/iserver/services/data-DataSource2/rest/data/datasources/AR_SCENE/datasets/AR_SCENE'
+    datasetUrl: servicesUrl + `/data-${workspaceName}/rest/data/datasources/AR_SCENE/datasets/AR_SCENE`,
+    sceneName, //: 'pipe3D',
   }
 }
 

@@ -170,7 +170,7 @@ async function get3DData() {
   const items: any[] = [{
     key: 'open_online',
     image: require('../../../../../../assets/Mine/mine_my_import_online_light.png'),
-    title: getLanguage().Map_Main_Menu.OPEN_ONLINE_DATA,
+    title: getLanguage().Profile.ONLINE,
     action: () => {
       DialogUtils.showInputDailog({
         title: getLanguage().Profile.ENTER_SERVER_ADDRESS,

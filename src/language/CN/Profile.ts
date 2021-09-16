@@ -416,6 +416,9 @@ const Profile = {
 
   CHOOSE_COLOR: '选择颜色',
   SET_PROJECTION: '设置投影',
+
+  ONLINE_DATA_UNAVAILABLE: '在线资源不可访问',
+  ONLINE: '在线',
 }
 
 export { Profile }

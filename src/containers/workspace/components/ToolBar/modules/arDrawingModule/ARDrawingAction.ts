@@ -10,6 +10,7 @@ import {
   FileTools,
   ARLayer,
   SCoordination,
+  IServerService,
 } from 'imobile_for_reactnative'
 import { IVector3, Point3D } from "imobile_for_reactnative/types/data"
 import {
@@ -17,7 +18,7 @@ import {
   ToolbarType,
   ConstPath,
 } from '../../../../../../constants'
-import { Toast, AppProgress, DialogUtils } from '../../../../../../utils'
+import { Toast, AppProgress, DialogUtils, dataUtil } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
@@ -179,6 +180,18 @@ export async function addARScene(location?: IVector3) {
       try {
         let addLayerName: string
         if(path.indexOf('http') === 0) {
+          //double check
+          const isValidUrl = dataUtil.checkOnline3DServiceUrl(path) === ''
+          if (!isValidUrl) {
+            Toast.show(getLanguage().Profile.ONLINE_DATA_UNAVAILABLE)
+            return
+          }
+          const iserverSrv = new IServerService()
+          const info = await iserverSrv.getSceneInfo(path)
+          if('error' in info) {
+            Toast.show(getLanguage().Profile.ONLINE_DATA_UNAVAILABLE)
+            return
+          }
           const {serverUrl, sceneName, datasetUrl} = getOnlineSceneFromUrl(path)
           const co = new SCoordination('online')
           const recordinfo = await co.downloadRecordset(datasetUrl, 0 , 1)

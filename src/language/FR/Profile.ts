@@ -409,6 +409,9 @@ const Profile: typeof CN.Profile = {
 
   CHOOSE_COLOR: 'Sélectionner la couleur',
   SET_PROJECTION: 'Configurer la projection',
+
+  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
+  ONLINE: 'Online', //to be translated
 }
 
 export { Profile }

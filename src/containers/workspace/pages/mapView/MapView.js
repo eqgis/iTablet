@@ -573,23 +573,23 @@ export default class MapView extends React.Component {
             break
           }
         }
-        if (mediaData?.type === 'AI_CLASSIFY') {
-          NavigationService.navigate('ClassifyResultEditView', {
-            layerName: info.layerName,
-            geoID: info.geoID,
-            datasourceAlias: layerInfo.datasourceAlias,
-            datasetName: layerInfo.datasetName,
-            imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
-            mediaName: mediaData.mediaName,
-            classifyTime: info.modifiedDate,
-            description: info.description,
-          })
-        } else {
-          NavigationService.navigate('MediaEdit', {
-            layerInfo,
-            info,
-          })
-        }
+        // if (mediaData?.type === 'AI_CLASSIFY') {
+        //   NavigationService.navigate('ClassifyResultEditView', {
+        //     layerName: info.layerName,
+        //     geoID: info.geoID,
+        //     datasourceAlias: layerInfo.datasourceAlias,
+        //     datasetName: layerInfo.datasetName,
+        //     imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+        //     mediaName: mediaData.mediaName,
+        //     classifyTime: info.modifiedDate,
+        //     description: info.description,
+        //   })
+        // } else {
+        NavigationService.navigate('MediaEdit', {
+          layerInfo,
+          info,
+        })
+        // }
       })
 
       this.clearData()

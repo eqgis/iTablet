@@ -1130,30 +1130,30 @@ export default class LayerSelectionAttribute extends React.Component {
           }
         }
 
-        const mediaData = info.mediaData && JSON.parse(info.mediaData)
-        if (mediaData?.type === 'AI_CLASSIFY') {
-          NavigationService.navigate('ClassifyResultEditView', {
-            layerName: layerName,
-            geoID: geoID,
-            datasourceAlias: GLOBAL.currentLayer.datasourceAlias,
-            datasetName: GLOBAL.currentLayer.datasetName,
-            imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
-            mediaName: mediaData.mediaName,
-            classifyTime: info.modifiedDate,
-            description: info.description,
-            cb: refresh,
-          })
-        } else {
-          NavigationService.navigate('MediaEdit', {
-            info,
-            layerInfo: GLOBAL.currentLayer,
-            cb: refresh,
-            gocb:()=>{
-              NavigationService.goBack()
-              GLOBAL.HAVEATTRIBUTE = false
-            },
-          })
-        }
+        // const mediaData = info.mediaData && JSON.parse(info.mediaData)
+        // if (mediaData?.type === 'AI_CLASSIFY') {
+        //   NavigationService.navigate('ClassifyResultEditView', {
+        //     layerName: layerName,
+        //     geoID: geoID,
+        //     datasourceAlias: GLOBAL.currentLayer.datasourceAlias,
+        //     datasetName: GLOBAL.currentLayer.datasetName,
+        //     imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+        //     mediaName: mediaData.mediaName,
+        //     classifyTime: info.modifiedDate,
+        //     description: info.description,
+        //     cb: refresh,
+        //   })
+        // } else {
+        NavigationService.navigate('MediaEdit', {
+          info,
+          layerInfo: GLOBAL.currentLayer,
+          cb: refresh,
+          gocb:()=>{
+            NavigationService.goBack()
+            GLOBAL.HAVEATTRIBUTE = false
+          },
+        })
+        // }
       },
     ] : []
     const dismissTitles = ['MediaFilePaths', 'MediaServiceIds']

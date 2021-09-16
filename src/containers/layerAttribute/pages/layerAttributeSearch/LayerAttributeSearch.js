@@ -295,26 +295,26 @@ export default class LayerAttributeSearch extends React.Component {
           }
         }
 
-        const mediaData = info.mediaData && JSON.parse(info.mediaData)
-        if (mediaData?.type === 'AI_CLASSIFY') {
-          NavigationService.navigate('ClassifyResultEditView', {
-            layerName: layerName,
-            geoID: geoID,
-            datasourceAlias: this.props.currentLayer.datasourceAlias,
-            datasetName: this.props.currentLayer.datasetName,
-            imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
-            mediaName: mediaData.mediaName,
-            classifyTime: info.modifiedDate,
-            description: info.description,
-            cb: refresh,
-          })
-        } else {
-          NavigationService.navigate('MediaEdit', {
-            info,
-            layerInfo: this.props.currentLayer,
-            cb: refresh,
-          })
-        }
+        // const mediaData = info.mediaData && JSON.parse(info.mediaData)
+        // if (mediaData?.type === 'AI_CLASSIFY') {
+        //   NavigationService.navigate('ClassifyResultEditView', {
+        //     layerName: layerName,
+        //     geoID: geoID,
+        //     datasourceAlias: this.props.currentLayer.datasourceAlias,
+        //     datasetName: this.props.currentLayer.datasetName,
+        //     imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+        //     mediaName: mediaData.mediaName,
+        //     classifyTime: info.modifiedDate,
+        //     description: info.description,
+        //     cb: refresh,
+        //   })
+        // } else {
+        NavigationService.navigate('MediaEdit', {
+          info,
+          layerInfo: this.props.currentLayer,
+          cb: refresh,
+        })
+        // }
       },
     ]
     const dismissTitles = ['MediaFilePaths', 'MediaServiceIds']

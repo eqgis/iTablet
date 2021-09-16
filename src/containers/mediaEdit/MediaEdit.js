@@ -130,7 +130,7 @@ export default class MediaEdit extends React.Component {
    */
   checkMedia = async (paths = []) => {
     // 若没有在线图片,则不下载
-    if (this.info.mediaServiceIds.length === 0) return
+    if (this.info.mediaServiceIds?.length === 0 || !this.onlineServicesUtils) return
     // 图片数量和图片id数量保持一致
     // if (paths.length !== this.info.mediaServiceIds.length) return
     const URL = this.onlineServicesUtils.serverUrl + '/datas/%@/download'
@@ -650,6 +650,8 @@ export default class MediaEdit extends React.Component {
         return this.renderAIDetectContent(mediaInfoType)
       case 'AI_VEHICLE':
         return this.renderAIVehicleContent()
+      case 'AI_CLASSIFY':
+        return this.renderAIClassifyContent()
       default:
         return this.renderDefaultContent()
     }
@@ -955,6 +957,60 @@ export default class MediaEdit extends React.Component {
             }
           },
         })} */}
+      </>
+    )
+  }
+
+  /** AI目标识别内容 */
+  renderAIClassifyContent = () => {
+    let category = ''
+    if (this.state.mediaData?.recognitionInfos) {
+      for (const recognitionInfo of this.state.mediaData.recognitionInfos) {
+        category += (category ? ',' : '') + recognitionInfo.title
+      }
+    }
+    return (
+      <>
+        {this.renderItem({
+          title: getLanguage(this.props.language).AI.CATEGORY,
+          value: this.state.mediaName,
+          type: 'arrow',
+          action: () => {
+            NavigationService.navigate('InputPage', {
+              value: this.state.mediaName,
+              headerTitle: getLanguage(GLOBAL.language).Map_Label.NAME,
+              type: 'name',
+              cb: async value => {
+                this.setState({
+                  mediaName: value,
+                })
+                NavigationService.goBack('InputPage')
+              },
+            })
+          },
+        })}
+        {this.renderItem({
+          title: getLanguage(this.props.language).Map_Main_Menu.COLLECT_TIME,
+          value: this.state.modifiedDate,
+          type: 'arrow',
+        })}
+        {this.renderItem({
+          title: getLanguage(this.props.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_REMARKS,
+          value: this.state.description,
+          type: 'arrow',
+          action: () => {
+            NavigationService.navigate('InputPage', {
+              value: this.state.description,
+              headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_REMARKS,
+              cb: async value => {
+                this.setState({
+                  description: value,
+                })
+                NavigationService.goBack()
+              },
+            })
+          },
+        })}
       </>
     )
   }

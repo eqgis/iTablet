@@ -307,29 +307,46 @@ export default class ClassifyView extends React.Component {
           //     ':' +
           //     getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY,
           // )
-          if (
-            Platform.OS === 'android' &&
-            imagePath.toLowerCase().indexOf('content://') !== 0
-          ) {
-            imagePath = 'file://' + imagePath
-          }
-          NavigationService.navigate('ClassifyResultEditView', {
-            datasourceAlias,
-            datasetName,
-            imagePath,
-            mediaName,
-            classifyTime,
+          // if (
+          //   Platform.OS === 'android' &&
+          //   imagePath.toLowerCase().indexOf('content://') !== 0
+          // ) {
+          //   imagePath = 'file://' + imagePath
+          // }
+          NavigationService.navigate('MediaEdit', {
+            info: {
+              mediaFilePaths: [imagePath],
+              modifiedDate: classifyTime,
+              layerName: currentLayer.name,
+              datasourceName: datasourceAlias,
+              datasetName: datasetName,
+              mediaName: mediaFileName,
+              mediaData: mediaData,
+              description: '',
+            },
+            layerInfo: GLOBAL.currentLayer,
             cb: async () => {
-              // NavigationService.goBack()
-              // await this.clear()
-              // await this.startPreview()
-              //保存后回到地图
-              // NavigationService.goBack()
-              // NavigationService.goBack()
               this.clear()
-              // GLOBAL.Toolbar?.switchAr()
+              NavigationService.goBack('MediaEdit')
             },
           })
+          // NavigationService.navigate('ClassifyResultEditView', {
+          //   datasourceAlias,
+          //   datasetName,
+          //   imagePath,
+          //   mediaName,
+          //   classifyTime,
+          //   cb: async () => {
+          //     // NavigationService.goBack()
+          //     // await this.clear()
+          //     // await this.startPreview()
+          //     //保存后回到地图
+          //     // NavigationService.goBack()
+          //     // NavigationService.goBack()
+          //     this.clear()
+          //     // GLOBAL.Toolbar?.switchAr()
+          //   },
+          // })
         }
       } else {
         Toast.show(

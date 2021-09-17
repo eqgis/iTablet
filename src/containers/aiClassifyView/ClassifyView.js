@@ -264,13 +264,13 @@ export default class ClassifyView extends React.Component {
     (async function() {
       let currentLayer = this.props.currentLayer
       // let reg = /^Label_(.*)#$/
-      let isTaggingLayer = false
+      let saveAble = false
       if (currentLayer) {
         let layerType = LayerUtils.getLayerType(currentLayer)
-        isTaggingLayer = layerType === 'TAGGINGLAYER'
+        saveAble = layerType === 'TAGGINGLAYER' || layerType === 'CAD' || layerType === 'POINTLAYER'
         // && currentLayer.datasourceAlias.match(reg)
       }
-      if (isTaggingLayer) {
+      if (saveAble) {
         const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
         const datasetName = currentLayer.datasetName // 标注图层名称
         let targetPath = await FileTools.appendingHomeDirectory(
@@ -324,7 +324,7 @@ export default class ClassifyView extends React.Component {
             mediaData: mediaData,
             description: '',
           },
-          layerInfo: GLOBAL.currentLayer,
+          layerInfo: currentLayer,
           cb: async () => {
             this.clear()
             NavigationService.goBack('MediaEdit')
@@ -353,6 +353,8 @@ export default class ClassifyView extends React.Component {
       //     getLanguage(this.props.language).Prompt.PLEASE_SELECT_PLOT_LAYER,
       //   )
       //   this.props.navigation.navigate('LayerManager')
+      } else {
+        Toast.show(getLanguage(GLOBAL.language).AI.SUPPORT_POINT_AND_CAD)
       }
     }.bind(this)())
   }

@@ -181,9 +181,13 @@ export default class LayerManager_tolbar extends React.Component {
     !isGroup && headerData.concat(layerSettingCanSelect(this.props.language))
 
     if (
-      layerData.type === DatasetType.IMAGE ||
-      layerData.type === DatasetType.MBImage
+      type !== ConstToolType.SM_MAP_LAYER_BASE_DEFAULT &&
+      type !== ConstToolType.SM_MAP_LAYER_BASE_CHANGE && (
+        layerData.type === DatasetType.IMAGE ||
+        layerData.type === DatasetType.MBImage
+      )
     ) {
+      // 非底图影像图层
       data = layerImageSetting(this.props.language)
       data[0].headers = headerData
     } else {

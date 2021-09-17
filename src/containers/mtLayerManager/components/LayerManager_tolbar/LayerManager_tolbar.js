@@ -181,8 +181,9 @@ export default class LayerManager_tolbar extends React.Component {
     !isGroup && headerData.concat(layerSettingCanSelect(this.props.language))
 
     if (
-      layerData.type === DatasetType.IMAGE ||
-      layerData.type === DatasetType.MBImage
+      layerData&&
+      (layerData.type === DatasetType.IMAGE ||
+      layerData.type === DatasetType.MBImage)
     ) {
       data = layerImageSetting(this.props.language)
       data[0].headers = headerData
@@ -400,30 +401,33 @@ export default class LayerManager_tolbar extends React.Component {
   //更新菜单按钮状态
   updateMenuState = (data, layerData) => {
     data = data.deepClone()
-    let newState = { layerData }
-    if (data && data[0] && data[0].headers && GLOBAL.Type !== 'MAP_3D') {
-      let tempheader0 = layerData.isVisible
-        ? layerSettingCanVisit(this.props.language)
-        : layerSettingCanNotVisit(this.props.language)
-      let tempheader1 = layerData.isSelectable
-        ? layerSettingCanSelect(this.props.language)
-        : layerSettingCanNotSelect(this.props.language)
-      if (
-        layerData.type === 'layerGroup' ||
-        layerData.type === DatasetType.IMAGE ||
-        layerData.type === DatasetType.MBImage
-      ) {
-        tempheader1 = layerSettingCanNotSelect(this.props.language)
-      }
-      data[0].headers = tempheader0.concat(tempheader1)
-      if (GLOBAL.Type === 'COLLECTION') {
-        let tempheader2 = layerData.isEditable
-          ? layerSettingCanEdit(this.props.language)
-          : layerSettingCanNotEdit(this.props.language)
-        let tempheader3 = layerData.isSnapable
-          ? layerSettingCanSnap(this.props.language)
-          : layerSettingCanNotSnap(this.props.language)
-        data[0].headers = data[0].headers.concat(tempheader2, tempheader3)
+    let newState = {}
+    if(layerData){
+      newState = { layerData }
+      if (data && data[0] && data[0].headers && GLOBAL.Type !== 'MAP_3D') {
+        let tempheader0 = layerData.isVisible
+          ? layerSettingCanVisit(this.props.language)
+          : layerSettingCanNotVisit(this.props.language)
+        let tempheader1 = layerData.isSelectable
+          ? layerSettingCanSelect(this.props.language)
+          : layerSettingCanNotSelect(this.props.language)
+        if (
+          layerData.type === 'layerGroup' ||
+          layerData.type === DatasetType.IMAGE ||
+          layerData.type === DatasetType.MBImage
+        ) {
+          tempheader1 = layerSettingCanNotSelect(this.props.language)
+        }
+        data[0].headers = tempheader0.concat(tempheader1)
+        if (GLOBAL.Type === 'COLLECTION') {
+          let tempheader2 = layerData.isEditable
+            ? layerSettingCanEdit(this.props.language)
+            : layerSettingCanNotEdit(this.props.language)
+          let tempheader3 = layerData.isSnapable
+            ? layerSettingCanSnap(this.props.language)
+            : layerSettingCanNotSnap(this.props.language)
+          data[0].headers = data[0].headers.concat(tempheader2, tempheader3)
+        }
       }
     }
     newState.data = data

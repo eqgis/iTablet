@@ -162,7 +162,6 @@ export default class SaveListView extends React.Component<Props, State> {
       let result = await this.props.saveMap({ mapName: mapName, nModule: '', addition })
       return result
     } catch (e) {
-      GLOBAL.clickWait = false
       this._setLoading && this._setLoading(false)
     }
   }

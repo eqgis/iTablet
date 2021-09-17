@@ -93,11 +93,11 @@ class NavigationHeader extends Component {
 
   handleBack = (navigation, event) => {
     if (this.props.backAction && typeof this.props.backAction === 'function') {
-      this.props.backAction(event)
+      return this.props.backAction(event)
     } else if (!this.props.backAction && navigation) {
       if (this.clickable) {
         this.clickable = false
-        navigation.goBack(null)
+        return navigation.goBack(null)
       }
     }
   }
@@ -155,7 +155,7 @@ class NavigationHeader extends Component {
         imageStyle={[styles.backIcon, { width: imgSize, height: imgSize }]}
         activeOpacity={activeOpacity}
         onPress={event => {
-          this.handleBack(navigation, event)
+          return this.handleBack(navigation, event)
         }}
       />
     )

@@ -68,8 +68,8 @@ export default class InputDialog extends PureComponent<Props, State> {
     keyboardAppearance: 'dark',
     returnKeyType: 'done',
     placeholder: '',
-    confirmBtnTitle: '是',
-    cancelBtnTitle: '否',
+    confirmBtnTitle: '',
+    cancelBtnTitle: '',
     legalCheck: true,
     multiline: false,
   }
@@ -248,8 +248,8 @@ export default class InputDialog extends PureComponent<Props, State> {
         // opacityStyle={{ height: scaleSize(250) }}
         confirmAction={this.confirm}
         cancelAction={this.cancel}
-        confirmBtnTitle={this.props.confirmBtnTitle}
-        cancelBtnTitle={this.props.cancelBtnTitle}
+        confirmBtnTitle={this.props.confirmBtnTitle || getLanguage(GLOBAL.language).Prompt.YES}
+        cancelBtnTitle={this.props.cancelBtnTitle || getLanguage(GLOBAL.language).Prompt.NO}
         confirmBtnDisable={this.props.legalCheck && !this.state.isLegalName}
       >
         <KeyboardAvoidingView

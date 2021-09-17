@@ -19,7 +19,7 @@ export default class MapThemeConfig extends Module {
     super({
       key: MapThemeConfig.key,
       example: {
-        EN: [
+        DEFAULT: [
           {
             name: 'PrecipitationOfUSA',
             mapName: 'PrecipitationOfUSA',
@@ -33,7 +33,7 @@ export default class MapThemeConfig extends Module {
             mapName: 'LandUse_800m_Secondary',
           },
         ],
-        DEFAULT: [
+        CN: [
           {
             name: '湖北',
             mapName: 'LandBuild',

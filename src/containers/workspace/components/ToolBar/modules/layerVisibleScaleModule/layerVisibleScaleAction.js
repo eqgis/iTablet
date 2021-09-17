@@ -22,6 +22,15 @@ function pickerConfirm(item) {
   let { layerData, preScale } = data
   let min = item[0].selectedItem.value
   let max = item[1].selectedItem.value
+  if(data.selectmin){
+    min = data.selectmin
+  }
+  if(data.min){
+    min = data.min
+  }
+  if(data.max){
+    max = data.max
+  }
   if (min !== 0 && max !== 0 && min <= max) {
     //最大比例尺必须大于最小比例尺
     Toast.show(getLanguage(GLOBAL.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
@@ -35,6 +44,7 @@ function pickerConfirm(item) {
     _params.existFullMap()
     SMap.setMapScale(1 / preScale)
     // NavigationService.navigate('LayerManager')
+    ToolbarModule.addData({min:false,max:false,selectmin:false })
   }
 }
 

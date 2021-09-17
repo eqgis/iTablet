@@ -5,6 +5,7 @@ import { Height } from '../../constants'
 import { scaleSize } from '../../utils'
 import { size, color } from '../../styles'
 import { getLanguage } from '../../language'
+import ToolbarModule from '../../containers/workspace/components/ToolBar/modules/ToolbarModule'
 
 const styles = StyleSheet.create({
   btnsView: {
@@ -188,9 +189,16 @@ export default class MultiPicker extends React.Component {
               : ''
           }
           onScroll={item => {
-            if (this.update) return
-            let index = this._getFirstDataIndex()
-            this.props.popData[index].selectedItem = item
+            try{
+              if (this.update) return
+              let index = this._getFirstDataIndex()
+              this.props.popData[index].selectedItem = item
+              if(index === 0){
+                ToolbarModule.addData({ selectmin: item.value })
+              }
+            }catch(e){
+              //
+            }
           }}
           onScrollEnd={this._scrollEnd}
           onDragEnd={this._scrollEnd}

@@ -76,6 +76,8 @@ import {
   setMapArMappingGuide,
 } from './src/redux/models/ar'
 
+import fs from 'react-native-fs'
+
 import LaunchGuidePage from './src/components/guide'
 import LaunchGuide from './configs/guide'
 // import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
@@ -263,8 +265,17 @@ class AppRoot extends Component {
       }
       await AppInfo.setUserName(userName)
       await this.getUserApplets(userName)
+      this.createXmlTemplate()
     } catch (e) {
 
+    }
+  }
+
+  createXmlTemplate = async() =>{
+    const fileDir = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.Module.XmlTemplate)
+    let exists = await fs.exists(fileDir)
+    if (!exists) {
+      await fs.mkdir(fileDir)
     }
   }
 

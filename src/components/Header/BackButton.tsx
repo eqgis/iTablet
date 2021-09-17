@@ -16,13 +16,31 @@ interface Props {
   activeOpacity?: number,
   image?: any,
   imageStyle?: any,
-  onPress: (event: GestureResponderEvent) => void,
+  /** 返回一个值用来判断方法何时执行完毕 */
+  onPress: (event: GestureResponderEvent) => any,
 }
 
 class BackButton extends PureComponent<Props> {
 
   static defaultProps = {
     image: getPublicAssets().common.icon_back,
+  }
+
+  /** 执行返回方法时防止重复点击 */
+  inAction: boolean = false
+
+  onPress = (event: GestureResponderEvent) => {
+    if(this.props.onPress) {
+      if(!this.inAction) {
+        this.inAction = true
+        const value = this.props.onPress(event)
+        Promise.resolve(value).then(() => {
+          this.inAction = false
+        }).catch(() => {
+          this.inAction = false
+        })
+      }
+    }
   }
 
   render() {
@@ -37,9 +55,7 @@ class BackButton extends PureComponent<Props> {
           alignContent: 'center',
         }, this.props.style]}
         activeOpacity={this.props.activeOpacity}
-        onPress={event => {
-          this.props.onPress && this.props.onPress(event)
-        }}
+        onPress={this.onPress}
       >
         {this.props.count ? <Text style={styles.count}>({this.props.count})</Text> : null}
         <View

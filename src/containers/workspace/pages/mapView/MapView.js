@@ -380,7 +380,6 @@ export default class MapView extends React.Component {
       currentDataset: {}, //当前使用的数据集
     }
     this.floorHiddenListener = null
-    GLOBAL.clickWait = false // 防止重复点击，该页面用于关闭地图方法
     CoworkInfo.closeMapHandle = this.back
 
     this._panResponder = PanResponder.create({
@@ -951,7 +950,6 @@ export default class MapView extends React.Component {
     if (GLOBAL.Type === ChunkType.MAP_AR){
       Dimensions.removeEventListener('change', this.onChange)
     }
-    GLOBAL.clickWait = false // MapView Unmount后将GLOBAL.clickWait设置为false，防止多次返回或返回到首页后闪现保存提示框
     SMap.setCurrentModule(0)
     if (
       GLOBAL.Type === ChunkType.MAP_AR ||
@@ -1464,7 +1462,6 @@ export default class MapView extends React.Component {
         return false
       }
     } catch (e) {
-      GLOBAL.clickWait = false
       this.setLoading(false)
     }
   }
@@ -1491,9 +1488,7 @@ export default class MapView extends React.Component {
       NavigationService.goBack(baskFrom)
 
       this.closeSample()
-      // GLOBAL.clickWait = false
     } catch (e) {
-      GLOBAL.clickWait = false
       this.setLoading(false)
     }
   }
@@ -1519,7 +1514,7 @@ export default class MapView extends React.Component {
       }
       await this.props.closeMap()
     } catch (e) {
-      GLOBAL.clickWait = false
+      //
     }
   }
 
@@ -1630,8 +1625,6 @@ export default class MapView extends React.Component {
         }
       }
 
-      if (GLOBAL.clickWait) return true
-      GLOBAL.clickWait = true
       let result = await SMap.mapIsModified() // 是否保存普通地图
       const needSaveARMap = GLOBAL.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
       if ((result || needSaveARMap) && !this.isExample) {
@@ -1643,7 +1636,6 @@ export default class MapView extends React.Component {
           if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()
           }
-          GLOBAL.clickWait = false
           await this.closeMapHandler(params?.baskFrom)
         })
       } else {
@@ -1657,13 +1649,11 @@ export default class MapView extends React.Component {
           }
           await this.closeMapHandler(params?.baskFrom)
         } catch (e) {
-          GLOBAL.clickWait = false
           this.setLoading(false)
         }
       }
       return true
     } catch (e) {
-      GLOBAL.clickWait = false
       return true
     }
   }
@@ -4246,7 +4236,7 @@ export default class MapView extends React.Component {
             return maps
           }}
           cancel={() => {
-            GLOBAL.clickWait = false
+            //
           }}
           saveMap={this.props.saveMap}
           saveARMap={this.props.saveARMap}
@@ -4261,7 +4251,6 @@ export default class MapView extends React.Component {
         device={this.props.device}
         cancel={() => {
           // this.backAction = null
-          GLOBAL.clickWait = false
         }}
       />
     )
@@ -4829,7 +4818,7 @@ export default class MapView extends React.Component {
               x: event.nativeEvent.pageX,
               y: event.nativeEvent.pageY,
             }
-            this.back()
+            return this.back()
           },
           type: 'fix',
           headerCenter: this.renderSearchBar(),

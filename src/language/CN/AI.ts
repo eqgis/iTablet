@@ -14,6 +14,8 @@ const AI = {
   VIOLATION_INFO: '违章信息',
   LAW_ENFORCER: '执法人员',
 
+  SUPPORT_POINT_AND_CAD: '只支持点图层和CAD图层',
+
   ALL_WRONG: '以上结果都不对',
 }
 

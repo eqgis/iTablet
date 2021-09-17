@@ -14,17 +14,23 @@ import { SMediaCollector, SAIDetectView, SMap } from 'imobile_for_reactnative'
 
 const styles = StyleSheet.create({
   headerBack: {
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: scaleSize(8),
-    width: scaleSize(60),
-    height: scaleSize(60),
+    width: scaleSize(80),
+    height: scaleSize(80),
+    marginTop: scaleSize(20),
+    marginLeft: scaleSize(40),
   },
   headerRightBtn: {
-    width: scaleSize(60),
-    height: scaleSize(60),
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: scaleSize(80),
+    height: scaleSize(80),
     borderRadius: scaleSize(8),
     backgroundColor: color.white,
+    marginTop: scaleSize(20),
   },
   overlay: {
     flex: 1,
@@ -121,7 +127,7 @@ function getHeaderData(type: string) {
       action: AiAggregateActions.setting,
       size: 'large',
       image: getThemeAssets().toolbar.icon_toolbar_setting,
-      style: styles.headerRightBtn,
+      style: [styles.headerRightBtn, {marginRight: scaleSize(30)}],
     }],
   }
   return headerData

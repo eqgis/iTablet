@@ -16,6 +16,8 @@ const AI: typeof CN.AI = { // need to translate
   VIOLATION_INFO: 'Violation Information',
   LAW_ENFORCER: 'Law Enforcer',
 
+  SUPPORT_POINT_AND_CAD: 'Only dot layers and CAD layers are supported', // need to translate
+
   ALL_WRONG: 'None of the above is true',
 }
 

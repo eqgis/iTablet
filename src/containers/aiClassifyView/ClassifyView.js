@@ -752,7 +752,7 @@ export default class ClassifyView extends React.Component {
       <MTBtn
         key={'backTo'}
         image={getPublicAssets().common.icon_back}
-        style={styles.headerBtn}
+        style={[styles.headerBtn, {marginLeft: scaleSize(40)}]}
         imageStyle={styles.headerImgBtn}
         onPress={async() => {
           NavigationService.goBack()
@@ -778,7 +778,7 @@ export default class ClassifyView extends React.Component {
           headerRight: [
             <MTBtn
               key={'settings'}
-              style={styles.headerBtn}
+              style={[styles.headerBtn, {marginRight: scaleSize(30)}]}
               image={getThemeAssets().toolbar.icon_toolbar_setting}
               imageStyle={styles.headerImgBtn}
               onPress={() => this.showClassifySettingsView()}

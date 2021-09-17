@@ -31,8 +31,8 @@ class BackButton extends PureComponent<Props> {
         accessible={true}
         accessibilityLabel={'返回'}
         style={[{
-          width: scaleSize(60),
-          height: scaleSize(60),
+          width: scaleSize(80),
+          height: scaleSize(80),
           justifyContent: 'center',
           alignContent: 'center',
         }, this.props.style]}

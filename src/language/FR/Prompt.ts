@@ -191,6 +191,7 @@ const Prompt: typeof CN.Prompt = {
   INPUT_LENGTH: 'Veuillez saisir la longueur maximale',
   DEFAULT_VALUE_EROROR: "Erreur de saisie de la valeur par défaut",
   SELECT_REQUIRED: 'Sélection requise',
+  DEFAULT_NAMING_SS: 'The name cannot start with SS_', // need to translate
 
   CLIPPING: 'Coupure',
   CLIPPED_SUCCESS: 'Coupé avec succès',

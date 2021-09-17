@@ -191,6 +191,7 @@ const Prompt: typeof CN.Prompt = {
   INPUT_LENGTH: 'أدخل أقصى طول',
   DEFAULT_VALUE_EROROR: 'القيمة الافتراضية خطأ في الإدخال',
   SELECT_REQUIRED: 'الرجاء اختيار البند المطلوب',
+  DEFAULT_NAMING_SS: 'The name cannot start with SS_', // need to translate
 
   CLIPPING: 'جارى القطع',
   CLIPPED_SUCCESS: 'تم القطع بنجاح',

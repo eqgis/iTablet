@@ -573,23 +573,23 @@ export default class MapView extends React.Component {
             break
           }
         }
-        if (mediaData?.type === 'AI_CLASSIFY') {
-          NavigationService.navigate('ClassifyResultEditView', {
-            layerName: info.layerName,
-            geoID: info.geoID,
-            datasourceAlias: layerInfo.datasourceAlias,
-            datasetName: layerInfo.datasetName,
-            imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
-            mediaName: mediaData.mediaName,
-            classifyTime: info.modifiedDate,
-            description: info.description,
-          })
-        } else {
-          NavigationService.navigate('MediaEdit', {
-            layerInfo,
-            info,
-          })
-        }
+        // if (mediaData?.type === 'AI_CLASSIFY') {
+        //   NavigationService.navigate('ClassifyResultEditView', {
+        //     layerName: info.layerName,
+        //     geoID: info.geoID,
+        //     datasourceAlias: layerInfo.datasourceAlias,
+        //     datasetName: layerInfo.datasetName,
+        //     imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+        //     mediaName: mediaData.mediaName,
+        //     classifyTime: info.modifiedDate,
+        //     description: info.description,
+        //   })
+        // } else {
+        NavigationService.navigate('MediaEdit', {
+          layerInfo,
+          info,
+        })
+        // }
       })
 
       this.clearData()
@@ -2898,7 +2898,7 @@ export default class MapView extends React.Component {
               ? getThemeAssets().edit.icon_undo
               : getThemeAssets().edit.icon_undo_ash
           }
-          imageStyle={styles.headerBtn}
+          imageStyle={styles.headerBtnImg}
           onPress={() => {
             if (!this.state.canBeUndo) return
               ; (async function () {
@@ -2923,7 +2923,7 @@ export default class MapView extends React.Component {
               ? getThemeAssets().edit.icon_redo
               : getThemeAssets().edit.icon_redo_ash
           }
-          imageStyle={styles.headerBtn}
+          imageStyle={styles.headerBtnImg}
           onPress={() => {
             if (!this.state.canBeRedo) return
               ; (async function () {
@@ -2942,7 +2942,7 @@ export default class MapView extends React.Component {
         {/*title={'还原'}*/}
         {/*style={styles.button}*/}
         {/*image={getThemeAssets().publicAssets.icon_revert}*/}
-        {/*imageStyle={styles.headerBtn}*/}
+        {/*imageStyle={styles.headerBtnImg}*/}
         {/*onPress={() => SMap.addMapHistory()}*/}
         {/*/>*/}
         <View style={styles.button} />
@@ -3069,6 +3069,7 @@ export default class MapView extends React.Component {
       return (
         <MTBtn
           key={'more'}
+          style={styles.headerBtn}
           imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
           image={getPublicAssets().common.icon_nav_imove}
           onPress={async () => {
@@ -3229,6 +3230,7 @@ export default class MapView extends React.Component {
               >
                 <MTBtn
                   key={info.key}
+                  style={styles.headerBtn}
                   imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
                   image={info.image}
                   onPress={info.action}
@@ -3259,6 +3261,7 @@ export default class MapView extends React.Component {
             buttons.push(
               <MTBtn
                 key={info.key}
+                style={styles.headerBtn}
                 imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
                 image={info.image}
                 onPress={info.action}
@@ -3271,6 +3274,7 @@ export default class MapView extends React.Component {
       buttons.push(
         <MTBtn
           key={'CoworkMember'}
+          style={styles.headerBtn}
           imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
           image={getPublicAssets().common.icon_nav_imove}
           onPress={async () => {
@@ -3282,7 +3286,7 @@ export default class MapView extends React.Component {
     return (
       <View
         style={{
-          width: scaleSize(itemWidth * buttons.length),
+          // width: scaleSize(itemWidth * buttons.length),
           flexDirection: 'row',
           justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
           alignItems: 'center',

@@ -191,6 +191,7 @@ const Prompt: typeof CN.Prompt = {
   INPUT_LENGTH: 'Lütfen maksimum uzunluğu girin',
   DEFAULT_VALUE_EROROR: 'Varsayılan değer giriş hatası',
   SELECT_REQUIRED: 'Lütfen gerekli olanları seçin',
+  DEFAULT_NAMING_SS: 'The name cannot start with SS_', // need to translate
 
   CLIPPING: 'Kırpılıyor',
   CLIPPED_SUCCESS: 'Başarıyla Kırpıldı',

@@ -131,11 +131,14 @@ function _headerLeft(type: string) {
         key={'backTo'}
         image={getPublicAssets().common.icon_back}
         style={{
-          alignItems: 'flex-start',
+          alignItems: 'center',
+          justifyContent: 'center',
           backgroundColor: 'white',
           borderRadius: scaleSize(8),
-          width: scaleSize(60),
-          height: scaleSize(60),
+          width: scaleSize(80),
+          height: scaleSize(80),
+          marginTop: scaleSize(20),
+          marginLeft: scaleSize(40),
         }}
         imageStyle={{
           width: imgSize,

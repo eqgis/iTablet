@@ -18,7 +18,7 @@ export default class MapEditConfig extends Module {
     super({
       key: MapEditConfig.key,
       example: {
-        EN: [
+        DEFAULT: [
           {
             name: 'PrecipitationOfUSA',
             mapName: 'LosAngeles',
@@ -32,7 +32,7 @@ export default class MapEditConfig extends Module {
             mapName: 'LosAngles',
           },
         ],
-        DEFAULT: [
+        CN: [
           {
             name: '湖南',
             mapName: '湖南',

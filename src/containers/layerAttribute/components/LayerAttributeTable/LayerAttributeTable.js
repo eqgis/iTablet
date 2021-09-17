@@ -340,22 +340,23 @@ export default class LayerAttributeTable extends React.Component {
    **/
   setSelected = (index, isToggle = true) => {
     if (index === undefined || isNaN(index) || index < 0) return
+    let _value = this.state.tableData?.[0]?.data?.[index]?.[0]?.value
     if (
       isToggle ||
-      !this.state.selected.get(this.state.tableData[0].data[index][0].value)
+      !this.state.selected.get(_value)
     ) {
       this.setState(state => {
         // copy the map rather than modifying state.
         const selected = new Map(state.selected)
         const target = selected.get(
-          this.state.tableData[0].data[index][0].value,
+          _value,
         )
         if (!this.props.multiSelect && !target) {
           // 多选或者点击已选行
           selected.clear()
         }
 
-        selected.set(this.state.tableData[0].data[index][0].value, !target) // toggle
+        selected.set(_value, !target) // toggle
         return { selected }
       })
     }

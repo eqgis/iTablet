@@ -10,9 +10,10 @@ export default StyleSheet.create({
     backgroundColor: 'black',
   },
   headerBtn: {
+    marginTop: scaleSize(20),
     borderRadius: scaleSize(8),
-    width: scaleSize(60),
-    height: scaleSize(60),
+    width: scaleSize(80),
+    height: scaleSize(80),
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',

@@ -18,7 +18,7 @@ export default class MapCollectionConfig extends Module {
     super({
       key: MapCollectionConfig.key,
       example: {
-        DEFAULT: [
+        CN: [
           {
             name: '地理国情普查',
             mapName: '国情普查_示范数据',
@@ -32,7 +32,7 @@ export default class MapCollectionConfig extends Module {
           name: 'KibanchizuKihonMinato',
           mapName: '基盤地図情報_基本項目',
         },
-        EN: {
+        DEFAULT: {
           name: 'LandCover',
           mapName: 'LandCover',
         },

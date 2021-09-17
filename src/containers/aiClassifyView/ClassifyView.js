@@ -289,53 +289,70 @@ export default class ClassifyView extends React.Component {
           mediaFileName = timeStr.toString()
           classifyTime = DateUtil.formatDate(timeStr, 'yyyy-MM-dd hh:mm:ss')
         }
-        let imagePath = targetPath + mediaFileName + '.jpg'
+        // let imagePath = targetPath + mediaFileName + '.jpg'
         const mediaData = JSON.stringify({
           type: 'AI_CLASSIFY',
           mediaName: mediaFileName,
         })
-        let result = await SMediaCollector.addAIClassifyMedia({
-          layerName: currentLayer.name,
-          datasourceName: datasourceAlias,
-          datasetName: datasetName,
-          mediaName: mediaFileName,
-          mediaData: mediaData,
+        // let result = await SMediaCollector.addAIClassifyMedia({
+        //   layerName: currentLayer.name,
+        //   datasourceName: datasourceAlias,
+        //   datasetName: datasetName,
+        //   mediaName: mediaFileName,
+        //   mediaData: mediaData,
+        // })
+        // if (result) {
+        // Toast.show(
+        //   madiaName +
+        //     ':' +
+        //     getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY,
+        // )
+        // if (
+        //   Platform.OS === 'android' &&
+        //   imagePath.toLowerCase().indexOf('content://') !== 0
+        // ) {
+        //   imagePath = 'file://' + imagePath
+        // }
+        NavigationService.navigate('MediaEdit', {
+          info: {
+            mediaFilePaths: [this.state.imgUri],
+            modifiedDate: classifyTime,
+            layerName: currentLayer.name,
+            datasourceName: datasourceAlias,
+            datasetName: datasetName,
+            mediaName: mediaFileName,
+            mediaData: mediaData,
+            description: '',
+          },
+          layerInfo: GLOBAL.currentLayer,
+          cb: async () => {
+            this.clear()
+            NavigationService.goBack('MediaEdit')
+          },
         })
-        if (result) {
-          // Toast.show(
-          //   madiaName +
-          //     ':' +
-          //     getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY,
-          // )
-          if (
-            Platform.OS === 'android' &&
-            imagePath.toLowerCase().indexOf('content://') !== 0
-          ) {
-            imagePath = 'file://' + imagePath
-          }
-          NavigationService.navigate('ClassifyResultEditView', {
-            datasourceAlias,
-            datasetName,
-            imagePath,
-            mediaName,
-            classifyTime,
-            cb: async () => {
-              // NavigationService.goBack()
-              // await this.clear()
-              // await this.startPreview()
-              //保存后回到地图
-              // NavigationService.goBack()
-              // NavigationService.goBack()
-              this.clear()
-              // GLOBAL.Toolbar?.switchAr()
-            },
-          })
-        }
-      } else {
-        Toast.show(
-          getLanguage(this.props.language).Prompt.PLEASE_SELECT_PLOT_LAYER,
-        )
-        this.props.navigation.navigate('LayerManager')
+        // NavigationService.navigate('ClassifyResultEditView', {
+        //   datasourceAlias,
+        //   datasetName,
+        //   imagePath,
+        //   mediaName,
+        //   classifyTime,
+        //   cb: async () => {
+        //     // NavigationService.goBack()
+        //     // await this.clear()
+        //     // await this.startPreview()
+        //     //保存后回到地图
+        //     // NavigationService.goBack()
+        //     // NavigationService.goBack()
+        //     this.clear()
+        //     // GLOBAL.Toolbar?.switchAr()
+        //   },
+        // })
+      //   }
+      // } else {
+      //   Toast.show(
+      //     getLanguage(this.props.language).Prompt.PLEASE_SELECT_PLOT_LAYER,
+      //   )
+      //   this.props.navigation.navigate('LayerManager')
       }
     }.bind(this)())
   }
@@ -735,7 +752,7 @@ export default class ClassifyView extends React.Component {
       <MTBtn
         key={'backTo'}
         image={getPublicAssets().common.icon_back}
-        style={styles.headerBtn}
+        style={[styles.headerBtn, {marginLeft: scaleSize(40)}]}
         imageStyle={styles.headerImgBtn}
         onPress={async() => {
           NavigationService.goBack()
@@ -761,7 +778,7 @@ export default class ClassifyView extends React.Component {
           headerRight: [
             <MTBtn
               key={'settings'}
-              style={styles.headerBtn}
+              style={[styles.headerBtn, {marginRight: scaleSize(30)}]}
               image={getThemeAssets().toolbar.icon_toolbar_setting}
               imageStyle={styles.headerImgBtn}
               onPress={() => this.showClassifySettingsView()}

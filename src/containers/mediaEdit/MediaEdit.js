@@ -406,7 +406,7 @@ export default class MediaEdit extends React.Component {
         this.cb(modifiedData)
       }
       if (result) {
-        if (this.info.geoID) {
+        if (this.info.geoID && !isDelete) {
           let info = await SMediaCollector.getMediaInfo(this.info.layerName, this.info.geoID)
 
           this.showInfo = {
@@ -436,6 +436,7 @@ export default class MediaEdit extends React.Component {
           : getLanguage(this.props.language).Prompt.SAVE_FAILED,
       )
     } catch (e) {
+      this.container && this.container.setLoading(false)
       Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
     }
   }

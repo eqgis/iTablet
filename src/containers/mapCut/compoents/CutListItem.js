@@ -146,7 +146,7 @@ export default class CutListItem extends PureComponent {
                 : CheckStatus.UN_CHECK,
               action: this.onSelect,
             })}
-            <TextInput
+            {/* <TextInput
               ref={ref => (this.input = ref)}
               underlineColorAndroid={'transparent'}
               style={styles.dsItemInput}
@@ -160,8 +160,8 @@ export default class CutListItem extends PureComponent {
                 // this.setState({ inputValue: text })
               }}
               onSubmitEditing={this.changeCaption}
-            />
-            {/*<Text style={styles.content}>{this.props.caption || this.props.data.caption}</Text>*/}
+            /> */}
+            <Text style={styles.content}>{this.props.caption || this.props.data.caption+ ''}</Text>
           </View>
           <TouchableOpacity
             onPress={this.showDatasource}

@@ -314,8 +314,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{GLOBAL.language === 'CN' ?
-            getLanguage(GLOBAL.language).Profile.X_COORDINATE : 'X'}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
           <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={longitude}
             onChangeText={text => {
@@ -329,8 +328,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         </View>
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{GLOBAL.language === 'CN' ?
-            getLanguage(GLOBAL.language).Profile.Y_COORDINATE : 'Y'}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
           <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={latitude}
             onChangeText={text => {

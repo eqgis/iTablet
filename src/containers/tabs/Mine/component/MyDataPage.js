@@ -770,7 +770,7 @@ export default class MyDataPage extends Component {
     if (this.getItemPopupData().length > 0) {
       return this.getItemPopupData()
     } else {
-      if(this.showMode === 'tap'){
+      if(this.showMode === 'tap' || (this.itemInfo&&this.itemInfo.section.title===getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE)){
         return this.getCustomItemPopupData().concat(this.getCommonItemPopupData().splice(1,1))
       }else{
         return this.getCustomItemPopupData().concat(this.getCommonItemPopupData())

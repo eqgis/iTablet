@@ -195,6 +195,8 @@ export default class MultiPicker extends React.Component {
               this.props.popData[index].selectedItem = item
               if(index === 0){
                 ToolbarModule.addData({ selectmin: item.value })
+              }else{
+                ToolbarModule.addData({ selectmax: item.value })
               }
             }catch(e){
               //

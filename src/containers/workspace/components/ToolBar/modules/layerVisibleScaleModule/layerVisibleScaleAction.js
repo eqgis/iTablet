@@ -25,6 +25,9 @@ function pickerConfirm(item) {
   if(data.selectmin){
     min = data.selectmin
   }
+  if(data.selectmax){
+    max = data.selectmax
+  }
   if(data.min){
     min = data.min
   }
@@ -44,7 +47,7 @@ function pickerConfirm(item) {
     _params.existFullMap()
     SMap.setMapScale(1 / preScale)
     // NavigationService.navigate('LayerManager')
-    ToolbarModule.addData({min:false,max:false,selectmin:false })
+    ToolbarModule.addData({min:false,max:false,selectmin:false ,selectmax:false })
   }
 }
 

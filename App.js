@@ -268,6 +268,7 @@ class AppRoot extends Component {
     if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)) {
       this.initDirectories(this.props.user.currentUser.userName)
       this.getUserApplets(this.props.user.currentUser.userName)
+      this.reCircleLogin()
     }
   }
 
@@ -508,7 +509,18 @@ class AppRoot extends Component {
         clearInterval(this.loginTimer)
         this.loginTimer = undefined
       }
-      this.loginTimer = setInterval(this.loginOnline, 1000 * 60 *10)
+      this.loginTimer = setInterval(this.loginOnline, 60000)
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+      if (this.loginTimer !== undefined) {
+        clearInterval(this.loginTimer)
+        this.loginTimer = undefined
+      }
+      this.loginTimer = setInterval(() => {
+        let url = this.props.user.currentUser.serverUrl
+        let userName = this.props.user.currentUser.userName
+        let password = this.props.user.currentUser.password
+        SIPortalService.login(url, userName, password, true)
+      }, 60000)
     }
   }
 
@@ -739,10 +751,10 @@ class AppRoot extends Component {
 
   handleStateChange = async appState => {
     if (appState === 'active') {
-      if (UserType.isOnlineUser(this.props.user.currentUser)) {
-        this.login(true)
-        this.reCircleLogin()
-      }
+      // if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      this.login(true)
+      this.reCircleLogin()
+      // }
       // if (!this.props.nav.key && this.props.map.currentMap.name) {
       //   // (async function() {
       //   try {

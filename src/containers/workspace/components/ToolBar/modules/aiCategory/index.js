@@ -20,7 +20,7 @@ class AICategoryModule extends FunctionModule {
     let actionAble = false
     if (params.currentLayer) {
       let layerType = LayerUtils.getLayerType(params.currentLayer)
-      actionAble = layerType === 'TAGGINGLAYER' || layerType === 'CAD' || layerType === 'POINTLAYER'
+      actionAble = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
     }
     if (!actionAble) {
       Toast.show(getLanguage(GLOBAL.language).AI.SUPPORT_POINT_AND_CAD)

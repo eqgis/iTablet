@@ -225,11 +225,7 @@ class AppRoot extends Component {
     AppState.addEventListener('change', this.handleStateChange)
     Platform.OS === 'android' &&
       BackHandler.addEventListener('hardwareBackPress', this.back)
-    if (Platform.OS === 'android') {
-      this.requestPermission()
-    } else {
-      this.init()
-    }
+
   }
 
   initGlobal = () => {
@@ -263,6 +259,10 @@ class AppRoot extends Component {
     }
   }
 
+  componentDidMount() {
+    Platform.OS === 'android' && SplashScreen.hide()
+  }
+
   componentDidUpdate(prevProps) {
     // 切换用户，重新加载用户配置文件
     if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)) {
@@ -275,7 +275,29 @@ class AppRoot extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
   }
 
+  onGuidePageEnd = () => {
+    this.setState({
+      showLaunchGuide: false,
+    })
+    if(this.props.isAgreeToProtocol) {
+      this.prevLoad()
+    } else {
+      this.protocolDialog?.setVisible(true)
+    }
+  }
+
+  prevLoad = async () => {
+    if (Platform.OS === 'android') {
+      this.requestPermission()
+    } else {
+      GLOBAL.Loading.setLoading(true, 'Loading')
+      await this.init()
+      GLOBAL.Loading.setLoading(false)
+    }
+  }
+
   requestPermission = async () => {
+    GLOBAL.Loading.setLoading(true, 'Loading')
     const results = await PermissionsAndroid.requestMultiple([
       'android.permission.READ_PHONE_STATE',
       'android.permission.ACCESS_FINE_LOCATION',
@@ -291,13 +313,17 @@ class AppRoot extends Component {
     //申请 android 11 读写权限
     let permisson11 = await AppUtils.requestStoragePermissionR()
     if (isAllGranted && permisson11) {
-      SMap.setPermisson(true)
-      this.init()
+      await SMap.setPermisson(true)
+      await this.init()
+      GLOBAL.Loading.setLoading(false)
     } else {
       GLOBAL.SimpleDialog.set({
         text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
         cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
-        cancelAction: /*AppUtils.AppExit*/this.init(),
+        cancelAction: /*AppUtils.AppExit*/ async () =>{
+          await this.init()
+          GLOBAL.Loading.setLoading(false)
+        },
         confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
         confirmAction: this.requestPermission,
       })
@@ -317,9 +343,11 @@ class AppRoot extends Component {
     // 显示界面，之前的为预加载
     this.setState({ isInit: true }, () => {
       this.login()
+      //开启新手引导 add jiakai
+      this.props.setGuideShow(true)
+      this.props.setVersion(GLOBAL.GUIDE_VERSION)
     })
 
-    Platform.OS === 'android' && SplashScreen.hide()
   }
 
   initEnvironment = async () => {
@@ -915,9 +943,7 @@ class AppRoot extends Component {
         confirm={isAgree => {
           this.props.setAgreeToProtocol && this.props.setAgreeToProtocol(isAgree)
           this.protocolDialog.setVisible(false)
-          //开启新手引导 add jiakai
-          this.props.setGuideShow(true)
-          this.props.setVersion(GLOBAL.GUIDE_VERSION)
+          this.prevLoad()
         }}
         cancel={() =>{
           this.protocolDialog.setVisible(false)
@@ -1010,7 +1036,6 @@ class AppRoot extends Component {
 
   renderGuidePage = () => {
     const guidePages = LaunchGuide.getGuide(this.props.language)
-    if (!this.state.showLaunchGuide) return null
     return (
       <LaunchGuidePage
         ref={ref => this.guidePage = ref}
@@ -1018,11 +1043,7 @@ class AppRoot extends Component {
         data={guidePages}
         device={this.props.device}
         getCustomGuide={LaunchGuide.getCustomGuide}
-        dismissCallback={() => {
-          this.setState({
-            showLaunchGuide: false,
-          })
-        }}
+        dismissCallback={this.onGuidePageEnd}
       />
     )
   }
@@ -1046,46 +1067,47 @@ class AppRoot extends Component {
     )
   }
 
+  renderRoot = () => {
+    return (this.state.isInit && (
+      <View style={{ flex: 1 }}>
+        <View style={[
+          { flex: 1 },
+          screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
+          {
+            backgroundColor: '#201F20',
+          },
+          {
+            paddingTop:
+              screen.isIphoneX() &&
+                this.props.device.orientation.indexOf('PORTRAIT') >= 0
+                ? screen.X_TOP
+                : 0,
+            paddingBottom: screen.getIphonePaddingBottom(),
+            ...screen.getIphonePaddingHorizontal(
+              this.props.device.orientation,
+            ),
+          },
+        ]}>
+          <RootNavigator
+            appConfig={this.props.appConfig}
+            setModules={this.props.setModules}
+            setNav={this.props.setNav}
+          />
+        </View>
+      </View>
+    ))
+  }
+
   render() {
     return (
       <>
-        {!this.state.showLaunchGuide && (!this.state.isInit ? (
-          <Loading info="Loading" />
-        ) : (
-          <View style={{ flex: 1 }}>
-            <View style={[
-              { flex: 1 },
-              screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
-              {
-                backgroundColor: '#201F20',
-              },
-              {
-                paddingTop:
-                  screen.isIphoneX() &&
-                    this.props.device.orientation.indexOf('PORTRAIT') >= 0
-                    ? screen.X_TOP
-                    : 0,
-                paddingBottom: screen.getIphonePaddingBottom(),
-                ...screen.getIphonePaddingHorizontal(
-                  this.props.device.orientation,
-                ),
-              },
-            ]}>
-              <RootNavigator
-                appConfig={this.props.appConfig}
-                setModules={this.props.setModules}
-                setNav={this.props.setNav}
-              />
-            </View>
-          </View>
-        ))}
+        {this.state.showLaunchGuide ? this.renderGuidePage() : this.renderRoot()}
         {this.renderImportDialog()}
         {this.renderARDeviceListDialog()}
-        {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
+        {this._renderProtocolDialog()}
         <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
         <MyToast ref={ref => GLOBAL.Toast = ref} />
         {this.renderSimpleDialog()}
-        {this.renderGuidePage()}
         {this.renderInputDialog()}
       </>
     )

@@ -290,6 +290,7 @@ const styles = StyleSheet.create({
     fontSize: setSpText(22),
     backgroundColor: 'transparent',
     color: color.fontColorBlack,
+    textAlign: 'center',
   },
   tabStyle: {
     // backgroundColor: color.subTheme,

@@ -30,11 +30,6 @@ async function aiClassify() {
       (await FileTools.fileIsExist(dustbin_model)) &&
       (await FileTools.fileIsExist(dustbin_txt))
     if (isDustbin) {
-      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-      if (GLOBAL.showAIDetect) {
-        GLOBAL.arSwitchToMap = true
-        ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-      }
       let taggingLayerData = await getTaggingLayerData()
       const dataList = await SMap.getTaggingLayers(
         _params.user.currentUser.userName,
@@ -55,6 +50,11 @@ async function aiClassify() {
         datasourceAlias,
         datasetName,
       })
+      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+      if (GLOBAL.showAIDetect) {
+        GLOBAL.arSwitchToMap = true
+        ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+      }
     } else {
       isDownload = false
       const downloadData = await getDownloadData(

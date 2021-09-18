@@ -153,7 +153,7 @@ export default class ProtocolDialog extends Component {
         // cancelBtnVisible={false}
         cancelAction={this.cancel}
         cancelBtnTitle={getLanguage(this.props.language).Friends.GROUP_APPLY_DISAGREE}
-        defaultVisible={true}
+        defaultVisible={false}
         confirmBtnDisable={this.state.confirmBtnDisable}
         type={Dialog.Type.NON_MODAL}
       >

@@ -10,7 +10,6 @@ import {
   BackHandler,
   NativeModules,
   AsyncStorage,
-  TouchableOpacity,
   StatusBar,
   TextInput,
   PermissionsAndroid,
@@ -212,8 +211,6 @@ class AppRoot extends Component {
     this.props.setNav() // 清空导航记录
     this.initGlobal()
     PT.initCustomPrototype()
-    // this.login = this.login.bind(this)
-    this.reCircleLogin = this.reCircleLogin.bind(this)
 
     if (config.language && !this.props.configLangSet) {
       this.props.setLanguage(config.language, true)
@@ -222,21 +219,164 @@ class AppRoot extends Component {
     } else {
       this.props.setLanguage(this.props.language)
     }
-    SMap.setModuleListener(this.onInvalidModule)
-    SMap.setLicenseListener(this.onInvalidLicense)
 
     this.loginTimer = undefined
 
-    SOnlineService.init()
-    if (Platform.OS === 'android') {
-      this.requestPermission()
-    } else {
-      this.init()
+    AppState.addEventListener('change', this.handleStateChange)
+    Platform.OS === 'android' &&
+      BackHandler.addEventListener('hardwareBackPress', this.back)
+
+  }
+
+  initGlobal = () => {
+    // GLOBAL.AppState = AppState.currentState
+    GLOBAL.STARTX = undefined  //离线导航起点
+    GLOBAL.ENDX = undefined  //离线导航终点
+    // GLOBAL.HASCHOSE = false  //离线数据选择
+    // TODO 动态切换主题，将 GLOBAL.ThemeType 放入Redux中管理
+    GLOBAL.ThemeType = ThemeType.LIGHT_THEME
+    GLOBAL.BaseMapSize = 1
+    //地图比例尺
+    GLOBAL.scaleView = null
+    // TODO 从GLOBAL中去除SelectedSelectionAttribute
+    GLOBAL.SelectedSelectionAttribute = null // 框选-属性-关联对象 {layerInfo, index, data}
+    this.setIsPad()
+    this._getIs64System()
+    GLOBAL.getDevice = this.getDevice
+    GLOBAL.back = this.back // 全局返回事件，根据不同界面有不同返回事件
+    GLOBAL.clickWait = false // 防止重复点击
+    GLOBAL.clearMapData = () => {
+      this.props.setEditLayer(null) // 清空地图图层中的数据
+      this.props.setSelection(null) // 清空地图选中目标中的数据
+      this.props.setMapSetting(null) // 清空地图设置中的数据
+      this.props.setAnalystParams(null) // 清空分析中的数据
+      this.props.setCollectionInfo() // 清空Collection中的数据
+      this.props.setCurrentTemplateInfo() // 清空当前模板
+      this.props.setCurrentTemplateList() // 清空当前模板
+      this.props.setTemplate() // 清空模板
+      this.props.setCurrentMap() // 清空当前地图
+      this.props.setCurrentLayer() // 清空当前图层
     }
   }
 
-  // UNSAFE_componentWillMount() {
-  // }
+  componentDidMount() {
+    Platform.OS === 'android' && SplashScreen.hide()
+  }
+
+  componentDidUpdate(prevProps) {
+    // 切换用户，重新加载用户配置文件
+    if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)) {
+      this.initDirectories(this.props.user.currentUser.userName)
+      this.getUserApplets(this.props.user.currentUser.userName)
+    }
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.back)
+  }
+
+  onGuidePageEnd = () => {
+    this.setState({
+      showLaunchGuide: false,
+    })
+    if(this.props.isAgreeToProtocol) {
+      this.prevLoad()
+    } else {
+      this.protocolDialog?.setVisible(true)
+    }
+  }
+
+  prevLoad = async () => {
+    if (Platform.OS === 'android') {
+      this.requestPermission()
+    } else {
+      GLOBAL.Loading.setLoading(true, 'Loading')
+      await this.init()
+      GLOBAL.Loading.setLoading(false)
+    }
+  }
+
+  requestPermission = async () => {
+    GLOBAL.Loading.setLoading(true, 'Loading')
+    const results = await PermissionsAndroid.requestMultiple([
+      'android.permission.READ_PHONE_STATE',
+      'android.permission.ACCESS_FINE_LOCATION',
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+      'android.permission.CAMERA',
+      'android.permission.RECORD_AUDIO',
+    ])
+    let isAllGranted = true
+    for (let key in results) {
+      isAllGranted = results[key] === 'granted' && isAllGranted
+    }
+    //申请 android 11 读写权限
+    let permisson11 = await AppUtils.requestStoragePermissionR()
+    if (isAllGranted && permisson11) {
+      await SMap.setPermisson(true)
+      await this.init()
+      GLOBAL.Loading.setLoading(false)
+    } else {
+      GLOBAL.SimpleDialog.set({
+        text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
+        cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
+        cancelAction: /*AppUtils.AppExit*/ async () =>{
+          await this.init()
+          GLOBAL.Loading.setLoading(false)
+        },
+        confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
+        confirmAction: this.requestPermission,
+      })
+      GLOBAL.SimpleDialog.setVisible(true)
+    }
+  }
+
+  init = async () => {
+    await this.initEnvironment()
+    await this.initLocation()
+    await this.initUser()
+    await this.openWorkspace()
+    this.checkImportData()
+    this.initOrientation()
+    this.reCircleLogin()
+
+    // 显示界面，之前的为预加载
+    this.setState({ isInit: true }, () => {
+      this.login()
+      //开启新手引导 add jiakai
+      this.props.setGuideShow(true)
+      this.props.setVersion(GLOBAL.GUIDE_VERSION)
+    })
+
+  }
+
+  initEnvironment = async () => {
+    await SMap.initEnvironment('iTablet')
+    await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
+    SOnlineService.init()
+    SIPortalService.init()
+    await this.initLicense()
+    SMap.setModuleListener(this.onInvalidModule)
+    SMap.setLicenseListener(this.onInvalidLicense)
+    if (Platform.OS === 'android') {
+      //  this.initSpeechManager()
+      SSpeechRecognizer.init('5dafb910')
+    } else {
+      SSpeechRecognizer.init('5b63b509')
+    }
+    await this.getVersion()
+  }
+
+  initLocation = async () => {
+    await SLocation.openGPS()
+    if (this.props.peripheralDevice !== 'local') {
+      SLocation.changeDevice(this.props.peripheralDevice)
+    }
+  }
+
+  initLicense = async () => {
+    await this.inspectEnvironment()
+  }
 
   /** 初始化用户数据 **/
   initUser = async () => {
@@ -244,10 +384,6 @@ class AppRoot extends Component {
       // 获取用户登录记录
       let users = await ConfigUtils.getUsers()
       let userName = 'Customer'
-      // 创建游客目录
-      if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
-        await FileTools.initUserDefaultData(userName)
-      }
       if (users.length === 0 || UserType.isProbationUser(users[0])) {
         // 若没有任何用户登录，则默认Customer登录
         this.props.setUser({
@@ -258,24 +394,237 @@ class AppRoot extends Component {
       } else {
         await this.props.setUsers(users)
         userName = users[0].userName
-        // 创建登录用户目录
-        if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
-          await FileTools.initUserDefaultData(userName)
-        }
       }
+      await this.initDirectories(userName)
       await AppInfo.setUserName(userName)
       await this.getUserApplets(userName)
       this.createXmlTemplate()
     } catch (e) {
-
+      //
     }
   }
+
+  // 初始化文件目录
+  initDirectories = async (userName = 'Customer') => {
+    try {
+      let paths = Object.keys(ConstPath)
+      let isCreate = true, absolutePath = ''
+      for (let i = 0; i < paths.length; i++) {
+        let path = ConstPath[paths[i]]
+        if (typeof path !== 'string') continue
+        absolutePath = await FileTools.appendingHomeDirectory(path)
+        let exist = await FileTools.fileIsExistInHomeDirectory(path)
+        let fileCreated = exist || await FileTools.createDirectory(absolutePath)
+        isCreate = fileCreated && isCreate
+      }
+      isCreate = this.initUserDirectories(userName) && isCreate
+      if (!isCreate) {
+        Toast.show('创建文件目录失败')
+      }
+    } catch (e) {
+      Toast.show('创建文件目录失败')
+    }
+  }
+
+   initUserDirectories = async (userName = 'Customer') => {
+     if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
+       await FileTools.initUserDefaultData(userName)
+     }
+   }
 
   createXmlTemplate = async() =>{
     const fileDir = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.Module.XmlTemplate)
     let exists = await fs.exists(fileDir)
     if (!exists) {
       await fs.mkdir(fileDir)
+    }
+  }
+
+  openWorkspace = async () => {
+    try {
+      let wsPath = ConstPath.CustomerPath + ConstPath.RelativeFilePath.Workspace[this.props.language === 'CN' ? 'CN' : 'EN'], path = ''
+      if (
+        this.props.user.currentUser.userType !== UserType.PROBATION_USER ||
+        (this.props.user.currentUser.userName !== '' && this.props.user.currentUser.userName !== 'Customer')
+      ) {
+        let userWsPath = ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Workspace[this.props.language === 'CN' ? 'CN' : 'EN']
+        if (await FileTools.fileIsExistInHomeDirectory(userWsPath)) {
+          path = await FileTools.appendingHomeDirectory(userWsPath)
+        } else {
+          path = await FileTools.appendingHomeDirectory(wsPath)
+        }
+      } else {
+        path = await FileTools.appendingHomeDirectory(wsPath)
+      }
+      // let customerPath = ConstPath.CustomerPath + ConstPath.RelativeFilePath.Workspace[this.props.language === 'CN' ? 'CN' : 'EN']
+      // path = await FileTools.appendingHomeDirectory(customerPath)
+
+      this.props.openWorkspace({ server: path })
+    } catch(e) {
+      //
+    }
+  }
+
+  /** 检查本地离线许可 */
+  inspectEnvironment = async () => {
+    //todo 初始化云许可，私有云许可状态
+    let serialNumber = await SMap.initSerialNumber('')
+    if (serialNumber !== '') {
+      await SMap.reloadLocalLicense()
+    }
+
+    let status = await SMap.getEnvironmentStatus()
+    this.props.setLicenseInfo(status)
+  }
+
+  checkImportData = async () => {
+    await this.getImportState()
+    await this.addImportExternalDataListener()
+    await this.addGetShareResultListener()
+  }
+
+  //初始化横竖屏显示方式
+  initOrientation = async () => {
+    if (Platform.OS === 'ios') {
+      Orientation.getSpecificOrientation((e, orientation) => {
+        this.showStatusBar(orientation)
+        this.props.setShow({ orientation: orientation })
+      })
+      Orientation.removeSpecificOrientationListener(this.orientation)
+      Orientation.addSpecificOrientationListener(this.orientation)
+    } else {
+      Orientation.getOrientation((e, orientation) => {
+        this.showStatusBar(orientation)
+        this.props.setShow({ orientation: orientation })
+      })
+      Orientation.removeOrientationListener(this.orientation)
+      Orientation.addOrientationListener(this.orientation)
+    }
+  }
+
+  reCircleLogin = () => {
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      if (this.loginTimer !== undefined) {
+        clearInterval(this.loginTimer)
+        this.loginTimer = undefined
+      }
+      this.loginTimer = setInterval(this.loginOnline, 1000 * 60 *10)
+    }
+  }
+
+  loginOnline = async () => {
+    // let isEmail = this.props.user.currentUser.isEmail
+    let nickname = this.props.user.currentUser.nickname
+    let password = this.props.user.currentUser.password
+    let userType = this.props.user.currentUser.userType
+
+    if(userType === UserType.COMMON_USER) {
+      await SOnlineService.setOnlineServiceSite('DEFAULT')
+    } else {
+      await SOnlineService.setOnlineServiceSite('JP')
+    }
+
+    let bLogin = false
+    // if (isEmail === true) {
+    bLogin = await SOnlineService.login(nickname, password)
+    // } else if (isEmail === false) {
+    //   bLogin = await SOnlineService.loginWithPhoneNumber(userName, password)
+    // }
+    return bLogin
+  }
+
+  logoutOnline = () => {
+    try {
+      if (this.props.user.userType !== UserType.PROBATION_USER) {
+        SOnlineService.logout()
+      }
+      this.props.closeWorkspace(async () => {
+        SOnlineService.removeCookie()
+        let customPath = await FileTools.appendingHomeDirectory(
+          ConstPath.CustomerPath +
+          ConstPath.RelativeFilePath.Workspace[
+            this.props.language === 'CN' ? 'CN' : 'EN'
+          ],
+        )
+        this.props.deleteUser(this.props.user.currentUser)
+        this.props.setUser({
+          userName: 'Customer',
+          nickname: 'Customer',
+          userType: UserType.PROBATION_USER,
+        })
+        NavigationService.popToTop('Tabs')
+        this.props.openWorkspace({ server: customPath })
+        Toast.show(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+      })
+    } catch (e) {
+      //
+    }
+  }
+
+  login = async bResetMsgService => {
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      let result
+      result = await this.loginOnline()
+      if (result === true) {
+        result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
+      } else {
+        // iOS防止第一次登录timeout
+        result = await this.loginOnline()
+      }
+      if(result === true){
+        let userType = this.props.user.currentUser.userType
+        let JSOnlineservice = new OnlineServicesUtils(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
+        //登录后更新用户信息 zhangxt
+        let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
+        let user = {
+          userName: userInfo.userId,
+          password: this.props.user.currentUser.password,
+          nickname: userInfo.nickname,
+          email: userInfo.email,
+          phoneNumber: userInfo.phoneNumber,
+          userId: userInfo.userId,
+          isEmail: true,
+          userType: UserType.COMMON_USER,
+        }
+        await this.props.setUser(user)
+        //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
+        if(bResetMsgService !== true){
+          //TODO 处理app加载流程，确保登录后再更新消息服务
+          GLOBAL.getFriend?.().onUserLoggedin()
+        }
+
+      } else {
+        //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
+        if(bResetMsgService !== true){
+          this.logoutOnline()
+        }
+      }
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+      let url = this.props.user.currentUser.serverUrl
+      let userName = this.props.user.currentUser.userName
+      let password = this.props.user.currentUser.password
+      SIPortalService.init()
+      let result = await SIPortalService.login(url, userName, password, true)
+      if (typeof result === 'boolean' && result) {
+        //登录后更新用户信息 zhangxt
+        let info = await SIPortalService.getMyAccount()
+        if (info) {
+          let userInfo = JSON.parse(info)
+          await this.props.setUser({
+            serverUrl: url,
+            userName: userInfo.name,
+            password: password,
+            nickname: userInfo.nickname,
+            email: userInfo.email,
+            userType: UserType.IPORTAL_COMMON_USER,
+          })
+        }
+        GLOBAL.getFriend().onUserLoggedin()
+        this.container.setLoading(false)
+        NavigationService.popToTop()
+      } else {
+        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+      }
     }
   }
 
@@ -315,25 +664,6 @@ class AppRoot extends Component {
     }
   }
 
-  initGlobal = () => {
-    // GLOBAL.AppState = AppState.currentState
-    GLOBAL.STARTX = undefined  //离线导航起点
-    GLOBAL.ENDX = undefined  //离线导航终点
-    // GLOBAL.HASCHOSE = false  //离线数据选择
-    // TODO 动态切换主题，将 GLOBAL.ThemeType 放入Redux中管理
-    GLOBAL.ThemeType = ThemeType.LIGHT_THEME
-    GLOBAL.BaseMapSize = 1
-    //地图比例尺
-    GLOBAL.scaleView = null
-    // TODO 从GLOBAL中去除SelectedSelectionAttribute
-    GLOBAL.SelectedSelectionAttribute = null // 框选-属性-关联对象 {layerInfo, index, data}
-    this.setIsPad()
-    this._getIs64System()
-    GLOBAL.getDevice = this.getDevice
-    GLOBAL.back = this.back // 全局返回事件，根据不同界面有不同返回事件
-    GLOBAL.clickWait = false // 防止重复点击
-  }
-
   getDevice = () => {
     return this.props.device
   }
@@ -348,6 +678,7 @@ class AppRoot extends Component {
         }
       }
     } catch (e) {
+      //
     }
   }
 
@@ -361,236 +692,6 @@ class AppRoot extends Component {
     GLOBAL.isPad = isPad
   }
 
-  loginOnline = async () => {
-    // let isEmail = this.props.user.currentUser.isEmail
-    let nickname = this.props.user.currentUser.nickname
-    let password = this.props.user.currentUser.password
-    let userType = this.props.user.currentUser.userType
-
-    if(userType === UserType.COMMON_USER) {
-      await SOnlineService.setOnlineServiceSite('DEFAULT')
-    } else {
-      await SOnlineService.setOnlineServiceSite('JP')
-    }
-
-    let bLogin = false
-    // if (isEmail === true) {
-    bLogin = await SOnlineService.login(nickname, password)
-    // } else if (isEmail === false) {
-    //   bLogin = await SOnlineService.loginWithPhoneNumber(userName, password)
-    // }
-    return bLogin
-  }
-
-  login = async bResetMsgService => {
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      let result
-      result = await this.loginOnline()
-      if (result === true) {
-        result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
-      } else {
-        // iOS防止第一次登录timeout
-        result = await this.loginOnline()
-      }
-      if(result === true){
-        let userType = this.props.user.currentUser.userType
-        let JSOnlineservice = new OnlineServicesUtils(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
-        //登录后更新用户信息 zhangxt
-        let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
-        let user = {
-          userName: userInfo.userId,
-          password: this.props.user.currentUser.password,
-          nickname: userInfo.nickname,
-          email: userInfo.email,
-          phoneNumber: userInfo.phoneNumber,
-          userId: userInfo.userId,
-          isEmail: true,
-          userType: UserType.COMMON_USER,
-        }
-        await this.props.setUser(user)
-        await this.initDirectories(user.userName)
-        //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
-        if(bResetMsgService !== true){
-          //TODO 处理app加载流程，确保登录后再更新消息服务
-          GLOBAL.getFriend?.().onUserLoggedin()
-        }
-
-      } else {
-        //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
-        if(bResetMsgService !== true){
-          this.logoutOnline()
-        }
-      }
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
-      let url = this.props.user.currentUser.serverUrl
-      let userName = this.props.user.currentUser.userName
-      let password = this.props.user.currentUser.password
-      SIPortalService.init()
-      let result = await SIPortalService.login(url, userName, password, true)
-      if (typeof result === 'boolean' && result) {
-        //登录后更新用户信息 zhangxt
-        let info = await SIPortalService.getMyAccount()
-        if (info) {
-          let userInfo = JSON.parse(info)
-          await this.props.setUser({
-            serverUrl: url,
-            userName: userInfo.name,
-            password: password,
-            nickname: userInfo.nickname,
-            email: userInfo.email,
-            userType: UserType.IPORTAL_COMMON_USER,
-          })
-          await this.initDirectories(userInfo.name)
-        }
-        GLOBAL.getFriend().onUserLoggedin()
-        this.container.setLoading(false)
-        NavigationService.popToTop()
-      } else {
-        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
-      }
-    }
-  }
-
-  reCircleLogin() {
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      if (this.loginTimer !== undefined) {
-        clearInterval(this.loginTimer)
-        this.loginTimer = undefined
-      }
-      this.loginTimer = setInterval(this.loginOnline, 60000)
-    }
-  }
-
-  logoutOnline = () => {
-    try {
-      if (this.props.user.userType !== UserType.PROBATION_USER) {
-        SOnlineService.logout()
-      }
-      this.props.closeWorkspace(async () => {
-        SOnlineService.removeCookie()
-        let customPath = await FileTools.appendingHomeDirectory(
-          ConstPath.CustomerPath +
-          ConstPath.RelativeFilePath.Workspace[
-            this.props.language === 'CN' ? 'CN' : 'EN'
-          ],
-        )
-        this.props.deleteUser(this.props.user.currentUser)
-        this.props.setUser({
-          userName: 'Customer',
-          nickname: 'Customer',
-          userType: UserType.PROBATION_USER,
-        })
-        NavigationService.popToTop('Tabs')
-        this.props.openWorkspace({ server: customPath })
-        Toast.show(getLanguage(this.props.language).Profile.LOGIN_INVALID)
-      })
-    } catch (e) {
-      //
-    }
-  }
-
-  requestPermission = async () => {
-    const results = await PermissionsAndroid.requestMultiple([
-      'android.permission.READ_PHONE_STATE',
-      'android.permission.ACCESS_FINE_LOCATION',
-      'android.permission.READ_EXTERNAL_STORAGE',
-      'android.permission.WRITE_EXTERNAL_STORAGE',
-      'android.permission.CAMERA',
-      'android.permission.RECORD_AUDIO',
-    ])
-    let isAllGranted = true
-    for (let key in results) {
-      isAllGranted = results[key] === 'granted' && isAllGranted
-    }
-    //申请 android 11 读写权限
-    let permisson11 = await AppUtils.requestStoragePermissionR()
-    if (isAllGranted && permisson11) {
-      SMap.setPermisson(true)
-      this.init()
-    } else {
-      GLOBAL.SimpleDialog.set({
-        text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
-        cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
-        cancelAction: /*AppUtils.AppExit*/this.init(),
-        confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
-        confirmAction: this.requestPermission,
-      })
-      GLOBAL.SimpleDialog.setVisible(true)
-    }
-  }
-
-  init = async () => {
-    // if (Platform.OS === 'android') {
-    await SMap.initEnvironment('iTablet')
-    // }
-    SLocation.openGPS()
-    this.inspectEnvironment()
-    this.reCircleLogin()
-    if (this.props.peripheralDevice !== 'local') {
-      SLocation.changeDevice(this.props.peripheralDevice)
-    }
-    if (Platform.OS === 'android') {
-      //  this.initSpeechManager()
-      SSpeechRecognizer.init('5dafb910')
-    } else {
-      SSpeechRecognizer.init('5b63b509')
-    }
-    AppState.addEventListener('change', this.handleStateChange)
-    // ; (async function () {
-    await this.initDirectories()
-    await this.initUser()
-    SOnlineService.init()
-    // SOnlineService.removeCookie()
-    SIPortalService.init()
-    await this.getVersion()
-    await this.getImportState()
-    await this.addImportExternalDataListener()
-    await this.addGetShareResultListener()
-    await this.openWorkspace()
-    await this.initOrientation()
-
-    // 显示界面，之前的为预加载
-    this.setState({ isInit: true }, () => {
-      this.login()
-    })
-    // }).bind(this)()
-
-    GLOBAL.clearMapData = () => {
-      this.props.setEditLayer(null) // 清空地图图层中的数据
-      this.props.setSelection(null) // 清空地图选中目标中的数据
-      this.props.setMapSetting(null) // 清空地图设置中的数据
-      this.props.setAnalystParams(null) // 清空分析中的数据
-      this.props.setCollectionInfo() // 清空Collection中的数据
-      this.props.setCurrentTemplateInfo() // 清空当前模板
-      this.props.setCurrentTemplateList() // 清空当前模板
-      this.props.setTemplate() // 清空模板
-      this.props.setCurrentMap() // 清空当前地图
-      this.props.setCurrentLayer() // 清空当前图层
-    }
-    Platform.OS === 'android' && SplashScreen.hide()
-    if(this.state.showLaunchGuide === false){
-      let orientationTimer = setTimeout(() => {
-        Orientation.unlockAllOrientations()
-        clearTimeout(orientationTimer)
-        orientationTimer = null
-      }, 1000)
-    }
-
-    Platform.OS === 'android' &&
-      BackHandler.addEventListener('hardwareBackPress', this.back)
-  }
-
-  componentDidUpdate(prevProps) {
-    // 切换用户，重新加载用户配置文件
-    if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)) {
-      this.getUserApplets(this.props.user.currentUser.userName)
-    }
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.back)
-  }
-
   getVersion = async () => {
     GLOBAL.language = this.props.language
     let appInfo = await AppInfo.getAppInfo()
@@ -599,27 +700,6 @@ class AppRoot extends Component {
       + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
     GLOBAL.isAudit = await SMap.isAudit()
     GLOBAL.GUIDE_VERSION = appInfo.GuideVersion
-  }
-
-  openWorkspace = async () => {
-    let wsPath = ConstPath.CustomerPath + ConstPath.RelativeFilePath.Workspace[this.props.language === 'CN' ? 'CN' : 'EN'], path = ''
-    if (
-      this.props.user.currentUser.userType !== UserType.PROBATION_USER ||
-      (this.props.user.currentUser.userName !== '' && this.props.user.currentUser.userName !== 'Customer')
-    ) {
-      let userWsPath = ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Workspace[this.props.language === 'CN' ? 'CN' : 'EN']
-      if (await FileTools.fileIsExistInHomeDirectory(userWsPath)) {
-        path = await FileTools.appendingHomeDirectory(userWsPath)
-      } else {
-        path = await FileTools.appendingHomeDirectory(wsPath)
-      }
-    } else {
-      path = await FileTools.appendingHomeDirectory(wsPath)
-    }
-    // let customerPath = ConstPath.CustomerPath + ConstPath.RelativeFilePath.Workspace[this.props.language === 'CN' ? 'CN' : 'EN']
-    // path = await FileTools.appendingHomeDirectory(customerPath)
-
-    this.props.openWorkspace({ server: path })
   }
 
   back = () => {
@@ -701,40 +781,6 @@ class AppRoot extends Component {
     }
   }
 
-  inspectEnvironment = async () => {
-
-    //todo 初始化云许可，私有云许可状态
-    let serialNumber = await SMap.initSerialNumber('')
-    if (serialNumber !== '') {
-      await SMap.reloadLocalLicense()
-    }
-
-    let status = await SMap.getEnvironmentStatus()
-    this.props.setLicenseInfo(status)
-    if (!status || !status.isLicenseValid) {
-      this.LicenseValidDialog.setDialogVisible(true)
-    }
-
-    // if(serialNumber!==''&&!status.isTrailLicense){
-    //   let licenseInfo = await SMap.getSerialNumberAndModules()
-    //   if(licenseInfo!=null&&licenseInfo.modulesArray){
-    //     let modules=licenseInfo.modulesArray
-    //     let size = modules.length
-    //     let number = 0
-    //     for (let i = 0; i < size; i++) {
-    //       let modultCode = Number(modules[i])
-    //       if(modultCode == 0){
-    //         continue
-    //       }
-    //       number = number + (1<<(modultCode%100))
-    //     }
-    //     GLOBAL.modulesNumber=number
-    //   }
-
-    // }
-
-  }
-
   showStatusBar = async orientation => {
     let result = await AsyncStorage.getItem('StatusBarVisible')
     let visible = result === 'true'
@@ -751,66 +797,6 @@ class AppRoot extends Component {
     this.props.setShow({
       orientation: o,
     })
-  }
-  //初始化横竖屏显示方式
-  initOrientation = async () => {
-    if (Platform.OS === 'ios') {
-      Orientation.getSpecificOrientation((e, orientation) => {
-        this.showStatusBar(orientation)
-        this.props.setShow({ orientation: orientation })
-      })
-      Orientation.removeSpecificOrientationListener(this.orientation)
-      Orientation.addSpecificOrientationListener(this.orientation)
-    } else {
-      Orientation.getOrientation((e, orientation) => {
-        this.showStatusBar(orientation)
-        this.props.setShow({ orientation: orientation })
-      })
-      Orientation.removeOrientationListener(this.orientation)
-      Orientation.addOrientationListener(this.orientation)
-    }
-  }
-
-  // 初始化文件目录
-  initDirectories = async (userName = 'Customer') => {
-    try {
-      await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
-      let paths = Object.keys(ConstPath)
-      let isCreate = true, absolutePath = ''
-      for (let i = 0; i < paths.length; i++) {
-        let path = ConstPath[paths[i]]
-        if (typeof path !== 'string') continue
-        absolutePath = await FileTools.appendingHomeDirectory(path)
-        let exist = await FileTools.fileIsExistInHomeDirectory(path)
-        let fileCreated = exist || await FileTools.createDirectory(absolutePath)
-        isCreate = fileCreated && isCreate
-      }
-      isCreate = this.initUserDirectories(userName) && isCreate
-      if (!isCreate) {
-        Toast.show('创建文件目录失败')
-      }
-    } catch (e) {
-      Toast.show('创建文件目录失败')
-    }
-  }
-
-  // 初始化游客用户文件目录
-  initUserDirectories = async (userName = 'Customer') => {
-    try {
-      let paths = Object.keys(ConstPath.RelativePath)
-      let isCreate = true, absolutePath = ''
-      for (let i = 0; i < paths.length; i++) {
-        let path = ConstPath.RelativePath[paths[i]]
-        if (typeof path !== 'string') continue
-        absolutePath = await FileTools.appendingHomeDirectory(ConstPath.UserPath + userName + '/' + path)
-        let exist = await FileTools.fileIsExistInHomeDirectory(ConstPath.UserPath + userName + '/' + path)
-        let fileCreated = exist || await FileTools.createDirectory(absolutePath)
-        isCreate = fileCreated && isCreate
-      }
-      return isCreate
-    } catch (e) {
-      return false
-    }
   }
 
   addImportExternalDataListener = async () => {
@@ -886,38 +872,6 @@ class AppRoot extends Component {
     }
   }
 
-  renderLicenseDialogChildren = () => {
-    return (
-      <View style={styles.dialogHeaderView}>
-        <Text style={styles.promptTtile}>
-          {getLanguage(this.props.language).Profile.LICENSE_CURRENT_EXPIRE}
-          {/* 试用许可已过期,请更换许可后重启 */}
-        </Text>
-        <View style={{ marginTop: scaleSize(30), width: '100%', height: 1, backgroundColor: color.item_separate_white }}></View>
-        <TouchableOpacity style={styles.btnStyle}
-          onPress={this.inputOfficialLicense}
-        >
-          <Text style={styles.btnTextStyle}>
-            {getLanguage(this.props.language).Profile.LICENSE_OFFICIAL_INPUT}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btnStyle}
-          onPress={this.applyTrialLicense}
-        >
-          <Text style={styles.btnTextStyle}>
-            {getLanguage(this.props.language).Profile.LICENSE_TRIAL_APPLY}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btnStyle}
-          onPress={() => this.LicenseValidDialog.setDialogVisible(false)}
-        >
-          <Text style={styles.btnTextStyle}>
-            {getLanguage(this.props.language).Profile.LICENSE_CLEAN_CANCLE}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
   //退出app
   exitApp = async () => {
     try {
@@ -925,149 +879,6 @@ class AppRoot extends Component {
     } catch (error) {
       Toast.show(getLanguage(this.props.language).Profile.LICENSE_EXIT_FAILED)
     }
-  }
-  //接入正式许可
-  inputOfficialLicense = async () => {
-
-    // if(Platform.OS === 'ios'){
-    //   GLOBAL.Loading.setLoading(
-    //     true,
-    //     this.props.language === 'CN' ? '许可申请中...' : 'Applying',
-    //   )
-
-    //   let activateResult = await SMap.activateNativeLicense()
-    //   if(activateResult === -1){
-    //     //没有本地许可文件
-    //     this.noNativeLicenseDialog.setDialogVisible(true)
-    //   }else if(activateResult === -2){
-    //     //本地许可文件序列号无效
-    //     Toast.show(
-    //       getLanguage(this.props.language).Profile
-    //         .LICENSE_NATIVE_EXPIRE,
-    //     )
-    //   }else {
-    //     AsyncStorage.setItem(constants.LICENSE_OFFICIAL_STORAGE_KEY, activateResult)
-    //     let modules = await SMap.licenseContainModule(activateResult)
-    //     let size = modules.length
-    //     let number = 0
-    //     for (let i = 0; i < size; i++) {
-    //       let modultCode = Number(modules[i])
-    //       number = number + modultCode
-    //     }
-    //     GLOBAL.modulesNumber = number
-
-    //     this.LicenseValidDialog.setDialogVisible(false)
-    //     GLOBAL.getLicense && GLOBAL.getLicense()
-    //     Toast.show(
-    //       getLanguage(this.props.language).Profile
-    //         .LICENSE_SERIAL_NUMBER_ACTIVATION_SUCCESS,
-    //     )
-    //   }
-    //   GLOBAL.Loading.setLoading(
-    //     false,
-    //     this.props.language === 'CN' ? '许可申请中...' : 'Applying...',
-    //   )
-    //   return
-    // }
-
-    this.LicenseValidDialog.setDialogVisible(false)
-    NavigationService.navigate('LicenseTypePage')
-  }
-  //申请试用许可
-  applyTrialLicense = async () => {
-
-    this.LicenseValidDialog.setDialogVisible(false)
-    //if(Platform.OS === 'ios')
-    {
-      SMap.applyTrialLicense().then(async value => {
-        if (value) {
-          Toast.show(GLOBAL.language === 'CN' ? '试用成功' : 'Successful trial')
-        } else {
-          // Toast.show(getLanguage(this.props.language).Prompt.COLLECT_SUCCESS)
-          Toast.show(
-            GLOBAL.language === 'CN'
-              ? '您已经申请过试用许可,请接入正式许可'
-              : 'You have applied for trial license, please access the formal license',
-          )
-        }
-        let status = await SMap.getEnvironmentStatus()
-        this.props.setLicenseInfo(status)
-        this.LicenseValidDialog.callback && this.LicenseValidDialog.callback()
-      })
-      return
-    }
-
-
-    // GLOBAL.Loading.setLoading(
-    //   true,
-    //   this.props.language==='CN'?"许可申请中...":"Applying"
-    // )
-    // try{
-    //   let fileCachePath = await FileTools.appendingHomeDirectory('/iTablet/license/Trial_License.slm')
-    //   let bRes = await RNFS.exists(fileCachePath)
-    //   if(bRes){
-    //     await RNFS.unlink(fileCachePath)
-    //   }
-    //   let dataUrl = undefined
-    //   setTimeout(()=>{
-    //     if(dataUrl === undefined){
-    //       GLOBAL.Loading.setLoading(
-    //         false,
-    //         this.props.language==='CN'?"许可申请中...":"Applying..."
-    //       )
-    //       Toast.show(this.props.language==='CN'?"许可申请失败,请检查网络连接":'License application failed.Please check the network connection')
-    //     }
-    //   }, 10000 )
-    //   dataUrl = await FetchUtils.getFindUserDataUrl(
-    //     'xiezhiyan123',
-    //     'Trial_License',
-    //     '.geojson',
-    //   )
-    //   let downloadOptions = {
-    //     fromUrl: dataUrl,
-    //     toFile: fileCachePath,
-    //     background: true,
-    //     fileName: 'Trial_License.slm',
-    //     progressDivider: 1,
-    //   }
-
-    //   const ret =  RNFS.downloadFile(downloadOptions)
-
-    //   ret.promise
-    //     .then(async () => {
-    //       GLOBAL.Loading.setLoading(
-    //         false,
-    //         this.props.language==='CN'?"许可申请中...":"Applying"
-    //       )
-    //       SMap.initTrailLicensePath()
-    //       this.openWorkspace()
-    //       Toast.show(this.props.language==='CN'?"试用成功":'Successful trial')
-    //       this.LicenseValidDialog.callback&&this.LicenseValidDialog.callback()
-    //     })
-    // }catch (e) {
-    //   GLOBAL.Loading.setLoading(
-    //     false,
-    //     this.props.language==='CN'?"许可申请中...":"Applying"
-    //   )
-    //   Toast.show(this.props.language==='CN'?"许可申请失败,请检查网络连接":'License application failed.Please check the network connection')
-    //   this.LicenseValidDialog.callback&&this.LicenseValidDialog.callback()
-    // }
-    // NavigationService.navigate('Protocol', { type: 'ApplyLicense' })
-  }
-  renderDialog = () => {
-    return (<Dialog
-      ref={ref => (this.LicenseValidDialog = ref)}
-      showBtns={false}
-      type={Dialog.Type.NON_MODAL}
-      opacity={1}
-      opacityStyle={styles.opacityView}
-      style={styles.dialogBackground}
-      confirmBtnTitle={this.props.language === 'CN' ? '试用' : 'The trial'}
-      cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
-    >
-      {this.renderLicenseDialogChildren()}
-    </Dialog>
-    )
   }
 
   renderImportDialog = () => {
@@ -1132,9 +943,7 @@ class AppRoot extends Component {
         confirm={isAgree => {
           this.props.setAgreeToProtocol && this.props.setAgreeToProtocol(isAgree)
           this.protocolDialog.setVisible(false)
-          //开启新手引导 add jiakai
-          this.props.setGuideShow(true)
-          this.props.setVersion(GLOBAL.GUIDE_VERSION)
+          this.prevLoad()
         }}
         cancel={() =>{
           this.protocolDialog.setVisible(false)
@@ -1203,45 +1012,6 @@ class AppRoot extends Component {
     )
   }
 
-  //提示没有本地许可文件
-  renderNoNativeOfficialLicenseDialog = () => {
-    return (<Dialog
-      ref={ref => (this.noNativeLicenseDialog = ref)}
-      showBtns={false}
-      type={Dialog.Type.NON_MODAL}
-      opacity={1}
-      opacityStyle={styles.opacityView}
-      style={styles.dialogBackground}
-    >
-      <View style={styles.dialogHeaderView}>
-        <Image
-          source={require('./src/assets/home/Frenchgrey/icon_prompt.png')}
-          style={styles.dialogHeaderImg}
-        />
-        <Text style={styles.promptTtile}>
-          {getLanguage(GLOBAL.language).Profile.LICENSE_NO_NATIVE_OFFICAL}
-        </Text>
-        <View style={{ width: '100%', height: 1, backgroundColor: color.item_separate_white, marginTop: scaleSize(40) }}></View>
-        <TouchableOpacity
-          style={{
-            height: scaleSize(60),
-            width: '100%',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-          onPress={() => { this.noNativeLicenseDialog.setDialogVisible(false) }}
-        >
-          <Text style={{ fontSize: scaleSize(24), color: color.fontColorBlack }}>
-            {getLanguage(this.props.language).Prompt.CONFIRM}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </Dialog>
-    )
-
-  }
-
   renderSimpleDialog = () => {
     return <SimpleDialog ref={ref => GLOBAL.SimpleDialog = ref} />
   }
@@ -1266,7 +1036,6 @@ class AppRoot extends Component {
 
   renderGuidePage = () => {
     const guidePages = LaunchGuide.getGuide(this.props.language)
-    if (!this.state.showLaunchGuide) return null
     return (
       <LaunchGuidePage
         ref={ref => this.guidePage = ref}
@@ -1274,11 +1043,7 @@ class AppRoot extends Component {
         data={guidePages}
         device={this.props.device}
         getCustomGuide={LaunchGuide.getCustomGuide}
-        dismissCallback={() => {
-          this.setState({
-            showLaunchGuide: false,
-          })
-        }}
+        dismissCallback={this.onGuidePageEnd}
       />
     )
   }
@@ -1302,48 +1067,47 @@ class AppRoot extends Component {
     )
   }
 
+  renderRoot = () => {
+    return (this.state.isInit && (
+      <View style={{ flex: 1 }}>
+        <View style={[
+          { flex: 1 },
+          screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
+          {
+            backgroundColor: '#201F20',
+          },
+          {
+            paddingTop:
+              screen.isIphoneX() &&
+                this.props.device.orientation.indexOf('PORTRAIT') >= 0
+                ? screen.X_TOP
+                : 0,
+            paddingBottom: screen.getIphonePaddingBottom(),
+            ...screen.getIphonePaddingHorizontal(
+              this.props.device.orientation,
+            ),
+          },
+        ]}>
+          <RootNavigator
+            appConfig={this.props.appConfig}
+            setModules={this.props.setModules}
+            setNav={this.props.setNav}
+          />
+        </View>
+      </View>
+    ))
+  }
+
   render() {
     return (
       <>
-        {!this.state.showLaunchGuide && (!this.state.isInit ? (
-          <Loading info="Loading" />
-        ) : (
-          <View style={{ flex: 1 }}>
-            <View style={[
-              { flex: 1 },
-              screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
-              {
-                backgroundColor: '#201F20',
-              },
-              {
-                paddingTop:
-                  screen.isIphoneX() &&
-                    this.props.device.orientation.indexOf('PORTRAIT') >= 0
-                    ? screen.X_TOP
-                    : 0,
-                paddingBottom: screen.getIphonePaddingBottom(),
-                ...screen.getIphonePaddingHorizontal(
-                  this.props.device.orientation,
-                ),
-              },
-            ]}>
-              <RootNavigator
-                appConfig={this.props.appConfig}
-                setModules={this.props.setModules}
-                setNav={this.props.setNav}
-              />
-            </View>
-            {this.renderDialog()}
-            {this.renderImportDialog()}
-            {this.renderARDeviceListDialog()}
-            {this.renderNoNativeOfficialLicenseDialog()}
-            {!this.props.isAgreeToProtocol && this._renderProtocolDialog()}
-            <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
-            <MyToast ref={ref => GLOBAL.Toast = ref} />
-          </View>
-        ))}
+        {this.state.showLaunchGuide ? this.renderGuidePage() : this.renderRoot()}
+        {this.renderImportDialog()}
+        {this.renderARDeviceListDialog()}
+        {this._renderProtocolDialog()}
+        <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
+        <MyToast ref={ref => GLOBAL.Toast = ref} />
         {this.renderSimpleDialog()}
-        {this.renderGuidePage()}
         {this.renderInputDialog()}
       </>
     )

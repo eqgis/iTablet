@@ -248,7 +248,7 @@ class NavigationHeader extends Component {
               </Text>
             </View>
 
-            {headerRight && <View style={styles.responseHeaderRight}>{headerRight}</View>}
+            {headerRight && <View style={[styles.responseHeaderRight, headerRightStyle]}>{headerRight}</View>}
           </View>)}
     </>
     )

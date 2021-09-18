@@ -8,6 +8,7 @@ import { ConstToolType } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { Toast, LayerUtils } from '../../../../../../utils'
 
 class AICollectionModule extends FunctionModule {
   constructor(props) {
@@ -15,8 +16,17 @@ class AICollectionModule extends FunctionModule {
   }
 
   action = async () => {
-    this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
+    let actionAble = false
+    if (params.currentLayer) {
+      let layerType = LayerUtils.getLayerType(params.currentLayer)
+      actionAble = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
+    }
+    if (!actionAble) {
+      Toast.show(getLanguage(GLOBAL.language).AI.SUPPORT_POINT_AND_CAD)
+      return
+    }
+    this.setModuleData(this.type)
     params.showFullMap && params.showFullMap(true)
     AiCollectionActions.aiDetect()
   }

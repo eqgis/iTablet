@@ -165,7 +165,7 @@ export async function addARScene(location?: IVector3) {
     }
 
     //若已存在场景图层则先移除
-    const sceneLayers = _params.arlayer?.layers.filter((layer: ARLayer) => {
+    const sceneLayers = _params.arlayer?.layers?.filter((layer: ARLayer) => {
       return layer.type === ARLayerType.AR_SCENE_LAYER
     })
     if(sceneLayers && sceneLayers.length > 0) {

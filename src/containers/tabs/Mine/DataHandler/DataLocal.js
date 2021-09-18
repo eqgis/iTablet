@@ -90,8 +90,7 @@ async function _getListByFilter(user, type) {
     case 'AIMODEL':
       path = userPath + ConstPath.RelativePath.AIModel
       filter = {
-        type: 'file',
-        extension: 'glb',
+        type: 'Directory',
       }
       break
     case 'ARMODEL':

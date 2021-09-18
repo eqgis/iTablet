@@ -456,16 +456,16 @@ function layerManagerData() {
     // },
   ]
   data = data.filter(item => {
-    if (
-      GLOBAL.language === 'CN' &&
-      (item.title === 'Google RoadMap' ||
-        item.title === 'Google Satellite' ||
-        item.title === 'Google Terrain' ||
-        item.title === 'Google Hybrid')
-    ) {
-      return false
+    if (GLOBAL.language === 'CN') {
+      return (
+        item.title.indexOf('Google') === -1
+      )
+    } else {
+      return (
+        item.title.indexOf('GaoDe') === -1 &&
+        item.title.indexOf('Tianditu') === -1
+      )
     }
-    return true
   })
 
   return data

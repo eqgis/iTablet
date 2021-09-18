@@ -236,8 +236,8 @@ export default class MapToolbar extends React.Component {
         textStyle={{ fontSize: setSpText(20) }}
         selected={this.state.currentIndex === index}
         image={item.image}
-        // style={{ width: scaleSize(120) }}
-        style={styles.btn}
+        style={{ width: this.props.device.width /  this.state.data.length}}
+        // style={styles.btn}
         selectedImage={item.selectedImage}
         onPress={() => {
           let current = this.props.initIndex

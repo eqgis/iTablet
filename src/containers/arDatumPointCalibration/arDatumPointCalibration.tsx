@@ -316,7 +316,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/>
           <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
           <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={longitude}
+            value={longitude + ''}
             onChangeText={text => {
               this.setState({longitude: this.clearNoNum(text)})
             }}
@@ -330,7 +330,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/>
           <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
           <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={latitude}
+            value={latitude + ''}
             onChangeText={text => {
               this.setState({latitude: this.clearNoNum(text)})
             }}
@@ -342,7 +342,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/>
           <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
           <Input style={styles.input} showClear={height != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={height}
+            value={height + ''}
             onChangeText={text => {
               this.setState({height: this.clearNoNum(text)})
             }}

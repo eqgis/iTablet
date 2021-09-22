@@ -23,9 +23,9 @@ async function getOnlineData(
   try {
     let objDataList
     if (UserType.isOnlineUser(currentUser)) {
-      objDataList = await SOnlineService.getMyContentData({currentPage, pageSize, types})
+      objDataList = await SOnlineService.getMyContentData({currentPage, pageSize, types, orderType: 'DESC', orderBy: 'CREATETIME'})
     } else if (UserType.isIPortalUser(currentUser)) {
-      objDataList = await SIPortalService.getMyContentData({currentPage, pageSize, types})
+      objDataList = await SIPortalService.getMyContentData({currentPage, pageSize, types, orderType: 'DESC', orderBy: 'CREATETIME'})
     }
     // const objDataList = JSON.parse(strDataList)
     if (objDataList.content) {

@@ -60,10 +60,10 @@ export default class MyDataPage extends Component {
     super(props)
     const { params } = this.props.navigation.state
     this.state = {
-      shareToLocal: false,
-      shareToOnline: false,
-      shareToIPortal: false,
-      shareToWechat: false,
+      shareToLocal: true,
+      shareToOnline: true,
+      shareToIPortal: true,
+      shareToWechat: true,
       shareToFriend: false,
       showSectionHeader: false,
       sectionData: [],

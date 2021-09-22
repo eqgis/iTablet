@@ -351,9 +351,6 @@ class AppRoot extends Component {
     // 显示界面，之前的为预加载
     this.setState({ isInit: true }, () => {
       this.login()
-      //开启新手引导 add jiakai
-      this.props.setGuideShow(true)
-      this.props.setVersion(GLOBAL.GUIDE_VERSION)
     })
 
   }

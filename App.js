@@ -261,6 +261,9 @@ class AppRoot extends Component {
 
   componentDidMount() {
     Platform.OS === 'android' && SplashScreen.hide()
+    if(!this.state.showLaunchGuide) {
+      this.showUserProtocol()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -280,6 +283,10 @@ class AppRoot extends Component {
     this.setState({
       showLaunchGuide: false,
     })
+    this.showUserProtocol()
+  }
+
+  showUserProtocol = () => {
     if(this.props.isAgreeToProtocol) {
       this.prevLoad()
     } else {

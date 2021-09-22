@@ -95,7 +95,7 @@ export default class MyLocalData extends Component {
         this.props.user.currentUser,
         this.currentPage,
         this.pageSize,
-        ['WORKSPACE'],
+        ['WORKSPACE', 'UDB', 'COLORSCHEME', 'FILLSYMBOL', 'LINESYMBOL', 'MARKERSYMBOL'],
         result => {
           this.dataListTotal = result
         },

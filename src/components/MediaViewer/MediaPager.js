@@ -142,22 +142,38 @@ export default class MediaPager extends React.Component {
 
   render() {
     if (this.props.data.length === 0 || !this.state.visible) return null
-
     if (this.props.isModal) {
-      return (
-        <Modal
-          visible={this.state.visible}
-          transparent={true}
-          onRequestClose={() => {
-            //点击物理按键需要隐藏对话框
-            if (this.props.backHide) {
-              this.setVisible(false)
-            }
-          }}
-        >
-          {this.renderContent()}
-        </Modal>
-      )
+      // iphone 使用Modal无法横屏展示
+      if (Platform.OS === 'ios') {
+        return (
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            {this.renderContent()}
+          </View>
+        )
+      } else {
+        return (
+          <Modal
+            visible={this.state.visible}
+            transparent={true}
+            onRequestClose={() => {
+              //点击物理按键需要隐藏对话框
+              if (this.props.backHide) {
+                this.setVisible(false)
+              }
+            }}
+          >
+            {this.renderContent()}
+          </Modal>
+        )
+      }
     }
     return this.renderContent()
   }

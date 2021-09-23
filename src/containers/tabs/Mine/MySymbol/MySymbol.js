@@ -11,6 +11,7 @@ class MySymbol extends MyDataPage {
       shareToLocal: true,
       shareToOnline: true,
       shareToIPortal: true,
+      shareToFriend: true,
     }
   }
 

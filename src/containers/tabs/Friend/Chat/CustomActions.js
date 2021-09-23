@@ -33,79 +33,170 @@ let AppUtils = NativeModules.AppUtils
 // }
 
 // eslint-disable-next-line no-unused-vars
-const ICONS = context => [
-  {
-    name: require('../../../../assets/lightTheme/friend/app_chat_map.png'),
-    type: 'ionicon',
-    text: getLanguage(GLOBAL.language).Friends.MAP,
-    onPress: () => {
-      NavigationService.navigate('MyMap', {
-        title: getLanguage(GLOBAL.language).Profile.MAP,
-        chatCallback: (_path, fileName) => {
-          context.props.sendCallBack(1, _path, fileName)
-        },
-      })
-      context.setModalVisible()
+const ICONS = context => {
+  const data = [
+    {
+      name: require('../../../../assets/lightTheme/friend/app_chat_map.png'),
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Friends.MAP,
+      onPress: () => {
+        NavigationService.navigate('MyMap', {
+          title: getLanguage(GLOBAL.language).Profile.MAP,
+          chatCallback: (_path, fileName) => {
+            context.props.sendCallBack(1, _path, fileName)
+          },
+        })
+        context.setModalVisible()
+      },
     },
-  },
-  {
-    name: getThemeAssets().mine.my_armap,
-    type: 'ionicon',
-    text: getLanguage(GLOBAL.language).Profile.ARMAP,
-    onPress: () => {
-      NavigationService.navigate('MyARMap', {
-        title: getLanguage(GLOBAL.language).Profile.ARMAP,
-        chatCallback: (_path, fileName) => {
-          context.props.sendCallBack(4, _path, fileName)
-        },
-      })
-      context.setModalVisible()
+    {
+      name: getThemeAssets().mine.my_armap,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Profile.ARMAP,
+      onPress: () => {
+        NavigationService.navigate('MyARMap', {
+          title: getLanguage(GLOBAL.language).Profile.ARMAP,
+          chatCallback: (_path, fileName) => {
+            context.props.sendCallBack(4, _path, fileName)
+          },
+        })
+        context.setModalVisible()
+      },
     },
-  },
-  // {
-  //   name: require('../../../../assets/lightTheme/friend/app_chat_data.png'),
-  //   type: 'ionicon',
-  //   text: getLanguage(GLOBAL.language).Friends.TEMPLATE,
-  //   onPress: () => {
-  //     NavigationService.navigate('MyModule', {
-  //       formChat: true,
-  //       // eslint-disable-next-line
-  //       chatCallBack: _path => {},
-  //     })
-  //     context.setModalVisible()
-  //   },
-  // },
-  {
-    name: require('../../../../assets/lightTheme/friend/app_chat_location.png'),
-    type: 'material',
-    text: getLanguage(GLOBAL.language).Friends.LOCATION,
-    onPress: () => {
-      context.setModalVisible()
-      context.handleLocationClick()
+    // {
+    //   name: require('../../../../assets/lightTheme/friend/app_chat_data.png'),
+    //   type: 'ionicon',
+    //   text: getLanguage(GLOBAL.language).Friends.TEMPLATE,
+    //   onPress: () => {
+    //     NavigationService.navigate('MyModule', {
+    //       formChat: true,
+    //       // eslint-disable-next-line
+    //       chatCallBack: _path => {},
+    //     })
+    //     context.setModalVisible()
+    //   },
+    // },
+    {
+      name: require('../../../../assets/lightTheme/friend/app_chat_location.png'),
+      type: 'material',
+      text: getLanguage(GLOBAL.language).Friends.LOCATION,
+      onPress: () => {
+        context.setModalVisible()
+        context.handleLocationClick()
+      },
     },
-  },
-  {
-    name: require('../../../../assets/lightTheme/friend/app_chat_pic.png'),
-    type: 'material',
-    text: getLanguage(GLOBAL.language).Friends.PICTURE,
-    onPress: () => {
-      context.setModalVisible()
-      ImagePicker.AlbumListView.defaultProps.showDialog = false
-      ImagePicker.AlbumListView.defaultProps.assetType = 'Photos'
-      ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
-      ImagePicker.getAlbum({
-        maxSize: 1,
-        callback: async data => {
-          // console.log(data)
-          if (data.length > 0) {
-            context.props.sendCallBack(2, data[0])
-          }
-        },
-      })
+    {
+      name: require('../../../../assets/lightTheme/friend/app_chat_pic.png'),
+      type: 'material',
+      text: getLanguage(GLOBAL.language).Friends.PICTURE,
+      onPress: () => {
+        context.setModalVisible()
+        ImagePicker.AlbumListView.defaultProps.showDialog = false
+        ImagePicker.AlbumListView.defaultProps.assetType = 'Photos'
+        ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
+        ImagePicker.getAlbum({
+          maxSize: 1,
+          callback: async data => {
+            // console.log(data)
+            if (data.length > 0) {
+              context.props.sendCallBack(2, data[0])
+            }
+          },
+        })
+      },
     },
-  },
-]
+    {
+      name: getThemeAssets().mine.my_data,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE,
+      onPress: () => {
+        NavigationService.navigate('MyDatasource', {
+          title: getLanguage(GLOBAL.language).Profile.DATA,
+          chatCallback: (_path, fileName) => {
+            context.props.sendCallBack(5, _path, fileName)
+          },
+        })
+        context.setModalVisible()
+      },
+    },
+    {
+      name: getThemeAssets().mine.my_symbol,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Profile.SYMBOL,
+      onPress: () => {
+        NavigationService.navigate('MySymbol', {
+          title: getLanguage(GLOBAL.language).Profile.SYMBOL,
+          chatCallback: (_path, fileName) => {
+            context.props.sendCallBack(6, _path, fileName)
+          },
+        })
+        context.setModalVisible()
+      },
+    },
+    {
+      name: getThemeAssets().mine.my_color,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Profile.COLOR_SCHEME,
+      onPress: () => {
+        NavigationService.navigate('MyColor', {
+          title: getLanguage(GLOBAL.language).Profile.COLOR_SCHEME,
+          chatCallback: (_path, fileName) => {
+            context.props.sendCallBack(7, _path, fileName)
+          },
+        })
+        context.setModalVisible()
+      },
+    },
+    {
+      name: getThemeAssets().mine.my_ai,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Profile.AIMODEL,
+      onPress: () => {
+        NavigationService.navigate('MyAIModel', {
+          title: getLanguage(GLOBAL.language).Profile.AIMODEL,
+          chatCallback: (_path, fileName) => {
+            context.props.sendCallBack(8, _path, fileName)
+          },
+        })
+        context.setModalVisible()
+      },
+    },
+    {
+      name: getThemeAssets().ar.armap.ar_effect,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Profile.AREFFECT,
+      onPress: () => {
+        NavigationService.navigate('MyAREffect', {
+          title: getLanguage(GLOBAL.language).Profile.AREFFECT,
+          chatCallback: (_path, fileName) => {
+            context.props.sendCallBack(9, _path, fileName)
+          },
+        })
+        context.setModalVisible()
+      },
+    },
+    {
+      name: getThemeAssets().ar.armap.ar_model,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Profile.ARMODEL,
+      onPress: () => {
+        NavigationService.navigate('MyARModel', {
+          title: getLanguage(GLOBAL.language).Profile.ARMODEL,
+          chatCallback: (_path, fileName) => {
+            context.props.sendCallBack(10, _path, fileName)
+          },
+        })
+        context.setModalVisible()
+      },
+    },
+  ]
 
+  if(Platform.OS === 'ios') {
+    data.pop()
+  }
+
+  return data
+}
 export default class CustomActions extends React.Component {
   props: {
     callBack: () => {},

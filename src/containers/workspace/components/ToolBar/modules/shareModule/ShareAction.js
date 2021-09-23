@@ -64,9 +64,9 @@ async function shareMap(type, list = [], name = '') {
           Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_START)
           const onProgress = progress => {
             progress = parseInt(progress)
-            if (progress % 10 !== 0) {
-              return
-            }
+            // if (progress % 10 !== 0) {
+            //   return
+            // }
             let currentSharingProgress = 0
             for (
               let i = 0;
@@ -95,6 +95,8 @@ async function shareMap(type, list = [], name = '') {
           }
           const onResult = async result => {
             if (result) {
+              let info = await JSOnlineService.getLoginUserInfo()
+              console.warn(info && JSON.stringify(info))
               await JSOnlineService.setDatasShareConfig(result, true)
               ToolbarModule.getParams().setSharing({
                 module: GLOBAL.Type,

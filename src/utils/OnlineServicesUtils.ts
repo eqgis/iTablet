@@ -427,43 +427,47 @@ export default class OnlineServicesUtils {
    * @param isPublic 是否公开
    */
   async setDatasShareConfig(id: string, isPublic: boolean): Promise<boolean> {
-    let url = this.serverUrl + `/mycontent/datas/sharesetting.rjson`
-    let headers = {}
-    let cookie = await this.getCookie(true)
-    if (cookie) {
-      headers = {
-        cookie: cookie,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+    try {
+      let url = this.serverUrl + `/mycontent/datas/sharesetting.rjson`
+      let headers = {}
+      let cookie = await this.getCookie(true)
+      if (cookie) {
+        headers = {
+          cookie: cookie,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }
       }
+      let entities: any[]
+      if (isPublic) {
+        entities = [
+          {
+            entityType: 'USER',
+            entityName: 'GUEST',
+            dataPermissionType: 'DOWNLOAD',
+          },
+        ]
+      } else {
+        entities = []
+      }
+      url = encodeURI(url)
+      let response = await RNFetchBlob.config({trusty:true}).fetch('PUT', url, headers, 
+      JSON.stringify({
+        ids: [id],
+        entities: entities,
+      }))
+      let result = await response.json()
+      // let result = await request(url, 'PUT', {
+      //   headers: headers,
+      //   body: {
+      //     ids: [id],
+      //     entities: entities,
+      //   },
+      // })
+      return result.succeed
+    } catch(e) {
+      return false
     }
-    let entities: any[]
-    if (isPublic) {
-      entities = [
-        {
-          entityType: 'USER',
-          entityName: 'GUEST',
-          dataPermissionType: 'DOWNLOAD',
-        },
-      ]
-    } else {
-      entities = []
-    }
-    url = encodeURI(url)
-    let response = await RNFetchBlob.config({trusty:true}).fetch('PUT', url, headers, 
-    JSON.stringify({
-      ids: [id],
-      entities: entities,
-    }))
-    let result = await response.json()
-    // let result = await request(url, 'PUT', {
-    //   headers: headers,
-    //   body: {
-    //     ids: [id],
-    //     entities: entities,
-    //   },
-    // })
-    return result.succeed
   }
 
 

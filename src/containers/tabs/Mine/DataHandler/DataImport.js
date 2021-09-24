@@ -91,7 +91,7 @@ async function importDataset(
 
 async function importXmlTemplate(user,item) {
   const userPath = await FileTools.appendingHomeDirectory(
-    `${ConstPath.UserPath + user.userName}/${ConstPath.RelativePath.Attribute}`,
+    ConstPath.ExternalData + '/XmlTemplate/',
   )
   return await _copyFile(item, userPath)
 }

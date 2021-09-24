@@ -243,15 +243,6 @@ export default class DataItem extends Component {
         await FileTools.deleteFile(fileDir)
       }
 
-      //处理标绘模版下载后放入外部数据导入目录中 add jiakai
-      if (result) {
-        let tempArr = []
-        tempArr = await FileTools.getPathListByFilterDeep(fileDir,'plot')
-        if (tempArr.length > 0) {
-          await FileTools.copyFile(fileDir, externalPath+'Plotting/'+name, true)
-          await FileTools.deleteFile(fileDir)
-        }
-      }
     } else {
       result = await FileTools.copyFile(path, externalPath + fileName, true)
     }

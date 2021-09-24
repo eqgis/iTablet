@@ -39,14 +39,14 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
     let ARMODEL = []
     let ARMAP = []
     let AREFFECT = []
-
     // 专题制图导出的xml
     let Xml_Template = []
+
     // 过滤临时文件： ~[0]@xxxx
     _checkTempFile(contentList)
 
     if(types.length === 0 || types.indexOf('plot') > -1) {
-      PL = await getPLList(path, contentList)
+      PL = getPLList(path, contentList)
     }
     if(types.length === 0 || types.indexOf('armap') > -1) {
       ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
@@ -108,7 +108,7 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
       COLOR = getColorList(path, contentList)
     }
     if(types.length === 0 || types.indexOf('xml_template') > -1) {
-      Xml_Template = getXmlTemplateList(path, contentList)
+      Xml_Template = getXmlTemplateList(path, contentList, uncheckedChildFileList)
     }
 
     resultList = resultList
@@ -140,45 +140,30 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
   }
 }
 
-function getXmlTemplateList(path, contentList) {
-  let xmlList = []
-  try{
-    let xmlDirContent = []
-    let dirName
-    // 找到xmlTemplate文件夹
-    for(let i = 0;i < contentList.length; i++){
-      if(contentList[i].name === 'XmlTemplate') {
-        contentList[i].check = true
-        dirName = contentList[i].name
-        xmlDirContent = contentList[i].contentList
-        break
-      }
-    }
-    // 找到该文件夹下xml文件
-    for(let i = 0;i < xmlDirContent.length; i++){
-      if(xmlDirContent[i].type === 'file'){
-        xmlList.push({
-          directory: `${path}/${dirName}`,
-          fileName: xmlDirContent[i].name,
-          filePath: `${path}/${dirName}/${xmlDirContent[i].name}`,
-          fileType: 'xmltemplate',
-        })
-      }
-    }
-    return xmlList
-  }catch (e){
-    return xmlList
-  }
-}
-
 /** 获取标绘模版 */
-async function getPLList(path, contentList) {
+function getPLList(path, contentList) {
   let PL = []
+  const relatedFiles = []
   try {
     for (let i = 0; i < contentList.length; i++) {
-      if (contentList[i].name === 'Plotting') {
-        contentList[i].check = true
-        PL = await _getPlottingList(`${path}/${contentList[i].name}`)
+      if (!contentList[i].check && contentList[i].type === 'directory') {
+        if(_isPlotDir(contentList[i].contentList)) {
+          _checkPlotDir(relatedFiles, `${path}/${contentList[i].name}` ,contentList[i].contentList)
+          PL.push({
+            filePath: `${path}/${contentList[i].name}`,
+            fileName: contentList[i].name,
+            directory: path,
+            fileType: 'plotting',
+            relatedFiles,
+          })
+        } else {
+          PL = PL.concat(
+            getPLList(
+              `${path}/${contentList[i].name}`,
+              contentList[i].contentList,
+            ),
+          )
+        }
       }
     }
     return PL
@@ -862,25 +847,46 @@ function getARMAPList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-/** 标绘模版 */
-async function _getPlottingList(path) {
-  const arrFile = []
-  const arrPlotDirContent = await FileTools.getDirectoryContent(path)
-  for (let i = 0; i < arrPlotDirContent.length; i++) {
-    const fileContent = arrPlotDirContent[i]
-    const isFile = fileContent.type
-    const fileName = fileContent.name
-    const newPath = `${path}/${fileName}`
-    if (isFile === 'directory') {
-      arrFile.push({
-        filePath: newPath,
-        fileName,
-        directory: newPath,
-        fileType: 'plotting',
-      })
+function getXmlTemplateList(path, contentList, uncheckedChildFileList) {
+  let DATA = []
+  try {
+    _checkUncheckedFile(path, contentList, uncheckedChildFileList)
+    for (let i = 0; i < contentList.length; i++) {
+      if (!contentList[i].check && contentList[i].type === 'file') {
+        if (_isXmlTemplate(contentList[i].name)) {
+          contentList[i].check = true
+          DATA.push({
+            directory: path,
+            fileName: contentList[i].name,
+            filePath: `${path}/${contentList[i].name}`,
+            fileType: 'xmltemplate',
+          })
+        }
+      } else if (!contentList[i].check && contentList[i].type === 'directory') {
+        DATA = DATA.concat(
+          getXmlTemplateList(
+            `${path}/${contentList[i].name}`,
+            contentList[i].contentList,
+            uncheckedChildFileList,
+          ),
+        )
+      }
+    }
+    return DATA
+  } catch (error) {
+    return DATA
+  }
+}
+
+function _checkPlotDir(relatedFiles, path, contentList) {
+  for (let i = 0; i < contentList.length; i++) {
+    if (!contentList[i].check && contentList[i].type === 'directory') {
+      if(contentList[i].name === 'Symbol' || contentList[i].name === 'SymbolIcon') {
+        contentList[i].check = true
+        relatedFiles.push(`${path}/${contentList[i].name}`)
+      }
     }
   }
-  return arrFile
 }
 
 async function _checkRelatedARDS(relatedFiles, name, path, contentList) {
@@ -1099,6 +1105,29 @@ function _checkRelatedAIModel(relatedFiles, name, path, contentList) {
   }
 }
 
+/**
+ * 检查此文件夹内是否包含 Symbol 和 SymbolIcon 文件夹
+ * 且 Symbol 文件夹含有 plot 文件
+ */
+function _isPlotDir(contentList) {
+  let hasIcon = false
+  let plots = []
+  for (let i = 0; i < contentList.length; i++) {
+    if (!contentList[i].check && contentList[i].type === 'directory') {
+      if(contentList[i].name === 'Symbol') {
+        plots = contentList[i].contentList.filter(item => {
+          return _isPlot(item.name)
+        })
+      }
+      if(contentList[i].name === 'SymbolIcon') {
+        hasIcon = true
+      }
+    }
+  }
+  return plots.length > 0 && hasIcon
+}
+
+
 function _isType(name, types = []) {
   name = name.toLowerCase()
   const index = name.lastIndexOf('.')
@@ -1115,6 +1144,10 @@ function _isType(name, types = []) {
     }
   }
   return result
+}
+
+function _isPlot(name) {
+  return _isType(name, ['plot'])
 }
 
 function _isWorkspace(name) {
@@ -1253,6 +1286,11 @@ function _isRelatedAIModel(name, checkName) {
   }
   return false
 }
+
+function _isXmlTemplate(name) {
+  return name.toLowerCase().endsWith('_template.xml')
+}
+
 
 async function _getLocalWorkspaceInfo(serverPath) {
   return await SMap.getLocalWorkspaceInfo(serverPath)

@@ -12,6 +12,7 @@ class MyTemplate extends MyDataPage {
       shareToLocal: true,
       shareToOnline: true,
       shareToIPortal: true,
+      shareToFriend: true,
       showSectionHeader: true,
     }
   }

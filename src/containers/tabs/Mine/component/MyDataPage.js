@@ -526,6 +526,12 @@ export default class MyDataPage extends Component {
             type = MsgConstant.MSG_COLORSCHEME
           } else if (this.type === this.types.aimodel) {
             type = MsgConstant.MSG_AI_MODEL
+          } else if (this.type === this.types.template) {
+            if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE) {
+              type = MsgConstant.MSG_TEMPLATE_PLOT
+            } else if (this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.MAP_TEMPLATE) {
+              type = MsgConstant.MSG_TEMPLATE_MAP
+            }
           }
           let action = [
             {

@@ -1288,7 +1288,7 @@ function _isRelatedAIModel(name, checkName) {
 }
 
 function _isXmlTemplate(name) {
-  return name.toLowerCase().endsWith('_template.xml')
+  return  _isType(name, ['xml']) && name.toLowerCase().indexOf('_template') > -1
 }
 
 

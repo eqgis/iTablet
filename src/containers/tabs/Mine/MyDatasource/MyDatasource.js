@@ -18,6 +18,7 @@ class MyDatasource extends MyDataPage {
       shareToOnline: true,
       shareToIPortal: true,
       shareToWechat: true,
+      shareToFriend: true,
     }
     this.from = params.from
     this.showMore = this.from === 'MapView' ? false : undefined

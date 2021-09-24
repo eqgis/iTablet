@@ -263,13 +263,14 @@ class GroupSourceManagePage extends Component<Props, State> {
     })
   }
 
-  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', cb = () => { } }: any) => {
+  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', orderBy = 'UPDATETIME', cb = () => { } }: any) => {
     this.servicesUtils?.getGroupResources({
       groupId: this.props.currentGroup.id,
       // resourceCreator: this.props.user.currentUser.userId,
       currentPage: currentPage,
       pageSize: pageSize,
       orderType: orderType,
+      orderBy: orderBy,
     }).then((result: any) => {
       if (result && result.content) {
         let _data = []

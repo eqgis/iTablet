@@ -1,4 +1,4 @@
-import { SMap, EngineType, SScene, SARMap } from 'imobile_for_reactnative'
+import { SMap, EngineType, SScene, SARMap, AppInfo } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
 
@@ -253,6 +253,9 @@ async function importDatasource(user, item) {
         const keys = Object.keys(description)
         for (const key of keys) {
           const path = description[key]
+          //加上用户信息 add xiezhy
+          //path = [NSString stringWithFormats:@"%@/User/%@/Data%@",[AppInfo getRootPath],[AppInfo getUserName], path];
+          path = await AppInfo.getRootPath() + '/User/' + await AppInfo.getUserName() + '/Data' + path
           const fromMediaPath = mediaPath + '/' + path.substring(path.lastIndexOf('/') + 1)
           const toMediaPath = await FileTools.appendingHomeDirectory(path)
           await FileTools.copyFile(fromMediaPath, toMediaPath)

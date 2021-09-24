@@ -29,6 +29,10 @@ export default {
   MSG_ARMAP: 11, // AR地图
   MSG_ARMODAL: 12, // AR模型
   MSG_AREFFECT: 13, // AR特效
+  MSG_DATASOURCE: 14, // 数据源
+  MSG_SYMBOL: 15, //符号
+  MSG_COLORSCHEME: 16, //色带
+  MSG_AI_MODEL: 17, // AI模型
   MSG_INVITE_COWORK: 21, // 协作邀请
 
   // MSG_COWORK 中的message的type

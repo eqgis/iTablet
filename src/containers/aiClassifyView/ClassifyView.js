@@ -267,7 +267,7 @@ export default class ClassifyView extends React.Component {
       let saveAble = false
       if (currentLayer) {
         let layerType = LayerUtils.getLayerType(currentLayer)
-        saveAble = layerType === 'TAGGINGLAYER' || layerType === 'CAD' || layerType === 'POINTLAYER'
+        saveAble = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
         // && currentLayer.datasourceAlias.match(reg)
       }
       if (saveAble) {

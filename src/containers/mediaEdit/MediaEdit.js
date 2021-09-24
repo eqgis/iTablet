@@ -1115,20 +1115,20 @@ export default class MediaEdit extends React.Component {
         {/*withBackBtn*/}
         {/*isModal*/}
         {/*/>*/}
-        <MediaPager
-          ref={ref => (this.mediaViewer = ref)}
-          data={this.state.paths}
-          withBackBtn
-          isModal
-          device={this.props.device}
-          onVisibleChange={visible => {
-            this.setState({
-              showBg: visible,
-            })
-          }}
-        />
         {this.renderDeleteDialog()}
       </Container>
+      <MediaPager
+        ref={ref => (this.mediaViewer = ref)}
+        data={this.state.paths}
+        withBackBtn
+        isModal
+        device={this.props.device}
+        onVisibleChange={visible => {
+          this.setState({
+            showBg: visible,
+          })
+        }}
+      />
       {/* 部分安卓设备竖屏进入MediaPager切换横屏 状态栏把MediaPager往下挤 看到底图 所以打开时显示个背景 zcj */}
       {Platform.OS === 'android' && this.state.showBg &&
         <View style={{width: '100%', height: '100%', position: 'absolute', backgroundColor: '#000'}}></View>}

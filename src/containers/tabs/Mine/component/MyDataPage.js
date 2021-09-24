@@ -518,6 +518,14 @@ export default class MyDataPage extends Component {
             type = MsgConstant.MSG_AREFFECT
           } else if (this.type === this.types.armodel) {
             type = MsgConstant.MSG_ARMODAL
+          } else if (this.type === this.types.data) {
+            type = MsgConstant.MSG_DATASOURCE
+          } else if (this.type === this.types.symbol) {
+            type = MsgConstant.MSG_SYMBOL
+          } else if (this.type === this.types.color) {
+            type = MsgConstant.MSG_COLORSCHEME
+          } else if (this.type === this.types.aimodel) {
+            type = MsgConstant.MSG_AI_MODEL
           }
           let action = [
             {

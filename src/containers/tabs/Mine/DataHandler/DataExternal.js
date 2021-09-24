@@ -45,6 +45,9 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
     // 过滤临时文件： ~[0]@xxxx
     _checkTempFile(contentList)
 
+    if(types.length === 0 || types.indexOf('plot') > -1) {
+      PL = await getPLList(path, contentList)
+    }
     if(types.length === 0 || types.indexOf('armap') > -1) {
       ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
     }
@@ -69,29 +72,45 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
     if(types.length === 0 || types.indexOf('areffect') > -1) {
       AREFFECT = getAREffectList(path, contentList)
     }
-
-    // ARMAP = await getARMAPList(path, contentList, uncheckedChildFileList)
-    PL = await getPLList(path, contentList)
-    // WS = await getWSList(path, contentList, uncheckedChildFileList)
-    // WS3D = await getWS3DList(path, contentList, uncheckedChildFileList)
-    // DS = getDSList(path, contentList, uncheckedChildFileList)
-    SCI = getSCIDSList(path, contentList, uncheckedChildFileList)
-    TIF = getTIFList(path, contentList, uncheckedChildFileList)
-    SHP = getSHPList(path, contentList, uncheckedChildFileList)
-    MIF = getMIFList(path, contentList, uncheckedChildFileList)
-    KML = getKMLList(path, contentList, uncheckedChildFileList)
-    KMZ = getKMZList(path, contentList, uncheckedChildFileList)
-    if (Platform.OS === 'ios') {
-      DWG = getDWGList(path, contentList, uncheckedChildFileList)
-      DXF = getDXFList(path, contentList, uncheckedChildFileList)
+    if(types.length === 0 || types.indexOf('sci') > -1) {
+      SCI = getSCIDSList(path, contentList, uncheckedChildFileList)
     }
-    GPX = getGPXList(path, contentList, uncheckedChildFileList)
-    IMG = getIMGList(path, contentList, uncheckedChildFileList)
-    COLOR = getColorList(path, contentList)
-    // SYMBOL = getSymbolList(path, contentList)
-    // AIMODEL = getAIModelList(path, contentList)
+    if(types.length === 0 || types.indexOf('tif') > -1) {
+      TIF = getTIFList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('shp') > -1) {
+      SHP = getSHPList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('mif') > -1) {
+      MIF = getMIFList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('kml') > -1) {
+      KML = getKMLList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('kmz') > -1) {
+      KMZ = getKMZList(path, contentList, uncheckedChildFileList)
+    }
+    if (Platform.OS === 'ios') {
+      if(types.length === 0 || types.indexOf('dwg') > -1) {
+        DWG = getDWGList(path, contentList, uncheckedChildFileList)
+      }
+      if(types.length === 0 || types.indexOf('dxf') > -1) {
+        DXF = getDXFList(path, contentList, uncheckedChildFileList)
+      }
+    }
+    if(types.length === 0 || types.indexOf('gpx') > -1) {
+      GPX = getGPXList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('img') > -1) {
+      IMG = getIMGList(path, contentList, uncheckedChildFileList)
+    }
+    if(types.length === 0 || types.indexOf('color') > -1) {
+      COLOR = getColorList(path, contentList)
+    }
+    if(types.length === 0 || types.indexOf('xml_template') > -1) {
+      Xml_Template = getXmlTemplateList(path, contentList)
+    }
 
-    Xml_Template = await getXmlTemplateList(path, contentList)
     resultList = resultList
       .concat(PL)
       .concat(WS)
@@ -121,7 +140,7 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
   }
 }
 
-async function getXmlTemplateList(path, contentList) {
+function getXmlTemplateList(path, contentList) {
   let xmlList = []
   try{
     let xmlDirContent = []

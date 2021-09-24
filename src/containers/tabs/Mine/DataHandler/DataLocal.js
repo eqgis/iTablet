@@ -31,6 +31,12 @@ async function getLocalData(user, type) {
         'Template',
       )
       break
+    case 'MAPPING_COLLECTING':
+      dataList = await NativeMethod.getTemplatesList(
+        user.userName,
+        'XmlTemplate',
+      )
+      break
     case 'AIMODEL':
       dataList = await _getAIModelDataList(user)
       break

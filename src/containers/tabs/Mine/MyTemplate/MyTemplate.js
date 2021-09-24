@@ -25,10 +25,19 @@ class MyTemplate extends MyDataPage {
       this.props.user.currentUser,
       'TEMPLAE_COLLECTING',
     )
+    let mappingData = await DataHandler.getLocalData(
+      this.props.user.currentUser,
+      'MAPPING_COLLECTING',
+    )
     let sectionData = []
     sectionData.push({
       title: getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE,
       data: plotData || [],
+      isShowItem: true,
+    })
+    sectionData.push({
+      title: getLanguage(GLOBAL.language).Profile.MAP_TEMPLATE,
+      data: mappingData || [],
       isShowItem: true,
     })
     sectionData.push({

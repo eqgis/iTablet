@@ -210,6 +210,13 @@ export default class DataItem extends Component {
       type = fileName.substring(index + 1).toLowerCase()
     }
 
+    //处理地图模版下载后自动导入 add jiakai
+    if (name.indexOf('_template') !== -1) {
+      externalPath =
+        appHome +
+        ConstPath.ExternalData + '/' + 'XmlTemplate/'
+    }
+
     let result
     if (!type) {
       result = false
@@ -225,6 +232,26 @@ export default class DataItem extends Component {
         }
       }
       result = await FileTools.unZipFile(path, fileDir)
+
+      //处理地图模版下载后自动导入 add jiakai
+      if (result && name.indexOf('_template') !== -1) {
+        externalPath =
+          appHome +
+          ConstPath.ExternalData + '/' + 'XmlTemplate/'
+        await FileTools.deleteFile(externalPath + name + '.xml')
+        await FileTools.copyFile(fileDir + '/' + name + '.xml', externalPath+name + '.xml', true)
+        await FileTools.deleteFile(fileDir)
+      }
+
+      //处理标绘模版下载后放入外部数据导入目录中 add jiakai
+      if (result) {
+        let tempArr = []
+        tempArr = await FileTools.getPathListByFilterDeep(fileDir,'plot')
+        if (tempArr.length > 0) {
+          await FileTools.copyFile(fileDir, externalPath+'Plotting/'+name, true)
+          await FileTools.deleteFile(fileDir)
+        }
+      }
     } else {
       result = await FileTools.copyFile(path, externalPath + fileName, true)
     }

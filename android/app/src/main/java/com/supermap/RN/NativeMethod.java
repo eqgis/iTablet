@@ -119,6 +119,8 @@ public class NativeMethod extends ReactContextBaseJavaModule {
             WritableArray templateList = Arguments.createArray();
             if (strModule == null || strModule.equals("")) {
                 templatePath = SDCARD + "iTablet/ExternalData";
+            }else if(strModule != null && strModule.equals("XmlTemplate")){
+                templatePath = SDCARD + "iTablet/ExternalData/XmlTemplate";
             } else {
                 templatePath = SDCARD + "iTablet/User/"+userName+ "/Data/" + strModule;
             }

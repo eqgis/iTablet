@@ -20,6 +20,7 @@ const Profile: typeof CN.Profile = {
   AIMODEL: 'AI Model',
   COLLECTION_TEMPLATE: 'Surveying Template',
   PLOTTING_TEMPLATE: 'Plotting Template',
+  MAP_TEMPLATE: 'Mapping Template',
   NAVIGATION: 'Navigation',
   INCREMENT: 'Increment',
   ENCLOSURE: 'Enclosure',

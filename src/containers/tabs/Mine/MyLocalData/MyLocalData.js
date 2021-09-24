@@ -523,6 +523,29 @@ export default class MyLocalData extends Component {
               await DataHandler.importExternalData(currentUser, dataList[i]),
             )
           }
+
+          //处理online地图模版导入 add jiakai
+          if (name.indexOf('_template') !== -1) {
+            let appHome = await FileTools.appendingHomeDirectory()
+            let externalPath =
+              appHome +
+              ConstPath.ExternalData + '/' + 'XmlTemplate/'
+
+            await FileTools.deleteFile(externalPath + name + '.xml')
+            results.push(
+              await FileTools.copyFile(toPath + '/' + name + '.xml', externalPath + name + '.xml', true)
+            )
+          }
+
+          //处理online标绘模版导入
+          let tempArr = []
+          tempArr = await FileTools.getPathListByFilterDeep(toPath,'plot')
+          if (tempArr.length > 0) {
+            results.push(
+              await DataHandler.importExternalData(currentUser, {fileType:'plotting',filePath:toPath}),
+            )
+          }
+
           result = results.some(value => value === true)
           FileTools.deleteFile(toPath)
         }

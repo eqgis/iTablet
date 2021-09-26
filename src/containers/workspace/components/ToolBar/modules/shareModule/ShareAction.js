@@ -85,7 +85,6 @@ async function shareMap(type, list = [], name = '') {
               }
             }
             if (progress < 100 && currentSharingProgress !== progress / 100) {
-              // console.warn('uploading: ' + progress)
               ToolbarModule.getParams().setSharing({
                 module: GLOBAL.Type,
                 name: dataName,
@@ -96,7 +95,6 @@ async function shareMap(type, list = [], name = '') {
           const onResult = async result => {
             if (result) {
               let info = await JSOnlineService.getLoginUserInfo()
-              console.warn(info && JSON.stringify(info))
               await JSOnlineService.setDatasShareConfig(result, true)
               ToolbarModule.getParams().setSharing({
                 module: GLOBAL.Type,

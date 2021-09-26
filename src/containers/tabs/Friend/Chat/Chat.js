@@ -790,6 +790,8 @@ class Chat extends React.Component {
       case MSGConstant.MSG_SYMBOL:
       case MSGConstant.MSG_COLORSCHEME:
       case MSGConstant.MSG_AI_MODEL:
+      case MSGConstant.MSG_TEMPLATE_PLOT:
+      case MSGConstant.MSG_TEMPLATE_MAP:
         this.onCustomViewFileTouch(type, message)
         break
       case MSGConstant.MSG_LOCATION:
@@ -926,6 +928,12 @@ class Chat extends React.Component {
             break
           case MSGConstant.MSG_AI_MODEL:
             this.showImportDataDialog('aimodel', message)
+            break
+          case MSGConstant.MSG_TEMPLATE_PLOT:
+            this.showImportDataDialog('plot', message)
+            break
+          case MSGConstant.MSG_TEMPLATE_MAP:
+            this.showImportDataDialog('xml_template', message)
             break
           case MSGConstant.MSG_LAYER:
             if (!GLOBAL.coworkMode) {
@@ -1334,7 +1342,7 @@ class Chat extends React.Component {
       <CustomActions
         {...props}
         callBack={value => this.setState({ chatBottom: value })}
-        sendCallBack={(type, value, fileName) => {
+        sendCallBack={(type, value, fileName, tempType = undefined) => {
           if (type === 1) {
             this.onSendFile(MSGConstant.MSG_MAP, value, fileName)
           } else if (type === 3) {
@@ -1355,6 +1363,9 @@ class Chat extends React.Component {
             this.onSendFile(MSGConstant.MSG_AREFFECT, value, fileName)
           } else if (type === 10) {
             this.onSendFile(MSGConstant.MSG_ARMODAL, value, fileName)
+          } else if (type === 11) {
+            const msgType = tempType === 'plot' ? MSGConstant.MSG_TEMPLATE_PLOT : MSGConstant.MSG_TEMPLATE_MAP
+            this.onSendFile(msgType, value, fileName)
           }
         }}
       />
@@ -1496,6 +1507,8 @@ class Chat extends React.Component {
       || currentMessage.type === MSGConstant.MSG_SYMBOL
       || currentMessage.type === MSGConstant.MSG_COLORSCHEME
       || currentMessage.type === MSGConstant.MSG_AI_MODEL
+      || currentMessage.type === MSGConstant.MSG_TEMPLATE_PLOT
+      || currentMessage.type === MSGConstant.MSG_TEMPLATE_MAP
     ) {
       let progress = currentMessage.originMsg.message.message.progress
       if (progress === undefined) {

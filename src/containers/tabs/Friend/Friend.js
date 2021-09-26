@@ -1454,6 +1454,12 @@ export default class Friend extends Component {
       case MSGConstant.MSG_AI_MODEL:
         text = `[${getLanguage().Profile.AIMODEL}]`
         break
+      case MSGConstant.MSG_TEMPLATE_PLOT:
+        text = `[${getLanguage().Profile.PLOTTING_TEMPLATE}]`
+        break
+      case MSGConstant.MSG_TEMPLATE_MAP:
+        text = `[${getLanguage().Profile.MAP_TEMPLATE}]`
+        break
       default:
         break
     }

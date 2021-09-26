@@ -13,6 +13,7 @@ import { getThemeAssets } from '../../../../../assets'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
 import { downloadSourceFile, deleteSourceDownloadFile, IDownloadProps, Download } from '../../../../../redux/models/down'
+import { setCurrentGroup } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
 import { SCoordination, GroupType } from 'imobile_for_reactnative'
 import SourceItem, { MoreParams, ItemData } from '../components/SourceItem'
@@ -115,6 +116,7 @@ interface Props {
   sourceDownloads: Download[],
   downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
   deleteSourceDownloadFile: (params: {id: number}) => Promise<any[]>,
+  setCurrentGroup: (data: any) => Promise<any[]>,
 }
 
 type SelectedData =  {
@@ -152,7 +154,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   deleteDialog: Dialog | undefined | null
   dropdown: ModalDropdown
   modules: Array<any>
-  tempSelectedData: Map
+  tempSelectedData: Map<string, SelectedData>
 
   currentSelectData: MoreParams | undefined | null
 
@@ -257,9 +259,12 @@ class GroupSourceManagePage extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.getGroupResources({
-      pageSize: this.pageSize,
-      currentPage: 1,
+    this.servicesUtils?.getGroupInfo(this.props.currentGroup.id).then(groupInfo => {
+      this.props.setCurrentGroup(groupInfo.basicInfo)
+      this.getGroupResources({
+        pageSize: this.pageSize,
+        currentPage: 1,
+      })
     })
   }
 
@@ -489,23 +494,29 @@ class GroupSourceManagePage extends Component<Props, State> {
             this._setMutiChoice()
           }}
         />
-        <ImageButton
-          containerStyle={{
-            marginRight: scaleSize(6),
-            marginLeft: scaleSize(30),
-          }}
-          icon={getThemeAssets().cowork.icon_nav_export}
-          onPress={() => {
-            NavigationService.navigate('GroupSourceUploadPage', {
-              cb: () => {
-                this.getGroupResources({
-                  pageSize: this.pageSize,
-                  currentPage: 1,
-                })
-              },
-            })
-          }}
-        />
+        {
+          (
+            this.props.currentGroup?.resourceSharer === 'CREATOR' && this.props.currentGroup?.creator === this.props.user.currentUser.userName ||
+            this.props.currentGroup?.resourceSharer === 'MEMBER'
+          ) &&
+          <ImageButton
+            containerStyle={{
+              marginRight: scaleSize(6),
+              marginLeft: scaleSize(30),
+            }}
+            icon={getThemeAssets().cowork.icon_nav_export}
+            onPress={() => {
+              NavigationService.navigate('GroupSourceUploadPage', {
+                cb: () => {
+                  this.getGroupResources({
+                    pageSize: this.pageSize,
+                    currentPage: 1,
+                  })
+                },
+              })
+            }}
+          />
+        }
       </>
     )
     // if (this.state.isMutiChoice) {
@@ -750,7 +761,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         headerProps={{
           title: this.title,
           navigation: this.props.navigation,
-          headerRight: this._renderHeaderRight(),
+          headerRight: !this.state.firstLoad && this._renderHeaderRight(),
           // headerLeft: this.state.isMutiChoice && this._renderHeaderLeft(),
           // backAction: this.state.isMutiChoice && this._closeDelete,
           headerTitleViewStyle: {
@@ -786,6 +797,7 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = {
   downloadSourceFile,
   deleteSourceDownloadFile,
+  setCurrentGroup,
 }
 
 export default connect(

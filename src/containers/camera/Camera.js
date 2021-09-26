@@ -117,7 +117,7 @@ export default class Camera extends React.Component {
       this.setState({
         recordStatus: RECORD_STATUS.RECORDING,
       })
-      const options = { quality: 0.5, base64: true, pauseAfterCapture: true }
+      const options = { quality: 0.5, base64: true, pauseAfterCapture: true, fixOrientation: true }
       let data = await this.camera.takePictureAsync(options)
       this.setState({
         data,
@@ -444,7 +444,7 @@ export default class Camera extends React.Component {
         <RNCamera
           style={styles.preview}
           type={RNCamera.Constants.Type.back}
-          flashMode={RNCamera.Constants.FlashMode.on}
+          flashMode={RNCamera.Constants.FlashMode.auto}
           androidCameraPermissionOptions={{
             title: 'Permission to use camera',
             message: 'We need your permission to use your camera',

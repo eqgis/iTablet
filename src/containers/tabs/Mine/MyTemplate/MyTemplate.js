@@ -12,6 +12,7 @@ class MyTemplate extends MyDataPage {
       shareToLocal: true,
       shareToOnline: true,
       shareToIPortal: true,
+      shareToFriend: true,
       showSectionHeader: true,
     }
   }
@@ -21,10 +22,13 @@ class MyTemplate extends MyDataPage {
       this.props.user.currentUser,
       'TEMPLAE_PLOTTING',
     )
-    let collectingData = await DataHandler.getLocalData(
-      this.props.user.currentUser,
-      'TEMPLAE_COLLECTING',
-    )
+    let collectingData
+    if(!this.chatCallback) {
+      collectingData = await DataHandler.getLocalData(
+        this.props.user.currentUser,
+        'TEMPLAE_COLLECTING',
+      )
+    }
     let mappingData = await DataHandler.getLocalData(
       this.props.user.currentUser,
       'MAPPING_COLLECTING',
@@ -40,11 +44,13 @@ class MyTemplate extends MyDataPage {
       data: mappingData || [],
       isShowItem: true,
     })
-    sectionData.push({
-      title: getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE,
-      data: collectingData || [],
-      isShowItem: true,
-    })
+    if(!this.chatCallback) {
+      sectionData.push({
+        title: getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE,
+        data: collectingData || [],
+        isShowItem: true,
+      })
+    }
     return sectionData
   }
 

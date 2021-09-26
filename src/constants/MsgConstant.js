@@ -33,6 +33,8 @@ export default {
   MSG_SYMBOL: 15, //符号
   MSG_COLORSCHEME: 16, //色带
   MSG_AI_MODEL: 17, // AI模型
+  MSG_TEMPLATE_PLOT: 18, //标绘模板
+  MSG_TEMPLATE_MAP: 19, //地图模板
   MSG_INVITE_COWORK: 21, // 协作邀请
 
   // MSG_COWORK 中的message的type

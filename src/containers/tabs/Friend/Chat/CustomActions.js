@@ -15,13 +15,15 @@ import {
   NetInfo,
   Platform,
   PermissionsAndroid,
+  ScrollView,
+  Dimensions,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import { SOnlineService, SMap } from 'imobile_for_reactnative'
 import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
 import { SimpleDialog } from '../Component'
-import { Toast } from '../../../../utils'
+import { Toast, screen} from '../../../../utils'
 import { getThemeAssets } from '../../../../assets'
 import { ImagePicker } from '../../../../components'
 let AppUtils = NativeModules.AppUtils
@@ -189,10 +191,24 @@ const ICONS = context => {
         context.setModalVisible()
       },
     },
+    {
+      name: getThemeAssets().mine.icon_my_template,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+      onPress: () => {
+        NavigationService.navigate('MyTemplate', {
+          title: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+          chatCallback: (_path, fileName, tempType) => {
+            context.props.sendCallBack(11, _path, fileName, tempType)
+          },
+        })
+        context.setModalVisible()
+      },
+    },
   ]
 
   if(Platform.OS === 'ios') {
-    data.pop()
+    data.splice(9, 1)
   }
 
   return data
@@ -296,43 +312,57 @@ export default class CustomActions extends React.Component {
     return <SimpleDialog ref={ref => (this.SimpleDialog = ref)} />
   }
 
-  render() {
-    return (
-      <TouchableOpacity
-        style={[styles.container, this.props.containerStyle]}
-        onPress={() => {
-          this.setModalVisible(true)
-        }}
-      >
-        <Modal
-          transparent={true}
-          visible={this.state.modalVisible}
-          animationType={'fade'}
-          supportedOrientations={[
-            'portrait',
-            'portrait-upside-down',
-            'landscape',
-            'landscape-left',
-            'landscape-right',
-          ]}
-          onRequestClose={() => this.setModalVisible()}
-        >
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              style={modalStyles.overlay}
-              activeOpacity={1}
-              onPress={() => this.setModalVisible()}
-            />
+  _getMargin = () => {
+    const screenWidth = screen.getScreenSafeWidth(GLOBAL.getDevice().orientation)
+    const number = Math.floor(screenWidth / ITEM_WIDTH)
+    const space = screenWidth - number * ITEM_WIDTH
+    return space / 2 / number
+  }
 
-            <View style={modalStyles.modal}>
+  renderMenu = () => {
+    return (
+      <Modal
+        transparent={true}
+        visible={this.state.modalVisible}
+        animationType={'fade'}
+        supportedOrientations={[
+          'portrait',
+          'portrait-upside-down',
+          'landscape',
+          'landscape-left',
+          'landscape-right',
+        ]}
+        onRequestClose={() => this.setModalVisible()}
+      >
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+
+          <TouchableOpacity
+            style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent'}]}
+            onPress={() => this.setModalVisible()}
+          />
+
+          <View style={{
+            height: scaleSize(400),
+          }}>
+            <ScrollView
+              style={{
+                width: '100%',
+                backgroundColor: 'white',
+              }}
+              contentContainerStyle={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}
+              showsVerticalScrollIndicator={false}
+            >
               {ICONS(this).map((v, i) => (
                 <View
                   key={i}
                   style={[
                     modalStyles.itemView,
-                    // {
-                    //   marginRight: (i + 1) % 4 === 0 ? 0 : scaleSize(40),
-                    // },
+                    {
+                      marginHorizontal:  this._getMargin(),
+                    },
                   ]}
                 >
                   <TouchableOpacity onPress={() => v.onPress(this)}>
@@ -344,44 +374,40 @@ export default class CustomActions extends React.Component {
                   <Text style={modalStyles.textStyle}>{v.text}</Text>
                 </View>
               ))}
-            </View>
+            </ScrollView>
           </View>
-        </Modal>
-        {this.renderIcon()}
-        {this.renderSimpleDialog()}
-      </TouchableOpacity>
+        </View>
+      </Modal>
+    )
+  }
+
+  render() {
+    return (
+      <>
+        <TouchableOpacity
+          style={[styles.container, this.props.containerStyle]}
+          onPress={() => {
+            this.setModalVisible(true)
+          }}
+        >
+          {this.renderIcon()}
+          {this.renderSimpleDialog()}
+        </TouchableOpacity>
+        {this.renderMenu()}
+      </>
     )
   }
 }
+
+const ITEM_WIDTH = scaleSize(120)
+
 const modalStyles = StyleSheet.create({
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: '#rgba(255,0,0,0)',
-  },
-  modal: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    borderTopColor: '#rgba(160,160,160,1)',
-    borderTopWidth: 1,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    height: scaleSize(400),
-    padding: scaleSize(5),
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
   itemView: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: scaleSize(20),
-    width: scaleSize(120),
+    width: ITEM_WIDTH,
     height: scaleSize(120),
   },
   textStyle: {

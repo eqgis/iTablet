@@ -493,7 +493,14 @@ export default class MyDataPage extends Component {
     await this.exportData(fileName)
     let path = this.exportPath
     this.exportPath = ''
-    this.chatCallback && this.chatCallback(path, fileName)
+    // 细分模板类型
+    let tempType = undefined
+    if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE) {
+      tempType = 'plot'
+    } else if (this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.MAP_TEMPLATE) {
+      tempType = 'map'
+    }
+    this.chatCallback && this.chatCallback(path, fileName, tempType)
     NavigationService.goBack()
   }
 
@@ -526,6 +533,12 @@ export default class MyDataPage extends Component {
             type = MsgConstant.MSG_COLORSCHEME
           } else if (this.type === this.types.aimodel) {
             type = MsgConstant.MSG_AI_MODEL
+          } else if (this.type === this.types.template) {
+            if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE) {
+              type = MsgConstant.MSG_TEMPLATE_PLOT
+            } else if (this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.MAP_TEMPLATE) {
+              type = MsgConstant.MSG_TEMPLATE_MAP
+            }
           }
           let action = [
             {

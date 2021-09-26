@@ -129,7 +129,11 @@ function getData(type: string, params: any) {
                       keywords: keywords,
                       content: _content,
                     })
-                    _params.getLayers?.()
+                    await _params.getLayers?.()
+                    if (_params.currentLayer?.name === layerData.name) {
+                      const _layer = await SMap.getLayerInfo?.(layerData.path)
+                      _params.setCurrentLayer?.(_layer)
+                    }
                     Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
                   } else {
                     Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)

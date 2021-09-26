@@ -165,7 +165,7 @@ export default class Login extends React.Component {
         userInfo !== false &&
           userInfo.userId === this.props.user.currentUser.userId
       ) {
-        Toast.show(getLanguage().User.USER_ALREADY_LOGGEDIN)
+        Toast.show(getLanguage().Profile.LOGIN_CURRENT)
         return
       }
 
@@ -174,7 +174,7 @@ export default class Login extends React.Component {
       if (loginResult.userInfo) {
         const loginUser = loginResult.userInfo
         if(loginUser.userName === this.props.user.currentUser.userId) {
-          Toast.show(getLanguage().User.USER_ALREADY_LOGGEDIN)
+          Toast.show(getLanguage().Profile.LOGIN_CURRENT)
           return
         }
         await this.initUserDirectories(loginUser.userName)

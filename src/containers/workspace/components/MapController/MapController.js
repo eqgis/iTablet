@@ -278,6 +278,10 @@ export default class MapController extends React.Component {
       this.setCompass(0)
       return
     }
+
+    //通讯录点击定位和显示位置冲突
+    SMap.deleteMarker(GLOBAL.markerTag)
+
     SMap.moveToCurrent().then(result => {
       !result &&
         Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)

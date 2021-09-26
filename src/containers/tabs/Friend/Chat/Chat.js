@@ -786,6 +786,12 @@ class Chat extends React.Component {
       case MSGConstant.MSG_ARMAP:
       case MSGConstant.MSG_AREFFECT:
       case MSGConstant.MSG_ARMODAL:
+      case MSGConstant.MSG_DATASOURCE:
+      case MSGConstant.MSG_SYMBOL:
+      case MSGConstant.MSG_COLORSCHEME:
+      case MSGConstant.MSG_AI_MODEL:
+      case MSGConstant.MSG_TEMPLATE_PLOT:
+      case MSGConstant.MSG_TEMPLATE_MAP:
         this.onCustomViewFileTouch(type, message)
         break
       case MSGConstant.MSG_LOCATION:
@@ -900,41 +906,34 @@ class Chat extends React.Component {
         }
         switch (type) {
           case MSGConstant.MSG_ARMAP:
-            this.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Friends.IMPORT_CONFIRM,
-              confirmAction: () => {
-                this.importFileData('armap', message)
-              },
-            })
-            this.SimpleDialog.setVisible(true)
+            this.showImportDataDialog('armap', message)
             break
           case MSGConstant.MSG_AREFFECT:
-            this.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Friends.IMPORT_CONFIRM,
-              confirmAction: () => {
-                this.importFileData('areffect', message)
-              },
-            })
-            this.SimpleDialog.setVisible(true)
+            this.showImportDataDialog('areffect', message)
             break
           case MSGConstant.MSG_ARMODAL:
-            this.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Friends.IMPORT_CONFIRM,
-              confirmAction: () => {
-                this.importFileData('armodel', message)
-              },
-            })
-            this.SimpleDialog.setVisible(true)
+            this.showImportDataDialog('armodel', message)
             break
           case MSGConstant.MSG_MAP:
-            this.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Friends.IMPORT_CONFIRM,
-              confirmAction: () => {
-                // this.importMap(message)
-                this.importFileData('workspace', message)
-              },
-            })
-            this.SimpleDialog.setVisible(true)
+            this.showImportDataDialog('workspace', message)
+            break
+          case MSGConstant.MSG_DATASOURCE:
+            this.showImportDataDialog('datasource', message)
+            break
+          case MSGConstant.MSG_SYMBOL:
+            this.showImportDataDialog('symbol', message)
+            break
+          case MSGConstant.MSG_COLORSCHEME:
+            this.showImportDataDialog('color', message)
+            break
+          case MSGConstant.MSG_AI_MODEL:
+            this.showImportDataDialog('aimodel', message)
+            break
+          case MSGConstant.MSG_TEMPLATE_PLOT:
+            this.showImportDataDialog('plot', message)
+            break
+          case MSGConstant.MSG_TEMPLATE_MAP:
+            this.showImportDataDialog('xml_template', message)
             break
           case MSGConstant.MSG_LAYER:
             if (!GLOBAL.coworkMode) {
@@ -1127,30 +1126,6 @@ class Chat extends React.Component {
     Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_SUCCESS)
   }
 
-  importMap = async message => {
-    GLOBAL.Loading.setLoading(
-      true,
-      getLanguage(GLOBAL.language).Friends.IMPORT_DATA,
-    )
-    let homePath = await FileTools.appendingHomeDirectory()
-    let receivePath = homePath + message.originMsg.message.message.filePath
-    let importPath = homePath + '/iTablet/Import'
-    try {
-      await FileTools.unZipFile(receivePath, importPath)
-      let dataList = await DataHandler.getExternalData(importPath)
-      //暂时只支持单个工作空间的导入
-      if (dataList.length === 1 && dataList[0].fileType === 'workspace') {
-        await DataHandler.importWorkspace(dataList[0])
-      }
-      Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_SUCCESS)
-    } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_FAIL)
-    } finally {
-      GLOBAL.Loading.setLoading(false)
-      FileTools.deleteFile(importPath)
-    }
-  }
-
   importFileData = async (type, message) => {
     if (!type) return
     GLOBAL.Loading.setLoading(
@@ -1162,22 +1137,34 @@ class Chat extends React.Component {
     let importPath = homePath + '/iTablet/Import'
     try {
       let result = await FileTools.unZipFile(receivePath, importPath)
+      let isImport = false
       if (result) {
-        let dataList = await DataHandler.getExternalData(importPath)
-        //暂时只支持单个的导入
-        if (dataList.length === 1 && dataList[0].fileType === type) {
-          await DataHandler.importExternalData(this.curUser, dataList[0])
+        let dataList = await DataHandler.getExternalData(importPath, [type])
+        let results = []
+        for (let i = 0; i < dataList.length; i++) {
+          results.push(await DataHandler.importExternalData(this.curUser, dataList[i]))
         }
-        Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_SUCCESS)
-      } else {
-        Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_FAIL)
+        isImport = results.some(value => value === true)
       }
+      isImport
+        ? Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
+        : Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
     } catch (error) {
       Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_FAIL)
     } finally {
       GLOBAL.Loading.setLoading(false)
       FileTools.deleteFile(importPath)
     }
+  }
+
+  showImportDataDialog = (type, message) => {
+    this.SimpleDialog.set({
+      text: getLanguage(GLOBAL.language).Friends.IMPORT_CONFIRM,
+      confirmAction: () => {
+        this.importFileData(type, message)
+      },
+    })
+    this.SimpleDialog.setVisible(true)
   }
 
   showOpenCoworkDialog = () => {
@@ -1364,6 +1351,18 @@ class Chat extends React.Component {
             this.onSendPicture(value)
           } else if (type === 4) {
             this.onSendFile(MSGConstant.MSG_ARMAP, value, fileName)
+          } else if (type === 5) {
+            this.onSendFile(MSGConstant.MSG_DATASOURCE, value, fileName)
+          } else if (type === 6) {
+            this.onSendFile(MSGConstant.MSG_SYMBOL, value, fileName)
+          } else if (type === 7) {
+            this.onSendFile(MSGConstant.MSG_COLORSCHEME, value, fileName)
+          } else if (type === 8) {
+            this.onSendFile(MSGConstant.MSG_AI_MODEL, value, fileName)
+          } else if (type === 9) {
+            this.onSendFile(MSGConstant.MSG_AREFFECT, value, fileName)
+          } else if (type === 10) {
+            this.onSendFile(MSGConstant.MSG_ARMODAL, value, fileName)
           }
         }}
       />
@@ -1501,6 +1500,12 @@ class Chat extends React.Component {
       currentMessage.type === MSGConstant.MSG_LAYER ||
       currentMessage.type === MSGConstant.MSG_DATASET ||
       currentMessage.type === MSGConstant.MSG_PICTURE
+      || currentMessage.type === MSGConstant.MSG_DATASOURCE
+      || currentMessage.type === MSGConstant.MSG_SYMBOL
+      || currentMessage.type === MSGConstant.MSG_COLORSCHEME
+      || currentMessage.type === MSGConstant.MSG_AI_MODEL
+      || currentMessage.type === MSGConstant.MSG_TEMPLATE_PLOT
+      || currentMessage.type === MSGConstant.MSG_TEMPLATE_MAP
     ) {
       let progress = currentMessage.originMsg.message.message.progress
       if (progress === undefined) {

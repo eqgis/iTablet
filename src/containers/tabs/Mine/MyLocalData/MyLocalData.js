@@ -248,7 +248,7 @@ export default class MyLocalData extends Component {
 
       let delDirs = []
       if (this.itemInfo.item.fileType === 'plotting') {
-        delDirs = [this.itemInfo.item.directory]
+        delDirs = this.itemInfo.item.relatedFiles
       } else if (
         //todo 关联所有二三维工作空间的文件，直接删除关联文件而不是文件夹
         (this.itemInfo.item.fileType === 'workspace' ||

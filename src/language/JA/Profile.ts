@@ -20,6 +20,7 @@ const Profile: typeof CN.Profile = {
   AIMODEL: 'AI モデル', //jp0730
   COLLECTION_TEMPLATE: 'コレクションテンプレート',
   PLOTTING_TEMPLATE: 'アニメシンボルテンプレート',
+  MAP_TEMPLATE: 'Mapping Template',//need to translate
   NAVIGATION: 'ナビ',
   INCREMENT: 'インクリメント',
   ENCLOSURE: 'フェンス',

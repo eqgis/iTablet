@@ -14,6 +14,7 @@ class MyColor extends MyDataPage {
       shareToLocal: true,
       shareToOnline: true,
       shareToIPortal: true,
+      shareToFriend: true,
     }
   }
 

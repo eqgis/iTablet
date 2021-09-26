@@ -18,6 +18,7 @@ const Profile = {
   AIMODEL: 'AI模型',
   COLLECTION_TEMPLATE: '采集模板',
   PLOTTING_TEMPLATE: '标绘模板',
+  MAP_TEMPLATE: '地图模板',
   NAVIGATION: '导航',
   INCREMENT: '增量',
   ENCLOSURE: '围栏',

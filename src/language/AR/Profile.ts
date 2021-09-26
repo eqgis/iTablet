@@ -20,6 +20,7 @@ const Profile: typeof CN.Profile = {
   AIMODEL: 'نموذج الذكاء الاصطناعى',
   COLLECTION_TEMPLATE: 'تنسيق ملف مسح الاراضى',
   PLOTTING_TEMPLATE: 'تنسيق ملف توقيع النقاط',
+  MAP_TEMPLATE: 'Mapping Template',//need to translate
   NAVIGATION: 'ملاحى',
   INCREMENT: 'زيادة',
   ENCLOSURE: 'نسيج',

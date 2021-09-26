@@ -20,6 +20,7 @@ const Profile: typeof CN.Profile = {
   AIMODEL: 'AI Modeli',
   COLLECTION_TEMPLATE: 'Ölçme Taslağı',
   PLOTTING_TEMPLATE: 'Çizim Şablonu',
+  MAP_TEMPLATE: 'Mapping Template',//need to translate
   NAVIGATION: 'Navigasyon',
   INCREMENT: 'Arttırım',
   ENCLOSURE: 'Çevreleme',

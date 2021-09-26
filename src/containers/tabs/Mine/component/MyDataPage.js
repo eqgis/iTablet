@@ -518,6 +518,20 @@ export default class MyDataPage extends Component {
             type = MsgConstant.MSG_AREFFECT
           } else if (this.type === this.types.armodel) {
             type = MsgConstant.MSG_ARMODAL
+          } else if (this.type === this.types.data) {
+            type = MsgConstant.MSG_DATASOURCE
+          } else if (this.type === this.types.symbol) {
+            type = MsgConstant.MSG_SYMBOL
+          } else if (this.type === this.types.color) {
+            type = MsgConstant.MSG_COLORSCHEME
+          } else if (this.type === this.types.aimodel) {
+            type = MsgConstant.MSG_AI_MODEL
+          } else if (this.type === this.types.template) {
+            if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE) {
+              type = MsgConstant.MSG_TEMPLATE_PLOT
+            } else if (this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.MAP_TEMPLATE) {
+              type = MsgConstant.MSG_TEMPLATE_MAP
+            }
           }
           let action = [
             {

@@ -99,8 +99,14 @@ export default class CustomView extends React.Component {
     if (
       type === MSGConstant.MSG_MAP ||
       type === MSGConstant.MSG_AREFFECT ||
-      type === MSGConstant.MSG_ARMODAL ||
-      type === MSGConstant.MSG_ARMAP
+      (type === MSGConstant.MSG_ARMODAL && Platform.OS=== 'android')||
+      type === MSGConstant.MSG_ARMAP ||
+      type === MSGConstant.MSG_DATASOURCE ||
+      type === MSGConstant.MSG_SYMBOL ||
+      type === MSGConstant.MSG_COLORSCHEME ||
+      type === MSGConstant.MSG_AI_MODEL ||
+      type === MSGConstant.MSG_TEMPLATE_PLOT ||
+      type === MSGConstant.MSG_TEMPLATE_MAP
       // ||
       // type === MSGConstant.MSG_LAYER ||
       // type === MSGConstant.MSG_DATASET
@@ -132,13 +138,31 @@ export default class CustomView extends React.Component {
           typeText = 'Dataset'
           break
         case MSGConstant.MSG_ARMAP:
-          typeText = 'ARMap'
+          typeText = 'AR Map'
           break
         case MSGConstant.MSG_AREFFECT:
-          typeText = 'AREffect'
+          typeText = 'AR Effect'
           break
         case MSGConstant.MSG_ARMODAL:
-          typeText = 'ARModal'
+          typeText = 'AR Modal'
+          break
+        case MSGConstant.MSG_DATASOURCE:
+          typeText = 'Datasouce'
+          break
+        case MSGConstant.MSG_SYMBOL:
+          typeText = 'Symbol'
+          break
+        case MSGConstant.MSG_COLORSCHEME:
+          typeText = 'Color Scheme'
+          break
+        case MSGConstant.MSG_AI_MODEL:
+          typeText = 'AI Model'
+          break
+        case MSGConstant.MSG_TEMPLATE_PLOT:
+          typeText = 'Plot Template'
+          break
+        case MSGConstant.MSG_TEMPLATE_MAP:
+          typeText = 'Map Template'
           break
       }
       return (

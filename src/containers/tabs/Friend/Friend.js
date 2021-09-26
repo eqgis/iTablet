@@ -142,7 +142,7 @@ export default class Friend extends Component {
       JSON.stringify(prevProps.user.currentUser.userName) !==
       JSON.stringify(this.props.user.currentUser.userName)
     ) {
-      
+
       this.updateServices()
     }
   }
@@ -333,8 +333,8 @@ export default class Friend extends Component {
           this.restartService()
         } else if (appState === 'background') {
           //切后台延迟断开，应对频繁切后台操作
-          
-           this.disconnectService(false,true)
+
+          this.disconnectService(false,true)
         }
       }
     }
@@ -407,7 +407,7 @@ export default class Friend extends Component {
    */
   updateServices = async () => {
     if(g_connectService){
-      
+
       await this.disconnectService()
     }
     this.restartService()
@@ -433,7 +433,7 @@ export default class Friend extends Component {
     } else {
       this.restarting = true
       if(g_connectService){
-        
+
         (await this.disconnectService(true))
       }
 
@@ -449,7 +449,7 @@ export default class Friend extends Component {
     }
     //重启中，等待重启完成
     if (!fromRestarting && this.restarting) {
-      
+
       setTimeout(this.disconnectService, 3000)
     } else {
       if (!g_connectService) {
@@ -459,22 +459,22 @@ export default class Friend extends Component {
       this.endCheckAvailability()
       if(bDelay){
         setTimeout(async ()=>{
-          
+
           if (this.prevAppstate === 'background') {
-            
-              
-              
-              await SMessageService.stopReceiveMessage()
-              await SMessageService.disconnectionService()
-              g_connectService = false
-              this.disconnecting = false
+
+
+
+            await SMessageService.stopReceiveMessage()
+            await SMessageService.disconnectionService()
+            g_connectService = false
+            this.disconnecting = false
           }else if (this.prevAppstate === 'active'){
-            
+
             this.disconnectBreak = true
           }
         }, 1000*20)
       }else{
-        
+
         await SMessageService.stopReceiveMessage()
         await SMessageService.disconnectionService()
         g_connectService = false
@@ -497,7 +497,7 @@ export default class Friend extends Component {
           this.props.user.currentUser.userName,
         )
         if (!res) {
-          
+
           // Toast.show(
           //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           // )
@@ -547,7 +547,7 @@ export default class Friend extends Component {
           g_connectService = true
         }
       } catch (error) {
-        
+
         // Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
         this.disconnectService()
       }
@@ -1209,18 +1209,18 @@ export default class Friend extends Component {
           talkIds.push(members[key].id)
         }
         queueExist = await SMessageServiceHTTP.declareSession(talkId, members, true)
-        
+
       } else if (messageObj.type !== MSGConstant.MSG_COWORK) {
         talkIds.push(talkId)
         queueExist = await SMessageServiceHTTP.declare('Message_' + talkId, true)
-        
+
       } else if (talkId.includes('Group_Task_') && GLOBAL.coworkMode) {
         let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
         queueExist = currentTaskInfo.members && await SMessageServiceHTTP.declareSession(talkId, currentTaskInfo.members, true)
-        
+
       }
       if (!queueExist) {
-        
+
         Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
         return
       }
@@ -1257,7 +1257,7 @@ export default class Friend extends Component {
               ? { position: 0 }
               : null
         }
-        
+
         Toast.show(
           getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           option,
@@ -1275,8 +1275,8 @@ export default class Friend extends Component {
               ? { position: 0 }
               : null
         }
-        
-        Toast.show(  
+
+        Toast.show(
           getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           option,
         )
@@ -1432,6 +1432,33 @@ export default class Friend extends Component {
         text =
           msg.originMsg.user.name +
           getLanguage(this.props.language).Friends.SYS_INVITE_TO_COWORK
+        break
+      case MSGConstant.MSG_ARMAP:
+        text = `[${getLanguage().Profile.ARMAP}]`
+        break
+      case MSGConstant.MSG_AREFFECT:
+        text = `[${getLanguage().Profile.AREFFECT}]`
+        break
+      case MSGConstant.MSG_ARMODAL:
+        text = `[${getLanguage().Profile.ARMODEL}]`
+        break
+      case MSGConstant.MSG_DATASOURCE:
+        text = `[${getLanguage().Analyst_Labels.DATA_SOURCE}]`
+        break
+      case MSGConstant.MSG_SYMBOL:
+        text = `[${getLanguage().Profile.SYMBOL}]`
+        break
+      case MSGConstant.MSG_COLORSCHEME:
+        text = `[${getLanguage().Profile.COLOR_SCHEME}]`
+        break
+      case MSGConstant.MSG_AI_MODEL:
+        text = `[${getLanguage().Profile.AIMODEL}]`
+        break
+      case MSGConstant.MSG_TEMPLATE_PLOT:
+        text = `[${getLanguage().Profile.PLOTTING_TEMPLATE}]`
+        break
+      case MSGConstant.MSG_TEMPLATE_MAP:
+        text = `[${getLanguage().Profile.MAP_TEMPLATE}]`
         break
       default:
         break

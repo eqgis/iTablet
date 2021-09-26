@@ -41,6 +41,8 @@ RCT_REMAP_METHOD(getTemplatesList, getTemplatesListByUserName:(NSString *)userNa
     
     if(strModule == nil || [strModule isEqualToString:@""]){
       templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
+    }else if (strModule != nil && [strModule isEqualToString:@"XmlTemplate"]){
+      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@", @"/Documents/iTablet/ExternalData/",strModule];
     }else {
       templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@%@%@", @"/Documents/iTablet/User/",userName, @"/Data/", strModule];
     }

@@ -189,10 +189,24 @@ const ICONS = context => {
         context.setModalVisible()
       },
     },
+    {
+      name: getThemeAssets().mine.icon_my_template,
+      type: 'ionicon',
+      text: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+      onPress: () => {
+        NavigationService.navigate('MyTemplate', {
+          title: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+          chatCallback: (_path, fileName, tempType) => {
+            context.props.sendCallBack(11, _path, fileName, tempType)
+          },
+        })
+        context.setModalVisible()
+      },
+    },
   ]
 
   if(Platform.OS === 'ios') {
-    data.pop()
+    data.splice(9, 1)
   }
 
   return data

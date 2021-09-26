@@ -1342,7 +1342,7 @@ class Chat extends React.Component {
       <CustomActions
         {...props}
         callBack={value => this.setState({ chatBottom: value })}
-        sendCallBack={(type, value, fileName) => {
+        sendCallBack={(type, value, fileName, tempType = undefined) => {
           if (type === 1) {
             this.onSendFile(MSGConstant.MSG_MAP, value, fileName)
           } else if (type === 3) {
@@ -1363,6 +1363,9 @@ class Chat extends React.Component {
             this.onSendFile(MSGConstant.MSG_AREFFECT, value, fileName)
           } else if (type === 10) {
             this.onSendFile(MSGConstant.MSG_ARMODAL, value, fileName)
+          } else if (type === 11) {
+            const msgType = tempType === 'plot' ? MSGConstant.MSG_TEMPLATE_PLOT : MSGConstant.MSG_TEMPLATE_MAP
+            this.onSendFile(msgType, value, fileName)
           }
         }}
       />

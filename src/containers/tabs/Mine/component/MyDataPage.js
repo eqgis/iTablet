@@ -493,7 +493,14 @@ export default class MyDataPage extends Component {
     await this.exportData(fileName)
     let path = this.exportPath
     this.exportPath = ''
-    this.chatCallback && this.chatCallback(path, fileName)
+    // 细分模板类型
+    let tempType = undefined
+    if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE) {
+      tempType = 'plot'
+    } else if (this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.MAP_TEMPLATE) {
+      tempType = 'map'
+    }
+    this.chatCallback && this.chatCallback(path, fileName, tempType)
     NavigationService.goBack()
   }
 

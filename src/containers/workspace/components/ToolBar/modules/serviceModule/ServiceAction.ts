@@ -113,7 +113,6 @@ async function addServiceLayer(datasetName: string) {
     }
   },
   uploadHandler: async res => {
-    console.warn(JSON.stringify(res))
     // 发送消息给其他组员
     Toast.show(res.result ? getLanguage(GLOBAL.language).Cowork.UPLOAD_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED)
     const params: any = ToolbarModule.getParams()

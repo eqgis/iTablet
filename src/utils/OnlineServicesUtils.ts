@@ -712,6 +712,7 @@ export default class OnlineServicesUtils {
    * @param password 用户密码
    */
    async login(userName: string, password: string): Promise<ILoginResult> {
+    await CookieManager.clearAll()
 
     if(this.type === 'online') {
       await SOnlineService.setOnlineServiceSite('DEFAULT')

@@ -117,7 +117,7 @@ export default class Camera extends React.Component {
       this.setState({
         recordStatus: RECORD_STATUS.RECORDING,
       })
-      const options = { quality: 0.5, base64: true, pauseAfterCapture: true }
+      const options = { quality: 0.5, base64: true, pauseAfterCapture: true, fixOrientation: true }
       let data = await this.camera.takePictureAsync(options)
       this.setState({
         data,

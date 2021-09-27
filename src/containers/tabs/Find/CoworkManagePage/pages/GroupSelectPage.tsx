@@ -3,6 +3,7 @@ import { SectionList, View, TouchableOpacity, Image, Text, StyleSheet, RefreshCo
 import { Container, PopMenu, ImageButton, ListSeparator, Dialog, RedDot } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize, SCoordinationUtils } from '../../../../../utils'
+import * as OnlineServicesUtils from '../../../../../utils/OnlineServicesUtils'
 import { size, color } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
 import { UserType } from '../../../../../constants'
@@ -11,7 +12,6 @@ import CoworkInfo from '../../../Friend/Cowork/CoworkInfo'
 import { Users } from '../../../../../redux/models/user'
 import { setCoworkGroup, setCurrentGroup, MessageType } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
-import { SCoordination } from 'imobile_for_reactnative'
 import CoworkFileHandle from '../CoworkFileHandle'
 
 interface Props {
@@ -36,8 +36,6 @@ interface State {
 
 class GroupSelectPage extends Component<Props, State> {
 
-  servicesUtils: SCoordination | undefined
-  onlineServicesUtils: any
   popData: Array<any>
   PagePopModal: PopMenu | null | undefined
   dialog: Dialog | null | undefined
@@ -56,13 +54,12 @@ class GroupSelectPage extends Component<Props, State> {
     super(props)
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      // this.servicesUtils = new SCoordination('online')
       SCoordinationUtils.setScoordiantion('online')
+      OnlineServicesUtils.setServiceType('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){
-      // this.servicesUtils = new SCoordination('iportal')
       SCoordinationUtils.setScoordiantion('iportal')
+      OnlineServicesUtils.setServiceType('iportal')
     }
-    this.servicesUtils = SCoordinationUtils.getScoordiantion()
 
     let sectionMap = new Map()
     sectionMap.set(getLanguage(GLOBAL.language).Friends.MY_GROUPS, true)
@@ -166,7 +163,7 @@ class GroupSelectPage extends Component<Props, State> {
 
   getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC'}) => {
     try {
-      this.servicesUtils?.getGroupInfos({
+      SCoordinationUtils.getScoordiantion()?.getGroupInfos({
         orderBy: orderBy,
         orderType: orderType,
         pageSize: pageSize,

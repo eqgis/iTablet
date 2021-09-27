@@ -8,14 +8,16 @@ import { ListSeparator, ImageButton, PopMenu, Dialog, TextBtn } from '../../../.
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import { setCurrentTask } from '../../../../redux/models/cowork'
-import { SCoordination, SMap, SMessageService } from 'imobile_for_reactnative'
-import { UserType, MsgConstant } from '../../../../constants'
+import { downloadSourceFile, deleteSourceDownloadFile, Download, IDownloadProps } from '../../../../redux/models/down'
+import { SMap } from 'imobile_for_reactnative'
+import { MsgConstant } from '../../../../constants'
 import { size, color } from '../../../../styles'
 import { TaskMessageItem } from './components'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import NavigationService from '../../../NavigationService'
 import CoworkFileHandle from './CoworkFileHandle'
 import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
+import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 
 import { connect } from 'react-redux'
 
@@ -121,17 +123,19 @@ interface Props {
   coworkMessages: any,
   mapModules: any,
   language: string,
+  sourceDownloads: Download[],
   createTask: () => void,
   setCurrentMapModule: (index: number) => void,
   addCoworkMsg: (params: any, cb?: () => {}) => void,
   deleteCoworkMsg: (params: any, cb?: () => {}) => void,
   setCoworkTaskGroup: (params: any, cb?: () => {}) => void,
   setCurrentTask: (params: any, cb?: () => {}) => void,
-  deleteTaskMembers: (params: TaskMemberDeleteParams) => Promise<any>
+  deleteTaskMembers: (params: TaskMemberDeleteParams) => Promise<any>,
+  downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
+  deleteSourceDownloadFile: (params: {id: number}) => Promise<any[]>,
 }
 
 class TaskManage extends React.Component<Props, State> {
-  servicesUtils: any
   list: FlatList<any> | null | undefined
   taskItemPop: PopMenu | null | undefined
   popData: Array<any>
@@ -179,11 +183,6 @@ class TaskManage extends React.Component<Props, State> {
       members: [],
     }
 
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      this.servicesUtils = new SCoordination('online')
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)){
-      this.servicesUtils = new SCoordination('iportal')
-    }
     CoworkInfo.setGroupId(this.props.groupInfo.id)
   }
 
@@ -232,7 +231,7 @@ class TaskManage extends React.Component<Props, State> {
 
   getMembers = async () => {
     if (!this.props.groupInfo.id) return
-    let result = await this.servicesUtils?.getGroupMembers({
+    let result = await OnlineServicesUtils.getService()?.getGroupMembers({
       groupId: this.props.groupInfo.id,
     })
     return result.content
@@ -481,6 +480,9 @@ class TaskManage extends React.Component<Props, State> {
         deleteCoworkMsg={this.props.deleteCoworkMsg}
         showMore={this._showMore}
         unread={unread}
+        downloadData={this.props.sourceDownloads}
+        downloadSourceFile={this.props.downloadSourceFile}
+        deleteSourceDownloadFile={this.props.deleteSourceDownloadFile}
       />
     )
   }
@@ -627,6 +629,7 @@ const mapStateToProps = (state: any) => ({
   currentTask: state.cowork.toJS().currentTask,
   coworkMessages: state.cowork.toJS().messages,
   mapModules: state.mapModules.toJS(),
+  sourceDownloads: state.down.toJS().sourceDownloads,
 })
 
 const mapDispatchToProps = {
@@ -635,6 +638,8 @@ const mapDispatchToProps = {
   setCoworkTaskGroup,
   setCurrentTask,
   deleteTaskMembers,
+  downloadSourceFile,
+  deleteSourceDownloadFile,
 }
 
 export default connect(

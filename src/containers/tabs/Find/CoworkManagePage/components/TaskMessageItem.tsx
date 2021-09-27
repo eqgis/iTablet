@@ -6,9 +6,11 @@ import { getLanguage } from '../../../../../language'
 import { getThemeAssets } from '../../../../../assets'
 import { color, size } from '../../../../../styles'
 import RNFS from 'react-native-fs'
-import { Toast, scaleSize, OnlineServicesUtils } from '../../../../../utils'
+import { Toast, scaleSize } from '../../../../../utils'
+import * as OnlineServicesUtils from '../../../../../utils/OnlineServicesUtils'
 import DataHandler from '../../../Mine/DataHandler'
 import { FileTools } from '../../../../../native'
+import { IDownloadProps, Download } from '../../../../../redux/models/down'
 
 import styles from './styles'
 
@@ -17,11 +19,14 @@ interface Props {
   user: any,
   isSelf: boolean,
   unread: number,
+  downloadData: Download[],
   onPress: (data: any) => void,
   addCoworkMsg: (data: any) => void,
   deleteCoworkMsg: (data: any) => void,
   showMore: (item: {data: any, event: any}) => void,
   getModule?: (key: string, index: number) => any,
+  downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
+  deleteSourceDownloadFile: (params: {id: number}) => Promise<any[]>,
 }
 
 interface State {
@@ -76,13 +81,30 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       ConstPath.RelativePath.Temp +
       this.props.data.id
 
-    let exist = await FileTools.fileIsExist(this.downloadingPath + '_')
+    // 检测是否下载完成
+    let exist = await FileTools.fileIsExist(this.downloadingPath)
     if (exist) {
-      let mapStr = await FileTools.readFile(this.downloadingPath + '_')
+      this.downloading = true
+      // 下载过程中退出当前界面,再次进入当前界面
+      // 防止下载完成后,进度条不会消失
+      let timer = setInterval(async () => {
+        exist = await FileTools.fileIsExist(this.downloadingPath + '_')
+        if (exist) {
+          clearInterval(timer)
+          this.setState({
+            exist: true,
+            isDownloading: false,
+          })
+        } else {
+          this.setState({
+            exist: false,
+            isDownloading: true,
+          })
+        }
+      }, 2000)
       this.setState({
-        isDownloading: false,
-        exist: true,
-        mapData: JSON.parse(mapStr),
+        exist: false,
+        isDownloading: true,
       })
     }
   }
@@ -106,6 +128,25 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       this.setState({
         module: module,
       })
+    }
+    const download = this.getDownloadData(this.props.downloadData, this.props.data.id)
+    if (this.itemProgress && download) {
+      if (this.itemProgress && download.progress === 100) {
+        this.props.deleteSourceDownloadFile({id: this.props.data.id})
+      }
+      this.itemProgress.progress = download.progress / 100
+    } else if (download && !this.state.isDownloading && download.progress >= 0 && download.progress < 100) {
+      this.setState({
+        isDownloading: true,
+      })
+    }
+  }
+
+  getDownloadData = (datas: Download[], id: number | string) => {
+    for (let item of this.props.downloadData) {
+      if (item.id === id) {
+        return item
+      }
     }
   }
 
@@ -137,42 +178,40 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
 
     let dataId = this.props.data.resource.resourceId
-    let dataUrl, onlineServicesUtils
+    let dataUrl
     if (UserType.isIPortalUser(this.props.user.currentUser)) {
       let url = this.props.user.currentUser.serverUrl
       if (url.indexOf('http') !== 0) {
         url = 'http://' + url
       }
       dataUrl = `${url}/datas/${dataId}/download`
-      onlineServicesUtils = new OnlineServicesUtils('iportal')
     } else {
       dataUrl = 'https://www.supermapol.com/web/datas/' + dataId + '/download'
-      onlineServicesUtils = new OnlineServicesUtils('online')
     }
 
     const downloadOptions = {
+      key: this.props.data.id,
       ...Platform.select({
         android: {
           headers: {
-            cookie: await onlineServicesUtils.getCookie(),
+            cookie: await OnlineServicesUtils.getService()?.getCookie() || '',
           },
         },
       }),
       fromUrl: dataUrl,
       toFile: this.path || '',
       background: true,
-      progress: (res: any) => {
-        let value = ~~res.progress.toFixed(0)
-        if (this.itemProgress) {
-          this.itemProgress.progress = value / 100
-        }
-        // RNFS.writeFile(this.downloadingPath, progress, 'utf8')
-      },
+      // progress: (res: any) => {
+      //   let value = ~~res.progress.toFixed(0)
+      //   if (this.itemProgress) {
+      //     this.itemProgress.progress = value / 100
+      //   }
+      //   // RNFS.writeFile(this.downloadingPath, progress, 'utf8')
+      // },
     }
 
     try {
-      const ret = RNFS.downloadFile(downloadOptions)
-      ret.promise
+      this.props.downloadSourceFile(downloadOptions)
         .then(async () => {
           let { result, path } = await this.unZipFile()
 
@@ -180,8 +219,8 @@ export default class TaskMessageItem extends React.Component<Props, State> {
           if (result) {
             let dataList = await DataHandler.getExternalData(path)
 
-            for (let i = 0; i < dataList.length; i++) {
-              let importResult = await DataHandler.importWorkspace(dataList[i])
+            for (let data of dataList) {
+              let importResult = await DataHandler.importWorkspace(data)
               if (importResult && importResult.length > 0) {
                 results = results.concat(importResult)
               }
@@ -402,5 +441,3 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     )
   }
 }
-
-

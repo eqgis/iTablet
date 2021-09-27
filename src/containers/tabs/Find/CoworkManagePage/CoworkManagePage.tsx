@@ -1,17 +1,12 @@
 import React from 'react'
 import { Container, PopMenu, ImageButton } from '../../../../components'
-import { View, TouchableOpacity, Text } from 'react-native'
-import { scaleSize, OnlineServicesUtils, screen } from '../../../../utils'
+import { scaleSize } from '../../../../utils'
+import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 import NavigationService from '../../../NavigationService'
 import { getLanguage } from '../../../../language'
-import { SCoordination, SMessageService, GroupType, GroupApplyMessageType } from 'imobile_for_reactnative'
+import { SMessageService, GroupType } from 'imobile_for_reactnative'
 import { UserType, MsgConstant } from '../../../../constants'
 import { getThemeAssets } from '../../../../assets'
-import { size } from '../../../../styles'
-import ScrollableTabView, {
-  DefaultTabBar,
-} from 'react-native-scrollable-tab-view'
-import GroupMessage from './GroupMessage'
 import TaskManage from './TaskManage'
 import { Users } from '../../../../redux/models/user'
 import { ReadMsgParams, DeleteInviteParams } from '../../../../redux/models/cowork'
@@ -33,14 +28,10 @@ interface Props {
 }
 
 type State = {
-  data: Array<GroupApplyMessageType>,
 }
 
 export default class CoworkManagePage extends React.Component<Props, State> {
 
-  servicesUtils: SCoordination | undefined | null
-  onlineServicesUtils: any
-  // popData: Array<any>
   PagePopModal: PopMenu | null | undefined
   container: any
   callBack: (data?: any) => any
@@ -48,31 +39,6 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.callBack = this.props.navigation?.state?.params?.callBack
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      this.servicesUtils = new SCoordination('online')
-      this.onlineServicesUtils = new OnlineServicesUtils('online')
-    } else if (UserType.isIPortalUser(this.props.user.currentUser)){
-      this.servicesUtils = new SCoordination('iportal')
-      this.onlineServicesUtils = new OnlineServicesUtils('iportal')
-    }
-
-    // this.popData = [
-    //   {
-    //     title: getLanguage(GLOBAL.language).Friends.GROUP_SETTING,
-    //     action: () => {
-    //       NavigationService.navigate('GroupSettingPage', {
-    //         callBack: this.callBack,
-    //       })
-    //     },
-    //   },
-    // ]
-    // 只有群主才能分配任务
-    // if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
-    //   this.popData.unshift({
-    //     title: getLanguage(GLOBAL.language).Friends.TASK_DISTRIBUTION,
-    //     action: this.createTask,
-    //   })
-    // }
   }
 
   shouldComponentUpdate(nextProps: any, nextState: any) {
@@ -83,7 +49,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
 
   componentDidMount() {
     (async function() {
-      GLOBAL.cookie = await this.onlineServicesUtils.getCookie()
+      GLOBAL.cookie = await OnlineServicesUtils.getService()?.getCookie()
     }.bind(this)())
     this.props.readCoworkGroupMsg({
       target: {
@@ -95,8 +61,6 @@ export default class CoworkManagePage extends React.Component<Props, State> {
 
   componentWillUnmount() {
     this.props.setCurrentGroup(undefined)
-    this.servicesUtils = null
-    this.onlineServicesUtils = null
     CoworkInfo.reset()
   }
 
@@ -216,97 +180,9 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           NavigationService.navigate('GroupSettingPage', {
             callBack: this.callBack,
           })
-          // this.PagePopModal && this.PagePopModal.setVisible(true, {
-          //   x: event.nativeEvent.pageX,
-          //   y: event.nativeEvent.pageY,
-          // })
         }}
       />,
     ]
-  }
-
-  renderTab() {
-    let width = screen.getScreenWidth(this.props.device.orientation)
-    return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <ScrollableTabView
-          page={0}
-          renderTabBar={() => (
-            <DefaultTabBar
-              style={{
-                height: scaleSize(80),
-                marginTop: scaleSize(20),
-                borderWidth: 0,
-              }}
-              renderTab={(name: null | undefined, page: any, isTabActive: any, onPressHandler: (arg0: any) => void) => {
-                let activeTextColor = 'rgba(70,128,223,1.0)'
-                let inactiveTextColor = 'black'
-                const textColor = isTabActive
-                  ? activeTextColor
-                  : inactiveTextColor
-                const fontWeight = isTabActive ? 'bold' : 'normal'
-
-                return (
-                  <TouchableOpacity
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      paddingTop: scaleSize(20),
-                      paddingBottom: scaleSize(10),
-                    }}
-                    key={name}
-                    accessibilityTraits="button"
-                    onPress={() => onPressHandler(page)}
-                  >
-                    <Text
-                      style={{
-                        color: textColor,
-                        fontWeight,
-                        fontSize: size.fontSize.fontSizeLg,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {name}
-                    </Text>
-                    {/* {name ===
-                      getLanguage(this.props.language).Friends.MESSAGES && (
-                      <InformSpot
-                        style={{
-                          top: scaleSize(15),
-                          right: '38%',
-                        }}
-                      />
-                    )} */}
-                  </TouchableOpacity>
-                )
-              }}
-            />
-          )}
-          initialPage={0}
-          tabBarUnderlineStyle={{
-            backgroundColor: 'rgba(70,128,223,1.0)',
-            height: scaleSize(6),
-            width: scaleSize(6),
-            borderRadius: scaleSize(3),
-            marginLeft: width / 2 / 2 - 3,
-            marginBottom: scaleSize(12),
-          }}
-        >
-          <GroupMessage
-            tabLabel={getLanguage(GLOBAL.language).Friends.MESSAGES}
-            user={this.props.user}
-            servicesUtils={this.servicesUtils}
-            groupInfo={this.props.currentGroup}
-          />
-          <TaskManage
-            tabLabel={getLanguage(GLOBAL.language).Friends.TASK}
-            groupInfo={this.props.currentGroup}
-            {...this.props}
-          />
-        </ScrollableTabView>
-      </View>
-    )
   }
 
   _renderPagePopup = () => {
@@ -338,15 +214,12 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           },
         }}
       >
-        {/* {this.renderContent()} */}
-        {/* {this.renderTab()} */}
         <TaskManage
           tabLabel={getLanguage(GLOBAL.language).Friends.TASK}
           groupInfo={this.props.currentGroup}
           createTask={this.createTask}
           {...this.props}
         />
-        {/* {this._renderPagePopup()} */}
       </Container>
     )
   }

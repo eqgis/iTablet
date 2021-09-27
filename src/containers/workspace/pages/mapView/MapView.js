@@ -2458,51 +2458,51 @@ export default class MapView extends React.Component {
    *  Info<string>, 识别的信息
    * }
    */
-  captureImage = params => {
-    //保存数据->跳转
-    (async function () {
-      let currentLayer = this.props.currentLayer
-      // let reg = /^Label_(.*)#$/
-      let isTaggingLayer = false
-      if (currentLayer) {
-        let layerType = LayerUtils.getLayerType(currentLayer)
-        isTaggingLayer = layerType === 'TAGGINGLAYER'
-        // isTaggingLayer = currentLayer.type === DatasetType.CAD
-        // && currentLayer.datasourceAlias.match(reg)
-      }
-      if (isTaggingLayer) {
-        const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
-        const datasetName = currentLayer.datasetName // 标注图层名称
-        let targetPath = await FileTools.appendingHomeDirectory(
-          ConstPath.UserPath +
-          this.props.user.currentUser.userName +
-          '/' +
-          ConstPath.RelativeFilePath.Media,
-        )
-        SMediaCollector.initMediaCollector(targetPath)
+  // captureImage = params => {
+  //   //保存数据->跳转
+  //   (async function () {
+  //     let currentLayer = this.props.currentLayer
+  //     // let reg = /^Label_(.*)#$/
+  //     let isTaggingLayer = false
+  //     if (currentLayer) {
+  //       let layerType = LayerUtils.getLayerType(currentLayer)
+  //       isTaggingLayer = layerType === 'TAGGINGLAYER'
+  //       // isTaggingLayer = currentLayer.type === DatasetType.CAD
+  //       // && currentLayer.datasourceAlias.match(reg)
+  //     }
+  //     if (isTaggingLayer) {
+  //       const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
+  //       const datasetName = currentLayer.datasetName // 标注图层名称
+  //       let targetPath = await FileTools.appendingHomeDirectory(
+  //         ConstPath.UserPath +
+  //         this.props.user.currentUser.userName +
+  //         '/' +
+  //         ConstPath.RelativeFilePath.Media,
+  //       )
+  //       SMediaCollector.initMediaCollector(targetPath)
 
-        let result = await SMediaCollector.addArMedia({
-          datasourceName: datasourceAlias,
-          datasetName: datasetName,
-          mediaName: params.mediaName,
-        })
-        if (result) {
-          this.switchAr()
-          Toast.show(
-            params.mediaName +
-            ':' +
-            getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY,
-          )
-        }
-      } else {
-        Toast.show(
-          getLanguage(this.props.language).Prompt.PLEASE_SELECT_PLOT_LAYER,
-        )
-        this.props.navigation.navigate('LayerManager')
-        await SAIDetectView.clearClickAIRecognition()
-      }
-    }.bind(this)())
-  }
+  //       let result = await SMediaCollector.addArMedia({
+  //         datasourceName: datasourceAlias,
+  //         datasetName: datasetName,
+  //         mediaName: params.mediaName,
+  //       })
+  //       if (result) {
+  //         this.switchAr()
+  //         Toast.show(
+  //           params.mediaName +
+  //           ':' +
+  //           getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY,
+  //         )
+  //       }
+  //     } else {
+  //       Toast.show(
+  //         getLanguage(this.props.language).Prompt.PLEASE_SELECT_PLOT_LAYER,
+  //       )
+  //       this.props.navigation.navigate('LayerManager')
+  //       await SAIDetectView.clearClickAIRecognition()
+  //     }
+  //   }.bind(this)())
+  // }
 
   /**
    * AR分类点击回调
@@ -2514,16 +2514,17 @@ export default class MapView extends React.Component {
    */
   _onArObjectClick = data => {
     if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
-      let params = {
-        ID: data.id,
-        mediaName: data.name,
-        Info: data.info,
-      }
+      // let params = {
+      //   ID: data.id,
+      //   mediaName: data.name,
+      //   Info: data.info,
+      // }
       // Toast.show(data.name + ', ' + data.info + ', ' + data.id)
-      this.showFullMap(false)
-      GLOBAL.toolBox.setVisible(false)
-      GLOBAL.AIDETECTCHANGE.setVisible(false)
-      this.captureImage(params)
+      // this.showFullMap(false)
+      // GLOBAL.toolBox.setVisible(false)
+      // GLOBAL.AIDETECTCHANGE.setVisible(false)
+      // this.captureImage(params)
+      ToolbarModule.getData()?.actions?.goToPreview?.()
     }
   }
 

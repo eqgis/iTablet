@@ -2,15 +2,12 @@ import React from 'react'
 import { Platform, View, Image, StyleSheet } from 'react-native'
 import { MTBtn } from '../../../../../../components'
 import { getThemeAssets, getPublicAssets } from '../../../../../../assets'
-import { ConstPath, ConstToolType } from '../../../../../../constants'
-import { scaleSize, fixedSize, DateUtil } from '../../../../../../utils'
+import { ConstToolType } from '../../../../../../constants'
+import { scaleSize, fixedSize } from '../../../../../../utils'
 import { color, zIndexLevel } from '../../../../../../styles'
-import NavigationService from '../../../../../NavigationService'
-import { FileTools } from '../../../../../../native'
 import AiCollectionActions from './AiCollectionActions'
 import ToolbarModule from '../ToolbarModule'
 import { SectionData, SectionItemData } from '../types'
-import { SMediaCollector, SAIDetectView, SMap } from 'imobile_for_reactnative'
 
 const styles = StyleSheet.create({
   headerBack: {
@@ -184,38 +181,7 @@ function getDetectBottomView() {
           backgroundColor: 'transparent',
         }}
         imageStyle={styles.bottomBtnImg}
-        onPress={async () => {
-          const _params: any = ToolbarModule.getParams()
-          const homePath = await FileTools.appendingHomeDirectory()
-          let targetPath = homePath + ConstPath.UserPath +
-            _params.user.currentUser.userName + '/' +
-            ConstPath.RelativeFilePath.Media
-          await SMediaCollector.initMediaCollector(targetPath)
-
-          // 获取对象识别信息
-          let recognitionInfos = await SAIDetectView.getAIRecognitionInfos()
-          const location = await SMap.getCurrentPosition()
-
-          const date = new Date().getTime().toString()
-          let path = await SAIDetectView.savePreviewBitmap(targetPath, date)
-          if (path) {
-            ToolbarModule.addData({
-              previewImage: path,
-              recognitionInfos: recognitionInfos,
-              location: location,
-              modifiedDate: DateUtil.formatDate(date),
-              mediaName: date,
-            })
-            await SAIDetectView.pauseDetect()
-            await SAIDetectView.clearDetectObjects()
-
-            GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_PREVIEW, {
-              isFullScreen: false,
-              height: 0,
-            })
-          }
-          // TODO 预览
-        }}
+        onPress={AiCollectionActions.goToPreview}
       />
     </View>
   )
@@ -250,52 +216,7 @@ function getPreviewBottomView() {
             backgroundColor: 'transparent',
           }}
           imageStyle={styles.bottomBtnImg}
-          onPress={async () => {
-            const _data: any = ToolbarModule.getData()
-            const _params: any = ToolbarModule.getParams()
-
-            let aiType
-            switch(_data.type) {
-              case ConstToolType.SM_MAP_AI_AGGREGATE:
-                aiType = 'AI_AGGREGATE'
-                break
-              case ConstToolType.SM_MAP_AI_ANALYSIS:
-              default:
-                aiType = 'AI_DETECT'
-                break
-            }
-            NavigationService.navigate('MediaEdit', {
-              // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
-              title: _data.title,
-              layerInfo: _params.currentLayer,
-              backAction: () => {
-                AiCollectionActions.aiDetect()
-                NavigationService.goBack('MediaEdit')
-              },
-              cb: () => {
-                AiCollectionActions.aiDetect()
-                NavigationService.goBack('MediaEdit')
-              },
-              info: {
-                // id: string,
-                coordinate: _data.location,
-                layerName: _params.currentLayer.name,
-                // geoID: number,
-                // medium: Array<any>,
-                modifiedDate: _data.modifiedDate,
-                mediaName: _data.mediaName,
-                mediaFilePaths: [_data.previewImage],
-                mediaServiceIds: [],
-                httpAddress: '',
-                description: '',
-                location: _data.location,
-                mediaData: {
-                  type: aiType,
-                  recognitionInfos: _data.recognitionInfos,
-                },
-              },
-            })
-          }}
+          onPress={AiCollectionActions.goToMediaEdit}
         />
       </View>
     </View>

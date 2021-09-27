@@ -218,6 +218,11 @@ function getImportState() {
   return FileTools.getImportState()
 }
 
+/** app启动时将跳转过来的uri所携带的数据复制到 Import 目录下 */
+function handleUriData() {
+  return FileTools.handleUriData()
+}
+
 /**
  * 深度遍历fileDir目录下的fileType数据,并添加到arrFilterFile中
  * fileDir 文件目录
@@ -413,6 +418,7 @@ export default {
   EnvironmentIsValid,
   addImportExternalData,
   getShareResult,
+  handleUriData,
   getImportState,
   getThumbnail,
   getPathListByFilterDeep,

@@ -483,6 +483,7 @@ class AppRoot extends Component {
   }
 
   checkImportData = async () => {
+    await FileTools.handleUriData()
     await this.getImportState()
     await this.addImportExternalDataListener()
     await this.addGetShareResultListener()

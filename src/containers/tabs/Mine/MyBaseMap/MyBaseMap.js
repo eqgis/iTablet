@@ -57,14 +57,18 @@ export default class MyBaseMap extends Component {
    * @returns {Array}
    */
   getCommonBaseMap = () => {
-    return [
-      ConstOnline.GAODE,
+    const maps = [
+      // ConstOnline.GAODE,
       ConstOnline.BingMap,
       ConstOnline.Baidu,
       ConstOnline.Google,
       ConstOnline.OSM,
       ConstOnline.tianditu(),
     ]
+    if(GLOBAL.language === 'CN') {
+      maps.splice(3, 1)
+    }
+    return maps
   }
 
   _renderItem = ({ item, index }) => {

@@ -144,10 +144,11 @@ interface OnlineRequestError {
   succeed: false
 }
 
+type ServiceType = 'iportal' | 'online' | 'OnlineJP'
 
 export default class OnlineServicesUtils {
   /** iportal还是online */
-  type: 'iportal' | 'online' | 'OnlineJP'
+  type: ServiceType
   /** iportal服务器地址或online地址 */
   serverUrl: string
   onlineUrl: string
@@ -156,12 +157,16 @@ export default class OnlineServicesUtils {
   /** android only - 登录后的用户凭证 */
   cookie: string
 
-  constructor(type: 'iportal' | 'online' | 'OnlineJP') {
+  constructor(type: ServiceType) {
     this.type = type
     this.serverUrl = ''
     this.onlineUrl = ''
     this.ssoURL = ''
     this.cookie = ''
+    this.setType(type)
+  }
+
+  setType = (type: ServiceType) => {
     if (type === 'iportal') {
       let url = SIPortalService.getIPortalUrl()
       if (url) {
@@ -1057,4 +1062,35 @@ function timeout(sec: number): Promise<'timeout'> {
       resolve('timeout')
     }, 1000 * sec)
   })
+}
+
+let _OnlineServicesUtils: OnlineServicesUtils | null
+
+function setServiceType(type: ServiceType) {
+  if (_OnlineServicesUtils) {
+    _OnlineServicesUtils.setType(type)
+  } else {
+    if (type) {
+      _OnlineServicesUtils = new OnlineServicesUtils(type)
+    } else {
+      _OnlineServicesUtils = new OnlineServicesUtils('online')
+    }
+  }
+}
+
+function getService(type?: ServiceType) {
+  if (!_OnlineServicesUtils || type && _OnlineServicesUtils.type !== type) {
+    _OnlineServicesUtils = null
+    if (type) {
+      _OnlineServicesUtils = new OnlineServicesUtils(type)
+    } else {
+      _OnlineServicesUtils = new OnlineServicesUtils('online')
+    }
+  }
+  return _OnlineServicesUtils
+}
+
+export {
+  setServiceType,
+  getService,
 }

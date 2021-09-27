@@ -7,7 +7,8 @@ import { StyleSheet, FlatList, RefreshControl, View, Text, Image } from 'react-n
 import { Container, PopMenu, ListSeparator, TextBtn } from '../../../../../components'
 import { ConstPath, UserType } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
-import { scaleSize, Toast, OnlineServicesUtils } from '../../../../../utils'
+import { scaleSize, Toast, SCoordinationUtils } from '../../../../../utils'
+import * as OnlineServicesUtils from '../../../../../utils/OnlineServicesUtils'
 import { color, size } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
 import NavigationService from '../../../../NavigationService'
@@ -103,8 +104,6 @@ interface State {
 
 class GroupSourceUploadPage extends Component<Props, State> {
 
-  servicesUtils: SCoordination | undefined | null
-  onlineServicesUtils: any
   popData: Array<any>
   pagePopModal: PopMenu | null | undefined
   container: any
@@ -120,11 +119,11 @@ class GroupSourceUploadPage extends Component<Props, State> {
     this.cb = this.props.navigation?.state?.params?.cb
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
-      this.servicesUtils = new SCoordination('online')
-      this.onlineServicesUtils = new OnlineServicesUtils('online')
+      SCoordinationUtils.setScoordiantion('online')
+      OnlineServicesUtils.setServiceType('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
-      this.servicesUtils = new SCoordination('iportal')
-      this.onlineServicesUtils = new OnlineServicesUtils('iportal')
+      SCoordinationUtils.setScoordiantion('iportal')
+      OnlineServicesUtils.setServiceType('iportal')
     }
 
     this.state = {
@@ -165,8 +164,6 @@ class GroupSourceUploadPage extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.servicesUtils = null
-    this.onlineServicesUtils = null
   }
 
   componentDidMount() {
@@ -289,7 +286,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
 
             try {
               if (_resultData.result) {
-                let resourceId = await this.onlineServicesUtils.uploadFile(
+                let resourceId = await OnlineServicesUtils.getService().uploadFile(
                   _resultData.zipPath,
                   `${name}.zip`,
                   'WORKSPACE',
@@ -309,7 +306,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
           this.setState({ isUploading: false })
 
           if (resourceIds.length > 0 && this.props.currentGroup.id) {
-            this.servicesUtils?.shareDataToGroup({
+            SCoordinationUtils.getScoordiantion()?.shareDataToGroup({
               groupId: this.props.currentGroup.id,
               ids: resourceIds,
             }).then(result => {

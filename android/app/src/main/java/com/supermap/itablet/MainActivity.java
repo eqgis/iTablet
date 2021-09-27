@@ -78,7 +78,7 @@ public class MainActivity extends ReactActivity {
 //        initDefaultData();
         appManager.getAppManager().addActivity(this);
         IWXAPI iwxapi=appManager.getAppManager().registerWechat(this);
-        FileTools.getUriState(this);
+        FileTools.saveUri(this);
 
         //注册网络状态监听广播
         RNFSManager.NetWorkChangReceiver netWorkChangReceiver = new RNFSManager.NetWorkChangReceiver();

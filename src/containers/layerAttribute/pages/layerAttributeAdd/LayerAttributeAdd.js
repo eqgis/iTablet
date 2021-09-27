@@ -123,11 +123,11 @@ export default class LayerAttributeAdd extends React.Component {
     let isConfirm = false
     if (!this.state.name || this.state.name === '') {
       Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_NAME)
-    } else if (this.state.name !== undefined && this.state.name !== '' && this.state.name.toLowerCase().indexOf('ss_')) {
+    } else if (this.state.name !== undefined && this.state.name !== '' && this.state.name.toLowerCase().indexOf('ss_') === 0) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.DEFAULT_NAMING_SS)
     } else if (!this.state.caption || this.state.caption === '') {
       Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_CAPTION)
-    } else if (this.state.caption !== undefined && this.state.caption !== '' && this.state.caption.toLowerCase().indexOf('ss_')) {
+    } else if (this.state.caption !== undefined && this.state.caption !== '' && this.state.caption.toLowerCase().indexOf('ss_') === 0) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.DEFAULT_NAMING_SS)
     } else if (!this.state.type) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.CHOICE_TYPE)

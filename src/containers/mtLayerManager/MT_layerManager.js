@@ -269,30 +269,27 @@ export default class MT_layerManager extends React.Component {
       this.props.setCurrentLayer &&
         this.props.setCurrentLayer(data, () => {
           // 切换图层，清除历史记录
-          if (
-            JSON.stringify(this.props.currentLayer) !==
-            JSON.stringify(data.name)
-          ) {
+          if (this.props.currentLayer.path !== data.path) {
             this.props.clearAttributeHistory &&
               this.props.clearAttributeHistory()
           }
+          if (parentData) {
+            this.getChildList({ data: parentData, section }).then(children => {
+              this.itemRefs[parentData.name] &&
+                this.itemRefs[parentData.name].setChildrenList(children)
+            })
+          }
+          // 若两次选中的item不再同一个图层组中
+          if (
+            prevParentData &&
+            (!parentData || parentData.name !== prevParentData.name)
+          ) {
+            this.getChildList({ data: prevParentData, section }).then(children => {
+              this.itemRefs[prevParentData.name] &&
+                this.itemRefs[prevParentData.name].setChildrenList(children)
+            })
+          }
         })
-      if (parentData) {
-        this.getChildList({ data: parentData, section }).then(children => {
-          this.itemRefs[parentData.name] &&
-            this.itemRefs[parentData.name].setChildrenList(children)
-        })
-      }
-      // 若两次选中的item不再同一个图层组中
-      if (
-        prevParentData &&
-        (!parentData || parentData.name !== prevParentData.name)
-      ) {
-        this.getChildList({ data: prevParentData, section }).then(children => {
-          this.itemRefs[prevParentData.name] &&
-            this.itemRefs[prevParentData.name].setChildrenList(children)
-        })
-      }
     }
   }
 
@@ -825,7 +822,10 @@ export default class MT_layerManager extends React.Component {
               })
             }}
             getLayers={this.props.getLayers}
-            isSelected={item.name === this.props.currentLayer.name}
+            isSelected={
+              item.name === this.props.currentLayer.name &&
+              item.path === this.props.currentLayer.path
+            }
             onPress={data => this.onPressRow({ ...data, section })}
             onAllPress={data => this.onAllPressRow({ ...data, section })}
             onArrowPress={({ data }) => this.getChildList({ data, section })}

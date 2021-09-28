@@ -1,6 +1,6 @@
 import CN from '../CN'
 
-// 提示语
+// Prompt
 const Prompt: typeof CN.Prompt = {
   YES: 'Yes',
   NO: 'No',
@@ -280,20 +280,20 @@ const Prompt: typeof CN.Prompt = {
   ENTER_CORRECT_MOBILE: 'Please enter the correct phone number',
   ENTER_CORRECT_EMAIL: 'Please enter the correct email address',
 
-  // 设置菜单提示信息
+  // Set prompts of menu
   ROTATION_ANGLE_ERROR: 'Rotation angle should be between -360° and 360°',
   MAP_SCALE_ERROR: 'Input error! Please enter a number',
   VIEW_BOUNDS_ERROR: 'Range error! Please enter a number',
   VIEW_BOUNDS_RANGE_ERROR: 'Parameter error! Both height and width of the view should be greater than zero',
   MAP_CENTER_ERROR: 'Coordinate error! Both X and Y should be numbers',
   COPY_SUCCESS: 'Copied successfully!',
-  // 复制坐标系
+  // Copy coordinate system
   COPY_COORD_SYSTEM_SUCCESS: 'Coordinate system replication successfully',
   COPY_COORD_SYSTEM_FAIL: 'Coordinate system replication failed',
   ILLEGAL_COORDSYS: 'Not a supported coordinate system file',
-  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'No coordinate systems can be copied',
 
-  TRANSFER_PARAMS: 'Param error! Please enter a number',
+  TRANSFER_PARAMS: 'Please enter a number',
   PLEASE_ENTER: 'Please enter ',
 
   REQUEST_TIMEOUT: 'Request timeout',
@@ -324,7 +324,7 @@ const Prompt: typeof CN.Prompt = {
   FAILED_TO_CREATE_LINE: 'Failed to create line',
   FAILED_TO_CREATE_REGION: 'Failed to create region',
   CLEAR_HISTORY: 'Clear history',
-  // 导航相关
+  // Navigation related
   SEARCH_AROUND: 'Search around',
   GO_HERE: 'Go here',
   SHOW_MORE_RESULT: 'Show more results',
@@ -346,7 +346,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'Please select the floor where the layer is located',
   LONG_PRESS_ADD_START: 'Please long press to add a starting point',
   LONG_PRESS_ADD_END: 'Please long press to add a destination',
-  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
+  TOUCH_TO_ADD_END: 'Please click to add a destination',
   ROUTE_ANALYSING: 'Analyzing',
   DISTANCE_ERROR: 'The destination is too close to the start point. Please reselect!',
   USE_ONLINE_ROUTE_ANALYST: "Points are out of the bounds of the network dataset. Or, there are no road nets around points. Do you want to use online route analyst?",
@@ -358,7 +358,7 @@ const Prompt: typeof CN.Prompt = {
   ARRIVE_DESTINATION: 'Arrived the destination',
   DEVIATE_NAV_PATH: 'Deviated from the navigation path',
 
-  //导航增量路网
+  //Incremental network 
   SELECT_LINE_DATASET: 'Please select a line dataset first',
   CANT_UNDO: 'Irrevocable',
   CANT_REDO: "Can't redo",
@@ -391,7 +391,7 @@ const Prompt: typeof CN.Prompt = {
   SMOOTH_NUMBER_NEED_BIGGER_THAN_2: 'Smoothing coefficient should be 2 ~ 10 integers',
   CONFIRM_EXIT: 'Are you sure to exit?',
   TOPO_EDIT_END: 'Are you finished editing and exit?',
-  // 自定义专题图
+  // Customized Thematic Map
   ONLY_INTEGER: 'Only integers can be entered!',
   ONLY_INTEGER_GREATER_THAN_2: 'Only integers greater than 2 can be entered!',
   PARAMS_ERROR: 'Params error! Failed to set!',
@@ -399,7 +399,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: "You may say:\n'Zoom in'，'Zoom out'，'Locate'，'Close',\n 'Search' or any Address",
   SPEECH_ERROR: 'Recognize error, please try again later',
   SPEECH_NONE: "You didn't seem to speak anything",
-  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
+  SPEECH_KEYWORD: 'You may say some keywords like:\n Address, Features',
 
   NOT_SUPPORT_STATISTIC: 'The field can not be counted',
   ATTRIBUTE_DELETE_CONFIRM: 'Are you sure you want to delete this attribute field?',
@@ -418,14 +418,14 @@ const Prompt: typeof CN.Prompt = {
   INVALID_DATA_SET_FAILED: 'Invalid data type. Failed to set',
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: 'The layer is invisible, and so you cannot set it to the current layer',
 
-  //三维AR管线相关
+  //3D Pipeline related content
   FILE_NOT_EXISTS: 'Data does not exist. Please download the Sample data',
   MOVE_PHONE_ADD_SCENE: 'Please move your phone slowly. Click on your screen to add a scene after recognizing a plane',
   IDENTIFY_TIMEOUT: 'The image recognition fails because of a timeout. Do you want to try again?',
   TRACKING_LOADING: 'Tracking...',
   UNSELECTED_OBJECT: 'Unselected object!',
 
-  // 专题制图加载/输出xml
+  // Load thematic map    output xml
   SUCCESS: 'Successfully operated',
   FAILED: 'The operation failed',
   NO_TEMPLATE: 'No templates are available',
@@ -434,7 +434,7 @@ const Prompt: typeof CN.Prompt = {
 
   SHOW_AR_SCENE_NOTIFY: 'Show Tips of AR Scene Detection',
 
-  CANT_PICTURE:'Unable to continue collection, up to 9 pictures can be added', //need to translate
+  CANT_PICTURE:'You could add 9 pictures at most',
 }
 
 export { Prompt }

@@ -1,8 +1,8 @@
 import CN from '../CN'
 
-// 我的、发现
+// Profile, Explore 
 const Profile: typeof CN.Profile = {
-  // 我的  主页面
+  // Profile homepage
   LOGIN_NOW: 'Login',
   IMPORT: 'Import',
   DATA: 'Data',
@@ -30,7 +30,7 @@ const Profile: typeof CN.Profile = {
 
   SELECT_MODEL: 'Select Model',
 
-  // 我的  提示语
+  // Profile prompt
   MY_GUIDE: 'You can open the data from the home module\n after importing it',
   MY_GUIDE_KNOW: 'Got it',
   MY_GUIDE_SLIDE: 'Swipe up to get more',
@@ -58,7 +58,7 @@ const Profile: typeof CN.Profile = {
   SCENE_BROWSE:'Click to open the scene',
   SCENE_FLY:'Set a flight route to browse the scene from different angles',
 
-  // 我的——登录
+  // Profile - login
   LOGIN: 'Login',
   LOGINING: 'Logging..',
   LOGIN_TIMEOUT: 'Login timeout, please try again later',
@@ -92,10 +92,21 @@ const Profile: typeof CN.Profile = {
   CONNECTING: 'Connecting',
   CONNECT_SERVER_FAIL: 'Failed to connect to the server, please check the network or server address',
   NEXT: 'Next',
+  MESSAGE_SERVICE_SETTING: 'Message Service Configuration',
+  MESSAGE_SERVICE_IP: 'IP Address of Message Service',
+  MESSAGE_SERVICE_PORT: 'Port of Message Service',
+  MESSAGE_SERVICE_MANAGE_PORT: 'Port of Message Service Manager',
+  MESSAGE_SERVICE_HOST_NAME: 'Virtual Host',
+  MESSAGE_SERVICE_ADMIN_NAME: 'Adminstrator',
+  MESSAGE_SERVICE_ADMIN_PASSWORD: 'Password',
+
+  FILE_SERVICE_SETTING: 'File Service Configuration',
+  FILE_SERVICE_UPLOAD_URL: 'URL to upload Files',
+  FILE_SERVICE_UPLOAD_DOWNLOAD: 'URL to download Files',
 
   SWITCH_ACCOUNT: 'Switch Account',
   LOG_OUT: 'Log out',
-  CANCELLATION:'Cancellation',//need to translate
+  CANCELLATION:'Register out',
 
   SWITCH: 'Switch',
   SWITCH_CURRENT: 'You are already logged in with this account',
@@ -250,9 +261,9 @@ const Profile: typeof CN.Profile = {
   SETTING_CLEAR_CACHE_SUCCESS:'Cleared',
   DISTANCE:'Distance(m)',
   TIME:'Time(s)',
-  INPUT_NUMBER:"Please Input Number",//need to translate
-  DISTANCE_LOCATION:'Distance Location',//need to translate
-  TIME_LOCATION:'Time Location',//need to translate
+  INPUT_NUMBER:"Please enter a number",
+  DISTANCE_LOCATION:'Position by Distance',
+  TIME_LOCATION:'Position by Time',
 
   // 许可
   LICENSE: 'License',
@@ -411,8 +422,8 @@ const Profile: typeof CN.Profile = {
   CHOOSE_COLOR: 'Choose Color',
   SET_PROJECTION: 'Set Projection',
 
-  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
-  ONLINE: 'Online', //to be translated
+  ONLINE_DATA_UNAVAILABLE: 'Unable to access online resources',
+  ONLINE: 'Online',
 }
 
 export { Profile }

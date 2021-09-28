@@ -157,6 +157,7 @@ const Friends: typeof CN.Friends = {
 
   // 创建群组
   JOIN: 'Join',
+  TITLE_CHOOSE_MEMBER: 'Select members',
   VIEW_MORE_MEMBERS: 'View more members',
   MY_GROUPS: 'My Groups',
   JOINED_GROUPS: 'Joined Groups',
@@ -267,18 +268,18 @@ const Friends: typeof CN.Friends = {
   INVITE_GROUP_MEMBERS_ERROR_1: 'The user already exists',
   INVITE_GROUP_MEMBERS_ERROR_2: 'The group has invited the user',
 
-  REPORT: 'report',//need to translate
-  SENDING: 'sending',//need to translate
-  REPORT_SUCCESS: 'report success',//need to translate
-  PRIVATE_REPORT:'Private letter report',//need to translate
+  REPORT: 'Report',
+  SENDING: 'Sending',
+  REPORT_SUCCESS: 'Successfully reported',
+  PRIVATE_REPORT:'Report messages',
 
-  INAPPROPRIATE: 'Publishing inappropriate caused me',//need to translate
-  ADVERTISING: 'Garbage advertising, selling fake goods',//need to translate
-  PORNOGRAPHIC: 'Pornographic vulgarity',//need to translate
-  ILLEGAL: 'Illegal crime',//need to translate
-  INFORMATION: 'Current affairs false information',//need to translate
-  MINOR:'Minor related',//need to translate
-  SUSPECTED:'Suspected of fraud',//need to translate
-  EMBEZZLED:'This account may be embezzled',//need to translate
+  INAPPROPRIATE: 'Harassment messages',
+  ADVERTISING: 'Spam advertisement, counterfeit goods',
+  PORNOGRAPHIC: 'Vulgar messages',
+  ILLEGAL: 'Illegal action, crime',
+  INFORMATION: 'False political news',
+  MINOR:'Minor related',
+  SUSPECTED:'Fraud message',
+  EMBEZZLED:'This account may be hacked',
 }
 export { Friends }

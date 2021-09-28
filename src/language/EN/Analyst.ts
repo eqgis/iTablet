@@ -257,7 +257,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   CONVERT_SUCCESS: 'Converted',
   CONVERT_FAILED: 'Failed to convert',
   ARITHMETIC: 'Arithmetic',
-  COORDSYS:'Coordinate System',//need to translate
+  COORDSYS:'Coordinate System',
 }
 
 const Convert_Unit: typeof CN.Convert_Unit = {

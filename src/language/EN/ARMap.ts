@@ -19,7 +19,7 @@ const ARMap: typeof CN.ARMap = {
   ADD_LAYER: 'Add Layer',
   SAVE: 'Save',
 
-  BORDER_WIDTH: 'BorderW idth',
+  BORDER_WIDTH: 'Border Width',
   POSITION: 'Position',
   ROTATION: 'Rotation',
   SCALE: 'Scale',
@@ -31,24 +31,24 @@ const ARMap: typeof CN.ARMap = {
   BACK: 'Back',
   DIRECTION: 'Direction',
   DISTANCE: 'Distance',
-  RATATION_AXIS: 'Ratation Axis',
-  CLOCKWISE: 'closewise',
-  COUNTER_CLOCKWISE: 'couterclockwise',
+  RATATION_AXIS: 'Rotation Axis',
+  CLOCKWISE: 'clockwise',
+  COUNTER_CLOCKWISE: 'Anticlockwise',
   WEST: 'W',
   EAST: 'E',
   SOUTH: 'S',
   NORTH: 'N',
 
-  ANIMATION: 'Aniamtion',
+  ANIMATION: 'Animation',
   ANIMATION_TYPE: 'Animation Type',
 
   AR_LAYER_NOT_SUPPORT_STYLE: 'The current layer does not support style editing',
 
-  TEXT_OPACITY: 'Text Opacity', // to be translated
-  TEXT_COLOR: 'Text Color', // to be translated
-  TEXT_SIZE: 'Text Size', // to be translated
-  BACKGROUND_OPACITY: 'Background Opacity', // to be translated
-  BACKGROUND_COLOR: 'Background Color', // to be translated
+  TEXT_OPACITY: 'Transparency',
+  TEXT_COLOR: 'Color',
+  TEXT_SIZE: 'Size',
+  BACKGROUND_OPACITY: 'Background Transparency',
+  BACKGROUND_COLOR: 'Background Color',
 
   FOOD: 'Food',
   SCENE: 'Scenic',
@@ -63,25 +63,25 @@ const ARMap: typeof CN.ARMap = {
   MARKET: 'Mall',
   SUBWAY: 'Subway',
 
-  SEARCHING: 'Searching', //to be translated
-  NO_SEARCH_RESULT: 'No search result', //to be translated
-  PLEASE_INPUT_KEYWORD: 'Please input keyword', //to be translated
+  SEARCHING: 'Searching',
+  NO_SEARCH_RESULT: 'No results',
+  PLEASE_INPUT_KEYWORD: 'Please enter keyword', 
 
-  FAILED_TO_ANALYZE_PATH: 'Failed to analyze path', //to be translated
-  FAILED_TO_GET_LOCATION: 'Failed to get current location', //to be translated
+  FAILED_TO_ANALYZE_PATH: 'Failed to analyze the path',
+  FAILED_TO_GET_LOCATION: 'Failed to get the current location',
 
-  CLEAR_SEARCH_HISOTORY: 'Clear Search History', //to be translated
+  CLEAR_SEARCH_HISOTORY: 'Clear',
 
-  ROUTE: 'Route', //to be translated
-  REMAIN: 'Remain', //to be translated
-  MAP_NAVI: 'Map Navigation', //to be translated
-  NAVIGATION: 'Navigation', //to be translated
-  ROUTE_NAVI: 'Route Navigation', //to be translated
+  ROUTE: 'Route',
+  REMAIN: 'Remain',
+  MAP_NAVI: 'Map Navigation',
+  NAVIGATION: 'Navigation',
+  ROUTE_NAVI: 'Route Navigation',
 
-  ROADNET_DATA: 'Road Net Data',  //to be translated
+  ROADNET_DATA: 'Road-net Data',
   HEIGHT: 'Height',
 
-  DURATION: 'Duration', //to be translated
+  DURATION: 'Duration',
 }
 
 export {

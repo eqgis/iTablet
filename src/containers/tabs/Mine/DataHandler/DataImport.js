@@ -252,7 +252,7 @@ async function importDatasource(user, item) {
         const description = JSON.parse(descriptionStr)
         const keys = Object.keys(description)
         for (const key of keys) {
-          const path = description[key]
+          let path = description[key]
           //加上用户信息 add xiezhy
           //path = [NSString stringWithFormats:@"%@/User/%@/Data%@",[AppInfo getRootPath],[AppInfo getUserName], path];
           path = await AppInfo.getRootPath() + '/User/' + await AppInfo.getUserName() + '/Data' + path

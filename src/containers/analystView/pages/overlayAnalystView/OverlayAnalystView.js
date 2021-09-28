@@ -106,7 +106,7 @@ export default class OverlayAnalystView extends Component {
       case getLanguage(this.props.language).Analyst_Methods.IDENTITY:
       case getLanguage(this.props.language).Analyst_Methods.INTERSECT:
       default:
-        limit = []
+        limit = [DatasetType.REGION, DatasetType.LINE, DatasetType.POINT]
         break
     }
     return limit

@@ -445,7 +445,7 @@ export default class BufferAnalystViewTab extends Component {
                 headerTitle: getLanguage(this.props.language).Analyst_Labels
                   .BUFFER_RADIUS,
                 placeholder:
-                  getLanguage(this.props.language).Analyst_Prompt.PLEASE_ENTER +
+                  getLanguage(this.props.language).Prompt.PLEASE_ENTER +
                   getLanguage(this.props.language).Analyst_Labels.BUFFER_RADIUS,
                 // keyboardType: 'numeric',
                 type: 'number',

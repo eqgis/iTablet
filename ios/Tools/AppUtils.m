@@ -67,6 +67,26 @@ RCT_REMAP_METHOD(isLocationOpen, LocationOpenWithresolve:(RCTPromiseResolveBlock
     reject(@"AppUtils", exception.reason, nil);
   }
 }
+
+bool foo(void){
+  if (sizeof(void*) == 4) {
+    NSLog(@"32-bit App");
+    return false;
+
+  } else if (sizeof(void*) == 8) {
+    NSLog(@"64-bit App");
+    return true;
+  }
+}
+RCT_REMAP_METHOD(is64Bit, is64BitResolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+  @try {
+    BOOL res = foo();
+    resolve([NSNumber numberWithBool:res]);
+  } @catch (NSException *exception) {
+    reject(@"AppUtils", exception.reason, nil);
+  }
+}
+
 RCT_REMAP_METHOD(isLocationAllowed, LocationAllowWithresolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
   @try {
     BOOL isAllowed;

@@ -688,7 +688,8 @@ class AppRoot extends Component {
   _getIs64System = async () => {
     try {
       GLOBAL.SYSTEM_VERSION = "x64"
-      if (Platform.OS === 'android') {
+      // if (Platform.OS === 'android') 
+      {
         let b64 = await AppUtils.is64Bit()
         if (b64 === false) {
           GLOBAL.SYSTEM_VERSION = "x32"

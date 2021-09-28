@@ -420,6 +420,8 @@ const Profile = {
 
   ONLINE_DATA_UNAVAILABLE: '在线资源不可访问',
   ONLINE: '在线',
+
+  CLOUD_CAPACITY_NOT_ENOUGH: '云存储空间不足',
 }
 
 export { Profile }

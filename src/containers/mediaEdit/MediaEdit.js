@@ -216,7 +216,7 @@ export default class MediaEdit extends React.Component {
           //   0,
           //   userPath,
           // )
-          let resourceId = await this.onlineServicesUtils.uploadFile(
+          let resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
             mediaFilePath,
             name,
             'PHOTOS',

@@ -425,7 +425,7 @@ export default class FunctionToolbar extends React.Component {
                         //   0,
                         //   userPath,
                         // )
-                        let resourceId = await this.onlineServicesUtils.uploadFile(
+                        let resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
                           mediaPath,
                           `${name}.${suffix}`,
                           'PHOTOS',

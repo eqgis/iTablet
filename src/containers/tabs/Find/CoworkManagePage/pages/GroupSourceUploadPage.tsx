@@ -286,7 +286,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
 
             try {
               if (_resultData.result) {
-                let resourceId = await OnlineServicesUtils.getService().uploadFile(
+                let resourceId = await OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
                   _resultData.zipPath,
                   `${name}.zip`,
                   'WORKSPACE',

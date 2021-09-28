@@ -103,7 +103,7 @@ async function share3DMap(type, list = []) {
               } else if (type === constants.SUPERMAP_IPORTAL) {
                 JSOnlineService = new OnlineServicesUtils('iportal')
               }
-              let uploadResult = await JSOnlineService.uploadFile(
+              let uploadResult = await JSOnlineService.uploadFileWithCheckCapacity(
                 zipPath,
                 `${dataName}.zip`,
                 'WORKSPACE',

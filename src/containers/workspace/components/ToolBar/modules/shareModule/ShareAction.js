@@ -123,7 +123,7 @@ async function shareMap(type, list = [], name = '') {
           } else if (type === constants.SUPERMAP_IPORTAL) {
             JSOnlineService = new OnlineServicesUtils('iportal')
           }
-          let uploadResult = await JSOnlineService.uploadFile(
+          let uploadResult = await JSOnlineService.uploadFileWithCheckCapacity(
             path,
             `${dataName}.zip`,
             'WORKSPACE',

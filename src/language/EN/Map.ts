@@ -34,7 +34,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   START_SAVE_AS_SENCE: 'Save As ',
   PLOT_SAVE_ANIMATION: 'Save Animation',
   ANIMATION_NODE_NAME: 'Animation Node Name',
-
   OPEN_ONLINE_DATA: 'Open Online Data',
 
   PLOT: 'Plot',
@@ -834,7 +833,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'Map Name',
   SHOW_SCALE: 'Show Scale',
   SHOW_LOCATION: 'Show Location',
-  SHOW_COMPASS: 'Show Compass', // to be translated
+  SHOW_COMPASS: 'Show Compass',
   ROTATION_GESTURE: 'Rotation Gesture',
   PITCH_GESTURE: 'Pitch Gesture',
   ROTATION_ANGLE: 'Rotation Angle',

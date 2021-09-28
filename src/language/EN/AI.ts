@@ -16,7 +16,7 @@ const AI: typeof CN.AI = {
   VIOLATION_INFO: 'Violation Information',
   LAW_ENFORCER: 'Law Enforcer',
 
-  SUPPORT_POINT_AND_CAD: 'Only dot layers and CAD layers are supported',
+  SUPPORT_POINT_AND_CAD: 'dot layers and CAD layers friendly',
 
   ALL_WRONG: 'None of the above is true',
 }

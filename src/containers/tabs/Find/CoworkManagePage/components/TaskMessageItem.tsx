@@ -91,19 +91,23 @@ export default class TaskMessageItem extends React.Component<Props, State> {
         if (exist) {
           clearInterval(timer)
           this.setState({
+            isDownloading: false,
             exist: true,
           })
         } else {
           this.setState({
+            isDownloading: true,
             exist: false,
           })
         }
       }, 2000)
       this.setState({
+        isDownloading: true,
         exist: false,
       })
     } else {
       this.setState({
+        isDownloading: false,
         exist: true,
       })
     }
@@ -171,19 +175,19 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return
     }
-    // if (this.state.isDownloading) {
-    //   Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
-    //   return
-    // }
-    // let downloadData = this.getDownloadData(this.props.downloadData, this.props.data.id)
-    let downloadData = this.props.downloadData
-    if (downloadData && downloadData.progress < 100) {
+    if (this.state.isDownloading) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
       return
     }
-    // this.setState({
-    //   isDownloading: true,
-    // })
+    // let downloadData = this.getDownloadData(this.props.downloadData, this.props.data.id)
+    // let downloadData = this.props.downloadData
+    // if (downloadData && downloadData.progress < 100) {
+    //   Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+    //   return
+    // }
+    this.setState({
+      isDownloading: true,
+    })
     RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
 
     let dataId = this.props.data.resource.resourceId
@@ -226,25 +230,25 @@ export default class TaskMessageItem extends React.Component<Props, State> {
           FileTools.deleteFile(this.path)
           FileTools.deleteFile(this.path + '_tmp') // 删除下载的临时文件
           FileTools.deleteFile(this.downloadingPath + '_')
-          // this.setState({
-          //   isDownloading: false,
-          // }, () => {
-          if (
-            e.message.includes('no such file or directory') || // Android提示
-            e.message.includes('Failed to open target resource') // iOS提示
-          ) {
-            Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_NOT_EXIST)
-          } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
-          }
-          // })
+          this.setState({
+            isDownloading: false,
+          }, () => {
+            if (
+              e.message.includes('no such file or directory') || // Android提示
+              e.message.includes('Failed to open target resource') // iOS提示
+            ) {
+              Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_NOT_EXIST)
+            } else {
+              Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+            }
+          })
         })
     } catch (e) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
       FileTools.deleteFile(this.path)
-      // this.setState({
-      //   isDownloading: false,
-      // })
+      this.setState({
+        isDownloading: false,
+      })
     }
   }
 
@@ -279,13 +283,13 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       await RNFS.writeFile(this.downloadingPath + '_', JSON.stringify(mapData), 'utf8')
 
       if (result.length === 0) {
-        // this.setState({
-        //   isDownloading: false,
-        // })
+        this.setState({
+          isDownloading: false,
+        })
         Toast.show(getLanguage(GLOBAL.language).Prompt.ONLINE_DATA_ERROR)
       } else {
         this.setState({
-          // isDownloading: false,
+          isDownloading: false,
           exist: true,
           // mapData,
         })
@@ -359,9 +363,10 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   }
 
   _renderProgress = () => {
+    if (!this.state.isDownloading) return null
     // let downloadData = this.getDownloadData(this.props.downloadData, this.props.data.id)
-    let downloadData = this.props.downloadData
-    if (!downloadData || downloadData.downloaded) return null
+    // let downloadData = this.props.downloadData
+    // if (!downloadData || downloadData.downloaded) return null
     return (
       <Progress
         ref={ref => (this.itemProgress = ref)}

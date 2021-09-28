@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, FlatList, Text, Image, StyleSheet, Platform } from 'react-native'
-import { scaleSize, Toast } from '../../../../utils'
+import { scaleSize, Toast, SCoordinationUtils } from '../../../../utils'
 import { addCoworkMsg, setCoworkTaskGroup, deleteTaskMembers, TaskMemberDeleteParams } from '../../../../redux/models/cowork'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { UserInfo } from '../../../../redux/models/user'
@@ -8,7 +8,7 @@ import { ListSeparator, ImageButton, PopMenu, Dialog, TextBtn } from '../../../.
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import { setCurrentTask } from '../../../../redux/models/cowork'
-import { downloadSourceFile, deleteSourceDownloadFile, Download, IDownloadProps } from '../../../../redux/models/down'
+import { downloadSourceFile, deleteSourceDownloadFile, DownloadData, IDownloadProps } from '../../../../redux/models/down'
 import { SMap } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { size, color } from '../../../../styles'
@@ -123,7 +123,7 @@ interface Props {
   coworkMessages: any,
   mapModules: any,
   language: string,
-  sourceDownloads: Download[],
+  sourceDownloads: DownloadData,
   createTask: () => void,
   setCurrentMapModule: (index: number) => void,
   addCoworkMsg: (params: any, cb?: () => {}) => void,
@@ -132,7 +132,7 @@ interface Props {
   setCurrentTask: (params: any, cb?: () => {}) => void,
   deleteTaskMembers: (params: TaskMemberDeleteParams) => Promise<any>,
   downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
-  deleteSourceDownloadFile: (params: {id: number}) => Promise<any[]>,
+  deleteSourceDownloadFile: (id: number | string) => Promise<any[]>,
 }
 
 class TaskManage extends React.Component<Props, State> {
@@ -231,7 +231,7 @@ class TaskManage extends React.Component<Props, State> {
 
   getMembers = async () => {
     if (!this.props.groupInfo.id) return
-    let result = await OnlineServicesUtils.getService()?.getGroupMembers({
+    let result = await SCoordinationUtils.getScoordiantion()?.getGroupMembers({
       groupId: this.props.groupInfo.id,
     })
     return result.content
@@ -474,13 +474,14 @@ class TaskManage extends React.Component<Props, State> {
         data={item}
         getModule={this._getModule}
         user={this.props.user}
-        isSelf={item?.applicant !== this.props.user.currentUser.id}
+        // isSelf={item?.applicant !== this.props.user.currentUser.id}
         onPress={(data: any) => this._onPress(data)}
         addCoworkMsg={this.props.addCoworkMsg}
         deleteCoworkMsg={this.props.deleteCoworkMsg}
         showMore={this._showMore}
         unread={unread}
-        downloadData={this.props.sourceDownloads}
+        // downloadData={this.props.sourceDownloads}
+        downloadData={this.props.sourceDownloads[item.id]}
         downloadSourceFile={this.props.downloadSourceFile}
         deleteSourceDownloadFile={this.props.deleteSourceDownloadFile}
       />

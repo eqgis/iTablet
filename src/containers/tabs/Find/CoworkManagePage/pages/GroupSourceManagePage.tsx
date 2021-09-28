@@ -12,7 +12,7 @@ import { UserType } from '../../../../../constants'
 import { getThemeAssets } from '../../../../../assets'
 import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
-import { downloadSourceFile, deleteSourceDownloadFile, IDownloadProps, Download } from '../../../../../redux/models/down'
+import { downloadSourceFile, deleteSourceDownloadFile, IDownloadProps, DownloadData } from '../../../../../redux/models/down'
 import { setCurrentGroup } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
 import { SCoordination, GroupType } from 'imobile_for_reactnative'
@@ -113,9 +113,9 @@ interface Props {
   device: any,
   mapModules: any,
   currentGroup: GroupType,
-  sourceDownloads: Download[],
+  sourceDownloads: DownloadData,
   downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
-  deleteSourceDownloadFile: (params: {id: number}) => Promise<any[]>,
+  deleteSourceDownloadFile: (id: number | string) => Promise<any[]>,
   setCurrentGroup: (data: any) => Promise<any[]>,
 }
 
@@ -565,7 +565,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         onPress={this._onPress}
         openCheckBox={this.state.isMutiChoice}
         // hasDownload={this.hasDownload}
-        downloadData={this.props.sourceDownloads}
+        downloadData={this.props.sourceDownloads[item.resourceId]}
         downloadSourceFile={this.props.downloadSourceFile}
         deleteSourceDownloadFile={this.props.deleteSourceDownloadFile}
         checked={!!this.state.selectedData.get(item.resourceId)}

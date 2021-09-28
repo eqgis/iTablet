@@ -17,22 +17,22 @@ import styles from './styles'
 interface Props {
   data: any,
   user: any,
-  isSelf: boolean,
+  // isSelf: boolean,
   unread: number,
-  downloadData: Download[],
+  downloadData: Download,
   onPress: (data: any) => void,
   addCoworkMsg: (data: any) => void,
   deleteCoworkMsg: (data: any) => void,
   showMore: (item: {data: any, event: any}) => void,
   getModule?: (key: string, index: number) => any,
   downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
-  deleteSourceDownloadFile: (params: {id: number}) => Promise<any[]>,
+  deleteSourceDownloadFile: (id: number | string) => Promise<any[]>,
 }
 
 interface State {
   progress: number,
   isDownloading: boolean,
-  isSelf: boolean,
+  // isSelf: boolean,
   module: any,
   exist: boolean,
   mapData: {
@@ -55,7 +55,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     this.downloadingPath = ''
     this.state = {
       isDownloading: false,
-      isSelf: props.isSelf,
+      // isSelf: props.isSelf,
       module: this.props.getModule && this.props.getModule(this.props.data.module.key, this.props.data.module.index),
       progress: 0,
       exist: false,
@@ -82,29 +82,29 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       this.props.data.id
 
     // 检测是否下载完成
-    let exist = await FileTools.fileIsExist(this.downloadingPath)
-    if (exist) {
-      this.downloading = true
+    let exist = await this.fileExist()
+    if (!exist && this.props.downloadData) {
       // 下载过程中退出当前界面,再次进入当前界面
       // 防止下载完成后,进度条不会消失
       let timer = setInterval(async () => {
-        exist = await FileTools.fileIsExist(this.downloadingPath + '_')
+        exist = await this.fileExist()
         if (exist) {
           clearInterval(timer)
           this.setState({
             exist: true,
-            isDownloading: false,
           })
         } else {
           this.setState({
             exist: false,
-            isDownloading: true,
           })
         }
       }, 2000)
       this.setState({
         exist: false,
-        isDownloading: true,
+      })
+    } else {
+      this.setState({
+        exist: true,
       })
     }
   }
@@ -117,41 +117,43 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   }
 
   async componentDidUpdate(prevProps: Props) {
+    const newState: any = {}
     if (
       this.props.getModule &&
       (
         this.props.data.module.key !== prevProps.data.module.key ||
-        this.props.data.module.index !== prevProps.data.module.key
+        this.props.data.module.index !== prevProps.data.module.index
       )
     ) {
       let module = this.props.getModule(this.props.data.module.key, this.props.data.module.index)
-      this.setState({
-        module: module,
-      })
+      newState.module = module
     }
-    const download = this.getDownloadData(this.props.downloadData, this.props.data.id)
+    const download = this.props.downloadData
     if (this.itemProgress && download) {
       if (this.itemProgress && download.progress === 100) {
-        this.props.deleteSourceDownloadFile({id: this.props.data.id})
+        this.props.deleteSourceDownloadFile(this.props.data.id)
       }
       this.itemProgress.progress = download.progress / 100
-    } else if (download && !this.state.isDownloading && download.progress >= 0 && download.progress < 100) {
-      this.setState({
-        isDownloading: true,
-      })
+    }
+    const fileExist = await this.fileExist()
+    if (this.state.exist !== fileExist) {
+      newState.exist = fileExist
+    }
+    if (Object.keys(newState).length > 0) {
+      this.setState(newState)
     }
   }
 
-  getDownloadData = (datas: Download[], id: number | string) => {
-    for (let item of this.props.downloadData) {
-      if (item.id === id) {
-        return item
-      }
-    }
+  fileExist = async () => {
+    return await FileTools.fileIsExist(this.downloadingPath + '_')
   }
 
-  _onPress = () => {
-    let data = Object.assign({map: this.state.mapData}, this.props.data)
+  _onPress = async () => {
+    let mapData, data = this.props.data
+    if (await this.fileExist()) {
+      mapData = await RNFS.readFile(this.downloadingPath + '_', 'utf8')
+      data = Object.assign({map: JSON.parse(mapData)}, this.props.data)
+    }
     this.props.onPress(data)
   }
 
@@ -163,18 +165,25 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   }
 
   _downloadFile = async () => {
-    if (this.state.exist) {
+    // if (this.state.exist) {
+    if (await this.fileExist()) {
       await this.unZipFile()
       Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return
     }
-    if (this.state.isDownloading) {
+    // if (this.state.isDownloading) {
+    //   Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+    //   return
+    // }
+    // let downloadData = this.getDownloadData(this.props.downloadData, this.props.data.id)
+    let downloadData = this.props.downloadData
+    if (downloadData && downloadData.progress < 100) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
       return
     }
-    this.setState({
-      isDownloading: true,
-    })
+    // this.setState({
+    //   isDownloading: true,
+    // })
     RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
 
     let dataId = this.props.data.resource.resourceId
@@ -212,71 +221,77 @@ export default class TaskMessageItem extends React.Component<Props, State> {
 
     try {
       this.props.downloadSourceFile(downloadOptions)
-        .then(async () => {
-          let { result, path } = await this.unZipFile()
-
-          let results: any[] = []
-          if (result) {
-            let dataList = await DataHandler.getExternalData(path)
-
-            for (let data of dataList) {
-              let importResult = await DataHandler.importWorkspace(data)
-              if (importResult && importResult.length > 0) {
-                results = results.concat(importResult)
-              }
-            }
-            FileTools.deleteFile(this.path)
-          }
-
-          let mapData
-          if (results.length > 0) {
-            let mapName = results[0]
-            let mapPath = `${ConstPath.UserPath + this.props.user.currentUser.userName}/${ConstPath.RelativePath.Map + mapName}.xml`
-            mapData = {
-              name: mapName,
-              path: mapPath,
-            }
-          }
-
-          await FileTools.deleteFile(this.downloadingPath)
-          await RNFS.writeFile(this.downloadingPath + '_', JSON.stringify(mapData), 'utf8')
-
-          if (result.length === 0) {
-            this.setState({
-              isDownloading: false,
-            })
-            Toast.show(getLanguage(GLOBAL.language).Prompt.ONLINE_DATA_ERROR)
-          } else {
-            this.setState({
-              isDownloading: false,
-              exist: true,
-              mapData,
-            })
-          }
-        })
+        .then(this._afterDownload)
         .catch(e => {
           FileTools.deleteFile(this.path)
           FileTools.deleteFile(this.path + '_tmp') // 删除下载的临时文件
           FileTools.deleteFile(this.downloadingPath + '_')
-          this.setState({
-            isDownloading: false,
-          }, () => {
-            if (
-              e.message.includes('no such file or directory') || // Android提示
-              e.message.includes('Failed to open target resource') // iOS提示
-            ) {
-              Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_NOT_EXIST)
-            } else {
-              Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
-            }
-          })
+          // this.setState({
+          //   isDownloading: false,
+          // }, () => {
+          if (
+            e.message.includes('no such file or directory') || // Android提示
+            e.message.includes('Failed to open target resource') // iOS提示
+          ) {
+            Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_NOT_EXIST)
+          } else {
+            Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+          }
+          // })
         })
     } catch (e) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
       FileTools.deleteFile(this.path)
-      this.setState({
-        isDownloading: false,
-      })
+      // this.setState({
+      //   isDownloading: false,
+      // })
+    }
+  }
+
+  _afterDownload = async () => {
+    try {
+      let { result, path } = await this.unZipFile()
+
+      let results: any[] = []
+      if (result) {
+        let dataList = await DataHandler.getExternalData(path)
+
+        for (let data of dataList) {
+          let importResult = await DataHandler.importWorkspace(data)
+          if (importResult && importResult.length > 0) {
+            results = results.concat(importResult)
+          }
+        }
+        FileTools.deleteFile(this.path)
+      }
+
+      let mapData
+      if (results.length > 0) {
+        let mapName = results[0]
+        let mapPath = `${ConstPath.UserPath + this.props.user.currentUser.userName}/${ConstPath.RelativePath.Map + mapName}.xml`
+        mapData = {
+          name: mapName,
+          path: mapPath,
+        }
+      }
+
+      await FileTools.deleteFile(this.downloadingPath)
+      await RNFS.writeFile(this.downloadingPath + '_', JSON.stringify(mapData), 'utf8')
+
+      if (result.length === 0) {
+        // this.setState({
+        //   isDownloading: false,
+        // })
+        Toast.show(getLanguage(GLOBAL.language).Prompt.ONLINE_DATA_ERROR)
+      } else {
+        this.setState({
+          // isDownloading: false,
+          exist: true,
+          // mapData,
+        })
+      }
+    } catch (error) {
+
     }
   }
 
@@ -344,7 +359,9 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   }
 
   _renderProgress = () => {
-    if (!this.state.isDownloading) return null
+    // let downloadData = this.getDownloadData(this.props.downloadData, this.props.data.id)
+    let downloadData = this.props.downloadData
+    if (!downloadData || downloadData.downloaded) return null
     return (
       <Progress
         ref={ref => (this.itemProgress = ref)}
@@ -413,11 +430,13 @@ export default class TaskMessageItem extends React.Component<Props, State> {
           >
             {this._renderContentView()}
           </View>
-          {!this.state.exist && this._renderButton({
-            image: getThemeAssets().cowork.icon_nav_import,
-            title: this.state.progress,
-            action: this._downloadFile,
-          })}
+          {
+            !this.state.exist && this._renderButton({
+              image: getThemeAssets().cowork.icon_nav_import,
+              title: this.state.progress,
+              action: this._downloadFile,
+            })
+          }
           {
             // this.state.exist &&
             this._renderButton({

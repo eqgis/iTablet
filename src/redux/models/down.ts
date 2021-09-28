@@ -26,6 +26,10 @@ export type Download = {
 /** downloads结构 */
 export type Downloads = Array<Download>
 
+export interface DownloadData {
+  [id: string]: Download,
+}
+
 export const setSampleDataShow = (
   params = {},
   cb = () => {},
@@ -170,10 +174,10 @@ export const downloadSourceFile = (params: IDownloadProps) => async (dispatch: (
   return result.promise
 }
 
-export const deleteSourceDownloadFile = (params = {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const deleteSourceDownloadFile = (id: number | string) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   await dispatch({
     type: DOWNLOADED_SOURCE_FILE_DELETE,
-    payload: params,
+    payload: {id},
   })
 }
 
@@ -205,7 +209,7 @@ const initialState = fromJS({
     },
   ],
   downloads: [],
-  sourceDownloads: [],
+  sourceDownloads: {}, // {[id]: data}
   downloadInfos: [],
   ignoreDownloads: [],
   showSampleData: false,
@@ -298,40 +302,14 @@ export default handleActions(
     [`${DOWNLOADING_SOURCE_FILE}`]: (state: { toJS: () => { sourceDownloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { sourceDownloads } = state.toJS()
       if (payload.id) {
-        if (sourceDownloads.length > 0) {
-          let isItem = false
-          for (let index = 0; index < sourceDownloads.length; index++) {
-            const element = sourceDownloads[index]
-            if (
-              element.id === payload.id &&
-              payload.progress !== sourceDownloads[index].progress
-            ) {
-              isItem = true
-              sourceDownloads[index] = payload
-              break
-            }
-          }
-          if (!isItem) {
-            sourceDownloads.push(payload)
-          }
-        } else {
-          sourceDownloads.push(payload)
-        }
+        sourceDownloads[payload.id] = payload
       }
       return state.setIn(['sourceDownloads'], fromJS(sourceDownloads))
     },
-    [`${DOWNLOADED_SOURCE_FILE_DELETE}`]: (state: { toJS: () => { sourceDownloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
+    [`${DOWNLOADED_SOURCE_FILE_DELETE}`]: (state: { toJS: () => { sourceDownloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: { payload: {id: number} }) => {
       const { sourceDownloads } = state.toJS()
-      if (payload.id) {
-        if (sourceDownloads.length > 0) {
-          for (let index = 0; index < sourceDownloads.length; index++) {
-            const element = sourceDownloads[index]
-            if (element.id === payload.id) {
-              sourceDownloads.splice(index, 1)
-              break
-            }
-          }
-        }
+      if (payload.id && sourceDownloads[payload.id]) {
+        delete sourceDownloads[payload.id]
       }
       return state.setIn(['sourceDownloads'], fromJS(sourceDownloads))
     },

@@ -378,7 +378,7 @@ export default class FunctionToolbar extends React.Component {
               return
             }
             const layerType = LayerUtils.getLayerType(this.props.currentLayer)
-            const isTaggingLayer = layerType === 'TAGGINGLAYER'
+            const isTaggingLayer = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
             if (isTaggingLayer) {
               const { datasourceAlias } = this.props.currentLayer // 标注数据源名称
               const { datasetName } = this.props.currentLayer // 标注图层名称
@@ -477,7 +477,7 @@ export default class FunctionToolbar extends React.Component {
             } else {
               Toast.show(
                 getLanguage(this.props.language).Prompt
-                  .PLEASE_SELECT_PLOT_LAYER,
+                  .PLEASE_SELECT_MEDIA_LAYER,
               )
               NavigationService.navigate('LayerManager')
               return
@@ -485,7 +485,7 @@ export default class FunctionToolbar extends React.Component {
           } else {
             Toast.show(
               getLanguage(this.props.language).Prompt
-                .PLEASE_SELECT_PLOT_LAYER,
+                .PLEASE_SELECT_MEDIA_LAYER,
             )
             NavigationService.navigate('LayerManager')
           }

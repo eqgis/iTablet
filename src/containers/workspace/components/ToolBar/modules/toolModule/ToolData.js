@@ -98,9 +98,9 @@ function getData(type, params) {
             title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
             action: ToolAction.captureImage,
             size: 'large',
-            disable: layerType !== 'TAGGINGLAYER',
+            disable: layerType !== 'TAGGINGLAYER' && layerType !== 'CADLAYER' && layerType !== 'POINTLAYER',
             image:
-              layerType !== 'TAGGINGLAYER'
+              layerType !== 'TAGGINGLAYER' && layerType !== 'CADLAYER' && layerType !== 'POINTLAYER'
                 ? getThemeAssets().mapTools.icon_tool_multi_media_ash
                 : getThemeAssets().mapTools.icon_tool_multi_media,
           },

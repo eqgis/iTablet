@@ -129,6 +129,7 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'La couche actuelle ne peut pas être stylisée et veuillez en sélectionner une autre',
 
   PLEASE_SELECT_PLOT_LAYER: 'Veuillez sélectionner la couche du tracé',
+  PLEASE_SELECT_MEDIA_LAYER: 'Please select a point, CAD or plot layer', // need to translate
   DONOT_SUPPORT_ARCORE: 'Les fonctionnalités RA ne sont pas disponibles sur cet appareil',
   GET_SUPPORTED_DEVICE_LIST: 'Afficher la liste des appareils pris en charge',
   PLEASE_NEW_PLOT_LAYER: 'Veuillez créer une nouvelle couche de tracé',

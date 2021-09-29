@@ -421,7 +421,7 @@ function captureImage() {
     // let reg = /^Label_(.*)#$/
     if (currentLayer) {
       const layerType = LayerUtils.getLayerType(currentLayer)
-      const isTaggingLayer = layerType === 'TAGGINGLAYER'
+      const isTaggingLayer = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
       // let isTaggingLayer = currentLayer.type === DatasetType.CAD
       // && currentLayer.datasourceAlias.match(reg)
       if (isTaggingLayer) {

@@ -129,6 +129,7 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: 'The current layer cannot be styled. Please select another one',
 
   PLEASE_SELECT_PLOT_LAYER: 'Please select or create a plot Layer',
+  PLEASE_SELECT_MEDIA_LAYER: 'Please select a point, CAD or plot layer',
   DONOT_SUPPORT_ARCORE: 'AR functionalities are unavailable on this device',
   GET_SUPPORTED_DEVICE_LIST: 'Get the list of supportive devices',
   PLEASE_NEW_PLOT_LAYER: 'Please create a new plot layer',

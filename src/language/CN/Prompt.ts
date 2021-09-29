@@ -127,6 +127,7 @@ const Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: '当前图层无法设置风格，请重新选择图层',
 
   PLEASE_SELECT_PLOT_LAYER: '请选择或新建标注图层',
+  PLEASE_SELECT_MEDIA_LAYER: '请选择点、CAD和标注图层',
   DONOT_SUPPORT_ARCORE: '此设备不支持AR功能',
   GET_SUPPORTED_DEVICE_LIST: '获取受支持的设备列表',
   PLEASE_NEW_PLOT_LAYER: '请新建标注图层',

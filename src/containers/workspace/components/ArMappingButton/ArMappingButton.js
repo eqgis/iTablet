@@ -508,18 +508,6 @@ export default class ArMappingButton extends React.Component {
     }
   }
 
-  componentDidMount() {
-    SARMap.addMeasureSaveListeners({
-      onSave: () => {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
-      }
-    })
-  }
-
-  componentWillUnmount() {
-    SARMap.removeMeasureSaveListeners()
-  }
-
   getLayerType = () =>{
     const layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
     let disablePoint = true,
@@ -1126,7 +1114,9 @@ export default class ArMappingButton extends React.Component {
       datasetName = 'Default_Tagging'
     }
     SARMap.setMeasurePath(datasourceAlias, datasetName)
-    SARMap.saveMeasureData(datasourceAlias, datasetName)
+    SARMap.saveMeasureData(datasourceAlias, datasetName).then(result => {
+      Toast.show(result ? getLanguage().Prompt.SAVE_SUCCESSFULLY : getLanguage().Prompt.SAVE_FAILED)
+    })
     // if (!result) {
     //   //await SMeasureAreaView.clearAll()
     //   if(this.saveType === 'savepoint'){

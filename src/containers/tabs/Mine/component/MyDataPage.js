@@ -31,6 +31,7 @@ import { MineItem, BatchHeadBar } from '../component'
 import { getThemeAssets, getPublicAssets, getARSceneAssets } from '../../../../assets'
 import RNFS from 'react-native-fs'
 import styles from './styles'
+import RNFetchBlob from 'rn-fetch-blob'
 
 const appUtilsModule = NativeModules.AppUtils
 const pointImg = require('../../../../assets/mapToolbar/dataset_type_point_black.png')
@@ -455,18 +456,25 @@ export default class MyDataPage extends Component {
     let result
     let { ext, onlineDataType } = this._getUploadType()
     this.exportPath = ''
+    let capacityInfo = { isCapacityEnough: false }
     if (ext && onlineDataType) {
-      result = await JSOnlineService.uploadFile(
+      result = await JSOnlineService.uploadFileWithCheckCapacity(
         path,
         fileName + '.' + ext,
         onlineDataType,
+        undefined,
+        capacityInfo
       )
       result && JSOnlineService.setDatasShareConfig(result, true)
     } else {
       result = false
     }
     await FileTools.deleteFile(path)
-    return result
+    if(!capacityInfo.isCapacityEnough) {
+      Toast.show(getLanguage().Profile.CLOUD_CAPACITY_NOT_ENOUGH)
+    } else {
+      return result
+    }
   }
 
   shareToIPortal = async fileName => {
@@ -475,18 +483,25 @@ export default class MyDataPage extends Component {
     let result
     let { ext, onlineDataType } = this._getUploadType()
     this.exportPath = ''
+    let capacityInfo = { isCapacityEnough: false }
     if (ext && onlineDataType) {
-      result = await JSIPortalServce.uploadFile(
+      result = await JSIPortalServce.uploadFileWithCheckCapacity(
         path,
         fileName + '.' + ext,
         onlineDataType,
+        undefined,
+        capacityInfo
       )
       result && JSIPortalServce.setDatasShareConfig(result, true)
     } else {
       result = false
     }
     await FileTools.deleteFile(path)
-    return result
+    if(!capacityInfo.isCapacityEnough) {
+      Toast.show(getLanguage().Profile.CLOUD_CAPACITY_NOT_ENOUGH)
+    } else {
+      return result
+    }
   }
 
   shareToChat = async fileName => {

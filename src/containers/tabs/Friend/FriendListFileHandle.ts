@@ -98,6 +98,9 @@ export default class FriendListFileHandle {
    * @param {*} user currentUser
    */
   static async initLocalFriendList(user: UserInfo) {
+    if (!UserType.isOnlineUser(user)) {
+      return
+    }
     await FriendListFileHandle.init(user)
     //读取本地文件并刷新
     FriendListFileHandle.getLocalFriendList()
@@ -108,6 +111,9 @@ export default class FriendListFileHandle {
    * @param {*} user currentUser
    */
   static async initFriendList(user: UserInfo) {
+    if (!UserType.isOnlineUser(user)) {
+      return
+    }
     await FriendListFileHandle.init(user)
     //读取本地文件并刷新
     await FriendListFileHandle.getLocalFriendList()

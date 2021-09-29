@@ -508,7 +508,7 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
     const targetPath = exportResult.targetPath
     if (result) {
       let uploadResult
-      uploadResult = await Service.uploadFile(
+      uploadResult = await Service.uploadFileWithCheckCapacity(
         targetPath,
         fileName + '.zip',
         publishDataType,

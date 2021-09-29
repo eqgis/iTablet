@@ -475,7 +475,55 @@ export default class OnlineServicesUtils {
     }
   }
 
+  /** 获取云存储空间，上传前先检查下空间是否足够 */
+  async getMyDataCapacity(): Promise<{usedCapacity: number, maxCapacity: number} | undefined> {
+    try {
+      const url = this.serverUrl + '/mycontent/datas/capacity.json'
 
+      let headers = {}
+      const cookie = await this.getCookie(true)
+      if (cookie) {
+        headers = {
+          cookie: cookie,
+        }
+      }
+
+      const response = RNFetchBlob.config({trusty : true}).fetch('GET', url, headers)
+
+      const result = await Promise.race([response, timeout(10)])
+      if (result === 'timeout') {
+        return
+      }
+
+      if (result.respInfo.status === 200) {
+        const info: {usedCapacity: number, maxCapacity: number}  = await result.json()
+
+        return info
+      } else {
+        return
+      }
+    } catch(e){
+      return
+    }
+  }
+
+  /**
+   * 上传文件前检查空间是否足够
+   */
+  async uploadFileWithCheckCapacity(filePath: string, fileName: string, fileType: keyof OnlineDataType, callback?: UploadCallBack, info?: {isCapacityEnough: boolean}) {
+    const capacity = await this.getMyDataCapacity()
+    if(capacity) {
+      const stat = await RNFetchBlob.fs.stat(filePath)
+      const isEnough = parseInt(stat.size) + capacity.usedCapacity < capacity.maxCapacity
+      info && (info.isCapacityEnough = isEnough)
+      if(!isEnough) {
+        return false
+      }
+    }
+
+    return await this.uploadFile(filePath, fileName, fileType, callback)
+
+  }
 
   /**
    * 上传文件

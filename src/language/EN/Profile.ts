@@ -424,6 +424,8 @@ const Profile: typeof CN.Profile = {
 
   ONLINE_DATA_UNAVAILABLE: 'Unable to access online resources',
   ONLINE: 'Online',
+
+  CLOUD_CAPACITY_NOT_ENOUGH: 'No enough capacity on cloud storage',  //to be translated
 }
 
 export { Profile }

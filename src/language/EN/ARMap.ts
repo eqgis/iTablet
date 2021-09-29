@@ -65,7 +65,7 @@ const ARMap: typeof CN.ARMap = {
 
   SEARCHING: 'Searching',
   NO_SEARCH_RESULT: 'No results',
-  PLEASE_INPUT_KEYWORD: 'Please enter keyword', 
+  PLEASE_INPUT_KEYWORD: 'Please enter keyword',
 
   FAILED_TO_ANALYZE_PATH: 'Failed to analyze the path',
   FAILED_TO_GET_LOCATION: 'Failed to get the current location',

@@ -1,21 +1,23 @@
-const Cowork = {
-  UPDATE_LOCAL_SERVICE: 'Updating local services', // need to translate
-  SUBMIT_SERVICE: 'Submit service', // need to translate
+import CN from '../CN'
 
-  UPDATE_SUCCESSFUL: 'Update successfully', // need to translate
-  UPDATE_FAILED: 'Update failed', // need to translate
+const Cowork: typeof CN.Cowork = {
+  UPDATE_LOCAL_SERVICE: 'تحديث الخدمات المحلية',
+  SUBMIT_SERVICE: 'تقديم الخدمات',
 
-  UPLOAD_SUCCESSFUL: 'Submit successfully', // need to translate
-  UPLOAD_FAILED: 'Submit failed', // need to translate
+  UPDATE_SUCCESSFUL: ' تحديث بنجاح ',
+  UPDATE_FAILED: 'فشل التحديث',
 
-  PUBLISH: 'Publish', // need to translate
+  UPLOAD_SUCCESSFUL: 'يقدم بنجاح',
+  UPLOAD_FAILED: 'ارتكاب الفشل',
 
-  ERROR_SERVICE_DATA_LOSE_URL: 'Online Data URL lost', // need to translate
+  PUBLISH: 'نشر',
 
-  PLEASE_ENTER_SERCICE_NAME: 'Please enter a service name', // need to translate
-  SERVICE_SHARING_SETTINGS: 'Service sharing settings', // need to translate
-  SEARCHABLE: 'Searchable', // need to translate
-  READABLE: 'Readable', // need to translate
+  ERROR_SERVICE_DATA_LOSE_URL: 'على الانترنت رابط البيانات المفقودة',
+
+  PLEASE_ENTER_SERCICE_NAME: 'الرجاء إدخال اسم الخدمة',
+  SERVICE_SHARING_SETTINGS: 'إعدادات الخدمة المشتركة',
+  SEARCHABLE: 'قابل للبحث',
+  READABLE: 'قابل للقراءة',
 }
 
 export { Cowork }

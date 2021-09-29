@@ -20,7 +20,7 @@ const Profile: typeof CN.Profile = {
   AIMODEL: 'Modèle IA',
   COLLECTION_TEMPLATE: "Modèle d'arpentage",
   PLOTTING_TEMPLATE: 'Modèle de traçage',
-  MAP_TEMPLATE: 'Mapping Template',//need to translate
+  MAP_TEMPLATE: 'Modèle de carte',
   NAVIGATION: 'Navigation',
   INCREMENT: 'Incrémentation',
   ENCLOSURE: 'Coffret',
@@ -92,10 +92,21 @@ const Profile: typeof CN.Profile = {
   CONNECTING: 'Connexion',
   CONNECT_SERVER_FAIL: "Impossible de se connecter au serveur, veuillez vérifier l'adresse réseau ou serveur,",
   NEXT: 'Suivant',
+  MESSAGE_SERVICE_SETTING: 'Message Service Configuration', // to be translated
+  MESSAGE_SERVICE_IP: 'IP Address of Message Service', // to be translated
+  MESSAGE_SERVICE_PORT: 'Port of Message Service', // to be translated
+  MESSAGE_SERVICE_MANAGE_PORT: 'Port of Message Service Manager', // to be translated
+  MESSAGE_SERVICE_HOST_NAME: 'Virtual Host', // to be translated
+  MESSAGE_SERVICE_ADMIN_NAME: 'Adminstrator', // to be translated
+  MESSAGE_SERVICE_ADMIN_PASSWORD: 'Password', // to be translated
+
+  FILE_SERVICE_SETTING: 'File Service Configuration', // to be translated
+  FILE_SERVICE_UPLOAD_URL: 'URL to upload Files', // to be translated
+  FILE_SERVICE_UPLOAD_DOWNLOAD: 'URL to download Files', // to be translated
 
   SWITCH_ACCOUNT: 'Changer de compte',
   LOG_OUT: 'Déconnexion',
-  CANCELLATION:'Cancellation',//need to translate
+  CANCELLATION:'Annulation',
 
   SWITCH: 'Commutateur',
   SWITCH_CURRENT: "Vous êtes déjà connecté avec cet utilisateur'",
@@ -114,7 +125,7 @@ const Profile: typeof CN.Profile = {
   PRIVATE_SERVICE: "Service privé'",
   PUBLIC_SERVICE: 'Service publique',
 
-  INVALID_SERVER_ADDRESS: 'Invalid Server Address', // to be translated
+  INVALID_SERVER_ADDRESS: 'Addresse du serveur est invalide',
 
   // 个人主页
   MY_ACCOUNT: 'Mon compte',
@@ -178,7 +189,7 @@ const Profile: typeof CN.Profile = {
   SET_AS_PRIVATE_DATA: 'Définir comme données privées',
   SET_AS_PUBLIC_DATA: 'Définir comme données publiques',
   NO_SERVICE: 'Pas de service',
-  SHARE_TO_GROUP: 'Share to group', // need to translate
+  SHARE_TO_GROUP: 'Partager au groupe',
 
   GET_DATA_FAILED: "Échec d'obtention des données",
 
@@ -248,11 +259,11 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: 'Cet appareil',
   SETTING_CLEAR_CACHE: 'Vider le cache',
   SETTING_CLEAR_CACHE_SUCCESS:'Suppression réussie',
-  DISTANCE:'Distance(m)',//need to translate
-  TIME:'Time(s)',//need to translate
-  INPUT_NUMBER:"Please Input Number",//need to translate
-  DISTANCE_LOCATION:'Distance Location',//need to translate
-  TIME_LOCATION:'Time Location',//need to translate
+  DISTANCE:'Distance(m)',
+  TIME:'Temps',
+  INPUT_NUMBER:"Veuillez saisir le numéro",
+  DISTANCE_LOCATION:'Emplacement à distance',
+  TIME_LOCATION:"Temps d'emplacement",
 
   // 许可
   LICENSE: 'License',
@@ -411,8 +422,8 @@ const Profile: typeof CN.Profile = {
   CHOOSE_COLOR: 'Sélectionner la couleur',
   SET_PROJECTION: 'Configurer la projection',
 
-  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
-  ONLINE: 'Online', //to be translated
+  ONLINE_DATA_UNAVAILABLE: 'Les données en ligne sont indisponible',
+  ONLINE: 'En ligne',
 
   CLOUD_CAPACITY_NOT_ENOUGH: 'No enough capacity on cloud storage',  //to be translated
 }

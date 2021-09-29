@@ -123,6 +123,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   STATISTIC_MODE: '統計モード',
   NUMERIC_PRECISION: '数字精度',
   AGGREGATE_TYPE: '集計タイプ',
+  AGGREGATE_DATASET: 'Aggregate Dataset',// to be translated
 
   THEMATIC_PARAMS: '主題図パラメータ',
   INTERVAL_MODE: '区分モード',
@@ -257,7 +258,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   CONVERT_SUCCESS: '変換に成功しました',
   CONVERT_FAILED: '変換に失敗しました',
   ARITHMETIC: 'アルゴリズム',
-  COORDSYS:'Coordinate System',//need to translate
+  COORDSYS:'座標系',
 }
 
 const Convert_Unit: typeof CN.Convert_Unit = {

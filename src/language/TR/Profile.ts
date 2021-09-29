@@ -20,7 +20,7 @@ const Profile: typeof CN.Profile = {
   AIMODEL: 'AI Modeli',
   COLLECTION_TEMPLATE: 'Ölçme Taslağı',
   PLOTTING_TEMPLATE: 'Çizim Şablonu',
-  MAP_TEMPLATE: 'Mapping Template',//need to translate
+  MAP_TEMPLATE: 'Haritalama Şablonu',
   NAVIGATION: 'Navigasyon',
   INCREMENT: 'Arttırım',
   ENCLOSURE: 'Çevreleme',
@@ -92,10 +92,21 @@ const Profile: typeof CN.Profile = {
   CONNECTING: 'Bağlanıyor',
   CONNECT_SERVER_FAIL: 'Sunucuya bağlanılamadı, lütfen ağ veya sunucu adresini kontrol edin',
   NEXT: 'Sonraki',
+  MESSAGE_SERVICE_SETTING: 'Message Service Configuration', // to be translated
+  MESSAGE_SERVICE_IP: 'IP Address of Message Service', // to be translated
+  MESSAGE_SERVICE_PORT: 'Port of Message Service', // to be translated
+  MESSAGE_SERVICE_MANAGE_PORT: 'Port of Message Service Manager', // to be translated
+  MESSAGE_SERVICE_HOST_NAME: 'Virtual Host', // to be translated
+  MESSAGE_SERVICE_ADMIN_NAME: 'Adminstrator', // to be translated
+  MESSAGE_SERVICE_ADMIN_PASSWORD: 'Password', // to be translated
+
+  FILE_SERVICE_SETTING: 'File Service Configuration', // to be translated
+  FILE_SERVICE_UPLOAD_URL: 'URL to upload Files', // to be translated
+  FILE_SERVICE_UPLOAD_DOWNLOAD: 'URL to download Files', // to be translated
 
   SWITCH_ACCOUNT: 'Hesap Değiştir',
   LOG_OUT: 'Oturumu Kapat',
-  CANCELLATION:'Cancellation',//need to translate
+  CANCELLATION:'İptal',
 
   SWITCH: 'Değiştir',
   SWITCH_CURRENT: 'Bu kullanıcı ile zaten giriş yaptınız',
@@ -114,7 +125,7 @@ const Profile: typeof CN.Profile = {
   PRIVATE_SERVICE: 'Özel Servis',
   PUBLIC_SERVICE: 'Halka Açık Servis',
 
-  INVALID_SERVER_ADDRESS: 'Invalid Server Address', // to be translated
+  INVALID_SERVER_ADDRESS: 'Hatalı sunucu adresi',
 
   // 个人主页
   MY_ACCOUNT: 'Hesabım',
@@ -178,7 +189,7 @@ const Profile: typeof CN.Profile = {
   SET_AS_PRIVATE_DATA: 'Özel Veri olarak ayarlaa',
   SET_AS_PUBLIC_DATA: 'Halka Açık Veri olarak ayarla',
   NO_SERVICE: 'Servis Yok',
-  SHARE_TO_GROUP: 'Share to group', // need to translate
+  SHARE_TO_GROUP: 'Grupla paylaş',
 
   GET_DATA_FAILED: 'Veri alınamadı',
 
@@ -248,11 +259,11 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: 'Bu cihaz',
   SETTING_CLEAR_CACHE: 'Çerezleri temizle',
   SETTING_CLEAR_CACHE_SUCCESS:'Temizleme başarılı',
-  DISTANCE:'Distance(m)',//need to translate
-  TIME:'Time(s)',//need to translate
-  INPUT_NUMBER:"Please Input Number",//need to translate
-  DISTANCE_LOCATION:'Distance Location',//need to translate
-  TIME_LOCATION:'Time Location',//need to translate
+  DISTANCE:'Mesafe(m)',
+  TIME:'Zaman(s)',
+  INPUT_NUMBER:'Lütfen sayı girin',
+  DISTANCE_LOCATION:'Uzaklık Konumu',
+  TIME_LOCATION:'Zamansal Konum',
 
   // 许可
   LICENSE: 'Lisans',
@@ -411,8 +422,8 @@ const Profile: typeof CN.Profile = {
   CHOOSE_COLOR: 'Renk Seç',
   SET_PROJECTION: 'Projeksiyonu ayarla',
 
-  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
-  ONLINE: 'Online', //to be translated
+  ONLINE_DATA_UNAVAILABLE: 'Uygun çevrimiçi veri bulunamadı ',
+  ONLINE: 'Çevrimiçi',
 
   CLOUD_CAPACITY_NOT_ENOUGH: 'No enough capacity on cloud storage',  //to be translated
 }

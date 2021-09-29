@@ -35,7 +35,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   PLOT_SAVE_ANIMATION: 'Animasyonu Kaydet',
   ANIMATION_NODE_NAME: 'Animasyon Nod Adı',
 
-  OPEN_ONLINE_DATA: 'Open Online Data', // to be translated
+  OPEN_ONLINE_DATA: 'Çevrimiçi Veri Aç',
 
   PLOT: 'Çizim',
 
@@ -144,7 +144,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_PICTURES: 'Resimler',
   COLLECT_TIME: 'Zaman',
   COORDINATE: 'Koordinat',
-  BASIC_INFO: 'Basic Information', // need to translate
+  BASIC_INFO: 'Temel Bilgiler',
 
   // 裁剪
   TOOLS_RECTANGLE_CLIP: 'Dikdörtgen Kırp',
@@ -640,7 +640,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_LAYER_STYLE: 'Katman Stili',
   LAYERS_FULL_EXTENT: 'Katman Stili',
   LAYERS_SET_VISIBLE_SCALE: 'Görünürlük Ölçeğini Ayarla',
-  LAYERS_VISIBLE_DISTANCE: 'Visible Distance', //to be translated
+  LAYERS_VISIBLE_DISTANCE: 'Görünebilir Mesafe',
   LAYERS_RENAME: 'Yeniden Adlandır',
   LAYERS_COPY: 'Kopyala',
   LAYERS_PASTE: 'Yapıştır',
@@ -833,7 +833,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'Harita Adı',
   SHOW_SCALE: 'Ölçeği Göster',
   SHOW_LOCATION: 'Konumu Göster',
-  SHOW_COMPASS: 'Show Compass', // to be translated
+  SHOW_COMPASS: 'Pusulayı Göster',
   ROTATION_GESTURE: 'Dönme Hareketi',
   PITCH_GESTURE: 'Saha Hareketi',
   ROTATION_ANGLE: 'Dönme Açısı',

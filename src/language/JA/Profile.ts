@@ -20,7 +20,7 @@ const Profile: typeof CN.Profile = {
   AIMODEL: 'AI モデル', //jp0730
   COLLECTION_TEMPLATE: 'コレクションテンプレート',
   PLOTTING_TEMPLATE: 'アニメシンボルテンプレート',
-  MAP_TEMPLATE: 'Mapping Template',//need to translate
+  MAP_TEMPLATE: 'マッピングテンプレート',
   NAVIGATION: 'ナビ',
   INCREMENT: 'インクリメント',
   ENCLOSURE: 'フェンス',
@@ -92,10 +92,21 @@ const Profile: typeof CN.Profile = {
   CONNECTING: '接続中',
   CONNECT_SERVER_FAIL: 'サーバーに接続できません。ネットワーク、サーバーアドレスを確認してください。',
   NEXT: '次へ',
+  MESSAGE_SERVICE_SETTING: 'Message Service Configuration', // to be translated
+  MESSAGE_SERVICE_IP: 'IP Address of Message Service', // to be translated
+  MESSAGE_SERVICE_PORT: 'Port of Message Service', // to be translated
+  MESSAGE_SERVICE_MANAGE_PORT: 'Port of Message Service Manager', // to be translated
+  MESSAGE_SERVICE_HOST_NAME: 'Virtual Host', // to be translated
+  MESSAGE_SERVICE_ADMIN_NAME: 'Adminstrator', // to be translated
+  MESSAGE_SERVICE_ADMIN_PASSWORD: 'Password', // to be translated
+
+  FILE_SERVICE_SETTING: 'File Service Configuration', // to be translated
+  FILE_SERVICE_UPLOAD_URL: 'URL to upload Files', // to be translated
+  FILE_SERVICE_UPLOAD_DOWNLOAD: 'URL to download Files', // to be translated
 
   SWITCH_ACCOUNT: 'アカウントの切替',
   LOG_OUT: 'ログアウト',
-  CANCELLATION:'Cancellation',//need to translate
+  CANCELLATION:'キャンセル',
 
   SWITCH: '切替',
   SWITCH_CURRENT: '現在ユーザーを使用中、切替できません',
@@ -248,11 +259,11 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: '当デバイス',
   SETTING_CLEAR_CACHE: 'キャッシュのクリア',
   SETTING_CLEAR_CACHE_SUCCESS:'クリアに成功',
-  DISTANCE:'Distance(m)',//need to translate
-  TIME:'Time(s)',//need to translate
-  INPUT_NUMBER:"Please Input Number",//need to translate
-  DISTANCE_LOCATION:'Distance Location',//need to translate
-  TIME_LOCATION:'Time Location',//need to translate
+  DISTANCE:'距離(m)',
+  TIME:'時間(s)',
+  INPUT_NUMBER:"数字を入力してください",
+  DISTANCE_LOCATION:'距離ポジショニング',
+  TIME_LOCATION:'時間ポジショニング',
 
   // ライセンス
   LICENSE: 'ライセンス',

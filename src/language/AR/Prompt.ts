@@ -5,7 +5,7 @@ const Prompt: typeof CN.Prompt = {
   YES: 'نعم',
   NO: 'لا',
   SAVE_TITLE: 'هل تريد حفظ التغييرات على الخريطة الحالية؟',
-  SAVE_DATA_TITLE: 'Would you like to save data?', // need to translate
+  SAVE_DATA_TITLE: 'هل تريد حفظ البيانات ؟',
   SAVE_YES: 'نعم',
   SAVE_NO: 'لا',
   CANCEL: 'الغاء',
@@ -42,17 +42,17 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'هل أنت متأكد أنك تريد حذف التوقف؟',
   DELETE_OBJECT: 'هل أنت متأكد من أنك تريد حذف الكائن نهائيًا؟',
-  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
+  DELETE_LAYER: 'هل أنت متأكد أنك تريد حذف هذه الطبقة بشكل دائم ؟',
   PLEASE_ADD_STOP: 'الرجاء إضافة نقطة',
-  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'The image layer cannot be set to the current layer', // need to translate
+  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'لا يمكن تعيين طبقة الصورة إلى الطبقة الحالية',
 
   CONFIRM: 'تأكيد',
   COMPLETE: 'اكتمال',
 
-  NO_PERMISSION: 'Doesn\'t have permission',// need to translate
+  NO_PERMISSION: "لا إذن",
   NO_PERMISSION_ALERT: 'التطبيق ليس لديه أذونات كافية للتشغيل',
   EXIT: 'خروج',
-  CONTINUE: 'Continue',// need to translate
+  CONTINUE: 'استمر',
   REQUEST_PERMISSION: 'طلب',
 
   OPENING: 'جارى الفتح',
@@ -171,7 +171,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISHING: 'جارى النشر',
   PUBLISH_SUCCESS: 'تم النشر بنجاج',
   PUBLISH_FAILED: 'فشل النشر',
-  PUBLISH_FAILED_INFO_1: 'The service has been published', // need to translate
+  PUBLISH_FAILED_INFO_1: 'تم نشر هذه الخدمة',
   DELETE_CONFIRM: 'هل أنت متأكد أنك تريد حذف العنصر؟',
   BATCH_DELETE_CONFIRM: 'هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟',
 
@@ -192,7 +192,7 @@ const Prompt: typeof CN.Prompt = {
   INPUT_LENGTH: 'أدخل أقصى طول',
   DEFAULT_VALUE_EROROR: 'القيمة الافتراضية خطأ في الإدخال',
   SELECT_REQUIRED: 'الرجاء اختيار البند المطلوب',
-  DEFAULT_NAMING_SS: 'The name cannot start with SS_', // need to translate
+  DEFAULT_NAMING_SS: 'The name cannot start with SS_',
 
   CLIPPING: 'جارى القطع',
   CLIPPED_SUCCESS: 'تم القطع بنجاح',
@@ -292,7 +292,7 @@ const Prompt: typeof CN.Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: 'تكرار نظام الاحداثيات بنجاح',
   COPY_COORD_SYSTEM_FAIL: 'فشل تكرار نظام الاحداثيات',
   ILLEGAL_COORDSYS: 'لا ندعم ملف نظام الاحداثيات',
-  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'تنسيق نظام النسخ المتماثل فشلت دون تنسيق',
 
   TRANSFER_PARAMS: 'خطأ قياس! الرجاء إدخال رقم',
   PLEASE_ENTER: 'من فضلك ادخل',
@@ -347,7 +347,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'يرجى تحديد الطابق التي تقع فيها الطبقة',
   LONG_PRESS_ADD_START: 'يرجى الضغط لفترة طويلة لإضافة نقطة البداية',
   LONG_PRESS_ADD_END: 'يرجى الضغط لفترة طويلة لإضافة وجهة',
-  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
+  TOUCH_TO_ADD_END: 'اضغط على إضافة الوجهة',
   ROUTE_ANALYSING: 'جارى التحليل',
   DISTANCE_ERROR: 'الوجهة قريبة جدًا من نقطة البداية ، يرجى إعادة التحديد',
   USE_ONLINE_ROUTE_ANALYST: 'النقاط خارج حدود مجموعة البيانات أو لا توجد مجموعة بيانات حول النقاط ، هل تريد استخدام محلل المسار عبر الإنترنت؟',
@@ -400,7 +400,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: 'يمكنك أن تقول',
   SPEECH_ERROR: 'التعرف على الخطأ ، يرجى المحاولة مرة أخرى في وقت لاحق',
   SPEECH_NONE: 'لا يبدو أنك تتحدث أي شيء',
-  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
+  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',
 
   NOT_SUPPORT_STATISTIC: 'الحقل لا يدعم الإحصاء',
   ATTRIBUTE_DELETE_CONFIRM: 'هل تريد بالتأكيد حذف حقل البيانات  هذا؟',
@@ -437,7 +437,7 @@ const Prompt: typeof CN.Prompt = {
 
   SHOW_AR_SCENE_NOTIFY: 'عرض ع المشهد كشف تلميح',
 
-  CANT_PICTURE:'Unable to continue collection, up to 9 pictures can be added', //need to translate
+  CANT_PICTURE:'لا يمكن الاستمرار في جمع ما يصل إلى 9 صور',
 }
 
 export { Prompt }

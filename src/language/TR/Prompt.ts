@@ -5,7 +5,7 @@ const Prompt: typeof CN.Prompt = {
   YES: 'Evet',
   NO: 'Hayır',
   SAVE_TITLE: 'Değişiklikleri mevcut haritaya kaydetmek istiyor musunuz?',
-  SAVE_DATA_TITLE: 'Would you like to save data?', // need to translate
+  SAVE_DATA_TITLE: 'Veriyi kaydetmek ister misiniz?',
   SAVE_YES: 'Evet',
   SAVE_NO: 'Hayır',
   CANCEL: 'İptal',
@@ -42,17 +42,17 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'Durdurmayı silmek istediğinizden emin misiniz?',
   DELETE_OBJECT: 'Nesneyi silmek istediğinizden emin misiniz?',
-  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
+  DELETE_LAYER: 'Katmanı kalıcı olarak silmek istediğinizden emin misiniz?',
   PLEASE_ADD_STOP: 'Lütfen Stop Ekleyin',
-  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'The image layer cannot be set to the current layer', // need to translate
+  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'Görüntü katmanı, geçerli katmana ayarlanamaz',
 
   CONFIRM: 'Onayla',
   COMPLETE: 'Tamamla',
 
-  NO_PERMISSION: 'Doesn\'t have permission',// need to translate
+  NO_PERMISSION: 'İzin yok',
   NO_PERMISSION_ALERT: 'İzin Yok',
   EXIT: 'Çıkış',
-  CONTINUE: 'Continue',// need to translate
+  CONTINUE: 'Devam et',
   REQUEST_PERMISSION: 'İstek',
 
   OPENING: 'Açılıyor',
@@ -171,7 +171,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISHING: 'Yayınlanıyor',
   PUBLISH_SUCCESS: 'Başarıyla yayınlandı',
   PUBLISH_FAILED: 'Yayınlama Başarısız',
-  PUBLISH_FAILED_INFO_1: 'The service has been published', // need to translate
+  PUBLISH_FAILED_INFO_1: 'Servis yayınlandı',
   DELETE_CONFIRM: 'Öğeyi silmek istediğinizden emin misiniz?',
   BATCH_DELETE_CONFIRM: 'Seçili öğe(ler)i silmek istediğinizden emin misiniz?',
 
@@ -192,7 +192,7 @@ const Prompt: typeof CN.Prompt = {
   INPUT_LENGTH: 'Lütfen maksimum uzunluğu girin',
   DEFAULT_VALUE_EROROR: 'Varsayılan değer giriş hatası',
   SELECT_REQUIRED: 'Lütfen gerekli olanları seçin',
-  DEFAULT_NAMING_SS: 'The name cannot start with SS_', // need to translate
+  DEFAULT_NAMING_SS: 'Ad SS_ ile başlayamaz',
 
   CLIPPING: 'Kırpılıyor',
   CLIPPED_SUCCESS: 'Başarıyla Kırpıldı',
@@ -292,7 +292,7 @@ const Prompt: typeof CN.Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: 'Koordinat sistemi çoğaltması başarılı',
   COPY_COORD_SYSTEM_FAIL: 'Koordinat sistemi çoğaltması başarısız',
   ILLEGAL_COORDSYS: 'Desteklenen bir koordinat sistemi dosyası değil',
-  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Koordinat sistemi çoğaltması başarısız, koordinat yok',
 
   TRANSFER_PARAMS: 'Parametre hatası, Lütfen bir numara girin',
   PLEASE_ENTER: 'Lütfen girin ',
@@ -347,7 +347,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'Lütfen katmanın konumlandığı katı seçin',
   LONG_PRESS_ADD_START: 'Lütfen başlangıç noktası eklemek için uzun basın',
   LONG_PRESS_ADD_END: 'Lütfen hedef eklemek için uzun basın',
-  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
+  TOUCH_TO_ADD_END: 'Bir hedef eklemek için lütfen dokunun',
   ROUTE_ANALYSING: 'Analiz yapılıyor',
   DISTANCE_ERROR: 'Hedef başlangıç noktasına çok yakın, lütfen yeniden seçin!',
   USE_ONLINE_ROUTE_ANALYST: 'Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?',
@@ -400,7 +400,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: "Aşağıdakileri seçebilirsiniz: \n'Yaklaş'，'Uzaklaş'，'Yerleştir'，'Kapat',\n 'Ara' ya da herhangi bir Adres",
   SPEECH_ERROR: 'Tanımlı hata, lütfen daha sonra tekrar deneyiniz',
   SPEECH_NONE: 'Hiçbir şey konuşmadınız gibi görünüyor',
-  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
+  SPEECH_KEYWORD: 'Şunu seçebilirsiniz:\n"Adres","Özellikler"daha Anahtar Kelimeler',
 
   NOT_SUPPORT_STATISTIC: 'Alan, istatistiği desteklemiyor',
   ATTRIBUTE_DELETE_CONFIRM: 'Bu öznitelik alanı silinsin mi?',
@@ -435,7 +435,7 @@ const Prompt: typeof CN.Prompt = {
 
   SHOW_AR_SCENE_NOTIFY: 'AR Scene keşfetme tiplerini göster',
 
-  CANT_PICTURE:'Unable to continue collection, up to 9 pictures can be added', //need to translate
+  CANT_PICTURE:"Koleksiyona devam edilemiyor, en fazla 9 resim eklenebilir'",
 }
 
 export { Prompt }

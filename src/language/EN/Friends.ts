@@ -157,7 +157,6 @@ const Friends: typeof CN.Friends = {
 
   // 创建群组
   JOIN: 'Join',
-  TITLE_CHOOSE_MEMBER: 'Select members',
   VIEW_MORE_MEMBERS: 'View more members',
   MY_GROUPS: 'My Groups',
   JOINED_GROUPS: 'Joined Groups',

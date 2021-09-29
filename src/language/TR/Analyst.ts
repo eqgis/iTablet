@@ -123,6 +123,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   STATISTIC_MODE: 'İstatistik Modu',
   NUMERIC_PRECISION: 'Sayısal Hassasiyet',
   AGGREGATE_TYPE: 'Kümeleme Tipi',
+  AGGREGATE_DATASET: 'Aggregate Dataset',// to be translated
 
   THEMATIC_PARAMS: 'Tematik Parametreler',
   INTERVAL_MODE: 'Aralık Modu',
@@ -257,7 +258,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   CONVERT_SUCCESS: 'Dönüşüm başarılı',
   CONVERT_FAILED: 'Dönüştürülemedi',
   ARITHMETIC: 'Algoritması',
-  COORDSYS:'Coordinate System',//need to translate
+  COORDSYS:'Koordinat Sistemi',
 }
 
 const Convert_Unit: typeof CN.Convert_Unit = {

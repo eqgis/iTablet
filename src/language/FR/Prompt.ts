@@ -5,7 +5,7 @@ const Prompt: typeof CN.Prompt = {
   YES: 'oui',
   NO: 'non',
   SAVE_TITLE: 'Voulez-vous enregistrer les modifications de la carte actuelle?',
-  SAVE_DATA_TITLE: 'Would you like to save data?', // need to translate
+  SAVE_DATA_TITLE: 'Voulez vous sauvegarder les données?',
   SAVE_YES: 'Oui',
   SAVE_NO: 'Non',
   CANCEL: 'Annuler',
@@ -42,17 +42,17 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: 'Êtes-vous sûr de vouloir supprimer stop?',
   DELETE_OBJECT: "Êtes-vous sûr de vouloir supprimer définitivement l'objet?",
-  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
+  DELETE_LAYER: 'Êtes vous sûr de vouloir supprimer définitivement la couche?',
   PLEASE_ADD_STOP: 'Veuillez ajouter un arrêt',
-  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'The image layer cannot be set to the current layer', // need to translate
+  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'The image layer cannot be set to the current layer',
 
   CONFIRM: 'Confirmer',
   COMPLETE: 'Complet',
 
-  NO_PERMISSION: 'Doesn\'t have permission',// need to translate
+  NO_PERMISSION: 'Pas de permission',
   NO_PERMISSION_ALERT: "L’application n’a pas les autorisations nécessaires pour s’exécuter",
   EXIT: 'Sortie',
-  CONTINUE: 'Continue',// need to translate
+  CONTINUE: 'Continuer',
   REQUEST_PERMISSION: 'Demande',
 
   OPENING: 'Ouverture',
@@ -171,7 +171,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISHING: 'Publication',
   PUBLISH_SUCCESS: 'Publié avec succès',
   PUBLISH_FAILED: 'Échec de la publication',
-  PUBLISH_FAILED_INFO_1: 'The service has been published', // need to translate
+  PUBLISH_FAILED_INFO_1: 'Le service a été publié',
   DELETE_CONFIRM: "Voulez-vous vraiment supprimer l'élément?",
   BATCH_DELETE_CONFIRM: 'Voulez-vous vraiment supprimer les éléments sélectionnés?',
 
@@ -192,7 +192,7 @@ const Prompt: typeof CN.Prompt = {
   INPUT_LENGTH: 'Veuillez saisir la longueur maximale',
   DEFAULT_VALUE_EROROR: "Erreur de saisie de la valeur par défaut",
   SELECT_REQUIRED: 'Sélection requise',
-  DEFAULT_NAMING_SS: 'The name cannot start with SS_', // need to translate
+  DEFAULT_NAMING_SS: 'Le nom ne peut pas commencer par SS_',
 
   CLIPPING: 'Coupure',
   CLIPPED_SUCCESS: 'Coupé avec succès',
@@ -291,7 +291,7 @@ const Prompt: typeof CN.Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: 'Coordonner la réplication du système avec succès',
   COPY_COORD_SYSTEM_FAIL: 'La réplication du système de coordonnées a échoué',
   ILLEGAL_COORDSYS: 'Pas un fichier de système de coordonnées pris en charge',
-  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',
 
   TRANSFER_PARAMS: 'Erreur de param! Veuillez saisir un nombre',
   PLEASE_ENTER: 'Veuillez saisir',
@@ -346,7 +346,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'Veuillez sélectionner le sol où se trouve la couche',
   LONG_PRESS_ADD_START: 'Veuillez appuyer longuement pour ajouter un point de départ',
   LONG_PRESS_ADD_END: 'Veuillez appuyer longuement pour ajouter une destination',
-  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
+  TOUCH_TO_ADD_END: 'Please touch to add a destination',
   ROUTE_ANALYSING: 'Analyse',
   DISTANCE_ERROR: 'La destination est trop proche du point de départ, veuillez resélectionner!',
   USE_ONLINE_ROUTE_ANALYST: "Les points sont en dehors des limites de l'ensemble de données ou il n'y a aucun ensemble de données autour des points, voulez-vous utiliser l'analyste d'itinéraire en ligne?",
@@ -399,7 +399,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: "You may say \n'Agrandir'，'Dézoomer'，'Localiser'，'Proche',\n 'Rechercher 'ou n'importe quelle adresse",
   SPEECH_ERROR: "Reconnaître l'erreur, veuillez réessayer plus tard",
   SPEECH_NONE: 'Vous ne sembliez rien dire',
-  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
+  SPEECH_KEYWORD: 'Vous pouvez dire :\n"Adresse","Caractéristiques"plus de mots clés',
 
   NOT_SUPPORT_STATISTIC: 'Le champ ne prend pas en charge les statistiques',
   ATTRIBUTE_DELETE_CONFIRM: "Bien sûr, supprimer ce champ d'attribut?",
@@ -434,7 +434,7 @@ const Prompt: typeof CN.Prompt = {
 
   SHOW_AR_SCENE_NOTIFY: 'Afficher les astuces de détection de scène RA',
 
-  CANT_PICTURE:'Unable to continue collection, up to 9 pictures can be added', //need to translate
+  CANT_PICTURE:'Impossible de continuer, la limite de la collecte est de 9 photos',
 }
 
 export { Prompt }

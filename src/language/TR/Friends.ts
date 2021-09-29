@@ -268,18 +268,18 @@ const Friends: typeof CN.Friends = {
   INVITE_GROUP_MEMBERS_ERROR_1: 'Kullanıcı zaten mevcut',
   INVITE_GROUP_MEMBERS_ERROR_2: 'Grup, kullanıcıyı davet etti',
 
-  REPORT: 'report',//need to translate
-  SENDING: 'sending',//need to translate
-  REPORT_SUCCESS: 'report success',//need to translate
-  PRIVATE_REPORT:'Private letter report',//need to translate
+  REPORT: 'Rapor',
+  SENDING: 'Gönderiliyor',
+  REPORT_SUCCESS: 'Rapor başarılı',
+  PRIVATE_REPORT:'Özel rapor',
 
-  INAPPROPRIATE: 'Publishing inappropriate caused me',//need to translate
-  ADVERTISING: 'Garbage advertising, selling fake goods',//need to translate
-  PORNOGRAPHIC: 'Pornographic vulgarity',//need to translate
-  ILLEGAL: 'Illegal crime',//need to translate
-  INFORMATION: 'Current affairs false information',//need to translate
-  MINOR:'Minor related',//need to translate
-  SUSPECTED:'Suspected of fraud',//need to translate
-  EMBEZZLED:'This account may be embezzled',//need to translate
+  INAPPROPRIATE: 'Uygunsuz yayınlar nedeniyle',
+  ADVERTISING: 'Çöp reklam, sahte mal satışı',
+  PORNOGRAPHIC: 'Pornografik materyal',
+  ILLEGAL: 'Suç unsuru',
+  INFORMATION: 'Güncel olaylarla ilgili yanlış bilgi',
+  MINOR:'Küçüklerin istismarı',
+  SUSPECTED:'Dolandırıcılık şüphesi',
+  EMBEZZLED:'Bu hesap çalınmış olabilir',
 }
 export { Friends }

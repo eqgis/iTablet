@@ -5,7 +5,7 @@ const Prompt: typeof CN.Prompt = {
   YES: 'はい',
   NO: 'いいえ',
   SAVE_TITLE: '現在マップを保存しますか',
-  SAVE_DATA_TITLE: 'Would you like to save data?', // need to translate
+  SAVE_DATA_TITLE: 'データを保存しますか',
   SAVE_YES: '保存',
   SAVE_NO: '保存しない',
   CANCEL: 'キャンセル',
@@ -42,14 +42,14 @@ const Prompt: typeof CN.Prompt = {
 
   DELETE_STOP: '目標ポイントを削除しますか?',
   DELETE_OBJECT: '当オブジェクトを削除しますか?',
-  DELETE_LAYER: 'Are you sure you want to permanently delete the layer?', // need to translate
+  DELETE_LAYER: 'レイヤーを削除しますか?',
   PLEASE_ADD_STOP: '目標ポイントを追加してください',
-  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: 'The image layer cannot be set to the current layer', // need to translate
+  IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: '画像レイヤーを現在レイヤーに設定できません',
 
-  NO_PERMISSION: 'Doesn\'t have permission',// need to translate
+  NO_PERMISSION: '権限はありません',
   NO_PERMISSION_ALERT: '実行に必要な権限はありません',
   EXIT: '閉じる',
-  CONTINUE: 'Continue',// need to translate
+  CONTINUE: '続き',
   REQUEST_PERMISSION: '権限の申請',
 
   CONFIRM: 'OK',
@@ -171,7 +171,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISHING: '配信サービス中',
   PUBLISH_SUCCESS: '配信に成功',
   PUBLISH_FAILED: '配信に失敗',
-  PUBLISH_FAILED_INFO_1: 'The service has been published', // need to translate
+  PUBLISH_FAILED_INFO_1: '当サービスは配信されています',
   DELETE_CONFIRM: '現在データを削除しますか？',
   BATCH_DELETE_CONFIRM: '現在の選択データを削除しますか？',
 
@@ -192,7 +192,7 @@ const Prompt: typeof CN.Prompt = {
   INPUT_LENGTH: '最大長さを入力してください',
   DEFAULT_VALUE_EROROR: 'デフォルト値の入力は無効',
   SELECT_REQUIRED: '必須かどうかを選択してください',
-  DEFAULT_NAMING_SS: 'The name cannot start with SS_', // need to translate
+  DEFAULT_NAMING_SS: '名称はSS_で開始できません',
 
   CLIPPING: 'マップクリップ中',
   CLIPPED_SUCCESS: 'クリップに成功',
@@ -292,7 +292,7 @@ const Prompt: typeof CN.Prompt = {
   COPY_COORD_SYSTEM_SUCCESS: '座標系のコピーに成功',
   COPY_COORD_SYSTEM_FAIL: '座標系のコピーに失敗',
   ILLEGAL_COORDSYS: '選択ファイルはサポートする座標系ファイルではありません',
-  COPY_COORD_SYSTEM_FAIL_NO_COORD: 'Coordinate system replication failed no coordinate',//need to translate
+  COPY_COORD_SYSTEM_FAIL_NO_COORD: '座標系のコピーに失敗しました。コピー可能の座標系はありません',
 
   TRANSFER_PARAMS: 'パラメータは不正です。1つの数字を入力してください',
   PLEASE_ENTER: '入力してください',
@@ -347,7 +347,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: 'レイヤーがある階を選択してください',
   LONG_PRESS_ADD_START: '長押し起点を追加してください',
   LONG_PRESS_ADD_END: '長押し終点を追加してください',
-  TOUCH_TO_ADD_END: 'Please touch to add a destination', //to be translated
+  TOUCH_TO_ADD_END: '押し終点を追加してください',
   ROUTE_ANALYSING: 'ルート解析中',
   DISTANCE_ERROR: '現在開始ポイントの距離は近すぎです、再度選択してください',
   USE_ONLINE_ROUTE_ANALYST: '起始ポイントは道路ネットワークデータセット範囲内にありません、または開始ポイント近くに道路ネットワークはありません。オンラインルート解析を使用しますか？',
@@ -400,7 +400,7 @@ const Prompt: typeof CN.Prompt = {
   SPEECH_TIP: '使用可能語句：\n"拡大"、"縮小"、"ポジショニング"、"閉じる"',
   SPEECH_ERROR: '識別に異常が発生します。後で再度試してください。',
   SPEECH_NONE: 'お話していないようですね',
-  SPEECH_KEYWORD: 'You may say:\n"Address","Features"more Keywords',//need to translate
+  SPEECH_KEYWORD: '以下のキーワードを使用できます：\n"アドレス","フィーチャ"',
 
   NOT_SUPPORT_STATISTIC: '当フィールドを統計をサポートしません',
   ATTRIBUTE_DELETE_CONFIRM: '選択フィールドを削除しますか？',
@@ -435,7 +435,7 @@ const Prompt: typeof CN.Prompt = {
 
   SHOW_AR_SCENE_NOTIFY: 'ARシーン検知ヒントの表示',
 
-  CANT_PICTURE:'Unable to continue collection, up to 9 pictures can be added', //need to translate
+  CANT_PICTURE:'コレクションを続きません。最高9個の画像は追加できます',
 }
 
 export { Prompt }

@@ -1,6 +1,6 @@
 import CN from '../CN'
 
-const ARMap: typeof CN.ARMap = {// need to translate
+const ARMap: typeof CN.ARMap = {
   ARDRAWING: 'Dessin RA',
 
   THREE_D: '3D',
@@ -34,21 +34,21 @@ const ARMap: typeof CN.ARMap = {// need to translate
   RATATION_AXIS: 'Axe de rotation',
   CLOCKWISE: "dans le sens des aiguilles d'une montre",
   COUNTER_CLOCKWISE: "sens inverse des aiguilles d'une montre",
-  WEST: 'W', // to be translated
-  EAST: 'E', // to be translated
-  SOUTH: 'S', // to be translated
-  NORTH: 'N', // to be translated
+  WEST: 'Ouest',
+  EAST: 'Est',
+  SOUTH: 'Sud',
+  NORTH: 'Nord',
 
   ANIMATION: 'Animation',
   ANIMATION_TYPE: "Type d'animation",
 
   AR_LAYER_NOT_SUPPORT_STYLE: "La couche actuelle ne supporte pas l'édition de style",
 
-  TEXT_OPACITY: 'Text Opacity', // to be translated
-  TEXT_COLOR: 'Text Color', // to be translated
-  TEXT_SIZE: 'Text Size', // to be translated
-  BACKGROUND_OPACITY: 'Background Opacity', // to be translated
-  BACKGROUND_COLOR: 'Background Color', // to be translated
+  TEXT_OPACITY: 'Opacity du texte',
+  TEXT_COLOR: 'Couleur du texte',
+  TEXT_SIZE: 'Taille du texte',
+  BACKGROUND_OPACITY: "Opacité de l'arrière plan",
+  BACKGROUND_COLOR: "Couleur de l'arrière plan",
 
   FOOD: 'Aliments',
   SCENE: 'Scénique',
@@ -63,25 +63,25 @@ const ARMap: typeof CN.ARMap = {// need to translate
   MARKET: 'Centre commercial',
   SUBWAY: 'Métro',
 
-  SEARCHING: 'Searching', //to be translated
-  NO_SEARCH_RESULT: 'No search result', //to be translated
-  PLEASE_INPUT_KEYWORD: 'Please input keyword', //to be translated
+  SEARCHING: 'Recherche',
+  NO_SEARCH_RESULT: 'Pas de résultat de recherche',
+  PLEASE_INPUT_KEYWORD: 'Veillez saisir un mot-clé',
 
-  FAILED_TO_ANALYZE_PATH: 'Failed to analyze path', //to be translated
-  FAILED_TO_GET_LOCATION: 'Failed to get current location', //to be translated
+  FAILED_TO_ANALYZE_PATH: "Echec de l'analyse ddu chemin",
+  FAILED_TO_GET_LOCATION: "Impossible d'obtenir l'emplacement",
 
-  CLEAR_SEARCH_HISOTORY: 'Clear Search History', //to be translated
+  CLEAR_SEARCH_HISOTORY: "Effacer l'historique de recherche",
 
-  ROUTE: 'Route', //to be translated
-  REMAIN: 'Remain', //to be translated
-  MAP_NAVI: 'Map Navigation', //to be translated
-  NAVIGATION: 'Navigation', //to be translated
-  ROUTE_NAVI: 'Route Navigation', //to be translated
+  ROUTE: 'Route',
+  REMAIN: 'Rester',
+  MAP_NAVI: 'navigation sur la catre',
+  NAVIGATION: 'Navigation',
+  ROUTE_NAVI: 'Navigation sur la route',
 
-  ROADNET_DATA: 'Road Net Data',  //to be translated
-  HEIGHT: 'Height',   //to be translated
+  ROADNET_DATA: 'Donnée du Réseau routier',
+  HEIGHT: 'Height',
 
-  DURATION: 'Duration', //to be translated
+  DURATION: 'Durée',
 }
 
 export {

@@ -1,14 +1,14 @@
 import CN from '../CN'
 
-const ARMap: typeof CN.ARMap = {// need to translate
+const ARMap: typeof CN.ARMap = {
   ARDRAWING: 'AR Çizim',
 
   THREE_D: '3D',
-  VECTOR: 'Vektor',
+  VECTOR: 'Vektör',
   MODEL: 'Model',
   EFFECT: 'Efekt',
 
-  SUBSTANCE: 'Substance',
+  SUBSTANCE: 'Materyal',
   AREA: 'Bölge',
   LINE: 'Hat',
   POINT: 'Doğru',
@@ -34,21 +34,21 @@ const ARMap: typeof CN.ARMap = {// need to translate
   RATATION_AXIS: 'Rotation Axis',
   CLOCKWISE: 'Saat yönünde',
   COUNTER_CLOCKWISE: 'anti-clockwise',
-  WEST: 'W', // to be translated
-  EAST: 'E', // to be translated
-  SOUTH: 'S', // to be translated
-  NORTH: 'N', // to be translated
+  WEST: 'B',
+  EAST: 'D',
+  SOUTH: 'G',
+  NORTH: 'K',
 
   ANIMATION: 'Animasyon',
   ANIMATION_TYPE: 'Animasyon Türü',
 
   AR_LAYER_NOT_SUPPORT_STYLE: 'Ağımdaki katı stil düzenlemesini desteklemez',
 
-  TEXT_OPACITY: 'Text Opacity', // to be translated
-  TEXT_COLOR: 'Text Color', // to be translated
-  TEXT_SIZE: 'Text Size', // to be translated
-  BACKGROUND_OPACITY: 'Background Opacity', // to be translated
-  BACKGROUND_COLOR: 'Background Color', // to be translated
+  TEXT_OPACITY: 'Yazı Matlığı',
+  TEXT_COLOR: 'Yazı Rengi',
+  TEXT_SIZE: 'Yazı Boyutu',
+  BACKGROUND_OPACITY: 'Arkaplan Matlığı',
+  BACKGROUND_COLOR: 'Arkaplan Rengi',
 
   FOOD: 'Yemek',
   SCENE: 'Manzara',
@@ -63,25 +63,25 @@ const ARMap: typeof CN.ARMap = {// need to translate
   MARKET: 'AVM',
   SUBWAY: 'Metro',
 
-  SEARCHING: 'Searching', //to be translated
-  NO_SEARCH_RESULT: 'No search result', //to be translated
-  PLEASE_INPUT_KEYWORD: 'Please input keyword', //to be translated
+  SEARCHING: 'Arıyor',
+  NO_SEARCH_RESULT: 'Sonuç bulunamadı.',
+  PLEASE_INPUT_KEYWORD: 'Lütfen anahtar kelime girin',
 
-  FAILED_TO_ANALYZE_PATH: 'Failed to analyze path', //to be translated
-  FAILED_TO_GET_LOCATION: 'Failed to get current location', //to be translated
+  FAILED_TO_ANALYZE_PATH: 'Yol analiz edilemedi',
+  FAILED_TO_GET_LOCATION: 'Geçerli konum alınamadı',
 
-  CLEAR_SEARCH_HISOTORY: 'Clear Search History', //to be translated
+  CLEAR_SEARCH_HISOTORY: 'Arama geçmişini temizle',
 
-  ROUTE: 'Route', //to be translated
-  REMAIN: 'Remain', //to be translated
-  MAP_NAVI: 'Map Navigation', //to be translated
-  NAVIGATION: 'Navigation', //to be translated
-  ROUTE_NAVI: 'Route Navigation', //to be translated
+  ROUTE: 'Rota',
+  REMAIN: 'Kal',
+  MAP_NAVI: 'Harita Navigasyonu',
+  NAVIGATION: 'Navigasyon',
+  ROUTE_NAVI: 'Rota Navigasyonu',
 
-  ROADNET_DATA: 'Road Net Data',  //to be translated
-  HEIGHT: 'Height',   //to be translated
+  ROADNET_DATA: 'Yol Net Verileri',
+  HEIGHT: 'Yükseklik',
 
-  DURATION: 'Duration', //to be translated
+  DURATION: 'Süre',
 }
 
 export {

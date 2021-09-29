@@ -1,6 +1,6 @@
 import CN from '../CN'
 
-const ARMap: typeof CN.ARMap = {// need to translate
+const ARMap: typeof CN.ARMap = {
   ARDRAWING: 'AR 編集',
 
   THREE_D: '3D',
@@ -34,10 +34,10 @@ const ARMap: typeof CN.ARMap = {// need to translate
   RATATION_AXIS: '回転軸',
   CLOCKWISE: '時周り',
   COUNTER_CLOCKWISE: '逆時周り',
-  WEST: 'W', // to be translated
-  EAST: 'E', // to be translated
-  SOUTH: 'S', // to be translated
-  NORTH: 'N', // to be translated
+  WEST: '西',
+  EAST: '東',
+  SOUTH: '南',
+  NORTH: '北',
 
   ANIMATION: 'アニメーション',
   ANIMATION_TYPE: 'アニメーションタイプ',
@@ -63,25 +63,25 @@ const ARMap: typeof CN.ARMap = {// need to translate
   MARKET: 'デパート',
   SUBWAY: '地下鉄',
 
-  SEARCHING: 'Searching', //to be translated
-  NO_SEARCH_RESULT: 'No search result', //to be translated
-  PLEASE_INPUT_KEYWORD: 'Please input keyword', //to be translated
+  SEARCHING: '検索中',
+  NO_SEARCH_RESULT: '検索結果はありません',
+  PLEASE_INPUT_KEYWORD: 'キーワードを入力してください',
 
-  FAILED_TO_ANALYZE_PATH: 'Failed to analyze path', //to be translated
-  FAILED_TO_GET_LOCATION: 'Failed to get current location', //to be translated
+  FAILED_TO_ANALYZE_PATH: 'パス解析に失敗しました',
+  FAILED_TO_GET_LOCATION: '位置の取得に失敗しました',
 
-  CLEAR_SEARCH_HISOTORY: 'Clear Search History', //to be translated
+  CLEAR_SEARCH_HISOTORY: '検索歴史のクリア',
 
-  ROUTE: 'Route', //to be translated
-  REMAIN: 'Remain', //to be translated
-  MAP_NAVI: 'Map Navigation', //to be translated
-  NAVIGATION: 'Navigation', //to be translated
-  ROUTE_NAVI: 'Route Navigation', //to be translated
+  ROUTE: 'ルート',
+  REMAIN: '残り',
+  MAP_NAVI: 'マップナビゲーション',
+  NAVIGATION: 'ナビゲーション',
+  ROUTE_NAVI: 'ルートナビゲーション',
 
-  ROADNET_DATA: 'Road Net Data',  //to be translated
-  HEIGHT: 'Height',   //to be translated
+  ROADNET_DATA: '道路ネットワークデータ',
+  HEIGHT: '高さ',
 
-  DURATION: 'Duration', //to be translated
+  DURATION: '時間',
 }
 
 export {

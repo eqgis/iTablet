@@ -1,21 +1,23 @@
-const Cowork = {
-  UPDATE_LOCAL_SERVICE: 'Updating local services', // need to translate
-  SUBMIT_SERVICE: 'Submit service', // need to translate
+import CN from '../CN'
 
-  UPDATE_SUCCESSFUL: 'Update successfully', // need to translate
-  UPDATE_FAILED: 'Update failed', // need to translate
+const Cowork: typeof CN.Cowork = {
+  UPDATE_LOCAL_SERVICE: 'Yerel servislerin güncellenmesi',
+  SUBMIT_SERVICE: 'Servis gönder',
 
-  UPLOAD_SUCCESSFUL: 'Submit successfully', // need to translate
-  UPLOAD_FAILED: 'Submit failed', // need to translate
+  UPDATE_SUCCESSFUL: 'Başarıyla güncellendi',
+  UPDATE_FAILED: 'Güncelleme başarısız',
 
-  PUBLISH: 'Publish', // need to translate
+  UPLOAD_SUCCESSFUL: 'Başarıyla gönderildi',
+  UPLOAD_FAILED: 'Gönderme başarısız',
 
-  ERROR_SERVICE_DATA_LOSE_URL: 'Online Data URL lost', // need to translate
+  PUBLISH: 'Paylaş',
 
-  PLEASE_ENTER_SERCICE_NAME: 'Please enter a service name', // need to translate
-  SERVICE_SHARING_SETTINGS: 'Service sharing settings', // need to translate
-  SEARCHABLE: 'Searchable', // need to translate
-  READABLE: 'Readable', // need to translate
+  ERROR_SERVICE_DATA_LOSE_URL:" Çevrimiçi Veri URL si kayboldu ",
+
+  PLEASE_ENTER_SERCICE_NAME: 'Lütfen bir servis adı girin',
+  SERVICE_SHARING_SETTINGS: 'Servis paylaşımı ayarları',
+  SEARCHABLE: 'Aranabilir',
+  READABLE: 'Okunabilir',
 }
 
 export { Cowork }

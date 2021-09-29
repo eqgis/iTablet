@@ -267,18 +267,18 @@ const Friends: typeof CN.Friends = {
   INVITE_GROUP_MEMBERS_ERROR_1: "L'utilisateur existe déjà",
   INVITE_GROUP_MEMBERS_ERROR_2: 'Le groupe a invité un utilisateur',
 
-  REPORT: 'report',//need to translate
-  SENDING: 'sending',//need to translate
-  REPORT_SUCCESS: 'report success',//need to translate
-  PRIVATE_REPORT:'Private letter report',//need to translate
+  REPORT: 'Rapport',
+  SENDING: 'Envoi en cours',
+  REPORT_SUCCESS: 'rapport obtenu',
+  PRIVATE_REPORT:'Rapport de lettre privée',
 
-  INAPPROPRIATE: 'Publishing inappropriate caused me',//need to translate
-  ADVERTISING: 'Garbage advertising, selling fake goods',//need to translate
-  PORNOGRAPHIC: 'Pornographic vulgarity',//need to translate
-  ILLEGAL: 'Illegal crime',//need to translate
-  INFORMATION: 'Current affairs false information',//need to translate
-  MINOR:'Minor related',//need to translate
-  SUSPECTED:'Suspected of fraud',//need to translate
-  EMBEZZLED:'This account may be embezzled',//need to translate
+  INAPPROPRIATE: 'Publication inappropriée causé par moi',
+  ADVERTISING: 'Publicité poubelle, vente de contrefacon',
+  PORNOGRAPHIC: 'vulgarité de la pornographie',
+  ILLEGAL: 'Crime illégal',
+  INFORMATION: 'Fausses informatons',
+  MINOR:'Liaison mineur',
+  SUSPECTED:'Suspecté de fraude',
+  EMBEZZLED:'Ce compte peut être détourné',
 }
 export { Friends }

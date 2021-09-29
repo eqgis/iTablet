@@ -35,7 +35,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   PLOT_SAVE_ANIMATION: 'حفظ الرسوم المتحركة',
   ANIMATION_NODE_NAME: 'اسم عقدة الرسوم المتحركة',
 
-  OPEN_ONLINE_DATA: 'Open Online Data', // to be translated
+  OPEN_ONLINE_DATA: 'هذا الحساب قد يكون مختلس',
 
   PLOT: 'رسم بيانى',
 
@@ -144,7 +144,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_PICTURES: 'صور',
   COLLECT_TIME: 'وقت',
   COORDINATE: 'إحداثيات',
-  BASIC_INFO: 'Basic Information', // need to translate
+  BASIC_INFO: 'معلومات أساسية',
 
   // 裁剪
   TOOLS_RECTANGLE_CLIP: 'قطع مستطيل',
@@ -646,7 +646,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_LAYER_STYLE: 'شكل الطبقة',
   LAYERS_FULL_EXTENT: 'المدى الكامل',
   LAYERS_SET_VISIBLE_SCALE: 'تعيين مقياس مرئي',
-  LAYERS_VISIBLE_DISTANCE: 'Visible Distance', //to be translated
+  LAYERS_VISIBLE_DISTANCE: 'المسافة المرئية',
   LAYERS_RENAME: 'اعادة تسمية',
   LAYERS_COPY: 'نسخ',
   LAYERS_PASTE: 'لصق',
@@ -839,7 +839,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'اسم الخريطة',
   SHOW_SCALE: 'عرض المقياس',
   SHOW_LOCATION: 'اعرض الموقع',
-  SHOW_COMPASS: 'Show Compass', // to be translated
+  SHOW_COMPASS: 'البوصلة',
   ROTATION_GESTURE: 'إيماءة الدوران',
   PITCH_GESTURE: 'إيماءة الاهتزاز',
   ROTATION_ANGLE: 'زاوية الدوران',

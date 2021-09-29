@@ -199,10 +199,8 @@ async function getData(type, params) {
       buttons = [ToolbarBtnType.CANCEL]
       break
     case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_POINT:
-      layerType = LayerUtils.getLayerType(
-        ToolbarModule.getParams().currentLayer,
-      )
-      isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
+      // isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
+      isTourLayer = await SMediaCollector.isTourLayer(event?.layerInfo?.name)
       data = [
         {
           key: constants.MOVE,
@@ -217,20 +215,6 @@ async function getData(type, params) {
           action: MarkAction.deleteLabel,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
-        },
-        {
-          key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
-          action: () => MarkAction.undo(type),
-          size: 'large',
-          image: getThemeAssets().edit.icon_undo,
-        },
-        {
-          key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
-          action: () => MarkAction.redo(type),
-          size: 'large',
-          image: getThemeAssets().edit.icon_redo,
         },
         // {
         //   key: 'tagging_style',
@@ -242,13 +226,29 @@ async function getData(type, params) {
       ]
       // if (!LayerUtils.isMediaData(event?.fieldInfo)) {
       if (!isTourLayer) {
-        data.push({
-          key: 'tagging_style',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
-          action: MarkAction.selectLabelToStyle,
-          size: 'large',
-          image: require('../../../../../../assets/function/icon_function_style.png'),
-        })
+        data = data.concat([
+          {
+            key: constants.UNDO,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+            action: () => MarkAction.undo(type),
+            size: 'large',
+            image: getThemeAssets().edit.icon_undo,
+          },
+          {
+            key: constants.REDO,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+            action: () => MarkAction.redo(type),
+            size: 'large',
+            image: getThemeAssets().edit.icon_redo,
+          },
+          {
+            key: 'tagging_style',
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+            action: MarkAction.selectLabelToStyle,
+            size: 'large',
+            image: require('../../../../../../assets/function/icon_function_style.png'),
+          },
+        ])
       }
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
@@ -257,10 +257,8 @@ async function getData(type, params) {
       ]
       break
     case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_LINE:
-      layerType = LayerUtils.getLayerType(
-        ToolbarModule.getParams().currentLayer,
-      )
-      isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
+      // isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
+      isTourLayer = await SMediaCollector.isTourLayer(event?.layerInfo?.name)
       data = [
         {
           key: constants.MOVE,
@@ -277,43 +275,6 @@ async function getData(type, params) {
           image: getThemeAssets().edit.icon_delete,
           selectMode: 'flash',
         },
-        {
-          key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
-          action: MarkAction.undo,
-          size: 'large',
-          image: getThemeAssets().edit.icon_undo,
-          selectMode: 'flash',
-        },
-        {
-          key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
-          action: MarkAction.redo,
-          size: 'large',
-          image: getThemeAssets().edit.icon_redo,
-          selectMode: 'flash',
-        },
-        {
-          key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
-          action: MarkAction.editNode,
-          size: 'large',
-          image: getThemeAssets().edit.icon_edit_node,
-        },
-        {
-          key: constants.DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
-          action: MarkAction.deleteNode,
-          size: 'large',
-          image: getThemeAssets().edit.icon_delete_node,
-        },
-        {
-          key: constants.ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
-          action: MarkAction.addNode,
-          size: 'large',
-          image: getThemeAssets().edit.icon_add_node,
-        },
         // {
         //   key: 'tagging_style',
         //   title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
@@ -324,13 +285,52 @@ async function getData(type, params) {
       ]
       // if (!LayerUtils.isMediaData(event?.fieldInfo)&&!isTourLayer) {
       if (!isTourLayer) {
-        data.push({
-          key: 'tagging_style',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
-          action: MarkAction.selectLabelToStyle,
-          size: 'large',
-          image: require('../../../../../../assets/function/icon_function_style.png'),
-        })
+        data = data.concat([
+          {
+            key: constants.UNDO,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+            action: MarkAction.undo,
+            size: 'large',
+            image: getThemeAssets().edit.icon_undo,
+            selectMode: 'flash',
+          },
+          {
+            key: constants.REDO,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+            action: MarkAction.redo,
+            size: 'large',
+            image: getThemeAssets().edit.icon_redo,
+            selectMode: 'flash',
+          },
+          {
+            key: constants.EDIT_NODE,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+            action: MarkAction.editNode,
+            size: 'large',
+            image: getThemeAssets().edit.icon_edit_node,
+          },
+          {
+            key: constants.DELETE_NODE,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+            action: MarkAction.deleteNode,
+            size: 'large',
+            image: getThemeAssets().edit.icon_delete_node,
+          },
+          {
+            key: constants.ADD_NODE,
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+            action: MarkAction.addNode,
+            size: 'large',
+            image: getThemeAssets().edit.icon_add_node,
+          },
+          {
+            key: 'tagging_style',
+            title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+            action: MarkAction.selectLabelToStyle,
+            size: 'large',
+            image: require('../../../../../../assets/function/icon_function_style.png'),
+          },
+        ])
       }
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,

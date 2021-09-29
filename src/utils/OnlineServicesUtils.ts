@@ -514,7 +514,6 @@ export default class OnlineServicesUtils {
     const capacity = await this.getMyDataCapacity()
     if(capacity) {
       const stat = await RNFetchBlob.fs.stat(filePath)
-      console.warn(capacity, stat)
       const isEnough = parseInt(stat.size) + capacity.usedCapacity < capacity.maxCapacity
       info && (info.isCapacityEnough = isEnough)
       if(!isEnough) {

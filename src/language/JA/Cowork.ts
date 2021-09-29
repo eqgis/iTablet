@@ -1,21 +1,21 @@
 const Cowork = {
-  UPDATE_LOCAL_SERVICE: 'Updating local services', // need to translate
-  SUBMIT_SERVICE: 'Submit service', // need to translate
+  UPDATE_LOCAL_SERVICE: 'ローカルサービスの更新',
+  SUBMIT_SERVICE: 'サービスのサブミット',
 
-  UPDATE_SUCCESSFUL: 'Update successfully', // need to translate
-  UPDATE_FAILED: 'Update failed', // need to translate
+  UPDATE_SUCCESSFUL: '更新に成功しました',
+  UPDATE_FAILED: '更新に失敗しました',
 
-  UPLOAD_SUCCESSFUL: 'Submit successfully', // need to translate
-  UPLOAD_FAILED: 'Submit failed', // need to translate
+  UPLOAD_SUCCESSFUL: 'サブミットに成功しました',
+  UPLOAD_FAILED: 'サブミットに失敗しました',
 
-  PUBLISH: 'Publish', // need to translate
+  PUBLISH: '配信',
 
-  ERROR_SERVICE_DATA_LOSE_URL: 'Online Data URL lost', // need to translate
+  ERROR_SERVICE_DATA_LOSE_URL: 'データURLがありません',
 
-  PLEASE_ENTER_SERCICE_NAME: 'Please enter a service name', // need to translate
-  SERVICE_SHARING_SETTINGS: 'Service sharing settings', // need to translate
-  SEARCHABLE: 'Searchable', // need to translate
-  READABLE: 'Readable', // need to translate
+  PLEASE_ENTER_SERCICE_NAME: 'サービス名を入力してください',
+  SERVICE_SHARING_SETTINGS: 'サービス共有設定',
+  SEARCHABLE: '検索可能',
+  READABLE: '表示可能',
 }
 
 export { Cowork }

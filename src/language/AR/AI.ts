@@ -1,24 +1,24 @@
 import CN from '../CN'
 
-const AI: typeof CN.AI = { // need to translate
-  NUMBER: 'Number',
-  CATEGORY: 'Category',
-  DATE: 'Date',
-  REMARK: 'Remark',
-  MORE: 'More',
+const AI: typeof CN.AI = {
+  NUMBER: 'عدد',
+  CATEGORY: 'تصنيف .',
+  DATE: 'تواريخ',
+  REMARK: 'تعليق .',
+  MORE: 'أكثر .',
   CONFIDENCE: 'الثقة',
 
-  CLIENT: 'Client',
-  PLATE_NUMBER: 'Plate Number',
-  VEHICLE_TYPE: 'Vehicle Type',
-  VEHICLE_COLOR: 'Vehicle Color',
-  ILLEGAL_TIME: 'Illegal time',
-  VIOLATION_INFO: 'Violation Information',
-  LAW_ENFORCER: 'Law Enforcer',
+  CLIENT: 'العملاء',
+  PLATE_NUMBER: 'رقم لوحة الرخصة',
+  VEHICLE_TYPE: 'نوع السيارة',
+  VEHICLE_COLOR: 'لون السيارة',
+  ILLEGAL_TIME: 'وقت غير قانوني',
+  VIOLATION_INFO: 'انتهاك المعلومات',
+  LAW_ENFORCER: 'إنفاذ القانون',
 
-  SUPPORT_POINT_AND_CAD: 'Only dot layers and CAD layers are supported', // need to translate
+  SUPPORT_POINT_AND_CAD: 'دعم فقط نقطة طبقة طبقة كندي',
 
-  ALL_WRONG: 'None of the above is true',
+  ALL_WRONG: 'هذا ليس صحيحا .',
 }
 
 export {

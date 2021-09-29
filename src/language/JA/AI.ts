@@ -1,24 +1,24 @@
 import CN from '../CN'
 
-const AI: typeof CN.AI = { // need to translate
-  NUMBER: 'Number',
-  CATEGORY: 'Category',
-  DATE: 'Date',
-  REMARK: 'Remark',
-  MORE: 'More',
+const AI: typeof CN.AI = {
+  NUMBER: '番号',
+  CATEGORY: 'タイプ',
+  DATE: 'データ',
+  REMARK: '備考',
+  MORE: '詳細',
   CONFIDENCE: '信頼度',
 
-  CLIENT: 'Client',
-  PLATE_NUMBER: 'Plate Number',
-  VEHICLE_TYPE: 'Vehicle Type',
-  VEHICLE_COLOR: 'Vehicle Color',
-  ILLEGAL_TIME: 'Illegal time',
-  VIOLATION_INFO: 'Violation Information',
-  LAW_ENFORCER: 'Law Enforcer',
+  CLIENT: 'クライアント',
+  PLATE_NUMBER: 'プレート番号',
+  VEHICLE_TYPE: '車両タイプ',
+  VEHICLE_COLOR: '車両色',
+  ILLEGAL_TIME: '不正な時間',
+  VIOLATION_INFO: '違反情報',
+  LAW_ENFORCER: '法執行官',
 
-  SUPPORT_POINT_AND_CAD: 'Only dot layers and CAD layers are supported', // need to translate
+  SUPPORT_POINT_AND_CAD: 'ポイントレイヤーと複合レイヤーしかサポートしません',
 
-  ALL_WRONG: 'None of the above is true',
+  ALL_WRONG: '上記の結果は正しくありません',
 }
 
 export {

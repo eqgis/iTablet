@@ -4,10 +4,10 @@ const Protocol: typeof CN.Protocol = {
   PROTOCOL: 'SuperMap Kullanıcı Hizmet Sözleşmesi',
   AGREE: 'Kabul Ediyorum',
   READ_AND_AGREE: 'Yukarıdaki şartları okudum ve kabul ediyorum',
-  AGAIN:'See Again',//need to translate
-  CONFIRM_EXIT:'Confirm Exit',//need to translate
-  REMINDER:'Reminder',//need to translate
-  AGREEMENT:'We attach great importance to the protection of your personal information and promise to protect and process your information in strict accordance with the hypergraph privacy policy. If we disagree with the policy, we regret that we will not be able to provide services',//need to translate
+  AGAIN:'Tekrar Gör',
+  CONFIRM_EXIT:'Çıkışı Onayla',
+  REMINDER:'Hatırlatıcı',
+  AGREEMENT:'Kişisel bilgilerinizin korunmasına büyük önem veriyoruz ve bilgilerinizi SuperMap gizlilik politikasına sıkı sıkıya uygun olarak korumayı ve işlemeyi taahhüt ediyoruz. Bu gizlilik politikasıyla aynı fikirde olmadığınız takdirde, hizmet sağlayamayacağımız için üzgünüz.',
 }
 
 const Common: typeof CN.Common = {

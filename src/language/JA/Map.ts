@@ -35,7 +35,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   PLOT_SAVE_ANIMATION: 'アニメーションの保存',
   ANIMATION_NODE_NAME: 'アニメーションノード名',
 
-  OPEN_ONLINE_DATA: 'Open Online Data', // to be translated
+  OPEN_ONLINE_DATA: 'オンラインデータを開く',
 
   PLOT: 'アニメシンボル',
 
@@ -144,7 +144,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_PICTURES: '画像',
   COLLECT_TIME: 'コレクション時間',
   COORDINATE: '経度緯度',
-  BASIC_INFO: 'Basic Information', // need to translate
+  BASIC_INFO: '基本情報',
 
   // 裁剪
   TOOLS_RECTANGLE_CLIP: '矩形クリップ',
@@ -640,7 +640,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_LAYER_STYLE: 'レイヤースタイル',
   LAYERS_FULL_EXTENT: '当レイヤーを全体表示',
   LAYERS_SET_VISIBLE_SCALE: '表示スケール範囲',
-  LAYERS_VISIBLE_DISTANCE: 'Visible Distance', //to be translated
+  LAYERS_VISIBLE_DISTANCE: '表示可能距離',
   LAYERS_RENAME: '名前変更',
   LAYERS_COPY: 'コピー',
   LAYERS_PASTE: 'コピーするレイヤーを挿入',
@@ -833,7 +833,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'マップ名',
   SHOW_SCALE: '表示スケール',
   SHOW_LOCATION: 'ロケーションの表示',
-  SHOW_COMPASS: 'Show Compass', // to be translated
+  SHOW_COMPASS: 'コンパスの表示',
   ROTATION_GESTURE: 'ジェスチャー回転',
   PITCH_GESTURE: 'ジェスチャー俯仰',
   ROTATION_ANGLE: '回転角度',

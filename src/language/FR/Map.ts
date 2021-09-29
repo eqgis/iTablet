@@ -36,7 +36,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   PLOT_SAVE_ANIMATION: "Enregistrer l'animation",
   ANIMATION_NODE_NAME: "Nom du nœud d'animation",
 
-  OPEN_ONLINE_DATA: 'Open Online Data', // to be translated
+  OPEN_ONLINE_DATA: 'Ouvrir les données en ligne',
 
   PLOT: 'Traçage',
 
@@ -145,7 +145,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_PICTURES: 'Images',
   COLLECT_TIME: 'Temps',
   COORDINATE: 'Coordonnée',
-  BASIC_INFO: 'Basic Information', // need to translate
+  BASIC_INFO: 'Information de base',
 
   // 裁剪
   TOOLS_RECTANGLE_CLIP: 'Faire un clip rectangulaire',
@@ -642,7 +642,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_LAYER_STYLE: 'Style de couche',
   LAYERS_FULL_EXTENT: 'Extension totale',
   LAYERS_SET_VISIBLE_SCALE: "Définir l'échelle de visibilité",
-  LAYERS_VISIBLE_DISTANCE: 'Visible Distance', //to be translated
+  LAYERS_VISIBLE_DISTANCE: 'Distance visible',
   LAYERS_RENAME: 'Renommer',
   LAYERS_COPY: 'Copie',
   LAYERS_PASTE: 'Coller',
@@ -835,7 +835,7 @@ const Map_Settings: typeof CN.Map_Settings = {
   MAP_NAME: 'Nom de la carte',
   SHOW_SCALE: "Afficher l'échelle",
   SHOW_LOCATION: 'Show Location',
-  SHOW_COMPASS: 'Show Compass', // to be translated
+  SHOW_COMPASS: 'Montrer la boussole',
   ROTATION_GESTURE: 'Geste de rotation',
   PITCH_GESTURE: 'Le Pas de Geste',
   ROTATION_ANGLE: 'Angle de rotation',

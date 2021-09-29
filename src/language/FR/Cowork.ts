@@ -1,21 +1,21 @@
 const Cowork = {
-  UPDATE_LOCAL_SERVICE: 'Updating local services', // need to translate
-  SUBMIT_SERVICE: 'Submit service', // need to translate
+  UPDATE_LOCAL_SERVICE: 'mises à jour du service local',
+  SUBMIT_SERVICE: 'Service soumis',
 
-  UPDATE_SUCCESSFUL: 'Update successfully', // need to translate
-  UPDATE_FAILED: 'Update failed', // need to translate
+  UPDATE_SUCCESSFUL: 'Mise à jour reussi',
+  UPDATE_FAILED: 'Echec du mise à jour',
 
-  UPLOAD_SUCCESSFUL: 'Submit successfully', // need to translate
-  UPLOAD_FAILED: 'Submit failed', // need to translate
+  UPLOAD_SUCCESSFUL: 'Soumission reussie',
+  UPLOAD_FAILED: 'Echec de la soumission',
 
-  PUBLISH: 'Publish', // need to translate
+  PUBLISH: 'Publier',
 
-  ERROR_SERVICE_DATA_LOSE_URL: 'Online Data URL lost', // need to translate
+  ERROR_SERVICE_DATA_LOSE_URL: 'Les données URL sont perdus',
 
-  PLEASE_ENTER_SERCICE_NAME: 'Please enter a service name', // need to translate
-  SERVICE_SHARING_SETTINGS: 'Service sharing settings', // need to translate
-  SEARCHABLE: 'Searchable', // need to translate
-  READABLE: 'Readable', // need to translate
+  PLEASE_ENTER_SERCICE_NAME: 'Veuillez entrer le nom de service',
+  SERVICE_SHARING_SETTINGS: 'Partade des paramétres de service',
+  SEARCHABLE: 'Consultable', 
+  READABLE: 'Lisible', 
 }
 
 export { Cowork }

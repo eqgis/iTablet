@@ -20,7 +20,7 @@ const Profile: typeof CN.Profile = {
   AIMODEL: 'نموذج الذكاء الاصطناعى',
   COLLECTION_TEMPLATE: 'تنسيق ملف مسح الاراضى',
   PLOTTING_TEMPLATE: 'تنسيق ملف توقيع النقاط',
-  MAP_TEMPLATE: 'Mapping Template',//need to translate
+  MAP_TEMPLATE: 'رسم قالب',
   NAVIGATION: 'ملاحى',
   INCREMENT: 'زيادة',
   ENCLOSURE: 'نسيج',
@@ -95,7 +95,7 @@ const Profile: typeof CN.Profile = {
 
   SWITCH_ACCOUNT: 'تبديل الحساب',
   LOG_OUT: 'تسجيل خروج',
-  CANCELLATION:'Cancellation',//need to translate
+  CANCELLATION:'ألغى',
 
   SWITCH: 'تبديل',
   SWITCH_CURRENT: 'لقد قمت بتسجيل الدخول بالفعل مع هذا المستخدم',
@@ -114,7 +114,7 @@ const Profile: typeof CN.Profile = {
   PRIVATE_SERVICE: 'خدمة خاصة',
   PUBLIC_SERVICE: 'خدمة عامة',
 
-  INVALID_SERVER_ADDRESS: 'Invalid Server Address', // to be translated
+  INVALID_SERVER_ADDRESS: 'صحيح عنوان الخادم',
 
   // 个人主页
   MY_ACCOUNT: 'حسابى',
@@ -180,7 +180,7 @@ const Profile: typeof CN.Profile = {
   SET_AS_PRIVATE_DATA: 'تعييت كبياناتخاصة',
   SET_AS_PUBLIC_DATA: 'تعيين كبيانات عامة',
   NO_SERVICE: 'لاتوجد خدمة',
-  SHARE_TO_GROUP: 'Share to group', // need to translate
+  SHARE_TO_GROUP: 'حصة المجموعة',
 
   GET_DATA_FAILED: 'فشل الحصول على البيانات',
 
@@ -250,11 +250,11 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: 'هذا الجهاز',
   SETTING_CLEAR_CACHE: 'مسح ذاكرة التخزين المؤقت',
   SETTING_CLEAR_CACHE_SUCCESS:'إزالة بنجاح',
-  DISTANCE:'Distance(m)',//need to translate
-  TIME:'Time(s)',//need to translate
-  INPUT_NUMBER:"Please Input Number",//need to translate
-  DISTANCE_LOCATION:'Distance Location',//need to translate
-  TIME_LOCATION:'Time Location',//need to translate
+  DISTANCE:'المسافة(m)',
+  TIME:'الوقت (s)',
+  INPUT_NUMBER:"الرجاء إدخال رقم",
+  DISTANCE_LOCATION:'بعد التعريب',
+  TIME_LOCATION:'الوقت والمكان',
 
   // 许可
   LICENSE: 'الرخصة',
@@ -420,8 +420,8 @@ const Profile: typeof CN.Profile = {
   CHOOSE_COLOR: 'اختيار اللون',
   SET_PROJECTION: 'تعيين الإسقاط',
 
-  ONLINE_DATA_UNAVAILABLE: 'Online Data unavailable', //to be translated
-  ONLINE: 'Online', //to be translated
+  ONLINE_DATA_UNAVAILABLE: 'البيانات على الانترنت غير متوفرة',
+  ONLINE: 'آنلاین',
 
   CLOUD_CAPACITY_NOT_ENOUGH: 'No enough capacity on cloud storage',  //to be translated
 }

@@ -1,6 +1,6 @@
 import CN from '../CN'
 
-const ARMap: typeof CN.ARMap = {// need to translate
+const ARMap: typeof CN.ARMap = {
   ARDRAWING: 'رسومات',
 
   THREE_D: '3D',
@@ -34,21 +34,21 @@ const ARMap: typeof CN.ARMap = {// need to translate
   RATATION_AXIS: 'محور الدوران',
   CLOCKWISE: 'مسافة قريبة',
   COUNTER_CLOCKWISE: 'عكس اتجاه عقارب الساعة',
-  WEST: 'W', // to be translated
-  EAST: 'E', // to be translated
-  SOUTH: 'S', // to be translated
-  NORTH: 'N', // to be translated
+  WEST: 'W',
+  EAST: 'E',
+  SOUTH: 'S',
+  NORTH: 'N',
 
   ANIMATION: 'أنمي',
   ANIMATION_TYPE: 'أنواع الرسوم المتحركة',
 
   AR_LAYER_NOT_SUPPORT_STYLE: 'تحرير نمط غير معتمد في الطبقة الحالية',
 
-  TEXT_OPACITY: 'Text Opacity', // to be translated
-  TEXT_COLOR: 'Text Color', // to be translated
-  TEXT_SIZE: 'Text Size', // to be translated
-  BACKGROUND_OPACITY: 'Background Opacity', // to be translated
-  BACKGROUND_COLOR: 'Background Color', // to be translated
+  TEXT_OPACITY: 'نص التعتيم',
+  TEXT_COLOR: 'لون النص',
+  TEXT_SIZE: 'حجم النص',
+  BACKGROUND_OPACITY: 'خلفية التعتيم',
+  BACKGROUND_COLOR: 'لون الخلفية',
 
   FOOD: 'طعام',
   SCENE: 'مشهد',
@@ -63,26 +63,26 @@ const ARMap: typeof CN.ARMap = {// need to translate
   MARKET: 'مول',
   SUBWAY: 'مترو الانفاق',
 
-  SEARCHING: 'Searching', //to be translated
-  NO_SEARCH_RESULT: 'No search result', //to be translated
-  PLEASE_INPUT_KEYWORD: 'Please input keyword', //to be translated
+  SEARCHING: 'بحث .',
+  NO_SEARCH_RESULT: 'لا توجد نتائج',
+  PLEASE_INPUT_KEYWORD: 'من فضلك أدخل المفتاح',
 
-  FAILED_TO_ANALYZE_PATH: 'Failed to analyze path', //to be translated
-  FAILED_TO_GET_LOCATION: 'Failed to get current location', //to be translated
+  FAILED_TO_ANALYZE_PATH: 'لا يمكن تحليل المسار',
+  FAILED_TO_GET_LOCATION: 'غير قادر على الحصول على الموقع الحالي',
 
-  CLEAR_SEARCH_HISOTORY: 'Clear Search History', //to be translated
+  CLEAR_SEARCH_HISOTORY: 'مسح تاريخ البحث',
 
-  ROUTE: 'Route', //to be translated
-  REMAIN: 'Remain', //to be translated
-  MAP_NAVI: 'Map Navigation', //to be translated
-  NAVIGATION: 'Navigation', //to be translated
-  ROUTE_NAVI: 'Route Navigation', //to be translated
+  ROUTE: 'طريق',
+  REMAIN: 'بقي',
+  MAP_NAVI: 'خريطة الملاحة',
+  NAVIGATION: 'أبحر',
+  ROUTE_NAVI: 'مسار الملاحة',
 
 
-  ROADNET_DATA: 'Road Net Data',  //to be translated
-  HEIGHT: 'Height',   //to be translated
+  ROADNET_DATA: 'بيانات شبكة الطرق',
+  HEIGHT: 'مرتفعات',
 
-  DURATION: 'Duration', //to be translated
+  DURATION: 'مدة',
 }
 
 export {

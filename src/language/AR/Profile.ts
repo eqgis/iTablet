@@ -92,6 +92,17 @@ const Profile: typeof CN.Profile = {
   CONNECTING: 'توصيل',
   CONNECT_SERVER_FAIL: 'فشل الاتصال بالسيرفر ، يرجى التحقق من عنوان الشبكة أو السيرفر',
   NEXT: 'التالى',
+  MESSAGE_SERVICE_SETTING: 'Message Service Configuration', // to be translated
+  MESSAGE_SERVICE_IP: 'IP Address of Message Service', // to be translated
+  MESSAGE_SERVICE_PORT: 'Port of Message Service', // to be translated
+  MESSAGE_SERVICE_MANAGE_PORT: 'Port of Message Service Manager', // to be translated
+  MESSAGE_SERVICE_HOST_NAME: 'Virtual Host', // to be translated
+  MESSAGE_SERVICE_ADMIN_NAME: 'Adminstrator', // to be translated
+  MESSAGE_SERVICE_ADMIN_PASSWORD: 'Password', // to be translated
+
+  FILE_SERVICE_SETTING: 'File Service Configuration', // to be translated
+  FILE_SERVICE_UPLOAD_URL: 'URL to upload Files', // to be translated
+  FILE_SERVICE_UPLOAD_DOWNLOAD: 'URL to download Files', // to be translated
 
   SWITCH_ACCOUNT: 'تبديل الحساب',
   LOG_OUT: 'تسجيل خروج',

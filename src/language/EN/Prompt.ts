@@ -358,7 +358,7 @@ const Prompt: typeof CN.Prompt = {
   ARRIVE_DESTINATION: 'Arrived the destination',
   DEVIATE_NAV_PATH: 'Deviated from the navigation path',
 
-  //Incremental network 
+  //Incremental network
   SELECT_LINE_DATASET: 'Please select a line dataset first',
   CANT_UNDO: 'Irrevocable',
   CANT_REDO: "Can't redo",

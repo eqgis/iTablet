@@ -123,6 +123,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   STATISTIC_MODE: 'الوضع الإحصائي',
   NUMERIC_PRECISION: 'الدقة الرقمية',
   AGGREGATE_TYPE: 'النوع الكلي',
+  AGGREGATE_DATASET: 'Aggregate Dataset',// to be translated
 
   THEMATIC_PARAMS: 'القياسات الموضوعية',
   INTERVAL_MODE: 'وضع الفاصل',

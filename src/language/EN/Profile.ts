@@ -1,6 +1,6 @@
 import CN from '../CN'
 
-// Profile, Explore 
+// Profile, Explore
 const Profile: typeof CN.Profile = {
   // Profile homepage
   LOGIN_NOW: 'Login',

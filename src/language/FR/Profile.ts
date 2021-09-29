@@ -92,6 +92,17 @@ const Profile: typeof CN.Profile = {
   CONNECTING: 'Connexion',
   CONNECT_SERVER_FAIL: "Impossible de se connecter au serveur, veuillez vérifier l'adresse réseau ou serveur,",
   NEXT: 'Suivant',
+  MESSAGE_SERVICE_SETTING: 'Message Service Configuration', // to be translated
+  MESSAGE_SERVICE_IP: 'IP Address of Message Service', // to be translated
+  MESSAGE_SERVICE_PORT: 'Port of Message Service', // to be translated
+  MESSAGE_SERVICE_MANAGE_PORT: 'Port of Message Service Manager', // to be translated
+  MESSAGE_SERVICE_HOST_NAME: 'Virtual Host', // to be translated
+  MESSAGE_SERVICE_ADMIN_NAME: 'Adminstrator', // to be translated
+  MESSAGE_SERVICE_ADMIN_PASSWORD: 'Password', // to be translated
+
+  FILE_SERVICE_SETTING: 'File Service Configuration', // to be translated
+  FILE_SERVICE_UPLOAD_URL: 'URL to upload Files', // to be translated
+  FILE_SERVICE_UPLOAD_DOWNLOAD: 'URL to download Files', // to be translated
 
   SWITCH_ACCOUNT: 'Changer de compte',
   LOG_OUT: 'Déconnexion',

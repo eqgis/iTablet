@@ -1,4 +1,6 @@
-const Cowork = {
+import CN from '../CN'
+
+const Cowork: typeof CN.Cowork = {
   UPDATE_LOCAL_SERVICE: 'Updating local services',
   SUBMIT_SERVICE: 'Submit service',
 

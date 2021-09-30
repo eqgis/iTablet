@@ -1,8 +1,7 @@
 import { MyDataPage } from '../component'
 import DataHandler from '../DataHandler'
-import { FileTools } from '../../../../native'
+import { FileTools, RNFS } from '../../../../native'
 import { ConstPath } from '../../../../constants'
-import RNFS from 'react-native-fs'
 
 class MyMap extends MyDataPage {
   constructor(props) {

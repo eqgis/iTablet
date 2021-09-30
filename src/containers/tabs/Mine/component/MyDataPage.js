@@ -17,7 +17,7 @@ import {
   PopMenu,
 } from '../../../../components'
 import { ConstPath, ConstInfo } from '../../../../constants'
-import { FileTools } from '../../../../native'
+import { FileTools, RNFS } from '../../../../native'
 import Toast from '../../../../utils/Toast'
 import { color } from '../../../../styles'
 import { scaleSize, OnlineServicesUtils } from '../../../../utils'
@@ -29,9 +29,7 @@ import { getLanguage } from '../../../../language/index'
 import { MsgConstant, SimpleDialog } from '../../Friend'
 import { MineItem, BatchHeadBar } from '../component'
 import { getThemeAssets, getPublicAssets, getARSceneAssets } from '../../../../assets'
-import RNFS from 'react-native-fs'
 import styles from './styles'
-import RNFetchBlob from 'rn-fetch-blob'
 
 const appUtilsModule = NativeModules.AppUtils
 const pointImg = require('../../../../assets/mapToolbar/dataset_type_point_black.png')

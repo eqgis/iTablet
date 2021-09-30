@@ -4,9 +4,8 @@
 
 // eslint-disable-next-line
 import { Platform } from 'react-native'
-import RNFS from 'react-native-fs'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
-import { FileTools } from '../../../../native'
+import { FileTools, RNFS } from '../../../../native'
 import { ConstPath, UserType } from '../../../../constants'
 import { OnlineServicesUtils } from '../../../../utils'
 

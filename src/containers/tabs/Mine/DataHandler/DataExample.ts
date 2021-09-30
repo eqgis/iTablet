@@ -1,6 +1,6 @@
 import { FileTools } from 'imobile_for_reactnative'
-import RNFS, { downloadFile, DownloadFileOptions} from 'react-native-fs'
 import { ConstPath } from '../../../../constants'
+import RNFS, { downloadFile, DownloadFileOptions} from '../../../../native/RNFS'
 import { OnlineServicesUtils } from '../../../../utils'
 
 export interface ExampleData {

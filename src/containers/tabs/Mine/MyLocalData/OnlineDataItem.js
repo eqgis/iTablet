@@ -4,11 +4,7 @@ import { scaleSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { Progress } from '../../../../components'
 import { getLanguage } from '../../../../language'
-// import { SMap } from 'imobile_for_reactnative'
 import UserType from '../../../../constants/UserType'
-// import ConstPath from '../../../../constants/ConstPath'
-// import {downloadFile} from 'react-native-fs'
-// import { FileTools } from '../../../../native';
 export default class OnlineDataItem extends Component {
   props: {
     user: Object,

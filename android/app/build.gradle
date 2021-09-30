@@ -238,17 +238,15 @@ dependencies {
     implementation project(':react-native-background-timer')
     implementation project(':react-native-video')
     implementation project(':react-native-image-crop-picker')
-    implementation project(':react-native-fs')
+//    implementation project(':react-native-fs')
     implementation project(':react-native-camera')
 //    implementation project(':jpush-react-native')
 //    implementation project(':jcore-react-native')
     implementation project(':react-native-contacts')
     implementation project(':react-native-amap-geolocation')
-    implementation project(':react-native-fs')
     implementation project(':react-native-orientation')
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
     implementation project(':imobile_for_reactnative')
-//    implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.facebook.react:react-native:+'

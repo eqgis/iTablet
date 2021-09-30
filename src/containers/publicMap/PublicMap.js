@@ -19,9 +19,8 @@ import styles from './Styles'
 import color from '../../styles/color'
 import FetchUtils from '../../utils/FetchUtils'
 import { getLanguage } from '../../language'
-import { FileTools } from '../../native'
+import { FileTools, RNFS } from '../../native'
 import { ConstPath } from '../../constants'
-import RNFS from 'react-native-fs'
 
 export default class PublicMap extends Component {
   props: {

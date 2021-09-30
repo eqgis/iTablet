@@ -8,9 +8,8 @@ import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import DataHandler from '../DataHandler'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
-import { FileTools } from '../../../../native'
+import { FileTools, RNFS } from '../../../../native'
 import { ConstPath } from '../../../../constants'
-import RNFS from 'react-native-fs'
 import cheerio from 'react-native-cheerio'
 
 class MyARMap extends MyDataPage {

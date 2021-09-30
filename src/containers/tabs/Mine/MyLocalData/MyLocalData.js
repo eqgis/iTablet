@@ -21,7 +21,7 @@ import OnlineDataItem from './OnlineDataItem'
 import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
 import DataHandler from '../DataHandler'
 import NavigationService from '../../../NavigationService'
-import { downloadFile } from 'react-native-fs'
+import { downloadFile } from '../../../../native/RNFS'
 let JSIPortalService, JSOnlineservice
 
 export default class MyLocalData extends Component {

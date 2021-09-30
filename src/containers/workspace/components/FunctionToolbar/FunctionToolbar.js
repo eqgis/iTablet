@@ -22,10 +22,9 @@ import styles, {
   BOTTOM_LANDSCAPE,
   PADDING_L,
 } from './styles'
-import ImageResizer from 'react-native-image-resizer'
 import { serviceModule } from '../../../workspace/components/ToolBar/modules'
-import * as RNFS from 'react-native-fs'
 import { FileTools } from '../../../../native'
+import * as RNFS from '../../../../native/RNFS'
 
 const COLLECTION = 'COLLECTION'
 const NETWORK = 'NETWORK'

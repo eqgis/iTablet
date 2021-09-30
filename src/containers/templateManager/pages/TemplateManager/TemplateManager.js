@@ -18,11 +18,9 @@ import NavigationService from '../../../../containers/NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
+import { RNFS as fs } from '../../../../native'
 import ConstPath from '../../../../constants/ConstPath'
 import { XMLUtil } from '../../utils'
-
-import fs from 'react-native-fs'
-import xml2js from 'react-native-xml2js'
 
 export default class TemplateManager extends React.Component {
   props: {

@@ -14,7 +14,7 @@
 #endif
 
 #import "RNFSManager.h"
-#import "Common/HWNetworkReachabilityManager.h"
+#import "HWNetworkReachabilityManager.h"
 #import "NativeUtil.h"
 #import "Orientation.h"
 #import "MyLaunchScreenViewController.h"

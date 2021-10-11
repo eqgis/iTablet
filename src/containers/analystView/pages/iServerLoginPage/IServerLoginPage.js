@@ -153,6 +153,7 @@ export default class IServerLoginPage extends React.Component {
                     this.serverUrl = text
                   }}
                   showClear
+                  onClear={() => this.serverUrl = ''}
                 />
                 <Text style={styles.text}>{'eg: 10.10.0.1:8090'}</Text>
                 <Input
@@ -167,6 +168,7 @@ export default class IServerLoginPage extends React.Component {
                     this.userName = text
                   }}
                   showClear
+                  onClear={() => this.userName = ''}
                 />
                 <Input
                   style={{ marginTop: scaleSize(20) }}
@@ -182,6 +184,7 @@ export default class IServerLoginPage extends React.Component {
                     this.password = text
                   }}
                   showClear
+                  onClear={() => this.password = ''}
                 />
               </View>
               <Button

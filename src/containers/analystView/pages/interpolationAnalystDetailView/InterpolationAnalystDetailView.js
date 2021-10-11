@@ -89,125 +89,124 @@ export default class InterpolationAnalystDetailView extends Component {
     this.container && this.container.setLoading(loading, info, extra)
   }
 
-  analyst = () => {
+  analyst = async () => {
     Toast.show(getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_START)
-    InteractionManager.runAfterInteractions(async () => {
-      try {
-        this.setLoading(
-          true,
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
-        )
+    // InteractionManager.runAfterInteractions(async () => {
+    try {
+      this.setLoading(
+        true,
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
+      )
 
-        let server = await FileTools.appendingHomeDirectory(
-          ConstPath.UserPath +
-            (this.props.currentUser.userName || 'Customer') +
-            '/' +
-            ConstPath.RelativePath.Datasource,
-        )
-        let sourceData = {
-            datasource: this.data.dataSource.value,
-            dataset: this.data.dataSet.value,
+      let server = await FileTools.appendingHomeDirectory(
+        ConstPath.UserPath +
+          (this.props.currentUser.userName || 'Customer') +
+          '/' +
+          ConstPath.RelativePath.Datasource,
+      )
+      let sourceData = {
+          datasource: this.data.dataSource.value,
+          dataset: this.data.dataSet.value,
+        },
+        resultData = {
+          datasource: this.data.resultDataSource.value,
+          server: server + this.data.resultDataSource.value + '.udb',
+          dataset: this.data.resultDataSet.value,
+        },
+        paramter = {
+          type: this.data.method.value,
+          resolution: this.data.resolution,
+          bounds: {
+            left: this.data.left,
+            bottom: this.data.bottom,
+            right: this.data.right,
+            top: this.data.top,
           },
-          resultData = {
-            datasource: this.data.resultDataSource.value,
-            server: server + this.data.resultDataSource.value + '.udb',
-            dataset: this.data.resultDataSet.value,
-          },
-          paramter = {
-            type: this.data.method.value,
-            resolution: this.data.resolution,
-            bounds: {
-              left: this.data.left,
-              bottom: this.data.bottom,
-              right: this.data.right,
-              top: this.data.top,
-            },
-            searchMode: this.state.searchMethod.value,
-            // exponent: this.state.exponent,
-          }
-
-        switch (this.state.searchMethod.value) {
-          case SAnalyst.SearchMode.KDTREE_FIXED_COUNT:
-          case SAnalyst.SearchMode.KDTREE_FIXED_RADIUS:
-            Object.assign(paramter, {
-              searchRadius: this.state.radius,
-              expectedCount: this.state.pointCount,
-            })
-            break
-          case SAnalyst.SearchMode.QUADTREE:
-            Object.assign(paramter, {
-              maxPointCountForInterpolation: this.state
-                .maxPointCountForInterpolation,
-              maxPointCountInNode: this.state.maxPointCountInNode,
-            })
-            break
+          searchMode: this.state.searchMethod.value,
+          // exponent: this.state.exponent,
         }
 
-        switch (this.data.method.value) {
-          case SAnalyst.InterpolationAlgorithmType.IDW:
-          case SAnalyst.InterpolationAlgorithmType.RBF:
-            Object.assign(paramter, {
-              power: this.state.power,
-            })
-            break
-          case SAnalyst.InterpolationAlgorithmType.KRIGING:
-          case SAnalyst.InterpolationAlgorithmType.SIMPLE_KRIGING:
-          case SAnalyst.InterpolationAlgorithmType.UNIVERSAL_KRIGING:
-            Object.assign(paramter, {
-              variogramMode: this.state.semivariogram.value,
-              range: this.state.range,
-              sill: this.state.sill,
-              nugget: this.state.nuggetEffect,
-            })
-            if (SAnalyst.InterpolationAlgorithmType.SIMPLE_KRIGING) {
-              paramter.mean = this.state.mean
-            } else if (SAnalyst.InterpolationAlgorithmType.UNIVERSAL_KRIGING) {
-              paramter.exponent = this.state.exponent
-            }
-            break
-        }
-
-        SAnalyst.interpolate(
-          sourceData,
-          resultData,
-          paramter,
-          this.data.interpolationField.name,
-          this.data.scale,
-          this.data.pixelFormat.value,
-        )
-          .then(async result => {
-            this.setLoading(false)
-
-            Toast.show(
-              result
-                ? getLanguage(this.props.language).Analyst_Prompt
-                  .ANALYSIS_SUCCESS
-                : getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-            )
-            if (result) {
-              let layers = await this.props.getLayers()
-              layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
-
-              GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
-              NavigationService.goBack('InterpolationAnalystView')
-              if (this.cb && typeof this.cb === 'function') {
-                this.cb()
-              }
-            }
+      switch (this.state.searchMethod.value) {
+        case SAnalyst.SearchMode.KDTREE_FIXED_COUNT:
+        case SAnalyst.SearchMode.KDTREE_FIXED_RADIUS:
+          Object.assign(paramter, {
+            searchRadius: this.state.radius,
+            expectedCount: this.state.pointCount,
           })
-          .catch(() => {
-            this.setLoading(false)
-            Toast.show(
-              getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-            )
+          break
+        case SAnalyst.SearchMode.QUADTREE:
+          Object.assign(paramter, {
+            maxPointCountForInterpolation: this.state
+              .maxPointCountForInterpolation,
+            maxPointCountInNode: this.state.maxPointCountInNode,
           })
-      } catch (e) {
-        this.setLoading(false)
-        Toast.show(
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS,
-        )
+          break
       }
-    })
+
+      switch (this.data.method.value) {
+        case SAnalyst.InterpolationAlgorithmType.IDW:
+        case SAnalyst.InterpolationAlgorithmType.RBF:
+          Object.assign(paramter, {
+            power: this.state.power,
+          })
+          break
+        case SAnalyst.InterpolationAlgorithmType.KRIGING:
+        case SAnalyst.InterpolationAlgorithmType.SIMPLE_KRIGING:
+        case SAnalyst.InterpolationAlgorithmType.UNIVERSAL_KRIGING:
+          Object.assign(paramter, {
+            variogramMode: this.state.semivariogram.value,
+            range: this.state.range,
+            sill: this.state.sill,
+            nugget: this.state.nuggetEffect,
+          })
+          if (SAnalyst.InterpolationAlgorithmType.SIMPLE_KRIGING) {
+            paramter.mean = this.state.mean
+          } else if (SAnalyst.InterpolationAlgorithmType.UNIVERSAL_KRIGING) {
+            paramter.exponent = this.state.exponent
+          }
+          break
+      }
+
+      SAnalyst.interpolate(
+        sourceData,
+        resultData,
+        paramter,
+        this.data.interpolationField.name,
+        this.data.scale,
+        this.data.pixelFormat.value,
+      )
+        .then(async result => {
+          Toast.show(
+            result
+              ? getLanguage(this.props.language).Analyst_Prompt
+                .ANALYSIS_SUCCESS
+              : getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+          )
+          if (result) {
+            let layers = await this.props.getLayers()
+            layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
+
+            GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
+            NavigationService.goBack('InterpolationAnalystView')
+            if (this.cb && typeof this.cb === 'function') {
+              this.cb()
+            }
+          }
+          this.setLoading(false)
+        })
+        .catch(() => {
+          this.setLoading(false)
+          Toast.show(
+            getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+          )
+        })
+    } catch (e) {
+      this.setLoading(false)
+      Toast.show(
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS,
+      )
+    }
+    // })
   }
 
   back = () => {

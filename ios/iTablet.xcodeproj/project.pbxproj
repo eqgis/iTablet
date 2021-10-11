@@ -2421,7 +2421,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/iPhoneOS.sdk",
 				);
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

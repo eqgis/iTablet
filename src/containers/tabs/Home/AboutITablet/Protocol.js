@@ -12,8 +12,8 @@ import { Container, MTBtn } from '../../../../components'
 import { Toast, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { getPublicAssets } from '../../../../assets'
-import { FileTools, RNFS } from '../../../../native'
-
+import { FileTools } from '../../../../native'
+import { RNFS } from 'imobile_for_reactnative'
 class Protocol extends Component {
   props: {
     navigation: Object,

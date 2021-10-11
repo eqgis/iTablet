@@ -19,7 +19,7 @@ import styles from './Styles'
 import color from '../../styles/color'
 import FetchUtils from '../../utils/FetchUtils'
 import { getLanguage } from '../../language'
-import { FileTools, RNFS } from '../../native'
+import {RNFS} from 'imobile_for_reactnative'
 import { ConstPath } from '../../constants'
 
 export default class PublicMap extends Component {

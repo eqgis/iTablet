@@ -20,7 +20,7 @@ import {
   InputToolbar,
 } from 'react-native-gifted-chat'
 import { SimpleDialog, ImageViewer } from '../index'
-import { SMap, EngineType, DatasetType } from 'imobile_for_reactnative'
+import { SMap, EngineType, DatasetType,RNFS } from 'imobile_for_reactnative'
 import { Container, MTBtn } from '../../../../components'
 import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
@@ -28,7 +28,6 @@ import CustomActions from './CustomActions'
 import CustomView from './CustomView'
 import { ConstPath, ConstOnline } from '../../../../constants'
 import { FileTools  } from '../../../../native'
-import RNFS, { stat } from '../../../../native/RNFS'
 import { Toast, LayerUtils } from '../../../../utils'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { ReadMsgParams } from '../../../../redux/models/cowork'
@@ -474,7 +473,7 @@ class Chat extends React.Component {
     // }
 
     fileName = fileName + '.zip'
-    let statResult = await stat(filePath)
+    let statResult = await RNFS.stat(filePath)
     //文件接收提醒
     let informMsg = {
       type: bGroup,
@@ -612,7 +611,7 @@ class Chat extends React.Component {
     let ctime = new Date()
     let time = Date.parse(ctime)
 
-    let statResult = await stat(filePath)
+    let statResult = await RNFS.stat(filePath)
     let message = {
       type: bGroup,
       user: {

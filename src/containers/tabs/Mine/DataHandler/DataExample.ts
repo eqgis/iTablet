@@ -1,6 +1,6 @@
-import { FileTools } from 'imobile_for_reactnative'
+import { FileTools,RNFS } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
-import RNFS, { downloadFile, DownloadFileOptions} from '../../../../native/RNFS'
+// import RNFS, { downloadFile, DownloadFileOptions} from '../../../../native/RNFS'
 import { OnlineServicesUtils } from '../../../../utils'
 
 export interface ExampleData {
@@ -72,7 +72,7 @@ async function downloadExampleData(exampleData: ExampleData, onProgress: (progre
     option.progress = res => {
       onProgress(res.progress)
     }
-    const { promise } = downloadFile(option)
+    const { promise } = RNFS.downloadFile(option)
 
     const toFile = option.toFile
     return promise.then(async () => {
@@ -91,7 +91,7 @@ async function downloadExampleData(exampleData: ExampleData, onProgress: (progre
   }
 }
 
-async function getDataDownloadOption(data: ExampleData): Promise<DownloadFileOptions & { id: number, fileName: string } | undefined> {
+async function getDataDownloadOption(data: ExampleData): Promise<RNFS.DownloadFileOptions & { id: number, fileName: string } | undefined> {
   const homePath = await FileTools.getHomeDirectory()
   const commonPath = ConstPath.Common
 

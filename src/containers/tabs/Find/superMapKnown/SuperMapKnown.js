@@ -6,7 +6,8 @@ import styles from './styles'
 // import { SOnlineService } from 'imobile_for_reactnative'
 import { Toast, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
-import { FileTools, RNFS } from '../../../../native'
+import { FileTools } from '../../../../native'
+import { RNFS  } from 'imobile_for_reactnative'
 import { color } from '../../../../styles'
 
 export default class SuperMapKnown extends Component {

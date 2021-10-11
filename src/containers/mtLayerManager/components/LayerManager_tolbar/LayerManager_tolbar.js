@@ -39,13 +39,12 @@ import {
 } from 'react-native'
 import ToolBarSectionList from '../../../workspace/components/ToolBar/components/ToolBarSectionList'
 import styles from './styles'
-import { SMap, DatasetType, SMCollectorType } from 'imobile_for_reactnative'
+import { SMap, DatasetType, SMCollectorType,RNFS} from 'imobile_for_reactnative'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
 import { Toast, scaleSize, setSpText, dataUtil, LayerUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { FileTools } from '../../../../../src/native'
-import { stat } from '../../../../native/RNFS'
 import { MsgConstant } from '../../../../containers/tabs/Friend'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import { themeModule } from '../../../workspace/components/ToolBar/modules'
@@ -1077,7 +1076,7 @@ export default class LayerManager_tolbar extends React.Component {
     let time = Date.parse(ctime)
 
     fileName = fileName + '.zip'
-    let statResult = await stat(filePath)
+    let statResult = await RNFS.stat(filePath)
     //文件接收提醒
     let informMsg = {
       type: bGroup,

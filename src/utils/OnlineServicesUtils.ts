@@ -1,7 +1,7 @@
 import { request } from './index'
 // import {cheerio as ch }from 'cheerio'
 import cheerio from 'react-native-cheerio'
-import { SOnlineService, SIPortalService ,SMap} from 'imobile_for_reactnative'
+import { SOnlineService, SIPortalService ,SMap,RNFS} from 'imobile_for_reactnative'
 import { Platform } from 'react-native'
 import axios from 'axios'
 // eslint-disable-next-line import/default
@@ -11,7 +11,6 @@ import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } fr
 import RNFetchBlob from 'rn-fetch-blob'
 import { TLoginUserType } from '../constants/UserType'
 import { UserInfo } from '../types'
-import { RNFS } from '../native'
 
 /** 上传回调 */
 interface UploadCallBack {

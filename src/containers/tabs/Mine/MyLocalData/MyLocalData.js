@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import { Container, PopMenu } from '../../../../components'
-import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
+import { SOnlineService, SIPortalService,RNFS } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import Toast from '../../../../utils/Toast'
 import { color } from '../../../../styles'
@@ -21,7 +21,7 @@ import OnlineDataItem from './OnlineDataItem'
 import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
 import DataHandler from '../DataHandler'
 import NavigationService from '../../../NavigationService'
-import { downloadFile } from '../../../../native/RNFS'
+// import { downloadFile } from '../../../../native/RNFS'
 let JSIPortalService, JSOnlineservice
 
 export default class MyLocalData extends Component {
@@ -495,7 +495,7 @@ export default class MyLocalData extends Component {
           })
         },
       }
-      await downloadFile(downloadOptions).promise
+      await RNFS.downloadFile(downloadOptions).promise
 
       this.props.updateDownList({
         id: itemInfo.id,

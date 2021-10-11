@@ -13,7 +13,7 @@ import {
 // import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { getLanguage } from '../../../language'
-import { RNFS } from '../../../native'
+import { RNFS } from 'imobile_for_reactnative'
 import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
 import Orientation from 'react-native-orientation'

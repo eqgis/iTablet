@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { SMap, WorkspaceType } from 'imobile_for_reactnative'
+import { SMap, WorkspaceType, RNFS as fs } from 'imobile_for_reactnative'
 import xml2js from 'react-native-xml2js'
-import { FileTools, RNFS as fs } from '../../native'
+import { FileTools } from '../../native'
 import { ConstInfo } from '../../constants'
 
 const parser = new xml2js.Parser()

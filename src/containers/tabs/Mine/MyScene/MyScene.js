@@ -1,7 +1,7 @@
 import { MyDataPage } from '../component'
 import DataHandler from '../DataHandler'
-import { FileTools, RNFS } from '../../../../native'
-import {SScene } from 'imobile_for_reactnative'
+import { FileTools } from '../../../../native'
+import {SScene,RNFS } from 'imobile_for_reactnative'
 
 class MyScene extends MyDataPage {
   constructor(props) {

@@ -84,7 +84,11 @@ class ChatImageViewer extends React.Component {
   renderHeader = () => {
     return (
       <TouchableOpacity
-        style={[styles.headerStyle, { top: screen.getIphonePaddingTop() }]}
+        style={[styles.headerStyle, {
+          top: screen.isIphoneX() && GLOBAL.getDevice().orientation.indexOf('PORTRAIT') >= 0
+            ? screen.X_TOP
+            : 0,
+        }]}
         onPress={hide}
       >
         <Image
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
   },
   headerStyle: {
     position: 'absolute',
-    top: 0,
+    // top: 0,
     height: scaleSize(100),
     width: scaleSize(100),
     justifyContent: 'center',

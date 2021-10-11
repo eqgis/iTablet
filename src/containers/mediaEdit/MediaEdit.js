@@ -14,7 +14,7 @@ import {
 } from '../../components'
 import { SimpleDialog } from '../tabs/Friend'
 import { Toast, checkType, OnlineServicesUtils } from '../../utils'
-import { FileTools, RNFS } from '../../native'
+import { FileTools } from '../../native'
 import { ConstPath, UserType } from '../../constants'
 import { getThemeAssets } from '../../assets'
 import styles from './styles'
@@ -22,7 +22,7 @@ import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
 // import ImagePicker from 'react-native-image-crop-picker'
-import { SMediaCollector, SOnlineService, SMap, SCoordination } from 'imobile_for_reactnative'
+import { SMediaCollector, SOnlineService, SMap, SCoordination, RNFS } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 
 const COLUMNS = 3

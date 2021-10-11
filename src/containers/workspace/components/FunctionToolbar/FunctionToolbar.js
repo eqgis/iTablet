@@ -8,7 +8,7 @@ import { View, Animated, FlatList, TouchableOpacity, Platform, Easing } from 're
 import { MTBtn } from '../../../../components'
 import { ConstToolType, Const, ChunkType, Height, UserType, ConstPath } from '../../../../constants'
 import { scaleSize, Toast, screen, LayerUtils, OnlineServicesUtils, dataUtil } from '../../../../utils'
-import { SMap, DatasetType, SCoordination, SMediaCollector } from 'imobile_for_reactnative'
+import { SMap, DatasetType, SCoordination, SMediaCollector,RNFS } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Bar } from 'react-native-progress'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -24,7 +24,7 @@ import styles, {
 } from './styles'
 import { serviceModule } from '../../../workspace/components/ToolBar/modules'
 import { FileTools } from '../../../../native'
-import * as RNFS from '../../../../native/RNFS'
+// import {  } from 'imobile_for_reactnative'
 
 const COLLECTION = 'COLLECTION'
 const NETWORK = 'NETWORK'

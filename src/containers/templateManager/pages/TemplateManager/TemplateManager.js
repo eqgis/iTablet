@@ -18,7 +18,7 @@ import NavigationService from '../../../../containers/NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
-import { RNFS as fs } from '../../../../native'
+import {RNFS as fs } from 'imobile_for_reactnative'
 import ConstPath from '../../../../constants/ConstPath'
 import { XMLUtil } from '../../utils'
 

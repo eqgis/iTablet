@@ -1,8 +1,8 @@
-import { SMap, SScene } from 'imobile_for_reactnative'
+import { SMap, SScene, RNFS  } from 'imobile_for_reactnative'
 import { Platform } from 'react-native'
 import cheerio from 'react-native-cheerio'
 import { Buffer } from 'buffer'
-import { FileTools, RNFS } from '../../../../native'
+import { FileTools} from '../../../../native'
 
 const iconv = require('iconv-lite')
 

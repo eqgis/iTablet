@@ -23,7 +23,7 @@ import styles from './styles'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
 import { XMLUtil } from '../../utils'
-import { FileTools, RNFS } from '../../../../native'
+import { FileTools } from '../../../../native'
 import ConstPath from '../../../../constants/ConstPath'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 

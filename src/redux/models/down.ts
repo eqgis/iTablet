@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import RNFS, {DownloadFileOptions, DownloadProgressCallbackResult} from '../../native/RNFS'
+import { RNFS  } from 'imobile_for_reactnative'
 // Constants
 // --------------------------------------------------
 export const DOWN_SET = 'DOWN_SET'
@@ -15,7 +15,7 @@ export const DOWNLOADED_SOURCE_FILE_DELETE = 'DOWNLOADED_SOURCE_FILE_DELETE'
 /** 下载参数 */
 export type IDownloadProps  = {
   key?: string,
-} & DownloadFileOptions
+} & RNFS.DownloadFileOptions
 
 export type Download = {
   id: string | number,
@@ -87,7 +87,7 @@ export const downloadFile = (params: IDownloadProps) => async (dispatch: (arg0: 
       // timer = null
     }
   }, 2000)
-  params.progress = async (res: DownloadProgressCallbackResult) => {
+  params.progress = async (res: RNFS.DownloadProgressCallbackResult) => {
     value = res.progress >= 0 ? ~~res.progress.toFixed(0) : 0
     if (value === 100) {
       const data = {
@@ -155,7 +155,7 @@ export const downloadSourceFile = (params: IDownloadProps) => async (dispatch: (
       // timer = null
     }
   }, 200)
-  params.progress = async (res: DownloadProgressCallbackResult) => {
+  params.progress = async (res: RNFS.DownloadProgressCallbackResult) => {
     value = res.progress >= 0 ? ~~res.progress.toFixed(0) : 0
     if (value === 100) {
       const data = {

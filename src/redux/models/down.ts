@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import RNFS, {DownloadFileOptions, DownloadProgressCallbackResult} from 'react-native-fs'
+import RNFS, {DownloadFileOptions, DownloadProgressCallbackResult} from '../../native/RNFS'
 // Constants
 // --------------------------------------------------
 export const DOWN_SET = 'DOWN_SET'

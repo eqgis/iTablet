@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "imobile_for_reactnative": "file:../iTablet/node_modules/imobile_for_reactnative",
-    "react-native-fs": "file:../iTablet/node_modules/react-native-fs",
     "axios": "0.19.0",
     "forge": "2.3.0",
     "immutable": "3.8.2",

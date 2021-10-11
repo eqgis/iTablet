@@ -32,7 +32,6 @@ import { scaleSize, screen } from '../../../utils'
 import { SimpleDialog } from '../Friend'
 import TabBar from '../TabBar'
 import ImageButton from '../../../components/ImageButton'
-import { readDir } from 'react-native-fs'
 
 const appUtilsModule = NativeModules.AppUtils
 export default class Home extends Component {

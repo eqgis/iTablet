@@ -23,9 +23,8 @@ import styles from './styles'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
 import { XMLUtil } from '../../utils'
-import { FileTools } from '../../../../native'
+import { FileTools, RNFS } from '../../../../native'
 import ConstPath from '../../../../constants/ConstPath'
-import fs from 'react-native-fs'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 
 const defaultData = [

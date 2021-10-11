@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { FlatList, Image, TouchableOpacity, View, Text ,  RefreshControl , ActivityIndicator} from 'react-native'
+import { FlatList, Image, TouchableOpacity, View, Text} from 'react-native'
 import NavigationService from '../../../NavigationService'
 import { Container } from '../../../../components'
 import styles from './styles'
 // import { SOnlineService } from 'imobile_for_reactnative'
 import { Toast, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
-import { FileTools } from '../../../../native'
-import RNFS from 'react-native-fs'
+import { FileTools, RNFS } from '../../../../native'
 import { color } from '../../../../styles'
 
 export default class SuperMapKnown extends Component {

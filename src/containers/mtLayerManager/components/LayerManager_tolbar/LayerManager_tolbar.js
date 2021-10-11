@@ -45,6 +45,7 @@ import { color } from '../../../../styles'
 import { Toast, scaleSize, setSpText, dataUtil, LayerUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { FileTools } from '../../../../../src/native'
+import { stat } from '../../../../native/RNFS'
 import { MsgConstant } from '../../../../containers/tabs/Friend'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import { themeModule } from '../../../workspace/components/ToolBar/modules'
@@ -58,7 +59,6 @@ import {
   getThemeIconByType,
   getLayerIconByType,
 } from '../../../../assets'
-import { stat } from 'react-native-fs'
 import ServiceData from '../../../workspace/components/ToolBar/modules/serviceModule/ServiceData'
 
 /** 工具栏类型 **/

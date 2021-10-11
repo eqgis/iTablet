@@ -44,7 +44,7 @@ import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
 import { setShow } from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
-import { FileTools, SplashScreen } from './src/native'
+import { FileTools, SplashScreen, RNFS as fs } from './src/native'
 import ConfigStore from './src/redux/store'
 import { scaleSize, Toast, screen, OnlineServicesUtils, DialogUtils } from './src/utils'
 import RootNavigator from './src/containers/RootNavigator'
@@ -74,8 +74,6 @@ import {
   setMapArGuide,
   setMapArMappingGuide,
 } from './src/redux/models/ar'
-
-import fs from 'react-native-fs'
 
 import LaunchGuidePage from './src/components/guide'
 import LaunchGuide from './configs/guide'

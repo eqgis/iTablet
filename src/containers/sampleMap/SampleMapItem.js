@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import { Image, Text, TouchableOpacity, View, Animated, Easing } from 'react-native'
 import styles from './styles'
-import { scaleSize } from '../../utils'
-import { Progress } from '../../components'
-import RNFS from 'react-native-fs'
-import { FileTools } from '../../native'
+import { FileTools, RNFS } from '../../native'
 import ConstPath from '../../constants/ConstPath'
-import UserType from '../../constants/UserType'
 import { getLanguage } from '../../language'
 import { getPublicAssets } from '../../assets'
 

@@ -10,10 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import * as RNFS from 'react-native-fs'
 // import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { getLanguage } from '../../../language'
+import { RNFS } from '../../../native'
 import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
 import Orientation from 'react-native-orientation'

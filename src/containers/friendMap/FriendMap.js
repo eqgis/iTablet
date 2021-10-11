@@ -14,10 +14,9 @@ import styles from './Styles'
 import color from '../../styles/color'
 import FetchUtils from '../../utils/FetchUtils'
 import { SOnlineService } from 'imobile_for_reactnative'
-import { FileTools } from '../../native'
+import { FileTools, RNFS } from '../../native'
 import { ConstPath } from '../../constants'
 import FriendListFileHandle from '../tabs/Friend/FriendListFileHandle'
-import RNFS from 'react-native-fs'
 export default class FriendMap extends Component {
   props: {
     navigation: Object,

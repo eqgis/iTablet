@@ -15,9 +15,7 @@ import { color } from '../../../../styles'
 import RenderSettingItem from './RenderSettingItem'
 import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
-import { SMap } from 'imobile_for_reactnative'
-import RNFS from 'react-native-fs'
-import { FileTools } from '../../../../native'
+import { FileTools, RNFS } from '../../../../native'
 
 export default class Setting extends Component {
   props: {

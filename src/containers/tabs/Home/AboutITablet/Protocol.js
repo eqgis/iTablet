@@ -12,8 +12,7 @@ import { Container, MTBtn } from '../../../../components'
 import { Toast, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 import { getPublicAssets } from '../../../../assets'
-import RNFS from 'react-native-fs'
-import { FileTools } from '../../../../native'
+import { FileTools, RNFS } from '../../../../native'
 
 class Protocol extends Component {
   props: {

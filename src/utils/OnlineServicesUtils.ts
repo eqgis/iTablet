@@ -6,12 +6,12 @@ import { Platform } from 'react-native'
 import axios from 'axios'
 // eslint-disable-next-line import/default
 import CookieManager from 'react-native-cookies'
-import RNFS from 'react-native-fs'
 import { UserType } from '../constants'
 import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
 import RNFetchBlob from 'rn-fetch-blob'
 import { TLoginUserType } from '../constants/UserType'
 import { UserInfo } from '../types'
+import { RNFS } from '../native'
 
 /** 上传回调 */
 interface UploadCallBack {

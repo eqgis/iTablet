@@ -1,8 +1,7 @@
 import xml2js from 'react-native-xml2js'
 const parser = new xml2js.Parser()
 const builder = new xml2js.Builder()
-import fs from 'react-native-fs'
-import { FileTools } from '../../../native'
+import { FileTools, RNFS as fs } from '../../../native'
 import { DatasetType } from 'imobile_for_reactnative'
 
 /**

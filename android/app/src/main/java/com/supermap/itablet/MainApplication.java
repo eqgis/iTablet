@@ -19,12 +19,13 @@ import com.ocetnik.timer.BackgroundTimerPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnative.photoview.PhotoViewPackage;
-import com.rnfs.RNFSPackage;
+//import com.rnfs.RNFSPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.supermap.RNUtils.AppInfo;
-import com.supermap.SupermapFullPackage;
+//import com.supermap.SupermapFullPackage;
 import com.supermap.file.CrashHandler;
 import com.supermap.rnsupermap.BuildConfig;
+import com.supermap.rnsupermap.SupermapFullPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import org.reactnative.camera.RNCameraPackage;
@@ -67,7 +68,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             new ReactVideoPackage(),
 //            new JPushPackage(!BuildConfig.DEBUG, !BuildConfig.DEBUG),
             new PickerPackage(),
-            new RNFSPackage(),
 //            new JPushPackage(true, true),
             new ReactNativeContacts(),
             new AMapGeolocationPackage(),

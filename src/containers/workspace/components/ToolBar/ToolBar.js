@@ -996,6 +996,9 @@ export default class ToolBar extends React.Component {
                 : styles.containers,
               !this.state.customView && showContainerRadius && styles.containerRadius,
               !this.state.customView && styles.hidden,
+              this.props.device.orientation.indexOf('LANDSCAPE') === 0
+                ? {height:screen.deviceWidth}
+                : {},
             ]}
             pointerEvents={'box-none'}
           >

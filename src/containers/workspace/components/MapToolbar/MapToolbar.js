@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { scaleSize, setSpText } from '../../../../utils'
+import { scaleSize, setSpText ,screen} from '../../../../utils'
 import { ListSeparator, MTBtn } from '../../../../components'
 import { ChunkType, MapTabs } from '../../../../constants'
 import PropTypes from 'prop-types'
@@ -271,8 +271,16 @@ export default class MapToolbar extends React.Component {
   render() {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let style = isLandscape ? styles.containerL : styles.containerP
+    let width = screen.deviceWidth
+    let height = isLandscape ? {
+      height: width,
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+    } : {}
     return (
-      <View style={[style, this.props.style]}>
+      <View style={[style, this.props.style,height]}>
         {this.renderItems(this.state.data)}
       </View>
     )

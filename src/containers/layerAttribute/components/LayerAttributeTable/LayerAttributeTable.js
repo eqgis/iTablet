@@ -116,6 +116,9 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   setIndexexes = (titles = []) => {
+    if (titles.length > 1 && titles[1].value.toString().toLowerCase() === 'smid') {
+      titles = titles.splice(1) // 去除第一个是'序号'的titles数据,第一个title位smid
+    }
     this.dismissIndexes = []
     this.buttonIndexes = []
     if (this.props.type === 'MULTI_DATA' && this.state.isMultiData) {

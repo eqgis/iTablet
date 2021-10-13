@@ -513,7 +513,7 @@ class AppRoot extends Component {
         clearInterval(this.loginTimer)
         this.loginTimer = undefined
       }
-      this.loginTimer = setInterval(this.loginOnline, 60000)
+      this.loginTimer = setInterval(this.loginOnline, 60000 * 10)
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       if (this.loginTimer !== undefined) {
         clearInterval(this.loginTimer)
@@ -524,7 +524,7 @@ class AppRoot extends Component {
         let userName = this.props.user.currentUser.userName
         let password = this.props.user.currentUser.password
         SIPortalService.login(url, userName, password, true)
-      }, 60000)
+      }, 60000 * 10)
     }
   }
 

@@ -36,6 +36,10 @@ export const ARModelExample: ExampleData[] = [{
   userName: '927528',
   downloadName: 'earth.zip',
   dir: 'ARModal/earth',
+}, {
+  userName: '927528',
+  downloadName: 'snowtree.zip',
+  dir: 'ARModal/snowtree',
 }]
 
 export const AREffectExample: ExampleData = {

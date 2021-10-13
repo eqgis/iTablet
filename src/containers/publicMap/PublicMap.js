@@ -21,6 +21,7 @@ import FetchUtils from '../../utils/FetchUtils'
 import { getLanguage } from '../../language'
 import {RNFS} from 'imobile_for_reactnative'
 import { ConstPath } from '../../constants'
+import { FileTools } from '../../native'
 
 export default class PublicMap extends Component {
   props: {

@@ -24,6 +24,7 @@ import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
 import { XMLUtil } from '../../utils'
 import { FileTools } from '../../../../native'
+import { RNFS as fs } from 'imobile_for_reactnative'
 import ConstPath from '../../../../constants/ConstPath'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 

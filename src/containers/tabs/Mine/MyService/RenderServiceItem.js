@@ -3,7 +3,7 @@ import { Image, Text, View, TouchableOpacity } from 'react-native'
 import styles, { textHeight } from './Styles'
 import NavigationService from '../../../NavigationService'
 import Toast from '../../../../utils/Toast'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, dataUtil } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
 // import { color } from '../../../../styles'
 export default class RenderServiceItem extends PureComponent {
@@ -54,7 +54,7 @@ export default class RenderServiceItem extends PureComponent {
             <Image
               resizeMode={'stretch'}
               style={styles.imageStyle}
-              source={{ uri: this.props.imageUrl }}
+              source={{ uri: dataUtil.dealUrl(this.props.imageUrl) }}
             />
           </TouchableOpacity>
 

@@ -346,6 +346,26 @@ function checkUrl(text, checkProtocal = true) {
   return error
 }
 
+/**
+ * 处理url中含有/../的路径问题
+ * @param {*} url 
+ * @returns 
+ */
+function dealUrl(url = '') {
+  try {
+    if (url === '') return url
+    let index = 0
+    while((index = url.indexOf('/../')) > 0){
+      url = url.substr(0, url.substr(0, index).lastIndexOf('/') + 1) + url.substr(index + 4)
+    }
+    return url
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    __DEV__ && console.warn(e)
+    return url
+  }
+}
+
 
 /**
  * 检查是否为合法的在线3维场景服务地址
@@ -489,6 +509,7 @@ export default {
 
   isLegalName,
   isLegalURL,
+  dealUrl,
 
   getNameByURL,
   xml2js,

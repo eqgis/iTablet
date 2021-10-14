@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Platform } from 'react-native'
-import { scaleSize } from '../../utils'
+import { scaleSize,screen } from '../../utils'
 import { color } from '../../styles'
 import PropTypes from 'prop-types'
 import { getThemeAssets } from '../../assets'
@@ -161,8 +161,12 @@ class TabBar extends React.Component {
   render() {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let style = isLandscape ? styles.containerL : styles.containerP
+    let width = screen.deviceWidth
+    let height = isLandscape ? {
+      height: width,
+    } : {}
     return (
-      <View style={[style, this.props.style]}>
+      <View style={[style, this.props.style,height]}>
         {this.renderItems(this.state.data)}
       </View>
     )

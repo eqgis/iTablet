@@ -111,32 +111,48 @@ export default class LayerAttributeTable extends React.Component {
     this.canBeLoadMore = true // 控制是否可以加载更多
     this.isScrolling = false // 防止连续定位滚动
     this.itemClickPosition = 0 //当前item点击位置 IOS
-
-    this.setIndexexes(titles)
+    try {
+      this.setIndexexes(titles)
+    } catch(e) {
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn(e)
+      this.dismissIndexes = []
+      this.buttonIndexes = []
+    }
   }
 
+  /**
+   * 设置属性表中 按钮/隐藏 Cell的index
+   */
   setIndexexes = (titles = []) => {
-    if (titles.length > 1 && titles[1].value.toString().toLowerCase() === 'smid') {
-      titles = titles.splice(1) // 去除第一个是'序号'的titles数据,第一个title位smid
-    }
-    this.dismissIndexes = []
-    this.buttonIndexes = []
-    if (this.props.type === 'MULTI_DATA' && this.state.isMultiData) {
-      for (let index in titles) {
-        if (this.props.dismissTitles && this.props.dismissTitles instanceof Array) {
-          const dismissIndex = this.props.dismissTitles?.indexOf(titles[index].value)
-          if (dismissIndex >= 0) this.dismissIndexes.push(parseInt(index) + 1)
+    try {
+      if (titles.length > 1 && titles[1].value?.toString().toLowerCase() === 'smid') {
+        titles = titles.splice(1) // 去除第一个是'序号'的titles数据,第一个title位smid
+      }
+      this.dismissIndexes = []
+      this.buttonIndexes = []
+      if (this.props.type === 'MULTI_DATA' && this.state.isMultiData) {
+        for (let index in titles) {
+          if (this.props.dismissTitles && this.props.dismissTitles instanceof Array) {
+            const dismissIndex = this.props.dismissTitles?.indexOf(titles[index].value)
+            if (dismissIndex >= 0) this.dismissIndexes.push(parseInt(index) + 1)
+          }
+          if (this.props.buttonNameFilter && this.props.buttonNameFilter instanceof Array) {
+            const buttonIndex = this.props.buttonNameFilter?.indexOf(titles[index].value)
+            if (buttonIndex >= 0) this.buttonIndexes.push(parseInt(index) + 1)
+          }
         }
-        if (this.props.buttonNameFilter && this.props.buttonNameFilter instanceof Array) {
-          const buttonIndex = this.props.buttonNameFilter?.indexOf(titles[index].value)
-          if (buttonIndex >= 0) this.buttonIndexes.push(parseInt(index) + 1)
+      } else {
+        for (let index in this.props.data) {
+          const dismissIndex = this.props.dismissTitles.indexOf(this.props.data[index].name)
+          if (dismissIndex >= 0) this.dismissIndexes.push(parseInt(index))
         }
       }
-    } else {
-      for (let index in this.props.data) {
-        const dismissIndex = this.props.dismissTitles.indexOf(this.props.data[index].name)
-        if (dismissIndex >= 0) this.dismissIndexes.push(parseInt(index))
-      }
+    } catch(e) {
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn(e)
+      this.dismissIndexes = []
+      this.buttonIndexes = []
     }
   }
 
@@ -163,54 +179,56 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const isMultiData = this.props.type === 'MULTI_DATA'
-    // this.props.data instanceof Array &&
-    // (this.props.data.length === 0 ||
-    //   (this.props.data.length > 1 && this.props.data[0] instanceof Array))
-    if (
-      JSON.stringify(prevProps.tableTitle) !==
-        JSON.stringify(this.props.tableTitle) ||
-      JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) ||
-      (!isMultiData &&
-        this.props.isShowSystemFields !== prevProps.isShowSystemFields) ||
-      JSON.stringify(this.state.tableHead) !==
-        JSON.stringify(this.props.tableHead)
-    ) {
-      let data = []
-      const titles = this.getTitle(data)
-      this.setIndexexes(titles)
+    try {
+      const isMultiData = this.props.type === 'MULTI_DATA'
+      if (
+        JSON.stringify(prevProps.tableTitle) !==
+          JSON.stringify(this.props.tableTitle) ||
+        JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) ||
+        (!isMultiData &&
+          this.props.isShowSystemFields !== prevProps.isShowSystemFields) ||
+        JSON.stringify(this.state.tableHead) !==
+          JSON.stringify(this.props.tableHead)
+      ) {
+        let data = []
+        const titles = this.getTitle(data)
+        this.setIndexexes(titles)
 
-      if (!isMultiData && !this.props.isShowSystemFields) {
-        this.props.data.forEach(item => {
-          if (item.fieldInfo && !item.fieldInfo.isSystemField) {
-            data.push(item)
-          }
-        })
-      } else {
-        data = this.props.data
-      }
-
-      this.setState({
-        colHeight: COL_HEIGHT,
-        widthArr: this.props.widthArr,
-        tableData: [
-          {
-            title: titles,
-            data,
-          },
-        ],
-        tableHead: this.props.tableHead,
-        isMultiData,
-      })
-      if (prevProps.data && this.props.data && this.props.data.length < prevProps.data.length) {
-        this.table &&
-          this.table.scrollToLocation({
-            animated: false,
-            itemIndex: 0,
-            sectionIndex: 0,
-            viewOffset: COL_HEIGHT,
+        if (!isMultiData && !this.props.isShowSystemFields) {
+          this.props.data.forEach(item => {
+            if (item.fieldInfo && !item.fieldInfo.isSystemField) {
+              data.push(item)
+            }
           })
+        } else {
+          data = this.props.data
+        }
+
+        this.setState({
+          colHeight: COL_HEIGHT,
+          widthArr: this.props.widthArr,
+          tableData: [
+            {
+              title: titles,
+              data,
+            },
+          ],
+          tableHead: this.props.tableHead,
+          isMultiData,
+        })
+        if (prevProps.data && this.props.data && this.props.data.length < prevProps.data.length) {
+          this.table &&
+            this.table.scrollToLocation({
+              animated: false,
+              itemIndex: 0,
+              sectionIndex: 0,
+              viewOffset: COL_HEIGHT,
+            })
+        }
       }
+    } catch(e) {
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn(e)
     }
   }
 

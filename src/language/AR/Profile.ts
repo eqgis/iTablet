@@ -124,6 +124,7 @@ const Profile: typeof CN.Profile = {
   MY_SERVICE: 'خدمة',
   PRIVATE_SERVICE: 'خدمة خاصة',
   PUBLIC_SERVICE: 'خدمة عامة',
+  NO_MAP_SERVICE:'The service does not have a map to display',// need to translate
 
   INVALID_SERVER_ADDRESS: 'صحيح عنوان الخادم',
 

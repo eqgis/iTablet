@@ -4,6 +4,7 @@ import styles, { textHeight } from './Styles'
 import NavigationService from '../../../NavigationService'
 import Toast from '../../../../utils/Toast'
 import { scaleSize } from '../../../../utils'
+import { getLanguage } from '../../../../language/index'
 // import { color } from '../../../../styles'
 export default class RenderServiceItem extends PureComponent {
   props: {
@@ -34,7 +35,7 @@ export default class RenderServiceItem extends PureComponent {
         mapInfos: this.props.mapInfos,
       })
     } else {
-      Toast.show('服务没有地图可展示')
+      Toast.show(getLanguage(GLOBAL.language).Profile.NO_MAP_SERVICE)
     }
   }
 

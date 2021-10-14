@@ -123,6 +123,7 @@ const Profile = {
   MY_SERVICE: '服务',
   PRIVATE_SERVICE: '私有服务',
   PUBLIC_SERVICE: '公有服务',
+  NO_MAP_SERVICE:'服务没有地图可展示',
 
   // 个人主页
   MY_ACCOUNT: '个人主页',

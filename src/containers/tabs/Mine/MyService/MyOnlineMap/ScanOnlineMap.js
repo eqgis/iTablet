@@ -176,7 +176,7 @@ export default class ScanOnlineMap extends React.Component {
     }
   }
   render() {
-    let uri = this.state.mapUrl + '.ol3'
+    let uri = this.state.mapUrl + '.leaflet'
     // let newUri
     // if (uri.indexOf('https') !== -1) {
     //   let subUri = uri.substring(5)

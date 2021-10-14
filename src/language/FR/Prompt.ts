@@ -172,6 +172,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_SUCCESS: 'Publié avec succès',
   PUBLISH_FAILED: 'Échec de la publication',
   PUBLISH_FAILED_INFO_1: 'Le service a été publié',
+  PUBLISH_FAILED_INFO_2: 'The service is being published and cannot be operated at this time', // need to translate
   DELETE_CONFIRM: "Voulez-vous vraiment supprimer l'élément?",
   BATCH_DELETE_CONFIRM: 'Voulez-vous vraiment supprimer les éléments sélectionnés?',
 

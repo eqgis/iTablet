@@ -172,6 +172,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_SUCCESS: 'Başarıyla yayınlandı',
   PUBLISH_FAILED: 'Yayınlama Başarısız',
   PUBLISH_FAILED_INFO_1: 'Servis yayınlandı',
+  PUBLISH_FAILED_INFO_2: 'The service is being published and cannot be operated at this time', // need to translate
   DELETE_CONFIRM: 'Öğeyi silmek istediğinizden emin misiniz?',
   BATCH_DELETE_CONFIRM: 'Seçili öğe(ler)i silmek istediğinizden emin misiniz?',
 

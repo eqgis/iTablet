@@ -170,6 +170,7 @@ const Prompt = {
   PUBLISH_SUCCESS: '发布成功',
   PUBLISH_FAILED: '发布失败',
   PUBLISH_FAILED_INFO_1: '已发布过服务',
+  PUBLISH_FAILED_INFO_2: '服务正在发布中，当前不允许操作',
   DELETE_CONFIRM: '是否删除当前数据？',
   BATCH_DELETE_CONFIRM: '是否删除当前所选数据？',
 

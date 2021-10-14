@@ -494,9 +494,15 @@ export default class InterpolationAnalystDetailView extends Component {
         autoCheckNumber
         numberRange={'[0, ]'}
         onChangeText={text => {
-          this.setState({
-            tension: text === '' ? '' : parseFloat(text),
-          })
+          if (text.lastIndexOf('.') === text.length - 1 && !isNaN(text)) {
+            this.setState({
+              tension: text,
+            })
+          } else {
+            this.setState({
+              tension: text === '' ? '' : parseFloat(text),
+            })
+          }
         }}
         onSubmitEditing={text => {
           if (text !== this.state.tension) {
@@ -524,9 +530,15 @@ export default class InterpolationAnalystDetailView extends Component {
         autoCheckNumber
         numberRange={'[0, 1]'}
         onChangeText={text => {
-          this.setState({
-            smoothness: text === '' ? '' : parseFloat(text),
-          })
+          if (text.lastIndexOf('.') === text.length - 1 && !isNaN(text)) {
+            this.setState({
+              smoothness: text,
+            })
+          } else {
+            this.setState({
+              smoothness: text === '' ? '' : parseFloat(text),
+            })
+          }
         }}
         onSubmitEditing={text => {
           if (text !== this.state.smoothness) {

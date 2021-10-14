@@ -70,6 +70,8 @@ export default class TemplateDetail extends React.Component {
       datasets: [],
       popData: [],
     }
+
+    this.prevItem = null
   }
 
   componentDidMount() {}
@@ -317,6 +319,8 @@ export default class TemplateDetail extends React.Component {
     // 属性设置
     this.currentItem.fields = data[2].data
 
+    this.prevItem = this.currentItem
+
     this.setState({
       data: this.state.data.concat(),
     })
@@ -324,6 +328,14 @@ export default class TemplateDetail extends React.Component {
   }
 
   onItemPress = ({ data, index }) => {
+
+    // this.currentItem.datasourceAlias = data[1].data[0].value
+    // // this.currentItem.datasetName = data[1].data[1].data.datasetName
+    // this.currentItem.datasetName = data[1].data[1].value
+    // this.currentItem.type = data[1].data[1].type
+    // // this.currentItem.data = data[1].data[1].data
+    // // 属性设置
+    // this.currentItem.fields = data[2].data
     this.currentItem = data
     let popData = [
       {
@@ -345,12 +357,12 @@ export default class TemplateDetail extends React.Component {
         data: [
           {
             name: getLanguage(this.props.language).Map_Settings.DATASOURCES,
-            value: data.datasourceAlias,
+            value: data.datasourceAlias || this.prevItem?.datasourceAlias || '',
             rightType: 'text',
           },
           {
             name: getLanguage(this.props.language).Map_Settings.DATASETS,
-            value: data.datasetName,
+            value: data.datasetName || this.prevItem?.datasetName || '',
             type: data.type,
             rightType: 'text',
           },
@@ -358,7 +370,7 @@ export default class TemplateDetail extends React.Component {
       },
       {
         title: getLanguage(this.props.language).Template.ATTRIBUTE_SETTINGS,
-        data: data.fields,
+        data: (data.fields.length > 0 ? data.fields : this.prevItem?.fields) || [],
       },
     ]
     this.setState(

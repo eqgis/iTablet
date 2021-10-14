@@ -190,6 +190,8 @@ export default class SampleMap extends Component {
             />
           }
           keyExtractor={this._keyExtractor}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator = {false}
         />
       </Container>
     )

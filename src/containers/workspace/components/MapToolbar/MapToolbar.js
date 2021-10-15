@@ -221,6 +221,8 @@ export default class MapToolbar extends React.Component {
   }
 
   _renderItem = ({ item, index }) => {
+    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+    let width = isLandscape ? scaleSize(96) : this.props.device.width /  this.state.data.length
     let title
     // if (item.key === MapTabs.MapView) {
     //   title = this.props.isAR
@@ -236,7 +238,7 @@ export default class MapToolbar extends React.Component {
         textStyle={{ fontSize: setSpText(20) }}
         selected={this.state.currentIndex === index}
         image={item.image}
-        style={{ width: this.props.device.width /  this.state.data.length}}
+        style={{ width: width }}
         // style={styles.btn}
         selectedImage={item.selectedImage}
         onPress={() => {
@@ -271,16 +273,8 @@ export default class MapToolbar extends React.Component {
   render() {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let style = isLandscape ? styles.containerL : styles.containerP
-    let width = screen.deviceWidth
-    let height = isLandscape ? {
-      height: width,
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-    } : {}
     return (
-      <View style={[style, this.props.style,height]}>
+      <View style={[style, this.props.style]}>
         {this.renderItems(this.state.data)}
       </View>
     )

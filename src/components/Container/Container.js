@@ -16,7 +16,7 @@ import {
 } from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
-import { scaleSize } from '../../utils'
+import { scaleSize ,screen} from '../../utils'
 import { Const } from '../../constants'
 
 import styles from './styles'
@@ -327,7 +327,7 @@ export default class Container extends Component {
       style.push(this.props.bottomProps.style)
     }
     let bottom = isLandscape
-      ? { right: this.state.bottom, height: this.props.device.height }
+      ? { right: this.state.bottom, height: screen.getScreenSafeHeight(this.props.device.orientation) }
       : { bottom: this.state.bottom, width: this.props.device.width }
     return (
       <AnimatedView style={[style, bottom]}>

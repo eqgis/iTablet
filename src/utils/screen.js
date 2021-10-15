@@ -180,6 +180,7 @@ const X_HEIGHT = 812
 const IOS_TOP = 20
 const X_TOP = 35
 const X_BOTTOM = 35
+const X_BOTTOM_L = 20
 
 function isIphoneX() {
   if (Platform.OS === 'ios') {
@@ -239,8 +240,9 @@ function getIphonePaddingBottom(orientation) {
     return paddingBottom
   }
   const _orientation = orientation || getOrientation()
-  if (isIphoneX() && _orientation.indexOf('PORTRAIT') >= 0) {
-    paddingBottom = X_BOTTOM
+  if (isIphoneX()) {
+    if (_orientation.indexOf('PORTRAIT') >= 0) paddingBottom = X_BOTTOM
+    else if (_orientation.indexOf('LANDSCAPE') >= 0) paddingBottom = X_BOTTOM_L
   }
   return paddingBottom
 }

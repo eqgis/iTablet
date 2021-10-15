@@ -591,6 +591,8 @@ export default class MyLocalData extends Component {
       } else {
         if (publishResults.error?.errorMsg?.indexOf('已发布') === 0) {
           Toast.show(getLanguage(this.props.language).Prompt.PUBLISH_FAILED_INFO_1)
+        } else if (publishResults.error?.errorMsg?.indexOf('正在发布中') >= 0) {
+          Toast.show(getLanguage(this.props.language).Prompt.PUBLISH_FAILED_INFO_2)
         } else {
           Toast.show(getLanguage(this.props.language).Prompt.PUBLISH_FAILED)
         }

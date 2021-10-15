@@ -187,17 +187,17 @@ export default class Camera extends React.Component {
 
   /** 重拍 **/
   remake = () => {
-    InteractionManager.runAfterInteractions(() => {
-      // 重置数据
-      this.state.type === TYPE.PHOTO &&
-        this.camera &&
-        this.camera.resumePreview()
-      this.setState({
-        data: null,
-        recordStatus: RECORD_STATUS.UN_RECORD,
-      })
-      this.mediaViewer && this.mediaViewer.setVisible(false)
+    // InteractionManager.runAfterInteractions(() => {
+    // 重置数据
+    this.state.type === TYPE.PHOTO &&
+      this.camera &&
+      this.camera.resumePreview()
+    this.setState({
+      data: null,
+      recordStatus: RECORD_STATUS.UN_RECORD,
     })
+    this.mediaViewer && this.mediaViewer.setVisible(false)
+    // })
   }
 
   addMedia = async (mediaPaths = []) => {

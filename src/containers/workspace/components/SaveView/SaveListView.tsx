@@ -123,6 +123,7 @@ export default class SaveListView extends React.Component<Props, State> {
    */
   save = async () => {
     try {
+      await SMap.checkCurrentModule()
       let result: {mapResult?: boolean, armapResult?: boolean} = {}
       if (this.state.selectedData.size === 0) return false
       this._setLoading && this._setLoading(true, getLanguage(GLOBAL.language).Prompt.SAVING)

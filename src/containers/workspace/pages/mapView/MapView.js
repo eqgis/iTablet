@@ -1409,6 +1409,7 @@ export default class MapView extends React.Component {
   /** 地图保存 */
   saveMap = async () => {
     try {
+      await SMap.checkCurrentModule()
       // if(GLOBAL.Type === ChunkType.MAP_AR){
       //   console.warn(1111)
       //   await this.props.closeARMap()
@@ -1463,6 +1464,7 @@ export default class MapView extends React.Component {
       }
     } catch (e) {
       this.setLoading(false)
+      return false
     }
   }
 

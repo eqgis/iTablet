@@ -271,7 +271,7 @@ export default class MapToolbar extends React.Component {
   render() {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let style = isLandscape ? styles.containerL : styles.containerP
-    let width = screen.deviceWidth
+    let width = screen.getScreenSafeHeight(this.props.device.orientation)
     let height = isLandscape ? {
       height: width,
       position: 'absolute',

@@ -53,8 +53,8 @@ export default class SaveView extends React.Component {
   /**
    * 保存事件
    */
-  save = () => {
-    (async function() {
+  save = async () => {
+    try {
       let result
       if (this.customSave) {
         result = await this.customSave()
@@ -68,7 +68,11 @@ export default class SaveView extends React.Component {
       }
       this.customSave = undefined
       this.customNotSave = undefined
-    }.bind(this)())
+    } catch (e) {
+      this.setVisible(false)
+      this.customSave = undefined
+      this.customNotSave = undefined
+    }
   }
 
   /**

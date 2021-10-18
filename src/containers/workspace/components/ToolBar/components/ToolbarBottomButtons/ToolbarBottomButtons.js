@@ -1,9 +1,9 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Image, Text ,Platform} from 'react-native'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { getThemeAssets } from '../../../../../../assets'
 import NavigationService from '../../../../../NavigationService'
-import { scaleSize } from '../../../../../../utils'
+import { scaleSize ,screen} from '../../../../../../utils'
 import { color } from '../../../../../../styles'
 import { Height, TouchType } from '../../../../../../constants'
 import ToolbarModule from '../../modules/ToolbarModule'
@@ -302,7 +302,9 @@ export default class ToolbarBottomButtons extends React.Component {
     let style
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       style = { ...styles.buttonzLandscape }
-      style.height = this.props.device.height
+      Platform.OS === 'android' ?
+        style.height = screen.getScreenSafeHeight(this.props.device.orientation)
+        : style.height = this.props.device.height
       if (btns.length === 1) {
         style.justifyContent = 'flex-end' // 只有一个按钮，从底部排列
       }

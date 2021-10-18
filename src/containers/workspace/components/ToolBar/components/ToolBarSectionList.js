@@ -365,7 +365,7 @@ export default class ToolBarSectionList extends React.Component {
           )}
           {section.extraData && (
             <TouchableOpacity
-              style={[styles.sectionRightButton,isLandscape&&{marginLeft: scaleSize(250)}]}
+              style={[styles.sectionRightButton]}
               onPress={() =>
                 section.extraData.action && section.extraData.action()
               }

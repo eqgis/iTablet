@@ -74,7 +74,6 @@ export default class PopModal extends PureComponent {
           left: 0,
           right: 0,
           backgroundColor: '#rgba(0, 0, 0, 0)',
-          paddingBottom: screen.getIphonePaddingBottom(),
         }, this.props.contentStyle]}
       >
         {this.props.children}

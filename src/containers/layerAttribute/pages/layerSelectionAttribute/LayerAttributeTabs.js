@@ -8,7 +8,7 @@ import * as React from 'react'
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { Container, MTBtn, Dialog, PopModal } from '../../../../components'
 import { ConstToolType } from '../../../../constants'
-import { Toast, scaleSize, StyleUtils, LayerUtils, screen } from '../../../../utils'
+import { Toast, scaleSize, StyleUtils, LayerUtils } from '../../../../utils'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { color, zIndexLevel } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
@@ -831,69 +831,53 @@ export default class LayerAttributeTabs extends React.Component {
   }
 
   renderEditControllerView = () => {
-    const paddingBottom = screen.isIphoneX() && this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? screen.X_BOTTOM_L : 0
     return (
-      <View
-        style={{
-          width: '100%',
-          height: scaleSize(100) + paddingBottom,
-          ...screen.getIphonePaddingHorizontal(
-            this.props.device.orientation,
-          ),
-        }}
-      >
-        <View
-          style={[styles.editControllerView, {
-            height: scaleSize(100) + paddingBottom,
-            paddingBottom,
-          }]}
-        >
-          <MTBtn
-            key={'undo'}
-            title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_UNDO}
-            //{'撤销'}
-            style={styles.button}
-            textColor={!this.state.canBeUndo && color.contentColorGray}
-            image={
-              this.state.canBeUndo
-                ? getThemeAssets().edit.icon_undo
-                : getThemeAssets().edit.icon_undo_ash
-            }
-            imageStyle={styles.headerBtn}
-            onPress={() => this.setAttributeHistory('undo')}
-          />
-          <MTBtn
-            key={'redo'}
-            title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_REDO}
-            //{'恢复'}
-            style={styles.button}
-            image={
-              this.state.canBeRedo
-                ? getThemeAssets().edit.icon_redo
-                : getThemeAssets().edit.icon_redo_ash
-            }
-            imageStyle={styles.headerBtn}
-            textColor={!this.state.canBeRedo && color.contentColorGray}
-            onPress={() => this.setAttributeHistory('redo')}
-          />
-          <MTBtn
-            key={'revert'}
-            title={
-              getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_REVERT
-            }
-            //{'还原'}
-            style={styles.button}
-            textColor={!this.state.canBeRevert && color.contentColorGray}
-            image={
-              this.state.canBeRevert
-                ? getThemeAssets().edit.icon_back_off
-                : getThemeAssets().edit.icon_back_off_ash
-            }
-            imageStyle={styles.headerBtn}
-            onPress={() => this.setAttributeHistory('revert')}
-          />
-          <View style={styles.button} />
-        </View>
+      <View style={[styles.editControllerView, { width: '100%' }]}>
+        <MTBtn
+          key={'undo'}
+          title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_UNDO}
+          //{'撤销'}
+          style={styles.button}
+          textColor={!this.state.canBeUndo && color.contentColorGray}
+          image={
+            this.state.canBeUndo
+              ? getThemeAssets().edit.icon_undo
+              : getThemeAssets().edit.icon_undo_ash
+          }
+          imageStyle={styles.headerBtn}
+          onPress={() => this.setAttributeHistory('undo')}
+        />
+        <MTBtn
+          key={'redo'}
+          title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_REDO}
+          //{'恢复'}
+          style={styles.button}
+          image={
+            this.state.canBeRedo
+              ? getThemeAssets().edit.icon_redo
+              : getThemeAssets().edit.icon_redo_ash
+          }
+          imageStyle={styles.headerBtn}
+          textColor={!this.state.canBeRedo && color.contentColorGray}
+          onPress={() => this.setAttributeHistory('redo')}
+        />
+        <MTBtn
+          key={'revert'}
+          title={
+            getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_REVERT
+          }
+          //{'还原'}
+          style={styles.button}
+          textColor={!this.state.canBeRevert && color.contentColorGray}
+          image={
+            this.state.canBeRevert
+              ? getThemeAssets().edit.icon_back_off
+              : getThemeAssets().edit.icon_back_off_ash
+          }
+          imageStyle={styles.headerBtn}
+          onPress={() => this.setAttributeHistory('revert')}
+        />
+        <View style={styles.button} />
       </View>
     )
   }

@@ -1428,7 +1428,7 @@ export default class LayerAttribute extends React.Component {
   }
 
   renderEditControllerView = () => {
-    const paddingBottom = screen.getIphonePaddingBottom()
+    const paddingBottom = screen.isIphoneX() ? screen.X_BOTTOM_L : 0
     return (
       <View
         style={{

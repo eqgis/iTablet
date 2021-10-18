@@ -32,9 +32,10 @@ export default class TemplateSource extends React.Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.getSources()
-    })
+    // 偶尔某个动画一直执行,导致runAfterInteractions中的方法一直不执行
+    // InteractionManager.runAfterInteractions(() => {
+    this.getSources()
+    // })
   }
 
   getSources = async () => {

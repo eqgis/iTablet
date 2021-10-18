@@ -327,7 +327,7 @@ export default class Container extends Component {
       style.push(this.props.bottomProps.style)
     }
     let bottom = isLandscape
-      ? { right: this.state.bottom, height: screen.getScreenSafeHeight(this.props.device.orientation) }
+      ? { right: this.state.bottom, height: screen.isIphoneX()?screen.getScreenSafeHeight(this.props.device.orientation) - 25 : screen.getScreenSafeHeight(this.props.device.orientation)}
       : { bottom: this.state.bottom, width: this.props.device.width }
     return (
       <AnimatedView style={[style, bottom]}>

@@ -161,7 +161,7 @@ class TabBar extends React.Component {
   render() {
     let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
     let style = isLandscape ? styles.containerL : styles.containerP
-    let width = screen.getScreenSafeHeight(this.props.device.orientation)
+    let width = screen.isIphoneX()?screen.getScreenSafeHeight(this.props.device.orientation) - 25 : screen.getScreenSafeHeight(this.props.device.orientation)
     let height = isLandscape ? {
       height: width,
     } : {}

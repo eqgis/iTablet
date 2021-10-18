@@ -2862,84 +2862,85 @@ export default class MapView extends React.Component {
    * 底部撤销恢复的工具栏
    */
   renderEditControllerView = () => {
+    const paddingBottom = screen.isIphoneX() && this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? screen.X_BOTTOM_L : 0
     return (
-      <View style={[
-        styles.editControllerView,
-        screen.isIphoneX()
-          ? (
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? {
-              height: scaleSize(124),
-              paddingBottom: scaleSize(24),
-            } : {
-              height: scaleSize(100),
-              marginBottom: screen.X_BOTTOM,
-            }
-          )
-          : {
-            width: '100%',
-            height: scaleSize(100),
+      <View
+        style={{
+          width: '100%',
+          height: scaleSize(100) + paddingBottom,
+          ...screen.getIphonePaddingHorizontal(
+            this.props.device.orientation,
+          ),
+        }}
+      >
+        <View style={[
+          styles.editControllerView,
+          {
+            height: scaleSize(100) + paddingBottom,
+            paddingBottom,
           },
-      ]}>
-        <MTBtn
-          key={'undo'}
-          title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_UNDO}
-          //{'撤销'}
-          style={styles.button}
-          textColor={!this.state.canBeUndo && color.contentColorGray}
-          image={
-            this.state.canBeUndo
-              ? getThemeAssets().edit.icon_undo
-              : getThemeAssets().edit.icon_undo_ash
-          }
-          imageStyle={styles.headerBtnImg}
-          onPress={() => {
-            if (!this.state.canBeUndo) return
-              ; (async function () {
-                await SMap.undo()
-                let historyCount = await SMap.getMapHistoryCount()
-                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-                this.setState({
-                  canBeUndo: currentHistoryCount >= 0,
-                  canBeRedo: currentHistoryCount < historyCount - 1,
-                })
-              }.bind(this)())
-          }}
-        />
-        <MTBtn
-          key={'redo'}
-          title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_REDO}
-          //{'恢复'}
-          style={styles.button}
-          textColor={!this.state.canBeRedo && color.contentColorGray}
-          image={
-            this.state.canBeRedo
-              ? getThemeAssets().edit.icon_redo
-              : getThemeAssets().edit.icon_redo_ash
-          }
-          imageStyle={styles.headerBtnImg}
-          onPress={() => {
-            if (!this.state.canBeRedo) return
-              ; (async function () {
-                await SMap.redo()
-                let historyCount = await SMap.getMapHistoryCount()
-                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-                this.setState({
-                  canBeUndo: currentHistoryCount >= 0,
-                  canBeRedo: currentHistoryCount < historyCount - 1,
-                })
-              }.bind(this)())
-          }}
-        />
-        {/*<MTBtn*/}
-        {/*key={'revert'}*/}
-        {/*title={'还原'}*/}
-        {/*style={styles.button}*/}
-        {/*image={getThemeAssets().publicAssets.icon_revert}*/}
-        {/*imageStyle={styles.headerBtnImg}*/}
-        {/*onPress={() => SMap.addMapHistory()}*/}
-        {/*/>*/}
-        <View style={styles.button} />
-        <View style={styles.button} />
+        ]}>
+          <MTBtn
+            key={'undo'}
+            title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_UNDO}
+            //{'撤销'}
+            style={styles.button}
+            textColor={!this.state.canBeUndo && color.contentColorGray}
+            image={
+              this.state.canBeUndo
+                ? getThemeAssets().edit.icon_undo
+                : getThemeAssets().edit.icon_undo_ash
+            }
+            imageStyle={styles.headerBtnImg}
+            onPress={() => {
+              if (!this.state.canBeUndo) return
+                ; (async function () {
+                  await SMap.undo()
+                  let historyCount = await SMap.getMapHistoryCount()
+                  let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                  this.setState({
+                    canBeUndo: currentHistoryCount >= 0,
+                    canBeRedo: currentHistoryCount < historyCount - 1,
+                  })
+                }.bind(this)())
+            }}
+          />
+          <MTBtn
+            key={'redo'}
+            title={getLanguage(this.props.language).Map_Attribute.ATTRIBUTE_REDO}
+            //{'恢复'}
+            style={styles.button}
+            textColor={!this.state.canBeRedo && color.contentColorGray}
+            image={
+              this.state.canBeRedo
+                ? getThemeAssets().edit.icon_redo
+                : getThemeAssets().edit.icon_redo_ash
+            }
+            imageStyle={styles.headerBtnImg}
+            onPress={() => {
+              if (!this.state.canBeRedo) return
+                ; (async function () {
+                  await SMap.redo()
+                  let historyCount = await SMap.getMapHistoryCount()
+                  let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                  this.setState({
+                    canBeUndo: currentHistoryCount >= 0,
+                    canBeRedo: currentHistoryCount < historyCount - 1,
+                  })
+                }.bind(this)())
+            }}
+          />
+          {/*<MTBtn*/}
+          {/*key={'revert'}*/}
+          {/*title={'还原'}*/}
+          {/*style={styles.button}*/}
+          {/*image={getThemeAssets().publicAssets.icon_revert}*/}
+          {/*imageStyle={styles.headerBtnImg}*/}
+          {/*onPress={() => SMap.addMapHistory()}*/}
+          {/*/>*/}
+          <View style={styles.button} />
+          <View style={styles.button} />
+        </View>
       </View>
     )
   }

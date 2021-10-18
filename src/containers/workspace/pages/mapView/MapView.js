@@ -2872,7 +2872,7 @@ export default class MapView extends React.Component {
               paddingBottom: scaleSize(24),
             } : {
               height: scaleSize(100),
-              marginBottom: screen.X_BOTTOM,
+              // marginBottom: screen.X_BOTTOM,
             }
           )
           : {

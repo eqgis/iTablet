@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { StyleSheet, View, Modal, TouchableOpacity, Text } from 'react-native'
 import { color, size } from '../../styles'
-import { scaleSize } from '../../utils'
+import { scaleSize, screen } from '../../utils'
 import { Button } from '../index'
 import { getLanguage } from '../../language/index'
 
@@ -392,6 +392,7 @@ export default class PopMenu extends PureComponent {
             style={[
               {
                 position: 'absolute',
+                paddingBottom: screen.getIphonePaddingBottom(),
               },
               this.state.position,
             ]}

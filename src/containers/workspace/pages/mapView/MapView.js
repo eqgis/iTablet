@@ -2628,7 +2628,7 @@ export default class MapView extends React.Component {
         }
       },
     })
-       
+
     this.isMeasure = false
     this.isDrawing = false
     this.isCollect = false
@@ -2894,15 +2894,15 @@ export default class MapView extends React.Component {
             imageStyle={styles.headerBtnImg}
             onPress={() => {
               if (!this.state.canBeUndo) return
-                ; (async function () {
-                  await SMap.undo()
-                  let historyCount = await SMap.getMapHistoryCount()
-                  let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-                  this.setState({
-                    canBeUndo: currentHistoryCount >= 0,
-                    canBeRedo: currentHistoryCount < historyCount - 1,
-                  })
-                }.bind(this)())
+              ; (async function () {
+                await SMap.undo()
+                let historyCount = await SMap.getMapHistoryCount()
+                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                this.setState({
+                  canBeUndo: currentHistoryCount >= 0,
+                  canBeRedo: currentHistoryCount < historyCount - 1,
+                })
+              }.bind(this)())
             }}
           />
           <MTBtn
@@ -2919,15 +2919,15 @@ export default class MapView extends React.Component {
             imageStyle={styles.headerBtnImg}
             onPress={() => {
               if (!this.state.canBeRedo) return
-                ; (async function () {
-                  await SMap.redo()
-                  let historyCount = await SMap.getMapHistoryCount()
-                  let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
-                  this.setState({
-                    canBeUndo: currentHistoryCount >= 0,
-                    canBeRedo: currentHistoryCount < historyCount - 1,
-                  })
-                }.bind(this)())
+              ; (async function () {
+                await SMap.redo()
+                let historyCount = await SMap.getMapHistoryCount()
+                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                this.setState({
+                  canBeUndo: currentHistoryCount >= 0,
+                  canBeRedo: currentHistoryCount < historyCount - 1,
+                })
+              }.bind(this)())
             }}
           />
           {/*<MTBtn*/}
@@ -3041,8 +3041,6 @@ export default class MapView extends React.Component {
   renderHeaderRight = () => {
     if (this.props.analyst.params || GLOBAL.Type === ChunkType.MAP_AR_MAPPING? this.props.isAR :this.state.showAIDetect)
       return null
-    let itemWidth =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
 
@@ -3063,7 +3061,9 @@ export default class MapView extends React.Component {
       return (
         <MTBtn
           key={'more'}
-          style={styles.headerBtn}
+          style={[styles.headerBtn, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+            height: screen.HEADER_HEIGHT_LANDSCAPE - 2,
+          }]}
           imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
           image={getPublicAssets().common.icon_nav_imove}
           onPress={async () => {
@@ -3224,7 +3224,9 @@ export default class MapView extends React.Component {
               >
                 <MTBtn
                   key={info.key}
-                  style={styles.headerBtn}
+                  style={[styles.headerBtn, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+                    height: screen.HEADER_HEIGHT_LANDSCAPE - 2,
+                  }]}
                   imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
                   image={info.image}
                   onPress={info.action}
@@ -3236,6 +3238,13 @@ export default class MapView extends React.Component {
                 {buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
                   GLOBAL.Type === this.props.online.share[0].module &&
                   this.props.online.share[0].progress !== undefined && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: scaleSize(4),
+                      justifyContent: 'space-between',
+                    }}
+                  >
                     <Bar
                       style={{
                         width: scaleSize(size), height: 2, borderWidth: 0,
@@ -3247,7 +3256,8 @@ export default class MapView extends React.Component {
                       }
                       width={scaleSize(60)}
                     />
-                  )}
+                  </View>
+                )}
               </View>
             )
         } else {
@@ -3255,7 +3265,9 @@ export default class MapView extends React.Component {
             buttons.push(
               <MTBtn
                 key={info.key}
-                style={styles.headerBtn}
+                style={[styles.headerBtn, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+                  height: screen.HEADER_HEIGHT_LANDSCAPE - 2,
+                }]}
                 imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
                 image={info.image}
                 onPress={info.action}
@@ -3268,7 +3280,9 @@ export default class MapView extends React.Component {
       buttons.push(
         <MTBtn
           key={'CoworkMember'}
-          style={styles.headerBtn}
+          style={[styles.headerBtn, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+            height: screen.HEADER_HEIGHT_LANDSCAPE - 2,
+          }]}
           imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
           image={getPublicAssets().common.icon_nav_imove}
           onPress={async () => {

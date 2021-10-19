@@ -240,9 +240,8 @@ function getIphonePaddingBottom(orientation) {
     return paddingBottom
   }
   const _orientation = orientation || getOrientation()
-  if (isIphoneX()) {
-    if (_orientation.indexOf('PORTRAIT') >= 0) paddingBottom = X_BOTTOM
-    else if (_orientation.indexOf('LANDSCAPE') >= 0) paddingBottom = X_BOTTOM_L
+  if (isIphoneX() && _orientation.indexOf('PORTRAIT') >= 0) {
+    paddingBottom = X_BOTTOM
   }
   return paddingBottom
 }
@@ -325,6 +324,7 @@ export default {
   IOS_TOP,
   X_TOP,
   X_BOTTOM,
+  X_BOTTOM_L,
   HEADER_HEIGHT,
   HEADER_HEIGHT_LANDSCAPE,
   isIphoneX,

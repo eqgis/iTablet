@@ -260,6 +260,7 @@ class AppRoot extends Component {
 
   componentDidMount() {
     Platform.OS === 'android' && SplashScreen.hide()
+    this.initOrientation()
     if(!this.state.showLaunchGuide) {
       this.showUserProtocol()
     }
@@ -344,7 +345,7 @@ class AppRoot extends Component {
     await this.initUser()
     await this.openWorkspace()
     this.checkImportData()
-    this.initOrientation()
+    // this.initOrientation()
     this.reCircleLogin()
 
     // 显示界面，之前的为预加载

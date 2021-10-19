@@ -1100,7 +1100,10 @@ export default class MediaEdit extends React.Component {
           ),
         }}
       >
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.itemView}>
             <Text style={styles.title}>{getLanguage(this.props.language).Map_Main_Menu.BASIC_INFO}</Text>
           </View>

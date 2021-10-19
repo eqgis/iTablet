@@ -23,6 +23,12 @@ export default StyleSheet.create({
     left: scaleSize(20),
     bottom: scaleSize(120),
   },
+  headerBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: scaleSize(80),
+    width: scaleSize(80),
+  },
   item: {
     flexDirection: 'row',
     justifyContent: 'space-between',

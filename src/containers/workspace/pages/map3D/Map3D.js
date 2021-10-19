@@ -6,7 +6,6 @@
 
 import * as React from 'react'
 import {
-  InteractionManager,
   Platform,
   View,
   Text,
@@ -38,7 +37,7 @@ import {
 } from '../../components'
 import { MapHeaderButton } from '../../../../constants'
 import { getPublicAssets ,getThemeAssets} from '../../../../assets'
-import { Toast, scaleSize } from '../../../../utils'
+import { Toast, scaleSize, screen } from '../../../../utils'
 import { color } from '../../../../styles'
 import { share3DModule, tool3DModule } from '../../components/ToolBar/modules'
 import NavigationService from '../../../NavigationService'
@@ -1065,6 +1064,9 @@ export default class Map3D extends React.Component {
             >
               <MTBtn
                 key={info.key}
+                style={[styles.headerBtn, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+                  height: screen.HEADER_HEIGHT_LANDSCAPE - 2,
+                }]}
                 imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
                 image={info.image}
                 onPress={info.action}
@@ -1076,17 +1078,25 @@ export default class Map3D extends React.Component {
               {buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
                 GLOBAL.Type === this.props.online.share[0].module &&
                 this.props.online.share[0].progress !== undefined && (
-                <Bar
+                <View
                   style={{
-                    width: scaleSize(size), height: 2, borderWidth: 0,
-                    backgroundColor: 'black', top: scaleSize(4),
+                    position: 'absolute',
+                    bottom: scaleSize(4),
+                    justifyContent: 'space-between',
                   }}
-                  progress={
-                    this.props.online.share[this.props.online.share.length - 1]
-                      .progress
-                  }
-                  width={scaleSize(60)}
-                />
+                >
+                  <Bar
+                    style={{
+                      width: scaleSize(size), height: 2, borderWidth: 0,
+                      backgroundColor: 'black', top: scaleSize(4),
+                    }}
+                    progress={
+                      this.props.online.share[this.props.online.share.length - 1]
+                        .progress
+                    }
+                    width={scaleSize(60)}
+                  />
+                </View>
               )}
             </View>
           )
@@ -1095,6 +1105,9 @@ export default class Map3D extends React.Component {
         buttons.push(
           <MTBtn
             key={info.key}
+            style={[styles.headerBtn, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+              height: screen.HEADER_HEIGHT_LANDSCAPE - 2,
+            }]}
             imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
             image={info.image}
             onPress={info.action}
@@ -1105,7 +1118,7 @@ export default class Map3D extends React.Component {
     return (
       <View
         style={{
-          width: scaleSize(itemWidth * buttons.length),
+          // width: scaleSize(itemWidth * buttons.length),
           flexDirection: 'row',
           justifyContent: buttons.length === 1 ? 'flex-end' : 'space-between',
           alignItems: 'center',

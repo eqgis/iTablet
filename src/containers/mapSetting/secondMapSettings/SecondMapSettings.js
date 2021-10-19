@@ -1511,6 +1511,8 @@ export default class SecondMapSettings extends Component {
           renderItem={this.renderItem}
           data={this.state.data}
           keyExtractor={(item, index) => item + index}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator = {false}
         />
         {this.renderConfidenceSlide()}
       </Container>

@@ -54,8 +54,14 @@ function pickerConfirm(item) {
 function pickerCancel() {
   const _params = ToolbarModule.getParams()
   let preScale = ToolbarModule.getData().preScale
-  _params.existFullMap()
-  _params.setToolbarVisible(false)
+  if(_params.device.orientation.indexOf('LANDSCAPE') === 0){
+    _params.setToolbarVisible(false, ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE, {
+      isExistFullMap: false,
+    })
+  }else{
+    _params.existFullMap()
+    _params.setToolbarVisible(false)
+  }
   SMap.setMapScale(1 / preScale)
   NavigationService.navigate('LayerManager')
 }

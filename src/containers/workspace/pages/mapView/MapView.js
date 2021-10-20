@@ -1409,21 +1409,11 @@ export default class MapView extends React.Component {
   /** 地图保存 */
   saveMap = async () => {
     try {
-      await SMap.checkCurrentModule()
       // if(GLOBAL.Type === ChunkType.MAP_AR){
       //   console.warn(1111)
       //   await this.props.closeARMap()
       //   await this.props.setCurrentARLayer()
       // }
-      if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-        //这里先处理下异常 add xiezhy
-        try {
-          await SMap.stopGuide()
-          await SMap.clearPoint()
-        } catch (e) {
-          this.setLoading(false)
-        }
-      }
       let mapName = ''
       if (this.props.map.currentMap.name) {
         // 获取当前打开的地图xml的名称
@@ -1456,6 +1446,15 @@ export default class MapView extends React.Component {
             ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
             : getLanguage(this.props.language).Prompt.SAVE_FAILED,
         )
+        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+          //这里先处理下异常 add xiezhy
+          try {
+            await SMap.stopGuide()
+            await SMap.clearPoint()
+          } catch (e) {
+            this.setLoading(false)
+          }
+        }
         return true
       } else {
         this.setLoading(false)

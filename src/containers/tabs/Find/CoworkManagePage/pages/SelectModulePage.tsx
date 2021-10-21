@@ -54,6 +54,7 @@ class SelectModulePage extends Component<Props, State> {
       .filter((item: any) => {
         return item.key === ChunkType.MAP_EDIT ||
         item.key === ChunkType.MAP_COLLECTION ||
+        item.key === ChunkType.MAP_PLOTTING ||
         item.key === ChunkType.MAP_THEME
       })
       .map((item: any) => {

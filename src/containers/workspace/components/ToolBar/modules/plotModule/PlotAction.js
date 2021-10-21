@@ -8,7 +8,7 @@ import {
   ToolbarType,
   TouchType,
 } from '../../../../../../constants'
-import { StyleUtils, Toast } from '../../../../../../utils'
+import { StyleUtils, Toast, LayerUtils } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
@@ -16,9 +16,11 @@ import PlotData from './PlotData'
 import { PlotAnimationView, AnimationNodeListView } from './customView'
 import NavigationService from '../../../../../NavigationService'
 
-function listAction(type, params = {}) {
+async function listAction(type, params = {}) {
+  const _params = ToolbarModule.getParams()
   switch (type) {
     case ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST:
+      await SMap.setLayerEditable(_params.currentLayer.path, true)
       SMap.readAnimationXmlFile(params.item.path)
       animationPlay()
       break
@@ -128,6 +130,10 @@ function showSymbol() {
 /** 标绘分类点击事件 * */
 async function showCollection(libId, symbolCode, type) {
   // await SMap.addCadLayer('PlotEdit')
+  const params = ToolbarModule.getParams()
+  if (params.currentLayer) {
+    await SMap.setLayerEditable(params.currentLayer.path, true)
+  }
   StyleUtils.setDefaultMapControlStyle().then(() => {})
   await SMap.setPlotSymbol(libId, symbolCode)
   const { data, buttons } = PlotData.getCollectionData(
@@ -196,25 +202,27 @@ async function animationWayUndo() {
 }
 
 async function collectionSubmit(libId, symbolCode) {
+  const params = ToolbarModule.getParams()
   await SMap.submit().then(async result => {
     if (result) {
       await SMap.refreshMap()
+      await SMap.setLayerEditable(params.currentLayer.path, true)
       SMap.setPlotSymbol(libId, symbolCode)
 
       ToolbarModule.getParams().getLayers(-1, async layers => {
-        let plotLayer
-        for (let i = 0; i < layers.length; i++) {
-          if (layers[i].name.indexOf('PlotEdit_') !== -1) {
-            plotLayer = layers[i]
-            break
-          }
-        }
-        if (plotLayer) {
-          ToolbarModule.getParams().setCurrentLayer(plotLayer)
-          if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-            let friend = GLOBAL.getFriend()
-            friend.onGeometryAdd(plotLayer)
-          }
+        // let plotLayer
+        // for (let i = 0; i < layers.length; i++) {
+        //   if (layers[i].name.indexOf('PlotEdit_') !== -1) {
+        //     plotLayer = layers[i]
+        //     break
+        //   }
+        // }
+        // if (plotLayer) {
+        //   ToolbarModule.getParams().setCurrentLayer(plotLayer)
+        let layerType = LayerUtils.getLayerType(params.currentLayer)
+        if (layerType !== 'TAGGINGLAYER' && GLOBAL.coworkMode && GLOBAL.getFriend) {
+          let friend = GLOBAL.getFriend()
+          friend.onGeometryAdd(params.currentLayer)
         }
       })
     }

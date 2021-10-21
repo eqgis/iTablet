@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -22,7 +22,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="All Rights Reserved" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L3J-dj-BGf">
-                            <rect key="frame" x="-107.5" y="605" width="590" height="22"/>
+                            <rect key="frame" x="-107.5" y="585" width="590" height="21"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="63R-Fi-xtj"/>
@@ -44,7 +44,7 @@
                             </variation>
                         </textField>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Copyright © 2018-2021 SuperMap" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ddC-W9-A8j">
-                            <rect key="frame" x="-12.5" y="562" width="400" height="29"/>
+                            <rect key="frame" x="-12.5" y="545.5" width="400" height="23"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="29" id="Rn8-I2-uXM"/>
@@ -66,7 +66,7 @@
                             </variation>
                         </textField>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon.png" highlightedImage="icon.png" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WHH-GL-dxD">
-                            <rect key="frame" x="102.5" y="59" width="170" height="100"/>
+                            <rect key="frame" x="102.5" y="15" width="170" height="82"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="195" id="8UT-iF-ZEs"/>
                                 <constraint firstAttribute="width" constant="170" id="S9W-gu-nSP"/>
@@ -93,7 +93,7 @@
                             </variation>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" highlightedImage="logo.png" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aqP-6q-GbA">
-                            <rect key="frame" x="62.5" y="144" width="250" height="100"/>
+                            <rect key="frame" x="62.5" y="87" width="250" height="59"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="200" id="MyC-Ui-zQd">
                                     <variation key="heightClass=regular" constant="250"/>
@@ -126,7 +126,7 @@
                             </variation>
                         </imageView>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNI-KA-g6m" userLabel="APP_SLOGAN">
-                            <rect key="frame" x="-62.5" y="209" width="500" height="66"/>
+                            <rect key="frame" x="-62.5" y="149" width="500" height="66"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" systemColor="linkColor"/>
                             <constraints>
@@ -149,7 +149,7 @@
                                     <fragment content="Create the World with Fingers">
                                         <attributes>
                                             <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <font key="NSFont" size="26" name="Times-Italic"/>
+                                            <font key="NSFont" size="19" name="Times-Italic"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -168,13 +168,10 @@
                             </variation>
                         </label>
                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_slogan_cn.png" translatesAutoresizingMaskIntoConstraints="NO" id="QwU-5b-ROa">
-                            <rect key="frame" x="-162.5" y="214" width="700" height="50"/>
+                            <rect key="frame" x="-62.5" y="149" width="500" height="66"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="71" id="793-SW-DEj">
-                                    <variation key="widthClass=compact" constant="50"/>
-                                    <variation key="heightClass=compact-widthClass=compact" constant="60"/>
-                                </constraint>
-                                <constraint firstAttribute="width" constant="700" id="Poq-4h-qbk"/>
+                                <constraint firstAttribute="height" constant="66" id="kdd-bv-DY0"/>
+                                <constraint firstAttribute="width" constant="500" id="khs-Xx-LSY"/>
                             </constraints>
                         </imageView>
                     </subviews>
@@ -183,23 +180,25 @@
                     <constraints>
                         <constraint firstItem="qjY-nN-MNR" firstAttribute="top" secondItem="WHH-GL-dxD" secondAttribute="top" constant="-15" id="1yE-Ig-tsm"/>
                         <constraint firstItem="gNI-KA-g6m" firstAttribute="centerX" secondItem="UX0-di-8wd" secondAttribute="centerX" id="3dY-nv-nB8"/>
+                        <constraint firstItem="QwU-5b-ROa" firstAttribute="bottom" secondItem="gNI-KA-g6m" secondAttribute="bottom" id="3l0-2Q-f0a"/>
+                        <constraint firstItem="QwU-5b-ROa" firstAttribute="trailing" secondItem="aqP-6q-GbA" secondAttribute="trailing" constant="125" id="8gQ-An-gof"/>
                         <constraint firstItem="L3J-dj-BGf" firstAttribute="top" secondItem="ddC-W9-A8j" secondAttribute="bottom" constant="16.5" id="CGO-Sf-zCS">
                             <variation key="heightClass=regular-widthClass=compact" constant="14"/>
                         </constraint>
-                        <constraint firstItem="QwU-5b-ROa" firstAttribute="centerX" secondItem="UX0-di-8wd" secondAttribute="centerX" id="LBA-0z-aCQ"/>
                         <constraint firstItem="aqP-6q-GbA" firstAttribute="top" secondItem="WHH-GL-dxD" secondAttribute="bottom" constant="-15" id="MTd-Dg-bBN">
                             <variation key="heightClass=compact-widthClass=regular" constant="-10"/>
                         </constraint>
-                        <constraint firstItem="gNI-KA-g6m" firstAttribute="top" secondItem="aqP-6q-GbA" secondAttribute="bottom" constant="-35" id="O6t-XX-LhJ">
+                        <constraint firstItem="gNI-KA-g6m" firstAttribute="top" secondItem="aqP-6q-GbA" secondAttribute="bottom" constant="-25" id="O6t-XX-LhJ">
                             <variation key="heightClass=compact" constant="-10"/>
                             <variation key="heightClass=compact-widthClass=compact" constant="-10"/>
-                            <variation key="heightClass=compact-widthClass=regular" constant="-15"/>
+                            <variation key="heightClass=compact-widthClass=regular" constant="3"/>
                             <variation key="heightClass=regular-widthClass=regular" constant="-20"/>
                         </constraint>
-                        <constraint firstItem="QwU-5b-ROa" firstAttribute="top" secondItem="aqP-6q-GbA" secondAttribute="bottom" constant="-30" id="Z24-bX-c4x"/>
+                        <constraint firstItem="QwU-5b-ROa" firstAttribute="top" secondItem="gNI-KA-g6m" secondAttribute="top" id="XDF-TA-vM1"/>
                         <constraint firstItem="ddC-W9-A8j" firstAttribute="centerX" secondItem="UX0-di-8wd" secondAttribute="centerX" id="biA-2F-HkL"/>
                         <constraint firstItem="aqP-6q-GbA" firstAttribute="centerX" secondItem="UX0-di-8wd" secondAttribute="centerX" id="edm-iM-zNY"/>
                         <constraint firstItem="qjY-nN-MNR" firstAttribute="bottom" secondItem="L3J-dj-BGf" secondAttribute="bottom" constant="40" id="nHy-Ze-CMb"/>
+                        <constraint firstItem="QwU-5b-ROa" firstAttribute="leading" secondItem="aqP-6q-GbA" secondAttribute="leading" constant="-125" id="sOd-sI-AWd"/>
                         <constraint firstItem="WHH-GL-dxD" firstAttribute="centerX" secondItem="UX0-di-8wd" secondAttribute="centerX" id="y65-QB-R4V"/>
                         <constraint firstItem="L3J-dj-BGf" firstAttribute="centerX" secondItem="UX0-di-8wd" secondAttribute="centerX" id="zfy-59-auy"/>
                     </constraints>

@@ -1340,6 +1340,7 @@ class Chat extends React.Component {
     return (
       <CustomActions
         {...props}
+        device={this.props.device}
         callBack={value => this.setState({ chatBottom: value })}
         sendCallBack={(type, value, fileName, tempType = undefined) => {
           if (type === 1) {

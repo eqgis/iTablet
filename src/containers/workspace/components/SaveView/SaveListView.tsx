@@ -123,7 +123,6 @@ export default class SaveListView extends React.Component<Props, State> {
    */
   save = async () => {
     try {
-      await SMap.checkCurrentModule()
       let result: {mapResult?: boolean, armapResult?: boolean} = {}
       if (this.state.selectedData.size === 0) return false
       this._setLoading && this._setLoading(true, getLanguage(GLOBAL.language).Prompt.SAVING)
@@ -137,9 +136,15 @@ export default class SaveListView extends React.Component<Props, State> {
             break
         }
       }
-      this.setVisible(false)
+      // 保存后方法顺序保持不变,处理保存异常返回的null
+      if (result.mapResult !== null && result.armapResult !== null) {
+        this.setVisible(false)
+      }
       this._setLoading && this._setLoading(false)
-      this.cb && typeof this.cb === 'function' && this.cb()
+      // result中有null,则是保存异常
+      if (result.mapResult !== null && result.armapResult !== null) {
+        this.cb && typeof this.cb === 'function' && this.cb()
+      }
       return result
     } catch (error) {
       this._setLoading && this._setLoading(false)
@@ -149,6 +154,9 @@ export default class SaveListView extends React.Component<Props, State> {
 
   saveMap = async (name: string, addition?: {[name: string]: any}) => {
     try {
+      let mapName = name
+      // 导出(保存)工作空间中地图到模块
+      let result = await this.props.saveMap({ mapName: mapName, nModule: '', addition })
       if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
         //这里先处理下异常 add xiezhy
         try {
@@ -158,9 +166,6 @@ export default class SaveListView extends React.Component<Props, State> {
           this._setLoading && this._setLoading(false)
         }
       }
-      let mapName = name
-      // 导出(保存)工作空间中地图到模块
-      let result = await this.props.saveMap({ mapName: mapName, nModule: '', addition })
       return result
     } catch (e) {
       this._setLoading && this._setLoading(false)

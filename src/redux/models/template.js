@@ -286,6 +286,7 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
 ) => {
   try {
     const templateData = getState().template.toJS()
+    const currentLayer = getState().layers.toJS().currentLayer
     const { template } = templateData
     const path = (params && params.path) || template.path
     const isFirst = params && params.isFirst
@@ -315,12 +316,13 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
         plotLibPaths.push(data[i].path)
       }
       // await SMap.addCadLayer('PlotEdit')
-      const resultArr = await SMap.initPlotSymbolLibrary(
-        plotLibPaths,
-        isFirst,
-        newName,
-        isDefaultNew,
-      )
+      const resultArr = await SMap.initPlotSymbol(plotLibPaths, {layerPath: currentLayer.layerPath})
+      // const resultArr = await SMap.initPlotSymbolLibrary(
+      //   plotLibPaths,
+      //   isFirst,
+      //   newName,
+      //   isDefaultNew,
+      // )
       Object.keys(resultArr).forEach(key => {
         plotLibIds.push(resultArr[key])
         plotlibIdAndNameArr.push([key, resultArr[key]])

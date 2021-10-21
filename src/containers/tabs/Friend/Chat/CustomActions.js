@@ -16,7 +16,6 @@ import {
   Platform,
   PermissionsAndroid,
   ScrollView,
-  Dimensions,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import { SOnlineService, SMap } from 'imobile_for_reactnative'
@@ -215,6 +214,7 @@ const ICONS = context => {
 }
 export default class CustomActions extends React.Component {
   props: {
+    device: Object,
     callBack: () => {},
     sendCallBack: () => {},
   }
@@ -231,6 +231,14 @@ export default class CustomActions extends React.Component {
 
   componentDidMount() {}
   componentWillUnmount() {}
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    )
+  }
+
   setModalVisible(visible = false) {
     if (visible) {
       this.props.callBack(scaleSize(400))
@@ -334,7 +342,14 @@ export default class CustomActions extends React.Component {
         ]}
         onRequestClose={() => this.setModalVisible()}
       >
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <View style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+          ...screen.getIphonePaddingHorizontal(
+            this.props.device.orientation,
+          ),
+          paddingBottom: screen.getIphonePaddingBottom(),
+        }}>
 
           <TouchableOpacity
             style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent'}]}

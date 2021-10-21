@@ -405,6 +405,55 @@ async function getData(type, params) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
+    case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_PLOT:
+      // isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
+      isTourLayer = await SMediaCollector.isTourLayer(event?.layerInfo?.name)
+      data = [
+        {
+          key: constants.MOVE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: getThemeAssets().edit.icon_translation,
+        },
+        {
+          key: constants.DELETE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          action: MarkAction.deleteLabel,
+          size: 'large',
+          image: getThemeAssets().edit.icon_delete,
+          selectMode: 'flash',
+        },
+        {
+          key: constants.UNDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          action: MarkAction.undo,
+          size: 'large',
+          image: getThemeAssets().edit.icon_undo,
+          selectMode: 'flash',
+        },
+        {
+          key: constants.REDO,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          action: MarkAction.redo,
+          size: 'large',
+          image: getThemeAssets().edit.icon_redo,
+          selectMode: 'flash',
+        },
+        {
+          key: constants.EDIT_NODE,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          action: MarkAction.editNode,
+          size: 'large',
+          image: getThemeAssets().edit.icon_edit_node,
+        },
+      ]
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
     case ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_TEXT:
       data = [
         {

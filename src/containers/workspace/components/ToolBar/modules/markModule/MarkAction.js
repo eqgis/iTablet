@@ -590,6 +590,10 @@ function geometrySelected(event) {
         type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_TEXT
         // height = ConstToolType.HEIGHT[0]
         break
+      case GeometryType.GEOGRAPHICOBJECT:
+        type = ConstToolType.SM_MAP_MARKS_TAGGING_EDIT_PLOT
+        // height = ConstToolType.HEIGHT[0]
+        break
     }
     if (type !== '' && layerType !== DatasetType.CAD) {
       this.selectLabelToEdit(type)

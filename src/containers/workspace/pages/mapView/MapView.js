@@ -402,6 +402,8 @@ export default class MapView extends React.Component {
         left: this._previousLeft,
       },
     }
+
+    this.clickAble = true//防止编辑状态下快速重复点击
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -1316,7 +1318,13 @@ export default class MapView extends React.Component {
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.geometrySelected
     ) {
-      ToolbarModule.getData().actions.geometrySelected(event)
+      if (this.clickAble) {
+        this.clickAble = false
+        ToolbarModule.getData().actions.geometrySelected(event)
+        setTimeout(() => {
+          this.clickAble = true
+        }, 1500)
+      }
       return
     }
     switch (currentToolbarType) {

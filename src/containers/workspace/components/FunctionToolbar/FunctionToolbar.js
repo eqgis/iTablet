@@ -349,8 +349,8 @@ export default class FunctionToolbar extends React.Component {
         GLOBAL.coworkMode &&
         // _item.type !== ConstToolType.SM_MAP_ADD &&
         _item.type !== ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE &&
-        _item.type !== ConstToolType.SM_MAP_NAVIGATION_MODULE &&
-        _item.type !== ConstToolType.SM_MAP_PLOT_ANIMATION
+        _item.type !== ConstToolType.SM_MAP_NAVIGATION_MODULE
+        //  && _item.type !== ConstToolType.SM_MAP_PLOT_ANIMATION
       ) {
         data.push(_item)
       }

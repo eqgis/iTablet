@@ -763,6 +763,7 @@ export default class ToolBar extends React.Component {
       this.props.getOverlay() && this.props.getOverlay().setVisible(false)
     } else if (
       this.state.type === ConstToolType.SM_MAP_PLOT_ANIMATION_TEMP ||
+      this.state.type === ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST ||
       this.state.type === ConstToolType.SM_MAP_PLOT_ANIMATION_GO_OBJECT_LIST
     ) {
       let height = 0

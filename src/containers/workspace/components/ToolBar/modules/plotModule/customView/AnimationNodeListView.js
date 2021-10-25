@@ -163,15 +163,26 @@ export default class AnimationNodeListView extends React.Component {
     )
   }
 
+  renderSectionSeparator = info => {
+    if (info.trailingItem === undefined && info.trailingSection) {
+      return <View style={styles.sectionSeparateViewStyle} />
+    }
+    if (info.trailingItem && info.section.title) {
+      return <View style={styles.sectionTrailingSeparateViewStyle} />
+    }
+    return null
+  }
+
   render() {
     return (
       <View
         style={{
           flex: 1,
           backgroundColor: color.content_white,
-          // borderTopLeftRadius: scaleSize(32),
-          // borderTopRightRadius: scaleSize(32),
-          // overflow: 'hidden',
+          paddingTop: scaleSize(20),
+          borderTopLeftRadius: scaleSize(40),
+          borderTopRightRadius: scaleSize(40),
+          overflow: 'hidden',
         }}
       >
         <SectionList
@@ -180,6 +191,7 @@ export default class AnimationNodeListView extends React.Component {
           renderSectionHeader={this.renderListSectionHeader}
           keyExtractor={(item, index) => index}
           ItemSeparatorComponent={this.renderItemSeparatorComponent}
+          SectionSeparatorComponent={this.renderSectionSeparator}
         />
       </View>
     )
@@ -224,7 +236,8 @@ const styles = StyleSheet.create({
     backgroundColor: color.subTheme,
   },
   sceneTitle: {
-    fontSize: setSpText(28),
+    fontSize: size.fontSize.fontSizeLg,
+    // fontSize: setSpText(28),
     color: '#FBFBFB',
     paddingLeft: scaleSize(30),
   },
@@ -239,6 +252,16 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 1,
     backgroundColor: color.separateColorGray,
+  },
+  sectionSeparateViewStyle: {
+    height: scaleSize(12),
+    marginHorizontal: 0,
+    backgroundColor: color.separateColorGray4,
+  },
+  sectionTrailingSeparateViewStyle: {
+    height: scaleSize(2),
+    marginHorizontal: scaleSize(30),
+    backgroundColor: color.separateColorGray4,
   },
 
   itemView: {

@@ -226,6 +226,39 @@ export default class MT_layerManager extends React.Component {
       })
       // let mapName = await this.map.getName()
     } catch (e) {
+      this.setState({
+        data: [
+          {
+            title: getLanguage(this.props.language).Map_Layer.PLOTS,
+            //'我的标注',
+            data: [],
+            visible: true,
+          },
+          {
+            title: getLanguage(this.props.language).Map_Layer.LAYERS,
+            //'我的图层',
+            data: [],
+            visible: true,
+          },
+          {
+            title: getLanguage(this.props.language).Map_Layer.BASEMAP,
+            // '我的底图',
+            data: [
+              {
+                caption: 'baseMap',
+                datasetName: '',
+                name: 'baseMap',
+                path: '',
+                themeType: 0,
+                type: 81,
+              },
+            ],
+            visible: true,
+          },
+        ],
+        refreshing: false,
+        allLayersVisible: true,
+      })
       this.setRefreshing(false)
     }
   }

@@ -130,6 +130,7 @@ const Prompt: typeof CN.Prompt = {
 
   PLEASE_SELECT_PLOT_LAYER: 'マークレイヤーを選択、または新規してください',
   PLEASE_SELECT_MEDIA_LAYER: 'Please select a point, CAD or plot layer', // need to translate
+  PLEASE_SELECT_CAD_LAYER: 'Please select a CAD layer', // need to translate
   DONOT_SUPPORT_ARCORE: '当デバイスはARを対応しません',
   GET_SUPPORTED_DEVICE_LIST: '対応しているデバイスのリストを表示',
   PLEASE_NEW_PLOT_LAYER: '新規マークレイヤーを作成しますか',

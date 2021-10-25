@@ -130,6 +130,7 @@ const Prompt: typeof CN.Prompt = {
 
   PLEASE_SELECT_PLOT_LAYER: 'Lütfen Çizim Katmanı Seçin',
   PLEASE_SELECT_MEDIA_LAYER: 'Please select a point, CAD or plot layer', // need to translate
+  PLEASE_SELECT_CAD_LAYER: 'Please select a CAD layer', // need to translate
   DONOT_SUPPORT_ARCORE: 'AR (Arttırılmış Gerçeklik) fonksiyonları bu cihazda desteklenmiyor.',
   GET_SUPPORTED_DEVICE_LIST: 'Desteklenen cihaz listesini gör',
   PLEASE_NEW_PLOT_LAYER: 'Lütfen Yeni Çizim Katmanı Oluşturun',

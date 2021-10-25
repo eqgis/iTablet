@@ -1,11 +1,13 @@
-import { SMap, Action } from 'imobile_for_reactnative'
+import { SMap, Action, DatasetType } from 'imobile_for_reactnative'
 import PlotData from './PlotData'
 import PlotAction from './PlotAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
+import { Toast } from '../../../../../../utils'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import NavigationService from '../../../../../NavigationService'
 
 class PlotModule extends FunctionModule {
   constructor(props) {
@@ -14,6 +16,11 @@ class PlotModule extends FunctionModule {
 
   action = async () => {
     const params = ToolbarModule.getParams()
+    if (params.currentLayer?.type !== DatasetType.CAD) {
+      NavigationService.navigate('LayerManager')
+      Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_CAD_LAYER)
+      return
+    }
     let _data = PlotData.getData(this.type, params)
     let containerType, data
     this.setModuleData(this.type)

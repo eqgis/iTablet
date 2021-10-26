@@ -130,6 +130,7 @@ const Prompt: typeof CN.Prompt = {
 
   PLEASE_SELECT_PLOT_LAYER: 'يرجى تحديد طبقة الرسم',
   PLEASE_SELECT_MEDIA_LAYER: 'Please select a point, CAD or plot layer', // need to translate
+  PLEASE_SELECT_CAD_LAYER: 'Please select a CAD layer', // need to translate
   DONOT_SUPPORT_ARCORE: 'وظائف AR غير متوفرة على هذا الجهاز',
   GET_SUPPORTED_DEVICE_LIST: 'عرض قائمة الأجهزة المدعومة',
   PLEASE_NEW_PLOT_LAYER: 'من فضلك أنشىء طبقة نقاط جديدة',

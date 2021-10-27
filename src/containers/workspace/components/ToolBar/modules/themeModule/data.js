@@ -664,7 +664,9 @@ function getThemeMapCreate(type) {
       title: getLanguage(GLOBAL.language).Map_Main_Menu.THEME_HEATMAP,
       // title: constants.THEME_HEATMAP,
       size: 'large',
-      action: () => showDatasetsList(type),
+      action: () => showDatasetsList(type,{
+        typeFilter: ['POINT'],
+      }),
       image: getThemeAssets().themeType.heatmap,
       selectedImage: getThemeAssets().themeType.heatmap,
     },

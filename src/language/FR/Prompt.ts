@@ -119,6 +119,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: 'Veuillez choisir la couche  région',
 
   NO_PLOTTING_DEDUCTION: 'Aucune déduction de traçage dans la carte actuelle',
+  DELETE_PLOTTING_DEDUCTION: 'Delete the deduction?', // need to translate
   NO_FLY: 'Pas de survol dans la scène actuelle',
   PLEASE_OPEN_SCENE: 'Veuillez ouvrir une scène',
   NO_SCENE: 'Aucune scène',

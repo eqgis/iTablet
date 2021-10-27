@@ -119,6 +119,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: 'ポリゴンレイヤーを選択してください',
 
   NO_PLOTTING_DEDUCTION: '現在マップに展開リストはありません',
+  DELETE_PLOTTING_DEDUCTION: 'Delete the deduction?', // need to translate
   NO_FLY: '現在シーンに飛行ルートはありません',
   PLEASE_OPEN_SCENE: 'シーンを開いてください',
   NO_SCENE: 'シーン表示無し',

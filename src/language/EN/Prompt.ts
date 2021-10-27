@@ -119,6 +119,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: 'Please select a region layer first',
 
   NO_PLOTTING_DEDUCTION: 'No plotting list in the current map',
+  DELETE_PLOTTING_DEDUCTION: 'Delete the deduction?',
   NO_FLY: 'No flying paths in the current scene',
   PLEASE_OPEN_SCENE: 'Please open a scene',
   NO_SCENE: 'No Scene',

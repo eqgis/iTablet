@@ -117,6 +117,7 @@ const Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: '请先选择面图层采集',
 
   NO_PLOTTING_DEDUCTION: '当前地图没有推演列表',
+  DELETE_PLOTTING_DEDUCTION: '是否删除该推演?',
   NO_FLY: '当前场景无飞行轨迹',
   PLEASE_OPEN_SCENE: '请打开场景',
   NO_SCENE: '无场景显示',

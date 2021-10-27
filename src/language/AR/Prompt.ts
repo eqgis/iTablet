@@ -119,6 +119,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: 'الرجاء اختيار المنطقة طبقة',
 
   NO_PLOTTING_DEDUCTION: 'لا يوجد رسم تخطيطي في الخريطة الحالية',
+  DELETE_PLOTTING_DEDUCTION: 'Delete the deduction?', // need to translate
   NO_FLY: 'لايوجد طيران فى المشهد الحالى',
   PLEASE_OPEN_SCENE: 'من فضلك افتح المشهد',
   NO_SCENE: 'لا يوجد مشهد',

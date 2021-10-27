@@ -36,7 +36,7 @@ export default StyleSheet.create({
   backImg: {
     position: 'absolute',
     width: '100%',
-    height: '60%',
+    height: '100%',
   },
   preview: {
     flex: 1,

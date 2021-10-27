@@ -315,7 +315,7 @@ export default class ClassifyView extends React.Component {
         // }
         NavigationService.navigate('MediaEdit', {
           info: {
-            mediaFilePaths: [this.state.imgUri],
+            mediaFilePaths: [this.state.imgUri || this.state.bgImageSource],
             modifiedDate: classifyTime,
             layerName: currentLayer.name,
             datasourceName: datasourceAlias,
@@ -791,7 +791,8 @@ export default class ClassifyView extends React.Component {
       >
         {this.renderCamera()}
         {!this.state.isCameraVisible && this.renderImgPickerView()}
-        {this.state.isCameraVisible && this.renderOverlayPreview()}
+        {/* {this.state.isCameraVisible && this.renderOverlayPreview()} */}
+        {this.renderOverlayPreview()}
         {this.state.isClassifyInfoVisible && this.renderBottomBtns()}
         {!this.state.isClassifyInfoVisible && this.renderAlbumBtn()}
         {!this.state.isClassifyInfoVisible && this.renderCenterBtn()}

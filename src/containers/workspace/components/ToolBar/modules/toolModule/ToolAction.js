@@ -143,8 +143,18 @@ function measureLength() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      // 防止重复添加
-      if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
+      // 防止重复添加 add xiezhy
+      let bAdd = false
+      if(pointArr.length>0){
+        let lastObj = JSON.parse(pointArr[pointArr.length-1])
+        if (Math.abs(lastObj.x-obj.curPoint.x)>1 || Math.abs(lastObj.y-obj.curPoint.y)>1){
+          bAdd = true
+        }
+      }else{
+        bAdd = true
+      }
+      
+      if (bAdd) {
         pointArr.push(JSON.stringify(obj.curPoint))
         const newState = {}
         if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
@@ -184,8 +194,17 @@ function measureArea() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      // 防止重复添加
-      if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
+      // 防止重复添加 add xiezhy
+      let bAdd = false
+      if(pointArr.length>0){
+        let lastObj = JSON.parse(pointArr[pointArr.length-1])
+        if (Math.abs(lastObj.x-obj.curPoint.x)>1 || Math.abs(lastObj.y-obj.curPoint.y)>1){
+          bAdd = true
+        }
+      }else{
+        bAdd = true
+      }
+      if (bAdd) {
         pointArr.push(JSON.stringify(obj.curPoint))
         const newState = {}
         if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
@@ -225,8 +244,17 @@ function measureAngle() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      // 防止重复添加
-      if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
+      // 防止重复添加 add xiezhy
+      let bAdd = false
+      if(pointArr.length>0){
+        let lastObj = JSON.parse(pointArr[pointArr.length-1])
+        if (Math.abs(lastObj.x-obj.curPoint.x)>1 || Math.abs(lastObj.y-obj.curPoint.y)>1){
+          bAdd = true
+        }
+      }else{
+        bAdd = true
+      }
+      if (bAdd) {
         // 角度量算前两次打点不会触发回调，第三次打点添加一个标识，最后一次撤销直接清除当前所有点
         pointArr.indexOf('startLine') === -1 && pointArr.push('startLine')
         pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1 &&

@@ -75,6 +75,7 @@ function getData(type: string, params: any) {
               value: layerData.datasetName,
               placeholder: getLanguage(GLOBAL.language).Cowork.PLEASE_ENTER_SERCICE_NAME,
               confirmAction: async name => {
+                await SMap.checkCurrentModule()
                 if (!name) return
                 const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
                 if (datasetDescription.type === 'onlineService') {

@@ -150,6 +150,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   isNoMore: boolean // 是否能加载更多
   isManage: boolean // 是否是资源管理模式
   hasDownload: boolean // 是否有下载按钮
+  keywords: string // 获取数据的关键词
   list: FlatList<any> | null | undefined
   deleteDialog: Dialog | undefined | null
   dropdown: ModalDropdown
@@ -196,6 +197,7 @@ class GroupSourceManagePage extends Component<Props, State> {
     this.isLoading = false // 防止同时重复加载多次
     this.isNoMore = false // 是否能加载更多
     this.tempSelectedData = new Map<string, SelectedData>()
+    this.keywords = this.props.navigation?.state?.params?.keywords || ''
 
     this.popData = [
       {
@@ -268,7 +270,7 @@ class GroupSourceManagePage extends Component<Props, State> {
     })
   }
 
-  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', orderBy = 'UPDATETIME', cb = () => { } }: any) => {
+  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', orderBy = 'UPDATETIME', keywords = this.keywords, cb = () => { } }: any) => {
     this.servicesUtils?.getGroupResources({
       groupId: this.props.currentGroup.id,
       // resourceCreator: this.props.user.currentUser.userId,
@@ -276,6 +278,7 @@ class GroupSourceManagePage extends Component<Props, State> {
       pageSize: pageSize,
       orderType: orderType,
       orderBy: orderBy,
+      keywords: keywords,
     }).then((result: any) => {
       if (result && result.content) {
         let _data = []

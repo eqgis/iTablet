@@ -216,9 +216,9 @@ export default class OnlineServicesUtils {
       return undefined
     }
 
-    if (this.cookie) {
-      return this.cookie
-    }
+    // if (this.cookie) {
+    //   return this.cookie
+    // }
 
     let cookie = undefined
     if (this.type === 'iportal') {

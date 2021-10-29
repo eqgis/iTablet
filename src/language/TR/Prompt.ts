@@ -119,6 +119,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: 'Lütfen Alan Katmanını Seçiniz',
 
   NO_PLOTTING_DEDUCTION: 'Mevcut haritada çizim kesintisi yok',
+  DELETE_PLOTTING_DEDUCTION: 'Delete the deduction?', // need to translate
   NO_FLY: 'Mevcut sahnede uçuş yok',
   PLEASE_OPEN_SCENE: 'Lütfen bir sahne açın',
   NO_SCENE: 'Sahne Yok',

@@ -143,8 +143,19 @@ function measureLength() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      // 防止重复添加
-      if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
+      // 防止重复添加 add xiezhy
+      // let bAdd = true
+      // if(pointArr.length>0){
+      //   for(let i=pointArr.length-1;i>=0;i--){
+      //     let lastObj = JSON.parse(pointArr[i])
+      //     if (Math.abs(lastObj.x-obj.curPoint.x)<=2 && Math.abs(lastObj.y-obj.curPoint.y)<=2){
+      //       bAdd = false
+      //       break
+      //     }
+      //   } 
+      // }
+      let bb = obj?.isUndoOrRedo
+      if (/*bAdd &&*/ bb!=true) {
         pointArr.push(JSON.stringify(obj.curPoint))
         const newState = {}
         if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
@@ -184,9 +195,21 @@ function measureArea() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      // 防止重复添加
-      if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
+      // 防止重复添加 add xiezhy
+      // let bAdd = true
+      // if(pointArr.length>0){
+      //   for(let i=pointArr.length-1;i>=0;i--){
+      //     let lastObj = JSON.parse(pointArr[i])
+      //     if (Math.abs(lastObj.x-obj.curPoint.x)<=2 && Math.abs(lastObj.y-obj.curPoint.y)<=2){
+      //       bAdd = false
+      //       break
+      //     }
+      //   } 
+      // }
+      let bb = obj?.isUndoOrRedo
+      if (/*bAdd &&*/ bb!=true) {
         pointArr.push(JSON.stringify(obj.curPoint))
+        // console.log("xzy push "+pointArr.length)
         const newState = {}
         if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
           newState.canUndo = true
@@ -225,8 +248,19 @@ function measureAngle() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      // 防止重复添加
-      if (pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1) {
+      // 防止重复添加 add xiezhy
+      // let bAdd = true
+      // if(pointArr.length>0){
+      //   for(let i=pointArr.length-1;i>=0;i--){
+      //     let lastObj = JSON.parse(pointArr[i])
+      //     if (Math.abs(lastObj.x-obj.curPoint.x)<=2 && Math.abs(lastObj.y-obj.curPoint.y)<=2){
+      //       bAdd = false
+      //       break
+      //     }
+      //   } 
+      // }
+      let bb = obj?.isUndoOrRedo
+      if (/*bAdd && */bb!=true) {
         // 角度量算前两次打点不会触发回调，第三次打点添加一个标识，最后一次撤销直接清除当前所有点
         pointArr.indexOf('startLine') === -1 && pointArr.push('startLine')
         pointArr.indexOf(JSON.stringify(obj.curPoint)) === -1 &&
@@ -301,6 +335,7 @@ async function undo(type) {
   if (pointArr.length > 0) {
     redoArr.push(pointArr.pop())
   }
+  // console.log("xzy undo "+pointArr.length)
   newState.canRedo = redoArr.length > 0
   newState.canUndo = pointArr.length > 0
   if (type === ConstToolType.SM_MAP_TOOL_MEASURE_ANGLE && pointArr.length <= 1) {
@@ -341,6 +376,7 @@ async function redo(type = null) {
   if (redoArr.length > 0) {
     pointArr.push(redoArr.pop())
   }
+  // console.log("xzy redo "+pointArr.length)
   newState.canRedo = redoArr.length > 0
   newState.canUndo = pointArr.length > 0
   Object.keys(newState).length > 0 &&

@@ -1,9 +1,11 @@
+import React from 'react'
+import { TouchableOpacity, Image } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { getLanguage } from '../../../../../../language'
-import { Toast } from '../../../../../../utils'
+import { Toast, scaleSize } from '../../../../../../utils'
 import { FileTools } from '../../../../../../native'
 import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
@@ -230,6 +232,36 @@ function getCollectionData(libId, symbolCode, params) {
   return { data, buttons }
 }
 
+/**
+ * 删除态势推演动画文件
+ * @param {*} item
+ */
+async function deleteAnimation(item) {
+  GLOBAL.SimpleDialog.set({
+    text: getLanguage(GLOBAL.language).Prompt.DELETE_PLOTTING_DEDUCTION,
+    cancelText: getLanguage(GLOBAL.language).Prompt.CANCEL,
+    cancelAction: /*AppUtils.AppExit*/ async () =>{
+      GLOBAL.Loading.setLoading(false)
+    },
+    confirmText: getLanguage(GLOBAL.language).Prompt.DELETE,
+    confirmAction: async () => {
+      try {
+        if (await FileTools.fileIsExist(item.path)) {
+          await FileTools.deleteFile(item.path)
+          await SMap.readAnimationXmlFile(item.path)
+          await PlotAction.showAnimationXmlList()
+        } else {
+          Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_NOT_EXIST)
+        }
+        await getAnimationList()
+      } catch (error) {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+      }
+    },
+  })
+  GLOBAL.SimpleDialog.setVisible(true)
+}
+
 async function getAnimationList() {
   const params = ToolbarModule.getParams()
   let buttons = getPlotButtons()
@@ -252,6 +284,26 @@ async function getAnimationList() {
           item.title = arrDirContent[key].name.split('.')[0]
           item.index = i
           item.path = path + arrDirContent[key].name
+          item.rightView = (
+            <TouchableOpacity
+              style={{
+                height: scaleSize(60),
+                width: scaleSize(60),
+                marginRight: scaleSize(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => deleteAnimation(item)}
+            >
+              <Image
+                source={getThemeAssets().edit.icon_delete}
+                style={{
+                  height: scaleSize(40),
+                  width: scaleSize(40),
+                }}
+              />
+            </TouchableOpacity>
+          )
           animationXmlList.push(item)
           i++
         }

@@ -6,6 +6,7 @@ import {
   ConstPath,
   UserType,
   ToolbarType,
+  ChunkType,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import {
@@ -269,7 +270,7 @@ export default class LayerManager_tolbar extends React.Component {
       }
     }
     // 屏蔽在线协作-移除图层，分享图层
-    if (GLOBAL.coworkMode) {
+    if (GLOBAL.coworkMode && GLOBAL.Type !== ChunkType.MAP_PLOTTING) {
       for(let i = data.length - 1; i >= 0; i--) {
         for(let j = data[i].data?.length - 1; j >= 0; j--) {
           if (

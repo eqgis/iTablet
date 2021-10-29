@@ -71,6 +71,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           NavigationService.navigate('GroupSourceManagePage', {
             isManage: false,
             hasDownload: false, // 是否有下载按钮
+            keywords: '.zip',
             title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
             itemAction: async ({data}: any) => {
               NavigationService.navigate('GroupFriendListPage', {

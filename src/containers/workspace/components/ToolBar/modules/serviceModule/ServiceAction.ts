@@ -233,6 +233,7 @@ async function listAction(type: string, params: any = {}) {
       break
     }
     case ConstToolType.SM_MAP_SERVICE_DATASET: {
+      await SMap.checkCurrentModule()
       const url = params.item.data
       let datasourceName = params.item.title
       if (url.includes('/datasources')) {
@@ -305,6 +306,7 @@ async function updateToLocal (layerData: {
   }
   let result = false
   try {
+    await SMap.checkCurrentModule()
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,
@@ -358,6 +360,7 @@ async function uploadToService(layerData: {
   }
   let result = false
   try {
+    await SMap.checkCurrentModule()
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,

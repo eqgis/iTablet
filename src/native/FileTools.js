@@ -182,36 +182,26 @@ function EnvironmentIsValid() {
   return FileTools.EnvironmentIsValid()
 }
 
-function addImportExternalData(handlers) {
-  if (Platform.OS === 'ios' && handlers) {
-    if (typeof handlers.callback === 'function') {
-      nativeEvt.addListener(MESSAGE_IMPORTEXTERNALDATA, function(e) {
-        handlers.callback(e)
-      })
-    }
-  } else if (Platform.OS === 'android' && handlers) {
-    if (typeof handlers.callback === 'function') {
-      DeviceEventEmitter.addListener(MESSAGE_IMPORTEXTERNALDATA, function(e) {
-        handlers.callback(e)
-      })
-    }
-  }
-}
 
+function addImportExternalData(handlers) {
+  if ( handlers) {
+    if (typeof handlers.callback === 'function') {
+      this.listenerIMPORT?.remove()
+      this.listenerIMPORT = nativeEvt.addListener(MESSAGE_IMPORTEXTERNALDATA, function(e) {
+        handlers.callback(e)
+      })
+    }
+  } 
+}
 function getShareResult(handlers) {
-  if (Platform.OS === 'ios' && handlers) {
+  if (handlers) {
     if (typeof handlers.callback === 'function') {
-      nativeEvt.addListener(MESSAGE_SHARERESULT, function(e) {
+      listenerSHARERESULT?.remove()
+      this.listenerSHARERESULT = nativeEvt.addListener(MESSAGE_SHARERESULT, function(e) {
         handlers.callback(e)
       })
     }
-  } else if (Platform.OS === 'android' && handlers) {
-    if (typeof handlers.callback === 'function') {
-      DeviceEventEmitter.addListener(MESSAGE_SHARERESULT, function(e) {
-        handlers.callback(e)
-      })
-    }
-  }
+  } 
 }
 
 function getImportState() {

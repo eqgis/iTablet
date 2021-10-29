@@ -60,6 +60,10 @@ async function getVisibleScalePickerData() {
 async function getBasicData(min, max, customMin, customMax) {
   const option = [
     {
+      key: '无',
+      value: 0,
+    },
+    {
       key: '1 : 2,500',
       value: 2500,
     },

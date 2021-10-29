@@ -86,18 +86,12 @@ export default class ClassifyView extends React.Component {
           this.datasetName,
           this.props.language,
         )
-        //注册监听
-        if (Platform.OS === 'ios') {
-          this.recognizeImageListener = iOSEventEmi.addListener(
-            'recognizeImage',
-            this.recognizeImage,
-          )
-        } else {
-          this.recognizeImageListener = DeviceEventEmitter.addListener(
-            'recognizeImage',
-            this.recognizeImage,
-          )
-        }
+        //注册监听  
+        this.recognizeImageListener?.remove()
+        this.recognizeImageListener = iOSEventEmi.addListener(
+          'recognizeImage',
+          this.recognizeImage,
+        )
         this.Loading.setLoading(false)
       }.bind(this)())
     })
@@ -109,7 +103,8 @@ export default class ClassifyView extends React.Component {
     // DeviceEventEmitter.removeListener('recognizeImage', this.recognizeImage)
 
     AppState.removeEventListener('change', this.handleStateChange)
-    this.recognizeImageListener && this.recognizeImageListener.remove()
+    this.recognizeImageListener?.remove()
+    this.recognizeImageListener = null
   }
 
   /************************** 处理状态变更 ***********************************/

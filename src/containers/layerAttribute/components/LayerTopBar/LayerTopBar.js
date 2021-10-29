@@ -30,6 +30,8 @@ export default class LayerTopBar extends React.Component {
     addFieldAction: () => {},
     tabsAction?: () => {}, // 显示侧滑栏
     attributesData: Array,
+    hasAddField?: boolean, // 是否有添加属性按钮
+    hasCamera?: boolean, // 是否有多媒体按钮
     canTabs?: boolean, // 是否可点击切换标签
     canLocated?: boolean, // 是否可点击定位
     canUndo?: boolean, // 是否可点击撤销
@@ -49,6 +51,8 @@ export default class LayerTopBar extends React.Component {
 
   static defaultProps = {
     canTabs: true,
+    hasAddField: true,
+    hasCamera: true,
     canLocated: true,
     canUndo: false,
     canRelated: false,
@@ -170,9 +174,9 @@ export default class LayerTopBar extends React.Component {
   }
 
   renderContentView = () => {
-    let data
-    data = [
-      {
+    let data = []
+    if (this.props.hasAddField) {
+      data.push({
         icon: this.props.canAddField
           ? getPublicAssets().common.icon_plus
           : getPublicAssets().common.icon_plus_gray,
@@ -181,49 +185,68 @@ export default class LayerTopBar extends React.Component {
           .ATTRIBUTE_FIELD_ADD,
         action: this.addAttributeFieldAction,
         enabled: this.props.canAddField,
-      },
-      {
-        icon: this.props.canLocated
-          ? getThemeAssets().attribute.icon_location
-          : getThemeAssets().attribute.icon_unlocation,
-        key: '定位',
-        title: getLanguage(GLOBAL.language).Map_Attribute
-          .ATTRIBUTE_LOCATION,
-        action: this.locateAction,
-        enabled: this.props.canLocated,
-      },
-      {
-        icon: this.props.canRelated
-          ? getThemeAssets().attribute.icon_relation
-          : getThemeAssets().attribute.icon_unrelation,
-        key: '关联',
-        title: getLanguage(GLOBAL.language).Map_Attribute
-          .ATTRIBUTE_ASSOCIATION,
-        action: this.relateAction,
-        enabled: this.props.canRelated,
-      },
-      {
-        icon: this.props.canDelete
-          ? getThemeAssets().attribute.icon_delete_select
-          : getThemeAssets().attribute.icon_delete_un_select,
-        key: '删除',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
-          .EDIT_DELETE,
-        action: this.deleteAction,
-        enabled: this.props.canDelete,
-      },
-      // {
-      //   icon: this.props.canRelated
-      //     ? getThemeAssets().mapTools.icon_tool_multi_media
-      //     : getThemeAssets().mapTools.icon_tool_multi_media_ash,
-      //   key: '拍照',
-      //   title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
-      //   action: this.captureImage,
-      //   enabled: this.props.canRelated,
-      // },
-    ]
+      })
+    }
 
-    if (!GLOBAL.showAIDetect) {
+    if (this.props.selectionAttribute) {
+      data = data.concat([
+        {
+          icon: this.props.canRelated
+            ? getThemeAssets().attribute.icon_relation
+            : getThemeAssets().attribute.icon_unrelation,
+          key: '关联',
+          title: getLanguage(GLOBAL.language).Map_Attribute
+            .ATTRIBUTE_ASSOCIATION,
+          action: this.relateAction,
+          enabled: this.props.canRelated,
+        },
+        {
+          icon: this.props.canDelete
+            ? getThemeAssets().attribute.icon_delete_select
+            : getThemeAssets().attribute.icon_delete_un_select,
+          key: '删除',
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .EDIT_DELETE,
+          action: this.deleteAction,
+          enabled: this.props.canDelete,
+        },
+      ])
+    } else {
+      data = data.concat([
+        {
+          icon: this.props.canLocated
+            ? getThemeAssets().attribute.icon_location
+            : getThemeAssets().attribute.icon_unlocation,
+          key: '定位',
+          title: getLanguage(GLOBAL.language).Map_Attribute
+            .ATTRIBUTE_LOCATION,
+          action: this.locateAction,
+          enabled: this.props.canLocated,
+        },
+        {
+          icon: this.props.canRelated
+            ? getThemeAssets().attribute.icon_relation
+            : getThemeAssets().attribute.icon_unrelation,
+          key: '关联',
+          title: getLanguage(GLOBAL.language).Map_Attribute
+            .ATTRIBUTE_ASSOCIATION,
+          action: this.relateAction,
+          enabled: this.props.canRelated,
+        },
+        {
+          icon: this.props.canDelete
+            ? getThemeAssets().attribute.icon_delete_select
+            : getThemeAssets().attribute.icon_delete_un_select,
+          key: '删除',
+          title: getLanguage(GLOBAL.language).Map_Main_Menu
+            .EDIT_DELETE,
+          action: this.deleteAction,
+          enabled: this.props.canDelete,
+        },
+      ])
+    }
+
+    if ((!GLOBAL.showAIDetect || this.props.selectionAttribute) && this.props.hasCamera) {
       data.push({
         icon: this.props.canRelated
           ? getThemeAssets().mapTools.icon_tool_multi_media
@@ -266,51 +289,6 @@ export default class LayerTopBar extends React.Component {
             .EDIT_DELETE,
           action: this.deleteAction,
           enabled: this.props.canDelete,
-        },
-      ]
-    }
-
-
-    if (this.props.selectionAttribute) {
-      data = [
-        {
-          icon: this.props.canAddField
-            ? getPublicAssets().common.icon_plus
-            : getPublicAssets().common.icon_plus_gray,
-          key: '添加',
-          title: getLanguage(GLOBAL.language).Map_Attribute
-            .ATTRIBUTE_FIELD_ADD,
-          action: this.addAttributeFieldAction,
-          enabled: this.props.canAddField,
-        },
-        {
-          icon: this.props.canRelated
-            ? getThemeAssets().attribute.icon_relation
-            : getThemeAssets().attribute.icon_unrelation,
-          key: '关联',
-          title: getLanguage(GLOBAL.language).Map_Attribute
-            .ATTRIBUTE_ASSOCIATION,
-          action: this.relateAction,
-          enabled: this.props.canRelated,
-        },
-        {
-          icon: this.props.canDelete
-            ? getThemeAssets().attribute.icon_delete_select
-            : getThemeAssets().attribute.icon_delete_un_select,
-          key: '删除',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .EDIT_DELETE,
-          action: this.deleteAction,
-          enabled: this.props.canDelete,
-        },
-        {
-          icon: this.props.canRelated
-            ? getThemeAssets().mapTools.icon_tool_multi_media
-            : getThemeAssets().mapTools.icon_tool_multi_media_ash,
-          key: '拍照',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
-          action: this.captureImage,
-          enabled: this.props.canRelated,
         },
       ]
     }

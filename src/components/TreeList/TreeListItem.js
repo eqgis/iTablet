@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   Easing,
   Image,
+  ScrollView,
 } from 'react-native'
 import { scaleSize, setSpText } from '../../utils'
 import { color } from '../../styles'
@@ -38,12 +39,14 @@ export default class TreeListItem extends React.Component {
     onPress?: () => {},
     renderChild: () => {},
     defaultShowChildren: boolean,
+    scrool?: boolean,
   }
 
   static defaultProps = {
     defaultShowChildren: false,
     separator: false,
     textColor: 'white',
+    scrool:false,
   }
 
   constructor(props) {
@@ -113,48 +116,98 @@ export default class TreeListItem extends React.Component {
           break
       }
     }
-    return (
-      <View style={[styles.row, this.props.style]}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={styles.row}
-          onPress={() =>
-            this._onPress({
+    if(this.props.scrool){
+      return (
+        <View style={[styles.row, this.props.style]}>
+          <ScrollView
+            horizontal={true}
+            style={{ flex: 1 }}
+          >
+            <TouchableOpacity
+              activeOpacity={1}
+              style={styles.row}
+              onPress={() =>
+                this._onPress({
+                  data: this.props.data,
+                  index: this.props.index,
+                })
+              }
+            >
+              {this.renderIcon()}
+              {icon && (
+                <Image
+                  resizeMode={'contain'}
+                  source={icon}
+                  style={[styles.icon, this.props.iconStyle]}
+                />
+              )}
+              <Text
+                style={[
+                  styles.title,
+                  icon && { marginLeft: scaleSize(20) },
+                  this.props.textColor && { color: this.props.textColor },
+                  this.props.fontSize && {
+                    fontSize: this.props.fontSize,
+                  },
+                ]}
+              >
+                {this.props.data.title ||
+                  this.props.data.name ||
+                  this.props.data.$.code + ' ' + this.props.data.$.name}
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
+          {this.props.rightView &&
+            this.props.rightView({
               data: this.props.data,
               index: this.props.index,
-            })
-          }
-        >
-          {this.renderIcon()}
-          {icon && (
-            <Image
-              resizeMode={'contain'}
-              source={icon}
-              style={[styles.icon, this.props.iconStyle]}
-            />
-          )}
-          <Text
-            style={[
-              styles.title,
-              icon && { marginLeft: scaleSize(20) },
-              this.props.textColor && { color: this.props.textColor },
-              this.props.fontSize && {
-                fontSize: this.props.fontSize,
-              },
-            ]}
+            })}
+        </View>
+      )
+    }else{
+      return (
+        <View style={[styles.row, this.props.style]}>
+          <TouchableOpacity
+            activeOpacity={1}
+            style={styles.row}
+            onPress={() =>
+              this._onPress({
+                data: this.props.data,
+                index: this.props.index,
+              })
+            }
           >
-            {this.props.data.title ||
-              this.props.data.name ||
-              this.props.data.$.code + ' ' + this.props.data.$.name}
-          </Text>
-        </TouchableOpacity>
-        {this.props.rightView &&
-          this.props.rightView({
-            data: this.props.data,
-            index: this.props.index,
-          })}
-      </View>
-    )
+            {this.renderIcon()}
+            {icon && (
+              <Image
+                resizeMode={'contain'}
+                source={icon}
+                style={[styles.icon, this.props.iconStyle]}
+              />
+            )}
+            <Text
+              style={[
+                styles.title,
+                icon && { marginLeft: scaleSize(20) },
+                this.props.textColor && { color: this.props.textColor },
+                this.props.fontSize && {
+                  fontSize: this.props.fontSize,
+                },
+              ]}
+            >
+              {this.props.data.title ||
+                this.props.data.name ||
+                this.props.data.$.code + ' ' + this.props.data.$.name}
+            </Text>
+          </TouchableOpacity>
+          {this.props.rightView &&
+            this.props.rightView({
+              data: this.props.data,
+              index: this.props.index,
+            })}
+        </View>
+      )
+    }
   }
 
   renderChildGroups = () => {

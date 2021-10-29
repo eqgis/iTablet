@@ -491,14 +491,14 @@ function saveMapAs() {
       type: 'name',
       cb: async value => {
         const addition = {}
-        const prefix = `@Label_${
-          ToolbarModule.getParams().user.currentUser.userName
-        }#`
-        const regexp = new RegExp(prefix)
-        const layers = await ToolbarModule.getParams().getLayers()
-        addition.filterLayers = layers
-          .filter(item => item.name.match(regexp))
-          .map(val => val.name)
+        // const prefix = `@Label_${
+        //   ToolbarModule.getParams().user.currentUser.userName
+        // }#`
+        // const regexp = new RegExp(prefix)
+        // const layers = await ToolbarModule.getParams().getLayers()
+        // addition.filterLayers = layers
+        //   .filter(item => item.name.match(regexp))
+        //   .map(val => val.name)
         if (
           ToolbarModule.getParams().map &&
           ToolbarModule.getParams().map.currentMap &&

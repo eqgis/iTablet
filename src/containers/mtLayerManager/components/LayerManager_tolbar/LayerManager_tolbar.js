@@ -423,15 +423,20 @@ export default class LayerManager_tolbar extends React.Component {
           tempheader1 = layerSettingCanNotSelect(this.props.language)
         }
         data[0].headers = tempheader0.concat(tempheader1)
-        if (GLOBAL.Type === 'COLLECTION') {
-          let tempheader2 = layerData.isEditable
-            ? layerSettingCanEdit(this.props.language)
-            : layerSettingCanNotEdit(this.props.language)
-          let tempheader3 = layerData.isSnapable
-            ? layerSettingCanSnap(this.props.language)
-            : layerSettingCanNotSnap(this.props.language)
-          data[0].headers = data[0].headers.concat(tempheader2, tempheader3)
+        // let tempheader2 = layerData.isEditable
+        //   ? layerSettingCanEdit(this.props.language)
+        //   : layerSettingCanNotEdit(this.props.language)
+        let tempheader3 = layerData.isSnapable
+          ? layerSettingCanSnap(this.props.language)
+          : layerSettingCanNotSnap(this.props.language)
+        if (
+          layerData.type === 'layerGroup' ||
+          layerData.type === DatasetType.IMAGE ||
+          layerData.type === DatasetType.MBImage
+        ) {
+          layerSettingCanNotSnap(this.props.language)
         }
+        data[0].headers = data[0].headers.concat(/*tempheader2,*/ tempheader3)
       }
     }
     newState.data = data

@@ -59,12 +59,7 @@ export default class LayerVisibilityView extends Component {
           keyboardType={'numeric'}
           value={this.state.mapScale + ''}
           returnKeyType={'done'}
-          onChangeText={mapScale => {
-            this.setState({
-              mapScale,
-            })
-          }}
-          onEndEditing={async evt => {
+          onBlur={async evt => {
             let mapScale = 0
             if (
               (evt.nativeEvent.text !== '' && isNaN(evt.nativeEvent.text)) ||
@@ -81,6 +76,28 @@ export default class LayerVisibilityView extends Component {
               mapScale,
             })
           }}
+          onChangeText={mapScale => {
+            this.setState({
+              mapScale,
+            })
+          }}
+          // onEndEditing={async evt => {
+          //   let mapScale = 0
+          //   if (
+          //     (evt.nativeEvent.text !== '' && isNaN(evt.nativeEvent.text)) ||
+          //     evt.nativeEvent.text === ''
+          //   ) {
+          //     Toast.show(getLanguage(GLOBAL.language).Prompt.TRANSFER_PARAMS)
+          //   } else {
+          //     mapScale = Number.parseFloat(this.state.mapScale)
+          //     //地图比例尺跟着变
+          //     await SMap.setMapScale(1.0 / mapScale)
+          //     SMap.refreshMap()
+          //   }
+          //   this.setState({
+          //     mapScale,
+          //   })
+          // }}
         />
       </View>
     )

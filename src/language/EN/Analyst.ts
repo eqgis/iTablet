@@ -212,7 +212,7 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   REGISTRATION_SAVE_AS: "Save as",
   REGISTRATION_RESAMPLE: "Resample Result",
   REGISTRATION_SAMPLE_MODE: "Sample Mode",
-  REGISTRATION_SAMPLE_MODE_NO: "No",
+  REGISTRATION_SAMPLE_MODE_NO: "Null",
   REGISTRATION_SAMPLE_MODE_NEAR: "Nearest Neighbor",
   REGISTRATION_SAMPLE_MODE_BILINEARITY: "Bilinear Interpolation",
   REGISTRATION_SAMPLE_MODE_CUBIC_SONVOLUTION: "Cubic Convolution Interpolation",

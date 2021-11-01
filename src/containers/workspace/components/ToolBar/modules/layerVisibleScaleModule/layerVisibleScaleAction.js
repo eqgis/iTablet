@@ -85,9 +85,28 @@ async function rightSelect(item) {
 
 async function commit() {
   const _params = ToolbarModule.getParams()
+  let data = ToolbarModule.getData()
+  let { layerData } = data
   let mapScale = await SMap.getMapScale()
   let currentType = ToolbarModule.getData().currentType
   ToolbarModule.addData({ [`${currentType}`]: mapScale - 0 })
+  let min = await SMap.getMinVisibleScale(layerData.path)
+  let max = await SMap.getMaxVisibleScale(layerData.path)
+  if(currentType==='min'){
+    if ( mapScale !== 0 && max!==0 && mapScale <= max) {
+      //最大比例尺必须大于最小比例尺
+      Toast.show(getLanguage(GLOBAL.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
+    }else{
+      SMap.setMinVisibleScale(layerData.path, mapScale-0)
+    }
+  }else{
+    if (mapScale !== 0 && min!==0 && min <= mapScale) {
+      //最大比例尺必须大于最小比例尺
+      Toast.show(getLanguage(GLOBAL.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
+    }else{
+      SMap.setMaxVisibleScale(layerData.path, mapScale-0)
+    }
+  }
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_VISIBLE_SCALE, {
     containerType: ToolbarType.multiPicker,
     isFullScreen: false,

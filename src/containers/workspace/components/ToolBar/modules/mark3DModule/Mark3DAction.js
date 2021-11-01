@@ -7,7 +7,8 @@ import { SScene } from 'imobile_for_reactnative'
 import ToolbarModule from '../ToolbarModule'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType ,ToolbarType} from '../../../../../../constants'
+import Mark3DData from './Mark3DData'
 
 /** 兴趣点 * */
 function createPoint() {
@@ -112,7 +113,7 @@ function clearPlotting() {
   params.setToolbarVisible(false)
 }
 
-function close(type) {
+async function close(type) {
   const _params = ToolbarModule.getParams()
   if (
     type === ConstToolType.SM_MAP3D_MARK_POINT ||
@@ -121,13 +122,25 @@ function close(type) {
     type === ConstToolType.SM_MAP3D_MARK_TEXT
   ) {
     SScene.clearAllLabel()
-    _params.existFullMap && _params.existFullMap()
-    _params.setToolbarVisible(false)
+    // _params.existFullMap && _params.existFullMap()
+    // _params.setToolbarVisible(false)
+    const _data = await Mark3DData.getData(ConstToolType.SM_MAP3D_MARK, _params)
+    const containerType = ToolbarType.table
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    _params.showFullMap && _params.showFullMap(true)
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK, {
+      containerType,
+      isFullScreen: true,
+      ...data,
+      ..._data,
+    })
   }
   SScene.checkoutListener('startTouchAttribute')
   SScene.setAction('PAN3D')
   GLOBAL.action3d = 'PAN3D'
-  ToolbarModule.setData()
+  // ToolbarModule.setData()
 }
 
 export default {

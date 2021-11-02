@@ -220,7 +220,9 @@ class GroupSourceUploadPage extends Component<Props, State> {
     )
     zipPath = tempPath + availableName
     let resultData = await this.props.exportWorkspace(
-      { maps: [mapName], outPath: path, isOpenMap: true, zipPath }
+      { maps: [mapName], outPath: path, isOpenMap: true, zipPath, extra: {
+        exportMedia: true,
+      } }
     )
     return resultData
   }

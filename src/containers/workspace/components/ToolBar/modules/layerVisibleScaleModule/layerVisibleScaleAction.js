@@ -22,12 +22,6 @@ function pickerConfirm(item) {
   let { layerData, preScale } = data
   let min = item[0].selectedItem.value
   let max = item[1].selectedItem.value
-  if(data.selectmin){
-    min = data.selectmin
-  }
-  if(data.selectmax){
-    max = data.selectmax
-  }
   if(data.min){
     min = data.min
   }
@@ -46,8 +40,8 @@ function pickerConfirm(item) {
     _params.setToolbarVisible(false)
     _params.existFullMap()
     SMap.setMapScale(1 / preScale)
+    ToolbarModule.addData({min:false,max:false})
     // NavigationService.navigate('LayerManager')
-    ToolbarModule.addData({min:false,max:false,selectmin:false ,selectmax:false })
   }
 }
 

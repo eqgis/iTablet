@@ -303,7 +303,7 @@ export default class OnlineServicesUtils {
         let publishResultUrl = this.serverUrl + `/mycontent/datas/${id}/publishstatus.rjson?dataServiceId=${dataServiceId}&forPublish=true`
         let publishResult
         let overTime = 0 // 防止发布服务获取结果超时,返回undefined
-        while (!publishResult && overTime < 3) {
+        while (!publishResult && overTime < 10) {
           publishResult = await request(encodeURI(publishResultUrl), 'GET', {
             headers: headers,
             // body: null,

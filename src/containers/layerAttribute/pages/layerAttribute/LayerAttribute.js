@@ -1627,6 +1627,7 @@ export default class LayerAttribute extends React.Component {
           <LayerTopBar
             orientation={this.props.device.orientation}
             hasAddField={!GLOBAL.coworkMode}
+            hasCamera={GLOBAL.coworkMode && this.isMediaLayer || !GLOBAL.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
             canLocated={this.state.attributes.data.length > 1}
             canRelated={this.state.currentIndex >= 0}
             canDelete={this.state.currentIndex >= 0}

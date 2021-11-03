@@ -60,6 +60,10 @@ async function getVisibleScalePickerData() {
 async function getBasicData(min, max, customMin, customMax) {
   const option = [
     {
+      key: '无',
+      value: 0,
+    },
+    {
       key: '1 : 2,500',
       value: 2500,
     },
@@ -166,12 +170,12 @@ async function getBasicData(min, max, customMin, customMax) {
   }
   const customOptionMin = {
     key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE,
-    value: customMin || 0,
+    value: 0,
     type: 'min',
   }
   const customOptionMax = {
     key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE,
-    value: customMax || 0,
+    value: 0,
     type: 'max',
   }
   minOption.unshift(customOptionMin)

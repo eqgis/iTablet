@@ -509,10 +509,6 @@ export default class MeasureAreaView extends React.Component {
             })
           },
         })
-        // DeviceEventEmitter.addListener(
-        //   'onCurrentHeightChanged',
-        //   this.onCurrentHeightChanged,
-        // )
       }
     }.bind(this)())
     // })

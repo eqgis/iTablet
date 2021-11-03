@@ -75,53 +75,26 @@ export default class MeasureView extends React.Component {
           SMeasureView.fixedPosition(false, fixedPoint.x, fixedPoint.y, 0)
         }, 1000)
         //注册监听
-        if (Platform.OS === 'ios') {
-          iOSEventEmi.addListener(
-            'onCurrentLengthChanged',
-            this.onCurrentLengthChanged,
-          )
-          iOSEventEmi.addListener(
-            'onTotalLengthChanged',
-            this.onTotalLengthChanged,
-          )
-          iOSEventEmi.addListener(
-            'onCurrentToLastPntDstChanged',
-            this.onCurrentToLastPntDstChanged,
-          )
-          iOSEventEmi.addListener(
-            'onSearchingSurfaces',
-            this.onSearchingSurfaces,
-          )
-          iOSEventEmi.addListener(
-            'onSearchingSurfacesSucceed',
-            this.onSearchingSurfacesSucceed,
-          )
-        } else {
-          DeviceEventEmitter.addListener(
-            'onCurrentLengthChanged',
-            this.onCurrentLengthChanged,
-          )
-          DeviceEventEmitter.addListener(
-            'onTotalLengthChanged',
-            this.onTotalLengthChanged,
-          )
-          DeviceEventEmitter.addListener(
-            'onTotalAreaChanged',
-            this.onTotalAreaChanged,
-          )
-          DeviceEventEmitter.addListener(
-            'onCurrentToLastPntDstChanged',
-            this.onCurrentToLastPntDstChanged,
-          )
-          DeviceEventEmitter.addListener(
-            'onSearchingSurfaces',
-            this.onSearchingSurfaces,
-          )
-          DeviceEventEmitter.addListener(
-            'onSearchingSurfacesSucceed',
-            this.onSearchingSurfacesSucceed,
-          )
-        }
+        this.onCurrentLengthChangedListener = iOSEventEmi.addListener(
+          'onCurrentLengthChanged',
+          this.onCurrentLengthChanged,
+        )
+        this.onTotalLengthChangedListener =  iOSEventEmi.addListener(
+          'onTotalLengthChanged',
+          this.onTotalLengthChanged,
+        )
+        this.onCurrentToLastPntDstChangedListener = iOSEventEmi.addListener(
+          'onCurrentToLastPntDstChanged',
+          this.onCurrentToLastPntDstChanged,
+        )
+        this.onSearchingSurfacesListener = iOSEventEmi.addListener(
+          'onSearchingSurfaces',
+          this.onSearchingSurfaces,
+        )
+        this.onSearchingSurfacesSucceedListener = iOSEventEmi.addListener(
+          'onSearchingSurfacesSucceed',
+          this.onSearchingSurfacesSucceed,
+        )
       }.bind(this)())
     })
   }
@@ -130,31 +103,20 @@ export default class MeasureView extends React.Component {
     SMap.setDynamicviewsetVisible(true)
     Orientation.unlockAllOrientations()
     //移除监听
-    DeviceEventEmitter.removeListener(
-      'onCurrentLengthChanged',
-      this.onCurrentLengthChanged,
-    )
-    DeviceEventEmitter.removeListener(
-      'onTotalLengthChanged',
-      this.onTotalLengthChanged,
-    )
-    DeviceEventEmitter.removeListener(
-      'onTotalAreaChanged',
-      this.onTotalAreaChanged,
-    )
-    DeviceEventEmitter.removeListener(
-      'onCurrentToLastPntDstChanged',
-      this.onCurrentToLastPntDstChanged,
-    )
-    DeviceEventEmitter.removeListener(
-      'onSearchingSurfaces',
-      this.onSearchingSurfaces,
-    )
-    DeviceEventEmitter.removeListener(
-      'onSearchingSurfacesSucceed',
-      this.onSearchingSurfacesSucceed,
-    )
+    this.onSearchingSurfacesSucceedListener?.remove()
+    this.onSearchingSurfacesSucceedListener = null
 
+    this.onSearchingSurfacesListener?.remove()
+    this.onSearchingSurfacesListener = null
+
+    this.onCurrentToLastPntDstChangedListener?.remove()
+    this.onCurrentToLastPntDstChangedListener = null
+
+    this.onTotalLengthChangedListener?.remove()
+    this.onTotalLengthChangedListener = null
+
+    this.onCurrentLengthChangedListener?.remove()
+    this.onCurrentLengthChangedListener = null
     //注册监听
     if (Platform.OS !== 'ios') {
       SMeasureView.dispose()

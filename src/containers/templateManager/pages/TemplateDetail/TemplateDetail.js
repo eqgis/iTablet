@@ -403,6 +403,7 @@ export default class TemplateDetail extends React.Component {
         style={[styles.row, styles.listItem]}
         textColor={color.themeText2}
         fontSize={size.fontSize.fontSizeXl}
+        scrool={true}
         rightView={({ data, index }) => {
           return (
             <View style={styles.itemRightView}>

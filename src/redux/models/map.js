@@ -167,16 +167,16 @@ export const saveMap = (params = {}, cb = () => { }) => async (
     const { userName } = getState().user.toJS().currentUser
     let path = ''
     if (!params.notSaveToXML) {
-      const prefix = `@Label_${userName}#`
-      const regexp = new RegExp(prefix)
-      const layers = await SMap.getLayersByType(-1)
-      params.addition.filterLayers = layers
-        .filter(item => {
-          if (item.name.match(regexp)) {
-            return item
-          }
-        })
-        .map(val => val.name)
+      // const prefix = `@Label_${userName}#`
+      // const regexp = new RegExp(prefix)
+      // const layers = await SMap.getLayersByType(-1)
+      // params.addition.filterLayers = layers
+      //   .filter(item => {
+      //     if (item.name.match(regexp)) {
+      //       return item
+      //     }
+      //   })
+      //   .map(val => val.name)
 
       if (currentMap.Template) {
         params.addition.Template = currentMap.Template

@@ -242,14 +242,8 @@ export default class CollectSceneFormView extends React.Component {
     // this.DatumPointDialog.setDialogVisible(true)
     // GLOBAL.Loading.setLoading(true)
     //注册监听
-    if (Platform.OS === 'ios') {
-      nativeEvt.addListener('onTotalLengthChanged', this.onTotalLengthChanged)
-    } else {
-      DeviceEventEmitter.addListener(
-        'onTotalLengthChanged',
-        this.onTotalLengthChanged,
-      )
-    }
+    this.onTotalLengthChangedListener?.remove()
+    this.onTotalLengthChangedListener = nativeEvt.addListener('onTotalLengthChanged', this.onTotalLengthChanged)
 
     // 判断图层类型，是否显示相应保存按钮
     await this._checkSaveDatset()
@@ -260,17 +254,7 @@ export default class CollectSceneFormView extends React.Component {
     Orientation.unlockAllOrientations()
     SCollectSceneFormView.onPause()
     //移除监听
-    if (Platform.OS === 'ios') {
-      nativeEvt.removeListener(
-        'onTotalLengthChanged',
-        this.onTotalLengthChanged,
-      )
-    } else {
-      DeviceEventEmitter.removeListener(
-        'onTotalLengthChanged',
-        this.onTotalLengthChanged,
-      )
-    }
+    this.onTotalLengthChangedListener?.remove()
   }
 
   // 判断图层类型，是否显示相应保存按钮

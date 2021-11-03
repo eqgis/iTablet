@@ -64,7 +64,7 @@ export default class LayerVisibilityView extends Component {
               mapScale,
             })
           }}
-          onEndEditing={evt => {
+          onEndEditing={async evt => {
             let mapScale = 0
             if (
               (evt.nativeEvent.text !== '' && isNaN(evt.nativeEvent.text)) ||
@@ -74,7 +74,8 @@ export default class LayerVisibilityView extends Component {
             } else {
               mapScale = Number.parseFloat(this.state.mapScale)
               //地图比例尺跟着变
-              SMap.setMapScale(1 / mapScale)
+              await SMap.setMapScale(1.0 / mapScale)
+              SMap.refreshMap()
             }
             this.setState({
               mapScale,

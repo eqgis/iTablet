@@ -7,6 +7,8 @@ import axios from 'axios'
 // eslint-disable-next-line import/default
 import CookieManager from 'react-native-cookies'
 import { UserType } from '../constants'
+import { getLanguage } from '../language'
+import { Toast } from '../utils'
 import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
 import RNFetchBlob from 'rn-fetch-blob'
 import { TLoginUserType } from '../constants/UserType'
@@ -313,6 +315,8 @@ export default class OnlineServicesUtils {
         if (publishResult) {
           publishResult.customResult = dataServiceId
           publishResults.push(publishResult)
+        } else if (overTime === 10) {
+          Toast.show(getLanguage(GLOBAL.language).Prompt.REQUEST_TIMEOUT)
         }
       }
 
@@ -631,11 +635,23 @@ export default class OnlineServicesUtils {
         }
       }
       url = encodeURI(url)
-      let response = await RNFetchBlob.config({trusty:true}).fetch('POST', url, headers, 
-      JSON.stringify({
-        fileName: fileName,
-        type: fileType,
-      }))
+      let response
+      if (Platform.OS === 'ios' || this.type === 'OnlineJP') {
+        response = await RNFetchBlob.config({trusty:true}).fetch('POST', url, headers, 
+        JSON.stringify({
+          fileName: fileName,
+          type: fileType,
+        }))
+      } else {
+        response = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            fileName: fileName,
+            type: fileType,
+          }),
+        })
+      }
       let result = await response.json()
       if (result.childID) {
         return result.childID

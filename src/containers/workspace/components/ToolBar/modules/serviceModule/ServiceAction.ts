@@ -301,9 +301,16 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
     return
   }
   const _params: any = ToolbarModule.getParams()
-  const _datasourceAlias = datasourceAlias || `Label_${
-    _params.user.currentUser.userName
-  }#`
+  let _datasourceAlias
+  if (datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+    _datasourceAlias = `Label_${
+      _params.user.currentUser.userName
+    }#`
+  } else {
+    _datasourceAlias = datasourceAlias || `Label_${
+      _params.user.currentUser.userName
+    }#`
+  }
   return SCoordinationUtils.getScoordiantion().downloadToLocal(datasetUrl, _datasourceAlias || '')
 }
 
@@ -542,10 +549,6 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
     fileName = pinyin.getPinYin(fileName, '', false)
 
     let publishDataType: keyof OnlineDataType = 'WORKSPACE'
-    // let publishDataType: keyof OnlineDataType = 'UDB'
-    // if (UserType.isOnlineUser(_params.user.currentUser)) {
-    //   publishDataType = 'WORKSPACE'
-    // }
 
     let exportResult = await exportData(fileName, datasourcePath, datasets, publishDataType)
     result = exportResult.result
@@ -583,48 +586,40 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
               entities: entities,
             })
             result = shareResult.succeed
+            let msgObj = {
+              type: MsgConstant.MSG_COWORK,
+              time: new Date().getTime(),
+              user: {
+                name: _params.user.currentUser.nickname,
+                id: _params.user.currentUser.userName,
+                groupID: _params.currentTask.id,     // 任务群组
+                groupName: '',
+                coworkGroupId: _params.currentTask.groupID,     // online协作群组
+                coworkGroupName: _params.currentTask.groupName,
+                taskId: _params.currentTask.id,
+              },
+              message: {
+                type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
+                datasourceAlias: datasourceAlias,
+                datasetName: publishResults[0].customResult,
+                serviceUrl: `${service.content[0].proxiedUrl}/data/datasources/${publishData.datasets[0]}/datasets/${publishData.datasets[0]}`,
+              },
+            }
+            let msgStr = JSON.stringify(msgObj)
+            await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
           } else {
             result = false
           }
-          // let msgObj = {
-          //   type: MsgConstant.MSG_COWORK,
-          //   time: new Date().getTime(),
-          //   user: {
-          //     name: _params.user.currentUser.nickname,
-          //     id: _params.user.currentUser.userName,
-          //     groupID: _params.currentTask.id,     // 任务群组
-          //     groupName: '',
-          //     coworkGroupId: _params.currentTask.groupID,     // online协作群组
-          //     coworkGroupName: _params.currentTask.groupName,
-          //     taskId: _params.currentTask.id,
-          //   },
-          //   message: {
-          //     type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
-          //     datasetName: publishResults[0].customResult,
-          //     serviceUrl: res.content.urlDataset,
-          //   },
-          // }
-          // let msgStr = JSON.stringify(msgObj)
-          // await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+          result = false
         }
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+        result = false
       }
       await FileTools.deleteFile(targetPath)
     }
   } catch (error) {
     console.warn(error)
-    //发布完成
-    // _params.setCoworkService({
-    //   groupId: _params.currentTask.groupID,
-    //   taskId: _params.currentTask.id,
-    //   service: {
-    //     layerName: publishData.layerName,
-    //     status: 'done',
-    //   },
-    // })
   } finally {
     //发布完成
     _params.setCoworkService({

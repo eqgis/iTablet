@@ -74,6 +74,7 @@ async function getData(type, params) {
           disable:
             (layerType !== 'TAGGINGLAYER' &&
               layerType !== 'CADLAYER' &&
+              layerType === 'LAYERGROUP' &&
               layerType !== 'POINTLAYER') ||
             isTourLayer ||
             ToolbarModule.getParams().currentLayer.isHeatmap,
@@ -81,6 +82,7 @@ async function getData(type, params) {
           image:
             (layerType !== 'TAGGINGLAYER' &&
               layerType !== 'CADLAYER' &&
+              layerType === 'LAYERGROUP' &&
               layerType !== 'POINTLAYER') ||
             isTourLayer ||
             ToolbarModule.getParams().currentLayer.isHeatmap
@@ -97,12 +99,14 @@ async function getData(type, params) {
             datasetDescription?.type === 'onlineService' || // 数据服务图层不支持文字
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'TEXTLAYER' ||
             isTourLayer,
           image:
             datasetDescription?.type === 'onlineService' || // 数据服务图层不支持文字
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'TEXTLAYER' ||
             isTourLayer
               ? getThemeAssets().mark.icon_text_ash
@@ -117,11 +121,13 @@ async function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'LINELAYER' ||
             isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'LINELAYER' ||
             isTourLayer
               ? getThemeAssets().mark.icon_dotted_lines_ash
@@ -136,11 +142,13 @@ async function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'LINELAYER' ||
             isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'LINELAYER' ||
             isTourLayer
               ? getThemeAssets().mark.icon_free_line_ash
@@ -155,11 +163,13 @@ async function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'REGIONLAYER' ||
             isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'REGIONLAYER' ||
             isTourLayer
               ? getThemeAssets().mark.icon_frame_ash
@@ -174,11 +184,13 @@ async function getData(type, params) {
           disable:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'REGIONLAYER' ||
             isTourLayer,
           image:
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
+            layerType === 'LAYERGROUP' &&
             layerType !== 'REGIONLAYER' ||
             isTourLayer
               ? getThemeAssets().mark.icon_free_region_ash
@@ -190,7 +202,11 @@ async function getData(type, params) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
           action: MarkAction.showEditLabel,
           size: 'large',
-          image: getThemeAssets().mark.icon_edit,
+          disable: layerType === 'LAYERGROUP',
+          image:
+            layerType === 'LAYERGROUP'
+              ? getThemeAssets().mark.icon_edit_ash
+              : getThemeAssets().mark.icon_edit,
         },
       ]
       break

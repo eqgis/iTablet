@@ -402,6 +402,9 @@ function getLayerType(currentLayer) {
         case DatasetType.IMAGE:
           layerType = 'IMAGELAYER'
           break
+        case 'layerGroup':
+          layerType = 'LAYERGROUP'
+          break
       }
     }
     return layerType

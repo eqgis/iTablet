@@ -4584,7 +4584,7 @@ export default class MapView extends React.Component {
 
   renderCurrentHeightChangeView() {
     return (
-      <View style={styles.currentHeightChangeView}>
+      <View style={[styles.currentHeightChangeView,{top: scaleSize(100)+screen.getIphonePaddingTop()}]}>
         <Text style={styles.titleCurrentHeight}>
           {this.state.currentHeight}
         </Text>

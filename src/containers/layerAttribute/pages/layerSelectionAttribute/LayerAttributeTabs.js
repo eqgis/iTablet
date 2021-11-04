@@ -155,10 +155,11 @@ export default class LayerAttributeTabs extends React.Component {
     this.currentTabRefs = []
     this.init = !!selectionAttribute
     this.backClicked = false
+    this.isMediaLayer = false // 是否是多媒体图层
   }
 
-  componentDidMount() {
-    (async function () {
+  async componentDidMount() {
+    try {
       await this.props.setBackAction({
         key: this.props.navigation.state.routeName,
         action: this.back,
@@ -166,42 +167,51 @@ export default class LayerAttributeTabs extends React.Component {
       if (this.preAction && typeof this.preAction === 'function') {
         await this.preAction()
       }
+      let layerInfo
       if (this.state.isCollection) {
+        layerInfo =  {
+          path: this.props.currentLayer.path,
+          type: 149,
+          selectTable: true,
+          Visible: true,
+          editable: false,
+          caption: this.props.currentLayer.caption,
+          name: this.props.currentLayer.name,
+        }
         // const layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
         let id = await SMap.getCurrentGeometryID(this.props.currentLayer.path)
         // let id = await SMap.getCurrentGeometryID(GLOBAL.currentLayer.name)
         this.props.setSelection && this.props.setSelection([{
-          layerInfo: {
-            path: this.props.currentLayer.path,
-            type: 149,
-            selectTable: true,
-            Visible: true,
-            editable: false,
-            caption: this.props.currentLayer.caption,
-            name: this.props.currentLayer.name,
-          },
+          layerInfo: layerInfo,
           ids: [id],
         }])
-      }
-      if (this.type === 'MY_DATA') {
+      } else if (this.type === 'MY_DATA') {
+        layerInfo = {
+          path: this.datasetName,
+          type: 149,
+          selectTable: true,
+          Visible: true,
+          editable: false,
+          caption: this.datasetName,
+          name: this.datasetName,
+        }
         let id = await SMap.getDatasetGeometryID(this.datasetName)
         this.props.setSelection && this.props.setSelection([{
-          layerInfo: {
-            path: this.datasetName,
-            type: 149,
-            selectTable: true,
-            Visible: true,
-            editable: false,
-            caption: this.datasetName,
-            name: this.datasetName,
-          },
+          layerInfo: layerInfo,
           ids: id,
         }])
+      } else {
+        layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
       }
+      this.isMediaLayer = await SMediaCollector.isMediaLayer(layerInfo.name)
       this.setState({
         isShowView: true,
       })
-    }.bind(this)())
+    } catch(e) {
+      this.setState({
+        isShowView: true,
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -989,6 +999,8 @@ export default class LayerAttributeTabs extends React.Component {
       >
         <LayerTopBar
           hasTabBtn
+          hasAddField={!GLOBAL.coworkMode}
+          hasCamera={GLOBAL.coworkMode && this.isMediaLayer || !GLOBAL.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
           orientation={this.props.device.orientation}
           tabsAction={this.showDrawer}
           canLocated={this.state.attributes.data.length > 1}

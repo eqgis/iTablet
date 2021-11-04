@@ -146,9 +146,9 @@ export default class CoworkInfo {
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&
           Toast.show(getLanguage(GLOBAL.language).Friends.ADD_DELETE_ERROR)
-      } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE) {
+      } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE || type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
         let url = message.message.serviceUrl
-        result = await serviceModule().actions.downloadToLocal(url)
+        result = await serviceModule().actions.downloadToLocal(url, message?.message?.DatasourceAlias)
         result && this.consumeMessage(message.messageID)
       }
       return result
@@ -237,6 +237,10 @@ export default class CoworkInfo {
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE) {
         let url = message.message.serviceUrl
         result = await serviceModule().actions.updateToLocal({ url })
+        result && this.consumeMessage(message.messageID)
+      } else if (type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
+        let url = message.message.serviceUrl
+        result = await serviceModule().actions.downloadToLocal(url, message?.message?.datasourceAlias)
         result && this.consumeMessage(message.messageID)
       }
       return result

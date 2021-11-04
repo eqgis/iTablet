@@ -33,11 +33,12 @@ function getData(type: string, params: any) {
           title: getLanguage(GLOBAL.language).Cowork.UPDATE_LOCAL_SERVICE,
           action: ({ layerData }: ActionParams) => {
             const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
-            if (datasetDescription.type !== 'onlineService') {
+            if (datasetDescription?.type !== 'onlineService') {
               return
             }
             ServiceAction.updateToLocal({
               url: datasetDescription.url,
+              datasourceAlias: layerData.datasourceAlias,
               datasetName: layerData.datasetName,
             })
           },
@@ -49,7 +50,7 @@ function getData(type: string, params: any) {
           title: getLanguage(GLOBAL.language).Cowork.SUBMIT_SERVICE,
           action: ({ layerData }: ActionParams) => {
             const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
-            if (datasetDescription.type !== 'onlineService') {
+            if (datasetDescription?.type !== 'onlineService') {
               return
             }
             ServiceAction.uploadToService({
@@ -78,7 +79,7 @@ function getData(type: string, params: any) {
                 await SMap.checkCurrentModule()
                 if (!name) return
                 const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
-                if (datasetDescription.type === 'onlineService') {
+                if (datasetDescription?.type === 'onlineService') {
                   return
                 }
                 if (!layerData.datasetName) return
@@ -95,13 +96,18 @@ function getData(type: string, params: any) {
                 })
                 // _params.setContainerLoading?.(true, getLanguage(_params.language).Prompt.PUBLISHING)
 
-                let datasourcePath = await FileTools.appendingHomeDirectory(
-                  ConstPath.UserPath + _params.user.currentUser.userName + '/' +
+                let datasourcePath = await FileTools.appendingHomeDirectory()
+                if (layerData?.datasourceAlias?.indexOf('Label_' + _params.user.currentUser.userName) === 0) {
+                  datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
                   ConstPath.RelativePath.Label +
                   'Label_' +
                   _params.user.currentUser.userName +
                   '#.udb'
-                )
+                } else {
+                  datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
+                  ConstPath.RelativePath.Datasource +
+                  layerData.datasourceAlias + '.udb'
+                }
                 if (layerData.datasourceAlias) {
                   const {result, content} = await ServiceAction.publishServiceToGroup(name, {
                     layerName: layerData.name,

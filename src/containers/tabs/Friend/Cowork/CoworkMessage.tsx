@@ -286,6 +286,11 @@ class CoworkMessageItem extends PureComponent<ItemProps, {}> {
         actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
         geoType = message.message.datasetName
         break
+      case MsgConstant.MSG_COWORK_SERVICE_PUBLISH:
+        action = getLanguage(GLOBAL.language).Cowork.PUBLISH + ' ' + getLanguage(GLOBAL.language).Profile.SERVICE
+        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
+        geoType = message.message.datasetName
+        break
     }
     if (!geoType) {
       switch (message.message.geoType) {

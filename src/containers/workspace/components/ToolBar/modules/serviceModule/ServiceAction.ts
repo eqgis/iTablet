@@ -81,73 +81,89 @@ async function addServiceLayer(datasetName: string) {
     }
   },
   updateHandler: async res => {
-    Toast.show(res.result ? getLanguage(GLOBAL.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED)
-    const params: any = ToolbarModule.getParams()
-    // 上传完成
-    res.content && params.setCoworkService({
-      groupId: params.currentTask.groupID,
-      taskId: params.currentTask.id,
-      service: {
-        datasetUrl: res.content?.urlDataset,
-        status: 'done',
-      },
-    })
-    if (res.result && res.content?.dataset) {
-      for (let layer of params.layers.layers) {
-        if (layer.datasetName === res.content.dataset) {
-          await SMediaCollector.hideMedia(layer.name)
-          await SMediaCollector.showMedia(layer.name, false)
-          break
-        }
+    try {
+      let msg = res.result ? getLanguage(GLOBAL.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED
+      if (res?.error?.reason) {
+        msg = res?.error?.reason
       }
-      if (!res.content) return
-      let _datasetUrl = res.content.urlDataset
-      const coworkMessages = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask?.groupID]?.[params.currentTask?.id]?.messages || []
-      if (coworkMessages.length > 0) {
-        for (const message of coworkMessages) {
-          if (message.message?.serviceUrl === _datasetUrl && message.status === 0) {
-            CoworkInfo.consumeMessage(message.messageID)
+      Toast.show(msg)
+      const params: any = ToolbarModule.getParams()
+      // 上传完成
+      res.content && params.setCoworkService({
+        groupId: params.currentTask.groupID,
+        taskId: params.currentTask.id,
+        service: {
+          datasetUrl: res.content?.urlDataset,
+          status: 'done',
+        },
+      })
+      if (res.result && res.content?.dataset) {
+        for (let layer of params.layers.layers) {
+          if (layer.datasetName === res.content.dataset) {
+            await SMediaCollector.hideMedia(layer.name)
+            await SMediaCollector.showMedia(layer.name, false)
+            break
+          }
+        }
+        if (!res.content) return
+        let _datasetUrl = res.content.urlDataset
+        const coworkMessages = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask?.groupID]?.[params.currentTask?.id]?.messages || []
+        if (coworkMessages.length > 0) {
+          for (const message of coworkMessages) {
+            if (message.message?.serviceUrl === _datasetUrl && message.status === 0) {
+              CoworkInfo.consumeMessage(message.messageID)
+            }
           }
         }
       }
+    } catch (error) {
+      Toast.show(getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED)
     }
   },
   uploadHandler: async res => {
-    // 发送消息给其他组员
-    Toast.show(res.result ? getLanguage(GLOBAL.language).Cowork.UPLOAD_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED)
-    const params: any = ToolbarModule.getParams()
-    // 上传完成
-    res.content && params.setCoworkService({
-      groupId: params.currentTask.groupID,
-      taskId: params.currentTask.id,
-      service: {
-        datasetUrl: res.content?.urlDataset,
-        status: 'done',
-      },
-    })
-    if (res.result && res.content) {
-      if (!res.result) return
-      const _params: any = ToolbarModule.getParams()
-      let msgObj = {
-        type: MsgConstant.MSG_COWORK,
-        time: new Date().getTime(),
-        user: {
-          name: _params.user.currentUser.nickname,
-          id: _params.user.currentUser.userName,
-          groupID: _params.currentTask.id,     // 任务群组
-          groupName: '',
-          coworkGroupId: _params.currentTask.groupID,     // online协作群组
-          coworkGroupName: _params.currentTask.groupName,
-          taskId: _params.currentTask.id,
-        },
-        message: {
-          type: MsgConstant.MSG_COWORK_SERVICE_UPDATE,
-          datasetName: res.content.dataset,
-          serviceUrl: res.content.urlDataset,
-        },
+    try {
+      // 发送消息给其他组员
+      let msg = res.result ? getLanguage(GLOBAL.language).Cowork.UPLOAD_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED
+      if (res?.error?.reason) {
+        msg = res?.error?.reason
       }
-      let msgStr = JSON.stringify(msgObj)
-      await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+      Toast.show(msg)
+      const params: any = ToolbarModule.getParams()
+      // 上传完成
+      res.content && params.setCoworkService({
+        groupId: params.currentTask.groupID,
+        taskId: params.currentTask.id,
+        service: {
+          datasetUrl: res.content?.urlDataset,
+          status: 'done',
+        },
+      })
+      if (res.result && res.content) {
+        if (!res.result) return
+        const _params: any = ToolbarModule.getParams()
+        let msgObj = {
+          type: MsgConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: _params.user.currentUser.nickname,
+            id: _params.user.currentUser.userName,
+            groupID: _params.currentTask.id,     // 任务群组
+            groupName: '',
+            coworkGroupId: _params.currentTask.groupID,     // online协作群组
+            coworkGroupName: _params.currentTask.groupName,
+            taskId: _params.currentTask.id,
+          },
+          message: {
+            type: MsgConstant.MSG_COWORK_SERVICE_UPDATE,
+            datasetName: res.content.dataset,
+            serviceUrl: res.content.urlDataset,
+          },
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+      }
+    } catch (error) {
+      Toast.show(getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED)
     }
   },
 })
@@ -285,9 +301,16 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
     return
   }
   const _params: any = ToolbarModule.getParams()
-  const _datasourceAlias = datasourceAlias || `Label_${
-    _params.user.currentUser.userName
-  }#`
+  let _datasourceAlias
+  if (datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+    _datasourceAlias = `Label_${
+      _params.user.currentUser.userName
+    }#`
+  } else {
+    _datasourceAlias = datasourceAlias || `Label_${
+      _params.user.currentUser.userName
+    }#`
+  }
   return SCoordinationUtils.getScoordiantion().downloadToLocal(datasetUrl, _datasourceAlias || '')
 }
 
@@ -315,9 +338,16 @@ async function updateToLocal (layerData: {
         status: 'update',
       },
     })
-    const datasourceAlias = layerData.datasourceAlias || `Label_${
-      _params.user.currentUser.userName
-    }#`
+    let datasourceAlias
+    if (layerData.datasourceAlias?.indexOf('Label_') === 0 && layerData.datasourceAlias?.indexOf('#') == layerData.datasourceAlias?.length - 1) {
+      datasourceAlias = `Label_${
+        _params.user.currentUser.userName
+      }#`
+    } else {
+      datasourceAlias = layerData.datasourceAlias || `Label_${
+        _params.user.currentUser.userName
+      }#`
+    }
     const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
     const params: any = ToolbarModule.getParams()
     let isAdded = false
@@ -331,6 +361,17 @@ async function updateToLocal (layerData: {
       result = await SCoordinationUtils.getScoordiantion().downloadToLocal(layerData.url, datasourceAlias)
     }
     result = await SCoordinationUtils.getScoordiantion().updateToLocal(layerData.url, datasourceAlias, datasetName)
+    // 失败直接改变状态,成功走回调
+    if (!result) {
+      _params.setCoworkService({
+        groupId: _params.currentTask.groupID,
+        taskId: _params.currentTask.id,
+        service: {
+          datasetUrl: layerData.url,
+          status: 'done',
+        },
+      })
+    }
   } catch (error) {
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
@@ -369,9 +410,16 @@ async function uploadToService(layerData: {
         status: 'upload',
       },
     })
-    const datasourceAlias = layerData.datasourceAlias || `Label_${
-      _params.user.currentUser.userName
-    }#`
+    let datasourceAlias
+    if (layerData.datasourceAlias?.indexOf('Label_') === 0 && layerData.datasourceAlias?.indexOf('#') == layerData.datasourceAlias?.length - 1) {
+      datasourceAlias = `Label_${
+        _params.user.currentUser.userName
+      }#`
+    } else {
+      datasourceAlias = layerData.datasourceAlias || `Label_${
+        _params.user.currentUser.userName
+      }#`
+    }
     const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
     result = await SCoordinationUtils.getScoordiantion().uploadToService(layerData.url, datasourceAlias, datasetName)
   } catch (error) {
@@ -501,10 +549,6 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
     fileName = pinyin.getPinYin(fileName, '', false)
 
     let publishDataType: keyof OnlineDataType = 'WORKSPACE'
-    // let publishDataType: keyof OnlineDataType = 'UDB'
-    // if (UserType.isOnlineUser(_params.user.currentUser)) {
-    //   publishDataType = 'WORKSPACE'
-    // }
 
     let exportResult = await exportData(fileName, datasourcePath, datasets, publishDataType)
     result = exportResult.result
@@ -527,8 +571,8 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
       }
       if(uploadResult) {
         const publishResults = await Service.publishService(uploadResult, publishDataType, 'RESTDATA')
-        result = publishResults[0].succeed
-        if (publishResults[0].succeed && publishResults[0].customResult) {
+        result = publishResults?.[0]?.succeed || false
+        if (result && publishResults[0].customResult) {
           const service = await SCoordinationUtils.getScoordiantion().getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
           // const service = await SCoordinationUtils.getScoordiantion().getUserServices({})
           if (service.content.length > 0) {
@@ -542,43 +586,40 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
               entities: entities,
             })
             result = shareResult.succeed
+            let msgObj = {
+              type: MsgConstant.MSG_COWORK,
+              time: new Date().getTime(),
+              user: {
+                name: _params.user.currentUser.nickname,
+                id: _params.user.currentUser.userName,
+                groupID: _params.currentTask.id,     // 任务群组
+                groupName: '',
+                coworkGroupId: _params.currentTask.groupID,     // online协作群组
+                coworkGroupName: _params.currentTask.groupName,
+                taskId: _params.currentTask.id,
+              },
+              message: {
+                type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
+                datasourceAlias: datasourceAlias,
+                datasetName: publishResults[0].customResult,
+                serviceUrl: `${service.content[0].proxiedUrl}/data/datasources/${publishData.datasets[0]}/datasets/${publishData.datasets[0]}`,
+              },
+            }
+            let msgStr = JSON.stringify(msgObj)
+            await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
           } else {
             result = false
           }
-          // let msgObj = {
-          //   type: MsgConstant.MSG_COWORK,
-          //   time: new Date().getTime(),
-          //   user: {
-          //     name: _params.user.currentUser.nickname,
-          //     id: _params.user.currentUser.userName,
-          //     groupID: _params.currentTask.id,     // 任务群组
-          //     groupName: '',
-          //     coworkGroupId: _params.currentTask.groupID,     // online协作群组
-          //     coworkGroupName: _params.currentTask.groupName,
-          //     taskId: _params.currentTask.id,
-          //   },
-          //   message: {
-          //     type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
-          //     datasetName: publishResults[0].customResult,
-          //     serviceUrl: res.content.urlDataset,
-          //   },
-          // }
-          // let msgStr = JSON.stringify(msgObj)
-          // await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+        } else {
+          result = false
         }
+      } else {
+        result = false
       }
       await FileTools.deleteFile(targetPath)
     }
   } catch (error) {
-    //发布完成
-    // _params.setCoworkService({
-    //   groupId: _params.currentTask.groupID,
-    //   taskId: _params.currentTask.id,
-    //   service: {
-    //     layerName: publishData.layerName,
-    //     status: 'done',
-    //   },
-    // })
+    console.warn(error)
   } finally {
     //发布完成
     _params.setCoworkService({

@@ -745,7 +745,7 @@ export default class MT_layerManager extends React.Component {
         if (services?.length > 0) {
           for (const service of services) {
             if ((
-              dsDescription.url && service.datasetUrl === dsDescription.url ||
+              dsDescription?.url && service.datasetUrl === dsDescription?.url ||
               service.layerName === item.name
             ) && service.status !== 'done') {
               return true

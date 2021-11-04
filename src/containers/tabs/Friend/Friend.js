@@ -117,7 +117,7 @@ export default class Friend extends Component {
   }
 
   componentDidMount() {
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+    if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
       FriendListFileHandle.initLocalFriendList(this.props.user.currentUser)
       //TODO 临时处理，app加载流程修改后在此处进行第一次连接服务
       this.updateServices()
@@ -315,7 +315,7 @@ export default class Friend extends Component {
   /************************** 处理状态变更 ***********************************/
 
   handleStateChange = async appState => {
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+    if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
       if (appState === 'inactive') {
         return
       }
@@ -342,7 +342,7 @@ export default class Friend extends Component {
 
   // eslint-disable-next-line no-unused-vars
   handleNetworkState = state => {
-    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+    if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
       this.restartService()
     }
   }

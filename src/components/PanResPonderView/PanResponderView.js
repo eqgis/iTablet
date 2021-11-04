@@ -5,9 +5,10 @@
  * description: 铺满容器的PanResponder 可选带顶部指示条
  */
 import React from 'react'
-import { StyleSheet, View, PanResponder } from 'react-native'
+import { StyleSheet, View, PanResponder ,Image} from 'react-native'
 import { color } from '../../styles'
 import { scaleSize } from '../../utils'
+import { getPublicAssets } from '../../assets'
 
 const STATE_TYPE = {
   LEFT: 'left',
@@ -86,22 +87,31 @@ export default class PanResponderView extends React.PureComponent {
   }
 
   _renderTopBar = () => {
-    let curStyle
+    let curStyle ,image
     switch (this.state.currentState) {
       case STATE_TYPE.LEFT:
         curStyle = { left: 0 }
+        image = getPublicAssets().common.icon_left_point
         break
       case STATE_TYPE.CENTER:
         curStyle = { left: '49%' }
+        image = getPublicAssets().common.icon_point
         break
       case STATE_TYPE.RIGHT:
         curStyle = { right: 0 }
+        image = getPublicAssets().common.icon_right_point
         break
     }
     return (
       <View style={styles.topbar}>
         <View style={styles.track} />
-        <View style={[styles.circle, curStyle]} />
+        {/* <View style={[styles.circle, curStyle]} /> */}
+        <Image
+          resizeMode={'contain'}
+          style={[styles.circle, curStyle]}
+          accessible={true}
+          source={image}
+        />
       </View>
     )
   }
@@ -133,15 +143,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: scaleSize(10),
     borderRadius: scaleSize(5),
-    marginVertical: scaleSize(10),
+    marginVertical: scaleSize(21),
     backgroundColor: color.blue1,
   },
   circle: {
     marginHorizontal: scaleSize(25),
     position: 'absolute',
-    width: scaleSize(30),
-    height: scaleSize(30),
-    borderRadius: scaleSize(15),
-    backgroundColor: color.blue1,
+    width: scaleSize(50),
+    height: scaleSize(50),
+    // borderRadius: scaleSize(15),
+    // backgroundColor: color.black,
   },
 })

@@ -72,6 +72,10 @@ const icon_complete = require('./icon_complete.png')
 
 const icon_move_left_right = require('./icon_move_left_right.png')
 
+const icon_left_point = require('./left_point.png')
+const icon_right_point = require('./right_point.png')
+const icon_point = require('./point.png')
+
 export default {
   icon_undo,
   icon_search,
@@ -144,4 +148,8 @@ export default {
   icon_downloading,
   icon_complete,
   icon_move_left_right,
+
+  icon_left_point,
+  icon_right_point,
+  icon_point,
 }

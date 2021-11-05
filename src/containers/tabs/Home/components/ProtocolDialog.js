@@ -68,7 +68,10 @@ export default class ProtocolDialog extends Component {
     return (
       <WebView
         ref={ref => (this.webView = ref)}
-        style={{ flex: 1, paddingVertical: 0, backgroundColor: 'transparent' }}
+        style={{
+          height: fixedSize(500),
+          width: fixedSize(500), paddingVertical: 0, backgroundColor: 'transparent',
+        }}
         source={source}
         // source={{
         //   uri:

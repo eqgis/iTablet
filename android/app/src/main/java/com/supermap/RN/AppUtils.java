@@ -49,7 +49,7 @@ public class AppUtils extends ReactContextBaseJavaModule {
             Boolean res =  (mReactContext.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
             promise.resolve(res);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
     }
 
@@ -119,7 +119,7 @@ public class AppUtils extends ReactContextBaseJavaModule {
             String contry = locale.getCountry();
             promise.resolve(language + '-'+ contry);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve("");
         }
      }
 
@@ -128,7 +128,7 @@ public class AppUtils extends ReactContextBaseJavaModule {
         try {
             promise.resolve(appManager.getAppManager().isWXInstalled());
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
     }
 
@@ -139,7 +139,7 @@ public class AppUtils extends ReactContextBaseJavaModule {
             Boolean result=appManager.getAppManager().sendFileOfWechat(params);
             promise.resolve(result);
         }catch (Exception e){
-            promise.reject(e);
+            promise.resolve(false);
         }
     }
 
@@ -186,7 +186,7 @@ public class AppUtils extends ReactContextBaseJavaModule {
                 }
             }).start();
         }catch (Exception e){
-            promise.reject(e);
+            promise.resolve(false);
         }
     }
 
@@ -196,8 +196,9 @@ public class AppUtils extends ReactContextBaseJavaModule {
             if (!MainActivity.getInstance().isFinishing()) {
                 MainActivity.getInstance().loadBundle();
             }
+            promise.resolve(true);
         } catch (Exception e){
-            promise.reject(e);
+            promise.resolve(false);
         }
     }
 

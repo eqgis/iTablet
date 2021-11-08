@@ -97,7 +97,7 @@ export default class FriendListFileHandle {
    * @param {*} user currentUser
    */
   static async initLocalFriendList(user: UserInfo) {
-    if (!UserType.isOnlineUser(user)) {
+    if (!UserType.isOnlineUser(user) && !UserType.isIPortalUser(user)) {
       return
     }
     await FriendListFileHandle.init(user)
@@ -110,7 +110,7 @@ export default class FriendListFileHandle {
    * @param {*} user currentUser
    */
   static async initFriendList(user: UserInfo) {
-    if (!UserType.isOnlineUser(user)) {
+    if (!UserType.isOnlineUser(user) && !UserType.isIPortalUser(user)) {
       return
     }
     await FriendListFileHandle.init(user)
@@ -130,6 +130,8 @@ export default class FriendListFileHandle {
         if (isJSON(value) === true) {
           FriendListFileHandle.friends = JSON.parse(value)
         }
+      } else {
+        FriendListFileHandle.friends = undefined
       }
 
       if (await FileTools.fileIsExist(FriendListFileHandle.friendListFile_ol)) {

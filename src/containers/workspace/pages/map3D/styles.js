@@ -111,6 +111,7 @@ export default StyleSheet.create({
   },
   addAndSubText: {
     height: scaleSize(70),
+    marginTop:scaleSize(10),
     justifyContent: 'center',
   },
   iconSap: {

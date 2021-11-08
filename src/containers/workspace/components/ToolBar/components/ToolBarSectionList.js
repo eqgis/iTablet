@@ -336,7 +336,7 @@ export default class ToolBarSectionList extends React.Component {
             ellipsizeMode={'tail'}
             style={[styles.sectionTitle, this.props.sectionTitleStyle,
               isLandscape && (section.expressionType || section.buttons || section.extraData) &&{
-                maxWidth: scaleSize(100),
+                maxWidth: scaleSize(120),
               }]}
           >
             {section.title}

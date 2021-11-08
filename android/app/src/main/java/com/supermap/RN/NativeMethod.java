@@ -105,7 +105,8 @@ public class NativeMethod extends ReactContextBaseJavaModule {
             promise.resolve(templateList);
 
         } catch (Exception e) {
-            promise.reject(e);
+            WritableArray arr = Arguments.createArray();
+            promise.resolve(arr);
         }
     }
 
@@ -147,7 +148,8 @@ public class NativeMethod extends ReactContextBaseJavaModule {
             promise.resolve(templateList);
 
         } catch (Exception e) {
-            promise.reject(e);
+            WritableArray arr = Arguments.createArray();
+            promise.resolve(arr);
         }
     }
 

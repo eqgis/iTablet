@@ -191,17 +191,17 @@ function addImportExternalData(handlers) {
         handlers.callback(e)
       })
     }
-  } 
+  }
 }
 function getShareResult(handlers) {
   if (handlers) {
     if (typeof handlers.callback === 'function') {
-      listenerSHARERESULT?.remove()
+      this.listenerSHARERESULT?.remove()
       this.listenerSHARERESULT = nativeEvt.addListener(MESSAGE_SHARERESULT, function(e) {
         handlers.callback(e)
       })
     }
-  } 
+  }
 }
 
 function getImportState() {

@@ -36,7 +36,7 @@ public class SPUtils extends ReactContextBaseJavaModule {
             reactContext.getSharedPreferences(fileName, Context.MODE_PRIVATE);
             promise.resolve(true);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
 	}
 
@@ -49,7 +49,7 @@ public class SPUtils extends ReactContextBaseJavaModule {
 
             promise.resolve(true);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
 	}
 
@@ -62,7 +62,7 @@ public class SPUtils extends ReactContextBaseJavaModule {
 
             promise.resolve(true);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
 	}
 
@@ -75,7 +75,7 @@ public class SPUtils extends ReactContextBaseJavaModule {
 
             promise.resolve(true);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
 	}
 
@@ -87,7 +87,7 @@ public class SPUtils extends ReactContextBaseJavaModule {
 
             promise.resolve(value);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
 	}
 
@@ -99,7 +99,7 @@ public class SPUtils extends ReactContextBaseJavaModule {
 
             promise.resolve(value);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve(false);
         }
 	}
 
@@ -111,7 +111,7 @@ public class SPUtils extends ReactContextBaseJavaModule {
 
             promise.resolve(value);
         } catch (Exception e) {
-            promise.reject(e);
+            promise.resolve("false");
         }
 	}
 

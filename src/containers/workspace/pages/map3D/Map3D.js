@@ -366,7 +366,7 @@ export default class Map3D extends React.Component {
     // )
   }
 
-  _onGetInstance = sceneControl => {
+  _onGetInstance = ()=> {
     // console.warn("add scene")
 
     //放到这里打开场景，更稳定 add xiezhy

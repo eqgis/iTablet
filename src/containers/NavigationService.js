@@ -66,7 +66,7 @@ function isInMap3D() {
  * @param routeName 从该页面返回
  * @param immediate
  */
-function goBack(routeName = undefined, immediate = null) {
+function goBack(routeName = '', immediate = null) {
   (async function _goBack() {
     let key
     if (routeName) {

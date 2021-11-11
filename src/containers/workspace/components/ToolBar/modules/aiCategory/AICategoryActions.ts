@@ -1,9 +1,11 @@
 /*global GLOBAL*/
-import {  SMap } from 'imobile_for_reactnative'
+import { Platform } from 'react-native'
+import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
-import { Toast, LayerUtils, FetchUtils } from '../../../../../../utils'
+import { Toast, LayerUtils, FetchUtils, DateUtil } from '../../../../../../utils'
 import { FileTools } from '../../../../../../native'
-import { ConstPath } from '../../../../../../constants'
+import { ConstPath, ConstToolType } from '../../../../../../constants'
+import { ImagePicker } from '../../../../../../components'
 import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
 
@@ -43,18 +45,17 @@ async function aiClassify() {
           break
         }
       }
-      // _params.showFullMap && _params.showFullMap(true)
       const datasourceAlias = taggingLayerData.datasourceAlias // 标注数据源名称
       const datasetName = taggingLayerData.datasetName // 标注图层名称
-      NavigationService.navigate('ClassifyView', {
+      await SARMap.setAIClassifyDefaultModel(GLOBAL.language)
+      ToolbarModule.addData({
         datasourceAlias,
         datasetName,
       })
-      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-      if (GLOBAL.showAIDetect) {
-        GLOBAL.arSwitchToMap = true
-        ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
-      }
+      GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_DETECT, {
+        isFullScreen: false,
+        height: 0,
+      })
     } else {
       isDownload = false
       const downloadData = await getDownloadData(
@@ -158,6 +159,166 @@ async function getTaggingLayerData() {
   return taggingLayerData
 }
 
+async function setting() {
+  const datasourceAlias = 'currentLayer.datasourceAlias' // 标注数据源名称
+  const datasetName = 'currentLayer.datasetName' // 标注图层名称
+  NavigationService.navigate('ClassifySettingsView', {
+    datasourceAlias,
+    datasetName,
+  })
+}
+
+async function close() {
+  // await SAIDetectView.pauseDetect()
+  // await SAIDetectView.clearDetectObjects()
+  GLOBAL.ToolBar.close()
+}
+
+async function takeCamera() {
+  try {
+    const _params: any = ToolbarModule.getParams()
+    const homePath = await FileTools.getHomeDirectory()
+    const tempPath = homePath + ConstPath.UserPath + _params.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp
+    const captureTime = new Date().getTime().toString()
+    const imgPath = tempPath + `IMG_${captureTime}.jpg`
+    const result = await SARMap.captureImage(imgPath)
+    if(result) {
+      const classResult = await SARMap.startAIClassify(imgPath)
+      if (classResult) {
+        ToolbarModule.addData({
+          selectedCategoryData: classResult.length > 0 && classResult[0], // 默认选择第一个识别结果
+          classResult: classResult,
+          captureImgPath: imgPath,
+          prevType: ConstToolType.SM_MAP_AI_CATEGORY_DETECT,
+        })
+        GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_PREVIEW, {
+          isFullScreen: false,
+          height: 0,
+        })
+      } else {
+        Toast.show('')
+      }
+    } else {
+      Toast.show('')
+    }
+  } catch (error) {
+    Toast.show('')
+  }
+}
+
+async function openAlbum() {
+  ImagePicker.AlbumListView.defaultProps.showDialog = false
+  ImagePicker.AlbumListView.defaultProps.dialogConfirm = null
+  ImagePicker.AlbumListView.defaultProps.assetType = 'Photos'
+  ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
+  ImagePicker.getAlbum({
+    maxSize: 1,
+    callback: async (data: any[]) => {
+      let mediaPaths: string[] = []
+      if (data.length > 0) {
+        data.forEach(item => {
+          mediaPaths.push(item.uri)
+        })
+        const result = await SARMap.startAIClassify(mediaPaths[0])
+        if (result) {
+          ToolbarModule.addData({
+            classResult: result,
+            captureImgPath: mediaPaths[0],
+            prevType: ConstToolType.SM_MAP_AI_CATEGORY_DETECT,
+          })
+          GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_PREVIEW, {
+            isFullScreen: false,
+            height: 0,
+          })
+        } else {
+          Toast.show('')
+        }
+      } else {
+        Toast.show(
+          getLanguage(GLOBAL.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_CLASSIFY_NOPICS,
+        )
+      }
+    },
+  })
+}
+
+async function clear() {
+  const _data: any = ToolbarModule.getData()
+  GLOBAL.toolBox?.setVisible(true, _data.prevType, {
+    isFullScreen: false,
+    height: 0,
+  })
+}
+
+async function save() {
+  try {
+    //保存数据->跳转
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    let currentLayer = _params.currentLayer
+    // let reg = /^Label_(.*)#$/
+    let saveAble = false
+    if (currentLayer) {
+      let layerType = LayerUtils.getLayerType(currentLayer)
+      saveAble = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
+      // && currentLayer.datasourceAlias.match(reg)
+    }
+    if (saveAble) {
+      const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
+      const datasetName = currentLayer.datasetName // 标注图层名称
+      let targetPath = await FileTools.appendingHomeDirectory(
+        ConstPath.UserPath +
+        _params.user.currentUser.userName +
+          '/' +
+          ConstPath.RelativeFilePath.Media,
+      )
+      SMediaCollector.initMediaCollector(targetPath)
+
+      let mediaName = _data.selectedCategoryData.label // 目标类别
+      let classifyTime = new Date().getTime()
+      let mediaFileName = mediaName // 图片文件名字
+      if (_data.selectedCategoryData.confidence === undefined) { // 结果全部不符合
+        const timeStr = classifyTime
+        mediaFileName = timeStr.toString()
+        classifyTime = DateUtil.formatDate(timeStr, 'yyyy-MM-dd hh:mm:ss')
+      }
+      const mediaData = JSON.stringify({
+        type: 'AI_CLASSIFY',
+        mediaName: mediaFileName,
+      })
+      NavigationService.navigate('MediaEdit', {
+        info: {
+          mediaFilePaths: [_data.captureImgPath],
+          modifiedDate: classifyTime,
+          layerName: currentLayer.name,
+          datasourceName: datasourceAlias,
+          datasetName: datasetName,
+          mediaName: mediaFileName,
+          mediaData: mediaData,
+          description: '',
+        },
+        layerInfo: currentLayer,
+        cb: async () => {
+          clear()
+          NavigationService.goBack('MediaEdit')
+        },
+      })
+    } else {
+      Toast.show(getLanguage(GLOBAL.language).AI.SUPPORT_POINT_AND_CAD)
+    }
+  } catch (error) {
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+  }
+}
+
 export default {
+  close,
+
   aiClassify,
+  setting,
+  takeCamera,
+  openAlbum,
+  clear,
+  save,
 }

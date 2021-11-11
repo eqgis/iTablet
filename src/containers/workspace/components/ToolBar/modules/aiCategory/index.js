@@ -27,6 +27,7 @@ class AICategoryModule extends FunctionModule {
       return
     }
     this.setModuleData(this.type)
+    params.showFullMap && params.showFullMap(true)
     // AICategoryActions.init()
     AICategoryActions.aiClassify()
   }

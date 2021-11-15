@@ -43,6 +43,9 @@ function illegallyParkCollect() {
           break
         }
       }
+      ToolbarModule.addData({
+        type: ConstToolType.SM_MAP_AI_VEHICLE_DETECT,
+      })
       _params.setToolbarVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_DETECT, {
         isFullScreen: false,
         height: 0,

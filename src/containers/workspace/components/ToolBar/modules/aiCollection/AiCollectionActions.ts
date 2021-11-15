@@ -1,11 +1,9 @@
 /*global GLOBAL*/
-import { SAIDetectView, SMap } from 'imobile_for_reactnative'
-import { getLanguage } from '../../../../../../language'
+import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
 import NavigationService from '../../../../../NavigationService'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
-import { LayerUtils, DateUtil } from '../../../../../../utils'
+import { LayerUtils } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
-import { SMediaCollector } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../../../native'
 
 async function getTaggingLayerData() {
@@ -62,13 +60,9 @@ function aiDetect() {
         break
       }
     }
-
-    await SAIDetectView.setProjectionModeEnable(true)
-    await SAIDetectView.setIsPolymerize(false)
-    await SAIDetectView.startDetect()
+    SARMap.startAIDetect(false)
     ;(await GLOBAL.toolBox) &&
       GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
-        // buttons: buttons,
         isFullScreen: false,
         height: 0,
       })
@@ -76,34 +70,42 @@ function aiDetect() {
 }
 
 async function goToPreview() {
-  const _params: any = ToolbarModule.getParams()
-  const homePath = await FileTools.appendingHomeDirectory()
-  let targetPath = homePath + ConstPath.UserPath +
-    _params.user.currentUser.userName + '/' +
-    ConstPath.RelativeFilePath.Media
-  await SMediaCollector.initMediaCollector(targetPath)
-
-  // 获取对象识别信息
-  let recognitionInfos = await SAIDetectView.getAIRecognitionInfos()
-  const location = await SMap.getCurrentPosition()
-
-  const date = new Date().getTime().toString()
-  let path = await SAIDetectView.savePreviewBitmap(targetPath, date)
-  if (path) {
-    ToolbarModule.addData({
-      previewImage: path,
-      recognitionInfos: recognitionInfos,
-      location: location,
-      modifiedDate: DateUtil.formatDate(date),
-      mediaName: date,
-    })
-    await SAIDetectView.pauseDetect()
-    await SAIDetectView.clearDetectObjects()
-
-    GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_PREVIEW, {
-      isFullScreen: false,
-      height: 0,
-    })
+  try {
+    const _params: any = ToolbarModule.getParams()
+    const homePath = await FileTools.getHomeDirectory()
+    let targetPath = homePath + ConstPath.UserPath +
+      _params.user.currentUser.userName + '/' +
+      ConstPath.RelativeFilePath.Media
+    await SMediaCollector.initMediaCollector(targetPath)
+    // 获取对象识别信息
+    let recognitionInfos = await SARMap.getAIRecognitionInfos()
+    const captureTime = new Date().getTime().toString()
+    const imgPath = targetPath + `IMG_${captureTime}.jpg`
+    const result = await SARMap.captureImage(imgPath, true)
+    if(result) {
+      const classResult = await SARMap.startAIClassify(imgPath)
+      if (classResult) {
+        const location = await SMap.getCurrentPosition()
+        ToolbarModule.addData({
+          classResult: classResult,
+          captureImgPath: imgPath,
+          recognitionInfos: recognitionInfos,
+          location: location,
+          prevType: ConstToolType.SM_MAP_AI_ANALYSIS_DETECT,
+        })
+        GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_PREVIEW, {
+          isFullScreen: false,
+          height: 0,
+        })
+      } else {
+        // Toast.show('')
+      }
+    } else {
+      // Toast.show('')
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    __DEV__ && console.warn(error)
   }
 }
 
@@ -141,7 +143,7 @@ async function goToMediaEdit() {
       // medium: Array<any>,
       modifiedDate: _data.modifiedDate,
       mediaName: _data.mediaName,
-      mediaFilePaths: [_data.previewImage],
+      mediaFilePaths: [_data.captureImgPath],
       mediaServiceIds: [],
       httpAddress: '',
       description: '',
@@ -155,22 +157,17 @@ async function goToMediaEdit() {
 }
 
 async function goToCollectType() {
-  const _params: any = ToolbarModule.getParams()
-  NavigationService.navigate('SecondMapSettings', {
-    title: getLanguage(_params.language).Map_Settings.DETECT_TYPE,
-    language: _params.language,
-    device: _params.device,
-  })
+  NavigationService.navigate('AIDetectSettingView')
 }
 
 async function setting() {
-  NavigationService.navigate('AIDetecSettingsView')
-  await SAIDetectView.setProjectionModeEnable(false)
+  NavigationService.navigate('AISelectModelView', {
+    modelType: 'detect',
+  })
 }
 
 async function close() {
-  await SAIDetectView.pauseDetect()
-  await SAIDetectView.clearDetectObjects()
+  await SARMap.endAIDetect()
   GLOBAL.ToolBar.close()
 }
 

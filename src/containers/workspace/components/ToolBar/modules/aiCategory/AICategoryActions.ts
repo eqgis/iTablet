@@ -52,6 +52,7 @@ async function aiClassify() {
         datasourceAlias,
         datasetName,
       })
+      _params.showFullMap && _params.showFullMap(true)
       GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_DETECT, {
         isFullScreen: false,
         height: 0,
@@ -160,17 +161,12 @@ async function getTaggingLayerData() {
 }
 
 async function setting() {
-  const datasourceAlias = 'currentLayer.datasourceAlias' // 标注数据源名称
-  const datasetName = 'currentLayer.datasetName' // 标注图层名称
-  NavigationService.navigate('ClassifySettingsView', {
-    datasourceAlias,
-    datasetName,
+  NavigationService.navigate('AISelectModelView', {
+    modelType: 'classify',
   })
 }
 
 async function close() {
-  // await SAIDetectView.pauseDetect()
-  // await SAIDetectView.clearDetectObjects()
   GLOBAL.ToolBar.close()
 }
 
@@ -178,9 +174,12 @@ async function takeCamera() {
   try {
     const _params: any = ToolbarModule.getParams()
     const homePath = await FileTools.getHomeDirectory()
-    const tempPath = homePath + ConstPath.UserPath + _params.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp
+    // const tempPath = homePath + ConstPath.UserPath + _params.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp
+    let targetPath = homePath + ConstPath.UserPath +
+      _params.user.currentUser.userName + '/' +
+      ConstPath.RelativeFilePath.Media
     const captureTime = new Date().getTime().toString()
-    const imgPath = tempPath + `IMG_${captureTime}.jpg`
+    const imgPath = targetPath + `IMG_${captureTime}.jpg`
     const result = await SARMap.captureImage(imgPath)
     if(result) {
       const classResult = await SARMap.startAIClassify(imgPath)
@@ -196,13 +195,13 @@ async function takeCamera() {
           height: 0,
         })
       } else {
-        Toast.show('')
+        // Toast.show('')
       }
     } else {
-      Toast.show('')
+      // Toast.show('')
     }
   } catch (error) {
-    Toast.show('')
+    // Toast.show('')
   }
 }
 

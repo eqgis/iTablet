@@ -699,6 +699,8 @@ const Map_Layer = {
   STRETCH_TYPE_HISTOGRAMEQUALIZATION: "直方图均衡",
   STRETCH_TYPE_HISTOGRAMSPECIFICATION: "直方图规定化",
   STRETCH_TYPE_GAUSSIAN: "高斯对比度拉伸",
+
+  ADD_ATTRIBUTE_FOR_LAYER: "为该图层创建属性字段",
 }
 
 // 属性

@@ -41,6 +41,8 @@ export const SHOW_AR = 'SHOW_AR'
 export const SHOW_AR_SCENE_NOTIFY = 'SHOW_AR_SCENE_NOTIFY'
 const SHOW_COMPASS = 'SHOW_COMPASS'
 export const ARPOISEARCH_VIEW = 'ARPOISEARCH_VIEW'
+export const SET_AI_DETECT_MODEL = 'SET_AI_DETECT_MODEL'
+export const SET_AI_CLASSIFY_MODEL = 'SET_AI_CLASSIFY_MODEL'
 // Actions
 // --------------------------------------------------
 export const setBufferSetting = (params, cb = () => {}) => async dispatch => {
@@ -298,6 +300,21 @@ export const showCompass = show => async dispatch => {
   })
 }
 
+export const setAIDetectModel = model => async dispatch => {
+  await dispatch({
+    type: SET_AI_DETECT_MODEL,
+    payload: model,
+  })
+}
+
+export const setAIClassifyModel = model => async dispatch => {
+  await dispatch({
+    type: SET_AI_CLASSIFY_MODEL,
+    payload: model,
+  })
+}
+
+
 let defaultMapLegend = (() => {
   let _mapLegend = {}
   let legendConfig = {
@@ -378,6 +395,8 @@ const initialState = fromJS({
   isShowCompass: false,
   /** ar导航设置跳转 */
   poiSearch:false,
+  aiDetectData: undefined,
+  aiClassifyData: undefined,
 })
 
 export default handleActions(
@@ -545,6 +564,12 @@ export default handleActions(
     },
     [`${SHOW_COMPASS}`]: (state, { payload }) => {
       return state.setIn(['isShowCompass'], fromJS(payload))
+    },
+    [`${SET_AI_DETECT_MODEL}`]: (state, { payload }) => {
+      return state.setIn(['aiDetectData'], fromJS(payload))
+    },
+    [`${SET_AI_CLASSIFY_MODEL}`]: (state, { payload }) => {
+      return state.setIn(['aiClassifyData'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       let data = ModelUtils.checkModel(

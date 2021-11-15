@@ -702,6 +702,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   STRETCH_TYPE_HISTOGRAMEQUALIZATION: "Histogram Eşitleme",
   STRETCH_TYPE_HISTOGRAMSPECIFICATION: "Histogram Belirleme",
   STRETCH_TYPE_GAUSSIAN: "Gaussian",
+  ADD_ATTRIBUTE_FOR_LAYER: "Katman için bir öznitelik alanı oluştur.",
 }
 
 // 属性

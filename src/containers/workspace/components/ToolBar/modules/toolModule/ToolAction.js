@@ -388,7 +388,7 @@ async function redo(type = null) {
 }
 
 async function setting() {
-  NavigationService.navigate('AIDetecSettingsView')
+  NavigationService.navigate('AISelectModelView')
   await SAIDetectView.setProjectionModeEnable(false)
 }
 

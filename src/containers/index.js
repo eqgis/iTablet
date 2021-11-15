@@ -132,7 +132,8 @@ import EnterDatumPoint from './arEnterDatumPoint/EnterDatumPoint'
 import CollectSceneFormSet from './arEnterDatumPoint/CollectSceneFormSet'
 import ClassifySettingsView from './ClassifySettingsView'
 import IllegallyParkView from './aiIllegallyPark'
-import AIDetecSettingsView from './AIDetecSettingsView'
+import AISelectModelView from './aiSelectModelView'
+import AIDetectSettingView from './aiDetectSettingView'
 import CastModelOperateView from './arCastModelOperateView'
 import ARProjectModeView from './arProjectModel'
 import ARNavigationView from './arNavigationView'
@@ -186,7 +187,7 @@ import RoadNet from './workspace/components/ArNavigation/RoadNet'
 import Report from '../containers/tabs/Friend/Chat/Report'
 import WebView from '../components/WebView'
 
-export default function(appConfig) {
+export default function (appConfig) {
   return createStackNavigator(
     {
       Tabs: {
@@ -427,70 +428,60 @@ export default function(appConfig) {
         screen: Chat,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       AddFriend: {
         screen: AddFriend,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       InformMessage: {
         screen: InformMessage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       CreateGroupChat: {
         screen: CreateGroupChat,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       RecommendFriend: {
         screen: RecommendFriend,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ManageFriend: {
         screen: ManageFriend,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ManageGroup: {
         screen: ManageGroup,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SelectModule: {
         screen: SelectModule,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       GroupMemberList: {
         screen: GroupMemberList,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SelectFriend: {
         screen: SelectFriend,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       /** ****************************** Mine ********************* */
@@ -498,49 +489,42 @@ export default function(appConfig) {
         screen: Register,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       Login: {
         screen: Login,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ToggleAccount: {
         screen: ToggleAccount,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       GetBack: {
         screen: GetBack,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyLocalData: {
         screen: MyLocalData,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyMap: {
         screen: MyMap,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyARMap: {
         screen: MyARMap,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyARModel: {
@@ -559,126 +543,108 @@ export default function(appConfig) {
         screen: MyScene,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyDatasource: {
         screen: MyDatasource,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MySymbol: {
         screen: MySymbol,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyTemplate: {
         screen: MyTemplate,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyColor: {
         screen: MyColor,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyDataset: {
         screen: MyDataset,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       NewDataset: {
         screen: NewDataset,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SearchMine: {
         screen: SearchMine,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyService: {
         screen: MyService,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyOnlineMap: {
         screen: MyOnlineMap,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyApplet: {
         screen: MyApplet,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       AppletManagement: {
         screen: AppletManagement,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       AppletList: {
         screen: AppletList,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyAIModel: {
         screen: MyAIModel,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ScanOnlineMap: {
         screen: ScanOnlineMap,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       Personal: {
         screen: Personal,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SampleMap: {
         screen: SampleMap,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       WebView: {
         screen: WebView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       /** ************************** Home ************************** */
@@ -686,168 +652,144 @@ export default function(appConfig) {
         screen: AboutITablet,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LicensePage: {
         screen: LicensePage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LicenseTypePage: {
         screen: LicenseTypePage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LicenseModule: {
         screen: LicenseModule,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LicenseJoin: {
         screen: LicenseJoin,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LicenseJoinCloud: {
         screen: LicenseJoinCloud,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LicenseJoinPrivateCloud: {
         screen: LicenseJoinPrivateCloud,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LicenseJoinEducation: {
         screen: LicenseJoinEducation,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       Setting: {
         screen: Setting,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LanguageSetting: {
         screen: LanguageSetting,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LocationSetting: {
         screen: LocationSetting,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       Protocol: {
         screen: protocol,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       PointAnalyst: {
         screen: PointAnalyst,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       PublicMap: {
         screen: PublicMap,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       FriendMap: {
         screen: FriendMap,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyLabel: {
         screen: MyLabel,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MyBaseMap: {
         screen: MyBaseMap,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LoadServer: {
         screen: LoadServer,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SuperMapKnown: {
         screen: SuperMapKnown,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       PublicData: {
         screen: PublicData,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       Applet: {
         screen: Applet,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       CoworkManagePage: {
         screen: CoworkManagePage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       FindSettingPage: {
         screen: FindSettingPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       Laboratory: {
         screen: Laboratory,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       /** 多媒体编辑 * */
@@ -855,7 +797,6 @@ export default function(appConfig) {
         screen: MediaEdit,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       /** 相机界面 * */
@@ -863,189 +804,168 @@ export default function(appConfig) {
         screen: Camera,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MeasureView: {
         screen: MeasureView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       MeasureAreaView: {
         screen: MeasureAreaView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SelectLocation: {
         screen: SelectLocation,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ARProjectModeView: {
         screen: ARProjectModeView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ClassifyView: {
         screen: ClassifyView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ModelChoseView: {
         screen: ModelChoseView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ClassifyResultEditView: {
         screen: ClassifyResultEditView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       CollectSceneFormView: {
         screen: CollectSceneFormView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       EnterDatumPoint: {
         screen: EnterDatumPoint,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       CollectSceneFormSet: {
         screen: CollectSceneFormSet,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ClassifySettingsView: {
         screen: ClassifySettingsView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
-      AIDetecSettingsView: {
-        screen: AIDetecSettingsView,
+      AIDetectSettingView: {
+        screen: AIDetectSettingView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
+        },
+      },
+      AISelectModelView: {
+        screen: AISelectModelView,
+        navigationOptions: {
+          header: null,
         },
       },
       IllegallyParkView: {
         screen: IllegallyParkView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       AIPoseEstimationView: {
         screen: AIPoseEstimationView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       AIGestureBoneView: {
         screen: AIGestureBoneView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ChooseTaggingLayer: {
         screen: ChooseTaggingLayer,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       CastModelOperateView: {
         screen: CastModelOperateView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ARNavigationView: {
         screen: ARNavigationView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ARVideoView: {
         screen: ARVideoView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ARImageView: {
         screen: ARImageView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ARWeatherView: {
         screen: ARWeatherView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ChooseWeather: {
         screen: ChooseWeather,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ARWebView: {
         screen: ARWebView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ARTextView: {
         screen: ARTextView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SuggestionFeedback: {
         screen: SuggestionFeedback,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ARSceneView: {
         screen: ARSceneView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       /** ************************** Analyst ************************** */
@@ -1060,161 +980,138 @@ export default function(appConfig) {
         screen: BufferAnalystView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       AnalystRadiusSetting: {
         screen: AnalystRadiusSetting,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       AnalystListEntry: {
         screen: AnalystListEntry,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       OverlayAnalystView: {
         screen: OverlayAnalystView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       OnlineAnalystView: {
         screen: OnlineAnalystView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       IServerLoginPage: {
         screen: IServerLoginPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SourceDatasetPage: {
         screen: SourceDatasetPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       AnalystRangePage: {
         screen: AnalystRangePage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       WeightAndStatistic: {
         screen: WeightAndStatistic,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       LocalAnalystView: {
         screen: LocalAnalystView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ReferenceAnalystView: {
         screen: ReferenceAnalystView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       RegistrationDatasetPage: {
         screen: RegistrationDatasetPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       RegistrationReferDatasetPage: {
         screen: RegistrationReferDatasetPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       RegistrationArithmeticPage: {
         screen: RegistrationArithmeticPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       RegistrationExecutePage: {
         screen: RegistrationExecutePage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ProjectionTransformationPage: {
         screen: ProjectionTransformationPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SourceCoordsPage: {
         screen: SourceCoordsPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ProjectionParameterSetPage: {
         screen: ProjectionParameterSetPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       ProjectionTargetCoordsPage: {
         screen: ProjectionTargetCoordsPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       RegistrationFastPage: {
         screen: RegistrationFastPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       RegistrationPage: {
         screen: RegistrationPage,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       InterpolationAnalystView: {
         screen: InterpolationAnalystView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       InterpolationAnalystDetailView: {
         screen: InterpolationAnalystDetailView,
         navigationOptions: {
           header: null,
-          // gesturesEnabled: true,
         },
       },
       SecondMapSettings: {

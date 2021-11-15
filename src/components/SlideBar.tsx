@@ -22,7 +22,7 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
 
   static defaultProps = defaultProps
 
-  barWidth: number
+  barWidth: number | undefined
 
   dimensions = Dimensions.get('screen')
 
@@ -36,10 +36,12 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
 
   lastOutput: number | undefined
 
+  currentValue: number = this.props.defaultValue
+
   constructor(props: Props & typeof defaultProps) {
     super(props)
 
-    this.barWidth = typeof this.props.style?.width === 'number' ?  this.props.style?.width : this.dimensions.width
+    // this.barWidth = typeof this.props.style?.width === 'number' ?  this.props.style?.width : this.dimensions.width
     this.count = Math.abs(this.props.range[1] - this.props.range[0])
 
     this.state = {
@@ -84,16 +86,31 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
     this.lastestLeft = 0
   }
 
+  _getBarWidth = (): number => {
+    if (this.barWidth !== undefined) return this.barWidth
+    return typeof this.props.style?.width === 'number' ?  this.props.style?.width : Dimensions.get('window').width
+  }
+
+  updateParams = (currentValue: number) => {
+    this.count = Math.abs(this.props.range[1] - this.props.range[0])
+
+    this.setState({
+      left: this.getLocation(currentValue),
+    })
+    this.prevLeft = this.getLocation(currentValue)
+    this.lastestLeft = 0
+  }
+
   //根据位置获取值
   getValue = (location: number) => {
     return (
-      Math.round((this.count * location) / this.barWidth) + this.props.range[0]
+      Math.round((this.count * location) / this._getBarWidth()) + this.props.range[0]
     )
   }
 
   //根据值获取位置
   getLocation = (value: number) => {
-    return (this.barWidth * (value - this.props.range[0])) / this.count
+    return (this._getBarWidth() * (value - this.props.range[0])) / this.count
   }
 
   onStart = () => {
@@ -103,7 +120,8 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
   onMove = (location: number) => {
     if (this.lastOutput === undefined || this.lastOutput !== location) {
       this.lastOutput = location
-      this.props.onMove && this.props.onMove(this.getValue(location))
+      this.currentValue = this.getValue(location)
+      this.props.onMove && this.props.onMove(this.currentValue)
     }
   }
 
@@ -115,7 +133,7 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
   onPanMove = (evt: GestureResponderEvent, gesture: PanResponderGestureState) => {
     const offx = gesture.dx
     let location = this.prevLeft + offx
-    if (location > this.barWidth) location = this.barWidth
+    if (location > this._getBarWidth()) location = this._getBarWidth()
     if (location < 0) location = 0
     location = this.getLocation(this.getValue(location))
     this.setState({
@@ -129,7 +147,7 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
     let location = this.lastestLeft
     if (gesture.dx === 0) {
       location = evt.nativeEvent.locationX
-      if (location > this.barWidth) location = this.barWidth
+      if (location > this._getBarWidth()) location = this._getBarWidth()
       if (location < 0) location = 0
       location = this.getLocation(this.getValue(location))
       this.setState({
@@ -153,7 +171,7 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
       <View
         style={[
           {
-            width: this.barWidth,
+            width: this._getBarWidth(),
             height: scaleSize(40),
             justifyContent: 'center',
             backgroundColor: '#00000000',
@@ -161,6 +179,15 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
           this.props.style,
         ]}
         {...this.panResponder.panHandlers}
+        onLayout={e => {
+          const width =  e.nativeEvent.layout.width
+          if(this.barWidth === undefined || this.barWidth !== width) {
+            this.barWidth = width
+            this.updateParams(this.currentValue)
+          } else {
+            this.barWidth = width
+          }
+        }}
       >
         <View
           style={{

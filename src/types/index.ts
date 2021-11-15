@@ -2,6 +2,12 @@ import { TUserType } from "../constants/UserType"
 
 export type ButtonSize = 'large' | 'normal' | 'small'
 
+/** 本地数据类型 */
+export type LocalDataType = 'DATA' | 'MAP' | 'SYMBOL' | 'ARMAP' | 'ARMODEL' | 'WORKSPACE3D' | 'AREFFECT' | 'AIMODEL' | 'SCENE' | 'COLOR' | 'LABEL' | 'TEMPLAE_PLOTTING' | 'TEMPLAE_COLLECTING' | 'MAPPING_COLLECTING'
+
+/** 外部数据类型 */
+export type ExternalDataType = 'workspace' | 'datasource' | 'symbol' | 'armap' | 'armodel' | 'workspace3d' | 'areffect' | 'online' | 'aimodel'
+
 export interface BaseItem {
   key: string,
   title?: string,

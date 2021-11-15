@@ -26,6 +26,12 @@ const Common: typeof CN.Common = {
 
   DELETE_CURRENT_OBJ_CONFIRM: "Ağımdaki nesni silmek ister misiniz?",
   NO_SELECTED_OBJ: "Seçili nesne yok",
+
+  CURRENT: 'Current', // to be translated
+  SELECTED: 'Selected', // to be translated
+  DEFAULT: 'Default', // to be translated
+
+  SELECT_MODEL: 'Select Model', // to be translated
 }
 
 export { Protocol, Common }

@@ -1040,7 +1040,7 @@ export default class MediaEdit extends React.Component {
   }
 
   back = () => {
-    function _goBack() {
+    const _goBack = () => {
       if (this.backAction) {
         this.backAction()
       } else {

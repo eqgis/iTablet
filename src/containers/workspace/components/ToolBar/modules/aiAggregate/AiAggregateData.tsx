@@ -119,7 +119,7 @@ function getHeaderData(type: string) {
       // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
       action: AiAggregateActions.goToCollectType,
       size: 'large',
-      image: getThemeAssets().setting.icon_detection_type,
+      image: getThemeAssets().ar.icon_tool_type,
       style: [styles.headerRightBtn, {marginRight: scaleSize(20)}],
     }, {
       key: 'setting',
@@ -136,7 +136,7 @@ function getHeaderData(type: string) {
 function getPreviewCustomView() {
   const _data: any = ToolbarModule.getData()
   const _params: any = ToolbarModule.getParams()
-  let imgPath = _data.previewImage
+  let imgPath = _data.captureImgPath
   if (
     Platform.OS === 'android' &&
     imgPath.toLowerCase().indexOf('content://') !== 0
@@ -184,38 +184,7 @@ function getDetectBottomView() {
           backgroundColor: 'transparent',
         }}
         imageStyle={styles.bottomBtnImg}
-        onPress={async () => {
-          const _params: any = ToolbarModule.getParams()
-          const homePath = await FileTools.appendingHomeDirectory()
-          let targetPath = homePath + ConstPath.UserPath +
-            _params.user.currentUser.userName + '/' +
-            ConstPath.RelativeFilePath.Media
-          await SMediaCollector.initMediaCollector(targetPath)
-
-          // 获取对象识别信息
-          let recognitionInfos = await SAIDetectView.getAIRecognitionInfos()
-          const location = await SMap.getCurrentPosition()
-
-          const date = new Date().getTime().toString()
-          let path = await SAIDetectView.savePreviewBitmap(targetPath, date)
-          if (path) {
-            ToolbarModule.addData({
-              previewImage: path,
-              recognitionInfos: recognitionInfos,
-              location: location,
-              modifiedDate: DateUtil.formatDate(date),
-              mediaName: date,
-            })
-            await SAIDetectView.pauseDetect()
-            await SAIDetectView.clearDetectObjects()
-
-            GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_AGGREGATE_PREVIEW, {
-              isFullScreen: false,
-              height: 0,
-            })
-          }
-          // TODO 预览
-        }}
+        onPress={AiAggregateActions.goToPreview}
       />
     </View>
   )
@@ -233,7 +202,7 @@ function getPreviewBottomView() {
         maxWidth: width,
       }]}>
         <MTBtn
-          key={'recognise'}
+          key={'cancel'}
           opacity={0.8}
           image={getThemeAssets().toolbar.icon_tool_cancel}
           style={{
@@ -243,49 +212,14 @@ function getPreviewBottomView() {
           onPress={AiAggregateActions.polymerizeCollect}
         />
         <MTBtn
-          key={'recognise'}
+          key={'submit'}
           opacity={0.8}
           image={getThemeAssets().toolbar.icon_tool_submit}
           style={{
             backgroundColor: 'transparent',
           }}
           imageStyle={styles.bottomBtnImg}
-          onPress={async () => {
-            const _data: any = ToolbarModule.getData()
-            const _params: any = ToolbarModule.getParams()
-
-            NavigationService.navigate('MediaEdit', {
-              // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
-              title: _data.title,
-              layerInfo: _params.currentLayer,
-              backAction: () => {
-                AiAggregateActions.polymerizeCollect()
-                NavigationService.goBack('MediaEdit')
-              },
-              cb: () => {
-                AiAggregateActions.polymerizeCollect()
-                NavigationService.goBack('MediaEdit')
-              },
-              info: {
-                // id: string,
-                coordinate: _data.location,
-                layerName: _params.currentLayer.name,
-                // geoID: number,
-                // medium: Array<any>,
-                modifiedDate: _data.modifiedDate,
-                mediaName: _data.mediaName,
-                mediaFilePaths: [_data.previewImage],
-                mediaServiceIds: [],
-                httpAddress: '',
-                description: '',
-                location: _data.location,
-                mediaData: {
-                  type: 'AI_AGGREGATE',
-                  recognitionInfos: _data.recognitionInfos,
-                },
-              },
-            })
-          }}
+          onPress={AiAggregateActions.goToMediaEdit}
         />
       </View>
     </View>

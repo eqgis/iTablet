@@ -62,7 +62,9 @@ import BottomBar from './BottomBar'
 import MyToast from './MyToast'
 import RedDot from './RedDot'
 import SlideBar from './SlideBar'
+import Slider from './Slider'
 import CompassView from './CompassView'
+import SwitchItem from './SwitchItem'
 
 export {
   Container,
@@ -139,5 +141,7 @@ export {
   MyToast,
   RedDot,
   SlideBar,
+  Slider,
   CompassView,
+  SwitchItem,
 }

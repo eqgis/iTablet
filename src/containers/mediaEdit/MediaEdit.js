@@ -755,10 +755,10 @@ export default class MediaEdit extends React.Component {
     if (this.state.mediaData?.recognitionInfos) {
       for (const recognitionInfo of this.state.mediaData.recognitionInfos) {
         if (type === 'AI_AGGREGATE') {
-          category += `${(category ? ',' : '')}${recognitionInfo.title}:${recognitionInfo.countID}`
-          confidence += `${(confidence ? ',' : '')}${recognitionInfo.title}:${recognitionInfo.confidence}`
+          category += `${(category ? ',' : '')}${recognitionInfo.label}:${recognitionInfo.countID}`
+          confidence += `${(confidence ? ',' : '')}${recognitionInfo.label}:${recognitionInfo.confidence}`
         } else {
-          category += (category ? ',' : '') + recognitionInfo.title
+          category += (category ? ',' : '') + recognitionInfo.label
         }
       }
     }

@@ -34,6 +34,8 @@ const icon_tips_lighting = require('./icon_tips_lighting.png')
 const icon_tips_approach = require('./icon_tips_approach.png')
 const icon_tips_move_away = require('./icon_tips_move_away.png')
 const icon_tool_ardrawing = require('./icon_tool_ardrawing.png')
+const img_default_pic = require('./img_default_pic.png')
+const icon_tool_type = require('./icon_tool_type.png')
 
 export default {
   functiontoolbar,
@@ -70,4 +72,6 @@ export default {
   icon_tips_approach,
   icon_tips_move_away,
   icon_tool_ardrawing,
+  img_default_pic,
+  icon_tool_type,
 }

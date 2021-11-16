@@ -704,6 +704,8 @@ const Map_Layer: typeof CN.Map_Layer = {
   STRETCH_TYPE_HISTOGRAMEQUALIZATION: "Égalisation d'histogramme",
   STRETCH_TYPE_HISTOGRAMSPECIFICATION: "Spécification de l'histogramme",
   STRETCH_TYPE_GAUSSIAN: "Gaussien",
+
+  ADD_ATTRIBUTE_FOR_LAYER: "Créer un champ d'attribut pour la couche",
 }
 
 // 属性

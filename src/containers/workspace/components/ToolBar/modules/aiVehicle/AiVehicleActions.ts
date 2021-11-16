@@ -1,9 +1,11 @@
 /*global GLOBAL*/
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
-import { Toast, LayerUtils } from '../../../../../../utils'
-import { ConstToolType } from '../../../../../../constants'
+import { Toast, LayerUtils, DateUtil } from '../../../../../../utils'
+import { ConstToolType, ConstPath } from '../../../../../../constants'
+import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
+import NavigationService from '../../../../../NavigationService'
 
 async function close() {
   const _data: any = ToolbarModule.getData()
@@ -12,6 +14,8 @@ async function close() {
       illegallyParkCollect()
       break
     default:
+      SARMap.endCarPlateRead()
+      // SARMap.removeCarPlateReadListener()
       GLOBAL.ToolBar?.removeAIDetect(false)
       GLOBAL.ToolBar?.close()
   }
@@ -39,6 +43,9 @@ function illegallyParkCollect() {
           break
         }
       }
+      ToolbarModule.addData({
+        type: ConstToolType.SM_MAP_AI_VEHICLE_DETECT,
+      })
       _params.setToolbarVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_DETECT, {
         isFullScreen: false,
         height: 0,
@@ -48,6 +55,84 @@ function illegallyParkCollect() {
       _params.navigation.navigate('LayerManager')
     }
   })()
+}
+
+/**
+ * 拍照进入预览页面
+ */
+async function goToPreview() {
+  try {
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    const date = new Date().getTime().toString()
+    const location = await SMap.getCurrentPosition()
+    const homePath = await FileTools.getHomeDirectory()
+    let targetPath = homePath + ConstPath.UserPath +
+      _params.user.currentUser.userName + '/' +
+      ConstPath.RelativeFilePath.Media
+    await SMediaCollector.initMediaCollector(targetPath)
+    const imgPath = targetPath + `IMG_${date}.jpg`
+    const result = await SARMap.captureImage(imgPath)
+    if (result) {
+      SARMap.endCarPlateRead()
+      // SARMap.removeCarPlateReadListener()
+      ToolbarModule.addData({
+        type: ConstToolType.SM_MAP_AI_VEHICLE_PREVIEW,
+        previewImage: imgPath,
+        mediaName: DateUtil.formatDate(date, 'yyyy-MM-dd'),
+        plateNubmer: _data.plateNubmer,
+        location: location,
+        modifiedDate: DateUtil.formatDate(date),
+      })
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_PREVIEW, {
+        isFullScreen: false,
+        height: 0,
+      })
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    __DEV__ && console.warn(error)
+  }
+}
+
+/**
+ * 进入结果处理界面
+ */
+async function goToResultView() {
+  try {
+    const _data: any = ToolbarModule.getData()
+    const _params: any = ToolbarModule.getParams()
+    NavigationService.navigate('MediaEdit', {
+      layerInfo: _params.currentLayer,
+      backAction: () => {
+        illegallyParkCollect()
+        NavigationService.goBack('MediaEdit')
+      },
+      cb: () => {
+        illegallyParkCollect()
+        NavigationService.goBack('MediaEdit')
+      },
+      info: {
+        coordinate: _data.location,
+        layerName: _params.currentLayer.name,
+        modifiedDate: _data.modifiedDate,
+        mediaName: _data.mediaName,
+        mediaFilePaths: [_data.previewImage],
+        mediaServiceIds: [],
+        httpAddress: '',
+        description: '',
+        location: _data.location,
+        mediaData: {
+          type: 'AI_VEHICLE',
+          mediaName: _data.mediaName,
+          plateNubmer: _data.plateNubmer,
+        },
+      },
+    })
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    __DEV__ && console.warn(error)
+  }
 }
 
 async function getTaggingLayerData() {
@@ -90,4 +175,6 @@ export default {
   close,
 
   illegallyParkCollect,
+  goToPreview,
+  goToResultView,
 }

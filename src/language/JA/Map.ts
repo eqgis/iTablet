@@ -702,6 +702,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   STRETCH_TYPE_HISTOGRAMEQUALIZATION: "ヒストグラム平坦化",
   STRETCH_TYPE_HISTOGRAMSPECIFICATION: "ヒストグラム仕様化",
   STRETCH_TYPE_GAUSSIAN: "ガウス誇張",
+  ADD_ATTRIBUTE_FOR_LAYER: '当レイヤーに属性フィールドを作成',
 }
 
 // 属性

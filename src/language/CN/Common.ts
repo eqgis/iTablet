@@ -24,6 +24,12 @@ const Common = {
 
   DELETE_CURRENT_OBJ_CONFIRM: "是否删除当前对象？",
   NO_SELECTED_OBJ: "没有选中对象",
+
+  CURRENT: '当前',
+  SELECTED: '选择',
+  DEFAULT: '默认',
+
+  SELECT_MODEL: '选择模型',
 }
 
 export { Protocol, Common }

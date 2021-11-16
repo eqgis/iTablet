@@ -18,7 +18,7 @@ import { FileTools} from '../../native'
 import Toast from '../../utils/Toast'
 import { getLanguage } from '../../language'
 import { ConstPath } from '../../constants'
-import { SAIClassifyView, SMap, RNFS  } from 'imobile_for_reactnative'
+import { SAIClassifyView, SMap, RNFS, SARMap  } from 'imobile_for_reactnative'
 
 const DEFAULT_MODEL = 'mobilenet_quant_224' //默认模型
 const DUSTBIN_MODEL = 'citycase' //垃圾箱模型
@@ -129,14 +129,14 @@ export default class ClassifySettingsView extends React.Component {
           defaultBtx: getLanguage(this.props.language).Prompt.USING,
         })
       } else if (currentmodel.ModelType === 'ABSOLUTE_FILE_PATH') {
-        if (currentmodel.ModelPath === this.dustbin_model) {
+        if (currentmodel.modelPath === this.dustbin_model) {
           this.setState({
             currentModel: DUSTBIN_MODEL,
             defaultBtx: getLanguage(this.props.language).Prompt
               .USED_IMMEDIATELY,
             dustbinBtx: getLanguage(this.props.language).Prompt.USING,
           })
-        } else if (currentmodel.ModelPath === this.plant_model) {
+        } else if (currentmodel.modelPath === this.plant_model) {
           this.setState({
             currentModel: PLANT_MODEL,
             defaultBtx: getLanguage(this.props.language).Prompt
@@ -268,7 +268,7 @@ export default class ClassifySettingsView extends React.Component {
               getItemCallback: async ({ item }) => {
                 let params = {}
                 params.ModelType = 'ABSOLUTE_FILE_PATH'
-                params.ModelPath =
+                params.modelPath =
                   GLOBAL.homePath + item.path + '/' + item.tflite
                 let labelPath = item.labels[0]
                 let labelFilter = item.labels.filter(label => {
@@ -289,19 +289,20 @@ export default class ClassifySettingsView extends React.Component {
                 if (labelFilter.length > 0) {
                   labelPath = labelFilter[0]
                 }
-                params.LabelPath = GLOBAL.homePath + item.path + '/' + labelPath
+                params.labelPath = GLOBAL.homePath + item.path + '/' + labelPath
                 if (Platform.OS === 'android' && item.param) {
                   try {
                     let paramPath =
                       GLOBAL.homePath + item.path + '/' + item.param
                     let info = await RNFS.readFile(paramPath)
                     let infoJson = JSON.parse(info)
-                    Object.assign(params, infoJson)
+                    params.param = infoJson
                   } catch (error) {
                     /** */
                   }
                 }
-                let result = await SAIClassifyView.setModel(params)
+                let result = await SARMap.setAIClassifyModel(params)
+                // let result = await SAIClassifyView.setModel(params)
                 NavigationService.goBack()
                 setTimeout(() => {
                   let dustbinBtx =
@@ -360,8 +361,8 @@ export default class ClassifySettingsView extends React.Component {
   useOrDownloadModel = async (title, key, fileName) => {
     let params = {
       ModelType: '',
-      ModelPath: '',
-      LabelPath: '',
+      modelPath: '',
+      labelPath: '',
     }
     if (title === getLanguage(this.props.language).Prompt.USED_IMMEDIATELY) {
       this.Loading.setLoading(
@@ -372,12 +373,12 @@ export default class ClassifySettingsView extends React.Component {
         params.ModelType = 'ASSETS_FILE'
       } else if (fileName === DUSTBIN_MODEL) {
         params.ModelType = 'ABSOLUTE_FILE_PATH'
-        params.ModelPath = this.dustbin_model
-        params.LabelPath = this.dustbin_txt
+        params.modelPath = this.dustbin_model
+        params.labelPath = this.dustbin_txt
       } else if (fileName === PLANT_MODEL) {
         params.ModelType = 'ABSOLUTE_FILE_PATH'
-        params.ModelPath = this.plant_model
-        params.LabelPath = this.plant_txt
+        params.modelPath = this.plant_model
+        params.labelPath = this.plant_txt
       }
       let result = await SAIClassifyView.setModel(params)
       if (result) {

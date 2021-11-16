@@ -1019,7 +1019,7 @@ export default class LayerAttributeTabs extends React.Component {
           type={this.type}
           attributes={this.state.attributes}
           // layerName={this.props.currentLayer.name}
-          layerName={this.props.selection[this.state.currentTabIndex].layerInfo.name}
+          layerName={this.props.selection?.[this.state.currentTabIndex]?.layerInfo?.name || this.props.currentLayer.name}
         />
         {this.state.isShowView && (
           <View

@@ -708,6 +708,8 @@ const Map_Layer: typeof CN.Map_Layer = {
   STRETCH_TYPE_HISTOGRAMEQUALIZATION: "معادلة المدرج التكراري",
   STRETCH_TYPE_HISTOGRAMSPECIFICATION: "مواصفات المدرج التكراري",
   STRETCH_TYPE_GAUSSIAN: "غاوسي",
+
+  ADD_ATTRIBUTE_FOR_LAYER: "قم بإنشاء حقل سمة للطبقة",
 }
 
 // 属性

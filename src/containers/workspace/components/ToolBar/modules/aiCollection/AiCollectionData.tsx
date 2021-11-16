@@ -112,11 +112,11 @@ function getHeaderData(type: string) {
     type: 'floatNoTitle',
     headerLeft: _headerLeft(),
     headerRight: [{
-      key: 'delete',
+      key: 'collectType',
       // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
       action: AiCollectionActions.goToCollectType,
       size: 'large',
-      image: getThemeAssets().setting.icon_detection_type,
+      image: getThemeAssets().ar.icon_tool_type,
       style: [styles.headerRightBtn, {marginRight: scaleSize(20)}],
     }, {
       key: 'setting',
@@ -133,7 +133,7 @@ function getHeaderData(type: string) {
 function getPreviewCustomView() {
   const _data: any = ToolbarModule.getData()
   const _params: any = ToolbarModule.getParams()
-  let imgPath = _data.previewImage
+  let imgPath = _data.captureImgPath
   if (
     Platform.OS === 'android' &&
     imgPath.toLowerCase().indexOf('content://') !== 0
@@ -199,7 +199,7 @@ function getPreviewBottomView() {
         maxWidth: width,
       }]}>
         <MTBtn
-          key={'recognise'}
+          key={'cancel'}
           opacity={0.8}
           image={getThemeAssets().toolbar.icon_tool_cancel}
           style={{
@@ -209,7 +209,7 @@ function getPreviewBottomView() {
           onPress={AiCollectionActions.aiDetect}
         />
         <MTBtn
-          key={'recognise'}
+          key={'submit'}
           opacity={0.8}
           image={getThemeAssets().toolbar.icon_tool_submit}
           style={{

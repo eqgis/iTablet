@@ -1,9 +1,19 @@
-import { SMap, EngineType, ARLayerType, DatasetType } from 'imobile_for_reactnative'
+import { SMap, EngineType, ARLayerType, DatasetType, FiltedData, TDatasetType, TARLayerType } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
 import { FileTools, NativeMethod } from '../../../../native'
 import { dataUtil } from '../../../../utils'
+import { UserInfo, LocalDataType } from '../../../../types'
 
-async function getLocalData(user, type) {
+export interface ILocalData extends FiltedData {
+  /** ai模型相关信息 */
+  aiModelInfo?: {
+    modelName: string,
+    labels: string[],
+    paramJsonName?: string,
+  }
+}
+
+async function getLocalData(user: UserInfo, type: LocalDataType) {
   let dataList = []
   switch (type) {
     case 'DATA':
@@ -44,7 +54,7 @@ async function getLocalData(user, type) {
   return dataList
 }
 
-async function _getListByFilter(user, type) {
+async function _getListByFilter(user: UserInfo, type: LocalDataType) {
   const homePath = await FileTools.appendingHomeDirectory()
   const userPath = `${homePath + ConstPath.UserPath + user.userName}/`
 
@@ -130,7 +140,7 @@ async function _getListByFilter(user, type) {
   return list
 }
 
-async function _getLabelDataList(user) {
+async function _getLabelDataList(user: UserInfo) {
   const homePath = await FileTools.appendingHomeDirectory()
   const userPath = `${homePath + ConstPath.UserPath + user.userName}/`
 
@@ -140,13 +150,13 @@ async function _getLabelDataList(user) {
   const result = await FileTools.fileIsExist(path)
   if (!result) {
     // creatLabelDatasource(user, path)
-    return null
+    return []
   }
   const list = await SMap.getUDBNameOfLabel(path)
   return list
 }
 
-async function _getPlotDataList(user) {
+async function _getPlotDataList(user: UserInfo) {
   const homePath = await FileTools.appendingHomeDirectory()
   const userPath = `${homePath + ConstPath.UserPath + user.userName}/`
   const plotPath = userPath + ConstPath.RelativePath.Plotting
@@ -182,7 +192,7 @@ async function _getPlotDataList(user) {
   return list
 }
 
-async function _getColorSchemeDataList(user) {
+async function _getColorSchemeDataList(user: UserInfo) {
   let dataList = await _getListByFilter(user, 'COLOR')
   for (let i = 0; i < dataList.length; i++) {
     await _getColorFromFile(dataList[i])
@@ -190,7 +200,7 @@ async function _getColorSchemeDataList(user) {
   return dataList
 }
 
-async function _getColorFromFile(item) {
+async function _getColorFromFile(item: any) {
   const homePath = await FileTools.appendingHomeDirectory()
   let colorScheme = await FileTools.readFile(homePath + item.path)
   let resutl = await dataUtil.xml2js(colorScheme)
@@ -209,7 +219,7 @@ async function _getColorFromFile(item) {
   item.colors = colors
 }
 
-async function _getAIModelDataList(user) {
+async function _getAIModelDataList(user: UserInfo) {
   let list = []
   const homePath = await FileTools.appendingHomeDirectory()
   let dataList = await _getListByFilter(user, 'AIMODEL')
@@ -235,17 +245,27 @@ async function _getAIModelDataList(user) {
       }
     }
     if (tflite && labels.length > 0) {
-      item.tflite = tflite
-      item.labels = labels
-      item.param = param
-      list.push(item)
+      // item.tflite = tflite
+      // item.labels = labels
+      // item.param = param
+      // list.push(item)
+
+      const info = {
+        modelName: tflite,
+        labels: labels,
+        paramJsonName: param,
+      }
+      list.push({
+        ...dataList[n],
+        aiModelInfo: info,
+      })
     }
   }
 
   return list
 }
 
-async function createDatasourceFile(user, datasourcePath) {
+async function createDatasourceFile(user: UserInfo, datasourcePath: string) {
   const result = await SMap.createDatasourceFile({
     server: datasourcePath,
     engineType: EngineType.UDB,
@@ -262,7 +282,7 @@ async function createDatasourceFile(user, datasourcePath) {
  * @param {*} ext   后缀名
  * @returns
  */
-async function getAvailableFileNameNoExt (path, name, ext) {
+async function getAvailableFileNameNoExt (path: string, name: string, ext: string) {
   const result = await FileTools.fileIsExist(path)
   if (!result) {
     await FileTools.createDirectory(path)
@@ -287,7 +307,7 @@ async function getAvailableFileNameNoExt (path, name, ext) {
  * @param {*} ext   后缀名
  * @returns
  */
-async function getAvailableFileName (path, name, ext) {
+async function getAvailableFileName (path: string, name: string, ext: string) {
   const result = await FileTools.fileIsExist(path)
   if (!result) {
     await FileTools.createDirectory(path)
@@ -317,12 +337,12 @@ async function getAvailableFileName (path, name, ext) {
  * @returns 创建后的数据源名和数据集名
  */
 async function createDefaultDatasource(
-  datasourcePath,
-  datasourceName,
-  datasetName,
-  datastType,
-  newDatasource,
-  newDataset,
+  datasourcePath: string,
+  datasourceName: string,
+  datasetName: string,
+  datastType: TDatasetType,
+  newDatasource: string,
+  newDataset: string,
 ) {
   let result = false
   try {
@@ -401,12 +421,12 @@ async function createDefaultDatasource(
 }
 
 async function createARElementDatasource(
-  user,
-  datasourceName,
-  datasetName,
-  newDatasource,
-  newDataset,
-  type,
+  user: UserInfo,
+  datasourceName: string,
+  datasetName: string,
+  newDatasource: string,
+  newDataset: string,
+  type: TARLayerType,
 ) {
   try {
     const homePath = await FileTools.getHomeDirectory()
@@ -430,7 +450,7 @@ async function createARElementDatasource(
 }
 
 async function createPoiSearchDatasource(
-  user,
+  user: UserInfo,
 ) {
   try {
     const homePath = await FileTools.getHomeDirectory()
@@ -438,7 +458,7 @@ async function createPoiSearchDatasource(
     const datasourceName = 'naviDatasource'
     const datasetName = 'naviDataset'
 
-    return await createDefaultDatasource(datasourcePath, datasourceName, datasetName, DatasetType.PointZ, false, false)
+    return await createDefaultDatasource(datasourcePath, datasourceName, datasetName, DatasetType.PointZ, '', '')
   } catch (e) {
     return {
       success: false,

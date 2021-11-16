@@ -44,6 +44,8 @@ export default class AlbumListView extends React.PureComponent {
     assetType: 'Photos',
     groupTypes: 'All',
     showDialog: false,
+    dialogConfirm: null,
+    dialogCancel: null,
   }
 
   constructor(props) {

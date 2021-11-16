@@ -221,6 +221,7 @@ async function openAlbum() {
         const result = await SARMap.startAIClassify(mediaPaths[0])
         if (result) {
           ToolbarModule.addData({
+            selectedCategoryData: result.length > 0 && result[0], // 默认选择第一个识别结果
             classResult: result,
             captureImgPath: mediaPaths[0],
             prevType: ConstToolType.SM_MAP_AI_CATEGORY_DETECT,

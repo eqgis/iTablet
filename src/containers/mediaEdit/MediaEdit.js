@@ -15,14 +15,14 @@ import {
 import { SimpleDialog } from '../tabs/Friend'
 import { Toast, checkType, OnlineServicesUtils } from '../../utils'
 import { FileTools } from '../../native'
-import { ConstPath, UserType } from '../../constants'
+import { ConstPath, UserType, ChunkType } from '../../constants'
 import { getThemeAssets } from '../../assets'
 import styles from './styles'
 import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
 // import ImagePicker from 'react-native-image-crop-picker'
-import { SMediaCollector, SOnlineService, SMap, SCoordination, RNFS } from 'imobile_for_reactnative'
+import { SMediaCollector, SOnlineService, SMap, SCoordination, RNFS, SARMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 
 const COLUMNS = 3
@@ -592,11 +592,19 @@ export default class MediaEdit extends React.Component {
       <PopView ref={ref => (this.popModal = ref)}>
         <TouchableOpacity
           style={[styles.popBtn, { width: '100%' }]}
-          onPress={() => {
+          onPress={async () => {
             this.popModal && this.popModal.setVisible(false)
+            const isAR = GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS
+            Platform.OS === 'android' && isAR && await SARMap.onPause() // Android相机和AR模块实景共用相机,要先暂停AR模块的相机,防止崩溃
             NavigationService.navigate('Camera', {
               limit: MAX_FILES - this.state.mediaFilePaths.length,
-              cb: this.addMediaFiles,
+              cb: async data => {
+                Platform.OS === 'android' && isAR && await SARMap.onResume()
+                this.addMediaFiles(data)
+              },
+              cancelCb: async () => {
+                Platform.OS === 'android' && isAR && await SARMap.onResume()
+              },
             })
           }}
         >

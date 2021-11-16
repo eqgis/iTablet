@@ -27,6 +27,38 @@ async function getXmlTemplateData() {
   ]
 }
 
+function getNaviData(language) {
+  let data = [
+    {
+      title: getLanguage(language).Map_Layer.LAYERS_FULL_VIEW_LAYER,
+      // '全副显示图层',
+      image: getThemeAssets().mapTools.icon_tool_full,
+    },
+    {
+      title: getLanguage(language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER,
+      // '设置为当前图层',
+      // image: getPublicAssets().mapTools.tools_set_current_layer,
+      image: getThemeAssets().layer.icon_layer_set_current,
+    },
+    {
+      title: getLanguage(language).Map_Layer.LAYERS_RENAME,
+      // '重命名',
+      image: getThemeAssets().layer.icon_layer_rename,
+    },
+    {
+      title: getLanguage(language).Map_Layer.LAYERS_REMOVE,
+      // '移除',
+      image: getThemeAssets().layer.icon_remove_layer,
+    },
+  ]
+  return [
+    {
+      title: '',
+      data,
+    },
+  ]
+}
+
 function getGroupData(language) {
   return [
     {
@@ -703,4 +735,5 @@ export {
   layerSettingCanNotSnap,
   getXmlTemplateData,
   layerImageSetting,
+  getNaviData,
 }

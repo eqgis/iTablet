@@ -15,7 +15,7 @@ async function close() {
       break
     default:
       SARMap.endCarPlateRead()
-      SARMap.removeCarPlateReadListener()
+      // SARMap.removeCarPlateReadListener()
       GLOBAL.ToolBar?.removeAIDetect(false)
       GLOBAL.ToolBar?.close()
   }
@@ -75,7 +75,7 @@ async function goToPreview() {
     const result = await SARMap.captureImage(imgPath)
     if (result) {
       SARMap.endCarPlateRead()
-      SARMap.removeCarPlateReadListener()
+      // SARMap.removeCarPlateReadListener()
       ToolbarModule.addData({
         type: ConstToolType.SM_MAP_AI_VEHICLE_PREVIEW,
         previewImage: imgPath,

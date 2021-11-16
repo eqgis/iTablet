@@ -169,8 +169,8 @@ class AISelectModelView extends React.Component<Props, State> {
 
   render() {
     const isSelected = this.modelType === 'detect'
-      ? this.props.aiDetectData === undefined
-      : this.props.aiClassifyData === undefined
+      ? this.props.aiDetectData?.path === undefined
+      : this.props.aiClassifyData?.path === undefined
     return(
       <Container
         ref={(ref: typeof Container) => (this.container = ref)}

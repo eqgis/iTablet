@@ -4943,7 +4943,7 @@ export default class MapView extends React.Component {
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
           orientation={this.props.device.orientation}
         />
-        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR : this.state.showAIDetect) && this.renderMapController()}
+        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ? this.props.isAR : this.state.showAIDetect) && this.renderMapController()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}

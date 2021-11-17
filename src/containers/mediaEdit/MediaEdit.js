@@ -164,7 +164,7 @@ export default class MediaEdit extends React.Component {
             }
           },
         }
-        
+
         await RNFS.downloadFile(downloadOptions).promise
       }
     }
@@ -254,8 +254,9 @@ export default class MediaEdit extends React.Component {
   }
 
   saveHandler = async () => {
+    let result = false
     if (!this.info.layerName) {
-      return
+      return result
     }
     try {
       this.container && this.container.setLoading(true, getLanguage(GLOBAL.language).Prompt.SAVEING)
@@ -306,12 +307,14 @@ export default class MediaEdit extends React.Component {
       if (deleteMedia && this.info.geoID) {
         this.deleteDialog && this.deleteDialog.setVisible(true)
       } else {
-        await this.save(this.modifiedData, false)
+        result = await this.save(this.modifiedData, false)
       }
       this.container && this.container.setLoading(false)
+      return result
     } catch (e) {
       this.container && this.container.setLoading(false)
       Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
+      return result
     }
   }
 
@@ -434,9 +437,11 @@ export default class MediaEdit extends React.Component {
           ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
           : getLanguage(this.props.language).Prompt.SAVE_FAILED,
       )
+      return result
     } catch (e) {
       this.container && this.container.setLoading(false)
       Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
+      return false
     }
   }
 
@@ -635,13 +640,14 @@ export default class MediaEdit extends React.Component {
         ref={ref => (this.deleteDialog = ref)}
         text={getLanguage(this.props.language).Prompt.DELETE_OBJ_WITHOUT_MEDIA_TIPS}
         disableBackTouch={false}
-
         confirmAction={async () => {
-          await this.save(this.modifiedData, true)
-          SMap.refreshMap()
-          NavigationService.goBack('MediaEdit')
-          if(GLOBAL.HAVEATTRIBUTE){
-            this.gocb && typeof this.gocb === 'function' && this.gocb()
+          const result = await this.save(this.modifiedData, true)
+          if (result) {
+            SMap.refreshMap()
+            NavigationService.goBack('MediaEdit')
+            if(GLOBAL.HAVEATTRIBUTE){
+              this.gocb && typeof this.gocb === 'function' && this.gocb()
+            }
           }
         }}
         confirmText={getLanguage(this.props.language).Prompt.DELETE}
@@ -1064,8 +1070,8 @@ export default class MediaEdit extends React.Component {
         cancelText: getLanguage(GLOBAL.language).Prompt.NO,
         disableBackTouch: false,
         confirmAction: async () => {
-          await this.saveHandler()
-          _goBack()
+          const result = await this.saveHandler()
+          result && _goBack()
         },
         cancelAction: _goBack,
         dismissAction: () => GLOBAL.SimpleDialog?.setVisible(false),

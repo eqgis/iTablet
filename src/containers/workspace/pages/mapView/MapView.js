@@ -14,7 +14,6 @@ import {
   SCollector,
   EngineType,
   SMediaCollector,
-  SMAIDetectView,
   SAIDetectView,
   SSpeechRecognizer,
   SMARMapView,
@@ -104,7 +103,6 @@ import {
   Image,
   TouchableOpacity,
   BackHandler,
-  AppState,
   StyleSheet,
   PanResponder,
   Animated,
@@ -1494,7 +1492,6 @@ export default class MapView extends React.Component {
           await SARMap.showTrackView(false)
           await SARMap.showPointCloud(false)
         }
-        await SARMap.dispose()
         // this.props.showAR(false)
       }
       this.setLoading(false)

@@ -1106,9 +1106,11 @@ export default class ArMappingButton extends React.Component {
     let datasetName = this.props.currentLayer.datasetName
     if (this.props.currentLayer.themeType !== 0 || (
       this.props.currentLayer.type !== DatasetType.CAD &&
-      (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
-      (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
-      (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT)
+      (
+        (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+        (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+        (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT)
+      )
     )) {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
       datasetName = 'Default_Tagging'

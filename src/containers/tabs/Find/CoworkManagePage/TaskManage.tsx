@@ -302,34 +302,14 @@ class TaskManage extends React.Component<Props, State> {
         currentTask.members = currentTask.members.concat(_members)
         let temp = []
         for (const member of currentTask.members) {
-          // CoworkInfo.addMember({
-          //   id: member.id,
-          //   name: member.name,
-          // })
           if (member.id === this.props.user.currentUser.userName) continue
-          // SMessageService.sendMessage(
-          //   JSON.stringify(currentTask),
-          //   member.id,
-          // )
           temp.push(member.id)
         }
         await SMessageServiceHTTP.sendMessage(
           currentTask,
           temp,
         )
-        currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
-        this.props.addCoworkMsg(currentTask)
-        // this.props.addTaskMembers({
-        //   groupID: currentTask.groupID,
-        //   id: currentTask.id,
-        //   members: _members,
-        // })
-        // 添加协作任务成员
-        // await CoworkFileHandle.addTaskGroupMember(
-        //   currentTask.groupID,
-        //   currentTask.id,
-        //   _members,
-        // )
+        this.props.addCoworkMsg(Object.assign({}, currentTask, {type: MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN}))
       },
     })
   }

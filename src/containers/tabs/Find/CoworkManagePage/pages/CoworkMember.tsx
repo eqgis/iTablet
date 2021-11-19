@@ -136,7 +136,7 @@ class CoworkMember extends Component<Props, State> {
       callBack: async (members: any) => {
         NavigationService.goBack('GroupFriendListPage', null)
 
-        let currentTask = this.props.currentTask
+        let currentTask = JSON.parse(JSON.stringify(this.props.currentTask))
         currentTask.user = {
           name: this.props.user.currentUser.nickname || '',
           id: this.props.user.currentUser.userName || '',
@@ -152,35 +152,14 @@ class CoworkMember extends Component<Props, State> {
         currentTask.members = currentTask.members.concat(_members)
         let temp = []
         for (const member of currentTask.members) {
-          // CoworkInfo.addMember({
-          //   id: member.id,
-          //   name: member.name,
-          // })
           if (member.userName === this.props.user.currentUser.userName) continue
-          // SMessageService.sendMessage(
-          //   JSON.stringify(currentTask),
-          //   member.id,
-          // )
           temp.push(member.id)
         }
         SMessageServiceHTTP.sendMessage(
           currentTask,
           temp,
         )
-        currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
-        this.props.addCoworkMsg(currentTask)
-        // this.props.addTaskMembers({
-        //   groupID: currentTask.groupID,
-        //   id: currentTask.id,
-        //   members: _members,
-        // })
-        // 添加协作任务成员
-        // CoworkFileHandle.addTaskGroupMember(
-        //   this.props.currentGroup.id,
-        //   currentTask.id,
-        //   _members,
-        // )
-        // this.getData()
+        this.props.addCoworkMsg(Object.assign({}, currentTask, {type: MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN}))
       },
     })
   }

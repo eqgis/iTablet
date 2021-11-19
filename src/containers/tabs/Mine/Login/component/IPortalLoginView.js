@@ -5,16 +5,17 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
-  Animated,
+  // Animated,
   Dimensions,
   Image,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native'
 import { Toast, scaleSize, dataUtil  } from '../../../../../utils'
 import styles from './styles'
 import { getLanguage } from '../../../../../language'
 import Input from '../../../../../components/Input'
 import { getThemeAssets } from '../../../../../assets'
-import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 export default class IPortalLoginView extends React.Component {
   props: {
     language: string,
@@ -32,7 +33,7 @@ export default class IPortalLoginView extends React.Component {
     super(props)
     this.state = {
       behavior: 'padding',
-      left: new Animated.Value(0),
+      // left: new Animated.Value(0),
       showServer: true,
       loginText:getLanguage(this.props.language).Profile.LOGIN,
       nextText:getLanguage(GLOBAL.language).Profile.NEXT,
@@ -170,7 +171,8 @@ export default class IPortalLoginView extends React.Component {
       return dataUtil.isLegalURL(iportalFileUploadURL) && dataUtil.isLegalURL(iportalFileDownloadURL)
     } catch(e) {
       Toast.show('文件服务配置错误')
-      console.warn('checkFileSettings error:' + e)
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn('checkFileSettings error:' + e)
       return false
     }
   }
@@ -211,14 +213,13 @@ export default class IPortalLoginView extends React.Component {
             return
           }
           this.setState({ showServer: false ,connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT})
-          Animated.timing(this.state.left, {
-            toValue: -this.screenWidth,
-            duration: 500,
-          }).start()
+          // Animated.timing(this.state.left, {
+          //   toValue: -this.screenWidth,
+          //   duration: 500,
+          // }).start()
         }, 1000)
       } else {
         setTimeout(() => {
-         
           this.props.connect(false)
           this.setState({connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT}, () => {
             Toast.show(getLanguage(GLOBAL.language).Profile.CONNECT_SERVER_FAIL)
@@ -546,31 +547,34 @@ export default class IPortalLoginView extends React.Component {
     )
   }
 
-  renderLoginSection = () => {
-    // let left = this.state.left
-    return (
-      <Animated.View
-        style={[
-          styles.loginSectionView,
-          // { left: left._value === 0 ? left : -this.screenWidth },
-        ]}
-      >
-        {this.state.showServer && this._renderServer()}
-        {!this.state.showServer && this._renderUser()}
-      </Animated.View>
-    )
-  }
+  // renderLoginSection = () => {
+  //   // let left = this.state.left
+  //   return (
+  //     <Animated.View
+  //       style={[
+  //         styles.loginSectionView,
+  //         // { left: left._value === 0 ? left : -this.screenWidth },
+  //       ]}
+  //     >
+  //       {this.state.showServer && this._renderServer()}
+  //       {!this.state.showServer && this._renderUser()}
+  //     </Animated.View>
+  //   )
+  // }
 
   render() {
     this.screenWidth = Dimensions.get('window').width
     return (
-      // <KeyboardAvoidingView
-      //   enabled={true}
-      //   keyboardVerticalOffset={0}
-      //   behavior={this.state.behavior}
-      // >
-      this.renderLoginSection()
-      // </KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        style={styles.loginSectionView}
+        enabled={true}
+        keyboardVerticalOffset={0}
+        behavior={Platform.OS === 'ios' && "padding"}
+      >
+        {/* {this.renderLoginSection()} */}
+        {this.state.showServer && this._renderServer()}
+        {!this.state.showServer && this._renderUser()}
+      </KeyboardAvoidingView>
     )
   }
 }

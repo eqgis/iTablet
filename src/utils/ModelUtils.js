@@ -20,6 +20,7 @@ function checkModel(state, payload) {
         typeof payload[key] !== typeof setting[key]
       ) {
         _data = state
+        break
       }
     }
   }

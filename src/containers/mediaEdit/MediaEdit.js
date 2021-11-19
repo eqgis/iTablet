@@ -15,14 +15,14 @@ import {
 import { SimpleDialog } from '../tabs/Friend'
 import { Toast, checkType, OnlineServicesUtils } from '../../utils'
 import { FileTools } from '../../native'
-import { ConstPath, UserType } from '../../constants'
+import { ConstPath, UserType, ChunkType } from '../../constants'
 import { getThemeAssets } from '../../assets'
 import styles from './styles'
 import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
 // import ImagePicker from 'react-native-image-crop-picker'
-import { SMediaCollector, SOnlineService, SMap, SCoordination, RNFS } from 'imobile_for_reactnative'
+import { SMediaCollector, SOnlineService, SMap, SCoordination, RNFS, SARMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 
 const COLUMNS = 3
@@ -164,7 +164,7 @@ export default class MediaEdit extends React.Component {
             }
           },
         }
-        
+
         await RNFS.downloadFile(downloadOptions).promise
       }
     }
@@ -254,8 +254,9 @@ export default class MediaEdit extends React.Component {
   }
 
   saveHandler = async () => {
+    let result = false
     if (!this.info.layerName) {
-      return
+      return result
     }
     try {
       this.container && this.container.setLoading(true, getLanguage(GLOBAL.language).Prompt.SAVEING)
@@ -306,12 +307,14 @@ export default class MediaEdit extends React.Component {
       if (deleteMedia && this.info.geoID) {
         this.deleteDialog && this.deleteDialog.setVisible(true)
       } else {
-        await this.save(this.modifiedData, false)
+        result = await this.save(this.modifiedData, false)
       }
       this.container && this.container.setLoading(false)
+      return result
     } catch (e) {
       this.container && this.container.setLoading(false)
       Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
+      return result
     }
   }
 
@@ -434,9 +437,11 @@ export default class MediaEdit extends React.Component {
           ? getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY
           : getLanguage(this.props.language).Prompt.SAVE_FAILED,
       )
+      return result
     } catch (e) {
       this.container && this.container.setLoading(false)
       Toast.show(getLanguage(this.props.language).Prompt.SAVE_FAILED)
+      return false
     }
   }
 
@@ -592,11 +597,19 @@ export default class MediaEdit extends React.Component {
       <PopView ref={ref => (this.popModal = ref)}>
         <TouchableOpacity
           style={[styles.popBtn, { width: '100%' }]}
-          onPress={() => {
+          onPress={async () => {
             this.popModal && this.popModal.setVisible(false)
+            const isAR = GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS
+            Platform.OS === 'android' && isAR && await SARMap.onPause() // Android相机和AR模块实景共用相机,要先暂停AR模块的相机,防止崩溃
             NavigationService.navigate('Camera', {
               limit: MAX_FILES - this.state.mediaFilePaths.length,
-              cb: this.addMediaFiles,
+              cb: async data => {
+                Platform.OS === 'android' && isAR && await SARMap.onResume()
+                this.addMediaFiles(data)
+              },
+              cancelCb: async () => {
+                Platform.OS === 'android' && isAR && await SARMap.onResume()
+              },
             })
           }}
         >
@@ -627,13 +640,14 @@ export default class MediaEdit extends React.Component {
         ref={ref => (this.deleteDialog = ref)}
         text={getLanguage(this.props.language).Prompt.DELETE_OBJ_WITHOUT_MEDIA_TIPS}
         disableBackTouch={false}
-
         confirmAction={async () => {
-          await this.save(this.modifiedData, true)
-          SMap.refreshMap()
-          NavigationService.goBack('MediaEdit')
-          if(GLOBAL.HAVEATTRIBUTE){
-            this.gocb && typeof this.gocb === 'function' && this.gocb()
+          const result = await this.save(this.modifiedData, true)
+          if (result) {
+            SMap.refreshMap()
+            NavigationService.goBack('MediaEdit')
+            if(GLOBAL.HAVEATTRIBUTE){
+              this.gocb && typeof this.gocb === 'function' && this.gocb()
+            }
           }
         }}
         confirmText={getLanguage(this.props.language).Prompt.DELETE}
@@ -1040,7 +1054,7 @@ export default class MediaEdit extends React.Component {
   }
 
   back = () => {
-    function _goBack() {
+    const _goBack = () => {
       if (this.backAction) {
         this.backAction()
       } else {
@@ -1056,8 +1070,8 @@ export default class MediaEdit extends React.Component {
         cancelText: getLanguage(GLOBAL.language).Prompt.NO,
         disableBackTouch: false,
         confirmAction: async () => {
-          await this.saveHandler()
-          _goBack()
+          const result = await this.saveHandler()
+          result && _goBack()
         },
         cancelAction: _goBack,
         dismissAction: () => GLOBAL.SimpleDialog?.setVisible(false),

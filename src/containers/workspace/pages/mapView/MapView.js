@@ -14,7 +14,6 @@ import {
   SCollector,
   EngineType,
   SMediaCollector,
-  SMAIDetectView,
   SAIDetectView,
   SSpeechRecognizer,
   SMARMapView,
@@ -104,7 +103,6 @@ import {
   Image,
   TouchableOpacity,
   BackHandler,
-  AppState,
   StyleSheet,
   PanResponder,
   Animated,
@@ -1494,7 +1492,6 @@ export default class MapView extends React.Component {
           await SARMap.showTrackView(false)
           await SARMap.showPointCloud(false)
         }
-        await SARMap.dispose()
         // this.props.showAR(false)
       }
       this.setLoading(false)
@@ -4803,6 +4800,9 @@ export default class MapView extends React.Component {
           onNaviLocationChange={(location, remian) => {
             this.arNavi.onLocationChange(remian)
           }}
+          onAIRecognitionTouch={() => {
+            ToolbarModule.getData()?.actions?.goToPreview?.()
+          }}
         />
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderHeader()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderBottomBtns()}
@@ -4956,7 +4956,7 @@ export default class MapView extends React.Component {
           ref={ref => (GLOBAL.MapSurfaceView = ref)}
           orientation={this.props.device.orientation}
         />
-        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR ? this.props.isAR : this.state.showAIDetect) && this.renderMapController()}
+        {!(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS ? this.props.isAR : this.state.showAIDetect) && this.renderMapController()}
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION &&
           this._renderIncrementRoad()}
         {this._renderMapSelectPoint()}

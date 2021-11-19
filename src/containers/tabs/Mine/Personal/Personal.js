@@ -178,6 +178,11 @@ export default class Personal extends Component {
           getLanguage(GLOBAL.language).Profile.PROFILE_PHOTO,
         )}
         {this._renderItem(
+          //'ID'
+          'ID',
+          this.props.user.currentUser.userName,
+        )}
+        {this._renderItem(
           //'用户名'
           getLanguage(GLOBAL.language).Profile.USERNAME,
           this.props.user.currentUser.nickname,

@@ -46,123 +46,123 @@ export default class BufferAnalystView extends Component {
     }
   }
 
-  analyst = () => {
+  analyst = async () => {
     if (!this.state.canBeAnalyst) return
     // if (!this.currentTab && this.singleBuffer)
     //   this.currentTab = this.singleBuffer
     if (this.currentTab) {
       Toast.show(getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_START)
-      InteractionManager.runAfterInteractions(async () => {
-        try {
-          this.setLoading(
-            true,
-            getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
+      // InteractionManager.runAfterInteractions(async () => {
+      try {
+        this.setLoading(
+          true,
+          getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
+        )
+        // if (this.currentTabIndex === 0) {
+        if (this.type === 'single') {
+          let {
+            sourceData,
+            resultData,
+            bufferParameter,
+            isUnion,
+            isAttributeRetained,
+            optionParameter,
+          } = await this.currentTab.getAnalystParams()
+          SAnalyst.createBuffer(
+            sourceData,
+            resultData,
+            bufferParameter,
+            isUnion,
+            isAttributeRetained,
+            optionParameter,
+          ).then(
+            async res => {
+              this.setLoading(false)
+
+              Toast.show(
+                res.result
+                  ? getLanguage(this.props.language).Analyst_Prompt
+                    .ANALYSIS_SUCCESS
+                  : getLanguage(this.props.language).Analyst_Prompt
+                    .ANALYSIS_FAIL,
+                // : res.errorMsg || getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+              )
+
+              if (res.result) {
+                let layers = await this.props.getLayers()
+                layers.length > 0 &&
+                  (await SMap.setLayerFullView(layers[0].path))
+                GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
+                NavigationService.goBack()
+                // NavigationService.goBack('AnalystListEntry')
+                // if (optionParameter.showResult) {
+                //   TabNavigationService.navigate('MapAnalystView')
+                // }
+                this.cb && this.cb()
+              }
+            },
+            () => {
+              this.setLoading(false)
+              // Toast.show(res && res.errorMsg)
+              Toast.show(
+                getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+              )
+            },
           )
-          // if (this.currentTabIndex === 0) {
-          if (this.type === 'single') {
-            let {
-              sourceData,
-              resultData,
-              bufferParameter,
-              isUnion,
-              isAttributeRetained,
-              optionParameter,
-            } = await this.currentTab.getAnalystParams()
-            SAnalyst.createBuffer(
-              sourceData,
-              resultData,
-              bufferParameter,
-              isUnion,
-              isAttributeRetained,
-              optionParameter,
-            ).then(
-              async res => {
-                this.setLoading(false)
+        } else {
+          // let { sourceData, resultData, bufferRadiuses, bufferRadiusUnit, semicircleSegments, isUnion, isAttributeRetained, isRing, optionParameter } = this.currentTab.getAnalystParams()
+          let params = await this.currentTab.getAnalystParams()
+          SAnalyst.createMultiBuffer(
+            params.sourceData,
+            params.resultData,
+            params.bufferRadiuses,
+            params.bufferRadiusUnit,
+            params.semicircleSegments,
+            params.isUnion,
+            params.isAttributeRetained,
+            params.isRing,
+            params.optionParameter,
+          ).then(
+            async res => {
+              this.setLoading(false)
 
-                Toast.show(
-                  res.result
-                    ? getLanguage(this.props.language).Analyst_Prompt
-                      .ANALYSIS_SUCCESS
-                    : getLanguage(this.props.language).Analyst_Prompt
-                      .ANALYSIS_FAIL,
-                  // : res.errorMsg || getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-                )
-
-                if (res.result) {
-                  let layers = await this.props.getLayers()
-                  layers.length > 0 &&
-                    (await SMap.setLayerFullView(layers[0].path))
-                  GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
-                  NavigationService.goBack()
-                  // NavigationService.goBack('AnalystListEntry')
-                  // if (optionParameter.showResult) {
-                  //   TabNavigationService.navigate('MapAnalystView')
-                  // }
-                  this.cb && this.cb()
-                }
-              },
-              () => {
-                this.setLoading(false)
-                // Toast.show(res && res.errorMsg)
-                Toast.show(
-                  getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-                )
-              },
-            )
-          } else {
-            // let { sourceData, resultData, bufferRadiuses, bufferRadiusUnit, semicircleSegments, isUnion, isAttributeRetained, isRing, optionParameter } = this.currentTab.getAnalystParams()
-            let params = await this.currentTab.getAnalystParams()
-            SAnalyst.createMultiBuffer(
-              params.sourceData,
-              params.resultData,
-              params.bufferRadiuses,
-              params.bufferRadiusUnit,
-              params.semicircleSegments,
-              params.isUnion,
-              params.isAttributeRetained,
-              params.isRing,
-              params.optionParameter,
-            ).then(
-              async res => {
-                this.setLoading(false)
-
-                Toast.show(
-                  res.result
-                    ? getLanguage(this.props.language).Analyst_Prompt
-                      .ANALYSIS_SUCCESS
-                    : getLanguage(this.props.language).Analyst_Prompt
-                      .ANALYSIS_FAIL,
-                  // : res.errorMsg || getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-                )
-                if (res.result) {
-                  let layers = await this.props.getLayers()
-                  layers.length > 0 &&
-                    (await SMap.setLayerFullView(layers[0].path))
-                  GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
-                  NavigationService.goBack()
-                  // NavigationService.goBack('AnalystListEntry')
-                  // if (
-                  //   params.optionParameter &&
-                  //   params.optionParameter.showResult
-                  // ) {
-                  //   TabNavigationService.navigate('MapView')
-                  // }
-                  this.cb && this.cb()
-                }
-              },
-              () => {
-                this.setLoading(false)
-                // Toast.show(res && res.errorMsg)
-                Toast.show(
-                  getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-                )
-              },
-            )
-          }
-        } catch (e) {
-          this.setLoading(false)
+              Toast.show(
+                res.result
+                  ? getLanguage(this.props.language).Analyst_Prompt
+                    .ANALYSIS_SUCCESS
+                  : getLanguage(this.props.language).Analyst_Prompt
+                    .ANALYSIS_FAIL,
+                // : res.errorMsg || getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+              )
+              if (res.result) {
+                let layers = await this.props.getLayers()
+                layers.length > 0 &&
+                  (await SMap.setLayerFullView(layers[0].path))
+                GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
+                NavigationService.goBack()
+                // NavigationService.goBack('AnalystListEntry')
+                // if (
+                //   params.optionParameter &&
+                //   params.optionParameter.showResult
+                // ) {
+                //   TabNavigationService.navigate('MapView')
+                // }
+                this.cb && this.cb()
+              }
+            },
+            () => {
+              this.setLoading(false)
+              // Toast.show(res && res.errorMsg)
+              Toast.show(
+                getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+              )
+            },
+          )
         }
-      })
+      } catch (e) {
+        this.setLoading(false)
+      }
+      // })
     }
   }
 

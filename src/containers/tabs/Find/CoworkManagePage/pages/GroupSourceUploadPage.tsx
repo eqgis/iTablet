@@ -321,7 +321,8 @@ class GroupSourceUploadPage extends Component<Props, State> {
             }).catch(() => {
               Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
             })
-          }
+          } else {
+            Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)}
         }}
       />
     )

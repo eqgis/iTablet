@@ -395,8 +395,8 @@ const initialState = fromJS({
   isShowCompass: false,
   /** ar导航设置跳转 */
   poiSearch:false,
-  aiDetectData: undefined,
-  aiClassifyData: undefined,
+  aiDetectData: {},
+  aiClassifyData: {},
 })
 
 export default handleActions(

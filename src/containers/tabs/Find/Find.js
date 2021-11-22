@@ -21,6 +21,7 @@ import { getLanguage } from '../../../language/index'
 import { getPublicAssets, getThemeAssets } from '../../../assets'
 import TabBar from '../TabBar'
 import FindItem from './FindItem'
+import CoworkFileHandle from './CoworkManagePage/CoworkFileHandle'
 
 var SUPERMAPKNOWN_UPDATE_TIME = 'SUPERMAPKNOWN_UPDATE_TIME'
 var SUPERMAPGROUP_UPDATE_TIME = 'SUPERMAPGROUP_UPDATE_TIME'
@@ -54,6 +55,22 @@ export default class Find extends Component {
   componentDidMount() {
     this._getSuperMapGroupData()
     this._getSuperMapKnownData()
+    CoworkFileHandle.initCoworkList(this.props.user.currentUser)
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    )
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(prevProps.user.currentUser) !== JSON.stringify(this.props.user.currentUser)
+    ) {
+      CoworkFileHandle.initCoworkList(this.props.user.currentUser)
+    }
   }
 
   _getSuperMapGroupData = async () => {

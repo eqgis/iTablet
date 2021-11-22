@@ -54,6 +54,7 @@ export default class Camera extends React.Component {
     this.datasetName = params.datasetName || 'MediaDataset'
     this.limit = params.limit >= 0 ? params.limit : 9
     this.cb = params.cb
+    this.cancelCb = params.cancelCb
     this.camera = null
     this.index = params.index || 0
     this.attribute = params.attribute || false
@@ -102,6 +103,9 @@ export default class Camera extends React.Component {
   }
 
   back = () => {
+    if (this.cancelCb && typeof this.cancelCb === 'function') {
+      this.cancelCb()
+    }
     NavigationService.goBack('Camera')
   }
 
@@ -355,7 +359,7 @@ export default class Camera extends React.Component {
       return (
         <View style={styles.buttonView}>
           <TouchableOpacity
-            onPress={() => NavigationService.goBack()}
+            onPress={this.back}
             style={styles.iconView}
           >
             <Image

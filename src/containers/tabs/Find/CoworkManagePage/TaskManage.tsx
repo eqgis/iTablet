@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, FlatList, Text, Image, StyleSheet, Platform } from 'react-native'
+import { View, FlatList, Text, Image, StyleSheet, Platform, RefreshControl } from 'react-native'
 import { scaleSize, Toast, SCoordinationUtils } from '../../../../utils'
 import { addCoworkMsg, setCoworkTaskGroup, deleteTaskMembers, TaskMemberDeleteParams } from '../../../../redux/models/cowork'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
@@ -11,21 +11,22 @@ import { setCurrentTask } from '../../../../redux/models/cowork'
 import { downloadSourceFile, deleteSourceDownloadFile, DownloadData, IDownloadProps } from '../../../../redux/models/down'
 import { SMap } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
-import { size, color } from '../../../../styles'
+import { size, color, zIndexLevel } from '../../../../styles'
 import { TaskMessageItem } from './components'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import NavigationService from '../../../NavigationService'
 import CoworkFileHandle from './CoworkFileHandle'
 import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
-import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 
 import { connect } from 'react-redux'
 
 const styles = StyleSheet.create({
   nullView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: scaleSize(100),
+    bottom: 0,
     alignItems: 'center',
   },
   nullSubView: {
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
       },
     }),
+    zIndex: zIndexLevel.ONE,
   },
   list: {
     paddingBottom: scaleSize(130),
@@ -108,6 +110,7 @@ type Members2 = Array<{
 interface State {
   dialogInfo: string,
   members: Members2,
+  isRefresh: boolean,
 }
 
 interface Props {
@@ -181,6 +184,7 @@ class TaskManage extends React.Component<Props, State> {
     this.state = {
       dialogInfo: '',
       members: [],
+      isRefresh: false,
     }
 
     CoworkInfo.setGroupId(this.props.groupInfo.id)
@@ -216,7 +220,27 @@ class TaskManage extends React.Component<Props, State> {
       : []
     // 若redux中数据为空，则从Online下载的cowork文件中读取是否有文件
     if (data.length === 0) {
-      CoworkFileHandle.getLocalCoworkList().then(async cowork => {
+      // CoworkFileHandle.getLocalCoworkList().then(async cowork => {
+      //   if (cowork && cowork.groups && cowork.groups[this.props.groupInfo.id]) {
+      //     let tasks = JSON.parse(JSON.stringify(cowork.groups[this.props.groupInfo.id].tasks))
+      //     if (tasks.length === 0) return
+      //     await this.props.setCoworkTaskGroup({
+      //       groupID: this.props.groupInfo.id,
+      //       tasks: tasks.reverse(),
+      //     })
+      //   }
+      // })
+      this.getData()
+    }
+  }
+
+  getData = async (refresh?: boolean) => {
+    try {
+      refresh && !this.state.isRefresh && this.setState({
+        isRefresh: true,
+      })
+      if (await CoworkFileHandle.syncOnlineCoworkList()) {
+        const cowork = await CoworkFileHandle.getLocalCoworkList()
         if (cowork && cowork.groups && cowork.groups[this.props.groupInfo.id]) {
           let tasks = JSON.parse(JSON.stringify(cowork.groups[this.props.groupInfo.id].tasks))
           if (tasks.length === 0) return
@@ -225,6 +249,13 @@ class TaskManage extends React.Component<Props, State> {
             tasks: tasks.reverse(),
           })
         }
+      }
+      refresh && this.state.isRefresh && this.setState({
+        isRefresh: false,
+      })
+    } catch(e) {
+      refresh && this.state.isRefresh && this.setState({
+        isRefresh: false,
       })
     }
   }
@@ -271,34 +302,14 @@ class TaskManage extends React.Component<Props, State> {
         currentTask.members = currentTask.members.concat(_members)
         let temp = []
         for (const member of currentTask.members) {
-          // CoworkInfo.addMember({
-          //   id: member.id,
-          //   name: member.name,
-          // })
           if (member.id === this.props.user.currentUser.userName) continue
-          // SMessageService.sendMessage(
-          //   JSON.stringify(currentTask),
-          //   member.id,
-          // )
           temp.push(member.id)
         }
         await SMessageServiceHTTP.sendMessage(
           currentTask,
           temp,
         )
-        currentTask.type = MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN
-        this.props.addCoworkMsg(currentTask)
-        // this.props.addTaskMembers({
-        //   groupID: currentTask.groupID,
-        //   id: currentTask.id,
-        //   members: _members,
-        // })
-        // 添加协作任务成员
-        // await CoworkFileHandle.addTaskGroupMember(
-        //   currentTask.groupID,
-        //   currentTask.id,
-        //   _members,
-        // )
+        this.props.addCoworkMsg(Object.assign({}, currentTask, {type: MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN}))
       },
     })
   }
@@ -594,7 +605,29 @@ class TaskManage extends React.Component<Props, State> {
       : []
     return (
       <View style={{flex: 1}}>
-        {
+        {data.length === 0 && this._renderNull()}
+        <FlatList
+          ref={ref => this.list = ref}
+          // style={styles.list}
+          data={data}
+          extraData={this.state}
+          renderItem={this.renderItem}
+          keyExtractor={(item, index) => item.id.toString()}
+          contentContainerStyle={styles.list}
+          // ItemSeparatorComponent={this._renderItemSeparatorComponent}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefresh}
+              onRefresh={() => this.getData(true)}
+              colors={['orange', 'red']}
+              tintColor={'orange'}
+              titleColor={'orange'}
+              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              enabled={true}
+            />
+          }
+        />
+        {/* {
           data.length > 0
             ? (
               <FlatList
@@ -606,10 +639,21 @@ class TaskManage extends React.Component<Props, State> {
                 keyExtractor={(item, index) => item.id.toString()}
                 contentContainerStyle={styles.list}
                 // ItemSeparatorComponent={this._renderItemSeparatorComponent}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.isRefresh}
+                    onRefresh={() => this.getData(true)}
+                    colors={['orange', 'red']}
+                    tintColor={'orange'}
+                    titleColor={'orange'}
+                    title={getLanguage(GLOBAL.language).Friends.LOADING}
+                    enabled={true}
+                  />
+                }
               />
             )
             : this._renderNull()
-        }
+        } */}
         {
           data.length > 0 &&
           this.props.user.currentUser.userName === this.props.groupInfo.creator &&

@@ -12,6 +12,7 @@ import { Users } from '../../../../redux/models/user'
 import { ReadMsgParams, DeleteInviteParams } from '../../../../redux/models/cowork'
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
+import CoworkFileHandle from './CoworkFileHandle'
 interface Props {
   navigation: Object,
   user: Users,
@@ -57,6 +58,15 @@ export default class CoworkManagePage extends React.Component<Props, State> {
       },
       type: MsgConstant.MSG_ONLINE_GROUP_TASK,
     })
+    CoworkFileHandle.refreshCallback = () => {
+      if (this.props.currentGroup.id === undefined && this.props.currentGroup.id === '') return
+      this.props.readCoworkGroupMsg({
+        target: {
+          groupId: this.props.currentGroup.id + '',
+        },
+        type: MsgConstant.MSG_ONLINE_GROUP_TASK,
+      })
+    }
   }
 
   componentWillUnmount() {

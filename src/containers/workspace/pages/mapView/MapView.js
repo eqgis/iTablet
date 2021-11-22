@@ -4079,26 +4079,10 @@ export default class MapView extends React.Component {
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
             // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
-            if (GLOBAL.Type === ChunkType.MAP_NAVIGATION && GLOBAL.TouchType !== TouchType.NAVIGATION_TOUCH_END) {
-              this.props.setMapNavigation({ isShow: false, name: '' })
-              GLOBAL.STARTNAME = getLanguage(
-                GLOBAL.language,
-              ).Map_Main_Menu.SELECT_START_POINT
-              GLOBAL.ENDNAME = getLanguage(
-                GLOBAL.language,
-              ).Map_Main_Menu.SELECT_DESTINATION
-              GLOBAL.STARTX = undefined
-              GLOBAL.ENDX = undefined
-              GLOBAL.MAPSELECTPOINT.setVisible(false)
-              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
-              await SMap.clearPoint()
-              GLOBAL.ToolBar?.existFullMap()
-            } else {
-              NavigationService.navigate('NavigationView', {
-                changeNavPathInfo: this.changeNavPathInfo,
-                getNavigationDatas: this.getNavigationDatas,
-              })
-            }
+            NavigationService.navigate('NavigationView', {
+              changeNavPathInfo: this.changeNavPathInfo,
+              getNavigationDatas: this.getNavigationDatas,
+            })
           },
         }}
       />

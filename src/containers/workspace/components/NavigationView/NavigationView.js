@@ -84,16 +84,15 @@ export default class NavigationView extends React.Component {
     if (this.backClicked) return
     this.backClicked = true
     //改变GLOBAL.TouchType 使GestureDetectListener的单击事件进入选择起点的逻辑
-    // GLOBAL.TouchType = TouchType.NAVIGATION_TOUCH_BEGIN
-    GLOBAL.TouchType = TouchType.NORMAL
+    GLOBAL.TouchType = TouchType.NAVIGATION_TOUCH_BEGIN
     //显示选点界面的顶部 底部组件
     GLOBAL.MAPSELECTPOINT.setVisible(true)
     GLOBAL.MAPSELECTPOINTBUTTON.setVisible(true, {
       button: getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_START_POINT,
     })
-    // //全幅
+    //全幅
     GLOBAL.toolBox.showFullMap(true)
-    // //导航选点 全屏时保留mapController
+    //导航选点 全屏时保留mapController
     GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
     this.props.setMapNavigation({
       isShow: true,

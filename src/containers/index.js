@@ -152,7 +152,6 @@ import NavigationView from './workspace/components/NavigationView'
 import NavigationDataChangePage from './NavigationDataChangePage'
 import CreateNavDataPage from './CreateNavDataPage'
 import ChooseTaggingLayer from './ChooseTaggingLayer'
-import ChooseNaviLayer from './ChooseNaviLayer'
 import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
 import LocationSetting from './locationSetting'
@@ -907,13 +906,6 @@ export default function (appConfig) {
         screen: ChooseTaggingLayer,
         navigationOptions: {
           header: null,
-        },
-      },
-      ChooseNaviLayer: {
-        screen: ChooseNaviLayer,
-        navigationOptions: {
-          header: null,
-          // gesturesEnabled: true,
         },
       },
       CastModelOperateView: {

@@ -64,18 +64,18 @@ export default class ChooseNaviLayer extends React.Component {
  * @param {*} param0.index 数据集在FlatList的data数组元素中的序号
  */
   _onDeletePress = async index => {
-    GLOBAL.Loading.setLoading(true, 'Loading')
     let data = JSON.parse(JSON.stringify(this.state.data))
     let deleteData = data.splice(index, 1)
     let { datasourceName, datasetName } = deleteData[0]
     //如果删除的是当前选中 自动选中下一个
     let selectedItem = this.state.selectedItem
     let removeLayer = false
+    GLOBAL.INCREMENT_DATA = this.item
     if (
       selectedItem.datasourceName === datasourceName &&
       selectedItem.datasetName === datasetName
     ) {
-      selectedItem = data[index] || {}
+      selectedItem = {}
     }
     if (
       GLOBAL.INCREMENT_DATA.datasourceName === datasourceName &&
@@ -84,12 +84,7 @@ export default class ChooseNaviLayer extends React.Component {
       removeLayer = true
       GLOBAL.INCREMENT_DATA = {}
     }
-    let sc = await SMap.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
-    if(sc){
-      GLOBAL.Loading.setLoading(false)
-    }else{
-      GLOBAL.Loading.setLoading(false)
-    }
+    await SMap.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
     this.setState({
       data,
       selectedItem,
@@ -129,8 +124,10 @@ export default class ChooseNaviLayer extends React.Component {
       let regExp = /^[a-zA-Z0-9@#_]+$/
       let isValid = regExp.test(text)
       if (isValid) {
-        await SMap.createDefaultDataset(text).then(async returnData => {
+        await SMap.createNaviDataset(text,GLOBAL.INCREMENT_DATA.layerName).then(async returnData => {
           if (returnData.datasetName) {
+            GLOBAL.INCREMENT_DATA = returnData
+            this.setState({selectedItem:returnData})
             this.getData()
           }
         })
@@ -206,6 +203,10 @@ export default class ChooseNaviLayer extends React.Component {
           this.toolBox.setVisible(false)
         },
       })
+    }else if (
+      title === getLanguage(GLOBAL.language).Map_Main_Menu.ADD_DATASET
+    ){
+      NavigationService.navigate('ChooseNaviDataImport',{sourceData:this.item})
     }
   }
 
@@ -377,26 +378,30 @@ export default class ChooseNaviLayer extends React.Component {
   renderHeaderRight = () => {
     let addImage = getPublicAssets().common.icon_add
     return (
-      <TouchableOpacity
-        style={styles.imageWrap}
-        onPress={async() => {
-          DialogUtils.showInputDailog({
-            label: 'input',
-            legalCheck: true,
-            type: 'name',
-            confirmAction: text => {
-              this.createDataset({ text })
-              DialogUtils.hideInputDailog()
-            },
-          })
-        }}
+      <View
+        style={{flexDirection: 'row'}}
       >
-        <Image
-          source={addImage}
-          resizeMode={'contain'}
-          style={styles.image}
-        />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.imageWrap}
+          onPress={async () => {
+            DialogUtils.showInputDailog({
+              label: 'input',
+              legalCheck: true,
+              type: 'name',
+              confirmAction: text => {
+                this.createDataset({ text })
+                DialogUtils.hideInputDailog()
+              },
+            })
+          }}
+        >
+          <Image
+            source={addImage}
+            resizeMode={'contain'}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+      </View>
     )
   }
 

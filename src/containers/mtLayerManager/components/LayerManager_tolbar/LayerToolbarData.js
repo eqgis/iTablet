@@ -41,6 +41,12 @@ function getNaviData(language) {
       image: getThemeAssets().layer.icon_layer_set_current,
     },
     {
+      title: getLanguage(language).Map_Main_Menu.ADD_DATASET,
+      // '追加数据集',
+      // image: getPublicAssets().mapTools.tools_set_current_layer,
+      image: getThemeAssets().mine.my_import,
+    },
+    {
       title: getLanguage(language).Map_Layer.LAYERS_RENAME,
       // '重命名',
       image: getThemeAssets().layer.icon_layer_rename,

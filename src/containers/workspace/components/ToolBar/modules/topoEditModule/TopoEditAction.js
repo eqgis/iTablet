@@ -81,16 +81,15 @@ async function geometrySelected(event) {
           cancelAction: inputCancel,
         })
         break
-      case ConstToolType.SM_MAP_TOPO_EXTEND_LINE:
-        SMap.setAction(Action.PAN)
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_EXTEND_LINE)
-        //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
-        setTimeout(() => {
-          GLOBAL.TouchType = TouchType.MAP_TOPO_EXTEND_LINE
-        }, 200)
-        break
+      // case ConstToolType.SM_MAP_TOPO_EXTEND_LINE:
+      //   SMap.setAction(Action.PAN)
+      //   Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_EXTEND_LINE)
+      //   //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
+      //   setTimeout(() => {
+      //     GLOBAL.TouchType = TouchType.MAP_TOPO_EXTEND_LINE
+      //   }, 200)
+      //   break
       case ConstToolType.SM_MAP_TOPO_SPLIT_LINE: {
-        await SMap.setAction(Action.SELECT)
         let data = ToolbarModule.getData()
         let { secondEvent } = data
         if (!secondEvent) {
@@ -101,14 +100,14 @@ async function geometrySelected(event) {
         }
         break
       }
-      case ConstToolType.SM_MAP_TOPO_TRIM_LINE:
-        SMap.setAction(Action.PAN)
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_TRIM_LINE)
-        //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
-        setTimeout(() => {
-          GLOBAL.TouchType = TouchType.MAP_TOPO_TRIM_LINE
-        }, 200)
-        break
+      // case ConstToolType.SM_MAP_TOPO_TRIM_LINE:
+      //   SMap.setAction(Action.PAN)
+      //   Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_TRIM_LINE)
+      //   //geometrySelected会在singleTap之前触发 延迟改变类型，避免触发两个
+      //   setTimeout(() => {
+      //     GLOBAL.TouchType = TouchType.MAP_TOPO_TRIM_LINE
+      //   }, 200)
+      //   break
       case ConstToolType.SM_MAP_TOPO_RESAMPLE_LINE:
         resampleLine()
         break
@@ -212,14 +211,33 @@ function changeAction(item) {
 async function switchType(item) {
   let { key } = item
   let touchType
-  let type
+  let type ,params
   switch (key) {
     case constants.MAP_TOPO_SMOOTH:
       type = ConstToolType.SM_MAP_TOPO_SMOOTH
-      await SMap.setAction(Action.SELECT)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_SMOOTH)
+      //弹窗 输入平滑系数
+        GLOBAL.InputDialog?.setDialogVisible(true, {
+          title: getLanguage(GLOBAL.language).Prompt.SMOOTH_FACTOR,
+          value: '',
+          confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
+          cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          placeholder: '',
+          returnKeyType: 'done',
+          keyboardAppearance: 'dark',
+          keyboardType: 'numeric',
+          confirmAction: inputConfirm,
+          cancelAction: inputCancel,
+        })
+      // await SMap.setAction(Action.SELECT)
+      // Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_SMOOTH)
       break
     case constants.MAP_TOPO_SPLIT_LINE:
+      params = {
+        id: ToolbarModule.getData().event.id,
+        ...GLOBAL.INCREMENT_DATA,
+        secondLine: false,
+      }
+      SMap.drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_SPLIT_LINE
       await SMap.setAction(Action.SELECT)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
@@ -231,26 +249,48 @@ async function switchType(item) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
       break
     case constants.MAP_TOPO_EXTEND:
+      params = {
+        id: ToolbarModule.getData().event.id,
+        ...GLOBAL.INCREMENT_DATA,
+        secondLine: false,
+      }
+      SMap.drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_EXTEND_LINE
-      await SMap.setAction(Action.SELECT)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
+      await SMap.setAction(Action.PAN)
+      setTimeout(() => {
+        GLOBAL.TouchType = TouchType.MAP_TOPO_EXTEND_LINE
+      }, 200)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
       break
     case constants.MAP_TOPO_TRIM:
+      params = {
+        id: ToolbarModule.getData().event.id,
+        ...GLOBAL.INCREMENT_DATA,
+        secondLine: false,
+      }
+      SMap.drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_TRIM_LINE
-      await SMap.setAction(Action.SELECT)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
+      await SMap.setAction(Action.PAN)
+      setTimeout(() => {
+        GLOBAL.TouchType = TouchType.MAP_TOPO_TRIM_LINE
+      }, 200)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
       break
     case constants.MAP_TOPO_RESAMPLE:
-      type = ConstToolType.SM_MAP_TOPO_RESAMPLE_LINE
+      // type = ConstToolType.SM_MAP_TOPO_RESAMPLE_LINE
+      type = ConstToolType.SM_MAP_TOPO_EDIT
       await SMap.setAction(Action.SELECT)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_RESAMPLE_LINE)
+      resampleLine()
+      // Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_RESAMPLE_LINE)
       break
     case constants.MAP_TOPO_CHANGE_DIRECTION:
-      type = ConstToolType.SM_MAP_TOPO_CHANGE_DIRECTION
+      // type = ConstToolType.SM_MAP_TOPO_CHANGE_DIRECTION
+      type = ConstToolType.SM_MAP_TOPO_EDIT
       await SMap.setAction(Action.SELECT)
-      Toast.show(
-        getLanguage(GLOBAL.language).Prompt.SELECT_CHANGE_DIRECTION_LINE,
-      )
+      changeLineDirection()
+      // Toast.show(
+      //   getLanguage(GLOBAL.language).Prompt.SELECT_CHANGE_DIRECTION_LINE,
+      // )
       break
     case constants.MAP_TOPO_OBJECT_EDIT:
       type = ConstToolType.SM_MAP_TOPO_OBJECT_EDIT
@@ -298,15 +338,17 @@ function close() {
   let nextType, touchType
   if (
     _params.type === ConstToolType.SM_MAP_TOPO_EDIT ||
-    _params.type === ConstToolType.SM_MAP_TOPO_SWITCH_TYPE
+    _params.type === ConstToolType.SM_MAP_TOPO_SWITCH_TYPE ||
+    _params.type === ConstToolType.SM_MAP_TOPO_OBJECT_EDIT_SELECTED
   ) {
     ToolbarModule.setToolBarData(ConstToolType.SM_MAP_INCREMENT_GPS_TRACK)
     nextType = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
     touchType = TouchType.NULL
+    SMap.setAction(Action.PAN)
   } else {
-    nextType = ConstToolType.SM_MAP_TOPO_SWITCH_TYPE
+    nextType = ConstToolType.SM_MAP_TOPO_EDIT
+    SMap.setAction(Action.SELECT)
   }
-  SMap.setAction(Action.PAN)
   SMap.clearTrackingLayer()
   _params.setToolbarVisible(true, nextType, {
     containerType,
@@ -332,7 +374,14 @@ async function inputConfirm(text) {
     if (result) {
       Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_SUCCESS)
     }
-    SMap.setAction(Action.SELECT)
+    const _params = ToolbarModule.getParams()
+    await SMap.setAction(Action.SELECT)
+    _params.setToolbarVisible &&
+      _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
+        isFullScreen: false,
+        height: 0,
+        resetToolModuleData: true,
+      })
     return true
   } else {
     Toast.show(
@@ -347,8 +396,8 @@ async function inputConfirm(text) {
  */
 function inputCancel() {
   const _params = ToolbarModule.getParams()
-  SMap.setAction(Action.PAN)
-  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_SWITCH_TYPE, {
+  // SMap.setAction(Action.PAN)
+  _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_OBJECT_EDIT_SELECTED, {
     containerType: ToolbarType.table,
     isFullScreen: false,
   })
@@ -397,6 +446,13 @@ async function extendLine() {
   GLOBAL.TouchType = TouchType.NULL
   SMap.setAction(Action.SELECT)
   ToolbarModule.addData({ event: undefined, point: undefined })
+  const _params = ToolbarModule.getParams()
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
+      isFullScreen: false,
+      height: 0,
+      resetToolModuleData: true,
+    })
 }
 
 /**
@@ -424,6 +480,13 @@ async function lineSplitByLine() {
   SMap.setAction(Action.SELECT)
   GLOBAL.TouchType = TouchType.NULL
   ToolbarModule.addData({ event: undefined, secondEvent: undefined })
+  const _params = ToolbarModule.getParams()
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
+      isFullScreen: false,
+      height: 0,
+      resetToolModuleData: true,
+    })
 }
 
 /**
@@ -451,6 +514,13 @@ async function trimLine() {
   GLOBAL.TouchType = TouchType.NULL
   SMap.setAction(Action.SELECT)
   ToolbarModule.addData({ event: undefined, point: undefined })
+  const _params = ToolbarModule.getParams()
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
+      isFullScreen: false,
+      height: 0,
+      resetToolModuleData: true,
+    })
 }
 
 /**
@@ -469,8 +539,8 @@ async function resampleLine() {
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
   }
-  SMap.setAction(Action.SELECT)
-  ToolbarModule.addData({ event: undefined })
+  // SMap.setAction(Action.SELECT)
+  // ToolbarModule.addData({ event: undefined })
 }
 
 /**
@@ -489,8 +559,8 @@ async function changeLineDirection() {
   } else {
     Toast.show(getLanguage(GLOBAL.language).Prompt.EDIT_FAILED)
   }
-  SMap.setAction(Action.SELECT)
-  ToolbarModule.addData({ event: undefined })
+  // SMap.setAction(Action.SELECT)
+  // ToolbarModule.addData({ event: undefined })
 }
 
 function editConfirm() {
@@ -527,6 +597,12 @@ async function editCancel() {
   }
   GLOBAL.TouchType = TouchType.NULL
   SMap.clearTrackingLayer()
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
+      isFullScreen: false,
+      height: 0,
+      resetToolModuleData: true,
+    })
 }
 export default {
   close,

@@ -378,7 +378,7 @@ const Prompt = {
   NETWORK_BUILDING: "构网中...",
   BUILD_SUCCESS: "路网构建成功",
   SELECT_LINE_SMOOTH: "请选择需要平滑的线",
-  SELECT_A_POINT_INLINE: "请选择一个线上点",
+  SELECT_A_POINT_INLINE: "请长按放大镜选择一个线上点",
   LINE_DATASET: "线数据集",
   DESTINATION_DATASOURCE: "目标数据源",
   SMOOTH_FACTOR: "请输入平滑系数",

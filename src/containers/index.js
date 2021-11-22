@@ -153,6 +153,7 @@ import NavigationDataChangePage from './NavigationDataChangePage'
 import CreateNavDataPage from './CreateNavDataPage'
 import ChooseTaggingLayer from './ChooseTaggingLayer'
 import ChooseNaviLayer from './ChooseNaviLayer'
+import ChooseNaviDataImport from './ChooseNaviDataImport'
 import LanguageSetting from './languageSetting'
 import CollectSceneFormHistoryView from './arCollectSceneFormHistoryView'
 import LocationSetting from './locationSetting'
@@ -911,6 +912,13 @@ export default function (appConfig) {
       },
       ChooseNaviLayer: {
         screen: ChooseNaviLayer,
+        navigationOptions: {
+          header: null,
+          // gesturesEnabled: true,
+        },
+      },
+      ChooseNaviDataImport: {
+        screen: ChooseNaviDataImport,
         navigationOptions: {
           header: null,
           // gesturesEnabled: true,

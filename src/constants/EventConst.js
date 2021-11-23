@@ -20,4 +20,6 @@ export default {
   IPORTAL_SERVICE_UPLOADING: 'com.supermap.RN.iPortalService_uploading',
   IPORTAL_SERVICE_UPLOADED: 'com.supermap.RN.iPortalService_uploaded',
   IPORTAL_SERVICE_DOWNLOADING: 'com.supermap.RN.iPortalService_downloading',
+
+  DOWNLOAD_MEDIA: 'itablet_download_media',
 }

@@ -20,11 +20,13 @@ interface Props {
   sections: SectionItem[],
   device: DEVICE,
   renderItem: (item: any) => any,
-  layer: ARLayer
+  layer: ARLayer,
+  getLayer: () => Promise<ARLayer[]>,
 }
 
 interface State {
-  selectable: boolean
+  selectable: boolean,
+  isVisible: boolean,
 }
 
 class ARLayerMenu extends React.Component<Props, State> {
@@ -33,6 +35,7 @@ class ARLayerMenu extends React.Component<Props, State> {
 
     this.state = {
       selectable: 'isSelectable' in this.props.layer ? this.props.layer.isSelectable : false,
+      isVisible: this.props.layer.isVisible,
     }
   }
 
@@ -48,6 +51,25 @@ class ARLayerMenu extends React.Component<Props, State> {
           alignItems: 'center',
           height: dp(40),
         }}>
+          <TouchableOpacity
+            onPress={() => {
+              const isVisible = this.state.isVisible
+              this.setState({
+                isVisible: !isVisible,
+              })
+              layer.isVisible = !isVisible
+              SARMap.setLayerVisible(this.props.layer.name, !isVisible).then(result => {
+                if (result && this.props.getLayer && typeof this.props.getLayer === 'function') {
+                  this.props.getLayer()
+                }
+              })
+            }}
+          >
+            <Image
+              style={{width: dp(25), height: dp(25)}}
+              source={this.state.isVisible ? getThemeAssets().layer.icon_layer_visible : getThemeAssets().layer.icon_layer_unvisible}
+            />
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               const selectable = this.state.selectable

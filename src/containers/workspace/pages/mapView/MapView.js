@@ -2139,13 +2139,13 @@ export default class MapView extends React.Component {
       {
         title: getLanguage(GLOBAL.language).Friends.COWORK_UPDATE,
         action: () => {
-          CoworkInfo.update(this.coworkMessageID)
+          CoworkInfo.update(this.coworkMessageID, true)
         },
       },
       {
         title: getLanguage(GLOBAL.language).Friends.COWORK_ADD,
         action: () => {
-          CoworkInfo.add(this.coworkMessageID)
+          CoworkInfo.add(this.coworkMessageID, true)
         },
       },
       {

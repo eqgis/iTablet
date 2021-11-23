@@ -16,6 +16,7 @@ import BackgroundTimer from 'react-native-background-timer'
 import { SMap, Action } from 'imobile_for_reactnative'
 import { Toast, LayerUtils } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
+import NavigationService from '../../../../../NavigationService'
 
 async function start() {
   if (GLOBAL.INCREMENT_DATA.datasetName) {
@@ -146,17 +147,18 @@ function showAttribute() {
  * 切换数据集
  */
 function changeNetwork() {
-  const _params = ToolbarModule.getParams()
-  let type = _params.type
-  _params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK, {
-    isFullScreen: false,
-    containerType: ToolbarType.list,
-    height:
-      _params.device.orientation === 'PORTRAIT'
-        ? Height.LIST_HEIGHT_P
-        : Height.LIST_HEIGHT_L,
-  })
-  ToolbarModule.addData({ preType: type })
+  NavigationService.navigate('ChooseNaviLayer')
+  // const _params = ToolbarModule.getParams()
+  // let type = _params.type
+  // _params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK, {
+  //   isFullScreen: false,
+  //   containerType: ToolbarType.list,
+  //   height:
+  //     _params.device.orientation === 'PORTRAIT'
+  //       ? Height.LIST_HEIGHT_P
+  //       : Height.LIST_HEIGHT_L,
+  // })
+  // ToolbarModule.addData({ preType: type })
 }
 
 //底部增量方式图片

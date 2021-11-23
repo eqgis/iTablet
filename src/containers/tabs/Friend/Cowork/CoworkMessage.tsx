@@ -93,9 +93,9 @@ class CoworkMessage extends Component<Props, State> {
           )
           let messageID = selection[i]
           if (type === 'update') {
-            result = await CoworkInfo.update(messageID, false, notify)
+            result = await CoworkInfo.update(messageID, notify)
           } else if (type === 'add') {
-            result = await CoworkInfo.add(messageID, false, notify)
+            result = await CoworkInfo.add(messageID, notify)
           } else if (type === 'ignore') {
             selection.splice(i, 1)
             await CoworkInfo.ignore(messageID)
@@ -103,11 +103,9 @@ class CoworkMessage extends Component<Props, State> {
           const coworkMessages = this.props.cowork.coworkInfo?.[this.props.currentUser.userName]?.[this.props.cowork.currentTask?.groupID]?.[this.props.cowork.currentTask?.id]?.messages || []
           if (coworkMessages.length > 0) {
             const serviceUrl = coworkMessages[messageID]?.message?.serviceUrl
-            if (serviceUrl) {
-              for (const message of coworkMessages) {
-                if (message.message?.serviceUrl === serviceUrl && message.status === 0) {
-                  CoworkInfo.consumeMessage(message.messageID)
-                }
+            for (const message of coworkMessages) {
+              if (message.message?.serviceUrl === serviceUrl && message.status === 0) {
+                CoworkInfo.consumeMessage(message.messageID)
               }
             }
           }

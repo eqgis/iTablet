@@ -57,6 +57,7 @@ export default class Home extends Component {
     openWorkspace: () => {},
     setUser: () => {},
     deleteUser: () => {},
+    setDownInformation: () => {},
     setBackAction: () => {},
     removeBackAction: () => {},
     setGuideShow: () => {},
@@ -1122,6 +1123,7 @@ export default class Home extends Component {
           >
             <ModuleList
               importWorkspace={this._onImportWorkspace}
+              setDownInformation={this.props.setDownInformation}
               currentUser={this.props.currentUser}
               device={this.props.device}
               showDialog={this.showDialog}

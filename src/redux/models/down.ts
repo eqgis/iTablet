@@ -3,6 +3,7 @@ import { handleActions } from 'redux-actions'
 import { RNFS  } from 'imobile_for_reactnative'
 // Constants
 // --------------------------------------------------
+export const DOWN_SET = 'DOWN_SET'
 export const DOWNLOADING_FILE = 'DOWNLOADING_FILE'
 export const DOWNLOADED_FILE_DELETE = 'DOWNLOADED_FILE_DELETE'
 export const DOWNLOADED_SET_IGNORE = 'DOWNLOADED_SET_IGNORE'
@@ -35,6 +36,17 @@ export const setSampleDataShow = (
 ) => async (dispatch: (arg0: any) => any) => {
   await dispatch({
     type: SAMPLE_DATA_SHOW,
+    payload: params,
+  })
+  cb && cb()
+}
+
+export const setDownInformation = (
+  params = {},
+  cb = () => {},
+) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+  await dispatch({
+    type: DOWN_SET,
     payload: params,
   })
   cb && cb()
@@ -170,6 +182,32 @@ export const deleteSourceDownloadFile = (id: number | string) => async (dispatch
 }
 
 const initialState = fromJS({
+  downList: [
+    {
+      isShowProgressView: false,
+      progress: '',
+      disabled: false,
+      index: 0,
+    },
+    {
+      isShowProgressView: false,
+      progress: '',
+      disabled: false,
+      index: 1,
+    },
+    {
+      isShowProgressView: false,
+      progress: '',
+      disabled: false,
+      index: 2,
+    },
+    {
+      isShowProgressView: false,
+      progress: '',
+      disabled: false,
+      index: 3,
+    },
+  ],
   downloads: [],
   sourceDownloads: {}, // {[id]: data}
   downloadInfos: [],
@@ -181,6 +219,24 @@ export default handleActions(
   {
     [`${SAMPLE_DATA_SHOW}`]: (state: any, { payload }: any) => {
       return state.setIn(['showSampleData'], fromJS(payload))
+    },
+    [`${DOWN_SET}`]: (state: { toJS: () => { downList: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
+      const { downList } = state.toJS()
+      if (payload.index) {
+        const { index } = payload
+        downList[index].index = payload.index
+
+        if (payload.isShowProgressView) {
+          downList[index].isShowProgressView = payload.isShowProgressView
+        }
+        if (payload.progress) {
+          downList[index].progress = payload.progress
+        }
+        if (payload.disabled) {
+          downList[index].disabled = payload.disabled
+        }
+      }
+      return state.setIn(['downList'], fromJS(downList))
     },
     [`${DOWNLOADING_FILE}`]: (state: { toJS: () => { downloads: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { downloads } = state.toJS()

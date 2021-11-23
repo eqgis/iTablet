@@ -1,10 +1,8 @@
 import * as React from 'react'
 import { TouchableOpacity, Text, Image, View, Platform } from 'react-native'
-import { getThemeAssets } from '../../assets'
+import { getPublicAssets, getThemeAssets } from '../../assets'
 import styles from './styles'
 import { FileTools } from '../../native'
-import { color } from '../../styles'
-import { Progress } from '../../components'
 
 type Data = {
   uri: string,
@@ -36,18 +34,15 @@ interface State {
   imageExist: boolean,
   image: { uri: string },
   showDelete: boolean,
-  showProgress: boolean,
 }
 
 export default class MediaItem extends React.Component<Props, State> {
-  mProgress: Progress | undefined | null
   constructor(props: Props) {
     super(props)
     this.state = {
       imageExist: false,
       image: props.data.uri === '+' ? getThemeAssets().publicAssets.icon_placeholder_s : { uri: props.data.uri },
       showDelete: !!this.props.showDelete,
-      showProgress: false,
     }
   }
 
@@ -162,7 +157,7 @@ export default class MediaItem extends React.Component<Props, State> {
 
   renderDuration = (sec: number) => {
     let m = 0
-    if (sec >= 60) {
+    if (sec > 60) {
       m = Math.floor(sec / 60)
       sec -= 60 * m
     }
@@ -183,36 +178,6 @@ export default class MediaItem extends React.Component<Props, State> {
         />
       </TouchableOpacity>
       // </View>
-    )
-  }
-
-  undateProgress = (progress: number) => {
-    if (this.mProgress) {
-      this.mProgress.progress = progress
-    }
-    if (!this.state.showProgress && progress >= 0) {
-      this.setState({
-        showProgress: true,
-      })
-    } else if (this.state.showProgress && progress === 1) {
-      let timer = setTimeout(() => {
-        this.setState({
-          showProgress: false,
-        })
-        clearTimeout(timer)
-      }, 1000)
-    }
-  }
-
-  renderProgress = () => {
-    if (!this.state.showProgress) return null
-    return (
-      <Progress
-        ref={ref => (this.mProgress = ref)}
-        style={styles.progressView}
-        progressAniDuration={0}
-        progressColor={color.selected}
-      />
     )
   }
 
@@ -247,7 +212,6 @@ export default class MediaItem extends React.Component<Props, State> {
             this.props.data.type === 'video' &&
             this.renderDuration(this.props.data.duration)}
         </TouchableOpacity>
-        {this.renderProgress()}
         {this.renderDelete()}
       </View>
     )

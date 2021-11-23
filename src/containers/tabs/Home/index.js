@@ -7,6 +7,7 @@ import {
   openWorkspace,
   closeWorkspace,
 } from '../../../redux/models/map'
+import { setDownInformation } from '../../../redux/models/down'
 import { importWorkspace } from '../../../redux/models/template'
 import { setUser, deleteUser } from '../../../redux/models/user'
 import {
@@ -51,6 +52,7 @@ const mapDispatchToProps = {
   closeWorkspace,
   setUser,
   deleteUser,
+  setDownInformation,
   setBackAction,
   removeBackAction,
   setGuideShow,

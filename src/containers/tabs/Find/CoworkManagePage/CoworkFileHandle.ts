@@ -78,7 +78,7 @@ export default class CoworkFileHandle {
   static async initLocalCoworkList(user: any) {
     await CoworkFileHandle.init(user)
     //读取本地文件并刷新
-    return await CoworkFileHandle.getLocalCoworkList()
+    CoworkFileHandle.getLocalCoworkList()
   }
 
   /**

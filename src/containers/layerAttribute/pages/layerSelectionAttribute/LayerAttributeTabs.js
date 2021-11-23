@@ -200,7 +200,22 @@ export default class LayerAttributeTabs extends React.Component {
           layerInfo: layerInfo,
           ids: id,
         }])
-      } else {
+      } else if (this.type === 'NAVIGATION') {
+        layerInfo = {
+          path: this.datasetName,
+          type: 149,
+          selectTable: true,
+          Visible: true,
+          editable: false,
+          caption: this.datasetName,
+          name: this.datasetName,
+        }
+        let id = await SMap.getNavigationDatasetGeometryID(this.datasetName)
+        this.props.setSelection && this.props.setSelection([{
+          layerInfo: layerInfo,
+          ids: id,
+        }])
+      }else {
         layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
       }
       this.isMediaLayer = await SMediaCollector.isMediaLayer(layerInfo.name)
@@ -424,7 +439,9 @@ export default class LayerAttributeTabs extends React.Component {
     let result
     if (this.type === 'MY_DATA') {
       result = await SMap.addAttributeFieldInfoByData(layerPath, fieldInfo)
-    } else {
+    }else if(this.type === 'NAVIGATION'){
+      result = await SMap.addNavigationAttributeFieldInfoByData(layerPath, fieldInfo)
+    }else {
       result = await SMap.addAttributeFieldInfo(layerPath, true, fieldInfo)
     }
     if (result) {
@@ -483,6 +500,10 @@ export default class LayerAttributeTabs extends React.Component {
         this.state.currentIndex, this.state.isCollection)
     }else if(this.type === 'MY_DATA'){
       result = await LayerUtils.deleteAttributeByData(
+        layerInfo.path,
+        this.state.currentIndex)
+    }else if(this.type === 'NAVIGATION'){
+      result = await LayerUtils.deleteNavigationAttributeByData(
         layerInfo.path,
         this.state.currentIndex)
     } else { // 删除选择集中指定位置的对象，用于点选/框选
@@ -697,6 +718,14 @@ export default class LayerAttributeTabs extends React.Component {
               layerPath,
               this.deleteFieldData.name,
             )
+          }else if(this.type === 'NAVIGATION'){
+            result = await SMap.removeNavigationRecordsetFieldInfoByData(
+              layerPath,
+              this.deleteFieldData.name,
+            )
+            if(result){
+              SMap.refreshMap()
+            }
           } else {
             result = await SMap.removeRecordsetFieldInfo(
               layerPath,
@@ -941,7 +970,7 @@ export default class LayerAttributeTabs extends React.Component {
             onPress={this.goToSearch}
           />,
         ]
-        if(this.type === 'MY_DATA'){
+        if(this.type === 'MY_DATA'||this.type === 'NAVIGATION'){
           buttons.splice(1,1)
         }
       } else {

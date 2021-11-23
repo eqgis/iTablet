@@ -138,6 +138,11 @@ async function changeMethod(type = ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD)
     })
 }
 
+function showAttribute() {
+  GLOBAL.NEEDREFRESHTABLE = true
+  NavigationService.navigate('LayerSelectionAttribute',{type:'NAVIGATION',datasetName:GLOBAL.INCREMENT_DATA.datasetName})
+}
+
 /**
  * 切换数据集
  */
@@ -267,4 +272,5 @@ export default {
   methodSelected,
   getTypeImage,
   topoEdit,
+  showAttribute,
 }

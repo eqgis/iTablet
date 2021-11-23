@@ -12,7 +12,7 @@ import { LayerAttributeTable } from '../../components'
 import { getLanguage } from '../../../../language'
 import { FileTools } from '../../../../native'
 import NavigationService from '../../../NavigationService'
-import { SMediaCollector } from 'imobile_for_reactnative'
+import { SMediaCollector ,SMap} from 'imobile_for_reactnative'
 //eslint-disable-next-line
 import { ActionPopover } from 'teaset'
 
@@ -147,7 +147,7 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   getAttribute = async (params = {}, cb = () => {}, resetCurrent = false) => {
-    if (this.props.type !== 'MY_DATA' && !this.state.isCollection&&(!this.props.layerSelection.layerInfo.path || params.currentPage < 0))
+    if (this.props.type !== 'NAVIGATION' && this.props.type !== 'MY_DATA' && !this.state.isCollection&&(!this.props.layerSelection.layerInfo.path || params.currentPage < 0))
       return
     let { currentPage, pageSize, type, ...others } = params
     // this.isLoading = true
@@ -156,6 +156,15 @@ export default class LayerSelectionAttribute extends React.Component {
       let result
       if(this.props.type === 'MY_DATA'){
         result = await LayerUtils.getSelectionAttributeByData(
+          JSON.parse(JSON.stringify(this.state.attributes)),
+          this.props.datasetName,
+          currentPage,
+          pageSize !== undefined ? pageSize : PAGE_SIZE,
+          type,
+          true,
+        )
+      }else if(this.props.type === 'NAVIGATION'){
+        result = await LayerUtils.getNavigationAttributeByData(
           JSON.parse(JSON.stringify(this.state.attributes)),
           this.props.datasetName,
           currentPage,
@@ -186,7 +195,7 @@ export default class LayerSelectionAttribute extends React.Component {
       let attributes = result.attributes || []
 
       //我的里面进入查看属性，没有选择图层
-      if(this.props.type !== 'MY_DATA'){
+      if(this.props.type !== 'MY_DATA' || this.props.type !== 'NAVIGATION'){
         this.isMediaLayer = await SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name)
       }
 
@@ -840,7 +849,7 @@ export default class LayerSelectionAttribute extends React.Component {
           }
         }
       }
-      if(this.props.type === 'MY_DATA'){
+      if(this.props.type === 'MY_DATA'||this.props.type === 'NAVIGATION'){
         this.props
           .setDataAttributes([
             {

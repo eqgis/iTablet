@@ -139,8 +139,12 @@ async function changeMethod(type = ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD)
 }
 
 function showAttribute() {
-  GLOBAL.NEEDREFRESHTABLE = true
-  NavigationService.navigate('LayerSelectionAttribute',{type:'NAVIGATION',datasetName:GLOBAL.INCREMENT_DATA.datasetName})
+  if (GLOBAL.INCREMENT_DATA.datasetName){
+    GLOBAL.NEEDREFRESHTABLE = true
+    NavigationService.navigate('LayerSelectionAttribute',{type:'NAVIGATION',datasetName:GLOBAL.INCREMENT_DATA.datasetName})
+  }else{
+    Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+  }
 }
 
 /**

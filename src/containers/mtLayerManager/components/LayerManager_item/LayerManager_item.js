@@ -632,7 +632,7 @@ export default class LayerManager_item extends React.Component {
       if (!dsDescription) return null
       switch(dsDescription.type) {
         case 'onlineService':
-          cornerMark = GLOBAL.coworkMode ? getThemeAssets().cowork.icon_state_published : null
+          cornerMark = GLOBAL.coworkMode && this.props.data.themeType === 0 ? getThemeAssets().cowork.icon_state_published : null
           break
       }
     }

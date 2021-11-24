@@ -279,6 +279,7 @@ export default class CoworkInfo {
         }
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         //TODO 处理删除
+        result = await SMap.deleteUserGeometry(message.message.layerPath, message.message.geometry, message.message.geoType)
         result = true
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE) {

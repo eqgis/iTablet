@@ -1524,6 +1524,9 @@ export default class MapView extends React.Component {
         for (let i = 0; i < this.props.selection.length; i++) {
           let item = this.props.selection[i]
           if (item.ids.length > 0) {
+            if (GLOBAL.coworkMode && item.ids.length > 0) {
+              GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.ids[0], item.geometryType)
+            }
             result =
               result &&
               (await SCollector.removeByIds(item.ids, item.layerInfo.path))

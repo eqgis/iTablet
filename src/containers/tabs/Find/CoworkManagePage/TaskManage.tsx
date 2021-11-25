@@ -508,7 +508,7 @@ class TaskManage extends React.Component<Props, State> {
    */
   _renderNull = () => {
     return (
-      <View style={styles.nullView}>
+      <View style={styles.nullView} pointerEvents={'box-none'}>
         <View style={styles.nullSubView}>
           <View
             style={{
@@ -605,7 +605,6 @@ class TaskManage extends React.Component<Props, State> {
       : []
     return (
       <View style={{flex: 1}}>
-        {data.length === 0 && this._renderNull()}
         <FlatList
           ref={ref => this.list = ref}
           // style={styles.list}
@@ -627,6 +626,7 @@ class TaskManage extends React.Component<Props, State> {
             />
           }
         />
+        {data.length === 0 && this._renderNull()}
         {/* {
           data.length > 0
             ? (

@@ -64,6 +64,9 @@ class ArStyleModule extends FunctionModule {
       return
     }
 
+    const layerStyle = await SARMap.getLayerStyle(_params.arlayer.currentLayer.name)
+    ToolbarModule.addData({currentARElementStyle: layerStyle})
+
     const _data = await ARStyleData.getData(this.type, _params)
     _params.setToolbarVisible(true, this.type, {
       isFullScreen: true,

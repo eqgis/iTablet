@@ -13,6 +13,9 @@ async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
 
   if (_params.type === ConstToolType.SM_AR_STYLE) {
+    const layer = _params.arlayer.currentLayer
+    const { currentARElementStyle } = ToolbarModule.getData()
+    layer && currentARElementStyle && SARMap.setLayerStyle(layer.name, currentARElementStyle)
     _params.setToolbarVisible(false)
     return
   }

@@ -228,7 +228,7 @@ async function getData(type, params) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
         },
@@ -286,7 +286,7 @@ async function getData(type, params) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
           selectMode: 'flash',
@@ -368,7 +368,7 @@ async function getData(type, params) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
           // constants.DELETE,
           size: 'large',
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           image: getThemeAssets().edit.icon_delete,
         },
         {
@@ -435,7 +435,7 @@ async function getData(type, params) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
           selectMode: 'flash',
@@ -482,7 +482,7 @@ async function getData(type, params) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
         },
@@ -526,7 +526,7 @@ async function getData(type, params) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
         },
@@ -563,7 +563,7 @@ async function getData(type, params) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
           selectMode: 'flash',
@@ -626,7 +626,7 @@ async function getData(type, params) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
           //constants.DELETE,
           size: 'large',
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           image: getThemeAssets().edit.icon_delete,
         },
         {
@@ -684,7 +684,7 @@ async function getData(type, params) {
         {
           key: constants.DELETE,
           title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
-          action: MarkAction.deleteLabel,
+          action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
         },

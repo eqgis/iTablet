@@ -853,6 +853,10 @@ function setTouchProgressInfo(title, value) {
   }
 }
 
+function remove() {
+  GLOBAL.removeObjectDialog && GLOBAL.removeObjectDialog.setDialogVisible(true)
+}
+
 /**
  * 获取Progress的tips
  * @param value
@@ -939,4 +943,5 @@ export default {
   setTaggingTextFont,
   showAttribute,
   showAttribute1,
+  remove,
 }

@@ -113,6 +113,7 @@ async function geometrySelected(event) {
     params.setSelection([
       {
         layerInfo: event.layerInfo,
+        geometryType: event.geometryType,
         ids: [event.id],
       },
     ])

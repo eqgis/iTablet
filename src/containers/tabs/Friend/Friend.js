@@ -1069,6 +1069,41 @@ export default class Friend extends Component {
     }
   }
 
+  onGeometryDelete = async (layerInfo, geoID, geoType) => {
+    try {
+      if (this.props.cowork.currentTask.id !== '') {
+        const geoXML = await SMap.getUserEditGeometry(layerInfo.path, geoID)
+        let msgObj = {
+          type: MSGConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: this.props.user.currentUser.nickname,
+            id: this.props.user.currentUser.userName,
+            groupID: this.props.cowork.currentTask.id,
+            groupName: '',
+            coworkGroupId: this.props.cowork.currentTask.groupID,     // online协作群组
+            coworkGroupName: this.props.cowork.currentTask.groupName,
+            taskId: this.props.cowork.currentTask.id,
+          },
+          message: {
+            type: MSGConstant.MSG_COWORK_DELETE,
+            layerPath: layerInfo.path,
+            layerName: layerInfo.name,
+            caption: layerInfo.caption,
+            id: geoID,
+            geoUserID: this.props.user.currentUser.userName,
+            geometry: geoXML,
+            geoType: geoType,
+          },
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await this._sendMessage(msgStr, this.props.cowork.currentTask.id, false)
+      }
+    } catch (error) {
+      //
+    }
+  }
+
   /**
    * 开始发送位置
    * @param {*} forceShow 第一次是否强制显示

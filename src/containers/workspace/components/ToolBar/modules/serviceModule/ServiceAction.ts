@@ -573,7 +573,9 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
         const publishResults = await Service.publishService(uploadResult, publishDataType, 'RESTDATA')
         result = publishResults?.[0]?.succeed || false
         if (result && publishResults[0].customResult) {
-          const service = await SCoordinationUtils.getScoordiantion().getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
+          const _SCoordination = SCoordinationUtils.getScoordiantion()
+          await _SCoordination.setCoordinationType(_SCoordination.type) // 重新获取cookie,防止cookie失效
+          const service = await _SCoordination.getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
           // const service = await SCoordinationUtils.getScoordiantion().getUserServices({})
           if (service.content.length > 0) {
             content = service.content
@@ -581,7 +583,7 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
             service.content.forEach(item => {
               ids.push(item.id)
             })
-            let shareResult = await SCoordinationUtils.getScoordiantion().shareServiceToGroup({
+            let shareResult = await _SCoordination.shareServiceToGroup({
               ids: ids,
               entities: entities,
             })

@@ -23,6 +23,7 @@ function getScoordiantion(type?: 'online' | 'iportal') {
       _SCoordination = new SCoordination('online')
     }
   }
+  _SCoordination.setCoordinationType(_SCoordination.type) // 重新获取cookie,防止cookie失效
   return _SCoordination
 }
 

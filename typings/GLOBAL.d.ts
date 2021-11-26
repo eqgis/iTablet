@@ -210,4 +210,5 @@ declare interface AnimationWayData {
 declare interface DATASET_SOURCE {
   datasetName: string,
   datasourceName: string,
+  layerName: string,
 }

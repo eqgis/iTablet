@@ -25,6 +25,8 @@ import { getPublicAssets, getThemeAssets } from '../../../../../../../assets'
 import { SMap } from 'imobile_for_reactnative'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { getLanguage } from '../../../../../../../language'
+import { Container } from '../../../../../../../components'
+import NavigationService from '../../../../../../NavigationService'
 
 export default class MergeDatasetView extends Component {
   props: {
@@ -60,6 +62,7 @@ export default class MergeDatasetView extends Component {
        */
       lineDataset: [],
     }
+    this.clickAble = true // 防止重复点击
   }
 
   componentDidMount() {
@@ -71,38 +74,13 @@ export default class MergeDatasetView extends Component {
    */
   _add = async () => {
     let lineDataset = await SMap.getAllLineDatasets()
-    let { datasetName, datasourceName } = this.props.sourceData
+    let { datasourceName } = this.props.sourceData
     let filterData = lineDataset.filter(item => {
-      if (item.title === datasourceName) {
-        item.data = item.data.filter(data => {
-          return data.datasetName !== datasetName
-        })
-        return item.data.length > 0
-      }
-      return true
+      return item.title !== datasourceName
     })
     this.setState({
       lineDataset: filterData,
     })
-  }
-
-  /**
-   * 返回路网采集模块
-   */
-  _cancel = () => {
-    const _params = ToolbarModule.getParams()
-    _params.setToolbarVisible(
-      true,
-      ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK,
-      {
-        isFullScreen: false,
-        containerType: ToolbarType.list,
-        height:
-          _params.device.orientation === 'PORTRAIT'
-            ? Height.LIST_HEIGHT_P
-            : Height.LIST_HEIGHT_L,
-      },
-    )
   }
 
   /**
@@ -151,17 +129,11 @@ export default class MergeDatasetView extends Component {
    * }]
    */
   mergeData = async selectedDatas => {
-    const _params = ToolbarModule.getParams()
-    _params.setContainerLoading(
-      true,
-      getLanguage(GLOBAL.language).Prompt.MERGEING,
-    )
     let result = await SMap.mergeDataset(
       { ...this.props.sourceData },
       selectedDatas,
     )
     if (result) {
-      _params.setContainerLoading(false)
       if (result instanceof Array) {
         let str = result.reduce(
           (preValue, curValue) => (preValue!=='' ? preValue + '、' : '')+ curValue.datasetName,
@@ -173,16 +145,10 @@ export default class MergeDatasetView extends Component {
           }:${str}`,
         )
       } else {
+        NavigationService.goBack()
         Toast.show(getLanguage(GLOBAL.language).Prompt.MERGE_SUCCESS)
-        let preType = ToolbarModule.getData().preType
-        let containerType = ToolbarType.table
-        _params.setToolbarVisible(true, preType, {
-          containerType,
-          isFullScreen: false,
-        })
       }
     } else {
-      _params.setContainerLoading(false)
       Toast.show(getLanguage(GLOBAL.language).Prompt.MERGE_FAILD)
     }
   }
@@ -249,35 +215,41 @@ export default class MergeDatasetView extends Component {
     )
   }
 
+  back = async() => {
+    if (this.clickAble) {
+      this.clickAble = false
+      setTimeout(() => {
+        this.clickAble = true
+      }, 1500)
+      NavigationService.goBack()
+    }
+  }
+
+  renderHeaderRight = () => {
+    return(
+      <View style={styles.actionView}>
+        <TouchableOpacity
+          style={styles.titleTxtWrap}
+          onPress={this.confirm}
+        >
+          <Text style={styles.actionTxt}>
+            {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_CONFIRM}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   render = () => {
     return (
-      <View style={styles.container}>
-        <View style={styles.title}>
-          <View style={styles.actionView}>
-            <TouchableOpacity
-              style={styles.titleTxtWrap}
-              onPress={this._cancel}
-            >
-              <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Find.BACK}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.titleTxt}>
-            {getLanguage(GLOBAL.language).Map_Main_Menu.ADD_DATASET}
-          </Text>
-          <View style={styles.actionView}>
-            <TouchableOpacity
-              style={styles.titleTxtWrap}
-              onPress={this.confirm}
-            >
-              <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_CONFIRM}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.sectionSeparateViewStyle} />
+      <Container
+        ref={ref => (this.container = ref)}
+        headerProps={{
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.ADD_DATASET,
+          backAction: this.back,
+          headerRight: this.renderHeaderRight(),
+        }}
+      >
         <SectionList
           style={styles.padding}
           keyExtractor={(item, index) => item.toString() + index}
@@ -285,7 +257,7 @@ export default class MergeDatasetView extends Component {
           renderSectionHeader={this._renderSectionHeader}
           renderItem={this.renderItem}
         />
-      </View>
+      </Container>
     )
   }
 }
@@ -411,7 +383,7 @@ const styles = StyleSheet.create({
   },
   actionTxt: {
     color: color.fontColorBlack,
-    fontSize: setSpText(20),
+    fontSize: setSpText(30),
   },
   titleTxtWrap: {
     minWidth: scaleSize(110),

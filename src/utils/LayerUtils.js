@@ -98,6 +98,17 @@ async function getSelectionAttributeByData(
   return dealData(attributes, data, page, type)
 }
 
+async function getNavigationAttributeByData(
+  attributes,
+  name,
+  page,
+  size,
+  type = 'loadMore',
+) {
+  const data = await SMap.getNavigationAttributeByData(name, page, size)
+  return dealData(attributes, data, page, type)
+}
+
 
 async function deleteSelectionAttributeByLayer(path,index,isCollection) {
   return await SMap.deleteSelectionAttributeByLayer(path,index,isCollection)
@@ -109,6 +120,10 @@ async function deleteAttributeByLayer(path, smID, isCollection) {
 
 async function deleteAttributeByData(name, smID) {
   return await SMap.deleteAttributeByData(name, smID)
+}
+
+async function deleteNavigationAttributeByData(name, smID) {
+  return await SMap.deleteNavigationAttributeByData(name, smID)
 }
 
 async function getCurrentGeometryID(path) {
@@ -546,4 +561,6 @@ export default {
 
   getSelectionAttributeByData,
   deleteAttributeByData,
+  getNavigationAttributeByData,
+  deleteNavigationAttributeByData,
 }

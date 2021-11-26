@@ -381,6 +381,10 @@ const Prompt: typeof CN.Prompt = {
   BUILD_SUCCESS: "Başarıyla uygulandı",
   SELECT_LINE_SMOOTH: "Lütfen düzeltilmesi gereken çizgiyi seçin",
   SELECT_A_POINT_INLINE: "Lütfen bir çevrimiçi nokta seçin",
+  SELECT_POINT_INCURRENTLINE:"Select the point on the current line to interrupt",//need to translate
+  SELECT_LINE_WITH_INTERRUPT:"Select the line to participate in the interruption",//need to translate
+  SELECT_LINE_EXTENSION:"Select the line to be extended",//need to translate
+  SELECT_LINE_TO_TRIM:"Select the clipped portion of the clipped line",//need to translate
   LINE_DATASET: "Çizgi Verikümesi",
   DESTINATION_DATASOURCE: "Hedef Veri Kaynağı",
   SMOOTH_FACTOR: "Lütfen düzeltme faktörünü girin",

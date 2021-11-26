@@ -80,7 +80,6 @@ import {
   FetchUtils,
   screen,
   Audio,
-  DownloadUtil,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -93,7 +92,6 @@ import {
   ChunkType,
   MapHeaderButton,
   Const,
-  EventConst,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import { setGestureDetectorListener } from '../../../GestureDetectorListener'
@@ -109,7 +107,6 @@ import {
   PanResponder,
   Animated,
   Dimensions,
-  DeviceEventEmitter,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -566,21 +563,8 @@ export default class MapView extends React.Component {
         action: this.back,
       })
 
-      DeviceEventEmitter.removeListener(
-        'onCurrentHeightChanged',
-        this.onCurrentHeightChanged,
-      )
-      SMediaCollector.setDownloadListener({
-        downloadingHandler: data => {
-          DownloadUtil.downloadMedia(data)
-          DeviceEventEmitter.emit(EventConst.DOWNLOAD_MEDIA, data)
-        },
-        downloadedHandler: data => {
-          DownloadUtil.downloadMedia(data)
-          DeviceEventEmitter.emit(EventConst.DOWNLOAD_MEDIA, data)
-        },
-      })
       SMediaCollector.setCalloutTapListener(async info => {
+        const mediaData = info.mediaData && JSON.parse(info.mediaData)
         let layerInfo
         for (const layer of this.props.layers.layers) {
           if (layer.name === info.layerName) {
@@ -588,10 +572,23 @@ export default class MapView extends React.Component {
             break
           }
         }
+        // if (mediaData?.type === 'AI_CLASSIFY') {
+        //   NavigationService.navigate('ClassifyResultEditView', {
+        //     layerName: info.layerName,
+        //     geoID: info.geoID,
+        //     datasourceAlias: layerInfo.datasourceAlias,
+        //     datasetName: layerInfo.datasetName,
+        //     imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
+        //     mediaName: mediaData.mediaName,
+        //     classifyTime: info.modifiedDate,
+        //     description: info.description,
+        //   })
+        // } else {
         NavigationService.navigate('MediaEdit', {
           layerInfo,
           info,
         })
+        // }
       })
 
       this.clearData()
@@ -990,7 +987,6 @@ export default class MapView extends React.Component {
 
     // 移除多媒体采集监听
     SMediaCollector.removeListener()
-    SMediaCollector.removeDownloadListener()
     // 移除协作消息点击监听
     SMap.removeMessageCalloutListener()
 
@@ -1009,6 +1005,25 @@ export default class MapView extends React.Component {
     GLOBAL.mapView && SMap.deleteGestureDetector()
 
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
+
+    if (GLOBAL.Type === ChunkType.MAP_AR_MAPPING) {
+      //移除监听
+      // DeviceEventEmitter.removeListener(
+      //   'onCurrentHeightChanged',
+      //   this.onCurrentHeightChanged,
+      // )
+
+      // if (Platform.OS === 'ios') {
+      //   iOSEventEmi.removeListener(
+      //     'com.supermap.RN.SMeasureAreaView.ADD',
+      //     this.onAdd,
+      //   )
+      //   iOSEventEmi.removeListener(
+      //     'com.supermap.RN.SMeasureAreaView.CLOSE',
+      //     this.onshowLog,
+      //   )
+      // }
+    }
   }
 
   /** 添加语音识别监听 */
@@ -2146,13 +2161,13 @@ export default class MapView extends React.Component {
       {
         title: getLanguage(GLOBAL.language).Friends.COWORK_UPDATE,
         action: () => {
-          CoworkInfo.update(this.coworkMessageID, true)
+          CoworkInfo.update(this.coworkMessageID)
         },
       },
       {
         title: getLanguage(GLOBAL.language).Friends.COWORK_ADD,
         action: () => {
-          CoworkInfo.add(this.coworkMessageID, true)
+          CoworkInfo.add(this.coworkMessageID)
         },
       },
       {
@@ -4071,10 +4086,26 @@ export default class MapView extends React.Component {
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
             // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
-            NavigationService.navigate('NavigationView', {
-              changeNavPathInfo: this.changeNavPathInfo,
-              getNavigationDatas: this.getNavigationDatas,
-            })
+            if (GLOBAL.Type === ChunkType.MAP_NAVIGATION && GLOBAL.TouchType !== TouchType.NAVIGATION_TOUCH_END) {
+              this.props.setMapNavigation({ isShow: false, name: '' })
+              GLOBAL.STARTNAME = getLanguage(
+                GLOBAL.language,
+              ).Map_Main_Menu.SELECT_START_POINT
+              GLOBAL.ENDNAME = getLanguage(
+                GLOBAL.language,
+              ).Map_Main_Menu.SELECT_DESTINATION
+              GLOBAL.STARTX = undefined
+              GLOBAL.ENDX = undefined
+              GLOBAL.MAPSELECTPOINT.setVisible(false)
+              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              await SMap.clearPoint()
+              GLOBAL.ToolBar?.existFullMap()
+            } else {
+              NavigationService.navigate('NavigationView', {
+                changeNavPathInfo: this.changeNavPathInfo,
+                getNavigationDatas: this.getNavigationDatas,
+              })
+            }
           },
         }}
       />

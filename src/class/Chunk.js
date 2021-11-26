@@ -40,7 +40,7 @@ export default class Chunk {
 
     this.licenceType = props.licenceType || 255 // TODO 临时方法
   }
-
+  
   getTitle = () => this.title
 
   action = async (user, lastMap) => {
@@ -153,7 +153,7 @@ export default class Chunk {
         // if (GLOBAL.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)
         // } else {
-        NavigationService.navigate('MapView', param)
+          NavigationService.navigate('MapView', param)
         // }
         break
       }
@@ -221,7 +221,7 @@ export default class Chunk {
         // if (GLOBAL.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)
         // } else {
-        NavigationService.navigate('MapView', param)
+          NavigationService.navigate('MapView', param)
         // }
         break
       }

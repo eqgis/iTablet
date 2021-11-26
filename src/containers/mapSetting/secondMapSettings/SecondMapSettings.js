@@ -47,7 +47,7 @@ import { getThemeAssets } from '../../../assets'
 import { getLanguage } from '../../../language'
 import FileTools from '../../../native/FileTools'
 import { mapSettingModule } from '../../workspace/components/ToolBar/modules'
-import { ConstToolType } from '../../../constants'
+import { ConstToolType ,ChunkType} from '../../../constants'
 import SlideBar from '../../../components/SlideBar'
 
 export default class SecondMapSettings extends Component {
@@ -285,6 +285,10 @@ export default class SecondMapSettings extends Component {
     data[13].value = SMap.isShowLocation()
     data[14].value = this.props.isShowCompass
     data.splice(1,1)
+
+    if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+      data.splice(11,1)
+    }
     return data
   }
 

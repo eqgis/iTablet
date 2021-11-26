@@ -1332,7 +1332,7 @@ export default class LayerAttribute extends React.Component {
                   columnIndex: 1,
                   rowData: data.rowData[i],
                   index: i,
-                  value: _mData.value instanceof Array ? _mData.value.toString() : _mData.value,
+                  value: _mData.value,
                 }
               } else {
                 params = {
@@ -1340,7 +1340,7 @@ export default class LayerAttribute extends React.Component {
                   columnIndex: i + 1,
                   rowData: data.rowData,
                   index: data.rowIndex,
-                  value: _mData.value instanceof Array ? _mData.value.toString() : _mData.value,
+                  value: _mData.value,
                 }
               }
               this.changeAction(params)

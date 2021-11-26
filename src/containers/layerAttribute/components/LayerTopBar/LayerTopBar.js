@@ -327,7 +327,7 @@ export default class LayerTopBar extends React.Component {
       })
     }
 
-    if(this.props.type === 'MY_DATA'){
+    if(this.props.type === 'MY_DATA' || this.props.type === 'NAVIGATION'){
       data = [
         {
           icon: this.props.canAddField

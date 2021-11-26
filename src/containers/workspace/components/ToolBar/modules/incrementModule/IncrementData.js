@@ -31,7 +31,13 @@ async function getData(type) {
       //toolbarBottomButtons里面默认传了type，此处不传type
       action: () => IncrementAction.changeMethod(),
     },
-    ToolbarBtnType.MENU_FLEX,
+    {
+      type: ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD,
+      image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
+      //toolbarBottomButtons里面默认传了type，此处不传type
+      action: () => IncrementAction.showAttribute(),
+    },
+    // ToolbarBtnType.MENU_FLEX,
     {
       type: ToolbarBtnType.MAP_SYMBOL,
       // image: getThemeAssets().navigation.btn_increment_topo_edit,

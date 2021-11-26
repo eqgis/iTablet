@@ -490,16 +490,20 @@ export default class CoworkFileHandle {
   /**
    * 删除任务群
    * @param groupId  Online群组
-   * @param taskId   任务群组
+   * @param taskIds   任务群组
    * @param callback 回调函数
    */
-  static async delTaskGroup(groupId: string|number, taskId: string, callback?: () => void) {
+  static async delTaskGroup(groupId: string|number, taskIds: string[], callback?: () => void) {
     let group = CoworkFileHandle.cowork.groups[groupId + '']
     if (CoworkFileHandle.cowork && group) {
-      for (let key = 0; key < group.tasks.length; key++) {
-        if (group.tasks[key].id === taskId) {
+      for (let key = group.tasks.length - 1; key >= 0; key--) {
+        const index = taskIds.indexOf(group.tasks[key].id)
+        if (index >= 0) {
           group.tasks.splice(key, 1)
-          break
+          taskIds.splice(index, 1)
+          if (taskIds.length === 0) {
+            break
+          }
         }
       }
     }

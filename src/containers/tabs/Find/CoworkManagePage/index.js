@@ -1,7 +1,7 @@
 import CoworkManagePage from './CoworkManagePage'
 import { connect } from 'react-redux'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
-import { deleteInvite, addCoworkMsg, deleteCoworkMsg, readCoworkGroupMsg, setCurrentGroup } from '../../../../redux/models/cowork' 
+import { deleteInvite, addCoworkMsg, deleteCoworkMsg, readCoworkGroupMsg, setCurrentGroup, deleteGroupTasks } from '../../../../redux/models/cowork' 
 
 const mapStateToProps = state => ({
   user: state.user.toJS(),
@@ -20,6 +20,7 @@ const mapDispatchToProps = {
   deleteCoworkMsg,
   readCoworkGroupMsg,
   setCurrentGroup,
+  deleteGroupTasks,
 }
 
 export default connect(

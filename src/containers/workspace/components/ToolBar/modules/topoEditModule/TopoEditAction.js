@@ -260,7 +260,7 @@ async function switchType(item) {
       setTimeout(() => {
         GLOBAL.TouchType = TouchType.MAP_TOPO_EXTEND_LINE
       }, 200)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
       break
     case constants.MAP_TOPO_TRIM:
       params = {
@@ -274,7 +274,7 @@ async function switchType(item) {
       setTimeout(() => {
         GLOBAL.TouchType = TouchType.MAP_TOPO_TRIM_LINE
       }, 200)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_BASE_LINE)
       break
     case constants.MAP_TOPO_RESAMPLE:
       // type = ConstToolType.SM_MAP_TOPO_RESAMPLE_LINE

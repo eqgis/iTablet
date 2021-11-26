@@ -502,10 +502,13 @@ export default class LayerAttributeTabs extends React.Component {
       result = await LayerUtils.deleteAttributeByData(
         layerInfo.path,
         this.state.currentIndex)
-    }else if(this.type === 'NAVIGATION'){
+    } else if (this.type === 'NAVIGATION') {
       result = await LayerUtils.deleteNavigationAttributeByData(
         layerInfo.path,
         this.state.currentIndex)
+      if (result) {
+        SMap.refreshMap()
+      }
     } else { // 删除选择集中指定位置的对象，用于点选/框选
       result = await LayerUtils.deleteSelectionAttributeByLayer(
         layerInfo.path,

@@ -260,7 +260,7 @@ export default class ChooseNaviLayer extends React.Component {
                   height: scaleSize(40),
                   width: scaleSize(40),
                 }}
-                source={getThemeAssets().layerType.layer_cad}
+                source={getThemeAssets().layerType.layer_line}
               />
             </TouchableOpacity>
           </View>

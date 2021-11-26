@@ -150,14 +150,14 @@ async function getData(type) {
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_resample,
         },
-        {
-          key: constants.MAP_TOPO_CHANGE_DIRECTION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .MAP_TOPO_CHANGE_DIRECTION,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getThemeAssets().navigation.icon_increment_change_direction,
-        },
+        // {
+        //   key: constants.MAP_TOPO_CHANGE_DIRECTION,
+        //   title: getLanguage(GLOBAL.language).Map_Main_Menu
+        //     .MAP_TOPO_CHANGE_DIRECTION,
+        //   action: TopoEditAction.switchType,
+        //   size: 'large',
+        //   image: getThemeAssets().navigation.icon_increment_change_direction,
+        // },
         // {
         //   key: constants.MAP_TOPO_OBJECT_EDIT,
         //   title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,

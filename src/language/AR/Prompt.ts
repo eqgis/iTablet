@@ -381,6 +381,10 @@ const Prompt: typeof CN.Prompt = {
   BUILD_SUCCESS: "تم بناؤه بنجاح",
   SELECT_LINE_SMOOTH: "الرجاء تحديد الخط الذي يحتاج إلى تجانس",
   SELECT_A_POINT_INLINE: "الرجاء تحديد نقطة على الإنترنت",
+  SELECT_POINT_INCURRENTLINE:"Select the point on the current line to interrupt",//need to translate
+  SELECT_LINE_WITH_INTERRUPT:"Select the line to participate in the interruption",//need to translate
+  SELECT_LINE_EXTENSION:"Select the line to be extended",//need to translate
+  SELECT_LINE_TO_TRIM:"Select the clipped portion of the clipped line",//need to translate
   LINE_DATASET: "خط مجموعة البيانات",
   DESTINATION_DATASOURCE: "مصدر البيانات الهدف",
   SMOOTH_FACTOR: "الرجاء إدخال عامل التنعيم",

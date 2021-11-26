@@ -78,15 +78,6 @@ async function magntouchCallback(event) {
       const data = ToolbarModule.getData()
       const point = event.screenPoint
       data?.actions?.pointSplitLine(point)
-      GLOBAL.TouchType = TouchType.NULL
-      const _params = ToolbarModule.getParams()
-      await SMap.setAction(Action.SELECT)
-      _params.setToolbarVisible &&
-        _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
-          isFullScreen: false,
-          height: 0,
-          resetToolModuleData: true,
-        })
       break
     }
     // case TouchType.MAP_TOPO_TRIM_LINE:

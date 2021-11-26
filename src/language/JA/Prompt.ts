@@ -381,6 +381,10 @@ const Prompt: typeof CN.Prompt = {
   BUILD_SUCCESS: "道路ネットワークの作成に成功しました",
   SELECT_LINE_SMOOTH: "スムーズネスラインを選択してください",
   SELECT_A_POINT_INLINE: "ライン上にあるポイントを選択してください",
+  SELECT_POINT_INCURRENTLINE:"Select the point on the current line to interrupt",//need to translate
+  SELECT_LINE_WITH_INTERRUPT:"Select the line to participate in the interruption",//need to translate
+  SELECT_LINE_EXTENSION:"Select the line to be extended",//need to translate
+  SELECT_LINE_TO_TRIM:"Select the clipped portion of the clipped line",//need to translate
   LINE_DATASET: "ラインデータセット",
   DESTINATION_DATASOURCE: "目標データソース",
   SMOOTH_FACTOR: "スムーズ係数を入力してください",

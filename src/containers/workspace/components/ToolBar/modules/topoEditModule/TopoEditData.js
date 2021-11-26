@@ -109,11 +109,11 @@ async function getData(type) {
     case ConstToolType.SM_MAP_TOPO_OBJECT_EDIT_SELECTED:
       data = [
         {
-          key: constants.MAP_TOPO_SMOOTH,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
+          key: constants.MAP_TOPO_SPLIT,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT,
           action: TopoEditAction.switchType,
           size: 'large',
-          image: getThemeAssets().navigation.icon_increment_smooth,
+          image: getThemeAssets().navigation.icon_incremnent_split,
         },
         {
           key: constants.MAP_TOPO_SPLIT_LINE,
@@ -121,13 +121,6 @@ async function getData(type) {
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_line_split_line,
-        },
-        {
-          key: constants.MAP_TOPO_SPLIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getThemeAssets().navigation.icon_incremnent_split,
         },
         {
           key: constants.MAP_TOPO_EXTEND,
@@ -142,6 +135,13 @@ async function getData(type) {
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_incremnent_trim,
+        },
+        {
+          key: constants.MAP_TOPO_SMOOTH,
+          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getThemeAssets().navigation.icon_increment_smooth,
         },
         {
           key: constants.MAP_TOPO_RESAMPLE,

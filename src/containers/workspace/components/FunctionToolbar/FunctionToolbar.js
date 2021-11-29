@@ -395,11 +395,12 @@ export default class FunctionToolbar extends React.Component {
                       let resourceIds = [],
                         _mediaPaths = [] // 保存修改名称后的图片地址
                       let name = '', suffix = ''
-                      for (let mediaPath of mediaPaths) {
-                        let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+                      let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+                      const newPaths = await FileTools.copyFiles(mediaPaths, dest)
+                      for (let mediaPath of newPaths) {
                         if (mediaPath.indexOf('assets-library://') === 0) { // 处理iOS相册文件
-                          suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext')?.toLowerCase() || ''
-                          name = dataUtil.getUrlQueryVariable(mediaPath, 'id')?.toLowerCase() || ''
+                          suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext') || ''
+                          name = dataUtil.getUrlQueryVariable(mediaPath, 'id') || ''
                           dest += `${name}.${suffix}`
                           mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
                         } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件

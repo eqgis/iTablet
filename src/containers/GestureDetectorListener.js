@@ -80,19 +80,20 @@ async function magntouchCallback(event) {
       data?.actions?.pointSplitLine(point)
       break
     }
-    // case TouchType.MAP_TOPO_TRIM_LINE:
-    // case TouchType.MAP_TOPO_EXTEND_LINE: {
-    //   // const data = ToolbarModule.getData()
-    //   const point = event.screenPoint
-    //   ToolbarModule.addData({ point })
-    //   let params = {
-    //     point,
-    //     ...GLOBAL.INCREMENT_DATA,
-    //     secondLine: true,
-    //   }
-    //   SMap.drawSelectedLineOnTrackingLayer(params)
-    //   break
-    // }
+    case TouchType.MAP_TOPO_TRIM_LINE:
+    // case TouchType.MAP_TOPO_EXTEND_LINE:
+    {
+      // const data = ToolbarModule.getData()
+      const point = event.screenPoint
+      ToolbarModule.addData({ point })
+      let params = {
+        point,
+        ...GLOBAL.INCREMENT_DATA,
+        secondLine: true,
+      }
+      SMap.drawSelectedLineOnTrackingLayer(params)
+      break
+    }
   }
 }
 

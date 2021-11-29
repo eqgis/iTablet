@@ -6,6 +6,7 @@ import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../../containers/NavigationService'
 import { getLanguage } from '../../../../language'
 import { TouchType } from '../../../../constants'
+import { zIndexLevel } from '../../../../styles'
 
 export default class MapSelectPointButton extends React.Component {
   props: {
@@ -435,6 +436,7 @@ export default class MapSelectPointButton extends React.Component {
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            zIndex: zIndexLevel.FOUR,
           }}
         >
           <TouchableOpacity

@@ -8,6 +8,7 @@ import * as React from 'react'
 import { Animated, requireNativeComponent } from 'react-native'
 import { scaleSize } from '../../../../utils'
 import { SMap } from 'imobile_for_reactnative'
+import { zIndexLevel } from '../../../../styles'
 
 export default class ScaleView extends React.Component {
   props: {
@@ -158,6 +159,7 @@ export default class ScaleView extends React.Component {
           bottom: this.bottom,
           width: scaleSize(150),
           height: scaleSize(60),
+          zIndex: zIndexLevel.ONE,
         }}
       >
         <RCTSMScaleView

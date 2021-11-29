@@ -100,7 +100,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 2,
   },
+  bottomViewBtn: {
+    width: scaleSize(100),
+    height: scaleSize(100),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   btnStyle: {
+    marginTop: scaleSize(8),
     color: '#1D1D1D',
     fontSize: size.fontSize.fontSizeMd,
   },
@@ -649,6 +656,7 @@ class GroupSourceManagePage extends Component<Props, State> {
       <View style={styles.bottomView}>
         <ImageButton
           key={'download'}
+          containerStyle={styles.bottomViewBtn}
           icon={getThemeAssets().cowork.icon_nav_import}
           title={getLanguage(GLOBAL.language).Prompt.DOWNLOAD}
           titleStyle={styles.btnStyle}
@@ -667,6 +675,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         />
         <ImageButton
           key={'delete'}
+          containerStyle={styles.bottomViewBtn}
           icon={getThemeAssets().edit.icon_delete}
           title={getLanguage(GLOBAL.language).Prompt.DELETE}
           titleStyle={styles.btnStyle}

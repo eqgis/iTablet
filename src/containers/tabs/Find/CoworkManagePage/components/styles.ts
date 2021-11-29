@@ -15,7 +15,7 @@ export default StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     paddingRight: scaleSize(28),
-    paddingLeft: scaleSize(40),
+    paddingLeft: scaleSize(30),
     paddingVertical: scaleSize(24),
     height: scaleSize(160),
     alignItems: 'center',

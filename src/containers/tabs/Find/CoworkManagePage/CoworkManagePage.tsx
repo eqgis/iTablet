@@ -29,6 +29,7 @@ interface Props {
 }
 
 type State = {
+  isMutiChoice: boolean,
 }
 
 export default class CoworkManagePage extends React.Component<Props, State> {
@@ -40,6 +41,9 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.callBack = this.props.navigation?.state?.params?.callBack
+    this.state = {
+      isMutiChoice: false,
+    }
   }
 
   shouldComponentUpdate(nextProps: any, nextState: any) {
@@ -168,8 +172,23 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   renderRight = (): Array<React.ReactNode> => {
     return [
       <ImageButton
+        key={'operation'}
+        containerStyle={{
+          width: scaleSize(44),
+          height: scaleSize(44),
+        }}
+        icon={getThemeAssets().nav.icon_nav_batch_operation}
+        onPress={() => {
+          this.setState({
+            isMutiChoice: !this.state.isMutiChoice,
+          })
+        }}
+      />,
+      <ImageButton
         key={'source'}
         containerStyle={{
+          marginLeft: scaleSize(30),
+          marginRight: scaleSize(6),
           width: scaleSize(44),
           height: scaleSize(44),
         }}
@@ -196,16 +215,16 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     ]
   }
 
-  _renderPagePopup = () => {
-    return (
-      <PopMenu
-        ref={ref => (this.PagePopModal = ref)}
-        data={this.popData}
-        device={this.props.device}
-        hasCancel={false}
-      />
-    )
-  }
+  // _renderPagePopup = () => {
+  //   return (
+  //     <PopMenu
+  //       ref={ref => (this.PagePopModal = ref)}
+  //       data={this.popData}
+  //       device={this.props.device}
+  //       hasCancel={false}
+  //     />
+  //   )
+  // }
 
   render() {
     return (
@@ -229,6 +248,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           tabLabel={getLanguage(GLOBAL.language).Friends.TASK}
           groupInfo={this.props.currentGroup}
           createTask={this.createTask}
+          isMutiChoice={this.state.isMutiChoice}
           {...this.props}
         />
       </Container>

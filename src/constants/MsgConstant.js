@@ -69,4 +69,6 @@ export default {
   MSG_ONLINE_MEMBER_DELETE: 407,
   /** 群组聊天消息 */
   MSG_ONLINE_GROUP_CHAT: 408,
+  /** 群组成员退出任务 */
+  MSG_ONLINE_GROUP_TASK_EXIST: 409,
 }

@@ -862,10 +862,11 @@ class Chat extends React.Component {
       wsData.layerIndex = 0
       let licenseStatus = await SMap.getEnvironmentStatus()
       GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
-      NavigationService.navigate('MapViewSingle', {
+      NavigationService.navigate('MapView', {
         wsData,
         isExample: true,
         noLegend: true,
+        viewEntire:false,
         mapName: message.originMsg.message.message.message,
         showMarker: {
           longitude: message.originMsg.message.message.longitude,

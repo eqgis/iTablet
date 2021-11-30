@@ -82,6 +82,7 @@ export default class LayerAttributeTabs extends React.Component {
     setCurrentAttribute: () => {},
     setLayerAttributes: () => {},
     setDataAttributes: () => {},
+    setNaviAttributes: () => {},
     setAttributeHistory: () => {},
     clearAttributeHistory: () => {},
     setBackAction: () => {},
@@ -856,6 +857,7 @@ export default class LayerAttributeTabs extends React.Component {
         setCurrentAttribute={this.props.setCurrentAttribute}
         setLayerAttributes={this.props.setLayerAttributes}
         setDataAttributes={this.props.setDataAttributes}
+        setNaviAttributes={this.props.setNaviAttributes}
         setAttributeHistory={this.props.setAttributeHistory}
         selectAction={this.selectAction}
         onGetAttribute={this.onGetAttribute}

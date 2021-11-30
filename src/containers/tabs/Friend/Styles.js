@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: '#FBFBFB',
-    fontSize: scaleSize(80),
+    fontSize: scaleSize(60),
   },
 })
 

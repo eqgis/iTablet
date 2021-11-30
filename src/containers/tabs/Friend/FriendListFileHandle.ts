@@ -4,10 +4,10 @@
 
 // eslint-disable-next-line
 import { Platform } from 'react-native'
-import { SOnlineService,RNFS } from 'imobile_for_reactnative'
+import { SOnlineService, SIPortalService, RNFS } from 'imobile_for_reactnative'
 import { FileTools} from '../../../native'
 import ConstPath from '../../../constants/ConstPath'
-import { OnlineServicesUtils } from '../../../utils'
+import * as OnlineServicesUtils from '../../../utils/OnlineServicesUtils'
 import { UserType } from '../../../constants'
 import { UserInfo } from '../../../types'
 
@@ -77,7 +77,7 @@ export default class FriendListFileHandle {
     FriendListFileHandle.friendListFile = ''
     FriendListFileHandle.friendListFile_ol = ''
 
-    if (!UserType.isOnlineUser(user)) {
+    if (!UserType.isOnlineUser(user) && !UserType.isIPortalUser(user)) {
       return
     }
 
@@ -152,57 +152,69 @@ export default class FriendListFileHandle {
     if (FriendListFileHandle.friendListFile_ol === '') {
       return false
     }
-    let JSOnlineService = new OnlineServicesUtils('online')
-    if (
-      (await JSOnlineService.getDataIdByName('friend.list.zip')) !== undefined
-    ) {
-      let promise = new Promise((resolve, reject) => {
-        SOnlineService.downloadFileWithCallBack(
-          FriendListFileHandle.friendListFile_ol,
-          'friend.list',
-          {
-            onResult: async value => {
-              try {
-                if (value === true) {
-                  let value = await RNFS.readFile(
-                    FriendListFileHandle.friendListFile_ol,
-                  )
-                  let onlineVersion: FriendListInfo = JSON.parse(value)
-                  //确保是当前用户的好友列表
-                  if(onlineVersion.user && onlineVersion.user === FriendListFileHandle.user?.userName) {
-                    if (
-                      !FriendListFileHandle.friends ||
-                      onlineVersion.rev > FriendListFileHandle.friends.rev
-                    ) {
-                      //没有本地friendlist或online的版本较新，更新本地文件
-                      FriendListFileHandle.friends = onlineVersion
-                      await RNFS.writeFile(
-                        FriendListFileHandle.friendListFile,
-                        value,
-                      )
-                      FriendListFileHandle.checkFriendList()
-                      FriendListFileHandle.refreshCallback?.()
-                      FriendListFileHandle.refreshMessageCallback?.()
-                    } else if (
-                      onlineVersion.rev < FriendListFileHandle.friends.rev
-                    ) {
-                      //本地版本较新，将本地文件更新到online
-                      await FriendListFileHandle.upload()
-                    }
-                  } else if(FriendListFileHandle.friends){
-                    await FriendListFileHandle.upload()
-                  }
-                  await RNFS.unlink(FriendListFileHandle.friendListFile_ol)
-                  resolve(true)
-                } else {
-                  resolve(false)
-                }
-              } catch (error) {
-                reject(error)
+    const isIPortalUser = UserType.isIPortalUser(FriendListFileHandle.user)
+    let JSOnlineService = OnlineServicesUtils.getService(isIPortalUser ? 'iportal' : 'online')
+    let dataId = await JSOnlineService?.getDataIdByName('friend.list.zip')
+    if (dataId !== undefined) {
+      const callback = async (value: boolean | string | RNFS.DownloadResult, resolve: (value: any) => void, reject: (value: any) => void) => {
+        try {
+          if (value === true) {
+            let value = await RNFS.readFile(
+              FriendListFileHandle.friendListFile_ol,
+            )
+            let onlineVersion: FriendListInfo = JSON.parse(value)
+            //确保是当前用户的好友列表
+            if(onlineVersion.user && onlineVersion.user === FriendListFileHandle.user?.userName) {
+              if (
+                !FriendListFileHandle.friends ||
+                onlineVersion.rev > FriendListFileHandle.friends.rev
+              ) {
+                //没有本地friendlist或online的版本较新，更新本地文件
+                FriendListFileHandle.friends = onlineVersion
+                await RNFS.writeFile(
+                  FriendListFileHandle.friendListFile,
+                  value,
+                )
+                FriendListFileHandle.checkFriendList()
+                FriendListFileHandle.refreshCallback?.()
+                FriendListFileHandle.refreshMessageCallback?.()
+              } else if (
+                onlineVersion.rev < FriendListFileHandle.friends.rev
+              ) {
+                //本地版本较新，将本地文件更新到online
+                await FriendListFileHandle.upload()
               }
+            } else if(FriendListFileHandle.friends){
+              await FriendListFileHandle.upload()
+            }
+            await RNFS.unlink(FriendListFileHandle.friendListFile_ol)
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        } catch (error) {
+          reject(error)
+        }
+      }
+      let promise = new Promise((resolve, reject) => {
+        if (isIPortalUser) {
+          JSOnlineService.downloadFile(
+            `${JSOnlineService.serverUrl}/mycontent/datas/${dataId}/download`,
+            FriendListFileHandle.friendListFile_ol,
+          ).then(result => {
+            callback(result, resolve, reject)
+          })
+        } else {
+          SOnlineService.downloadFileWithCallBack(
+            FriendListFileHandle.friendListFile_ol,
+            'friend.list',
+            {
+              onResult: async value => {
+                callback(value, resolve, reject)
+              },
             },
-          },
-        )
+          )
+        }
       })
       return promise
     } else {
@@ -222,7 +234,7 @@ export default class FriendListFileHandle {
   }
 
   static checkFriendList() {
-    if(!UserType.isOnlineUser(FriendListFileHandle.user)) {
+    if(!UserType.isOnlineUser(FriendListFileHandle.user) && !UserType.isIPortalUser(FriendListFileHandle.user)) {
       FriendListFileHandle.friends = undefined
       return
     }
@@ -352,24 +364,54 @@ export default class FriendListFileHandle {
     }
     FriendListFileHandle.uploading = true
     //上传
-    await SOnlineService.deleteData('friend.list')
     let UploadFileName = 'friend.list.zip'
     if (Platform.OS === 'android') {
       UploadFileName = 'friend.list'
     }
-    let promise = new Promise(resolve => {
-      SOnlineService.uploadFile(
-        FriendListFileHandle.friendListFile,
-        UploadFileName,
-        {
-          onResult: () => {
-            resolve(true)
+    let promise
+    if (UserType.isIPortalUser(FriendListFileHandle.user)) {
+      await SIPortalService.deleteMyData('friend.list')
+      promise = new Promise(resolve => {
+        FileTools.zipFile(FriendListFileHandle.friendListFile, FriendListFileHandle.friendListFile + '.zip').then((result: boolean) => {
+          result && OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
+            FriendListFileHandle.friendListFile + '.zip',
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            FileTools.deleteFile(FriendListFileHandle.friendListFile + '.zip')
+            resolve(!!id)
             FriendListFileHandle.uploading = false
             FriendListFileHandle.waitUploading = false
+          })
+        })
+        // SIPortalService.uploadData(
+        //   FriendListFileHandle.friendListFile,
+        //   UploadFileName,
+        //   {
+        //     onResult: () => {
+        //       resolve(true)
+        //       FriendListFileHandle.uploading = false
+        //       FriendListFileHandle.waitUploading = false
+        //     },
+        //   },
+        // )
+      })
+    } else {
+      await SOnlineService.deleteData('friend.list')
+      promise = new Promise(resolve => {
+        SOnlineService.uploadFile(
+          FriendListFileHandle.friendListFile,
+          UploadFileName,
+          {
+            onResult: () => {
+              resolve(true)
+              FriendListFileHandle.uploading = false
+              FriendListFileHandle.waitUploading = false
+            },
           },
-        },
-      )
-    })
+        )
+      })
+    }
     return promise
   }
 

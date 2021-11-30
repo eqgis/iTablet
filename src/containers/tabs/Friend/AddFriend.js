@@ -23,13 +23,12 @@ import { Toast, OnlineServicesUtils } from '../../../utils'
 import { size, color } from '../../../styles'
 import { getThemeAssets } from '../../../assets'
 import MSGConstant from '../../../constants/MsgConstant'
+import { UserType } from '../../../constants'
 
 const dismissKeyboard = require('dismissKeyboard')
-const JSOnlineServices = new OnlineServicesUtils('online')
 class AddFriend extends Component {
   props: {
     navigation: Object,
-    user: Object,
   }
 
   constructor(props) {
@@ -44,6 +43,11 @@ class AddFriend extends Component {
       text: '',
     }
     this.language = this.props.navigation.getParam('language')
+    if (UserType.isIPortalUser(this.user)) {
+      this.onlineServices = new OnlineServicesUtils('iportal')
+    } else {
+      this.onlineServices = new OnlineServicesUtils('online')
+    }
   }
   componentDidMount() {
     this.friend = this.props.navigation.getParam('friend')
@@ -89,7 +93,7 @@ class AddFriend extends Component {
     )
     let reg = /^[0-9]{11}$/
     let isEmail = !reg.test(val)
-    let result = await JSOnlineServices.getUserInfo(val, isEmail)
+    let result = await this.onlineServices.getUserInfo(val, isEmail)
     if (result === false || result === '获取用户id失败') {
       result = {
         userId: '0',

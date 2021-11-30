@@ -2167,7 +2167,7 @@ export default class Friend extends Component {
           title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
           headerStyle: { borderBottomWidth: 0 },
           headerRight:
-            this.props.user.currentUser.userType === UserType.COMMON_USER ? (
+            this.props.user.currentUser.userType === UserType.COMMON_USER || this.props.user.currentUser.userType === UserType.IPORTAL_COMMON_USER ? (
               <TouchableOpacity
                 style={styles.addFriendView}
                 onPress={() => {
@@ -2185,7 +2185,7 @@ export default class Friend extends Component {
         }}
         bottomBar={this.renderTabBar()}
       >
-        {this.props.user.currentUser.userType === UserType.COMMON_USER
+        {this.props.user.currentUser.userType === UserType.COMMON_USER || this.props.user.currentUser.userType === UserType.IPORTAL_COMMON_USER
           ? this.renderTab()
           : this.renderNOFriend()}
         <AddMore

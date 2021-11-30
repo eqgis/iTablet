@@ -587,6 +587,7 @@ class AppRoot extends Component {
       } else {
         // iOS防止第一次登录timeout
         result = await this.loginOnline()
+        result = result && await FriendListFileHandle.initFriendList(this.props.user.currentUser)
       }
       if(result === true){
         let userType = this.props.user.currentUser.userType
@@ -625,11 +626,13 @@ class AppRoot extends Component {
       if (typeof result === 'boolean' && result) {
         //登录后更新用户信息 zhangxt
         let info = await SIPortalService.getMyAccount()
+        result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
         if (info) {
           let userInfo = JSON.parse(info)
           await this.props.setUser({
             serverUrl: url,
             userName: userInfo.name,
+            userId: userInfo.name,
             password: password,
             nickname: userInfo.nickname,
             email: userInfo.email,

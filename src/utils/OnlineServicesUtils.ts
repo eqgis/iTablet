@@ -1,7 +1,7 @@
 import { request } from './index'
 // import {cheerio as ch }from 'cheerio'
 import cheerio from 'react-native-cheerio'
-import { SOnlineService, SIPortalService ,SMap,RNFS} from 'imobile_for_reactnative'
+import { SOnlineService, SIPortalService ,SMap, RNFS} from 'imobile_for_reactnative'
 import { Platform } from 'react-native'
 import axios from 'axios'
 // eslint-disable-next-line import/default
@@ -13,6 +13,7 @@ import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } fr
 import RNFetchBlob from 'rn-fetch-blob'
 import { TLoginUserType } from '../constants/UserType'
 import { UserInfo } from '../types'
+import SCoordinationUtils from './SCoordinationUtils'
 
 /** 上传回调 */
 interface UploadCallBack {
@@ -168,6 +169,7 @@ export default class OnlineServicesUtils {
   }
 
   setType = (type: ServiceType) => {
+    this.type = type
     if (type === 'iportal') {
       let url = SIPortalService.getIPortalUrl()
       if (url) {
@@ -881,6 +883,17 @@ export default class OnlineServicesUtils {
    */
   getUserInfo = async (userName: string, isEmail = true): Promise<OnlineUserInfo|false> => {
     try {
+      if (this.type === 'iportal') {
+        SCoordinationUtils.setScoordiantion(this.type)
+        const result = await SCoordinationUtils.getScoordiantion().searchUserByName(userName)
+        if (result.length === 0) return false
+        return {
+          userId: result[0].name,
+          nickname: result[0].nickname,
+          phoneNumber: '',
+          email: null,
+        }
+      }
       let url
       //仅支持邮箱，用户名 zhangxt
       isEmail = true

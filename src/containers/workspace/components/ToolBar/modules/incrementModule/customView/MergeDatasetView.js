@@ -106,16 +106,16 @@ export default class MergeDatasetView extends Component {
      * 需要有默认的道路名称字段'RoadName'或自己选择的道路名称字段
      * 有默认字段，则fieldInfo.length为0，有选择的字段，则item.selectedFieldInfo不为空
      */
-    let filterData = selectedData.filter(item => {
-      return item.fieldInfo.length > 0 && !item.selectedFieldInfo
-    })
-    if (filterData.length > 0) {
-      Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
-      )
-    } else {
-      this.mergeData(selectedData)
-    }
+    // let filterData = selectedData.filter(item => {
+    //   return item.fieldInfo.length > 0 && !item.selectedFieldInfo
+    // })
+    // if (filterData.length > 0) {
+    //   Toast.show(
+    //     getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
+    //   )
+    // } else {
+    this.mergeData(selectedData)
+    // }
   }
 
   /**

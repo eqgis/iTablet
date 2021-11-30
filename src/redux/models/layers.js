@@ -234,6 +234,33 @@ export const setDataAttributes = (
   }
 }
 
+export const setNaviAttributes = (
+  params = [],
+  cb = () => { },
+) => async dispatch => {
+  let bRes = false
+  try {
+    if (params && params.length > 0) {
+      for (let i = 0; i < params.length; i++) {
+        bRes = await SMap.setNaviFieldInfo(
+          params[i].layerPath,
+          params[i].fieldInfo,
+          params[i].params,
+        )
+      }
+    }
+
+    // await dispatch({
+    //   type: ADD_ATTRIBUTE_HISTORY,
+    //   payload: params || [],
+    // })
+    cb && cb(bRes)
+    return bRes
+  } catch (e) {
+    return false
+  }
+}
+
 export const setAttributeHistory = (params = {}, cb = () => {}) => async (
   dispatch,
   getState,

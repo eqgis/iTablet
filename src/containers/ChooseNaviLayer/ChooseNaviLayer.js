@@ -417,7 +417,7 @@ export default class ChooseNaviLayer extends React.Component {
         <Container
           ref={ref => (this.container = ref)}
           headerProps={{
-            title: getLanguage(this.props.language).Prompt.CHOOSE_LAYER,
+            title: getLanguage(this.props.language).Map_Main_Menu.DATASET,
             backAction: this.back,
             headerRight: this.renderHeaderRight(),
           }}

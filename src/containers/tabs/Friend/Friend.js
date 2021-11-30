@@ -2313,10 +2313,10 @@ export default class Friend extends Component {
               style={styles.imagStyle}
               source={require('../../../assets/Mine/online_white.png')}
             />
-            <Text style={styles.textStyle}>{'Online'}</Text>
+            <Text style={styles.textStyle}>{getLanguage(this.props.language).Profile.LOGIN_NOW}</Text>
           </View>
         </TouchableOpacity>
-        <View>
+        {/* <View>
           <Text
             style={{
               fontSize: scaleSize(20),
@@ -2326,7 +2326,7 @@ export default class Friend extends Component {
           >
             {getLanguage(this.props.language).Friends.LOGOUT}
           </Text>
-        </View>
+        </View> */}
       </View>
     )
   }

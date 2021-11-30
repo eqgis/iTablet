@@ -30,8 +30,8 @@ export default class InformSpot extends Component {
   getContacts = () => {
     let bInform = false
     let currentUser
-    if (this.props.chat.hasOwnProperty(this.props.user.currentUser.userId)) {
-      currentUser = this.props.chat[this.props.user.currentUser.userId]
+    if (this.props.chat.hasOwnProperty(this.props.user.currentUser.userName)) {
+      currentUser = this.props.chat[this.props.user.currentUser.userName]
       let keys = Object.keys(currentUser)
       for (let i = 0, key = ''; i < keys.length; i++) {
         key = keys[i]

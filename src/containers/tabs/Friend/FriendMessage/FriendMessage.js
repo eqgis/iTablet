@@ -85,8 +85,8 @@ class FriendMessage extends Component {
     let srcData = []
     this.inFormData = []
     let currentUser
-    if (this.props.chat.hasOwnProperty(this.props.user.userId)) {
-      currentUser = this.props.chat[this.props.user.userId]
+    if (this.props.chat.hasOwnProperty(this.props.user.userName)) {
+      currentUser = this.props.chat[this.props.user.userName]
       let keys = Object.keys(currentUser)
       for (let i = 0, key = ''; i < keys.length; i++) {
         key = keys[i]
@@ -194,7 +194,7 @@ class FriendMessage extends Component {
           onPress: () => {
             MessageDataHandle.delMessage({
               //清除未读信息
-              userId: this.props.user.userId, //当前登录账户的id
+              userId: this.props.user.userName, //当前登录账户的id
               talkId: 1, //会话ID
             })
           },
@@ -209,7 +209,7 @@ class FriendMessage extends Component {
         onPress: () => {
           MessageDataHandle.readMessage({
             //清除未读信息
-            userId: this.props.user.userId, //当前登录账户的id
+            userId: this.props.user.userName, //当前登录账户的id
             talkId: this.target.id, //会话ID
           })
         },
@@ -221,7 +221,7 @@ class FriendMessage extends Component {
           onPress: () => {
             MessageDataHandle.unReadMessage({
               //清除未读信息
-              userId: this.props.user.userId, //当前登录账户的id
+              userId: this.props.user.userName, //当前登录账户的id
               talkId: this.target.id, //会话ID
             })
           },
@@ -291,7 +291,7 @@ class FriendMessage extends Component {
         onPress={() => {
           MessageDataHandle.readMessage({
             //清除未读信息
-            userId: this.props.user.userId, //当前登录账户的id
+            userId: this.props.user.userName, //当前登录账户的id
             talkId: 1, //会话ID
           })
           NavigationService.navigate('InformMessage', {
@@ -440,7 +440,7 @@ class FriendMessage extends Component {
         confirmAction={() => {
           MessageDataHandle.delMessage({
             //清除未读信息
-            userId: this.props.user.userId, //当前登录账户的id
+            userId: this.props.user.userName, //当前登录账户的id
             talkId: this.target.id, //会话ID
           })
           this.dialog.setDialogVisible(false)

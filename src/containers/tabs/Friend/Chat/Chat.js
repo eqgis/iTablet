@@ -557,12 +557,12 @@ class Chat extends React.Component {
     /**
      * uri
      * android:
-     * 1. /storage/emulated/0/iTablet/Common/Images/02.png
+     * 1. /iTablet/Common/Images/02.png
      * 2. content://media/external/images/media/214684
      *    ==> /storage/emulated/0/ttt.fw
      *
      * ios:
-     * 1. /var/mobile/Containers/Data/Application/B98D0EBB-9D73-45E9-94E7-38C327F2A9B9/Documents/iTablet/Common/Images/02.png
+     * 1. /iTablet/Common/Images/02.png
      * 2. assets-library://asset/asset.PNG?id=381993E0-7631-4BA0-A351-0536E30FAED0&ext=PNG
      *   ==> X
      */
@@ -571,9 +571,10 @@ class Chat extends React.Component {
     let fileName
     let hasTempFile = false
     if (uri.indexOf('assets-library://') === 0) {
-      let destPath = userPath + '/' + data.filename
-      await RNFS.copyAssetsFileIOS(uri, destPath, 0, 0)
-      filePath = destPath
+      // let destPath = userPath + '/' + data.filename
+      // await RNFS.copyAssetsFileIOS(uri, destPath, 0, 0)
+      const newPaths = await FileTools.copyFiles([uri], userPath)
+      filePath = newPaths[0]
       hasTempFile = true
     } else if (uri.indexOf('content://') === 0) {
       filePath = await FileTools.getContentAbsolutePathAndroid(uri)
@@ -626,7 +627,7 @@ class Chat extends React.Component {
         message: {
           fileName: data.filename || fileName,
           fileSize: statResult.size,
-          filePath: uri,
+          filePath: filePath.replace(GLOBAL.homePath, ''),
           imgdata: imgData,
           progress: 0,
         },
@@ -742,9 +743,9 @@ class Chat extends React.Component {
 
     this.receiveFile(message, receivePath, res => {
       if (res === true) {
-        this.ImageViewer.setImageUri(
-          homePath + message.originMsg.message.message.filePath,
-        )
+        // this.ImageViewer.setImageUri(
+        //   homePath + message.originMsg.message.message.filePath,
+        // )
         this.setState({
           messages: this.state.messages.map(m => {
             return {

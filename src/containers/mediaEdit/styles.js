@@ -113,4 +113,13 @@ export default StyleSheet.create({
     fontSize: size.fontSize.fontSizeXl,
     marginLeft: scaleSize(10),
   },
+
+  progressView: {
+    position: 'absolute',
+    height: '100%',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#rgba(0, 0, 0, 0.3)',
+  },
 })

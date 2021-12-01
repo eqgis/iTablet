@@ -28,7 +28,6 @@ import {
   layerNavigationSetting,
   getXmlTemplateData,
   layerImageSetting,
-  getNaviData,
 } from './LayerToolbarData'
 import {
   View,
@@ -77,9 +76,9 @@ export default class LayerManager_tolbar extends React.Component {
     // existFullMap: () => {},
     getLayers: () => {}, // 更新数据（包括其他界面）
     setCurrentLayer: () => {},
-    onPress?: () => {},
-    onThisPress?: () => {},
-    updateTagging?: () => {},
+    onPress: () => {},
+    onThisPress: () => {},
+    updateTagging: () => {},
     getOverlayView: () => {},
     updateData?: () => {},
     currentLayer: Object,
@@ -87,10 +86,9 @@ export default class LayerManager_tolbar extends React.Component {
     // layers: Object,
     user: Object,
     navigation: Object,
-    curUserBaseMaps?: Array,
+    curUserBaseMaps: Array,
     currentScale: Number,
-    mapFromXml?: () => {},
-    Onavipress?: () => {},
+    mapFromXml?: () => {}
   }
 
   static defaultProps = {
@@ -269,9 +267,6 @@ export default class LayerManager_tolbar extends React.Component {
         case "GET_XML_TEMPLATE":
           data = await getXmlTemplateData()
           break
-        case "NAVI_LAYER":
-          data = await getNaviData(GLOBAL.language)
-          break
       }
     }
     // 屏蔽在线协作-移除图层，分享图层
@@ -407,8 +402,6 @@ export default class LayerManager_tolbar extends React.Component {
   setOverlayViewVisible = visible => {
     GLOBAL.LayerManagerOverlayView &&
       GLOBAL.LayerManagerOverlayView.setVisible(visible)
-    GLOBAL.NaviLayerOverlayView &&
-      GLOBAL.NaviLayerOverlayView.setVisible(visible)
   }
 
   //更新菜单按钮状态
@@ -493,11 +486,6 @@ export default class LayerManager_tolbar extends React.Component {
   }
 
   listAction = ({ section, type }) => {
-    //单独在导航采集界面自己处理点击事件
-    if(this.state.type === "NAVI_LAYER"){
-      this.props.Onavipress(section.title)
-      return
-    }
     if (section.action) {
       (async function() {
         try {
@@ -1301,7 +1289,6 @@ export default class LayerManager_tolbar extends React.Component {
           case ConstToolType.SM_MAP_LAYER_BASE_CHANGE:
           case ConstToolType.SM_MAP_LAYER_NAVIGATION:
           case 'GET_XML_TEMPLATE':
-          case 'NAVI_LAYER':
             box = this.renderList()
             break
         }

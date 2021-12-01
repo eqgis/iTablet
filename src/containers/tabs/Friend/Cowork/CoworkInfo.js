@@ -104,7 +104,14 @@ export default class CoworkInfo {
     })
   }
 
-  static async add(messageID, notify = true) {
+  /**
+   * 添加对象
+   * @param {*} messageID 消息ID
+   * @param {*} readAllSameObj 是否将同一个对象的所有消息已读
+   * @param {*} notify 是否提示对象不存在
+   * @returns
+   */
+  static async add(messageID, readAllSameObj = false, notify = true) {
     try {
       let message = this.messages[messageID]
       let result = false
@@ -142,7 +149,18 @@ export default class CoworkInfo {
           result = await SMap.insertXMLLayer(index, message.message.layer)
           result && SMap.refreshMap()
         }
-        result && this.consumeMessage(message.messageID)
+        if (result) {
+          if (readAllSameObj && message.message.geometry) {
+            for (let i = this.messages.length - 1; i >= 0; i--) {
+              const item = this.messages[i]
+              if (item.message.id === message.message.id && item.status == 0) {
+                this.consumeMessage(item.messageID)
+              }
+            }
+          } else {
+            this.consumeMessage(message.messageID)
+          }
+        }
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&
           Toast.show(getLanguage(GLOBAL.language).Friends.ADD_DELETE_ERROR)
@@ -157,7 +175,14 @@ export default class CoworkInfo {
     }
   }
 
-  static async update(messageID, notify = true) {
+  /**
+   * 更新对象
+   * @param {*} messageID 消息ID
+   * @param {*} readAllSameObj 是否将同一个对象的所有消息已读
+   * @param {*} notify 是否提示对象不存在
+   * @returns
+   */
+  static async update(messageID, readAllSameObj = false, notify = true) {
     try {
       let message = this.messages[messageID]
       let result = false
@@ -194,7 +219,18 @@ export default class CoworkInfo {
           result = await SMap.insertXMLLayer(index, message.message.layer)
           result && SMap.refreshMap()
         }
-        result && this.consumeMessage(message.messageID)
+        if (result) {
+          if (readAllSameObj) {
+            for (let i = this.messages.length - 1; i >= 0; i--) {
+              const item = this.messages[i]
+              if (item.message.id === message.message.id && item.status == 0) {
+                this.consumeMessage(item.messageID)
+              }
+            }
+          } else {
+            this.consumeMessage(message.messageID)
+          }
+        }
       } else if (type === MsgConstant.MSG_COWORK_UPDATE) {
         if (message.message.geometry) {
           let exist = await SMap.isUserGeometryExist(
@@ -229,7 +265,18 @@ export default class CoworkInfo {
           )
           result && SMap.refreshMap()
         }
-        result && this.consumeMessage(message.messageID)
+        if (result) {
+          if (readAllSameObj) {
+            for (let i = this.messages.length - 1; i >= 0; i--) {
+              const item = this.messages[i]
+              if (item.message.id === message.message.id && item.status == 0) {
+                this.consumeMessage(item.messageID)
+              }
+            }
+          } else {
+            this.consumeMessage(message.messageID)
+          }
+        }
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         //TODO 处理删除
         // result = await SMap.updateUserGeometry(

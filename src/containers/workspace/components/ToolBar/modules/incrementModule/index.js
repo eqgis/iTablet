@@ -9,14 +9,7 @@ import IncrementAction from './IncrementAction'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { ConstToolType ,ToolbarType,TouchType} from '../../../../../../constants'
-import ToolbarModule from '../../../../components/ToolBar/modules/ToolbarModule'
-import {
-  SMap,
-} from 'imobile_for_reactnative'
-import {
-  LayerUtils,
-} from '../../../../../../utils'
+import { ConstToolType } from '../../../../../../constants'
 
 class IncrementModule extends FunctionModule {
   constructor(props) {
@@ -24,33 +17,8 @@ class IncrementModule extends FunctionModule {
     this.getMenuData = IncrementAction.getMenuData
   }
 
-  action = async() => {
-    const params = ToolbarModule.getParams()
-    const containerType = ToolbarType.table
-    const _data = await IncrementData.getData(ConstToolType.SM_MAP_INCREMENT_GPS_TRACK)
-    const data = ToolbarModule.getToolbarSize(containerType, {
-      data: _data.data,
-    })
-    GLOBAL.toolBox.showFullMap(true)
-    SMap.createDefaultDataset().then(async returnData => {
-      if (returnData.datasetName) {
-        params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_GPS_TRACK, {
-          containerType,
-          isFullScreen: false,
-          resetToolModuleData: true,
-          // height:data.height,
-          // column:data.column,
-          ...data,
-        })
-        GLOBAL.INCREMENT_DATA = returnData
-      }
-    })
-    //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
-    let layers = this.props.layers.layers
-    LayerUtils.setLayersSelectable(layers, false, true)
-    GLOBAL.TouchType = TouchType.NULL
-    GLOBAL.IncrementRoadDialog.setVisible(false)
-    // GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
+  action = () => {
+    GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
   }
 }
 

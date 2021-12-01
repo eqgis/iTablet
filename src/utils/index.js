@@ -19,6 +19,7 @@ import AppProgress from './AppProgress'
 import SCoordinationUtils from './SCoordinationUtils'
 import DateUtil from './DateUtil'
 import * as pinyin from './pinyin'
+import DownloadUtil from './DownloadUtil'
 
 export {
   screen,
@@ -49,4 +50,5 @@ export {
   SCoordinationUtils,
   DateUtil,
   pinyin,
+  DownloadUtil,
 }

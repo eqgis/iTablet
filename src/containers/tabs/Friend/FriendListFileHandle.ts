@@ -365,9 +365,6 @@ export default class FriendListFileHandle {
     FriendListFileHandle.uploading = true
     //上传
     let UploadFileName = 'friend.list.zip'
-    if (Platform.OS === 'android') {
-      UploadFileName = 'friend.list'
-    }
     let promise
     if (UserType.isIPortalUser(FriendListFileHandle.user)) {
       let dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
@@ -385,19 +382,11 @@ export default class FriendListFileHandle {
             FriendListFileHandle.waitUploading = false
           })
         })
-        // SIPortalService.uploadData(
-        //   FriendListFileHandle.friendListFile,
-        //   UploadFileName,
-        //   {
-        //     onResult: () => {
-        //       resolve(true)
-        //       FriendListFileHandle.uploading = false
-        //       FriendListFileHandle.waitUploading = false
-        //     },
-        //   },
-        // )
       })
     } else {
+      if (Platform.OS === 'android') {
+        UploadFileName = 'friend.list'
+      }
       await SOnlineService.deleteData('friend.list')
       promise = new Promise(resolve => {
         SOnlineService.uploadFile(

@@ -1069,10 +1069,17 @@ export default class Friend extends Component {
     }
   }
 
-  onGeometryDelete = async (layerInfo, geoID, geoType) => {
+  onGeometryDelete = async (layerInfo, fieldInfos, geoID, geoType) => {
     try {
       if (this.props.cowork.currentTask.id !== '') {
-        // const geoXML = await SMap.getUserEditGeometry(layerInfo.path, geoID)
+        let geoUserID = ''
+        for (let i = 0; i < fieldInfos.length; i++) {
+          let fieldInfo = fieldInfos[i]
+          if (fieldInfo.name === 'userID') {
+            geoUserID = fieldInfo.value
+            break
+          }
+        }
         let msgObj = {
           type: MSGConstant.MSG_COWORK,
           time: new Date().getTime(),
@@ -1091,7 +1098,7 @@ export default class Friend extends Component {
             layerName: layerInfo.name,
             caption: layerInfo.caption,
             id: geoID,
-            geoUserID: this.props.user.currentUser.userName,
+            geoUserID: geoUserID,
             // geometry: geoXML,
             geoType: geoType,
           },

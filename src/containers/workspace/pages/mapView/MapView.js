@@ -1290,6 +1290,7 @@ export default class MapView extends React.Component {
         {
           layerInfo: event.layerInfo,
           geometryType: event.geometryType,
+          fieldInfo: event.fieldInfo,
           ids: [event.id],
         },
       ])
@@ -1522,7 +1523,7 @@ export default class MapView extends React.Component {
           let item = this.props.selection[i]
           if (item.ids.length > 0) {
             if (GLOBAL.coworkMode && item.ids.length > 0) {
-              GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.ids[0], item.geometryType)
+              GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
             }
             result =
               result &&

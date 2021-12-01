@@ -628,13 +628,40 @@ function _addNewMessage(prevMessages: Array<any>, messages: Array<any>) {
           )
         }
         if (result) {
-          await SMap.addMessageCallout(
-            message.message.layerPath,
-            message.message.id,
-            message.message.geoUserID,
-            message.user.name,
-            message.messageID,
-          )
+          let count = 0, prevMessage
+          for (let i = messages.length - 1; i >= 0; i--) {
+            const item = messages[i]
+            if (item.message.id === message.message.id && item.status == 0) {
+              count++
+              if (count === 2) {
+                prevMessage = item
+                break
+              }
+            }
+          }
+          if (count == 1) {
+            await SMap.addMessageCallout(
+              message.message.layerPath,
+              message.message.id,
+              message.message.geoUserID,
+              message.user.name,
+              message.messageID,
+            )
+          } else {
+            // 同一个对象若有更新标志,则先移除,再次添加
+            if (prevMessage) {
+              await SMap.removeMessageCallout(
+                prevMessage.messageID,
+              )
+            }
+            await SMap.addMessageCallout(
+              message.message.layerPath,
+              message.message.id,
+              message.message.geoUserID,
+              message.user.name,
+              message.messageID,
+            )
+          }
         }
         adding = false
       } catch (error) {

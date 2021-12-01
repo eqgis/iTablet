@@ -258,16 +258,16 @@ class TaskManage extends React.Component<Props, State> {
       : []
     // 若redux中数据为空，则从Online下载的cowork文件中读取是否有文件
     if (data.length === 0) {
-      // CoworkFileHandle.getLocalCoworkList().then(async cowork => {
-      //   if (cowork && cowork.groups && cowork.groups[this.props.groupInfo.id]) {
-      //     let tasks = JSON.parse(JSON.stringify(cowork.groups[this.props.groupInfo.id].tasks))
-      //     if (tasks.length === 0) return
-      //     await this.props.setCoworkTaskGroup({
-      //       groupID: this.props.groupInfo.id,
-      //       tasks: tasks.reverse(),
-      //     })
-      //   }
-      // })
+      CoworkFileHandle.initLocalCoworkList(this.props.user.currentUser).then(async cowork => {
+        if (cowork && cowork.groups && cowork.groups[this.props.groupInfo.id]) {
+          let tasks = JSON.parse(JSON.stringify(cowork.groups[this.props.groupInfo.id].tasks))
+          if (tasks.length === 0) return
+          await this.props.setCoworkTaskGroup({
+            groupID: this.props.groupInfo.id,
+            tasks: tasks.reverse(),
+          })
+        }
+      })
       this.getData()
     }
   }

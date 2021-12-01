@@ -2,7 +2,7 @@
  * 多媒体编辑界面
  */
 import * as React from 'react'
-import { ScrollView, TouchableOpacity, Text, Platform, View , Image} from 'react-native'
+import { ScrollView, TouchableOpacity, Text, Platform, View , Image, DeviceEventEmitter, RefreshControl } from 'react-native'
 import {
   Container,
   TextBtn,
@@ -13,20 +13,22 @@ import {
   ImagePicker,
 } from '../../components'
 import { SimpleDialog } from '../tabs/Friend'
-import { Toast, checkType, OnlineServicesUtils } from '../../utils'
+import { Toast, checkType, OnlineServicesUtils, DownloadUtil } from '../../utils'
 import { FileTools } from '../../native'
-import { ConstPath, UserType, ChunkType } from '../../constants'
+import { ConstPath, UserType, ChunkType, EventConst } from '../../constants'
 import { getThemeAssets } from '../../assets'
 import styles from './styles'
 import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
 // import ImagePicker from 'react-native-image-crop-picker'
-import { SMediaCollector, SOnlineService, SMap, SCoordination, RNFS, SARMap } from 'imobile_for_reactnative'
+import { SMediaCollector, SOnlineService, SIPortalService, SMap, SCoordination, RNFS, SARMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 
 const COLUMNS = 3
 const MAX_FILES = 9
+
+let that // 用于同步上一次进入界面,正在下载数据后退出,再次进入时,下载onProgress中的this指向上一次的界面.componentWillUnmount时记得清空
 
 export default class MediaEdit extends React.Component {
   props: {
@@ -60,6 +62,7 @@ export default class MediaEdit extends React.Component {
       mediaData: this.info.mediaData && (
         typeof this.info.mediaData === 'string' ? JSON.parse(this.info.mediaData) : this.info.mediaData
       ) || {},
+      isRefresh: false,
     }
     let title = params && params.title || ''
     if (!title && this.showInfo.mediaData.type) {
@@ -98,10 +101,26 @@ export default class MediaEdit extends React.Component {
         this.onlineServicesUtils = new OnlineServicesUtils('iportal')
       }
     }
+
+    that = this
   }
 
   componentDidMount() {
     (async function() {
+      this.subscription = DeviceEventEmitter.addListener(EventConst.DOWNLOAD_MEDIA, async downloadMedia => {
+        DownloadUtil.downloadMedia(downloadMedia)
+        downloadMedia?.progress >= 0 && this.mediaItemRef?.[0]?.undateProgress(downloadMedia?.progress)
+        if (downloadMedia?.progress === 1) {
+          DownloadUtil.deleteDownloadMedia({
+            toPath: downloadMedia.data.toPath,
+            url: downloadMedia.data.url,
+          })
+          let paths = await this.dealData(this.state.mediaFilePaths)
+          this.setState({
+            paths,
+          })
+        }
+      })
       let paths = await this.dealData(this.state.mediaFilePaths)
       this.checkMedia(paths)
       this.setState({
@@ -111,8 +130,10 @@ export default class MediaEdit extends React.Component {
   }
 
   componentWillUnmount() {
+    this.subscription.remove()
     this.servicesUtils = null
     this.onlineServicesUtils = null
+    that = null
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -122,6 +143,24 @@ export default class MediaEdit extends React.Component {
       JSON.stringify(nextState) !== JSON.stringify(this.state) ||
       JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device)
     return shouldUpdate
+  }
+
+  refresh = async () => {
+    try {
+      this.setState({
+        isRefresh: true,
+      }, async () => {
+        let paths = await this.dealData(this.state.mediaFilePaths)
+        this.setState({
+          paths,
+          isRefresh: false,
+        })
+      })
+    } catch (error) {
+      this.setState({
+        isRefresh: false,
+      })
+    }
   }
 
   /**
@@ -135,17 +174,24 @@ export default class MediaEdit extends React.Component {
     const URL = this.onlineServicesUtils.serverUrl + '/datas/%@/download'
     for (let i = 0; i < paths.length; i++) {
       let path = paths[i].uri + ''
-      // iTablet/User/ysl0917/Data/Media/8ffc99d6-1330-4794-82d5-a2daf9001021.jpg
-      // if (!path.includes(`/${this.props.user.currentUser.userName}/`)) {
-      //   let path1 = path.substr(0, path.indexOf('iTablet/User/') + 13)
-      //   let path2 = path.substr(path.indexOf('/Data/Media/'))
-
-      //   path = path1 + this.props.user.currentUser.userName + path2
-      //   paths[i].uri = path
-      // }
       let id = this.info.mediaServiceIds[i]
-      if (!(await FileTools.fileIsExist(path)) && id !== undefined) {
-        let url = URL.replace('%@', id)
+      let url = URL.replace('%@', id)
+      const downloadMedia = DownloadUtil.getDownloadMedia({
+        url,
+        toPath: path,
+      })
+      if (
+        downloadMedia === undefined &&
+        !(await FileTools.fileIsExist(path)) && // 检测是否下载完毕
+        !(await FileTools.fileIsExist(path + '_tmp')) && // 检测是否正在下载, _tmp后缀的文件为正在下载的文件
+        id !== undefined
+      ) {
+        let cookie = undefined
+        if (UserType.isIPortalUser(this.props.user.currentUser)) {
+          cookie = await SIPortalService.getIPortalCookie()
+        } else if (UserType.isOnlineUser(this.props.user.currentUser)) {
+          cookie = await SOnlineService.getCookie()
+        }
         const downloadOptions = {
           fromUrl: url,
           toFile: path,
@@ -153,14 +199,33 @@ export default class MediaEdit extends React.Component {
           ...Platform.select({
             android: {
               headers: {
-                cookie: await SOnlineService.getAndroidSessionID(),
+                cookie: cookie,
               },
             },
           }),
-          progress: res => {
-            if (res.progress === 100) {
-              this.mediaItemRef[i].forceUpdate()
-              // this.tableList.forceUpdate()
+          progress: async res => {
+            if (!isNaN(res?.progress)) {
+              DownloadUtil.downloadMedia({
+                type: 'Media',
+                progress: res.progress / 100,
+                data: {
+                  toPath: path,
+                  url: url,
+                },
+              })
+              that?.mediaItemRef?.[i]?.undateProgress(res.progress / 100)
+              if (res.progress === 100) {
+                DownloadUtil.deleteDownloadMedia({
+                  toPath: path,
+                  url: url,
+                })
+                if (that) {
+                  let paths = await that.dealData(that.state.mediaFilePaths)
+                  that.setState({
+                    paths,
+                  })
+                }
+              }
             }
           },
         }
@@ -531,7 +596,7 @@ export default class MediaEdit extends React.Component {
       <MediaItem
         ref={ref => {
           if (ref && ref.props.data.uri !== '+') {
-            this.mediaItemRef[rowIndex * COLUMNS + cellIndex] = ref
+            that.mediaItemRef[rowIndex * COLUMNS + cellIndex] = ref
           }
         }}
         data={item}
@@ -1117,6 +1182,16 @@ export default class MediaEdit extends React.Component {
         <ScrollView style={{ flex: 1 }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefresh}
+              onRefresh={this.refresh}
+              colors={['orange', 'red']}
+              tintColor={'orange'}
+              titleColor={'orange'}
+              enabled={true}
+            />
+          }
         >
           <View style={styles.itemView}>
             <Text style={styles.title}>{getLanguage(this.props.language).Map_Main_Menu.BASIC_INFO}</Text>

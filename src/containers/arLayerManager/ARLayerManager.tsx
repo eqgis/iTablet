@@ -390,6 +390,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           device={this.props.device}
           renderItem={this._renderListItem}
           layer={this.state.selectLayer}
+          getLayer={this._getLayer}
         />
       </>
     )

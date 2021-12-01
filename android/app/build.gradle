@@ -114,9 +114,9 @@ android {
     defaultConfig {
         applicationId "com.supermap.itablet"
         minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 82
-        versionName "11.0.1"
+        targetSdkVersion 29
+        versionCode 85
+        versionName "10.2.1"
         manifestPlaceholders = [
                 JPUSH_APPKEY: "7d2470baad20e273cd6e53cc",
                 APP_CHANNEL : "default"

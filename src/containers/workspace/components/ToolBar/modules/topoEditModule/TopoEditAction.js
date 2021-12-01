@@ -151,6 +151,8 @@ function dialogConfirm() {
   GLOBAL.FloorListView?.setVisible(true)
   GLOBAL.mapController?.setVisible(true)
   GLOBAL.TouchType = TouchType.NORMAL
+  SMap.clearTrackingLayer()
+  GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
 }
 /**
  * 合并数据集

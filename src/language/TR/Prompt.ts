@@ -367,8 +367,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "Geri alınamaz",
   CANT_REDO: "Yeniden yapılamaz",
   DATASET_RENAME_FAILED: "Veri kümesi adı yalnızca harf, rakam ve '_', '@', '#' içerebilir",
+  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",//need to translate
   SWITCH_LINE: "Veri kümesini değiştir",
   HAS_NO_ROADNAME_FIELD_DATA: "Yol adı alanı bilgisi olmayan veri kümesi",
+  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
   MERGE_SUCCESS: "Başarıyla birleştirildi",
   MERGE_FAILD: "Birleştirme başarısız oldu",
   NOT_SUPPORT_PRJCOORDSYS: "Aşağıdaki veri setinin koordinat sistemi birleştirmeyi desteklemiyor",

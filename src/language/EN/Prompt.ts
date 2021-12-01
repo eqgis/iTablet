@@ -367,8 +367,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "Irrevocable",
   CANT_REDO: "Can't redo",
   DATASET_RENAME_FAILED: "The dataset name can only contain letters, numbers and \"_\", \"@\", \"#\"",
+  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",
   SWITCH_LINE: "Switch dataset",
   HAS_NO_ROADNAME_FIELD_DATA: "Dataset without road name field info",
+  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
   MERGE_SUCCESS: "Merged successfully",
   MERGE_FAILD: "Merge failed",
   NOT_SUPPORT_PRJCOORDSYS: "The coordinate system of the following data set does not support merging",

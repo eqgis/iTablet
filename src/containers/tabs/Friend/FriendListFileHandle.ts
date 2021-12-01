@@ -365,12 +365,10 @@ export default class FriendListFileHandle {
     FriendListFileHandle.uploading = true
     //上传
     let UploadFileName = 'friend.list.zip'
-    if (Platform.OS === 'android') {
-      UploadFileName = 'friend.list'
-    }
     let promise
     if (UserType.isIPortalUser(FriendListFileHandle.user)) {
-      await SIPortalService.deleteMyData('friend.list')
+      let dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
+      await SIPortalService.deleteMyData(dataId + '')
       promise = new Promise(resolve => {
         FileTools.zipFile(FriendListFileHandle.friendListFile, FriendListFileHandle.friendListFile + '.zip').then((result: boolean) => {
           result && OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
@@ -384,19 +382,11 @@ export default class FriendListFileHandle {
             FriendListFileHandle.waitUploading = false
           })
         })
-        // SIPortalService.uploadData(
-        //   FriendListFileHandle.friendListFile,
-        //   UploadFileName,
-        //   {
-        //     onResult: () => {
-        //       resolve(true)
-        //       FriendListFileHandle.uploading = false
-        //       FriendListFileHandle.waitUploading = false
-        //     },
-        //   },
-        // )
       })
     } else {
+      if (Platform.OS === 'android') {
+        UploadFileName = 'friend.list'
+      }
       await SOnlineService.deleteData('friend.list')
       promise = new Promise(resolve => {
         SOnlineService.uploadFile(

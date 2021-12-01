@@ -567,10 +567,6 @@ export default class MapView extends React.Component {
         action: this.back,
       })
 
-      DeviceEventEmitter.removeListener(
-        'onCurrentHeightChanged',
-        this.onCurrentHeightChanged,
-      )
       SMediaCollector.setDownloadListener({
         downloadingHandler: data => {
           DownloadUtil.downloadMedia(data)
@@ -1294,6 +1290,7 @@ export default class MapView extends React.Component {
         {
           layerInfo: event.layerInfo,
           geometryType: event.geometryType,
+          fieldInfo: event.fieldInfo,
           ids: [event.id],
         },
       ])
@@ -1526,7 +1523,7 @@ export default class MapView extends React.Component {
           let item = this.props.selection[i]
           if (item.ids.length > 0) {
             if (GLOBAL.coworkMode && item.ids.length > 0) {
-              GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.ids[0], item.geometryType)
+              GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
             }
             result =
               result &&
@@ -1540,10 +1537,14 @@ export default class MapView extends React.Component {
           this.props.setSelection && this.props.setSelection()
           SMap.setAction(Action.SELECT)
           let preType = ToolbarModule.getParams().type
-          let type =
-            preType.indexOf('MAP_TOPO_') > -1
-              ? ConstToolType.SM_MAP_TOPO_EDIT
-              : ConstToolType.SM_MAP_EDIT
+          let type
+          if (preType.indexOf('SM_MAP_MARKS_') > -1) {
+            type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
+          } else if (preType.indexOf('MAP_TOPO_') > -1) {
+            type = ConstToolType.SM_MAP_TOPO_EDIT
+          } else {
+            type = ConstToolType.SM_MAP_EDIT
+          }
           // 删除对象后，编辑设为为选择状态
           this.toolBox.setVisible(true, type, {
             isFullScreen: false,
@@ -4068,10 +4069,26 @@ export default class MapView extends React.Component {
             }
             GLOBAL.MAPSELECTPOINT.setVisible(false)
             // GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
-            NavigationService.navigate('NavigationView', {
-              changeNavPathInfo: this.changeNavPathInfo,
-              getNavigationDatas: this.getNavigationDatas,
-            })
+            if (GLOBAL.Type === ChunkType.MAP_NAVIGATION && GLOBAL.TouchType !== TouchType.NAVIGATION_TOUCH_END) {
+              this.props.setMapNavigation({ isShow: false, name: '' })
+              GLOBAL.STARTNAME = getLanguage(
+                GLOBAL.language,
+              ).Map_Main_Menu.SELECT_START_POINT
+              GLOBAL.ENDNAME = getLanguage(
+                GLOBAL.language,
+              ).Map_Main_Menu.SELECT_DESTINATION
+              GLOBAL.STARTX = undefined
+              GLOBAL.ENDX = undefined
+              GLOBAL.MAPSELECTPOINT.setVisible(false)
+              GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
+              await SMap.clearPoint()
+              GLOBAL.ToolBar?.existFullMap()
+            } else {
+              NavigationService.navigate('NavigationView', {
+                changeNavPathInfo: this.changeNavPathInfo,
+                getNavigationDatas: this.getNavigationDatas,
+              })
+            }
           },
         }}
       />

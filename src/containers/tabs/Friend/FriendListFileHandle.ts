@@ -370,7 +370,8 @@ export default class FriendListFileHandle {
     }
     let promise
     if (UserType.isIPortalUser(FriendListFileHandle.user)) {
-      await SIPortalService.deleteMyData('friend.list')
+      let dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
+      await SIPortalService.deleteMyData(dataId + '')
       promise = new Promise(resolve => {
         FileTools.zipFile(FriendListFileHandle.friendListFile, FriendListFileHandle.friendListFile + '.zip').then((result: boolean) => {
           result && OnlineServicesUtils.getService().uploadFileWithCheckCapacity(

@@ -197,6 +197,7 @@ class FriendList extends Component {
               enabled={true}
             />
           }
+          ListFooterComponent={<View style={{height:0}}/>}
         />
         {this.state.sections.length > 30 && (
           <View style={styles.FlatListViewStyle}>
@@ -215,6 +216,7 @@ class FriendList extends Component {
                   </Text>
                 </TouchableOpacity>
               )}
+              ListFooterComponent={<View style={{height:0}}/>}
             />
           </View>
         )}

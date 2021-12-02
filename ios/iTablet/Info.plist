@@ -98,8 +98,9 @@
 	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>location</string>
 		<string>fetch</string>
+		<string>location</string>
+		<string>processing</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
@@ -132,6 +133,10 @@
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict/>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.supermap.itablet</string>
 	</array>
 </dict>
 </plist>

@@ -14,7 +14,7 @@
 #endif
 
 #import "RNFSManager.h"
-#import "HWNetworkReachabilityManager.h"
+//#import "HWNetworkReachabilityManager.h"
 #import "NativeUtil.h"
 #import "Orientation.h"
 #import "MyLaunchScreenViewController.h"
@@ -135,7 +135,7 @@ static NSString* g_sampleCodeName = @"#";;
   [[NSNotificationCenter defaultCenter] postNotificationName:@"dowloadFile"
                                                       object:nil];
   // 开启网络监听
-  [[HWNetworkReachabilityManager shareManager] monitorNetworkStatus];
+//  [[HWNetworkReachabilityManager shareManager] monitorNetworkStatus];
     
   @try {
     //初始化极光推送

@@ -367,8 +367,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "元に戻すことはできません",
   CANT_REDO: "やり直すことはできません",
   DATASET_RENAME_FAILED: "データセット名数字、アルファベット、「_」、「@」、「＃」で構成することが必要です",
+  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",//need to translate
   SWITCH_LINE: "データの切替",
   HAS_NO_ROADNAME_FIELD_DATA: "道路名フィールド情報を選択されていないデータセットがあります",
+  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
   MERGE_SUCCESS: "マージに成功しました",
   MERGE_FAILD: "マージに失敗しました",
   NOT_SUPPORT_PRJCOORDSYS: "以下のデータセットの座標系はマージをサポートしていません",

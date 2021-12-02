@@ -11,6 +11,8 @@ import { getThemeAssets,getLayerWhiteIconByType ,getPublicAssets,getLayerIconByT
 import { getLanguage } from '../../language'
 import { LayerManager_tolbar } from '../mtLayerManager/components/LayerManager_tolbar'
 import { OverlayView } from '../workspace/components'
+import { FileTools } from '../../native'
+import { ConstPath } from '../../constants'
 
 export default class ChooseNaviLayer extends React.Component {
   static propTypes = {
@@ -133,6 +135,28 @@ export default class ChooseNaviLayer extends React.Component {
         })
       } else {
         Toast.show(getLanguage(GLOBAL.language).Prompt.DATASET_RENAME_FAILED)
+      }
+    }
+
+    exportDatasource = async ({ text }) => {
+      let regExp = /^[a-zA-Z0-9@#_]+$/
+      let isValid = regExp.test(text)
+      if (isValid) {
+        const homePath = await FileTools.getHomeDirectory()
+        const udbpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udb"
+        const udbtargetPath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Datasource + text + ".udb"
+        await FileTools.copyFile(udbpath, udbtargetPath, true)
+
+        const uddpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udd"
+        const uddtargetPath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Datasource + text + ".udd"
+        let result = await FileTools.copyFile(uddpath, uddtargetPath, true)
+        if(result){
+          Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_SUCCESS)
+        }else{
+          Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED)
+        }
+      } else {
+        Toast.show(getLanguage(GLOBAL.language).Prompt.DATASOURCE_RENAME_FAILED)
       }
     }
 
@@ -381,6 +405,26 @@ export default class ChooseNaviLayer extends React.Component {
       <View
         style={{flexDirection: 'row'}}
       >
+        <TouchableOpacity
+          style={styles.imageWrap}
+          onPress={async () => {
+            DialogUtils.showInputDailog({
+              label: 'input',
+              legalCheck: true,
+              type: 'name',
+              confirmAction: text => {
+                this.exportDatasource({ text })
+                DialogUtils.hideInputDailog()
+              },
+            })
+          }}
+        >
+          <Image
+            source={getThemeAssets().nav.icon_nav_export}
+            resizeMode={'contain'}
+            style={styles.image}
+          />
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.imageWrap}
           onPress={async () => {

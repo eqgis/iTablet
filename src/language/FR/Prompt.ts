@@ -366,8 +366,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "Irrévocable",
   CANT_REDO: "Impossible de refaire",
   DATASET_RENAME_FAILED: "Le nom du jeu de données ne peut contenir que des lettres, des chiffres et '_', '@', '#'",
+  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",//need to translate
   SWITCH_LINE: "Changer de jeu de données",
   HAS_NO_ROADNAME_FIELD_DATA: "Ensemble de données sans informations de champ de nom de route",
+  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
   MERGE_SUCCESS: "Fusionné avec succès",
   MERGE_FAILD: "La fusion a échoué",
   NOT_SUPPORT_PRJCOORDSYS: "Le système de coordonnées de l'ensemble de données suivant ne prend pas en charge la fusion",

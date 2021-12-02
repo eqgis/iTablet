@@ -367,8 +367,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "غير قابل للنقض",
   CANT_REDO: "لا يمكن الإعادة",
   DATASET_RENAME_FAILED: "لا يمكن أن يحتوي اسم مجموعة البيانات إلا على أحرف وأرقام و\"_\"،\" @ \"،\" # \"",
+  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",//need to translate
   SWITCH_LINE: "تبديل مجموعة البيانات",
   HAS_NO_ROADNAME_FIELD_DATA: "مجموعة بيانات بدون معلومات حقل اسم الطريق",
+  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
   MERGE_SUCCESS: "تم الدمج بنجاح",
   MERGE_FAILD: "فشل الدمج",
   NOT_SUPPORT_PRJCOORDSYS: "لنظام الإحداثي لمجموعة البيانات التالية لا يدعم الدمج",

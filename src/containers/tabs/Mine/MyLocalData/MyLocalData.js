@@ -56,6 +56,7 @@ export default class MyLocalData extends Component {
     this.itemInfo = {}
     JSIPortalService = new OnlineServicesUtils('iportal')
     JSOnlineservice = new OnlineServicesUtils('online')
+    this.totalPage = 0
   }
   componentDidMount() {
     this.getData()
@@ -124,10 +125,11 @@ export default class MyLocalData extends Component {
           dataType: 'external',
         })
       }
-      if (onlineData.length > 0) {
+      this.totalPage = onlineData.totalPage
+      if (onlineData.content.length > 0) {
         sectionData.push({
           title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
-          data: onlineData,
+          data: onlineData.content,
           isShowItem: true,
           dataType: 'online',
         })
@@ -768,7 +770,7 @@ export default class MyLocalData extends Component {
     try {
       //防止data为空时调用
       //数据删除时不调用
-      if (this.state.activityShow) return
+      if (this.state.activityShow || this.currentPage >= this.totalPage) return
       if (this.state.sectionData && this.state.sectionData.length === 0) return
       let section = this.state.sectionData[this.state.sectionData.length - 1]
       if (section.dataType !== 'online') return
@@ -791,12 +793,14 @@ export default class MyLocalData extends Component {
       let oldOnlineData = sectionData[sectionData.length - 1]
       let oldData = oldOnlineData.data
       this.currentPage = this.currentPage + 1
-      let data = await getOnlineData(
+      let onlineData = await getOnlineData(
         this.props.user.currentUser,
         this.currentPage,
         10,
         ['WORKSPACE'],
       )
+      let data = onlineData.content
+      this.totalPage = onlineData.totalPage
       if (data.length > 0) {
         let newData = oldData.concat(data)
         oldOnlineData.data = newData

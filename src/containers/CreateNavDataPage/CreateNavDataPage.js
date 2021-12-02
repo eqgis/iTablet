@@ -311,7 +311,7 @@ export default class CreateNavDataPage extends Component {
         item={item}
         selected={selected}
         onSelect={async item => {
-          let result = await SMap.isLongitude(item.datasourceName,item.datasetName)
+          let result = await SMap.isPrgCoordSysWGS1984(item)
           if(result){
             this.setState({ selectedDataset: item })
           }else{

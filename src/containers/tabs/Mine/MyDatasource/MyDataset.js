@@ -22,6 +22,9 @@ class MyDataset extends MyDataPage {
     this.state = {
       ...this.state,
       shareToLocal: true,
+      shareToOnline: false,
+      shareToIPortal: false,
+      shareToWechat: false,
       title:
         params.data.name &&
         params.data.name.substr(0, params.data.name.lastIndexOf('.')),
@@ -108,33 +111,39 @@ class MyDataset extends MyDataPage {
   exportData = async (name, exportToTemp = true) => {
     let datasetParams = Object.assign({}, this.itemInfo.item)
     let homePath = await FileTools.appendingHomeDirectory()
-    let targetPath
+
+    //先导出，再根据情况是否打包
+    let exportPath = homePath + this.getRelativeExportPath()
+    let availableName = await this._getAvailableFileName(
+      exportPath,
+      name,
+      this.exportType,
+    )
+    /** 单个文件 */
+    let filePath = exportPath + availableName
+    let result = await SMap.exportDataset(
+      this.exportType,
+      filePath,
+      datasetParams,
+    )
+
+    if(!result) return false
+
     if (exportToTemp) {
       let tempPath = homePath + this.getRelativeTempPath()
-      let availableName = await this._getAvailableFileName(
+      let zipName = await this._getAvailableFileName(
         tempPath,
         'MyExport',
         'zip',
       )
-      targetPath = tempPath + availableName
+      let targetPath = tempPath + zipName
+
+      result = await FileTools.zipFile(filePath, targetPath)
+      FileTools.deleteFile(filePath)
       this.exportPath = targetPath
     } else {
-      let exportPath = homePath + this.getRelativeExportPath()
-      let availableName = await this._getAvailableFileName(
-        exportPath,
-        name,
-        this.exportType,
-      )
-      targetPath = exportPath + availableName
       this.exportPath = this.getRelativeExportPath() + availableName
     }
-
-    let result = false
-    result = await SMap.exportDataset(
-      this.exportType,
-      targetPath,
-      datasetParams,
-    )
 
     return result
   }

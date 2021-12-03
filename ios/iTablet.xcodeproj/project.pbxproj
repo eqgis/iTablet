@@ -187,13 +187,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNPhotoView;
 		};
-		0A0ABB08231F4900005F3269 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8E069CCC7D1740F59DFE0C9B /* AMapGeolocation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 832C81801AAF6DEF007FA2F7;
-			remoteInfo = AMapGeolocation;
-		};
 		0A0ABB0D231F4900005F3269 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD6BEDE0251A4FD9A83E2659 /* RCTBEEPickerManager.xcodeproj */;
@@ -773,7 +766,6 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8B1D70E9B9D84EE8B72BFB60 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		8CEBBE375A25447F9697656F /* libRCTJCoreModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTJCoreModule.a; sourceTree = "<group>"; };
-		8E069CCC7D1740F59DFE0C9B /* AMapGeolocation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AMapGeolocation.xcodeproj; path = "../node_modules/react-native-amap-geolocation/lib/ios/AMapGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		9098A2463DE246D19C37CCA1 /* UIKit.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		995E625BA77141C79D10DBB2 /* libSupermap.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSupermap.a; sourceTree = "<group>"; };
 		9B178A29AEDA4320AF6CC78A /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -957,14 +949,6 @@
 			isa = PBXGroup;
 			children = (
 				0A0066A923389721005F0DCA /* libRNPhotoView.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		0A0ABB05231F4900005F3269 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0A0ABB09231F4900005F3269 /* libAMapGeolocation.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1389,7 +1373,6 @@
 				42219B4096494B08AF407B38 /* RNBackgroundTimer.xcodeproj */,
 				5ACE6D6C17F9429194D7409D /* RNGestureHandler.xcodeproj */,
 				CD6BEDE0251A4FD9A83E2659 /* RCTBEEPickerManager.xcodeproj */,
-				8E069CCC7D1740F59DFE0C9B /* AMapGeolocation.xcodeproj */,
 				42F23CEACB614666B8634F00 /* RCTImageResizer.xcodeproj */,
 				379B1C4B9DC5455C95F0F253 /* RNPhotoView.xcodeproj */,
 				CFDD1D39251B42E7AF986C53 /* RNCookieManagerIOS.xcodeproj */,
@@ -1532,10 +1515,6 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = 0A0ABB05231F4900005F3269 /* Products */;
-					ProjectRef = 8E069CCC7D1740F59DFE0C9B /* AMapGeolocation.xcodeproj */;
-				},
 				{
 					ProductGroup = 0A11D99821F885A400AFE6D6 /* Products */;
 					ProjectRef = 0A11D99721F885A400AFE6D6 /* ART.xcodeproj */;
@@ -1706,13 +1685,6 @@
 			fileType = archive.ar;
 			path = libRNPhotoView.a;
 			remoteRef = 0A0066A823389721005F0DCA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0A0ABB09231F4900005F3269 /* libAMapGeolocation.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAMapGeolocation.a;
-			remoteRef = 0A0ABB08231F4900005F3269 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0A0ABB0E231F4900005F3269 /* libRCTBEEPickerManager.a */ = {
@@ -2261,7 +2233,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = URZW253WPZ;
@@ -2343,7 +2315,7 @@
 					"$(PROJECT_DIR)/SDKExport/",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 11.0;
+				MARKETING_VERSION = 11.0.2;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2366,7 +2338,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = URZW253WPZ;
 				ENABLE_BITCODE = NO;
@@ -2388,7 +2360,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/iPhoneOS.sdk",
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2447,8 +2419,8 @@
 					"$(PROJECT_DIR)/SDKExport/",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 11.0;
-				ONLY_ACTIVE_ARCH = YES;
+				MARKETING_VERSION = 11.0.2;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

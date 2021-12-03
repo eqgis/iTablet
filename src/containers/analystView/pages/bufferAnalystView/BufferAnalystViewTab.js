@@ -43,29 +43,6 @@ function getFlatType(language) {
   ]
 }
 
-// const SemicircleArcData = Array.from({ length: 100 }, (v, k) => ({
-//   value: k + 1,
-//   key: k + 1,
-// }))
-
-// map方法受动画影响,不能及时获取数据,该用for
-// const SemicircleArcData = new Array(197).fill('').map((item, index) => {
-//   return {
-//     value: index + 4,
-//     key: index + 4,
-//   }
-// })
-const SemicircleArcData = function() {
-  const arr = []
-  for (let i = 0; i < 197; i++) {
-    arr.push({
-      value: i + 4,
-      key: i + 4,
-    })
-  }
-  return arr
-}
-
 const defaultState = {
   dataSource: null,
   dataSet: null,
@@ -121,6 +98,10 @@ export default class BufferAnalystViewTab extends Component {
     }
 
     this.currentPop = ''
+    this.semicircleArcData = Array.from({ length: 100 }, (v, k) => ({
+      value: k + 1,
+      key: k + 1,
+    }))
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -554,7 +535,7 @@ export default class BufferAnalystViewTab extends Component {
             this.currentPop = popTypes.SemicircleArcNum
             this.setState(
               {
-                popData: SemicircleArcData(),
+                popData: this.semicircleArcData,
                 currentPopData: this.state.semicircleArcNum,
               },
               () => {

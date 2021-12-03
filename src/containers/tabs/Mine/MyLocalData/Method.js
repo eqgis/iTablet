@@ -20,8 +20,8 @@ async function getOnlineData(
   cb = () => {},
 ) {
   const newData = []
+  let objDataList
   try {
-    let objDataList
     if (UserType.isOnlineUser(currentUser)) {
       objDataList = await SOnlineService.getMyContentData({currentPage, pageSize, types, orderType: 'DESC', orderBy: 'CREATETIME'})
     } else if (UserType.isIPortalUser(currentUser)) {
@@ -55,7 +55,8 @@ async function getOnlineData(
       // Toast.show('登录失效，请重新登录')
     }
   }
-  return newData
+  objDataList.content = newData
+  return objDataList
 }
 
 export {

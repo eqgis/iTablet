@@ -308,11 +308,11 @@ class AppRoot extends Component {
     GLOBAL.Loading.setLoading(true, 'Loading')
     const results = await PermissionsAndroid.requestMultiple([
       'android.permission.READ_PHONE_STATE',
-      'android.permission.ACCESS_FINE_LOCATION',
+      // 'android.permission.ACCESS_FINE_LOCATION',
       'android.permission.READ_EXTERNAL_STORAGE',
       'android.permission.WRITE_EXTERNAL_STORAGE',
-      'android.permission.CAMERA',
-      'android.permission.RECORD_AUDIO',
+      // 'android.permission.CAMERA',
+      // 'android.permission.RECORD_AUDIO',
     ])
     let isAllGranted = true
     for (let key in results) {

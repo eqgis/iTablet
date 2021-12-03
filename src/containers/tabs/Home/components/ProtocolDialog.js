@@ -54,16 +54,16 @@ export default class ProtocolDialog extends Component {
       source =
         this.props.language === 'CN'
           ? {
-            uri: 'file:///android_asset/SuperMapUserServiceAgreement_CN.html',
+            uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
           }
           : {
-            uri: 'file:///android_asset/SuperMapUserServiceAgreement_EN.html',
+            uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
           }
     } else {
       source =
         this.props.language === 'CN'
-          ? require('../../../../assets/Protocol/SuperMapUserServiceAgreement_CN.html')
-          : require('../../../../assets/Protocol/SuperMapUserServiceAgreement_EN.html')
+          ? require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_CN.html')
+          : require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_EN.html')
     }
     return (
       <WebView

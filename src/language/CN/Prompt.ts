@@ -46,6 +46,7 @@ const Prompt = {
 
   CONFIRM: "确定",
   COMPLETE: "完成",
+  INSTALL:"安装",
 
   NO_PERMISSION: "应用缺少运行所需的权限!",
   NO_PERMISSION_ALERT: "应用缺少运行所需的权限,\n会导致部分功能不能正常使用！",
@@ -131,7 +132,7 @@ const Prompt = {
   PLEASE_SELECT_MEDIA_LAYER: "请选择点、CAD和标注图层",
   PLEASE_SELECT_CAD_LAYER: "请选CAD图层",
   DONOT_SUPPORT_ARCORE: "此设备不支持AR功能",
-  GET_SUPPORTED_DEVICE_LIST: "获取受支持的设备列表",
+  GET_SUPPORTED_DEVICE_LIST: "请安装或升级ARCore",
   PLEASE_NEW_PLOT_LAYER: "请新建标注图层",
   DOWNLOADING_PLEASE_WAIT: "下载中请稍等",
   DOWNLOADING_OTHERS_PLEASE_WAIT: "其他文件正在下载，请稍等",

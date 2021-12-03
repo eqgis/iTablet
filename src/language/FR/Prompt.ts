@@ -48,6 +48,7 @@ const Prompt: typeof CN.Prompt = {
 
   CONFIRM: "Confirmer",
   COMPLETE: "Complet",
+  INSTALL:"Install",//need to translate
 
   NO_PERMISSION: "Pas de permission",
   NO_PERMISSION_ALERT: "L’application n’a pas les autorisations nécessaires pour s’exécuter",
@@ -133,7 +134,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer", // need to translate
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer", // need to translate
   DONOT_SUPPORT_ARCORE: "Les fonctionnalités RA ne sont pas disponibles sur cet appareil",
-  GET_SUPPORTED_DEVICE_LIST: "Afficher la liste des appareils pris en charge",
+  GET_SUPPORTED_DEVICE_LIST: "Install or upgrade ARCore",//need to translate
   PLEASE_NEW_PLOT_LAYER: "Veuillez créer une nouvelle couche de tracé",
   DOWNLOADING_PLEASE_WAIT: "Téléchargement en cours, veuillez patienter",
   DOWNLOADING_OTHERS_PLEASE_WAIT: "Veuillez patienter pendant le téléchargement des autres fichiers",

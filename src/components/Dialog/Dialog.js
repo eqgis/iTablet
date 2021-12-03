@@ -31,13 +31,16 @@ export default class Dialog extends PureComponent {
     activeOpacity?: number,
     cancelBtnTitle?: string,
     confirmBtnTitle?: string,
+    installBtnTitle?: string,
     confirmBtnVisible?: boolean,
     cancelBtnVisible?: boolean,
+    installBtnVisible?: boolean,
     confirmBtnDisable?: boolean,
     cancelBtnDisable?: boolean,
     cancelBtnStyle?: string,
     confirmBtnStyle?: string,
     confirmAction?: () => void,
+    installAction?: () => void,
     cancelAction?: () => void,
     dismissAction?: () => void,
     confirmTitleStyle?: any,
@@ -58,9 +61,11 @@ export default class Dialog extends PureComponent {
     activeOpacity: 0.8,
     cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
     confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
+    installBtnTitle: getLanguage(GLOBAL.language).Prompt.INSTALL,
     showBtns: true,
     confirmBtnVisible: true,
     cancelBtnVisible: true,
+    installBtnVisible:false,
     confirmBtnDisable: false,
     cancelBtnDisable: false,
     onlyOneBtn: false,
@@ -100,6 +105,10 @@ export default class Dialog extends PureComponent {
   confirm = () => {
     if (this.props.confirmBtnDisable) return
     this.props.confirmAction && this.props.confirmAction()
+  }
+
+  install = () => {
+    this.props.installAction && this.props.installAction()
   }
 
   cancel = () => {
@@ -150,6 +159,28 @@ export default class Dialog extends PureComponent {
             {this.props.confirmBtnTitle}
           </Text>
         </TouchableOpacity>
+
+        {this.props.installBtnVisible &&<View style={styles.separateLineL} />}
+        {this.props.installBtnVisible &&
+        <TouchableOpacity
+          activeOpacity={this.props.activeOpacity}
+          style={[styles.btnStyle, this.props.confirmBtnStyle]}
+          onPress={this.install}
+        >
+          <Text
+            style={[
+              this.props.confirmBtnDisable
+                ? styles.btnDisableTitle
+                : styles.btnTitle,
+              confirmPressColor,
+              this.props.confirmTitleStyle,
+            ]}
+          >
+            {this.props.installBtnTitle}
+          </Text>
+        </TouchableOpacity>
+        }
+
         <View style={styles.separateLineL} />
         <TouchableOpacity
           activeOpacity={this.props.activeOpacity}

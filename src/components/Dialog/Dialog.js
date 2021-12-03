@@ -121,7 +121,7 @@ export default class Dialog extends PureComponent {
   renderListBtns = () => {
     let confirmPressColor = this.state.confirmPress ? { color: '#4680DF' } : {}
     let cancelPressColor = this.state.cancelPress ? { color: '#4680DF' } : {}
-    let height = this.props.installBtnVisible ? scaleSize(200) : scaleSize(160)
+    let height = this.props.installBtnVisible ? scaleSize(250) : scaleSize(160)
     return (
       <View
         style={{

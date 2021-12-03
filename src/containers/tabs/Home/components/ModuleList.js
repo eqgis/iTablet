@@ -325,7 +325,7 @@ class ModuleList extends Component {
         }
       }
 
-      if (item.key === ChunkType.MAP_AR_MAPPING) {
+      if (item.key === ChunkType.MAP_AR_MAPPING || item.key === ChunkType.MAP_AR || item.key === ChunkType.MAP_AR_ANALYSIS) {
         const isSupportedARCore = await SMeasureView.isSupportedARCore()
         if (!isSupportedARCore) {
           GLOBAL.ARDeviceListDialog.setVisible(true)

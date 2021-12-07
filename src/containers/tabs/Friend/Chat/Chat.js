@@ -573,9 +573,11 @@ class Chat extends React.Component {
     if (uri.indexOf('assets-library://') === 0) {
       // let destPath = userPath + '/' + data.filename
       // await RNFS.copyAssetsFileIOS(uri, destPath, 0, 0)
+      if (uri.toLowerCase().indexOf('.gif') == -1) {
+        hasTempFile = true
+      }
       const newPaths = await FileTools.copyFiles([uri], userPath)
       filePath = newPaths[0]
-      hasTempFile = true
     } else if (uri.indexOf('content://') === 0) {
       filePath = await FileTools.getContentAbsolutePathAndroid(uri)
       fileName = filePath.substr(filePath.lastIndexOf('/') + 1)
@@ -627,7 +629,7 @@ class Chat extends React.Component {
         message: {
           fileName: data.filename || fileName,
           fileSize: statResult.size,
-          filePath: filePath.replace(GLOBAL.homePath, ''),
+          filePath: hasTempFile ? uri : filePath.replace(GLOBAL.homePath, ''),
           imgdata: imgData,
           progress: 0,
         },

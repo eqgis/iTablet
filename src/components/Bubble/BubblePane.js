@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { scaleSize, screen } from '../../utils'
 import Bubble from './Bubble'
+import { size } from '../../styles/index'
 
 const DEFAULT_POSITION = {
   // left: 20,
@@ -40,7 +41,8 @@ export default class BubblePane extends React.Component {
           key={item.title + index}
           title={item.title}
           type={item.type}
-          style={index !== 0 && { marginTop: 5 }}
+          style={[index !== 0 && { marginTop: 5 },{backgroundColor: 'black',height:scaleSize(70),borderRadius: scaleSize(10)}]}
+          titleStyle={{color:'white',fontSize: size.fontSize.fontSizeXXl}}
           onPress={() => {
             let bubbles = this.state.bubbles.concat()
             bubbles.splice(index, 1)

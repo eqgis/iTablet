@@ -81,6 +81,8 @@ declare namespace GLOBAL {
   let arSwitchToMap: boolean           
   /** 导航-增量路网数据 */
   let INCREMENT_DATA: DATASET_SOURCE   
+  /** 导航-采集方式 */
+  let NAVMETHOD: string
   /** 判断是否含有CAD图层，如果有CAD图层，屏蔽线性和二次线配准 */
   let IsHaveCadDataset: boolean        
   /** 地图xml，用于保存改变地图之前的状态 */

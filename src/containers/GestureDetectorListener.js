@@ -78,6 +78,7 @@ async function magntouchCallback(event) {
       const data = ToolbarModule.getData()
       const point = event.screenPoint
       data?.actions?.pointSplitLine(point)
+      GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
       break
     }
     case TouchType.MAP_TOPO_TRIM_LINE:
@@ -92,6 +93,7 @@ async function magntouchCallback(event) {
         secondLine: true,
       }
       SMap.drawSelectedLineOnTrackingLayer(params)
+      GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
       break
     }
   }
@@ -282,6 +284,7 @@ async function touchCallback(event) {
         secondLine: true,
       }
       SMap.drawSelectedLineOnTrackingLayer(params)
+      GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
       break
     }
     case TouchType.ADD_NODES:

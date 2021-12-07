@@ -48,6 +48,7 @@ const Prompt: typeof CN.Prompt = {
 
   CONFIRM: "Confirm",
   COMPLETE: "Complete",
+  INSTALL:"Install",
 
   NO_PERMISSION: "Doesn\"t have permission",
   NO_PERMISSION_ALERT: "Doesn\"t have permission to run the application",
@@ -132,7 +133,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_LAYER: "Please select or create a plot Layer",
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer",
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer",
-  DONOT_SUPPORT_ARCORE: "AR functionalities are unavailable on this device",
+  DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
   GET_SUPPORTED_DEVICE_LIST: "Get the list of supportive devices",
   PLEASE_NEW_PLOT_LAYER: "Please create a new plot layer",
   DOWNLOADING_PLEASE_WAIT: "Please wait a minute",

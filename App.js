@@ -54,7 +54,7 @@ import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
 import * as PT from './src/customPrototype'
 import NavigationService from './src/containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo } from 'imobile_for_reactnative'
+import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap} from 'imobile_for_reactnative'
 // import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
@@ -308,11 +308,11 @@ class AppRoot extends Component {
     GLOBAL.Loading.setLoading(true, 'Loading')
     const results = await PermissionsAndroid.requestMultiple([
       'android.permission.READ_PHONE_STATE',
-      'android.permission.ACCESS_FINE_LOCATION',
+      // 'android.permission.ACCESS_FINE_LOCATION',
       'android.permission.READ_EXTERNAL_STORAGE',
       'android.permission.WRITE_EXTERNAL_STORAGE',
-      'android.permission.CAMERA',
-      'android.permission.RECORD_AUDIO',
+      // 'android.permission.CAMERA',
+      // 'android.permission.RECORD_AUDIO',
     ])
     let isAllGranted = true
     for (let key in results) {
@@ -1042,11 +1042,14 @@ class AppRoot extends Component {
         buttonMode={'list'}
         text={getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE}
         confirmText={getLanguage(this.props.language).Prompt.GET_SUPPORTED_DEVICE_LIST}
+        installText={getLanguage(GLOBAL.language).Prompt.INSTALL}
         confirmAction={() => {
           NavigationService.navigate('Protocol', {
             type: 'ARDevice',
           })
         }}
+        installBtnVisible={true}
+        installAction={()=>{SARMap.installARCore()}}
         confirmTitleStyle={{ color: '#4680DF' }}
         cancelTitleStyle={{ color: '#4680DF' }}
       />

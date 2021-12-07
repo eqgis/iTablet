@@ -54,6 +54,7 @@ const Prompt: typeof CN.Prompt = {
 
   CONFIRM: "OK",
   COMPLETE: "完了",
+  INSTALL:"Install",//need to translate
 
   OPENING: "開く中",
 
@@ -132,7 +133,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_LAYER: "マークレイヤーを選択、または新規してください",
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer", // need to translate
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer", // need to translate
-  DONOT_SUPPORT_ARCORE: "当デバイスはARを対応しません",
+  DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
   GET_SUPPORTED_DEVICE_LIST: "対応しているデバイスのリストを表示",
   PLEASE_NEW_PLOT_LAYER: "新規マークレイヤーを作成しますか",
   DOWNLOADING_PLEASE_WAIT: "ダウンロード中、お待ちください",

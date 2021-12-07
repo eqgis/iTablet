@@ -46,6 +46,7 @@ const Prompt = {
 
   CONFIRM: "确定",
   COMPLETE: "完成",
+  INSTALL:"安装",
 
   NO_PERMISSION: "应用缺少运行所需的权限!",
   NO_PERMISSION_ALERT: "应用缺少运行所需的权限,\n会导致部分功能不能正常使用！",
@@ -130,7 +131,7 @@ const Prompt = {
   PLEASE_SELECT_PLOT_LAYER: "请选择或新建标注图层",
   PLEASE_SELECT_MEDIA_LAYER: "请选择点、CAD和标注图层",
   PLEASE_SELECT_CAD_LAYER: "请选CAD图层",
-  DONOT_SUPPORT_ARCORE: "此设备不支持AR功能",
+  DONOT_SUPPORT_ARCORE: "请安装或升级ARCore",
   GET_SUPPORTED_DEVICE_LIST: "获取受支持的设备列表",
   PLEASE_NEW_PLOT_LAYER: "请新建标注图层",
   DOWNLOADING_PLEASE_WAIT: "下载中请稍等",
@@ -381,7 +382,7 @@ const Prompt = {
   BUILD_SUCCESS: "路网构建成功",
   SELECT_LINE_SMOOTH: "请选择需要平滑的线",
   SELECT_A_POINT_INLINE: "请长按放大镜选择一个线上点",
-  SELECT_POINT_INCURRENTLINE:"选择当前线上的点打断",
+  SELECT_POINT_INCURRENTLINE:"请长按选择当前线上的点打断",
   SELECT_LINE_WITH_INTERRUPT:"选择参与打断的线",
   SELECT_LINE_EXTENSION:"选择被延伸的线",
   SELECT_LINE_TO_TRIM:"选择被修剪线的修剪部分",

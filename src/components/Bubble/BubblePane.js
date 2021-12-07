@@ -4,7 +4,7 @@ import { scaleSize, screen } from '../../utils'
 import Bubble from './Bubble'
 
 const DEFAULT_POSITION = {
-  left: 20,
+  // left: 20,
   top: scaleSize(screen.getIphonePaddingTop() + 108),
 }
 
@@ -103,7 +103,9 @@ export default class BubblePane extends React.Component {
 
   render() {
     return (
-      <View style={[styles.pane, this.state.position]}>
+      <View style={[styles.pane, this.state.position]}
+        pointerEvents={'box-none'}
+      >
         {this.renderBubbles()}
       </View>
     )
@@ -115,10 +117,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // left: 20,
     // top: 120,
+    left: '-50%',
+    right: '-50%',
     flexDirection: 'column',
     backgroundColor: 'transparent',
     justifyContent: 'center',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     // maxWidth: scaleSize(120),
   },
 })

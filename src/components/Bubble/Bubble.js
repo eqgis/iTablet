@@ -8,6 +8,7 @@ export default class Bubble extends React.PureComponent {
     title: String,
     type: String, // info | error | warning | success
     style?: Object,
+    titleStyle?:Object,
     onPress?: () => {},
   }
 
@@ -52,7 +53,7 @@ export default class Bubble extends React.PureComponent {
     return (
       <Animated.View style={[bubbleStyle, this.props.style]}>
         <TouchableOpacity onPress={this._onPress}>
-          <Text style={titleStyle}>{this.props.title}</Text>
+          <Text style={[titleStyle,this.props.titleStyle]}>{this.props.title}</Text>
         </TouchableOpacity>
       </Animated.View>
     )

@@ -20,7 +20,10 @@ async function getOnlineData(
   cb = () => {},
 ) {
   const newData = []
-  let objDataList
+  let objDataList = {
+    content: [],
+    total: 0,
+  }
   try {
     if (UserType.isOnlineUser(currentUser)) {
       objDataList = await SOnlineService.getMyContentData({currentPage, pageSize, types, orderType: 'DESC', orderBy: 'CREATETIME'})
@@ -46,6 +49,7 @@ async function getOnlineData(
         objContent.id += ''
         newData.push(objContent)
       }
+      objDataList.content = newData
     }
   } catch (e) {
     const result = await NetInfo.getConnectionInfo()
@@ -54,8 +58,11 @@ async function getOnlineData(
     } else {
       // Toast.show('登录失效，请重新登录')
     }
+    objDataList = {
+      content: [],
+      total: 0,
+    }
   }
-  objDataList.content = newData
   return objDataList
 }
 

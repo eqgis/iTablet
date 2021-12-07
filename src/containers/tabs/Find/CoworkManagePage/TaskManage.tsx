@@ -18,6 +18,7 @@ import NavigationService from '../../../NavigationService'
 import CoworkFileHandle from './CoworkFileHandle'
 import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
 import BatchHeadBar from '../../Mine/component/BatchHeadBar'
+import { DataItemServices } from 'imobile_for_reactnative/types/interface/iserver/types'
 
 import { connect } from 'react-redux'
 
@@ -477,7 +478,7 @@ class TaskManage extends React.Component<Props, State> {
       // CoworkInfo.setMembers(members)
       this._checkMembers(data, _members)
       CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
-      this.createCowork(data.id, module, index, data.map)
+      this.createCowork(data.id, module, index, data.map, data.resource?.restService)
     } else {
       Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_DOWNLOAD_INFO)
     }
@@ -491,7 +492,7 @@ class TaskManage extends React.Component<Props, State> {
     })
   }
 
-  createCowork = async (targetId: any, module: { action: (user: UserInfo, map: any) => void }, index: number, map: any) => {
+  createCowork = async (targetId: any, module: { action: (user: UserInfo, map: any, service?: DataItemServices) => void }, index: number, map: any, service?: DataItemServices) => {
     try {
       GLOBAL.Loading.setLoading(
         true,
@@ -511,7 +512,7 @@ class TaskManage extends React.Component<Props, State> {
       // CoworkInfo.setId(this.props.user.currentUser.userName + '')
       GLOBAL.getFriend().setCurMod(module)
       this.props.setCurrentMapModule(index).then(() => {
-        module.action(this.props.user.currentUser, map)
+        module.action(this.props.user.currentUser, map, service)
       })
       GLOBAL.getFriend().curChat &&
         GLOBAL.getFriend().curChat.setCoworkMode(true)

@@ -293,7 +293,8 @@ export default class LayerManager_tolbar extends React.Component {
         data[0]?.data?.unshift(...serviceData.data)
       }
       // else if (layerData?.datasourceAlias?.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0) {
-      else if (layerData?.name && await SMediaCollector.isMediaLayer(layerData.name)) {
+      // else if (layerData?.name && await SMediaCollector.isMediaLayer(layerData.name)) {
+      else if (layerData.themeType <= 0 && !layerData.isHeatmap) {
         let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
         data[0]?.data?.unshift(...serviceData.data)
       }

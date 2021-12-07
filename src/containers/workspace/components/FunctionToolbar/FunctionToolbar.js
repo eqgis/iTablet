@@ -367,7 +367,7 @@ export default class FunctionToolbar extends React.Component {
         size: 'large',
         image: getThemeAssets().mapTools.icon_tool_multi_media,
         disableImage: getThemeAssets().mapTools.icon_tool_multi_media_ash,
-        action: () => {
+        action: async () => {
           if (this.props.currentLayer) {
             if (this.props.currentLayer.themeType) {
               Toast.show(
@@ -378,7 +378,8 @@ export default class FunctionToolbar extends React.Component {
             }
             const layerType = LayerUtils.getLayerType(this.props.currentLayer)
             const isTaggingLayer = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
-            if (isTaggingLayer) {
+            const isMediaLayer = await SMediaCollector.isMediaLayer(this.props.currentLayer.name)
+            if (isTaggingLayer && isMediaLayer) {
               const { datasourceAlias } = this.props.currentLayer // 标注数据源名称
               const { datasetName } = this.props.currentLayer // 标注图层名称
               NavigationService.navigate('Camera', {
@@ -415,16 +416,6 @@ export default class FunctionToolbar extends React.Component {
                           suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
                           dest += `${name}.${suffix}`
                         }
-                        //获取缩略图
-                        // let resizedImageUri = await ImageResizer.createResizedImage(
-                        //   mediaPath,
-                        //   60,
-                        //   100,
-                        //   'PNG',
-                        //   1,
-                        //   0,
-                        //   userPath,
-                        // )
                         let resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
                           mediaPath,
                           `${name}.${suffix}`,
@@ -449,9 +440,6 @@ export default class FunctionToolbar extends React.Component {
                       } else {
                         Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
                       }
-                      // if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)) {
-                      //   result = await SMediaCollector.updateTour(this.props.currentLayer.name)
-                      // }
                       // 分享到群组中
                       if (resourceIds.length > 0 && this.props.currentTask.groupID) {
                         this.servicesUtils?.shareDataToGroup({
@@ -470,7 +458,8 @@ export default class FunctionToolbar extends React.Component {
                       }
                     }
                   } catch (e) {
-                    console.warn('error')
+                    // eslint-disable-next-line no-console
+                    __DEV__ && console.warn('error')
                   }
                 },
               })

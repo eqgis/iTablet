@@ -246,6 +246,7 @@ export default class CoworkInfo {
               message.message.geometry,
             )
           } else {
+            SMap.removeMessageCallout(messageID)
             notify &&
               Toast.show(
                 getLanguage(GLOBAL.language).Friends.UPDATE_NOT_EXIST_OBJ,

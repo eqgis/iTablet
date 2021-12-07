@@ -254,7 +254,7 @@ async function switchType(item) {
       type = ConstToolType.SM_MAP_TOPO_SPLIT
       touchType = TouchType.MAP_TOPO_SPLIT_BY_POINT
       await SMap.setAction(Action.PAN)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
+      // Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_A_POINT_INLINE)
       title= getLanguage(GLOBAL.language).Prompt.SELECT_POINT_INCURRENTLINE
       break
     case constants.MAP_TOPO_EXTEND:
@@ -349,7 +349,7 @@ function submit() {
   SMap.setAction(Action.SELECT)
 }
 
-function close() {
+async function close() {
   const _params = ToolbarModule.getParams()
   const containerType = ToolbarType.table
   let nextType, touchType
@@ -359,9 +359,22 @@ function close() {
     _params.type === ConstToolType.SM_MAP_TOPO_OBJECT_EDIT_SELECTED
   ) {
     ToolbarModule.setToolBarData(ConstToolType.SM_MAP_INCREMENT_GPS_TRACK)
-    nextType = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
+    // nextType = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
+    nextType = GLOBAL.NAVMETHOD
     touchType = TouchType.NULL
     SMap.setAction(Action.PAN)
+    switch (nextType) {
+      case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
+        break
+      case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
+        break
+      case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
+        await SMap.setAction(Action.CREATEPOLYLINE)
+        break
+      case ConstToolType.SM_MAP_INCREMENT_FREELINE:
+        await SMap.setAction(Action.FREEDRAW)
+        break
+    }
   } else {
     nextType = ConstToolType.SM_MAP_TOPO_EDIT
     SMap.setAction(Action.SELECT)

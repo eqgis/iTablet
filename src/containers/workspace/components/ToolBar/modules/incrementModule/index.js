@@ -34,7 +34,7 @@ class IncrementModule extends FunctionModule {
     GLOBAL.toolBox.showFullMap(true)
     SMap.createDefaultDataset().then(async returnData => {
       if (returnData.datasetName) {
-        params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_GPS_TRACK, {
+        params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD, {
           containerType,
           isFullScreen: false,
           resetToolModuleData: true,
@@ -46,10 +46,9 @@ class IncrementModule extends FunctionModule {
       }
     })
     //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
-    let layers = this.props.layers.layers
-    LayerUtils.setLayersSelectable(layers, false, true)
     GLOBAL.TouchType = TouchType.NULL
     GLOBAL.IncrementRoadDialog.setVisible(false)
+    GLOBAL.NAVMETHOD = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
     // GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
   }
 }

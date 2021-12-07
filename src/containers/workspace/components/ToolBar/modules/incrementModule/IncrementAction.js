@@ -136,6 +136,7 @@ async function changeMethod(type = ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD)
       containerType,
       isFullScreen: false,
     })
+  GLOBAL.NAVMETHOD = type
 }
 
 function showAttribute() {
@@ -248,6 +249,7 @@ function dialogConfirm() {
  * 拓扑编辑
  */
 async function topoEdit() {
+  Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_OBJECT)
   const _params = ToolbarModule.getParams()
   //切换方式 清除上次增量的数据
   await SMap.clearIncrementPoints()

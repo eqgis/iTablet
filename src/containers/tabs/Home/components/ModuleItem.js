@@ -95,7 +95,7 @@ export default class ModuleItem extends Component {
   setDownloading = (downloading = false) => {
     this.downloading = downloading
   }
-  
+
   spin = (isLoading = true) => {
     if (!this.state.isLoading && isLoading) {
       this.setState({
@@ -104,11 +104,12 @@ export default class ModuleItem extends Component {
         if (!this.aniMotion && this.state.isLoading) {
           this.rotateValue.setValue(0)
           this.aniMotion = Animated.timing(this.rotateValue,{
+            isInteraction: false,
             toValue: this.rotateValue._value === 0 ? 1 : 0,
             duration: 800,
             easing: Easing.linear,
             useNativeDriver: true,
-          });
+          })
           Animated.loop(this.aniMotion).start()
         }
       })

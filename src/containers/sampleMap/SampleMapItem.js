@@ -101,6 +101,7 @@ export default class SampleMapItem extends Component {
     if (!this.aniMotion && this.state.isDownloading) {
       this.state.rotateValue.setValue(0)
       this.aniMotion = Animated.timing(this.state.rotateValue,{
+        isInteraction: false,
         toValue: this.state.rotateValue._value === 0 ? 1 : 0,
         duration: 800,
         easing: Easing.linear,

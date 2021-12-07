@@ -92,6 +92,7 @@ export default class Progress extends Component {
   _startAniProgress = progress => {
     if (progress >= 0 && this.totalWidth !== 0) {
       Animated.timing(this._progressAni, {
+        isInteraction: false,
         toValue: progress * this.totalWidth,
         duration: this.props.progressAniDuration,
         easing: Easing.linear,
@@ -102,6 +103,7 @@ export default class Progress extends Component {
   _startAniBuffer = buffer => {
     if (buffer >= 0 && this.totalWidth !== 0) {
       Animated.timing(this._bufferAni, {
+        isInteraction: false,
         toValue: buffer * this.totalWidth,
         duration: this.props.bufferAniDuration,
       }).start()

@@ -432,7 +432,7 @@ export default class ChooseNaviLayer extends React.Component {
               label: 'input',
               legalCheck: true,
               type: 'name',
-              title:getLanguage(GLOBAL.language).Profile.ENTER_DATASET_NAME,
+              title:getLanguage(GLOBAL.language).Profile.INPUT_DATASET_NAME,
               confirmAction: text => {
                 this.createDataset({ text })
                 DialogUtils.hideInputDailog()

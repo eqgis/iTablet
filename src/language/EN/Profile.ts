@@ -230,6 +230,7 @@ const Profile: typeof CN.Profile = {
   BUILDING: "Building",
   BUILD_SUCCESS: "Built",
   BUILD_FAILED: "Failed to build",
+  INPUT_DATASET_NAME: "Please input dataset name",
 
   // 创建数据源
   NEW_DATASOURCE: "Create Datasource",

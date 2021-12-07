@@ -230,6 +230,7 @@ const Profile: typeof CN.Profile = {
   BUILDING: "作成",
   BUILD_SUCCESS: "作成に成功",
   BUILD_FAILED: "作成に失敗",
+  INPUT_DATASET_NAME: "Please input dataset name",//need to translate
 
   // 作成データソース
   NEW_DATASOURCE: "新規データソース",

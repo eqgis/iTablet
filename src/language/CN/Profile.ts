@@ -227,6 +227,7 @@ const Profile = {
   BUILDING: "构建中",
   BUILD_SUCCESS: "构建成功",
   BUILD_FAILED: "构建失败",
+  INPUT_DATASET_NAME: "请输入数据集名称",
 
   // 创建数据源
   NEW_DATASOURCE: "新建数据源",

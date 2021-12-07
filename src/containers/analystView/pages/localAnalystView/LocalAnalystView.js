@@ -4,6 +4,7 @@ import {
   UserType,
   ToolbarType,
   ConstToolType,
+  TouchType,
 } from '../../../../constants'
 import { Container, LinkageList } from '../../../../components'
 import styles from './styles'
@@ -193,6 +194,19 @@ export default class LocalAnalystView extends Component {
             //   })
             // }
             NavigationService.goBack()
+
+            switch (this.type) {
+              case ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH:
+                GLOBAL.TouchType = TouchType.ADD_STATIONS
+                break
+              case ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
+                GLOBAL.TouchType = TouchType.SET_AS_START_STATION
+                break
+              case ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH:
+                GLOBAL.TouchType = TouchType.ADD_STATIONS
+                break
+            }
+
           } else {
             this.setLoading(false)
             Toast.show(

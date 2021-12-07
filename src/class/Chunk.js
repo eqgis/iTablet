@@ -43,7 +43,7 @@ export default class Chunk {
 
   getTitle = () => this.title
 
-  action = async (user, lastMap) => {
+  action = async (user, lastMap, service) => {
     if (this.preAction && typeof this.preAction === 'function') {
       let result = await this.preAction()
       if (!result) return false
@@ -149,6 +149,9 @@ export default class Chunk {
           wsData,
           mapTitle: this.title,
           isExample: this.isExample,
+        }
+        if (service) {
+          param = Object.assign(param, {service: service})
         }
         // if (GLOBAL.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)

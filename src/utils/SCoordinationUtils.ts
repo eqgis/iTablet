@@ -1,4 +1,5 @@
 import { SCoordination } from 'imobile_for_reactnative'
+import { ServiceDatasource } from 'imobile_for_reactnative/types/interface/iserver/types'
 
 let _SCoordination: SCoordination | null
 
@@ -37,9 +38,44 @@ function getInfoFromDescription(datasetDescription: string) {
   return {serviceName, datasourceName, datasetName}
 }
 
+/**
+ * 初始化在线服务地图数据
+ * @param serviceUrl
+ * @returns
+ */
+async function initMapDataWithService(serviceUrl: string) {
+  let data: ServiceDatasource[] = []
+  try {
+    let datasources = await getScoordiantion().getServiceData(serviceUrl)
+    for (const datasourceName of datasources.datasourceNames) {
+      let dsData: ServiceDatasource = {
+        datasourceName: datasourceName,
+        datasets: [],
+      }
+      let datasets = await getScoordiantion().getServiceData(serviceUrl, datasourceName)
+      for (const datasetUrl of datasets.childUriList) {
+        if (datasetUrl.indexOf('_Table', datasetUrl.length - '_Table'.length) === -1) {
+          dsData.datasets.push({
+            datasetName: datasetUrl.substr(datasetUrl.lastIndexOf('/') + 1),
+            datasetUrl: datasetUrl,
+          })
+        }
+      }
+      if (dsData.datasets.length > 0) {
+        data.push(dsData)
+      }
+    }
+    await getScoordiantion().initDatasourceWithService(data)
+    return data
+  } catch (error) {
+    return data
+  }
+}
+
 export default {
   setScoordiantion,
   getScoordiantion,
 
   getInfoFromDescription,
+  initMapDataWithService,
 }

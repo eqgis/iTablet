@@ -747,7 +747,10 @@ export default class MT_layerManager extends React.Component {
             if ((
               dsDescription?.url && service.datasetUrl === dsDescription?.url ||
               service.layerName === item.name
-            ) && service.status !== 'done') {
+            ) &&
+            item.themeType <= 0 && !item.isHeatmap &&
+            service.status !== 'done'
+            ) {
               return true
             }
           }
@@ -764,7 +767,10 @@ export default class MT_layerManager extends React.Component {
           const currentCoworkMessage = this.props.cowork.coworkInfo[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id].messages
           if (currentCoworkMessage?.length > 0) {
             for (const message of currentCoworkMessage) {
-              if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
+              if (
+                message.message?.serviceUrl === dsDescription.url && message?.status === 0 &&
+                item.themeType <= 0 && !item.isHeatmap
+              ) {
                 cornerMarkImage = getThemeAssets().cowork.icon_state_update
                 return cornerMarkImage
               }

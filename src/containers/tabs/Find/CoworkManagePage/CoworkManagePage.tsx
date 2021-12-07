@@ -1,10 +1,10 @@
 import React from 'react'
 import { Container, PopMenu, ImageButton } from '../../../../components'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, SCoordinationUtils } from '../../../../utils'
 import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 import NavigationService from '../../../NavigationService'
 import { getLanguage } from '../../../../language'
-import { SMessageService, GroupType } from 'imobile_for_reactnative'
+import { SMessageService } from 'imobile_for_reactnative'
 import { UserType, MsgConstant } from '../../../../constants'
 import { getThemeAssets } from '../../../../assets'
 import TaskManage from './TaskManage'
@@ -13,6 +13,7 @@ import { ReadMsgParams, DeleteInviteParams } from '../../../../redux/models/cowo
 import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
 import CoworkFileHandle from './CoworkFileHandle'
+import { DataItemServices, GroupType } from 'imobile_for_reactnative/types/interface/iserver/types'
 interface Props {
   navigation: Object,
   user: Users,
@@ -88,6 +89,18 @@ export default class CoworkManagePage extends React.Component<Props, State> {
             keywords: '.zip',
             title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
             itemAction: async ({data}: any) => {
+              // TODO 查询数据信息,新增传递数据是否发布服务
+              const dataDetail = await SCoordinationUtils.getScoordiantion()?.getResourceDetail(data.resourceId)
+              let restService: DataItemServices | null = null
+              if (dataDetail?.dataItemServices?.length > 0) {
+                for (const service of dataDetail.dataItemServices) {
+                  if (service.serviceType === 'RESTDATA' && service.serviceStatus === 'PUBLISHED') {
+                    restService = service
+                    break
+                  }
+                }
+              }
+
               NavigationService.navigate('GroupFriendListPage', {
                 mode: 'multiSelect', // 多选模式
                 includeMe: false, // 是否包含当前用户
@@ -129,6 +142,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
                       resourceName: data.resourceName,
                       nickname: data.nickname,
                       resourceCreator: data.resourceCreator,
+                      restService: restService,
                     },
                     type: MsgConstant.MSG_ONLINE_GROUP_TASK,
                     time: timeStr,

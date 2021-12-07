@@ -252,7 +252,11 @@ async function listAction(type: string, params: any = {}) {
       await SMap.checkCurrentModule()
       const url = params.item.data
       let datasourceName = params.item.title
-      if (url.includes('/datasources')) {
+      // 如果服务对应数据源在本地没有打开,则放入标注图层中
+      if (url.indexOf('/datasources/') && url.indexOf('/datasets/')) {
+        datasourceName = url.substring(url.indexOf('datasources/') + 12, url.indexOf('/datasets'))
+      }
+      if (!await SMap.isDatasourceOpened(datasourceName)) {
         datasourceName = `Label_${
           _params.user.currentUser.userName
         }#`
@@ -343,10 +347,19 @@ async function updateToLocal (layerData: {
       datasourceAlias = `Label_${
         _params.user.currentUser.userName
       }#`
-    } else {
+    } else if (layerData.datasourceAlias) {
       datasourceAlias = layerData.datasourceAlias || `Label_${
         _params.user.currentUser.userName
       }#`
+    } else {
+      if (layerData.url.indexOf('/datasources/') && layerData.url.indexOf('/datasets/')) {
+        datasourceAlias = layerData.url.substring(layerData.url.indexOf('datasources/') + 12, layerData.url.indexOf('/datasets'))
+      }
+      if (!datasourceAlias || !await SMap.isDatasourceOpened(datasourceAlias)) {
+        datasourceAlias = `Label_${
+          _params.user.currentUser.userName
+        }#`
+      }
     }
     const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
     const params: any = ToolbarModule.getParams()

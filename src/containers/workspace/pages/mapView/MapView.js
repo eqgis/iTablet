@@ -81,6 +81,7 @@ import {
   screen,
   Audio,
   DownloadUtil,
+  SCoordinationUtils,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -1667,7 +1668,7 @@ export default class MapView extends React.Component {
   _addMap = () => {
     (async function () {
       try {
-        let hasMap = false // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
+        let mapInfo // 判断是否打开了地图，若打开了地图，加载完成后先保存在MapControl中
         if (this.wsData) {
           if (this.wsData instanceof Array) {
             for (let i = 0; i < this.wsData.length; i++) {
@@ -1685,8 +1686,7 @@ export default class MapView extends React.Component {
                   false,
                 )
               } else if (item.type === 'Map') {
-                await this._openMap(this.wsData[i])
-                hasMap = true
+                mapInfo = await this._openMap(this.wsData[i])
               }
               // else if (item.type === 'LastMap') {
               //   // 打开最近地图
@@ -1700,8 +1700,7 @@ export default class MapView extends React.Component {
             } else if (this.wsData.type === 'Datasource') {
               await this._openDatasource(this.wsData, this.wsData.layerIndex)
             } else if (this.wsData.type === 'Map') {
-              await this._openMap(this.wsData)
-              hasMap = true
+              mapInfo = await this._openMap(this.wsData)
             }
             // else if (this.wsData.type === 'LastMap') {
             //   // 打开最近地图
@@ -1731,7 +1730,7 @@ export default class MapView extends React.Component {
           })
         }
         //没有打开地图，默认加载以“DefaultMapLib"为名的符号库
-        if (!hasMap) {
+        if (!mapInfo) {
           const userPath = `${ConstPath.UserPath +
             (this.props.user.currentUser.userName || 'Customer')}/`
           const fillLibPath = await FileTools.appendingHomeDirectory(
@@ -1800,7 +1799,7 @@ export default class MapView extends React.Component {
             layer.isVisible = await SMap.setLayerVisible(layer.name, true)
             this.props.setCurrentLayer(layer)
 
-            if (hasMap) await SMap.saveMap('', false, false)
+            if (mapInfo) await SMap.saveMap('', false, false)
             // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
             let dataList = await SMap.getTaggingLayers(
               this.props.user.currentUser.userName,
@@ -1811,6 +1810,12 @@ export default class MapView extends React.Component {
               }
             })
           }
+        }
+
+        // 在线协作-若整个地图数据已发布服务-则初始化数据源-数据集为服务数据
+        const service = this.props.navigation.state?.params?.service
+        if (GLOBAL.coworkMode && this.props.navigation.state?.params?.service) {
+          await SCoordinationUtils.initMapDataWithService(service.address)
         }
 
         // 标注图层等其他图层添加完后再获取图层列表
@@ -2038,8 +2043,10 @@ export default class MapView extends React.Component {
           await this.props.setTemplate()
         }
       }
+      return mapInfo
     } catch (e) {
       this.setLoading(false)
+      return null
     }
   }
 

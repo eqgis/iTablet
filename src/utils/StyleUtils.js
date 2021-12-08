@@ -2,6 +2,7 @@
  * MapView辅助工具类
  */
 import { SMap, GeoStyle } from 'imobile_for_reactnative'
+import { Platform } from 'react-native'
 
 /**
  * 设置选择集样式
@@ -41,19 +42,35 @@ async function setDefaultMapControlStyle() {
   nodeStyle.setMarkerHeight(1)
   nodeStyle.setMarkerWidth(1)
   nodeStyle.setMarkerSize(5)
-  nodeStyle.setMarkerColor(0, 0, 0)
+  // nodeStyle.setMarkerColor(0, 0, 0)
 
-  const style = {
+  let style = {
     nodeStyle: JSON.stringify(nodeStyle),
     nodeColor: [0, 0, 0, 1],
     nodeSize: 0.5,
     strokeColor: [84, 160, 240, 0],
+    // strokeColor: [240, 160, 84, 0],
     // strokeColor: colorRgb2Hex(255, 0, 0, 1),
     strokeFillColor: [200, 200, 200, 127 / 255],
     strokeWidth: 1,
     objectColor: [0, 255, 255, 255],
     objectWidth: 1,
   }
+  if (Platform.OS === 'android'){
+    style = {
+      nodeStyle: JSON.stringify(nodeStyle),
+      nodeColor: [0, 0, 0, 1],
+      nodeSize: 0.5,
+      // strokeColor: [84, 160, 240, 0],
+      strokeColor: [240, 160, 84, 0],
+      // strokeColor: colorRgb2Hex(255, 0, 0, 1),
+      strokeFillColor: [200, 200, 200, 127 / 255],
+      strokeWidth: 1,
+      objectColor: [0, 255, 255, 255],
+      objectWidth: 1,
+    }
+  }
+
   return SMap.setMapControlStyle(style)
 }
 

@@ -35,19 +35,19 @@ async function setSingleSelectionStyle(layerPath = '') {
 
 async function setDefaultMapControlStyle() {
   const nodeStyle = new GeoStyle()
-  // nodeStyle.setFillForeColor(250, 20, 20, 1)
-  // nodeStyle.setLineWidth(1)
-  // nodeStyle.setLineColor(70, 128, 223)
-  // nodeStyle.setMarkerHeight(1)
-  // nodeStyle.setMarkerWidth(1)
-  // nodeStyle.setMarkerSize(5)
-  // geoStyle.setMarkerColor(255, 0, 0)
+  nodeStyle.setFillForeColor(0, 0, 0, 1)
+  nodeStyle.setLineWidth(1)
+  nodeStyle.setLineColor(0, 0, 0)
+  nodeStyle.setMarkerHeight(1)
+  nodeStyle.setMarkerWidth(1)
+  nodeStyle.setMarkerSize(5)
+  nodeStyle.setMarkerColor(0, 0, 0)
 
   const style = {
     nodeStyle: JSON.stringify(nodeStyle),
-    nodeColor: [250, 20, 20, 1],
-    nodeSize: 1,
-    strokeColor: [90, 90, 90, 1],
+    nodeColor: [0, 0, 0, 1],
+    nodeSize: 0.5,
+    strokeColor: [84, 160, 240, 0],
     // strokeColor: colorRgb2Hex(255, 0, 0, 1),
     strokeFillColor: [200, 200, 200, 127 / 255],
     strokeWidth: 1,

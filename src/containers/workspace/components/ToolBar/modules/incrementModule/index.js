@@ -15,7 +15,7 @@ import {
   SMap,
 } from 'imobile_for_reactnative'
 import {
-  LayerUtils,
+  StyleUtils,
 } from '../../../../../../utils'
 
 class IncrementModule extends FunctionModule {
@@ -50,6 +50,7 @@ class IncrementModule extends FunctionModule {
     GLOBAL.IncrementRoadDialog.setVisible(false)
     GLOBAL.NAVMETHOD = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
     // GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
+    StyleUtils.setDefaultMapControlStyle()
   }
 }
 

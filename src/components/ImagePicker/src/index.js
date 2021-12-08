@@ -46,6 +46,11 @@ function showImagePicker(initialRouteName, options) {
   )
 }
 
+export function hide () {
+  sibling && sibling.destroy()
+  sibling = null
+}
+
 export {
   PhotoModalPage,
   // PreviewMultiView,

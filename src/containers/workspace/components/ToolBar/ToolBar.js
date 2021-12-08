@@ -471,6 +471,7 @@ export default class ToolBar extends React.Component {
       isShow = isShow === undefined ? true : isShow
       animatedList.push(
         Animated.timing(this.state.bottom, {
+          isInteraction: false,
           toValue: isShow
             ? 0
             : -Math.max(this.props.device.height, this.props.device.width),
@@ -479,6 +480,7 @@ export default class ToolBar extends React.Component {
       )
       animatedList.push(
         Animated.timing(this.state.right, {
+          isInteraction: false,
           toValue: isShow
             ? 0
             : -Math.max(this.props.device.height, this.props.device.width),

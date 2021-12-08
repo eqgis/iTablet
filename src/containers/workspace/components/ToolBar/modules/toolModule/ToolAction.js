@@ -496,12 +496,12 @@ function tour() {
 
     let tourLayer
     ImagePicker.AlbumListView.defaultProps.showDialog = true
-    ImagePicker.AlbumListView.defaultProps.dialogConfirm = (
+    ImagePicker.AlbumListView.defaultProps.dialogConfirm = async (
       value = '',
       cb = () => {},
     ) => {
-      if (value !== '') {
-        (async function() {
+      try {
+        if (value !== '') {
           await SMap.setLabelColor()
           const tagginData = await SMap.newTaggingDataset(
             value,
@@ -511,9 +511,13 @@ function tour() {
           )
           tourLayer = tagginData.layerName
           cb && cb()
-        })()
+        }
+        Toast.show(value)
+      } catch (error) {
+        if (error?.code === 'INVALID_MODULE') {
+          ImagePicker.hide()
+        }
       }
-      Toast.show(value)
     }
 
     ImagePicker.AlbumListView.defaultProps.assetType = 'All'

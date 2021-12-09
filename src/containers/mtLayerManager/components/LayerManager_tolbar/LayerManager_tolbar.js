@@ -74,6 +74,7 @@ export default class LayerManager_tolbar extends React.Component {
     containerProps?: Object,
     // data: Array,
     layerData?: Object,
+    currentTask?: Object,
     // existFullMap: () => {},
     getLayers: () => {}, // 更新数据（包括其他界面）
     setCurrentLayer: () => {},
@@ -295,8 +296,15 @@ export default class LayerManager_tolbar extends React.Component {
       // else if (layerData?.datasourceAlias?.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0) {
       // else if (layerData?.name && await SMediaCollector.isMediaLayer(layerData.name)) {
       else if (layerData.themeType <= 0 && !layerData.isHeatmap) {
-        let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
-        data[0]?.data?.unshift(...serviceData.data)
+        // 当前群组地图资源拥有者可以发布任务,其他成员只能更新和提交服务;标注图层可以发布任务
+        if (
+          layerData?.datasourceAlias?.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0 ||
+          this.props.currentTask?.resource?.resourceCreator &&
+          this.props.currentTask?.resource?.resourceCreator === this.props.user.currentUser?.userName
+        ) {
+          let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
+          data[0]?.data?.unshift(...serviceData.data)
+        }
       }
     }
     return data

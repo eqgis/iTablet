@@ -1044,6 +1044,7 @@ export default class MT_layerManager extends React.Component {
         user={this.props.user}
         navigation={this.props.navigation}
         mapFromXml={this.props.mapFromXml}
+        currentTask={this.props.cowork.currentTask}
       />
     )
   }

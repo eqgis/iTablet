@@ -25,18 +25,18 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
-async function addServiceLayer(datasetName: string) {
+async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
-  const labelUDB = `Label_${_params.user.currentUser.userName}#`
+  const labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
   const resultArr = await SMap.addLayers([datasetName], labelUDB)
   if (resultArr.length > 0) {
     SMap.refreshMap()
     await _params.getLayers()
     SMediaCollector.showMedia(resultArr[0].layerName, false)
-    Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
+    Toast.show(datasetName + getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
     _params.setToolbarVisible(false)
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+    Toast.show(datasetName + getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
     SMap.refreshMap()
   }
 }
@@ -50,17 +50,17 @@ async function addServiceLayer(datasetName: string) {
     let _datasetUrl = res.content.urlDataset
     let datasetName = _datasetUrl.substring(_datasetUrl.lastIndexOf('/') + 1).replace('.json', '').replace('.rjson', '')
     const params: any = ToolbarModule.getParams()
-    // 上传完成
-    res.content && params.setCoworkService({
-      groupId: params.currentTask.groupID,
-      taskId: params.currentTask.id,
-      service: {
-        datasetUrl: res.content?.urlDataset,
-        status: 'done',
-      },
-    })
     if (res.result) {
-      addServiceLayer(datasetName)
+      await addServiceLayer(datasetName, res.content?.datasource)
+
+      res.content && params.setCoworkService({
+        groupId: params.currentTask.groupID,
+        taskId: params.currentTask.id,
+        service: {
+          datasetUrl: res.content?.urlDataset,
+          status: 'done',
+        },
+      })    
     } else if (
       res.error?.reason?.includes('exist') ||
       res.error?.reason?.includes('failed to create local dataset according to the web dataset resource') // iOS
@@ -76,7 +76,16 @@ async function addServiceLayer(datasetName: string) {
       if (isAdded) {
         SCoordinationUtils.getScoordiantion().updateToLocal(_datasetUrl.replace('.json', '').replace('.rjson', ''), res.content.datasource, datasetName)
       } else {
-        addServiceLayer(datasetName)
+        await addServiceLayer(datasetName, res.content?.datasource)
+
+        res.content && params.setCoworkService({
+          groupId: params.currentTask.groupID,
+          taskId: params.currentTask.id,
+          service: {
+            datasetUrl: res.content?.urlDataset,
+            status: 'done',
+          },
+        })
       }
     }
   },
@@ -86,17 +95,8 @@ async function addServiceLayer(datasetName: string) {
       if (res?.error?.reason) {
         msg = res?.error?.reason
       }
-      Toast.show(msg)
+      Toast.show(res?.content?.dataset + msg)
       const params: any = ToolbarModule.getParams()
-      // 上传完成
-      res.content && params.setCoworkService({
-        groupId: params.currentTask.groupID,
-        taskId: params.currentTask.id,
-        service: {
-          datasetUrl: res.content?.urlDataset,
-          status: 'done',
-        },
-      })
       if (res.result && res.content?.dataset) {
         for (let layer of params.layers.layers) {
           if (layer.datasetName === res.content.dataset) {
@@ -105,6 +105,15 @@ async function addServiceLayer(datasetName: string) {
             break
           }
         }
+        // 上传完成
+        res.content && params.setCoworkService({
+          groupId: params.currentTask.groupID,
+          taskId: params.currentTask.id,
+          service: {
+            datasetUrl: res.content?.urlDataset,
+            status: 'done',
+          },
+        })
         if (!res.content) return
         let _datasetUrl = res.content.urlDataset
         const coworkMessages = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask?.groupID]?.[params.currentTask?.id]?.messages || []
@@ -127,7 +136,7 @@ async function addServiceLayer(datasetName: string) {
       if (res?.error?.reason) {
         msg = res?.error?.reason
       }
-      Toast.show(msg)
+      Toast.show(res?.content?.dataset + msg)
       const params: any = ToolbarModule.getParams()
       // 上传完成
       res.content && params.setCoworkService({
@@ -178,42 +187,73 @@ async function listAction(type: string, params: any = {}) {
     case ConstToolType.SM_MAP_SERVICE_LIST: {
       let data = params.item.data
 
-      let result = await SCoordinationUtils.getScoordiantion().getServiceData(data.linkPage)
-
-      if (result.errorMsg) {
-        Toast.show(result.errorMsg)
-        return
-      }
-      if (
-        params.section &&
-        params.section.title ===
-          getLanguage(_params.language).Profile.SERVICE
-      ) {
-        let _subData: Type.ListItem[] = []
-        result.datasourceNames.forEach((item: string) => {
-          _subData.push({
-            key: item,
-            title: item,
-            data: data,
-            size: 'large',
-            image: getThemeAssets().dataType.icon_data_source,
+      _params.setToolbarVisible(false)
+      _params.showFullMap && _params.showFullMap(false)
+      let result = false
+      const serviceData = await SCoordinationUtils.initMapDataWithService(data.linkPage)
+      let services = []
+      for (const datasource of serviceData) {
+        for (const dataset of datasource.datasets) {
+          let datasourceName = datasource.datasourceName.indexOf('Tagging_') === 0 ? '' : datasource.datasourceName
+          services.push({
+            datasetUrl: dataset.datasetUrl,
+            status: 'download',
           })
-        })
-        let _data = [{
-          title: getLanguage(GLOBAL.language).Map_Settings.DATASOURCES,
-          image: getThemeAssets().dataType.icon_data_source,
-          data: _subData,
-        }]
-        ToolbarModule.addData({
-          datasources: _data,
-        })
-        _params.setToolbarVisible(true, ConstToolType.SM_MAP_SERVICE_DATASOURCE, {
-          data: _data,
-          buttons: [ToolbarBtnType.TOOLBAR_BACK],
-          containerType: ToolbarType.list,
-          isFullScreen: true,
-        })
+          downloadToLocal(dataset.datasetUrl, datasourceName)
+        }
       }
+
+      _params.setCoworkService({
+        groupId: _params.currentTask.groupID,
+        taskId: _params.currentTask.id,
+        service: services,
+      })
+
+      // _params.setCoworkService({
+      //   groupId: _params.currentTask.groupID,
+      //   taskId: _params.currentTask.id,
+      //   service: {
+      //     datasetUrl: data.linkPage,
+      //     status: 'done',
+      //   },
+      // })
+
+      // let result = await SCoordinationUtils.getScoordiantion().getServiceData(data.linkPage)
+
+      // if (result.errorMsg) {
+      //   Toast.show(result.errorMsg)
+      //   return
+      // }
+      // if (
+      //   params.section &&
+      //   params.section.title ===
+      //     getLanguage(_params.language).Profile.SERVICE
+      // ) {
+      //   let _subData: Type.ListItem[] = []
+      //   result.datasourceNames.forEach((item: string) => {
+      //     _subData.push({
+      //       key: item,
+      //       title: item,
+      //       data: data,
+      //       size: 'large',
+      //       image: getThemeAssets().dataType.icon_data_source,
+      //     })
+      //   })
+      //   let _data = [{
+      //     title: getLanguage(GLOBAL.language).Map_Settings.DATASOURCES,
+      //     image: getThemeAssets().dataType.icon_data_source,
+      //     data: _subData,
+      //   }]
+      //   ToolbarModule.addData({
+      //     datasources: _data,
+      //   })
+      //   _params.setToolbarVisible(true, ConstToolType.SM_MAP_SERVICE_DATASOURCE, {
+      //     data: _data,
+      //     buttons: [ToolbarBtnType.TOOLBAR_BACK],
+      //     containerType: ToolbarType.list,
+      //     isFullScreen: true,
+      //   })
+      // }
       break
     }
     case ConstToolType.SM_MAP_SERVICE_DATASOURCE:{
@@ -302,7 +342,7 @@ function toolbarBack(type: string) {
 async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
   if (!datasetUrl) {
     Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
-    return
+    return false
   }
   const _params: any = ToolbarModule.getParams()
   let _datasourceAlias
@@ -652,6 +692,84 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
   }
 }
 
+async function publishService(dataID: string, datasourceAlias: string, groups: publishGroup[]): Promise<{
+  result: boolean,
+  content: any[],
+}> {
+  const _params: any = ToolbarModule.getParams()
+  let result = false
+  let content: any[] = []
+  try {
+    let Service: OnlineServicesUtils
+    if (UserType.isIPortalUser(_params.user.currentUser)) {
+      Service = new OnlineServicesUtils('iportal')
+    } else {
+      Service = new OnlineServicesUtils('online')
+    }
+    const entities: AuthorizeSetting[] = []
+    for (const group of groups) {
+      entities.push({
+        entityId: group.groupId,
+        entityName: group.groupName,
+        entityType: group.entityType || 'IPORTALGROUP',
+        permissionType: group.permissionType || 'READ',
+      })
+    }
+    const publishResults = await Service.publishService(dataID, 'WORKSPACE', 'RESTDATA')
+    result = publishResults?.[0]?.succeed || false
+    if (result && publishResults[0].customResult) {
+      const _SCoordination = SCoordinationUtils.getScoordiantion()
+      await _SCoordination.setCoordinationType(_SCoordination.type) // 重新获取cookie,防止cookie失效
+      const service = await _SCoordination.getUserServices({keywords: [publishResults[0].customResult], orderBy: 'UPDATETIME', orderType: 'DESC'})
+      // const service = await SCoordinationUtils.getScoordiantion().getUserServices({})
+      if (service.content.length > 0) {
+        content = service.content
+        let ids: string[] = []
+        service.content.forEach(item => {
+          ids.push(item.id)
+        })
+        let shareResult = await _SCoordination.shareServiceToGroup({
+          ids: ids,
+          entities: entities,
+        })
+        result = shareResult.succeed
+        let msgObj = {
+          type: MsgConstant.MSG_COWORK,
+          time: new Date().getTime(),
+          user: {
+            name: _params.user.currentUser.nickname,
+            id: _params.user.currentUser.userName,
+            groupID: _params.currentTask.id,     // 任务群组
+            groupName: '',
+            coworkGroupId: _params.currentTask.groupID,     // online协作群组
+            coworkGroupName: _params.currentTask.groupName,
+            taskId: _params.currentTask.id,
+          },
+          message: {
+            type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
+            datasourceAlias: datasourceAlias,
+            datasetName: publishResults[0].customResult,
+            serviceUrl: service.content[0].proxiedUrl,
+          },
+        }
+        let msgStr = JSON.stringify(msgObj)
+        await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+      } else {
+        result = false
+      }
+    } else {
+      result = false
+    }
+  } catch (error) {
+    console.warn(error)
+  } finally {
+    return {
+      result,
+      content,
+    }
+  }
+}
+
 export interface DataServiceUrlParams {
   id: string | number,
   datasourceAlias: string,
@@ -711,5 +829,6 @@ export default {
   getUserServices,
   getGroupServices,
   publishServiceToGroup,
+  publishService,
   setDataService,
 }

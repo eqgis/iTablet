@@ -25,6 +25,7 @@ async function geometrySelected(event) {
     ToolbarModule.getData().event
   ) {
     ToolbarModule.addData({ secondEvent: event })
+    GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
   } else {
     ToolbarModule.addData({
       event,

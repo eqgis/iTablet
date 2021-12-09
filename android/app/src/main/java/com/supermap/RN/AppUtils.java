@@ -139,7 +139,8 @@ public class AppUtils extends ReactContextBaseJavaModule {
             Boolean result=appManager.getAppManager().sendFileOfWechat(params);
             promise.resolve(result);
         }catch (Exception e){
-            promise.resolve(false);
+            //需要通过异常判断文件大小是否超过10M
+            promise.reject(e);
         }
     }
 

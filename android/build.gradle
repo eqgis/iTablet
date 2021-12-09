@@ -11,6 +11,7 @@ buildscript {
         maven { url "https://jitpack.io" }
         maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
         maven { url 'https://dl.google.com/dl/android/maven2/' }
+        maven {url 'https://developer.huawei.com/repo/'}
         google()
         mavenCentral()
     }
@@ -36,6 +37,7 @@ allprojects {
         maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
         maven { url 'https://dl.google.com/dl/android/maven2/' }
         google()
+        maven {url 'https://developer.huawei.com/repo/'}
 
 //        maven { url "https://maven.google.com" }
     }

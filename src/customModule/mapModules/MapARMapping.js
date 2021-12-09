@@ -81,7 +81,7 @@ export default class MapARMapping extends Module {
           return false
         }
         SMap.setDynamicviewsetVisible(false)
-        Orientation.lockToPortrait()
+        //Orientation.lockToPortrait()
         return isAvailable
       },
     })

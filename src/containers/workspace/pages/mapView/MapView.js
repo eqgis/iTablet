@@ -4554,13 +4554,17 @@ export default class MapView extends React.Component {
 
   _onDatumPointClose = point => {
     this.props.setDatumPoint(false)
-    SARMap.setCenterHitTest(true)
+    if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+      SARMap.showMeasureView(true)
+    }
   }
 
   _onDatumPointConfirm = point => {
     SARMap.setPosition(Number(point.x), Number(point.y),Number(point.h))
     this.props.setDatumPoint(false)
-    SARMap.setCenterHitTest(true)
+    if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+      SARMap.showMeasureView(true)
+    }
   }
 
   ARMappingHeaderBack = () => {

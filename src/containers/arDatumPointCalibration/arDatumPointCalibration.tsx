@@ -7,7 +7,7 @@ import Input from '../../components/Input'
 import { scaleSize, Toast } from '../../utils/index'
 import { SMap, SCollectSceneFormView, Action ,SARMap} from 'imobile_for_reactnative'
 import NavigationService from '../../containers/NavigationService'
-import { ConstOnline, TouchType } from '../../constants'
+import { ChunkType, TouchType } from '../../constants'
 import { Container } from '../../components'
 import styles from './styles'
 
@@ -437,7 +437,9 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   }
 
   _renderScan = () => {
-    SARMap.setCenterHitTest(false)
+    if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
+      SARMap.showMeasureView(false)
+    }
     const { scanning } = this.state
     const transY = this.state.animValue.interpolate({
       inputRange: [0,1],

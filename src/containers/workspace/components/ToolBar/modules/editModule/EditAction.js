@@ -109,14 +109,6 @@ function close() {
 /** 地图点选对象回调 **/
 async function geometrySelected(event) {
   const params = ToolbarModule.getParams()
-  params.setSelection &&
-    params.setSelection([
-      {
-        layerInfo: event.layerInfo,
-        geometryType: event.geometryType,
-        ids: [event.id],
-      },
-    ])
   if (event.fieldInfo) {
     ToolbarModule.addData({
       layerInfo: event.layerInfo,

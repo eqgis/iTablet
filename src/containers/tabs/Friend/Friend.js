@@ -938,19 +938,21 @@ export default class Friend extends Component {
       if (this.props.cowork.currentTask.id !== '') {
         let geometry = await SMap.getUserEditGeometry(layerInfo.path, id)
         let geoUserID = ''
-        for (let i = 0; i < fieldInfos.length; i++) {
-          let fieldInfo = fieldInfos[i]
-          if (fieldInfo.name === 'userID') {
-            geoUserID = fieldInfo.value
-            break
-          }
-        }
         let geoID = id
-        for (let i = 0; i < fieldInfos.length; i++) {
-          let fieldInfo = fieldInfos[i]
-          if (fieldInfo.name === 'geoID') {
-            geoID = isNaN(fieldInfo.value) || fieldInfo.value === '' ? id : parseInt(fieldInfo.value)
-            break
+        if (fieldInfos) {
+          for (let i = 0; i < fieldInfos.length; i++) {
+            let fieldInfo = fieldInfos[i]
+            if (fieldInfo.name === 'userID') {
+              geoUserID = fieldInfo.value
+              break
+            }
+          }
+          for (let i = 0; i < fieldInfos.length; i++) {
+            let fieldInfo = fieldInfos[i]
+            if (fieldInfo.name === 'geoID') {
+              geoID = isNaN(fieldInfo.value) || fieldInfo.value === '' ? id : parseInt(fieldInfo.value)
+              break
+            }
           }
         }
         let msgObj = {
@@ -1073,11 +1075,13 @@ export default class Friend extends Component {
     try {
       if (this.props.cowork.currentTask.id !== '') {
         let geoUserID = ''
-        for (let i = 0; i < fieldInfos.length; i++) {
-          let fieldInfo = fieldInfos[i]
-          if (fieldInfo.name === 'userID') {
-            geoUserID = fieldInfo.value
-            break
+        if (fieldInfos) {
+          for (let i = 0; i < fieldInfos.length; i++) {
+            let fieldInfo = fieldInfos[i]
+            if (fieldInfo.name === 'userID') {
+              geoUserID = fieldInfo.value
+              break
+            }
           }
         }
         let msgObj = {
@@ -1317,7 +1321,7 @@ export default class Friend extends Component {
               ? { position: 0 }
               : null
         }
-
+console.warn(e)
         Toast.show(
           getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
           option,

@@ -5,7 +5,7 @@ const iportalMQIP = '192.168.11.206'
 
 export default {
   // name: '全功能移动GIS软件',
-  name: 'SuperMap iTablet',
+  name: '外业采集系统',
   alias: 'iTablet',
   version: '0.0.1',
   launchGuideVersion: '0.0.3',

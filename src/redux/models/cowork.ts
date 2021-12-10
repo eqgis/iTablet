@@ -148,7 +148,7 @@ export interface ServiceInfo {
 export interface ServiceParams {
   groupId: string,
   taskId: string,
-  service: ServiceInfo,
+  service: ServiceInfo[] | ServiceInfo,
 }
 
 
@@ -1512,28 +1512,58 @@ export default handleActions(
       if (taskServices && taskServices.length > 0) {
         for (let i = 0; i < taskServices.length; i ++) {
           let service = taskServices[i]
-          if (
-            service.layerName === payload.service.layerName ||
-            service.datasetUrl === payload.service.datasetUrl
-          ) {
-            targetService = Object.assign(service, payload.service)
-            // 若完成，则删除记录
-            if (service.status === 'done') {
-              taskServices.splice(i, 1)
-              services[userId][payload.groupId][payload.taskId] = taskServices
+          if (payload.service instanceof Array) {
+            for (const _service of payload.service) {
+              if (
+                service.layerName === _service.layerName ||
+                service.datasetUrl === _service.datasetUrl
+              ) {
+                targetService = Object.assign(service, _service)
+                // 若完成，则删除记录
+                if (service.status === 'done') {
+                  taskServices.splice(i, 1)
+                  services[userId][payload.groupId][payload.taskId] = taskServices
+                }
+                break
+              }
             }
-            break
+          } else {
+            if (
+              service.layerName === payload.service.layerName ||
+              service.datasetUrl === payload.service.datasetUrl
+            ) {
+              targetService = Object.assign(service, payload.service)
+              // 若完成，则删除记录
+              if (service.status === 'done') {
+                taskServices.splice(i, 1)
+                services[userId][payload.groupId][payload.taskId] = taskServices
+              }
+              break
+            }
           }
         }
       }
       // 若服务不存在，则添加；若完成，则不添加
-      if (!targetService && payload.service.status !== 'done') {
-        if (!services[userId]) services[userId] = {}
-        if (!services[userId][payload.groupId]) services[userId][payload.groupId] = {}
-        if (!services[userId][payload.groupId][payload.taskId]) services[userId][payload.groupId][payload.taskId] = []
-        if (!taskServices) taskServices = []
-        taskServices.push(payload.service)
-        services[userId][payload.groupId][payload.taskId] = taskServices
+      if (!targetService) {
+        if (payload.service instanceof Array) {
+          for (const _service of payload.service) {
+            if (_service.status !== 'done') {
+              if (!services[userId]) services[userId] = {}
+              if (!services[userId][payload.groupId]) services[userId][payload.groupId] = {}
+              if (!services[userId][payload.groupId][payload.taskId]) services[userId][payload.groupId][payload.taskId] = []
+              if (!taskServices) taskServices = []
+              taskServices.push(_service)
+              services[userId][payload.groupId][payload.taskId] = taskServices
+            }
+          }
+        } else {
+          if (!services[userId]) services[userId] = {}
+          if (!services[userId][payload.groupId]) services[userId][payload.groupId] = {}
+          if (!services[userId][payload.groupId][payload.taskId]) services[userId][payload.groupId][payload.taskId] = []
+          if (!taskServices) taskServices = []
+          taskServices.push(payload.service)
+          services[userId][payload.groupId][payload.taskId] = taskServices
+        }
       }
       return state.setIn(['services'], fromJS(services))
     },

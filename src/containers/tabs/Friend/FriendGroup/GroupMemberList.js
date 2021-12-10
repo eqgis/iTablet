@@ -120,7 +120,7 @@ class GroupMemberList extends Component {
       <TouchableItemView
         text={item.name}
         disableTouch={
-          this.mode === 'select' && this.user.userId === item.id ? true : false
+          this.mode === 'select' && this.user.userName === item.id ? true : false
         }
         renderImage={() => (
           <Image

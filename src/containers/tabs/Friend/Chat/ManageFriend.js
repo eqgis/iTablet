@@ -48,8 +48,8 @@ class ManageFriend extends Component {
         JSON.stringify({
           user: {
             name: this.user.userName,
-            id: this.user.userId,
-            groupID: this.user.userId,
+            id: this.user.userName,
+            groupID: this.user.userName,
             groupName: '',
           },
           type: MsgConstant.MSG_DEL_FRIEND,
@@ -60,7 +60,7 @@ class ManageFriend extends Component {
       )
     }
     MessageDataHandle.delMessage({
-      userId: this.user.userId, //当前登录账户的id
+      userId: this.user.userName, //当前登录账户的id
       talkId: this.targetUser.id, //会话ID
     })
     FriendListFileHandle.delFromFriendList(this.targetUser.id)

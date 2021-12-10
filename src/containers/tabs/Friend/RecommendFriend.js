@@ -166,7 +166,7 @@ class RecommendFriend extends Component {
       if (result !== false && result !== '获取用户id失败') {
         if (
           result.userId &&
-          result.userId !== this.user.userId &&
+          result.userId !== this.user.userName &&
           !FriendListFileHandle.isFriend(result.userId) &&
           result.nickname
         ) {
@@ -191,7 +191,7 @@ class RecommendFriend extends Component {
       if (result !== false && result !== '获取用户id失败') {
         if (
           result.userId &&
-          result.userId !== this.user.userId &&
+          result.userId !== this.user.userName &&
           !FriendListFileHandle.isFriend(result.userId) &&
           result.nickname
         ) {
@@ -229,8 +229,8 @@ class RecommendFriend extends Component {
       type: MsgConstant.MSG_ADD_FRIEND,
       user: {
         name: this.user.nickname,
-        id: this.user.userId,
-        groupID: this.user.userId,
+        id: this.user.userName,
+        groupID: this.user.userName,
         groupName: '',
       },
       time: time,
@@ -301,7 +301,7 @@ class RecommendFriend extends Component {
           activeOpacity={0.75}
           onPress={() => {
             this.target = item //[id,name]
-            if (this.target.id === this.user.userId) {
+            if (this.target.id === this.user.userName) {
               Toast.show(getLanguage(this.language).Friends.ADD_SELF)
               return
             }

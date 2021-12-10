@@ -156,9 +156,9 @@ export default class FriendListFileHandle {
     let JSOnlineService = OnlineServicesUtils.getService(isIPortalUser ? 'iportal' : 'online')
     let dataId = await JSOnlineService?.getDataIdByName('friend.list.zip')
     if (dataId !== undefined) {
-      const callback = async (value: boolean | string | RNFS.DownloadResult, resolve: (value: any) => void, reject: (value: any) => void) => {
+      const callback = async (result: boolean | string | RNFS.DownloadResult, resolve: (value: any) => void, reject: (value: any) => void) => {
         try {
-          if (value === true) {
+          if (result === true || typeof result === 'object' && result.jobId) {
             let value = await RNFS.readFile(
               FriendListFileHandle.friendListFile_ol,
             )
@@ -202,7 +202,7 @@ export default class FriendListFileHandle {
             `${JSOnlineService.serverUrl}/mycontent/datas/${dataId}/download`,
             FriendListFileHandle.friendListFile_ol,
           ).then(result => {
-            callback(result, resolve, reject)
+            callback(!!result, resolve, reject)
           })
         } else {
           SOnlineService.downloadFileWithCallBack(
@@ -370,17 +370,14 @@ export default class FriendListFileHandle {
       let dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
       await SIPortalService.deleteMyData(dataId + '')
       promise = new Promise(resolve => {
-        FileTools.zipFile(FriendListFileHandle.friendListFile, FriendListFileHandle.friendListFile + '.zip').then((result: boolean) => {
-          result && OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
-            FriendListFileHandle.friendListFile + '.zip',
-            UploadFileName,
-            'WORKSPACE',
-          ).then(id => {
-            FileTools.deleteFile(FriendListFileHandle.friendListFile + '.zip')
-            resolve(!!id)
-            FriendListFileHandle.uploading = false
-            FriendListFileHandle.waitUploading = false
-          })
+        OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
+          FriendListFileHandle.friendListFile,
+          UploadFileName,
+          'WORKSPACE',
+        ).then(id => {
+          resolve(!!id)
+          FriendListFileHandle.uploading = false
+          FriendListFileHandle.waitUploading = false
         })
       })
     } else {

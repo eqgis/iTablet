@@ -5,7 +5,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
-import { LayerUtils, DialogUtils, Toast } from '../../../../../../utils'
+import { LayerUtils, DialogUtils, Toast, SCoordinationUtils } from '../../../../../../utils'
 import * as Type from '../../../../../../types'
 import ToolbarModule from '../ToolbarModule'
 import ServiceAction, { DataServiceUrlParams } from './ServiceAction'
@@ -72,7 +72,8 @@ function getData(type: string, params: any) {
           title: getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE,
           action: ({ layerData }: ActionParams) => {
             const _params: any = ToolbarModule.getParams()
-            const name = layerData.datasourceAlias?.indexOf('Label_') === 0 ? ('Tagging_' + _params.map.currentMap.name) : layerData.datasourceAlias
+            const isTaggingLayer = layerData.datasourceAlias?.indexOf('Label_') === 0
+            const name = isTaggingLayer ? ('Tagging_' + _params.map.currentMap.name) : layerData.datasourceAlias
             GLOBAL.SimpleDialog.set({
               text: getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE + ' ' + name,
               cancelText: getLanguage(GLOBAL.language).Prompt.NO,
@@ -101,57 +102,80 @@ function getData(type: string, params: any) {
                 })
                 // _params.setContainerLoading?.(true, getLanguage(_params.language).Prompt.PUBLISHING)
 
-                let datasourcePath = await FileTools.appendingHomeDirectory()
-                if (layerData?.datasourceAlias?.indexOf('Label_' + _params.user.currentUser.userName) === 0) {
-                  datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
-                  ConstPath.RelativePath.Label +
-                  'Label_' +
-                  _params.user.currentUser.userName +
-                  '#.udb'
-                } else {
-                  datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
-                  ConstPath.RelativePath.Datasource +
-                  layerData.datasourceAlias + '.udb'
-                }
-                if (layerData.datasourceAlias) {
-                  const {result, content} = await ServiceAction.publishServiceToGroup(name, {
-                    layerName: layerData.name,
-                    datasourceAlias: layerData.datasourceAlias,
-                    datasourcePath,
-                    datasets: [layerData.datasetName],
-                  }, [{
+                if (!isTaggingLayer && !datasetDescription && _params?.currentTask?.resource?.resourceId && layerData.datasourceAlias) {
+                  const {result, content} = await ServiceAction.publishService(_params?.currentTask?.resource?.resourceId, layerData.datasourceAlias, [{
                     groupId: _params.currentGroup.id,
                     groupName: _params.currentGroup.groupName,
                   }])
-                  // _params.setContainerLoading?.(false)
-
+                  content.length > 0 && await SCoordinationUtils.initMapDataWithService(content[0].proxiedUrl)
+                  await SMap.refreshMap()
+                  await _params.getLayers()
+                  _params.setCoworkService({
+                    groupId: _params.currentTask.groupID,
+                    taskId: _params.currentTask.id,
+                    service: {
+                      layerName: layerData.name,
+                      status: 'done',
+                    },
+                  })
                   if (result) {
-                    let keywords: string[] = []
-                    let _content: DataServiceUrlParams[] = []
-                    content?.forEach(item => {
-                      _content.push({
-                        id: item.id,
-                        datasourceAlias: layerData.datasourceAlias || '',
-                        datasetName: layerData.datasetName || '',
-                      })
-                      keywords.push(item.resTitle)
-                    })
-                    await ServiceAction.setDataService({
-                      groupID: _params.currentGroup.id,
-                      keywords: keywords,
-                      content: _content,
-                    })
-                    await _params.getLayers?.()
-                    if (_params.currentLayer?.name === layerData.name) {
-                      const _layer = await SMap.getLayerInfo?.(layerData.path)
-                      _params.setCurrentLayer?.(_layer)
-                    }
                     Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
                   } else {
                     Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
                   }
                 } else {
-                  Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+                  let datasourcePath = await FileTools.appendingHomeDirectory()
+                  if (layerData?.datasourceAlias?.indexOf('Label_' + _params.user.currentUser.userName) === 0) {
+                    datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
+                    ConstPath.RelativePath.Label +
+                    'Label_' +
+                    _params.user.currentUser.userName +
+                    '#.udb'
+                  } else {
+                    datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
+                    ConstPath.RelativePath.Datasource +
+                    layerData.datasourceAlias + '.udb'
+                  }
+                  if (layerData.datasourceAlias) {
+                    const {result, content} = await ServiceAction.publishServiceToGroup(name, {
+                      layerName: layerData.name,
+                      datasourceAlias: layerData.datasourceAlias,
+                      datasourcePath,
+                      datasets: [layerData.datasetName],
+                    }, [{
+                      groupId: _params.currentGroup.id,
+                      groupName: _params.currentGroup.groupName,
+                    }])
+                    // _params.setContainerLoading?.(false)
+
+                    if (result) {
+                      let keywords: string[] = []
+                      let _content: DataServiceUrlParams[] = []
+                      content?.forEach(item => {
+                        _content.push({
+                          id: item.id,
+                          datasourceAlias: layerData.datasourceAlias || '',
+                          datasetName: layerData.datasetName || '',
+                        })
+                        keywords.push(item.resTitle)
+                      })
+                      await ServiceAction.setDataService({
+                        groupID: _params.currentGroup.id,
+                        keywords: keywords,
+                        content: _content,
+                      })
+                      await _params.getLayers?.()
+                      if (_params.currentLayer?.name === layerData.name) {
+                        const _layer = await SMap.getLayerInfo?.(layerData.path)
+                        _params.setCurrentLayer?.(_layer)
+                      }
+                      Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
+                    } else {
+                      Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+                    }
+                  } else {
+                    Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+                  }
                 }
               },
             })

@@ -126,7 +126,7 @@ class AddFriend extends Component {
 
     let item = this.target
     let curUserName = this.user.nickname
-    let uuid = this.user.userId
+    let uuid = this.user.userName
     let ctime = new Date()
     let time = Date.parse(ctime)
     let message = {

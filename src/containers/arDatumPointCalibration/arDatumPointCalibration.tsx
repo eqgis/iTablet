@@ -438,7 +438,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
 
   _renderScan = () => {
     if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
-      SARMap.showMeasureView(false)
+      SARMap.measuerPause(true)
     }
     const { scanning } = this.state
     const transY = this.state.animValue.interpolate({

@@ -4555,7 +4555,7 @@ export default class MapView extends React.Component {
   _onDatumPointClose = point => {
     this.props.setDatumPoint(false)
     if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
-      SARMap.showMeasureView(true)
+      SARMap.measuerPause(false)
     }
   }
 
@@ -4563,7 +4563,7 @@ export default class MapView extends React.Component {
     SARMap.setPosition(Number(point.x), Number(point.y),Number(point.h))
     this.props.setDatumPoint(false)
     if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
-      SARMap.showMeasureView(true)
+      SARMap.measuerPause(false)
     }
   }
 

@@ -85,6 +85,7 @@ export default class ToggleAccount extends Component {
             newUser = {
               serverUrl: url,
               userName: userInfo.name,
+              userId: userInfo.name,
               password: password,
               nickname: userInfo.nickname,
               email: userInfo.email,

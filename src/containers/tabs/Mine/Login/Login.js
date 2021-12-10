@@ -260,6 +260,7 @@ export default class Login extends React.Component {
           const user = {
             serverUrl: url,
             userName: userInfo.name,
+            userId: userInfo.name,
             password: password,
             nickname: userInfo.nickname,
             email: userInfo.email,

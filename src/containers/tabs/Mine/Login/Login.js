@@ -190,6 +190,7 @@ export default class Login extends React.Component {
           userType: loginUser.userType,
         }
         let friendListResult = FriendListFileHandle.initFriendList(user)
+        GLOBAL.getFriend?.().onUserLoggedin()
         // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
         const result = await new Promise.race([friendListResult, timeout(30)])
         if (result === 'timeout') {
@@ -260,13 +261,14 @@ export default class Login extends React.Component {
           const user = {
             serverUrl: url,
             userName: userInfo.name,
+            userId: userInfo.name,
             password: password,
             nickname: userInfo.nickname,
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
           }
           this.props.setUser(user)
-
+          GLOBAL.getFriend?.().onUserLoggedin()
           AppInfo.setServiceUrl(url)
           FriendListFileHandle.initFriendList(user) // iportal初始化好友列表信息,防止之前online用户留存信息的存在,把online的好友文件下载到iportal用户中
         }

@@ -49,12 +49,20 @@ export default class ToggleAccount extends Component {
           getLanguage(GLOBAL.language).Profile.SWITCHING,
         )
       }
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        await SOnlineService.logout()
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        await SIPortalService.logout()
+      }
+      await GLOBAL.getFriend?.().disconnectService()
+      GLOBAL.isLogging = true
       let result
       let newUser
       if (userType === UserType.COMMON_USER) {
         //使用昵称登录online zhangxt
         result = await SOnlineService.login(item.nickname, password)
         if (result) {
+          GLOBAL.getFriend().onUserLoggedin()
           result = await FriendListFileHandle.initFriendList(item)
         }
         // if (result) {
@@ -85,11 +93,14 @@ export default class ToggleAccount extends Component {
             newUser = {
               serverUrl: url,
               userName: userInfo.name,
+              userId: userInfo.name,
               password: password,
               nickname: userInfo.nickname,
               email: userInfo.email,
               userType: UserType.IPORTAL_COMMON_USER,
             }
+            GLOBAL.getFriend().onUserLoggedin()
+            FriendListFileHandle.initFriendList(newUser) // iportal初始化好友列表信息,防止之前online用户留存信息的存在,把online的好友文件下载到iportal用户中
           }
         }
       }

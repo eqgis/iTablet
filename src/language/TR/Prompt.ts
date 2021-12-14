@@ -134,6 +134,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer", // need to translate
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer", // need to translate
   DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
+  DONOT_SUPPORT_ARENGINE: "Install or upgrade AREngine",//need to translate
   GET_SUPPORTED_DEVICE_LIST: "Desteklenen cihaz listesini gör",
   PLEASE_NEW_PLOT_LAYER: "Lütfen Yeni Çizim Katmanı Oluşturun",
   DOWNLOADING_PLEASE_WAIT: "İndiriliyor, lütfen bekleyin",

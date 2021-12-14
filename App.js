@@ -195,6 +195,9 @@ class AppRoot extends Component {
     setMapAnalystGuide: PropTypes.func,
   }
 
+  /** 是否是华为设备 */
+  isHuawei = false
+
   constructor(props) {
     super(props)
     const guidePages = LaunchGuide.getGuide(this.props.language) || []
@@ -370,6 +373,7 @@ class AppRoot extends Component {
       SSpeechRecognizer.init('5b63b509')
     }
     await this.getVersion()
+    this.isHuawei = await SARMap.isHuawei()
   }
 
   initLocation = async () => {
@@ -1040,7 +1044,10 @@ class AppRoot extends Component {
       <SimpleDialog
         ref={ref => GLOBAL.ARDeviceListDialog = ref}
         buttonMode={'list'}
-        text={getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE}
+        text={this.isHuawei
+          ? getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARENGINE
+          : getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE
+        }
         confirmText={getLanguage(this.props.language).Prompt.GET_SUPPORTED_DEVICE_LIST}
         installText={getLanguage(GLOBAL.language).Prompt.INSTALL}
         confirmAction={() => {
@@ -1125,7 +1132,7 @@ class AppRoot extends Component {
       <>
         {this.state.showLaunchGuide ? this.renderGuidePage() : this.renderRoot()}
         {this.renderImportDialog()}
-        {this.renderARDeviceListDialog()}
+        {this.state.isInit && this.renderARDeviceListDialog()}
         {this._renderProtocolDialog()}
         <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
         <MyToast ref={ref => GLOBAL.Toast = ref} />

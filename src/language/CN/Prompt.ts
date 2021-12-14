@@ -132,6 +132,7 @@ const Prompt = {
   PLEASE_SELECT_MEDIA_LAYER: "请选择点、CAD和标注图层",
   PLEASE_SELECT_CAD_LAYER: "请选CAD图层",
   DONOT_SUPPORT_ARCORE: "请安装或升级ARCore",
+  DONOT_SUPPORT_ARENGINE: "请安装或升级AREngine",
   GET_SUPPORTED_DEVICE_LIST: "获取受支持的设备列表",
   PLEASE_NEW_PLOT_LAYER: "请新建标注图层",
   DOWNLOADING_PLEASE_WAIT: "下载中请稍等",

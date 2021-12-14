@@ -1052,7 +1052,7 @@ class AppRoot extends Component {
         installText={getLanguage(GLOBAL.language).Prompt.INSTALL}
         confirmAction={() => {
           NavigationService.navigate('Protocol', {
-            type: 'ARDevice',
+            type: this.isHuawei ? 'AREngineDevice' : 'ARDevice',
           })
         }}
         installBtnVisible={true}

@@ -290,6 +290,11 @@ class Protocol extends Component {
           uri: `https://developers.google.cn/ar/discover/supported-devices`,
         }
         break
+      case 'AREngineDevice':
+        source = {
+          uri: 'https://developer.huawei.com/consumer/cn/doc/development/graphics-Guides/introduction-0000001050130900',
+        }
+        break
       default:
         break
     }

@@ -407,6 +407,9 @@ export default class MapView extends React.Component {
     }
 
     this.clickAble = true//防止编辑状态下快速重复点击
+
+    //AR测量进入地图默认没有定位
+    GLOBAL.haslocation = false
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -1823,6 +1826,11 @@ export default class MapView extends React.Component {
           { type: -1, currentLayerIndex: 0 },
           async layers => {
             if (!this.wsData) return
+            layers.map(layer => {
+              if (layer.isVisible) {
+                SMediaCollector.showMedia(layer.name, false)
+              }
+            })
             // 若数据源已经打开，图层未加载，则去默认加载一个图层
             if (layers.length === 0) {
               let result = false
@@ -2660,7 +2668,7 @@ export default class MapView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
-        if(!params.haslocation){
+        if(!GLOBAL.haslocation){
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arDrawArea') {
@@ -2668,7 +2676,7 @@ export default class MapView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
-        if(!params.haslocation){
+        if(!GLOBAL.haslocation){
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arDrawPoint') {
@@ -2676,7 +2684,7 @@ export default class MapView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
-        if(!params.haslocation){
+        if(!GLOBAL.haslocation){
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arMeasureHeight') {
@@ -2716,7 +2724,7 @@ export default class MapView extends React.Component {
         this.title = getLanguage(
           GLOBAL.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT
-        if(!params.haslocation){
+        if(!GLOBAL.haslocation){
           this.props.setDatumPoint(true)
         }
       }else if (this.measureType === 'arDrawRectangle') {
@@ -4557,6 +4565,7 @@ export default class MapView extends React.Component {
     if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
       SARMap.measuerPause(false)
     }
+    GLOBAL.haslocation = true
   }
 
   _onDatumPointConfirm = point => {
@@ -4565,6 +4574,7 @@ export default class MapView extends React.Component {
     if(GLOBAL.Type === ChunkType.MAP_AR_MAPPING){
       SARMap.measuerPause(false)
     }
+    GLOBAL.haslocation = true
   }
 
   ARMappingHeaderBack = () => {

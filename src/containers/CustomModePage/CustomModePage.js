@@ -16,13 +16,14 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
-import { SThemeCartography, SMap } from 'imobile_for_reactnative'
+import { SThemeCartography, SMap ,ThemeType } from 'imobile_for_reactnative'
 import { Container } from '../../components'
 import { color } from '../../styles'
 import { scaleSize, setSpText, Toast, screen } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstToolType, ToolbarType, TouchType } from '../../constants'
 import { getLanguage } from '../../language'
+import constants from '../workspace/constants'
 import {
   themeModule,
 } from '../workspace/components/ToolBar/modules'
@@ -90,7 +91,84 @@ export default class CustomModePage extends Component {
     // GLOBAL.ToolBar?.setVisible(false)
     // GLOBAL.ToolBar?.existFullMap()
     const params = ToolbarModule.getParams()
-    themeModule().actions.layerListAction(params.currentLayer)
+    this.layerListAction(params.currentLayer)
+  }
+
+  layerListAction = async data => {
+    const _params = ToolbarModule.getParams()
+    let curThemeType
+    if (data.isHeatmap) {
+      curThemeType = constants.THEME_HEATMAP
+    } else {
+      switch (data.themeType) {
+        case ThemeType.UNIQUE:
+          curThemeType = constants.THEME_UNIQUE_STYLE
+          break
+        case ThemeType.RANGE:
+          curThemeType = constants.THEME_RANGE_STYLE
+          break
+        case ThemeType.LABEL:
+          curThemeType = constants.THEME_UNIFY_LABEL
+          break
+        case ThemeType.LABELUNIQUE:
+          curThemeType = constants.THEME_UNIQUE_LABEL
+          break
+        case ThemeType.LABELRANGE:
+          curThemeType = constants.THEME_RANGE_LABEL
+          break
+        case ThemeType.DOTDENSITY:
+          curThemeType = constants.THEME_DOT_DENSITY
+          break
+        case ThemeType.GRADUATEDSYMBOL:
+          curThemeType = constants.THEME_GRADUATED_SYMBOL
+          break
+        case ThemeType.GRAPH:
+          curThemeType = constants.THEME_GRAPH_STYLE
+          break
+        case ThemeType.GRIDRANGE:
+          curThemeType = constants.THEME_GRID_RANGE
+          break
+        case ThemeType.GRIDUNIQUE:
+          curThemeType = constants.THEME_GRID_UNIQUE
+          break
+        default:
+          Toast.show(
+            getLanguage(_params.language).Prompt
+              .CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION,
+          )
+          break
+      }
+    }
+    if (curThemeType) {
+      const _type =
+        curThemeType === constants.THEME_GRAPH_STYLE
+          ? ConstToolType.SM_MAP_THEME_PARAM_GRAPH
+          : ConstToolType.SM_MAP_THEME_PARAM
+      _params.showFullMap(true)
+      // const { orientation } = _params.device
+      const xml = await SMap.mapToXml()
+      ToolbarModule.setData({
+        type: _type,
+        getData: themeModule.getData,
+        actions:themeModule.actions,
+        currentThemeData: data,
+        themeCreateType: curThemeType,
+        mapXml: xml,
+      })
+      _params.setToolbarVisible(true, _type, {
+        containerType: ToolbarType.list,
+        isFullScreen: true,
+        // height:
+        //   orientation.indexOf('PORTRAIT') >= 0
+        //     ? ConstToolType.THEME_HEIGHT[3]
+        //     : ConstToolType.TOOLBAR_HEIGHT_2[3],
+        // column: orientation.indexOf('PORTRAIT') >= 0 ? 8 : 4,
+        themeType: curThemeType,
+        isTouchProgress: false,
+        showMenuDialog: true,
+      })
+      _params.navigation.navigate('MapView')
+    }
   }
 
   _changeItemVisible = index => {

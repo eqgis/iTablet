@@ -630,6 +630,11 @@ async function changeMap(item) {
       }
       await SMap.openTaggingDataset(params.user.currentUser.userName)
       await params.getLayers(-1, async layers => {
+        layers.map(layer => {
+          if (layer.isVisible) {
+            SMediaCollector.showMedia(layer.name, false)
+          }
+        })
         let _currentLayer = null
         // 默认设置第一个可见图层为当前图层
         for (let layer of layers) {

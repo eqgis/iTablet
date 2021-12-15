@@ -172,6 +172,8 @@ declare namespace GLOBAL {
   let ARContainer: any
   /** 三维AR管线判断数据是否打开 ARSceneView.js*/
   let isSceneOpen: boolean
+  /** AR模块判断是否定位*/
+  let haslocation: boolean
   // 全局方法
   /** 获取设备信息，待优化 App.js*/
   function getDevice(): Device        

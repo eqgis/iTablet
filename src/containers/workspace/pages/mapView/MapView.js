@@ -1823,6 +1823,11 @@ export default class MapView extends React.Component {
           { type: -1, currentLayerIndex: 0 },
           async layers => {
             if (!this.wsData) return
+            layers.map(layer => {
+              if (layer.isVisible) {
+                SMediaCollector.showMedia(layer.name, false)
+              }
+            })
             // 若数据源已经打开，图层未加载，则去默认加载一个图层
             if (layers.length === 0) {
               let result = false

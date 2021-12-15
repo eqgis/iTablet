@@ -134,6 +134,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer",
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer",
   DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
+  DONOT_SUPPORT_ARENGINE: "Install or upgrade AREngine",//need to translate
   GET_SUPPORTED_DEVICE_LIST: "Get the list of supportive devices",
   PLEASE_NEW_PLOT_LAYER: "Please create a new plot layer",
   DOWNLOADING_PLEASE_WAIT: "Please wait a minute",

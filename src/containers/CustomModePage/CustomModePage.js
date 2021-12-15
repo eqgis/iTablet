@@ -23,6 +23,9 @@ import { scaleSize, setSpText, Toast, screen } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstToolType, ToolbarType, TouchType } from '../../constants'
 import { getLanguage } from '../../language'
+import {
+  themeModule,
+} from '../workspace/components/ToolBar/modules'
 
 export default class CustomModePage extends Component {
   props: {
@@ -80,12 +83,14 @@ export default class CustomModePage extends Component {
   }
 
   _back = async () => {
-    let mapXml = ToolbarModule.getData().mapXml
-    await SMap.mapFromXml(mapXml) // 不保存专题图修改，还原地图
+    // let mapXml = ToolbarModule.getData().mapXml
+    // await SMap.mapFromXml(mapXml) // 不保存专题图修改，还原地图
     this.props.navigation.goBack()
-    GLOBAL.PreviewHeader?.setVisible(false)
-    GLOBAL.ToolBar?.setVisible(false)
-    GLOBAL.ToolBar?.existFullMap()
+    // GLOBAL.PreviewHeader?.setVisible(false)
+    // GLOBAL.ToolBar?.setVisible(false)
+    // GLOBAL.ToolBar?.existFullMap()
+    const params = ToolbarModule.getParams()
+    themeModule().actions.layerListAction(params.currentLayer)
   }
 
   _changeItemVisible = index => {

@@ -1208,7 +1208,9 @@ async function commit(type) {
   }
   if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     for (const key of Object.keys(selectList)) {
-      const resultArr = await SMap.addLayers(selectList[key], key)
+      const datasetNames = selectList[key]?.map(item => item.datasetName) || []
+      if (datasetNames.length === 0) continue
+      const resultArr = await SMap.addLayers(datasetNames, key)
       // 找出有默认样式的数据集，并给对应图层设置
       for (let i = 0; i < resultArr.length; i++) {
         const description =
@@ -1238,7 +1240,7 @@ async function commit(type) {
       }
     }
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION) {
-    const expressions = selectList[_data.themeDatasetName] || []
+    const expressions = selectList[_data.themeDatasetName]?.map(item => item.expression) || []
     // 数据集->创建统计专题图
     const params = {
       DatasourceAlias: _data.themeDatasourceAlias,
@@ -1264,7 +1266,7 @@ async function commit(type) {
   } else if (
     type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
   ) {
-    const expressions = selectList[Object.keys(selectList)[0]] || []
+    const expressions = selectList[Object.keys(selectList)[0]]?.map(item => item.expression) || []
     // 图层->创建统计专题图
     const params = {
       LayerName: _data.currentLayer.name || '', // 图层名称

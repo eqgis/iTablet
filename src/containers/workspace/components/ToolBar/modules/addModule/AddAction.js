@@ -183,7 +183,9 @@ async function commit() {
   }
   const result = {}
   for (const key of Object.keys(selectList)) {
-    const resultArr = await SMap.addLayers(selectList[key], key)
+    const datasetNames = selectList[key]?.map(item => item.datasetName) || []
+    if (datasetNames.length === 0) continue
+    const resultArr = await SMap.addLayers(datasetNames, key)
 
     // 找出有默认样式的数据集，并给对应图层设置
     for (let i = 0; i < resultArr.length; i++) {

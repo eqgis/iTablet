@@ -6,7 +6,7 @@
 /* global GLOBAL */
 import * as React from 'react'
 import { TouchableOpacity, Text, SectionList, View, Image } from 'react-native'
-import { Container, MTBtn, Dialog } from '../../components'
+import { Container, MTBtn, Dialog, TextBtn, Waitting } from '../../components'
 import { Toast, scaleSize, LayerUtils } from '../../utils'
 import { MapToolbar, OverlayView } from '../workspace/components'
 import {
@@ -39,6 +39,8 @@ import NavigationService from '../../containers/NavigationService'
 import { getLanguage } from '../../language'
 import styles from './styles'
 import { getXmlTemplateData } from './components/LayerManager_tolbar/LayerToolbarData'
+import ServiceAction from '../workspace/components/ToolBar/modules/serviceModule/ServiceAction'
+
 export default class MT_layerManager extends React.Component {
   props: {
     language: string,
@@ -97,6 +99,7 @@ export default class MT_layerManager extends React.Component {
     this.currentItemRef = {} // 当前被选中的item
     this.prevItemRef = {} // 上一个被选中的item
     this.dialog = undefined
+    this.publishMapServiceWatting = undefined // 发布地图服务,只有在线协作可用
   }
 
   componentDidUpdate(prevProps) {
@@ -901,7 +904,7 @@ export default class MT_layerManager extends React.Component {
     let image = section.visible
       ? getThemeAssets().publicAssets.icon_drop_down
       : getThemeAssets().publicAssets.icon_drop_up
-    let action, rightIcon
+    let action, rightIcon, publishServiceBtn
     if (section.title === getLanguage(this.props.language).Map_Layer.PLOTS) {
       action = this.tool_row
       rightIcon = getThemeAssets().publicAssets.icon_edit
@@ -912,6 +915,90 @@ export default class MT_layerManager extends React.Component {
       rightIcon = this.state.allLayersVisible
         ? getThemeAssets().layer.icon_invisible
         : getThemeAssets().layer.icon_visible
+      if (GLOBAL.coworkMode) {
+        let isPublishing = false
+        if (
+          this.props.cowork?.currentTask?.groupID &&
+          this.props.cowork.services?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.length > 0
+        ) {
+          const services = this.props.cowork.services[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]
+          if (services?.length > 0) {
+            for (const service of services) {
+              if (service.layerName === 'publish-map-service' && service.status !== 'done') {
+                isPublishing = true
+                break
+              }
+            }
+          }
+        }
+        let mapServiceUrl = ''
+        for (const item of section.data) {
+          const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
+          if (dsDescription?.url) {
+            mapServiceUrl = dsDescription.url.substring(0, dsDescription.url.indexOf('/data/datasources'))
+            break
+          }
+        }
+
+        publishServiceBtn = (
+          <View style={styles.sectionPublishView}>
+            <MTBtn
+              style={styles.rightIconView}
+              imageStyle={styles.icon}
+              image={mapServiceUrl ? getThemeAssets().cowork.icon_nav_import : getThemeAssets().edit.icon_redo}
+              onPress={async () => {
+                if (mapServiceUrl) {
+                  GLOBAL.SimpleDialog.set({
+                    text: getLanguage(GLOBAL.language).Prompt.WHETHER_DOWNLOAD_ALL_SERVICES,
+                    cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+                    cancelAction: async () => {
+                      GLOBAL.Loading.setLoading(false)
+                    },
+                    confirmText: getLanguage(GLOBAL.language).Prompt.YES,
+                    confirmAction: async () => {
+                      ServiceAction.downloadService(mapServiceUrl)
+                    },
+                  })
+                } else {
+                  let datasources = await SMap.getDatasources()
+                  let datasrouceNames = ''
+                  for (const datasource of datasources) {
+                    const datasourceAlias = datasource.alias
+                    // 不发布标注图层
+                    if (datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+                      continue
+                    }
+                    datasrouceNames += (datasrouceNames ? ', ' : '') + datasourceAlias
+                  }
+                  GLOBAL.SimpleDialog.set({
+                    text: getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE + ' ' + datasrouceNames,
+                    cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+                    cancelAction: async () => {
+                      GLOBAL.Loading.setLoading(false)
+                    },
+                    confirmText: getLanguage(GLOBAL.language).Prompt.YES,
+                    confirmAction: async () => {
+                      ServiceAction.publishMapService()
+                    },
+                  })
+                }
+                GLOBAL.SimpleDialog.setVisible(true)
+              }}
+            />
+            {/* <TextBtn
+              btnText={
+                mapServiceUrl
+                  ? '下载服务'
+                  : getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE
+              }
+              textStyle={styles.title}
+              btnClick={async () => {
+              }}
+            /> */}
+            {isPublishing ? <Waitting isLoading={true}/> : <View style={styles.watting}/>}
+          </View>
+        )
+      }
     }
     return (
       <TouchableOpacity
@@ -930,6 +1017,7 @@ export default class MT_layerManager extends React.Component {
             </Text>
           )}
         </View>
+        {publishServiceBtn}
         <TouchableOpacity style={styles.rightIconView} onPress={action}>
           <Image
             resizeMode={'contain'}

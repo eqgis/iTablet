@@ -148,6 +148,12 @@ interface OnlineRequestError {
 
 type ServiceType = 'iportal' | 'online' | 'OnlineJP'
 
+interface PushlishResult {
+  succeed: boolean,
+  customResult?: string,
+  error?: any,
+}
+
 export default class OnlineServicesUtils {
   /** iportal还是online */
   type: ServiceType
@@ -277,7 +283,7 @@ export default class OnlineServicesUtils {
    * @param id 数据id
    * @param dataType 数据的类型
    */
-  async publishService(id: string, dataType: keyof OnlineDataType, serviceType?: string): Promise<{succeed: boolean, customResult?: string, error?: any}[]> {
+  async publishService(id: string, dataType: keyof OnlineDataType, serviceType?: string): Promise<PushlishResult | PushlishResult[]> {
     let publishUrl: string = this.serverUrl + `/mycontent/datas/${id}/publishstatus.rjson?serviceType=`
     if (serviceType) {
       publishUrl += serviceType

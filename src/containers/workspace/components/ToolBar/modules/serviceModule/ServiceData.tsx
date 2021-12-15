@@ -1,15 +1,18 @@
 /**
  * 获取地图工具数据
  */
+import React from 'react'
 import { SMap } from 'imobile_for_reactnative'
-import { ConstToolType, ConstPath } from '../../../../../../constants'
+import { ConstToolType, ConstPath, ToolbarType } from '../../../../../../constants'
+import { ImageButton } from '../../../../../../components'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
-import { LayerUtils, DialogUtils, Toast, SCoordinationUtils } from '../../../../../../utils'
+import { LayerUtils, DialogUtils, Toast, SCoordinationUtils, scaleSize } from '../../../../../../utils'
 import * as Type from '../../../../../../types'
 import ToolbarModule from '../ToolbarModule'
 import ServiceAction, { DataServiceUrlParams } from './ServiceAction'
 import { FileTools } from '../../../../../../native'
+import ToolbarBtnType from '../../ToolbarBtnType'
 interface ActionParams {
   layerData: SMap.LayerInfo,
 }
@@ -20,13 +23,88 @@ interface ActionParams {
  * @param params
  * @returns {{data: Array, buttons: Array}}
  */
-function getData(type: string, params: any) {
+async function getData(type: string, params: any) {
   let data: Type.ListItem[] = []
   let buttons: Type.ToolbarBottomButton[] = []
   let customView = null
   params && ToolbarModule.setParams(params)
   switch (type) {
-    case ConstToolType.SM_MAP_SERVICE:
+    case ConstToolType.SM_MAP_SERVICE: {
+      const result = await ServiceAction.getGroupServices(params.currentTask.groupID)
+      let _data: any = []
+      if (result?.content?.length > 0) {
+        let datasources = await SMap.getDatasources() || []
+        // let services = []
+        const mapName = params.map?.currentMap?.name?.replace(/_[0-9]+$/g, '') || ''
+        result.content.forEach(item => {
+          let exist = false
+          // 查询服务所在数据源是否在当前地图已经打开
+          // 若没打开,则过滤掉
+          for (const datasource of datasources) {
+            let serviceUDBName = item.resourceName.substring(item.resourceName.indexOf('_') + 1, item.resourceName.lastIndexOf('_'))
+            // 判断是否发布时,本地打包的名字自动添加了 -数字- 后缀
+            const reg = /-[0-9]+-$/
+            serviceUDBName = serviceUDBName.replace(reg, '')
+            if (
+              exist ||
+              serviceUDBName.toLocaleLowerCase() === mapName.toLocaleLowerCase() || // 服务数据是地图数据
+              serviceUDBName.toLocaleLowerCase() === datasource.alias.toLocaleLowerCase() || // 服务数据是数据源数据
+              serviceUDBName.toLocaleLowerCase().indexOf('tagging_') === 0 ||
+              serviceUDBName.toLocaleLowerCase().indexOf('default_tagging') === 0
+            ) {
+              exist = true
+              break
+            }
+          }
+          exist && _data.push({
+            key: item.resourceId,
+            title: item.resourceName,
+            subTitle: new Date(item.createTime).Format("yyyy-MM-dd hh:mm:ss"),
+            data: item,
+            size: 'large',
+            image: getThemeAssets().dataType.icon_data_source,
+            rightView: _renderRightView(item),
+          })
+        })
+      }
+      data = [{
+        key: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
+        title: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
+        image: getThemeAssets().mine.my_service,
+        data: _data,
+      }]
+      break
+    }
+    case ConstToolType.SM_MAP_SERVICE_DATASET:{
+      const _data: any = ToolbarModule.getData()
+
+      let result = await SCoordinationUtils.getScoordiantion().getServiceData(_data.datasourceUrl, _data.datasourceName)
+
+      let _subData: any[] = []
+      result.childUriList.forEach((item: string) => {
+        // if (!item.endsWith('_Table')) {
+        if (item.indexOf('_Table', item.length - '_Table'.length) === -1) {
+          _subData.push({
+            key: item,
+            title: item.substr(item.lastIndexOf('/') + 1),
+            data: item,
+            size: 'large',
+            image: getThemeAssets().dataType.icon_data_set,
+          })
+        }
+      })
+      data = [{
+        key: _data.datasourceName,
+        // title: getLanguage(GLOBAL.language).Map_Settings.DATASETS,
+        title: _data.datasourceName,
+        image: getThemeAssets().dataType.icon_data_set,
+        data: _subData,
+        allSelectType: true,
+      }]
+      buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
+      break
+    }
+    case ConstToolType.SM_MAP_SERVICE_UPDATE:
       data = [
         {
           key: 'update_local_service',
@@ -265,6 +343,26 @@ function getData(type: string, params: any) {
       ]
   }
   return { data, buttons, customView }
+}
+
+function _renderRightView(item: any) {
+  return (
+    <ImageButton
+      containerStyle={{
+        width: scaleSize(80),
+        height: scaleSize(80),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroudColor: 'red',
+        marginRight: scaleSize(30),
+      }}
+      iconStyle={{width: scaleSize(44), height: scaleSize(44)}}
+      icon={getThemeAssets().cowork.icon_nav_import}
+      onPress={() => {
+        ServiceAction.downloadService(item?.linkPage)
+      }}
+    />
+  )
 }
 
 export default {

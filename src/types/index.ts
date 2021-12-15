@@ -19,6 +19,7 @@ export interface BaseItem {
 export interface ListItem extends BaseItem {
   subTitle?: string,
   data?: any,
+  allSelectType?: boolean,
 }
 
 export type ToolbarBottomButton = {

@@ -347,7 +347,7 @@ export default class FunctionToolbar extends React.Component {
       if (
         !GLOBAL.coworkMode ||
         GLOBAL.coworkMode &&
-        // _item.type !== ConstToolType.SM_MAP_ADD &&
+        _item.type !== ConstToolType.SM_MAP_ADD &&
         _item.type !== ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE &&
         _item.type !== ConstToolType.SM_MAP_NAVIGATION_MODULE
         //  && _item.type !== ConstToolType.SM_MAP_PLOT_ANIMATION
@@ -551,7 +551,7 @@ export default class FunctionToolbar extends React.Component {
    * @returns
    */
   _renderLoading = ({ item, index }) => {
-    if (this.state.isServiceLoading && item.type === ConstToolType.SM_MAP_SERVICE) {
+    if (this.state.isServiceLoading && item.type === ConstToolType.SM_MAP_SERVICE_UPDATE) {
       return (
         <Animated.Image
           resizeMode={'contain'}

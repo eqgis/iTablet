@@ -82,6 +82,27 @@ export default class ToolBarSectionList extends React.Component {
     }
   }
 
+  findeSelectItem = (selectList, name) => {
+    try {
+      let _index = -1
+      for (const x in selectList) {
+        const _item = selectList[x]
+        if (
+          _item.title === name ||
+          _item.name === name ||
+          _item.expression === name ||
+          _item.datasetName === name
+        ) {
+          _index = parseInt(x)
+          break
+        }
+      }
+      return _index
+    } catch (error) {
+      return -1
+    }
+  }
+
   dealSelectList = sections => {
     let moduleData = this.props.getToolbarModule().getData()
     let selectList = moduleData.selectList || [],
@@ -95,11 +116,11 @@ export default class ToolBarSectionList extends React.Component {
           item.title || item.name || item.expression || item.datasetName
         if (
           item.isSelected &&
-          selectList[section.title].indexOf(pushName) < 0
+          this.findeSelectItem(selectList[section.title], pushName) < 0
         ) {
-          selectList[section.title].push(pushName)
+          selectList[section.title].push(item)
         } else if (
-          selectList[section.title].indexOf(pushName) >= 0 &&
+          this.findeSelectItem(selectList[section.title], pushName) >= 0 &&
           this.props.listSelectable
         ) {
           item.isSelected = true
@@ -151,12 +172,13 @@ export default class ToolBarSectionList extends React.Component {
 
         let pushName =
           item.title || item.name || item.expression || item.datasetName
-        let _index = selectList[title].indexOf(pushName)
+        let _index = this.findeSelectItem(selectList[section.title], pushName)
+        // let _index = selectList[title].indexOf(pushName)
         if (_index >= 0 && isSelected) {
           // 取消选中并删除selectList中记录
           selectList[title].splice(_index, 1)
         } else {
-          selectList[title].push(pushName)
+          selectList[title].push(item)
         }
       }
       break
@@ -212,8 +234,8 @@ export default class ToolBarSectionList extends React.Component {
             // 全部取消
             selectList[title] && delete selectList[title]
           } else {
-            if (selectList[title].indexOf(pushName) < 0) {
-              selectList[title].push(pushName)
+            if (this.findeSelectItem(selectList[section.title], pushName) < 0) {
+              selectList[title].push(sections[i].data[k])
             }
           }
         }
@@ -404,7 +426,7 @@ export default class ToolBarSectionList extends React.Component {
     let selectImg = item.isSelected
       ? require('../../../../../assets/mapTools/icon_multi_selected_disable_black.png')
       : require('../../../../../assets/mapTools/icon_multi_unselected_disable_black.png')
-    let selectedTextStyle = item.isSelected ? { color: 'white' } : {}
+    let selectedTextStyle = !this.props.listSelectable && item.isSelected ? { color: 'white' } : {}
     return (
       <TouchableOpacity
         style={[

@@ -75,6 +75,7 @@ export default StyleSheet.create({
     // height:40,
     // width: scaleSize(),
     flex: 1,
+    flexDirection: 'column',
     marginLeft: scaleSize(30),
   },
   text: {

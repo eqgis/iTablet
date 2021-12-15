@@ -176,6 +176,7 @@ const Prompt = {
   PUBLISH_FAILED_INFO_2: "服务正在发布中，当前不允许操作",
   DELETE_CONFIRM: "是否删除当前数据？",
   BATCH_DELETE_CONFIRM: "是否删除当前所选数据？",
+  WHETHER_DOWNLOAD_ALL_SERVICES: '是否下载并更新所有服务?',
 
   SELECT_AT_LEAST_ONE: "请至少选择一个数据",
   DELETE_MAP_RELATE_DATA: "删除数据将影响以下地图\n是否继续删除？",

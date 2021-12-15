@@ -290,22 +290,22 @@ export default class LayerManager_tolbar extends React.Component {
 
       const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
       if (dsDescription?.type === 'onlineService') {
-        let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE)
+        let serviceData = await ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPDATE)
         data[0]?.data?.unshift(...serviceData.data)
       }
       // else if (layerData?.datasourceAlias?.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0) {
       // else if (layerData?.name && await SMediaCollector.isMediaLayer(layerData.name)) {
-      else if (layerData.themeType <= 0 && !layerData.isHeatmap) {
-        // 当前群组地图资源拥有者可以发布任务,其他成员只能更新和提交服务;标注图层可以发布任务
-        if (
-          layerData?.datasourceAlias?.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0 ||
-          this.props.currentTask?.resource?.resourceCreator &&
-          this.props.currentTask?.resource?.resourceCreator === this.props.user.currentUser?.userName
-        ) {
-          let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
-          data[0]?.data?.unshift(...serviceData.data)
-        }
-      }
+      // else if (layerData.themeType <= 0 && !layerData.isHeatmap) {
+      //   // 当前群组地图资源拥有者可以发布任务,其他成员只能更新和提交服务;标注图层可以发布任务
+      //   if (
+      //     layerData?.datasourceAlias?.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0 ||
+      //     this.props.currentTask?.resource?.resourceCreator &&
+      //     this.props.currentTask?.resource?.resourceCreator === this.props.user.currentUser?.userName
+      //   ) {
+      //     let serviceData = await ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
+      //     data[0]?.data?.unshift(...serviceData.data)
+      //   }
+      // }
     }
     return data
   }

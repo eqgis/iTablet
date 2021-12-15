@@ -178,6 +178,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
   DELETE_CONFIRM: "هل أنت متأكد أنك تريد حذف العنصر؟",
   BATCH_DELETE_CONFIRM: "هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟",
+  WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate
 
   SELECT_AT_LEAST_ONE: "يرجى تحديد عنصر واحد على الأقل",
   DELETE_MAP_RELATE_DATA: "سوف تتأثر الخريطة (الخرائط) التالية ، هل تريد المتابعة؟",

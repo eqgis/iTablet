@@ -178,6 +178,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
   DELETE_CONFIRM: "Öğeyi silmek istediğinizden emin misiniz?",
   BATCH_DELETE_CONFIRM: "Seçili öğe(ler)i silmek istediğinizden emin misiniz?",
+  WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate
 
   SELECT_AT_LEAST_ONE: "En az bir öğe seçin",
   DELETE_MAP_RELATE_DATA: "Aşağıdaki harita(lar) etkilenecek, devam et?",

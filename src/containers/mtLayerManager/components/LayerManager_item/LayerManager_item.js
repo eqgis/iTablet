@@ -9,7 +9,7 @@ import * as React from 'react'
 import { ActionPopover } from 'teaset'
 import { View, Text, TouchableOpacity, Image, Animated, Easing } from 'react-native'
 import { DatasetType, ThemeType, SMap } from 'imobile_for_reactnative'
-import { Toast, scaleSize, LayerUtils, screen } from '../../../../utils'
+import { Toast, scaleSize, LayerUtils, screen, setSpText } from '../../../../utils'
 import SwipeOut from 'react-native-swipeout'
 import styles from './styles'
 import { color } from '../../../../styles'
@@ -735,6 +735,7 @@ export default class LayerManager_item extends React.Component {
         </View>
         <View style={styles.text_container}>
           <Text numberOfLines={2} style={[styles.text, { color: selectcolor }]}>{name}</Text>
+          <Text numberOfLines={1} style={[styles.text, { fontSize: setSpText(20), color: this.props.isSelected ? selectcolor : color.fontColorGray }]}>{this.state.data.datasourceAlias + ' - ' + this.state.data.datasetName}</Text>
         </View>
         <TouchableOpacity style={styles.btn} onPress={this._tool_row}>
           <Image

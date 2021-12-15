@@ -72,10 +72,50 @@ async function initMapDataWithService(serviceUrl: string) {
   }
 }
 
+/**
+ * 初始化在UDB线服务地图数据
+ * @param udbServiceUrl
+ * @param datasourceName
+ * @param datasets
+ * @returns
+ */
+async function initMapDataWithServiceUDB(udbServiceUrl: string, datasourceName: string, datasets?: Array<{datasetName: string, datasetUrl: string}>) {
+  let data: ServiceDatasource[] = []
+  try {
+    let dsData: ServiceDatasource = {
+      datasourceName: datasourceName,
+      datasets: [],
+    }
+    if (datasets) {
+      dsData.datasets = datasets
+      data.push(dsData)
+    } else {
+      let _datasets = datasets || await getScoordiantion().getServiceData(udbServiceUrl, datasourceName)
+
+      for (const datasetUrl of _datasets.childUriList) {
+        if (datasetUrl.indexOf('_Table', datasetUrl.length - '_Table'.length) === -1) {
+          dsData.datasets.push({
+            datasetName: datasetUrl.substr(datasetUrl.lastIndexOf('/') + 1),
+            datasetUrl: datasetUrl,
+          })
+        }
+      }
+      if (dsData.datasets.length > 0) {
+        data.push(dsData)
+      }
+    }
+    await getScoordiantion().initDatasourceWithService(data)
+    return data
+  } catch (error) {
+    return data
+  }
+}
+
 export default {
   setScoordiantion,
   getScoordiantion,
 
   getInfoFromDescription,
   initMapDataWithService,
+  initMapDataWithServiceUDB,
 }

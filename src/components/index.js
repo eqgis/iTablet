@@ -65,6 +65,7 @@ import SlideBar from './SlideBar'
 import Slider from './Slider'
 import CompassView from './CompassView'
 import SwitchItem from './SwitchItem'
+import Waitting from './Waitting'
 
 export {
   Container,
@@ -144,4 +145,5 @@ export {
   Slider,
   CompassView,
   SwitchItem,
+  Waitting,
 }

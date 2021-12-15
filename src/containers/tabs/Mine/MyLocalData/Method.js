@@ -34,10 +34,10 @@ async function getOnlineData(
     if (objDataList.content) {
       // 过滤friendlist
       for (let i = objDataList.content.length - 1; i > -1; i--) {
-        // if (objDataList.content[i].fileName.indexOf('friend.list') !== -1 || objDataList.content[i].fileName.indexOf('cowork.list') !== -1) {
-        //   objDataList.content.splice(i, 1)
-        //   objDataList.total -= 1
-        // }
+        if (objDataList.content[i].fileName.indexOf('friend.list') !== -1 || objDataList.content[i].fileName.indexOf('cowork.list') !== -1) {
+          objDataList.content.splice(i, 1)
+          objDataList.total -= 1
+        }
       }
     }
     if (objDataList.content && objDataList.content.length > 0) {

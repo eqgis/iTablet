@@ -24,8 +24,8 @@ export interface ListItem extends BaseItem {
 
 export type ToolbarBottomButton = {
   type: string,
-  image: any,
-  action: (data?: any) => any,
+  image?: any,
+  action?: (data?: any) => any,
 } | string
 
 export interface UserInfo {

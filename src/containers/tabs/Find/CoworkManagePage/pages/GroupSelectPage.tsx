@@ -249,7 +249,12 @@ class GroupSelectPage extends Component<Props, State> {
   _renderItem = ({ section, item }: any) => {
     let isShow = this.state.sectionMap.get(section.title)
     if (!isShow) return null
-    let unread = this.props.coworkMessages[this.props.user.currentUser.userName]?.coworkGroupMessages?.[item.id]?.unread || 0
+    let unread = 0
+    try {
+      unread = this.props.coworkMessages?.[this.props.user.currentUser.userName]?.coworkGroupMessages?.[item.id]?.unread || 0
+    } catch (error) {
+      unread = 0
+    }
     return (
       <TouchableOpacity
         style={[styles.ItemViewStyle]}
@@ -282,8 +287,8 @@ class GroupSelectPage extends Component<Props, State> {
   }
 
   _renderGroupMessage = () => {
-    let applyMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.applyMessages?.unread || 0
-    let inviteMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.inviteMessages?.unread || 0
+    let applyMessagesUnread = this.props.coworkMessages?.[this.props.user.currentUser.userName]?.applyMessages?.unread || 0
+    let inviteMessagesUnread = this.props.coworkMessages?.[this.props.user.currentUser.userName]?.inviteMessages?.unread || 0
     return (
       <View>
         <TouchableOpacity

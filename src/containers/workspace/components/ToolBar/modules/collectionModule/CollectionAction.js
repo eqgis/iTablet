@@ -269,8 +269,10 @@ async function collectionSubmit(type) {
     //协作时同步编辑对象
     if (GLOBAL.coworkMode && GLOBAL.getFriend) {
       const params = ToolbarModule.getParams()
+      let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+      let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
       let friend = GLOBAL.getFriend()
-      friend.onGeometryAdd(params.currentLayer)
+      isRealTime && friend.onGeometryAdd(params.currentLayer)
     }
     switch (type) {
       case SMCollectorType.LINE_GPS_PATH:

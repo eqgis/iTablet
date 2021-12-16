@@ -1527,7 +1527,9 @@ export default class MapView extends React.Component {
           let item = this.props.selection[i]
           if (item.ids.length > 0) {
             if (GLOBAL.coworkMode && item.ids.length > 0) {
-              GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
+              let currentTaskInfo = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]
+              let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+              isRealTime && GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
             }
             result =
               result &&

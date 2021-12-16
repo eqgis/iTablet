@@ -318,7 +318,7 @@ export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (
  * 添加消息到地图上
  * @param params TaskInfoParams
  */
-export const addTaskMessage = (params: TaskInfoParams, isRealTime = true) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+export const addTaskMessage = (params: TaskInfoParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   if (adding) return
   adding = true
   const userId = getState().user.toJS().currentUser.userName || 'Customer'
@@ -326,7 +326,6 @@ export const addTaskMessage = (params: TaskInfoParams, isRealTime = true) => asy
     type: COWORK_TASK_INFO_ADD,
     payload: params,
     userId,
-    isRealTime,
   })
   adding = false
   return result
@@ -774,7 +773,7 @@ function deleteTaskMessages(
   // if (taskIds !== undefined && groupId !== undefined && messages[userId]?.coworkGroupMessages?.[groupId]?.[taskId]) {
   //   delete messages[userId].coworkGroupMessages[groupId][taskId]
   // }
-  return messages
+  return messages || {}
 }
 
 /**
@@ -1105,7 +1104,7 @@ export default handleActions(
         }
         coworkGroupMessages[payload.groupId][payload.taskId].unread++
 
-        return state.setIn(['messages'], fromJS(messages))
+        return state.setIn(['messages'], fromJS(messages || {}))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_APPLY) { // 申请消息
         let messages = state.toJS().messages
         if (!messages[userId]) messages[userId] = {}
@@ -1117,7 +1116,7 @@ export default handleActions(
         }
         applyMessages.unread++
 
-        return state.setIn(['messages'], fromJS(messages))
+        return state.setIn(['messages'], fromJS(messages || {}))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_INVITE) { // 邀请消息
         let messages = state.toJS().messages
         if (!messages[userId]) messages[userId] = {}
@@ -1129,7 +1128,7 @@ export default handleActions(
         }
         inviteMessages.unread++
 
-        return state.setIn(['messages'], fromJS(messages))
+        return state.setIn(['messages'], fromJS(messages || {}))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK) { // 添加/修改任务
         let {tasks, type} = addTask(state, { payload, userId })
         let coworkInfo = state.toJS().coworkInfo
@@ -1155,7 +1154,7 @@ export default handleActions(
             }
           }
           coworkGroupMessages[payload.groupID].unread++
-          return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo)).setIn(['messages'], fromJS(messages))
+          return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo)).setIn(['messages'], fromJS(messages || {}))
         }
 
         return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo))
@@ -1211,7 +1210,7 @@ export default handleActions(
           _messages.unread = 0
         }
       }
-      return state.setIn(['messages'], fromJS(messages))
+      return state.setIn(['messages'], fromJS(messages || {}))
     },
     [`${COWORK_GROUP_MSG_DELETE}`]: (state: any, { payload, userId }: any) => {
       let allTask = state.toJS().tasks
@@ -1382,14 +1381,14 @@ export default handleActions(
       }
       return state.setIn(['coworkNewMessage'], fromJS(num))
     },
-    [`${COWORK_TASK_INFO_ADD}`]: (state: any, { payload, userId, isRealTime }: any) => {
+    [`${COWORK_TASK_INFO_ADD}`]: (state: any, { payload, userId }: any) => {
       let coworkInfo = state.toJS().coworkInfo
       let taskInfo = getTaskInfo(coworkInfo, userId, payload.user.coworkGroupId, payload.user.groupID, true)
-      taskInfo.prevMessages.push(payload)
-      if (!isRealTime) {
-        coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
-        return fromJS(coworkInfo)
+      if (!taskInfo.isRealTime) {
+        // coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
+        return state
       }
+      taskInfo.prevMessages.push(payload)
       let {
         prevMessages,
         messages,

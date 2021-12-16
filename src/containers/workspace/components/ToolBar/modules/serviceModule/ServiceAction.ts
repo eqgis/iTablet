@@ -44,7 +44,7 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
 /**
  * 数据服务回调监听
  */
- SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
+SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   downloadHandler: async res => {
     if (!res.content) return
     let _datasetUrl = res.content.urlDataset
@@ -87,6 +87,15 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
           },
         })
       }
+    } else {
+      res.content && params.setCoworkService({
+        groupId: params.currentTask.groupID,
+        taskId: params.currentTask.id,
+        service: {
+          datasetUrl: res.content?.urlDataset,
+          status: 'done',
+        },
+      })
     }
   },
   updateHandler: async res => {
@@ -124,6 +133,15 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
             }
           }
         }
+      } else {
+        res.content && params.setCoworkService({
+          groupId: params.currentTask.groupID,
+          taskId: params.currentTask.id,
+          service: {
+            datasetUrl: res.content?.urlDataset,
+            status: 'done',
+          },
+        })
       }
     } catch (error) {
       Toast.show(getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED)
@@ -170,6 +188,15 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
         }
         let msgStr = JSON.stringify(msgObj)
         await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+      } else {
+        res.content && params.setCoworkService({
+          groupId: params.currentTask.groupID,
+          taskId: params.currentTask.id,
+          service: {
+            datasetUrl: res.content?.urlDataset,
+            status: 'done',
+          },
+        })
       }
     } catch (error) {
       Toast.show(getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED)

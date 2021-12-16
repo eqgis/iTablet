@@ -101,7 +101,10 @@ async function getData(type: string, params: any) {
         data: _subData,
         allSelectType: true,
       }]
-      buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
+      buttons = [ToolbarBtnType.TOOLBAR_BACK, {
+        type: ToolbarBtnType.TOOLBAR_COMMIT,
+        image: getThemeAssets().cowork.icon_nav_import,
+      }]
       break
     }
     case ConstToolType.SM_MAP_SERVICE_UPDATE:

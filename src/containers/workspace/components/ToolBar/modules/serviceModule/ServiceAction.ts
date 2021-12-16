@@ -33,7 +33,7 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
     SMap.refreshMap()
     await _params.getLayers()
     SMediaCollector.showMedia(resultArr[0].layerName, false)
-    Toast.show(datasetName + getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
+    Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
     _params.setToolbarVisible(false)
   } else {
     Toast.show(datasetName + getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
@@ -250,7 +250,7 @@ async function listAction(type: string, params: any = {}) {
         })
         _params.setToolbarVisible(true, ConstToolType.SM_MAP_SERVICE_DATASOURCE, {
           data: _data,
-          buttons: [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT],
+          buttons: [ToolbarBtnType.TOOLBAR_BACK],
           containerType: ToolbarType.list,
           isFullScreen: true,
         })
@@ -369,8 +369,8 @@ function toolbarBack(type: string) {
   if (type === ConstToolType.SM_MAP_SERVICE_DATASET) {
     _params.setToolbarVisible(true, ConstToolType.SM_MAP_SERVICE_DATASOURCE, {
       data: _data.datasources,
-      buttons: [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT],
-      containerType: ToolbarType.selectableList,
+      buttons: [ToolbarBtnType.TOOLBAR_BACK],
+      containerType: ToolbarType.list,
       isFullScreen: true,
     })
   } else if (type === ConstToolType.SM_MAP_SERVICE_DATASOURCE) {

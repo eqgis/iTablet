@@ -562,7 +562,7 @@ export default class ToolBarSectionList extends React.Component {
             : { color: color.item_separate_white },
         ]}
         ellipsizeMode="tail"
-        numberOfLines={1}
+        // numberOfLines={1}
       >
         {info}
       </Text>
@@ -930,8 +930,8 @@ const styles = StyleSheet.create({
     width: scaleSize(520),
     marginLeft: scaleSize(30),
     marginTop: scaleSize(4),
-    fontSize: setSpText(16),
-    height: scaleSize(30),
+    fontSize: setSpText(14),
+    height: scaleSize(40),
     backgroundColor: 'transparent',
     textAlignVertical: 'center',
     color: color.item_separate_white,

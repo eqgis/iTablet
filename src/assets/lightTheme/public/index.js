@@ -47,6 +47,8 @@ const icon_layer = require('./icon_layer.png')
 const icon_img_close = require('./icon_img_close.png')
 const img_add_upload = require('./img_add_upload.png')
 
+const icon_data_upload = require('./icon_data_upload.png')
+
 export default {
   icon_undo,
   icon_redo,
@@ -93,4 +95,5 @@ export default {
   icon_layer,
   icon_img_close,
   img_add_upload,
+  icon_data_upload,
 }

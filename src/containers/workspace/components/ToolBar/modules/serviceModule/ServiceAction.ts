@@ -15,7 +15,7 @@ import {
   UserType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin } from '../../../../../../utils'
+import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin, LayerUtils } from '../../../../../../utils'
 import { OnlineDataType } from '../../../../../../utils/OnlineServicesUtils'
 import * as Type from '../../../../../../types'
 import { getThemeAssets } from '../../../../../../assets'
@@ -887,21 +887,36 @@ async function publishMapService() {
     for (const datasource of datasources) {
       const datasourceAlias = datasource.alias
       // 不发布标注图层
-      if (datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+      if (
+        datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1 || // 过滤标注数据源
+        datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
+      ) {
         continue
       }
 
-      const {result, content, error} = await publishService(_params?.currentTask?.resource?.resourceId, datasourceAlias, [{
-        groupId: _params.currentGroup.id,
-        groupName: _params.currentGroup.groupName,
-      }])
-      content.length > 0 && await SCoordinationUtils.initMapDataWithService(content[0].proxiedUrl)
+      let publishResult: {
+        result: boolean,
+        content: any[],
+        error?: {
+          code: number,
+          errorMsg: string,
+        },
+      }
+      try {
+        publishResult = await publishService(_params?.currentTask?.resource?.resourceId, datasourceAlias, [{
+          groupId: _params.currentGroup.id,
+          groupName: _params.currentGroup.groupName,
+        }])
+        publishResult.content.length > 0 && await SCoordinationUtils.initMapDataWithService(publishResult.content[0].proxiedUrl)
+      } catch (error) {
+        continue
+      }
       await SMap.refreshMap()
       await _params.getLayers()
-      if (result) {
+      if (publishResult?.result) {
         Toast.show(datasourceAlias + getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
       } else {
-        Toast.show(datasourceAlias + (error?.errorMsg || getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED))
+        Toast.show(datasourceAlias + (publishResult?.error?.errorMsg || getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED))
       }
     }
 

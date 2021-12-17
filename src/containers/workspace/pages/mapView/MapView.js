@@ -546,6 +546,11 @@ export default class MapView extends React.Component {
         SMap.setStopNavigationListener({
           callback: this._changeRouteCancel,
         })
+        SMap.setCurrentFloorIDListener({
+          callback: currentFloorID => {
+            this.changeFloorID(currentFloorID)
+          },
+        })
       }
       this.container &&
         this.container.setLoading(

@@ -38,7 +38,7 @@ export default class MapARAnalysis extends Module {
           aiCollection, // AI目标识别
           aiVehicle,
           aiCategory,
-          aiAggregate, // AI聚合
+          // aiAggregate, // AI聚合
         ]
         break
       case 'map':

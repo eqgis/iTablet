@@ -1769,7 +1769,7 @@ export default class Friend extends Component {
            * 对象添加更改的协作消息
            */
           // CoworkInfo.pushMessage(messageObj)
-          this.props.addTaskMessage(messageObj, true)
+          this.props.addTaskMessage(messageObj)
         }
       }
     }

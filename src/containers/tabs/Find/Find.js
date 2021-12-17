@@ -217,8 +217,8 @@ export default class Find extends Component {
   }
 
   _selectionRender = () => {
-    let applyMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.applyMessages?.unread || 0
-    let inviteMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.inviteMessages?.unread || 0
+    let applyMessagesUnread = this.props.coworkMessages?.[this.props.user.currentUser.userName]?.applyMessages?.unread || 0
+    let inviteMessagesUnread = this.props.coworkMessages?.[this.props.user.currentUser.userName]?.inviteMessages?.unread || 0
     return (
       <View opacity={1} style={{ flex: 1, backgroundColor: color.bgW }}>
         <ScrollView

@@ -15,7 +15,7 @@ import {
   UserType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin } from '../../../../../../utils'
+import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin, LayerUtils } from '../../../../../../utils'
 import { OnlineDataType } from '../../../../../../utils/OnlineServicesUtils'
 import * as Type from '../../../../../../types'
 import { getThemeAssets } from '../../../../../../assets'
@@ -44,7 +44,7 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
 /**
  * 数据服务回调监听
  */
- SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
+SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   downloadHandler: async res => {
     if (!res.content) return
     let _datasetUrl = res.content.urlDataset
@@ -87,6 +87,15 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
           },
         })
       }
+    } else {
+      res.content && params.setCoworkService({
+        groupId: params.currentTask.groupID,
+        taskId: params.currentTask.id,
+        service: {
+          datasetUrl: res.content?.urlDataset,
+          status: 'done',
+        },
+      })
     }
   },
   updateHandler: async res => {
@@ -124,6 +133,15 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
             }
           }
         }
+      } else {
+        res.content && params.setCoworkService({
+          groupId: params.currentTask.groupID,
+          taskId: params.currentTask.id,
+          service: {
+            datasetUrl: res.content?.urlDataset,
+            status: 'done',
+          },
+        })
       }
     } catch (error) {
       Toast.show(getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED)
@@ -170,6 +188,15 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
         }
         let msgStr = JSON.stringify(msgObj)
         await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+      } else {
+        res.content && params.setCoworkService({
+          groupId: params.currentTask.groupID,
+          taskId: params.currentTask.id,
+          service: {
+            datasetUrl: res.content?.urlDataset,
+            status: 'done',
+          },
+        })
       }
     } catch (error) {
       Toast.show(getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED)
@@ -860,21 +887,36 @@ async function publishMapService() {
     for (const datasource of datasources) {
       const datasourceAlias = datasource.alias
       // 不发布标注图层
-      if (datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+      if (
+        datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1 || // 过滤标注数据源
+        datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
+      ) {
         continue
       }
 
-      const {result, content, error} = await publishService(_params?.currentTask?.resource?.resourceId, datasourceAlias, [{
-        groupId: _params.currentGroup.id,
-        groupName: _params.currentGroup.groupName,
-      }])
-      content.length > 0 && await SCoordinationUtils.initMapDataWithService(content[0].proxiedUrl)
+      let publishResult: {
+        result: boolean,
+        content: any[],
+        error?: {
+          code: number,
+          errorMsg: string,
+        },
+      }
+      try {
+        publishResult = await publishService(_params?.currentTask?.resource?.resourceId, datasourceAlias, [{
+          groupId: _params.currentGroup.id,
+          groupName: _params.currentGroup.groupName,
+        }])
+        publishResult.content.length > 0 && await SCoordinationUtils.initMapDataWithService(publishResult.content[0].proxiedUrl)
+      } catch (error) {
+        continue
+      }
       await SMap.refreshMap()
       await _params.getLayers()
-      if (result) {
+      if (publishResult?.result) {
         Toast.show(datasourceAlias + getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
       } else {
-        Toast.show(datasourceAlias + (error?.errorMsg || getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED))
+        Toast.show(datasourceAlias + (publishResult?.error?.errorMsg || getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED))
       }
     }
 

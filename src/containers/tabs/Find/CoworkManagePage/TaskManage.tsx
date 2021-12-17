@@ -467,8 +467,26 @@ class TaskManage extends React.Component<Props, State> {
     return members
   }
 
-  _onPress = (data: any) => {
+  _onPress = async (data: any) => {
     if (data.map) {
+      let restService = data.resource?.restService
+      try {
+        // 若分配的任务消息中没有服务数据,则去查询
+        // 此情况运用在发布任务时,数据还没有服务,在协作过程中发布后,此后再次进入任务,可以获得数据服务信息
+        if (!restService) {
+          const dataDetail = await SCoordinationUtils.getScoordiantion()?.getResourceDetail(data.resource.resourceId)
+          if (dataDetail?.dataItemServices?.length > 0) {
+            for (const service of dataDetail.dataItemServices) {
+              if (service.serviceType === 'RESTDATA' && service.serviceStatus === 'PUBLISHED') {
+                restService = service
+                break
+              }
+            }
+          }
+        }
+      } catch (error) {
+        restService = data.resource?.restService
+      }
       let index = data.module.index
       let module = this._getModule(data.module.key, index)
       this.props.setCurrentTask(data)
@@ -478,7 +496,7 @@ class TaskManage extends React.Component<Props, State> {
       // CoworkInfo.setMembers(members)
       this._checkMembers(data, _members)
       CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
-      this.createCowork(data.id, module, index, data.map, data.resource?.restService)
+      this.createCowork(data.id, module, index, data.map, restService)
     } else {
       Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_DOWNLOAD_INFO)
     }

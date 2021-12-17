@@ -1,5 +1,6 @@
 import { SCoordination } from 'imobile_for_reactnative'
 import { ServiceDatasource } from 'imobile_for_reactnative/types/interface/iserver/types'
+import LayerUtils from './LayerUtils'
 
 let _SCoordination: SCoordination | null
 
@@ -46,13 +47,18 @@ function getInfoFromDescription(datasetDescription: string) {
 async function initMapDataWithService(serviceUrl: string) {
   let data: ServiceDatasource[] = []
   try {
-    let datasources = await getScoordiantion().getServiceData(serviceUrl)
+    const _scoordiantion = getScoordiantion()
+    let datasources = await _scoordiantion.getServiceData(serviceUrl)
     for (const datasourceName of datasources.datasourceNames) {
+      if (
+        datasourceName.indexOf('Label_') === 0 && datasourceName.indexOf('#') === datasourceName.length - 1 || // 过滤标注数据源
+        LayerUtils.isBaseLayerDatasource(datasourceName) // 过滤底图数据源
+      ) continue
       let dsData: ServiceDatasource = {
         datasourceName: datasourceName,
         datasets: [],
       }
-      let datasets = await getScoordiantion().getServiceData(serviceUrl, datasourceName)
+      let datasets = await _scoordiantion.getServiceData(serviceUrl, datasourceName)
       for (const datasetUrl of datasets.childUriList) {
         if (datasetUrl.indexOf('_Table', datasetUrl.length - '_Table'.length) === -1) {
           dsData.datasets.push({

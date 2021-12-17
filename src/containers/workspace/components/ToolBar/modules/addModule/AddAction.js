@@ -183,7 +183,10 @@ async function commit() {
   }
   const result = {}
   for (const key of Object.keys(selectList)) {
-    const datasetNames = selectList[key]?.map(item => item.datasetName) || []
+    const datasetNames = []
+    for (const item of selectList[key]) {
+      datasetNames.push(item.datasetName)
+    }
     if (datasetNames.length === 0) continue
     const resultArr = await SMap.addLayers(datasetNames, key)
 

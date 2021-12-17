@@ -221,8 +221,10 @@ async function collectionSubmit(libId, symbolCode) {
         //   ToolbarModule.getParams().setCurrentLayer(plotLayer)
         let layerType = LayerUtils.getLayerType(params.currentLayer)
         if (layerType !== 'TAGGINGLAYER' && GLOBAL.coworkMode && GLOBAL.getFriend) {
+          let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+          let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
           let friend = GLOBAL.getFriend()
-          friend.onGeometryAdd(params.currentLayer)
+          isRealTime && friend.onGeometryAdd(params.currentLayer)
         }
       })
     }

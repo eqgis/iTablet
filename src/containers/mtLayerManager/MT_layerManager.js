@@ -751,7 +751,7 @@ export default class MT_layerManager extends React.Component {
               dsDescription?.url && service.datasetUrl === dsDescription?.url ||
               service.layerName === item.name
             ) &&
-            item.themeType <= 0 && !item.isHeatmap &&
+            // item.themeType <= 0 && !item.isHeatmap &&
             service.status !== 'done'
             ) {
               return true
@@ -771,8 +771,8 @@ export default class MT_layerManager extends React.Component {
           if (currentCoworkMessage?.length > 0) {
             for (const message of currentCoworkMessage) {
               if (
-                message.message?.serviceUrl === dsDescription.url && message?.status === 0 &&
-                item.themeType <= 0 && !item.isHeatmap
+                message.message?.serviceUrl === dsDescription.url && message?.status === 0
+                // item.themeType <= 0 && !item.isHeatmap
               ) {
                 cornerMarkImage = getThemeAssets().cowork.icon_state_update
                 return cornerMarkImage
@@ -940,32 +940,39 @@ export default class MT_layerManager extends React.Component {
           }
         }
 
-        publishServiceBtn = (
-          <View style={styles.sectionPublishView}>
-            <MTBtn
-              style={styles.rightIconView}
-              imageStyle={styles.icon}
-              image={mapServiceUrl ? getThemeAssets().cowork.icon_nav_import : getThemeAssets().edit.icon_redo}
-              onPress={async () => {
-                if (mapServiceUrl) {
-                  GLOBAL.SimpleDialog.set({
-                    text: getLanguage(GLOBAL.language).Prompt.WHETHER_DOWNLOAD_ALL_SERVICES,
-                    cancelText: getLanguage(GLOBAL.language).Prompt.NO,
-                    cancelAction: async () => {
-                      GLOBAL.Loading.setLoading(false)
-                    },
-                    confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-                    confirmAction: async () => {
-                      ServiceAction.downloadService(mapServiceUrl)
-                    },
-                  })
-                } else {
+        publishServiceBtn =
+          this.props.cowork.currentTask?.resource?.resourceCreator &&
+          this.props.cowork.currentTask?.resource?.resourceCreator === this.props.user.currentUser?.userName &&
+          !mapServiceUrl && (
+            <View style={styles.sectionPublishView}>
+              <MTBtn
+                style={styles.rightIconView}
+                imageStyle={styles.icon}
+                // image={mapServiceUrl ? getThemeAssets().cowork.icon_nav_import : getThemeAssets().edit.icon_redo}
+                image={getThemeAssets().publicAssets.icon_data_upload}
+                onPress={async () => {
+                  // if (mapServiceUrl) {
+                  //   GLOBAL.SimpleDialog.set({
+                  //     text: getLanguage(GLOBAL.language).Prompt.WHETHER_DOWNLOAD_ALL_SERVICES,
+                  //     cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+                  //     cancelAction: async () => {
+                  //       GLOBAL.Loading.setLoading(false)
+                  //     },
+                  //     confirmText: getLanguage(GLOBAL.language).Prompt.YES,
+                  //     confirmAction: async () => {
+                  //       ServiceAction.downloadService(mapServiceUrl)
+                  //     },
+                  //   })
+                  // } else {
                   let datasources = await SMap.getDatasources()
                   let datasrouceNames = ''
                   for (const datasource of datasources) {
                     const datasourceAlias = datasource.alias
                     // 不发布标注图层
-                    if (datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+                    if (
+                      datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') === datasourceAlias?.length - 1 || // 过滤标注数据源
+                      datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
+                    ) {
                       continue
                     }
                     datasrouceNames += (datasrouceNames ? ', ' : '') + datasourceAlias
@@ -981,23 +988,23 @@ export default class MT_layerManager extends React.Component {
                       ServiceAction.publishMapService()
                     },
                   })
+                  // }
+                  GLOBAL.SimpleDialog.setVisible(true)
+                }}
+              />
+              {/* <TextBtn
+                btnText={
+                  mapServiceUrl
+                    ? '下载服务'
+                    : getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE
                 }
-                GLOBAL.SimpleDialog.setVisible(true)
-              }}
-            />
-            {/* <TextBtn
-              btnText={
-                mapServiceUrl
-                  ? '下载服务'
-                  : getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE
-              }
-              textStyle={styles.title}
-              btnClick={async () => {
-              }}
-            /> */}
-            {isPublishing ? <Waitting isLoading={true}/> : <View style={styles.watting}/>}
-          </View>
-        )
+                textStyle={styles.title}
+                btnClick={async () => {
+                }}
+              /> */}
+              {isPublishing ? <Waitting isLoading={true}/> : <View style={styles.watting}/>}
+            </View>
+          )
       }
     }
     return (

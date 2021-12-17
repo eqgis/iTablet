@@ -308,6 +308,38 @@ function isBaseLayer(layer) {
   // return false
 }
 
+function isBaseLayerDatasource(datasourceName) {
+  try {
+    for (let i = 0, n = baseMaps.length; i < n; i++) {
+      const _dsName = baseMaps[i].toUpperCase().split('@')[1]
+      if (datasourceName.toUpperCase() === _dsName) {
+        return true
+      }
+    }
+    return false
+  } catch (e) {
+    return false
+  }
+
+  // if (
+  //   name.indexOf('roadmap@GoogleMaps') >= 0 ||
+  //   name.indexOf('satellite@GoogleMaps') >= 0 ||
+  //   name.indexOf('terrain@GoogleMaps') >= 0 ||
+  //   name.indexOf('hybrid@GoogleMaps') >= 0 ||
+  //   name.indexOf('vec@TD') >= 0 ||
+  //   name.indexOf('cva@TDWZ') >= 0 ||
+  //   name.indexOf('img@TDYXM') >= 0 ||
+  //   name.indexOf('TrafficMap@BaiduMap') >= 0 ||
+  //   name.indexOf('Standard@OpenStreetMaps') >= 0 ||
+  //   name.indexOf('CycleMap@OpenStreetMaps') >= 0 ||
+  //   name.indexOf('TransportMap@OpenStreetMaps') >= 0 ||
+  //   name.indexOf('quanguo@SuperMapCloud') >= 0
+  // ) {
+  //   return true
+  // }
+  // return false
+}
+
 function getBaseLayers(layers = []) {
   const arr = []
   for (let i = 0; i < layers.length; i++) {
@@ -545,6 +577,7 @@ export default {
   canBeRevert,
 
   isBaseLayer,
+  isBaseLayerDatasource,
   addBaseMap,
   setBaseMap,
   openDefaultBaseMap,

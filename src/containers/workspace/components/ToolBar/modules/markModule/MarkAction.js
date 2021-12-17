@@ -191,10 +191,14 @@ async function commit(type) {
             //提交标注后 需要刷新属性表
             GLOBAL.NEEDREFRESHTABLE = true
             if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-              let layerType = LayerUtils.getLayerType(currentLayer)
-              if (layerType !== 'TAGGINGLAYER') {
-                let friend = GLOBAL.getFriend()
-                friend.onGeometryAdd(currentLayer)
+              let currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
+              let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+              if (isRealTime) {
+                let layerType = LayerUtils.getLayerType(currentLayer)
+                if (layerType !== 'TAGGINGLAYER') {
+                  let friend = GLOBAL.getFriend()
+                  friend.onGeometryAdd(currentLayer)
+                }
               }
             }
           }
@@ -206,16 +210,20 @@ async function commit(type) {
           const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
           try {
             if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-              let event = ToolbarModule.getData().event
-              let layerType = LayerUtils.getLayerType(event.layerInfo)
-              if (layerType !== 'TAGGINGLAYER') {
-                let friend = GLOBAL.getFriend()
-                friend.onGeometryEdit(
-                  event.layerInfo,
-                  event.fieldInfo,
-                  event.id,
-                  event.geometryType,
-                )
+              let currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
+              let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+              if (isRealTime) {
+                let event = ToolbarModule.getData().event
+                let layerType = LayerUtils.getLayerType(event.layerInfo)
+                if (layerType !== 'TAGGINGLAYER') {
+                  let friend = GLOBAL.getFriend()
+                  friend.onGeometryEdit(
+                    event.layerInfo,
+                    event.fieldInfo,
+                    event.id,
+                    event.geometryType,
+                  )
+                }
               }
             }
 

@@ -57,6 +57,7 @@ import {
 } from '../../components'
 import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { shareModule, arEditModule } from '../../components/ToolBar/modules'
+import ServiceAction from '../../components/ToolBar/modules/serviceModule/ServiceAction'
 import {
   Container,
   MTBtn,
@@ -1532,7 +1533,9 @@ export default class MapView extends React.Component {
           let item = this.props.selection[i]
           if (item.ids.length > 0) {
             if (GLOBAL.coworkMode && item.ids.length > 0) {
-              GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
+              let currentTaskInfo = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]
+              let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+              isRealTime && GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
             }
             result =
               result &&
@@ -1824,6 +1827,7 @@ export default class MapView extends React.Component {
         const service = this.props.navigation.state?.params?.service
         if (GLOBAL.coworkMode && this.props.navigation.state?.params?.service) {
           await SCoordinationUtils.initMapDataWithService(service.address)
+          await ServiceAction.downloadService(service.address)
         }
 
         // 标注图层等其他图层添加完后再获取图层列表

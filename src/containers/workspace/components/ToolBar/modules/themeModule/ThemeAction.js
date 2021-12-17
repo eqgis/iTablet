@@ -1208,7 +1208,10 @@ async function commit(type) {
   }
   if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     for (const key of Object.keys(selectList)) {
-      const datasetNames = selectList[key]?.map(item => item.datasetName) || []
+      const datasetNames = []
+      for (const item of selectList[key]) {
+        datasetNames.push(item.datasetName)
+      }
       if (datasetNames.length === 0) continue
       const resultArr = await SMap.addLayers(datasetNames, key)
       // 找出有默认样式的数据集，并给对应图层设置
@@ -1240,7 +1243,10 @@ async function commit(type) {
       }
     }
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION) {
-    const expressions = selectList[_data.themeDatasetName]?.map(item => item.expression) || []
+    const expressions = []
+    for (const item of selectList[_data.themeDatasetName]) {
+      expressions.push(item.expression)
+    }
     // 数据集->创建统计专题图
     const params = {
       DatasourceAlias: _data.themeDatasourceAlias,
@@ -1266,7 +1272,10 @@ async function commit(type) {
   } else if (
     type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
   ) {
-    const expressions = selectList[Object.keys(selectList)[0]]?.map(item => item.expression) || []
+    const expressions = []
+    for (const item of selectList[Object.keys(selectList)[0]]) {
+      expressions.push(item.expression)
+    }
     // 图层->创建统计专题图
     const params = {
       LayerName: _data.currentLayer.name || '', // 图层名称
@@ -1888,8 +1897,11 @@ function sendUpdateThemeMsg(layerInfo) {
   if (GLOBAL.coworkMode && GLOBAL.getFriend && layerInfo) {
     let layerType = LayerUtils.getLayerType(layerInfo)
     if (layerType !== 'TAGGINGLAYER') {
+      const params = ToolbarModule.getParams()
+      let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+      let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
       let friend = GLOBAL.getFriend()
-      friend.onThemeEdit(layerInfo)
+      isRealTime && friend.onThemeEdit(layerInfo)
     }
   }
 }
@@ -1897,8 +1909,11 @@ function sendUpdateThemeMsg(layerInfo) {
 function sendAddThemeMsg(layerInfo) {
   //协作时同步编辑对象
   if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+    const params = ToolbarModule.getParams()
+    let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+    let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
     let friend = GLOBAL.getFriend()
-    friend.onThemeLayerAdd(layerInfo)
+    isRealTime && friend.onThemeLayerAdd(layerInfo)
   }
 }
 

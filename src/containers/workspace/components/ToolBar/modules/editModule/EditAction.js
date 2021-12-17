@@ -49,15 +49,19 @@ async function commit(type) {
           }
           //协作时同步编辑对象
           if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-            let event = ToolbarModule.getData().event
-            //TODO 增加类型判断
-            let friend = GLOBAL.getFriend()
-            friend.onGeometryEdit(
-              event.layerInfo,
-              event.fieldInfo,
-              event.id,
-              event.geometryType,
-            )
+            let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+            let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+            if (isRealTime) {
+              let event = ToolbarModule.getData().event
+              //TODO 增加类型判断
+              let friend = GLOBAL.getFriend()
+              friend.onGeometryEdit(
+                event.layerInfo,
+                event.fieldInfo,
+                event.id,
+                event.geometryType,
+              )
+            }
           }
           currentToolbarType = ConstToolType.SM_MAP_EDIT
           // 编辑完成关闭Toolbar

@@ -969,7 +969,10 @@ export default class MT_layerManager extends React.Component {
                   for (const datasource of datasources) {
                     const datasourceAlias = datasource.alias
                     // 不发布标注图层
-                    if (datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+                    if (
+                      datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') === datasourceAlias?.length - 1 || // 过滤标注数据源
+                      datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
+                    ) {
                       continue
                     }
                     datasrouceNames += (datasrouceNames ? ', ' : '') + datasourceAlias

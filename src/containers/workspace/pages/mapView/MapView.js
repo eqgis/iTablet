@@ -595,7 +595,6 @@ export default class MapView extends React.Component {
             break
           }
         }
-        console.warn(info)
         NavigationService.navigate('MediaEdit', {
           layerInfo,
           info,

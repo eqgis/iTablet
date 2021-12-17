@@ -1048,19 +1048,19 @@ export default class MediaEdit extends React.Component {
     let category = ''
     if (this.state.mediaData?.recognitionInfos) {
       for (const recognitionInfo of this.state.mediaData.recognitionInfos) {
-        category += (category ? ',' : '') + recognitionInfo.title
+        category += (category ? ',' : '') + recognitionInfo.label
       }
     }
     return (
       <>
         {this.renderItem({
           title: getLanguage(this.props.language).AI.CATEGORY,
-          value: this.state.mediaName,
+          value: category,
           type: 'arrow',
           action: () => {
             NavigationService.navigate('InputPage', {
-              value: this.state.mediaName,
-              headerTitle: getLanguage(GLOBAL.language).Map_Label.NAME,
+              value: category,
+              headerTitle: getLanguage(GLOBAL.language).Map_Label.CATEGORY,
               type: 'name',
               cb: async value => {
                 this.setState({

@@ -183,7 +183,7 @@ export async function addARScene(location?: IVector3) {
       }
 
       const homePath = await FileTools.getHomeDirectory()
-      let path = _data.arContent
+      let path: string = _data.arContent
       if(!path) {
         Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SCENE_SELECTED)
         return
@@ -223,11 +223,11 @@ export async function addARScene(location?: IVector3) {
           }
           addLayerName = await SARMap.addSceneLayerOnline(datasourceName, datasetName, serverUrl, sceneName, location, sceneOffset)
         } else {
-          path = homePath + _data.arContent.substring(0, _data.arContent.lastIndexOf('.'))
-          // 得到的是工作空间所在目录 需要去找到sxwu文件路径
-          const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
-          if(list.length == 0) return
-          addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path, location)
+          path = homePath + _data.arContent
+          const pxp = await DataHandler.getPxpContent(path)
+          if(pxp === null) return
+          const wsPath = path.substring(0, path.lastIndexOf('/')) +  '/' + pxp.Workspace.server
+          addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, location)
         }
         if(addLayerName !== ''){
           const layers: ARLayer[] = await _params.getARLayers()

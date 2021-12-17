@@ -87,6 +87,7 @@ export default class MediaEdit extends React.Component {
       title: title,
       showDelete: false,
       showBg: false,
+      category:this.info.category? this.info.category : '',
     }
     this.mediaItemRef = []
     this.modifiedData = {} // 修改的信息
@@ -454,6 +455,7 @@ export default class MediaEdit extends React.Component {
           mediaIds: this._ids,
           location: this.info.location,
           description: description,
+          category:this.state.category,
           mediaData: JSON.stringify(this.state.mediaData),
           mediaType: this.showInfo.mediaData.type || '',
         })
@@ -837,7 +839,11 @@ export default class MediaEdit extends React.Component {
           category += `${(category ? ',' : '')}${recognitionInfo.label}:${recognitionInfo.countID}`
           confidence += `${(confidence ? ',' : '')}${recognitionInfo.label}:${recognitionInfo.confidence}`
         } else {
-          category += (category ? ',' : '') + recognitionInfo.label
+          const count = this.state.mediaData.recognitionInfos.filter(item => item.label === recognitionInfo.label).length
+          if(category.indexOf(recognitionInfo.label) < 0)
+          {
+            category += (category ? ',' : '') + recognitionInfo.label + (count > 1 ? '(' + count + ')' : '')
+          }
         }
       }
     }
@@ -849,7 +855,20 @@ export default class MediaEdit extends React.Component {
         })} */}
         {this.renderItem({
           title: getLanguage(this.props.language).AI.CATEGORY,
-          value: category,
+          value: this.state.category ? this.state.category:category,
+          type: 'arrow',
+          action: () => {
+            NavigationService.navigate('InputPage', {
+              value: this.state.category ? this.state.category:category,
+              headerTitle: getLanguage(GLOBAL.language).AI.CATEGORY,
+              cb: async value => {
+                this.setState({
+                  category: value,
+                })
+                NavigationService.goBack()
+              },
+            })
+          },
         })}
         {type === 'AI_AGGREGATE' && this.renderItem({
           title: getLanguage(this.props.language).AI.CONFIDENCE,
@@ -858,6 +877,19 @@ export default class MediaEdit extends React.Component {
         {this.renderItem({
           title: getLanguage(this.props.language).AI.DATE,
           value: this.state.modifiedDate,
+          type: 'arrow',
+          action: () => {
+            NavigationService.navigate('InputPage', {
+              value: this.state.modifiedDate,
+              headerTitle: getLanguage(GLOBAL.language).AI.DATE,
+              cb: async value => {
+                this.setState({
+                  modifiedDate: value,
+                })
+                NavigationService.goBack()
+              },
+            })
+          },
         })}
         {this.renderItem({
           title: getLanguage(this.props.language).AI.REMARK,

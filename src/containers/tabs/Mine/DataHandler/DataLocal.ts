@@ -143,7 +143,7 @@ async function _getListByFilter(user: UserInfo, type: LocalDataType) {
 interface IPxpContent {
   Name: string
   Workspace: {
-    type: number //todo
+    type: number | string //todo 这里android和ios的类型不一样，暂时在js层做兼容
     server: string
   }
   Type: number //todo
@@ -154,7 +154,7 @@ async function getPxpContent(pxpPath: string): Promise<IPxpContent | null> {
   const content = await RNFS.readFile(pxpPath)
   const pxp = JSON.parse(content)
   if('Name' in pxp && typeof pxp['Name'] === 'string' &&
-   ('Workspace' in pxp && ('type' in pxp['Workspace'] && typeof pxp['Workspace']['type'] === 'string') &&
+   ('Workspace' in pxp && ('type' in pxp['Workspace'] && (typeof pxp['Workspace']['type'] === 'string') || (typeof pxp['Workspace']['type'] === 'number')) &&
    ('server' in pxp['Workspace'] && typeof pxp['Workspace']['server'] === 'string')) &&
    'Type' in pxp && typeof pxp['Type'] === 'number'
   ) {

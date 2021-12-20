@@ -69,7 +69,7 @@ function aiDetect() {
   })()
 }
 
-async function goToPreview() {
+async function goToPreview(infos?: SARMap.AIRecognitionInfo[]) {
   try {
     const _params: any = ToolbarModule.getParams()
     const homePath = await FileTools.getHomeDirectory()
@@ -78,7 +78,7 @@ async function goToPreview() {
       ConstPath.RelativeFilePath.Media
     await SMediaCollector.initMediaCollector(targetPath)
     // 获取对象识别信息
-    let recognitionInfos = await SARMap.getAIRecognitionInfos()
+    let recognitionInfos = infos && infos?.length > 0 ? infos : await SARMap.getAIRecognitionInfos()
     const captureTime = new Date().getTime().toString()
     const imgPath = targetPath + `IMG_${captureTime}.jpg`
     const result = await SARMap.captureImage(imgPath, true)

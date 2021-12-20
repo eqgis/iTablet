@@ -25,6 +25,9 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
+const SERVICE_TAGGING_PRE_NAME = 'Tagging_'
+const LABEL_PRE_NAME = 'Label_'
+
 async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
   const labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
@@ -221,7 +224,7 @@ async function listAction(type: string, params: any = {}) {
       // let services = []
       // for (const datasource of serviceData) {
       //   for (const dataset of datasource.datasets) {
-      //     let datasourceName = datasource.datasourceName.indexOf('Label_') === 0 ? '' : datasource.datasourceName
+      //     let datasourceName = datasource.datasourceName.indexOf(LABEL_PRE_NAME) === 0 ? '' : datasource.datasourceName
       //     services.push({
       //       datasetUrl: dataset.datasetUrl,
       //       status: 'download',
@@ -370,7 +373,7 @@ async function downloadService(url: string) {
     let services = []
     for (const datasource of serviceData) {
       for (const dataset of datasource.datasets) {
-        let datasourceName = datasource.datasourceName.indexOf('Label_') === 0 ? '' : datasource.datasourceName
+        let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
         services.push({
           datasetUrl: dataset.datasetUrl,
           status: 'download',
@@ -417,7 +420,7 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
   }
   const _params: any = ToolbarModule.getParams()
   let _datasourceAlias
-  if (datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+  if (datasourceAlias?.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
     _datasourceAlias = `Label_${
       _params.user.currentUser.userName
     }#`
@@ -454,7 +457,7 @@ async function updateToLocal (layerData: {
       },
     })
     let datasourceAlias
-    if (layerData.datasourceAlias?.indexOf('Label_') === 0 && layerData.datasourceAlias?.indexOf('#') == layerData.datasourceAlias?.length - 1) {
+    if (layerData.datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && layerData.datasourceAlias?.indexOf('#') == layerData.datasourceAlias?.length - 1) {
       datasourceAlias = `Label_${
         _params.user.currentUser.userName
       }#`
@@ -535,7 +538,7 @@ async function uploadToService(layerData: {
       },
     })
     let datasourceAlias
-    if (layerData.datasourceAlias?.indexOf('Label_') === 0 && layerData.datasourceAlias?.indexOf('#') == layerData.datasourceAlias?.length - 1) {
+    if (layerData.datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && layerData.datasourceAlias?.indexOf('#') == layerData.datasourceAlias?.length - 1) {
       datasourceAlias = `Label_${
         _params.user.currentUser.userName
       }#`
@@ -888,7 +891,7 @@ async function publishMapService() {
       const datasourceAlias = datasource.alias
       // 不发布标注图层
       if (
-        datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1 || // 过滤标注数据源
+        datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1 || // 过滤标注数据源
         datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
       ) {
         continue
@@ -1015,7 +1018,7 @@ async function commit() {
         const serviceData = await SCoordinationUtils.initMapDataWithServiceUDB(datasourceUrl, datasourceName, datasets)
         for (const datasource of serviceData) {
           for (const dataset of datasource.datasets) {
-            let datasourceName = datasource.datasourceName.indexOf('Label_') === 0 ? '' : datasource.datasourceName
+            let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
             downloadToLocal(dataset.datasetUrl, datasourceName)
           }
         }

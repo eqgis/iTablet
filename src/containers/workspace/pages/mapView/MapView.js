@@ -4822,8 +4822,8 @@ export default class MapView extends React.Component {
           onNaviLocationChange={(location, remian) => {
             this.arNavi.onLocationChange(remian)
           }}
-          onAIRecognitionTouch={() => {
-            ToolbarModule.getData()?.actions?.goToPreview?.()
+          onAIRecognitionTouch={info => {
+            ToolbarModule.getData()?.actions?.goToPreview?.([info])
           }}
         />
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderHeader()}

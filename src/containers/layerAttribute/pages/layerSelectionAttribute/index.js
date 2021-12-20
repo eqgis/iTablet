@@ -23,6 +23,8 @@ const mapStateToProps = state => ({
   attributesHistory: state.layers.toJS().attributesHistory,
   map: state.map.toJS(),
   device: state.device.toJS().device,
+  currentTask: state.cowork.toJS().currentTask,
+  currentUser: state.user.toJS().currentUser,
 })
 
 const mapDispatchToProps = {

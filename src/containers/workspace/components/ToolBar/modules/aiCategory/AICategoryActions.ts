@@ -285,7 +285,7 @@ async function save() {
       }
       const mediaData = JSON.stringify({
         type: 'AI_CLASSIFY',
-        mediaName: mediaFileName,
+        recognitionInfos: [_data.selectedCategoryData],
       })
       NavigationService.navigate('MediaEdit', {
         info: {

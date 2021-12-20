@@ -1,5 +1,5 @@
 const Protocol = {
-  PROTOCOL: "超图隐私保护提示",
+  PROTOCOL: "隐私保护提示",
   AGREE: "同意",
   READ_AND_AGREE: "我已阅读并同意上述条款",
   AGAIN:"再次查看",

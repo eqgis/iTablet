@@ -1,4 +1,4 @@
-import { SMap, EngineType, ARLayerType, DatasetType, FiltedData, TDatasetType, TARLayerType } from 'imobile_for_reactnative'
+import { SMap, EngineType, ARLayerType, DatasetType, FiltedData, TDatasetType, TARLayerType, RNFS } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
 import { FileTools, NativeMethod } from '../../../../native'
 import { dataUtil } from '../../../../utils'
@@ -139,6 +139,30 @@ async function _getListByFilter(user: UserInfo, type: LocalDataType) {
   }
   return list
 }
+
+interface IPxpContent {
+  Name: string
+  Workspace: {
+    type: number | string //todo 这里android和ios的类型不一样，暂时在js层做兼容
+    server: string
+  }
+  Type: number //todo
+}
+
+/** 获取3维pxp文件内内容 */
+async function getPxpContent(pxpPath: string): Promise<IPxpContent | null> {
+  const content = await RNFS.readFile(pxpPath)
+  const pxp = JSON.parse(content)
+  if('Name' in pxp && typeof pxp['Name'] === 'string' &&
+   ('Workspace' in pxp && ('type' in pxp['Workspace'] && (typeof pxp['Workspace']['type'] === 'string') || (typeof pxp['Workspace']['type'] === 'number')) &&
+   ('server' in pxp['Workspace'] && typeof pxp['Workspace']['server'] === 'string')) &&
+   'Type' in pxp && typeof pxp['Type'] === 'number'
+  ) {
+    return pxp
+  }
+  return null
+}
+
 
 async function _getLabelDataList(user: UserInfo) {
   const homePath = await FileTools.appendingHomeDirectory()
@@ -469,6 +493,7 @@ async function createPoiSearchDatasource(
 
 export default {
   getLocalData,
+  getPxpContent,
   createDatasourceFile,
   getAvailableFileName,
   getAvailableFileNameNoExt,

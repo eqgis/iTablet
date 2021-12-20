@@ -77,6 +77,8 @@ export default class LayerAttributeTabs extends React.Component {
     currentLayer: Object,
     map: Object,
     device: Object,
+    currentTask: Object,
+    currentUser: Object,
     selection: Array,
     attributesHistory: Array,
     setCurrentAttribute: () => {},
@@ -144,6 +146,8 @@ export default class LayerAttributeTabs extends React.Component {
       isShowSystemFields: true,
       //采集标注后属性为true 默认false add jiakai
       isCollection: params && params.isCollection ? params.isCollection : false, // Selection为空，查询最后一条
+
+      isMediaLayer: false, // 当前图层是否是多媒体图层
     }
 
     // 选择集中当前选中的属性
@@ -156,7 +160,6 @@ export default class LayerAttributeTabs extends React.Component {
     this.currentTabRefs = []
     this.init = !!selectionAttribute
     this.backClicked = false
-    this.isMediaLayer = false // 是否是多媒体图层
   }
 
   async componentDidMount() {
@@ -219,8 +222,8 @@ export default class LayerAttributeTabs extends React.Component {
       }else {
         layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
       }
-      this.isMediaLayer = await SMediaCollector.isMediaLayer(layerInfo.name)
       this.setState({
+        isMediaLayer: await SMediaCollector.isMediaLayer(layerInfo.name),
         isShowView: true,
       })
     } catch(e) {
@@ -640,7 +643,7 @@ export default class LayerAttributeTabs extends React.Component {
     })
   }
 
-  drawerOnChange = ({ index }) => {
+  drawerOnChange = async({ index }) => {
     if (this.state.currentTabIndex !== index) {
       this.currentTabRefs &&
         this.currentTabRefs[this.state.currentTabIndex] &&
@@ -662,7 +665,9 @@ export default class LayerAttributeTabs extends React.Component {
           canBeRevert: false,
         }
       }
-      this.setState(Object.assign(newState, toolVisible))
+      const layerInfo = this.props.selection[index].layerInfo
+      const isMediaLayer = await SMediaCollector.isMediaLayer(layerInfo.name)
+      this.setState(Object.assign(newState, toolVisible, {isMediaLayer}))
     }
 
     let timer = setTimeout(() => {
@@ -1034,7 +1039,7 @@ export default class LayerAttributeTabs extends React.Component {
         <LayerTopBar
           hasTabBtn
           hasAddField={!GLOBAL.coworkMode}
-          hasCamera={GLOBAL.coworkMode && this.isMediaLayer || !GLOBAL.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
+          hasCamera={GLOBAL.coworkMode && this.state.isMediaLayer || !GLOBAL.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
           orientation={this.props.device.orientation}
           tabsAction={this.showDrawer}
           canLocated={this.state.attributes.data.length > 1}
@@ -1052,8 +1057,14 @@ export default class LayerAttributeTabs extends React.Component {
           islayerSelection={true}
           type={this.type}
           attributes={this.state.attributes}
-          // layerName={this.props.currentLayer.name}
-          layerName={this.props.selection?.[this.state.currentTabIndex]?.layerInfo?.name || this.props.currentLayer.name}
+          currentTask={this.props.currentTask}
+          currentUser={this.props.currentUser}
+          layerInfo={
+            this.props.selection?.[this.state.currentTabIndex]?.layerInfo?.name
+              ? this.props.selection?.[this.state.currentTabIndex]?.layerInfo
+              : this.props.currentLayer
+          }
+          // layerName={this.props.selection?.[this.state.currentTabIndex]?.layerInfo?.name || this.props.currentLayer.name}
         />
         {this.state.isShowView && (
           <View

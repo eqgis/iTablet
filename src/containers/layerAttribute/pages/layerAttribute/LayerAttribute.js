@@ -76,6 +76,8 @@ export default class LayerAttribute extends React.Component {
     setAttributeHistory: () => {},
     clearAttributeHistory: () => {},
     device: Object,
+    currentTask: Object,
+    currentUser: Object,
   }
 
   constructor(props) {
@@ -1608,7 +1610,7 @@ export default class LayerAttribute extends React.Component {
         headerProps={{
           title: this.props.mapModules.modules[
             this.props.mapModules.currentMapModule
-          ].chunk.title,
+          ].chunk?.title || '',
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../../../assets/mapTools/icon_close.png'),
@@ -1647,7 +1649,10 @@ export default class LayerAttribute extends React.Component {
             refreshAction={this.refreshAction}
             layerAttribute={true}
             attributes={this.state.attributes}
-            layerName={this.props.currentLayer.name}
+            // layerName={this.props.currentLayer.name}
+            layerInfo={this.props.currentLayer}
+            currentTask={this.props.currentTask}
+            currentUser={this.props.currentUser}
           />
         )}
         <View

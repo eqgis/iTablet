@@ -51,6 +51,29 @@ async function searchLayerAttribute(
 }
 
 /**
+ * 搜索我的数据中对象的属性
+ * @param attributes
+ * @param path
+ * @param params
+ * @param page
+ * @param size
+ * @param type
+ * @returns {Promise.<*>}
+ */
+async function searchMyDataAttribute(
+  attributes,
+  path,
+  params = {},
+  page,
+  size,
+  type = 'loadMore',
+) {
+  const data = await SMap.searchMyDataAttribute(path, params, page, size)
+
+  return dealData(attributes, data, page, type)
+}
+
+/**
  * 搜索指定图层中Selection匹配对象的属性
  * @param attributes
  * @param path
@@ -569,6 +592,7 @@ export default {
   getLayerAttribute,
   searchLayerAttribute,
   searchSelectionAttribute,
+  searchMyDataAttribute,
   getSelectionAttributeByLayer,
   deleteSelectionAttributeByLayer,
   deleteAttributeByLayer,

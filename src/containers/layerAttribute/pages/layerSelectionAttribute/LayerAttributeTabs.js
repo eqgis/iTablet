@@ -291,10 +291,13 @@ export default class LayerAttributeTabs extends React.Component {
   }
 
   goToSearch = () => {
+    let myData = this.type === 'MY_DATA' ? true : false
+    let isSelection = this.type === 'MY_DATA' ? false : true
     NavigationService.navigate('LayerAttributeSearch', {
       layerPath: this.props.selection[this.state.currentTabIndex].layerInfo
         .path,
-      isSelection: true,
+      isSelection: isSelection,
+      myData:myData,
     })
   }
 

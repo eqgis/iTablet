@@ -379,33 +379,33 @@ class GroupFriendListPage extends Component<Props, State> {
         {
           (this.state.isManage || this.mode === 'multiSelect') &&
           (
-            this.props.user.currentUser.userName !== item.userName
-              ? (
-                <CheckBox
-                  type={'circle'}
-                  style={styles.checkBtn}
-                  checked={!!this.state.selectedMembers.get(item.userName + '')}
-                  onChange={value => {
-                    this.setState(state => {
-                      const selected = new Map(state.selectedMembers)
-                      const isSelected = selected.has(item.userName + '')
-                      if (value && !isSelected) {
-                        selected.set(item.userName + '', item)
-                      } else {
-                        selected.delete(item.userName + '')
-                      }
-                      return { selectedMembers: selected }
-                    })
-                  }}
-                />
-              )
-              : (
-                <View style={{
-                  marginLeft: scaleSize(32),
-                  height: scaleSize(30),
-                  width: scaleSize(30),
-                }} />
-              )
+            // this.props.user.currentUser.userName !== item.userName
+            //   ? (
+            <CheckBox
+              type={'circle'}
+              style={styles.checkBtn}
+              checked={!!this.state.selectedMembers.get(item.userName + '')}
+              onChange={value => {
+                this.setState(state => {
+                  const selected = new Map(state.selectedMembers)
+                  const isSelected = selected.has(item.userName + '')
+                  if (value && !isSelected) {
+                    selected.set(item.userName + '', item)
+                  } else {
+                    selected.delete(item.userName + '')
+                  }
+                  return { selectedMembers: selected }
+                })
+              }}
+            />
+            // )
+            // : (
+            //   <View style={{
+            //     marginLeft: scaleSize(32),
+            //     height: scaleSize(30),
+            //     width: scaleSize(30),
+            //   }} />
+            // )
           )
         }
         <Image
@@ -478,7 +478,7 @@ class GroupFriendListPage extends Component<Props, State> {
               this.setState(state => {
                 const selected = new Map(state.selectedMembers)
                 this.state.allData.forEach(item => {
-                  if (this.props.user.currentUser.userName === item.userName) return
+                  // if (this.props.user.currentUser.userName === item.userName) return
                   const isSelected = selected.has(item.userName + '')
                   if (value && !isSelected) {
                     selected.set(item.userName + '', item)

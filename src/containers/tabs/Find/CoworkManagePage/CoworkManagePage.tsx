@@ -103,7 +103,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
 
               NavigationService.navigate('GroupFriendListPage', {
                 mode: 'multiSelect', // 多选模式
-                includeMe: false, // 是否包含当前用户
+                includeMe: true, // 是否包含当前用户
                 hasSettingBtn: false, // 是否含有右上角设置按钮
                 callBack: async (members: any) => {
                   NavigationService.goBack('SelectModulePage', null)

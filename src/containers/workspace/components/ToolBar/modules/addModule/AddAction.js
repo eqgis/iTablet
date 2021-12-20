@@ -125,11 +125,11 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     // 数据集列表点击事件
     let data = ToolbarModule.getData()
-    if (data && data.selectList) {
-      data = Object.assign(data.selectList, params.selectList)
-    } else {
-      data = Object.assign(data, { selectList: params.selectList })
-    }
+    // if (data && data.selectList) {
+    //   data = Object.assign(data.selectList, params.selectList)
+    // } else {
+    data = Object.assign(data || {}, { selectList: params.selectList })
+    // }
     ToolbarModule.addData(data)
   }
 }

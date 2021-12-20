@@ -151,6 +151,7 @@ const Profile: typeof CN.Profile = {
   LOCAL: "ローカル",
   SAMPLEDATA: "サンプルデータ",
   ON_DEVICE: "外部データ",
+  USER_DATA: "User Data", // need to translate
   EXPORT_DATA: "データのエクスポート",
   IMPORT_DATA: "データのインポート",
   UPLOAD_DATA: "データのシェア",

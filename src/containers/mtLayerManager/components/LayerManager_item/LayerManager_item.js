@@ -736,7 +736,12 @@ export default class LayerManager_item extends React.Component {
         </View>
         <View style={styles.text_container}>
           <Text numberOfLines={2} style={[styles.text, { color: selectcolor }]}>{name}</Text>
-          <Text numberOfLines={1} style={[styles.text, { fontSize: setSpText(20), color: this.props.isSelected ? selectcolor : color.fontColorGray }]}>{this.state.data.datasourceAlias + ' - ' + this.state.data.datasetName}</Text>
+          {
+            this.state.data.datasourceAlias && this.state.data.datasetName &&
+            <Text numberOfLines={1} style={[styles.text, { fontSize: setSpText(20), color: this.props.isSelected ? selectcolor : color.fontColorGray }]}>
+              {this.state.data.datasourceAlias + ' - ' + this.state.data.datasetName}
+            </Text>
+          }
         </View>
         <TouchableOpacity style={styles.btn} onPress={this._tool_row}>
           <Image

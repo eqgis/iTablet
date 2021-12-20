@@ -36,6 +36,7 @@ const RelativePath = {
   ARDatasource: `${Data}ARDatasource/`,
   Color: `${Data}Color/`,
   Temp: `${Data}Temp/`, // 临时文件
+  UserData: `${Data}UserData/`, // 用户地图数据
   AIModel: `${Data}AIModel/`,
   ARModel: `${Data}ARModel/`,
   AREffect: `${Data}AREffect/`,

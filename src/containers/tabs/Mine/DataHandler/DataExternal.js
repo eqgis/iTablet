@@ -16,6 +16,9 @@ const iconv = require('iconv-lite')
 async function getExternalData(path, types = [], uncheckedChildFileList = []) {
   let resultList = []
   try {
+    if (path.lastIndexOf('/') === path.length - 1) {
+      path = path.substring(0, path.length - 1)
+    }
     const contentList = await _getDirectoryContentDeep(path)
 
     let PL = []

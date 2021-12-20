@@ -82,14 +82,21 @@ export default class MyLocalData extends Component {
       let sectionData = []
       let cacheData = []
       let userData = []
+      let externalData = []
       let onlineData = []
       let homePath = GLOBAL.homePath
       let cachePath = homePath + ConstPath.CachePath2
-      let userPath =
+      let externalPath =
         homePath +
         ConstPath.ExternalData
+      let userPath = await FileTools.appendingHomeDirectory(
+        `${ConstPath.UserPath + this.props.user.currentUser.userName}/${
+          ConstPath.RelativePath.UserData
+        }`,
+      )
 
       let cachePromise = DataHandler.getExternalData(cachePath)
+      let externalPromise = DataHandler.getExternalData(externalPath)
       let userPromise = DataHandler.getExternalData(userPath)
       this.currentPage = 1
       let onlineDataPromise = getOnlineData(
@@ -104,11 +111,13 @@ export default class MyLocalData extends Component {
       let result = await new Promise.all([
         cachePromise,
         userPromise,
+        externalPromise,
         onlineDataPromise,
       ])
       cacheData = result[0]
       userData = result[1]
-      onlineData = result[2]
+      externalData = result[2]
+      onlineData = result[3]
       if (cacheData.length > 0) {
         sectionData.push({
           title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
@@ -119,8 +128,16 @@ export default class MyLocalData extends Component {
       }
       if (userData.length > 0) {
         sectionData.push({
-          title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
+          title: getLanguage(GLOBAL.language).Profile.USER_DATA,
           data: userData,
+          isShowItem: true,
+          dataType: 'user',
+        })
+      }
+      if (externalData.length > 0) {
+        sectionData.push({
+          title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
+          data: externalData,
           isShowItem: true,
           dataType: 'external',
         })

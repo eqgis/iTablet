@@ -149,7 +149,7 @@ export default class SourceItem extends Component<Props, State> {
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
-      ConstPath.RelativePath.Temp +
+      ConstPath.RelativePath.UserData +
       this.props.data.resourceName
 
     this.downloadingPath =
@@ -157,7 +157,7 @@ export default class SourceItem extends Component<Props, State> {
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
-      ConstPath.RelativePath.Temp +
+      ConstPath.RelativePath.UserData +
       this.props.data.resourceId
 
     let exist = await FileTools.fileIsExist(this.downloadingPath + '_')

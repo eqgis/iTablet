@@ -40,6 +40,7 @@ export default class LayerAttributeSearch extends React.Component {
     this.type = params && params.type
     this.layerPath = params && params.layerPath
     this.isSelection = (params && params.isSelection) || false
+    this.myData = (params && params.myData) || false
     this.cb = params && params.cb
     this.state = {
       attributes: {
@@ -100,11 +101,22 @@ export default class LayerAttributeSearch extends React.Component {
       attributes = []
     ;(async function() {
       try {
-        if (this.isSelection) {
+        if (this.isSelection && !this.myData) {
           result = await LayerUtils.searchSelectionAttribute(
             this.state.attributes,
             this.layerPath,
             searchKey,
+            this.currentPage,
+            PAGE_SIZE,
+            type,
+          )
+        }else if (this.myData && !this.isSelection){
+          result = await LayerUtils.searchMyDataAttribute(
+            this.state.attributes,
+            this.layerPath,
+            {
+              key: searchKey,
+            },
             this.currentPage,
             PAGE_SIZE,
             type,

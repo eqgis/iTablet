@@ -1825,7 +1825,7 @@ export default class MapView extends React.Component {
 
         // 在线协作-若整个地图数据已发布服务-则初始化数据源-数据集为服务数据
         const service = this.props.navigation.state?.params?.service
-        if (GLOBAL.coworkMode && this.props.navigation.state?.params?.service) {
+        if (GLOBAL.coworkMode && this.props.navigation.state?.params?.service && GLOBAL.Type !== ChunkType.MAP_PLOTTING) {
           await SCoordinationUtils.initMapDataWithService(service.address)
           await ServiceAction.downloadService(service.address)
         }

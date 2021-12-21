@@ -50,7 +50,7 @@ async function commit(type) {
           //协作时同步编辑对象
           if (GLOBAL.coworkMode && GLOBAL.getFriend) {
             let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
-            let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+            let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
             if (isRealTime) {
               let event = ToolbarModule.getData().event
               //TODO 增加类型判断

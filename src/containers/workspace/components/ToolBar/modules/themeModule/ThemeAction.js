@@ -1899,7 +1899,7 @@ function sendUpdateThemeMsg(layerInfo) {
     if (layerType !== 'TAGGINGLAYER') {
       const params = ToolbarModule.getParams()
       let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
-      let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+      let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
       let friend = GLOBAL.getFriend()
       isRealTime && friend.onThemeEdit(layerInfo)
     }
@@ -1911,7 +1911,7 @@ function sendAddThemeMsg(layerInfo) {
   if (GLOBAL.coworkMode && GLOBAL.getFriend) {
     const params = ToolbarModule.getParams()
     let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
-    let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+    let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
     let friend = GLOBAL.getFriend()
     isRealTime && friend.onThemeLayerAdd(layerInfo)
   }

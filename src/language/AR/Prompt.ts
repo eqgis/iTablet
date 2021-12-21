@@ -10,6 +10,7 @@ const Prompt: typeof CN.Prompt = {
   SAVE_NO: "لا",
   CANCEL: "الغاء",
   COMMIT: "إرسال",
+  SUBMIT: "إرسال",
   REDO: "إعادة",
   UNDO: "الغاء",
   SHARE: "مشاركة",
@@ -177,6 +178,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED: "فشل النشر",
   PUBLISH_FAILED_INFO_1: "تم نشر هذه الخدمة",
   PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
+  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
   DELETE_CONFIRM: "هل أنت متأكد أنك تريد حذف العنصر؟",
   BATCH_DELETE_CONFIRM: "هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟",
   WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate

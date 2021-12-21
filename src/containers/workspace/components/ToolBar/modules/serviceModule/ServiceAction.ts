@@ -28,6 +28,10 @@ import DataHandler from '../../../../../tabs/Mine/DataHandler'
 const SERVICE_TAGGING_PRE_NAME = 'Tagging_'
 const LABEL_PRE_NAME = 'Label_'
 
+const updateHandlers: {
+  [key: string]: (data?: any) => void,
+} = {}
+
 async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
   const labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
@@ -150,7 +154,15 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           },
         })
       }
+      if (res.content?.urlDataset && updateHandlers[res.content.urlDataset]) {
+        await updateHandlers[res.content.urlDataset](res.content.urlDataset)
+        delete updateHandlers[res.content.urlDataset]
+      }
     } catch (error) {
+      if (res.content?.urlDataset && updateHandlers[res.content.urlDataset]) {
+        await updateHandlers[res.content.urlDataset](res.content.urlDataset)
+        delete updateHandlers[res.content.urlDataset]
+      }
       Toast.show(getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED)
     }
   },
@@ -367,7 +379,7 @@ async function listAction(type: string, params: any = {}) {
 
 async function downloadService(url: string) {
   try {
-    if (!url) return
+    if (!url) return false
     const _params: any = ToolbarModule.getParams()
 
     _params.setToolbarVisible(false)
@@ -391,8 +403,9 @@ async function downloadService(url: string) {
       taskId: _params.currentTask.id,
       service: services,
     })
+    return true
   } catch (error) {
-    
+    return false
   }
 }
 
@@ -443,7 +456,7 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
  */
 async function updateToLocal (layerData: {
   url: string, datasourceAlias?: string, datasetName?: string,
-}) {
+}, cb?: (result: boolean) => void) {
   const _params: any = ToolbarModule.getParams()
   if (!layerData.url) {
     Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
@@ -513,6 +526,7 @@ async function updateToLocal (layerData: {
       },
     })
   } finally {
+    cb && cb(result)
     return result
   }
 }
@@ -914,7 +928,10 @@ async function publishMapService() {
           groupId: _params.currentGroup.id,
           groupName: _params.currentGroup.groupName,
         }])
-        publishResult.content.length > 0 && await SCoordinationUtils.initMapDataWithService(publishResult.content[0].proxiedUrl)
+        if (publishResult.content.length > 0) {
+          await downloadService(publishResult.content[0].proxiedUrl) // 发布后,更新本地服务,生成_Table文件
+          // await SCoordinationUtils.initMapDataWithService(publishResult.content[0].proxiedUrl)
+        }
       } catch (error) {
         continue
       }

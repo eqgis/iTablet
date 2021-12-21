@@ -131,11 +131,54 @@ async function getData(type: string, params: any) {
           key: 'submit_service',
           title: getLanguage(GLOBAL.language).Cowork.SUBMIT_SERVICE,
           action: ({ layerData }: ActionParams) => {
+            const _params: any = ToolbarModule.getParams()
             const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
             if (datasetDescription?.type !== 'onlineService') {
               return
             }
-            ServiceAction.uploadToService({
+            let exist = false
+            if (
+              _params.currentTask?.groupID &&
+              _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params?.currentTask?.groupID]?.[_params?.currentTask?.id]?.messages
+            ) {
+              const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+              if (dsDescription.url && dsDescription?.type === 'onlineService') {
+                const currentCoworkMessage = _params.coworkInfo[_params.user.currentUser.userName][_params.currentTask.groupID][_params.currentTask.id].messages
+                if (currentCoworkMessage?.length > 0) {
+                  for (const message of currentCoworkMessage) {
+                    if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
+                      exist = true
+                      GLOBAL.SimpleDialog.set({
+                        text: getLanguage(GLOBAL.language).Prompt.SERVICE_SUBMIT_BEFORE_UPDATE,
+                        cancelText: getLanguage(GLOBAL.language).Prompt.CANCEL,
+                        cancelAction: async () => {
+                          GLOBAL.Loading.setLoading(false)
+                        },
+                        confirmText: getLanguage(GLOBAL.language).Prompt.SUBMIT,
+                        confirmAction: async () => {
+                          ServiceAction.updateToLocal({
+                            url: datasetDescription.url,
+                            datasourceAlias: layerData.datasourceAlias,
+                            datasetName: layerData.datasetName,
+                          }, result => {
+                            ServiceAction.uploadToService({
+                              // layerName: layerData.name,
+                              url: datasetDescription.url,
+                              datasourceAlias: layerData.datasourceAlias,
+                              datasetName: layerData.datasetName,
+                              onlineDatasourceAlias: datasetDescription.datasourceAlias,
+                            })
+                          })
+                        },
+                      })
+                      GLOBAL.SimpleDialog.setVisible(true)
+                      break
+                    }
+                  }
+                }
+              }
+            }
+            !exist && ServiceAction.uploadToService({
               // layerName: layerData.name,
               url: datasetDescription.url,
               datasourceAlias: layerData.datasourceAlias,

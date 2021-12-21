@@ -192,7 +192,7 @@ async function commit(type) {
             GLOBAL.NEEDREFRESHTABLE = true
             if (GLOBAL.coworkMode && GLOBAL.getFriend) {
               let currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
-              let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+              let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
               if (isRealTime) {
                 let layerType = LayerUtils.getLayerType(currentLayer)
                 if (layerType !== 'TAGGINGLAYER') {
@@ -211,7 +211,7 @@ async function commit(type) {
           try {
             if (GLOBAL.coworkMode && GLOBAL.getFriend) {
               let currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
-              let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+              let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
               if (isRealTime) {
                 let event = ToolbarModule.getData().event
                 let layerType = LayerUtils.getLayerType(event.layerInfo)

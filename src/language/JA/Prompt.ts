@@ -10,6 +10,7 @@ const Prompt: typeof CN.Prompt = {
   SAVE_NO: "保存しない",
   CANCEL: "キャンセル",
   COMMIT: "コミット",
+  SUBMIT: "コミット",
   REDO: "やり直す",
   UNDO: "取り消す",
   SHARE: "シェア",
@@ -177,6 +178,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED: "配信に失敗",
   PUBLISH_FAILED_INFO_1: "当サービスは配信されています",
   PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
+  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
   DELETE_CONFIRM: "現在データを削除しますか？",
   BATCH_DELETE_CONFIRM: "現在の選択データを削除しますか？",
   WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate

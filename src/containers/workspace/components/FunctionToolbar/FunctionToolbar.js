@@ -551,7 +551,7 @@ export default class FunctionToolbar extends React.Component {
    * @returns
    */
   _renderLoading = ({ item, index }) => {
-    if (this.state.isServiceLoading && item.type === ConstToolType.SM_MAP_SERVICE_UPDATE) {
+    if (this.state.isServiceLoading && item.type === ConstToolType.SM_MAP_SERVICE) {
       return (
         <Animated.Image
           resizeMode={'contain'}

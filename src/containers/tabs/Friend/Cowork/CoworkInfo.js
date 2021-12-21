@@ -166,7 +166,11 @@ export default class CoworkInfo {
           Toast.show(getLanguage(GLOBAL.language).Friends.ADD_DELETE_ERROR)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE || type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
         let url = message.message.serviceUrl
-        result = await serviceModule().actions.downloadToLocal(url, message?.message?.DatasourceAlias)
+        if (url.endsWith('/rest') && url.indexOf('/rest/data/datasources/') === -1) { // 下载地图服务
+          result = await serviceModule().actions.downloadService(url)
+        } else { // 下载数据集服务
+          result = await serviceModule().actions.downloadToLocal(url, message?.message?.datasourceAlias)
+        }
         result && this.consumeMessage(message.messageID)
       }
       return result
@@ -295,7 +299,11 @@ export default class CoworkInfo {
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
         let url = message.message.serviceUrl
-        result = await serviceModule().actions.downloadToLocal(url, message?.message?.datasourceAlias)
+        if (url.endsWith('/rest') && url.indexOf('/rest/data/datasources/') === -1) { // 下载地图服务
+          result = await serviceModule().actions.downloadService(url)
+        } else { // 下载数据集服务
+          result = await serviceModule().actions.downloadToLocal(url, message?.message?.datasourceAlias)
+        }
         result && this.consumeMessage(message.messageID)
       }
       return result

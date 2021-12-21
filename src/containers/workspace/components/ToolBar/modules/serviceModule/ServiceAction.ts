@@ -367,7 +367,7 @@ async function listAction(type: string, params: any = {}) {
 
 async function downloadService(url: string) {
   try {
-    if (!url) return
+    if (!url) return false
     const _params: any = ToolbarModule.getParams()
 
     _params.setToolbarVisible(false)
@@ -391,8 +391,9 @@ async function downloadService(url: string) {
       taskId: _params.currentTask.id,
       service: services,
     })
+    return true
   } catch (error) {
-    
+    return false
   }
 }
 
@@ -914,7 +915,10 @@ async function publishMapService() {
           groupId: _params.currentGroup.id,
           groupName: _params.currentGroup.groupName,
         }])
-        publishResult.content.length > 0 && await SCoordinationUtils.initMapDataWithService(publishResult.content[0].proxiedUrl)
+        if (publishResult.content.length > 0) {
+          await downloadService(publishResult.content[0].proxiedUrl) // 发布后,更新本地服务,生成_Table文件
+          // await SCoordinationUtils.initMapDataWithService(publishResult.content[0].proxiedUrl)
+        }
       } catch (error) {
         continue
       }

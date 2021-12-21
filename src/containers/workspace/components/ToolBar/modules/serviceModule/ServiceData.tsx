@@ -37,26 +37,27 @@ async function getData(type: string, params: any) {
         // let services = []
         const mapName = params.map?.currentMap?.name?.replace(/_[0-9]+$/g, '') || ''
         result.content.forEach(item => {
-          let exist = false
-          // 查询服务所在数据源是否在当前地图已经打开
-          // 若没打开,则过滤掉
-          for (const datasource of datasources) {
-            let serviceUDBName = item.resourceName.substring(item.resourceName.indexOf('_') + 1, item.resourceName.lastIndexOf('_'))
-            // 判断是否发布时,本地打包的名字自动添加了 -数字- 后缀
-            const reg = /-[0-9]+-$/
-            serviceUDBName = serviceUDBName.replace(reg, '')
-            if (
-              exist ||
-              serviceUDBName.toLocaleLowerCase() === mapName.toLocaleLowerCase() || // 服务数据是地图数据
-              serviceUDBName.toLocaleLowerCase() === datasource.alias.toLocaleLowerCase() || // 服务数据是数据源数据
-              serviceUDBName.toLocaleLowerCase().indexOf('tagging_') === 0 ||
-              serviceUDBName.toLocaleLowerCase().indexOf('default_tagging') === 0
-            ) {
-              exist = true
-              break
-            }
-          }
-          exist && _data.push({
+          // let exist = false
+          // // 查询服务所在数据源是否在当前地图已经打开
+          // // 若没打开,则过滤掉
+          // for (const datasource of datasources) {
+          //   let serviceUDBName = item.resourceName.substring(item.resourceName.indexOf('_') + 1, item.resourceName.lastIndexOf('_'))
+          //   // 判断是否发布时,本地打包的名字自动添加了 -数字- 后缀
+          //   const reg = /-[0-9]+-$/
+          //   serviceUDBName = serviceUDBName.replace(reg, '')
+          //   if (
+          //     exist ||
+          //     serviceUDBName.toLocaleLowerCase() === mapName.toLocaleLowerCase() || // 服务数据是地图数据
+          //     serviceUDBName.toLocaleLowerCase() === datasource.alias.toLocaleLowerCase() || // 服务数据是数据源数据
+          //     serviceUDBName.toLocaleLowerCase().indexOf('tagging_') === 0 ||
+          //     serviceUDBName.toLocaleLowerCase().indexOf('default_tagging') === 0
+          //   ) {
+          //     exist = true
+          //     break
+          //   }
+          // }
+          // exist &&
+          _data.push({
             key: item.resourceId,
             title: item.resourceName,
             subTitle: new Date(item.createTime).Format("yyyy-MM-dd hh:mm:ss"),

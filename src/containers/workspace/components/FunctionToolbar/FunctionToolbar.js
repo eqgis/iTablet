@@ -376,10 +376,10 @@ export default class FunctionToolbar extends React.Component {
               )
               return
             }
-            const layerType = LayerUtils.getLayerType(this.props.currentLayer)
-            const isTaggingLayer = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
+            // const layerType = LayerUtils.getLayerType(this.props.currentLayer)
+            // const isTaggingLayer = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
             const isMediaLayer = await SMediaCollector.isMediaLayer(this.props.currentLayer.name)
-            if (isTaggingLayer && isMediaLayer) {
+            if (isMediaLayer) {
               const { datasourceAlias } = this.props.currentLayer // 标注数据源名称
               const { datasetName } = this.props.currentLayer // 标注图层名称
               NavigationService.navigate('Camera', {

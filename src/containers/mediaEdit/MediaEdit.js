@@ -87,7 +87,7 @@ export default class MediaEdit extends React.Component {
       title: title,
       showDelete: false,
       showBg: false,
-      category:this.info.category? this.info.category : '',
+      category:this.info.mediaData.category? this.info.mediaData.category : '',
     }
     this.mediaItemRef = []
     this.modifiedData = {} // 修改的信息
@@ -455,7 +455,6 @@ export default class MediaEdit extends React.Component {
           mediaIds: this._ids,
           location: this.info.location,
           description: description,
-          category:this.state.category,
           mediaData: JSON.stringify(this.state.mediaData),
           mediaType: this.showInfo.mediaData.type || '',
         })
@@ -844,6 +843,9 @@ export default class MediaEdit extends React.Component {
           {
             category += (category ? ',' : '') + recognitionInfo.label + (count > 1 ? '(' + count + ')' : '')
           }
+          if(this.state.mediaData?.category){
+            category = this.state.mediaData.category
+          }
         }
       }
     }
@@ -855,15 +857,18 @@ export default class MediaEdit extends React.Component {
         })} */}
         {this.renderItem({
           title: getLanguage(this.props.language).AI.CATEGORY,
-          value: this.state.category ? this.state.category:category,
+          value: this.state.category ? this.state.category : category,
           type: 'arrow',
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.category ? this.state.category:category,
               headerTitle: getLanguage(GLOBAL.language).AI.CATEGORY,
               cb: async value => {
+                let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
+                mediaData.category = value
                 this.setState({
                   category: value,
+                  mediaData: mediaData,
                 })
                 NavigationService.goBack()
               },
@@ -1083,11 +1088,14 @@ export default class MediaEdit extends React.Component {
         category += (category ? ',' : '') + recognitionInfo.label
       }
     }
+    if(this.state.mediaData?.category){
+      category = this.state.mediaData.category
+    }
     return (
       <>
         {this.renderItem({
           title: getLanguage(this.props.language).AI.CATEGORY,
-          value: category,
+          value: this.state.category? this.state.category:category,
           type: 'arrow',
           action: () => {
             NavigationService.navigate('InputPage', {
@@ -1095,8 +1103,11 @@ export default class MediaEdit extends React.Component {
               headerTitle: getLanguage(GLOBAL.language).Map_Label.CATEGORY,
               type: 'name',
               cb: async value => {
+                let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
+                mediaData.category = value
                 this.setState({
-                  mediaName: value,
+                  category: value,
+                  mediaData: mediaData,
                 })
                 NavigationService.goBack('InputPage')
               },

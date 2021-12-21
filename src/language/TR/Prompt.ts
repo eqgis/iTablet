@@ -10,6 +10,7 @@ const Prompt: typeof CN.Prompt = {
   SAVE_NO: "Hayır",
   CANCEL: "İptal",
   COMMIT: "Uygula",
+  SUBMIT: "Gönder",
   REDO: "Yeniden yap",
   UNDO: "Geri al",
   SHARE: "Paylaş",
@@ -177,6 +178,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED: "Yayınlama Başarısız",
   PUBLISH_FAILED_INFO_1: "Servis yayınlandı",
   PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
+  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
   DELETE_CONFIRM: "Öğeyi silmek istediğinizden emin misiniz?",
   BATCH_DELETE_CONFIRM: "Seçili öğe(ler)i silmek istediğinizden emin misiniz?",
   WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate

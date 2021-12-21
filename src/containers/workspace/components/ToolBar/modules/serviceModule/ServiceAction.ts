@@ -28,6 +28,10 @@ import DataHandler from '../../../../../tabs/Mine/DataHandler'
 const SERVICE_TAGGING_PRE_NAME = 'Tagging_'
 const LABEL_PRE_NAME = 'Label_'
 
+const updateHandlers: {
+  [key: string]: (data?: any) => void,
+} = {}
+
 async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
   const labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
@@ -150,7 +154,15 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           },
         })
       }
+      if (res.content?.urlDataset && updateHandlers[res.content.urlDataset]) {
+        await updateHandlers[res.content.urlDataset](res.content.urlDataset)
+        delete updateHandlers[res.content.urlDataset]
+      }
     } catch (error) {
+      if (res.content?.urlDataset && updateHandlers[res.content.urlDataset]) {
+        await updateHandlers[res.content.urlDataset](res.content.urlDataset)
+        delete updateHandlers[res.content.urlDataset]
+      }
       Toast.show(getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED)
     }
   },
@@ -444,7 +456,7 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
  */
 async function updateToLocal (layerData: {
   url: string, datasourceAlias?: string, datasetName?: string,
-}) {
+}, cb?: (result: boolean) => void) {
   const _params: any = ToolbarModule.getParams()
   if (!layerData.url) {
     Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
@@ -514,6 +526,7 @@ async function updateToLocal (layerData: {
       },
     })
   } finally {
+    cb && cb(result)
     return result
   }
 }

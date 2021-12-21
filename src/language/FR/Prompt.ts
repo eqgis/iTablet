@@ -10,6 +10,7 @@ const Prompt: typeof CN.Prompt = {
   SAVE_NO: "Non",
   CANCEL: "Annuler",
   COMMIT: "Commettre",
+  SUBMIT: "Soumettre",
   REDO: "Refaire",
   UNDO: "Annuler",
   SHARE: "Partage",
@@ -177,6 +178,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED: "Échec de la publication",
   PUBLISH_FAILED_INFO_1: "Le service a été publié",
   PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
+  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
   DELETE_CONFIRM: "Voulez-vous vraiment supprimer l'élément?",
   BATCH_DELETE_CONFIRM: "Voulez-vous vraiment supprimer les éléments sélectionnés?",
   WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate

@@ -191,7 +191,7 @@ export default class MapSetting extends Component {
             }}
             // value={this.state.isRealTime}
             value={
-              this.props.currentTaskInfo?.isRealTime === undefined ? true : this.props.currentTaskInfo.isRealTime
+              this.props.currentTaskInfo?.isRealTime === undefined ? false : this.props.currentTaskInfo.isRealTime
             }
             leftImage={getThemeAssets().setting.icon_horizontal_screen}
           />

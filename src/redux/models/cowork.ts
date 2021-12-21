@@ -731,7 +731,7 @@ function getTaskInfo(
       messages: [],
       prevMessages: [],
       unread: 0,
-      isRealTime: true,
+      isRealTime: false,
       members: [],
     }
   }
@@ -970,6 +970,10 @@ function initMessages(userMessages: MessageType) {
   return userMessages
 }
 
+function isServiceMsg(type: number) {
+  return type === MsgConstant.MSG_COWORK_SERVICE_UPDATE || type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH
+}
+
 export interface MessageType {
   applyMessages: {
     unread: number,
@@ -1021,7 +1025,7 @@ const initialState = fromJS({
    *          messages: [],        // 添加到地图上的消息
    *          prevMessages: [],    // 未添加到地图上的消息
    *          unread: 0,
-   *          isRealTime: true,    // 是否是实时添加
+   *          isRealTime: false,    // 是否是实时添加
    *          members: [],         // 本地储存的成员，
    *        }
    *      }
@@ -1384,7 +1388,7 @@ export default handleActions(
     [`${COWORK_TASK_INFO_ADD}`]: (state: any, { payload, userId }: any) => {
       let coworkInfo = state.toJS().coworkInfo
       let taskInfo = getTaskInfo(coworkInfo, userId, payload.user.coworkGroupId, payload.user.groupID, true)
-      if (!taskInfo.isRealTime) {
+      if (!taskInfo.isRealTime && !isServiceMsg(payload.message.type)) {
         // coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
         return state
       }

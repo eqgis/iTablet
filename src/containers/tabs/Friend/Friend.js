@@ -1194,7 +1194,7 @@ export default class Friend extends Component {
           this.lastLocation = location
         })
         // let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
-        // let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+        // let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
         // if (
         //   isRealTime &&
         //   // CoworkInfo.isRealTime &&

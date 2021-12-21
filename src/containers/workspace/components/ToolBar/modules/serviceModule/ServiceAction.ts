@@ -36,10 +36,10 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
     SMap.refreshMap()
     await _params.getLayers()
     SMediaCollector.showMedia(resultArr[0].layerName, false)
-    Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
+    // Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
     _params.setToolbarVisible(false)
   } else {
-    Toast.show(datasetName + getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+    // Toast.show(datasetName + getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
     SMap.refreshMap()
   }
 }
@@ -70,7 +70,11 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
     ) {
       const params: any = ToolbarModule.getParams()
       let isAdded = false
-      for (let layer of params.layers.layers) {
+      let layers = params.layers.layers
+      if (!params.layers.layers || params.layers.layers.length === 0) {
+        layers = await params.getLayers()
+      }
+      for (let layer of layers) {
         if (layer.datasetName === datasetName) {
           isAdded = true
           break
@@ -107,7 +111,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
       if (res?.error?.reason) {
         msg = res?.error?.reason
       }
-      Toast.show(res?.content?.dataset + msg)
+      // Toast.show(res?.content?.dataset + msg)
       const params: any = ToolbarModule.getParams()
       if (res.result && res.content?.dataset) {
         for (let layer of params.layers.layers) {

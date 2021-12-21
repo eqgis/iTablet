@@ -13,6 +13,7 @@ import { Toast, scaleSize, LayerUtils, screen, setSpText } from '../../../../uti
 import SwipeOut from 'react-native-swipeout'
 import styles from './styles'
 import { color } from '../../../../styles'
+import { ChunkType } from '../../../../constants'
 import {
   getThemeIconByType,
   getThemeWhiteIconByType,
@@ -608,6 +609,8 @@ export default class LayerManager_item extends React.Component {
   }
 
   renderCornerMark = () => {
+    // 应急标绘不支持服务
+    if (GLOBAL.Type === ChunkType.MAP_PLOTTING) return null
     if (this.props.isLoading) {
       return (
         <Animated.Image

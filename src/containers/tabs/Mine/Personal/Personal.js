@@ -311,7 +311,7 @@ export default class Personal extends Component {
           {this._renderLine()}
           {this._renderToggleAccount()}
           {this._renderLine()}
-          {this._renderCancelLog()}
+          {UserType.isOnlineUser(this.props.user.currentUser) && this._renderCancelLog()}
           {this._renderLine()}
           {this._renderLogout()}
           {this._renderSimpleDialog()}

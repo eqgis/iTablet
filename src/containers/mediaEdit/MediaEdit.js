@@ -843,7 +843,7 @@ export default class MediaEdit extends React.Component {
           {
             category += (category ? ',' : '') + recognitionInfo.label + (count > 1 ? '(' + count + ')' : '')
           }
-          if(this.state.mediaData?.category){
+          if(this.state.mediaData.category ? true:false){
             category = this.state.mediaData.category
           }
         }
@@ -1088,7 +1088,7 @@ export default class MediaEdit extends React.Component {
         category += (category ? ',' : '') + recognitionInfo.label
       }
     }
-    if(this.state.mediaData?.category){
+    if(this.state.mediaData.category?true:false){
       category = this.state.mediaData.category
     }
     return (

@@ -248,6 +248,12 @@ export default class LayerTopBar extends React.Component {
                   Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_UPLOAD_FAILED)
                 })
               }
+            } else {
+              let result = await SMediaCollector.addMedia({
+                datasourceName: datasourceAlias,
+                datasetName: datasetName,
+                mediaPaths,
+              }, false, { index: index, selectionAttribute: selectionAttribute, ids: GLOBAL.layerSelection?.ids ,layerAttribute: layerAttribute})
             }
             if (
               this.props.refreshAction &&

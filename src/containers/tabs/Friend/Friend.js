@@ -429,7 +429,7 @@ export default class Friend extends Component {
       if(this.disconnectBreak){
         return
       }
-      setTimeout(this.restartService, 3000)
+      setTimeout(this.restartService, 60000)
     } else {
       this.restarting = true
       if(g_connectService){

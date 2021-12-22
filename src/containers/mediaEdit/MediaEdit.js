@@ -87,7 +87,7 @@ export default class MediaEdit extends React.Component {
       title: title,
       showDelete: false,
       showBg: false,
-      category:this.info.mediaData.category? this.info.mediaData.category : '',
+      category:this.showInfo.mediaData.category? this.showInfo.mediaData.category : '',
     }
     this.mediaItemRef = []
     this.modifiedData = {} // 修改的信息

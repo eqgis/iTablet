@@ -498,9 +498,9 @@ export default class Friend extends Component {
         )
         if (!res) {
 
-          // Toast.show(
-          //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          // )
+          Toast.show(
+            getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+          )
         } else {
           //是否有其他连接
           let connection = await SMessageServiceHTTP.getConnection(

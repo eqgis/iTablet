@@ -190,14 +190,14 @@ export default class Login extends React.Component {
           userType: loginUser.userType,
         }
         let friendListResult = FriendListFileHandle.initFriendList(user)
-        GLOBAL.getFriend?.().onUserLoggedin()
         // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
         const result = await new Promise.race([friendListResult, timeout(30)])
         if (result === 'timeout') {
           Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         } else if (result) {
+          await this.props.setUser(user)
           GLOBAL.isLogging = true
-          this.props.setUser(user)
+          GLOBAL.getFriend?.().onUserLoggedin()
           AppInfo.setServiceUrl('https://www.supermapol.com/web/')
           NavigationService.popToTop('Tabs')
         } else {
@@ -267,14 +267,14 @@ export default class Login extends React.Component {
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
           }
-          this.props.setUser(user)
+          GLOBAL.isLogging = true
+          await this.props.setUser(user)
           GLOBAL.getFriend?.().onUserLoggedin()
           AppInfo.setServiceUrl(url)
           FriendListFileHandle.initFriendList(user) // iportal初始化好友列表信息,防止之前online用户留存信息的存在,把online的好友文件下载到iportal用户中
         }
         this.iportalLogin.loginResult()
         this.setState({covered:false})
-        GLOBAL.isLogging = true
         // this.container.setLoading(false)
         NavigationService.popToTop()
       } else {

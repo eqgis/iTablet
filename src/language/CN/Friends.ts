@@ -242,7 +242,7 @@ const Friends = {
   TASK_UPDATE_TIME: "更新时间",
   TASK_CREATE_TIME: "创建时间",
   TASK_SEND_TIME: "发送时间",
-  TASK_MODULE: "模块",
+  TASK_MODULE: "协作模块",
   // 提示消息
   GROUP_EXIST_INFO: "是否退出群组",
   GROUP_DELETE_INFO: "是否解散群组",

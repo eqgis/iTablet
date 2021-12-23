@@ -401,7 +401,8 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Friends.TASK_TITLE + ': ' + this.state.module.title}
+          {/* {getLanguage(GLOBAL.language).Friends.TASK_TITLE + ': ' + this.state.module.title} */}
+          {getLanguage(GLOBAL.language).Friends.TASK_TITLE + ': ' + this.props.data.resource.resourceName.replace('.zip', '')}
         </Text>
         <Text
           numberOfLines={1}
@@ -410,7 +411,8 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Friends.TASK_MAP + ': ' + this.props.data.resource.resourceName.replace('.zip', '')}
+          {/* {getLanguage(GLOBAL.language).Friends.TASK_MAP + ': ' + this.props.data.resource.resourceName.replace('.zip', '')} */}
+          {getLanguage(GLOBAL.language).Friends.TASK_MODULE + ': ' + this.state.module.title}
         </Text>
         <Text
           numberOfLines={1}

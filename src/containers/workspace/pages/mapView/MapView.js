@@ -1487,6 +1487,11 @@ export default class MapView extends React.Component {
         }
         // this.props.showAR(false)
       }
+      if (GLOBAL.Type === ChunkType.MAP_PLOTTING){
+        const params = ToolbarModule.getParams()
+        const libIds = params.template.plotLibIds
+        await SMap.removePlotSymbolLibraryArr(libIds)
+      }
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
 

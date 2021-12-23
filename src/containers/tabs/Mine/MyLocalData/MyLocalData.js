@@ -134,19 +134,19 @@ export default class MyLocalData extends Component {
           dataType: 'user',
         })
       }
-      if (externalData.length > 0) {
-        sectionData.push({
-          title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
-          data: externalData,
-          isShowItem: true,
-          dataType: 'external',
-        })
-      }
+      // if (externalData.length > 0) {
+      //   sectionData.push({
+      //     title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
+      //     data: externalData,
+      //     isShowItem: true,
+      //     dataType: 'external',
+      //   })
+      // }
       this.totalPage = onlineData.totalPage
-      if (onlineData.content.length > 0) {
+      if (externalData.length > 0 || onlineData.content.length > 0) {
         sectionData.push({
           title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
-          data: onlineData.content,
+          data: externalData.concat(onlineData.content),
           isShowItem: true,
           dataType: 'online',
         })

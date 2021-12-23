@@ -3,6 +3,8 @@ import { handleActions } from 'redux-actions'
 import { } from '../../utils'
 import { ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 import { UserInfo } from '../../types'
+import { UserType } from '../../constants'
+import { joinGroup, getGroups, COWORK_GROUP_NAME } from '../../../configs/mapModules/CoworkModule'
 // Constants
 // --------------------------------------------------
 export const USER_SET = 'USER_SET'
@@ -62,6 +64,14 @@ export interface Users {
 // ---------------------------------.3-----------------
 export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   GLOBAL.currentUser = params
+  // 定制版,加入默认协作群组
+  if (UserType.isIPortalUser(params) || UserType.isOnlineUser(params)) {
+    const groupInfo = await getGroups(params, COWORK_GROUP_NAME, {pageSize: 100, currentPage: 1, orderBy: 'CREATETIME', orderType: 'DESC', joinTypes: ['CANJOIN']})
+    if (groupInfo) {
+      // 若群组存在,但未加入群组,则直接加入并进入群组
+      await joinGroup(params, groupInfo)
+    }
+  }
   await dispatch({
     type: USER_SET,
     payload: params,

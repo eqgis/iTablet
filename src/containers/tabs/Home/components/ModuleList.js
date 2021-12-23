@@ -634,7 +634,7 @@ class ModuleList extends Component {
             : { marginTop: scaleSize(20) },
         ]}
       >
-        {this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? (
+        {/* {this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? (
           <View style={{ width: '100%' }}>
             <ScrollView
               style={{ height: '100%' }}
@@ -657,7 +657,18 @@ class ModuleList extends Component {
           >
             {this._renderPortraitRows()}
           </ScrollView>
-        )}
+        )} */}
+        <View
+          style={{
+            alignContent: 'center',
+            justifyContent: 'center',
+            flexDirection: this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 'row' : 'column',
+          }}
+        >
+          {
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? this._renderLandscapeColumns() : this._renderPortraitRows()
+          }
+        </View>
       </View>
     )
   }

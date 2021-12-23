@@ -2323,7 +2323,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.supermap.iTablet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.supermap.collection;
 				PRODUCT_NAME = "SuperMap iTablet";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2428,7 +2428,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.supermap.iTablet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.supermap.collection;
 				PRODUCT_NAME = "SuperMap iTablet";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

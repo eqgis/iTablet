@@ -55,6 +55,7 @@ class ModuleList extends Component {
     setIgnoreDownload: () => {},
     setSampleDataShow: () => {},
     itemAction: () =>{},
+    setCurrentGroup: () => Promise<void>,
   }
 
   constructor(props) {
@@ -93,18 +94,21 @@ class ModuleList extends Component {
     let data = []
     for (let item of this.props.mapModules.modules) {
       if (item && item.getChunk) {
-        data.push(item.getChunk(this.props.language))
+        data.push(item.getChunk(this.props.language, {
+          currentUser: this.props.currentUser,
+          setCurrentGroup: this.props.setCurrentGroup,
+        }))
       } else {
         data = []
         break
       }
     }
-    if (
-      (data.length > 0 && data[data.length - 1].key !== AppletAdd.key) ||
-      data.length === 0
-    ) {
-      data.push(new AppletAdd().getChunk(this.props.language))
-    }
+    // if (
+    //   (data.length > 0 && data[data.length - 1].key !== AppletAdd.key) ||
+    //   data.length === 0
+    // ) {
+    //   data.push(new AppletAdd().getChunk(this.props.language))
+    // }
 
     //市场不允许出现添加小程序，在审核期间把标去掉 add xiezhy
     // if(GLOBAL.isAudit){

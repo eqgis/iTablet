@@ -4,21 +4,23 @@ import * as AppModule from '../../src/customModule/mapModules'
 /** 自定义模块 **/
 // import MapExample from './MapExample'
 // import TourModule from './TourModule'
+import CoworkModule from './CoworkModule'
 
 /** export顺序为首页模块显示顺序 **/
 const mapModules = [
-  AppModule.MapARMapping,
-  AppModule.MapEditConfig,
+  // AppModule.MapARMapping,
+  // AppModule.MapEditConfig,
   AppModule.Map3DConfig,
-  AppModule.MapARConfig,
+  // AppModule.MapARConfig,
   AppModule.MapThemeConfig,
-  AppModule.MapARAnalysis,
+  // AppModule.MapARAnalysis,
   AppModule.MapCollectionConfig,
   AppModule.MapNavigationConfig,
   AppModule.MapPlottingConfig,
-  AppModule.MapAnalystConfig,
+  // AppModule.MapAnalystConfig,
   // MapExample,
   // TourModule,
+  CoworkModule,
 ]
 
 export default (function () {

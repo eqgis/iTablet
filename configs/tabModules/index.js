@@ -11,7 +11,7 @@ import { AppTabs } from '../../src/constants'
 /** export顺序为首页Tabs显示顺序, 默认第一个为Home **/
 export default [
   AppTabs.Friend,
-  AppTabs.Find,
+  // AppTabs.Find,
   // Example,
   AppTabs.Mine,
 ]

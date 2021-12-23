@@ -51,4 +51,5 @@ export interface UserInfo {
   userId: string,
   /** @deprecated 是否为邮箱登录 */
   isEmail: string,
+  roles: string[],
 }

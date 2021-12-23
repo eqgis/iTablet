@@ -353,6 +353,7 @@ class Chat extends React.Component {
     }
     let ctime = new Date()
     let time = Date.parse(ctime)
+    console.warn(this.targetUser.id)
     //要发送/保存的消息
     let message = {
       message: messages[0].text,

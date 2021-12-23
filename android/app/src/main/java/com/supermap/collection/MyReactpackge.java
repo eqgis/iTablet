@@ -1,4 +1,4 @@
-package com.supermap.itablet;
+package com.supermap.collection;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
@@ -8,7 +8,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.supermap.RN.AppUtils;
 import com.supermap.RN.NativeMethod;
 import com.supermap.RN.SPUtils;
-import com.supermap.itablet.splashscreen.SplashScreenModule;
+import com.supermap.collection.splashscreen.SplashScreenModule;
 
 import java.util.ArrayList;
 import java.util.Collections;

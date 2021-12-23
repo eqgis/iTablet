@@ -1,4 +1,4 @@
-package com.supermap.itablet;
+package com.supermap.collection;
 
 import android.Manifest;
 import android.app.Activity;
@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
@@ -27,10 +26,6 @@ import com.supermap.RN.appManager;
 import com.supermap.RNUtils.AppInfo;
 import com.supermap.RNUtils.FileTools;
 import com.supermap.component.activity.AiGestureBoneActivity;
-import com.supermap.data.Environment;
-import com.supermap.data.ITabletLicenseManager;
-import com.supermap.data.Toolkit;
-import com.supermap.itablet.splashscreen.SplashScreen;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -38,11 +33,6 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import java.io.File;
 import java.lang.reflect.Field;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends ReactActivity {
@@ -70,7 +60,8 @@ public class MainActivity extends ReactActivity {
 //        } else {
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //        }
-        SplashScreen.show(this);
+        // 启动页
+//        SplashScreen.show(this);
         super.onCreate(savedInstanceState);
         // 在JS申请权限以免没有权限导致崩溃
 //        requestPermissions();

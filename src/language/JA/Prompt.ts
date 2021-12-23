@@ -162,6 +162,7 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_SELECTION: "現在の選択は ",
   THE_LAYER_DOES_NOT_EXIST: "当レイヤーは存在しません",
 
+  TO_CREATE_COWROK_GROUP: "Please inform the administrator to create a collaboration group", // need to translate
   IMPORTING_DATA: "データインポート中",
   DATA_BEING_IMPORT: "データインポート中",
   IMPORTING: "インポート中...",

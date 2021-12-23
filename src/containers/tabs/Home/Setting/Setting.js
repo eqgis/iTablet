@@ -141,14 +141,14 @@ export default class Setting extends Component {
           getLanguage(GLOBAL.language).Profile.SETTING_CLEAR_CACHE,
         )}
         {/** 关于放在最后 */}
-        {this.props.appConfig.about &&
+        {/* {this.props.appConfig.about &&
           this.props.appConfig.about.isShow &&
           this.renderItemView(
             this.onAbout,
             getLanguage(GLOBAL.language).Profile.SETTING_ABOUT +
               this.props.appConfig.alias +
               getLanguage(GLOBAL.language).Profile.SETTING_ABOUT_AFTER,
-          )}
+          )} */}
       </View>
     )
   }

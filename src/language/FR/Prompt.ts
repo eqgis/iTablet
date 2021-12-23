@@ -162,6 +162,7 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_SELECTION: "La sélection actuelle est",
   THE_LAYER_DOES_NOT_EXIST: "La couche n'existe pas",
 
+  TO_CREATE_COWROK_GROUP: "Please inform the administrator to create a collaboration group", // need to translate
   IMPORTING_DATA: "Importation de données",
   DATA_BEING_IMPORT: "Les données sont en cours d'importation",
   IMPORTING: "Importation",

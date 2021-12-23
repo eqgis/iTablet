@@ -53,7 +53,7 @@ export default class Chunk {
       this.props.action &&
       typeof this.props.action === 'function'
     ) {
-      await this.props.action()
+      await this.props.action(user, lastMap, service)
       return true
     }
     GLOBAL.Type = this.key

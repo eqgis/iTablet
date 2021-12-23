@@ -1,4 +1,4 @@
-package com.supermap.itablet;
+package com.supermap.collection;
 
 import androidx.multidex.MultiDexApplication;
 

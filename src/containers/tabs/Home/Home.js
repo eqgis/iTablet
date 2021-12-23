@@ -68,6 +68,7 @@ export default class Home extends Component {
     setCollectGuide: () => {},
     setMapEditGuide: () => {},
     setMapSceneGuide: () => {},
+    setCurrentGroup: () => Promise<void>,
   }
 
   constructor(props) {
@@ -1129,6 +1130,7 @@ export default class Home extends Component {
               latestMap={this.props.latestMap}
               oldMapModules={this.props.appConfig.oldMapModules}
               mapModules={this.props.mapModules}
+              setCurrentGroup={this.props.setCurrentGroup}
               itemAction={() => {
                 this._closeModal()
                 this.SimpleDialog.set({

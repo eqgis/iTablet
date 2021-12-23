@@ -1,4 +1,4 @@
-package com.supermap.itablet.splashscreen;
+package com.supermap.collection.splashscreen;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 
+import com.supermap.collection.R;
 import com.supermap.interfaces.utils.SLanguage;
-import com.supermap.itablet.R;
 
 import java.lang.ref.WeakReference;
 

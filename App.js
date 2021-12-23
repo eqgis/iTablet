@@ -42,6 +42,7 @@ import { setMapModule } from './src/redux/models/mapModules'
 import { Dialog, Loading, MyToast, InputDialog } from './src/components'
 import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
+import { setCoworkTaskGroup } from './src/redux/models/cowork'
 import { setShow } from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
 import { RNFS as fs } from 'imobile_for_reactnative'
@@ -174,6 +175,7 @@ class AppRoot extends Component {
     setEditLayer: PropTypes.func,
     setSelection: PropTypes.func,
     setCollectionInfo: PropTypes.func,
+    setCoworkTaskGroup: PropTypes.func,
     setCurrentTemplateInfo: PropTypes.func,
     setCurrentTemplateList: PropTypes.func,
     setTemplate: PropTypes.func,
@@ -200,13 +202,14 @@ class AppRoot extends Component {
 
   constructor(props) {
     super(props)
-    const guidePages = LaunchGuide.getGuide(this.props.language) || []
+    // const guidePages = LaunchGuide.getGuide(this.props.language) || []
     this.state = {
       sceneStyle: styles.invisibleMap,
       import: null,
       isInit: false,
       /**判断是否显示APP启动引导页，根据launchGuideVersion是否一致和是否有启动页 */
-      showLaunchGuide: config.launchGuideVersion > (this.props.appConfig.launchGuideVersion || '0') && guidePages.length > 0,
+      // showLaunchGuide: config.launchGuideVersion > (this.props.appConfig.launchGuideVersion || '0') && guidePages.length > 0,
+      showLaunchGuide: false,
     }
     // this.preLaunchGuideVersion = this.props.appConfig.launchGuideVersion
     this.props.setModules(config) // 设置模块
@@ -269,7 +272,7 @@ class AppRoot extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     // 切换用户，重新加载用户配置文件
     if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)) {
       this.initDirectories(this.props.user.currentUser.userName)
@@ -290,11 +293,11 @@ class AppRoot extends Component {
   }
 
   showUserProtocol = () => {
-    if(this.props.isAgreeToProtocol) {
-      this.prevLoad()
-    } else {
-      this.protocolDialog?.setVisible(true)
-    }
+    // if(this.props.isAgreeToProtocol) {
+    this.prevLoad()
+    // } else {
+    //   this.protocolDialog?.setVisible(true)
+    // }
   }
 
   prevLoad = async () => {
@@ -359,7 +362,7 @@ class AppRoot extends Component {
   }
 
   initEnvironment = async () => {
-    await SMap.initEnvironment('iTablet')
+    await SMap.initEnvironment(ConstPath.AppName)
     await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
     SOnlineService.init()
     SIPortalService.init()
@@ -607,6 +610,7 @@ class AppRoot extends Component {
           userId: userInfo.userId,
           isEmail: true,
           userType: UserType.COMMON_USER,
+          roles: userInfo.roles,
         }
         await this.props.setUser(user)
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
@@ -641,6 +645,7 @@ class AppRoot extends Component {
             nickname: userInfo.nickname,
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
+            roles: userInfo.roles,
           })
         }
         GLOBAL.getFriend().onUserLoggedin()
@@ -1175,6 +1180,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setEditLayer,
   setSelection,
   setCollectionInfo,
+  setCoworkTaskGroup,
   setCurrentTemplateInfo,
   setCurrentTemplateList,
   setTemplate,

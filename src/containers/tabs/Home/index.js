@@ -28,6 +28,7 @@ import {
   setMapArGuide,
   setMapArMappingGuide,
 } from '../../../redux/models/ar'
+import { setCurrentGroup } from '../../../redux/models/cowork'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -62,6 +63,7 @@ const mapDispatchToProps = {
   setCollectGuide,
   setMapEditGuide,
   setMapSceneGuide,
+  setCurrentGroup,
 }
 export default connect(
   mapStateToProps,

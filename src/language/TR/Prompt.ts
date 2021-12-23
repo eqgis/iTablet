@@ -162,6 +162,7 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_SELECTION: "Geçerli seçim ",
   THE_LAYER_DOES_NOT_EXIST: "Lağıt mevcut değil",
 
+  TO_CREATE_COWROK_GROUP: "Please inform the administrator to create a collaboration group", // need to translate
   IMPORTING_DATA: "Veriyi içeri aktarıyor",
   DATA_BEING_IMPORT: "Veri içe aktarılıyor",
   IMPORTING: "Aktarılıyor",

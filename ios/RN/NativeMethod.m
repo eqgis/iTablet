@@ -7,6 +7,7 @@
 //
 
 #import "NativeMethod.h"
+#import "AppInfo.h"
 
 @implementation NativeMethod
 RCT_EXPORT_MODULE();
@@ -16,12 +17,14 @@ RCT_REMAP_METHOD(getTemplates, getTemplatesByUserName:(NSString *)userName strMo
     if (userName == nil || [userName isEqualToString:@""]) {
       userName = @"Customer";
     }
-    NSString* templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
+    NSString *templatePath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents%@/ExternalData", [AppInfo getRootPath]];
+//    NSString* templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
     
     if(strModule == nil || [strModule isEqualToString:@""]){
-      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
+      templatePath = templatePath;
     }else {
-      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@", @"/Documents/iTablet/ExternalData/", strModule];
+//      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@", @"/Documents/iTablet/ExternalData/", strModule];
+      templatePath = [NSString stringWithFormat:@"%@/%@", templatePath, strModule];
     }
     
     NSMutableArray* templateList = [NativeMethod getTemplate:templatePath];
@@ -37,14 +40,15 @@ RCT_REMAP_METHOD(getTemplatesList, getTemplatesListByUserName:(NSString *)userNa
     if (userName == nil || [userName isEqualToString:@""]) {
       userName = @"Customer";
     }
-    NSString* templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
+//    NSString* templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
+    NSString *templatePath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents%@/ExternalData", [AppInfo getRootPath]];
     
     if(strModule == nil || [strModule isEqualToString:@""]){
-      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@", @"/Documents/iTablet/ExternalData"];
+      templatePath = templatePath;
     }else if (strModule != nil && [strModule isEqualToString:@"XmlTemplate"]){
-      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@", @"/Documents/iTablet/ExternalData/",strModule];
+      templatePath = [NSString stringWithFormat:@"%@/%@", templatePath, strModule];
     }else {
-      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"%@%@%@%@", @"/Documents/iTablet/User/",userName, @"/Data/", strModule];
+      templatePath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents%@/User/%@/Data/%@", [AppInfo getRootPath], userName, strModule];
     }
     
     NSMutableArray* templateList = [NativeMethod getTemplateList:templatePath];

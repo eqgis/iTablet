@@ -1,4 +1,4 @@
-package com.supermap.itablet.splashscreen;
+package com.supermap.collection.splashscreen;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;

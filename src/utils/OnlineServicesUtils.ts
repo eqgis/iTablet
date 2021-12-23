@@ -33,11 +33,12 @@ interface QueryParam {
 }
 
 interface CommonUserInfo {
-  nickname: string
-  name: string
-  email: string
+  nickname: string,
+  name: string,
+  email: string,
   /** iportal或online用户 */
-  userType: TLoginUserType
+  userType: TLoginUserType,
+  roles: string[],
 }
 
 interface ILoginResult {
@@ -54,7 +55,8 @@ interface OnlineUserInfo {
   userId: string,
   nickname: string,
   phoneNumber: string,
-  email: string | null
+  email: string | null,
+  roles: string[],
 }
 
 /** online / iportal 上的数据类型 */
@@ -268,7 +270,8 @@ export default class OnlineServicesUtils {
           name: info.name,
           nickname: info.nickname,
           email: info.email,
-          userType: this._getUserType()
+          userType: this._getUserType(),
+          roles: info.roles,
         }
       } else {
         return false
@@ -814,6 +817,7 @@ export default class OnlineServicesUtils {
           nickname: myInfo.nickname,
           email: myInfo.email,
           userType: this._getUserType(),
+          roles: myInfo.roles,
         }
       } else {
         result.errorInfo = '获取信息失败'
@@ -898,6 +902,7 @@ export default class OnlineServicesUtils {
           nickname: result[0].nickname,
           phoneNumber: '',
           email: null,
+          roles: result[0]?.roles,
         }
       }
       let url
@@ -938,6 +943,7 @@ export default class OnlineServicesUtils {
             (info.email && info.email.indexOf('@isupermap.com')) === -1
               ? info.email
               : null,
+          roles: info.roles,
         }
       } else {
         return false

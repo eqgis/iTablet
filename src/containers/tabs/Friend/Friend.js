@@ -202,7 +202,7 @@ export default class Friend extends Component {
     try {
       this.getOnlineGroup(type)
       let commonPath = await FileTools.appendingHomeDirectory(
-        '/iTablet/Common/',
+        ConstPath.Common,
       )
       let servicesUtils = new OnlineServicesUtils(type)
       let data

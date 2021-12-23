@@ -5,13 +5,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Process;
 import android.util.Log;
 
 
 import com.supermap.RNUtils.FileUtil;
-import com.supermap.itablet.MainApplication;
+import com.supermap.collection.MainApplication;
 import com.supermap.services.LogInfoService;
 
 import java.io.ByteArrayOutputStream;

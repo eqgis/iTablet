@@ -1,4 +1,5 @@
-const AppPath = '/iTablet/'
+const AppName = 'Collection'
+const AppPath = `/${AppName}/`
 const Data = 'Data/'
 const DefaultData = 'DefaultData/'
 const Collection = 'Collection'

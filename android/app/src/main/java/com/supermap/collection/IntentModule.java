@@ -1,4 +1,4 @@
-package com.supermap.itablet;
+package com.supermap.collection;
 import android.app.Activity;
 import android.content.Intent;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;

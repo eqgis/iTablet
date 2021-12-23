@@ -1,4 +1,4 @@
-package com.supermap.itablet.wxapi;
+package com.supermap.collection.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -70,7 +70,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
    public void itentMainActivity(){
        try {
-           Class toActivity=Class.forName("com.supermap.itablet.MainActivity");
+           Class toActivity=Class.forName("com.supermap.collection.MainActivity");
            Intent intent = new Intent(this,toActivity);
            this.startActivity(intent);
        } catch (ClassNotFoundException e) {

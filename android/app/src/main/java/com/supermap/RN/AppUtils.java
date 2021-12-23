@@ -19,7 +19,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.supermap.containts.EventConst;
 import com.supermap.interfaces.utils.SLocation;
-import com.supermap.itablet.MainActivity;
+import com.supermap.collection.MainActivity;
 
 import java.util.Locale;
 import java.util.Map;

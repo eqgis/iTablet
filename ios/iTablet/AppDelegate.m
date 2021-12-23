@@ -123,7 +123,7 @@ static NSString* g_sampleCodeName = @"#";;
 //  }else{
 //    self.allowRotation = UIInterfaceOrientationMaskLandscape;
 //  }
-  [self addLaunchSlogan];
+//  [self addLaunchSlogan];
   
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange:) name:@"SMOrientations" object:nil];
@@ -207,7 +207,7 @@ static NSString* g_sampleCodeName = @"#";;
   } else {
     #if DEBUG
 //    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.187.250"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.2.195"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

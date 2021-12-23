@@ -13,6 +13,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.supermap.RNUtils.AppInfo;
 
 import java.io.File;
 
@@ -46,9 +47,9 @@ public class NativeMethod extends ReactContextBaseJavaModule {
             String templatePath = "";
             WritableArray templateList = Arguments.createArray();
             if (strModule == null || strModule.equals("")) {
-                templatePath = SDCARD + "iTablet/ExternalData";
+                templatePath = SDCARD + AppInfo.getRootPath() + "/ExternalData";
             } else {
-                templatePath = SDCARD + "iTablet/ExternalData/" + strModule;
+                templatePath = SDCARD + AppInfo.getRootPath() + "/ExternalData" + strModule;
             }
 
             File file = new File(templatePath);
@@ -119,11 +120,11 @@ public class NativeMethod extends ReactContextBaseJavaModule {
             String templatePath = "";
             WritableArray templateList = Arguments.createArray();
             if (strModule == null || strModule.equals("")) {
-                templatePath = SDCARD + "iTablet/ExternalData";
+                templatePath = SDCARD + AppInfo.getRootPath() + "/ExternalData";
             }else if(strModule != null && strModule.equals("XmlTemplate")){
-                templatePath = SDCARD + "iTablet/ExternalData/XmlTemplate";
+                templatePath = SDCARD + AppInfo.getRootPath() + "/ExternalData/XmlTemplate";
             } else {
-                templatePath = SDCARD + "iTablet/User/"+userName+ "/Data/" + strModule;
+                templatePath = SDCARD + AppInfo.getRootPath() + "/User/"+userName+ "/Data/" + strModule;
             }
 
             File file = new File(templatePath);

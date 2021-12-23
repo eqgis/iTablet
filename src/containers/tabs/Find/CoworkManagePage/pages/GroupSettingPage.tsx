@@ -250,11 +250,11 @@ class GroupSettingPage extends Component<Props, State> {
     } else {
       _data = this.state.data.concat([])
     }
-    if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
-      _data.push({
-        title: 'plus',
-      })
-    }
+    // if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
+    //   _data.push({
+    //     title: 'plus',
+    //   })
+    // }
 
     return (
       <View style={styles.tableView}>
@@ -375,7 +375,7 @@ class GroupSettingPage extends Component<Props, State> {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(80),
           },
-          headerRight: this._renderRight(),
+          // headerRight: this._renderRight(),
         }}
       >
         <ScrollView
@@ -399,7 +399,7 @@ class GroupSettingPage extends Component<Props, State> {
           {this._renderMembers()}
           {this._renderSettings()}
         </ScrollView>
-        {this._renderBottom()}
+        {/* {this._renderBottom()} */}
         {this._renderDeleteDialog()}
       </Container>
     )

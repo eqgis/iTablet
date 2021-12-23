@@ -162,6 +162,7 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_SELECTION: "الاختيار الحالى هو",
   THE_LAYER_DOES_NOT_EXIST: "الطبقة غير موجودة",
 
+  TO_CREATE_COWROK_GROUP: "Please inform the administrator to create a collaboration group", // need to translate
   IMPORTING_DATA: "استيراد البيانات",
   DATA_BEING_IMPORT: "يتم استيراد البيانات",
   IMPORTING: "جارى الاستيراد",

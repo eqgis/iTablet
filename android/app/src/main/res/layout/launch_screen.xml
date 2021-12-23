@@ -18,16 +18,7 @@
         android:layout_height="97dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/icon" />
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/logo" />
+        android:src="@drawable/icon1" />
 
     <!--    <TextView-->
 <!--        android:id="@+id/version"-->
@@ -40,13 +31,15 @@
 <!--        android:textSize="18sp"-->
 <!--        android:textStyle="bold|italic" />-->
 
-    <pl.droidsonroids.gif.GifImageView
+    <TextView
         android:id="@+id/slogan"
-        android:layout_width="700dp"
-        android:layout_height="56dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/launch_slogan_cn" />
+        android:text="外业采集系统"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
 
     <View
         android:layout_width="match_parent"

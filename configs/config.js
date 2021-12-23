@@ -10,8 +10,8 @@ const MQ_IP = iportalMQIP
 const FILE_MANAGE_IP = iportalMQIP
 
 export default {
-  name: '外业采集协作',
-  alias: '外业采集协作',
+  name: '外业采集系统',
+  alias: '外业采集系统',
   version: '0.0.1',
   launchGuideVersion: '0.0.3',
   language: 'AUTO',

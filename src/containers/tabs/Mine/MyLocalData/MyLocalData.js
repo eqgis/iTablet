@@ -134,19 +134,19 @@ export default class MyLocalData extends Component {
           dataType: 'user',
         })
       }
-      // if (externalData.length > 0) {
-      //   sectionData.push({
-      //     title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
-      //     data: externalData,
-      //     isShowItem: true,
-      //     dataType: 'external',
-      //   })
-      // }
-      this.totalPage = onlineData.totalPage
-      if (externalData.length > 0 || onlineData.content.length > 0) {
+      if (externalData.length > 0) {
         sectionData.push({
           title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
-          data: externalData.concat(onlineData.content),
+          data: externalData,
+          isShowItem: true,
+          dataType: 'external',
+        })
+      }
+      this.totalPage = onlineData.totalPage
+      if (onlineData.content.length > 0) {
+        sectionData.push({
+          title: getLanguage(GLOBAL.language).Profile.ONLINE_DATA,
+          data: onlineData.content,
           isShowItem: true,
           dataType: 'online',
         })
@@ -188,14 +188,14 @@ export default class MyLocalData extends Component {
   }
 
   _renderSectionHeader = info => {
-    if (
-      info.section.dataType === 'online' &&
-      ((this.state.sectionData.length === 2 &&
-        this.state.sectionData[0].dataType === 'external') ||
-        this.state.sectionData.length === 3)
-    ) {
-      return <View />
-    }
+    // if (
+    //   info.section.dataType === 'online' &&
+    //   ((this.state.sectionData.length === 2 &&
+    //     this.state.sectionData[0].dataType === 'external') ||
+    //     this.state.sectionData.length === 3)
+    // ) {
+    //   return <View />
+    // }
     return (
       <LocalDtaHeader
         info={info}

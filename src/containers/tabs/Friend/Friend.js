@@ -498,8 +498,7 @@ export default class Friend extends Component {
           this.props.user.currentUser.userName,
         )
         if (!res) {
-          if(count === 60 || count === 0){
-            count = 0
+          if(count%60 === 0 || count === 0){
             Toast.show(
               getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
             )
@@ -1310,10 +1309,10 @@ export default class Friend extends Component {
               : null
         }
 
-        Toast.show(
-          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          option,
-        )
+        // Toast.show(
+        //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+        //   option,
+        // )
       }
 
       cb && cb(result)
@@ -1328,10 +1327,10 @@ export default class Friend extends Component {
               : null
         }
 
-        Toast.show(
-          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          option,
-        )
+        // Toast.show(
+        //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+        //   option,
+        // )
       }
       cb && cb(false)
       return false

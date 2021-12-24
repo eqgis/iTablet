@@ -145,7 +145,7 @@ export default class MyLocalData extends Component {
       this.totalPage = onlineData.totalPage
       if (onlineData.content.length > 0) {
         sectionData.push({
-          title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
+          title: getLanguage(GLOBAL.language).Profile.ONLINE_DATA,
           data: onlineData.content,
           isShowItem: true,
           dataType: 'online',
@@ -188,14 +188,14 @@ export default class MyLocalData extends Component {
   }
 
   _renderSectionHeader = info => {
-    if (
-      info.section.dataType === 'online' &&
-      ((this.state.sectionData.length === 2 &&
-        this.state.sectionData[0].dataType === 'external') ||
-        this.state.sectionData.length === 3)
-    ) {
-      return <View />
-    }
+    // if (
+    //   info.section.dataType === 'online' &&
+    //   ((this.state.sectionData.length === 2 &&
+    //     this.state.sectionData[0].dataType === 'external') ||
+    //     this.state.sectionData.length === 3)
+    // ) {
+    //   return <View />
+    // }
     return (
       <LocalDtaHeader
         info={info}

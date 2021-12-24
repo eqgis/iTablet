@@ -149,6 +149,7 @@ const Profile = {
   SAMPLEDATA: "样例数据",
   USER_DATA: "用户数据",
   ON_DEVICE: "外部数据",
+  ONLINE_DATA: "在线数据",
   EXPORT_DATA: "导出数据",
   IMPORT_DATA: "导入数据",
   UPLOAD_DATA: "分享数据",

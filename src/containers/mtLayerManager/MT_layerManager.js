@@ -915,7 +915,7 @@ export default class MT_layerManager extends React.Component {
       rightIcon = this.state.allLayersVisible
         ? getThemeAssets().layer.icon_invisible
         : getThemeAssets().layer.icon_visible
-      if (GLOBAL.coworkMode) {
+      if (GLOBAL.coworkMode && GLOBAL.Type !== ChunkType.MAP_PLOTTING) { // 标绘没有发布按钮
         let isPublishing = false
         if (
           this.props.cowork?.currentTask?.groupID &&

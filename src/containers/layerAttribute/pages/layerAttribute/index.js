@@ -7,6 +7,7 @@ import {
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,
+  getLayers,
 } from '../../../../redux/models/layers'
 
 const mapStateToProps = state => ({
@@ -32,6 +33,7 @@ const mapDispatchToProps = {
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,
+  getLayers,
 }
 
 export default connect(

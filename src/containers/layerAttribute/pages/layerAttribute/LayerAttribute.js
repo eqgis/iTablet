@@ -75,6 +75,7 @@ export default class LayerAttribute extends React.Component {
     setLayerAttributes: () => {},
     setAttributeHistory: () => {},
     clearAttributeHistory: () => {},
+    getLayers: () => {},
     device: Object,
     currentTask: Object,
     currentUser: Object,
@@ -1037,7 +1038,7 @@ export default class LayerAttribute extends React.Component {
               // 单条数据修改属性
               attributes.data[0][data.index].value = data.value
             }
-
+            this.props.getLayers?.()
             let checkData = this.checkToolIsViable()
             this.setState({
               attributes,

@@ -58,7 +58,19 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
     let datasetName = _datasetUrl.substring(_datasetUrl.lastIndexOf('/') + 1).replace('.json', '').replace('.rjson', '')
     const params: any = ToolbarModule.getParams()
     if (res.result) {
-      await addServiceLayer(datasetName, res.content?.datasource)
+      const params: any = ToolbarModule.getParams()
+      let isAdded = false
+      let layers = params.layers.layers
+      if (!params.layers.layers || params.layers.layers.length === 0) {
+        layers = await params.getLayers()
+      }
+      for (let layer of layers) {
+        if (layer.datasetName === datasetName) {
+          isAdded = true
+          break
+        }
+      }
+      !isAdded && await addServiceLayer(datasetName, res.content?.datasource)
 
       res.content && params.setCoworkService({
         groupId: params.currentTask.groupID,
@@ -187,6 +199,15 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
       if (res.result && res.content) {
         if (!res.result) return
         const _params: any = ToolbarModule.getParams()
+        let hasResetLayer = false
+        for (const layer of _params.layers.layers) {
+          const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layer)
+          if (dsDescription.url && dsDescription?.type === 'onlineService' && layer.isModified) {
+            hasResetLayer = true
+            await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
+          }
+        }
+        hasResetLayer && _params.getLayers()
         let msgObj = {
           type: MsgConstant.MSG_COWORK,
           time: new Date().getTime(),

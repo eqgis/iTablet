@@ -32,6 +32,7 @@ export default class LayerAttributeSearch extends React.Component {
     setCurrentAttribute: () => {},
     // getAttributes: () => {},
     setLayerAttributes: () => {},
+    getLayers: () => {},
   }
 
   constructor(props) {
@@ -221,7 +222,11 @@ export default class LayerAttributeSearch extends React.Component {
             cursorType: 2, // 2: DYNAMIC, 3: STATIC
           },
         },
-      ])
+      ]).then(result => {
+        if (result) {
+          this.props.getLayers?.()
+        }
+      })
     }
   }
 

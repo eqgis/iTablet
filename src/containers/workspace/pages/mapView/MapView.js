@@ -309,7 +309,8 @@ export default class MapView extends React.Component {
 
     this.path = (params && params.path) || ''
     this.showDialogCaption =
-      params && params.path ? !params.path.endsWith('.smwu') : true
+      // params && params.path ? !params.path.endsWith('.smwu') : true
+      params && params.path ? !(params.path.indexOf('.smwu', params.path.length - '.smwu'.length) !== -1) : true
     /** 自定义返回事件 */
     this.backAction = (params && params.backAction) || null
     this.state = {

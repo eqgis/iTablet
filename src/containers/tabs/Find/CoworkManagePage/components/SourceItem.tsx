@@ -276,7 +276,7 @@ export default class SourceItem extends Component<Props, State> {
         this.props.downloadSourceFile(downloadOptions)
           .then(async () => {
             let result, path
-            if (this.path?.endsWith('.zip')) {
+            if (this.path?.indexOf('.zip', this.path?.length - '.zip'.length) !== -1) {
               const zipResult = await this.unZipFile()
               result = zipResult.result
               path = zipResult.path

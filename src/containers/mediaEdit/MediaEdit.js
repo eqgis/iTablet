@@ -90,7 +90,7 @@ export default class MediaEdit extends React.Component {
       category:this.showInfo.mediaData.category? this.showInfo.mediaData.category : '',
     }
     this.mediaItemRef = []
-    this.modifiedData = {} // 修改的信息
+    this.modifiedData = [] // 修改的信息
     this._newMediaFiles = [] // 临时存放要提交的新多媒体文件
     this._ids = [] // 临时存放要提交的新多媒体文件ID
     if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
@@ -490,7 +490,7 @@ export default class MediaEdit extends React.Component {
         }
 
         // 保存成功,清除临时数据
-        this.modifiedData = {}
+        this.modifiedData = []
         this._newMediaFiles = []
         this._ids = []
       }
@@ -866,6 +866,7 @@ export default class MediaEdit extends React.Component {
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.category = value
+                this.modifiedData.push({category:value})
                 this.setState({
                   category: value,
                   mediaData: mediaData,
@@ -1105,6 +1106,7 @@ export default class MediaEdit extends React.Component {
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.category = value
+                this.modifiedData.push({category:value})
                 this.setState({
                   category: value,
                   mediaData: mediaData,

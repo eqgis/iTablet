@@ -33,13 +33,14 @@ const styles = StyleSheet.create({
   },
   batchCheckStyle: {
     flexDirection: 'row',
-    width: scaleSize(100),
+    width: scaleSize(110),
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   batchCheckTextStyle: {
     fontSize: scaleSize(20),
     color: '#505050',
+    marginLeft: scaleSize(10),
   },
   batchHeadTextStyle: {
     marginRight: scaleSize(30),

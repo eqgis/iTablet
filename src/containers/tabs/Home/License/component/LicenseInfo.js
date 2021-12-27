@@ -125,7 +125,7 @@ export default class LicenseInfo extends Component {
         let date2 = new Date(tempTimeStr)
         days = Math.ceil(
           (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24),
-        )
+        ) + 1
         if (days < 0) {
           days = 0
         }

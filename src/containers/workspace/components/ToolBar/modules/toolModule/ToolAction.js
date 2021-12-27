@@ -486,6 +486,7 @@ function captureImage() {
 
 function tour() {
   (async function() {
+    await SMap.checkCurrentModule()
     const _params = ToolbarModule.getParams()
     const targetPath = await FileTools.appendingHomeDirectory(
       `${ConstPath.UserPath + _params.user.currentUser.userName}/${

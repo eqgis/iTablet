@@ -162,6 +162,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "كاميرا",
   TOUR: "جولة",
   TOUR_NAME: "اسم الجولة",
+  SCAN: "Scan", // need to translate
 
   STYLE_TRANSFER: "رسم الخرائط والذكاء الاصطناعي",
   OBJ_EDIT: "تحرير الكائن",

@@ -192,7 +192,11 @@ export default class PoiInfoContainer extends React.Component {
   }
 
   // 显示 底部存在搜周边按钮的状态  / 隐藏
-  setVisible = (visible, radius = 5000) => {
+  setVisible = (visible, state = {
+    radius: 5000,
+    resultList: this.state.resultList,
+    showList: this.state.resultList,
+  }) => {
     if (visible === this.state.visible) {
       return
     }
@@ -218,7 +222,7 @@ export default class PoiInfoContainer extends React.Component {
     }
     this.setState({
       visible,
-      radius,
+      ...state,
     })
   }
 

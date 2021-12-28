@@ -162,6 +162,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "Kamera",
   TOUR: "Gezinti",
   TOUR_NAME: "Gezinti Adı",
+  SCAN: "Scan", // need to translate
 
   STYLE_TRANSFER: "AI Kartografi",
   OBJ_EDIT: "Nesne düzenleme",

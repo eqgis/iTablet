@@ -267,7 +267,7 @@ export default class PointAnalyst extends Component {
                 resultList: [],
               },
               () => {
-                GLOBAL.PoiInfoContainer.setVisible(true, this.radius)
+                GLOBAL.PoiInfoContainer.setVisible(true, {radius: this.radius})
                 this.container.setLoading(false)
                 NavigationService.goBack()
               },

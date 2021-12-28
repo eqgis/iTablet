@@ -163,6 +163,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "Caméra",
   TOUR: "Tour",
   TOUR_NAME: "Nom du tour",
+  SCAN: "Scan", // need to translate
 
   STYLE_TRANSFER: "Cartographie IA",
   OBJ_EDIT: "Edit Object",

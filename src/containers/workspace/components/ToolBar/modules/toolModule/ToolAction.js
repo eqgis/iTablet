@@ -22,6 +22,8 @@ import { ImagePicker } from '../../../../../../components'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
+import { TYPE } from '../../../../../camera/Camera'
+import LocateUtils from '../../../../../pointAnalyst/LocateUtils'
 
 function begin() {
   GLOBAL.GPS = setInterval(() => {
@@ -580,6 +582,36 @@ function matchPictureStyle() {
   })
 }
 
+
+// 二维码识别
+async function qrCode() {
+  try {
+    const _params = ToolbarModule.getParams()
+    NavigationService.navigate('Camera', {
+      type: TYPE.BARCODE,
+      qrCb: event => {
+        _params.setToolbarVisible(false)
+        // NavigationService.goBack('Camera')
+        LocateUtils.SearchGeoInCurrentLayer(
+          {
+            title: event.data,
+            value: event.data,
+            radius: 5000,
+            is3D: false,
+          },
+          async data => {
+            // eslint-disable-next-line no-console
+            __DEV__ && console.warn(data)
+          },
+        )
+      },
+    })
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    __DEV__ && console.warn(error)
+  }
+}
+
 // 设置我的图层的可选择性
 // function _setMyLayersSelectable(layers, selectable) {
 //   for (let i = 0; i < layers.length; i++) {
@@ -1007,6 +1039,7 @@ export default {
   rectangleCut,
   captureImage,
   tour,
+  qrCode,
 
   setting,
 }

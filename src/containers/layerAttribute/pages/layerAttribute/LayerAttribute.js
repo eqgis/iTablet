@@ -314,6 +314,7 @@ export default class LayerAttribute extends React.Component {
             ...others,
           })
           this.setLoading(false)
+          cb && cb(attributes)
         } else {
           let newAttributes = JSON.parse(JSON.stringify(attributes))
           let startIndex =

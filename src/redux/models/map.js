@@ -519,9 +519,12 @@ export default handleActions(
           newData[extData.userName][extData.moduleName].unshift(payload)
         }
 
+        state = state.setIn(['currentMap'], fromJS(payload))
+        if (!GLOBAL.coworkMode) { // 协作不记录上一次打开的地图,从而影响普通模块
+          state = state.setIn(['latestMap'], fromJS(newData))
+        }
+
         return state
-          .setIn(['currentMap'], fromJS(payload))
-          .setIn(['latestMap'], fromJS(newData))
       }
       return state.setIn(['currentMap'], fromJS(payload))
     },

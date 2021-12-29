@@ -92,17 +92,17 @@ const Profile: typeof CN.Profile = {
   CONNECTING: "Bağlanıyor",
   CONNECT_SERVER_FAIL: "Sunucuya bağlanılamadı, lütfen ağ veya sunucu adresini kontrol edin",
   NEXT: "Sonraki",
-  MESSAGE_SERVICE_SETTING: "Message Service Configuration", // to be translated
-  MESSAGE_SERVICE_IP: "IP Address of Message Service", // to be translated
-  MESSAGE_SERVICE_PORT: "Port of Message Service", // to be translated
-  MESSAGE_SERVICE_MANAGE_PORT: "Port of Message Service Manager", // to be translated
-  MESSAGE_SERVICE_HOST_NAME: "Virtual Host", // to be translated
-  MESSAGE_SERVICE_ADMIN_NAME: "Adminstrator", // to be translated
-  MESSAGE_SERVICE_ADMIN_PASSWORD: "Password", // to be translated
+  MESSAGE_SERVICE_SETTING: "Mesaj Hizmeti Yapılandırması",
+  MESSAGE_SERVICE_IP: "Mesaj Hizmetinin IP Adresi",
+  MESSAGE_SERVICE_PORT: "Mesaj Hizmet Portu",
+  MESSAGE_SERVICE_MANAGE_PORT: "Mesaj Hizmet Yöneticisi Portu",
+  MESSAGE_SERVICE_HOST_NAME: "Sanal Sunucu",
+  MESSAGE_SERVICE_ADMIN_NAME: "Yönetici",
+  MESSAGE_SERVICE_ADMIN_PASSWORD: "Şifre",
 
-  FILE_SERVICE_SETTING: "File Service Configuration", // to be translated
-  FILE_SERVICE_UPLOAD_URL: "URL to upload Files", // to be translated
-  FILE_SERVICE_UPLOAD_DOWNLOAD: "URL to download Files", // to be translated
+  FILE_SERVICE_SETTING: "Dosya Hizmeti Yapılandırması",
+  FILE_SERVICE_UPLOAD_URL: "Dosya Yükleme URL'si",
+  FILE_SERVICE_UPLOAD_DOWNLOAD: "Dosyaları İndirme URL'si",
 
   SWITCH_ACCOUNT: "Hesap Değiştir",
   LOG_OUT: "Oturumu Kapat",
@@ -124,7 +124,7 @@ const Profile: typeof CN.Profile = {
   MY_SERVICE: "Servis",
   PRIVATE_SERVICE: "Özel Servis",
   PUBLIC_SERVICE: "Halka Açık Servis",
-  NO_MAP_SERVICE:"The service does not have a map to display",// need to translate
+  NO_MAP_SERVICE:"Hizmetin görüntülenecek bir haritası yok",
 
   INVALID_SERVER_ADDRESS: "Hatalı sunucu adresi",
 
@@ -232,7 +232,7 @@ const Profile: typeof CN.Profile = {
   BUILDING: "Building",
   BUILD_SUCCESS: "Build Sucessfully",
   BUILD_FAILED: "Build Failed",
-  INPUT_DATASET_NAME: "Please input dataset name",//need to translate
+  INPUT_DATASET_NAME: "Lütfen veri kümesi adını girin",
 
   // 创建数据源
   NEW_DATASOURCE: "Verikaynağı Oluştur",
@@ -429,7 +429,7 @@ const Profile: typeof CN.Profile = {
   ONLINE_DATA_UNAVAILABLE: "Uygun çevrimiçi veri bulunamadı ",
   ONLINE: "Çevrimiçi",
 
-  CLOUD_CAPACITY_NOT_ENOUGH: "No enough capacity on cloud storage",  //to be translated
+  CLOUD_CAPACITY_NOT_ENOUGH: "Bulut depolamada yeterli kapasite yok",
 }
 
 export { Profile }

@@ -49,7 +49,7 @@ const Prompt: typeof CN.Prompt = {
 
   CONFIRM: "Onayla",
   COMPLETE: "Tamamla",
-  INSTALL:"Install",//need to translate
+  INSTALL:"Yükle",
 
   NO_PERMISSION: "İzin yok",
   NO_PERMISSION_ALERT: "İzin Yok",
@@ -121,7 +121,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: "Lütfen Alan Katmanını Seçiniz",
 
   NO_PLOTTING_DEDUCTION: "Mevcut haritada çizim kesintisi yok",
-  DELETE_PLOTTING_DEDUCTION: "Delete the deduction?", // need to translate
+  DELETE_PLOTTING_DEDUCTION: "Kesintiyi silmek ister misiniz?",
   NO_FLY: "Mevcut sahnede uçuş yok",
   PLEASE_OPEN_SCENE: "Lütfen bir sahne açın",
   NO_SCENE: "Sahne Yok",
@@ -132,10 +132,10 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: "Geçerli katman stillendirilemez, lütfen başka bir katmanı yeniden seçin",
 
   PLEASE_SELECT_PLOT_LAYER: "Lütfen Çizim Katmanı Seçin",
-  PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer", // need to translate
-  PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer", // need to translate
-  DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
-  DONOT_SUPPORT_ARENGINE: "Install or upgrade AREngine",//need to translate
+  PLEASE_SELECT_MEDIA_LAYER: "Lütfen bir nokta, CAD veya çizim katmanı seçin",
+  PLEASE_SELECT_CAD_LAYER: "Lütfen bir CAD katmanı seçin",
+  DONOT_SUPPORT_ARCORE: "ARCore'u kurun veya yükseltin",
+  DONOT_SUPPORT_ARENGINE: "AREngine'i kurun veya yükseltin",
   GET_SUPPORTED_DEVICE_LIST: "Desteklenen cihaz listesini gör",
   PLEASE_NEW_PLOT_LAYER: "Lütfen Yeni Çizim Katmanı Oluşturun",
   DOWNLOADING_PLEASE_WAIT: "İndiriliyor, lütfen bekleyin",
@@ -177,11 +177,11 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_SUCCESS: "Başarıyla yayınlandı",
   PUBLISH_FAILED: "Yayınlama Başarısız",
   PUBLISH_FAILED_INFO_1: "Servis yayınlandı",
-  PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
+  PUBLISH_FAILED_INFO_2: "Hizmet yayınlanıyor fakat şu anda çalıştırılamıyor",
   SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
   DELETE_CONFIRM: "Öğeyi silmek istediğinizden emin misiniz?",
   BATCH_DELETE_CONFIRM: "Seçili öğe(ler)i silmek istediğinizden emin misiniz?",
-  WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate
+  WHETHER_DOWNLOAD_ALL_SERVICES: 'Tüm hizmetleri indirmek ve güncellemek istediğinizden emin misiniz?',
 
   SELECT_AT_LEAST_ONE: "En az bir öğe seçin",
   DELETE_MAP_RELATE_DATA: "Aşağıdaki harita(lar) etkilenecek, devam et?",
@@ -372,10 +372,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "Geri alınamaz",
   CANT_REDO: "Yeniden yapılamaz",
   DATASET_RENAME_FAILED: "Veri kümesi adı yalnızca harf, rakam ve '_', '@', '#' içerebilir",
-  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",//need to translate
+  DATASOURCE_RENAME_FAILED: "Veri kaynağı adı yalnızca harfler, sayılar ve \"_\", \"@\", \"#\" içerebilir." ,
   SWITCH_LINE: "Veri kümesini değiştir",
   HAS_NO_ROADNAME_FIELD_DATA: "Yol adı alanı bilgisi olmayan veri kümesi",
-  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
+  NOT_LONGITUDE:"Enlem ve boylam koordinatlarını değil, veri kümesi projeksiyon koordinatlarını seçin, lütfen dönüştürme işlemini yapın.",
   MERGE_SUCCESS: "Başarıyla birleştirildi",
   MERGE_FAILD: "Birleştirme başarısız oldu",
   NOT_SUPPORT_PRJCOORDSYS: "Aşağıdaki veri setinin koordinat sistemi birleştirmeyi desteklemiyor",
@@ -388,10 +388,10 @@ const Prompt: typeof CN.Prompt = {
   BUILD_SUCCESS: "Başarıyla uygulandı",
   SELECT_LINE_SMOOTH: "Lütfen düzeltilmesi gereken çizgiyi seçin",
   SELECT_A_POINT_INLINE: "Lütfen bir çevrimiçi nokta seçin",
-  SELECT_POINT_INCURRENTLINE:"Select the point on the current line to interrupt",//need to translate
-  SELECT_LINE_WITH_INTERRUPT:"Select the line to participate in the interruption",//need to translate
-  SELECT_LINE_EXTENSION:"Select the line to be extended",//need to translate
-  SELECT_LINE_TO_TRIM:"Select the clipped portion of the clipped line",//need to translate
+  SELECT_POINT_INCURRENTLINE:"Kesinti için geçerli satırdaki noktayı seçin",
+  SELECT_LINE_WITH_INTERRUPT:"Kesintiye katılmak için çizgi seçin",
+  SELECT_LINE_EXTENSION:"Uzatılacak çizgiyi seçin",
+  SELECT_LINE_TO_TRIM:"Kırpılan çizginin kırpılan kısmını seçin",
   LINE_DATASET: "Çizgi Verikümesi",
   DESTINATION_DATASOURCE: "Hedef Veri Kaynağı",
   SMOOTH_FACTOR: "Lütfen düzeltme faktörünü girin",

@@ -27,11 +27,11 @@ const Common: typeof CN.Common = {
   DELETE_CURRENT_OBJ_CONFIRM: "Voulez-vous supprimer l'objet actuel ?",
   NO_SELECTED_OBJ: "Aucun objet sélectionné",
 
-  CURRENT: 'Current', // to be translated
-  SELECTED: 'Selected', // to be translated
-  DEFAULT: 'Default', // to be translated
+  CURRENT: 'Actuel',
+  SELECTED: 'Sélectionné',
+  DEFAULT: 'Defaut',
 
-  SELECT_MODEL: 'Select Model', // to be translated
+  SELECT_MODEL: 'Sélectionner le Modèle',
 }
 
 export { Protocol, Common }

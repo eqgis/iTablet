@@ -92,17 +92,17 @@ const Profile: typeof CN.Profile = {
   CONNECTING: "توصيل",
   CONNECT_SERVER_FAIL: "فشل الاتصال بالسيرفر ، يرجى التحقق من عنوان الشبكة أو السيرفر",
   NEXT: "التالى",
-  MESSAGE_SERVICE_SETTING: "Message Service Configuration", // to be translated
-  MESSAGE_SERVICE_IP: "IP Address of Message Service", // to be translated
-  MESSAGE_SERVICE_PORT: "Port of Message Service", // to be translated
-  MESSAGE_SERVICE_MANAGE_PORT: "Port of Message Service Manager", // to be translated
-  MESSAGE_SERVICE_HOST_NAME: "Virtual Host", // to be translated
-  MESSAGE_SERVICE_ADMIN_NAME: "Adminstrator", // to be translated
-  MESSAGE_SERVICE_ADMIN_PASSWORD: "Password", // to be translated
+  MESSAGE_SERVICE_SETTING: "تكوين خدمة الرسائل",
+  MESSAGE_SERVICE_IP: "عنوان بروتوكول الإنترنت خدمة الرسائل",
+  MESSAGE_SERVICE_PORT: "خدمة الرسائل ميناء",
+  MESSAGE_SERVICE_MANAGE_PORT: "ميناء مدير خدمة الرسائل",
+  MESSAGE_SERVICE_HOST_NAME: "استضافة المواقع",
+  MESSAGE_SERVICE_ADMIN_NAME: "مدير",
+  MESSAGE_SERVICE_ADMIN_PASSWORD: "كلمة السر",
 
-  FILE_SERVICE_SETTING: "File Service Configuration", // to be translated
-  FILE_SERVICE_UPLOAD_URL: "URL to upload Files", // to be translated
-  FILE_SERVICE_UPLOAD_DOWNLOAD: "URL to download Files", // to be translated
+  FILE_SERVICE_SETTING: "ملف خدمة التكوين",
+  FILE_SERVICE_UPLOAD_URL: "رابط تحميل الملف",
+  FILE_SERVICE_UPLOAD_DOWNLOAD: "رابط تحميل الملف",
 
   SWITCH_ACCOUNT: "تبديل الحساب",
   LOG_OUT: "تسجيل خروج",
@@ -124,7 +124,7 @@ const Profile: typeof CN.Profile = {
   MY_SERVICE: "خدمة",
   PRIVATE_SERVICE: "خدمة خاصة",
   PUBLIC_SERVICE: "خدمة عامة",
-  NO_MAP_SERVICE:"The service does not have a map to display",// need to translate
+  NO_MAP_SERVICE:"هذه الخدمة لا تظهر على الخريطة",
 
   INVALID_SERVER_ADDRESS: "صحيح عنوان الخادم",
 
@@ -234,7 +234,7 @@ const Profile: typeof CN.Profile = {
   BUILDING: "جاري البناء",
   BUILD_SUCCESS: "تم البناء بنجاح",
   BUILD_FAILED: "فشل البناء",
-  INPUT_DATASET_NAME: "Please input dataset name",//need to translate
+  INPUT_DATASET_NAME: "من فضلك أدخل اسم مجموعة البيانات",
 
   // 创建数据源
   NEW_DATASOURCE: "أنشاء مجموعه بيانات",
@@ -438,7 +438,7 @@ const Profile: typeof CN.Profile = {
   ONLINE_DATA_UNAVAILABLE: "البيانات على الانترنت غير متوفرة",
   ONLINE: "آنلاین",
 
-  CLOUD_CAPACITY_NOT_ENOUGH: "No enough capacity on cloud storage",  //to be translated
+  CLOUD_CAPACITY_NOT_ENOUGH: "ليس هناك ما يكفي من القدرة على تخزين سحابة",
 }
 
 export { Profile }

@@ -49,7 +49,7 @@ const Prompt: typeof CN.Prompt = {
 
   CONFIRM: "Confirmer",
   COMPLETE: "Complet",
-  INSTALL:"Install",//need to translate
+  INSTALL:"Installer",
 
   NO_PERMISSION: "Pas de permission",
   NO_PERMISSION_ALERT: "L’application n’a pas les autorisations nécessaires pour s’exécuter",
@@ -121,7 +121,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: "Veuillez choisir la couche  région",
 
   NO_PLOTTING_DEDUCTION: "Aucune déduction de traçage dans la carte actuelle",
-  DELETE_PLOTTING_DEDUCTION: "Delete the deduction?", // need to translate
+  DELETE_PLOTTING_DEDUCTION: "Supprimer les déduction?",
   NO_FLY: "Pas de survol dans la scène actuelle",
   PLEASE_OPEN_SCENE: "Veuillez ouvrir une scène",
   NO_SCENE: "Aucune scène",
@@ -132,10 +132,10 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: "La couche actuelle ne peut pas être stylisée et veuillez en sélectionner une autre",
 
   PLEASE_SELECT_PLOT_LAYER: "Veuillez sélectionner la couche du tracé",
-  PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer", // need to translate
-  PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer", // need to translate
-  DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
-  DONOT_SUPPORT_ARENGINE: "Install or upgrade AREngine",//need to translate
+  PLEASE_SELECT_MEDIA_LAYER: "Veuillez sélectionner une couche de point, CAD ou de parcelle",
+  PLEASE_SELECT_CAD_LAYER: "Veuillez sélectionner une couche CAD ",
+  DONOT_SUPPORT_ARCORE: "Installer ou mettre à niveau ARCore",
+  DONOT_SUPPORT_ARENGINE: "Installer ou mettre à niveau AREngine",
   GET_SUPPORTED_DEVICE_LIST: "Afficher la liste des appareils pris en charge",
   PLEASE_NEW_PLOT_LAYER: "Veuillez créer une nouvelle couche de tracé",
   DOWNLOADING_PLEASE_WAIT: "Téléchargement en cours, veuillez patienter",
@@ -177,11 +177,11 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_SUCCESS: "Publié avec succès",
   PUBLISH_FAILED: "Échec de la publication",
   PUBLISH_FAILED_INFO_1: "Le service a été publié",
-  PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
+  PUBLISH_FAILED_INFO_2: "le service est en cours de publication et ne peut pas être exploité pour le moment",
   SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
   DELETE_CONFIRM: "Voulez-vous vraiment supprimer l'élément?",
   BATCH_DELETE_CONFIRM: "Voulez-vous vraiment supprimer les éléments sélectionnés?",
-  WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate
+  WHETHER_DOWNLOAD_ALL_SERVICES: 'Êtes-vous sûr de vouloir télécharger et mettre à jour tous les services?',
 
   SELECT_AT_LEAST_ONE: "Veuillez sélectionner au moins un élément",
   DELETE_MAP_RELATE_DATA: "Les cartes suivantes seront affectées, continuer?",
@@ -371,10 +371,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "Irrévocable",
   CANT_REDO: "Impossible de refaire",
   DATASET_RENAME_FAILED: "Le nom du jeu de données ne peut contenir que des lettres, des chiffres et '_', '@', '#'",
-  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",//need to translate
+  DATASOURCE_RENAME_FAILED: "Le nom de la source de données ne peut contenir que des lettre, des chiffres et \"_\", \"@\", \"#\"",
   SWITCH_LINE: "Changer de jeu de données",
   HAS_NO_ROADNAME_FIELD_DATA: "Ensemble de données sans informations de champ de nom de route",
-  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
+  NOT_LONGITUDE:"Sélectionner de projection de l'ensemble de données et non les coordonnées de latitude et de longitude, veuillez convertir",
   MERGE_SUCCESS: "Fusionné avec succès",
   MERGE_FAILD: "La fusion a échoué",
   NOT_SUPPORT_PRJCOORDSYS: "Le système de coordonnées de l'ensemble de données suivant ne prend pas en charge la fusion",
@@ -387,10 +387,10 @@ const Prompt: typeof CN.Prompt = {
   BUILD_SUCCESS: "Construit avec succès",
   SELECT_LINE_SMOOTH: "Veuillez sélectionner la ligne à lisser",
   SELECT_A_POINT_INLINE: "Veuillez sélectionner un point en ligne",
-  SELECT_POINT_INCURRENTLINE:"Select the point on the current line to interrupt",//need to translate
-  SELECT_LINE_WITH_INTERRUPT:"Select the line to participate in the interruption",//need to translate
-  SELECT_LINE_EXTENSION:"Select the line to be extended",//need to translate
-  SELECT_LINE_TO_TRIM:"Select the clipped portion of the clipped line",//need to translate
+  SELECT_POINT_INCURRENTLINE:"Sélectionner le point sur la ligne actuelle à interrompre",
+  SELECT_LINE_WITH_INTERRUPT:"Sélectionner la ligne pour participer à l'interruption",
+  SELECT_LINE_EXTENSION:"Sélectionner la ligne à prolonger",
+  SELECT_LINE_TO_TRIM:"Sélectionner la partie couper de la ligne couper",
   LINE_DATASET: "Jeu de données de ligne",
   DESTINATION_DATASOURCE: "Source de données cible",
   SMOOTH_FACTOR: "Veuillez saisir le facteur de lissage",

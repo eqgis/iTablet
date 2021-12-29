@@ -49,7 +49,7 @@ const Prompt: typeof CN.Prompt = {
 
   CONFIRM: "تأكيد",
   COMPLETE: "اكتمال",
-  INSTALL:"Install",//need to translate
+  INSTALL:"تركيب .",
 
   NO_PERMISSION: "لا إذن",
   NO_PERMISSION_ALERT: "التطبيق ليس لديه أذونات كافية للتشغيل",
@@ -121,7 +121,7 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_REGION_LAYER: "الرجاء اختيار المنطقة طبقة",
 
   NO_PLOTTING_DEDUCTION: "لا يوجد رسم تخطيطي في الخريطة الحالية",
-  DELETE_PLOTTING_DEDUCTION: "Delete the deduction?", // need to translate
+  DELETE_PLOTTING_DEDUCTION: "حذف الخصم",
   NO_FLY: "لايوجد طيران فى المشهد الحالى",
   PLEASE_OPEN_SCENE: "من فضلك افتح المشهد",
   NO_SCENE: "لا يوجد مشهد",
@@ -132,10 +132,10 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: "لا يمكن تصميم الطبقة الحالية ، والرجاء إعادة تحديد طبقة أخرى",
 
   PLEASE_SELECT_PLOT_LAYER: "يرجى تحديد طبقة الرسم",
-  PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer", // need to translate
-  PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer", // need to translate
-  DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
-  DONOT_SUPPORT_ARENGINE: "Install or upgrade AREngine",//need to translate
+  PLEASE_SELECT_MEDIA_LAYER: "حدد نقطة ، كندي ، أو طبقة الطباعة",
+  PLEASE_SELECT_CAD_LAYER: "الرجاء اختيار طبقة كندي",
+  DONOT_SUPPORT_ARCORE: "تثبيت أو ترقية ARCore",
+  DONOT_SUPPORT_ARENGINE: "تثبيت أو ترقية AREngine",
   GET_SUPPORTED_DEVICE_LIST: "عرض قائمة الأجهزة المدعومة",
   PLEASE_NEW_PLOT_LAYER: "من فضلك أنشىء طبقة نقاط جديدة",
   DOWNLOADING_PLEASE_WAIT: "من فضلك انتظر جارى التنزيل",
@@ -177,11 +177,11 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_SUCCESS: "تم النشر بنجاج",
   PUBLISH_FAILED: "فشل النشر",
   PUBLISH_FAILED_INFO_1: "تم نشر هذه الخدمة",
-  PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
+  PUBLISH_FAILED_INFO_2: "الخدمة قيد النشر ، لا يمكن أن تعمل في هذا الوقت",
   SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
   DELETE_CONFIRM: "هل أنت متأكد أنك تريد حذف العنصر؟",
   BATCH_DELETE_CONFIRM: "هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟",
-  WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate
+  WHETHER_DOWNLOAD_ALL_SERVICES: 'هل أنت متأكد أنك تريد تحميل وتحديث جميع الخدمات',
 
   SELECT_AT_LEAST_ONE: "يرجى تحديد عنصر واحد على الأقل",
   DELETE_MAP_RELATE_DATA: "سوف تتأثر الخريطة (الخرائط) التالية ، هل تريد المتابعة؟",
@@ -372,10 +372,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "غير قابل للنقض",
   CANT_REDO: "لا يمكن الإعادة",
   DATASET_RENAME_FAILED: "لا يمكن أن يحتوي اسم مجموعة البيانات إلا على أحرف وأرقام و\"_\"،\" @ \"،\" # \"",
-  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",//need to translate
+  DATASOURCE_RENAME_FAILED: "اسم مصدر البيانات يمكن أن تحتوي فقط على الحروف والأرقام والأرقام \"_\", \"@\", \"#\"",
   SWITCH_LINE: "تبديل مجموعة البيانات",
   HAS_NO_ROADNAME_FIELD_DATA: "مجموعة بيانات بدون معلومات حقل اسم الطريق",
-  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
+  NOT_LONGITUDE:"حدد إحداثيات الإسقاط من مجموعة البيانات بدلا من إحداثيات الطول والعرض ، تحويل",
   MERGE_SUCCESS: "تم الدمج بنجاح",
   MERGE_FAILD: "فشل الدمج",
   NOT_SUPPORT_PRJCOORDSYS: "لنظام الإحداثي لمجموعة البيانات التالية لا يدعم الدمج",
@@ -388,10 +388,10 @@ const Prompt: typeof CN.Prompt = {
   BUILD_SUCCESS: "تم بناؤه بنجاح",
   SELECT_LINE_SMOOTH: "الرجاء تحديد الخط الذي يحتاج إلى تجانس",
   SELECT_A_POINT_INLINE: "الرجاء تحديد نقطة على الإنترنت",
-  SELECT_POINT_INCURRENTLINE:"Select the point on the current line to interrupt",//need to translate
-  SELECT_LINE_WITH_INTERRUPT:"Select the line to participate in the interruption",//need to translate
-  SELECT_LINE_EXTENSION:"Select the line to be extended",//need to translate
-  SELECT_LINE_TO_TRIM:"Select the clipped portion of the clipped line",//need to translate
+  SELECT_POINT_INCURRENTLINE:"حدد نقطة على الخط الحالي أن يقطع",
+  SELECT_LINE_WITH_INTERRUPT:"اختيار الخط الذي تريد المشاركة في المقاطعة",
+  SELECT_LINE_EXTENSION:"حدد الخط الذي تريد تمديده",
+  SELECT_LINE_TO_TRIM:"اختيار قطع جزء من خط الخياطة",
   LINE_DATASET: "خط مجموعة البيانات",
   DESTINATION_DATASOURCE: "مصدر البيانات الهدف",
   SMOOTH_FACTOR: "الرجاء إدخال عامل التنعيم",

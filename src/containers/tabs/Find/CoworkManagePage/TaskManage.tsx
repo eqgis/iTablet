@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   bottomViewBtn: {
-    width: scaleSize(100),
+    // width: scaleSize(100),
     height: scaleSize(100),
     alignItems: 'center',
     justifyContent: 'center',

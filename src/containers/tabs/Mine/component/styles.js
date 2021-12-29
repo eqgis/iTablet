@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
-    width: 40,
+    // width: 40,
     borderRadius: 5,
     backgroundColor: 'transparent',
   },
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   batchCheckStyle: {
     flexDirection: 'row',
-    width: scaleSize(110),
+    // width: scaleSize(110),
     justifyContent: 'space-around',
     alignItems: 'center',
   },

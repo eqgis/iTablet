@@ -1,6 +1,6 @@
 import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
-import { Toast } from '../../utils'
+import { Toast, LayerUtils } from '../../utils'
 import { getLanguage } from '../../language'
 
 /**
@@ -39,6 +39,130 @@ async function SearchPoiInMapView(item, cb = () => {}) {
         },
       )
     }
+  }
+}
+
+async function SearchGeoInCurrentLayer(item, cb = () => {}) {
+  if (item.is3D) return
+  try {
+    let result = null
+    const key = (item.title || item.content)?.substring(0, 20)
+    if (GLOBAL.currentLayer?.path) {
+      result = await SMap.searchLayerAttribute(GLOBAL.currentLayer.path, {
+        key: key,
+      }, 0, 100)
+    }
+    let location = await SMap.getMapcenterPosition()
+    if (result?.data?.length > 0) {
+      NavigationService.navigate('MapView')
+
+      const resultList = []
+      for (const dataItem of result.data) {
+        let name, x, y
+        for (const _item of dataItem) {
+          if (_item.name.toLowerCase() === 'smid' && name === '') {
+            name = _item.value
+          }
+          if (_item.name.toLowerCase() === 'name' || _item.name.toLowerCase() === 'title') {
+            name = _item.value
+          }
+          if (_item.name.toLowerCase() === 'smx') {
+            x = parseFloat(_item.value)
+          }
+          if (_item.name.toLowerCase() === 'smy') {
+            y = parseFloat(_item.value)
+          }
+        }
+        let _location = await SMap.translateLocationToLongitudeLatitude({x, y})
+        // SMap.getLoca
+        resultList.push({
+          pointName: name,
+          x: x,
+          y: y,
+          address: dataItem.address || `x:${_location.x} y:${_location.y}`,
+          distance: getDistance(_location, location),
+        })
+      }
+      resultList.sort(compare('distance')).forEach((dataItem, index) => {
+        resultList[index].distance =
+        dataItem.distance > 1000
+          ? (dataItem.distance / 1000).toFixed(2) + 'km'
+          : ~~dataItem.distance + 'm'
+      })
+      if (resultList.length > 0) {
+        await SMap.addCallouts(resultList)
+        GLOBAL.PoiInfoContainer.show()
+        GLOBAL.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
+        GLOBAL.PoiTopSearchBar.setVisible(true)
+        GLOBAL.PoiTopSearchBar.setState({
+          defaultValue: item.title || item.content,
+        })
+      }
+
+      // {
+      //   pointName: item.name,
+      //   x: item.location.x,
+      //   y: item.location.y,
+      //   address: item.address,
+      //   distance: getDistance(item.location, location),
+      // }
+
+      cb && cb(result)
+    } else {
+      if (GLOBAL.PoiInfoContainer) {
+        GLOBAL.PoiInfoContainer.setState({
+          showList: true,
+          location: location,
+        })
+        GLOBAL.PoiInfoContainer.getSearchResult(
+          {
+            keyWords: item.title || item.content,
+            location: JSON.stringify(location),
+            radius: item.radius || 0,
+          },
+          async data => {
+            if (data) {
+              NavigationService.navigate('MapView')
+              GLOBAL.PoiInfoContainer.setVisible(true)
+              GLOBAL.PoiTopSearchBar.setVisible(true)
+              GLOBAL.PoiTopSearchBar.setState({
+                defaultValue: item.title || item.content,
+              })
+            } else {
+              // 没有搜索结果,在当前位置添加callout
+              let _location = await SMap.getCurrentPosition()
+              const resultList = []
+              resultList.push({
+                pointName: key,
+                x: _location.x,
+                y: _location.y,
+                address: `x:${_location.x} y:${_location.y}`,
+                distance: getDistance(_location, location),
+              })
+              resultList.sort(compare('distance')).forEach((dataItem, index) => {
+                resultList[index].distance =
+                dataItem.distance > 1000
+                  ? (dataItem.distance / 1000).toFixed(2) + 'km'
+                  : ~~dataItem.distance + 'm'
+              })
+              await SMap.addCallouts(resultList)
+              NavigationService.navigate('MapView')
+              GLOBAL.PoiInfoContainer.show()
+              GLOBAL.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
+              GLOBAL.PoiTopSearchBar.setVisible(true)
+              GLOBAL.PoiTopSearchBar.setState({
+                defaultValue: item.title || item.content,
+              })
+              await SMap.toLocationPoint(_location)
+            }
+            cb && cb(data)
+          },
+        )
+      }
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    __DEV__ && console.warn(error)
   }
 }
 
@@ -150,5 +274,6 @@ function getSearchResult(params, location, cb = () => {}) {
 
 export default {
   SearchPoiInMapView,
+  SearchGeoInCurrentLayer,
   getSearchResult,
 }

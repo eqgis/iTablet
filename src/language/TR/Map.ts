@@ -19,7 +19,7 @@ const Map_Label: typeof CN.Map_Label = {
 // 地图、场景主菜单
 const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CURRENT_MAP: "Mevcut Harita",
-  CURRENT_SCENCE: "Mevcut Manzara",
+  CURRENT_SCENCE: "Mevcut Sahne",
   CURRENT_MODEL: "Mevcut Model",
   // 地图制图及公共 开始
   START: "Başla",
@@ -162,6 +162,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "Kamera",
   TOUR: "Gezinti",
   TOUR_NAME: "Gezinti Adı",
+  SCAN: "Scan", // need to translate
 
   STYLE_TRANSFER: "AI Kartografi",
   OBJ_EDIT: "Nesne düzenleme",
@@ -936,7 +937,7 @@ const Map_Tools: typeof CN.Map_Tools = {
 // POI title
 const Map_PoiTitle: typeof CN.Map_PoiTitle = {
   FOOD: "Yemek",
-  SCENE: "Manzara",
+  SCENE: "Sahne",
   BANK: "Banka",
   SUPERMARKET: "Market",
   HOTEL: "Otel",

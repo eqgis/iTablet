@@ -162,6 +162,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "マルチメディアコレクション",
   TOUR: "旅行軌跡",
   TOUR_NAME: "旅行軌跡名",
+  SCAN: "Scan", // need to translate
 
   STYLE_TRANSFER: "AIマップ作成",
   OBJ_EDIT: "オブジェクト編集",

@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import {
-  InteractionManager,
   Text,
   TouchableOpacity,
   View,
@@ -13,7 +12,7 @@ import {
 } from 'react-native'
 import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
-import NavigationService from '../../containers/NavigationService'
+import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
 import { Progress, MediaViewer, ImagePicker } from '../../components'
 import { RNCamera } from 'react-native-camera'
@@ -24,10 +23,11 @@ import { getLanguage } from '../../language'
 import styles from './styles'
 import ImageButton from '../../components/ImageButton'
 
-const TYPE = {
+export const TYPE = {
   PHOTO: 1,
   VIDEO: 2,
   AUDIO: 3,
+  BARCODE: 4,
 }
 
 const RECORD_STATUS = {
@@ -62,14 +62,17 @@ export default class Camera extends React.Component {
     this.selectionAttribute = params.selectionAttribute || false
     this.ids = []
     this.layerAttribute = params.layerAttribute || false
+    this.qrCb = params.qrCb // 二维码/条形码 回调
 
     this.state = {
       data: null,
       videoPaused: true, // 视频是否暂停
       showVideoController: false, // 视频控制器是否显示
-      type: TYPE.PHOTO,
+      type: params?.type || TYPE.PHOTO,
       recordStatus: RECORD_STATUS.UN_RECORD, // 拍摄状态
     }
+
+    this.qrCodeData = null
   }
 
   // eslint-disable-next-line
@@ -308,6 +311,30 @@ export default class Camera extends React.Component {
     )
   }
 
+  /**
+   * 
+   * @param {*} event {
+        data: string;
+        rawData?: string;
+        type: keyof BarCodeType;
+        // @description For Android use `[Point<string>, Point<string>]`
+        // @description For iOS use `{ origin: Point<string>, size: Size<string> }`
+        bounds: [Point<string>, Point<string>] | { origin: Point<string>; size: Size<string> };
+      }
+   */
+  _onBarCodeRead = event => {
+    if (this.state.type !== TYPE.BARCODE || this.state.recordStatus === RECORD_STATUS.RECORDED) {
+      return
+    }
+    if (this.qrCodeData?.data === event.data && this.qrCodeData?.rawData === event.rawData) {
+      return
+    }
+    this.qrCodeData = event
+    if (this.qrCb && typeof this.qrCb === 'function') {
+      this.qrCb(event)
+    }
+  }
+
   renderProgress = () => {
     if (
       !(
@@ -368,16 +395,22 @@ export default class Camera extends React.Component {
               style={styles.smallIcon}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.openAlbum()}
-            style={styles.iconView}
-          >
-            <Image
-              resizeMode={'contain'}
-              source={getPublicAssets().common.icon_album}
-              style={styles.smallIcon}
-            />
-          </TouchableOpacity>
+          {
+            this.state.type === TYPE.BARCODE
+              ? <View style={styles.iconView} />
+              : (
+                <TouchableOpacity
+                  onPress={() => this.openAlbum()}
+                  style={styles.iconView}
+                >
+                  <Image
+                    resizeMode={'contain'}
+                    source={getPublicAssets().common.icon_album}
+                    style={styles.smallIcon}
+                  />
+                </TouchableOpacity>
+              )
+          }
         </View>
       )
     }
@@ -385,7 +418,7 @@ export default class Camera extends React.Component {
 
   renderCenterBtn = () => {
     // 照片/视频拍摄完成不显示此按钮
-    if (this.state.recordStatus === RECORD_STATUS.RECORDED) return null
+    if (this.state.type === TYPE.BARCODE || this.state.recordStatus === RECORD_STATUS.RECORDED) return null
     return (
       <ImageButton
         containerStyle={styles.capture}
@@ -407,7 +440,7 @@ export default class Camera extends React.Component {
   }
 
   renderChangeBtns = () => {
-    if (this.state.recordStatus !== RECORD_STATUS.UN_RECORD) return null
+    if (this.state.type === TYPE.BARCODE || this.state.recordStatus !== RECORD_STATUS.UN_RECORD) return null
     return (
       <View style={styles.changeView}>
         <TouchableOpacity
@@ -461,6 +494,7 @@ export default class Camera extends React.Component {
             buttonPositive: 'Ok',
             buttonNegative: 'Cancel',
           }}
+          onBarCodeRead={this._onBarCodeRead}
         >
           {({ camera, status }) => {
             // recordAudioPermissionStatus

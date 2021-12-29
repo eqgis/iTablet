@@ -196,7 +196,7 @@ export default class LayerAttributeTable extends React.Component {
 
         if (!isMultiData && !this.props.isShowSystemFields) {
           this.props.data.forEach(item => {
-            if (item.fieldInfo && !item.fieldInfo.isSystemField) {
+            if (!this._isSystomField(item.fieldInfo)) {
               data.push(item)
             }
           })
@@ -231,6 +231,11 @@ export default class LayerAttributeTable extends React.Component {
       __DEV__ && console.warn(e)
     }
   }
+
+  _isSystomField = fieldInfo => {
+    return fieldInfo?.isSystemField || fieldInfo?.name?.toUpperCase().indexOf('SS_') === 0 || fieldInfo?.name?.toUpperCase().indexOf('SM') === 0
+  }
+
 
   //IOS avoidingView无效 手动滚动过去
   // componentDidMount() {

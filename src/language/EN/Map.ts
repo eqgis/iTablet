@@ -161,6 +161,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "Camera",
   TOUR: "Tour",
   TOUR_NAME: "Tour Name",
+  SCAN: "Scan",
 
   STYLE_TRANSFER: "AI Cartography",
   OBJ_EDIT: "Edit Object",

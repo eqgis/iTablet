@@ -208,18 +208,17 @@ export default class MyBaseMap extends Component {
       userAdd: true,
     }
     let list = this.curUserBaseMaps
-    //add xiezhy
-    // if (thisHandle.item != undefined) {
-    //   for (let i = 0, n = list.length; i < n; i++) {
-    //     if (
-    //       list[i].DSParams.server === thisHandle.item.server &&
-    //       list[i].mapName === thisHandle.item.name
-    //     ) {
-    //       list.splice(i, 1)
-    //       break
-    //     }
-    //   }
-    // }
+    if (item != undefined) {
+      for (let i = 0, n = list.length; i < n; i++) {
+        if (
+          list[i].DSParams.server === item.DSParams.server &&
+          list[i].mapName === item.mapName
+        ) {
+          list.splice(i, 1)
+          break
+        }
+      }
+    }
     list.push(item)
     let count = list.length
     for (let i = 0; i < count; i++) {

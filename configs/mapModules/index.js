@@ -9,18 +9,18 @@ import CoworkModule from './CoworkModule'
 /** export顺序为首页模块显示顺序 **/
 const mapModules = [
   // AppModule.MapARMapping,
-  // AppModule.MapEditConfig,
-  AppModule.Map3DConfig,
-  // AppModule.MapARConfig,
+  CoworkModule,
   AppModule.MapThemeConfig,
+  AppModule.MapEditConfig,
+  AppModule.Map3DConfig,
   // AppModule.MapARAnalysis,
-  AppModule.MapCollectionConfig,
   AppModule.MapNavigationConfig,
-  AppModule.MapPlottingConfig,
+  AppModule.MapARConfig,
+  AppModule.MapCollectionConfig,
+  // AppModule.MapPlottingConfig,
   // AppModule.MapAnalystConfig,
   // MapExample,
   // TourModule,
-  CoworkModule,
 ]
 
 export default (function () {

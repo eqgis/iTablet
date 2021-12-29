@@ -1,0 +1,279 @@
+{
+  "tbSurvey": {
+    "id": 59,
+    "surveyname": "隐形眼镜在大学生中的市场前景调查书",
+    "remark": "",
+    "createdepart": "政府事业部",
+    "surveystate": 1,
+    "creator": "张三",
+    "createdate": "2021-12-06T08:29:47.147+00:00"
+  },
+  "quesAndOpts": [
+    {
+      "tbQuestion": {
+        "id": 101,
+        "quesname": "请问您现在在戴哪一种眼镜",
+        "quesremark": "",
+        "questype": 1,
+        "ordernum": 0,
+        "creator": "",
+        "createtime": null,
+        "isrequired": 2,
+        "surveyid": 59
+      },
+      "tbQuestionOpts": [
+        {
+          "id": 296,
+          "surveyid": 59,
+          "questionid": 101,
+          "opt": "框架眼镜",
+          "ordernum": 0,
+          "questype": 1
+        },
+        {
+          "id": 297,
+          "surveyid": 59,
+          "questionid": 101,
+          "opt": "隐形眼镜",
+          "ordernum": 1,
+          "questype": 1
+        },
+        {
+          "id": 298,
+          "surveyid": 59,
+          "questionid": 101,
+          "opt": "未配眼镜",
+          "ordernum": 2,
+          "questype": 1
+        },
+        {
+          "id": 299,
+          "surveyid": 59,
+          "questionid": 101,
+          "opt": "视力好，不需要配",
+          "ordernum": 3,
+          "questype": 1
+        }
+      ]
+    },
+    {
+      "tbQuestion": {
+        "id": 102,
+        "quesname": "假若您已近视尚未配眼镜，您准备",
+        "quesremark": "",
+        "questype": 1,
+        "ordernum": 0,
+        "creator": "",
+        "createtime": null,
+        "isrequired": 2,
+        "surveyid": 59
+      },
+      "tbQuestionOpts": [
+        {
+          "id": 300,
+          "surveyid": 59,
+          "questionid": 102,
+          "opt": "配框架眼镜",
+          "ordernum": 0,
+          "questype": 1
+        },
+        {
+          "id": 301,
+          "surveyid": 59,
+          "questionid": 102,
+          "opt": "配隐形眼镜",
+          "ordernum": 1,
+          "questype": 1
+        },
+        {
+          "id": 302,
+          "surveyid": 59,
+          "questionid": 102,
+          "opt": "不配镜",
+          "ordernum": 2,
+          "questype": 1
+        }
+      ]
+    },
+    {
+      "tbQuestion": {
+        "id": 103,
+        "quesname": "您选择框架眼镜是因为",
+        "quesremark": "",
+        "questype": 1,
+        "ordernum": 0,
+        "creator": "",
+        "createtime": null,
+        "isrequired": 2,
+        "surveyid": 59
+      },
+      "tbQuestionOpts": [
+        {
+          "id": 303,
+          "surveyid": 59,
+          "questionid": 103,
+          "opt": "价格适中",
+          "ordernum": 0,
+          "questype": 1
+        },
+        {
+          "id": 304,
+          "surveyid": 59,
+          "questionid": 103,
+          "opt": "方便",
+          "ordernum": 1,
+          "questype": 1
+        },
+        {
+          "id": 305,
+          "surveyid": 59,
+          "questionid": 103,
+          "opt": "一般近视者都戴",
+          "ordernum": 2,
+          "questype": 1
+        },
+        {
+          "id": 306,
+          "surveyid": 59,
+          "questionid": 103,
+          "opt": "其他",
+          "ordernum": 3,
+          "questype": 1
+        }
+      ]
+    },
+    {
+      "tbQuestion": {
+        "id": 104,
+        "quesname": "戴眼镜给体育运动带来了一些不便，对此您持何种态度",
+        "quesremark": "",
+        "questype": 1,
+        "ordernum": 0,
+        "creator": "",
+        "createtime": null,
+        "isrequired": 2,
+        "surveyid": 59
+      },
+      "tbQuestionOpts": [
+        {
+          "id": 307,
+          "surveyid": 59,
+          "questionid": 104,
+          "opt": "无所谓",
+          "ordernum": 0,
+          "questype": 1
+        },
+        {
+          "id": 308,
+          "surveyid": 59,
+          "questionid": 104,
+          "opt": "无可奈何，不戴不行",
+          "ordernum": 1,
+          "questype": 1
+        },
+        {
+          "id": 309,
+          "surveyid": 59,
+          "questionid": 104,
+          "opt": "运动时少戴",
+          "ordernum": 2,
+          "questype": 1
+        },
+        {
+          "id": 310,
+          "surveyid": 59,
+          "questionid": 104,
+          "opt": "换成隐形眼镜",
+          "ordernum": 3,
+          "questype": 1
+        }
+      ]
+    },
+    {
+      "tbQuestion": {
+        "id": 105,
+        "quesname": "长期戴框架眼镜，会使眼镜不同程度的变形，对此您持何种态度",
+        "quesremark": "",
+        "questype": 1,
+        "ordernum": 0,
+        "creator": "",
+        "createtime": null,
+        "isrequired": 2,
+        "surveyid": 59
+      },
+      "tbQuestionOpts": [
+        {
+          "id": 311,
+          "surveyid": 59,
+          "questionid": 105,
+          "opt": "无所谓",
+          "ordernum": 0,
+          "questype": 1
+        },
+        {
+          "id": 312,
+          "surveyid": 59,
+          "questionid": 105,
+          "opt": "无可奈何",
+          "ordernum": 1,
+          "questype": 1
+        },
+        {
+          "id": 313,
+          "surveyid": 59,
+          "questionid": 105,
+          "opt": "尽量少戴",
+          "ordernum": 2,
+          "questype": 1
+        },
+        {
+          "id": 314,
+          "surveyid": 59,
+          "questionid": 105,
+          "opt": "换成隐形眼镜",
+          "ordernum": 3,
+          "questype": 1
+        }
+      ]
+    },
+    {
+      "tbQuestion": {
+        "id": 106,
+        "quesname": "如果您想买隐形眼镜，请问您最高能接受以下哪种价格",
+        "quesremark": "",
+        "questype": 1,
+        "ordernum": 0,
+        "creator": "",
+        "createtime": null,
+        "isrequired": 2,
+        "surveyid": 59
+      },
+      "tbQuestionOpts": [
+        {
+          "id": 315,
+          "surveyid": 59,
+          "questionid": 106,
+          "opt": "三百元",
+          "ordernum": 0,
+          "questype": 1
+        },
+        {
+          "id": 316,
+          "surveyid": 59,
+          "questionid": 106,
+          "opt": "五百元",
+          "ordernum": 1,
+          "questype": 1
+        },
+        {
+          "id": 317,
+          "surveyid": 59,
+          "questionid": 106,
+          "opt": "八百元",
+          "ordernum": 2,
+          "questype": 1
+        }
+      ]
+    }
+  ]
+}

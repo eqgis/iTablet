@@ -32,7 +32,8 @@ async function composeWaiting(action) {
   setTimeout(() => (GLOBAL.clickWait = false), 2000)
 }
 
-const STAR_MODULE = ChunkType.MAP_AR_MAPPING
+// const STAR_MODULE = ChunkType.MAP_AR_MAPPING
+const STAR_MODULE = 'Cowork'
 
 class ModuleList extends Component {
   props: {

@@ -92,17 +92,17 @@ const Profile: typeof CN.Profile = {
   CONNECTING: "接続中",
   CONNECT_SERVER_FAIL: "サーバーに接続できません。ネットワーク、サーバーアドレスを確認してください。",
   NEXT: "次へ",
-  MESSAGE_SERVICE_SETTING: "Message Service Configuration", // to be translated
-  MESSAGE_SERVICE_IP: "IP Address of Message Service", // to be translated
-  MESSAGE_SERVICE_PORT: "Port of Message Service", // to be translated
-  MESSAGE_SERVICE_MANAGE_PORT: "Port of Message Service Manager", // to be translated
-  MESSAGE_SERVICE_HOST_NAME: "Virtual Host", // to be translated
-  MESSAGE_SERVICE_ADMIN_NAME: "Adminstrator", // to be translated
-  MESSAGE_SERVICE_ADMIN_PASSWORD: "Password", // to be translated
+  MESSAGE_SERVICE_SETTING: "メッセージサービス設定",
+  MESSAGE_SERVICE_IP: "メッセージサービスのIPアドレス",
+  MESSAGE_SERVICE_PORT: "メッセージサービスのPort",
+  MESSAGE_SERVICE_MANAGE_PORT: "メッセージサービスマネージャのPort",
+  MESSAGE_SERVICE_HOST_NAME: "仮想マシンHost",
+  MESSAGE_SERVICE_ADMIN_NAME: "管理者",
+  MESSAGE_SERVICE_ADMIN_PASSWORD: "パスワード",
 
-  FILE_SERVICE_SETTING: "File Service Configuration", // to be translated
-  FILE_SERVICE_UPLOAD_URL: "URL to upload Files", // to be translated
-  FILE_SERVICE_UPLOAD_DOWNLOAD: "URL to download Files", // to be translated
+  FILE_SERVICE_SETTING: "ファイルサービス設定",
+  FILE_SERVICE_UPLOAD_URL: "ファイルアップロードサービスのURL",
+  FILE_SERVICE_UPLOAD_DOWNLOAD: "ファイルダウンロードサービスのURL",
 
   SWITCH_ACCOUNT: "アカウントの切替",
   LOG_OUT: "ログアウト",
@@ -124,9 +124,9 @@ const Profile: typeof CN.Profile = {
   MY_SERVICE: "サービス",
   PRIVATE_SERVICE: "プライベートサービス",
   PUBLIC_SERVICE: "パブリックサービス",
-  NO_MAP_SERVICE:"The service does not have a map to display",// need to translate
+  NO_MAP_SERVICE:"サービスに表示できるマップはありません",
 
-  INVALID_SERVER_ADDRESS: "Invalid Server Address", // to be translated
+  INVALID_SERVER_ADDRESS: "無効なサービスアドレス",
 
   // 个人主页
   MY_ACCOUNT: "個人ホームページ",
@@ -192,7 +192,7 @@ const Profile: typeof CN.Profile = {
   SET_AS_PRIVATE_DATA: "プライベートデータに設定",
   SET_AS_PUBLIC_DATA: "パブリックデータに設定",
   NO_SERVICE: "サービス無し",
-  SHARE_TO_GROUP: "Share to group", // need to translate
+  SHARE_TO_GROUP: "グループに共有",
 
   GET_DATA_FAILED: "データの取得に失敗しました",
 
@@ -232,7 +232,7 @@ const Profile: typeof CN.Profile = {
   BUILDING: "作成",
   BUILD_SUCCESS: "作成に成功",
   BUILD_FAILED: "作成に失敗",
-  INPUT_DATASET_NAME: "Please input dataset name",//need to translate
+  INPUT_DATASET_NAME: "データセットを入力してください",
 
   // 作成データソース
   NEW_DATASOURCE: "新規データソース",
@@ -426,10 +426,10 @@ const Profile: typeof CN.Profile = {
   CHOOSE_COLOR: "色の選択",
   SET_PROJECTION: "投影を設定する",
 
-  ONLINE_DATA_UNAVAILABLE: "Online Data unavailable", //to be translated
-  ONLINE: "Online", //to be translated
+  ONLINE_DATA_UNAVAILABLE: "オンラインデータを使用できません",
+  ONLINE: "オンライン",
 
-  CLOUD_CAPACITY_NOT_ENOUGH: "No enough capacity on cloud storage",  //to be translated
+  CLOUD_CAPACITY_NOT_ENOUGH: "クラウドストレージのスペースは足りません",
 }
 
 export { Profile }

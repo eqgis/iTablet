@@ -44,8 +44,11 @@ async function showDatasetsList(type, filter = {}) {
   
           let server = await FileTools.appendingHomeDirectory(data.item.path)
           let alias = data.item.name
-          if (alias.endsWith('.udb')) alias = alias.replace('.udb', '')
-          if (alias.endsWith('.sci')) alias = alias.replace('.sci', '')
+
+          if (alias.indexOf('.udb', alias.length - '.udb'.length) !== -1) alias = alias.replace('.udb', '')
+          if (alias.indexOf('.sci', alias.length - '.sci'.length) !== -1) alias = alias.replace('.sci', '')
+          // if (alias.endsWith('.udb')) alias = alias.replace('.udb', '')
+          // if (alias.endsWith('.sci')) alias = alias.replace('.sci', '')
   
           let datasourceParams = {
             server,

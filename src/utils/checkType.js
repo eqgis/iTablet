@@ -46,20 +46,30 @@ function getMediaTypeByPath(uri = '') {
   let type = ''
   if (!uri) return type
   uri = uri.toLowerCase()
+
   if (
-    uri.endsWith('mp4') ||
-    uri.endsWith('mov') ||
-    uri.endsWith('avi') ||
-    uri.endsWith('wmv') ||
+    uri.indexOf('.mp4', uri.length - '.mp4'.length) !== -1 ||
+    uri.indexOf('.mov', uri.length - '.mov'.length) !== -1 ||
+    uri.indexOf('.avi', uri.length - '.avi'.length) !== -1 ||
+    uri.indexOf('.wmv', uri.length - '.wmv'.length) !== -1 ||
+    // uri.endsWith('mp4') ||
+    // uri.endsWith('mov') ||
+    // uri.endsWith('avi') ||
+    // uri.endsWith('wmv') ||
     uri.indexOf('/video/') > 0
   ) {
     type = 'video'
   } else if (
-    uri.endsWith('jpg') ||
-    uri.endsWith('jpeg') ||
-    uri.endsWith('png') ||
-    uri.endsWith('gif') ||
-    uri.endsWith('bmp') ||
+    uri.indexOf('.jpg', uri.length - '.jpg'.length) !== -1 ||
+    uri.indexOf('.jpeg', uri.length - '.jpeg'.length) !== -1 ||
+    uri.indexOf('.png', uri.length - '.png'.length) !== -1 ||
+    uri.indexOf('.gif', uri.length - '.gif'.length) !== -1 ||
+    uri.indexOf('.bmp', uri.length - '.bmp'.length) !== -1 ||
+    // uri.endsWith('jpg') ||
+    // uri.endsWith('jpeg') ||
+    // uri.endsWith('png') ||
+    // uri.endsWith('gif') ||
+    // uri.endsWith('bmp') ||
     uri.indexOf('/images/') > 0
   ) {
     type = 'photo'

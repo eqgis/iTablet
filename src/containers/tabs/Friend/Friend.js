@@ -60,6 +60,7 @@ const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
 
 let g_connectService = false
+let count = 0
 export default class Friend extends Component {
   props: {
     language: string,
@@ -497,11 +498,15 @@ export default class Friend extends Component {
           this.props.user.currentUser.userName,
         )
         if (!res) {
-
-          Toast.show(
-            getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          )
+          if(count%60 === 0 || count === 0){
+            Toast.show(
+              getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+            )
+          }
+          count++
+          this.connectService()
         } else {
+          count = 0
           //是否有其他连接
           let connection = await SMessageServiceHTTP.getConnection(
             this.props.user.currentUser.userName,
@@ -1304,10 +1309,10 @@ export default class Friend extends Component {
               : null
         }
 
-        Toast.show(
-          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          option,
-        )
+        // Toast.show(
+        //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+        //   option,
+        // )
       }
 
       cb && cb(result)
@@ -1322,10 +1327,10 @@ export default class Friend extends Component {
               : null
         }
 
-        Toast.show(
-          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          option,
-        )
+        // Toast.show(
+        //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+        //   option,
+        // )
       }
       cb && cb(false)
       return false

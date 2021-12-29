@@ -3,6 +3,7 @@ import LayerAttributeSearch from './LayerAttributeSearch'
 import {
   setCurrentAttribute,
   setLayerAttributes,
+  getLayers,
 } from '../../../../redux/models/layers'
 import { closeMap } from '../../../../redux/models/map'
 
@@ -20,6 +21,7 @@ const mapDispatchToProps = {
   setCurrentAttribute,
   closeMap,
   setLayerAttributes,
+  getLayers,
 }
 
 export default connect(

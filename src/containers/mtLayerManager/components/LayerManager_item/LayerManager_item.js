@@ -630,13 +630,15 @@ export default class LayerManager_item extends React.Component {
     let cornerMark
     if (this.props.cornerMarkImage) {
       cornerMark = this.props.cornerMarkImage
+    } else if (GLOBAL.coworkMode && this.props.data.isModified) {
+      cornerMark = getThemeAssets().cowork.icon_state_published
     } else {
       const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.state.data)
       if (!dsDescription) return null
       switch(dsDescription.type) {
         case 'onlineService':
           // cornerMark = GLOBAL.coworkMode && this.props.data.themeType === 0 ? getThemeAssets().cowork.icon_state_published : null
-          cornerMark = GLOBAL.coworkMode ? getThemeAssets().cowork.icon_state_published : null
+          cornerMark = GLOBAL.coworkMode ? getThemeAssets().cowork.icon_complate : null
           break
       }
     }

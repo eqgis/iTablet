@@ -92,17 +92,17 @@ const Profile: typeof CN.Profile = {
   CONNECTING: "Connexion",
   CONNECT_SERVER_FAIL: "Impossible de se connecter au serveur, veuillez vérifier l'adresse réseau ou serveur,",
   NEXT: "Suivant",
-  MESSAGE_SERVICE_SETTING: "Message Service Configuration", // to be translated
-  MESSAGE_SERVICE_IP: "IP Address of Message Service", // to be translated
-  MESSAGE_SERVICE_PORT: "Port of Message Service", // to be translated
-  MESSAGE_SERVICE_MANAGE_PORT: "Port of Message Service Manager", // to be translated
-  MESSAGE_SERVICE_HOST_NAME: "Virtual Host", // to be translated
-  MESSAGE_SERVICE_ADMIN_NAME: "Adminstrator", // to be translated
-  MESSAGE_SERVICE_ADMIN_PASSWORD: "Password", // to be translated
+  MESSAGE_SERVICE_SETTING: "Configuration du service d message",
+  MESSAGE_SERVICE_IP: "Addresse IP du service de messagerie",
+  MESSAGE_SERVICE_PORT: "Port du service de messagerie",
+  MESSAGE_SERVICE_MANAGE_PORT: "Port du gestionnaire du service de messagerie",
+  MESSAGE_SERVICE_HOST_NAME: "Hôte vituel",
+  MESSAGE_SERVICE_ADMIN_NAME: "Administrateur",
+  MESSAGE_SERVICE_ADMIN_PASSWORD: "Mot de passe",
 
-  FILE_SERVICE_SETTING: "File Service Configuration", // to be translated
-  FILE_SERVICE_UPLOAD_URL: "URL to upload Files", // to be translated
-  FILE_SERVICE_UPLOAD_DOWNLOAD: "URL to download Files", // to be translated
+  FILE_SERVICE_SETTING: "Configuration du service de fichier",
+  FILE_SERVICE_UPLOAD_URL: "URL RL pour télécharger des fichiers",
+  FILE_SERVICE_UPLOAD_DOWNLOAD: "URL RL pour télécharger des fichiers",
 
   SWITCH_ACCOUNT: "Changer de compte",
   LOG_OUT: "Déconnexion",
@@ -124,7 +124,7 @@ const Profile: typeof CN.Profile = {
   MY_SERVICE: "Service",
   PRIVATE_SERVICE: "Service privé'",
   PUBLIC_SERVICE: "Service publique",
-  NO_MAP_SERVICE:"The service does not have a map to display",// need to translate
+  NO_MAP_SERVICE:"le service n'a pas de carte à afficher",
 
   INVALID_SERVER_ADDRESS: "Addresse du serveur est invalide",
 
@@ -151,6 +151,7 @@ const Profile: typeof CN.Profile = {
   LOCAL: "Local",
   SAMPLEDATA: "exemples de données",
   ON_DEVICE: "Données d'utilisateur",
+  ONLINE_DATA: "Online Data", // need to translate
   USER_DATA: "User Data", // need to translate
   EXPORT_DATA: "Exporter les données",
   IMPORT_DATA: "Importer des données",
@@ -231,7 +232,7 @@ const Profile: typeof CN.Profile = {
   BUILDING: "Bâtiment",
   BUILD_SUCCESS: "Construit avec succès",
   BUILD_FAILED: "Construction échouée",
-  INPUT_DATASET_NAME: "Please input dataset name",//need to translate
+  INPUT_DATASET_NAME: "Veuillez saisir le nom de l'ensemble de données",
 
   // 创建数据源
   NEW_DATASOURCE: "Créer une source de données",
@@ -428,7 +429,7 @@ const Profile: typeof CN.Profile = {
   ONLINE_DATA_UNAVAILABLE: "Les données en ligne sont indisponible",
   ONLINE: "En ligne",
 
-  CLOUD_CAPACITY_NOT_ENOUGH: "No enough capacity on cloud storage",  //to be translated
+  CLOUD_CAPACITY_NOT_ENOUGH: "Pas assez de capacité sur le stockage cloud",
 }
 
 export { Profile }

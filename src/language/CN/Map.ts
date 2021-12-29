@@ -159,6 +159,7 @@ const Map_Main_Menu = {
   CAMERA: "多媒体采集",
   TOUR: "旅行轨迹",
   TOUR_NAME: "旅行轨迹名称",
+  SCAN: "扫一扫",
 
   STYLE_TRANSFER: "AI配图",
   OBJ_EDIT: "对象编辑",

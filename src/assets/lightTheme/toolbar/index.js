@@ -29,6 +29,7 @@ const icon_tool_cancel = require('./icon_tool_cancel.png')
 const back = require('./icon_return.png')
 const icon_photo_picture = require('./icon_photo_picture.png')
 const icon_tool_photograph = require('./icon_tool_photograph.png')
+const icon_qrcode = require('./icon_qrcode.png')
 
 export default {
   icon_toolbar_add,
@@ -62,4 +63,5 @@ export default {
   back,
   icon_photo_picture,
   icon_tool_photograph,
+  icon_qrcode,
 }

@@ -766,7 +766,7 @@ export default class MT_layerManager extends React.Component {
         this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.messages
       ) {
         const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
-        if (dsDescription.url && dsDescription?.type === 'onlineService') {
+        if (dsDescription?.url && dsDescription?.type === 'onlineService') {
           const currentCoworkMessage = this.props.cowork.coworkInfo[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id].messages
           if (currentCoworkMessage?.length > 0) {
             for (const message of currentCoworkMessage) {
@@ -915,7 +915,7 @@ export default class MT_layerManager extends React.Component {
       rightIcon = this.state.allLayersVisible
         ? getThemeAssets().layer.icon_invisible
         : getThemeAssets().layer.icon_visible
-      if (GLOBAL.coworkMode) {
+      if (GLOBAL.coworkMode && GLOBAL.Type !== ChunkType.MAP_PLOTTING) { // 标绘没有发布按钮
         let isPublishing = false
         if (
           this.props.cowork?.currentTask?.groupID &&

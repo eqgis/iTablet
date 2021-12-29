@@ -14,6 +14,12 @@ import { getLanguage } from '../../../../language/index'
 // import { Toast } from '../../../../utils'
 import styles from './styles'
 import { ConstOnline } from '../../../../constants'
+import RenderServiceItem from '../MyService/RenderServiceItem'
+import { UserType } from '../../../../constants'
+import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
+
+let _arrPrivateServiceList = []
+let _arrPublishServiceList = []
 export default class MyBaseMap extends Component {
   props: {
     user: any,
@@ -49,7 +55,182 @@ export default class MyBaseMap extends Component {
     this.uploadList = []
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    if(UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)){
+      this._initFirstSectionData()
+    }
+  }
+
+  _initFirstSectionData = async () => {
+    await this._initSectionsData(9, 9)
+  }
+
+  _initSectionsData = async (currentPage, pageSize) => {
+    try {
+      let arrPublishServiceList = []
+      let arrPrivateServiceList = []
+      let strServiceList
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        strServiceList = await SOnlineService.getServiceList(1, pageSize)
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        strServiceList = await SIPortalService.getMyServices(1, pageSize)
+      }
+      if (typeof strServiceList === 'string') {
+        let objServiceList = JSON.parse(strServiceList)
+        this.serviceListTotal = objServiceList.total
+
+        /** 构造SectionsData数据*/
+        for (let page = 1; page <= currentPage; page++) {
+          if (page > 1) {
+            if (UserType.isOnlineUser(this.props.user.currentUser)) {
+              strServiceList = await SOnlineService.getServiceList(
+                page,
+                pageSize,
+              )
+            } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+              strServiceList = await SIPortalService.getMyServices(
+                page,
+                pageSize,
+              )
+            }
+            objServiceList = JSON.parse(strServiceList)
+          }
+
+          let objArrServiceContent = objServiceList.content
+          for (let objContent of objArrServiceContent) {
+            let arrScenes = objContent.scenes
+            let arrMapInfos = objContent.mapInfos
+            let strThumbnail = objContent.thumbnail
+            let strRestTitle = objContent.resTitle
+            let strID = objContent.id
+            let bIsPublish = false
+            let objArrAuthorizeSetting = objContent.authorizeSetting
+            let authorizeSetting = objContent.authorizeSetting
+            for (let strPermission of objArrAuthorizeSetting) {
+              let strPermissionType = strPermission.permissionType
+              if (strPermissionType === 'READ') {
+                bIsPublish = true
+                break
+              }
+            }
+            let strSectionsData =
+              '{"restTitle":"' +
+              strRestTitle +
+              '","thumbnail":"' +
+              strThumbnail +
+              '","id":"' +
+              strID +
+              '","scenes":' +
+              JSON.stringify(arrScenes) +
+              ',"mapInfos":' +
+              JSON.stringify(arrMapInfos) +
+              ',"isPublish":' +
+              bIsPublish +
+              ',"authorizeSetting":' +
+              JSON.stringify(authorizeSetting) +
+              '}'
+
+            if (arrMapInfos.length > 0 || arrScenes.length > 0) {
+              let objSectionsData = JSON.parse(strSectionsData)
+              if (bIsPublish) {
+                arrPublishServiceList.push(objSectionsData)
+              } else {
+                arrPrivateServiceList.push(objSectionsData)
+              }
+            }
+          }
+        }
+        /** 重新赋值，避免浅拷贝*/
+        _arrPrivateServiceList = arrPrivateServiceList
+        _arrPublishServiceList = arrPublishServiceList
+      }
+
+      if (_arrPublishServiceList.length > 0) {
+        for (let i = 0, n = _arrPublishServiceList.length; i < n; i++) {
+          if (_arrPublishServiceList[i].restTitle && _arrPublishServiceList[i].mapInfos[0].mapUrl){
+            this.addServer(_arrPublishServiceList[i].restTitle, _arrPublishServiceList[i].mapInfos[0].mapUrl)
+          }
+        }
+        // this.curUserBaseMaps.push.apply(this.curUserBaseMaps,_arrPublishServiceList)
+      }
+
+      if (_arrPrivateServiceList.length === 0) {
+        _arrPrivateServiceList.push({})
+      }
+      if (_arrPublishServiceList.length === 0) {
+        _arrPublishServiceList.push({})
+      }
+    } catch (e) {
+      console.warn(e)
+    }
+  }
+
+  addServer = (strRestTitle,server) => {
+    let alias = strRestTitle
+    let layerName =
+      server.substring(
+        server.lastIndexOf('/') + 1,
+        server.length,
+      ) +
+      '@' +
+      alias //this.state.server.lastIndexOf('/')
+    let _DSParams = {}
+    // if (this.state.engineType === 23) {
+    //   _DSParams = {
+    //     server: this.state.server,
+    //     engineType: this.state.engineType,
+    //     alias: alias,
+    //     driver: this.state.driver,
+    //     // datasetIndex: this.state.selcetIndex,
+    //     layerIndex: this.state.selcetIndex,
+    //   }
+    // } else {
+    _DSParams = {
+      server: server,
+      engineType: 225,
+      alias: alias,
+      // datasetIndex: this.state.selcetIndex,
+      layerIndex: 0,
+    }
+    // }
+    let item = {
+      type: 'Datasource',
+      DSParams: _DSParams,
+      // DSParams: {
+      //   server: this.state.server,
+      //   engineType: this.state.engineType,
+      //   alias: alias,
+      // },
+      // layerIndex: 0,
+      layerIndex: 0,
+      mapName: strRestTitle,
+      layerName: layerName,
+      userAdd: true,
+    }
+    let list = this.curUserBaseMaps
+    //add xiezhy
+    // if (thisHandle.item != undefined) {
+    //   for (let i = 0, n = list.length; i < n; i++) {
+    //     if (
+    //       list[i].DSParams.server === thisHandle.item.server &&
+    //       list[i].mapName === thisHandle.item.name
+    //     ) {
+    //       list.splice(i, 1)
+    //       break
+    //     }
+    //   }
+    // }
+    list.push(item)
+    let count = list.length
+    for (let i = 0; i < count; i++) {
+      list[i].index = i
+    }
+    this.props.setBaseMap &&
+      this.props.setBaseMap({
+        userId: this.props.user.currentUser.userId,
+        baseMaps: list,
+      })
+  }
 
   /**
    * @author zhangxt
@@ -82,6 +263,29 @@ export default class MyBaseMap extends Component {
         itemOnPress={this.itemOnPress}
       />
     )
+  }
+
+  _renderServiceItem = ({ item, index }) => {
+    let restTitle = item.restTitle
+    if (restTitle !== undefined) {
+      let imageUri = item.thumbnail
+      let isPublish = item.isPublish
+      let itemId = item.id
+      let scenes = item.scenes
+      let mapInfos = item.mapInfos
+      return (
+        <RenderServiceItem
+          data={item}
+          imageUrl={imageUri}
+          restTitle={restTitle}
+          isPublish={isPublish}
+          itemId={itemId}
+          index={index}
+          scenes={scenes}
+          mapInfos={mapInfos}
+        />
+      )
+    }
   }
 
   _keyExtractor = index => {
@@ -223,6 +427,22 @@ export default class MyBaseMap extends Component {
             />
           )}
         />
+        {/* <FlatList
+          initialNumToRender={20}
+          ref={ref => (this.serviceref = ref)}
+          renderItem={this._renderServiceItem}
+          keyExtractor={(item, index) => index.toString()}
+          data={this.state.arrPrivateServiceList}
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                backgroundColor: color.separateColorGray,
+                flex: 1,
+                height: 1,
+              }}
+            />
+          )}
+        /> */}
         {/*{this._showMyDataPopupModal()}*/}
         {this.renderPopupMenu()}
       </Container>

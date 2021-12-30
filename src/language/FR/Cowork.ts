@@ -18,6 +18,8 @@ const Cowork: typeof CN.Cowork = {
   SERVICE_SHARING_SETTINGS: "Partade des paramétres de service",
   SEARCHABLE: "Consultable",
   READABLE: "Lisible",
+
+  UPDATE_THEME_ERROR_INFO: "This message is for updating thematic map and cannot be appended", // need to translate
 }
 
 export { Cowork }

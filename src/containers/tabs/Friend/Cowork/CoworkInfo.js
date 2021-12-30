@@ -160,6 +160,10 @@ export default class CoworkInfo {
           } else {
             this.consumeMessage(message.messageID)
           }
+        } else {
+          if (message.message.themeType > 0 && message.message.theme) {
+            Toast.show(getLanguage(GLOBAL.language).Cowork.UPDATE_THEME_ERROR_INFO)
+          }
         }
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&

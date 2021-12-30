@@ -147,7 +147,7 @@ export default class MyBaseMap extends Component {
 
       if (_arrPublishServiceList.length > 0) {
         for (let i = 0, n = _arrPublishServiceList.length; i < n; i++) {
-          if (_arrPublishServiceList[i].restTitle && _arrPublishServiceList[i].mapInfos[0].mapUrl){
+          if (_arrPublishServiceList[i].restTitle && _arrPublishServiceList[i].mapInfos[0] && _arrPublishServiceList[i].mapInfos[0].mapUrl){
             this.addServer(_arrPublishServiceList[i].restTitle, _arrPublishServiceList[i].mapInfos[0].mapUrl)
           }
         }
@@ -219,6 +219,7 @@ export default class MyBaseMap extends Component {
         }
       }
     }
+    console.warn(item)
     list.push(item)
     let count = list.length
     for (let i = 0; i < count; i++) {

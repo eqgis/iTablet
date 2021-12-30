@@ -162,7 +162,7 @@ export default class BaseMapItem extends Component {
         <View style={styles.rowView}>
           <Image source={Img} style={styles.Img} />
           <Text style={styles.title}>{this.props.item.mapName}</Text>
-          {!this.props.item.userAdd ? null : (
+          {!this.props.item.nodeleteBT && (!this.props.item.userAdd ? null : (
             <View
               style={{
                 justifyContent: 'center',
@@ -193,7 +193,7 @@ export default class BaseMapItem extends Component {
                 />
               </TouchableOpacity>
             </View>
-          )}
+          ))}
         </View>
       </TouchableOpacity>
     )

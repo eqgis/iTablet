@@ -282,7 +282,12 @@ class TaskManage extends React.Component<Props, State> {
       const cowork = await CoworkFileHandle.getLocalCoworkList()
       if (cowork && cowork.groups && cowork.groups[this.props.groupInfo.id]) {
         let tasks = JSON.parse(JSON.stringify(cowork.groups[this.props.groupInfo.id].tasks))
-        if (tasks.length === 0) return
+        if (tasks.length === 0) {
+          refresh && this.state.isRefresh && this.setState({
+            isRefresh: false,
+          })
+          return
+        }
         await this.props.setCoworkTaskGroup({
           groupID: this.props.groupInfo.id,
           tasks: tasks.reverse(),

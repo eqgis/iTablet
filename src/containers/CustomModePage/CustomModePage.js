@@ -19,8 +19,9 @@ import {
 import { SThemeCartography, SMap ,ThemeType } from 'imobile_for_reactnative'
 import { Container } from '../../components'
 import { color } from '../../styles'
-import { scaleSize, setSpText, Toast, screen } from '../../utils'
+import { scaleSize, setSpText, Toast } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import ThemeAction from '../workspace/components/ToolBar/modules/themeModule/ThemeAction'
 import { ConstToolType, ToolbarType, TouchType } from '../../constants'
 import { getLanguage } from '../../language'
 import constants from '../workspace/constants'
@@ -276,6 +277,11 @@ export default class CustomModePage extends Component {
       GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(false)
       GLOBAL.ToolBar && GLOBAL.ToolBar.existFullMap()
       GLOBAL.TouchType = TouchType.NORMAL
+      // 在线协作,专题,实时同步
+      if (GLOBAL.coworkMode) {
+        let layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
+        ThemeAction.sendUpdateThemeMsg(layerInfo)
+      }
       ToolbarModule.setData({})
       this.props.navigation.goBack()
     } else {

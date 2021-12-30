@@ -2358,6 +2358,7 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.PreviewHeader = ref)}
         navigation={this.props.navigation}
         language={this.props.language}
+        currentLayer={this.props.currentLayer}
       />
     )
   }

@@ -32,6 +32,10 @@ const updateHandlers: {
   [key: string]: (data?: any) => void,
 } = {}
 
+function isLabelDatasource(datasourceAlias?: string) {
+  return datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1
+}
+
 async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
   const labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
@@ -70,7 +74,9 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           break
         }
       }
-      !isAdded && await addServiceLayer(datasetName, res.content?.datasource)
+      !isAdded &&
+      isLabelDatasource(res.content?.datasource) && // 只有标注数据集能直接添加图层
+      await addServiceLayer(datasetName, res.content?.datasource)
 
       res.content && params.setCoworkService({
         groupId: params.currentTask.groupID,
@@ -99,6 +105,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
       if (isAdded) {
         SCoordinationUtils.getScoordiantion().updateToLocal(_datasetUrl.replace('.json', '').replace('.rjson', ''), res.content.datasource, datasetName)
       } else {
+        isLabelDatasource(res.content?.datasource) && // 只有标注数据集能直接添加图层
         await addServiceLayer(datasetName, res.content?.datasource)
 
         res.content && params.setCoworkService({
@@ -458,7 +465,7 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
   }
   const _params: any = ToolbarModule.getParams()
   let _datasourceAlias
-  if (datasourceAlias?.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1) {
+  if (isLabelDatasource(datasourceAlias)) {
     _datasourceAlias = `Label_${
       _params.user.currentUser.userName
     }#`
@@ -495,7 +502,7 @@ async function updateToLocal (layerData: {
       },
     })
     let datasourceAlias
-    if (layerData.datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && layerData.datasourceAlias?.indexOf('#') == layerData.datasourceAlias?.length - 1) {
+    if (isLabelDatasource(layerData?.datasourceAlias)) {
       datasourceAlias = `Label_${
         _params.user.currentUser.userName
       }#`
@@ -577,7 +584,7 @@ async function uploadToService(layerData: {
       },
     })
     let datasourceAlias
-    if (layerData.datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && layerData.datasourceAlias?.indexOf('#') == layerData.datasourceAlias?.length - 1) {
+    if (isLabelDatasource(layerData.datasourceAlias)) {
       datasourceAlias = `Label_${
         _params.user.currentUser.userName
       }#`
@@ -930,7 +937,7 @@ async function publishMapService() {
       const datasourceAlias = datasource.alias
       // 不发布标注图层
       if (
-        datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1 || // 过滤标注数据源
+        isLabelDatasource(datasourceAlias) || // 过滤标注数据源
         datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
       ) {
         continue

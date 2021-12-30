@@ -710,7 +710,7 @@ export default class MT_layerManager extends React.Component {
           (async function() {
             await SMap.setLabelColor()
             await SMap.newTaggingDataset(
-              value,
+              `${value}_${this.props.user.currentUser.userName}`,
               this.props.user.currentUser.userName,
             )
             // this.setRefreshing(true)

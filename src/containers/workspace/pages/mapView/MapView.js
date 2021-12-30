@@ -1804,7 +1804,7 @@ export default class MapView extends React.Component {
           )
           if (!hasDefaultTagging) {
             await SMap.newTaggingDataset(
-              'Default_Tagging',
+              `Default_Tagging_${this.props.user.currentUser.userName}`,
               this.props.user.currentUser.userName,
             )
           }

@@ -703,12 +703,12 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -767,12 +767,12 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -834,12 +834,12 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -899,12 +899,12 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -964,12 +964,12 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -1113,7 +1113,7 @@ export default class ArMappingButton extends React.Component {
       )
     )) {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
-      datasetName = 'Default_Tagging'
+      datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
     }
     SARMap.setMeasurePath(datasourceAlias, datasetName)
     SARMap.saveMeasureData(datasourceAlias, datasetName).then(result => {

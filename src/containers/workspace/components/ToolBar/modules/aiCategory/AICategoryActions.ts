@@ -139,12 +139,12 @@ async function getTaggingLayerData() {
     )
     if (!hasDefaultTagging) {
       await SMap.newTaggingDataset(
-        'Default_Tagging',
+        `Default_Tagging_${_params.user.currentUser.userName}`,
         _params.user.currentUser.userName,
       )
     }
     let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-    let datasetName = 'Default_Tagging'
+    let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
     taggingLayerData = {
       datasourceAlias,
       datasetName,

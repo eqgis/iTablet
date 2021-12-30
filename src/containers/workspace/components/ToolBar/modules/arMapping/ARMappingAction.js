@@ -90,12 +90,12 @@ function arMeasureCollect() {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -158,12 +158,12 @@ function arDrawLine() {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -222,12 +222,12 @@ function arDrawArea() {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -285,12 +285,12 @@ function arDrawPoint() {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       GLOBAL.MeasureCollectData = {
         datasourceAlias,
         datasetName,

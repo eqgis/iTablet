@@ -658,34 +658,34 @@ class AppRoot extends Component {
   getUserApplets = async userName => {
     try {
       // 获取当前用户的小程序
-      let applets = await ConfigUtils.getApplets(userName)
-      let myMapModules = []
-      if (applets === null || userName === 'Customer' && applets.length === 0) {
-        await ConfigUtils.recordApplets(userName, _mapModules)
-        applets = _mapModules
-      } else {
-        // APP默认模块不能改动
-        let defaultValues = Object.values(ChunkType)
-        let tempArr = defaultValues.concat(applets)
-        applets = Array.from(new Set(tempArr))
-      }
-      let needToUpdate = false
-      applets.map(key => {
-        if (key !== 'APPLET_ADD') {
-          for (let item of mapModules) {
-            needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
-            if (item.key === key || needToUpdate) {
-              myMapModules.push(item)
-              break
-            }
-          }
-        }
-      })
+      // let applets = await ConfigUtils.getApplets(userName)
+      // let myMapModules = []
+      // if (applets === null || userName === 'Customer' && applets.length === 0) {
+      // await ConfigUtils.recordApplets(userName, _mapModules)
+      // applets = _mapModules
+      // } else {
+      //   // APP默认模块不能改动
+      //   let defaultValues = Object.values(ChunkType)
+      //   let tempArr = defaultValues.concat(applets)
+      //   applets = Array.from(new Set(tempArr))
+      // }
+      // let needToUpdate = false
+      // applets.map(key => {
+      //   if (key !== 'APPLET_ADD') {
+      //     for (let item of mapModules) {
+      //       needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
+      //       if (item.key === key || needToUpdate) {
+      //         myMapModules.push(item)
+      //         break
+      //       }
+      //     }
+      //   }
+      // })
       // 添加新的小程序后，直接显示在首页，并记录到本地文件
-      if (needToUpdate) {
-        await ConfigUtils.recordApplets(userName, _mapModules)
-      }
-      await this.props.setMapModule(myMapModules)
+      // if (needToUpdate) {
+      await ConfigUtils.recordApplets(userName, _mapModules)
+      // }
+      await this.props.setMapModule(mapModules)
     } catch (e) {
       await ConfigUtils.recordApplets(userName, _mapModules)
     }

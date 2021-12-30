@@ -12,17 +12,20 @@ import {
   StyleSheet,
   Animated,
 } from 'react-native'
+import { SMap } from 'imobile_for_reactnative'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import { getPublicAssets } from '../../../../assets'
 import { color, zIndexLevel } from '../../../../styles'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { TouchType } from '../../../../constants'
 import { getLanguage } from '../../../../language'
+import ThemeAction from '../../../workspace/components/ToolBar/modules/themeModule/ThemeAction'
 
 export default class PreviewHeader extends React.Component {
   props: {
     navigation: Object,
     language: String,
+    currentLayer: Object,
   }
 
   constructor(props) {
@@ -55,6 +58,12 @@ export default class PreviewHeader extends React.Component {
     this.setVisible(false, {})
     GLOBAL.ToolBar && GLOBAL.ToolBar.existFullMap()
     GLOBAL.TouchType = TouchType.NORMAL
+    // 在线协作,专题,实时同步
+    if (GLOBAL.coworkMode) {
+      SMap.getLayerInfo(this.props.currentLayer.path).then(layerInfo => {
+        ThemeAction.sendUpdateThemeMsg(layerInfo)
+      })
+    }
     ToolbarModule.setData({})
   }
   render() {

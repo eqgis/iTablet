@@ -16,6 +16,8 @@ const Cowork = {
   SERVICE_SHARING_SETTINGS: "服务共享设置",
   SEARCHABLE: "可检索",
   READABLE: "可查看",
+
+  UPDATE_THEME_ERROR_INFO: "此消息为更新专题图,不能添加",
 }
 
 export { Cowork }

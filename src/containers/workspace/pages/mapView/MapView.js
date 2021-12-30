@@ -1804,7 +1804,7 @@ export default class MapView extends React.Component {
           )
           if (!hasDefaultTagging) {
             await SMap.newTaggingDataset(
-              'Default_Tagging',
+              `Default_Tagging_${this.props.user.currentUser.userName}`,
               this.props.user.currentUser.userName,
             )
           }
@@ -2358,6 +2358,7 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.PreviewHeader = ref)}
         navigation={this.props.navigation}
         language={this.props.language}
+        currentLayer={this.props.currentLayer}
       />
     )
   }
@@ -3086,6 +3087,9 @@ export default class MapView extends React.Component {
     ]
     let buttons = []
     if (this.isExample) {
+      if(this.wsData.nodeleteBT){
+        return null
+      }
       return (
         <MTBtn
           key={'more'}

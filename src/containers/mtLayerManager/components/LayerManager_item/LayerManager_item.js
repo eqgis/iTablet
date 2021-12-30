@@ -307,7 +307,7 @@ export default class LayerManager_item extends React.Component {
         data: this.state.data,
         parentData: this.props.parentData,
       })
-      await SMap.setLayerEditable(this.state.data.path, true)
+      // await SMap.setLayerEditable(this.state.data.path, true)
     } else return
   }
 
@@ -317,7 +317,7 @@ export default class LayerManager_item extends React.Component {
         data: this.state.data,
         parentData: this.props.parentData,
       })
-      await SMap.setLayerEditable(this.state.data.path, true)
+      // await SMap.setLayerEditable(this.state.data.path, true)
     } else return
   }
 
@@ -627,13 +627,13 @@ export default class LayerManager_item extends React.Component {
         />
       )
     }
+    const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.state.data)
     let cornerMark
     if (this.props.cornerMarkImage) {
       cornerMark = this.props.cornerMarkImage
-    } else if (GLOBAL.coworkMode && this.props.data.isModified) {
+    } else if (GLOBAL.coworkMode && dsDescription?.type === 'onlineService' && this.props.data.isModified) {
       cornerMark = getThemeAssets().cowork.icon_state_published
     } else {
-      const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.state.data)
       if (!dsDescription) return null
       switch(dsDescription.type) {
         case 'onlineService':

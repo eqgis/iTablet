@@ -206,6 +206,7 @@ export default class MyBaseMap extends Component {
       mapName: strRestTitle,
       layerName: layerName,
       userAdd: true,
+      nodeleteBT: true,
     }
     let list = this.curUserBaseMaps
     if (item != undefined) {
@@ -219,7 +220,6 @@ export default class MyBaseMap extends Component {
         }
       }
     }
-    console.warn(item)
     list.push(item)
     let count = list.length
     for (let i = 0; i < count; i++) {

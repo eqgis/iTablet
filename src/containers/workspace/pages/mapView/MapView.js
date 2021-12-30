@@ -3086,6 +3086,9 @@ export default class MapView extends React.Component {
     ]
     let buttons = []
     if (this.isExample) {
+      if(this.wsData.nodeleteBT){
+        return null
+      }
       return (
         <MTBtn
           key={'more'}

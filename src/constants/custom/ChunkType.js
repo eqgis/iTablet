@@ -3,7 +3,7 @@
  * 顺序和显示顺序一致
  */
 export default {
-  // MAP_AR_MAPPING: 'MAP_AR_MAPPING',
+  MAP_AR_MAPPING: 'MAP_AR_MAPPING',
   MAP_EDIT: 'MAP_EDIT',
   MAP_3D: 'MAP_3D',
   MAP_AR: 'MAP_AR',

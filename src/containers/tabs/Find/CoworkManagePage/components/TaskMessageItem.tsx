@@ -412,7 +412,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
           }}
         >
           {/* {getLanguage(GLOBAL.language).Friends.TASK_MAP + ': ' + this.props.data.resource.resourceName.replace('.zip', '')} */}
-          {getLanguage(GLOBAL.language).Friends.TASK_MODULE + ': ' + this.state.module.title}
+          {getLanguage(GLOBAL.language).Friends.TASK_MODULE + ': ' + this.state.module.title + '任务'}
         </Text>
         <Text
           numberOfLines={1}

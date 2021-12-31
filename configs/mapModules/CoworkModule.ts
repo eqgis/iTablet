@@ -110,7 +110,7 @@ export default class CoworkModule extends Module {
     return this.createChunk(language, {
       key: CoworkModule.key,
       // 根据语言获取地图模块名称
-      title: getLanguage(language).Find.ONLINE_COWORK,
+      title: '我的任务',
       // 模块图片
       moduleImage: getThemeAssets().find.onlineCowork,
       // 点击时模块高亮图片

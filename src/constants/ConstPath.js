@@ -71,6 +71,7 @@ const RelativeFilePath = {
 
 // 默认创建的目录
 export default {
+  AppName,
   AppPath,
   // SampleDataPath: AppPath + 'data/sample/', // 存放示例数据
   // LocalDataPath: AppPath + 'data/local/', // 存放用户地图数据

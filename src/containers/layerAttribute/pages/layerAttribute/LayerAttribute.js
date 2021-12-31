@@ -1636,7 +1636,7 @@ export default class LayerAttribute extends React.Component {
             canRelated={this.state.currentIndex >= 0}
             canDelete={this.state.currentIndex >= 0}
             canAddField={
-              !(dsDescription?.url && dsDescription?.type === 'onlineService') &&
+              !(GLOBAL.coworkMode && dsDescription?.url && dsDescription?.type === 'onlineService') &&
               this.props.currentLayer.name !== undefined &&
               this.props.currentLayer.name !== '' &&
               this.props.currentLayer.type !== DatasetType.IMAGE &&

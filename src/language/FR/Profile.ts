@@ -12,7 +12,7 @@ const Profile: typeof CN.Profile = {
   ARMODEL: "Modèle RA",
   AREFFECT: "Effet RA",
   SCENE: "Scène",
-  BASEMAP: "Carte de base",
+  BASEMAP: "Fond",
   SYMBOL: "Symbole",
   SETTINGS: "Paramètres",
   COLOR_SCHEME: "Schéma de couleur",

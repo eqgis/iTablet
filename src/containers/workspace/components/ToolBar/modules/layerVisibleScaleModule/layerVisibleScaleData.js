@@ -60,7 +60,7 @@ async function getVisibleScalePickerData() {
 async function getBasicData(min, max, customMin, customMax) {
   const option = [
     {
-      key: '无',
+      key: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_NO,
       value: 0,
     },
     {

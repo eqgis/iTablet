@@ -168,7 +168,7 @@ function dealData(attributes, result = {}, page, type) {
       } else {
         tableHead.push({
           value: item.fieldInfo.caption,
-          isSystemField: item.fieldInfo.isSystemField,
+          isSystemField: item.fieldInfo.caption.toString().toLowerCase() === 'smuserid' || item.fieldInfo.isSystemField,
           fieldInfo: item.fieldInfo,
         })
       }
@@ -184,7 +184,7 @@ function dealData(attributes, result = {}, page, type) {
       } else {
         tableHead.push({
           value: item.caption,
-          isSystemField: item.isSystemField,
+          isSystemField: item.caption.toString().toLowerCase() === 'smuserid' || item.isSystemField,
           fieldInfo: item,
         })
       }

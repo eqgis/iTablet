@@ -1354,6 +1354,8 @@ export default class LayerAttribute extends React.Component {
             this.setState({currentIndex:-1})
             this.table.setSelected(data.rowIndex)
             this.refresh()
+          }else{
+            this.refresh()
           }
         }
 

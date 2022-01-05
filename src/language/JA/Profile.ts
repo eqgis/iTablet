@@ -12,7 +12,7 @@ const Profile: typeof CN.Profile = {
   ARMODEL: "AR モデル",
   AREFFECT: "AR 効果",
   SCENE: "シーン",
-  BASEMAP: "ベースマップ",
+  BASEMAP: "背景地図",
   SYMBOL: "シンボル",
   SETTINGS: "設定",
   COLOR_SCHEME: "カラースキーム",

@@ -149,7 +149,7 @@ const Profile: typeof CN.Profile = {
   PATH: "Trajectoire",
 
   LOCAL: "Local",
-  SAMPLEDATA: "exemples de données",
+  SAMPLEDATA: "Echantillons",
   ON_DEVICE: "Données d'utilisateur",
   ONLINE_DATA: "Online Data", // need to translate
   USER_DATA: "User Data", // need to translate

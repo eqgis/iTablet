@@ -9,7 +9,7 @@ const AI: typeof CN.AI = {
   CONFIDENCE: "Confidence,secret,confiance",
 
   CLIENT: "Client",
-  PLATE_NUMBER: "Numéro de la plaque",
+  PLATE_NUMBER: "Numero de voiture",
   VEHICLE_TYPE: "Type de véhicule",
   VEHICLE_COLOR: "Couleur du vehicule",
   ILLEGAL_TIME: "Temps illégal",

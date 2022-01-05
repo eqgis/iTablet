@@ -13,6 +13,7 @@ import {
   Animated,
 } from 'react-native'
 import { Container, Dialog } from '../../../components'
+import { UserType } from '../../../constants'
 import { dialogStyles } from './Styles'
 import { getLanguage } from '../../../language'
 // eslint-disable-next-line
@@ -24,7 +25,6 @@ import FriendListFileHandle from './FriendListFileHandle'
 import { MsgConstant } from '../../../constants'
 import NavigationService from '../../NavigationService'
 
-const JSOnlineServices = new OnlineServicesUtils('online')
 class RecommendFriend extends Component {
   props: {
     navigation: Object,
@@ -47,6 +47,11 @@ class RecommendFriend extends Component {
     this.addFriendRequest = this.addFriendRequest.bind(this)
     this.exit = false
     this.loadingHeight = new Animated.Value(0)
+    if (UserType.isOnlineUser(this.props.user?.currentUser)) {
+      this.service = new OnlineServicesUtils('online')
+    } else if (UserType.isIPortalUser(this.props.user?.currentUser)) {
+      this.service = new OnlineServicesUtils('iportal')
+    }
   }
 
   componentDidMount() {
@@ -55,6 +60,23 @@ class RecommendFriend extends Component {
 
   componentWillUnmount() {
     this.exit = true
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
+      JSON.stringify(nextProps.user?.currentUser) !== JSON.stringify(this.props.user?.currentUser)
+    )
+  }
+
+  componentDidUpdate(prevProps) {
+    if (JSON.stringify(prevProps.user?.currentUser) !== JSON.stringify(this.props.user?.currentUser)) {
+      if (UserType.isOnlineUser(this.props.user?.currentUser)) {
+        this.service = new OnlineServicesUtils('online')
+      } else if (UserType.isIPortalUser(this.props.user?.currentUser)) {
+        this.service = new OnlineServicesUtils('iportal')
+      }
+    }
   }
 
   requestPermission = async () => {
@@ -162,7 +184,7 @@ class RecommendFriend extends Component {
         break
       }
       let number = this.formatPhoneNumber(val.phoneNumbers[i].number)
-      let result = await JSOnlineServices.getUserInfo(number, false)
+      let result = await this.service.getUserInfo(number, false)
       if (result !== false && result !== '获取用户id失败') {
         if (
           result.userId &&
@@ -187,7 +209,7 @@ class RecommendFriend extends Component {
       }
     }
     for (let i = 0; i < val.emails.length; i++) {
-      let result = await JSOnlineServices.getUserInfo(val.emails[i].email, true)
+      let result = await this.service.getUserInfo(val.emails[i].email, true)
       if (result !== false && result !== '获取用户id失败') {
         if (
           result.userId &&

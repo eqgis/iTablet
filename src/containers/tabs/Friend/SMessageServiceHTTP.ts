@@ -1,10 +1,8 @@
 import { Buffer } from 'buffer'
 import fetch from 'node-fetch'
 import { SMessageService } from 'imobile_for_reactnative'
-import MSGConstant from '../../../constants/MsgConstant'
 import { Toast } from '../../../utils'
 import { getLanguage } from '../../../language'
-import FriendListFileHandle from './FriendListFileHandle'
 
 interface SERVICE_INFO {
   MSG_IP?: string,
@@ -46,7 +44,7 @@ export default class SMessageServiceHTTP {
       `${SMessageServiceHTTP.serviceInfo.MSG_UserName}:${SMessageServiceHTTP.serviceInfo.MSG_Password}`,
     ).toString('base64')
     const url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port
-      }/api/queues/%2F/Message_${talkId}?columns=consumers`
+    }/api/queues/%2F/Message_${talkId}?columns=consumers`
     const extraData = {
       headers: {
         Authorization: `Basic ${auth}`,
@@ -63,7 +61,7 @@ export default class SMessageServiceHTTP {
         `${SMessageServiceHTTP.serviceInfo.MSG_UserName}:${SMessageServiceHTTP.serviceInfo.MSG_Password}`,
       ).toString('base64')
       const url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port
-        }/api/queues/%2F/Message_${userId}?columns=consumer_details`
+      }/api/queues/%2F/Message_${userId}?columns=consumer_details`
       const extraData = {
         headers: {
           Authorization: `Basic ${auth}`,
@@ -89,7 +87,7 @@ export default class SMessageServiceHTTP {
       `${SMessageServiceHTTP.serviceInfo.MSG_UserName}:${SMessageServiceHTTP.serviceInfo.MSG_Password}`,
     ).toString('base64')
     const url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port
-      }/api/queues/%2F/Message_${userId}?columns=consumer_details`
+    }/api/queues/%2F/Message_${userId}?columns=consumer_details`
     const extraData = {
       headers: {
         Authorization: `Basic ${auth}`,
@@ -112,7 +110,7 @@ export default class SMessageServiceHTTP {
       `${SMessageServiceHTTP.serviceInfo.MSG_UserName}:${SMessageServiceHTTP.serviceInfo.MSG_Password}`,
     ).toString('base64')
     const url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port
-      }/api/connections/${connectionName}`
+    }/api/connections/${connectionName}`
     encodeURI(url)
     const extraData = {
       headers: {
@@ -138,7 +136,7 @@ export default class SMessageServiceHTTP {
         `${SMessageServiceHTTP.serviceInfo.MSG_UserName}:${SMessageServiceHTTP.serviceInfo.MSG_Password}`,
       ).toString('base64')
       const url = `http://${SMessageServiceHTTP.serviceInfo.MSG_IP}:${SMessageServiceHTTP.serviceInfo.MSG_HTTP_Port
-        }/api/bindings/%2F/e/message.group/q/Message_${id}`
+      }/api/bindings/%2F/e/message.group/q/Message_${id}`
       encodeURI(url)
       const extraData = {
         headers: {

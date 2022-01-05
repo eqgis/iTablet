@@ -15,31 +15,32 @@ import NavigationService from '../../../../containers/NavigationService'
 import BackButton from '../../../../components/Header/BackButton'
 
 interface Props {
-  toolbarVisible: boolean
-  visible: boolean
-  device:any
+  toolbarVisible: boolean,
+  visible: boolean,
+  device:any,
 }
 
 interface State {
-  results: (POIInfo| POIInfoOnline)[]
-  selectedPoi?: POIInfo | POIInfoOnline
-  isInputing: boolean
-  showResult: boolean
+  results: (POIInfo| POIInfoOnline)[],
+  selectedPoi?: POIInfo | POIInfoOnline,
+  isInputing: boolean,
+  showResult: boolean,
   //TODO
-  history: string[]
+  history: string[],
   //搜索半径
-  searchRadius: number
+  searchRadius: number,
+  searchKey: string,
 }
 
 interface DefaultPOI {
-  image: any
-  title: string
+  image: any,
+  title: string,
 }
 
-const OnlineService = new OnlineServicesUtils('online')
 const dismissKeyboard = require('dismissKeyboard')
 class ARPoiSearchView extends React.PureComponent<Props, State> {
   textInput : TextInput | null = null
+  OnlineService : OnlineServicesUtils | null = null
 
   currentLocation? : {ll: Point, mercator: Point} | null
 
@@ -61,6 +62,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     } else {
       SSpeechRecognizer.setParameter('language', 'en_us ')
     }
+    this.OnlineService = new OnlineServicesUtils('online')
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -157,7 +159,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
       //TODO radius由小到大多次分析
       const searchRadius = this.state.searchRadius
       //在线搜索
-      const result = await OnlineService.searchPoi({
+      const result = await this.OnlineService?.searchPoi({
         keywords: key,
         location: this.currentLocation.ll,
         radius: searchRadius,
@@ -249,9 +251,9 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         const currentLocation = await SARMap.getCurrentLocation()
         if(currentLocation) {
           const roadNetDataset = ARNaviModule.getData().naviDatasetInfo
-          let result: RouteAnalyzeResult | null = null
+          let result: RouteAnalyzeResult | null | undefined = null
           if('address' in this.state.selectedPoi) {
-            result = await OnlineService.routeAnalyze({
+            result = await this.OnlineService?.routeAnalyze({
               startPoint: currentLocation.ll,
               endPoint: await SMap.mercatorToLL(this.state.selectedPoi.location),
               to: 910111

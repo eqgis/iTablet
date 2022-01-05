@@ -47,7 +47,8 @@ import { setLicenseInfo } from './src/redux/models/license'
 import { RNFS as fs } from 'imobile_for_reactnative'
 import { FileTools, SplashScreen} from './src/native'
 import ConfigStore from './src/redux/store'
-import { scaleSize, Toast, screen, OnlineServicesUtils, DialogUtils } from './src/utils'
+import { scaleSize, Toast, screen, DialogUtils } from './src/utils'
+import * as OnlineServicesUtils from './src/utils/OnlineServicesUtils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
 import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
@@ -362,7 +363,7 @@ class AppRoot extends Component {
     await SMap.initEnvironment('iTablet')
     await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
     SOnlineService.init()
-    SIPortalService.init()
+    SIPortalService.init(this.props.user.currentUser.serverUrl)
     await this.initLicense()
     SMap.setModuleListener(this.onInvalidModule)
     SMap.setLicenseListener(this.onInvalidLicense)
@@ -595,7 +596,8 @@ class AppRoot extends Component {
       }
       if(result === true){
         let userType = this.props.user.currentUser.userType
-        let JSOnlineservice = new OnlineServicesUtils(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
+        // let JSOnlineservice = new OnlineServicesUtils(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
+        let JSOnlineservice = OnlineServicesUtils.getService(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
         //登录后更新用户信息 zhangxt
         let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
         let user = {
@@ -625,7 +627,7 @@ class AppRoot extends Component {
       let url = this.props.user.currentUser.serverUrl
       let userName = this.props.user.currentUser.userName
       let password = this.props.user.currentUser.password
-      SIPortalService.init()
+      SIPortalService.init(this.props.user.currentUser.serverUrl)
       let result = await SIPortalService.login(url, userName, password, true)
       if (typeof result === 'boolean' && result) {
         //登录后更新用户信息 zhangxt

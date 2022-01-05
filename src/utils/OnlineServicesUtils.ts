@@ -177,7 +177,7 @@ export default class OnlineServicesUtils {
   setType = (type: ServiceType) => {
     this.type = type
     if (type === 'iportal') {
-      let url = SIPortalService.getIPortalUrl()
+      let url = SIPortalService.getIPortalUrl() || this.serverUrl
       if (url) {
         this.serverUrl = url
         if (url.indexOf('http') !== 0) {
@@ -548,6 +548,92 @@ export default class OnlineServicesUtils {
       let id = await this._getUploadId(fileName, fileType)
       if (id) {
         let url = this.serverUrl + `/mycontent/datas/${id}/upload.rjson`
+        let headers = {}
+        let cookie = await this.getCookie()
+        if (cookie) {
+          headers = {
+            cookie: cookie,
+          }
+        }
+        url = encodeURI(url)
+        let uploadParams = {
+          toUrl: url,
+          headers: headers,
+          files: [
+            {
+              name: fileName,
+              filename: fileName,
+              filepath: filePath,
+            },
+          ],
+          background: true,
+          method: 'POST',
+          begin: (res: any) => {
+            if (callback && typeof callback.onBegin === 'function') {
+              callback.onBegin(res)
+            }
+          },
+          progress: (res: any) => {
+            try {
+              if (callback && typeof callback.onProgress === 'function') {
+                let progress = res.totalBytesSent / res.totalBytesExpectedToSend
+                callback.onProgress(progress * 100)
+              }
+            } catch {
+              /*** */
+            }
+          },
+        }
+
+        let result = await RNFS.uploadFiles(uploadParams).promise
+        let body = JSON.parse(result.body)
+        return body.childID
+      } else {
+        return false
+      }
+    } catch (error) {
+      return false
+    }
+  }
+
+  /**
+   * 检测服务器空间,更新服务器已有的文件
+   * @param fileId 
+   * @param filePath 
+   * @param fileName 
+   * @param fileType 
+   * @param callback 
+   * @param info 
+   * @returns 
+   */
+  async updateFileWithCheckCapacity(fileId: string, filePath: string, fileName: string, fileType: keyof OnlineDataType, callback?: UploadCallBack, info?: {isCapacityEnough: boolean}) {
+    const capacity = await this.getMyDataCapacity()
+    if(capacity) {
+      const stat = await RNFetchBlob.fs.stat(filePath)
+      const isEnough = parseInt(stat.size) + capacity.usedCapacity < capacity.maxCapacity
+      info && (info.isCapacityEnough = isEnough)
+      if(!isEnough) {
+        return false
+      }
+    }
+
+    return await this.updateFile(fileId, filePath, fileName, fileType, callback)
+
+  }
+
+  /**
+   * 更新服务器已有的文件
+   * @param fileId 
+   * @param filePath 
+   * @param fileName 
+   * @param fileType 
+   * @param callback 
+   * @returns 
+   */
+  async updateFile(fileId: string, filePath: string, fileName: string, fileType: keyof OnlineDataType, callback?: UploadCallBack) {
+    try {
+      if (fileId) {
+        let url = this.serverUrl + `/mycontent/datas/${fileId}/update.rjson?fileName=${fileName}&dataType=${fileType}`
         let headers = {}
         let cookie = await this.getCookie()
         if (cookie) {

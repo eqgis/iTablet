@@ -22,7 +22,6 @@ import IPortalLoginView from './component/IPortalLoginView'
 import Orientation from 'react-native-orientation'
 import { color } from '../../../../styles'
 
-const JSOnlineService = new OnlineServicesUtils('online')
 export default class Login extends React.Component {
   props: {
     language: string,
@@ -45,6 +44,7 @@ export default class Login extends React.Component {
     }
     this.scaleL = new Animated.Value(1)
     this.scaleR = new Animated.Value(0.7)
+    this.JSOnlineService = new OnlineServicesUtils('online')
   }
 
   componentDidMount() {
@@ -160,7 +160,7 @@ export default class Login extends React.Component {
       }
 
       //使用邮箱或昵称登录的用户可以在此处检查是否已经登录
-      const userInfo = await JSOnlineService.getUserInfo(userName)
+      const userInfo = await this.JSOnlineService?.getUserInfo(userName)
       if (
         userInfo !== false &&
           userInfo.userId === this.props.user.currentUser.userId
@@ -169,7 +169,7 @@ export default class Login extends React.Component {
         return
       }
 
-      const loginResult = await JSOnlineService.login(userName, password)
+      const loginResult = await this.JSOnlineService?.login(userName, password)
 
       if (loginResult.userInfo) {
         const loginUser = loginResult.userInfo

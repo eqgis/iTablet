@@ -203,6 +203,18 @@ export default class FriendListFileHandle {
             FriendListFileHandle.friendListFile_ol,
           ).then(result => {
             callback(!!result, resolve, reject)
+          }).catch(e => {
+            // 如果下载出错,则重新更新上传
+            dataId && OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+              dataId,
+              FriendListFileHandle.friendListFile,
+              'friend.list.zip',
+              'WORKSPACE',
+            ).then(id => {
+              resolve(!!id)
+              FriendListFileHandle.uploading = false
+              FriendListFileHandle.waitUploading = false
+            })
           })
         } else {
           SOnlineService.downloadFileWithCallBack(
@@ -366,19 +378,33 @@ export default class FriendListFileHandle {
     //上传
     let UploadFileName = 'friend.list.zip'
     let promise
+    let dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
     if (UserType.isIPortalUser(FriendListFileHandle.user)) {
-      let dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
-      await SIPortalService.deleteMyData(dataId + '')
+      // await SIPortalService.deleteMyData(dataId + '')
       promise = new Promise(resolve => {
-        OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
-          FriendListFileHandle.friendListFile,
-          UploadFileName,
-          'WORKSPACE',
-        ).then(id => {
-          resolve(!!id)
-          FriendListFileHandle.uploading = false
-          FriendListFileHandle.waitUploading = false
-        })
+        // let action = OnlineServicesUtils.getService().uploadFileWithCheckCapacity
+        if (dataId) {
+          OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+            dataId,
+            FriendListFileHandle.friendListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            FriendListFileHandle.uploading = false
+            FriendListFileHandle.waitUploading = false
+          })
+        } else {
+          OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
+            FriendListFileHandle.friendListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            FriendListFileHandle.uploading = false
+            FriendListFileHandle.waitUploading = false
+          })
+        }
       })
     } else {
       if (Platform.OS === 'android') {
@@ -386,17 +412,39 @@ export default class FriendListFileHandle {
       }
       await SOnlineService.deleteData('friend.list')
       promise = new Promise(resolve => {
-        SOnlineService.uploadFile(
-          FriendListFileHandle.friendListFile,
-          UploadFileName,
-          {
-            onResult: () => {
-              resolve(true)
-              FriendListFileHandle.uploading = false
-              FriendListFileHandle.waitUploading = false
-            },
-          },
-        )
+        if (dataId) {
+          OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+            dataId,
+            FriendListFileHandle.friendListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            FriendListFileHandle.uploading = false
+            FriendListFileHandle.waitUploading = false
+          })
+        } else {
+          OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
+            FriendListFileHandle.friendListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            FriendListFileHandle.uploading = false
+            FriendListFileHandle.waitUploading = false
+          })
+        }
+        // SOnlineService.uploadFile(
+        //   FriendListFileHandle.friendListFile,
+        //   UploadFileName,
+        //   {
+        //     onResult: () => {
+        //       resolve(true)
+        //       FriendListFileHandle.uploading = false
+        //       FriendListFileHandle.waitUploading = false
+        //     },
+        //   },
+        // )
       })
     }
     return promise

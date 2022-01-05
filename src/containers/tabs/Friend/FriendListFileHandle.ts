@@ -202,12 +202,11 @@ export default class FriendListFileHandle {
             `${JSOnlineService.serverUrl}/mycontent/datas/${dataId}/download`,
             FriendListFileHandle.friendListFile_ol,
           ).then(result => {
-            console.warn(JSON.stringify(result))
             callback(!!result, resolve, reject)
           }).catch(e => {
-            console.warn('error ---- ' + JSON.stringify(e))
             // 如果下载出错,则重新更新上传
-            OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+            dataId && OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+              dataId,
               FriendListFileHandle.friendListFile,
               'friend.list.zip',
               'WORKSPACE',

@@ -9,7 +9,7 @@ const Map_Module: typeof CN.Map_Module = {
   MAP_AR_ANALYSIS: "Analyse RA",
   MAP_AR_MAPPING: "Collection RA",
   MAP_NAVIGATION: "Navigation",
-  MAP_THEME: "Carte thématique",
+  MAP_THEME: "Carte \nthématique",
   MAP_COLLECTION: "Arpentage",
   MAP_PLOTTING: "Traçage",
   MAP_ANALYST: "Traitement de l'information",

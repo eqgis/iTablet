@@ -15,7 +15,7 @@ const Cowork: typeof CN.Cowork = {
   ERROR_SERVICE_DATA_LOSE_URL: "Les données URL sont perdus",
 
   PLEASE_ENTER_SERCICE_NAME: "Veuillez entrer le nom de service",
-  SERVICE_SHARING_SETTINGS: "Partade des paramétres de service",
+  SERVICE_SHARING_SETTINGS: "Partage des services",
   SEARCHABLE: "Consultable",
   READABLE: "Lisible",
 

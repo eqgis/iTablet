@@ -188,6 +188,7 @@ export default class Login extends React.Component {
           userId: loginUser.userName,
           isEmail: isEmail,
           userType: loginUser.userType,
+          roles: loginUser.roles,
         }
         let friendListResult = FriendListFileHandle.initFriendList(user)
         // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
@@ -266,6 +267,7 @@ export default class Login extends React.Component {
             nickname: userInfo.nickname,
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
+            roles: userInfo.roles,
           }
           GLOBAL.isLogging = true
           await this.props.setUser(user)

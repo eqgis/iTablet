@@ -13,6 +13,7 @@ const Friends: typeof CN.Friends = {
   RECOMMEND_FRIEND: "Recommend Friends",
   SELECT_MODULE: "Select Module",
   SELECT_MAP: "Select Map",
+  PUBLIC_FRIENDS: "Public Friends",
   // Friend
   MSG_SERVICE_FAILED: "Failed to connect to message service",
   MSG_SERVICE_NOT_CONNECT: "Unable to connect to message service",

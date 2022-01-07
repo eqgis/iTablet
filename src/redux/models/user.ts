@@ -42,6 +42,8 @@ export interface UserInfoParams {
   password?: string,
   /** 用户类型，详见UserType */
   userType: string,
+  /** 用户角色 */
+  roles: string[],
   /** iportal用户所使用的服务器地址 */
   serverUrl?: string,
   /** @deprecated 同userName */

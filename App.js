@@ -609,6 +609,7 @@ class AppRoot extends Component {
           userId: userInfo.userId,
           isEmail: true,
           userType: UserType.COMMON_USER,
+          roles: userInfo.roles,
         }
         await this.props.setUser(user)
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
@@ -643,6 +644,7 @@ class AppRoot extends Component {
             nickname: userInfo.nickname,
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
+            roles: userInfo.roles,
           })
         }
         GLOBAL.getFriend().onUserLoggedin()

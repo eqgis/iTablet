@@ -98,6 +98,7 @@ export default class ToggleAccount extends Component {
               nickname: userInfo.nickname,
               email: userInfo.email,
               userType: UserType.IPORTAL_COMMON_USER,
+              roles: userInfo.roles,
             }
             GLOBAL.getFriend().onUserLoggedin()
             FriendListFileHandle.initFriendList(newUser) // iportal初始化好友列表信息,防止之前online用户留存信息的存在,把online的好友文件下载到iportal用户中

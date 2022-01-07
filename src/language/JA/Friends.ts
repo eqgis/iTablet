@@ -13,6 +13,7 @@ const Friends: typeof CN.Friends = {
   RECOMMEND_FRIEND: "友達推奨",
   SELECT_MODULE: "モジュールの選択",
   SELECT_MAP: "マップの選択",
+  PUBLIC_FRIENDS: "Public Friends", // need to translate
   // Friend
   MSG_SERVICE_FAILED: "メッセージサービスに接続のに失敗しました！",
   MSG_SERVICE_NOT_CONNECT: "メッセージサービスに接続しません！",

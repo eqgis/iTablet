@@ -12,6 +12,7 @@ import { scaleSize } from '../../../utils/screen'
 import { getLanguage } from '../../../language/index'
 import { getThemeAssets } from '../../../assets'
 import { color } from '../../../styles'
+import { UserType } from '../../../constants'
 let Top = scaleSize(88)
 if (Platform.OS === 'ios') {
   Top += 20
@@ -31,6 +32,7 @@ export default class AddMore extends React.Component {
   props: {
     show: Boolean,
     device: Object,
+    user: Object,
     closeModal: () => {},
     addMore: () => {},
   }
@@ -76,6 +78,7 @@ export default class AddMore extends React.Component {
   }
 
   render() {
+    const isIPortalUser = UserType.isIPortalUser(this.props.user)
     return (
       <Modal
         transparent={true}
@@ -106,25 +109,28 @@ export default class AddMore extends React.Component {
               top: this.props.device.orientation.indexOf('LANDSCAPE') === 0
                 ? scaleSize(60)
                 : Top,
-            }
+            },
           ]}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.addMore(1), this.closeModal()
-              }}
-              style={styles.itemView}
-            >
-              <Image
-                style={styles.imgStyle}
-                source={getThemeAssets().friend.add_contacts}
-              />
-              <Text style={styles.textStyle}>
-                {getLanguage(GLOBAL.language).Friends.ADD_FRIENDS}
+            {
+              !isIPortalUser &&
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.addMore(1), this.closeModal()
+                }}
+                style={styles.itemView}
+              >
+                <Image
+                  style={styles.imgStyle}
+                  source={getThemeAssets().friend.add_contacts}
+                />
+                <Text style={styles.textStyle}>
+                  {getLanguage(GLOBAL.language).Friends.ADD_FRIENDS}
 
-                {/* //添加好友 */}
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.seperator} />
+                  {/* //添加好友 */}
+                </Text>
+              </TouchableOpacity>
+            }
+            {!isIPortalUser && <View style={styles.seperator} />}
             <TouchableOpacity
               onPress={() => {
                 this.props.addMore(2), this.closeModal()

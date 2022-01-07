@@ -23,7 +23,8 @@ interface Props {
 
 interface State {
   messages: Array<any>,
-  selected: Array<any>,
+  // selected: Array<any>,
+  selected: Map<number, any>,
 }
 
 class CoworkMessage extends Component<Props, State> {
@@ -31,7 +32,7 @@ class CoworkMessage extends Component<Props, State> {
     super(props)
     this.state = {
       messages: [],
-      selected: [],
+      selected: new Map<number, any>(),
     }
   }
 
@@ -64,15 +65,13 @@ class CoworkMessage extends Component<Props, State> {
 
   selecteAll = () => {
     if (this.state.messages.length !== 0) {
-      let selected = []
-      if (this.state.messages.length !== this.state.selected.length) {
-        for (let message of this.state.messages) {
-          if (message.status === 2 || this.state.selected.includes(message.messageID)) continue
-          selected.push(message.messageID)
-        }
-        // selected不为空,则表示之前没有全部选中,则加上原来被选中的ID
-        if (selected.length > 0) {
-          selected = selected.concat(this.state.selected)
+      const selected = new Map<number, any>()
+      if (this.state.messages.length !== this.state.selected.size) {
+
+        if (this.state.messages.length > this.state.selected.size) {
+          this.state.messages.forEach((item: any) => {
+            selected.set(item.messageID, item)
+          })
         }
       }
       this.setState({ selected })
@@ -81,32 +80,35 @@ class CoworkMessage extends Component<Props, State> {
 
   onButtomPress = async (type: string) => {
     try {
-      if (this.state.selected.length > 0) {
-        let notify = this.state.selected.length === 1
-        let selection = this.state.selected.clone()
-        selection.sort((a: number, b: number) => b - a)
+      if (this.state.selected.size > 0) {
+        let notify = this.state.selected.size === 1
+        let selection = new Map().clone(this.state.selected)
+        // selection.sort((a: number, b: number) => b - a)
         let result = false
-        for (let i = selection.length - 1; i >= 0; i--) {
-          GLOBAL.Loading.setLoading(
-            true,
-            getLanguage(GLOBAL.language).Friends.UPDATING,
-          )
-          let messageID = selection[i]
-          if (type === 'update') {
-            result = await CoworkInfo.update(messageID, false, notify)
-          } else if (type === 'add') {
-            result = await CoworkInfo.add(messageID, false, notify)
-          } else if (type === 'ignore') {
-            selection.splice(i, 1)
-            await CoworkInfo.ignore(messageID)
-          }
-          const coworkMessages = this.props.cowork.coworkInfo?.[this.props.currentUser.userName]?.[this.props.cowork.currentTask?.groupID]?.[this.props.cowork.currentTask?.id]?.messages || []
-          if (coworkMessages.length > 0) {
-            const serviceUrl = coworkMessages[messageID]?.message?.serviceUrl
-            if (serviceUrl) {
-              for (const message of coworkMessages) {
-                if (message.message?.serviceUrl === serviceUrl && message.status === 0) {
-                  CoworkInfo.consumeMessage(message.messageID)
+        if (selection.size > 0) {
+          const keys = selection.keys()
+          for(let key of keys) {
+            GLOBAL.Loading.setLoading(
+              true,
+              getLanguage(GLOBAL.language).Friends.UPDATING,
+            )
+            let messageID = selection.get(key).messageID
+            if (type === 'update') {
+              result = await CoworkInfo.update(messageID, false, notify)
+            } else if (type === 'add') {
+              result = await CoworkInfo.add(messageID, false, notify)
+            } else if (type === 'ignore') {
+              selection.delete(key)
+              await CoworkInfo.ignore(messageID)
+            }
+            const coworkMessages = this.props.cowork.coworkInfo?.[this.props.currentUser.userName]?.[this.props.cowork.currentTask?.groupID]?.[this.props.cowork.currentTask?.id]?.messages || []
+            if (coworkMessages.length > 0) {
+              const serviceUrl = coworkMessages[messageID]?.message?.serviceUrl
+              if (serviceUrl) {
+                for (const message of coworkMessages) {
+                  if (message.message?.serviceUrl === serviceUrl && message.status === 0) {
+                    CoworkInfo.consumeMessage(message.messageID)
+                  }
                 }
               }
             }
@@ -126,7 +128,7 @@ class CoworkMessage extends Component<Props, State> {
     }
   }
 
-  _renderButton = (item: {title: string, image: any, action: () => void}) => {
+  _renderButton = (item: {title: string, image: any, disableImage?: any, disable?: boolean, action: () => void}) => {
     return (
       <MTBtn
         key={item.title}
@@ -136,11 +138,11 @@ class CoworkMessage extends Component<Props, State> {
           justifyContent: 'center',
         }}
         title={item.title}
-        textColor={'#1D1D1D'}
+        textColor={item.disable ? color.fontColorGray : '#1D1D1D'}
         textStyle={{ fontSize: setSpText(20) }}
-        image={item.image}
+        image={item.disable && item.disableImage ? item.disableImage : item.image}
         onPress={async () => {
-          if (item.action) {
+          if (item.action && !item.disable) {
             item.action()
           }
         }}
@@ -149,6 +151,19 @@ class CoworkMessage extends Component<Props, State> {
   }
 
   renderButtons = () => {
+    // MSG_COWORK_SERVICE_UPDATE: 15, // 数据服务更新
+    // MSG_COWORK_SERVICE_PUBLISH: 16, // 数据服务发布
+    let canAdd = true
+    const keys = this.state.selected.keys()
+    for(let key of keys) {
+      if (
+        this.state.selected.get(key).message.type === MsgConstant.MSG_COWORK_SERVICE_UPDATE ||
+        this.state.selected.get(key).message.type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH
+      ) {
+        canAdd = false
+        break
+      }
+    }
     return (
       <View
         style={{
@@ -170,6 +185,8 @@ class CoworkMessage extends Component<Props, State> {
         {this._renderButton({
           title: getLanguage(GLOBAL.language).Friends.COWORK_ADD,
           image: getThemeAssets().publicAssets.icon_add,
+          disableImage: getThemeAssets().publicAssets.icon_add_disable,
+          disable: !canAdd,
           action: () => this.onButtomPress('add'),
         })}
         {this._renderButton({
@@ -186,15 +203,15 @@ class CoworkMessage extends Component<Props, State> {
       <CoworkMessageItem
         key={item.time + '_' + item.messageID}
         data={item}
-        selected={this.state.selected.includes(item.messageID)}
+        selected={this.state.selected.has(item.messageID)}
         onPress={data => {
           // 忽略之后不可点击
           if (data.status === 2) return
-          let selected = this.state.selected.clone()
-          if (selected.includes(data.messageID)) {
-            selected.splice(selected.indexOf(data.messageID), 1)
+          let selected = new Map().clone(this.state.selected)
+          if (selected.has(data.messageID)) {
+            selected.delete(data.messageID)
           } else {
-            selected.push(data.messageID)
+            selected.set(data.messageID, data)
           }
           this.setState({ selected })
         }}

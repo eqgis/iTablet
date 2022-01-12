@@ -744,7 +744,7 @@ export default class LayerManager_item extends React.Component {
           {
             this.state.data.datasourceAlias !== '' && this.state.data.datasetName !== '' &&
             <Text numberOfLines={1} style={[styles.text, { fontSize: setSpText(20), color: this.props.isSelected ? selectcolor : color.fontColorGray }]}>
-              {this.state.data.datasourceAlias + ' - ' + this.state.data.datasetName}
+              {this.state.data.datasourceAlias + ' - ' + this.state.data.datasetName + ' - ' + this.state.data.name}
             </Text>
           }
         </View>

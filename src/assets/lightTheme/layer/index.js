@@ -17,6 +17,8 @@ const icon_remove_layer = require('./icon_remove_layer.png')
 const icon_visible = require('./icon_visible.png')
 const icon_invisible = require('./icon_invisible.png')
 const icon_add_layer = require('./icon_add_layer.png')
+const icon_media = require('./icon_media.png')
+const icon_media_unvisible = require('./icon_media_unvisible.png')
 
 export default {
   icon_layer_uneditable,
@@ -39,4 +41,6 @@ export default {
 
   icon_visible,
   icon_invisible,
+  icon_media,
+  icon_media_unvisible,
 }

@@ -1547,6 +1547,10 @@ export default class MapView extends React.Component {
               result &&
               (await SCollector.removeByIds(item.ids, item.layerInfo.path))
             result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
+            // 若果删除的是旅行轨迹的多媒体对象,则更新旅行轨迹
+            if (await SMediaCollector.isTourLayer(item.layerInfo.name)) {
+              result = await SMediaCollector.updateTour(item.layerInfo.name)
+            }
           }
         }
 
@@ -1843,7 +1847,9 @@ export default class MapView extends React.Component {
             if (!this.wsData) return
             layers.map(layer => {
               if (layer.isVisible) {
-                SMediaCollector.showMedia(layer.name, false)
+                const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layer)
+                // const layerDescription = JSON.parse(layer.description)
+                dsDescription?.isShowMedia && SMediaCollector.showMedia(layer.name, false)
               }
             })
             // 若数据源已经打开，图层未加载，则去默认加载一个图层

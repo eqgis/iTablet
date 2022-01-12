@@ -387,7 +387,7 @@ export default class LayerManager_tolbar extends React.Component {
         params.layerData.type &&
         params.layerData.type === 'layerGroup'
       let data = await this.getData(type, isGroup, params.layerData)
-      newState = this.updateMenuState(data, params.layerData)
+      newState = await this.updateMenuState(data, params.layerData)
     }
     if (isShow) {
       this.refreshParentList = params.refreshParentList
@@ -404,7 +404,7 @@ export default class LayerManager_tolbar extends React.Component {
       () => {
         this.showToolbarAndBox(isShow)
         // !isShow && this.props.existFullMap && this.props.existFullMap()
-        // this.updateMenuState()
+        // await this.updateMenuState()
         this.updateOverlayView()
       },
     )
@@ -422,7 +422,7 @@ export default class LayerManager_tolbar extends React.Component {
   }
 
   //更新菜单按钮状态
-  updateMenuState = (data, layerData) => {
+  updateMenuState = async (data, layerData) => {
     data = data.deepClone()
     let newState = {}
     if(layerData){
@@ -456,6 +456,43 @@ export default class LayerManager_tolbar extends React.Component {
           layerSettingCanNotSnap(this.props.language)
         }
         data[0].headers = data[0].headers.concat(/*tempheader2,*/ tempheader3)
+
+        if (await SMediaCollector.isMediaLayer(layerData.name)) {
+          let isShowMedia = false
+          if (layerData) {
+            const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+            isShowMedia = !!dsDescription?.isShowMedia
+          }
+          data[0].headers.push({
+            title: '设置多媒体可见',
+            image: isShowMedia ? getThemeAssets().layer.icon_media : getThemeAssets().layer.icon_media_unvisible,
+            action: async layerData => {
+              let newLayerData = dataUtil.deepClone(this.state.layerData)
+              let dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+              if (isShowMedia) {
+                await SMediaCollector.hideMedia(layerData.name)
+                if (dsDescription) {
+                  dsDescription.isShowMedia = false
+                } else {
+                  dsDescription = {isShowMedia: false}
+                }
+              } else {
+                await SMediaCollector.showMedia(layerData.name, false)
+                if (dsDescription) {
+                  dsDescription.isShowMedia = true
+                } else {
+                  dsDescription = {isShowMedia: true}
+                }
+              }
+              newLayerData.datasetDescription = JSON.stringify(dsDescription)
+              let newState = await this.updateMenuState(this.state.data, newLayerData)
+              this.setState(newState, async () => {
+                this.props.updateData && (await this.props.updateData())
+                this.setThislayer()
+              })
+            },
+          })
+        }
       }
     }
     newState.data = data
@@ -678,7 +715,7 @@ export default class LayerManager_tolbar extends React.Component {
         let newLayerData = dataUtil.deepClone(this.state.layerData)
         newLayerData.isVisible = true
         newLayerData.isVisible = true
-        let newState = this.updateMenuState(this.state.data, newLayerData)
+        let newState = await this.updateMenuState(this.state.data, newLayerData)
         this.setState(newState, async () => {
           this.props.setCurrentLayer &&
             this.props.setCurrentLayer(this.state.layerData)
@@ -770,9 +807,13 @@ export default class LayerManager_tolbar extends React.Component {
     (async function() {
       let layerData = JSON.parse(JSON.stringify(this.state.layerData))
       let rel
+      if (item.action) {
+        item.action(layerData)
+        return
+      }
       switch (item.title) {
         case getLanguage(this.props.language).Map_Layer.VISIBLE:
-        case getLanguage(this.props.language).Map_Layer.NOT_VISIBLE:
+        case getLanguage(this.props.language).Map_Layer.NOT_VISIBLE: {
           layerData.isVisible = !layerData.isVisible
           if (
             !layerData.isVisible &&
@@ -781,7 +822,18 @@ export default class LayerManager_tolbar extends React.Component {
             this.props.setCurrentLayer(null)
           }
           rel = await SMap.setLayerVisible(layerData.path, layerData.isVisible)
+          let dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+          if (item.title ===  getLanguage(this.props.language).Map_Layer.VISIBLE) {
+            await SMediaCollector.hideMedia(layerData.name)
+            if (dsDescription) {
+              dsDescription.isShowMedia = false
+            } else {
+              dsDescription = {isShowMedia: false}
+            }
+            layerData.datasetDescription = JSON.stringify(dsDescription)
+          }
           break
+        }
         case getLanguage(this.props.language).Map_Layer.EDITABLE:
         case getLanguage(this.props.language).Map_Layer.NOT_EDITABLE:
           layerData.isEditable = !layerData.isEditable
@@ -808,7 +860,7 @@ export default class LayerManager_tolbar extends React.Component {
           break
       }
       if (rel) {
-        let newState = this.updateMenuState(this.state.data, layerData)
+        let newState = await this.updateMenuState(this.state.data, layerData)
         this.setState(
           newState,
           () => {

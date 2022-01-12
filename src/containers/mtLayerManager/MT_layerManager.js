@@ -606,9 +606,10 @@ export default class MT_layerManager extends React.Component {
       }
 
       if (value) {
+        let layerType = LayerUtils.getLayerType(data)
         // 显示多媒体callouts
-        // TODO 图层显示和多媒体显示逻辑分开,图层显示的时候,暂时不显示多媒体,由多媒体开关来控制
-        // SMediaCollector.showMedia(data.name)
+        // TODO 普通图层显示和多媒体显示逻辑分开,图层显示的时候,暂时不显示多媒体,由多媒体开关来控制
+        layerType === 'TAGGINGLAYER' && SMediaCollector.showMedia(data.name)
       } else {
         // 隐藏多媒体callouts
         SMediaCollector.hideMedia(data.name)

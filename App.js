@@ -13,6 +13,7 @@ import {
   StatusBar,
   TextInput,
   PermissionsAndroid,
+  NetInfo,
 } from 'react-native'
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -228,6 +229,7 @@ class AppRoot extends Component {
     AppState.addEventListener('change', this.handleStateChange)
     Platform.OS === 'android' &&
       BackHandler.addEventListener('hardwareBackPress', this.back)
+    NetInfo.addEventListener('connectionChange', this.handleNetworkState)
 
   }
 
@@ -281,6 +283,22 @@ class AppRoot extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
+    NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
+  }
+
+  handleNetworkState = async state => {
+    // TODO 网络状态发生变化,wifi切换为移动网络,判断内网服务是否可用,若不可用,退出登录
+    if(UserType.isIPortalUser(this.props.user.currentUser)) {
+      const userInfo = await OnlineServicesUtils.getService()?.getUserInfo()
+      if (userInfo === false) {
+        // 无法连接内网, 退出登录
+        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        return
+      }
+    }
+    if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
+      GLOBAL.getFriend()?.restartService()
+    }
   }
 
   onGuidePageEnd = () => {

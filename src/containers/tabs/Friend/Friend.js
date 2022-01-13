@@ -111,7 +111,7 @@ export default class Friend extends Component {
     }
     this.messageQueue = []
     AppState.addEventListener('change', this.handleStateChange)
-    NetInfo.addEventListener('connectionChange', this.handleNetworkState)
+    // NetInfo.addEventListener('connectionChange', this.handleNetworkState)
     this.addFileListener()
     this.stateChangeCount = 0
     this._receiveMessage = this._receiveMessage.bind(this)
@@ -153,7 +153,7 @@ export default class Friend extends Component {
   componentWillUnmount() {
     this.removeFileListener()
     AppState.removeEventListener('change', this.handleStateChange)
-    NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
+    // NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
   }
 
   _getWidth = () => {

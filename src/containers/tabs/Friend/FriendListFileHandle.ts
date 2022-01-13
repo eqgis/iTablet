@@ -11,6 +11,7 @@ import * as OnlineServicesUtils from '../../../utils/OnlineServicesUtils'
 import { UserType } from '../../../constants'
 import { UserInfo } from '../../../types'
 import RNFetchBlob from 'rn-fetch-blob'
+import CookieManager from 'react-native-cookies'
 
 
 function isJSON(str: string) {
@@ -205,6 +206,10 @@ export default class FriendListFileHandle {
           rememberme: true,
         }))
         cookie = adminLoginResponse.respInfo.headers['Set-Cookie'].split('; ')[0]
+
+        // let result = await SIPortalService.login(JSOnlineService.serverUrl + '/login.json', FriendListFileHandle.adminInfo.userName, FriendListFileHandle.adminInfo.password, true)
+
+
         admingLoginResult = await adminLoginResponse.json()
       } else {
         cookie = await SIPortalService.getIPortalCookie()
@@ -245,6 +250,13 @@ export default class FriendListFileHandle {
           await RNFetchBlob.config({trusty:true}).fetch('GET', JSOnlineService.serverUrl + '/services/security/logout.json', {
             cookie: cookie,
           })
+        }
+      }
+      // iOS获取admin用户列表后,cookie发生改变,需要重新登录
+      if (Platform.OS === 'ios' &&  admingLoginResult?.succeed && cookie) {
+        await CookieManager.clearAll()
+        if (FriendListFileHandle.user.password && FriendListFileHandle.user.userName) {
+          await SIPortalService.login(FriendListFileHandle.user.serverUrl, FriendListFileHandle.user.userName, FriendListFileHandle.user.password, true)
         }
       }
     } else {

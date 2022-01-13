@@ -104,7 +104,7 @@ function commit() {
     const _params: any = ToolbarModule.getParams()
     const layer: ARElementLayer = data.selectARElementLayer
     const ARElementLayerVisibleBounds: number = data.ARElementLayerVisibleBounds
-    SARMap.setLayerVisibleBounds(layer.name, ARElementLayerVisibleBounds)
+    SARMap.setLayerMaxVisibleBounds(layer.name, ARElementLayerVisibleBounds)
     _params.setToolbarVisible(false)
   } else{
     SARMap.submit().then(async () => {

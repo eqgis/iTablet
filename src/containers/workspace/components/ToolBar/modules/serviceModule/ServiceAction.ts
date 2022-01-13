@@ -209,7 +209,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
         let hasResetLayer = false
         for (const layer of _params.layers.layers) {
           const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layer)
-          if (dsDescription?.url && dsDescription?.type === 'onlineService' && layer.isModified) {
+          if (dsDescription?.url && dsDescription?.type === 'onlineService' && res.content.urlDataset === dsDescription.url && layer.isModified) {
             hasResetLayer = true
             await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
           }

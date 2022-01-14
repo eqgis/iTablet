@@ -176,13 +176,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
       ],
     }]
     //ARElementLayer添加可见范围
-    if(this.state.selectLayer && 'visibleBounds' in this.state.selectLayer) {
+    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
         image: getThemeAssets().layer.icon_layer_visible_scale,
         action: async () => {
           let layer = this.state.selectLayer
-          if (layer && 'visibleBounds' in layer) {
+          if (layer && 'maxVisibleBounds' in layer) {
             const _params: any = ToolbarModule.getParams()
             arEditModule().setModuleData()
             _params.showFullMap(true)
@@ -191,7 +191,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
               showMenuDialog: false,
               isFullScreen: true,
             })
-            ToolbarModule.addData({selectARElementLayer: layer, ARElementLayerVisibleBounds: layer.visibleBounds})
+            ToolbarModule.addData({selectARElementLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds})
             NavigationService.goBack()
           }
         },

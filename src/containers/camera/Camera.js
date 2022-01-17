@@ -78,7 +78,7 @@ export default class Camera extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    GLOBAL.isPad && Orientation.lockToPortrait()
+    // GLOBAL.isPad && Orientation.lockToPortrait()
   }
 
   componentWillUnmount() {
@@ -87,7 +87,7 @@ export default class Camera extends React.Component {
       this.recordTimer = null
     }
     SMap.setDynamicviewsetVisible(true)
-    GLOBAL.isPad && Orientation.unlockAllOrientations()
+    // GLOBAL.isPad && Orientation.unlockAllOrientations()
     Platform.OS === 'android' && BackHandler.removeEventListener('hardwareBackPress', this.back)
   }
 

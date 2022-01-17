@@ -289,7 +289,7 @@ export default class LayerManager_tolbar extends React.Component {
       }
 
       const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
-      if (dsDescription?.type === 'onlineService') {
+      if (dsDescription?.type === 'onlineService' && LayerUtils.availableServiceLayer(layerData.type)) {
         let serviceData = await ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPDATE)
         data[0]?.data?.unshift(...serviceData.data)
       }

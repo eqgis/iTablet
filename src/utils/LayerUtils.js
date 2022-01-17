@@ -588,6 +588,15 @@ function getDatasetDescriptionByLayer(layer) {
   }
 }
 
+/**
+ * 是否可作为服务的图层
+ * @param {*} datasetType
+ * @returns
+ */
+function availableServiceLayer(datasetType) {
+  return datasetType === DatasetType.CAD || datasetType === DatasetType.POINT || datasetType === DatasetType.LINE || datasetType === DatasetType.REGION
+}
+
 export default {
   getLayerAttribute,
   searchLayerAttribute,
@@ -620,4 +629,6 @@ export default {
   deleteAttributeByData,
   getNavigationAttributeByData,
   deleteNavigationAttributeByData,
+
+  availableServiceLayer,
 }

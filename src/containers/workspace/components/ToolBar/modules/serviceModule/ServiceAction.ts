@@ -773,28 +773,44 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
               ids: ids,
               entities: entities,
             })
-            result = shareResult.succeed
-            let msgObj = {
-              type: MsgConstant.MSG_COWORK,
-              time: new Date().getTime(),
-              user: {
-                name: _params.user.currentUser.nickname,
-                id: _params.user.currentUser.userName,
-                groupID: _params.currentTask.id,     // 任务群组
-                groupName: '',
-                coworkGroupId: _params.currentTask.groupID,     // online协作群组
-                coworkGroupName: _params.currentTask.groupName,
-                taskId: _params.currentTask.id,
-              },
-              message: {
-                type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
-                datasourceAlias: datasourceAlias,
-                datasetName: publishResults.customResult,
-                serviceUrl: `${service.content[0].proxiedUrl}/data/datasources/${publishData.datasets[0]}/datasets/${publishData.datasets[0]}`,
-              },
+            const serviceData = await SCoordinationUtils.initMapDataWithService(service.content[0].proxiedUrl)
+            for (const datasource of serviceData) {
+              for (const dataset of datasource.datasets) {
+                let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
+                let _datasourceAlias = _datasourceAlias
+                if (isLabelDatasource(datasourceAlias)) {
+                  _datasourceAlias = `Label_${
+                    _params.user.currentUser.userName
+                  }#`
+                } else {
+                  _datasourceAlias = datasourceAlias || `Label_${
+                    _params.user.currentUser.userName
+                  }#`
+                }
+                result = shareResult.succeed
+                let msgObj = {
+                  type: MsgConstant.MSG_COWORK,
+                  time: new Date().getTime(),
+                  user: {
+                    name: _params.user.currentUser.nickname,
+                    id: _params.user.currentUser.userName,
+                    groupID: _params.currentTask.id,     // 任务群组
+                    groupName: '',
+                    coworkGroupId: _params.currentTask.groupID,     // online协作群组
+                    coworkGroupName: _params.currentTask.groupName,
+                    taskId: _params.currentTask.id,
+                  },
+                  message: {
+                    type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
+                    datasourceAlias: datasourceAlias,
+                    datasetName: publishResults.customResult,
+                    serviceUrl: dataset.datasetUrl,
+                  },
+                }
+                let msgStr = JSON.stringify(msgObj)
+                await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+              }
             }
-            let msgStr = JSON.stringify(msgObj)
-            await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
           } else {
             result = false
           }

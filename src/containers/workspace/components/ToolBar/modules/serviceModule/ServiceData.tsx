@@ -274,7 +274,7 @@ async function getData(type: string, params: any) {
                       groupName: _params.currentGroup.groupName,
                     }])
                     // _params.setContainerLoading?.(false)
-
+                    await SMap.resetModified(layerData.path) // 发布后,重置图层
                     if (result) {
                       let keywords: string[] = []
                       let _content: DataServiceUrlParams[] = []

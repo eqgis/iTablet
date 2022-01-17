@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { SMap } from 'imobile_for_reactnative'
-import { ConstToolType, ConstPath, ToolbarType } from '../../../../../../constants'
+import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { ImageButton } from '../../../../../../components'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
@@ -13,6 +13,7 @@ import ToolbarModule from '../ToolbarModule'
 import ServiceAction, { DataServiceUrlParams } from './ServiceAction'
 import { FileTools } from '../../../../../../native'
 import ToolbarBtnType from '../../ToolbarBtnType'
+import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 interface ActionParams {
   layerData: SMap.LayerInfo,
 }
@@ -123,6 +124,7 @@ async function getData(type: string, params: any) {
               datasourceAlias: layerData.datasourceAlias,
               datasetName: layerData.datasetName,
             })
+            CoworkInfo.consumeMessageByLayerPath(layerData.path)
           },
           size: 'large',
           image: getThemeAssets().edit.icon_redo,

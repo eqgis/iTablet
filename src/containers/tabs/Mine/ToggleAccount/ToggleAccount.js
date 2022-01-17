@@ -63,7 +63,7 @@ export default class ToggleAccount extends Component {
         result = await SOnlineService.login(item.nickname, password)
         if (result) {
           GLOBAL.getFriend().onUserLoggedin()
-          result = await FriendListFileHandle.initFriendList(item)
+          FriendListFileHandle.initFriendList(item)
         }
         // if (result) {
         //   // 初始化协作文件

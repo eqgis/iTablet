@@ -170,8 +170,10 @@ export default class Login extends React.Component {
       }
 
       const loginResult = await this.JSOnlineService?.login(userName, password)
-
-      if (loginResult.userInfo) {
+      const result = await new Promise.race([loginResult, timeout(30)])
+      if (result === 'timeout') {
+        Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
+      } else if (loginResult.userInfo) {
         const loginUser = loginResult.userInfo
         if(loginUser.userName === this.props.user.currentUser.userId) {
           Toast.show(getLanguage().Profile.LOGIN_CURRENT)
@@ -191,19 +193,19 @@ export default class Login extends React.Component {
           roles: loginUser.roles,
         }
         let friendListResult = FriendListFileHandle.initFriendList(user)
-        // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
-        const result = await new Promise.race([friendListResult, timeout(30)])
-        if (result === 'timeout') {
-          Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
-        } else if (result) {
-          await this.props.setUser(user)
-          GLOBAL.isLogging = true
-          GLOBAL.getFriend?.().onUserLoggedin()
-          AppInfo.setServiceUrl('https://www.supermapol.com/web/')
-          NavigationService.popToTop('Tabs')
-        } else {
-          Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
-        }
+        // // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
+        // const result = await new Promise.race([friendListResult, timeout(30)])
+        // if (result === 'timeout') {
+        //   Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
+        // } else if (result) {
+        await this.props.setUser(user)
+        GLOBAL.isLogging = true
+        GLOBAL.getFriend?.().onUserLoggedin()
+        AppInfo.setServiceUrl('https://www.supermapol.com/web/')
+        NavigationService.popToTop('Tabs')
+        // } else {
+        //   Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
+        // }
       } else {
         const errorInfo = loginResult.errorInfo
         if (

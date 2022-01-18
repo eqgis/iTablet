@@ -36,6 +36,27 @@ function isLabelDatasource(datasourceAlias?: string) {
   return datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1
 }
 
+/**
+ * 获取本地标注数据源名称
+ * @param datasourceAlias
+ * @returns
+ */
+async function getLabelDatasourceName(datasourceAlias?: string) {
+  let _datasourceAlias = datasourceAlias || ''
+  const _params: any = ToolbarModule.getParams()
+  // if (_datasourceAlias && isLabelDatasource(_datasourceAlias) && await SMap.isDatasourceOpened(_datasourceAlias)) {
+  if (_datasourceAlias && isLabelDatasource(_datasourceAlias)) {
+    _datasourceAlias = `Label_${
+      _params.user.currentUser.userName
+    }#`
+  } else {
+    _datasourceAlias = _datasourceAlias || `Label_${
+      _params.user.currentUser.userName
+    }#`
+  }
+  return _datasourceAlias
+}
+
 async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
   const labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
@@ -463,17 +484,7 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
     Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
     return false
   }
-  const _params: any = ToolbarModule.getParams()
-  let _datasourceAlias
-  if (isLabelDatasource(datasourceAlias)) {
-    _datasourceAlias = `Label_${
-      _params.user.currentUser.userName
-    }#`
-  } else {
-    _datasourceAlias = datasourceAlias || `Label_${
-      _params.user.currentUser.userName
-    }#`
-  }
+  let _datasourceAlias = await getLabelDatasourceName(datasourceAlias)
   return SCoordinationUtils.getScoordiantion().downloadToLocal(datasetUrl, _datasourceAlias || '')
 }
 
@@ -583,16 +594,7 @@ async function uploadToService(layerData: {
         status: 'upload',
       },
     })
-    let datasourceAlias
-    if (isLabelDatasource(layerData.datasourceAlias)) {
-      datasourceAlias = `Label_${
-        _params.user.currentUser.userName
-      }#`
-    } else {
-      datasourceAlias = layerData.datasourceAlias || `Label_${
-        _params.user.currentUser.userName
-      }#`
-    }
+    let datasourceAlias = await getLabelDatasourceName(layerData.datasourceAlias)
     const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
     result = await SCoordinationUtils.getScoordiantion().uploadToService(layerData.url, datasourceAlias, datasetName)
   } catch (error) {
@@ -776,17 +778,8 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
             const serviceData = await SCoordinationUtils.initMapDataWithService(service.content[0].proxiedUrl)
             for (const datasource of serviceData) {
               for (const dataset of datasource.datasets) {
-                let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
-                let _datasourceAlias = _datasourceAlias
-                if (isLabelDatasource(datasourceAlias)) {
-                  _datasourceAlias = `Label_${
-                    _params.user.currentUser.userName
-                  }#`
-                } else {
-                  _datasourceAlias = datasourceAlias || `Label_${
-                    _params.user.currentUser.userName
-                  }#`
-                }
+                let _datasourceAlias = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
+                _datasourceAlias = await getLabelDatasourceName(datasourceAlias)
                 result = shareResult.succeed
                 let msgObj = {
                   type: MsgConstant.MSG_COWORK,
@@ -802,7 +795,7 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
                   },
                   message: {
                     type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
-                    datasourceAlias: datasourceAlias,
+                    datasourceAlias: _datasourceAlias,
                     datasetName: publishResults.customResult,
                     serviceUrl: dataset.datasetUrl,
                   },

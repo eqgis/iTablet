@@ -251,15 +251,17 @@ async function getData(type: string, params: any) {
                     Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
                   }
                 } else {
-                  let datasourcePath = await FileTools.appendingHomeDirectory()
-                  if (layerData?.datasourceAlias?.indexOf('Label_' + _params.user.currentUser.userName) === 0) {
-                    datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
+                  let datasourcePath
+                  if (layerData?.datasourceServer) {
+                    datasourcePath = layerData.datasourceServer
+                  } else if (layerData?.datasourceAlias?.indexOf('Label_' + _params.user.currentUser.userName) === 0) {
+                    datasourcePath = await FileTools.appendingHomeDirectory() + ConstPath.UserPath + _params.user.currentUser.userName + '/' +
                     ConstPath.RelativePath.Label +
                     'Label_' +
                     _params.user.currentUser.userName +
                     '#.udb'
                   } else {
-                    datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
+                    datasourcePath = await FileTools.appendingHomeDirectory() + ConstPath.UserPath + _params.user.currentUser.userName + '/' +
                     ConstPath.RelativePath.Datasource +
                     layerData.datasourceAlias + '.udb'
                   }

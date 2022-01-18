@@ -1535,13 +1535,14 @@ export default class MapView extends React.Component {
 
         let result = true
         //使用for循环等待，在forEach里await没有用
-        for (let i = 0; i < this.props.selection.length; i++) {
-          let item = this.props.selection[i]
+        for (let item of this.props.selection) {
           if (item.ids.length > 0) {
             if (GLOBAL.coworkMode && item.ids.length > 0) {
               let currentTaskInfo = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]
               let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
-              isRealTime && GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
+
+              let layerType = LayerUtils.getLayerType(item.layerInfo)
+              isRealTime && layerType !== 'TAGGINGLAYER' && GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
             }
             result =
               result &&

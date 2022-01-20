@@ -19,15 +19,14 @@ class MyDataset extends MyDataPage {
     super(props)
     this.type = this.types.dataset
     const { params } = this.props.navigation.state
+    this.datasourceName = params.data.name && params.data.name.substr(0, params.data.name.lastIndexOf('.')) // 加入到工作空间时,数据源的名称,防止同名不同文件的数据源
     this.state = {
       ...this.state,
       shareToLocal: true,
       shareToOnline: false,
       shareToIPortal: false,
       shareToWechat: false,
-      title:
-        params.data.name &&
-        params.data.name.substr(0, params.data.name.lastIndexOf('.')),
+      title: this.datasourceName, // 数据源文件名称,不一定是数据源的名称
       data: params.data,
     }
     this.from = params.from
@@ -52,7 +51,8 @@ class MyDataset extends MyDataPage {
 
   componentWillUnmount() {
     if (!this.isAlreadyOpen) {
-      SMap.closeDatasource(this.state.title)
+      // SMap.closeDatasource(this.datasourceName)
+      this.from === 'MapView' ? SMap.closeTempDatasource() :  SMap.closeDatasource(this.datasourceName)
     }
     this.container && this.container.setLoading(false)
   }
@@ -60,32 +60,42 @@ class MyDataset extends MyDataPage {
   _openDatasource = async () => {
     try {
       let datasources = await SMap.getDatasources()
+      let homePath = await FileTools.appendingHomeDirectory()
       this.isAlreadyOpen = false
       if (datasources.length !== 0) {
         for (let i = 0; i < datasources.length; i++) {
-          if (datasources[i].alias === this.state.title) {
+          if (
+            datasources[i].server === (homePath + this.state.data.path)
+          ) {
+            this.datasourceName = datasources[i].alias
             this.isAlreadyOpen = true
             break
           }
         }
       }
       if (!this.isAlreadyOpen) {
-        let homePath = await FileTools.appendingHomeDirectory()
         let datasourceParams = {}
         datasourceParams.server = homePath + this.state.data.path
         datasourceParams.engineType = EngineType.UDB
         datasourceParams.alias = this.state.title
-        await SMap.openDatasource2(datasourceParams)
+        await SMap.openDatasource2(datasourceParams, this.from === 'MapView')
       }
+      // let datasourceParams = {}
+      // datasourceParams.server = homePath + this.state.data.path
+      // datasourceParams.engineType = EngineType.UDB
+      // datasourceParams.alias = this.state.title
+      // await SMap.openTempDatasource(datasourceParams)
     } catch (error) {
       Toast.show(getLanguage(GLOBAL.language).Profile.OPEN_DATASROUCE_FAILED)
     }
   }
 
   getData = async () => {
+    let userTempWorkspace = !this.isAlreadyOpen && this.from === 'MapView'
     let dataset = await SMap.getDatasetsByDatasource({
-      alias: this.state.title,
-    })
+      alias: userTempWorkspace ? this.datasourceName : this.state.title,
+      server: await FileTools.appendingHomeDirectory(this.state.data.path),
+    }, false, {}, userTempWorkspace)
     let data = dataset.list
 
     let sectionData = []
@@ -101,7 +111,7 @@ class MyDataset extends MyDataPage {
     try {
       if (!this.itemInfo) return false
       let datasetName = this.itemInfo.item.datasetName
-      let result = await SMap.deleteDataset(this.state.title, datasetName)
+      let result  = await SMap.deleteDataset(this.datasourceName, datasetName, !this.isAlreadyOpen && this.from === 'MapView')
       return result
     } catch (e) {
       return false
@@ -166,9 +176,10 @@ class MyDataset extends MyDataPage {
         //设置数据集投影
         let datasetName = this.itemInfo.item.datasetName
         result = await SProcess.setPrjCoordSys(
-          this.state.title,
+          this.datasourceName,
           datasetName,
           targetCoords.value+"",
+          !this.isAlreadyOpen && this.from === 'MapView',
         )
         GLOBAL.Loading.setLoading(false)
         if (result) {
@@ -188,7 +199,7 @@ class MyDataset extends MyDataPage {
           getLanguage(GLOBAL.language).Profile.BUILDING,
         )
         let datasetName = this.itemInfo.item.datasetName
-        let result = await SMap.buildPyramid(this.state.title, datasetName)
+        let result = await SMap.buildPyramid(this.datasourceName, datasetName)
         GLOBAL.Loading.setLoading(false)
         Toast.show(
           result
@@ -214,7 +225,7 @@ class MyDataset extends MyDataPage {
           getLanguage(GLOBAL.language).Profile.BUILDING,
         )
         let datasetName = this.itemInfo.item.datasetName
-        let result = await SMap.updataStatistics(this.state.title, datasetName)
+        let result = await SMap.updataStatistics(this.datasourceName, datasetName)
         GLOBAL.Loading.setLoading(false)
         Toast.show(
           result
@@ -288,7 +299,8 @@ class MyDataset extends MyDataPage {
       action: () => {
         this._closeModal()
         NavigationService.navigate('NewDataset', {
-          title: this.state.title,
+          title: this.datasourceName,
+          userTempWorkspace: !this.isAlreadyOpen && this.from === 'MapView',
           getDatasets: () => this.state.sectionData[0].data,
           refreshCallback: async () => {
             await this._getSectionData()

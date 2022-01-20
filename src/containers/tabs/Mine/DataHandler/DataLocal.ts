@@ -397,7 +397,7 @@ async function createDefaultDatasource(
         })
         //未打开则在此打开
         if(opends.length === 0) {
-          result = await SMap.openDatasource({
+          result = !!await SMap.openDatasource({
             alias: datasourceName,
             server: server,
             engineType: EngineType.UDB,

@@ -151,15 +151,17 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   },
   updateHandler: async res => {
     try {
-      let msg = res.result ? getLanguage(GLOBAL.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED
-      if (res?.error?.reason) {
-        msg = res?.error?.reason
-      }
+      // let msg = res.result ? getLanguage(GLOBAL.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED
+      // if (res?.error?.reason) {
+      //   msg = res?.error?.reason
+      // }
       // Toast.show(res?.content?.dataset + msg)
       const params: any = ToolbarModule.getParams()
       if (res.result && res.content?.dataset) {
+        let _layer
         for (let layer of params.layers.layers) {
           if (layer.datasetName === res.content.dataset) {
+            _layer = layer
             await SMediaCollector.hideMedia(layer.name)
             await SMediaCollector.showMedia(layer.name, false)
             break
@@ -176,6 +178,20 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
         })
         if (!res.content) return
         let _datasetUrl = res.content.urlDataset
+
+        if (_layer) {
+          const dsDescription = LayerUtils.getDatasetDescriptionByLayer(_layer)
+          // 若更新的图层不含服务数据,则添加为服务图层
+          if (dsDescription === null || dsDescription?.type !== 'onlineService') {
+            const serviceData = {
+              url: _datasetUrl,
+              datasourceAlias: _layer.datasourceAlias,
+              dataset: _layer.datasetName,
+            }
+            const setResult = await SCoordinationUtils.getScoordiantion().setDataService(_layer.datasourceAlias, _layer.datasetName, serviceData)
+          }
+        }
+
         const coworkMessages = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask?.groupID]?.[params.currentTask?.id]?.messages || []
         if (coworkMessages.length > 0) {
           for (const message of coworkMessages) {
@@ -433,8 +449,8 @@ async function downloadService(url: string) {
 
     _params.setToolbarVisible(false)
     _params.showFullMap && _params.showFullMap(false)
-    let result = false
-    const serviceData = await SCoordinationUtils.initMapDataWithService(url)
+      let result = false
+      const serviceData = await SCoordinationUtils.initMapDataWithService(url)
     let services = []
     for (const datasource of serviceData) {
       for (const dataset of datasource.datasets) {

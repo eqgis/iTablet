@@ -59,7 +59,17 @@ async function getLabelDatasourceName(datasourceAlias?: string) {
 
 async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
-  const labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
+  let labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
+  if (labelUDB) {
+    const datasourceInfo = await SMap.getDatasourceByAlias(labelUDB)
+    if (datasourceInfo?.server) {
+      labelUDB = datasourceInfo.server.substring(datasourceInfo.server.lastIndexOf('/') + 1, datasourceInfo.server.lastIndexOf('.'))
+    }
+  } else if (!labelUDB || !await SMap.isDatasourceOpened(labelUDB)) {
+    labelUDB = `Label_${
+      _params.user.currentUser.userName
+    }#`
+  }
   const resultArr = await SMap.addLayers([datasetName], labelUDB)
   if (resultArr.length > 0) {
     SMap.refreshMap()
@@ -95,9 +105,12 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           break
         }
       }
-      !isAdded &&
-      isLabelDatasource(res.content?.datasource) && // 只有标注数据集能直接添加图层
-      await addServiceLayer(datasetName, res.content?.datasource)
+
+      if (isAdded) {
+        SCoordinationUtils.getScoordiantion().updateToLocal(_datasetUrl.replace('.json', '').replace('.rjson', ''), res.content.datasource, datasetName)
+      } else if (isLabelDatasource(res.content?.datasource)) { // 只有标注数据集能直接添加图层
+        await addServiceLayer(datasetName, res.content?.datasource)
+      }
 
       res.content && params.setCoworkService({
         groupId: params.currentTask.groupID,

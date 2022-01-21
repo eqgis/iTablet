@@ -223,6 +223,7 @@ const Prompt = {
   SHARE_PREPARE: "准备分享",
   SHARE_START: "开始分享",
   SHARE_WX_FILE_SIZE_LIMITE: "文件大小不超过10M",
+  SHARE_NOT_COMPLRTE: "分享尚未完成",
 
   EXPORTING: "导出中",
   EXPORT_SUCCESS: "导出成功",

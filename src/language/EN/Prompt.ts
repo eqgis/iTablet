@@ -225,6 +225,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_PREPARE: "Preparing for sharing",
   SHARE_START: "Start sharing",
   SHARE_WX_FILE_SIZE_LIMITE: "File size cannot exceeds 10M",
+  SHARE_NOT_COMPLRTE: "Sharing is not completed",
 
   EXPORTING: "Exporting",
   EXPORT_SUCCESS: "Exported",

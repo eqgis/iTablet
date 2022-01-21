@@ -112,14 +112,21 @@ export default class CoworkManagePage extends React.Component<Props, State> {
                   let timeStr = new Date().getTime()
                   let id = `Group_Task_${this.props.currentGroup.id}_${timeStr}`
 
-                  let _members = [{
-                    name: this.props.user.currentUser.nickname || '',
-                    id: this.props.user.currentUser.userName || '',
-                  }]
+                  let _members = []
+                  let hasMine = false
                   for (const member of members) {
+                    if (this.props.user.currentUser.userName === member.userName) {
+                      hasMine = true
+                    }
                     _members.push({
                       name: member.nickname,
                       id: member.userName,
+                    })
+                  }
+                  if (!hasMine) {
+                    _members.unshift({
+                      name: this.props.user.currentUser.nickname || '',
+                      id: this.props.user.currentUser.userName || '',
                     })
                   }
 

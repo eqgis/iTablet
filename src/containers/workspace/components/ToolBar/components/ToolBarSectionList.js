@@ -350,7 +350,7 @@ export default class ToolBarSectionList extends React.Component {
             <Image
               source={section.image}
               resizeMode={'contain'}
-              style={[styles.section_dataset_type, section.allSelectType && {marginLeft: scaleSize(10)}]}
+              style={[styles.section_dataset_type, section.allSelectType && {marginLeft: scaleSize(6)}]}
             />
           )}
           <Text
@@ -359,7 +359,7 @@ export default class ToolBarSectionList extends React.Component {
             style={[styles.sectionTitle, this.props.sectionTitleStyle,
               isLandscape && (section.expressionType || section.buttons || section.extraData) &&{
                 maxWidth: scaleSize(120),
-              }]}
+              },{marginLeft:scaleSize(16)}]}
           >
             {section.title}
           </Text>

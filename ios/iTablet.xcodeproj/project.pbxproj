@@ -140,6 +140,8 @@
 		DDAFB8CE1D4748E3B330DDE2 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 244D0910A95D47C8B23823F1 /* libRNGestureHandler.a */; };
 		E0509A2D700743D5B7DAB506 /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F600F658FE4C4D69AEB76059 /* libRNBackgroundTimer.a */; };
 		E1C8733E9EBD46178B730F5A /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A72D654CE12343FAABD50105 /* libRCTBEEPickerManager.a */; };
+		E5DE629E277B063300B3489F /* GLTFSceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DE6263277B063200B3489F /* GLTFSceneKit.framework */; };
+		E5DE629F277B0BB500B3489F /* GLTFSceneKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E5DE6263277B063200B3489F /* GLTFSceneKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDCFE5F05909482399867063 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CD931E62D24C278BC22FC9 /* libresolv.tbd */; };
 		FBB79BB5658E4D198E348DAE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 204FAC9BD5F245C193CA49A0 /* libz.tbd */; };
 /* End PBXBuildFile section */
@@ -609,6 +611,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				E5DE629F277B0BB500B3489F /* GLTFSceneKit.framework in Embed Frameworks */,
 				668A3F6E262BDDC000BAE2FF /* CocoaAsyncSocket.framework in Embed Frameworks */,
 				668A3F6B262BDDB500BAE2FF /* RMQClient.framework in Embed Frameworks */,
 				0A8F7C8721D1BA320003595E /* ZipArchive.framework in Embed Frameworks */,
@@ -781,6 +784,7 @@
 		CD6BEDE0251A4FD9A83E2659 /* RCTBEEPickerManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTBEEPickerManager.xcodeproj; path = "../node_modules/react-native-picker/ios/RCTBEEPickerManager.xcodeproj"; sourceTree = "<group>"; };
 		CFDD1D39251B42E7AF986C53 /* RNCookieManagerIOS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCookieManagerIOS.xcodeproj; path = "../node_modules/react-native-cookies/ios/RNCookieManagerIOS.xcodeproj"; sourceTree = "<group>"; };
 		D6CD931E62D24C278BC22FC9 /* libresolv.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		E5DE6263277B063200B3489F /* GLTFSceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLTFSceneKit.framework; path = iPhoneOS.sdk/GLTFSceneKit.framework; sourceTree = "<group>"; };
 		F600F658FE4C4D69AEB76059 /* libRNBackgroundTimer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundTimer.a; sourceTree = "<group>"; };
 		FBFE6EA32B214FC98F0375EB /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -794,6 +798,7 @@
 				2A5299AD2386A1AB0071AD06 /* Accelerate.framework in Frameworks */,
 				6112EBED23151716005F89FC /* libbz2.tbd in Frameworks */,
 				6112EBEA231516FA005F89FC /* libsqlite3.tbd in Frameworks */,
+				E5DE629E277B063300B3489F /* GLTFSceneKit.framework in Frameworks */,
 				6112EBEB231516FA005F89FC /* libsqlite3.0.tbd in Frameworks */,
 				2AAEE1D0230E696800902D1D /* libxml2.tbd in Frameworks */,
 				668A3F6A262BDDB500BAE2FF /* RMQClient.framework in Frameworks */,
@@ -1244,6 +1249,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E5DE6263277B063200B3489F /* GLTFSceneKit.framework */,
 				0A13B49C22A66F37005E4AEC /* RSKImageCropper.framework */,
 				668A3F5D262BDCC100BAE2FF /* CocoaAsyncSocket.framework */,
 				668A3F5E262BDCC100BAE2FF /* JKVValue.framework */,

@@ -225,7 +225,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_PREPARE: "Paylaşım için Hazırlanıyor",
   SHARE_START: "Paylaşmaya Başla",
   SHARE_WX_FILE_SIZE_LIMITE: "Dosya boyutu 10M'den fazla geçemez",
-  SHARE_NOT_COMPLRTE: "Sharing is not completed",  // 待翻译
+  SHARE_NOT_COMPLRTE: "Sharing is not completed",  // To be translated
 
   EXPORTING: "Dışarı Aktarılıyor",
   EXPORT_SUCCESS: "Başarıyla Dışarı Aktarıldı",

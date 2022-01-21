@@ -3281,13 +3281,13 @@ export default class MapView extends React.Component {
                       GLOBAL.Type === this.props.online.share[0].module &&
                       this.props.online.share[0].progress !== undefined &&
                       this.isShareCanClick){
-                        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_NOT_COMPLRTE, {duration:1000, position:145})
+                        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_NOT_COMPLRTE, {duration:1500, position:145})
                         // 当提示还存在时，分享按钮点击不给反应
                         this.isShareCanClick = false
                         const timer = setTimeout(() => {
                           this.isShareCanClick = true
                           clearTimeout(timer)
-                        }, 1000)
+                        }, 1500)
                       }
                     info.action()
                   }}

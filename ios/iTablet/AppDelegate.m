@@ -207,7 +207,7 @@ static NSString* g_sampleCodeName = @"#";;
   } else {
     #if DEBUG
 //    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.2.17"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.187.250"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

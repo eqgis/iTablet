@@ -412,6 +412,9 @@ export default class MapView extends React.Component {
 
     //AR测量进入地图默认没有定位
     GLOBAL.haslocation = false
+
+    // 分享按钮是否可点击标识，true为可点击
+    this.isShareCanClick = true
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -3271,7 +3274,24 @@ export default class MapView extends React.Component {
                   }]}
                   imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
                   image={info.image}
-                  onPress={info.action}
+                  // onPress={info.action}
+                  onPress={() => {
+                    // 正在分享中时，点击分享按钮就给一个提示
+                    if(buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
+                      GLOBAL.Type === this.props.online.share[0].module &&
+                      this.props.online.share[0].progress !== undefined &&
+                      this.isShareCanClick){
+                        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_NOT_COMPLRTE, {duration:1000, position:145})
+                        // 当提示还存在时，分享按钮点击不给反应
+                        this.isShareCanClick = false
+                        const timer = setTimeout(() => {
+                          this.isShareCanClick = true
+                          clearTimeout(timer)
+                        }, 1000)
+                      }
+                    info.action()
+                  }}
+
                 />
                 {
                   info.newInfo &&

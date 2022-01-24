@@ -1655,6 +1655,25 @@ export default class MapView extends React.Component {
         }
       }
 
+      // 若服务正在更新,则无法关闭地图
+      if (
+        GLOBAL.coworkMode && this.props.currentTask?.groupID &&
+        this.props.currentTaskServices?.[this.props.user.currentUser.userName]?.[this.props.currentTask?.groupID]?.[this.props.currentTask?.id]?.length > 0
+      ) {
+        let currentServices = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
+        let serviceDone = true
+        for (const services of currentServices) {
+          if (services.status !== 'done') {
+            serviceDone = false
+            break
+          }
+        }
+        if (!serviceDone) {
+          Toast.show(getLanguage(this.props.language).Cowork.CLOSE_MAP_BEFORE_UPDATE_SERVICE)
+          return true
+        }
+      }
+
       let result = await SMap.mapIsModified() // 是否保存普通地图
       const needSaveARMap = GLOBAL.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
       if ((result || needSaveARMap) && !this.isExample) {

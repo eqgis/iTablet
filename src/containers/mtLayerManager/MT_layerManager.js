@@ -740,6 +740,9 @@ export default class MT_layerManager extends React.Component {
     // 类型图标角标
     let cornerMarkImage = null
     try {
+      if (GLOBAL.coworkMode && !LayerUtils.availableServiceLayer(item.type)) {
+        return cornerMarkImage
+      }
       if (
         GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
         this.props.cowork.services?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.length > 0

@@ -309,7 +309,7 @@ export default class CoworkInfo {
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE) {
         let url = message.message.serviceUrl
-        result = await serviceModule().actions.updateToLocal({ url })
+        result = await serviceModule().actions.updateToLocal({ url, datasourceAlias: message.message.datasourceAlias })
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
         let url = message.message.serviceUrl

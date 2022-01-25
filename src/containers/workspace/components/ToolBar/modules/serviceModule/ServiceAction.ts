@@ -44,8 +44,9 @@ function isLabelDatasource(datasourceAlias?: string) {
 async function getLabelDatasourceName(datasourceAlias?: string) {
   let _datasourceAlias = datasourceAlias || ''
   const _params: any = ToolbarModule.getParams()
-  // if (_datasourceAlias && isLabelDatasource(_datasourceAlias) && await SMap.isDatasourceOpened(_datasourceAlias)) {
-  if (_datasourceAlias && isLabelDatasource(_datasourceAlias)) {
+  if (_datasourceAlias && isLabelDatasource(_datasourceAlias) && await SMap.isDatasourceOpened(_datasourceAlias)) {
+
+  } else if (_datasourceAlias && isLabelDatasource(_datasourceAlias)) {
     _datasourceAlias = `Label_${
       _params.user.currentUser.userName
     }#`
@@ -73,8 +74,14 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
   const resultArr = await SMap.addLayers([datasetName], labelUDB)
   if (resultArr.length > 0) {
     SMap.refreshMap()
-    await _params.getLayers()
+    const layers = await _params.getLayers()
     SMediaCollector.showMedia(resultArr[0].layerName, false)
+    for (const layer of layers) {
+      if (layer.name === resultArr[0].layerName) {
+        await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
+        break
+      }
+    }
     // Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
     _params.setToolbarVisible(false)
   } else {
@@ -280,6 +287,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           message: {
             type: MsgConstant.MSG_COWORK_SERVICE_UPDATE,
             datasetName: res.content.dataset,
+            datasourceAlias: res.content.datasource,
             serviceUrl: res.content.urlDataset,
           },
         }
@@ -466,9 +474,17 @@ async function downloadService(url: string) {
       const serviceData = await SCoordinationUtils.initMapDataWithService(url)
     let services = []
     for (const datasource of serviceData) {
+      let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
+      const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
-        let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
-        services.push({
+        let canAdd = false
+        for (const _dataset of _datasets.list) {
+          if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
+            canAdd = true
+            break
+          }
+        }
+        canAdd && services.push({
           datasetUrl: dataset.datasetUrl,
           status: 'download',
         })
@@ -542,7 +558,9 @@ async function updateToLocal (layerData: {
       },
     })
     let datasourceAlias
-    if (isLabelDatasource(layerData?.datasourceAlias)) {
+    if (layerData?.datasourceAlias && await SMap.isDatasourceOpened(layerData?.datasourceAlias)) {
+      datasourceAlias = layerData.datasourceAlias
+    } else if (isLabelDatasource(layerData?.datasourceAlias)) {
       datasourceAlias = `Label_${
         _params.user.currentUser.userName
       }#`

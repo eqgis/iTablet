@@ -536,6 +536,19 @@ export default class Friend extends Component {
                 }),
                 this.props.user.currentUser.userName,
               )
+              // TODO 防止ios顶号失败
+              // 定时器,延迟执行关闭链接操作
+              // 等待被顶号的一端接收到消息,并登出后,顶号的一端再创建Connection
+              const _time = async function() {
+                return new Promise(function(resolve, reject) {
+                  let timer = setTimeout(function() {
+                    resolve('waitting send close message')
+                    timer && clearTimeout(timer)
+                  }, 1000)
+                })
+              }
+              await _time()
+
               await SMessageServiceHTTP.closeConnection(connection)
             }
             GLOBAL.isLogging = false

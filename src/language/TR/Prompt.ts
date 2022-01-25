@@ -241,6 +241,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "Başarıyla ayarlandı",
   SETTING_FAILED: "Ayarlama başarısız",
   NETWORK_ERROR: "Ağ Hatası",
+  NETWORK_RECONNECT: "Reconnection network", // need to translate
   NO_NETWORK: "İnternet bağlantısı yok",
   CHOOSE_CLASSIFY_MODEL: "Sınıflandırma Modeli Seç",
   USED_IMMEDIATELY: "Hemen Kullanıldı",

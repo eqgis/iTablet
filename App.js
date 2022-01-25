@@ -287,17 +287,21 @@ class AppRoot extends Component {
   }
 
   handleNetworkState = async state => {
-    // TODO 网络状态发生变化,wifi切换为移动网络,判断内网服务是否可用,若不可用,退出登录
-    if(UserType.isIPortalUser(this.props.user.currentUser)) {
-      const userInfo = await OnlineServicesUtils.getService()?.getUserInfo()
-      if (userInfo === false) {
-        // 无法连接内网, 退出登录
-        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+    // TODO 网络状态发生变化,wifi切换为移动网络,判断内网服务是否可用
+    if(UserType.isIPortalUser(this.props.user.currentUser) || UserType.isOnlineUser(this.props.user.currentUser)) {
+      const isConnected = await OnlineServicesUtils.getService()?.checkConnection()
+      if (isConnected) {
+        Toast.show(getLanguage().Prompt.NETWORK_RECONNECT)
+        GLOBAL.getFriend()?.restartService()
         return
+      } else {
+        // 无法连接内网, 退出登录
+        // GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        Toast.show(getLanguage().Prompt.NETWORK_ERROR)
       }
-    }
-    if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
-      GLOBAL.getFriend()?.restartService()
+    } else if (state.type === 'none' || state.type === 'unknown') {
+      Toast.show(getLanguage().Prompt.NETWORK_ERROR)
+      return
     }
   }
 

@@ -241,6 +241,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "تم التعيين بنجاح",
   SETTING_FAILED: "فشل التعيين",
   NETWORK_ERROR: "خطأ فى الشبكة",
+  NETWORK_RECONNECT: "Reconnection network", // need to translate
   NO_NETWORK: "لايوجد اتصال بالانترنت",
   CHOOSE_CLASSIFY_MODEL: "اختر تصنيف النموذج",
   USED_IMMEDIATELY: "تستخدم على الفور",

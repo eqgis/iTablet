@@ -241,6 +241,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "Set successfully",
   SETTING_FAILED: "Failed to set",
   NETWORK_ERROR: "Network error",
+  NETWORK_RECONNECT: "Reconnection network", // need to translate
   NO_NETWORK: "No Internet connection",
   CHOOSE_CLASSIFY_MODEL: "Choose Classification Model",
   USED_IMMEDIATELY: "Use it now",

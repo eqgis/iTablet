@@ -241,6 +241,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "設定に成功",
   SETTING_FAILED: "設定に失敗",
   NETWORK_ERROR: "ネットワークエラー",
+  NETWORK_RECONNECT: "Reconnection network", // need to translate
   NO_NETWORK: "ネットワークに接続しません",
   CHOOSE_CLASSIFY_MODEL: "モデルタイプを選択してください",
   USED_IMMEDIATELY: "すぐに使用",

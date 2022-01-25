@@ -579,9 +579,8 @@ export default class Friend extends Component {
       } catch (error) {
 
         // Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
-        // this.disconnectService()
-        console.warn('重连消息服务')
-        this.connectService()
+        this.disconnectService()
+        // this.connectService()
       }
     }
   }

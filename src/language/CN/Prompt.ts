@@ -239,6 +239,7 @@ const Prompt = {
   SETTING_SUCCESS: "设置成功",
   SETTING_FAILED: "设置失败",
   NETWORK_ERROR: "网络错误",
+  NETWORK_RECONNECT: "重新连接",
   NO_NETWORK: "未连接到网络",
   CHOOSE_CLASSIFY_MODEL: "选择分类模型",
   USED_IMMEDIATELY: "立即使用",

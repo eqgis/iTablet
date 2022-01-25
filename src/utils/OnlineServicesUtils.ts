@@ -219,6 +219,34 @@ export default class OnlineServicesUtils {
   }
 
   /**
+   * 检测连接是否正常
+   * @returns
+   */
+  async checkConnection() {
+    let url = this.serverUrl + '/login.rjson'
+    if (this.serverUrl.indexOf('http') !== 0) {
+      url = 'http://' + url
+    }
+    let status = undefined
+    try {
+      let response: any = await Promise.race([
+        fetch(url),
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject(new Error('request timeout'))
+          }, 10000)
+        }),
+      ])
+      console.warn('checkConnection', JSON.stringify(response))
+      status = response.status
+    } catch (error) {
+      // console.log(error)
+    }
+    // iportal: 405, online: 200
+    return status === 405 || status === 200
+  }
+
+  /**
    * @param getIOSCookie ios使用 fetch 接口时需设置为 false
    */
   getCookie = async (getIOSCookie = false): Promise<string|undefined> => {

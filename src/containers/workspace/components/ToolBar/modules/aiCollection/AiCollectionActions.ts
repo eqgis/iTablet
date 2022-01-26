@@ -1,10 +1,12 @@
 /*global GLOBAL*/
-import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
+import { Platform } from "react-native"
+import { SMap, SARMap, SMediaCollector, RNFS } from 'imobile_for_reactnative'
 import NavigationService from '../../../../../NavigationService'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { LayerUtils } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 import { FileTools } from '../../../../../../native'
+import { ILocalData } from '../../../../../tabs/Mine/DataHandler/DataLocal'
 
 async function getTaggingLayerData() {
   const _params: any = ToolbarModule.getParams()
@@ -171,6 +173,92 @@ async function close() {
   GLOBAL.ToolBar.close()
 }
 
+/**
+ * 设置ai模块要使用的模型文件
+ * @param model 本地模型文件信息
+ * @param type 识别或是分类模型
+ * @param language 当前语言
+ */
+export async function setAIModel(model: ILocalData, type: 'detect' | 'classify', language: string) {
+  if(model.aiModelInfo) {
+    const homePath = await FileTools.getHomeDirectory()
+    const modelPath = homePath + model.path + '/' + model.aiModelInfo.modelName
+
+    //获取对应语言文件
+    const labelDefault = model.aiModelInfo.labels.filter(item => (
+      item.indexOf('_cn.txt') === -1
+      && item.indexOf('_jp.txt') === -1
+    ))
+    let labelPath: string
+    if(labelDefault.length > 0) {
+      labelPath = homePath + model.path + '/' + labelDefault[0]
+    } else {
+      labelPath = homePath + model.path + '/' + model.aiModelInfo.labels[0]
+    }
+
+    if(language === 'CN') {
+      const name = model.aiModelInfo.labels.find(item => item.toLowerCase().indexOf('_cn.txt') > -1)
+      name && (labelPath = homePath + model.path + '/' + name)
+    } else if(language === 'JP') {
+      const name = model.aiModelInfo.labels.find(item => item.toLowerCase().indexOf('_jp.txt') > -1)
+      name && (labelPath = homePath + model.path + '/' + name)
+    }
+
+    //读取额外配置信息
+    let param
+    try {
+      if(Platform.OS === 'android' && model.aiModelInfo.paramJsonName) {
+        const paramPath =  homePath + model.path + '/' + model.aiModelInfo.paramJsonName
+        const file = await RNFS.readFile(paramPath)
+        param = JSON.parse(file)
+      }
+    } catch(e) {
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn(e)
+    }
+
+    if(type === 'detect') {
+      await SARMap.setAIDetectModel({
+        modelPath: modelPath,
+        labelPath: labelPath,
+        param: param,
+      })
+    } else if(type === 'classify') {
+      await SARMap.setAIClassifyModel({
+        modelPath: modelPath,
+        labelPath: labelPath,
+        param: param,
+      })
+    }
+  }
+}
+
+/** 设置redux中保存的模型 */
+export async function setSelectedModel(language: string) {
+  const _params: any = ToolbarModule.getParams()
+  const detectModel = _params.aiDetectData
+  const classifyModel = _params.aiClassifyData
+  const homePath = await FileTools.getHomeDirectory()
+  //模型不存在则使用默认模型
+  if(detectModel && await FileTools.fileIsExist(
+    homePath + detectModel.path + '/' + detectModel.aiModelInfo?.modelName))
+  {
+    setAIModel(detectModel, 'detect', language)
+  } else {
+    SARMap.setAIDetectDefaultModel(language)
+    _params?.setAIDetectModel(undefined)
+  }
+  //模型不存在则使用默认模型
+  if(classifyModel && await FileTools.fileIsExist(
+    homePath + classifyModel.path + '/' + classifyModel.aiModelInfo?.modelName))
+  {
+    setAIModel(classifyModel, 'classify', language)
+  } else {
+    SARMap.setAIClassifyDefaultModel(language)
+    _params?.setAIClassifyModel(undefined)
+  }
+}
+
 export default {
   close,
 
@@ -179,4 +267,5 @@ export default {
   setting,
   goToPreview,
   goToMediaEdit,
+  setSelectedModel,
 }

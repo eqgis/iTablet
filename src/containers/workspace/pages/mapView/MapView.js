@@ -257,6 +257,10 @@ export default class MapView extends React.Component {
     showSampleData: PropTypes.bool,
     setSampleDataShow: PropTypes.func,
     isShowCompass: PropTypes.bool,
+    aiDetectData: PropTypes.object,
+    aiClassifyData: PropTypes.object,
+    setAIClassifyModel: PropTypes.func,
+    setAIDetectModel: PropTypes.func,
   }
 
   /** 是否导航中 */

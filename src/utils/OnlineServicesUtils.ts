@@ -237,7 +237,6 @@ export default class OnlineServicesUtils {
           }, 10000)
         }),
       ])
-      console.warn('checkConnection', JSON.stringify(response))
       status = response.status
     } catch (error) {
       // console.log(error)

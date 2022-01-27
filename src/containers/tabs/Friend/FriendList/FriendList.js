@@ -85,7 +85,7 @@ class FriendList extends Component {
             frend['markName'] = result[key].markName
             frend['name'] = result[key].name
             frend['info'] = result[key].info
-            if (frend['info'].isFriend !== 2) {
+            if (frend['info'].isFriend !== 2 && this.props.user.userName !== result[key].name) {
               srcFriendData.push(frend)
             }
           }

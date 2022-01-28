@@ -15,6 +15,7 @@ export const GET_MAPS = 'GET_MAPS'
 export const SET_LATEST_MAP = 'SET_LATEST_MAP'
 export const SET_CURRENT_MAP = 'SET_CURRENT_MAP'
 export const SET_BASEMAP = 'SET_BASEMAP'
+export const SET_CUR_BASEMAP_ITEM = 'SET_CUR_BASEMAP_ITEM'  // 设置当前使用的底图对象
 let isExporting = false
 
 // Actions
@@ -444,6 +445,43 @@ export const setBaseMap = (params, cb = () => { }) => async dispatch => {
   cb && cb()
 }
 
+// 设置当前底图的对象
+export const setBaseMapItem = (params = { }, cb = () => { }) => async (
+  dispatch,
+  getState,
+) => {
+  let payload = params.baseMapItem || initialState.baseMapItem
+  await dispatch({
+    type: SET_CUR_BASEMAP_ITEM,
+    payload,
+  })
+  cb && cb()
+}
+
+
+const initBaseMap = {
+  datasourceServer: "http://cn.bing.com/ditu",
+  datasourceAlias: "bingMap",
+  datasetDescription: "",
+  isModified: true,
+  isHeatmap: false,
+  path: "roadmap_cn@bingMap",
+  datasetName: "roadmap_cn",
+  name: "roadmap_cn@bingMap",
+  isSelectable: false,
+  type: 81,
+  layerGroupId: "",
+  description: "",
+  caption: "roadmap_cn@bingMap",
+  groupName: "",
+  isEditable: false,
+  themeType: 0,
+  isVisible: true,
+  isSnapable: true,
+  index: 0,
+  layerCount: 1,
+}
+
 const initialState = fromJS({
   latestMap: {},
   map: {},
@@ -460,6 +498,7 @@ const initialState = fromJS({
       ConstOnline.tianditu(),
     ],
   },
+  baseMapItem: initBaseMap,
 })
 
 export default handleActions(
@@ -550,6 +589,18 @@ export default handleActions(
           data.baseMaps = initialState.toJS().baseMaps
         }
         return fromJS(data)
+      }
+      return state
+    },
+    [`${SET_CUR_BASEMAP_ITEM}`]: (state = initialState, { payload }) => {
+      // let payload = action.payload
+      // payload 是从action里解构出来的，是改变后的数据
+      if(payload) {
+        console.log("SET_CUR_BASEMAP_ITEM: " + payload)
+        let newState = JSON.parse(JSON.stringify(state))
+        newState.baseMapItem = payload
+        // return newState
+        return state.setIn(['baseMapItem'], fromJS(payload))
       }
       return state
     },

@@ -43,7 +43,8 @@ const icon_tool_download = require('./icon_tool_download.png')
 const icon_tool_switch = require('./icon_tool_switch.png')
 
 const compass = require('./navi_over_data_yaw_icon.png')
-const icon_layer = require('./icon_layer.png')
+// 工具栏里底图的图标引入
+const icon_layer = require('./icon_my_Basemap.png')
 
 const icon_img_close = require('./icon_img_close.png')
 const img_add_upload = require('./img_add_upload.png')

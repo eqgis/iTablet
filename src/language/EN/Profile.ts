@@ -124,7 +124,7 @@ const Profile: typeof CN.Profile = {
   MY_SERVICE: "Service",
   PRIVATE_SERVICE: "Private Service",
   PUBLIC_SERVICE: "Public Service",
-  NO_MAP_SERVICE:"The service does not have a map to display",// need to translate
+  NO_MAP_SERVICE:"There are no available maps in the service",
 
   INVALID_SERVER_ADDRESS: "Invalid Server Address",
 
@@ -429,7 +429,7 @@ const Profile: typeof CN.Profile = {
   ONLINE_DATA_UNAVAILABLE: "Unable to access online resources",
   ONLINE: "Online",
 
-  CLOUD_CAPACITY_NOT_ENOUGH: "No enough capacity on cloud storage",  //to be translated
+  CLOUD_CAPACITY_NOT_ENOUGH: "There is not enough space on cloud",
 }
 
 export { Profile }

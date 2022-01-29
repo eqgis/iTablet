@@ -593,13 +593,7 @@ export default handleActions(
       return state
     },
     [`${SET_CUR_BASEMAP_ITEM}`]: (state = initialState, { payload }) => {
-      // let payload = action.payload
-      // payload 是从action里解构出来的，是改变后的数据
       if(payload) {
-        console.log("SET_CUR_BASEMAP_ITEM: " + payload)
-        let newState = JSON.parse(JSON.stringify(state))
-        newState.baseMapItem = payload
-        // return newState
         return state.setIn(['baseMapItem'], fromJS(payload))
       }
       return state

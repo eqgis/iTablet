@@ -7,7 +7,7 @@ import {
   clearAttributeHistory,
 } from '../../redux/models/layers'
 import { setMapLegend } from '../../redux/models/setting'
-import { closeMap, mapToXml, mapFromXml, setBaseMapItem } from '../../redux/models/map'
+import { closeMap, mapToXml, mapFromXml } from '../../redux/models/map'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -22,7 +22,6 @@ const mapStateToProps = state => ({
   appConfig: state.appConfig.toJS(),
   mapModules: state.mapModules.toJS(),
   cowork: state.cowork.toJS(),
-  baseMapItem: state.map.toJS().baseMapItem,
 })
 
 const mapDispatchToProps = {
@@ -34,7 +33,6 @@ const mapDispatchToProps = {
   setMapLegend,
   mapToXml,
   mapFromXml,
-  setBaseMapItem
 }
 
 export default connect(

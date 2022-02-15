@@ -274,7 +274,7 @@ renderCustomAlertDialog = () => {
     return (
       <View style={styles.informationView}>
         <Text style={styles.information}>
-          Copyright 2018-2021 SuperMap Software Co.,Ltd.All rights reserved
+          Copyright 2018-2022 SuperMap Software Co.,Ltd.All rights reserved
         </Text>
       </View>
     )

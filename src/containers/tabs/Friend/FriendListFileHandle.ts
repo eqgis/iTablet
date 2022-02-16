@@ -86,8 +86,12 @@ export default class FriendListFileHandle {
    * @param {*} user currentUser
    */
   static async init(user: UserInfo) {
+    if (FriendListFileHandle.user?.userName !== user.userName || !UserType.isIPortalUser(user)) {
+      // 非iportal用户使用friend.list文件,或非相同用户初始化清空好友列表
+      // iportal用户使用在线好友数据,则不初始化好友列表
+      FriendListFileHandle.friends = undefined
+    }
     FriendListFileHandle.user = user
-    FriendListFileHandle.friends = undefined
     FriendListFileHandle.friendListFile = ''
     FriendListFileHandle.friendListFile_ol = ''
 
@@ -161,7 +165,7 @@ export default class FriendListFileHandle {
    * 读取本地列表，删除online列表
    */
   static async getLocalFriendList() {
-    if (FriendListFileHandle.friendListFile !== '') {
+    if (FriendListFileHandle.friendListFile !== '' && FriendListFileHandle.user && !UserType.isIPortalUser(FriendListFileHandle.user)) {
       if (await FileTools.fileIsExist(FriendListFileHandle.friendListFile)) {
         let value = await RNFS.readFile(FriendListFileHandle.friendListFile)
         if (isJSON(value) === true) {

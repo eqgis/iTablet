@@ -7,7 +7,8 @@ import {
   Animated,
   FlatList,
 } from 'react-native'
-import { Toast, OnlineServicesUtils, scaleSize } from '../../../../utils/index'
+import { Toast, scaleSize } from '../../../../utils/index'
+import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 import { Container } from '../../../../components'
 import { FileTools } from '../../../../native'
 import { SIPortalService, AppInfo } from 'imobile_for_reactnative'
@@ -44,7 +45,6 @@ export default class Login extends React.Component {
     }
     this.scaleL = new Animated.Value(1)
     this.scaleR = new Animated.Value(0.7)
-    this.JSOnlineService = new OnlineServicesUtils('online')
   }
 
   componentDidMount() {
@@ -160,7 +160,7 @@ export default class Login extends React.Component {
       }
 
       //使用邮箱或昵称登录的用户可以在此处检查是否已经登录
-      const userInfo = await this.JSOnlineService?.getUserInfo(userName)
+      const userInfo = await OnlineServicesUtils.getService('online')?.getUserInfo(userName)
       if (
         userInfo !== false &&
           userInfo.userId === this.props.user.currentUser.userId
@@ -169,7 +169,7 @@ export default class Login extends React.Component {
         return
       }
 
-      const loginResult = await this.JSOnlineService?.login(userName, password)
+      const loginResult = await OnlineServicesUtils.getService('online')?.login(userName, password)
       const result = await new Promise.race([loginResult, timeout(30)])
       if (result === 'timeout') {
         Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
@@ -261,6 +261,7 @@ export default class Login extends React.Component {
         if (info) {
           let userInfo = JSON.parse(info)
           await this.initUserDirectories(userInfo.name)
+          OnlineServicesUtils.getService('iportal') // 初始化OnlineServicesUtils
           const user = {
             serverUrl: url,
             userName: userInfo.name,

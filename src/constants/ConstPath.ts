@@ -16,7 +16,7 @@ const Module = {
 }
 
 // 该目录下的数据会被创建在 '/iTablet/'下，不要轻易加
-const RelativePath = {
+const RelativePath: {[name: string]: string} = {
   // 对应用户中的相对路径
   Environment: 'Environment/',
   License: 'License/',
@@ -43,7 +43,7 @@ const RelativePath = {
   // ARScene: `${Data}ARScene/`,
 }
 
-const RelativeFilePath = {
+const RelativeFilePath: {[name: string]: string} = {
   ExportData: 'ExportData/',
   WorkspaceFile: Workspace,
   // Workspace: Data + 'Workspace.smwu', // 工作空间

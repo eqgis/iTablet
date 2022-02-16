@@ -132,6 +132,7 @@ export default class MT_layerManager extends React.Component {
         allLayers.length > 0 ||
         (allLayers.length === 0 && GLOBAL.Type === ChunkType.MAP_ANALYST)
       ) {
+        // 当图层数量大于0且最后一个图层不是底图时 或者 图层数量为0且为分析模式的时候
         if (
           (allLayers.length > 0 &&
             !LayerUtils.isBaseLayer(allLayers[allLayers.length - 1])) ||
@@ -148,6 +149,7 @@ export default class MT_layerManager extends React.Component {
             },
           ]
         } else if (allLayers.length > 0) {
+          // 当图层数量大于0，最后一个图层是底图，对图层显示进行分类,底图放进baseMap里，其他图层放进alllayers里
           baseMap = allLayers.filter(layer => {
             return LayerUtils.isBaseLayer(layer)
           })

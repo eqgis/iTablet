@@ -66,7 +66,6 @@ export default class MT_layerManager extends React.Component {
     appConfig: Object,
     mapModules: Object,
     cowork: any,
-    props: Object,
   }
 
   constructor(props) {
@@ -101,7 +100,6 @@ export default class MT_layerManager extends React.Component {
     this.prevItemRef = {} // 上一个被选中的item
     this.dialog = undefined
     this.publishMapServiceWatting = undefined // 发布地图服务,只有在线协作可用
-    this.BaseMapUpdate = false  // 放在store里的basemapItem是否需要更新
   }
 
   componentDidUpdate(prevProps) {
@@ -266,25 +264,6 @@ export default class MT_layerManager extends React.Component {
       })
       this.setRefreshing(false)
     }
-
-    // 是底图且是“我的图层”里的最后一个图层，即当前底图是用户自定义的底图 
-    if(this.state.data[2].data[0].caption === "baseMap"){
-      // 不需要更新store里的baseMapitem
-      this.BaseMapUpdate = false
-      // 在这里获取持久化存储的底图
-      let baseMapItem = this.props.baseMapItem  
-      if(baseMapItem){
-        // 将上一个系统自带的底图的对象赋值给即将要渲染在“我的底图”分类里的子项
-        this.state.data[2].data[0] = baseMapItem
-      }    
-    } else {
-      this.BaseMapUpdate = this.state.data[2].data[0]
-      // 需要更新store里的baseMapitem，而且新的baseMapitem与原来的不一样时才更新
-      if(this.BaseMapUpdate && this.BaseMapUpdate.caption !== this.props.baseMapItem.caption) {
-        this.props.setBaseMapItem({baseMapItem: this.BaseMapUpdate})
-      }
-    }
-
   }
 
   getItemLayout = (data, index) => {
@@ -847,21 +826,7 @@ export default class MT_layerManager extends React.Component {
         } else if (
           section.title === getLanguage(this.props.language).Map_Layer.BASEMAP
         ) {
-          // 分类的标题是“我的底图”的子项设置
           action = this.onToolBasePress
-
-          // 是底图且是“我的图层”里的最后一个图层，即当前底图是用户自定义的底图
-          if(item.caption === "baseMap"){
-            // 不需要更新store里的baseMapitem
-            this.BaseMapUpdate = false
-            // 在这里获取持久化存储的底图
-            let baseMapItem = this.props.baseMapItem  
-            if(baseMapItem){
-              // 将上一个系统自带的底图的对象赋值给即将要渲染在“我的底图”分类里的子项
-              item = baseMapItem
-            }
-          } 
-
         } else if (
           section.title === getLanguage(this.props.language).Map_Layer.PLOTS
         ) {
@@ -1046,7 +1011,7 @@ export default class MT_layerManager extends React.Component {
             </View>
           )
       }
-    } 
+    }
     return (
       <TouchableOpacity
         style={styles.sectionHeader}

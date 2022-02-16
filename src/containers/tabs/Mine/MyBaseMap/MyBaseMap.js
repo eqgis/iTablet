@@ -167,13 +167,31 @@ export default class MyBaseMap extends Component {
 
   addServer = (strRestTitle,server) => {
     let alias = strRestTitle
-    let layerName =
-      server.substring(
-        server.lastIndexOf('/') + 1,
-        server.length,
-      ) +
-      '@' +
-      alias //this.state.server.lastIndexOf('/')
+
+    // 拿到图层名字前面的组成部分（从服务地址的最后一个“/”后拿）
+    let layerNameTitle = server.substring(
+      server.lastIndexOf('/') + 1,
+      server.length,
+    )
+    // [\u4e00-\u9fa5] 中文字符的范围
+    let rex = /.*[\u4e00-\u9fa5]+.*$/g
+    let layerName = ""
+    if(rex.test(decodeURIComponent(layerNameTitle))) {
+      // 这个图层名字的标题部分解码后包含中文，则直接简单拼接就好
+      layerName = layerNameTitle + '@' + alias  //this.state.server.lastIndexOf('/')
+    } else {
+      // 这个图层名字的标题部分解码后不包含中文，就加一个前缀“en-”标识（注：如果其他地方需要用图层名字进行地址拼接的，需要先将前缀给去掉）
+      layerName = 'en-' + layerNameTitle + '@' + alias
+    }
+
+    // let layerName =
+    //   server.substring(
+    //     server.lastIndexOf('/') + 1,
+    //     server.length,
+    //   ) +
+    //   '@' +
+    //   alias //this.state.server.lastIndexOf('/')
+
     let _DSParams = {}
     // if (this.state.engineType === 23) {
     //   _DSParams = {

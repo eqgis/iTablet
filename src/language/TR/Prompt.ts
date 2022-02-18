@@ -226,6 +226,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_START: "Paylaşmaya Başla",
   SHARE_WX_FILE_SIZE_LIMITE: "Dosya boyutu 10M'den fazla geçemez",
   SHARE_NOT_COMPLRTE: "Sharing is not completed",  // To be translated
+  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
 
   EXPORTING: "Dışarı Aktarılıyor",
   EXPORT_SUCCESS: "Başarıyla Dışarı Aktarıldı",

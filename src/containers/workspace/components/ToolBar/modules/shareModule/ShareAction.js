@@ -166,7 +166,7 @@ function showSaveDialog(type) {
     return
   }
   if (!ToolbarModule.getParams().map.currentMap.name) {
-    Toast.show(ConstInfo.PLEASE_SAVE_MAP, {duration:1500})
+    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SAVE_MAP, {duration:1500})
     return
   }
 

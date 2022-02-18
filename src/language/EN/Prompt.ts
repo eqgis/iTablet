@@ -226,6 +226,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_START: "Start sharing",
   SHARE_WX_FILE_SIZE_LIMITE: "File size cannot exceeds 10M",
   SHARE_NOT_COMPLRTE: "Sharing is not completed",
+  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
 
   EXPORTING: "Exporting",
   EXPORT_SUCCESS: "Exported",

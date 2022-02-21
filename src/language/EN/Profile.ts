@@ -9,7 +9,7 @@ const Profile: typeof CN.Profile = {
   MARK: "Mark",
   MAP: "Map",
   ARMAP: "AR Map",
-  ARMODEL: "AR Modal",
+  ARMODEL: "AR Model",
   AREFFECT: "AR Effect",
   SCENE: "Scene",
   BASEMAP: "Base Map",

@@ -178,7 +178,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED: "فشل النشر",
   PUBLISH_FAILED_INFO_1: "تم نشر هذه الخدمة",
   PUBLISH_FAILED_INFO_2: "الخدمة قيد النشر ، لا يمكن أن تعمل في هذا الوقت",
-  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
+  SERVICE_SUBMIT_BEFORE_UPDATE: "يرجى تحديث الخدمة قبل التقديم",
   DELETE_CONFIRM: "هل أنت متأكد أنك تريد حذف العنصر؟",
   BATCH_DELETE_CONFIRM: "هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟",
   WHETHER_DOWNLOAD_ALL_SERVICES: 'هل أنت متأكد أنك تريد تحميل وتحديث جميع الخدمات',
@@ -225,7 +225,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_PREPARE: "جارى التجهيز للمشاركة",
   SHARE_START: "بدء المشاركة",
   SHARE_WX_FILE_SIZE_LIMITE: "حجم الملف لا يمكن أن يتجاوز 10 م",
-  SHARE_NOT_COMPLRTE: "Sharing is not completed",  // To be translated
+  SHARE_NOT_COMPLRTE: "لم تكتمل المشاركة",
   PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
 
   EXPORTING: "جارى التصدير",
@@ -242,7 +242,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "تم التعيين بنجاح",
   SETTING_FAILED: "فشل التعيين",
   NETWORK_ERROR: "خطأ فى الشبكة",
-  NETWORK_RECONNECT: "Reconnection network", // need to translate
+  NETWORK_RECONNECT: "شبكة إعادة الاتصال",
   NO_NETWORK: "لايوجد اتصال بالانترنت",
   CHOOSE_CLASSIFY_MODEL: "اختر تصنيف النموذج",
   USED_IMMEDIATELY: "تستخدم على الفور",

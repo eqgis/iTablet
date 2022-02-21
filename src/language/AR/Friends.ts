@@ -13,7 +13,7 @@ const Friends: typeof CN.Friends = {
   RECOMMEND_FRIEND: "أقتراح صديق",
   SELECT_MODULE: "أختر الوحدة",
   SELECT_MAP: "اختر الخريطة",
-  PUBLIC_FRIENDS: "Public Friends", // need to translate
+  PUBLIC_FRIENDS: "أصدقاء الجمهور",
   // Friend
   MSG_SERVICE_FAILED: "فشل الاتصال بخدمة الرسائل",
   MSG_SERVICE_NOT_CONNECT: "تعذر الاتصال بخدمة الرسائل",

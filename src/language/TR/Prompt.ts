@@ -178,7 +178,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED: "Yayınlama Başarısız",
   PUBLISH_FAILED_INFO_1: "Servis yayınlandı",
   PUBLISH_FAILED_INFO_2: "Hizmet yayınlanıyor fakat şu anda çalıştırılamıyor",
-  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
+  SERVICE_SUBMIT_BEFORE_UPDATE: "Lütfen göndermeden önce hizmeti güncelleyin.",
   DELETE_CONFIRM: "Öğeyi silmek istediğinizden emin misiniz?",
   BATCH_DELETE_CONFIRM: "Seçili öğe(ler)i silmek istediğinizden emin misiniz?",
   WHETHER_DOWNLOAD_ALL_SERVICES: 'Tüm hizmetleri indirmek ve güncellemek istediğinizden emin misiniz?',
@@ -225,7 +225,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_PREPARE: "Paylaşım için Hazırlanıyor",
   SHARE_START: "Paylaşmaya Başla",
   SHARE_WX_FILE_SIZE_LIMITE: "Dosya boyutu 10M'den fazla geçemez",
-  SHARE_NOT_COMPLRTE: "Sharing is not completed",  // To be translated
+  SHARE_NOT_COMPLRTE: "Paylaşma Tamamlanamadı.",
   PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
 
   EXPORTING: "Dışarı Aktarılıyor",
@@ -242,7 +242,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "Başarıyla ayarlandı",
   SETTING_FAILED: "Ayarlama başarısız",
   NETWORK_ERROR: "Ağ Hatası",
-  NETWORK_RECONNECT: "Reconnection network", // need to translate
+  NETWORK_RECONNECT: "Yeniden Ağ Bağlantısı",
   NO_NETWORK: "İnternet bağlantısı yok",
   CHOOSE_CLASSIFY_MODEL: "Sınıflandırma Modeli Seç",
   USED_IMMEDIATELY: "Hemen Kullanıldı",

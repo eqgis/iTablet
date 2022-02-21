@@ -151,8 +151,8 @@ const Profile: typeof CN.Profile = {
   LOCAL: "Local",
   SAMPLEDATA: "Echantillons",
   ON_DEVICE: "Données d'utilisateur",
-  ONLINE_DATA: "Online Data", // need to translate
-  USER_DATA: "User Data", // need to translate
+  ONLINE_DATA: "Donnée en ligne",
+  USER_DATA: "Données d'utilisateur",
   EXPORT_DATA: "Exporter les données",
   IMPORT_DATA: "Importer des données",
   UPLOAD_DATA: "Partager les données",

@@ -60,6 +60,8 @@ async function OpenData(data, index, callback) {
       isReAdd = !!(layerAddArray.length)
     }
 
+    // 最后一个图层是否是底图的标识
+    let isBaseLayerEnd = LayerUtils.isBaseLayer(layers[layers.length - 1])
     // 设置新的底图
     if (data instanceof Array) {
       
@@ -70,7 +72,7 @@ async function OpenData(data, index, callback) {
         }
 
         // 当前底图为用户自定义的，并且layers的最后一个图层是系统自带的底图时，将用户的底图上移 lyx
-        if(data?.userAdd){  
+        if(data?.userAdd && isBaseLayerEnd){  
           for(let i = 0; i <  GLOBAL.BaseMapSize; i++) {
             await SMap.moveUpLayer(name)
           }
@@ -87,7 +89,7 @@ async function OpenData(data, index, callback) {
       if(!isReAdd) {
         await SMap.openDatasource(data.DSParams, index, false)
         // 当前底图为用户自定义的，并且layers的最后一个图层是系统自带的底图时，将用户的底图上移 lyx
-        if(data?.userAdd){  
+        if(data?.userAdd && isBaseLayerEnd){  
           for(let i = 0; i <  GLOBAL.BaseMapSize; i++) {
             await SMap.moveUpLayer(name)
           }

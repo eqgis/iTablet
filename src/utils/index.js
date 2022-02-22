@@ -20,6 +20,7 @@ import SCoordinationUtils from './SCoordinationUtils'
 import DateUtil from './DateUtil'
 import * as pinyin from './pinyin'
 import DownloadUtil from './DownloadUtil'
+import GetUserBaseMapUtil from './GetUserBaseMapUtil'
 
 export {
   screen,
@@ -39,6 +40,7 @@ export {
   /** 地图公共方法 * */
   LayerUtils,
   ModelUtils,
+  GetUserBaseMapUtil, // 加载当前登录用户的底图数组
   /** 分析公共方法 * */
   AnalystTools,
   StyleUtils,
@@ -51,4 +53,5 @@ export {
   DateUtil,
   pinyin,
   DownloadUtil,
+  
 }

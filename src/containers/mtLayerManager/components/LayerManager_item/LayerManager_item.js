@@ -754,6 +754,7 @@ export default class LayerManager_item extends React.Component {
       >
         <View style={styles.btn_container}>
           {this.state.data.type === LAYER_GROUP ? (
+            // 当数据类型为图层分组时渲染
             <TouchableOpacity style={styles.btn} onPress={this._arrow_pop_row}>
               <Image
                 resizeMode={'contain'}

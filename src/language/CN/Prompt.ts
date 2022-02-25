@@ -143,6 +143,9 @@ const Prompt = {
   CHOOSE_LAYER: "选择图层",
 
   COLLECT_SUCCESS: "采集成功",
+  LONG_PRESS_SELECT_POINT: "长按选点",
+  LONG_PRESS_END_POINT: "长按选择终点",
+  LONG_PRESS_START_POINT: "长按选择起点",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "至少选中两个多媒体文件",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "该对象已经没有多媒体文件，是否删除？",

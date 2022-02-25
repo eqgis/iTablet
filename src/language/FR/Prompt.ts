@@ -145,6 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "Choisir une couche",
 
   COLLECT_SUCCESS: "Recueillir le succès",
+  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
+  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
+  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
 
   SELECT_TWO_MEDIAS_AT_LEAST: "Vous devez sélectionner au moins deux médias",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "Cet objet n'a pas de fichier multimédia. Voulez-vous le supprimer ?",

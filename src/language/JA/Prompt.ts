@@ -145,6 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "選択レイヤー",
 
   COLLECT_SUCCESS: "コレクションに成功",
+  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
+  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
+  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
 
   SELECT_TWO_MEDIAS_AT_LEAST: "少なくとも2つのメディアファイルを選択してください",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "当オブジェクトにメディアファイルはありません。削除しますか?",

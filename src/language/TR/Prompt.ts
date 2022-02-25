@@ -145,6 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "Katman Seç",
 
   COLLECT_SUCCESS: "Başarıyla Toplandı",
+  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
+  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
+  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
 
   SELECT_TWO_MEDIAS_AT_LEAST: "Lütfen en az iki medya seçin",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "Bu nesne medi dosyaları yok.Silmek ister misiniz?",

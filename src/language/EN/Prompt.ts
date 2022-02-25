@@ -145,6 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "Choose Layer",
 
   COLLECT_SUCCESS: "Collected",
+  LONG_PRESS_SELECT_POINT: "Long press to select point",
+  LONG_PRESS_END_POINT: "Long press to select the end point",
+  LONG_PRESS_START_POINT: "Long press to select the starting point",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "You have to select two multi-media files at least",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "This object has no multi-media files. Do you want to delete it?",

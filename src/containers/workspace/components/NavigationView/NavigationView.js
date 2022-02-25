@@ -101,6 +101,8 @@ export default class NavigationView extends React.Component {
     })
     //考虑搜索界面跳转，不能直接goBack
     NavigationService.navigate('MapView')
+    // 点击后给一个长按选择起点的提示 lyx
+    Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_START_POINT, {duration: 2500})
   }
 
   /**
@@ -123,6 +125,8 @@ export default class NavigationView extends React.Component {
       name: '',
     })
     NavigationService.navigate('MapView')
+    // 点击后给一个长按选择终点的提示 lyx
+    Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_END_POINT, {duration: 2500})
   }
 
   // [{datasourceName:'',datasetName:'',name:''}]

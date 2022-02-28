@@ -21,6 +21,7 @@ import OnlineDataItem from './OnlineDataItem'
 import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
 import DataHandler from '../DataHandler'
 import NavigationService from '../../../NavigationService'
+import Directory from './Directory'
 // import { downloadFile } from '../../../../native/RNFS'
 let JSIPortalService, JSOnlineservice
 
@@ -57,6 +58,11 @@ export default class MyLocalData extends Component {
     JSIPortalService = new OnlineServicesUtils('iportal')
     JSOnlineservice = new OnlineServicesUtils('online')
     this.totalPage = 0
+
+    // 文件夹数组，主要存放文件夹数组索引
+    this.directoryArray = [] 
+    // 存放最终构造成的外部数据的对象
+    this.externalDataObj = {}
   }
   componentDidMount() {
     this.getData()
@@ -73,11 +79,15 @@ export default class MyLocalData extends Component {
     }
   }
 
-  getData = async () => {
+  getData = async (str = '') => {
     try {
+      let loadText = getLanguage(this.props.language).Prompt.LOADING
+      if(str === 'del'){
+        loadText =  getLanguage(this.props.language).Prompt.DELETING_DATA
+      }
       this.container.setLoading(
         true,
-        getLanguage(this.props.language).Prompt.LOADING,
+        loadText,
       )
       let sectionData = []
       let cacheData = []
@@ -135,9 +145,15 @@ export default class MyLocalData extends Component {
         })
       }
       if (externalData.length > 0) {
+        // 重新构造外部数据
+        // 先清空一下文件夹数组,刷新的时候需要将文件夹数组的值清空
+        this.directoryArray = []
+        // 调用构造外部数据新对象的方法
+        this.externalDataObj = await this.createExternalData(externalData)
         sectionData.push({
           title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
-          data: externalData,
+          // data: externalData,
+          data: this.externalDataObj.children,
           isShowItem: true,
           dataType: 'external',
         })
@@ -221,7 +237,10 @@ export default class MyLocalData extends Component {
       } else {
         return null
       }
-    } else {
+    } else if(info.section.dataType === 'external'){
+      return this.renderExternalData(info.item, info.section)
+
+    }else {
       return (
         <LocalDataItem
           info={info}
@@ -296,10 +315,7 @@ export default class MyLocalData extends Component {
       }
 
       if (result || result === undefined) {
-        Toast.show(
-          //'删除成功'
-          getLanguage(this.props.language).Prompt.DELETED_SUCCESS,
-        )
+        
         if (await FileTools.fileIsExist(this.itemInfo.item.directory)) {
           let contents = await FileTools.getDirectoryContent(
             this.itemInfo.item.directory,
@@ -318,6 +334,12 @@ export default class MyLocalData extends Component {
         this.setState({ sectionData: sectionData }, () => {
           this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(false)
         })
+        await this.getData('del')
+        Toast.show(
+          //'删除成功'
+          getLanguage(this.props.language).Prompt.DELETED_SUCCESS,
+        )
+        
       } else {
         Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
       }
@@ -977,4 +999,257 @@ export default class MyLocalData extends Component {
       </Container>
     )
   }
+
+  /**
+   * 根据已经获取到的数据，构造新的数据
+   * 在getData里调用，注意将externalDataObj的数据保存起来（放到this里）
+   * @param {Array<Object>} data 前面获取到的外部数据
+   * @return 构造的数据
+   */
+  async createExternalData (data) {
+    // 用于存放最终构造的数据结果对象
+    let externalDataObj = {
+    	type: 'directory',
+      index: 0,
+      name: 'ExternalData',
+      path: '/storage/emulated/0/iTablet/ExternalData',
+      children: [],
+    }
+
+    // 构造根文件夹的索引对象并将其放入文件夹数组
+    let directoryIndexObj = {
+      address: externalDataObj,
+      name: externalDataObj.name
+    }
+    this.directoryArray.push(directoryIndexObj)
+  
+    // 遍历数组构造新的数据
+    for(let i = 0, len = data.length; i < len; i ++){
+      // 去掉前面到外部数据这一段的路径
+      let strPath = "/storage/emulated/0/iTablet/ExternalData/" 
+      let path = data[i].filePath.replace(strPath, "")
+   
+      // 当路径与文件名不同时，才需要对路径做拆分
+      let paths = (path !== data[i].fileName) ? path.split('/') : [path]
+   
+      try {
+        // 构造外部数据根目录下的子项
+        await this.typeIsDirectory(data[i], paths, 0, externalDataObj.children)
+      } catch (error) {
+        console.log("error : " + error.message)
+      }
+      
+    }
+
+    // 将构造好的数据返回出去
+    return externalDataObj
+  }
+
+  /**
+   * 具体的构造数据的地方,完成判断当前路径是否是文件夹，以及他们改添加到哪个文件夹下
+   * @param {Object} data 数据的对象
+   * @param {Array<String>} paths 数据的路径所拆分成的数组
+   * @param {Number} index 当前文件夹，所在paths里的索引位置
+   * @param {Array<Object>} arr 是此文件夹所在的父文件夹的子项数组
+   * @return 用于递归的回归过程
+   */
+  async typeIsDirectory(data, paths, index, arr){
+    // 当路径与文件名不同时，
+    if(paths[index] !== data.fileName){
+      // 拼接此文件夹的路径，一直到此文件夹这里
+      let pathStr = paths[0]
+      for(let i = 1; i <= index; i ++) {
+        pathStr += '/' + paths[i]
+      }
+     
+      // 文件夹对象
+      let obj = {
+        type: 'directory',
+        index: index + 1,
+        name: paths[index],
+        path: pathStr,
+        children: [],
+      }
+      
+      let tempDataObj = this.directoryIsExist(obj.name, obj.path, obj)
+      // 是否添加进文件夹数组里的标识，true为添加(文件夹不存在)，false为不添加(文件夹存在)
+      let isAdd = tempDataObj.flag
+      
+     
+      // 当是否添加标识为true时，即此文件夹不存在，需要添加
+      if(isAdd){
+        // 为新的文件夹构建文件夹索引对象，并放入文件夹数组
+        let directoryIndexObj = {
+          address: obj,
+          name: obj.name
+        }
+        this.directoryArray.push(directoryIndexObj)
+        // 是新数组就直接添加进传入的子项数组就可以了
+        arr.push(obj)
+       
+
+      } else {
+        // 如果该文件夹已经存在的话,对obj进行重新赋值,将obj的值换为找到的已存在的文件夹的值
+        obj = tempDataObj.obj
+      }
+
+      // 递归构建obj的子项 
+      if(index < paths.length - 1) {
+        await this.typeIsDirectory(data, paths, ++index, obj.children)
+      }
+        
+    } else {
+      // 当路径与文件名相同时
+      // 去掉前面到外部数据这一段的路径
+      let strPath = "/storage/emulated/0/iTablet/ExternalData/" 
+      let pathStr = data.filePath.replace(strPath, "")
+      // 非文件夹对象
+      let obj = {
+        type: data.fileType,
+        index: index + 1,
+        name: data.fileName,
+        path: pathStr,
+        children: [data],
+      }
+
+      // 我要拿到的数据是，文件所在文件夹的名字和路径
+      // 文件所在文件夹的名字
+      let directoryName = ''
+      // 文件所在文件夹的路径
+      let directoryPath = ''
+
+      // 是否是根路径下的文件
+      if(pathStr === data.fileName){
+        // 是根路径下的文件，名字和路径就可以直接从文件夹数组的第一个元素里拿
+        let tempArray = this.directoryArray
+        directoryName = tempArray[0].name
+        directoryPath = tempArray[0].address.path
+      } else {
+        // 不是是根路径下的文件的处理如下
+        // 文件路径的临时数组
+        let tempPaths = pathStr.split('/')
+        let length = tempPaths.length
+        // 拿到文件所在文件夹的名字
+        directoryName = tempPaths[length - 2]
+        // 拼接出要移除的字符串（在路径的末尾）
+        let deleteStr = '/' +  tempPaths[length - 1]
+        // 将要移除的字符串移除，得到文件所在文件夹的路径
+        directoryPath = pathStr.replace(deleteStr, "")
+      }
+
+      // 父文件夹(即文件所在文件夹)是否存在标识， true不存在，false存在
+      let isfatherDirectoryExist = await this.directoryIsExist(directoryName, directoryPath, obj).flag
+
+      if(isfatherDirectoryExist) {
+        arr.push(obj)
+      }
+      
+    } 
+    return 
+  }
+
+  /**
+   * 文件夹或文件所在文件夹是否已经存在于文件夹数组里了
+   * @param {String} directoryName 文件夹或文件所在文件夹的名字
+   * @param {String} directoryPath 文件夹或文件所在文件夹的路径
+   * @param {Object} obj 文件夹或文件的对象
+   * @return 一个对象，flag： 布尔类型，返回一个标识，true表示文件夹已经存在，false表示文件夹不存在 ；obj： 找到的已存在的文件夹的对象；
+   */
+   directoryIsExist(directoryName, directoryPath, obj){
+    let tempArray = this.directoryArray
+    // 用于标识是否找到了相同的文件夹 
+    let flag = true
+
+    // 先看文件夹的名字是否相同，再看路径是否相同，查看某一个文件夹是否已经存在了
+    for(let i = 0, len = tempArray.length; i < len; i ++){
+      // 次循环里名字不相同，直接下一循环
+      if(tempArray[i].name !== directoryName) { continue }
+      // 名字相同但路径不同，直接下一循环
+      if(tempArray[i].address.path !== directoryPath) { continue }
+      // 名字相同且路径相同,将是否添加标识设为false（文件夹已经存在了）
+      flag = false
+
+      // 判断obj是否是文件夹类型
+      if(obj.type === 'directory'){
+        // 当obj是文件夹时，就将obj的地址指向已存在的文件夹
+        obj = tempArray[i].address
+
+      } else {
+        // 当obj是文件时，因为前面对比的是其所在的文件夹是否存在，存在时，可以直接把此文件放入所在文件夹的子项里
+        tempArray[i].address.children.push(obj)
+      }
+      // 当找到名字相同且路径相同的文件夹且所有的处理操作都完成后，直接退出循环
+      break
+    }
+    return {flag, obj}
+  }
+
+  /**
+   * 外部数据新建对象的数据结构
+    let externalDataObj = {
+      type: 'directory', // 用于类型判断是渲染什么组件
+      index: xxx,        // 文件夹层级，最外层外部数据根目录为0
+      name: 'xxx',       // 名字
+      path: 'xxx',       // 在数据构成时记录当前文件或当前文件夹的路径
+      children: [        // 当前文件的子项，如果不是文件夹类型就渲染为文件的数据
+        {
+          type: 'xxx',
+          index: xxx,
+          name: 'xxx',
+          path: 'xxx',
+          children: [{}] 
+        },
+        {
+          type: 'dictory',
+          index: xxx,
+          name: 'xxx',
+          path: 'xxx',
+          children: [...]
+        },
+        ...
+      ]
+    }
+  */
+
+  /**
+   * 拿去构造好的数据，用递归实现外部数据的嵌套渲染  (在_renderItem里调用)
+   * @param {Object} obj 外部数据新建对象
+   * @param {Object} section 外部数据的头部信息对象
+   * @return 返回一个组件实例
+   */
+  renderExternalData(obj, section){
+    // 判断是否是文件夹类型
+    if(obj.type === 'directory'){
+      // 文件夹组件
+      let content = <Directory 
+        obj = {obj}
+        section = {section}
+      >
+        {
+         Array.isArray(obj.children) &&
+            obj.children.map(data => this.renderExternalData(data, section))
+          
+        }
+      </Directory>
+      return content
+
+    } else {
+      let item = obj.children[0]
+      // 当不是文件夹时就渲染之前已经写好的item组件
+      return (
+        <LocalDataItem
+          info = {{item, section}}
+          itemOnpress = {this.itemOnpress}
+          isImporting = {
+            this.props.importItem !== '' &&
+            JSON.stringify(item) === JSON.stringify(this.props.importItem.item)
+          }
+        />
+      )
+    }
+  
+
+  }
+
+
 }

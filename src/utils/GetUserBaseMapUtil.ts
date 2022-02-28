@@ -2,14 +2,138 @@ import { UserType } from '../../src/constants'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import { ConstOnline } from '../../src/constants'
 
+interface CurrentUserObjType {
+    userId: string,
+    nickname: string,
+    isEmail: boolean,
+    userType: string,
+    userName: string,
+    password: string,
+}
+interface DSParamsType {
+  alias: string,
+  engineType: number,
+  server: string,
+  layerIndex?: number,
+}
+
+interface BaseMapsType {
+  layerIndex: number,
+  layerName?: string,
+  mapName: string,
+  type: string,
+  DSParams: DSParamsType,
+  index?: number,
+  userAdd?: boolean,
+  nodeleteBT?: boolean,
+}
+
+interface SearchParameterType {
+  orderType: string,
+  isDataItemService: any,
+  keywords: any,
+  shareToMe: any,
+  orderBy: string,
+  pageSize: number,
+  dirIds: any,
+  isBatch: any,
+  filterFields: any,
+  departmentIds: any,
+  accessMode: any,
+  offline: any,
+  checkStatus: any,
+  enable: any,
+  createEnd: number,
+  groupIds: any,
+  authorizedOnly: boolean,
+  resourceIds: any,
+  permissionType: any,
+  types: any,
+  visitEnd: number,
+  returnSubDir: any,
+  searchScope: any,
+  isNotInDir: any,
+  visitStart: number,
+  createStart: number,
+  tags: any,
+  currentUser: any,
+  userNames: Array<string>,
+  ids: any,
+  currentPage: number,
+}
+
+interface MapInfosType {
+  mapTitle: string,
+  mapUrl: string,
+  id: any,
+  serviceId: number,
+  mapThumbnail: string,
+}
+
+interface AuthorizeSettingType {
+  permissionType: string,
+  aliasName: string,
+  entityRoles: Array<any>,
+  entityType: string,
+  entityName: string,
+  entityId: any,
+}
+
+interface ServerListContentItemType {
+  addedSceneNames: any,
+  linkPage: any,
+  metadata: any,
+  isDataItemService: boolean,
+  previewUrl: any,
+  metadataString: string,
+  description: string,
+  verifyReason: any,
+  isBatch: boolean,
+  serviceRootUrlId: any,
+  type: string,
+  addedMapNames: any,
+  offline: boolean,
+  checkStatus: string,
+  visitCount: 0,
+  enable: boolean,
+  nickname: string,
+  id: number,
+  thumbnail: string,
+  proxiedUrl: string,
+  authorizeSetting: Array<AuthorizeSettingType>,
+  updateTime: number,
+  userName: string,
+  version: any,
+  tags: any,
+  resTitle: string,
+  checkUser: any,
+  checkUserNick: any,
+  checkTime: any,
+  createTime: number,
+  tokenRefreshUrl: any,
+  scenes: Array<any>,
+  mapInfos: Array<MapInfosType>,
+}
+
+interface ServerListType {
+  currentPage: number,
+  pageSize: number,
+  total: number,
+  totalPage: number,
+  searchParameter: SearchParameterType,
+}
+
+
+
+
 // 私有服务列表数组
-let _arrPrivateServiceList = []
+let _arrPrivateServiceList: Array<ServerListContentItemType> = []
 // 公有服务列表数组
-let _arrPublishServiceList = []
+let _arrPublishServiceList: Array<ServerListContentItemType> = []
 // 当前登录用户的底图数组
-let curUserBaseMaps = []
+let curUserBaseMaps: Array<BaseMapsType> = []
 // 当前登录的用户
-let currentUser = {}
+let currentUser: CurrentUserObjType
 
 
 /**
@@ -18,7 +142,7 @@ let currentUser = {}
   * @param currentUser  当前登录用户  
   * @param baseMaps 当前用户的底图数组
   */
-let loadUserBaseMaps = async (currentUserObj, baseMaps) => {
+let loadUserBaseMaps = async (currentUserObj: CurrentUserObjType, baseMaps: Array<BaseMapsType>) => {
   currentUser = currentUserObj
   curUserBaseMaps = baseMaps
   // 等_arrPublishServiceList的值被修改完成后再返回它的值
@@ -34,9 +158,9 @@ let _initFirstSectionData = async () => {
   
   //添加公共底图 
   curUserBaseMaps = getCommonBaseMap().concat(curUserBaseMaps)
-  let count = curUserBaseMaps.length
+  let count:number = curUserBaseMaps.length
   // 矫正当前用户底图数组里元素的index的值，让index的值与他的位置保持相同
-  for (let i = 0; i < count; i++) {
+  for (let i: number = 0; i < count; i++) {
     curUserBaseMaps[i].index = i
   }
   if(UserType.isOnlineUser(currentUser) || UserType.isIPortalUser(currentUser)){
@@ -54,12 +178,12 @@ let _initFirstSectionData = async () => {
   * @param {Number} currentPage 当前页码
   * @param {Number} pageSize    当前页条数
   */
-let _initSectionsData = async (currentPage, pageSize) => {
+let _initSectionsData = async (currentPage: number, pageSize: number) => {
     try {
       // 公有服务列表数组
-      let arrPublishServiceList = []
+      let arrPublishServiceList: Array<ServerListContentItemType> = []
       // 私有服务列表数组
-      let arrPrivateServiceList = []
+      let arrPrivateServiceList: Array<ServerListContentItemType> = []
       // 获取服务列表数据（是json字符串类型）
       let strServiceList
       if (UserType.isOnlineUser(currentUser)) {
@@ -157,7 +281,6 @@ let _initSectionsData = async (currentPage, pageSize) => {
 
      
     } catch (e) {
-      debugger
       console.warn(e)
     }
 }
@@ -166,18 +289,19 @@ let _initSectionsData = async (currentPage, pageSize) => {
     * 更新当前用户的底图（构造底图图层对象,修改当前用户底图数组并对其进行持久化存储处理）
     * @param {String} strRestTitle 地图的名字
     * @param {String} server 地图的服务地址
+    * @returns {Array<BaseMapsType>} 返回底图数组
     */
-let addServer = (strRestTitle,server) => {
-  let alias = strRestTitle
+let addServer = (strRestTitle: string, server: string) => {
+  let alias:string = strRestTitle
 
   // 拿到图层名字前面的组成部分（从服务地址的最后一个“/”后拿）
-  let layerNameTitle = server.substring(
+  let layerNameTitle:string = server.substring(
     server.lastIndexOf('/') + 1,
     server.length,
   )
   // [\u4e00-\u9fa5] 中文字符的范围
   let rex = /.*[\u4e00-\u9fa5]+.*$/g
-  let layerName = ""
+  let layerName: string = ""
   if(rex.test(decodeURIComponent(layerNameTitle))) {
     // 这个图层名字的标题部分解码后包含中文，则直接简单拼接就好
     layerName = layerNameTitle + '@' + alias  //this.state.server.lastIndexOf('/')
@@ -186,15 +310,14 @@ let addServer = (strRestTitle,server) => {
     layerName = 'en-' + layerNameTitle + '@' + alias
   }
 
-  let _DSParams = {}
-  _DSParams = {
+  let _DSParams: DSParamsType = {
     server: server,
     engineType: 225,
     alias: alias,
     layerIndex: 0,
   }
   // 构造底图图层对象
-  let item = {
+  let item: BaseMapsType = {
     type: 'Datasource',
     DSParams: _DSParams,
     layerIndex: 0,
@@ -203,10 +326,10 @@ let addServer = (strRestTitle,server) => {
     userAdd: true,
     nodeleteBT: true,
   }
-  let list = curUserBaseMaps
+  let list: Array<BaseMapsType> = curUserBaseMaps
   // 当底图图层对象的值不为undefined时，就遍历当前用户的底图数组
   if (item != undefined) {
-    for (let i = 0, n = list.length; i < n; i++) {
+    for (let i:number = 0, n:number = list.length; i < n; i++) {
       // 如果item对象，在当前用户的底图数组里已经存在了，就将存在的对象给删除掉，并退出遍历
       if (
         list[i].DSParams.server === item.DSParams.server &&
@@ -219,7 +342,7 @@ let addServer = (strRestTitle,server) => {
   }
   // 将底图图层对象item放在当前用户的底图数组的末尾
   list.push(item)
-  let count = list.length
+  let count:number = list.length
   // 矫正当前用户的底图数组元素的index值，让index的值与他的位置保持相同（因为前面删除又添加，让原本正常的值乱掉了）
   for (let i = 0; i < count; i++) {
     list[i].index = i

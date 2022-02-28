@@ -43,7 +43,7 @@ interface DictoryObjType{
   index: number,
   name: string,
   path: string,
-  children: Array<DictoryObjType>
+  children: Array<any>
 }
 // Section的类型
 interface SectionType{

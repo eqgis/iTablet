@@ -1007,12 +1007,16 @@ export default class MyLocalData extends Component {
    * @return 构造的数据
    */
   async createExternalData (data) {
+    let rootPath =  '/storage/emulated/0/iTablet/ExternalData'
+    if(Platform.OS === 'ios') {
+      rootPath = '/var/mobile/Containers/Data/Application/AD4E0454-A30E-410B-A388-2DADEC91C266/Documents/iTablet/ExternalData'
+    }
     // 用于存放最终构造的数据结果对象
     let externalDataObj = {
     	type: 'directory',
       index: 0,
       name: 'ExternalData',
-      path: '/storage/emulated/0/iTablet/ExternalData',
+      path: rootPath,
       children: [],
     }
 
@@ -1026,7 +1030,7 @@ export default class MyLocalData extends Component {
     // 遍历数组构造新的数据
     for(let i = 0, len = data.length; i < len; i ++){
       // 去掉前面到外部数据这一段的路径
-      let strPath = "/storage/emulated/0/iTablet/ExternalData/" 
+      let strPath = rootPath + '/'
       let path = data[i].filePath.replace(strPath, "")
    
       // 当路径与文件名不同时，才需要对路径做拆分
@@ -1044,6 +1048,8 @@ export default class MyLocalData extends Component {
     // 将构造好的数据返回出去
     return externalDataObj
   }
+
+
 
   /**
    * 具体的构造数据的地方,完成判断当前路径是否是文件夹，以及他们改添加到哪个文件夹下
@@ -1092,59 +1098,9 @@ export default class MyLocalData extends Component {
         // 如果该文件夹已经存在的话,对obj进行重新赋值,将obj的值换为找到的已存在的文件夹的值
         obj = tempDataObj.obj
       }
-
-      // 递归构建obj的子项 
-      if(index < paths.length - 1) {
-        await this.typeIsDirectory(data, paths, ++index, obj.children)
-      }
-        
-    } else {
-      // 当路径与文件名相同时
-      // 去掉前面到外部数据这一段的路径
-      let strPath = "/storage/emulated/0/iTablet/ExternalData/" 
-      let pathStr = data.filePath.replace(strPath, "")
-      // 非文件夹对象
-      let obj = {
-        type: data.fileType,
-        index: index + 1,
-        name: data.fileName,
-        path: pathStr,
-        children: [data],
-      }
-
-      // 我要拿到的数据是，文件所在文件夹的名字和路径
-      // 文件所在文件夹的名字
-      let directoryName = ''
-      // 文件所在文件夹的路径
-      let directoryPath = ''
-
-      // 是否是根路径下的文件
-      if(pathStr === data.fileName){
-        // 是根路径下的文件，名字和路径就可以直接从文件夹数组的第一个元素里拿
-        let tempArray = this.directoryArray
-        directoryName = tempArray[0].name
-        directoryPath = tempArray[0].address.path
-      } else {
-        // 不是是根路径下的文件的处理如下
-        // 文件路径的临时数组
-        let tempPaths = pathStr.split('/')
-        let length = tempPaths.length
-        // 拿到文件所在文件夹的名字
-        directoryName = tempPaths[length - 2]
-        // 拼接出要移除的字符串（在路径的末尾）
-        let deleteStr = '/' +  tempPaths[length - 1]
-        // 将要移除的字符串移除，得到文件所在文件夹的路径
-        directoryPath = pathStr.replace(deleteStr, "")
-      }
-
-      // 父文件夹(即文件所在文件夹)是否存在标识， true不存在，false存在
-      let isfatherDirectoryExist = await this.directoryIsExist(directoryName, directoryPath, obj).flag
-
-      if(isfatherDirectoryExist) {
-        arr.push(obj)
-      }
-      
-    } 
+      // 当文件夹找到或创建后，直接就将数据放进此文件夹
+      obj.children.push(data)
+    }
     return 
   }
 
@@ -1193,18 +1149,11 @@ export default class MyLocalData extends Component {
       path: 'xxx',       // 在数据构成时记录当前文件或当前文件夹的路径
       children: [        // 当前文件的子项，如果不是文件夹类型就渲染为文件的数据
         {
-          type: 'xxx',
-          index: xxx,
-          name: 'xxx',
-          path: 'xxx',
-          children: [{}] 
-        },
-        {
           type: 'dictory',
           index: xxx,
           name: 'xxx',
           path: 'xxx',
-          children: [...]
+          children: [{},...] 
         },
         ...
       ]
@@ -1218,6 +1167,7 @@ export default class MyLocalData extends Component {
    * @return 返回一个组件实例
    */
   renderExternalData(obj, section){
+    let that = this
     // 判断是否是文件夹类型
     if(obj.type === 'directory'){
       // 文件夹组件
@@ -1227,26 +1177,22 @@ export default class MyLocalData extends Component {
       >
         {
          Array.isArray(obj.children) &&
-            obj.children.map(data => this.renderExternalData(data, section))
+            obj.children.map(data => (
+              <LocalDataItem
+                info = {{item: data, section}}
+                itemOnpress = {that.itemOnpress}
+                isImporting = {
+                  that.props.importItem !== '' &&
+                  JSON.stringify(data) === JSON.stringify(that.props.importItem.item)
+                }
+              />
+            ))
           
         }
       </Directory>
       return content
 
-    } else {
-      let item = obj.children[0]
-      // 当不是文件夹时就渲染之前已经写好的item组件
-      return (
-        <LocalDataItem
-          info = {{item, section}}
-          itemOnpress = {this.itemOnpress}
-          isImporting = {
-            this.props.importItem !== '' &&
-            JSON.stringify(item) === JSON.stringify(this.props.importItem.item)
-          }
-        />
-      )
-    }
+    } 
   
 
   }

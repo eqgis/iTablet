@@ -63,6 +63,10 @@ export default class MyLocalData extends Component {
     this.directoryArray = [] 
     // 存放最终构造成的外部数据的对象
     this.externalDataObj = {}
+
+    // 给删除文件夹的方法绑定this
+    this.directoryOnpress = this.directoryOnpress.bind(this)
+    this.directoryItemOnPress = this.directoryItemOnPress.bind(this)
   }
   componentDidMount() {
     this.getData()
@@ -263,7 +267,7 @@ export default class MyLocalData extends Component {
     this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(false)
   }
 
-  _onDeleteData = async () => {
+  _onDeleteData = async (str = '') => {
     try {
       this._closeModal()
       if (
@@ -279,7 +283,7 @@ export default class MyLocalData extends Component {
         //'删除数据中...'
         getLanguage(this.props.language).Prompt.DELETING_DATA,
       )
-
+      
       let exportDir =
         GLOBAL.homePath +
         ConstPath.ExternalData
@@ -328,17 +332,28 @@ export default class MyLocalData extends Component {
         for (let i = 0; i < sectionData.length; i++) {
           let data = sectionData[i]
           if (data.title === this.itemInfo.section.title) {
-            data.data.splice(this.itemInfo.index, 1)
+            if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.ON_DEVICE){
+              // 当是外部数据的时候的处理方式
+              data.data[this.directoryIndex - 1]?.children.splice(this.itemInfo.index, 1)
+              // 删除数据之后，检查文件夹是否应该删除
+              if( data.data[this.directoryIndex - 1].children.length === 0){
+                this.directoryArray.splice(this.directoryIndex, 1)
+                data.data.splice(this.directoryIndex - 1, 1)
+              }
+            } else {
+              data.data.splice(this.itemInfo.index, 1)
+            }
           }
         }
         this.setState({ sectionData: sectionData }, () => {
           this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(false)
         })
-        await this.getData('del')
-        Toast.show(
-          //'删除成功'
-          getLanguage(this.props.language).Prompt.DELETED_SUCCESS,
-        )
+        if(str != 'directory'){
+          Toast.show(
+            //'删除成功'
+            getLanguage(this.props.language).Prompt.DELETED_SUCCESS,
+          )
+        }
         
       } else {
         Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
@@ -350,7 +365,9 @@ export default class MyLocalData extends Component {
       )
       this._closeModal()
     } finally {
-      this.setLoading(false)
+      if(str != 'directory'){
+        this.setLoading(false)
+      }
     }
   }
 
@@ -897,51 +914,59 @@ export default class MyLocalData extends Component {
     const fileType = item.item && item.item.fileType
     if (item) {
       data = []
-      // 专题制图导出的xml不用导入到用户目录
-      if(fileType !== 'xmltemplate'){
+      // 文件夹的删除选项
+      if(item.obj && item.obj?.type === 'directory'){
         data.push({
-          title: getLanguage(this.props.language).Profile.IMPORT_DATA,
-          action: this.importData,
+          title: getLanguage(this.props.language).Profile.DELETE_DATA,
+          action: this.directoryOnpress,
         })
-      }
-      if (item.dataItemServices) {
-        if (
-          item.serviceStatus !== 'PUBLISHED' &&
-          item.serviceStatus !== 'PUBLISHING' &&
-          item.serviceStatus !== 'DOES_NOT_INVOLVE'
-        ) {
+      }  else {
+        // 专题制图导出的xml不用导入到用户目录
+        if(fileType !== 'xmltemplate'){
           data.push({
-            title: getLanguage(this.props.language).Profile.PUBLISH_SERVICE,
-            action: this._onPublishService,
+            title: getLanguage(this.props.language).Profile.IMPORT_DATA,
+            action: this.importData,
           })
         }
-      }
-
-      data.push({
-        title: getLanguage(this.props.language).Profile.DELETE_DATA,
-        action: this.deleteData,
-      })
-
-      if (item.authorizeSetting) {
-        let isPublish = false
-        let authorizeSetting = item.authorizeSetting
-        for (let i = 0; i < authorizeSetting.length; i++) {
-          let dataPermissionType = authorizeSetting[i].dataPermissionType
-          if (dataPermissionType === 'DOWNLOAD') {
-            isPublish = true
-            break
+        if (item.dataItemServices) {
+          if (
+            item.serviceStatus !== 'PUBLISHED' &&
+            item.serviceStatus !== 'PUBLISHING' &&
+            item.serviceStatus !== 'DOES_NOT_INVOLVE'
+          ) {
+            data.push({
+              title: getLanguage(this.props.language).Profile.PUBLISH_SERVICE,
+              action: this._onPublishService,
+            })
           }
         }
-        let title
-        if (isPublish) {
-          title = getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_DATA
-        } else {
-          title = getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_DATA
-        }
+
         data.push({
-          title: title,
-          action: this._onChangeDataVisibility,
+          title: getLanguage(this.props.language).Profile.DELETE_DATA,
+          action: this.deleteData,
         })
+
+        if (item.authorizeSetting) {
+          let isPublish = false
+          let authorizeSetting = item.authorizeSetting
+          for (let i = 0; i < authorizeSetting.length; i++) {
+            let dataPermissionType = authorizeSetting[i].dataPermissionType
+            if (dataPermissionType === 'DOWNLOAD') {
+              isPublish = true
+              break
+            }
+          }
+          let title
+          if (isPublish) {
+            title = getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_DATA
+          } else {
+            title = getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_DATA
+          }
+          data.push({
+            title: title,
+            action: this._onChangeDataVisibility,
+          })
+        }
       }
     }
     return data
@@ -1174,13 +1199,26 @@ export default class MyLocalData extends Component {
       let content = <Directory 
         obj = {obj}
         section = {section}
+        directoryOnpress = {(event)=>{
+          this.directoryItemOnPress && this.directoryItemOnPress({obj, section}, event)
+        }}
       >
         {
          Array.isArray(obj.children) &&
-            obj.children.map(data => (
+            obj.children.map((data, index) => (
               <LocalDataItem
-                info = {{item: data, section}}
-                itemOnpress = {that.itemOnpress}
+                info = {{index, item: data, section}}
+                itemOnpress = {(info, event)=>{
+                  let len = that.directoryArray.length
+                  for(let i = 0; i < len; i++ ){
+                    if(obj.name === that.directoryArray[i].name){
+                      // 记录当前文件夹在文件夹数组中的索引
+                      that.directoryIndex = i
+                      break
+                    }
+                  }
+                  that.itemOnpress(info, event)
+                }}
                 isImporting = {
                   that.props.importItem !== '' &&
                   JSON.stringify(data) === JSON.stringify(that.props.importItem.item)
@@ -1196,6 +1234,57 @@ export default class MyLocalData extends Component {
   
 
   }
+/**
+ * 点击文件夹后面的更多按钮触发的菜单
+ * @param {Object} item 
+ * @param {Component} event 
+ */
+  directoryItemOnPress = (item, event) => {
+    // 记录删除文件夹内的子项数组和所属的分类
+    this.directoryItem = item.obj.children
+    this.directorySection = item.section
+    let len = this.directoryArray.length
+    for(let i = 0; i < len; i++ ){
+      if(item.obj.name === this.directoryArray[i].name){
+        // 记录当前文件夹在文件夹数组中的索引
+        this.directoryIndex = i
+        break
+      }
+    }
+    
+    // 重置this.itemInfo
+    this.itemInfo = item
+    // 设置菜单位置，并让菜单显示
+    try {
+      this.LocalDataPopupModal &&
+      this.LocalDataPopupModal.setVisible(true, {
+        x: event.nativeEvent.pageX,
+        y: event.nativeEvent.pageY,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
+  /**
+   * 删除文件夹
+   */
+  async directoryOnpress(){
+    // 获取要删啊除的文件夹的子项数组和分类
+    let arr = this.directoryItem
+    let section = this.directorySection
+    // 循环删除每一个文件夹下的数据
+    for(let i = arr.length - 1; i >= 0; i--){
+      // 重置this.itemInfo
+      this.itemInfo = {index: i, item: arr[i], section}
+      await this._onDeleteData('directory')
+    }
+    this.setLoading(false)
+    Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
+    
+    // 清空
+    this.directoryItem = []
+    this.directorySection = null
+  }
 
 }

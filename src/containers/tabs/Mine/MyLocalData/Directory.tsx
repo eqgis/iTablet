@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
       marginLeft: 10,
     },
     titleText: {
+      flex: 1,
       fontSize: size.fontSize.fontSizeXl,
       marginLeft: 10,
       color: color.fontColorBlack,
@@ -57,6 +58,7 @@ interface SectionType{
 interface Props{
   obj: DictoryObjType,
   section: SectionType,
+  directoryOnpress: Function,
   children?: Component,
 }
 // state的类型
@@ -96,6 +98,8 @@ export default class Directory extends Component<Props, State> {
       let arrowImg = this.state.isDirectoryOpen
         ? getThemeAssets().publicAssets.icon_dropup_selected
         : getThemeAssets().publicAssets.icon_dropdown_selected
+      let imageWidth = scaleSize(40),
+        imageHeight = scaleSize(40)
 
       return (
         <View style={[styles.directoryContainer, {display, marginLeft: directoryMarginLeft}]}>
@@ -111,6 +115,23 @@ export default class Directory extends Component<Props, State> {
 
           {/* 这个文件夹的名字 */}
           <Text style={styles.titleText}>{this.props.obj.name}</Text>
+
+          <TouchableOpacity
+            onPress={this.props.directoryOnpress}
+          >
+            <Image
+              style={{
+                width: imageWidth,
+                height: imageHeight,
+                marginRight: 10,
+                // tintColor: imageColor,
+              }}
+              resizeMode={'contain'}
+              source={require('../../../../assets/Mine/icon_more_gray.png')}
+            />
+          </TouchableOpacity>
+
+          
         </TouchableOpacity>
 
         {/* 当文件夹状态为打开时（true）才渲染其子项 */}

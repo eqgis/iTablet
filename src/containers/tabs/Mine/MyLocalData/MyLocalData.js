@@ -1032,10 +1032,7 @@ export default class MyLocalData extends Component {
    * @return 构造的数据
    */
   async createExternalData (data) {
-    let rootPath =  '/storage/emulated/0/iTablet/ExternalData'
-    if(Platform.OS === 'ios') {
-      rootPath = '/var/mobile/Containers/Data/Application/AD4E0454-A30E-410B-A388-2DADEC91C266/Documents/iTablet/ExternalData'
-    }
+    let rootPath = GLOBAL.homePath + ConstPath.ExternalData
     // 用于存放最终构造的数据结果对象
     let externalDataObj = {
     	type: 'directory',

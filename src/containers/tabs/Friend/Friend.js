@@ -209,7 +209,7 @@ export default class Friend extends Component {
       )
       let servicesUtils = new OnlineServicesUtils(type)
       let data
-      let Info
+      let Info, useConfigServer = false
       if (type === 'iportal' && this.props.appConfig.messageServer) {
         data = this.props.appConfig.messageServer
         if (
@@ -224,8 +224,9 @@ export default class Friend extends Component {
         ) {
           Info = data
         }
-      } else if (this.props.appConfig.infoServer) {
+      } else if (this.props.appConfig.infoServer?.url && this.props.appConfig.infoServer?.fileName) {
         data = this.props.appConfig.infoServer
+        useConfigServer = true
       } else {
         data = await servicesUtils.getPublicDataByName(
           '927528',
@@ -234,7 +235,7 @@ export default class Friend extends Component {
       }
       if (!Info && data && (data.url || data.id !== undefined)) {
         let url =
-          data.url || `${servicesUtils.serverUrl}/datas/${data.id}/download`
+        data.url || `${servicesUtils.serverUrl}/datas/${data.id}/download`
 
         let filePath = commonPath + data.fileName
 
@@ -252,6 +253,7 @@ export default class Friend extends Component {
 
         await RNFS.downloadFile(downloadOptions).promise
         let info = await RNFS.readFile(filePath)
+        info = await FileTools.decoder(info)
         RNFS.unlink(filePath)
         let serverInfo = JSON.parse(info)
         Info = serverInfo

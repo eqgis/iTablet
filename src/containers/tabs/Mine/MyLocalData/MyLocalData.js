@@ -63,6 +63,9 @@ export default class MyLocalData extends Component {
     this.directoryArray = [] 
     // 存放最终构造成的外部数据的对象
     this.externalDataObj = {}
+    // 记录外部数据放在前面的零散的数据的个数
+    this.externalSelfCount = 0
+    this.isExternalSelfDataIndex = -1
 
     // 给删除文件夹的方法绑定this
     this.directoryOnpress = this.directoryOnpress.bind(this)
@@ -242,7 +245,8 @@ export default class MyLocalData extends Component {
         return null
       }
     } else if(info.section.dataType === 'external'){
-      return this.renderExternalData(info.item, info.section)
+      // return this.renderExternalData(info.item, info.section)
+      return this.renderExternalData(info)
 
     }else {
       return (
@@ -333,13 +337,24 @@ export default class MyLocalData extends Component {
           let data = sectionData[i]
           if (data.title === this.itemInfo.section.title) {
             if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.ON_DEVICE){
-              // 当是外部数据的时候的处理方式
-              data.data[this.directoryIndex - 1]?.children.splice(this.itemInfo.index, 1)
-              // 删除数据之后，检查文件夹是否应该删除
-              if( data.data[this.directoryIndex - 1].children.length === 0){
-                this.directoryArray.splice(this.directoryIndex, 1)
-                data.data.splice(this.directoryIndex - 1, 1)
+              // 外部数据的处理方式
+              if(this.isExternalSelfDataIndex >= 0) {
+                // 是外部数据下的直接文件(数据)
+                data.data.splice(this.isExternalSelfDataIndex, 1)
+                // 外部数据下的直接文件(数据)的数量也要减一
+                this.externalSelfCount -= 1
+                // 将记录删除的数据是外部数据下的直接数据的索引置值为-1，只有下一次删除直接数据时会被置为大于等于0的数（索引）
+                this.isExternalSelfDataIndex = -1
+              } else {
+                // 当是外部数据文件夹下数据的时候的处理方式
+                data.data[this.directoryIndex + this.externalSelfCount - 1]?.children.splice(this.itemInfo.index, 1)
+                // 删除数据之后，检查文件夹是否应该删除
+                if( data.data[this.directoryIndex + this.externalSelfCount - 1].children.length === 0){
+                  this.directoryArray.splice(this.directoryIndex, 1)
+                  data.data.splice(this.directoryIndex + this.externalSelfCount - 1, 1)
+                }
               }
+              
             } else {
               data.data.splice(this.itemInfo.index, 1)
             }
@@ -1122,6 +1137,21 @@ export default class MyLocalData extends Component {
       }
       // 当文件夹找到或创建后，直接就将数据放进此文件夹
       obj.children.push(data)
+    } else {
+      // 当路径与文件名相同时, 文件是外部数据根目录下的数据，直接放到根目录下即可
+      // 非文件夹对象
+      let obj = {
+        type: data.fileType,
+        index: index + 1,
+        name: data.fileName,
+        path: GLOBAL.homePath + ConstPath.ExternalData,
+        children: [data],
+      }
+      // 直接在外部数据下的文件数量加1
+      this.externalSelfCount += 1
+      // 将这个数据放进
+      arr.unshift(obj)
+
     }
     return 
   }
@@ -1188,7 +1218,9 @@ export default class MyLocalData extends Component {
    * @param {Object} section 外部数据的头部信息对象
    * @return 返回一个组件实例
    */
-  renderExternalData(obj, section){
+  renderExternalData(infodata){
+    let {index, item, section} = infodata
+    let obj = item
     let that = this
     // 判断是否是文件夹类型
     if(obj.type === 'directory'){
@@ -1227,7 +1259,27 @@ export default class MyLocalData extends Component {
       </Directory>
       return content
 
-    } 
+    } else {
+      let item = obj.children[0]
+      // 当不是文件夹时就渲染之前已经写好的item组件
+      return (
+        <LocalDataItem
+          info = {{index, item, section}}
+          // itemOnpress = {this.itemOnpress}
+          itemOnpress = {(info, event) => {
+            // 记录删除的数据是外部数据下的直接数据的索引
+            if(index < this.externalSelfCount) {
+              that.isExternalSelfDataIndex = index
+            }
+            that.itemOnpress(info, event)
+          }}
+          isImporting = {
+            this.props.importItem !== '' &&
+            JSON.stringify(item) === JSON.stringify(this.props.importItem.item)
+          }
+        />
+      )
+    }
   
 
   }

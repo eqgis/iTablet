@@ -18,6 +18,7 @@ const mapStateToProps = state => ({
   down: state.online.toJS().down,
   device: state.device.toJS().device,
   importItem: state.externalData.toJS().importItem,
+  baseMaps: state.map.toJS().baseMaps,
 })
 
 const mapDispatchToProps = {

@@ -18,7 +18,7 @@ import LocalDataItem from './LocalDataItem'
 import { getOnlineData } from './Method'
 import LocalDtaHeader from './LocalDataHeader'
 import OnlineDataItem from './OnlineDataItem'
-import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
+import { scaleSize, FetchUtils, OnlineServicesUtils, GetUserBaseMapUtil } from '../../../../utils'
 import DataHandler from '../DataHandler'
 import NavigationService from '../../../NavigationService'
 import Directory from './Directory'
@@ -749,6 +749,7 @@ export default class MyLocalData extends Component {
       } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
         result = await SIPortalService.deleteMyData(dataId)
       }
+      await this.loadUserBaseMaps()
       if (typeof result === 'boolean' && result) {
         let sectionData = JSON.parse(JSON.stringify(this.state.sectionData)) // [...this.state.sectionData]
         let oldOnline = sectionData[sectionData.length - 1]
@@ -773,6 +774,29 @@ export default class MyLocalData extends Component {
     } finally {
       // this.setLoading(false)
     }
+  }
+
+  /**
+   * 加载当前用户的底图
+   */
+  async loadUserBaseMaps(){
+    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
+    // 当公有服务列表数组有元素时，就遍历这个数组
+    if (arrPublishServiceList.length > 0) {
+      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
+        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
+        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl){
+          let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
+          // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
+          this.props.setBaseMap &&
+            this.props.setBaseMap({
+              userId: this.props.user.currentUser.userId,
+              baseMaps: list,
+            })
+        }
+      }
+    }
+
   }
 
   _onChangeDataVisibility = async () => {

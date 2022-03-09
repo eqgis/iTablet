@@ -104,6 +104,16 @@ export default class CoworkInfo {
     })
   }
 
+  /**根据Layer路径已读图层相关所有消息 */
+  static consumeMessageByLayerPath(layerPath) {
+    for (let i = this.messages.length - 1; i >= 0; i--) {
+      const item = this.messages[i]
+      if (item.message.layerPath === layerPath && item.status == 0) {
+        this.consumeMessage(item.messageID)
+      }
+    }
+  }
+
   /**
    * 添加对象
    * @param {*} messageID 消息ID
@@ -299,7 +309,7 @@ export default class CoworkInfo {
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE) {
         let url = message.message.serviceUrl
-        result = await serviceModule().actions.updateToLocal({ url })
+        result = await serviceModule().actions.updateToLocal({ url, datasourceAlias: message.message.datasourceAlias })
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
         let url = message.message.serviceUrl

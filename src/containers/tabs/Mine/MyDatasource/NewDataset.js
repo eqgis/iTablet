@@ -32,6 +32,7 @@ class NewDataset extends Component {
   constructor(props) {
     super(props)
     const { params } = this.props.navigation.state
+    this.userTempWorkspace = !!params?.userTempWorkspace // 是否使用临时工作空间
     this.state = {
       title: params.title,
       datasets: [],
@@ -220,17 +221,20 @@ class NewDataset extends Component {
             this.container && this.container.setLoading(false)
           }, 1000)
         } else {
-          for (let i = 0; i < newDatasets.length; i++) {
+          for (let newDataset of newDatasets) {
             let result = await SMap.createDataset(
               this.state.title,
-              newDatasets[i].datasetName,
-              newDatasets[i].datasetType,
+              newDataset.datasetName,
+              newDataset.datasetType,
+              this.userTempWorkspace,
             )
             if(result){
               await SProcess.setPrjCoordSys(
                 this.state.title,
-                newDatasets[i].datasetName,
-                newDatasets[i].datasetPrjValue+"")
+                newDataset.datasetName,
+                newDataset.datasetPrjValue+"",
+                this.userTempWorkspace,
+              )
             }
           }
           setTimeout(async () => {
@@ -259,6 +263,7 @@ class NewDataset extends Component {
           !(await SMap.isAvailableDatasetName(
             this.state.title,
             datasets[i].datasetName,
+            this.userTempWorkspace,
           ))
         ) {
           this.badName = datasets[i].datasetName

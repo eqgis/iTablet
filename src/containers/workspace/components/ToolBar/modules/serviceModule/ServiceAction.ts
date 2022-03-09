@@ -36,14 +36,52 @@ function isLabelDatasource(datasourceAlias?: string) {
   return datasourceAlias?.indexOf(LABEL_PRE_NAME) === 0 && datasourceAlias?.indexOf('#') == datasourceAlias?.length - 1
 }
 
+/**
+ * 获取本地标注数据源名称
+ * @param datasourceAlias
+ * @returns
+ */
+async function getLabelDatasourceName(datasourceAlias?: string) {
+  let _datasourceAlias = datasourceAlias || ''
+  const _params: any = ToolbarModule.getParams()
+  if (_datasourceAlias && isLabelDatasource(_datasourceAlias) && await SMap.isDatasourceOpened(_datasourceAlias)) {
+
+  } else if (_datasourceAlias && isLabelDatasource(_datasourceAlias)) {
+    _datasourceAlias = `Label_${
+      _params.user.currentUser.userName
+    }#`
+  } else {
+    _datasourceAlias = _datasourceAlias || `Label_${
+      _params.user.currentUser.userName
+    }#`
+  }
+  return _datasourceAlias
+}
+
 async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
-  const labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
+  let labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
+  if (labelUDB) {
+    const datasourceInfo = await SMap.getDatasourceByAlias(labelUDB)
+    if (datasourceInfo?.server) {
+      labelUDB = datasourceInfo.server.substring(datasourceInfo.server.lastIndexOf('/') + 1, datasourceInfo.server.lastIndexOf('.'))
+    }
+  } else if (!labelUDB || !await SMap.isDatasourceOpened(labelUDB)) {
+    labelUDB = `Label_${
+      _params.user.currentUser.userName
+    }#`
+  }
   const resultArr = await SMap.addLayers([datasetName], labelUDB)
   if (resultArr.length > 0) {
     SMap.refreshMap()
-    await _params.getLayers()
+    const layers = await _params.getLayers()
     SMediaCollector.showMedia(resultArr[0].layerName, false)
+    for (const layer of layers) {
+      if (layer.name === resultArr[0].layerName) {
+        await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
+        break
+      }
+    }
     // Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
     _params.setToolbarVisible(false)
   } else {
@@ -74,9 +112,12 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           break
         }
       }
-      !isAdded &&
-      isLabelDatasource(res.content?.datasource) && // 只有标注数据集能直接添加图层
-      await addServiceLayer(datasetName, res.content?.datasource)
+
+      if (isAdded) {
+        SCoordinationUtils.getScoordiantion().updateToLocal(_datasetUrl.replace('.json', '').replace('.rjson', ''), res.content.datasource, datasetName)
+      } else if (isLabelDatasource(res.content?.datasource)) { // 只有标注数据集能直接添加图层
+        await addServiceLayer(datasetName, res.content?.datasource)
+      }
 
       res.content && params.setCoworkService({
         groupId: params.currentTask.groupID,
@@ -130,15 +171,17 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   },
   updateHandler: async res => {
     try {
-      let msg = res.result ? getLanguage(GLOBAL.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED
-      if (res?.error?.reason) {
-        msg = res?.error?.reason
-      }
+      // let msg = res.result ? getLanguage(GLOBAL.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED
+      // if (res?.error?.reason) {
+      //   msg = res?.error?.reason
+      // }
       // Toast.show(res?.content?.dataset + msg)
       const params: any = ToolbarModule.getParams()
       if (res.result && res.content?.dataset) {
+        let _layer
         for (let layer of params.layers.layers) {
           if (layer.datasetName === res.content.dataset) {
+            _layer = layer
             await SMediaCollector.hideMedia(layer.name)
             await SMediaCollector.showMedia(layer.name, false)
             break
@@ -155,6 +198,20 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
         })
         if (!res.content) return
         let _datasetUrl = res.content.urlDataset
+
+        if (_layer) {
+          const dsDescription = LayerUtils.getDatasetDescriptionByLayer(_layer)
+          // 若更新的图层不含服务数据,则添加为服务图层
+          if (dsDescription === null || dsDescription?.type !== 'onlineService') {
+            const serviceData = {
+              url: _datasetUrl,
+              datasourceAlias: _layer.datasourceAlias,
+              dataset: _layer.datasetName,
+            }
+            const setResult = await SCoordinationUtils.getScoordiantion().setDataService(_layer.datasourceAlias, _layer.datasetName, serviceData)
+          }
+        }
+
         const coworkMessages = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask?.groupID]?.[params.currentTask?.id]?.messages || []
         if (coworkMessages.length > 0) {
           for (const message of coworkMessages) {
@@ -209,7 +266,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
         let hasResetLayer = false
         for (const layer of _params.layers.layers) {
           const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layer)
-          if (dsDescription?.url && dsDescription?.type === 'onlineService' && layer.isModified) {
+          if (dsDescription?.url && dsDescription?.type === 'onlineService' && res.content.urlDataset === dsDescription.url && layer.isModified) {
             hasResetLayer = true
             await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
           }
@@ -230,6 +287,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           message: {
             type: MsgConstant.MSG_COWORK_SERVICE_UPDATE,
             datasetName: res.content.dataset,
+            datasourceAlias: res.content.datasource,
             serviceUrl: res.content.urlDataset,
           },
         }
@@ -412,13 +470,21 @@ async function downloadService(url: string) {
 
     _params.setToolbarVisible(false)
     _params.showFullMap && _params.showFullMap(false)
-    let result = false
-    const serviceData = await SCoordinationUtils.initMapDataWithService(url)
+      let result = false
+      const serviceData = await SCoordinationUtils.initMapDataWithService(url)
     let services = []
     for (const datasource of serviceData) {
+      let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
+      const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
-        let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
-        services.push({
+        let canAdd = false
+        for (const _dataset of _datasets.list) {
+          if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
+            canAdd = true
+            break
+          }
+        }
+        canAdd && services.push({
           datasetUrl: dataset.datasetUrl,
           status: 'download',
         })
@@ -463,17 +529,7 @@ async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
     Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
     return false
   }
-  const _params: any = ToolbarModule.getParams()
-  let _datasourceAlias
-  if (isLabelDatasource(datasourceAlias)) {
-    _datasourceAlias = `Label_${
-      _params.user.currentUser.userName
-    }#`
-  } else {
-    _datasourceAlias = datasourceAlias || `Label_${
-      _params.user.currentUser.userName
-    }#`
-  }
+  let _datasourceAlias = await getLabelDatasourceName(datasourceAlias)
   return SCoordinationUtils.getScoordiantion().downloadToLocal(datasetUrl, _datasourceAlias || '')
 }
 
@@ -502,7 +558,9 @@ async function updateToLocal (layerData: {
       },
     })
     let datasourceAlias
-    if (isLabelDatasource(layerData?.datasourceAlias)) {
+    if (layerData?.datasourceAlias && await SMap.isDatasourceOpened(layerData?.datasourceAlias)) {
+      datasourceAlias = layerData.datasourceAlias
+    } else if (isLabelDatasource(layerData?.datasourceAlias)) {
       datasourceAlias = `Label_${
         _params.user.currentUser.userName
       }#`
@@ -583,16 +641,7 @@ async function uploadToService(layerData: {
         status: 'upload',
       },
     })
-    let datasourceAlias
-    if (isLabelDatasource(layerData.datasourceAlias)) {
-      datasourceAlias = `Label_${
-        _params.user.currentUser.userName
-      }#`
-    } else {
-      datasourceAlias = layerData.datasourceAlias || `Label_${
-        _params.user.currentUser.userName
-      }#`
-    }
+    let datasourceAlias = await getLabelDatasourceName(layerData.datasourceAlias)
     const datasetName = layerData.datasetName || layerData.url.substr(layerData.url.lastIndexOf('/') + 1)
     result = await SCoordinationUtils.getScoordiantion().uploadToService(layerData.url, datasourceAlias, datasetName)
   } catch (error) {
@@ -773,28 +822,35 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
               ids: ids,
               entities: entities,
             })
-            result = shareResult.succeed
-            let msgObj = {
-              type: MsgConstant.MSG_COWORK,
-              time: new Date().getTime(),
-              user: {
-                name: _params.user.currentUser.nickname,
-                id: _params.user.currentUser.userName,
-                groupID: _params.currentTask.id,     // 任务群组
-                groupName: '',
-                coworkGroupId: _params.currentTask.groupID,     // online协作群组
-                coworkGroupName: _params.currentTask.groupName,
-                taskId: _params.currentTask.id,
-              },
-              message: {
-                type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
-                datasourceAlias: datasourceAlias,
-                datasetName: publishResults.customResult,
-                serviceUrl: `${service.content[0].proxiedUrl}/data/datasources/${publishData.datasets[0]}/datasets/${publishData.datasets[0]}`,
-              },
+            const serviceData = await SCoordinationUtils.initMapDataWithService(service.content[0].proxiedUrl)
+            for (const datasource of serviceData) {
+              for (const dataset of datasource.datasets) {
+                let _datasourceAlias = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
+                _datasourceAlias = await getLabelDatasourceName(datasourceAlias)
+                result = shareResult.succeed
+                let msgObj = {
+                  type: MsgConstant.MSG_COWORK,
+                  time: new Date().getTime(),
+                  user: {
+                    name: _params.user.currentUser.nickname,
+                    id: _params.user.currentUser.userName,
+                    groupID: _params.currentTask.id,     // 任务群组
+                    groupName: '',
+                    coworkGroupId: _params.currentTask.groupID,     // online协作群组
+                    coworkGroupName: _params.currentTask.groupName,
+                    taskId: _params.currentTask.id,
+                  },
+                  message: {
+                    type: MsgConstant.MSG_COWORK_SERVICE_PUBLISH,
+                    datasourceAlias: _datasourceAlias,
+                    datasetName: publishResults.customResult,
+                    serviceUrl: dataset.datasetUrl,
+                  },
+                }
+                let msgStr = JSON.stringify(msgObj)
+                await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+              }
             }
-            let msgStr = JSON.stringify(msgObj)
-            await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
           } else {
             result = false
           }

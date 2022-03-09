@@ -145,6 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "Choisir une couche",
 
   COLLECT_SUCCESS: "Recueillir le succès",
+  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
+  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
+  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
 
   SELECT_TWO_MEDIAS_AT_LEAST: "Vous devez sélectionner au moins deux médias",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "Cet objet n'a pas de fichier multimédia. Voulez-vous le supprimer ?",
@@ -179,7 +182,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED: "Échec de la publication",
   PUBLISH_FAILED_INFO_1: "Le service a été publié",
   PUBLISH_FAILED_INFO_2: "le service est en cours de publication et ne peut pas être exploité pour le moment",
-  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
+  SERVICE_SUBMIT_BEFORE_UPDATE: "Veuillez mettre à jour le service avant de soumettre",
   DELETE_CONFIRM: "Voulez-vous vraiment supprimer l'élément?",
   BATCH_DELETE_CONFIRM: "Voulez-vous vraiment supprimer les éléments sélectionnés?",
   WHETHER_DOWNLOAD_ALL_SERVICES: 'Êtes-vous sûr de vouloir télécharger et mettre à jour tous les services?',
@@ -226,6 +229,8 @@ const Prompt: typeof CN.Prompt = {
   SHARE_PREPARE: "Préparation du partage",
   SHARE_START: "Commencer le partage",
   SHARE_WX_FILE_SIZE_LIMITE: "La taille du fichier ne doit pas dépasser 10M",
+  SHARE_NOT_COMPLRTE: "Le partage n'est pas terminé",
+  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
 
   EXPORTING: "Exportation",
   EXPORT_SUCCESS: "Exporté avec succès",
@@ -241,6 +246,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "Réglé avec succès",
   SETTING_FAILED: "Échec de la configuration",
   NETWORK_ERROR: "Erreur réseau",
+  NETWORK_RECONNECT: "Réseau de reconnexion",
   NO_NETWORK: "Pas de connexion Internet",
   CHOOSE_CLASSIFY_MODEL: "Choisir le modèle de classification",
   USED_IMMEDIATELY: "Utilisé immédiatement",
@@ -355,7 +361,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_THE_FLOOR: "Veuillez sélectionner le sol où se trouve la couche",
   LONG_PRESS_ADD_START: "Veuillez appuyer longuement pour ajouter un point de départ",
   LONG_PRESS_ADD_END: "Veuillez appuyer longuement pour ajouter une destination",
-  TOUCH_TO_ADD_END: "Please touch to add a destination",
+  TOUCH_TO_ADD_END: "Veuillez toucher pour ajouter une destination",
   ROUTE_ANALYSING: "Analyse",
   DISTANCE_ERROR: "La destination est trop proche du point de départ, veuillez resélectionner!",
   USE_ONLINE_ROUTE_ANALYST: "Les points sont en dehors des limites de l'ensemble de données ou il n'y a aucun ensemble de données autour des points, voulez-vous utiliser l'analyste d'itinéraire en ligne?",
@@ -435,7 +441,7 @@ const Prompt: typeof CN.Prompt = {
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: "La couche n'est pas visible et ne peut pas être définie sur la couche actuelle",
   //三维AR管线相关
   FILE_NOT_EXISTS: "Les données ne sont pas disponibles.Téléchargez les données modèles",
-  MOVE_PHONE_ADD_SCENE: "Please move phone slowly,identify the plane click on the screen to add scene",
+  MOVE_PHONE_ADD_SCENE: "Veuillez déplacer le téléphone lentement, identifier l'avion, cliquer sur l'écran pour ajouter une scène",
   IDENTIFY_TIMEOUT: "Délai d'expiration de l'image de suivi, réessayez?",
   TRACKING_LOADING: "Suivi...",
   UNSELECTED_OBJECT: "Objet non sélectionné !",

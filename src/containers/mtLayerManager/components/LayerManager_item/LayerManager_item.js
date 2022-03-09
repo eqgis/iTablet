@@ -425,157 +425,205 @@ export default class LayerManager_item extends React.Component {
     )
   }
 
+  /**
+   * ”我的图层“的子项的设置菜单的管理方法
+   * @param {Component} pressView 显示用的组件
+   * @param {object} layer 触发组件显示的图层对象
+   */
   _showPopover = (pressView, layer) => {
     let items = []
-
-    items = [
-      {
-        title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MOVE_UP,
-        onPress: () => {
-          (async function() {
-            await SMap.moveUpLayer(layer.path)
-            if (this.props.parentData) {
-              this.props.refreshParent &&
-                this.props.refreshParent(this.props.parentData)
-            } else {
-              await this.props.getLayers()
-            }
-            let { px, py, width, height } = this.PressViewPosition
-            if (layer.index > 0) {
-              py = py - height
-              if (py >= scaleSize(180)) {
-                this.popKey = ActionPopover.show(
-                  {
-                    x: px,
-                    y: py,
-                    width,
-                    height,
-                  },
-                  items,
-                )
-              } else {
-                this.popKey = ''
-              }
-              layer.index -= 1
-              this.setState({
-                data: layer,
-              })
-              this.PressViewPosition = { px, py, width, height }
-            } else {
-              this.popKey = ActionPopover.show(
-                {
-                  x: px,
-                  y: py,
-                  width,
-                  height,
-                },
-                items,
-              )
-            }
-          }.bind(this)())
-        },
-      },
-      {
-        title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MOVE_DOWN,
-        onPress: () => {
-          (async function() {
-            await SMap.moveDownLayer(layer.path)
-            if (this.props.parentData) {
-              this.props.refreshParent &&
-                this.props.refreshParent(this.props.parentData)
-            } else {
-              await this.props.getLayers()
-            }
-            let { px, py, width, height } = this.PressViewPosition
-            if (layer.index < layer.layerCount - 1) {
-              py = py + height
-              if (
-                py < screen.getScreenHeight() - scaleSize(
-                  screen.getOrientation().indexOf('PORTRAIT') ? 40 : 120,
-                )
-              ) {
-                this.popKey = ActionPopover.show(
-                  {
-                    x: px,
-                    y: py,
-                    width,
-                    height,
-                  },
-                  items,
-                )
-              } else {
-                this.popKey = ''
-              }
-              layer.index += 1
-              this.setState({
-                data: layer,
-              })
-              this.PressViewPosition = { px, py, width, height }
-            } else {
-              this.popKey = ActionPopover.show(
-                {
-                  x: px,
-                  y: py,
-                  width,
-                  height,
-                },
-                items,
-              )
-            }
-          }.bind(this)())
-        },
-      },
-      {
-        title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_TOP,
-        onPress: () => {
-          (async function() {
-            this.popKey = ''
-            await SMap.moveToTop(layer.path)
-            if (layer.path.indexOf('/') === -1) {
-              let count = await SMap.getTaggingLayerCount(
-                (this.props.user.currentUser &&
-                  this.props.user.currentUser.userName) ||
-                  'Customer',
-              )
-              for (let i = 0; i < count; i++) {
-                await SMap.moveToTop(layer.path)
-              }
-            }
-            if (this.props.parentData) {
-              this.props.refreshParent &&
-                this.props.refreshParent(this.props.parentData)
-            } else {
-              await this.props.getLayers()
-            }
-          }.bind(this)())
-        },
-      },
-      {
-        title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_BOTTOM,
-        onPress: () => {
-          (async function() {
-            this.popKey = ''
-            await SMap.moveToBottom(layer.path)
-            if (layer.path.indexOf('/') === -1 && this.props.hasBaseMap) {
-              SMap.moveUpLayer(layer.path)
-            }
-          }.bind(this)())
-          // if (
-          //   this.props.layers[this.props.layers.length - 1].name.indexOf(
-          //     'vec@TD',
-          //   ) >= 0
-          // ) {
-          //   SMap.moveToBottom(layer.name)
-          // }
+    let upMoveObj = {
+      // 将图层向上移一层
+      title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MOVE_UP,
+      onPress: () => {
+        (async function() {
+          // 调用接口方法上移图层
+          await SMap.moveUpLayer(layer.path)
           if (this.props.parentData) {
             this.props.refreshParent &&
               this.props.refreshParent(this.props.parentData)
           } else {
-            this.props.getLayers()
+            await this.props.getLayers()
           }
-        },
+          // 重新确定按钮的显示位置
+          let { px, py, width, height } = this.PressViewPosition
+          if (layer.index > 0) {
+
+            // 点击上移按钮后，检查当前图层是否需要变化按钮显示 lyx
+            if(layer.index === 1){
+              // 从第二个图层移到第一个图层，要去掉原来items里的置顶和上移按钮
+              items.splice(2,1)  
+              items.splice(0,1)
+            } else if(layer.index === layer.layerCount - 1) {
+              // 从最后一个图层移动到倒数第二个图层，需要加上 下移和置底按钮
+              items.splice(1, 0, downMoveObj)
+              items.push(moveToBottomObj)
+            }
+
+            py = py - height
+            if (py >= scaleSize(180)) {
+              this.popKey = ActionPopover.show(
+                {
+                  x: px,
+                  y: py,
+                  width,
+                  height,
+                },
+                items,
+              )
+            } else {
+              this.popKey = ''
+            }
+            layer.index -= 1
+            this.setState({
+              data: layer,
+            })
+            this.PressViewPosition = { px, py, width, height }
+          } else {
+            this.popKey = ActionPopover.show(
+              {
+                x: px,
+                y: py,
+                width,
+                height,
+              },
+              items,
+            )
+          }
+        }.bind(this)())
       },
-    ]
+    }
+    let downMoveObj = {
+      // 将图层向下移一层
+      title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MOVE_DOWN,
+      onPress: () => {
+        (async function() {
+          await SMap.moveDownLayer(layer.path)
+          if (this.props.parentData) {
+            this.props.refreshParent &&
+              this.props.refreshParent(this.props.parentData)
+          } else {
+            await this.props.getLayers()
+          }
+          let { px, py, width, height } = this.PressViewPosition
+          if (layer.index < layer.layerCount - 1) {
+
+            // 点击下移按钮后，检查当前图层是否需要变化按钮显示 lyx
+            if(layer.index === 0){
+              // 从第一个图层移到第二个图层，需要加上 上移和置顶按钮
+              items.unshift(upMoveObj)
+              items.splice(2, 0, moveToTopObj)
+            } else if(layer.index === layer.layerCount - 2) {
+              // 从倒数第二个图层移动到最后一个图层，需要去掉原来item里的置底和下移按钮
+              items.splice(3, 1)
+              items.splice(1, 1)
+            }
+
+            py = py + height
+            if (
+              py < screen.getScreenHeight() - scaleSize(
+                screen.getOrientation().indexOf('PORTRAIT') ? 40 : 120,
+              )
+            ) {
+              this.popKey = ActionPopover.show(
+                {
+                  x: px,
+                  y: py,
+                  width,
+                  height,
+                },
+                items,
+              )
+            } else {
+              this.popKey = ''
+            }
+            layer.index += 1
+            this.setState({
+              data: layer,
+            })
+            this.PressViewPosition = { px, py, width, height }
+          } else {
+            this.popKey = ActionPopover.show(
+              {
+                x: px,
+                y: py,
+                width,
+                height,
+              },
+              items,
+            )
+          }
+        }.bind(this)())
+      },
+    }
+    let moveToTopObj = {
+      // 将图层置顶
+      title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_TOP,
+      onPress: () => {
+        (async function() {
+          this.popKey = ''
+          await SMap.moveToTop(layer.path)
+          if (layer.path.indexOf('/') === -1) {
+            let count = await SMap.getTaggingLayerCount(
+              (this.props.user.currentUser &&
+                this.props.user.currentUser.userName) ||
+                'Customer',
+            )
+            for (let i = 0; i < count; i++) {
+              await SMap.moveToTop(layer.path)
+            }
+          }
+          if (this.props.parentData) {
+            this.props.refreshParent &&
+              this.props.refreshParent(this.props.parentData)
+          } else {
+            await this.props.getLayers()
+          }
+        }.bind(this)())
+      },
+    }
+    let moveToBottomObj = {
+      // 将图层置底
+      title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_BOTTOM,
+      onPress: () => {
+        (async function() {
+          this.popKey = ''
+          await SMap.moveToBottom(layer.path)
+          if (layer.path.indexOf('/') === -1 && this.props.hasBaseMap) {
+            SMap.moveUpLayer(layer.path)
+          }
+        }.bind(this)())
+        // if (
+        //   this.props.layers[this.props.layers.length - 1].name.indexOf(
+        //     'vec@TD',
+        //   ) >= 0
+        // ) {
+        //   SMap.moveToBottom(layer.name)
+        // }
+        if (this.props.parentData) {
+          this.props.refreshParent &&
+            this.props.refreshParent(this.props.parentData)
+        } else {
+          this.props.getLayers()
+        }
+      },
+    }
+
+    // 根据图层总数和图层当前所处位置调整设置菜单的按钮显示 lyx
+    if(layer.layerCount === 1){
+      // 当只有一个图层时，什么按钮也不显示
+      item = []
+    }else if(layer.index === 0){
+      // 当前图层是第一个图层时，显示置底和下移按钮
+      items = [downMoveObj, moveToBottomObj]
+    }else if(layer.index === layer.layerCount - 1){
+      // 当前图层是最后一个图层时，显示置顶和上移按钮
+      items = [upMoveObj, moveToTopObj]
+    } else {
+      items = [upMoveObj, downMoveObj, moveToTopObj, moveToBottomObj]
+    }
+
+    // 设置菜单的显示的位置坐标
     pressView.measure((ox, oy, width, height, px, py) => {
       this.popKey = ActionPopover.show(
         {
@@ -631,14 +679,14 @@ export default class LayerManager_item extends React.Component {
     let cornerMark
     if (this.props.cornerMarkImage) {
       cornerMark = this.props.cornerMarkImage
-    } else if (GLOBAL.coworkMode && dsDescription?.type === 'onlineService' && this.props.data.isModified) {
+    } else if (GLOBAL.coworkMode && dsDescription?.type === 'onlineService' && this.props.data.isModified && LayerUtils.availableServiceLayer(this.state.data.type)) {
       cornerMark = getThemeAssets().cowork.icon_state_published
     } else {
       if (!dsDescription) return null
       switch(dsDescription.type) {
         case 'onlineService':
           // cornerMark = GLOBAL.coworkMode && this.props.data.themeType === 0 ? getThemeAssets().cowork.icon_state_published : null
-          cornerMark = GLOBAL.coworkMode ? getThemeAssets().cowork.icon_complate : null
+          cornerMark = GLOBAL.coworkMode && LayerUtils.availableServiceLayer(this.state.data.type) ? getThemeAssets().cowork.icon_complate : null
           break
       }
     }
@@ -706,6 +754,7 @@ export default class LayerManager_item extends React.Component {
       >
         <View style={styles.btn_container}>
           {this.state.data.type === LAYER_GROUP ? (
+            // 当数据类型为图层分组时渲染
             <TouchableOpacity style={styles.btn} onPress={this._arrow_pop_row}>
               <Image
                 resizeMode={'contain'}
@@ -742,9 +791,9 @@ export default class LayerManager_item extends React.Component {
         <View style={styles.text_container}>
           <Text numberOfLines={2} style={[styles.text, { color: selectcolor }]}>{name}</Text>
           {
-            this.state.data.datasourceAlias && this.state.data.datasetName &&
+            this.state.data.datasourceAlias !== '' && this.state.data.datasetName !== '' &&
             <Text numberOfLines={1} style={[styles.text, { fontSize: setSpText(20), color: this.props.isSelected ? selectcolor : color.fontColorGray }]}>
-              {this.state.data.datasourceAlias + ' - ' + this.state.data.datasetName}
+              {this.state.data.datasourceAlias + ' - ' + this.state.data.datasetName + ' - ' + this.state.data.name}
             </Text>
           }
         </View>

@@ -27,6 +27,7 @@ class AICollectionModule extends FunctionModule {
       return
     }
     this.setModuleData(this.type)
+    AiCollectionActions.setSelectedModel(params.language)
     params.showFullMap && params.showFullMap(true)
     AiCollectionActions.aiDetect()
   }

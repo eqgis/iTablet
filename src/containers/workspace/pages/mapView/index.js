@@ -61,6 +61,7 @@ import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
 import { createARMap, openARMap, saveARMap, closeARMap } from '../../../../redux/models/armap'
 import { setCoworkService } from '../../../../redux/models/cowork'
+import { setAIClassifyModel, setAIDetectModel } from '../../../../redux/models/setting'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -118,6 +119,8 @@ const mapStateToProps = state => ({
   showSampleData: state.down.toJS().showSampleData,
   baseMaps: state.map.toJS().baseMaps,
   isShowCompass: state.setting.toJS().isShowCompass,
+  aiDetectData: state.setting.toJS().aiDetectData,
+  aiClassifyData: state.setting.toJS().aiClassifyData,
 })
 
 const mapDispatchToProps = {
@@ -176,6 +179,8 @@ const mapDispatchToProps = {
   setSampleDataShow,
   setCoworkService,
   arPoiSearch,
+  setAIClassifyModel,
+  setAIDetectModel,
 }
 
 export default connect(

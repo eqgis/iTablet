@@ -11,6 +11,7 @@ const Friends = {
   RECOMMEND_FRIEND: "好友推荐",
   SELECT_MODULE: "选择模块",
   SELECT_MAP: "选择地图",
+  PUBLIC_FRIENDS: "公开好友",
   // Friend
   MSG_SERVICE_FAILED: "连接消息服务失败！",
   MSG_SERVICE_NOT_CONNECT: "未能连接消息服务！",

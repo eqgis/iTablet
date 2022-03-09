@@ -19,7 +19,8 @@ const Cowork: typeof CN.Cowork = {
   SEARCHABLE: "Aranabilir",
   READABLE: "Okunabilir",
 
-  UPDATE_THEME_ERROR_INFO: "This message is for updating thematic map and cannot be appended", // need to translate
+  UPDATE_THEME_ERROR_INFO: "Bu mesaj tematik haritayı güncellemek içindir. Ekleme yapılamaz.", // need to translate
+  CLOSE_MAP_BEFORE_UPDATE_SERVICE: "Hizmet güncelleniyor, lütfen güncelleme tamamlanana kadar haritayı kapatmayın.", // need to translate
 }
 
 export { Cowork }

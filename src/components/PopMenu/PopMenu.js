@@ -333,8 +333,12 @@ export default class PopMenu extends PureComponent {
 
   _renderHeader = () => {
     return (
-      <View key={this.props.title} style={styles.item}>
-        <Text style={styles.title}>{this.props.title}</Text>
+      <View key={this.props.title} style={[styles.item,{height: scaleSize(95)}]}>
+        <Text style={styles.title}
+          numberOfLines={3}
+          ellipsizeMode={'clip'}>
+          {this.props.title}
+        </Text>
       </View>
     )
   }

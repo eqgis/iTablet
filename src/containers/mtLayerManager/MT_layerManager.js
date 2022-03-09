@@ -132,6 +132,7 @@ export default class MT_layerManager extends React.Component {
         allLayers.length > 0 ||
         (allLayers.length === 0 && GLOBAL.Type === ChunkType.MAP_ANALYST)
       ) {
+        // 当图层数量大于0且最后一个图层不是底图时 或者 图层数量为0且为分析模式的时候
         if (
           (allLayers.length > 0 &&
             !LayerUtils.isBaseLayer(allLayers[allLayers.length - 1])) ||
@@ -148,6 +149,7 @@ export default class MT_layerManager extends React.Component {
             },
           ]
         } else if (allLayers.length > 0) {
+          // 当图层数量大于0，最后一个图层是底图，对图层显示进行分类,底图放进baseMap里，其他图层放进alllayers里
           baseMap = allLayers.filter(layer => {
             return LayerUtils.isBaseLayer(layer)
           })
@@ -606,8 +608,10 @@ export default class MT_layerManager extends React.Component {
       }
 
       if (value) {
+        let layerType = LayerUtils.getLayerType(data)
         // 显示多媒体callouts
-        SMediaCollector.showMedia(data.name)
+        // TODO 普通图层显示和多媒体显示逻辑分开,图层显示的时候,暂时不显示多媒体,由多媒体开关来控制
+        layerType === 'TAGGINGLAYER' && SMediaCollector.showMedia(data.name)
       } else {
         // 隐藏多媒体callouts
         SMediaCollector.hideMedia(data.name)
@@ -738,6 +742,9 @@ export default class MT_layerManager extends React.Component {
     // 类型图标角标
     let cornerMarkImage = null
     try {
+      if (GLOBAL.coworkMode && !LayerUtils.availableServiceLayer(item.type)) {
+        return cornerMarkImage
+      }
       if (
         GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
         this.props.cowork.services?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.length > 0

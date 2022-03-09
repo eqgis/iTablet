@@ -1518,8 +1518,8 @@ export default handleActions(
           if (payload.service instanceof Array) {
             for (const _service of payload.service) {
               if (
-                service.layerName === _service.layerName ||
-                service.datasetUrl === _service.datasetUrl
+                service.layerName && service.layerName === _service.layerName ||
+                service.datasetUrl && service.datasetUrl === _service.datasetUrl
               ) {
                 targetService = Object.assign(service, _service)
                 // 若完成，则删除记录
@@ -1532,8 +1532,8 @@ export default handleActions(
             }
           } else {
             if (
-              service.layerName === payload.service.layerName ||
-              service.datasetUrl === payload.service.datasetUrl
+              service.layerName && service.layerName === payload.service.layerName ||
+              service.datasetUrl && service.datasetUrl === payload.service.datasetUrl
             ) {
               targetService = Object.assign(service, payload.service)
               // 若完成，则删除记录

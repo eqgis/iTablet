@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { SMap } from 'imobile_for_reactnative'
-import { ConstToolType, ConstPath, ToolbarType } from '../../../../../../constants'
+import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { ImageButton } from '../../../../../../components'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
@@ -13,6 +13,7 @@ import ToolbarModule from '../ToolbarModule'
 import ServiceAction, { DataServiceUrlParams } from './ServiceAction'
 import { FileTools } from '../../../../../../native'
 import ToolbarBtnType from '../../ToolbarBtnType'
+import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 interface ActionParams {
   layerData: SMap.LayerInfo,
 }
@@ -123,6 +124,7 @@ async function getData(type: string, params: any) {
               datasourceAlias: layerData.datasourceAlias,
               datasetName: layerData.datasetName,
             })
+            CoworkInfo.consumeMessageByLayerPath(layerData.path)
           },
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
@@ -249,15 +251,17 @@ async function getData(type: string, params: any) {
                     Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
                   }
                 } else {
-                  let datasourcePath = await FileTools.appendingHomeDirectory()
-                  if (layerData?.datasourceAlias?.indexOf('Label_' + _params.user.currentUser.userName) === 0) {
-                    datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
+                  let datasourcePath
+                  if (layerData?.datasourceServer) {
+                    datasourcePath = layerData.datasourceServer
+                  } else if (layerData?.datasourceAlias?.indexOf('Label_' + _params.user.currentUser.userName) === 0) {
+                    datasourcePath = await FileTools.appendingHomeDirectory() + ConstPath.UserPath + _params.user.currentUser.userName + '/' +
                     ConstPath.RelativePath.Label +
                     'Label_' +
                     _params.user.currentUser.userName +
                     '#.udb'
                   } else {
-                    datasourcePath += ConstPath.UserPath + _params.user.currentUser.userName + '/' +
+                    datasourcePath = await FileTools.appendingHomeDirectory() + ConstPath.UserPath + _params.user.currentUser.userName + '/' +
                     ConstPath.RelativePath.Datasource +
                     layerData.datasourceAlias + '.udb'
                   }
@@ -272,7 +276,7 @@ async function getData(type: string, params: any) {
                       groupName: _params.currentGroup.groupName,
                     }])
                     // _params.setContainerLoading?.(false)
-
+                    await SMap.resetModified(layerData.path) // 发布后,重置图层
                     if (result) {
                       let keywords: string[] = []
                       let _content: DataServiceUrlParams[] = []

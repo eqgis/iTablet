@@ -41,8 +41,8 @@ export default {
     // {key: 'AIModel'},
   ],
   infoServer: {
-    url: 'https://www.supermapol.com/web/datas/235674088/download',
-    fileName: 'ServerInfo.geojson',
+    // url: 'https://www.supermapol.com/web/datas/547487753/download',
+    // fileName: 'ServerInfo.geojson',
   },
   messageServer: {
     MSG_ADDRESS: `http://${IPORTAL_IP}:${IPORTAL_PORT}/iportal/web`,

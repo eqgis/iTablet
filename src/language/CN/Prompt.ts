@@ -143,6 +143,9 @@ const Prompt = {
   CHOOSE_LAYER: "选择图层",
 
   COLLECT_SUCCESS: "采集成功",
+  LONG_PRESS_SELECT_POINT: "长按选点",
+  LONG_PRESS_END_POINT: "长按选择终点",
+  LONG_PRESS_START_POINT: "长按选择起点",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "至少选中两个多媒体文件",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "该对象已经没有多媒体文件，是否删除？",
@@ -224,6 +227,8 @@ const Prompt = {
   SHARE_PREPARE: "准备分享",
   SHARE_START: "开始分享",
   SHARE_WX_FILE_SIZE_LIMITE: "文件大小不超过10M",
+  SHARE_NOT_COMPLRTE: "分享尚未完成",
+  PLEASE_SAVE_MAP: "请先保存地图",
 
   EXPORTING: "导出中",
   EXPORT_SUCCESS: "导出成功",
@@ -239,6 +244,7 @@ const Prompt = {
   SETTING_SUCCESS: "设置成功",
   SETTING_FAILED: "设置失败",
   NETWORK_ERROR: "网络错误",
+  NETWORK_RECONNECT: "重新连接",
   NO_NETWORK: "未连接到网络",
   CHOOSE_CLASSIFY_MODEL: "选择分类模型",
   USED_IMMEDIATELY: "立即使用",

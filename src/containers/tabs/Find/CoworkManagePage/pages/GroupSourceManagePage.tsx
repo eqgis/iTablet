@@ -15,7 +15,8 @@ import { Users } from '../../../../../redux/models/user'
 import { downloadSourceFile, deleteSourceDownloadFile, IDownloadProps, DownloadData } from '../../../../../redux/models/down'
 import { setCurrentGroup } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
-import { SCoordination, GroupType } from 'imobile_for_reactnative'
+import { SCoordination } from 'imobile_for_reactnative'
+import { ResultDataBase, ResourceType, GroupType } from 'imobile_for_reactnative/types/interface/iserver/types'
 import SourceItem, { MoreParams, ItemData } from '../components/SourceItem'
 import BatchHeadBar from '../../../Mine/component/BatchHeadBar'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -277,7 +278,29 @@ class GroupSourceManagePage extends Component<Props, State> {
     })
   }
 
-  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', orderBy = 'UPDATETIME', keywords = this.keywords, cb = () => { } }: any) => {
+  /**
+   * 查找群组资源
+   * @param param
+   * {
+   *    pageSize: number,
+   *    currentPage: number,
+   *    orderType: DESC | ASC,
+   *    orderBy: ResourceOrderBy,
+   *    keywords: string[], // 群资源名称关键字过滤
+   *    resourceSubTypes: string[], // 群组数据类型过滤
+   *    cb: () => void,
+   * }
+   */
+  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', orderBy = 'UPDATETIME', keywords = this.keywords, resourceSubTypes = this.isManage ? [] : ['WORKSPACE'], cb = () => {} }: any) => {
+    const filterData = (data: ResourceType[], resourceSubTypes: Array<string>) => {
+      const _data = []
+      for (const item of data) {
+        if (resourceSubTypes.indexOf(item.sourceSubtype) >= 0) {
+          _data.push(item)
+        }
+      }
+      return _data
+    }
     this.servicesUtils?.getGroupResources({
       groupId: this.props.currentGroup.id,
       // resourceCreator: this.props.user.currentUser.userId,
@@ -286,19 +309,24 @@ class GroupSourceManagePage extends Component<Props, State> {
       orderType: orderType,
       orderBy: orderBy,
       keywords: keywords,
-    }).then((result: any) => {
+    }).then((result: ResultDataBase<ResourceType>) => {
       if (result && result.content) {
-        let _data = []
+        let _data = [], _filterData: ResourceType[] = []
         if (result.content.length > 0) {
+          _filterData = resourceSubTypes?.length > 0 ? filterData(result.content, resourceSubTypes) : result.content
+          // const _filterData = result.content
           if (this.currentPage < currentPage) {
             _data = this.state.data.deepClone()
-            _data = _data.concat(result.content)
+            _data = _data.concat(_filterData)
           } else {
-            _data = result.content
+            _data = _filterData
           }
         }
         // 判断是否还有更多数据
-        if (_data.length === result.total) {
+        // if (_data.length === result.total) {
+        //   this.isNoMore = true
+        // }
+        if (currentPage === result.totalPage) {
           this.isNoMore = true
         }
         this.currentPage = currentPage
@@ -307,8 +335,17 @@ class GroupSourceManagePage extends Component<Props, State> {
           isRefresh: false,
           firstLoad: false,
         }, () => {
-          this.isLoading = false
-          cb && cb()
+          // 不满pageSize,继续到下一页查找相关数据
+          if (result.totalPage != undefined && currentPage < result.totalPage && this.state.data.length <= pageSize * currentPage) {
+            this.getGroupResources({
+              pageSize: this.pageSize,
+              currentPage: this.currentPage + 1,
+              cb: cb,
+            })
+          } else {
+            this.isLoading = false
+            cb && cb()
+          }
         })
       } else {
         this.setState({
@@ -583,10 +620,15 @@ class GroupSourceManagePage extends Component<Props, State> {
           let selected = new Map(this.tempSelectedData)
           const isSelected = selected.has(data.resourceId)
           if (isSelected) {
-            const item = selected.get(data.resourceId)
-            if (!item?.download) {
-              selected.set(data.resourceId, {...data, download: download})
+            if (!value) {
+              selected.delete(data.resourceId)
               this.setState({selectedData: selected})
+            } else {
+              const item = selected.get(data.resourceId)
+              if (!item?.download) {
+                selected.set(data.resourceId, {...data, download: download})
+                this.setState({selectedData: selected})
+              }
             }
           } else if (value) {
             selected.set(data.resourceId, {...data, download: download})

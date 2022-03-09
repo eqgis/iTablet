@@ -13,6 +13,7 @@ const Friends: typeof CN.Friends = {
   RECOMMEND_FRIEND: "Arkadaş Ekle",
   SELECT_MODULE: "Modül Seç",
   SELECT_MAP: "Harita Seç",
+  PUBLIC_FRIENDS: "Herkese Açık Arkadaşlar",
   // Friend
   MSG_SERVICE_FAILED: "Mesaj servisine bağlanılamadı",
   MSG_SERVICE_NOT_CONNECT: "Mesaj servisine bağlanılamıyor",

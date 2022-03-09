@@ -15,11 +15,12 @@ const Cowork: typeof CN.Cowork = {
   ERROR_SERVICE_DATA_LOSE_URL: "Les données URL sont perdus",
 
   PLEASE_ENTER_SERCICE_NAME: "Veuillez entrer le nom de service",
-  SERVICE_SHARING_SETTINGS: "Partade des paramétres de service",
+  SERVICE_SHARING_SETTINGS: "Partage des services",
   SEARCHABLE: "Consultable",
   READABLE: "Lisible",
 
-  UPDATE_THEME_ERROR_INFO: "This message is for updating thematic map and cannot be appended", // need to translate
+  UPDATE_THEME_ERROR_INFO: "Ce message concerne la mise à jour de la carte thématique et ne peut pas être ajouté",
+  CLOSE_MAP_BEFORE_UPDATE_SERVICE: "Le service est en cours de mise à jour, veuillez ne pas fermer la carte tant que la mise à jour n'est pas terminée",
 }
 
 export { Cowork }

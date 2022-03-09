@@ -25,7 +25,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   START: "開始",
   START_OPEN_MAP: "マップを開く",
   START_NEW_MAP: "新規マップ",
-  START_RECENT: "歴史レコード",
+  START_RECENT: "履歴レコード",
   START_SAVE_MAP: "マップの保存",
   START_SAVE_AS_MAP: "マップに名前を付けて保存",
   START_OPEN_SENCE: "シーンを開く",
@@ -37,7 +37,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
 
   OPEN_ONLINE_DATA: "オンラインデータを開く",
 
-  PLOT: "アニメシンボル",
+  PLOT: "進路プロット",
 
   // 地图制图及公共 添加
   OPEN: "追加",
@@ -54,9 +54,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   NETWORK_MODULE: "道路ネットワーク",
   NETMODEL: "ネットワークモデル",
   NETDATA: "道路ネットワークデータの選択",
-  INDOORDATA: "室内データソース",
+  INDOORDATA: "屋内データソース",
   INDOOR_DATASOURCE: "屋内データソース",
-  OUTDOOR_DATASETS: "アウトドアデータセット",
+  OUTDOOR_DATASETS: "屋外データセット",
   SWITCH_DATA: "ナビデータの切替",
   DATASET: "データセットの選択",
   Traffic: "道路状況",
@@ -162,7 +162,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "マルチメディアコレクション",
   TOUR: "旅行軌跡",
   TOUR_NAME: "旅行軌跡名",
-  SCAN: "Scan", // need to translate
+  SCAN: "スキャン",
 
   STYLE_TRANSFER: "AIマップ作成",
   OBJ_EDIT: "オブジェクト編集",

@@ -149,7 +149,7 @@ function showSaveDialog(type) {
     type !== ConstToolType.SM_MAP3D_SHARE &&
     !ToolbarModule.getParams().map.currentMap.name
   ) {
-    Toast.show(ConstInfo.PLEASE_SAVE_MAP)
+    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SAVE_MAP)
     return
   }
   if (ToolbarModule.getData().isSharing) {

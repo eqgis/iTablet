@@ -24,28 +24,80 @@ async function OpenData(data, index, callback) {
   // Layer index = 0 为顶层
   if (isOpen) {
     let info = await SMap.getMapInfo()
-    if (layers.length > 0) {
-      let baseMap = layers.filter(layer => {
-        return LayerUtils.isBaseLayer(layer)
-      })
-      for (let i = 0; i < baseMap.length; i++) {
-        await SMap.removeLayer(baseMap[i].path)
-      }
-      for (let i = 0; i < baseMap.length; i++) {
-        await SMap.closeDatasource(baseMap[i].datasourceAlias)
+    if(!data?.userAdd){  // 当是系统自带的底图时就移除，是用户自定义的底图时，就不移除原底图 lyx
+      if (layers.length > 0) {
+        // 获取底图数组
+        let baseMap = layers.filter(layer => {
+          return LayerUtils.isBaseLayer(layer)
+        })
+        // 移除所有的图层
+        for (let i = 0; i < baseMap.length; i++) {
+          await SMap.removeLayer(baseMap[i].path)
+        }
+        // 关闭数据源
+        for (let i = 0; i < baseMap.length; i++) {
+          await SMap.closeDatasource(baseMap[i].datasourceAlias)
+        }
       }
     }
+
+    
+    // 从data里获取当前最后一个图层的名字,并解码（解码主要是对有中文编码的部分进行解码） lyx
+    let name = decodeURIComponent(data.layerName)
+    // 是加了英文标识的图层
+    let rexE = /^en-/g
+    if(rexE.test(name)){
+      // 加了英文标识的将标识去掉，就是图层的真实名字
+      name = name.replace('en-', '')
+    }
+    // 记录当前要添加的底图是否是重复添加的图层的标识，true表示是重复添加的，false表示第一次添加
+    let isReAdd = false 
+    // 是用户自定义的底图时，查找当前底图是否已经被添加过了
+    if(data?.userAdd) {
+      // 所有以当前底图名字为开头的图层对象的数组
+      let layerAddArray = layers.filter(value => new RegExp('^' +name, 'i').test(value.name))
+      // 当前底图被添加形成的图层数组的长度不为0时，表示当前底图已经被添加过了
+      isReAdd = !!(layerAddArray.length)
+    }
+
+    // 最后一个图层是否是底图的标识
+    let isBaseLayerEnd = LayerUtils.isBaseLayer(layers[layers.length - 1])
+    // 设置新的底图
     if (data instanceof Array) {
-      for (let i = 0; i < data.length; i++) {
-        await SMap.openDatasource(data[i].DSParams, index, false)
+      
+      // 当不是重复添加的底图时，就打开数据源(并添加图层)
+      if(!isReAdd) {
+        for (let i = 0; i < data.length; i++) {
+          await SMap.openDatasource(data[i].DSParams, index, false)
+        }
+
+        // 当前底图为用户自定义的，并且layers的最后一个图层是系统自带的底图时，将用户的底图上移 lyx
+        if(data?.userAdd && isBaseLayerEnd){  
+          for(let i = 0; i <  GLOBAL.BaseMapSize; i++) {
+            await SMap.moveUpLayer(name)
+          }
+        } else {
+          GLOBAL.BaseMapSize = data.length
+        }
       }
-      GLOBAL.BaseMapSize = data.length
+      // 如果回调存在且为为函数就调用回调函数
       if (callback && typeof callback === 'function') {
         callback()
       }
     } else {
-      await SMap.openDatasource(data.DSParams, index, false)
-      GLOBAL.BaseMapSize = 1
+      // 当不是重复添加的底图时，就打开数据源(并添加图层)
+      if(!isReAdd) {
+        await SMap.openDatasource(data.DSParams, index, false)
+        // 当前底图为用户自定义的，并且layers的最后一个图层是系统自带的底图时，将用户的底图上移 lyx
+        if(data?.userAdd && isBaseLayerEnd){  
+          for(let i = 0; i <  GLOBAL.BaseMapSize; i++) {
+            await SMap.moveUpLayer(name)
+          }
+        } else {
+          GLOBAL.BaseMapSize = 1
+        }
+      }
+      // 如果回调存在且为为函数就调用回调函数
       if (callback && typeof callback === 'function') {
         callback()
       }

@@ -18,6 +18,7 @@ const Cowork = {
   READABLE: "可查看",
 
   UPDATE_THEME_ERROR_INFO: "此消息为更新专题图,不能添加",
+  CLOSE_MAP_BEFORE_UPDATE_SERVICE: "服务正在更新,请更新结束后再关闭地图",
 }
 
 export { Cowork }

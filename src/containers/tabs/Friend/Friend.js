@@ -15,6 +15,7 @@ import {
   AppState,
   NetInfo,
   AsyncStorage,
+  Switch,
 } from 'react-native'
 import ScrollableTabView, {
   DefaultTabBar,
@@ -25,7 +26,7 @@ import { SMessageService, SOnlineService, SIPortalService, SMap, SCoordination }
 import NavigationService from '../../NavigationService'
 import screen, { scaleSize } from '../../../utils/screen'
 import { Toast, OnlineServicesUtils } from '../../../utils'
-import { size } from '../../../styles'
+import { size, color } from '../../../styles'
 import { styles } from './Styles'
 
 import { getThemeAssets } from '../../../assets'
@@ -106,10 +107,11 @@ export default class Friend extends Component {
       data: [{}],
       bHasUserInfo: false,
       showPop: false,
+      openFriends: false,
     }
     this.messageQueue = []
     AppState.addEventListener('change', this.handleStateChange)
-    NetInfo.addEventListener('connectionChange', this.handleNetworkState)
+    // NetInfo.addEventListener('connectionChange', this.handleNetworkState)
     this.addFileListener()
     this.stateChangeCount = 0
     this._receiveMessage = this._receiveMessage.bind(this)
@@ -151,7 +153,7 @@ export default class Friend extends Component {
   componentWillUnmount() {
     this.removeFileListener()
     AppState.removeEventListener('change', this.handleStateChange)
-    NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
+    // NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
   }
 
   _getWidth = () => {
@@ -207,7 +209,7 @@ export default class Friend extends Component {
       )
       let servicesUtils = new OnlineServicesUtils(type)
       let data
-      let Info
+      let Info, useConfigServer = false
       if (type === 'iportal' && this.props.appConfig.messageServer) {
         data = this.props.appConfig.messageServer
         if (
@@ -222,8 +224,9 @@ export default class Friend extends Component {
         ) {
           Info = data
         }
-      } else if (this.props.appConfig.infoServer) {
+      } else if (this.props.appConfig.infoServer?.url && this.props.appConfig.infoServer?.fileName) {
         data = this.props.appConfig.infoServer
+        useConfigServer = true
       } else {
         data = await servicesUtils.getPublicDataByName(
           '927528',
@@ -232,7 +235,7 @@ export default class Friend extends Component {
       }
       if (!Info && data && (data.url || data.id !== undefined)) {
         let url =
-          data.url || `${servicesUtils.serverUrl}/datas/${data.id}/download`
+        data.url || `${servicesUtils.serverUrl}/datas/${data.id}/download`
 
         let filePath = commonPath + data.fileName
 
@@ -250,6 +253,7 @@ export default class Friend extends Component {
 
         await RNFS.downloadFile(downloadOptions).promise
         let info = await RNFS.readFile(filePath)
+        info = await FileTools.decoder(info)
         RNFS.unlink(filePath)
         let serverInfo = JSON.parse(info)
         Info = serverInfo
@@ -413,6 +417,16 @@ export default class Friend extends Component {
     }
     this.restartService()
     JPushService.init(this.props.user.currentUser.userName)
+
+    // iportal管理员获取是否公开用户列表
+    if (UserType.isIPortalUser(this.props.user.currentUser) && this.props.user.currentUser.roles.indexOf('ADMIN') >= 0) {
+      const iportalAdminInfoId = await FriendListFileHandle.isAdminOpenFriends()
+      if (this.state.openFriends !== !!iportalAdminInfoId) {
+        this.setState({
+          openFriends: !!iportalAdminInfoId,
+        })
+      }
+    }
     if (this.props.user.currentUser.userName === undefined) {
       FriendListFileHandle.initFriendList(this.props.user.currentUser)
       // CoworkFileHandle.initCoworkList(this.props.user.currentUser)
@@ -524,6 +538,19 @@ export default class Friend extends Component {
                 }),
                 this.props.user.currentUser.userName,
               )
+              // TODO 防止ios顶号失败
+              // 定时器,延迟执行关闭链接操作
+              // 等待被顶号的一端接收到消息,并登出后,顶号的一端再创建Connection
+              const _time = async function() {
+                return new Promise(function(resolve, reject) {
+                  let timer = setTimeout(function() {
+                    resolve('waitting send close message')
+                    timer && clearTimeout(timer)
+                  }, 1000)
+                })
+              }
+              await _time()
+
               await SMessageServiceHTTP.closeConnection(connection)
             }
             GLOBAL.isLogging = false
@@ -555,6 +582,7 @@ export default class Friend extends Component {
 
         // Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
         this.disconnectService()
+        // this.connectService()
       }
     }
   }
@@ -1893,7 +1921,7 @@ export default class Friend extends Component {
       } else {
         //处理单人消息
         let isFriend = FriendListFileHandle.getIsFriend(messageObj.user.id)
-        if (isFriend === undefined || isFriend === 0) {
+        if (!UserType.isIPortalUser(this.props.user.currentUser) && (isFriend === undefined || isFriend === 0)) {
           //非好友,正常情况下不应该收到非好友的消息，收到后让对方删除
           let delMessage = {
             message: '',
@@ -2175,6 +2203,45 @@ export default class Friend extends Component {
     return <TabBar navigation={this.props.navigation} />
   }
 
+  renderIPortalAdminView = () => {
+    if (!UserType.isIPortalUser(this.props.user.currentUser)) return null
+    if (this.props.user.currentUser.roles.indexOf('ADMIN') < 0) return null
+    return (
+      <View
+        style={{
+          backgroundColor: color.itemColorGray2,
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: scaleSize(80),
+          paddingHorizontal: scaleSize(30),
+        }}
+      >
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: scaleSize(26), marginLeft: scaleSize(40) }}>{getLanguage(this.props.language).Friends.PUBLIC_FRIENDS}</Text>
+        </View>
+        <Switch
+          trackColor={{ false: color.bgG, true: color.switch }}
+          thumbColor={this.state.openFriends ? color.bgW : color.bgW}
+          ios_backgroundColor={
+            this.state.openFriends ? color.switch : color.bgG
+          }
+          value={this.state.openFriends}
+          onValueChange={value => {
+            this.setState({
+              openFriends: value,
+            }, () => {
+              if (value) {
+                FriendListFileHandle.uploadAdminInfo()
+              } else {
+                FriendListFileHandle.deleteAdminInfo()
+              }
+            })
+          }}
+        />
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -2203,12 +2270,14 @@ export default class Friend extends Component {
         }}
         bottomBar={this.renderTabBar()}
       >
+        {this.renderIPortalAdminView()}
         {this.props.user.currentUser.userType === UserType.COMMON_USER || this.props.user.currentUser.userType === UserType.IPORTAL_COMMON_USER
           ? this.renderTab()
           : this.renderNOFriend()}
         <AddMore
           show={this.state.showPop}
           device={this.props.device}
+          user={this.props.user.currentUser}
           closeModal={show => {
             this.setState({ showPop: show })
           }}

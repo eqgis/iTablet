@@ -163,7 +163,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "Caméra",
   TOUR: "Tour",
   TOUR_NAME: "Nom du tour",
-  SCAN: "Scan", // need to translate
+  SCAN: "Analyse",
 
   STYLE_TRANSFER: "Cartographie IA",
   OBJ_EDIT: "Edit Object",
@@ -284,7 +284,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   USER_DEFINE: "Défini par l'utilisateur",
 
   DOT_VALUE: "Valeur du point",
-  GRADUATE_BY: "Granduer par",
+  GRADUATE_BY: "Graduer par",
   DATUM_VALUE: "Valeur de donnée",
   RANGE_COUNT: "Nombre de plages",
 

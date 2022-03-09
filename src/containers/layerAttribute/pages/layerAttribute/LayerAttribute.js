@@ -823,6 +823,10 @@ export default class LayerAttribute extends React.Component {
       result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, index, false)
     }
     if (result) {
+      if (GLOBAL.coworkMode) {
+        SMap.setLayerModified(this.props.currentLayer.path, true) // 在线协作-成功删除数据,修改图层状态
+        this.props.getLayers?.()
+      }
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
     } else {
       Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
@@ -1354,6 +1358,8 @@ export default class LayerAttribute extends React.Component {
             this.setState({currentIndex:-1})
             this.table.setSelected(data.rowIndex)
             this.refresh()
+          }else{
+            this.refresh()
           }
         }
 
@@ -1636,7 +1642,7 @@ export default class LayerAttribute extends React.Component {
             canRelated={this.state.currentIndex >= 0}
             canDelete={this.state.currentIndex >= 0}
             canAddField={
-              !(dsDescription?.url && dsDescription?.type === 'onlineService') &&
+              !(GLOBAL.coworkMode && dsDescription?.url && dsDescription?.type === 'onlineService') &&
               this.props.currentLayer.name !== undefined &&
               this.props.currentLayer.name !== '' &&
               this.props.currentLayer.type !== DatasetType.IMAGE &&

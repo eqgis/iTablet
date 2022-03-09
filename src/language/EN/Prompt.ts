@@ -134,8 +134,8 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_SELECT_PLOT_LAYER: "Please select or create a plot Layer",
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer",
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer",
-  DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
-  DONOT_SUPPORT_ARENGINE: "Install or upgrade AREngine",//need to translate
+  DONOT_SUPPORT_ARCORE: "Please install or upgrade ARCore",
+  DONOT_SUPPORT_ARENGINE: "Please install or upgrade AREngine",
   GET_SUPPORTED_DEVICE_LIST: "Get the list of supportive devices",
   PLEASE_NEW_PLOT_LAYER: "Please create a new plot layer",
   DOWNLOADING_PLEASE_WAIT: "Please wait a minute",
@@ -145,6 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "Choose Layer",
 
   COLLECT_SUCCESS: "Collected",
+  LONG_PRESS_SELECT_POINT: "Long press to select point",
+  LONG_PRESS_END_POINT: "Long press to select the end point",
+  LONG_PRESS_START_POINT: "Long press to select the starting point",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "You have to select two multi-media files at least",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "This object has no multi-media files. Do you want to delete it?",
@@ -226,6 +229,8 @@ const Prompt: typeof CN.Prompt = {
   SHARE_PREPARE: "Preparing for sharing",
   SHARE_START: "Start sharing",
   SHARE_WX_FILE_SIZE_LIMITE: "File size cannot exceeds 10M",
+  SHARE_NOT_COMPLRTE: "Sharing is not completed",
+  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
 
   EXPORTING: "Exporting",
   EXPORT_SUCCESS: "Exported",
@@ -241,6 +246,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "Set successfully",
   SETTING_FAILED: "Failed to set",
   NETWORK_ERROR: "Network error",
+  NETWORK_RECONNECT: "Reconnect network", 
   NO_NETWORK: "No Internet connection",
   CHOOSE_CLASSIFY_MODEL: "Choose Classification Model",
   USED_IMMEDIATELY: "Use it now",
@@ -376,7 +382,7 @@ const Prompt: typeof CN.Prompt = {
   DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",
   SWITCH_LINE: "Switch dataset",
   HAS_NO_ROADNAME_FIELD_DATA: "Dataset without road name field info",
-  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
+  NOT_LONGITUDE:"The involved data should use a latitude-longitude coordinate system. And so please convert the coordinate system of data first",
   MERGE_SUCCESS: "Merged successfully",
   MERGE_FAILD: "Merge failed",
   NOT_SUPPORT_PRJCOORDSYS: "The coordinate system of the following data set does not support merging",
@@ -389,10 +395,10 @@ const Prompt: typeof CN.Prompt = {
   BUILD_SUCCESS: "Successfully built",
   SELECT_LINE_SMOOTH: "Please select the line that needs to be smoothed",
   SELECT_A_POINT_INLINE: "Please select an online point",
-  SELECT_POINT_INCURRENTLINE:"Select the point on the current line to interrupt",//need to translate
-  SELECT_LINE_WITH_INTERRUPT:"Select the line to participate in the interruption",//need to translate
-  SELECT_LINE_EXTENSION:"Select the line to be extended",//need to translate
-  SELECT_LINE_TO_TRIM:"Select the clipped portion of the clipped line",//need to translate
+  SELECT_POINT_INCURRENTLINE:"Please long press to select a point at which the line will be split",
+  SELECT_LINE_WITH_INTERRUPT:"Select the involved line",
+  SELECT_LINE_EXTENSION:"Select the line to be extended",
+  SELECT_LINE_TO_TRIM:"Select the clips of the line to be clipped",
   LINE_DATASET: "Line Dataset",
   DESTINATION_DATASOURCE: "Target Datasource",
   SMOOTH_FACTOR: "Please enter smoothing factor",

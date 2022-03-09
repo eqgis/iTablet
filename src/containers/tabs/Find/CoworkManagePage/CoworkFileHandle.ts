@@ -7,7 +7,8 @@ import { Platform } from 'react-native'
 import { SOnlineService, SIPortalService, RNFS  } from 'imobile_for_reactnative'
 import { FileTools} from '../../../../native'
 import { ConstPath, UserType } from '../../../../constants'
-import { OnlineServicesUtils } from '../../../../utils'
+import OnlineServicesUtils1 from '../../../../utils/OnlineServicesUtils'
+import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 
 function isJSON(str: any) {
   if (typeof str === 'string') {
@@ -35,7 +36,7 @@ export default class CoworkFileHandle {
   static coworkListFile_ol: string = ''
   static uploading: boolean = false
   static waitUploading: boolean = false
-  static service: OnlineServicesUtils | undefined
+  static service: OnlineServicesUtils1 | undefined
 
 
   /**
@@ -54,9 +55,9 @@ export default class CoworkFileHandle {
     CoworkFileHandle.user = user
 
     if (UserType.isOnlineUser(CoworkFileHandle.user)) {
-      this.service = new OnlineServicesUtils('online')
+      this.service = OnlineServicesUtils.getService('online')
     } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
-      this.service = new OnlineServicesUtils('iportal')
+      this.service = OnlineServicesUtils.getService('iportal')
     }
     // CoworkFileHandle.coworkFileName = this.getCoworkFileName()
 
@@ -310,32 +311,68 @@ export default class CoworkFileHandle {
         dataId && await SIPortalService.deleteMyData(dataId + '')
       }
       let UploadFileName = CoworkFileHandle.coworkFileName_ol + '.zip'
+      let dataId = await this.service?.getDataIdByName(UploadFileName)
       let promise = new Promise(resolve => {
         if (UserType.isOnlineUser(CoworkFileHandle.user)) {
           if (Platform.OS === 'android') {
             UploadFileName = CoworkFileHandle.coworkFileName_ol
           }
-          SOnlineService.uploadFile(
-            CoworkFileHandle.coworkListFile,
-            UploadFileName,
-            {
-              onResult: () => {
-                resolve(true)
-                CoworkFileHandle.uploading = false
-                CoworkFileHandle.waitUploading = false
-              },
-            },
-          )
+          if (dataId) {
+            this.service?.updateFileWithCheckCapacity(
+              dataId,
+              CoworkFileHandle.coworkListFile,
+              UploadFileName,
+              'WORKSPACE',
+            ).then(id => {
+              resolve(!!id)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            })
+          } else {
+            this.service?.uploadFileWithCheckCapacity(
+              CoworkFileHandle.coworkListFile,
+              UploadFileName,
+              'WORKSPACE',
+            ).then(id => {
+              resolve(!!id)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            })
+          }
+          // SOnlineService.uploadFile(
+          //   CoworkFileHandle.coworkListFile,
+          //   UploadFileName,
+          //   {
+          //     onResult: () => {
+          //       resolve(true)
+          //       CoworkFileHandle.uploading = false
+          //       CoworkFileHandle.waitUploading = false
+          //     },
+          //   },
+          // )
         } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
-          this.service?.uploadFile(
-            CoworkFileHandle.coworkListFile,
-            UploadFileName,
-            'WORKSPACE',
-          ).then(result => {
-            resolve(result)
-            CoworkFileHandle.uploading = false
-            CoworkFileHandle.waitUploading = false
-          })
+          if (dataId) {
+            this.service?.updateFileWithCheckCapacity(
+              dataId,
+              CoworkFileHandle.coworkListFile,
+              UploadFileName,
+              'WORKSPACE',
+            ).then(result => {
+              resolve(result)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            })
+          } else {
+            this.service?.uploadFileWithCheckCapacity(
+              CoworkFileHandle.coworkListFile,
+              UploadFileName,
+              'WORKSPACE',
+            ).then(result => {
+              resolve(result)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            })
+          }
         }
       })
       return promise

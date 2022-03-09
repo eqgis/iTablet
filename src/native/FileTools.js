@@ -378,6 +378,26 @@ async function getAvailableFileName(path, name, ext) {
   }
 }
 
+/** 加密 */
+async function encode(data = '') {
+  try {
+    if (!data) return ''
+    return await FileTools.encode(data)
+  } catch (e) {
+    return e
+  }
+}
+
+/** 解密 */
+async function decoder(data = '') {
+  try {
+    if (!data) return ''
+    return await FileTools.decoder(data)
+  } catch (e) {
+    return e
+  }
+}
+
 export default {
   getHomeDirectory,
   appendingHomeDirectory,
@@ -413,4 +433,6 @@ export default {
   getThumbnail,
   getPathListByFilterDeep,
   getAvailableFileName,
+  encode,
+  decoder,
 }

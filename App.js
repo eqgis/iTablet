@@ -13,6 +13,7 @@ import {
   StatusBar,
   TextInput,
   PermissionsAndroid,
+  NetInfo,
 } from 'react-native'
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -48,7 +49,8 @@ import { setLicenseInfo } from './src/redux/models/license'
 import { RNFS as fs } from 'imobile_for_reactnative'
 import { FileTools, SplashScreen} from './src/native'
 import ConfigStore from './src/redux/store'
-import { scaleSize, Toast, screen, OnlineServicesUtils, DialogUtils } from './src/utils'
+import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil } from './src/utils'
+import * as OnlineServicesUtils from './src/utils/OnlineServicesUtils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
 import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
@@ -80,6 +82,8 @@ import {
 import LaunchGuidePage from './src/components/guide'
 import LaunchGuide from './configs/guide'
 // import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
+
+import { setBaseMap } from './src/redux/models/map'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -230,6 +234,7 @@ class AppRoot extends Component {
     AppState.addEventListener('change', this.handleStateChange)
     Platform.OS === 'android' &&
       BackHandler.addEventListener('hardwareBackPress', this.back)
+    NetInfo.addEventListener('connectionChange', this.handleNetworkState)
 
   }
 
@@ -283,6 +288,26 @@ class AppRoot extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
+    NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
+  }
+
+  handleNetworkState = async state => {
+    // TODO 网络状态发生变化,wifi切换为移动网络,判断内网服务是否可用
+    if(UserType.isIPortalUser(this.props.user.currentUser) || UserType.isOnlineUser(this.props.user.currentUser)) {
+      const isConnected = await OnlineServicesUtils.getService()?.checkConnection()
+      if (isConnected) {
+        Toast.show(getLanguage().Prompt.NETWORK_RECONNECT)
+        GLOBAL.getFriend()?.restartService()
+        return
+      } else {
+        // 无法连接内网, 退出登录
+        // GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        Toast.show(getLanguage().Prompt.NETWORK_ERROR)
+      }
+    } else if (state.type === 'none' || state.type === 'unknown') {
+      Toast.show(getLanguage().Prompt.NETWORK_ERROR)
+      return
+    }
   }
 
   onGuidePageEnd = () => {
@@ -365,7 +390,7 @@ class AppRoot extends Component {
     await SMap.initEnvironment(ConstPath.AppName)
     await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
     SOnlineService.init()
-    SIPortalService.init()
+    SIPortalService.init(this.props.user.currentUser.serverUrl)
     await this.initLicense()
     SMap.setModuleListener(this.onInvalidModule)
     SMap.setLicenseListener(this.onInvalidLicense)
@@ -406,6 +431,9 @@ class AppRoot extends Component {
       } else {
         await this.props.setUsers(users)
         userName = users[0].userName
+
+        // 加载用户底图
+        await this.loadUserBaseMaps()
       }
       await this.initDirectories(userName)
       await AppInfo.setUserName(userName)
@@ -414,6 +442,39 @@ class AppRoot extends Component {
     } catch (e) {
       //
     }
+  }
+
+  /**
+   * 加载当前用户的底图
+   */
+  async loadUserBaseMaps(){
+    let curUserBaseMaps = []
+    // 根据当前用户id获取当前用户的底图数组
+    if(this.props.user.currentUser.userId){
+      curUserBaseMaps = this.props.baseMaps[this.props.user.currentUser.userId]
+    }
+     
+    // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
+    if (!curUserBaseMaps) {
+      curUserBaseMaps = this.props.baseMaps['default']
+    }
+    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
+    // 当公有服务列表数组有元素时，就遍历这个数组
+    if (arrPublishServiceList.length > 0) {
+      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
+        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
+        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl){
+          let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
+          // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
+          this.props.setBaseMap &&
+            this.props.setBaseMap({
+              userId: currentUser.userId,
+              baseMaps: list,
+            })
+        }
+      }
+    }
+
   }
 
   // 初始化文件目录
@@ -598,7 +659,8 @@ class AppRoot extends Component {
       }
       if(result === true){
         let userType = this.props.user.currentUser.userType
-        let JSOnlineservice = new OnlineServicesUtils(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
+        // let JSOnlineservice = new OnlineServicesUtils(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
+        let JSOnlineservice = OnlineServicesUtils.getService(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
         //登录后更新用户信息 zhangxt
         let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
         let user = {
@@ -618,7 +680,6 @@ class AppRoot extends Component {
           //TODO 处理app加载流程，确保登录后再更新消息服务
           GLOBAL.getFriend?.().onUserLoggedin()
         }
-
       } else {
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
         if(bResetMsgService !== true){
@@ -629,7 +690,7 @@ class AppRoot extends Component {
       let url = this.props.user.currentUser.serverUrl
       let userName = this.props.user.currentUser.userName
       let password = this.props.user.currentUser.password
-      SIPortalService.init()
+      SIPortalService.init(this.props.user.currentUser.serverUrl)
       let result = await SIPortalService.login(url, userName, password, true)
       if (typeof result === 'boolean' && result) {
         //登录后更新用户信息 zhangxt
@@ -1165,6 +1226,7 @@ const mapStateToProps = state => {
     isAgreeToProtocol: state.setting.toJS().isAgreeToProtocol,
     appConfig: state.appConfig.toJS(),
     version: state.home.toJS().version,
+    baseMaps: state.map.toJS().baseMaps,
   }
 }
 
@@ -1199,6 +1261,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setMapAnalystGuide,
   deleteUser,
   closeWorkspace,
+  setBaseMap,
 })(AppRoot)
 
 const App = () =>

@@ -305,16 +305,16 @@ class GroupFriendListPage extends Component<Props, State> {
     if (this.mode === 'select') return null
     let isMultiSelect = this.mode === 'multiSelect'
     if (isMultiSelect) {
-      if (this.state.selectedMembers.size === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
-        return
-      }
+      // if (this.state.selectedMembers.size === 0) {
+      //   Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
+      //   return
+      // }
       this._multiSelectConfirm()
     } else if (this.state.isManage) {
-      if (this.state.selectedMembers.size === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
-        return
-      }
+      // if (this.state.selectedMembers.size === 0) {
+      //   Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
+      //   return
+      // }
 
       this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_DELETE_INFO)
       this.dialogAction = () => {
@@ -327,27 +327,6 @@ class GroupFriendListPage extends Component<Props, State> {
           userIds: userIds,
         }).then(async result => {
           if (result.succeed) {
-            // 给删除对象发送被删除消息
-            // let timeStr = new Date().getTime()
-            // let message = {
-            //   type: MsgConstant.MSG_ONLINE_MEMBER_DELETE,
-            //   user: {
-            //     name: this.props.user.currentUser.nickname || '',
-            //     id: this.props.user.currentUser.userName || '',
-            //   },
-            //   group: {
-            //     groupID: this.props.currentGroup.id,
-            //     groupName: this.props.currentGroup.groupName,
-            //     groupCreator: this.props.currentGroup.creator,
-            //   },
-            //   time: timeStr,
-            // }
-            // for (let i = 0; i < userIds.length; i++) {
-            //   SMessageService.sendMessage(
-            //     JSON.stringify(message),
-            //     userIds[i],
-            //   )
-            // }
             this._sendDeleteMsg(userIds)
             await this.getContacts()
             this.callBack && this.callBack()
@@ -384,7 +363,8 @@ class GroupFriendListPage extends Component<Props, State> {
             <CheckBox
               type={'circle'}
               style={styles.checkBtn}
-              checked={!!this.state.selectedMembers.get(item.userName + '')}
+              disable={this.props.user.currentUser.userName === item.userName}
+              checked={this.props.user.currentUser.userName === item.userName ? true : (!!this.state.selectedMembers.get(item.userName + ''))}
               onChange={value => {
                 this.setState(state => {
                   const selected = new Map(state.selectedMembers)
@@ -472,7 +452,7 @@ class GroupFriendListPage extends Component<Props, State> {
             style={styles.checkBtn}
             checked={
               this.state.selectedMembers.size === this.state.allData.length &&
-              this.state.selectedMembers.size > 0
+              this.state.selectedMembers.size >= 0
             } // -1是减去管理者自己
             onChange={value => {
               this.setState(state => {
@@ -505,8 +485,8 @@ class GroupFriendListPage extends Component<Props, State> {
             btnText={getLanguage(this.props.language).Prompt.CONFIRM}
             containerStyle={[
               styles.bottomBtn,
-              this.state.selectedMembers.size === 0 &&
-              {backgroundColor: color.itemColorGray3},
+              // this.state.selectedMembers.size === 0 &&
+              // {backgroundColor: color.itemColorGray3},
             ]}
             textStyle={styles.bottomBtnText}
             btnClick={this._btnAction}

@@ -13,6 +13,7 @@ const Friends: typeof CN.Friends = {
   RECOMMEND_FRIEND: "Recommend Friends",
   SELECT_MODULE: "Select Module",
   SELECT_MAP: "Select Map",
+  PUBLIC_FRIENDS: "Public Friends",
   // Friend
   MSG_SERVICE_FAILED: "Failed to connect to message service",
   MSG_SERVICE_NOT_CONNECT: "Unable to connect to message service",
@@ -23,14 +24,14 @@ const Friends: typeof CN.Friends = {
   RECEIVE_FAIL_EXPIRE: "Receive failed, the file might have expired",
   RECEIVE_FAIL_NETWORK: "Receive failed, please check your network",
   // FriendMessage
-  MARK_READ: "Mark read", //*
-  MARK_UNREAD: "Mark unread", //*
-  DEL: "Delete", //*
-  NOTIFICATION: "Notification", //*
-  CLEAR_NOTIFICATION: "Clear notification", //*
-  CONFIRM: "Yes", //*
-  CANCEL: "Cancel", //*
-  ALERT_DEL_HISTORY: "Clear this chat history?", //*
+  MARK_READ: "Mark read", 
+  MARK_UNREAD: "Mark unread", 
+  DEL: "Delete",  
+  NOTIFICATION: "Notification",  
+  CLEAR_NOTIFICATION: "Clear notification",  
+  CONFIRM: "Yes",  
+  CANCEL: "Cancel",  
+  ALERT_DEL_HISTORY: "Clear this chat history?",  
   // FriendList
   SET_MARK_NAME: "Set mark name",
   DEL_FRIEND: "Delete friend",
@@ -45,7 +46,6 @@ const Friends: typeof CN.Friends = {
   CONFIRM2: "OK",
   TITLE_CHOOSE_FRIEND: "Choose friend",
   TITLE_CHOOSE_GROUP: "Choose group",
-  TITLE_CHOOSE_MEMBER: "Choose member",
   TOAST_CHOOSE_2: "Add more than 2 friends to chat in a group",
   NO_FRIEND: "Oops, no friends yet",
   // AddFriend
@@ -155,8 +155,9 @@ const Friends: typeof CN.Friends = {
   SYS_MSG_GEO_UPDATED2: "",
   ADDED: "Added",
 
-  // 创建群组
+  // Create group
   JOIN: "Join",
+  TITLE_CHOOSE_MEMBER: "Choose Members",
   VIEW_MORE_MEMBERS: "View more members",
   MY_GROUPS: "My Groups",
   JOINED_GROUPS: "Joined Groups",
@@ -245,7 +246,7 @@ const Friends: typeof CN.Friends = {
   TASK_CREATE_TIME: "Created Time",
   TASK_SEND_TIME: "Sent Time",
   TASK_MODULE: "Module",
-  // 提示消息
+  // Prompts
   GROUP_EXIST_INFO: "Do you want to leave the group",
   GROUP_DELETE_INFO: "Do you want to delete the group",
   GROUP_DELETE_INFO2: "The current group has been disbanded",

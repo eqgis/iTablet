@@ -145,6 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "Katman Seç",
 
   COLLECT_SUCCESS: "Başarıyla Toplandı",
+  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
+  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
+  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
 
   SELECT_TWO_MEDIAS_AT_LEAST: "Lütfen en az iki medya seçin",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "Bu nesne medi dosyaları yok.Silmek ister misiniz?",
@@ -179,7 +182,7 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_FAILED: "Yayınlama Başarısız",
   PUBLISH_FAILED_INFO_1: "Servis yayınlandı",
   PUBLISH_FAILED_INFO_2: "Hizmet yayınlanıyor fakat şu anda çalıştırılamıyor",
-  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
+  SERVICE_SUBMIT_BEFORE_UPDATE: "Lütfen göndermeden önce hizmeti güncelleyin.",
   DELETE_CONFIRM: "Öğeyi silmek istediğinizden emin misiniz?",
   BATCH_DELETE_CONFIRM: "Seçili öğe(ler)i silmek istediğinizden emin misiniz?",
   WHETHER_DOWNLOAD_ALL_SERVICES: 'Tüm hizmetleri indirmek ve güncellemek istediğinizden emin misiniz?',
@@ -226,6 +229,8 @@ const Prompt: typeof CN.Prompt = {
   SHARE_PREPARE: "Paylaşım için Hazırlanıyor",
   SHARE_START: "Paylaşmaya Başla",
   SHARE_WX_FILE_SIZE_LIMITE: "Dosya boyutu 10M'den fazla geçemez",
+  SHARE_NOT_COMPLRTE: "Paylaşma Tamamlanamadı.",
+  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
 
   EXPORTING: "Dışarı Aktarılıyor",
   EXPORT_SUCCESS: "Başarıyla Dışarı Aktarıldı",
@@ -241,6 +246,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "Başarıyla ayarlandı",
   SETTING_FAILED: "Ayarlama başarısız",
   NETWORK_ERROR: "Ağ Hatası",
+  NETWORK_RECONNECT: "Yeniden Ağ Bağlantısı",
   NO_NETWORK: "İnternet bağlantısı yok",
   CHOOSE_CLASSIFY_MODEL: "Sınıflandırma Modeli Seç",
   USED_IMMEDIATELY: "Hemen Kullanıldı",

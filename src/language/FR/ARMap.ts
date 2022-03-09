@@ -78,7 +78,7 @@ const ARMap: typeof CN.ARMap = {
   NAVIGATION: "Navigation",
   ROUTE_NAVI: "Navigation sur la route",
 
-  ROADNET_DATA: "Donnée du Réseau routier",
+  ROADNET_DATA: "Données routières",
   HEIGHT: "Height",
 
   DURATION: "Durée",

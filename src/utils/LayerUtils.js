@@ -168,7 +168,7 @@ function dealData(attributes, result = {}, page, type) {
       } else {
         tableHead.push({
           value: item.fieldInfo.caption,
-          isSystemField: item.fieldInfo.isSystemField,
+          isSystemField: item.fieldInfo.caption.toString().toLowerCase() === 'smuserid' || item.fieldInfo.isSystemField,
           fieldInfo: item.fieldInfo,
         })
       }
@@ -184,7 +184,7 @@ function dealData(attributes, result = {}, page, type) {
       } else {
         tableHead.push({
           value: item.caption,
-          isSystemField: item.isSystemField,
+          isSystemField: item.caption.toString().toLowerCase() === 'smuserid' || item.isSystemField,
           fieldInfo: item,
         })
       }
@@ -588,6 +588,15 @@ function getDatasetDescriptionByLayer(layer) {
   }
 }
 
+/**
+ * 是否可作为服务的图层
+ * @param {*} datasetType
+ * @returns
+ */
+function availableServiceLayer(datasetType) {
+  return datasetType === DatasetType.CAD || datasetType === DatasetType.POINT || datasetType === DatasetType.LINE || datasetType === DatasetType.REGION
+}
+
 export default {
   getLayerAttribute,
   searchLayerAttribute,
@@ -620,4 +629,6 @@ export default {
   deleteAttributeByData,
   getNavigationAttributeByData,
   deleteNavigationAttributeByData,
+
+  availableServiceLayer,
 }

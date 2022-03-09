@@ -257,6 +257,10 @@ export default class MapView extends React.Component {
     showSampleData: PropTypes.bool,
     setSampleDataShow: PropTypes.func,
     isShowCompass: PropTypes.bool,
+    aiDetectData: PropTypes.object,
+    aiClassifyData: PropTypes.object,
+    setAIClassifyModel: PropTypes.func,
+    setAIDetectModel: PropTypes.func,
   }
 
   /** 是否导航中 */
@@ -412,6 +416,9 @@ export default class MapView extends React.Component {
 
     //AR测量进入地图默认没有定位
     GLOBAL.haslocation = false
+
+    // 分享按钮是否可点击标识，true为可点击
+    this.isShareCanClick = true
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -1535,18 +1542,27 @@ export default class MapView extends React.Component {
 
         let result = true
         //使用for循环等待，在forEach里await没有用
-        for (let i = 0; i < this.props.selection.length; i++) {
-          let item = this.props.selection[i]
+        for (let item of this.props.selection) {
           if (item.ids.length > 0) {
             if (GLOBAL.coworkMode && item.ids.length > 0) {
               let currentTaskInfo = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]
               let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
-              isRealTime && GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
+
+              let layerType = LayerUtils.getLayerType(item.layerInfo)
+              isRealTime && layerType !== 'TAGGINGLAYER' && GLOBAL.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
             }
             result =
               result &&
               (await SCollector.removeByIds(item.ids, item.layerInfo.path))
             result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
+            if (result && GLOBAL.coworkMode) {
+              // 在线协作-成功删除数据,修改图层状态
+              await SMap.setLayerModified(this.props.currentLayer.path, true)
+            }
+            // 若果删除的是旅行轨迹的多媒体对象,则更新旅行轨迹
+            if (await SMediaCollector.isTourLayer(item.layerInfo.name)) {
+              result = await SMediaCollector.updateTour(item.layerInfo.name)
+            }
           }
         }
 
@@ -1639,6 +1655,25 @@ export default class MapView extends React.Component {
           GLOBAL.removeObjectDialog.getState().visible
         ) {
           GLOBAL.removeObjectDialog.setDialogVisible(false)
+          return true
+        }
+      }
+
+      // 若服务正在更新,则无法关闭地图
+      if (
+        GLOBAL.coworkMode && this.props.currentTask?.groupID &&
+        this.props.currentTaskServices?.[this.props.user.currentUser.userName]?.[this.props.currentTask?.groupID]?.[this.props.currentTask?.id]?.length > 0
+      ) {
+        let currentServices = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
+        let serviceDone = true
+        for (const services of currentServices) {
+          if (services.status !== 'done') {
+            serviceDone = false
+            break
+          }
+        }
+        if (!serviceDone) {
+          Toast.show(getLanguage(this.props.language).Cowork.CLOSE_MAP_BEFORE_UPDATE_SERVICE)
           return true
         }
       }
@@ -1843,7 +1878,9 @@ export default class MapView extends React.Component {
             if (!this.wsData) return
             layers.map(layer => {
               if (layer.isVisible) {
-                SMediaCollector.showMedia(layer.name, false)
+                const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layer)
+                // const layerDescription = JSON.parse(layer.description)
+                dsDescription?.isShowMedia && SMediaCollector.showMedia(layer.name, false)
               }
             })
             // 若数据源已经打开，图层未加载，则去默认加载一个图层
@@ -3261,7 +3298,24 @@ export default class MapView extends React.Component {
                   }]}
                   imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
                   image={info.image}
-                  onPress={info.action}
+                  // onPress={info.action}
+                  onPress={() => {
+                    // 正在分享中时，点击分享按钮就给一个提示
+                    if(buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
+                      GLOBAL.Type === this.props.online.share[0].module &&
+                      this.props.online.share[0].progress !== undefined &&
+                      this.isShareCanClick){
+                        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_NOT_COMPLRTE, {duration:1500, position:145})
+                        // 当提示还存在时，分享按钮点击不给反应
+                        this.isShareCanClick = false
+                        const timer = setTimeout(() => {
+                          this.isShareCanClick = true
+                          clearTimeout(timer)
+                        }, 1500)
+                      }
+                    info.action()
+                  }}
+
                 />
                 {
                   info.newInfo &&

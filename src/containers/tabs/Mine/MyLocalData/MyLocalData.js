@@ -21,6 +21,7 @@ import OnlineDataItem from './OnlineDataItem'
 import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
 import DataHandler from '../DataHandler'
 import NavigationService from '../../../NavigationService'
+import Directory from './Directory'
 // import { downloadFile } from '../../../../native/RNFS'
 let JSIPortalService, JSOnlineservice
 
@@ -57,6 +58,18 @@ export default class MyLocalData extends Component {
     JSIPortalService = new OnlineServicesUtils('iportal')
     JSOnlineservice = new OnlineServicesUtils('online')
     this.totalPage = 0
+
+    // 文件夹数组，主要存放文件夹数组索引
+    this.directoryArray = [] 
+    // 存放最终构造成的外部数据的对象
+    this.externalDataObj = {}
+    // 记录外部数据放在前面的零散的数据的个数
+    this.externalSelfCount = 0
+    this.isExternalSelfDataIndex = -1
+
+    // 给删除文件夹的方法绑定this
+    this.directoryOnpress = this.directoryOnpress.bind(this)
+    this.directoryItemOnPress = this.directoryItemOnPress.bind(this)
   }
   componentDidMount() {
     this.getData()
@@ -73,11 +86,15 @@ export default class MyLocalData extends Component {
     }
   }
 
-  getData = async () => {
+  getData = async (str = '') => {
     try {
+      let loadText = getLanguage(this.props.language).Prompt.LOADING
+      if(str === 'del'){
+        loadText =  getLanguage(this.props.language).Prompt.DELETING_DATA
+      }
       this.container.setLoading(
         true,
-        getLanguage(this.props.language).Prompt.LOADING,
+        loadText,
       )
       let sectionData = []
       let cacheData = []
@@ -135,9 +152,15 @@ export default class MyLocalData extends Component {
         })
       }
       if (externalData.length > 0) {
+        // 重新构造外部数据
+        // 先清空一下文件夹数组,刷新的时候需要将文件夹数组的值清空
+        this.directoryArray = []
+        // 调用构造外部数据新对象的方法
+        this.externalDataObj = await this.createExternalData(externalData)
         sectionData.push({
           title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
-          data: externalData,
+          // data: externalData,
+          data: this.externalDataObj.children,
           isShowItem: true,
           dataType: 'external',
         })
@@ -221,7 +244,11 @@ export default class MyLocalData extends Component {
       } else {
         return null
       }
-    } else {
+    } else if(info.section.dataType === 'external'){
+      // return this.renderExternalData(info.item, info.section)
+      return this.renderExternalData(info)
+
+    }else {
       return (
         <LocalDataItem
           info={info}
@@ -244,7 +271,7 @@ export default class MyLocalData extends Component {
     this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(false)
   }
 
-  _onDeleteData = async () => {
+  _onDeleteData = async (str = '') => {
     try {
       this._closeModal()
       if (
@@ -260,7 +287,7 @@ export default class MyLocalData extends Component {
         //'删除数据中...'
         getLanguage(this.props.language).Prompt.DELETING_DATA,
       )
-
+      
       let exportDir =
         GLOBAL.homePath +
         ConstPath.ExternalData
@@ -296,10 +323,7 @@ export default class MyLocalData extends Component {
       }
 
       if (result || result === undefined) {
-        Toast.show(
-          //'删除成功'
-          getLanguage(this.props.language).Prompt.DELETED_SUCCESS,
-        )
+        
         if (await FileTools.fileIsExist(this.itemInfo.item.directory)) {
           let contents = await FileTools.getDirectoryContent(
             this.itemInfo.item.directory,
@@ -312,12 +336,40 @@ export default class MyLocalData extends Component {
         for (let i = 0; i < sectionData.length; i++) {
           let data = sectionData[i]
           if (data.title === this.itemInfo.section.title) {
-            data.data.splice(this.itemInfo.index, 1)
+            if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.ON_DEVICE){
+              // 外部数据的处理方式
+              if(this.isExternalSelfDataIndex >= 0) {
+                // 是外部数据下的直接文件(数据)
+                data.data.splice(this.isExternalSelfDataIndex, 1)
+                // 外部数据下的直接文件(数据)的数量也要减一
+                this.externalSelfCount -= 1
+                // 将记录删除的数据是外部数据下的直接数据的索引置值为-1，只有下一次删除直接数据时会被置为大于等于0的数（索引）
+                this.isExternalSelfDataIndex = -1
+              } else {
+                // 当是外部数据文件夹下数据的时候的处理方式
+                data.data[this.directoryIndex + this.externalSelfCount - 1]?.children.splice(this.itemInfo.index, 1)
+                // 删除数据之后，检查文件夹是否应该删除
+                if( data.data[this.directoryIndex + this.externalSelfCount - 1].children.length === 0){
+                  this.directoryArray.splice(this.directoryIndex, 1)
+                  data.data.splice(this.directoryIndex + this.externalSelfCount - 1, 1)
+                }
+              }
+              
+            } else {
+              data.data.splice(this.itemInfo.index, 1)
+            }
           }
         }
         this.setState({ sectionData: sectionData }, () => {
           this.LocalDataPopupModal && this.LocalDataPopupModal.setVisible(false)
         })
+        if(str != 'directory'){
+          Toast.show(
+            //'删除成功'
+            getLanguage(this.props.language).Prompt.DELETED_SUCCESS,
+          )
+        }
+        
       } else {
         Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
       }
@@ -328,7 +380,9 @@ export default class MyLocalData extends Component {
       )
       this._closeModal()
     } finally {
-      this.setLoading(false)
+      if(str != 'directory'){
+        this.setLoading(false)
+      }
     }
   }
 
@@ -875,51 +929,59 @@ export default class MyLocalData extends Component {
     const fileType = item.item && item.item.fileType
     if (item) {
       data = []
-      // 专题制图导出的xml不用导入到用户目录
-      if(fileType !== 'xmltemplate'){
+      // 文件夹的删除选项
+      if(item.obj && item.obj?.type === 'directory'){
         data.push({
-          title: getLanguage(this.props.language).Profile.IMPORT_DATA,
-          action: this.importData,
+          title: getLanguage(this.props.language).Profile.DELETE_DATA,
+          action: this.directoryOnpress,
         })
-      }
-      if (item.dataItemServices) {
-        if (
-          item.serviceStatus !== 'PUBLISHED' &&
-          item.serviceStatus !== 'PUBLISHING' &&
-          item.serviceStatus !== 'DOES_NOT_INVOLVE'
-        ) {
+      }  else {
+        // 专题制图导出的xml不用导入到用户目录
+        if(fileType !== 'xmltemplate'){
           data.push({
-            title: getLanguage(this.props.language).Profile.PUBLISH_SERVICE,
-            action: this._onPublishService,
+            title: getLanguage(this.props.language).Profile.IMPORT_DATA,
+            action: this.importData,
           })
         }
-      }
-
-      data.push({
-        title: getLanguage(this.props.language).Profile.DELETE_DATA,
-        action: this.deleteData,
-      })
-
-      if (item.authorizeSetting) {
-        let isPublish = false
-        let authorizeSetting = item.authorizeSetting
-        for (let i = 0; i < authorizeSetting.length; i++) {
-          let dataPermissionType = authorizeSetting[i].dataPermissionType
-          if (dataPermissionType === 'DOWNLOAD') {
-            isPublish = true
-            break
+        if (item.dataItemServices) {
+          if (
+            item.serviceStatus !== 'PUBLISHED' &&
+            item.serviceStatus !== 'PUBLISHING' &&
+            item.serviceStatus !== 'DOES_NOT_INVOLVE'
+          ) {
+            data.push({
+              title: getLanguage(this.props.language).Profile.PUBLISH_SERVICE,
+              action: this._onPublishService,
+            })
           }
         }
-        let title
-        if (isPublish) {
-          title = getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_DATA
-        } else {
-          title = getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_DATA
-        }
+
         data.push({
-          title: title,
-          action: this._onChangeDataVisibility,
+          title: getLanguage(this.props.language).Profile.DELETE_DATA,
+          action: this.deleteData,
         })
+
+        if (item.authorizeSetting) {
+          let isPublish = false
+          let authorizeSetting = item.authorizeSetting
+          for (let i = 0; i < authorizeSetting.length; i++) {
+            let dataPermissionType = authorizeSetting[i].dataPermissionType
+            if (dataPermissionType === 'DOWNLOAD') {
+              isPublish = true
+              break
+            }
+          }
+          let title
+          if (isPublish) {
+            title = getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_DATA
+          } else {
+            title = getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_DATA
+          }
+          data.push({
+            title: title,
+            action: this._onChangeDataVisibility,
+          })
+        }
       }
     }
     return data
@@ -977,4 +1039,301 @@ export default class MyLocalData extends Component {
       </Container>
     )
   }
+
+  /**
+   * 根据已经获取到的数据，构造新的数据
+   * 在getData里调用，注意将externalDataObj的数据保存起来（放到this里）
+   * @param {Array<Object>} data 前面获取到的外部数据
+   * @return 构造的数据
+   */
+  async createExternalData (data) {
+    let rootPath = GLOBAL.homePath + ConstPath.ExternalData
+    // 用于存放最终构造的数据结果对象
+    let externalDataObj = {
+    	type: 'directory',
+      index: 0,
+      name: 'ExternalData',
+      path: rootPath,
+      children: [],
+    }
+
+    // 构造根文件夹的索引对象并将其放入文件夹数组
+    let directoryIndexObj = {
+      address: externalDataObj,
+      name: externalDataObj.name
+    }
+    this.directoryArray.push(directoryIndexObj)
+  
+    // 遍历数组构造新的数据
+    for(let i = 0, len = data.length; i < len; i ++){
+      // 去掉前面到外部数据这一段的路径
+      let strPath = rootPath + '/'
+      let path = data[i].filePath.replace(strPath, "")
+   
+      // 当路径与文件名不同时，才需要对路径做拆分
+      let paths = (path !== data[i].fileName) ? path.split('/') : [path]
+   
+      try {
+        // 构造外部数据根目录下的子项
+        await this.typeIsDirectory(data[i], paths, 0, externalDataObj.children)
+      } catch (error) {
+        console.log("error : " + error.message)
+      }
+      
+    }
+
+    // 将构造好的数据返回出去
+    return externalDataObj
+  }
+
+
+
+  /**
+   * 具体的构造数据的地方,完成判断当前路径是否是文件夹，以及他们改添加到哪个文件夹下
+   * @param {Object} data 数据的对象
+   * @param {Array<String>} paths 数据的路径所拆分成的数组
+   * @param {Number} index 当前文件夹，所在paths里的索引位置
+   * @param {Array<Object>} arr 是此文件夹所在的父文件夹的子项数组
+   * @return 用于递归的回归过程
+   */
+  async typeIsDirectory(data, paths, index, arr){
+    // 当路径与文件名不同时，
+    if(paths[index] !== data.fileName){
+      // 拼接此文件夹的路径，一直到此文件夹这里
+      let pathStr = paths[0]
+      for(let i = 1; i <= index; i ++) {
+        pathStr += '/' + paths[i]
+      }
+     
+      // 文件夹对象
+      let obj = {
+        type: 'directory',
+        index: index + 1,
+        name: paths[index],
+        path: pathStr,
+        children: [],
+      }
+      
+      let tempDataObj = this.directoryIsExist(obj.name, obj.path, obj)
+      // 是否添加进文件夹数组里的标识，true为添加(文件夹不存在)，false为不添加(文件夹存在)
+      let isAdd = tempDataObj.flag
+      
+     
+      // 当是否添加标识为true时，即此文件夹不存在，需要添加
+      if(isAdd){
+        // 为新的文件夹构建文件夹索引对象，并放入文件夹数组
+        let directoryIndexObj = {
+          address: obj,
+          name: obj.name
+        }
+        this.directoryArray.push(directoryIndexObj)
+        // 是新数组就直接添加进传入的子项数组就可以了
+        arr.push(obj)
+       
+
+      } else {
+        // 如果该文件夹已经存在的话,对obj进行重新赋值,将obj的值换为找到的已存在的文件夹的值
+        obj = tempDataObj.obj
+      }
+      // 当文件夹找到或创建后，直接就将数据放进此文件夹
+      obj.children.push(data)
+    } else {
+      // 当路径与文件名相同时, 文件是外部数据根目录下的数据，直接放到根目录下即可
+      // 非文件夹对象
+      let obj = {
+        type: data.fileType,
+        index: index + 1,
+        name: data.fileName,
+        path: GLOBAL.homePath + ConstPath.ExternalData,
+        children: [data],
+      }
+      // 直接在外部数据下的文件数量加1
+      this.externalSelfCount += 1
+      // 将这个数据放进
+      arr.unshift(obj)
+
+    }
+    return 
+  }
+
+  /**
+   * 文件夹或文件所在文件夹是否已经存在于文件夹数组里了
+   * @param {String} directoryName 文件夹或文件所在文件夹的名字
+   * @param {String} directoryPath 文件夹或文件所在文件夹的路径
+   * @param {Object} obj 文件夹或文件的对象
+   * @return 一个对象，flag： 布尔类型，返回一个标识，true表示文件夹已经存在，false表示文件夹不存在 ；obj： 找到的已存在的文件夹的对象；
+   */
+   directoryIsExist(directoryName, directoryPath, obj){
+    let tempArray = this.directoryArray
+    // 用于标识是否找到了相同的文件夹 
+    let flag = true
+
+    // 先看文件夹的名字是否相同，再看路径是否相同，查看某一个文件夹是否已经存在了
+    for(let i = 0, len = tempArray.length; i < len; i ++){
+      // 次循环里名字不相同，直接下一循环
+      if(tempArray[i].name !== directoryName) { continue }
+      // 名字相同但路径不同，直接下一循环
+      if(tempArray[i].address.path !== directoryPath) { continue }
+      // 名字相同且路径相同,将是否添加标识设为false（文件夹已经存在了）
+      flag = false
+
+      // 判断obj是否是文件夹类型
+      if(obj.type === 'directory'){
+        // 当obj是文件夹时，就将obj的地址指向已存在的文件夹
+        obj = tempArray[i].address
+
+      } else {
+        // 当obj是文件时，因为前面对比的是其所在的文件夹是否存在，存在时，可以直接把此文件放入所在文件夹的子项里
+        tempArray[i].address.children.push(obj)
+      }
+      // 当找到名字相同且路径相同的文件夹且所有的处理操作都完成后，直接退出循环
+      break
+    }
+    return {flag, obj}
+  }
+
+  /**
+   * 外部数据新建对象的数据结构
+    let externalDataObj = {
+      type: 'directory', // 用于类型判断是渲染什么组件
+      index: xxx,        // 文件夹层级，最外层外部数据根目录为0
+      name: 'xxx',       // 名字
+      path: 'xxx',       // 在数据构成时记录当前文件或当前文件夹的路径
+      children: [        // 当前文件的子项，如果不是文件夹类型就渲染为文件的数据
+        {
+          type: 'dictory',
+          index: xxx,
+          name: 'xxx',
+          path: 'xxx',
+          children: [{},...] 
+        },
+        ...
+      ]
+    }
+  */
+
+  /**
+   * 拿去构造好的数据，用递归实现外部数据的嵌套渲染  (在_renderItem里调用)
+   * @param {Object} obj 外部数据新建对象
+   * @param {Object} section 外部数据的头部信息对象
+   * @return 返回一个组件实例
+   */
+  renderExternalData(infodata){
+    let {index, item, section} = infodata
+    let obj = item
+    let that = this
+    // 判断是否是文件夹类型
+    if(obj.type === 'directory'){
+      // 文件夹组件
+      let content = <Directory 
+        obj = {obj}
+        section = {section}
+        directoryOnpress = {(event)=>{
+          this.directoryItemOnPress && this.directoryItemOnPress({obj, section}, event)
+        }}
+      >
+        {
+         Array.isArray(obj.children) &&
+            obj.children.map((data, index) => (
+              <LocalDataItem
+                info = {{index, item: data, section}}
+                itemOnpress = {(info, event)=>{
+                  let len = that.directoryArray.length
+                  for(let i = 0; i < len; i++ ){
+                    if(obj.name === that.directoryArray[i].name){
+                      // 记录当前文件夹在文件夹数组中的索引
+                      that.directoryIndex = i
+                      break
+                    }
+                  }
+                  that.itemOnpress(info, event)
+                }}
+                isImporting = {
+                  that.props.importItem !== '' &&
+                  JSON.stringify(data) === JSON.stringify(that.props.importItem.item)
+                }
+              />
+            ))
+          
+        }
+      </Directory>
+      return content
+
+    } else {
+      let item = obj.children[0]
+      // 当不是文件夹时就渲染之前已经写好的item组件
+      return (
+        <LocalDataItem
+          info = {{index, item, section}}
+          // itemOnpress = {this.itemOnpress}
+          itemOnpress = {(info, event) => {
+            // 记录删除的数据是外部数据下的直接数据的索引
+            if(index < this.externalSelfCount) {
+              that.isExternalSelfDataIndex = index
+            }
+            that.itemOnpress(info, event)
+          }}
+          isImporting = {
+            this.props.importItem !== '' &&
+            JSON.stringify(item) === JSON.stringify(this.props.importItem.item)
+          }
+        />
+      )
+    }
+  
+
+  }
+/**
+ * 点击文件夹后面的更多按钮触发的菜单
+ * @param {Object} item 
+ * @param {Component} event 
+ */
+  directoryItemOnPress = (item, event) => {
+    // 记录删除文件夹内的子项数组和所属的分类
+    this.directoryItem = item.obj.children
+    this.directorySection = item.section
+    let len = this.directoryArray.length
+    for(let i = 0; i < len; i++ ){
+      if(item.obj.name === this.directoryArray[i].name){
+        // 记录当前文件夹在文件夹数组中的索引
+        this.directoryIndex = i
+        break
+      }
+    }
+    
+    // 重置this.itemInfo
+    this.itemInfo = item
+    // 设置菜单位置，并让菜单显示
+    try {
+      this.LocalDataPopupModal &&
+      this.LocalDataPopupModal.setVisible(true, {
+        x: event.nativeEvent.pageX,
+        y: event.nativeEvent.pageY,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * 删除文件夹
+   */
+  async directoryOnpress(){
+    // 获取要删啊除的文件夹的子项数组和分类
+    let arr = this.directoryItem
+    let section = this.directorySection
+    // 循环删除每一个文件夹下的数据
+    for(let i = arr.length - 1; i >= 0; i--){
+      // 重置this.itemInfo
+      this.itemInfo = {index: i, item: arr[i], section}
+      await this._onDeleteData('directory')
+    }
+    this.setLoading(false)
+    Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
+    
+    // 清空
+    this.directoryItem = []
+    this.directorySection = null
+  }
+
 }

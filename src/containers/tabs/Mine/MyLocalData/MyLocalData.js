@@ -39,6 +39,7 @@ export default class MyLocalData extends Component {
     importSceneWorkspace: () => {},
     updateDownList: () => {},
     removeItemOfDownList: () => {},
+    setBaseMap: () => {},
   }
 
   constructor(props) {
@@ -795,6 +796,14 @@ export default class MyLocalData extends Component {
             })
         }
       }
+    } else if(arrPublishServiceList.length === 0) {
+      // 当公有服务最后一个被删除了时的处理
+      let list = GetUserBaseMapUtil.getCommonBaseMap()
+      this.props.setBaseMap &&
+      this.props.setBaseMap({
+        userId: currentUser.userId,
+        baseMaps: list,
+      })
     }
 
   }

@@ -4,7 +4,7 @@ import {
   importPlotLib,
   importWorkspace,
 } from '../../../../redux/models/template'
-import { importSceneWorkspace } from '../../../../redux/models/map'
+import { importSceneWorkspace, setBaseMap } from '../../../../redux/models/map'
 import {
   updateDownList,
   removeItemOfDownList,
@@ -28,6 +28,7 @@ const mapDispatchToProps = {
   updateDownList,
   removeItemOfDownList,
   setImportItem,
+  setBaseMap,
 }
 export default connect(
   mapStateToProps,

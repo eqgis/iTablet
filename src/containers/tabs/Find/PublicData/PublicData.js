@@ -110,6 +110,7 @@ export default class PublicData extends React.Component {
   ]
 
   setSearchParams = params => {
+    // 当已经有检索条件时就合并检索条件，没有就直接设置检索条件的值
     if (this.searchParams) {
       Object.assign(this.searchParams, params)
     } else {

@@ -480,7 +480,7 @@ class AppRoot extends Component {
         let fileCreated = exist || await FileTools.createDirectory(absolutePath)
         isCreate = fileCreated && isCreate
       }
-      isCreate = this.initUserDirectories(userName) && isCreate
+      isCreate = this.initUserDirectories(userName)
       if (!isCreate) {
         Toast.show('创建文件目录失败')
       }
@@ -491,8 +491,9 @@ class AppRoot extends Component {
 
    initUserDirectories = async (userName = 'Customer') => {
      if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
-       await FileTools.initUserDefaultData(userName)
+       return await FileTools.initUserDefaultData(userName)
      }
+     return true
    }
 
   createXmlTemplate = async() =>{

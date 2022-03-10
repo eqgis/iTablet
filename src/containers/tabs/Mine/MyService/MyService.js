@@ -21,9 +21,9 @@ import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import styles from './Styles'
 import { color, size } from '../../../../styles'
 import Toast from '../../../../utils/Toast'
-import { scaleSize, OnlineServicesUtils } from '../../../../utils'
+import { scaleSize, OnlineServicesUtils,  GetUserBaseMapUtil} from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
-import { UserType } from '../../../../constants'
+import { ConstOnline, UserType } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 
 /**
@@ -44,6 +44,7 @@ export default class MyService extends Component {
     user: Object,
     device: Object,
     setUser: () => {},
+    setBaseMap: () => {},
   }
   constructor(props) {
     super(props)
@@ -77,9 +78,44 @@ export default class MyService extends Component {
   componentDidMount() {
     this._initFirstSectionData()
   }
-  componentWillUnmount() {
+
+  componentWillUnmount() { 
     this._clearInterval()
   }
+
+  /**
+   * @author lyx
+   * 加载当前用户的底图
+   */
+   async loadUserBaseMaps(){
+    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
+    // debugger
+    // GetUserBaseMapUtil.setCurUserBaseMapsTool()
+    // let arrPublishServiceList = _arrPublishServiceList
+    // 当公有服务列表数组有元素时，就遍历这个数组
+    if (arrPublishServiceList.length > 0) {
+      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
+        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
+        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl){
+          let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
+          // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
+          this.props.setBaseMap &&
+            this.props.setBaseMap({
+              userId: currentUser.userId,
+              baseMaps: list,
+            })
+        }
+      }
+    } else if(arrPublishServiceList.length === 0) {
+      let list = GetUserBaseMapUtil.getCommonBaseMap()
+      this.props.setBaseMap &&
+      this.props.setBaseMap({
+        userId: currentUser.userId,
+        baseMaps: list,
+      })
+    }
+  }
+
   _clearInterval = () => {
     if (this.objProgressWidth !== undefined) {
       clearInterval(this.objProgressWidth)
@@ -217,8 +253,15 @@ export default class MyService extends Component {
         isPublish,
       )
     }
+
+    let loadText = getLanguage(this.props.language).Prompt.LOADING
+    this.container.setLoading(
+      true,
+      loadText,
+    )
+
     if (typeof result === 'boolean' && result) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
+      // Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
       this._onModalRefresh2(
         null,
         this.onClickItemIsPublish,
@@ -226,6 +269,8 @@ export default class MyService extends Component {
         this.onClickItemIndex,
       )
     } else {
+      //关闭加载动画
+      this.container.setLoading(false)
       Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_FAILED)
     }
   }
@@ -545,6 +590,11 @@ export default class MyService extends Component {
     this.setState({
       arrPrivateServiceList: _arrPrivateServiceList,
       arrPublishServiceList: _arrPublishServiceList,
+    }, async () => {
+      await this.loadUserBaseMaps()
+      //关闭加载动画
+      this.container.setLoading(false)
+      Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
     })
   }
 

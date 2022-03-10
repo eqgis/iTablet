@@ -448,17 +448,7 @@ class AppRoot extends Component {
    * 加载当前用户的底图
    */
   async loadUserBaseMaps(){
-    let curUserBaseMaps = []
-    // 根据当前用户id获取当前用户的底图数组
-    if(this.props.user.currentUser.userId){
-      curUserBaseMaps = this.props.baseMaps[this.props.user.currentUser.userId]
-    }
-     
-    // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
-    if (!curUserBaseMaps) {
-      curUserBaseMaps = this.props.baseMaps['default']
-    }
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
+    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
     // 当公有服务列表数组有元素时，就遍历这个数组
     if (arrPublishServiceList.length > 0) {
       for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
@@ -468,7 +458,7 @@ class AppRoot extends Component {
           // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
           this.props.setBaseMap &&
             this.props.setBaseMap({
-              userId: currentUser.userId,
+              userId: this.props.user.currentUser.userId,
               baseMaps: list,
             })
         }

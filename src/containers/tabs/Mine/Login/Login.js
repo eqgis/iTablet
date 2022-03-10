@@ -316,17 +316,7 @@ export default class Login extends React.Component {
 
 
   async loadUserBaseMaps(){
-    let curUserBaseMaps = []
-    // 根据当前用户id获取当前用户的底图数组
-    if(this.props.user.currentUser.userId){
-      curUserBaseMaps = this.props.baseMaps[this.props.user.currentUser.userId]
-    }
-     
-    // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
-    if (!curUserBaseMaps) {
-      curUserBaseMaps = this.props.baseMaps['default']
-    }
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
+    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
     // 当公有服务列表数组有元素时，就遍历这个数组
     if (arrPublishServiceList.length > 0) {
       for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {

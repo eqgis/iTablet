@@ -140,11 +140,12 @@ let currentUser: CurrentUserObjType
   * 加载用户底图
   * @author lyx
   * @param currentUser  当前登录用户  
-  * @param baseMaps 当前用户的底图数组
+  * @param baseMaps 当前用户的底图数组  , baseMaps: Array<BaseMapsType>
   */
-let loadUserBaseMaps = async (currentUserObj: CurrentUserObjType, baseMaps: Array<BaseMapsType>) => {
+let loadUserBaseMaps = async (currentUserObj: CurrentUserObjType) => {
+  cleanTemp()
   currentUser = currentUserObj
-  curUserBaseMaps = baseMaps
+  // curUserBaseMaps = baseMaps
   // 等_arrPublishServiceList的值被修改完成后再返回它的值
   await _initFirstSectionData()
   return _arrPublishServiceList
@@ -371,10 +372,29 @@ let getCommonBaseMap = () => {
   return maps
 }
 
+/**
+ * 
+ * @returns 设置当前用户底图的方法
+ */
+let setCurUserBaseMapsTool = () => {
+  curUserBaseMaps = getCommonBaseMap()
+}
+
+let cleanTemp = () => {
+  // 私有服务列表数组
+  _arrPrivateServiceList = []
+  // 公有服务列表数组
+  _arrPublishServiceList = []
+  // 当前登录用户的底图数组
+  curUserBaseMaps = []
+}
+
 
  export default {
   loadUserBaseMaps,
   addServer,
+  getCommonBaseMap,
+  setCurUserBaseMapsTool,
  }
 
 

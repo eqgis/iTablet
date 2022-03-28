@@ -22,6 +22,8 @@ import { DataItemServices } from 'imobile_for_reactnative/types/interface/iserve
 
 import { connect } from 'react-redux'
 
+import { getRwSubtaskById } from '../../../../utils/TaskThreeServiceUrtils'
+
 const styles = StyleSheet.create({
   nullView: {
     position: 'absolute',
@@ -501,6 +503,7 @@ class TaskManage extends React.Component<Props, State> {
       // CoworkInfo.setMembers(members)
       this._checkMembers(data, _members)
       CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
+      // debugger
       this.createCowork(data.id, module, index, data.map, restService)
     } else {
       Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_DOWNLOAD_INFO)

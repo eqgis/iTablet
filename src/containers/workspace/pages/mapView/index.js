@@ -60,7 +60,7 @@ import { downloadFile, deleteDownloadFile ,setSampleDataShow} from '../../../../
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
 import { createARMap, openARMap, saveARMap, closeARMap } from '../../../../redux/models/armap'
-import { setCoworkService } from '../../../../redux/models/cowork'
+import { setCoworkService , updateCoworkMsgProcess} from '../../../../redux/models/cowork'
 import { setAIClassifyModel, setAIDetectModel } from '../../../../redux/models/setting'
 
 const mapStateToProps = state => ({
@@ -121,6 +121,7 @@ const mapStateToProps = state => ({
   isShowCompass: state.setting.toJS().isShowCompass,
   aiDetectData: state.setting.toJS().aiDetectData,
   aiClassifyData: state.setting.toJS().aiClassifyData,
+  threeServiceIpUrl: state.cowork.toJS().threeServiceIpUrl,
 })
 
 const mapDispatchToProps = {
@@ -181,6 +182,7 @@ const mapDispatchToProps = {
   arPoiSearch,
   setAIClassifyModel,
   setAIDetectModel,
+  updateCoworkMsgProcess,
 }
 
 export default connect(

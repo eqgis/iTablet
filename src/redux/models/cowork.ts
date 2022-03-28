@@ -41,6 +41,11 @@ export const COWORK_TASK_INFO_MEMBER_LOCATION_SHOW = 'COWORK_TASK_INFO_MEMBER_LO
 /** 协作群组数据服务添加/修改 */
 export const COWORK_SERVICE_SET = 'COWORK_SERVICE_SET'
 
+/** 第三方的服务IP地址添加修改 */
+export const THREE_SERVICE_IP_URL = 'THREE_SERVICE_IP_URL'
+/** 修改第三方的任务的完成进度 */
+export const UPDATE_SUBTASK_PROCESS = 'UPDATE_SUBTASK_PROCESS'
+
 // export interface Task {
 // }
 
@@ -202,6 +207,17 @@ export const addCoworkMsg = (params: any, cb?: () => {}) => async (dispatch: (ar
   cb && cb()
 }
 
+/** 修改任务进度 */
+export const updateCoworkMsgProcess = (params: any, cb?: () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
+ 
+  await dispatch({
+    type: UPDATE_SUBTASK_PROCESS,
+    payload: params,
+    userId: userId,
+  })
+  cb && cb()
+}
 /**
  * 读取群组（申请/邀请/聊天）消息
  */
@@ -450,6 +466,18 @@ export const setCoworkNewMessage = (
   await dispatch({
     type: COWORK_NEW_MESSAGE_SET,
     payload: params,
+  })
+  cb && cb()
+}
+
+/** 修改第三方服务的IP地址 */
+export const setThreeServiceIpUrl = (
+  param = {},
+  cb = () => {},
+) => async (dispatch:(arg0: any) => any) => {
+  await dispatch({
+    type: THREE_SERVICE_IP_URL,
+    payload: param,
   })
   cb && cb()
 }
@@ -1050,6 +1078,8 @@ const initialState = fromJS({
    * }
    */
   services: {},
+  /** threeServiceIpUrl: String 第三方服务IP地址 */
+  threeServiceIpUrl: ''
 })
 
 /*************************************** Actions *******************************************/
@@ -1431,6 +1461,7 @@ export default handleActions(
       let allTask = state.toJS().tasks
       let task = getTask(allTask, userId, payload.groupId, payload.taskId)
 
+      // 当任务信息和任务本身都存在时
       if (taskInfo && task) {
         if (payload.isRealTime) {
           showAll(taskInfo.members, taskInfo.messages)
@@ -1575,6 +1606,25 @@ export default handleActions(
       _data.currentGroup = {} // 重置当前群组
       _data.currentTask = {} // 重置当前任务
       return fromJS(_data)
+    },
+    [THREE_SERVICE_IP_URL]: (state: any, {payload}: any) => {
+      return state.setIn(['threeServiceIpUrl'], fromJS(payload.threeServiceIpUrl))
+    },
+    [UPDATE_SUBTASK_PROCESS]:(state: any, {payload, userId}: any) => {
+      // 修改任务进度的方法
+      let allTask = state.toJS().tasks
+      let myTasks: any = allTask[userId] || {}
+      let tasks: any = myTasks[payload.groupID] || []
+      for (let i = 0; i < tasks.length; i++) {
+        let _task = tasks[i]
+        if (payload.id === _task.id) {
+          tasks.splice(i, 1, payload)
+          break
+        }
+      }
+      allTask[userId] = myTasks
+
+      return state.setIn(['tasks'], fromJS(allTask))
     },
   },
   initialState,

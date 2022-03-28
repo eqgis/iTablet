@@ -372,6 +372,7 @@ async function createDefaultDatasource(
   try {
     let server = datasourcePath + datasourceName + '.udb'
     const exist = await FileTools.fileIsExist(server)
+    // debugger
     if(!exist) {
       //不存在，创建并打开
       result = await SMap.createDatasource({

@@ -301,6 +301,7 @@ class GroupSourceManagePage extends Component<Props, State> {
       }
       return _data
     }
+    // 通过服务工具获取服务数据
     this.servicesUtils?.getGroupResources({
       groupId: this.props.currentGroup.id,
       // resourceCreator: this.props.user.currentUser.userId,
@@ -315,6 +316,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         if (result.content.length > 0) {
           _filterData = resourceSubTypes?.length > 0 ? filterData(result.content, resourceSubTypes) : result.content
           // const _filterData = result.content
+          debugger
           if (this.currentPage < currentPage) {
             _data = this.state.data.deepClone()
             _data = _data.concat(_filterData)

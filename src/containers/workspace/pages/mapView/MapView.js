@@ -135,6 +135,7 @@ import DatumPointCalibration from '../../../arDatumPointCalibration/'
 import DataHandler from '../../../tabs/Mine/DataHandler'
 import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
+import { getRwSubtaskById, setSubtaskProcess } from '../../../../utils/TaskThreeServiceUrtils'
 
 GLOBAL.markerTag = 118082
 
@@ -280,6 +281,8 @@ export default class MapView extends React.Component {
     this.viewEntire = params?.viewEntire !== undefined ? params.viewEntire: this.isExample
     /** 是否显示图例 */
     this.noLegend = (params && params.noLegend) || false
+
+    // console.warn(this.props.threeServiceIpUrl);
     /**
      * 要打开的数据 object|array 工作空间，数据源，地图或它们的数组
      * Datasource和Map一般不会同时使用
@@ -419,6 +422,42 @@ export default class MapView extends React.Component {
 
     // 分享按钮是否可点击标识，true为可点击
     this.isShareCanClick = true
+  }
+
+  /** 获取第三方的数据 */
+  _getThreeTaskInfo = async () => {
+   try {
+      // 获取当前任务的ID
+      let subtaskid = this.props.currentTask.resource.resourceId
+      // 获取指定ID的子任务信息
+      let threeServiceIpUrl = 'http://192.168.11.21:6933' 
+      // let threeServiceIpUrl = this.props.threeServiceIpUrl
+      let subtaskInfo = await getRwSubtaskById(threeServiceIpUrl, subtaskid)
+      // 拿到子任务里显示数据的列表
+      let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
+
+      let array = subtaskInfo.subtaskname.split("-")
+      let timeStr = new Date().getTime()
+      // 唯一标识
+      let id = array[1] + '_' + array[2] + '_' + subtaskid
+
+      let path  = (await FileTools.getHomeDirectory()) +
+        ConstPath.UserPath +
+        this.props.user.currentUser.userName +
+        '/' +
+        ConstPath.RelativePath.Datasource
+      let param = {
+        shapes: infoDataList,
+        path,
+        id,
+      }
+      let result = await SMap.addThreeTaskData(param, false)
+      // debugger
+     
+   } catch (error) {
+     console.warn('mapView error: ' + error);
+   }
+
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -1246,7 +1285,10 @@ export default class MapView extends React.Component {
   /** 原生mapview加载完成回调 */
   _onGetInstance = async mapView => {
     this.mapView = mapView
-    this._addMap()
+    await this._addMap()
+     // 当是第三方的任务时，才记载第三方的服务数据
+     this.props.currentTask?.isThreeTask && await this._getThreeTaskInfo()
+    
   }
 
   _onLoad = async () => {
@@ -1413,6 +1455,67 @@ export default class MapView extends React.Component {
     await SMap.removeFloorHiddenListener(listeners)
   }
 
+  /** 保存第三方数据，并移除第三方数据图层
+   */
+  saveThreeData = async (isUpdate:boolean) => {
+    try {
+      // 获取当前任务的ID
+      let subtaskid = this.props.currentTask.resource.resourceId
+      // 获取指定ID的子任务信息
+      let threeServiceIpUrl = 'http://192.168.11.21:6933' 
+      // let threeServiceIpUrl = this.props.threeServiceIpUrl
+      let subtaskInfo = await getRwSubtaskById(threeServiceIpUrl, subtaskid)
+
+      let array = subtaskInfo.subtaskname.split("-")
+      // 唯一标识
+      let id = array[1] + '_' + array[2] + '_' + subtaskid
+
+      // 拿到子任务里显示数据的列表
+      let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
+      let ProcessStr = subtaskInfo.process
+      let preProcess = ProcessStr.substring(0,ProcessStr.length - 1)
+      // debugger
+      // 应该是算出来的，暂时写死 10
+      let totalCount = 10
+      if(preProcess !== '0'){
+        totalCount = parseInt((infoDataList.length * 100) / preProcess)
+      }
+      
+      // 移除图层的参数
+      let param = {
+        id,
+        totalCount,  // 完成任务的对象总数
+        isUpdate, // 是否需要更新子任务进度
+      }
+      // 返回的是一个字符串
+      let process = await SMap.removeThreeDataLayer(param, false)
+      
+      // 当需要更新进度时才去更新
+      if(isUpdate && process !== ''){
+        let result = await setSubtaskProcess(threeServiceIpUrl, subtaskid, process)
+        if(result) {
+          let curTaskInfo = JSON.parse(JSON.stringify(this.props.currentTask))
+          curTaskInfo.process = process
+          // 此处调用修改方法进行修改
+          this.props.updateCoworkMsgProcess(curTaskInfo)
+        }
+      }
+    } catch (error) {
+      console.warn("remove three data layer: " + error)
+    }
+    
+  }
+  /** 不保存事件 */
+  notSaveMap = async () => {
+    try {
+      if(this.props.currentTask?.isThreeTask){
+        this.saveThreeData(false)
+      }
+    } catch (error) {
+      console.warn("not save map error: " + error);
+    }
+  }
+
   /** 地图保存 */
   saveMap = async () => {
     try {
@@ -1442,7 +1545,9 @@ export default class MapView extends React.Component {
       if (this.props.map.currentMap.Template) {
         addition.Template = this.props.map.currentMap.Template
       }
-
+      if(this.props.currentTask?.isThreeTask){
+        this.saveThreeData(true)
+      }
       this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
       // 导出(保存)工作空间中地图到模块
       let result = await this.props.saveMap({ mapTitle: mapName, nModule: '', addition })
@@ -4376,6 +4481,7 @@ export default class MapView extends React.Component {
         ref={ref => (GLOBAL.SaveMapView = ref)}
         language={this.props.language}
         save={this.saveMap}
+        notSave = {this.notSaveMap}
         device={this.props.device}
         cancel={() => {
           // this.backAction = null

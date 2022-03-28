@@ -49,6 +49,8 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   path: string | undefined
   downloading: boolean
   downloadingPath: string
+  // 第三方的数据路径
+  threeDataPath: string
   itemProgress: Progress | undefined | null
 
   constructor(props: Props) {
@@ -56,6 +58,8 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     this.path = ''
     this.downloading = false
     this.downloadingPath = ''
+    // 第三方的数据路径
+    this.threeDataPath = ''
     this.state = {
       isDownloading: false,
       // isSelf: props.isSelf,
@@ -84,6 +88,11 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       ConstPath.RelativePath.Temp +
       this.props.data.id
 
+    // 第三方的数据路径
+    this.threeDataPath = (await FileTools.getHomeDirectory()) +
+      ConstPath.CachePath2 
+      //+ 'blank'
+  
     // 检测是否下载完成
     let exist = await this.fileExist()
     if (!exist && this.props.downloadData) {
@@ -157,10 +166,17 @@ export default class TaskMessageItem extends React.Component<Props, State> {
 
   _onPress = async () => {
     let mapData, data = this.props.data
-    if (await this.fileExist()) {
+    let isThreeData = await FileTools.fileIsExist(this.threeDataPath)
+     if (await this.fileExist()) {
       mapData = await RNFS.readFile(this.downloadingPath + '_', 'utf8')
       data = Object.assign({map: JSON.parse(mapData)}, this.props.data)
+    }else if (isThreeData) {
+      // 获取文件的内容（地图的名称和地图的xml文件路径）
+      // mapData = `{"name":"blankMap","path":"/Collection/Cache/blank/blankMap.xml"}`
+      mapData = `{"name":"blankMap","path":"/Collection/Cache/blankMap.xml"}`
+      data = Object.assign({map: JSON.parse(mapData)}, this.props.data)
     }
+    // debugger
     this.props.onPress(data)
   }
 
@@ -392,6 +408,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
   }
 
   _renderContentView = () => {
+    let title = this.props.data?.maintask ? this.props.data.maintask.maintaskName : this.state.module.title
     return (
       <View style={{flexDirection: 'column', flex: 1, justifyContent: 'space-between'}}>
         <Text
@@ -412,7 +429,10 @@ export default class TaskMessageItem extends React.Component<Props, State> {
           }}
         >
           {/* {getLanguage(GLOBAL.language).Friends.TASK_MAP + ': ' + this.props.data.resource.resourceName.replace('.zip', '')} */}
-          {getLanguage(GLOBAL.language).Friends.TASK_MODULE + ': ' + this.state.module.title + '任务'}
+          {/* {getLanguage(GLOBAL.language).Friends.TASK_MODULE + ': ' + this.state.module.title + '任务'} */}
+          {getLanguage(GLOBAL.language).Friends.TASK_MODULE + ': ' + title + '任务'}
+
+         
         </Text>
         <Text
           numberOfLines={1}
@@ -468,20 +488,42 @@ export default class TaskMessageItem extends React.Component<Props, State> {
               {this._renderContentView()}
             </View>
             {
-              !this.state.exist && this._renderButton({
+              !this.state.exist && !this.props.data.isThreeTask && this._renderButton({
                 image: getThemeAssets().cowork.icon_nav_import,
                 title: this.state.progress,
                 action: this._downloadFile,
               })
             }
-            {
-              // this.state.exist &&
-              this._renderButton({
-                image: getThemeAssets().publicAssets.icon_move,
-                action: this._showMore,
-                style: {marginLeft: scaleSize(24)},
-              })
-            }
+            
+            <View
+              style={{
+                flexDirection:'column',
+                justifyContent: 'space-between',
+                alignContent:'center',
+              }}
+            >
+              {
+                // this.state.exist &&
+                this._renderButton({
+                  image: getThemeAssets().publicAssets.icon_move,
+                  action: this._showMore,
+                  style: {width:scaleSize(100),},
+                })
+              }
+          
+              {
+                 this.props.data.isThreeTask && (
+                  <Text style={{
+                    fontSize: size.fontSize.fontSizeSm,
+                    color: color.fontColorGray3,
+                    marginTop: scaleSize(-24),
+                    textAlign: 'center',
+                  }}>
+                      {"进度: " + this.props.data.process}
+                  </Text>
+                )
+              }
+            </View>
           </TouchableOpacity>
         </View>
         {

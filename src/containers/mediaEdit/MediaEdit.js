@@ -21,7 +21,6 @@ import styles from './styles'
 import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
-// import ImagePicker from 'react-native-image-crop-picker'
 import { SMediaCollector, SOnlineService, SIPortalService, SMap, SCoordination, RNFS, SARMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 

@@ -49,7 +49,7 @@ interface MainAndSubTaskInfo {
 }
 
 let rootUrl = 'http://192.168.11.21:6933'
-let tokenCode = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDg1MTM1NjMsInVzZXJuYW1lIjoiYWRtaW4ifQ.22hnGWXqIEX6eG4zVKC7XzV6vBmEAx-JahAaW4OtUY8'
+let tokenCode = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDg2MDAxNTcsInVzZXJuYW1lIjoiYWRtaW4ifQ.7JB-9xbnwV-RmyRxGHeNNMnKvRE-ZsLB-HDGuNtLG2o'
 
 /**
  * 超时返回‘timeout’

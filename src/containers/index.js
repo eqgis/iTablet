@@ -188,6 +188,7 @@ import NavigationView2D from './workspace/components/ArNavigation/NavigationView
 import RoadNet from './workspace/components/ArNavigation/RoadNet'
 import Report from '../containers/tabs/Friend/Chat/Report'
 import WebView from '../components/WebView'
+import MyQuestionView from '../../configs/tabModules/QuestionListOther/QuestionView'
 
 export default function (appConfig) {
   return createStackNavigator(
@@ -1244,6 +1245,13 @@ export default function (appConfig) {
           header: null,
         },
       },
+      MyQuestionView: {
+        screen: MyQuestionView,
+        navigationOptions: {
+          header: null,
+        },
+      }
+
     },
     {
       defaultNavigationOptions: {

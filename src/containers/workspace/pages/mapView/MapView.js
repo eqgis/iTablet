@@ -137,6 +137,9 @@ import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
 import { getRwSubtaskById, setSubtaskProcess } from '../../../../utils/TaskThreeServiceUrtils'
 
+import TaskProcess from '../../../../containers/tabs/Friend/Cowork/TaskProcess'
+import ProcessUtils from '../../../../utils/ProcessUtils'
+
 GLOBAL.markerTag = 118082
 
 const TOP_DEFAULT = Platform.select({
@@ -430,8 +433,8 @@ export default class MapView extends React.Component {
       // 获取当前任务的ID
       let subtaskid = this.props.currentTask.resource.resourceId
       // 获取指定ID的子任务信息
-      let threeServiceIpUrl = 'http://192.168.11.21:6933' 
-      // let threeServiceIpUrl = this.props.threeServiceIpUrl
+      // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
+      let threeServiceIpUrl = this.props.threeServiceIpUrl
       let subtaskInfo = await getRwSubtaskById(threeServiceIpUrl, subtaskid)
       // 拿到子任务里显示数据的列表
       let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
@@ -1285,9 +1288,7 @@ export default class MapView extends React.Component {
   /** 原生mapview加载完成回调 */
   _onGetInstance = async mapView => {
     this.mapView = mapView
-    await this._addMap()
-     // 当是第三方的任务时，才记载第三方的服务数据
-     this.props.currentTask?.isThreeTask && await this._getThreeTaskInfo()
+    this._addMap()
     
   }
 
@@ -1462,13 +1463,14 @@ export default class MapView extends React.Component {
       // 获取当前任务的ID
       let subtaskid = this.props.currentTask.resource.resourceId
       // 获取指定ID的子任务信息
-      let threeServiceIpUrl = 'http://192.168.11.21:6933' 
-      // let threeServiceIpUrl = this.props.threeServiceIpUrl
+      // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
+      let threeServiceIpUrl = this.props.threeServiceIpUrl
       let subtaskInfo = await getRwSubtaskById(threeServiceIpUrl, subtaskid)
 
       let array = subtaskInfo.subtaskname.split("-")
       // 唯一标识
       let id = array[1] + '_' + array[2] + '_' + subtaskid
+      // let id = array[1] + '_' + subtaskid + '_'+ Math.random() * 100
 
       // 拿到子任务里显示数据的列表
       let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
@@ -1478,7 +1480,7 @@ export default class MapView extends React.Component {
       // 应该是算出来的，暂时写死 10
       let totalCount = 10
       if(preProcess !== '0'){
-        totalCount = parseInt((infoDataList.length * 100) / preProcess)
+        totalCount = Math.round((infoDataList.length * 100) / preProcess)
       }
       
       // 移除图层的参数
@@ -2067,6 +2069,10 @@ export default class MapView extends React.Component {
       if (this.viewEntire) {
         SMap.viewEntire()
       }
+
+      // 当是第三方的任务时，才记载第三方的服务数据
+     this.props.currentTask?.isThreeTask && await this._getThreeTaskInfo()
+
     }.bind(this)())
   }
 
@@ -2567,6 +2573,7 @@ export default class MapView extends React.Component {
     this.TrafficView && this.TrafficView.setVisible(full)
     this.NavIcon && this.NavIcon.setVisible(full)
     this.NewMessageIcon && this.NewMessageIcon.setVisible(full)
+    this.TaskProcess && this.TaskProcess.setVisible(full)
     if (
       !(
         !full &&
@@ -5240,6 +5247,15 @@ export default class MapView extends React.Component {
         {GLOBAL.coworkMode && this.state.onlineCowork && (
           <NewMessageIcon ref={ref => (this.NewMessageIcon = ref)} />
         )}
+
+        {
+          this.props.currentTask?.isThreeTask && (
+            <TaskProcess ref={ref => {
+              this.TaskProcess = ref
+              ProcessUtils.setTaskProcessComponentRef(ref)
+            }}/>
+          )
+        }
         {GLOBAL.Type === ChunkType.MAP_NAVIGATION && (
           <Dialog
             ref={ref => (GLOBAL.NavDialog = ref)}

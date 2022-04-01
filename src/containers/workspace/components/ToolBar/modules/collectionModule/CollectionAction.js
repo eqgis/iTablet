@@ -19,6 +19,8 @@ import NavigationService from '../../../../../NavigationService'
 import { jsonUtil, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 
+import ProcessUtils from '../../../../../../utils/ProcessUtils'
+
 function openTemplate(type) {
   const params = ToolbarModule.getParams()
   const _data = CollectionData.getData(type)
@@ -224,6 +226,7 @@ async function createCollector(type, layerName) {
 
     const mapInfo = await SMap.getMapInfo()
 
+    debugger
     const datasourceName =
       _params.collection.datasourceName ||
       (_params.map &&
@@ -289,6 +292,8 @@ async function collectionSubmit(type) {
     }
     // 采集后 需要刷新属性表
     GLOBAL.NEEDREFRESHTABLE = true
+    let taskProcessref = ProcessUtils.getTaskProcessComponentRef()
+    await taskProcessref?.updateSubTaskProcess();
   }
   return result
 }

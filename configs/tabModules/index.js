@@ -7,13 +7,13 @@ import { AppTabs } from '../../src/constants'
 
 /** 自定义Tab **/
 // import Example from './Example'
-import QuestionView from './QuestionView'
+import QuestionListView from './QuestionListView'
 
 /** export顺序为首页Tabs显示顺序, 默认第一个为Home **/
 export default [
   AppTabs.Friend,
   // AppTabs.Find,
   // Example,
-  QuestionView,
+  QuestionListView,
   AppTabs.Mine,
 ]

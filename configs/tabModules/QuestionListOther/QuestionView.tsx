@@ -1,17 +1,19 @@
 import * as React from 'react'
 import { ScrollView, Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { scaleSize, Toast } from '../../src/utils'
-import { getLanguage } from '../../src/language'
-import { size, color } from '../../src/styles'
-import { getPublicAssets, getThemeAssets } from '../../src/assets'
-import { Button } from '../../src/components'
-import survey from '../../src/assets/survey.json'
-import TabContainer from '../../src/containers/tabs/TabContainer'
+import { scaleSize, Toast } from '../../../src/utils'
+import { getLanguage } from '../../../src/language'
+import { size, color } from '../../../src/styles'
+import { getPublicAssets, getThemeAssets } from '../../../src/assets'
+import { Button, Container } from '../../../src/components'
+import survey from '../../../src/assets/survey.json'
+import TabContainer from '../../../src/containers/tabs/TabContainer'
 import { RNFS  } from 'imobile_for_reactnative'
-import { FileTools } from '../../src/native'
-import { ConstPath } from '../../src/constants'
-import { UserInfo } from '../../src/types'
+import { FileTools } from '../../../src/native'
+import { ConstPath } from '../../../src/constants'
+import { UserInfo } from '../../../src/types'
+import { addTbAnswerList } from '../../../src/utils/TaskThreeServiceUrtils'
+import { AnswerData } from './QuestionInterface'
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -88,8 +90,10 @@ class QuestionView extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     // this.questionData = survey
+
+    let surveyInfo = this.props.navigation.state.params.tbSurveyInfo
     this.state = {
-      questionData: survey,
+      questionData: surveyInfo,
     }
   }
 
@@ -133,9 +137,8 @@ class QuestionView extends React.Component<Props, State> {
   render = () => {
 
     return (
-      <TabContainer
-        hideInBackground={false}
-        showFullInMap={true}
+      <Container
+        ref={(ref: any) => (this.container = ref)}
         headerProps={{
           title: QuestionView.getTitle(this.props.language),
           withoutBack: true,
@@ -154,8 +157,12 @@ class QuestionView extends React.Component<Props, State> {
             // 检查必须完成的选项
             let requireIds: number[] = []
             this.state.questionData.quesAndOpts.forEach((element: any) => {
-              element.tbQuestion.isrequired === 2 && requireIds.push(element.tbQuestion.id)
+              // 要将未渲染的空数据给过滤掉
+              if(element.tbQuestion.quesname !== "" && element.tbQuestionOpts.length !== 0) {
+                element.tbQuestion.isrequired === 2 && requireIds.push(element.tbQuestion.id)
+              }
             })
+
             for (const questionId of requireIds) {
               if (!data.has(questionId + '')) {
                 Toast.show('请完成必选选项')
@@ -167,18 +174,57 @@ class QuestionView extends React.Component<Props, State> {
             const resultStr = {
               [this.state.questionData.tbSurvey.id]: [...data.entries()].reduce((obj, [key, value]) => (obj[key] = value, obj), {}),
             }
+           
+            try {
+              let answerInfoList = resultStr[this.state.questionData.tbSurvey.id]
+  
+              let aswerList:Array<AnswerData> = []
+              let len = answerInfoList.length
+              let time = new Date();
+  
+              let tbSurvey = this.state.questionData.tbSurvey
+              let quesAndOpts = this.state.questionData.quesAndOpts
+              let index = 0;
+              for (const key in answerInfoList) {
+  
+                // 确定问题类型，要去遍历
+  
+                let obj =  {
+                  createtime: "" + time,
+                  depart: tbSurvey.createdepart,
+                  id: index,
+                  optid: answerInfoList[key][0],
+                  questionid: parseInt(key),
+                  questype: 1,
+                  surveyid: tbSurvey.id,
+                  voter: "string"
+                }
+                // 索引ID自加
+                index ++
+                // 将数据放进数组里
+                aswerList.push(obj)
+              }
+  
+              // 第三方服务地址，暂时固定
+              let threeServiceIpUrl = 'http://192.168.11.21:6932' 
+              debugger
+              await addTbAnswerList(threeServiceIpUrl, aswerList)
+            } catch (error) {
+              debugger
+            }
 
-            const tempPath = (await FileTools.getHomeDirectory()) +
-              ConstPath.UserPath +
-              this.props.currentUser.userName +
-              '/' +
-              ConstPath.RelativePath.Temp
+            // const tempPath = (await FileTools.getHomeDirectory()) +
+            //   ConstPath.UserPath +
+            //   this.props.currentUser.userName +
+            //   '/' +
+            //   ConstPath.RelativePath.Temp
 
-            RNFS.writeFile(`${tempPath}/question_${new Date().getTime()}.ques`, JSON.stringify(resultStr), 'utf8')
+            // RNFS.writeFile(`${tempPath}/question_${new Date().getTime()}.ques`, JSON.stringify(resultStr), 'utf8')
+
             Toast.show(getLanguage(this.props.language).Profile.SUGGESTION_SUBMIT_SUCCEED)
           }}
         />
-      </TabContainer>
+      </Container>
     )
   }
 }
@@ -197,17 +243,19 @@ const MyQuestionView = connect(
   mapDispatchToProps,
 )(QuestionView)
 
+export default MyQuestionView
+
 // 导出界面相关信息
-export default {
-  key: 'Question',
-  // 根据系统语言获取Title
-  getTitle: QuestionView.getTitle,
-  // 自定义Tab界面
-  Screen: MyQuestionView,
-  // Tab未点击图片
-  image: getThemeAssets().tabBar.tab_discover,
-  selectedImage: getThemeAssets().tabBar.tab_discover_selected,
-}
+// export default {
+//   key: 'Question',
+//   // 根据系统语言获取Title
+//   getTitle: QuestionView.getTitle,
+//   // 自定义Tab界面
+//   Screen: MyQuestionView,
+//   // Tab未点击图片
+//   image: getThemeAssets().tabBar.tab_discover,
+//   selectedImage: getThemeAssets().tabBar.tab_discover_selected,
+// }
 
 interface FormProps {
   data: any,
@@ -316,9 +364,11 @@ class Form extends React.Component<FormProps, FormState> {
         </View>
         {
           question?.map((element: any, index: number) => {
-            return (
-              this.renderQuestion(element, index)
-            )
+            if(element.tbQuestion.quesname !== "" && element.tbQuestionOpts.length !== 0) {
+              return (
+                this.renderQuestion(element, index)
+              )
+            }
           })
         }
         <Button

@@ -246,11 +246,11 @@ export default class MediaEdit extends React.Component {
         if (item.indexOf('file://') === 0) {
           path = item.replace('file://', '')
           // item = path
-        } else if (item.indexOf('/iTablet') === 0) {
+        } else if (item.indexOf(`/${ConstPath.AppName}`) === 0) {
           path = await FileTools.appendingHomeDirectory(item)
         }
         info = await SMediaCollector.getVideoInfo(path)
-      } else if (item.indexOf('/iTablet') === 0) {
+      } else if (item.indexOf(`/${ConstPath.AppName}`) === 0) {
         // 判断是否是已存的图片
         path = await FileTools.appendingHomeDirectory(item)
       }

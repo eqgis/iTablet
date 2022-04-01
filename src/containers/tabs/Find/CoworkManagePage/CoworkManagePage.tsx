@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, TextInput, Text} from 'react-native'
+import {View, TextInput, Text, Switch} from 'react-native'
 import { Container, PopMenu, ImageButton } from '../../../../components'
 import { scaleSize, SCoordinationUtils } from '../../../../utils'
 import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
@@ -17,7 +17,9 @@ import CoworkFileHandle from './CoworkFileHandle'
 import { DataItemServices, GroupType } from 'imobile_for_reactnative/types/interface/iserver/types'
 
 import { connect } from 'react-redux'
-import { getMainAndSubTaskInfo, updateRwMainStask, setMaintaskstate, setSubtaskState } from '../../../../utils/TaskThreeServiceUrtils'
+import { getMainAndSubTaskInfo, login } from '../../../../utils/TaskThreeServiceUrtils'
+import RadioButton from '../../../aiClassifyView/RadioButton'
+
 
 interface Props {
   navigation: Object,
@@ -36,6 +38,7 @@ interface Props {
 
 type State = {
   isMutiChoice: boolean,
+  isEnabled: boolean,
 }
 export default class CoworkManagePage extends React.Component<Props, State> {
 
@@ -44,12 +47,15 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   callBack: (data?: any) => any
   servicesUtils: SCoordination | undefined
   urlText: string
+  FirstRB: React.Component
+  checkedItem: number
 
   constructor(props: Props) {
     super(props)
     this.callBack = this.props.navigation?.state?.params?.callBack
     this.state = {
       isMutiChoice: false,
+      isEnabled: false,
     }
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
@@ -57,7 +63,8 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('iportal')
     }
-    this.urlText = 'http://192.168.11.21:6933'
+    this.urlText = 'http://192.168.11.21:6932'
+    this.checkedItem = 1
   }
 
   shouldComponentUpdate(nextProps: any, nextState: any) {
@@ -208,11 +215,21 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     GLOBAL.SimpleDialog.setVisible(true)
   }
 
+  RadioButtonOnChange = index => {
+    if (index === 0) {
+      this.FirstRB?.setChecked(true)
+    } else if (index === 1) {
+      this.FirstRB?.setChecked(false)
+    } 
+    this.checkedItem = index
+  }
+
   // 添加第三方的服务的ip地址 是一个对话框的形式
   addIp = () => {
     GLOBAL.SimpleDialog.set({
       renderCustomeView: () =>{
-        // let urlText = 'http://192.168.11.21:6933'
+        // let urlText = 'http://192.168.11.21:6932'
+        let that = this
         return (
           <View
             style={{
@@ -242,33 +259,60 @@ export default class CoworkManagePage extends React.Component<Props, State> {
                 width: '100%',
                 textAlign: 'center',
               }}
-              placeholder = 'http://192.168.11.21:6933'
+              placeholder = 'http://192.168.11.21:6932'
               onChangeText={text => {
                 this.urlText = text
               }}
             />
+            <View
+              style={{
+                flexDirection: 'row',
+                color:'#999',
+                width: '100%',
+                marginLeft: scaleSize(16),
+              }}
+            >
+              <RadioButton
+                ref={ref => (this.FirstRB = ref)}
+                onChange={() => {
+                  if(this.checkedItem === 0){
+                    this.RadioButtonOnChange(1)
+                  } else {
+                    this.RadioButtonOnChange(0)
+                  }
+                  
+                }}
+              />
+              <Text>{'是否获取数据'}</Text>
+            </View>
+
           </View>
        )
       },
       cancelText: '取消',
       cancelAction: () => { 
+        // this.props.setThreeServiceIpUrl({threeServiceIpUrl:'http://192.168.11.21:6932'})
         GLOBAL.SimpleDialog.setVisible(false) 
       },
       confirmText: getLanguage(this.props.language).Profile.MAP_AR_DATUM_SURE,
       confirmAction: async () => {
         
         // 要先对输入框里的内容做判断
-        let threeServiceIpUrl = 'http://192.168.11.21:6933'
+        let threeServiceIpUrl = 'http://192.168.11.21:6932'
         // 更改redux里的三方IP地址 
         // this.props.setThreeServiceIpUrl({threeServiceIpUrl})
 
         await this.props.setThreeServiceIpUrl({threeServiceIpUrl:this.urlText})
+        login(this.urlText)
+        if(this.checkedItem === 1) {
+          return 
+        }
         // await this.props.setThreeServiceIpUrl({threeServiceIpUrl})
         // let tempurl = await this.props.threeServiceIpUrl
         // debugger
         // 点击确认之后就要去获取服务数据，将他们的格式转换成我们自己的格式
         let info = await getMainAndSubTaskInfo(this.urlText)
-        
+
         // 测接口
         // setMaintaskstate(56, 1)
         // setSubtaskState(102, 3)

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ScrollView, Text, Image, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { ScrollView, Text, Image, View, StyleSheet, TouchableOpacity, FlatList , RefreshControl} from 'react-native'
 import { connect } from 'react-redux'
 import { scaleSize, Toast } from '../../src/utils'
 import { getLanguage } from '../../src/language'
@@ -28,6 +28,7 @@ interface Props {
 
 interface State {
   surveyList: Array<SurveyItemData>,
+  isRefresh: boolean,
 }
 
 
@@ -39,6 +40,7 @@ class QuestionListView extends React.Component<Props, State> {
     super(props)
     this.state = {
       surveyList:[],
+      isRefresh: false,
     }
   }
 
@@ -53,7 +55,8 @@ class QuestionListView extends React.Component<Props, State> {
   /** 获取问卷数据 */
   getData = async () => {
     // 第三方服务地址，暂时固定
-    let threeServiceIpUrl = 'http://192.168.11.21:6932' 
+    // let threeServiceIpUrl = 'http://192.168.11.21:6933' 
+    let threeServiceIpUrl = this.props.threeServiceIpUrl
     // 登录重置token的值
     // debugger
     await login(threeServiceIpUrl)
@@ -61,7 +64,8 @@ class QuestionListView extends React.Component<Props, State> {
     this.tbSurveyList = await getTbSurveyList(threeServiceIpUrl, 1, 10)
     // debugger
     this.setState({
-      surveyList: this.tbSurveyList.records
+      surveyList: this.tbSurveyList.records,
+      isRefresh: false,
     })
   }
 
@@ -85,6 +89,9 @@ class QuestionListView extends React.Component<Props, State> {
         id = {item.id}
       />
     )
+  }
+  download = async () => {
+    await this.getData()
   }
 
   render = () => {
@@ -115,6 +122,17 @@ class QuestionListView extends React.Component<Props, State> {
          data={this.state.surveyList}
          renderItem = {this._renderItem}
          keyExtractor = {item => item.id}
+         refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefresh}
+            onRefresh={this.download}
+            colors={['orange', 'red']}
+            tintColor={'orange'}
+            titleColor={'orange'}
+            title={getLanguage(this.props.language).Friends.LOADING}
+            enabled={true}
+          />
+        }
        />
       </TabContainer>
      
@@ -128,6 +146,7 @@ const mapStateToProps = (state: any) => ({
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
   currentUser: state.user.toJS().currentUser,
+  threeServiceIpUrl: state.cowork.toJS().threeServiceIpUrl,
 })
 
 // 链接Redux，获取持久化/全局动态数据

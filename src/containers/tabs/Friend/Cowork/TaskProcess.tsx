@@ -6,6 +6,7 @@ import { color, size } from '../../../../styles'
 import { connect } from 'react-redux'
 import { getRwSubtaskById, setSubtaskProcess } from '../../../../utils/TaskThreeServiceUrtils'
 import { SMap } from 'imobile_for_reactnative'
+import {updateCoworkMsgProcess} from '../../../../../src/redux/models/cowork'
 
 interface Props {
   language: string,
@@ -34,7 +35,7 @@ class TaskProcess extends Component<Props, State> {
     this.left = new Animated.Value(scaleSize(DEFAULT_LEFT))
     this.visible = true
     this.timer = null
-    this.totalCount = 10
+    this.totalCount = 100
     this.isFirstC = true
 
     this.state = {
@@ -186,7 +187,9 @@ const mapStateToProps = state => ({
   threeServiceIpUrl: state.cowork.toJS().threeServiceIpUrl,
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  updateCoworkMsgProcess,
+}
 
 export default connect(
   mapStateToProps,

@@ -355,40 +355,30 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     }
 
     let answerListObj = '{"tbAnswerList":' + JSON.stringify(insertAnswerParam) + '}'
+    let param = {tbAnswerList:insertAnswerParam}
     // 传递的参数信息
     let uploadParams = {
-      insertAnswerParam: answerListObj,
+      insertAnswerParam: param,
       // tbAnswerList: JSON.stringify(insertAnswerParam)
     }
     debugger
-    // const response = RNFetchBlob.fetch('POST', url, headers, JSON.stringify(uploadParams))
-    const response = RNFetchBlob.fetch('POST', url, headers, [
-      {name:'insertAnswerParam', data: answerListObj}
-    ])
-
-    const response01 = await fetch(url,{
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: tokenCode,
-      },
-      credentials: 'include',
-      body: JSON.stringify(uploadParams),
-    })
-
-    const fetchobj = new Fetch()
-    fetchobj.request({url,
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: tokenCode,
-      },
-      body: uploadParams,
-    })
-
+    const response = RNFetchBlob.fetch('POST', url, headers, JSON.stringify(uploadParams))
+    // const response = RNFetchBlob.fetch('POST', url, headers, [
+    //   {name:'insertAnswerParam', data: answerListObj}
+    // ])
     let result = await Promise.race([response, timeout(10)])
+    debugger
+
+    // const response01 = await fetch(url,{
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //     Authorization: tokenCode,
+    //   },
+    //   credentials: 'include',
+    //   body: JSON.stringify(uploadParams),
+    // })
     debugger
     if(result === 'timeout') {
       console.warn("timeout");

@@ -457,6 +457,14 @@ export default class MapView extends React.Component {
       let result = await SMap.addThreeTaskData(param, false)
       // debugger
      
+      let ProcessStr = subtaskInfo.process
+      let preProcess = ProcessStr.substring(0,ProcessStr.length - 1)
+      // debugger
+      this.totalCount = 100
+      if(preProcess !== '0'){
+        this.totalCount = Math.round((infoDataList.length * 100) / preProcess)
+      }
+
    } catch (error) {
      console.warn('mapView error: ' + error);
    }
@@ -1474,19 +1482,19 @@ export default class MapView extends React.Component {
 
       // 拿到子任务里显示数据的列表
       let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
-      let ProcessStr = subtaskInfo.process
-      let preProcess = ProcessStr.substring(0,ProcessStr.length - 1)
-      // debugger
-      // 应该是算出来的，暂时写死 10
-      let totalCount = 10
-      if(preProcess !== '0'){
-        totalCount = Math.round((infoDataList.length * 100) / preProcess)
-      }
+      // let ProcessStr = subtaskInfo.process
+      // let preProcess = ProcessStr.substring(0,ProcessStr.length - 1)
+      // // debugger
+      // // 应该是算出来的，暂时写死 10
+      // let totalCount = 10
+      // if(preProcess !== '0'){
+      //   totalCount = Math.round((infoDataList.length * 100) / preProcess)
+      // }
       
       // 移除图层的参数
       let param = {
         id,
-        totalCount,  // 完成任务的对象总数
+        totalCount: this.totalCount,  // 完成任务的对象总数
         isUpdate, // 是否需要更新子任务进度
       }
       // 返回的是一个字符串

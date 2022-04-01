@@ -88,10 +88,18 @@ export default class MyService extends Component {
    * 加载当前用户的底图
    */
    async loadUserBaseMaps(){
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
-    // debugger
-    // GetUserBaseMapUtil.setCurUserBaseMapsTool()
-    // let arrPublishServiceList = _arrPublishServiceList
+    // let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
+    GetUserBaseMapUtil.setCurUserBaseMapsTool()
+    let arrPublishServiceList = JSON.parse(JSON.stringify(_arrPublishServiceList))
+
+    // 若公有服务列表只有一个为空的对象，就需要先将这个数组元素给删除掉
+    if (
+      arrPublishServiceList.length === 1 &&
+      arrPublishServiceList[0].id === undefined
+    ) {
+      arrPublishServiceList.splice(0, 1)
+    }
+
     // 当公有服务列表数组有元素时，就遍历这个数组
     if (arrPublishServiceList.length > 0) {
       for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
@@ -238,6 +246,7 @@ export default class MyService extends Component {
     }
   }
 
+  /** 修改 online 和 iportal 的服务数据 */
   _publishService = async () => {
     this._onCloseModal()
     let isPublish = !this.onClickItemIsPublish
@@ -495,14 +504,24 @@ export default class MyService extends Component {
     )
   }
 
+  /**
+   * 修改页面显示上的数据
+   * @param {any} itemId  
+   * @param {boolean} isPublish 服务修改前的公有性标识
+   * @param {boolean} isDelete 是否是执行的删除方法的标识
+   * @param {number} index 当前点击项的索引
+   */
   _onModalRefresh2 = async (itemId, isPublish, isDelete, index) => {
     if (index !== undefined) {
       if (isPublish) {
+        // 修改前是公有的服务
         if (isDelete) {
+          // 是从删除方法进来的，删除的是公有服务
           _arrPublishServiceList.splice(index, 1)
           let total = this.serviceListTotal - 1
           this.serviceListTotal = total
         } else {
+          // 是从修改服务公有性的方法进来的，将服务从公有改为私有
           let objPublishList = _arrPublishServiceList[index]
           let strRestTitle = objPublishList.restTitle
           let strThumbnail = objPublishList.thumbnail
@@ -511,6 +530,7 @@ export default class MyService extends Component {
           let arrMapInfos = objPublishList.mapInfos
           let authorizeSetting = objPublishList.authorizeSetting
           let bIsPublish = false
+          // 构造sectionData数据
           let strSectionsData =
             '{"restTitle":"' +
             strRestTitle +
@@ -527,7 +547,9 @@ export default class MyService extends Component {
             ',"authorizeSetting":' +
             JSON.stringify(authorizeSetting) +
             '}'
+          // 将构造的sectionData数据设置为json数据
           let objPrivateList = JSON.parse(strSectionsData)
+          // 若私有服务列表只有一个为空的对象，就需要先将这个数组元素给删除掉
           if (
             _arrPrivateServiceList.length === 1 &&
             _arrPrivateServiceList[0].id === undefined
@@ -535,15 +557,20 @@ export default class MyService extends Component {
             _arrPrivateServiceList.splice(0, 1)
           }
 
+          // 在私有服务列表添加该sectionData的json数据
           _arrPrivateServiceList.push(objPrivateList)
+          // 在公有服务列表里将该服务数据删除掉
           _arrPublishServiceList.splice(index, 1)
         }
       } else {
+        // 修改前是私有的服务
         if (isDelete) {
+          // 是从删除方法进来的，删除的是私有服务
           _arrPrivateServiceList.splice(index, 1)
           let total = this.serviceListTotal - 1
           this.serviceListTotal = total
         } else {
+          // 是从修改服务公有性的方法进来的，将服务从私有改为公有
           let objPrivateList = _arrPrivateServiceList[index]
           let strRestTitle = objPrivateList.restTitle
           let strThumbnail = objPrivateList.thumbnail
@@ -579,9 +606,11 @@ export default class MyService extends Component {
           _arrPrivateServiceList.splice(index, 1)
         }
       }
+      // 若设置完成后私有服务列表为空则给它一个空对象占位
       if (_arrPrivateServiceList.length === 0) {
         _arrPrivateServiceList.push({})
       }
+      // 若设置完成后公有服务列表为空则给它一个空对象占位
       if (_arrPublishServiceList.length === 0) {
         _arrPublishServiceList.push({})
       }

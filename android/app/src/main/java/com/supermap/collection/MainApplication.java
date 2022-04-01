@@ -17,7 +17,6 @@ import com.facebook.soloader.SoLoader;
 import com.github.yamill.orientation.OrientationPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 //import com.rnfs.RNFSPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
@@ -67,7 +66,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
 //            new JPushPackage(!BuildConfig.DEBUG, !BuildConfig.DEBUG),
             new ReactVideoPackage(),
 //            new JPushPackage(!BuildConfig.DEBUG, !BuildConfig.DEBUG),
-            new PickerPackage(),
 //            new JPushPackage(true, true),
             new ReactNativeContacts(),
             new AMapGeolocationPackage(),

@@ -304,8 +304,6 @@ export default class ProjectionTargetCoordsPage extends Component {
         if(newData[i].allData.length == 0) return
         section.visible = !section.visible
         newData[section.index] = section
-      } else {
-        newData[i].visible = false
       }
       if (!newData[i].visible) {
         let _allData = []
@@ -422,6 +420,11 @@ export default class ProjectionTargetCoordsPage extends Component {
     )
   }
 
+  /**
+   * 搜索框的方法
+   * @param {*} searchKey 
+   * @returns 
+   */
   search = searchKey => {
     if (!(this._allGeoCoordSysTypes && this._allPrjCoordSysTypes && this._allCommonCoordSysTypes)) {
       GLOBAL.Loading.setLoading(false)
@@ -429,6 +432,7 @@ export default class ProjectionTargetCoordsPage extends Component {
     }
     // searchKey
     if (searchKey === '' || !searchKey) {
+      // 当搜索框里没有搜索关键字时的处理方式
       let allGeoCoordSysTypes = this._allGeoCoordSysTypes
       let allPrjCoordSysTypes = this._allPrjCoordSysTypes
 
@@ -468,10 +472,14 @@ export default class ProjectionTargetCoordsPage extends Component {
         allCommonCoordSysTypes: commonCoordSysTypes,
       })
     } else {
+      // 当搜索框里有搜索关键字时的处理方式
+      // 分别用三个数组来重新记录各自的数据
       let allGeoCoordSysTypes = []
       let allPrjCoordSysTypes = []
       let allCommonCST = []
+      // 将搜索关键字全部转为大写的形式
       let tempSearchKey = searchKey.toUpperCase()
+      // 地理坐标系的数组过滤
       for (let i = 0; i < this._allGeoCoordSysTypes.length; i++) {
         // if (this._allGeoCoordSysTypes[i].title.indexOf(searchKey) != -1) {
         if (
@@ -482,6 +490,7 @@ export default class ProjectionTargetCoordsPage extends Component {
           allGeoCoordSysTypes.push(this._allGeoCoordSysTypes[i])
         }
       }
+      // 投影坐标系的数组过滤
       for (let i = 0; i < this._allPrjCoordSysTypes.length; i++) {
         if (
           this._allPrjCoordSysTypes[i].title
@@ -492,28 +501,33 @@ export default class ProjectionTargetCoordsPage extends Component {
         }
       }
 
+      // 常用坐标系的数组过滤
       this._allCommonCoordSysTypes.forEach(item => {
         if(item.title.toUpperCase().indexOf(tempSearchKey) != -1){
           allCommonCST.push(item)
         }
       })
 
+      // 将地理坐标系的元素限制在20个以内显示
       let geoCoordSysTypes =
         allGeoCoordSysTypes.length > 20
           ? allGeoCoordSysTypes.slice(0, 20)
           : allGeoCoordSysTypes
+      // 将投影坐标系的元素限制在20个以内显示
       let prjCoordSysTypes =
         allPrjCoordSysTypes.length > 20
           ? allPrjCoordSysTypes.slice(0, 20)
           : allPrjCoordSysTypes
 
+      // 当地理坐标系的数组长度为0时，此类数据不展开值为false
       let geoCoordVisiable = allGeoCoordSysTypes.length !== 0
-      let prjCoordVisiable = allGeoCoordSysTypes.length === 0
+      // 当投影坐标系的数组长度为0时，此类数据展开值为false
+      let prjCoordVisiable = prjCoordSysTypes.length !== 0
       let commonVisible = false
       if(allCommonCST.length != 0){
         commonVisible = true
-        geoCoordVisiable = false
-        prjCoordVisiable = false
+        // geoCoordVisiable = false
+        // prjCoordVisiable = false
       }
       let _data = [
         {

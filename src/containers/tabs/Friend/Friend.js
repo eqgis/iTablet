@@ -932,6 +932,7 @@ export default class Friend extends Component {
           layerInfo.path,
           this.props.user.currentUser.userName,
         )
+        let location = await SMap.getCurrentLocation()
         let geometry = geoInfo.geometry
         let geoType = geoInfo.geoType
         let geoID = geoInfo.geoID
@@ -956,6 +957,8 @@ export default class Friend extends Component {
             geoUserID: this.props.user.currentUser.userName,
             geometry: geometry,
             geoType: geoType,
+            location,
+            taskProcess: this.props.cowork?.currentTask?.process,
           },
         }
         let msgStr = JSON.stringify(msgObj)

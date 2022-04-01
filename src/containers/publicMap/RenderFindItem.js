@@ -41,7 +41,6 @@ export default class RenderFindItem extends Component {
       // '下载',
       isDownloading: 0,//0 未下载，1 下载中，2 已完成
     }
-    // debugger
     this.unZipFile = this.unZipFile.bind(this)
     this.timer = null
   }

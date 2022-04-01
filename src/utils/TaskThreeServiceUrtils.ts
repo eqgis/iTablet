@@ -50,7 +50,7 @@ interface MainAndSubTaskInfo {
   subtaskInfoList: Array<SubtaskInfo>
 }
 
-let rootUrl = 'http://192.168.11.21:6932'
+let rootUrl = ''
 let tokenCode = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDg2ODg3NDYsInVzZXJuYW1lIjoiYWRtaW4ifQ.J11HVPdpQsvNPFAF1PvxMW5sY7HkuIW0Pg80d0xfd1o'
 
 /**
@@ -72,7 +72,6 @@ let pwdCode = async (): Promise<any> => {
   let url = rootUrl + '/api/v1/UserController/passWd?password=12345678'
   const response = RNFetchBlob.fetch('GET', url)
   let result = await Promise.race([response, timeout(30)])
-  // debugger
   if(result === 'timeout') {
     console.warn("timeout");
     return false
@@ -91,13 +90,16 @@ let pwdCode = async (): Promise<any> => {
 
 /** 登录账号 */
 let login = async (urlParam: string): Promise<any> => {
-  let url = rootUrl + '/api/v1/UserController/login?userName=admin&userPasswd=25d55ad283aa400af464c76d713c07ad'
-  if(urlParam === '') {
-    url = urlParam + '/api/v1/UserController/login?userName=admin&userPasswd=25d55ad283aa400af464c76d713c07ad'
-  }
+  rootUrl = urlParam
+  // let url = rootUrl + '/api/v1/UserController/login?userName=admin&userPasswd=25d55ad283aa400af464c76d713c07ad'
+  // if(urlParam === '') {
+  //   url = urlParam + '/api/v1/UserController/login?userName=admin&userPasswd=25d55ad283aa400af464c76d713c07ad'
+  // }
+  let url = urlParam + '/api/v1/UserController/login?userName=admin&userPasswd=25d55ad283aa400af464c76d713c07ad'
   const response = RNFetchBlob.fetch('GET', url)
+  debugger
   let result = await Promise.race([response, timeout(30)])
-  // debugger
+  debugger
   if(result === 'timeout') {
     console.warn("timeout");
     return false
@@ -107,7 +109,6 @@ let login = async (urlParam: string): Promise<any> => {
     let info = await result.json()
     console.warn("info.userInfo.token: " + info.userInfo.token);
     tokenCode = info.userInfo.token
-    // debugger
     return true
   } else {
     console.warn("result.respInfo.status: " + result.respInfo.status);
@@ -119,14 +120,58 @@ let login = async (urlParam: string): Promise<any> => {
 
 /** 
  * 获取主任务和子任务信息列表
- * @param {string} urlParam 请求的IP地址 
+ * @param {string} urlParam 请求的IP地址   urlParam: string
  */
-let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
+let getMainAndSubTaskInfo = async (): Promise<any> => {
   try {
     let url = rootUrl + '/api/vi/TaskController/getMainAndSubTaskInfo'
-    if(urlParam === '') {
-      url = urlParam + '/api/vi/TaskController/getMainAndSubTaskInfo'
+    // if(urlParam === '') {
+    //   url = urlParam + '/api/vi/TaskController/getMainAndSubTaskInfo'
+    // }
+    // let url = urlParam + '/api/vi/TaskController/getMainAndSubTaskInfo'
+    
+    // 登录账号的token要放到请求头里去
+    let headers = {
+      token: tokenCode,
     }
+    debugger
+    const response = RNFetchBlob.fetch('GET', url, headers)
+    let result = await Promise.race([response, timeout(30)])
+    debugger
+    if(result === 'timeout') {
+      console.warn("timeout");
+      return false
+    }
+    if(result.respInfo.status === 200) {
+      // 请求成功
+      let info = await result.json()
+      console.warn("taskid: " + info[0].rwMaintask.taskid);
+      // 将请求回来的数据返回出去
+      return info
+    } else {
+      console.warn("result.respInfo.status: " + result.respInfo.status);
+      return false
+    }
+  } catch (error) {
+    return false
+  }
+}
+
+
+/**
+ * 通过id获取单个子任务信息
+ * @param {string} urlParam 请求的IP地址 
+ * @param {number} subtaskid 子任务id 
+ * @returns 
+ */
+ let getRwSubtaskById = async (subtaskid: number): Promise<any> => {
+  try {
+    let url = rootUrl + '/api/vi/TaskController/getRwSubtaskById?subtaskid=' + subtaskid
+    // if(urlParam === '') {
+    //   url = urlParam + '/api/vi/TaskController/getRwSubtaskById?subtaskid=' + subtaskid
+    // }
+
+    // let url = urlParam + '/api/vi/TaskController/getRwSubtaskById?subtaskid=' + subtaskid
     
     // 登录账号的token要放到请求头里去
     let headers = {
@@ -142,61 +187,15 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     if(result.respInfo.status === 200) {
       // 请求成功
       let info = await result.json()
-      console.warn("taskid: " + info[0].rwMaintask.taskid);
-      // debugger
-      // 将请求回来的数据返回出去
-      return info
-    } else {
-      console.warn("result.respInfo.status: " + result.respInfo.status);
-      // debugger
-      return false
-    }
-  } catch (error) {
-    // debugger
-    return false
-  }
-}
-
-
-/**
- * 通过id获取单个子任务信息
- * @param {string} urlParam 请求的IP地址 
- * @param {number} subtaskid 子任务id 
- * @returns 
- */
- let getRwSubtaskById = async (urlParam: string, subtaskid: number): Promise<any> => {
-  try {
-    let url = rootUrl + '/api/vi/TaskController/getRwSubtaskById?subtaskid=' + subtaskid
-    if(urlParam === '') {
-      url = urlParam + '/api/vi/TaskController/getRwSubtaskById?subtaskid=' + subtaskid
-    }
-    
-    // 登录账号的token要放到请求头里去
-    let headers = {
-      token: tokenCode,
-    }
-    const response = RNFetchBlob.fetch('GET', url, headers)
-    let result = await Promise.race([response, timeout(30)])
-    // debugger
-    if(result === 'timeout') {
-      console.warn("timeout");
-      return false
-    }
-    if(result.respInfo.status === 200) {
-      // 请求成功
-      let info = await result.json()
       // console.warn("subtaskid: " + info.subtaskid);
-      // debugger
       // 将请求回来的数据返回出去
       return info
     } else {
       // console.warn("result.respInfo.status: " + result.respInfo.status);
-      // debugger
       return false
     }
   } catch (error) {
     // console.warn("error: " + error);
-    // debugger
     return false
   }
 }
@@ -208,12 +207,13 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
  * @param {string} process 子任务信息 to do
  * @returns 
  */
- let setSubtaskProcess = async (urlParam: string, subtaskid: number, process:string): Promise<any> => {
+ let setSubtaskProcess = async (subtaskid: number, process:string): Promise<any> => {
   try {
     let url = rootUrl + '/api/vi/TaskController/setSubtaskProcess?subtaskid=' + subtaskid + '&process=' + process + '25'
-    if(urlParam === '') {
-      url = urlParam + '/api/vi/TaskController/setSubtaskProcess?subtaskid=' + subtaskid + '&process=' + process + '25'
-    }
+    // if(urlParam === '') {
+    //   url = urlParam + '/api/vi/TaskController/setSubtaskProcess?subtaskid=' + subtaskid + '&process=' + process + '25'
+    // }
+    // let url = urlParam + '/api/vi/TaskController/setSubtaskProcess?subtaskid=' + subtaskid + '&process=' + process + '25'
     
     // 登录账号的token要放到请求头里去
     let headers = {
@@ -221,7 +221,6 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     }
     const response = RNFetchBlob.fetch('PUT', url, headers)
     let result = await Promise.race([response, timeout(30)])
-    // debugger
     if(result === 'timeout') {
       console.warn("timeout");
       return false
@@ -230,17 +229,14 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       // 请求成功
       let info = await result.json()
       // console.warn("subtaskid: " + info.subtaskid);
-      // debugger
       // 将请求回来的数据返回出去
       return true
     } else {
       // console.warn("result.respInfo.status: " + result.respInfo.status);
-      // debugger
       return false
     }
   } catch (error) {
     console.warn("error: " + error);
-    // debugger
     return false
   }
 }
@@ -254,12 +250,13 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
  * @param {number} size 一页加载多少条数据
  * @returns 
  */
- let getTbSurveyList = async (urlParam: string, current: number, size: number): Promise<any> => {
+ let getTbSurveyList = async (current: number, size: number): Promise<any> => {
   try {
     let url = rootUrl + '/api/vi/SurveyController/getTbSurveyList?current='+ current + '&size=' + size
-    if(urlParam === '') {
-      url = urlParam + '/api/vi/SurveyController/getTbSurveyList?current='+ current + '&size=' + size
-    }
+    // if(urlParam === '') {
+    //   url = urlParam + '/api/vi/SurveyController/getTbSurveyList?current='+ current + '&size=' + size
+    // }
+    // let url = urlParam + '/api/vi/SurveyController/getTbSurveyList?current='+ current + '&size=' + size
     
     // 登录账号的token要放到请求头里去
     let headers = {
@@ -267,7 +264,6 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     }
     const response = RNFetchBlob.fetch('GET', url, headers)
     let result = await Promise.race([response, timeout(30)])
-    // debugger
     if(result === 'timeout') {
       console.warn("timeout");
       return false
@@ -275,17 +271,14 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     if(result.respInfo.status === 200) {
       // 请求成功
       let info = await result.json()
-      // debugger
       // 将请求回来的数据返回出去
       return info
     } else {
       // console.warn("result.respInfo.status: " + result.respInfo.status);
-      debugger
       return false
     }
   } catch (error) {
     // console.warn("error: " + error);
-    debugger
     return false
   }
 }
@@ -296,12 +289,13 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
  * @param {number} id 当前问卷的问卷具体信息
  * @returns 
  */
- let getTbSurveyInfoById = async (urlParam: string, id: number): Promise<any> => {
+ let getTbSurveyInfoById = async (id: number): Promise<any> => {
   try {
     let url = rootUrl + '/api/vi/SurveyController/getTbSurveyInfoById?id='+ id
-    if(urlParam === '') {
-      url = urlParam + '/api/vi/SurveyController/getTbSurveyInfoById?id='+ id
-    }
+    // if(urlParam === '') {
+    //   url = urlParam + '/api/vi/SurveyController/getTbSurveyInfoById?id='+ id
+    // }
+    // let url = urlParam + '/api/vi/SurveyController/getTbSurveyInfoById?id='+ id
     
     // 登录账号的token要放到请求头里去
     let headers = {
@@ -309,7 +303,6 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     }
     const response = RNFetchBlob.fetch('GET', url, headers)
     let result = await Promise.race([response, timeout(30)])
-    // debugger
     if(result === 'timeout') {
       console.warn("timeout");
       return false
@@ -317,17 +310,14 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     if(result.respInfo.status === 200) {
       // 请求成功
       let info = await result.json()
-      // debugger
       // 将请求回来的数据返回出去
       return info
     } else {
       // console.warn("result.respInfo.status: " + result.respInfo.status);
-      debugger
       return false
     }
   } catch (error) {
     // console.warn("error: " + error);
-    debugger
     return false
   }
 }
@@ -338,12 +328,13 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
  * @param {string} insertAnswerParam 子任务信息 to do
  * @returns 
  */
- let addTbAnswerList = async (urlParam: string, insertAnswerParam: Array<AnswerData>): Promise<boolean> => {
+ let addTbAnswerList = async (insertAnswerParam: Array<AnswerData>): Promise<boolean> => {
   try {
     let url = rootUrl + '/api/vi/SurveyController/addTbAnswerList'
-    if(urlParam === '') {
-      url = urlParam + '/api/vi/SurveyController/addTbAnswerList'
-    }
+    // if(urlParam === '') {
+    //   url = urlParam + '/api/vi/SurveyController/addTbAnswerList'
+    // }
+    // let url = urlParam + '/api/vi/SurveyController/addTbAnswerList'
     
     // 登录账号的token要放到请求头里去
     let headers = {
@@ -361,13 +352,11 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       insertAnswerParam: param,
       // tbAnswerList: JSON.stringify(insertAnswerParam)
     }
-    debugger
     const response = RNFetchBlob.fetch('POST', url, headers, JSON.stringify(uploadParams))
     // const response = RNFetchBlob.fetch('POST', url, headers, [
     //   {name:'insertAnswerParam', data: answerListObj}
     // ])
     let result = await Promise.race([response, timeout(30)])
-    debugger
 
     // const response01 = await fetch(url,{
     //   method: 'POST',
@@ -379,7 +368,6 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     //   credentials: 'include',
     //   body: JSON.stringify(uploadParams),
     // })
-    debugger
     if(result === 'timeout') {
       console.warn("timeout");
       return false
@@ -388,17 +376,14 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       // 请求成功
       let info = await result.json()
       // console.warn("subtaskid: " + info.subtaskid);
-      debugger
       // 将请求回来的数据返回出去
       return true
     } else {
       // console.warn("result.respInfo.status: " + result.respInfo.status);
-      debugger
       return false
     }
   } catch (error) {
     console.warn("error: " + error);
-    debugger
     return false
   }
 }
@@ -418,10 +403,11 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
  */
  let updateSubtaskList = async (urlParam: string, subtaskInfo: any): Promise<any> => {
   try {
-    let url = rootUrl + '/api/vi/TaskController/updateSubtaskList'
-    if(urlParam === '') {
-      url = urlParam + '/api/vi/TaskController/updateSubtaskList'
-    }
+    // let url = rootUrl + '/api/vi/TaskController/updateSubtaskList'
+    // if(urlParam === '') {
+    //   url = urlParam + '/api/vi/TaskController/updateSubtaskList'
+    // }
+    let url = urlParam + '/api/vi/TaskController/updateSubtaskList'
     
     // 登录账号的token要放到请求头里去
     let headers = {
@@ -433,7 +419,6 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     }
     const response = RNFetchBlob.fetch('PUT', url, headers, uploadParams)
     let result = await Promise.race([response, timeout(30)])
-    // debugger
     if(result === 'timeout') {
       console.warn("timeout");
       return false
@@ -442,17 +427,14 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       // 请求成功
       let info = await result.json()
       // console.warn("subtaskid: " + info.subtaskid);
-      // debugger
       // 将请求回来的数据返回出去
       return info
     } else {
       // console.warn("result.respInfo.status: " + result.respInfo.status);
-      // debugger
       return false
     }
   } catch (error) {
     console.warn("error: " + error);
-    // debugger
     return false
   }
 }
@@ -481,11 +463,9 @@ let updateRwMainStask = async (maintaskInsertParam: MainAndSubTaskInfo): Promise
 
     if(result.state === 200) {
       console.warn("update MainTask: "+ result.status + "--" + result.succeed);
-      // debugger
       return result.succeed
     } else {
       console.warn("update MainTask: "+ result.status + "--" + result.error);
-      // debugger
       return false
     }
   
@@ -520,11 +500,9 @@ let setMaintaskstate = async (taskid: number, taskstate: number): Promise<any> =
 
     if(result.state === true) {
       console.warn("MainTask: " + result.message);
-      // debugger
       return result.succeed
     } else {
       console.warn("MainTask: "+ result.status + "--" + result.error);
-      // debugger
       return false
     }
   
@@ -557,11 +535,9 @@ let setSubtaskState = async (subtaskid: number, subtaskstate: number): Promise<a
     let status = response.respInfo.status
     if(status === 200) {
       console.warn("subtask: " + status);
-      // debugger
       return true
     } else {
       console.warn("subtask: " + status);
-      // debugger
       return false
     }
   

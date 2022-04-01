@@ -63,7 +63,8 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('iportal')
     }
-    this.urlText = 'http://192.168.11.21:6932'
+    // this.urlText = 'http://192.168.11.21:6932'
+    this.urlText = ''
     this.checkedItem = 1
   }
 
@@ -291,27 +292,27 @@ export default class CoworkManagePage extends React.Component<Props, State> {
       },
       cancelText: '取消',
       cancelAction: () => { 
-        // this.props.setThreeServiceIpUrl({threeServiceIpUrl:'http://192.168.11.21:6932'})
         GLOBAL.SimpleDialog.setVisible(false) 
       },
       confirmText: getLanguage(this.props.language).Profile.MAP_AR_DATUM_SURE,
       confirmAction: async () => {
         
         // 要先对输入框里的内容做判断
-        let threeServiceIpUrl = 'http://192.168.11.21:6932'
+        // let threeServiceIpUrl = 'http://192.168.11.21:6932'
         // 更改redux里的三方IP地址 
         // this.props.setThreeServiceIpUrl({threeServiceIpUrl})
 
         await this.props.setThreeServiceIpUrl({threeServiceIpUrl:this.urlText})
-        login(this.urlText)
+        let tempurl = await this.props.threeServiceIpUrl
+        debugger
+        await login(this.urlText)
         if(this.checkedItem === 1) {
           return 
         }
         // await this.props.setThreeServiceIpUrl({threeServiceIpUrl})
-        // let tempurl = await this.props.threeServiceIpUrl
-        // debugger
+        
         // 点击确认之后就要去获取服务数据，将他们的格式转换成我们自己的格式
-        let info = await getMainAndSubTaskInfo(this.urlText)
+        let info = await getMainAndSubTaskInfo()
 
         // 测接口
         // setMaintaskstate(56, 1)
@@ -412,6 +413,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
             )
             // TODO 底层同样declare个人队列
             await SMessageService.declareSession(_members, id)
+
             this.props.addCoworkMsg(message)
 
           }

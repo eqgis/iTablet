@@ -130,9 +130,10 @@ class QuestionItem extends React.Component<Props, State> {
     console.warn("点击项为： " + this.props.id);
 
     // 第三方服务地址，暂时固定
-    let threeServiceIpUrl = 'http://192.168.11.21:6932' 
+    // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
+    let threeServiceIpUrl = this.props.threeServiceIpUrl
     // debugger
-    let tbSurveyInfo = await getTbSurveyInfoById(threeServiceIpUrl, this.props.id)
+    let tbSurveyInfo = await getTbSurveyInfoById(this.props.id)
     // debugger
     // this.props.navigation && this.props.navigation.navigate('MyQuestionView',{tbSurveyInfo})
     NavigationService.navigate('MyQuestionView',{tbSurveyInfo})
@@ -192,6 +193,7 @@ const mapStateToProps = (state: any) => ({
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
   currentUser: state.user.toJS().currentUser,
+  threeServiceIpUrl: state.cowork.toJS().threeServiceIpUrl,
 })
 
 // 链接Redux，获取持久化/全局动态数据

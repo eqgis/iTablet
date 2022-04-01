@@ -58,11 +58,9 @@ class QuestionListView extends React.Component<Props, State> {
     // let threeServiceIpUrl = 'http://192.168.11.21:6933' 
     let threeServiceIpUrl = this.props.threeServiceIpUrl
     // 登录重置token的值
-    // debugger
     await login(threeServiceIpUrl)
     // 获取问卷列表
-    this.tbSurveyList = await getTbSurveyList(threeServiceIpUrl, 1, 10)
-    // debugger
+    this.tbSurveyList = await getTbSurveyList(1, 10)
     this.setState({
       surveyList: this.tbSurveyList.records,
       isRefresh: false,

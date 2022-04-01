@@ -1401,6 +1401,7 @@ export default handleActions(
         }
       }
       let coworkInfo = state.toJS().coworkInfo
+      debugger
       if (coworkInfo?.[userId]?.[payload.groupID]) {
         delete coworkInfo[userId][payload.groupID]
       }

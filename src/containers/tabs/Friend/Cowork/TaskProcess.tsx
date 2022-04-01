@@ -78,7 +78,7 @@ class TaskProcess extends Component<Props, State> {
       // 获取指定ID的子任务信息
       // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
       let threeServiceIpUrl = this.props.threeServiceIpUrl
-      let subtaskInfo = await getRwSubtaskById(threeServiceIpUrl, subtaskid)
+      let subtaskInfo = await getRwSubtaskById(subtaskid)
 
       let array = subtaskInfo.subtaskname.split("-")
       // 唯一标识
@@ -112,7 +112,7 @@ class TaskProcess extends Component<Props, State> {
       let process = await SMap.upSubTaskProcess(param, false)
       // 当需要更新进度时才去更新
       if(process !== ''){
-        let result = await setSubtaskProcess(threeServiceIpUrl, subtaskid, process)
+        let result = await setSubtaskProcess(subtaskid, process)
         
         // 定时更新
         // this.timer = setInterval(async ()=>{

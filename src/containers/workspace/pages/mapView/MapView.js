@@ -435,7 +435,7 @@ export default class MapView extends React.Component {
       // 获取指定ID的子任务信息
       // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
       let threeServiceIpUrl = this.props.threeServiceIpUrl
-      let subtaskInfo = await getRwSubtaskById(threeServiceIpUrl, subtaskid)
+      let subtaskInfo = await getRwSubtaskById(subtaskid)
       // 拿到子任务里显示数据的列表
       let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
 
@@ -455,11 +455,9 @@ export default class MapView extends React.Component {
         id,
       }
       let result = await SMap.addThreeTaskData(param, false)
-      // debugger
      
       let ProcessStr = subtaskInfo.process
       let preProcess = ProcessStr.substring(0,ProcessStr.length - 1)
-      // debugger
       this.totalCount = 100
       if(preProcess !== '0'){
         this.totalCount = Math.round((infoDataList.length * 100) / preProcess)
@@ -1473,7 +1471,7 @@ export default class MapView extends React.Component {
       // 获取指定ID的子任务信息
       // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
       let threeServiceIpUrl = this.props.threeServiceIpUrl
-      let subtaskInfo = await getRwSubtaskById(threeServiceIpUrl, subtaskid)
+      let subtaskInfo = await getRwSubtaskById( subtaskid)
 
       let array = subtaskInfo.subtaskname.split("-")
       // 唯一标识
@@ -1502,7 +1500,7 @@ export default class MapView extends React.Component {
       
       // 当需要更新进度时才去更新
       if(isUpdate && process !== ''){
-        let result = await setSubtaskProcess(threeServiceIpUrl, subtaskid, process)
+        let result = await setSubtaskProcess(subtaskid, process)
         if(result) {
           let curTaskInfo = JSON.parse(JSON.stringify(this.props.currentTask))
           curTaskInfo.process = process

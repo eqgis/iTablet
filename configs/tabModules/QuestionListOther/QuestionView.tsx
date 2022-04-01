@@ -209,7 +209,7 @@ class QuestionView extends React.Component<Props, State> {
               // let threeServiceIpUrl = 'http://192.168.11.21:6933' 
               let threeServiceIpUrl = this.props.threeServiceIpUrl
               debugger
-              await addTbAnswerList(threeServiceIpUrl, aswerList)
+              await addTbAnswerList(aswerList)
             } catch (error) {
               debugger
             }

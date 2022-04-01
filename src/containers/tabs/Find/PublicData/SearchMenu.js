@@ -85,10 +85,22 @@ export default class SearchMenu extends React.Component {
   }
 
   reset = () => {
-    if (this.state.searchText !== '') {
-      this.setSearchText('')
-      this.searchBar && this.searchBar.clear()
-    }
+    // if (this.state.searchText !== '') {
+    //   this.setSearchText('')
+    //   this.searchBar && this.searchBar.clear()
+    // }
+
+    // 重置页面的值
+    this.setState({
+      selectList: this.getAllDataTypes(),
+      orderBy: orderBy.lastModifiedTime,
+      orderType: orderType.DESC,
+      searchText: '',
+    }, () => {
+      // 重置数据的值
+      this.setParams()
+    })
+    
   }
 
   search = () => {
@@ -111,6 +123,10 @@ export default class SearchMenu extends React.Component {
     })
   }
 
+  /**
+   * 搜索框里数据变化调用的处理方法
+   * @param {*} text 文本框里的文字
+   */
   setSearchText = text => {
     this.setState({ searchText: text })
     this.props.setParams({

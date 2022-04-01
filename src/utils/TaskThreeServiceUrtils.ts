@@ -71,7 +71,7 @@ function timeout(sec: number): Promise<'timeout'> {
 let pwdCode = async (): Promise<any> => {
   let url = rootUrl + '/api/v1/UserController/passWd?password=12345678'
   const response = RNFetchBlob.fetch('GET', url)
-  let result = await Promise.race([response, timeout(10)])
+  let result = await Promise.race([response, timeout(30)])
   // debugger
   if(result === 'timeout') {
     console.warn("timeout");
@@ -96,7 +96,7 @@ let login = async (urlParam: string): Promise<any> => {
     url = urlParam + '/api/v1/UserController/login?userName=admin&userPasswd=25d55ad283aa400af464c76d713c07ad'
   }
   const response = RNFetchBlob.fetch('GET', url)
-  let result = await Promise.race([response, timeout(10)])
+  let result = await Promise.race([response, timeout(30)])
   // debugger
   if(result === 'timeout') {
     console.warn("timeout");
@@ -133,7 +133,7 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       token: tokenCode,
     }
     const response = RNFetchBlob.fetch('GET', url, headers)
-    let result = await Promise.race([response, timeout(10)])
+    let result = await Promise.race([response, timeout(30)])
     debugger
     if(result === 'timeout') {
       console.warn("timeout");
@@ -176,7 +176,7 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       token: tokenCode,
     }
     const response = RNFetchBlob.fetch('GET', url, headers)
-    let result = await Promise.race([response, timeout(10)])
+    let result = await Promise.race([response, timeout(30)])
     // debugger
     if(result === 'timeout') {
       console.warn("timeout");
@@ -220,7 +220,7 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       token: tokenCode,
     }
     const response = RNFetchBlob.fetch('PUT', url, headers)
-    let result = await Promise.race([response, timeout(10)])
+    let result = await Promise.race([response, timeout(30)])
     // debugger
     if(result === 'timeout') {
       console.warn("timeout");
@@ -266,7 +266,7 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       token: tokenCode,
     }
     const response = RNFetchBlob.fetch('GET', url, headers)
-    let result = await Promise.race([response, timeout(10)])
+    let result = await Promise.race([response, timeout(30)])
     // debugger
     if(result === 'timeout') {
       console.warn("timeout");
@@ -308,7 +308,7 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       token: tokenCode,
     }
     const response = RNFetchBlob.fetch('GET', url, headers)
-    let result = await Promise.race([response, timeout(10)])
+    let result = await Promise.race([response, timeout(30)])
     // debugger
     if(result === 'timeout') {
       console.warn("timeout");
@@ -366,7 +366,7 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
     // const response = RNFetchBlob.fetch('POST', url, headers, [
     //   {name:'insertAnswerParam', data: answerListObj}
     // ])
-    let result = await Promise.race([response, timeout(10)])
+    let result = await Promise.race([response, timeout(30)])
     debugger
 
     // const response01 = await fetch(url,{
@@ -432,7 +432,7 @@ let getMainAndSubTaskInfo = async (urlParam: string): Promise<any> => {
       rwSubtaskInfo: subtaskInfo,
     }
     const response = RNFetchBlob.fetch('PUT', url, headers, uploadParams)
-    let result = await Promise.race([response, timeout(10)])
+    let result = await Promise.race([response, timeout(30)])
     // debugger
     if(result === 'timeout') {
       console.warn("timeout");

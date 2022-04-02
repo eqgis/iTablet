@@ -13,7 +13,6 @@ import {
   NativeEventEmitter,
   Platform,
   AppState,
-  NetInfo,
   AsyncStorage,
   Switch,
 } from 'react-native'
@@ -56,6 +55,7 @@ import {
   TaskMemberLocationParams,
   TaskMemberDeleteParams,
 } from '../../../redux/models/cowork'
+import { SYSTEM_QUEUE_ID } from '../../../../configs/config'
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
@@ -1313,6 +1313,9 @@ export default class Friend extends Component {
       let generalMsg = JSON.stringify(messageObj)
 
       let result = SMessageService.sendMessage(generalMsg, talkId)
+      if (talkId !==  this.props.user.currentUser.userName && SYSTEM_QUEUE_ID) {
+        SMessageServiceHTTP.sendMessage(generalMsg, [SYSTEM_QUEUE_ID])
+      }
 
       let timeout = sec => {
         return new Promise(resolve => {

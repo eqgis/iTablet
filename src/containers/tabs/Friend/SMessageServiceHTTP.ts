@@ -3,6 +3,7 @@ import fetch from 'node-fetch'
 import { SMessageService } from 'imobile_for_reactnative'
 import { Toast } from '../../../utils'
 import { getLanguage } from '../../../language'
+import { SYSTEM_QUEUE_ID } from '../../../../configs/config'
 
 interface SERVICE_INFO {
   MSG_IP?: string,
@@ -285,8 +286,9 @@ export default class SMessageServiceHTTP {
    * 发送给指定人员
    * @param messageObj 消息
    * @param targetIds 发送目标对象数组
+   * @param sendToSystem 是否发送给系统
    */
-  static async sendMessage(messageObj: any, targetIds: Array<string>): Promise<void> {
+  static async sendMessage(messageObj: any, targetIds: Array<string>, sendToSystem?: boolean): Promise<void> {
     try {
       let queues = await this.getMessageQueues('binding')
       for (let i = 0; i < targetIds.length; i++) {
@@ -310,6 +312,10 @@ export default class SMessageServiceHTTP {
           )
         }
       }
+      // 发送给系统信息
+      if (sendToSystem && SYSTEM_QUEUE_ID) {
+        this.sendMessage(messageObj, [SYSTEM_QUEUE_ID], false)
+      }
     } catch (e) {
       Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
     }
@@ -320,8 +326,9 @@ export default class SMessageServiceHTTP {
    * @param messageObj 消息
    * @param targetId 群组ID
    * @param members 成员
+   * @param sendToSystem 是否发送给系统
    */
-  static async sendGroupMessage(messageObj: any, targetId: string, members: Array<any>) {
+  static async sendGroupMessage(messageObj: any, targetId: string, members: Array<any>, sendToSystem?: boolean) {
     try {
       if (!targetId.includes('Group_')) return
       let _queue
@@ -340,6 +347,10 @@ export default class SMessageServiceHTTP {
         JSON.stringify(messageObj),
         targetId,
       )
+      // 发送给系统信息
+      if (sendToSystem && SYSTEM_QUEUE_ID) {
+        this.sendMessage(messageObj, [SYSTEM_QUEUE_ID], false)
+      }
     } catch (e) {
       Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
     }

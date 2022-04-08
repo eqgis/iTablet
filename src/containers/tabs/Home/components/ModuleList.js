@@ -5,7 +5,7 @@ import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { Module } from '../../../../class'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
-import { SMap ,SMeasureView } from 'imobile_for_reactnative'
+import { SMap ,SMeasureView, SLocation } from 'imobile_for_reactnative'
 import {
   downloadFile,
   deleteDownloadFile,
@@ -318,6 +318,10 @@ class ModuleList extends Component {
         if (isAllGranted && permisson11) {
           SMap.setPermisson(true)
           // this.init()
+
+          // 重新设置权限后，重新打开定位
+          await SLocation.openGPS()
+
         } else {
           this.props.itemAction()
           item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈

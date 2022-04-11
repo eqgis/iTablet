@@ -365,6 +365,7 @@ export default class MapView extends React.Component {
       samplescale:new Animated.Value(0.1),
       showPoiSearch:false,
       showNavigation:false,
+      imageTrackingresultTag: '',
     }
     this.props.setDatumPoint(GLOBAL.Type === ChunkType.MAP_AR ? true : false)
     this.props.showAR(GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS  ? true : false)
@@ -4889,6 +4890,13 @@ export default class MapView extends React.Component {
           onAIRecognitionTouch={info => {
             ToolbarModule.getData()?.actions?.goToPreview?.([info])
           }}
+          onImageTrackingResult={async (tag) => {
+            // ar增强定位执行的回调函数
+            await this.setState({imageTrackingresultTag:tag})
+            // 调用AREnhancePosition的startScan方法
+            this.datumPointCalibration?.arEnhancePosition?.startScan()
+          }
+          }
         />
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderHeader()}
         {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.renderBottomBtns()}
@@ -5207,6 +5215,9 @@ export default class MapView extends React.Component {
           startScan={this._startScan}
           onClose={this._onDatumPointClose}
           onConfirm={this._onDatumPointConfirm}
+          ref ={(ref) => {this.datumPointCalibration = ref}}
+          // 通过属性让回调拿到的结过往子组件传
+          imageTrackingresultTag = {this.state.imageTrackingresultTag}
         />}
         {this._renderExitSaveView()}
       </View>

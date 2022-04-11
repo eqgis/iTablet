@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize } from '../../utils/index'
+import { dp } from '../../utils'
+
 const SCAN_SIZE = scaleSize(512)
 const CORNER_SIZE = scaleSize(60)
 const BORDER_SIZE = 3
@@ -162,8 +164,9 @@ export default StyleSheet.create({
   button:{
     width: scaleSize(112),
     height: scaleSize(112),
-    borderRadius: scaleSize(56),
-    backgroundColor: '#f8f8f8',
+    // borderRadius: scaleSize(56),
+    // backgroundColor: '#f8f8f8',
+    borderRadius: scaleSize(10),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -182,11 +185,13 @@ export default StyleSheet.create({
   inputBox: {
     width: '100%',
     height: scaleSize(80),
-    borderRadius: scaleSize(40),
-    backgroundColor: '#f8f8f8',
+    // borderRadius: scaleSize(40),
+    // backgroundColor: '#f8f8f8',
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: scaleSize(12),
+    borderBottomWidth: dp(1),
+    borderBottomColor: '#ECECEC'
   },
   inputIcon: {
     height: scaleSize(80),

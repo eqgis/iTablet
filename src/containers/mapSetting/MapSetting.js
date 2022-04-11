@@ -187,6 +187,13 @@ export default class MapSetting extends Component {
                 taskId: this.props.currentTask.id,
                 isRealTime: value,
               })
+              // 显示轨迹和位置
+              this.props.setMemberShow({
+                groupId: this.props.currentTask.groupID,
+                taskId: this.props.currentTask.id,
+                memberId: this.props.user.currentUser.userName,
+                show: value,
+              })
               // this.setState({ isRealTime: value })
             }}
             // value={this.state.isRealTime}

@@ -65,7 +65,6 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     }
     // this.urlText = 'http://192.168.11.21:6932'
     this.urlText = ''
-    this.checkedItem = 1
   }
 
   shouldComponentUpdate(nextProps: any, nextState: any) {
@@ -77,6 +76,17 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   componentDidMount() {
     (async function() {
       GLOBAL.cookie = await OnlineServicesUtils.getService()?.getCookie()
+      
+      if(this.props.threeServiceIpUrl === '') {
+        // 先同步本地文件与online文件
+        await CoworkFileHandle.syncOnlineCoworkList()
+        // 再获取本地文件数据
+        let cowork = await CoworkFileHandle.getLocalCoworkList()
+        await this.props.setThreeServiceIpUrl({threeServiceIpUrl:cowork?.url})
+        let tempurl = await this.props.threeServiceIpUrl
+        login(cowork?.url)
+      }
+
     }.bind(this)())
     this.props.readCoworkGroupMsg({
       target: {
@@ -216,14 +226,6 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     GLOBAL.SimpleDialog.setVisible(true)
   }
 
-  RadioButtonOnChange = index => {
-    if (index === 0) {
-      this.FirstRB?.setChecked(true)
-    } else if (index === 1) {
-      this.FirstRB?.setChecked(false)
-    } 
-    this.checkedItem = index
-  }
 
   // 添加第三方的服务的ip地址 是一个对话框的形式
   addIp = () => {
@@ -273,18 +275,6 @@ export default class CoworkManagePage extends React.Component<Props, State> {
                 marginLeft: scaleSize(16),
               }}
             >
-              <RadioButton
-                ref={ref => (this.FirstRB = ref)}
-                onChange={() => {
-                  if(this.checkedItem === 0){
-                    this.RadioButtonOnChange(1)
-                  } else {
-                    this.RadioButtonOnChange(0)
-                  }
-                  
-                }}
-              />
-              <Text>{'是否获取数据'}</Text>
             </View>
 
           </View>
@@ -296,137 +286,140 @@ export default class CoworkManagePage extends React.Component<Props, State> {
       },
       confirmText: getLanguage(this.props.language).Profile.MAP_AR_DATUM_SURE,
       confirmAction: async () => {
-        
-        // 要先对输入框里的内容做判断
-        // let threeServiceIpUrl = 'http://192.168.11.21:6932'
-        // 更改redux里的三方IP地址 
-        // this.props.setThreeServiceIpUrl({threeServiceIpUrl})
-
         await this.props.setThreeServiceIpUrl({threeServiceIpUrl:this.urlText})
-        let tempurl = await this.props.threeServiceIpUrl
-        debugger
-        await login(this.urlText)
-        if(this.checkedItem === 1) {
-          return 
+        if(this.props.currentGroup.creator !== this.props.user.currentUser.userName){
+          this.getData(false, false)
+        } else {
+          this.getData(true, true)
         }
-        // await this.props.setThreeServiceIpUrl({threeServiceIpUrl})
-        
-        // 点击确认之后就要去获取服务数据，将他们的格式转换成我们自己的格式
-        let info = await getMainAndSubTaskInfo()
-
-        // 测接口
-        // setMaintaskstate(56, 1)
-        // setSubtaskState(102, 3)
-        // getMainAndSubTaskInfo(threeServiceIpUrl)
-        let maintaskLen = info.length
-        for(let i = 0; i < maintaskLen; i++){
-          // 获取主任务的信息
-          let maintaskid = info[i].rwMaintask.taskid
-          let maintaskName = info[i].rwMaintask.taskname
-          let time = info[i].rwMaintask.createtime
-          let subtaskInfoList = info[i].subtaskInfoList
-          let substasklength = subtaskInfoList.length
-
-          // 获取当前群组成员
-          let result = await this.servicesUtils?.getGroupMembers({
-            groupId: this.props.currentGroup.id,
-          })
-          let members = result.content
-
-          for(let j = 0; j < substasklength; j ++) {
-            // 获取子任务的信息
-            let subtaskname = subtaskInfoList[j].subtaskname
-            let principal = subtaskInfoList[j].principal
-            let subtaskid = subtaskInfoList[j].subtaskid
-            let process = subtaskInfoList[j].process
-
-            // 向用户发送信息
-            let timeStr = new Date().getTime()
-            let id = `Group_Task_${this.props.currentGroup.id}_${timeStr}`
-
-            // 群组成员
-            let _members = []
-            let hasMine = false
-            for (const member of members) {
-              if (this.props.user.currentUser.userName === member.userName) {
-                hasMine = true
-              }
-              _members.push({
-                name: member.nickname,
-                id: member.userName,
-              })
-            }
-            if (!hasMine) {
-              _members.unshift({
-                name: this.props.user.currentUser.nickname || '',
-                id: this.props.user.currentUser.userName || '',
-              })
-            }
-
-            // 任务的数据结构的构造
-            let message = {
-              id: id, 
-              groupID: this.props.currentGroup.id,
-              user: {
-                name: this.props.user.currentUser.nickname || '',
-                id: this.props.user.currentUser.userName || '',
-              },
-              creator: principal,
-              members: _members,
-              name: subtaskname,
-              module: { 
-                key: 'MAP_COLLECTION',
-                index: 7,
-              },
-              resource: {
-                resourceId: subtaskid,
-                resourceName: subtaskname,
-                nickname: principal,
-                resourceCreator: principal,
-                restService: null,
-              },
-              type: MsgConstant.MSG_ONLINE_GROUP_TASK,
-              time: timeStr,
-              isThreeTask: true, // 是否是第三方加载的任务 
-              maintask: {  // 记录主任务的ID和名称 一个可选属性
-                maintaskid,
-                maintaskName,
-              },
-              process, // 完成进度
-            }
-            
-            let temp = []
-            for (const member of members) {
-              if (
-                member.nickname === this.props.user.currentUser.nickname ||
-                member.userName === this.props.user.currentUser.userName
-              ) continue
-              // SMessageService.sendMessage(
-              //   JSON.stringify(message),
-              //   member.userName,
-              // )
-              temp.push(member.userName)
-            }
-            SMessageServiceHTTP.sendMessage(
-              message,
-              temp,
-            )
-            // TODO 底层同样declare个人队列
-            await SMessageService.declareSession(_members, id)
-
-            this.props.addCoworkMsg(message)
-
-          }
-
-
-        }
-        // GLOBAL.SimpleDialog.setVisible(false) 
+      
       },
     })
     GLOBAL.SimpleDialog.setVisible(true)
   }
 
-  renderRight = (): Array<React.ReactNode> => {
+  /** 更新或获取任务列表 */
+  getData = async (isGetData: boolean = true, isAllChange: booble = false) => {
+    let result =  await login(this.props.threeServiceIpUrl)
+    
+    if(!isGetData){
+      if(result){
+        Toast.show('IP地址设置成功')
+      }
+      return
+    }
+    
+    // 点击确认之后就要去获取服务数据，将他们的格式转换成我们自己的格式
+    let info = await getMainAndSubTaskInfo()
+
+    let maintaskLen = info.length
+    for(let i = 0; i < maintaskLen; i++){
+      // 获取主任务的信息
+      let maintaskid = info[i].rwMaintask.taskid
+      let maintaskName = info[i].rwMaintask.taskname
+      let time = info[i].rwMaintask.createtime
+      let subtaskInfoList = info[i].subtaskInfoList
+      let substasklength = subtaskInfoList.length
+
+      // 获取当前群组成员
+      let result = await this.servicesUtils?.getGroupMembers({
+        groupId: this.props.currentGroup.id,
+      })
+      let members = result.content
+
+      for(let j = 0; j < substasklength; j ++) {
+        // 获取子任务的信息
+        let subtaskname = subtaskInfoList[j].subtaskname
+        let principal = subtaskInfoList[j].principal
+        let subtaskid = subtaskInfoList[j].subtaskid
+        let process = subtaskInfoList[j].process
+
+        // 向用户发送信息
+        let timeStr = new Date().getTime()
+        // let id = `Group_Task_${this.props.currentGroup.id}_${timeStr}`
+        let id = `Group_Task_${this.props.currentGroup.id}_${subtaskid}`
+
+        // 群组成员
+        let _members = []
+        let hasMine = false
+        for (const member of members) {
+          if (this.props.user.currentUser.userName === member.userName) {
+            hasMine = true
+          }
+          _members.push({
+            name: member.nickname,
+            id: member.userName,
+          })
+        }
+        if (!hasMine) {
+          _members.unshift({
+            name: this.props.user.currentUser.nickname || '',
+            id: this.props.user.currentUser.userName || '',
+          })
+        }
+
+        // 任务的数据结构的构造
+        let message = {
+          id: id, 
+          groupID: this.props.currentGroup.id,
+          user: {
+            name: this.props.user.currentUser.nickname || '',
+            id: this.props.user.currentUser.userName || '',
+          },
+          creator: this.props.user.currentUser.userName,
+          members: _members,
+          name: subtaskname,
+          module: { 
+            key: 'MAP_COLLECTION',
+            index: 7,
+          },
+          resource: {
+            resourceId: subtaskid,
+            resourceName: subtaskname,
+            nickname: principal,
+            resourceCreator: principal,
+            restService: null,
+          },
+          type: MsgConstant.MSG_ONLINE_GROUP_TASK,
+          time: timeStr,
+          isThreeTask: true, // 是否是第三方加载的任务 
+          maintask: {  // 记录主任务的ID和名称 一个可选属性
+            maintaskid,
+            maintaskName,
+          },
+          process, // 完成进度
+          url: this.props.threeServiceIpUrl
+        }
+        // if(isAllChange) {
+          
+        // }
+
+        let temp = []
+        for (const member of members) {
+          if (
+            member.nickname === this.props.user.currentUser.nickname ||
+            member.userName === this.props.user.currentUser.userName
+          ) continue
+          temp.push(member.userName)
+        }
+        SMessageServiceHTTP.sendMessage(
+          message,
+          temp,
+        )
+        // TODO 底层同样declare个人队列
+        await SMessageService.declareSession(_members, id)
+        
+
+        this.props.addCoworkMsg(message)
+
+      }
+
+
+    }
+
+  }
+
+  renderRight = (): Array<React.ReactNode> => {    
     return [
       <ImageButton
         key={'operation'}
@@ -524,6 +517,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
           groupInfo={this.props.currentGroup}
           createTask={this.createTask}
           isMutiChoice={this.state.isMutiChoice}
+          getData = {this.getData}
           {...this.props}
         />
       </Container>

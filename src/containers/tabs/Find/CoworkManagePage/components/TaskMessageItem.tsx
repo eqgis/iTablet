@@ -176,7 +176,6 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       mapData = `{"name":"blankMap","path":"/Collection/Cache/blankMap.xml"}`
       data = Object.assign({map: JSON.parse(mapData)}, this.props.data)
     }
-    // debugger
     this.props.onPress(data)
   }
 

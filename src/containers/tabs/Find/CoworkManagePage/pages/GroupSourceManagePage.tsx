@@ -316,7 +316,6 @@ class GroupSourceManagePage extends Component<Props, State> {
         if (result.content.length > 0) {
           _filterData = resourceSubTypes?.length > 0 ? filterData(result.content, resourceSubTypes) : result.content
           // const _filterData = result.content
-          debugger
           if (this.currentPage < currentPage) {
             _data = this.state.data.deepClone()
             _data = _data.concat(_filterData)

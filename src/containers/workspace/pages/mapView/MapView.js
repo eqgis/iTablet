@@ -24,6 +24,8 @@ import {
   // SCollectSceneFormView,
   ARElementType,
   ARAction,
+  SMessageService,
+  SCoordination,
 } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import {
@@ -96,6 +98,7 @@ import {
   MapHeaderButton,
   Const,
   EventConst,
+  UserType,
 } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import { setGestureDetectorListener } from '../../../GestureDetectorListener'
@@ -139,6 +142,9 @@ import { getRwSubtaskById, setSubtaskProcess } from '../../../../utils/TaskThree
 
 import TaskProcess from '../../../../containers/tabs/Friend/Cowork/TaskProcess'
 import ProcessUtils from '../../../../utils/ProcessUtils'
+
+import SMessageServiceHTTP from '../../../../containers/tabs/Friend/SMessageServiceHTTP'
+import { SYSTEM_QUEUE_ID } from '../../../../../../iTablet/configs/config'
 
 GLOBAL.markerTag = 118082
 
@@ -425,6 +431,12 @@ export default class MapView extends React.Component {
 
     // 分享按钮是否可点击标识，true为可点击
     this.isShareCanClick = true
+    
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      this.servicesUtils = new SCoordination('online')
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+      this.servicesUtils = new SCoordination('iportal')
+    }
   }
 
   /** 获取第三方的数据 */
@@ -1462,6 +1474,44 @@ export default class MapView extends React.Component {
     await SMap.removeFloorHiddenListener(listeners)
   }
 
+  /** 给所有人发消息 */
+  noticeAllMenbers = async (progress: string) => {
+    // 获取当前群组成员
+    let result = await this.servicesUtils?.getGroupMembers({
+      groupId: this.props.currentGroup.id,
+    })
+    let members = result.content
+
+    let temp = []
+    for (const member of members) {
+      if (
+        member.nickname === this.props.user.currentUser.nickname ||
+        member.userName === this.props.user.currentUser.userName
+      ) continue
+      // SMessageService.sendMessage(
+      //   JSON.stringify(message),
+      //   member.userName,
+      // )
+      temp.push(member.userName)
+    }
+    let messageObj = {
+      message: '',
+      type: 10,
+      user: {
+        name: this.props.user.currentUser.userName,
+        id: this.props.user.currentUser.userName,
+        groupID: this.props.currentGroup.id,
+        groupName: "",
+      },
+      time: new Date().getTime(),
+    }
+    SMessageServiceHTTP.sendMessage(
+      messageObj,
+      temp,
+    )
+
+  }
+
   /** 保存第三方数据，并移除第三方数据图层
    */
   saveThreeData = async (isUpdate:boolean) => {
@@ -1480,14 +1530,6 @@ export default class MapView extends React.Component {
 
       // 拿到子任务里显示数据的列表
       let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
-      // let ProcessStr = subtaskInfo.process
-      // let preProcess = ProcessStr.substring(0,ProcessStr.length - 1)
-      // // debugger
-      // // 应该是算出来的，暂时写死 10
-      // let totalCount = 10
-      // if(preProcess !== '0'){
-      //   totalCount = Math.round((infoDataList.length * 100) / preProcess)
-      // }
       
       // 移除图层的参数
       let param = {
@@ -1497,6 +1539,8 @@ export default class MapView extends React.Component {
       }
       // 返回的是一个字符串
       let process = await SMap.removeThreeDataLayer(param, false)
+
+      await this.noticeAllMenbers(process)
       
       // 当需要更新进度时才去更新
       if(isUpdate && process !== ''){
@@ -1528,7 +1572,6 @@ export default class MapView extends React.Component {
   saveMap = async () => {
     try {
       // if(GLOBAL.Type === ChunkType.MAP_AR){
-      //   console.warn(1111)
       //   await this.props.closeARMap()
       //   await this.props.setCurrentARLayer()
       // }

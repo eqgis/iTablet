@@ -101,10 +101,10 @@ android {
 
     signingConfigs {
         release_config {
-            keyAlias 'supermap'
-            keyPassword 'supermap321'
+            keyAlias 'collection'
+            keyPassword 'collection321'
             storeFile file('../keystores/release.keystore')
-            storePassword 'supermap123'
+            storePassword 'collection321'
             v1SigningEnabled true
             v2SigningEnabled true
         }
@@ -112,7 +112,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.supermap.itablet"
+        applicationId "com.supermap.collection"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 185

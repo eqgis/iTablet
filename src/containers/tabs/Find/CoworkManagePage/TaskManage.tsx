@@ -168,6 +168,7 @@ interface Props {
   downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
   deleteSourceDownloadFile: (id: number | string) => Promise<any[]>,
   deleteGroupTasks: (params: {userId: string, groupID: string, taskIds: string[]}, cb?:() => any) => Promise<void>,
+  getData: (isGetData: boolean, isAllChange: boolean) => void,
 }
 
 class TaskManage extends React.Component<Props, State> {
@@ -503,7 +504,7 @@ class TaskManage extends React.Component<Props, State> {
       // CoworkInfo.setMembers(members)
       this._checkMembers(data, _members)
       CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
-      // debugger
+      
       this.createCowork(data.id, module, index, data.map, restService)
     } else {
       Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_DOWNLOAD_INFO)
@@ -802,7 +803,10 @@ class TaskManage extends React.Component<Props, State> {
           refreshControl={
             <RefreshControl
               refreshing={this.state.isRefresh}
-              onRefresh={() => this.getData(true)}
+              onRefresh={() => {
+                this.getData(true)
+                this.props.getData(true, false)
+              }}
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}

@@ -308,7 +308,6 @@ function isBaseLayer(layer) {
     }
     return false
   } catch (e) {
-    // debugger
     return false
   }
 

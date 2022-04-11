@@ -534,7 +534,7 @@ const addTask = (state: any, { payload, userId }: any): {
       CoworkFileHandle.addTaskGroup({
         id: payload.groupID,
         groupName: payload.name,
-      }, payload)
+      }, payload, payload.url)
     } else {
       type = 0 // 接收到其他成员的任务信息,但本地任务已删除
     }
@@ -1401,7 +1401,7 @@ export default handleActions(
         }
       }
       let coworkInfo = state.toJS().coworkInfo
-      debugger
+      
       if (coworkInfo?.[userId]?.[payload.groupID]) {
         delete coworkInfo[userId][payload.groupID]
       }

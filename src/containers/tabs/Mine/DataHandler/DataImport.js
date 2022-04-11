@@ -291,9 +291,7 @@ async function importSCI(user, item) {
     //   }
     // }
 
-    // debugger
     await FileTools.copydir(item.directory, `${userPath}/${datasourceName}`)
-    // debugger
     return true
   } catch (e) {
     return false

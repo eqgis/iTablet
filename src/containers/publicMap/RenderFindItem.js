@@ -73,7 +73,6 @@ export default class RenderFindItem extends Component {
       })
       this.addDownloadListener()
     } else {
-      // debugger
       this.exist = await FileTools.fileIsExist(this.path)
       if (this.exist) {//文件存在，下载完成
         this.setState({

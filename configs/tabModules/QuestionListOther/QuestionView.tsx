@@ -180,8 +180,9 @@ class QuestionView extends React.Component<Props, State> {
   
               let aswerList:Array<AnswerData> = []
               let len = answerInfoList.length
-              let time = new Date();
-  
+              let d = new Date();
+              d.setHours(d.getHours(), d.getMinutes() - d.getTimezoneOffset());
+
               let tbSurvey = this.state.questionData.tbSurvey
               let quesAndOpts = this.state.questionData.quesAndOpts
               let index = 0;
@@ -190,7 +191,7 @@ class QuestionView extends React.Component<Props, State> {
                 // 确定问题类型，要去遍历
   
                 let obj =  {
-                  createtime: "" + time,
+                  createtime: d.toISOString(),
                   depart: tbSurvey.createdepart,
                   id: index,
                   optid: answerInfoList[key][0],
@@ -208,10 +209,9 @@ class QuestionView extends React.Component<Props, State> {
               // 第三方服务地址，暂时固定
               // let threeServiceIpUrl = 'http://192.168.11.21:6933' 
               let threeServiceIpUrl = this.props.threeServiceIpUrl
-              debugger
               await addTbAnswerList(aswerList)
+              
             } catch (error) {
-              debugger
             }
 
             // const tempPath = (await FileTools.getHomeDirectory()) +

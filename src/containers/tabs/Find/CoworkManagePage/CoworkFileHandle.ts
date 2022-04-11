@@ -9,6 +9,7 @@ import { FileTools} from '../../../../native'
 import { ConstPath, UserType } from '../../../../constants'
 import OnlineServicesUtils1 from '../../../../utils/OnlineServicesUtils'
 import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
+import { UNDERLAYCOLOR_TINT } from '../../../../utils/constUtil'
 
 function isJSON(str: any) {
   if (typeof str === 'string') {
@@ -474,13 +475,14 @@ export default class CoworkFileHandle {
   static async addTaskGroup(group: {
     id: number,
     groupName: string,
-  }, task: any) {
+  }, task: any, url: string) {
     let taskGroup = CoworkFileHandle.getTaskGroup(group.id, task.id)
 
     if (!taskGroup) {
       if (!CoworkFileHandle.cowork) {
         CoworkFileHandle.cowork = {
           rev: 1,
+          url: url,
           groups: {
             [group.id + '']: {
               ...group,
@@ -490,6 +492,7 @@ export default class CoworkFileHandle {
         }
       } else {
         CoworkFileHandle.cowork['rev'] += 1
+        CoworkFileHandle.cowork['url'] = url
       }
       if (!CoworkFileHandle.cowork.groups) {
         CoworkFileHandle.cowork.groups = {}

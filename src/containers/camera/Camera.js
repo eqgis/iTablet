@@ -23,6 +23,8 @@ import { getLanguage } from '../../language'
 import styles from './styles'
 import ImageButton from '../../components/ImageButton'
 
+import { updateRiskImg } from '../../../src/utils/TaskThreeServiceUrtils'
+
 export const TYPE = {
   PHOTO: 1,
   VIDEO: 2,
@@ -235,6 +237,14 @@ export default class Camera extends React.Component {
   confirm = () => {
     (async function() {
       let sourcePath = this.state.data.uri.replace('file://', '')
+
+      if(this.props.currentTask?.isThreeTask){
+        // 调用上传图片的接口上传风险图片到第三方服务
+        await updateRiskImg(35, 30, {
+          base64: this.state.data.base64,
+          path: sourcePath
+        })
+      }
 
       let result = false
       if (this.cb && typeof this.cb === 'function') {

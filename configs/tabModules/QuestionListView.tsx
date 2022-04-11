@@ -9,7 +9,9 @@ import TabContainer from '../../src/containers/tabs/TabContainer'
 import { UserInfo } from '../../src/types'
 import { login, getTbSurveyList } from '../../src/utils/TaskThreeServiceUrtils'
 import QuestionItem from './QuestionListOther/QuestionItem'
-import { SurveyItemData, addTbAnswerList } from './QuestionListOther/QuestionInterface'
+import { SurveyItemData } from './QuestionListOther/QuestionInterface'
+import CoworkFileHandle from '../../src/containers/tabs/Find/CoworkManagePage/CoworkFileHandle'
+import { setThreeServiceIpUrl } from '../../src/redux/models/cowork'
 
 
 const styles = StyleSheet.create({
@@ -49,22 +51,68 @@ class QuestionListView extends React.Component<Props, State> {
   }
 
   componentDidMount = async () => {
+   if(!this.props.currentUser){
+     Toast.show("请先登录")
+   }
     await this.getData()
   }
 
   /** 获取问卷数据 */
   getData = async () => {
     // 第三方服务地址，暂时固定
-    // let threeServiceIpUrl = 'http://192.168.11.21:6933' 
-    let threeServiceIpUrl = this.props.threeServiceIpUrl
-    // 登录重置token的值
-    await login(threeServiceIpUrl)
-    // 获取问卷列表
-    this.tbSurveyList = await getTbSurveyList(1, 10)
-    this.setState({
-      surveyList: this.tbSurveyList.records,
-      isRefresh: false,
-    })
+    // let threeServiceIpUrl = this.props.threeServiceIpUrl
+    // // 登录重置token的值
+    // await login(threeServiceIpUrl)
+
+    if(this.props.threeServiceIpUrl === '') {
+      // 初始化
+      await CoworkFileHandle.init(this.props.currentUser)
+      // 先同步本地文件与online文件
+      await CoworkFileHandle.syncOnlineCoworkList()
+     
+    }
+
+    // 再获取本地文件数据
+    let cowork = await CoworkFileHandle.getLocalCoworkList()
+    if(cowork){
+      await this.props.setThreeServiceIpUrl({threeServiceIpUrl:cowork?.url})
+     
+    }
+
+    console.warn(this.props.threeServiceIpUrl);
+    let tempUrl = this.props.threeServiceIpUrl
+    if(tempUrl === '') {
+      // 延迟30秒
+      await setTimeout(() => {
+        
+      }, 30000);
+      // 停止更新状态转圈
+      this.setState({
+        isRefresh: false,
+      })
+      Toast.show("无效的ip地址：" + tempUrl)
+    } else {
+      await login(this.props.threeServiceIpUrl)
+
+      // 获取问卷列表
+      this.tbSurveyList = await getTbSurveyList(1, 10)
+      if(this.tbSurveyList) {
+        this.setState({
+          surveyList: this.tbSurveyList.records,
+          isRefresh: false,
+        })
+        Toast.show("问卷列表获取成功！")
+      } else {
+         // 停止更新状态转圈
+        this.setState({
+          isRefresh: false,
+        })
+        Toast.show("问卷列表获取失败！")
+      }
+    }
+    
+    
+   
   }
 
   shouldComponentUpdate = (nextProps: Props, nextState: State) => {
@@ -138,7 +186,9 @@ class QuestionListView extends React.Component<Props, State> {
   }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  setThreeServiceIpUrl,
+}
 
 const mapStateToProps = (state: any) => ({
   device: state.device.toJS().device,

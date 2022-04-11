@@ -226,7 +226,6 @@ async function createCollector(type, layerName) {
 
     const mapInfo = await SMap.getMapInfo()
 
-    debugger
     const datasourceName =
       _params.collection.datasourceName ||
       (_params.map &&

@@ -45,18 +45,9 @@ class TaskProcess extends Component<Props, State> {
   }
 
   componentDidMount = async () => {
-    // this.updateSubTaskProcess()
-    // this.timer = setInterval(async ()=>{
-    //     console.log("1111");
-    //     this.updateSubTaskProcess()
-    //   }, 1000)
   }
 
   componentWillUnmount = () => {
-   // 当定时器标识不为空时，先清除定时器
-    // if(this.timer !== null){
-    //   clearInterval(this.timer)
-    // }
   }
 
 
@@ -69,14 +60,9 @@ class TaskProcess extends Component<Props, State> {
    */
    updateSubTaskProcess = async () => {
     try {
-      // 当定时器标识不为空时，先清除定时器
-      // if(this.timer !== null){
-      //   clearInterval(this.timer)
-      // }
       // 获取当前任务的ID
       let subtaskid = this.props.currentTask.resource.resourceId
       // 获取指定ID的子任务信息
-      // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
       let threeServiceIpUrl = this.props.threeServiceIpUrl
       let subtaskInfo = await getRwSubtaskById(subtaskid)
 
@@ -84,13 +70,8 @@ class TaskProcess extends Component<Props, State> {
       // 唯一标识
       let id = array[1] + '_' + array[2] + '_' + subtaskid
 
-      // let ProcessStr = this.props.data.process
-     
-
-      // debugger
       // let totalCount = 10
       if(this.isFirstC) {
-        debugger
         // 拿到子任务里显示数据的列表
         let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
         let ProcessStr = subtaskInfo.process
@@ -114,11 +95,6 @@ class TaskProcess extends Component<Props, State> {
       if(process !== ''){
         let result = await setSubtaskProcess(subtaskid, process)
         
-        // 定时更新
-        // this.timer = setInterval(async ()=>{
-        //   console.log("1111");
-        //   let result = await setSubtaskProcess(threeServiceIpUrl, subtaskid, process)
-        // }, 500)
         this.setState({subTaskProcess: process})
 
         if(result) {

@@ -416,6 +416,13 @@ const Profile: typeof CN.Profile = {
   MAR_AR_DATUM_NORTH: "Kuzey",
   MAR_AR_PICTURE_LOCATION_SUCCEED: "QR konumu başarılı",
   MAR_AR_QR_INVALID: "QR kodu bilgisi tanınmadı",
+  MAP_AR_ENHANCE_POSITION: 'Ar enhanced position',  // To be translated
+  MAP_AR_DATUM_MANUAL_LOCATION: "Manual position",  // To be translated
+  MAP_AR_DATUM_GPS_LOCATION: "GPS postion",  // To be translated
+  ALIGN_LOCATOR_CODE: 'Please align the locator code', // To be translated
+  CALIBRATION_TIMEOUT: 'Calibration timeout',  // To be translated
+  CALIBRATION_SUCCESSFUL: 'Calibration successful', // To be translated
+  AR_ENHANCE_POSITION_EXITED: 'Ar enhanced positioning exited', // To be translated
 
   // ar地图
   COLLECT_SCENE_RENAME: "Yeniden adlandırma",

@@ -72,6 +72,8 @@ const icon_tool_clip_in = require('./icon_tool_clip_in.png')
 const icon_tool_clip_out = require('./icon_tool_clip_out.png')
 
 const icon_submitdata = require('./icon_submitdata.png')
+const icon_mobile = require('./icon_mobile.png')
+
 
 export default {
   icon_free_line_disable,
@@ -143,4 +145,5 @@ export default {
   icon_tool_clip_out,
 
   icon_submitdata,
+  icon_mobile,
 }

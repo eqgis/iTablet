@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { Component } from 'react'
-import {  View, Image, Text, TouchableOpacity, Animated, Platform } from 'react-native'
+import {  View, Image, Text, TouchableOpacity, Animated, Platform, Dimensions } from 'react-native'
 import { getThemeAssets } from '../../assets'
 import { getLanguage } from '../../language'
 import Input from '../../components/Input'
@@ -10,6 +10,11 @@ import NavigationService from '../../containers/NavigationService'
 import { ChunkType, TouchType } from '../../constants'
 import { Container } from '../../components'
 import styles from './styles'
+import { AppStyle } from '../../styles'
+import { dp } from '../../utils'
+import AREnhancePosition from './AREnhancePosition'
+import Orientation from 'react-native-orientation'
+
 
 interface IState {
   close: boolean,
@@ -27,6 +32,7 @@ interface IProps {
   startScan: Function, // 调用各自界面的camera进行二维码扫描
   routeName: string,
   routeData: Object,
+  imageTrackingresultTag: string, // ar增强定位的返回结果
 }
 
 export default class DatumPointCalibration extends Component<IProps,IState> {
@@ -209,6 +215,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     return value + ''
   }
 
+
   // 自动定位
   _autoLocation = async () => {
     global.Loading.setLoading(
@@ -308,7 +315,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     }
   }
 
-  _renderInputs = () => {
+  _renderInputs01 = () => {
     const { longitude, latitude, height } = this.state
     return (
       <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
@@ -354,7 +361,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     )
   }
 
-  _renderBtns = () => {
+  _renderBtns01 = () => {
     const { activeBtn } = this.state
     return (
       <View style={styles.buttons}>
@@ -398,22 +405,248 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     )
   }
 
+  _renderInputs = () => {
+    const { longitude, latitude, height } = this.state
+    return (
+      <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
+        <View style={styles.inputBox}>
+          {/* <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/> */}
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
+          <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
+            value={longitude + ''}
+            onChangeText={text => {
+              this.setState({longitude: this.clearNoNum(text)})
+            }}
+            onClear={() => {
+              // 多次clear value都是0 不会引起Input更新 但是Input自己把value设置为了‘’
+              // 所以值为0时 不显示clear按钮
+              this.setState({longitude: "0"})
+            }}/>
+        </View>
+        <View style={styles.inputBox}>
+          {/* <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/> */}
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
+          <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
+            value={latitude + ''}
+            onChangeText={text => {
+              this.setState({latitude: this.clearNoNum(text)})
+            }}
+            onClear={() => {
+              this.setState({latitude: "0"})
+            }}/>
+        </View>
+        <View style={styles.inputBox}>
+          {/* <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/> */}
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
+          <Input style={styles.input} showClear={height != 0} textAlign={'left'} keyboardType={'number-pad'}
+            value={height + ''}
+            onChangeText={text => {
+              this.setState({height: this.clearNoNum(text)})
+            }}
+            onClear={() => {
+              this.setState({height: "0"})
+            }}/>
+        </View>
+      </View>
+    )
+  }
+
+  _renderBtns = () => {
+    const { activeBtn } = this.state
+    let titleWidth = 80
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          // marginTop: dp(6),
+          marginBottom: dp(6),
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          flex:1
+        }}
+      >
+        {/* 自动定位部分 */}
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flex:1,
+            borderRightWidth: dp(1),
+            borderColor: '#F8F8F8',
+            paddingRight: dp(2),
+          }}
+        >
+          <Text
+            numberOfLines={2}
+            style={[AppStyle.h3c,
+              { color: '#707070',
+                maxWidth: dp(titleWidth + 20),
+                width: dp(titleWidth),
+                fontSize: dp(14),
+                textAlign: 'left',
+                paddingBottom: dp(6),
+              },
+              // styleTemp
+            ]
+            }
+          >
+            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
+          </Text>
+
+          <View style={styles.buttons}>
+             {/* ar增强定位 */}
+             <TouchableOpacity style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }} onPress={() => {
+               
+                // 调用ar增强定位的方法获取定位
+                SARMap.setAREnhancePosition()
+                // 跳转到扫描界面
+                this.setState({
+                  showStatus: 'arEnhance',
+                })
+              }}>
+                <View style={[styles.button, activeBtn == 3 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                  <Image source={getThemeAssets().collection.icon_ar_enhance} style={styles.buttonIcon}/>
+                </View>
+                <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAP_AR_ENHANCE_POSITION}</Text>
+              </TouchableOpacity>
+          </View>
+
+
+
+        </View>
+
+        {/* 手动定位部分 */}
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flex:3,
+            paddingLeft: dp(6),
+          }}
+        >
+          <Text
+            numberOfLines={2}
+            style={[AppStyle.h3,
+              { color: '#707070',
+                maxWidth: dp(titleWidth + 20),
+                width: dp(titleWidth),
+                fontSize: dp(14),
+                textAlign: 'center',
+                paddingBottom: dp(6),
+              },
+              // styleTemp
+            ]}
+          >
+            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_MANUAL_LOCATION}
+          </Text>
+
+          <View style={styles.buttons}>
+            {/* 图片定位 */}
+            <TouchableOpacity style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }} onPress={() => {
+              this.setState({
+                showStatus: 'scan',
+              })
+            }}>
+              <View style={[styles.button, activeBtn == 0 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                <Image source={getThemeAssets().collection.icon_scan} style={styles.buttonIcon}/>
+              </View>
+              <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAR_AR_DATUM_PICTURE_LOCATION}</Text>
+            </TouchableOpacity>
+
+            {/* 地图选点 */}
+            <TouchableOpacity style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }} onPress={this._mapSelectPoint}>
+              <View style={[styles.button, activeBtn == 1 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                <Image source={getThemeAssets().collection.icon_map_selection} style={styles.buttonIcon}/>
+              </View>
+              <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}</Text>
+            </TouchableOpacity>
+
+            {/* GPS定位 */}
+            <TouchableOpacity style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }} onPress={this._autoLocation}>
+              <View style={[styles.button, activeBtn == 2 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                <Image source={getThemeAssets().collection.icon_location} style={styles.buttonIcon}/>
+              </View>
+              <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_GPS_LOCATION}</Text>
+            </TouchableOpacity>
+          </View>
+          
+        </View>
+
+      </View>
+
+
+
+     
+    )
+  }
+
   _renderContent = () => {
+
+     // 获取屏幕的宽高
+     const screenWidth = Dimensions.get('window').width
+     const screemHeight = Dimensions.get('window').height
+ 
+     //设置宽度的最大最小值
+     let widthTemp = 616
+     if(screenWidth > 500) {
+       widthTemp = 656
+     }
+     // 设置高度的最大最小值
+     let heightTemp = 990
+     if(screemHeight > 900){
+       heightTemp = 1000
+     }
+     // 判断当前屏幕的横竖屏
+     const orientation = Orientation.getInitialOrientation()
+     // 横屏状态下，将
+     if(orientation === 'LANDSCAPE') {
+       if(screenWidth > 1000) {
+         widthTemp = 1000
+         heightTemp = 960
+       }
+     }
+
     return (
       <View style={styles.container}>
-        <View style={styles.viewBox}>
+        <View style={[styles.viewBox, {
+          height: scaleSize(heightTemp),
+          width: scaleSize(widthTemp),
+        }]}>
           <View style={styles.titleBox}>
-            <Text style={styles.title}>{getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}</Text>
+            <Image style={{
+                height: scaleSize(150),
+                width: scaleSize(150),
+              }} 
+              source={getThemeAssets().mapTools.icon_mobile} 
+            />
+
+            {/* <Text style={styles.title}>{getLanguage(GLOBAL.language).Profile.MAR_AR_POSITION_CORRECT}</Text> */}
             <TouchableOpacity
               style={{
                 position: 'absolute',
                 right: scaleSize(-20),
+                top: scaleSize(16),
               }}
               onPress={this._onClose}
             >
               <Image style={styles.titleBtn} source={getThemeAssets().mapTools.icon_tool_cancel} />
             </TouchableOpacity>
           </View>
+          <Text style={styles.title}>{getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}</Text>
           <Text style={styles.subTitle}>{getLanguage(global.language).Profile.MAP_AR_TOWARDS_NORTH}</Text>
           {this._renderInputs()}
           {this._renderBtns()}
@@ -559,6 +792,30 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     )
   }
 
+  /** ar增强定位的扫描界面的渲染 */
+  _renderEnhanceScan = () => {
+    return (
+      <AREnhancePosition
+        ref ={(ref) => {this.arEnhancePosition = ref}}
+        imageTrackingresultTag = {this.props.imageTrackingresultTag}
+        onBack = {() => {
+          SARMap.stopAREnhancePosition().then(() => {
+            // 已退出AR增强定位
+              Toast.show(getLanguage(GLOBAL.language).Profile.AR_ENHANCE_POSITION_EXITED)
+            })
+          // 关闭校准界面
+          this._onClose()
+
+        }}
+        onSuccess = {() => {
+          // 定位成功走的方法
+          // 关闭校准界面
+          this._onClose()
+        }}
+      />
+    )
+  }
+
   render() {
     const { close, showStatus } = this.state
     let content = null
@@ -568,6 +825,8 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       case 'scan': content = this._renderScan()
         break
       case 'setting': content = this._renderSetting()
+        break
+      case 'arEnhance' : content = this._renderEnhanceScan()
         break
     }
     return (

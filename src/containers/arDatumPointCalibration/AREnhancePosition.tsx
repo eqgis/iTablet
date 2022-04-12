@@ -53,11 +53,11 @@ class AREnhancePosition extends React.Component<IProps, IState> {
     setTimeout(()=>{
       if(result === 'ImageTracking success') {
         // 校准成功
-        Toast.show(getLanguage(GLOBAL.language).Profile.CALIBRATION_SUCCESSFUL)
+        Toast.show(getLanguage(global.language).Profile.CALIBRATION_SUCCESSFUL)
         this.props.onSuccess?.()
       } else {
         // 校准超时
-        Toast.show(getLanguage(GLOBAL.language).Profile.CALIBRATION_TIMEOUT)
+        Toast.show(getLanguage(global.language).Profile.CALIBRATION_TIMEOUT)
       }
     }, 800)
 
@@ -80,7 +80,7 @@ class AREnhancePosition extends React.Component<IProps, IState> {
             {/* 提示如何操作部分 */}
             <View style={[styles.col]}>
               <Image source={getThemeAssets().collection.scan_tip} style={styles.scanTip}/>
-              <Text style={styles.tip}>{getLanguage(GLOBAL.language).Profile.ALIGN_LOCATOR_CODE}</Text>
+              <Text style={styles.tip}>{getLanguage(global.language).Profile.ALIGN_LOCATOR_CODE}</Text>
             </View>
             {/* 扫描的动画 */}
             <Animated.Image source={getThemeAssets().collection.bg_scan_line} style={[styles.line, {

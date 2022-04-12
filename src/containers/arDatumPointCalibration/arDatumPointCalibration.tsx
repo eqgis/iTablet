@@ -411,7 +411,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
         <View style={styles.inputBox}>
           {/* <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/> */}
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
           <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={longitude + ''}
             onChangeText={text => {
@@ -425,7 +425,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         </View>
         <View style={styles.inputBox}>
           {/* <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/> */}
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
           <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={latitude + ''}
             onChangeText={text => {
@@ -437,7 +437,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         </View>
         <View style={styles.inputBox}>
           {/* <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/> */}
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
           <Input style={styles.input} showClear={height != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={height + ''}
             onChangeText={text => {
@@ -491,7 +491,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
             ]
             }
           >
-            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
+            {getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
           </Text>
 
           <View style={styles.buttons}>
@@ -511,7 +511,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
                 <View style={[styles.button, activeBtn == 3 && {borderWidth: 1, borderColor: '#ccc'}]}>
                   <Image source={getThemeAssets().collection.icon_ar_enhance} style={styles.buttonIcon}/>
                 </View>
-                <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAP_AR_ENHANCE_POSITION}</Text>
+                <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_ENHANCE_POSITION}</Text>
               </TouchableOpacity>
           </View>
 
@@ -542,7 +542,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
               // styleTemp
             ]}
           >
-            {getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_MANUAL_LOCATION}
+            {getLanguage(global.language).Profile.MAP_AR_DATUM_MANUAL_LOCATION}
           </Text>
 
           <View style={styles.buttons}>
@@ -558,7 +558,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
               <View style={[styles.button, activeBtn == 0 && {borderWidth: 1, borderColor: '#ccc'}]}>
                 <Image source={getThemeAssets().collection.icon_scan} style={styles.buttonIcon}/>
               </View>
-              <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAR_AR_DATUM_PICTURE_LOCATION}</Text>
+              <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAR_AR_DATUM_PICTURE_LOCATION}</Text>
             </TouchableOpacity>
 
             {/* 地图选点 */}
@@ -569,7 +569,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
               <View style={[styles.button, activeBtn == 1 && {borderWidth: 1, borderColor: '#ccc'}]}>
                 <Image source={getThemeAssets().collection.icon_map_selection} style={styles.buttonIcon}/>
               </View>
-              <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}</Text>
+              <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}</Text>
             </TouchableOpacity>
 
             {/* GPS定位 */}
@@ -580,7 +580,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
               <View style={[styles.button, activeBtn == 2 && {borderWidth: 1, borderColor: '#ccc'}]}>
                 <Image source={getThemeAssets().collection.icon_location} style={styles.buttonIcon}/>
               </View>
-              <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_GPS_LOCATION}</Text>
+              <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_GPS_LOCATION}</Text>
             </TouchableOpacity>
           </View>
           
@@ -634,7 +634,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
               source={getThemeAssets().mapTools.icon_mobile} 
             />
 
-            {/* <Text style={styles.title}>{getLanguage(GLOBAL.language).Profile.MAR_AR_POSITION_CORRECT}</Text> */}
+            {/* <Text style={styles.title}>{getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}</Text> */}
             <TouchableOpacity
               style={{
                 position: 'absolute',
@@ -801,7 +801,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         onBack = {() => {
           SARMap.stopAREnhancePosition().then(() => {
             // 已退出AR增强定位
-              Toast.show(getLanguage(GLOBAL.language).Profile.AR_ENHANCE_POSITION_EXITED)
+              Toast.show(getLanguage(global.language).Profile.AR_ENHANCE_POSITION_EXITED)
             })
           // 关闭校准界面
           this._onClose()

@@ -1,8 +1,9 @@
 /* eslint-disable import/no-duplicates */
-import { screen } from '../../../../../utils'
-import * as Modules from '../modules'
-import mapFunctionModules from '../../../../../../configs/mapFunctionModules'
+import screen from '../../../../../utils/screen'
+// import * as Modules from '../modules'
+// import mapFunctionModules from '../../../../../../configs/mapFunctionModules'
 import ToolBarHeight from './ToolBarHeight'
+import ToolbarModuleUtils from './ToolbarModuleUtils'
 
 // 更新类中的数据
 // function setParams(params) {
@@ -73,43 +74,46 @@ class ToolbarModule {
 
   getModules() {
     try {
-      if (this._modules.length === 0) {
-        for (let key in Modules) {
-          // eslint-disable-next-line import/namespace
-          let item = Modules[key]()
-          item.setToolbarModule && item.setToolbarModule(this)
-          this._modules.push(item)
-        }
-      }
-      return this._modules
+      // if (this._modules.length === 0) {
+      //   for (let key in Modules) {
+      //     // eslint-disable-next-line import/namespace
+      //     let item = Modules[key]()
+      //     item.setToolbarModule && item.setToolbarModule(this)
+      //     this._modules.push(item)
+      //   }
+      // }
+      // return this._modules
+      return ToolbarModuleUtils.getModules(this)
     } catch (error) {
       return []
     }
   }
 
   add(param) {
-    let item = param()
-    item.setToolbarModule(this)
-    this._modules.push(item)
+    // let item = param()
+    // item.setToolbarModule(this)
+    // this._modules.push(item)
+    ToolbarModuleUtils.add(this, param)
   }
 
   getModule(type, params = {}) {
     try {
-      let module
-      let modules = this.getModules()
-      if (typeof type !== 'string') return null // 防止type不为字符串
-      // SM_ 开头的为系统字段
-      if (type.indexOf('SM_') === 0) {
-        modules.map(item => {
-          if (type.indexOf(item.type) === 0) {
-            module = item
-          }
-        })
-      } else if (type !== '') {
-        // 自定义FunctionModule
-        module = mapFunctionModules.getModule(type, params)
-      }
-      return module
+      // let module
+      // let modules = this.getModules()
+      // if (typeof type !== 'string') return null // 防止type不为字符串
+      // // SM_ 开头的为系统字段
+      // if (type.indexOf('SM_') === 0) {
+      //   modules.map(item => {
+      //     if (type.indexOf(item.type) === 0) {
+      //       module = item
+      //     }
+      //   })
+      // } else if (type !== '') {
+      //   // 自定义FunctionModule
+      //   module = mapFunctionModules.getModule(type, params)
+      // }
+      // return module
+      return ToolbarModuleUtils.getModule(this, type, params)
     } catch (error) {
       return []
     }

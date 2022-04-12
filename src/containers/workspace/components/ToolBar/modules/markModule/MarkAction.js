@@ -47,7 +47,7 @@ async function point() {
       // height: ConstToolType.HEIGHT[4],
     })
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
 }
 async function words() {
@@ -67,10 +67,10 @@ async function words() {
       isFullScreen: false,
       // height: ConstToolType.HEIGHT[4],
     })
-    GLOBAL.TouchType = TouchType.MAP_MARKS_TAGGING
+    global.TouchType = TouchType.MAP_MARKS_TAGGING
     ToolbarModule.addData({MarkType:'MAP_MARKS_TAGGING'})
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
 }
 
@@ -94,7 +94,7 @@ async function pointline() {
     SMap.setAction(Action.CREATEPOLYLINE)
     ToolbarModule.addData({MarkType:'CREATEPOLYLINE'})
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
 }
 
@@ -117,7 +117,7 @@ async function freeline() {
     SMap.setAction(Action.FREEDRAW)
     ToolbarModule.addData({MarkType:'FREEDRAW'})
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
 }
 
@@ -141,7 +141,7 @@ async function pointcover() {
     SMap.setAction(Action.CREATEPOLYGON)
     ToolbarModule.addData({MarkType:'CREATEPOLYGON'})
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
 }
 async function move() {
@@ -167,7 +167,7 @@ async function freecover() {
     SMap.setAction(Action.DRAWPLOYGON)
     ToolbarModule.addData({MarkType:'DRAWPLOYGON'})
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
 }
 async function commit(type) {
@@ -177,7 +177,7 @@ async function commit(type) {
       let have = await SMap.haveCurrentGeometry()
       if(have){
         // 是否有新的采集或标注
-        GLOBAL.HAVEATTRIBUTE = true
+        global.HAVEATTRIBUTE = true
       }
       let currentLayer = _params.currentLayer
       SMap.setTaggingGrid(
@@ -189,14 +189,14 @@ async function commit(type) {
           if (result) {
             SMap.refreshMap()
             //提交标注后 需要刷新属性表
-            GLOBAL.NEEDREFRESHTABLE = true
-            if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+            global.NEEDREFRESHTABLE = true
+            if (global.coworkMode && global.getFriend) {
               let currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
               let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
               if (isRealTime) {
                 let layerType = LayerUtils.getLayerType(currentLayer)
                 if (layerType !== 'TAGGINGLAYER') {
-                  let friend = GLOBAL.getFriend()
+                  let friend = global.getFriend()
                   friend.onGeometryAdd(currentLayer)
                 }
               }
@@ -209,14 +209,14 @@ async function commit(type) {
         if (result) {
           const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
           try {
-            if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+            if (global.coworkMode && global.getFriend) {
               let currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
               let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
               if (isRealTime) {
                 let event = ToolbarModule.getData().event
                 let layerType = LayerUtils.getLayerType(event.layerInfo)
                 if (layerType !== 'TAGGINGLAYER') {
-                  let friend = GLOBAL.getFriend()
+                  let friend = global.getFriend()
                   friend.onGeometryEdit(
                     event.layerInfo,
                     event.fieldInfo,
@@ -265,9 +265,9 @@ async function commit(type) {
 async function showAttribute() {
   let have = await SMap.haveCurrentGeometry()
   if(have){
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
-    if(GLOBAL.HAVEATTRIBUTE){
+    if(global.HAVEATTRIBUTE){
       NavigationService.navigate('LayerSelectionAttribute',{isCollection:true,preType:'SM_MAP_MARKS_DRAW'})
     }
   }
@@ -277,9 +277,9 @@ async function showAttribute() {
 async function showAttribute1() {
   let have = await SMap.haveCurrentGeometry()
   if(have){
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
-    if(GLOBAL.HAVEATTRIBUTE){
+    if(global.HAVEATTRIBUTE){
       NavigationService.navigate('LayerSelectionAttribute',{isCollection:true,preType:'SM_MAP_MARKS_DRAW_TEXT'})
     }
   }
@@ -326,7 +326,7 @@ function back() {
     isFullScreen: true,
   })
    // 是否有新的采集或标注
-   GLOBAL.HAVEATTRIBUTE = false
+   global.HAVEATTRIBUTE = false
 }
 /**
  * 显示编辑标注菜单
@@ -350,7 +350,7 @@ function showEditLabel() {
   // _setMyLayersSelectable(layers, false)
 
   // Toast.show(
-  //   GLOBAL.language === 'CN'
+  //   global.language === 'CN'
   //     ? '点击文字左上角以选中文字'
   //     : 'Tap top-right of text to select it',
   // )
@@ -488,7 +488,7 @@ async function deleteLabel() {
     const _params = ToolbarModule.getParams()
     const _selection = _params.selection
     if (_selection.length === 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
+      Toast.show(getLanguage(global.language).Prompt.NON_SELECTED_OBJ)
       return
     }
     let result = true
@@ -539,22 +539,22 @@ function colorAction(params) {
 function setTaggingTextFont(param) {
   const { event } = ToolbarModule.getData()
   switch (param.title) {
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BOLD:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
       SMap.setTaggingTextFont('BOLD', event.layerInfo.path, event.id)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ITALIC:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
       SMap.setTaggingTextFont('ITALIC', event.layerInfo.path, event.id)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_UNDERLINE:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
       SMap.setTaggingTextFont('UNDERLINE', event.layerInfo.path, event.id)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_STRIKEOUT:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
       SMap.setTaggingTextFont('STRIKEOUT', event.layerInfo.path, event.id)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SHADOW:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
       SMap.setTaggingTextFont('SHADOW', event.layerInfo.path, event.id)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_OUTLINE:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
       SMap.setTaggingTextFont('OUTLINE', event.layerInfo.path, event.id)
       break
   }
@@ -655,8 +655,8 @@ async function close(type) {
       preType:_data.preType,
     })
     await SMap.clearTrackingLayer()
-    GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, _data.preType, {
+    global.toolBox &&
+        global.toolBox.setVisible(true, _data.preType, {
           containerType: 'table',
           isFullScreen: false,
         })
@@ -665,7 +665,7 @@ async function close(type) {
         SMap.setAction(Action.CREATEPOINT)
         break
       case 'MAP_MARKS_TAGGING':
-        GLOBAL.TouchType = TouchType.MAP_MARKS_TAGGING
+        global.TouchType = TouchType.MAP_MARKS_TAGGING
         break
       case 'CREATEPOLYLINE':
         SMap.setAction(Action.CREATEPOLYLINE)
@@ -706,14 +706,14 @@ function menu(type, selectKey, params = {}) {
 
   if (Utils.isTouchProgress(selectKey)) {
     isFullScreen = true
-    showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
-    isTouchProgress = GLOBAL.ToolBar.state.showMenuDialog
+    showMenuDialog = !global.ToolBar.state.showMenuDialog
+    isTouchProgress = global.ToolBar.state.showMenuDialog
     setData()
   } else {
-    isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
-    showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
+    isFullScreen = !global.ToolBar.state.showMenuDialog
+    showMenuDialog = !global.ToolBar.state.showMenuDialog
     isTouchProgress = false
-    if (!GLOBAL.ToolBar.state.showMenuDialog) {
+    if (!global.ToolBar.state.showMenuDialog) {
       // 先滑出box，再显示Menu
       showBox()
       setTimeout(setData, Const.ANIMATED_DURATION_2)
@@ -729,11 +729,11 @@ function showMenuBox(type, selectKey, params = {}) {
     if (Utils.isTouchProgress(selectKey)) {
       params.setData &&
         params.setData({
-          isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
+          isTouchProgress: !global.ToolBar.state.isTouchProgress,
           showMenuDialog: false,
-          isFullScreen: !GLOBAL.ToolBar.state.isTouchProgress,
+          isFullScreen: !global.ToolBar.state.isTouchProgress,
         })
-    } else if (!GLOBAL.ToolBar.state.showMenuDialog) {
+    } else if (!global.ToolBar.state.showMenuDialog) {
       params.showBox && params.showBox()
     } else {
       params.setData &&
@@ -786,23 +786,23 @@ async function getTouchProgressInfo() {
   let value = 0
   let step = 1
   let unit = ''
-  let title = GLOBAL.toolBox?.state?.selectName
+  let title = global.toolBox?.state?.selectName
   switch (title) {
     //线宽 边框宽度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
       value = await SMap.getTaggingLineWidth(event.layerInfo.path, event.id)
       range = [1, 20]
       unit = 'mm'
       break
     //符号大小
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
       value = await SMap.getTaggingMarkerSize(event.layerInfo.path, event.id)
       range = [1, 100]
       unit = 'mm'
       break
     //旋转角度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION:
       if (event.geometryType === GeometryType.GEOTEXT) {
         //文本旋转角度
         value = await SMap.getTaggingTextAngle(event.layerInfo.path, event.id)
@@ -813,13 +813,13 @@ async function getTouchProgressInfo() {
       unit = '°'
       break
     //透明度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY:
       value = await SMap.getTaggingAlpha(event.layerInfo.path, event.id)
       range = [0, 100]
       unit = '%'
       break
     //字号
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE:
       value = await SMap.getTaggingTextSize(event.layerInfo.path, event.id)
       range = [1, 20]
       unit = 'mm'
@@ -836,33 +836,33 @@ async function getTouchProgressInfo() {
 function setTouchProgressInfo(title, value) {
   const data = ToolbarModule.getData()
   let event = data.event
-  // switch (GLOBAL.ToolBar?.state?.selectName) {
+  // switch (global.ToolBar?.state?.selectName) {
   switch (title) {
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
       SMap.setTaggingLineWidth(value, event.layerInfo.path, event.id)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
       SMap.setTaggingMarkerSize(value, event.layerInfo.path, event.id)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION:
       if (event.geometryType === GeometryType.GEOTEXT) {
         SMap.setTaggingTextAngle(value, event.layerInfo.path, event.id)
       } else {
         SMap.setTaggingAngle(value, event.layerInfo.path, event.id)
       }
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY:
       SMap.setTaggingAlpha(value, event.layerInfo.path, event.id)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE:
       SMap.setTaggingTextSize(value, event.layerInfo.path, event.id)
       break
   }
 }
 
 function remove() {
-  GLOBAL.removeObjectDialog && GLOBAL.removeObjectDialog.setDialogVisible(true)
+  global.removeObjectDialog && global.removeObjectDialog.setDialogVisible(true)
 }
 
 /**
@@ -872,45 +872,45 @@ function remove() {
  */
 // function getTouchProgressTips(value) {
 //   let tips = ''
-//   switch (GLOBAL.ToolBar?.state?.selectName) {
-//     case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-//     case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+//   switch (global.ToolBar?.state?.selectName) {
+//     case getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+//     case getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
 //       tips =
-//         getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH +
+//         getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH +
 //         '     ' +
 //         parseInt(value) +
 //         'mm'
 //       break
-//     case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+//     case getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
 //       tips =
-//         getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
+//         getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE +
 //         '     ' +
 //         parseInt(value) +
 //         'mm'
 //       break
-//     case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION:
+//     case getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION:
 //       tips =
-//         getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION +
+//         getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
 //         '     ' +
 //         parseInt(value) +
 //         '°'
 //       break
-//     case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+//     case getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY:
 //       tips =
-//         getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY +
+//         getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY +
 //         '     ' +
 //         parseInt(value) +
 //         '%'
 //       break
-//     case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE:
+//     case getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE:
 //       tips =
-//         getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE +
+//         getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE +
 //         '     ' +
 //         parseInt(value)
 //       break
 //     case 'TEXT_ROTATION':
 //       tips =
-//         getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION +
+//         getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION +
 //         '     ' +
 //         parseInt(value) +
 //         '°'

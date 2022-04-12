@@ -104,11 +104,13 @@ export default class AnalystMapRecommend extends React.Component {
       Animated.timing(this.state.right, {
         toValue: visible ? 0 : -WIDTH,
         duration: Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
     } else {
       Animated.timing(this.state.bottom, {
         toValue: visible ? 0 : -HEIGHT * 3,
         duration: Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
     }
   }

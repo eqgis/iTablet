@@ -11,7 +11,7 @@ class MyDatasource extends MyDataPage {
   constructor(props) {
     super(props)
     this.type = this.types.data
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.state = {
       ...this.state,
       shareToLocal: true,
@@ -106,13 +106,13 @@ class MyDatasource extends MyDataPage {
 
   getCustomPagePopupData = () => [
     {
-      title: getLanguage(GLOBAL.language).Profile.NEW_DATASOURCE,
+      title: getLanguage(global.language).Profile.NEW_DATASOURCE,
       action: () => {
         this._closeModal()
         NavigationService.navigate('InputPage', {
-          placeholder: getLanguage(GLOBAL.language).Profile
+          placeholder: getLanguage(global.language).Profile
             .ENTER_DATASOURCE_NAME,
-          headerTitle: getLanguage(GLOBAL.language).Profile.SET_DATASOURCE_NAME,
+          headerTitle: getLanguage(global.language).Profile.SET_DATASOURCE_NAME,
           type: 'name',
           cb: async name => {
             let homePath = await FileTools.appendingHomeDirectory()
@@ -146,14 +146,14 @@ class MyDatasource extends MyDataPage {
 
   onItemPress = info => {
     if (this.showMode === 'tap') {
-      if(this.props.navigation.state.params?.callback) {
-        this.props.navigation.state.params.callback(info)
+      if(this.props.route.params?.callback) {
+        this.props.route.params.callback(info)
         this.props.navigation.goBack()
       }
       return
     }
     if (info?.item.isDirectory) {
-      Toast.show(GLOBAL.language === 'CN' ? 'not UDB data source' : '')
+      Toast.show(global.language === 'CN' ? 'not UDB data source' : '')
       return
     }
     this.itemInfo = info

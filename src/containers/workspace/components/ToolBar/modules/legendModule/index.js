@@ -10,19 +10,19 @@ import { getLanguage } from '../../../../../../language'
 async function action(type) {
   const _params = ToolbarModule.getParams()
   const { mapLegend } = _params
-  if (mapLegend[GLOBAL.Type]) {
-    mapLegend[GLOBAL.Type] = {
+  if (mapLegend[global.Type]) {
+    mapLegend[global.Type] = {
       isShow: true,
-      backgroundColor: mapLegend[GLOBAL.Type].backgroundColor,
-      column: mapLegend[GLOBAL.Type].column,
-      widthPercent: mapLegend[GLOBAL.Type].widthPercent,
-      heightPercent: mapLegend[GLOBAL.Type].heightPercent,
-      fontPercent: mapLegend[GLOBAL.Type].fontPercent,
-      imagePercent: mapLegend[GLOBAL.Type].imagePercent,
-      legendPosition: mapLegend[GLOBAL.Type].legendPosition,
+      backgroundColor: mapLegend[global.Type].backgroundColor,
+      column: mapLegend[global.Type].column,
+      widthPercent: mapLegend[global.Type].widthPercent,
+      heightPercent: mapLegend[global.Type].heightPercent,
+      fontPercent: mapLegend[global.Type].fontPercent,
+      imagePercent: mapLegend[global.Type].imagePercent,
+      legendPosition: mapLegend[global.Type].legendPosition,
     }
   } else {
-    mapLegend[GLOBAL.Type] = {
+    mapLegend[global.Type] = {
       isShow: true,
       backgroundColor: 'white',
       column: 2,
@@ -47,7 +47,7 @@ async function action(type) {
   })
   _params.showFullMap && _params.showFullMap(true)
   _params.navigation.navigate('MapView')
-  GLOBAL.toolBox && GLOBAL.toolBox.switchAr(false) // 若是AR地图，则切换到二维地图界面，然后显示图例
+  global.toolBox && global.toolBox.switchAr(false) // 若是AR地图，则切换到二维地图界面，然后显示图例
 }
 
 function setModuleData(type) {
@@ -61,7 +61,7 @@ function setModuleData(type) {
 
 export default function(type, title, customAction) {
   return {
-    title: title || getLanguage(GLOBAL.language).Map_Settings.THEME_LEGEND,
+    title: title || getLanguage(global.language).Map_Settings.THEME_LEGEND,
     type: ConstToolType.SM_MAP_LEGEND,
     action: () => {
       if (customAction === false) {

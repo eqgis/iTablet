@@ -59,7 +59,7 @@ export default class RNLegendView extends React.Component {
     })
 
     // 初始化位置
-    let legendPosition = this.props.legendSettings[GLOBAL.Type].position
+    let legendPosition = this.props.legendSettings[global.Type].position
     this._previousTop = legendPosition?.y > 0
       ? legendPosition.y
       : screen.getHeaderHeight(this.props.device.orientation) + scaleSize(8)
@@ -99,8 +99,8 @@ export default class RNLegendView extends React.Component {
       returnFlag = true
     } else if (
       nextState.legendSource !== this.state.legendSource ||
-      JSON.stringify(nextProps.legendSettings[GLOBAL.Type]) !==
-        JSON.stringify(this.props.legendSettings[GLOBAL.Type]) ||
+      JSON.stringify(nextProps.legendSettings[global.Type]) !==
+        JSON.stringify(this.props.legendSettings[global.Type]) ||
       (JSON.stringify(this.state) !== JSON.stringify(nextState) &&
         this.state.flatListKey === nextState.flatListKey)
     ) {
@@ -128,7 +128,7 @@ export default class RNLegendView extends React.Component {
     } else {
       const maxY = this.props.device.safeHeight - scaleSize(
         (this.state.height *
-          this.props.legendSettings[GLOBAL.Type].heightPercent) /
+          this.props.legendSettings[global.Type].heightPercent) /
           100,
       )
       if (y > maxY) {
@@ -140,7 +140,7 @@ export default class RNLegendView extends React.Component {
     } else {
       const maxX = this.props.device.safeWidth - scaleSize(
         (this.state.width *
-          this.props.legendSettings[GLOBAL.Type].widthPercent) /
+          this.props.legendSettings[global.Type].widthPercent) /
           100,
       )
       if (x > maxX) {
@@ -184,7 +184,7 @@ export default class RNLegendView extends React.Component {
     // this._previousLeft = position.dx
 
     let legendData = this.props.legendSettings
-    legendData[GLOBAL.Type].position = {
+    legendData[global.Type].position = {
       x: this._moveViewStyles.style.left,
       y: this._moveViewStyles.style.top,
     }
@@ -262,18 +262,18 @@ export default class RNLegendView extends React.Component {
     title = title.join('~')
     let curImageSize =
       (this.state.imageSize *
-        this.props.legendSettings[GLOBAL.Type].imagePercent) /
+        this.props.legendSettings[global.Type].imagePercent) /
       100
     let curFontSize =
       (this.state.fontSize *
-        this.props.legendSettings[GLOBAL.Type].fontPercent) /
+        this.props.legendSettings[global.Type].fontPercent) /
       100
     return (
       <View
         pointerEvents={'box-none'}
         style={{
           width:
-            (1 / this.props.legendSettings[GLOBAL.Type].column) * 100 + '%',
+            (1 / this.props.legendSettings[global.Type].column) * 100 + '%',
           height: scaleSize(80),
           justifyContent: 'center',
           alignItems: 'center',
@@ -326,7 +326,7 @@ export default class RNLegendView extends React.Component {
   }
 
   render() {
-    if (this.props.legendSettings[GLOBAL.Type]) {
+    if (this.props.legendSettings[global.Type]) {
       return (
         <View
           ref={ref => this.moveView = ref}
@@ -334,12 +334,12 @@ export default class RNLegendView extends React.Component {
             position: 'absolute',
             width: scaleSize(
               (this.state.width *
-                this.props.legendSettings[GLOBAL.Type].widthPercent) /
+                this.props.legendSettings[global.Type].widthPercent) /
                 100,
             ),
             height: scaleSize(
               (this.state.height *
-                this.props.legendSettings[GLOBAL.Type].heightPercent) /
+                this.props.legendSettings[global.Type].heightPercent) /
                 100,
             ),
             borderColor: color.separateColorGray4,
@@ -347,7 +347,7 @@ export default class RNLegendView extends React.Component {
             borderWidth: scaleSize(3),
             paddingHorizontal: scaleSize(5),
             overflow: 'hidden',
-            backgroundColor: this.props.legendSettings[GLOBAL.Type]
+            backgroundColor: this.props.legendSettings[global.Type]
               .backgroundColor,
             ...this._moveViewStyles.style,
           }}
@@ -388,7 +388,7 @@ export default class RNLegendView extends React.Component {
             renderItem={this.renderLegendItem}
             data={this.state.legendSource}
             keyExtractor={(item, index) => item.title + index}
-            numColumns={this.props.legendSettings[GLOBAL.Type].column}
+            numColumns={this.props.legendSettings[global.Type].column}
             key={this.state.flatListKey}
           />
         </View>

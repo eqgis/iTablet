@@ -20,7 +20,7 @@ export default class AnalystRadiusSetting extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
     this.backcb = params && params.backcb
     let bufferRadiuses = params && params.bufferRadiuses

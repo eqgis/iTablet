@@ -69,7 +69,7 @@ async function getData(type, params) {
       data = [
         {
           key: constants.POINT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_CREATE_POINT,
+          title: getLanguage(global.language).Map_Main_Menu.TOOLS_CREATE_POINT,
           action: MarkAction.point,
           disable:
             (layerType !== 'TAGGINGLAYER' &&
@@ -92,18 +92,18 @@ async function getData(type, params) {
         },
         {
           key: constants.WORDS,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_CREATE_TEXT,
+          title: getLanguage(global.language).Map_Main_Menu.TOOLS_CREATE_TEXT,
           size: 'large',
           action: MarkAction.words,
           disable:
-            GLOBAL.coworkMode && datasetDescription?.type === 'onlineService' || // 数据服务图层不支持文字
+            global.coworkMode && datasetDescription?.type === 'onlineService' || // 数据服务图层不支持文字
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
             layerType !== 'TEXTLAYER' ||
             isTourLayer ||
             layerType === 'LAYERGROUP',
           image:
-          GLOBAL.coworkMode && datasetDescription?.type === 'onlineService' || // 数据服务图层不支持文字
+          global.coworkMode && datasetDescription?.type === 'onlineService' || // 数据服务图层不支持文字
             layerType !== 'TAGGINGLAYER' &&
             layerType !== 'CADLAYER' &&
             layerType !== 'TEXTLAYER' ||
@@ -115,7 +115,7 @@ async function getData(type, params) {
         },
         {
           key: constants.POINTLINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.DOT_LINE,
+          title: getLanguage(global.language).Map_Main_Menu.DOT_LINE,
           size: 'large',
           action: MarkAction.pointline,
           disable:
@@ -136,7 +136,7 @@ async function getData(type, params) {
         },
         {
           key: constants.FREELINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_LINE,
+          title: getLanguage(global.language).Map_Main_Menu.FREE_LINE,
           size: 'large',
           action: MarkAction.freeline,
           disable:
@@ -157,7 +157,7 @@ async function getData(type, params) {
         },
         {
           key: constants.POINTCOVER,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.DOT_REGION,
+          title: getLanguage(global.language).Map_Main_Menu.DOT_REGION,
           size: 'large',
           action: MarkAction.pointcover,
           disable:
@@ -178,7 +178,7 @@ async function getData(type, params) {
         },
         {
           key: constants.FREECOVER,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.FREE_REGION,
+          title: getLanguage(global.language).Map_Main_Menu.FREE_REGION,
           size: 'large',
           action: MarkAction.freecover,
           disable:
@@ -199,7 +199,7 @@ async function getData(type, params) {
         },
         {
           key: 'showEditLabel',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
           action: MarkAction.showEditLabel,
           size: 'large',
           disable: layerType === 'LAYERGROUP',
@@ -220,21 +220,21 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
         },
         // {
         //   key: 'tagging_style',
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+        //   title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
         //   action: MarkAction.selectLabelToStyle,
         //   size: 'large',
         //   image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -245,21 +245,21 @@ async function getData(type, params) {
         data = data.concat([
           {
             key: constants.UNDO,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+            title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
             action: () => MarkAction.undo(type),
             size: 'large',
             image: getThemeAssets().edit.icon_undo,
           },
           {
             key: constants.REDO,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+            title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
             action: () => MarkAction.redo(type),
             size: 'large',
             image: getThemeAssets().edit.icon_redo,
           },
           {
             key: 'tagging_style',
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+            title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
             action: MarkAction.selectLabelToStyle,
             size: 'large',
             image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -278,14 +278,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
@@ -293,7 +293,7 @@ async function getData(type, params) {
         },
         // {
         //   key: 'tagging_style',
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+        //   title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
         //   action: MarkAction.selectLabelToStyle,
         //   size: 'large',
         //   image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -304,7 +304,7 @@ async function getData(type, params) {
         data = data.concat([
           {
             key: constants.UNDO,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+            title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
             action: MarkAction.undo,
             size: 'large',
             image: getThemeAssets().edit.icon_undo,
@@ -312,7 +312,7 @@ async function getData(type, params) {
           },
           {
             key: constants.REDO,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+            title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
             action: MarkAction.redo,
             size: 'large',
             image: getThemeAssets().edit.icon_redo,
@@ -320,28 +320,28 @@ async function getData(type, params) {
           },
           {
             key: constants.EDIT_NODE,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+            title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
             action: MarkAction.editNode,
             size: 'large',
             image: getThemeAssets().edit.icon_edit_node,
           },
           {
             key: constants.DELETE_NODE,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+            title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
             action: MarkAction.deleteNode,
             size: 'large',
             image: getThemeAssets().edit.icon_delete_node,
           },
           {
             key: constants.ADD_NODE,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+            title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
             action: MarkAction.addNode,
             size: 'large',
             image: getThemeAssets().edit.icon_add_node,
           },
           {
             key: 'tagging_style',
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+            title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
             action: MarkAction.selectLabelToStyle,
             size: 'large',
             image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -358,14 +358,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           // constants.DELETE,
           size: 'large',
           action: MarkAction.remove,
@@ -373,35 +373,35 @@ async function getData(type, params) {
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           size: 'large',
           action: MarkAction.undo,
           image: getThemeAssets().edit.icon_undo,
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           size: 'large',
           action: MarkAction.redo,
           image: getThemeAssets().edit.icon_redo,
         },
         {
           key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
           size: 'large',
           action: MarkAction.editNode,
           image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
           size: 'large',
           action: MarkAction.deleteNode,
           image: getThemeAssets().edit.icon_delete_node,
         },
         {
           key: constants.ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
           // constants.ADD_NODE,
           size: 'large',
           action: MarkAction.addNode,
@@ -409,7 +409,7 @@ async function getData(type, params) {
         },
         {
           key: 'tagging_style',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: MarkAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -427,14 +427,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
@@ -442,7 +442,7 @@ async function getData(type, params) {
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: MarkAction.undo,
           size: 'large',
           image: getThemeAssets().edit.icon_undo,
@@ -450,7 +450,7 @@ async function getData(type, params) {
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: MarkAction.redo,
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
@@ -458,7 +458,7 @@ async function getData(type, params) {
         },
         {
           key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
           action: MarkAction.editNode,
           size: 'large',
           image: getThemeAssets().edit.icon_edit_node,
@@ -474,35 +474,35 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: () => MarkAction.undo(type),
           size: 'large',
           image: getThemeAssets().edit.icon_undo,
         },
         {
           key: 'redo',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: () => MarkAction.redo(type),
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
         },
         {
           key: 'tagging_style',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_EDIT,
           action: MarkAction.selectLabelToStyle,
           size: 'large',
           image: require('../../../../../../assets/function/icon_function_style.png'),
@@ -518,28 +518,28 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: () => MarkAction.undo(type),
           size: 'large',
           image: getThemeAssets().edit.icon_undo,
         },
         {
           key: 'redo',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: () => MarkAction.redo(type),
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
@@ -555,14 +555,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
@@ -570,7 +570,7 @@ async function getData(type, params) {
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: MarkAction.undo,
           size: 'large',
           image: getThemeAssets().edit.icon_undo,
@@ -578,7 +578,7 @@ async function getData(type, params) {
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: MarkAction.redo,
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
@@ -586,21 +586,21 @@ async function getData(type, params) {
         },
         {
           key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
           action: MarkAction.editNode,
           size: 'large',
           image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
           action: MarkAction.deleteNode,
           size: 'large',
           image: getThemeAssets().edit.icon_delete_node,
         },
         {
           key: constants.ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
           action: MarkAction.addNode,
           size: 'large',
           image: getThemeAssets().edit.icon_add_node,
@@ -616,14 +616,14 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           //constants.DELETE,
           size: 'large',
           action: MarkAction.remove,
@@ -631,35 +631,35 @@ async function getData(type, params) {
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           size: 'large',
           action: MarkAction.undo,
           image: getThemeAssets().edit.icon_undo,
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           size: 'large',
           action: MarkAction.redo,
           image: getThemeAssets().edit.icon_redo,
         },
         {
           key: constants.EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_NODES,
           size: 'large',
           action: MarkAction.editNode,
           image: getThemeAssets().edit.icon_edit_node,
         },
         {
           key: constants.DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE_NODES,
           size: 'large',
           action: MarkAction.deleteNode,
           image: getThemeAssets().edit.icon_delete_node,
         },
         {
           key: constants.ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_ADD_NODES,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_ADD_NODES,
           //constants.ADD_NODE,
           size: 'large',
           action: MarkAction.addNode,
@@ -676,28 +676,28 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MOVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: MarkAction.move,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.DELETE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT_DELETE,
+          title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
           action: MarkAction.remove,
           size: 'large',
           image: getThemeAssets().edit.icon_delete,
         },
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: () => MarkAction.undo(type),
           size: 'large',
           image: getThemeAssets().edit.icon_undo,
         },
         {
           key: 'redo',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: () => MarkAction.redo(type),
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
@@ -732,7 +732,7 @@ async function getData(type, params) {
       data = [
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_BOLD,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BOLD,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_BOLD,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_bold.png'),
@@ -740,7 +740,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_ITALIC,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ITALIC,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_italic.png'),
@@ -748,7 +748,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_UNDERLINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_UNDERLINE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_underline.png'),
@@ -756,7 +756,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_STRIKEOUT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_STRIKEOUT,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_strikeout.png'),
@@ -764,7 +764,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_SHADOW,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SHADOW,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_shadow.png'),
@@ -772,7 +772,7 @@ async function getData(type, params) {
         },
         {
           key: constants.MAP_THEME_PARAM_UNIFORMLABEL_FONT_OUTLINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_OUTLINE,
+          title: getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE,
           action: MarkAction.setTaggingTextFont,
           size: 'large',
           image: require('../../../../../../assets/mapTools/style_font_outline.png'),

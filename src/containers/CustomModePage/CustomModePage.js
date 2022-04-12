@@ -38,7 +38,7 @@ export default class CustomModePage extends Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.type = (params && params.type) || ToolbarModule.getData().customType
     this.state = {
       originData: [],
@@ -79,7 +79,7 @@ export default class CustomModePage extends Component {
         length,
       },
       () => {
-        GLOBAL.ToolBar?.showFullMap(true)
+        global.ToolBar?.showFullMap(true)
       },
     )
   }
@@ -88,9 +88,9 @@ export default class CustomModePage extends Component {
     // let mapXml = ToolbarModule.getData().mapXml
     // await SMap.mapFromXml(mapXml) // 不保存专题图修改，还原地图
     this.props.navigation.goBack()
-    // GLOBAL.PreviewHeader?.setVisible(false)
-    // GLOBAL.ToolBar?.setVisible(false)
-    // GLOBAL.ToolBar?.existFullMap()
+    // global.PreviewHeader?.setVisible(false)
+    // global.ToolBar?.setVisible(false)
+    // global.ToolBar?.existFullMap()
     const params = ToolbarModule.getParams()
     this.layerListAction(params.currentLayer)
   }
@@ -181,7 +181,7 @@ export default class CustomModePage extends Component {
   }
   _changeItemValue = (index, text) => {
     if (isNaN(Math.round(text)) || text.indexOf('.') > 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.ONLY_INTEGER)
+      Toast.show(getLanguage(global.language).Prompt.ONLY_INTEGER)
       return
     }
     let data = JSON.parse(JSON.stringify(this.state.data))
@@ -206,7 +206,7 @@ export default class CustomModePage extends Component {
   _changeLength = length => {
     if (isNaN(Math.round(length)) || length.includes('.') || length < 3) {
       Toast.show(
-        getLanguage(GLOBAL.language).Prompt.ONLY_INTEGER_GREATER_THAN_2,
+        getLanguage(global.language).Prompt.ONLY_INTEGER_GREATER_THAN_2,
       )
       return
     }
@@ -256,14 +256,14 @@ export default class CustomModePage extends Component {
     if (rel) {
       const params = ToolbarModule.getParams()
       params.showFullMap && params.showFullMap(true)
-      GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(true)
+      global.PreviewHeader && global.PreviewHeader.setVisible(true)
       ToolbarModule.addData({
         customModeData: this.state.data,
         customType: this.type,
       })
       this.props.navigation.goBack()
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.PARAMS_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.PARAMS_ERROR)
     }
   }
 
@@ -274,18 +274,18 @@ export default class CustomModePage extends Component {
     }
     let rel = await this._setAttrToMap(data)
     if (rel) {
-      GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(false)
-      GLOBAL.ToolBar && GLOBAL.ToolBar.existFullMap()
-      GLOBAL.TouchType = TouchType.NORMAL
+      global.PreviewHeader && global.PreviewHeader.setVisible(false)
+      global.ToolBar && global.ToolBar.existFullMap()
+      global.TouchType = TouchType.NORMAL
       // 在线协作,专题,实时同步
-      if (GLOBAL.coworkMode) {
+      if (global.coworkMode) {
         let layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
         ThemeAction.sendUpdateThemeMsg(layerInfo)
       }
       ToolbarModule.setData({})
       this.props.navigation.goBack()
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.PARAMS_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.PARAMS_ERROR)
     }
   }
 
@@ -331,12 +331,12 @@ export default class CustomModePage extends Component {
       <View style={styles.rightContainer}>
         <TouchableOpacity style={styles.btn} onPress={this._preView}>
           <Text style={styles.rightText}>
-            {getLanguage(GLOBAL.language).Map_Main_Menu.PREVIEW}
+            {getLanguage(global.language).Map_Main_Menu.PREVIEW}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={this._confirm}>
           <Text style={styles.rightText}>
-            {getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
+            {getLanguage(global.language).Map_Settings.CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>
@@ -350,7 +350,7 @@ export default class CustomModePage extends Component {
     return (
       <View style={styles.row}>
         <Text style={styles.itemTitle}>
-          {getLanguage(GLOBAL.language).Map_Main_Menu.RANGE}
+          {getLanguage(global.language).Map_Main_Menu.RANGE}
         </Text>
 
         <View style={styles.inputView}>
@@ -473,23 +473,23 @@ export default class CustomModePage extends Component {
     let title, hasSubTitle
     switch (this.type) {
       case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
-        title = getLanguage(GLOBAL.language).Map_Main_Menu
+        title = getLanguage(global.language).Map_Main_Menu
           .THEME_RANGES_LABEL_MAP_TITLE
         hasSubTitle = true
         break
       case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
         hasSubTitle = true
-        title = getLanguage(GLOBAL.language).Map_Main_Menu
+        title = getLanguage(global.language).Map_Main_Menu
           .THEME_RANGES_MAP_TITLE
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
         hasSubTitle = false
-        title = getLanguage(GLOBAL.language).Map_Main_Menu
+        title = getLanguage(global.language).Map_Main_Menu
           .THEME_UNIQUE_VALUES_MAP_TITLE
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
         hasSubTitle = false
-        title = getLanguage(GLOBAL.language).Map_Main_Menu
+        title = getLanguage(global.language).Map_Main_Menu
           .THEME_UNIQUE_VALUE_LABEL_MAP_TITLE
         break
     }

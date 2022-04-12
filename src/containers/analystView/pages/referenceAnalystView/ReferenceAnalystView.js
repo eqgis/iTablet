@@ -79,7 +79,7 @@ export default class ReferenceAnalystView extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.cb = params && params.cb
     this.type = params && params.type
     this.defaultState = params && params.defaultState
@@ -229,7 +229,7 @@ export default class ReferenceAnalystView extends Component {
           let layers = await this.props.getLayers()
           layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
 
-          GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
+          global.ToolBar && global.ToolBar.setVisible(false)
           NavigationService.goBack('ReferenceAnalystView')
           if (this.cb && typeof this.cb === 'function') {
             this.cb()
@@ -257,8 +257,8 @@ export default class ReferenceAnalystView extends Component {
     NavigationService.goBack('ReferenceAnalystView')
     //{
     //泰森多边形分析自定义区域后返回未全屏问题 jiakai
-    GLOBAL.toolBox.showFullMap(true)
-    GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_ANALYSIS, {
+    global.toolBox.showFullMap(true)
+    global.toolBox.setVisible(true, ConstToolType.SM_MAP_ANALYSIS, {
       isFullScreen: true,
     })
     //}
@@ -539,7 +539,7 @@ export default class ReferenceAnalystView extends Component {
                   () => {
                     let params = Object.assign(
                       {},
-                      this.props.navigation.state.params,
+                      this.props.route.params,
                       { defaultState: this.state },
                     )
                     this.props
@@ -588,7 +588,7 @@ export default class ReferenceAnalystView extends Component {
                   () => {
                     let params = Object.assign(
                       {},
-                      this.props.navigation.state.params,
+                      this.props.route.params,
                       { defaultState: this.state },
                     )
                     this.props
@@ -605,7 +605,7 @@ export default class ReferenceAnalystView extends Component {
                         },
                       })
                       .then(() => {
-                        GLOBAL.TouchType = TouchType.REFERENCE
+                        global.TouchType = TouchType.REFERENCE
                         SMap.getAction().then(type => {
                           if (type !== Action.CREATEPOLYGON) {
                             SMap.setAction(Action.CREATEPOLYGON)

@@ -88,9 +88,9 @@ class CoworkMessage extends Component<Props, State> {
         if (selection.size > 0) {
           const keys = selection.keys()
           for(let key of keys) {
-            GLOBAL.Loading.setLoading(
+            global.Loading.setLoading(
               true,
-              getLanguage(GLOBAL.language).Friends.UPDATING,
+              getLanguage(global.language).Friends.UPDATING,
             )
             let messageID = selection.get(key).messageID
             if (type === 'update') {
@@ -116,15 +116,15 @@ class CoworkMessage extends Component<Props, State> {
         }
         result && NavigationService.goBack('CoworkMessage', null)
         this.getMessage(selection)
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       } else {
         Toast.show(
-          getLanguage(GLOBAL.language).Friends.SELECT_MESSAGE_TO_UPDATE,
+          getLanguage(global.language).Friends.SELECT_MESSAGE_TO_UPDATE,
         )
       }
     } catch (error) {
       this.getMessage()
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }
   }
 
@@ -178,19 +178,19 @@ class CoworkMessage extends Component<Props, State> {
         }}
       >
         {this._renderButton({
-          title: getLanguage(GLOBAL.language).Friends.COWORK_UPDATE,
+          title: getLanguage(global.language).Friends.COWORK_UPDATE,
           image: getThemeAssets().edit.icon_redo,
           action: () => this.onButtomPress('update'),
         })}
         {this._renderButton({
-          title: getLanguage(GLOBAL.language).Friends.COWORK_ADD,
+          title: getLanguage(global.language).Friends.COWORK_ADD,
           image: getThemeAssets().publicAssets.icon_add,
           disableImage: getThemeAssets().publicAssets.icon_add_disable,
           disable: !canAdd,
           action: () => this.onButtomPress('add'),
         })}
         {this._renderButton({
-          title: getLanguage(GLOBAL.language).Friends.COWORK_IGNORE,
+          title: getLanguage(global.language).Friends.COWORK_IGNORE,
           image: getThemeAssets().publicAssets.icon_ignore,
           action: () => this.onButtomPress('ignore'),
         })}
@@ -223,7 +223,7 @@ class CoworkMessage extends Component<Props, State> {
     return (
       <TouchableOpacity onPress={this.selecteAll}>
         <Text style={{ fontSize: scaleSize(26), color: color.fontColorBlack }}>
-          {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
+          {getLanguage(global.language).Profile.SELECT_ALL}
         </Text>
       </TouchableOpacity>
     )
@@ -234,7 +234,7 @@ class CoworkMessage extends Component<Props, State> {
       <Container
         style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.NEW_MESSAGE,
+          title: getLanguage(global.language).Friends.NEW_MESSAGE,
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: this.renderHeaderRight(),
@@ -289,51 +289,51 @@ class CoworkMessageItem extends PureComponent<ItemProps, {}> {
     let geoType = ''
     switch (message.message.type) {
       case MsgConstant.MSG_COWORK_ADD:
-        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_ADDED
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_ADDED2
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_ADDED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_ADDED2
         break
       case MsgConstant.MSG_COWORK_DELETE:
-        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_DELETED
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_DELETED2
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_DELETED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_DELETED2
         break
       case MsgConstant.MSG_COWORK_UPDATE:
-        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED2
         break
       case MsgConstant.MSG_COWORK_SERVICE_UPDATE:
-        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED + ' ' + getLanguage(GLOBAL.language).Profile.SERVICE
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED + ' ' + getLanguage(global.language).Profile.SERVICE
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED2
         geoType = message.message.datasetName
         break
       case MsgConstant.MSG_COWORK_SERVICE_PUBLISH:
-        action = getLanguage(GLOBAL.language).Cowork.PUBLISH + ' ' + getLanguage(GLOBAL.language).Profile.SERVICE
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
+        action = getLanguage(global.language).Cowork.PUBLISH + ' ' + getLanguage(global.language).Profile.SERVICE
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED2
         geoType = message.message.datasetName
         break
     }
     if (!geoType) {
       switch (message.message.geoType) {
         case GeometryType.GEOPOINT:
-          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_POINT
+          geoType = getLanguage(global.language).Profile.DATASET_TYPE_POINT
           break
         case GeometryType.GEOLINE:
-          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_LINE
+          geoType = getLanguage(global.language).Profile.DATASET_TYPE_LINE
           break
         case GeometryType.GEOREGION:
-          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_REGION
+          geoType = getLanguage(global.language).Profile.DATASET_TYPE_REGION
           break
         case GeometryType.GEOTEXT:
-          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_TEXT
+          geoType = getLanguage(global.language).Profile.DATASET_TYPE_TEXT
           break
         case GeometryType.GEOGRAPHICOBJECT:
-          geoType = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING
+          geoType = getLanguage(global.language).Map_Main_Menu.PLOTTING
       }
     }
     if (!geoType && message.message.themeType) {
-      geoType = getLanguage(GLOBAL.language).Map_Main_Menu.THEME
+      geoType = getLanguage(global.language).Map_Main_Menu.THEME
     }
     if (!geoType && message.message.isHeatmap) {
-      geoType = getLanguage(GLOBAL.language).Map_Main_Menu.THEME_HEATMAP
+      geoType = getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP
     }
     if (action) {
       action = action + ' '

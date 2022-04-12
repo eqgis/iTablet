@@ -32,6 +32,7 @@ export default class BackgroundOverlay extends React.Component {
     Animated.timing(this.state.left, {
       toValue: visible ? 0 : this.width,
       duration: 300,
+      useNativeDriver: false,
     }).start()
     this.visible = visible
   }

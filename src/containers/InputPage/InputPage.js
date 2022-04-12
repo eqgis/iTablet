@@ -23,7 +23,7 @@ export default class InputPage extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
     this.backcb = params && params.backcb
     let defaultValue = params && params.value !== undefined ? params.value : ''
@@ -36,7 +36,7 @@ export default class InputPage extends React.Component {
       btnTitle:
         params && params.btnTitle
           ? params.btnTitle
-          : getLanguage(GLOBAL.language).Prompt.CONFIRM, //'确定',
+          : getLanguage(global.language).Prompt.CONFIRM, //'确定',
       // keyboardType:
       //   params && params.keyboardType ? params.keyboardType : 'default',
       type: params && params.type ? params.type : 'default', // 输入值类型，关系到值的检测

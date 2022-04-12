@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  AsyncStorage,
+  // AsyncStorage,
 } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import { Container } from '../../../components'
 import { UserType } from '../../../constants'
 import NavigationService from '../../NavigationService'

@@ -5,8 +5,9 @@
 */
 
 import * as React from 'react'
-import { StyleSheet, WebView } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { constUtil, Toast } from '../../utils'
+import { WebView } from 'react-native-webview'
 
 import { Container } from '../../components'
 import { getLanguage } from '../../language/index'
@@ -32,7 +33,7 @@ export default class GetBack extends React.Component {
       <Container
         style={styles.container}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.RESET_PASSWORD,
+          title: getLanguage(global.language).Profile.RESET_PASSWORD,
           navigation: this.props.navigation,
         }}
       >

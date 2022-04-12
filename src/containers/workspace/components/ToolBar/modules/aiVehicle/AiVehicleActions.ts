@@ -16,8 +16,8 @@ async function close() {
     default:
       SARMap.endCarPlateRead()
       // SARMap.removeCarPlateReadListener()
-      GLOBAL.ToolBar?.removeAIDetect(false)
-      GLOBAL.ToolBar?.close()
+      global.ToolBar?.removeAIDetect(false)
+      global.ToolBar?.close()
   }
 }
 
@@ -28,7 +28,7 @@ function illegallyParkCollect() {
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
     )
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    global.toolBox && global.toolBox.removeAIDetect(true)
     if (dataList.length > 0) {
       let taggingLayerData = await getTaggingLayerData()
       const dataList = await SMap.getTaggingLayers(
@@ -39,7 +39,7 @@ function illegallyParkCollect() {
           taggingLayerData.datasourceAlias === layer.datasourceAlias &&
           taggingLayerData.datasetName === layer.datasetName
         ) {
-          GLOBAL.currentLayer = layer
+          global.currentLayer = layer
           break
         }
       }
@@ -137,7 +137,7 @@ async function goToResultView() {
 
 async function getTaggingLayerData() {
   const _params: any = ToolbarModule.getParams()
-  let currentLayer: any = GLOBAL.currentLayer
+  let currentLayer: any = global.currentLayer
   let isTaggingLayer = false
   if (currentLayer) {
     let layerType = LayerUtils.getLayerType(currentLayer)

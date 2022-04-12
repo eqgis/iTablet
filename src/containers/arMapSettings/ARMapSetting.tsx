@@ -37,7 +37,7 @@ class ARMapSetting extends React.Component<Props,State> {
           }}
         >
           <Text style={styles.itemText}>
-            {getLanguage(GLOBAL.language).Profile.MAR_AR_POSITION_CORRECT}
+            {getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}
           </Text>
           <Image
             style={styles.itemImage}
@@ -52,7 +52,7 @@ class ARMapSetting extends React.Component<Props,State> {
     return (
       <MapToolbar
         navigation={this.props.navigation}
-        type={GLOBAL.Type}
+        type={global.Type}
         initIndex={2}
         mapModules={this.props.mapModules}
         ARView={true}
@@ -66,7 +66,7 @@ class ARMapSetting extends React.Component<Props,State> {
         style={styles.conatiner}
         headerProps={{
           withoutBack: !this.state.poiSearch,
-          title: getLanguage(GLOBAL.language).Map_Label.SETTING,
+          title: getLanguage(global.language).Map_Label.SETTING,
           navigation: this.props.navigation,
           headerTitleViewStyle: {
             textAlign: 'left',

@@ -14,7 +14,7 @@ import Mark3DData from './Mark3DData'
 function createPoint() {
   const params = ToolbarModule.getParams()
   try {
-    if (!GLOBAL.openWorkspace) {
+    if (!global.openWorkspace) {
       Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
       // '请打开场景')
       return
@@ -35,7 +35,7 @@ function createPoint() {
 function createText() {
   const params = ToolbarModule.getParams()
   try {
-    if (!GLOBAL.openWorkspace) {
+    if (!global.openWorkspace) {
       Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
       // '请打开场景')
       return
@@ -61,7 +61,7 @@ function createText() {
 /** 点绘线 * */
 function createLine() {
   const params = ToolbarModule.getParams()
-  if (!GLOBAL.openWorkspace) {
+  if (!global.openWorkspace) {
     Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
     // '请打开场景')
     return
@@ -83,7 +83,7 @@ function createLine() {
 function createRegion() {
   const params = ToolbarModule.getParams()
   try {
-    if (!GLOBAL.openWorkspace) {
+    if (!global.openWorkspace) {
       Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
       // '请打开场景')
       return
@@ -103,7 +103,7 @@ function createRegion() {
 /** 清除标注 * */
 function clearPlotting() {
   const params = ToolbarModule.getParams()
-  if (!GLOBAL.openWorkspace) {
+  if (!global.openWorkspace) {
     Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
     // '请打开场景')
     return
@@ -139,7 +139,7 @@ async function close(type) {
   }
   SScene.checkoutListener('startTouchAttribute')
   SScene.setAction('PAN3D')
-  GLOBAL.action3d = 'PAN3D'
+  global.action3d = 'PAN3D'
   // ToolbarModule.setData()
 }
 

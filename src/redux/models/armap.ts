@@ -261,7 +261,7 @@ export default handleActions(
         data.currentMap = undefined
         return fromJS(data)
       }
-      return fromJS(state)
+      return state
     },
   },
   initialState,

@@ -34,7 +34,7 @@ async function closeARRawDatasource() {
   if(isAdded && !isSaved) {
     await SMap.closeDatasource(rawDatasource)
     const homePath = await FileTools.getHomeDirectory()
-    const datasourcePath = homePath + ConstPath.UserPath + GLOBAL.currentUser.userName + '/' + ConstPath.RelativePath.ARDatasource
+    const datasourcePath = homePath + ConstPath.UserPath + global.currentUser.userName + '/' + ConstPath.RelativePath.ARDatasource
     const udbPath = datasourcePath + '/' + rawDatasource + '.udb'
     const uddPath = datasourcePath + '/' + rawDatasource + '.udd'
     await FileTools.deleteFile(udbPath)
@@ -51,7 +51,7 @@ async function closeARRawDatasource() {
 
 async function exportARMap(fileName: string, targetPath: string): Promise<boolean> {
   const homePath = await FileTools.getHomeDirectory()
-  const tempPath = homePath + ConstPath.UserPath + GLOBAL.currentUser.userName + '/' + ConstPath.RelativePath.Temp
+  const tempPath = homePath + ConstPath.UserPath + global.currentUser.userName + '/' + ConstPath.RelativePath.Temp
   const mapName = fileName.substring(0, fileName.lastIndexOf('.'))
   const tempDir = tempPath + mapName
   await FileTools.deleteFile(tempDir)

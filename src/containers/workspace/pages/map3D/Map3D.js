@@ -80,11 +80,11 @@ export default class Map3D extends React.Component {
 
   constructor(props) {
     super(props)
-    GLOBAL.sceneName = ''
-    GLOBAL.openWorkspace = false
-    GLOBAL.action3d = ''
-    GLOBAL.offlineScene = false
-    const params = this.props.navigation.state.params
+    global.sceneName = ''
+    global.openWorkspace = false
+    global.action3d = ''
+    global.offlineScene = false
+    const params = this.props.route.params
     this.mapName = params.mapName || null
     this.state = {
       title: '',
@@ -110,54 +110,50 @@ export default class Map3D extends React.Component {
   }
 
   componentDidMount() {
-    if (GLOBAL.isLicenseValid) {
+    if (global.isLicenseValid) {
       this.container.setLoading(
         true,
         getLanguage(this.props.language).Prompt.LOADING,
       )
-      // InteractionManager.runAfterInteractions(openScene)
-      // this.openTimer = setTimeout(openScene, 3000)
-      this.unsubscribeFocus = this.props.navigation.addListener(
-        'willFocus',
-        () => {
-          if (this.showFullonBlur) {
-            this.showFullMap(false)
-            this.showFullonBlur = false
-          }
-          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-        },
-      )
+      
+      
+      this.unsubscribeFocus = () => {
+        if (this.showFullonBlur) {
+          this.showFullMap(false)
+          this.showFullonBlur = false
+        }
+        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+      }
 
-      //zhangxt 2020-10-12 跳转回map3d速度太快等情况未触发willFocus时，在didFocus时重复处理相关逻辑
-      this.unsubscribeDidFocus = this.props.navigation.addListener(
-        'didFocus',
-        () => {
-          if (this.showFullonBlur) {
-            this.showFullMap(false)
-            this.showFullonBlur = false
-          }
-          this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-        },
-      )
+      this.unsubscribeDidFocus = () => {
+        if (this.showFullonBlur) {
+          this.showFullMap(false)
+          this.showFullonBlur = false
+        }
+        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+      }
 
-      this.unsubscribeBlur = this.props.navigation.addListener(
-        'willBlur',
-        () => {
-          if (!this.fullMap) {
-            this.showFullMap(true)
-            this.showFullonBlur = true
-          }
-          this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-        },
-      )
+      this.unsubscribeBlur = () => {
+        if (!this.fullMap) {
+          this.showFullMap(true)
+          this.showFullonBlur = true
+        }
+        this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+      }
+
+      this.props.navigation.addListener('willFocus', this.unsubscribeFocus)
+      //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
+      this.props.navigation.addListener('didFocus', this.unsubscribeDidFocus)
+      this.props.navigation.addListener('willBlur', this.unsubscribeBlur)
+
       BackHandler.addEventListener('hardwareBackPress', this.backHandler)
     } else {
-      GLOBAL.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
+      global.SimpleDialog.set({
+        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
         confirmAction: () => NavigationService.goBack(),
         cancelAction: () => NavigationService.goBack(),
       })
-      GLOBAL.SimpleDialog.setVisible(true)
+      global.SimpleDialog.setVisible(true)
     }
   }
 
@@ -171,7 +167,7 @@ export default class Map3D extends React.Component {
       for (let i = 0; i < this.props.downloads.length; i++) {
         if (
           this.props.downloads[i].id &&
-          this.props.downloads[i].params.module === GLOBAL.Type
+          this.props.downloads[i].params.module === global.Type
         ) {
           data = this.props.downloads[i]
         }
@@ -183,18 +179,18 @@ export default class Map3D extends React.Component {
   }
 
   componentWillUnmount() {
-    // GLOBAL.SaveMapView&&GLOBAL.SaveMapView.setTitle(SAVE_TITLE)
+    // global.SaveMapView&&global.SaveMapView.setTitle(SAVE_TITLE)
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
-        key: this.props.navigation.state.routeName,
+        key: this.props.route.routeName,
       })
     }
-    GLOBAL.Type = null
+    global.Type = null
     this.attributeListener && this.attributeListener.remove()
     this.circleFlyListen && this.circleFlyListen.remove()
-    this.unsubscribeFocus && this.unsubscribeFocus.remove()
-    this.unsubscribeFocus && this.unsubscribeBlur.remove()
-    this.unsubscribeDidFocus && this.unsubscribeDidFocus.remove()
+    this.props.navigation.removeListener('willFocus', this.unsubscribeFocus)
+    this.props.navigation.removeListener('didFocus', this.unsubscribeDidFocus)
+    this.props.navigation.removeListener('willBlur', this.unsubscribeBlur)
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
 
@@ -231,14 +227,14 @@ export default class Map3D extends React.Component {
       SScene.getAttribute()
       SScene.setCircleFly()
       SScene.setAction('PAN3D')
-      GLOBAL.action3d = 'PAN3D'
+      global.action3d = 'PAN3D'
     })
   }
 
   addAttributeListener = async () => {
     this.attributeListener = await SScene.addAttributeListener({
       callback: result => {
-        GLOBAL.action3d === 'PAN3D' && this.showFullMap(!this.fullMap)
+        global.action3d === 'PAN3D' && this.showFullMap(!this.fullMap)
 
         let list = []
         let arr = []
@@ -280,7 +276,7 @@ export default class Map3D extends React.Component {
       if(Platform.OS === 'ios'){
         SScene.initNoScene()
         // initNoScene() 里设置了isRender 需要closeWorkspace里设置
-        GLOBAL.openWorkspace = true
+        global.openWorkspace = true
       }
       // if (this.props.showSampleData) {
       let animatedList = []
@@ -288,12 +284,14 @@ export default class Map3D extends React.Component {
         Animated.timing(this.state.samplescale, {
           toValue: 1.2,
           duration: 500,
+          useNativeDriver: false,
         })
       )
       animatedList.push(
         Animated.timing(this.state.samplescale, {
           toValue: 1,
           duration: 500,
+          useNativeDriver: false,
         })
       )
       Animated.sequence(animatedList).start()
@@ -309,9 +307,9 @@ export default class Map3D extends React.Component {
         }
         SScene.setNavigationControlVisible(false)
         this.initListener()
-        GLOBAL.openWorkspace = true
-        GLOBAL.sceneName = this.name
-        GLOBAL.offlineScene = true
+        global.openWorkspace = true
+        global.sceneName = this.name
+        global.offlineScene = true
         setTimeout(() => {
           this.container.setLoading(false)
           // Toast.show('无场景显示')
@@ -338,12 +336,14 @@ export default class Map3D extends React.Component {
         Animated.timing(this.state.samplescale, {
           toValue: 1.2,
           duration: 500,
+          useNativeDriver: false,
         })
       )
       animatedList.push(
         Animated.timing(this.state.samplescale, {
           toValue: 1,
           duration: 500,
+          useNativeDriver: false,
         })
       )
       Animated.sequence(animatedList).start()
@@ -382,7 +382,7 @@ export default class Map3D extends React.Component {
         action: this.back,
       })
     }
-    GLOBAL.SaveMapView && GLOBAL.SaveMapView.setTitle(SAVE_TITLE)
+    global.SaveMapView && global.SaveMapView.setTitle(SAVE_TITLE)
 
     // 三维地图只允许单例
     // setTimeout(this._addScene, 2000)
@@ -455,17 +455,17 @@ export default class Map3D extends React.Component {
     })
   }
   back = async () => {
-    // GLOBAL.SaveMapView &&
-    //   GLOBAL.openWorkspace &&
-    //   GLOBAL.SaveMapView.setVisible(true, this.setLoading)
-    // if (!GLOBAL.openWorkspace) {
+    // global.SaveMapView &&
+    //   global.openWorkspace &&
+    //   global.SaveMapView.setVisible(true, this.setLoading)
+    // if (!global.openWorkspace) {
     //   this.container && this.container.setLoading(false)
     //   NavigationService.goBack()
     // }
-    // GLOBAL.sceneName = ''
+    // global.sceneName = ''
     if (!this.mapLoaded) return
     try {
-      if (GLOBAL.isCircleFlying) {
+      if (global.isCircleFlying) {
         await SScene.stopCircleFly()
         await SScene.clearCirclePoint()
       }
@@ -486,10 +486,10 @@ export default class Map3D extends React.Component {
           this.SaveDialog.setDialogVisible(false)
           return true
         } else if (
-          GLOBAL.removeObjectDialog &&
-          GLOBAL.removeObjectDialog.getState().visible
+          global.removeObjectDialog &&
+          global.removeObjectDialog.getState().visible
         ) {
-          GLOBAL.removeObjectDialog.setDialogVisible(false)
+          global.removeObjectDialog.setDialogVisible(false)
           return true
         }
       }
@@ -500,7 +500,7 @@ export default class Map3D extends React.Component {
           getLanguage(this.props.language).Prompt.CLOSING_3D,
           //'正在关闭'
         )
-      // if (GLOBAL.openWorkspace) {
+      // if (global.openWorkspace) {
         // this.SaveDialog && this.SaveDialog.setDialogVisible(true)
         // await SScene.saveWorkspace()
       this.mapController?.stopCompass()
@@ -526,7 +526,7 @@ export default class Map3D extends React.Component {
   renderOverLayer = () => {
     return (
       <OverlayView
-        ref={ref => (GLOBAL.OverlayView = ref)}
+        ref={ref => (global.OverlayView = ref)}
         onPress={() => {
           this.toolBox && this.toolBox.overlayOnPress()
         }}
@@ -901,7 +901,7 @@ export default class Map3D extends React.Component {
   renderTool = () => {
     return (
       <ToolBar
-        ref={ref => (GLOBAL.ToolBar = this.toolBox = ref)}
+        ref={ref => (global.ToolBar = this.toolBox = ref)}
         user={this.props.user}
         existFullMap={() => this.showFullMap(false)}
         confirmDialog={this.confirm}
@@ -917,7 +917,7 @@ export default class Map3D extends React.Component {
         setContainerLoading={this.setLoading}
         layerList={this.state.layerlist}
         changeLayerList={this.getLayers}
-        getOverlay={() => GLOBAL.OverlayView}
+        getOverlay={() => global.OverlayView}
       />
     )
   }
@@ -992,7 +992,7 @@ export default class Map3D extends React.Component {
       for (let i = 0; i < this.props.downloads.length; i++) {
         if (
           this.props.downloads[i].id &&
-          this.props.downloads[i].params.module === GLOBAL.Type
+          this.props.downloads[i].params.module === global.Type
         ) {
           data = this.props.downloads[i]
           break
@@ -1076,7 +1076,7 @@ export default class Map3D extends React.Component {
                 <RedDot style={{position: 'absolute', top: 0, right: 0}} />
               }
               {buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
-                GLOBAL.Type === this.props.online.share[0].module &&
+                global.Type === this.props.online.share[0].module &&
                 this.props.online.share[0].progress !== undefined && (
                 <View
                   style={{
@@ -1225,11 +1225,11 @@ export default class Map3D extends React.Component {
         }
         bottomProps={{ type: 'fix' }}
       >
-        {GLOBAL.isLicenseValid && (
+        {global.isLicenseValid && (
           <SMSceneView style={styles.map} onGetScene={this._onGetInstance} />
         )}
         <SurfaceView
-          ref={ref => (GLOBAL.MapSurfaceView = ref)}
+          ref={ref => (global.MapSurfaceView = ref)}
           orientation={this.props.device.orientation}
         />
         {this.renderMapController()}

@@ -85,7 +85,7 @@ function getPlotOperationData(type, params) {
       data = [
         {
           key: 'startFly',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_START,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
           // '开始播放',
           action: async () => {
             await SMap.initAnimation()
@@ -97,7 +97,7 @@ function getPlotOperationData(type, params) {
         },
         {
           key: 'stop',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_PAUSE,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
           // '暂停',
           action: () => {
             SMap.animationPause()
@@ -109,7 +109,7 @@ function getPlotOperationData(type, params) {
         },
         {
           key: 'reset',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .PLOTTING_ANIMATION_RESET,
           // '复原',
           action: () => PlotAction.reset(),
@@ -128,7 +128,7 @@ function getAnimationNodeListData() {
   const animationNodeList = []
   const data = [
     {
-      title: getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_NODE_EDIT,
+      title: getLanguage(global.language).Map_Plotting.ANIMATION_NODE_EDIT,
       // '态势推演列表',
       data: animationNodeList,
     },
@@ -147,7 +147,7 @@ function getAnimationWayData(type, params) {
     case ConstToolType.SM_MAP_PLOT_ANIMATION_WAY:
       data.push({
         key: constants.CANCEL,
-        title: getLanguage(GLOBAL.language).Map_Plotting
+        title: getLanguage(global.language).Map_Plotting
           .PLOTTING_ANIMATION_BACK,
         action: PlotAction.cancelAnimationWay,
         size: 'large',
@@ -155,14 +155,14 @@ function getAnimationWayData(type, params) {
       })
       data.push({
         key: constants.UNDO,
-        title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+        title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
         action: PlotAction.animationWayUndo,
         size: 'large',
         image: getThemeAssets().edit.icon_undo,
       })
       data.push({
         key: constants.SUBMIT,
-        title: getLanguage(GLOBAL.language).Map_Plotting
+        title: getLanguage(global.language).Map_Plotting
           .PLOTTING_ANIMATION_SAVE,
         action: PlotAction.endAnimationWayPoint,
         size: 'large',
@@ -187,7 +187,7 @@ function getCollectionData(libId, symbolCode, params) {
   let buttons = []
   data.push({
     key: constants.UNDO,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
     // constants.UNDO,
     action: PlotAction.undo,
     size: 'large',
@@ -195,7 +195,7 @@ function getCollectionData(libId, symbolCode, params) {
   })
   data.push({
     key: constants.REDO,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
     // constants.REDO,
     action: PlotAction.redo,
     size: 'large',
@@ -204,7 +204,7 @@ function getCollectionData(libId, symbolCode, params) {
 
   data.push({
     key: constants.CANCEL,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_CANCEL,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_CANCEL,
     // constants.CANCEL,
     action: () => PlotAction.cancel(libId, symbolCode),
     size: 'large',
@@ -212,7 +212,7 @@ function getCollectionData(libId, symbolCode, params) {
   })
   data.push({
     key: constants.SUBMIT,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_SUBMIT,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
     // constants.SUBMIT,
     action: () => PlotAction.collectionSubmit(libId, symbolCode),
     size: 'large',
@@ -237,13 +237,13 @@ function getCollectionData(libId, symbolCode, params) {
  * @param {*} item
  */
 async function deleteAnimation(item) {
-  GLOBAL.SimpleDialog.set({
-    text: getLanguage(GLOBAL.language).Prompt.DELETE_PLOTTING_DEDUCTION,
-    cancelText: getLanguage(GLOBAL.language).Prompt.CANCEL,
+  global.SimpleDialog.set({
+    text: getLanguage(global.language).Prompt.DELETE_PLOTTING_DEDUCTION,
+    cancelText: getLanguage(global.language).Prompt.CANCEL,
     cancelAction: /*AppUtils.AppExit*/ async () =>{
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     },
-    confirmText: getLanguage(GLOBAL.language).Prompt.DELETE,
+    confirmText: getLanguage(global.language).Prompt.DELETE,
     confirmAction: async () => {
       try {
         if (await FileTools.fileIsExist(item.path)) {
@@ -251,15 +251,15 @@ async function deleteAnimation(item) {
           await SMap.readAnimationXmlFile(item.path)
           await PlotAction.showAnimationXmlList()
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_NOT_EXIST)
+          Toast.show(getLanguage(global.language).Friends.RESOURCE_NOT_EXIST)
         }
         await getAnimationList()
       } catch (error) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+        Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
       }
     },
   })
-  GLOBAL.SimpleDialog.setVisible(true)
+  global.SimpleDialog.setVisible(true)
 }
 
 async function getAnimationList() {

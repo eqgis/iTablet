@@ -55,7 +55,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
 
   componentDidMount() {
     (async function() {
-      GLOBAL.cookie = await OnlineServicesUtils.getService()?.getCookie()
+      global.cookie = await OnlineServicesUtils.getService()?.getCookie()
     }.bind(this)())
     this.props.readCoworkGroupMsg({
       target: {
@@ -87,7 +87,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
             isManage: false,
             hasDownload: false, // 是否有下载按钮
             keywords: '.zip',
-            title: getLanguage(GLOBAL.language).Friends.SELECT_MAP,
+            title: getLanguage(global.language).Friends.SELECT_MAP,
             itemAction: async ({data}: any) => {
               // TODO 查询数据信息,新增传递数据是否发布服务
               const dataDetail = await SCoordinationUtils.getScoordiantion()?.getResourceDetail(data.resourceId)
@@ -183,11 +183,11 @@ export default class CoworkManagePage extends React.Component<Props, State> {
   }
 
   deleteInvite = (data: any) => {
-    GLOBAL.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Friends.DELETE_COWORK_ALERT,
+    global.SimpleDialog.set({
+      text: getLanguage(global.language).Friends.DELETE_COWORK_ALERT,
       confirmAction: () => this.props.deleteInvite(data),
     })
-    GLOBAL.SimpleDialog.setVisible(true)
+    global.SimpleDialog.setVisible(true)
   }
 
   renderRight = (): Array<React.ReactNode> => {
@@ -254,7 +254,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          // title: getLanguage(GLOBAL.language).Find.ONLINE_COWORK,
+          // title: getLanguage(global.language).Find.ONLINE_COWORK,
           title: this.props.currentGroup.groupName,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
@@ -266,7 +266,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
         }}
       >
         <TaskManage
-          tabLabel={getLanguage(GLOBAL.language).Friends.TASK}
+          tabLabel={getLanguage(global.language).Friends.TASK}
           groupInfo={this.props.currentGroup}
           createTask={this.createTask}
           isMutiChoice={this.state.isMutiChoice}

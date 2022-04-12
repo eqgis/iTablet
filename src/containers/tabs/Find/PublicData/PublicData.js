@@ -31,7 +31,7 @@ export default class PublicData extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: getLanguage(GLOBAL.language).Find.PUBLIC_DATA,
+      title: getLanguage(global.language).Find.PUBLIC_DATA,
       data: [],
       initData: false,
       noData: false,
@@ -110,7 +110,6 @@ export default class PublicData extends React.Component {
   ]
 
   setSearchParams = params => {
-    // 当已经有检索条件时就合并检索条件，没有就直接设置检索条件的值
     if (this.searchParams) {
       Object.assign(this.searchParams, params)
     } else {
@@ -195,9 +194,9 @@ export default class PublicData extends React.Component {
   renderStatus = () => {
     let text
     if (this.state.noData) {
-      text = getLanguage(GLOBAL.language).Find.NO_DATA
+      text = getLanguage(global.language).Find.NO_DATA
     } else if (this.state.loadError) {
-      text = getLanguage(GLOBAL.language).Find.NETWORK_ERROR
+      text = getLanguage(global.language).Find.NETWORK_ERROR
     }
     if (text) {
       return (
@@ -221,7 +220,7 @@ export default class PublicData extends React.Component {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            title={getLanguage(global.language).Friends.LOADING}
             enabled={true}
           />
         }
@@ -260,7 +259,7 @@ export default class PublicData extends React.Component {
               textAlign: 'center',
             }}
           >
-            {getLanguage(GLOBAL.language).Find.NO_MORE_DATA}
+            {getLanguage(global.language).Find.NO_MORE_DATA}
           </Text>
         </View>
       )
@@ -294,7 +293,7 @@ export default class PublicData extends React.Component {
               color: 'orange',
             }}
           >
-            {getLanguage(GLOBAL.language).Prompt.LOADING}
+            {getLanguage(global.language).Prompt.LOADING}
           </Text>
         </View>
       )

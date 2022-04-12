@@ -58,14 +58,14 @@ async function toolbarBack() {
 function menu(type: string, selectKey: string, params: any) {
   let showMenu = false
 
-  if (GLOBAL.ToolBar) {
-    if (GLOBAL.ToolBar.state.showMenuDialog) {
+  if (global.ToolBar) {
+    if (global.ToolBar.state.showMenuDialog) {
       showMenu = false
     } else {
       showMenu = true
     }
     params.showBox && params.showBox()
-    GLOBAL.ToolBar.setState({
+    global.ToolBar.setState({
       isFullScreen: showMenu,
       showMenuDialog: showMenu,
       selectKey: selectKey,
@@ -84,7 +84,7 @@ function showMenuBox(type: string, selectKey: string, params: any) {
     case ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION:
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION:
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION_AXIS:
-      if (!GLOBAL.ToolBar.state.showMenuDialog) {
+      if (!global.ToolBar.state.showMenuDialog) {
         params.showBox && params.showBox()
       } else {
         params.setData && params.setData({
@@ -134,14 +134,14 @@ function commit() {
       }
       ToolbarModule.addData({transformData})
       const data = await AREditData.getData(_params.type, _params)
-      // GLOBAL.ToolBar.setState({
+      // global.ToolBar.setState({
       //   data: data.data,
       //   // isFullScreen: false,
       //   // showMenuDialog: false,
-      //   // selectName: GLOBAL.ToolBar.state.selectName,
-      //   // selectKey: GLOBAL.ToolBar.state.selectKey,
+      //   // selectName: global.ToolBar.state.selectName,
+      //   // selectKey: global.ToolBar.state.selectKey,
       // })
-      GLOBAL.ToolBar.resetContentView()
+      global.ToolBar.resetContentView()
     })
   }
   return true
@@ -232,8 +232,8 @@ function deleteARElement() {
 
   const element = _data.selectARElement
   if(element) {
-    GLOBAL.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Common.DELETE_CURRENT_OBJ_CONFIRM,
+    global.SimpleDialog.set({
+      text: getLanguage(global.language).Common.DELETE_CURRENT_OBJ_CONFIRM,
       confirmAction: () => {
         SARMap.clearSelection()
         SARMap.removeEditElement()
@@ -245,9 +245,9 @@ function deleteARElement() {
         })
       },
     })
-    GLOBAL.SimpleDialog.setVisible(true)
+    global.SimpleDialog.setVisible(true)
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Common.NO_SELECTED_OBJ)
+    Toast.show(getLanguage(global.language).Common.NO_SELECTED_OBJ)
   }
 }
 

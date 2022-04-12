@@ -21,7 +21,7 @@ export default class ModelChoseView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName
 

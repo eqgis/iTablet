@@ -74,8 +74,8 @@ async function getData(type: string, params: {[name: string]: any}) {
  * @param params Toolbar setVisible中的params
  */
 async function showSlideToolbar(type: string, language: string, params: any) {
-  GLOBAL.toolBox &&
-  GLOBAL.toolBox.setVisible(true, type, {
+  global.toolBox &&
+  global.toolBox.setVisible(true, type, {
     containerType: ToolbarType.slider,
     isFullScreen: false,
     showMenuDialog: false,
@@ -284,8 +284,8 @@ async function getStyleData(type: string) {
       data = [
         {
           key: 'left-right',
-          leftText:  getLanguage(GLOBAL.language).ARMap.WEST,
-          rightText:  getLanguage(GLOBAL.language).ARMap.EAST,
+          leftText:  getLanguage(global.language).ARMap.WEST,
+          rightText:  getLanguage(global.language).ARMap.EAST,
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {
@@ -302,8 +302,8 @@ async function getStyleData(type: string) {
         },
         {
           key: 'down-up',
-          leftText:  getLanguage(GLOBAL.language).ARMap.DOWN,
-          rightText:  getLanguage(GLOBAL.language).ARMap.UP,
+          leftText:  getLanguage(global.language).ARMap.DOWN,
+          rightText:  getLanguage(global.language).ARMap.UP,
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {
@@ -320,8 +320,8 @@ async function getStyleData(type: string) {
         },
         {
           key: 'back-front',
-          leftText:  getLanguage(GLOBAL.language).ARMap.SOUTH,
-          rightText:  getLanguage(GLOBAL.language).ARMap.NORTH,
+          leftText:  getLanguage(global.language).ARMap.SOUTH,
+          rightText:  getLanguage(global.language).ARMap.NORTH,
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {
@@ -415,13 +415,13 @@ async function getAnimationData(type: string) {
         {
           key: 'add',
           image: getThemeAssets().functionBar.icon_tool_add,
-          title: getLanguage(GLOBAL.language).Common.ADD,
+          title: getLanguage(global.language).Common.ADD,
           action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_TYPE),
         },
         {
           key: 'none',
           image: getThemeAssets().ar.armap.ar_animation_none,
-          title: getLanguage(GLOBAL.language).Common.NONE,
+          title: getLanguage(global.language).Common.NONE,
           action: () => {
             if(element && typeof element !== 'string') {
               SARMap.clearAnimation(element.layerName, element.id)
@@ -460,13 +460,13 @@ async function getAnimationData(type: string) {
         {
           key: ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION,
           image: getThemeAssets().ar.armap.ar_translation,
-          title: getLanguage(GLOBAL.language).ARMap.POSITION,
+          title: getLanguage(global.language).ARMap.POSITION,
           action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION),
         },
         {
           key: ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION,
           image: getThemeAssets().ar.armap.ar_rotate,
-          title: getLanguage(GLOBAL.language).ARMap.ROTATION,
+          title: getLanguage(global.language).ARMap.ROTATION,
           action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION),
         },
       ]
@@ -500,7 +500,7 @@ async function getAnimationData(type: string) {
         title: getLanguage(_params.language).ARMap.DISTANCE,
         type: ToolbarType.slider,
         data: [{
-          // title: getLanguage(GLOBAL.language).ARMap.DISTANCE,
+          // title: getLanguage(global.language).ARMap.DISTANCE,
           type: ToolbarType.slider,
           data: [{
             onMove: (loc: number) => {
@@ -511,7 +511,7 @@ async function getAnimationData(type: string) {
             },
             defaultValue: 1,
             range: [-5, 5],
-            unit: getLanguage(GLOBAL.language).Map_Main_Menu.METERS,
+            unit: getLanguage(global.language).Map_Main_Menu.METERS,
           }],
         }],
       })
@@ -582,7 +582,7 @@ function getHeaderData(type: string) {
       type: 'floatNoTitle',
       headerRight: [{
         key: 'delete',
-        // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+        // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
         action: AREditAction.deleteARElement,
         size: 'large',
         image: getThemeAssets().ar.toolbar.icon_delete,

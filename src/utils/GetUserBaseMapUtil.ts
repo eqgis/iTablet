@@ -140,12 +140,11 @@ let currentUser: CurrentUserObjType
   * 加载用户底图
   * @author lyx
   * @param currentUser  当前登录用户  
-  * @param baseMaps 当前用户的底图数组  , baseMaps: Array<BaseMapsType>
+  * @param baseMaps 当前用户的底图数组
   */
-let loadUserBaseMaps = async (currentUserObj: CurrentUserObjType) => {
-  cleanTemp()
+let loadUserBaseMaps = async (currentUserObj: CurrentUserObjType, baseMaps: Array<BaseMapsType>) => {
   currentUser = currentUserObj
-  // curUserBaseMaps = baseMaps
+  curUserBaseMaps = baseMaps
   // 等_arrPublishServiceList的值被修改完成后再返回它的值
   await _initFirstSectionData()
   return _arrPublishServiceList
@@ -366,35 +365,16 @@ let getCommonBaseMap = () => {
     ConstOnline.tianditu(),
   ]
   // 如果语言是中文，就删除掉OSM这个底图
-  if(GLOBAL.language === 'CN') {
+  if(global.language === 'CN') {
     maps.splice(3, 1)
   }
   return maps
-}
-
-/**
- * 
- * @returns 设置当前用户底图的方法
- */
-let setCurUserBaseMapsTool = () => {
-  curUserBaseMaps = getCommonBaseMap()
-}
-
-let cleanTemp = () => {
-  // 私有服务列表数组
-  _arrPrivateServiceList = []
-  // 公有服务列表数组
-  _arrPublishServiceList = []
-  // 当前登录用户的底图数组
-  curUserBaseMaps = []
 }
 
 
  export default {
   loadUserBaseMaps,
   addServer,
-  getCommonBaseMap,
-  setCurUserBaseMapsTool,
  }
 
 

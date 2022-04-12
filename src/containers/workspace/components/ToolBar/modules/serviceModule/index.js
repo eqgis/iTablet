@@ -42,7 +42,7 @@ export default function(serviceType) {
 
   return new ServiceModule({
     type: ConstToolType.SM_MAP_SERVICE,
-    title: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
+    title: getLanguage(global.language).Profile.MY_SERVICE,
     size: 'large',
     image: getThemeAssets().mine.my_service,
     getData: ServiceData.getData,

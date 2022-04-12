@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, NetInfo, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 import { Container, DropdownView } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize } from '../../../../../utils'
@@ -26,7 +27,7 @@ class LoginCloud extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.state = {
       onEmailTitleFocus: true,
       reLogin: true,
@@ -36,7 +37,7 @@ class LoginCloud extends Component {
 
   componentDidMount() {
     this.reLogin()
-    if (!GLOBAL.isPad) {
+    if (!global.isPad) {
       Orientation.lockToPortrait()
     }
   }
@@ -106,20 +107,20 @@ class LoginCloud extends Component {
 
     try {
       if (!userName) {
-        Toast.show(getLanguage(GLOBAL.language).Profile.ENTER_USERNAME_ALL)
+        Toast.show(getLanguage(global.language).Profile.ENTER_USERNAME_ALL)
         return
       }
       if (!password) {
-        Toast.show(getLanguage(GLOBAL.language).Profile.ENTER_PASSWORD)
+        Toast.show(getLanguage(global.language).Profile.ENTER_PASSWORD)
         return
       }
 
-      let isConnected = await NetInfo.isConnected.fetch()
+      let isConnected = (await NetInfo.fetch()).isConnected
       if (isConnected) {
         if(this.state.reLogin) {
           this.container.setLoading(
             true,
-            getLanguage(GLOBAL.language).Prompt.LOG_IN,
+            getLanguage(global.language).Prompt.LOG_IN,
           )
         } else {
           this.onlineLogin?.logining()
@@ -130,7 +131,7 @@ class LoginCloud extends Component {
         }
         result = startLogin()
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_NETWORK)
+        Toast.show(getLanguage(global.language).Prompt.NO_NETWORK)
         return false
       }
 
@@ -144,7 +145,7 @@ class LoginCloud extends Component {
 
       let res = await new Promise.race([result, timeout(20)])
       if (res === 'timeout') {
-        Toast.show(getLanguage(GLOBAL.language).Profile.LOGIN_TIMEOUT)
+        Toast.show(getLanguage(global.language).Profile.LOGIN_TIMEOUT)
         return false
       } else {
         result = res
@@ -157,12 +158,12 @@ class LoginCloud extends Component {
         })
         return true
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_LOG)
+        Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
         SMap.logoutCloudLicense()
         return false
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_LOG)
+      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
       SMap.logoutCloudLicense()
       return false
     } finally {
@@ -226,12 +227,12 @@ class LoginCloud extends Component {
       >
         {this.renderItem({
           key: 'DEFAULT',
-          title: getLanguage(GLOBAL.language).Profile
+          title: getLanguage(global.language).Profile
             .LICENSE_CLOUD_SITE_DEFAULT,
         })}
         {this.renderItem({
           key: 'JP',
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_CLOUD_SITE_JP,
+          title: getLanguage(global.language).Profile.LICENSE_CLOUD_SITE_JP,
         })}
       </View>
     )
@@ -307,7 +308,7 @@ class LoginCloud extends Component {
     return (
       <OnlineLoginView
         ref={ref => (this.onlineLogin = ref)}
-        language={GLOBAL.language}
+        language={global.language}
         login={this.login}
         showRegister={false}
         useDefaultName={true}
@@ -320,7 +321,7 @@ class LoginCloud extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          // title: getLanguage(GLOBAL.language).Profile.LOGIN,
+          // title: getLanguage(global.language).Profile.LOGIN,
           backImg: require('../../../../../assets/public/left_arrow.png'),
           headerStyle: {
             borderBottomWidth: 0,

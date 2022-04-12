@@ -18,7 +18,7 @@ import LocalDataItem from './LocalDataItem'
 import { getOnlineData } from './Method'
 import LocalDtaHeader from './LocalDataHeader'
 import OnlineDataItem from './OnlineDataItem'
-import { scaleSize, FetchUtils, OnlineServicesUtils, GetUserBaseMapUtil } from '../../../../utils'
+import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
 import DataHandler from '../DataHandler'
 import NavigationService from '../../../NavigationService'
 import Directory from './Directory'
@@ -39,14 +39,13 @@ export default class MyLocalData extends Component {
     importSceneWorkspace: () => {},
     updateDownList: () => {},
     removeItemOfDownList: () => {},
-    setBaseMap: () => {},
   }
 
   constructor(props) {
     super(props)
     this.state = {
       sectionData: [],
-      userName: this.props.navigation.getParam('userName', ''),
+      userName: this.props.route.params.userName,
       isRefreshing: false,
       activityShow: false,
       itemInfo: {},
@@ -64,9 +63,6 @@ export default class MyLocalData extends Component {
     this.directoryArray = [] 
     // 存放最终构造成的外部数据的对象
     this.externalDataObj = {}
-    // 记录外部数据放在前面的零散的数据的个数
-    this.externalSelfCount = 0
-    this.isExternalSelfDataIndex = -1
 
     // 给删除文件夹的方法绑定this
     this.directoryOnpress = this.directoryOnpress.bind(this)
@@ -102,7 +98,7 @@ export default class MyLocalData extends Component {
       let userData = []
       let externalData = []
       let onlineData = []
-      let homePath = GLOBAL.homePath
+      let homePath = global.homePath
       let cachePath = homePath + ConstPath.CachePath2
       let externalPath =
         homePath +
@@ -138,7 +134,7 @@ export default class MyLocalData extends Component {
       onlineData = result[3]
       if (cacheData.length > 0) {
         sectionData.push({
-          title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
+          title: getLanguage(global.language).Profile.SAMPLEDATA,
           data: cacheData,
           isShowItem: true,
           dataType: 'cache',
@@ -146,7 +142,7 @@ export default class MyLocalData extends Component {
       }
       if (userData.length > 0) {
         sectionData.push({
-          title: getLanguage(GLOBAL.language).Profile.USER_DATA,
+          title: getLanguage(global.language).Profile.USER_DATA,
           data: userData,
           isShowItem: true,
           dataType: 'user',
@@ -159,7 +155,7 @@ export default class MyLocalData extends Component {
         // 调用构造外部数据新对象的方法
         this.externalDataObj = await this.createExternalData(externalData)
         sectionData.push({
-          title: getLanguage(GLOBAL.language).Profile.ON_DEVICE,
+          title: getLanguage(global.language).Profile.ON_DEVICE,
           // data: externalData,
           data: this.externalDataObj.children,
           isShowItem: true,
@@ -169,7 +165,7 @@ export default class MyLocalData extends Component {
       this.totalPage = onlineData.totalPage
       if (onlineData.content.length > 0) {
         sectionData.push({
-          title: getLanguage(GLOBAL.language).Profile.ONLINE_DATA,
+          title: getLanguage(global.language).Profile.ONLINE_DATA,
           data: onlineData.content,
           isShowItem: true,
           dataType: 'online',
@@ -246,8 +242,7 @@ export default class MyLocalData extends Component {
         return null
       }
     } else if(info.section.dataType === 'external'){
-      // return this.renderExternalData(info.item, info.section)
-      return this.renderExternalData(info)
+      return this.renderExternalData(info.item, info.section)
 
     }else {
       return (
@@ -280,7 +275,7 @@ export default class MyLocalData extends Component {
         JSON.stringify(this.itemInfo.item) ===
           JSON.stringify(this.props.importItem.item)
       ) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DATA_BEING_IMPORT)
+        Toast.show(getLanguage(global.language).Prompt.DATA_BEING_IMPORT)
         return
       }
       this.setLoading(
@@ -290,7 +285,7 @@ export default class MyLocalData extends Component {
       )
       
       let exportDir =
-        GLOBAL.homePath +
+        global.homePath +
         ConstPath.ExternalData
 
       let delDirs = []
@@ -337,25 +332,14 @@ export default class MyLocalData extends Component {
         for (let i = 0; i < sectionData.length; i++) {
           let data = sectionData[i]
           if (data.title === this.itemInfo.section.title) {
-            if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.ON_DEVICE){
-              // 外部数据的处理方式
-              if(this.isExternalSelfDataIndex >= 0) {
-                // 是外部数据下的直接文件(数据)
-                data.data.splice(this.isExternalSelfDataIndex, 1)
-                // 外部数据下的直接文件(数据)的数量也要减一
-                this.externalSelfCount -= 1
-                // 将记录删除的数据是外部数据下的直接数据的索引置值为-1，只有下一次删除直接数据时会被置为大于等于0的数（索引）
-                this.isExternalSelfDataIndex = -1
-              } else {
-                // 当是外部数据文件夹下数据的时候的处理方式
-                data.data[this.directoryIndex + this.externalSelfCount - 1]?.children.splice(this.itemInfo.index, 1)
-                // 删除数据之后，检查文件夹是否应该删除
-                if( data.data[this.directoryIndex + this.externalSelfCount - 1].children.length === 0){
-                  this.directoryArray.splice(this.directoryIndex, 1)
-                  data.data.splice(this.directoryIndex + this.externalSelfCount - 1, 1)
-                }
+            if(this.itemInfo.section.title === getLanguage(global.language).Profile.ON_DEVICE){
+              // 当是外部数据的时候的处理方式
+              data.data[this.directoryIndex - 1]?.children.splice(this.itemInfo.index, 1)
+              // 删除数据之后，检查文件夹是否应该删除
+              if( data.data[this.directoryIndex - 1].children.length === 0){
+                this.directoryArray.splice(this.directoryIndex, 1)
+                data.data.splice(this.directoryIndex - 1, 1)
               }
-              
             } else {
               data.data.splice(this.itemInfo.index, 1)
             }
@@ -431,27 +415,27 @@ export default class MyLocalData extends Component {
       getItemCallback: async ({ item }) => {
         NavigationService.goBack()
         if (type === 'tif' || type === 'img') {
-          GLOBAL.SimpleDialog.set({
-            text: getLanguage(GLOBAL.language).Profile.IMPORT_BUILD_PYRAMID,
-            confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-            cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+          global.SimpleDialog.set({
+            text: getLanguage(global.language).Profile.IMPORT_BUILD_PYRAMID,
+            confirmText: getLanguage(global.language).Prompt.YES,
+            cancelText: getLanguage(global.language).Prompt.NO,
             confirmAction: async () => {
               try {
-                GLOBAL.Loading.setLoading(
+                global.Loading.setLoading(
                   true,
-                  getLanguage(GLOBAL.language).Prompt.IMPORTING,
+                  getLanguage(global.language).Prompt.IMPORTING,
                 )
                 await importDataset(item, { buildPyramid: true })
-                GLOBAL.Loading.setLoading(false)
+                global.Loading.setLoading(false)
               } catch (error) {
-                GLOBAL.Loading.setLoading(false)
+                global.Loading.setLoading(false)
               }
             },
             cancelAction: () => {
               importDataset(item)
             },
           })
-          GLOBAL.SimpleDialog.setVisible(true)
+          global.SimpleDialog.setVisible(true)
         } else {
           importDataset(item)
         }
@@ -470,7 +454,7 @@ export default class MyLocalData extends Component {
   importData = async () => {
     this._closeModal()
     if (this.props.importItem !== '') {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING_DATA)
+      Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
       return
     }
     if (this.itemInfo && this.itemInfo.id) {
@@ -523,7 +507,7 @@ export default class MyLocalData extends Component {
             itemInfo.id === element.id &&
             element.progress > 0
           ) {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING_DATA)
+            Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
             return
           }
         }
@@ -558,7 +542,7 @@ export default class MyLocalData extends Component {
         headers,
         progressDivider: 2,
         begin: () => {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING_DATA)
+          Toast.show(getLanguage(global.language).Prompt.IMPORTING_DATA)
         },
         progress: res => {
           const value = ~~res.progress.toFixed(0)
@@ -672,7 +656,7 @@ export default class MyLocalData extends Component {
         }
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     } finally {
       this.setLoading(false)
     }
@@ -726,7 +710,7 @@ export default class MyLocalData extends Component {
         //'服务删除失败')
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     } finally {
       // this.setLoading(false)
     }
@@ -750,7 +734,6 @@ export default class MyLocalData extends Component {
       } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
         result = await SIPortalService.deleteMyData(dataId)
       }
-      await this.loadUserBaseMaps()
       if (typeof result === 'boolean' && result) {
         let sectionData = JSON.parse(JSON.stringify(this.state.sectionData)) // [...this.state.sectionData]
         let oldOnline = sectionData[sectionData.length - 1]
@@ -775,37 +758,6 @@ export default class MyLocalData extends Component {
     } finally {
       // this.setLoading(false)
     }
-  }
-
-  /**
-   * 加载当前用户的底图
-   */
-  async loadUserBaseMaps(){
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
-    // 当公有服务列表数组有元素时，就遍历这个数组
-    if (arrPublishServiceList.length > 0) {
-      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
-        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
-        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl){
-          let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
-          // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
-          this.props.setBaseMap &&
-            this.props.setBaseMap({
-              userId: this.props.user.currentUser.userId,
-              baseMaps: list,
-            })
-        }
-      }
-    } else if(arrPublishServiceList.length === 0) {
-      // 当公有服务最后一个被删除了时的处理
-      let list = GetUserBaseMapUtil.getCommonBaseMap()
-      this.props.setBaseMap &&
-      this.props.setBaseMap({
-        userId: currentUser.userId,
-        baseMaps: list,
-      })
-    }
-
   }
 
   _onChangeDataVisibility = async () => {
@@ -860,7 +812,7 @@ export default class MyLocalData extends Component {
         //'设置失败')
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     } finally {
       this.setLoading(false)
     }
@@ -1006,9 +958,9 @@ export default class MyLocalData extends Component {
           }
           let title
           if (isPublish) {
-            title = getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_DATA
+            title = getLanguage(global.language).Profile.SET_AS_PRIVATE_DATA
           } else {
-            title = getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_DATA
+            title = getLanguage(global.language).Profile.SET_AS_PUBLIC_DATA
           }
           data.push({
             title: title,
@@ -1080,7 +1032,7 @@ export default class MyLocalData extends Component {
    * @return 构造的数据
    */
   async createExternalData (data) {
-    let rootPath = GLOBAL.homePath + ConstPath.ExternalData
+    let rootPath = global.homePath + ConstPath.ExternalData
     // 用于存放最终构造的数据结果对象
     let externalDataObj = {
     	type: 'directory',
@@ -1170,21 +1122,6 @@ export default class MyLocalData extends Component {
       }
       // 当文件夹找到或创建后，直接就将数据放进此文件夹
       obj.children.push(data)
-    } else {
-      // 当路径与文件名相同时, 文件是外部数据根目录下的数据，直接放到根目录下即可
-      // 非文件夹对象
-      let obj = {
-        type: data.fileType,
-        index: index + 1,
-        name: data.fileName,
-        path: GLOBAL.homePath + ConstPath.ExternalData,
-        children: [data],
-      }
-      // 直接在外部数据下的文件数量加1
-      this.externalSelfCount += 1
-      // 将这个数据放进
-      arr.unshift(obj)
-
     }
     return 
   }
@@ -1251,9 +1188,7 @@ export default class MyLocalData extends Component {
    * @param {Object} section 外部数据的头部信息对象
    * @return 返回一个组件实例
    */
-  renderExternalData(infodata){
-    let {index, item, section} = infodata
-    let obj = item
+  renderExternalData(obj, section){
     let that = this
     // 判断是否是文件夹类型
     if(obj.type === 'directory'){
@@ -1292,27 +1227,7 @@ export default class MyLocalData extends Component {
       </Directory>
       return content
 
-    } else {
-      let item = obj.children[0]
-      // 当不是文件夹时就渲染之前已经写好的item组件
-      return (
-        <LocalDataItem
-          info = {{index, item, section}}
-          // itemOnpress = {this.itemOnpress}
-          itemOnpress = {(info, event) => {
-            // 记录删除的数据是外部数据下的直接数据的索引
-            if(index < this.externalSelfCount) {
-              that.isExternalSelfDataIndex = index
-            }
-            that.itemOnpress(info, event)
-          }}
-          isImporting = {
-            this.props.importItem !== '' &&
-            JSON.stringify(item) === JSON.stringify(this.props.importItem.item)
-          }
-        />
-      )
-    }
+    } 
   
 
   }

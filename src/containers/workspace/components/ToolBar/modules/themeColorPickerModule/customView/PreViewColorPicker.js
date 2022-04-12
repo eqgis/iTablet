@@ -119,7 +119,7 @@ export default class PreviewColorPicker extends Component {
       if (rel) {
         ToolbarModule.addData({ customModeData: data })
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.PARAMS_ERROR)
+        Toast.show(getLanguage(global.language).Prompt.PARAMS_ERROR)
       }
     }
 
@@ -311,7 +311,7 @@ export default class PreviewColorPicker extends Component {
               }}
             >
               <Text style={rightText}>
-                {getLanguage(GLOBAL.language).Map_Main_Menu.COLOR_PICKER}
+                {getLanguage(global.language).Map_Main_Menu.COLOR_PICKER}
               </Text>
             </TouchableOpacity>
           </View>

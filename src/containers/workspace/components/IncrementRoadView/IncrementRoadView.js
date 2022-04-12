@@ -61,7 +61,7 @@ export default class IncrementRoadView extends React.Component {
             }}
           >
             <Text style={[styles.text, leftTxt]}>
-              {getLanguage(GLOBAL.language).Map_Main_Menu.TRACK}
+              {getLanguage(global.language).Map_Main_Menu.TRACK}
             </Text>
           </TouchableOpacity>
 
@@ -72,7 +72,7 @@ export default class IncrementRoadView extends React.Component {
             }}
           >
             <Text style={[styles.text, rightTxt]}>
-              {getLanguage(GLOBAL.language).Map_Main_Menu.HAND_PAINTED}
+              {getLanguage(global.language).Map_Main_Menu.HAND_PAINTED}
             </Text>
           </TouchableOpacity>
         </View>

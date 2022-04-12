@@ -108,7 +108,7 @@ export default class ApplyItem extends Component<Props, State> {
     let status = ''
     switch(this.props.data.checkStatus) {
       case 'WAITING':
-        status = getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE
+        status = getLanguage(global.language).Friends.GROUP_APPLY_AGREE
         return (
           <TouchableOpacity activeOpacity={0.8} style={styles.btnView} onPress={this._onPress}>
             {/* <Image
@@ -128,10 +128,10 @@ export default class ApplyItem extends Component<Props, State> {
           </TouchableOpacity>
         )
       case 'REFUSED':
-        status = getLanguage(GLOBAL.language).Friends.GROUP_APPLY_DISAGREE
+        status = getLanguage(global.language).Friends.GROUP_APPLY_DISAGREE
         break
       case 'ACCEPTED':
-        status = getLanguage(GLOBAL.language).Friends.GROUP_APPLY_ALREADY_AGREE
+        status = getLanguage(global.language).Friends.GROUP_APPLY_ALREADY_AGREE
         break
     }
     return (
@@ -146,8 +146,8 @@ export default class ApplyItem extends Component<Props, State> {
       <View style={[styles.itemViewStyle, this.props.style]}>
         <View style={styles.contentView}>
           <Text style={styles.title}>{this.props.data.applicantNick}</Text>
-          <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_APPLY_TO + ': ' + this.props.data.groupName}</Text>
-          <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Friends.APPLY_REASON + ': ' + this.props.data.applyReason}</Text>
+          <Text style={styles.subTitle}>{getLanguage(global.language).Friends.GROUP_APPLY_TO + ': ' + this.props.data.groupName}</Text>
+          <Text style={styles.subTitle}>{getLanguage(global.language).Friends.APPLY_REASON + ': ' + this.props.data.applyReason}</Text>
           <Text style={styles.time}>{new Date(this.props.data.applyTime).Format("yyyy-MM-dd hh:mm:ss")}</Text>
         </View>
         {this._renderRight()}

@@ -6,7 +6,7 @@
 
 import * as React from 'react'
 //eslint-disable-next-line
-import { ActionPopover } from 'teaset'
+// import { ActionPopover } from 'teaset'
 import { View, Text, TouchableOpacity, Image, Animated, Easing } from 'react-native'
 import { DatasetType, ThemeType, SMap } from 'imobile_for_reactnative'
 import { Toast, scaleSize, LayerUtils, screen, setSpText } from '../../../../utils'
@@ -111,7 +111,7 @@ export default class LayerManager_item extends React.Component {
       this.getData(this.props.data)
     }
     if (this.props.device.orientation !== prevProps.device.orientation && this.popKey) {
-      ActionPopover.hide(this.popKey)
+      // ActionPopover.hide(this.popKey)
       this.popKey = ''
     }
     // 加载图标
@@ -434,7 +434,7 @@ export default class LayerManager_item extends React.Component {
     let items = []
     let upMoveObj = {
       // 将图层向上移一层
-      title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MOVE_UP,
+      title: getLanguage(global.language).Map_Layer.LAYERS_MOVE_UP,
       onPress: () => {
         (async function() {
           // 调用接口方法上移图层
@@ -462,15 +462,15 @@ export default class LayerManager_item extends React.Component {
 
             py = py - height
             if (py >= scaleSize(180)) {
-              this.popKey = ActionPopover.show(
-                {
-                  x: px,
-                  y: py,
-                  width,
-                  height,
-                },
-                items,
-              )
+              // this.popKey = ActionPopover.show(
+              //   {
+              //     x: px,
+              //     y: py,
+              //     width,
+              //     height,
+              //   },
+              //   items,
+              // )
             } else {
               this.popKey = ''
             }
@@ -480,22 +480,22 @@ export default class LayerManager_item extends React.Component {
             })
             this.PressViewPosition = { px, py, width, height }
           } else {
-            this.popKey = ActionPopover.show(
-              {
-                x: px,
-                y: py,
-                width,
-                height,
-              },
-              items,
-            )
+            // this.popKey = ActionPopover.show(
+            //   {
+            //     x: px,
+            //     y: py,
+            //     width,
+            //     height,
+            //   },
+            //   items,
+            // )
           }
         }.bind(this)())
       },
     }
     let downMoveObj = {
       // 将图层向下移一层
-      title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MOVE_DOWN,
+      title: getLanguage(global.language).Map_Layer.LAYERS_MOVE_DOWN,
       onPress: () => {
         (async function() {
           await SMap.moveDownLayer(layer.path)
@@ -525,15 +525,15 @@ export default class LayerManager_item extends React.Component {
                 screen.getOrientation().indexOf('PORTRAIT') ? 40 : 120,
               )
             ) {
-              this.popKey = ActionPopover.show(
-                {
-                  x: px,
-                  y: py,
-                  width,
-                  height,
-                },
-                items,
-              )
+              // this.popKey = ActionPopover.show(
+              //   {
+              //     x: px,
+              //     y: py,
+              //     width,
+              //     height,
+              //   },
+              //   items,
+              // )
             } else {
               this.popKey = ''
             }
@@ -543,22 +543,22 @@ export default class LayerManager_item extends React.Component {
             })
             this.PressViewPosition = { px, py, width, height }
           } else {
-            this.popKey = ActionPopover.show(
-              {
-                x: px,
-                y: py,
-                width,
-                height,
-              },
-              items,
-            )
+            // this.popKey = ActionPopover.show(
+            //   {
+            //     x: px,
+            //     y: py,
+            //     width,
+            //     height,
+            //   },
+            //   items,
+            // )
           }
         }.bind(this)())
       },
     }
     let moveToTopObj = {
       // 将图层置顶
-      title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_TOP,
+      title: getLanguage(global.language).Map_Layer.LAYERS_TOP,
       onPress: () => {
         (async function() {
           this.popKey = ''
@@ -584,7 +584,7 @@ export default class LayerManager_item extends React.Component {
     }
     let moveToBottomObj = {
       // 将图层置底
-      title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_BOTTOM,
+      title: getLanguage(global.language).Map_Layer.LAYERS_BOTTOM,
       onPress: () => {
         (async function() {
           this.popKey = ''
@@ -625,15 +625,15 @@ export default class LayerManager_item extends React.Component {
 
     // 设置菜单的显示的位置坐标
     pressView.measure((ox, oy, width, height, px, py) => {
-      this.popKey = ActionPopover.show(
-        {
-          x: px,
-          y: py,
-          width,
-          height,
-        },
-        items,
-      )
+      // this.popKey = ActionPopover.show(
+      //   {
+      //     x: px,
+      //     y: py,
+      //     width,
+      //     height,
+      //   },
+      //   items,
+      // )
       this.PressViewPosition = {
         width,
         height,
@@ -658,7 +658,7 @@ export default class LayerManager_item extends React.Component {
 
   renderCornerMark = () => {
     // 应急标绘不支持服务
-    if (GLOBAL.Type === ChunkType.MAP_PLOTTING) return null
+    if (global.Type === ChunkType.MAP_PLOTTING) return null
     if (this.props.isLoading) {
       return (
         <Animated.Image
@@ -679,14 +679,14 @@ export default class LayerManager_item extends React.Component {
     let cornerMark
     if (this.props.cornerMarkImage) {
       cornerMark = this.props.cornerMarkImage
-    } else if (GLOBAL.coworkMode && dsDescription?.type === 'onlineService' && this.props.data.isModified && LayerUtils.availableServiceLayer(this.state.data.type)) {
+    } else if (global.coworkMode && dsDescription?.type === 'onlineService' && this.props.data.isModified && LayerUtils.availableServiceLayer(this.state.data.type)) {
       cornerMark = getThemeAssets().cowork.icon_state_published
     } else {
       if (!dsDescription) return null
       switch(dsDescription.type) {
         case 'onlineService':
-          // cornerMark = GLOBAL.coworkMode && this.props.data.themeType === 0 ? getThemeAssets().cowork.icon_state_published : null
-          cornerMark = GLOBAL.coworkMode && LayerUtils.availableServiceLayer(this.state.data.type) ? getThemeAssets().cowork.icon_complate : null
+          // cornerMark = global.coworkMode && this.props.data.themeType === 0 ? getThemeAssets().cowork.icon_state_published : null
+          cornerMark = global.coworkMode && LayerUtils.availableServiceLayer(this.state.data.type) ? getThemeAssets().cowork.icon_complate : null
           break
       }
     }

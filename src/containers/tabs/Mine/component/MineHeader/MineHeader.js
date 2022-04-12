@@ -169,7 +169,7 @@ export default class MineHeader extends Component {
             profileTextStyle,
             isLandscape && {
               flex: 1,
-              marginLeft: GLOBAL.isPad ? fixedSize(30) : fixedSize(30),
+              marginLeft: global.isPad ? fixedSize(30) : fixedSize(30),
             },
           ]}
         >
@@ -254,8 +254,8 @@ export default class MineHeader extends Component {
             style={[
               styles.profileContainerBgL,
               isLandscape && {
-                marginTop: GLOBAL.isPad ? fixedSize(86) : fixedSize(50),
-                marginBottom: GLOBAL.isPad ? scaleSize(60) : 0,
+                marginTop: global.isPad ? fixedSize(86) : fixedSize(50),
+                marginBottom: global.isPad ? scaleSize(60) : 0,
               },
             ]}
           >
@@ -265,7 +265,7 @@ export default class MineHeader extends Component {
               {/*{!hasCustomLogo && this._renderSideItem()}*/}
               <View style={[
                 styles.searchContainerL,
-                { marginLeft: GLOBAL.isPad ? fixedSize(72) : fixedSize(30) }
+                { marginLeft: global.isPad ? fixedSize(72) : fixedSize(30) }
               ]}>
                 {this._renderSearch()}
               </View>

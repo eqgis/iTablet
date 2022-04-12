@@ -169,7 +169,7 @@ class GroupSourceManagePage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.title = this.props.navigation?.state?.params?.title || getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE
+    this.title = this.props.navigation?.state?.params?.title || getLanguage(global.language).Friends.GROUP_RESOURCE
     this.isManage = this.props.navigation?.state?.params?.isManage !== undefined
       ? this.props.navigation?.state?.params?.isManage
       : true
@@ -209,7 +209,7 @@ class GroupSourceManagePage extends Component<Props, State> {
 
     this.popData = [
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE_UPLOAD,
+        title: getLanguage(global.language).Friends.GROUP_RESOURCE_UPLOAD,
         action: () => {
           NavigationService.navigate('GroupSourceUploadPage', {
             title: getLanguage(this.props.language).Profile.MAP,
@@ -223,34 +223,34 @@ class GroupSourceManagePage extends Component<Props, State> {
         },
       },
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE_DELETE,
+        title: getLanguage(global.language).Friends.GROUP_RESOURCE_DELETE,
         action: () => this._setMutiChoice(true),
       },
     ]
 
     this.popSourceData = [
       {
-        title: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+        title: getLanguage(global.language).Prompt.DOWNLOAD,
         action: () => this.currentSelectData?.download?.(),
       },
       // {
-      //   title: getLanguage(GLOBAL.language).Cowork.PUBLISH,
+      //   title: getLanguage(global.language).Cowork.PUBLISH,
       //   action: () => {
       //   },
       // },
       {
-        title: getLanguage(GLOBAL.language).Prompt.DELETE,
+        title: getLanguage(global.language).Prompt.DELETE,
         action: () => {
           this.currentSelectData?.data.resourceId && this._delete([this.currentSelectData?.data.resourceId])
         },
       },
       // {
-      //   title: getLanguage(GLOBAL.language).Prompt.RENAME,
+      //   title: getLanguage(global.language).Prompt.RENAME,
       //   action: () => {
       //   },
       // },
       {
-        title: getLanguage(GLOBAL.language).Prompt.CANCEL,
+        title: getLanguage(global.language).Prompt.CANCEL,
       },
     ]
   }
@@ -439,7 +439,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   _deleteSource = () => {
     if (this.state.isMutiChoice) {
       if (this.state.selectedData.size === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
+        Toast.show(getLanguage(global.language).Friends.GROUP_SELECT_MEMBER)
         return false
       }
       let ids: Array<string> = []
@@ -682,7 +682,7 @@ class GroupSourceManagePage extends Component<Props, State> {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            title={getLanguage(global.language).Friends.LOADING}
             enabled={true}
           />
         }
@@ -700,7 +700,7 @@ class GroupSourceManagePage extends Component<Props, State> {
           key={'download'}
           containerStyle={styles.bottomViewBtn}
           icon={getThemeAssets().cowork.icon_nav_import}
-          title={getLanguage(GLOBAL.language).Prompt.DOWNLOAD}
+          title={getLanguage(global.language).Prompt.DOWNLOAD}
           titleStyle={styles.btnStyle}
           onPress={() => {
             if (this.state.selectedData.size > 0) {
@@ -719,7 +719,7 @@ class GroupSourceManagePage extends Component<Props, State> {
           key={'delete'}
           containerStyle={styles.bottomViewBtn}
           icon={getThemeAssets().edit.icon_delete}
-          title={getLanguage(GLOBAL.language).Prompt.DELETE}
+          title={getLanguage(global.language).Prompt.DELETE}
           titleStyle={styles.btnStyle}
           onPress={() => {
             if (this.state.selectedData.size > 0) {
@@ -785,7 +785,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         <View style={[styles.dropdownItem, { backgroundColor: color.itemColorGray2 }]}>
           <Image resizeMode={'contain'} style={styles.dropdownItemImage} source={this.state.currentModule.moduleImage} />
           <Text style={styles.dropdownItemText}>{this.state.currentModule.title}</Text>
-          <Text style={styles.dropdownItemRightText}>{getLanguage(GLOBAL.language).Friends.SELECT_MODULE}</Text>
+          <Text style={styles.dropdownItemRightText}>{getLanguage(global.language).Friends.SELECT_MODULE}</Text>
         </View>
       </ModalDropdown>
     )
@@ -796,7 +796,7 @@ class GroupSourceManagePage extends Component<Props, State> {
       <View style={styles.nullView}>
         <View style={styles.nullSubView}>
           <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_data} />
-          <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_DATA_NULL}</Text>
+          <Text style={styles.nullTitle}>{getLanguage(global.language).Friends.GROUP_DATA_NULL}</Text>
         </View>
         <View style={{ flex: 1, backgroundColor: 'transparent' }} />
       </View>

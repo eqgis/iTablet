@@ -23,8 +23,10 @@ import styles from './styles'
 import NavigationService from '../../containers/NavigationService'
 import { ChunkType } from '../../constants'
 import { getLanguage } from '../../language/index'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 const AnimatedView = Animated.View
+
 
 export default class Container extends Component {
   props: {
@@ -87,6 +89,7 @@ export default class Container extends Component {
       Animated.timing(this.state.top, {
         toValue: visible ? 0 : scaleSize(-200),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
       this.headerVisible = visible
     } else {
@@ -99,6 +102,7 @@ export default class Container extends Component {
     Animated.timing(this.state.bottom, {
       toValue: visible ? 0 : scaleSize(-200),
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
+      useNativeDriver: false,
     }).start()
     this.bottomVisible = visible
   }
@@ -131,14 +135,15 @@ export default class Container extends Component {
     Animated.timing(this.overlayWidth, {
       toValue: width,
       duration: 300,
+      useNativeDriver: false,
     }).start()
     this.setPageVisible(this.visible)
   }
 
   getCurrentOverlayWidth = () => {
     let width
-    if (GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
-      if (!GLOBAL.isPad && this.getAspectRation() < 1.8) {
+    if (global.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
+      if (!global.isPad && this.getAspectRation() < 1.8) {
         width = 40
       } else {
         width = 40
@@ -182,13 +187,14 @@ export default class Container extends Component {
       }
     }
     //todo 所有container添加navigation属性
-    if (navigation) {
-      let name = navigation.state.routeName
-      let current = NavigationService.isCurrent(name)
-      if (!current) {
-        return false
-      }
-    }
+    // if (navigation) {
+    //   const navState = navigation.getState()
+    //   let name = navState.routes[navState.index].name
+    //   let current = NavigationService.isCurrent(name)
+    //   if (!current) {
+    //     return false
+    //   }
+    // }
     if (backAction) {
       backAction()
       return true
@@ -207,19 +213,28 @@ export default class Container extends Component {
     ) {
       let navigation =
         this.props.navigation || this.props.headerProps.navigation
-      this.unsubscribeFocus = navigation.addListener('willFocus', () => {
+      this.unsubscribeFocus = () => {
         this.setPageVisible(true)
-      })
+      }
+      navigation.addListener('willFocus', this.unsubscribeFocus)
 
-      this.unsubscribeBlur = navigation.addListener('willBlur', () => {
+      this.unsubscribeBlur = () => {
         this.setPageVisible(false)
-      })
+      }
+      navigation.addListener('willBlur', this.unsubscribeBlur)
     }
   }
 
   removeNavigationListener = () => {
-    this.unsubscribeFocus && this.unsubscribeFocus.remove()
-    this.unsubscribeFocus && this.unsubscribeBlur.remove()
+    if (
+      this.props.navigation ||
+      (this.props.headerProps && this.props.headerProps.navigation)
+    ) {
+      let navigation =
+        this.props.navigation || this.props.headerProps.navigation
+      this.unsubscribeFocus && navigation.removeListener('willFocus', this.unsubscribeFocus)
+      this.unsubscribeBlur && navigation.removeListener('willBlur', this.unsubscribeBlur)
+    }
   }
 
   setPageVisible = visible => {
@@ -228,9 +243,9 @@ export default class Container extends Component {
     if (this.props.hideInBackground) {
       if (NavigationService.isInMap() || NavigationService.isInMap3D()) {
         let isLandscape =
-          GLOBAL.getDevice() &&
-          GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
-        let x = visible ? 0 : isLandscape ? GLOBAL.getDevice().width : 0
+          global.getDevice() &&
+          global.getDevice().orientation.indexOf('LANDSCAPE') === 0
+        let x = visible ? 0 : isLandscape ? global.getDevice().width : 0
         let duration = isLandscape ? 300 : 0
         // 解决遮罩层在右时，View跳出两次 zcj
         if(!this.props.isOverlayBefore){
@@ -240,6 +255,7 @@ export default class Container extends Component {
         Animated.timing(this.viewX, {
           toValue: x,
           duration: duration,
+          useNativeDriver: false,
         }).start()
       }
     }
@@ -250,12 +266,12 @@ export default class Container extends Component {
     // 当加载状态为不加载，是否显示选点的提示标识为true，且当前模块儿为导航采集时，就给一个“长按选点”的提示
     if (!loading 
       && this.isShowPointToast
-      && GLOBAL.Type === ChunkType.MAP_NAVIGATION) {  
+      && global.Type === ChunkType.MAP_NAVIGATION) {  
       // 导航采集选点提示
       Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_SELECT_POINT, {duration: 2500})
     }
     // 当加载的文字信息为“加载中”，将是否显示选点的提示标识设为true
-    if(info === getLanguage(this.props.language).Prompt.LOADING && GLOBAL.Type === ChunkType.MAP_NAVIGATION){
+    if(info === getLanguage(this.props.language).Prompt.LOADING && global.Type === ChunkType.MAP_NAVIGATION){
       this.isShowPointToast = true 
     } else {
       this.isShowPointToast = false
@@ -322,8 +338,8 @@ export default class Container extends Component {
   renderBottom = fixBottom => {
     if (!this.props.bottomBar) return null
     let isLandscape =
-      GLOBAL.getDevice() &&
-      GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
+      global.getDevice() &&
+      global.getDevice().orientation.indexOf('LANDSCAPE') === 0
     let style = []
     if (fixBottom) {
       if (isLandscape) {
@@ -366,8 +382,8 @@ export default class Container extends Component {
       (this.props.headerProps && this.props.headerProps.headerOnTop) || false
     let direction = {
       flexDirection:
-        GLOBAL.getDevice() &&
-        GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0
+        global.getDevice() &&
+        global.getDevice().orientation.indexOf('LANDSCAPE') === 0
           ? 'row'
           : 'column',
     }
@@ -385,7 +401,7 @@ export default class Container extends Component {
             <TouchableOpacity
               onPress={this.onOverlayPress}
               activeOpacity={this.props.blankOpacity}
-              style={[styles.overlay, { opacity: this.props.blankOpacity }]}
+              style={[styles.overlay, { opacity: 0.5 }]}
             />
           </AnimatedView>
         )}

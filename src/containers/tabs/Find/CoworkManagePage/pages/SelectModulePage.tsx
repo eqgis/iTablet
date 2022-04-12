@@ -49,7 +49,7 @@ class SelectModulePage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.callBack = this.props.navigation.getParam('callBack')
+    this.callBack = this.props.route.params.callBack
     let _modules = this.props.mapModules.modules
       .filter((item: any) => {
         return item.key === ChunkType.MAP_EDIT ||
@@ -80,7 +80,7 @@ class SelectModulePage extends Component<Props, State> {
 
   _renderItem = ({item, index}: {item: any, index: number}) => {
     if (
-      item.title === getLanguage(GLOBAL.language).Map_Module.MAP_3D
+      item.title === getLanguage(global.language).Map_Module.MAP_3D
     ) {
       return null
     }
@@ -106,7 +106,7 @@ class SelectModulePage extends Component<Props, State> {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.SELECT_MODULE,
+          title: getLanguage(global.language).Friends.SELECT_MODULE,
           withoutBack: false,
           navigation: this.props.navigation,
         }}

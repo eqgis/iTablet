@@ -40,7 +40,7 @@ export default class MergeDatasetView extends Component {
   }
 
   static defaultProps = {
-    sourceData: GLOBAL.INCREMENT_DATA,
+    sourceData: global.INCREMENT_DATA,
   }
   constructor(props) {
     super(props)
@@ -98,7 +98,7 @@ export default class MergeDatasetView extends Component {
     })
     if (selectedData.length === 0) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Prompt.PLEASE_CHOOSE_DATASET,
+        getLanguage(global.language).Analyst_Prompt.PLEASE_CHOOSE_DATASET,
       )
       return
     }
@@ -111,7 +111,7 @@ export default class MergeDatasetView extends Component {
     // })
     // if (filterData.length > 0) {
     //   Toast.show(
-    //     getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
+    //     getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
     //   )
     // } else {
     this.mergeData(selectedData)
@@ -141,15 +141,15 @@ export default class MergeDatasetView extends Component {
         )
         Toast.show(
           `${
-            getLanguage(GLOBAL.language).Prompt.NOT_SUPPORT_PRJCOORDSYS
+            getLanguage(global.language).Prompt.NOT_SUPPORT_PRJCOORDSYS
           }:${str}`,
         )
       } else {
         NavigationService.goBack()
-        Toast.show(getLanguage(GLOBAL.language).Prompt.MERGE_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.MERGE_SUCCESS)
       }
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.MERGE_FAILD)
+      Toast.show(getLanguage(global.language).Prompt.MERGE_FAILD)
     }
   }
 
@@ -233,7 +233,7 @@ export default class MergeDatasetView extends Component {
           onPress={this.confirm}
         >
           <Text style={styles.actionTxt}>
-            {getLanguage(GLOBAL.language).Map_Main_Menu.MERGE_CONFIRM}
+            {getLanguage(global.language).Map_Main_Menu.MERGE_CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>
@@ -245,7 +245,7 @@ export default class MergeDatasetView extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.ADD_DATASET,
+          title: getLanguage(global.language).Map_Main_Menu.ADD_DATASET,
           backAction: this.back,
           headerRight: this.renderHeaderRight(),
         }}
@@ -311,7 +311,7 @@ class Item extends Component {
       this.props.item.fieldInfo.length === 0 &&
       !this.props.item.hasRoadName
     ) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
+      Toast.show(getLanguage(global.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
     } else {
       this.props.item.selected = !this.state.selected
       this.setState({
@@ -350,7 +350,7 @@ class Item extends Component {
             }}
             defaultValue={
               this.props.item.selectedFieldInfo ||
-              getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
+              getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
             }
             options={this.props.item.fieldInfo}
           />

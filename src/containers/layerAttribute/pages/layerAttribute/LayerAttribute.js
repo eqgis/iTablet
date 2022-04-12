@@ -45,7 +45,7 @@ import {
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
 //eslint-disable-next-line
-import { ActionPopover } from 'teaset'
+// import { ActionPopover } from 'teaset'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
 
@@ -83,8 +83,8 @@ export default class LayerAttribute extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
-    this.type = (params && params.type) || GLOBAL.Type
+    const { params } = this.props.route
+    this.type = (params && params.type) || global.Type
     let checkData = this.checkToolIsViable()
     this.state = {
       attributes: {
@@ -174,8 +174,8 @@ export default class LayerAttribute extends React.Component {
       this.setState({
         ...checkData,
       })
-    } else if (GLOBAL.NEEDREFRESHTABLE) {
-      GLOBAL.NEEDREFRESHTABLE = false
+    } else if (global.NEEDREFRESHTABLE) {
+      global.NEEDREFRESHTABLE = false
       let startIndex = this.state.startIndex - PAGE_SIZE
       if (startIndex <= 0) {
         startIndex = 0
@@ -413,7 +413,7 @@ export default class LayerAttribute extends React.Component {
    * 定位到首位
    */
   locateToTop = () => {
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     this.currentPage = 0
     if (this.state.startIndex === 0) {
@@ -475,7 +475,7 @@ export default class LayerAttribute extends React.Component {
    */
   locateToBottom = () => {
     if (this.total <= 0) return
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     this.currentPage =
       this.total > 0 ? Math.floor((this.total - 1) / PAGE_SIZE) : 0
@@ -532,7 +532,7 @@ export default class LayerAttribute extends React.Component {
       // 相对定位
       currentIndex = this.state.currentIndex + data.index
       if (currentIndex < 0 || currentIndex >= this.total) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -553,7 +553,7 @@ export default class LayerAttribute extends React.Component {
     } else if (data.type === 'absolute') {
       // 绝对定位
       if (data.index <= 0 || data.index > this.total) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -573,7 +573,7 @@ export default class LayerAttribute extends React.Component {
       currentIndex = data.index - 1
     }
 
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     if (startIndex !== 0) {
       this.canBeRefresh = true
@@ -654,7 +654,7 @@ export default class LayerAttribute extends React.Component {
       })
     }
 
-    // GLOBAL.SelectedSelectionAttribute = {
+    // global.SelectedSelectionAttribute = {
     //   index:this.state.startIndex + index,
     //   layerInfo:this.props.layerSelection.layerInfo,
     //   data,
@@ -667,7 +667,7 @@ export default class LayerAttribute extends React.Component {
 
     items = [
       {
-        title: getLanguage(GLOBAL.language).Map_Attribute.DETAIL,
+        title: getLanguage(global.language).Map_Attribute.DETAIL,
         onPress: () => {
           (async function () {
             this.addPopModal &&
@@ -681,7 +681,7 @@ export default class LayerAttribute extends React.Component {
     ]
     if (this.state.attributes.data.length > 1) {
       items.push({
-        title: getLanguage(GLOBAL.language).Map_Attribute.ASCENDING,
+        title: getLanguage(global.language).Map_Attribute.ASCENDING,
         onPress: () => {
           this.canBeRefresh = true
           this.filter = fieldInfo.name + ' ASC'
@@ -694,7 +694,7 @@ export default class LayerAttribute extends React.Component {
         },
       })
       items.push({
-        title: getLanguage(GLOBAL.language).Map_Attribute.DESCENDING,
+        title: getLanguage(global.language).Map_Attribute.DESCENDING,
         onPress: () => {
           this.canBeRefresh = true
           this.filter = fieldInfo.name + ' DESC'
@@ -724,7 +724,7 @@ export default class LayerAttribute extends React.Component {
       )
     ) {
       items.push({
-        title: getLanguage(GLOBAL.language).Profile.DELETE,
+        title: getLanguage(global.language).Profile.DELETE,
         onPress: () => {
           if (!fieldInfo) {
             return
@@ -743,7 +743,7 @@ export default class LayerAttribute extends React.Component {
         fieldInfo.type === FieldType.DOUBLE)
     ) {
       items.push({
-        title: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_STATISTIC,
+        title: getLanguage(global.language).Map_Attribute.ATTRIBUTE_STATISTIC,
         onPress: () => {
           NavigationService.navigate('LayerAttributeStatistic', {
             fieldInfo,
@@ -762,29 +762,29 @@ export default class LayerAttribute extends React.Component {
         if (px > screenWidth - allWidth / 2 + width / 2) {
           option.direction = 'left'
         }
-        ActionPopover.show(
-          {
-            x: px,
-            y: py,
-            width,
-            height,
-          },
-          items,
-          option,
-        )
+        // ActionPopover.show(
+        //   {
+        //     x: px,
+        //     y: py,
+        //     width,
+        //     height,
+        //   },
+        //   items,
+        //   option,
+        // )
       })
     }
   }
   /** 点击属性字段回调 **/
   onPressHeader = ({ fieldInfo, index, pressView }) => {
-    if (GLOBAL.Type === ChunkType.MAP_3D) {
+    if (global.Type === ChunkType.MAP_3D) {
       return
     }
     this._showPopover(pressView, index, fieldInfo)
   }
 
   showLayerAddView = () => {
-    // GLOBAL.ToolBar.showFullMap(true)
+    // global.ToolBar.showFullMap(true)
     this.addPopModal && this.addPopModal.setVisible(true)
   }
 
@@ -823,7 +823,7 @@ export default class LayerAttribute extends React.Component {
       result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, index, false)
     }
     if (result) {
-      if (GLOBAL.coworkMode) {
+      if (global.coworkMode) {
         SMap.setLayerModified(this.props.currentLayer.path, true) // 在线协作-成功删除数据,修改图层状态
         this.props.getLayers?.()
       }
@@ -920,8 +920,8 @@ export default class LayerAttribute extends React.Component {
           this.props.navigation.navigate('MapView', {
             hideMapController: true,
           })
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setVisible(
+        global.toolBox &&
+          global.toolBox.setVisible(
             true,
             ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
             {
@@ -931,9 +931,9 @@ export default class LayerAttribute extends React.Component {
           )
       })
 
-      GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
-      if ((GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) && GLOBAL.showAIDetect) {
-        GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+      global.toolBox && global.toolBox.showFullMap()
+      if ((global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS) && global.showAIDetect) {
+        global.toolBox && global.toolBox.switchAr()
       }
 
       StyleUtils.setSelectionStyle(this.props.currentLayer.path)
@@ -948,12 +948,12 @@ export default class LayerAttribute extends React.Component {
     //   this.state.currentFieldInfo[0].value,
     // ]).then(data => {
     //   this.props.navigation && this.props.navigation.navigate('MapView')
-    //   GLOBAL.toolBox &&
-    //     GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE, {
+    //   global.toolBox &&
+    //     global.toolBox.setVisible(true, ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE, {
     //       isFullScreen: false,
     //       height: 0,
     //     })
-    //   GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
+    //   global.toolBox && global.toolBox.showFullMap()
     //
     //   StyleUtils.setSelectionStyle(this.props.currentLayer.path)
     //   if (data instanceof Array && data.length > 0) {
@@ -970,8 +970,8 @@ export default class LayerAttribute extends React.Component {
   }
 
   setSaveViewVisible = visible => {
-    GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, {
+    global.SaveMapView &&
+      global.SaveMapView.setVisible(visible, {
         setLoading: this.setLoading,
       })
   }
@@ -1109,7 +1109,7 @@ export default class LayerAttribute extends React.Component {
         }
         break
     }
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOADING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
     //'修改中')
     try {
       this.props.setAttributeHistory &&
@@ -1296,9 +1296,9 @@ export default class LayerAttribute extends React.Component {
 
   renderMapLayerAttribute = () => {
     // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
-    //   buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
     let buttonNameFilter = this.isMediaLayer ? ['MediaData'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+      buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.currentLayer.name,
@@ -1308,7 +1308,7 @@ export default class LayerAttribute extends React.Component {
         }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
         if(!has){
-          Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+          Toast.show(getLanguage(global.language).Prompt.AFTER_COLLECT)
           return
         }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
@@ -1636,13 +1636,13 @@ export default class LayerAttribute extends React.Component {
         {this.type !== 'MAP_3D' && (
           <LayerTopBar
             orientation={this.props.device.orientation}
-            hasAddField={!GLOBAL.coworkMode}
-            hasCamera={GLOBAL.coworkMode && this.isMediaLayer || !GLOBAL.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
+            hasAddField={!global.coworkMode}
+            hasCamera={global.coworkMode && this.isMediaLayer || !global.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
             canLocated={this.state.attributes.data.length > 1}
             canRelated={this.state.currentIndex >= 0}
             canDelete={this.state.currentIndex >= 0}
             canAddField={
-              !(GLOBAL.coworkMode && dsDescription?.url && dsDescription?.type === 'onlineService') &&
+              !(global.coworkMode && dsDescription?.url && dsDescription?.type === 'onlineService') &&
               this.props.currentLayer.name !== undefined &&
               this.props.currentLayer.name !== '' &&
               this.props.currentLayer.type !== DatasetType.IMAGE &&

@@ -99,7 +99,7 @@ async function listAction(type, params = {}) {
       params.section &&
       params.section.title === getLanguage(_params.language).Profile.SYMBOL
     ) {
-      let filePath = GLOBAL.homePath + params.item.path
+      let filePath = global.homePath + params.item.path
       ToolbarModule.addData({
         currentSymbolFile: filePath,
         lastData: ToolbarModule.getData().data,
@@ -116,10 +116,10 @@ async function listAction(type, params = {}) {
       if (resultArr.length > 0) {
         SMap.refreshMap()
         SMediaCollector.showMedia(resultArr[0].layerName, false)
-        Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.ADD_SUCCESS)
         _params.setToolbarVisible(false)
       } else {
-        SMap.refreshMap(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+        SMap.refreshMap(getLanguage(global.language).Prompt.ADD_FAILED)
       }
     }
   } else if (type === ConstToolType.SM_MAP_ADD_DATASET) {
@@ -222,7 +222,7 @@ async function commit() {
     })
 
     _params.setToolbarVisible(false)
-    GLOBAL.prjDialog.setDialogVisible(true)
+    global.prjDialog.setDialogVisible(true)
     Toast.show(getLanguage(_params.language).Prompt.ADD_SUCCESS)
   } else {
     Toast.show(getLanguage(_params.language).Prompt.CHOOSE_DATASET)

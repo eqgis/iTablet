@@ -82,7 +82,7 @@ class ArNaviModule extends FunctionModule {
 export default function() {
   return new ArNaviModule({
     type: ConstToolType.SM_AR_NAVI,
-    title: getLanguage(GLOBAL.language).Map_Label.NAVIGATION,
+    title: getLanguage(global.language).Map_Label.NAVIGATION,
     size: 'large',
     image: getThemeAssets().mine.ar_navigation,
     getData: ARStyleData.getData,

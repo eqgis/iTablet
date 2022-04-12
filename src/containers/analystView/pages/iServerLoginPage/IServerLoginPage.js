@@ -24,7 +24,7 @@ export default class IServerLoginPage extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
     this.backcb = params && params.backcb
     this.state = {
@@ -105,7 +105,7 @@ export default class IServerLoginPage extends React.Component {
 
   render() {
     // if (!this.serverUrl) {
-    //   const { params } = this.props.navigation.state
+    //   const { params } = this.props.route
     //   this.serverUrl = params && params.serverUrl || ''
     // }
     return (

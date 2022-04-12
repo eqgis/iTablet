@@ -41,23 +41,23 @@ export default class SearchMenu extends React.Component {
 
   getData = () => [
     {
-      key: getLanguage(GLOBAL.language).Find.ALL,
+      key: getLanguage(global.language).Find.ALL,
       value: 'all',
     },
     {
-      key: getLanguage(GLOBAL.language).Find.ONLINE_WORKSPACE,
+      key: getLanguage(global.language).Find.ONLINE_WORKSPACE,
       value: ['WORKSPACE'],
     },
     {
-      key: getLanguage(GLOBAL.language).Find.ONLINE_DATASOURCE,
+      key: getLanguage(global.language).Find.ONLINE_DATASOURCE,
       value: ['UDB'],
     },
     {
-      key: getLanguage(GLOBAL.language).Find.ONLINE_SYMBOL,
+      key: getLanguage(global.language).Find.ONLINE_SYMBOL,
       value: ['MARKERSYMBOL', 'LINESYMBOL', 'FILLSYMBOL'],
     },
     {
-      key: getLanguage(GLOBAL.language).Find.ONLINE_COLORSCHEME,
+      key: getLanguage(global.language).Find.ONLINE_COLORSCHEME,
       value: ['COLORSCHEME'],
     },
   ]
@@ -85,22 +85,10 @@ export default class SearchMenu extends React.Component {
   }
 
   reset = () => {
-    // if (this.state.searchText !== '') {
-    //   this.setSearchText('')
-    //   this.searchBar && this.searchBar.clear()
-    // }
-
-    // 重置页面的值
-    this.setState({
-      selectList: this.getAllDataTypes(),
-      orderBy: orderBy.lastModifiedTime,
-      orderType: orderType.DESC,
-      searchText: '',
-    }, () => {
-      // 重置数据的值
-      this.setParams()
-    })
-    
+    if (this.state.searchText !== '') {
+      this.setSearchText('')
+      this.searchBar && this.searchBar.clear()
+    }
   }
 
   search = () => {
@@ -123,10 +111,6 @@ export default class SearchMenu extends React.Component {
     })
   }
 
-  /**
-   * 搜索框里数据变化调用的处理方法
-   * @param {*} text 文本框里的文字
-   */
   setSearchText = text => {
     this.setState({ searchText: text })
     this.props.setParams({
@@ -186,7 +170,7 @@ export default class SearchMenu extends React.Component {
             style={styles.orderImg}
           />
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Find.SORT_BY_NAME}
+            {getLanguage(global.language).Find.SORT_BY_NAME}
           </Text>
           <Text style={styles.orderText}>
             {this.state.orderBy === orderBy.fileName ? indicator : ''}
@@ -203,7 +187,7 @@ export default class SearchMenu extends React.Component {
             style={styles.orderImg}
           />
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Find.SORT_BY_TIME}
+            {getLanguage(global.language).Find.SORT_BY_TIME}
           </Text>
           <Text style={styles.orderText}>
             {this.state.orderBy === orderBy.lastModifiedTime ? indicator : ''}
@@ -287,7 +271,7 @@ export default class SearchMenu extends React.Component {
           <TextInput
             ref={ref => (this.searchBar = ref)}
             style={styles.searchInputStyle}
-            placeholder={getLanguage(GLOBAL.language).Profile.SEARCH}
+            placeholder={getLanguage(global.language).Profile.SEARCH}
             defaultValue={this.state.searchText}
             placeholderTextColor={'#A7A7A7'}
             returnKeyType={'search'}
@@ -306,12 +290,12 @@ export default class SearchMenu extends React.Component {
       <View style={styles.searchButtonContainer}>
         <TouchableOpacity style={styles.searchButton} onPress={this.reset}>
           <Text style={styles.searchButtonText}>
-            {getLanguage(GLOBAL.language).Find.RESET}
+            {getLanguage(global.language).Find.RESET}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.searchButton} onPress={this.search}>
           <Text style={styles.searchButtonText}>
-            {getLanguage(GLOBAL.language).Find.CONFIRM}
+            {getLanguage(global.language).Find.CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>

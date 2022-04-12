@@ -114,7 +114,7 @@ class MyScene extends MyDataPage {
       }
     } else {
        
-      Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
       // '导出失败')
     }
     return result

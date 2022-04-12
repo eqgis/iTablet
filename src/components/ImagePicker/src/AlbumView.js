@@ -10,18 +10,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-// import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { getLanguage } from '../../../language'
 import { RNFS } from 'imobile_for_reactnative'
 import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
 import Orientation from 'react-native-orientation'
+import { ImageUtils } from '.'
 
 export default class AlbumView extends React.PureComponent {
   props: {
     column: number,
-    device: Object,
   }
 
   static defaultProps = {
@@ -31,7 +30,7 @@ export default class AlbumView extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      selectedItems: [...this.props.selectedItems],
+      selectedItems: [...props.route.params.selectedItems],
       orientation: screen.getOrientation(),
     }
   }
@@ -77,7 +76,7 @@ export default class AlbumView extends React.PureComponent {
         showFullInMap={true}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.props.groupName,
+          title: this.props.route.params.groupName,
           navigation: this.props.navigation,
           backAction: this._clickBack,
           headerRight: [
@@ -86,7 +85,7 @@ export default class AlbumView extends React.PureComponent {
               onPress={this._onFinish.bind(this, [])}
             >
               <Text style={styles.headerRight}>
-                {getLanguage(GLOBAL.language).Analyst_Labels.CANCEL}
+                {getLanguage(global.language).Analyst_Labels.CANCEL}
               </Text>
             </TouchableOpacity>,
           ],
@@ -109,7 +108,7 @@ export default class AlbumView extends React.PureComponent {
           key={this._column()}
           style={[styles.list]}
           renderItem={this._renderItem}
-          data={this.props.photos}
+          data={this.props.route.params.photos}
           keyExtractor={item => item.uri}
           numColumns={this._column()}
           extraData={this.state}
@@ -121,13 +120,16 @@ export default class AlbumView extends React.PureComponent {
 
   renderDuration = sec => {
     let m = 0
-    if (sec > 60) {
-      m = Math.floor(sec / 60)
-      sec -= 60 * m
+    duration = '0'
+    if (sec !== null) {
+      if (sec > 60) {
+        m = Math.floor(sec / 60)
+        sec -= 60 * m
+      }
+      let s = sec.toFixed() - 1 + 1
+  
+      duration = (m >= 10 ? '' : '0') + m + ':' + (s >= 10 ? '' : '0') + s
     }
-    let s = sec.toFixed() - 1 + 1
-
-    let duration = (m >= 10 ? '' : '0') + m + ':' + (s >= 10 ? '' : '0') + s
     return <Text style={styles.duration}>{duration}</Text>
   }
 
@@ -140,7 +142,7 @@ export default class AlbumView extends React.PureComponent {
     )
     const backgroundColor = isSelected ? '#e15151' : 'transparent'
     const hasIcon =
-      isSelected || this.state.selectedItems.length < this.props.maxSize
+      isSelected || this.state.selectedItems.length < this.props.route.params.maxSize
     return (
       <TouchableOpacity onPress={this._clickCell.bind(this, item)}>
         <View style={{ padding: 1 }}>
@@ -157,7 +159,9 @@ export default class AlbumView extends React.PureComponent {
             style={{ width: edge, height: edge, overflow: 'hidden' }}
             resizeMode="cover"
           />
-          {item.playableDuration >= 0 &&
+          {
+            item.playableDuration !== null &&
+            item.playableDuration >= 0 &&
             item.type.toLowerCase().indexOf('video') >= 0 &&
             this.renderDuration(item.playableDuration)}
           {hasIcon && (
@@ -179,13 +183,13 @@ export default class AlbumView extends React.PureComponent {
 
   _renderBottomView = () => {
     const previewButton =
-      this.state.selectedItems.length > 0 ? this.props.previewLabel : ''
+      this.state.selectedItems.length > 0 ? this.props.route.params.previewLabel : ''
     const okButton =
-      getLanguage(GLOBAL.language).Analyst_Labels.ADD +
+      getLanguage(global.language).Analyst_Labels.ADD +
       ' (' +
       this.state.selectedItems.length +
       '/' +
-      this.props.maxSize +
+      this.props.route.params.maxSize +
       ')'
     // const safeArea = getSafeAreaInset()
     return (
@@ -203,7 +207,7 @@ export default class AlbumView extends React.PureComponent {
   }
 
   _onFinish = data => {
-    if (this.props.autoConvertPath && Platform.OS === 'ios') {
+    if (this.props.route.params.autoConvertPath && Platform.OS === 'ios') {
       const promises = data.map((item, index) => {
         const { uri } = item
         const params = uri.split('?')
@@ -235,19 +239,21 @@ export default class AlbumView extends React.PureComponent {
         })
       })
       Promise.all(promises).then(() => {
-        this.props.callback && this.props.callback(data)
+        this.props.route.params.callback && this.props.route.params.callback(data)
       })
-    } else if (this.props.autoConvertPath && Platform.OS === 'android') {
+    } else if (this.props.route.params.autoConvertPath && Platform.OS === 'android') {
       const promises = data.map((item, index) => {
         return RNFS.stat(item.uri).then(result => {
           data[index].uri = result.originalFilepath
         })
       })
       Promise.all(promises).then(() => {
-        this.props.callback && this.props.callback(data)
+        this.props.route.params.callback && this.props.route.params.callback(data)
       })
     } else {
-      this.props.callback && this.props.callback(data)
+      this.props.route.params.callback && this.props.route.params.callback(data)
+      // this.props.navigation.navigate('MapStack')
+      ImageUtils.hide()
     }
   }
 
@@ -259,8 +265,9 @@ export default class AlbumView extends React.PureComponent {
   }
 
   _clickBack = () => {
-    this.props.onBack && this.props.onBack(this.state.selectedItems)
-    this.props.navigation.goBack()
+    this.props.route.params.onBack && this.props.route.params.onBack(this.state.selectedItems)
+    // this.props.navigation.navigate('MapStack')
+    ImageUtils.hide()
   }
 
   _clickCell = itemuri => {
@@ -274,13 +281,13 @@ export default class AlbumView extends React.PureComponent {
       this.setState({
         selectedItems: [...selectedItems],
       })
-    } else if (this.state.selectedItems.length >= this.props.maxSize) {
-      if (this.props.maxSize === 1) {
+    } else if (this.state.selectedItems.length >= this.props.route.params.maxSize) {
+      if (this.props.route.params.maxSize === 1) {
         this.setState({
           selectedItems: [itemuri],
         })
       } else {
-        Alert.alert('', this.props.maxSizeChooseAlert(this.props.maxSize))
+        Alert.alert('', this.props.route.params.maxSizeChooseAlert(this.props.route.params.maxSize))
       }
     } else {
       this.setState({

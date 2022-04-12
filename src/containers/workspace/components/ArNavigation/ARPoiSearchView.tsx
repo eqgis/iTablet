@@ -2,7 +2,7 @@ import { ARAction, SARMap, SMap, SMARInterestView ,SSpeechRecognizer} from 'imob
 import { POIInfo, POIInfoOnline, POISearchResult, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
 import { Point } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
-import { Dimensions, FlatList, Image, ListRenderItemInfo, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { dismissKeyboard, Dimensions, FlatList, Image, ListRenderItemInfo, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { getThemeAssets ,getPublicAssets} from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import { ARNaviModule } from '../ArNavigationModule'
@@ -37,7 +37,6 @@ interface DefaultPOI {
   title: string,
 }
 
-const dismissKeyboard = require('dismissKeyboard')
 class ARPoiSearchView extends React.PureComponent<Props, State> {
   textInput : TextInput | null = null
   OnlineService : OnlineServicesUtils | null = null
@@ -57,7 +56,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
       searchRadius: 5000,
       searchKey:'',
     }
-    if (GLOBAL.language === 'CN') {
+    if (global.language === 'CN') {
       SSpeechRecognizer.setParameter('language', 'zh_cn')
     } else {
       SSpeechRecognizer.setParameter('language', 'en_us ')
@@ -152,10 +151,10 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     if(key != '') {
       this.currentLocation = (await SARMap.getCurrentLocation())
       if(!this.currentLocation) {
-        Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_GET_LOCATION)
+        Toast.show(getLanguage(global.language).ARMap.FAILED_TO_GET_LOCATION)
         return
       }
-      GLOBAL.Loading?.setLoading(true,getLanguage(GLOBAL.language).ARMap.SEARCHING)
+      global.Loading?.setLoading(true,getLanguage(global.language).ARMap.SEARCHING)
       //TODO radius由小到大多次分析
       const searchRadius = this.state.searchRadius
       //在线搜索
@@ -223,13 +222,13 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         await SARMap.removeSearchPois()
         SARMap.addSearchPois(infos)
       } else {
-        Toast.show(getLanguage(GLOBAL.language).ARMap.NO_SEARCH_RESULT)
+        Toast.show(getLanguage(global.language).ARMap.NO_SEARCH_RESULT)
       }
-      GLOBAL.Loading?.setLoading(false)
+      global.Loading?.setLoading(false)
       dismissKeyboard()
       SARMap.setAction(ARAction.SELECT)
     } else {
-      Toast.show(getLanguage(GLOBAL.language).ARMap.PLEASE_INPUT_KEYWORD)
+      Toast.show(getLanguage(global.language).ARMap.PLEASE_INPUT_KEYWORD)
     }
   }
 
@@ -273,7 +272,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           })
           return result
         } else {
-          Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_GET_LOCATION)
+          Toast.show(getLanguage(global.language).ARMap.FAILED_TO_GET_LOCATION)
           return null
         }
       } else {
@@ -294,7 +293,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         _params.showArNavi && _params.showArNavi(false)
         _params.showNavigation && _params.showNavigation(true)
       } else {
-        Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_ANALYZE_PATH)
+        Toast.show(getLanguage(global.language).ARMap.FAILED_TO_ANALYZE_PATH)
       }
     } catch(e) {
       //
@@ -312,7 +311,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           analystResult: result
         })
       } else {
-        Toast.show(getLanguage(GLOBAL.language).ARMap.FAILED_TO_ANALYZE_PATH)
+        Toast.show(getLanguage(global.language).ARMap.FAILED_TO_ANALYZE_PATH)
       }
     } else {
       // AppLog.error('未选中poi')
@@ -323,47 +322,47 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     return [
       {
         image: getThemeAssets().nav.food,
-        title: getLanguage(GLOBAL.language).ARMap.FOOD,
+        title: getLanguage(global.language).ARMap.FOOD,
       },
       {
         image: getThemeAssets().nav.scene,
-        title: getLanguage(GLOBAL.language).ARMap.SCENE,
+        title: getLanguage(global.language).ARMap.SCENE,
       },
       {
         image: getThemeAssets().nav.bank,
-        title: getLanguage(GLOBAL.language).ARMap.BANK,
+        title: getLanguage(global.language).ARMap.BANK,
       },
       {
         image: getThemeAssets().nav.market,
-        title: getLanguage(GLOBAL.language).ARMap.SUPERMARKET,
+        title: getLanguage(global.language).ARMap.SUPERMARKET,
       },
       {
         image: getThemeAssets().nav.hotel,
-        title: getLanguage(GLOBAL.language).ARMap.HOTEL,
+        title: getLanguage(global.language).ARMap.HOTEL,
       },
       {
         image: getThemeAssets().nav.toilet,
-        title: getLanguage(GLOBAL.language).ARMap.TOILET,
+        title: getLanguage(global.language).ARMap.TOILET,
       },
       {
         image: getThemeAssets().nav.bus,
-        title: getLanguage(GLOBAL.language).ARMap.BUS_STOP,
+        title: getLanguage(global.language).ARMap.BUS_STOP,
       },
       {
         image: getThemeAssets().nav.park,
-        title: getLanguage(GLOBAL.language).ARMap.PARKING_LOT,
+        title: getLanguage(global.language).ARMap.PARKING_LOT,
       },
       {
         image: getThemeAssets().nav.hospital,
-        title: getLanguage(GLOBAL.language).ARMap.HOSPITAL,
+        title: getLanguage(global.language).ARMap.HOSPITAL,
       },
       {
         image: getThemeAssets().nav.gas_station,
-        title: getLanguage(GLOBAL.language).ARMap.GAS_STATION,
+        title: getLanguage(global.language).ARMap.GAS_STATION,
       },
       {
         image: getThemeAssets().nav.mall,
-        title: getLanguage(GLOBAL.language).ARMap.MARKET,
+        title: getLanguage(global.language).ARMap.MARKET,
       },
     ]
   }
@@ -398,7 +397,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         <TextInput
           ref={ref => this.textInput = ref}
           style={styles.textInput}
-          placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
+          placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
           returnKeyType={'search'}
           defaultValue={this.state.searchKey}
           onFocus={() => this.setState({isInputing: true})}
@@ -503,7 +502,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           onPress={() => {this.setState({history: []})}}
         >
           <Text style={{ fontSize: scaleSize(22), color: GRAY}}>
-            {getLanguage(GLOBAL.language).ARMap.CLEAR_SEARCH_HISOTORY}
+            {getLanguage(global.language).ARMap.CLEAR_SEARCH_HISOTORY}
           </Text>
         </TouchableOpacity>
       </View>
@@ -600,7 +599,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           style={{borderRadius: scaleSize(20), marginTop: scaleSize(40), width: scaleSize(80), height: scaleSize(80), justifyContent: 'center'}}
           imageStyle={{width: scaleSize(40), height: scaleSize(40)}}
           textStyle={{fontSize: scaleSize(18)}}
-          data={[{title:getLanguage(GLOBAL.language).Map_Main_Menu.NETWORK,image: getThemeAssets().nav.road_net, key: 'roadnet', action: () => {
+          data={[{title:getLanguage(global.language).Map_Main_Menu.NETWORK,image: getThemeAssets().nav.road_net, key: 'roadnet', action: () => {
             NavigationService.navigate('RoadNet', {
               datasource: ARNaviModule.getData().naviDatasourceInfo,
               dataset: ARNaviModule.getData().naviDatasetInfo,
@@ -611,7 +610,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           style={{borderRadius: scaleSize(20), marginTop: scaleSize(40), width: scaleSize(80), height: scaleSize(80), justifyContent: 'center'}}
           imageStyle={{width: scaleSize(40), height: scaleSize(40)}}
           textStyle={{fontSize: scaleSize(18)}}
-          data={[{title:getLanguage(GLOBAL.language).Map_Label.SETTING,image: getThemeAssets().nav.setting, key: 'setting', action: () => {
+          data={[{title:getLanguage(global.language).Map_Label.SETTING,image: getThemeAssets().nav.setting, key: 'setting', action: () => {
             NavigationService.navigate('ARMapSetting',{
               poiSearch:true,
             })
@@ -651,13 +650,13 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         <View style={{flexDirection: 'row', justifyContent: 'flex-end' }}>
           <Button
             style={{marginHorizontal: scaleSize(20), width: scaleSize(150), height: scaleSize(80),borderRadius: scaleSize(50)}}
-            title={getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION}
+            title={getLanguage(global.language).Prompt.AR_NAVIGATION}
             color={'WHITE'}
             onPress={this.onNavi}
           />
           <Button
             style={{width: scaleSize(150), height: scaleSize(80),borderRadius: scaleSize(50)}}
-            title={getLanguage(GLOBAL.language).ARMap.ROUTE}
+            title={getLanguage(global.language).ARMap.ROUTE}
             onPress={this.onPath}
           />
         </View>

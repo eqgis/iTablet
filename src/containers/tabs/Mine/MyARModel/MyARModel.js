@@ -22,12 +22,12 @@ class MyARModel extends MyDataPage {
     super(props)
     this.dataType = 'ARMODEL'
     this.type = this.types.armodel
-    if(this.props.navigation.state.params?.showMode) {
-      this.showMode = this.props.navigation.state.params.showMode
+    if(this.props.route.params?.showMode) {
+      this.showMode = this.props.route.params.showMode
     }
     let title = title = getLanguage(this.props.language).Profile.ARMODEL
-    if(this.props.navigation.state.params?.title) {
-      title = this.props.navigation.state.params.title
+    if(this.props.route.params?.title) {
+      title = this.props.route.params.title
     }
     this.state = {
       ...this.state,

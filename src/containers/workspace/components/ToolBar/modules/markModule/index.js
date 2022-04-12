@@ -46,7 +46,7 @@ class MarkModule extends FunctionModule {
 export default function() {
   return new MarkModule({
     type: ConstToolType.SM_MAP_MARKS,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.PLOTS,
+    title: getLanguage(global.language).Map_Main_Menu.PLOTS,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_mark,
     getData: MarkData.getData,

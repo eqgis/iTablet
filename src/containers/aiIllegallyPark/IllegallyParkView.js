@@ -27,7 +27,7 @@ export default class IllegallyParkView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName || ''
 
@@ -114,8 +114,8 @@ export default class IllegallyParkView extends React.Component {
   back = () => {
     NavigationService.goBack('IllegallyParkView')
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    global.toolBox && global.toolBox.removeAIDetect(false)
+    global.toolBox.switchAr()
     return true
   }
 
@@ -126,7 +126,7 @@ export default class IllegallyParkView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT,
           navigation: this.props.navigation,
           backAction: this.back,

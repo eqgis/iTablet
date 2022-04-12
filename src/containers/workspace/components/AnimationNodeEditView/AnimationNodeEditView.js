@@ -25,7 +25,7 @@ export default class AnimationNodeEditView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
     this.backcb = params && params.backcb
     // let defaultValue = params && params.value !== undefined ? params.value : ''
@@ -38,7 +38,7 @@ export default class AnimationNodeEditView extends React.Component {
     //   btnTitle:
     //     params && params.btnTitle
     //       ? params.btnTitle
-    //       : getLanguage(GLOBAL.language).Prompt.CONFIRM, //'确定',
+    //       : getLanguage(global.language).Prompt.CONFIRM, //'确定',
     //   keyboardType:
     //     params && params.keyboardType ? params.keyboardType : 'default',
     //   isLegalName: !!defaultValue,
@@ -55,7 +55,7 @@ export default class AnimationNodeEditView extends React.Component {
       btnTitle:
         params && params.btnTitle
           ? params.btnTitle
-          : getLanguage(GLOBAL.language).Prompt.CONFIRM, //'确定',
+          : getLanguage(global.language).Prompt.CONFIRM, //'确定',
       headerTitle:
         params && params.headerTitle !== undefined ? params.headerTitle : '',
     }
@@ -112,7 +112,7 @@ export default class AnimationNodeEditView extends React.Component {
 
   modifyRotateStartAngle = () => {
     NavigationService.navigate('AnimationNodeEditRotateView', {
-      headerTitle: getLanguage(GLOBAL.language).Map_Plotting
+      headerTitle: getLanguage(global.language).Map_Plotting
         .ANIMATION_ROTATE_START_ANGLE,
       //'开始旋转角度',
       data: this.state.data.startAngle,
@@ -129,7 +129,7 @@ export default class AnimationNodeEditView extends React.Component {
 
   modifyRotateEndAngle = () => {
     NavigationService.navigate('AnimationNodeEditRotateView', {
-      headerTitle: getLanguage(GLOBAL.language).Map_Plotting
+      headerTitle: getLanguage(global.language).Map_Plotting
         .ANIMATION_ROTATE_END_ANGLE,
       //'结束旋转角度',
       data: this.state.data.endAngle,
@@ -167,14 +167,14 @@ export default class AnimationNodeEditView extends React.Component {
       <View style={styles.subContainer}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_ATTRIBUTE}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_ATTRIBUTE}
           </Text>
         </View>
 
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .ANIMATION_ATTRIBUTE_LINE_WIDTH
             }
           </Text>
@@ -202,7 +202,7 @@ export default class AnimationNodeEditView extends React.Component {
               <View style={{ marginLeft: scaleSize(50) }} />
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .ANIMATION_ATTRIBUTE_LINE_WIDTH_START
                 }
               </Text>
@@ -262,7 +262,7 @@ export default class AnimationNodeEditView extends React.Component {
               <View style={{ marginLeft: scaleSize(50) }} />
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .ANIMATION_ATTRIBUTE_LINE_WIDTH_END
                 }
               </Text>
@@ -324,7 +324,7 @@ export default class AnimationNodeEditView extends React.Component {
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .ANIMATION_ATTRIBUTE_LINE_COLOR
             }
           </Text>
@@ -351,7 +351,7 @@ export default class AnimationNodeEditView extends React.Component {
                 <View style={styles.marginLiftMax} />
                 <Text style={styles.startTimeText}>
                   {
-                    getLanguage(GLOBAL.language).Map_Plotting
+                    getLanguage(global.language).Map_Plotting
                       .ANIMATION_BLINK_START_COLOR
                   }
                 </Text>
@@ -400,7 +400,7 @@ export default class AnimationNodeEditView extends React.Component {
                 <View style={styles.marginLiftMax} />
                 <Text style={styles.startTimeText}>
                   {
-                    getLanguage(GLOBAL.language).Map_Plotting
+                    getLanguage(global.language).Map_Plotting
                       .ANIMATION_ATTRIBUTE_LINE_COLOR_END
                   }
                 </Text>
@@ -452,7 +452,7 @@ export default class AnimationNodeEditView extends React.Component {
           <View style={styles.startTime}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH
               }
             </Text>
@@ -482,7 +482,7 @@ export default class AnimationNodeEditView extends React.Component {
               <View style={{ marginLeft: scaleSize(50) }} />
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_START
                 }
               </Text>
@@ -543,7 +543,7 @@ export default class AnimationNodeEditView extends React.Component {
               <View style={{ marginLeft: scaleSize(50) }} />
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .ANIMATION_ATTRIBUTE_SURROUND_LINE_WIDTH_END
                 }
               </Text>
@@ -605,7 +605,7 @@ export default class AnimationNodeEditView extends React.Component {
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR
             }
           </Text>
@@ -632,7 +632,7 @@ export default class AnimationNodeEditView extends React.Component {
                 <View style={styles.marginLiftMax} />
                 <Text style={styles.startTimeText}>
                   {
-                    getLanguage(GLOBAL.language).Map_Plotting
+                    getLanguage(global.language).Map_Plotting
                       .ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_START
                   }
                 </Text>
@@ -683,7 +683,7 @@ export default class AnimationNodeEditView extends React.Component {
                 <View style={styles.marginLiftMax} />
                 <Text style={styles.startTimeText}>
                   {
-                    getLanguage(GLOBAL.language).Map_Plotting
+                    getLanguage(global.language).Map_Plotting
                       .ANIMATION_ATTRIBUTE_SURROUND_LINE_COLOR_END
                   }
                 </Text>
@@ -741,14 +741,14 @@ export default class AnimationNodeEditView extends React.Component {
       <View style={styles.subContainer}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_ROTATE}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_ROTATE}
           </Text>
         </View>
         <View style={styles.startTime}>
           <View style={styles.itemView}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_ROTATE_DIRECTION
               }
             </Text>
@@ -770,7 +770,7 @@ export default class AnimationNodeEditView extends React.Component {
             <View style={{ marginLeft: scaleSize(5) }} />
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_ROTATE_CLOCKWISE
               }
             </Text>
@@ -791,7 +791,7 @@ export default class AnimationNodeEditView extends React.Component {
             <View style={{ marginLeft: scaleSize(5) }} />
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_ROTATE_ANTICLOCKWISE
               }
             </Text>
@@ -803,7 +803,7 @@ export default class AnimationNodeEditView extends React.Component {
           <View style={styles.itemView}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_ROTATE_START_ANGLE
               }
             </Text>
@@ -831,7 +831,7 @@ export default class AnimationNodeEditView extends React.Component {
           <View style={styles.itemView}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_ROTATE_END_ANGLE
               }
             </Text>
@@ -862,7 +862,7 @@ export default class AnimationNodeEditView extends React.Component {
       <View style={styles.subContainer}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_BLINK}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_BLINK}
           </Text>
         </View>
         <View style={styles.startTime}>
@@ -883,7 +883,7 @@ export default class AnimationNodeEditView extends React.Component {
             <View style={{ marginLeft: scaleSize(15) }} />
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_BLINK_INTERVAL
               }
             </Text>
@@ -947,7 +947,7 @@ export default class AnimationNodeEditView extends React.Component {
           <View style={styles.startTime}>
             {/* <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_BLINK_NUMBER
               }
             </Text> */}
@@ -969,7 +969,7 @@ export default class AnimationNodeEditView extends React.Component {
               <View style={{ marginLeft: scaleSize(15) }} />
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .ANIMATION_BLINK_NUMBER
                 }
               </Text>
@@ -1035,7 +1035,7 @@ export default class AnimationNodeEditView extends React.Component {
         <View style={styles.lineStyle} />
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_BLINK_REPLACE}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_BLINK_REPLACE}
           </Text>
           <View style={styles.startTimeView}>
             <Switch
@@ -1060,7 +1060,7 @@ export default class AnimationNodeEditView extends React.Component {
                 <View style={styles.marginLiftMax} />
                 <Text style={styles.startTimeText}>
                   {
-                    getLanguage(GLOBAL.language).Map_Plotting
+                    getLanguage(global.language).Map_Plotting
                       .ANIMATION_BLINK_START_COLOR
                   }
                 </Text>
@@ -1112,7 +1112,7 @@ export default class AnimationNodeEditView extends React.Component {
                 <View style={styles.marginLiftMax} />
                 <Text style={styles.startTimeText}>
                   {
-                    getLanguage(GLOBAL.language).Map_Plotting
+                    getLanguage(global.language).Map_Plotting
                       .ANIMATION_BLINK_REPLACE_COLOR
                   }
                 </Text>
@@ -1196,13 +1196,13 @@ export default class AnimationNodeEditView extends React.Component {
       <View style={styles.subContainer}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_SCALE}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_SCALE}
           </Text>
         </View>
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .ANIMATION_SCALE_START_SCALE
             }
           </Text>
@@ -1262,7 +1262,7 @@ export default class AnimationNodeEditView extends React.Component {
           <View style={styles.startTime}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_SCALE_END_SCALE
               }
             </Text>
@@ -1329,13 +1329,13 @@ export default class AnimationNodeEditView extends React.Component {
       <View style={styles.subContainer}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_GROW}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_GROW}
           </Text>
         </View>
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .ANIMATION_SCALE_START_SCALE
             }
           </Text>
@@ -1404,7 +1404,7 @@ export default class AnimationNodeEditView extends React.Component {
           <View style={styles.startTime}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .ANIMATION_SCALE_END_SCALE
               }
             </Text>
@@ -1480,12 +1480,12 @@ export default class AnimationNodeEditView extends React.Component {
       <View style={styles.subContainer}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_SHOW}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_SHOW}
           </Text>
         </View>
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_SHOW_STATE}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_SHOW_STATE}
           </Text>
           <View style={styles.startTimeView}>
             <Switch
@@ -1510,7 +1510,7 @@ export default class AnimationNodeEditView extends React.Component {
         {
           <View style={styles.startTime}>
             <Text style={styles.startTimeText}>
-              {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_SHOW_EFFECT}
+              {getLanguage(global.language).Map_Plotting.ANIMATION_SHOW_EFFECT}
             </Text>
 
             <View style={styles.startTimeView}>
@@ -1542,12 +1542,12 @@ export default class AnimationNodeEditView extends React.Component {
       <View style={styles.subContainer}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.ANIMATION_ATTRIBUTE_STR}
+            {getLanguage(global.language).Map_Plotting.ANIMATION_ATTRIBUTE_STR}
           </Text>
         </View>
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
-            {getLanguage(GLOBAL.language).Map_Main_Menu.ANIMATION_NODE_NAME}
+            {getLanguage(global.language).Map_Main_Menu.ANIMATION_NODE_NAME}
           </Text>
           <View style={styles.startTimeView}>
             <TextInput
@@ -1567,7 +1567,7 @@ export default class AnimationNodeEditView extends React.Component {
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_START_TIME
             }
           </Text>
@@ -1624,7 +1624,7 @@ export default class AnimationNodeEditView extends React.Component {
           <View style={styles.startTime}>
             <Text style={styles.startTimeText}>
               {
-                getLanguage(GLOBAL.language).Map_Plotting
+                getLanguage(global.language).Map_Plotting
                   .PLOTTING_ANIMATION_DURATION
               }
             </Text>

@@ -9,7 +9,8 @@ import {
   ChunkType,
 } from '../../../../constants'
 import TouchProgress from '../TouchProgress'
-import * as ExtraDimensions from 'react-native-extra-dimensions-android'
+// import * as ExtraDimensions from 'react-native-extra-dimensions-android'
+import ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModuleDefault, { getToolbarModule } from './modules/ToolbarModule'
 import { View, Animated, Platform, TouchableOpacity, Image } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
@@ -181,13 +182,13 @@ export default class ToolBar extends React.Component {
 
   componentDidMount() {
     if (Platform.OS === 'android') {
-      ExtraDimensions.addSoftMenuBarWidthChangeListener({
-        softBarPositionChange: val => {
-          if (this.state.hasSoftMenuBottom !== val) {
-            this.setState({ hasSoftMenuBottom: val })
-          }
-        },
-      })
+      // ExtraDimensions.addSoftMenuBarWidthChangeListener({
+      //   softBarPositionChange: val => {
+      //     if (this.state.hasSoftMenuBottom !== val) {
+      //       this.setState({ hasSoftMenuBottom: val })
+      //     }
+      //   },
+      // })
     }
   }
 
@@ -314,7 +315,7 @@ export default class ToolBar extends React.Component {
    *   height:              工具栏高度
    *   containerType:       容器的类型, list | table
    *   resetToolModuleData: 是否重置ToolbarModule中的data
-   *   touchType:           setVisible之后 GLOBAL.TouchType的值
+   *   touchType:           setVisible之后 global.TouchType的值
    *   isExistFullMap:      setVisible之后是否退出全屏
    *   themeType:           专题类型
    *
@@ -336,13 +337,13 @@ export default class ToolBar extends React.Component {
         this.measure(params)
       }
       if (params.touchType) {
-        GLOBAL.TouchType = params.touchType
+        global.TouchType = params.touchType
       } else {
         if (isShow) {
-          GLOBAL.TouchType = TouchType.NULL
-          GLOBAL.bubblePane && GLOBAL.bubblePane.reset() // 重置气泡提示
+          global.TouchType = TouchType.NULL
+          global.bubblePane && global.bubblePane.reset() // 重置气泡提示
         } else if (!isShow) {
-          GLOBAL.TouchType = TouchType.NORMAL
+          global.TouchType = TouchType.NORMAL
         }
       }
       if (
@@ -365,6 +366,9 @@ export default class ToolBar extends React.Component {
             buttons = buttons || _data.buttons
             customView = customView || _data.customView
             pageAction = pageAction || _data.pageAction
+            if ((!data || data.length === 0) && (!buttons || buttons.length === 0) && !customView) {
+              buttons = [ToolbarBtnType.CANCEL]
+            }
           }
           if (pageAction) {
             pageAction()
@@ -476,6 +480,7 @@ export default class ToolBar extends React.Component {
             ? 0
             : -Math.max(this.props.device.height, this.props.device.width),
           duration: Const.ANIMATED_DURATION,
+          useNativeDriver: false,
         }),
       )
       animatedList.push(
@@ -485,6 +490,7 @@ export default class ToolBar extends React.Component {
             ? 0
             : -Math.max(this.props.device.height, this.props.device.width),
           duration: Const.ANIMATED_DURATION,
+          useNativeDriver: false,
         }),
       )
       this.isShow = isShow
@@ -516,8 +522,8 @@ export default class ToolBar extends React.Component {
   // close = (type = this.state.type, actionFirst = false) => {
   close = () => {
     let newState = { data: [], type: '' }
-    if (GLOBAL.Type === ChunkType.MAP_EDIT) {
-      GLOBAL.showMenu = true
+    if (global.Type === ChunkType.MAP_EDIT) {
+      global.showMenu = true
       newState.selectKey = ''
     }
 
@@ -537,7 +543,7 @@ export default class ToolBar extends React.Component {
     SMap.setAction(Action.PAN)
 
     // this.updateOverlayView()
-    GLOBAL.TouchType = TouchType.NORMAL
+    global.TouchType = TouchType.NORMAL
   }
 
   getToolbarModule = () => {
@@ -680,7 +686,7 @@ export default class ToolBar extends React.Component {
         this.contentView.changeHeight(
           this.getBoxShow() ? 0 : this.getContentViewHeight(),
         )
-      if (GLOBAL.Type === ChunkType.MAP_EDIT) {
+      if (global.Type === ChunkType.MAP_EDIT) {
         if (
           this.state.type &&
           (this.state.type.indexOf(ConstToolType.SM_MAP_MARKS_TAGGING_EDIT) !==
@@ -691,8 +697,8 @@ export default class ToolBar extends React.Component {
         ) {
           return
         }
-        if (GLOBAL.showMenu) {
-          GLOBAL.showMenu = false
+        if (global.showMenu) {
+          global.showMenu = false
           this.setState({
             buttons: [
               ToolbarBtnType.CANCEL,
@@ -701,7 +707,7 @@ export default class ToolBar extends React.Component {
             ],
           })
         } else {
-          GLOBAL.showMenu = true
+          global.showMenu = true
           this.setState({
             buttons: [
               ToolbarBtnType.CANCEL,
@@ -730,7 +736,7 @@ export default class ToolBar extends React.Component {
       this.state.showMenuDialog
     )
       return
-    GLOBAL.TouchType = TouchType.NORMAL
+    global.TouchType = TouchType.NORMAL
     if (
       this.ToolbarModule.getData().actions &&
       this.ToolbarModule.getData().actions.overlayOnPress
@@ -782,13 +788,13 @@ export default class ToolBar extends React.Component {
     } else if (this.state.type === ConstToolType.SM_MAP3D_FLY_LIST) {
       SScene.checkoutListener('startTouchAttribute')
       SScene.setAction('PAN3D')
-      GLOBAL.action3d = 'PAN3D'
+      global.action3d = 'PAN3D'
       this.setVisible(false)
     } else {
       this.setVisible(false)
     }
-    if (GLOBAL.Type === ChunkType.MAP_EDIT) {
-      GLOBAL.showMenu = true
+    if (global.Type === ChunkType.MAP_EDIT) {
+      global.showMenu = true
       this.setState({ selectKey: '' })
     }
   }

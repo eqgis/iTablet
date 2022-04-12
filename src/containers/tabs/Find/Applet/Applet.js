@@ -31,7 +31,7 @@ export default class Applet extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.type = params.type // 判断类型，默认公共数据。其他如APPLET 小程序
     this.state = {
       data: [],
@@ -178,40 +178,40 @@ export default class Applet extends React.Component {
 
   onDownloaded = result => {
     if (result) {
-      GLOBAL.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Find.APPLET_DOWNLOADED_RELOAD,
+      global.SimpleDialog.set({
+        text: getLanguage(global.language).Find.APPLET_DOWNLOADED_RELOAD,
         confirmText: getLanguage(this.props.language).Find.RELOAD,
         confirmAction: () => {
           appUtilsModule.reloadBundle()
         },
       })
-      GLOBAL.SimpleDialog.setVisible(true)
+      global.SimpleDialog.setVisible(true)
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
     }
   }
 
   reset = async () => {
     try {
-      const bundlePath = GLOBAL.homePath + ConstPath.BundlesPath
+      const bundlePath = global.homePath + ConstPath.BundlesPath
       let fileList = await FileTools.getPathList(bundlePath)
       if (fileList.length > 0) {
-        GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Find.APPLET_RESET_OLD_VERSION,
+        global.SimpleDialog.set({
+          text: getLanguage(global.language).Find.APPLET_RESET_OLD_VERSION,
           confirmText: getLanguage(this.props.language).Find.RESET,
           confirmAction: async () => {
             this.container &&
               this.container.setLoading(
                 true,
-                getLanguage(GLOBAL.language).Find.APPLET_RESETTING,
+                getLanguage(global.language).Find.APPLET_RESETTING,
               )
             let result = await FileTools.deleteFile(
-              GLOBAL.homePath + ConstPath.BundlesPath,
+              global.homePath + ConstPath.BundlesPath,
             )
             result =
               result &&
               (await FileTools.createDirectory(
-                GLOBAL.homePath + ConstPath.BundlesPath,
+                global.homePath + ConstPath.BundlesPath,
               ))
             if (result) {
               setTimeout(() => {
@@ -219,17 +219,17 @@ export default class Applet extends React.Component {
                 appUtilsModule.reloadBundle()
               }, 1000)
             } else {
-              Toast.show(getLanguage(GLOBAL.language).Find.APPLET_RESET_FAILED)
+              Toast.show(getLanguage(global.language).Find.APPLET_RESET_FAILED)
             }
           },
         })
-        GLOBAL.SimpleDialog.setVisible(true)
+        global.SimpleDialog.setVisible(true)
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Find.APPLET_OLD_VERSION_ALREADY)
+        Toast.show(getLanguage(global.language).Find.APPLET_OLD_VERSION_ALREADY)
       }
     } catch (e) {
       this.container && this.container.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Find.APPLET_RESET_FAILED)
+      Toast.show(getLanguage(global.language).Find.APPLET_RESET_FAILED)
     }
   }
 
@@ -250,9 +250,9 @@ export default class Applet extends React.Component {
   renderStatus = () => {
     let text
     if (this.state.noData) {
-      text = getLanguage(GLOBAL.language).Find.NO_DATA
+      text = getLanguage(global.language).Find.NO_DATA
     } else if (this.state.loadError) {
-      text = getLanguage(GLOBAL.language).Find.NETWORK_ERROR
+      text = getLanguage(global.language).Find.NETWORK_ERROR
     }
     if (text) {
       return (
@@ -276,7 +276,7 @@ export default class Applet extends React.Component {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            title={getLanguage(global.language).Friends.LOADING}
             enabled={true}
           />
         }
@@ -316,7 +316,7 @@ export default class Applet extends React.Component {
               textAlign: 'center',
             }}
           >
-            {getLanguage(GLOBAL.language).Find.NO_MORE_DATA}
+            {getLanguage(global.language).Find.NO_MORE_DATA}
           </Text>
         </View>
       )
@@ -350,7 +350,7 @@ export default class Applet extends React.Component {
               color: 'orange',
             }}
           >
-            {getLanguage(GLOBAL.language).Prompt.LOADING}
+            {getLanguage(global.language).Prompt.LOADING}
           </Text>
         </View>
       )

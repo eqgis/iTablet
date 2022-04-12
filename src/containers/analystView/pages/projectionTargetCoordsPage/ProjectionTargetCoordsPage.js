@@ -7,7 +7,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { getThemeAssets } from '../../../../assets'
 import { color, size } from '../../../../styles'
 import { View, Text, SectionList, TouchableOpacity, Image, Platform } from 'react-native'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import { SMap, SProcess, DatasetType } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 
@@ -26,7 +26,7 @@ export default class ProjectionTargetCoordsPage extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     // let _transMothodParameter = params.transMothodParameter
     this.cb = params && params.cb
     // this.filtVectDataset = params && params.filtVectDataset
@@ -53,6 +53,15 @@ export default class ProjectionTargetCoordsPage extends Component {
       // 弹出框数据
       popData: [],
       currentPopData: null,
+
+      currentPage: 0,
+      routes: [{
+        key: 'RESETING',
+        title: getLanguage(global.language).Analyst_Labels.RESETING,
+      }, {
+        key: 'COPY',
+        title: getLanguage(global.language).Analyst_Labels.COPY,
+      }]
     }
   }
 
@@ -74,7 +83,7 @@ export default class ProjectionTargetCoordsPage extends Component {
 
     let _data = [
       {
-        title: getLanguage(GLOBAL.language).Analyst_Labels.GEOCOORDSYS,
+        title: getLanguage(global.language).Analyst_Labels.GEOCOORDSYS,
         //'地理坐标系',
         data: geoCoordSysTypes,
         visible: false,
@@ -82,7 +91,7 @@ export default class ProjectionTargetCoordsPage extends Component {
         allData: allGeoCoordSysTypes,
       },
       {
-        title: getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS,
+        title: getLanguage(global.language).Analyst_Labels.PRJCOORDSYS,
         //'投影坐标系',
         data: prjCoordSysTypes,
         visible: false,
@@ -90,7 +99,7 @@ export default class ProjectionTargetCoordsPage extends Component {
         allData: allPrjCoordSysTypes,
       },
       {
-        title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
+        title: getLanguage(global.language).Analyst_Labels.COMMONCOORDSYS,
         //'常用坐标系',
         data: allCommonCoordSysTypes,
         visible: true,
@@ -99,7 +108,7 @@ export default class ProjectionTargetCoordsPage extends Component {
       },
     ]
     //如果是设置数据集投影暂时屏蔽掉地理坐标系
-    // if(this.title && this.title ===getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS){
+    // if(this.title && this.title ===getLanguage(global.language).Analyst_Labels.PRJCOORDSYS){
     //   _data.splice(1,1)
     // }
     this.setState({
@@ -113,8 +122,8 @@ export default class ProjectionTargetCoordsPage extends Component {
   confirm = () => {
     if (!this.state.coordSysSelectItem) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
-          getLanguage(GLOBAL.language).Analyst_Labels.TARGET_COORDS,
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
       )
       return
     }
@@ -202,7 +211,7 @@ export default class ProjectionTargetCoordsPage extends Component {
     return (
       <PopModalList
         ref={ref => (this.popModal = ref)}
-        language={GLOBAL.language}
+        language={global.language}
         popData={this.state.popData}
         currentPopData={this.state.currentPopData}
         confirm={async data => {
@@ -287,8 +296,8 @@ export default class ProjectionTargetCoordsPage extends Component {
                 {info.item.title}
               </Text>
               {info.item.type !== undefined &&
-                <Text style={styles.tipText}>{info.item.type == 0 ? getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS :
-                  getLanguage(GLOBAL.language).Analyst_Labels.GEOCOORDSYS}</Text>}
+                <Text style={styles.tipText}>{info.item.type == 0 ? getLanguage(global.language).Analyst_Labels.PRJCOORDSYS :
+                  getLanguage(global.language).Analyst_Labels.GEOCOORDSYS}</Text>}
             </View>
           </TouchableOpacity>
         </View>
@@ -304,6 +313,8 @@ export default class ProjectionTargetCoordsPage extends Component {
         if(newData[i].allData.length == 0) return
         section.visible = !section.visible
         newData[section.index] = section
+      } else {
+        newData[i].visible = false
       }
       if (!newData[i].visible) {
         let _allData = []
@@ -420,19 +431,13 @@ export default class ProjectionTargetCoordsPage extends Component {
     )
   }
 
-  /**
-   * 搜索框的方法
-   * @param {*} searchKey 
-   * @returns 
-   */
   search = searchKey => {
     if (!(this._allGeoCoordSysTypes && this._allPrjCoordSysTypes && this._allCommonCoordSysTypes)) {
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
       return
     }
     // searchKey
     if (searchKey === '' || !searchKey) {
-      // 当搜索框里没有搜索关键字时的处理方式
       let allGeoCoordSysTypes = this._allGeoCoordSysTypes
       let allPrjCoordSysTypes = this._allPrjCoordSysTypes
 
@@ -441,7 +446,7 @@ export default class ProjectionTargetCoordsPage extends Component {
       let commonCoordSysTypes = this._allCommonCoordSysTypes
       let _data = [
         {
-          title: getLanguage(GLOBAL.language).Analyst_Labels.GEOCOORDSYS,
+          title: getLanguage(global.language).Analyst_Labels.GEOCOORDSYS,
           //'地理坐标系',
           data: geoCoordSysTypes,
           visible: false,
@@ -449,7 +454,7 @@ export default class ProjectionTargetCoordsPage extends Component {
           allData: allGeoCoordSysTypes,
         },
         {
-          title: getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS,
+          title: getLanguage(global.language).Analyst_Labels.PRJCOORDSYS,
           //'投影坐标系',
           data: prjCoordSysTypes,
           visible: false,
@@ -457,7 +462,7 @@ export default class ProjectionTargetCoordsPage extends Component {
           allData: allPrjCoordSysTypes,
         },
         {
-          title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
+          title: getLanguage(global.language).Analyst_Labels.COMMONCOORDSYS,
           //'常用坐标系',
           data: commonCoordSysTypes,
           visible: true,
@@ -472,14 +477,10 @@ export default class ProjectionTargetCoordsPage extends Component {
         allCommonCoordSysTypes: commonCoordSysTypes,
       })
     } else {
-      // 当搜索框里有搜索关键字时的处理方式
-      // 分别用三个数组来重新记录各自的数据
       let allGeoCoordSysTypes = []
       let allPrjCoordSysTypes = []
       let allCommonCST = []
-      // 将搜索关键字全部转为大写的形式
       let tempSearchKey = searchKey.toUpperCase()
-      // 地理坐标系的数组过滤
       for (let i = 0; i < this._allGeoCoordSysTypes.length; i++) {
         // if (this._allGeoCoordSysTypes[i].title.indexOf(searchKey) != -1) {
         if (
@@ -490,7 +491,6 @@ export default class ProjectionTargetCoordsPage extends Component {
           allGeoCoordSysTypes.push(this._allGeoCoordSysTypes[i])
         }
       }
-      // 投影坐标系的数组过滤
       for (let i = 0; i < this._allPrjCoordSysTypes.length; i++) {
         if (
           this._allPrjCoordSysTypes[i].title
@@ -501,37 +501,32 @@ export default class ProjectionTargetCoordsPage extends Component {
         }
       }
 
-      // 常用坐标系的数组过滤
       this._allCommonCoordSysTypes.forEach(item => {
         if(item.title.toUpperCase().indexOf(tempSearchKey) != -1){
           allCommonCST.push(item)
         }
       })
 
-      // 将地理坐标系的元素限制在20个以内显示
       let geoCoordSysTypes =
         allGeoCoordSysTypes.length > 20
           ? allGeoCoordSysTypes.slice(0, 20)
           : allGeoCoordSysTypes
-      // 将投影坐标系的元素限制在20个以内显示
       let prjCoordSysTypes =
         allPrjCoordSysTypes.length > 20
           ? allPrjCoordSysTypes.slice(0, 20)
           : allPrjCoordSysTypes
 
-      // 当地理坐标系的数组长度为0时，此类数据不展开值为false
       let geoCoordVisiable = allGeoCoordSysTypes.length !== 0
-      // 当投影坐标系的数组长度为0时，此类数据展开值为false
-      let prjCoordVisiable = prjCoordSysTypes.length !== 0
+      let prjCoordVisiable = allGeoCoordSysTypes.length === 0
       let commonVisible = false
       if(allCommonCST.length != 0){
         commonVisible = true
-        // geoCoordVisiable = false
-        // prjCoordVisiable = false
+        geoCoordVisiable = false
+        prjCoordVisiable = false
       }
       let _data = [
         {
-          title: getLanguage(GLOBAL.language).Analyst_Labels.GEOCOORDSYS,
+          title: getLanguage(global.language).Analyst_Labels.GEOCOORDSYS,
           //'地理坐标系',
           data: geoCoordSysTypes,
           visible: geoCoordVisiable,
@@ -539,7 +534,7 @@ export default class ProjectionTargetCoordsPage extends Component {
           allData: allGeoCoordSysTypes,
         },
         {
-          title: getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS,
+          title: getLanguage(global.language).Analyst_Labels.PRJCOORDSYS,
           //'投影坐标系',
           data: prjCoordSysTypes,
           visible: prjCoordVisiable,
@@ -547,7 +542,7 @@ export default class ProjectionTargetCoordsPage extends Component {
           allData: allPrjCoordSysTypes,
         },
         {
-          title: getLanguage(GLOBAL.language).Analyst_Labels.COMMONCOORDSYS,
+          title: getLanguage(global.language).Analyst_Labels.COMMONCOORDSYS,
           //'常用坐标系',
           data: allCommonCST,
           visible: commonVisible,
@@ -562,7 +557,7 @@ export default class ProjectionTargetCoordsPage extends Component {
         allCommonCoordSysTypes: allCommonCST,
       })
     }
-    GLOBAL.Loading.setLoading(false)
+    global.Loading.setLoading(false)
   }
 
   renderSearchBar = () => {
@@ -575,33 +570,33 @@ export default class ProjectionTargetCoordsPage extends Component {
         }}
         ref={ref => (this.searchBar = ref)}
         onSubmitEditing={searchKey => {
-          GLOBAL.Loading.setLoading(
+          global.Loading.setLoading(
             true,
-            getLanguage(GLOBAL.language).Prompt.SEARCHING,
+            getLanguage(global.language).Prompt.SEARCHING,
           )
           this.search(searchKey)
         }}
         onClear={() => {
           this.search('')
         }}
-        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
+        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
         //{'请输入搜索关键字'}
       />
     )
   }
 
   //源数据部分界面
-  renderTop() {
+  renderTop = () => {
     return (
       <View style={{ backgroundColor: color.white }}>
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.SOURCE_DATA}
+            {getLanguage(global.language).Analyst_Labels.SOURCE_DATA}
           </Text>
         </View>
         <AnalystItem
           // style={{ marginRight: scaleSize(0) }}
-          title={getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE}
+          title={getLanguage(global.language).Analyst_Labels.DATA_SOURCE}
           value={(this.state.dataSource && this.state.dataSource.value) || ''}
           onPress={async () => {
             this.currentPop = popTypes.DataSource
@@ -619,12 +614,12 @@ export default class ProjectionTargetCoordsPage extends Component {
         />
         <AnalystItem
           style={{ borderBottomWidth: 0 }}
-          title={getLanguage(GLOBAL.language).Analyst_Labels.DATA_SET}
+          title={getLanguage(global.language).Analyst_Labels.DATA_SET}
           value={(this.state.dataSet && this.state.dataSet.value) || ''}
           onPress={async () => {
             if (!this.state.dataSource) {
               Toast.show(
-                getLanguage(GLOBAL.language).Analyst_Prompt
+                getLanguage(global.language).Analyst_Prompt
                   .SELECT_DATA_SOURCE_FIRST,
               )
               return
@@ -658,124 +653,124 @@ export default class ProjectionTargetCoordsPage extends Component {
   // getData(paramsData) {
   //   let data = []
   //   data.push({
-  //     title: getLanguage(GLOBAL.language).Analyst_Labels.PROJECTION_COORDS_NAME,
+  //     title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_NAME,
   //     value: paramsData.coordName,
   //   })
   //   data.push({
-  //     title: getLanguage(GLOBAL.language).Analyst_Labels.PROJECTION_COORDS_UNIT,
+  //     title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_UNIT,
   //     value: paramsData.coordUnit,
   //   })
   //   data.push({
-  //     title: getLanguage(GLOBAL.language).Analyst_Labels
+  //     title: getLanguage(global.language).Analyst_Labels
   //       .PROJECTION_GROUND_DATUM,
   //     value: paramsData.geoDatumName,
   //   })
   //   data.push({
-  //     title: getLanguage(GLOBAL.language).Analyst_Labels
+  //     title: getLanguage(global.language).Analyst_Labels
   //       .PROJECTION_REFERENCE_ELLIPSOID,
   //     value: paramsData.geoSpheroid,
   //   })
   //   return data
   // }
 
-  getData(paramsData) {
+  getData = (paramsData) => {
     let data = []
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.PROJECTION_COORDS_NAME,
+      title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_NAME,
       value: paramsData.coordName,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.PROJECTION_COORDS_UNIT,
+      title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_UNIT,
       // value: paramsData.coordUnit,
       value: this.getUnitName(paramsData.coordUnit),
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels
+      title: getLanguage(global.language).Analyst_Labels
         .PROJECTION_GROUND_DATUM,
       value: paramsData.geoDatumName,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels
+      title: getLanguage(global.language).Analyst_Labels
         .PROJECTION_REFERENCE_ELLIPSOID,
       value: paramsData.geoSpheroid,
     })
     return data
   }
 
-  getUnitName(coordUnitType) {
+  getUnitName = (coordUnitType) => {
     let unitName = ''
     switch (coordUnitType) {
       case 10:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.MILIMETER
+        unitName = getLanguage(global.language).Convert_Unit.MILIMETER
         break
       case 11:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREMILIMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMILIMETER
         break
       case 100:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.CENTIMETER
+        unitName = getLanguage(global.language).Convert_Unit.CENTIMETER
         break
       case 101:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUARECENTIMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUARECENTIMETER
         break
       case 254:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.INCH
+        unitName = getLanguage(global.language).Convert_Unit.INCH
         break
       case 255:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREINCH
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREINCH
         break
       case 1000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.DECIMETER
+        unitName = getLanguage(global.language).Convert_Unit.DECIMETER
         break
       case 1001:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREDECIMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREDECIMETER
         break
       case 3048:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.FOOT
+        unitName = getLanguage(global.language).Convert_Unit.FOOT
         break
       case 3049:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREFOOT
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREFOOT
         break
       case 9144:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.YARD
+        unitName = getLanguage(global.language).Convert_Unit.YARD
         break
       case 9145:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREYARD
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREYARD
         break
       case 10000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.METER
+        unitName = getLanguage(global.language).Convert_Unit.METER
         break
       case 10001:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMETER
         break
       case 10000000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.KILOMETER
+        unitName = getLanguage(global.language).Convert_Unit.KILOMETER
         break
       case 10000001:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREKILOMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREKILOMETER
         break
       case 16090000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.MILE
+        unitName = getLanguage(global.language).Convert_Unit.MILE
         break
       case 16090001:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREMILE
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMILE
         break
       case 1000000000 + 485:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SECOND
+        unitName = getLanguage(global.language).Convert_Unit.SECOND
         break
       case 1000000000 + 29089:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.MINUTE
+        unitName = getLanguage(global.language).Convert_Unit.MINUTE
         break
       case 1000000000 + 1745329:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.DEGREE
+        unitName = getLanguage(global.language).Convert_Unit.DEGREE
         break
       case 100000000 + 1000000000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.RADIAN
+        unitName = getLanguage(global.language).Convert_Unit.RADIAN
         break
     }
     return unitName
   }
 
-  renderRows() {
+  renderRows = () => {
     let tempData = this.getData(this.state.dataSet.coordParams)
     let rows = []
     for (let i = 0; i < tempData.length; i++) {
@@ -784,7 +779,7 @@ export default class ProjectionTargetCoordsPage extends Component {
     return <View style={{ backgroundColor: color.content_white }}>{rows}</View>
   }
 
-  renderItem(item, index) {
+  renderItem = (item, index) => {
     return (
       <View
         style={{
@@ -806,12 +801,12 @@ export default class ProjectionTargetCoordsPage extends Component {
   }
 
   //目标坐标系界面
-  renderTargetCoords() {
+  renderTargetCoords = () => {
     return !this.state.dataSet ? null : (
       <View style={{ backgroundColor: color.white, marginTop: scaleSize(20) }}>
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.TARGET_COORDS}
+            {getLanguage(global.language).Analyst_Labels.TARGET_COORDS}
           </Text>
         </View>
         {this.renderRows()}
@@ -819,10 +814,10 @@ export default class ProjectionTargetCoordsPage extends Component {
     )
   }
 
-  renderTabReset() {
+  renderTabReset = () => {
     return (
       <View
-        tabLabel={getLanguage(GLOBAL.language).Analyst_Labels.RESETING}
+        tabLabel={getLanguage(global.language).Analyst_Labels.RESETING}
         style={{ backgroundColor: color.background, flex: 1 }}
       >
         {this.renderSearchBar()}
@@ -831,10 +826,10 @@ export default class ProjectionTargetCoordsPage extends Component {
     )
   }
 
-  renderTabCopy() {
+  renderTabCopy = () => {
     return (
       <View
-        tabLabel={getLanguage(GLOBAL.language).Analyst_Labels.COPY}
+        tabLabel={getLanguage(global.language).Analyst_Labels.COPY}
         style={{ backgroundColor: color.background, flex: 1 }}
       >
         {this.renderTop()}
@@ -848,19 +843,74 @@ export default class ProjectionTargetCoordsPage extends Component {
       coordSysSelectItem: null,
     })
   }
+
+  renderScene = SceneMap({
+    'RESETING': this.renderTabReset,
+    'COPY': this.renderTabCopy,
+  })
+
+  goToPage = index => {
+    this.state.currentPage !== index &&
+    this.setState({
+      currentPage: index,
+    })
+  }
+
+  _renderTabBar = props => (
+    <TabBar
+      {...props}
+      indicatorStyle={{
+        backgroundColor: color.blue1,
+      }}
+      onTabPress={({route, preventDefault}) => {
+        const routes = this.state.routes
+        for (const index in routes) {
+          if (Object.hasOwnProperty.call(routes, index)) {
+            const element = routes[index];
+            if (element.key === route.key) {
+              this.setState({
+                coordSysSelectItem: null,
+                currentPage: parseInt(index),
+              })
+              preventDefault()
+              break
+            }
+          }
+        }
+      }}
+      style={{
+        height: scaleSize(80),
+        marginTop: scaleSize(20),
+        borderWidth: 0,
+        backgroundColor: color.white,
+        elevation: 0,
+        shadowRadius: 0,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0,
+      }}
+      labelStyle={{
+        color: 'black',
+        // fontWeight: true ? 'bold' : 'normal',
+        fontSize: size.fontSize.fontSizeMd,
+        textAlign: 'center',
+      }}
+      activeColor={color.blue1}
+    />
+  )
+
   renderPlotTab = () => {
     return (
-      <ScrollableTabView
-        style={{ backgroundColor: color.white }}
-        tabBarActiveTextColor={color.blue1}
-        tabBarUnderlineStyle={{ backgroundColor: color.blue1 }}
-        tabBarTextStyle={{ fontSize: size.fontSize.fontSizeMd }}
-        locked={false}
-        onChangeTab={this.onChangeTab}
-      >
-        {this.renderTabReset()}
-        {this.renderTabCopy()}
-      </ScrollableTabView>
+      <TabView
+        lazy
+        navigationState={{
+          index: this.state.currentPage,
+          routes: this.state.routes,
+        }}
+        onIndexChange={this.goToPage}
+        renderTabBar={this._renderTabBar}
+        renderScene={this.renderScene}
+        swipeEnabled={true}
+      />
     )
   }
 
@@ -870,13 +920,13 @@ export default class ProjectionTargetCoordsPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          // title: getLanguage(GLOBAL.language).Analyst_Labels.TARGET_COORDS,
+          // title: getLanguage(global.language).Analyst_Labels.TARGET_COORDS,
           title: this.title,
           navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this.confirm}
             />

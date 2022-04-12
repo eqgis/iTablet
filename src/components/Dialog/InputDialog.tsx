@@ -179,22 +179,22 @@ export default class InputDialog extends PureComponent<Props, State> {
           result: isNumber,
           error: isNumber
             ? null
-            : getLanguage(GLOBAL.language).Prompt.ERROR_INFO_NOT_A_NUMBER,
+            : getLanguage(global.language).Prompt.ERROR_INFO_NOT_A_NUMBER,
         }
         break
       }
       case 'name':
-        res = dataUtil.isLegalName(text, GLOBAL.language)
+        res = dataUtil.isLegalName(text, global.language)
         break
       case 'http':
         if (text === '') {
           res = { result: true }
         } else {
-          res = dataUtil.isLegalURL(text, GLOBAL.language)
+          res = dataUtil.isLegalURL(text, global.language)
         }
         break
       default:
-        res = { result: text !== '', error: text === '' ? getLanguage(GLOBAL.language).Prompt.ERROR_INFO_EMPTY : '' }
+        res = { result: text !== '', error: text === '' ? getLanguage(global.language).Prompt.ERROR_INFO_EMPTY : '' }
         break
     }
     return res
@@ -248,8 +248,8 @@ export default class InputDialog extends PureComponent<Props, State> {
         // opacityStyle={{ height: scaleSize(250) }}
         confirmAction={this.confirm}
         cancelAction={this.cancel}
-        confirmBtnTitle={this.props.confirmBtnTitle || getLanguage(GLOBAL.language).Prompt.YES}
-        cancelBtnTitle={this.props.cancelBtnTitle || getLanguage(GLOBAL.language).Prompt.NO}
+        confirmBtnTitle={this.props.confirmBtnTitle || getLanguage(global.language).Prompt.YES}
+        cancelBtnTitle={this.props.cancelBtnTitle || getLanguage(global.language).Prompt.NO}
         confirmBtnDisable={this.props.legalCheck && !this.state.isLegalName}
       >
         <KeyboardAvoidingView

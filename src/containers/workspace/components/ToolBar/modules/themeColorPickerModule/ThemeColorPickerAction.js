@@ -19,7 +19,7 @@ function close() {
 
 async function commit() {
   const _params = ToolbarModule.getParams()
-  if (GLOBAL.coworkMode) {
+  if (global.coworkMode) {
     let layerInfo = await SMap.getLayerInfo(_params.currentLayer.path)
     ThemeAction.sendUpdateThemeMsg(layerInfo)
   }

@@ -183,7 +183,7 @@ class RoadNet extends React.Component<Props, State> {
     return(
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).ARMap.ROADNET_DATA,
+          title: getLanguage(global.language).ARMap.ROADNET_DATA,
           headerRight: this.renderHeaderRight(),
           backAction: () => {
             this.props.navigation.goBack()

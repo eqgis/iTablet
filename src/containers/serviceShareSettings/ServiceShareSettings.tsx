@@ -65,8 +65,8 @@ export default class ServiceShareSettings extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    this.currentData = this.props.navigation.state?.params?.data
-    this.cb = this.props.navigation.state?.params?.cb
+    this.currentData = this.props.route?.params?.data
+    this.cb = this.props.route?.params?.cb
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
@@ -164,15 +164,15 @@ export default class ServiceShareSettings extends Component<Props, State> {
         <View style={styles.topLeftView}>
           {/* <View style={styles.selectImgView} /> */}
           <Text style={[styles.topText, {marginLeft: scaleSize(80) }]}>
-            {getLanguage(GLOBAL.language).Friends.GROUPS}
+            {getLanguage(global.language).Friends.GROUPS}
           </Text>
         </View>
         <View style={styles.topRightView}>
           <Text style={[styles.topText, { width: scaleSize(160) }]}>
-            {getLanguage(GLOBAL.language).Cowork.SEARCHABLE}
+            {getLanguage(global.language).Cowork.SEARCHABLE}
           </Text>
           <Text style={[styles.topText, { width: scaleSize(160) }]}>
-            {getLanguage(GLOBAL.language).Cowork.READABLE}
+            {getLanguage(global.language).Cowork.READABLE}
           </Text>
         </View>
       </View>
@@ -207,13 +207,13 @@ export default class ServiceShareSettings extends Component<Props, State> {
       <Container
         // ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Cowork.SERVICE_SHARING_SETTINGS,
+          title: getLanguage(global.language).Cowork.SERVICE_SHARING_SETTINGS,
           //'我的服务',
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(GLOBAL.language).Prompt.CONFIRM}
+              btnText={getLanguage(global.language).Prompt.CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this._save}
             />

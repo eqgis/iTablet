@@ -15,12 +15,12 @@ async function SearchPoiInMapView(item, cb = () => {}) {
   if (!item.is3D) {
     let location = await SMap.getMapcenterPosition()
     this.location = location
-    if (GLOBAL.PoiInfoContainer) {
-      GLOBAL.PoiInfoContainer.setState({
+    if (global.PoiInfoContainer) {
+      global.PoiInfoContainer.setState({
         showList: true,
         location: location,
       })
-      GLOBAL.PoiInfoContainer.getSearchResult(
+      global.PoiInfoContainer.getSearchResult(
         {
           keyWords: item.title || item.content,
           location: JSON.stringify(location),
@@ -29,9 +29,9 @@ async function SearchPoiInMapView(item, cb = () => {}) {
         data => {
           if (data) {
             NavigationService.navigate('MapView')
-            GLOBAL.PoiInfoContainer.setVisible(true)
-            GLOBAL.PoiTopSearchBar.setVisible(true)
-            GLOBAL.PoiTopSearchBar.setState({
+            global.PoiInfoContainer.setVisible(true)
+            global.PoiTopSearchBar.setVisible(true)
+            global.PoiTopSearchBar.setState({
               defaultValue: item.title || item.content,
             })
           }
@@ -47,8 +47,8 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
   try {
     let result = null
     const key = (item.title || item.content)?.substring(0, 20)
-    if (GLOBAL.currentLayer?.path) {
-      result = await SMap.searchLayerAttribute(GLOBAL.currentLayer.path, {
+    if (global.currentLayer?.path) {
+      result = await SMap.searchLayerAttribute(global.currentLayer.path, {
         key: key,
       }, 0, 100)
     }
@@ -91,10 +91,10 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
       })
       if (resultList.length > 0) {
         await SMap.addCallouts(resultList)
-        GLOBAL.PoiInfoContainer.show()
-        GLOBAL.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
-        GLOBAL.PoiTopSearchBar.setVisible(true)
-        GLOBAL.PoiTopSearchBar.setState({
+        global.PoiInfoContainer.show()
+        global.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
+        global.PoiTopSearchBar.setVisible(true)
+        global.PoiTopSearchBar.setState({
           defaultValue: item.title || item.content,
         })
       }
@@ -109,12 +109,12 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
 
       cb && cb(result)
     } else {
-      if (GLOBAL.PoiInfoContainer) {
-        GLOBAL.PoiInfoContainer.setState({
+      if (global.PoiInfoContainer) {
+        global.PoiInfoContainer.setState({
           showList: true,
           location: location,
         })
-        GLOBAL.PoiInfoContainer.getSearchResult(
+        global.PoiInfoContainer.getSearchResult(
           {
             keyWords: item.title || item.content,
             location: JSON.stringify(location),
@@ -123,9 +123,9 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
           async data => {
             if (data) {
               NavigationService.navigate('MapView')
-              GLOBAL.PoiInfoContainer.setVisible(true)
-              GLOBAL.PoiTopSearchBar.setVisible(true)
-              GLOBAL.PoiTopSearchBar.setState({
+              global.PoiInfoContainer.setVisible(true)
+              global.PoiTopSearchBar.setVisible(true)
+              global.PoiTopSearchBar.setState({
                 defaultValue: item.title || item.content,
               })
             } else {
@@ -147,10 +147,10 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
               })
               await SMap.addCallouts(resultList)
               NavigationService.navigate('MapView')
-              GLOBAL.PoiInfoContainer.show()
-              GLOBAL.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
-              GLOBAL.PoiTopSearchBar.setVisible(true)
-              GLOBAL.PoiTopSearchBar.setState({
+              global.PoiInfoContainer.show()
+              global.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
+              global.PoiTopSearchBar.setVisible(true)
+              global.PoiTopSearchBar.setState({
                 defaultValue: item.title || item.content,
               })
               await SMap.toLocationPoint(_location)
@@ -209,7 +209,7 @@ function getSearchResult(params, location, cb = () => {}) {
     })
     .then(data => {
       if (data.error || data.poiInfos.length === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SEARCH_RESULTS)
+        Toast.show(getLanguage(global.language).Prompt.NO_SEARCH_RESULTS)
         cb && cb()
       } else {
         let poiInfos = data.poiInfos
@@ -219,7 +219,7 @@ function getSearchResult(params, location, cb = () => {}) {
             .then(data2 => {
               if (data.error || data.poiInfos.length === 0) {
                 Toast.show(
-                  getLanguage(GLOBAL.language).Prompt.NO_SEARCH_RESULTS,
+                  getLanguage(global.language).Prompt.NO_SEARCH_RESULTS,
                 )
               } else {
                 poiInfos = data2.poiInfos

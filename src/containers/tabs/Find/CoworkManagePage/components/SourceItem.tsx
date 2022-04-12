@@ -220,7 +220,7 @@ export default class SourceItem extends Component<Props, State> {
   _downloadFile = async () => {
     if (this.state.exist) {
       await this.unZipFile()
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return
     }
     if (
@@ -231,7 +231,7 @@ export default class SourceItem extends Component<Props, State> {
           this.props.user.currentUser.userName !== ''))
     ) {
       if (this.state.isDownloading) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+        Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
         return
       }
       this.setState({
@@ -300,7 +300,7 @@ export default class SourceItem extends Component<Props, State> {
               this.setState({
                 isDownloading: false,
               })
-              Toast.show(getLanguage(GLOBAL.language).Prompt.ONLINE_DATA_ERROR)
+              Toast.show(getLanguage(global.language).Prompt.ONLINE_DATA_ERROR)
             } else {
               this.setState({
                 exist: true,
@@ -311,7 +311,7 @@ export default class SourceItem extends Component<Props, State> {
             RNFS.writeFile(this.downloadingPath + '_', '100%', 'utf8')
           })
           .catch(() => {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+            Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
             FileTools.deleteFile(this.path)
             FileTools.deleteFile(this.downloadingPath + '_')
             this.setState({
@@ -319,7 +319,7 @@ export default class SourceItem extends Component<Props, State> {
             })
           })
       } catch (e) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+        Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
         FileTools.deleteFile(this.path)
         this.setState({
           isDownloading: false,

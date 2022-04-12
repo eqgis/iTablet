@@ -276,7 +276,7 @@ export default class TemplatePopView extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.props.cancelTitle ||
-              getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+              getLanguage(this.props.language || global.language).Analyst_Labels
                 .CANCEL}
           </Text>
         </TouchableOpacity>
@@ -306,7 +306,7 @@ export default class TemplatePopView extends React.Component {
           >
             <Text style={styles.btnText}>
               {this.props.confirmTitle ||
-                getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+                getLanguage(this.props.language || global.language).Analyst_Labels
                   .RESET}
             </Text>
           </TouchableOpacity>
@@ -328,7 +328,7 @@ export default class TemplatePopView extends React.Component {
           >
             <Text style={styles.btnText}>
               {this.props.confirmTitle ||
-                getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+                getLanguage(this.props.language || global.language).Analyst_Labels
                   .CONFIRM}
             </Text>
           </TouchableOpacity>
@@ -343,14 +343,14 @@ export default class TemplatePopView extends React.Component {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' && 'padding'}
           keyboardVerticalOffset={
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !GLOBAL.isPad
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !global.isPad
               ? 0
               : (this.props.device.height - this.props.height || 0)
           }
           style={[
             styles.popView,
             this.props.height >= 0 && { height: this.props.height },
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !GLOBAL.isPad &&
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !global.isPad &&
             { height: this.props.device.height },
             {
               flexDirection: 'column',

@@ -37,10 +37,10 @@ export default class MapController extends React.Component {
       left: new Animated.Value(DEFAULT_LEFT),
       //在导航界面缩放时，bottom高度为scaleSize(240)避免mapController被遮盖
       bottom:
-        (GLOBAL.NAV_PARAMS && GLOBAL.NAV_PARAMS.length > 0) ||
-        (GLOBAL.PoiInfoContainer && GLOBAL.PoiInfoContainer.state.visible) ||
-        (GLOBAL.NAVIGATIONSTARTBUTTON &&
-          GLOBAL.NAVIGATIONSTARTBUTTON.state.show)
+        (global.NAV_PARAMS && global.NAV_PARAMS.length > 0) ||
+        (global.PoiInfoContainer && global.PoiInfoContainer.state.visible) ||
+        (global.NAVIGATIONSTARTBUTTON &&
+          global.NAVIGATIONSTARTBUTTON.state.show)
           ? new Animated.Value(scaleSize(240))
           : this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? new Animated.Value(DEFAULT_BOTTOM_LAND)
@@ -98,6 +98,7 @@ export default class MapController extends React.Component {
       Animated.timing(this.state.bottom, {
         toValue: newBottom,
         duration: 300,
+        useNativeDriver: false,
       }),
     )
     newLeft !== undefined &&
@@ -105,6 +106,7 @@ export default class MapController extends React.Component {
         Animated.timing(this.state.left, {
           toValue: newLeft,
           duration: 300,
+          useNativeDriver: false,
         }),
       )
     Animated.sequence(animatedList).start()
@@ -137,6 +139,7 @@ export default class MapController extends React.Component {
     Animated.timing(this.state.bottom, {
       toValue: value,
       duration: Const.ANIMATED_DURATION,
+      useNativeDriver: false,
     }).start()
   }
 
@@ -145,11 +148,13 @@ export default class MapController extends React.Component {
       Animated.timing(this.state.left, {
         toValue: DEFAULT_LEFT,
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
     } else {
       Animated.timing(this.state.left, {
         toValue: scaleSize(-200),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -166,6 +171,7 @@ export default class MapController extends React.Component {
         Animated.timing(this.state.bottom, {
           toValue: bottom,
           duration: immediately ? 0 : Const.ANIMATED_DURATION,
+          useNativeDriver: false,
         }),
       )
     }
@@ -174,6 +180,7 @@ export default class MapController extends React.Component {
         Animated.timing(this.state.left, {
           toValue: DEFAULT_LEFT,
           duration: immediately ? 0 : Const.ANIMATED_DURATION,
+          useNativeDriver: false,
         }),
       )
     }
@@ -190,6 +197,7 @@ export default class MapController extends React.Component {
         Animated.timing(this.state.bottom, {
           toValue: _bottom,
           duration: immediately ? 0 : Const.ANIMATED_DURATION,
+          useNativeDriver: false,
         }),
       )
     }
@@ -200,6 +208,7 @@ export default class MapController extends React.Component {
         Animated.timing(this.state.left, {
           toValue: _left,
           duration: immediately ? 0 : Const.ANIMATED_DURATION,
+          useNativeDriver: false,
         }),
       )
     }
@@ -213,6 +222,7 @@ export default class MapController extends React.Component {
       Animated.timing(this.state.compass, {
         toValue: deg,
         duration: 1,
+        useNativeDriver: false,
       }).start()
     this.deg = deg
   }
@@ -280,11 +290,11 @@ export default class MapController extends React.Component {
     }
 
     //通讯录点击定位和显示位置冲突
-    SMap.deleteMarker(GLOBAL.markerTag)
+    SMap.deleteMarker(global.markerTag)
 
     SMap.moveToCurrent().then(result => {
       !result &&
-        Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
+        Toast.show(getLanguage(global.language).Prompt.OUT_OF_MAP_BOUNDS)
     })
 
     //{{ 更新地图选点控件 add jiakai
@@ -293,7 +303,7 @@ export default class MapController extends React.Component {
         x: map.x,
         y: map.y,
       }
-      GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
+      global.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
    // }}
   }
 

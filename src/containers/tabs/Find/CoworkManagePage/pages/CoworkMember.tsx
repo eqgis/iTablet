@@ -230,7 +230,7 @@ class CoworkMember extends Component<Props, State> {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.COWORK_MEMBER,
+          title: getLanguage(global.language).Friends.COWORK_MEMBER,
           withoutBack: false,
           navigation: this.props.navigation,
         }}

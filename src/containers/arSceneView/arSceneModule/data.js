@@ -25,7 +25,7 @@ const trackData = {
   image: getThemeAssets().ar.toolbar.icon_ar_pipe_scan,
   action: async () => {
     await SSceneAR.imageTrack()
-    GLOBAL.Loading.setLoading(true,getLanguage(GLOBAL.language).Prompt.TRACKING_LOADING)
+    global.Loading.setLoading(true,getLanguage(global.language).Prompt.TRACKING_LOADING)
   },
 }
 
@@ -40,7 +40,7 @@ async function getData(type) {
   switch (type) {
     case ConstToolType.SM_ARSCENEMODULE_NOMAL:
         // 退出打开样例数据时的showFullMap
-        GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
+        global.toolBox && global.toolBox.existFullMap()
         buttons = [
           {
             type: ToolbarBtnType.PLACEHOLDER,
@@ -53,7 +53,7 @@ async function getData(type) {
             type: 'add',
             image: getThemeAssets().ar.toolbar.icon_newdata,
             action: async () => {
-              GLOBAL.ARContainer.setHeaderVisible(false)
+              global.ARContainer.setHeaderVisible(false)
               const type = ConstToolType.SM_ARSCENEMODULE_WORKSPACE
               ToolbarModule.getParams().setToolbarVisible(true, type, {
                 containerType: ToolbarType.list,
@@ -65,13 +65,13 @@ async function getData(type) {
       break
     case ConstToolType.SM_ARSCENEMODULE:
       // 退出打开样例数据时的showFullMap
-      GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
+      global.toolBox && global.toolBox.existFullMap()
       buttons = [
         {
           type: 'style',
           image: getThemeAssets().functionBar.icon_tool_thematic,
           action: () => {
-            GLOBAL.ARContainer.setHeaderVisible(false)
+            global.ARContainer.setHeaderVisible(false)
             ToolbarModule.getParams().setToolbarVisible(
               true,
               ConstToolType.SM_ARSCENEMODULE_modify_style,
@@ -86,7 +86,7 @@ async function getData(type) {
           image: getThemeAssets().ar.toolbar.icon_toolbar_switch,
           action: () => {
             const containerType = ToolbarType.list
-            GLOBAL.ARContainer.setHeaderVisible(false)
+            global.ARContainer.setHeaderVisible(false)
             ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.SM_ARSCENEMODULE_CHANGE, {
               containerType,
             })
@@ -96,7 +96,7 @@ async function getData(type) {
           type: 'add',
           image: getThemeAssets().ar.toolbar.icon_newdata,
           action: async () => {
-            GLOBAL.ARContainer.setHeaderVisible(false)
+            global.ARContainer.setHeaderVisible(false)
             const type = ConstToolType.SM_ARSCENEMODULE_WORKSPACE
             ToolbarModule.getParams().setToolbarVisible(true, type, {
               containerType: ToolbarType.list,
@@ -110,7 +110,7 @@ async function getData(type) {
           let customname = await SSceneAR.getCurrentWorkSpaceName()
           const data1 = []
           try {
-            const user = GLOBAL.currentUser
+            const user = global.currentUser
             const path = await FileTools.appendingHomeDirectory(
               `${ConstPath.UserPath + user.userName}/${ConstPath.RelativeFilePath.Scene}`,
             )
@@ -127,7 +127,7 @@ async function getData(type) {
                     0,
                     element.name.lastIndexOf('.'),
                   )
-                  if (GLOBAL.language === 'EN') {
+                  if (global.language === 'EN') {
                     const day = element.mtime
                       .replace(/年|月|日/g, '/')
                       .split('  ')[0]
@@ -159,7 +159,7 @@ async function getData(type) {
                             backgroundColor: 'transparent',
                           }}
                         >
-                          {getLanguage(GLOBAL.language).Map_Main_Menu.CURRENT_SCENCE}
+                          {getLanguage(global.language).Map_Main_Menu.CURRENT_SCENCE}
                         </Text>
                       </View>
                     )
@@ -170,12 +170,12 @@ async function getData(type) {
               }
               data1.push({
                 image: getThemeAssets().module.icon_map_3d,
-                title: getLanguage(GLOBAL.language).Map_Label.SCENE,
+                title: getLanguage(global.language).Map_Label.SCENE,
                 data: _data,
               })
             }
           } catch (error) {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SCENE_LIST)
+            Toast.show(getLanguage(global.language).Prompt.NO_SCENE_LIST)
           }
     
           function renderRightButton ({title, image, action}) {
@@ -221,20 +221,20 @@ async function getData(type) {
     
           data1[0].buttons = [
             renderRightButton({
-              title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
+              title: getLanguage(global.language).Profile.SAMPLEDATA,
               action: () => {
                 NavigationService.navigate('SampleMap', {
                   refreshAction: getSceneData,
                   // isfull: false,
                 })
                 // 样例数据界面半屏显示，并且隐藏上一层控件 by zcj
-                GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
+                global.toolBox && global.toolBox.showFullMap()
               },
             }),
           ]
 
           let Type
-          if(GLOBAL.isSceneOpen){
+          if(global.isSceneOpen){
             Type = ConstToolType.SM_ARSCENEMODULE
           }else{
             Type = ConstToolType.SM_ARSCENEMODULE_NOMAL
@@ -245,8 +245,8 @@ async function getData(type) {
               type: ToolbarBtnType.TOOLBAR_BACK,
               action: () =>{
                 // 退出打开样例数据时的showFullMap
-                GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
-                GLOBAL.ARContainer.setHeaderVisible(true)
+                global.toolBox && global.toolBox.existFullMap()
+                global.ARContainer.setHeaderVisible(true)
                 ToolbarModule.getParams().setToolbarVisible(
                   true,
                   Type,
@@ -261,7 +261,7 @@ async function getData(type) {
           {
             type: ToolbarBtnType.TOOLBAR_BACK,
             action: () =>{
-              GLOBAL.ARContainer.setHeaderVisible(true)
+              global.ARContainer.setHeaderVisible(true)
               ToolbarModule.getParams().setToolbarVisible(
                 true,
                 ConstToolType.SM_ARSCENEMODULE,
@@ -497,7 +497,7 @@ async function getData(type) {
                           backgroundColor: 'transparent',
                         }}
                       >
-                        {getLanguage(GLOBAL.language).Map_Main_Menu.CURRENT_MODEL}
+                        {getLanguage(global.language).Map_Main_Menu.CURRENT_MODEL}
                       </Text>
                     </View>
                   )
@@ -515,7 +515,7 @@ async function getData(type) {
                 {
                   type: ToolbarBtnType.TOOLBAR_BACK,
                   action: () => {
-                    GLOBAL.ARContainer.setHeaderVisible(true)
+                    global.ARContainer.setHeaderVisible(true)
                     ToolbarModule.getParams().setToolbarVisible(true, ConstToolType.SM_ARSCENEMODULE)
                   },
                 },
@@ -523,7 +523,7 @@ async function getData(type) {
 
           data = [ 
             {
-            title: getLanguage(GLOBAL.language).Map_Main_Menu
+            title: getLanguage(global.language).Map_Main_Menu
               .NETWORK_MODEL,
             image: getThemeAssets().ar.toolbar.icon_mapdata,
             data: _data,

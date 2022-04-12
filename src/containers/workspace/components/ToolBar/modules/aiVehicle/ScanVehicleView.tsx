@@ -76,7 +76,7 @@ export default class ScanVehicleView extends React.Component<Props, State> {
           maxWidth: width,
         }]}>
           <View style={styles.previewBottomLeftContent}>
-            <Text style={styles.previewBottomTitle}>{getLanguage(GLOBAL.language).AI.PLATE_NUMBER}</Text>
+            <Text style={styles.previewBottomTitle}>{getLanguage(global.language).AI.PLATE_NUMBER}</Text>
             <Input
               style={{ paddingHorizontal: 0 }}
               textAlign={'left'}
@@ -96,7 +96,7 @@ export default class ScanVehicleView extends React.Component<Props, State> {
           <Button
             key="confirm"
             style={styles.confirmBtn}
-            title={getLanguage(GLOBAL.language).Map_Tools.TAKE_PHOTO}
+            title={getLanguage(global.language).Map_Tools.TAKE_PHOTO}
             onPress={async () => {
               AiVehicleActions.goToPreview()
             }}

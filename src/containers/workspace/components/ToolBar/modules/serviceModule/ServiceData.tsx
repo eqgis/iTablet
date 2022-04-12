@@ -70,8 +70,8 @@ async function getData(type: string, params: any) {
         })
       }
       data = [{
-        key: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
-        title: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
+        key: getLanguage(global.language).Profile.MY_SERVICE,
+        title: getLanguage(global.language).Profile.MY_SERVICE,
         image: getThemeAssets().mine.my_service,
         data: _data,
       }]
@@ -97,7 +97,7 @@ async function getData(type: string, params: any) {
       })
       data = [{
         key: _data.datasourceName,
-        // title: getLanguage(GLOBAL.language).Map_Settings.DATASETS,
+        // title: getLanguage(global.language).Map_Settings.DATASETS,
         title: _data.datasourceName,
         image: getThemeAssets().dataType.icon_data_set,
         data: _subData,
@@ -113,7 +113,7 @@ async function getData(type: string, params: any) {
       data = [
         {
           key: 'update_local_service',
-          title: getLanguage(GLOBAL.language).Cowork.UPDATE_LOCAL_SERVICE,
+          title: getLanguage(global.language).Cowork.UPDATE_LOCAL_SERVICE,
           action: ({ layerData }: ActionParams) => {
             const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
             if (datasetDescription?.type !== 'onlineService') {
@@ -131,7 +131,7 @@ async function getData(type: string, params: any) {
         },
         {
           key: 'submit_service',
-          title: getLanguage(GLOBAL.language).Cowork.SUBMIT_SERVICE,
+          title: getLanguage(global.language).Cowork.SUBMIT_SERVICE,
           action: ({ layerData }: ActionParams) => {
             const _params: any = ToolbarModule.getParams()
             const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
@@ -150,13 +150,13 @@ async function getData(type: string, params: any) {
                   for (const message of currentCoworkMessage) {
                     if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
                       exist = true
-                      GLOBAL.SimpleDialog.set({
-                        text: getLanguage(GLOBAL.language).Prompt.SERVICE_SUBMIT_BEFORE_UPDATE,
-                        cancelText: getLanguage(GLOBAL.language).Prompt.CANCEL,
+                      global.SimpleDialog.set({
+                        text: getLanguage(global.language).Prompt.SERVICE_SUBMIT_BEFORE_UPDATE,
+                        cancelText: getLanguage(global.language).Prompt.CANCEL,
                         cancelAction: async () => {
-                          GLOBAL.Loading.setLoading(false)
+                          global.Loading.setLoading(false)
                         },
-                        confirmText: getLanguage(GLOBAL.language).Prompt.SUBMIT,
+                        confirmText: getLanguage(global.language).Prompt.SUBMIT,
                         confirmAction: async () => {
                           ServiceAction.updateToLocal({
                             url: datasetDescription.url,
@@ -173,7 +173,7 @@ async function getData(type: string, params: any) {
                           })
                         },
                       })
-                      GLOBAL.SimpleDialog.setVisible(true)
+                      global.SimpleDialog.setVisible(true)
                       break
                     }
                   }
@@ -196,18 +196,18 @@ async function getData(type: string, params: any) {
       data = [
         {
           key: 'upload_service',
-          title: getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE,
+          title: getLanguage(global.language).Profile.PUBLISH_SERVICE,
           action: ({ layerData }: ActionParams) => {
             const _params: any = ToolbarModule.getParams()
             const isTaggingLayer = layerData.datasourceAlias?.indexOf('Label_') === 0
             const name = isTaggingLayer ? ('Tagging_' + _params.map.currentMap.name) : layerData.datasourceAlias
-            GLOBAL.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Profile.PUBLISH_SERVICE + ' ' + name,
-              cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+            global.SimpleDialog.set({
+              text: getLanguage(global.language).Profile.PUBLISH_SERVICE + ' ' + name,
+              cancelText: getLanguage(global.language).Prompt.NO,
               cancelAction: async () => {
-                GLOBAL.Loading.setLoading(false)
+                global.Loading.setLoading(false)
               },
-              confirmText: getLanguage(GLOBAL.language).Prompt.YES,
+              confirmText: getLanguage(global.language).Prompt.YES,
               confirmAction: async () => {
                 await SMap.checkCurrentModule()
                 if (!name) return
@@ -246,9 +246,9 @@ async function getData(type: string, params: any) {
                     },
                   })
                   if (result) {
-                    Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
+                    Toast.show(getLanguage(global.language).Prompt.PUBLISH_SUCCESS)
                   } else {
-                    Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+                    Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)
                   }
                 } else {
                   let datasourcePath
@@ -298,21 +298,21 @@ async function getData(type: string, params: any) {
                         const _layer = await SMap.getLayerInfo?.(layerData.path)
                         _params.setCurrentLayer?.(_layer)
                       }
-                      Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
+                      Toast.show(getLanguage(global.language).Prompt.PUBLISH_SUCCESS)
                     } else {
-                      Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+                      Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)
                     }
                   } else {
-                    Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+                    Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)
                   }
                 }
               },
             })
-            GLOBAL.SimpleDialog.setVisible(true)
+            global.SimpleDialog.setVisible(true)
             // DialogUtils.showInputDailog({
             //   type: 'name',
             //   value: layerData.datasetName,
-            //   placeholder: getLanguage(GLOBAL.language).Cowork.PLEASE_ENTER_SERCICE_NAME,
+            //   placeholder: getLanguage(global.language).Cowork.PLEASE_ENTER_SERCICE_NAME,
             //   confirmAction: async name => {
             //     await SMap.checkCurrentModule()
             //     if (!name) return
@@ -379,12 +379,12 @@ async function getData(type: string, params: any) {
             //           const _layer = await SMap.getLayerInfo?.(layerData.path)
             //           _params.setCurrentLayer?.(_layer)
             //         }
-            //         Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
+            //         Toast.show(getLanguage(global.language).Prompt.PUBLISH_SUCCESS)
             //       } else {
-            //         Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+            //         Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)
             //       }
             //     } else {
-            //       Toast.show(getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED)
+            //       Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)
             //     }
             //   },
             // })

@@ -30,7 +30,7 @@ class Share3DModule extends FunctionModule {
 export default function() {
   return new Share3DModule({
     type: ConstToolType.SM_MAP3D_SHARE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.SHARE,
+    title: getLanguage(global.language).Map_Main_Menu.SHARE,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_share.png'),
     getData: Share3DData.getData,

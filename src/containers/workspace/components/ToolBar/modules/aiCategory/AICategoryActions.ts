@@ -41,19 +41,19 @@ async function aiClassify() {
           taggingLayerData.datasourceAlias === layer.datasourceAlias &&
           taggingLayerData.datasetName === layer.datasetName
         ) {
-          GLOBAL.currentLayer = layer
+          global.currentLayer = layer
           break
         }
       }
       const datasourceAlias = taggingLayerData.datasourceAlias // 标注数据源名称
       const datasetName = taggingLayerData.datasetName // 标注图层名称
-      await SARMap.setAIClassifyDefaultModel(GLOBAL.language)
+      await SARMap.setAIClassifyDefaultModel(global.language)
       ToolbarModule.addData({
         datasourceAlias,
         datasetName,
       })
       _params.showFullMap && _params.showFullMap(true)
-      GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_DETECT, {
+      global.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_DETECT, {
         isFullScreen: false,
         height: 0,
       })
@@ -167,7 +167,7 @@ async function setting() {
 }
 
 async function close() {
-  GLOBAL.ToolBar.close()
+  global.ToolBar.close()
 }
 
 async function takeCamera() {
@@ -190,7 +190,7 @@ async function takeCamera() {
           captureImgPath: imgPath,
           prevType: ConstToolType.SM_MAP_AI_CATEGORY_DETECT,
         })
-        GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_PREVIEW, {
+        global.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_PREVIEW, {
           isFullScreen: false,
           height: 0,
         })
@@ -226,7 +226,7 @@ async function openAlbum() {
             captureImgPath: mediaPaths[0],
             prevType: ConstToolType.SM_MAP_AI_CATEGORY_DETECT,
           })
-          GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_PREVIEW, {
+          global.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_CATEGORY_PREVIEW, {
             isFullScreen: false,
             height: 0,
           })
@@ -235,7 +235,7 @@ async function openAlbum() {
         }
       } else {
         Toast.show(
-          getLanguage(GLOBAL.language).Map_Main_Menu
+          getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_CLASSIFY_NOPICS,
         )
       }
@@ -245,7 +245,7 @@ async function openAlbum() {
 
 async function clear() {
   const _data: any = ToolbarModule.getData()
-  GLOBAL.toolBox?.setVisible(true, _data.prevType, {
+  global.toolBox?.setVisible(true, _data.prevType, {
     isFullScreen: false,
     height: 0,
   })
@@ -305,10 +305,10 @@ async function save() {
         },
       })
     } else {
-      Toast.show(getLanguage(GLOBAL.language).AI.SUPPORT_POINT_AND_CAD)
+      Toast.show(getLanguage(global.language).AI.SUPPORT_POINT_AND_CAD)
     }
   } catch (error) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+    Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
   }
 }
 

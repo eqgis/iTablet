@@ -1,5 +1,10 @@
-import 'react-native-gesture-handler'
-import { AppRegistry } from 'react-native'
-import App from './App'
+/**
+ * @format
+ */
 
-AppRegistry.registerComponent('iTablet', () => App)
+import {AppRegistry} from 'react-native';
+import App from './App';
+import {name as appName} from './app.json';
+import './GLOBAL'
+
+AppRegistry.registerComponent(appName, () => App);

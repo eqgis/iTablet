@@ -32,7 +32,7 @@ export default class setting extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.type = (params && params.type) || 'MAP_3D'
     this.state = {
       data: [],

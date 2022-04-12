@@ -25,7 +25,7 @@ class LocationSetting extends React.Component {
       devices: ['local'],
       currentOption: this.prevOption,
       showSearch: true,
-      searchNotify: getLanguage(GLOBAL.language).Prompt.SEARCHING,
+      searchNotify: getLanguage(global.language).Prompt.SEARCHING,
       distanceLocation: false,
       timeLocation:false,
       distanceLocationText: "",
@@ -63,7 +63,7 @@ class LocationSetting extends React.Component {
         SLocation.setLocationDistance(0+"")
       }else{
         if(isNaN(this.state.distanceLocationText)){
-          Toast.show(getLanguage(GLOBAL.language).Profile.INPUT_NUMBER)
+          Toast.show(getLanguage(global.language).Profile.INPUT_NUMBER)
           return
         }else{
           SLocation.setLocationDistance(this.state.distanceLocationText)
@@ -76,7 +76,7 @@ class LocationSetting extends React.Component {
         SLocation.setLocationTime(0+"")
       }else{
         if(isNaN(this.state.timeLocationText)){
-          Toast.show(getLanguage(GLOBAL.language).Profile.INPUT_NUMBER)
+          Toast.show(getLanguage(global.language).Profile.INPUT_NUMBER)
           return
         }else{
           SLocation.setLocationTime(this.state.timeLocationText)
@@ -99,7 +99,7 @@ class LocationSetting extends React.Component {
       }, 10000)
     })
     if(this.state.devices.length === 1) {
-      this.setState({ searchNotify: getLanguage(GLOBAL.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
+      this.setState({ searchNotify: getLanguage(global.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
     } else if(this.state.devices.length > 1) {
       this.setState({ showSearch: false})
     }
@@ -120,7 +120,7 @@ class LocationSetting extends React.Component {
     let title
     switch (key) {
       case 'local':
-        title = getLanguage(GLOBAL.language).Profile.SETTING_LOCATION_LOCAL
+        title = getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL
         break
       default:
         title = key
@@ -162,10 +162,10 @@ class LocationSetting extends React.Component {
     return(
       <View style={{ flexDirection: 'column' }}>
         <View style={styles.itemView}>
-          <Text style={styles.text}>{getLanguage(GLOBAL.language).Profile.DISTANCE_LOCATION}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.DISTANCE_LOCATION}</Text>
           {this.state.distanceLocation && !this.state.timeLocation && <TextInput
             value={this.state.distanceLocationText}
-            placeholder={getLanguage(GLOBAL.language).Profile.DISTANCE}
+            placeholder={getLanguage(global.language).Profile.DISTANCE}
             keyboardType="numeric"
             placeholderTextColor={color.fontColorGray}
             style={styles.textInput}
@@ -186,10 +186,10 @@ class LocationSetting extends React.Component {
         </View>
         {this.renderSeperator()}
         <View style={styles.itemView}>
-          <Text style={styles.text}>{getLanguage(GLOBAL.language).Profile.TIME_LOCATION}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.TIME_LOCATION}</Text>
           {this.state.timeLocation && !this.state.distanceLocation && <TextInput
             value={this.state.timeLocationText}
-            placeholder={getLanguage(GLOBAL.language).Profile.TIME}
+            placeholder={getLanguage(global.language).Profile.TIME}
             keyboardType="numeric"
             placeholderTextColor={color.fontColorGray}
             style={styles.textInput}
@@ -231,7 +231,7 @@ class LocationSetting extends React.Component {
           onPress={this.changeDevice}
         >
           <Text style={[styles.headerRightText, { color: textColor }]}>
-            {getLanguage(GLOBAL.language).Profile.SAVE}
+            {getLanguage(global.language).Profile.SAVE}
           </Text>
         </TouchableOpacity>
       </View>
@@ -241,7 +241,7 @@ class LocationSetting extends React.Component {
   renderSearch() {
     return (
       <View style={styles.searchItem}>
-        {this.state.searchNotify === getLanguage(GLOBAL.language).Prompt.SEARCHING && (<ActivityIndicator size="small" color="#505050" />)}
+        {this.state.searchNotify === getLanguage(global.language).Prompt.SEARCHING && (<ActivityIndicator size="small" color="#505050" />)}
         <Text style={styles.searchText}>
           {this.state.searchNotify}
         </Text>
@@ -255,7 +255,7 @@ class LocationSetting extends React.Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.SETTING_LOCATION_DEVICE,
+          title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),

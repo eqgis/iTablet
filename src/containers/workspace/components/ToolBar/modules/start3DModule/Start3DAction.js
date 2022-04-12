@@ -67,7 +67,7 @@ async function getSceneData() {
           }
           element.subTitle = element.mtime
           element.image = getThemeAssets().mine.my_scene
-          if (element.name === GLOBAL.sceneName && !element.isOnlineScence && GLOBAL.offlineScene) {
+          if (element.name === global.sceneName && !element.isOnlineScence && global.offlineScene) {
             element.rightView = (
               <View
                 style={{
@@ -185,7 +185,7 @@ async function getSceneData() {
       action: addOnlineScene,
     }),
     renderRightButton({
-      title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
+      title: getLanguage(global.language).Profile.SAMPLEDATA,
       action: () => {
         NavigationService.navigate('SampleMap', {
           refreshAction: getSceneData,
@@ -196,7 +196,7 @@ async function getSceneData() {
   if (onlineScenceData.length > 0) {
     for (let i = 0; i < onlineScenceData.length; i++) {
       let rightView
-      if (onlineScenceData[i].name === GLOBAL.sceneName && !GLOBAL.offlineScene) {
+      if (onlineScenceData[i].name === global.sceneName && !global.offlineScene) {
         rightView = (
           <View
             style={{
@@ -254,7 +254,7 @@ async function getSceneData() {
 
 function openScene(item) {
   const _params = ToolbarModule.getParams()
-  if (item.name === GLOBAL.sceneName && !item.isOnlineScence && GLOBAL.offlineScene) {
+  if (item.name === global.sceneName && !item.isOnlineScence && global.offlineScene) {
     Toast.show(getLanguage(_params.language).Prompt.THE_SCENE_IS_OPENED)
     // '场景已打开,请勿重复打开场景')
     return
@@ -269,10 +269,10 @@ function openScene(item) {
     if(await SScene.isEarthScene()){
       SScene.changeBaseLayer(1)
     }
-    GLOBAL.action3d = 'PAN3D'
-    GLOBAL.openWorkspace = true
-    GLOBAL.sceneName = item.name
-    GLOBAL.offlineScene = true
+    global.action3d = 'PAN3D'
+    global.openWorkspace = true
+    global.sceneName = item.name
+    global.offlineScene = true
     
     // let MapInfo = {name:item.name,path:item.path},userName:_params.user.currentUser.userId,moduleName:"Map3D"}
     //保存三维打开的历史场景 add xiezhy
@@ -280,7 +280,7 @@ function openScene(item) {
     _params.refreshLayer3dList && _params.refreshLayer3dList()
     _params.existFullMap && _params.existFullMap(true)
     _params.setToolbarVisible(false)
-    GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(false)
+    global.OverlayView && global.OverlayView.setVisible(false)
 
     _params.changeLayerList && _params.changeLayerList()
   })
@@ -289,7 +289,7 @@ function openScene(item) {
 //打开在线场景
 function openOnlineScene(item) {
   const _params = ToolbarModule.getParams()
-  if (item.name === GLOBAL.sceneName && !GLOBAL.offlineScene) {
+  if (item.name === global.sceneName && !global.offlineScene) {
     Toast.show(getLanguage(_params.language).Prompt.THE_SCENE_IS_OPENED)
     // '场景已打开,请勿重复打开场景')
     return
@@ -314,12 +314,12 @@ function openOnlineScene(item) {
       await SScene.setCircleFly()
       await SScene.setAction('PAN3D')
       await SScene.changeBaseLayer(1)
-      GLOBAL.action3d = 'PAN3D'
-      GLOBAL.openWorkspace = true
-      GLOBAL.sceneName = item.name
-      GLOBAL.offlineScene = false
+      global.action3d = 'PAN3D'
+      global.openWorkspace = true
+      global.sceneName = item.name
+      global.offlineScene = false
       _params.refreshLayer3dList && await _params.refreshLayer3dList()
-      GLOBAL.OverlayView && GLOBAL.OverlayView.setVisible(false)
+      global.OverlayView && global.OverlayView.setVisible(false)
   
       _params.changeLayerList && await _params.changeLayerList()
   

@@ -1,4 +1,4 @@
-import { NetInfo } from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 import {
   SOnlineService,
   SIPortalService,
@@ -55,9 +55,11 @@ async function getOnlineData(
       objDataList.content = newData
     }
   } catch (e) {
-    const result = await NetInfo.getConnectionInfo()
+    // const result = await NetInfo.getConnectionInfo()
+    // if (result.type === 'unknown' || result.type === 'none') {
+    const result = await NetInfo.fetch()
     if (result.type === 'unknown' || result.type === 'none') {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     } else {
       // Toast.show('登录失效，请重新登录')
     }

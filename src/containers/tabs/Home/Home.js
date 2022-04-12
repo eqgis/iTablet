@@ -7,10 +7,10 @@ import {
   NativeModules,
   InteractionManager,
   Platform,
-  NetInfo,
   ScrollView,
   PermissionsAndroid,
 } from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 import { Container, Dialog, PopMenu, Button } from '../../../components'
 import { ModuleList } from './components'
 import styles from './styles'
@@ -82,9 +82,9 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    if (this.props.version !== GLOBAL.GUIDE_VERSION) {
+    if (this.props.version !== global.GUIDE_VERSION) {
       if (this.props.isAgreeToProtocol) {
-        this.props.setVersion(GLOBAL.GUIDE_VERSION)
+        this.props.setVersion(global.GUIDE_VERSION)
         this.props.setGuideShow(true)
         this.props.setMapArGuide(true)
         this.props.setMapArMappingGuide(true)
@@ -112,7 +112,7 @@ export default class Home extends Component {
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
-        key: this.props.navigation.state.routeName,
+        key: this.props.route.routeName,
       })
     }
   }
@@ -131,7 +131,7 @@ export default class Home extends Component {
           if (result === true) {
             // Toast.show('导入3D成功')
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS)
+            Toast.show(getLanguage(global.language).Prompt.IMPORTED_SUCCESS)
           }
           result = await SMap.importWorkspaceInfo({
             server: filePath,
@@ -140,7 +140,7 @@ export default class Home extends Component {
 
           // if (result.length === 0) {
           //   Toast.show(
-          //     getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT,
+          //     getLanguage(global.language).Prompt.FAILED_TO_IMPORT,
           //   )
           // }
         } else {
@@ -150,7 +150,7 @@ export default class Home extends Component {
           })
 
           if (result.length === 0) {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
+            Toast.show(getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
           }
         }
       }
@@ -247,7 +247,7 @@ export default class Home extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-          GLOBAL.language === 'CN' ? 'CN' : 'EN'
+          global.language === 'CN' ? 'CN' : 'EN'
           ],
         )
         this.props.deleteUser(this.props.user.currentUser)
@@ -302,15 +302,22 @@ export default class Home extends Component {
 
   confirm = async () => {
     //先判断是否有网
-    NetInfo.isConnected.fetch().done(isConnected => {
-      if (isConnected) {
-        let confirm = this.dialogConfirm ? this.dialogConfirm : () => { }
-        confirm &&
-          confirm(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
-      } else {
-        Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
-      }
-    })
+    if ((await NetInfo.fetch()).isConnected) {
+      let confirm = this.dialogConfirm ? this.dialogConfirm : () => { }
+      confirm &&
+        confirm(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
+    } else {
+      Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
+    }
+    // NetInfo.isConnected.fetch().done(isConnected => {
+    //   if (isConnected) {
+    //     let confirm = this.dialogConfirm ? this.dialogConfirm : () => { }
+    //     confirm &&
+    //       confirm(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
+    //   } else {
+    //     Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
+    //   }
+    // })
   }
 
   cancel = () => {
@@ -707,7 +714,7 @@ export default class Home extends Component {
                 height: scaleSize(60),
               }}
             />
-            <Text style={styles.tabText}>{getLanguage(GLOBAL.language).Navigator_Label.PROFILE}</Text>
+            <Text style={styles.tabText}>{getLanguage(global.language).Navigator_Label.PROFILE}</Text>
           </View>
 
         </View>
@@ -1018,9 +1025,9 @@ export default class Home extends Component {
           styles.header,
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? {
-              paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
-              paddingRight: GLOBAL.isPad ? scaleSize(72) : scaleSize(24),
-              paddingTop: GLOBAL.isPad ? scaleSize(64) : scaleSize(10),
+              paddingLeft: global.isPad ? scaleSize(88) : scaleSize(28),
+              paddingRight: global.isPad ? scaleSize(72) : scaleSize(24),
+              paddingTop: global.isPad ? scaleSize(64) : scaleSize(10),
             }
             : {
               paddingHorizontal: scaleSize(40),
@@ -1133,8 +1140,6 @@ export default class Home extends Component {
                 this._closeModal()
                 this.SimpleDialog.set({
                   text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
-                  // cancelText: getLanguage(this.props.language).Prompt.CANCEL,
-                  // cancelAction: this.SimpleDialog.setVisible(false),
                   confirmText: getLanguage(this.props.language).Prompt.CONFIRM,
                   confirmAction: this.SimpleDialog.setVisible(false),
                   cancelBtnVisible:false,

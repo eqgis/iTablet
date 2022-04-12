@@ -4,7 +4,7 @@ import styles from './styles'
 import { scaleSize } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 //eslint-disable-next-line
-import { ActionPopover } from 'teaset'
+// import { ActionPopover } from 'teaset'
 // import ConstOnline from '../../../../constants/ConstOnline'
 export default class BaseMapItem extends Component {
   props: {
@@ -37,10 +37,10 @@ export default class BaseMapItem extends Component {
   // mapName: 'OSM',
   _showPopover = (pressView, item) => {
     let items = []
-    // GLOBAL.language
+    // global.language
     items = [
       {
-        title: GLOBAL.language === 'CN' ? '修改' : 'modify',
+        title: global.language === 'CN' ? '修改' : 'modify',
         // '删除',
         onPress: () => {
           NavigationService.navigate('LoadServer', {
@@ -52,7 +52,7 @@ export default class BaseMapItem extends Component {
         },
       },
       {
-        title: GLOBAL.language === 'CN' ? '删除' : 'delete',
+        title: global.language === 'CN' ? '删除' : 'delete',
         // '删除',
         onPress: () => {
           let list = this.props.curUserBaseMaps
@@ -73,17 +73,17 @@ export default class BaseMapItem extends Component {
         },
       },
     ]
-    pressView.measure((ox, oy, width, height, px, py) => {
-      ActionPopover.show(
-        {
-          x: px,
-          y: py,
-          width,
-          height,
-        },
-        items,
-      )
-    })
+    // pressView.measure((ox, oy, width, height, px, py) => {
+    //   ActionPopover.show(
+    //     {
+    //       x: px,
+    //       y: py,
+    //       width,
+    //       height,
+    //     },
+    //     items,
+    //   )
+    // })
   }
   goToMapView = () => {
     let params = {

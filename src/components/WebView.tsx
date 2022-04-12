@@ -19,7 +19,7 @@ class WebView extends Component<Props> {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.CANCELLATION,
+          title: getLanguage(global.language).Profile.CANCELLATION,
           navigation: this.props.navigation,
         }}
       >

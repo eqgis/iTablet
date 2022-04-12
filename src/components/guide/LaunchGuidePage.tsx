@@ -107,10 +107,11 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
         if (!visible && this.props.dismissCallback) {
           this.props.dismissCallback()
         }
-        if (!visible &&!GLOBAL.isPad) {
+        if (!visible &&!global.isPad) {
           Orientation.unlockAllOrientations()
         }
       })
+      this.isAnimated = false
     } else {
       this.isAnimated = false
     }

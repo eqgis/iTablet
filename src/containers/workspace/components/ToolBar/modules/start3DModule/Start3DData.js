@@ -13,7 +13,7 @@ function getData(type, params) {
   data = [
     {
       key: constants.OPEN,
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.START_OPEN_SENCE,
+      title: getLanguage(global.language).Map_Main_Menu.START_OPEN_SENCE,
       // '打开场景',
       action: Start3DAction.getSceneData,
       size: 'large',

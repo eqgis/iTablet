@@ -51,10 +51,12 @@ export default class DrawerBar extends React.Component {
     let moveAnimation = Animated.timing(this.state.left, {
       toValue: isShow ? 0 : -BAR_WIDTH,
       duration: 300,
+      useNativeDriver: false,
     })
     let opacityAnimation = Animated.timing(this.state.fadeOutOpacity, {
       toValue: isShow ? 1 : 0,
       duration: 0,
+      useNativeDriver: false,
     })
     if (isShow) {
       animations.push(opacityAnimation)

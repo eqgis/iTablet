@@ -43,7 +43,7 @@ export default class AnalystTools extends Component {
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
-        key: this.props.navigation.state.routeName,
+        key: this.props.route.routeName,
       })
     }
     this.props.setMapLegend(false)
@@ -109,7 +109,7 @@ export default class AnalystTools extends Component {
           //'正在关闭地图'
         )
         await this.props.closeMap()
-        GLOBAL.clearMapData()
+        global.clearMapData()
         this.setLoading(false)
         NavigationService.goBack()
       } catch (e) {

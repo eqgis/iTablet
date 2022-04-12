@@ -9,10 +9,10 @@ function changeLegendVisible() {
   const _params = ToolbarModule.getParams()
   const legendData = _params.mapLegend
   const type = ConstToolType.SM_MAP_LEGEND
-  legendData[GLOBAL.Type].isShow = !legendData[GLOBAL.Type].isShow
+  legendData[global.Type].isShow = !legendData[global.Type].isShow
   const { data, buttons } = LegendData.getData(type)
-  GLOBAL.ToolBar &&
-    GLOBAL.ToolBar.setState({
+  global.ToolBar &&
+    global.ToolBar.setState({
       // type,
       data,
       buttons,
@@ -56,14 +56,14 @@ function menu(type, selectKey, params = {}) {
 
   if (Utils.isTouchProgress(selectKey)) {
     isFullScreen = true
-    showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
-    isTouchProgress = GLOBAL.ToolBar.state.showMenuDialog
+    showMenuDialog = !global.ToolBar.state.showMenuDialog
+    isTouchProgress = global.ToolBar.state.showMenuDialog
     setData()
   } else {
-    isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
-    showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
+    isFullScreen = !global.ToolBar.state.showMenuDialog
+    showMenuDialog = !global.ToolBar.state.showMenuDialog
     isTouchProgress = false
-    if (!GLOBAL.ToolBar.state.showMenuDialog) {
+    if (!global.ToolBar.state.showMenuDialog) {
       // 先滑出box，再显示Menu
       showBox()
       setTimeout(setData, Const.ANIMATED_DURATION_2)
@@ -80,11 +80,11 @@ function showMenuBox(type, selectKey, params = {}) {
     if (Utils.isTouchProgress(selectKey)) {
       params.setData &&
         params.setData({
-          isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
+          isTouchProgress: !global.ToolBar.state.isTouchProgress,
           showMenuDialog: false,
-          isFullScreen: !GLOBAL.ToolBar.state.isTouchProgress,
+          isFullScreen: !global.ToolBar.state.isTouchProgress,
         })
-    } else if (!GLOBAL.ToolBar.state.showMenuDialog) {
+    } else if (!global.ToolBar.state.showMenuDialog) {
       params.showBox && params.showBox()
     } else {
       params.setData &&
@@ -101,7 +101,7 @@ function showMenuBox(type, selectKey, params = {}) {
 function tableAction(type, item = {}) {
   const _params = ToolbarModule.getParams()
   const legendData = JSON.parse(JSON.stringify(_params.mapLegend))
-  legendData[GLOBAL.Type].backgroundColor = item.background
+  legendData[global.Type].backgroundColor = item.background
   _params.setMapLegend && _params.setMapLegend(legendData)
 }
 
@@ -110,13 +110,13 @@ function cancelSelect() {
 
   // const legendData = _params.mapLegend
   const type = ConstToolType.SM_MAP_LEGEND
-  let isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
-  let showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
+  let isFullScreen = !global.ToolBar.state.showMenuDialog
+  let showMenuDialog = !global.ToolBar.state.showMenuDialog
   let isTouchProgress = false
   const { data, buttons } = LegendData.getData(type)
   const setData = function() {
-    GLOBAL.ToolBar &&
-      GLOBAL.ToolBar.setState(
+    global.ToolBar &&
+      global.ToolBar.setState(
         {
           // type,
           data,
@@ -126,19 +126,19 @@ function cancelSelect() {
           buttons,
         },
         () => {
-          GLOBAL.ToolBar.updateOverlayView()
+          global.ToolBar.updateOverlayView()
         },
       )
   }
   // 先滑出box，再显示Menu
-  GLOBAL.ToolBar && GLOBAL.ToolBar.showBox()
+  global.ToolBar && global.ToolBar.showBox()
   setTimeout(setData, Const.ANIMATED_DURATION_2)
 }
 
 function changePosition(params) {
   const _params = ToolbarModule.getParams()
   const legendData = JSON.parse(JSON.stringify(_params.mapLegend))
-  legendData[GLOBAL.Type].legendPosition =
+  legendData[global.Type].legendPosition =
     params[0].selectedItem && params[0].selectedItem.value
   _params.setMapLegend(legendData)
 }
@@ -185,31 +185,31 @@ async function getTouchProgressInfo(title) {
   let value = 0
   let step = 1
   let unit = ''
-  // let title = GLOBAL.toolBox?.state?.selectName
+  // let title = global.toolBox?.state?.selectName
   switch (title) {
     //线宽 边框宽度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_COLUMN:
-      value = legendSettings[GLOBAL.Type].column
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN:
+      value = legendSettings[global.Type].column
       range = [1, 4]
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_WIDTH:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH:
       range = [20, 100]
-      value = legendSettings[GLOBAL.Type].widthPercent
+      value = legendSettings[global.Type].widthPercent
       break
     //符号大小
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_HEIGHT:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT:
       range = [20, 100]
-      value = legendSettings[GLOBAL.Type].heightPercent
+      value = legendSettings[global.Type].heightPercent
       break
     //旋转角度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_ICON:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_ICON:
       range = [10, 100]
-      value = legendSettings[GLOBAL.Type].imagePercent
+      value = legendSettings[global.Type].imagePercent
       break
     //透明度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_FONT:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_FONT:
       range = [10, 100]
-      value = legendSettings[GLOBAL.Type].fontPercent
+      value = legendSettings[global.Type].fontPercent
       break
   }
   return { title, value, tips, range, step, unit }
@@ -226,47 +226,47 @@ function setTouchProgressInfo(title, value) {
   // let legendSettings = {..._params.mapLegend}
   let legendSettings = JSON.parse(JSON.stringify(_params.mapLegend))
   let range = [1, 100]
-  // switch (GLOBAL.ToolBar?.state?.selectName) {
+  // switch (global.ToolBar?.state?.selectName) {
   switch (title) {
     //线宽 边框宽度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_COLUMN:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN:
       range = [1, 4]
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
-      legendSettings[GLOBAL.Type].column = Math.floor(value)
+      legendSettings[global.Type].column = Math.floor(value)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_WIDTH:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH:
       range = [20, 100]
       
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       
-      legendSettings[GLOBAL.Type].widthPercent = value
+      legendSettings[global.Type].widthPercent = value
       break
     //符号大小
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_HEIGHT:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT:
       range = [20, 100]
       
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       
-      legendSettings[GLOBAL.Type].heightPercent = value
+      legendSettings[global.Type].heightPercent = value
       break
     //旋转角度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_ICON:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_ICON:
       range = [10, 100]
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
-      legendSettings[GLOBAL.Type].imagePercent = value
+      legendSettings[global.Type].imagePercent = value
       break
     //透明度
-    case getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_FONT:
+    case getLanguage(global.language).Map_Main_Menu.LEGEND_FONT:
       range = [10, 100]
       
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       
-      legendSettings[GLOBAL.Type].fontPercent = value
+      legendSettings[global.Type].fontPercent = value
       break
   }
   _setMapLegend(legendSettings)

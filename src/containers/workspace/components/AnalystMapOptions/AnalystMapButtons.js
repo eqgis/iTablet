@@ -91,28 +91,28 @@ export default class AnalystMapButtons extends React.Component {
           title: getLanguage(this.props.language).Analyst_Labels
             .SET_START_STATION,
           action: () => {
-            GLOBAL.TouchType = TouchType.SET_START_STATION
+            global.TouchType = TouchType.SET_START_STATION
           },
         },
         {
           title: getLanguage(this.props.language).Analyst_Labels
             .MIDDLE_STATIONS,
           action: () => {
-            GLOBAL.TouchType = TouchType.MIDDLE_STATIONS
+            global.TouchType = TouchType.MIDDLE_STATIONS
           },
         },
         {
           title: getLanguage(this.props.language).Analyst_Labels
             .ADD_BARRIER_NODES,
           action: () => {
-            GLOBAL.TouchType = TouchType.ADD_BARRIER_NODES
+            global.TouchType = TouchType.ADD_BARRIER_NODES
           },
         },
         {
           title: getLanguage(this.props.language).Analyst_Labels
             .SET_END_STATION,
           action: () => {
-            GLOBAL.TouchType = TouchType.SET_END_STATION
+            global.TouchType = TouchType.SET_END_STATION
           },
         },
       ],
@@ -121,14 +121,14 @@ export default class AnalystMapButtons extends React.Component {
           title: getLanguage(this.props.language).Analyst_Labels
             .SET_AS_START_STATION,
           action: () => {
-            GLOBAL.TouchType = TouchType.SET_AS_START_STATION
+            global.TouchType = TouchType.SET_AS_START_STATION
           },
         },
         {
           title: getLanguage(this.props.language).Analyst_Labels
             .SET_AS_END_STATION,
           action: () => {
-            GLOBAL.TouchType = TouchType.SET_AS_END_STATION
+            global.TouchType = TouchType.SET_AS_END_STATION
           },
         },
       ],
@@ -136,14 +136,14 @@ export default class AnalystMapButtons extends React.Component {
         {
           title: getLanguage(this.props.language).Analyst_Labels.ADD_STATIONS,
           action: () => {
-            GLOBAL.TouchType = TouchType.ADD_STATIONS
+            global.TouchType = TouchType.ADD_STATIONS
           },
         },
         {
           title: getLanguage(this.props.language).Analyst_Labels
             .ADD_BARRIER_NODES,
           action: () => {
-            GLOBAL.TouchType = TouchType.ADD_BARRIER_NODES
+            global.TouchType = TouchType.ADD_BARRIER_NODES
           },
         },
       ],
@@ -153,7 +153,7 @@ export default class AnalystMapButtons extends React.Component {
       title: getLanguage(this.props.language).Analyst_Labels.CLEAR,
       action: () => {
         AnalystTools.clear(type)
-        GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+        global.bubblePane && global.bubblePane.clear()
       },
     })
     return curData

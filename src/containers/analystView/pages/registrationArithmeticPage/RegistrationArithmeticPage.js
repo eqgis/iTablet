@@ -15,7 +15,7 @@ export default class RegistrationArithmeticPage extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
 
     let tempData = this.getData()
@@ -28,24 +28,24 @@ export default class RegistrationArithmeticPage extends Component {
   getData() {
     let data = []
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_LINE,
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_LINE,
       arithmeticMode: 1,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_QUADRATIC,
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_QUADRATIC,
       arithmeticMode: 2,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_RECTANGLE,
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_RECTANGLE,
       arithmeticMode: 0,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_OFFSET,
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_OFFSET,
       arithmeticMode: 4,
     })
 
     //判断是否含有CAD图层，如果有CAD图层，屏蔽线性和二次线配准
-    if (GLOBAL.IsHaveCadDataset) {
+    if (global.IsHaveCadDataset) {
       data.splice(0, 2)
     }
     return data
@@ -99,13 +99,13 @@ export default class RegistrationArithmeticPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Analyst_Labels
+          title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_ARITHMETIC,
           navigation: this.props.navigation,
           backAction: this.back,
           // headerRight: (
           //   <TextBtn
-          //     btnText={getLanguage(GLOBAL.language).Profile.LICENSE_EXIT}
+          //     btnText={getLanguage(global.language).Profile.LICENSE_EXIT}
           //     textStyle={styles.headerBtnTitle}
           //     btnClick={this.exit}
           //   />

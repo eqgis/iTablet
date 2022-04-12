@@ -37,7 +37,7 @@ export default class MapToolbar extends React.Component {
     let current = 0
     if (props.initIndex < 0 && data.length > 0) {
       for (let i = 0; i < data.length; i++) {
-        if (data[i].key === props.navigation.state.key) {
+        if (data[i].key === props.route.name) {
           current = i
         }
       }
@@ -104,13 +104,13 @@ export default class MapToolbar extends React.Component {
             key: MapTabs.MapView,
             title:
               this.props.isAR
-                ? getLanguage(GLOBAL.language).Map_Label.ARMAP
-                : getLanguage(GLOBAL.language).Map_Label.MAP,
+                ? getLanguage(global.language).Map_Label.ARMAP
+                : getLanguage(global.language).Map_Label.MAP,
             //'地图',
             image: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene : getThemeAssets().tabBar.tab_map,
             selectedImage: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene_selected : getThemeAssets().tabBar.tab_map_selected,
             btnClick: () => {
-              GLOBAL.ToolBar.existFullMap()
+              global.ToolBar.existFullMap()
               this.props.navigation &&
                 this.props.navigation.navigate('MapView', { type })
             },
@@ -120,7 +120,7 @@ export default class MapToolbar extends React.Component {
         case MapTabs.ARLayerManager:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.LAYER,
+            title: getLanguage(global.language).Map_Label.LAYER,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
@@ -133,7 +133,7 @@ export default class MapToolbar extends React.Component {
         case MapTabs.LayerAttribute:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
+            title: getLanguage(global.language).Map_Label.ATTRIBUTE,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
             selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
@@ -147,7 +147,7 @@ export default class MapToolbar extends React.Component {
         case MapTabs.ARMapSetting:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.SETTING,
+            title: getLanguage(global.language).Map_Label.SETTING,
             //'设置',
             image: getThemeAssets().tabBar.tab_setting,
             selectedImage: getThemeAssets().tabBar.tab_setting_selected,
@@ -160,7 +160,7 @@ export default class MapToolbar extends React.Component {
         case MapTabs.Scene:
           list.push({
             key: MapTabs.Scene,
-            title: getLanguage(GLOBAL.language).Map_Label.SCENE,
+            title: getLanguage(global.language).Map_Label.SCENE,
             //'场景',
             image: getThemeAssets().tabBar.tab_scene,
             selectedImage: getThemeAssets().tabBar.tab_scene_selected,
@@ -175,7 +175,7 @@ export default class MapToolbar extends React.Component {
         case MapTabs.Layer3DManager:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.LAYER,
+            title: getLanguage(global.language).Map_Label.LAYER,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
@@ -190,7 +190,7 @@ export default class MapToolbar extends React.Component {
         case MapTabs.LayerAttribute3D:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
+            title: getLanguage(global.language).Map_Label.ATTRIBUTE,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
             selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
@@ -205,7 +205,7 @@ export default class MapToolbar extends React.Component {
         case MapTabs.Map3DSetting:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.SETTING,
+            title: getLanguage(global.language).Map_Label.SETTING,
             //'设置',
             image: getThemeAssets().tabBar.tab_setting,
             selectedImage: getThemeAssets().tabBar.tab_setting_selected,
@@ -226,8 +226,8 @@ export default class MapToolbar extends React.Component {
     let title
     // if (item.key === MapTabs.MapView) {
     //   title = this.props.isAR
-    //     ? getLanguage(GLOBAL.language).Map_Label.ARMAP
-    //     : getLanguage(GLOBAL.language).Map_Label.MAP
+    //     ? getLanguage(global.language).Map_Label.ARMAP
+    //     : getLanguage(global.language).Map_Label.MAP
     // }
     return (
       <MTBtn
@@ -243,8 +243,9 @@ export default class MapToolbar extends React.Component {
         selectedImage={item.selectedImage}
         onPress={() => {
           let current = this.props.initIndex
+          const navState = this.props.navigation.getState()
           for (let i = 0; i < this.state.data.length; i++) {
-            if (this.state.data[i].key === this.props.navigation.state.key) {
+            if (this.state.data[i].key === navState.routes[navState.index].name) {
               current = i
             }
           }

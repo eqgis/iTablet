@@ -19,21 +19,21 @@ function arMeasureArea() {
   (async function() {
     // const isSupportedARCore = await SMeasureView.isSupportedARCore()
     // if (!isSupportedARCore) {
-    //   GLOBAL.ARDeviceListDialog.setVisible(true)
+    //   global.ARDeviceListDialog.setVisible(true)
     //   return
     // }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
     const _data = ARMeasureData.getMeasureAreaData()
     const containerType = ToolbarType.arMeasure
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
     })
-    GLOBAL.ToolBar.setVisible(true,'SM_MAP_AR_MEASURE_SECOND',{
+    global.ToolBar.setVisible(true,'SM_MAP_AR_MEASURE_SECOND',{
       containerType,
       data:_data.data,
       secdata:_data.measureAreadata,
@@ -50,21 +50,21 @@ function arMeasureVolume() {
   (async function() {
     // const isSupportedARCore = await SMeasureView.isSupportedARCore()
     // if (!isSupportedARCore) {
-    //   GLOBAL.ARDeviceListDialog.setVisible(true)
+    //   global.ARDeviceListDialog.setVisible(true)
     //   return
     // }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
     const _data = ARMeasureData.getMeasureAreaData()
     const containerType = ToolbarType.arMeasure
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data1,
     })
-    GLOBAL.ToolBar.setVisible(true,'SM_MAP_AR_MEASURE_SECOND',{
+    global.ToolBar.setVisible(true,'SM_MAP_AR_MEASURE_SECOND',{
       containerType,
       data:_data.data1,
       secdata:_data.measureAreadata1,
@@ -82,20 +82,20 @@ function arMeasurePolygon() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
     // NavigationService.navigate('MeasureAreaView', {
     //   measureType: 'measureArea',
     // })
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureArea'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureArea'})
   })()
 }
 
@@ -104,21 +104,21 @@ function arMeasureRectanglet() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
     // NavigationService.navigate('MeasureAreaView', {
     //   measureType: 'arMeasureRectangle',
     // })
 
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureRectangle'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureRectangle'})
   })()
 }
 
@@ -127,20 +127,20 @@ function arMeasureCircular() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
     // NavigationService.navigate('MeasureAreaView', {
     //   measureType: 'arMeasureCircle',
     // })
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCircle'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCircle'})
   })()
 }
 
@@ -149,20 +149,20 @@ function arMeasureCuboid() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
     // NavigationService.navigate('MeasureAreaView', {
     //   measureType: 'arMeasureCuboid',
     // })
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCuboid'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCuboid'})
   })()
 }
 
@@ -172,20 +172,20 @@ function arMeasureCylinder() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
     // NavigationService.navigate('MeasureAreaView', {
     //   measureType: 'arMeasureCylinder',
     // })
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCylinder'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCylinder'})
   })()
 }
 
@@ -194,19 +194,19 @@ function arMeasureLength() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
     // NavigationService.navigate('MeasureAreaView', {
     //   measureType: 'measureLength',
     // })
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureLength'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureLength'})
   })()
 }
 
@@ -219,20 +219,20 @@ function arMeasureAngle() {
     // }
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
     // NavigationService.navigate('MeasureAreaView', {
     //   measureType: 'measureAngle',
     // })
 
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureAngle'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureAngle'})
   })()
 }
 
@@ -241,19 +241,19 @@ function arMeasureHeight() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
     // NavigationService.navigate('MeasureAreaView', {
     //   measureType: 'arMeasureHeight',
     // })
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureHeight'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureHeight'})
   })()
 }
 

@@ -1,4 +1,4 @@
-import { scaleSize } from '../utils'
+import { scaleSize } from '../utils/screen'
 
 export default {
   UNIQUE: '单值专题图',

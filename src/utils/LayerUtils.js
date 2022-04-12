@@ -389,7 +389,7 @@ function getBaseLayers(layers = []) {
     //   arr.push(layers[i])
     // }
   }
-  GLOBAL.BaseMapSize = arr.length
+  global.BaseMapSize = arr.length
   return arr
 }
 
@@ -413,7 +413,7 @@ async function addBaseMap(
           visible,
         )
       }
-      GLOBAL.BaseMapSize = data.length
+      global.BaseMapSize = data.length
     } else {
       await SMap.openDatasource(
         data.DSParams,
@@ -421,7 +421,7 @@ async function addBaseMap(
         false,
         visible,
       )
-      GLOBAL.BaseMapSize = 1
+      global.BaseMapSize = 1
     }
   }
 }
@@ -431,7 +431,7 @@ async function openDefaultBaseMap() {
   await addBaseMap([], data)
 }
 
-function getDefaultBaseMapData(language = GLOBAL.language) {
+function getDefaultBaseMapData(language = global.language) {
   if (language === 'CN') {
     return [ConstOnline.tiandituImgCN(), ConstOnline.tiandituImg()]
   } else {
@@ -444,7 +444,7 @@ function getDefaultBaseMapData(language = GLOBAL.language) {
  * @returns {string}
  */
 function getLayerType(currentLayer) {
-  // let currentLayer = GLOBAL.currentLayer
+  // let currentLayer = global.currentLayer
   try {
     let layerType = ''
     if (currentLayer && !currentLayer.themeType) {

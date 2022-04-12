@@ -120,7 +120,7 @@ export default class AnalystListItem extends Component {
             {this.props.title}
           </Text>
         </View>
-          {/* {(this.props.title == getLanguage(language).Analyst_Methods.AGGREGATE_POINTS_ANALYSIS && GLOBAL.AGGREGATE_POINTS_ANALYSIS) && */}
+          {/* {(this.props.title == getLanguage(language).Analyst_Methods.AGGREGATE_POINTS_ANALYSIS && global.AGGREGATE_POINTS_ANALYSIS) && */}
           {this.props.isAnalyst &&
             <Animated.Image
               resizeMode={'contain'}
@@ -135,7 +135,7 @@ export default class AnalystListItem extends Component {
               source={getPublicAssets().common.icon_downloading}
             />
           }
-          {/* {(this.props.title == getLanguage(language).Analyst_Methods.DENSITY && GLOBAL.DENSITY) &&
+          {/* {(this.props.title == getLanguage(language).Analyst_Methods.DENSITY && global.DENSITY) &&
             <Animated.Image
               resizeMode={'contain'}
               style={[

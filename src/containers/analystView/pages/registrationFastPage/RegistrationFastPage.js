@@ -21,7 +21,7 @@ export default class RegistrationExecutePage extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.userName = params && params.userName
 
     this.datasources = []
@@ -70,9 +70,9 @@ export default class RegistrationExecutePage extends Component {
 
   getData = () => {
     (async function() {
-      GLOBAL.Loading.setLoading(
+      global.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.LOADING,
+        getLanguage(global.language).Prompt.LOADING,
       )
       try {
         let data = await SMap.getDatasetsByWorkspaceDatasource()
@@ -93,8 +93,8 @@ export default class RegistrationExecutePage extends Component {
 
         let datasetArr = []
 
-        if (GLOBAL.RectifyDatasetInfo) {
-          let datasourceInfos = GLOBAL.RectifyDatasetInfo
+        if (global.RectifyDatasetInfo) {
+          let datasourceInfos = global.RectifyDatasetInfo
           for (let i = 0; i < datasourceInfos.length; i++) {
             let datasourceInfo = datasourceInfos[i]
             let datasourceInfoDataLength = datasourceInfo.data.length
@@ -131,9 +131,9 @@ export default class RegistrationExecutePage extends Component {
           datasets: datasetArr,
           datasourcesInfo: data,
         })
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       } catch (e) {
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       }
     }.bind(this)())
   }
@@ -156,19 +156,19 @@ export default class RegistrationExecutePage extends Component {
     //判断是否选择配准信息文件
     if (!this.state.registrationFile) {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
-          getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_EXPORT_FILE,
+        getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT +
+          getLanguage(global.language).Analyst_Labels.REGISTRATION_EXPORT_FILE,
       )
       return
     }
 
-    GLOBAL.Loading.setLoading(
+    global.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_EXECUTING,
+      getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTING,
     )
     try {
       let _registrationFile = this.state.registrationFile
-      // let arithmeticMode = GLOBAL.RegistrationArithmeticMode
+      // let arithmeticMode = global.RegistrationArithmeticMode
       let datasets = this.state.datasets
       let count = 0
       for (let i = 0; i < datasets.length; i++) {
@@ -199,19 +199,19 @@ export default class RegistrationExecutePage extends Component {
       }
       if (count === datasets.length) {
         Toast.show(
-          getLanguage(GLOBAL.language).Analyst_Labels
+          getLanguage(global.language).Analyst_Labels
             .REGISTRATION_EXECUTE_SUCCESS,
         )
       } else {
         Toast.show(
-          getLanguage(GLOBAL.language).Analyst_Labels
+          getLanguage(global.language).Analyst_Labels
             .REGISTRATION_EXECUTE_FAILED,
         )
       }
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
       NavigationService.goBack('RegistrationDatasetPage')
     } catch {
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }
   }
 
@@ -244,31 +244,31 @@ export default class RegistrationExecutePage extends Component {
         >
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_ORIGINAL_DATASOURCE
             }
           </Text>
 
           <Text style={styles.textOriginalStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAVE_AS}
+            {getLanguage(global.language).Analyst_Labels.REGISTRATION_SAVE_AS}
           </Text>
 
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_RESULT_DATASET
             }
           </Text>
 
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_RESULT_DATASOURCE
             }
           </Text>
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_SAMPLE_MODE
             }
           </Text>
@@ -283,10 +283,10 @@ export default class RegistrationExecutePage extends Component {
 
   editDatasetName(dataset, index) {
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(GLOBAL.language).Analyst_Labels
+      headerTitle: getLanguage(global.language).Analyst_Labels
         .REGISTRATION_RESULT_DATASET,
       value: dataset.outputDatasetName,
-      placeholder: getLanguage(GLOBAL.language).Analyst_Labels
+      placeholder: getLanguage(global.language).Analyst_Labels
         .REGISTRATION_RESULT_DATASET,
       type: 'name',
       cb: async value => {
@@ -449,7 +449,7 @@ export default class RegistrationExecutePage extends Component {
               >
                 {item.sampleModeData && item.sampleModeData.checked
                   ? item.sampleModeData.sampleModeTitle
-                  : getLanguage(GLOBAL.language).Analyst_Labels
+                  : getLanguage(global.language).Analyst_Labels
                     .REGISTRATION_SAMPLE_MODE_NO}
               </Text>
               <Image
@@ -535,21 +535,21 @@ export default class RegistrationExecutePage extends Component {
   getArithmeticData() {
     let data = []
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_LINE_,
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_LINE_,
       arithmeticMode: 1,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels
+      title: getLanguage(global.language).Analyst_Labels
         .REGISTRATION_QUADRATIC_,
       arithmeticMode: 2,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels
+      title: getLanguage(global.language).Analyst_Labels
         .REGISTRATION_RECTANGLE_,
       arithmeticMode: 0,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_OFFSET_,
+      title: getLanguage(global.language).Analyst_Labels.REGISTRATION_OFFSET_,
       arithmeticMode: 4,
     })
 
@@ -701,14 +701,14 @@ export default class RegistrationExecutePage extends Component {
       <View style={styles.parameterView}>
         <View style={styles.parameterHeaderTextView}>
           <Text style={styles.parameterTextView}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.PARAMETER_SETTINGS}
+            {getLanguage(global.language).Analyst_Labels.PARAMETER_SETTINGS}
           </Text>
         </View>
         <View style={styles.lineStyle} />
         <View style={styles.parameterItem}>
           <Text style={styles.parameterItemTitleText}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_EXPORT_FILE
             }
           </Text>
@@ -721,9 +721,9 @@ export default class RegistrationExecutePage extends Component {
             <Text style={styles.parameterItemText}>
               {this.state.registrationFile
                 ? this.state.registrationFile.title
-                : getLanguage(GLOBAL.language).Analyst_Labels
+                : getLanguage(global.language).Analyst_Labels
                   .REGISTRATION_PLEASE_SELECT +
-                  getLanguage(GLOBAL.language).Analyst_Labels
+                  getLanguage(global.language).Analyst_Labels
                     .REGISTRATION_EXPORT_FILE}
             </Text>
             <Image
@@ -736,7 +736,7 @@ export default class RegistrationExecutePage extends Component {
         {/* <View style={styles.lineStyle}></View>
         <View style={styles.parameterItem}>
           <Text style={styles.parameterItemTitleText}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_ARITHMETIC}
+            {getLanguage(global.language).Analyst_Labels.REGISTRATION_ARITHMETIC}
           </Text>
           <TouchableOpacity style={styles.parameterSubitem}
             onPress ={()=>{
@@ -745,8 +745,8 @@ export default class RegistrationExecutePage extends Component {
             }
             >
             <Text style={styles.parameterItemText}>
-              {this.state.registrationArithmetic?this.state.registrationArithmetic.title:(getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT+
-                getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_ARITHMETIC)}
+              {this.state.registrationArithmetic?this.state.registrationArithmetic.title:(getLanguage(global.language).Analyst_Labels.REGISTRATION_PLEASE_SELECT+
+                getLanguage(global.language).Analyst_Labels.REGISTRATION_ARITHMETIC)}
             </Text>
             <Image style={{ width: scaleSize(40), height: scaleSize(40) }}
               source={getPublicAssets().common.icon_about_itablet_more}
@@ -764,13 +764,13 @@ export default class RegistrationExecutePage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Analyst_Modules
+          title: getLanguage(global.language).Analyst_Modules
             .REGISTRATION_SPEEDINESS,
           navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={() => {
                 this.confirm()

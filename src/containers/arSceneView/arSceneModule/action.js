@@ -17,27 +17,27 @@ async function listAction(type, params = {}) {
     if(type === ConstToolType.SM_ARSCENEMODULE_CHANGE)
     {
         await SSceneAR.setSceneLayer(params.item.name)
-        GLOBAL.ARContainer.setHeaderVisible(true)
+        global.ARContainer.setHeaderVisible(true)
         ToolbarModule.getParams().setToolbarVisible(
           true,
           ConstToolType.SM_ARSCENEMODULE,
         )
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SWITCHING_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.SWITCHING_SUCCESS)
     } else {
         await SSceneAR.changeWorkSpace(params.item.path,params.item.name)
         // let Type
-        //   if(GLOBAL.isSceneOpen){
+        //   if(global.isSceneOpen){
         //     Type = ConstToolType.SM_ARSCENEMODULE
         //   }else{
         //     Type = ConstToolType.SM_ARSCENEMODULE_NOMAL
         //   }
-        GLOBAL.ARContainer.setHeaderVisible(true)
-        GLOBAL.isSceneOpen = false
+        global.ARContainer.setHeaderVisible(true)
+        global.isSceneOpen = false
         ToolbarModule.getParams().setToolbarVisible(
           true,
           ConstToolType.SM_ARSCENEMODULE_NOMAL,
         )
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SWITCHING_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.SWITCHING_SUCCESS)
     }
     
 }

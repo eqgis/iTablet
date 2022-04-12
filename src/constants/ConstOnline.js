@@ -9,10 +9,11 @@ const tiandituTokens = [
   '1b9a39b63a731de1ae2a328063f55297',
   'afb813b539bdb93f10d4332bce28ac83',
   '33757333f15cccf21c5c950de7699ac9',
+  '03dffb412a3f96f6404979826ec3651d',
 ]
 
 function _getToken() {
-  const rad = Math.ceil(Math.random() * 9) - 1
+  const rad = Math.ceil(Math.random() * 10) - 1
   const token = tiandituTokens[rad]
   return token
 }

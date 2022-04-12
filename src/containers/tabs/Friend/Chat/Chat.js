@@ -60,12 +60,12 @@ class Chat extends React.Component {
   constructor(props) {
     super(props)
     this.openTime = new Date().getTime()
-    this.friend = GLOBAL.getFriend()
+    this.friend = global.getFriend()
     this.curUser = this.friend.props.user.currentUser
-    this.targetId = this.props.navigation.getParam('targetId')
+    this.targetId = this.props.route.params.targetId
     this.targetUser = this.friend.getTargetUser(this.targetId)
     this.friend.setCurChat(this, this.openTime)
-    this.action = this.props.navigation.getParam('action')
+    this.action = this.props.route.params.action
     this._isMounted = false
     this.state = {
       messages: [],
@@ -73,11 +73,11 @@ class Chat extends React.Component {
       typingText: null,
       isLoadingEarlier: false,
       showUserAvatar: true,
-      messageInfo: this.props.navigation.getParam('messageInfo', ''),
+      messageInfo: this.props.route.params.messageInfo,
       showInformSpot: false,
       chatBottom: 0,
-      title: this.props.navigation.getParam('title') || this.targetUser.title,
-      coworkMode: GLOBAL.coworkMode,
+      title: this.props.route.params.title || this.targetUser.title,
+      coworkMode: global.coworkMode,
     }
 
     this.onSend = this.onSend.bind(this)
@@ -102,7 +102,7 @@ class Chat extends React.Component {
   componentDidMount() {
     Platform.OS === 'android' && BackHandler.addEventListener('hardwareBackPress', this.back)
     // Platform.OS === 'android' && this.props.setBackAction({
-    //   key: this.props.navigation.state.routeName,
+    //   key: this.props.route.routeName,
     //   action: () => this.back(),
     // })
     if (this.state.coworkMode) {
@@ -174,7 +174,7 @@ class Chat extends React.Component {
     if (Platform.OS === 'android') {
       BackHandler.removeEventListener('hardwareBackPress', this.back)
       // this.props.removeBackAction({
-      //   key: this.props.navigation.state.routeName,
+      //   key: this.props.route.routeName,
       // })
     }
     this.friend.setCurChat(undefined, this.openTime)
@@ -190,7 +190,7 @@ class Chat extends React.Component {
     return true
     // if (this.state.coworkMode) {
     //   // this.SimpleDialog.set({
-    //   //   text: getLanguage(GLOBAL.language).Friends.ALERT_EXIT_COWORK,
+    //   //   text: getLanguage(global.language).Friends.ALERT_EXIT_COWORK,
     //   //   confirmAction: () => {
     //   //     this.endCowork()
     //   //   },
@@ -207,12 +207,12 @@ class Chat extends React.Component {
   //   if (Platform.OS === 'android') {
   //     if (value) {
   //       this.props.setBackAction({
-  //         key: this.props.navigation.state.routeName,
+  //         key: this.props.route.routeName,
   //         action: () => this.back(),
   //       })
   //     } else {
   //       this.props.removeBackAction({
-  //         key: this.props.navigation.state.routeName,
+  //         key: this.props.route.routeName,
   //       })
   //     }
   //   }
@@ -222,7 +222,7 @@ class Chat extends React.Component {
   //   let close = () => {
   //     this.friend.setCurMod(undefined)
   //     this.setCoworkMode(false)
-  //     GLOBAL.coworkMode = false
+  //     global.coworkMode = false
   //     this.friend.leaveCowork()
   //     this.props.navigation.replace('CoworkTabs', {
   //       targetId: this.targetId,
@@ -237,8 +237,8 @@ class Chat extends React.Component {
   //   if (mapOpen) {
   //     SMap.mapIsModified().then(async result => {
   //       if (result) {
-  //         GLOBAL.SaveMapView &&
-  //           GLOBAL.SaveMapView.setVisible(true, null, async () => {
+  //         global.SaveMapView &&
+  //           global.SaveMapView.setVisible(true, null, async () => {
   //             await this.props.closeMap()
   //             close()
   //             this.props.navigation.pop()
@@ -537,9 +537,9 @@ class Chat extends React.Component {
             msgId: msgId,
             percentage: 0,
           })
-          Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL_NETWORK)
+          Toast.show(getLanguage(global.language).Friends.SEND_FAIL_NETWORK)
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Friends.SEND_SUCCESS)
+          Toast.show(getLanguage(global.language).Friends.SEND_SUCCESS)
         }
       },
     )
@@ -629,7 +629,7 @@ class Chat extends React.Component {
         message: {
           fileName: data.filename || fileName,
           fileSize: statResult.size,
-          filePath: hasTempFile ? uri : filePath.replace(GLOBAL.homePath, ''),
+          filePath: hasTempFile ? uri : filePath.replace(global.homePath, ''),
           imgdata: imgData,
           progress: 0,
         },
@@ -662,7 +662,7 @@ class Chat extends React.Component {
         RNFS.unlink(filePath)
       }
       if (!result) {
-        Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL)
+        Toast.show(getLanguage(global.language).Friends.SEND_FAIL)
       }
     }
     if (sendToServer) {
@@ -721,7 +721,7 @@ class Chat extends React.Component {
             msgId: message._id,
             percentage: 0,
           })
-          let absolutePath = GLOBAL.homePath + receivePath + '/' + storeFileName
+          let absolutePath = global.homePath + receivePath + '/' + storeFileName
           if (await FileTools.fileIsExist(absolutePath)) {
             FileTools.deleteFile(absolutePath)
           }
@@ -733,7 +733,7 @@ class Chat extends React.Component {
 
   receivePicture = async message => {
     if (message.download) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.WAIT_DOWNLOADING)
+      Toast.show(getLanguage(global.language).Friends.WAIT_DOWNLOADING)
       return
     }
     let homePath = await FileTools.appendingHomeDirectory()
@@ -810,7 +810,7 @@ class Chat extends React.Component {
   onCustomViewPictureTouch = async message => {
     let homePath = await FileTools.appendingHomeDirectory()
     if (message.downloading) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.WAIT_DOWNLOADING)
+      Toast.show(getLanguage(global.language).Friends.WAIT_DOWNLOADING)
     } else if (!message.originMsg.message.message.filePath) {
       let fileSize = message.originMsg.message.message.fileSize
       let fileSizeText = fileSize.toFixed(2) + 'B'
@@ -824,7 +824,7 @@ class Chat extends React.Component {
       }
       this.SimpleDialog.set({
         text:
-          getLanguage(GLOBAL.language).Friends.LOAD_ORIGIN_PIC +
+          getLanguage(global.language).Friends.LOAD_ORIGIN_PIC +
           '(' +
           fileSizeText +
           ')？',
@@ -856,15 +856,15 @@ class Chat extends React.Component {
   }
 
   onCustomViewLocationTouch = async message => {
-    if (GLOBAL.coworkMode) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.LOCATION_COWORK_NOTIFY)
+    if (global.coworkMode) {
+      Toast.show(getLanguage(global.language).Friends.LOCATION_COWORK_NOTIFY)
     } else if (this.action) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.LOCATION_SHARE_NOTIFY)
+      Toast.show(getLanguage(global.language).Friends.LOCATION_SHARE_NOTIFY)
     } else {
-      let wsData = JSON.parse(JSON.stringify(GLOBAL.language === 'CN'? ConstOnline.OSM:ConstOnline.Google))
+      let wsData = JSON.parse(JSON.stringify(global.language === 'CN'? ConstOnline.OSM:ConstOnline.Google))
       wsData.layerIndex = 0
       let licenseStatus = await SMap.getEnvironmentStatus()
-      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+      global.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapView', {
         wsData,
         isExample: true,
@@ -885,10 +885,10 @@ class Chat extends React.Component {
 
     if (message.user._id !== this.curUser.userName) {
       if (message.downloading) {
-        Toast.show(getLanguage(GLOBAL.language).Friends.WAIT_DOWNLOADING)
+        Toast.show(getLanguage(global.language).Friends.WAIT_DOWNLOADING)
       } else if (message.originMsg.message.message.progress !== 100) {
         this.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Friends.RECEIVE_CONFIRM,
+          text: getLanguage(global.language).Friends.RECEIVE_CONFIRM,
           confirmAction: () => {
             this.receiveFile(message, receivePath)
           },
@@ -899,7 +899,7 @@ class Chat extends React.Component {
         let filePath = homePath + message.originMsg.message.message.filePath
         if (!(await FileTools.fileIsExist(filePath))) {
           this.SimpleDialog.set({
-            text: getLanguage(GLOBAL.language).Friends.DATA_NOT_FOUND,
+            text: getLanguage(global.language).Friends.DATA_NOT_FOUND,
             confirmAction: () => {
               this.receiveFile(message, receivePath)
             },
@@ -939,11 +939,11 @@ class Chat extends React.Component {
             this.showImportDataDialog('xml_template', message)
             break
           case MSGConstant.MSG_LAYER:
-            if (!GLOBAL.coworkMode) {
+            if (!global.coworkMode) {
               this.showOpenCoworkDialog()
             } else {
               this.SimpleDialog.set({
-                text: getLanguage(GLOBAL.language).Friends.IMPORT_CONFIRM,
+                text: getLanguage(global.language).Friends.IMPORT_CONFIRM,
                 confirmAction: () => {
                   this.importLayer(message)
                 },
@@ -952,11 +952,11 @@ class Chat extends React.Component {
             }
             break
           case MSGConstant.MSG_DATASET:
-            if (!GLOBAL.coworkMode) {
+            if (!global.coworkMode) {
               this.showOpenCoworkDialog()
             } else {
               this.SimpleDialog.set({
-                text: getLanguage(GLOBAL.language).Friends.IMPORT_CONFIRM,
+                text: getLanguage(global.language).Friends.IMPORT_CONFIRM,
                 confirmAction: () => {
                   this.importDataset(message)
                 },
@@ -975,7 +975,7 @@ class Chat extends React.Component {
   importDataset = async message => {
     if (CoworkInfo.coworkId !== '') {
       Toast.show(
-        getLanguage(GLOBAL.language).Friends.ONLINECOWORK_DISABLE_OPERATION,
+        getLanguage(global.language).Friends.ONLINECOWORK_DISABLE_OPERATION,
       )
       return
     }
@@ -985,8 +985,8 @@ class Chat extends React.Component {
     } catch (error) {
       mapOpen = false
     }
-    if (!(GLOBAL.coworkMode && mapOpen)) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.OPENCOWORKFIRST)
+    if (!(global.coworkMode && mapOpen)) {
+      Toast.show(getLanguage(global.language).Friends.OPENCOWORKFIRST)
       return
     }
     let homePath = await FileTools.appendingHomeDirectory()
@@ -1082,13 +1082,13 @@ class Chat extends React.Component {
     }
 
     await FileTools.deleteFile(fileDir)
-    Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_SUCCESS)
+    Toast.show(getLanguage(global.language).Friends.IMPORT_SUCCESS)
   }
 
   importLayer = async message => {
     if (CoworkInfo.coworkId !== '') {
       Toast.show(
-        getLanguage(GLOBAL.language).Friends.ONLINECOWORK_DISABLE_OPERATION,
+        getLanguage(global.language).Friends.ONLINECOWORK_DISABLE_OPERATION,
       )
       return
     }
@@ -1098,8 +1098,8 @@ class Chat extends React.Component {
     } catch (error) {
       mapOpen = false
     }
-    if (!(GLOBAL.coworkMode && mapOpen)) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.OPENCOWORKFIRST)
+    if (!(global.coworkMode && mapOpen)) {
+      Toast.show(getLanguage(global.language).Friends.OPENCOWORKFIRST)
       return
     }
     let homePath = await FileTools.appendingHomeDirectory()
@@ -1126,14 +1126,14 @@ class Chat extends React.Component {
       SMap.refreshMap()
     })
     // NavigationService.navigate('MapView')
-    Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_SUCCESS)
+    Toast.show(getLanguage(global.language).Friends.IMPORT_SUCCESS)
   }
 
   importFileData = async (type, message) => {
     if (!type) return
-    GLOBAL.Loading.setLoading(
+    global.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Friends.IMPORT_DATA,
+      getLanguage(global.language).Friends.IMPORT_DATA,
     )
     let homePath = await FileTools.appendingHomeDirectory()
     let receivePath = homePath + message.originMsg.message.message.filePath
@@ -1153,16 +1153,16 @@ class Chat extends React.Component {
         ? Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
         : Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.IMPORT_FAIL)
+      Toast.show(getLanguage(global.language).Friends.IMPORT_FAIL)
     } finally {
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
       FileTools.deleteFile(importPath)
     }
   }
 
   showImportDataDialog = (type, message) => {
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Friends.IMPORT_CONFIRM,
+      text: getLanguage(global.language).Friends.IMPORT_CONFIRM,
       confirmAction: () => {
         this.importFileData(type, message)
       },
@@ -1172,7 +1172,7 @@ class Chat extends React.Component {
 
   showOpenCoworkDialog = () => {
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Friends.OPENCOWORKFIRST,
+      text: getLanguage(global.language).Friends.OPENCOWORKFIRST,
       confirmAction: () => {
         NavigationService.navigate('SelectModule')
       },
@@ -1182,7 +1182,7 @@ class Chat extends React.Component {
 
   _headerLeft = () => {
     let imgSize, dotLeft
-    if (GLOBAL.getDevice().orientation && GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
+    if (global.getDevice().orientation && global.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
       imgSize = scaleSize(40)
       dotLeft = scaleSize(35)
     } else {
@@ -1277,15 +1277,15 @@ class Chat extends React.Component {
           ) : null} */}
           <GiftedChat
             ref={ref => (this.GiftedChat = ref)}
-            locale={getLanguage(GLOBAL.language).Friends.LOCALE}
-            placeholder={getLanguage(GLOBAL.language).Friends.INPUT_MESSAGE}
+            locale={getLanguage(global.language).Friends.LOCALE}
+            placeholder={getLanguage(global.language).Friends.INPUT_MESSAGE}
             messages={this.state.messages}
             showAvatarForEveryMessage={true}
             onSend={this.onSend}
             loadEarlier={this.state.loadEarlier}
             onLoadEarlier={this.onLoadEarlier}
             isLoadingEarlier={this.state.isLoadingEarlier}
-            label={getLanguage(GLOBAL.language).Friends.LOAD_EARLIER}
+            label={getLanguage(global.language).Friends.LOAD_EARLIER}
             showUserAvatar={this.state.showUserAvatar}
             renderAvatarOnTop={false}
             user={{
@@ -1307,7 +1307,7 @@ class Chat extends React.Component {
                   <InputToolbar
                     {...props}
                     textStyle={{color: color.fontColorGray2}}
-                    label={getLanguage(GLOBAL.language).Friends.SEND}
+                    label={getLanguage(global.language).Friends.SEND}
                   />
                 )
               }

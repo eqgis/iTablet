@@ -55,7 +55,7 @@ export default class TemplateDetail extends React.Component {
 
   constructor(props) {
     super(props)
-    let params = this.props.navigation.state.params || {}
+    let params = this.props.route.params || {}
 
     this.path = params.path || ''
     this.oldData = params.data || {}
@@ -204,7 +204,7 @@ export default class TemplateDetail extends React.Component {
   }
 
   confirm = async () => {
-    let params = this.props.navigation.state.params || {}
+    let params = this.props.route.params || {}
     if (params.title) {
       await this.goBack({
         title: params.title,
@@ -273,7 +273,7 @@ export default class TemplateDetail extends React.Component {
           }
         }
 
-        let params = this.props.navigation.state.params
+        let params = this.props.route.params
         if (params && params.cb && typeof params.cb === 'function') {
           params.cb()
         }
@@ -497,8 +497,8 @@ export default class TemplateDetail extends React.Component {
             })
             this.dialog.setDialogVisible(false)
           }}
-          confirmBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
-          cancelBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CANCEL}
+          confirmBtnTitle={getLanguage(global.language).Map_Settings.CONFIRM}
+          cancelBtnTitle={getLanguage(global.language).Map_Settings.CANCEL}
         />
       </Container>
     )

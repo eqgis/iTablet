@@ -306,17 +306,17 @@ class GroupFriendListPage extends Component<Props, State> {
     let isMultiSelect = this.mode === 'multiSelect'
     if (isMultiSelect) {
       // if (this.state.selectedMembers.size === 0) {
-      //   Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
+      //   Toast.show(getLanguage(global.language).Friends.GROUP_SELECT_MEMBER)
       //   return
       // }
       this._multiSelectConfirm()
     } else if (this.state.isManage) {
       // if (this.state.selectedMembers.size === 0) {
-      //   Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
+      //   Toast.show(getLanguage(global.language).Friends.GROUP_SELECT_MEMBER)
       //   return
       // }
 
-      this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_DELETE_INFO)
+      this._setDialogVisible(true, getLanguage(global.language).Friends.GROUP_MEMBER_DELETE_INFO)
       this.dialogAction = () => {
         let userIds: Array<string> = []
         this.state.selectedMembers.forEach((member: any) => {
@@ -478,7 +478,7 @@ class GroupFriendListPage extends Component<Props, State> {
               {color: color.itemColorGray3},
             ]}
           >
-            {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
+            {getLanguage(global.language).Profile.SELECT_ALL}
           </Text>
           {/* <TouchableOpacity></TouchableOpacity> */}
           <TextBtn

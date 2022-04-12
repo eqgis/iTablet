@@ -22,8 +22,8 @@ export default class MyOnlineMap extends Component {
     super(props)
     this.screenWidth = Dimensions.get('window').width
     this.state = {
-      scenes: this.props.navigation.getParam('scenes', []),
-      mapInfos: this.props.navigation.getParam('mapInfos', []),
+      scenes: this.props.route.params.scenes || [],
+      mapInfos: this.props.route.paramsmapInfos || [],
       progressWidth: this.screenWidth * 0.6,
       isLoadingProgressView: true,
     }
@@ -67,7 +67,7 @@ export default class MyOnlineMap extends Component {
   }
   _loadOnlineData = async () => {
     try {
-      let uri = this.props.navigation.getParam('uri', 'null')
+      let uri = this.props.route.params.uri || null
       if (uri === undefined || uri === null || uri === 'null') {
         this.setState({ isLoadingProgressView: false })
         return
@@ -118,7 +118,7 @@ export default class MyOnlineMap extends Component {
         }
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     } finally {
       this.setState({ isLoadingProgressView: false })
       this._clearInterval()
@@ -171,7 +171,7 @@ export default class MyOnlineMap extends Component {
                   },
                 ]}
               >
-                {getLanguage(GLOBAL.language).Profile.BROWSE_MAP}
+                {getLanguage(global.language).Profile.BROWSE_MAP}
                 {/* 浏览地图 */}
               </Text>
             </View>
@@ -227,13 +227,13 @@ export default class MyOnlineMap extends Component {
       if (this.state.mapInfos.length > 0) {
         sectionsData = [
           {
-            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
+            title: getLanguage(global.language).Profile.MAP_2D,
             //'二维地图',
             data: this.state.mapInfos,
           },
 
           {
-            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
+            title: getLanguage(global.language).Profile.MAP_2D,
             //'三维场景',
             data: this.state.scenes,
           },
@@ -241,7 +241,7 @@ export default class MyOnlineMap extends Component {
       } else {
         sectionsData = [
           {
-            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
+            title: getLanguage(global.language).Profile.MAP_2D,
             //'三维场景',
             data: this.state.scenes,
           },
@@ -251,7 +251,7 @@ export default class MyOnlineMap extends Component {
       if (this.state.mapInfos.length > 0) {
         sectionsData = [
           {
-            title: getLanguage(GLOBAL.language).Profile.MAP_2D,
+            title: getLanguage(global.language).Profile.MAP_2D,
             //'二维地图',
             data: this.state.mapInfos,
           },
@@ -290,7 +290,7 @@ export default class MyOnlineMap extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.MAP_ONLINE,
+          title: getLanguage(global.language).Profile.MAP_ONLINE,
           //'在线地图',
           withoutBack: false,
           navigation: this.props.navigation,

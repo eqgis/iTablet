@@ -125,7 +125,7 @@ import { FunctionExampleTypes } from './index'
  *   height:              工具栏高度
  *   containerType:       容器的类型, list | table
  *   resetToolModuleData: 是否重置ToolbarModule中的data
- *   touchType:           setVisible之后 GLOBAL.TouchType的值
+ *   touchType:           setVisible之后 global.TouchType的值
  *   isExistFullMap:      setVisible之后是否退出全屏
  *   themeType:           专题类型
  *

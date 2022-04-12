@@ -15,7 +15,7 @@ import { FileTools } from '../../native'
 import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
 import { Progress, MediaViewer, ImagePicker } from '../../components'
-import { RNCamera } from 'react-native-camera'
+import { Camera as RNCamera } from 'react-native-vision-camera'
 import { SMediaCollector,SMap  } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { getLanguage } from '../../language'
@@ -49,7 +49,7 @@ export default class Camera extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName || 'MediaDataset'
     this.limit = params.limit >= 0 ? params.limit : 9
@@ -78,7 +78,7 @@ export default class Camera extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    // GLOBAL.isPad && Orientation.lockToPortrait()
+    // global.isPad && Orientation.lockToPortrait()
   }
 
   componentWillUnmount() {
@@ -87,7 +87,7 @@ export default class Camera extends React.Component {
       this.recordTimer = null
     }
     SMap.setDynamicviewsetVisible(true)
-    // GLOBAL.isPad && Orientation.unlockAllOrientations()
+    // global.isPad && Orientation.unlockAllOrientations()
     Platform.OS === 'android' && BackHandler.removeEventListener('hardwareBackPress', this.back)
   }
 
@@ -208,8 +208,8 @@ export default class Camera extends React.Component {
   }
 
   addMedia = async (mediaPaths = []) => {
-    if(GLOBAL.layerSelection !== undefined){
-      this.ids = GLOBAL.layerSelection.ids
+    if(global.layerSelection !== undefined){
+      this.ids = global.layerSelection.ids
     }
     // TODO 添加提示
     if (!this.datasourceAlias) return

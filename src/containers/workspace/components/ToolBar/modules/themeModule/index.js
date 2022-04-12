@@ -46,7 +46,7 @@ class ThemeModule extends FunctionModule {
 export default function() {
   return new ThemeModule({
     type: ConstToolType.SM_MAP_THEME,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.THEME,
+    title: getLanguage(global.language).Map_Main_Menu.THEME,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_thematic,
     getData: ThemeData.getData,

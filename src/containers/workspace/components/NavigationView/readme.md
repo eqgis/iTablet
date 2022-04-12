@@ -37,7 +37,7 @@
             endX: 终点经度
             endY: 终点纬度
             isIndoor: 是否室内 false
-            hasNaved: 是否已导航（GLOBAL.NAV_PARAMS[0]的此项需要设置为true，后面的设置为false）
+            hasNaved: 是否已导航（global.NAV_PARAMS[0]的此项需要设置为true，后面的设置为false）
             datasourceName: 数据源名称
             datasetName: 数据集名称
             modelFileName: 模型文件名称
@@ -52,6 +52,6 @@
             endFloor: 终点楼层ID
             datasourceName: 数据源名称
             isIndoor: 是否室内 true
-            hasNaved: 是否已导航（GLOBAL.NAV_PARAMS[0]的此项需要设置为true，后面的设置为false）
+            hasNaved: 是否已导航（global.NAV_PARAMS[0]的此项需要设置为true，后面的设置为false）
          }
      ```

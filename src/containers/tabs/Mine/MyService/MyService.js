@@ -21,9 +21,9 @@ import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
 import styles from './Styles'
 import { color, size } from '../../../../styles'
 import Toast from '../../../../utils/Toast'
-import { scaleSize, OnlineServicesUtils,  GetUserBaseMapUtil} from '../../../../utils'
+import { scaleSize, OnlineServicesUtils } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
-import { ConstOnline, UserType } from '../../../../constants'
+import { UserType } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 
 /**
@@ -44,16 +44,15 @@ export default class MyService extends Component {
     user: Object,
     device: Object,
     setUser: () => {},
-    setBaseMap: () => {},
   }
   constructor(props) {
     super(props)
     this.screenWidth = Dimensions.get('window').width
     ;(this.publishServiceTitle = getLanguage(
-      GLOBAL.language,
+      global.language,
     ).Profile.PUBLIC_SERVICE),
     (this.privateServiceTitle = getLanguage(
-      GLOBAL.language,
+      global.language,
     ).Profile.PRIVATE_SERVICE),
     (this.state = {
       arrPrivateServiceList: _arrPrivateServiceList,
@@ -78,52 +77,9 @@ export default class MyService extends Component {
   componentDidMount() {
     this._initFirstSectionData()
   }
-
-  componentWillUnmount() { 
+  componentWillUnmount() {
     this._clearInterval()
   }
-
-  /**
-   * @author lyx
-   * 加载当前用户的底图
-   */
-   async loadUserBaseMaps(){
-    // let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
-    GetUserBaseMapUtil.setCurUserBaseMapsTool()
-    let arrPublishServiceList = JSON.parse(JSON.stringify(_arrPublishServiceList))
-
-    // 若公有服务列表只有一个为空的对象，就需要先将这个数组元素给删除掉
-    if (
-      arrPublishServiceList.length === 1 &&
-      arrPublishServiceList[0].id === undefined
-    ) {
-      arrPublishServiceList.splice(0, 1)
-    }
-
-    // 当公有服务列表数组有元素时，就遍历这个数组
-    if (arrPublishServiceList.length > 0) {
-      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
-        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
-        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl){
-          let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
-          // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
-          this.props.setBaseMap &&
-            this.props.setBaseMap({
-              userId: currentUser.userId,
-              baseMaps: list,
-            })
-        }
-      }
-    } else if(arrPublishServiceList.length === 0) {
-      let list = GetUserBaseMapUtil.getCommonBaseMap()
-      this.props.setBaseMap &&
-      this.props.setBaseMap({
-        userId: currentUser.userId,
-        baseMaps: list,
-      })
-    }
-  }
-
   _clearInterval = () => {
     if (this.objProgressWidth !== undefined) {
       clearInterval(this.objProgressWidth)
@@ -246,7 +202,6 @@ export default class MyService extends Component {
     }
   }
 
-  /** 修改 online 和 iportal 的服务数据 */
   _publishService = async () => {
     this._onCloseModal()
     let isPublish = !this.onClickItemIsPublish
@@ -262,15 +217,8 @@ export default class MyService extends Component {
         isPublish,
       )
     }
-
-    let loadText = getLanguage(this.props.language).Prompt.LOADING
-    this.container.setLoading(
-      true,
-      loadText,
-    )
-
     if (typeof result === 'boolean' && result) {
-      // Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
+      Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
       this._onModalRefresh2(
         null,
         this.onClickItemIsPublish,
@@ -278,18 +226,16 @@ export default class MyService extends Component {
         this.onClickItemIndex,
       )
     } else {
-      //关闭加载动画
-      this.container.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
     }
   }
 
   _deleteService = async () => {
     try {
       this._onCloseModal()
-      GLOBAL.Loading.setLoading(
+      global.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.DELETING_SERVICE,
+        getLanguage(global.language).Prompt.DELETING_SERVICE,
       )
 
       let deletPromise
@@ -324,7 +270,7 @@ export default class MyService extends Component {
           true,
           this.onClickItemIndex,
         )
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DELETED_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.DELETED_SUCCESS)
         //'删除成功')
       } else if (typeof result === 'boolean' && !result) {
         this.deleteService = true
@@ -334,16 +280,16 @@ export default class MyService extends Component {
           true,
           this.onClickItemIndex,
         )
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DELETED_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.DELETED_SUCCESS)
         //'删除成功')
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+        Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
         //'删除失败')
       }
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     } catch (error) {
-      GLOBAL.Loading.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+      global.Loading.setLoading(false)
+      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
       //'删除失败')
     }
   }
@@ -436,7 +382,7 @@ export default class MyService extends Component {
             { backgroundColor: color.content_white, textAlign: 'center' },
           ]}
         >
-          {getLanguage(GLOBAL.language).Profile.NO_SERVICE}
+          {getLanguage(global.language).Profile.NO_SERVICE}
           {/* 没有服务 */}
         </Text>
       </View>
@@ -477,16 +423,16 @@ export default class MyService extends Component {
     let data = [
       {
         title: this.onClickItemIsPublish
-          ? getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_SERVICE
-          : getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_SERVICE,
+          ? getLanguage(global.language).Profile.SET_AS_PRIVATE_SERVICE
+          : getLanguage(global.language).Profile.SET_AS_PUBLIC_SERVICE,
         action: this._publishService,
       },
       {
-        title: getLanguage(GLOBAL.language).Cowork.SERVICE_SHARING_SETTINGS,
+        title: getLanguage(global.language).Cowork.SERVICE_SHARING_SETTINGS,
         action: this._shareToGroup,
       },
       {
-        title: getLanguage(GLOBAL.language).Profile.DELETE,
+        title: getLanguage(global.language).Profile.DELETE,
         action: this._deleteService,
       },
     ]
@@ -504,24 +450,14 @@ export default class MyService extends Component {
     )
   }
 
-  /**
-   * 修改页面显示上的数据
-   * @param {any} itemId  
-   * @param {boolean} isPublish 服务修改前的公有性标识
-   * @param {boolean} isDelete 是否是执行的删除方法的标识
-   * @param {number} index 当前点击项的索引
-   */
   _onModalRefresh2 = async (itemId, isPublish, isDelete, index) => {
     if (index !== undefined) {
       if (isPublish) {
-        // 修改前是公有的服务
         if (isDelete) {
-          // 是从删除方法进来的，删除的是公有服务
           _arrPublishServiceList.splice(index, 1)
           let total = this.serviceListTotal - 1
           this.serviceListTotal = total
         } else {
-          // 是从修改服务公有性的方法进来的，将服务从公有改为私有
           let objPublishList = _arrPublishServiceList[index]
           let strRestTitle = objPublishList.restTitle
           let strThumbnail = objPublishList.thumbnail
@@ -530,7 +466,6 @@ export default class MyService extends Component {
           let arrMapInfos = objPublishList.mapInfos
           let authorizeSetting = objPublishList.authorizeSetting
           let bIsPublish = false
-          // 构造sectionData数据
           let strSectionsData =
             '{"restTitle":"' +
             strRestTitle +
@@ -547,9 +482,7 @@ export default class MyService extends Component {
             ',"authorizeSetting":' +
             JSON.stringify(authorizeSetting) +
             '}'
-          // 将构造的sectionData数据设置为json数据
           let objPrivateList = JSON.parse(strSectionsData)
-          // 若私有服务列表只有一个为空的对象，就需要先将这个数组元素给删除掉
           if (
             _arrPrivateServiceList.length === 1 &&
             _arrPrivateServiceList[0].id === undefined
@@ -557,20 +490,15 @@ export default class MyService extends Component {
             _arrPrivateServiceList.splice(0, 1)
           }
 
-          // 在私有服务列表添加该sectionData的json数据
           _arrPrivateServiceList.push(objPrivateList)
-          // 在公有服务列表里将该服务数据删除掉
           _arrPublishServiceList.splice(index, 1)
         }
       } else {
-        // 修改前是私有的服务
         if (isDelete) {
-          // 是从删除方法进来的，删除的是私有服务
           _arrPrivateServiceList.splice(index, 1)
           let total = this.serviceListTotal - 1
           this.serviceListTotal = total
         } else {
-          // 是从修改服务公有性的方法进来的，将服务从私有改为公有
           let objPrivateList = _arrPrivateServiceList[index]
           let strRestTitle = objPrivateList.restTitle
           let strThumbnail = objPrivateList.thumbnail
@@ -606,11 +534,9 @@ export default class MyService extends Component {
           _arrPrivateServiceList.splice(index, 1)
         }
       }
-      // 若设置完成后私有服务列表为空则给它一个空对象占位
       if (_arrPrivateServiceList.length === 0) {
         _arrPrivateServiceList.push({})
       }
-      // 若设置完成后公有服务列表为空则给它一个空对象占位
       if (_arrPublishServiceList.length === 0) {
         _arrPublishServiceList.push({})
       }
@@ -619,11 +545,6 @@ export default class MyService extends Component {
     this.setState({
       arrPrivateServiceList: _arrPrivateServiceList,
       arrPublishServiceList: _arrPublishServiceList,
-    }, async () => {
-      await this.loadUserBaseMaps()
-      //关闭加载动画
-      this.container.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
     })
   }
 
@@ -715,7 +636,7 @@ export default class MyService extends Component {
               color: color.font_color_white,
             }}
           >
-            {getLanguage(GLOBAL.language).Prompt.LOADING}
+            {getLanguage(global.language).Prompt.LOADING}
             {/* //加载中... */}
           </Text>
         </View>
@@ -799,7 +720,7 @@ export default class MyService extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
+          title: getLanguage(global.language).Profile.MY_SERVICE,
 
           //'我的服务',
           withoutBack: false,

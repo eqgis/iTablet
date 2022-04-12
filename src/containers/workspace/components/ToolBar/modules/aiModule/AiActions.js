@@ -20,11 +20,11 @@ function illegallyParkCollect() {
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
     )
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    global.toolBox && global.toolBox.removeAIDetect(true)
     if (dataList.length > 0) {
-      if (GLOBAL.showAIDetect) {
-        GLOBAL.arSwitchToMap = true
-        ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+      if (global.showAIDetect) {
+        global.arSwitchToMap = true
+        ;(await global.toolBox) && global.toolBox.switchAr()
       }
       let taggingLayerData = await getTaggingLayerData()
       const dataList = await SMap.getTaggingLayers(
@@ -35,7 +35,7 @@ function illegallyParkCollect() {
           taggingLayerData.datasourceAlias === dataList[i].datasourceAlias &&
           taggingLayerData.datasetName === dataList[i].datasetName
         ) {
-          GLOBAL.currentLayer = dataList[i]
+          global.currentLayer = dataList[i]
           break
         }
       }
@@ -54,7 +54,7 @@ function illegallyParkCollect() {
 
 async function getTaggingLayerData() {
   const _params = ToolbarModule.getParams()
-  let currentLayer = GLOBAL.currentLayer
+  let currentLayer = global.currentLayer
   let isTaggingLayer = false
   if (currentLayer) {
     let layerType = LayerUtils.getLayerType(currentLayer)
@@ -103,10 +103,10 @@ function aiClassify() {
         (await FileTools.fileIsExist(this.dustbin_model)) &&
         (await FileTools.fileIsExist(this.dustbin_txt))
       if (isDustbin) {
-        GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-        if (GLOBAL.showAIDetect) {
-          GLOBAL.arSwitchToMap = true
-          ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+        global.toolBox && global.toolBox.removeAIDetect(true)
+        if (global.showAIDetect) {
+          global.arSwitchToMap = true
+          ;(await global.toolBox) && global.toolBox.switchAr()
         }
         let taggingLayerData = await getTaggingLayerData()
         const dataList = await SMap.getTaggingLayers(
@@ -117,7 +117,7 @@ function aiClassify() {
             taggingLayerData.datasourceAlias === dataList[i].datasourceAlias &&
             taggingLayerData.datasetName === dataList[i].datasetName
           ) {
-            GLOBAL.currentLayer = dataList[i]
+            global.currentLayer = dataList[i]
             break
           }
         }
@@ -200,10 +200,10 @@ function _downloadData(downloadData) {
 function aiDetect() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    global.toolBox && global.toolBox.removeAIDetect(false)
+    if (global.showAIDetect) {
+      global.arSwitchToMap = true
+      ;(await global.toolBox) && global.toolBox.switchAr()
     }
     let taggingLayerData = await getTaggingLayerData()
     const dataList = await SMap.getTaggingLayers(
@@ -214,7 +214,7 @@ function aiDetect() {
         taggingLayerData.datasourceAlias === dataList[i].datasourceAlias &&
         taggingLayerData.datasetName === dataList[i].datasetName
       ) {
-        GLOBAL.currentLayer = dataList[i]
+        global.currentLayer = dataList[i]
         break
       }
     }
@@ -232,16 +232,16 @@ function aiDetect() {
         image: getThemeAssets().toolbar.icon_toolbar_setting,
       },
     ]
-    ;(await GLOBAL.toolBox) &&
-      GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
+    ;(await global.toolBox) &&
+      global.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
         buttons: buttons,
         isFullScreen: false,
         height: 0,
       })
-    GLOBAL.AIDETECTCHANGE.setVisible(true, getLanguage(
-      GLOBAL.language,
+    global.AIDETECTCHANGE.setVisible(true, getLanguage(
+      global.language,
     ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT)
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    ;(await global.toolBox) && global.toolBox.switchAr()
   })()
 }
 
@@ -249,17 +249,17 @@ function aiDetect() {
 function polymerizeCollect() {
   // await SAIDetectView.setIsPolymerize(true)
   // await SAIDetectView.startDetect()
-  // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-  // ;(await GLOBAL.toolBox) && GLOBAL.toolBox.setVisible(false)
-  // if (!GLOBAL.showAIDetect) {
-  //   (await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  // global.toolBox && global.toolBox.removeAIDetect(false)
+  // ;(await global.toolBox) && global.toolBox.setVisible(false)
+  // if (!global.showAIDetect) {
+  //   (await global.toolBox) && global.toolBox.switchAr()
   // }
   (async function() {
     const _params = ToolbarModule.getParams()
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    global.toolBox && global.toolBox.removeAIDetect(false)
+    if (global.showAIDetect) {
+      global.arSwitchToMap = true
+      ;(await global.toolBox) && global.toolBox.switchAr()
     }
     let taggingLayerData = await getTaggingLayerData()
     const dataList = await SMap.getTaggingLayers(
@@ -270,7 +270,7 @@ function polymerizeCollect() {
         taggingLayerData.datasourceAlias === dataList[i].datasourceAlias &&
         taggingLayerData.datasetName === dataList[i].datasetName
       ) {
-        GLOBAL.currentLayer = dataList[i]
+        global.currentLayer = dataList[i]
         break
       }
     }
@@ -287,27 +287,27 @@ function polymerizeCollect() {
         image: getThemeAssets().toolbar.icon_toolbar_setting,
       },
     ]
-    ;(await GLOBAL.toolBox) &&
-      GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
+    ;(await global.toolBox) &&
+      global.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
         buttons: buttons,
         isFullScreen: false,
         height: 0,
       })
-    GLOBAL.AIDETECTCHANGE.setVisible(true, getLanguage(
-      GLOBAL.language,
+    global.AIDETECTCHANGE.setVisible(true, getLanguage(
+      global.language,
     ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT)
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    ;(await global.toolBox) && global.toolBox.switchAr()
   })()
 }
 
 // 人体姿态
 function poseEstimation() {
   (async function() {
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    global.toolBox && global.toolBox.removeAIDetect(true)
 
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    if (global.showAIDetect) {
+      global.arSwitchToMap = true
+      ;(await global.toolBox) && global.toolBox.switchAr()
     }
 
     setTimeout(async () => {
@@ -319,50 +319,50 @@ function poseEstimation() {
 // 手势骨骼
 function gestureBone() {
   (async function() {
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    global.toolBox && global.toolBox.removeAIDetect(true)
 
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    if (global.showAIDetect) {
+      global.arSwitchToMap = true
+      ;(await global.toolBox) && global.toolBox.switchAr()
     }
 
     setTimeout(async () => {
       // NavigationService.navigate('AIGestureBoneView')
       let info = {}
       info.gestureTitle = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AI_GESTURE_BONE //放大
       info.zoom = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY //放大
       info.shrink = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK //缩小
-      info.full = getLanguage(GLOBAL.language).Map_Main_Menu.FULL_SCREEN //全幅
+      info.full = getLanguage(global.language).Map_Main_Menu.FULL_SCREEN //全幅
       info.associationCancel = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL //取消关联
       info.association = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ASSOCIATION //关联地图
       info.switchCamera = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA //切换相机
       info.location = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Attribute.ATTRIBUTE_LOCATION //定位
       info.gestureDetail = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AI_GESTURE_BONE_DETAIL //手势详情
       info.close = getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AI_GESTURE_BONE_CLOSE //关闭
-      // SMap.toGestureBoneView(getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_GESTURE_BONE)
+      // SMap.toGestureBoneView(getLanguage(global.language).Map_Main_Menu.MAP_AI_GESTURE_BONE)
       SMap.toGestureBoneView(info)
       SMap.addGestureBoneFinishListener(() => {
-        GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-        if (!GLOBAL.showAIDetect) {
-          GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+        global.toolBox && global.toolBox.removeAIDetect(false)
+        if (!global.showAIDetect) {
+          global.toolBox && global.toolBox.switchAr()
         }
         SMap.removeGestureBoneFinishListener()
       })

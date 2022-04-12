@@ -11,6 +11,7 @@ import {
   TextInput,
   FlatList,
   Image,
+  dismissKeyboard,
 } from 'react-native'
 import NavigationService from '../../NavigationService'
 import { scaleSize } from '../../../utils/screen'
@@ -25,7 +26,6 @@ import { getThemeAssets } from '../../../assets'
 import MSGConstant from '../../../constants/MsgConstant'
 import { UserType } from '../../../constants'
 
-const dismissKeyboard = require('dismissKeyboard')
 class AddFriend extends Component {
   props: {
     navigation: Object,
@@ -36,13 +36,13 @@ class AddFriend extends Component {
     this.screenWidth = Dimensions.get('window').width
     this.target
     this.friend = {}
-    this.user = this.props.navigation.getParam('user')
+    this.user = this.props.route.params.user
     this.state = {
       list: [],
       isLoading: false,
       text: '',
     }
-    this.language = this.props.navigation.getParam('language')
+    this.language = this.props.route.params.language
     if (UserType.isIPortalUser(this.user)) {
       this.onlineServices = new OnlineServicesUtils('iportal')
     } else {
@@ -50,8 +50,8 @@ class AddFriend extends Component {
     }
   }
   componentDidMount() {
-    this.friend = this.props.navigation.getParam('friend')
-    this.user = this.props.navigation.getParam('user')
+    this.friend = this.props.route.params.friend
+    this.user = this.props.route.params.user
   }
 
   renderSearchBar = () => {
@@ -250,7 +250,7 @@ class AddFriend extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.ADD_FRIENDS,
+          title: getLanguage(global.language).Friends.ADD_FRIENDS,
           //'添加好友',
           withoutBack: false,
           navigation: this.props.navigation,

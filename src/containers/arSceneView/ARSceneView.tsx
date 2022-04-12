@@ -47,30 +47,30 @@ export default class ARSceneView extends React.Component<IProps> {
     SSceneAR.setFileExistsListener({
       callback: async result => {
         if (!result) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.FILE_NOT_EXISTS)
+          Toast.show(getLanguage(global.language).Prompt.FILE_NOT_EXISTS)
         }
       },
     })
     SSceneAR.setSceneOpenListener({
       callback: async result => {
         if (result) {
-          GLOBAL.isSceneOpen = true
+          global.isSceneOpen = true
           this.toolbar && this.toolbar.setVisible(true, 'SM_ARSCENEMODULE', {
             type: 'table',
           })
-          GLOBAL.Loading.setLoading(false)
+          global.Loading.setLoading(false)
           setTimeout(()=>{
-            Toast.show(getLanguage(GLOBAL.language).Prompt.SUCCESS)
+            Toast.show(getLanguage(global.language).Prompt.SUCCESS)
           },1000)
         }else{
-          GLOBAL.isSceneOpen = false
+          global.isSceneOpen = false
         }
       },
     })
 
     this._trackListener = SSceneAR.setImageTrackingCallback(this._trackCb)
     this.customerPath()
-    // Toast.show(getLanguage(GLOBAL.language).Prompt.MOVE_PHONE_ADD_SCENE)
+    // Toast.show(getLanguage(global.language).Prompt.MOVE_PHONE_ADD_SCENE)
 
 
     let vis = await SMap.getMapLayerVisible()
@@ -85,10 +85,10 @@ export default class ARSceneView extends React.Component<IProps> {
   _trackCb = result => {
     // 成功
     if(result){
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }else{
       // 超时
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
       setTimeout(()=>{
         this.dialog && this.dialog.setDialogVisible(true)
       },1000)
@@ -96,7 +96,7 @@ export default class ARSceneView extends React.Component<IProps> {
   }
 
   customerPath = async() => {
-    const user = GLOBAL.currentUser
+    const user = global.currentUser
     const path = await FileTools.appendingHomeDirectory(
       `${ConstPath.UserPath + user.userName}/${ConstPath.RelativeFilePath.Scene}`,
     )
@@ -108,13 +108,13 @@ export default class ARSceneView extends React.Component<IProps> {
     this.setState({showPlaceholderView:false})
     await SSceneAR.close()
     // Orientation.lockToPortrait()
-    GLOBAL.Loading.setLoading(true,"Loading")
+    global.Loading.setLoading(true,"Loading")
     NavigationService.goBack()
     setTimeout(() => {
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
       // NavigationService.goBack()
-      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-      GLOBAL.toolBox.switchAr()
+      global.toolBox && global.toolBox.removeAIDetect(false)
+      global.toolBox.switchAr()
     }, 500)
   }
 
@@ -127,7 +127,7 @@ export default class ARSceneView extends React.Component<IProps> {
     }else{
       // SSceneAR.setLoadModelState(false)
       await SSceneAR.imageTrack()
-      GLOBAL.Loading.setLoading(true,getLanguage(GLOBAL.language).Prompt.TRACKING_LOADING)
+      global.Loading.setLoading(true,getLanguage(global.language).Prompt.TRACKING_LOADING)
     }
 
   }
@@ -153,9 +153,9 @@ export default class ARSceneView extends React.Component<IProps> {
       <Dialog
         ref={ref => (this.dialog = ref)}
         cancelBtnVisible={!firstDialog}
-        confirmBtnTitle={firstDialog ? getLanguage(GLOBAL.language).Prompt.CONFIRM
-          : getLanguage(GLOBAL.language).Prompt.YES}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.NO}
+        confirmBtnTitle={firstDialog ? getLanguage(global.language).Prompt.CONFIRM
+          : getLanguage(global.language).Prompt.YES}
+        cancelBtnTitle={getLanguage(global.language).Prompt.NO}
         confirmAction={async ()=>{
           this.dialog && this.onDialogConfirm()
         }}
@@ -170,8 +170,8 @@ export default class ARSceneView extends React.Component<IProps> {
           <Image source={require('../../assets/home/Frenchgrey/icon_prompt.png')} style={styles.titleImg}/>
           <Text style={styles.titleText}>{
             firstDialog ?
-              getLanguage(GLOBAL.language).Prompt.MOVE_PHONE_ADD_SCENE
-              : getLanguage(GLOBAL.language).Prompt.IDENTIFY_TIMEOUT
+              getLanguage(global.language).Prompt.MOVE_PHONE_ADD_SCENE
+              : getLanguage(global.language).Prompt.IDENTIFY_TIMEOUT
           }</Text>
         </View>
       </Dialog>
@@ -182,9 +182,9 @@ export default class ARSceneView extends React.Component<IProps> {
     return (
       <View style={{flex: 1}}>
         <Container
-          ref={ref => (GLOBAL.ARContainer = ref)}
+          ref={ref => (global.ARContainer = ref)}
           headerProps={{
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_PIPELINE,
+            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_PIPELINE,
             navigation: this.props.navigation,
             backAction: this.back,
             type: 'fix',

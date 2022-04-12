@@ -26,7 +26,7 @@ export default class SampleMapItem extends Component {
     this.downloadingPath = false
     this.aniMotion = null
     this.state = {
-      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+      progress: getLanguage(global.language).Prompt.DOWNLOAD,
       isDownloading: false,
       downloaded: false,
       rotateValue: new Animated.Value(0),
@@ -35,7 +35,7 @@ export default class SampleMapItem extends Component {
 
   componentDidMount() {
     (async function () {
-      let fileCachePath = GLOBAL.homePath + ConstPath.CachePath
+      let fileCachePath = global.homePath + ConstPath.CachePath
       let fileName = this.props.data.fileName.substr(0, this.props.data.fileName.lastIndexOf('.zip'))
       let fileName2 = ''
       if (fileName.endsWith('_EXAMPLE')) {
@@ -116,8 +116,8 @@ export default class SampleMapItem extends Component {
     if (this.state.isDownloading || this.state.downloaded) return
     try {
       if (typeof this.props.downloadFile === 'function') {
-        let cachePath = GLOBAL.homePath + ConstPath.CachePath
-        let toPath = GLOBAL.homePath + ConstPath.CachePath + this.props.data.fileName
+        let cachePath = global.homePath + ConstPath.CachePath
+        let toPath = global.homePath + ConstPath.CachePath + this.props.data.fileName
         let defaultExample = {}, example = this.props.moduleData.example
         if (example) {
           if (example.checkUrl === undefined) {
@@ -218,7 +218,7 @@ export default class SampleMapItem extends Component {
   //       style={[styles.itemDownloadView, styles.itemDownloadedView]}
   //     >
   //       <Text style={[styles.itemName, { marginHorizontal: scaleSize(22) }]}>
-  //         {getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY}
+  //         {getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY}
   //       </Text>
   //     </View>
   //   )

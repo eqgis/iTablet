@@ -36,7 +36,7 @@ export default class AnalysisMenuListView extends React.Component {
     this.userName = this.props.userName
 
     let toolData = this.getToolData()
-    let tempAnalysData = this.getData(GLOBAL.language)
+    let tempAnalysData = this.getData(global.language)
     this.state = {
       //   data: props.data,
       animationMode: -1,
@@ -93,8 +93,8 @@ export default class AnalysisMenuListView extends React.Component {
   getToolData() {
     let data = []
     data.push({
-      key: getLanguage(GLOBAL.language).Analyst_Modules.REGISTRATION_CREATE,
-      title: getLanguage(GLOBAL.language).Analyst_Modules.REGISTRATION_CREATE,
+      key: getLanguage(global.language).Analyst_Modules.REGISTRATION_CREATE,
+      title: getLanguage(global.language).Analyst_Modules.REGISTRATION_CREATE,
       action: () => {
         this.create()
       },
@@ -102,8 +102,8 @@ export default class AnalysisMenuListView extends React.Component {
       image: getThemeAssets().analyst.analysis_registration_new,
     })
     data.push({
-      key: getLanguage(GLOBAL.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
-      title: getLanguage(GLOBAL.language).Analyst_Modules
+      key: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
+      title: getLanguage(global.language).Analyst_Modules
         .REGISTRATION_SPEEDINESS,
       action: () => {
         this.speediness()
@@ -112,9 +112,9 @@ export default class AnalysisMenuListView extends React.Component {
       image: getThemeAssets().analyst.analysis_registration_fast,
     })
     data.push({
-      key: getLanguage(GLOBAL.language).Analyst_Modules
+      key: getLanguage(global.language).Analyst_Modules
         .PROJECTION_TRANSFORMATION,
-      title: getLanguage(GLOBAL.language).Analyst_Modules
+      title: getLanguage(global.language).Analyst_Modules
         .PROJECTION_TRANSFORMATION,
       action: () => {
         NavigationService.navigate('ProjectionTransformationPage', {})
@@ -123,8 +123,8 @@ export default class AnalysisMenuListView extends React.Component {
       image: getThemeAssets().analyst.analysis_converter,
     })
     // data.push({
-    //     key: getLanguage(GLOBAL.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
-    //     title: getLanguage(GLOBAL.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
+    //     key: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
+    //     title: getLanguage(global.language).Analyst_Modules.REGISTRATION_SPEEDINESS,
     //     size: 'large',
     //     // action: (params = {}) => {
     //     //   NavigationService.navigate('LocalAnalystView', {
@@ -284,7 +284,7 @@ export default class AnalysisMenuListView extends React.Component {
       <View style={styles.container}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Module.MAP_ANALYST}
+            {getLanguage(global.language).Map_Module.MAP_ANALYST}
           </Text>
         </View>
 
@@ -303,7 +303,7 @@ export default class AnalysisMenuListView extends React.Component {
       <View style={styles.container}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.ANALYST}
+            {getLanguage(global.language).Analyst_Labels.ANALYST}
           </Text>
         </View>
 

@@ -57,7 +57,7 @@ export default class AboutITablet extends Component {
         this.props.setMapSceneGuide(true)
         NavigationService.goBack('Setting')
       },
-      value: getLanguage(GLOBAL.language).Profile.START_GUIDE,
+      value: getLanguage(global.language).Profile.START_GUIDE,
       contentHeight: scaleSize(200),
     })
   }

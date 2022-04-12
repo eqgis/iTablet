@@ -5,10 +5,9 @@ import FriendGroup from './FriendGroup/FriendGroup'
 import { Container } from '../../../components'
 import { getLanguage } from '../../../language/index'
 import { scaleSize, screen } from '../../../utils'
+import { size, color } from '../../../styles'
 import { connect } from 'react-redux'
-import ScrollableTabView, {
-  DefaultTabBar,
-} from 'react-native-scrollable-tab-view'
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 
 class SelectFriend extends Component {
   props: {
@@ -19,7 +18,7 @@ class SelectFriend extends Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.showType = params.showType || 'friend'
     this.callBack = params.callBack
     this.title = params.title || ''
@@ -30,11 +29,21 @@ class SelectFriend extends Component {
         case 'joinedGroup':  // 我加入的群组
         case 'createGroup':  // 我创建的群组
         case 'canJoinGroup':  // 没加入的群组
-          this.title = getLanguage(GLOBAL.language).Friends.TITLE_CHOOSE_GROUP
+          this.title = getLanguage(global.language).Friends.TITLE_CHOOSE_GROUP
           break
         default:
-          this.title = getLanguage(GLOBAL.language).Friends.TITLE_CHOOSE_FRIEND
+          this.title = getLanguage(global.language).Friends.TITLE_CHOOSE_FRIEND
       }
+    }
+    this.state = {
+      index: 0,
+      routes: [{
+        key: 'FriendList',
+        title: getLanguage(this.props.language).Friends.FRIENDS,
+      }, {
+        key: 'FriendGroup',
+        title: getLanguage(this.props.language).Friends.GROUPS,
+      }],
     }
   }
 
@@ -42,10 +51,10 @@ class SelectFriend extends Component {
     return (
       <FriendList
         ref={ref => (this.friendList = ref)}
-        tabLabel={getLanguage(GLOBAL.language).Friends.FRIENDS}
-        language={GLOBAL.language}
+        tabLabel={getLanguage(global.language).Friends.FRIENDS}
+        language={global.language}
         user={this.props.user.currentUser}
-        friend={GLOBAL.getFriend()}
+        friend={global.getFriend()}
         callBack={targetId => {
           this.callBack && this.callBack(targetId)
         }}
@@ -57,10 +66,10 @@ class SelectFriend extends Component {
     return (
       <FriendGroup
         ref={ref => (this.friendGroup = ref)}
-        tabLabel={getLanguage(GLOBAL.language).Friends.GROUPS}
-        language={GLOBAL.language}
+        tabLabel={getLanguage(global.language).Friends.GROUPS}
+        language={global.language}
         user={this.props.user.currentUser}
-        friend={GLOBAL.getFriend()}
+        friend={global.getFriend()}
         callBack={targetId => {
           this.callBack && this.callBack(targetId)
         }}
@@ -69,70 +78,85 @@ class SelectFriend extends Component {
     )
   }
 
+  goToPage = index => {
+    this.state.index !== index &&
+      this.setState({
+        index,
+      })
+  }
+
+  _renderTabBar = props => (
+    <TabBar
+      {...props}
+      indicatorStyle={{
+        backgroundColor: 'rgba(70,128,223,1.0)',
+        height: scaleSize(3),
+        width: scaleSize(30),
+        marginLeft: screen.getScreenWidth(this.props.device.orientation) / 2 / 2 - 10,
+      }}
+      renderBadge={scene => (
+        scene.route.key === 'FriendMessage' &&
+        <InformSpot
+          style={{
+            top: scaleSize(15),
+            right: '38%',
+          }}
+        />
+      )}
+      onTabPress={({route, preventDefault}) => {
+        const routes = this.state.routes
+        for (const index in routes) {
+          if (Object.hasOwnProperty.call(routes, index)) {
+            const element = routes[index];
+            if (element.key === route.key) {
+              this.setState({
+                currentPage: parseInt(index),
+              })
+              preventDefault()
+              break
+            }
+          }
+        }
+      }}
+      style={{
+        height: scaleSize(80),
+        marginTop: scaleSize(20),
+        borderWidth: 0,
+        backgroundColor: color.white,
+        elevation: 0,
+        shadowRadius: 0,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0,
+      }}
+      labelStyle={{
+        color: 'black',
+        // fontWeight: true ? 'bold' : 'normal',
+        fontSize: size.fontSize.fontSizeLg,
+        textAlign: 'center',
+      }}
+      activeColor={'rgba(70,128,223,1.0)'}
+    />
+  )
+  
+  _renderTabs = () => {
+    return SceneMap({
+      'FriendList': this.renderFriendList,
+      'FriendGroup': () => this.renderGroupList(['MINE']),
+    })
+  }
+
+
   renderLists = () => {
     let width = screen.getScreenWidth(this.props.device.orientation)
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <ScrollableTabView
-          renderTabBar={() => (
-            <DefaultTabBar
-              style={{ height: scaleSize(60) }}
-              renderTab={(name, page, isTabActive, onPressHandler) => {
-                let activeTextColor = 'rgba(70,128,223,1.0)'
-                let inactiveTextColor = 'black'
-                const textColor = isTabActive
-                  ? activeTextColor
-                  : inactiveTextColor
-                const fontWeight = isTabActive ? 'bold' : 'normal'
-
-                return (
-                  <TouchableOpacity
-                    style={{ flex: 1 }}
-                    key={name}
-                    accessible={true}
-                    accessibilityLabel={name}
-                    accessibilityTraits="button"
-                    onPress={() => onPressHandler(page)}
-                  >
-                    <View
-                      style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        paddingVertical: scaleSize(10),
-                      }}
-                    >
-                      <View>
-                        <Text
-                          style={{
-                            color: textColor,
-                            fontWeight,
-                            fontSize: scaleSize(25),
-                            textAlign: 'center',
-                          }}
-                        >
-                          {name}
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                )
-              }}
-            />
-          )}
-          initialPage={0}
-          prerenderingSiblingsNumber={1}
-          tabBarUnderlineStyle={{
-            backgroundColor: 'rgba(70,128,223,1.0)',
-            height: scaleSize(3),
-            width: scaleSize(30),
-            marginLeft: width / 2 / 2 - 10,
-          }}
-        >
-          {this.renderFriendList()}
-          {this.renderGroupList(['MINE'])}
-        </ScrollableTabView>
+        <TabView
+          navigationState={this.state}
+          onIndexChange={this.goToPage}
+          renderTabBar={this._renderTabBar}
+          renderScene={this._renderTabs()}
+          swipeEnabled={true}
+        />
       </View>
     )
   }

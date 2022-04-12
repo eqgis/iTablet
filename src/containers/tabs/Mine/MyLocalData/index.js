@@ -4,7 +4,7 @@ import {
   importPlotLib,
   importWorkspace,
 } from '../../../../redux/models/template'
-import { importSceneWorkspace, setBaseMap } from '../../../../redux/models/map'
+import { importSceneWorkspace } from '../../../../redux/models/map'
 import {
   updateDownList,
   removeItemOfDownList,
@@ -18,7 +18,6 @@ const mapStateToProps = state => ({
   down: state.online.toJS().down,
   device: state.device.toJS().device,
   importItem: state.externalData.toJS().importItem,
-  baseMaps: state.map.toJS().baseMaps,
 })
 
 const mapDispatchToProps = {
@@ -29,7 +28,6 @@ const mapDispatchToProps = {
   updateDownList,
   removeItemOfDownList,
   setImportItem,
-  setBaseMap,
 }
 export default connect(
   mapStateToProps,

@@ -185,7 +185,7 @@ export async function addARScene(location?: IVector3) {
       const homePath = await FileTools.getHomeDirectory()
       let path: string = _data.arContent
       if(!path) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SCENE_SELECTED)
+        Toast.show(getLanguage(global.language).Prompt.NO_SCENE_SELECTED)
         return
       }
 
@@ -553,7 +553,7 @@ async function _downloadExamples(type: ExternalDataType, examples: ExampleData[]
     // const downloadData: Download | undefined = _getDownload(downloadKey)
     // if(downloadData && downloadData.progress < 100) {
     if(AppProgress.isInProgress(downloadKey)) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
       return
     }
   }
@@ -580,7 +580,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
   const downloadKey = exampleData.userName + '_' + exampleData.downloadName
   // const downloadData: Download | undefined = _getDownload(downloadKey)
   // if(downloadData && downloadData.progress < 100) {
-  //   Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+  //   Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
   //   return false
   // }
   if(AppProgress.isInProgress(downloadKey)) {
@@ -592,7 +592,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
   //尝试读取以前下载的示范数据
   const items = await DataHandler.getExternalData(homePath + ConstPath.Common + exampleData.dir, [type])
   if(items.length === 0) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+    Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
     AppProgress.addProgress(downloadKey)
     result = await DataHandler.downloadExampleData(exampleData, progress => {
       AppProgress.updateProgress(downloadKey, progress)
@@ -607,7 +607,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
     //     progressDivider: 1,
     //     key: downloadOption.id,
     //     // key: downloadKey,
-    //     module: GLOBAL.Type,
+    //     module: global.Type,
     //   }
     //   result = await _params.downloadFile(downloadOptions)
 
@@ -617,7 +617,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
     //   }
     // }
     if(result) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING)
+      Toast.show(getLanguage(global.language).Prompt.IMPORTING)
       const items = await DataHandler.getExternalData(homePath + ConstPath.Common + exampleData.dir, [type])
       if(items.length > 0) {
         //TODO 导入所有数据
@@ -625,23 +625,23 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
           result = await DataHandler.importExternalData(_params.user.currentUser, item) && result
         }
         // result && AppToolBar.resetTabData()
-        Toast.show(result ? getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS : getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
+        Toast.show(result ? getLanguage(global.language).Prompt.IMPORTED_SUCCESS : getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
       } else {
         Toast.show('没有数据')
       }
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
     }
     AppProgress.onProgressEnd(downloadKey)
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING)
+    Toast.show(getLanguage(global.language).Prompt.IMPORTING)
     // result = await DataHandler.importExternalData(_params.user.currentUser, items[0])
     for (const item of items) {
       result = await DataHandler.importExternalData(_params.user.currentUser, item) && result
     }
     // result && AppToolBar.resetTabData()
     AppProgress.onProgressEnd(downloadKey)
-    Toast.show(result ? getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS : getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
+    Toast.show(result ? getLanguage(global.language).Prompt.IMPORTED_SUCCESS : getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
   }
 }
 

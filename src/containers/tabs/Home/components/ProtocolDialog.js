@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {
-  WebView,
   View,
   StyleSheet,
   Text,
   TouchableOpacity,
   Platform,
 } from 'react-native'
+import { WebView } from 'react-native-webview'
 import { Dialog, CheckBox, MTBtn } from '../../../../components'
 import { setSpText, Toast, fixedSize } from '../../../../utils'
 import { color } from '../../../../styles'

@@ -44,10 +44,10 @@ export default class Progress extends Component {
   }
 
   // eslint-disable-next-line
-  componentWillMount() {
-    this.progress = this.props.progress
-    this.buffer = this.props.buffer
-  }
+  // componentWillMount() {
+  //   this.progress = this.props.progress
+  //   this.buffer = this.props.buffer
+  // }
 
   constructor(props) {
     super(props)
@@ -65,9 +65,9 @@ export default class Progress extends Component {
 
     if (width > 0 && this.totalWidth !== width) {
       //获取progress控件引用
-      let progress = this._getProgress()
+      let progress = this.mProgress
       //获取buffer控件引用
-      let buffer = this._getBuffer()
+      let buffer =  this.mBuffer
       //获取父布局宽度
       this.totalWidth = width
       //给progress控件设置高度
@@ -96,6 +96,7 @@ export default class Progress extends Component {
         toValue: progress * this.totalWidth,
         duration: this.props.progressAniDuration,
         easing: Easing.linear,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -106,19 +107,20 @@ export default class Progress extends Component {
         isInteraction: false,
         toValue: buffer * this.totalWidth,
         duration: this.props.bufferAniDuration,
+        useNativeDriver: false,
       }).start()
     }
   }
 
   _getProgress = () => {
-    if (typeof this.mProgress.refs.node !== 'undefined') {
+    if (typeof this.mProgress.refs?.node !== 'undefined') {
       return this.mProgress.refs.node
     }
-    return this.mProgress._component
+    return this.mProgress._component || 0
   }
 
   _getBuffer = () => {
-    if (typeof this.mBuffer.refs.node !== 'undefined') {
+    if (typeof this.mBuffer.refs?.node !== 'undefined') {
       return this.mBuffer.refs.node
     }
     return this.mBuffer._component

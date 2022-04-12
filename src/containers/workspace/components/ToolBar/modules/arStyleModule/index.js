@@ -82,7 +82,7 @@ class ArStyleModule extends FunctionModule {
 export default function() {
   return new ArStyleModule({
     type: ConstToolType.SM_AR_STYLE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
+    title: getLanguage(global.language).Map_Main_Menu.STYLE,
     size: 'large',
     image: getThemeAssets().mine.my_color,
     getData: ARStyleData.getData,

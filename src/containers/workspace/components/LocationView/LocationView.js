@@ -28,23 +28,23 @@ export default class LocationView extends React.Component {
   _location = async () => {
     let point = await SMap.getCurrentPosition()
     if (this.isStart) {
-      GLOBAL.STARTX = point.x
-      GLOBAL.STARTY = point.y
-      await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
-      GLOBAL.STARTNAME =
-        (await FetchUtils.getPointName(GLOBAL.STARTX, GLOBAL.STARTY)) ||
+      global.STARTX = point.x
+      global.STARTY = point.y
+      await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+      global.STARTNAME =
+        (await FetchUtils.getPointName(global.STARTX, global.STARTY)) ||
         `${
-          getLanguage(GLOBAL.language).Map_Main_Menu.START_POINT
-        }(${GLOBAL.STARTX.toFixed(6)},${GLOBAL.STARTY.toFixed(6)})`
+          getLanguage(global.language).Map_Main_Menu.START_POINT
+        }(${global.STARTX.toFixed(6)},${global.STARTY.toFixed(6)})`
     } else {
-      GLOBAL.ENDX = point.x
-      GLOBAL.ENDY = point.y
-      await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
-      GLOBAL.ENDNAME =
-        (await FetchUtils.getPointName(GLOBAL.ENDX, GLOBAL.ENDY)) ||
+      global.ENDX = point.x
+      global.ENDY = point.y
+      await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+      global.ENDNAME =
+        (await FetchUtils.getPointName(global.ENDX, global.ENDY)) ||
         `${
-          getLanguage(GLOBAL.language).Map_Main_Menu.END_POINT
-        }(${GLOBAL.ENDX.toFixed(6)},${GLOBAL.ENDY.toFixed(6)})`
+          getLanguage(global.language).Map_Main_Menu.END_POINT
+        }(${global.ENDX.toFixed(6)},${global.ENDY.toFixed(6)})`
     }
     SMap.moveToPoint(point)
   }

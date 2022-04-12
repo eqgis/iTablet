@@ -72,7 +72,7 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
    * 进入页面默认显示一个特效（如果文件存在）
    */
   showDefault = async () => {
-    let path = GLOBAL.homePath + '/iTablet/Common/Weather/Snow.mp4'
+    let path = global.homePath + '/iTablet/Common/Weather/Snow.mp4'
     if (await FileTools.fileIsExist(path)) {
       SARWeather.setWeather(path)
       this.setCurrent('Snow')
@@ -87,8 +87,8 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
       this.clickAble = false
       SARWeather.onDestroy()
       NavigationService.goBack()
-      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-      GLOBAL.toolBox.switchAr()
+      global.toolBox && global.toolBox.removeAIDetect(false)
+      global.toolBox.switchAr()
     }
   }
 
@@ -159,7 +159,7 @@ export default class ARWeatherView extends React.Component<IProps, IState> {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
           navigation: this.props.navigation,
           backAction: this.back,
           type: 'fix',

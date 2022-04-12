@@ -85,7 +85,7 @@ class ChatImageViewer extends React.Component {
     return (
       <TouchableOpacity
         style={[styles.headerStyle, {
-          top: screen.isIphoneX() && GLOBAL.getDevice().orientation.indexOf('PORTRAIT') >= 0
+          top: screen.isIphoneX() && global.getDevice().orientation.indexOf('PORTRAIT') >= 0
             ? screen.X_TOP
             : 0,
         }]}
@@ -117,7 +117,7 @@ class ChatImageViewer extends React.Component {
           style={styles.bottomMenuStyle}
         >
           <Text style={styles.text}>
-            {getLanguage(GLOBAL.language).Friends.LOAD_ORIGIN_PIC +
+            {getLanguage(global.language).Friends.LOAD_ORIGIN_PIC +
               '(' +
               fileSizeText +
               ')'}

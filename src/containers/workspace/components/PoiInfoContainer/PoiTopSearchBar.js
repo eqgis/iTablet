@@ -46,6 +46,7 @@ export default class PoiTopSearchBar extends React.Component {
       Animated.timing(this.width, {
         toValue: width,
         duration: 300,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -55,6 +56,7 @@ export default class PoiTopSearchBar extends React.Component {
     Animated.timing(this.top, {
       toValue: height,
       duration: 400,
+      useNativeDriver: false,
     }).start()
     let obj = {
       visible,
@@ -64,14 +66,14 @@ export default class PoiTopSearchBar extends React.Component {
   }
 
   back = async () => {
-    if (GLOBAL.PoiInfoContainer) {
-      let poiData = GLOBAL.PoiInfoContainer.state
-      let tempResult = GLOBAL.PoiInfoContainer.tempResult
+    if (global.PoiInfoContainer) {
+      let poiData = global.PoiInfoContainer.state
+      let tempResult = global.PoiInfoContainer.tempResult
       if (tempResult.tempList.length > 0 && !poiData.showList) {
         //清除操作分开写，此处需要await，返回搜索界面无需await，加快速度
-        await GLOBAL.PoiInfoContainer.clear()
+        await global.PoiInfoContainer.clear()
         this.setState({ defaultValue: tempResult.name })
-        GLOBAL.PoiInfoContainer.setState(
+        global.PoiInfoContainer.setState(
           {
             destination: '',
             location: {},
@@ -82,7 +84,7 @@ export default class PoiTopSearchBar extends React.Component {
             resultList: tempResult.tempList,
           },
           async () => {
-            GLOBAL.PoiInfoContainer.show()
+            global.PoiInfoContainer.show()
             await SMap.addCallouts(tempResult.tempList)
           },
         )
@@ -90,8 +92,8 @@ export default class PoiTopSearchBar extends React.Component {
         NavigationService.navigate('PointAnalyst', {
           type: 'pointSearch',
         })
-        GLOBAL.PoiInfoContainer.setVisible(false)
-        GLOBAL.PoiInfoContainer.tempResult = {
+        global.PoiInfoContainer.setVisible(false)
+        global.PoiInfoContainer.tempResult = {
           name: '',
           tempList: [],
         }
@@ -100,7 +102,7 @@ export default class PoiTopSearchBar extends React.Component {
           name: '',
         })
         this.setVisible(false)
-        GLOBAL.PoiInfoContainer.clear()
+        global.PoiInfoContainer.clear()
       }
     }
   }
@@ -111,19 +113,19 @@ export default class PoiTopSearchBar extends React.Component {
         defaultValue={this.state.defaultValue}
         ref={ref => (this.searchBar = ref)}
         onSubmitEditing={async searchKey => {
-          GLOBAL.PoiInfoContainer.clear()
+          global.PoiInfoContainer.clear()
           //zhangxt 2020-10-12 补全接口需要的参数
           let location = await SMap.getMapcenterPosition()
-          GLOBAL.PoiInfoContainer.getSearchResult({
+          global.PoiInfoContainer.getSearchResult({
             keyWords: searchKey,
             location: JSON.stringify(location),
             radius: 5000,
           })
-          GLOBAL.PoiInfoContainer.setState({
+          global.PoiInfoContainer.setState({
             showList: true,
           })
         }}
-        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
+        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
         //{'请输入搜索关键字'}
       />
     )
@@ -149,7 +151,7 @@ export default class PoiTopSearchBar extends React.Component {
           title={
             this.type === 'pointSearch'
               ? ''
-              : getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS
+              : getLanguage(global.language).Map_Main_Menu.TOOLS_PATH_ANALYSIS
           }
           backAction={this.back}
           headerCenter={this._renderSearchBar()}

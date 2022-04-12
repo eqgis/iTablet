@@ -44,7 +44,7 @@ function search(content = '') {
   let item = { content: newContent }
   switch (value) {
     // case keywords.SEARCH:
-    //   GLOBAL.AudioDialog.setVisible(false)
+    //   global.AudioDialog.setVisible(false)
     //   NavigationService.navigate('PointAnalyst', {
     //     type: 'pointSearch',
     //   })
@@ -60,16 +60,16 @@ function search(content = '') {
       {
         ...item,
         radius: 5000,
-        is3D: GLOBAL.Type === ChunkType.MAP_3D,
+        is3D: global.Type === ChunkType.MAP_3D,
       },
       async data => {
         if (data) {
           Audio.hideAudio()
         }
         // this.location = location
-        // if (GLOBAL.Type !== ChunkType.MAP_3D) {
-        //   if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-        //     GLOBAL.TouchType = TouchType.NORMAL
+        // if (global.Type !== ChunkType.MAP_3D) {
+        //   if (global.Type === ChunkType.MAP_NAVIGATION) {
+        //     global.TouchType = TouchType.NORMAL
         //     await SMap.clearTrackingLayer()
         //     // this.props.setNavigationChangeAR(true)
         //     this.props.setMapNavigation({

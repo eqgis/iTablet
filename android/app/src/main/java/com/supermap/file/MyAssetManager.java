@@ -1,11 +1,11 @@
 package com.supermap.file;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-
-import android.content.Context;
-import android.content.res.AssetManager;
 
 public class MyAssetManager {
 	private static WeakReference<AssetManager> sAssetManager = null;

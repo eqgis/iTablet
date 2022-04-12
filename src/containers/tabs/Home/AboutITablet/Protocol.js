@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {
-  WebView,
   View,
   Dimensions,
   Platform,
   UIManager,
   LayoutAnimation,
 } from 'react-native'
+import { WebView } from 'react-native-webview'
 import { connect } from 'react-redux'
 import { Container, MTBtn } from '../../../../components'
 import { Toast, OnlineServicesUtils } from '../../../../utils'
@@ -21,7 +21,7 @@ class Protocol extends Component {
   }
   constructor(props) {
     super(props)
-    const params = this.props.navigation.state.params
+    const params = this.props.route.params
     this.type = params.type
     this.knownItem = params.knownItem || {}
     this.state = {
@@ -67,7 +67,7 @@ class Protocol extends Component {
         if (result) {
           this.setState({ isLoadWebView: true })
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.NETWORK_REQUEST_FAILED)
         }
       }
     } else {
@@ -167,7 +167,7 @@ class Protocol extends Component {
       case 'protocol':
         if (Platform.OS === 'android') {
           source =
-            GLOBAL.language === 'CN'
+            global.language === 'CN'
               ? {
                 uri:
                     'file:///android_asset/SuperMapUserServiceAgreement_CN.html',
@@ -178,16 +178,16 @@ class Protocol extends Component {
               }
         } else {
           source =
-            GLOBAL.language === 'CN'
+            global.language === 'CN'
               ? require('../../../../assets/Protocol/SuperMapUserServiceAgreement_CN.html')
               : require('../../../../assets/Protocol/SuperMapUserServiceAgreement_EN.html')
         }
-        title = getLanguage(GLOBAL.language).Profile.SERVICE_AGREEMENT
+        title = getLanguage(global.language).Profile.SERVICE_AGREEMENT
         break
       case 'Privacy':
         if (Platform.OS === 'android') {
           source =
-            GLOBAL.language === 'CN'
+            global.language === 'CN'
               ? {
                 uri:
                     'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
@@ -198,17 +198,17 @@ class Protocol extends Component {
               }
         } else {
           source =
-            GLOBAL.language === 'CN'
+            global.language === 'CN'
               ? require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_CN.html')
               : require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_EN.html')
         }
-        title = getLanguage(GLOBAL.language).Profile.PRIVACY_POLICY
+        title = getLanguage(global.language).Profile.PRIVACY_POLICY
         break
       case 'superMapForum':
         source = {
           uri: `http://ask.supermap.com/`,
         }
-        title = getLanguage(GLOBAL.language).Prompt.SUPERMAP_FORUM
+        title = getLanguage(global.language).Prompt.SUPERMAP_FORUM
         //'超图论坛'
         break
       case 'SuperMapGroup':
@@ -223,7 +223,7 @@ class Protocol extends Component {
           //  +
           // '.html',
         }
-        title = getLanguage(GLOBAL.language).Prompt.SUPERMAP_GROUP
+        title = getLanguage(global.language).Prompt.SUPERMAP_GROUP
         //'超图集团'
         break
       case 'superMapKnown':
@@ -234,7 +234,7 @@ class Protocol extends Component {
           // +
           // '.html',
         }
-        title = getLanguage(GLOBAL.language).Prompt.SUPERMAP_KNOW
+        title = getLanguage(global.language).Prompt.SUPERMAP_KNOW
         //'超图知道'
         break
       case 'userHelp':
@@ -242,33 +242,33 @@ class Protocol extends Component {
           source = {
             uri:
               'file:///' +
-              GLOBAL.homePath +
+              global.homePath +
               this.userHelpPath,
           }
         } else {
           source = {
             uri:
-              GLOBAL.homePath +
+              global.homePath +
               this.userHelpPath,
           }
         }
-        title = getLanguage(GLOBAL.language).Prompt.INSTRUCTION_MANUAL
+        title = getLanguage(global.language).Prompt.INSTRUCTION_MANUAL
         break
       case 'ApplyLicense':
         source = {
           uri: `https://www.supermapol.com/web/pricing/triallicense`,
         }
-        title = getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE
+        title = getLanguage(global.language).Prompt.APPLY_LICENSE
         //'申请许可'
         break
       case 'Register':
         source = {
           uri: `https://sso.supermap.com/phoneregister?service=http://www.supermapol.com`,
         }
-        title = getLanguage(GLOBAL.language).Profile.REGISTER
+        title = getLanguage(global.language).Profile.REGISTER
         break
       case 'SuperMapOnlineProtocal':
-        if (GLOBAL.language === 'CN') {
+        if (global.language === 'CN') {
           source = {
             uri:
               'https://sso.supermap.com/agreement.jsp?service=https://www.supermapol.com',
@@ -279,11 +279,11 @@ class Protocol extends Component {
               'https://sso.supermap.com/agreement_en.jsp?service=http://www.supermapol.com',
           }
         }
-        title = getLanguage(GLOBAL.language).Profile.SERVICE_AGREEMENT
+        title = getLanguage(global.language).Profile.SERVICE_AGREEMENT
         break
       case 'GISAcademy':
         source = { uri: `https://edu.supermap.com` }
-        title = getLanguage(GLOBAL.language).Find.GIS_ACADEMY
+        title = getLanguage(global.language).Find.GIS_ACADEMY
         break
       case 'ARDevice':
         source = {

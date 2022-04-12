@@ -35,7 +35,7 @@ export default class SymbolList extends React.Component {
 
   _onSymbolClick = data => {
     if (
-      GLOBAL.Type === ChunkType.MAP_THEME &&
+      global.Type === ChunkType.MAP_THEME &&
       this.props.layerData.themeType > 0
     ) {
       let params = {
@@ -96,7 +96,7 @@ export default class SymbolList extends React.Component {
 
   renderLibrary = () => {
     let symbols = []
-    if (GLOBAL.Type === ChunkType.MAP_THEME) {
+    if (global.Type === ChunkType.MAP_THEME) {
       switch (this.props.type) {
         case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
         case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOLS:

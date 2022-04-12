@@ -124,7 +124,7 @@ export default class AddMore extends React.Component {
                   source={getThemeAssets().friend.add_contacts}
                 />
                 <Text style={styles.textStyle}>
-                  {getLanguage(GLOBAL.language).Friends.ADD_FRIENDS}
+                  {getLanguage(global.language).Friends.ADD_FRIENDS}
 
                   {/* //添加好友 */}
                 </Text>
@@ -142,7 +142,7 @@ export default class AddMore extends React.Component {
                 source={getThemeAssets().friend.new_chat}
               />
               <Text style={styles.textStyle}>
-                {getLanguage(GLOBAL.language).Friends.NEW_GROUP_CHAT}
+                {getLanguage(global.language).Friends.NEW_GROUP_CHAT}
 
                 {/* // 发起群聊 */}
               </Text>
@@ -159,7 +159,7 @@ export default class AddMore extends React.Component {
                 {/*source={getThemeAssets().friend.friend_mobileCon}*/}
               {/*/>*/}
               {/*<Text style={styles.textStyle}>*/}
-                {/*{getLanguage(GLOBAL.language).Friends.RECOMMEND_FRIEND}*/}
+                {/*{getLanguage(global.language).Friends.RECOMMEND_FRIEND}*/}
               {/*</Text>*/}
             {/*</TouchableOpacity>*/}
           </View>

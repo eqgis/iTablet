@@ -1,9 +1,9 @@
 package com.supermap.file;
 
-import java.lang.ref.WeakReference;
-
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import java.lang.ref.WeakReference;
 
 public class MySharedPreferences {
 	/**

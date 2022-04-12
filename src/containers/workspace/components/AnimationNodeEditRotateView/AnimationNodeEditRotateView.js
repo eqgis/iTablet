@@ -13,7 +13,7 @@ export default class AnimationNodeEditRotateView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
     this.backcb = params && params.backcb
     this.clickAble = true // 防止重复点击
@@ -26,7 +26,7 @@ export default class AnimationNodeEditRotateView extends React.Component {
       btnTitle:
         params && params.btnTitle
           ? params.btnTitle
-          : getLanguage(GLOBAL.language).Prompt.CONFIRM, //'确定',
+          : getLanguage(global.language).Prompt.CONFIRM, //'确定',
       headerTitle:
         params && params.headerTitle !== undefined ? params.headerTitle : '',
     }

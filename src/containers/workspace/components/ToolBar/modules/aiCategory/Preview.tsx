@@ -178,13 +178,13 @@ export default class Preview extends React.Component<Props, State> {
         <View style={styles.takeplace} />
         <Text style={styles.title}>
           {
-            getLanguage(GLOBAL.language).Map_Main_Menu
+            getLanguage(global.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT
           }
         </Text>
         <Text style={styles.titleConfidence}>
           {
-            getLanguage(GLOBAL.language).Map_Main_Menu
+            getLanguage(global.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_CLASSIFY_CONFIDENCE
           }
         </Text>
@@ -231,7 +231,7 @@ export default class Preview extends React.Component<Props, State> {
         {this.renderRadios()}
         {
           this.renderRadio({
-            label: getLanguage(GLOBAL.language).AI.ALL_WRONG,
+            label: getLanguage(global.language).AI.ALL_WRONG,
           }, this.props.data.length)
         }
       </View>

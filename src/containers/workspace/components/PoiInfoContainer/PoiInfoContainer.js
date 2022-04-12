@@ -165,6 +165,7 @@ export default class PoiInfoContainer extends React.Component {
         Animated.timing(this.width, {
           toValue: width,
           duration: 300,
+          useNativeDriver: false,
         }),
       )
     height !== undefined &&
@@ -172,6 +173,7 @@ export default class PoiInfoContainer extends React.Component {
         Animated.timing(this.height, {
           toValue: height,
           duration: 300,
+          useNativeDriver: false,
         }),
       )
     bottom !== undefined &&
@@ -179,6 +181,7 @@ export default class PoiInfoContainer extends React.Component {
         Animated.timing(this.bottom, {
           toValue: bottom,
           duration: 300,
+          useNativeDriver: false,
         }),
       )
     boxHeight !== undefined &&
@@ -186,6 +189,7 @@ export default class PoiInfoContainer extends React.Component {
         Animated.timing(this.boxHeight, {
           toValue: boxHeight,
           duration: 300,
+          useNativeDriver: false,
         }),
       )
     Animated.parallel(AnimationList).start()
@@ -200,25 +204,28 @@ export default class PoiInfoContainer extends React.Component {
     if (visible === this.state.visible) {
       return
     }
-    GLOBAL.TouchType = visible ? TouchType.MAP_NAVIGATION : TouchType.NORMAL
+    global.TouchType = visible ? TouchType.MAP_NAVIGATION : TouchType.NORMAL
     let value = visible ? 0 : scaleSize(-screen.getScreenHeight())
     Animated.timing(this.bottom, {
       toValue: value,
       duration: 400,
+      useNativeDriver: false,
     }).start()
-    GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
+    global.toolBox && global.toolBox.showFullMap()
     if (!visible) {
       Animated.timing(this.height, {
         toValue: 0,
         duration: 400,
+        useNativeDriver: false,
       }).start()
       Animated.timing(this.boxHeight, {
         toValue: 0,
         duration: 10,
+        useNativeDriver: false,
       }).start()
       //同时隐藏顶部框
-      GLOBAL.PoiTopSearchBar && GLOBAL.PoiTopSearchBar.setVisible(false)
-      GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
+      global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
+      global.toolBox && global.toolBox.existFullMap()
     }
     this.setState({
       visible,
@@ -246,9 +253,9 @@ export default class PoiInfoContainer extends React.Component {
   //online返回存在的缺陷，没有直接返回楼层，地址中包含有楼层，但格式不统一，无法拿到，后续导航无法到正确楼层
   getSearchResult = (params, cb) => {
     try {
-      GLOBAL.Loading.setLoading(
+      global.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.SEARCHING,
+        getLanguage(global.language).Prompt.SEARCHING,
       )
       LocateUtils.getSearchResult(params, this.state.location, data => {
         if (data) {
@@ -261,16 +268,16 @@ export default class PoiInfoContainer extends React.Component {
               this.show()
               await SMap.addCallouts(data.resultList)
               cb && cb(data)
-              GLOBAL.Loading.setLoading(false)
+              global.Loading.setLoading(false)
             },
           )
         } else {
           cb && cb()
-          GLOBAL.Loading.setLoading(false)
+          global.Loading.setLoading(false)
         }
       })
     } catch (error) {
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }
   }
 
@@ -281,30 +288,30 @@ export default class PoiInfoContainer extends React.Component {
     if (searchClickedInfo.isClicked) {
       let title = searchClickedInfo.title
       if (
-        title === getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_START_POINT
+        title === getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT
       ) {
         //设置起点
-        GLOBAL.STARTX = item.x
-        GLOBAL.STARTY = item.y
-        GLOBAL.STARTNAME = item.pointName
-        await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
+        global.STARTX = item.x
+        global.STARTY = item.y
+        global.STARTNAME = item.pointName
+        await SMap.getStartPoint(global.STARTX, global.STARTY, false)
       } else {
         //设置终点
-        GLOBAL.ENDX = item.x
-        GLOBAL.ENDY = item.y
-        GLOBAL.ENDNAME = item.pointName
-        await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
+        global.ENDX = item.x
+        global.ENDY = item.y
+        global.ENDNAME = item.pointName
+        await SMap.getEndPoint(global.ENDX, global.ENDY, false)
       }
       SMap.removeAllCallout()
       this.setVisible(false)
-      GLOBAL.PoiTopSearchBar && GLOBAL.PoiTopSearchBar.setVisible(false)
-      GLOBAL.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
+      global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
+      global.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
       NavigationService.navigate('NavigationView', {
         changeNavPathInfo: this.props.changeNavPathInfo,
         getNavigationDatas: this.props.getNavigationDatas,
       })
     } else {
-      GLOBAL.mapController && GLOBAL.mapController.setVisible(false)
+      global.mapController && global.mapController.setVisible(false)
       let historyArr = this.props.mapSearchHistory
       let hasAdded = false
       historyArr.map(v => {
@@ -319,8 +326,8 @@ export default class PoiInfoContainer extends React.Component {
         })
       }
       this.props.setMapSearchHistory(historyArr)
-      let tempName = GLOBAL.PoiTopSearchBar.state.defaultValue
-      GLOBAL.PoiTopSearchBar.setState({ defaultValue: item.pointName })
+      let tempName = global.PoiTopSearchBar.state.defaultValue
+      global.PoiTopSearchBar.setState({ defaultValue: item.pointName })
       this.showTable()
       setTimeout(async () => {
         let tempList = JSON.parse(JSON.stringify(this.state.resultList))
@@ -352,10 +359,12 @@ export default class PoiInfoContainer extends React.Component {
       Animated.timing(this.boxHeight, {
         toValue: scaleSize(80),
         duration: 0,
+        useNativeDriver: false,
       }).start()
       Animated.timing(this.height, {
         toValue: scaleSize(80),
         duration: 0,
+        useNativeDriver: false,
       }).start()
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
         Animated.timing(this.bottom, {
@@ -364,6 +373,7 @@ export default class PoiInfoContainer extends React.Component {
             screen.getHeaderHeight() -
             scaleSize(80),
           duration: 0,
+          useNativeDriver: false,
         }).start()
       }
       this.setState({
@@ -476,26 +486,26 @@ export default class PoiInfoContainer extends React.Component {
     SMap.clearTrackingLayer()
     SMap.removePOICallout()
     let position = await SMap.getCurrentPosition()
-    GLOBAL.STARTX = position.x
-    GLOBAL.STARTY = position.y
-    GLOBAL.ENDX = this.state.location.x
-    GLOBAL.ENDY = this.state.location.y
+    global.STARTX = position.x
+    global.STARTY = position.y
+    global.ENDX = this.state.location.x
+    global.ENDY = this.state.location.y
 
-    GLOBAL.STARTNAME = getLanguage(GLOBAL.language).Map_Main_Menu.MY_LOCATION
-    GLOBAL.ENDNAME = this.state.destination
+    global.STARTNAME = getLanguage(global.language).Map_Main_Menu.MY_LOCATION
+    global.ENDNAME = this.state.destination
     //先跳转，尽量减少用户界面等待时间
     NavigationService.navigate('NavigationView', {
       changeNavPathInfo: this.props.changeNavPathInfo,
       getNavigationDatas: this.props.getNavigationDatas,
     })
-    await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
-    await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
-    GLOBAL.PoiTopSearchBar && GLOBAL.PoiTopSearchBar.setVisible(false)
+    await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+    await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+    global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
     this.setInitialState()
   }
 
   renderView = () => {
-    if (GLOBAL.Type !== ChunkType.MAP_NAVIGATION) {
+    if (global.Type !== ChunkType.MAP_NAVIGATION) {
       return (
         <View
           style={{
@@ -521,7 +531,7 @@ export default class PoiInfoContainer extends React.Component {
               }}
             >
               <Text style={styles.searchTxt}>
-                {getLanguage(GLOBAL.language).Prompt.SEARCH_AROUND}
+                {getLanguage(global.language).Prompt.SEARCH_AROUND}
               </Text>
             </TouchableOpacity>
           </View>
@@ -552,7 +562,7 @@ export default class PoiInfoContainer extends React.Component {
               }}
             >
               <Text style={styles.searchTxt}>
-                {getLanguage(GLOBAL.language).Prompt.SEARCH_AROUND}
+                {getLanguage(global.language).Prompt.SEARCH_AROUND}
               </Text>
             </TouchableOpacity>
             <View style={{ width: 20 }} />
@@ -564,7 +574,7 @@ export default class PoiInfoContainer extends React.Component {
               }}
             >
               <Text style={styles.searchTxt}>
-                {getLanguage(GLOBAL.language).Prompt.GO_HERE}
+                {getLanguage(global.language).Prompt.GO_HERE}
               </Text>
             </TouchableOpacity>
           </View>
@@ -585,8 +595,8 @@ export default class PoiInfoContainer extends React.Component {
               location: JSON.stringify(this.state.location),
               radius: this.state.radius,
             })
-            GLOBAL.PoiTopSearchBar &&
-              GLOBAL.PoiTopSearchBar.setState({ defaultValue: item.title })
+            global.PoiTopSearchBar &&
+              global.PoiTopSearchBar.setState({ defaultValue: item.title })
           }}
           style={styles.searchIconWrap}
         >
@@ -669,7 +679,7 @@ export default class PoiInfoContainer extends React.Component {
         style={styles.moreWrap}
       >
         <Text style={styles.moreText}>
-          {getLanguage(GLOBAL.language).Prompt.SHOW_MORE_RESULT}
+          {getLanguage(global.language).Prompt.SHOW_MORE_RESULT}
         </Text>
       </TouchableOpacity>
     )

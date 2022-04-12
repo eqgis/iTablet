@@ -27,7 +27,7 @@ const popTypes = {
   PixelFormat: 'PixelFormat',
 }
 
-function getDefaultState(language = GLOBAL.language) {
+function getDefaultState(language = global.language) {
   return {
     method: InterpolationParamsData.getInterpolationMethod(language)[0],
     // 源数据
@@ -65,7 +65,7 @@ export default class InterpolationAnalystView extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.cb = params && params.cb
     this.state = {
       title: (params && params.title) || '',

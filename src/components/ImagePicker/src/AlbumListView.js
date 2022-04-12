@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  CameraRoll,
   Image,
   FlatList,
   Platform,
@@ -10,6 +9,7 @@ import {
   View,
   Dimensions,
 } from 'react-native'
+import CameraRoll from "@react-native-community/cameraroll"
 import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { InputDialog } from '../../Dialog'
@@ -19,6 +19,7 @@ import { size, color } from '../../../styles'
 import { FileTools } from '../../../native'
 import { ConstPath } from '../../../constants'
 import Orientation from 'react-native-orientation'
+import * as ImageUtils from './ImageUtils'
 
 export default class AlbumListView extends React.PureComponent {
   props: {
@@ -28,7 +29,6 @@ export default class AlbumListView extends React.PureComponent {
     groupTypes: String,
     choosePhotoTitle: String,
     cancelLabel: String,
-    callback: String,
     navigation: Object,
     device: Object,
     showDialog?: boolean,
@@ -58,7 +58,7 @@ export default class AlbumListView extends React.PureComponent {
   }
 
   componentDidMount() {
-    Dimensions.addEventListener('change', this._onWindowChanged)
+    this.windowChangedListener = Dimensions.addEventListener('change', this._onWindowChanged)
     ;(async function() {
       if (this.props.showDialog && this.dialog)
         this.dialog.setDialogVisible(this.props.showDialog)
@@ -113,7 +113,8 @@ export default class AlbumListView extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    Dimensions.removeEventListener('change', this._onWindowChanged)
+    // Dimensions.removeEventListener('change', this._onWindowChanged)
+    this.windowChangedListener?.remove()
   }
   
   componentDidUpdate() {
@@ -154,9 +155,12 @@ export default class AlbumListView extends React.PureComponent {
           navigation: this.props.navigation,
           withoutBack: true,
           headerRight: [
-            <TouchableOpacity key={'addImage'} onPress={this._clickCancel}>
+            <TouchableOpacity key={'addImage'} onPress={() => {
+              // NavigationService.goBack('ImagePickerStack')
+              ImageUtils.hide()
+            }}>
               <Text style={styles.headerRight}>
-                {getLanguage(GLOBAL.language).Analyst_Labels.CANCEL}
+                {getLanguage(global.language).Analyst_Labels.CANCEL}
               </Text>
             </TouchableOpacity>,
           ],
@@ -185,7 +189,7 @@ export default class AlbumListView extends React.PureComponent {
         {this.props.dialogConfirm && (
           <InputDialog
             ref={ref => (this.dialog = ref)}
-            title={getLanguage(GLOBAL.language).Map_Main_Menu.TOUR_NAME}
+            title={getLanguage(global.language).Map_Main_Menu.TOUR_NAME}
             confirmAction={value => {
               this.props.dialogConfirm(value, () =>
                 this.dialog.setDialogVisible(false),
@@ -198,8 +202,8 @@ export default class AlbumListView extends React.PureComponent {
                 this._clickCancel()
               }
             }}
-            confirmBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
-            cancelBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CANCEL}
+            confirmBtnTitle={getLanguage(global.language).Map_Settings.CONFIRM}
+            cancelBtnTitle={getLanguage(global.language).Map_Settings.CANCEL}
           />
         )}
       </Container>
@@ -250,6 +254,7 @@ export default class AlbumListView extends React.PureComponent {
       first: 1000000,
       groupTypes: Platform.OS === 'ios' ? this.props.groupTypes : undefined,
       assetType: assetType,
+      include: ['location', 'playableDuration', 'fileSize', 'imageSize']
     })
     const arr = result.edges.map(item => item.node)
     const dict = arr.reduce((prv, cur) => {
@@ -287,6 +292,8 @@ export default class AlbumListView extends React.PureComponent {
 
   _clickCancel = () => {
     this.props.callback && this.props.callback([])
+    // NavigationService.goBack('ImagePickerStack')
+    ImageUtils.hide()
   }
 
   _clickRow = item => {

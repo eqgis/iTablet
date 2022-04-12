@@ -38,7 +38,7 @@ export default class LocalAnalystView extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.type = params && params.type
     this.cb = params && params.cb
     this.reloadData = true
@@ -70,7 +70,7 @@ export default class LocalAnalystView extends Component {
     if (this.reloadData || this.props.userUdbAndDs.length === 0) {
       this.getData()
     } else if (this.linkageList && this.props.userUdbAndDs.length > 0) {
-      let params = this.props.navigation.state.params
+      let params = this.props.route.params
       let leftIndex = -1,
         rightIndex = -1
       let leftData = this.props.userUdbAndDs[0]
@@ -143,7 +143,7 @@ export default class LocalAnalystView extends Component {
       try {
         // let params1 =
         //   this.props.nav.routes[this.props.nav.index - 1].params || {}
-        let params2 = this.props.navigation.state.params || {}
+        let params2 = this.props.route.params || {}
         this.setLoading(
           true,
           getLanguage(this.props.language).Analyst_Prompt.LOADING_MODULE,
@@ -162,7 +162,7 @@ export default class LocalAnalystView extends Component {
             ToolbarModule.addData({
               navigationParams: params2,
               backAction: () => {
-                GLOBAL.mapController.move({
+                global.mapController.move({
                   bottom: 'default',
                   left: scaleSize(-200),
                 })
@@ -187,8 +187,8 @@ export default class LocalAnalystView extends Component {
             await this.props.getLayers()
             this.setLoading(false)
             await SMap.setLayerFullView(res.layerInfo.path)
-            // if (GLOBAL.mapController) {
-            //   GLOBAL.mapController.move({
+            // if (global.mapController) {
+            //   global.mapController.move({
             //     bottom: this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? scaleSize(45) : scaleSize(135),
             //     left: 'default',
             //   })
@@ -197,13 +197,13 @@ export default class LocalAnalystView extends Component {
 
             switch (this.type) {
               case ConstToolType.SM_MAP_ANALYSIS_OPTIMAL_PATH:
-                GLOBAL.TouchType = TouchType.ADD_STATIONS
+                global.TouchType = TouchType.ADD_STATIONS
                 break
               case ConstToolType.SM_MAP_ANALYSIS_CONNECTIVITY_ANALYSIS:
-                GLOBAL.TouchType = TouchType.SET_AS_START_STATION
+                global.TouchType = TouchType.SET_AS_START_STATION
                 break
               case ConstToolType.SM_MAP_ANALYSIS_FIND_TSP_PATH:
-                GLOBAL.TouchType = TouchType.ADD_STATIONS
+                global.TouchType = TouchType.ADD_STATIONS
                 break
             }
 

@@ -47,7 +47,7 @@ function getData(type, params) {
       data = colorsWithNull
       break
     case ConstToolType.SM_MAP_STYLE_TEXT_FONT:
-      data = font(GLOBAL.language)
+      data = font(global.language)
       break
   }
   ToolbarModule.setParams(params)

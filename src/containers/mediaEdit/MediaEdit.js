@@ -21,6 +21,7 @@ import styles from './styles'
 import MediaItem from './MediaItem'
 import { getLanguage } from '../../language'
 import NavigationService from '../../containers/NavigationService'
+// import ImagePicker from 'react-native-image-crop-picker'
 import { SMediaCollector, SOnlineService, SIPortalService, SMap, SCoordination, RNFS, SARMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 
@@ -42,7 +43,7 @@ export default class MediaEdit extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.info = (params && params.info) || {}
     this.layerInfo = params && params.layerInfo
     this.cb = params && params.cb
@@ -67,16 +68,16 @@ export default class MediaEdit extends React.Component {
     if (!title && this.showInfo.mediaData.type) {
       switch (this.showInfo.mediaData.type) {
         case 'AI_AGGREGATE':
-          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT
+          title = getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_AGGREGATE_COLLECT
           break
         case 'AI_DETECT':
-          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT
+          title = getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT
           break
         case 'AI_VEHICLE':
-          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT
+          title = getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT
           break
         case 'AI_CLASSIFY':
-          title = getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CLASSIFY
+          title = getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CLASSIFY
           break
       }
     }
@@ -92,7 +93,7 @@ export default class MediaEdit extends React.Component {
     this.modifiedData = [] // 修改的信息
     this._newMediaFiles = [] // 临时存放要提交的新多媒体文件
     this._ids = [] // 临时存放要提交的新多媒体文件ID
-    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
+    if (global.coworkMode && global.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
         this.servicesUtils = new SCoordination('online')
         this.onlineServicesUtils = new OnlineServicesUtils('online')
@@ -265,7 +266,7 @@ export default class MediaEdit extends React.Component {
   uploadMedia = async mediaFilePaths => {
     let resourceIds = []
     try {
-      if (GLOBAL.coworkMode && mediaFilePaths.length > 0) {
+      if (global.coworkMode && mediaFilePaths.length > 0) {
         // _mediaPaths = [] // 保存修改名称后的图片地址
         for (let mediaFilePath of  mediaFilePaths) {
           let name = mediaFilePath.substr(mediaFilePath.lastIndexOf('/') + 1)
@@ -324,7 +325,7 @@ export default class MediaEdit extends React.Component {
       return result
     }
     try {
-      this.container && this.container.setLoading(true, getLanguage(GLOBAL.language).Prompt.SAVEING)
+      this.container && this.container.setLoading(true, getLanguage(global.language).Prompt.SAVEING)
       this._newMediaFiles = []
       this._ids = []
       let modifiedData = [],
@@ -392,7 +393,7 @@ export default class MediaEdit extends React.Component {
           ConstPath.RelativeFilePath.Media,
       )
       // 在线协作，上传到服务器
-      if (GLOBAL.coworkMode) {
+      if (global.coworkMode) {
         const newPaths = await FileTools.copyFiles(this._newMediaFiles, targetPath)
         if (this._newMediaFiles.length > 0) {
           // let _newIds = await this.uploadMedia(this._newMediaFiles)
@@ -459,7 +460,7 @@ export default class MediaEdit extends React.Component {
         })
       }
       let newState = {}
-      if (GLOBAL.coworkMode && result) {
+      if (global.coworkMode && result) {
         this.info.mediaServiceIds = this._ids
         newState.mediaServiceIds = this._ids
         // this.setState({mediaServiceIds: this._ids})
@@ -664,7 +665,7 @@ export default class MediaEdit extends React.Component {
           style={[styles.popBtn, { width: '100%' }]}
           onPress={async () => {
             this.popModal && this.popModal.setVisible(false)
-            const isAR = GLOBAL.Type === ChunkType.MAP_AR_MAPPING || GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS
+            const isAR = global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS
             Platform.OS === 'android' && isAR && await SARMap.onPause() // Android相机和AR模块实景共用相机,要先暂停AR模块的相机,防止崩溃
             NavigationService.navigate('Camera', {
               limit: MAX_FILES - this.state.mediaFilePaths.length,
@@ -710,7 +711,7 @@ export default class MediaEdit extends React.Component {
           if (result) {
             SMap.refreshMap()
             NavigationService.goBack('MediaEdit')
-            if(GLOBAL.HAVEATTRIBUTE){
+            if(global.HAVEATTRIBUTE){
               this.gocb && typeof this.gocb === 'function' && this.gocb()
             }
           }
@@ -756,7 +757,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.mediaName,
-              headerTitle: getLanguage(GLOBAL.language).Map_Label.NAME,
+              headerTitle: getLanguage(global.language).Map_Label.NAME,
               type: 'name',
               cb: async value => {
                 this.setState({
@@ -784,7 +785,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.httpAddress,
-              headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
+              headerTitle: getLanguage(global.language).Map_Main_Menu
                 .TOOLS_HTTP,
               type: 'http',
               cb: async value => {
@@ -803,7 +804,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.description,
-              headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
+              headerTitle: getLanguage(global.language).Map_Main_Menu
                 .TOOLS_REMARKS,
               cb: async value => {
                 this.setState({
@@ -861,7 +862,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.category ? this.state.category:category,
-              headerTitle: getLanguage(GLOBAL.language).AI.CATEGORY,
+              headerTitle: getLanguage(global.language).AI.CATEGORY,
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.category = value
@@ -886,7 +887,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.modifiedDate,
-              headerTitle: getLanguage(GLOBAL.language).AI.DATE,
+              headerTitle: getLanguage(global.language).AI.DATE,
               cb: async value => {
                 this.setState({
                   modifiedDate: value,
@@ -903,7 +904,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.description,
-              headerTitle: getLanguage(GLOBAL.language).AI.REMARK,
+              headerTitle: getLanguage(global.language).AI.REMARK,
               cb: async value => {
                 this.setState({
                   description: value,
@@ -949,7 +950,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.mediaData.client || '',
-              headerTitle: getLanguage(GLOBAL.language).AI.CLIENT,
+              headerTitle: getLanguage(global.language).AI.CLIENT,
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.client = value
@@ -968,7 +969,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.mediaData.plateNubmer || '',
-              headerTitle: getLanguage(GLOBAL.language).AI.PLATE_NUMBER,
+              headerTitle: getLanguage(global.language).AI.PLATE_NUMBER,
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.plateNubmer = value
@@ -987,7 +988,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.mediaData.vehicleType || '',
-              headerTitle: getLanguage(GLOBAL.language).AI.VEHICLE_TYPE,
+              headerTitle: getLanguage(global.language).AI.VEHICLE_TYPE,
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.vehicleType = value
@@ -1006,7 +1007,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.mediaData.vehicleColor || '',
-              headerTitle: getLanguage(GLOBAL.language).AI.VEHICLE_COLOR,
+              headerTitle: getLanguage(global.language).AI.VEHICLE_COLOR,
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.vehicleColor = value
@@ -1030,7 +1031,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.mediaData.vehicleInfo || '',
-              headerTitle: getLanguage(GLOBAL.language).AI.VIOLATION_INFO,
+              headerTitle: getLanguage(global.language).AI.VIOLATION_INFO,
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.vehicleInfo = value
@@ -1049,7 +1050,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.mediaData.lawEnforcer || '',
-              headerTitle: getLanguage(GLOBAL.language).AI.LAW_ENFORCER,
+              headerTitle: getLanguage(global.language).AI.LAW_ENFORCER,
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
                 mediaData.lawEnforcer = value
@@ -1100,7 +1101,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: category,
-              headerTitle: getLanguage(GLOBAL.language).Map_Label.CATEGORY,
+              headerTitle: getLanguage(global.language).Map_Label.CATEGORY,
               type: 'name',
               cb: async value => {
                 let mediaData = JSON.parse(JSON.stringify(this.state.mediaData))
@@ -1127,7 +1128,7 @@ export default class MediaEdit extends React.Component {
           action: () => {
             NavigationService.navigate('InputPage', {
               value: this.state.description,
-              headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_REMARKS,
+              headerTitle: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_REMARKS,
               cb: async value => {
                 this.setState({
                   description: value,
@@ -1173,19 +1174,19 @@ export default class MediaEdit extends React.Component {
     if (this.info.geoID) {
       _goBack()
     } else {
-      GLOBAL.SimpleDialog?.set({
-        text: getLanguage(GLOBAL.language).Prompt.SAVE_DATA_TITLE,
-        confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-        cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+      global.SimpleDialog?.set({
+        text: getLanguage(global.language).Prompt.SAVE_DATA_TITLE,
+        confirmText: getLanguage(global.language).Prompt.YES,
+        cancelText: getLanguage(global.language).Prompt.NO,
         disableBackTouch: false,
         confirmAction: async () => {
           const result = await this.saveHandler()
           result && _goBack()
         },
         cancelAction: _goBack,
-        dismissAction: () => GLOBAL.SimpleDialog?.setVisible(false),
+        dismissAction: () => global.SimpleDialog?.setVisible(false),
       })
-      GLOBAL.SimpleDialog?.setVisible(true)
+      global.SimpleDialog?.setVisible(true)
     }
   }
 

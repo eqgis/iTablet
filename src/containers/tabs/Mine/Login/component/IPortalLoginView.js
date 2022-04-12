@@ -36,7 +36,7 @@ export default class IPortalLoginView extends React.Component {
       // left: new Animated.Value(0),
       showServer: true,
       loginText:getLanguage(this.props.language).Profile.LOGIN,
-      nextText:getLanguage(GLOBAL.language).Profile.NEXT,
+      nextText:getLanguage(global.language).Profile.NEXT,
       canTouch: true,//登录按钮点击判断 add jiakai
       connectTouch: true,//下一步按钮点击判断 add jiakai
       showMessageServiceSettings: false,
@@ -180,11 +180,11 @@ export default class IPortalLoginView extends React.Component {
   goNext = async () => {
     if (this.iportalAddress) {
       //下一步点击后按钮及提示状态 add jiakai
-      this.setState({nextText:getLanguage(GLOBAL.language).Profile.CONNECTING,connectTouch:false})
+      this.setState({nextText:getLanguage(global.language).Profile.CONNECTING,connectTouch:false})
       this.props.connect(true)
-      // GLOBAL.Loading.setLoading(
+      // global.Loading.setLoading(
       //   true,
-      //   getLanguage(GLOBAL.language).Profile.CONNECTING,
+      //   getLanguage(global.language).Profile.CONNECTING,
       // )
       let url = this.iportalAddress + '/login.rjson'
       if (this.iportalAddress.indexOf('http') !== 0) {
@@ -206,13 +206,13 @@ export default class IPortalLoginView extends React.Component {
       }
       if (status === 405) {
         setTimeout(async () => {
-          // GLOBAL.Loading.setLoading(false)
+          // global.Loading.setLoading(false)
           this.props.connect(false)
           if (!await this.checkMessageSettings() || !await this.checkFileSettings()) {
-            this.setState({connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT})
+            this.setState({connectTouch: true,nextText:getLanguage(global.language).Profile.NEXT})
             return
           }
-          this.setState({ showServer: false ,connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT})
+          this.setState({ showServer: false ,connectTouch: true,nextText:getLanguage(global.language).Profile.NEXT})
           // Animated.timing(this.state.left, {
           //   toValue: -this.screenWidth,
           //   duration: 500,
@@ -221,10 +221,10 @@ export default class IPortalLoginView extends React.Component {
       } else {
         setTimeout(() => {
           this.props.connect(false)
-          this.setState({connectTouch: true,nextText:getLanguage(GLOBAL.language).Profile.NEXT}, () => {
-            Toast.show(getLanguage(GLOBAL.language).Profile.CONNECT_SERVER_FAIL)
+          this.setState({connectTouch: true,nextText:getLanguage(global.language).Profile.NEXT}, () => {
+            Toast.show(getLanguage(global.language).Profile.CONNECT_SERVER_FAIL)
           })
-          // GLOBAL.Loading.setLoading(false)
+          // global.Loading.setLoading(false)
         }, 1000)
       }
     } else {

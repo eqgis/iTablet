@@ -32,17 +32,17 @@ export default class InformMessage extends React.Component {
     this.screenWidth = Dimensions.get('window').width
     this.friend = {}
     this.state = {
-      messageInfo: this.props.navigation.getParam('messageInfo', ''),
-      currentUser: this.props.navigation.getParam('user', ''),
+      messageInfo: this.props.route.params.messageInfo,
+      currentUser: this.props.route.params.user,
     }
-    this.language = this.props.navigation.getParam('language', '')
-    this.friend = this.props.navigation.getParam('friend')
+    this.language = this.props.route.params.language
+    this.friend = this.props.route.params.friend
   }
   componentDidMount() {
     this.setState(() => {
       return {
-        messageInfo: this.props.navigation.getParam('messageInfo'),
-        currentUser: this.props.navigation.getParam('user', ''),
+        messageInfo: this.props.route.params.messageInfo,
+        currentUser: this.props.route.params.user,
       }
     })
   }

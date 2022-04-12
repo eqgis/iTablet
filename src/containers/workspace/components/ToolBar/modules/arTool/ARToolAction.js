@@ -26,7 +26,7 @@ function arCastModelOperate() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     if (isProjectModelDownload) {
@@ -44,10 +44,10 @@ function arCastModelOperate() {
           Toast.show(getLanguage(_params.language).Prompt.DOWNLOADING_OTHERS_PLEASE_WAIT)
           return
         }
-        GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-        if (GLOBAL.showAIDetect) {
-          GLOBAL.arSwitchToMap = true
-          ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+        global.toolBox && global.toolBox.removeAIDetect(true)
+        if (global.showAIDetect) {
+          global.arSwitchToMap = true
+          ;(await global.toolBox) && global.toolBox.switchAr()
         }
         NavigationService.navigate('ARProjectModeView')
       } else {
@@ -119,16 +119,16 @@ function _downloadData(downloadData) {
 async function arVideo() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    GLOBAL.ARDeviceListDialog.setVisible(true)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
-  if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = true
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  if (global.showAIDetect) {
+    global.arSwitchToMap = true
+    ;(await global.toolBox) && global.toolBox.switchAr()
   }
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-  GLOBAL.EnterDatumPointType = 'arVideo'
+  global.toolBox && global.toolBox.removeAIDetect(true)
+  global.EnterDatumPointType = 'arVideo'
   // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARVideoView')
 }
@@ -136,16 +136,16 @@ async function arVideo() {
 async function arImage() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    GLOBAL.ARDeviceListDialog.setVisible(true)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
-  if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = true
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  if (global.showAIDetect) {
+    global.arSwitchToMap = true
+    ;(await global.toolBox) && global.toolBox.switchAr()
   }
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-  GLOBAL.EnterDatumPointType = 'arImage'
+  global.toolBox && global.toolBox.removeAIDetect(true)
+  global.EnterDatumPointType = 'arImage'
   // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARImageView')
 }
@@ -153,16 +153,16 @@ async function arImage() {
 async function arWebView() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    GLOBAL.ARDeviceListDialog.setVisible(true)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
-  if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = true
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  if (global.showAIDetect) {
+    global.arSwitchToMap = true
+    ;(await global.toolBox) && global.toolBox.switchAr()
   }
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-  GLOBAL.EnterDatumPointType = 'arWebView'
+  global.toolBox && global.toolBox.removeAIDetect(true)
+  global.EnterDatumPointType = 'arWebView'
   // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARWebView')
 }
@@ -170,16 +170,16 @@ async function arWebView() {
 async function arText() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
   if (!isSupportedARCore) {
-    GLOBAL.ARDeviceListDialog.setVisible(true)
+    global.ARDeviceListDialog.setVisible(true)
     return
   }
 
-  if (GLOBAL.showAIDetect) {
-    GLOBAL.arSwitchToMap = false
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  if (global.showAIDetect) {
+    global.arSwitchToMap = false
+    ;(await global.toolBox) && global.toolBox.switchAr()
   }
-  GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-  GLOBAL.EnterDatumPointType = 'arText'
+  global.toolBox && global.toolBox.removeAIDetect(true)
+  global.EnterDatumPointType = 'arText'
   // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARTextView')
 }
@@ -191,13 +191,13 @@ async function ar3D() {
     return
   }
 
-  if (GLOBAL.showAIDetect) {
-    GLOBAL.isswitch = true
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+  if (global.showAIDetect) {
+    global.isswitch = true
+    global.toolBox && global.toolBox.removeAIDetect(true)
+    ;(await global.toolBox) && global.toolBox.switchAr()
   }
 
-  GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false)
+  global.toolBox && global.toolBox.setVisible(false)
   NavigationService.navigate('ARSceneView')
 }
 

@@ -1,4 +1,3 @@
-// import { AsyncStorage } from 'react-native'
 import { SMap, ThemeType, SThemeCartography } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
@@ -44,8 +43,8 @@ export default class CoworkInfo {
         CoworkInfo.closeMapHandle && CoworkInfo.closeMapHandle({baskFrom: 'CoworkManagePage'})
         Toast.show(
           messageObj.message.type === MsgConstant.MSG_ONLINE_MEMBER_DELETE
-            ? getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_DELETE_INFO2
-            : getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2
+            ? getLanguage(global.language).Friends.GROUP_MEMBER_DELETE_INFO2
+            : getLanguage(global.language).Friends.GROUP_DELETE_INFO2
         )
         break
       } else if (nav.routes[i].routeName === 'CoworkManagePage' && messageObj.message.groupId === this.groupId) {
@@ -53,7 +52,7 @@ export default class CoworkInfo {
         CoworkInfo.getGroupHandle && CoworkInfo.getGroupHandle()
         CoworkInfo.exitGroup && CoworkInfo.exitGroup({ groupID: messageObj.message.groupId })
         NavigationService.goBack('CoworkManagePage', null)
-        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2)
+        Toast.show(getLanguage(global.language).Friends.GROUP_DELETE_INFO2)
         break
       }
     }
@@ -172,12 +171,12 @@ export default class CoworkInfo {
           }
         } else {
           if (message.message.themeType > 0 && message.message.theme) {
-            Toast.show(getLanguage(GLOBAL.language).Cowork.UPDATE_THEME_ERROR_INFO)
+            Toast.show(getLanguage(global.language).Cowork.UPDATE_THEME_ERROR_INFO)
           }
         }
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&
-          Toast.show(getLanguage(GLOBAL.language).Friends.ADD_DELETE_ERROR)
+          Toast.show(getLanguage(global.language).Friends.ADD_DELETE_ERROR)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE || type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
         let url = message.message.serviceUrl
         if (url.endsWith('/rest') && url.indexOf('/rest/data/datasources/') === -1) { // 下载地图服务
@@ -267,7 +266,7 @@ export default class CoworkInfo {
             SMap.removeMessageCallout(messageID)
             notify &&
               Toast.show(
-                getLanguage(GLOBAL.language).Friends.UPDATE_NOT_EXIST_OBJ,
+                getLanguage(global.language).Friends.UPDATE_NOT_EXIST_OBJ,
               )
           }
         } else if (message.message.isHeatmap && message.message.layerHeatmap) {

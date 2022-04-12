@@ -31,7 +31,7 @@ class NewDataset extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.userTempWorkspace = !!params?.userTempWorkspace // 是否使用临时工作空间
     this.state = {
       title: params.title,
@@ -191,7 +191,7 @@ class NewDataset extends Component {
   _createDatasets = async () => {
     try {
       if (this.state.datasets.length === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Profile.PLEASE_ADD_DATASET)
+        Toast.show(getLanguage(global.language).Profile.PLEASE_ADD_DATASET)
       } else {
         let newDatasets = this.state.datasets
         if (this.state.errorMap.size) {
@@ -199,22 +199,22 @@ class NewDataset extends Component {
         }
         for (let i = 0; i < newDatasets.length; i++) {
           if (!newDatasets[i].datasetName) {
-            Toast.show(getLanguage(GLOBAL.language).Profile.ENTER_DATASET_NAME)
+            Toast.show(getLanguage(global.language).Profile.ENTER_DATASET_NAME)
             return
           }
           if (!newDatasets[i].datasetType) {
-            Toast.show(getLanguage(GLOBAL.language).Profile.SELECT_DATASET_TYPE)
+            Toast.show(getLanguage(global.language).Profile.SELECT_DATASET_TYPE)
             return
           }
         }
         this.container.setLoading(
           true,
-          getLanguage(GLOBAL.language).Prompt.CREATING,
+          getLanguage(global.language).Prompt.CREATING,
         )
         if (!(await this._isAvailableDatasetName(newDatasets))) {
           setTimeout(() => {
             Toast.show(
-              getLanguage(GLOBAL.language).Prompt.INVALID_DATASET_NAME +
+              getLanguage(global.language).Prompt.INVALID_DATASET_NAME +
                 ': ' +
                 this.badName,
             )
@@ -238,7 +238,7 @@ class NewDataset extends Component {
             }
           }
           setTimeout(async () => {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.CREATE_SUCCESSFULLY)
+            Toast.show(getLanguage(global.language).Prompt.CREATE_SUCCESSFULLY)
             this.refreshCallback && (await this.refreshCallback())
             this._clearDatasets()
             this.container && this.container.setLoading(false)
@@ -248,7 +248,7 @@ class NewDataset extends Component {
       }
     } catch (error) {
       setTimeout(() => {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.CREATE_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.CREATE_FAILED)
         this.container && this.container.setLoading(false)
       }, 1000)
     }
@@ -277,7 +277,7 @@ class NewDataset extends Component {
     // 设置投影坐标系
     _setProjection = (item, index) => {
       NavigationService.navigate('ProjectionTargetCoordsPage',{
-        title: getLanguage(GLOBAL.language).Analyst_Labels.COORDSYS,
+        title: getLanguage(global.language).Analyst_Labels.COORDSYS,
         // 投影坐标系选择界面确定时回调
         cb: targetCoords =>{
           NavigationService.goBack()
@@ -321,7 +321,7 @@ class NewDataset extends Component {
         <View style={styles.datasetNameStyle}>
           <Text style={styles.textStyle}>
             {/* {'数据集名称'} */}
-            {getLanguage(GLOBAL.language).Profile.DATASET_NAME}
+            {getLanguage(global.language).Profile.DATASET_NAME}
           </Text>
           <Input
             style={styles.textInputStyle}
@@ -329,7 +329,7 @@ class NewDataset extends Component {
             onChangeText={text => {
               item.datasetName = text
               item.nameChanged = true
-              let { error } = dataUtil.isLegalName(text, GLOBAL.language)
+              let { error } = dataUtil.isLegalName(text, global.language)
               this.setErrorMap(item.key, error)
             }}
             showClear={true}
@@ -346,7 +346,7 @@ class NewDataset extends Component {
         <View>
           <Text style={styles.textStyle}>
             {/* {'数据集类型'} */}
-            {getLanguage(GLOBAL.language).Profile.DATASET_TYPE}
+            {getLanguage(global.language).Profile.DATASET_TYPE}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {this._renderDatasetType(item, DatasetType.POINT)}
@@ -360,7 +360,7 @@ class NewDataset extends Component {
         {/* 设置数据集投影 */}
         <View style={{marginBottom:scaleSize(10)}}>
           <Text style={styles.textStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.COORDSYS}
+            {getLanguage(global.language).Analyst_Labels.COORDSYS}
           </Text>
           <TouchableOpacity onPress={()=>{
             this._setProjection(item,index)
@@ -381,16 +381,16 @@ class NewDataset extends Component {
     let text
     let img
     if (type === DatasetType.POINT) {
-      text = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_POINT
+      text = getLanguage(global.language).Profile.DATASET_TYPE_POINT
       img = pointImg
     } else if (type === DatasetType.LINE) {
-      text = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_LINE
+      text = getLanguage(global.language).Profile.DATASET_TYPE_LINE
       img = lineImg
     } else if (type === DatasetType.REGION) {
-      text = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_REGION
+      text = getLanguage(global.language).Profile.DATASET_TYPE_REGION
       img = regionImg
     } else if (type === DatasetType.TEXT) {
-      text = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_TEXT
+      text = getLanguage(global.language).Profile.DATASET_TYPE_TEXT
       img = textImg
     } else if (type === DatasetType.CAD) {
       text = 'CAD'
@@ -432,7 +432,7 @@ class NewDataset extends Component {
             <Image style={styles.imgStyle} source={addImg} />
             <Text style={[styles.textStyle, { color: '#4680DF' }]}>
               {/* {'添加数据集'} */}
-              {getLanguage(GLOBAL.language).Profile.ADD_DATASET}
+              {getLanguage(global.language).Profile.ADD_DATASET}
             </Text>
           </View>
         </TouchableOpacity>
@@ -463,13 +463,13 @@ class NewDataset extends Component {
         <TouchableOpacity onPress={this._clearDatasets}>
           <Text style={[styles.textStyle, { padding: scaleSize(10) }]}>
             {/* {'清空'} */}
-            {getLanguage(GLOBAL.language).Profile.CLEAR}
+            {getLanguage(global.language).Profile.CLEAR}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this._createDatasets}>
           <Text style={[styles.textStyle, { padding: scaleSize(10) }]}>
             {/* {'创建'} */}
-            {getLanguage(GLOBAL.language).Profile.CREATE}
+            {getLanguage(global.language).Profile.CREATE}
           </Text>
         </TouchableOpacity>
       </View>
@@ -484,7 +484,7 @@ class NewDataset extends Component {
           backgroundColor: color.contentColorWhite,
         }}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.NEW_DATASET,
+          title: getLanguage(global.language).Profile.NEW_DATASET,
           withoutBack: false,
           navigation: this.props.navigation,
         }}

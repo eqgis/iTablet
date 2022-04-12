@@ -114,27 +114,27 @@ function getMenuData(type, themeType) {
   }
   ToolbarModule.setData(moduleData)
   if (themeType === constants.THEME_UNIQUE_STYLE) {
-    data = ThemeMenuData.uniqueMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.uniqueMenuInfo(global.language)
   } else if (themeType === constants.THEME_RANGE_STYLE) {
-    data = ThemeMenuData.rangeMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.rangeMenuInfo(global.language)
   } else if (themeType === constants.THEME_UNIFY_LABEL) {
-    data = ThemeMenuData.labelMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.labelMenuInfo(global.language)
   } else if (themeType === constants.THEME_UNIQUE_LABEL) {
-    data = ThemeMenuData.uniqueLabelMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.uniqueLabelMenuInfo(global.language)
   } else if (themeType === constants.THEME_RANGE_LABEL) {
-    data = ThemeMenuData.rangeLabelMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.rangeLabelMenuInfo(global.language)
   } else if (themeType === constants.THEME_GRAPH_STYLE) {
-    data = ThemeMenuData.graphMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.graphMenuInfo(global.language)
   } else if (themeType === constants.THEME_DOT_DENSITY) {
-    data = ThemeMenuData.dotDensityMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.dotDensityMenuInfo(global.language)
   } else if (themeType === constants.THEME_GRADUATED_SYMBOL) {
-    data = ThemeMenuData.graduatedSymbolMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.graduatedSymbolMenuInfo(global.language)
   } else if (themeType === constants.THEME_GRID_UNIQUE) {
-    data = ThemeMenuData.gridUniqueMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.gridUniqueMenuInfo(global.language)
   } else if (themeType === constants.THEME_GRID_RANGE) {
-    data = ThemeMenuData.gridRangeMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.gridRangeMenuInfo(global.language)
   } else if (themeType === constants.THEME_HEATMAP) {
-    data = ThemeMenuData.heatmapMenuInfo(GLOBAL.language)
+    data = ThemeMenuData.heatmapMenuInfo(global.language)
   }
   return data
 }

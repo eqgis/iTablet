@@ -94,12 +94,12 @@ export default class LayerManager_tolbar extends React.Component {
             title: '',
             data: [
               {
-                title: getLanguage(GLOBAL.language).Map_Layer.ADD_A_IMAGE_LAYER,
+                title: getLanguage(global.language).Map_Layer.ADD_A_IMAGE_LAYER,
                 image: getThemeAssets().start.icon_new_map,
                 type: 'AddImage',
               },
               {
-                title: getLanguage(GLOBAL.language).Map_Layer.BASEMAP_SWITH,
+                title: getLanguage(global.language).Map_Layer.BASEMAP_SWITH,
                 image: getThemeAssets().start.icon_open_map,
               },
             ],
@@ -107,16 +107,16 @@ export default class LayerManager_tolbar extends React.Component {
         ]
         break
       case ConstToolType.SM_MAP3D_LAYER3D_IMAGE:
-        data = layere3dImage(GLOBAL.language)
+        data = layere3dImage(global.language)
         break
       case ConstToolType.SM_MAP3D_LAYER3D_TERRAIN:
-        data = layere3dTerrain(GLOBAL.language)
+        data = layere3dTerrain(global.language)
         break
       case ConstToolType.SM_MAP3D_BASE:
         data = [
           {
             header: {
-              title: getLanguage(GLOBAL.language).Map_Layer.ONLINE_BASE_MAP,
+              title: getLanguage(global.language).Map_Layer.ONLINE_BASE_MAP,
               // image: getThemeAssets().layer3dType.layer3d_normal_selected,
               image: getThemeAssets().layer3dType.layer3d_normal,
             },
@@ -147,7 +147,7 @@ export default class LayerManager_tolbar extends React.Component {
         //地形添加二级界面
         let terrainDatas = {
           header: {
-            title: getLanguage(GLOBAL.language).Map_Layer.TERRAIN,
+            title: getLanguage(global.language).Map_Layer.TERRAIN,
             // image: getThemeAssets().layer3dType.layer3d_terrain_layer_selected,
             image: getThemeAssets().layer3dType.layer3d_terrain_layer,
             type: 'Terrain',
@@ -173,7 +173,7 @@ export default class LayerManager_tolbar extends React.Component {
         //影像添加二级界面
         let terrainDatas = {
           header: {
-            title: getLanguage(GLOBAL.language).Map_Layer.IMAGE,
+            title: getLanguage(global.language).Map_Layer.IMAGE,
             // image: getThemeAssets().layer3dType.layer3d_image_selected,
             image: getThemeAssets().layer3dType.layer3d_image,
             type: 'Image',
@@ -206,6 +206,7 @@ export default class LayerManager_tolbar extends React.Component {
       Animated.timing(this.state.bottom, {
         toValue: isShow ? 0 : -screen.deviceHeight,
         duration: 300,
+        useNativeDriver: false,
       }).start()
       this.isShow = isShow
     }
@@ -222,6 +223,7 @@ export default class LayerManager_tolbar extends React.Component {
         Animated.timing(this.state.boxHeight, {
           toValue: this.height,
           duration: 300,
+          useNativeDriver: false,
         }).start()
       }
       this.isBoxShow = true
@@ -264,8 +266,8 @@ export default class LayerManager_tolbar extends React.Component {
    * @param visible
    */
   setOverlayViewVisible = visible => {
-    GLOBAL.LayerManagerOverlayView &&
-      GLOBAL.LayerManagerOverlayView.setVisible(visible)
+    global.LayerManagerOverlayView &&
+      global.LayerManagerOverlayView.setVisible(visible)
   }
 
   //更新遮盖层状态
@@ -283,7 +285,7 @@ export default class LayerManager_tolbar extends React.Component {
       return
     }
     if (
-      section.title === getLanguage(GLOBAL.language).Map_Layer.BASEMAP_SWITH
+      section.title === getLanguage(global.language).Map_Layer.BASEMAP_SWITH
     ) {
       //'切换底图') {
       this.setVisible(true, ConstToolType.SM_MAP3D_BASE, {
@@ -344,10 +346,10 @@ export default class LayerManager_tolbar extends React.Component {
           this.props.layer3dRefresh()
           SScene.ensureVisibleLayer(name)
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
         }
       }).catch(() => {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
       })
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'AddImage_second') {
@@ -359,10 +361,10 @@ export default class LayerManager_tolbar extends React.Component {
           this.props.layer3dRefresh()
           SScene.ensureVisibleLayer(name)
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
         }
       }).catch(() => {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
       })
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'RemoveLayer3d_image') {
@@ -470,7 +472,7 @@ export default class LayerManager_tolbar extends React.Component {
           }}
           onPress={() => {
             this.props.navigation.navigate('InputPage', {
-              headerTitle: getLanguage(GLOBAL.language).Map_Layer.ADD_LAYER_URL,
+              headerTitle: getLanguage(global.language).Map_Layer.ADD_LAYER_URL,
               value: '',
               placeholder: section.header.type === 'Image'
                 ? 'http://<service address>/rest/realspace/datas/layer'

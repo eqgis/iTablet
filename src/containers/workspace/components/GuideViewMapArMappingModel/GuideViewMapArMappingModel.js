@@ -115,7 +115,7 @@ export default class GuideViewMapArMappingModel extends React.Component {
           style={styles.btn}
           imageStyle={styles.btnImage}
           key={0}
-          title={getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_MEASURE}
+          title={getLanguage(global.language).Map_Main_Menu.MAP_AR_MEASURE}
           textColor={'black'}
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}

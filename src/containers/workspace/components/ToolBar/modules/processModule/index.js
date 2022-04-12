@@ -51,7 +51,7 @@ class AnalysisModule extends FunctionModule {
 export default function() {
   return new AnalysisModule({
     type: ConstToolType.SM_MAP_PROCESS,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.PROCESS,
+    title: getLanguage(global.language).Map_Main_Menu.PROCESS,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_handle,
     getData: ProcessData.getData,

@@ -44,22 +44,22 @@ async function doubleTouchCallback(event) {
 }
 
 async function magntouchCallback(event) {
-  switch (GLOBAL.TouchType) {
+  switch (global.TouchType) {
     case TouchType.NORMAL:
-      if (GLOBAL.Type === ChunkType.MAP_NAVIGATION){
+      if (global.Type === ChunkType.MAP_NAVIGATION){
         (async function () {
           await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
-          GLOBAL.STARTX = event.LLPoint.x
-          GLOBAL.STARTY = event.LLPoint.y
+          global.STARTX = event.LLPoint.x
+          global.STARTY = event.LLPoint.y
           //显示选点界面的顶部 底部组件
-          GLOBAL.MAPSELECTPOINT.setVisible(true)
-          GLOBAL.MAPSELECTPOINTBUTTON.setVisible(true, {
-            button: getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_START_POINT,
+          global.MAPSELECTPOINT.setVisible(true)
+          global.MAPSELECTPOINTBUTTON.setVisible(true, {
+            button: getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT,
           })
           //全幅
-          GLOBAL.toolBox.showFullMap(true)
+          global.toolBox.showFullMap(true)
           //导航选点 全屏时保留mapController
-          GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
+          global.mapController && global.mapController.setVisible(true)
           this.props.setMapNavigation({
             isShow: true,
             name: '',
@@ -70,15 +70,15 @@ async function magntouchCallback(event) {
     case TouchType.NAVIGATION_TOUCH_END:
       (async function () {
         await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
-        GLOBAL.ENDX = event.LLPoint.x
-        GLOBAL.ENDY = event.LLPoint.y
+        global.ENDX = event.LLPoint.x
+        global.ENDY = event.LLPoint.y
       })()
       break
     case TouchType.MAP_TOPO_SPLIT_BY_POINT: {
       const data = ToolbarModule.getData()
       const point = event.screenPoint
       data?.actions?.pointSplitLine(point)
-      GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+      global.bubblePane && global.bubblePane.clear()
       break
     }
     case TouchType.MAP_TOPO_TRIM_LINE:
@@ -89,34 +89,34 @@ async function magntouchCallback(event) {
       ToolbarModule.addData({ point })
       let params = {
         point,
-        ...GLOBAL.INCREMENT_DATA,
+        ...global.INCREMENT_DATA,
         secondLine: true,
       }
       SMap.drawSelectedLineOnTrackingLayer(params)
-      GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+      global.bubblePane && global.bubblePane.clear()
       break
     }
   }
 }
 
 async function longtouchCallback() {
-  switch (GLOBAL.TouchType) {
+  switch (global.TouchType) {
     case TouchType.NORMAL:
       break
-    //   if (GLOBAL.Type === ChunkType.MAP_NAVIGATION){
+    //   if (global.Type === ChunkType.MAP_NAVIGATION){
     //     (async function () {
     //       await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
-    //       GLOBAL.STARTX = event.LLPoint.x
-    //       GLOBAL.STARTY = event.LLPoint.y
+    //       global.STARTX = event.LLPoint.x
+    //       global.STARTY = event.LLPoint.y
     //       //显示选点界面的顶部 底部组件
-    //       GLOBAL.MAPSELECTPOINT.setVisible(true)
-    //       GLOBAL.MAPSELECTPOINTBUTTON.setVisible(true, {
-    //         button: getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_START_POINT,
+    //       global.MAPSELECTPOINT.setVisible(true)
+    //       global.MAPSELECTPOINTBUTTON.setVisible(true, {
+    //         button: getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT,
     //       })
     //       //全幅
-    //       GLOBAL.toolBox.showFullMap(true)
+    //       global.toolBox.showFullMap(true)
     //       //导航选点 全屏时保留mapController
-    //       GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
+    //       global.mapController && global.mapController.setVisible(true)
     //       this.props.setMapNavigation({
     //         isShow: true,
     //         name: '',
@@ -127,8 +127,8 @@ async function longtouchCallback() {
     // case TouchType.NAVIGATION_TOUCH_END:
     //   (async function () {
     //     await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
-    //     GLOBAL.ENDX = event.LLPoint.x
-    //     GLOBAL.ENDY = event.LLPoint.y
+    //     global.ENDX = event.LLPoint.x
+    //     global.ENDY = event.LLPoint.y
     //   })()
     //   break
   }
@@ -136,44 +136,44 @@ async function longtouchCallback() {
 let isfull = false
 async function touchCallback(event) {
   let guideInfo
-  switch (GLOBAL.TouchType) {
+  switch (global.TouchType) {
     // case TouchType.NAVIGATION_TOUCH_BEGIN:
     //   (async function() {
     //     await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
-    //     GLOBAL.STARTX = event.LLPoint.x
-    //     GLOBAL.STARTY = event.LLPoint.y
+    //     global.STARTX = event.LLPoint.x
+    //     global.STARTY = event.LLPoint.y
     //   })()
     //   break
     // case TouchType.NAVIGATION_TOUCH_END:
     //   (async function() {
     //     await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
-    //     GLOBAL.ENDX = event.LLPoint.x
-    //     GLOBAL.ENDY = event.LLPoint.y
+    //     global.ENDX = event.LLPoint.x
+    //     global.ENDY = event.LLPoint.y
     //   })()
     //   break
     case TouchType.NORMAL:
       // if (
-      //   GLOBAL.PoiInfoContainer &&
-      //   GLOBAL.PoiInfoContainer.state.resultList.length > 0 &&
-      //   !GLOBAL.PoiInfoContainer.state.showMore
+      //   global.PoiInfoContainer &&
+      //   global.PoiInfoContainer.state.resultList.length > 0 &&
+      //   !global.PoiInfoContainer.state.showMore
       // ) {
-      //   GLOBAL.PoiInfoContainer.hidden()
+      //   global.PoiInfoContainer.hidden()
       // }
       guideInfo = await SMap.isGuiding()
       if (
         !guideInfo.isOutdoorGuiding &&
         !guideInfo.isIndoorGuiding &&
-        (!GLOBAL.NAVIGATIONSTARTHEAD ||
-          !GLOBAL.NAVIGATIONSTARTHEAD.state.show) &&
-        !GLOBAL.PoiInfoContainer.state.visible &&
-        (!GLOBAL.MAPSELECTPOINT ||
-          !GLOBAL.MAPSELECTPOINT.state.show)
+        (!global.NAVIGATIONSTARTHEAD ||
+          !global.NAVIGATIONSTARTHEAD.state.show) &&
+        !global.PoiInfoContainer.state.visible &&
+        (!global.MAPSELECTPOINT ||
+          !global.MAPSELECTPOINT.state.show)
       ) {
         if (!(await isDoubleTouchComing())) {
           if (isfull) {
-            GLOBAL.toolBox && GLOBAL.toolBox.existFullMap()
+            global.toolBox && global.toolBox.existFullMap()
           } else {
-            GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
+            global.toolBox && global.toolBox.showFullMap()
           }
           isfull = !isfull
         }
@@ -181,21 +181,21 @@ async function touchCallback(event) {
       break
     case TouchType.MAP_NAVIGATION:
       if (
-        GLOBAL.PoiInfoContainer &&
-        GLOBAL.PoiInfoContainer.state.resultList.length > 0 &&
-        !GLOBAL.PoiInfoContainer.state.showMore
+        global.PoiInfoContainer &&
+        global.PoiInfoContainer.state.resultList.length > 0 &&
+        !global.PoiInfoContainer.state.showMore
       ) {
-        GLOBAL.PoiInfoContainer.hidden()
+        global.PoiInfoContainer.hidden()
       }
       break
     case TouchType.MAP_MARKS_TAGGING:
       NavigationService.navigate('InputPage', {
-        headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_NAME,
+        headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_NAME,
         // type: 'name',
         cb: async value => {
           if (value !== '') {
-            const datasourceName = GLOBAL.currentLayer.datasourceAlias
-            const { datasetName } = GLOBAL.currentLayer
+            const datasourceName = global.currentLayer.datasourceAlias
+            const { datasetName } = global.currentLayer
             await SMap.addTextRecordset(
               datasourceName,
               datasetName,
@@ -203,9 +203,9 @@ async function touchCallback(event) {
               event.screenPoint.x,
               event.screenPoint.y,
             )
-            GLOBAL.HAVEATTRIBUTE = true
+            global.HAVEATTRIBUTE = true
             NavigationService.goBack()
-            //GLOBAL.TouchType = TouchType.NORMAL
+            //global.TouchType = TouchType.NORMAL
           }
         },
         backcb: async () => {
@@ -216,45 +216,45 @@ async function touchCallback(event) {
     case TouchType.SET_START_STATION:
       STransportationAnalyst.setStartPoint(
         event.screenPoint,
-        getLanguage(GLOBAL.language).Analyst_Labels.START_STATION,
+        getLanguage(global.language).Analyst_Labels.START_STATION,
       )
       break
     case TouchType.MIDDLE_STATIONS:
       STransportationAnalyst.addNode(
         event.screenPoint,
-        getLanguage(GLOBAL.language).Analyst_Labels.MIDDLE_STATION,
+        getLanguage(global.language).Analyst_Labels.MIDDLE_STATION,
       )
       break
     case TouchType.SET_END_STATION:
       STransportationAnalyst.setEndPoint(
         event.screenPoint,
-        getLanguage(GLOBAL.language).Analyst_Labels.END_STATION,
+        getLanguage(global.language).Analyst_Labels.END_STATION,
       )
       break
     case TouchType.SET_AS_START_STATION:
       STransportationAnalyst.setStartPoint(
         event.screenPoint,
-        getLanguage(GLOBAL.language).Analyst_Labels.START_STATION,
+        getLanguage(global.language).Analyst_Labels.START_STATION,
       )
       // SFacilityAnalyst.setStartPoint(event.screenPoint)
       break
     case TouchType.SET_AS_END_STATION:
       STransportationAnalyst.setEndPoint(
         event.screenPoint,
-        getLanguage(GLOBAL.language).Analyst_Labels.END_STATION,
+        getLanguage(global.language).Analyst_Labels.END_STATION,
       )
       // SFacilityAnalyst.setEndPoint(event.screenPoint)
       break
     case TouchType.ADD_STATIONS:
       STransportationAnalyst.addNode(
         event.screenPoint,
-        getLanguage(GLOBAL.language).Analyst_Labels.NODE,
+        getLanguage(global.language).Analyst_Labels.NODE,
       )
       break
     case TouchType.ADD_BARRIER_NODES:
       STransportationAnalyst.addBarrierNode(
         event.screenPoint,
-        getLanguage(GLOBAL.language).Analyst_Labels.BARRIER_NODE,
+        getLanguage(global.language).Analyst_Labels.BARRIER_NODE,
       )
       break
     case TouchType.ANIMATION_WAY:
@@ -262,9 +262,9 @@ async function touchCallback(event) {
       break
     case TouchType.MAP_SELECT_POINT: {
       const point = await SMap.pixelPointToMap(event.screenPoint)
-      GLOBAL.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
-      // SMap.deleteMarker(GLOBAL.markerTag)
-      SMap.showMarker(point.x, point.y, GLOBAL.markerTag)
+      global.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
+      // SMap.deleteMarker(global.markerTag)
+      SMap.showMarker(point.x, point.y, global.markerTag)
       break
     }
     // case TouchType.MAP_TOPO_SPLIT_BY_POINT: {
@@ -280,11 +280,11 @@ async function touchCallback(event) {
       ToolbarModule.addData({ point })
       let params = {
         point,
-        ...GLOBAL.INCREMENT_DATA,
+        ...global.INCREMENT_DATA,
         secondLine: true,
       }
       SMap.drawSelectedLineOnTrackingLayer(params)
-      GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+      global.bubblePane && global.bubblePane.clear()
       break
     }
     case TouchType.ADD_NODES:

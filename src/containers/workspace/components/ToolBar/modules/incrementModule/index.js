@@ -31,7 +31,7 @@ class IncrementModule extends FunctionModule {
     const data = ToolbarModule.getToolbarSize(containerType, {
       data: _data.data,
     })
-    GLOBAL.toolBox.showFullMap(true)
+    global.toolBox.showFullMap(true)
     SMap.createDefaultDataset().then(async returnData => {
       if (returnData.datasetName) {
         params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD, {
@@ -42,14 +42,14 @@ class IncrementModule extends FunctionModule {
           // column:data.column,
           ...data,
         })
-        GLOBAL.INCREMENT_DATA = returnData
+        global.INCREMENT_DATA = returnData
       }
     })
     //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
-    GLOBAL.TouchType = TouchType.NULL
-    GLOBAL.IncrementRoadDialog.setVisible(false)
-    GLOBAL.NAVMETHOD = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
-    // GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
+    global.TouchType = TouchType.NULL
+    global.IncrementRoadDialog.setVisible(false)
+    global.NAVMETHOD = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
+    // global.IncrementRoadDialog && global.IncrementRoadDialog.setVisible(true)
     StyleUtils.setDefaultMapControlStyle()
   }
 }
@@ -57,7 +57,7 @@ class IncrementModule extends FunctionModule {
 export default function() {
   return new IncrementModule({
     type: ConstToolType.SM_MAP_INCREMENT,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_collection,
     getData: IncrementData.getData,

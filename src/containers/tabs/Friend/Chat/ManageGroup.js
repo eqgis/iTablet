@@ -20,15 +20,15 @@ class ManageGroup extends Component {
 
   constructor(props) {
     super(props)
-    this.friend = this.props.navigation.getParam('friend')
-    this.user = this.props.navigation.getParam('user')
-    this.targetId = this.props.navigation.getParam('targetId')
+    this.friend = this.props.route.params.friend
+    this.user = this.props.route.params.user
+    this.targetId = this.props.route.params.targetId
     this.targetUser = this.friend.getTargetUser(this.targetId)
-    this.language = GLOBAL.language
-    this.chat = this.props.navigation.getParam('chat')
+    this.language = global.language
+    this.chat = this.props.route.params.chat
     this.masterID = FriendListFileHandle.getGroup(this.targetUser.id).masterID
     this.state = {
-      coworkMode: GLOBAL.coworkMode,
+      coworkMode: global.coworkMode,
     }
   }
 
@@ -146,7 +146,7 @@ class ManageGroup extends Component {
           <TouchableItemView
             //地图协作
             image={getThemeAssets().friend.friend_map}
-            text={getLanguage(GLOBAL.language).Friends.COWORK}
+            text={getLanguage(global.language).Friends.COWORK}
             onPress={() => {
               NavigationService.navigate('SelectModule')
             }}
@@ -156,7 +156,7 @@ class ManageGroup extends Component {
           <TouchableItemView
             //退出协作
             image={getThemeAssets().friend.friend_map}
-            text={getLanguage(GLOBAL.language).Friends.EXIT_COWORK}
+            text={getLanguage(global.language).Friends.EXIT_COWORK}
             onPress={() => {
               this.chat.back()
               // this.friend.setCurMap(undefined)

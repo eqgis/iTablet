@@ -279,7 +279,7 @@ export default class FriendMap extends Component {
         this.setState({ data: this.flatListData })
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
       this.setState({ data: arrObjContent })
     }
     return arrObjContent
@@ -302,7 +302,7 @@ export default class FriendMap extends Component {
         })
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
       this.setState({ isRefresh: false })
     }
   }
@@ -317,7 +317,7 @@ export default class FriendMap extends Component {
         this.setState({ isRefresh: false, data: this.flatListData })
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
       this.setState({ isRefresh: false })
     }
   }
@@ -337,7 +337,7 @@ export default class FriendMap extends Component {
       // this.setState({ data: newData, isLoadingData: false })
       // }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
       this.setState({ isLoadingData: false })
     }
   }
@@ -351,7 +351,7 @@ export default class FriendMap extends Component {
         this.setState({ data: this.flatListData, isLoadingData: false })
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
       this.setState({ isLoadingData: false })
     }
   }

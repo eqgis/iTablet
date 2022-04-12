@@ -6,7 +6,6 @@ import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo
 import { scaleSize, Toast, DialogUtils } from '../../utils'
 import { getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
-import { UserInfo } from '../../redux/models/user'
 import { ARMapInfo } from '../../redux/models/arlayer'
 import { ARMapState } from '../../redux/models/armap'
 import { DEVICE } from '../../redux/models/device'
@@ -19,6 +18,7 @@ import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
 import NavigationService from '../NavigationService'
 import ARLayerMenu from './ARLayerMenu'
 import { ConstToolType } from '../../constants'
+import { UserInfo } from '@/types'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -62,6 +62,7 @@ interface Props {
   arlayer: ARMapInfo,
   armap: ARMapState,
   navigation: any,
+  route: any,
   device: DEVICE,
   mapModules: {
     modules: any[],
@@ -87,10 +88,10 @@ export default class ARLayerManager extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.state = {
       menuVisible: false,
-      type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
+      type: (params && params.type) || global.Type, // 底部Tabbar类型
     }
   }
 
@@ -114,7 +115,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
       title: '',
       data: [
         // {
-        //   title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_LAYER_STYLE,
+        //   title: getLanguage(global.language).Map_Layer.LAYERS_LAYER_STYLE,
         //   image: getThemeAssets().layer.icon_layer_style,
         //   action: async () => {
         //     if (this.props.arlayer.currentLayer) {
@@ -128,7 +129,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         //   },
         // },
         {
-          title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
+          title: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
           image: getThemeAssets().layer.icon_layer_style,
           action: async () => {
             let layer = this.state.selectLayer
@@ -152,13 +153,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
           },
         },
         {
-          title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
+          title: getLanguage(global.language).Map_Layer.LAYERS_REMOVE,
           image: getThemeAssets().layer.icon_remove_layer,
           action: async () => {
-            GLOBAL.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Prompt.DELETE_LAYER,
-              confirmText: getLanguage(GLOBAL.language).Prompt.DELETE,
-              cancelText: getLanguage(GLOBAL.language).Prompt.CANCEL,
+            global.SimpleDialog.set({
+              text: getLanguage(global.language).Prompt.DELETE_LAYER,
+              confirmText: getLanguage(global.language).Prompt.DELETE,
+              cancelText: getLanguage(global.language).Prompt.CANCEL,
               confirmAction: async () => {
                 if (this.state.selectLayer) {
                   await SARMap.removeARLayer(this.state.selectLayer.name)
@@ -170,7 +171,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                 }
               },
             })
-            GLOBAL.SimpleDialog.setVisible(true)
+            global.SimpleDialog.setVisible(true)
           },
         },
       ],
@@ -203,7 +204,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
       this.state.selectLayer?.type === ARLayerType.AR_SCENE_LAYER
     ) {
       menuData[0].data.unshift({
-        title: getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
+        title: getLanguage(global.language).Map_Main_Menu.EDIT,
         image: getThemeAssets().functionBar.icon_tool_edit,
         action: async () => {
           if (this.props.arlayer.currentLayer?.name !== this.state.selectLayer?.name) {
@@ -352,14 +353,14 @@ export default class ARLayerManager extends React.Component<Props, State> {
     return (
       <InputDialog
         ref={ref => (this.inputDialog = ref)}
-        title={getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_MAP}
-        placeholder={getLanguage(GLOBAL.language).Profile.MAP_NAME}
+        title={getLanguage(global.language).Map_Main_Menu.START_SAVE_MAP}
+        placeholder={getLanguage(global.language).Profile.MAP_NAME}
         confirmAction={value => {
           this.props.saveARMap(value)
           this.inputDialog?.setDialogVisible(false)
         }}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.SAVE_YES}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.CANCEL}
+        confirmBtnTitle={getLanguage(global.language).Prompt.SAVE_YES}
+        cancelBtnTitle={getLanguage(global.language).Prompt.CANCEL}
       />
     )
   }

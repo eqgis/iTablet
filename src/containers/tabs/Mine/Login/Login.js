@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {
-  NetInfo,
   View,
   TouchableOpacity,
   Text,
   Animated,
   FlatList,
 } from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 import { Toast, scaleSize } from '../../../../utils/index'
 import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 import { Container } from '../../../../components'
@@ -35,7 +35,7 @@ export default class Login extends React.Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.show =
       params && params.show && params.show.length > 0 ? params.show : []
     this.state = {
@@ -49,15 +49,15 @@ export default class Login extends React.Component {
 
   componentDidMount() {
     this.getData()
-    if (!GLOBAL.isPad) {
+    if (!global.isPad) {
       Orientation.lockToPortrait()
-      GLOBAL.ORIENTATIONLOCKED = true
+      global.ORIENTATIONLOCKED = true
     }
   }
 
   componentWillUnmount() {
     Orientation.unlockAllOrientations()
-    GLOBAL.ORIENTATIONLOCKED = false
+    global.ORIENTATIONLOCKED = false
   }
 
   getData = () => {
@@ -143,7 +143,7 @@ export default class Login extends React.Component {
         return
       }
 
-      let isConnected = await NetInfo.isConnected.fetch()
+      let isConnected = (await NetInfo.fetch()).isConnected
       if(!isConnected) {
         Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
         return
@@ -199,8 +199,8 @@ export default class Login extends React.Component {
         //   Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
         // } else if (result) {
         await this.props.setUser(user)
-        GLOBAL.isLogging = true
-        GLOBAL.getFriend?.().onUserLoggedin()
+        global.isLogging = true
+        global.getFriend?.().onUserLoggedin()
         AppInfo.setServiceUrl('https://www.supermapol.com/web/')
         NavigationService.popToTop('Tabs')
         // 加载用户底图
@@ -274,9 +274,9 @@ export default class Login extends React.Component {
             userType: UserType.IPORTAL_COMMON_USER,
             roles: userInfo.roles,
           }
-          GLOBAL.isLogging = true
+          global.isLogging = true
           await this.props.setUser(user)
-          GLOBAL.getFriend?.().onUserLoggedin()
+          global.getFriend?.().onUserLoggedin()
           AppInfo.setServiceUrl(url)
           FriendListFileHandle.initFriendList(user) // iportal初始化好友列表信息,防止之前online用户留存信息的存在,把online的好友文件下载到iportal用户中
           // 加载用户底图
@@ -316,7 +316,17 @@ export default class Login extends React.Component {
 
 
   async loadUserBaseMaps(){
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
+    let curUserBaseMaps = []
+    // 根据当前用户id获取当前用户的底图数组
+    if(this.props.user.currentUser.userId){
+      curUserBaseMaps = this.props.baseMaps[this.props.user.currentUser.userId]
+    }
+     
+    // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
+    if (!curUserBaseMaps) {
+      curUserBaseMaps = this.props.baseMaps['default']
+    }
+    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
     // 当公有服务列表数组有元素时，就遍历这个数组
     if (arrPublishServiceList.length > 0) {
       for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
@@ -427,10 +437,12 @@ export default class Login extends React.Component {
                 Animated.timing(this.scaleL, {
                   toValue: this.offset,
                   duration: 0,
+                  useNativeDriver: false,
                 }),
                 Animated.timing(this.scaleR, {
                   toValue: this.offset,
                   duration: 0,
+                  useNativeDriver: false,
                 }),
               ]).start()
 
@@ -456,12 +468,12 @@ export default class Login extends React.Component {
   renderLogin = () => {
     if (this.state.type === 'Online') {
       return (
-        <OnlineLoginView language={GLOBAL.language} login={this._loginOnline} ref={ref => (this.onlineLogin = ref)}/>
+        <OnlineLoginView language={global.language} login={this._loginOnline} ref={ref => (this.onlineLogin = ref)}/>
       )
     } else if (this.state.type === 'iPortal') {
       return (
         <IPortalLoginView
-          language={GLOBAL.language}
+          language={global.language}
           login={this._loginIPortal}
           connect={this._connect}
           setMessageService={this.props.setMessageService}

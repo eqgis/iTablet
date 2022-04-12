@@ -63,7 +63,7 @@ export interface Users {
 // Actions
 // ---------------------------------.3-----------------
 export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
-  GLOBAL.currentUser = params
+  global.currentUser = params
   await dispatch({
     type: USER_SET,
     payload: params,
@@ -72,7 +72,7 @@ export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (ar
 }
 
 export const setUsers = (params: UserInfo[], cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
-  GLOBAL.currentUser = params[0]
+  global.currentUser = params[0]
   await dispatch({
     type: USERS_SET,
     payload: params,

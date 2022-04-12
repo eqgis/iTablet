@@ -31,7 +31,7 @@ function setStretchType(item) {
   }
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_MENU, {
     showMenuDialog: true,
-    selectKey: GLOBAL.ToolBar.state.selectKey,
+    selectKey: global.ToolBar.state.selectKey,
   })
 }
 
@@ -39,7 +39,7 @@ function onPickerCancel() {
   const _params = ToolbarModule.getParams()
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_SETTING_IMAGE_MENU, {
     showMenuDialog: true,
-    selectKey: GLOBAL.ToolBar.state.selectKey,
+    selectKey: global.ToolBar.state.selectKey,
   })
 }
 

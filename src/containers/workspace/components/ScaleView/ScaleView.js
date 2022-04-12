@@ -82,6 +82,7 @@ export default class ScaleView extends React.Component {
       Animated.timing(this.bottom, {
         toValue: newBottom,
         duration: 300,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -99,16 +100,19 @@ export default class ScaleView extends React.Component {
         Animated.timing(this.left, {
           toValue: visible ? scaleSize(120) : scaleSize(30),
           duration: immediately ? 0 : 300,
+          useNativeDriver: false,
         }),
         Animated.timing(this.bottom, {
           toValue: visible ? scaleSize(120) : scaleSize(this.bottomN),
           duration: immediately ? 0 : 300,
+          useNativeDriver: false,
         }),
       ]).start()
     } else {
       Animated.timing(this.left, {
         toValue: visible ? scaleSize(120) : scaleSize(30),
         duration: immediately ? 0 : 300,
+        useNativeDriver: false,
       }).start()
     }
     this.setState({

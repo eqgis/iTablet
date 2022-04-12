@@ -1,6 +1,6 @@
 import CN from './CN/index'
 
-function getLanguage(param: string = GLOBAL.language): typeof CN{
+function getLanguage(param: string = global.language): typeof CN{
   let language: typeof CN
   switch (param) {
     case 'CN':

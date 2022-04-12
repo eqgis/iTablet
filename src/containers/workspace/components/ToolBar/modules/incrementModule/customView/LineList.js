@@ -82,22 +82,22 @@ export default class LineList extends Component {
    */
   _confirm = async () => {
     if (!this.state.selectedItem.datasetName) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+      Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
       return
     }
     if (
-      GLOBAL.INCREMENT_DATA.datasetName !==
+      global.INCREMENT_DATA.datasetName !==
         this.state.selectedItem.datasetName ||
-      GLOBAL.INCREMENT_DATA.datasourceName !==
+      global.INCREMENT_DATA.datasourceName !==
         this.state.selectedItem.datasourceName
     ) {
       let params = {
-        preDatasetName: GLOBAL.INCREMENT_DATA.datasetName || '',
+        preDatasetName: global.INCREMENT_DATA.datasetName || '',
         datasourceName: this.state.selectedItem.datasourceName,
         datasetName: this.state.selectedItem.datasetName,
       }
       await SMap.setCurrentDataset(params)
-      GLOBAL.INCREMENT_DATA = this.state.selectedItem
+      global.INCREMENT_DATA = this.state.selectedItem
     }
     const params = ToolbarModule.getParams()
     const preType = ToolbarModule.getData().preType
@@ -181,7 +181,7 @@ export default class LineList extends Component {
         editingItem: {},
       })
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DATASET_RENAME_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.DATASET_RENAME_FAILED)
     }
   }
   // _clearEdit = () => {
@@ -224,11 +224,11 @@ export default class LineList extends Component {
       selectedItem = data[index] || {}
     }
     if (
-      GLOBAL.INCREMENT_DATA.datasourceName === datasourceName &&
-      GLOBAL.INCREMENT_DATA.datasetName === datasetName
+      global.INCREMENT_DATA.datasourceName === datasourceName &&
+      global.INCREMENT_DATA.datasetName === datasetName
     ) {
       removeLayer = true
-      GLOBAL.INCREMENT_DATA = {}
+      global.INCREMENT_DATA = {}
     }
     SMap.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
     this.setState({
@@ -340,18 +340,18 @@ export default class LineList extends Component {
               onPress={this._cancel}
             >
               <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Prompt.CANCEL}
+                {getLanguage(global.language).Prompt.CANCEL}
               </Text>
             </TouchableOpacity>
             <Text style={styles.titleTxt}>
-              {getLanguage(GLOBAL.language).Prompt.SWITCH_LINE}
+              {getLanguage(global.language).Prompt.SWITCH_LINE}
             </Text>
             <TouchableOpacity
               style={styles.titleTxtWrap}
               onPress={this._confirm}
             >
               <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+                {getLanguage(global.language).Prompt.CONFIRM}
               </Text>
             </TouchableOpacity>
           </View>
@@ -374,18 +374,18 @@ export default class LineList extends Component {
               onPress={this._cancel}
             >
               <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Prompt.CANCEL}
+                {getLanguage(global.language).Prompt.CANCEL}
               </Text>
             </TouchableOpacity>
             <Text style={styles.titleTxt}>
-              {getLanguage(GLOBAL.language).Prompt.SWITCH_LINE}
+              {getLanguage(global.language).Prompt.SWITCH_LINE}
             </Text>
             <TouchableOpacity
               style={styles.titleTxtWrap}
               onPress={this._confirm}
             >
               <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+                {getLanguage(global.language).Prompt.CONFIRM}
               </Text>
             </TouchableOpacity>
           </View>

@@ -130,9 +130,9 @@ class GroupInvitePage extends React.Component<Props, State> {
         })
       }
 
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }, () => {
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     })
   }
 
@@ -152,7 +152,7 @@ class GroupInvitePage extends React.Component<Props, State> {
       inviteNames: [this.state.selectedUser.name],
     }).then((result: any) => {
       if (result.succeed) {
-        Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_SUCCESS)
+        Toast.show(getLanguage(global.language).Friends.INVITE_SUCCESS)
         this.inviteDialog?.setDialogVisible(false)
 
         let timeStr = new Date().getTime()
@@ -191,14 +191,14 @@ class GroupInvitePage extends React.Component<Props, State> {
       } else {
         if (result?.error?.errorMsg) {
           if (result.error.errorMsg.toString().indexOf('已经存在于') >= 0) {
-            Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_GROUP_MEMBERS_ERROR_1)
+            Toast.show(getLanguage(global.language).Friends.INVITE_GROUP_MEMBERS_ERROR_1)
           } else if (result.error.errorMsg.toString().indexOf('已经邀请过') >= 0) {
-            Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_GROUP_MEMBERS_ERROR_2)
+            Toast.show(getLanguage(global.language).Friends.INVITE_GROUP_MEMBERS_ERROR_2)
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_FAILED)
+            Toast.show(getLanguage(global.language).Friends.INVITE_FAILED)
           }
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Friends.INVITE_FAILED)
+          Toast.show(getLanguage(global.language).Friends.INVITE_FAILED)
         }
       }
     })
@@ -223,13 +223,13 @@ class GroupInvitePage extends React.Component<Props, State> {
           }}
           ref={ref => (this.searchBar = ref)}
           onSubmitEditing={searchKey => {
-            GLOBAL.Loading.setLoading(true, getLanguage(GLOBAL.language).Prompt.SEARCHING)
+            global.Loading.setLoading(true, getLanguage(global.language).Prompt.SEARCHING)
             this.search(searchKey)
           }}
           onClear={() => {
             this.search('')
           }}
-          placeholder={getLanguage(GLOBAL.language).Friends.INVITE_SEARCH_PLACEHOLDER}
+          placeholder={getLanguage(global.language).Friends.INVITE_SEARCH_PLACEHOLDER}
         />
       </View>
     )
@@ -262,7 +262,7 @@ class GroupInvitePage extends React.Component<Props, State> {
     return (
       <InputDialog
         ref={ref => (this.inviteDialog = ref)}
-        title={getLanguage(GLOBAL.language).Friends.INVITE_REASON}
+        title={getLanguage(global.language).Friends.INVITE_REASON}
         multiline={true}
         legalCheck={false}
         confirmAction={value => {
@@ -271,8 +271,8 @@ class GroupInvitePage extends React.Component<Props, State> {
         cancelAction={() => {
           this.inviteDialog?.setDialogVisible(false)
         }}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Friends.INVITE}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Friends.CANCEL}
+        confirmBtnTitle={getLanguage(global.language).Friends.INVITE}
+        cancelBtnTitle={getLanguage(global.language).Friends.CANCEL}
       />
     )
   }
@@ -307,7 +307,7 @@ class GroupInvitePage extends React.Component<Props, State> {
           ListEmptyComponent={() => {
             return (
               <FriendList
-              language={GLOBAL.language}
+              language={global.language}
               user={this.props.user.currentUser}
               callBack={(user) => {
                 const info = this.getUserSerachInfo(user)

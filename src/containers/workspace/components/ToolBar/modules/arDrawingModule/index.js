@@ -48,7 +48,7 @@ class ArDrawingModule extends FunctionModule {
 export default function() {
   return new ArDrawingModule({
     type: ConstToolType.SM_AR_DRAWING,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
+    title: getLanguage(global.language).Map_Main_Menu.OPEN,
     size: 'large',
     // image: getThemeAssets().ar.icon_tool_ardrawing,
     image: getThemeAssets().functionBar.icon_tool_add,

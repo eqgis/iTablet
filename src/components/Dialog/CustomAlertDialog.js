@@ -26,8 +26,8 @@ export default class CustomAlertDialog extends PureComponent {
   static defaultProps = {
     title: '',
     value: '',
-    confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.YES,
-    cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.NO,
+    confirmBtnTitle: getLanguage(global.language).Prompt.YES,
+    cancelBtnTitle: getLanguage(global.language).Prompt.NO,
   }
 
   constructor(props) {
@@ -112,8 +112,8 @@ export default class CustomAlertDialog extends PureComponent {
         opacityStyle={{ height: scaleSize(250) }}
         confirmAction={this.confirm}
         cancelAction={this.cancel}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.CONFIRM}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.CANCEL}
+        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
+        cancelBtnTitle={getLanguage(global.language).Prompt.CANCEL}
       >
         <View style={contentStyle}>
           <Image

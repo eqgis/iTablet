@@ -37,7 +37,7 @@ export default class LayerAttributeSearch extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.type = params && params.type
     this.layerPath = params && params.layerPath
     this.isSelection = (params && params.isSelection) || false
@@ -188,8 +188,8 @@ export default class LayerAttributeSearch extends React.Component {
   }
 
   setSaveViewVisible = visible => {
-    GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, {
+    global.SaveMapView &&
+      global.SaveMapView.setVisible(visible, {
         setLoading: this.setLoading,
       })
   }
@@ -249,9 +249,9 @@ export default class LayerAttributeSearch extends React.Component {
       return null
 
     // let buttonNameFilter = ['MediaFilePaths', 'MediaServiceIds', 'MediaData'], // 属性表cell显示 查看 按钮
-    //   buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW]
+    //   buttonTitles = [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW]
     let buttonNameFilter = ['MediaData'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage(GLOBAL.language).Map_Tools.VIEW]
+      buttonTitles = [getLanguage(global.language).Map_Tools.VIEW]
     let buttonActions = [
       async data => {
         let layerName = this.props.currentLayer.name,
@@ -261,7 +261,7 @@ export default class LayerAttributeSearch extends React.Component {
         }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
         if(!has){
-          Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+          Toast.show(getLanguage(global.language).Prompt.AFTER_COLLECT)
           return
         }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
@@ -347,8 +347,8 @@ export default class LayerAttributeSearch extends React.Component {
           this.state.attributes.data.length > 1
             ? this.state.attributes.head
             : [
-              getLanguage(GLOBAL.language).Map_Label.NAME,
-              getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
+              getLanguage(global.language).Map_Label.NAME,
+              getLanguage(global.language).Map_Label.ATTRIBUTE,
               //'名称'
               //'属性值'
             ]
@@ -384,10 +384,10 @@ export default class LayerAttributeSearch extends React.Component {
       <SearchBar
         ref={ref => (this.searchBar = ref)}
         onSubmitEditing={searchKey => {
-          this.setLoading(true, getLanguage(GLOBAL.language).Prompt.SEARCHING)
+          this.setLoading(true, getLanguage(global.language).Prompt.SEARCHING)
           this.search(searchKey)
         }}
-        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
+        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
         //{'请输入搜索关键字'}
       />
     )

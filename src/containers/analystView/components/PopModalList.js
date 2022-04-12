@@ -189,7 +189,7 @@ export default class PopModalList extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.props.cancelTitle ||
-              getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+              getLanguage(this.props.language || global.language).Analyst_Labels
                 .CANCEL}
           </Text>
         </TouchableOpacity>
@@ -221,7 +221,7 @@ export default class PopModalList extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.props.confirmTitle ||
-              getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+              getLanguage(this.props.language || global.language).Analyst_Labels
                 .CONFIRM}
           </Text>
         </TouchableOpacity>

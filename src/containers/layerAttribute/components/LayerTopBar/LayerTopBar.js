@@ -77,7 +77,7 @@ export default class LayerTopBar extends React.Component {
       attribute: {},
       showTable: false,
     }
-    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0 && this.props.currentUser) {
+    if (global.coworkMode && global.Type.indexOf('3D') < 0 && this.props.currentUser) {
       if (UserType.isOnlineUser(this.props.currentUser)) {
         this.servicesUtils = new SCoordination('online')
         this.onlineServicesUtils = new OnlineServicesUtils('online')
@@ -141,7 +141,7 @@ export default class LayerTopBar extends React.Component {
         let maxFiles = 9 - info.mediaFilePaths.length
         limit = maxFiles
         if(maxFiles <= 0){
-          Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_PICTURE)
+          Toast.show(getLanguage(global.language).Prompt.CANT_PICTURE)
           return
         }
       }
@@ -166,7 +166,7 @@ export default class LayerTopBar extends React.Component {
         datasetName = layerInfo.datasetName // 标注图层名称
       }
       if(this.props.islayerSelection){
-        let info = await SMap.getDataNameByLayer(GLOBAL.SelectedSelectionAttribute.layerInfo.path)
+        let info = await SMap.getDataNameByLayer(global.SelectedSelectionAttribute.layerInfo.path)
         datasetName = info.datasetName
         datasourceAlias = info.datasourceAlias
       }
@@ -185,7 +185,7 @@ export default class LayerTopBar extends React.Component {
         }) => {
         // cb: async mediaPaths => {
           try {
-            if (GLOBAL.coworkMode) {
+            if (global.coworkMode) {
               let resourceIds = [],
                 _mediaPaths = [] // 保存修改名称后的图片地址
               let name = '', suffix = ''
@@ -228,9 +228,9 @@ export default class LayerTopBar extends React.Component {
                   datasetName,
                   mediaPaths,
                   mediaIds: resourceIds,
-                }, false, { index: index, selectionAttribute: selectionAttribute, ids: GLOBAL.layerSelection?.ids ,layerAttribute: layerAttribute})
+                }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
               } else {
-                Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_UPLOAD_FAILED)
+                Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
               }
               // 分享到群组中
               if (resourceIds.length > 0 && this.props.currentTask?.groupID) {
@@ -239,13 +239,13 @@ export default class LayerTopBar extends React.Component {
                   ids: resourceIds,
                 }).then(result => {
                   if (result.succeed) {
-                    Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_UPLOAD_SUCCESS)
+                    Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_SUCCESS)
                     this.cb && this.cb()
                   } else {
-                    Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_UPLOAD_FAILED)
+                    Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
                   }
                 }).catch(() => {
-                  Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_UPLOAD_FAILED)
+                  Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
                 })
               }
             } else {
@@ -253,7 +253,7 @@ export default class LayerTopBar extends React.Component {
                 datasourceName: datasourceAlias,
                 datasetName: datasetName,
                 mediaPaths,
-              }, false, { index: index, selectionAttribute: selectionAttribute, ids: GLOBAL.layerSelection?.ids ,layerAttribute: layerAttribute})
+              }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
             }
             if (
               this.props.refreshAction &&
@@ -287,7 +287,7 @@ export default class LayerTopBar extends React.Component {
           ? getPublicAssets().common.icon_plus
           : getPublicAssets().common.icon_plus_gray,
         key: '添加',
-        title: getLanguage(GLOBAL.language).Map_Attribute
+        title: getLanguage(global.language).Map_Attribute
           .ATTRIBUTE_FIELD_ADD,
         action: this.addAttributeFieldAction,
         enabled: this.props.canAddField,
@@ -301,7 +301,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_relation
             : getThemeAssets().attribute.icon_unrelation,
           key: '关联',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_ASSOCIATION,
           action: this.relateAction,
           enabled: this.props.canRelated,
@@ -311,7 +311,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_delete_select
             : getThemeAssets().attribute.icon_delete_un_select,
           key: '删除',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .EDIT_DELETE,
           action: this.deleteAction,
           enabled: this.props.canDelete,
@@ -324,7 +324,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_location
             : getThemeAssets().attribute.icon_unlocation,
           key: '定位',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_LOCATION,
           action: this.locateAction,
           enabled: this.props.canLocated,
@@ -334,7 +334,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_relation
             : getThemeAssets().attribute.icon_unrelation,
           key: '关联',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_ASSOCIATION,
           action: this.relateAction,
           enabled: this.props.canRelated,
@@ -344,7 +344,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_delete_select
             : getThemeAssets().attribute.icon_delete_un_select,
           key: '删除',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .EDIT_DELETE,
           action: this.deleteAction,
           enabled: this.props.canDelete,
@@ -352,13 +352,13 @@ export default class LayerTopBar extends React.Component {
       ])
     }
 
-    if ((!GLOBAL.showAIDetect || this.props.selectionAttribute) && this.props.hasCamera) {
+    if ((!global.showAIDetect || this.props.selectionAttribute) && this.props.hasCamera) {
       data.push({
         icon: this.props.canRelated
           ? getThemeAssets().mapTools.icon_tool_multi_media
           : getThemeAssets().mapTools.icon_tool_multi_media_ash,
         key: '拍照',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+        title: getLanguage(global.language).Map_Main_Menu.CAMERA,
         action: this.captureImage,
         enabled: this.props.canRelated,
       })
@@ -371,7 +371,7 @@ export default class LayerTopBar extends React.Component {
             ? getPublicAssets().common.icon_plus
             : getPublicAssets().common.icon_plus_gray,
           key: '添加',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_FIELD_ADD,
           action: this.addAttributeFieldAction,
           enabled: this.props.canAddField,
@@ -381,7 +381,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_location
             : getThemeAssets().attribute.icon_unlocation,
           key: '定位',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_LOCATION,
           action: this.locateAction,
           enabled: this.props.canLocated,
@@ -391,7 +391,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_delete_select
             : getThemeAssets().attribute.icon_delete_un_select,
           key: '删除',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .EDIT_DELETE,
           action: this.deleteAction,
           enabled: this.props.canDelete,

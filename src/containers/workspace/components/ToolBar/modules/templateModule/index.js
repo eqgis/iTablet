@@ -19,7 +19,7 @@ class TemplateModule extends FunctionModule {
 export default function() {
   return new TemplateModule({
     type: ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE,
-    title: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+    title: getLanguage(global.language).Profile.TEMPLATE,
     size: 'large',
     image: require('../../../../../../assets/function/icon_function_module.png'),
     getData: TempletData.getData,

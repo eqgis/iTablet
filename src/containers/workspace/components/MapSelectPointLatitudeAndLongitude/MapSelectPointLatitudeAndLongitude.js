@@ -24,8 +24,8 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
 
   componentDidMount = async () => {
     let position
-    if (GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
-      position = GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE
+    if (global.SELECTPOINTLATITUDEANDLONGITUDE) {
+      position = global.SELECTPOINTLATITUDEANDLONGITUDE
     } else {
       position = await SMap.getCurrentPosition()
     }
@@ -80,7 +80,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
           <View style={{ backgroundColor: color.background }}>
             <View style={styles.item}>
               <Text style={styles.itemtitle}>
-                {getLanguage(GLOBAL.language).Profile.X_COORDINATE}
+                {getLanguage(global.language).Profile.X_COORDINATE}
               </Text>
               {/* <TextInput
                 editable={this.state.isEdit}
@@ -118,7 +118,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
 
             <View style={styles.item}>
               <Text style={styles.itemtitle}>
-                {getLanguage(GLOBAL.language).Profile.Y_COORDINATE}
+                {getLanguage(global.language).Profile.Y_COORDINATE}
               </Text>
               {/* <TextInput
                 editable={this.state.isEdit}

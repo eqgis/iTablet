@@ -82,10 +82,10 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
         break
       }
     }
-    // Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
+    // Toast.show(getLanguage(global.language).Prompt.ADD_SUCCESS)
     _params.setToolbarVisible(false)
   } else {
-    // Toast.show(datasetName + getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+    // Toast.show(datasetName + getLanguage(global.language).Prompt.ADD_FAILED)
     SMap.refreshMap()
   }
 }
@@ -171,7 +171,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   },
   updateHandler: async res => {
     try {
-      // let msg = res.result ? getLanguage(GLOBAL.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED
+      // let msg = res.result ? getLanguage(global.language).Cowork.UPDATE_SUCCESSFUL : getLanguage(global.language).Cowork.UPDATE_FAILED
       // if (res?.error?.reason) {
       //   msg = res?.error?.reason
       // }
@@ -239,13 +239,13 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
         await updateHandlers[res.content.urlDataset](res.content.urlDataset)
         delete updateHandlers[res.content.urlDataset]
       }
-      Toast.show(getLanguage(GLOBAL.language).Cowork.UPDATE_FAILED)
+      Toast.show(getLanguage(global.language).Cowork.UPDATE_FAILED)
     }
   },
   uploadHandler: async res => {
     try {
       // 发送消息给其他组员
-      let msg = res.result ? getLanguage(GLOBAL.language).Cowork.UPLOAD_SUCCESSFUL : getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED
+      let msg = res.result ? getLanguage(global.language).Cowork.UPLOAD_SUCCESSFUL : getLanguage(global.language).Cowork.UPLOAD_FAILED
       if (res?.error?.reason) {
         msg = res?.error?.reason
       }
@@ -292,7 +292,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           },
         }
         let msgStr = JSON.stringify(msgObj)
-        await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+        await global.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
       } else {
         res.content && params.setCoworkService({
           groupId: params.currentTask.groupID,
@@ -304,7 +304,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
         })
       }
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Cowork.UPLOAD_FAILED)
+      Toast.show(getLanguage(global.language).Cowork.UPLOAD_FAILED)
     }
   },
 })
@@ -372,7 +372,7 @@ async function listAction(type: string, params: any = {}) {
           })
         })
         let _data = [{
-          // title: getLanguage(GLOBAL.language).Map_Settings.DATASOURCES,
+          // title: getLanguage(global.language).Map_Settings.DATASOURCES,
           title: data.resourceName,
           image: getThemeAssets().dataType.icon_data_source,
           data: _subData,
@@ -409,7 +409,7 @@ async function listAction(type: string, params: any = {}) {
       //   }
       // })
       // let _data = [{
-      //   // title: getLanguage(GLOBAL.language).Map_Settings.DATASETS,
+      //   // title: getLanguage(global.language).Map_Settings.DATASETS,
       //   title: datasourceName,
       //   image: getThemeAssets().dataType.icon_data_set,
       //   data: _subData,
@@ -526,7 +526,7 @@ function toolbarBack(type: string) {
 
 async function downloadToLocal(datasetUrl: string, datasourceAlias?: string) {
   if (!datasetUrl) {
-    Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
+    Toast.show(getLanguage(global.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
     return false
   }
   let _datasourceAlias = await getLabelDatasourceName(datasourceAlias)
@@ -543,7 +543,7 @@ async function updateToLocal (layerData: {
 }, cb?: (result: boolean) => void) {
   const _params: any = ToolbarModule.getParams()
   if (!layerData.url) {
-    Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
+    Toast.show(getLanguage(global.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
     return
   }
   let result = false
@@ -627,7 +627,7 @@ async function uploadToService(layerData: {
 }) {
   const _params: any = ToolbarModule.getParams()
   if (!layerData.url) {
-    Toast.show(getLanguage(GLOBAL.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
+    Toast.show(getLanguage(global.language).Cowork.ERROR_SERVICE_DATA_LOSE_URL)
     return
   }
   let result = false
@@ -848,7 +848,7 @@ async function publishServiceToGroup(fileName: string, publishData: publishData,
                   },
                 }
                 let msgStr = JSON.stringify(msgObj)
-                await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+                await global.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
               }
             }
           } else {
@@ -956,7 +956,7 @@ async function publishService(dataID: string, datasourceAlias: string, groups: p
           },
         }
         let msgStr = JSON.stringify(msgObj)
-        await GLOBAL.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
+        await global.getFriend()._sendMessage(msgStr, _params.currentTask.id, false)
       } else {
         result = false
       }
@@ -1022,9 +1022,9 @@ async function publishMapService() {
       await SMap.refreshMap()
       await _params.getLayers()
       if (publishResult?.result) {
-        Toast.show(datasourceAlias + getLanguage(GLOBAL.language).Prompt.PUBLISH_SUCCESS)
+        Toast.show(datasourceAlias + getLanguage(global.language).Prompt.PUBLISH_SUCCESS)
       } else {
-        Toast.show(datasourceAlias + (publishResult?.error?.errorMsg || getLanguage(GLOBAL.language).Prompt.PUBLISH_FAILED))
+        Toast.show(datasourceAlias + (publishResult?.error?.errorMsg || getLanguage(global.language).Prompt.PUBLISH_FAILED))
       }
     }
 

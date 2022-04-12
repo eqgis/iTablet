@@ -289,7 +289,7 @@ export function getMapChildPageWith(orientation) {
   const ration = _height / _width
   if (orientation.indexOf('LANDSCAPE') === 0) {
     width *= 0.45
-    if (!GLOBAL.isPad && ration < 1.8) {
+    if (!global.isPad && ration < 1.8) {
       width *= 0.6
     }
   }

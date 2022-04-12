@@ -27,7 +27,7 @@ export default class OnlineLoginView extends React.Component {
     }
     // 在云许可登录时，如果当前app已登录，则默认填入账号
     if(props.useDefaultName){
-      const { nickname, userType  } = GLOBAL.currentUser
+      const { nickname, userType  } = global.currentUser
       if(nickname !== 'Customer' && userType !== "probation_user"){
         this.userName = nickname
       }
@@ -92,7 +92,7 @@ export default class OnlineLoginView extends React.Component {
             inputStyle={styles.customInputStyle}
           />
         </View>
-        {GLOBAL.isPad && <View style={{ width: '100%', height: 15 }} />}
+        {global.isPad && <View style={{ width: '100%', height: 15 }} />}
         <View style={styles.inputBackgroud}>
           {/* <TextInput
             clearButtonMode={'while-editing'}
@@ -150,7 +150,7 @@ export default class OnlineLoginView extends React.Component {
             NavigationService.navigate('GetBack')
           }}
         >
-          {getLanguage(GLOBAL.language).Profile.FORGET_PASSWORD}
+          {getLanguage(global.language).Profile.FORGET_PASSWORD}
         </Text>
       </View>
     )

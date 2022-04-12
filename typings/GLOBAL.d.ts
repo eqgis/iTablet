@@ -13,7 +13,7 @@ declare namespace GLOBAL {
   let SYSTEM_VERSION: string 
   /** 新手引导版本号 */
   let GUIDE_VERSION: string             
-  /** TODO 动态切换主题，将 GLOBAL.ThemeType 放入Redux中管理 */
+  /** TODO 动态切换主题，将 global.ThemeType 放入Redux中管理 */
   let ThemeType: string               
   /** 底图数量 */
   let BaseMapSize: number             

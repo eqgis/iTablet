@@ -62,8 +62,8 @@ class GroupSelectPage extends Component<Props, State> {
     }
 
     let sectionMap = new Map()
-    sectionMap.set(getLanguage(GLOBAL.language).Friends.MY_GROUPS, true)
-    sectionMap.set(getLanguage(GLOBAL.language).Friends.JOINED_GROUPS, true)
+    sectionMap.set(getLanguage(global.language).Friends.MY_GROUPS, true)
+    sectionMap.set(getLanguage(global.language).Friends.JOINED_GROUPS, true)
 
     this.state = {
       data: [],
@@ -77,7 +77,7 @@ class GroupSelectPage extends Component<Props, State> {
 
     this.popData = [
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_CREATE,
+        title: getLanguage(global.language).Friends.GROUP_CREATE,
         action: () => {
           NavigationService.navigate('CreateGroupPage', {
             callBack: (newGroup: {
@@ -93,7 +93,7 @@ class GroupSelectPage extends Component<Props, State> {
         },
       },
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY,
+        title: getLanguage(global.language).Friends.GROUP_APPLY,
         action: () => {
           if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
             NavigationService.navigate('GroupApplyPage', {callBack: () => this.refresh(false)})
@@ -195,10 +195,10 @@ class GroupSelectPage extends Component<Props, State> {
           this.currentPage = currentPage
           this.setState({
             data: [{
-              title: getLanguage(GLOBAL.language).Friends.MY_GROUPS,
+              title: getLanguage(global.language).Friends.MY_GROUPS,
               data: myGroups,
             }, {
-              title: getLanguage(GLOBAL.language).Friends.JOINED_GROUPS,
+              title: getLanguage(global.language).Friends.JOINED_GROUPS,
               data: _joinedGroups,
             }],
             isRefresh: false,
@@ -316,7 +316,7 @@ class GroupSelectPage extends Component<Props, State> {
               )
             }
           </View>
-          <Text style={styles.ITemHeadTextStyle}>{getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE}</Text>
+          <Text style={styles.ITemHeadTextStyle}>{getLanguage(global.language).Friends.GROUP_MESSAGE}</Text>
           <View style={styles.arrowImgView}>
             <Image
               resizeMode={'contain'}
@@ -331,15 +331,15 @@ class GroupSelectPage extends Component<Props, State> {
   }
 
   sectionToggle = (section: any) => {
-    if (section.title === getLanguage(GLOBAL.language).Friends.MY_GROUPS) {
-      let myGroups = getLanguage(GLOBAL.language).Friends.MY_GROUPS
+    if (section.title === getLanguage(global.language).Friends.MY_GROUPS) {
+      let myGroups = getLanguage(global.language).Friends.MY_GROUPS
       this.setState(state => {
         const sectionMap = new Map().clone(state.sectionMap)
         sectionMap.set(myGroups, !state.sectionMap.get(myGroups))
         return { sectionMap }
       })
-    } else if (section.title === getLanguage(GLOBAL.language).Friends.JOINED_GROUPS) {
-      let joinedGroups = getLanguage(GLOBAL.language).Friends.JOINED_GROUPS
+    } else if (section.title === getLanguage(global.language).Friends.JOINED_GROUPS) {
+      let joinedGroups = getLanguage(global.language).Friends.JOINED_GROUPS
       this.setState(state => {
         const sectionMap = new Map().clone(state.sectionMap)
         sectionMap.set(joinedGroups, !state.sectionMap.get(joinedGroups))
@@ -394,7 +394,7 @@ class GroupSelectPage extends Component<Props, State> {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            title={getLanguage(global.language).Friends.LOADING}
             enabled={true}
           />
         }
@@ -410,7 +410,7 @@ class GroupSelectPage extends Component<Props, State> {
       <Dialog
         ref={ref => (this.dialog = ref)}
         type={Dialog.Type.MODAL}
-        info={getLanguage(GLOBAL.language).Friends.INVITE_GROUP_MEMBERS_INFO}
+        info={getLanguage(global.language).Friends.INVITE_GROUP_MEMBERS_INFO}
         confirmAction={() => {
           if (this.newGroupData) {
             this.dialog && this.dialog.setDialogVisible(false)
@@ -430,7 +430,7 @@ class GroupSelectPage extends Component<Props, State> {
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.TITLE_CHOOSE_GROUP,
+          title: getLanguage(global.language).Friends.TITLE_CHOOSE_GROUP,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
           headerTitleViewStyle: {

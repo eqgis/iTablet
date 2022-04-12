@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { StyleSheet, Text, View, Animated } from 'react-native'
-// import TouchableItem from 'react-navigation/src/views/TouchableItem'
 import { TouchableItem } from '../../../../components'
 
 interface Props {

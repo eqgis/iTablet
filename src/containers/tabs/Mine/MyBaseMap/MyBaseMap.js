@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, View, TouchableOpacity, Image, RefreshControl } from 'react-native'
+import { FlatList, View, TouchableOpacity, Image } from 'react-native'
 // import { ConstPath, ConstInfo } from '../../../../constants'
 // import { FileTools } from '../../../../native'
 // import { SMap, EngineType, SOnlineService } from 'imobile_for_reactnative'
@@ -17,7 +17,6 @@ import { ConstOnline } from '../../../../constants'
 import RenderServiceItem from '../MyService/RenderServiceItem'
 import { UserType } from '../../../../constants'
 import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
-import { GetUserBaseMapUtil } from '../../../../utils'
 
 let _arrPrivateServiceList = []
 let _arrPublishServiceList = []
@@ -33,11 +32,9 @@ export default class MyBaseMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: getLanguage(GLOBAL.language).Profile.BASEMAP,
+      title: getLanguage(global.language).Profile.BASEMAP,
       //'底图',
       modalIsVisible: false,
-      isRefreshing: false,
-      curUserBaseMaps: this.getCommonBaseMap(),
     }
     // 根据当前用户id获取当前用户的底图数组
     this.curUserBaseMaps = this.props.baseMaps[
@@ -58,56 +55,7 @@ export default class MyBaseMap extends Component {
     for (let i = 0; i < count; i++) {
       this.curUserBaseMaps[i].index = i
     }
-    this.setState({curUserBaseMaps: this.curUserBaseMaps})
     this.uploadList = []
-  }
-
-  async componentDidMount(prevProps, prevState) {
-    let loadText = getLanguage(this.props.language).Prompt.LOADING
-    this.container.setLoading(
-      true,
-      loadText,
-    )
-    // 加载用户底图
-    await this.loadUserBaseMaps()
-    // if(UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)){
-    //   this._initFirstSectionData()
-    // }
-
-    //关闭加载动画
-    this.container.setLoading(false)
-  }
-
-  /**
-   * @author lyx
-   * 加载当前用户的底图
-   */
-  async loadUserBaseMaps(){
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
-    let listResult = []
-    // 当公有服务列表数组有元素时，就遍历这个数组
-    if (arrPublishServiceList.length > 0) {
-      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
-        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
-        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl){
-          let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
-          // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
-          this.props.setBaseMap &&
-            this.props.setBaseMap({
-              userId: currentUser.userId,
-              baseMaps: list,
-            })
-          listResult = list
-        }
-      }
-    }
-    if(listResult.length <= 0) {
-      listResult = this.getCommonBaseMap()
-    }
-    this.setState({
-      curUserBaseMaps: listResult,
-      isRefreshing: false,
-    })
   }
 
   /**
@@ -124,7 +72,7 @@ export default class MyBaseMap extends Component {
       ConstOnline.OSM,
       ConstOnline.tianditu(),
     ]
-    if(GLOBAL.language === 'CN') {
+    if(global.language === 'CN') {
       maps.splice(3, 1)
     }
     return maps
@@ -259,7 +207,7 @@ export default class MyBaseMap extends Component {
     let item = this.itemInfo
     if (item) {
       data.push({
-        title: getLanguage(GLOBAL.language).Profile.DELETE_DATA,
+        title: getLanguage(global.language).Profile.DELETE_DATA,
         action: this.deleteData,
       })
     }
@@ -294,7 +242,7 @@ export default class MyBaseMap extends Component {
           ref={ref => (this.ref = ref)}
           renderItem={this._renderItem}
           keyExtractor={(item, index) => index.toString()}
-          data={this.state.curUserBaseMaps}
+          data={this.curUserBaseMaps}
           ItemSeparatorComponent={() => (
             <View
               style={{
@@ -304,28 +252,6 @@ export default class MyBaseMap extends Component {
               }}
             />
           )}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.isRefreshing}
-              onRefresh={() => {
-                try {
-                  this.setState({ isRefreshing: true })
-                  // 加载底图
-                  // this.loadUserBaseMaps().then(() => {
-                  //   this.setState({ isRefreshing: false })
-                  // })
-                  this.loadUserBaseMaps()
-                } catch (error) {
-                  Toast.show('刷新失败')
-                }
-              }}
-              colors={['orange', 'red']}
-              titleColor={'orange'}
-              tintColor={'orange'}
-              title={'刷新中...'}
-              enabled={true}
-            />
-          }
         />
         {/* <FlatList
           initialNumToRender={20}

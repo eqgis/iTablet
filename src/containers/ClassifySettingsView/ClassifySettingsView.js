@@ -41,7 +41,7 @@ export default class ClassifySettingsView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName
 
@@ -269,17 +269,17 @@ export default class ClassifySettingsView extends React.Component {
                 let params = {}
                 params.ModelType = 'ABSOLUTE_FILE_PATH'
                 params.modelPath =
-                  GLOBAL.homePath + item.path + '/' + item.tflite
+                  global.homePath + item.path + '/' + item.tflite
                 let labelPath = item.labels[0]
                 let labelFilter = item.labels.filter(label => {
                   if (
-                    GLOBAL.language === 'CN' &&
+                    global.language === 'CN' &&
                     label.toLowerCase().indexOf('_cn') > -1
                   ) {
                     return true
                   }
                   if (
-                    GLOBAL.language !== 'CN' &&
+                    global.language !== 'CN' &&
                     label.toLowerCase().indexOf('_cn') < 0
                   ) {
                     return true
@@ -289,11 +289,11 @@ export default class ClassifySettingsView extends React.Component {
                 if (labelFilter.length > 0) {
                   labelPath = labelFilter[0]
                 }
-                params.labelPath = GLOBAL.homePath + item.path + '/' + labelPath
+                params.labelPath = global.homePath + item.path + '/' + labelPath
                 if (Platform.OS === 'android' && item.param) {
                   try {
                     let paramPath =
-                      GLOBAL.homePath + item.path + '/' + item.param
+                      global.homePath + item.path + '/' + item.param
                     let info = await RNFS.readFile(paramPath)
                     let infoJson = JSON.parse(info)
                     params.param = infoJson

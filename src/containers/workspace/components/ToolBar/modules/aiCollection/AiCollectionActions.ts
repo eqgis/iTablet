@@ -10,7 +10,7 @@ import { ILocalData } from '../../../../../tabs/Mine/DataHandler/DataLocal'
 
 async function getTaggingLayerData() {
   const _params: any = ToolbarModule.getParams()
-  let currentLayer: any = GLOBAL.currentLayer
+  let currentLayer: any = global.currentLayer
   let isTaggingLayer = false
   if (currentLayer) {
     let layerType = LayerUtils.getLayerType(currentLayer)
@@ -48,7 +48,7 @@ async function getTaggingLayerData() {
 function aiDetect() {
   (async function() {
     const _params: any = ToolbarModule.getParams()
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
+    global.toolBox && global.toolBox.removeAIDetect(false)
     let taggingLayerData = await getTaggingLayerData()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
@@ -58,13 +58,13 @@ function aiDetect() {
         taggingLayerData.datasourceAlias === layer.datasourceAlias &&
         taggingLayerData.datasetName === layer.datasetName
       ) {
-        GLOBAL.currentLayer = layer
+        global.currentLayer = layer
         break
       }
     }
     SARMap.startAIDetect(false)
-    ;(await GLOBAL.toolBox) &&
-      GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
+    ;(await global.toolBox) &&
+      global.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
         isFullScreen: false,
         height: 0,
       })
@@ -95,7 +95,7 @@ async function goToPreview(infos?: SARMap.AIRecognitionInfo[]) {
           location: location,
           prevType: ConstToolType.SM_MAP_AI_ANALYSIS_DETECT,
         })
-        GLOBAL.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_PREVIEW, {
+        global.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_PREVIEW, {
           isFullScreen: false,
           height: 0,
         })
@@ -126,7 +126,7 @@ async function goToMediaEdit() {
       break
   }
   NavigationService.navigate('MediaEdit', {
-    // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
+    // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
     title: _data.title,
     layerInfo: _params.currentLayer,
     backAction: () => {
@@ -170,7 +170,7 @@ async function setting() {
 
 async function close() {
   await SARMap.endAIDetect()
-  GLOBAL.ToolBar.close()
+  global.ToolBar.close()
 }
 
 /**

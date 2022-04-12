@@ -122,33 +122,33 @@ export default class LayerAttributeAdd extends React.Component {
   confirmValidate = () => {
     let isConfirm = false
     if (!this.state.name || this.state.name === '') {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_NAME)
+      Toast.show(getLanguage(global.language).Prompt.ENTER_NAME)
     } else if (this.state.name !== undefined && this.state.name !== '' && this.state.name.toLowerCase().indexOf('ss_') === 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DEFAULT_NAMING_SS)
+      Toast.show(getLanguage(global.language).Prompt.DEFAULT_NAMING_SS)
     } else if (!this.state.caption || this.state.caption === '') {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_CAPTION)
+      Toast.show(getLanguage(global.language).Prompt.ENTER_CAPTION)
     } else if (this.state.caption !== undefined && this.state.caption !== '' && this.state.caption.toLowerCase().indexOf('ss_') === 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DEFAULT_NAMING_SS)
+      Toast.show(getLanguage(global.language).Prompt.DEFAULT_NAMING_SS)
     } else if (!this.state.type) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.CHOICE_TYPE)
+      Toast.show(getLanguage(global.language).Prompt.CHOICE_TYPE)
     } else if (!this.state.maxLength) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.INPUT_LENGTH)
+      Toast.show(getLanguage(global.language).Prompt.INPUT_LENGTH)
     } else if (
       this.state.defaultValue &&
       !this.checkDefaultValue(this.state.defaultValue)
     ) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DEFAULT_VALUE_EROROR)
+      Toast.show(getLanguage(global.language).Prompt.DEFAULT_VALUE_EROROR)
     } else if (
       this.state.isRequired === '' ||
       this.state.isRequired === undefined
     ) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_REQUIRED)
+      Toast.show(getLanguage(global.language).Prompt.SELECT_REQUIRED)
     } else if (
       this.state.isRequired &&
       (this.state.defaultValue === '' || this.state.defaultValue === undefined)
     ) {
       Toast.show(
-        getLanguage(GLOBAL.language).Prompt.ATTRIBUTE_DEFAULT_VALUE_IS_NULL,
+        getLanguage(global.language).Prompt.ATTRIBUTE_DEFAULT_VALUE_IS_NULL,
       )
     } else {
       isConfirm = true
@@ -204,18 +204,18 @@ export default class LayerAttributeAdd extends React.Component {
 
   getType = ({ labelTitle, value }) => {
     switch (labelTitle) {
-      case getLanguage(GLOBAL.language).Map_Attribute.TYPE:
+      case getLanguage(global.language).Map_Attribute.TYPE:
         this.setState({
           type: value,
         })
         break
-      case getLanguage(GLOBAL.language).Map_Attribute.REQUIRED:
+      case getLanguage(global.language).Map_Attribute.REQUIRED:
         this.setState({
           isRequired: value,
           isDefaultValueCanEdit: value,
         })
         break
-      case getLanguage(GLOBAL.language).Map_Attribute.DEFAULT:
+      case getLanguage(global.language).Map_Attribute.DEFAULT:
         this.setState({
           defaultValue: value,
         })
@@ -224,22 +224,22 @@ export default class LayerAttributeAdd extends React.Component {
 
   getInputValue = ({ title, text }) => {
     switch (title) {
-      case getLanguage(GLOBAL.language).Map_Attribute.NAME:
+      case getLanguage(global.language).Map_Attribute.NAME:
         this.setState({
           name: text,
         })
         break
-      case getLanguage(GLOBAL.language).Map_Attribute.ALIAS:
+      case getLanguage(global.language).Map_Attribute.ALIAS:
         this.setState({
           caption: text,
         })
         break
-      case getLanguage(GLOBAL.language).Map_Attribute.REQUIRED:
+      case getLanguage(global.language).Map_Attribute.REQUIRED:
         this.setState({
           maxLength: parseInt(text),
         })
         break
-      case getLanguage(GLOBAL.language).Map_Attribute.DEFAULT:
+      case getLanguage(global.language).Map_Attribute.DEFAULT:
         this.setState({
           defaultValue: text,
         })
@@ -265,14 +265,14 @@ export default class LayerAttributeAdd extends React.Component {
         },
       ]}>
         <ImageButton
-          title={getLanguage(GLOBAL.language).Map_Attribute.CONFIRM_ADD}
+          title={getLanguage(global.language).Map_Attribute.CONFIRM_ADD}
           titleStyle={styles.text1}
           containerStyle={[styles.btn, styles.btn1]}
           direction={'row'}
           onPress={() => this.confirm(false)}
         />
         <ImageButton
-          title={getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_CONTINUE}
+          title={getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_CONTINUE}
           titleStyle={styles.text2}
           containerStyle={[styles.btn, styles.btn2]}
           direction={'row'}
@@ -367,7 +367,7 @@ export default class LayerAttributeAdd extends React.Component {
   }
 
   renderDefaultValue = () => {
-    let defaultValueTile = getLanguage(GLOBAL.language).Map_Attribute.DEFAULT
+    let defaultValueTile = getLanguage(global.language).Map_Attribute.DEFAULT
     return !this.state.isRequired ? null : this.state.type === 1 ? (
       <Row
         style={{ marginTop: scaleSize(15) }}
@@ -378,8 +378,8 @@ export default class LayerAttributeAdd extends React.Component {
         disable={this.state.isEdit && this.state.isDefaultValueCanEdit}
         defaultValue={this.state.defaultValue}
         radioArr={[
-          { title: getLanguage(GLOBAL.language).Prompt.YES, value: true },
-          { title: getLanguage(GLOBAL.language).Prompt.NO, value: false },
+          { title: getLanguage(global.language).Prompt.YES, value: true },
+          { title: getLanguage(global.language).Prompt.NO, value: false },
         ]}
         radioColumn={2}
         getValue={this.getType}
@@ -406,8 +406,8 @@ export default class LayerAttributeAdd extends React.Component {
         navigation={this.props.navigation}
         title={
           this.state.isEdit
-            ? getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_DETAIL
-            : getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_ADD
+            ? getLanguage(global.language).Map_Attribute.ATTRIBUTE_DETAIL
+            : getLanguage(global.language).Map_Attribute.ATTRIBUTE_ADD
         }
         backAction={() => {
           this.props.backAction && this.props.backAction()
@@ -439,7 +439,7 @@ export default class LayerAttributeAdd extends React.Component {
             })
           }}
         >
-          <Text style={styles.typeText}>{GLOBAL.language === 'CN' ? typeStr[i][0] : typeStr[i][1]}</Text>
+          <Text style={styles.typeText}>{global.language === 'CN' ? typeStr[i][0] : typeStr[i][1]}</Text>
         </TouchableOpacity>
       )
       if (row.length === column || i === typeStr.length - 1) {
@@ -470,7 +470,7 @@ export default class LayerAttributeAdd extends React.Component {
           disable={this.state.isEdit}
           defaultValue={this.state.name}
           type={Row.Type.INPUT_WRAP}
-          title={getLanguage(GLOBAL.language).Map_Attribute.NAME}
+          title={getLanguage(global.language).Map_Attribute.NAME}
           getValue={this.getInputValue}
         />
         <Row
@@ -482,7 +482,7 @@ export default class LayerAttributeAdd extends React.Component {
           disable={this.state.isEdit}
           defaultValue={this.state.caption}
           type={Row.Type.INPUT_WRAP}
-          title={getLanguage(GLOBAL.language).Map_Attribute.ALIAS}
+          title={getLanguage(global.language).Map_Attribute.ALIAS}
           getValue={this.getInputValue}
         />
         <Row
@@ -490,7 +490,7 @@ export default class LayerAttributeAdd extends React.Component {
           titleStyle={[styles.titleStyle, { marginTop: scaleSize(22) }]}
           key={'类型'}
           type={Row.Type.RADIO_GROUP}
-          title={getLanguage(GLOBAL.language).Map_Attribute.TYPE}
+          title={getLanguage(global.language).Map_Attribute.TYPE}
           defaultValue={this.state.type}
           disable={this.state.isEdit}
           orientation={this.props.device.orientation}
@@ -503,7 +503,7 @@ export default class LayerAttributeAdd extends React.Component {
           disableStyle={styles.disableStyle}
           key={'长度'}
           type={Row.Type.TEXT_BTN}
-          title={getLanguage(GLOBAL.language).Map_Attribute.LENGTH}
+          title={getLanguage(global.language).Map_Attribute.LENGTH}
           disable={true}
           value={this.state.maxLength ? this.state.maxLength + '' : null}
         />
@@ -513,12 +513,12 @@ export default class LayerAttributeAdd extends React.Component {
           titleStyle={styles.titleStyle}
           key={'必填'}
           type={Row.Type.RADIO_GROUP}
-          title={getLanguage(GLOBAL.language).Map_Attribute.REQUIRED}
+          title={getLanguage(global.language).Map_Attribute.REQUIRED}
           disable={this.state.isEdit}
           defaultValue={this.state.isRequired}
           radioArr={[
-            { title: getLanguage(GLOBAL.language).Prompt.YES, value: true },
-            { title: getLanguage(GLOBAL.language).Prompt.NO, value: false },
+            { title: getLanguage(global.language).Prompt.YES, value: true },
+            { title: getLanguage(global.language).Prompt.NO, value: false },
           ]}
           radioColumn={2}
           getValue={this.getType}

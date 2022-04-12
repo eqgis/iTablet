@@ -124,15 +124,19 @@ class TabBar extends React.Component {
   }
 
   _renderItem = ({ item }, key) => {
-    // let NavIndex = this.props.navigation.state.index
-    let routeKey = this.props.navigation.state.key
+    // let NavIndex = this.props.route.index
+    let routeState = this.props.navigation?.getState()
+    let routeKey = ''
+    if (routeState && routeState.routeNames?.length > 0 && routeState.routeNames[routeState.index]) {
+      routeKey = routeState.routeNames[routeState.index]
+    }
     return (
       <TabItem
         key={key}
         item={item}
         selected={routeKey === item.key}
         onPress={() => {
-          !GLOBAL.clickWait && item.btnClick && item.btnClick()
+          !global.clickWait && item.btnClick && item.btnClick()
         }}
         renderExtra={() => {
           if (item.key === 'Friend') {

@@ -30,7 +30,7 @@ export default class RNFloorListView extends React.Component {
       data: [],
       height:
         props.device.orientation.indexOf('LANDSCAPE') === 0
-          ? GLOBAL.isPad
+          ? global.isPad
             ? scaleSize(360)
             : scaleSize(240)
           : scaleSize(360),
@@ -55,7 +55,7 @@ export default class RNFloorListView extends React.Component {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       let height, bottom
       if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-        height = GLOBAL.isPad ? scaleSize(360) : scaleSize(240)
+        height = global.isPad ? scaleSize(360) : scaleSize(240)
         bottom = this.isSimilar(prevState.bottom._value, DEFAULT_BOTTOM)
           ? DEFAULT_BOTTOM_LOW
           : prevState.bottom._value
@@ -73,6 +73,7 @@ export default class RNFloorListView extends React.Component {
           Animated.timing(this.state.bottom, {
             toValue: bottom,
             duration: Const.ANIMATED_DURATION,
+            useNativeDriver: false,
           }).start()
           if (height < prevState.height) {
             this.list &&
@@ -134,11 +135,13 @@ export default class RNFloorListView extends React.Component {
       Animated.timing(this.state.left, {
         toValue: DEFAULT_LEFT,
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
     } else {
       Animated.timing(this.state.left, {
         toValue: scaleSize(-200),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -162,6 +165,7 @@ export default class RNFloorListView extends React.Component {
       Animated.timing(this.state.left, {
         toValue: left,
         duration: Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
   }
   /**
@@ -177,6 +181,7 @@ export default class RNFloorListView extends React.Component {
     Animated.timing(this.state.bottom, {
       toValue: value,
       duration: Const.ANIMATED_DURATION,
+      useNativeDriver: false,
     }).start()
   }
 
@@ -217,7 +222,7 @@ export default class RNFloorListView extends React.Component {
     if (
       this.state.data.length === 0 ||
       !this.state.currentFloorID ||
-      (!GLOBAL.isPad &&
+      (!global.isPad &&
         this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
         this.state.isGuiding)
     )

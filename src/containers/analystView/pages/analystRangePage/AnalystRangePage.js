@@ -22,7 +22,7 @@ export default class AnalystRangePage extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
     this.backcb = params && params.backcb
     const bounds = (params && params.bounds) || [0, 0, 0, 0] // 顺序：左-下-右-上

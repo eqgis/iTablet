@@ -53,21 +53,21 @@ async function getData(type) {
       data = [
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: IncrementAction.undo,
           size: 'large',
           image: getThemeAssets().edit.icon_undo,
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: IncrementAction.redo,
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
@@ -75,7 +75,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_COMMIT,
           action: IncrementAction.submit,
           size: 'large',
@@ -87,21 +87,21 @@ async function getData(type) {
       data = [
         {
           key: constants.UNDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
           action: IncrementAction.undo,
           size: 'large',
           image: getThemeAssets().edit.icon_undo,
         },
         {
           key: constants.REDO,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
           action: IncrementAction.redo,
           size: 'large',
           image: getThemeAssets().edit.icon_redo,
         },
         {
           key: constants.MAP_INCREMENT_ADD_POINT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_ADD_POINT,
           action: IncrementAction.addPoint,
           size: 'large',
@@ -109,7 +109,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
@@ -117,7 +117,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_COMMIT,
           action: IncrementAction.submit,
           size: 'large',
@@ -129,21 +129,21 @@ async function getData(type) {
       data = [
         {
           key: constants.MAP_INCREMENT_START,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_START,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_INCREMENT_START,
           action: IncrementAction.start,
           size: 'large',
           image: getThemeAssets().navigation.increment_start,
         },
         {
           key: constants.MAP_INCREMENT_STOP,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_INCREMENT_STOP,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_INCREMENT_STOP,
           action: IncrementAction.stop,
           size: 'large',
           image: getThemeAssets().navigation.increment_stop,
         },
         {
           key: constants.MAP_INCREMENT_CANCEL,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_CANCEL,
           action: IncrementAction.cancel,
           size: 'large',
@@ -151,7 +151,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_COMMIT,
           action: IncrementAction.submit,
           size: 'large',
@@ -163,7 +163,7 @@ async function getData(type) {
       data = [
         {
           key: constants.MAP_INCREMENT_GPS_POINT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_GPS_POINT,
           action: () =>
             IncrementAction.methodSelected(
@@ -174,7 +174,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_GPS_TRACK,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_GPS_TRACK,
           action: () =>
             IncrementAction.methodSelected(
@@ -185,7 +185,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_POINTLINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_POINTLINE,
           action: () =>
             IncrementAction.methodSelected(
@@ -196,7 +196,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_FREELINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_FREELINE,
           action: () =>
             IncrementAction.methodSelected(
@@ -210,7 +210,7 @@ async function getData(type) {
     case ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK:
       data = await SMap.getLineDataset()
       //eslint-disable-next-line
-      customView = props => <LineList data={data} device={props.device} selectedItem={GLOBAL.INCREMENT_DATA}/>
+      customView = props => <LineList data={data} device={props.device} selectedItem={global.INCREMENT_DATA}/>
       buttons = []
       break
   }

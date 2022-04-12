@@ -42,7 +42,7 @@ export default class MapSetting extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.type = params && params.type
     this.state = {
       data: [],
@@ -71,10 +71,10 @@ export default class MapSetting extends Component {
 
   getData = async () => {
     let newData = getThematicMapSettings()
-    if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
+    if (global.Type === ChunkType.MAP_AR_ANALYSIS) {
       newData = newData.concat(getMapARAnalysisSettings())
     }
-    // if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+    // if (global.Type === ChunkType.MAP_NAVIGATION) {
     //   newData = newData.concat(getNavigationSetting())
     // }
     this.setState({
@@ -103,8 +103,8 @@ export default class MapSetting extends Component {
   }
 
   setSaveViewVisible = visible => {
-    GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, {
+    global.SaveMapView &&
+      global.SaveMapView.setVisible(visible, {
         setLoading: this.setLoading,
       })
   }
@@ -167,7 +167,7 @@ export default class MapSetting extends Component {
       <View>
         {this._renderItemSeparatorComponent()}
         {/*<MapSettingItem*/}
-        {/*title={getLanguage(GLOBAL.language).Map_Setting.COLUMN_NAV_BAR}*/}
+        {/*title={getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}*/}
         {/*type={'switch'}*/}
         {/*rightAction={value => {*/}
         {/*this.props.setColumnNavBar(value)*/}
@@ -179,7 +179,7 @@ export default class MapSetting extends Component {
         {CoworkInfo.coworkId !== '' && (
           <MapSettingItem
             type={'switch'}
-            title={getLanguage(GLOBAL.language).Map_Setting.REAL_TIME_SYNC}
+            title={getLanguage(global.language).Map_Setting.REAL_TIME_SYNC}
             rightAction={value => {
               // CoworkInfo.setIsRealTime(value)
               this.props.setIsRealTime({

@@ -35,13 +35,13 @@ class RecommendFriend extends Component {
     super(props)
     this.screenWidth = Dimensions.get('window').width
     this.target
-    this.friend = this.props.navigation.getParam('friend')
-    this.user = this.props.navigation.getParam('user')
+    this.friend = this.props.route.params.friend
+    this.user = this.props.route.params.user
     this.state = {
       loading: false,
       contacts: [],
     }
-    this.language = this.props.navigation.getParam('language')
+    this.language = this.props.route.params.language
     this.search = this.search.bind(this)
     this._renderItem = this._renderItem.bind(this)
     this.addFriendRequest = this.addFriendRequest.bind(this)
@@ -117,6 +117,7 @@ class RecommendFriend extends Component {
     Animated.timing(this.loadingHeight, {
       toValue: visible ? 40 : 0,
       duration: 800,
+      useNativeDriver: false,
     }).start()
     this.setState({
       loading: visible,
@@ -160,7 +161,7 @@ class RecommendFriend extends Component {
                 }),
               )
               if (this.exit) {
-                GLOBAL.Loading.setLoading(false)
+                global.Loading.setLoading(false)
                 return
               }
             }
@@ -273,7 +274,7 @@ class RecommendFriend extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.RECOMMEND_FRIEND,
+          title: getLanguage(global.language).Friends.RECOMMEND_FRIEND,
           withoutBack: false,
           navigation: this.props.navigation,
         }}

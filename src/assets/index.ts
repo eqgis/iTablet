@@ -5,7 +5,7 @@ import PublicTheme from './publicTheme'
 
 function getThemeAssets(): typeof LightTheme {
   let asset
-  switch (GLOBAL.ThemeType) {
+  switch (global.ThemeType) {
     case AppThemeType.DARK_THEME:
       asset = require('./darkTheme').default
       break

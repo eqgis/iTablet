@@ -9,12 +9,14 @@ import {
   Text,
   BackHandler,
   NativeModules,
-  AsyncStorage,
+  // AsyncStorage,
   StatusBar,
   TextInput,
   PermissionsAndroid,
-  NetInfo,
+  // NetInfo,
 } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
+import NetInfo from "@react-native-community/netinfo"
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
@@ -83,6 +85,7 @@ import LaunchGuide from './configs/guide'
 // import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
 
 import { setBaseMap } from './src/redux/models/map'
+import AppNavigator from './src/containers'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -231,28 +234,28 @@ class AppRoot extends Component {
     AppState.addEventListener('change', this.handleStateChange)
     Platform.OS === 'android' &&
       BackHandler.addEventListener('hardwareBackPress', this.back)
-    NetInfo.addEventListener('connectionChange', this.handleNetworkState)
+    NetInfo.addEventListener(this.handleNetworkState)
 
   }
 
   initGlobal = () => {
-    // GLOBAL.AppState = AppState.currentState
-    GLOBAL.STARTX = undefined  //离线导航起点
-    GLOBAL.ENDX = undefined  //离线导航终点
-    // GLOBAL.HASCHOSE = false  //离线数据选择
-    // TODO 动态切换主题，将 GLOBAL.ThemeType 放入Redux中管理
-    GLOBAL.ThemeType = ThemeType.LIGHT_THEME
-    GLOBAL.BaseMapSize = 1
+    // global.AppState = AppState.currentState
+    global.STARTX = undefined  //离线导航起点
+    global.ENDX = undefined  //离线导航终点
+    // global.HASCHOSE = false  //离线数据选择
+    // TODO 动态切换主题，将 global.ThemeType 放入Redux中管理
+    global.ThemeType = ThemeType.LIGHT_THEME
+    global.BaseMapSize = 1
     //地图比例尺
-    GLOBAL.scaleView = null
+    global.scaleView = null
     // TODO 从GLOBAL中去除SelectedSelectionAttribute
-    GLOBAL.SelectedSelectionAttribute = null // 框选-属性-关联对象 {layerInfo, index, data}
+    global.SelectedSelectionAttribute = null // 框选-属性-关联对象 {layerInfo, index, data}
     this.setIsPad()
     this._getIs64System()
-    GLOBAL.getDevice = this.getDevice
-    GLOBAL.back = this.back // 全局返回事件，根据不同界面有不同返回事件
-    GLOBAL.clickWait = false // 防止重复点击
-    GLOBAL.clearMapData = () => {
+    global.getDevice = this.getDevice
+    global.back = this.back // 全局返回事件，根据不同界面有不同返回事件
+    global.clickWait = false // 防止重复点击
+    global.clearMapData = () => {
       this.props.setEditLayer(null) // 清空地图图层中的数据
       this.props.setSelection(null) // 清空地图选中目标中的数据
       this.props.setMapSetting(null) // 清空地图设置中的数据
@@ -285,7 +288,7 @@ class AppRoot extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
-    NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
+    // NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
   }
 
   handleNetworkState = async state => {
@@ -294,11 +297,11 @@ class AppRoot extends Component {
       const isConnected = await OnlineServicesUtils.getService()?.checkConnection()
       if (isConnected) {
         Toast.show(getLanguage().Prompt.NETWORK_RECONNECT)
-        GLOBAL.getFriend()?.restartService()
+        global.getFriend()?.restartService()
         return
       } else {
         // 无法连接内网, 退出登录
-        // GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        // global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
         Toast.show(getLanguage().Prompt.NETWORK_ERROR)
       }
     } else if (state.type === 'none' || state.type === 'unknown') {
@@ -326,14 +329,14 @@ class AppRoot extends Component {
     if (Platform.OS === 'android') {
       this.requestPermission()
     } else {
-      GLOBAL.Loading.setLoading(true, 'Loading')
+      global.Loading.setLoading(true, 'Loading')
       await this.init()
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }
   }
 
   requestPermission = async () => {
-    GLOBAL.Loading.setLoading(true, 'Loading')
+    global.Loading.setLoading(true, 'Loading')
     const results = await PermissionsAndroid.requestMultiple([
       'android.permission.READ_PHONE_STATE',
       // 'android.permission.ACCESS_FINE_LOCATION',
@@ -351,19 +354,19 @@ class AppRoot extends Component {
     if (isAllGranted && permisson11) {
       await SMap.setPermisson(true)
       await this.init()
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     } else {
-      GLOBAL.SimpleDialog.set({
+      global.SimpleDialog.set({
         text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
         cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
         cancelAction: /*AppUtils.AppExit*/ async () =>{
           await this.init()
-          GLOBAL.Loading.setLoading(false)
+          global.Loading.setLoading(false)
         },
         confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
         confirmAction: this.requestPermission,
       })
-      GLOBAL.SimpleDialog.setVisible(true)
+      global.SimpleDialog.setVisible(true)
     }
   }
 
@@ -445,7 +448,17 @@ class AppRoot extends Component {
    * 加载当前用户的底图
    */
   async loadUserBaseMaps(){
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser)
+    let curUserBaseMaps = []
+    // 根据当前用户id获取当前用户的底图数组
+    if(this.props.user.currentUser.userId){
+      curUserBaseMaps = this.props.baseMaps[this.props.user.currentUser.userId]
+    }
+     
+    // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
+    if (!curUserBaseMaps) {
+      curUserBaseMaps = this.props.baseMaps['default']
+    }
+    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
     // 当公有服务列表数组有元素时，就遍历这个数组
     if (arrPublishServiceList.length > 0) {
       for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
@@ -455,7 +468,7 @@ class AppRoot extends Component {
           // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
           this.props.setBaseMap &&
             this.props.setBaseMap({
-              userId: this.props.user.currentUser.userId,
+              userId: currentUser.userId,
               baseMaps: list,
             })
         }
@@ -467,6 +480,7 @@ class AppRoot extends Component {
   // 初始化文件目录
   initDirectories = async (userName = 'Customer') => {
     try {
+      global.homePath = await FileTools.appendingHomeDirectory()
       let paths = Object.keys(ConstPath)
       let isCreate = true, absolutePath = ''
       for (let i = 0; i < paths.length; i++) {
@@ -665,7 +679,7 @@ class AppRoot extends Component {
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
         if(bResetMsgService !== true){
           //TODO 处理app加载流程，确保登录后再更新消息服务
-          GLOBAL.getFriend?.().onUserLoggedin()
+          global.getFriend?.().onUserLoggedin()
         }
       } else {
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
@@ -696,9 +710,9 @@ class AppRoot extends Component {
             roles: userInfo.roles,
           })
         }
-        GLOBAL.getFriend().onUserLoggedin()
+        global.getFriend().onUserLoggedin()
       } else {
-        GLOBAL.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
       }
     }
   }
@@ -745,12 +759,12 @@ class AppRoot extends Component {
 
   _getIs64System = async () => {
     try {
-      GLOBAL.SYSTEM_VERSION = "x64"
+      global.SYSTEM_VERSION = "x64"
       // if (Platform.OS === 'android') 
       {
         let b64 = await AppUtils.is64Bit()
         if (b64 === false) {
-          GLOBAL.SYSTEM_VERSION = "x32"
+          global.SYSTEM_VERSION = "x32"
         }
       }
     } catch (e) {
@@ -765,17 +779,17 @@ class AppRoot extends Component {
     } else {
       isPad = await AppUtils.isPad()
     }
-    GLOBAL.isPad = isPad
+    global.isPad = isPad
   }
 
   getVersion = async () => {
-    GLOBAL.language = this.props.language
+    global.language = this.props.language
     let appInfo = await AppInfo.getAppInfo()
     let bundleInfo = await AppInfo.getBundleVersion()
-    GLOBAL.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
+    global.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
       + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
-    GLOBAL.isAudit = await SMap.isAudit()
-    GLOBAL.GUIDE_VERSION = appInfo.GuideVersion
+    global.isAudit = await SMap.isAudit()
+    global.GUIDE_VERSION = appInfo.GuideVersion
   }
 
   back = () => {
@@ -792,25 +806,25 @@ class AppRoot extends Component {
   }
 
   onInvalidModule = () => {
-    GLOBAL.SimpleDialog.set({
+    global.SimpleDialog.set({
       text: getLanguage(this.props.language).Profile.INVALID_MODULE,
       confirmText: getLanguage(this.props.language).Profile.GO_ACTIVATE,
       confirmAction: () => {
         NavigationService.navigate('LicensePage')
       },
     })
-    GLOBAL.SimpleDialog.setVisible(true)
+    global.SimpleDialog.setVisible(true)
   }
 
   onInvalidLicense = () => {
-    GLOBAL.SimpleDialog.set({
+    global.SimpleDialog.set({
       text: getLanguage(this.props.language).Profile.INVALID_LICENSE,
       confirmText: getLanguage(this.props.language).Profile.GO_ACTIVATE,
       confirmAction: () => {
         NavigationService.navigate('LicensePage')
       },
     })
-    GLOBAL.SimpleDialog.setVisible(true)
+    global.SimpleDialog.setVisible(true)
   }
 
   handleStateChange = async appState => {
@@ -827,17 +841,17 @@ class AppRoot extends Component {
       //     await this.props.setCurrentAttribute({})
       //     // this.setState({ showScaleView: false })
       //     //此处置空unmount内的判断会失效 zhangxt
-      //     // GLOBAL.Type = null
-      //     GLOBAL.clearMapData()
+      //     // global.Type = null
+      //     global.clearMapData()
 
       //     // 移除协作时，个人/新操作的callout
       //     await SMap.removeUserCallout()
       //     await SMap.clearUserTrack()
 
-      //     if (GLOBAL.coworkMode) {
+      //     if (global.coworkMode) {
       //       CoworkInfo.setId('') // 退出任务清空任务ID
-      //       GLOBAL.coworkMode = false
-      //       GLOBAL.getFriend().setCurMod(undefined)
+      //       global.coworkMode = false
+      //       global.getFriend().setCurMod(undefined)
       //       // NavigationService.goBack('CoworkTabs')
       //     }
       //   } catch(e) {
@@ -886,8 +900,8 @@ class AppRoot extends Component {
   addGetShareResultListener = async () => {
     await FileTools.getShareResult({
       callback: () => {
-        // if(GLOBAL.shareFilePath&&GLOBAL.shareFilePath.length>1){
-        // FileTools.deleteFile(GLOBAL.shareFilePath)
+        // if(global.shareFilePath&&global.shareFilePath.length>1){
+        // FileTools.deleteFile(global.shareFilePath)
         // }
         // result && this.import.setDialogVisible(true)
       },
@@ -903,8 +917,8 @@ class AppRoot extends Component {
   // 初始化录音
   // initSpeechManager = async () => {
   //   try {
-  //     GLOBAL.SpeechManager = new SpeechManager()
-  //     await GLOBAL.SpeechManager.init()
+  //     global.SpeechManager = new SpeechManager()
+  //     await global.SpeechManager.init()
   //   } catch (e) {
   //     Toast.show('语音初始化失败')
   //   }
@@ -930,7 +944,7 @@ class AppRoot extends Component {
   map3dBackAction = async () => {
     try {
       this.container && this.container.setLoading(true, '正在关闭')
-      if (GLOBAL.openWorkspace) {
+      if (global.openWorkspace) {
         // this.SaveDialog && this.SaveDialog.setDialogVisible(true)
         // await SScene.saveWorkspace()
         await SScene.closeWorkspace()
@@ -967,11 +981,11 @@ class AppRoot extends Component {
         confirmAction={async () => {
           try {
             this.import.setDialogVisible(false)
-            GLOBAL.Loading.setLoading(
+            global.Loading.setLoading(
               true,
               getLanguage(this.props.language).Friends.IMPORT_DATA,
             )
-            let homePath = GLOBAL.homePath
+            let homePath = global.homePath
             let importPath = homePath + '/iTablet/Import'
             let filePath = importPath + '/import.zip'
             let isImport = false
@@ -988,14 +1002,14 @@ class AppRoot extends Component {
             isImport
               ? Toast.show(getLanguage(this.props.language).Prompt.IMPORTED_SUCCESS)
               : Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
-            GLOBAL.Loading.setLoading(false)
+            global.Loading.setLoading(false)
           } catch (error) {
             Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_IMPORT)
-            GLOBAL.Loading.setLoading(false)
+            global.Loading.setLoading(false)
           }
         }}
         cancelAction={async () => {
-          let homePath = GLOBAL.homePath
+          let homePath = global.homePath
           let importPath = homePath + ConstPath.Import
           await FileTools.deleteFile(importPath)
           this.import.setDialogVisible(false)
@@ -1023,7 +1037,7 @@ class AppRoot extends Component {
         }}
         cancel={() =>{
           this.protocolDialog.setVisible(false)
-          GLOBAL.SimpleDialog.set({
+          global.SimpleDialog.set({
             renderCustomeView:()=>{
               return (
                 <View
@@ -1069,7 +1083,7 @@ class AppRoot extends Component {
             confirmText: getLanguage(this.props.language).Protocol.CONFIRM_EXIT,
             confirmAction: () => { this.exitApp() },
           })
-          GLOBAL.SimpleDialog.setVisible(true)
+          global.SimpleDialog.setVisible(true)
         }
         }
       />
@@ -1089,20 +1103,20 @@ class AppRoot extends Component {
   }
 
   renderSimpleDialog = () => {
-    return <SimpleDialog ref={ref => GLOBAL.SimpleDialog = ref} />
+    return <SimpleDialog ref={ref => global.SimpleDialog = ref} />
   }
 
   renderARDeviceListDialog = () => {
     return (
       <SimpleDialog
-        ref={ref => GLOBAL.ARDeviceListDialog = ref}
+        ref={ref => global.ARDeviceListDialog = ref}
         buttonMode={'list'}
         text={this.isHuawei
           ? getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARENGINE
           : getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE
         }
         confirmText={getLanguage(this.props.language).Prompt.GET_SUPPORTED_DEVICE_LIST}
-        installText={getLanguage(GLOBAL.language).Prompt.INSTALL}
+        installText={getLanguage(global.language).Prompt.INSTALL}
         confirmAction={() => {
           NavigationService.navigate('Protocol', {
             type: this.isHuawei ? 'AREngineDevice' : 'ARDevice',
@@ -1143,8 +1157,8 @@ class AppRoot extends Component {
         //   })
         //   this.dialog.setDialogVisible(false)
         // }}
-        // confirmBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
-        // cancelBtnTitle={getLanguage(GLOBAL.language).Map_Settings.CANCEL}
+        // confirmBtnTitle={getLanguage(global.language).Map_Settings.CONFIRM}
+        // cancelBtnTitle={getLanguage(global.language).Map_Settings.CANCEL}
       />
     )
   }
@@ -1154,7 +1168,7 @@ class AppRoot extends Component {
       <View style={{ flex: 1 }}>
         <View style={[
           { flex: 1 },
-          screen.isIphoneX() && // GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // GLOBAL.getDevice() &&
+          screen.isIphoneX() && // global.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // global.getDevice() &&
           {
             backgroundColor: '#201F20',
           },
@@ -1170,8 +1184,10 @@ class AppRoot extends Component {
             ),
           },
         ]}>
+          {/* <AppNavigator /> */}
           <RootNavigator
             appConfig={this.props.appConfig}
+            device={this.props.device}
             setModules={this.props.setModules}
             setNav={this.props.setNav}
           />
@@ -1187,8 +1203,8 @@ class AppRoot extends Component {
         {this.renderImportDialog()}
         {this.state.isInit && this.renderARDeviceListDialog()}
         {this._renderProtocolDialog()}
-        <Loading ref={ref => GLOBAL.Loading = ref} initLoading={false} />
-        <MyToast ref={ref => GLOBAL.Toast = ref} />
+        <Loading ref={ref => global.Loading = ref} initLoading={false} />
+        <MyToast ref={ref => global.Toast = ref} />
         {this.renderSimpleDialog()}
         {this.renderInputDialog()}
       </>

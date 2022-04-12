@@ -91,7 +91,7 @@ function openMap() {
       })
     }
     data.push({
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN_MAP,
+      title: getLanguage(global.language).Map_Main_Menu.OPEN_MAP,
       image: getThemeAssets().mine.my_armap,
       data: userFileList || [],
     })
@@ -119,7 +119,7 @@ function setSaveViewVisible(visible: boolean, cb: () => void) {
   mapName =
     mapName.substr(0, mapName.lastIndexOf('.')) ||
     _params.armap.currentMap.mapName
-  GLOBAL.SaveMapView && GLOBAL.SaveMapView.setVisible(visible, {
+  global.SaveMapView && global.SaveMapView.setVisible(visible, {
     cb,
     customSave: async ()=>await _saveMap(mapName),
   })
@@ -136,8 +136,8 @@ async function _saveMap(name: string) {
       _params.setToolbarVisible(false)
     Toast.show(
       result
-        ? getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY
-        : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED,
+        ? getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY
+        : getLanguage(global.language).Prompt.SAVE_FAILED,
     )
     return result
   } catch(e) {
@@ -152,7 +152,7 @@ async function createMap() {
     DialogUtils.showInputDailog({
       value: '',
       type: 'name',
-      placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
+      placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
       confirmAction: async (value: string) => {
         let result = await _params.createARMap(value)
         result && DialogUtils.hideInputDailog()
@@ -164,7 +164,7 @@ async function createMap() {
   } catch (e) {
     _params.setContainerLoading &&
       _params.setContainerLoading(false)
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+    Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
   }
 }
 
@@ -176,7 +176,7 @@ async function saveMap() {
       _params.setContainerLoading &&
       _params.setContainerLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.SAVING,
+        getLanguage(global.language).Prompt.SAVING,
       )
       let mapName = _params.armap.currentMap.mapName
       mapName =
@@ -184,28 +184,28 @@ async function saveMap() {
         _params.armap.currentMap.mapName
       const result = await _saveMap(mapName)
       _params.setContainerLoading && _params.setContainerLoading(false)
-      Toast.show(result ? getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      Toast.show(result ? getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY : getLanguage(global.language).Prompt.SAVE_FAILED)
     } else {
       DialogUtils.showInputDailog({
         value: '',
         type: 'name',
-        placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME,
+        placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
         confirmAction: async (value: string) => {
           _params.setContainerLoading &&
           _params.setContainerLoading(
             true,
-            getLanguage(GLOBAL.language).Prompt.SAVING,
+            getLanguage(global.language).Prompt.SAVING,
           )
           const result = await _saveMap(value)
           result && DialogUtils.hideInputDailog()
-          Toast.show(result ? getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+          Toast.show(result ? getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY : getLanguage(global.language).Prompt.SAVE_FAILED)
         },
       })
     }
   } catch (e) {
     _params.setContainerLoading &&
       _params.setContainerLoading(false)
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+    Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
   }
 }
 

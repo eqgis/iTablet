@@ -20,8 +20,6 @@ import { color, size } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 import { getPinYinFirstCharacter } from '../../../../utils/pinyin'
 import FriendListFileHandle from '../FriendListFileHandle'
-// eslint-disable-next-line
-import { ActionPopover } from 'teaset'
 import { getLanguage } from '../../../../language/index'
 
 export interface FriendInfo {
@@ -57,6 +55,17 @@ class FriendList extends Component {
 
   componentDidMount() {
     this.getContacts()
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextProps.language !== this.props.language ||
+      JSON.stringify(nextProps.user) !== JSON.stringify(this.props.user) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
   }
 
   refresh = () => {

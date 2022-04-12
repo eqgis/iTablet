@@ -162,7 +162,7 @@ class GroupSettingPage extends Component<Props, State> {
   _bottomBtnAction = () => {
     if (this.props.user.currentUser.userName === this.props.currentGroup.creator) {
       // deleteGroup
-      this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO)
+      this._setDialogVisible(true, getLanguage(global.language).Friends.GROUP_DELETE_INFO)
       this.dialogAction = () => {
         this.servicesUtils?.deleteGroup([this.props.currentGroup.id]).then((result: any) => {
           // MSG_ONLINE_GROUP_DELETE
@@ -175,7 +175,7 @@ class GroupSettingPage extends Component<Props, State> {
         })
       }
     } else {
-      this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_EXIST_INFO)
+      this._setDialogVisible(true, getLanguage(global.language).Friends.GROUP_EXIST_INFO)
       this.dialogAction = () => {
         this.servicesUtils?.deleteGroupMembers({
           groupId: this.props.currentGroup.id,
@@ -270,7 +270,7 @@ class GroupSettingPage extends Component<Props, State> {
           onPress={() => {
             NavigationService.navigate('GroupFriendListPage', {
               mode: 'manage', // 管理模式
-              title: getLanguage(GLOBAL.language).Friends.GROUP_MEMBER,
+              title: getLanguage(global.language).Friends.GROUP_MEMBER,
               callBack: this.getMembers,
             })
           }}

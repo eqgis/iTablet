@@ -4,14 +4,12 @@
  */
 
 import React from 'react'
+import { View } from 'react-native'
 import { MapView, Map3D } from './pages'
 
-import {
-  createBottomTabNavigator,
-  createStackNavigator,
-} from 'react-navigation'
-// eslint-disable-next-line import/no-unresolved
-import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import { color } from '../../styles'
 import LayerManager from '../mtLayerManager'
@@ -23,6 +21,9 @@ import { LayerAttribute } from '../layerAttribute'
 import TabNavigationService from '../TabNavigationService'
 import ARLayerManager from '../arLayerManager'
 import ARMapSetting from '../arMapSettings/ARMapSetting'
+
+const Stack = createNativeStackNavigator()
+const Tab = createBottomTabNavigator()
 
 function compose(Component) {
   class Tab extends Component {
@@ -78,12 +79,6 @@ const stackOption = {
   },
   transitionConfig: () => ({
     screenInterpolator: sceneProps => {
-      if (
-        !GLOBAL.getDevice().orientation ||
-        GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') < 0
-      ) {
-        return StackViewStyleInterpolator.forFade(sceneProps)
-      }
       return forHorizontal(sceneProps)
     },
   }),
@@ -103,68 +98,68 @@ const forHorizontal = sceneProps => {
     inputRange: [index - 1, index - 0.99, index],
     outputRange: [0, 1, 1],
   })
-
+console.warn(translateX)
   return { opacity, transform: [{ translateX: translateX }] }
 }
 
-const MapStack = compose(
-  createStackNavigator(
-    {
-      MapView: {
-        screen: MapView,
-      },
-      LayerManager: {
-        screen: LayerManager,
-      },
-      LayerAttribute: {
-        screen: LayerAttribute,
-      },
-      MapSetting: {
-        screen: MapSetting,
-      },
-      ARLayerManager: {
-        screen: ARLayerManager,
-      },
-      ARMapSetting: {
-        screen: ARMapSetting,
-      },
-    },
-    stackOption,
-  ),
-)
+// const MapStack = compose(
+//   createNativeStackNavigator(
+//     {
+//       MapView: {
+//         screen: MapView,
+//       },
+//       LayerManager: {
+//         screen: LayerManager,
+//       },
+//       LayerAttribute: {
+//         screen: LayerAttribute,
+//       },
+//       MapSetting: {
+//         screen: MapSetting,
+//       },
+//       ARLayerManager: {
+//         screen: ARLayerManager,
+//       },
+//       ARMapSetting: {
+//         screen: ARMapSetting,
+//       },
+//     },
+//     stackOption,
+//   ),
+// )
 
-const ARMapStack = compose(
-  createStackNavigator(
-    {
-      ARMapView: {
-        screen: MapView,
-      },
-      ARLayerManager: {
-        screen: ARLayerManager,
-      },
-      // LayerAttribute: {
-      //   screen: LayerAttribute,
-      // },
-      ARMapSetting: {
-        screen: ARMapSetting,
-      },
-    },
-    stackOption,
-  ),
-)
+// const ARMapStack = compose(
+//   createNativeStackNavigator(
+//     {
+//       ARMapView: {
+//         screen: MapView,
+//       },
+//       ARLayerManager: {
+//         screen: ARLayerManager,
+//       },
+//       // LayerAttribute: {
+//       //   screen: LayerAttribute,
+//       // },
+//       ARMapSetting: {
+//         screen: ARMapSetting,
+//       },
+//     },
+//     stackOption,
+//   ),
+// )
 
-const CoworkTabs = createBottomTabNavigator(
-  {
-    // onechat
-    Chat: {
-      screen: Chat,
-    },
-    CoworkMapStack: {
-      screen: MapStack,
-    },
-  },
-  options,
-)
+// const CoworkTabs = createBottomTabNavigator(
+//   {
+//     // onechat
+//     Chat: {
+//       screen: Chat,
+//     },
+//     CoworkMapStack: {
+//       screen: MapStack,
+//     },
+//   },
+//   options,
+// )
 
 // const analystTabsOptions = Object.assign({}, options, {
 //   initialRouteIndex: 1,
@@ -188,22 +183,97 @@ const CoworkTabs = createBottomTabNavigator(
 //   ),
 // )
 
-const Map3DStack = createStackNavigator(
-  {
-    Map3D: {
-      screen: Map3D,
-    },
-    Layer3DManager: {
-      screen: Layer3DManager,
-    },
-    LayerAttribute3D: {
-      screen: LayerAttribute,
-    },
-    Map3DSetting: {
-      screen: Setting,
-    },
-  },
-  stackOption,
-)
+// const Map3DStack = createNativeStackNavigator(
+//   {
+//     Map3D: {
+//       screen: Map3D,
+//     },
+//     Layer3DManager: {
+//       screen: Layer3DManager,
+//     },
+//     LayerAttribute3D: {
+//       screen: LayerAttribute,
+//     },
+//     Map3DSetting: {
+//       screen: Setting,
+//     },
+//   },
+//   stackOption,
+// )
+
+function MapStack(device) {
+  return (
+    <Stack.Navigator
+      initialRouteName='MapView'
+      screenOptions={{
+        headerShown: false,
+        animation: device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'slide_from_right',
+        presentation: 'transparentModal',
+      }}
+    >
+      <Stack.Screen name="MapView" component={MapView} />
+      <Stack.Screen name="LayerManager" component={LayerManager} />
+      <Stack.Screen name="LayerAttribute" component={LayerAttribute} />
+      <Stack.Screen name="MapSetting" component={MapSetting} />
+      <Stack.Screen name="ARLayerManager" component={ARLayerManager} />
+      <Stack.Screen name="ARMapSetting" component={ARMapSetting} />
+    </Stack.Navigator>
+  )
+}
+
+function ARMapStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName='MapView'
+      screenOptions={{
+        // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        headerShown: false,
+        animation: 'none',
+      }}
+    >
+      <Stack.Screen name="MapView" component={MapView} />
+      <Stack.Screen name="ARLayerManager" component={ARLayerManager} />
+      <Stack.Screen name="LayerAttribute" component={LayerAttribute} />
+      <Stack.Screen name="ARMapSetting" component={ARMapSetting} />
+    </Stack.Navigator>
+  )
+}
+
+function CoworkTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName='Chat'
+      screenOptions={{
+        // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        headerShown: false,
+        animation: 'none',
+      }}
+      tabBar={() => <View style={{height: 0, width: '100%'}} />}
+    >
+      <Tab.Screen name="Chat" component={Chat} />
+      <Tab.Screen name="CoworkMapStack" component={MapStack} />
+    </Tab.Navigator>
+  )
+}
+
+function Map3DStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName='Map3D'
+      screenOptions={{
+        // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        headerShown: false,
+        animation: 'slide_from_right',
+        presentation: 'transparentModal',
+      }}
+      tabBar={() => <View style={{height: 0, width: '100%'}} />}
+    >
+      <Stack.Screen name="Map3D" component={Map3D} />
+      <Stack.Screen name="Layer3DManager" component={Layer3DManager} />
+      <Stack.Screen name="LayerAttribute3D" component={LayerAttribute} />
+      <Stack.Screen name="Map3DSetting" component={Setting} />
+    </Stack.Navigator>
+  )
+}
 
 export { CoworkTabs, MapView, MapStack, Map3DStack, ARMapStack }

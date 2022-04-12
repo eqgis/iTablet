@@ -48,14 +48,14 @@ async function tableAction(type: string, params: { key: any; layerName: any; act
 function menu(type: string, selectKey: string, params: any) {
   let showMenu = false
 
-  if (GLOBAL.ToolBar) {
-    if (GLOBAL.ToolBar.state.showMenuDialog) {
+  if (global.ToolBar) {
+    if (global.ToolBar.state.showMenuDialog) {
       showMenu = false
     } else {
       showMenu = true
     }
     params.showBox && params.showBox()
-    GLOBAL.ToolBar.setState({
+    global.ToolBar.setState({
       isFullScreen: showMenu,
       showMenuDialog: showMenu,
       selectKey: selectKey,
@@ -70,7 +70,7 @@ function showMenuBox(type: string, selectKey: string, params: any) {
   //   case ConstToolType.SM_AR_STYLE_BORDER_WIDTH:
   //   case ConstToolType.SM_AR_STYLE_TRANSFROM:
   //   case ConstToolType.SM_AR_STYLE_EFFECT:
-  //     if (!GLOBAL.ToolBar.state.showMenuDialog) {
+  //     if (!global.ToolBar.state.showMenuDialog) {
   //       params.showBox && params.showBox()
   //     } else {
   //       params.setData && params.setData({
@@ -81,7 +81,7 @@ function showMenuBox(type: string, selectKey: string, params: any) {
   //     }
   //     break
   // }
-  if (!GLOBAL.ToolBar.state.showMenuDialog) {
+  if (!global.ToolBar.state.showMenuDialog) {
     params.showBox && params.showBox()
   } else {
     params.setData && params.setData({

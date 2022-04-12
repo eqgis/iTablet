@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
   selection: state.layers.toJS().selection,
   latestMap: state.map.toJS().latestMap,
   map: state.map.toJS(),
-  armap: state.armap.toJS(),
+  armap: {},
   arlayer: state.arlayer.toJS(),
   bufferSetting: state.setting.toJS().buffer,
   overlaySetting: state.setting.toJS().overlay,

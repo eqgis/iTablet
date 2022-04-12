@@ -20,7 +20,7 @@ export default class ARTextView extends React.Component {
 
   constructor(props) {
     super(props)
-    let params = this.props.navigation.state.params || {}
+    let params = this.props.route.params || {}
     this.point = params.point
     this.clickAble = true // 防止重复点击
     this.datumPointRef = null
@@ -57,8 +57,8 @@ export default class ARTextView extends React.Component {
       this.clickAble = false
       SARText.onDestroy()
       NavigationService.goBack('ARTextView')
-      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-      GLOBAL.toolBox.switchAr()
+      global.toolBox && global.toolBox.removeAIDetect(false)
+      global.toolBox.switchAr()
     }
   }
 
@@ -71,7 +71,7 @@ export default class ARTextView extends React.Component {
 
   _onDatumPointClose = point => {
     SARText.setPosition(Number(point.x), Number(point.y), Number(point.h))
-    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+    global.SELECTPOINTLATITUDEANDLONGITUDE = point
     this.setState({
       showDatumPoint: false,
     }, () => {
@@ -115,7 +115,7 @@ export default class ARTextView extends React.Component {
         <Container
           ref={ref => (this.Container = ref)}
           headerProps={{
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TEXT,
+            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_TEXT,
             navigation: this.props.navigation,
             backAction: this.back,
             type: 'fix',

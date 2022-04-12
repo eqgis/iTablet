@@ -90,7 +90,7 @@ export default handleActions(
       return state.setIn(['messageServer'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) =>
-      payload && payload.appConfig ? fromJS(payload.appConfig) : state,
+      payload && payload.appConfig ? fromJS(payload.appConfig) : state
   },
   initialState,
 )

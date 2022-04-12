@@ -12,11 +12,11 @@ import {
   Text,
   Image,
   NativeModules,
-  NetInfo,
   Platform,
   PermissionsAndroid,
   ScrollView,
 } from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 import { getLanguage } from '../../../../language/index'
 import { SOnlineService, SMap } from 'imobile_for_reactnative'
 import { scaleSize } from '../../../../utils/screen'
@@ -39,10 +39,10 @@ const ICONS = context => {
     {
       name: require('../../../../assets/lightTheme/friend/app_chat_map.png'),
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Friends.MAP,
+      text: getLanguage(global.language).Friends.MAP,
       onPress: () => {
         NavigationService.navigate('MyMap', {
-          title: getLanguage(GLOBAL.language).Profile.MAP,
+          title: getLanguage(global.language).Profile.MAP,
           chatCallback: (_path, fileName) => {
             context.props.sendCallBack(1, _path, fileName)
           },
@@ -53,10 +53,10 @@ const ICONS = context => {
     {
       name: getThemeAssets().mine.my_armap,
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Profile.ARMAP,
+      text: getLanguage(global.language).Profile.ARMAP,
       onPress: () => {
         NavigationService.navigate('MyARMap', {
-          title: getLanguage(GLOBAL.language).Profile.ARMAP,
+          title: getLanguage(global.language).Profile.ARMAP,
           chatCallback: (_path, fileName) => {
             context.props.sendCallBack(4, _path, fileName)
           },
@@ -67,7 +67,7 @@ const ICONS = context => {
     // {
     //   name: require('../../../../assets/lightTheme/friend/app_chat_data.png'),
     //   type: 'ionicon',
-    //   text: getLanguage(GLOBAL.language).Friends.TEMPLATE,
+    //   text: getLanguage(global.language).Friends.TEMPLATE,
     //   onPress: () => {
     //     NavigationService.navigate('MyModule', {
     //       formChat: true,
@@ -80,7 +80,7 @@ const ICONS = context => {
     {
       name: require('../../../../assets/lightTheme/friend/app_chat_location.png'),
       type: 'material',
-      text: getLanguage(GLOBAL.language).Friends.LOCATION,
+      text: getLanguage(global.language).Friends.LOCATION,
       onPress: () => {
         context.setModalVisible()
         context.handleLocationClick()
@@ -89,7 +89,7 @@ const ICONS = context => {
     {
       name: require('../../../../assets/lightTheme/friend/app_chat_pic.png'),
       type: 'material',
-      text: getLanguage(GLOBAL.language).Friends.PICTURE,
+      text: getLanguage(global.language).Friends.PICTURE,
       onPress: () => {
         context.setModalVisible()
         ImagePicker.AlbumListView.defaultProps.showDialog = false
@@ -109,10 +109,10 @@ const ICONS = context => {
     {
       name: getThemeAssets().mine.my_data,
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE,
+      text: getLanguage(global.language).Analyst_Labels.DATA_SOURCE,
       onPress: () => {
         NavigationService.navigate('MyDatasource', {
-          title: getLanguage(GLOBAL.language).Profile.DATA,
+          title: getLanguage(global.language).Profile.DATA,
           chatCallback: (_path, fileName) => {
             context.props.sendCallBack(5, _path, fileName)
           },
@@ -123,10 +123,10 @@ const ICONS = context => {
     {
       name: getThemeAssets().mine.my_symbol,
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Profile.SYMBOL,
+      text: getLanguage(global.language).Profile.SYMBOL,
       onPress: () => {
         NavigationService.navigate('MySymbol', {
-          title: getLanguage(GLOBAL.language).Profile.SYMBOL,
+          title: getLanguage(global.language).Profile.SYMBOL,
           chatCallback: (_path, fileName) => {
             context.props.sendCallBack(6, _path, fileName)
           },
@@ -137,10 +137,10 @@ const ICONS = context => {
     {
       name: getThemeAssets().mine.my_color,
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Profile.COLOR_SCHEME,
+      text: getLanguage(global.language).Profile.COLOR_SCHEME,
       onPress: () => {
         NavigationService.navigate('MyColor', {
-          title: getLanguage(GLOBAL.language).Profile.COLOR_SCHEME,
+          title: getLanguage(global.language).Profile.COLOR_SCHEME,
           chatCallback: (_path, fileName) => {
             context.props.sendCallBack(7, _path, fileName)
           },
@@ -151,10 +151,10 @@ const ICONS = context => {
     {
       name: getThemeAssets().mine.my_ai,
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Profile.AIMODEL,
+      text: getLanguage(global.language).Profile.AIMODEL,
       onPress: () => {
         NavigationService.navigate('MyAIModel', {
-          title: getLanguage(GLOBAL.language).Profile.AIMODEL,
+          title: getLanguage(global.language).Profile.AIMODEL,
           chatCallback: (_path, fileName) => {
             context.props.sendCallBack(8, _path, fileName)
           },
@@ -165,10 +165,10 @@ const ICONS = context => {
     {
       name: getThemeAssets().ar.armap.ar_effect,
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Profile.AREFFECT,
+      text: getLanguage(global.language).Profile.AREFFECT,
       onPress: () => {
         NavigationService.navigate('MyAREffect', {
-          title: getLanguage(GLOBAL.language).Profile.AREFFECT,
+          title: getLanguage(global.language).Profile.AREFFECT,
           chatCallback: (_path, fileName) => {
             context.props.sendCallBack(9, _path, fileName)
           },
@@ -179,10 +179,10 @@ const ICONS = context => {
     {
       name: getThemeAssets().ar.armap.ar_model,
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Profile.ARMODEL,
+      text: getLanguage(global.language).Profile.ARMODEL,
       onPress: () => {
         NavigationService.navigate('MyARModel', {
-          title: getLanguage(GLOBAL.language).Profile.ARMODEL,
+          title: getLanguage(global.language).Profile.ARMODEL,
           chatCallback: (_path, fileName) => {
             context.props.sendCallBack(10, _path, fileName)
           },
@@ -193,10 +193,10 @@ const ICONS = context => {
     {
       name: getThemeAssets().mine.icon_my_template,
       type: 'ionicon',
-      text: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+      text: getLanguage(global.language).Profile.TEMPLATE,
       onPress: () => {
         NavigationService.navigate('MyTemplate', {
-          title: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+          title: getLanguage(global.language).Profile.TEMPLATE,
           chatCallback: (_path, fileName, tempType) => {
             context.props.sendCallBack(11, _path, fileName, tempType)
           },
@@ -249,14 +249,14 @@ export default class CustomActions extends React.Component {
   }
 
   handleLocationClick = async () => {
-    let isConnected = await NetInfo.isConnected.fetch()
+    let isConnected = (await NetInfo.fetch()).isConnected
     if (!isConnected) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NO_NETWORK)
+      Toast.show(getLanguage(global.language).Prompt.NO_NETWORK)
       return
     }
     if (!(await AppUtils.isLocationOpen())) {
       this.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Prompt.OPEN_LOCATION,
+        text: getLanguage(global.language).Prompt.OPEN_LOCATION,
         confirmAction: () => {
           AppUtils.startAppLoactionSetting()
         },
@@ -280,7 +280,7 @@ export default class CustomActions extends React.Component {
     }
     if (!allowed) {
       this.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Prompt.REQUEST_LOCATION,
+        text: getLanguage(global.language).Prompt.REQUEST_LOCATION,
         confirmAction: () => {
           AppUtils.startAppLoactionSetting()
         },
@@ -291,7 +291,7 @@ export default class CustomActions extends React.Component {
 
     let location = await SMap.getCurrentLocation()
     if (location.longitude === 0 && location.latitude === 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.LOCATION_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.LOCATION_ERROR)
       return
     }
     SOnlineService.reverseGeocoding(location.longitude, location.latitude, {
@@ -321,7 +321,7 @@ export default class CustomActions extends React.Component {
   }
 
   _getMargin = () => {
-    const screenWidth = screen.getScreenSafeWidth(GLOBAL.getDevice().orientation)
+    const screenWidth = screen.getScreenSafeWidth(global.getDevice().orientation)
     const number = Math.floor(screenWidth / ITEM_WIDTH)
     const space = screenWidth - number * ITEM_WIDTH
     return space / 2 / number

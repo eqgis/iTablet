@@ -9,7 +9,7 @@ const CustomModules: {
   // Tour,
 }
 
-function getModule (type: string) {
+function getModule (type: string, params?: any) {
   let module = {}
   if (typeof type !== 'string') return null
   for (let key in CustomModules) {

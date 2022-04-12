@@ -9,7 +9,7 @@ function getData() {
     {
       //AR沙盘
       key: 'arCastModelOperate',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
       action: ARToolAction.arCastModelOperate,
       size: 'large',
@@ -18,7 +18,7 @@ function getData() {
     {
       //AR视频
       key: 'arVideo',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_VIDEO,
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
       action: ARToolAction.arVideo,
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_video,
@@ -26,7 +26,7 @@ function getData() {
     {
       //AR图片
       key: 'arImage',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_IMAGE,
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_IMAGE,
       action: ARToolAction.arImage,
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_picture,
@@ -34,7 +34,7 @@ function getData() {
     {
       //AR网页
       key: 'arWebView',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEBVIEW,
       action: ARToolAction.arWebView,
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_webpage,
@@ -42,7 +42,7 @@ function getData() {
     {
       //AR文字
       key: 'arText',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TEXT,
+      title: getLanguage(global.language).Map_Main_Menu.MAP_AR_TEXT,
       action: ARToolAction.arText,
       size: 'large',
       image: getThemeAssets().ar.functiontoolbar.ar_text,

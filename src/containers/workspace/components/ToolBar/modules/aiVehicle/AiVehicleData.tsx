@@ -20,7 +20,7 @@ function getData() {
 
 function _headerLeft() {
   let imgSize
-  if (GLOBAL.getDevice().orientation && GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
+  if (global.getDevice().orientation && global.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
     imgSize = scaleSize(40)
   } else {
     imgSize = scaleSize(60)
@@ -135,7 +135,7 @@ function getPreviewBottomView(type: string) {
         maxWidth: width,
       }]}>
         <View style={styles.previewBottomLeftContent}>
-          <Text style={styles.previewBottomTitle}>{getLanguage(GLOBAL.language).AI.PLATE_NUMBER}</Text>
+          <Text style={styles.previewBottomTitle}>{getLanguage(global.language).AI.PLATE_NUMBER}</Text>
           <Input
             style={{ paddingHorizontal: 0 }}
             textAlign={'left'}
@@ -155,7 +155,7 @@ function getPreviewBottomView(type: string) {
         <Button
           key="loginBtn"
           style={styles.confirmBtn}
-          title={getLanguage(GLOBAL.language).Common.CONFIRM}
+          title={getLanguage(global.language).Common.CONFIRM}
           onPress={async () => {
             if (type === ConstToolType.SM_MAP_AI_VEHICLE_PREVIEW) {
               AiVehicleActions.goToResultView()

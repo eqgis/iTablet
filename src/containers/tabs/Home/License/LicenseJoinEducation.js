@@ -52,16 +52,16 @@ class LicenseJoinEducation extends Component {
       licenseInfo.isLicenseValid &&
       licenseInfo.licenseType === 1
     ) {
-      GLOBAL.SimpleDialog.set({
-        text: getLanguage(GLOBAL.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
+      global.SimpleDialog.set({
+        text: getLanguage(global.language).Profile.LICENSE_EXIT_CLOUD_ACTIVATE,
         confirmAction: async () => {
-          let result = await GLOBAL.recycleCloudLicense()
+          let result = await global.recycleCloudLicense()
           if (result > -1) {
             this.activate(true)
           }
         },
       })
-      GLOBAL.SimpleDialog.setVisible(true)
+      global.SimpleDialog.setVisible(true)
     } else {
       this.activate(true)
     }
@@ -70,7 +70,7 @@ class LicenseJoinEducation extends Component {
   activate = async (confirm = false) => {
     try {
       if (this.server === '') {
-        Toast.show(getLanguage(GLOBAL.language).Profile.ENTER_SERVER_ADDRESS)
+        Toast.show(getLanguage(global.language).Profile.ENTER_SERVER_ADDRESS)
         return
       }
       if (this.server.indexOf('http') !== 0) {
@@ -80,7 +80,7 @@ class LicenseJoinEducation extends Component {
 
       if (!bConnect) {
         Toast.show(
-          getLanguage(GLOBAL.language).Profile.LICENSE_EDUCATION_CONNECT_FAIL,
+          getLanguage(global.language).Profile.LICENSE_EDUCATION_CONNECT_FAIL,
         )
         return
       }
@@ -93,20 +93,20 @@ class LicenseJoinEducation extends Component {
       this.container &&
         this.container.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATING,
+          getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
       let result = await SMap.applyEduLicense(this.server)
       
       if (result) {
         this.container && this.container.setLoading(false)
         Toast.show(
-          getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+          getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
         )
         if(Platform.OS === 'android') {
           await SMap.setEducationConnectCallback(async result => {
             if (!result) {
               Toast.show(
-                GLOBAL.language === 'CN'
+                global.language === 'CN'
                   ? '教育许可的连接已断开!'
                   : 'Lost connection with education license server!',
               )
@@ -121,18 +121,18 @@ class LicenseJoinEducation extends Component {
         this.props.navigation.pop(2)
       } else {
         this.container && this.container.setLoading(false)
-        Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
+        Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
       }
     } catch (e) {
       this.container && this.container.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
+      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
     }
   }
 
   queryLicense = async () => {
     try {
       if (this.server === '') {
-        Toast.show(getLanguage(GLOBAL.language).Profile.ENTER_SERVER_ADDRESS)
+        Toast.show(getLanguage(global.language).Profile.ENTER_SERVER_ADDRESS)
         return
       }
       if (
@@ -144,19 +144,19 @@ class LicenseJoinEducation extends Component {
       this.container &&
         this.container.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATING,
+          getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
       let result = await SMap.applyEduLicense(this.server)
       this.container && this.container.setLoading(false)
       if (result) {
         Toast.show(
-          getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_SUCCESS,
+          getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
         )
 
         await SMap.setEducationConnectCallback(async result => {
           if (!result) {
             Toast.show(
-              GLOBAL.language === 'CN'
+              global.language === 'CN'
                 ? '教育许可的连接已断开!'
                 : 'Lost connection with education license server!',
             )
@@ -169,11 +169,11 @@ class LicenseJoinEducation extends Component {
         this.props.setLicenseInfo(info)
         this.props.navigation.pop(1)
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
+        Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
       }
     } catch (e) {
       this.container && this.container.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATION_FAIL)
+      Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
     }
   }
 
@@ -185,7 +185,7 @@ class LicenseJoinEducation extends Component {
             clearButtonMode={'while-editing'}
             keyboardType={'default'}
             placeholder={
-              getLanguage(GLOBAL.language).Profile.ENTER_SERVER_ADDRESS
+              getLanguage(global.language).Profile.ENTER_SERVER_ADDRESS
             }
             placeholderTextColor={'#A7A7A7'}
             multiline={false}
@@ -207,7 +207,7 @@ class LicenseJoinEducation extends Component {
           }}
         >
           <Text style={styles.titleText}>
-            {getLanguage(GLOBAL.language).Profile.LICENSE_ACTIVATE}
+            {getLanguage(global.language).Profile.LICENSE_ACTIVATE}
           </Text>
         </TouchableOpacity>
       </View>
@@ -219,7 +219,7 @@ class LicenseJoinEducation extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_EDUCATION,
+          title: getLanguage(global.language).Profile.LICENSE_EDUCATION,
           navigation: this.props.navigation,
         }}
       >

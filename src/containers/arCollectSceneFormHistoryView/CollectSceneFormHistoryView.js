@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   Text,
   Image,
-  AsyncStorage,
+  // AsyncStorage,
 } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import NavigationService from '../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../language'
@@ -32,7 +33,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
   constructor(props) {
     super(props)
     this.clickAble = true // 防止重复点击
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.state = {
       collectData: params.datasourceAlias,
       chooseDataSource: false,
@@ -406,7 +407,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
         historyData: [],
       })
       Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu
+        getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY,
       )
     }
@@ -415,9 +416,9 @@ export default class CollectSceneFormHistoryView extends React.Component {
   datasourceRename = async () => {
     let updata = this.getDatasource
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
+      headerTitle: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
       value: this.state.reName,
-      placeholder: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
+      placeholder: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
       type: 'name',
       cb: async value => {
         let result = await SCollectSceneFormView.dataSourceReName(
@@ -439,9 +440,9 @@ export default class CollectSceneFormHistoryView extends React.Component {
 
   rename = async () => {
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
+      headerTitle: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
       value: this.state.reName,
-      placeholder: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
+      placeholder: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
       type: 'name',
       cb: async value => {
         await SCollectSceneFormView.reNameDataSource(this.state.reName, value)
@@ -467,10 +468,10 @@ export default class CollectSceneFormHistoryView extends React.Component {
       this.state.reName,
     )
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(GLOBAL.language).Profile
+      headerTitle: getLanguage(global.language).Profile
         .COLLECT_SCENE_ADD_REMARK,
       value: description,
-      placeholder: getLanguage(GLOBAL.language).Profile
+      placeholder: getLanguage(global.language).Profile
         .COLLECT_SCENE_ADD_REMARK,
       type: 'name',
       cb: async value => {
@@ -555,7 +556,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
         selectedNum: 0,
       })
       Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu
+        getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY,
       )
     }
@@ -590,7 +591,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
             source={getThemeAssets().attribute.icon_delete}
           />
           <Text style={{ fontSize: scaleSize(20) }}>
-            {getLanguage(GLOBAL.language).Profile.BATCH_DELETE}
+            {getLanguage(global.language).Profile.BATCH_DELETE}
           </Text>
         </TouchableOpacity>
       </View>
@@ -606,7 +607,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
       <Button
         style={styles.item}
         titleStyle={styles.btnTitle}
-        title={getLanguage(GLOBAL.language).Prompt.CANCEL}
+        title={getLanguage(global.language).Prompt.CANCEL}
         // {'取消'}
         key={'取消'}
         onPress={() => {
@@ -623,8 +624,8 @@ export default class CollectSceneFormHistoryView extends React.Component {
         <Button
           style={styles.item}
           titleStyle={styles.btnTitle}
-          title={getLanguage(GLOBAL.language).Prompt.BATCH_DELETE}
-          key={getLanguage(GLOBAL.language).Prompt.BATCH_DELETE}
+          title={getLanguage(global.language).Prompt.BATCH_DELETE}
+          key={getLanguage(global.language).Prompt.BATCH_DELETE}
           onPress={() => {
             this.setState({ BATCH_DELETE: true })
             this.PopView.setVisible(false)
@@ -637,8 +638,8 @@ export default class CollectSceneFormHistoryView extends React.Component {
         <Button
           style={styles.item}
           titleStyle={styles.btnTitle}
-          title={getLanguage(GLOBAL.language).Prompt.RENAME}
-          key={getLanguage(GLOBAL.language).Prompt.RENAME}
+          title={getLanguage(global.language).Prompt.RENAME}
+          key={getLanguage(global.language).Prompt.RENAME}
           onPress={() => {
             this.datasourceRename()
             this.PopView.setVisible(false)
@@ -652,8 +653,8 @@ export default class CollectSceneFormHistoryView extends React.Component {
           <Button
             style={styles.item}
             titleStyle={styles.btnTitle}
-            title={getLanguage(GLOBAL.language).Prompt.RENAME}
-            key={getLanguage(GLOBAL.language).Prompt.RENAME}
+            title={getLanguage(global.language).Prompt.RENAME}
+            key={getLanguage(global.language).Prompt.RENAME}
             onPress={() => {
               this.rename()
               this.PopView.setVisible(false)
@@ -667,9 +668,9 @@ export default class CollectSceneFormHistoryView extends React.Component {
             style={styles.item}
             titleStyle={styles.btnTitle}
             title={
-              getLanguage(GLOBAL.language).Profile.COLLECT_SCENE_ADD_REMARK
+              getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK
             }
-            key={getLanguage(GLOBAL.language).Profile.COLLECT_SCENE_ADD_REMARK}
+            key={getLanguage(global.language).Profile.COLLECT_SCENE_ADD_REMARK}
             onPress={() => {
               this.addRemark()
               this.PopView.setVisible(false)
@@ -682,8 +683,8 @@ export default class CollectSceneFormHistoryView extends React.Component {
           <Button
             style={styles.item}
             titleStyle={styles.btnTitle}
-            title={getLanguage(GLOBAL.language).Prompt.DELETE}
-            key={getLanguage(GLOBAL.language).Prompt.DELETE}
+            title={getLanguage(global.language).Prompt.DELETE}
+            key={getLanguage(global.language).Prompt.DELETE}
             onPress={() => {
               this.deleteHistory(this.state.historyData[this.state.index])
               this.PopView.setVisible(false)
@@ -697,8 +698,8 @@ export default class CollectSceneFormHistoryView extends React.Component {
         <Button
           style={styles.item}
           titleStyle={styles.btnTitle}
-          title={getLanguage(GLOBAL.language).Prompt.RENAME}
-          key={getLanguage(GLOBAL.language).Prompt.RENAME}
+          title={getLanguage(global.language).Prompt.RENAME}
+          key={getLanguage(global.language).Prompt.RENAME}
           onPress={() => {
             this.rename()
             this.PopView.setVisible(false)
@@ -745,7 +746,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
         BATCH_DELETE: false,
       })
       Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu
+        getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_NO_HISTORY,
       )
     }
@@ -841,7 +842,7 @@ export default class CollectSceneFormHistoryView extends React.Component {
                   textAlignVertical: 'center',
                 }}
               >
-                {getLanguage(GLOBAL.language).Prompt.COMPLETE}
+                {getLanguage(global.language).Prompt.COMPLETE}
               </Text>
             </TouchableOpacity>
           )}

@@ -39,7 +39,7 @@ class Mark3DModule extends FunctionModule {
 export default function() {
   return new Mark3DModule({
     type: ConstToolType.SM_MAP3D_MARK,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.PLOTS,
+    title: getLanguage(global.language).Map_Main_Menu.PLOTS,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_mark,
     getData: Mark3DData.getData,

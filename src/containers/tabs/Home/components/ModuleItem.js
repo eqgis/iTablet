@@ -84,11 +84,11 @@ export default class ModuleItem extends Component {
     let width =
       this.props.style && this.props.style.width
         ? this.props.style.width
-        : SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad)
+        : SizeUtil.getItemWidth(this.props.device.orientation, global.isPad)
     let height =
       this.props.style && this.props.style.height
         ? this.props.style.height
-        : SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad)
+        : SizeUtil.getItemHeight(this.props.device.orientation, global.isPad)
     return { width, height }
   }
 
@@ -202,7 +202,7 @@ export default class ModuleItem extends Component {
           },
         ]}
       >
-        <View
+        <Animated.View
           style={[
             this.isLandscape() ? styles.moduleViewL : styles.moduleViewP,
             {
@@ -262,7 +262,7 @@ export default class ModuleItem extends Component {
               source={getPublicAssets().common.icon_downloading}
             />
           }
-        </View>
+        </Animated.View>
       </TouchableOpacity>
     )
   }

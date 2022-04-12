@@ -105,13 +105,13 @@ export default class CreateNavDataPage extends Component {
         datasource: data,
       })
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NO_DATASOURCE)
+      Toast.show(getLanguage(global.language).Prompt.NO_DATASOURCE)
       setTimeout(() => {
         this.dialog.setDialogVisible(true, {
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.NEW_DATASOURCE,
+          title: getLanguage(global.language).Map_Main_Menu.NEW_DATASOURCE,
           value: 'default_roadnet_datasource',
-          confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
-          cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          confirmBtnTitle: getLanguage(global.language).Prompt.CONFIRM,
+          cancelBtnTitle: getLanguage(global.language).Prompt.CANCEL,
           placeholder: '',
           returnKeyType: 'done',
           keyboardAppearance: 'dark',
@@ -127,7 +127,7 @@ export default class CreateNavDataPage extends Component {
   _confirm = () => {
     let { selectedDatasource, selectedDataset } = this.state
     if (!selectedDataset.datasetName) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+      Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
       return
     }
     let data = JSON.parse(JSON.stringify(this.state.sleectedData))
@@ -137,7 +137,7 @@ export default class CreateNavDataPage extends Component {
         !data[i].selectedFieldInfo
       ) {
         Toast.show(
-          getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
+          getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
         )
         return
       }
@@ -145,15 +145,15 @@ export default class CreateNavDataPage extends Component {
 
     if (!selectedDatasource.datasourceName) {
       Toast.show(
-        getLanguage(GLOBAL.language).Prompt.SELECT_DESTINATION_DATASOURCE,
+        getLanguage(global.language).Prompt.SELECT_DESTINATION_DATASOURCE,
       )
       return
     }
     this.dialog.setDialogVisible(true, {
-      title: getLanguage(GLOBAL.language).Prompt.INPUT_MODEL_FILE_NAME,
+      title: getLanguage(global.language).Prompt.INPUT_MODEL_FILE_NAME,
       value: this.state.selectedDataset.datasetName,
-      confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
-      cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
+      confirmBtnTitle: getLanguage(global.language).Prompt.CONFIRM,
+      cancelBtnTitle: getLanguage(global.language).Prompt.CANCEL,
       placeholder: '',
       returnKeyType: 'done',
       keyboardAppearance: 'dark',
@@ -168,10 +168,10 @@ export default class CreateNavDataPage extends Component {
   _createDatasource = async datasourceName => {
     this.container.setLoading(
       true,
-      getLanguage(GLOBAL.language).Prompt.CREATING,
+      getLanguage(global.language).Prompt.CREATING,
     )
     let datasourcePath =
-      GLOBAL.homePath +
+      global.homePath +
       ConstPath.UserPath +
       this.props.currentUser.userName +
       '/' +
@@ -186,7 +186,7 @@ export default class CreateNavDataPage extends Component {
     if (rel) {
       this.getDatasource()
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.CREATE_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.CREATE_FAILED)
     }
     this.container.setLoading(false)
     return true
@@ -238,13 +238,13 @@ export default class CreateNavDataPage extends Component {
       )
       let isFileExist = await FileTools.fileIsExist(filePath)
       if (isFileExist) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.FILENAME_ALREADY_EXIST)
+        Toast.show(getLanguage(global.language).Prompt.FILENAME_ALREADY_EXIST)
       } else {
         this.dialog.setDialogVisible(false)
 
-        GLOBAL.Loading.setLoading(
+        global.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Prompt.NETWORK_BUILDING,
+          getLanguage(global.language).Prompt.NETWORK_BUILDING,
         )
         let rel = false
         let data = JSON.parse(JSON.stringify(sleectedData))
@@ -265,8 +265,8 @@ export default class CreateNavDataPage extends Component {
         }
 
         setTimeout(() => {
-          GLOBAL.Loading.setLoading(false)
-          rel && Toast.show(getLanguage(GLOBAL.language).Prompt.BUILD_SUCCESS)
+          global.Loading.setLoading(false)
+          rel && Toast.show(getLanguage(global.language).Prompt.BUILD_SUCCESS)
         }, 1000)
       }
     }
@@ -349,7 +349,7 @@ export default class CreateNavDataPage extends Component {
               this.setState({sleectedData: data})
             }
           }else{
-            Toast.show(getLanguage(GLOBAL.language).Prompt.NOT_LONGITUDE)
+            Toast.show(getLanguage(global.language).Prompt.NOT_LONGITUDE)
           }
         }}
         selectedField={async item => {
@@ -383,7 +383,7 @@ export default class CreateNavDataPage extends Component {
             backgroundColor: color.content_white,
           }}
         >
-          <Text>{getLanguage(GLOBAL.language).Prompt.LINE_DATASET}</Text>
+          <Text>{getLanguage(global.language).Prompt.LINE_DATASET}</Text>
         </View>
         <SectionList
           keyExtractor={(item, index) => item.toString() + index}
@@ -436,7 +436,7 @@ export default class CreateNavDataPage extends Component {
           }}
         >
           <Text>
-            {getLanguage(GLOBAL.language).Prompt.DESTINATION_DATASOURCE}
+            {getLanguage(global.language).Prompt.DESTINATION_DATASOURCE}
           </Text>
         </View>
         <FlatList
@@ -458,7 +458,7 @@ export default class CreateNavDataPage extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Prompt.NEW_NAV_DATA,
+          title: getLanguage(global.language).Prompt.NEW_NAV_DATA,
           navigation: this.props.navigation,
         }}
       >
@@ -467,7 +467,7 @@ export default class CreateNavDataPage extends Component {
         {this.state.datasource.length > 0 && (
           <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
             <Text style={styles.confirmTxt}>
-              {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+              {getLanguage(global.language).Prompt.CONFIRM}
             </Text>
           </TouchableOpacity>
         )}
@@ -517,7 +517,7 @@ class Item extends Component {
       this.props.item.fieldInfo.length === 0 &&
       !this.props.item.hasRoadName
     ) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
+      Toast.show(getLanguage(global.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
     } else {
       this.props.onSelect && this.props.onSelect(this.props.item)
     }
@@ -584,7 +584,7 @@ class Item extends Component {
                 }}
                 defaultValue={
                   this.props.item.selectedFieldInfo ||
-                  getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
+                  getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
                 }
                 options={this.props.item.fieldInfo}
               />

@@ -27,7 +27,7 @@ export default class NavigationDataChangePage extends Component {
   }
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.state = {
       /**
        * [{
@@ -266,10 +266,10 @@ export default class NavigationDataChangePage extends Component {
     let title,
       separate = false
     if (section.title === 'datasource') {
-      title = getLanguage(GLOBAL.language).Map_Main_Menu.INDOOR_DATASOURCE
+      title = getLanguage(global.language).Map_Main_Menu.INDOOR_DATASOURCE
       separate = false
     } else {
-      title = getLanguage(GLOBAL.language).Map_Main_Menu.OUTDOOR_DATASETS
+      title = getLanguage(global.language).Map_Main_Menu.OUTDOOR_DATASETS
       separate = true
     }
     return (
@@ -285,7 +285,7 @@ export default class NavigationDataChangePage extends Component {
               style={styles.textWrapper}
             >
               <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Prompt.CREATE}
+                {getLanguage(global.language).Prompt.CREATE}
               </Text>
             </TouchableOpacity>
           ) : (
@@ -301,7 +301,7 @@ export default class NavigationDataChangePage extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.SWITCH_DATA,
+          title: getLanguage(global.language).Map_Main_Menu.SWITCH_DATA,
           navigation: this.props.navigation,
         }}
         style={{ paddingBottom: scaleSize(120) }}
@@ -314,7 +314,7 @@ export default class NavigationDataChangePage extends Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.LOADING}
               enabled={true}
             />
           }
@@ -330,7 +330,7 @@ export default class NavigationDataChangePage extends Component {
         />
         <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
           <Text style={styles.confirmTxt}>
-            {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+            {getLanguage(global.language).Prompt.CONFIRM}
           </Text>
         </TouchableOpacity>
       </Container>

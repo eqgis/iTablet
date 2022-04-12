@@ -18,7 +18,7 @@ class PlotModule extends FunctionModule {
     const params = ToolbarModule.getParams()
     if (params.currentLayer?.type !== DatasetType.CAD) {
       NavigationService.navigate('LayerManager')
-      Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_CAD_LAYER)
+      Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_CAD_LAYER)
       return
     }
     let _data = PlotData.getData(this.type, params)
@@ -64,11 +64,11 @@ class PlotModule extends FunctionModule {
 export default function(type) {
   let image, title
   if (type === ConstToolType.SM_MAP_PLOT_ANIMATION) {
-    title = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING_ANIMATION
+    title = getLanguage(global.language).Map_Main_Menu.PLOTTING_ANIMATION
     image = getThemeAssets().functionBar.icon_tool_deduction
   } else {
     type = ConstToolType.SM_MAP_PLOT
-    title = getLanguage(GLOBAL.language).Map_Main_Menu.PLOT
+    title = getLanguage(global.language).Map_Main_Menu.PLOT
     image = getThemeAssets().functionBar.icon_tool_plotting
   }
   return new PlotModule({

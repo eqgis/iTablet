@@ -4,8 +4,6 @@ import { StyleSheet } from 'react-native'
 import { color } from '../../../../styles'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import { ChunkType, Height } from '../../../../constants'
-import DefaultTabBar from './DefaultTabBar'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
 import GroupTab from './GroupTab'
 import SymbolTab from './SymbolTab'
 import {
@@ -28,6 +26,7 @@ import { getLanguage } from '../../../../language/index'
 import PlotList from './PlotList'
 import PlotTab from './PlotTab'
 import PlotLibTab from './PlotLibTab'
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -95,7 +94,7 @@ class SymbolTabs extends React.Component {
       this.props.symbol.currentSymbols.length === 0 && this.initSymbols()
     }
     if (
-      GLOBAL.Type === ChunkType.MAP_PLOTTING &&
+      global.Type === ChunkType.MAP_PLOTTING &&
       this.props.template.currentPlotList.length === 0
     ) {
       this.initPlotting()
@@ -188,235 +187,265 @@ class SymbolTabs extends React.Component {
     return width
   }
 
+  renderTabBar = props => (
+    <TabBar
+      {...props}
+      indicatorStyle={[
+        styles.tabBarUnderlineStyle,
+        {marginLeft: this._getWidth() / 4 / 2 - scaleSize(8)},
+      ]}
+      style={styles.tabStyle}
+      labelStyle={styles.tabTextStyle}
+      activeColor={color.themeText2}
+    />
+  )
+
+  _renderSymbolCurrent = () => (
+    <SymbolTab
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT
+      }
+      //"最近"
+      data={this.props.symbol.latestSymbols}
+      setCurrentSymbol={this.props.setCurrentSymbol}
+      showToolbar={this.props.showToolbar}
+      device={this.props.device}
+      column={this.props.column}
+    />
+  )
+
+  _renderSymbol = () => (
+    <SymbolTab
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL
+      }
+      //"符号"
+      data={this.props.symbol.currentSymbols}
+      setCurrentSymbol={this.props.setCurrentSymbol}
+      showToolbar={this.props.showToolbar}
+      device={this.props.device}
+      column={this.props.column}
+    />
+  )
+
+  _renderSymbolGroup = () => (
+    <GroupTab
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP
+      }
+      //"分组"
+      goToPage={this.goToPage}
+      setCurrentSymbols={this.props.setCurrentSymbols}
+    />
+  )
+
   renderTabs = () => {
     return (
-      <ScrollableTabView
-        ref={ref => (this.scrollTab = ref)}
-        style={[styles.container, this.props.style]}
-        initialPage={1}
-        page={this.state.currentPage}
-        onChangeTab={({ i }) => this.goToPage(i)}
-        renderTabBar={() => (
-          <DefaultTabBar
-            activeBackgroundColor={'transparent'}
-            activeTextColor={color.themeText2}
-            inactiveTextColor={color.white}
-            textStyle={styles.tabTextStyle}
-            tabStyle={styles.tabStyle}
-          />
-        )}
-        tabBarUnderlineStyle={[
-          styles.tabBarUnderlineStyle,
-          {marginLeft: this._getWidth() / 3 / 2 - scaleSize(32)},
-        ]}
-      >
-        <SymbolTab
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT
-          }
-          //"最近"
-          data={this.props.symbol.latestSymbols}
-          setCurrentSymbol={this.props.setCurrentSymbol}
-          showToolbar={this.props.showToolbar}
-          device={this.props.device}
-          column={this.props.column}
-        />
-        <SymbolTab
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL
-          }
-          //"符号"
-          data={this.props.symbol.currentSymbols}
-          setCurrentSymbol={this.props.setCurrentSymbol}
-          showToolbar={this.props.showToolbar}
-          device={this.props.device}
-          column={this.props.column}
-        />
-        <GroupTab
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP
-          }
-          //"分组"
-          goToPage={this.goToPage}
-          setCurrentSymbols={this.props.setCurrentSymbols}
-        />
-        {/*<TemplateTab tabLabel="模板" />*/}
-      </ScrollableTabView>
+      <TabView
+        navigationState={{
+          index: this.state.currentPage,
+          routes: [
+            { key: 'COLLECTION_RECENT', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT },
+            { key: 'COLLECTION_SYMBOL', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL },
+            { key: 'COLLECTION_GROUP', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP },
+          ]
+        }}
+        onIndexChange={this.goToPage}
+        renderTabBar={this.renderTabBar}
+        renderScene={SceneMap({
+          COLLECTION_RECENT: this._renderSymbolCurrent,
+          COLLECTION_SYMBOL: this._renderSymbol,
+          COLLECTION_GROUP: this._renderSymbolGroup,
+        })}
+      />
     )
   }
+
+  
+  _renderTemplateCurrent = () => (
+    <TemplateTab
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT
+      }
+      //"最近"
+      style={styles.temple}
+      user={this.props.user}
+      showToolbar={this.props.showToolbar}
+      data={this.props.template.latestTemplateSymbols}
+      layers={this.props.layers}
+      setCurrentTemplateInfo={this.props.setCurrentTemplateInfo}
+      setEditLayer={this.props.setEditLayer}
+      getSymbolTemplates={this.props.getSymbolTemplates}
+      setCurrentSymbol={this.props.setCurrentSymbol}
+      device={this.props.device}
+      column={this.props.column}
+    />
+  )
+  
+  _renderTemplate = () => (
+    <TemplateTab
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL
+      }
+      //"符号"
+      style={styles.temple}
+      user={this.props.user}
+      showToolbar={this.props.showToolbar}
+      data={this.props.template.currentTemplateList}
+      layers={this.props.layers}
+      setCurrentTemplateInfo={this.props.setCurrentTemplateInfo}
+      setEditLayer={this.props.setEditLayer}
+      getSymbolTemplates={this.props.getSymbolTemplates}
+      setCurrentSymbol={this.props.setCurrentSymbol}
+      device={this.props.device}
+      column={this.props.column}
+    />
+  )
+
+  _renderTemplateGroup = () => (
+    <TemplateList
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP
+      }
+      //"分组"
+      style={styles.temple}
+      user={this.props.user}
+      showToolbar={this.props.showToolbar}
+      template={this.props.template}
+      layers={this.props.layers}
+      setCurrentTemplateInfo={this.props.setCurrentTemplateInfo}
+      setEditLayer={this.props.setEditLayer}
+      getSymbolTemplates={this.props.getSymbolTemplates}
+      setCurrentTemplateList={this.props.setCurrentTemplateList}
+      goToPage={this.goToPage}
+    />
+  )
 
   renderTempleTab = () => {
     return (
-      <ScrollableTabView
-        ref={ref => (this.scrollTab = ref)}
-        style={[styles.container, this.props.style]}
-        initialPage={1}
-        page={this.state.currentPage}
-        onChangeTab={({ i }) => this.goToPage(i)}
-        renderTabBar={() => (
-          <DefaultTabBar
-            style={styles.tabs}
-            activeBackgroundColor={color.white}
-            activeTextColor={color.themeText2}
-            inactiveTextColor={color.white}
-            textStyle={styles.tabTextStyle}
-            tabStyle={styles.tabStyle}
-          />
-        )}
-        tabBarUnderlineStyle={[
-          styles.tabBarUnderlineStyle,
-          {marginLeft: this._getWidth() / 3 / 2 - scaleSize(32)},
-        ]}
-      >
-        <TemplateTab
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT
-          }
-          //"最近"
-          style={styles.temple}
-          user={this.props.user}
-          showToolbar={this.props.showToolbar}
-          data={this.props.template.latestTemplateSymbols}
-          layers={this.props.layers}
-          setCurrentTemplateInfo={this.props.setCurrentTemplateInfo}
-          setEditLayer={this.props.setEditLayer}
-          getSymbolTemplates={this.props.getSymbolTemplates}
-          setCurrentSymbol={this.props.setCurrentSymbol}
-          device={this.props.device}
-          column={this.props.column}
-        />
-        <TemplateTab
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL
-          }
-          //"符号"
-          style={styles.temple}
-          user={this.props.user}
-          showToolbar={this.props.showToolbar}
-          data={this.props.template.currentTemplateList}
-          layers={this.props.layers}
-          setCurrentTemplateInfo={this.props.setCurrentTemplateInfo}
-          setEditLayer={this.props.setEditLayer}
-          getSymbolTemplates={this.props.getSymbolTemplates}
-          setCurrentSymbol={this.props.setCurrentSymbol}
-          device={this.props.device}
-          column={this.props.column}
-        />
-        <TemplateList
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP
-          }
-          //"分组"
-          style={styles.temple}
-          user={this.props.user}
-          showToolbar={this.props.showToolbar}
-          template={this.props.template}
-          layers={this.props.layers}
-          setCurrentTemplateInfo={this.props.setCurrentTemplateInfo}
-          setEditLayer={this.props.setEditLayer}
-          getSymbolTemplates={this.props.getSymbolTemplates}
-          setCurrentTemplateList={this.props.setCurrentTemplateList}
-          goToPage={this.goToPage}
-        />
-        {/*<TemplateTab tabLabel="模板" />*/}
-      </ScrollableTabView>
+      <TabView
+        navigationState={{
+          index: this.state.currentPage,
+          routes: [
+            { key: 'COLLECTION_RECENT', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT },
+            { key: 'COLLECTION_SYMBOL', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL },
+            { key: 'COLLECTION_GROUP', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP },
+          ]
+        }}
+        onIndexChange={this.goToPage}
+        renderTabBar={this.renderTabBar}
+        renderScene={SceneMap({
+          COLLECTION_RECENT: this._renderTemplateCurrent,
+          COLLECTION_SYMBOL: this._renderTemplate,
+          COLLECTION_GROUP: this._renderTemplateGroup,
+        })}
+      />
     )
   }
 
+  _renderPlotCurrent = () => (
+    <PlotTab
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT
+      }
+      //"最近"
+      style={styles.temple}
+      user={this.props.user}
+      showToolbar={this.props.showToolbar}
+      data={this.props.template.latestPlotSymbols}
+      layers={this.props.layers}
+      setCurrentPlotInfo={this.props.setCurrentPlotInfo}
+      setEditLayer={this.props.setEditLayer}
+      getSymbolPlots={this.props.getSymbolPlots}
+      setCurrentSymbol={this.props.setCurrentSymbol}
+      device={this.props.device}
+    />
+  )
+
+  _renderPlotSymbol = () => (
+    <PlotTab
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL
+      }
+      //"符号"
+      style={styles.temple}
+      user={this.props.user}
+      showToolbar={this.props.showToolbar}
+      data={this.props.template.currentPlotList}
+      layers={this.props.layers}
+      setCurrentPlotInfo={this.props.setCurrentPlotInfo}
+      setEditLayer={this.props.setEditLayer}
+      getSymbolPlots={this.props.getSymbolPlots}
+      setCurrentSymbol={this.props.setCurrentSymbol}
+      device={this.props.device}
+    />
+  )
+
+  _renderPlotGroup = () => (
+    <PlotList
+      tabLabel={
+        getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP
+      }
+      //"分组"
+      style={styles.temple}
+      user={this.props.user}
+      showToolbar={this.props.showToolbar}
+      template={this.props.template}
+      layers={this.props.layers}
+      setCurrentPlotInfo={this.props.setCurrentPlotInfo}
+      setEditLayer={this.props.setEditLayer}
+      getSymbolPlots={this.props.getSymbolPlots}
+      setCurrentPlotList={this.props.setCurrentPlotList}
+      goToPage={this.goToPage}
+    />
+  )
+
+  _renderPlotLib = () => (
+    <PlotLibTab
+      tabLabel={getLanguage(this.props.language).Map_Main_Menu.PLOTTING_LIB}
+      //"符号"
+      style={styles.temple}
+      user={this.props.user}
+      showToolbar={this.props.showToolbar}
+      template={this.props.template}
+      data={this.props.template.plotLibPaths}
+      layers={this.props.layers}
+      setCurrentPlotInfo={this.props.setCurrentPlotInfo}
+      setEditLayer={this.props.setEditLayer}
+      getSymbolPlots={this.props.getSymbolPlots}
+      setCurrentSymbol={this.props.setCurrentSymbol}
+      setCurrentPlotList={this.props.setCurrentPlotList}
+      device={this.props.device}
+      goToPage={this.goToPage}
+    />
+  )
+
   renderPlotTab = () => {
     return (
-      <ScrollableTabView
-        ref={ref => (this.scrollTab = ref)}
-        style={[styles.container, this.props.style]}
-        initialPage={1}
-        page={this.state.currentPage}
-        onChangeTab={({ i }) => this.goToPage(i)}
-        renderTabBar={() => (
-          <DefaultTabBar
-            activeBackgroundColor={color.white}
-            activeTextColor={color.themeText2}
-            inactiveTextColor={color.white}
-            textStyle={styles.tabTextStyle}
-            tabStyle={styles.tabStyle}
-          />
-        )}
-        tabBarUnderlineStyle={[
-          styles.tabBarUnderlineStyle,
-          {marginLeft: this._getWidth() / 4 / 2 - scaleSize(32)},
-        ]}
-      >
-        <PlotTab
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT
-          }
-          //"最近"
-          style={styles.temple}
-          user={this.props.user}
-          showToolbar={this.props.showToolbar}
-          data={this.props.template.latestPlotSymbols}
-          layers={this.props.layers}
-          setCurrentPlotInfo={this.props.setCurrentPlotInfo}
-          setEditLayer={this.props.setEditLayer}
-          getSymbolPlots={this.props.getSymbolPlots}
-          setCurrentSymbol={this.props.setCurrentSymbol}
-          device={this.props.device}
-        />
-        <PlotTab
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL
-          }
-          //"符号"
-          style={styles.temple}
-          user={this.props.user}
-          showToolbar={this.props.showToolbar}
-          data={this.props.template.currentPlotList}
-          layers={this.props.layers}
-          setCurrentPlotInfo={this.props.setCurrentPlotInfo}
-          setEditLayer={this.props.setEditLayer}
-          getSymbolPlots={this.props.getSymbolPlots}
-          setCurrentSymbol={this.props.setCurrentSymbol}
-          device={this.props.device}
-        />
-        <PlotList
-          tabLabel={
-            getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP
-          }
-          //"分组"
-          style={styles.temple}
-          user={this.props.user}
-          showToolbar={this.props.showToolbar}
-          template={this.props.template}
-          layers={this.props.layers}
-          setCurrentPlotInfo={this.props.setCurrentPlotInfo}
-          setEditLayer={this.props.setEditLayer}
-          getSymbolPlots={this.props.getSymbolPlots}
-          setCurrentPlotList={this.props.setCurrentPlotList}
-          goToPage={this.goToPage}
-        />
-        <PlotLibTab
-          tabLabel={getLanguage(this.props.language).Map_Main_Menu.PLOTTING_LIB}
-          //"符号"
-          style={styles.temple}
-          user={this.props.user}
-          showToolbar={this.props.showToolbar}
-          template={this.props.template}
-          data={this.props.template.plotLibPaths}
-          layers={this.props.layers}
-          setCurrentPlotInfo={this.props.setCurrentPlotInfo}
-          setEditLayer={this.props.setEditLayer}
-          getSymbolPlots={this.props.getSymbolPlots}
-          setCurrentSymbol={this.props.setCurrentSymbol}
-          setCurrentPlotList={this.props.setCurrentPlotList}
-          device={this.props.device}
-          goToPage={this.goToPage}
-        />
-        {/*<TemplateTab tabLabel="模板" />*/}
-      </ScrollableTabView>
+      <TabView
+        navigationState={{
+          index: this.state.currentPage,
+          routes: [
+            { key: 'COLLECTION_RECENT', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_RECENT },
+            { key: 'COLLECTION_SYMBOL', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_SYMBOL },
+            { key: 'COLLECTION_GROUP', title: getLanguage(this.props.language).Map_Main_Menu.COLLECTION_GROUP },
+            { key: 'PLOTTING_LIB', title: getLanguage(this.props.language).Map_Main_Menu.PLOTTING_LIB },
+          ]
+        }}
+        onIndexChange={this.goToPage}
+        renderTabBar={this.renderTabBar}
+        renderScene={SceneMap({
+          COLLECTION_RECENT: this._renderPlotCurrent,
+          COLLECTION_SYMBOL: this._renderPlotSymbol,
+          COLLECTION_GROUP: this._renderPlotGroup,
+          PLOTTING_LIB: this._renderPlotLib,
+        })}
+      />
     )
   }
 
   render() {
-    if (GLOBAL.Type === ChunkType.MAP_PLOTTING) {
+    if (global.Type === ChunkType.MAP_PLOTTING) {
       return this.renderPlotTab()
     }
 
@@ -453,8 +482,11 @@ const styles = StyleSheet.create({
     color: color.fontColorBlack,
   },
   tabStyle: {
-    // backgroundColor: color.subTheme,
     backgroundColor: color.white,
+    elevation: 0,
+    shadowRadius: 0,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0,
   },
 })
 

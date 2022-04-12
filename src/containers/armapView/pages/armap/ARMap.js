@@ -57,7 +57,7 @@ export default class ARMap extends Component {
   }
 
   _onArObjectClick = data => {
-    if (GLOBAL.Type === ChunkType.MAP_AR) {
+    if (global.Type === ChunkType.MAP_AR) {
       // let params = {
       //   ID: data.id,
       //   Name: data.name,
@@ -144,7 +144,7 @@ export default class ARMap extends Component {
             if (status === 'READY') this.camera = camera
           }}
         </RNCamera>*/}
-        {/* {<SMDynamicArrowView ref={ref => (GLOBAL.DynamicArrowView = ref)} />}*/}
+        {/* {<SMDynamicArrowView ref={ref => (global.DynamicArrowView = ref)} />}*/}
         {this.state.isDetect && (
           <SMAIDetectView
             style={styles.aiview}

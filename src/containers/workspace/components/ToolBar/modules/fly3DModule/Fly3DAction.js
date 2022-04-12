@@ -76,14 +76,14 @@ async function close(type) {
   if (type === ConstToolType.SM_MAP3D_FLY) {
     SScene.checkoutListener('startTouchAttribute')
     SScene.flyStop()
-    GLOBAL.action3d && SScene.setAction(GLOBAL.action3d)
+    global.action3d && SScene.setAction(global.action3d)
     params.existFullMap && params.existFullMap()
     params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP3D_FLY_NEW) {
     SScene.checkoutListener('startTouchAttribute')
     SScene.clearRoutStops()
     SScene.flyStop()
-    GLOBAL.action3d && SScene.setAction(GLOBAL.action3d)
+    global.action3d && SScene.setAction(global.action3d)
     params.existFullMap && params.existFullMap()
     params.setToolbarVisible(false)
   } else {

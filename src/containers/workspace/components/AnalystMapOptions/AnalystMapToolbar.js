@@ -103,7 +103,7 @@ export default class AnalystMapToolbar extends React.Component {
               AnalystTools.analyst(this.props.type)
                 .then(({ edges }) => {
                   if (edges && edges.length > 0) {
-                    GLOBAL.TouchType = TouchType.NORMAL // 关闭分析界面，触摸事件设置为normal
+                    global.TouchType = TouchType.NORMAL // 关闭分析界面，触摸事件设置为normal
                     this.props.setAnalystParams(null)
                     AnalystTools.showMsg(
                       this.props.type,

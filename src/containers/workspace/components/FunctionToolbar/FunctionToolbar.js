@@ -114,7 +114,7 @@ export default class FunctionToolbar extends React.Component {
     this.previousOpacity = new Animated.Value(0)
     this.nextOpacity = new Animated.Value(0)
 
-    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
+    if (global.coworkMode && global.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
         this.servicesUtils = new SCoordination('online')
         this.onlineServicesUtils = new OnlineServicesUtils('online')
@@ -157,7 +157,7 @@ export default class FunctionToolbar extends React.Component {
       const data = this.getData(this.props.type)
       this.setState({data: data})
     }
-    if (GLOBAL.coworkMode) {
+    if (global.coworkMode) {
       // 数据服务下载动画
       if (
         this.props.currentTask?.groupID &&
@@ -200,10 +200,12 @@ export default class FunctionToolbar extends React.Component {
         Animated.timing(this.state.top, {
           toValue: top,
           duration: 300,
+          useNativeDriver: false,
         }),
         Animated.timing(this.state.right, {
           toValue: right,
           duration: 300,
+          useNativeDriver: false,
         }),
       ]).start()
     } else {
@@ -215,6 +217,7 @@ export default class FunctionToolbar extends React.Component {
       Animated.timing(this.state.top, {
         toValue: top,
         duration: 300,
+        useNativeDriver: false,
       }).start()
     }
     this.handlePosition()
@@ -260,6 +263,7 @@ export default class FunctionToolbar extends React.Component {
       Animated.timing(this.previousOpacity, {
         toValue: onPrevious ? 0 : 1,
         duration: 150,
+        useNativeDriver: false,
       }).start()
     }
     if (onNext !== this.onNext) {
@@ -267,6 +271,7 @@ export default class FunctionToolbar extends React.Component {
       Animated.timing(this.nextOpacity, {
         toValue: onNext ? 0 : 1,
         duration: 150,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -281,10 +286,12 @@ export default class FunctionToolbar extends React.Component {
       Animated.timing(this.state.bottom, {
         toValue: visible ? BOTTOM_LANDSCAPE : scaleSize(-120),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start(),
       Animated.timing(this.state.right, {
         toValue: visible ? RIGHT : scaleSize(-100),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start(),
     ]).start()
     this.visible = visible
@@ -334,7 +341,7 @@ export default class FunctionToolbar extends React.Component {
             layerSettingImageModule().actions.showSetting()
           } else if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
             styleModule().action(ConstToolType.SM_MAP_STYLE)
-          } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
+          } else if (global.Type === ChunkType.MAP_THEME) {
             themeModule().actions.layerListAction(this.props.currentLayer)
           } else {
             Toast.show(
@@ -345,8 +352,8 @@ export default class FunctionToolbar extends React.Component {
         }
       }
       if (
-        !GLOBAL.coworkMode ||
-        GLOBAL.coworkMode &&
+        !global.coworkMode ||
+        global.coworkMode &&
         _item.type !== ConstToolType.SM_MAP_ADD &&
         _item.type !== ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE &&
         _item.type !== ConstToolType.SM_MAP_NAVIGATION_MODULE
@@ -356,14 +363,14 @@ export default class FunctionToolbar extends React.Component {
       }
     })
     // 在线协作非三维模块，侧边栏新增多媒体采集
-    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0) {
-      GLOBAL.Type !== ChunkType.MAP_PLOTTING && data.push({
+    if (global.coworkMode && global.Type.indexOf('3D') < 0) {
+      global.Type !== ChunkType.MAP_PLOTTING && data.push({
         isLoading: false,
         ...serviceModule(UserType.isIPortalUser(this.props.user.currentUser) ? 'iportal' : 'online'),
       })
       data.push({
         type: ConstToolType.SM_MAP_MEDIA,
-        getTitle: () => getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+        getTitle: () => getLanguage(global.language).Map_Main_Menu.CAMERA,
         size: 'large',
         image: getThemeAssets().mapTools.icon_tool_multi_media,
         disableImage: getThemeAssets().mapTools.icon_tool_multi_media_ash,
@@ -392,7 +399,7 @@ export default class FunctionToolbar extends React.Component {
                 }) => {
                 // cb: async mediaPaths => {
                   try {
-                    if (GLOBAL.coworkMode) {
+                    if (global.coworkMode) {
                       let resourceIds = [],
                         _mediaPaths = [] // 保存修改名称后的图片地址
                       let name = '', suffix = ''
@@ -594,7 +601,7 @@ export default class FunctionToolbar extends React.Component {
         />
         {item.title === '分享' &&
           this.props.online.share[0] &&
-          GLOBAL.Type === this.props.online.share[0].module &&
+          global.Type === this.props.online.share[0].module &&
           this.props.online.share[0].progress !== undefined && (
           <Bar
             style={styles.progress}
@@ -609,7 +616,7 @@ export default class FunctionToolbar extends React.Component {
         {this._renderLoading({ item, index })}
         {/*{item.title === '分享' &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1] &&*/}
-        {/*GLOBAL.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}
+        {/*global.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1].progress !== undefined && (*/}
         {/*<Text>{this.props.online.share[this.props.online.share.length - 1].progress}</Text>*/}
         {/*)}*/}

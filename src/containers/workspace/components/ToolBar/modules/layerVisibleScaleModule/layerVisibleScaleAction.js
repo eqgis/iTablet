@@ -36,13 +36,13 @@ function pickerConfirm(item) {
   }
   if (min !== 0 && max !== 0 && min <= max) {
     //最大比例尺必须大于最小比例尺
-    Toast.show(getLanguage(GLOBAL.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
+    Toast.show(getLanguage(global.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
   } else {
     !isSimilar(min, item[0].initItem.value) &&
       SMap.setMinVisibleScale(layerData.path, min)
     !isSimilar(max, item[1].initItem.value) &&
       SMap.setMaxVisibleScale(layerData.path, max)
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
+    Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
     _params.setToolbarVisible(false)
     _params.existFullMap()
     SMap.setMapScale(1 / preScale)
@@ -67,7 +67,7 @@ function pickerCancel() {
 }
 
 async function rightSelect(item) {
-  if (item.key === getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE) {
+  if (item.key === getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE) {
     const _params = ToolbarModule.getParams()
     let currentType = item.type
     let mapScale = await SMap.getMapScale()
@@ -95,14 +95,14 @@ async function commit() {
   if(currentType==='min'){
     if ( mapScale !== 0 && max!==0 && mapScale <= max) {
       //最大比例尺必须大于最小比例尺
-      Toast.show(getLanguage(GLOBAL.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
+      Toast.show(getLanguage(global.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
     }else{
       SMap.setMinVisibleScale(layerData.path, mapScale-0)
     }
   }else{
     if (mapScale !== 0 && min!==0 && min <= mapScale) {
       //最大比例尺必须大于最小比例尺
-      Toast.show(getLanguage(GLOBAL.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
+      Toast.show(getLanguage(global.language).Map_Layer.LAYER_SCALE_RANGE_WRONG)
     }else{
       SMap.setMaxVisibleScale(layerData.path, mapScale-0)
     }

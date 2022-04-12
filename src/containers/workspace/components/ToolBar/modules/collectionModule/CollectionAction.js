@@ -37,9 +37,9 @@ function openTemplate(type) {
 async function showAttribute() {
   let have = await SMap.haveCurrentGeometry()
   if(have){
-    Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
-    if(GLOBAL.HAVEATTRIBUTE){
+    if(global.HAVEATTRIBUTE){
       const _params = ToolbarModule.getParams()
       NavigationService.navigate('LayerSelectionAttribute',{isCollection:true, preType: _params.type})
     }
@@ -123,7 +123,7 @@ function showCollection(type, layerName) {
 }
 
 function showSymbol() {
-  GLOBAL.HAVEATTRIBUTE = false
+  global.HAVEATTRIBUTE = false
   const params = ToolbarModule.getParams()
   params.showFullMap && params.showFullMap(true)
   params.setToolbarVisible(true, ConstToolType.SM_MAP_COLLECTION_SYMBOL, {
@@ -261,17 +261,17 @@ async function collectionSubmit(type) {
   let have = await SMap.haveCurrentGeometry()
   if (have) {
     // 是否有新的采集或标注
-    GLOBAL.HAVEATTRIBUTE = true
+    global.HAVEATTRIBUTE = true
   }
   const result = await SCollector.submit(type)
   if (result) {
-    GLOBAL.HAVEATTRIBUTE = true
+    global.HAVEATTRIBUTE = true
     //协作时同步编辑对象
-    if (GLOBAL.coworkMode && GLOBAL.getFriend) {
+    if (global.coworkMode && global.getFriend) {
       const params = ToolbarModule.getParams()
       let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
       let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
-      let friend = GLOBAL.getFriend()
+      let friend = global.getFriend()
       isRealTime && friend.onGeometryAdd(params.currentLayer)
     }
     switch (type) {
@@ -288,7 +288,7 @@ async function collectionSubmit(type) {
       )
     }
     // 采集后 需要刷新属性表
-    GLOBAL.NEEDREFRESHTABLE = true
+    global.NEEDREFRESHTABLE = true
   }
   return result
 }
@@ -330,7 +330,7 @@ function redo(type) {
 }
 
 async function close(type) {
-  GLOBAL.HAVEATTRIBUTE = false
+  global.HAVEATTRIBUTE = false
   const params = ToolbarModule.getParams()
   // 当前为采集状态
   if (

@@ -606,7 +606,7 @@ class CreateGroupPage extends React.Component<Props, State> {
               />
               <Text style={[styles.itemTitle, {marginLeft: scaleSize(20)}]}>
                 {
-                  getLanguage(GLOBAL.language).Friends.GROUP_TYPE_PUBLIC_CHECK_INFO
+                  getLanguage(global.language).Friends.GROUP_TYPE_PUBLIC_CHECK_INFO
                 }
               </Text>
             </View>

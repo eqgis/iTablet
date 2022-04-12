@@ -4,7 +4,7 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  AsyncStorage,
+  // AsyncStorage,
   Platform,
 } from 'react-native'
 import { Container, Button } from '../../../../components'
@@ -13,6 +13,7 @@ import { getLanguage } from '../../../../language/index'
 import { SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../utils'
 import ModuleInfo from './component/ModuleInfo'
+import AsyncStorage from '@react-native-community/async-storage'
 
 var LICENSE_MODULE_REGISTER = 'LICENSE_MODULE_REGISTER'
 
@@ -23,7 +24,7 @@ export default class LicenseModule extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.user = params && params.user
     this.features = params && params.features
     this.state = {
@@ -57,7 +58,7 @@ export default class LicenseModule extends Component {
   }
 
   getModules = async () => {
-    GLOBAL.Loading.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOADING)
+    global.Loading.setLoading(true, getLanguage(global.language).Prompt.LOADING)
     let modules = this.features.clone()
     let size = modules.length
     let number = 0
@@ -77,7 +78,7 @@ export default class LicenseModule extends Component {
       allModules: allModules,
       allAPPModules: allAPPModules,
     })
-    GLOBAL.Loading.setLoading(false)
+    global.Loading.setLoading(false)
   }
 
   getModuleID = () => {
@@ -105,33 +106,33 @@ export default class LicenseModule extends Component {
 
   initAllModules = () => {
     let allModules = []
-    allModules.push(getLanguage(GLOBAL.language).Profile.Core_Dev)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Core_Runtime)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Navigation_Dev)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Navigation_Runtime)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Realspace_Dev)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Realspace_Runtime)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Plot_Dev)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Plot_Runtime)
+    allModules.push(getLanguage(global.language).Profile.Core_Dev)
+    allModules.push(getLanguage(global.language).Profile.Core_Runtime)
+    allModules.push(getLanguage(global.language).Profile.Navigation_Dev)
+    allModules.push(getLanguage(global.language).Profile.Navigation_Runtime)
+    allModules.push(getLanguage(global.language).Profile.Realspace_Dev)
+    allModules.push(getLanguage(global.language).Profile.Realspace_Runtime)
+    allModules.push(getLanguage(global.language).Profile.Plot_Dev)
+    allModules.push(getLanguage(global.language).Profile.Plot_Runtime)
     allModules.push(
-      getLanguage(GLOBAL.language).Profile.Industry_Navigation_Dev,
+      getLanguage(global.language).Profile.Industry_Navigation_Dev,
     )
     allModules.push(
-      getLanguage(GLOBAL.language).Profile.Industry_Navigation_Runtime,
+      getLanguage(global.language).Profile.Industry_Navigation_Runtime,
     )
-    allModules.push(getLanguage(GLOBAL.language).Profile.Indoor_Navigation_Dev)
+    allModules.push(getLanguage(global.language).Profile.Indoor_Navigation_Dev)
     allModules.push(
-      getLanguage(GLOBAL.language).Profile.Indoor_Navigation_Runtime,
+      getLanguage(global.language).Profile.Indoor_Navigation_Runtime,
     )
-    allModules.push(getLanguage(GLOBAL.language).Profile.Plot3D_Dev)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Plot3D_Runtime)
-    allModules.push(getLanguage(GLOBAL.language).Profile.Realspace_Analyst_Dev)
+    allModules.push(getLanguage(global.language).Profile.Plot3D_Dev)
+    allModules.push(getLanguage(global.language).Profile.Plot3D_Runtime)
+    allModules.push(getLanguage(global.language).Profile.Realspace_Analyst_Dev)
     allModules.push(
-      getLanguage(GLOBAL.language).Profile.Realspace_Analyst_Runtime,
+      getLanguage(global.language).Profile.Realspace_Analyst_Runtime,
     )
-    allModules.push(getLanguage(GLOBAL.language).Profile.Realspace_Effect_Dev)
+    allModules.push(getLanguage(global.language).Profile.Realspace_Effect_Dev)
     allModules.push(
-      getLanguage(GLOBAL.language).Profile.Realspace_Effect_Runtime,
+      getLanguage(global.language).Profile.Realspace_Effect_Runtime,
     )
     return allModules
   }
@@ -139,18 +140,18 @@ export default class LicenseModule extends Component {
   initItabletAllModules = () => {
     let allModules = []
     allModules.push(
-      getLanguage(GLOBAL.language).Profile.LICENSE_EDITION_STANDARD,
+      getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD,
     )
     allModules.push(
-      getLanguage(GLOBAL.language).Profile.LICENSE_EDITION_PROFESSIONAL,
+      getLanguage(global.language).Profile.LICENSE_EDITION_PROFESSIONAL,
     )
     allModules.push(
-      getLanguage(GLOBAL.language).Profile.LICENSE_EDITION_ADVANCED,
+      getLanguage(global.language).Profile.LICENSE_EDITION_ADVANCED,
     )
-    allModules.push(getLanguage(GLOBAL.language).Profile.ITABLET_ARMAP)
-    allModules.push(getLanguage(GLOBAL.language).Profile.ITABLET_NAVIGATIONMAP)
-    allModules.push(getLanguage(GLOBAL.language).Profile.ITABLET_DATAANALYSIS)
-    allModules.push(getLanguage(GLOBAL.language).Profile.ITABLET_PLOTTING)
+    allModules.push(getLanguage(global.language).Profile.ITABLET_ARMAP)
+    allModules.push(getLanguage(global.language).Profile.ITABLET_NAVIGATIONMAP)
+    allModules.push(getLanguage(global.language).Profile.ITABLET_DATAANALYSIS)
+    allModules.push(getLanguage(global.language).Profile.ITABLET_PLOTTING)
     return allModules
   }
 
@@ -177,7 +178,7 @@ export default class LicenseModule extends Component {
     let result = await SMap.licenseBuyRegister(moduleCode, userName)
     if (result) {
       Toast.show(
-        getLanguage(GLOBAL.language).Profile.LICENSE_MODULE_REGISTER_SUCCESS,
+        getLanguage(global.language).Profile.LICENSE_MODULE_REGISTER_SUCCESS,
       )
       let licenseModuleRegisterNumber = this.state.licenseModuleRegisterNumber
       let offset = 1 << moduleCode % 100
@@ -191,7 +192,7 @@ export default class LicenseModule extends Component {
       })
     } else {
       Toast.show(
-        getLanguage(GLOBAL.language).Profile.LICENSE_MODULE_REGISTER_FAIL,
+        getLanguage(global.language).Profile.LICENSE_MODULE_REGISTER_FAIL,
       )
     }
   }
@@ -216,7 +217,7 @@ export default class LicenseModule extends Component {
           </Text>
           {havaRegister ? (
             <Button
-              title={getLanguage(GLOBAL.language).Profile.LICENSE_HAVE_REGISTER}
+              title={getLanguage(global.language).Profile.LICENSE_HAVE_REGISTER}
               style={{
                 width: scaleSize(100),
                 height: scaleSize(40),
@@ -232,7 +233,7 @@ export default class LicenseModule extends Component {
             />
           ) : (
             <Button
-              title={getLanguage(GLOBAL.language).Profile.LICENSE_REGISTER_BUY}
+              title={getLanguage(global.language).Profile.LICENSE_REGISTER_BUY}
               style={{
                 width: scaleSize(100),
                 height: scaleSize(40),
@@ -282,7 +283,7 @@ export default class LicenseModule extends Component {
     let label = this.state.allModules[index]
     let currentEdition =
       moduleCode === this.state.allAPPModules[index][position]
-        ? getLanguage(GLOBAL.language).Profile.LICENSE_EDITION_CURRENT
+        ? getLanguage(global.language).Profile.LICENSE_EDITION_CURRENT
         : null
     return (
       <View style={{ width: '100%', backgroundColor: color.content_white }}>
@@ -329,7 +330,7 @@ export default class LicenseModule extends Component {
       <View style={{ backgroundColor: color.background }}>
         <View style={styles.item}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Profile.LICENSE_EDITION}
+            {getLanguage(global.language).Profile.LICENSE_EDITION}
           </Text>
         </View>
         <View style={styles.separateLine} />
@@ -358,7 +359,7 @@ export default class LicenseModule extends Component {
       <View style={{ backgroundColor: color.background }}>
         <View style={styles.item}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Profile.LICENSE_CONTAIN_EXPAND_MODULE}
+            {getLanguage(global.language).Profile.LICENSE_CONTAIN_EXPAND_MODULE}
           </Text>
         </View>
         <View style={styles.separateLine} />
@@ -386,7 +387,7 @@ export default class LicenseModule extends Component {
       <View style={{ backgroundColor: color.background }}>
         <View style={styles.item}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Profile.LICENSE_NOT_CONTAIN_MODULE}
+            {getLanguage(global.language).Profile.LICENSE_NOT_CONTAIN_MODULE}
           </Text>
         </View>
         <View style={styles.separateLine} />
@@ -422,7 +423,7 @@ export default class LicenseModule extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_CONTAIN_MODULE,
+          title: getLanguage(global.language).Profile.LICENSE_CONTAIN_MODULE,
           //'所含模块',
           navigation: this.props.navigation,
         }}

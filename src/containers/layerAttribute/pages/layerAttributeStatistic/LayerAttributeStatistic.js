@@ -64,7 +64,7 @@ export default class LayerAttributeStatistic extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.fieldInfo = params.fieldInfo
     this.layer = params.layer
     const data = getData(this.props.language)

@@ -44,75 +44,75 @@ async function getData(type: string, params: {[name: string]: any}) {
       SARMap.setAction(ARAction.NULL)
       data = [
         {
-          title: getLanguage(GLOBAL.language).Prompt.POI,
+          title: getLanguage(global.language).Prompt.POI,
           data: [{
             key: ConstToolType.SM_AR_DRAWING_IMAGE,
             image: getThemeAssets().ar.functiontoolbar.ar_picture,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_IMAGE,
+            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_IMAGE,
             action: ARDrawingAction.arImage,
           }, {
             key: ConstToolType.SM_AR_DRAWING_VIDEO,
             image: getThemeAssets().ar.functiontoolbar.ar_video,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_VIDEO,
+            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
             action: ARDrawingAction.arVideo,
           }, {
             key: ConstToolType.SM_AR_DRAWING_WEB,
             image: getThemeAssets().ar.functiontoolbar.ar_webpage,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_WEBVIEW,
+            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEBVIEW,
             action: ARDrawingAction.arWebView,
           }],
         },
         {
-          title: getLanguage(GLOBAL.language).ARMap.VECTOR,
+          title: getLanguage(global.language).ARMap.VECTOR,
           data: [
             // {
             //   key: ConstToolType.SM_AR_DRAWING_POINT,
             //   image: getThemeAssets().toolbar.icon_toolbar_savespot,
             //   // selectedImage: any,
-            //   title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_POINT,
+            //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_POINT,
             //   action: data => {},
             // },
             // {
             //   key: ConstToolType.SM_AR_DRAWING_LINE,
             //   image: getThemeAssets().toolbar.icon_toolbar_saveline,
             //   // selectedImage: any,
-            //   title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_LINE,
+            //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_LINE,
             //   action: data => {},
             // },
             // {
             //   key: ConstToolType.SM_AR_DRAWING_REGION,
             //   image: getThemeAssets().toolbar.icon_toolbar_region,
             //   // selectedImage: any,
-            //   title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_AEREA,
+            //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_AEREA,
             //   action: data => {},
             // },
             // {
             //   key: ConstToolType.SM_AR_DRAWING_SUBSTANCE,
             //   image: getThemeAssets().ar.functiontoolbar.icon_ar_volume_select,
             //   // selectedImage: any,
-            //   title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE,
+            //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE,
             //   action: data => {},
             // },
             {
               key: ConstToolType.SM_AR_DRAWING_TEXT,
               image: getThemeAssets().layerType.layer_text,
               // selectedImage: any,
-              title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
+              title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
               action: ARDrawingAction.arText,
             },
           ],
         },
         {
-          title: getLanguage(GLOBAL.language).ARMap.THREE_D,
+          title: getLanguage(global.language).ARMap.THREE_D,
           containerType: 'list',
           getData: get3DData,
         },
         {
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
           getData: getARModel,
         },
         {
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
           getData: getAREffect,
         },
       ]

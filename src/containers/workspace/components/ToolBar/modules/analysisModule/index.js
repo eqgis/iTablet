@@ -39,7 +39,7 @@ class AnalysisModule extends FunctionModule {
 export default function() {
   return new AnalysisModule({
     type: ConstToolType.SM_MAP_ANALYSIS,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS,
+    title: getLanguage(global.language).Map_Main_Menu.ANALYSIS,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_analysis,
     getData: AnalysisData.getData,

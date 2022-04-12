@@ -27,7 +27,7 @@ export default class OnlineAnalystView extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.cb = params && params.cb
     this.state = {
       type:
@@ -113,7 +113,7 @@ export default class OnlineAnalystView extends Component {
         //   getLanguage(this.props.language).Analyst_Prompt.BEING_ANALYZED,
         //   {
         //     timeout: 20000,
-        //     timeoutMsg: getLanguage(GLOBAL.language).Prompt.REQUEST_TIMEOUT,
+        //     timeoutMsg: getLanguage(global.language).Prompt.REQUEST_TIMEOUT,
         //   },
         // )
         let analysisData = this.aggregatePointsView.getData()
@@ -138,7 +138,7 @@ export default class OnlineAnalystView extends Component {
         //   getLanguage(this.props.language).Analyst_Prompt.BEING_ANALYZED,
         //   {
         //     timeout: 20000,
-        //     timeoutMsg: getLanguage(GLOBAL.language).Prompt.REQUEST_TIMEOUT,
+        //     timeoutMsg: getLanguage(global.language).Prompt.REQUEST_TIMEOUT,
         //   },
         // )
         let analysisData = this.densityView.getData()
@@ -237,7 +237,7 @@ export default class OnlineAnalystView extends Component {
 
   /** 获取数据集数据信息 **/
   getDatasetInfo = async dataset => {
-    if (GLOBAL.cookie) {
+    if (global.cookie) {
       let data = await this.props.getDatasetInfoFromIServer({
         ip: this.props.iServerData.ip,
         port: this.props.iServerData.port,

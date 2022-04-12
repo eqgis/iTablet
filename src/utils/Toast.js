@@ -13,7 +13,7 @@ function show(msg, option = null) {
   // if (option.type === 'normal') {
   //   Toast.show(msg, op)
   // } else {
-  //   GLOBAL.Toast.show(msg, op)
+  //   global.Toast.show(msg, op)
   // }
   Toast.show(msg, op)
 }

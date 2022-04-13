@@ -12,10 +12,10 @@ target 'iTablet' do
     :hermes_enabled => false
   )
 
-  target 'iTabletTests' do
-    inherit! :complete
-    # Pods for testing
-  end
+  # target 'iTabletTests' do
+  #   inherit! :complete
+  #   # Pods for testing
+  # end
 
   # Enables Flipper.
   #

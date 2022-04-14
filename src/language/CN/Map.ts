@@ -664,6 +664,13 @@ const Map_Layer = {
   SELECT_LAYSER_SCALE: "请选择比例尺",
   LAYER_SCALE_RANGE_WRONG: "最大比例尺必须大于最小比例尺",
 
+  LAYERS_SECONDS_TO_PLAY: "持续时间",
+  LAYER_MOVEUP_SUCCESS: '图层上移成功',
+  LAYER_MOVEUP_FAIL: '图层上移失败',
+  LAYER_MOVEDOWN_SUCCESS: '图层下移成功',
+  LAYER_MOVEDOWN_FAIL: '图层下移失败',
+
+
   VISIBLE: "设置图层可见",
   NOT_VISIBLE: "设置图层不可见",
   OPTIONAL: "设置图层可选",

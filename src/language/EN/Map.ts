@@ -667,6 +667,13 @@ const Map_Layer: typeof CN.Map_Layer = {
   SELECT_LAYSER_SCALE: "Please select a scale",
   LAYER_SCALE_RANGE_WRONG: "The maximum scale must be bigger than the minimum scale",
 
+  LAYERS_SECONDS_TO_PLAY: "Seconds to play",
+  LAYER_MOVEUP_SUCCESS: 'Moveup success',
+  LAYER_MOVEUP_FAIL: 'Moveup fail',
+  LAYER_MOVEDOWN_SUCCESS: 'Movedown success',
+  LAYER_MOVEDOWN_FAIL: 'Movedown fail',
+
+
   VISIBLE: "Visible",
   NOT_VISIBLE: "Not Visible",
   OPTIONAL: "Optional",

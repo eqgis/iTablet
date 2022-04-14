@@ -1188,6 +1188,7 @@ class AppRoot extends Component {
           <RootNavigator
             appConfig={this.props.appConfig}
             device={this.props.device}
+            currentUser={this.props.user.currentUser}
             setModules={this.props.setModules}
             setNav={this.props.setNav}
           />

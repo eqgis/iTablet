@@ -35,11 +35,19 @@ class LicenseTypePage extends Component {
   }
 
   joinCloud = () => {
-    NavigationService.navigate('LicenseJoinCloud')
+    if (UserType.isIPortalUser(this.props.currentUser) || UserType.isOnlineUser(this.props.currentUser)) {
+      NavigationService.navigate('LicenseJoinCloud')
+    } else {
+      NavigationService.navigate('LoginCloud')
+    }
   }
 
   joinPrivateCloud = () => {
-    NavigationService.navigate('LicenseJoinPrivateCloud')
+    if (UserType.isIPortalUser(this.props.currentUser) || UserType.isOnlineUser(this.props.currentUser)) {
+      NavigationService.navigate('LicenseJoinPrivateCloud')
+    } else {
+      NavigationService.navigate('ConnectServer')
+    }
   }
 
   joinEducationLicense = () => {

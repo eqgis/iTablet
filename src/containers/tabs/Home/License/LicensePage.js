@@ -90,12 +90,23 @@ class LicensePage extends Component {
       let userInfo = this.props.cloudLicenseUser
       if (userInfo.isEmail === undefined) {
         Toast.show(getLanguage(global.language).Prompt.PLEASE_LOGIN)
-        NavigationService.navigate('LicenseJoinCloud', {
-          callback: () => {
-            NavigationService.goBack()
-            this._recycleCloudLicense()
-          },
-        })
+        // NavigationService.navigate('LicenseJoinCloud', {
+        //   callback: () => {
+        //     NavigationService.goBack()
+        //     this._recycleCloudLicense()
+        //   },
+        // })
+        
+        if (UserType.isIPortalUser(this.props.currentUser) || UserType.isOnlineUser(this.props.currentUser)) {
+          this.props.navigation.navigate('LicenseJoinCloud', {
+            callback: () => {
+              NavigationService.goBack()
+              this._recycleCloudLicense()
+            },
+          })
+        } else {
+          NavigationService.navigate('LoginCloud')
+        }
         return -1
       }
       global.Loading.setLoading(
@@ -227,6 +238,7 @@ class LicensePage extends Component {
 const mapStateToProps = state => ({
   licenseInfo: state.license.toJS().licenseInfo,
   cloudLicenseUser: state.license.toJS().cloudLicenseUser,
+  currentUser: state.user.toJS().currentUser,
 })
 
 const mapDispatchToProps = {

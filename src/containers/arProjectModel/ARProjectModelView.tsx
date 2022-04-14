@@ -21,11 +21,10 @@ import { getLanguage } from '../../language'
 import { color } from '../../styles'
 import { scaleSize } from '../../utils'
 import Orientation from 'react-native-orientation'
-import { NavigationScreenProp } from 'react-navigation'
 
 
 interface IProps {
-  navigation: NavigationScreenProp<{}>,
+  navigation: any,
   language: string,
   user: Object,
   nav: Object,

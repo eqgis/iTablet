@@ -286,7 +286,7 @@ export async function addARModel(location?: IVector3) {
     const _data: any = ToolbarModule.getData()
     const layer = _params.arlayer.currentLayer
     if(layer){
-      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
+      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, location)
     }
   } catch (error) {
     Toast.show(error)

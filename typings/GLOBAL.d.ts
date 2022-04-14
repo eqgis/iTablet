@@ -174,6 +174,9 @@ declare namespace GLOBAL {
   let isSceneOpen: boolean
   /** AR模块判断是否定位*/
   let haslocation: boolean
+  /** AR特效图层是否添加完成标识 */
+  let isNotEndAddEffect: boolean
+
   // 全局方法
   /** 获取设备信息，待优化 App.js*/
   function getDevice(): Device        

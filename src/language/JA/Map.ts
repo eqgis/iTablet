@@ -667,6 +667,12 @@ const Map_Layer: typeof CN.Map_Layer = {
   SELECT_LAYSER_SCALE: "スケールを選択してください",
   LAYER_SCALE_RANGE_WRONG: "最大スケールは最小スケールより大きい値に設定する必要があります。",
 
+  LAYERS_SECONDS_TO_PLAY: "Seconds to play",  // To be translated
+  LAYER_MOVEUP_SUCCESS: 'Moveup success',  // To be translated
+  LAYER_MOVEUP_FAIL: 'Moveup fail',  // To be translated
+  LAYER_MOVEDOWN_SUCCESS: 'Movedown success',  // To be translated
+  LAYER_MOVEDOWN_FAIL: 'Movedown fail',  // To be translated
+
   VISIBLE: "レイヤーを表示に設定",
   NOT_VISIBLE: "レイヤーを非表示に設定",
   OPTIONAL: "レイヤーを選択可能に設定",

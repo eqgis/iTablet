@@ -86,15 +86,12 @@
 		4E045E34246AC6A9009F64CE /* python2.7.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4E045DD9246AC6A9009F64CE /* python2.7.zip */; };
 		4E045E36246AC6C6009F64CE /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E045E35246AC6C6009F64CE /* PIL */; };
 		4E0D303E24DA9980001AE116 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4E0D303D24DA9980001AE116 /* resources.bundle */; };
-		4E20A3DD2653606D0019E3D5 /* CALayer+MainThreadGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E20A3DB2653606D0019E3D5 /* CALayer+MainThreadGuard.m */; };
-		4E20A3DE2653606D0019E3D5 /* CALayer+MainThreadGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E20A3DB2653606D0019E3D5 /* CALayer+MainThreadGuard.m */; };
-		4E2A612226F1EE2D00964FE1 /* UIApplication+NBUIKitMainThreadGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A612126F1EE2D00964FE1 /* UIApplication+NBUIKitMainThreadGuard.m */; };
 		4E2E2D16260C8365008D0FB2 /* MyLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E2E2D13260C8365008D0FB2 /* MyLaunchScreen.storyboard */; };
 		4E2E2D17260C8365008D0FB2 /* MyLaunchScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2E2D15260C8365008D0FB2 /* MyLaunchScreenViewController.m */; };
-		4E4157C527FFE0EA005C744B /* ARWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E41578B27FFE0EA005C744B /* ARWebView.xib */; };
 		4E47F998280558F7001EF103 /* left_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E47F997280558F7001EF103 /* left_arrow.png */; };
 		4E51DC0F37A544EEAA87110D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161B72053D084F8288A022CA /* Foundation.framework */; };
 		4E68739626463BF6003E29E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E68739526463BF6003E29E7 /* LaunchScreen.storyboard */; };
+		4E74952F280D3E4A0074F2EB /* ARWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7494F5280D3E4A0074F2EB /* ARWebView.xib */; };
 		4EE4616E239A497C00775A76 /* labelmap_cn.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4EE4616D239A497C00775A76 /* labelmap_cn.txt */; };
 		4EFB3DE123BBF28700688642 /* libiconv.2.4.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EFB3DDF23BBF07300688642 /* libiconv.2.4.0.tbd */; };
 		4FDE080EB44C437285909CD0 /* libRCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1853C4F095F74312930AEB4B /* libRCTContacts.a */; };
@@ -113,7 +110,6 @@
 		614D856D23C71A1900BDEC31 /* HorizonalFinemapping.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 614D856423C71A1900BDEC31 /* HorizonalFinemapping.prototxt */; };
 		614D856E23C71A1900BDEC31 /* Segmentation.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = 614D856523C71A1900BDEC31 /* Segmentation.caffemodel */; };
 		614D856F23C71A1900BDEC31 /* CharacterRecognization.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 614D856623C71A1900BDEC31 /* CharacterRecognization.prototxt */; };
-		665DD0FC2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 665DD0FB2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m */; };
 		668A3F67262BDDA500BAE2FF /* JKVValue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5E262BDCC100BAE2FF /* JKVValue.framework */; };
 		668A3F68262BDDA500BAE2FF /* JKVValue.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5E262BDCC100BAE2FF /* JKVValue.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		668A3F6A262BDDB500BAE2FF /* RMQClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668A3F5C262BDCC100BAE2FF /* RMQClient.framework */; };
@@ -714,16 +710,12 @@
 		4E045E35246AC6C6009F64CE /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
 		4E0D303D24DA9980001AE116 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resources.bundle; sourceTree = "<group>"; };
 		4E1ADBD1246ABBAE00F11C42 /* NativeUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeUtil.h; sourceTree = "<group>"; };
-		4E20A3DB2653606D0019E3D5 /* CALayer+MainThreadGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+MainThreadGuard.m"; sourceTree = "<group>"; };
-		4E20A3DC2653606D0019E3D5 /* CALayer+MainThreadGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+MainThreadGuard.h"; sourceTree = "<group>"; };
-		4E2A612026F1EE2D00964FE1 /* UIApplication+NBUIKitMainThreadGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NBUIKitMainThreadGuard.h"; sourceTree = "<group>"; };
-		4E2A612126F1EE2D00964FE1 /* UIApplication+NBUIKitMainThreadGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NBUIKitMainThreadGuard.m"; sourceTree = "<group>"; };
 		4E2E2D13260C8365008D0FB2 /* MyLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyLaunchScreen.storyboard; sourceTree = "<group>"; };
 		4E2E2D14260C8365008D0FB2 /* MyLaunchScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLaunchScreenViewController.h; sourceTree = "<group>"; };
 		4E2E2D15260C8365008D0FB2 /* MyLaunchScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLaunchScreenViewController.m; sourceTree = "<group>"; };
-		4E41578B27FFE0EA005C744B /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
 		4E47F997280558F7001EF103 /* left_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_arrow.png; sourceTree = "<group>"; };
 		4E68739526463BF6003E29E7 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4E7494F5280D3E4A0074F2EB /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
 		4EE4616D239A497C00775A76 /* labelmap_cn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labelmap_cn.txt; sourceTree = "<group>"; };
 		4EFB3DDF23BBF07300688642 /* libiconv.2.4.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.4.0.tbd; path = usr/lib/libiconv.2.4.0.tbd; sourceTree = SDKROOT; };
 		5ACE6D6C17F9429194D7409D /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
@@ -745,8 +737,6 @@
 		64EBB0CEFDCC424896C92D54 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		6576741CC21E433D89E8DBD7 /* libAMapGeolocation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAMapGeolocation.a; sourceTree = "<group>"; };
 		6606183D264B692000638D30 /* LibUGC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibUGC.xcodeproj; path = ../../../../../../../Volumes/ExternData/code/sourceCode/UGC/Builds/64_arm_iphone/LibUGC/LibUGC.xcodeproj; sourceTree = "<group>"; };
-		665DD0FA2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+NBUIKitMainThreadGuard.h"; sourceTree = "<group>"; };
-		665DD0FB2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+NBUIKitMainThreadGuard.m"; sourceTree = "<group>"; };
 		668A3F5C262BDCC100BAE2FF /* RMQClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RMQClient.framework; sourceTree = "<group>"; };
 		668A3F5D262BDCC100BAE2FF /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		668A3F5E262BDCC100BAE2FF /* JKVValue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JKVValue.framework; sourceTree = "<group>"; };
@@ -968,6 +958,7 @@
 		0A16C40221AC0AB700A515FA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				4E7494F5280D3E4A0074F2EB /* ARWebView.xib */,
 				4E47F997280558F7001EF103 /* left_arrow.png */,
 				0AC5859A2609861B001AB8B5 /* launch_slogan_cn.png */,
 				0AC5855D26098619001AB8B5 /* launch_slogan_en.png */,
@@ -1273,15 +1264,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4E41578A27FFE0EA005C744B /* ARComponent */ = {
-			isa = PBXGroup;
-			children = (
-				4E41578B27FFE0EA005C744B /* ARWebView.xib */,
-			);
-			name = ARComponent;
-			path = ../node_modules/imobile_for_reactnative/ios/ARMapping/ARComponent;
-			sourceTree = "<group>";
-		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1378,7 +1360,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				4E41578A27FFE0EA005C744B /* ARComponent */,
 				13B07FAE1A68108700A75B9A /* iTablet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* iTabletTests */,
@@ -1419,12 +1400,6 @@
 				0ABCB8C32246056500992994 /* WeiXinUtils.m */,
 				0A64601821FEB82C00928DAD /* AppUtils.h */,
 				0A64601921FEB82C00928DAD /* AppUtils.m */,
-				4E20A3DC2653606D0019E3D5 /* CALayer+MainThreadGuard.h */,
-				4E20A3DB2653606D0019E3D5 /* CALayer+MainThreadGuard.m */,
-				665DD0FA2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.h */,
-				665DD0FB2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m */,
-				4E2A612026F1EE2D00964FE1 /* UIApplication+NBUIKitMainThreadGuard.h */,
-				4E2A612126F1EE2D00964FE1 /* UIApplication+NBUIKitMainThreadGuard.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -2084,11 +2059,11 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0A11D9E921F9641D00AFE6D6 /* logo.png in Resources */,
+				4E74952F280D3E4A0074F2EB /* ARWebView.xib in Resources */,
 				183793EC2738ACA600090F24 /* mobilenet_quant_224.tflite in Resources */,
 				614D856E23C71A1900BDEC31 /* Segmentation.caffemodel in Resources */,
 				4E68739626463BF6003E29E7 /* LaunchScreen.storyboard in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				4E4157C527FFE0EA005C744B /* ARWebView.xib in Resources */,
 				0AEE2C9E24A9977D00C9734E /* Template.zip in Resources */,
 				614D856F23C71A1900BDEC31 /* CharacterRecognization.prototxt in Resources */,
 				614D856723C71A1900BDEC31 /* SegmenationFree-Inception.caffemodel in Resources */,
@@ -2133,7 +2108,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -2141,7 +2116,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\nexport SKIP_BUNDLING\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
@@ -2166,12 +2141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E20A3DD2653606D0019E3D5 /* CALayer+MainThreadGuard.m in Sources */,
-				665DD0FC2652515D002F5146 /* UIView+NBUIKitMainThreadGuard.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				0A9573C821C0B8EE00B5853A /* NativeMethod.m in Sources */,
-				4E2A612226F1EE2D00964FE1 /* UIApplication+NBUIKitMainThreadGuard.m in Sources */,
 				0ABCB8C42246056500992994 /* WeiXinUtils.m in Sources */,
 				0A64601A21FEB82C00928DAD /* AppUtils.m in Sources */,
 				4E2E2D17260C8365008D0FB2 /* MyLaunchScreenViewController.m in Sources */,
@@ -2182,7 +2154,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E20A3DE2653606D0019E3D5 /* CALayer+MainThreadGuard.m in Sources */,
 				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
 				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
 			);

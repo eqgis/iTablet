@@ -91,7 +91,7 @@ renderCustomAlertDialog = () => {
         >
           SuperMap iTablet
         </Text>
-        <Text style={styles.version}>10i(2021)</Text>
+        <Text style={styles.version}>11i(2022)</Text>
       </View>
     )
   }

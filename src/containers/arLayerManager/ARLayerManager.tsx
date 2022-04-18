@@ -2,7 +2,7 @@ import { SARMap, ARLayerType } from 'imobile_for_reactnative'
 import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
-import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo, View } from 'react-native'
+import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo, View, Platform } from 'react-native'
 import { scaleSize, Toast, DialogUtils } from '../../utils'
 import { getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
@@ -81,8 +81,15 @@ interface State {
   type: string,
 }
 
+interface Postion {
+  x: number,
+  y: number,
+}
+
 export default class ARLayerManager extends React.Component<Props, State> {
   inputDialog: InputDialog | undefined | null
+  backPositon: Postion
+  tabType: string
 
   constructor(props: Props) {
     super(props)
@@ -92,6 +99,9 @@ export default class ARLayerManager extends React.Component<Props, State> {
       menuVisible: false,
       type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
     }
+    this.backPositon = {x:0, y: 0}
+    // 获取由添加页面过来的tab的索引
+    this.tabType = params && params?.tabType
   }
 
   componentDidMount() {
@@ -129,7 +139,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         // },
         {
           title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME,
-          image: getThemeAssets().layer.icon_layer_style,
+          image: getThemeAssets().layer.icon_layer_rename02,
           action: async () => {
             let layer = this.state.selectLayer
             // if (this.props.arlayer.currentLayer) {
@@ -153,7 +163,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         },
         {
           title: getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE,
-          image: getThemeAssets().layer.icon_remove_layer,
+          image: getThemeAssets().layer.icon_tool_delete,
           action: async () => {
             GLOBAL.SimpleDialog.set({
               text: getLanguage(GLOBAL.language).Prompt.DELETE_LAYER,
@@ -175,28 +185,155 @@ export default class ARLayerManager extends React.Component<Props, State> {
         },
       ],
     }]
+
+    // 特效图层下移
+    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+      menuData[0].data.unshift({
+        title: getLanguage().Map_Layer.LAYERS_MOVE_DOWN,
+        image: getThemeAssets().layer.icon_edit_movedown,
+        action: async () => {
+          
+          if(Platform.OS === 'android') {
+            const isMoveup = await SARMap.moveLayerDown(this.state.selectLayer.name)
+            if(isMoveup) {
+              // 更新页面数据
+              await this._getLayer()
+              Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_SUCCESS)
+            } else {
+              Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
+            }
+          } else {
+            // IOS TODO
+          }
+          // 隐藏菜单列表
+          this.setState({
+            menuVisible: false,
+          })
+
+
+        },
+      })
+    }
+    
+    // 特效图层上移
+    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+      menuData[0].data.unshift({
+        title: getLanguage().Map_Layer.LAYERS_MOVE_UP,
+        image: getThemeAssets().layer.icon_edit_moveup,
+        action: async () => {
+          if(Platform.OS === 'android') {
+            const isMoveup = await SARMap.moveLayerUp(this.state.selectLayer.name)
+            if(isMoveup) {
+              // 更新页面数据
+              await this._getLayer()
+              Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_SUCCESS)
+            } else {
+              Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
+            }
+          } else {
+            // IOS TODO
+          }
+          // 隐藏菜单列表
+          this.setState({
+            menuVisible: false,
+          })
+
+        },
+      })
+    }
+
+
     //ARElementLayer添加可见范围
     if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer) {
+      if('maxAnimationBounds' in this.state.selectLayer) {
+        // 非特效图层的可见距离的设置
+        menuData[0].data.unshift({
+          title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
+          image: getThemeAssets().layer.icon_visible_distance,
+          action: async () => {
+            console.warn("点击了非特效图层的可见距离设置按钮");
+
+            let layer = this.state.selectLayer
+            if (layer && 'maxVisibleBounds' in layer) {
+              const _params: any = ToolbarModule.getParams()
+              arEditModule().setModuleData()
+              _params.showFullMap(true)
+              // 将类型换成特效图层的
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS, {
+                isTouchProgress: true,
+                showMenuDialog: false,
+                isFullScreen: true,
+              })
+              ToolbarModule.addData({selectARElementLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds})
+              NavigationService.goBack()
+            }
+          },
+        })
+      } else if("secondsToPlay" in this.state.selectLayer) {
+        // 特效图层的可见距离的设置
+        menuData[0].data.unshift({
+          title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
+          image: getThemeAssets().layer.icon_visible_distance,
+          action: async () => {
+            console.warn("点击了特效图层的可见距离设置按钮")
+            
+            let layer = this.state.selectLayer
+          
+            if (layer && 'maxVisibleBounds' in layer) {
+              // 获取参数对象
+              const _params: any = ToolbarModule.getParams()
+              // 存放数据到ToolBarModule
+              arEditModule().setModuleData()
+              _params.showFullMap(true)
+              // 设置工具栏是否可见
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS, {
+                isTouchProgress: true,
+                showMenuDialog: false,
+                isFullScreen: true,
+              })
+              // 禁止左右拖动滑块的时候出现上下位移而调用dialog框
+              GLOBAL.isEffectProgress = true
+              ToolbarModule.addData({selectAREffectLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds, AREffectLayerVisibleBounds: layer.maxVisibleBounds,})
+              NavigationService.goBack()
+            }
+          },
+        })
+      }
+      
+    }
+
+    // 特效图层可持续时间
+    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
-        title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
-        image: getThemeAssets().layer.icon_layer_visible_scale,
+        title: getLanguage().Map_Layer.LAYERS_SECONDS_TO_PLAY,
+        image: getThemeAssets().layer.icon_tool_duration,
         action: async () => {
           let layer = this.state.selectLayer
-          if (layer && 'maxVisibleBounds' in layer) {
+        
+          if("secondsToPlay" in this.state.selectLayer){
+            // 获取参数对象
             const _params: any = ToolbarModule.getParams()
+            // 存放数据到ToolBarModule
             arEditModule().setModuleData()
             _params.showFullMap(true)
-            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS, {
+            // 设置工具栏是否可见
+            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY, {
               isTouchProgress: true,
               showMenuDialog: false,
               isFullScreen: true,
             })
-            ToolbarModule.addData({selectARElementLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds})
+            // 禁止左右拖动滑块的时候出现上下位移而调用dialog框
+            GLOBAL.isEffectProgress = true
+            ToolbarModule.addData({selectAREffectLayer: layer, AREffectLayerSecondsToPlay: layer?.secondsToPlay })
             NavigationService.goBack()
+            
           }
+
         },
       })
     }
+
+
     // 三维图层编辑功能
     if (
       this.state.selectLayer?.type === ARLayerType.AR3D_LAYER ||
@@ -227,9 +364,46 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
   _renderLayers = () => {
     if(!this.props.arlayer.layers) return null
+    // 在此处加过滤条件
+    const layers = this.props.arlayer.layers
+    const length = layers.length
+    const type: string | undefined = this.tabType
+
+    // 图层类型分类数组
+    const allTypes = [
+      [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
+      [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
+      [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
+      [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
+      [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
+      [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
+    ]
+    let newLayers: ARLayer[] = []
+    if(type){
+      // 当类型为有值的情况下，一定是一个数字的字符串
+      const typeIndex = parseInt(type)
+      for(let i = 0; i < length; i ++){
+        // 判断该图层的类型是否属于要过滤的类型 false表示不显示的 true表示显示的
+        let isFilter = false
+        allTypes[typeIndex].map((item) => {
+          if(item === layers[i].type) {
+            isFilter = true
+          }
+        } )
+        if(isFilter){
+          newLayers.push(layers[i])
+        }
+      }
+    } else {
+      // 当没有过滤类型传过来时，默认显示全部数据
+      newLayers = JSON.parse(JSON.stringify(layers))
+    }
+
+
     return (
       <ARLayers
-        layers={this.props.arlayer.layers}
+        // layers={this.props.arlayer.layers}
+        layers = {newLayers}
         currentLayer={this.props.arlayer.currentLayer}
         setCurrentARLayer={this.props.setCurrentARLayer}
         onPress={layer => {
@@ -333,8 +507,15 @@ export default class ARLayerManager extends React.Component<Props, State> {
         action: () => {
           this.props.navigation.navigate('MapView')
           arDrawingModule().action()
+          // 点击新建图层，将特效图层是否正在添加中的标识设置为false，即添加完成
+          GLOBAL.isNotEndAddEffect = false
+          let type = this.tabType
+          if(!type) {
+            type = "0"
+          }
           ToolbarModule.addData({
             addNewDsetWhenCreate: true,
+            moduleIndex: Number(type),
           })
         },
       }),
@@ -346,6 +527,19 @@ export default class ARLayerManager extends React.Component<Props, State> {
       //   },
       // }),
     ]
+  }
+  /** 返回按钮执行的方法 */
+  _back = () => {
+    this.props.navigation.navigate('MapView')
+    arDrawingModule().action()
+    let type = this.tabType
+    if(!type) {
+      type = "0"
+    }
+    ToolbarModule.addData({
+      moduleIndex: Number(type),
+    })
+
   }
 
   _renderInputDialog = () => {
@@ -411,20 +605,23 @@ export default class ARLayerManager extends React.Component<Props, State> {
   render() {
     return(
       <Container
+        ref={ref => (this.container = ref)}
         headerProps={{
           title: this.props.mapModules.modules[
             this.props.mapModules.currentMapModule
           ].chunk.title,
           navigation: this.props.navigation,
-          withoutBack: true,
+          withoutBack: !this.tabType,
           // headerLeft: this._renderHeaderLeft(),
           headerRight: this._renderHeaderRight(),
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(90),
           },
+          backBtnType: 'gray',
+          backAction: this._back,
         }}
-        bottomBar={this.renderToolBar()}
+        bottomBar={!this.tabType && this.renderToolBar()}
       >
         {this._renderLayers()}
         {this._renderInputDialog()}

@@ -669,6 +669,12 @@ const Map_Layer: typeof CN.Map_Layer = {
   SELECT_LAYSER_SCALE: "Veuillez sélectionner une échelle",
   LAYER_SCALE_RANGE_WRONG: "l'échelle de visibilité maximale doit être supérieure à l'échelle de visibilité minimale",
 
+  LAYERS_SECONDS_TO_PLAY: "Seconds to play",  // To be translated
+  LAYER_MOVEUP_SUCCESS: 'Moveup success',  // To be translated
+  LAYER_MOVEUP_FAIL: 'Moveup fail',  // To be translated
+  LAYER_MOVEDOWN_SUCCESS: 'Movedown success',  // To be translated
+  LAYER_MOVEDOWN_FAIL: 'Movedown fail',  // To be translated
+
   VISIBLE: "Visible",
   NOT_VISIBLE: "Invisible",
   OPTIONAL: "Optionnel",

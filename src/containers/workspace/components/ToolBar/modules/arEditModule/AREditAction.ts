@@ -4,7 +4,7 @@ import {
   ARAction,
   ARLayerType,
 } from 'imobile_for_reactnative'
-import { IAnimationParam, ARElementLayer } from "imobile_for_reactnative/types/interface/ar"
+import { IAnimationParam, ARElementLayer, AREffectLayer } from "imobile_for_reactnative/types/interface/ar"
 import { IVector3 } from "imobile_for_reactnative/types/data"
 import {
   ConstToolType,
@@ -15,6 +15,7 @@ import { DialogUtils, Toast } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 import { IARTransform } from '../types'
 import AREditData from './AREditData'
+import { Platform } from 'react-native'
 
 async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
@@ -106,6 +107,42 @@ function commit() {
     const ARElementLayerVisibleBounds: number = data.ARElementLayerVisibleBounds
     SARMap.setLayerMaxVisibleBounds(layer.name, ARElementLayerVisibleBounds)
     _params.setToolbarVisible(false)
+
+  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS){
+    // 特效图层设置可见距离的方法
+    const data: any  = ToolbarModule.getData()
+    const _params: any = ToolbarModule.getParams()
+    const layer: AREffectLayer = data.selectAREffectLayer
+    const AREffectLayerVisibleBounds: number = data.AREffectLayerVisibleBounds
+
+     // 设置最大可见距离的方法
+    if(Platform.OS === 'android') {
+      SARMap.setEffectLayerMaxVisibleBounds(layer.name, AREffectLayerVisibleBounds)
+    } else {
+      // IOS TODO
+    }
+    _params.setToolbarVisible(false)
+    // 特效图层点击确认后将禁用dialog框给取消
+    GLOBAL.isEffectProgress = false
+
+  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
+    // 特效图层设置持续时间
+    const data: any  = ToolbarModule.getData()
+    const _params: any = ToolbarModule.getParams()
+    const layer: AREffectLayer = data.selectAREffectLayer
+    const AREffectLayerSecondsToPlay: number = data.AREffectLayerSecondsToPlay
+
+    // 设置持续时间的方法
+    if(Platform.OS === 'android') {
+      SARMap.setEffectLayerSecondsToPlay(layer.name, AREffectLayerSecondsToPlay)
+    } else {
+      // IOS TODO
+    }
+
+    _params.setToolbarVisible(false)
+    // 特效图层点击确认后将禁用dialog框给取消
+    GLOBAL.isEffectProgress = false
+
   } else{
     SARMap.submit().then(async () => {
       const _data: any = ToolbarModule.getData()
@@ -161,6 +198,8 @@ function close() {
     // })
     // return true
   }
+  // 将禁用dialog框设置为不禁用
+  GLOBAL.isEffectProgress = false
   return false
 }
 
@@ -253,24 +292,74 @@ function deleteARElement() {
 
 async function getTouchProgressInfo(title: string) {
   const data: any  = ToolbarModule.getData()
-  const ARElementLayerVisibleBounds: number = data.ARElementLayerVisibleBounds
+  const _params: any = ToolbarModule.getParams()
   let tips = ''
   let range = [1, 100]
-  let value = ARElementLayerVisibleBounds
+  let value = data.ARElementLayerVisibleBounds
   let step = 1
   let unit = getLanguage().Convert_Unit.METER
   let _title = getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE
+
+  if(_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
+    range = [1, 100]
+    value = data.ARElementLayerVisibleBounds
+    step = 1
+    unit = getLanguage().Convert_Unit.METER
+    _title = getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE
+  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS){
+    // 特效图层设置可见距离的方法
+    range = [0, 100]
+    value = data.AREffectLayerVisibleBounds
+    step = 1
+    unit = getLanguage().Convert_Unit.METER
+    _title = getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE
+    
+
+  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
+    // 特效图层设置持续时间
+    range = [0, 100]
+    value = data.AREffectLayerSecondsToPlay
+    step = 1
+    unit = getLanguage().Convert_Unit.SECOND
+    _title = getLanguage().Map_Layer.LAYERS_SECONDS_TO_PLAY
+
+  } 
 
   return { title: _title, value, tips, range, step, unit }
 }
 
 
 function setTouchProgressInfo(title: string, value: number) {
-  let range = [1, 100]
-  if (value > range[1]) value = range[1]
-  else if (value <= range[0]) value = range[0]
+  const _params: any = ToolbarModule.getParams()
+  if(_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
+    // 非特效图层设置可见距离
+    let range = [1, 100]
+    if (value > range[1]) value = range[1]
+    else if (value <= range[0]) value = range[0]
 
-  ToolbarModule.addData({ARElementLayerVisibleBounds: value})
+    ToolbarModule.addData({ARElementLayerVisibleBounds: value})
+
+  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS){
+    // 特效图层设置可见距离
+    let range = [0, 100]
+    if (value > range[1]) value = range[1]
+    else if (value <= range[0]) value = range[0]
+
+    // 添加特效可见距离
+    ToolbarModule.addData({AREffectLayerVisibleBounds: value})
+
+  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
+    // 特效图层设置持续时间
+    let range = [0, 100]
+    if (value > range[1]) value = range[1]
+    else if (value <= range[0]) value = range[0]
+
+    // 添加特效持续时间
+    ToolbarModule.addData({AREffectLayerSecondsToPlay: value})
+  } 
+
+
+  
 }
 
 export default {

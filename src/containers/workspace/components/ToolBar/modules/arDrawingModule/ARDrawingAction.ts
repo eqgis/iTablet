@@ -286,7 +286,7 @@ export async function addARModel(location?: IVector3) {
     const _data: any = ToolbarModule.getData()
     const layer = _params.arlayer.currentLayer
     if(layer){
-      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
+      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, location)
     }
   } catch (error) {
     Toast.show(error)
@@ -340,11 +340,21 @@ async function addAREffect(fileName: string, filePath: string) {
     const homePath = await FileTools.getHomeDirectory()
     const layers = _params.arlayer.layers
     let effectLayer: ARLayer | undefined = undefined
-    if(layers) {
-      effectLayer = layers.find((item: ARLayer) => item.type === ARLayerType.EFFECT_LAYER)
+
+    // 是否允许新建图层添加
+    // 特效图层是否未添加完毕  false表示添加完毕， true表示未添加完毕
+    // const isNotEnd = _data.isNotEndAddEffect
+    const isNotEnd = GLOBAL.isNotEndAddEffect
+
+    // 获取当前图层
+    const layer = _params?.arlayer?.currentLayer
+    // 若当前图层是特效图层
+    if(layer?.type === ARLayerType.EFFECT_LAYER){
+      effectLayer = layer
     }
-    // 若已有特效图层，则替换
-    if(effectLayer) {
+
+    // 若当前图层是特效图层,且为正在添加状态，则替换
+    if(isNotEnd && effectLayer) {
       const homePath = await FileTools.getHomeDirectory()
       if (Platform.OS === 'ios') {
         let targetPath = filePath.replace('.areffect','.mp4')
@@ -374,7 +384,14 @@ async function addAREffect(fileName: string, filePath: string) {
     }else{
       addLayerName = await SARMap.addEffectLayer(layerName, homePath + filePath)
     }
+    // 先矫正定位
+    if(Platform.OS === 'android') {
+      SARMap.setEffectLayerCenter(fileName.substring(0, fileName.lastIndexOf('.')))
+    } else {
+      // IOS TODO
+    }
     if(addLayerName !== '') {
+      GLOBAL.isNotEndAddEffect = true
       const layers = await _params.getARLayers()
       const defaultLayer = layers.find((item: ARLayer) => {
         return item.type === ARLayerType.EFFECT_LAYER
@@ -489,6 +506,7 @@ async function toolbarBack() {
 }
 
 function commit() {
+  GLOBAL.isNotEndAddEffect = false
   SARMap.setCenterHitTest(false)
   // SARMap.setAction(ARAction.SELECT)
   SARMap.setAction(ARAction.NULL)

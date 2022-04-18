@@ -28,6 +28,7 @@ interface TableData {
   data: any,
   type?: string,
   getData?: () => Promise<any>,
+  opPress?: () => void,
 }
 
 
@@ -64,6 +65,7 @@ export default class Tabs extends React.Component<Props, State> {
       this.setState({
         currentPage: index,
       })
+    this.props.data[index]?.onPress()
   }
 
   _getWidth = () => {

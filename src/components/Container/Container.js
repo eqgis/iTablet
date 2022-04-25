@@ -47,6 +47,7 @@ export default class Container extends Component {
     orientation?: String, // redux中的实时横竖屏数据
     onOverlayPress?: () => {}, // 横屏时，半屏遮罩点击事件
     isOverlayBefore?: boolean, // 横屏是，遮罩的位置，true为左，反之为右
+    showPointToast?: boolean, // 导航模块显示选点提示
   }
 
   static defaultProps = {
@@ -62,6 +63,7 @@ export default class Container extends Component {
     blankOpacity: 0, //透明半屏的透明度
     hideInBackground: true, //在mapview和map3d中,StackNavigator中有新页面时是否隐藏本页面
     isOverlayBefore: true,
+    showPointToast:false,// 导航模块显示选点提示
   }
 
   constructor(props) {
@@ -248,15 +250,16 @@ export default class Container extends Component {
   setLoading = async (loading, info, extra = {}) => {
     await this.loading.setLoading(loading, info, extra)
     // 当加载状态为不加载，是否显示选点的提示标识为true，且当前模块儿为导航采集时，就给一个“长按选点”的提示
-    if (!loading 
+    if (!loading
       && this.isShowPointToast
-      && GLOBAL.Type === ChunkType.MAP_NAVIGATION) {  
+      && GLOBAL.Type === ChunkType.MAP_NAVIGATION
+      && this.props.showPointToast) {
       // 导航采集选点提示
       Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_SELECT_POINT, {duration: 2500})
     }
     // 当加载的文字信息为“加载中”，将是否显示选点的提示标识设为true
     if(info === getLanguage(this.props.language).Prompt.LOADING && GLOBAL.Type === ChunkType.MAP_NAVIGATION){
-      this.isShowPointToast = true 
+      this.isShowPointToast = true
     } else {
       this.isShowPointToast = false
     }

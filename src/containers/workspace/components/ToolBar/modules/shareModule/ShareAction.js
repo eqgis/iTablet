@@ -33,7 +33,7 @@ async function shareMap(type, list = [], name = '') {
       const notExportMapIndexes = []
       for (let i = 1; i <= GLOBAL.BaseMapSize; i++) {
         if (LayerUtils.isBaseLayer(layers[layers.length - i])) {
-          notExportMapIndexes.push(layers.length - i)
+          notExportMapIndexes.push(layers[layers.length - i].name)
         }
       }
       const notExport = {

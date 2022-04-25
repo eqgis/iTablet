@@ -4949,6 +4949,7 @@ export default class MapView extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
+        showPointToast={true}
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{

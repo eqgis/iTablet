@@ -6,11 +6,10 @@ import { View, TouchableOpacity, FlatList, Text, ListRenderItemInfo, Image } fro
 import NavigationService from '../NavigationService'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
-import { NavigationScreenProp } from 'react-navigation'
 import  { Downloads, IDownloadProps } from '../../redux/models/down'
 import { getThemeAssets, getPublicAssets } from '../../assets'
 interface IProps {
-  navigation: NavigationScreenProp<{}>
+  navigation: any,
   downloads: Downloads,
   downloadFile: (param: IDownloadProps) => void
 }

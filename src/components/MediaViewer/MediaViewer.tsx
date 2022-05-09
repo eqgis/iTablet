@@ -2,21 +2,27 @@
  * 多媒体预览界面
  */
 import * as React from 'react'
-import { Modal } from 'react-native'
+import { Modal, StyleProp, ViewStyle } from 'react-native'
 import { checkType } from '../../utils'
 import VideoViewer from './VideoViewer'
 import ImageViewer from './ImageViewer'
 
 import styles from './styles'
 
-export default class MediaViewer extends React.Component {
-  props: {
-    uri: Object,
-    // type: string,
-    isModal: boolean,
-    containerStyle: any,
-    withBackBtn: boolean,
-  }
+interface Props {
+  uri?: string,
+  // type: string,
+  isModal?: boolean,
+  containerStyle?: StyleProp<ViewStyle>,
+  withBackBtn?: boolean,
+}
+
+interface State {
+  uri: string,
+  visible: boolean,
+}
+
+export default class MediaViewer extends React.Component<Props, State> {
 
   static defaultProps = {
     isModal: false,
@@ -24,7 +30,7 @@ export default class MediaViewer extends React.Component {
     containerStyle: styles.container,
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -33,7 +39,7 @@ export default class MediaViewer extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
       JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
@@ -46,16 +52,19 @@ export default class MediaViewer extends React.Component {
   //   }
   // }
 
-  setVisible = (visible = !this.state.visible, uri = '') => {
-    let newState = {}
+  setVisible = (visible = !this.state.visible, uri?: string) => {
+    let newState = {
+      uri: this.state.uri || '',
+      visible: false,
+    }
     if (visible !== this.state.visible) {
       newState.visible = visible
     }
-    if (uri !== this.state.uri) {
+    if (uri !== undefined && uri !== this.state.uri) {
       let type = checkType.getMediaTypeByPath(uri)
-      if (this.state.type !== type) {
-        newState.type = type
-      }
+      // if (this.state.type !== type) {
+      //   newState.type = type
+      // }
       newState.uri = uri
     }
     if (Object.keys(newState).length > 0) {
@@ -72,7 +81,7 @@ export default class MediaViewer extends React.Component {
         <VideoViewer
           uri={this.state.uri}
           withBackBtn={this.props.withBackBtn}
-          backAction={() => this.setVisible(false)}
+          backAction={() => {}}
         />
       )
     } else {
@@ -80,7 +89,7 @@ export default class MediaViewer extends React.Component {
         <ImageViewer
           uri={this.state.uri}
           containerStyle={this.props.containerStyle}
-          backAction={() => this.setVisible(false)}
+          backAction={() => {}}
         />
       )
     }

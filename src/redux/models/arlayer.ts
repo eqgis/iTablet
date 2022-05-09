@@ -42,7 +42,8 @@ interface DispatchParams {
 
 export const getARLayers = () => async (dispatch: (params: DispatchParams) => any) => {
   try {
-    const layers = await SARMap.getLayers()
+    // 将获取到的数组反序
+    const layers = await (await SARMap.getLayers()).reverse()
     dispatch({
       type: GET_AR_LAYERS,
       payload: layers,

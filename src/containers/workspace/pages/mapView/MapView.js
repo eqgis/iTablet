@@ -151,7 +151,6 @@ export default class MapView extends React.Component {
     nav: PropTypes.object,
     user: PropTypes.object,
     editLayer: PropTypes.object,
-    analystLayer: PropTypes.object,
     selection: PropTypes.array,
     latestMap: PropTypes.object,
     navigation: PropTypes.object,
@@ -213,8 +212,6 @@ export default class MapView extends React.Component {
     setSelection: PropTypes.func,
     setLatestMap: PropTypes.func,
     setCurrentMap: PropTypes.func,
-    setBufferSetting: PropTypes.func,
-    setOverlaySetting: PropTypes.func,
     setAnalystLayer: PropTypes.func,
     getLayers: PropTypes.func,
     setCollectionInfo: PropTypes.func,
@@ -952,7 +949,7 @@ export default class MapView extends React.Component {
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.route
           let preParams = prevProps.route.params
-          if (params.hideMapController && !preParams.hideMapController) {
+          if (params?.hideMapController && !preParams?.hideMapController) {
             this.mapController && this.mapController.setVisible(false)
           }
         })
@@ -1259,8 +1256,6 @@ export default class MapView extends React.Component {
   clearData = () => {
     this.props.setEditLayer(null)
     // this.props.setSelection(null)
-    this.props.setBufferSetting(null)
-    this.props.setOverlaySetting(null)
     this.props.setAnalystLayer(null)
     this.props.setCollectionInfo() // 置空Redux中Collection中的数据
     this.props.setCurrentTemplateInfo() // 清空当前模板
@@ -1442,7 +1437,6 @@ export default class MapView extends React.Component {
   saveMap = async () => {
     try {
       // if(global.Type === ChunkType.MAP_AR){
-      //   console.warn(1111)
       //   await this.props.closeARMap()
       //   await this.props.setCurrentARLayer()
       // }

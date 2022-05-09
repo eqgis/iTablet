@@ -1,5 +1,7 @@
 import { TUserType } from "../constants/UserType"
 
+export * from './NavigationTypes'
+
 export type ButtonSize = 'large' | 'normal' | 'small'
 
 /** 本地数据类型 */

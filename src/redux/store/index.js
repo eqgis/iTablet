@@ -39,8 +39,9 @@ const persistConfig = {
 }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
+export const reducer = persistCombineReducers(persistConfig, reducers)
+
 export default () => {
-  const reducer = persistCombineReducers(persistConfig, reducers)
   const store = createStore(
     reducer,
     composeEnhancers(applyMiddleware(...middlewares)),

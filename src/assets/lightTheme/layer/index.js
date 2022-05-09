@@ -20,6 +20,19 @@ const icon_add_layer = require('./icon_add_layer.png')
 const icon_media = require('./icon_media.png')
 const icon_media_unvisible = require('./icon_media_unvisible.png')
 
+// 图层下移图片
+const icon_edit_movedown = require('./icon_edit_movedown.png')
+// 图层上移图片
+const icon_edit_moveup = require('./icon_edit_moveup.png')
+// 可见距离 AR
+const icon_visible_distance = require('./icon_distance.png')
+// 特效图层持续时间的图片
+const icon_tool_duration = require('./icon_tool_duration.png')
+// 重命名图标02 AR
+const icon_layer_rename02 = require('./icon_layer_rename02.png')
+// 删除图标 AR
+const icon_tool_delete = require('./icon_tool_delete.png')
+
 export default {
   icon_layer_uneditable,
   icon_layer_editable,
@@ -43,4 +56,12 @@ export default {
   icon_invisible,
   icon_media,
   icon_media_unvisible,
+
+  icon_edit_movedown,
+  icon_edit_moveup,
+  icon_visible_distance,
+  icon_tool_duration,
+  icon_layer_rename02,
+  icon_tool_delete,
+
 }

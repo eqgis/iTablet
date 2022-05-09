@@ -166,7 +166,7 @@ export default class LayerAttributeTabs extends React.Component {
   async componentDidMount() {
     try {
       await this.props.setBackAction({
-        key: this.props.route.routeName,
+        key: this.props.route.name,
         action: this.back,
       })
       if (this.preAction && typeof this.preAction === 'function') {
@@ -255,7 +255,7 @@ export default class LayerAttributeTabs extends React.Component {
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
-        key: this.props.route.routeName,
+        key: this.props.route.name,
       })
     }
   }

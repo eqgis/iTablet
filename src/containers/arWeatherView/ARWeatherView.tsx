@@ -9,10 +9,9 @@ import { color } from '../../styles'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { FileTools } from '../../native'
-import { NavigationScreenProp } from 'react-navigation'
 
 interface IProps {
-  navigation: NavigationScreenProp<{}>
+  navigation: any,
 }
 
 interface IState {

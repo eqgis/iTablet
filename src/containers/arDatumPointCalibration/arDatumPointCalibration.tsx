@@ -157,6 +157,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     const { startScan } = this.props
     // 父组件完成扫描逻辑
     const result = await startScan()
+    console.warn(JSON.stringify(result))
     let point
     if(this._checkInfoValid(result)){
       point = JSON.parse(result)

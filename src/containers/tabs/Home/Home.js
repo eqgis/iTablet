@@ -112,7 +112,7 @@ export default class Home extends Component {
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
-        key: this.props.route.routeName,
+        key: this.props.route.name,
       })
     }
   }
@@ -261,7 +261,8 @@ export default class Home extends Component {
           this.container.setLoading(false)
         }
         // NavigationService.navigate('Mine')
-        NavigationService.popToTop('Tabs')
+        // NavigationService.popToTop('Tabs')
+        NavigationService.navigate('Tabs', {screen: 'Home'})
         this.props.openWorkspace({ server: customPath })
       })
     } catch (e) {

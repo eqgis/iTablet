@@ -551,7 +551,6 @@ export default handleActions(
         }
         return fromJS(data)
       }
-      console.warn(3, state)
       return state
     },
   },

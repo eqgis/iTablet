@@ -19,7 +19,7 @@ class SelectModule extends Component {
 
   constructor(props) {
     super(props)
-    this.callBack = this.props.route.param.callBack
+    this.callBack = this.props.route.params.callBack
   }
 
   onPress = (module, index) => {

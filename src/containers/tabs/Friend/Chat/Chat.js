@@ -102,7 +102,7 @@ class Chat extends React.Component {
   componentDidMount() {
     Platform.OS === 'android' && BackHandler.addEventListener('hardwareBackPress', this.back)
     // Platform.OS === 'android' && this.props.setBackAction({
-    //   key: this.props.route.routeName,
+    //   key: this.props.route.name,
     //   action: () => this.back(),
     // })
     if (this.state.coworkMode) {
@@ -174,7 +174,7 @@ class Chat extends React.Component {
     if (Platform.OS === 'android') {
       BackHandler.removeEventListener('hardwareBackPress', this.back)
       // this.props.removeBackAction({
-      //   key: this.props.route.routeName,
+      //   key: this.props.route.name,
       // })
     }
     this.friend.setCurChat(undefined, this.openTime)
@@ -207,12 +207,12 @@ class Chat extends React.Component {
   //   if (Platform.OS === 'android') {
   //     if (value) {
   //       this.props.setBackAction({
-  //         key: this.props.route.routeName,
+  //         key: this.props.route.name,
   //         action: () => this.back(),
   //       })
   //     } else {
   //       this.props.removeBackAction({
-  //         key: this.props.route.routeName,
+  //         key: this.props.route.name,
   //       })
   //     }
   //   }

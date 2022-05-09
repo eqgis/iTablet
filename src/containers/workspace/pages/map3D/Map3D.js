@@ -182,7 +182,7 @@ export default class Map3D extends React.Component {
     // global.SaveMapView&&global.SaveMapView.setTitle(SAVE_TITLE)
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
-        key: this.props.route.routeName,
+        key: this.props.route.name,
       })
     }
     global.Type = null

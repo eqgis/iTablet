@@ -136,6 +136,8 @@ export default class FunctionToolbar extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (
+      JSON.stringify(this.props.language) !==
+        JSON.stringify(nextProps.language) ||
       JSON.stringify(this.props.online.share) !==
         JSON.stringify(nextProps.online.share) ||
       JSON.stringify(this.props.currentTaskServices) !==

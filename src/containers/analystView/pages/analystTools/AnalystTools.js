@@ -43,7 +43,7 @@ export default class AnalystTools extends Component {
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
-        key: this.props.route.routeName,
+        key: this.props.route.name,
       })
     }
     this.props.setMapLegend(false)

@@ -60,10 +60,10 @@ async function magntouchCallback(event) {
           global.toolBox.showFullMap(true)
           //导航选点 全屏时保留mapController
           global.mapController && global.mapController.setVisible(true)
-          this.props.setMapNavigation({
-            isShow: true,
-            name: '',
-          })
+          // this.props.setMapNavigation({
+          //   isShow: true,
+          //   name: '',
+          // })
         })()
       }
       break

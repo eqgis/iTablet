@@ -9,7 +9,7 @@ import { SMap } from 'imobile_for_reactnative'
 import Orientation from 'react-native-orientation'
 import { color } from '../../styles'
 import styles from './styles'
-import { Path } from '@react-native-community/art'
+import { Path, Surface, Shape } from '@react-native-community/art'
 
 const ShapeType = {
   RECTANGLE: 'RECTANGLE',
@@ -231,9 +231,9 @@ export default class SurfaceView extends Component {
     const dHeight = Dimensions.get('window').height
     return (
       <View {...this._panResponder.panHandlers} style={this.props.style}>
-        <ART.Surface width={dWidth} height={dHeight}>
-          <ART.Shape d={this.path} stroke={color.switch} strokeWidth={5} />
-        </ART.Surface>
+        <Surface width={dWidth} height={dHeight}>
+          <Shape d={this.path} stroke={color.switch} strokeWidth={5} />
+        </Surface>
       </View>
     )
   }

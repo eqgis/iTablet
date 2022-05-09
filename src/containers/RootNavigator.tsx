@@ -4,24 +4,18 @@ import PropTypes from 'prop-types'
 import NavigationService from './NavigationService'
 import AppNavigator from '../containers'
 import { NavigationContainer, NavigationState } from '@react-navigation/native'
+import { UserInfo } from '@/types'
 
 interface Props {
   appConfig: any,
   device: any,
+  currentUser: UserInfo,
 
   setNav: (params: any, cb?: () => void) => Promise<void>,
   setModules: (params: any, cb?: () => void) => Promise<void>,
 }
 
 export default class RootNavigator extends Component<Props> {
-  static propTypes = {
-    appConfig: PropTypes.object,
-    device: PropTypes.object,
-
-    setNav: PropTypes.func,
-    setModules: PropTypes.func,
-  }
-
   shouldComponentUpdate(nextProps: Props) {
     let prevAppConfig = Object.assign({}, this.props.appConfig)
     let nextAppConfig = Object.assign({}, nextProps.appConfig)
@@ -42,6 +36,7 @@ export default class RootNavigator extends Component<Props> {
       RootView = AppNavigator({
         appConfig: this.props.appConfig,
         device: this.props.device,
+        currentUser: this.props.currentUser,
       })
     }
     return (

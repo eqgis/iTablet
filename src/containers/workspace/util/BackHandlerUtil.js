@@ -5,10 +5,10 @@ function backHandler(nav, backActions) {
     nav && nav.routes ? nav : NavigationService.getTopLevelNavigator().state.nav
   let current = _nav.routes[_nav.index]
   let key
-  while (current.routes) {
-    current = current.routes[current.index]
+  while (current?.state?.routes) {
+    current = current.state.routes[current.state.index]
   }
-  key = current.routeName
+  key = current.name
   if (backActions[key] && typeof backActions[key] === 'function') {
     backActions[key]()
     return true

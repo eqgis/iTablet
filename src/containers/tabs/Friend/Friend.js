@@ -153,7 +153,6 @@ export default class Friend extends Component {
       JSON.stringify(prevProps.user.currentUser.userName) !==
       JSON.stringify(this.props.user.currentUser.userName)
     ) {
-console.warn(222)
       this.updateServices()
     }
   }
@@ -1764,7 +1763,8 @@ console.warn(222)
           nickname: 'Customer',
           userType: UserType.PROBATION_USER,
         })
-        NavigationService.popToTop('Tabs')
+        // NavigationService.popToTop('Tabs')
+        NavigationService.navigate('Tabs', {screen: 'Home'})
         this.props.openWorkspace({ server: customPath })
         Toast.show(
           message === ''

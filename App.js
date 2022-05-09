@@ -638,7 +638,8 @@ class AppRoot extends Component {
           nickname: 'Customer',
           userType: UserType.PROBATION_USER,
         })
-        NavigationService.popToTop('Tabs')
+        // NavigationService.popToTop('Tabs')
+        NavigationService.navigate('Tabs', {screen: 'Home'})
         this.props.openWorkspace({ server: customPath })
         Toast.show(getLanguage(this.props.language).Profile.LOGIN_INVALID)
       })

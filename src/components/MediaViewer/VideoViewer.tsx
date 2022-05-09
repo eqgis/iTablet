@@ -6,22 +6,38 @@ import { Image, View, TouchableOpacity } from 'react-native'
 import Video from 'react-native-video'
 import { getPublicAssets } from '../../assets'
 import { Progress } from '../Progress'
-import { VIDEO_STATUS } from './MediaConst'
+import { VIDEO_STATUS, VIDEO_STATUS_TYPE } from './MediaConst'
 
 import styles from './styles'
 
-export default class VideoViewer extends React.Component {
-  props: {
-    uri: Object,
-    withBackBtn: boolean,
-    backAction: () => {},
-  }
+interface Props {
+  uri: string,
+  withBackBtn: boolean,
+  backAction: () => void,
+}
+
+interface State {
+  videoPaused: boolean, // 视频是否暂停
+  videoControllerVisible: boolean, // 视频控制器是否显示
+  videoStatus: VIDEO_STATUS_TYPE, // 视频状态
+}
+
+interface SetVisibleParams {
+  visible?: boolean,
+  autoDismiss?: boolean,
+}
+
+export default class VideoViewer extends React.Component<Props, State> {
+
+  timer: NodeJS.Timeout | null | undefined
+  player: Video | null | undefined
+  mProgress: Progress | null | undefined
 
   static defaultProps = {
     withBackBtn: false,
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -31,14 +47,14 @@ export default class VideoViewer extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
       JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     )
   }
 
-  setVideoControllerVisible = (option = {}) => {
+  setVideoControllerVisible = (option: SetVisibleParams) => {
     if (option.visible === undefined) {
       option.visible = !this.state.videoControllerVisible
     }
@@ -48,7 +64,7 @@ export default class VideoViewer extends React.Component {
         this.setState({
           videoControllerVisible: false,
         })
-        clearTimeout(this.timer)
+        this.timer && clearTimeout(this.timer)
         this.timer = null
       }, 2000)
     } else if (!option.visible) {
@@ -70,7 +86,7 @@ export default class VideoViewer extends React.Component {
     if (!this.props.uri || !this.player) return null
     if (this.state.videoStatus === VIDEO_STATUS.STOP) {
       this.player.seek(0, 0)
-      this.mProgress.progress = 0
+      if (this.mProgress) this.mProgress.progress = 0
     }
     let videoPaused = !this.state.videoPaused
     this.setState({
@@ -122,8 +138,8 @@ export default class VideoViewer extends React.Component {
           }}
           onProgress={({ currentTime, seekableDuration }) => {
             // console.warn(currentTime, seekableDuration)
-            currentTime = currentTime.toFixed() - 1 + 1
-            seekableDuration = seekableDuration.toFixed() - 1 + 1
+            currentTime = parseFloat(currentTime.toFixed())
+            seekableDuration = parseFloat(seekableDuration.toFixed())
             if (this.mProgress) {
               this.mProgress.progress = currentTime / seekableDuration
             }

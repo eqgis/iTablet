@@ -30,8 +30,6 @@ import {
   getSymbolPlots,
 } from '../../../../redux/models/template'
 import {
-  setBufferSetting,
-  setOverlaySetting,
   getMapSetting,
   setMapLegend,
   setMapNavigation,
@@ -67,7 +65,6 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   nav: state.nav.toJS(),
   editLayer: state.layers.toJS().editLayer,
-  analystLayer: state.layers.toJS().analystLayer,
   selection: state.layers.toJS().selection,
   latestMap: state.map.toJS().latestMap,
   map: state.map.toJS(),
@@ -127,8 +124,6 @@ const mapDispatchToProps = {
   setEditLayer,
   setSelection,
   setLatestMap,
-  setBufferSetting,
-  setOverlaySetting,
   setAnalystLayer,
   setCurrentMap,
   getLayers,

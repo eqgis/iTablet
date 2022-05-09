@@ -4,21 +4,30 @@
 import * as React from 'react'
 import { View, Modal, Platform } from 'react-native'
 import { checkType, screen } from '../../utils'
-import Swiper from 'react-native-swiper' // eslint-disable-line
+import Swiper from 'react-native-swiper'
 import styles from './styles'
 import VideoViewer from './VideoViewer'
 import ImageViewer from './ImageViewer'
+import { DEVICE } from '@/redux/models/device'
 
-export default class MediaPager extends React.Component {
-  props: {
-    data: Array,
-    isModal: boolean,
-    withBackBtn: boolean,
-    backHide?: boolean,
-    defaultIndex: number,
-    device: Object,
-    onVisibleChange?: (visible: boolean)=>{}
-  }
+interface Props {
+  data: {uri: string}[],
+  isModal: boolean,
+  withBackBtn: boolean,
+  backHide?: boolean,
+  defaultIndex: number,
+  device: DEVICE,
+  onVisibleChange?: (visible: boolean)=>{}
+}
+
+interface State {
+  defaultIndex: number,
+  visible: boolean,
+}
+
+export default class MediaPager extends React.Component<Props, State> {
+
+  dataRef: (VideoViewer | ImageViewer | null)[] = []
 
   static defaultProps = {
     isModal: false,
@@ -28,7 +37,7 @@ export default class MediaPager extends React.Component {
     backHide: true,
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -38,7 +47,7 @@ export default class MediaPager extends React.Component {
     this.dataRef = []
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     let shouldUpdate =
       JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
@@ -47,7 +56,10 @@ export default class MediaPager extends React.Component {
   }
 
   setVisible = (visible = !this.state.visible, index = 0) => {
-    let newState = {}
+    let newState = {
+      defaultIndex: this.state.defaultIndex,
+      visible: this.state.visible,
+    }
     if (visible !== this.state.visible) {
       newState.visible = visible
     }
@@ -120,13 +132,13 @@ export default class MediaPager extends React.Component {
         }}
       >
         <Swiper
-          // eslint-disable-next-line
           onScrollBeginDrag={(e, state, context) => {
             const type = checkType.getMediaTypeByPath(
               this.props.data[state.index].uri,
             )
-            if (type === 'video') {
-              this.dataRef[state.index] && this.dataRef[state.index].pause()
+            const currentView = this.dataRef[state.index]
+            if (type === 'video' && currentView instanceof VideoViewer) {
+              currentView.pause()
             }
           }}
           dot={<View style={styles.dot} />}

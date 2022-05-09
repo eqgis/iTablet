@@ -22,7 +22,7 @@ import { ImagePicker } from '../../../../../../components'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
-import { TYPE } from '../../../../../camera/Camera'
+import { TYPE } from '../../../../../camera/types'
 import LocateUtils from '../../../../../pointAnalyst/LocateUtils'
 import { launchImageLibrary } from 'react-native-image-picker'
 

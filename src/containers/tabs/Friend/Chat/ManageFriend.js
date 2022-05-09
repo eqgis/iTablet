@@ -30,7 +30,7 @@ class ManageFriend extends Component {
     super(props)
     this.friend = this.props.route.params.friend
     this.user = this.props.route.params.user
-    this.targetId = this.props.route.param.targetId
+    this.targetId = this.props.route.params.targetId
     this.targetUser = this.friend.getTargetUser(this.targetId)
     this.language = global.language
     this.chat = this.props.route.params.chat

@@ -7,7 +7,6 @@ import {
   Platform,
   Dimensions,
 } from 'react-native'
-// import { createAppContainer, createStackNavigator } from 'react-navigation'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'

@@ -28,7 +28,7 @@ async function SearchPoiInMapView(item, cb = () => {}) {
         },
         data => {
           if (data) {
-            NavigationService.navigate('MapView')
+            NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
             global.PoiInfoContainer.setVisible(true)
             global.PoiTopSearchBar.setVisible(true)
             global.PoiTopSearchBar.setState({
@@ -54,7 +54,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
     }
     let location = await SMap.getMapcenterPosition()
     if (result?.data?.length > 0) {
-      NavigationService.navigate('MapView')
+      NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
 
       const resultList = []
       for (const dataItem of result.data) {
@@ -122,7 +122,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
           },
           async data => {
             if (data) {
-              NavigationService.navigate('MapView')
+              NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
               global.PoiInfoContainer.setVisible(true)
               global.PoiTopSearchBar.setVisible(true)
               global.PoiTopSearchBar.setState({
@@ -146,7 +146,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
                   : ~~dataItem.distance + 'm'
               })
               await SMap.addCallouts(resultList)
-              NavigationService.navigate('MapView')
+              NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
               global.PoiInfoContainer.show()
               global.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
               global.PoiTopSearchBar.setVisible(true)

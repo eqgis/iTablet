@@ -92,7 +92,7 @@ export default class BaseMapItem extends Component {
       mapTitle: this.props.item.mapName,
       noLegend: true,
     }
-    NavigationService.navigate('MapView', params)
+    NavigationService.navigate('MapStack', {screen: 'MapView', params: params})
   }
 
   render() {

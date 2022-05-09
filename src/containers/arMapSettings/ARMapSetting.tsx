@@ -29,7 +29,7 @@ class ARMapSetting extends React.Component<Props,State> {
       <View style={styles.settingView}>
         <TouchableOpacity style={styles.settingItem}
           onPress={() => {
-            NavigationService.navigate('MapView')
+            NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
             this.props.setDatumPoint(true)
             if(this.state.poiSearch){
               this.props.arPoiSearch(true)

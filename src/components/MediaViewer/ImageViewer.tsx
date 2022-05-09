@@ -2,31 +2,36 @@
  * 图片预览界面
  */
 import * as React from 'react'
-import { Dimensions, Image, TouchableOpacity, Platform } from 'react-native'
+import { Dimensions, Image, TouchableOpacity, Platform, LayoutChangeEvent } from 'react-native'
 import ImageZoom from 'react-native-image-pan-zoom'
 // eslint-disable-next-line import/no-unresolved
 import PhotoView from 'react-native-photo-view'
 import styles from './styles'
 
-export default class ImageViewer extends React.Component {
-  props: {
-    uri: Object,
-    containerStyle: any,
-    backAction: () => {},
-  }
+interface Props {
+  uri: string,
+  containerStyle: any,
+  backAction: () => void,
+}
 
+export default class ImageViewer extends React.Component<Props> {
+
+  width = 0
+  height = 0
+  imageWidth = 200
+  imageHeight = 200
+  
   static defaultProps = {
     containerStyle: styles.container,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: Props) {
     return (
-      JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
-      JSON.stringify(this.state) !== JSON.stringify(nextState)
+      JSON.stringify(this.props) !== JSON.stringify(nextProps)
     )
   }
 
-  handleLayout = event => {
+  handleLayout = (event: LayoutChangeEvent) => {
     let imageZoomShouldUpdate = false
     let imageShouldUpdate = false
     if (event.nativeEvent.layout.width !== this.width) {
@@ -63,27 +68,27 @@ export default class ImageViewer extends React.Component {
     // this.forceUpdate()
   }
 
-  renderIOS = () => {
-    return (
-      <ImageZoom
-        onClick={() => {
-          if (typeof this.props.backAction === 'function') {
-            this.props.backAction()
-          }
-        }}
-        cropWidth={Dimensions.get('window').width}
-        cropHeight={Dimensions.get('window').height}
-        imageWidth={this.imageWidth}
-        imageHeight={this.imageHeight}
-        // enableCenterFocus={true}
-      >
-        <Image
-          style={{ width: this.imageWidth, height: this.imageHeight }}
-          source={{ uri: this.props.uri }}
-        />
-      </ImageZoom>
-    )
-  }
+  // renderIOS = (): React.ReactNode => {
+  //   return (
+  //     <ImageZoom
+  //       onClick={(event) => {
+  //         if (typeof this.props.backAction === 'function') {
+  //           this.props.backAction()
+  //         }
+  //       }}
+  //       cropWidth={Dimensions.get('window').width}
+  //       cropHeight={Dimensions.get('window').height}
+  //       imageWidth={this.imageWidth}
+  //       imageHeight={this.imageHeight}
+  //       // enableCenterFocus={true}
+  //     >
+  //       <Image
+  //         style={{ width: this.imageWidth, height: this.imageHeight }}
+  //         source={{ uri: this.props.uri }}
+  //       />
+  //     </ImageZoom>
+  //   )
+  // }
 
   renderAndroid = () => {
     return (
@@ -117,7 +122,8 @@ export default class ImageViewer extends React.Component {
           }
         }}
       >
-        {Platform.OS === 'ios' ? this.renderIOS() : this.renderAndroid()}
+        {/* {Platform.OS === 'ios' ? this.renderIOS() : this.renderAndroid()} */}
+        {this.renderAndroid()}
       </TouchableOpacity>
     )
   }

@@ -95,7 +95,7 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${USER_SET}`]: (state: { toJS: () => { users: any }; setIn: (arg0: string[], arg1: any) => { (): any; new(): any; setIn: { (arg0: string[], arg1: any): any; new(): any } } }, { payload }: any) => {
+    [`${USER_SET}`]: (state: { toJS: () => { users: UserInfo[] }; setIn: (arg0: string[], arg1: any) => { (): any; new(): any; setIn: { (arg0: string[], arg1: any): any; new(): any } } }, { payload }: any) => {
       const { users } = state.toJS()
       for (let i = 0; i < users.length; i++) {
         //判断类型后有id判断id，没有id判断userName
@@ -123,7 +123,7 @@ export default handleActions(
       }
       return state.setIn(['users'], fromJS(payload))
     },
-    [`${USER_DELETE}`]: (state: { toJS: () => { users: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
+    [`${USER_DELETE}`]: (state: { toJS: () => { users: UserInfo[] }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { users } = state.toJS()
       for (let i = 0; i < users.length; i++) {
         //判断类型后有id判断id，没有id判断userName

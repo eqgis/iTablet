@@ -202,7 +202,8 @@ export default class Login extends React.Component {
         global.isLogging = true
         global.getFriend?.().onUserLoggedin()
         AppInfo.setServiceUrl('https://www.supermapol.com/web/')
-        NavigationService.popToTop('Tabs')
+        // NavigationService.popToTop('Tabs')
+        NavigationService.navigate('Tabs', {screen: 'Home'})
         // 加载用户底图
         await this.loadUserBaseMaps()
         // } else {

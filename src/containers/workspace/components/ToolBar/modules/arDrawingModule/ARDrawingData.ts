@@ -9,6 +9,7 @@ import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { Platform } from 'react-native'
 import { AR3DExample, ARModelExample, AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4 } from '../../../../../tabs/Mine/DataHandler/DataExample'
 import { dataUtil, DialogUtils } from '../../../../../../utils'
+import NavigationService from '../../../../../NavigationService'
 
 interface SectionItemData {
   key: string,
@@ -16,6 +17,8 @@ interface SectionItemData {
   // selectedImage: any,
   title: string,
   action: (data: any) => void,
+  /** 点击切换标签事件 */
+  onPress?: (index: number) => void,
 }
 
 interface SectionData {
@@ -23,14 +26,33 @@ interface SectionData {
   containerType?: string,
   data?: SectionItemData[],
   getData?: () => Promise<SectionItemData[]>,
+  /** 点击切换标签事件 */
+  onPress?: (index: number) => void,
 }
 
 async function getData(type: string, params: {[name: string]: any}) {
   ToolbarModule.setParams(params)
+  ToolbarModule.addData({moduleIndex: 0})
   let data: SectionData[] | SectionItemData[] | string[] = []
   let buttons: any[] = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
   if (type === ConstToolType.SM_AR_DRAWING) {
-    buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
+    // buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
+    buttons = [
+      ToolbarBtnType.CANCEL,
+      {
+        type: 'TO_AR_LAYER_MANAGER',
+        image: getThemeAssets().tabBar.tab_layer,
+        action: () => {
+          // 获取当前所属的tab索引值
+          let tabType = ToolbarModule.getData()?.moduleIndex?.toString()
+          // 跳转到图层管理页面
+          NavigationService.navigate("ARLayerManager", {
+            tabType: tabType,
+          })
+        },
+      },
+      ToolbarBtnType.TOOLBAR_COMMIT,
+    ]
   } else {
     buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
   }
@@ -61,6 +83,12 @@ async function getData(type: string, params: {[name: string]: any}) {
             title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEBVIEW,
             action: ARDrawingAction.arWebView,
           }],
+          onPress: () => {
+            // 点击tab后将索引值同步
+            ToolbarModule.addData({moduleIndex: 0})
+            // 转到非特效tab里视为特效图层已经添加完成
+            global.isNotEndAddEffect = false
+          },
         },
         {
           title: getLanguage(global.language).ARMap.VECTOR,
@@ -101,18 +129,40 @@ async function getData(type: string, params: {[name: string]: any}) {
               action: ARDrawingAction.arText,
             },
           ],
+          onPress: () => {
+            // 点击tab后将索引值同步
+            ToolbarModule.addData({moduleIndex: 1})
+            // 转到非特效tab里视为特效图层已经添加完成
+            global.isNotEndAddEffect = false
+          },
         },
         {
           title: getLanguage(global.language).ARMap.THREE_D,
           containerType: 'list',
+          onPress: () => {
+            // 点击tab后将索引值同步
+            ToolbarModule.addData({moduleIndex: 2})
+            // 转到非特效tab里视为特效图层已经添加完成
+            global.isNotEndAddEffect = false
+          },
           getData: get3DData,
         },
         {
           title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
+          onPress: () => {
+            // 点击tab后将索引值同步
+            ToolbarModule.addData({moduleIndex: 3})
+            // 转到非特效tab里视为特效图层已经添加完成
+            global.isNotEndAddEffect = false
+          },
           getData: getARModel,
         },
         {
           title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
+          onPress: () => {
+            // 点击tab后将索引值同步
+            ToolbarModule.addData({moduleIndex: 4})
+          },
           getData: getAREffect,
         },
       ]

@@ -100,7 +100,7 @@ export default class NavigationView extends React.Component {
       name: '',
     })
     //考虑搜索界面跳转，不能直接goBack
-    NavigationService.navigate('MapView')
+    NavigationService.navigate('MapStack', {screen: 'MapView'})
     // 点击后给一个长按选择起点的提示 lyx
     Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_START_POINT, {duration: 2500})
   }
@@ -124,7 +124,7 @@ export default class NavigationView extends React.Component {
       isShow: true,
       name: '',
     })
-    NavigationService.navigate('MapView')
+    NavigationService.navigate('MapStack', {screen: 'MapView'})
     // 点击后给一个长按选择终点的提示 lyx
     Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_END_POINT, {duration: 2500})
   }
@@ -566,7 +566,7 @@ export default class NavigationView extends React.Component {
           this.loading.setLoading(false)
           global.TouchType = TouchType.NULL
           //考虑搜索界面跳转，不能直接goBack
-          NavigationService.navigate('MapView')
+          NavigationService.navigate('MapStack', {screen: 'MapView'})
           global.mapController?.changeBottom(true)
           global.FloorListView?.changeBottom(true)
         }
@@ -643,7 +643,7 @@ export default class NavigationView extends React.Component {
         this.loading.setLoading(false)
         global.TouchType = TouchType.NULL
         //考虑搜索界面跳转，不能直接goBack
-        NavigationService.navigate('MapView')
+        NavigationService.navigate('MapStack', {screen: 'MapView'})
         global.mapController && global.mapController.changeBottom(true)
         global.FloorListView && global.FloorListView.changeBottom(true)
       }

@@ -75,7 +75,7 @@ export default class NavigationDataChangePage extends Component {
   }
 
   componentWillUnmount() {
-    this.focusListener && this.focusListener.remove()
+    this.focusListener && this.focusListener()
   }
 
   /**

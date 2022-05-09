@@ -7,7 +7,6 @@ import React from 'react'
 import { View } from 'react-native'
 import { MapView, Map3D } from './pages'
 
-import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
@@ -98,7 +97,6 @@ const forHorizontal = sceneProps => {
     inputRange: [index - 1, index - 0.99, index],
     outputRange: [0, 1, 1],
   })
-console.warn(translateX)
   return { opacity, transform: [{ translateX: translateX }] }
 }
 
@@ -263,8 +261,7 @@ function Map3DStack() {
       screenOptions={{
         // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         headerShown: false,
-        animation: 'slide_from_right',
-        presentation: 'transparentModal',
+        animation: 'none',
       }}
       tabBar={() => <View style={{height: 0, width: '100%'}} />}
     >

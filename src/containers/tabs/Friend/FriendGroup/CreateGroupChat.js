@@ -42,7 +42,7 @@ class CreateGroupChat extends Component {
     this._renderSectionHeader = this._renderSectionHeader.bind(this)
     this.language = this.props.route.params.language
     this.groupID = this.props.route.params.groupID
-    this.refreshListCallBack = this.props.route.param.cb
+    this.refreshListCallBack = this.props.route.params.cb
   }
 
   refresh = () => {

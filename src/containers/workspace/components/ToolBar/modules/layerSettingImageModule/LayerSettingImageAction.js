@@ -10,7 +10,7 @@ function showSetting(back = false) {
     showMenuDialog: true,
   })
   if (back) {
-    NavigationService.navigate('MapView')
+    NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
   }
 }
 

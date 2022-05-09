@@ -176,6 +176,8 @@ declare namespace GLOBAL {
   let haslocation: boolean
   /** AR特效图层是否添加完成标识 */
   let isNotEndAddEffect: boolean
+  /** 特效图层的方法调用toolbar是否禁止上下位移调用dialog框  true表示禁止调用 false表示允许调用*/
+  let isEffectProgress: boolean
 
   // 全局方法
   /** 获取设备信息，待优化 App.js*/

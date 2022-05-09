@@ -122,6 +122,8 @@ function commit() {
       // IOS TODO
     }
     _params.setToolbarVisible(false)
+    // 特效图层点击确认后将禁用dialog框给取消
+    GLOBAL.isEffectProgress = false
 
   } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
     // 特效图层设置持续时间
@@ -138,6 +140,8 @@ function commit() {
     }
 
     _params.setToolbarVisible(false)
+    // 特效图层点击确认后将禁用dialog框给取消
+    GLOBAL.isEffectProgress = false
 
   } else{
     SARMap.submit().then(async () => {
@@ -194,6 +198,8 @@ function close() {
     // })
     // return true
   }
+  // 将禁用dialog框设置为不禁用
+  GLOBAL.isEffectProgress = false
   return false
 }
 

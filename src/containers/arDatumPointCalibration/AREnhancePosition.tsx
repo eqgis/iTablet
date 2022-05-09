@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, Animated, TouchableOpacity, Text } from 'react
 import { dp, Toast} from '../../utils'
 import { getThemeAssets } from '../../assets'
 import { getLanguage } from '../../language'
+import HardwareBackHandler from '../../components/HardwareBackHandler'
 interface IProps {
   imageTrackingresultTag: string
   onBack?: () => void
@@ -96,6 +97,7 @@ class AREnhancePosition extends React.Component<IProps, IState> {
         }}>
           <Image source={getThemeAssets().collection.icon_ar_scan_back} style={{width: dp(30), height: dp(30)}}/>
         </TouchableOpacity>
+        <HardwareBackHandler onBackPress={()=>{return true}}/>
       </View>
     )
   }

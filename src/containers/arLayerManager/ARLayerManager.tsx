@@ -292,6 +292,8 @@ export default class ARLayerManager extends React.Component<Props, State> {
                 showMenuDialog: false,
                 isFullScreen: true,
               })
+              // 禁止左右拖动滑块的时候出现上下位移而调用dialog框
+              GLOBAL.isEffectProgress = true
               ToolbarModule.addData({selectAREffectLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds, AREffectLayerVisibleBounds: layer.maxVisibleBounds,})
               NavigationService.goBack()
             }
@@ -321,6 +323,8 @@ export default class ARLayerManager extends React.Component<Props, State> {
               showMenuDialog: false,
               isFullScreen: true,
             })
+            // 禁止左右拖动滑块的时候出现上下位移而调用dialog框
+            GLOBAL.isEffectProgress = true
             ToolbarModule.addData({selectAREffectLayer: layer, AREffectLayerSecondsToPlay: layer?.secondsToPlay })
             NavigationService.goBack()
             

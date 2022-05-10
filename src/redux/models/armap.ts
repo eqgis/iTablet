@@ -251,13 +251,10 @@ export default handleActions(
         mapName: payload.mapName,
       }))
     },
-    [REHYDRATE]: (state: any, { payload }: ARMapAction<ARMapState>) => {
-      if (payload?.maps) {
-        let data: ARMapState = {
-          maps: [],
-          currentMap: undefined,
-        }
-        data.maps = payload.maps || []
+    [REHYDRATE]: (state: any, { payload }: any) => {
+      if (payload?.armap) {
+        let data: ARMapState = payload?.armap
+        data.maps = data.maps || []
         data.currentMap = undefined
         return fromJS(data)
       }

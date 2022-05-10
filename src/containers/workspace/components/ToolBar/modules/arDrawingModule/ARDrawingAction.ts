@@ -12,7 +12,7 @@ import {
   SCoordination,
   IServerService,
 } from 'imobile_for_reactnative'
-import { IVector3, Point3D } from "imobile_for_reactnative/types/data"
+import { Point3D } from "imobile_for_reactnative/types/data"
 import {
   ConstToolType,
   ToolbarType,
@@ -62,7 +62,7 @@ let isAddingARElement: boolean = false
  * 添加到当前位置
  * @param type
  */
-async function addAtCurrent(type: string, location?: IVector3) {
+async function addAtCurrent(type: string, location?: Point3D) {
   if(isAddingARElement) return
   isAddingARElement = true
   const _params: any = ToolbarModule.getParams()
@@ -149,7 +149,7 @@ async function ar3D(path: string) {
 }
 
 /** 打开三维场景 */
-export async function addARScene(location?: IVector3) {
+export async function addARScene(location?: Point3D) {
   try {
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
@@ -177,7 +177,7 @@ export async function addARScene(location?: IVector3) {
     const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
     if(result.success) {
       datasourceName = result.datasourceName
-      datasetName = result.datasetName
+      datasetName = result.datasetName || ''
       if(newDatasource) {
         DataHandler.setARRawDatasource(datasourceName)
       }
@@ -279,21 +279,21 @@ async function arModel(path: string) {
 }
 
 /** 添加模型 */
-export async function addARModel(location?: IVector3) {
+export async function addARModel(location?: Point3D) {
   try {
     await checkARLayer(ARLayerType.AR_MODEL_LAYER)
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
     const layer = _params.arlayer.currentLayer
     if(layer){
-      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
+      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, location)
     }
   } catch (error) {
     Toast.show(error)
   }
 }
 
-async function addMedia(type: TARElementType, location?: IVector3) {
+async function addMedia(type: TARElementType, location?: Point3D) {
   try {
     await checkARLayer(ARLayerType.AR_MEDIA_LAYER)
     const _params: any = ToolbarModule.getParams()
@@ -312,7 +312,7 @@ async function addMedia(type: TARElementType, location?: IVector3) {
   }
 }
 
-async function addText(location?: IVector3) {
+async function addText(location?: Point3D) {
   try {
     await checkARLayer(ARLayerType.AR_TEXT_LAYER)
     const _params: any = ToolbarModule.getParams()

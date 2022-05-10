@@ -1,4 +1,7 @@
 import React from 'react'
+import { connect, ConnectedProps } from 'react-redux'
+import { setCurrentMapModule } from '../../../../redux/models/mapModules'
+import { deleteInvite, addCoworkMsg, deleteCoworkMsg, readCoworkGroupMsg, setCurrentGroup, deleteGroupTasks } from '../../../../redux/models/cowork' 
 import { Container, PopMenu, ImageButton } from '../../../../components'
 import { scaleSize, SCoordinationUtils } from '../../../../utils'
 import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
@@ -14,34 +17,26 @@ import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
 import CoworkFileHandle from './CoworkFileHandle'
 import { DataItemServices, GroupType } from 'imobile_for_reactnative/types/interface/iserver/types'
-interface Props {
-  navigation: Object,
-  user: Users,
-  // cowork: Cowork,
-  appConfig: Object,
-  latestMap: Object,
-  currentGroup: GroupType,
-  device: any,
-  setCurrentMapModule: (index: number) => void,
-  deleteInvite: (params: DeleteInviteParams) => Promise<any>,
-  addCoworkMsg: (params: any, cb?: () => {}) => void,
-  readCoworkGroupMsg: (params: ReadMsgParams) => Promise<any>,
-  setCurrentGroup: (data: any) => any,
+import { MainStackScreenNavigationProps, MainStackScreenRouteProp } from '@/types'
+
+interface Props extends ReduxProps {
+  navigation: MainStackScreenNavigationProps<'CoworkManagePage'>
+  route: MainStackScreenRouteProp<'CoworkManagePage'>
 }
 
 type State = {
   isMutiChoice: boolean,
 }
 
-export default class CoworkManagePage extends React.Component<Props, State> {
+class CoworkManagePage extends React.Component<Props, State> {
 
   PagePopModal: PopMenu | null | undefined
   container: any
-  callBack: (data?: any) => any
+  callBack: (data?: unknown) => void
 
   constructor(props: Props) {
     super(props)
-    this.callBack = this.props.navigation?.state?.params?.callBack
+    this.callBack = this.props.route?.params?.callBack
     this.state = {
       isMutiChoice: false,
     }
@@ -87,7 +82,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
             isManage: false,
             hasDownload: false, // 是否有下载按钮
             keywords: '.zip',
-            title: getLanguage(global.language).Friends.SELECT_MAP,
+            title: getLanguage(this.props.language).Friends.SELECT_MAP,
             itemAction: async ({data}: any) => {
               // TODO 查询数据信息,新增传递数据是否发布服务
               const dataDetail = await SCoordinationUtils.getScoordiantion()?.getResourceDetail(data.resourceId)
@@ -106,7 +101,8 @@ export default class CoworkManagePage extends React.Component<Props, State> {
                 includeMe: true, // 是否包含当前用户
                 hasSettingBtn: false, // 是否含有右上角设置按钮
                 callBack: async (members: any) => {
-                  NavigationService.goBack('SelectModulePage', null)
+                  // NavigationService.goBack('SelectModulePage', null)
+                  NavigationService.navigate('CoworkManagePage', null)
 
                   // 向用户发送信息
                   let timeStr = new Date().getTime()
@@ -184,7 +180,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
 
   deleteInvite = (data: any) => {
     global.SimpleDialog.set({
-      text: getLanguage(global.language).Friends.DELETE_COWORK_ALERT,
+      text: getLanguage(this.props.language).Friends.DELETE_COWORK_ALERT,
       confirmAction: () => this.props.deleteInvite(data),
     })
     global.SimpleDialog.setVisible(true)
@@ -254,7 +250,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          // title: getLanguage(global.language).Find.ONLINE_COWORK,
+          // title: getLanguage(this.props.language).Find.ONLINE_COWORK,
           title: this.props.currentGroup.groupName,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
@@ -266,7 +262,7 @@ export default class CoworkManagePage extends React.Component<Props, State> {
         }}
       >
         <TaskManage
-          tabLabel={getLanguage(global.language).Friends.TASK}
+          tabLabel={getLanguage(this.props.language).Friends.TASK}
           groupInfo={this.props.currentGroup}
           createTask={this.createTask}
           isMutiChoice={this.state.isMutiChoice}
@@ -276,3 +272,32 @@ export default class CoworkManagePage extends React.Component<Props, State> {
     )
   }
 }
+
+const mapStateToProps = (state: any) => ({
+  user: state.user.toJS(),
+  appConfig: state.appConfig.toJS(),
+  latestMap: state.map.toJS().latestMap,
+  device: state.device.toJS().device,
+  language: state.setting.toJS().language,
+  currentGroup: state.cowork.toJS().currentGroup,
+  // cowork: state.cowork.toJS(),
+})
+
+const mapDispatchToProps = {
+  setCurrentMapModule,
+  deleteInvite,
+  addCoworkMsg,
+  deleteCoworkMsg,
+  readCoworkGroupMsg,
+  setCurrentGroup,
+  deleteGroupTasks,
+}
+
+const connector = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)
+
+type ReduxProps = ConnectedProps<typeof connector>
+
+export default connector(CoworkManagePage)

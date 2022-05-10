@@ -3,7 +3,6 @@ import MapView from './MapView'
 import {
   setEditLayer,
   setSelection,
-  setAnalystLayer,
   getLayers,
   setCurrentAttribute,
   setCurrentLayer,
@@ -124,7 +123,6 @@ const mapDispatchToProps = {
   setEditLayer,
   setSelection,
   setLatestMap,
-  setAnalystLayer,
   setCurrentMap,
   getLayers,
   setCollectionInfo,

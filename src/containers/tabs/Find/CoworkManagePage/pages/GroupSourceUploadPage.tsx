@@ -116,7 +116,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.cb = this.props.navigation?.state?.params?.cb
+    this.cb = this.props.route?.params?.cb
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       SCoordinationUtils.setScoordiantion('online')

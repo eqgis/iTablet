@@ -14,12 +14,13 @@ import NavigationService from '../../../../NavigationService'
 import { Users } from '../../../../../redux/models/user'
 import { downloadSourceFile, deleteSourceDownloadFile, IDownloadProps, DownloadData } from '../../../../../redux/models/down'
 import { setCurrentGroup } from '../../../../../redux/models/cowork'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { SCoordination } from 'imobile_for_reactnative'
 import { ResultDataBase, ResourceType, GroupType } from 'imobile_for_reactnative/types/interface/iserver/types'
 import SourceItem, { MoreParams, ItemData } from '../components/SourceItem'
 import BatchHeadBar from '../../../Mine/component/BatchHeadBar'
-import ModalDropdown from 'react-native-modal-dropdown'
+// import ModalDropdown from 'react-native-modal-dropdown'
+import { MainStackScreenNavigationProps, MainStackScreenRouteProp } from '@/types'
 
 const ITEM_HEIGHT = scaleSize(80)
 
@@ -114,17 +115,9 @@ const styles = StyleSheet.create({
   },
 })
 
-interface Props {
-  navigation: any,
-  user: Users,
-  language: string,
-  device: any,
-  mapModules: any,
-  currentGroup: GroupType,
-  sourceDownloads: DownloadData,
-  downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
-  deleteSourceDownloadFile: (id: number | string) => Promise<any[]>,
-  setCurrentGroup: (data: any) => Promise<any[]>,
+interface Props extends ReduxProps {
+  navigation: MainStackScreenNavigationProps<'GroupSourceManagePage'>
+  route: MainStackScreenRouteProp<'GroupSourceManagePage'>
 }
 
 type SelectedData =  {
@@ -161,7 +154,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   keywords: string // 获取数据的关键词
   list: FlatList<any> | null | undefined
   deleteDialog: Dialog | undefined | null
-  dropdown: ModalDropdown
+  // dropdown: ModalDropdown
   modules: Array<any>
   tempSelectedData: Map<string, SelectedData>
 
@@ -169,12 +162,12 @@ class GroupSourceManagePage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.title = this.props.navigation?.state?.params?.title || getLanguage(global.language).Friends.GROUP_RESOURCE
-    this.isManage = this.props.navigation?.state?.params?.isManage !== undefined
-      ? this.props.navigation?.state?.params?.isManage
+    this.title = this.props.route?.params?.title || getLanguage(this.props.language).Friends.GROUP_RESOURCE
+    this.isManage = this.props.route?.params?.isManage !== undefined
+      ? this.props.route?.params?.isManage
       : true
-    this.hasDownload = this.props.navigation?.state?.params?.hasDownload !== undefined
-      ? this.props.navigation?.state?.params?.hasDownload
+    this.hasDownload = this.props.route?.params?.hasDownload !== undefined
+      ? this.props.route?.params?.hasDownload
       : true
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
@@ -205,11 +198,11 @@ class GroupSourceManagePage extends Component<Props, State> {
     this.isLoading = false // 防止同时重复加载多次
     this.isNoMore = false // 是否能加载更多
     this.tempSelectedData = new Map<string, SelectedData>()
-    this.keywords = this.props.navigation?.state?.params?.keywords || ''
+    this.keywords = this.props.route?.params?.keywords || ''
 
     this.popData = [
       {
-        title: getLanguage(global.language).Friends.GROUP_RESOURCE_UPLOAD,
+        title: getLanguage(this.props.language).Friends.GROUP_RESOURCE_UPLOAD,
         action: () => {
           NavigationService.navigate('GroupSourceUploadPage', {
             title: getLanguage(this.props.language).Profile.MAP,
@@ -223,34 +216,34 @@ class GroupSourceManagePage extends Component<Props, State> {
         },
       },
       {
-        title: getLanguage(global.language).Friends.GROUP_RESOURCE_DELETE,
+        title: getLanguage(this.props.language).Friends.GROUP_RESOURCE_DELETE,
         action: () => this._setMutiChoice(true),
       },
     ]
 
     this.popSourceData = [
       {
-        title: getLanguage(global.language).Prompt.DOWNLOAD,
+        title: getLanguage(this.props.language).Prompt.DOWNLOAD,
         action: () => this.currentSelectData?.download?.(),
       },
       // {
-      //   title: getLanguage(global.language).Cowork.PUBLISH,
+      //   title: getLanguage(this.props.language).Cowork.PUBLISH,
       //   action: () => {
       //   },
       // },
       {
-        title: getLanguage(global.language).Prompt.DELETE,
+        title: getLanguage(this.props.language).Prompt.DELETE,
         action: () => {
           this.currentSelectData?.data.resourceId && this._delete([this.currentSelectData?.data.resourceId])
         },
       },
       // {
-      //   title: getLanguage(global.language).Prompt.RENAME,
+      //   title: getLanguage(this.props.language).Prompt.RENAME,
       //   action: () => {
       //   },
       // },
       {
-        title: getLanguage(global.language).Prompt.CANCEL,
+        title: getLanguage(this.props.language).Prompt.CANCEL,
       },
     ]
   }
@@ -262,11 +255,11 @@ class GroupSourceManagePage extends Component<Props, State> {
     return shouldUpdate
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.device.orientation !== this.props.device.orientation) {
-      this.dropdown?.hide()
-    }
-  }
+  // componentDidUpdate(prevProps: Props) {
+  //   if (prevProps.device.orientation !== this.props.device.orientation) {
+  //     this.dropdown?.hide()
+  //   }
+  // }
 
   componentDidMount() {
     this.servicesUtils?.getGroupInfo(this.props.currentGroup.id).then(groupInfo => {
@@ -430,7 +423,7 @@ class GroupSourceManagePage extends Component<Props, State> {
         })
       } else {
         if (result.error?.errorMsg !== undefined) {
-          Toast.show(ResultInfo.resultError(result.error))
+          Toast.show(ResultInfo.resultError(result.error) || 'error')
         }
       }
     })
@@ -439,7 +432,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   _deleteSource = () => {
     if (this.state.isMutiChoice) {
       if (this.state.selectedData.size === 0) {
-        Toast.show(getLanguage(global.language).Friends.GROUP_SELECT_MEMBER)
+        Toast.show(getLanguage(this.props.language).Friends.GROUP_SELECT_MEMBER)
         return false
       }
       let ids: Array<string> = []
@@ -453,13 +446,13 @@ class GroupSourceManagePage extends Component<Props, State> {
   }
 
   _onPress = (data: any) => {
-    let itemAction = this.props.navigation?.state?.params?.itemAction
+    let itemAction = this.props.route?.params?.itemAction
     if (itemAction) {
       let temp: any = {data}
-      if (this.dropdown) {
-        temp.module = this.state.currentModule
-        temp.moduleIndex = this.state.currentModuleIndex
-      }
+      // if (this.dropdown) {
+      //   temp.module = this.state.currentModule
+      //   temp.moduleIndex = this.state.currentModuleIndex
+      // }
       itemAction(temp)
     }
   }
@@ -682,7 +675,7 @@ class GroupSourceManagePage extends Component<Props, State> {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(global.language).Friends.LOADING}
+            title={getLanguage(this.props.language).Friends.LOADING}
             enabled={true}
           />
         }
@@ -700,7 +693,7 @@ class GroupSourceManagePage extends Component<Props, State> {
           key={'download'}
           containerStyle={styles.bottomViewBtn}
           icon={getThemeAssets().cowork.icon_nav_import}
-          title={getLanguage(global.language).Prompt.DOWNLOAD}
+          title={getLanguage(this.props.language).Prompt.DOWNLOAD}
           titleStyle={styles.btnStyle}
           onPress={() => {
             if (this.state.selectedData.size > 0) {
@@ -719,7 +712,7 @@ class GroupSourceManagePage extends Component<Props, State> {
           key={'delete'}
           containerStyle={styles.bottomViewBtn}
           icon={getThemeAssets().edit.icon_delete}
-          title={getLanguage(global.language).Prompt.DELETE}
+          title={getLanguage(this.props.language).Prompt.DELETE}
           titleStyle={styles.btnStyle}
           onPress={() => {
             if (this.state.selectedData.size > 0) {
@@ -765,38 +758,38 @@ class GroupSourceManagePage extends Component<Props, State> {
     )
   }
 
-  _renderPopMenu = () => {
-    if (this.isManage) return null
-    let maxHeight = this.modules.length * ITEM_HEIGHT
-    let limitHeight = screen.getScreenHeight(this.props.device.orientation) - screen.getHeaderHeight() - ITEM_HEIGHT
+  // _renderPopMenu = () => {
+  //   if (this.isManage) return null
+  //   let maxHeight = this.modules.length * ITEM_HEIGHT
+  //   let limitHeight = screen.getScreenHeight(this.props.device.orientation) - screen.getHeaderHeight() - ITEM_HEIGHT
 
-    if (maxHeight > limitHeight) maxHeight = limitHeight
+  //   if (maxHeight > limitHeight) maxHeight = limitHeight
 
-    return (
-      <ModalDropdown
-        ref={(ref: ModalDropdown) => this.dropdown = ref}
-        style={styles.dropdown}
-        textStyle={styles.dropdownText}
-        dropdownStyle={[styles.dropdownContent, { height: maxHeight }]}
-        options={this.modules}
-        renderRow={this._renderDropdownItem}
-        onSelect={this._dropDownOnSelect}
-      >
-        <View style={[styles.dropdownItem, { backgroundColor: color.itemColorGray2 }]}>
-          <Image resizeMode={'contain'} style={styles.dropdownItemImage} source={this.state.currentModule.moduleImage} />
-          <Text style={styles.dropdownItemText}>{this.state.currentModule.title}</Text>
-          <Text style={styles.dropdownItemRightText}>{getLanguage(global.language).Friends.SELECT_MODULE}</Text>
-        </View>
-      </ModalDropdown>
-    )
-  }
+  //   return (
+  //     <ModalDropdown
+  //       ref={(ref: ModalDropdown) => this.dropdown = ref}
+  //       style={styles.dropdown}
+  //       textStyle={styles.dropdownText}
+  //       dropdownStyle={[styles.dropdownContent, { height: maxHeight }]}
+  //       options={this.modules}
+  //       renderRow={this._renderDropdownItem}
+  //       onSelect={this._dropDownOnSelect}
+  //     >
+  //       <View style={[styles.dropdownItem, { backgroundColor: color.itemColorGray2 }]}>
+  //         <Image resizeMode={'contain'} style={styles.dropdownItemImage} source={this.state.currentModule.moduleImage} />
+  //         <Text style={styles.dropdownItemText}>{this.state.currentModule.title}</Text>
+  //         <Text style={styles.dropdownItemRightText}>{getLanguage(this.props.language).Friends.SELECT_MODULE}</Text>
+  //       </View>
+  //     </ModalDropdown>
+  //   )
+  // }
 
   _renderNull = () => {
     return (
       <View style={styles.nullView}>
         <View style={styles.nullSubView}>
           <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_data} />
-          <Text style={styles.nullTitle}>{getLanguage(global.language).Friends.GROUP_DATA_NULL}</Text>
+          <Text style={styles.nullTitle}>{getLanguage(this.props.language).Friends.GROUP_DATA_NULL}</Text>
         </View>
         <View style={{ flex: 1, backgroundColor: 'transparent' }} />
       </View>
@@ -838,6 +831,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   }
 }
 
+type ReduxProps = ConnectedProps<typeof connector>
 
 const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
@@ -854,7 +848,9 @@ const mapDispatchToProps = {
   setCurrentGroup,
 }
 
-export default connect(
+const connector = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(GroupSourceManagePage)
+)
+
+export default connector(GroupSourceManagePage)

@@ -1,11 +1,13 @@
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs"
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { NAVIGATION_CAREMA } from "./NavigationParams"
+import { NAVIGATION_CAREMA, GroupSourceManagePageParams, CoworkManagePageParams } from "./NavigationParams"
 
 /****************************** navigator 页面参数 ********************************/
 export type MainStackParamList = {
   Camera: NAVIGATION_CAREMA,
+  GroupSourceManagePage: GroupSourceManagePageParams,
+  CoworkManagePage: CoworkManagePageParams,
 }
 
 export type HomeTabParamList = {

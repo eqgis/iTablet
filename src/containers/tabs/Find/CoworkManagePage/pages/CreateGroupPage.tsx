@@ -200,8 +200,8 @@ class CreateGroupPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    this.callBack = this.props.navigation?.state?.params?.callBack
-    this.initData = this.props.navigation?.state?.params?.initData
+    this.callBack = this.props.route?.params?.callBack
+    this.initData = this.props.route?.params?.initData
     this.title = this.initData
       ? getLanguage(this.props.language).Friends.GROUP_SETTING
       : getLanguage(this.props.language).Friends.GROUP_CREATE

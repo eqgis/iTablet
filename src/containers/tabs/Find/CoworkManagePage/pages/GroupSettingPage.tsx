@@ -57,8 +57,8 @@ class GroupSettingPage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.callBack = this.props.navigation?.state?.params?.callBack
-    this.title = this.props.navigation?.state?.params?.title || getLanguage(this.props.language).Friends.TITLE_CHOOSE_MEMBER
+    this.callBack = this.props.route?.params?.callBack
+    this.title = this.props.route?.params?.title || getLanguage(this.props.language).Friends.TITLE_CHOOSE_MEMBER
 
     this.state = {
       data: [], // 所有数组

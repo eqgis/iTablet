@@ -34,10 +34,10 @@ class RoadNet extends React.Component<Props, State> {
   }
 
   reopen = () => {
-    const datasourceInfo = this.props.navigation?.state?.params?.datasource
+    const datasourceInfo = this.props.route?.params?.datasource
     if(datasourceInfo) {
       let index
-      const dataset = this.props.navigation?.state?.params?.dataset
+      const dataset = this.props.route?.params?.dataset
       if(dataset) {
         index = datasourceInfo.datasets.findIndex(item => item.datasetName ===  dataset.datasetName)
       }

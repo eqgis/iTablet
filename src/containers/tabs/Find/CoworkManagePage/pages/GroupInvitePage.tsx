@@ -100,7 +100,7 @@ class GroupInvitePage extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.currentGroup = this.props.navigation?.state?.params?.groupInfo || this.props.currentGroup
+    this.currentGroup = this.props.route?.params?.groupInfo || this.props.currentGroup
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)){

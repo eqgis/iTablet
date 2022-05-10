@@ -5,7 +5,6 @@
 */
 
 import * as React from 'react'
-//eslint-disable-next-line
 // import { ActionPopover } from 'teaset'
 import { View, Text, TouchableOpacity, Image, Animated, Easing } from 'react-native'
 import { DatasetType, ThemeType, SMap } from 'imobile_for_reactnative'
@@ -624,7 +623,7 @@ export default class LayerManager_item extends React.Component {
     }
 
     // 设置菜单的显示的位置坐标
-    pressView.measure((ox, oy, width, height, px, py) => {
+    pressView?.measure((ox, oy, width, height, px, py) => {
       // this.popKey = ActionPopover.show(
       //   {
       //     x: px,

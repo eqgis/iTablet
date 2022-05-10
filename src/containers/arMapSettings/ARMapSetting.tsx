@@ -20,7 +20,7 @@ class ARMapSetting extends React.Component<Props,State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      poiSearch: this.props.navigation?.state?.params?.poiSearch
+      poiSearch: this.props.route?.params?.poiSearch
     }
   }
 

@@ -756,23 +756,11 @@ export default class OnlineServicesUtils {
         }
       }
       url = encodeURI(url)
-      let response
-      if (Platform.OS === 'ios' || this.type === 'OnlineJP') {
-        response = await RNFetchBlob.config({trusty:true}).fetch('POST', url, headers, 
-        JSON.stringify({
-          fileName: fileName,
-          type: fileType,
-        }))
-      } else {
-        response = await fetch(url, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify({
-            fileName: fileName,
-            type: fileType,
-          }),
-        })
-      }
+      let response = await RNFetchBlob.config({trusty:true}).fetch('POST', url, headers, 
+      JSON.stringify({
+        fileName: fileName,
+        type: fileType,
+      }))
       let result = await response.json()
       if (result.childID) {
         return result.childID

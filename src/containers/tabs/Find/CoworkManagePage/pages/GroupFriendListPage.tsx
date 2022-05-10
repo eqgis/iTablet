@@ -75,11 +75,11 @@ class GroupFriendListPage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.callBack = this.props.navigation?.state?.params?.callBack
-    this.mode = this.props.navigation?.state?.params?.mode === undefined ? 'select' : this.props.navigation?.state?.params?.mode
-    this.includeMe = this.props.navigation?.state?.params?.includeMe === undefined ? true : this.props.navigation?.state?.params?.includeMe
-    this.title = this.props.navigation?.state?.params?.title || getLanguage(this.props.language).Friends.TITLE_CHOOSE_MEMBER
-    this.filter = this.props.navigation?.state?.params?.filter
+    this.callBack = this.props.route?.params?.callBack
+    this.mode = this.props.route?.params?.mode === undefined ? 'select' : this.props.route?.params?.mode
+    this.includeMe = this.props.route?.params?.includeMe === undefined ? true : this.props.route?.params?.includeMe
+    this.title = this.props.route?.params?.title || getLanguage(this.props.language).Friends.TITLE_CHOOSE_MEMBER
+    this.filter = this.props.route?.params?.filter
 
     this.state = {
       allData: [], // 所有数组
@@ -316,7 +316,7 @@ class GroupFriendListPage extends Component<Props, State> {
       //   return
       // }
 
-      this._setDialogVisible(true, getLanguage(global.language).Friends.GROUP_MEMBER_DELETE_INFO)
+      this._setDialogVisible(true, getLanguage(this.props.language).Friends.GROUP_MEMBER_DELETE_INFO)
       this.dialogAction = () => {
         let userIds: Array<string> = []
         this.state.selectedMembers.forEach((member: any) => {
@@ -478,7 +478,7 @@ class GroupFriendListPage extends Component<Props, State> {
               {color: color.itemColorGray3},
             ]}
           >
-            {getLanguage(global.language).Profile.SELECT_ALL}
+            {getLanguage(this.props.language).Profile.SELECT_ALL}
           </Text>
           {/* <TouchableOpacity></TouchableOpacity> */}
           <TextBtn

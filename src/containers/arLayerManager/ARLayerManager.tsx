@@ -252,7 +252,6 @@ export default class ARLayerManager extends React.Component<Props, State> {
           title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
           image: getThemeAssets().layer.icon_visible_distance,
           action: async () => {
-            console.warn("点击了非特效图层的可见距离设置按钮");
 
             let layer = this.state.selectLayer
             if (layer && 'maxVisibleBounds' in layer) {
@@ -276,7 +275,6 @@ export default class ARLayerManager extends React.Component<Props, State> {
           title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
           image: getThemeAssets().layer.icon_visible_distance,
           action: async () => {
-            console.warn("点击了特效图层的可见距离设置按钮")
             
             let layer = this.state.selectLayer
           

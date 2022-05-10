@@ -40,7 +40,7 @@ class GroupMessagePage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.callBack = this.props.navigation?.state?.params?.callBack
+    this.callBack = this.props.route?.params?.callBack
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')

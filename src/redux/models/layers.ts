@@ -68,14 +68,6 @@ export const setCurrentLayer = (params, cb = () => {}) => async dispatch => {
   cb && cb()
 }
 
-export const setAnalystLayer = (params, cb = () => {}) => async dispatch => {
-  await dispatch({
-    type: SET_ANALYST_LAYER,
-    payload: params || {},
-  })
-  cb && cb()
-}
-
 export const getLayers = (params = -1, cb = () => {}) => async dispatch => {
   if (typeof params === 'number') {
     params = {

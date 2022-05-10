@@ -186,11 +186,11 @@ class TaskManage extends React.Component<Props, State> {
 
     this.popData = [
       {
-        title: getLanguage(global.language).Friends.INVITE_CORWORK_MEMBERS,
+        title: getLanguage(this.props.language).Friends.INVITE_CORWORK_MEMBERS,
         action: this.invite,
       },
       // {
-      //   title: getLanguage(global.language).Friends.DELETE_CORWORK_MEMBERS,
+      //   title: getLanguage(this.props.language).Friends.DELETE_CORWORK_MEMBERS,
       //   action: () => {
       //     NavigationService.navigate('GroupFriendListPage', {
       //       mode: 'multiSelect', // 多选模式
@@ -202,9 +202,9 @@ class TaskManage extends React.Component<Props, State> {
       //   },
       // },
       {
-        title: getLanguage(global.language).Friends.DELETE_CORWORK_TASK,
+        title: getLanguage(this.props.language).Friends.DELETE_CORWORK_TASK,
         action: () => {
-          this._setDialogVisible(true, getLanguage(global.language).Friends.GROUP_TASK_DELETE_INFO)
+          this._setDialogVisible(true, getLanguage(this.props.language).Friends.GROUP_TASK_DELETE_INFO)
           this.dialogAction = () => {
             this.deleteTasks([this.currentData])
           }
@@ -503,7 +503,7 @@ class TaskManage extends React.Component<Props, State> {
       CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
       this.createCowork(data.id, module, index, data.map, restService)
     } else {
-      Toast.show(getLanguage(global.language).Friends.RESOURCE_DOWNLOAD_INFO)
+      Toast.show(getLanguage(this.props.language).Friends.RESOURCE_DOWNLOAD_INFO)
     }
   }
 
@@ -519,13 +519,13 @@ class TaskManage extends React.Component<Props, State> {
     try {
       global.Loading.setLoading(
         true,
-        getLanguage(global.language).Prompt.PREPARING,
+        getLanguage(this.props.language).Prompt.PREPARING,
       )
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
         global.SimpleDialog.set({
-          text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+          text: getLanguage(this.props.language).Prompt.APPLY_LICENSE_FIRST,
         })
         global.SimpleDialog.setVisible(true)
         return
@@ -609,10 +609,10 @@ class TaskManage extends React.Component<Props, State> {
             }}
           >
             <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
-            <Text style={styles.nullTitle}>{getLanguage(global.language).Friends.GROUP_TASK_NULL}</Text>
+            <Text style={styles.nullTitle}>{getLanguage(this.props.language).Friends.GROUP_TASK_NULL}</Text>
             {
               this.props.groupInfo.creator === this.props.user.currentUser.userName &&
-              <Text style={styles.nullSubTitle}>{getLanguage(global.language).Friends.CREATE_FIRST_GROUP_TASK}</Text>
+              <Text style={styles.nullSubTitle}>{getLanguage(this.props.language).Friends.CREATE_FIRST_GROUP_TASK}</Text>
             }
             {
               this.props.groupInfo.creator === this.props.user.currentUser.userName &&
@@ -679,7 +679,7 @@ class TaskManage extends React.Component<Props, State> {
   _renderBottom = () => {
     return (
       <TextBtn
-        btnText={getLanguage(global.language).Friends.TASK_DISTRIBUTION}
+        btnText={getLanguage(this.props.language).Friends.TASK_DISTRIBUTION}
         containerStyle={styles.bottomBtn}
         textStyle={styles.bottomBtnText}
         btnClick={() => {
@@ -727,7 +727,7 @@ class TaskManage extends React.Component<Props, State> {
           key={'download'}
           containerStyle={styles.bottomViewBtn}
           icon={getThemeAssets().cowork.icon_nav_import}
-          title={getLanguage(global.language).Prompt.DOWNLOAD}
+          title={getLanguage(this.props.language).Prompt.DOWNLOAD}
           titleStyle={styles.btnStyle}
           onPress={() => {
             if (this.state.selectedData.size > 0) {
@@ -747,11 +747,11 @@ class TaskManage extends React.Component<Props, State> {
           key={'delete'}
           containerStyle={styles.bottomViewBtn}
           icon={getThemeAssets().edit.icon_delete}
-          title={getLanguage(global.language).Prompt.DELETE}
+          title={getLanguage(this.props.language).Prompt.DELETE}
           titleStyle={styles.btnStyle}
           onPress={() => {
             if (this.state.selectedData.size > 0) {
-              this._setDialogVisible(true, getLanguage(global.language).Friends.GROUP_TASK_DELETE_INFO)
+              this._setDialogVisible(true, getLanguage(this.props.language).Friends.GROUP_TASK_DELETE_INFO)
               this.dialogAction = () => {
                 try {
                   let tasks: any[] = []
@@ -803,7 +803,7 @@ class TaskManage extends React.Component<Props, State> {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(global.language).Friends.LOADING}
+              title={getLanguage(this.props.language).Friends.LOADING}
               enabled={true}
             />
           }
@@ -828,7 +828,7 @@ class TaskManage extends React.Component<Props, State> {
                     colors={['orange', 'red']}
                     tintColor={'orange'}
                     titleColor={'orange'}
-                    title={getLanguage(global.language).Friends.LOADING}
+                    title={getLanguage(this.props.language).Friends.LOADING}
                     enabled={true}
                   />
                 }

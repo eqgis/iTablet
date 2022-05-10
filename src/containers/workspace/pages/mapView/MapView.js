@@ -212,7 +212,6 @@ export default class MapView extends React.Component {
     setSelection: PropTypes.func,
     setLatestMap: PropTypes.func,
     setCurrentMap: PropTypes.func,
-    setAnalystLayer: PropTypes.func,
     getLayers: PropTypes.func,
     setCollectionInfo: PropTypes.func,
     setCurrentLayer: PropTypes.func,
@@ -1256,7 +1255,6 @@ export default class MapView extends React.Component {
   clearData = () => {
     this.props.setEditLayer(null)
     // this.props.setSelection(null)
-    this.props.setAnalystLayer(null)
     this.props.setCollectionInfo() // 置空Redux中Collection中的数据
     this.props.setCurrentTemplateInfo() // 清空当前模板
     this.props.setCurrentPlotInfo() //清空当前模板

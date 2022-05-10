@@ -31,8 +31,8 @@ class NavigationView2D extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      destinationName: this.props.navigation?.state?.params?.destinationName,
-      result: this.props.navigation?.state?.params?.analystResult
+      destinationName: this.props.route?.params?.destinationName,
+      result: this.props.route?.params?.analystResult
     }
   }
 

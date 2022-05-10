@@ -22,3 +22,16 @@ export interface NAVIGATION_CAREMA {
   selectionAttribute?: boolean,
   layerAttribute?: boolean,
 }
+
+export interface GroupSourceManagePageParams {
+  title?: string,
+  keywords?: string,
+  isManage?: boolean,
+  hasDownload?: boolean,
+  itemAction?: (params: unknown) => void,
+}
+
+
+export interface CoworkManagePageParams {
+  callBack: (params?: unknown) => void,
+}

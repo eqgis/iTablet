@@ -60,7 +60,7 @@ export default class SelectLocation extends React.Component<Props, State>{
         -Math.max(this.props.device.height, this.props.device.width),
       ),
     }
-    this.cb = this.props.navigation?.state?.params?.cb
+    this.cb = this.props.route?.params?.cb
     this.isShow = false
   }
 

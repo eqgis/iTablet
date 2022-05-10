@@ -25,6 +25,8 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
+
+
 const SERVICE_TAGGING_PRE_NAME = 'Tagging_'
 const LABEL_PRE_NAME = 'Label_'
 
@@ -477,17 +479,21 @@ async function downloadService(url: string) {
       let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
       const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
-        let canAdd = false
-        for (const _dataset of _datasets.list) {
-          if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
-            canAdd = true
-            break
+        let canAdd = true
+        if(_datasets != null){
+          canAdd = false
+          for (const _dataset of _datasets.list) {
+            if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
+              canAdd = true
+              break
+            }
           }
         }
         canAdd && services.push({
           datasetUrl: dataset.datasetUrl,
           status: 'download',
         })
+        debugger
         downloadToLocal(dataset.datasetUrl, datasourceName)
       }
     }

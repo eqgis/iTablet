@@ -57,7 +57,6 @@
     "react-native-vision-camera": "^2.13.1",
     "react-native-webview": "^11.18.0",
     "react-native-xml2js": "^1.0.3",
-    "react-navigation": "^4.4.4",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
     "redux-actions": "^2.6.5",

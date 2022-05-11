@@ -66,6 +66,9 @@ import Slider from './Slider'
 import CompassView from './CompassView'
 import SwitchItem from './SwitchItem'
 import Waitting from './Waitting'
+import {
+  PopoverButtonsView,
+} from './Popover'
 
 export {
   Container,
@@ -146,4 +149,5 @@ export {
   CompassView,
   SwitchItem,
   Waitting,
+  PopoverButtonsView,
 }

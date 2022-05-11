@@ -10,11 +10,11 @@ import { Toast, LayerUtils, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import { LayerAttributeTable } from '../../components'
 import { getLanguage } from '../../../../language'
-import { FileTools } from '../../../../native'
+import { PopoverButtonsView } from '../../../../components'
+import { Rect } from 'react-native-popover-view'
 import NavigationService from '../../../NavigationService'
-import { SMediaCollector ,SMap} from 'imobile_for_reactnative'
-//eslint-disable-next-line
-// import { ActionPopover } from 'teaset'
+import { SMediaCollector } from 'imobile_for_reactnative'
+import { View } from 'react-native'
 
 const PAGE_SIZE = 30
 const ROWS_LIMIT = 120
@@ -74,6 +74,7 @@ export default class LayerSelectionAttribute extends React.Component {
     this.noMore = false // 判断是否加载完毕
     this.isLoading = false // 防止同时重复加载多次
     this.isMediaLayer = false // 是否是多媒体图层
+    this.Popover = undefined // 长按弹窗
   }
 
   componentDidMount() {
@@ -747,17 +748,9 @@ export default class LayerSelectionAttribute extends React.Component {
       })
     }
     if (pressView) {
-      // pressView.measure((ox, oy, width, height, px, py) => {
-      //   ActionPopover.show(
-      //     {
-      //       x: px,
-      //       y: py,
-      //       width,
-      //       height,
-      //     },
-      //     items,
-      //   )
-      // })
+      pressView.measure((ox, oy, width, height, px, py) => {
+        this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), items)
+      })
     }
   }
   /** 点击属性字段回调 **/
@@ -1274,22 +1267,15 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   render() {
-    // return (
-    //   <Container
-    //     ref={ref => (this.container = ref)}
-    //     headerProps={{
-    //       title: '属性',
-    //       navigation: this.props.navigation,
-    //     }}
-    //     style={styles.container}
-    //   >
-    //     {this.state.attributes && this.state.attributes.length > 0 ? (
-    //       this.renderTable()
-    //     ) : (
-    //       <View style={{ flex: 1 }} />
-    //     )}
-    //   </Container>
-    // )
-    return this.renderTable()
+    return (
+      <View style={{flex: 1}}>
+        {this.renderTable()}
+        <PopoverButtonsView
+          ref={ref => this.Popover = ref}
+          backgroundStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
+          popoverStyle={{backgroundColor: 'rgba(0, 0, 0, 1)'}}
+        />
+      </View>
+    )
   }
 }

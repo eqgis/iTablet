@@ -59,7 +59,7 @@ function Tabs(arr: any[]) {
   for (let i = 0; i < arr?.length; i++) {
     switch (arr[i]) {
       case AppTabs.Friend:
-        tabs.push(<Tab.Screen name='Friend' component={Friend} options={{lazy: false}} />)
+        tabs.push(<Tab.Screen name='Friend' component={Friend} />)
         break
       case AppTabs.Find:
         tabs.push(<Tab.Screen name='Find' component={Find} />)

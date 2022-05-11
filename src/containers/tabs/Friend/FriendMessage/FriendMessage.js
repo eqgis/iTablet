@@ -12,11 +12,10 @@ import {
   Image,
   ImageBackground,
 } from 'react-native'
-// eslint-disable-next-line
-// import { ActionPopover } from 'teaset'
 import NavigationService from '../../../NavigationService'
 import { scaleSize } from '../../../../utils/screen'
-import { Dialog } from '../../../../components'
+import { Dialog, PopoverButtonsView } from '../../../../components'
+import { Rect } from 'react-native-popover-view'
 import { styles } from './Styles'
 import { dialogStyles } from './../Styles'
 import FriendListFileHandle from '../FriendListFileHandle'
@@ -24,7 +23,6 @@ import MessageDataHandle from './../MessageDataHandle'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import moment from 'moment'
-// import Friend from './../Friend'
 
 class FriendMessage extends Component {
   props: {
@@ -45,6 +43,8 @@ class FriendMessage extends Component {
       bRefesh: true,
       hasInformMsg: 0,
     }
+    this.Popover = undefined // 长按弹窗
+    this.listRefs = {} // 列表item ref
   }
 
   refresh = () => {
@@ -179,6 +179,11 @@ class FriendMessage extends Component {
           renderItem={({ item, index }) => this._renderItem(item, index)}
           keyExtractor={(item, index) => index.toString()}
         />
+        <PopoverButtonsView
+          ref={ref => this.Popover = ref}
+          backgroundStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
+          popoverStyle={{backgroundColor: 'rgba(0, 0, 0, 1)'}}
+        />
         {this.renderDialog()}
       </View>
     )
@@ -238,17 +243,9 @@ class FriendMessage extends Component {
         },
       ]
     }
-    // pressView.measure((ox, oy, width, height, px, py) => {
-    //   ActionPopover.show(
-    //     {
-    //       x: px,
-    //       y: py,
-    //       width,
-    //       height,
-    //     },
-    //     items,
-    //   )
-    // })
+    pressView?.measure((ox, oy, width, height, px, py) => {
+      this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), items)
+    })
   }
   
   _renderDot = num => {
@@ -279,14 +276,13 @@ class FriendMessage extends Component {
   }
 
   _renderInformItem() {
-    let iTemView
     return (
       <TouchableOpacity
         style={styles.listHeader}
-        ref={ref => (iTemView = ref)}
+        ref={ref => (this.listRefs['info'] = ref)}
         activeOpacity={0.75}
         onLongPress={() => {
-          this._showPopover(iTemView)
+          this._showPopover(this.listRefs['info'])
         }}
         onPress={() => {
           MessageDataHandle.readMessage({
@@ -331,29 +327,16 @@ class FriendMessage extends Component {
       let time = lastMessage.originMsg.time
       let ctime = new Date(time)
       let timeString = moment(ctime).format('YYYY/MM/DD HH:mm')
-      // let timeString =
-      //   '' +
-      //   ctime.getFullYear() +
-      //   '/' +
-      //   (ctime.getMonth() + 1) +
-      //   '/' +
-      //   ctime.getDate() +
-      //   ' ' +
-      //   ctime.getHours() +
-      //   ':' +
-      //   ctime.getMinutes()
-
-      let iTemView
       return (
         <TouchableOpacity
-          ref={ref => (iTemView = ref)}
+          ref={ref => (this.listRefs[item.id] = ref)}
           style={styles.ItemViewStyle}
           activeOpacity={0.75}
           onPress={() => {
             this._onSectionselect(item, index)
           }}
           onLongPress={() => {
-            this._showPopover(iTemView, item)
+            this._showPopover(this.listRefs[item.id], item)
           }}
         >
           <View>
@@ -443,6 +426,9 @@ class FriendMessage extends Component {
             userId: this.props.user.userName, //当前登录账户的id
             talkId: this.target.id, //会话ID
           })
+          if (this.listRefs[this.target.id]) {
+            delete this.listRefs[this.target.id]
+          }
           this.dialog.setDialogVisible(false)
         }}
         opacity={1}

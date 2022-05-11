@@ -13,6 +13,7 @@ import {
   PopModal,
   InfoView,
   Dialog,
+  PopoverButtonsView,
 } from '../../../../components'
 import {
   Toast,
@@ -30,7 +31,6 @@ import {
   LocationView,
 } from '../../components'
 import { getThemeAssets } from '../../../../assets'
-import { FileTools } from '../../../../native'
 import styles from './styles'
 import {
   SMap,
@@ -44,10 +44,9 @@ import {
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
-//eslint-disable-next-line
-// import { ActionPopover } from 'teaset'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
+import { Rect } from 'react-native-popover-view'
 
 const SINGLE_ATTRIBUTE = 'singleAttribute'
 const PAGE_SIZE = 30
@@ -114,6 +113,7 @@ export default class LayerAttribute extends React.Component {
     this.isLoading = false // 防止同时重复加载多次
     this.filter = '' // 属性查询过滤
     this.isMediaLayer = false // 是否是多媒体图层
+    this.Popover = undefined // 长按弹窗
   }
 
   componentDidMount() {
@@ -754,24 +754,7 @@ export default class LayerAttribute extends React.Component {
     }
     if (pressView) {
       pressView.measure((ox, oy, width, height, px, py) => {
-        let screenWidth = screen.getScreenWidth(),
-          allWidth = width * items.length
-        // let dx = screenWidth - allWidth / 2 + width / 2
-        // let x = px > dx ? dx : px
-        let option = {}
-        if (px > screenWidth - allWidth / 2 + width / 2) {
-          option.direction = 'left'
-        }
-        // ActionPopover.show(
-        //   {
-        //     x: px,
-        //     y: py,
-        //     width,
-        //     height,
-        //   },
-        //   items,
-        //   option,
-        // )
+        this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), items)
       })
     }
   }
@@ -1724,6 +1707,11 @@ export default class LayerAttribute extends React.Component {
           }}
         />
         {this.renderDeleteFieldDialog()}
+        <PopoverButtonsView
+          ref={ref => this.Popover = ref}
+          backgroundStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
+          popoverStyle={{backgroundColor: 'rgba(0, 0, 0, 1)'}}
+        />
       </Container>
     )
   }

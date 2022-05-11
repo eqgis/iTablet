@@ -6,7 +6,7 @@
 /* global GLOBAL */
 import * as React from 'react'
 import { TouchableOpacity, Text, SectionList, View, Image } from 'react-native'
-import { Container, MTBtn, Dialog, TextBtn, Waitting } from '../../components'
+import { Container, MTBtn, Dialog, Waitting, PopoverButtonsView } from '../../components'
 import { Toast, scaleSize, LayerUtils } from '../../utils'
 import { MapToolbar, OverlayView } from '../workspace/components'
 import {
@@ -40,6 +40,7 @@ import { getLanguage } from '../../language'
 import styles from './styles'
 import { getXmlTemplateData } from './components/LayerManager_tolbar/LayerToolbarData'
 import ServiceAction from '../workspace/components/ToolBar/modules/serviceModule/ServiceAction'
+import { Rect } from 'react-native-popover-view'
 
 export default class MT_layerManager extends React.Component {
   props: {
@@ -94,12 +95,16 @@ export default class MT_layerManager extends React.Component {
       type: (params && params.type) || global.Type, // 底部Tabbar类型
       allLayersVisible: false,
       isOutput: true, // 点击了输出/加载按钮，用于判断dialog行为
+
+      isVisible: false,
+      buttonRect: new Rect(1, 1, 100, 60),
     }
     this.itemRefs = {} // 记录列表items
     this.currentItemRef = {} // 当前被选中的item
     this.prevItemRef = {} // 上一个被选中的item
     this.dialog = undefined
     this.publishMapServiceWatting = undefined // 发布地图服务,只有在线协作可用
+    this.Popover = undefined
   }
 
   componentDidUpdate(prevProps) {
@@ -876,6 +881,7 @@ export default class MT_layerManager extends React.Component {
               item.path === this.props.currentLayer.path
             }
             onPress={data => this.onPressRow({ ...data, section })}
+            onLongPress={data => this.showPopover(data)}
             onAllPress={data => this.onAllPressRow({ ...data, section })}
             onArrowPress={({ data }) => this.getChildList({ data, section })}
             onToolPress={data => action({ ...data, section })}
@@ -905,6 +911,20 @@ export default class MT_layerManager extends React.Component {
     this.setState({
       data: newData.concat(),
     })
+  }
+
+  // showPopover = ({ref, popoverData}) => {
+  //   ref?.measure((ox, oy, width, height, px, py) => {
+  //     this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), popoverData)
+  //   });
+  // }
+
+  showPopover = ({px, py, width, height, popoverData}) => {
+    this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), popoverData)
+  }
+
+  closePopover = () => {
+    this.setState({isVisible: false});
   }
 
   renderSection = ({ section }) => {
@@ -1276,6 +1296,11 @@ export default class MT_layerManager extends React.Component {
         {this.renderOverLayer()}
         {this.renderTool()}
         {this._renderDialog()}
+        <PopoverButtonsView
+          ref={ref => this.Popover = ref}
+          backgroundStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
+          popoverStyle={{backgroundColor: 'rgba(0, 0, 0, 1)'}}
+        />
       </Container>
     )
   }

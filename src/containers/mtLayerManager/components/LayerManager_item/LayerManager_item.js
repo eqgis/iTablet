@@ -508,7 +508,7 @@ export default class LayerManager_item extends React.Component {
               items.push(moveToBottomObj)
             }
 
-            py = py - itemHeight
+            py = py - height
             layer.index -= 1
             this.setState({
               data: layer,

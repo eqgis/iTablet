@@ -46,7 +46,8 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
   if (item.is3D) return
   try {
     let result = null
-    const key = (item.title || item.content)?.substring(0, 20)
+    const key = (item.title || item.content)?.substring(0, 20) || ''
+    if (!key) return
     if (global.currentLayer?.path) {
       result = await SMap.searchLayerAttribute(global.currentLayer.path, {
         key: key,
@@ -76,7 +77,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
         let _location = await SMap.translateLocationToLongitudeLatitude({x, y})
         // SMap.getLoca
         resultList.push({
-          pointName: name,
+          pointName: name || '',
           x: x,
           y: y,
           address: dataItem.address || `x:${_location.x} y:${_location.y}`,
@@ -133,7 +134,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
               let _location = await SMap.getCurrentPosition()
               const resultList = []
               resultList.push({
-                pointName: key,
+                pointName: key || '',
                 x: _location.x,
                 y: _location.y,
                 address: `x:${_location.x} y:${_location.y}`,

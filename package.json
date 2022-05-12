@@ -19,6 +19,8 @@
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "axios": "^0.26.1",
+    "fbjs": "^3.0.4",
+    "fbjs-scripts": "^3.0.1",
     "immutable": "^4.0.0",
     "imobile_for_reactnative": "file:../imobile_for_reactnative",
     "jcore-react-native": "^1.9.5",
@@ -65,7 +67,7 @@
     "redux-promise-middleware": "^6.1.2",
     "redux-thunk": "^2.4.1",
     "rn-fetch-blob": "^0.12.0",
-    "teaset": "^0.7.5"
+    "vision-camera-dynamsoft-barcode-reader": "^0.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",

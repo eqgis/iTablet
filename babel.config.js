@@ -8,6 +8,11 @@ module.exports = {
         rootPathPrefix: '@/'
       }
     ],
-    'react-native-reanimated/plugin'
+    [
+      'react-native-reanimated/plugin',
+      {
+        globals: ['__decode'],
+      },
+    ]
   ]
 };

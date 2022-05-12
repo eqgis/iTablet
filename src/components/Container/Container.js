@@ -406,7 +406,7 @@ export default class Container extends Component {
           </AnimatedView>
         )}
         <View style={{ flex: 1 }}>
-          <StatusBar animated={true} hidden={false} />
+          <StatusBar animated={true} hidden={global.getDevice().orientation.indexOf('LANDSCAPE') === 0} />
           {headerOnTop && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1, overflow: 'hidden' }, direction]}>
             <ContainerView style={[styles.container]}>

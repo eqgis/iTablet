@@ -1,7 +1,7 @@
 /**
  * 相机界面
  */
-import * as React from 'react'
+import React from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -16,9 +16,11 @@ import { FileTools } from '../../native'
 import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
 import { Progress, MediaViewer, ImagePicker } from '../../components'
-import { Camera as RNCamera, CameraCaptureError, CameraDevice, Frame, PhotoFile, RecordVideoOptions, TakePhotoOptions, useCameraDevices, useFrameProcessor, VideoFile } from 'react-native-vision-camera'
-import { SMediaCollector,SMap  } from 'imobile_for_reactnative'
+import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, RecordVideoOptions, TakePhotoOptions, useCameraDevices, useFrameProcessor, VideoFile } from 'react-native-vision-camera'
+import { SMediaCollector  } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
+import { DBRConfig, decode, TextResult } from 'vision-camera-dynamsoft-barcode-reader'
+import * as REA from 'react-native-reanimated';
 
 import styles from './styles'
 import ImageButton from '../../components/ImageButton'
@@ -71,10 +73,7 @@ class Camera extends React.Component<Props, State> {
   ids: number[] = []
   layerAttribute = false
   qrCb: ((params: unknown) => void) | null | undefined = null // 二维码/条形码 回调
-  qrCodeData?: {
-    data: string,
-    rawData?: string,
-  }
+  qrCodeData?: TextResult[]
   recordTimer: NodeJS.Timer | null | undefined
   mProgress: Progress | null | undefined
   mediaViewer: MediaViewer | null | undefined
@@ -352,27 +351,20 @@ class Camera extends React.Component<Props, State> {
 
   /**
    * 
-   * @param {*} event {
-        data: string;
-        rawData?: string;
-        type: keyof BarCodeType;
-        // @description For Android use `[Point<string>, Point<string>]`
-        // @description For iOS use `{ origin: Point<string>, size: Size<string> }`
-        bounds: [Point<string>, Point<string>] | { origin: Point<string>; size: Size<string> };
-      }
+   * @param {TextResult[]} event
    */
-  // _onBarCodeRead = event => {
-    // if (this.state.type !== TYPE.BARCODE || this.state.recordStatus === RECORD_STATUS.RECORDED) {
-    //   return
-    // }
-    // if (this.qrCodeData?.data === event.data && this.qrCodeData?.rawData === event.rawData) {
-    //   return
-    // }
-    // this.qrCodeData = event
-    // if (this.qrCb && typeof this.qrCb === 'function') {
-    //   this.qrCb(event)
-    // }
-  // }
+  _onBarCodeRead = (event: TextResult[]) => {
+    if (this.state.type !== TYPE.BARCODE || this.state.recordStatus === RECORD_STATUS.RECORDED) {
+      return
+    }
+    if (JSON.stringify(this.qrCodeData) === JSON.stringify(event)) {
+      return
+    }
+    this.qrCodeData = event
+    if (this.qrCb && typeof this.qrCb === 'function') {
+      this.qrCb(event)
+    }
+  }
   
   renderProgress = () => {
     if (
@@ -520,8 +512,9 @@ class Camera extends React.Component<Props, State> {
         <View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'black'}} />
         <MyCamera
           {...this.props}
-          getRef={(ref: RNCamera | undefined) => this.camera = ref}
+          getRef={ref => this.camera = ref}
           type={this.state.type}
+          qrCb={this._onBarCodeRead}
         />
         {this.renderProgress()}
 
@@ -553,14 +546,35 @@ type ReduxProps = ConnectedProps<typeof connector>
 
 export default connector(Camera)
 
-function MyCamera(props) {
+interface MyCameraProps {
+  getRef: React.LegacyRef<RNCamera> | undefined,
+  type: CAREMA_MEDIA_TYPE,
+  qrCb?: (params: TextResult[]) => void
+}
+
+function MyCamera(props: MyCameraProps) {
+  // 获取可用多媒体设备
   const devices = useCameraDevices('wide-angle-camera')
+  // 获取后置摄像头
   const device = devices.back
-  const frameProcessor = useFrameProcessor((frame) => {
-    'worklet'
-    // const isHotdog = detectIsHotdog(frame)
-    // TODO QRCode
-  }, [])
+  // const [barcodeResults, setBarcodeResults] = React.useState([] as TextResult[]);
+
+  let frameProcessor = undefined
+  if (props.type === TYPE.BARCODE) {
+    // 帧处理
+    frameProcessor = useFrameProcessor((frame) => {
+      'worklet'
+      const config: DBRConfig = {};
+      config.template="{\"ImageParameter\":{\"BarcodeFormatIds\":[\"BF_QR_CODE\"],\"Description\":\"\",\"Name\":\"Settings\"},\"Version\":\"3.0\"}"; //scan qrcode only
+  
+      // 二维码解码
+      const results:TextResult[] = decode(frame,config)
+      if (props.qrCb && results.length > 0) {
+        REA.runOnJS(props.qrCb)(results);
+      }
+    }, [])
+  }
+
   if (!device) return <View style={{backgroundColor: 'yellow'}} />
 
   return (
@@ -571,7 +585,8 @@ function MyCamera(props) {
       ref={props.getRef}
       photo={props.type === TYPE.PHOTO}
       video={props.type === TYPE.VIDEO}
-      // frameProcessor={props.type === TYPE.BARCODE ? frameProcessor : undefined}
+      frameProcessor={props.type === TYPE.BARCODE ? frameProcessor : undefined}
+      frameProcessorFps={1}
     />
   )
 }

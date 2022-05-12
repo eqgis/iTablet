@@ -612,12 +612,13 @@ async function qrCode() {
     NavigationService.navigate('Camera', {
       type: TYPE.BARCODE,
       qrCb: event => {
+        if (event.length <= 0) return
         _params.setToolbarVisible(false)
-        // NavigationService.goBack('Camera')
+        NavigationService.goBack('Camera')
         LocateUtils.SearchGeoInCurrentLayer(
           {
-            title: event.data,
-            value: event.data,
+            title: event[0].barcodeText,
+            value: event[0].barcodeText,
             radius: 5000,
             is3D: false,
           },

@@ -349,7 +349,6 @@ export default class LayerManager_item extends React.Component {
       } else {
         // 设置菜单的显示的位置坐标
         ref?.measure((ox, oy, width, height, px, py) => {
-          console.warn('PressViewPosition', width, height, px, py)
           this.PressViewPosition = {
             width,
             height,

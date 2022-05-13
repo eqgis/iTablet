@@ -477,11 +477,14 @@ async function downloadService(url: string) {
       let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
       const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
-        let canAdd = false
-        for (const _dataset of _datasets.list) {
-          if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
-            canAdd = true
-            break
+        let canAdd = true
+        if(_datasets != null){
+          canAdd = false
+          for (const _dataset of _datasets.list) {
+            if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
+              canAdd = true
+              break
+            }
           }
         }
         canAdd && services.push({

@@ -15,8 +15,12 @@ interface Props {
   currentUser: any,
 }
 
+interface State {
+  text?: undefined | string,
+}
+
 const DEFAULT_LEFT = scaleSize(0)
-class NewMessageIcon extends Component<Props, {}> {
+class NewMessageIcon extends Component<Props, State> {
 
   left: Animated.Value
   visible: boolean
@@ -25,15 +29,23 @@ class NewMessageIcon extends Component<Props, {}> {
     super(props)
     this.left = new Animated.Value(scaleSize(DEFAULT_LEFT))
     this.visible = true
+    this.state = {
+      text: '',
+    }
   }
 
-  setVisible = (visible: boolean) => {
+  setVisible = (visible: boolean,text?:string) => {
     if (visible !== this.visible) {
       Animated.timing(this.left, {
         toValue: visible ? scaleSize(DEFAULT_LEFT) : -500,
         duration: 300,
       }).start()
       this.visible = visible
+    }
+    if (text !== this.state.text) {
+      this.setState({
+        text: text,
+      })
     }
   }
 
@@ -70,7 +82,7 @@ class NewMessageIcon extends Component<Props, {}> {
             }}
           >
             <Text style={{ color: 'white', fontSize: size.fontSize.fontSizeLg }}>
-              {`${
+              {this.state.text ? this.state.text : `${
                 getLanguage(GLOBAL.language).Friends.COWORK_MESSAGE
               }(${number})`}
             </Text>

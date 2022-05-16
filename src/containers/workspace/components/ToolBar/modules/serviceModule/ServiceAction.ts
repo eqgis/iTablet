@@ -98,6 +98,7 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
 SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   downloadHandler: async res => {
     if (!res.content) return
+    Toast.show(res.content.dataset+' download success')
     let _datasetUrl = res.content.urlDataset
     let datasetName = _datasetUrl.substring(_datasetUrl.lastIndexOf('/') + 1).replace('.json', '').replace('.rjson', '')
     const params: any = ToolbarModule.getParams()
@@ -493,7 +494,6 @@ async function downloadService(url: string) {
           datasetUrl: dataset.datasetUrl,
           status: 'download',
         })
-        debugger
         downloadToLocal(dataset.datasetUrl, datasourceName)
       }
     }

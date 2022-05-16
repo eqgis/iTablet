@@ -489,6 +489,8 @@ async function downloadService(url: string) {
               break
             }
           }
+        }else{
+          Toast.show("Start to download "+datasourceName)
         }
         canAdd && services.push({
           datasetUrl: dataset.datasetUrl,

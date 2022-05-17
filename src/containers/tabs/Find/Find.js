@@ -11,7 +11,7 @@ import {
   ScrollView,
   // AsyncStorage,
 } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Container } from '../../../components'
 import { UserType } from '../../../constants'
 import NavigationService from '../../NavigationService'

@@ -21,7 +21,7 @@ import { scaleSize, Toast } from '../../../../../utils'
 import styles from '../styles'
 import { getPublicAssets } from '../../../../../assets'
 import { getLanguage } from '../../../../../language'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 class LicenseJoinCloud extends Component {
   props: {

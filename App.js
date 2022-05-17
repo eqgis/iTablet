@@ -15,7 +15,7 @@ import {
   PermissionsAndroid,
   // NetInfo,
 } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'

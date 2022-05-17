@@ -7,7 +7,7 @@ import {
   Image,
   // AsyncStorage,
 } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import NavigationService from '../NavigationService'
 import styles from './styles'
 import { getLanguage } from '../../language'

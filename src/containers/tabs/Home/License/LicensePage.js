@@ -11,7 +11,7 @@ import NavigationService from '../../../NavigationService'
 import constants from '../../../../../src/containers/workspace/constants'
 import { Dialog } from '../../../../components'
 import LicenseInfo from './component/LicenseInfo'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LicenseType = {
   local: 0,

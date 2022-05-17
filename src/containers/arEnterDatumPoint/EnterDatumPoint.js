@@ -8,7 +8,7 @@ import {
   // AsyncStorage,
   FlatList,
 } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Container, Button } from '../../components'
 
 import { color } from '../../styles'

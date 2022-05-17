@@ -13,7 +13,7 @@ import { getLanguage } from '../../../../language/index'
 import { SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../utils'
 import ModuleInfo from './component/ModuleInfo'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 var LICENSE_MODULE_REGISTER = 'LICENSE_MODULE_REGISTER'
 

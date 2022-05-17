@@ -4914,13 +4914,13 @@ export default class MapView extends React.Component {
           }
           }
         />
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderHeader()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderBottomBtns()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showCurrentHeightView && !this.props.showDatumPoint && this.renderCurrentHeightChangeView()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.showADDPoint && this.state.isnew && !this.state.isTrack && !this.props.showDatumPoint && this.renderADDPoint()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showADD && this.state.isnew && !this.state.isTrack && !this.props.showDatumPoint && this.renderCenterBtn()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.is_showLog && this.state.showLog && this.props.showARSceneNotify && !this.props.showDatumPoint && this.renderDioLog()}
-        {GLOBAL.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showGenera && (this.isDrawing || this.isCollect) && !this.props.showDatumPoint && this.renderGeneralView()}
+        {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderHeader()}
+        {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderBottomBtns()}
+        {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showCurrentHeightView && !this.props.showDatumPoint && this.renderCurrentHeightChangeView()}
+        {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.showADDPoint && this.state.isnew && !this.state.isTrack && !this.props.showDatumPoint && this.renderADDPoint()}
+        {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showADD && this.state.isnew && !this.state.isTrack && !this.props.showDatumPoint && this.renderCenterBtn()}
+        {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.state.showSwitch && this.state.is_showLog && this.state.showLog && this.props.showARSceneNotify && !this.props.showDatumPoint && this.renderDioLog()}
+        {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && this.state.showGenera && (this.isDrawing || this.isCollect) && !this.props.showDatumPoint && this.renderGeneralView()}
       </>
     )
   }

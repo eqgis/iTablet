@@ -18,7 +18,7 @@ import {
   DeviceEventEmitter,
 } from 'react-native'
 import { TabView, SceneMap, TabBar as FriendTabBar } from 'react-native-tab-view'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // eslint-disable-next-line
 import { SMessageService, SOnlineService, SIPortalService, SMap, SCoordination } from 'imobile_for_reactnative'

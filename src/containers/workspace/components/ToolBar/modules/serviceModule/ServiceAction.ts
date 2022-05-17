@@ -25,6 +25,8 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
+
+
 const SERVICE_TAGGING_PRE_NAME = 'Tagging_'
 const LABEL_PRE_NAME = 'Label_'
 
@@ -96,6 +98,12 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
 SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   downloadHandler: async res => {
     if (!res.content) return
+    if(res.content?.isEnd === 1.0){
+      g_messageIcon?.setVisible(true)
+    }else if(res.content?.isEnd <= 1.0){
+      
+      g_messageIcon?.setVisible(true,getLanguage(GLOBAL.language).Cowork.SYNC_SERVICE+' '+Math.floor(res.content?.isEnd * 100)+'%')
+    }
     let _datasetUrl = res.content.urlDataset
     let datasetName = _datasetUrl.substring(_datasetUrl.lastIndexOf('/') + 1).replace('.json', '').replace('.rjson', '')
     const params: any = ToolbarModule.getParams()
@@ -463,7 +471,8 @@ async function listAction(type: string, params: any = {}) {
   }
 }
 
-async function downloadService(url: string) {
+let  g_messageIcon:any
+async function downloadService(url: string,messageIcon:any) {
   try {
     if (!url) return false
     const _params: any = ToolbarModule.getParams()
@@ -477,12 +486,18 @@ async function downloadService(url: string) {
       let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
       const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
-        let canAdd = false
-        for (const _dataset of _datasets.list) {
-          if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
-            canAdd = true
-            break
+        let canAdd = true
+        if(_datasets != null){
+          canAdd = false
+          for (const _dataset of _datasets.list) {
+            if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
+              canAdd = true
+              break
+            }
           }
+        }else{
+          g_messageIcon = messageIcon
+          g_messageIcon?.setVisible(true,getLanguage(GLOBAL.language).Cowork.SYNC_SERVICE+'...')
         }
         canAdd && services.push({
           datasetUrl: dataset.datasetUrl,

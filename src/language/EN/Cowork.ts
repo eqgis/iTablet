@@ -3,6 +3,7 @@ import CN from "../CN"
 const Cowork: typeof CN.Cowork = {
   UPDATE_LOCAL_SERVICE: "Updating local services",
   SUBMIT_SERVICE: "Submit service",
+  SYNC_SERVICE: "Sync service",//To be translated
 
   UPDATE_SUCCESSFUL: "Update successfully",
   UPDATE_FAILED: "Update failed",

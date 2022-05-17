@@ -1,7 +1,7 @@
 import mapModules from './mapModules/index'
 import tabModules from './tabModules/index'
 
-const iportalMQIP = '192.168.11.206'
+const iportalMQIP = '192.168.11.21'
 
 export default {
   // name: '全功能移动GIS软件',

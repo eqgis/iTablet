@@ -80,6 +80,7 @@ ios/iTablet-tvOS
 ios/iTablet-tvOSTests
 ios/Build
 ios/Index
+ios/Pods
 package-lock.json
 yarn.lock
 .vscode/

@@ -101,7 +101,8 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
     if(res.content?.isEnd === 1.0){
       g_messageIcon?.setVisible(true)
     }else if(res.content?.isEnd <= 1.0){
-      g_messageIcon?.setVisible(true,getLanguage(GLOBAL.language).Cowork.SYNC_SERVICE+' '+res.content?.isEnd*100+'%')
+      
+      g_messageIcon?.setVisible(true,getLanguage(GLOBAL.language).Cowork.SYNC_SERVICE+' '+Math.floor(res.content?.isEnd * 100)+'%')
     }
     let _datasetUrl = res.content.urlDataset
     let datasetName = _datasetUrl.substring(_datasetUrl.lastIndexOf('/') + 1).replace('.json', '').replace('.rjson', '')

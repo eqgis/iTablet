@@ -1,7 +1,8 @@
 const Cowork = {
   UPDATE_LOCAL_SERVICE: "更新本地服务",
   SUBMIT_SERVICE: "提交服务",
-
+  SYNC_SERVICE: "同步服务中",
+  
   UPDATE_SUCCESSFUL: "更新成功",
   UPDATE_FAILED: "更新失败",
 

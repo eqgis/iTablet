@@ -1885,7 +1885,7 @@ export default class MapView extends React.Component {
         const service = this.props.route?.params?.service
         if (global.coworkMode && this.props.route?.params?.service && global.Type !== ChunkType.MAP_PLOTTING) {
           await SCoordinationUtils.initMapDataWithService(service.address)
-          await ServiceAction.downloadService(service.address)
+          await ServiceAction.downloadService(service.address,this.NewMessageIcon)
         }
 
         // 标注图层等其他图层添加完后再获取图层列表

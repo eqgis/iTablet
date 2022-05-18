@@ -1,7 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Home, { Setting, AboutITablet } from './Home'
 import Mine, {
   MyService,

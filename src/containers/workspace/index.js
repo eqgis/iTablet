@@ -4,7 +4,7 @@
  */
 
 import React from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { MapView, Map3D } from './pages'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -205,8 +205,8 @@ function MapStack(device) {
       initialRouteName='MapView'
       screenOptions={{
         headerShown: false,
-        animation: device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'slide_from_right',
-        presentation: 'transparentModal',
+        animation: device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : (Platform.OS === 'ios' ? 'default' : 'slide_from_right'),
+        presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
       }}
     >
       <Stack.Screen name="MapView" component={MapView} />

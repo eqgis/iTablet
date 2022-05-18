@@ -2,9 +2,6 @@ import React from 'react'
 import {
   createNativeStackNavigator,
 } from '@react-navigation/native-stack'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { NavigationContainer, NavigationState } from '@react-navigation/native'
-import NavigationService from './NavigationService'
 
 // 主页
 
@@ -198,6 +195,7 @@ import WebView from '../components/WebView'
 import { ImagePickerStack } from '@/components/ImagePicker'
 import { UserInfo } from '@/types'
 import { UserType } from '@/constants'
+import { Platform } from 'react-native'
 
 const Stack = createNativeStackNavigator()
 
@@ -212,8 +210,8 @@ export default function(params: {
       screenOptions={{
         // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         headerShown: false,
-        animation: 'slide_from_right',
-        presentation: 'transparentModal',
+        animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
+        presentation: 'card',
       }}
     >
       <Stack.Screen name="Tabs">
@@ -310,7 +308,7 @@ export default function(params: {
       <Stack.Screen name="Protocol" component={Protocol} />
       <Stack.Screen name="PublicMap" component={PublicMap} />
       <Stack.Screen name="PointAnalyst" component={PointAnalyst} options={{
-        animation: params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right',
+        animation: Platform.OS === 'ios' ? 'default' : (params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right'),
       }}/>
       <Stack.Screen name="FriendMap" component={FriendMap} />
       <Stack.Screen name="MyLabel" component={MyLabel} />
@@ -385,7 +383,7 @@ export default function(params: {
       <Stack.Screen name="SecondMapSettings6" component={SecondMapSettings} />
       <Stack.Screen name="SecondMapSettings7" component={SecondMapSettings} />
       <Stack.Screen name="NavigationView" component={NavigationView} options={{
-        animation: params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right',
+        animation: Platform.OS === 'ios' ? 'default' : (params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right'),
       }} />
       <Stack.Screen name="NavigationDataChangePage" component={NavigationDataChangePage} />
       <Stack.Screen name="CreateNavDataPage" component={CreateNavDataPage} />

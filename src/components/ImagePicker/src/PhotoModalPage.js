@@ -113,7 +113,7 @@ export default class extends React.PureComponent {
               initialRouteName={PageKeys.album_list}
               screenOptions={{
                 headerShown: false,
-                animation: 'slide_from_right',
+                animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
                 presentation: 'transparentModal',
               }}
             >

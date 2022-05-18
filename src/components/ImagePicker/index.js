@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
+import { Platform } from 'react-native'
 import * as ImagePicker from './src'
 import PageKeys from './src/PageKeys'
 const Stack = createNativeStackNavigator()
@@ -12,7 +13,7 @@ export function ImagePickerStack() {
       initialRouteName={PageKeys.album_list}
       screenOptions={{
           headerShown: false,
-          animation: 'slide_from_right',
+          animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
           presentation: 'transparentModal',
       }}
       >

@@ -39,6 +39,7 @@ class NewMessageIcon extends Component<Props, State> {
       Animated.timing(this.left, {
         toValue: visible ? scaleSize(DEFAULT_LEFT) : -500,
         duration: 300,
+        useNativeDriver: false,
       }).start()
       this.visible = visible
     }
@@ -83,7 +84,7 @@ class NewMessageIcon extends Component<Props, State> {
           >
             <Text style={{ color: 'white', fontSize: size.fontSize.fontSizeLg }}>
               {this.state.text ? this.state.text : `${
-                getLanguage(GLOBAL.language).Friends.COWORK_MESSAGE
+                getLanguage(this.props.language).Friends.COWORK_MESSAGE
               }(${number})`}
             </Text>
           </View>

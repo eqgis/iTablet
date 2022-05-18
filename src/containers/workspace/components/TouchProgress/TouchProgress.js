@@ -180,7 +180,7 @@ export default class TouchProgress extends Component {
   _handlePanResponderMove = (evt, gestureState) => {
     if (Math.abs(gestureState.dy) > Math.abs(gestureState.dx)) {
       if (Math.abs(gestureState.dy) > 20) {
-        if(!GLOBAL.isEffectProgress){
+        if(!global.isEffectProgress){
           this.showMenu()
         }
       }

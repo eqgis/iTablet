@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* iTabletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* iTabletTests.m */; };
 		0A33905628323ED70094AD2F /* libSupermap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AF84280815BF00435541 /* libSupermap.a */; };
+		0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A33933C283386F90094AD2F /* SuperMap.bundle */; };
 		0AC8AEF92808109F00435541 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AE6A2808109D00435541 /* libWeChatSDK.a */; };
 		0AC8AEFA2808109F00435541 /* AppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE6C2808109E00435541 /* AppUtils.m */; };
 		0AC8AEFC2808109F00435541 /* WeiXinUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE6F2808109E00435541 /* WeiXinUtils.m */; };
@@ -236,6 +237,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* iTabletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iTabletTests.m; sourceTree = "<group>"; };
 		06FACE8019E26F0904A7ACC2 /* Pods-iTablet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iTablet.release.xcconfig"; path = "Target Support Files/Pods-iTablet/Pods-iTablet.release.xcconfig"; sourceTree = "<group>"; };
+		0A33933C283386F90094AD2F /* SuperMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMap.bundle; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMap.bundle; sourceTree = "<group>"; };
 		0AC8AE682808109D00435541 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		0AC8AE692808109D00435541 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		0AC8AE6A2808109D00435541 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
@@ -766,6 +768,7 @@
 				0AC8AFBB2808185D00435541 /* libSocketRocket.a */,
 				0AC8AFB12808180800435541 /* JRE.framework */,
 				0AC8AFA7280817BE00435541 /* SuperMap.framework */,
+				0A33933C283386F90094AD2F /* SuperMap.bundle */,
 				0AC8AFA3280817BA00435541 /* GLTFSceneKit.framework */,
 				0AC8AFA12808178700435541 /* Foundation.framework */,
 				0AC8AF9F2808177E00435541 /* ExternalAccessory.framework */,
@@ -1034,6 +1037,7 @@
 				0AC8AF0A2808109F00435541 /* OleFileIO-README.md in Resources */,
 				0AC8AF3F2808109F00435541 /* PcfFontFile.py in Resources */,
 				0AC8AF212808109F00435541 /* PalmImagePlugin.py in Resources */,
+				0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */,
 				0AC8AF342808109F00435541 /* features.py in Resources */,
 				0AC8AF502808109F00435541 /* ImagePalette.py in Resources */,
 				0AC8AF1E2808109F00435541 /* MicImagePlugin.py in Resources */,

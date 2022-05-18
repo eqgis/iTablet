@@ -91,8 +91,13 @@ static NSString* g_sampleCodeName = @"#";;
   completionHandler();
 }
 
+- (void)jpushNotificationAuthorization:(JPAuthorizationStatus)status withInfo:(NSDictionary *)info { 
+  
+}
 
-- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
+
+
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler
 {
   [RNFSManager setCompletionHandlerForIdentifier:identifier completionHandler:completionHandler];
 }
@@ -136,7 +141,12 @@ static NSString* g_sampleCodeName = @"#";;
 //  [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
 //  [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
   
-  RCTRootView *rootView = [AppDelegate loadBunle:launchOptions];
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                   moduleName:@"iTablet"
+                                            initialProperties:nil];
+  
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -174,7 +184,12 @@ static NSString* g_sampleCodeName = @"#";;
   @try {
     //初始化极光推送
     JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
-    entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound|JPAuthorizationOptionProvidesAppNotificationSettings;
+    if (@available(iOS 12.0, *)) {
+      entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound|JPAuthorizationOptionProvidesAppNotificationSettings;
+    } else {
+      // Fallback on earlier versions
+      entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
+    }
     [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
     
   } @catch (NSException *exception) {
@@ -196,6 +211,7 @@ static NSString* g_sampleCodeName = @"#";;
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
+  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.199"];
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
@@ -203,7 +219,7 @@ static NSString* g_sampleCodeName = @"#";;
 }
 
 #pragma mark - 微信打开压缩包
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
   if(![[url absoluteString] containsString:@"platformId=wechat"]){
        [FileTools getUriState:url];
@@ -211,6 +227,7 @@ static NSString* g_sampleCodeName = @"#";;
   return [WXApi handleOpenURL:url delegate:self];
 }
 
+#pragma mark - 加载bundle包,App初始化不使用该方法
 +(RCTRootView *)loadBunle:(NSDictionary *)launchOptions {
   NSURL *jsCodeLocation;
   NSString* jsBundlePath = [AppInfo getBundleFile];
@@ -219,7 +236,7 @@ static NSString* g_sampleCodeName = @"#";;
   } else {
     #if DEBUG
 //    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.2.17"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.199"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

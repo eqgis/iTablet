@@ -110,24 +110,24 @@ export default class LayerManager_item extends React.Component {
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
       this.getData(this.props.data)
     }
-    if (this.props.device.orientation !== prevProps.device.orientation && this.iTemView) {
-      this.iTemView?.measure((ox, oy, width, height, px, py) => {
-        this.PressViewPosition = {
-          width,
-          height,
-          px,
-          py,
-        }
+    // if (this.props.device.orientation !== prevProps.device.orientation && this.iTemView) {
+    //   this.iTemView?.measure((ox, oy, width, height, px, py) => {
+    //     this.PressViewPosition = {
+    //       width,
+    //       height,
+    //       px,
+    //       py,
+    //     }
         
-        const popoverData = this._showPopover(this.iTemView, this.state.data)
-        this.props.onLongPress({
-          data: this.state.data,
-          parentData: this.props.parentData,
-          popoverData: popoverData,
-          ...this.PressViewPosition,
-        })
-      })
-    }
+    //     const popoverData = this._showPopover(this.iTemView, this.state.data)
+    //     this.props.onLongPress({
+    //       data: this.state.data,
+    //       parentData: this.props.parentData,
+    //       popoverData: popoverData,
+    //       ...this.PressViewPosition,
+    //     })
+    //   })
+    // }
     // 加载图标
     if ((this.props.isLoading !== prevProps.isLoading || !this.aniMotion) && this.props.isLoading) {
       this.aniMotion = null

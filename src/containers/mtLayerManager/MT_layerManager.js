@@ -113,6 +113,10 @@ export default class MT_layerManager extends React.Component {
     ) {
       this.getData()
     }
+    
+    if (this.props.device.orientation !== prevProps.device.orientation) {
+      this.Popover?.setVisible(false)
+    }
   }
 
   componentDidMount() {

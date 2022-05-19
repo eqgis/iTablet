@@ -65,7 +65,7 @@ export default class Tabs extends React.Component<Props, State> {
       this.setState({
         currentPage: index,
       })
-    this.props.data[index]?.onPress()
+    this.props.data[index]?.onPress?.()
   }
 
   _getWidth = () => {

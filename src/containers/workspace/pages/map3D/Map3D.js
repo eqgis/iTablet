@@ -52,6 +52,7 @@ import { Bar } from 'react-native-progress'
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
   props: {
+    nav: Object,
     language: string,
     editLayer: Object,
     latestMap: Object,

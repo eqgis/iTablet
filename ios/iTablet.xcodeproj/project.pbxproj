@@ -441,6 +441,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */,
 				0AC8AF982808176000435541 /* CoreGraphics.framework in Frameworks */,
 				0AF85164283221BB00287BA5 /* libCocoaAsyncSocket.a in Frameworks */,
 				0A33905628323ED70094AD2F /* libSupermap.a in Frameworks */,
@@ -464,7 +465,6 @@
 				0AC8AF8E280816C700435541 /* CFNetwork.framework in Frameworks */,
 				0AC8AF8C280816BF00435541 /* AVFoundation.framework in Frameworks */,
 				0AC8AFCD2808191A00435541 /* libsqlite3.0.tbd in Frameworks */,
-				0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */,
 				0AC8AFE0280819F000435541 /* Security.framework in Frameworks */,
 				0AC8AF8A280816B900435541 /* AudioToolbox.framework in Frameworks */,
 				0AC8AFAA280817C900435541 /* JavaScriptCore.framework in Frameworks */,
@@ -1134,7 +1134,7 @@
 		};
 		7EF7DDE23D15C7127A16F417 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (

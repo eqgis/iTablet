@@ -119,8 +119,8 @@ export default class LayerManager_item extends React.Component {
           py,
         }
         
+        const popoverData = this._showPopover(this.iTemView, this.state.data)
         this.props.onLongPress({
-          ref: ref,
           data: this.state.data,
           parentData: this.props.parentData,
           popoverData: popoverData,
@@ -340,7 +340,6 @@ export default class LayerManager_item extends React.Component {
       const popoverData = this._showPopover(ref, this.state.data)
       if (this.PressViewPosition !== undefined) {
         this.props.onLongPress({
-          ref: ref,
           data: this.state.data,
           parentData: this.props.parentData,
           popoverData: popoverData,
@@ -357,7 +356,6 @@ export default class LayerManager_item extends React.Component {
           }
           
           this.props.onLongPress({
-            ref: ref,
             data: this.state.data,
             parentData: this.props.parentData,
             popoverData: popoverData,

@@ -22,6 +22,7 @@ import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 import { setSampleDataShow} from '../../../../redux/models/down'
 
 const mapStateToProps = state => ({
+  nav: state.nav.toJS(),
   language: state.setting.toJS().language,
   editLayer: state.layers.toJS().editLayer,
   latestMap: state.map.toJS().latestMap,

@@ -1059,7 +1059,7 @@ export default class Home extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation} />
+    return <TabBar navigation={this.props.navigation} currentRoute={'Home'} />
   }
 
   requestPermission = async () => {

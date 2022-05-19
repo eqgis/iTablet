@@ -138,6 +138,7 @@ export default class Friend extends Component {
   shouldComponentUpdate(prevProps, prevState) {
     if (
       JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user) ||
+      JSON.stringify(prevProps.navigation) !== JSON.stringify(this.props.navigation) ||
       JSON.stringify(prevProps.chat) !== JSON.stringify(this.props.chat) ||
       JSON.stringify(prevState) !== JSON.stringify(this.state) ||
       prevProps.language !== this.props.language ||
@@ -2214,7 +2215,7 @@ export default class Friend extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation} />
+    return <TabBar navigation={this.props.navigation} currentRoute={'Friend'} />
   }
 
   renderIPortalAdminView = () => {

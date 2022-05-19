@@ -13,6 +13,7 @@ import { AppTabs } from '../../constants'
 class TabBar extends React.Component {
   static propTypes = {
     language: PropTypes.string,
+    currentRoute: PropTypes.string, // 指定当前选择的tab
     navigation: PropTypes.object,
     style: PropTypes.any,
     appConfig: PropTypes.object,
@@ -31,6 +32,7 @@ class TabBar extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (
       nextProps.language !== this.props.language ||
+      nextProps.currentRoute !== this.props.currentRoute ||
       JSON.stringify(nextProps.style) !== JSON.stringify(this.props.style) ||
       JSON.stringify(nextProps.appConfig) !== JSON.stringify(this.props.appConfig) ||
       JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device) ||
@@ -126,8 +128,8 @@ class TabBar extends React.Component {
   _renderItem = ({ item }, key) => {
     // let NavIndex = this.props.route.index
     let routeState = this.props.navigation?.getState()
-    let routeKey = ''
-    if (routeState && routeState.routeNames?.length > 0 && routeState.routeNames[routeState.index]) {
+    let routeKey = this.props.currentRoute || ''
+    if (!routeKey && routeState && routeState.routeNames?.length > 0 && routeState.routeNames[routeState.index]) {
       routeKey = routeState.routeNames[routeState.index]
     }
     return (

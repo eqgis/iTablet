@@ -305,7 +305,7 @@ export default class Personal extends Component {
       >
         <ScrollView
           style={{ flex: 1 }}
-          contentContainerStyle={[styles.container]}
+          // contentContainerStyle={[styles.container]}
         >
           {this.renderHeader()}
           {this._renderLine()}

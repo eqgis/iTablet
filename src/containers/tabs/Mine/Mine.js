@@ -361,7 +361,7 @@ export default class Mine extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation} />
+    return <TabBar navigation={this.props.navigation} currentRoute={'Mine'} />
   }
 
   render() {

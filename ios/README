@@ -1,0 +1,19 @@
+
+注意：
+step1:
+在"RCTJCoreModule.m" 添加下面代码
+/*
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[
+             ];
+}
+*/
+step2:
+在“logging.cc”中“inline void LogDestination::SetLogDestination(LogSeverity severity,
+					      const char* base_filename)”方法添加如下代码
+/*
+ if(!(severity >= 0 && severity < NUM_SEVERITIES) ){
+        return;
+    }
+*/

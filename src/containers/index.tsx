@@ -212,6 +212,7 @@ export default function(params: {
         headerShown: false,
         animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
         presentation: 'card',
+        gestureEnabled: false,
       }}
     >
       <Stack.Screen name="Tabs">

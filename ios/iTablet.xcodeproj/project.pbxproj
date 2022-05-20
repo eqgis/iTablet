@@ -24,112 +24,7 @@
 		0AC8AF072808109F00435541 /* Workspace.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE872808109E00435541 /* Workspace.zip */; };
 		0AC8AF082808109F00435541 /* SuperMapAR.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE882808109E00435541 /* SuperMapAR.bundle */; };
 		0AC8AF092808109F00435541 /* python2.7.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE892808109E00435541 /* python2.7.zip */; };
-		0AC8AF0A2808109F00435541 /* OleFileIO-README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE8B2808109E00435541 /* OleFileIO-README.md */; };
-		0AC8AF0B2808109F00435541 /* MpoImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE8C2808109E00435541 /* MpoImagePlugin.py */; };
-		0AC8AF0C2808109F00435541 /* ImageMode.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE8D2808109E00435541 /* ImageMode.py */; };
-		0AC8AF0D2808109F00435541 /* PngImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE8E2808109E00435541 /* PngImagePlugin.py */; };
-		0AC8AF0E2808109F00435541 /* XbmImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE8F2808109E00435541 /* XbmImagePlugin.py */; };
-		0AC8AF0F2808109F00435541 /* PcxImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE902808109E00435541 /* PcxImagePlugin.py */; };
-		0AC8AF102808109F00435541 /* SunImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE912808109E00435541 /* SunImagePlugin.py */; };
-		0AC8AF112808109F00435541 /* ImageFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE922808109E00435541 /* ImageFile.py */; };
-		0AC8AF122808109F00435541 /* SpiderImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE932808109E00435541 /* SpiderImagePlugin.py */; };
-		0AC8AF132808109F00435541 /* TarIO.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE942808109E00435541 /* TarIO.py */; };
-		0AC8AF142808109F00435541 /* FitsStubImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE952808109E00435541 /* FitsStubImagePlugin.py */; };
-		0AC8AF152808109F00435541 /* MpegImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE962808109E00435541 /* MpegImagePlugin.py */; };
-		0AC8AF162808109F00435541 /* BdfFontFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE972808109E00435541 /* BdfFontFile.py */; };
-		0AC8AF172808109F00435541 /* GribStubImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE982808109E00435541 /* GribStubImagePlugin.py */; };
-		0AC8AF182808109F00435541 /* ImageStat.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE992808109E00435541 /* ImageStat.py */; };
-		0AC8AF192808109F00435541 /* PixarImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE9A2808109E00435541 /* PixarImagePlugin.py */; };
-		0AC8AF1A2808109F00435541 /* GimpPaletteFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE9B2808109E00435541 /* GimpPaletteFile.py */; };
-		0AC8AF1B2808109F00435541 /* ImageColor.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE9C2808109E00435541 /* ImageColor.py */; };
-		0AC8AF1C2808109F00435541 /* ContainerIO.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE9D2808109E00435541 /* ContainerIO.py */; };
-		0AC8AF1D2808109F00435541 /* MspImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE9E2808109E00435541 /* MspImagePlugin.py */; };
-		0AC8AF1E2808109F00435541 /* MicImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE9F2808109E00435541 /* MicImagePlugin.py */; };
-		0AC8AF1F2808109F00435541 /* ImtImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA02808109E00435541 /* ImtImagePlugin.py */; };
-		0AC8AF202808109F00435541 /* GifImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA12808109E00435541 /* GifImagePlugin.py */; };
-		0AC8AF212808109F00435541 /* PalmImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA22808109E00435541 /* PalmImagePlugin.py */; };
-		0AC8AF222808109F00435541 /* ImageQt.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA32808109E00435541 /* ImageQt.py */; };
-		0AC8AF232808109F00435541 /* ImageMath.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA42808109E00435541 /* ImageMath.py */; };
-		0AC8AF242808109F00435541 /* PaletteFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA52808109E00435541 /* PaletteFile.py */; };
-		0AC8AF252808109F00435541 /* FontFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA62808109E00435541 /* FontFile.py */; };
-		0AC8AF262808109F00435541 /* ExifTags.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA72808109E00435541 /* ExifTags.py */; };
-		0AC8AF272808109F00435541 /* ImageCms.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA82808109E00435541 /* ImageCms.py */; };
-		0AC8AF282808109F00435541 /* FpxImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEA92808109E00435541 /* FpxImagePlugin.py */; };
-		0AC8AF292808109F00435541 /* ImageChops.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEAA2808109E00435541 /* ImageChops.py */; };
-		0AC8AF2A2808109F00435541 /* BufrStubImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEAB2808109E00435541 /* BufrStubImagePlugin.py */; };
-		0AC8AF2B2808109F00435541 /* PSDraw.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEAC2808109E00435541 /* PSDraw.py */; };
-		0AC8AF2C2808109F00435541 /* PcdImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEAD2808109E00435541 /* PcdImagePlugin.py */; };
-		0AC8AF2D2808109F00435541 /* ImageFilter.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEAE2808109E00435541 /* ImageFilter.py */; };
-		0AC8AF2E2808109F00435541 /* ImageDraw2.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEAF2808109E00435541 /* ImageDraw2.py */; };
-		0AC8AF2F2808109F00435541 /* ImagePath.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB02808109E00435541 /* ImagePath.py */; };
-		0AC8AF302808109F00435541 /* DcxImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB12808109E00435541 /* DcxImagePlugin.py */; };
-		0AC8AF312808109F00435541 /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB22808109E00435541 /* __init__.py */; };
-		0AC8AF322808109F00435541 /* JpegPresets.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB32808109E00435541 /* JpegPresets.py */; };
-		0AC8AF332808109F00435541 /* Hdf5StubImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB42808109E00435541 /* Hdf5StubImagePlugin.py */; };
-		0AC8AF342808109F00435541 /* features.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB52808109E00435541 /* features.py */; };
-		0AC8AF352808109F00435541 /* ImageDraw.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB62808109E00435541 /* ImageDraw.py */; };
-		0AC8AF362808109F00435541 /* GimpGradientFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB72808109E00435541 /* GimpGradientFile.py */; };
-		0AC8AF372808109F00435541 /* ImageWin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB82808109E00435541 /* ImageWin.py */; };
-		0AC8AF382808109F00435541 /* IcoImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEB92808109E00435541 /* IcoImagePlugin.py */; };
-		0AC8AF392808109F00435541 /* _tkinter_finder.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEBA2808109E00435541 /* _tkinter_finder.py */; };
-		0AC8AF3A2808109F00435541 /* EpsImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEBB2808109E00435541 /* EpsImagePlugin.py */; };
-		0AC8AF3B2808109F00435541 /* TgaImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEBC2808109E00435541 /* TgaImagePlugin.py */; };
-		0AC8AF3C2808109F00435541 /* ImageMorph.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEBD2808109E00435541 /* ImageMorph.py */; };
-		0AC8AF3D2808109F00435541 /* Jpeg2KImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEBE2808109E00435541 /* Jpeg2KImagePlugin.py */; };
-		0AC8AF3E2808109F00435541 /* WalImageFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEBF2808109E00435541 /* WalImageFile.py */; };
-		0AC8AF3F2808109F00435541 /* PcfFontFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC02808109E00435541 /* PcfFontFile.py */; };
-		0AC8AF402808109F00435541 /* ImageTk.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC12808109E00435541 /* ImageTk.py */; };
-		0AC8AF412808109F00435541 /* GbrImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC22808109E00435541 /* GbrImagePlugin.py */; };
-		0AC8AF422808109F00435541 /* ImageOps.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC32808109E00435541 /* ImageOps.py */; };
-		0AC8AF432808109F00435541 /* PdfImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC42808109E00435541 /* PdfImagePlugin.py */; };
-		0AC8AF442808109F00435541 /* ImageShow.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC52808109E00435541 /* ImageShow.py */; };
-		0AC8AF452808109F00435541 /* ImageEnhance.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC62808109E00435541 /* ImageEnhance.py */; };
-		0AC8AF462808109F00435541 /* WmfImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC72808109E00435541 /* WmfImagePlugin.py */; };
-		0AC8AF472808109F00435541 /* ImageGrab.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC82808109E00435541 /* ImageGrab.py */; };
-		0AC8AF482808109F00435541 /* WebPImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEC92808109F00435541 /* WebPImagePlugin.py */; };
-		0AC8AF492808109F00435541 /* FliImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AECA2808109F00435541 /* FliImagePlugin.py */; };
-		0AC8AF4A2808109F00435541 /* TiffTags.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AECB2808109F00435541 /* TiffTags.py */; };
-		0AC8AF4B2808109F00435541 /* CurImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AECC2808109F00435541 /* CurImagePlugin.py */; };
-		0AC8AF4C2808109F00435541 /* _util.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AECD2808109F00435541 /* _util.py */; };
-		0AC8AF4D2808109F00435541 /* GdImageFile.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AECE2808109F00435541 /* GdImageFile.py */; };
-		0AC8AF4E2808109F00435541 /* TiffImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AECF2808109F00435541 /* TiffImagePlugin.py */; };
-		0AC8AF4F2808109F00435541 /* IptcImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED02808109F00435541 /* IptcImagePlugin.py */; };
-		0AC8AF502808109F00435541 /* ImagePalette.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED12808109F00435541 /* ImagePalette.py */; };
-		0AC8AF512808109F00435541 /* BmpImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED22808109F00435541 /* BmpImagePlugin.py */; };
-		0AC8AF522808109F00435541 /* ImageTransform.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED32808109F00435541 /* ImageTransform.py */; };
-		0AC8AF532808109F00435541 /* IcnsImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED42808109F00435541 /* IcnsImagePlugin.py */; };
-		0AC8AF542808109F00435541 /* McIdasImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED52808109F00435541 /* McIdasImagePlugin.py */; };
-		0AC8AF552808109F00435541 /* XpmImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED62808109F00435541 /* XpmImagePlugin.py */; };
-		0AC8AF562808109F00435541 /* OleFileIO.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED72808109F00435541 /* OleFileIO.py */; };
-		0AC8AF572808109F00435541 /* DdsImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED82808109F00435541 /* DdsImagePlugin.py */; };
-		0AC8AF582808109F00435541 /* ImageSequence.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AED92808109F00435541 /* ImageSequence.py */; };
-		0AC8AF592808109F00435541 /* PyAccess.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEDA2808109F00435541 /* PyAccess.py */; };
-		0AC8AF5A2808109F00435541 /* _binary.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEDB2808109F00435541 /* _binary.py */; };
-		0AC8AF5B2808109F00435541 /* Image.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEDC2808109F00435541 /* Image.py */; };
-		0AC8AF5C2808109F00435541 /* XVThumbImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEDD2808109F00435541 /* XVThumbImagePlugin.py */; };
-		0AC8AF5D2808109F00435541 /* SgiImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEDE2808109F00435541 /* SgiImagePlugin.py */; };
-		0AC8AF5E2808109F00435541 /* ImImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEDF2808109F00435541 /* ImImagePlugin.py */; };
-		0AC8AF5F2808109F00435541 /* PsdImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE02808109F00435541 /* PsdImagePlugin.py */; };
-		0AC8AF602808109F00435541 /* JpegImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE12808109F00435541 /* JpegImagePlugin.py */; };
-		0AC8AF612808109F00435541 /* ImageFont.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE22808109F00435541 /* ImageFont.py */; };
-		0AC8AF622808109F00435541 /* PpmImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE32808109F00435541 /* PpmImagePlugin.py */; };
-		0AC8AF632808109F00435541 /* FtexImagePlugin.py in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE42808109F00435541 /* FtexImagePlugin.py */; };
 		0AC8AF642808109F00435541 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE52808109F00435541 /* logo.png */; };
-		0AC8AF652808109F00435541 /* mobilenet_quant_224.tflite in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE72808109F00435541 /* mobilenet_quant_224.tflite */; };
-		0AC8AF662808109F00435541 /* labelmap_cn.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE82808109F00435541 /* labelmap_cn.txt */; };
-		0AC8AF672808109F00435541 /* mobilenet_quant_224_cn.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE92808109F00435541 /* mobilenet_quant_224_cn.txt */; };
-		0AC8AF682808109F00435541 /* mobilenet_quant_224.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEEA2808109F00435541 /* mobilenet_quant_224.txt */; };
-		0AC8AF692808109F00435541 /* labelmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEEB2808109F00435541 /* labelmap.txt */; };
-		0AC8AF6A2808109F00435541 /* detect.tflite in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEEC2808109F00435541 /* detect.tflite */; };
-		0AC8AF6B2808109F00435541 /* SegmenationFree-Inception.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEEE2808109F00435541 /* SegmenationFree-Inception.caffemodel */; };
-		0AC8AF6C2808109F00435541 /* SegmenationFree-Inception.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEEF2808109F00435541 /* SegmenationFree-Inception.prototxt */; };
-		0AC8AF6D2808109F00435541 /* HorizonalFinemapping.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF02808109F00435541 /* HorizonalFinemapping.caffemodel */; };
-		0AC8AF6E2808109F00435541 /* CharacterRecognization.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF12808109F00435541 /* CharacterRecognization.caffemodel */; };
-		0AC8AF6F2808109F00435541 /* cascade.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF22808109F00435541 /* cascade.xml */; };
-		0AC8AF702808109F00435541 /* Segmentation.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF32808109F00435541 /* Segmentation.prototxt */; };
-		0AC8AF712808109F00435541 /* HorizonalFinemapping.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF42808109F00435541 /* HorizonalFinemapping.prototxt */; };
-		0AC8AF722808109F00435541 /* Segmentation.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF52808109F00435541 /* Segmentation.caffemodel */; };
-		0AC8AF732808109F00435541 /* CharacterRecognization.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF62808109F00435541 /* CharacterRecognization.prototxt */; };
 		0AC8AF742808109F00435541 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF72808109F00435541 /* resources.bundle */; };
 		0AC8AF752808109F00435541 /* PlotLibData.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF82808109F00435541 /* PlotLibData.zip */; };
 		0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AF76280810BF00435541 /* LaunchScreen.xib */; };
@@ -180,6 +75,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		4E28CE9128378DEA0045CB07 /* left_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE8C28378DEA0045CB07 /* left_arrow.png */; };
+		4E28CE9228378DEA0045CB07 /* ARWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE8F28378DEA0045CB07 /* ARWebView.xib */; };
+		4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9028378DEA0045CB07 /* publicMap.txt */; };
+		4E28CE9528378DFD0045CB07 /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9428378DFD0045CB07 /* PIL */; };
+		4E28CE9828378E530045CB07 /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9628378E530045CB07 /* Resource */; };
+		4E28CE9928378E530045CB07 /* Model in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9728378E530045CB07 /* Model */; };
 		5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -262,112 +163,7 @@
 		0AC8AE872808109E00435541 /* Workspace.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Workspace.zip; sourceTree = "<group>"; };
 		0AC8AE882808109E00435541 /* SuperMapAR.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SuperMapAR.bundle; sourceTree = "<group>"; };
 		0AC8AE892808109E00435541 /* python2.7.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = python2.7.zip; sourceTree = "<group>"; };
-		0AC8AE8B2808109E00435541 /* OleFileIO-README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "OleFileIO-README.md"; sourceTree = "<group>"; };
-		0AC8AE8C2808109E00435541 /* MpoImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = MpoImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE8D2808109E00435541 /* ImageMode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageMode.py; sourceTree = "<group>"; };
-		0AC8AE8E2808109E00435541 /* PngImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PngImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE8F2808109E00435541 /* XbmImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = XbmImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE902808109E00435541 /* PcxImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PcxImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE912808109E00435541 /* SunImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = SunImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE922808109E00435541 /* ImageFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageFile.py; sourceTree = "<group>"; };
-		0AC8AE932808109E00435541 /* SpiderImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = SpiderImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE942808109E00435541 /* TarIO.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = TarIO.py; sourceTree = "<group>"; };
-		0AC8AE952808109E00435541 /* FitsStubImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = FitsStubImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE962808109E00435541 /* MpegImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = MpegImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE972808109E00435541 /* BdfFontFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = BdfFontFile.py; sourceTree = "<group>"; };
-		0AC8AE982808109E00435541 /* GribStubImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = GribStubImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE992808109E00435541 /* ImageStat.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageStat.py; sourceTree = "<group>"; };
-		0AC8AE9A2808109E00435541 /* PixarImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PixarImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE9B2808109E00435541 /* GimpPaletteFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = GimpPaletteFile.py; sourceTree = "<group>"; };
-		0AC8AE9C2808109E00435541 /* ImageColor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageColor.py; sourceTree = "<group>"; };
-		0AC8AE9D2808109E00435541 /* ContainerIO.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ContainerIO.py; sourceTree = "<group>"; };
-		0AC8AE9E2808109E00435541 /* MspImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = MspImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AE9F2808109E00435541 /* MicImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = MicImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEA02808109E00435541 /* ImtImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImtImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEA12808109E00435541 /* GifImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = GifImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEA22808109E00435541 /* PalmImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PalmImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEA32808109E00435541 /* ImageQt.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageQt.py; sourceTree = "<group>"; };
-		0AC8AEA42808109E00435541 /* ImageMath.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageMath.py; sourceTree = "<group>"; };
-		0AC8AEA52808109E00435541 /* PaletteFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PaletteFile.py; sourceTree = "<group>"; };
-		0AC8AEA62808109E00435541 /* FontFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = FontFile.py; sourceTree = "<group>"; };
-		0AC8AEA72808109E00435541 /* ExifTags.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ExifTags.py; sourceTree = "<group>"; };
-		0AC8AEA82808109E00435541 /* ImageCms.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageCms.py; sourceTree = "<group>"; };
-		0AC8AEA92808109E00435541 /* FpxImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = FpxImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEAA2808109E00435541 /* ImageChops.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageChops.py; sourceTree = "<group>"; };
-		0AC8AEAB2808109E00435541 /* BufrStubImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = BufrStubImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEAC2808109E00435541 /* PSDraw.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PSDraw.py; sourceTree = "<group>"; };
-		0AC8AEAD2808109E00435541 /* PcdImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PcdImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEAE2808109E00435541 /* ImageFilter.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageFilter.py; sourceTree = "<group>"; };
-		0AC8AEAF2808109E00435541 /* ImageDraw2.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageDraw2.py; sourceTree = "<group>"; };
-		0AC8AEB02808109E00435541 /* ImagePath.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImagePath.py; sourceTree = "<group>"; };
-		0AC8AEB12808109E00435541 /* DcxImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = DcxImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEB22808109E00435541 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
-		0AC8AEB32808109E00435541 /* JpegPresets.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = JpegPresets.py; sourceTree = "<group>"; };
-		0AC8AEB42808109E00435541 /* Hdf5StubImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = Hdf5StubImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEB52808109E00435541 /* features.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = features.py; sourceTree = "<group>"; };
-		0AC8AEB62808109E00435541 /* ImageDraw.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageDraw.py; sourceTree = "<group>"; };
-		0AC8AEB72808109E00435541 /* GimpGradientFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = GimpGradientFile.py; sourceTree = "<group>"; };
-		0AC8AEB82808109E00435541 /* ImageWin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageWin.py; sourceTree = "<group>"; };
-		0AC8AEB92808109E00435541 /* IcoImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = IcoImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEBA2808109E00435541 /* _tkinter_finder.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = _tkinter_finder.py; sourceTree = "<group>"; };
-		0AC8AEBB2808109E00435541 /* EpsImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = EpsImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEBC2808109E00435541 /* TgaImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = TgaImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEBD2808109E00435541 /* ImageMorph.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageMorph.py; sourceTree = "<group>"; };
-		0AC8AEBE2808109E00435541 /* Jpeg2KImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = Jpeg2KImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEBF2808109E00435541 /* WalImageFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = WalImageFile.py; sourceTree = "<group>"; };
-		0AC8AEC02808109E00435541 /* PcfFontFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PcfFontFile.py; sourceTree = "<group>"; };
-		0AC8AEC12808109E00435541 /* ImageTk.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageTk.py; sourceTree = "<group>"; };
-		0AC8AEC22808109E00435541 /* GbrImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = GbrImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEC32808109E00435541 /* ImageOps.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageOps.py; sourceTree = "<group>"; };
-		0AC8AEC42808109E00435541 /* PdfImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PdfImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEC52808109E00435541 /* ImageShow.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageShow.py; sourceTree = "<group>"; };
-		0AC8AEC62808109E00435541 /* ImageEnhance.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageEnhance.py; sourceTree = "<group>"; };
-		0AC8AEC72808109E00435541 /* WmfImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = WmfImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEC82808109E00435541 /* ImageGrab.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageGrab.py; sourceTree = "<group>"; };
-		0AC8AEC92808109F00435541 /* WebPImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = WebPImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AECA2808109F00435541 /* FliImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = FliImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AECB2808109F00435541 /* TiffTags.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = TiffTags.py; sourceTree = "<group>"; };
-		0AC8AECC2808109F00435541 /* CurImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = CurImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AECD2808109F00435541 /* _util.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = _util.py; sourceTree = "<group>"; };
-		0AC8AECE2808109F00435541 /* GdImageFile.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = GdImageFile.py; sourceTree = "<group>"; };
-		0AC8AECF2808109F00435541 /* TiffImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = TiffImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AED02808109F00435541 /* IptcImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = IptcImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AED12808109F00435541 /* ImagePalette.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImagePalette.py; sourceTree = "<group>"; };
-		0AC8AED22808109F00435541 /* BmpImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = BmpImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AED32808109F00435541 /* ImageTransform.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageTransform.py; sourceTree = "<group>"; };
-		0AC8AED42808109F00435541 /* IcnsImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = IcnsImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AED52808109F00435541 /* McIdasImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = McIdasImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AED62808109F00435541 /* XpmImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = XpmImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AED72808109F00435541 /* OleFileIO.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = OleFileIO.py; sourceTree = "<group>"; };
-		0AC8AED82808109F00435541 /* DdsImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = DdsImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AED92808109F00435541 /* ImageSequence.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageSequence.py; sourceTree = "<group>"; };
-		0AC8AEDA2808109F00435541 /* PyAccess.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PyAccess.py; sourceTree = "<group>"; };
-		0AC8AEDB2808109F00435541 /* _binary.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = _binary.py; sourceTree = "<group>"; };
-		0AC8AEDC2808109F00435541 /* Image.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = Image.py; sourceTree = "<group>"; };
-		0AC8AEDD2808109F00435541 /* XVThumbImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = XVThumbImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEDE2808109F00435541 /* SgiImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = SgiImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEDF2808109F00435541 /* ImImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEE02808109F00435541 /* PsdImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PsdImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEE12808109F00435541 /* JpegImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = JpegImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEE22808109F00435541 /* ImageFont.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ImageFont.py; sourceTree = "<group>"; };
-		0AC8AEE32808109F00435541 /* PpmImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = PpmImagePlugin.py; sourceTree = "<group>"; };
-		0AC8AEE42808109F00435541 /* FtexImagePlugin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = FtexImagePlugin.py; sourceTree = "<group>"; };
 		0AC8AEE52808109F00435541 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		0AC8AEE72808109F00435541 /* mobilenet_quant_224.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = mobilenet_quant_224.tflite; sourceTree = "<group>"; };
-		0AC8AEE82808109F00435541 /* labelmap_cn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labelmap_cn.txt; sourceTree = "<group>"; };
-		0AC8AEE92808109F00435541 /* mobilenet_quant_224_cn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mobilenet_quant_224_cn.txt; sourceTree = "<group>"; };
-		0AC8AEEA2808109F00435541 /* mobilenet_quant_224.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mobilenet_quant_224.txt; sourceTree = "<group>"; };
-		0AC8AEEB2808109F00435541 /* labelmap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labelmap.txt; sourceTree = "<group>"; };
-		0AC8AEEC2808109F00435541 /* detect.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = detect.tflite; sourceTree = "<group>"; };
-		0AC8AEEE2808109F00435541 /* SegmenationFree-Inception.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SegmenationFree-Inception.caffemodel"; sourceTree = "<group>"; };
-		0AC8AEEF2808109F00435541 /* SegmenationFree-Inception.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SegmenationFree-Inception.prototxt"; sourceTree = "<group>"; };
-		0AC8AEF02808109F00435541 /* HorizonalFinemapping.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = HorizonalFinemapping.caffemodel; sourceTree = "<group>"; };
-		0AC8AEF12808109F00435541 /* CharacterRecognization.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = CharacterRecognization.caffemodel; sourceTree = "<group>"; };
-		0AC8AEF22808109F00435541 /* cascade.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = cascade.xml; sourceTree = "<group>"; };
-		0AC8AEF32808109F00435541 /* Segmentation.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Segmentation.prototxt; sourceTree = "<group>"; };
-		0AC8AEF42808109F00435541 /* HorizonalFinemapping.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HorizonalFinemapping.prototxt; sourceTree = "<group>"; };
-		0AC8AEF52808109F00435541 /* Segmentation.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = Segmentation.caffemodel; sourceTree = "<group>"; };
-		0AC8AEF62808109F00435541 /* CharacterRecognization.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CharacterRecognization.prototxt; sourceTree = "<group>"; };
 		0AC8AEF72808109F00435541 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resources.bundle; sourceTree = "<group>"; };
 		0AC8AEF82808109F00435541 /* PlotLibData.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = PlotLibData.zip; sourceTree = "<group>"; };
 		0AC8AF77280810BF00435541 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = iTablet/Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -423,6 +219,12 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iTablet/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iTablet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iTablet/main.m; sourceTree = "<group>"; };
+		4E28CE8C28378DEA0045CB07 /* left_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_arrow.png; sourceTree = "<group>"; };
+		4E28CE8F28378DEA0045CB07 /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
+		4E28CE9028378DEA0045CB07 /* publicMap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = publicMap.txt; sourceTree = "<group>"; };
+		4E28CE9428378DFD0045CB07 /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
+		4E28CE9628378E530045CB07 /* Resource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resource; sourceTree = "<group>"; };
+		4E28CE9728378E530045CB07 /* Model */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Model; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iTablet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iTablet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -557,6 +359,12 @@
 		0AC8AE812808109E00435541 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				4E28CE9728378E530045CB07 /* Model */,
+				4E28CE9628378E530045CB07 /* Resource */,
+				4E28CE9428378DFD0045CB07 /* PIL */,
+				4E28CE8F28378DEA0045CB07 /* ARWebView.xib */,
+				4E28CE8C28378DEA0045CB07 /* left_arrow.png */,
+				4E28CE9028378DEA0045CB07 /* publicMap.txt */,
 				0AC8AE822808109E00435541 /* Images.zip */,
 				0AC8AE832808109E00435541 /* icon.png */,
 				0AC8AE842808109E00435541 /* launch_slogan_en.png */,
@@ -565,140 +373,11 @@
 				0AC8AE872808109E00435541 /* Workspace.zip */,
 				0AC8AE882808109E00435541 /* SuperMapAR.bundle */,
 				0AC8AE892808109E00435541 /* python2.7.zip */,
-				0AC8AE8A2808109E00435541 /* PIL */,
 				0AC8AEE52808109F00435541 /* logo.png */,
-				0AC8AEE62808109F00435541 /* Model */,
-				0AC8AEED2808109F00435541 /* Resource */,
 				0AC8AEF72808109F00435541 /* resources.bundle */,
 				0AC8AEF82808109F00435541 /* PlotLibData.zip */,
 			);
 			path = assets;
-			sourceTree = "<group>";
-		};
-		0AC8AE8A2808109E00435541 /* PIL */ = {
-			isa = PBXGroup;
-			children = (
-				0AC8AE8B2808109E00435541 /* OleFileIO-README.md */,
-				0AC8AE8C2808109E00435541 /* MpoImagePlugin.py */,
-				0AC8AE8D2808109E00435541 /* ImageMode.py */,
-				0AC8AE8E2808109E00435541 /* PngImagePlugin.py */,
-				0AC8AE8F2808109E00435541 /* XbmImagePlugin.py */,
-				0AC8AE902808109E00435541 /* PcxImagePlugin.py */,
-				0AC8AE912808109E00435541 /* SunImagePlugin.py */,
-				0AC8AE922808109E00435541 /* ImageFile.py */,
-				0AC8AE932808109E00435541 /* SpiderImagePlugin.py */,
-				0AC8AE942808109E00435541 /* TarIO.py */,
-				0AC8AE952808109E00435541 /* FitsStubImagePlugin.py */,
-				0AC8AE962808109E00435541 /* MpegImagePlugin.py */,
-				0AC8AE972808109E00435541 /* BdfFontFile.py */,
-				0AC8AE982808109E00435541 /* GribStubImagePlugin.py */,
-				0AC8AE992808109E00435541 /* ImageStat.py */,
-				0AC8AE9A2808109E00435541 /* PixarImagePlugin.py */,
-				0AC8AE9B2808109E00435541 /* GimpPaletteFile.py */,
-				0AC8AE9C2808109E00435541 /* ImageColor.py */,
-				0AC8AE9D2808109E00435541 /* ContainerIO.py */,
-				0AC8AE9E2808109E00435541 /* MspImagePlugin.py */,
-				0AC8AE9F2808109E00435541 /* MicImagePlugin.py */,
-				0AC8AEA02808109E00435541 /* ImtImagePlugin.py */,
-				0AC8AEA12808109E00435541 /* GifImagePlugin.py */,
-				0AC8AEA22808109E00435541 /* PalmImagePlugin.py */,
-				0AC8AEA32808109E00435541 /* ImageQt.py */,
-				0AC8AEA42808109E00435541 /* ImageMath.py */,
-				0AC8AEA52808109E00435541 /* PaletteFile.py */,
-				0AC8AEA62808109E00435541 /* FontFile.py */,
-				0AC8AEA72808109E00435541 /* ExifTags.py */,
-				0AC8AEA82808109E00435541 /* ImageCms.py */,
-				0AC8AEA92808109E00435541 /* FpxImagePlugin.py */,
-				0AC8AEAA2808109E00435541 /* ImageChops.py */,
-				0AC8AEAB2808109E00435541 /* BufrStubImagePlugin.py */,
-				0AC8AEAC2808109E00435541 /* PSDraw.py */,
-				0AC8AEAD2808109E00435541 /* PcdImagePlugin.py */,
-				0AC8AEAE2808109E00435541 /* ImageFilter.py */,
-				0AC8AEAF2808109E00435541 /* ImageDraw2.py */,
-				0AC8AEB02808109E00435541 /* ImagePath.py */,
-				0AC8AEB12808109E00435541 /* DcxImagePlugin.py */,
-				0AC8AEB22808109E00435541 /* __init__.py */,
-				0AC8AEB32808109E00435541 /* JpegPresets.py */,
-				0AC8AEB42808109E00435541 /* Hdf5StubImagePlugin.py */,
-				0AC8AEB52808109E00435541 /* features.py */,
-				0AC8AEB62808109E00435541 /* ImageDraw.py */,
-				0AC8AEB72808109E00435541 /* GimpGradientFile.py */,
-				0AC8AEB82808109E00435541 /* ImageWin.py */,
-				0AC8AEB92808109E00435541 /* IcoImagePlugin.py */,
-				0AC8AEBA2808109E00435541 /* _tkinter_finder.py */,
-				0AC8AEBB2808109E00435541 /* EpsImagePlugin.py */,
-				0AC8AEBC2808109E00435541 /* TgaImagePlugin.py */,
-				0AC8AEBD2808109E00435541 /* ImageMorph.py */,
-				0AC8AEBE2808109E00435541 /* Jpeg2KImagePlugin.py */,
-				0AC8AEBF2808109E00435541 /* WalImageFile.py */,
-				0AC8AEC02808109E00435541 /* PcfFontFile.py */,
-				0AC8AEC12808109E00435541 /* ImageTk.py */,
-				0AC8AEC22808109E00435541 /* GbrImagePlugin.py */,
-				0AC8AEC32808109E00435541 /* ImageOps.py */,
-				0AC8AEC42808109E00435541 /* PdfImagePlugin.py */,
-				0AC8AEC52808109E00435541 /* ImageShow.py */,
-				0AC8AEC62808109E00435541 /* ImageEnhance.py */,
-				0AC8AEC72808109E00435541 /* WmfImagePlugin.py */,
-				0AC8AEC82808109E00435541 /* ImageGrab.py */,
-				0AC8AEC92808109F00435541 /* WebPImagePlugin.py */,
-				0AC8AECA2808109F00435541 /* FliImagePlugin.py */,
-				0AC8AECB2808109F00435541 /* TiffTags.py */,
-				0AC8AECC2808109F00435541 /* CurImagePlugin.py */,
-				0AC8AECD2808109F00435541 /* _util.py */,
-				0AC8AECE2808109F00435541 /* GdImageFile.py */,
-				0AC8AECF2808109F00435541 /* TiffImagePlugin.py */,
-				0AC8AED02808109F00435541 /* IptcImagePlugin.py */,
-				0AC8AED12808109F00435541 /* ImagePalette.py */,
-				0AC8AED22808109F00435541 /* BmpImagePlugin.py */,
-				0AC8AED32808109F00435541 /* ImageTransform.py */,
-				0AC8AED42808109F00435541 /* IcnsImagePlugin.py */,
-				0AC8AED52808109F00435541 /* McIdasImagePlugin.py */,
-				0AC8AED62808109F00435541 /* XpmImagePlugin.py */,
-				0AC8AED72808109F00435541 /* OleFileIO.py */,
-				0AC8AED82808109F00435541 /* DdsImagePlugin.py */,
-				0AC8AED92808109F00435541 /* ImageSequence.py */,
-				0AC8AEDA2808109F00435541 /* PyAccess.py */,
-				0AC8AEDB2808109F00435541 /* _binary.py */,
-				0AC8AEDC2808109F00435541 /* Image.py */,
-				0AC8AEDD2808109F00435541 /* XVThumbImagePlugin.py */,
-				0AC8AEDE2808109F00435541 /* SgiImagePlugin.py */,
-				0AC8AEDF2808109F00435541 /* ImImagePlugin.py */,
-				0AC8AEE02808109F00435541 /* PsdImagePlugin.py */,
-				0AC8AEE12808109F00435541 /* JpegImagePlugin.py */,
-				0AC8AEE22808109F00435541 /* ImageFont.py */,
-				0AC8AEE32808109F00435541 /* PpmImagePlugin.py */,
-				0AC8AEE42808109F00435541 /* FtexImagePlugin.py */,
-			);
-			path = PIL;
-			sourceTree = "<group>";
-		};
-		0AC8AEE62808109F00435541 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				0AC8AEE72808109F00435541 /* mobilenet_quant_224.tflite */,
-				0AC8AEE82808109F00435541 /* labelmap_cn.txt */,
-				0AC8AEE92808109F00435541 /* mobilenet_quant_224_cn.txt */,
-				0AC8AEEA2808109F00435541 /* mobilenet_quant_224.txt */,
-				0AC8AEEB2808109F00435541 /* labelmap.txt */,
-				0AC8AEEC2808109F00435541 /* detect.tflite */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		0AC8AEED2808109F00435541 /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				0AC8AEEE2808109F00435541 /* SegmenationFree-Inception.caffemodel */,
-				0AC8AEEF2808109F00435541 /* SegmenationFree-Inception.prototxt */,
-				0AC8AEF02808109F00435541 /* HorizonalFinemapping.caffemodel */,
-				0AC8AEF12808109F00435541 /* CharacterRecognization.caffemodel */,
-				0AC8AEF22808109F00435541 /* cascade.xml */,
-				0AC8AEF32808109F00435541 /* Segmentation.prototxt */,
-				0AC8AEF42808109F00435541 /* HorizonalFinemapping.prototxt */,
-				0AC8AEF52808109F00435541 /* Segmentation.caffemodel */,
-				0AC8AEF62808109F00435541 /* CharacterRecognization.prototxt */,
-			);
-			path = Resource;
 			sourceTree = "<group>";
 		};
 		0AC8AF80280815BF00435541 /* Products */ = {
@@ -953,127 +632,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AC8AF4F2808109F00435541 /* IptcImagePlugin.py in Resources */,
-				0AC8AF352808109F00435541 /* ImageDraw.py in Resources */,
+				4E28CE9928378E530045CB07 /* Model in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				0AC8AF5B2808109F00435541 /* Image.py in Resources */,
-				0AC8AF4A2808109F00435541 /* TiffTags.py in Resources */,
-				0AC8AF0E2808109F00435541 /* XbmImagePlugin.py in Resources */,
-				0AC8AF1D2808109F00435541 /* MspImagePlugin.py in Resources */,
-				0AC8AF0C2808109F00435541 /* ImageMode.py in Resources */,
-				0AC8AF3D2808109F00435541 /* Jpeg2KImagePlugin.py in Resources */,
-				0AC8AF4D2808109F00435541 /* GdImageFile.py in Resources */,
-				0AC8AF652808109F00435541 /* mobilenet_quant_224.tflite in Resources */,
-				0AC8AF6B2808109F00435541 /* SegmenationFree-Inception.caffemodel in Resources */,
-				0AC8AF552808109F00435541 /* XpmImagePlugin.py in Resources */,
-				0AC8AF6F2808109F00435541 /* cascade.xml in Resources */,
-				0AC8AF2D2808109F00435541 /* ImageFilter.py in Resources */,
-				0AC8AF702808109F00435541 /* Segmentation.prototxt in Resources */,
-				0AC8AF682808109F00435541 /* mobilenet_quant_224.txt in Resources */,
-				0AC8AF2A2808109F00435541 /* BufrStubImagePlugin.py in Resources */,
-				0AC8AF2C2808109F00435541 /* PcdImagePlugin.py in Resources */,
-				0AC8AF292808109F00435541 /* ImageChops.py in Resources */,
-				0AC8AF532808109F00435541 /* IcnsImagePlugin.py in Resources */,
-				0AC8AF692808109F00435541 /* labelmap.txt in Resources */,
-				0AC8AF3C2808109F00435541 /* ImageMorph.py in Resources */,
-				0AC8AF422808109F00435541 /* ImageOps.py in Resources */,
-				0AC8AF112808109F00435541 /* ImageFile.py in Resources */,
-				0AC8AF632808109F00435541 /* FtexImagePlugin.py in Resources */,
-				0AC8AF3A2808109F00435541 /* EpsImagePlugin.py in Resources */,
+				4E28CE9528378DFD0045CB07 /* PIL in Resources */,
 				0AC8AF042808109F00435541 /* launch_slogan_en.png in Resources */,
-				0AC8AF6E2808109F00435541 /* CharacterRecognization.caffemodel in Resources */,
-				0AC8AF3B2808109F00435541 /* TgaImagePlugin.py in Resources */,
-				0AC8AF282808109F00435541 /* FpxImagePlugin.py in Resources */,
-				0AC8AF412808109F00435541 /* GbrImagePlugin.py in Resources */,
-				0AC8AF392808109F00435541 /* _tkinter_finder.py in Resources */,
-				0AC8AF732808109F00435541 /* CharacterRecognization.prototxt in Resources */,
-				0AC8AF602808109F00435541 /* JpegImagePlugin.py in Resources */,
-				0AC8AF232808109F00435541 /* ImageMath.py in Resources */,
-				0AC8AF362808109F00435541 /* GimpGradientFile.py in Resources */,
-				0AC8AF4B2808109F00435541 /* CurImagePlugin.py in Resources */,
-				0AC8AF142808109F00435541 /* FitsStubImagePlugin.py in Resources */,
-				0AC8AF512808109F00435541 /* BmpImagePlugin.py in Resources */,
-				0AC8AF522808109F00435541 /* ImageTransform.py in Resources */,
-				0AC8AF5F2808109F00435541 /* PsdImagePlugin.py in Resources */,
-				0AC8AF662808109F00435541 /* labelmap_cn.txt in Resources */,
-				0AC8AF312808109F00435541 /* __init__.py in Resources */,
-				0AC8AF102808109F00435541 /* SunImagePlugin.py in Resources */,
-				0AC8AF452808109F00435541 /* ImageEnhance.py in Resources */,
+				4E28CE9828378E530045CB07 /* Resource in Resources */,
 				0AC8AF032808109F00435541 /* icon.png in Resources */,
-				0AC8AF172808109F00435541 /* GribStubImagePlugin.py in Resources */,
+				4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */,
 				0AC8AF082808109F00435541 /* SuperMapAR.bundle in Resources */,
-				0AC8AF462808109F00435541 /* WmfImagePlugin.py in Resources */,
-				0AC8AF152808109F00435541 /* MpegImagePlugin.py in Resources */,
 				0AC8AF742808109F00435541 /* resources.bundle in Resources */,
-				0AC8AF612808109F00435541 /* ImageFont.py in Resources */,
-				0AC8AF132808109F00435541 /* TarIO.py in Resources */,
-				0AC8AF6A2808109F00435541 /* detect.tflite in Resources */,
-				0AC8AF0D2808109F00435541 /* PngImagePlugin.py in Resources */,
-				0AC8AF1B2808109F00435541 /* ImageColor.py in Resources */,
-				0AC8AF402808109F00435541 /* ImageTk.py in Resources */,
-				0AC8AF572808109F00435541 /* DdsImagePlugin.py in Resources */,
-				0AC8AF2B2808109F00435541 /* PSDraw.py in Resources */,
-				0AC8AF1F2808109F00435541 /* ImtImagePlugin.py in Resources */,
-				0AC8AF2F2808109F00435541 /* ImagePath.py in Resources */,
-				0AC8AF472808109F00435541 /* ImageGrab.py in Resources */,
-				0AC8AF442808109F00435541 /* ImageShow.py in Resources */,
-				0AC8AF2E2808109F00435541 /* ImageDraw2.py in Resources */,
-				0AC8AF1A2808109F00435541 /* GimpPaletteFile.py in Resources */,
-				0AC8AF222808109F00435541 /* ImageQt.py in Resources */,
+				4E28CE9128378DEA0045CB07 /* left_arrow.png in Resources */,
 				0AC8AF642808109F00435541 /* logo.png in Resources */,
 				0AC8AF072808109F00435541 /* Workspace.zip in Resources */,
-				0AC8AF202808109F00435541 /* GifImagePlugin.py in Resources */,
-				0AC8AF302808109F00435541 /* DcxImagePlugin.py in Resources */,
-				0AC8AF722808109F00435541 /* Segmentation.caffemodel in Resources */,
-				0AC8AF272808109F00435541 /* ImageCms.py in Resources */,
-				0AC8AF372808109F00435541 /* ImageWin.py in Resources */,
-				0AC8AF6D2808109F00435541 /* HorizonalFinemapping.caffemodel in Resources */,
-				0AC8AF542808109F00435541 /* McIdasImagePlugin.py in Resources */,
-				0AC8AF482808109F00435541 /* WebPImagePlugin.py in Resources */,
-				0AC8AF5D2808109F00435541 /* SgiImagePlugin.py in Resources */,
-				0AC8AF712808109F00435541 /* HorizonalFinemapping.prototxt in Resources */,
-				0AC8AF672808109F00435541 /* mobilenet_quant_224_cn.txt in Resources */,
-				0AC8AF1C2808109F00435541 /* ContainerIO.py in Resources */,
-				0AC8AF4E2808109F00435541 /* TiffImagePlugin.py in Resources */,
-				0AC8AF0A2808109F00435541 /* OleFileIO-README.md in Resources */,
-				0AC8AF3F2808109F00435541 /* PcfFontFile.py in Resources */,
-				0AC8AF212808109F00435541 /* PalmImagePlugin.py in Resources */,
+				4E28CE9228378DEA0045CB07 /* ARWebView.xib in Resources */,
 				0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */,
-				0AC8AF342808109F00435541 /* features.py in Resources */,
-				0AC8AF502808109F00435541 /* ImagePalette.py in Resources */,
-				0AC8AF1E2808109F00435541 /* MicImagePlugin.py in Resources */,
-				0AC8AF3E2808109F00435541 /* WalImageFile.py in Resources */,
 				0AC8AF022808109F00435541 /* Images.zip in Resources */,
-				0AC8AF122808109F00435541 /* SpiderImagePlugin.py in Resources */,
-				0AC8AF492808109F00435541 /* FliImagePlugin.py in Resources */,
-				0AC8AF162808109F00435541 /* BdfFontFile.py in Resources */,
-				0AC8AF582808109F00435541 /* ImageSequence.py in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				0AC8AF262808109F00435541 /* ExifTags.py in Resources */,
-				0AC8AF0B2808109F00435541 /* MpoImagePlugin.py in Resources */,
-				0AC8AF182808109F00435541 /* ImageStat.py in Resources */,
-				0AC8AF382808109F00435541 /* IcoImagePlugin.py in Resources */,
-				0AC8AF5E2808109F00435541 /* ImImagePlugin.py in Resources */,
 				0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */,
-				0AC8AF4C2808109F00435541 /* _util.py in Resources */,
 				0AC8AF062808109F00435541 /* launch_slogan_cn.png in Resources */,
 				0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */,
 				0AC8AF052808109F00435541 /* Template.zip in Resources */,
-				0AC8AF592808109F00435541 /* PyAccess.py in Resources */,
-				0AC8AF242808109F00435541 /* PaletteFile.py in Resources */,
 				0AC8AF092808109F00435541 /* python2.7.zip in Resources */,
-				0AC8AF192808109F00435541 /* PixarImagePlugin.py in Resources */,
-				0AC8AF622808109F00435541 /* PpmImagePlugin.py in Resources */,
-				0AC8AF322808109F00435541 /* JpegPresets.py in Resources */,
-				0AC8AF562808109F00435541 /* OleFileIO.py in Resources */,
-				0AC8AF5C2808109F00435541 /* XVThumbImagePlugin.py in Resources */,
-				0AC8AF432808109F00435541 /* PdfImagePlugin.py in Resources */,
 				0AC8AF752808109F00435541 /* PlotLibData.zip in Resources */,
-				0AC8AF332808109F00435541 /* Hdf5StubImagePlugin.py in Resources */,
-				0AC8AF5A2808109F00435541 /* _binary.py in Resources */,
-				0AC8AF0F2808109F00435541 /* PcxImagePlugin.py in Resources */,
-				0AC8AF6C2808109F00435541 /* SegmenationFree-Inception.prototxt in Resources */,
-				0AC8AF252808109F00435541 /* FontFile.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

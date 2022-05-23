@@ -5,10 +5,48 @@ export * from './NavigationTypes'
 export type ButtonSize = 'large' | 'normal' | 'small'
 
 /** 本地数据类型 */
-export type LocalDataType = 'DATA' | 'MAP' | 'SYMBOL' | 'ARMAP' | 'ARMODEL' | 'WORKSPACE3D' | 'AREFFECT' | 'AIMODEL' | 'SCENE' | 'COLOR' | 'LABEL' | 'TEMPLAE_PLOTTING' | 'TEMPLAE_COLLECTING' | 'MAPPING_COLLECTING'
+export type LocalDataType = 'DATA' 
+                          | 'MAP' 
+                          | 'SYMBOL'
+                          | 'ARMAP'
+                          | 'ARMODEL'
+                          | 'WORKSPACE3D'
+                          | 'AREFFECT'
+                          | 'AIMODEL'
+                          | 'SCENE'
+                          | 'COLOR'
+                          | 'LABEL'
+                          | 'TEMPLAE_PLOTTING' 
+                          | 'TEMPLAE_COLLECTING' 
+                          | 'MAPPING_COLLECTING'
+                          | 'SANDTABLE'
 
 /** 外部数据类型 */
-export type ExternalDataType = 'workspace' | 'datasource' | 'symbol' | 'armap' | 'armodel' | 'workspace3d' | 'areffect' | 'online' | 'aimodel'
+export type ExternalDataType = 'workspace' 
+                            | 'datasource'
+                            | 'symbol' 
+                            | 'armap' 
+                            | 'armodel' 
+                            | 'workspace3d'
+                            | 'areffect'
+                            | 'online'
+                            | 'aimodel'
+                            | 'sandtable'
+                            | 'plotting'
+                            | 'sci'
+                            | 'color'
+                            | 'xml_template'
+                            | ExternalDatasetType
+
+export type ExternalDatasetType = | 'tif'
+                                  | 'shp'
+                                  | 'mif'
+                                  | 'kml'
+                                  | 'kmz'
+                                  | 'dwg'
+                                  | 'dxf'
+                                  | 'gpx'
+                                  | 'img'
 
 export interface BaseItem {
   key: string,
@@ -48,11 +86,11 @@ export interface UserInfo {
   /** 用户类型，详见UserType */
   userType: TUserType,
   /** 用户角色 */
-  roles: string[],
+  roles?: string[],
   /** iportal用户所使用的服务器地址 */
-  serverUrl: string,
+  serverUrl?: string,
   /** @deprecated 同userName */
-  userId: string,
+  userId?: string,
   /** @deprecated 是否为邮箱登录 */
-  isEmail: string,
+  isEmail?: string,
 }

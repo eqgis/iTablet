@@ -21,6 +21,13 @@ import DateUtil from './DateUtil'
 import * as pinyin from './pinyin'
 import DownloadUtil from './DownloadUtil'
 import GetUserBaseMapUtil from './GetUserBaseMapUtil'
+import * as AppStyle from './AppStyle'
+import * as AppLog from './AppLog'
+import AppToolBar from './AppToolBar'
+import AppEvent from './AppEvent/AppEvent'
+import AppUser from './AppUser'
+
+export { CheckSpell } from './CheckUtils'
 
 export {
   screen,
@@ -53,5 +60,9 @@ export {
   DateUtil,
   pinyin,
   DownloadUtil,
-  
+  AppStyle,
+  AppLog,
+  AppToolBar,
+  AppEvent,
+  AppUser,
 }

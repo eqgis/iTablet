@@ -44,6 +44,8 @@ import arEditModule from './arEditModule'
 import arStyleModule from './arStyleModule'
 import arNaviModule from './arNaviModule'
 import changeMapModule from './changeMapModule'
+import arSandTable from './arSandTable'
+
 export {
   startModule,
   start3DModule,
@@ -90,6 +92,7 @@ export {
   arEditModule,
   arStyleModule,
   arNaviModule,
+  arSandTable,
 
   changeMapModule,
 }

@@ -473,7 +473,7 @@ export default class MyLocalData extends Component {
         fileType === 'armap' ||
         fileType === 'armodel' ||
         fileType === 'areffect' ||
-        fileType === 'xmltemplate'
+        fileType === 'xml_template'
       ) {
         this._onImportExternalData(this.itemInfo.item)
       } else if (
@@ -589,12 +589,12 @@ export default class MyLocalData extends Component {
         this.itemInfo.type === 'LINESYMBOL' ||
         this.itemInfo.type === 'FILLSYMBOL'
       ) {
-        result = await DataHandler.importSymbol(currentUser, {
+        result = await DataHandler.importSymbol({
           fileName: itemInfo.fileName,
           filePath: filePath,
         })
       } else if (this.itemInfo.type === 'COLORSCHEME') {
-        result = await DataHandler.importColor(currentUser, {
+        result = await DataHandler.importColor({
           fileName: itemInfo.fileName,
           filePath: filePath,
         })
@@ -922,7 +922,7 @@ export default class MyLocalData extends Component {
         })
       }  else {
         // 专题制图导出的xml不用导入到用户目录
-        if(fileType !== 'xmltemplate'){
+        if(fileType !== 'xml_template'){
           data.push({
             title: getLanguage(this.props.language).Profile.IMPORT_DATA,
             action: this.importData,

@@ -31,7 +31,7 @@ import {
   setBackAction,
   removeBackAction,
 } from '../../redux/models/backActions'
-import { RooteState } from '@/redux/types'
+import { RootState } from '@/redux/types'
 import { CAREMA_MEDIA_TYPE, CAREMA_RECORD_STATUS, RECORD_STATUS, TYPE } from './types'
 import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 
@@ -527,7 +527,7 @@ class Camera extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: RooteState) => ({
+const mapStateToProps = (state: RootState) => ({
   nav: state.nav.toJS(),
   language: state.setting.toJS().language,
   user: state.user.toJS(),

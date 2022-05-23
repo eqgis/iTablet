@@ -1,10 +1,35 @@
-import { SMap, SScene, RNFS  } from 'imobile_for_reactnative'
+import { FileTools, SMap, FileInfo  } from 'imobile_for_reactnative'
 import { Platform } from 'react-native'
-import cheerio from 'react-native-cheerio'
-import { Buffer } from 'buffer'
-import { FileTools} from '../../../../native'
+import { ExternalDataType } from '@/types'
+import { ConstPath } from '@/constants'
 
-const iconv = require('iconv-lite')
+
+interface FileDetailInfo extends FileInfo {
+  /** 当为文件夹时其中的内容,当为文件时是空数组 */
+  contentList: FileDetailInfo[]
+  /** 是否已扫描过 */
+  check?: boolean
+  /** 工作空间文件详细信息 */
+  wsInfo?: SMap.WorkspaceInfo
+}
+
+export interface IExternalData {
+  /** 所在文件夹路径 */
+  directory: string
+  fileName: string
+  /** 文件路径 */
+  filePath: string
+  /** 数据类型 */
+  fileType: ExternalDataType
+  /** 工作空间详细信息 */
+  wsInfo?: SMap.WorkspaceInfo
+  /** 工作空间等的其他相关文件 */
+  relatedFiles?: RelatedFiles
+  id?:number
+}
+
+type UncheckedFiles = Array<string>
+type RelatedFiles = Array<string>
 
 /**
  * 判断所有文件类型，优先级：
@@ -13,41 +38,42 @@ const iconv = require('iconv-lite')
  * 3.3维工作空间 sxwu和关联文件夹，符号库
  * 4.其他udb，符号等
  */
-async function getExternalData(path, types = [], uncheckedChildFileList = []) {
-  let resultList = []
+async function getExternalData(path: string, types:ExternalDataType[]= [], uncheckedChildFileList = []) {
+  let resultList: IExternalData[] = []
   try {
     if (path.lastIndexOf('/') === path.length - 1) {
       path = path.substring(0, path.length - 1)
     }
     const contentList = await _getDirectoryContentDeep(path)
 
-    let PL = []
-    let WS = []
-    let WS3D = []
-    let DS = []
-    let SCI = []
-    let TIF = []
-    let SHP = []
-    let MIF = []
-    let KML = []
-    let KMZ = []
-    let DWG = []
-    let DXF = []
-    let GPX = []
-    let IMG = []
-    let COLOR = []
-    let SYMBOL = []
-    let AIMODEL = []
-    let ARMODEL = []
-    let ARMAP = []
-    let AREFFECT = []
+    let PL:IExternalData[] = []
+    let WS:IExternalData[] = []
+    let WS3D:IExternalData[] = []
+    let DS:IExternalData[] = []
+    let SCI:IExternalData[] = []
+    let TIF:IExternalData[] = []
+    let SHP:IExternalData[] = []
+    let MIF:IExternalData[] = []
+    let KML:IExternalData[] = []
+    let KMZ:IExternalData[] = []
+    let DWG:IExternalData[] = []
+    let DXF:IExternalData[] = []
+    let GPX:IExternalData[] = []
+    let IMG:IExternalData[] = []
+    let COLOR:IExternalData[] = []
+    let SYMBOL:IExternalData[] = []
+    let AIMODEL:IExternalData[] = []
+    let SANDTABLE:IExternalData[] = []
+    let ARMODEL:IExternalData[] = []
+    let ARMAP:IExternalData[] = []
+    let AREFFECT:IExternalData[] = []
     // 专题制图导出的xml
-    let Xml_Template = []
+    let Xml_Template:IExternalData[] = []
 
     // 过滤临时文件： ~[0]@xxxx
     _checkTempFile(contentList)
 
-    if(types.length === 0 || types.indexOf('plot') > -1) {
+    if(types.length === 0 || types.indexOf('plotting') > -1) {
       PL = getPLList(path, contentList)
     }
     if(types.length === 0 || types.indexOf('armap') > -1) {
@@ -67,6 +93,9 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
     }
     if(types.length === 0 || types.indexOf('aimodel') > -1) {
       AIMODEL = getAIModelList(path, contentList)
+    }
+    if(types.length === 0 || types.indexOf('sandtable') > -1) {
+      SANDTABLE = getARSandTableList(path, contentList)
     }
     if(types.length === 0 || types.indexOf('armodel') > -1) {
       ARMODEL = getARModelList(path, contentList)
@@ -134,6 +163,7 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
       .concat(Xml_Template)
       .concat(ARMAP)
       .concat(AREFFECT)
+      .concat(SANDTABLE)
       .concat(ARMODEL)
     return resultList
   } catch (e) {
@@ -142,10 +172,47 @@ async function getExternalData(path, types = [], uncheckedChildFileList = []) {
   }
 }
 
+
+async function deleteExternalData(data: IExternalData) {
+  const homePath = await FileTools.getHomeDirectory()
+  const externalPath = homePath + ConstPath.ExternalData
+  let dirs: string[] = []
+  if((data.fileType === 'workspace' || data.fileType === 'workspace3d')&& data.directory !== externalPath) {
+    dirs = [data.directory]
+  } else {
+    dirs = [data.filePath]
+    if(data.relatedFiles && data.relatedFiles.length > 0) {
+      dirs = dirs.concat(data.relatedFiles)
+    }
+  }
+
+  let result = false
+  for (let i = 0; i < dirs.length; i++) {
+    if (await FileTools.fileIsExist(dirs[i])) {
+      result = await FileTools.deleteFile(dirs[i])
+      if (!result) {
+        break
+      }
+    }
+  }
+
+  //删除空文件夹
+  if (data.directory !== externalPath && await FileTools.fileIsExist(data.directory)) {
+    const contents = await FileTools.getDirectoryContent(
+      data.directory,
+    )
+    if (contents.length === 0) {
+      await FileTools.deleteFile(data.directory)
+    }
+  }
+
+  return result
+}
+
 /** 获取标绘模版 */
-function getPLList(path, contentList) {
-  let PL = []
-  const relatedFiles = []
+function getPLList(path: string, contentList: FileDetailInfo[],) {
+  let PL: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     for (let i = 0; i < contentList.length; i++) {
       if (!contentList[i].check && contentList[i].type === 'directory') {
@@ -176,9 +243,9 @@ function getPLList(path, contentList) {
 }
 
 /** 获取二维工作空间 */
-async function getWSList(path, contentList, uncheckedChildFileList) {
-  let WS = []
-  const relatedFiles = []
+async function getWSList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let WS: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -232,9 +299,9 @@ async function getWSList(path, contentList, uncheckedChildFileList) {
 }
 
 /** 获取三维工作空间 */
-async function getWS3DList(path, contentList, uncheckedChildFileList) {
-  let WS3D = []
-  const relatedFiles = []
+async function getWS3DList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let WS3D: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -305,7 +372,7 @@ async function getWS3DList(path, contentList, uncheckedChildFileList) {
 }
 
 // 过滤掉三维工作空间下的kml
-function _checkWS3DKML(relatedFiles, path, contentList){
+function _checkWS3DKML(relatedFiles: RelatedFiles, path: string, contentList:FileDetailInfo[]){
   for(let i = 0; i < contentList.length; i++){
     if(contentList[i].type === 'file' && contentList[i].name.indexOf('.kml') > 0){
       contentList[i].check = true
@@ -315,9 +382,9 @@ function _checkWS3DKML(relatedFiles, path, contentList){
 }
 
 /** 获取SCI数据源 */
-function getSCIDSList(path, contentList, uncheckedChildFileList) {
-  let DS = []
-  const relatedFiles = []
+function getSCIDSList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let DS: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -349,9 +416,9 @@ function getSCIDSList(path, contentList, uncheckedChildFileList) {
   }
 }
 /** 获取数据源 */
-function getDSList(path, contentList, uncheckedChildFileList) {
-  let DS = []
-  const relatedFiles = []
+function getDSList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let DS: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -385,8 +452,8 @@ function getDSList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getTIFList(path, contentList, uncheckedChildFileList) {
-  let TIF = []
+function getTIFList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let TIF: IExternalData[] = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -416,9 +483,9 @@ function getTIFList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getSHPList(path, contentList, uncheckedChildFileList) {
-  let SHP = []
-  const relatedFiles = []
+function getSHPList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let SHP: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -450,9 +517,9 @@ function getSHPList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getMIFList(path, contentList, uncheckedChildFileList) {
-  let MIF = []
-  const relatedFiles = []
+function getMIFList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let MIF: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -484,8 +551,8 @@ function getMIFList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getKMLList(path, contentList, uncheckedChildFileList) {
-  let KML = []
+function getKMLList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let KML: IExternalData[] = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -515,8 +582,8 @@ function getKMLList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getKMZList(path, contentList, uncheckedChildFileList) {
-  let KMZ = []
+function getKMZList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let KMZ: IExternalData[] = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -546,8 +613,8 @@ function getKMZList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getDWGList(path, contentList, uncheckedChildFileList) {
-  let DWG = []
+function getDWGList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let DWG: IExternalData[] = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -577,8 +644,8 @@ function getDWGList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getDXFList(path, contentList, uncheckedChildFileList) {
-  let DXF = []
+function getDXFList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let DXF: IExternalData[] = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -608,8 +675,8 @@ function getDXFList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getGPXList(path, contentList, uncheckedChildFileList) {
-  let GPX = []
+function getGPXList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let GPX: IExternalData[] = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -639,8 +706,8 @@ function getGPXList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getIMGList(path, contentList, uncheckedChildFileList) {
-  let IMG = []
+function getIMGList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let IMG: IExternalData[] = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -670,8 +737,8 @@ function getIMGList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getColorList(path, contentList) {
-  let COLOR = []
+function getColorList(path: string, contentList: FileDetailInfo[]) {
+  let COLOR: IExternalData[] = []
   try {
     for (let i = 0; i < contentList.length; i++) {
       if (!contentList[i].check && contentList[i].type === 'file') {
@@ -699,8 +766,8 @@ function getColorList(path, contentList) {
   }
 }
 
-function getSymbolList(path, contentList) {
-  let SYMBOL = []
+function getSymbolList(path: string, contentList: FileDetailInfo[]) {
+  let SYMBOL: IExternalData[] = []
   try {
     for (let i = 0; i < contentList.length; i++) {
       if (!contentList[i].check && contentList[i].type === 'file') {
@@ -728,9 +795,9 @@ function getSymbolList(path, contentList) {
   }
 }
 
-function getAIModelList(path, contentList) {
-  let AIModel = []
-  const relatedFiles = []
+function getAIModelList(path: string, contentList: FileDetailInfo[]) {
+  let AIModel: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     for (let i = 0; i < contentList.length; i++) {
       if (!contentList[i].check && contentList[i].type === 'file') {
@@ -765,8 +832,8 @@ function getAIModelList(path, contentList) {
   }
 }
 
-function getAREffectList (path, contentList) {
-  let AREFFECT = []
+function getAREffectList (path: string, contentList: FileDetailInfo[]) {
+  let AREFFECT: IExternalData[] = []
   try {
     for(let item of contentList) {
       if(item.check) continue
@@ -788,8 +855,43 @@ function getAREffectList (path, contentList) {
   }
 }
 
-function getARModelList(path, contentList) {
-  let ARMODEL = []
+
+function getARSandTableList(path: string, contentList: FileDetailInfo[]) {
+  let SANDTABLE: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
+  try {
+    for(let i = 0; i < contentList.length; i++) {
+      if(contentList[i].check) continue
+      if(contentList[i].type === 'file') {
+        if(_isSandTable(contentList[i].name)) {
+          contentList[i].check = true
+          //todo 从xml中读取每个glb名称再去查找
+          _checkRelatedSandTableModel(
+            relatedFiles,
+            path,
+            contentList
+          )
+          SANDTABLE.push({
+            directory: path,
+            fileName: contentList[i].name,
+            filePath: `${path}/${contentList[i].name}`,
+            fileType: 'sandtable',
+            relatedFiles
+          })
+        }
+      } else if(contentList[i].type === 'directory') {
+        SANDTABLE = SANDTABLE.concat(getARSandTableList(`${path}/${contentList[i].name}`, contentList[i].contentList))
+      }
+    }
+    return SANDTABLE
+  } catch(err){
+    console.warn(err)
+    return SANDTABLE
+  }
+}
+
+function getARModelList(path: string, contentList: FileDetailInfo[]) {
+  let ARMODEL: IExternalData[] = []
   try {
     for(let item of contentList) {
       if(item.check) continue
@@ -812,9 +914,9 @@ function getARModelList(path, contentList) {
 }
 
 /** 获取AR地图 */
-function getARMAPList(path, contentList, uncheckedChildFileList) {
-  let DATA = []
-  const relatedFiles = []
+function getARMAPList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let DATA: IExternalData[] = []
+  const relatedFiles: RelatedFiles = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let item of contentList) {
@@ -849,8 +951,8 @@ function getARMAPList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function getXmlTemplateList(path, contentList, uncheckedChildFileList) {
-  let DATA = []
+function getXmlTemplateList(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
+  let DATA: IExternalData[] = []
   try {
     _checkUncheckedFile(path, contentList, uncheckedChildFileList)
     for (let i = 0; i < contentList.length; i++) {
@@ -861,7 +963,7 @@ function getXmlTemplateList(path, contentList, uncheckedChildFileList) {
             directory: path,
             fileName: contentList[i].name,
             filePath: `${path}/${contentList[i].name}`,
-            fileType: 'xmltemplate',
+            fileType: 'xml_template',
           })
         }
       } else if (!contentList[i].check && contentList[i].type === 'directory') {
@@ -880,7 +982,7 @@ function getXmlTemplateList(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function _checkPlotDir(relatedFiles, path, contentList) {
+function _checkPlotDir(relatedFiles: RelatedFiles, path: string, contentList: FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (!contentList[i].check && contentList[i].type === 'directory') {
       if(contentList[i].name === 'Symbol' || contentList[i].name === 'SymbolIcon') {
@@ -891,38 +993,38 @@ function _checkPlotDir(relatedFiles, path, contentList) {
   }
 }
 
-async function _checkRelatedARDS(relatedFiles, name, path, contentList) {
-  try {
-    const mapXml = await RNFS.readFile(`${path}/${name}`)
-    const $ = cheerio.load(mapXml)
-    const nodes = $('DatasourceServer')
-    const datasourceArr = []
-    for(let i = 0; i < nodes.length; i++) {
-      const datasourceNode = nodes[i].children[0]
-      const datasource = datasourceNode
-      datasourceArr.push(datasource.nodeValue)
-    }
-    for (let i = 0; i < contentList.length; i++) {
-      if (!contentList[i].check && contentList[i].type === 'file') {
-        for(let n = 0; n < datasourceArr.length; n ++) {
-          const index = contentList[i].name.lastIndexOf('.')
-          let nameNoExt =  contentList[i].name
-          if(index > 0) {
-            nameNoExt = contentList[i].name.substring(0, index)
-          }
-          if(datasourceArr[n].indexOf(nameNoExt) === 0) {
-            contentList[i].check = true
-            relatedFiles.push(`${path}/${contentList[i].name}`)
-          }
-        }
-      }
-    }
-  } catch(e) {
-    // console.warn(e)
-  }
-}
+// async function _checkRelatedARDS(relatedFiles, name, path, contentList) {
+//   try {
+//     const mapXml = await RNFS.readFile(`${path}/${name}`)
+//     const $ = cheerio.load(mapXml)
+//     const nodes = $('DatasourceServer')
+//     const datasourceArr = []
+//     for(let i = 0; i < nodes.length; i++) {
+//       const datasourceNode = nodes[i].children[0]
+//       const datasource = datasourceNode
+//       datasourceArr.push(datasource.nodeValue)
+//     }
+//     for (let i = 0; i < contentList.length; i++) {
+//       if (!contentList[i].check && contentList[i].type === 'file') {
+//         for(let n = 0; n < datasourceArr.length; n ++) {
+//           const index = contentList[i].name.lastIndexOf('.')
+//           let nameNoExt =  contentList[i].name
+//           if(index > 0) {
+//             nameNoExt = contentList[i].name.substring(0, index)
+//           }
+//           if(datasourceArr[n].indexOf(nameNoExt) === 0) {
+//             contentList[i].check = true
+//             relatedFiles.push(`${path}/${contentList[i].name}`)
+//           }
+//         }
+//       }
+//     }
+//   } catch(e) {
+//     // console.warn(e)
+//   }
+// }
 
-function _checkARDatasource(relatedFiles, path, contentList) {
+function _checkARDatasource(relatedFiles: RelatedFiles, path: string, contentList:FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (!contentList[i].check && contentList[i].type === 'directory' && contentList[i].name === 'Datasource') {
       contentList[i].check = true
@@ -932,7 +1034,7 @@ function _checkARDatasource(relatedFiles, path, contentList) {
   }
 }
 
-function _checkARResource(relatedFiles, path, contentList) {
+function _checkARResource(relatedFiles: RelatedFiles, path: string, contentList:FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (!contentList[i].check && contentList[i].type === 'directory' && contentList[i].name === 'Resource') {
       contentList[i].check = true
@@ -947,11 +1049,11 @@ function _checkARResource(relatedFiles, path, contentList) {
  * 其他文件夹下的文件加入uncheckedChildFileList
  */
 function _checkDatasources(
-  relatedFiles,
-  relatedDatasources,
-  path,
-  contentList,
-  uncheckedChildFileList,
+  relatedFiles: RelatedFiles,
+  relatedDatasources: Array<{alias: string, server: string}>,
+  path: string,
+  contentList: FileDetailInfo[],
+  uncheckedChildFileList: UncheckedFiles,
 ) {
   try {
     for (let n = 0; n < relatedDatasources.length; n++) {
@@ -990,37 +1092,37 @@ function _checkDatasources(
   }
 }
 
-function _checkRelated3DLayer(
-  relatedFiles,
-  layerInfo,
-  path,
-  contentList,
-  uncheckedChildFileList,
-) {
-  try {
-    for (let n = 0; n < layerInfo.length; n++) {
-      relatedFiles.push(layerInfo[n].path)
-      let layerChecked = false
-      for (let i = 0; i < contentList.length; i++) {
-        if (!contentList[i].check && contentList[i].type === 'directory') {
-          if (`${path}/${contentList[i].name}` === layerInfo[n].path) {
-            contentList[i].check = true
-            layerChecked = true
-            break
-          }
-        }
-      }
-      if (!layerChecked) {
-        uncheckedChildFileList.push(layerInfo[n].path)
-      }
-    }
-  } catch (error) {
-    // console.log(error)
-  }
-}
+// function _checkRelated3DLayer(
+//   relatedFiles,
+//   layerInfo,
+//   path,
+//   contentList,
+//   uncheckedChildFileList,
+// ) {
+//   try {
+//     for (let n = 0; n < layerInfo.length; n++) {
+//       relatedFiles.push(layerInfo[n].path)
+//       let layerChecked = false
+//       for (let i = 0; i < contentList.length; i++) {
+//         if (!contentList[i].check && contentList[i].type === 'directory') {
+//           if (`${path}/${contentList[i].name}` === layerInfo[n].path) {
+//             contentList[i].check = true
+//             layerChecked = true
+//             break
+//           }
+//         }
+//       }
+//       if (!layerChecked) {
+//         uncheckedChildFileList.push(layerInfo[n].path)
+//       }
+//     }
+//   } catch (error) {
+//     // console.log(error)
+//   }
+// }
 
 // 关联当前文件夹下所有和场景同名的符号
-function _checkRelated3DSymbols(relatedFiles, scenes, path, contentList) {
+function _checkRelated3DSymbols(relatedFiles: RelatedFiles, scenes: string[], path: string, contentList: FileDetailInfo[]) {
   for (let n = 0; n < scenes.length; n++) {
     for (let i = 0; i < contentList.length; i++) {
       if (
@@ -1041,7 +1143,7 @@ function _checkRelated3DSymbols(relatedFiles, scenes, path, contentList) {
   }
 }
 
-function _checkFlyingFiles(relatedFiles, path, contentList) {
+function _checkFlyingFiles(relatedFiles: RelatedFiles, path: string, contentList: FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (
       !contentList[i].check &&
@@ -1054,7 +1156,7 @@ function _checkFlyingFiles(relatedFiles, path, contentList) {
   }
 }
 
-function _checkRelatedDS(relatedFiles, name, path, contentList) {
+function _checkRelatedDS(relatedFiles: RelatedFiles, name: string, path: string, contentList: FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (
       !contentList[i].check &&
@@ -1068,7 +1170,7 @@ function _checkRelatedDS(relatedFiles, name, path, contentList) {
 }
 
 // 关联同名的其他shp文件
-function _checkRelatedSHP(relatedFiles, name, path, contentList) {
+function _checkRelatedSHP(relatedFiles: RelatedFiles, name: string, path: string, contentList: FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (
       !contentList[i].check &&
@@ -1081,7 +1183,7 @@ function _checkRelatedSHP(relatedFiles, name, path, contentList) {
   }
 }
 
-function _checkRelatedMIF(relatedFiles, name, path, contentList) {
+function _checkRelatedMIF(relatedFiles: RelatedFiles, name: string, path: string, contentList: FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (
       !contentList[i].check &&
@@ -1094,7 +1196,7 @@ function _checkRelatedMIF(relatedFiles, name, path, contentList) {
   }
 }
 
-function _checkRelatedAIModel(relatedFiles, name, path, contentList) {
+function _checkRelatedAIModel(relatedFiles: RelatedFiles, name: string, path: string, contentList: FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (
       !contentList[i].check &&
@@ -1111,7 +1213,7 @@ function _checkRelatedAIModel(relatedFiles, name, path, contentList) {
  * 检查此文件夹内是否包含 Symbol 和 SymbolIcon 文件夹
  * 且 Symbol 文件夹含有 plot 文件
  */
-function _isPlotDir(contentList) {
+function _isPlotDir(contentList: FileDetailInfo[]) {
   let hasIcon = false
   let plots = []
   for (let i = 0; i < contentList.length; i++) {
@@ -1130,7 +1232,7 @@ function _isPlotDir(contentList) {
 }
 
 
-function _isType(name, types = []) {
+function _isType(name: string, types: string[] = []): boolean {
   name = name.toLowerCase()
   const index = name.lastIndexOf('.')
   let ext
@@ -1148,11 +1250,11 @@ function _isType(name, types = []) {
   return result
 }
 
-function _isPlot(name) {
+function _isPlot(name: string) {
   return _isType(name, ['plot'])
 }
 
-function _isWorkspace(name) {
+function _isWorkspace(name: string) {
   return _isType(name, ['smwu', 'sxwu', 'sxw', 'smw'])
 }
 
@@ -1169,23 +1271,23 @@ function _isWorkspace(name) {
  * @param {*} name
  */
 
-function _isARMap(name) {
+function _isARMap(name: string) {
   return _isType(name, ['arxml'])
 }
 
-function _isSCIDatasource(name) {
+function _isSCIDatasource(name: string) {
   return _isType(name, ['SCI', 'sci'])
 }
 
-function _isDatasource2(name) {
+function _isDatasource2(name: string) {
   return _isType(name, ['udb'])
 }
 
-function _isSubDS(name) {
+function _isSubDS(name: string) {
   return _isType(name, ['udd'])
 }
 
-function _isRelatedDS(name, checkName) {
+function _isRelatedDS(name: string, checkName: string) {
   if (_isSubDS(checkName)) {
     name = name.substring(0, name.lastIndexOf('.'))
     checkName = checkName.substring(0, checkName.lastIndexOf('.'))
@@ -1194,19 +1296,19 @@ function _isRelatedDS(name, checkName) {
   return false
 }
 
-function _isTIF(name) {
+function _isTIF(name: string) {
   return _isType(name, ['tif', 'tiff'])
 }
 
-function _isSHP(name) {
+function _isSHP(name: string) {
   return _isType(name, ['shp'])
 }
 
-function _isSubSHP(name) {
+function _isSubSHP(name: string) {
   return _isType(name, ['dbf', 'prj', 'shx'])
 }
 
-function _isRelatedSHP(name, checkName) {
+function _isRelatedSHP(name: string, checkName: string) {
   if (_isSubSHP(checkName)) {
     name = name.substring(0, name.lastIndexOf('.'))
     checkName = checkName.substring(0, checkName.lastIndexOf('.'))
@@ -1215,15 +1317,15 @@ function _isRelatedSHP(name, checkName) {
   return false
 }
 
-function _isMIF(name) {
+function _isMIF(name: string) {
   return _isType(name, ['mif'])
 }
 
-function _isSubMIF(name) {
+function _isSubMIF(name: string) {
   return _isType(name, ['mid'])
 }
 
-function _isRelatedMIF(name, checkName) {
+function _isRelatedMIF(name: string, checkName: string) {
   if (_isSubMIF(checkName)) {
     name = name.substring(0, name.lastIndexOf('.'))
     checkName = checkName.substring(0, checkName.lastIndexOf('.'))
@@ -1232,55 +1334,63 @@ function _isRelatedMIF(name, checkName) {
   return false
 }
 
-function _isKML(name) {
+function _isKML(name: string) {
   return _isType(name, ['kml'])
 }
 
-function _isKMZ(name) {
+function _isKMZ(name: string) {
   return _isType(name, ['kmz'])
 }
 
-function _isDWG(name) {
+function _isDWG(name: string) {
   return _isType(name, ['dwg'])
 }
 
-function _isDXF(name) {
+function _isDXF(name: string) {
   return _isType(name, ['dxf'])
 }
 
-function _isGPX(name) {
+function _isGPX(name: string) {
   return _isType(name, ['gpx'])
 }
 
-function _isIMG(name) {
+function _isIMG(name: string) {
   return _isType(name, ['img'])
 }
 
-function _isSymbol(name) {
+function _isSymbol(name: string) {
   return _isType(name, ['sym', 'lsl', 'bru'])
 }
 
-function _isColor(name) {
+function _isColor(name: string) {
   return _isType(name, ['scs'])
 }
 
-function _isFlyingFile(name) {
+function _isFlyingFile(name: string) {
   return _isType(name, ['fpf'])
 }
 
-function _isAIModel(name) {
+function _isAIModel(name: string) {
   return _isType(name, ['tflite'])
 }
 
-function _isSubAIModel(name) {
+function _isSubAIModel(name: string) {
   return _isType(name, ['txt', 'json'])
 }
 
-function _isAREffect(name) {
+function _isAREffect(name: string) {
   return _isType(name, ['areffect'])
 }
 
-function _isRelatedAIModel(name, checkName) {
+function _isARModel(name: string) {
+  return _isType(name, ['glb'])
+}
+
+function _isSandTable(name: string) {
+  return _isType(name, ['stxml'])
+}
+
+function _isRelatedAIModel(name: string, checkName: string) {
   if (_isSubAIModel(checkName)) {
     name = name.substring(0, name.lastIndexOf('.'))
     checkName = checkName.substring(0, checkName.lastIndexOf('.'))
@@ -1289,75 +1399,75 @@ function _isRelatedAIModel(name, checkName) {
   return false
 }
 
-function _isXmlTemplate(name) {
+function _isXmlTemplate(name: string) {
   return  _isType(name, ['xml']) && name.toLowerCase().indexOf('_template') > -1
 }
 
 
-async function _getLocalWorkspaceInfo(serverPath) {
+async function _getLocalWorkspaceInfo(serverPath: string) {
   return await SMap.getLocalWorkspaceInfo(serverPath)
 }
 
-async function _getLayerInfo3D(serverUrl, currentPath) {
-  const layers = []
-  try {
-    if (Platform.OS === 'android') {
-      const scenes = await SScene.getSceneXMLfromWorkspace(serverUrl)
-      for (let i = 0; i < scenes.length; i++) {
-        const { xml } = scenes[i]
-        const $ = cheerio.load(xml)
-        const nodes = $('sml\\:DataSourceAlias')
-        for (let n = 0; n < nodes.length; n++) {
-          let rpath = nodes[n].children[0].nodeValue
-          // 处理反斜线
-          rpath = rpath.replace(/\\/g, '/')
-          // 目前只获取工作空间同级的图层文件夹
-          if (rpath.indexOf('./') === 0) {
-            const pathArr = rpath.split('/')
-            const path = pathArr[1]
-            layers.push({
-              name: scenes[i].name,
-              path: `${currentPath}/${path}`,
-            })
-          }
-        }
-      }
-    } else {
-      const wsType = serverUrl
-        .substr(serverUrl.lastIndexOf('.') + 1)
-        .toLowerCase()
-      // ios目前直接从工作空间文件读取
-      if (wsType === 'sxwu') {
-        let workspaceStr = await RNFS.readFile(serverUrl, 'base64')
-        const rawStr = Buffer.from(workspaceStr, 'base64')
-        workspaceStr = iconv.decode(rawStr, 'gb2312')
+// async function _getLayerInfo3D(serverUrl, currentPath) {
+//   const layers = []
+//   try {
+//     if (Platform.OS === 'android') {
+//       const scenes = await SScene.getSceneXMLfromWorkspace(serverUrl)
+//       for (let i = 0; i < scenes.length; i++) {
+//         const { xml } = scenes[i]
+//         const $ = cheerio.load(xml)
+//         const nodes = $('sml\\:DataSourceAlias')
+//         for (let n = 0; n < nodes.length; n++) {
+//           let rpath = nodes[n].children[0].nodeValue
+//           // 处理反斜线
+//           rpath = rpath.replace(/\\/g, '/')
+//           // 目前只获取工作空间同级的图层文件夹
+//           if (rpath.indexOf('./') === 0) {
+//             const pathArr = rpath.split('/')
+//             const path = pathArr[1]
+//             layers.push({
+//               name: scenes[i].name,
+//               path: `${currentPath}/${path}`,
+//             })
+//           }
+//         }
+//       }
+//     } else {
+//       const wsType = serverUrl
+//         .substr(serverUrl.lastIndexOf('.') + 1)
+//         .toLowerCase()
+//       // ios目前直接从工作空间文件读取
+//       if (wsType === 'sxwu') {
+//         let workspaceStr = await RNFS.readFile(serverUrl, 'base64')
+//         const rawStr = Buffer.from(workspaceStr, 'base64')
+//         workspaceStr = iconv.decode(rawStr, 'gb2312')
 
-        const $ = cheerio.load(workspaceStr)
-        const nodes = $('sml\\:DataSourceAlias')
-        for (let n = 0; n < nodes.length; n++) {
-          let rpath = nodes[n].children[0].nodeValue
-          // 处理反斜线
-          rpath = rpath.replace(/\\/g, '/')
-          // 目前只获取工作空间同级的图层文件夹
-          if (rpath.indexOf('./') === 0) {
-            const pathArr = rpath.split('/')
-            const path = pathArr[1]
-            layers.push({
-              name: path,
-              path: `${currentPath}/${path}`,
-            })
-          }
-        }
-      }
-    }
-    return layers
-  } catch (error) {
-    // console.log(error)
-    return layers
-  }
-}
+//         const $ = cheerio.load(workspaceStr)
+//         const nodes = $('sml\\:DataSourceAlias')
+//         for (let n = 0; n < nodes.length; n++) {
+//           let rpath = nodes[n].children[0].nodeValue
+//           // 处理反斜线
+//           rpath = rpath.replace(/\\/g, '/')
+//           // 目前只获取工作空间同级的图层文件夹
+//           if (rpath.indexOf('./') === 0) {
+//             const pathArr = rpath.split('/')
+//             const path = pathArr[1]
+//             layers.push({
+//               name: path,
+//               path: `${currentPath}/${path}`,
+//             })
+//           }
+//         }
+//       }
+//     }
+//     return layers
+//   } catch (error) {
+//     // console.log(error)
+//     return layers
+//   }
+// }
 
-function _checkUncheckedFile(path, contentList, uncheckedChildFileList) {
+function _checkUncheckedFile(path: string, contentList: FileDetailInfo[], uncheckedChildFileList: UncheckedFiles) {
   for (let i = uncheckedChildFileList.length - 1; i >= 0; i--) {
     for (let n = 0; n < contentList.length; n++) {
       if (`${path}/${contentList[n].name}` === uncheckedChildFileList[i]) {
@@ -1368,7 +1478,7 @@ function _checkUncheckedFile(path, contentList, uncheckedChildFileList) {
   }
 }
 
-function _checkTempFile(contentList) {
+function _checkTempFile(contentList: FileDetailInfo[]) {
   for (let i = 0; i < contentList.length; i++) {
     if (contentList[i].name.indexOf('~[') === 0) {
       contentList[i].check = true
@@ -1381,11 +1491,25 @@ function _checkTempFile(contentList) {
   }
 }
 
+function _checkRelatedSandTableModel(relatedFiles: RelatedFiles, path: string, contentList: FileDetailInfo[]) {
+  for(let i = 0; i < contentList.length; i++) {
+    if (
+      !contentList[i].check &&
+      contentList[i].type === 'file' &&
+      _isARModel(contentList[i].name)
+    ) {
+      contentList[i].check = true
+      relatedFiles.push(`${path}/${contentList[i].name}`)
+    }
+  }
+}
+
 /** 递归获取所有文件 */
-async function _getDirectoryContentDeep(path) {
-  let contentList = []
+async function _getDirectoryContentDeep(path: string) {
+  let contentList: FileDetailInfo[] = []
   try {
-    contentList = await FileTools.getDirectoryContent(path)
+    const fileInfos = await FileTools.getDirectoryContent(path)
+    Object.assign(contentList, fileInfos)
     for (let i = 0; i < contentList.length; i++) {
       if (contentList[i].type === 'directory') {
         contentList[i].contentList = await _getDirectoryContentDeep(
@@ -1402,4 +1526,5 @@ async function _getDirectoryContentDeep(path) {
 
 export default {
   getExternalData,
+  deleteExternalData,
 }

@@ -74,6 +74,7 @@ export default class TableItem extends React.Component<Props, State> {
         } else {
           AppProgress.addProgressListener(
             key,
+            () => {},
             this.updateProgerss,
             () => {
               this.onProgressEnd(key)

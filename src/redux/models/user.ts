@@ -3,6 +3,7 @@ import { handleActions } from 'redux-actions'
 import { } from '../../utils'
 import { ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 import { UserInfo } from '../../types'
+import AppUser from '@/utils/AppUser'
 // Constants
 // --------------------------------------------------
 export const USER_SET = 'USER_SET'
@@ -64,6 +65,7 @@ export interface Users {
 // ---------------------------------.3-----------------
 export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   global.currentUser = params
+  AppUser.setCurrentUser(params)
   await dispatch({
     type: USER_SET,
     payload: params,
@@ -73,6 +75,7 @@ export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (ar
 
 export const setUsers = (params: UserInfo[], cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   global.currentUser = params[0]
+  AppUser.setCurrentUser(params[0])
   await dispatch({
     type: USERS_SET,
     payload: params,

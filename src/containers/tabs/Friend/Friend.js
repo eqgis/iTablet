@@ -1894,7 +1894,7 @@ export default class Friend extends Component {
     }
 
     //对接桌面
-    if (messageObj.type < 10 && typeof messageObj.message === 'string') {
+    if ((messageObj.encode === undefined || messageObj.encode === true) && messageObj.type < 10 && typeof messageObj.message === 'string') {
       messageObj.message = Buffer.from(messageObj.message, 'base64').toString()
     }
 

@@ -31,7 +31,7 @@ const ARMap: typeof CN.ARMap = {
   BACK: "後",
   DIRECTION: "方向",
   DISTANCE: "距離",
-  RATATION_AXIS: "回転軸",
+  ROTATION_AXIS: "回転軸",
   CLOCKWISE: "時周り",
   COUNTER_CLOCKWISE: "逆時周り",
   WEST: "西",

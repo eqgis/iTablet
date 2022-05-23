@@ -25,6 +25,7 @@ import armap from './armap'
 import arlayer from './arlayer'
 import home from './home'
 import device2 from './device2'
+import aranimation from './aranimation'
 
 export {
   nav,
@@ -54,4 +55,5 @@ export {
   arlayer,
   home,
   device2,
+  aranimation,
 }

@@ -31,7 +31,7 @@ const ARMap: typeof CN.ARMap = {
   BACK: "Retour",
   DIRECTION: "Direction",
   DISTANCE: "Distance",
-  RATATION_AXIS: "Axe de rotation",
+  ROTATION_AXIS: "Axe de rotation",
   CLOCKWISE: "dans le sens des aiguilles d'une montre",
   COUNTER_CLOCKWISE: "sens inverse des aiguilles d'une montre",
   WEST: "Ouest",

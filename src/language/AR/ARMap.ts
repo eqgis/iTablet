@@ -31,7 +31,7 @@ const ARMap: typeof CN.ARMap = {
   BACK: "ظهر",
   DIRECTION: "الاتجاه",
   DISTANCE: "المسافة",
-  RATATION_AXIS: "محور الدوران",
+  ROTATION_AXIS: "محور الدوران",
   CLOCKWISE: "مسافة قريبة",
   COUNTER_CLOCKWISE: "عكس اتجاه عقارب الساعة",
   WEST: "W",

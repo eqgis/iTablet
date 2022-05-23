@@ -182,7 +182,7 @@ class SandTableAlignView extends React.Component<Props, State> {
 
 
 const mapStateToProp = (state: RootState) => ({
-  windowSize: state.device.windowSize
+  windowSize: state.device2.windowSize
 })
 
 type ReduxProps = ConnectedProps<typeof connector>

@@ -1,6 +1,6 @@
 import functiontoolbar from './functiontoolbar'
 import toolbar from './toolbar'
-import armap from './armap'
+import * as armap from './armap'
 
 const icon_ar = require('./icon_ar.png')
 // const icon_ai_assistant = require('./icon_ai_assistant.png')

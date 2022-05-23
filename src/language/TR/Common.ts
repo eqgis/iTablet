@@ -52,6 +52,45 @@ const Common: typeof CN.Common = {
   MODEL_LIST: 'Model List',
 
   ALIGN: 'Alignment',
+  
+  VISIBILITY: 'Visibility', // to be translated
+  SHOW: 'Show', // to be translated
+  HIDE: 'Hide', // to be translated
+
+  CUSTOME_ANIMATION: 'Custome Animation', // to be translated
+  MODEL_ANIMATION: 'Model Animation', // to be translated
+  BONE_ANIMATION: 'Bone Animation', // to be translated
+  ANIMATION_BOUNDS: 'Animation Bounds', // to be translated
+  ANIMATION_SETTING: 'Animation Settings', // to be translated
+  REPEAT_COUNT: 'Repeat Count', // to be translated
+
+  DELAY: 'Delay', // to be translated
+  ORDER: 'Order', // to be translated
+  AFTER_PREV_ANIMATION: 'Start After Previous', // to be translated
+  WITH_PREV_ANIMATION: 'Start With Previous', // to be translated
+  TOUCH_TO_START: 'Touch To Start', // to be translated
+
+  START_FRAME: 'Start Frame', // to be translated
+  END_FRAME: 'End Frame', // to be translated
+
+  START_FROM_CURRENT_POSITION: 'Start From Current Position', // to be translated
+  START_FROM_CURRENT_DGREE: 'Start From Current Degree', // to be translated
+
+  START_POSITION: 'Start Postion', // to be translated
+  END_POSITION: 'End Position', // to be translated
+  START_DEGREE: 'Start Degree', // to be translated
+  END_DEGREE: 'End Degree', // to be translated
+
+  KEEP_VISIBLE: 'Keep Visible', // to be translated
+  KEEP_REPEATE: 'Keep Repeat',  // to be translated
+
+  ANIMATION_LIST: 'Animation list',  // to be translated
+  ANIMATION_WINDOW: 'Animation window',  // to be translated
+  
+  PLEASE_SELECT_ANIMATION: 'Please Select Animation',   // to be translated
+  
+  DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
+
 }
 
 export { Protocol, Common }

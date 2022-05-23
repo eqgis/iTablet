@@ -45,6 +45,7 @@ import arStyleModule from './arStyleModule'
 import arNaviModule from './arNaviModule'
 import changeMapModule from './changeMapModule'
 import arSandTable from './arSandTable'
+import arAnimation from './arAnimation'
 
 export {
   startModule,
@@ -93,6 +94,7 @@ export {
   arStyleModule,
   arNaviModule,
   arSandTable,
+  arAnimation,
 
   changeMapModule,
 }

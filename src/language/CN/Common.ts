@@ -49,6 +49,45 @@ const Common = {
   MODEL_LIST: '模型列表',
 
   ALIGN: '排列',
+
+  VISIBILITY: '显隐',
+  SHOW: '显示',
+  HIDE: '隐藏',
+
+  CUSTOME_ANIMATION: '自定义动画',
+  MODEL_ANIMATION: '模型动画',
+  BONE_ANIMATION: '骨骼动画',
+  ANIMATION_BOUNDS: '动画范围',
+  ANIMATION_SETTING: '动画设置',
+  REPEAT_COUNT: '重复次数',
+
+  DELAY: '延迟',
+  ORDER: '顺序',
+  AFTER_PREV_ANIMATION: '上一动画之后',
+  WITH_PREV_ANIMATION: '与上一动画同时',
+  TOUCH_TO_START: '点击开始',
+
+  START_FRAME: '开始帧',
+  END_FRAME: '结束帧',
+
+  START_FROM_CURRENT_POSITION: '从当前位置开始',
+  START_FROM_CURRENT_DGREE: '从当前角度开始',
+
+  START_POSITION: '开始位置',
+  END_POSITION: '结束位置',
+  START_DEGREE: '开始角度',
+  END_DEGREE: '结束角度',
+
+  KEEP_VISIBLE: '始终可见',
+  KEEP_REPEATE: '始终重复',
+
+  ANIMATION_LIST: '动画列表',
+  ANIMATION_WINDOW: '动画窗格',
+
+  
+  PLEASE_SELECT_ANIMATION: '请选择动画',
+
+  DELETE_COMFIRM: '确认删除吗?',
 }
 
 export { Protocol, Common }

@@ -137,6 +137,7 @@ import DataHandler from '../../../tabs/Mine/DataHandler'
 import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
 import Toolbar from '@/Toolbar'
+import { onAddARAnimation } from '@/Toolbar/modules/arAnimation/Actions'
 
 global.markerTag = 118082
 
@@ -4877,7 +4878,15 @@ export default class MapView extends React.Component {
           ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
           onARElementTouch={element => {
-            if(
+            if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
+              onAddARAnimation(element)
+            } else if(element.type === ARElementType.AR_SAND_TABLE
+              && (AppToolBar.getCurrentOption()?.key === 'AR_SAND_TABLE_CREATE'
+                || AppToolBar.getCurrentOption()?.key === 'AR_SAND_TABLE_MODIFY'
+              )) {
+              AppToolBar.addData({selectARElement: element})
+              AppToolBar.show('ARSANDTABLE',  'AR_SAND_TABLE_EDIT')
+            } else if(
               !this.state.showPoiSearch &&
               element.type === ARElementType.AR_IMAGE
               || element.type === ARElementType.AR_VIDEO
@@ -4898,9 +4907,6 @@ export default class MapView extends React.Component {
                 selectName: getLanguage(this.props.language).ARMap.POSITION,
                 selectKey: getLanguage(this.props.language).ARMap.POSITION,
               })
-            } else if(element.type === ARElementType.AR_SAND_TABLE) {
-              AppToolBar.addData({selectARElement: element})
-              AppToolBar.show('ARSANDTABLE',  'AR_SAND_TABLE_EDIT')
             }
           }}
           onCalloutTouch={tag => {

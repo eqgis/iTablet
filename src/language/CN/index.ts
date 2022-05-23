@@ -21,6 +21,7 @@ const ALL = {
   ...Analyst.Analyst_Modules,
   ...Analyst.Analyst_Params,
   ...Analyst.Analyst_Prompt,
+  ...Analyst.Convert_Unit,
   ...ARMap.ARMap,
   ...Common.Common,
   ...Common.Protocol,

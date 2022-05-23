@@ -29,7 +29,7 @@ const ARMap = {
   BACK: "后",
   DIRECTION: "方向",
   DISTANCE: "距离",
-  RATATION_AXIS: "旋转轴",
+  ROTATION_AXIS: "旋转轴",
   CLOCKWISE: "顺时针",
   COUNTER_CLOCKWISE: "逆时针",
   WEST: "西",

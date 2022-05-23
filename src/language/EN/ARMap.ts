@@ -31,7 +31,7 @@ const ARMap: typeof CN.ARMap = {
   BACK: "Back",
   DIRECTION: "Direction",
   DISTANCE: "Distance",
-  RATATION_AXIS: "Rotation Axis",
+  ROTATION_AXIS: "Rotation Axis",
   CLOCKWISE: "clockwise",
   COUNTER_CLOCKWISE: "Anticlockwise",
   WEST: "W",

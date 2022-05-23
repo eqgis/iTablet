@@ -31,7 +31,7 @@ const ARMap: typeof CN.ARMap = {
   BACK: "Geri",
   DIRECTION: "Doğru",
   DISTANCE: "Distance",
-  RATATION_AXIS: "Dönme Ekseni",
+  ROTATION_AXIS: "Dönme Ekseni",
   CLOCKWISE: "Saat Yönünde",
   COUNTER_CLOCKWISE: "Saat Yönünün Tersine",
   WEST: "B",

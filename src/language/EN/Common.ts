@@ -33,7 +33,7 @@ const Common: typeof CN.Common = {
 
   SELECT_MODEL: 'Select Model',
 
-  PLEASE_SELECT_MODEL: 'Please select model', // To be translated
+  PLEASE_SELECT_MODEL: 'Please select model',
   
   SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
   SHOULD_BE_INTEGER: 'shoud be an integer',
@@ -52,6 +52,45 @@ const Common: typeof CN.Common = {
   MODEL_LIST: 'Model List',
 
   ALIGN: 'Alignment',
+  
+  VISIBILITY: 'Visibility',
+  SHOW: 'Show',
+  HIDE: 'Hide',
+
+  CUSTOME_ANIMATION: 'Custome Animation',
+  MODEL_ANIMATION: 'Model Animation',
+  BONE_ANIMATION: 'Bone Animation',
+  ANIMATION_BOUNDS: 'Animation Bounds',
+  ANIMATION_SETTING: 'Animation Settings',
+  REPEAT_COUNT: 'Repeat Count',
+
+  DELAY: 'Delay',
+  ORDER: 'Order',
+  AFTER_PREV_ANIMATION: 'Start After Previous',
+  WITH_PREV_ANIMATION: 'Start With Previous',
+  TOUCH_TO_START: 'Touch To Start',
+
+  START_FRAME: 'Start Frame',
+  END_FRAME: 'End Frame',
+
+  START_FROM_CURRENT_POSITION: 'Start From Current Position',
+  START_FROM_CURRENT_DGREE: 'Start From Current Degree',
+
+  START_POSITION: 'Start Postion',
+  END_POSITION: 'End Position',
+  START_DEGREE: 'Start Degree',
+  END_DEGREE: 'End Degree',
+
+  KEEP_VISIBLE: 'Keep Visible',
+  KEEP_REPEATE: 'Keep Repeat', 
+
+  ANIMATION_LIST: 'Animation list', 
+  ANIMATION_WINDOW: 'Animation window', 
+  
+  PLEASE_SELECT_ANIMATION: 'Please Select Animation',  
+  
+  DELETE_COMFIRM: 'Would you like to delete it?',
+
 }
 
 export { Protocol, Common }

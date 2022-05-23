@@ -6,6 +6,7 @@ import { AppToolBar } from "../utils"
 import { ToolbarModuleViewProps } from "../SMToolbar/ToolbarModule"
 import { MainStackScreenNavigationProps } from "@/types"
 import {
+  arAnimationData,
   arSandTableData,
   ModuleList,
 } from "./modules"
@@ -36,6 +37,7 @@ class Toolbar extends React.Component<Props> {
         {...this.props}
       >
         <SToolbar.Module name={'ARSANDTABLE'} data={arSandTableData}/>
+        <SToolbar.Module name={'ARANIMATION'} data={arAnimationData}/>
       </SToolbar.Container>
     )
   }

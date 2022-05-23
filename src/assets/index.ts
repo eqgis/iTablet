@@ -1,7 +1,53 @@
 import { SMap, DatasetType, ThemeType, TThemeType, TARLayerType, ARLayerType } from 'imobile_for_reactnative'
 import { ThemeType as AppThemeType } from '../constants'
 import LightTheme from './lightTheme'
+import publicTheme from './publicTheme'
 import PublicTheme from './publicTheme'
+
+const image = {
+  ...LightTheme.analyst,
+  ...LightTheme.ar.armap,
+  ...LightTheme.ar.functiontoolbar,
+  ...LightTheme.ar.toolbar,
+  ...LightTheme.ar,
+  ...LightTheme.attribute,
+  ...LightTheme.collection,
+  ...LightTheme.cowork,
+  ...LightTheme.dataType,
+  ...LightTheme.edit,
+  ...LightTheme.find,
+  ...LightTheme.friend,
+  ...LightTheme.functionBar,
+  ...LightTheme.home,
+  ...LightTheme.layer,
+  ...LightTheme.layer3dType,
+  ...LightTheme.layerType,
+  ...LightTheme.mapTools,
+  ...LightTheme.mark,
+  ...LightTheme.mine,
+  ...LightTheme.module,
+  ...LightTheme.nav,
+  ...LightTheme.navigation,
+  ...LightTheme.plot,
+  ...LightTheme.publicAssets,
+  ...LightTheme.search,
+  ...LightTheme.setting,
+  ...LightTheme.share,
+  ...LightTheme.start,
+  ...LightTheme.tabBar,
+  ...LightTheme.themeType,
+  ...LightTheme.toolbar,
+  ...publicTheme.attribute,
+  ...publicTheme.common,
+  ...publicTheme.mapTools,
+  ...publicTheme.plot,
+  ...publicTheme.theme.aggregationColorScheme,
+  ...publicTheme.theme.graphColorScheme,
+}
+
+function getImage(): typeof image {
+  return image
+}
 
 function getThemeAssets(): typeof LightTheme {
   let asset
@@ -263,6 +309,7 @@ function getARSceneAssets(type: number) {
 }
 
 export {
+  getImage,
   getThemeAssets,
   getPublicAssets,
   getThemeIconByType,

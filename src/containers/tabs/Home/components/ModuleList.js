@@ -175,7 +175,7 @@ class ModuleList extends Component {
           await FileTools.unZipFile(fileCachePath, cachePath)
           let tempData = await DataHandler.getExternalData(fileDirPath) || []
           if (downloadData.itemData.mapType === Module.MapType.SCENE || downloadData.itemData.mapType === Module.MapType.AR) {
-            await DataHandler.importWorkspace3D(this.props.currentUser, tempData[0])
+            await DataHandler.importWorkspace3D(tempData[0])
           } else if (downloadData.itemData.mapType === Module.MapType.MAP) {
             await DataHandler.importWorkspace(tempData[0])
           }

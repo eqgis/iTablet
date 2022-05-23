@@ -1,6 +1,6 @@
-import { SMap, EngineType, ARLayerType, DatasetType, FiltedData, TDatasetType, TARLayerType, RNFS } from 'imobile_for_reactnative'
+import { FileTools,  SMap, EngineType, ARLayerType, DatasetType, FiltedData, TDatasetType, TARLayerType, RNFS, FileInfo } from 'imobile_for_reactnative'
 import { ConstPath } from '../../../../constants'
-import { FileTools, NativeMethod } from '../../../../native'
+import { NativeMethod } from '../../../../native'
 import { dataUtil } from '../../../../utils'
 import { UserInfo, LocalDataType } from '../../../../types'
 
@@ -11,10 +11,15 @@ export interface ILocalData extends FiltedData {
     labels: string[],
     paramJsonName?: string,
   }
+  /** 沙盘模型相关信息 */
+  sandTableInfo?: {
+    models: string[]
+    xml: string
+  }
 }
 
-async function getLocalData(user: UserInfo, type: LocalDataType) {
-  let dataList = []
+async function getLocalData(user: UserInfo, type: LocalDataType): Promise<ILocalData[]> {
+
   switch (type) {
     case 'DATA':
     case 'MAP':
@@ -24,42 +29,36 @@ async function getLocalData(user: UserInfo, type: LocalDataType) {
     case 'ARMODEL':
     case 'AREFFECT':
     case 'WORKSPACE3D':
-      dataList = await _getListByFilter(user, type)
-      break
+      return await _getListByFilter(user, type)
     case 'COLOR':
-      dataList = await _getColorSchemeDataList(user)
-      break
+      return await _getColorSchemeDataList(user)
     case 'LABEL':
-      dataList = await _getLabelDataList(user)
-      break
+      return await _getLabelDataList(user)
     case 'TEMPLAE_PLOTTING':
-      dataList = await _getPlotDataList(user)
-      break
+      return await _getPlotDataList(user)
     case 'TEMPLAE_COLLECTING':
-      dataList = await NativeMethod.getTemplatesList(
+      return await NativeMethod.getTemplatesList(
         user.userName,
         'Template',
       )
-      break
     case 'MAPPING_COLLECTING':
-      dataList = await NativeMethod.getTemplatesList(
+      return await NativeMethod.getTemplatesList(
         user.userName,
         'XmlTemplate',
       )
-      break
     case 'AIMODEL':
-      dataList = await _getAIModelDataList(user)
-      break
+      return await _getAIModelDataList(user)
+    case 'SANDTABLE':
+      return await _getLocalSandTable(user.userName)
   }
-  return dataList
 }
 
 async function _getListByFilter(user: UserInfo, type: LocalDataType) {
   const homePath = await FileTools.appendingHomeDirectory()
   const userPath = `${homePath + ConstPath.UserPath + user.userName}/`
 
-  let path
-  let filter
+  let path = ''
+  let filter = {}
   switch (type) {
     case 'DATA':
       path = userPath + ConstPath.RelativePath.Datasource
@@ -127,7 +126,7 @@ async function _getListByFilter(user: UserInfo, type: LocalDataType) {
       path = userPath + ConstPath.RelativePath.AREffect
       filter = {
         type: 'AREFFECT',
-        extension: 'areffect',
+      extension: 'areffect',
       }
       break
   }
@@ -287,6 +286,47 @@ async function _getAIModelDataList(user: UserInfo) {
   }
 
   return list
+}
+
+
+async function _getLocalSandTable(userName: string): Promise<ILocalData[]> {
+  const homePath = await FileTools.getHomeDirectory()
+  const userPath = `${homePath + ConstPath.UserPath + userName}/`
+ 
+  const sandTablePath = userPath + ConstPath.RelativePath.ARSandTable
+
+  const list = await FileTools.getPathListByFilter(sandTablePath, {type: 'Directory'})
+
+  const results: ILocalData[] = []
+  for(let i = 0; i < list.length; i++) {
+    const content = await FileTools.getDirectoryContent(homePath + list[i].path)
+    let path: string | undefined
+    const glbs: string[] = []
+    content.forEach(item => {
+      if(item.type === 'file') {
+        const index = item.name.lastIndexOf('.')
+        if(index > 0) {
+          const type = item.name.substring(index + 1).toLowerCase()
+          if(type === 'stxml') {
+            path = item.name
+          } else if(type === 'glb') {
+            glbs.push(item.name)
+          }
+        }
+      }
+    })
+    if(path && glbs.length > 0) {
+      results.push({
+        ...list[i],
+        sandTableInfo: {
+          xml: path,
+          models: glbs,
+        }
+      })
+    }
+  }
+
+  return results
 }
 
 async function createDatasourceFile(user: UserInfo, datasourcePath: string) {
@@ -491,6 +531,38 @@ async function createPoiSearchDatasource(
   }
 }
 
+async function getAvailableName(path: string, name: string, type: 'file' | 'directory', ext = ''): Promise<string> {
+  const fileList = await FileTools.getDirectoryContent(path)
+
+  let AvailabeName = name
+  if (type === 'file' && ext !== '') {
+    AvailabeName = `${name}.${ext}`
+  }
+  if (_isInlList(AvailabeName, fileList, type)) {
+    for (let i = 1; ; i++) {
+      AvailabeName = `${name}_${i}`
+      if (type === 'file' && ext !== '') {
+        AvailabeName = `${name}_${i}.${ext}`
+      }
+      if (!_isInlList(AvailabeName, fileList, type)) {
+        return AvailabeName
+      }
+    }
+  } else {
+    return AvailabeName
+  }
+}
+
+function _isInlList(name: string, fileList: FileInfo[], type: 'file' | 'directory') {
+  for (let i = 0; i < fileList.length; i++) {
+    if (name === fileList[i].name && type === fileList[i].type) {
+      return true
+    }
+  }
+  return false
+}
+
+
 export default {
   getLocalData,
   getPxpContent,
@@ -500,4 +572,5 @@ export default {
   createDefaultDatasource,
   createARElementDatasource,
   createPoiSearchDatasource,
+  getAvailableName,
 }

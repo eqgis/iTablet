@@ -106,7 +106,7 @@ export default class SampleMap extends Component {
       await FileTools.unZipFile(fileCachePath, cachePath)
       let tempData = await DataHandler.getExternalData(fileDirPath) || []
       if (downloadData.mapType === Module.MapType.SCENE || downloadData.mapType === Module.MapType.AR) {
-        await DataHandler.importWorkspace3D(downloadData.tmpCurrentUser, tempData[0])
+        await DataHandler.importWorkspace3D(tempData[0])
       } else if (downloadData.mapType === Module.MapType.MAP) {
         await DataHandler.importWorkspace(tempData[0])
       }

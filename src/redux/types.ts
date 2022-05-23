@@ -1,7 +1,7 @@
 import { FieldInfo2 } from 'imobile_for_reactnative'
 import { reducer } from './store'
 
-export type RooteState = ReturnType<typeof reducer>
+export type RootState = ReturnType<typeof reducer>
 
 export interface FilterParams {
   filter: string,

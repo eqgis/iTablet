@@ -69,6 +69,10 @@ import Waitting from './Waitting'
 import {
   PopoverButtonsView,
 } from './Popover'
+import Dialog2 from './Dialog2'
+import InputDialog2 from './InputDialog2'
+import FloatBar from './FloatBar'
+
 
 export {
   Container,
@@ -150,4 +154,7 @@ export {
   SwitchItem,
   Waitting,
   PopoverButtonsView,
+  Dialog2,
+  InputDialog2,
+  FloatBar,
 }

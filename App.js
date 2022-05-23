@@ -42,7 +42,7 @@ import {
 } from './src/redux/models/template'
 import { setModules } from './src/redux/models/appConfig'
 import { setMapModule } from './src/redux/models/mapModules'
-import { Dialog, Loading, MyToast, InputDialog } from './src/components'
+import { Dialog, Loading, MyToast, InputDialog, Dialog2, InputDialog2 } from './src/components'
 import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
 import { setShow } from './src/redux/models/device'
@@ -86,6 +86,8 @@ import LaunchGuide from './configs/guide'
 
 import { setBaseMap } from './src/redux/models/map'
 import AppNavigator from './src/containers'
+import AppDialog from '@/utils/AppDialog'
+import AppInputDialog from '@/utils/AppInputDialog'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -1209,6 +1211,8 @@ class AppRoot extends Component {
         <MyToast ref={ref => global.Toast = ref} />
         {this.renderSimpleDialog()}
         {this.renderInputDialog()}
+        <Dialog2 ref={ref => AppDialog.setDialog(ref)} />
+        <InputDialog2 ref={ref => AppInputDialog.setDialog(ref)} />
       </>
     )
   }

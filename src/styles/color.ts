@@ -76,11 +76,7 @@ const lightTheme = {
   modalBgColor: 'rgba(0, 0, 0, 0.5)',
 }
 
-type Styles = {
-  [name: string]: string
-}
-
-const defaultStyles: Styles = {
+const defaultStyles = {
   white: '#FFFFFF',
   red: '#FF0000',
   yellow: '#FFFF00',
@@ -266,7 +262,7 @@ const colors = [
   '#FF0000',
 ]
 
-let customStyles: Styles
+let customStyles
 switch (global.ThemeType) {
   case ThemeType.DARK_THEME:
     customStyles = darkTheme

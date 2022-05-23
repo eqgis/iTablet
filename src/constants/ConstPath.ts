@@ -16,7 +16,7 @@ const Module = {
 }
 
 // 该目录下的数据会被创建在 '/iTablet/'下，不要轻易加
-const RelativePath: {[name: string]: string} = {
+const RelativePath = {
   // 对应用户中的相对路径
   Environment: 'Environment/',
   License: 'License/',
@@ -40,6 +40,7 @@ const RelativePath: {[name: string]: string} = {
   AIModel: `${Data}AIModel/`,
   ARModel: `${Data}ARModel/`,
   AREffect: `${Data}AREffect/`,
+  ARSandTable: `${Data}ARSandTable/`,
   // ARScene: `${Data}ARScene/`,
 }
 

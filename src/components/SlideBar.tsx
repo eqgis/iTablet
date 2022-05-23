@@ -1,54 +1,86 @@
 import React, { Component } from 'react'
-import { Dimensions, View, PanResponder, ViewStyle, PanResponderInstance, GestureResponderEvent, PanResponderGestureState, ScaledSize } from 'react-native'
-import { scaleSize } from '../utils'
+import { View, PanResponder, ViewStyle, PanResponderInstance, GestureResponderEvent, PanResponderGestureState, Dimensions, StyleSheet } from 'react-native'
+import { AppStyle, dp } from '../utils'
 
-interface Props {
+interface Props extends Partial<IDefaultProps> {
   style?: ViewStyle,
   onStart?: () => void,
-  onMove: (loc: number) => void,
+  onMove: (loc: number, isGesture: boolean, isMinValue?: boolean) => void,
   onEnd?: () => void,
+  onMaxReach?: (maxValue: number,isGesture: boolean) => void
 }
 
 interface State {
   left: number
+  right: number
 }
 
-const defaultProps = {
-  range: [0, 100],
-  defaultValue: 0,
+interface IDefaultProps {
+  range: [number, number]
+  defaultMinValue: number
+  defaultMaxValue: number
+  mode: 'single' | 'double'
+  disabled: boolean
+  /** 横向显示 */
+  horizontal: boolean
 }
 
-class SlideBar extends Component<Props & typeof defaultProps, State> {
+const defaultProps: IDefaultProps = {
+  range: [0, 100,],
+  defaultMinValue: 0,
+  defaultMaxValue: 0,
+  mode: 'single',
+  disabled: false,
+  horizontal: true,
+}
+
+export default class SlideBar extends Component<Props & typeof defaultProps, State> {
 
   static defaultProps = defaultProps
 
-  barWidth: number | undefined
-
-  dimensions = Dimensions.get('screen')
-
-  count: number
-
-  prevLeft: number
-
-  lastestLeft: number
-
   panResponder: PanResponderInstance
 
-  lastOutput: number | undefined
+  /** 是否滑动中 */
+  isMoving = false
 
-  currentValue: number = this.props.defaultValue
+  /** 范围刻度 */
+  count: number
+
+  /** 是否正在调整最大值滑块 */
+  isControlMax = true
+
+  /** 记录开始滑动的最小值 */
+  startMinValue: number
+
+  /** 记录开始滑动的最大值 */
+  startMaxValue: number
+
+  /** 当前最小值 */
+  currentMinValue: number
+
+  /** 当前最大值 */
+  currentMaxValue: number
 
   constructor(props: Props & typeof defaultProps) {
     super(props)
 
-    // this.barWidth = typeof this.props.style?.width === 'number' ?  this.props.style?.width : this.dimensions.width
     this.count = Math.abs(this.props.range[1] - this.props.range[0])
 
-    this.state = {
-      left: this.getLocation(this.props.defaultValue),
+    if(this.props.mode === 'single') {
+      this.currentMinValue = this.props.range[0]
+      this.currentMaxValue = this.props.defaultMaxValue
+    } else {
+      this.currentMinValue = this.props.defaultMinValue
+      this.currentMaxValue = this.props.defaultMaxValue
     }
-    this.prevLeft = this.state.left
-    this.lastestLeft = 0
+
+    this.startMinValue = this.currentMinValue
+    this.startMaxValue = this.currentMaxValue
+
+    this.state = {
+      left: this.getLocation(this.currentMinValue),
+      right: this.getLocation(this.currentMaxValue),
+    }
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
@@ -59,167 +91,312 @@ class SlideBar extends Component<Props & typeof defaultProps, State> {
     })
   }
 
-  shouldComponentUpdate(nextProps: Props & typeof defaultProps, nextState: State) {
-    return (
-      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
-      JSON.stringify(nextProps) !== JSON.stringify(this.props)
-    )
-  }
 
   componentDidUpdate(prevProps: Props & typeof defaultProps) {
-    if (
-      JSON.stringify(prevProps.range) !== JSON.stringify(this.props.range) ||
-      prevProps.defaultValue !== this.props.defaultValue
+    if(prevProps.defaultMaxValue !== this.props.defaultMaxValue
+      || prevProps.defaultMinValue !== this.props.defaultMinValue
+      || prevProps.mode !== this.props.mode
+      || prevProps.range !== this.props.range
     ) {
-      this.count = Math.abs(this.props.range[1] - this.props.range[0])
-      this.setState({
-        left: this.getLocation(this.props.defaultValue),
-      })
+      if(this.props.mode === 'single') {
+        this.updateParams(this.props.range[0], this.props.defaultMaxValue)
+      } else {
+        this.updateParams(this.props.defaultMinValue, this.props.defaultMaxValue)
+      }
+    } else if(prevProps.horizontal !== this.props.horizontal) {
+      this.updateParams(this.currentMinValue, this.currentMaxValue)
     }
   }
 
-  reset = () => {
-    this.prevLeft = this.getLocation(this.props.defaultValue)
-    this.setState({
-      left: this.prevLeft,
-    })
-    this.lastestLeft = 0
-  }
-
-  _getBarWidth = (): number => {
-    if (this.barWidth !== undefined) return this.barWidth
-    return typeof this.props.style?.width === 'number' ?  this.props.style?.width : Dimensions.get('window').width
-  }
-
-  updateParams = (currentValue: number) => {
+  updateParams = (minValue: number, maxValue: number) => {
     this.count = Math.abs(this.props.range[1] - this.props.range[0])
 
     this.setState({
-      left: this.getLocation(currentValue),
+      left: this.getLocation(minValue),
+      right: this.getLocation(maxValue)
     })
-    this.prevLeft = this.getLocation(currentValue)
-    this.lastestLeft = 0
+    this.currentMinValue = this.startMinValue = minValue
+    this.currentMaxValue = this.startMaxValue = maxValue
+  }
+
+  /** 横向为宽度， 纵向为高度 */
+  barLength?: number
+
+  _getBarLength = (): number => {
+    if (this.barLength!== undefined) return this.barLength
+    const width = typeof this.props.style?.width === 'number' ?  this.props.style?.width : Dimensions.get('window').width
+    const height = typeof this.props.style?.height === 'number' ? this.props.style.height: Dimensions.get('window').height
+    return this.props.horizontal ? width : height
   }
 
   //根据位置获取值
   getValue = (location: number) => {
-    return (
-      Math.round((this.count * location) / this._getBarWidth()) + this.props.range[0]
+    return this.props.horizontal ? (
+      Math.round((this.count * location) / this._getBarLength()) + this.props.range[0]
+    ) : (
+      this.props.range[1] -  Math.round((this.count * location) / this._getBarLength())
     )
   }
 
   //根据值获取位置
   getLocation = (value: number) => {
-    return (this._getBarWidth() * (value - this.props.range[0])) / this.count
+    return this.props.horizontal ? (
+      (this._getBarLength() * (value - this.props.range[0])) / this.count
+    ) : (
+      (this._getBarLength() * (this.props.range[1] - value)) / this.count
+    )
   }
 
-  onStart = () => {
-    this.props.onStart && this.props.onStart()
+  increment = () => {
+    this.isControlMax = true
+    const value = this.currentMaxValue + 1
+    if (value > this.props.range[1]) {
+      this.onMove(this.getLocation(this.currentMaxValue), false)
+      return
+    }
+    const location = this.getLocation(value)
+    this.setState({
+      right: location,
+    })
+    this.onMove(this.getLocation(value), false)
   }
 
-  onMove = (location: number) => {
-    if (this.lastOutput === undefined || this.lastOutput !== location) {
-      this.lastOutput = location
-      this.currentValue = this.getValue(location)
-      this.props.onMove && this.props.onMove(this.currentValue)
+  decrement = () => {
+    if(this.props.mode === 'single') {
+      this.isControlMax = true
+      const value = this.currentMaxValue - 1
+      if (value < this.props.range[0]) return
+      const location = this.getLocation(value)
+      this.setState({
+        right: location,
+      })
+      this.onMove(this.getLocation(value), false)
+    } else {
+      this.isControlMax = false
+      const value = this.currentMinValue - 1
+      if (value < this.props.range[0]) return
+      const location = this.getLocation(value)
+      this.setState({
+        left: location,
+      })
+      this.onMove(this.getLocation(value), false)
     }
   }
 
-  onEnd = (location: number) => {
-    this.onMove(location)
-    this.props.onEnd && this.props.onEnd()
+  onStart = (evt: GestureResponderEvent) => {
+    if(this.props.disabled) return
+    this.isMoving = true
+    if(this.props.mode === 'single') {
+      this.isControlMax = true
+    } else {
+      const startLoc = this.props.horizontal ? evt.nativeEvent.locationX : evt.nativeEvent.locationY
+      const startValue = this.getValue(startLoc)
+      if(Math.abs(startValue - this.currentMaxValue) > Math.abs(startValue - this.currentMinValue)) {
+        this.isControlMax = false
+      } else {
+        this.isControlMax = true
+      }
+    }
+    this.startMaxValue = this.currentMaxValue
+    this.startMinValue = this.currentMinValue
+    this.props.onStart && this.props.onStart()
   }
 
   onPanMove = (evt: GestureResponderEvent, gesture: PanResponderGestureState) => {
-    const offx = gesture.dx
-    let location = this.prevLeft + offx
-    if (location > this._getBarWidth()) location = this._getBarWidth()
+    if(this.props.disabled) return
+    const offset = this.props.horizontal ? gesture.dx : gesture.dy
+    //获取移动前位置
+    const currentLocation = this.isControlMax ? this.getLocation(this.startMaxValue) : this.getLocation(this.startMinValue)
+    //计算本次移动后的位置
+    let location = currentLocation + offset
+    if (location > this._getBarLength()) location = this._getBarLength()
     if (location < 0) location = 0
-    location = this.getLocation(this.getValue(location))
-    this.setState({
-      left: location,
-    })
-    this.lastestLeft = location
-    this.onMove(location)
-  }
-
-  onPanRelease = (evt: GestureResponderEvent, gesture: PanResponderGestureState) => {
-    let location = this.lastestLeft
-    if (gesture.dx === 0) {
-      location = evt.nativeEvent.locationX
-      if (location > this._getBarWidth()) location = this._getBarWidth()
-      if (location < 0) location = 0
+    if(this.isControlMax) {
+      //最大值不能小于等于最小值
+      if(this.props.mode === 'double' && this.getValue(location) <= this.currentMinValue) return
+      location = this.getLocation(this.getValue(location))
+      this.setState({
+        right: location,
+      })
+    } else {
+      //最小值不能大于等于最大值
+      if(this.props.mode === 'double' && this.getValue(location) >= this.currentMaxValue) return
       location = this.getLocation(this.getValue(location))
       this.setState({
         left: location,
       })
     }
-    this.prevLeft = location
+    this.onMove(location, true)
+  }
+
+  onPanRelease = (evt: GestureResponderEvent, gesture: PanResponderGestureState) => {
+    if(this.props.disabled) return
+    this.isMoving = false
+    let location = this.isControlMax ? this.getLocation(this.currentMaxValue) : this.getLocation(this.currentMinValue)
+    const offset = this.props.horizontal ? gesture.dx : gesture.dy
+    if (offset === 0) {
+      location = this.props.horizontal ? evt.nativeEvent.locationX : evt.nativeEvent.locationY
+      if (location > this._getBarLength()) location = this._getBarLength()
+      if (location < 0) location = 0
+      location = this.getLocation(this.getValue(location))
+      if(this.isControlMax) {
+        //最大值不能小于等于最小值
+        if(this.props.mode === 'double' && this.getValue(location) <= this.currentMinValue) return
+        this.setState({
+          right: location,
+        })
+      } else {
+        //最小值不能大于等于最大值
+        if(this.props.mode === 'double' && this.getValue(location) >= this.currentMaxValue) return
+        this.setState({
+          left: location,
+        })
+      }
+    }
     this.onEnd(location)
   }
 
+  onMove = (location: number, isGesture: boolean) => {
+    if(this.isControlMax) {
+      if(this.getValue(location) === this.props.range[1]) {
+        this.props.onMaxReach?.(this.getValue(location), isGesture)
+      }
+      if (this.currentMaxValue !== this.getValue(location)) {
+        this.currentMaxValue = this.getValue(location)
+        this.props.onMove(this.currentMaxValue, isGesture)
+      }
+    } else {
+      if(this.currentMinValue !== this.getValue(location)) {
+        this.currentMinValue = this.getValue(location)
+        this.props.onMove(this.currentMinValue, isGesture, true)
+      }
+    }
+  }
+
+  onEnd = (location: number) => {
+    this.onMove(location, true)
+    this.props.onEnd && this.props.onEnd()
+  }
+
   onClear = () => {
+    this.currentMinValue = this.props.defaultMinValue
+    this.currentMaxValue = this.props.defaultMaxValue
     this.setState({
-      left: this.getLocation(this.props.defaultValue),
+      left: this.getLocation(this.props.defaultMinValue),
+      right: this.getLocation(this.props.defaultMaxValue),
     })
-    this.prevLeft = this.getLocation(this.props.defaultValue)
-    this.onEnd(this.prevLeft)
   }
 
   render() {
     return (
       <View
         style={[
-          {
-            width: this._getBarWidth(),
-            height: scaleSize(40),
-            justifyContent: 'center',
-            backgroundColor: '#00000000',
-          },
+          this.props.horizontal ? styles.containerStyle : styles.containerStyleL,
           this.props.style,
         ]}
         {...this.panResponder.panHandlers}
         onLayout={e => {
           const width =  e.nativeEvent.layout.width
-          if(this.barWidth === undefined || this.barWidth !== width) {
-            this.barWidth = width
-            this.updateParams(this.currentValue)
+          const height = e.nativeEvent.layout.height
+          const length = this.props.horizontal ? width : height
+          if(!this.isMoving && (this.barLength === undefined || this.barLength !== length)) {
+            this.barLength = length
+            this.updateParams(this.currentMinValue, this.currentMaxValue)
           } else {
-            this.barWidth = width
+            this.barLength = length
           }
         }}
       >
         <View
-          style={{
-            width: '100%',
-            height: scaleSize(2),
-            backgroundColor: '#F1F3F8',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
+          style={this.props.horizontal ? styles.backgroundLine : styles.backgroundLineL}
         >
           <View
-            style={{
-              height: scaleSize(2),
-              backgroundColor: '#000000',
-              width: this.state.left,
-            }}
-          />
-          <View
-            style={{
-              width: scaleSize(25),
-              height: scaleSize(25),
-              borderWidth: scaleSize(2),
-              borderColor: '#000000',
-              borderRadius: scaleSize(12.5),
-              backgroundColor: '#FFFFFF',
-              marginLeft: -scaleSize(12.5),
-            }}
-          />
+            style={[
+              this.props.horizontal ? styles.valueLine : styles.valueLineL,
+              this.props.horizontal ? {
+                right: this._getBarLength() - this.state.right,
+                left: this.props.mode === 'double' ? this.state.left : 0,
+              } : {
+                top: this.state.right,
+                bottom: this.props.mode === 'double' ? this._getBarLength() - this.state.left : 0
+              },
+              {backgroundColor: this.props.disabled ? AppStyle.Color.GRAY : '#000000'}
+            ]}
+          >
+            {this.props.mode === 'double' && (
+              <View
+                style={[
+                  styles.indicator,
+                  this.props.horizontal ? {
+                    top: -dp(8),
+                    left:  -dp(8),
+                  } : {
+                    right: -dp(8),
+                    bottom: -dp(8)
+                  },
+                  {borderColor: this.props.disabled ? AppStyle.Color.GRAY : '#000000'}
+                ]}
+              />
+            )}
+
+            <View
+              style={[
+                styles.indicator,
+                this.props.horizontal ? {
+                  top: -dp(8),
+                  right:  -dp(8),
+                } : {
+                  right: -dp(8),
+                  top: -dp(8)
+                },
+                {borderColor: this.props.disabled ? AppStyle.Color.GRAY : '#000000'}
+              ]}
+            />
+          </View>
         </View>
       </View>
     )
   }
 }
 
-export default SlideBar
+
+const styles = StyleSheet.create({
+  containerStyle: {
+    height: dp(45),
+    justifyContent: 'center',
+  },
+  containerStyleL: {
+    width: dp(45),
+    alignItems: 'center',
+  },
+  backgroundLine: {
+    width: '100%',
+    height: dp(2),
+    backgroundColor: '#F1F3F8',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backgroundLineL: {
+    height: '100%',
+    width: dp(2),
+    backgroundColor: '#F1F3F8',
+    alignItems: 'center',
+  },
+  valueLine: {
+    position: 'absolute',
+    height: dp(2),
+  },
+  valueLineL: {
+    position: 'absolute',
+    width: dp(2),
+  },
+  indicator: {
+    position: 'absolute',
+
+    width: dp(16),
+    height: dp(16),
+    borderWidth: dp(2),
+    borderRadius: dp(8),
+    backgroundColor: '#FFFFFF',
+  }
+})

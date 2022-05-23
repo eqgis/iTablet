@@ -83,6 +83,7 @@ import {
   Audio,
   DownloadUtil,
   SCoordinationUtils,
+  AppToolBar,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -135,6 +136,7 @@ import DatumPointCalibration from '../../../arDatumPointCalibration/'
 import DataHandler from '../../../tabs/Mine/DataHandler'
 import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
+import Toolbar from '@/Toolbar'
 
 global.markerTag = 118082
 
@@ -4885,6 +4887,7 @@ export default class MapView extends React.Component {
             ) {
               arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
               ToolbarModule.addData({selectARElement: element})
+              AppToolBar.addData({selectARElement: element})
               SARMap.appointEditElement(element.id, element.layerName)
               SARMap.setAction(ARAction.MOVE)
               this.showFullMap(true)
@@ -4895,6 +4898,9 @@ export default class MapView extends React.Component {
                 selectName: getLanguage(this.props.language).ARMap.POSITION,
                 selectKey: getLanguage(this.props.language).ARMap.POSITION,
               })
+            } else if(element.type === ARElementType.AR_SAND_TABLE) {
+              AppToolBar.addData({selectARElement: element})
+              AppToolBar.show('ARSANDTABLE',  'AR_SAND_TABLE_EDIT')
             }
           }}
           onCalloutTouch={tag => {
@@ -5208,6 +5214,11 @@ export default class MapView extends React.Component {
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
+        <Toolbar
+          visibleChange={visible => {
+            this.showFullMap(visible)
+          }}
+        />
       </Container>
     )
   }

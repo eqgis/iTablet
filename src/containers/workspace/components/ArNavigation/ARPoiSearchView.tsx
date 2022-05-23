@@ -8,11 +8,11 @@ import { getLanguage } from '../../../../language'
 import { ARNaviModule } from '../ArNavigationModule'
 import { scaleSize, Toast, OnlineServicesUtils ,screen ,Audio} from '../../../../../src/utils'
 import Button from './Button'
-import FloatBar from './FloatBar'
 import DataHandler from '../../../../../src/containers/tabs/Mine/DataHandler'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import NavigationService from '../../../../containers/NavigationService'
 import BackButton from '../../../../components/Header/BackButton'
+import { FloatBar } from '@/components'
 
 interface Props {
   toolbarVisible: boolean,

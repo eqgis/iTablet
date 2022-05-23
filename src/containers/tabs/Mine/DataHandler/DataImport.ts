@@ -1,58 +1,77 @@
-import { SMap, EngineType, SScene, SARMap, AppInfo } from 'imobile_for_reactnative'
+import { SMap, EngineType, SScene, SARMap, AppInfo, FileInfo } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
+import { ExternalDatasetType, UserInfo } from '@/types'
+import { IExternalData } from './DataExternal'
+import { AppUser } from '@/utils'
 
-async function importExternalData(user, item) {
+async function importExternalData(user: UserInfo, item: IExternalData): Promise<boolean> {
   let type = item.fileType
-  let result = false
+  let result: boolean
   switch (type) {
+    case 'tif':
+    case 'shp':
+    case 'mif':
+    case 'kml':
+    case 'kmz':
+    case 'dwg':
+    case 'dxf':
+    case 'gpx':
+    case 'img':
+      //数据集导入调用 importDataset
+      result = false
+      break
+    case 'online': 
+      result = false
+      break
     case 'plotting':
       result = await importPlotLib(item)
       break
-    case 'workspace':
-      result = await importWorkspace(item)
-      result = result ? result.length > 0 : false
+    case 'workspace': {
+      const importResult = await importWorkspace(item)
+      result = importResult === false ? false : importResult.length > 0
+    }
       break
     case 'workspace3d':
-      result = await importWorkspace3D(user, item)
+      result = await importWorkspace3D(item)
       break
     case 'datasource':
-      result = await importDatasource(user, item)
+      result = await importDatasource(item)
       break
     case 'sci':
-      result = await importSCI(user, item)
+      result = await importSCI(item)
       break
     case 'color':
-      result = await importColor(user, item)
+      result = await importColor(item)
       break
     case 'symbol':
-      result = await importSymbol(user, item)
+      result = await importSymbol(item)
       break
     case 'aimodel':
-      result = await importAIModel(user, item)
+      result = await importAIModel(item)
       break
-    case 'xmltemplate':
-      result = await importXmlTemplate(user,item)
+    case 'xml_template':
+      result = await importXmlTemplate(item)
       break
     case 'armap':
       result = await importARMap(item)
       break
     case 'armodel':
-      result = await importARModel(user, item)
+      result = await importARModel(item)
       break
     case 'areffect':
-      result = await importAREffect(user, item)
+      result = await importAREffect(item)
       break
-    default:
-      break
+    case 'sandtable':
+      result = await importSandTable(item)
   }
   return result
 }
 
 async function importDataset(
-  type,
-  filePath,
-  datasourceItem,
+  type: ExternalDatasetType,
+  filePath: string,
+  datasourceItem: any,
   importParams = {},
 ) {
   let params = {}
@@ -89,14 +108,14 @@ async function importDataset(
   return await _importDataset(type, filePath, datasourceItem, importParams)
 }
 
-async function importXmlTemplate(user,item) {
+async function importXmlTemplate(item: IExternalData) {
   const userPath = await FileTools.appendingHomeDirectory(
     ConstPath.ExternalData + '/XmlTemplate/',
   )
   return await _copyFile(item, userPath)
 }
 
-async function importPlotLib(item) {
+async function importPlotLib(item: IExternalData) {
   try {
     return await SMap.importPlotLibData(item.filePath)
   } catch (error) {
@@ -104,7 +123,7 @@ async function importPlotLib(item) {
   }
 }
 
-async function importWorkspace(item) {
+async function importWorkspace(item: IExternalData) {
   try {
     const { filePath } = item
     const type = _getWorkspaceType(filePath)
@@ -124,7 +143,7 @@ async function importWorkspace(item) {
  * 2.生成对应的pxp
  * 3.复制工作空间和相关文件
  */
-async function importWorkspace3D(user, item) {
+async function importWorkspace3D(item: IExternalData) {
   try {
     return await SScene.import3DWorkspace({server:item.filePath})
   } catch (error) {
@@ -132,86 +151,27 @@ async function importWorkspace3D(user, item) {
   }
 }
 
-/**
- * 1.遍历scenes，获取可用的文件夹名
- * 2.生成对应的pxp
- * 3.复制工作空间和相关文件
- * 4.此接口用来过滤AR三维数据
- */
-async function importWorkspace3DAR(user, item) {
-  try {
-    const userPath = await FileTools.appendingHomeDirectory(
-      `${ConstPath.UserPath + user.userName}/Data/Scene`,
-    )
-
-    const contentList = await FileTools.getDirectoryContent(userPath)
-
-    const workspaceName = item.fileName.substring(
-      0,
-      item.fileName.lastIndexOf('.'),
-    )
-    const workspaceFolder = _getAvailableName(
-      workspaceName,
-      contentList,
-      'directory',
-    )
-    const workspaceInfo = {
-      type: `${_getWorkspaceType(item.fileName)}`,
-      server: `${workspaceFolder}/${item.fileName}`,
-    }
-
-    for (let i = 0; i < item.wsInfo.scenes.length; i++) {
-      const scene = item.wsInfo.scenes[i]
-      const pxp = _getAvailableName(scene, contentList, 'file', 'pxp')
-      const pxpInfo = {
-        Name: scene,
-        Workspace: workspaceInfo,
-        Type: 0,
-      }
-      await FileTools.writeFile(`${userPath}/${pxp}`, JSON.stringify(pxpInfo))
-
-      const absoluteWorkspacePath = `${userPath}/${workspaceFolder}`
-      await FileTools.createDirectory(absoluteWorkspacePath)
-      await FileTools.copyFile(
-        item.filePath,
-        `${absoluteWorkspacePath}/${item.fileName}`,
-      )
-
-      for (let i = 0; i < item.relatedFiles.length; i++) {
-        const filePath = item.relatedFiles[i]
-        const fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
-        await FileTools.copyFile(
-          filePath,
-          `${absoluteWorkspacePath}/${fileName}`,
-        )
-      }
-    }
-    return true
-  } catch (error) {
-    return false
-  }
-}
-
-async function importARMap(item) {
+async function importARMap(item: IExternalData) {
   return await SARMap.importMap(item.filePath)
 }
 
-async function importARModel(user, item) {
+async function importARModel(item: IExternalData) {
   const homePath = await FileTools.getHomeDirectory()
-  const targetPath = homePath + ConstPath.UserPath + user.userName + '/' + ConstPath.RelativePath.ARModel
+
+  const targetPath = homePath + ConstPath.UserPath + AppUser.getCurrentUser().userName + '/' + ConstPath.RelativePath.ARModel
   return await _copyFile(item, targetPath)
 }
 
-async function importAREffect(user, item) {
+async function importAREffect(item: IExternalData) {
   const homePath = await FileTools.getHomeDirectory()
-  const targetPath = homePath + ConstPath.UserPath + user.userName + '/' + ConstPath.RelativePath.AREffect
+  const targetPath = homePath + ConstPath.UserPath + AppUser.getCurrentUser().userName + '/' + ConstPath.RelativePath.AREffect
   return await _copyFile(item, targetPath)
 }
 
-async function importDatasource(user, item) {
+async function importDatasource(item: IExternalData) {
   try {
     const userPath = await FileTools.appendingHomeDirectory(
-      `${ConstPath.UserPath + user.userName}/Data/Datasource`,
+      `${ConstPath.UserPath + AppUser.getCurrentUser().userName}/Data/Datasource`,
     )
 
     const contentList = await FileTools.getDirectoryContent(userPath)
@@ -244,7 +204,7 @@ async function importDatasource(user, item) {
     await FileTools.copyFile(sourceUdd, `${userPath}/${uddName}`)
     if (await FileTools.fileIsExist(mediaPath)) {
       const targetMediaPath = await FileTools.appendingHomeDirectory(
-        `${ConstPath.UserPath + user.userName}/Data/Media`,
+        `${ConstPath.UserPath + AppUser.getCurrentUser().userName}/Data/Media`,
       )
       const descriptionPath = `${mediaPath}/description.json`
       if (await FileTools.fileIsExist(descriptionPath)) {
@@ -270,10 +230,10 @@ async function importDatasource(user, item) {
   }
 }
 
-async function importSCI(user, item) {
+async function importSCI(item: IExternalData) {
   try {
     const userPath = await FileTools.appendingHomeDirectory(
-      `${ConstPath.UserPath + user.userName}/Data/Datasource`,
+      `${ConstPath.UserPath + AppUser.getCurrentUser().userName}/Data/Datasource`,
     )
 
     let index = item.directory.lastIndexOf('/')
@@ -303,25 +263,25 @@ async function importSCI(user, item) {
   // await FileTools.copyFile(sourceUdd, `${userPath}/${uddName}`)
 }
 
-async function importColor(user, item) {
+async function importColor(item: IExternalData) {
   const userPath = await FileTools.appendingHomeDirectory(
-    `${ConstPath.UserPath + user.userName}/Data/Color`,
+    `${ConstPath.UserPath + AppUser.getCurrentUser().userName}/Data/Color`,
   )
 
   return await _copyFile(item, userPath)
 }
 
-async function importSymbol(user, item) {
+async function importSymbol(item: IExternalData) {
   const userPath = await FileTools.appendingHomeDirectory(
-    `${ConstPath.UserPath + user.userName}/Data/Symbol`,
+    `${ConstPath.UserPath + AppUser.getCurrentUser().userName}/Data/Symbol`,
   )
 
   return await _copyFile(item, userPath)
 }
 
-async function importAIModel(user, item) {
+async function importAIModel(item: IExternalData) {
   const userPath = await FileTools.appendingHomeDirectory(
-    `${ConstPath.UserPath + user.userName}/Data/AIModel`,
+    `${ConstPath.UserPath + AppUser.getCurrentUser().userName}/Data/AIModel`,
   )
   const contentList = await FileTools.getDirectoryContent(userPath)
   let name = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
@@ -330,66 +290,22 @@ async function importAIModel(user, item) {
   return await _copyFile(item, `${userPath}/${name}`)
 }
 
-// async function importTIF(filePath, datasourceItem) {
-//   return await _importDataset('tif', filePath, datasourceItem)
-// }
+async function importSandTable(item: IExternalData): Promise<boolean> {
+  const homePath = await FileTools.getHomeDirectory()
+  const targetPath = homePath +
+    `${ConstPath.UserPath + AppUser.getCurrentUser().userName}/${ConstPath.RelativePath.ARSandTable}`
 
-// async function importSHP(filePath, datasourceItem) {
-//   return await _importDataset('shp', filePath, datasourceItem)
-// }
-
-// async function importMIF(filePath, datasourceItem) {
-//   return await _importDataset('mif', filePath, datasourceItem)
-// }
-
-// async function importKML(filePath, datasourceItem) {
-//   let name = filePath.substr(filePath.lastIndexOf('/') + 1)
-//   name = name.split('.')[0]
-//   return await _importDataset('kml', filePath, datasourceItem, {
-//     datasetName: name,
-//     importAsCAD: true,
-//   })
-// }
-
-// async function importKMZ(filePath, datasourceItem) {
-//   let name = filePath.substr(filePath.lastIndexOf('/') + 1)
-//   name = name.split('.')[0]
-//   return await _importDataset('kmz', filePath, datasourceItem, {
-//     datasetName: name,
-//     importAsCAD: true,
-//   })
-// }
-
-// async function importDWG(filePath, datasourceItem) {
-//   return await _importDataset('dwg', filePath, datasourceItem, {
-//     inverseBlackWhite: false,
-//     importAsCAD: true,
-//   })
-// }
-
-// async function importDXF(filePath, datasourceItem) {
-//   return await _importDataset('dxf', filePath, datasourceItem, {
-//     inverseBlackWhite: false,
-//     importAsCAD: true,
-//   })
-// }
-
-// async function importGPX(filePath, datasourceItem) {
-//   let name = filePath.substr(filePath.lastIndexOf('/') + 1)
-//   name = name.split('.')[0]
-//   return await _importDataset('gpx', filePath, datasourceItem, {
-//     datasetName: name,
-//   })
-// }
-
-// async function importIMG(filePath, datasourceItem) {
-//   return await _importDataset('img', filePath, datasourceItem)
-// }
+  const contentList = await FileTools.getDirectoryContent(targetPath)
+  let name = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
+  name = _getAvailableName(name, contentList, 'directory')
+  await FileTools.createDirectory(`${targetPath}/${name}`)
+  return await _copyFile(item, `${targetPath}/${name}`)
+}
 
 async function _importDataset(
-  type,
-  filePath,
-  datasourceItem,
+  type: ExternalDatasetType,
+  filePath: string,
+  datasourceItem: any,
   importParams = {},
 ) {
   try {
@@ -416,7 +332,7 @@ async function _importDataset(
   }
 }
 
-async function _copyFile(item, desDir) {
+async function _copyFile(item: IExternalData, desDir: string): Promise<boolean> {
   try {
     const fileName = item.fileName.substring(0, item.fileName.lastIndexOf('.'))
     const fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1)
@@ -445,7 +361,7 @@ async function _copyFile(item, desDir) {
   }
 }
 
-function _getAvailableName(name, fileList, type, ext = '') {
+function _getAvailableName(name: string, fileList: FileInfo[], type: 'file' | 'directory', ext = '')  {
   let AvailabeName = name
   if (type === 'file' && ext !== '') {
     AvailabeName = `${name}.${ext}`
@@ -465,7 +381,7 @@ function _getAvailableName(name, fileList, type, ext = '') {
   }
 }
 
-function _isInlList(name, fileList, type) {
+function _isInlList(name: string, fileList: FileInfo[], type: 'file' | 'directory') {
   for (let i = 0; i < fileList.length; i++) {
     if (name === fileList[i].name && type === fileList[i].type) {
       return true
@@ -474,7 +390,7 @@ function _isInlList(name, fileList, type) {
   return false
 }
 
-function _getWorkspaceType(path) {
+function _getWorkspaceType(path: string) {
   const index = path.lastIndexOf('.')
   let type
   if (index < 1) {
@@ -511,21 +427,8 @@ export default {
   importExternalData,
   importDataset,
 
-  importPlotLib,
   importWorkspace,
   importWorkspace3D,
-  importDatasource,
-  importSCI,
   importColor,
   importSymbol,
-  importWorkspace3DAR,
-  // importTIF,
-  // importSHP,
-  // importMIF,
-  // importKML,
-  // importKMZ,
-  // importDWG,
-  // importDXF,
-  // importGPX,
-  // importIMG,
 }

@@ -24,6 +24,7 @@ import ar from './ar'
 import armap from './armap'
 import arlayer from './arlayer'
 import home from './home'
+import device2 from './device2'
 
 export {
   nav,
@@ -52,4 +53,5 @@ export {
   armap,
   arlayer,
   home,
+  device2,
 }

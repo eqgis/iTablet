@@ -1,7 +1,7 @@
 import mapModules from './mapModules/index'
 import tabModules from './tabModules/index'
 
-const iportalMQIP = '192.168.11.215'
+const iportalMQIP = '192.168.11.21'
 const IPORTAL_PORT = '8190'
 // const iportalMQIP = '10.10.3.194'
 // const IPORTAL_PORT = '8089'

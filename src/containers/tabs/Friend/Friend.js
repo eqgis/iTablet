@@ -1158,7 +1158,10 @@ export default class Friend extends Component {
   startSendLocation = (forceShow = false) => {
     this.sendCurrentLocation(forceShow)
     this.locationTimer = setInterval(() => {
-      this.sendCurrentLocation()
+      let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
+      let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
+      // 实时协作才能实时发送地理位置
+      isRealTime && this.sendCurrentLocation()
     }, 3000)
   }
 
@@ -1226,6 +1229,7 @@ export default class Friend extends Component {
           }
           let msgStr = JSON.stringify(msgObj)
           await this._sendMessage(msgStr, coworkId, false)
+          GLOBAL.coworkMode && await this._sendMessageToService(msgStr) // 发送给服务器
 
           this.lastLocation = location
         })
@@ -1313,9 +1317,9 @@ export default class Friend extends Component {
       let generalMsg = JSON.stringify(messageObj)
 
       let result = SMessageService.sendMessage(generalMsg, talkId)
-      if (talkId !==  this.props.user.currentUser.userName && SYSTEM_QUEUE_ID) {
-        SMessageServiceHTTP.sendMessage(generalMsg, [SYSTEM_QUEUE_ID])
-      }
+      // if (talkId !==  this.props.user.currentUser.userName && SYSTEM_QUEUE_ID) {
+      //   SMessageServiceHTTP.sendMessage(generalMsg, [SYSTEM_QUEUE_ID])
+      // }
 
       let timeout = sec => {
         return new Promise(resolve => {
@@ -1367,6 +1371,25 @@ export default class Friend extends Component {
         // )
       }
       cb && cb(false)
+      return false
+    }
+  }
+
+  _sendMessageToService = async (messageStr) => {
+    try {
+      if (!messageStr || !SYSTEM_QUEUE_ID) {
+        return false
+      }
+      let messageObj = JSON.parse(messageStr)
+      //对接桌面
+      if (messageObj.type < 10 && typeof messageObj.message === 'string') {
+        messageObj.message = Buffer.from(messageObj.message).toString('base64')
+      }
+      const generalMsg = JSON.stringify(messageObj)
+      SMessageServiceHTTP.sendMessage(generalMsg, [SYSTEM_QUEUE_ID])
+      return true
+    } catch (error) {
+      __DEV__ && console.warn(error)
       return false
     }
   }

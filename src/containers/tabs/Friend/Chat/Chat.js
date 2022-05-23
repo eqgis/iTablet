@@ -353,7 +353,6 @@ class Chat extends React.Component {
     }
     let ctime = new Date()
     let time = Date.parse(ctime)
-    console.warn(this.targetUser.id)
     //要发送/保存的消息
     let message = {
       message: messages[0].text,
@@ -387,6 +386,7 @@ class Chat extends React.Component {
       return
     }
     this.friend._sendMessage(JSON.stringify(message), this.targetUser.id, false)
+    GLOBAL.coworkMode && this.friend._sendMessageToService(JSON.stringify(message)) // 协作时,发送给服务器
   }
 
   onSendLocation(value) {
@@ -440,6 +440,7 @@ class Chat extends React.Component {
       return
     }
     this.friend._sendMessage(JSON.stringify(message), this.targetUser.id, false)
+    GLOBAL.coworkMode && this.friend._sendMessageToService(JSON.stringify(message)) // 协作时,发送给服务器
   }
 
   async onSendFile(type, filePath, fileName, extraInfo) {

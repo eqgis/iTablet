@@ -1,4 +1,4 @@
-import { SARMap, ARLayerType } from 'imobile_for_reactnative'
+import { SARMap, ARLayerType, ARElementLayer } from 'imobile_for_reactnative'
 import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
@@ -91,6 +91,11 @@ export default class ARLayerManager extends React.Component<Props, State> {
   backPositon: Postion
   tabType: string
 
+  // 记录最后一个特效图层的索引
+  lastEffectlayerIndex: number
+  // 记录当前图层的索引
+  curLayerIndex: number
+
   constructor(props: Props) {
     super(props)
 
@@ -102,9 +107,14 @@ export default class ARLayerManager extends React.Component<Props, State> {
     this.backPositon = {x:0, y: 0}
     // 获取由添加页面过来的tab的索引
     this.tabType = params && params?.tabType
+
+    // 记录最后一个特效图层的索引，设置初始值为 -1
+    this.lastEffectlayerIndex = -1
+    // 记录当前图层的索引，设置初始值为 -1
+    this.curLayerIndex = -1
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._getLayer()
 
     if(!this.props.arlayer.layers) return
@@ -140,9 +150,44 @@ export default class ARLayerManager extends React.Component<Props, State> {
       }
     }
 
+
+    this.lastEffectlayerIndex = await this.getLastEffectLayerIndex()
+    // this.curLayerIndex = await this.getLayerIndex()
+
   }
-  componentDidUpdate(){
+
+  /** 获取最后一个特效图层索引值 */
+  getLastEffectLayerIndex = async ():Promise<number> => {
+    if(!this.props.arlayer.layers) return -1
+    // 在此处加过滤条件
+    const layers = this.props.arlayer.layers
+    let lastEffectlayerIndex = 0
+    const layersLength = layers.length
+    for(let i = 0; i < layersLength; i++){
+      if(layers[i].type === ARLayerType.EFFECT_LAYER){
+        lastEffectlayerIndex = i
+      }
+    }
+    return lastEffectlayerIndex
+  }
+
+  /** 获取当前图层索引值 */
+  getLayerIndex = async (layer: ARElementLayer):Promise<number> => {
+    if(!this.props.arlayer.layers) return -1
+    // 在此处加过滤条件
+    const layers = this.props.arlayer.layers
+    let curLayerIndex = -1
+    layers.map((item: ARElementLayer, index: number) => {
+      if(item.name === layer?.name){
+        curLayerIndex = index
+      }
+    })
+    return curLayerIndex
+  }
+
+  async componentDidUpdate(){
     this._getLayer()
+    this.lastEffectlayerIndex = await this.getLastEffectLayerIndex()
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -237,7 +282,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
               await this._getLayer()
               Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_SUCCESS)
             } else {
-              Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
+              this.curLayerIndex = await this.getLayerIndex(this.state.selectLayer)
+              if(this.curLayerIndex !== this.lastEffectlayerIndex){
+                Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
+              } else {
+                // 最后一个特效图层不能下移
+                Toast.show(getLanguage().Map_Layer.LAST_EFFECT_LAYER_NOT_MOVEDOWN)
+              }
             }
           } else {
             // IOS TODO
@@ -265,7 +316,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
               await this._getLayer()
               Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_SUCCESS)
             } else {
-              Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
+              this.curLayerIndex = await this.getLayerIndex(this.state.selectLayer)
+              if(this.curLayerIndex !== 0){
+                Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
+              } else {
+                // 第一个特效图层不能上移
+                Toast.show(getLanguage().Map_Layer.FIRST_EFFECT_LAYER_NOT_MOVEUP)
+              }
             }
           } else {
             // IOS TODO

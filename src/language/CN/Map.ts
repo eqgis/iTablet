@@ -669,6 +669,8 @@ const Map_Layer = {
   LAYER_MOVEUP_FAIL: '图层上移失败',
   LAYER_MOVEDOWN_SUCCESS: '图层下移成功',
   LAYER_MOVEDOWN_FAIL: '图层下移失败',
+  FIRST_EFFECT_LAYER_NOT_MOVEUP: '第一个特效图层不能上移',
+  LAST_EFFECT_LAYER_NOT_MOVEDOWN: '最后一个特效图层不能下移',
 
 
   VISIBLE: "设置图层可见",

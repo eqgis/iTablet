@@ -435,7 +435,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
         params.selectKey !== this.state.selectKey ||
         params.isTouchProgress !== this.state.isTouchProgress
       ) {
-        (async function() {
+        (async () => {
           let data = params.data
           let buttons = params.buttons
           let customView = params.customView
@@ -512,7 +512,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
               this.updateOverlayView()
             },
           )
-        }.bind(this)())
+        })()
       } else {
         this.showToolbarAndBox(isShow)
         if (params.cb) {

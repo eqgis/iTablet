@@ -173,6 +173,9 @@ function getPreviewBottomView(type: string) {
 function getBottomView(type: string) {
   let bottomView
   switch(type) {
+    case ConstToolType.SM_MAP_AI_VEHICLE_DETECT:
+      bottomView = <View/> // 防止Toolbar默认底部buttonView弹出
+      break
     case ConstToolType.SM_MAP_AI_VEHICLE_PREVIEW:
       bottomView = getPreviewBottomView(type)
       break

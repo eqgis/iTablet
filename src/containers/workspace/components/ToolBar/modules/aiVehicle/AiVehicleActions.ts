@@ -22,39 +22,42 @@ async function close() {
 }
 
 // 违章采集
-function illegallyParkCollect() {
-  (async function() {
-    const _params: any = ToolbarModule.getParams()
+async function illegallyParkCollect() {
+  const _params: any = ToolbarModule.getParams()
+  const dataList = await SMap.getTaggingLayers(
+    _params.user.currentUser.userName,
+  )
+  global.toolBox && global.toolBox.removeAIDetect(true)
+  if (dataList.length > 0) {
+    let taggingLayerData = await getTaggingLayerData()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
     )
-    global.toolBox && global.toolBox.removeAIDetect(true)
-    if (dataList.length > 0) {
-      let taggingLayerData = await getTaggingLayerData()
-      const dataList = await SMap.getTaggingLayers(
-        _params.user.currentUser.userName,
-      )
-      for (let layer of dataList) {
-        if (
-          taggingLayerData.datasourceAlias === layer.datasourceAlias &&
-          taggingLayerData.datasetName === layer.datasetName
-        ) {
-          global.currentLayer = layer
-          break
-        }
+    for (let layer of dataList) {
+      if (
+        taggingLayerData.datasourceAlias === layer.datasourceAlias &&
+        taggingLayerData.datasetName === layer.datasetName
+      ) {
+        global.currentLayer = layer
+        break
       }
-      ToolbarModule.addData({
-        type: ConstToolType.SM_MAP_AI_VEHICLE_DETECT,
-      })
-      _params.setToolbarVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_DETECT, {
-        isFullScreen: false,
-        height: 0,
-      })
-    } else {
-      Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
-      _params.navigation.navigate('LayerManager')
     }
-  })()
+    ToolbarModule.addData({
+      type: ConstToolType.SM_MAP_AI_VEHICLE_DETECT,
+    })
+    // _params.setToolbarVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_DETECT, {
+    //   isFullScreen: false,
+    //   height: 0,
+    // })
+    global.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_DETECT, {
+      isFullScreen: false,
+      height: 0,
+    })
+    _params.showFullMap && _params.showFullMap(true)
+  } else {
+    Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
+    _params.navigation.navigate('LayerManager')
+  }
 }
 
 /**

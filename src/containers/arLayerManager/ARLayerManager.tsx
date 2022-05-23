@@ -106,6 +106,43 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
   componentDidMount() {
     this._getLayer()
+
+    if(!this.props.arlayer.layers) return
+    // 在此处加过滤条件
+    const layers = this.props.arlayer.layers
+    const length = layers.length
+    const type: string | undefined = this.tabType
+
+    // 图层类型分类数组
+    const allTypes = [
+      [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
+      [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
+      [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
+      [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
+      [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
+      // [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
+    ]
+    if(type){
+      // 当类型为有值的情况下，一定是一个数字的字符串
+      const typeIndex = parseInt(type)
+      for(let i = 0; i < length; i ++){
+        // 判断该图层的类型是否属于要过滤的类型 false表示不显示的 true表示显示的
+        let isFilter = false
+        allTypes[typeIndex].map(item => {
+          if(item === layers[i].type) {
+            isFilter = true
+          }
+        } )
+        if(isFilter){
+          // newLayers.push(layers[i])
+          this.props.setCurrentARLayer(layers[i])
+        }
+      }
+    }
+
+  }
+  componentDidUpdate(){
+    this._getLayer()
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -192,7 +229,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         title: getLanguage().Map_Layer.LAYERS_MOVE_DOWN,
         image: getThemeAssets().layer.icon_edit_movedown,
         action: async () => {
-          
+
           if(Platform.OS === 'android') {
             const isMoveup = await SARMap.moveLayerDown(this.state.selectLayer.name)
             if(isMoveup) {
@@ -214,7 +251,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         },
       })
     }
-    
+
     // 特效图层上移
     if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
@@ -251,7 +288,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
           image: getThemeAssets().layer.icon_visible_distance,
           action: async () => {
-            console.warn("点击了非特效图层的可见距离设置按钮");
+            console.warn("点击了非特效图层的可见距离设置按钮")
 
             let layer = this.state.selectLayer
             if (layer && 'maxVisibleBounds' in layer) {
@@ -276,9 +313,9 @@ export default class ARLayerManager extends React.Component<Props, State> {
           image: getThemeAssets().layer.icon_visible_distance,
           action: async () => {
             console.warn("点击了特效图层的可见距离设置按钮")
-            
+
             let layer = this.state.selectLayer
-          
+
             if (layer && 'maxVisibleBounds' in layer) {
               // 获取参数对象
               const _params: any = ToolbarModule.getParams()
@@ -293,13 +330,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
               })
               // 禁止左右拖动滑块的时候出现上下位移而调用dialog框
               GLOBAL.isEffectProgress = true
-              ToolbarModule.addData({selectAREffectLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds, AREffectLayerVisibleBounds: layer.maxVisibleBounds,})
+              ToolbarModule.addData({selectAREffectLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds, AREffectLayerVisibleBounds: layer.maxVisibleBounds})
               NavigationService.goBack()
             }
           },
         })
       }
-      
+
     }
 
     // 特效图层可持续时间
@@ -309,7 +346,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         image: getThemeAssets().layer.icon_tool_duration,
         action: async () => {
           let layer = this.state.selectLayer
-        
+
           if("secondsToPlay" in this.state.selectLayer){
             // 获取参数对象
             const _params: any = ToolbarModule.getParams()
@@ -326,7 +363,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
             GLOBAL.isEffectProgress = true
             ToolbarModule.addData({selectAREffectLayer: layer, AREffectLayerSecondsToPlay: layer?.secondsToPlay })
             NavigationService.goBack()
-            
+
           }
 
         },
@@ -364,46 +401,12 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
   _renderLayers = () => {
     if(!this.props.arlayer.layers) return null
-    // 在此处加过滤条件
-    const layers = this.props.arlayer.layers
-    const length = layers.length
     const type: string | undefined = this.tabType
-
-    // 图层类型分类数组
-    const allTypes = [
-      [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
-      [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
-      [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
-      [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
-      [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
-      [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
-    ]
-    let newLayers: ARLayer[] = []
-    if(type){
-      // 当类型为有值的情况下，一定是一个数字的字符串
-      const typeIndex = parseInt(type)
-      for(let i = 0; i < length; i ++){
-        // 判断该图层的类型是否属于要过滤的类型 false表示不显示的 true表示显示的
-        let isFilter = false
-        allTypes[typeIndex].map((item) => {
-          if(item === layers[i].type) {
-            isFilter = true
-          }
-        } )
-        if(isFilter){
-          newLayers.push(layers[i])
-        }
-      }
-    } else {
-      // 当没有过滤类型传过来时，默认显示全部数据
-      newLayers = JSON.parse(JSON.stringify(layers))
-    }
-
 
     return (
       <ARLayers
-        // layers={this.props.arlayer.layers}
-        layers = {newLayers}
+        layers={this.props.arlayer.layers}
+        type = {type}
         currentLayer={this.props.arlayer.currentLayer}
         setCurrentARLayer={this.props.setCurrentARLayer}
         onPress={layer => {
@@ -637,6 +640,7 @@ interface ARLayersProps {
   onPress: (layer: ARLayer) => void,
   onPressMore: (layer: ARLayer) => void,
   getARLayers: () => Promise<ARLayer[]>,
+  type: string | undefined,
 }
 
 export class ARLayers extends React.Component<ARLayersProps> {
@@ -645,6 +649,7 @@ export class ARLayers extends React.Component<ARLayersProps> {
     return (
       <ARLayerItem
         layer={item}
+        type={this.props.type}
         currentLayer={this.props.currentLayer}
         onPress={layer => {
           this.props.onPress(layer)

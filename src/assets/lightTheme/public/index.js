@@ -16,6 +16,8 @@ const icon_dropdown_selected = require('./icon_dropdown_selected.png')
 const icon_dropup_selected = require('./icon_dropup_selected.png')
 const icon_move = require('./icon_move.png')
 const icon_move_selected = require('./icon_move_selected.png')
+// 缺图标 一个浅色图标
+const icon_move_gray = require('./icon_move.png')
 const icon_jump = require('./icon_jump.png')
 
 const icon_cancel = require('./icon_cancel.png')
@@ -72,6 +74,7 @@ export default {
   icon_dropup_selected,
   icon_move,
   icon_move_selected,
+  icon_move_gray,
   icon_jump,
 
   icon_cancel,

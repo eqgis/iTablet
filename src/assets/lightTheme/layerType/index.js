@@ -1,5 +1,6 @@
 const icon_unknown_selected = require('./icon_unknown_white.png')
 const icon_unknown = require('./icon_unknown_black.png')
+const unknown_gray = require('./icon_unknown_Temp_gray.png')
 const layer_group = require('./icon_layer_group.png')
 const layer_group_selected = require('./icon_layer_group_selected.png')
 
@@ -28,6 +29,7 @@ const layer_grid_selected = require('./icon_layer_grid_selected.png')
 export default {
   icon_unknown_selected,
   icon_unknown,
+  unknown_gray,
   /* 图层组 */
   layer_group,
   /* 图层组选中状态 */

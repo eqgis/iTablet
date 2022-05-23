@@ -248,6 +248,29 @@ function getARLayerAssets(type: TARLayerType): any {
   }
 }
 
+/** 根据AR图层类型获取相应的禁用图片 */
+function getARLayerAssetsGray(type: TARLayerType): any {
+  switch (type) {
+    case ARLayerType.EFFECT_LAYER:
+      return getThemeAssets().ar.armap.ar_effect_gray
+    case ARLayerType.AR_MEDIA_LAYER:
+      return getThemeAssets().ar.armap.ar_poi_gray
+    case ARLayerType.AR3D_LAYER:
+      return getThemeAssets().ar.armap.ar_3d_gray
+    case ARLayerType.AR_SCENE_LAYER:
+      return getThemeAssets().ar.armap.ar_3d_gray
+    case ARLayerType.AR_MODEL_LAYER:
+      return getThemeAssets().ar.armap.ar_model_gray
+    case ARLayerType.AR_TEXT_LAYER:
+    case ARLayerType.AR_POINT_LAYER:
+    case ARLayerType.AR_LINE_LAYER:
+    case ARLayerType.AR_REGION_LAYER:
+      return getThemeAssets().ar.armap.ar_vector_gray
+    default:
+      return getThemeAssets().layerType.unknown_gray
+  }
+}
+
 /** 根据AR场景类型获取对应图片 */
 function getARSceneAssets(type: number) {
   switch(type) {
@@ -271,4 +294,5 @@ export {
   getLayerWhiteIconByType,
   getARLayerAssets,
   getARSceneAssets,
+  getARLayerAssetsGray,
 }

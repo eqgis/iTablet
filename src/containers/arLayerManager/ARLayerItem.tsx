@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Image, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { scaleSize, setSpText } from '../../utils'
 import { color, size } from '../../styles'
-import { getARLayerAssets, getPublicAssets, getThemeAssets } from '../../assets'
+import { getARLayerAssets, getPublicAssets, getThemeAssets, getARLayerAssetsGray } from '../../assets'
 import { SARMap, ARLayerType } from 'imobile_for_reactnative'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
 import { ARLayers } from './ARLayerManager'
@@ -47,6 +47,7 @@ interface ItemProps {
   currentLayer?: ARLayer,
   setCurrentARLayer: (layer?: ARLayer) => void,
   getARLayers: () => Promise<ARLayer[]>,
+  type: string | undefined,
 }
 
 interface ItemState {
@@ -55,12 +56,41 @@ interface ItemState {
 }
 
 export default class LayerItem extends React.Component<ItemProps, ItemState> {
+  isFilter = true
   constructor(props: ItemProps) {
     super(props)
 
     this.state = {
       visible: this.props.layer.isVisible,
       showChildGroup: false,
+    }
+  }
+
+
+  /** 图层判断 */
+  FilterGray(){
+    // 图层类型分类数组
+    const allTypes = [
+      [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
+      [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
+      [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
+      [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
+      [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
+      // [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
+    ]
+
+    // 判断当前项是否可以被设置为当前图层
+    if(this.props.type){
+      // 当类型为有值的情况下，一定是一个数字的字符串
+      const typeIndex = parseInt(this.props.type)
+      let isFilter = false
+      // 判断该图层的类型是否属于要过滤的类型 false表示不能设置为当前图层的 true表示可以设置为当前图层的
+      allTypes[typeIndex].map(item => {
+        if(item === this.props.layer.type) {
+          isFilter = true
+        }
+      } )
+      this.isFilter = isFilter
     }
   }
 
@@ -93,7 +123,7 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
   }
 
   render() {
-    const typeIcon = getARLayerAssets(this.props.layer.type)
+    let typeIcon = getARLayerAssets(this.props.layer.type)
     let visibleIcon
     const isCurrentLayer = this.props.currentLayer?.name === this.props.layer.name
     let ItemStyle: ViewStyle = {}, textStyle: TextStyle = {}, moreImg: any, arrowImg: any
@@ -121,11 +151,25 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
         ? getThemeAssets().publicAssets.icon_drop_down
         : getThemeAssets().publicAssets.icon_drop_up
     }
+
+    this.FilterGray()
+    if(!this.isFilter) {
+      textStyle = {
+        color: color.gray,
+      }
+      // 重新获取浅色图标
+      typeIcon = getARLayerAssetsGray(this.props.layer.type)
+      moreImg = getThemeAssets().publicAssets.icon_move_gray
+    }
+
     return (
       <>
         <TouchableOpacity
           onPress={() => {
-            this.props.onPress(this.props.layer)
+            // 当能够改为当前图层时，点击才生效
+            if(this.isFilter){
+              this.props.onPress(this.props.layer)
+            }
           }}
           // style={[AppStyle.ListItemStyleNS, {marginLeft: 0, paddingLeft: dp(20)}, ItemStyle]}
           style={[styles.rowOne, ItemStyle]}
@@ -138,9 +182,12 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
           }}>
             {this.props.layer.type === ARLayerType.AR_SCENE_LAYER &&
             <TouchableOpacity onPress={() => {
-              this.setState({
-                showChildGroup: !this.state.showChildGroup,
-              })
+              // 当能够改为当前图层时，点击才生效
+              if(this.isFilter){
+                this.setState({
+                  showChildGroup: !this.state.showChildGroup,
+                })
+              }
             }}>
               <Image
                 style={[styles.arrowImg, {marginHorizontal: scaleSize(8)}]}
@@ -150,7 +197,14 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
             }
             <TouchableOpacity
               style={styles.btn}
-              onPress={this.setVisible}>
+              // onPress={this.setVisible}
+              onPress={() => {
+                // 当能够改为当前图层时，点击才生效
+                if(this.isFilter) {
+                  this.setVisible()
+                }
+              }}
+            >
               <Image
                 resizeMode={'contain'}
                 style={styles.btn_image}
@@ -174,7 +228,10 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
           <TouchableOpacity
             style={styles.btn}
             onPress={() => {
-              this.props.onPressMore(this.props.layer)
+              // 当能够改为当前图层时，点击才生效
+              if(this.isFilter) {
+                this.props.onPressMore(this.props.layer)
+              }
             }}
           >
             <Image

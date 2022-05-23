@@ -4,6 +4,13 @@ const ar_vector= require('./icon_ar_vector_layer.png')
 const ar_model= require('./icon_ar_model.png')
 const ar_effect = require('./icon_ar_special_effects.png')
 
+// 浅色图标
+const ar_poi_gray = require('./icon_ar_layer_poi_gray.png')
+const ar_3d_gray = require('./icon_ar_layer_3d_gray.png')
+const ar_vector_gray = require('./icon_ar_layer_vector_layer_gray.png')
+const ar_model_gray = require('./icon_ar_layer_model_gray.png')
+const ar_effect_gray = require('./icon_ar_layer_effect_gray.png')
+
 const ar_video = require('./icon_ar_video_Temp.png')
 const ar_picture = require('./icon_ar_picture_Temp.png')
 const ar_webvew = require('./icon_ar_webpage_Temp.png')
@@ -31,6 +38,13 @@ export default {
   ar_video,
   ar_model,
   ar_effect,
+  /** 浅色图标 */
+  ar_poi_gray,
+  ar_3d_gray,
+  ar_vector_gray,
+  ar_model_gray,
+  ar_effect_gray,
+
   ar_picture,
   ar_webvew,
   ar_text,

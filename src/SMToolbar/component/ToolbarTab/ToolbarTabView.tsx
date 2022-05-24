@@ -2,10 +2,10 @@ import React from 'react'
 import { ScaledSize, View } from 'react-native'
 import Slider, {Props as SliderItem } from '../../../components/Slider'
 import ToolBarList, { ToolBarListOption } from '../ToolBarList'
-import TabItemColor from './TabItemColor'
+import { Button } from '@/components'
 import { dp } from '../../../utils'
 import { ToolBarSlideItem } from '../ToolBarSlide'
-import { Button } from '@/components'
+import ToolbarColor, { ToolbarColorOption } from '../ToolbarColor'
 
 
 export type ToolbarTabItem = TabSlide | TabList | TabColor
@@ -28,13 +28,7 @@ interface TabList extends CommonProps, ToolBarListOption {
 
 interface TabColor extends CommonProps {
   type: 'color'
-  data: TabColorItem
-}
-
-interface TabColorItem {
-  colors: string[],
-  initColor?: string,
-  onSelect: (color: string) => void
+  data: ToolbarColorOption
 }
 
 interface Props {
@@ -91,10 +85,15 @@ class ToolbarTabView extends React.Component<Props, State> {
     fn()
   }
 
-  renderColor = (data: TabColorItem) => {
+  renderColor = (data: ToolbarColorOption) => {
     return (
       <View>
-        <TabItemColor data={data} windowSize={this.props.windowSize}/>
+        <ToolbarColor
+          toolbarVisible={true}
+          animation={false}
+          data={data}
+          windowSize={this.props.windowSize}
+        />
       </View>
     )
   }

@@ -1,4 +1,5 @@
 import { ToolBarBottomItem } from './component/ToolBarBottom'
+import { ToolbarColorOption } from './component/ToolbarColor'
 import { FloatBottomOption } from './component/ToolBarFloatBar'
 import { ToolBarListItem, ToolBarListOption } from './component/ToolBarList'
 import { ToolBarMenuOption } from './component/ToolBarMenu'
@@ -37,17 +38,20 @@ export interface IToolbarOption {
   /** toolbar list 所需的数据 */
   listData: ToolBarListOption
 
+  colorOption: ToolbarColorOption
+
   /** toolbar bottom 所需的数据 */
   bottomData: Array<ToolBarBottomItem>
 
   /** 浮动底部工具栏所需数据 */
   floatBottomData: FloatBottomOption
 
-  /** 显示菜单所需数据 */
+  /** 显示菜单所需数据  tabOption和 menuData是等价的，可以互换 */
   menuData: ToolBarMenuOption
 
   slideData: ToolBarSlideOption
 
+  /** tab 数据  tabOption和 menuData是等价的，可以互换 */
   tabOption: ToolbarTabOption
 
   /** 选择列表，支持单选 多选 */
@@ -67,6 +71,8 @@ export class ToolbarOption<ModuleOption> implements IToolbarOption {
   slideHeaderData: ToolbarSlideHeaderOption = {visible: false, data: [],selectIndex: 0}
 
   listData: ToolBarListOption = { data: [], oneColumn: true, showSelect: true }
+
+  colorOption: ToolbarColorOption = { colors: [], onSelect: () => {}}
 
   bottomData: Array<ToolBarBottomItem> = []
 

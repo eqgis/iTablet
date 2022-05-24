@@ -11,8 +11,10 @@ export interface ToolBarBottomItem {
   /**
    * toolbar 用来识别特定功能的按钮
    * 'back': 点击toobar透明背景会调用此按钮来退出
+   * 'menu_toogle': toolbar menu 菜单显隐按钮
+   * 'menu_view_toogle': toolbar menu view显隐按钮
    */
-  ability?: 'back'
+  ability?: 'back' | 'menu_toogle' | 'menu_view_toogle'
 }
 
 interface Props {

@@ -311,9 +311,7 @@ function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
   SARMap.appointEditElement(element.id, element.layerName)
 
   option.bottomData = getPoiEditBottom()
-  option.tabOption.isShowToggle = true
-  option.tabOption.isShowView = false
-  option.tabOption.data = _getTransformTabData()
+  option.menuData.data = _getTransformTabData()
 }
 
 /** poi对象编辑时底栏 */

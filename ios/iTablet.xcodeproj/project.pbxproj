@@ -100,13 +100,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = Supermap;
 		};
-		0AF850CE282E471200287BA5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0AF850CA282E471100287BA5 /* RNPhotoView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNPhotoView;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -207,7 +200,6 @@
 		0AC8AFE528081A0600435541 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		0AC8AFE728081A0A00435541 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = ../../../0_57_4/200622/iTablet/ios/ZipArchive.framework; sourceTree = "<group>"; };
 		0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "iPhoneOS/libstdc++.6.0.9.tbd"; sourceTree = "<group>"; };
-		0AF850CA282E471100287BA5 /* RNPhotoView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNPhotoView.xcodeproj; path = "../node_modules/react-native-photo-view/ios/RNPhotoView.xcodeproj"; sourceTree = "<group>"; };
 		0AF850D3282E54BF00287BA5 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipArchive.framework; sourceTree = "<group>"; };
 		0AF85115282E5AAD00287BA5 /* libReactNativeART.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReactNativeART.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/iTablet-gmwhicjjcrnqixdiqmxbvwdehkir/Build/Products/Debug-iphoneos/ReactNativeART/libReactNativeART.a"; sourceTree = "<group>"; };
 		0AF851192831DB6800287BA5 /* iTablet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iTablet-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -388,14 +380,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0AF850CB282E471100287BA5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0AF850CF282E471200287BA5 /* libRNPhotoView.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* iTablet */ = {
 			isa = PBXGroup;
 			children = (
@@ -472,7 +456,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				0AF850CA282E471100287BA5 /* RNPhotoView.xcodeproj */,
 				0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */,
 			);
 			name = Libraries;
@@ -587,10 +570,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 0AF850CB282E471100287BA5 /* Products */;
-					ProjectRef = 0AF850CA282E471100287BA5 /* RNPhotoView.xcodeproj */;
-				},
-				{
 					ProductGroup = 0AC8AF80280815BF00435541 /* Products */;
 					ProjectRef = 0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */;
 				},
@@ -609,13 +588,6 @@
 			fileType = archive.ar;
 			path = libSupermap.a;
 			remoteRef = 0AC8AF83280815BF00435541 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0AF850CF282E471200287BA5 /* libRNPhotoView.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNPhotoView.a;
-			remoteRef = 0AF850CE282E471200287BA5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

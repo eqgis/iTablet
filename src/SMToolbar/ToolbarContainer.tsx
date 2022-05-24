@@ -3,15 +3,16 @@ import { ScaledSize, StyleSheet, TouchableOpacity } from 'react-native'
 import ToolBarBottom from './component/ToolBarBottom'
 import ToolBarFloatBar from './component/ToolBarFloatBar'
 import ToolBarList from './component/ToolBarList'
-import ToolBarMenu from './component/ToolBarMenu'
+import ToolBarMenu, { SupportToolbarOption } from './component/ToolBarMenu'
 import ToolBarSlide from './component/ToolBarSlide'
 import { AppLog, AppStyle } from '../utils'
 import { ModuleProps, ToolbarModuleViewProps } from './ToolbarModule'
 import { ToolbarModuleData } from './ToolbarModuleData'
-import { IToolbarOption, ToolbarOption } from './ToolbarOption'
+import { IToolbarOption, ToolbarOption, ToolBarBottomItem } from './ToolbarOption'
 import ToolbarSlideHeader from './component/ToolbarSlideHeader'
 import ToolbarSelectionList from './component/ToolbarSelectionList'
 import ToolbarTabContainer from './component/ToolbarTab/ToolbarTabContainer'
+import ToolbarColor from './component/ToolbarColor'
 
 export interface ToolbarProps<ParamList> extends React.ClassAttributes<ToolBarContainer<ParamList>>{
   initModule?: {name: keyof ParamList, key: ParamList[keyof ParamList]}
@@ -101,6 +102,25 @@ class ToolBarContainer<ParamList> extends React.Component<ToolbarProps<ParamList
     }
   }
 
+  /**
+   * 根据选中的 menu 数据来更新toolbar
+   * 此时 toobar 仍在当前的 module 页面中，不会改变
+   */
+  setMenuView = (data: SupportToolbarOption, bottom: ToolBarBottomItem[]) => {
+    let currentBottom = this.state.bottomData
+    const hasMenuControl = currentBottom.find(item => {
+      return item.ability === 'menu_toogle' || item.ability === 'menu_view_toogle'
+    })
+    if(currentBottom.length > 0 && !hasMenuControl) {
+      currentBottom = currentBottom.concat([])
+      currentBottom.splice(1, 0, ...bottom)
+    }
+    this.setState({
+      ...data,
+      bottomData: currentBottom,
+    })
+  }
+
   resetTabData = () => {
     this.toolbarTabRef?.reset?.()
   }
@@ -137,6 +157,7 @@ class ToolBarContainer<ParamList> extends React.Component<ToolbarProps<ParamList
         <ToolBarMenu
           toolbarVisible={this.state.visible}
           data={this.state.menuData}
+          onSelect={this.setMenuView}
         />
       </>
     )
@@ -182,6 +203,11 @@ class ToolBarContainer<ParamList> extends React.Component<ToolbarProps<ParamList
           showSelect={this.state.listData.showSelect === true}
           getExtraData={this.state.listData.getExtraData}
           animation={true}
+          windowSize={this.props.windowSize}
+        />
+        <ToolbarColor
+          toolbarVisible={this.state.visible}
+          data={this.state.colorOption}
           windowSize={this.props.windowSize}
         />
         <ToolbarTabContainer

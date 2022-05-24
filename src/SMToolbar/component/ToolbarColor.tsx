@@ -1,18 +1,24 @@
 import React from 'react'
 import { View, ScrollView, StyleSheet, TouchableOpacity,Image,TextInput,Text} from 'react-native'
-import { AppStyle, dp } from '../../../utils'
-import { getImage } from '../../../assets'
+import { AppStyle, dp } from '../../utils'
+import { getImage } from '../../assets'
 import { ScaledSize } from 'react-native'
+import ToolbarSlideCard from './ToolbarSlideCard'
 
-export interface TabColorItem {
+export interface ToolbarColorOption {
   colors: string[]
   initColor?: string
   onSelect: (color: string) => void
 }
 
-interface IProps {
-  data: TabColorItem
+interface IProps extends Partial<DefaultProps> {
+  toolbarVisible: boolean
+  data: ToolbarColorOption
   windowSize: ScaledSize
+}
+
+interface DefaultProps {
+  animation: boolean
 }
 
 interface IState {
@@ -21,18 +27,45 @@ interface IState {
   colors: string[]
 }
 
-/** ToolBarTab 内的颜色选择组件 */
-class TabItemColor extends React.Component<IProps, IState> {
+const defaultProps: DefaultProps = {
+  animation: true
+}
+
+export default class ToolbarColor extends React.Component<IProps & DefaultProps, IState> {
+
+  static defaultProps = defaultProps
+
   r:string
   g:string
   b:string
-  constructor(props: IProps){
+  constructor(props: IProps & DefaultProps){
     super(props)
     this.state = {
       selectColor: props.data.initColor || props.data.colors[0],
       addColor: false,
       colors:this.props.data.colors
     }
+    this.r = ''
+    this.g = ''
+    this.b = ''
+  }
+
+  isVisible = () => {
+    return this.props.toolbarVisible && this.props.data.colors.length > 0
+  }
+
+  componentDidUpdate(prevProps: IProps & DefaultProps) {
+    if(prevProps.data !== this.props.data) {
+      this.updateData()
+    }
+  }
+
+  updateData = () => {
+    this.setState({
+      selectColor: this.props.data.initColor || this.props.data.colors[0],
+      addColor: false,
+      colors:this.props.data.colors
+    })
     this.r = ''
     this.g = ''
     this.b = ''
@@ -180,7 +213,7 @@ class TabItemColor extends React.Component<IProps, IState> {
 
   isPortrait = true
 
-  render() {
+  renderContent = () => {
     this.isPortrait = this.props.windowSize.height > this.props.windowSize.width
     return (
       <>
@@ -196,6 +229,14 @@ class TabItemColor extends React.Component<IProps, IState> {
       </>
     )
   }
+
+  render() {
+    return this.props.animation ? (
+      <ToolbarSlideCard visible={this.isVisible()}>
+        {this.renderContent()}
+      </ToolbarSlideCard>
+    ) : this.renderContent()
+  }
 }
 
 function colorRGB2Hex(color:string) {
@@ -208,9 +249,6 @@ function colorRGB2Hex(color:string) {
   return hex
 }
 
-
-
-export default TabItemColor
 
 const styles = StyleSheet.create({
   list: {

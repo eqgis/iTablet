@@ -266,8 +266,8 @@ export default class AlbumView extends React.PureComponent {
 
   _clickBack = () => {
     this.props.route.params.onBack && this.props.route.params.onBack(this.state.selectedItems)
-    // this.props.navigation.navigate('MapStack')
-    ImageUtils.hide()
+    this.props.navigation.goBack()
+    // ImageUtils.hide()
   }
 
   _clickCell = itemuri => {

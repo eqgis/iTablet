@@ -103,7 +103,7 @@ android {
         release_config {
             keyAlias 'collection'
             keyPassword 'collection321'
-            storeFile file('../keystores/release.keystore')
+            storeFile file('../keystores/release_colloction.keystore')
             storePassword 'collection321'
             v1SigningEnabled true
             v2SigningEnabled true

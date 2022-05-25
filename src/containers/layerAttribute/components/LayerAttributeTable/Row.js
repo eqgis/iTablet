@@ -9,6 +9,7 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import Cell from './Cell'
+import CellButton from './CellButton'
 
 const ROW_HEIGHT = scaleSize(80)
 const CELL_WIDTH = 100
@@ -269,22 +270,17 @@ export default class Row extends Component {
       }
       let iTemView
       return (
-        <TouchableOpacity
-          ref={ref => (iTemView = ref)}
-          activeOpacity={1}
-          key={index}
+        <CellButton
           style={[
             width ? { width } : { flex: 1 },
             borderStyle,
             cellStyle,
-            // { width },
           ]}
-          onPress={() => this._action(iTemView, index)}
-        >
-          <Text style={[textStyle, width && { width: width - 4 }]}>
-            {value + ''}
-          </Text>
-        </TouchableOpacity>
+          textStyle={[textStyle, width && { width: width - 4 }]}
+          onPress={this._action}
+          index={index}
+          text={value + ''}
+        />
       )
     } else {
       return (

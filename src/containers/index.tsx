@@ -222,9 +222,13 @@ export default function(params: {
       <Stack.Screen name="MapStack" >
         {() => MapStack(params.device)}
       </Stack.Screen>
-      <Stack.Screen name="Map3DStack" component={Map3DStack} />
+      <Stack.Screen name="Map3DStack" >
+        {() => Map3DStack(params.device)}
+      </Stack.Screen>
+      <Stack.Screen name="CoworkTabs" >
+        {() => CoworkTabs(params.device)}
+      </Stack.Screen>
       <Stack.Screen name="MapViewSingle" component={MapView} />
-      <Stack.Screen name="CoworkTabs" component={CoworkTabs} />
       <Stack.Screen name="CoworkMember" component={CoworkMember} />
       <Stack.Screen name="CoworkMessage" component={CoworkMessage} />
       <Stack.Screen name="GroupSelectPage" component={GroupSelectPage} />

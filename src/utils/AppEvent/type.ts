@@ -1,5 +1,3 @@
-import { AIRecognitionInfo } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
-import { ARElement } from "imobile_for_reactnative/types/interface/ar"
 
 
 

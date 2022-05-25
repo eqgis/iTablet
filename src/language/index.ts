@@ -1,5 +1,7 @@
 import CN from './CN/index'
 
+
+let currentLan = 'CN'
 function getLanguage(param: string = global.language): typeof CN{
   let language: typeof CN
   switch (param) {
@@ -26,4 +28,14 @@ function getLanguage(param: string = global.language): typeof CN{
   return language
 }
 
-export { getLanguage }
+
+function setCurrentLanguage(lan: string) {
+  currentLan = lan
+}
+
+function getCurrentLanguage(): string {
+  return currentLan
+}
+
+
+export { getLanguage, setCurrentLanguage, getCurrentLanguage }

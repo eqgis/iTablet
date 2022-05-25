@@ -9,7 +9,7 @@ import ListSeparator from './ListSeparator'
 import Container from './Container'
 import EmptyView from './EmptyView'
 import Loading from './Container/Loading'
-import { Button, BtnOne, BtnTwo, ColorBtn, MTBtn } from './Button'
+import { Button, BtnOne, BtnTwo, ColorBtn, MTBtn } from './Button/index'
 import DataSetListSection from './DataSetListSection'
 import {
   Dialog,
@@ -72,7 +72,7 @@ import {
 import Dialog2 from './Dialog2'
 import InputDialog2 from './InputDialog2'
 import FloatBar from './FloatBar'
-
+import CustomModal from './CustomModal'
 
 export {
   Container,
@@ -157,4 +157,5 @@ export {
   Dialog2,
   InputDialog2,
   FloatBar,
+  CustomModal,
 }

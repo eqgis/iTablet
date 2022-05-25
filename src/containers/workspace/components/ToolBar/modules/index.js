@@ -46,6 +46,7 @@ import arNaviModule from './arNaviModule'
 import changeMapModule from './changeMapModule'
 import arSandTable from './arSandTable'
 import arAnimation from './arAnimation'
+import arAttribute from './arAttribute'
 
 export {
   startModule,
@@ -95,6 +96,7 @@ export {
   arNaviModule,
   arSandTable,
   arAnimation,
+  arAttribute,
 
   changeMapModule,
 }

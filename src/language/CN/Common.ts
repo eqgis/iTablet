@@ -88,6 +88,15 @@ const Common = {
   PLEASE_SELECT_ANIMATION: '请选择动画',
 
   DELETE_COMFIRM: '确认删除吗?',
+  
+  NULL_DATA: '数据为空',
+
+  PLEASE_SELECT_OBJ: '请选择对象',
+  PLEASE_SELECT_LAYER_OR_OBJECT: "请选择图层或对象",
+  PLEASE_SELECT_AR_OBJECT_LAYER: "请选择AR对象图层",
+
+  ATTRIBUTE_ADD_TO_AR_SCENE: "添加到AR场景",
+  
 }
 
 export { Protocol, Common }

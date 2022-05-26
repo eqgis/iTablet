@@ -512,14 +512,14 @@ export default class Friend extends Component {
         await this.initServerInfo(UserType.isOnlineUser(this.props.user.currentUser) ? 'online' : 'iportal')
         let res = await SMessageService.connectService(
           SMessageServiceHTTP.serviceInfo.MSG_IP,
-          SMessageServiceHTTP.serviceInfo.MSG_Port,
+          Number(SMessageServiceHTTP.serviceInfo.MSG_Port),
           SMessageServiceHTTP.serviceInfo.MSG_HostName,
           SMessageServiceHTTP.serviceInfo.MSG_UserName,
           SMessageServiceHTTP.serviceInfo.MSG_Password,
           this.props.user.currentUser.userName,
         )
         if (!res) {
-          if(count%60 === 0 || count === 0){
+          if(count%600 === 0 || count === 0){
             Toast.show(
               getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
             )

@@ -16,17 +16,13 @@ import {
 } from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
-import { scaleSize , screen, Toast} from '../../utils'
+import { scaleSize , screen } from '../../utils'
 import { Const } from '../../constants'
 
 import styles from './styles'
 import NavigationService from '../../containers/NavigationService'
-import { ChunkType } from '../../constants'
-import { getLanguage } from '../../language/index'
-import { useNavigation, useRoute } from '@react-navigation/native'
 
 const AnimatedView = Animated.View
-
 
 export default class Container extends Component {
   props: {
@@ -78,9 +74,6 @@ export default class Container extends Component {
     this.viewX = new Animated.Value(0)
     this.visible = true
     this.overlayCanClick = true
-
-    // 是否显示选点的提示标识，true(显示)，false(不显示)
-    this.isShowPointToast = false
   }
 
   setHeaderVisible = (visible, immediately = false) => {
@@ -263,19 +256,6 @@ export default class Container extends Component {
 
   setLoading = async (loading, info, extra = {}) => {
     await this.loading.setLoading(loading, info, extra)
-    // 当加载状态为不加载，是否显示选点的提示标识为true，且当前模块儿为导航采集时，就给一个“长按选点”的提示
-    if (!loading 
-      && this.isShowPointToast
-      && global.Type === ChunkType.MAP_NAVIGATION) {  
-      // 导航采集选点提示
-      Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_SELECT_POINT, {duration: 2500})
-    }
-    // 当加载的文字信息为“加载中”，将是否显示选点的提示标识设为true
-    if(info === getLanguage(this.props.language).Prompt.LOADING && global.Type === ChunkType.MAP_NAVIGATION){
-      this.isShowPointToast = true 
-    } else {
-      this.isShowPointToast = false
-    }
   }
 
   getAspectRation = () => {

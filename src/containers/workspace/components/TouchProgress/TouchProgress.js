@@ -96,7 +96,7 @@ export default class TouchProgress extends Component {
   getHeightByOrientation = () => {
     let height = this.props.device.safeHeight
     if (this.props.device.orientation.indexOf('LANDSCAPE') < 0) {
-      height -= height.TOOLBAR_BUTTONS
+      height -= Height.TOOLBAR_BUTTONS
     }
     return height
   }

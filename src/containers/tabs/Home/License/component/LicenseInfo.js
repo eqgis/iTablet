@@ -116,9 +116,9 @@ export default class LicenseInfo extends Component {
         timeStr = licenseInfo.expireDate
         let tempTimeStr =
           timeStr.slice(0, 4) +
-          '/' +
+          '-' +
           timeStr.slice(4, 6) +
-          '/' +
+          '-' +
           timeStr.slice(6) +
           ' 00:00'
         let date1 = new Date()

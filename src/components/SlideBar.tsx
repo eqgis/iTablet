@@ -146,9 +146,7 @@ export default class SlideBar extends Component<Props & typeof defaultProps, Sta
       (this._getBarLength() * (this.props.range[1] - value)) / this.count
     )
   }
-  reset = ()=>{
-    //todo
-  }
+
   increment = () => {
     this.isControlMax = true
     const value = this.currentMaxValue + 1

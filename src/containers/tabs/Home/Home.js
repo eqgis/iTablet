@@ -95,11 +95,9 @@ export default class Home extends Component {
         this.props.setMapSceneGuide(true)
       }
     }
-    InteractionManager.runAfterInteractions(() => {
-      if (Platform.OS === 'android') {
-        this.props.setBackAction({ action: this.showExitPop })
-      }
-    })
+    if (Platform.OS === 'android') {
+      this.props.setBackAction({ action: this.showExitPop })
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

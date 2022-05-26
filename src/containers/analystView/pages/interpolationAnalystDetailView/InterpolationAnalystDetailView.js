@@ -187,7 +187,8 @@ export default class InterpolationAnalystDetailView extends Component {
             layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
 
             global.ToolBar && global.ToolBar.setVisible(false)
-            NavigationService.goBack('InterpolationAnalystView')
+            // NavigationService.goBack('InterpolationAnalystView')
+            NavigationService.navigate('MapStack', {screen: 'MapView'})
             if (this.cb && typeof this.cb === 'function') {
               this.cb()
             }

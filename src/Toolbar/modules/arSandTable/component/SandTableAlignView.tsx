@@ -7,7 +7,7 @@ import { getImage } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import { RootState } from '../../../../redux/types'
 import ToolbarSlideCard from '../../../../SMToolbar/component/ToolbarSlideCard'
-import { AppStyle, CheckSpell, DialogUtils, dp } from '../../../../utils'
+import { AppInputDialog, AppStyle, CheckSpell, dp } from '../../../../utils'
 
 interface Props extends ReduxProps {
   visible: boolean
@@ -134,10 +134,10 @@ class SandTableAlignView extends React.Component<Props, State> {
         <Pressable
           style={styles.CurrentSpaceTextContainer}
           onPress={() => {
-            DialogUtils.showInputDailog({
-              value: this.state.currentSpace + '',
+            AppInputDialog.show({
+              defaultValue: this.state.currentSpace + '',
               checkSpell: CheckSpell.checkFloat('positive'),
-              confirmAction: text => {
+              confirm: text => {
                 const space = parseFloat(text)
                 this.setState({
                   currentSpace: space

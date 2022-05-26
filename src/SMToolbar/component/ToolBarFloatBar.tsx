@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, ImageRequireSource, ScrollView, StyleSheet, Text, ViewStyle } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Animated, { EasingNode as Easing } from 'react-native-reanimated'
+import {Animated,   Easing } from 'react-native'
 import { AppStyle, dp } from '../../utils'
 
 
@@ -44,7 +44,8 @@ class ToolBarFloatBar extends React.Component<Props> {
     Animated.timing(this.bottom, {
       toValue: this.isVisible() ? dp(20) : -BarHeight,
       duration: 300,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: false
     }).start()
   }
 

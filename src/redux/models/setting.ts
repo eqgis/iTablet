@@ -6,6 +6,7 @@ import { NativeModules } from 'react-native'
 import { getMapSettings } from '../../containers/mapSetting/settingData'
 import { ModelUtils } from '../../utils'
 import { ChunkType } from '../../constants'
+import { setCurrentLanguage } from '@/language'
 
 const { AppUtils } = NativeModules
 // Constants
@@ -97,6 +98,7 @@ export const setLanguage = (params: string, isConfig = false, cb = () => {}) => 
       payload: language,
     })
     global.language = language
+    setCurrentLanguage(language)
   } else {
     await SLanguage.setLanguage(params)
     await dispatch({
@@ -104,6 +106,7 @@ export const setLanguage = (params: string, isConfig = false, cb = () => {}) => 
       payload: params,
     })
     global.language = params
+    setCurrentLanguage(params)
   }
   if (isConfig) {
     await dispatch({

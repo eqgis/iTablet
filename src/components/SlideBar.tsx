@@ -146,7 +146,9 @@ export default class SlideBar extends Component<Props & typeof defaultProps, Sta
       (this._getBarLength() * (this.props.range[1] - value)) / this.count
     )
   }
-
+  reset = ()=>{
+    //todo
+  }
   increment = () => {
     this.isControlMax = true
     const value = this.currentMaxValue + 1
@@ -200,8 +202,9 @@ export default class SlideBar extends Component<Props & typeof defaultProps, Sta
     this.startMaxValue = this.currentMaxValue
     this.startMinValue = this.currentMinValue
     this.props.onStart && this.props.onStart()
-  }
+  } 
 
+  
   onPanMove = (evt: GestureResponderEvent, gesture: PanResponderGestureState) => {
     if(this.props.disabled) return
     const offset = this.props.horizontal ? gesture.dx : gesture.dy

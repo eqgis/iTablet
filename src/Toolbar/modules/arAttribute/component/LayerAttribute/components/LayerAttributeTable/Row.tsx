@@ -4,12 +4,14 @@
  E-mail: yangshanglong@supermap.com
  */
 
+import { FieldInfo2 } from 'imobile_for_reactnative/types/data'
 import React, { Component } from 'react'
-import { Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { scaleSize } from '../../../../utils'
-import { color } from '../../../../styles'
+import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle, GestureResponderEvent, StyleProp, Image } from 'react-native'
+import { getImage } from '../../../../../../../assets'
+import { getLanguage } from '../../../../../../../language'
+import { scaleSize, AppStyle, dp } from '../../../../../../../utils'
 import Cell from './Cell'
-import CellButton from './CellButton'
+import { CellData } from './types'
 
 const ROW_HEIGHT = scaleSize(80)
 const CELL_WIDTH = 100
@@ -18,13 +20,13 @@ const styles = StyleSheet.create({
   rowContainer: {
     flex: 1,
     height: ROW_HEIGHT,
-    backgroundColor: color.white,
+    backgroundColor: AppStyle.Color.WHITE,
     flexDirection: 'row',
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: color.gray7,
+    borderColor: AppStyle.Color.LIGHT_GRAY,
     // borderBottomWidth: 1,
-    //borderBottomColor: color.bgG,
+    //borderBottomColor: AppStyle.Color.bgG,
   },
   cell: {
     height: ROW_HEIGHT,
@@ -32,80 +34,118 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(4),
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   selectedCell: {
+    flexDirection: 'row',
     height: ROW_HEIGHT,
-    backgroundColor: color.selected,
+    backgroundColor: AppStyle.Color.BLUE,
     paddingHorizontal: scaleSize(4),
     alignItems: 'center',
     justifyContent: 'center',
   },
   indexCell: {
     height: ROW_HEIGHT,
-    backgroundColor: color.itemColorGray,
+    backgroundColor: AppStyle.Color.LIGHT_GRAY,
     paddingHorizontal: scaleSize(4),
     alignItems: 'center',
     justifyContent: 'center',
   },
   cellText: {
-    color: color.themeText2,
+    color: AppStyle.Color.Text_Dark,
     textAlign: 'center',
     backgroundColor: 'transparent',
   },
   selectedCellText: {
-    color: color.white,
+    color: AppStyle.Color.WHITE,
     textAlign: 'center',
     backgroundColor: 'transparent',
   },
   indexCellText: {
-    color: color.fontColorWhite,
+    color: AppStyle.Color.WHITE,
     textAlign: 'center',
     backgroundColor: 'transparent',
   },
 })
 
-export default class Row extends Component {
-  props: {
+interface RowDataType {
+  index: number,
+  name: string,
+  data: any,
+  value: string | number | boolean,
+  fieldInfo: FieldInfo2,
+  isSystemField: boolean,
+}
+
+interface Props {
+  data: RowDataType[] | RowDataType,
+  index: number,
+  dismissIndexes?: number[], // 隐藏的元素
+  buttonIndexes?: number[], // Cell 为button的列的index
+  buttonActions?: ((data?: any) => void)[], // Cell 为button的列的点击事件
+  buttonTitles?: string[], // Cell 为button列对应的title, buttonTitles必须不为空，buttonIndexes才生效
+  selected?: boolean,
+  hasInputText?: boolean,
+  hasChecked?: boolean, // 表格是否有多选按钮
+  renderCell?: (data: { item: any, index: number }) => React.ReactNode,
+  style?: StyleProp<ViewStyle>,
+  cellStyle?: StyleProp<ViewStyle>,
+  disableCellStyle?: StyleProp<ViewStyle>, // 不可编辑Cell的样式
+  cellTextStyle?: StyleProp<TextStyle>,
+  selectedCellStyle?: StyleProp<ViewStyle>, // 被选中行的样式
+  selectedCellTextStyle?: StyleProp<TextStyle>, // 被选中行字体的样式
+  cellWidthArr?: number[], // cell的宽度数组
+  indexColumn?: number, // 每一行index所在的列，indexColumn >= 0 则所在列为Text
+  indexCellStyle?: any, // 每一行index所在的列，indexColumn >= 0 则所在列样式
+  indexCellTextStyle?: any, // 每一行index所在的列，indexColumn >= 0 则所在列文字样式
+  onPress?: (data: {
     data: any,
     index: number,
-    dismissIndexes?: Array, // 隐藏的元素
-    buttonIndexes?: Array, // Cell 为button的列的index
-    buttonActions?: Array, // Cell 为button的列的点击事件
-    buttonTitles?: Array, // Cell 为button列对应的title, buttonTitles必须不为空，buttonIndexes才生效
-    selected?: boolean,
-    hasInputText?: boolean,
-    renderCell?: () => {},
-    style?: Object,
-    cellStyle?: Object,
-    disableCellStyle?: Object, // 不可编辑Cell的样式
-    cellTextStyle?: Object,
-    selectedCellStyle?: Object, // 被选中行的样式
-    selectedCellTextStyle?: Object, // 被选中行字体的样式
-    cellWidthArr?: Array, // cell的宽度数组
-    indexColumn?: number, // 每一行index所在的列，indexColumn >= 0 则所在列为Text
-    indexCellStyle?: any, // 每一行index所在的列，indexColumn >= 0 则所在列样式
-    indexCellTextStyle?: any, // 每一行index所在的列，indexColumn >= 0 则所在列文字样式
-    onPress?: () => {},
-    onFocus?: () => {},
-    separatorColor?: string,
-    onChangeEnd?: () => {},
-    isShowSystemFields?: boolean,
-  }
+    columnIndex: number,
+    pressView: TouchableOpacity | null,
+  }) => void,
+  onFocus?: (params: GestureResponderEvent) => void,
+  separatorColor?: string,
+  onChangeEnd?: (data: {
+    rowData: any,
+    index: number,
+    columnIndex: number,
+    cellData: any,
+    value: string,
+  }) => void,
+  onChecked?: (selected: string) => void,
+  isShowSystemFields?: boolean,
+}
+
+interface State {
+  selected: string[],
+}
+
+export default class Row extends Component<Props, State> {
 
   static defaultProps = {
-    separatorColor: color.gray6,
+    separatorColor: AppStyle.Color.GRAY,
     indexColumn: -1,
     hasInputText: true,
     isShowSystemFields: true,
     selected: false,
+    hasChecked: false,
     dismissIndexes: [],
     buttonIndexes: [],
     buttonActions: [],
     buttonTitles: [],
   }
 
-  shouldComponentUpdate(nextProps) {
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      selected: [],
+    }
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     if (
+      JSON.stringify(this.state) !== JSON.stringify(nextState) ||
       this.props.isShowSystemFields !== nextProps.isShowSystemFields ||
       JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
       this.props.selected !== nextProps.selected
@@ -115,10 +155,10 @@ export default class Row extends Component {
     return false
   }
 
-  _onFocus = evt => {
+  _onFocus = (evt: GestureResponderEvent) => {
     this.props.onFocus && this.props.onFocus(evt)
   }
-  _action = (iTemView, columnIndex) => {
+  _action = (iTemView: TouchableOpacity | null, columnIndex: number) => {
     if (this.props.onPress && typeof this.props.onPress === 'function') {
       return this.props.onPress({
         data: this.props.data,
@@ -129,11 +169,12 @@ export default class Row extends Component {
     }
   }
 
-  _isSystomField = fieldInfo => {
+  _isSystomField = (fieldInfo: FieldInfo2 | RowDataType) => {
     return fieldInfo?.isSystemField || fieldInfo?.name?.toUpperCase().indexOf('SS_') === 0 || fieldInfo?.name?.toUpperCase().indexOf('SM') === 0
+    || fieldInfo?.name?.toUpperCase().indexOf('AR_') === 0
   }
 
-  changeEnd = data => {
+  changeEnd = (data: CellData) => {
     if (
       this.props.onChangeEnd &&
       typeof this.props.onChangeEnd === 'function'
@@ -143,17 +184,53 @@ export default class Row extends Component {
         index: this.props.index,
         columnIndex: data.index,
         cellData: data.data,
-        value: data.value,
+        value: data.value + '',
       })
     }
   }
 
-  _renderCell = (item, index) => {
+  onChecked = (value: string) => {
+    const _selected = new Set(this.state.selected)
+    if (_selected.has(value)) {
+      _selected.delete(value)
+    } else {
+      _selected.add(value)
+    }
+    this.setState({
+      selected: Array.from(_selected),
+    }, () => {
+      if (
+        this.props.onChecked &&
+        typeof this.props.onChecked === 'function'
+      ) {
+        this.props.onChecked(value)
+      }
+    })
+  }
+
+  _renderCheck = (value: string) => {
+    const icon = this.state.selected.includes(value)
+      ? getImage().icon_check
+      : getImage().icon_uncheck
+    return (
+      <TouchableOpacity
+        onPress={() => this.onChecked(value)}
+      >
+        <Image
+          style={AppStyle.Image_Style}
+          source={icon}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  _renderCell = (item: any, index: number): React.ReactNode => {
     let isButton = false, // 属性表cell显示 查看 按钮
       buttonTitle = '',
-      buttonAction = () => {}
+      buttonAction: (arg0: { data: any; index: number; columnIndex: number }) => void
     if (
-      this.props.buttonTitles.length === this.props.buttonIndexes.length &&
+      this.props.buttonTitles && this.props.buttonActions &&
+      this.props.buttonTitles.length === this.props.buttonIndexes?.length &&
       this.props.buttonIndexes.indexOf(index) >= 0 &&
       this.props.buttonTitles.length > 0
     ) {
@@ -172,21 +249,15 @@ export default class Row extends Component {
     if (this.props.renderCell && typeof this.props.renderCell === 'function') {
       return this.props.renderCell({ item, index })
     }
-    // let isLastCell = isSingleData
-    //   ? index === 1
-    //   : this.props.data.length - 1 === index
-    let isSingleData =
-      // typeof item !== 'object' ||
-      item === null || item === undefined || item.fieldInfo === undefined
-    // let value = isSingleData ? item : item.value
-    let value = item instanceof Object ? item.value : item
+    const isSingleData = item === null || item === undefined || item.fieldInfo === undefined
+    const value = item instanceof Object ? item.value : item
     let editable, isRequired, defaultValue
-    if (isSingleData) {
+    if (isSingleData && !(this.props.data instanceof Array)) {
       // 单个属性，第一列为名称
       if (index === 0) {
         editable = false
       } else {
-        let isHead = this.props.data.fieldInfo === undefined
+        const isHead = this.props.data.fieldInfo === undefined
         editable = !isHead && !this._isSystomField(this.props.data.fieldInfo)
         isRequired = !isHead && this.props.data.fieldInfo.isRequired
         defaultValue =
@@ -205,13 +276,13 @@ export default class Row extends Component {
 
     let cellStyle = [
         styles.cell,
-        this.props.cellStyle,
-        !editable && this.props.disableCellStyle,
+        this.props.cellStyle || {},
+        !editable ? this.props.disableCellStyle : {},
       ],
-      textStyle = [styles.cellText, this.props.cellTextStyle]
+      textStyle = [styles.cellText, this.props.cellTextStyle || {}]
     if (this.props.selected) {
-      cellStyle = [styles.selectedCell, this.props.selectedCellStyle]
-      textStyle = [styles.selectedCellText, this.props.selectedCellTextStyle]
+      cellStyle = [styles.selectedCell, this.props.selectedCellStyle || {}]
+      textStyle = [styles.selectedCellText, this.props.selectedCellTextStyle || {}]
     }
     let isLastCell = false
     if (this.props.data instanceof Array) {
@@ -219,12 +290,12 @@ export default class Row extends Component {
     } else {
       isLastCell = index === 1
     }
-    let borderStyle = {
+    const borderStyle = {
       // borderLeftWidth: index === 0 ? 1 : 0,
       borderRightWidth: isLastCell ? 0 : 1,
       borderBottomWidth: 1,
       borderColor: this.props.separatorColor,
-      overflow: 'hidden',
+      // overflow: 'hidden',
     }
     if (isButton) {
       return (
@@ -248,8 +319,8 @@ export default class Row extends Component {
           <Text
             style={[
               textStyle,
-              width && { width: width - 4 },
-              { color: color.USUAL_BLUE },
+              width ? { width: width - 4 } : {},
+              { color: AppStyle.Color.BLUE },
             ]}
           >
             {buttonTitle}
@@ -257,7 +328,7 @@ export default class Row extends Component {
         </TouchableOpacity>
       )
     } else if (
-      (this.props.indexColumn >= 0 && this.props.indexColumn === index) ||
+      (this.props.indexColumn !== undefined && this.props.indexColumn >= 0 && this.props.indexColumn === index) ||
       !this.props.hasInputText
     ) {
       if (!this.props.selected) {
@@ -268,19 +339,29 @@ export default class Row extends Component {
           textStyle = [styles.cellText, this.props.indexCellTextStyle]
         }
       }
-      let iTemView
+      let iTemView: TouchableOpacity | null
+      const hasChecked = this.props.hasChecked && (isSingleData && index !== 1 || !isSingleData && this.props.indexColumn !== index) && item.value !== getLanguage().ATTRIBUTE_NO
       return (
-        <CellButton
+        <TouchableOpacity
+          ref={ref => (iTemView = ref)}
+          activeOpacity={1}
+          key={index}
           style={[
             width ? { width } : { flex: 1 },
             borderStyle,
             cellStyle,
+            // {backgroundColor: 'ywllow'}
+            // { width },
           ]}
-          textStyle={[textStyle, width && { width: width - 4 }]}
-          onPress={this._action}
-          index={index}
-          text={value + ''}
-        />
+          onPress={() => this._action(iTemView, index)}
+        >
+          <View style={{flex: 1}}>
+            <Text style={[textStyle, width ? { width: width - 4 - (hasChecked ? dp(25) : 0) } : {}]}>
+              {value + ''}
+            </Text>
+          </View>
+          {hasChecked && this._renderCheck(value)}
+        </TouchableOpacity>
       )
     } else {
       return (
@@ -288,21 +369,20 @@ export default class Row extends Component {
           key={index}
           index={index}
           style={[
-            !editable && { backgroundColor: color.bgW },
+            !editable ? { backgroundColor: AppStyle.Color.Background_Container } : {},
             cellStyle,
-            this.props.cellStyle,
+            this.props.cellStyle || {},
             width ? { width } : { flex: 1 },
             borderStyle,
             // { width },
           ]}
-          textStyle={[
+          cellTextStyle={[
             textStyle,
-            this.props.selected && styles.selectedCellText,
+            this.props.selected ? styles.selectedCellText : {},
           ]}
           value={value}
           data={this.props.data instanceof Array ? item : this.props.data}
           editable={editable}
-          overlayStyle={editable && styles.selectedOverlay}
           isRequired={isRequired}
           defaultValue={defaultValue}
           keyboardType={typeof value === 'number' ? 'decimal-pad' : 'default'}
@@ -315,11 +395,12 @@ export default class Row extends Component {
   }
 
   _renderCells = () => {
-    if (this.props.data <= 0 || !this.props.data) return null
-    let cells = []
+    if (this.props.data instanceof Array && this.props.data.length <= 0 || !this.props.data) return <View />
+    const cells: React.ReactNode[] = []
     if (this.props.data instanceof Array) {
       this.props.data.forEach((item, index) => {
         if (
+          this.props.dismissIndexes &&
           this.props.dismissIndexes.indexOf(index) < 0 && (
             this.props.isShowSystemFields ||
             typeof item === 'string' ||
@@ -345,7 +426,7 @@ export default class Row extends Component {
         cells.push(this._renderCell(this.props.data['value'], 1))
       }
     }
-    return cells
+    return <>{cells}</>
   }
 
   render() {

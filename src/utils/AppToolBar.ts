@@ -55,6 +55,8 @@ interface ToolBarData {
   sandTableModels?: string[]
 
   isAlbumFirstAdd?: boolean
+  /** AR属性表,选中的属性字段名称 */
+  selectedAttribute?: string[]
 }
 
 const toolBarData: ToolBarData = {}

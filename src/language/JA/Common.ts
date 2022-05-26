@@ -91,6 +91,14 @@ const Common: typeof CN.Common = {
   
   DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
 
+  NULL_DATA: 'Null Data', // to be translated
+
+  PLEASE_SELECT_OBJ: 'Please select object', // to be translated
+  PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or object", // to be translated
+  PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
+
+  ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
+  
 }
 
 export { Protocol, Common }

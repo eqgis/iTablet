@@ -1,6 +1,6 @@
 import { color, size } from '@/styles'
 import { scaleSize } from '@/utils'
-import React, { SetStateAction, useImperativeHandle, useState } from 'react'
+import React, { SetStateAction, useEffect, useImperativeHandle, useState } from 'react'
 import { forwardRef } from 'react'
 import { TouchableOpacity, View, Text, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import Popover, { Rect } from 'react-native-popover-view'
@@ -32,10 +32,11 @@ function PopoverButtonsView(props: PopoverButtonProps, ref: typeof PopoverButton
   const [data, setData] = useState(props.data || [])
 
   useImperativeHandle(ref, () => ({  
-    setVisible: (isShowPopover: boolean, rect: SetStateAction<Rect>, data?: ButtonProps[]) => {
+    setVisible: async (isShowPopover: boolean, rect?: SetStateAction<Rect>, data?: ButtonProps[], cb?:(() => void) | null) => {
       setShowPopover(isShowPopover)
-      setFrom(rect)
+      rect && setFrom(rect)
       data && setData(data)
+      cb?.()
     }
   }))
 
@@ -63,6 +64,9 @@ function PopoverButtonsView(props: PopoverButtonProps, ref: typeof PopoverButton
       backgroundStyle={props.backgroundStyle ? props.backgroundStyle : {backgroundColor: 'rgba(0, 0, 0, 0)'}}
       popoverStyle={props.popoverStyle ? props.popoverStyle : {backgroundColor: 'rgba(0, 0, 0, 1)'}}
       isVisible={showPopover}
+      animationConfig={{
+        duration: 100,
+      }}
       from={from}
       onRequestClose={_onRequestClose}>
       {_renderButtons()}

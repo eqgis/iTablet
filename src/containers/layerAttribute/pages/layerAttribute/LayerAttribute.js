@@ -669,13 +669,14 @@ export default class LayerAttribute extends React.Component {
       {
         title: getLanguage(global.language).Map_Attribute.DETAIL,
         onPress: () => {
-          (async function () {
-            this.addPopModal &&
-              this.addPopModal.setVisible(true, {
+          this.Popover?.setVisible(false, undefined, undefined, () => {
+            setTimeout(() => {
+              this.addPopModal?.setVisible(true, {
                 data: { fieldInfo },
                 isDetail: true,
               })
-          }.bind(this)())
+            }, 300);
+          })
         },
       },
     ]
@@ -729,8 +730,12 @@ export default class LayerAttribute extends React.Component {
           if (!fieldInfo) {
             return
           }
-          deleteFieldData = fieldInfo
-          this.deleteFieldDialog.setDialogVisible(true)
+          this.Popover?.setVisible(false, undefined, undefined, () => {
+            deleteFieldData = fieldInfo
+            setTimeout(() => {
+              this.deleteFieldDialog.setDialogVisible(true)
+            }, 300);
+          })
         },
       })
     }
@@ -749,6 +754,7 @@ export default class LayerAttribute extends React.Component {
             fieldInfo,
             layer: this.props.currentLayer,
           })
+          this.Popover?.setVisible(false)
         },
       })
     }

@@ -4877,8 +4877,19 @@ export default class MapView extends React.Component {
           customStyle={this.props.isAR ? null : styles.hidden}
           ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
-          onARElementTouch={element => {
-            if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
+          onARElementTouch={async element => {
+            if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT') {
+              AppToolBar.addData({selectARElement: element})
+              const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
+              if (attributes) {
+                const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
+                if (isShowAttribute) {
+                  // SARMap.hideAttribute(element.layerName, element.id)
+                } else {
+                  SARMap.showAttribute(element.layerName, element.id, attributes)
+                }
+              }
+            } else if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
               onAddARAnimation(element)
             } else if(element.type === ARElementType.AR_SAND_TABLE
               && (AppToolBar.getCurrentOption()?.key === 'AR_SAND_TABLE_CREATE'
@@ -5246,6 +5257,7 @@ export default class MapView extends React.Component {
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
         <Toolbar
+          navigation={this.props.navigation}
           visibleChange={visible => {
             this.showFullMap(visible)
           }}

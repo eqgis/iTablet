@@ -2,10 +2,8 @@
  * 图片预览界面
  */
 import * as React from 'react'
-import { Dimensions, Image, TouchableOpacity, Platform, LayoutChangeEvent } from 'react-native'
-import ImageZoom from 'react-native-image-pan-zoom'
-// eslint-disable-next-line import/no-unresolved
-import PhotoView from 'react-native-photo-view'
+import { View, Image, LayoutChangeEvent } from 'react-native'
+import PhotoView from 'react-native-image-zoom-viewer'
 import styles from './styles'
 
 interface Props {
@@ -68,63 +66,22 @@ export default class ImageViewer extends React.Component<Props> {
     // this.forceUpdate()
   }
 
-  // renderIOS = (): React.ReactNode => {
-  //   return (
-  //     <ImageZoom
-  //       onClick={(event) => {
-  //         if (typeof this.props.backAction === 'function') {
-  //           this.props.backAction()
-  //         }
-  //       }}
-  //       cropWidth={Dimensions.get('window').width}
-  //       cropHeight={Dimensions.get('window').height}
-  //       imageWidth={this.imageWidth}
-  //       imageHeight={this.imageHeight}
-  //       // enableCenterFocus={true}
-  //     >
-  //       <Image
-  //         style={{ width: this.imageWidth, height: this.imageHeight }}
-  //         source={{ uri: this.props.uri }}
-  //       />
-  //     </ImageZoom>
-  //   )
-  // }
-
-  renderAndroid = () => {
+  render() {
+    const images = [{
+      url: this.props.uri,
+    }]
     return (
       <PhotoView
-        source={{ uri: this.props.uri }}
-        minimumZoomScale={0.5}
-        maximumZoomScale={3}
-        androidScaleType="center"
-        style={{
-          // width: this.imageWidth,
-          // height: this.imageHeight,
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          position: 'absolute',
-        }}
-      />
-    )
-  }
-
-  render() {
-    return (
-      <TouchableOpacity
-        onLayout={this.handleLayout}
-        activeOpacity={1}
-        style={this.props.containerStyle}
-        onPress={() => {
+        imageUrls={images}
+        enableSwipeDown={true}
+        saveToLocalByLongPress={false}
+        onCancel={() => {
           if (typeof this.props.backAction === 'function') {
             this.props.backAction()
           }
         }}
-      >
-        {/* {Platform.OS === 'ios' ? this.renderIOS() : this.renderAndroid()} */}
-        {this.renderAndroid()}
-      </TouchableOpacity>
+        renderIndicator={() => <View />}
+      />
     )
   }
 }

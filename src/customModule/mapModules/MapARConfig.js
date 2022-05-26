@@ -24,6 +24,7 @@ import {
 } from '../../containers/workspace/components/ToolBar/modules'
 import Orientation from 'react-native-orientation'
 import { LayerUtils } from '../../utils'
+import { Platform } from 'react-native'
 
 export default class MapARConfig extends Module {
   static key = ChunkType.MAP_AR
@@ -62,7 +63,7 @@ export default class MapARConfig extends Module {
     let modules = []
     switch(type) {
       case 'ar':
-        modules = [
+        modules = Platform.OS === 'android' ? [
           arStartModule,
           arDrawingModule,
           arEditModule,
@@ -71,6 +72,12 @@ export default class MapARConfig extends Module {
           arSandTable,
           arAnimation,
           arAttribute,
+        ] : [
+          arStartModule,
+          arDrawingModule,
+          arEditModule,
+          arStyleModule,
+          arNaviModule,
         ]
         break
       case 'map':

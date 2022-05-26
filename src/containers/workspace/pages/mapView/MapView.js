@@ -1969,11 +1969,18 @@ export default class MapView extends React.Component {
           await SARMap.resetARMapWorkspace()
         }
 
-        //地图打开后显示比例尺，获取图例数据
-        this.setState({ showScaleView: true, mapLoaded: true })
         global.legend && global.legend.getLegendData()
-        // this.mapLoaded = true
-        this.setLoading(false)
+
+        //地图打开后显示比例尺，获取图例数据
+        this.setState({ showScaleView: true, mapLoaded: true }, async () => {
+          await this.setLoading(false)
+        
+          // 当加载状态为不加载，是否显示选点的提示标识为true，且当前模块儿为导航采集时，就给一个“长按选点”的提示
+          if (global.Type === ChunkType.MAP_NAVIGATION) {  
+            // 导航采集选点提示
+            Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_SELECT_POINT, {duration: 2500})
+          }
+        })
       } catch (e) {
         this.setLoading(false)
         this.setState({ mapLoaded: true })

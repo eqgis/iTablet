@@ -4893,6 +4893,11 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_WEBVIEW
               || element.type === ARElementType.AR_TEXT
               || element.type === ARElementType.AR_MODEL
+              || element.type === ARElementType.AR_ALBUM
+              || element.type === ARElementType.AR_BROCHOR
+              || element.type === ARElementType.AR_VIDEO_ALBUM
+              || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
+              || element.type === ARElementType.AR_SAND_TABLE_ALBUM
             ) {
               arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
               ToolbarModule.addData({selectARElement: element})
@@ -4907,6 +4912,26 @@ export default class MapView extends React.Component {
                 selectName: getLanguage(this.props.language).ARMap.POSITION,
                 selectKey: getLanguage(this.props.language).ARMap.POSITION,
               })
+            }
+          }}
+          onARElementAdd={element => {
+            AppToolBar.addData({addARElement: element})
+            if(element.type === ARElementType.AR_ATTRIBUTE_ALBUM || element.type === ARElementType.AR_BROCHOR || element.type === ARElementType.AR_ALBUM|| element.type === ARElementType.AR_VIDEO_ALBUM || element.type === ARElementType.AR_SAND_TABLE_ALBUM){
+              if(AppToolBar.getData().isAlbumFirstAdd){
+                arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
+                ToolbarModule.addData({selectARElement: element})
+                AppToolBar.addData({selectARElement: element,isAlbumFirstAdd:false})
+                SARMap.appointEditElement(element.id, element.layerName)
+                SARMap.setAction(ARAction.MOVE)
+                this.showFullMap(true)
+                this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+                  containerType: ToolbarType.slider,
+                  isFullScreen: false,
+                  showMenuDialog: false,
+                  selectName: getLanguage(this.props.language).ARMap.POSITION,
+                  selectKey: getLanguage(this.props.language).ARMap.POSITION,
+                })
+              }
             }
           }}
           onCalloutTouch={tag => {

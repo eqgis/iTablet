@@ -273,6 +273,7 @@ const Prompt = {
   AFTER_COLLECT: "请先拍照采集后查看",
 
   POI: "兴趣点",
+  WIDGET: "小组件",
 
   ILLEGAL_DATA: "无效数据",
 

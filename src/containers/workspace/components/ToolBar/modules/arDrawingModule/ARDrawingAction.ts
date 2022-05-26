@@ -18,7 +18,7 @@ import {
   ToolbarType,
   ConstPath,
 } from '../../../../../../constants'
-import { Toast, AppProgress, DialogUtils, dataUtil } from '../../../../../../utils'
+import { Toast, AppProgress, DialogUtils, dataUtil, AppToolBar } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
@@ -28,6 +28,9 @@ import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffec
 import { ExternalDataType, ToolBarListItem } from '../types'
 import { Downloads, Download } from '../../../../../../redux/models/down'
 import { Platform } from 'react-native'
+import { getThemeAssets } from '../../../../../../assets'
+import ToolbarBtnType from '../../ToolbarBtnType'
+import { addARBrochore } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface AssetType {
   Photos: 'Photos',
@@ -35,12 +38,12 @@ interface AssetType {
   All: 'All'
 }
 
-function openSourcePicker(assetType: keyof AssetType, callback: (data: any) => void) {
+function openSourcePicker(assetType: keyof AssetType, callback: (data: any) => void,size:number) {
   ImagePicker.AlbumListView.defaultProps.showDialog = false
   ImagePicker.AlbumListView.defaultProps.assetType = assetType
   ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
   ImagePicker.getAlbum({
-    maxSize: 1,
+    maxSize: size,
     callback: callback,
   })
 }
@@ -72,19 +75,31 @@ async function addAtCurrent(type: string, location?: Point3D) {
     await addARModel(location)
   } else if (type === ConstToolType.SM_AR_DRAWING_TEXT) {
     await addText(location)
-  } else {
-    let _type
-    if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
-      _type = ARElementType.AR_VIDEO
-    } else if (type === ConstToolType.SM_AR_DRAWING_WEB) {
-      _type = ARElementType.AR_WEBVIEW
-    } else {
-      _type = ARElementType.AR_IMAGE
-    }
-
-    await addMedia(_type, location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_BROCHORE) {
+    await addBrochore(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_SAND_TABLE_ALBUM) {
+    await addARSandTableAlbum(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_ATTRIBUTE_WIDGET) {
+    await addARAttriubutWidget(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_WIDGET) {
+    await addARWidget(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM) {
+    await addARVideoAlbum(location)
   }
+    else {
+      let _type
+      if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
+        _type = ARElementType.AR_VIDEO
+      } else if (type === ConstToolType.SM_AR_DRAWING_WEB) {
+        _type = ARElementType.AR_WEBVIEW
+      } else {
+        _type = ARElementType.AR_IMAGE
+      }
+
+      await addMedia(_type, location)
+    }
   isAddingARElement = false
+  AppToolBar.addData({isAlbumFirstAdd:true})
 }
 
 /**
@@ -111,7 +126,7 @@ async function arVideo() {
       let path = data[0].uri
       setARToolbar(ConstToolType.SM_AR_DRAWING_VIDEO, { arContent: path })
     }
-  })
+  },1)
 }
 
 async function arImage() {
@@ -120,7 +135,7 @@ async function arImage() {
       let path = data[0].uri
       setARToolbar(ConstToolType.SM_AR_DRAWING_IMAGE, { arContent: path })
     }
-  })
+  },1)
 }
 
 async function arWebView() {
@@ -324,6 +339,66 @@ async function addText(location?: Point3D) {
     }
   } catch (error) {
     Toast.show(error)
+  }
+}
+
+async function addBrochore(location?: Point3D){
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  if(layer){
+    SARMap.addARBrochore(layer.name, ARElementType.AR_BROCHOR,albumName, location)
+  }
+}
+
+async function addARSandTableAlbum(location?: Point3D){
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  const { sandTablePaths } = _data
+  if(layer && sandTablePaths){
+    await SARMap.addARSandTableAlbum(layer.name, sandTablePaths, albumName,location)
+  }
+}
+
+async function addARAttriubutWidget(location?: Point3D){
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  const arPhotos = _data.arPhotos
+  if(arPhotos && layer) {
+    SARMap.addARAttributeWidget(layer.name, ARElementType.AR_ATTRIBUTE_ALBUM,arPhotos,albumName, location)
+  }
+}
+
+async function addARWidget(location?: Point3D){
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  const arPhotos = _data.arPhotos
+  if(arPhotos && layer) {
+    SARMap.addARWidget(layer.name, ARElementType.AR_ALBUM,arPhotos,albumName, location)
+  }
+}
+
+async function addARVideoAlbum(location?: Point3D){
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  const arPhotos = _data.arPhotos
+  const videoType = _data.videoType
+  if(arPhotos && layer) {
+    SARMap.addARVideoAlbum(layer.name, ARElementType.AR_VIDEO_ALBUM,arPhotos,albumName,videoType, location)
   }
 }
 
@@ -663,6 +738,108 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
   }
 }
 
+function arAttributeAlbum(){
+  const _params: any = ToolbarModule.getParams()
+  const data = []
+  data.push({
+    key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
+    title: getLanguage(global.language).Map_Main_Menu.RELATIONSHIP,
+    action: () => {
+      openSourcePicker('Photos', data => {
+        if (data && data.length > 0) {
+          ToolbarModule.addData({ arPhotos: data,albumName: getLanguage().ATTRIBUTE_ALBUM})
+          const _params: any = ToolbarModule.getParams()
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_WIDGET, {
+            isFullScreen: false,
+          })
+        }
+      },10)
+    },
+    size: 'large',
+    image: getThemeAssets().ar.functiontoolbar.icon_tool_relation,
+  },{
+    key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
+    title: getLanguage(global.language).Map_Main_Menu.LIST,
+    action: () => {
+      openSourcePicker('Photos', data => {
+        if (data && data.length > 0) {
+          ToolbarModule.addData({ arPhotos: data,albumName: getLanguage().ATTRIBUTE_ALBUM})
+          const _params: any = ToolbarModule.getParams()
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_ATTRIBUTE_WIDGET, {
+            isFullScreen: false,
+          })
+        }
+      },10)
+    },
+    size: 'large',
+    image: getThemeAssets().ar.functiontoolbar.icon_tool_list,
+  },)
+  const buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+  ]
+  _params.setToolbarVisible(true, ConstToolType.SM_AR_ATTRIBUTE_ALBUM, {
+    isFullScreen: false,
+    containerType: ToolbarType.table,
+    data,
+    buttons,
+  })
+}
+
+function arVideoAlbum(){
+  const _params: any = ToolbarModule.getParams()
+  const data = []
+  data.push({
+    key: ConstToolType.SM_AR_VIDEO_ALBUM,
+    title: getLanguage(global.language).Map_Main_Menu.LOOP,
+    action: ()=>{
+      openSourcePicker('Videos', data => {
+        if (data && data.length > 0) {
+          ToolbarModule.addData({ arPhotos: data,albumName: getLanguage().VIDEO_ALBUM ,videoType:0})
+          const _params: any = ToolbarModule.getParams()
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM, {
+            isFullScreen: false,
+          })
+        }
+      },5)
+    },
+    size: 'large',
+    image: getThemeAssets().ar.functiontoolbar.icon_tool_loop,
+  },{
+    key: ConstToolType.SM_AR_VIDEO_ALBUM,
+    title: getLanguage(global.language).Map_Main_Menu.LIST,
+    action: ()=>{
+      openSourcePicker('Videos', data => {
+        if (data && data.length > 0) {
+          ToolbarModule.addData({ arPhotos: data,albumName: getLanguage().VIDEO_ALBUM ,videoType:1})
+          const _params: any = ToolbarModule.getParams()
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM, {
+            isFullScreen: false,
+          })
+        }
+      },10)
+    },
+    size: 'large',
+    image: getThemeAssets().ar.functiontoolbar.icon_tool_list,
+  },)
+  const buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+  ]
+  _params.setToolbarVisible(true, ConstToolType.SM_AR_VIDEO_ALBUM, {
+    isFullScreen: false,
+    containerType: ToolbarType.table,
+    data,
+    buttons,
+  })
+}
+
+function arMapBrochor(){
+  NavigationService.navigate("MapSelectList",{type:'mapSelect'})
+}
+
+function arSandtableAlbum(){
+  NavigationService.navigate("MapSelectList",{type:'sandTableSelect'})
+}
+
 
 export default {
   toolbarBack,
@@ -683,6 +860,11 @@ export default {
   arModel,
   addARModel,
   addAREffect,
+
+  arAttributeAlbum,
+  arVideoAlbum,
+  arMapBrochor,
+  arSandtableAlbum,
 
   download3DExample,
   downloadModelExample,

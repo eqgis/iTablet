@@ -196,6 +196,7 @@ import { ImagePickerStack } from '@/components/ImagePicker'
 import { UserInfo } from '@/types'
 import { UserType } from '@/constants'
 import { Platform } from 'react-native'
+import MapSelectList from '../containers/workspace/components/ToolBar/modules/arDrawingModule/MapSelectList'
 
 const Stack = createNativeStackNavigator()
 
@@ -211,7 +212,7 @@ export default function(params: {
         // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         headerShown: false,
         animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
-        presentation: 'card',
+        presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
         gestureEnabled: false,
       }}
     >
@@ -401,6 +402,7 @@ export default function(params: {
         animation: 'slide_from_bottom',
         // presentation: 'modal',
       }} />
+      <Stack.Screen name="MapSelectList" component={MapSelectList} />
     </Stack.Navigator>
   )
 }

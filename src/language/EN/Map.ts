@@ -553,6 +553,27 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 专题制图加载/输出xml
   MAP_OUTPUT_XML: "Output",
   MAP_LOAD_XML: "Load",
+
+  ATTRIBUTE_ALBUM: "Picture Collection",//to be translate
+  VIDEO_ALBUM:"Viedo Album",//to be translate
+  MAPBROCHORE: "Map Brochore",//to be translate
+  CHOOSE_MAP:"Choose Map",
+  SANDTABLE_ALBUM:"Sand Table Album",//to be translate
+  CHOOSE_SANDTABLE:"Choose Sand Table",//to be translate
+  TITLE:'Title',
+  BACKGROUND:'BackGround',
+  ARRAY:'Array',
+  TEXT_SHAPE:'Shape',
+  ROTATION_ANGLE:'Rotation Angle',
+  BOLD:'Bold',
+  TILT:'Tilt',
+  UNDERLINE:'UnderLine',
+  STRIKETHROUGH:'StrikeThrough',
+  SHADOW:'Shadow',
+  FILLCOLOR:'FillColor',
+  RELATIONSHIP:'RelationShip',
+  LIST:'List',
+  LOOP:'Loop',
 }
 
 // 推演动画

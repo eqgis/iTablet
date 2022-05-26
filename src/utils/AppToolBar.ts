@@ -54,6 +54,7 @@ interface ToolBarData {
   /** 选中的沙盘模型路径 */
   sandTableModels?: string[]
 
+  isAlbumFirstAdd?: boolean
 }
 
 const toolBarData: ToolBarData = {}

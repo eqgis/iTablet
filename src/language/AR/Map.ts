@@ -559,6 +559,28 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 专题制图加载/输出xml
   MAP_OUTPUT_XML: "مخرجات",
   MAP_LOAD_XML: "تحميل",
+
+  //小组件
+  ATTRIBUTE_ALBUM: "ألبوم السمات",
+  VIDEO_ALBUM:"Viedo Album",//to be translate
+  MAPBROCHORE: "كتيب الخريطة",
+  CHOOSE_MAP:"Choose Map",//to be translate
+  SANDTABLE_ALBUM:"Sand Table Album",//to be translate
+  CHOOSE_SANDTABLE:"Choose Sand Table",//to be translate
+  TITLE:'Title',//to be translate
+  BACKGROUND:'BackGround',//to be translate
+  ARRAY:'Array',//to be translate
+  TEXT_SHAPE:'Shape',//to be translate
+  ROTATION_ANGLE:'Rotation Angle',//to be translate
+  BOLD:'Bold',//to be translate
+  TILT:'Tilt',//to be translate
+  UNDERLINE:'UnderLine',//to be translate
+  STRIKETHROUGH:'StrikeThrough',//to be translate
+  SHADOW:'Shadow',//to be translate
+  FILLCOLOR:'FillColor',//to be translate
+  RELATIONSHIP:'RelationShip',//to be translate
+  LIST:'List',//to be translate
+  LOOP:'Loop',//to be translate
 }
 
 // 推演动画

@@ -7,9 +7,9 @@ import { UserInfo, LocalDataType } from '../../../../types'
 export interface ILocalData extends FiltedData {
   /** ai模型相关信息 */
   aiModelInfo?: {
-    modelName: string,
-    labels: string[],
-    paramJsonName?: string,
+    modelName: string
+    lables: string[]
+    paramJsonName?: string
   }
   /** 沙盘模型相关信息 */
   sandTableInfo?: {

@@ -275,6 +275,7 @@ const Prompt: typeof CN.Prompt = {
   AFTER_COLLECT: "يرجى جمع قبل مشاهدة",
 
   POI: "نقاط الاهتمام",
+  WIDGET: "جهاز صغير",
 
   ILLEGAL_DATA: "بيانات غير قانونية",
 

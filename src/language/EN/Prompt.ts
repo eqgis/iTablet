@@ -275,6 +275,7 @@ const Prompt: typeof CN.Prompt = {
   AFTER_COLLECT: "Please collect data by taking a picture first",
 
   POI: "POI",
+  WIDGET: "Widget",
 
   ILLEGAL_DATA: "Valid Data",
 

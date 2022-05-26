@@ -275,6 +275,7 @@ const Prompt: typeof CN.Prompt = {
   AFTER_COLLECT: "Lütfen görüntülemeden önce toplayın",
 
   POI: "POI",
+  WIDGET: "Aygıt",
 
   ILLEGAL_DATA: "Yasadışı Veri",
 

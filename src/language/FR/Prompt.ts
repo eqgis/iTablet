@@ -274,6 +274,7 @@ const Prompt: typeof CN.Prompt = {
   CANT_USE_TRACK_TO_INCREMENT_ROAD: "L'emplacement actuel est hors des limites de la carte afin que vous ne puissiez pas utiliser le suivi pour incrémenter la route",
   AFTER_COLLECT: "Veuillez collecter avant de visionner",
   POI: "POI",
+  WIDGET: "Widget",
 
   ILLEGAL_DATA: "Données illégales",
 

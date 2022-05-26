@@ -275,6 +275,7 @@ const Prompt: typeof CN.Prompt = {
   AFTER_COLLECT: "表示前に、まずフィールドしてください",
 
   POI: "POI",
+  WIDGET: "ウィジェット",
 
   ILLEGAL_DATA: "データは無効です",
 

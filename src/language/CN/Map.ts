@@ -550,6 +550,28 @@ const Map_Main_Menu = {
   // 专题制图加载/输出xml
   MAP_OUTPUT_XML: "输出",
   MAP_LOAD_XML: "加载",
+
+  //小组件
+  ATTRIBUTE_ALBUM: "图片集",
+  VIDEO_ALBUM:"视频集",
+  MAPBROCHORE: "地图集",
+  CHOOSE_MAP:"选择地图",
+  SANDTABLE_ALBUM:"沙盘集",
+  CHOOSE_SANDTABLE:"选择沙盘",
+  TITLE:'标题',
+  BACKGROUND:'背景',
+  ARRAY:'排列',
+  TEXT_SHAPE:'字形',
+  ROTATION_ANGLE:'旋转角度',
+  BOLD:'加粗',
+  TILT:'倾斜',
+  UNDERLINE:'下划线',
+  STRIKETHROUGH:'删除线',
+  SHADOW:'阴影',
+  FILLCOLOR:'填充色',
+  RELATIONSHIP:'流程',
+  LIST:'列表',
+  LOOP:'循环',
 }
 
 // 推演动画

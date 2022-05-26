@@ -165,10 +165,41 @@ async function getData(type: string, params: {[name: string]: any}) {
           },
           getData: getAREffect,
         },
+        {
+          title: getLanguage(global.language).Prompt.WIDGET,
+          data: [{
+            key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
+            image: getThemeAssets().ar.functiontoolbar.ar_picture_collection,
+            title: getLanguage(global.language).Map_Main_Menu.ATTRIBUTE_ALBUM,
+            action: ARDrawingAction.arAttributeAlbum,
+          }, {
+            key: ConstToolType.SM_AR_VIDEO_ALBUM,
+            image: getThemeAssets().ar.functiontoolbar.ar_video_collection,
+            title: getLanguage(global.language).Map_Main_Menu.VIDEO_ALBUM,
+            action: ARDrawingAction.arVideoAlbum,
+          }, {
+            key: ConstToolType.SM_AR_MAPBROCHORE,
+            image: getThemeAssets().ar.functiontoolbar.ar_map_collection,
+            title: getLanguage(global.language).Map_Main_Menu.MAPBROCHORE,
+            action: ARDrawingAction.arMapBrochor,
+          }, {
+            key: ConstToolType.SM_AR_SANDTABLE_ALBUM,
+            image: getThemeAssets().ar.functiontoolbar.sandtable_album,
+            title: getLanguage(global.language).Map_Main_Menu.SANDTABLE_ALBUM,
+            action: ARDrawingAction.arSandtableAlbum,
+          }],
+          onPress: () => {
+            // 点击tab后将索引值同步
+            ToolbarModule.addData({moduleIndex: 5})
+            // 转到非特效tab里视为特效图层已经添加完成
+            global.isNotEndAddEffect = false
+          },
+        },
       ]
       if (Platform.OS === 'ios') {
         data.splice(3, 1)
-      }
+        data.splice(4, 1)
+      }      
       break
     }
     case ConstToolType.SM_AR_DRAWING_IMAGE:
@@ -177,6 +208,11 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_TEXT:
     case ConstToolType.SM_AR_DRAWING_SCENE:
     case ConstToolType.SM_AR_DRAWING_MODAL:
+    case ConstToolType.SM_AR_DRAWING_ADD_BROCHORE:
+    case ConstToolType.SM_AR_DRAWING_ADD_SAND_TABLE_ALBUM:
+    case ConstToolType.SM_AR_DRAWING_ADD_ATTRIBUTE_WIDGET:
+    case ConstToolType.SM_AR_DRAWING_ADD_WIDGET:
+    case ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM:
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         {

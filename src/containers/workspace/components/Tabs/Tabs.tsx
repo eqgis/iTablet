@@ -125,7 +125,8 @@ export default class Tabs extends React.Component<Props, State> {
       {...props}
       indicatorStyle={[
         styles.tabBarUnderlineStyle,
-        {marginLeft: this._getWidth() / this.props.data.length / 2 - scaleSize(32)},
+        // {marginLeft: this._getWidth() / this.props.data.length / 2 - scaleSize(16)},
+        {marginLeft: scaleSize(43)},
       ]}
       // onTabPress={({route, preventDefault}) => {
       //   const routes = this._getRoutes()
@@ -145,6 +146,8 @@ export default class Tabs extends React.Component<Props, State> {
       style={styles.tabStyle}
       labelStyle={styles.tabTextStyle}
       activeColor={color.themeText2}
+      scrollEnabled={true}
+      tabStyle={{width:scaleSize(150)}}
     />
   )
 

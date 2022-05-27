@@ -99,7 +99,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
   downloadHandler: async res => {
     if (!res.content) return
     if(res.content?.isEnd === 1.0){
-      g_messageIcon?.setVisible(true)
+      g_messageIcon?.setVisible(true,'#END')
     }else if(res.content?.isEnd <= 1.0){
       
       g_messageIcon?.setVisible(true,getLanguage(global.language).Cowork.SYNC_SERVICE+' '+Math.floor(res.content?.isEnd * 100)+'%')

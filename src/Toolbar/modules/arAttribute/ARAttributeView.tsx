@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 import { Animated,  Easing } from 'react-native'
 import { ModuleViewProps } from '../..'
 import { getImage } from '../../../assets'
-import {  AppToolBar, dp } from '../../../utils'
+import { dp } from '../../../utils'
 import Attribute from './component/Attribute'
 
 export interface ARAttributeViewOption {

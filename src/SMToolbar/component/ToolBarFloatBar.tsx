@@ -1,6 +1,5 @@
 import React from 'react'
-import { Image, ImageRequireSource, ScrollView, StyleSheet, Text, ViewStyle } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Image, ImageRequireSource, ScrollView, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
 import {Animated,   Easing } from 'react-native'
 import { AppStyle, dp } from '../../utils'
 

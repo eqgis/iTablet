@@ -5,12 +5,11 @@
  */
 
 import * as React from 'react'
-import { View, ScrollView, ViewStyle, Image, Text, ImageSourcePropType } from 'react-native'
+import { View, ScrollView, ViewStyle, Image, Text, ImageSourcePropType, TouchableOpacity } from 'react-native'
 import { getImage } from '../../../../../../../assets'
 import styles from './styles'
 import { getLanguage } from '../../../../../../../language'
 import { scaleSize  } from '../../../../../../../utils'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const itemGap = scaleSize(20)
 

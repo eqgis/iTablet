@@ -24,11 +24,12 @@ class NewMessageIcon extends Component<Props, State> {
 
   left: Animated.Value
   visible: boolean
-
+  isTextShow: boolean
   constructor(props: Props) {
     super(props)
     this.left = new Animated.Value(scaleSize(DEFAULT_LEFT))
     this.visible = true
+    this.isTextShow = false
     this.state = {
       text: '',
     }
@@ -43,6 +44,18 @@ class NewMessageIcon extends Component<Props, State> {
       }).start()
       this.visible = visible
     }
+    if(this.isTextShow && !text){
+      return
+    }
+    if(text){
+      this.isTextShow = true 
+    }
+
+    if(text === '#END'){
+      this.isTextShow = false
+      text = undefined
+    }
+
     if (text !== this.state.text) {
       this.setState({
         text: text,

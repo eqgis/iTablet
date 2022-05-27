@@ -166,7 +166,7 @@ class Slider extends React.Component<Props & DefaultProps, State> {
 
   renderManulController = (mode: 'decrement' | 'increment') => {
     if(!this.props.showManulController) return null
-    const icon = mode === 'decrement' ? getImage().icon_enlarge : getImage().icon_narrow
+    const icon = mode === 'decrement' ? getImage().icon_narrow : getImage().icon_enlarge
     const disableStyle: ImageStyle = {
       tintColor: AppStyle.Color.LIGHT_GRAY
     }
@@ -292,8 +292,8 @@ class Slider extends React.Component<Props & DefaultProps, State> {
               <TouchableOpacity
                 style={[{flexDirection: 'row'}, !this.props.horizontal && {marginTop: dp(5)}]}
                 onPress={() => {
-                    this.props.onDisable?.(!this.state.disabled)
-                    this.setState({disabled: !this.state.disabled})
+                  this.props.onDisable?.(!this.state.disabled)
+                  this.setState({disabled: !this.state.disabled})
                 }}
               >
                 <Image

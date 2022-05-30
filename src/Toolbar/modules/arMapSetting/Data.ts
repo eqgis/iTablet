@@ -16,9 +16,6 @@ export function getData(key: ModuleList['ARMAP_SETTING']): IToolbarOption {
     case 'AR_MAP_SETTING_ANIMATION':
       settingAnimation(option)
       break
-    case 'AR_MAP_SETTING_EFFECT_VIEW_BOUNDS':
-      settingEffectViewBounds(option)
-      break
     case 'AR_MAP_SECONDS_TO_PLAY':
       settingSecondsToPlay(option)
       break
@@ -97,77 +94,6 @@ function settingViewBounds(option: IToolbarOption) {
 }
 
 
-/** 点击特效图层可见距离的页面数据构造及功能的实现 */
-function settingEffectViewBounds(option: IToolbarOption){
-  let minVisible = AppToolBar.getData().minVisibleBounds || 0
-  let maxVisible = AppToolBar.getData().maxVisibleBounds || 0
-  // const centerX = AppToolBar.getData().centerX || 0
-  // const centerY = AppToolBar.getData().centerY || 0
-  let isMaxVisibleChange = false
-  let isMinVisibleChange = false
-  let keepVisible = minVisible === 0 && maxVisible === 0
-
-  // 底部工具栏 可见距离的滑动条的数据
-  option.slideData = {
-    data: [{
-      type: 'double',
-      bottomLeft: {type: 'text', text: getLanguage().VISIBLE_DISTANCE},
-      defaultMaxValue: maxVisible,
-      defaultMinValue: minVisible,
-      range: [0, 100],
-      disableText: getLanguage().KEEP_VISIBLE,
-      disabled: keepVisible,
-      onMove: (loc, isMin) => {
-        if(isMin) {
-          isMinVisibleChange = true
-          minVisible = loc
-        } else {
-          isMaxVisibleChange = true
-          maxVisible = loc
-        }
-      },
-      onDisable: isDisabled => {
-        keepVisible = isDisabled
-      }
-    }]
-  }
-
-
-  // 底部工具栏 可见距离的两个按钮选项的数据
-  option.bottomData=[
-    {
-      image: getImage().back,
-      onPress: AppToolBar.goBack,
-    },
-    {
-      image: getImage().icon_submit,
-      onPress: () => {
-        const layer = AppToolBar.getData().selectARLayer
-        if(layer) {
-          const results: Promise<boolean>[] = []
-          // results.push( SARMap.setEffectLayerCenter(layer.name, centerX, centerY))
-          if(keepVisible) {
-            // 当可见距离为一直可见时，将最大最小可见距离都设置为0
-            results.push(SARMap.setEffectLayerMaxVisibleBounds(layer.name, 0))
-            results.push(SARMap.setEffectLayerMinVisibleBounds(layer.name, 0))
-          } else {
-            // 不是一直可见就哪个改变了就设置哪个
-            if(isMaxVisibleChange) {
-              results.push(SARMap.setEffectLayerMaxVisibleBounds(layer.name, maxVisible))
-            }
-            if(isMinVisibleChange) {
-              results.push(SARMap.setEffectLayerMinVisibleBounds(layer.name, minVisible))
-            }
-          }
-          if(results.length > 0) {
-            Promise.all(results).then(AppToolBar.getProps().getARLayers)
-          }
-        }
-        AppToolBar.goBack()
-      }
-    }
-  ]
-}
 
 /** 点击特效图层的持续时间及功能的实现 */
 function settingSecondsToPlay(option: IToolbarOption){

@@ -188,7 +188,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }]
 
     // 特效图层下移
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_DOWN,
         image: getThemeAssets().layer.icon_edit_movedown,
@@ -217,7 +217,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }
 
     // 特效图层上移
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_UP,
         image: getThemeAssets().layer.icon_edit_moveup,
@@ -245,28 +245,23 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
 
     //ARElementLayer添加可见范围
-    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer) {
+    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer
+       && !(Platform.OS === 'ios' && this.state.selectLayer.type === ARLayerType.EFFECT_LAYER)) {
       const maxVisibleBounds = this.state.selectLayer.maxVisibleBounds
       const minVisibleBounds = this.state.selectLayer.minVisibleBounds
-      const isEffetLayer = 'secondsToPlay' in this.state.selectLayer
       AppToolBar.addData({selectARLayer: this.state.selectLayer, maxVisibleBounds, minVisibleBounds})
       menuData[0].data.unshift({
         title: getLanguage().LAYERS_VISIBLE_DISTANCE,
         image: getImage().icon_visible_distance,
         action: async () => {
-
-          if(isEffetLayer) {
-            AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SETTING_EFFECT_VIEW_BOUNDS')
-          } else {
-            AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SETTING_VIEW_BOUNDS')
-          }
+          AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SETTING_VIEW_BOUNDS')
           NavigationService.goBack()
         },
       })
     }
 
     //ARElementLayer 动画范围
-    if(this.state.selectLayer && 'maxAnimationBounds' in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && 'maxAnimationBounds' in this.state.selectLayer) {
       const maxAnimationBounds = this.state.selectLayer.maxAnimationBounds
       const minAnimationBounds = this.state.selectLayer.minAnimationBounds
       AppToolBar.addData({selectARLayer: this.state.selectLayer, maxAnimationBounds, minAnimationBounds})
@@ -280,30 +275,15 @@ export default class ARLayerManager extends React.Component<Props, State> {
       })
     }
     // 特效图层可持续时间
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+      const secondsToPlay = this.state.selectLayer.secondsToPlay
+      AppToolBar.addData({selectARLayer: this.state.selectLayer,secondsToPlay})
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_SECONDS_TO_PLAY,
         image: getThemeAssets().layer.icon_tool_duration,
         action: async () => {
-          const layer = this.state.selectLayer
-
-          if("secondsToPlay" in this.state.selectLayer){
-            // 获取参数对象
-            const _params: any = ToolbarModule.getParams()
-            // 存放数据到ToolBarModule
-            arEditModule().setModuleData()
-            _params.showFullMap(true)
-            // 设置工具栏是否可见
-            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY, {
-              isTouchProgress: true,
-              showMenuDialog: false,
-              isFullScreen: true,
-            })
-            ToolbarModule.addData({selectAREffectLayer: layer, AREffectLayerSecondsToPlay: layer?.secondsToPlay })
-            NavigationService.goBack()
-
-          }
-
+          AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SECONDS_TO_PLAY')
+          NavigationService.goBack()
         },
       })
     }

@@ -8,10 +8,12 @@ import { MainStackScreenNavigationProps } from "@/types"
 import {
   arAnimationData,
   arAttributeData,
+  arMapSettingData,
   arMapStyleData,
   arSandTableData,
   ModuleList,
 } from "./modules"
+import { getARLayers } from "@/redux/models/arlayer"
 
 const SToolbar = createToolbar<ModuleList>()
 
@@ -40,6 +42,7 @@ class Toolbar extends React.Component<Props> {
         <SToolbar.Module name={'ARANIMATION'} data={arAnimationData}/>
         <SToolbar.Module name={'ARATTRIBUTE'} data={arAttributeData}/>
         <SToolbar.Module name={'ARMAP_STYLE'} data={arMapStyleData}/>
+        <SToolbar.Module name={'ARMAP_SETTING'} data={arMapSettingData}/>
       </SToolbar.Container>
     )
   }
@@ -50,9 +53,8 @@ const mapStateToProp = (state: RootState) => ({
   arMapInfo: state.arlayer.toJS(),
 })
 
-
 const mapDispatch = {
-
+  getARLayers
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

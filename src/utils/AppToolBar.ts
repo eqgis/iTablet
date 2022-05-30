@@ -1,4 +1,4 @@
-import { ARElement, ARElementStyle, IAnimationParam, IARTransform } from "imobile_for_reactnative/types/interface/ar"
+import { ARElement, ARElementStyle, IAnimationParam, IARTransform, ARLayer } from "imobile_for_reactnative/types/interface/ar"
 import ToolBarContainer from "../SMToolbar/ToolbarContainer"
 import { Props } from "../Toolbar"
 import { ModuleList } from "../Toolbar/modules"
@@ -38,14 +38,20 @@ interface ToolBarData {
   animationParam?: IAnimationParam
   /** 当前图层的风格 */
   currentLayerStyle?: ARElementStyle
-
+  /** 要操作的AR图层  */
+  selectARLayer?: ARLayer
   /** 是否正在添加AR对象，控制添加频率 */
   isAddingARElement?: boolean
-
+  secondsToPlay?: number
   /** 添加沙盒路径 */
   sandTablePath?: string
   sandTablePaths?:string[]
 
+  /** AR图层可见范围 */
+  maxVisibleBounds?: number
+  minVisibleBounds?: number
+  maxAnimationBounds?: number
+  minAnimationBounds?: number
   /** 矢量符号线的符号路径 */
   markerLineContent?: string
   /** 矢量线符号的文件夹路径 */

@@ -279,6 +279,16 @@ export default class Mine extends Component {
               }),
           })
           break
+        case 'SANDTABLE':
+          data.push({
+            title: getLanguage(this.props.language).Common.SAND_TABLE,
+            image: getThemeAssets().layerType.icon_layer_sandtable,
+            onClick: () =>
+              NavigationService.navigate('MySandTable', {
+                title: getLanguage(this.props.language).Common.SAND_TABLE,
+              }),
+          })
+          break
       }
     }
     return data

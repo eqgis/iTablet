@@ -24,6 +24,7 @@ import {
   MyColor,
   MyApplet,
   MyAIModel,
+  MySandTable,
   Personal,
   ToggleAccount,
   Setting,
@@ -310,6 +311,7 @@ export default function(params: {
       <Stack.Screen name="AppletManagement" component={AppletManagement} />
       <Stack.Screen name="AppletList" component={AppletList} />
       <Stack.Screen name="MyAIModel" component={MyAIModel} />
+      <Stack.Screen name="MySandTable" component={MySandTable} />
       <Stack.Screen name="ScanOnlineMap" component={ScanOnlineMap} />
       <Stack.Screen name="Personal" component={Personal} />
       <Stack.Screen name="SampleMap" component={SampleMap} />

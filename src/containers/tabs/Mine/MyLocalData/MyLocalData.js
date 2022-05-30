@@ -473,6 +473,7 @@ export default class MyLocalData extends Component {
         fileType === 'armap' ||
         fileType === 'armodel' ||
         fileType === 'areffect' ||
+        fileType === 'sandtable' ||
         fileType === 'xml_template'
       ) {
         this._onImportExternalData(this.itemInfo.item)

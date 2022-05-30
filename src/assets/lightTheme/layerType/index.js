@@ -25,6 +25,8 @@ const layer_text_selected = require('./icon_layer_text_selected.png')
 const layer_grid = require('./icon_layer_grid.png')
 const layer_grid_selected = require('./icon_layer_grid_selected.png')
 
+const icon_layer_sandtable = require('./icon_layer_sandtable.png')
+
 export default {
   icon_unknown_selected,
   icon_unknown,
@@ -61,4 +63,6 @@ export default {
   layer_text_selected,
   layer_grid,
   layer_grid_selected,
+
+  icon_layer_sandtable,
 }

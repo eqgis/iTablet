@@ -26,6 +26,7 @@ import MyAIModel from './MyAIModel'
 import MyARMap from './MyARMap'
 import MyARModel from './MyARModel'
 import MyAREffect from './MyAREffect'
+import MySandTable from './MySandTable'
 // import LoadServer from './MyBaseMap'
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -70,4 +71,5 @@ export {
   MyARMap,
   MyARModel,
   MyAREffect,
+  MySandTable,
 }

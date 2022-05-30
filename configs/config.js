@@ -34,6 +34,7 @@ export default {
     {key: 'MyColor'},
     {key: 'MyApplet'},
     {key: 'AIModel'},
+    {key: 'SANDTABLE'},
   ],
   infoServer: {
     // url: 'https://www.supermapol.com/web/datas/547487753/download',

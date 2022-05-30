@@ -85,4 +85,5 @@
    removeProgressListener,
    isInProgress,
    isProgressEnd,
+   removeProgress,
  }

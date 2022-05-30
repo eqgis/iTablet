@@ -769,8 +769,9 @@ export default class InterpolationAnalystView extends Component {
         }}
       >
         <KeyboardAvoidingView
+          style={{flex: 1}}
           behavior={Platform.OS === 'ios' && 'padding'}
-          keyboardVerticalOffset={-Const.BOTTOM_HEIGHT}
+          // keyboardVerticalOffset={-Const.BOTTOM_HEIGHT}
         >
           <ScrollView
             style={[styles.scrollView, { paddingBottom: -Const.BOTTOM_HEIGHT }]}

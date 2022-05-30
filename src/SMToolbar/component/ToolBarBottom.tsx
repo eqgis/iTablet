@@ -1,6 +1,6 @@
 import React, { createContext } from 'react'
 import { Image, ImageRequireSource, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import Animated, { EasingNode as Easing } from 'react-native-reanimated'
+import { Animated,  Easing } from 'react-native'
 import { AppStyle, dp } from '../../utils'
 
 /** toolbar bottom 按钮参数 */
@@ -59,7 +59,8 @@ class ToolBarBottom extends React.Component<Props> {
     Animated.timing(this.bottom, {
       toValue: this.isVisible() ? 0 : -2000,
       duration: 300,
-      easing: this.props.visible ?  Easing.bezier(0.28, 0, 0.63, 1) : Easing.cubic
+      easing: this.props.visible ?  Easing.bezier(0.28, 0, 0.63, 1) : Easing.cubic,
+      useNativeDriver: false
     }).start()
   }
 

@@ -1,16 +1,16 @@
-import { getImage } from "@/assets";
-import DataHandler from "@/containers/tabs/Mine/DataHandler";
-import { getLanguage } from "@/language";
-import { ToolbarTabItem } from "@/SMToolbar/component/ToolbarTab/ToolbarTabView";
-import { IToolbarOption, SelectionListOption, ToolBarBottomItem, ToolbarOption } from "@/SMToolbar/ToolbarOption";
-import { AppEvent, AppLog, AppToolBar, AppUser, Toast } from "@/utils";
-import AppDialog from "@/utils/AppDialog";
-import AppInputDialog from "@/utils/AppInputDialog";
-import { ARAction } from "imobile_for_reactnative";
-import { SARMap } from "imobile_for_reactnative";
-import { ModuleList } from "..";
-import { addModelToSandTable, saveARSandTable } from "./Actions";
-import { ARSAndTableViewOption } from "./BottomView";
+import { getImage } from "@/assets"
+import DataHandler from "@/containers/tabs/Mine/DataHandler"
+import { getLanguage } from "@/language"
+import { ToolbarTabItem } from "@/SMToolbar/component/ToolbarTab/ToolbarTabView"
+import { IToolbarOption, SelectionListOption, ToolBarBottomItem, ToolbarOption } from "@/SMToolbar/ToolbarOption"
+import { AppEvent, AppLog, AppToolBar, AppUser, Toast } from "@/utils"
+import AppDialog from "@/utils/AppDialog"
+import AppInputDialog from "@/utils/AppInputDialog"
+import { ARAction } from "imobile_for_reactnative"
+import { SARMap } from "imobile_for_reactnative"
+import { ModuleList } from ".."
+import { addModelToSandTable, saveARSandTable } from "./Actions"
+import { ARSAndTableViewOption } from "./BottomView"
 
 
 export function getData(key: ModuleList['ARSANDTABLE']): IToolbarOption {
@@ -67,6 +67,7 @@ function sandTableCreateOption(option: IToolbarOption) {
           confirm: () => {
             SARMap.closeARSandTable()
             SARMap.setAction(ARAction.NULL)
+            SARMap.cancel()
             AppToolBar.goBack()
           }
         })
@@ -174,7 +175,7 @@ function sandTableModifyOption(option: IToolbarOption) {
 
 function selectSandboxModel(option: IToolbarOption) {
 
-  ;(option.selectionListData as SelectionListOption<string>) = {
+  (option.selectionListData as SelectionListOption<string>) = {
     data: [],
     mode: 'multiple',
     onCencel: AppToolBar.goBack,
@@ -329,9 +330,9 @@ function getPoiEditBottom(): ToolBarBottomItem[] {
       onPress: () => {
         AppToolBar.resetTabData()
         SARMap.submit().then(() => {
-            SARMap.setAction(ARAction.NULL)
-            SARMap.clearSelection()
-            AppToolBar.goBack()
+          SARMap.setAction(ARAction.NULL)
+          SARMap.clearSelection()
+          AppToolBar.goBack()
         }
         )}
     },
@@ -383,7 +384,7 @@ function _getTransformTabData(): ToolbarTabItem[] {
         }
       })
       SARMap.appointEditElement(editItem.id, editItem.layerName)
-      
+
     })
   }
 

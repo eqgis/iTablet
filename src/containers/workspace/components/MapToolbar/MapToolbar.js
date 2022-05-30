@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { scaleSize, setSpText ,screen} from '../../../../utils'
+import { scaleSize, setSpText ,screen, AppToolBar} from '../../../../utils'
 import { ListSeparator, MTBtn } from '../../../../components'
 import { ChunkType, MapTabs } from '../../../../constants'
 import PropTypes from 'prop-types'
@@ -110,7 +110,7 @@ export default class MapToolbar extends React.Component {
             image: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene : getThemeAssets().tabBar.tab_map,
             selectedImage: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene_selected : getThemeAssets().tabBar.tab_map_selected,
             btnClick: () => {
-              global.ToolBar.existFullMap()
+              AppToolBar.getCurrentOption() === undefined && global.ToolBar.existFullMap()
               this.props.navigation &&
                 this.props.navigation.navigate('MapView', { type })
             },

@@ -243,7 +243,8 @@ export default class OverlayAnalystView extends Component {
           layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
 
           global.ToolBar && global.ToolBar.setVisible(false)
-          NavigationService.goBack('AnalystListEntry')
+          // NavigationService.goBack('AnalystListEntry')
+          NavigationService.navigate('MapStack', {screen: 'MapView'})
           // if (optionParameter.showResult) {
           //   TabNavigationService.navigate('MapAnalystView')
           // }

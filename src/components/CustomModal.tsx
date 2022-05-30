@@ -1,6 +1,6 @@
 import React from 'react'
 import { BackHandler, Pressable, StyleSheet, View } from 'react-native'
-import Animated, { EasingNode as Easing, concat } from 'react-native-reanimated'
+import { Animated, Easing } from 'react-native'
 import { RootSiblingPortal } from 'react-native-root-siblings'
 import { AppStyle } from '../utils'
 
@@ -83,7 +83,8 @@ class CustomModal extends React.Component<Props & DefaultProps, State> {
     Animated.timing(this.bottom, {
       toValue: visible ? 0 : -2000,
       duration: 300,
-      easing: visible ?  Easing.bezier(0.28, 0, 0.63, 1) : Easing.cubic
+      easing: visible ?  Easing.bezier(0.28, 0, 0.63, 1) : Easing.cubic,
+      useNativeDriver: false
     }).start()
     if(visible) {
       this.setState({childrenVisible: true})
@@ -99,25 +100,32 @@ class CustomModal extends React.Component<Props & DefaultProps, State> {
       toValue: visible ? 100 : 0,
       duration: 1,
       easing: Easing.linear,
+      useNativeDriver: false
     }).start()
     if(!visible) {
       Animated.timing(this.backgroundOpacity, {
         toValue: visible ? 0.6 : 0,
         duration: 1,
-        easing: Easing.linear
+        easing: Easing.linear,
+        useNativeDriver: false
       }).start()
     } else {
       setTimeout(() => {
         Animated.timing(this.backgroundOpacity, {
           toValue: visible ? 0.6 : 0,
           duration: 200,
-          easing: Easing.linear
+          easing: Easing.linear,
+          useNativeDriver: false,
         }).start()
       }, 300)
     }
   }
 
   renderBackground = () => {
+    const height = this.backgroundHeight.interpolate({
+      inputRange: [0, 100],
+      outputRange: ['0%', '100%'],
+    })
     return (
       <Animated.View
         style={[{
@@ -125,7 +133,7 @@ class CustomModal extends React.Component<Props & DefaultProps, State> {
           width: '100%',
           backgroundColor: this.props.transparent ? 'transparent' : AppStyle.Color.GRAY,
           opacity: this.props.animationType === 'slide' ? this.backgroundOpacity: 0.6,
-          height: this.props.animationType === 'slide' ? concat(this.backgroundHeight, '%') : '100%'
+          height: this.props.animationType === 'slide' ? height : '100%'
         }]}
       >
         <Pressable

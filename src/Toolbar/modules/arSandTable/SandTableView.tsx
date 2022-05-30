@@ -1,7 +1,7 @@
 import { ARElementType, ARLayerType, SARMap, FileTools, RNFS, ARAction } from 'imobile_for_reactnative'
 import React from 'react'
 import { Image, Platform, StyleSheet, TouchableOpacity } from 'react-native'
-import Animated, { EasingNode as Easing } from 'react-native-reanimated'
+import {Animated,  Easing } from 'react-native'
 import { getImage } from '../../../assets'
 import { getLanguage } from '../../../language'
 import {  AppEvent,  AppLog,  AppStyle, AppToolBar, CheckSpell, dp, Toast } from '../../../utils'
@@ -73,7 +73,8 @@ class SandTableView extends React.Component<Props, State> {
     Animated.timing(this.deleteRight, {
       toValue: visible ? dp(25) : -dp(80),
       duration: 300,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: false,
     }).start()
   }
 

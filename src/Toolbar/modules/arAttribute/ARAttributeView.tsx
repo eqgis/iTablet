@@ -2,10 +2,10 @@ import FloatBar, { FloatItem } from '@/components/FloatBar'
 import NavigationService from '@/containers/NavigationService'
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import Animated, { EasingNode as Easing } from 'react-native-reanimated'
+import { Animated,  Easing } from 'react-native'
 import { ModuleViewProps } from '../..'
 import { getImage } from '../../../assets'
-import {  AppToolBar, dp } from '../../../utils'
+import { dp } from '../../../utils'
 import Attribute from './component/Attribute'
 
 export interface ARAttributeViewOption {
@@ -34,7 +34,8 @@ class ARAttributeView extends React.Component<Props> {
     Animated.timing(this.layerRight, {
       toValue: visible ? dp(25) : -dp(80),
       duration: 300,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: false
     }).start()
   }
 
@@ -52,7 +53,7 @@ class ARAttributeView extends React.Component<Props> {
 
   renderLayer = () => {
     return (
-      <Animated.View style={[
+      <Animated.View style={
         this.isPortrait ? {
           right: this.layerRight,
           ...styles.settingButton
@@ -60,7 +61,7 @@ class ARAttributeView extends React.Component<Props> {
           top: dp(30),
           left: this.layerRight,
           ...styles.settingButtonL
-        }]}>
+        }}>
         <FloatBar
           data={this.getLayerData()}
           showSeperator={false}

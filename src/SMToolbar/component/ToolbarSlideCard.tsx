@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dimensions, StyleProp, StyleSheet, ViewStyle } from 'react-native'
 import { View } from 'react-native'
-import Animated, { EasingNode as Easing } from 'react-native-reanimated'
+import { Animated,  Easing } from 'react-native'
 import { AppStyle, dp } from '../../utils'
 import { LANDSCAPE_WIDTH } from './styles'
 import { BottomHeight, HeightContext } from './ToolBarBottom'
@@ -45,7 +45,8 @@ class ToolbarSlideCard extends React.Component<Props, State> {
     Animated.timing(this.bottom, {
       toValue: visible ? bottom : -2000,
       duration: 300,
-      easing: visible ?  Easing.bezier(0.28, 0, 0.63, 1) : Easing.cubic
+      easing: visible ?  Easing.bezier(0.28, 0, 0.63, 1) : Easing.cubic,
+      useNativeDriver: false
     }).start()
     if(visible) {
       this.setState({childrenVisible: true})

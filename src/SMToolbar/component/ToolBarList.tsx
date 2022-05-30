@@ -1,7 +1,6 @@
 import React from 'react'
-import { ImageRequireSource, ScaledSize } from 'react-native'
+import { ImageRequireSource, ScaledSize, ScrollView } from 'react-native'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
 import { AppProgress, AppStyle, dp } from '../../utils'
 import { LANDSCAPE_WIDTH } from './styles'
 import ToolbarSlideCard from './ToolbarSlideCard'

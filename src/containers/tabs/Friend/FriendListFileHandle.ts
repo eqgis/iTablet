@@ -256,8 +256,8 @@ export default class FriendListFileHandle {
           })
         }
       }
-      // iOS获取admin用户列表后,cookie发生改变,需要重新登录
-      if (Platform.OS === 'ios' &&  admingLoginResult?.succeed && cookie) {
+      // cookie发生改变,需要重新登录
+      if (admingLoginResult?.succeed && cookie) {
         await CookieManager.clearAll()
         if (FriendListFileHandle.user.password && FriendListFileHandle.user.userName) {
           await SIPortalService.login(FriendListFileHandle.user.serverUrl, FriendListFileHandle.user.userName, FriendListFileHandle.user.password, true)

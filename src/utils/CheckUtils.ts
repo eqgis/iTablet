@@ -89,7 +89,8 @@ function checkOnline3DServiceUrl(text: string): string {
 
 //正数检查
 function _checkPositveNumber(text: string): string {
-  if(text.startsWith('-')) {
+  const value = Number(text)
+  if(isNaN(value) || value <= 0) {
     return getLanguage().SHOULD_BE_POSITIVE_NUMBER
   }
   return ''

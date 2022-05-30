@@ -158,7 +158,7 @@ class SlideItem extends React.Component<ItemProps, ItemState> {
     this.setState({
       currentValue: this.props.item.defaultValue,
     }, () => {
-      this.sliderBar?.reset()
+      this.sliderBar?.onClear()
     })
   }
 

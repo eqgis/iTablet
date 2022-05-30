@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dimensions, FlatList, Image, ImageSourcePropType, ListRenderItemInfo, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import Animated, { EasingNode as Easing }  from 'react-native-reanimated'
+import { Animated, Easing }  from 'react-native'
 import { AppStyle, dp } from '../../utils'
 
 export interface ToolbarSlideHeaderOption {
@@ -90,7 +90,8 @@ class ToolbarSlideHeader extends React.Component<Props, State> {
     Animated.timing(this.top, {
       toValue: this.isPortrait ? dp(50) : dp(20),
       duration: 100,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: false
     }).start()
   }
 
@@ -99,7 +100,8 @@ class ToolbarSlideHeader extends React.Component<Props, State> {
     Animated.timing(this.top, {
       toValue: this.isPortrait ? dp(50) : dp(20),
       duration: 300,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: false
     }).start()
   }
 
@@ -107,7 +109,8 @@ class ToolbarSlideHeader extends React.Component<Props, State> {
     Animated.timing(this.top, {
       toValue: -dp(80),
       duration: 300,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: false
     }).start()
     setTimeout(() => {
       this._clearData()
@@ -118,19 +121,22 @@ class ToolbarSlideHeader extends React.Component<Props, State> {
     Animated.timing(this.left, {
       toValue: isShowAll ? dp(10) : 0,
       duration: 200,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: false
     }).start()
     if(this.itemWidth) {
       Animated.timing(this.width, {
         toValue: isShowAll ? this.getListWidth(): this.itemWidth,
         duration: 200,
-        easing: Easing.linear
+        easing: Easing.linear,
+        useNativeDriver: false
       }).start()
     }
     Animated.timing(this.borderRadius, {
       toValue: isShowAll ? BORDERRADIUS: 0,
       duration: 200,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: false
     }).start()
     this.props.option.onShowAll?.(isShowAll)
   }

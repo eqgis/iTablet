@@ -311,6 +311,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     this.ToolbarModule.setParams({
       type: state.type,
       setToolbarVisible: this.setVisible,
+      showBox:this.showBox,
       setLastState: this.setLastState,
       scrollListToLocation: this.scrollListToLocation,
       showMenuBox: this.showMenuBox,

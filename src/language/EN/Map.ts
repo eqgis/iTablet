@@ -574,6 +574,22 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   RELATIONSHIP:'RelationShip',
   LIST:'List',
   LOOP:'Loop',
+  COLOR: 'Color',
+  OPACITY: 'Opactiy',
+  BORDER_WIDTH: 'Border Width',
+  BORDER_COLOR: 'Border Color',
+  VISIBLE_DISTANCE:'Visible Distance',
+  SECONDS_TO_PLAY: 'Seconds to play',
+  TEXT_OPACITY: 'Transparency',
+  TEXT_COLOR: 'Color',
+  TEXT_SIZE: 'Size',
+  BACKGROUND_OPACITY: 'Background Transparency',
+  BACKGROUND_COLOR: 'Background Color',
+  LINE_COLOR_: 'Line Color',// To be translated
+  TIME_COLOR: 'Time Color',// To be translated
+  LINE_WIDTH: 'Line width',  // To be translated
+  LINE_POINT_SIZE: 'Line point size',  // To be translated
+  BUTTON_TEXT_SIZE: 'Button Size',// To be translated
 }
 
 // 推演动画

@@ -3,6 +3,7 @@ import {
   SARMap,
   ARAction,
   ARLayerType,
+  ARElementType,
 } from 'imobile_for_reactnative'
 import { IAnimationParam, ARElementLayer, AREffectLayer } from "imobile_for_reactnative/types/interface/ar"
 import { IVector3 } from "imobile_for_reactnative/types/data"
@@ -11,7 +12,7 @@ import {
   ToolbarType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { DialogUtils, Toast } from '../../../../../../utils'
+import { DialogUtils, Toast,AppToolBar } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 import { IARTransform } from '../types'
 import AREditData from './AREditData'
@@ -21,6 +22,35 @@ async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
   let prevType
   switch(_params.type) {
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_LINE_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_TIME_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT_SIZE:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ROTATION_ANGLE:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_OPACITY:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_BUTTON_TEXT_SIZE:
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND:
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_OPACITY:
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
+    case ConstToolType.SM_AR_EDIT_SETTING_ARRAY:
+      _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING, {
+        containerType: ToolbarType.table,
+        isFullScreen: false,
+      })
+      return
+    case ConstToolType.SM_AR_EDIT_SETTING:
+      _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+        containerType: ToolbarType.slider,
+        isFullScreen: false,
+        showMenuDialog: false,
+        selectName: getLanguage(global.language).ARMap.POSITION,
+        selectKey: getLanguage(global.language).ARMap.POSITION,
+      })
+      _params.showBox && _params.showBox()
+      return
     case ConstToolType.SM_AR_EDIT_ANIMATION_TYPE:
       prevType = ConstToolType.SM_AR_EDIT_ANIMATION
       break
@@ -48,6 +78,15 @@ async function toolbarBack() {
       _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
         isFullScreen: false,
       })
+      const element = AppToolBar.getData().selectARElement
+      if(typeof(element) !== 'string' && (element?.type === ARElementType.AR_ATTRIBUTE_ALBUM || element?.type === ARElementType.AR_BROCHOR || element?.type === ARElementType.AR_ALBUM || element?.type === ARElementType.AR_VIDEO_ALBUM|| element?.type === ARElementType.AR_SAND_TABLE_ALBUM)){
+        const style = await SARMap.getNodeStyle(element)
+        SARMap.setNodeStyle({TextShadow:style.TextShadow},element)
+        SARMap.setNodeStyle({TextBold:style.TextBold},element)
+        SARMap.setNodeStyle({Flags:style.TextFlags},element)
+        SARMap.setNodeStyle({TextSize:style.TextSize},element)
+        SARMap.setNodeStyle({TextRotation:style.TextRotation},element)
+      }
     }
     SARMap.clearSelection()
     SARMap.cancel()
@@ -356,6 +395,30 @@ function setTouchProgressInfo(title: string, value: number) {
   
 }
 
+function colorAction(type:any, item = {}) {
+  const element = AppToolBar.getData().selectARElement
+  switch (type.type){
+    case 'SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR':
+      SARMap.setNodeStyle({ TextColor: type.key }, element)
+    break
+    case 'SM_AR_EDIT_SETTING_IITLE_ALBUM_LINE_COLOR':
+      SARMap.setNodeStyle({ LineColor: type.key }, element)
+    break
+    case 'SM_AR_EDIT_SETTING_IITLE_ALBUM_TIME_COLOR':
+      SARMap.setNodeStyle({ TimeColor: type.key }, element)
+    break
+    case 'SM_AR_EDIT_SETTING_IITLE_COLOR':
+      SARMap.setNodeStyle({TextColor:type.key},element)
+    break
+    case 'SM_AR_EDIT_SETTING_BACKGROUND':
+      SARMap.setNodeStyle({fillColor:type.key},element)
+    break
+    case 'SM_AR_EDIT_SETTING_BACKGROUND_BORDER_COLOR':
+      SARMap.setNodeStyle({borderColor:type.key},element)
+      break
+  }
+}
+
 export default {
   toolbarBack,
   menu,
@@ -368,4 +431,5 @@ export default {
   showAnimationAction,
   createAnimation,
   deleteARElement,
+  colorAction,
 }

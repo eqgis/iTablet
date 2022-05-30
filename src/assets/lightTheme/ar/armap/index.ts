@@ -33,3 +33,19 @@ export const rotation_y = require('./icon_ar_y_rotate.png')
 export const rotation_z = require('./icon_ar_z_rotate.png')
 
 export const ar_animation = require('./icon_tool_deduction.png')
+
+export const icon_tool_title = require('./icon_tool_title.png')
+export const icon_tool_background = require('./icon_tool_background.png')
+export const icon_tool_array = require('./icon_tool_array.png')
+
+export const icon_tool_bold = require('./icon_tool_bold.png')
+export const icon_tool_tilt = require('./icon_tool_tilt.png')
+export const icon_tool_underline = require('./icon_tool_underline.png')
+export const icon_tool_strikethrough = require('./icon_tool_strikethrough.png')
+export const icon_tool_shadow = require('./icon_tool_shadow.png')
+
+export const icon_array_1_3 = require('./icon_array_1＊3.png')
+export const icon_array_2_3 = require('./icon_array_2＊3.png')
+export const icon_array_2_4 = require('./icon_array_2＊4.png')
+export const icon_array_3_3 = require('./icon_array_3＊3.png')
+export const icon_array_4_4 = require('./icon_array_4＊4.png')

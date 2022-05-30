@@ -297,7 +297,7 @@ class Slider extends React.Component<Props & DefaultProps, State> {
                 }}
               >
                 <Image
-                  source={this.state.disabled ? getImage().icon_check_in : getImage().icon_check}
+                  source={this.state.disabled ? getImage().icon_check : getImage().icon_uncheck}
                   style={AppStyle.Image_Style_Small}
                 />
                 <Text

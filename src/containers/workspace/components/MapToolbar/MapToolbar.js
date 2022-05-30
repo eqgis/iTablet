@@ -86,15 +86,15 @@ export default class MapToolbar extends React.Component {
     // let tabModules = this.props.mapModules.modules[
     //   this.props.mapModules.currentMapModule
     // ].tabModules
-    const module = this.props.mapModules.modules[
+    const _module = this.props.mapModules.modules[
       this.props.mapModules.currentMapModule
     ]
 
     let tabModules = []
-    if (module.getTabModules) {
-      tabModules = module.getTabModules(this.props.isAR ? 'ar' : 'map')
+    if (_module.getTabModules) {
+      tabModules = _module.getTabModules(this.props.isAR ? 'ar' : 'map')
     } else {
-      tabModules = module.tabModules
+      tabModules = _module.tabModules
     }
 
     for (let module of tabModules) {
@@ -110,7 +110,7 @@ export default class MapToolbar extends React.Component {
             image: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene : getThemeAssets().tabBar.tab_map,
             selectedImage: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene_selected : getThemeAssets().tabBar.tab_map_selected,
             btnClick: () => {
-              AppToolBar.getCurrentOption() === undefined && global.ToolBar.existFullMap()
+              AppToolBar.getCurrentOption() === undefined && global.ToolBar?.existFullMap()
               this.props.navigation &&
                 this.props.navigation.navigate('MapView', { type })
             },
@@ -125,8 +125,15 @@ export default class MapToolbar extends React.Component {
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
             btnClick: () => {
-              this.props.navigation &&
-                this.props.navigation.navigate(module, { type })
+              if (this.props.navigation) {
+                if (this.props.navigation.getState().type === 'tab') {
+                  this.props.navigation.navigate(module, { type })
+                } else {
+                  this.props.navigation.replace(module, { type })
+                }
+              }
+              // this.props.navigation &&
+              //   this.props.navigation.navigate(module, { type })
             },
           })
           break
@@ -152,8 +159,15 @@ export default class MapToolbar extends React.Component {
             image: getThemeAssets().tabBar.tab_setting,
             selectedImage: getThemeAssets().tabBar.tab_setting_selected,
             btnClick: () => {
-              this.props.navigation &&
-                this.props.navigation.navigate(module, { type })
+              if (this.props.navigation) {
+                if (this.props.navigation.getState().type === 'tab') {
+                  this.props.navigation.navigate(module, { type })
+                } else {
+                  this.props.navigation.replace(module, { type })
+                }
+              }
+              // this.props.navigation &&
+              //   this.props.navigation.replace(module, { type })
             },
           })
           break
@@ -180,10 +194,17 @@ export default class MapToolbar extends React.Component {
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
             btnClick: () => {
-              this.props.navigation &&
-                this.props.navigation.navigate('Layer3DManager', {
-                  type: 'MAP_3D',
-                })
+              if (this.props.navigation) {
+                if (this.props.navigation.getState().type === 'tab') {
+                  this.props.navigation.navigate(module, { type })
+                } else {
+                  this.props.navigation.replace(module, { type })
+                }
+              }
+              // this.props.navigation &&
+              //   this.props.navigation.navigate('Layer3DManager', {
+              //     type: 'MAP_3D',
+              //   })
             },
           })
           break
@@ -195,10 +216,17 @@ export default class MapToolbar extends React.Component {
             image: getThemeAssets().tabBar.tab_attribute,
             selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
             btnClick: () => {
-              this.props.navigation &&
-                this.props.navigation.navigate('LayerAttribute3D', {
-                  type: 'MAP_3D',
-                })
+              if (this.props.navigation) {
+                if (this.props.navigation.getState().type === 'tab') {
+                  this.props.navigation.navigate(module, { type })
+                } else {
+                  this.props.navigation.replace(module, { type })
+                }
+              }
+              // this.props.navigation &&
+              //   this.props.navigation.navigate('LayerAttribute3D', {
+              //     type: 'MAP_3D',
+              //   })
             },
           })
           break
@@ -210,8 +238,15 @@ export default class MapToolbar extends React.Component {
             image: getThemeAssets().tabBar.tab_setting,
             selectedImage: getThemeAssets().tabBar.tab_setting_selected,
             btnClick: () => {
-              this.props.navigation &&
-                this.props.navigation.navigate('Map3DSetting', {})
+              if (this.props.navigation) {
+                if (this.props.navigation.getState().type === 'tab') {
+                  this.props.navigation.navigate(module, { type })
+                } else {
+                  this.props.navigation.replace(module, { type })
+                }
+              }
+              // this.props.navigation &&
+              //   this.props.navigation.navigate('Map3DSetting', {})
             },
           })
           break

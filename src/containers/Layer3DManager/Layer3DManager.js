@@ -216,7 +216,8 @@ export default class Layer3DManager extends Component {
           withoutBack: true,
         }}
         onOverlayPress={() => {
-          this.props.navigation.navigate('Map3D')
+          // this.props.navigation.navigate('Map3D')
+          this.props.navigation.goBack()
         }}
         bottomBar={this.renderToolBar()}
         // bottomProps={{ type: 'fix' }}

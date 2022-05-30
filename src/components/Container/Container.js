@@ -289,10 +289,10 @@ export default class Container extends Component {
       }
     } else {
       if (NavigationService.isInMap()) {
-        NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
+        NavigationService.navigate('MapStack', {screen: 'MapView'})
       }
       if (NavigationService.isInMap3D()) {
-        NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: param})
+        NavigationService.navigate('Map3DStack', {screen: 'Map3D'})
       }
     }
   }

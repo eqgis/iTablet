@@ -156,7 +156,7 @@ function commit() {
 
      // 设置最大可见距离的方法
     if(Platform.OS === 'android') {
-      SARMap.setEffectLayerMaxVisibleBounds(layer.name, AREffectLayerVisibleBounds)
+      SARMap.setLayerMaxVisibleBounds(layer.name, AREffectLayerVisibleBounds)
     } else {
       // IOS TODO
     }

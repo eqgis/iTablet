@@ -34,17 +34,17 @@ const Common: typeof CN.Common = {
   SELECT_MODEL: 'モデルの選択',
 
   PLEASE_SELECT_MODEL: 'Please select model', // To be translated
-  
+
   SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
   SHOULD_BE_INTEGER: 'shoud be an integer',
   SHOULD_BE_POSITIVE_NUMBER: 'shoud be a positive number',
 
-  
+
   TRANVERSE: 'Tranverse',
   LONGITUDINAL: 'Longitudinal',
   HORIZONTAL: 'Horizontal',
   VERTICAL: 'Vertical',
-  
+
   EXIT_SAND_TABLE_CONFIRM: 'Do you want to quit editing the sand table?',
   PLEASE_INPUT_MODEL_NAME: 'Please input model name',
   SAND_TABLE: 'Sand Table',
@@ -86,9 +86,9 @@ const Common: typeof CN.Common = {
 
   ANIMATION_LIST: 'Animation list',  // to be translated
   ANIMATION_WINDOW: 'Animation window',  // to be translated
-  
+
   PLEASE_SELECT_ANIMATION: 'Please Select Animation',   // to be translated
-  
+
   DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
 
   NULL_DATA: 'Null Data', // to be translated
@@ -98,7 +98,22 @@ const Common: typeof CN.Common = {
   PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
-  
+
+  ALIGNMENT: '配置',
+  LEFT_START: '左上',
+  LEFT_END: '左下',
+  RIGHT_START: '右上',
+  RIGHT_END: '右下',
+  TOP_START: '上左',
+  TOP_END: '上右',
+  BOTTOM_START: '下左',
+  BOTTOM_END: '下右',
+
+
+  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
+  LINE_MARKER_SPEED: 'Speed', // To be translated
+  LINE_MARKER: 'Line marker',  // To be translated
+
 }
 
 export { Protocol, Common }

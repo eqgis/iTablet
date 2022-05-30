@@ -75,6 +75,8 @@ async function addAtCurrent(type: string, location?: Point3D) {
     await addARModel(location)
   } else if (type === ConstToolType.SM_AR_DRAWING_TEXT) {
     await addText(location)
+  } else if(type === ConstToolType.SM_AR_DRAWING_BUBBLE_TEXT) {
+    await addBubbleText(location)
   } else if (type === ConstToolType.SM_AR_DRAWING_ADD_BROCHORE) {
     await addBrochore(location)
   } else if (type === ConstToolType.SM_AR_DRAWING_ADD_SAND_TABLE_ALBUM) {
@@ -154,6 +156,16 @@ async function arText() {
     value: '',
     confirmAction: async (value: string) => {
       setARToolbar(ConstToolType.SM_AR_DRAWING_TEXT, { arContent: value })
+      DialogUtils.hideInputDailog()
+    },
+  })
+}
+
+function arBubbleText() {
+  DialogUtils.showInputDailog({
+    value: '',
+    confirmAction: async (value: string) => {
+      setARToolbar(ConstToolType.SM_AR_DRAWING_BUBBLE_TEXT, { arContent: value })
       DialogUtils.hideInputDailog()
     },
   })
@@ -336,6 +348,21 @@ async function addText(location?: Point3D) {
     const layer = _params.arlayer.currentLayer
     if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
       SARMap.addARText(layer.name, content, location)
+    }
+  } catch (error) {
+    Toast.show(error)
+  }
+}
+
+async function addBubbleText(location?: Point3D) {
+  try {
+    await checkARLayer(ARLayerType.AR_TEXT_LAYER)
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    let content = _data.arContent
+    const layer = _params.arlayer.currentLayer
+    if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
+      SARMap.addARBubbleText(layer.name, content, location)
     }
   } catch (error) {
     Toast.show(error)
@@ -854,6 +881,7 @@ export default {
   arImage,
   arWebView,
   arText,
+  arBubbleText,
   addText,
   ar3D,
   addARScene,

@@ -2,7 +2,7 @@ import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { scaleSize, Toast ,AppToolBar} from '../../../../../../utils'
 import { color } from '../../../../../../styles'
 import { getLanguage } from '../../../../../../language'
-import { getThemeAssets } from '../../../../../../assets'
+import { getImage, getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
@@ -416,6 +416,7 @@ function getMenuData(type:any) {
       case ARElementType.AR_VIDEO:
       case ARElementType.AR_WEBVIEW:
       case ARElementType.AR_TEXT:
+      case ARElementType.AR_BUBBLE_TEXT:
       case ARElementType.AR_MODEL:
       case ARElementType.AR_ATTRIBUTE_ALBUM:
       case ARElementType.AR_BROCHOR:
@@ -1179,6 +1180,9 @@ async function getAnimationData(type: string) {
 function getHeaderData(type: string) {
   let headerData: any
   const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+
+
   if (
     _params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
     _params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
@@ -1208,6 +1212,25 @@ function getHeaderData(type: string) {
         },
       }],
     }
+    if(_data.selectARElement && typeof _data.selectARElement !== 'string') {
+      if(_data.selectARElement.type === ARElementType.AR_TEXT
+      || _data.selectARElement.type === ARElementType.AR_BUBBLE_TEXT) {
+        headerData.headerRight.push({
+          key: 'edit_text',
+          // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+          action: AREditAction.changeARText,
+          size: 'large',
+          image: getImage().icon_edit,
+          style: {
+            width: scaleSize(60),
+            height: scaleSize(60),
+            borderRadius: scaleSize(8),
+            backgroundColor: color.white,
+          },
+        })
+      }
+    }
+
   }
   return headerData
 }

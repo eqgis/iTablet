@@ -111,6 +111,9 @@ const Common = {
   LINE_MARKER_SPEED: '流速',
   LINE_MARKER: '符号',
 
+
+  BUBBLE_TEXT: '气泡文字',
+
 }
 
 export { Protocol, Common }

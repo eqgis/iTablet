@@ -4910,6 +4910,7 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_VIDEO
               || element.type === ARElementType.AR_WEBVIEW
               || element.type === ARElementType.AR_TEXT
+              || element.type === ARElementType.AR_BUBBLE_TEXT
               || element.type === ARElementType.AR_MODEL
               || element.type === ARElementType.AR_ALBUM
               || element.type === ARElementType.AR_BROCHOR

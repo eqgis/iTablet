@@ -65,3 +65,5 @@ export const align_bottom_end = require('./icon_align_lower_end.png')
 
 
 export const marker_line = require('./icon_vector_symbol.png')
+
+export const bubble_text = require('./icon_ar_bubble_text.png')

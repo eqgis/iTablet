@@ -12,7 +12,7 @@ import {
   ToolbarType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { DialogUtils, Toast,AppToolBar } from '../../../../../../utils'
+import { DialogUtils, Toast,AppToolBar, AppInputDialog } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 import { IARTransform } from '../types'
 import AREditData from './AREditData'
@@ -419,6 +419,20 @@ function colorAction(type:any, item = {}) {
   }
 }
 
+async function changeARText() {
+  const _data: any = ToolbarModule.getData()
+  const element = _data.selectARElement
+  if(_data.selectARElement && typeof _data.selectARElement !== 'string') {
+    const text = await SARMap.getARText(element.layerName, element.id)
+    AppInputDialog.show({
+      defaultValue: text,
+      confirm: text => {
+        SARMap.setARText(element.layerName, element.id, text)
+      }
+    })
+  }
+}
+
 export default {
   toolbarBack,
   menu,
@@ -432,4 +446,5 @@ export default {
   createAnimation,
   deleteARElement,
   colorAction,
+  changeARText,
 }

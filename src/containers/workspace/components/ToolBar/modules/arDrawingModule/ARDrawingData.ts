@@ -1,6 +1,6 @@
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { getThemeAssets, getARSceneAssets, getPublicAssets } from '../../../../../../assets'
+import { getThemeAssets, getARSceneAssets, getPublicAssets, getImage } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
@@ -128,6 +128,13 @@ async function getData(type: string, params: {[name: string]: any}) {
               title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
               action: ARDrawingAction.arText,
             },
+            {
+              key: ConstToolType.SM_AR_DRAWING_BUBBLE_TEXT,
+              image: getImage().bubble_text,
+              // selectedImage: any,
+              title: getLanguage().BUBBLE_TEXT,
+              action: ARDrawingAction.arBubbleText,
+            },
           ],
           onPress: () => {
             // 点击tab后将索引值同步
@@ -206,6 +213,7 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_VIDEO:
     case ConstToolType.SM_AR_DRAWING_WEB:
     case ConstToolType.SM_AR_DRAWING_TEXT:
+    case ConstToolType.SM_AR_DRAWING_BUBBLE_TEXT:
     case ConstToolType.SM_AR_DRAWING_SCENE:
     case ConstToolType.SM_AR_DRAWING_MODAL:
     case ConstToolType.SM_AR_DRAWING_ADD_BROCHORE:

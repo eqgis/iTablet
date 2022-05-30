@@ -58,6 +58,7 @@ import SecondMapSettings from './mapSetting/secondMapSettings'
 // 地图功能页面
 import MTLayerManager from './mtLayerManager'
 import Layer3DManager from './Layer3DManager'
+import MapSetting from './mapSetting'
 import {
   LayerSelectionAttribute,
   LayerAttributeAdd,
@@ -230,6 +231,11 @@ export default function(params: {
         {() => CoworkTabs(params.device)}
       </Stack.Screen>
       <Stack.Screen name="MapViewSingle" component={MapView} />
+      <Stack.Screen name="MapSetting" component={MapSetting} options={{
+        headerShown: false,
+        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+        presentation: 'containedTransparentModal',
+      }}/>
       <Stack.Screen name="CoworkMember" component={CoworkMember} />
       <Stack.Screen name="CoworkMessage" component={CoworkMessage} />
       <Stack.Screen name="GroupSelectPage" component={GroupSelectPage} />
@@ -241,8 +247,18 @@ export default function(params: {
       <Stack.Screen name="GroupMessagePage" component={GroupMessagePage} />
       <Stack.Screen name="SelectModulePage" component={SelectModulePage} />
       <Stack.Screen name="GroupSettingPage" component={GroupSettingPage} />
-      <Stack.Screen name="LayerManager" component={MTLayerManager} />
-      <Stack.Screen name="Layer3DManager" component={Layer3DManager} />
+      <Stack.Screen name="LayerManager" component={MTLayerManager} options={{
+        headerShown: false,
+        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+        // presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
+        // animation: 'none',
+        presentation: 'containedTransparentModal',
+      }}/>
+      <Stack.Screen name="Layer3DManager" component={Layer3DManager} options={{
+        headerShown: false,
+        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+        presentation: 'containedTransparentModal',
+      }}/>
       <Stack.Screen name="LayerSelectionAttribute" component={LayerSelectionAttribute} />
       <Stack.Screen name="LayerAttributeAdd" component={LayerAttributeAdd} />
       <Stack.Screen name="LayerAttributeSearch" component={LayerAttributeSearch} />
@@ -314,7 +330,10 @@ export default function(params: {
       <Stack.Screen name="Protocol" component={Protocol} />
       <Stack.Screen name="PublicMap" component={PublicMap} />
       <Stack.Screen name="PointAnalyst" component={PointAnalyst} options={{
-        animation: Platform.OS === 'ios' ? 'default' : (params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right'),
+        // animation: (params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right'),
+        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+        headerShown: false,
+        presentation: 'containedTransparentModal',
       }}/>
       <Stack.Screen name="FriendMap" component={FriendMap} />
       <Stack.Screen name="MyLabel" component={MyLabel} />
@@ -389,14 +408,25 @@ export default function(params: {
       <Stack.Screen name="SecondMapSettings6" component={SecondMapSettings} />
       <Stack.Screen name="SecondMapSettings7" component={SecondMapSettings} />
       <Stack.Screen name="NavigationView" component={NavigationView} options={{
-        animation: Platform.OS === 'ios' ? 'default' : (params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right'),
+        // animation: Platform.OS === 'ios' ? 'default' : (params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right'),
+        headerShown: false,
+        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+        presentation: 'containedTransparentModal',
       }} />
       <Stack.Screen name="NavigationDataChangePage" component={NavigationDataChangePage} />
       <Stack.Screen name="CreateNavDataPage" component={CreateNavDataPage} />
       <Stack.Screen name="CollectSceneFormHistoryView" component={CollectSceneFormHistoryView} />
       <Stack.Screen name="CustomModePage" component={CustomModePage} />
-      <Stack.Screen name="ARLayerManager" component={ARLayerManager} />
-      <Stack.Screen name="ARMapSetting" component={ARMapSetting} />
+      <Stack.Screen name="ARLayerManager" component={ARLayerManager} options={{
+        headerShown: false,
+        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+        presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
+      }}/>
+      <Stack.Screen name="ARMapSetting" component={ARMapSetting} options={{
+        headerShown: false,
+        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+        presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
+      }}/>
       <Stack.Screen name="ServiceShareSettings" component={ServiceShareSettings} />
       <Stack.Screen name="NavigationView2D" component={NavigationView2D} />
       <Stack.Screen name="RoadNet" component={RoadNet} />

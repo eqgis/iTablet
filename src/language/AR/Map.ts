@@ -581,6 +581,22 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   RELATIONSHIP:'RelationShip',//to be translate
   LIST:'List',//to be translate
   LOOP:'Loop',//to be translate
+  COLOR: 'الألوان',
+  OPACITY: 'مبهمة',
+  BORDER_WIDTH: 'عرض الحدود',
+  BORDER_COLOR: 'لون الحدود',
+  VISIBLE_DISTANCE:'المسافة المرئية',
+  SECONDS_TO_PLAY: 'Seconds to play',  // To be translated
+  TEXT_OPACITY: 'نص التعتيم',
+  TEXT_COLOR: 'لون النص',
+  TEXT_SIZE: 'حجم النص',
+  BACKGROUND_OPACITY: 'خلفية التعتيم',
+  BACKGROUND_COLOR: 'لون الخلفية',
+  LINE_COLOR_: 'Line Color',// To be translated
+  TIME_COLOR: 'Time Color',// To be translated
+  LINE_WIDTH: 'Line width',  // To be translated
+  LINE_POINT_SIZE: 'Line point size',  // To be translated
+  BUTTON_TEXT_SIZE: 'Button Size',// To be translated
 }
 
 // 推演动画

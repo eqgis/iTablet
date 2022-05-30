@@ -424,14 +424,14 @@ const styles = StyleSheet.create({
   },
   text: {
     color: AppStyle.Color.Text_Dark,
-    fontSize: dp(12),
+    fontSize: dp(14),
     backgroundColor: 'transparent',
     textAlign: 'center',
   },
   textHighLight: {
     color: AppStyle.Color.WHITE,
     fontWeight: 'bold',
-    fontSize: dp(12),
+    fontSize: dp(15),
     backgroundColor: 'transparent',
     textAlign: 'center',
   },

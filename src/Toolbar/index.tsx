@@ -8,6 +8,7 @@ import { MainStackScreenNavigationProps } from "@/types"
 import {
   arAnimationData,
   arAttributeData,
+  arMapStyleData,
   arSandTableData,
   ModuleList,
 } from "./modules"
@@ -38,6 +39,7 @@ class Toolbar extends React.Component<Props> {
         <SToolbar.Module name={'ARSANDTABLE'} data={arSandTableData}/>
         <SToolbar.Module name={'ARANIMATION'} data={arAnimationData}/>
         <SToolbar.Module name={'ARATTRIBUTE'} data={arAttributeData}/>
+        <SToolbar.Module name={'ARMAP_STYLE'} data={arMapStyleData}/>
       </SToolbar.Container>
     )
   }

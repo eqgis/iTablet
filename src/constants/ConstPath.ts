@@ -42,9 +42,10 @@ const RelativePath = {
   AREffect: `${Data}AREffect/`,
   ARSandTable: `${Data}ARSandTable/`,
   // ARScene: `${Data}ARScene/`,
+  ARSymbol: `${Data}ARSymbol/`,
 }
 
-const RelativeFilePath: {[name: string]: string} = {
+const RelativeFilePath = {
   ExportData: 'ExportData/',
   WorkspaceFile: Workspace,
   // Workspace: Data + 'Workspace.smwu', // 工作空间

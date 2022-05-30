@@ -34,17 +34,17 @@ const Common: typeof CN.Common = {
   SELECT_MODEL: 'Select Model',
 
   PLEASE_SELECT_MODEL: 'Please select model',
-  
+
   SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
   SHOULD_BE_INTEGER: 'shoud be an integer',
   SHOULD_BE_POSITIVE_NUMBER: 'shoud be a positive number',
 
-  
+
   TRANVERSE: 'Tranverse',
   LONGITUDINAL: 'Longitudinal',
   HORIZONTAL: 'Horizontal',
   VERTICAL: 'Vertical',
-  
+
   EXIT_SAND_TABLE_CONFIRM: 'Do you want to quit editing the sand table?',
   PLEASE_INPUT_MODEL_NAME: 'Please input model name',
   SAND_TABLE: 'Sand Table',
@@ -52,7 +52,7 @@ const Common: typeof CN.Common = {
   MODEL_LIST: 'Model List',
 
   ALIGN: 'Alignment',
-  
+
   VISIBILITY: 'Visibility',
   SHOW: 'Show',
   HIDE: 'Hide',
@@ -82,13 +82,13 @@ const Common: typeof CN.Common = {
   END_DEGREE: 'End Degree',
 
   KEEP_VISIBLE: 'Keep Visible',
-  KEEP_REPEATE: 'Keep Repeat', 
+  KEEP_REPEATE: 'Keep Repeat',
 
-  ANIMATION_LIST: 'Animation list', 
-  ANIMATION_WINDOW: 'Animation window', 
-  
-  PLEASE_SELECT_ANIMATION: 'Please Select Animation',  
-  
+  ANIMATION_LIST: 'Animation list',
+  ANIMATION_WINDOW: 'Animation window',
+
+  PLEASE_SELECT_ANIMATION: 'Please Select Animation',
+
   DELETE_COMFIRM: 'Would you like to delete it?',
 
   NULL_DATA: 'Null Data', // to be translated
@@ -98,7 +98,20 @@ const Common: typeof CN.Common = {
   PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
-  
+
+  ALIGNMENT: 'Alignment',
+  LEFT_START: 'Left Top',
+  LEFT_END: 'Left Bottom',
+  RIGHT_START: 'Right Top',
+  RIGHT_END: 'Right Bottom',
+  TOP_START: 'Top Left',
+  TOP_END: 'Top Right',
+  BOTTOM_START: 'Bottom Left',
+  BOTTOM_END: 'Bottom Right',
+
+  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
+  LINE_MARKER_SPEED: 'Speed', // To be translated
+  LINE_MARKER: 'Line marker',  // To be translated
 }
 
 export { Protocol, Common }

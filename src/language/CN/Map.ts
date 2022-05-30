@@ -572,6 +572,22 @@ const Map_Main_Menu = {
   RELATIONSHIP:'流程',
   LIST:'列表',
   LOOP:'循环',
+  COLOR: '颜色',
+  OPACITY: '透明度',
+  BORDER_WIDTH: '边框宽度',
+  BORDER_COLOR: '边框色',
+  VISIBLE_DISTANCE: '可见距离',
+  SECONDS_TO_PLAY: '持续时间',
+  TEXT_OPACITY: '文字透明',
+  TEXT_COLOR: '文字颜色',
+  TEXT_SIZE: '字号',
+  BACKGROUND_OPACITY: '背景透明',
+  BACKGROUND_COLOR: '背景色',
+  LINE_COLOR_: '线颜色',
+  TIME_COLOR: '时间戳颜色',
+  LINE_WIDTH: '线宽',
+  LINE_POINT_SIZE: '节点大小',
+  BUTTON_TEXT_SIZE: '按钮字号',
 }
 
 // 推演动画

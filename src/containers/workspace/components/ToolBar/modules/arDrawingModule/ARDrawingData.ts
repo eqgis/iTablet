@@ -54,7 +54,7 @@ async function getData(type: string, params: {[name: string]: any}) {
       ToolbarBtnType.TOOLBAR_COMMIT,
     ]
   } else {
-    buttons = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
+    buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.TOOLBAR_COMMIT]
   }
   switch (type) {
     case ConstToolType.SM_AR_DRAWING:

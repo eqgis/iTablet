@@ -572,7 +572,7 @@ class AnimatorParamSetting extends React.Component<Props, State> {
   renderNodeTranslationParam = () => {
     return (
       <>
-        <Seperator text={getLanguage().POSITION}/>
+        <Seperator text={getLanguage().ARMap.POSITION}/>
 
         <BoolItem
           name={getLanguage().START_FROM_CURRENT_POSITION}

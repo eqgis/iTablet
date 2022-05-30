@@ -8,6 +8,7 @@ import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import { SARMap, ARLayerType } from 'imobile_for_reactnative'
+import { arMapStyleData } from '@/Toolbar/modules'
 
 class ArStyleModule extends FunctionModule {
   constructor(props) {
@@ -47,10 +48,11 @@ class ArStyleModule extends FunctionModule {
       return
     }
     if (
-      _params.arlayer.currentLayer.type === ARLayerType.AR_SCENE_LAYER ||
-      _params.arlayer.currentLayer.type === ARLayerType.AR_MODEL_LAYER
+      _params.arlayer.currentLayer.type !== ARLayerType.AR_MEDIA_LAYER ||
+      _params.arlayer.currentLayer.type === ARLayerType.EFFECT_LAYER
     ) {
-      Toast.show(getLanguage(_params.language).ARMap.AR_LAYER_NOT_SUPPORT_STYLE)
+      // 除了 poi 和 特效图层， 其他由新的 toobar 处理
+      arMapStyleData.action()
       return
     }
     this.setModuleData(this.type)

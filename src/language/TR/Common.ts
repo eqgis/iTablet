@@ -34,17 +34,17 @@ const Common: typeof CN.Common = {
   SELECT_MODEL: 'Model Seç',
 
   PLEASE_SELECT_MODEL: 'Please select model', // To be translated
-  
+
   SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
   SHOULD_BE_INTEGER: 'shoud be an integer',
   SHOULD_BE_POSITIVE_NUMBER: 'shoud be a positive number',
 
-  
+
   TRANVERSE: 'Tranverse',
   LONGITUDINAL: 'Longitudinal',
   HORIZONTAL: 'Horizontal',
   VERTICAL: 'Vertical',
-  
+
   EXIT_SAND_TABLE_CONFIRM: 'Do you want to quit editing the sand table?',
   PLEASE_INPUT_MODEL_NAME: 'Please input model name',
   SAND_TABLE: 'Sand Table',
@@ -52,7 +52,7 @@ const Common: typeof CN.Common = {
   MODEL_LIST: 'Model List',
 
   ALIGN: 'Alignment',
-  
+
   VISIBILITY: 'Visibility', // to be translated
   SHOW: 'Show', // to be translated
   HIDE: 'Hide', // to be translated
@@ -86,9 +86,9 @@ const Common: typeof CN.Common = {
 
   ANIMATION_LIST: 'Animation list',  // to be translated
   ANIMATION_WINDOW: 'Animation window',  // to be translated
-  
+
   PLEASE_SELECT_ANIMATION: 'Please Select Animation',   // to be translated
-  
+
   DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
 
   NULL_DATA: 'Null Data', // to be translated
@@ -98,7 +98,21 @@ const Common: typeof CN.Common = {
   PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
-  
+
+  ALIGNMENT: 'Hizalama',
+  LEFT_START: 'Sol Başlangıç',
+  LEFT_END: 'Sol Uç',
+  RIGHT_START: 'Sağ Başlangıç',
+  RIGHT_END: 'Sağ Uç',
+  TOP_START: 'Üst Başlangıç',
+  TOP_END: 'Üst Uç',
+  BOTTOM_START: 'Alt Başlangıç',
+  BOTTOM_END: 'Alt Uç',
+
+  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
+  LINE_MARKER_SPEED: 'Speed', // To be translated
+  LINE_MARKER: 'Line marker',  // To be translated
+
 }
 
 export { Protocol, Common }

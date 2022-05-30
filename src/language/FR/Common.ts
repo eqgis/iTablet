@@ -34,17 +34,17 @@ const Common: typeof CN.Common = {
   SELECT_MODEL: 'Sélectionner le Modèle',
 
   PLEASE_SELECT_MODEL: 'Please select model', // To be translated
-  
+
   SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
   SHOULD_BE_INTEGER: 'shoud be an integer',
   SHOULD_BE_POSITIVE_NUMBER: 'shoud be a positive number',
 
-  
+
   TRANVERSE: 'Tranverse',
   LONGITUDINAL: 'Longitudinal',
   HORIZONTAL: 'Horizontal',
   VERTICAL: 'Vertical',
-  
+
   EXIT_SAND_TABLE_CONFIRM: 'Do you want to quit editing the sand table?',
   PLEASE_INPUT_MODEL_NAME: 'Please input model name',
   SAND_TABLE: 'Sand Table',
@@ -86,11 +86,11 @@ const Common: typeof CN.Common = {
 
   ANIMATION_LIST: 'Animation list',  // to be translated
   ANIMATION_WINDOW: 'Animation window',  // to be translated
-  
+
   PLEASE_SELECT_ANIMATION: 'Please Select Animation',   // to be translated
-  
+
   DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
-  
+
   NULL_DATA: 'Null Data', // to be translated
 
   PLEASE_SELECT_OBJ: 'Please select object', // to be translated
@@ -98,7 +98,20 @@ const Common: typeof CN.Common = {
   PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
-  
+
+  ALIGNMENT: 'Alignement',
+  LEFT_START: 'Départ à gauche',
+  LEFT_END: 'Fin à gauche',
+  RIGHT_START: 'Départ à droite',
+  RIGHT_END: 'Fin à droite',
+  TOP_START: 'Départ en haut',
+  TOP_END: 'Fin en haut',
+  BOTTOM_START: 'Départ en bas',
+  BOTTOM_END: 'Fin en bas',
+
+  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
+  LINE_MARKER_SPEED: 'Speed', // To be translated
+  LINE_MARKER: 'Line marker',  // To be translated
 }
 
 export { Protocol, Common }

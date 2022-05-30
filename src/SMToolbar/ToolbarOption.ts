@@ -51,7 +51,10 @@ export interface IToolbarOption {
 
   slideData: ToolBarSlideOption
 
-  /** tab 数据  tabOption和 menuData是等价的，可以互换 */
+  /**
+   *  tab 数据  tabOption和 menuData是等价的，可以互换
+   *  @deprecated iTablet中最好替换为menuData，使用iTablet的风格
+   */
   tabOption: ToolbarTabOption
 
   /** 选择列表，支持单选 多选 */

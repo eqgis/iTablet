@@ -1,11 +1,7 @@
-import { ARLayer } from "imobile_for_reactnative"
-import { AIRecognitionInfo, ARNodeStyle } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ARElement, ARElementStyle, IAnimationParam, IARTransform } from "imobile_for_reactnative/types/interface/ar"
-import { GeometrySelectedEvent } from "imobile_for_reactnative/types/interface/mapping/SMap"
 import ToolBarContainer from "../SMToolbar/ToolbarContainer"
 import { Props } from "../Toolbar"
 import { ModuleList } from "../Toolbar/modules"
-import CameraRoll from "@react-native-community/cameraroll"
 
 let toolbarRef: ToolBarContainer<ModuleList>
 
@@ -42,15 +38,20 @@ interface ToolBarData {
   animationParam?: IAnimationParam
   /** 当前图层的风格 */
   currentLayerStyle?: ARElementStyle
- 
+
   /** 是否正在添加AR对象，控制添加频率 */
   isAddingARElement?: boolean
- 
+
   /** 添加沙盒路径 */
   sandTablePath?: string
   sandTablePaths?:string[]
 
-
+  /** 矢量符号线的符号路径 */
+  markerLineContent?: string
+  /** 矢量线符号的文件夹路径 */
+  arSymbolFilePath?: string
+  /** ar矢量线符号数组 */
+  ARSymbolObjList?: Array<ARSymbolObj>
   /** 选中的沙盘模型路径 */
   sandTableModels?: string[]
 

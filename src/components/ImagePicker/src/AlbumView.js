@@ -287,7 +287,7 @@ export default class AlbumView extends React.PureComponent {
           selectedItems: [itemuri],
         })
       } else {
-        Alert.alert('', this.props.route.params.maxSizeChooseAlert(this.props.route.params.maxSize))
+        // Alert.alert('', this.props.route.params.maxSizeChooseAlert(this.props.route.params.maxSize))
       }
     } else {
       this.setState({

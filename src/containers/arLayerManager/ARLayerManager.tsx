@@ -3,8 +3,8 @@ import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
 import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo, View, Platform } from 'react-native'
-import { scaleSize, Toast, DialogUtils } from '../../utils'
-import { getThemeAssets } from '../../assets'
+import { scaleSize, Toast, DialogUtils, AppToolBar } from '../../utils'
+import { getImage, getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
 import { ARMapInfo } from '../../redux/models/arlayer'
 import { ARMapState } from '../../redux/models/armap'
@@ -121,7 +121,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
   }
 
   _getMenuData = () => {
-    let menuData = [{
+    const menuData = [{
       title: '',
       data: [
         // {
@@ -142,7 +142,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           title: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
           image: getThemeAssets().layer.icon_layer_rename02,
           action: async () => {
-            let layer = this.state.selectLayer
+            const layer = this.state.selectLayer
             // if (this.props.arlayer.currentLayer) {
             if (layer) {
               DialogUtils.showInputDailog({
@@ -188,12 +188,12 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }]
 
     // 特效图层下移
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_DOWN,
         image: getThemeAssets().layer.icon_edit_movedown,
         action: async () => {
-          
+
           if(Platform.OS === 'android') {
             const isMoveup = await SARMap.moveLayerDown(this.state.selectLayer.name)
             if(isMoveup) {
@@ -215,9 +215,9 @@ export default class ARLayerManager extends React.Component<Props, State> {
         },
       })
     }
-    
+
     // 特效图层上移
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_UP,
         image: getThemeAssets().layer.icon_edit_moveup,
@@ -245,85 +245,45 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
 
     //ARElementLayer添加可见范围
-    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer) {
-      if('maxAnimationBounds' in this.state.selectLayer) {
-        // 非特效图层的可见距离的设置
-        menuData[0].data.unshift({
-          title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
-          image: getThemeAssets().layer.icon_visible_distance,
-          action: async () => {
-
-            let layer = this.state.selectLayer
-            if (layer && 'maxVisibleBounds' in layer) {
-              const _params: any = ToolbarModule.getParams()
-              arEditModule().setModuleData()
-              _params.showFullMap(true)
-              // 将类型换成特效图层的
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS, {
-                isTouchProgress: true,
-                showMenuDialog: false,
-                isFullScreen: true,
-              })
-              ToolbarModule.addData({selectARElementLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds})
-              NavigationService.goBack()
-            }
-          },
-        })
-      } else if("secondsToPlay" in this.state.selectLayer) {
-        // 特效图层的可见距离的设置
-        menuData[0].data.unshift({
-          title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
-          image: getThemeAssets().layer.icon_visible_distance,
-          action: async () => {
-            
-            let layer = this.state.selectLayer
-          
-            if (layer && 'maxVisibleBounds' in layer) {
-              // 获取参数对象
-              const _params: any = ToolbarModule.getParams()
-              // 存放数据到ToolBarModule
-              arEditModule().setModuleData()
-              _params.showFullMap(true)
-              // 设置工具栏是否可见
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS, {
-                isTouchProgress: true,
-                showMenuDialog: false,
-                isFullScreen: true,
-              })
-              ToolbarModule.addData({selectAREffectLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds, AREffectLayerVisibleBounds: layer.maxVisibleBounds,})
-              NavigationService.goBack()
-            }
-          },
-        })
-      }
-      
+    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer
+       && !(Platform.OS === 'ios' && this.state.selectLayer.type === ARLayerType.EFFECT_LAYER)) {
+      const maxVisibleBounds = this.state.selectLayer.maxVisibleBounds
+      const minVisibleBounds = this.state.selectLayer.minVisibleBounds
+      AppToolBar.addData({selectARLayer: this.state.selectLayer, maxVisibleBounds, minVisibleBounds})
+      menuData[0].data.unshift({
+        title: getLanguage().LAYERS_VISIBLE_DISTANCE,
+        image: getImage().icon_visible_distance,
+        action: async () => {
+          AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SETTING_VIEW_BOUNDS')
+          NavigationService.goBack()
+        },
+      })
     }
 
+    //ARElementLayer 动画范围
+    if(Platform.OS === 'android' && this.state.selectLayer && 'maxAnimationBounds' in this.state.selectLayer) {
+      const maxAnimationBounds = this.state.selectLayer.maxAnimationBounds
+      const minAnimationBounds = this.state.selectLayer.minAnimationBounds
+      AppToolBar.addData({selectARLayer: this.state.selectLayer, maxAnimationBounds, minAnimationBounds})
+      menuData[0].data.unshift({
+        title: getLanguage().ANIMATION_SETTING,
+        image: getImage().icon_edit,
+        action: async () => {
+          AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SETTING_ANIMATION')
+          NavigationService.goBack()
+        },
+      })
+    }
     // 特效图层可持续时间
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+      const secondsToPlay = this.state.selectLayer.secondsToPlay
+      AppToolBar.addData({selectARLayer: this.state.selectLayer,secondsToPlay})
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_SECONDS_TO_PLAY,
         image: getThemeAssets().layer.icon_tool_duration,
         action: async () => {
-          let layer = this.state.selectLayer
-        
-          if("secondsToPlay" in this.state.selectLayer){
-            // 获取参数对象
-            const _params: any = ToolbarModule.getParams()
-            // 存放数据到ToolBarModule
-            arEditModule().setModuleData()
-            _params.showFullMap(true)
-            // 设置工具栏是否可见
-            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY, {
-              isTouchProgress: true,
-              showMenuDialog: false,
-              isFullScreen: true,
-            })
-            ToolbarModule.addData({selectAREffectLayer: layer, AREffectLayerSecondsToPlay: layer?.secondsToPlay })
-            NavigationService.goBack()
-            
-          }
-
+          AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SECONDS_TO_PLAY')
+          NavigationService.goBack()
         },
       })
     }

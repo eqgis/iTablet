@@ -113,6 +113,5 @@ const Common: typeof CN.Common = {
   LINE_MARKER_SPEED: 'Speed', // To be translated
   LINE_MARKER: 'Line marker',  // To be translated
 }
-}
 
 export { Protocol, Common }

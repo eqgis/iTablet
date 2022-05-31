@@ -144,7 +144,6 @@ export const language_cn = {
 
   ADD_WEIGHT_STATISTIC: "增加权重字段",
 
-
   // 邻近分析
   DISPLAY_REGION_SETTINGS: "显示区域设置",
   CUSTOM_LOCALE: "自定义区域",
@@ -348,7 +347,6 @@ export const language_cn = {
   RAINBOW_COLOR: "彩虹色",
   SPECTRAL_GRADIENT: "光谱渐变",
   TERRAIN_GRADIENT: "地形渐变",
-
 
   // 聚合类型
   AGGREGATE_WITH_GRID: "网格面聚合",
@@ -1327,7 +1325,7 @@ export const language_cn = {
 
   MAP_AR_AI_ASSISTANT_LEFT_ROTATE: "左转",
   MAP_AR_AI_ASSISTANT_RIGHT_ROTATE: "右转",
-  MAP_AR_AI_ASSISTANT_SAND_TABLE: "显示沙盘",
+  MAP_AR_AI_ASSISTANT_SAND_TABLE: "沙盘",
   MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE: "隐藏沙盘",
   MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL: "模型",
   MAP_AR_AI_ASSISTANT_OPREATE_MODEL: "投射模型",
@@ -2346,6 +2344,7 @@ export const language_cn = {
   SAVE_DATA_TITLE: "是否保存数据?",
   SAVE_YES: "保存",
   SAVE_NO: "不保存",
+  CANCEL: "取消",
   COMMIT: "提交",
   SUBMIT: "提交",
   REDO: "重做",

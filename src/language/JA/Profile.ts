@@ -19,8 +19,8 @@ const Profile: typeof CN.Profile = {
   TEMPLATE: "テンプレート",
   AIMODEL: "AI モデル", //jp0730
   COLLECTION_TEMPLATE: "コレクションテンプレート",
-  PLOTTING_TEMPLATE: "アニメシンボルテンプレート",
-  MAP_TEMPLATE: "マッピングテンプレート",
+  PLOTTING_TEMPLATE: "進路プロットテンプレート",
+  MAP_TEMPLATE: "マップテンプレート",
   NAVIGATION: "ナビ",
   INCREMENT: "インクリメント",
   ENCLOSURE: "フェンス",
@@ -53,7 +53,7 @@ const Profile: typeof CN.Profile = {
   START_COLLECT:"1.テンプレートに基づいて、フィールドマップを作成",
   CHOOSE_COLLECT:"2.シンボルを選択",
   EDIT_COLLECT:"3.フィールドデータを編集",
-  MAP_BROWSE:"マップを開き",
+  MAP_BROWSE:"マップを開く",
   MAP_TAGGINGL:"マーク方式を選択",
   SCENE_BROWSE:"シーンを開き",
   SCENE_FLY:"飛行ルートを設定",
@@ -72,7 +72,7 @@ const Profile: typeof CN.Profile = {
   ENTER_USERNAME_ALL: "携帯番号、メールアドレスまたはニックネームを入力してください",
   ENTER_PASSWORD: "パスワードを入力してください",
   RE_ENTER_PASSWORD: "確認パスワードを入力してください",
-  PASSWORD_DISMATCH: "パスワードが一致しません。再確認してください",
+  PASSWORD_DISMATCH: "パスワードは一致しません。再確認してください",
   REGISTER: "レジスタ",
   FORGET_PASSWORD: "パスワードを忘れましたか？",
   RESET_PASSWORD: "パスワードの再設定",
@@ -151,8 +151,8 @@ const Profile: typeof CN.Profile = {
   LOCAL: "ローカル",
   SAMPLEDATA: "サンプルデータ",
   ON_DEVICE: "外部データ",
-  ONLINE_DATA: "Online Data", // need to translate
-  USER_DATA: "User Data", // need to translate
+  ONLINE_DATA: "オンラインデータ",
+  USER_DATA: "ユーザーデータ",
   EXPORT_DATA: "データのエクスポート",
   IMPORT_DATA: "データのインポート",
   UPLOAD_DATA: "データのシェア",
@@ -416,13 +416,13 @@ const Profile: typeof CN.Profile = {
   MAR_AR_DATUM_NORTH: "北",
   MAR_AR_PICTURE_LOCATION_SUCCEED: "QR ロケショーンに成功しました",
   MAR_AR_QR_INVALID: "QR コード情報を見つかりませんでした",
-  MAP_AR_ENHANCE_POSITION: 'Ar enhanced position',  // To be translated
-  MAP_AR_DATUM_MANUAL_LOCATION: "Manual position",  // To be translated
-  MAP_AR_DATUM_GPS_LOCATION: "GPS postion",  // To be translated
-  ALIGN_LOCATOR_CODE: 'Please align the locator code', // To be translated
-  CALIBRATION_TIMEOUT: 'Calibration timeout',  // To be translated
-  CALIBRATION_SUCCESSFUL: 'Calibration successful', // To be translated
-  AR_ENHANCE_POSITION_EXITED: 'Ar enhanced positioning exited', // To be translated
+  MAP_AR_ENHANCE_POSITION: 'AR拡張ポジショニング',
+  MAP_AR_DATUM_MANUAL_LOCATION: "手動ポジショニング",
+  MAP_AR_DATUM_GPS_LOCATION: "GPSポジショニング",
+  ALIGN_LOCATOR_CODE: 'ロケーターを設定してください。',
+  CALIBRATION_TIMEOUT: 'タイムアウト',
+  CALIBRATION_SUCCESSFUL: '成功',
+  AR_ENHANCE_POSITION_EXITED: 'AR拡張ポジショニングを閉じる',
 
   // ar地图
   COLLECT_SCENE_RENAME: "名前変更",

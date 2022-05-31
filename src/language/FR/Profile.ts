@@ -416,13 +416,13 @@ const Profile: typeof CN.Profile = {
   MAR_AR_DATUM_NORTH: "Nord",
   MAR_AR_PICTURE_LOCATION_SUCCEED: "Emplacement QR réussi",
   MAR_AR_QR_INVALID: "Informations sur le code QR non reconnues",
-  MAP_AR_ENHANCE_POSITION: 'Ar enhanced position',  // To be translated
-  MAP_AR_DATUM_MANUAL_LOCATION: "Manual position",  // To be translated
-  MAP_AR_DATUM_GPS_LOCATION: "GPS postion",  // To be translated
-  ALIGN_LOCATOR_CODE: 'Please align the locator code', // To be translated
-  CALIBRATION_TIMEOUT: 'Calibration timeout',  // To be translated
-  CALIBRATION_SUCCESSFUL: 'Calibration successful', // To be translated
-  AR_ENHANCE_POSITION_EXITED: 'Ar enhanced positioning exited', // To be translated
+  MAP_AR_ENHANCE_POSITION: 'Ar position améliorée',
+  MAP_AR_DATUM_MANUAL_LOCATION: "position manuel",
+  MAP_AR_DATUM_GPS_LOCATION: "postion du GPS ",
+  ALIGN_LOCATOR_CODE: 'Veuillez aligner le code de localisation',
+  CALIBRATION_TIMEOUT: "Délai d'étalonnage",
+  CALIBRATION_SUCCESSFUL: 'Calibration reussie',
+  AR_ENHANCE_POSITION_EXITED: 'Ar positionnement amélioré quitté',
 
   // ar地图
   COLLECT_SCENE_RENAME: "Renommer",

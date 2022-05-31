@@ -189,7 +189,7 @@ const Profile: typeof CN.Profile = {
   PUBLISH_SERVICE: "Yayınla",
   SET_AS_PRIVATE_SERVICE: "Özel Servis olarak ayarla",
   SET_AS_PUBLIC_SERVICE: "Halka Açık Servis olarak ayarla",
-  SET_AS_PRIVATE_DATA: "Özel Veri olarak ayarlaa",
+  SET_AS_PRIVATE_DATA: "Özel Veri olarak ayarla",
   SET_AS_PUBLIC_DATA: "Halka Açık Veri olarak ayarla",
   NO_SERVICE: "Servis Yok",
   SHARE_TO_GROUP: "Grupla paylaş",
@@ -370,8 +370,8 @@ const Profile: typeof CN.Profile = {
   ITABLET_NAVIGATIONMAP: "Navigasyon",
   ITABLET_DATAANALYSIS: "Veri Analizi",
   ITABLET_PLOTTING: "Çizim",
-  INVALID_MODULE: "Mevcut Modülü Geçersiz. Devam Edememek.",
-  INVALID_LICENSE: "Lisans Geçersiz. Devam Edememek.",
+  INVALID_MODULE: "Mevcut Modülü Geçersiz. Devam Edilemez.",
+  INVALID_LICENSE: "Lisans Geçersiz. Devam Edilemez.",
   GO_ACTIVATE: "Aktivasyonu",
 
   // 意见反馈
@@ -416,13 +416,13 @@ const Profile: typeof CN.Profile = {
   MAR_AR_DATUM_NORTH: "Kuzey",
   MAR_AR_PICTURE_LOCATION_SUCCEED: "QR konumu başarılı",
   MAR_AR_QR_INVALID: "QR kodu bilgisi tanınmadı",
-  MAP_AR_ENHANCE_POSITION: 'Ar enhanced position',  // To be translated
-  MAP_AR_DATUM_MANUAL_LOCATION: "Manual position",  // To be translated
-  MAP_AR_DATUM_GPS_LOCATION: "GPS postion",  // To be translated
-  ALIGN_LOCATOR_CODE: 'Please align the locator code', // To be translated
-  CALIBRATION_TIMEOUT: 'Calibration timeout',  // To be translated
-  CALIBRATION_SUCCESSFUL: 'Calibration successful', // To be translated
-  AR_ENHANCE_POSITION_EXITED: 'Ar enhanced positioning exited', // To be translated
+  MAP_AR_ENHANCE_POSITION: 'AR Gelişmiş Konum',
+  MAP_AR_DATUM_MANUAL_LOCATION: "Manuel Pozisyon",
+  MAP_AR_DATUM_GPS_LOCATION: "GPS Pozisyon",
+  ALIGN_LOCATOR_CODE: 'Lütfen yer bulma kodunu hizalayın',
+  CALIBRATION_TIMEOUT: 'Kalibrasyon zaman aşımı',
+  CALIBRATION_SUCCESSFUL: 'Kalibrasyon başarılı',
+  AR_ENHANCE_POSITION_EXITED: 'AR gelişmiş konumlandırmadan çıkıldı',
 
   // ar地图
   COLLECT_SCENE_RENAME: "Yeniden adlandırma",

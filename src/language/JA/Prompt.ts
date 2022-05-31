@@ -10,7 +10,7 @@ const Prompt: typeof CN.Prompt = {
   SAVE_NO: "保存しない",
   CANCEL: "キャンセル",
   COMMIT: "コミット",
-  SUBMIT: "コミット",
+  SUBMIT: "サブミット",
   REDO: "やり直す",
   UNDO: "取り消す",
   SHARE: "シェア",
@@ -32,19 +32,19 @@ const Prompt: typeof CN.Prompt = {
   DOWNLOAD_SUCCESSFULLY: "ダウンロード済",
   DOWNLOAD_FAILED: "ダウンロードに失敗しました",
   UNZIPPING: "解凍中",
-  ONLINE_DATA_ERROR: "ネットワークデータは壊れました、使用できません",
+  ONLINE_DATA_ERROR: "ネットワークデータは壊れています。使用不可",
 
   NO_REMINDER: "次回からヒントを表示しません",
 
   LOG_OUT: "ログアウトしますか？",
   FAILED_TO_LOG: "ログインに失敗しました",
-  INCORRECT_USER_INFO: "ユーザー名、またはパスワードは不正です",
-  INCORRECT_IPORTAL_ADDRESS: "サーバーアドレスは正かどうかを確認してください",
+  INCORRECT_USER_INFO: "ユーザー名、またはパスワードは間違っています",
+  INCORRECT_IPORTAL_ADDRESS: "サーバーアドレスは正しいかどうかを確認してください",
 
-  DELETE_STOP: "目標ポイントを削除しますか?",
-  DELETE_OBJECT: "当オブジェクトを削除しますか?",
+  DELETE_STOP: "目標点を削除しますか?",
+  DELETE_OBJECT: "このオブジェクトを削除しますか?",
   DELETE_LAYER: "レイヤーを削除しますか?",
-  PLEASE_ADD_STOP: "目標ポイントを追加してください",
+  PLEASE_ADD_STOP: "目標点を追加してください",
   IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: "画像レイヤーを現在レイヤーに設定できません",
 
   NO_PERMISSION: "権限はありません",
@@ -55,35 +55,35 @@ const Prompt: typeof CN.Prompt = {
 
   CONFIRM: "OK",
   COMPLETE: "完了",
-  INSTALL:"Install",//need to translate
+  INSTALL:"インストール",
 
-  OPENING: "開く中",
+  OPENING: "いま開いています",
 
   QUIT: "SuperMap iTabletを閉じますか?",
   MAP_LOADING: "マップロード中",
   LOADING: "ロード中",
   OPEN_MAP_CONFIRM: "マップを開くかどうか",
-  THE_MAP_IS_OPENED: "当マップは開いています",
-  THE_MAP_IS_NOTEXIST: "当マップは存在しません",
-  OPEN_MAP_FAILED: "マップを開きのに失敗しました",
-  THE_SCENE_IS_OPENED: "当シーンは開いています",
+  THE_MAP_IS_OPENED: "このマップは開いています",
+  THE_MAP_IS_NOTEXIST: "このマップは存在しません",
+  OPEN_MAP_FAILED: "マップを開くのに失敗しました",
+  THE_SCENE_IS_OPENED: "このシーンは開いています",
   NO_SCENE_LIST: "シーンリストはありません",
-  NO_SCENE_SELECTED: "選択中のシーンはありません",
+  NO_SCENE_SELECTED: "シーンが選択されていません",
   SWITCHING: "マップ切り替え中",
   CLOSING: "マップを閉じています",
-  CLOSING_3D: "マップを閉じています",
-  SAVING: "マップ保存中",
-  SWITCHING_SUCCESS: "切替にに成功",
-  ADD_SUCCESS: "追加に成功",
-  ADD_FAILED: "追加に失敗",
+  CLOSING_3D: "シーンを閉じています",
+  SAVING: "保存中",
+  SWITCHING_SUCCESS: "切替成功",
+  ADD_SUCCESS: "追加成功",
+  ADD_FAILED: "追加失敗",
   ADD_MAP_FAILED: "現在マップに追加できません",
   CREATE_THEME_FAILED: "主題図の作成に失敗しました",
   PLEASE_ADD_DATASET: "追加するデータセットを選択してください",
   PLEASE_SELECT_OBJECT: "編集オブジェクトを選択してください",
   SWITCHING_PLOT_LIB: "アニメシンボルライブラリを切り替え中",
   NON_SELECTED_OBJ: "選択オブジェクトはありません",
-  CHANGE_BASE_MAP: "現在ベースマップはありません。ベースマップを切替えてください。",
-  OVERRIDE_SYMBOL: "同じIDのシンボルを上書きしますか？", //jp0730
+  CHANGE_BASE_MAP: "背景地図は空です。先に背景地図を切替えてください。",
+  OVERRIDE_SYMBOL: "このシンボルIDは使われています。追加方法を選択してください。", //jp0730
   OVERWRITE: "上書き",
   CHOOSE_DATASET: "データセットを選択してください",
 
@@ -99,7 +99,7 @@ const Prompt: typeof CN.Prompt = {
   SUPERMAP_GROUP: "SuperMap Group",
   INSTRUCTION_MANUAL: "ヘルプ",
   THE_CURRENT_LAYER: "現在レイヤー",
-  NO_BASE_MAP: "ベースマップを削除できません",
+  NO_BASE_MAP: "背景地図は削除できません",
   ENTER_KEY_WORDS: "検索キーワード入力してください",
   SEARCHING: "検索中",
   SEARCHING_DEVICE_NOT_FOUND: "外部デバイスは検出されませんでした",
@@ -120,8 +120,8 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_CHOOSE_LINE_LAYER: "ラインレイヤーを選択してください",
   PLEASE_CHOOSE_REGION_LAYER: "ポリゴンレイヤーを選択してください",
 
-  NO_PLOTTING_DEDUCTION: "現在マップに展開リストはありません",
-  DELETE_PLOTTING_DEDUCTION: "Delete the deduction?", // need to translate
+  NO_PLOTTING_DEDUCTION: "現在マップに進路プロットリストはありません",
+  DELETE_PLOTTING_DEDUCTION: "プロットを削除しますか?",
   NO_FLY: "現在シーンに飛行ルートはありません",
   PLEASE_OPEN_SCENE: "シーンを開いてください",
   NO_SCENE: "シーン表示無し",
@@ -132,10 +132,10 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER_CANNOT_BE_STYLED: "現在レイヤーにスタイルを設定できません。レイヤーを再度選択してください。",
 
   PLEASE_SELECT_PLOT_LAYER: "マークレイヤーを選択、または新規してください",
-  PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer", // need to translate
-  PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer", // need to translate
-  DONOT_SUPPORT_ARCORE: "Install or upgrade ARCore",//need to translate
-  DONOT_SUPPORT_ARENGINE: "Install or upgrade AREngine",//need to translate
+  PLEASE_SELECT_MEDIA_LAYER: "ポイント、複合、またはマークレイヤーを選択してください",
+  PLEASE_SELECT_CAD_LAYER: "複合レイヤーを選択してください",
+  DONOT_SUPPORT_ARCORE: "ARCoreをインストール、または更新してください",
+  DONOT_SUPPORT_ARENGINE: "AREngineをインストール、または更新してください",
   GET_SUPPORTED_DEVICE_LIST: "対応しているデバイスのリストを表示",
   PLEASE_NEW_PLOT_LAYER: "新規マークレイヤーを作成しますか",
   DOWNLOADING_PLEASE_WAIT: "ダウンロード中、お待ちください",
@@ -145,9 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "選択レイヤー",
 
   COLLECT_SUCCESS: "コレクションに成功",
-  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
-  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
-  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
+  LONG_PRESS_SELECT_POINT: "Long press to select point",
+  LONG_PRESS_END_POINT: "Long press to select the end point",
+  LONG_PRESS_START_POINT: "Long press to select the starting point",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "少なくとも2つのメディアファイルを選択してください",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "当オブジェクトにメディアファイルはありません。削除しますか?",
@@ -180,11 +180,11 @@ const Prompt: typeof CN.Prompt = {
   PUBLISH_SUCCESS: "配信に成功",
   PUBLISH_FAILED: "配信に失敗",
   PUBLISH_FAILED_INFO_1: "当サービスは配信されています",
-  PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time", // need to translate
-  SERVICE_SUBMIT_BEFORE_UPDATE: "Please update the service before submitting", // need to translate
+  PUBLISH_FAILED_INFO_2: "サービス更新中、操作できません",
+  SERVICE_SUBMIT_BEFORE_UPDATE: "サービスを更新後で、サブミットしてください",
   DELETE_CONFIRM: "現在データを削除しますか？",
   BATCH_DELETE_CONFIRM: "現在の選択データを削除しますか？",
-  WHETHER_DOWNLOAD_ALL_SERVICES: 'Are you sure you want to download and update all services?', // need to translate
+  WHETHER_DOWNLOAD_ALL_SERVICES: 'すべてのサービスをダウンロード、更新しますか?',
 
   SELECT_AT_LEAST_ONE: "少なくとも1つのデータを削除してください",
   DELETE_MAP_RELATE_DATA: "データ削除は以下のマップに影響があります。削除しますか？",
@@ -222,21 +222,21 @@ const Prompt: typeof CN.Prompt = {
 
   PLEASE_LOGIN_AND_SHARE: "ログインしてシェアします",
   PLEASE_LOGIN: "ログインしてください",
-  SHARING: "シェア中",
-  SHARE_SUCCESS: "シェアに成功",
-  SHARE_FAILED: "シェアに失敗",
-  SHARE_PREPARE: "シェア準備",
-  SHARE_START: "シェア開始",
-  SHARE_WX_FILE_SIZE_LIMITE: "ファイルサイズは10Mを超えません",
+  SHARING: "共有中",
+  SHARE_SUCCESS: "共有に成功",
+  SHARE_FAILED: "共有に失敗",
+  SHARE_PREPARE: "共有準備",
+  SHARE_START: "共有開始",
+  SHARE_WX_FILE_SIZE_LIMITE: "ファイルサイズは10MB以内にしてください",
+  SHARE_NOT_COMPLRTE: "共有は未完了",
+  PLEASE_SAVE_MAP: "マップを保存してください",
 
   EXPORTING: "エクスポート中",
   EXPORT_SUCCESS: "エクスポートに成功",
   EXPORT_FAILED: "エクスポートに失敗",
   EXPORT_TO: "データエクスポート先：",
-  REQUIRE_PRJ_1984: "データセットの投影座標系はWGS_1984に設定する必要があります",
+  REQUIRE_PRJ_1984: "データセットの投影座標系はWGS_84に設定する必要があります",
   EXPORT_TEMP_FAILED: "普通のマップをテンプレートにエクスポートできません",
-  SHARE_NOT_COMPLRTE: "Sharing is not completed",  // To be translated
-  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
 
   UNDO_FAILED: "取り消すに失敗",
   REDO_FAILED: "やり直すに失敗",
@@ -245,13 +245,13 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "設定に成功",
   SETTING_FAILED: "設定に失敗",
   NETWORK_ERROR: "ネットワークエラー",
-  NETWORK_RECONNECT: "Reconnection network", // need to translate
-  NO_NETWORK: "ネットワークに接続しません",
+  NETWORK_RECONNECT: "ネットワークに再接続",
+  NO_NETWORK: "ネットワークに接続していません",
   CHOOSE_CLASSIFY_MODEL: "モデルタイプを選択してください",
   USED_IMMEDIATELY: "すぐに使用",
   USING: "使用中",
   DEFAULT_MODEL: "デフォルトモデル",
-  DUSTBIN_MODEL: "ゴミモデル",
+  DUSTBIN_MODEL: "ゴミ箱モデル",
   PLANT_MODEL: "植物モデル",
   CHANGING: "切り替え中",
   CHANGE_SUCCESS: "切り替えに成功",
@@ -268,32 +268,32 @@ const Prompt: typeof CN.Prompt = {
 
   LOCATING: "ポジショニング中",
   CANNOT_LOCATION: "ポジショニングできません",
-  INDEX_OUT_OF_BOUNDS: "位置の越境",
+  INDEX_OUT_OF_BOUNDS: "境界線を越えています",
   PLEASE_SELECT_LICATION_INFORMATION: "ポジショニング情報を選択してください",
   OUT_OF_MAP_BOUNDS: "マップ範囲内にありません",
   CANT_USE_TRACK_TO_INCREMENT_ROAD: "現在位置は道路ネットワークデータセット内にありません。トラックインクリメント道路ネットワークを使用できません。",
-  AFTER_COLLECT: "表示前に、まずフィールドしてください",
+  AFTER_COLLECT: "表示前に、まず撮影してください",
 
   POI: "POI",
   WIDGET: "ウィジェット",
 
   ILLEGAL_DATA: "データは無効です",
 
-  UNSUPPORTED_LAYER_TO_SHARE: "当レイヤーのシェアをサポートしません",
-  SELECT_DATASET_TO_SHARE: "シェアするデータセットを選択してください",
+  UNSUPPORTED_LAYER_TO_SHARE: "このレイヤーの共有はサポートしません",
+  SELECT_DATASET_TO_SHARE: "共有するデータセットを選択してください",
   ENTER_DATA_NAME: "データ名を入力してください",
-  SHARED_DATA_10M: "シェアファイルは10MBを超えします",
+  SHARED_DATA_10M: "共有するファイルは10MBを超えています",
 
-  PHIONE_HAS_BEEN_REGISTERED: "携帯番号が登録されました",
-  NICKNAME_IS_EXISTS: "ニックネームは存在しています",
-  VERIFICATION_CODE_ERROR: "ショートメッセージ検証コード不正",
+  PHIONE_HAS_BEEN_REGISTERED: "この電話番号が登録されています",
+  NICKNAME_IS_EXISTS: "このニックネームはすでに使われています",
+  VERIFICATION_CODE_ERROR: "この検証用SMSコードは正しくありません",
   VERIFICATION_CODE_SENT: "検証コードは送信しました",
-  EMAIL_HAS_BEEN_REGISTERED: "メールアドレスはレジスタされました",
-  REGISTERING: "レジスタ中",
-  REGIST_SUCCESS: "レジスタに成功",
-  REGIST_FAILED: "レジスタに失敗",
-  GOTO_ACTIVATE: "メールでアクティベーションしてください",
-  ENTER_CORRECT_MOBILE: "正しい携帯番号を入力してください",
+  EMAIL_HAS_BEEN_REGISTERED: "このメールアドレスは登録されています",
+  REGISTERING: "登録中",
+  REGIST_SUCCESS: "登録成功",
+  REGIST_FAILED: "登録失敗",
+  GOTO_ACTIVATE: "届いた登録メールでアクティベーションしてください",
+  ENTER_CORRECT_MOBILE: "正しい電話番号を入力してください",
   ENTER_CORRECT_EMAIL: "正しいメールアドレスを入力してください",
 
   // 設定菜单ヒント情報
@@ -379,10 +379,10 @@ const Prompt: typeof CN.Prompt = {
   CANT_UNDO: "元に戻すことはできません",
   CANT_REDO: "やり直すことはできません",
   DATASET_RENAME_FAILED: "データセット名数字、アルファベット、「_」、「@」、「＃」で構成することが必要です",
-  DATASOURCE_RENAME_FAILED: "The datasource name can only contain letters, numbers and \"_\", \"@\", \"#\"",//need to translate
+  DATASOURCE_RENAME_FAILED: "データソース名はアルファベット、数字、「_」、「@」、「＃」で構成することが必要です",
   SWITCH_LINE: "データの切替",
   HAS_NO_ROADNAME_FIELD_DATA: "道路名フィールド情報を選択されていないデータセットがあります",
-  NOT_LONGITUDE:"Select data set projection coordinates not latitude and longitude coordinates, please convert",//need to translate
+  NOT_LONGITUDE:"選択データの座標系は地理座標系ではありません。変換してください",
   MERGE_SUCCESS: "マージに成功しました",
   MERGE_FAILD: "マージに失敗しました",
   NOT_SUPPORT_PRJCOORDSYS: "以下のデータセットの座標系はマージをサポートしていません",
@@ -395,10 +395,10 @@ const Prompt: typeof CN.Prompt = {
   BUILD_SUCCESS: "道路ネットワークの作成に成功しました",
   SELECT_LINE_SMOOTH: "スムーズネスラインを選択してください",
   SELECT_A_POINT_INLINE: "ライン上にあるポイントを選択してください",
-  SELECT_POINT_INCURRENTLINE:"Select the point on the current line to interrupt",//need to translate
-  SELECT_LINE_WITH_INTERRUPT:"Select the line to participate in the interruption",//need to translate
-  SELECT_LINE_EXTENSION:"Select the line to be extended",//need to translate
-  SELECT_LINE_TO_TRIM:"Select the clipped portion of the clipped line",//need to translate
+  SELECT_POINT_INCURRENTLINE:"切断するためのライン上にあるポイントを選択してください",
+  SELECT_LINE_WITH_INTERRUPT:"切断するラインを選択してください",
+  SELECT_LINE_EXTENSION:"延長するラインを選択してください",
+  SELECT_LINE_TO_TRIM:"トリミングするラインを選択してください",
   LINE_DATASET: "ラインデータセット",
   DESTINATION_DATASOURCE: "目標データソース",
   SMOOTH_FACTOR: "スムーズ係数を入力してください",

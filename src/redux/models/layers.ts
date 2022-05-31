@@ -550,7 +550,7 @@ export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) 
 
   const data = [
     {
-      title: getLanguage(language).Map_Layer.PLOTS,
+      title: getLanguage(language).Map_Layer.MY_PLOTS,
       // '我的标注',
       data: lablelist,
       visible: true,
@@ -564,7 +564,7 @@ export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) 
       index: 1,
     },
     {
-      title: getLanguage(language).Map_Layer.BASEMAP,
+      title: getLanguage(language).Map_Layer.MY_BASEMAP,
       // '我的底图',
       data: basemaplist,
       visible: true,

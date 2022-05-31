@@ -532,15 +532,17 @@ export default class ToolBarSectionList extends React.Component {
         getLanguage(global.language).Prompt.LATEST + item.info.lastModifiedDate
     } else if (item.info.infoType === 'fieldType') {
       info =
-        getLanguage(global.language).Prompt.FIELD_TYPE + item.info.fieldType
+        getLanguage(global.language).Prompt.FIELD_TYPE + ': ' + item.info.fieldType
     } else if (item.info.infoType === 'dataset') {
       let geoCoordSysType = item.info.geoCoordSysType
       let prjCoordSysType = item.info.prjCoordSysType
       info =
         getLanguage(global.language).Prompt.GEOGRAPHIC_COORDINATE_SYSTEM +
+        ': ' +
         geoCoordSysType +
         ', ' +
         getLanguage(global.language).Prompt.PROJECTED_COORDINATE_SYSTEM +
+        ': ' +
         prjCoordSysType
     } else {
       return

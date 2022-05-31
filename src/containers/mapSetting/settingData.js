@@ -462,7 +462,7 @@ const rangeSettings = () => [
 // 四至范围
 const fourRanges = () => [
   {
-    title: getLanguage(global.language).Map_Settings.LEFT,
+    title: getLanguage(global.language).LEFT,
     value: '',
     state: false,
     iconType: 'input',
@@ -474,7 +474,7 @@ const fourRanges = () => [
     iconType: 'input',
   },
   {
-    title: getLanguage(global.language).Map_Settings.RIGHT,
+    title: getLanguage(global.language).RIGHT,
     value: '',
     state: false,
     iconType: 'input',

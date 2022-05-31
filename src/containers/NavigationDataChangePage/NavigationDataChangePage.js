@@ -285,7 +285,7 @@ export default class NavigationDataChangePage extends Component {
               style={styles.textWrapper}
             >
               <Text style={styles.actionTxt}>
-                {getLanguage(global.language).Prompt.CREATE}
+                {getLanguage(global.language).Prompt.NEW}
               </Text>
             </TouchableOpacity>
           ) : (
@@ -314,7 +314,7 @@ export default class NavigationDataChangePage extends Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(global.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.REFRESHING}
               enabled={true}
             />
           }
@@ -330,7 +330,7 @@ export default class NavigationDataChangePage extends Component {
         />
         <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
           <Text style={styles.confirmTxt}>
-            {getLanguage(global.language).Prompt.CONFIRM}
+            {getLanguage(global.language).CONFIRM}
           </Text>
         </TouchableOpacity>
       </Container>

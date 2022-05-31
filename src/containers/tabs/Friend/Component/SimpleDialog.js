@@ -166,7 +166,7 @@ export default class SimpleDialog extends PureComponent {
             ? this.state.confirmText
             : this.props.confirmText !== ''
               ? this.props.confirmText
-              : getLanguage(global.language).Friends.CONFIRM
+              : getLanguage(global.language).CONFIRM
         }
         installBtnTitle={
           this.props.installText !== ''

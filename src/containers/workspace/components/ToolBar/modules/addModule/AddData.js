@@ -138,8 +138,7 @@ async function getUDBsAndMaps() {
       data: labelDatasets,
     },
     {
-      title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
-        .OPEN_MAP,
+      title: getLanguage(ToolbarModule.getParams().language).MAP,
       // Const.MAP,
       // image: require('../../../../../../assets/mapToolbar/list_type_map.png'),
       image: getThemeAssets().dataType.icon_map,
@@ -290,7 +289,7 @@ async function getSymbolsFromFile() {
               cancelAction: () =>
                 addSymbol(mapName, currentSymbolFile, data.id, false),
               confirmText: getLanguage(global.language).Prompt.OVERWRITE,
-              cancelText: getLanguage(global.language).Prompt.CREATE,
+              cancelText: getLanguage(global.language).Prompt.NEW,
               disableBackTouch: false,
             })
             global.SimpleDialog.setVisible(true)

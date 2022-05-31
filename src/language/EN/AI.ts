@@ -6,7 +6,6 @@ const AI: typeof CN.AI = {
   DATE: "Date",
   REMARK: "Remark",
   MORE: "More",
-  CONFIDENCE: "Confidence",
 
   CLIENT: "Client",
   PLATE_NUMBER: "Plate Number",

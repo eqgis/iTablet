@@ -66,7 +66,7 @@ async function listAction(type, params = {}) {
     } else if (
       params.section &&
       params.section.title ===
-        getLanguage(_params.language).Map_Main_Menu.OPEN_MAP
+        getLanguage(_params.language).MAP
     ) {
       // 添加地图
       _params.setContainerLoading &&
@@ -178,7 +178,7 @@ async function commit() {
     (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
   if (!_params) return
   if (Object.keys(selectList).length === 0) {
-    Toast.show(getLanguage(_params.language).Prompt.PLEASE_ADD_DATASET)
+    Toast.show(getLanguage(_params.language).Prompt.PLEASE_SELECT_DATASET_TO_ADD)
     return
   }
   const result = {}

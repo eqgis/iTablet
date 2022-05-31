@@ -526,7 +526,7 @@ export default class InterpolationAnalystView extends Component {
           </Text>
         </View>
         <AnalystItem
-          title={getLanguage(this.props.language).Analyst_Labels.LEFT}
+          title={getLanguage(this.props.language).LEFT}
           value={this.state.left}
           keyboardType={'numeric'}
           rightType={'input'}
@@ -540,7 +540,7 @@ export default class InterpolationAnalystView extends Component {
           }}
         />
         <AnalystItem
-          title={getLanguage(this.props.language).Analyst_Labels.DOWN}
+          title={getLanguage(this.props.language).DOWN}
           value={this.state.bottom}
           keyboardType={'numeric'}
           rightType={'input'}
@@ -554,7 +554,7 @@ export default class InterpolationAnalystView extends Component {
           }}
         />
         <AnalystItem
-          title={getLanguage(this.props.language).Analyst_Labels.RIGHT}
+          title={getLanguage(this.props.language).RIGHT}
           value={this.state.right}
           keyboardType={'numeric'}
           rightType={'input'}
@@ -568,7 +568,7 @@ export default class InterpolationAnalystView extends Component {
           }}
         />
         <AnalystItem
-          title={getLanguage(this.props.language).Analyst_Labels.UP}
+          title={getLanguage(this.props.language).UP}
           value={this.state.top}
           keyboardType={'numeric'}
           rightType={'input'}

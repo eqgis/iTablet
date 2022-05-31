@@ -343,7 +343,7 @@ class CollectSceneFormSet extends Component {
         }}
       >
         <Text style={styles.textConfirm}>
-          {getLanguage(global.language).Map_Settings.CONFIRM}
+          {getLanguage(global.language).CONFIRM}
         </Text>
       </TouchableOpacity>
     )

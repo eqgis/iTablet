@@ -28,7 +28,7 @@ export default class RNLegendView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: getLanguage(this.props.language).Map_Settings.THEME_LEGEND,
+      title: getLanguage(this.props.language).Map_Settings.LEGEND,
       width: 600,
       height: 420,
       topLeft: {

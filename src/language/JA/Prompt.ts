@@ -13,7 +13,6 @@ const Prompt: typeof CN.Prompt = {
   SUBMIT: "サブミット",
   REDO: "やり直す",
   UNDO: "取り消す",
-  SHARE: "シェア",
   DELETE: "削除",
   WECHAT: "WeChat",
   BEGIN: "開始",
@@ -22,7 +21,6 @@ const Prompt: typeof CN.Prompt = {
   WX_NOT_INSTALLED: "WeChatはありません",
   WX_SHARE_FAILED: "WeChatにシェアのに失敗しました。WeChatをインストールしているかどうかを確認ください",
   RENAME: "名前変更",
-  BATCH_DELETE: "バッチ削除",
   PREPARING: "準備中",
 
   DOWNLOAD_SAMPLE_DATA: "サンプルデータをダウンロードしますか？",
@@ -36,7 +34,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_REMINDER: "次回からヒントを表示しません",
 
-  LOG_OUT: "ログアウトしますか？",
+  LOG_OUT_CONFIRM: "ログアウトしますか？",
   FAILED_TO_LOG: "ログインに失敗しました",
   INCORRECT_USER_INFO: "ユーザー名、またはパスワードは間違っています",
   INCORRECT_IPORTAL_ADDRESS: "サーバーアドレスは正しいかどうかを確認してください",
@@ -53,7 +51,6 @@ const Prompt: typeof CN.Prompt = {
   CONTINUE: "続き",
   REQUEST_PERMISSION: "権限の申請",
 
-  CONFIRM: "OK",
   COMPLETE: "完了",
   INSTALL:"インストール",
 
@@ -69,7 +66,7 @@ const Prompt: typeof CN.Prompt = {
   THE_SCENE_IS_OPENED: "このシーンは開いています",
   NO_SCENE_LIST: "シーンリストはありません",
   NO_SCENE_SELECTED: "シーンが選択されていません",
-  SWITCHING: "マップ切り替え中",
+  SWITCHING_MAP: "マップ切り替え中",
   CLOSING: "マップを閉じています",
   CLOSING_3D: "シーンを閉じています",
   SAVING: "保存中",
@@ -78,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   ADD_FAILED: "追加失敗",
   ADD_MAP_FAILED: "現在マップに追加できません",
   CREATE_THEME_FAILED: "主題図の作成に失敗しました",
-  PLEASE_ADD_DATASET: "追加するデータセットを選択してください",
+  PLEASE_SELECT_DATASET_TO_ADD: "追加するデータセットを選択してください",
   PLEASE_SELECT_OBJECT: "編集オブジェクトを選択してください",
   SWITCHING_PLOT_LIB: "アニメシンボルライブラリを切り替え中",
   NON_SELECTED_OBJ: "選択オブジェクトはありません",
@@ -101,7 +98,6 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER: "現在レイヤー",
   NO_BASE_MAP: "背景地図は削除できません",
   ENTER_KEY_WORDS: "検索キーワード入力してください",
-  SEARCHING: "検索中",
   SEARCHING_DEVICE_NOT_FOUND: "外部デバイスは検出されませんでした",
   READING_DATA: "データ読取中",
   CREATE_SUCCESSFULLY: "作成に成功",
@@ -192,7 +188,6 @@ const Prompt: typeof CN.Prompt = {
   LOG_IN: "ログイン中",
   ENTER_MAP_NAME: "マップ名を入力してください",
   CLIP_ENTER_MAP_NAME: "マップ名を入力してください",
-  ENTER_SERVICE_ADDRESS: "サービスアドレスを入力してください",
   ENTER_ANIMATION_NAME: "アニメーション名を入力してください",
   ENTER_ANIMATION_NODE_NAME: "アニメーションノード名入力してください",
   PLEASE_SELECT_PLOT_SYMBOL: "アニメシンボルシンボルを選択してください",
@@ -211,14 +206,10 @@ const Prompt: typeof CN.Prompt = {
 
   LAYER_CANNOT_CREATE_THEMATIC_MAP: "当レイヤーで主題図を作成することをサポートしません",
 
-  ANALYSING: "解析中",
   CHOOSE_STARTING_POINT: "起点を入力してください",
   CHOOSE_DESTINATION: "終点を入力してください",
 
   LATEST: "最後変更時間: ",
-  GEOGRAPHIC_COORDINATE_SYSTEM: "地理座標系: ",
-  PROJECTED_COORDINATE_SYSTEM: "投影座標系: ",
-  FIELD_TYPE: "フィールドタイプ: ",
 
   PLEASE_LOGIN_AND_SHARE: "ログインしてシェアします",
   PLEASE_LOGIN: "ログインしてください",
@@ -339,7 +330,7 @@ const Prompt: typeof CN.Prompt = {
   FAILED_TO_CREATE_TEXT: "文字に追加失敗",
   FAILED_TO_CREATE_LINE: "ライン追加に失敗",
   FAILED_TO_CREATE_REGION: "ポリゴン追加に失敗",
-  CLEAR_HISTORY: "検索歴史のクリア",
+  CLEAR_SEARCH_HISTORY: "検索歴史のクリア",
   // ナビ相关
   SEARCH_AROUND: "周囲を検索",
   GO_HERE: "ここへ行く",
@@ -367,7 +358,7 @@ const Prompt: typeof CN.Prompt = {
   DISTANCE_ERROR: "現在開始ポイントの距離は近すぎです、再度選択してください",
   USE_ONLINE_ROUTE_ANALYST: "起始ポイントは道路ネットワークデータセット範囲内にありません、または開始ポイント近くに道路ネットワークはありません。オンラインルート解析を使用しますか？",
   NOT_SUPPORT_ONLINE_NAVIGATION: "オンラインナビをサポートしません",
-  CREATE: "新規",
+  NEW: "新規",
   NO_DATASOURCE: "現在のワークスペースにはデータソースがありません。新規データソースを作成してください",
   FLOOR: "階", //jp0730
   AR_NAVIGATION: "AR ナビ",
@@ -392,7 +383,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_DESTINATION_DATASOURCE: "ターゲットデータソースを選択してください",
   FILENAME_ALREADY_EXIST: "ファイルは既に存在しています。ファイル名を再入力してください",
   NETWORK_BUILDING: "ネットワーク作成中...",
-  BUILD_SUCCESS: "道路ネットワークの作成に成功しました",
+  ROADNET_BUILD_SUCCESS: "道路ネットワークの作成に成功しました",
   SELECT_LINE_SMOOTH: "スムーズネスラインを選択してください",
   SELECT_A_POINT_INLINE: "ライン上にあるポイントを選択してください",
   SELECT_POINT_INCURRENTLINE:"切断するためのライン上にあるポイントを選択してください",

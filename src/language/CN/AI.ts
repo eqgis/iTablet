@@ -4,7 +4,6 @@ const AI = {
   DATE: "时间",
   REMARK: "备注",
   MORE: "更多",
-  CONFIDENCE: "置信度",
 
   CLIENT: "当事人",
   PLATE_NUMBER: "车牌号码",

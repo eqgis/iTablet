@@ -7,7 +7,6 @@ const Analyst_Modules: typeof CN.Analyst_Modules = {
   BUFFER_ANALYST_MULTIPLE: "Multi-Buffer Analysis",
   OVERLAY_ANALYSIS: "Overlay Analysis",
   THIESSEN_POLYGON: "Thiessen Polygon",
-  MEASURE_DISTANCE: "Measure Distance",
   ONLINE_ANALYSIS: "Online Analysis",
   INTERPOLATION_ANALYSIS: "Interpolation Analysis",
 
@@ -36,12 +35,8 @@ const Analyst_Methods: typeof CN.Analyst_Methods = {
 
 const Analyst_Labels: typeof CN.Analyst_Labels = {
   ANALYST: "Analyze",
-  CONFIRM: "Done",
-  RESET: "Reset",
-  CANCEL: "Cancel",
   NEXT: "Next",
   PREVIOUS: "Previous",
-  ADD: "Add",
   Edit: "Edit",
 
   // local
@@ -49,7 +44,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   BUILD_A_NETWORK_DATASET: "Build A Network Dataset",
   CHOOSE_DATA: "Choose Data",
   TOPOLOGY: "Topology",
-  ADD_DATASET: "Add Dataset",
   DONE: "Done",
   RESULT_FIELDS: "Result Fields",
   SPLIT_SETTINGS: "Split Settings",
@@ -59,7 +53,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SET_START_STATION: "Set Start Station",
   MIDDLE_STATIONS: "Middle Stations",
   SET_END_STATION: "Set End Station",
-  LOCATION: "Location",
   SET_AS_START_STATION: "Starting Point",
   SET_AS_END_STATION: "Destination",
   ADD_STATIONS: "Add Stations",
@@ -91,13 +84,11 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SEMICIRCLE_SEGMENTS: "Semicircle Segments",
   RING_BUFFER: "Ring Buffer",
   RESULT_DATA: "Result Data",
-  BATCH_ADD: "Batch Add",
   START_VALUE: "Start Value",
   END_VALUE: "End Value",
   STEP: "Step",
-  RANGE_COUNT: "Range Count",
+  RANGE_COUNT_2: "Range Count",
   INSERT: "Insert",
-  DELETE: "Delete",
   INDEX: "Index",
   RADIUS: "Radius",
   RESULT_DATASET_NAME: "Name of Result Dataset",
@@ -138,11 +129,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
 
   ADD_WEIGHT_STATISTIC: "Add Weighted Field",
 
-  // Direction
-  LEFT: "Left",
-  DOWN: "Down",
-  RIGHT: "Right",
-  UP: "Up",
 
   // Proximity Analysis
   DISPLAY_REGION_SETTINGS: "Display Region Settings",
@@ -180,7 +166,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   TENSION: "Tension",
   SMOOTHNESS: "Smoothness",
   SEMIVARIOGRAM: "Semivariogram",
-  ROTATION: "Rotation",
   SILL: "Sill",
   RANGE: "Range",
   NUGGET_EFFECT: "Nugget Effect",
@@ -330,11 +315,11 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   STANDARD_DEVIATION_INTERVAL: "Standard Deviation Interval",
 
   // Units of length
-  METER: "m",
-  KILOMETER: "km",
-  YARD: "yd",
-  FOOT: "ft",
-  MILE: "mile",
+  ABBR_METER: "m",
+  ABBR_KILOMETER: "km",
+  ABBR_YARD: "yd",
+  ABBR_FOOT: "ft",
+  ABBR_MILE: "mile",
 
   // Units of area
   SQUARE_MILE: "mile²",
@@ -353,14 +338,6 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SPECTRAL_GRADIENT: "Spectral Gradient",
   TERRAIN_GRADIENT: "Terrain Gradient",
 
-  // Count modes
-  MAX: "Max",
-  MIN: "Min",
-  AVERAGE: "Average",
-  SUM: "Sum",
-  VARIANCE: "Variance",
-  STANDARD_DEVIATION: "Standard Deviation",
-
   // Aggregation types
   AGGREGATE_WITH_GRID: "Aggregate with Grid",
   AGGREGATE_WITH_REGION: "Aggregate with Region",
@@ -376,8 +353,8 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   UBIT1: "UBIT1",
   UBIT16: "UBIT16",
   UBIT32: "UBIT32",
-  SINGLE: "Single",
-  DOUBLE: "Double",
+  SINGLE_FLOAT: "Single",
+  DOUBLE_FLOAT: "Double",
 
   // Searching Methods
   SEARCH_VARIABLE_LENGTH: "Variable Length",
@@ -385,7 +362,7 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SEARCH_BLOCK: "Block",
 
   // 半变异函数
-  SPHERICAL: "Spherical",
+  SPHERICAL_FUNCTION: "Spherical",
   EXPONENTIAL: "Exponential",
   GAUSSIAN: "Gaussian",
 }

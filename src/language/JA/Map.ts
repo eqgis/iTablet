@@ -3,17 +3,12 @@ import CN from "../CN"
 // 制图
 const Map_Label: typeof CN.Map_Label = {
   // 地图底部导航
-  MAP: "マップ",
   LAYER: "レイヤー",
   ATTRIBUTE: "属性",
   SETTING: "設定",
   SCENE: "シーン",
-  NAME: "名",
   TOOL_BOX: "ツールボックス",
-  ARMAP: "ARマップ",
-  NAVIGATION: "ナビ",
-  INCREMENT: "インクリメント",
-  ENCLOSURE: "フェンス",
+  AR_SCENE: "ARマップ",
 }
 
 // 地图、场景主菜单
@@ -42,7 +37,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 地图制图及公共 添加
   OPEN: "追加",
   OPEN_DATASOURCE: "データソース",
-  OPEN_MAP: "マップ",
   OPEN_BACK: "前へ",
 
   NAVIGATION_START: "ナビ",
@@ -157,7 +151,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_TARGET_DATASOURCE: "目標データソース",
   TOOLS_UNIFIED_SETTING: "統一設定",
   MAP_CLIP: "マップクリップ",
-  CLIP: "クリップ",
 
   CAMERA: "マルチメディアコレクション",
   TOUR: "旅行軌跡",
@@ -276,7 +269,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   THEME_RANGES_MAP_TITLE: "区分ラベル主題図",
   THEME_UNIQUE_VALUES_MAP_TITLE: "個別ラベル主題図",
   THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: "個別ラベル主題図",
-  RANGE: "段数",
+  RANGES: "段数",
   PREVIEW: "プレビュー",
   CUSTOM_THEME_MAP: "カスタム主題図",
   COLOR_PICKER: "カラーピッカー",
@@ -350,7 +343,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE: "当デバイスをサポートしません",
   MAP_AR_MEASURE: "AR 計測", //ｊｐ0730
   MAP_AR_ANALYZE: "AR 解析", //ｊｐ0730
-  MAP_AR_MAPPING: "AR マッピング",
   MAP_AR_TOOL: "投入する", //jp0917
   MAP_AR_CAMERA_EXCEPTION: "カメラ異常、権限を確認してください",
   MAP_AR_AI_ASSISTANT: "AI\nアシスタント",
@@ -480,8 +472,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 智能配图
   FILL: "フィル",
   BORDER: "輪郭",
-  LINE: "ライン",
-  MARK: "マーク",
 
   // 地图导航
   START_POINT: "起点",
@@ -489,7 +479,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DRAW: "描画",
   ROAD_DETAILS: "道路詳細",
   ROUTE_THROUGH: "経由道路：",
-  DISTANCE: "距離：",
   METERS: "メートル",
   KILOMETERS: "キロメートル",
   DISPLAY_MAP: "マップの表示",
@@ -542,7 +531,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_TOPO_TRIM: "ライントリミング",
   MAP_TOPO_RESAMPLE: "リサンプリング",
   MAP_TOPO_CHANGE_DIRECTION: "方向を変更",
-  ADD_DATASET: "データセットの追加",
   SELECT_ROADNAME_FIELD: "次のデータセットの道路名フィールドを選択します",
   SELECT_FIELD: "フィールドの選択",
   MERGE_CANCEL: "キャンセル",
@@ -564,7 +552,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   BACKGROUND:'BackGround',//to be translate
   ARRAY:'Array',//to be translate
   TEXT_SHAPE:'Shape',//to be translate
-  ROTATION_ANGLE:'Rotation Angle',//to be translate
   BOLD:'Bold',//to be translate
   TILT:'Tilt',//to be translate
   UNDERLINE:'UnderLine',//to be translate
@@ -661,7 +648,7 @@ const Map_Plotting: typeof CN.Map_Plotting = {
 
 // 图层
 const Map_Layer: typeof CN.Map_Layer = {
-  PLOTS: "マイマーク",
+  MY_PLOTS: "マイマーク",
   PLOTS_IMPORT: "マークのインポート",
   PLOTS_DELETE: "マークの削除",
   PLOTS_EDIT: "マークの編集",
@@ -722,7 +709,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_CREATE_THEMATIC_MAP: "主題図の作成",
   LAYERS_MODIFY_THEMATIC_MAP: "主題図の変更",
 
-  BASEMAP: "マイベースマップ",
+  MY_BASEMAP: "マイベースマップ",
   BASEMAP_SWITH: "ベースマップの切替",
   MY_TERRAIN: "マイ地形",
 
@@ -773,7 +760,7 @@ const Map_Attribute: typeof CN.Map_Attribute = {
   NAME: "名前",
   TYPE: "タイプ",
   LENGTH: "長さ",
-  DEFAULT: "デフォルト",
+  DEFAULT_VALUE: "デフォルト",
   CONFIRM_ADD: "追加",
 
   DETAIL: "詳細",
@@ -793,9 +780,6 @@ const Map_Attribute: typeof CN.Map_Attribute = {
 
 // 地图设置
 const Map_Setting: typeof CN.Map_Setting = {
-  BASIC_SETTING: "基本設定",
-  ROTATION_GESTURE: "ジェスチャー回転",
-  PITCH_GESTURE: "ジェスチャー俯仰",
   THEME_LEGEND: "主題図凡例",
   COLUMN_NAV_BAR: "横向きの時にツールバーを縦表示",
   REAL_TIME_SYNC: "リアルタイム同期",
@@ -803,7 +787,6 @@ const Map_Setting: typeof CN.Map_Setting = {
   // 效果设置
   EFFECT_SETTINGS: "効果設定",
   ANTI_ALIASING_MAP: "アンチエイリアスマップ",
-  SHOW_OVERLAYS: "テキスト重複表示",
 
   // 范围设置
   BOUNDS_SETTING: "範囲設定",
@@ -820,7 +803,7 @@ const Map_Setting: typeof CN.Map_Setting = {
 
 // 地图设置菜单
 const Map_Settings: typeof CN.Map_Settings = {
-  THEME_LEGEND: "凡例",
+  LEGEND: "凡例",
   // 一级菜单
   BASIC_SETTING: "基本設定",
   RANGE_SETTING: "範囲設定",
@@ -883,7 +866,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   PITCH_GESTURE: "ジェスチャー俯仰",
   ROTATION_ANGLE: "回転角度",
   COLOR_MODE: "カラーモード",
-  BACKGROUND_COLOR: "背景カラー",
   MAP_ANTI_ALIASING: "マップアンチエイリアス",
   FIX_SYMBOL_ANGLE: "固定シンボル角度",
   FIX_TEXT_ANGLE: "固定テキスト角度",
@@ -940,14 +922,12 @@ const Map_Settings: typeof CN.Map_Settings = {
 
   // 四级菜单 转换方法参数设置
   BASIC_PARAMS: "基本パラメータ",
-  OFFSET: "オフセット量",
   PROPORTIONAL_DIFFERENCE: "比例差",
   ROTATION_ANGLE_SECONDS: "回転角度(秒)",
 
   // 四级菜单 和复制提示
   DATASOURCES: "データソース",
   DATASETS: "データセット",
-  TYPE: "タイプ",
   FORMAT: "フォーマット",
   ALL_COORD_FILE: "サポートする座標系ファイル",
   SHAPE_COORD_FILE: "Shape座標系ファイル",
@@ -959,9 +939,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 设置的一些参数
   PERCENT: "百分率",
   OFF: "閉じる",
-  CONFIRM: "OK",
-  CANCEL: "キャンセル",
-  COPY: "コピー",
 
   CONFIDENCE: "信頼度",
 }
@@ -980,7 +957,7 @@ const Map_Tools: typeof CN.Map_Tools = {
 // POI title
 const Map_PoiTitle: typeof CN.Map_PoiTitle = {
   FOOD: "食べ物",
-  SCENE: "観光地",
+  SCENIC: "観光地",
   BANK: "銀行",
   SUPERMARKET: "スーパー",
   HOTEL: "ホテル",

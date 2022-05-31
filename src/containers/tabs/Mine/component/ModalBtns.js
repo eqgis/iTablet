@@ -98,7 +98,7 @@ export default class ModalBtns extends Component {
           {this.props.actionOfFriend && (
             <MTBtn
               key={'friend'}
-              title={getLanguage(global.language).Navigator_Label.FRIENDS}
+              title={getLanguage(global.language).Navigator_Label.ADDRESS_BOOK}
               style={styles.button}
               image={getThemeAssets().share.friend}
               imageStyle={styles.headerBtn}

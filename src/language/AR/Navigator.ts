@@ -3,7 +3,7 @@ import CN from "../CN"
 //底部导航、首页弹出框选项
 const Navigator_Label: typeof CN.Navigator_Label = {
   HOME: "الرئيسية",
-  FRIENDS: "جهات الإتصال",
+  ADDRESS_BOOK: "جهات الإتصال",
   EXPLORE: "المستكشف",
   PROFILE: "الملف شخصى",
 

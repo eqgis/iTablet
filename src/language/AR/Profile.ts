@@ -11,7 +11,6 @@ const Profile: typeof CN.Profile = {
   ARMAP: "خريطة",
   ARMODEL: "نموذج ع",
   AREFFECT: "AR Effect",
-  SCENE: "مشهد",
   BASEMAP: "خريطة الأساس",
   SYMBOL: "رمز",
   SETTINGS: "إعدادات",
@@ -91,7 +90,6 @@ const Profile: typeof CN.Profile = {
   REGISTER_ONLINE_PROTOCAL: "شروط خدمة سوبرماب وسياسة الخصوصية",
   CONNECTING: "توصيل",
   CONNECT_SERVER_FAIL: "فشل الاتصال بالسيرفر ، يرجى التحقق من عنوان الشبكة أو السيرفر",
-  NEXT: "التالى",
   MESSAGE_SERVICE_SETTING: "تكوين خدمة الرسائل",
   MESSAGE_SERVICE_IP: "عنوان بروتوكول الإنترنت خدمة الرسائل",
   MESSAGE_SERVICE_PORT: "خدمة الرسائل ميناء",
@@ -115,7 +113,6 @@ const Profile: typeof CN.Profile = {
 
   // 地图服务地址
   SERVICE_ADDRESS: "عنوان الخدمة",
-  MAP_NAME: "أسم الخريطة",
   ENTER_SERVICE_ADDRESS: "من فضلك أدخل عنوان الخدمة",
   SAVE: "حفظ",
 
@@ -140,12 +137,10 @@ const Profile: typeof CN.Profile = {
   DELETE_ACCOUNT: "حذف حساب",
   UNABLE_DELETE_SELF: "لا يمكن حذف المستخدم الحالى",
 
-  DELETE: "حذف",
   SELECT_ALL: "تحديد الكل",
   DESELECT_ALL: "إلغاء تحديد الكل",
 
   // 数据删除导出
-  SHARE: "مشاركة",
   PATH: "مسار",
 
   LOCAL: "محلى",
@@ -225,7 +220,6 @@ const Profile: typeof CN.Profile = {
   DATASET_TYPE_LINE: "خط",
   DATASET_TYPE_REGION: "منطقة",
   DATASET_TYPE_TEXT: "نص",
-  CLEAR: "مسح",
   CREATE: "أنشاء",
   DATASET_BUILD_PYRAMID: "بناء هرم",
   DATASET_BUILD_STATISTICS: "نموذج الإحصاء",
@@ -237,7 +231,6 @@ const Profile: typeof CN.Profile = {
   INPUT_DATASET_NAME: "من فضلك أدخل اسم مجموعة البيانات",
 
   // 创建数据源
-  NEW_DATASOURCE: "أنشاء مجموعه بيانات",
   SET_DATASOURCE_NAME: "تعيين اسم محموعه بيانات",
   ENTER_DATASOURCE_NAME: "من فضلك ادخل اسم مجموعه البيانات",
   OPEN_DATASROUCE_FAILED: "فشل فتح مجموعه البيانات",
@@ -265,7 +258,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: "هذا الجهاز",
   SETTING_CLEAR_CACHE: "مسح ذاكرة التخزين المؤقت",
   SETTING_CLEAR_CACHE_SUCCESS:"إزالة بنجاح",
-  DISTANCE:"المسافة(m)",
+  DISTANCE_METER:"المسافة(m)",
   TIME:"الوقت (s)",
   INPUT_NUMBER:"الرجاء إدخال رقم",
   DISTANCE_LOCATION:"بعد التعريب",

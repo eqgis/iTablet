@@ -60,7 +60,7 @@ export default class Dialog extends PureComponent {
     title: undefined,
     activeOpacity: 0.8,
     cancelBtnTitle: getLanguage(global.language).Prompt.CANCEL,
-    confirmBtnTitle: getLanguage(global.language).Prompt.CONFIRM,
+    confirmBtnTitle: getLanguage(global.language).CONFIRM,
     installBtnTitle: getLanguage(global.language).Prompt.INSTALL,
     showBtns: true,
     confirmBtnVisible: true,

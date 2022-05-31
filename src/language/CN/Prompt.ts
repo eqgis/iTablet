@@ -11,7 +11,6 @@ const Prompt = {
   SUBMIT: "提交",
   REDO: "重做",
   UNDO: "撤销",
-  SHARE: "分享",
   DELETE: "删除",
   WECHAT: "微信",
   BEGIN: "开始",
@@ -20,7 +19,6 @@ const Prompt = {
   WX_NOT_INSTALLED: "未检测到微信",
   WX_SHARE_FAILED: "微信分享失败，请检查是否安装微信",
   RENAME: "重命名",
-  BATCH_DELETE: "批量删除",
   PREPARING: "准备中",
 
   DOWNLOAD_SAMPLE_DATA: "是否下载样例数据？",
@@ -34,7 +32,7 @@ const Prompt = {
 
   NO_REMINDER: "下次不再提醒",
 
-  LOG_OUT: "是否退出登录？",
+  LOG_OUT_CONFIRM: "是否退出登录？",
   FAILED_TO_LOG: "登录失败",
   INCORRECT_USER_INFO: "用户名或用户密码错误",
   INCORRECT_IPORTAL_ADDRESS: "请检查服务器地址是否正确",
@@ -45,7 +43,6 @@ const Prompt = {
   PLEASE_ADD_STOP: "请添加站点",
   IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: "影像图层不能被设为当前图层",
 
-  CONFIRM: "确定",
   COMPLETE: "完成",
   INSTALL:"安装",
 
@@ -67,7 +64,7 @@ const Prompt = {
   THE_SCENE_IS_OPENED: "该场景已打开",
   NO_SCENE_LIST: "无场景列表",
   NO_SCENE_SELECTED: "未选择场景",
-  SWITCHING: "正在切换地图",
+  SWITCHING_MAP: "正在切换地图",
   CLOSING: "正在关闭地图",
   CLOSING_3D: "正在关闭场景",
   SAVING: "正在保存地图",
@@ -76,7 +73,7 @@ const Prompt = {
   ADD_FAILED: "添加失败",
   ADD_MAP_FAILED: "不能添加当前地图",
   CREATE_THEME_FAILED: "创建专题图失败",
-  PLEASE_ADD_DATASET: "请先选择要添加的数据集",
+  PLEASE_SELECT_DATASET_TO_ADD: "请先选择要添加的数据集",
   PLEASE_SELECT_OBJECT: "请选择编辑对象",
   SWITCHING_PLOT_LIB: "正在切换标绘库",
   NON_SELECTED_OBJ: "没有选择对象",
@@ -99,7 +96,6 @@ const Prompt = {
   THE_CURRENT_LAYER: "当前图层为",
   NO_BASE_MAP: "无底图可移除",
   ENTER_KEY_WORDS: "请输入搜索关键字",
-  SEARCHING: "搜索中",
   SEARCHING_DEVICE_NOT_FOUND: "未能搜索到外部设备",
   READING_DATA: "读取数据中",
   CREATE_SUCCESSFULLY: "创建成功",
@@ -190,7 +186,6 @@ const Prompt = {
   LOG_IN: "登录中",
   ENTER_MAP_NAME: "请输入地图名字",
   CLIP_ENTER_MAP_NAME: "请输入地图名字",
-  ENTER_SERVICE_ADDRESS: "请输入服务地址",
   ENTER_ANIMATION_NAME: "请输入动画名字",
   ENTER_ANIMATION_NODE_NAME: "请输入动画节点名字",
   PLEASE_SELECT_PLOT_SYMBOL: "请选择标绘符号",
@@ -209,14 +204,10 @@ const Prompt = {
 
   LAYER_CANNOT_CREATE_THEMATIC_MAP: "不支持由该图层创建专题图",
 
-  ANALYSING: "分析中",
   CHOOSE_STARTING_POINT: "请输入起点",
   CHOOSE_DESTINATION: "请输入终点",
 
   LATEST: "最后修改时间: ",
-  GEOGRAPHIC_COORDINATE_SYSTEM: "地理坐标系: ",
-  PROJECTED_COORDINATE_SYSTEM: "投影坐标系: ",
-  FIELD_TYPE: "字段类型: ",
 
   PLEASE_LOGIN_AND_SHARE: "请登录后再分享",
   PLEASE_LOGIN: "请登录",
@@ -337,7 +328,7 @@ const Prompt = {
   FAILED_TO_CREATE_TEXT: "添加文字失败",
   FAILED_TO_CREATE_LINE: "点绘线失败",
   FAILED_TO_CREATE_REGION: "点绘面失败",
-  CLEAR_HISTORY: "清除搜索记录",
+  CLEAR_SEARCH_HISTORY: "清除搜索记录",
   // 导航相关
   SEARCH_AROUND: "搜周边",
   GO_HERE: "到这去",
@@ -365,7 +356,7 @@ const Prompt = {
   DISTANCE_ERROR: "当前起始点距离太近，请重新选点",
   USE_ONLINE_ROUTE_ANALYST: "起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？",
   NOT_SUPPORT_ONLINE_NAVIGATION: "在线导航暂不支持",
-  CREATE: "新建",
+  NEW: "新建",
   NO_DATASOURCE: "当前工作空间无数据源，请先新建数据源",
   FLOOR: "楼层",
   AR_NAVIGATION: "AR导航",
@@ -390,7 +381,7 @@ const Prompt = {
   SELECT_DESTINATION_DATASOURCE: "请选择目标数据源",
   FILENAME_ALREADY_EXIST: "文件已存在,请重新输入文件名",
   NETWORK_BUILDING: "构网中...",
-  BUILD_SUCCESS: "路网构建成功",
+  ROADNET_BUILD_SUCCESS: "路网构建成功",
   SELECT_LINE_SMOOTH: "请选择需要平滑的线",
   SELECT_A_POINT_INLINE: "请长按放大镜选择一个线上点",
   SELECT_POINT_INCURRENTLINE:"请长按选择当前线上的点打断",

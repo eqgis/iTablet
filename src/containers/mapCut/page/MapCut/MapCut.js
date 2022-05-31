@@ -56,7 +56,7 @@ export default class MapCut extends React.Component {
   constructor(props) {
     super(props)
     const { params } = props.route
-    COMPLETE = getLanguage(this.props.language).Prompt.CONFIRM
+    COMPLETE = getLanguage(this.props.language).CONFIRM
     EDIT = getLanguage(this.props.language).Map_Main_Menu.EDIT
     CANCEL = getLanguage(this.props.language).Prompt.CANCEL
     this.state = {
@@ -888,7 +888,7 @@ export default class MapCut extends React.Component {
         ref={ref => (this.addLayerModal = ref)}
         layers={this.state.outLayers}
         confirmTitle={
-          getLanguage(this.props.language || global.language).Analyst_Labels
+          getLanguage(this.props.language || global.language)
             .CONFIRM
         }
         cancelTitle={

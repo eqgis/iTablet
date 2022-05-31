@@ -250,7 +250,7 @@ export default class MeasureView extends React.Component {
         ref={ref => (this.DatumPointDialog = ref)}
         type={'modal'}
         cancelBtnVisible={false}
-        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(global.language).CONFIRM}
         confirmAction={async () => {
           let fixedPoint = this.point
           //设置基点

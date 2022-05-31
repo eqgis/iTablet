@@ -4,8 +4,6 @@ const Find = {
   APPLET: "小程序",
   GIS_ACADEMY: "GIS学院",
   SEARCH_RESULT: "搜索结果",
-  BACK: "返回",
-  CONFIRM: "确定",
   RESET: "重置",
 
   ALL: "全部",
@@ -21,7 +19,7 @@ const Find = {
 
   SELECT_DATATYPES_FIRST: "请先选择数据类型",
   NO_DATA: "未能找到数据",
-  NETWORK_ERROR: "网络出错，请稍后再试",
+  NETWORK_ERROR_NOTIFY: "网络出错，请稍后再试",
   NO_MORE_DATA: "数据已全部加载",
   DOWNLOADED: "下载完成，可在导入中导入数据",
 

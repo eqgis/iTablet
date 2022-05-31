@@ -7,7 +7,6 @@ const Analyst_Modules: typeof CN.Analyst_Modules = {
   BUFFER_ANALYST_MULTIPLE: "Analyse multi-tampons",
   OVERLAY_ANALYSIS: "Analyse de superposition",
   THIESSEN_POLYGON: "Polygone de Thiessen",
-  MEASURE_DISTANCE: "Mesure de distance",
   ONLINE_ANALYSIS: "Analyse en ligne",
   INTERPOLATION_ANALYSIS: "Analyse d'interpolation",
 
@@ -36,12 +35,8 @@ const Analyst_Methods: typeof CN.Analyst_Methods = {
 
 const Analyst_Labels: typeof CN.Analyst_Labels = {
   ANALYST: "Analyse",
-  CONFIRM: "Terminé",
-  RESET: "Réinitialiser",
-  CANCEL: "Annuler",
   NEXT: "Suivant",
   PREVIOUS: "Précédent",
-  ADD: "Ajouter",
   Edit: "Éditer",
 
   // local
@@ -49,7 +44,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   BUILD_A_NETWORK_DATASET: "Créer un réseau de jeu de données",
   CHOOSE_DATA: "Choisir les données",
   TOPOLOGY: "Topologie",
-  ADD_DATASET: "Ajouter un ensemble de données",
   DONE: "Terminé",
   RESULT_FIELDS: "Champs de résultats",
   SPLIT_SETTINGS: "Paramètres de fractionnement",
@@ -59,7 +53,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SET_START_STATION: "Définir la station de départ",
   MIDDLE_STATIONS: "Stations intermédiaires",
   SET_END_STATION: "Définir la station d'arrivée",
-  LOCATION: "Localisation",
   SET_AS_START_STATION: "Point de départ",
   SET_AS_END_STATION: "Destination",
   ADD_STATIONS: "Ajouter des stations",
@@ -91,13 +84,11 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SEMICIRCLE_SEGMENTS: "Segments en demi-cercle",
   RING_BUFFER: "Tampon en anneau",
   RESULT_DATA: "Données de résultat",
-  BATCH_ADD: "Ajouter les lots",
   START_VALUE: "Valeur initiale",
   END_VALUE: "Valeur finale",
   STEP: "Étape",
-  RANGE_COUNT: "Plage de Compte",
+  RANGE_COUNT_2: "Plage de Compte",
   INSERT: "Insérer",
-  DELETE: "Supprimer",
   INDEX: "Indice",
   RADIUS: "Rayon",
   RESULT_DATASET_NAME: "Nom du résultat du jeu de données",
@@ -138,11 +129,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
 
   ADD_WEIGHT_STATISTIC: "Ajouter un champ pondéré",
 
-  // 方向
-  LEFT: "Gauche",
-  DOWN: "Bas",
-  RIGHT: "Droite",
-  UP: "Haut",
 
   // 邻近分析
   DISPLAY_REGION_SETTINGS: "Afficher les paramètres de la région",
@@ -180,7 +166,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   TENSION: "Tension",
   SMOOTHNESS: "Souplesse",
   SEMIVARIOGRAM: "Semi-variogramme",
-  ROTATION: "Rotation",
   SILL: "Seuil",
   RANGE: "Intervalle",
   NUGGET_EFFECT: "Effet de pépite",
@@ -330,11 +315,11 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   STANDARD_DEVIATION_INTERVAL: "Intervalle standard de déviation",
 
   // 长度单位
-  METER: "m",
-  KILOMETER: "km",
-  YARD: "yd",
-  FOOT: "ft",
-  MILE: "mile",
+  ABBR_METER: "m",
+  ABBR_KILOMETER: "km",
+  ABBR_YARD: "yd",
+  ABBR_FOOT: "ft",
+  ABBR_MILE: "mile",
 
   // 面积单位
   SQUARE_MILE: "mille²",
@@ -353,14 +338,6 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SPECTRAL_GRADIENT: "Gradient spectral",
   TERRAIN_GRADIENT: "Gradient du terrain",
 
-  // 统计模式
-  MAX: "Max",
-  MIN: "Min",
-  AVERAGE: "Moyenne",
-  SUM: "Sum",
-  VARIANCE: "Variance",
-  STANDARD_DEVIATION: "Écart-type",
-
   // 聚合类型
   AGGREGATE_WITH_GRID: "Agréger avec la grille",
   AGGREGATE_WITH_REGION: "Agréger avec la région",
@@ -376,8 +353,8 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   UBIT1: "UBIT1",
   UBIT16: "UBIT16",
   UBIT32: "UBIT32",
-  SINGLE: "Seul",
-  DOUBLE: "Double",
+  SINGLE_FLOAT: "Seul",
+  DOUBLE_FLOAT: "Double",
 
   // 查找方法
   SEARCH_VARIABLE_LENGTH: "Longueur variable",
@@ -385,7 +362,7 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SEARCH_BLOCK: "Obstacle",
 
   // 半变异函数
-  SPHERICAL: "Sphérique",
+  SPHERICAL_FUNCTION: "Sphérique",
   EXPONENTIAL: "Exponentiel",
   GAUSSIAN: "Gaussien",
 }

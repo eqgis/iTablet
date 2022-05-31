@@ -3,17 +3,12 @@ import CN from "../CN"
 // 制图
 const Map_Label: typeof CN.Map_Label = {
   // 地图底部导航
-  MAP: "Harita",
   LAYER: "Katman",
   ATTRIBUTE: "Öznitelik",
   SETTING: "Ayarlar",
   SCENE: "Sahne",
-  NAME: "Ad",
   TOOL_BOX: "Araç Kutusu",
-  ARMAP: "Görünüm",
-  NAVIGATION: "Navigasyon",
-  INCREMENT: "Arttırma",
-  ENCLOSURE: "İlişik",
+  AR_SCENE: "Görünüm",
 }
 
 // 地图、场景主菜单
@@ -42,7 +37,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 地图制图及公共 添加
   OPEN: "Aç",
   OPEN_DATASOURCE: "Veri Kaynağı",
-  OPEN_MAP: "Harita",
   OPEN_BACK: "Geri",
 
   NAVIGATION_START: "Yönlendirme",
@@ -157,7 +151,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_TARGET_DATASOURCE: "Hedef Veri Kaynağı",
   TOOLS_UNIFIED_SETTING: "Birleşik Ayarlar",
   MAP_CLIP: "Harita Kırpma",
-  CLIP: "Kırpma",
 
   CAMERA: "Kamera",
   TOUR: "Gezinti",
@@ -276,7 +269,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   THEME_RANGES_MAP_TITLE: "Aralıklı Harita",
   THEME_UNIQUE_VALUES_MAP_TITLE: "Özgün Değerler Haritası",
   THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: "Özgün Değer Etiketi Haritası",
-  RANGE: "Aralık",
+  RANGES: "Aralık",
   PREVIEW: "Ön izleme",
   CUSTOM_THEME_MAP: "Özel Tematik Harita",
   COLOR_PICKER: "Renk Seçici",
@@ -350,7 +343,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE: "Bu cihazı desteklemiyor",
   MAP_AR_MEASURE: "AR Ölçüm",
   MAP_AR_ANALYZE: "AR Analizi",
-  MAP_AR_MAPPING: "AR Haritalama",
   MAP_AR_TOOL: "Fırlat",
   MAP_AR_CAMERA_EXCEPTION: "Kamera anormal, lütfen iznin açık olup olmadığını kontrol edin.",
   MAP_AR_AI_ASSISTANT: "AI Toplama",
@@ -480,8 +472,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 智能配图
   FILL: "Doldur",
   BORDER: "Kenar",
-  LINE: "Çizgi",
-  MARK: "İşaret",
 
   // 地图导航
   START_POINT: "Başlangıç Noktası",
@@ -489,7 +479,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DRAW: "Çiz",
   ROAD_DETAILS: "Yol Detayları",
   ROUTE_THROUGH: "Yol Boyunca：",
-  DISTANCE: "Mesafe: ",
   METERS: "m",
   KILOMETERS: "Km",
   DISPLAY_MAP: "Haritayı Göster",
@@ -542,7 +531,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_TOPO_TRIM: "Kırpma",
   MAP_TOPO_RESAMPLE: "Yeniden Örnekleme",
   MAP_TOPO_CHANGE_DIRECTION: "Yönü Değiştir",
-  ADD_DATASET: "Veri Kümesini ekle",
   SELECT_ROADNAME_FIELD: "Yol Adı Alanını Seçin",
   SELECT_FIELD: "Dosya Seç",
   MERGE_CANCEL: "İptal",
@@ -564,7 +552,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   BACKGROUND:'BackGround',//to be translate
   ARRAY:'Array',//to be translate
   TEXT_SHAPE:'Shape',//to be translate
-  ROTATION_ANGLE:'Rotation Angle',//to be translate
   BOLD:'Bold',//to be translate
   TILT:'Tilt',//to be translate
   UNDERLINE:'UnderLine',//to be translate
@@ -661,7 +648,7 @@ const Map_Plotting: typeof CN.Map_Plotting = {
 
 // 图层
 const Map_Layer: typeof CN.Map_Layer = {
-  PLOTS: "İşaretlediklerim",
+  MY_PLOTS: "İşaretlediklerim",
   PLOTS_IMPORT: "İşaretlileri içe aktarma",
   PLOTS_DELETE: "İşaretlileri Sil",
   PLOTS_EDIT: "İşaretlileri Düzenleme",
@@ -722,7 +709,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_CREATE_THEMATIC_MAP: "Tematik Harita Oluştur",
   LAYERS_MODIFY_THEMATIC_MAP: "Tematik Haritayı Değiştir",
 
-  BASEMAP: "Altlık Haritam",
+  MY_BASEMAP: "Altlık Haritam",
   BASEMAP_SWITH: "Altlık haritayı değiştir",
   MY_TERRAIN: "Yerlerim",
 
@@ -773,7 +760,7 @@ const Map_Attribute: typeof CN.Map_Attribute = {
   NAME: "Ad",
   TYPE: "Türü",
   LENGTH: "Uzunluk",
-  DEFAULT: "Varsayılan",
+  DEFAULT_VALUE: "Varsayılan",
   CONFIRM_ADD: "Ekle",
 
   DETAIL: "Detay",
@@ -793,9 +780,6 @@ const Map_Attribute: typeof CN.Map_Attribute = {
 
 // 地图设置
 const Map_Setting: typeof CN.Map_Setting = {
-  BASIC_SETTING: "Temel Ayarlar",
-  ROTATION_GESTURE: "Dönme Hareketi",
-  PITCH_GESTURE: "Dönme Hareketi",
   THEME_LEGEND: "Tema Lejantı",
   COLUMN_NAV_BAR: "Dikey Gezinme Çubuğu Yatay Olduğunda",
   REAL_TIME_SYNC: "Gerçek Zamanlı Senkronize",
@@ -803,7 +787,6 @@ const Map_Setting: typeof CN.Map_Setting = {
   // 效果设置
   EFFECT_SETTINGS: "Efekt Ayarları",
   ANTI_ALIASING_MAP: "Düzgünleştirme Haritası",
-  SHOW_OVERLAYS: "Çakışmaları Göster",
 
   // 范围设置
   BOUNDS_SETTING: "Sınır Ayarları",
@@ -820,7 +803,7 @@ const Map_Setting: typeof CN.Map_Setting = {
 
 // 地图设置菜单
 const Map_Settings: typeof CN.Map_Settings = {
-  THEME_LEGEND: "Tema Lejantı",
+  LEGEND: "Tema Lejantı",
   // 一级菜单
   BASIC_SETTING: "Temel Ayarlar",
   RANGE_SETTING: "Sınır Ayarları",
@@ -883,7 +866,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   PITCH_GESTURE: "Saha Hareketi",
   ROTATION_ANGLE: "Dönme Açısı",
   COLOR_MODE: "Renk Modu",
-  BACKGROUND_COLOR: "Arkaplan Rengi",
   MAP_ANTI_ALIASING: "Harita Düzeltme",
   FIX_SYMBOL_ANGLE: "Sembol Açısını Düzelt",
   FIX_TEXT_ANGLE: "Fix Text Angle",
@@ -940,14 +922,12 @@ const Map_Settings: typeof CN.Map_Settings = {
 
   // 四级菜单 转换方法参数设置
   BASIC_PARAMS: "Temel Parametreler",
-  OFFSET: "Kaydırma (Offset)",
   PROPORTIONAL_DIFFERENCE: "Oransal Fark",
   ROTATION_ANGLE_SECONDS: "Dönme Açısı (Saniye)",
 
   // 四级菜单 和复制提示
   DATASOURCES: "Veri Kaynağı",
   DATASETS: "Veri Kümesi",
-  TYPE: "Tür",
   FORMAT: "Format",
   ALL_COORD_FILE: "Desteklenen Koordinat Sistemi Dosyası",
   SHAPE_COORD_FILE: "Shape Koordinat Sistemi Dosyası",
@@ -959,9 +939,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 设置的一些参数
   PERCENT: "Yüzde",
   OFF: "Kapalı",
-  CONFIRM: "Onay",
-  CANCEL: "İptal",
-  COPY: "Kopyala",
 
   CONFIDENCE: "Gizlilik",
 }
@@ -980,7 +957,7 @@ const Map_Tools: typeof CN.Map_Tools = {
 // POI title
 const Map_PoiTitle: typeof CN.Map_PoiTitle = {
   FOOD: "Yemek",
-  SCENE: "Sahne",
+  SCENIC: "Sahne",
   BANK: "Banka",
   SUPERMARKET: "Market",
   HOTEL: "Otel",

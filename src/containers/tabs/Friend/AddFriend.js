@@ -193,7 +193,7 @@ class AddFriend extends Component {
       <Dialog
         ref={ref => (this.dialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(this.language).Friends.CONFIRM}
+        confirmBtnTitle={getLanguage(this.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.language).Friends.CANCEL}
         confirmAction={this.addFriendRequest}
         opacity={1}

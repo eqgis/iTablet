@@ -670,7 +670,7 @@ class TaskManage extends React.Component<Props, State> {
             this.dialogAction()
           }
         }}
-        confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(this.props.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
       />
     )
@@ -803,7 +803,7 @@ class TaskManage extends React.Component<Props, State> {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(this.props.language).Friends.LOADING}
+              title={getLanguage(this.props.language).Friends.REFRESHING}
               enabled={true}
             />
           }
@@ -828,7 +828,7 @@ class TaskManage extends React.Component<Props, State> {
                     colors={['orange', 'red']}
                     tintColor={'orange'}
                     titleColor={'orange'}
-                    title={getLanguage(this.props.language).Friends.LOADING}
+                    title={getLanguage(this.props.language).Friends.REFRESHING}
                     enabled={true}
                   />
                 }

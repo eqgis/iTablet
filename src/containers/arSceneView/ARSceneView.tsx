@@ -153,7 +153,7 @@ export default class ARSceneView extends React.Component<IProps> {
       <Dialog
         ref={ref => (this.dialog = ref)}
         cancelBtnVisible={!firstDialog}
-        confirmBtnTitle={firstDialog ? getLanguage(global.language).Prompt.CONFIRM
+        confirmBtnTitle={firstDialog ? getLanguage(global.language).CONFIRM
           : getLanguage(global.language).Prompt.YES}
         cancelBtnTitle={getLanguage(global.language).Prompt.NO}
         confirmAction={async ()=>{

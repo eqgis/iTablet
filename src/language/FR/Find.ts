@@ -6,8 +6,6 @@ const Find: typeof CN.Find = {
   APPLET: "Applet",
   GIS_ACADEMY: "Académie SIG",
   SEARCH_RESULT: "Résultat de recherche",
-  BACK: "Arrière",
-  CONFIRM: "Chercher",
   RESET: "Réinitialiser",
 
   ALL: "Tout",
@@ -23,7 +21,7 @@ const Find: typeof CN.Find = {
 
   SELECT_DATATYPES_FIRST: "Veuillez d'abord sélectionner les données",
   NO_DATA: "Données non trouvées",
-  NETWORK_ERROR: "Erreur réseau, veuillez réessayer plus tard",
+  NETWORK_ERROR_NOTIFY: "Erreur réseau, veuillez réessayer plus tard",
   NO_MORE_DATA: "Pas de données trouvées",
   DOWNLOADED: "Téléchargement réussi. Vous pouvez importer ces données à partir de Importer",
 

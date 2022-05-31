@@ -110,7 +110,7 @@ export default class CreateNavDataPage extends Component {
         this.dialog.setDialogVisible(true, {
           title: getLanguage(global.language).Map_Main_Menu.NEW_DATASOURCE,
           value: 'default_roadnet_datasource',
-          confirmBtnTitle: getLanguage(global.language).Prompt.CONFIRM,
+          confirmBtnTitle: getLanguage(global.language).CONFIRM,
           cancelBtnTitle: getLanguage(global.language).Prompt.CANCEL,
           placeholder: '',
           returnKeyType: 'done',
@@ -152,7 +152,7 @@ export default class CreateNavDataPage extends Component {
     this.dialog.setDialogVisible(true, {
       title: getLanguage(global.language).Prompt.INPUT_MODEL_FILE_NAME,
       value: this.state.selectedDataset.datasetName,
-      confirmBtnTitle: getLanguage(global.language).Prompt.CONFIRM,
+      confirmBtnTitle: getLanguage(global.language).CONFIRM,
       cancelBtnTitle: getLanguage(global.language).Prompt.CANCEL,
       placeholder: '',
       returnKeyType: 'done',
@@ -266,7 +266,7 @@ export default class CreateNavDataPage extends Component {
 
         setTimeout(() => {
           global.Loading.setLoading(false)
-          rel && Toast.show(getLanguage(global.language).Prompt.BUILD_SUCCESS)
+          rel && Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_SUCCESS)
         }, 1000)
       }
     }
@@ -467,7 +467,7 @@ export default class CreateNavDataPage extends Component {
         {this.state.datasource.length > 0 && (
           <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
             <Text style={styles.confirmTxt}>
-              {getLanguage(global.language).Prompt.CONFIRM}
+              {getLanguage(global.language).CONFIRM}
             </Text>
           </TouchableOpacity>
         )}

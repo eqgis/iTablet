@@ -61,7 +61,7 @@ function setModuleData(type) {
 
 export default function(type, title, customAction) {
   return {
-    title: title || getLanguage(global.language).Map_Settings.THEME_LEGEND,
+    title: title || getLanguage(global.language).Map_Settings.LEGEND,
     type: ConstToolType.SM_MAP_LEGEND,
     action: () => {
       if (customAction === false) {

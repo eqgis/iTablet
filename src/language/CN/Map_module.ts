@@ -1,7 +1,7 @@
 // 地图类型
 const Map_Module = {
   MAP_EDIT: "地图浏览",
-  MAP_3D: "三维浏览",
+  MODULE_3D: "三维浏览",
   MAP_AR_MODULE: "AR模块",
   MAP_AR: "AR地图",
   MAP_AR_ANALYSIS: "AR分析",

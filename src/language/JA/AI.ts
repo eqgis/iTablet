@@ -6,7 +6,6 @@ const AI: typeof CN.AI = {
   DATE: "日付",
   REMARK: "備考",
   MORE: "詳細",
-  CONFIDENCE: "信頼度",
 
   CLIENT: "クライアント",
   PLATE_NUMBER: "車両登録番号",

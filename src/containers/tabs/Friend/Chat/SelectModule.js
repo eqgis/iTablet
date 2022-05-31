@@ -74,7 +74,7 @@ class SelectModule extends Component {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => {
               if (
-                item.title === getLanguage(global.language).Map_Module.MAP_3D
+                item.title === getLanguage(global.language).Map_Module.MODULE_3D
               ) {
                 return null
               }

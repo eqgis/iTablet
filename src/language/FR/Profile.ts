@@ -11,7 +11,6 @@ const Profile: typeof CN.Profile = {
   ARMAP: "Carte RA",
   ARMODEL: "Modèle RA",
   AREFFECT: "Effet RA",
-  SCENE: "Scène",
   BASEMAP: "Fond",
   SYMBOL: "Symbole",
   SETTINGS: "Paramètres",
@@ -91,7 +90,6 @@ const Profile: typeof CN.Profile = {
   REGISTER_ONLINE_PROTOCAL: "Conditions d'utilisation et politique de confidentialité de SuperMap",
   CONNECTING: "Connexion",
   CONNECT_SERVER_FAIL: "Impossible de se connecter au serveur, veuillez vérifier l'adresse réseau ou serveur,",
-  NEXT: "Suivant",
   MESSAGE_SERVICE_SETTING: "Configuration du service d message",
   MESSAGE_SERVICE_IP: "Addresse IP du service de messagerie",
   MESSAGE_SERVICE_PORT: "Port du service de messagerie",
@@ -115,7 +113,6 @@ const Profile: typeof CN.Profile = {
 
   // 地图服务地址
   SERVICE_ADDRESS: "Adresse de service",
-  MAP_NAME: "Nom de la carte",
   ENTER_SERVICE_ADDRESS: "Veuillez saisir l'adresse du service",
   SAVE: "Enregistrer",
 
@@ -140,12 +137,10 @@ const Profile: typeof CN.Profile = {
   DELETE_ACCOUNT: "Supprimer le compte",
   UNABLE_DELETE_SELF: "Impossible de supprimer l'utilisateur actuel",
 
-  DELETE: "Supprimer",
   SELECT_ALL: "Sélectionner tout",
   DESELECT_ALL: "Désélectionner tout",
 
   // 数据删除导出
-  SHARE: "Partage",
   PATH: "Trajectoire",
 
   LOCAL: "Local",
@@ -223,7 +218,6 @@ const Profile: typeof CN.Profile = {
   DATASET_TYPE_LINE: "ligne",
   DATASET_TYPE_REGION: "région",
   DATASET_TYPE_TEXT: "texte",
-  CLEAR: "Enlever",
   CREATE: "Créer",
   DATASET_BUILD_PYRAMID: "Construire une pyramide",
   DATASET_BUILD_STATISTICS: "Modèle statistique",
@@ -235,7 +229,6 @@ const Profile: typeof CN.Profile = {
   INPUT_DATASET_NAME: "Veuillez saisir le nom de l'ensemble de données",
 
   // 创建数据源
-  NEW_DATASOURCE: "Créer une source de données",
   SET_DATASOURCE_NAME: "Définir le nom de la source de données",
   ENTER_DATASOURCE_NAME: "Veuillez saisir le nom de la source de données",
   OPEN_DATASROUCE_FAILED: "Échec de l'ouverture de la source de données",
@@ -263,7 +256,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: "Cet appareil",
   SETTING_CLEAR_CACHE: "Vider le cache",
   SETTING_CLEAR_CACHE_SUCCESS:"Suppression réussie",
-  DISTANCE:"Distance(m)",
+  DISTANCE_METER:"Distance(m)",
   TIME:"Temps",
   INPUT_NUMBER:"Veuillez saisir le numéro",
   DISTANCE_LOCATION:"Emplacement à distance",

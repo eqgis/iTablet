@@ -5,7 +5,6 @@ const Analyst_Modules = {
   BUFFER_ANALYST_MULTIPLE: "多重缓冲区",
   OVERLAY_ANALYSIS: "叠加分析",
   THIESSEN_POLYGON: "泰森多边形",
-  MEASURE_DISTANCE: "距离计算",
   ONLINE_ANALYSIS: "在线分析",
   INTERPOLATION_ANALYSIS: "插值分析",
 
@@ -34,12 +33,8 @@ const Analyst_Methods = {
 
 const Analyst_Labels = {
   ANALYST: "分析",
-  CONFIRM: "确定",
-  RESET: "重置",
-  CANCEL: "取消",
   NEXT: "下一步",
   PREVIOUS: "上一步",
-  ADD: "添加",
   Edit: "修改",
 
   // local
@@ -47,7 +42,6 @@ const Analyst_Labels = {
   BUILD_A_NETWORK_DATASET: "新建二维网络数据集",
   CHOOSE_DATA: "选择数据",
   TOPOLOGY: "拓扑构网",
-  ADD_DATASET: "添加数据集",
   DONE: "确定",
   RESULT_FIELDS: "字段设置",
   SPLIT_SETTINGS: "打断设置",
@@ -57,7 +51,6 @@ const Analyst_Labels = {
   SET_START_STATION: "设置起点",
   MIDDLE_STATIONS: "添加途经点",
   SET_END_STATION: "设置终点",
-  LOCATION: "选中位置",
   SET_AS_START_STATION: "设置起点",
   SET_AS_END_STATION: "设置终点",
   ADD_STATIONS: "添加站点",
@@ -89,13 +82,11 @@ const Analyst_Labels = {
   SEMICIRCLE_SEGMENTS: "半圆弧线段数",
   RING_BUFFER: "生成环状缓冲区",
   RESULT_DATA: "结果数据",
-  BATCH_ADD: "批量添加",
   START_VALUE: "起始值",
   END_VALUE: "结束值",
   STEP: "步长",
-  RANGE_COUNT: "段数",
+  RANGE_COUNT_2: "段数",
   INSERT: "插入",
-  DELETE: "删除",
   INDEX: "序号",
   RADIUS: "半径",
   RESULT_DATASET_NAME: "结果数据集名称",
@@ -136,12 +127,6 @@ const Analyst_Labels = {
 
   ADD_WEIGHT_STATISTIC: "增加权重字段",
 
-  // 方向
-  LEFT: "左",
-  DOWN: "下",
-  RIGHT: "右",
-  UP: "上",
-
   // 邻近分析
   DISPLAY_REGION_SETTINGS: "显示区域设置",
   CUSTOM_LOCALE: "自定义区域",
@@ -178,7 +163,6 @@ const Analyst_Labels = {
   TENSION: "张力系数",
   SMOOTHNESS: "光滑系数",
   SEMIVARIOGRAM: "半变异函数",
-  ROTATION: "旋转角度",
   SILL: "基台值",
   RANGE: "自相关阈值",
   NUGGET_EFFECT: "块金效应值",
@@ -328,11 +312,11 @@ const Analyst_Params = {
   STANDARD_DEVIATION_INTERVAL: "标准差分段",
 
   // 长度单位
-  METER: "米",
-  KILOMETER: "千米",
-  YARD: "码",
-  FOOT: "英尺",
-  MILE: "英里",
+  ABBR_METER: "米",
+  ABBR_KILOMETER: "千米",
+  ABBR_YARD: "码",
+  ABBR_FOOT: "英尺",
+  ABBR_MILE: "英里",
 
   // 面积单位
   SQUARE_MILE: "平方英里",
@@ -351,14 +335,6 @@ const Analyst_Params = {
   SPECTRAL_GRADIENT: "光谱渐变",
   TERRAIN_GRADIENT: "地形渐变",
 
-  // 统计模式
-  MAX: "最大值",
-  MIN: "最小值",
-  AVERAGE: "平均值",
-  SUM: "求和",
-  VARIANCE: "方差",
-  STANDARD_DEVIATION: "标准差",
-
   // 聚合类型
   AGGREGATE_WITH_GRID: "网格面聚合",
   AGGREGATE_WITH_REGION: "多边形聚合",
@@ -374,8 +350,8 @@ const Analyst_Params = {
   UBIT1: "1位无符号",
   UBIT16: "16位",
   UBIT32: "32位",
-  SINGLE: "单精度浮点型",
-  DOUBLE: "双精度浮点型",
+  SINGLE_FLOAT: "单精度浮点型",
+  DOUBLE_FLOAT: "双精度浮点型",
 
   // 查找方法
   SEARCH_VARIABLE_LENGTH: "变长查找",
@@ -383,7 +359,7 @@ const Analyst_Params = {
   SEARCH_BLOCK: "块查找",
 
   // 半变异函数
-  SPHERICAL: "球函数",
+  SPHERICAL_FUNCTION: "球函数",
   EXPONENTIAL: "指数函数",
   GAUSSIAN: "高斯函数",
 }

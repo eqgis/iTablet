@@ -3,7 +3,7 @@ import CN from "../CN"
 // 地图类型
 const Map_Module: typeof CN.Map_Module = {
   MAP_EDIT: "Parcourir",
-  MAP_3D: "Vue de la scène",
+  MODULE_3D: "Vue de la scène",
   MAP_AR_MODULE: "Module RA",
   MAP_AR: "Cartographie RA",
   MAP_AR_ANALYSIS: "Analyse RA",

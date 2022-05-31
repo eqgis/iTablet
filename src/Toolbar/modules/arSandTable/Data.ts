@@ -390,7 +390,7 @@ function _getTransformTabData(): ToolbarTabItem[] {
 
   return[
     {
-      title: getLanguage().ARMap.POSITION,
+      title: getLanguage().ARMap.TRANSLATION,
       onPress: () => {
         SARMap.setAction(ARAction.MOVE)
       },

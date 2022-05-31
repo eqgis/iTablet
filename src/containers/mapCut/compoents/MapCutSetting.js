@@ -310,7 +310,7 @@ export default class MapCutSetting extends React.Component {
           }}
         >
           <Text style={styles.closeText}>
-            {getLanguage(this.props.language).Prompt.CONFIRM}
+            {getLanguage(this.props.language).CONFIRM}
             {/* 确定 */}
           </Text>
         </TouchableOpacity>

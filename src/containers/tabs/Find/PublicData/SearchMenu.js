@@ -295,7 +295,7 @@ export default class SearchMenu extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity style={styles.searchButton} onPress={this.search}>
           <Text style={styles.searchButtonText}>
-            {getLanguage(global.language).Find.CONFIRM}
+            {getLanguage(global.language).SEARCH}
           </Text>
         </TouchableOpacity>
       </View>

@@ -6,8 +6,6 @@ const Find: typeof CN.Find = {
   APPLET: "Aplet",
   GIS_ACADEMY: "CBS Akademi",
   SEARCH_RESULT: "Sonuç",
-  BACK: "Geri",
-  CONFIRM: "Onay",
   RESET: "Sıfırla",
 
   ALL: "Hepsi",
@@ -23,7 +21,7 @@ const Find: typeof CN.Find = {
 
   SELECT_DATATYPES_FIRST: "Lütfen önce veriyi seçin",
   NO_DATA: "Veri bulunamadı",
-  NETWORK_ERROR: "Ağ hatası, lütfen daha sonra tekrar deneyiniz",
+  NETWORK_ERROR_NOTIFY: "Ağ hatası, lütfen daha sonra tekrar deneyiniz",
   NO_MORE_DATA: "Daha fazla veri bulunamadı",
   DOWNLOADED: "İndirme tamamlandı. İçeri aktarabilir",
 

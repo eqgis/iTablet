@@ -31,7 +31,6 @@ class ARMapAddView extends React.Component<Props, State> {
   componentDidMount() {
     AppEvent.addListener('ar_map_on_add_element', async (currentAddElement) => {
       ARMapModule.getAddElements().push(currentAddElement)
-      console.warn(ToolbarModule.getParams().type)
       if(ToolbarModule.getParams().type === ConstToolType.SM_AR_DRAWING_MODAL
         || ToolbarModule.getParams().type === ConstToolType.SM_AR_DRAWING_ADD_POINT
       ) {

@@ -96,7 +96,7 @@ export default class Home extends Component {
       }
     }
     if (Platform.OS === 'android') {
-      this.props.setBackAction({ action: this.showExitPop })
+      this.props.setBackAction({ key: 'Home', action: this.showExitPop })
     }
   }
 

@@ -45,6 +45,7 @@ export default class Container extends Component {
     orientation?: String, // redux中的实时横竖屏数据
     onOverlayPress?: () => {}, // 横屏时，半屏遮罩点击事件
     isOverlayBefore?: boolean, // 横屏是，遮罩的位置，true为左，反之为右
+    backActions?: {key: string, action: () => void}[]
   }
 
   static defaultProps = {
@@ -170,6 +171,7 @@ export default class Container extends Component {
       this.props.navigation ||
       (this.props.headerProps && this.props.headerProps.navigation)
     let backAction
+    const navigationState = navigation.getState()
     let headerProps = this.props.headerProps
     if (headerProps) {
       if (
@@ -188,6 +190,14 @@ export default class Container extends Component {
     //     return false
     //   }
     // }
+
+    // 查找redux backActions中是否有返回上一页的事件
+    if (!backAction && navigationState) {
+      const routeName = navigationState?.routes?.[navigationState.index]?.name
+      if (routeName && this.props.backActions?.[routeName]) {
+        backAction = this.props.backActions?.[routeName]
+      }
+    }
     if (backAction) {
       backAction()
       return true

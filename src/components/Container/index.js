@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 const mapStateToProps = state => {
   return {
     device: state.device.toJS().device,
+    backActions: state.backActions.toJS(),
   }
 }
 

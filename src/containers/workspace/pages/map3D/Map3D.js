@@ -380,6 +380,7 @@ export default class Map3D extends React.Component {
 
     if (Platform.OS === 'android') {
       this.props.setBackAction({
+        key: 'Map3D',
         action: this.back,
       })
     }

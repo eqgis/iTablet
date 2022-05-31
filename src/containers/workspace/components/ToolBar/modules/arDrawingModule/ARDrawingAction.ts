@@ -18,19 +18,17 @@ import {
   ToolbarType,
   ConstPath,
 } from '../../../../../../constants'
-import { Toast, AppProgress, DialogUtils, dataUtil, AppToolBar } from '../../../../../../utils'
+import { Toast, AppProgress, DialogUtils, dataUtil, AppToolBar, AppEvent } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
 import ToolbarModule from '../ToolbarModule'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffectExample3, AREffectExample4, ExampleData } from '../../../../../tabs/Mine/DataHandler/DataExample'
-import { ExternalDataType, ToolBarListItem } from '../types'
-import { Downloads, Download } from '../../../../../../redux/models/down'
+import { ExternalDataType } from '../types'
 import { Platform } from 'react-native'
 import { getThemeAssets } from '../../../../../../assets'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { addARBrochore } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface AssetType {
   Photos: 'Photos',
@@ -587,6 +585,10 @@ async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
   const _data: any = ToolbarModule.getData()
 
+  if(_params.type === ConstToolType.SM_AR_DRAWING_MODAL) {
+    AppEvent.emitEvent('ar_map_add_end')
+  }
+
   if (_params.type === ConstToolType.SM_AR_DRAWING_ADD_POINT) {
     // 点选添加对象界面，返回上一级
     setARToolbar(_data.prevType, { arContent: _data.arContent })
@@ -608,6 +610,12 @@ async function toolbarBack() {
 }
 
 function commit() {
+  const _params: any = ToolbarModule.getParams()
+  if(_params.type === ConstToolType.SM_AR_DRAWING_MODAL
+    || _params.type === ConstToolType.SM_AR_DRAWING_ADD_POINT
+  ) {
+    AppEvent.emitEvent('ar_map_add_end')
+  }
   global.isNotEndAddEffect = false
   SARMap.setCenterHitTest(false)
   // SARMap.setAction(ARAction.SELECT)

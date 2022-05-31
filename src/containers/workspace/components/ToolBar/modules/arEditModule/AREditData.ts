@@ -1,4 +1,4 @@
-import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import { Const, ConstToolType, ToolbarType } from '../../../../../../constants'
 import { scaleSize, Toast ,AppToolBar} from '../../../../../../utils'
 import { color } from '../../../../../../styles'
 import { getLanguage } from '../../../../../../language'
@@ -56,6 +56,14 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION_AXIS:
     case ConstToolType.SM_AR_EDIT_ANIMATION: {
       const _data = await getAnimationData(type)
+      if (_data) {
+        data = _data.data
+        buttons = _data.buttons
+      }
+      break
+    }
+    case ConstToolType.SM_AR_EDIT_ANIMATION_BONE_ANIMATION: {
+      const _data = await getBoneAnimationData(type)
       if (_data) {
         data = _data.data
         buttons = _data.buttons
@@ -173,6 +181,10 @@ const ARStyleItems = (language: string) => {
       key: getLanguage(language).ARMap.ANIMATION,
       action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION),
       selectKey: getLanguage(language).ARMap.ANIMATION,
+    },{
+      key: getLanguage(language).BONE_ANIMATION,
+      action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_BONE_ANIMATION),
+      selectKey: getLanguage(language).BONE_ANIMATION,
     })
   }
   return items
@@ -1176,6 +1188,73 @@ async function getAnimationData(type: string) {
   }
   return { buttons, data: allData }
 }
+
+
+/**
+ * 获取骨骼动画（模型自带动画）编辑数据
+ * @param type
+ * @returns
+ */
+async function getBoneAnimationData(type: string) {
+  const _data: any = ToolbarModule.getData()
+  const _params: any = ToolbarModule.getParams()
+  const element = _data.selectARElement
+  const currentLayer = _params.arlayer.currentLayer
+
+  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER)  {
+    Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)
+    return
+  }
+  // const layerName = element?.layerName || currentLayer?.name
+  // const id = element?.id || 0
+
+  const buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+    ToolbarBtnType.MENU,
+    ToolbarBtnType.MENU_FLEX,
+    ToolbarBtnType.TOOLBAR_COMMIT,
+  ]
+  let data: any[] = []
+  const allData: {
+    title: string,
+    type?: string,
+    data: typeof data,
+  }[] = []
+  data = [
+    {
+      key: 'none',
+      image: getThemeAssets().ar.armap.ar_animation_none,
+      title: getLanguage(global.language).Common.NONE,
+      action: () => {
+        if(element && typeof element !== 'string') {
+          SARMap.setModelAnimation(element.layerName, element.id, -1)
+        }
+      },
+    },
+  ]
+  const modelAnimations = await SARMap.getModelAnimation(element.layerName, element.id)
+  const animationData: DATA_ITEM[] = []
+  for (let i = 0; i < modelAnimations.length; i++) {
+    const item = modelAnimations[i]
+    animationData.push({
+      key: 'none',
+      image: getThemeAssets().ar.armap.ar_scale,
+      title: item,
+      action: async () => {
+        if(element && typeof element !== 'string') {
+          SARMap.setModelAnimation(element.layerName, element.id, i)
+        }
+      },
+    })
+  }
+
+  allData.push({
+    title: getLanguage(_params.language).BONE_ANIMATION,
+    data: data.concat(animationData),
+  })
+  return { buttons, data: allData }
+}
+
 
 function getHeaderData(type: string) {
   let headerData: any

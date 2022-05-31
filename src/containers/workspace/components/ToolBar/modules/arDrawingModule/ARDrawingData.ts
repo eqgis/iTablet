@@ -405,7 +405,6 @@ async function getARSandTable() {
       title: item.name,
       data: item,
       action: () => {
-        console.warn(item.name)
         ARDrawingAction.arSandTable(homePath + item.path + '/' + item.sandTableInfo.xml)
       },
     }

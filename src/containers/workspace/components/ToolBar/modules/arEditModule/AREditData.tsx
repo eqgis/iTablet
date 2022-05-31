@@ -1263,8 +1263,6 @@ async function getBoneAnimationData(type: string) {
 function getHeaderData(type: string) {
   let headerData: any
   const _params: any = ToolbarModule.getParams()
-  const _data: any = ToolbarModule.getData()
-
 
   if (
     _params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||

@@ -367,21 +367,6 @@ async function addBubbleText(location?: Point3D) {
   }
 }
 
-async function addBubbleText(location?: Point3D) {
-  try {
-    await checkARLayer(ARLayerType.AR_TEXT_LAYER)
-    const _params: any = ToolbarModule.getParams()
-    const _data: any = ToolbarModule.getData()
-    let content = _data.arContent
-    const layer = _params.arlayer.currentLayer
-    if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-      SARMap.addARBubbleText(layer.name, content, location)
-    }
-  } catch (error) {
-    Toast.show(error)
-  }
-}
-
 async function addBrochore(location?: Point3D){
   await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
   const _params: any = ToolbarModule.getParams()

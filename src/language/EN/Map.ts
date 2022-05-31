@@ -344,9 +344,8 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   SHARE_EXPLORE: "Explore",
 
   MAO_ROAD_DISTRIBUTION: "Road\nNetwork",
-
-  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: "Does not support this device. Please use a version newer than android7",
   MAP_AR_DONT_SUPPORT_DEVICE: "Does not support this device",
+  MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: "Does not support this device. Please use a version newer than android7",
   MAP_AR_MEASURE: "AR Measure",
   MAP_AR_ANALYZE: "AR Analyze",
   MAP_AR_MAPPING: "AR Survey",

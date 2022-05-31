@@ -10,8 +10,8 @@ const Map_Module: typeof CN.Map_Module = {
   MAP_AR_MAPPING: "AR マッピング",
   MAP_NAVIGATION: "ナビ",
   MAP_THEME: "主題図",
-  MAP_COLLECTION: "フィールド",
-  MAP_PLOTTING: "アニメシンボル",
+  MAP_COLLECTION: "コレクション",
+  MAP_PLOTTING: "進路プロット",
   MAP_ANALYST: "データ処理",
 
   APPLET_ADD: "アプレットの追加",

@@ -711,11 +711,11 @@ const Map_Layer: typeof CN.Map_Layer = {
   SELECT_LAYSER_SCALE: "من فضلك اختر المقياس",
   LAYER_SCALE_RANGE_WRONG: "يجب أن يكون المقياس المرئي الأقصى أكبر من المقياس المرئي الحد الأدنى",
 
-  LAYERS_SECONDS_TO_PLAY: "Seconds to play",  // To be translated
-  LAYER_MOVEUP_SUCCESS: 'Moveup success',  // To be translated
-  LAYER_MOVEUP_FAIL: 'Moveup fail',  // To be translated
-  LAYER_MOVEDOWN_SUCCESS: 'Movedown success',  // To be translated
-  LAYER_MOVEDOWN_FAIL: 'Movedown fail',  // To be translated
+  LAYERS_SECONDS_TO_PLAY: "فترة",
+  LAYER_MOVEUP_SUCCESS: 'النجاح في الترقية',
+  LAYER_MOVEUP_FAIL: 'نقل الفشل',
+  LAYER_MOVEDOWN_SUCCESS: 'النجاح في النزول',
+  LAYER_MOVEDOWN_FAIL: 'فشل الهبوط',
 
   VISIBLE: "مرئي",
   NOT_VISIBLE: "غير مرئي",

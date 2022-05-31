@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { MTBtn } from '../../../../../../components'
-import { scaleSize, Toast ,AppToolBar} from '../../../../../../utils'
+import { scaleSize, Toast, AppToolBar} from '../../../../../../utils'
 import { color } from '../../../../../../styles'
 import { getLanguage } from '../../../../../../language'
-import { getThemeAssets, getPublicAssets } from '../../../../../../assets'
+import { getThemeAssets, getPublicAssets, getImage } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
@@ -59,6 +59,14 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION_AXIS:
     case ConstToolType.SM_AR_EDIT_ANIMATION: {
       const _data = await getAnimationData(type)
+      if (_data) {
+        data = _data.data
+        buttons = _data.buttons
+      }
+      break
+    }
+    case ConstToolType.SM_AR_EDIT_ANIMATION_BONE_ANIMATION: {
+      const _data = await getBoneAnimationData(type)
       if (_data) {
         data = _data.data
         buttons = _data.buttons
@@ -176,6 +184,10 @@ const ARStyleItems = (language: string) => {
       key: getLanguage(language).ARMap.ANIMATION,
       action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION),
       selectKey: getLanguage(language).ARMap.ANIMATION,
+    },{
+      key: getLanguage(language).BONE_ANIMATION,
+      action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_BONE_ANIMATION),
+      selectKey: getLanguage(language).BONE_ANIMATION,
     })
   }
   return items
@@ -419,6 +431,7 @@ function getMenuData(type:any) {
       case ARElementType.AR_VIDEO:
       case ARElementType.AR_WEBVIEW:
       case ARElementType.AR_TEXT:
+      case ARElementType.AR_BUBBLE_TEXT:
       case ARElementType.AR_MODEL:
       case ARElementType.AR_ATTRIBUTE_ALBUM:
       case ARElementType.AR_BROCHOR:
@@ -1180,9 +1193,79 @@ async function getAnimationData(type: string) {
   return { buttons, data: allData }
 }
 
+
+/**
+ * 获取骨骼动画（模型自带动画）编辑数据
+ * @param type
+ * @returns
+ */
+async function getBoneAnimationData(type: string) {
+  const _data: any = ToolbarModule.getData()
+  const _params: any = ToolbarModule.getParams()
+  const element = _data.selectARElement
+  const currentLayer = _params.arlayer.currentLayer
+
+  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER)  {
+    Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)
+    return
+  }
+  // const layerName = element?.layerName || currentLayer?.name
+  // const id = element?.id || 0
+
+  const buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+    ToolbarBtnType.MENU,
+    ToolbarBtnType.MENU_FLEX,
+    ToolbarBtnType.TOOLBAR_COMMIT,
+  ]
+  let data: any[] = []
+  const allData: {
+    title: string,
+    type?: string,
+    data: typeof data,
+  }[] = []
+  data = [
+    {
+      key: 'none',
+      image: getThemeAssets().ar.armap.ar_animation_none,
+      title: getLanguage(global.language).Common.NONE,
+      action: () => {
+        if(element && typeof element !== 'string') {
+          SARMap.setModelAnimation(element.layerName, element.id, -1)
+        }
+      },
+    },
+  ]
+  const modelAnimations = await SARMap.getModelAnimation(element.layerName, element.id)
+  const animationData: DATA_ITEM[] = []
+  for (let i = 0; i < modelAnimations.length; i++) {
+    const item = modelAnimations[i]
+    animationData.push({
+      key: 'none',
+      image: getThemeAssets().ar.armap.ar_scale,
+      title: item,
+      action: async () => {
+        if(element && typeof element !== 'string') {
+          SARMap.setModelAnimation(element.layerName, element.id, i)
+        }
+      },
+    })
+  }
+
+  allData.push({
+    title: getLanguage(_params.language).BONE_ANIMATION,
+    data: data.concat(animationData),
+  })
+  return { buttons, data: allData }
+}
+
+
 function getHeaderData(type: string) {
   let headerData: any
   const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+
+
   if (
     _params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
     _params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
@@ -1213,26 +1296,25 @@ function getHeaderData(type: string) {
         },
       }],
     }
-
-    if (_data.selectARElement?.type === ARElementType.AR_SAND_TABLE) {
-      headerData.headerRight.push({
-        key: 'export',
-        // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
-        action: AREditAction.exportSandTable,
-        size: 'large',
-        image: getPublicAssets().common.export_black,
-        style: {
-          width: scaleSize(60),
-          height: scaleSize(60),
-          marginTop: scaleSize(8),
-          borderRadius: scaleSize(8),
-          backgroundColor: color.white,
-        },
-      })
-      headerData.headerRightStyle = {
-        flexDirection: 'column',
+    if(_data.selectARElement && typeof _data.selectARElement !== 'string') {
+      if(_data.selectARElement.type === ARElementType.AR_TEXT
+      || _data.selectARElement.type === ARElementType.AR_BUBBLE_TEXT) {
+        headerData.headerRight.push({
+          key: 'edit_text',
+          // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+          action: AREditAction.changeARText,
+          size: 'large',
+          image: getImage().icon_edit,
+          style: {
+            width: scaleSize(60),
+            height: scaleSize(60),
+            borderRadius: scaleSize(8),
+            backgroundColor: color.white,
+          },
+        })
       }
     }
+
   }
   return headerData
 }

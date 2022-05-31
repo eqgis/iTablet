@@ -13,7 +13,7 @@ import {
   ConstPath,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { DialogUtils, Toast, AppToolBar } from '../../../../../../utils'
+import { DialogUtils, Toast, AppToolBar, AppInputDialog } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 import { IARTransform } from '../types'
 import AREditData from './AREditData'
@@ -436,13 +436,26 @@ async function exportSandTable() {
       const availableName = await DataHandler.getAvailableName(targetPath, name, 'directory')
       const result = await SARMap.saveAsARSandTable(availableName, targetPath)
       SARMap.closeARSandTable()
-      console.warn(targetPath, availableName)
       Toast.show(result
         ? getLanguage(global.language).Prompt.EXPORT_SUCCESS
         : getLanguage(global.language).Prompt.EXPORT_FAILED)
       DialogUtils.hideInputDailog()
     },
   })
+}
+
+async function changeARText() {
+  const _data: any = ToolbarModule.getData()
+  const element = _data.selectARElement
+  if(_data.selectARElement && typeof _data.selectARElement !== 'string') {
+    const text = await SARMap.getARText(element.layerName, element.id)
+    AppInputDialog.show({
+      defaultValue: text,
+      confirm: text => {
+        SARMap.setARText(element.layerName, element.id, text)
+      }
+    })
+  }
 }
 
 export default {
@@ -459,4 +472,5 @@ export default {
   deleteARElement,
   colorAction,
   exportSandTable,
+  changeARText,
 }

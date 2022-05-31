@@ -145,9 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "Choisir une couche",
 
   COLLECT_SUCCESS: "Recueillir le succès",
-  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
-  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
-  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
+  LONG_PRESS_SELECT_POINT: "Appuyez longuement pour sélectionner le point",
+  LONG_PRESS_END_POINT: "Appuyez longuement pour sélectionner le point final",
+  LONG_PRESS_START_POINT: "Appuyez longuement pour sélectionner le point de départ",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "Vous devez sélectionner au moins deux médias",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "Cet objet n'a pas de fichier multimédia. Voulez-vous le supprimer ?",
@@ -229,7 +229,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_START: "Commencer le partage",
   SHARE_WX_FILE_SIZE_LIMITE: "La taille du fichier ne doit pas dépasser 10M",
   SHARE_NOT_COMPLRTE: "Le partage n'est pas terminé",
-  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
+  PLEASE_SAVE_MAP: "Enregistrer la première carte svp",
 
   EXPORTING: "Exportation",
   EXPORT_SUCCESS: "Exporté avec succès",

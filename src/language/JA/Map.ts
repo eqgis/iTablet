@@ -25,7 +25,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   START: "開始",
   START_OPEN_MAP: "マップを開く",
   START_NEW_MAP: "新規マップ",
-  START_RECENT: "歴史レコード",
+  START_RECENT: "履歴レコード",
   START_SAVE_MAP: "マップの保存",
   START_SAVE_AS_MAP: "マップに名前を付けて保存",
   START_OPEN_SENCE: "シーンを開く",
@@ -37,7 +37,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
 
   OPEN_ONLINE_DATA: "オンラインデータを開く",
 
-  PLOT: "アニメシンボル",
+  PLOT: "進路プロット",
 
   // 地图制图及公共 添加
   OPEN: "追加",
@@ -54,9 +54,9 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   NETWORK_MODULE: "道路ネットワーク",
   NETMODEL: "ネットワークモデル",
   NETDATA: "道路ネットワークデータの選択",
-  INDOORDATA: "室内データソース",
+  INDOORDATA: "屋内データソース",
   INDOOR_DATASOURCE: "屋内データソース",
-  OUTDOOR_DATASETS: "アウトドアデータセット",
+  OUTDOOR_DATASETS: "屋外データセット",
   SWITCH_DATA: "ナビデータの切替",
   DATASET: "データセットの選択",
   Traffic: "道路状況",
@@ -162,7 +162,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   CAMERA: "マルチメディアコレクション",
   TOUR: "旅行軌跡",
   TOUR_NAME: "旅行軌跡名",
-  SCAN: "Scan", // need to translate
+  SCAN: "スキャン",
 
   STYLE_TRANSFER: "AIマップ作成",
   OBJ_EDIT: "オブジェクト編集",
@@ -704,11 +704,11 @@ const Map_Layer: typeof CN.Map_Layer = {
   SELECT_LAYSER_SCALE: "スケールを選択してください",
   LAYER_SCALE_RANGE_WRONG: "最大スケールは最小スケールより大きい値に設定する必要があります。",
 
-  LAYERS_SECONDS_TO_PLAY: "Seconds to play",  // To be translated
-  LAYER_MOVEUP_SUCCESS: 'Moveup success',  // To be translated
-  LAYER_MOVEUP_FAIL: 'Moveup fail',  // To be translated
-  LAYER_MOVEDOWN_SUCCESS: 'Movedown success',  // To be translated
-  LAYER_MOVEDOWN_FAIL: 'Movedown fail',  // To be translated
+  LAYERS_SECONDS_TO_PLAY: "再生時間",
+  LAYER_MOVEUP_SUCCESS: '上に移動するのに成功しました',
+  LAYER_MOVEUP_FAIL: '上に移動するのに失敗しました',
+  LAYER_MOVEDOWN_SUCCESS: '下に移動するのに成功しました',
+  LAYER_MOVEDOWN_FAIL: '下に移動するのに失敗しました',
 
   VISIBLE: "レイヤーを表示に設定",
   NOT_VISIBLE: "レイヤーを非表示に設定",

@@ -145,9 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "اختر الطبقة",
 
   COLLECT_SUCCESS: "جمع ناجح",
-  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
-  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
-  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
+  LONG_PRESS_SELECT_POINT: "اضغط على اختيار نقطة طويلة",
+  LONG_PRESS_END_POINT: "اضغط على اختيار نقطة النهاية الطويلة",
+  LONG_PRESS_START_POINT: "اضغط على اختيار نقطة انطلاق طويلة",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "يجب عليك اختيار وسيلتين على الأقل",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "هذا الكائن لا يملك ملفات الوسائط .هل تريد حذفه ؟",
@@ -229,7 +229,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_START: "بدء المشاركة",
   SHARE_WX_FILE_SIZE_LIMITE: "حجم الملف لا يمكن أن يتجاوز 10 م",
   SHARE_NOT_COMPLRTE: "لم تكتمل المشاركة",
-  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
+  PLEASE_SAVE_MAP: "يرجى حفظ الخريطة الأولى",
 
   EXPORTING: "جارى التصدير",
   EXPORT_SUCCESS: "تم التصدير بنجاح",

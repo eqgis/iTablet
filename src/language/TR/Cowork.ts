@@ -4,7 +4,7 @@ const Cowork: typeof CN.Cowork = {
   UPDATE_LOCAL_SERVICE: "Yerel servislerin güncellenmesi",
   SUBMIT_SERVICE: "Servis gönder",
   SYNC_SERVICE: "Sync service",//To be translated
-  
+
   UPDATE_SUCCESSFUL: "Başarıyla güncellendi",
   UPDATE_FAILED: "Güncelleme başarısız",
 

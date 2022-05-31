@@ -145,9 +145,9 @@ const Prompt: typeof CN.Prompt = {
   CHOOSE_LAYER: "Katman Seç",
 
   COLLECT_SUCCESS: "Başarıyla Toplandı",
-  LONG_PRESS_SELECT_POINT: "Long press to select point",  // To be translated
-  LONG_PRESS_END_POINT: "Long press to select the end point",  // To be translated
-  LONG_PRESS_START_POINT: "Long press to select the starting point",  // To be translated
+  LONG_PRESS_SELECT_POINT: "Noktayı seçmek için uzun basın",
+  LONG_PRESS_END_POINT: "Bitiş noktasını seçmek için uzun basın",
+  LONG_PRESS_START_POINT: "Başlangıç noktasını seçmek için uzun basın",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "Lütfen en az iki medya seçin",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "Bu nesne medi dosyaları yok.Silmek ister misiniz?",
@@ -229,7 +229,7 @@ const Prompt: typeof CN.Prompt = {
   SHARE_START: "Paylaşmaya Başla",
   SHARE_WX_FILE_SIZE_LIMITE: "Dosya boyutu 10M'den fazla geçemez",
   SHARE_NOT_COMPLRTE: "Paylaşma Tamamlanamadı.",
-  PLEASE_SAVE_MAP: "Please save the map first",  // To be translated
+  PLEASE_SAVE_MAP: "Lütfen önce haritayı kaydedin",  // To be translated
 
   EXPORTING: "Dışarı Aktarılıyor",
   EXPORT_SUCCESS: "Başarıyla Dışarı Aktarıldı",

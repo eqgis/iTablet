@@ -704,11 +704,11 @@ const Map_Layer: typeof CN.Map_Layer = {
   SELECT_LAYSER_SCALE: "Lütfen bir ölçek seçin",
   LAYER_SCALE_RANGE_WRONG: "Maksimum Görünürlük Ölçeği, Minimum Görünürlük Ölçeğinden büyük olmalıdır",
 
-  LAYERS_SECONDS_TO_PLAY: "Seconds to play",  // To be translated
-  LAYER_MOVEUP_SUCCESS: 'Moveup success',  // To be translated
-  LAYER_MOVEUP_FAIL: 'Moveup fail',  // To be translated
-  LAYER_MOVEDOWN_SUCCESS: 'Movedown success',  // To be translated
-  LAYER_MOVEDOWN_FAIL: 'Movedown fail',  // To be translated
+  LAYERS_SECONDS_TO_PLAY: "Oynatma Saniyesi",
+  LAYER_MOVEUP_SUCCESS: 'Yukarı taşıma başarılı',
+  LAYER_MOVEUP_FAIL: 'Yukarı taşıma başarısız',
+  LAYER_MOVEDOWN_SUCCESS: 'Aşağı taşıma başarılı',
+  LAYER_MOVEDOWN_FAIL: 'Aşağı taşıma başarısız',
 
   VISIBLE: "Görülebilir",
   NOT_VISIBLE: "Görülebilir Değil",

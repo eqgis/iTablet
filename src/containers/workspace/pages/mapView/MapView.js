@@ -84,6 +84,7 @@ import {
   DownloadUtil,
   SCoordinationUtils,
   AppToolBar,
+  AppEvent,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -4909,6 +4910,7 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_VIDEO
               || element.type === ARElementType.AR_WEBVIEW
               || element.type === ARElementType.AR_TEXT
+              || element.type === ARElementType.AR_BUBBLE_TEXT
               || element.type === ARElementType.AR_MODEL
               || element.type === ARElementType.AR_ALBUM
               || element.type === ARElementType.AR_BROCHOR
@@ -4933,9 +4935,10 @@ export default class MapView extends React.Component {
             }
           }}
           onARElementAdd={element => {
-            AppToolBar.addData({ addARElement: element })
-            if (element.type === ARElementType.AR_ATTRIBUTE_ALBUM || element.type === ARElementType.AR_BROCHOR || element.type === ARElementType.AR_ALBUM || element.type === ARElementType.AR_VIDEO_ALBUM || element.type === ARElementType.AR_SAND_TABLE_ALBUM) {
-              if (AppToolBar.getData().isAlbumFirstAdd) {
+            AppToolBar.addData({addARElement: element})
+            AppEvent.emitEvent('ar_map_on_add_element', element)
+            if(element.type === ARElementType.AR_ATTRIBUTE_ALBUM || element.type === ARElementType.AR_BROCHOR || element.type === ARElementType.AR_ALBUM|| element.type === ARElementType.AR_VIDEO_ALBUM || element.type === ARElementType.AR_SAND_TABLE_ALBUM){
+              if(AppToolBar.getData().isAlbumFirstAdd){
                 arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
                 ToolbarModule.addData({ selectARElement: element })
                 AppToolBar.addData({ selectARElement: element, isAlbumFirstAdd: false })

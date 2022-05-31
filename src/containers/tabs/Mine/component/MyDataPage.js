@@ -1285,6 +1285,7 @@ export default class MyDataPage extends Component {
             />
           }
           eatraData={this.state}
+          ListFooterComponent={<View style={{height:8}}/>}
         />
         {this._renderItemPopup()}
         {this._renderPagePopup()}

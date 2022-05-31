@@ -905,7 +905,7 @@ export default class MyLocalData extends Component {
         </View>
       )
     } else {
-      return <View />
+      return <View style={{height: 8}} />
     }
   }
 

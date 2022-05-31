@@ -1096,6 +1096,7 @@ export default class MT_layerManager extends React.Component {
         initialNumToRender={15}
         // ItemSeparatorComponent={this.renderItemSeparator}
         renderSectionFooter={this.renderSectionFooter}
+        ListFooterComponent={<View style={{height:8}}/>}
       />
     )
   }

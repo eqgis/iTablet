@@ -15,6 +15,7 @@ export default class FunctionModule {
     this.getData = this.props.getData
     this.getMenuData = this.props.getMenuData
     this.getHeaderData = this.props.getHeaderData
+    this.getHeaderView = this.props.getHeaderView
     this.getCustomView = this.props.getCustomView
     this.getBottomView = this.props.getBottomView
     // 整合默认事件和自定义事件

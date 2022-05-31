@@ -972,6 +972,8 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
   /** 自定义Header */
   renderCustomHeader = () => {
     // if (!this.state.showCustomHeader) return null
+    const headerView = this.ToolbarModule.getHeaderView(this.state.type)
+    if (headerView) return headerView
     const headerData = this.ToolbarModule.getHeaderData(this.state.type)
     if (!headerData) return null
     return (
@@ -982,6 +984,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
         title={headerData.title}
         type={headerData.type}
         headerRight={this.renderCustomHeaderRight()}
+        headerRightStyle={this.ToolbarModule.getHeaderData(this.state.type)?.headerRightStyle}
         headerLeft={headerData.headerLeft}
         headerTitleViewStyle={headerData.headerTitleViewStyle}
       />

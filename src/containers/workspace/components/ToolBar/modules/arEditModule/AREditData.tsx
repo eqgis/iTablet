@@ -1,8 +1,11 @@
+import React from 'react'
+import { View, TouchableOpacity } from 'react-native'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import { MTBtn } from '../../../../../../components'
 import { scaleSize, Toast ,AppToolBar} from '../../../../../../utils'
 import { color } from '../../../../../../styles'
 import { getLanguage } from '../../../../../../language'
-import { getThemeAssets } from '../../../../../../assets'
+import { getThemeAssets, getPublicAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
@@ -422,6 +425,7 @@ function getMenuData(type:any) {
       case ARElementType.AR_ALBUM:
       case ARElementType.AR_VIDEO_ALBUM:
       case ARElementType.AR_SAND_TABLE_ALBUM:
+      case ARElementType.AR_SAND_TABLE:
         data = ARStyleItems(_params.language)
         break
     }
@@ -732,30 +736,30 @@ async function getStyleData(type: string) {
         {
           key: ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND,
           image: getThemeAssets().ar.armap.icon_tool_background,
-            title: getLanguage().BACKGROUND,
-            action: () => {
-              const _params: any = ToolbarModule.getParams()
-              _params.showFullMap && _params.showFullMap(true)
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND, {
-                containerType: ToolbarType.colorTable,
-                isFullScreen: false,
-              })
-            },
+          title: getLanguage().BACKGROUND,
+          action: () => {
+            const _params: any = ToolbarModule.getParams()
+            _params.showFullMap && _params.showFullMap(true)
+            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND, {
+              containerType: ToolbarType.colorTable,
+              isFullScreen: false,
+            })
           },
-          {
-            key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
-            image: getThemeAssets().ar.armap.icon_tool_array,
-            title: getLanguage().ARRAY,
-            action: () => {
-              const _params: any = ToolbarModule.getParams()
-              _params.showFullMap && _params.showFullMap(true)
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_ARRAY, {
-                containerType: ToolbarType.table,
-                isFullScreen: false,
-              })
-            },
+        },
+        {
+          key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
+          image: getThemeAssets().ar.armap.icon_tool_array,
+          title: getLanguage().ARRAY,
+          action: () => {
+            const _params: any = ToolbarModule.getParams()
+            _params.showFullMap && _params.showFullMap(true)
+            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_ARRAY, {
+              containerType: ToolbarType.table,
+              isFullScreen: false,
+            })
           },
-    ]
+        },
+      ]
       const element = AppToolBar.getData().selectARElement
       //点击右侧node时不显示标题设置
       if (element?.touchType !== 0) {
@@ -946,45 +950,45 @@ async function getStyleData(type: string) {
       break
     }
     case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_OPACITY:
-      {
-        data =[
-          {
-            key: 'single',
-            leftText:  ' ',
-            rightText: '%',
-            onMove: (loc: number) => {
-              SARMap.setNodeStyle({opacity:loc/100},element)
-            },
-            defaultValue: defaultValue.opacity[0],
-            range: range.opacity,
-          },
-        ]
-        allData.push({
-          title: getLanguage(_params.language).BACKGROUND_OPACITY,
-          data: data,
-        })
-        break
-      }
-      case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
+    {
+      data =[
         {
-          data =[
-            {
-              key: 'single',
-              leftText:  ' ',
-              rightText: 'mm',
-              onMove: (loc: number) => {
-                SARMap.setNodeStyle({borderWidth:loc},element)
-              },
-              defaultValue: defaultValue.width[0],
-              range: range.width,
-            },
-          ]
-          allData.push({
-            title: getLanguage(_params.language).BORDER_WIDTH,
-            data: data,
-          })
-          break
-        }
+          key: 'single',
+          leftText:  ' ',
+          rightText: '%',
+          onMove: (loc: number) => {
+            SARMap.setNodeStyle({opacity:loc/100},element)
+          },
+          defaultValue: defaultValue.opacity[0],
+          range: range.opacity,
+        },
+      ]
+      allData.push({
+        title: getLanguage(_params.language).BACKGROUND_OPACITY,
+        data: data,
+      })
+      break
+    }
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
+    {
+      data =[
+        {
+          key: 'single',
+          leftText:  ' ',
+          rightText: 'mm',
+          onMove: (loc: number) => {
+            SARMap.setNodeStyle({borderWidth:loc},element)
+          },
+          defaultValue: defaultValue.width[0],
+          range: range.width,
+        },
+      ]
+      allData.push({
+        title: getLanguage(_params.language).BORDER_WIDTH,
+        data: data,
+      })
+      break
+    }
   }
   return {
     buttons,
@@ -1185,6 +1189,7 @@ function getHeaderData(type: string) {
   ) {
     return headerData
   }
+  const _data: any = ToolbarModule.getData()
   if (
     // type === ConstToolType.SM_AR_EDIT ||
     type === ConstToolType.SM_AR_EDIT_SCALE ||
@@ -1208,8 +1213,79 @@ function getHeaderData(type: string) {
         },
       }],
     }
+
+    if (_data.selectARElement?.type === ARElementType.AR_SAND_TABLE) {
+      headerData.headerRight.push({
+        key: 'export',
+        // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+        action: AREditAction.exportSandTable,
+        size: 'large',
+        image: getPublicAssets().common.export_black,
+        style: {
+          width: scaleSize(60),
+          height: scaleSize(60),
+          marginTop: scaleSize(8),
+          borderRadius: scaleSize(8),
+          backgroundColor: color.white,
+        },
+      })
+      headerData.headerRightStyle = {
+        flexDirection: 'column',
+      }
+    }
   }
   return headerData
+}
+
+function getHeaderView(type: string) {
+  const _data: any = ToolbarModule.getData()
+  if (
+    (
+      type === ConstToolType.SM_AR_EDIT_SCALE ||
+      type === ConstToolType.SM_AR_EDIT_ROTATION ||
+      type === ConstToolType.SM_AR_EDIT_POSITION
+    ) &&
+    _data.selectARElement?.type === ARElementType.AR_SAND_TABLE
+  ) {
+    return (
+      <View
+        style={{
+          flexDirection: 'column',
+          position: 'absolute',
+          right: scaleSize(20),
+          top: scaleSize(20),
+          backgroundColor: 'transparent',
+        }}
+      >
+        <MTBtn
+          key={'delete'}
+          style={{
+            width: scaleSize(60),
+            height: scaleSize(60),
+            borderRadius: scaleSize(8),
+            backgroundColor: color.white,
+          }}
+          imageStyle={{ width: scaleSize(50), height: scaleSize(50) }}
+          image={getThemeAssets().ar.toolbar.icon_delete}
+          onPress={AREditAction.deleteARElement}
+        />
+        <MTBtn
+          key={'export'}
+          style={{
+            width: scaleSize(60),
+            height: scaleSize(60),
+            marginTop: scaleSize(8),
+            borderRadius: scaleSize(8),
+            backgroundColor: color.white,
+          }}
+          imageStyle={{ width: scaleSize(50), height: scaleSize(50) }}
+          image={getPublicAssets().common.export_black}
+          onPress={AREditAction.exportSandTable}
+        />
+      </View>
+    )
+  }
+  return undefined
 }
 
 function getColorTable(){
@@ -1793,4 +1869,5 @@ export default {
   getData,
   getMenuData,
   getHeaderData,
+  getHeaderView,
 }

@@ -10,18 +10,21 @@ import { IVector3 } from "imobile_for_reactnative/types/data"
 import {
   ConstToolType,
   ToolbarType,
+  ConstPath,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { DialogUtils, Toast,AppToolBar } from '../../../../../../utils'
+import { DialogUtils, Toast, AppToolBar } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 import { IARTransform } from '../types'
 import AREditData from './AREditData'
 import { Platform } from 'react-native'
+import { FileTools } from '@/native'
+import DataHandler from '../../../../../tabs/Mine/DataHandler'
 
 async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
   let prevType
-  switch(_params.type) {
+  switch (_params.type) {
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR:
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_LINE_COLOR:
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_TIME_COLOR:
@@ -64,7 +67,7 @@ async function toolbarBack() {
       prevType = ConstToolType.SM_AR_EDIT
       break
     default:
-      // const _data = await AREditData.getData(prevType, _params)
+    // const _data = await AREditData.getData(prevType, _params)
   }
   if (
     prevType === ConstToolType.SM_AR_EDIT_ANIMATION ||
@@ -79,19 +82,19 @@ async function toolbarBack() {
         isFullScreen: false,
       })
       const element = AppToolBar.getData().selectARElement
-      if(typeof(element) !== 'string' && (element?.type === ARElementType.AR_ATTRIBUTE_ALBUM || element?.type === ARElementType.AR_BROCHOR || element?.type === ARElementType.AR_ALBUM || element?.type === ARElementType.AR_VIDEO_ALBUM|| element?.type === ARElementType.AR_SAND_TABLE_ALBUM)){
+      if (typeof (element) !== 'string' && (element?.type === ARElementType.AR_ATTRIBUTE_ALBUM || element?.type === ARElementType.AR_BROCHOR || element?.type === ARElementType.AR_ALBUM || element?.type === ARElementType.AR_VIDEO_ALBUM || element?.type === ARElementType.AR_SAND_TABLE_ALBUM)) {
         const style = await SARMap.getNodeStyle(element)
-        SARMap.setNodeStyle({TextShadow:style.TextShadow},element)
-        SARMap.setNodeStyle({TextBold:style.TextBold},element)
-        SARMap.setNodeStyle({Flags:style.TextFlags},element)
-        SARMap.setNodeStyle({TextSize:style.TextSize},element)
-        SARMap.setNodeStyle({TextRotation:style.TextRotation},element)
+        SARMap.setNodeStyle({ TextShadow: style.TextShadow }, element)
+        SARMap.setNodeStyle({ TextBold: style.TextBold }, element)
+        SARMap.setNodeStyle({ Flags: style.TextFlags }, element)
+        SARMap.setNodeStyle({ TextSize: style.TextSize }, element)
+        SARMap.setNodeStyle({ TextRotation: style.TextRotation }, element)
       }
     }
     SARMap.clearSelection()
     SARMap.cancel()
     SARMap.setAction(ARAction.SELECT)
-    ToolbarModule.addData({selectARElement: null})
+    ToolbarModule.addData({ selectARElement: null })
   }
 }
 
@@ -115,7 +118,7 @@ function menu(type: string, selectKey: string, params: any) {
 }
 
 function showMenuBox(type: string, selectKey: string, params: any) {
-  switch(type) {
+  switch (type) {
     case ConstToolType.SM_AR_EDIT_ROTATION:
     case ConstToolType.SM_AR_EDIT_POSITION:
     case ConstToolType.SM_AR_EDIT_SCALE:
@@ -139,38 +142,38 @@ function showMenuBox(type: string, selectKey: string, params: any) {
 
 function commit() {
   const _params: any = ToolbarModule.getParams()
-  if(_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
-    const data: any  = ToolbarModule.getData()
+  if (_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
+    const data: any = ToolbarModule.getData()
     const _params: any = ToolbarModule.getParams()
     const layer: ARElementLayer = data.selectARElementLayer
     const ARElementLayerVisibleBounds: number = data.ARElementLayerVisibleBounds
     SARMap.setLayerMaxVisibleBounds(layer.name, ARElementLayerVisibleBounds)
     _params.setToolbarVisible(false)
 
-  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS){
+  } else if (_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS) {
     // 特效图层设置可见距离的方法
-    const data: any  = ToolbarModule.getData()
+    const data: any = ToolbarModule.getData()
     const _params: any = ToolbarModule.getParams()
     const layer: AREffectLayer = data.selectAREffectLayer
     const AREffectLayerVisibleBounds: number = data.AREffectLayerVisibleBounds
 
-     // 设置最大可见距离的方法
-    if(Platform.OS === 'android') {
+    // 设置最大可见距离的方法
+    if (Platform.OS === 'android') {
       SARMap.setLayerMaxVisibleBounds(layer.name, AREffectLayerVisibleBounds)
     } else {
       // IOS TODO
     }
     _params.setToolbarVisible(false)
 
-  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
+  } else if (_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
     // 特效图层设置持续时间
-    const data: any  = ToolbarModule.getData()
+    const data: any = ToolbarModule.getData()
     const _params: any = ToolbarModule.getParams()
     const layer: AREffectLayer = data.selectAREffectLayer
     const AREffectLayerSecondsToPlay: number = data.AREffectLayerSecondsToPlay
 
     // 设置持续时间的方法
-    if(Platform.OS === 'android') {
+    if (Platform.OS === 'android') {
       SARMap.setEffectLayerSecondsToPlay(layer.name, AREffectLayerSecondsToPlay)
     } else {
       // IOS TODO
@@ -178,7 +181,7 @@ function commit() {
 
     _params.setToolbarVisible(false)
 
-  } else{
+  } else {
     SARMap.submit().then(async () => {
       const _data: any = ToolbarModule.getData()
       const _params: any = ToolbarModule.getParams()
@@ -204,7 +207,7 @@ function commit() {
         rotationZ: 0,
         scale: 0,
       }
-      ToolbarModule.addData({transformData})
+      ToolbarModule.addData({ transformData })
       const data = await AREditData.getData(_params.type, _params)
       // global.ToolBar.setState({
       //   data: data.data,
@@ -227,7 +230,7 @@ function close() {
     SARMap.clearSelection()
     SARMap.setAction(ARAction.NULL)
     // SARMap.setAction(ARAction.SELECT)
-    ToolbarModule.addData({selectARElement: null})
+    ToolbarModule.addData({ selectARElement: null })
     // _params.setToolbarVisible(true, _params.type, {
     //   isFullScreen: false,
     // })
@@ -248,19 +251,19 @@ function showAnimationAction(type: string) {
     const animationParam: IAnimationParam = {
       name: '',
       type: 'translation',
-      startPosition: {x: 0, y: 0, z:0},
+      startPosition: { x: 0, y: 0, z: 0 },
       direction: 'x',
       distance: 1,
     }
-    ToolbarModule.addData({animationParam})
+    ToolbarModule.addData({ animationParam })
   } else if (type === ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION) {
     const animationParam: IAnimationParam = {
       name: '',
       type: 'rotation',
-      rotationAxis: {x: 1, y: 0, z:0},
+      rotationAxis: { x: 1, y: 0, z: 0 },
       clockwise: true,
     }
-    ToolbarModule.addData({animationParam})
+    ToolbarModule.addData({ animationParam })
   }
 }
 
@@ -290,7 +293,7 @@ function createAnimation(params?: IAnimation) {
         _data.animationParam.name = name
         // NavigationService.goBack('InputPage')
         await SARMap.addNodeAnimation(_data.animationParam)
-        ToolbarModule.addData({animationParam: null})
+        ToolbarModule.addData({ animationParam: null })
         DialogUtils.getInputDialog()?.setDialogVisible(false)
         showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION)
       }
@@ -303,7 +306,7 @@ function deleteARElement() {
   const _data: any = ToolbarModule.getData()
 
   const element = _data.selectARElement
-  if(element) {
+  if (element) {
     global.SimpleDialog.set({
       text: getLanguage(global.language).Common.DELETE_CURRENT_OBJ_CONFIRM,
       confirmAction: () => {
@@ -324,7 +327,7 @@ function deleteARElement() {
 }
 
 async function getTouchProgressInfo(title: string) {
-  const data: any  = ToolbarModule.getData()
+  const data: any = ToolbarModule.getData()
   const _params: any = ToolbarModule.getParams()
   let tips = ''
   let range = [1, 100]
@@ -333,22 +336,22 @@ async function getTouchProgressInfo(title: string) {
   let unit = getLanguage().Convert_Unit.METER
   let _title = getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE
 
-  if(_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
+  if (_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
     range = [1, 100]
     value = data.ARElementLayerVisibleBounds
     step = 1
     unit = getLanguage().Convert_Unit.METER
     _title = getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE
-  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS){
+  } else if (_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS) {
     // 特效图层设置可见距离的方法
     range = [0, 100]
     value = data.AREffectLayerVisibleBounds
     step = 1
     unit = getLanguage().Convert_Unit.METER
     _title = getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE
-    
 
-  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
+
+  } else if (_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
     // 特效图层设置持续时间
     range = [0, 100]
     value = data.AREffectLayerSecondsToPlay
@@ -356,7 +359,7 @@ async function getTouchProgressInfo(title: string) {
     unit = getLanguage().Convert_Unit.SECOND
     _title = getLanguage().Map_Layer.LAYERS_SECONDS_TO_PLAY
 
-  } 
+  }
 
   return { title: _title, value, tips, range, step, unit }
 }
@@ -364,59 +367,82 @@ async function getTouchProgressInfo(title: string) {
 
 function setTouchProgressInfo(title: string, value: number) {
   const _params: any = ToolbarModule.getParams()
-  if(_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
+  if (_params.type === ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS) {
     // 非特效图层设置可见距离
     let range = [1, 100]
     if (value > range[1]) value = range[1]
     else if (value <= range[0]) value = range[0]
 
-    ToolbarModule.addData({ARElementLayerVisibleBounds: value})
+    ToolbarModule.addData({ ARElementLayerVisibleBounds: value })
 
-  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS){
+  } else if (_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS) {
     // 特效图层设置可见距离
     let range = [0, 100]
     if (value > range[1]) value = range[1]
     else if (value <= range[0]) value = range[0]
 
     // 添加特效可见距离
-    ToolbarModule.addData({AREffectLayerVisibleBounds: value})
+    ToolbarModule.addData({ AREffectLayerVisibleBounds: value })
 
-  } else if(_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
+  } else if (_params.type === ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY) {
     // 特效图层设置持续时间
     let range = [0, 100]
     if (value > range[1]) value = range[1]
     else if (value <= range[0]) value = range[0]
 
     // 添加特效持续时间
-    ToolbarModule.addData({AREffectLayerSecondsToPlay: value})
-  } 
+    ToolbarModule.addData({ AREffectLayerSecondsToPlay: value })
+  }
 
 
-  
+
 }
 
-function colorAction(type:any, item = {}) {
+function colorAction(type: any, item = {}) {
   const element = AppToolBar.getData().selectARElement
-  switch (type.type){
+  switch (type.type) {
     case 'SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR':
       SARMap.setNodeStyle({ TextColor: type.key }, element)
-    break
+      break
     case 'SM_AR_EDIT_SETTING_IITLE_ALBUM_LINE_COLOR':
       SARMap.setNodeStyle({ LineColor: type.key }, element)
-    break
+      break
     case 'SM_AR_EDIT_SETTING_IITLE_ALBUM_TIME_COLOR':
       SARMap.setNodeStyle({ TimeColor: type.key }, element)
-    break
+      break
     case 'SM_AR_EDIT_SETTING_IITLE_COLOR':
-      SARMap.setNodeStyle({TextColor:type.key},element)
-    break
+      SARMap.setNodeStyle({ TextColor: type.key }, element)
+      break
     case 'SM_AR_EDIT_SETTING_BACKGROUND':
-      SARMap.setNodeStyle({fillColor:type.key},element)
-    break
+      SARMap.setNodeStyle({ fillColor: type.key }, element)
+      break
     case 'SM_AR_EDIT_SETTING_BACKGROUND_BORDER_COLOR':
-      SARMap.setNodeStyle({borderColor:type.key},element)
+      SARMap.setNodeStyle({ borderColor: type.key }, element)
       break
   }
+}
+
+async function exportSandTable() {
+  DialogUtils.showInputDailog({
+    label: 'input',
+    legalCheck: true,
+    type: 'name',
+    confirmAction: async name => {
+      const _data: any = ToolbarModule.getData()
+      await SARMap.appointARSandTable(_data.selectARElement?.layerName, _data.selectARElement?.id)
+      const homePath = await FileTools.getHomeDirectory()
+      const targetPath = homePath + ConstPath.ExternalData
+
+      const availableName = await DataHandler.getAvailableName(targetPath, name, 'directory')
+      const result = await SARMap.saveAsARSandTable(availableName, targetPath)
+      SARMap.closeARSandTable()
+      console.warn(targetPath, availableName)
+      Toast.show(result
+        ? getLanguage(global.language).Prompt.EXPORT_SUCCESS
+        : getLanguage(global.language).Prompt.EXPORT_FAILED)
+      DialogUtils.hideInputDailog()
+    },
+  })
 }
 
 export default {
@@ -432,4 +458,5 @@ export default {
   createAnimation,
   deleteARElement,
   colorAction,
+  exportSandTable,
 }

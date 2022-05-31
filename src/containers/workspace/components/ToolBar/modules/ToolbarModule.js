@@ -166,7 +166,8 @@ class ToolbarModule {
   }
 
   /**
-   * 获取菜单弹框数据
+   * 获取自定义Header数据
+   * getHeaderView优先级高于getHeaderData
    * @param type
    * @param others {themeType}
    * @returns {Array}
@@ -177,6 +178,24 @@ class ToolbarModule {
       let module = this.getModule(type)
       let data = (module?.getHeaderData && module.getHeaderData(type, ...others)) || undefined
       return data
+    } catch(e) {
+      return null
+    }
+  }
+
+  /**
+   * 获取自定义Header
+   * 优先于getHeaderData
+   * @param type
+   * @param others {themeType}
+   * @returns {Array}
+   */
+  getHeaderView(type, ...others) {
+    try {
+      if (!type) return null
+      let module = this.getModule(type)
+      let header = (module?.getHeaderView && module.getHeaderView(type, ...others)) || undefined
+      return header
     } catch(e) {
       return null
     }

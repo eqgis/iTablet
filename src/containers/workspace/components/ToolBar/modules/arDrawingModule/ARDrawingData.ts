@@ -10,6 +10,7 @@ import { Platform } from 'react-native'
 import { AR3DExample, ARModelExample, AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4 } from '../../../../../tabs/Mine/DataHandler/DataExample'
 import { dataUtil, DialogUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
+import { FileTools } from '@/native'
 
 interface SectionItemData {
   key: string,
@@ -158,6 +159,16 @@ async function getData(type: string, params: {[name: string]: any}) {
           getData: getARModel,
         },
         {
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE,
+          onPress: () => {
+            // 点击tab后将索引值同步
+            // ToolbarModule.addData({moduleIndex: 3})
+            // 转到非特效tab里视为特效图层已经添加完成
+            global.isNotEndAddEffect = false
+          },
+          getData: getARSandTable,
+        },
+        {
           title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
           onPress: () => {
             // 点击tab后将索引值同步
@@ -213,6 +224,7 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_ADD_ATTRIBUTE_WIDGET:
     case ConstToolType.SM_AR_DRAWING_ADD_WIDGET:
     case ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM:
+    case ConstToolType.SM_AR_DRAWING_ADD_SAND:
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         {
@@ -368,6 +380,26 @@ async function getAREffect() {
       title: item.name.substring(0, item.name.lastIndexOf('.')),
       data: item,
       action: () => ARDrawingAction.addAREffect(item.name, item.path),
+    }
+  }))
+}
+
+/** 获取沙盘数据 */
+async function getARSandTable() {
+  const _params: any = ToolbarModule.getParams()
+  const sandTableTemp: any[] = await DataHandler.getLocalData(_params.user.currentUser, 'SANDTABLE')
+  const items: any[] = []
+  const homePath = await FileTools.getHomeDirectory()
+  return items.concat(sandTableTemp.map(item => {
+    return {
+      key: item.name,
+      image: getThemeAssets().layerType.icon_layer_sandtable,
+      title: item.name,
+      data: item,
+      action: () => {
+        console.warn(item.name)
+        ARDrawingAction.arSandTable(homePath + item.path + '/' + item.sandTableInfo.xml)
+      },
     }
   }))
 }

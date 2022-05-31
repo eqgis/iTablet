@@ -114,6 +114,7 @@ export default function() {
     image: getThemeAssets().functionBar.icon_tool_edit,
     getData: AREditData.getData,
     getHeaderData: AREditData.getHeaderData,
+    getHeaderView: AREditData.getHeaderView,
     getMenuData: AREditData.getMenuData,
     actions: AREditAction,
   })

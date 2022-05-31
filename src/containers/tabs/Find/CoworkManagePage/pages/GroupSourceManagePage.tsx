@@ -675,7 +675,7 @@ class GroupSourceManagePage extends Component<Props, State> {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(this.props.language).Friends.LOADING}
+            title={getLanguage(this.props.language).Friends.REFRESHING}
             enabled={true}
           />
         }

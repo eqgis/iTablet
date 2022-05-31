@@ -196,7 +196,7 @@ export default class PublicData extends React.Component {
     if (this.state.noData) {
       text = getLanguage(global.language).Find.NO_DATA
     } else if (this.state.loadError) {
-      text = getLanguage(global.language).Find.NETWORK_ERROR
+      text = getLanguage(global.language).Find.NETWORK_ERROR_NOTIFY
     }
     if (text) {
       return (
@@ -220,7 +220,7 @@ export default class PublicData extends React.Component {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(global.language).Friends.LOADING}
+            title={getLanguage(global.language).Friends.REFRESHING}
             enabled={true}
           />
         }

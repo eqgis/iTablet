@@ -11,7 +11,6 @@ const Profile: typeof CN.Profile = {
   ARMAP: "AR Harita",
   ARMODEL: "AR Modeli",
   AREFFECT: "AR Effect",
-  SCENE: "Manzara",
   BASEMAP: "Altlık Harita",
   SYMBOL: "Sembol",
   SETTINGS: "Ayarlar",
@@ -91,7 +90,6 @@ const Profile: typeof CN.Profile = {
   REGISTER_ONLINE_PROTOCAL: "SuperMap Hizmet Şartları ve Gizlilik Politikası",
   CONNECTING: "Bağlanıyor",
   CONNECT_SERVER_FAIL: "Sunucuya bağlanılamadı, lütfen ağ veya sunucu adresini kontrol edin",
-  NEXT: "Sonraki",
   MESSAGE_SERVICE_SETTING: "Mesaj Hizmeti Yapılandırması",
   MESSAGE_SERVICE_IP: "Mesaj Hizmetinin IP Adresi",
   MESSAGE_SERVICE_PORT: "Mesaj Hizmet Portu",
@@ -115,7 +113,6 @@ const Profile: typeof CN.Profile = {
 
   // 地图服务地址
   SERVICE_ADDRESS: "Servis Adresi",
-  MAP_NAME: "Harita Adı",
   ENTER_SERVICE_ADDRESS: "Lütfen Servis Adresini girin",
   SAVE: "Kaydet",
 
@@ -140,12 +137,10 @@ const Profile: typeof CN.Profile = {
   DELETE_ACCOUNT: "Hesap Sil",
   UNABLE_DELETE_SELF: "Kullanıcı Silinemiyor",
 
-  DELETE: "Sil",
   SELECT_ALL: "Tümünü Seç",
   DESELECT_ALL: "Tüm Seçimleri Kaldır",
 
   // 数据删除导出
-  SHARE: "Paylaş",
   PATH: "Erişim Yolu",
 
   LOCAL: "Lokal",
@@ -223,7 +218,6 @@ const Profile: typeof CN.Profile = {
   DATASET_TYPE_LINE: "Çizgi",
   DATASET_TYPE_REGION: "Bölge",
   DATASET_TYPE_TEXT: "Metin",
-  CLEAR: "Temizle",
   CREATE: "Oluştur",
   DATASET_BUILD_PYRAMID: "Veri Piramidi",
   DATASET_BUILD_STATISTICS: "Statistics Model",
@@ -235,7 +229,6 @@ const Profile: typeof CN.Profile = {
   INPUT_DATASET_NAME: "Lütfen veri kümesi adını girin",
 
   // 创建数据源
-  NEW_DATASOURCE: "Verikaynağı Oluştur",
   SET_DATASOURCE_NAME: "Verikaynağı Adı Ayarla",
   ENTER_DATASOURCE_NAME: "Lütfen verikaynağı adı girin",
   OPEN_DATASROUCE_FAILED: "Verikaynağı açılamadı",
@@ -263,7 +256,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: "Bu cihaz",
   SETTING_CLEAR_CACHE: "Çerezleri temizle",
   SETTING_CLEAR_CACHE_SUCCESS:"Temizleme başarılı",
-  DISTANCE:"Mesafe(m)",
+  DISTANCE_METER:"Mesafe(m)",
   TIME:"Zaman(s)",
   INPUT_NUMBER:"Lütfen sayı girin",
   DISTANCE_LOCATION:"Uzaklık Konumu",

@@ -5,7 +5,7 @@ const Protocol: typeof CN.Protocol = {
   AGREE: "موافق",
   READ_AND_AGREE: "لقد قرأت الشروط المذكورة أعلاه وأوافق عليها",
   AGAIN:"مع السلامة",
-  CONFIRM_EXIT:"تأكيد خروج",
+  EXIT_APP:"تأكيد خروج",
   REMINDER:"تذكير",
   AGREEMENT:"نحن التقيد الصارم بسياسة الخصوصية SuperMap لحماية المعلومات الشخصية الخاصة بك .من أجل خدمة أفضل لك ، يرجى الموافقة على هذه السياسة",
 }
@@ -13,8 +13,6 @@ const Protocol: typeof CN.Protocol = {
 const Common: typeof CN.Common = {
   UP: "أعلى",
   DOWN: "أسفل",
-  LEFT: "شمال",
-  RIGHT: "يمين",
   FRONT: "أمام",
   BACK: "خلف",
 
@@ -31,7 +29,6 @@ const Common: typeof CN.Common = {
   SELECTED: 'اختار',
   DEFAULT: 'خرق',
 
-  SELECT_MODEL: 'اختيار النموذج',
 
   PLEASE_SELECT_MODEL: 'Please select model', // To be translated
 

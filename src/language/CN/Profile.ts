@@ -9,7 +9,6 @@ const Profile = {
   ARMAP: "AR地图",
   ARMODEL: "AR模型",
   AREFFECT: "AR特效",
-  SCENE: "场景",
   BASEMAP: "底图",
   SYMBOL: "符号",
   SETTINGS: "设置",
@@ -89,7 +88,6 @@ const Profile = {
   REGISTER_ONLINE_PROTOCAL: "《超图软件用户服务协议》",
   CONNECTING: "连接中",
   CONNECT_SERVER_FAIL: "未能连接到服务器，请检查网络或服务器地址",
-  NEXT: "下一步",
   MESSAGE_SERVICE_SETTING: "消息服务配置",
   MESSAGE_SERVICE_IP: "消息服务IP地址",
   MESSAGE_SERVICE_PORT: "消息服务端口号",
@@ -113,7 +111,6 @@ const Profile = {
 
   // 地图服务地址
   SERVICE_ADDRESS: "服务地址",
-  MAP_NAME: "地图名称",
   ENTER_SERVICE_ADDRESS: "请输入服务地址",
   SAVE: "保存",
   INVALID_SERVER_ADDRESS: "无效的服务地址",
@@ -137,12 +134,10 @@ const Profile = {
   DELETE_ACCOUNT: "删除账号",
   UNABLE_DELETE_SELF: "不能删除当前用户",
 
-  DELETE: "删除",
   SELECT_ALL: "全选",
   DESELECT_ALL: "全不选",
 
   // 数据删除导出
-  SHARE: "分享",
   PATH: "路径",
 
   LOCAL: "本地",
@@ -220,7 +215,6 @@ const Profile = {
   DATASET_TYPE_LINE: "线",
   DATASET_TYPE_REGION: "面",
   DATASET_TYPE_TEXT: "文本",
-  CLEAR: "清空",
   CREATE: "创建",
   DATASET_BUILD_PYRAMID: "构建金字塔",
   DATASET_BUILD_STATISTICS: "生成统计模型",
@@ -232,7 +226,6 @@ const Profile = {
   INPUT_DATASET_NAME: "请输入数据集名称",
 
   // 创建数据源
-  NEW_DATASOURCE: "新建数据源",
   SET_DATASOURCE_NAME: "设置数据源名称",
   ENTER_DATASOURCE_NAME: "请输入数据源名称",
   OPEN_DATASROUCE_FAILED: "打开数据源失败",
@@ -260,7 +253,7 @@ const Profile = {
   SETTING_LOCATION_LOCAL: "此设备",
   SETTING_CLEAR_CACHE: "清除缓存",
   SETTING_CLEAR_CACHE_SUCCESS: "清除成功",
-  DISTANCE: "距离(单位m)",
+  DISTANCE_METER: "距离(单位m)",
   TIME: "时间(单位s)",
   INPUT_NUMBER: "请输入数字",
   DISTANCE_LOCATION: "距离定位",

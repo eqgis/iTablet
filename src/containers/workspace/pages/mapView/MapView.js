@@ -4929,8 +4929,8 @@ export default class MapView extends React.Component {
                 containerType: ToolbarType.slider,
                 isFullScreen: false,
                 showMenuDialog: false,
-                selectName: getLanguage(this.props.language).ARMap.POSITION,
-                selectKey: getLanguage(this.props.language).ARMap.POSITION,
+                selectName: getLanguage(this.props.language).ARMap.TRANSLATION,
+                selectKey: getLanguage(this.props.language).ARMap.TRANSLATION,
               })
             }
           }}
@@ -4949,8 +4949,8 @@ export default class MapView extends React.Component {
                   containerType: ToolbarType.slider,
                   isFullScreen: false,
                   showMenuDialog: false,
-                  selectName: getLanguage(this.props.language).ARMap.POSITION,
-                  selectKey: getLanguage(this.props.language).ARMap.POSITION,
+                  selectName: getLanguage(this.props.language).ARMap.TRANSLATION,
+                  selectKey: getLanguage(this.props.language).ARMap.TRANSLATION,
                 })
               }
             }

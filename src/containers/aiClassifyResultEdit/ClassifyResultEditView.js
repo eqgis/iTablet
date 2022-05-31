@@ -192,7 +192,7 @@ export default class ClassifyResultEditView extends React.Component {
           headerRight: [
             <TextBtn
               key={'confirm'}
-              btnText={getLanguage(global.language).Common.CONFIRM}
+              btnText={getLanguage(global.language).CONFIRM}
               textStyle={
                 this.state.mediaName
                   ? styles.headerBtnTitle

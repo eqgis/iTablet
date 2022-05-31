@@ -7,7 +7,6 @@ const Analyst_Modules: typeof CN.Analyst_Modules = {
   BUFFER_ANALYST_MULTIPLE: "Çoklu-Buffer Analizi",
   OVERLAY_ANALYSIS: "Kaplama Analizi",
   THIESSEN_POLYGON: "Thiessen Poligonu",
-  MEASURE_DISTANCE: "Mesafe Ölçme",
   ONLINE_ANALYSIS: "Çevrimiçi Analiz",
   INTERPOLATION_ANALYSIS: "Enterpolasyon Analizi",
 
@@ -36,12 +35,8 @@ const Analyst_Methods: typeof CN.Analyst_Methods = {
 
 const Analyst_Labels: typeof CN.Analyst_Labels = {
   ANALYST: "Analist",
-  CONFIRM: "Onayla",
-  RESET: "Sıfırla",
-  CANCEL: "İptal",
   NEXT: "Sonraki",
   PREVIOUS: "Önceki",
-  ADD: "Ekle",
   Edit: "Düzenle",
 
   // local
@@ -49,7 +44,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   BUILD_A_NETWORK_DATASET: "Ağ Veri Kümesi Oluşturma",
   CHOOSE_DATA: "Veri Seç",
   TOPOLOGY: "Topoloji",
-  ADD_DATASET: "Veri Kümesi Ekle",
   DONE: "Tamamlandı",
   RESULT_FIELDS: "Sonuç Alanları",
   SPLIT_SETTINGS: "Bölme Ayarları",
@@ -59,7 +53,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SET_START_STATION: "Başlangıç İstasyonu Ayarla",
   MIDDLE_STATIONS: "Orta İstasyonlar",
   SET_END_STATION: "Bitiş İstasyonu Ayarla",
-  LOCATION: "Konum",
   SET_AS_START_STATION: "Başlangıç İstasyonu Olarak Ayarla",
   SET_AS_END_STATION: "Bitiş Yeri İstasyonu Ayarla",
   ADD_STATIONS: "İstasyon Ekle",
@@ -91,13 +84,11 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SEMICIRCLE_SEGMENTS: "Yarım Daire Segmentleri",
   RING_BUFFER: "Buffer'ı Daire İçine Al",
   RESULT_DATA: "Sonuç Veri",
-  BATCH_ADD: "Toplu Ekleme",
   START_VALUE: "Başlangıç Değeri",
   END_VALUE: "Bitiş Değeri",
   STEP: "Adım",
-  RANGE_COUNT: "Aralık Sayısı",
+  RANGE_COUNT_2: "Aralık Sayısı",
   INSERT: "Ekle",
-  DELETE: "Sil",
   INDEX: "Dizin",
   RADIUS: "Yarıçap",
   RESULT_DATASET_NAME: "Sonuç Veri Kümesinin Adı",
@@ -138,11 +129,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
 
   ADD_WEIGHT_STATISTIC: "Ağırlıklı Alan Ekle",
 
-  // 方向
-  LEFT: "Sol",
-  DOWN: "Aşağı",
-  RIGHT: "Sağ",
-  UP: "Yukarı",
 
   // 邻近分析
   DISPLAY_REGION_SETTINGS: "Bölge Ayarlarını Göster",
@@ -180,7 +166,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   TENSION: "Gerilim",
   SMOOTHNESS: "Düzgünlük",
   SEMIVARIOGRAM: "Yarı Varyans",
-  ROTATION: "Döndürme",
   SILL: "Eşik",
   RANGE: "Aralık",
   NUGGET_EFFECT: "Kütle Etkisi",
@@ -330,11 +315,11 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   STANDARD_DEVIATION_INTERVAL: "Standart Sapma Aralığı",
 
   // 长度单位
-  METER: "m",
-  KILOMETER: "km",
-  YARD: "yard",
-  FOOT: "ft",
-  MILE: "mil",
+  ABBR_METER: "m",
+  ABBR_KILOMETER: "km",
+  ABBR_YARD: "yard",
+  ABBR_FOOT: "ft",
+  ABBR_MILE: "mil",
 
   // 面积单位
   SQUARE_MILE: "mil²",
@@ -353,14 +338,6 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SPECTRAL_GRADIENT: "Spektral Gradyan",
   TERRAIN_GRADIENT: "Arazi Gradyanı",
 
-  // 统计模式
-  MAX: "Max",
-  MIN: "Min",
-  AVERAGE: "Ortalama",
-  SUM: "Toplam (Sum)",
-  VARIANCE: "Varyans",
-  STANDARD_DEVIATION: "Standart Sapma",
-
   // 聚合类型
   AGGREGATE_WITH_GRID: "Gridli Kümeleme",
   AGGREGATE_WITH_REGION: "Alanla Kümeleme",
@@ -376,8 +353,8 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   UBIT1: "UBIT1",
   UBIT16: "UBIT16",
   UBIT32: "UBIT32",
-  SINGLE: "Tek",
-  DOUBLE: "Çift",
+  SINGLE_FLOAT: "Tek",
+  DOUBLE_FLOAT: "Çift",
 
   // 查找方法
   SEARCH_VARIABLE_LENGTH: "Değişken Uzunluk",
@@ -385,7 +362,7 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SEARCH_BLOCK: "Blok",
 
   // 半变异函数
-  SPHERICAL: "Küresel",
+  SPHERICAL_FUNCTION: "Küresel",
   EXPONENTIAL: "Eksponansiyel",
   GAUSSIAN: "Gaussian",
 }

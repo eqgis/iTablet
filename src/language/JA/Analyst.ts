@@ -7,7 +7,6 @@ const Analyst_Modules: typeof CN.Analyst_Modules = {
   BUFFER_ANALYST_MULTIPLE: "マルチバッファ",
   OVERLAY_ANALYSIS: "オーバーレイ解析",
   THIESSEN_POLYGON: "ティーセンポリゴン",
-  MEASURE_DISTANCE: "距離計測",
   ONLINE_ANALYSIS: "オンライン解析",
   INTERPOLATION_ANALYSIS: "補間解析",
 
@@ -36,12 +35,8 @@ const Analyst_Methods: typeof CN.Analyst_Methods = {
 
 const Analyst_Labels: typeof CN.Analyst_Labels = {
   ANALYST: "解析",
-  CONFIRM: "OK",
-  RESET: "リセット",
-  CANCEL: "キャンセル",
   NEXT: "次へ",
   PREVIOUS: "前へ",
-  ADD: "追加",
   Edit: "編集",
 
   // local
@@ -49,7 +44,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   BUILD_A_NETWORK_DATASET: "ネットワークデータセットを新規作成",
   CHOOSE_DATA: "データを選択",
   TOPOLOGY: "トポロジ処理でネットワークを作成",
-  ADD_DATASET: "データセットを追加",
   DONE: "OK",
   RESULT_FIELDS: "フィールド設定",
   SPLIT_SETTINGS: "切断設定",
@@ -59,7 +53,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SET_START_STATION: "起点を設定",
   MIDDLE_STATIONS: "経由地点を追加",
   SET_END_STATION: "終点を設定",
-  LOCATION: "位置",
   SET_AS_START_STATION: "起点を設定",
   SET_AS_END_STATION: "終点を設定",
   ADD_STATIONS: "地点を追加",
@@ -91,13 +84,11 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SEMICIRCLE_SEGMENTS: "半円セグメント",
   RING_BUFFER: "環状バッファを生成",
   RESULT_DATA: "結果データ",
-  BATCH_ADD: "バッチ追加",
   START_VALUE: "始値",
   END_VALUE: "終値",
   STEP: "ステップ",
-  RANGE_COUNT: "段階数",
+  RANGE_COUNT_2: "段階数",
   INSERT: "挿入",
-  DELETE: "削除",
   INDEX: "インデックス",
   RADIUS: "半径",
   RESULT_DATASET_NAME: "結果データセット名",
@@ -138,11 +129,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
 
   ADD_WEIGHT_STATISTIC: "重みフィールドを追加",
 
-  // 方向
-  LEFT: "左",
-  DOWN: "下",
-  RIGHT: "右",
-  UP: "上",
 
   // 近隣解析
   DISPLAY_REGION_SETTINGS: "表示エリアの設定",
@@ -180,7 +166,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   TENSION: "テンション",
   SMOOTHNESS: "スムーズネス",
   SEMIVARIOGRAM: "セミバリオグラム",
-  ROTATION: "回転角度",
   SILL: "シル値",
   RANGE: "自己相関閾値",
   NUGGET_EFFECT: "ナゲット効果",
@@ -330,11 +315,11 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   STANDARD_DEVIATION_INTERVAL: "標準偏差間隔",
 
   // 長さ単位
-  METER: "メートル",
-  KILOMETER: "キロメートル",
-  YARD: "ヤード",
-  FOOT: "フィート",
-  MILE: "マイル",
+  ABBR_METER: "メートル",
+  ABBR_KILOMETER: "キロメートル",
+  ABBR_YARD: "ヤード",
+  ABBR_FOOT: "フィート",
+  ABBR_MILE: "マイル",
 
   // 面積単位
   SQUARE_MILE: "平方マイル",
@@ -353,14 +338,6 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SPECTRAL_GRADIENT: "スペクトルグラデーション",
   TERRAIN_GRADIENT: "地形グラデーション",
 
-  // 統計モード
-  MAX: "最大値",
-  MIN: "最小値",
-  AVERAGE: "平均値",
-  SUM: "合計",
-  VARIANCE: "分散",
-  STANDARD_DEVIATION: "標準偏差",
-
   // 集計タイプ
   AGGREGATE_WITH_GRID: "グリッド集計解析",
   AGGREGATE_WITH_REGION: "ポリゴン集計解析",
@@ -376,8 +353,8 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   UBIT1: "符号なし1ビット",
   UBIT16: "16ビット",
   UBIT32: "32ビット",
-  SINGLE: "単精度フロート",
-  DOUBLE: "倍精度フロート",
+  SINGLE_FLOAT: "単精度フロート",
+  DOUBLE_FLOAT: "倍精度フロート",
 
   // 検索方法
   SEARCH_VARIABLE_LENGTH: "変数検索",
@@ -385,7 +362,7 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SEARCH_BLOCK: "ブロック検索",
 
   // セミバリオグラム
-  SPHERICAL: "球状",
+  SPHERICAL_FUNCTION: "球状",
   EXPONENTIAL: "指数関数",
   GAUSSIAN: "ガウス関数",
 }

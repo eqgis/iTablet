@@ -167,7 +167,7 @@ export default class ColorPickerPage extends React.Component {
           onPress={this.reset}
         />
         <Button
-          title={getLanguage(global.language).Analyst_Labels.CONFIRM}
+          title={getLanguage(global.language).CONFIRM}
           onPress={this.confirm}
         />
       </View>

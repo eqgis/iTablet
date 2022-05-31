@@ -12,7 +12,7 @@ const PoiData = () => [
     icon: getThemeAssets().search.search_icon_food,
   },
   {
-    title: getLanguage(global.language).Map_PoiTitle.SCENE,
+    title: getLanguage(global.language).SCENIC,
     icon: getThemeAssets().search.search_icon_scenic,
   },
   {

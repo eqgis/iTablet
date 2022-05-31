@@ -1204,7 +1204,7 @@ export default class Map3D extends React.Component {
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          title: getLanguage(this.props.language).Map_Module.MAP_3D,
+          title: getLanguage(this.props.language).Map_Module.MODULE_3D,
           //'三维场景',
           navigation: this.props.navigation,
           backAction: this.back,

@@ -92,7 +92,7 @@ class Dialog extends React.Component<Props, State> {
      renderCustomerView: undefined,
      confirm: () => {},
      cancel: () => {},
-     confirmText: getLanguage().Common.CONFIRM,
+     confirmText: getLanguage().CONFIRM,
      cancelText: getLanguage().CANCEL,
      showCancel: true,
      autoHide: true,

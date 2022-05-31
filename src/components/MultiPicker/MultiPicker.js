@@ -247,7 +247,7 @@ export default class MultiPicker extends React.Component {
         >
           <Text style={styles.btnText}>
             {
-              getLanguage(this.props.language || global.language).Analyst_Labels
+              getLanguage(this.props.language || global.language)
                 .CONFIRM
             }
           </Text>

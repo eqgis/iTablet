@@ -6,8 +6,6 @@ const Find: typeof CN.Find = {
   APPLET: "Applet",
   GIS_ACADEMY: "GIS Academy",
   SEARCH_RESULT: "Search Result",
-  BACK: "Back",
-  CONFIRM: "Search",
   RESET: "Reset",
 
   ALL: "All",
@@ -23,7 +21,7 @@ const Find: typeof CN.Find = {
 
   SELECT_DATATYPES_FIRST: "Please select data first",
   NO_DATA: "Data no found",
-  NETWORK_ERROR: "Network error, please try again later",
+  NETWORK_ERROR_NOTIFY: "Network error, please try again later",
   NO_MORE_DATA: "No more data found",
   DOWNLOADED: "Data was downloaded successfully. You can import this data at Import",
 

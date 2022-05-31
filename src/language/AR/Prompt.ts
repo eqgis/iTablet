@@ -13,7 +13,6 @@ const Prompt: typeof CN.Prompt = {
   SUBMIT: "إرسال",
   REDO: "إعادة",
   UNDO: "الغاء",
-  SHARE: "مشاركة",
   DELETE: "حذف",
   WECHAT: "دردشه",
   BEGIN: "ابدأ",
@@ -22,7 +21,6 @@ const Prompt: typeof CN.Prompt = {
   WX_NOT_INSTALLED: "دردشة غير مثبت",
   WX_SHARE_FAILED: "فشلت مشاركة الدردشة,من فضلك تأكد من تثبيت الدردشة",
   RENAME: "اعادة التسمية",
-  BATCH_DELETE: "حذف الدفعة",
   PREPARING: "خطة",
 
   DOWNLOAD_SAMPLE_DATA: "تنزيل البيانات النموذجية؟",
@@ -36,7 +34,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_REMINDER: "لا يوجد تذكير",
 
-  LOG_OUT: "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  LOG_OUT_CONFIRM: "هل أنت متأكد أنك تريد تسجيل الخروج؟",
   FAILED_TO_LOG: "فشل فى تسجيل الدخول",
   INCORRECT_USER_INFO: "الحساب غير موجود أو خطأ كلمة المرور",
   INCORRECT_IPORTAL_ADDRESS: "فشل فى تسجيل الدخول,من فضلك تحقق من عنوان اليرفر الخاص بك",
@@ -47,7 +45,6 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_ADD_STOP: "الرجاء إضافة نقطة",
   IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: "لا يمكن تعيين طبقة الصورة إلى الطبقة الحالية",
 
-  CONFIRM: "تأكيد",
   COMPLETE: "اكتمال",
   INSTALL:"تركيب .",
 
@@ -69,7 +66,7 @@ const Prompt: typeof CN.Prompt = {
   THE_SCENE_IS_OPENED: "تم فتح المشهد",
   NO_SCENE_LIST: "لاتوجد بيانات",
   NO_SCENE_SELECTED: "لا مشاهد مختارة",
-  SWITCHING: "تبديل",
+  SWITCHING_MAP: "تبديل",
   CLOSING: "إغلاق",
   CLOSING_3D: "إغلاق",
   SAVING: "حفظ",
@@ -78,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   ADD_FAILED: "فشلت الاضافة",
   ADD_MAP_FAILED: "لا يمكن إضافة الخريطة الحالية",
   CREATE_THEME_FAILED: "فشل فى انشاء موضوع",
-  PLEASE_ADD_DATASET: "من فضلك اضف مجموعه البيانات",
+  PLEASE_SELECT_DATASET_TO_ADD: "من فضلك اضف مجموعه البيانات",
   PLEASE_SELECT_OBJECT: "من فضلك حدد الكائن لتعدديله",
   SWITCHING_PLOT_LIB: "تبديل",
   NON_SELECTED_OBJ: "لم يتم اختيار كائن",
@@ -101,7 +98,6 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER: "الطبقة الحالية تكون",
   NO_BASE_MAP: "لا يمكن حذف الخريطة الأساسية",
   ENTER_KEY_WORDS: "يرجى إدخال الكلمات الرئيسية",
-  SEARCHING: "جارى البحث",
   SEARCHING_DEVICE_NOT_FOUND: "لا يوجد جهاز",
   READING_DATA: "جارى قراءه البيانات",
   CREATE_SUCCESSFULLY: "تم إنشاؤه بنجاح",
@@ -192,7 +188,6 @@ const Prompt: typeof CN.Prompt = {
   LOG_IN: "جارى التحميل",
   ENTER_MAP_NAME: "من فضلك ادخل اسم الخريطة",
   CLIP_ENTER_MAP_NAME: "ادخل اسم الخريطة",
-  ENTER_SERVICE_ADDRESS: "من فضلك ادخل عنوان الخدمة",
   ENTER_ANIMATION_NAME: "من فضلك ادخل اسم الرسوم المتحركة",
   ENTER_ANIMATION_NODE_NAME: "من فضلك ادخل اسم عقدة الرسوم المتحركة",
   PLEASE_SELECT_PLOT_SYMBOL: "من فضلك اختر رمز النقط",
@@ -211,14 +206,10 @@ const Prompt: typeof CN.Prompt = {
 
   LAYER_CANNOT_CREATE_THEMATIC_MAP: "الخريطة الحالية لايمكن استخدمها فى امشاء خريطة موضوعية",
 
-  ANALYSING: "جارى التحليل",
   CHOOSE_STARTING_POINT: "اختر نقطة البداية",
   CHOOSE_DESTINATION: "اختر وجهة",
 
   LATEST: "الاخير",
-  GEOGRAPHIC_COORDINATE_SYSTEM: "نظام الاحداثيات الجغرافية",
-  PROJECTED_COORDINATE_SYSTEM: "نظام الاحداثيات المسقط",
-  FIELD_TYPE: "نوع الحقل",
 
   PLEASE_LOGIN_AND_SHARE: "من فضك ادخل وشارك",
   PLEASE_LOGIN: "الرجاء تسجيل الدخول",
@@ -339,7 +330,7 @@ const Prompt: typeof CN.Prompt = {
   FAILED_TO_CREATE_TEXT: "فشل إنشاء النص",
   FAILED_TO_CREATE_LINE: "فشل إنشاء الخط",
   FAILED_TO_CREATE_REGION: "فشل في إنشاء المنطقة",
-  CLEAR_HISTORY: "تاريخ واضح",
+  CLEAR_SEARCH_HISTORY: "تاريخ واضح",
   // 导航相关
   SEARCH_AROUND: "ابحث حولها",
   GO_HERE: "اذهب الى هنا",
@@ -367,7 +358,7 @@ const Prompt: typeof CN.Prompt = {
   DISTANCE_ERROR: "الوجهة قريبة جدًا من نقطة البداية ، يرجى إعادة التحديد",
   USE_ONLINE_ROUTE_ANALYST: "النقاط خارج حدود مجموعة البيانات أو لا توجد مجموعة بيانات حول النقاط ، هل تريد استخدام محلل المسار عبر الإنترنت؟",
   NOT_SUPPORT_ONLINE_NAVIGATION: "التنقل عبر الإنترنت غير متاح حتى الآن",
-  CREATE: "جديد",
+  NEW: "جديد",
   NO_DATASOURCE: "لا يوجد مصدر بيانات في مساحة العمل الحالية ، يرجى إنشاء مصدر بيانات جديد أولاً",
   FLOOR: "طابق",
   AR_NAVIGATION: "AR Navi",
@@ -392,7 +383,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_DESTINATION_DATASOURCE: "الرجاء تحديد مصدر البيانات الهدف",
   FILENAME_ALREADY_EXIST: "الملف موجود بالفعل ، يرجى إعادة إدخال اسم الملف",
   NETWORK_BUILDING: "جاري البناء...",
-  BUILD_SUCCESS: "تم بناؤه بنجاح",
+  ROADNET_BUILD_SUCCESS: "تم بناؤه بنجاح",
   SELECT_LINE_SMOOTH: "الرجاء تحديد الخط الذي يحتاج إلى تجانس",
   SELECT_A_POINT_INLINE: "الرجاء تحديد نقطة على الإنترنت",
   SELECT_POINT_INCURRENTLINE:"حدد نقطة على الخط الحالي أن يقطع",

@@ -3,7 +3,7 @@ const Protocol = {
   AGREE: "同意",
   READ_AND_AGREE: "我已阅读并同意上述条款",
   AGAIN:"再次查看",
-  CONFIRM_EXIT:"退出应用",
+  EXIT_APP:"退出应用",
   REMINDER:"温馨提示",
   AGREEMENT:"我们非常重视对您个人信息的保护，承诺严格按照超图隐私权政策保护及处理您的信息，如不同意该政策，很遗憾我们将无法提供服务",
 }
@@ -11,8 +11,6 @@ const Protocol = {
 const Common = {
   UP: "上",
   DOWN: "下",
-  LEFT: "左",
-  RIGHT: "右",
   FRONT: "前",
   BACK: "后",
 
@@ -29,7 +27,6 @@ const Common = {
   SELECTED: '选择',
   DEFAULT: '默认',
 
-  SELECT_MODEL: '选择模型',
   PLEASE_SELECT_MODEL: '请选择模型',
 
   SHOULD_BE_DECIMAL_FRACTION: '必须为小数',

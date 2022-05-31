@@ -418,7 +418,7 @@ class FriendMessage extends Component {
       <Dialog
         ref={ref => (this.dialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(this.props.language).Friends.CONFIRM}
+        confirmBtnTitle={getLanguage(this.props.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.props.language).Friends.CANCEL}
         confirmAction={() => {
           MessageDataHandle.delMessage({

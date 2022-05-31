@@ -788,7 +788,7 @@ export default class LayerAttributeTabs extends React.Component {
             )
           }
         }}
-        confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(this.props.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         opacity={1}
         cancelAction={() => {

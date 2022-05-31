@@ -213,7 +213,7 @@ export default class ServiceShareSettings extends Component<Props, State> {
           navigation: this.props.navigation,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(global.language).Prompt.CONFIRM}
+              btnText={getLanguage(global.language).CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this._save}
             />

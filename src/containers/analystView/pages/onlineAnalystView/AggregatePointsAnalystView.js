@@ -27,7 +27,7 @@ export default class AggregatePointsAnalystView extends Component {
       bounds: [], // 分析范围：左-下-右-上
       meshSize: 30, // 网格大小（分辨率）
       // 网格大小单位：Meter(默认),Kilometer,Yard,Foot,Mile
-      meshSizeUnit: getLanguage(this.props.language).Analyst_Params.METER,
+      meshSizeUnit: getLanguage(this.props.language).ABBR_METER,
 
       weightAndStatisticMode: [], // weight 和 statisticMode数据数组
       weight: 1, // 权重 默认1
@@ -135,7 +135,7 @@ export default class AggregatePointsAnalystView extends Component {
       meshType: onlineParamsData.getMeshType(this.props.language)[0],
       bounds: [],
       meshSize: 30,
-      meshSizeUnit: getLanguage(this.props.language).Analyst_Params.METER,
+      meshSizeUnit: getLanguage(this.props.language).ABBR_METER,
       weightAndStatisticMode: [],
       weight: 1,
       statisticModes: '',

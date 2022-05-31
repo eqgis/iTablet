@@ -1,17 +1,12 @@
 // 制图
 const Map_Label = {
   // 地图底部导航
-  MAP: "地图",
   LAYER: "图层",
   ATTRIBUTE: "属性",
   SETTING: "设置",
   SCENE: "场景",
-  NAME: "名称",
   TOOL_BOX: "工具箱",
-  ARMAP: "实景",
-  NAVIGATION: "导航",
-  INCREMENT: "增量",
-  ENCLOSURE: "围栏",
+  AR_SCENE: "实景",
 }
 
 // 地图、场景主菜单
@@ -39,7 +34,6 @@ const Map_Main_Menu = {
   // 地图制图及公共 添加
   OPEN: "添加",
   OPEN_DATASOURCE: "数据源",
-  OPEN_MAP: "地图",
   OPEN_BACK: "上一步",
 
   NAVIGATION_START: "导航",
@@ -154,7 +148,6 @@ const Map_Main_Menu = {
   TOOLS_TARGET_DATASOURCE: "目标数据源",
   TOOLS_UNIFIED_SETTING: "统一设置",
   MAP_CLIP: "地图裁剪",
-  CLIP: "裁剪",
 
   CAMERA: "多媒体采集",
   TOUR: "旅行轨迹",
@@ -273,7 +266,7 @@ const Map_Main_Menu = {
   THEME_RANGES_MAP_TITLE: "分段风格专题图",
   THEME_UNIQUE_VALUES_MAP_TITLE: "单值风格专题图",
   THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: "单值标签专题图",
-  RANGE: "段数",
+  RANGES: "段数",
   PREVIEW: "预览",
   CUSTOM_THEME_MAP: "自定义专题图",
   COLOR_PICKER: "色盘",
@@ -346,7 +339,6 @@ const Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE: "不支持此设备",
   MAP_AR_MEASURE: "AR量算",
   MAP_AR_ANALYZE: "AR分析",
-  MAP_AR_MAPPING: "AR测图",
   MAP_AR_TOOL: "投放",
   MAP_AR_CAMERA_EXCEPTION: "摄像头异常, 请检查权限是否开启",
   MAP_AR_AI_ASSISTANT: "AI助手",
@@ -476,8 +468,6 @@ const Map_Main_Menu = {
   // 智能配图
   FILL: "填充",
   BORDER: "轮廓",
-  LINE: "线",
-  MARK: "标注",
 
   // 地图导航
   START_POINT: "起点",
@@ -485,7 +475,6 @@ const Map_Main_Menu = {
   DRAW: "绘制",
   ROAD_DETAILS: "路线详情",
   ROUTE_THROUGH: "途经路线：",
-  DISTANCE: "距离：",
   METERS: "米",
   KILOMETERS: "千米",
   DISPLAY_MAP: "显示地图",
@@ -538,7 +527,6 @@ const Map_Main_Menu = {
   MAP_TOPO_TRIM: "修剪",
   MAP_TOPO_RESAMPLE: "重采样",
   MAP_TOPO_CHANGE_DIRECTION: "变方向",
-  ADD_DATASET: "追加数据集",
   SELECT_ROADNAME_FIELD: "请选择道路名称字段",
   SELECT_FIELD: "选择字段",
   MERGE_CANCEL: "取消",
@@ -562,7 +550,6 @@ const Map_Main_Menu = {
   BACKGROUND:'背景',
   ARRAY:'排列',
   TEXT_SHAPE:'字形',
-  ROTATION_ANGLE:'旋转角度',
   BOLD:'加粗',
   TILT:'倾斜',
   UNDERLINE:'下划线',
@@ -659,7 +646,7 @@ const Map_Plotting = {
 
 // 图层
 const Map_Layer = {
-  PLOTS: "我的标注",
+  MY_PLOTS: "我的标注",
   PLOTS_IMPORT: "导入标注",
   PLOTS_DELETE: "删除标注",
   PLOTS_EDIT: "编辑标注",
@@ -721,7 +708,7 @@ const Map_Layer = {
   LAYERS_CREATE_THEMATIC_MAP: "制作专题图",
   LAYERS_MODIFY_THEMATIC_MAP: "修改专题图",
 
-  BASEMAP: "我的底图",
+  MY_BASEMAP: "我的底图",
   BASEMAP_SWITH: "切换底图",
   MY_TERRAIN: "我的地形",
 
@@ -773,7 +760,7 @@ const Map_Attribute = {
   NAME: "名称",
   TYPE: "类型",
   LENGTH: "长度",
-  DEFAULT: "缺省值",
+  DEFAULT_VALUE: "缺省值",
   CONFIRM_ADD: "确认",
 
   DETAIL: "详情",
@@ -793,9 +780,6 @@ const Map_Attribute = {
 
 // 地图设置
 const Map_Setting = {
-  BASIC_SETTING: "基本设置",
-  ROTATION_GESTURE: "手势旋转",
-  PITCH_GESTURE: "手势俯仰",
   THEME_LEGEND: "专题图图例",
   COLUMN_NAV_BAR: "横屏时纵向显示导航栏",
   REAL_TIME_SYNC: "实时同步",
@@ -803,7 +787,6 @@ const Map_Setting = {
   // 效果设置
   EFFECT_SETTINGS: "效果设置",
   ANTI_ALIASING_MAP: "反走样地图",
-  SHOW_OVERLAYS: "显示压盖对象",
 
   // 范围设置
   BOUNDS_SETTING: "范围设置",
@@ -820,7 +803,7 @@ const Map_Setting = {
 
 // 地图设置菜单
 const Map_Settings = {
-  THEME_LEGEND: "图例",
+  LEGEND: "图例",
   // 一级菜单
   BASIC_SETTING: "基本设置",
   RANGE_SETTING: "范围设置",
@@ -883,7 +866,6 @@ const Map_Settings = {
   PITCH_GESTURE: "手势俯仰",
   ROTATION_ANGLE: "旋转角度",
   COLOR_MODE: "颜色模式",
-  BACKGROUND_COLOR: "背景颜色",
   MAP_ANTI_ALIASING: "地图反走样",
   FIX_SYMBOL_ANGLE: "固定符号角度",
   FIX_TEXT_ANGLE: "固定文本角度",
@@ -940,14 +922,12 @@ const Map_Settings = {
 
   // 四级菜单 转换方法参数设置
   BASIC_PARAMS: "基本参数",
-  OFFSET: "偏移量",
   PROPORTIONAL_DIFFERENCE: "比例差",
   ROTATION_ANGLE_SECONDS: "旋转角度(秒)",
 
   // 四级菜单 和复制提示
   DATASOURCES: "数据源",
   DATASETS: "数据集",
-  TYPE: "类型",
   FORMAT: "格式",
   ALL_COORD_FILE: "所支持的坐标系文件",
   SHAPE_COORD_FILE: "Shape坐标系文件",
@@ -959,9 +939,6 @@ const Map_Settings = {
   // 设置的一些参数
   PERCENT: "百分比",
   OFF: "关",
-  CONFIRM: "确定",
-  CANCEL: "取消",
-  COPY: "复制",
 
   CONFIDENCE: "置信度",
 }
@@ -980,7 +957,7 @@ const Map_Tools = {
 // POI title
 const Map_PoiTitle = {
   FOOD: "美食",
-  SCENE: "景点",
+  SCENIC: "景点",
   BANK: "银行",
   SUPERMARKET: "超市",
   HOTEL: "酒店",

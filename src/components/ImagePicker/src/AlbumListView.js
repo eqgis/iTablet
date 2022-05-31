@@ -202,7 +202,7 @@ export default class AlbumListView extends React.PureComponent {
                 this._clickCancel()
               }
             }}
-            confirmBtnTitle={getLanguage(global.language).Map_Settings.CONFIRM}
+            confirmBtnTitle={getLanguage(global.language).CONFIRM}
             cancelBtnTitle={getLanguage(global.language).Map_Settings.CANCEL}
           />
         )}

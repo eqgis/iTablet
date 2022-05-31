@@ -49,7 +49,7 @@ export default class Map3DConfig extends Module {
   getChunk = language => {
     return this.createChunk(language, {
       key: Map3DConfig.key,
-      title: getLanguage(language).Map_Module.MAP_3D,
+      title: getLanguage(language).Map_Module.MODULE_3D,
       moduleImage: getThemeAssets().module.icon_map_3d,
       moduleImageTouch: getThemeAssets().module.icon_map_3d_touch,
       defaultMapName: this.getExampleName(language)[0].mapName,

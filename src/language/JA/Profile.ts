@@ -11,7 +11,6 @@ const Profile: typeof CN.Profile = {
   ARMAP: "AR マップ",
   ARMODEL: "AR モデル",
   AREFFECT: "AR 効果",
-  SCENE: "シーン",
   BASEMAP: "背景地図",
   SYMBOL: "シンボル",
   SETTINGS: "設定",
@@ -91,7 +90,6 @@ const Profile: typeof CN.Profile = {
   REGISTER_ONLINE_PROTOCAL: "《スーパーマップユーザーサービス協議 》",
   CONNECTING: "接続中",
   CONNECT_SERVER_FAIL: "サーバーに接続できません。ネットワーク、サーバーアドレスを確認してください。",
-  NEXT: "次へ",
   MESSAGE_SERVICE_SETTING: "メッセージサービス設定",
   MESSAGE_SERVICE_IP: "メッセージサービスのIPアドレス",
   MESSAGE_SERVICE_PORT: "メッセージサービスのPort",
@@ -115,7 +113,6 @@ const Profile: typeof CN.Profile = {
 
   // マップサービスアドレス
   SERVICE_ADDRESS: "サービスアドレス",
-  MAP_NAME: "マップ名",
   ENTER_SERVICE_ADDRESS: "サービスアドレスを入力してください",
   SAVE: "保存",
 
@@ -140,12 +137,10 @@ const Profile: typeof CN.Profile = {
   DELETE_ACCOUNT: "アカウントの削除",
   UNABLE_DELETE_SELF: "現在ユーザーは削除されません",
 
-  DELETE: "削除",
   SELECT_ALL: "すべて選択",
   DESELECT_ALL: "選択の反転",
 
   // データ削除エクスポート
-  SHARE: "シェア",
   PATH: "パス",
 
   LOCAL: "ローカル",
@@ -223,7 +218,6 @@ const Profile: typeof CN.Profile = {
   DATASET_TYPE_LINE: "ライン",
   DATASET_TYPE_REGION: "ポリゴン",
   DATASET_TYPE_TEXT: "テキスト",
-  CLEAR: "クリア",
   CREATE: "作成",
   DATASET_BUILD_PYRAMID: "ピラミッドの作成", //jp0730
   DATASET_BUILD_STATISTICS: "統計モデルの生成",
@@ -235,7 +229,6 @@ const Profile: typeof CN.Profile = {
   INPUT_DATASET_NAME: "データセットを入力してください",
 
   // 作成データソース
-  NEW_DATASOURCE: "新規データソース",
   SET_DATASOURCE_NAME: "データソース名の設定",
   ENTER_DATASOURCE_NAME: "データソース名の入力",
   OPEN_DATASROUCE_FAILED: "データソースを開くのに失敗しました。",
@@ -263,7 +256,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: "当デバイス",
   SETTING_CLEAR_CACHE: "キャッシュのクリア",
   SETTING_CLEAR_CACHE_SUCCESS:"クリアに成功",
-  DISTANCE:"距離(m)",
+  DISTANCE_METER:"距離(m)",
   TIME:"時間(s)",
   INPUT_NUMBER:"数字を入力してください",
   DISTANCE_LOCATION:"距離ポジショニング",

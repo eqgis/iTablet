@@ -3,17 +3,12 @@ import CN from "../CN"
 // 制图
 const Map_Label: typeof CN.Map_Label = {
   // 地图底部导航
-  MAP: "Map",
   LAYER: "Layer",
   ATTRIBUTE: "Attribute",
   SETTING: "Setting",
   SCENE: "Scene",
-  NAME: "Name",
   TOOL_BOX: "Toolbox",
-  ARMAP: "Scenery",
-  NAVIGATION: "Navigation",
-  INCREMENT: "Increment",
-  ENCLOSURE: "Enclosure",
+  AR_SCENE: "Scenery",
 }
 
 // 地图、场景主菜单
@@ -41,7 +36,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 地图制图及公共 添加
   OPEN: "Add",
   OPEN_DATASOURCE: "Datasource",
-  OPEN_MAP: "Map",
   OPEN_BACK: "Back",
 
   NAVIGATION_START: "Navigate",
@@ -156,7 +150,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_TARGET_DATASOURCE: "Target Datasource",
   TOOLS_UNIFIED_SETTING: "Unified setting",
   MAP_CLIP: "Map Clip",
-  CLIP: "Clip",
 
   CAMERA: "Camera",
   TOUR: "Tour",
@@ -275,7 +268,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   THEME_RANGES_MAP_TITLE: "Ranges Map",
   THEME_UNIQUE_VALUES_MAP_TITLE: "Unique Values Map",
   THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: "Unique Value Label Map",
-  RANGE: "Ranges",
+  RANGES: "Ranges",
   PREVIEW: "Preview",
   CUSTOM_THEME_MAP: "Custom Thematic Map",
   COLOR_PICKER: "Color Picker",
@@ -348,7 +341,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE_SEVEN: "Does not support this device. Please use a version newer than android7",
   MAP_AR_MEASURE: "AR Measure",
   MAP_AR_ANALYZE: "AR Analyze",
-  MAP_AR_MAPPING: "AR Survey",
   MAP_AR_TOOL: "Launch",
   MAP_AR_CAMERA_EXCEPTION: "The camera is abnormal, please check whether the permission is open.",
   MAP_AR_AI_ASSISTANT: "AI\nCollect",
@@ -478,8 +470,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 智能配图
   FILL: "Fill",
   BORDER: "Border",
-  LINE: "Line",
-  MARK: "Mark",
 
   // 地图导航
   START_POINT: "Start Point",
@@ -487,7 +477,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DRAW: "Draw",
   ROAD_DETAILS: "Road Details",
   ROUTE_THROUGH: "Route Through:",
-  DISTANCE: "Distance:",
   METERS: "m",
   KILOMETERS: "Km",
   DISPLAY_MAP: "Display Map",
@@ -540,7 +529,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_TOPO_TRIM: "Trim",
   MAP_TOPO_RESAMPLE: "Re-sample",
   MAP_TOPO_CHANGE_DIRECTION: "Change Direction",
-  ADD_DATASET: "Append Dataset",
   SELECT_ROADNAME_FIELD: "Please select the road name field",
   SELECT_FIELD: "Select Field",
   MERGE_CANCEL: "Cancel",
@@ -563,7 +551,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   BACKGROUND:'BackGround',
   ARRAY:'Array',
   TEXT_SHAPE:'Shape',
-  ROTATION_ANGLE:'Rotation Angle',
   BOLD:'Bold',
   TILT:'Tilt',
   UNDERLINE:'UnderLine',
@@ -660,7 +647,7 @@ const Map_Plotting: typeof CN.Map_Plotting = {
 
 // 图层
 const Map_Layer: typeof CN.Map_Layer = {
-  PLOTS: "My Marks",
+  MY_PLOTS: "My Marks",
   PLOTS_IMPORT: "Import Marks",
   PLOTS_DELETE: "Delete Marks",
   PLOTS_EDIT: "Edit Marks",
@@ -722,7 +709,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_CREATE_THEMATIC_MAP: "Create Thematic Map",
   LAYERS_MODIFY_THEMATIC_MAP: "Modify Thematic Map",
 
-  BASEMAP: "My Basemap",
+  MY_BASEMAP: "My Basemap",
   BASEMAP_SWITH: "Switch Basemap",
   MY_TERRAIN: "My Terrain",
 
@@ -774,7 +761,7 @@ const Map_Attribute: typeof CN.Map_Attribute = {
   NAME: "Name",
   TYPE: "Type",
   LENGTH: "Length",
-  DEFAULT: "Default",
+  DEFAULT_VALUE: "Default",
   CONFIRM_ADD: "Add",
 
   DETAIL: "Detail",
@@ -794,9 +781,6 @@ const Map_Attribute: typeof CN.Map_Attribute = {
 
 // 地图设置
 const Map_Setting: typeof CN.Map_Setting = {
-  BASIC_SETTING: "Basic Settings",
-  ROTATION_GESTURE: "Rotation Gesture",
-  PITCH_GESTURE: "Pitch Gesture",
   THEME_LEGEND: "Theme Legend",
   COLUMN_NAV_BAR: "Vertical Navigation Bar when Landscape",
   REAL_TIME_SYNC: "Real-time Synchronize",
@@ -804,7 +788,6 @@ const Map_Setting: typeof CN.Map_Setting = {
   // 效果设置
   EFFECT_SETTINGS: "Effect Settings",
   ANTI_ALIASING_MAP: "Anti-aliasing Map",
-  SHOW_OVERLAYS: "Show Overlays",
 
   // 范围设置
   BOUNDS_SETTING: "Bounds settings",
@@ -821,7 +804,7 @@ const Map_Setting: typeof CN.Map_Setting = {
 
 // 地图设置菜单
 const Map_Settings: typeof CN.Map_Settings = {
-  THEME_LEGEND: "Theme Legend",
+  LEGEND: "Theme Legend",
   // 一级菜单
   BASIC_SETTING: "Basic Settings",
   RANGE_SETTING: "Bounds Settings",
@@ -884,7 +867,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   PITCH_GESTURE: "Pitch Gesture",
   ROTATION_ANGLE: "Rotation Angle",
   COLOR_MODE: "Color Mode",
-  BACKGROUND_COLOR: "Background Color",
   MAP_ANTI_ALIASING: "Map Anti-aliasing",
   FIX_SYMBOL_ANGLE: "Fix Symbol Angle",
   FIX_TEXT_ANGLE: "Fix Text Angle",
@@ -941,14 +923,12 @@ const Map_Settings: typeof CN.Map_Settings = {
 
   // 四级菜单 转换方法参数设置
   BASIC_PARAMS: "Basic Params",
-  OFFSET: "Offset",
   PROPORTIONAL_DIFFERENCE: "Proportional Difference",
   ROTATION_ANGLE_SECONDS: "Rotation Angle(Seconds)",
 
   // 四级菜单 和复制提示
   DATASOURCES: "Datasources",
   DATASETS: "Datasets",
-  TYPE: "Type",
   FORMAT: "Format",
   ALL_COORD_FILE: "Supported Coordinate System File",
   SHAPE_COORD_FILE: "Shape Coordinate System File",
@@ -960,9 +940,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 设置的一些参数
   PERCENT: "Percent",
   OFF: "OFF",
-  CONFIRM: "Confirm",
-  CANCEL: "Cancel",
-  COPY: "Copy",
 
   CONFIDENCE: "Confidence",
 }
@@ -981,7 +958,7 @@ const Map_Tools: typeof CN.Map_Tools = {
 // POI title
 const Map_PoiTitle: typeof CN.Map_PoiTitle = {
   FOOD: "Food",
-  SCENE: "Scenic",
+  SCENIC: "Scenic",
   BANK: "Bank",
   SUPERMARKET: "Market",
   HOTEL: "Hotel",

@@ -49,8 +49,8 @@ async function toolbarBack() {
         containerType: ToolbarType.slider,
         isFullScreen: false,
         showMenuDialog: false,
-        selectName: getLanguage(global.language).ARMap.POSITION,
-        selectKey: getLanguage(global.language).ARMap.POSITION,
+        selectName: getLanguage(global.language).ARMap.TRANSLATION,
+        selectKey: getLanguage(global.language).ARMap.TRANSLATION,
       })
       _params.showBox && _params.showBox()
       return

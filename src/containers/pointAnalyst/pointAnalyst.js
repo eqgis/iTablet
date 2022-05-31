@@ -499,7 +499,7 @@ export default class PointAnalyst extends Component {
                 fontSize: setSpText(20),
               }}
             >
-              {getLanguage(global.language).Prompt.CLEAR_HISTORY}
+              {getLanguage(global.language).Prompt.CLEAR_SEARCH_HISTORY}
             </Text>
           </TouchableOpacity>
         )}

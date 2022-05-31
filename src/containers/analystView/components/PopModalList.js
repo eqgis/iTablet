@@ -221,7 +221,7 @@ export default class PopModalList extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.props.confirmTitle ||
-              getLanguage(this.props.language || global.language).Analyst_Labels
+              getLanguage(this.props.language || global.language)
                 .CONFIRM}
           </Text>
         </TouchableOpacity>

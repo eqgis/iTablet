@@ -80,7 +80,7 @@ class SelectModulePage extends Component<Props, State> {
 
   _renderItem = ({item, index}: {item: any, index: number}) => {
     if (
-      item.title === getLanguage(global.language).Map_Module.MAP_3D
+      item.title === getLanguage(global.language).Map_Module.MODULE_3D
     ) {
       return null
     }

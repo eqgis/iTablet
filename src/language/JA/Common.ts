@@ -5,7 +5,7 @@ const Protocol: typeof CN.Protocol = {
   AGREE: "同意",
   READ_AND_AGREE: "閲読済み、同意",
   AGAIN:"もう一度確認",
-  CONFIRM_EXIT:"アプリケーションを終了",
+  EXIT_APP:"アプリケーションを終了",
   REMINDER:"リマインダー",
   AGREEMENT:"弊社は個人情報の保護を非常に重要視し、「個人情報保護方針」に厳密に従ってあなたの個人情報を保護および処理することを約束します。あなたがこのポリシーに同意しない場合、残念ながら、サービスを提供することはできません",
 }
@@ -13,8 +13,6 @@ const Protocol: typeof CN.Protocol = {
 const Common: typeof CN.Common = {
   UP: "上",
   DOWN: "下",
-  LEFT: "左",
-  RIGHT: "右",
   FRONT: "前",
   BACK: "後",
 
@@ -31,7 +29,6 @@ const Common: typeof CN.Common = {
   SELECTED: '選択',
   DEFAULT: 'デフォルト',
 
-  SELECT_MODEL: 'モデルの選択',
 
   PLEASE_SELECT_MODEL: 'Please select model', // To be translated
 

@@ -3,17 +3,12 @@ import CN from "../CN"
 // 制图
 const Map_Label: typeof CN.Map_Label = {
   // 地图底部导航
-  MAP: "Carte",
   LAYER: "Couche",
   ATTRIBUTE: "Attribut",
   SETTING: "Paramètre",
   SCENE: "Paysage",
-  NAME: "Nom",
   TOOL_BOX: "Bôite à outils",
-  ARMAP: "Paysage",
-  NAVIGATION: "Navigation",
-  INCREMENT: "Incrémenter",
-  ENCLOSURE: "Enceinte",
+  AR_SCENE: "Paysage",
 }
 
 // 地图、场景主菜单
@@ -43,7 +38,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 地图制图及公共 添加
   OPEN: "Ajouter",
   OPEN_DATASOURCE: "Source de données",
-  OPEN_MAP: "Carte",
   OPEN_BACK: "Retour",
 
   NAVIGATION_START: "Naviguer",
@@ -158,7 +152,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_TARGET_DATASOURCE: "Source de données cible",
   TOOLS_UNIFIED_SETTING: "Réglage unifié",
   MAP_CLIP: "Clip de Carte",
-  CLIP: "Clip",
 
   CAMERA: "Caméra",
   TOUR: "Tour",
@@ -277,7 +270,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   THEME_RANGES_MAP_TITLE: "Carte des plages",
   THEME_UNIQUE_VALUES_MAP_TITLE: "Carte des valeurs uniques",
   THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: "Carte d'étiquette de valeur unique",
-  RANGE: "Plage",
+  RANGES: "Plage",
   PREVIEW: "Aperçu",
   CUSTOM_THEME_MAP: "Carte thématique personnalisée",
   COLOR_PICKER: "Pipette à couleurs",
@@ -351,7 +344,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_AR_DONT_SUPPORT_DEVICE: "Ne supporte pas ce dispositif",
   MAP_AR_MEASURE: "Mesure RA",
   MAP_AR_ANALYZE: "Analyse RA",
-  MAP_AR_MAPPING: "Cartographie RA",
   MAP_AR_TOOL: "Lancer",
   MAP_AR_CAMERA_EXCEPTION: "La caméra est anormale, veuillez vérifier si l'autorisation est activée.",
   MAP_AR_AI_ASSISTANT: "IA\nCollecte",
@@ -481,8 +473,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 智能配图
   FILL: "Remplir",
   BORDER: "Bordure",
-  LINE: "Ligne",
-  MARK: "Marque",
 
   // 地图导航
   START_POINT: "Point de départ",
@@ -490,7 +480,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DRAW: "Dessiner",
   ROAD_DETAILS: "Détails de la route",
   ROUTE_THROUGH: "Traverser：",
-  DISTANCE: "Distance:",
   METERS: "m",
   KILOMETERS: "Km",
   DISPLAY_MAP: "Afficher la carte",
@@ -543,7 +532,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_TOPO_TRIM: "Réduire",
   MAP_TOPO_RESAMPLE: "Rééchantillonnage",
   MAP_TOPO_CHANGE_DIRECTION: "Changer de direction",
-  ADD_DATASET: "Ajouter un jeu de données",
   SELECT_ROADNAME_FIELD: "Sélectionnez le champ Nom de la route",
   SELECT_FIELD: "Sélectionnez un champ",
   MERGE_CANCEL: "Annuler",
@@ -566,7 +554,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   BACKGROUND:'BackGround',//to be translate
   ARRAY:'Array',//to be translate
   TEXT_SHAPE:'Shape',//to be translate
-  ROTATION_ANGLE:'Rotation Angle',//to be translate
   BOLD:'Bold',//to be translate
   TILT:'Tilt',//to be translate
   UNDERLINE:'UnderLine',//to be translate
@@ -663,7 +650,7 @@ const Map_Plotting: typeof CN.Map_Plotting = {
 
 // 图层
 const Map_Layer: typeof CN.Map_Layer = {
-  PLOTS: "Mes marques",
+  MY_PLOTS: "Mes marques",
   PLOTS_IMPORT: "Importer des marques",
   PLOTS_DELETE: "Supprimer les marques",
   PLOTS_EDIT: "Edit Marks",
@@ -724,7 +711,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_CREATE_THEMATIC_MAP: "Créer une carte thématique",
   LAYERS_MODIFY_THEMATIC_MAP: "Modifier la carte thématique",
 
-  BASEMAP: "Mon fond de carte",
+  MY_BASEMAP: "Mon fond de carte",
   BASEMAP_SWITH: "interchanger fond de carte",
   MY_TERRAIN: "Mon terrain",
 
@@ -776,7 +763,7 @@ const Map_Attribute: typeof CN.Map_Attribute = {
   NAME: "Nom",
   TYPE: "Type",
   LENGTH: "Longueur",
-  DEFAULT: "Défaut",
+  DEFAULT_VALUE: "Défaut",
   CONFIRM_ADD: "Ajouter",
 
   DETAIL: "Détail",
@@ -796,9 +783,6 @@ const Map_Attribute: typeof CN.Map_Attribute = {
 
 // 地图设置
 const Map_Setting: typeof CN.Map_Setting = {
-  BASIC_SETTING: "Paramètres de base",
-  ROTATION_GESTURE: "Geste de rotation",
-  PITCH_GESTURE: "Le Pas de Geste",
   THEME_LEGEND: "Légende du thème",
   COLUMN_NAV_BAR: "Barre de navigation verticale en mode paysage",
   REAL_TIME_SYNC: "Synchronisation en temps réel",
@@ -806,7 +790,6 @@ const Map_Setting: typeof CN.Map_Setting = {
   // 效果设置
   EFFECT_SETTINGS: "Paramètres d'effet",
   ANTI_ALIASING_MAP: "Carte d'anticrénelage",
-  SHOW_OVERLAYS: "Afficher les superpositions",
 
   // 范围设置
   BOUNDS_SETTING: "Paramètres des bornes",
@@ -823,7 +806,7 @@ const Map_Setting: typeof CN.Map_Setting = {
 
 // 地图设置菜单
 const Map_Settings: typeof CN.Map_Settings = {
-  THEME_LEGEND: "Légende du thème",
+  LEGEND: "Légende du thème",
   // 一级菜单
   BASIC_SETTING: "Paramètres de base",
   RANGE_SETTING: "Paramètres des bornes",
@@ -886,7 +869,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   PITCH_GESTURE: "Le Pas de Geste",
   ROTATION_ANGLE: "Angle de rotation",
   COLOR_MODE: "Mode de couleur",
-  BACKGROUND_COLOR: "Couleur de l'arrière plan",
   MAP_ANTI_ALIASING: "Anticrénelage de carte",
   FIX_SYMBOL_ANGLE: "Fixer l'angle du symbole",
   FIX_TEXT_ANGLE: "Fixer l'angle du texte",
@@ -943,14 +925,12 @@ const Map_Settings: typeof CN.Map_Settings = {
 
   // 四级菜单 转换方法参数设置
   BASIC_PARAMS: "Paramètres de base",
-  OFFSET: "Offset",
   PROPORTIONAL_DIFFERENCE: "Différence proportionnelle",
   ROTATION_ANGLE_SECONDS: "Angle de rotation(Seconds)",
 
   // 四级菜单 和复制提示
   DATASOURCES: "Source de données",
   DATASETS: "Ensemble de données",
-  TYPE: "Type",
   FORMAT: "Format",
   ALL_COORD_FILE: "Fichier du système de coordonnées supporté",
   SHAPE_COORD_FILE: "Fichier du système de coordonnées de forme",
@@ -962,9 +942,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 设置的一些参数
   PERCENT: "Pour cent",
   OFF: "OFF",
-  CONFIRM: "Confirmer",
-  CANCEL: "Annuler",
-  COPY: "Copier",
 
   CONFIDENCE: "Confidence",
 }
@@ -983,7 +960,7 @@ const Map_Tools: typeof CN.Map_Tools = {
 // POI title
 const Map_PoiTitle: typeof CN.Map_PoiTitle = {
   FOOD: "Aliments",
-  SCENE: "Scénique",
+  SCENIC: "Scène",
   BANK: "Banque",
   SUPERMARKET: "Marché",
   HOTEL: "Hôtel",

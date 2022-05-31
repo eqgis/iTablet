@@ -586,8 +586,8 @@ export default class InterpolationAnalystDetailView extends Component {
         }}
       />,
       <AnalystItem
-        key={getLanguage(this.props.language).Analyst_Labels.ROTATION}
-        title={getLanguage(this.props.language).Analyst_Labels.ROTATION}
+        key={getLanguage(this.props.language).ROTATION_ANGLE}
+        title={getLanguage(this.props.language).ROTATION_ANGLE}
         value={this.state.rotation + ''}
         keyboardType={'numeric'}
         rightType={'input'}

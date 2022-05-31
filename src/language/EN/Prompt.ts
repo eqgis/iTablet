@@ -13,7 +13,6 @@ const Prompt: typeof CN.Prompt = {
   SUBMIT: "Submit",
   REDO: "Redo",
   UNDO: "Undo",
-  SHARE: "Share",
   DELETE: "Delete",
   WECHAT: "Wechat",
   BEGIN: "Begin",
@@ -22,7 +21,6 @@ const Prompt: typeof CN.Prompt = {
   WX_NOT_INSTALLED: "Did not find wechat",
   WX_SHARE_FAILED: "Failed to share to Wechat. Please check whether you have installed wechat",
   RENAME: "Rename",
-  BATCH_DELETE: "Delete in Bulk",
   PREPARING: "Preparing",
 
   DOWNLOAD_SAMPLE_DATA: "Download the sample data?",
@@ -36,7 +34,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_REMINDER: "No reminder",
 
-  LOG_OUT: "Are you sure you want to log out?",
+  LOG_OUT_CONFIRM: "Are you sure you want to log out?",
   FAILED_TO_LOG: "Failed to Login",
   INCORRECT_USER_INFO: "Wrong account or password",
   INCORRECT_IPORTAL_ADDRESS: "Please check whether your server address is correct",
@@ -47,7 +45,6 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_ADD_STOP: "Please add a stop",
   IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: "The image layer cannot be set to the current layer",
 
-  CONFIRM: "Confirm",
   COMPLETE: "Complete",
   INSTALL:"Install",
 
@@ -69,7 +66,7 @@ const Prompt: typeof CN.Prompt = {
   THE_SCENE_IS_OPENED: "The scene has been opened",
   NO_SCENE_LIST: "No data",
   NO_SCENE_SELECTED: "No scene has been selected",
-  SWITCHING: "Switching",
+  SWITCHING_MAP: "Switching",
   CLOSING: "Closing",
   CLOSING_3D: "Closing",
   SAVING: "Saving",
@@ -78,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   ADD_FAILED: "Failed to add",
   ADD_MAP_FAILED: "Can not add current map",
   CREATE_THEME_FAILED: "Failed to create the thematic map",
-  PLEASE_ADD_DATASET: "Please add the dataset",
+  PLEASE_SELECT_DATASET_TO_ADD: "Please add the dataset",
   PLEASE_SELECT_OBJECT: "Please select an object to edit",
   SWITCHING_PLOT_LIB: "Switching",
   NON_SELECTED_OBJ: "No object selected",
@@ -101,7 +98,6 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER: "The current layer is",
   NO_BASE_MAP: "No base maps can be removed",
   ENTER_KEY_WORDS: "Please enter key words",
-  SEARCHING: "Searching",
   SEARCHING_DEVICE_NOT_FOUND: "No devices were found",
   READING_DATA: "Reading Data",
   CREATE_SUCCESSFULLY: "Created",
@@ -192,7 +188,6 @@ const Prompt: typeof CN.Prompt = {
   LOG_IN: "Logging",
   ENTER_MAP_NAME: "Please enter the map name",
   CLIP_ENTER_MAP_NAME: "Enter the map name",
-  ENTER_SERVICE_ADDRESS: "Please enter the service address",
   ENTER_ANIMATION_NAME: "Please enter the animation name",
   ENTER_ANIMATION_NODE_NAME: "Please enter the animation node name",
   PLEASE_SELECT_PLOT_SYMBOL: "Please select a plot symbol",
@@ -211,14 +206,10 @@ const Prompt: typeof CN.Prompt = {
 
   LAYER_CANNOT_CREATE_THEMATIC_MAP: "The current layer cannot be used to create a thematic map.",
 
-  ANALYSING: "Analyzing",
   CHOOSE_STARTING_POINT: "Choose a starting point",
   CHOOSE_DESTINATION: "Choose a destination",
 
   LATEST: "Latest:",
-  GEOGRAPHIC_COORDINATE_SYSTEM: "Geographic Coordinate System:",
-  PROJECTED_COORDINATE_SYSTEM: "Projected Coordinate System:",
-  FIELD_TYPE: "Field Type:",
 
   PLEASE_LOGIN_AND_SHARE: "Please log in first to share",
   PLEASE_LOGIN: "Please log in",
@@ -245,7 +236,7 @@ const Prompt: typeof CN.Prompt = {
   SETTING_SUCCESS: "Set successfully",
   SETTING_FAILED: "Failed to set",
   NETWORK_ERROR: "Network error",
-  NETWORK_RECONNECT: "Reconnect network", 
+  NETWORK_RECONNECT: "Reconnect network",
   NO_NETWORK: "No Internet connection",
   CHOOSE_CLASSIFY_MODEL: "Choose Classification Model",
   USED_IMMEDIATELY: "Use it now",
@@ -339,7 +330,7 @@ const Prompt: typeof CN.Prompt = {
   FAILED_TO_CREATE_TEXT: "Failed to create text",
   FAILED_TO_CREATE_LINE: "Failed to create line",
   FAILED_TO_CREATE_REGION: "Failed to create region",
-  CLEAR_HISTORY: "Clear history",
+  CLEAR_SEARCH_HISTORY: "Clear history",
   // Navigation related
   SEARCH_AROUND: "Search around",
   GO_HERE: "Go here",
@@ -367,7 +358,7 @@ const Prompt: typeof CN.Prompt = {
   DISTANCE_ERROR: "The destination is too close to the start point. Please reselect!",
   USE_ONLINE_ROUTE_ANALYST: "Points are out of the bounds of the network dataset. Or, there are no road nets around points. Do you want to use online route analyst?",
   NOT_SUPPORT_ONLINE_NAVIGATION: "Online navigation is not support yet.",
-  CREATE: "New",
+  NEW: "New",
   NO_DATASOURCE: "There is no datasource in the current workspace, please create a new datasource first",
   FLOOR: "Floor",
   AR_NAVIGATION: "AR Navi",
@@ -392,7 +383,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_DESTINATION_DATASOURCE: "Please select the target datasource",
   FILENAME_ALREADY_EXIST: "The file already exists, please re-enter the file name",
   NETWORK_BUILDING: "Building...",
-  BUILD_SUCCESS: "Successfully built",
+  ROADNET_BUILD_SUCCESS: "Successfully built",
   SELECT_LINE_SMOOTH: "Please select the line that needs to be smoothed",
   SELECT_A_POINT_INLINE: "Please select an online point",
   SELECT_POINT_INCURRENTLINE:"Please long press to select a point at which the line will be split",

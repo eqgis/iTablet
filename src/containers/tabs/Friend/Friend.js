@@ -2264,7 +2264,7 @@ export default class Friend extends Component {
         hideInBackground={false}
         showFullInMap={true}
         headerProps={{
-          title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
+          title: getLanguage(this.props.language).Navigator_Label.ADDRESS_BOOK,
           headerStyle: { borderBottomWidth: 0 },
           headerRight:
             this.props.user.currentUser.userType === UserType.COMMON_USER || this.props.user.currentUser.userType === UserType.IPORTAL_COMMON_USER ? (

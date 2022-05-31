@@ -757,7 +757,7 @@ export default class RegistrationPage extends Component {
           backAction: this.detalBack,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(global.language).CONFIRM}
               textStyle={
                 this.state.isCanDo
                   ? styles.headerBtnTitle
@@ -811,7 +811,7 @@ export default class RegistrationPage extends Component {
                 <TextBtn
                   btnText={
                     this.state.isEditPoint
-                      ? getLanguage(global.language).Analyst_Labels.CONFIRM
+                      ? getLanguage(global.language).CONFIRM
                       : getLanguage(global.language).Profile.LICENSE_EXIT
                   }
                   textStyle={styles.headerBtnTitle}

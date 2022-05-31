@@ -145,7 +145,7 @@ export default class ToggleAccount extends Component {
   /** 删除自己时弹出对话框 确定后退出并回退到首页*/
   showDeleteSelfDialog = () => {
     global.SimpleDialog.set({
-      text: getLanguage(global.language).Prompt.LOG_OUT,
+      text: getLanguage(global.language).Prompt.LOG_OUT_CONFIRM,
       confirmAction: () => {
         this.logout()
         NavigationService.popToTop()

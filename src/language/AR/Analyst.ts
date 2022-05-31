@@ -7,7 +7,6 @@ const Analyst_Modules: typeof CN.Analyst_Modules = {
   BUFFER_ANALYST_MULTIPLE: "تحليلات الحرم المتعدد",
   OVERLAY_ANALYSIS: "تحليلات التداخل",
   THIESSEN_POLYGON: "منطقة سيسن",
-  MEASURE_DISTANCE: "قياس المسافة",
   ONLINE_ANALYSIS: "التحليل عبر الإنترنت",
   INTERPOLATION_ANALYSIS: "تحليل الاستيفاء",
 
@@ -36,12 +35,8 @@ const Analyst_Methods: typeof CN.Analyst_Methods = {
 
 const Analyst_Labels: typeof CN.Analyst_Labels = {
   ANALYST: "المحلل",
-  CONFIRM: "تاكيد",
-  RESET: "تعيين",
-  CANCEL: "الغاء",
   NEXT: "التالى",
   PREVIOUS: "السابق",
-  ADD: "اضافه",
   Edit: "تعديل",
 
   // local
@@ -49,7 +44,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   BUILD_A_NETWORK_DATASET: "بناء مجموعة بيانات الشبكة",
   CHOOSE_DATA: "اختر البيانات",
   TOPOLOGY: "طبولوجى",
-  ADD_DATASET: "اضف مجموعة بيانات",
   DONE: "تم",
   RESULT_FIELDS: "نتيجة الحقول",
   SPLIT_SETTINGS: "تقسيم الإعدادات",
@@ -59,7 +53,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SET_START_STATION: "تعيين محطه البداية",
   MIDDLE_STATIONS: "المحطات الوسطى",
   SET_END_STATION: "تعيين محطه النهاية",
-  LOCATION: "الموقع",
   SET_AS_START_STATION: "تعيين كمحطة بداية",
   SET_AS_END_STATION: "تعيين كمحطة النهاية",
   ADD_STATIONS: "اضافة محطات",
@@ -91,13 +84,11 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   SEMICIRCLE_SEGMENTS: "قطاعات نصف دائرة",
   RING_BUFFER: "حرم حلقة",
   RESULT_DATA: "نتيجة البيانات",
-  BATCH_ADD: "اضافة دفعه",
   START_VALUE: "قيمة البداية",
   END_VALUE: "قيمة النهاية",
   STEP: "خطوة",
-  RANGE_COUNT: "عدد المدى",
+  RANGE_COUNT_2: "عدد المدى",
   INSERT: "إدراج",
-  DELETE: "حذف",
   INDEX: "مؤشر",
   RADIUS: "نصف القطر",
   RESULT_DATASET_NAME: "اسم نتيجة مجموعة البيانات",
@@ -138,11 +129,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
 
   ADD_WEIGHT_STATISTIC: "إضافة حقل مرجح",
 
-  // 方向
-  LEFT: "شمال",
-  DOWN: "أسفل",
-  RIGHT: "يمين",
-  UP: "أعلى",
 
   // 邻近分析
   DISPLAY_REGION_SETTINGS: "عرض إعدادات المنطقة",
@@ -180,7 +166,6 @@ const Analyst_Labels: typeof CN.Analyst_Labels = {
   TENSION: "ضغط",
   SMOOTHNESS: "نعومة",
   SEMIVARIOGRAM: "شبه مخطط",
-  ROTATION: "دوران",
   SILL: "Sill",
   RANGE: "المدى",
   NUGGET_EFFECT: "تأثير الكتلة",
@@ -330,11 +315,11 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   STANDARD_DEVIATION_INTERVAL: "الفاصل الزمني للانحراف المعياري",
 
   // 长度单位
-  METER: "متر",
-  KILOMETER: "كيلومتر",
-  YARD: "ياردة",
-  FOOT: "قدم",
-  MILE: "ميل",
+  ABBR_METER: "متر",
+  ABBR_KILOMETER: "كيلومتر",
+  ABBR_YARD: "ياردة",
+  ABBR_FOOT: "قدم",
+  ABBR_MILE: "ميل",
 
   // 面积单位
   SQUARE_MILE: "ميل مربع",
@@ -353,14 +338,6 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SPECTRAL_GRADIENT: "التدرج الطيفي",
   TERRAIN_GRADIENT: "تدرج التضاريس",
 
-  // 统计模式
-  MAX: "اعلى قيمة",
-  MIN: "أدنى قيمة",
-  AVERAGE: "متوسط",
-  SUM: "مجموع",
-  VARIANCE: "فرق",
-  STANDARD_DEVIATION: "الانحراف المعياري",
-
   // 聚合类型
   AGGREGATE_WITH_GRID: "التجميع مع الشبكة",
   AGGREGATE_WITH_REGION: "التجميع مع المنطقة",
@@ -376,8 +353,8 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   UBIT1: "حرف واحد",
   UBIT16: "16 حرف",
   UBIT32: "32 حرف",
-  SINGLE: "فردى",
-  DOUBLE: "عشرى",
+  SINGLE_FLOAT: "فردى",
+  DOUBLE_FLOAT: "عشرى",
 
   // 查找方法
   SEARCH_VARIABLE_LENGTH: "طول متغير",
@@ -385,7 +362,7 @@ const Analyst_Params: typeof CN.Analyst_Params = {
   SEARCH_BLOCK: "حظر",
 
   // 半变异函数
-  SPHERICAL: "كروي",
+  SPHERICAL_FUNCTION: "كروي",
   EXPONENTIAL: "متسارع",
   GAUSSIAN: "غاوسي",
 }

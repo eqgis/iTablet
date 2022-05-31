@@ -1203,7 +1203,7 @@ async function commit(type) {
   const { selectList } = _data
   if (!_params) return
   if (selectList && Object.keys(selectList).length === 0) {
-    Toast.show(getLanguage(_params.language).Prompt.PLEASE_ADD_DATASET)
+    Toast.show(getLanguage(_params.language).Prompt.PLEASE_SELECT_DATASET_TO_ADD)
     return
   }
   if (type === ConstToolType.SM_MAP_ADD_DATASET) {

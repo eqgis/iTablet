@@ -438,7 +438,7 @@ export default class NavigationStartButton extends React.Component {
       <View style={{ flex: 1, width: '100%' }}>
         {
           <Text style={{ paddingTop: scaleSize(20), fontSize: setSpText(20) }}>
-            {getLanguage(global.language).Map_Main_Menu.DISTANCE + length}
+            {getLanguage(global.language).Map_Main_Menu.DISTANCE + ": " + length}
           </Text>
         }
         {!this.state.isroad && this.renderRoad()}

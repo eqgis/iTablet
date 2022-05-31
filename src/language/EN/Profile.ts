@@ -11,7 +11,6 @@ const Profile: typeof CN.Profile = {
   ARMAP: "AR Map",
   ARMODEL: "AR Model",
   AREFFECT: "AR Effect",
-  SCENE: "Scene",
   BASEMAP: "Base Map",
   SYMBOL: "Symbol",
   SETTINGS: "Settings",
@@ -91,7 +90,6 @@ const Profile: typeof CN.Profile = {
   REGISTER_ONLINE_PROTOCAL: "SuperMap Terms of Service and Privacy Policy",
   CONNECTING: "Connecting",
   CONNECT_SERVER_FAIL: "Failed to connect to the server, please check the network or server address",
-  NEXT: "Next",
   MESSAGE_SERVICE_SETTING: "Message Service Configuration",
   MESSAGE_SERVICE_IP: "IP Address of Message Service",
   MESSAGE_SERVICE_PORT: "Port of Message Service",
@@ -115,7 +113,6 @@ const Profile: typeof CN.Profile = {
 
   // 地图服务地址
   SERVICE_ADDRESS: "Service Address",
-  MAP_NAME: "Map Name",
   ENTER_SERVICE_ADDRESS: "Please enter the Service Address",
   SAVE: "Save",
 
@@ -140,12 +137,10 @@ const Profile: typeof CN.Profile = {
   DELETE_ACCOUNT: "Delete Account",
   UNABLE_DELETE_SELF: "Unable to delete current user",
 
-  DELETE: "Delete",
   SELECT_ALL: "Select All",
   DESELECT_ALL: "Deselect All",
 
   // 数据删除导出
-  SHARE: "Share",
   PATH: "Path",
 
   LOCAL: "Local",
@@ -223,7 +218,6 @@ const Profile: typeof CN.Profile = {
   DATASET_TYPE_LINE: "line",
   DATASET_TYPE_REGION: "region",
   DATASET_TYPE_TEXT: "text",
-  CLEAR: "Clear",
   CREATE: "Create",
   DATASET_BUILD_PYRAMID: "Build Pyramid",
   DATASET_BUILD_STATISTICS: "Statistics Model",
@@ -235,7 +229,6 @@ const Profile: typeof CN.Profile = {
   INPUT_DATASET_NAME: "Please input dataset name",
 
   // 创建数据源
-  NEW_DATASOURCE: "Create Datasource",
   SET_DATASOURCE_NAME: "Set Datasource Name",
   ENTER_DATASOURCE_NAME: "Please enter a datasource name",
   OPEN_DATASROUCE_FAILED: "Failed to open the datasource",
@@ -263,7 +256,7 @@ const Profile: typeof CN.Profile = {
   SETTING_LOCATION_LOCAL: "This device",
   SETTING_CLEAR_CACHE: "Clear Cache",
   SETTING_CLEAR_CACHE_SUCCESS:"Cleared",
-  DISTANCE:"Distance(m)",
+  DISTANCE_METER:"Distance(m)",
   TIME:"Time(s)",
   INPUT_NUMBER:"Please enter a number",
   DISTANCE_LOCATION:"Position by Distance",

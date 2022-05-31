@@ -326,7 +326,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
       },
       {
         image: getThemeAssets().nav.scene,
-        title: getLanguage(global.language).ARMap.SCENE,
+        title: getLanguage(global.language).SCENIC,
       },
       {
         image: getThemeAssets().nav.bank,

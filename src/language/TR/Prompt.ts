@@ -13,7 +13,6 @@ const Prompt: typeof CN.Prompt = {
   SUBMIT: "Gönder",
   REDO: "Yeniden yap",
   UNDO: "Geri al",
-  SHARE: "Paylaş",
   DELETE: "Sil",
   WECHAT: "Wechat",
   BEGIN: "Başla",
@@ -22,7 +21,6 @@ const Prompt: typeof CN.Prompt = {
   WX_NOT_INSTALLED: "Wechat yüklü değil",
   WX_SHARE_FAILED: "Wechat yüklemesini kontrol edin",
   RENAME: "Yeniden adlandır",
-  BATCH_DELETE: "Toplu Sil",
   PREPARING: "Hazırlamak",
 
   DOWNLOAD_SAMPLE_DATA: "Örnek veri indir?",
@@ -36,7 +34,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_REMINDER: "Hatırlatma Yok",
 
-  LOG_OUT: "Çıkış yapmak istediğinizden emin misiniz?",
+  LOG_OUT_CONFIRM: "Çıkış yapmak istediğinizden emin misiniz?",
   FAILED_TO_LOG: "Giriş başarısız",
   INCORRECT_USER_INFO: "Hesap mevcut değil ya da şifre hatalı",
   INCORRECT_IPORTAL_ADDRESS: "Giriş Başarısız, lütfen sunucu adresinizi kontrol edin",
@@ -47,7 +45,6 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_ADD_STOP: "Lütfen Stop Ekleyin",
   IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: "Görüntü katmanı, geçerli katmana ayarlanamaz",
 
-  CONFIRM: "Onayla",
   COMPLETE: "Tamamla",
   INSTALL:"Yükle",
 
@@ -69,7 +66,7 @@ const Prompt: typeof CN.Prompt = {
   THE_SCENE_IS_OPENED: "Manzara açıldı",
   NO_SCENE_LIST: "Veri Yok",
   NO_SCENE_SELECTED: "Sahne seçilmedi",
-  SWITCHING: "Değiştiriliyor",
+  SWITCHING_MAP: "Değiştiriliyor",
   CLOSING: "Kapatılıyor",
   CLOSING_3D: "Kapatılıyor",
   SAVING: "Kaydediliyor",
@@ -78,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   ADD_FAILED: "Ekleme Başarısız",
   ADD_MAP_FAILED: "Mevcut haritaya eklenemez",
   CREATE_THEME_FAILED: "Tema oluşturma başarısız",
-  PLEASE_ADD_DATASET: "Lütfen verikümesi ekleyin",
+  PLEASE_SELECT_DATASET_TO_ADD: "Lütfen verikümesi ekleyin",
   PLEASE_SELECT_OBJECT: "Lütfen düzenlemek için bir nesne seçin",
   SWITCHING_PLOT_LIB: "Değiştiriliyor",
   NON_SELECTED_OBJ: "Seçili nesne yok",
@@ -101,7 +98,6 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER: "Geçerli Katman",
   NO_BASE_MAP: "Temel harita kaldırılamaz",
   ENTER_KEY_WORDS: "Lütfen anahtar kelimeleri girin",
-  SEARCHING: "Arıyor",
   SEARCHING_DEVICE_NOT_FOUND: "hiçbir cihaz bulunamadı",
   READING_DATA: "Veri Okuyor",
   CREATE_SUCCESSFULLY: "Başarıyla oluşturuldu",
@@ -192,7 +188,6 @@ const Prompt: typeof CN.Prompt = {
   LOG_IN: "Yükleniyor",
   ENTER_MAP_NAME: "Lütfen harita adı girin",
   CLIP_ENTER_MAP_NAME: "Harita adı girin",
-  ENTER_SERVICE_ADDRESS: "Lütfen Servis Adresi girin",
   ENTER_ANIMATION_NAME: "Lütfen animasyon adını girin",
   ENTER_ANIMATION_NODE_NAME: "Lütfen animasyon node adını girin",
   PLEASE_SELECT_PLOT_SYMBOL: "Lütfen çizim sembolü seçin",
@@ -211,14 +206,10 @@ const Prompt: typeof CN.Prompt = {
 
   LAYER_CANNOT_CREATE_THEMATIC_MAP: "Mevcut katman tematik bir harita oluşturmak için kullanılamaz.",
 
-  ANALYSING: "Analiz ediliyor",
   CHOOSE_STARTING_POINT: "Başlangıç noktası seç",
   CHOOSE_DESTINATION: "Hedef Seçin",
 
   LATEST: "En son: ",
-  GEOGRAPHIC_COORDINATE_SYSTEM: "Coğrafi Koordinat Sistemi: ",
-  PROJECTED_COORDINATE_SYSTEM: "Öngörülen (Projected) Koordinat Sistemi: ",
-  FIELD_TYPE: "Alan Tipi: ",
 
   PLEASE_LOGIN_AND_SHARE: "Lütfen giriş yap ve paylaş",
   PLEASE_LOGIN: "Lütfen giriş",
@@ -339,7 +330,7 @@ const Prompt: typeof CN.Prompt = {
   FAILED_TO_CREATE_TEXT: "Metin oluşturma başarısız",
   FAILED_TO_CREATE_LINE: "Çizgi oluşturma başarısız",
   FAILED_TO_CREATE_REGION: "Poligon oluşturma başarısız",
-  CLEAR_HISTORY: "Geçmişi temizle",
+  CLEAR_SEARCH_HISTORY: "Geçmişi temizle",
   // 导航相关
   SEARCH_AROUND: "Etrafında ara",
   GO_HERE: "Buraya git",
@@ -367,7 +358,7 @@ const Prompt: typeof CN.Prompt = {
   DISTANCE_ERROR: "Hedef başlangıç noktasına çok yakın, lütfen yeniden seçin!",
   USE_ONLINE_ROUTE_ANALYST: "Noktalar verikümesi sınırlarının dışında ya da noktalar çevresinde verikümesi yok. Çevrimiçi rota analisti kullanmak ister misiniz?",
   NOT_SUPPORT_ONLINE_NAVIGATION: "Çevrimiçi navigasyon henüz desteklenmiyor.",
-  CREATE: "Yeni",
+  NEW: "Yeni",
   NO_DATASOURCE: "Geçerli çalışma alanında veri kaynağı yok, lütfen önce yeni bir veri kaynağı oluşturun",
   FLOOR: "Kat",
   AR_NAVIGATION: "AR Navi",
@@ -392,7 +383,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_DESTINATION_DATASOURCE: "Lütfen hedef veri kaynağını seçin",
   FILENAME_ALREADY_EXIST: "Dosya zaten mevcut, lütfen dosya adını yeniden girin",
   NETWORK_BUILDING: "Uygulanıyor...",
-  BUILD_SUCCESS: "Başarıyla uygulandı",
+  ROADNET_BUILD_SUCCESS: "Başarıyla uygulandı",
   SELECT_LINE_SMOOTH: "Lütfen düzeltilmesi gereken çizgiyi seçin",
   SELECT_A_POINT_INLINE: "Lütfen bir çevrimiçi nokta seçin",
   SELECT_POINT_INCURRENTLINE:"Kesinti için geçerli satırdaki noktayı seçin",

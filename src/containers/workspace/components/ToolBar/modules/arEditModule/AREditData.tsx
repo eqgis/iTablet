@@ -153,16 +153,16 @@ const ARStyleItems = (language: string) => {
       selectKey: getLanguage(language).ARMap.SCALE,
     },
     {
-      key: getLanguage(language).ARMap.POSITION,
+      key: getLanguage(language).ARMap.TRANSLATION,
       action: () => {
         SARMap.setAction(ARAction.MOVE)
         showSlideToolbar(ConstToolType.SM_AR_EDIT_POSITION, language, {
-          selectName: getLanguage(language).ARMap.POSITION,
-          selectKey: getLanguage(language).ARMap.POSITION,
+          selectName: getLanguage(language).ARMap.TRANSLATION,
+          selectKey: getLanguage(language).ARMap.TRANSLATION,
           // isTouchProgress: true,
         })
       },
-      selectKey: getLanguage(language).ARMap.POSITION,
+      selectKey: getLanguage(language).ARMap.TRANSLATION,
     },
     {
       key: getLanguage(language).ARMap.ROTATION,
@@ -645,8 +645,8 @@ async function getStyleData(type: string) {
         },
         {
           key: 'down-up',
-          leftText:  getLanguage(global.language).ARMap.DOWN,
-          rightText:  getLanguage(global.language).ARMap.UP,
+          leftText:  getLanguage(global.language).DOWN,
+          rightText:  getLanguage(global.language).UP,
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {
@@ -681,7 +681,7 @@ async function getStyleData(type: string) {
         },
       ]
       allData.push({
-        title: getLanguage(_params.language).ARMap.POSITION,
+        title: getLanguage(_params.language).ARMap.TRANSLATION,
         data: data,
       })
       break
@@ -1091,7 +1091,7 @@ async function getAnimationData(type: string) {
         {
           key: ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION,
           image: getThemeAssets().ar.armap.ar_translation,
-          title: getLanguage(global.language).ARMap.POSITION,
+          title: getLanguage(global.language).ARMap.TRANSLATION,
           action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION),
         },
         {

@@ -3,17 +3,12 @@ import CN from "../CN"
 // 制图
 const Map_Label: typeof CN.Map_Label = {
   // 地图底部导航
-  MAP: "خريطة",
   LAYER: "طبقة",
   ATTRIBUTE: "جدول البيانات",
   SETTING: "إعدادات",
   SCENE: "مشهد",
-  NAME: "اسم",
   TOOL_BOX: "صندوق الأدوات",
-  ARMAP: "خريطة الواقع المعزز",
-  NAVIGATION: "ملاحى",
-  INCREMENT: "زيادة",
-  ENCLOSURE: "نسييج",
+  AR_SCENE: "خريطة الواقع المعزز",
 }
 
 // 地图、场景主菜单
@@ -42,7 +37,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 地图制图及公共 添加
   OPEN: "إضافة",
   OPEN_DATASOURCE: "مجموعة بيانات",
-  OPEN_MAP: "خريطة",
   OPEN_BACK: "عودة",
 
   NAVIGATION_START: "ملاحى",
@@ -157,7 +151,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   TOOLS_TARGET_DATASOURCE: "مجموعة البيانات المستهدفة",
   TOOLS_UNIFIED_SETTING: "إعداد موحد",
   MAP_CLIP: "قطع الخريطة",
-  CLIP: "قطع",
 
   CAMERA: "كاميرا",
   TOUR: "جولة",
@@ -276,7 +269,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   THEME_RANGES_MAP_TITLE: "خريطة النطاقات",
   THEME_UNIQUE_VALUES_MAP_TITLE: "خريطة القيم الفريدة",
   THEME_UNIQUE_VALUE_LABEL_MAP_TITLE: "خريطة تسمية القيمة الفريدة",
-  RANGE: "نطاقات",
+  RANGES: "نطاقات",
   PREVIEW: "معاينة",
   CUSTOM_THEME_MAP: "خريطة موضوعية مخصصة",
   COLOR_PICKER: "محكم الألوان",
@@ -351,7 +344,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
 
   MAP_AR_MEASURE: "قياس الواقع المعزز",
   MAP_AR_ANALYZE: "تحليل الواقع المعزز",
-  MAP_AR_MAPPING: " خرائط الواقع المعزز",
   MAP_AR_TOOL: "ادوات الواقع المعزز",
   MAP_AR_CAMERA_EXCEPTION: "الكاميرا غير طبيعية ، يرجى التحقق مما إذا كان الإذن مفتوحًا",
   MAP_AR_AI_ASSISTANT: "الذكاء الاصطناعي\n جمع",
@@ -485,8 +477,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   // 智能配图
   FILL: "ملىء",
   BORDER: "حدود",
-  LINE: "خط",
-  MARK: "علامة",
 
   // 地图导航
   START_POINT: "نقطة البداية",
@@ -494,7 +484,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   DRAW: "رسم",
   ROAD_DETAILS: "تفاصيل الطريق",
   ROUTE_THROUGH: "عبر الطريق",
-  DISTANCE: "مسافة",
   METERS: "متر",
   KILOMETERS: "كيلومتر",
   DISPLAY_MAP: "عرض الخريطة",
@@ -547,7 +536,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   MAP_TOPO_TRIM: "تقليم",
   MAP_TOPO_RESAMPLE: "إعادة أخذ العينات",
   MAP_TOPO_CHANGE_DIRECTION: "تغيير الاتجاه",
-  ADD_DATASET: "إلحاق مجموعة البيانات",
   SELECT_ROADNAME_FIELD: "حدد حقل اسم الطريق",
   SELECT_FIELD: "تحديد حقل",
   MERGE_CANCEL: "إلغاء",
@@ -571,7 +559,6 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   BACKGROUND:'BackGround',//to be translate
   ARRAY:'Array',//to be translate
   TEXT_SHAPE:'Shape',//to be translate
-  ROTATION_ANGLE:'Rotation Angle',//to be translate
   BOLD:'Bold',//to be translate
   TILT:'Tilt',//to be translate
   UNDERLINE:'UnderLine',//to be translate
@@ -668,7 +655,7 @@ const Map_Plotting: typeof CN.Map_Plotting = {
 
 // 图层
 const Map_Layer: typeof CN.Map_Layer = {
-  PLOTS: "علامة",
+  MY_PLOTS: "علامة",
   PLOTS_IMPORT: "استيراد علامات",
   PLOTS_DELETE: "حذف علامات",
   PLOTS_EDIT: "تحرير العلامات",
@@ -729,7 +716,7 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYERS_CREATE_THEMATIC_MAP: "أنشاء خريطة موضوعية",
   LAYERS_MODIFY_THEMATIC_MAP: "تعديل خريطة موضوعية",
 
-  BASEMAP: "خريطة الأساس الخاصة بي",
+  MY_BASEMAP: "خريطة الأساس الخاصة بي",
   BASEMAP_SWITH: "تبديل خريطة الأساس",
   MY_TERRAIN: "تضاريس بلادي",
 
@@ -781,7 +768,7 @@ const Map_Attribute: typeof CN.Map_Attribute = {
   NAME: "اسم",
   TYPE: "نوع",
   LENGTH: "طول",
-  DEFAULT: "افتراضي",
+  DEFAULT_VALUE: "افتراضي",
   CONFIRM_ADD: "إضافة",
 
   DETAIL: "تفاصبل",
@@ -801,9 +788,6 @@ const Map_Attribute: typeof CN.Map_Attribute = {
 
 // 地图设置
 const Map_Setting: typeof CN.Map_Setting = {
-  BASIC_SETTING: "الاعدادات الاساسية",
-  ROTATION_GESTURE: "إيماءة الدوران",
-  PITCH_GESTURE: "Pitch Gesture",
   THEME_LEGEND: "عنوان تفسيرى للموضوع",
   COLUMN_NAV_BAR: "شريط التنقل العمودي عند الأفقي",
   REAL_TIME_SYNC: "مزامنة في الوقت الفعلي",
@@ -811,7 +795,6 @@ const Map_Setting: typeof CN.Map_Setting = {
   // 效果设置
   EFFECT_SETTINGS: "اعدات التاثير",
   ANTI_ALIASING_MAP: "القضاء على التعرج الخرائط",
-  SHOW_OVERLAYS: "عرض التداخل",
 
   // 范围设置
   BOUNDS_SETTING: "إعدادات الحدود",
@@ -828,7 +811,7 @@ const Map_Setting: typeof CN.Map_Setting = {
 
 // 地图设置菜单
 const Map_Settings: typeof CN.Map_Settings = {
-  THEME_LEGEND: "عنوان تفسيرى للموضوع",
+  LEGEND: "عنوان تفسيرى للموضوع",
   // 一级菜单
   BASIC_SETTING: "الاعدادات الاساسية",
   RANGE_SETTING: "إعدادات الحدود",
@@ -891,7 +874,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   PITCH_GESTURE: "إيماءة الاهتزاز",
   ROTATION_ANGLE: "زاوية الدوران",
   COLOR_MODE: "وضع اللون",
-  BACKGROUND_COLOR: "لون الخلفية",
   MAP_ANTI_ALIASING: "خريطة القضاء على التعرج",
   FIX_SYMBOL_ANGLE: "إصلاح زاوية الرمز",
   FIX_TEXT_ANGLE: "إصلاح زاوية النص",
@@ -948,14 +930,12 @@ const Map_Settings: typeof CN.Map_Settings = {
 
   // 四级菜单 转换方法参数设置
   BASIC_PARAMS: "معاملات اساسية",
-  OFFSET: "تعويض",
   PROPORTIONAL_DIFFERENCE: "الفرق النسبي",
   ROTATION_ANGLE_SECONDS: "زاوية الدوران (بالثواني)",
 
   // 四级菜单 和复制提示
   DATASOURCES: "مصدر البيانات",
   DATASETS: "مجموعات البيانات",
-  TYPE: "نوع",
   FORMAT: "تنسيق",
   ALL_COORD_FILE: "ملف نظام الإحداثيات المدعوم",
   SHAPE_COORD_FILE: "شكل ملف نظام الاحداثيات",
@@ -967,9 +947,6 @@ const Map_Settings: typeof CN.Map_Settings = {
   // 设置的一些参数
   PERCENT: "نسبه مئويه",
   OFF: "إيقاف",
-  CONFIRM: "تأكيد",
-  CANCEL: "الغاء",
-  COPY: "نسخ",
 
   CONFIDENCE: "الثقة",
 }
@@ -988,7 +965,7 @@ const Map_Tools: typeof CN.Map_Tools = {
 // POI title
 const Map_PoiTitle: typeof CN.Map_PoiTitle = {
   FOOD: "طعام",
-  SCENE: "مشهد",
+  SCENIC: "مشهد",
   BANK: "بنك",
   SUPERMARKET: "سوق",
   HOTEL: "فندق",

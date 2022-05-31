@@ -5,7 +5,7 @@ const Protocol: typeof CN.Protocol = {
   AGREE: "Agree",
   READ_AND_AGREE: "I\"ve read and agree to the above terms",
   AGAIN:"See Again",
-  CONFIRM_EXIT:"Quit",
+  EXIT_APP:"Quit",
   REMINDER:"Warm-tip",
   AGREEMENT:"We strictly follow and obey SuperMap Privacy Policy to protect your personal information. To serve you well, please agree the policy",
 }
@@ -13,8 +13,6 @@ const Protocol: typeof CN.Protocol = {
 const Common: typeof CN.Common = {
   UP: "Up",
   DOWN: "Down",
-  LEFT: "Left",
-  RIGHT: "Right",
   FRONT: "Front",
   BACK: "Back",
 
@@ -31,7 +29,6 @@ const Common: typeof CN.Common = {
   SELECTED: 'Selected',
   DEFAULT: 'Default',
 
-  SELECT_MODEL: 'Select Model',
 
   PLEASE_SELECT_MODEL: 'Please select model',
 

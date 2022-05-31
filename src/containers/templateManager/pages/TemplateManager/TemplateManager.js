@@ -171,7 +171,7 @@ export default class TemplateManager extends React.Component {
           // backAction: this.back,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(this.props.language).Prompt.CREATE}
+              btnText={getLanguage(this.props.language).Prompt.NEW}
               textStyle={styles.headerBtnTitle}
               // width={scaleSize(80)}
               height={scaleSize(40)}
@@ -188,7 +188,7 @@ export default class TemplateManager extends React.Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(global.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.REFRESHING}
               enabled={true}
             />
           }

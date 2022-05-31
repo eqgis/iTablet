@@ -29,7 +29,7 @@ export default class Personal extends Component {
 
   _logoutConfirm = () => {
     this.SimpleDialog.set({
-      text: getLanguage(global.language).Prompt.LOG_OUT,
+      text: getLanguage(global.language).Prompt.LOG_OUT_CONFIRM,
       confirmAction: this._logout,
     })
     this.SimpleDialog.setVisible(true)

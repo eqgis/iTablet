@@ -145,7 +145,7 @@ export default class SinglePicker extends React.Component {
         >
           <Text style={styles.btnText}>
             {
-              getLanguage(this.props.language || global.language).Analyst_Labels
+              getLanguage(this.props.language || global.language)
                 .CONFIRM
             }
           </Text>

@@ -6,8 +6,6 @@ const Find: typeof CN.Find = {
   APPLET: "アプレット",
   GIS_ACADEMY: "GISアカデミー", //JP0730
   SEARCH_RESULT: "検索結果",
-  BACK: "返す",
-  CONFIRM: "検索",
   RESET: "リセット",
 
   ALL: "すべて",
@@ -23,7 +21,7 @@ const Find: typeof CN.Find = {
 
   SELECT_DATATYPES_FIRST: "まずはデータタイプを選択してください",
   NO_DATA: "データは見つかりません",
-  NETWORK_ERROR: "ネット異常、後ほど再トライしてください",
+  NETWORK_ERROR_NOTIFY: "ネット異常、後ほど再トライしてください",
   NO_MORE_DATA: "データはすべてロードしました。",
   DOWNLOADED: "ダウンロード完了、インポートできます。",
 

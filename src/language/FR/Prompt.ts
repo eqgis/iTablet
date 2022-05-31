@@ -13,7 +13,6 @@ const Prompt: typeof CN.Prompt = {
   SUBMIT: "Soumettre",
   REDO: "Refaire",
   UNDO: "Annuler",
-  SHARE: "Partage",
   DELETE: "Supprimer",
   WECHAT: "Wechat",
   BEGIN: "Commencer",
@@ -22,7 +21,6 @@ const Prompt: typeof CN.Prompt = {
   WX_NOT_INSTALLED: "Wechat non installé'",
   WX_SHARE_FAILED: "Le partage Wechat a échoué, veuillez vérifier l'installation de wechat",
   RENAME: "Renommer",
-  BATCH_DELETE: "Suppression de lot",
   PREPARING: "En preparation",
 
   DOWNLOAD_SAMPLE_DATA: "Télécharger des échantillons de données?",
@@ -36,7 +34,7 @@ const Prompt: typeof CN.Prompt = {
 
   NO_REMINDER: "Pas de rappel",
 
-  LOG_OUT: "Êtes-vous sûr de vouloir vous déconnecter",
+  LOG_OUT_CONFIRM: "Êtes-vous sûr de vouloir vous déconnecter",
   FAILED_TO_LOG: "Échec de la connexion",
   INCORRECT_USER_INFO: "Compte inexistant ou erreur de mot de passe",
   INCORRECT_IPORTAL_ADDRESS: "Échec de la connexion, veuillez vérifier l'adresse de votre serveur",
@@ -47,7 +45,6 @@ const Prompt: typeof CN.Prompt = {
   PLEASE_ADD_STOP: "Veuillez ajouter un arrêt",
   IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER: "The image layer cannot be set to the current layer",
 
-  CONFIRM: "Confirmer",
   COMPLETE: "Complet",
   INSTALL:"Installer",
 
@@ -69,7 +66,7 @@ const Prompt: typeof CN.Prompt = {
   THE_SCENE_IS_OPENED: "La scène est ouverte",
   NO_SCENE_LIST: "Aucune donnée",
   NO_SCENE_SELECTED: "Aucune scène n'a été sélectionnée",
-  SWITCHING: "Commutation",
+  SWITCHING_MAP: "Commutation",
   CLOSING: "Clôture",
   CLOSING_3D: "Clôture",
   SAVING: "Enregistrement",
@@ -78,7 +75,7 @@ const Prompt: typeof CN.Prompt = {
   ADD_FAILED: "Échec d'ajout",
   ADD_MAP_FAILED: "Impossible d'ajouter la carte actuelle",
   CREATE_THEME_FAILED: "Échec de la création du thème",
-  PLEASE_ADD_DATASET: "Veuillez ajouter l'ensemble de données",
+  PLEASE_SELECT_DATASET_TO_ADD: "Veuillez ajouter l'ensemble de données",
   PLEASE_SELECT_OBJECT: "Veuillez sélectionner un objet à modifier",
   SWITCHING_PLOT_LIB: "Commutation",
   NON_SELECTED_OBJ: "Aucun objet sélectionné",
@@ -101,7 +98,6 @@ const Prompt: typeof CN.Prompt = {
   THE_CURRENT_LAYER: "La couche actuelle est",
   NO_BASE_MAP: "Aucune carte de base ne peut être supprimée",
   ENTER_KEY_WORDS: "Veuillez saisir des mots clés",
-  SEARCHING: "Recherche",
   SEARCHING_DEVICE_NOT_FOUND: "Aucun appareil trouvé",
   READING_DATA: "Lecture des données",
   CREATE_SUCCESSFULLY: "Créé avec succès",
@@ -192,7 +188,6 @@ const Prompt: typeof CN.Prompt = {
   LOG_IN: "Chargement",
   ENTER_MAP_NAME: "Veuillez saisir le nom de la carte",
   CLIP_ENTER_MAP_NAME: "Entrez le nom de la carte",
-  ENTER_SERVICE_ADDRESS: "Veuillez saisir l'adresse du service",
   ENTER_ANIMATION_NAME: "Veuillez saisir le nom de l'animation",
   ENTER_ANIMATION_NODE_NAME: "Veuillez saisir le nom du nœud d'animation",
   PLEASE_SELECT_PLOT_SYMBOL: "Veuillez sélectionner le symbole de tracé",
@@ -211,14 +206,10 @@ const Prompt: typeof CN.Prompt = {
 
   LAYER_CANNOT_CREATE_THEMATIC_MAP: "La couche actuelle ne peut pas être utilisée pour créer une carte thématique.",
 
-  ANALYSING: "Analyser",
   CHOOSE_STARTING_POINT: "Choisir le point de départ",
   CHOOSE_DESTINATION: "Choisir la destination",
 
   LATEST: "Dernières: ",
-  GEOGRAPHIC_COORDINATE_SYSTEM: "Système de coordonnées géographiques: ",
-  PROJECTED_COORDINATE_SYSTEM: "Système de coordonnées projeté: ",
-  FIELD_TYPE: "Type de champ: ",
 
   PLEASE_LOGIN_AND_SHARE: "Veuillez vous connecter et partager",
   PLEASE_LOGIN: "Veuillez vous connecter",
@@ -338,7 +329,7 @@ const Prompt: typeof CN.Prompt = {
   FAILED_TO_CREATE_TEXT: "Impossible de créer du texte",
   FAILED_TO_CREATE_LINE: "Impossible de créer la ligne",
   FAILED_TO_CREATE_REGION: "Échec de création de la région",
-  CLEAR_HISTORY: "Histoire claire",
+  CLEAR_SEARCH_HISTORY: "Histoire claire",
   // 导航相关
   SEARCH_AROUND: "Rechercher autour de",
   GO_HERE: "Allez ici",
@@ -366,7 +357,7 @@ const Prompt: typeof CN.Prompt = {
   DISTANCE_ERROR: "La destination est trop proche du point de départ, veuillez resélectionner!",
   USE_ONLINE_ROUTE_ANALYST: "Les points sont en dehors des limites de l'ensemble de données ou il n'y a aucun ensemble de données autour des points, voulez-vous utiliser l'analyste d'itinéraire en ligne?",
   NOT_SUPPORT_ONLINE_NAVIGATION: "La navigation en ligne n'est pas encore prise en charge",
-  CREATE: "Nouveau",
+  NEW: "Nouveau",
   NO_DATASOURCE: "Il n'y a pas de source de données dans l'espace de travail actuel, veuillez d'abord créer une nouvelle source de données",
   FLOOR: "Sol",
   AR_NAVIGATION: "Navigation RA",
@@ -391,7 +382,7 @@ const Prompt: typeof CN.Prompt = {
   SELECT_DESTINATION_DATASOURCE: "Veuillez sélectionner la source de données cible",
   FILENAME_ALREADY_EXIST: "Le fichier existe déjà, veuillez saisir à nouveau le nom du fichier",
   NETWORK_BUILDING: "Bâtiment...",
-  BUILD_SUCCESS: "Construit avec succès",
+  ROADNET_BUILD_SUCCESS: "Construit avec succès",
   SELECT_LINE_SMOOTH: "Veuillez sélectionner la ligne à lisser",
   SELECT_A_POINT_INLINE: "Veuillez sélectionner un point en ligne",
   SELECT_POINT_INCURRENTLINE:"Sélectionner le point sur la ligne actuelle à interrompre",

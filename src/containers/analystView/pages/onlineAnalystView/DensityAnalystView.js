@@ -25,7 +25,7 @@ export default class OnlineAnalystView extends Component {
       // 网络面类型 其中0：四边形网格，1：六边形网格
       meshType: onlineParamsData.getMeshType(this.props.language)[0],
       // 网格大小单位：Meter(默认),Kilometer,Yard,Foot,Mile
-      meshSizeUnit: getLanguage(this.props.language).Analyst_Params.METER,
+      meshSizeUnit: getLanguage(this.props.language).ABBR_METER,
       weight: '', // 权重 默认1
       bounds: [], // 分析范围：左-下-右-上
       meshSize: 30, // 网格大小（分辨率）
@@ -124,7 +124,7 @@ export default class OnlineAnalystView extends Component {
     this.setState({
       analystMethod: onlineParamsData.getAnalysisMethod(this.props.language)[0],
       meshType: onlineParamsData.getMeshType(this.props.language)[0],
-      meshSizeUnit: getLanguage(this.props.language).Analyst_Params.METER,
+      meshSizeUnit: getLanguage(this.props.language).ABBR_METER,
       weight: '',
       bounds: [],
       meshSize: 30,

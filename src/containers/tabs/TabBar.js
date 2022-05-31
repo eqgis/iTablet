@@ -82,7 +82,7 @@ class TabBar extends React.Component {
         case AppTabs.Friend:
           list.push({
             key: 'Friend',
-            title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
+            title: getLanguage(this.props.language).Navigator_Label.ADDRESS_BOOK,
             image: getThemeAssets().tabBar.tab_friend,
             selectedImage: getThemeAssets().tabBar.tab_friend_selected,
             btnClick: () => btnClick(tabModules[i]),

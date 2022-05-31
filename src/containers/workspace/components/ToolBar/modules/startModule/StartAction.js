@@ -907,6 +907,11 @@ async function openTemplate(item) {
                 }
               }
 
+              // 没有标注图层,则默认打开一个
+              if (taggingLayers.length === 0) {
+                await SMap.openTaggingDataset(params.user.currentUser.userName)
+              }
+
               // params.setContainerLoading(false)
               await params.mapMoveToCurrent()
               params.setContainerLoading(

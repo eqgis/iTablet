@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { getImage } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import { RootState } from '../../../../redux/types'
-import ToolbarSlideCard from '../../../../SMToolbar/component/ToolbarSlideCard'
+import { ToolbarSlideCard } from 'imobile_for_reactnative/components/ToolbarKit'
 import { AppInputDialog, AppStyle, CheckSpell, dp } from '../../../../utils'
 
 interface Props extends ReduxProps {

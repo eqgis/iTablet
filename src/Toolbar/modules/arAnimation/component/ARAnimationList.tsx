@@ -10,7 +10,7 @@ import { setARAnimation } from '@/redux/models/aranimation'
 import { SARMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { RootState } from '../../../../redux/types'
-import ToolbarSlideCard from '../../../../SMToolbar/component/ToolbarSlideCard'
+import { ToolbarSlideCard } from 'imobile_for_reactnative/components/ToolbarKit'
 import * as ModuleData from '../Actions'
 
 

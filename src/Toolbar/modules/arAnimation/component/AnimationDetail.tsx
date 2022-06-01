@@ -9,7 +9,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from '../../../../redux/types'
 import { AppendID, ARAnimatorWithID, deleteARAnimation, moveARAnimation, setARAnimation } from '@/redux/models/aranimation'
 import { getLanguage } from '../../../../language'
-import ToolbarSlideCard from '../../../../SMToolbar/component/ToolbarSlideCard'
+import { ToolbarSlideCard } from 'imobile_for_reactnative/components/ToolbarKit'
 import * as ModuleData from '../Actions'
  
 interface Props extends ReduxProps {

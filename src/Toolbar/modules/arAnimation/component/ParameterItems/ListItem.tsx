@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Text, TouchableOpacity, View, ScaledSize, ImageRequireSource, Image, ScrollView } from 'react-native'
-import { LANDSCAPE_WIDTH } from '../../../../../SMToolbar/component/styles'
+import { LANDSCAPE_WIDTH } from 'imobile_for_reactnative/components/ToolbarKit/component/styles'
 import { AppStyle, dp } from '../../../../../utils'
 
 interface ListItemProps {

@@ -1,7 +1,7 @@
 import { getImage } from "@/assets"
 import { AppToolBar } from "@/utils"
 import { getLanguage } from "../../../language"
-import { ToolbarModuleData } from "../../../SMToolbar/ToolbarModuleData"
+import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import BottomView from "./BottomView"
 import { getData } from "./Data"
 import SandTableView from "./SandTableView"

@@ -1,5 +1,5 @@
 import { ARElement, ARElementStyle, IAnimationParam, IARTransform, ARLayer } from "imobile_for_reactnative/types/interface/ar"
-import ToolBarContainer from "../SMToolbar/ToolbarContainer"
+import ToolBarContainer from "imobile_for_reactnative/components/ToolbarKit/ToolbarContainer"
 import { Props } from "../Toolbar"
 import { ModuleList } from "../Toolbar/modules"
 

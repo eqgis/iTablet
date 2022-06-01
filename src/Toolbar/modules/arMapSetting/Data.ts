@@ -2,7 +2,7 @@ import { SARMap } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
-import { IToolbarOption, ToolbarOption } from "../../../SMToolbar/ToolbarOption"
+import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar } from "../../../utils"
 
 

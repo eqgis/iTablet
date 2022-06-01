@@ -1,8 +1,7 @@
 import { getImage } from "@/assets"
 import DataHandler from "@/containers/tabs/Mine/DataHandler"
 import { getLanguage } from "@/language"
-import { ToolbarTabItem } from "@/SMToolbar/component/ToolbarTab/ToolbarTabView"
-import { IToolbarOption, SelectionListOption, ToolBarBottomItem, ToolbarOption } from "@/SMToolbar/ToolbarOption"
+import { IToolbarOption, SelectionListOption, ToolBarBottomItem, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppEvent, AppLog, AppToolBar, AppUser, Toast } from "@/utils"
 import AppDialog from "@/utils/AppDialog"
 import AppInputDialog from "@/utils/AppInputDialog"
@@ -11,6 +10,7 @@ import { SARMap } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { addModelToSandTable, saveARSandTable } from "./Actions"
 import { ARSAndTableViewOption } from "./BottomView"
+import { ToolBarMenuItem } from "imobile_for_reactnative/components/ToolbarKit/component/ToolBarMenu"
 
 
 export function getData(key: ModuleList['ARSANDTABLE']): IToolbarOption {
@@ -344,7 +344,7 @@ function getPoiEditBottom(): ToolBarBottomItem[] {
 }
 
 /** 位置调整通用模版 POI/模型/三维场景/三维图层 */
-function _getTransformTabData(): ToolbarTabItem[] {
+function _getTransformTabData(): ToolBarMenuItem[] {
   const range: {
     scale: [number , number],
     position: [number, number],

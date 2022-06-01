@@ -482,6 +482,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   BORDER: "Kenar",
   LINE: "Çizgi",
   MARK: "İşaret",
+  MARKER_LINE: "Marker line", // to be translated
 
   // 地图导航
   START_POINT: "Başlangıç Noktası",

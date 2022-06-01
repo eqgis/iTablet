@@ -481,6 +481,7 @@ const Map_Main_Menu: typeof CN.Map_Main_Menu = {
   BORDER: "Border",
   LINE: "Line",
   MARK: "Mark",
+  MARKER_LINE: "Marker line", // to be translated
 
   // 地图导航
   START_POINT: "Start Point",

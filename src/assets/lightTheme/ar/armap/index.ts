@@ -23,6 +23,7 @@ export const ar_distance = require('./icon_ar_distance.png')
 export const ar_add_location = require('./icon_ar_add_location.png')
 export const ar_add_point = require('./icon_ar_add_point.png')
 export const icon_add_to = require('./icon_add_to.png')
+export const undo = require('./icon_undo.png')
 
 export const translation_x = require('./icon_ar_x_translation.png')
 export const translation_y = require('./icon_ar_y_translation.png')

@@ -478,6 +478,7 @@ const Map_Main_Menu = {
   BORDER: "轮廓",
   LINE: "线",
   MARK: "标注",
+  MARKER_LINE:"符号线",
 
   // 地图导航
   START_POINT: "起点",

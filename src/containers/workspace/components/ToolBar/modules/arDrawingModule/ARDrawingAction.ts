@@ -85,19 +85,25 @@ async function addAtCurrent(type: string, location?: Point3D) {
     await addARWidget(location)
   } else if (type === ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM) {
     await addARVideoAlbum(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_LINE) {
+    await addARLinePoint(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE) {
+    await addARMarkerLinePoint(location)
+  }else if(type === ConstToolType.SM_AR_DRAWING_VERTEX_ADD_LINE){
+    await editAddLinePoint(location)
   }
-    else {
-      let _type
-      if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
-        _type = ARElementType.AR_VIDEO
-      } else if (type === ConstToolType.SM_AR_DRAWING_WEB) {
-        _type = ARElementType.AR_WEBVIEW
-      } else {
-        _type = ARElementType.AR_IMAGE
-      }
-
-      await addMedia(_type, location)
+  else {
+    let _type
+    if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
+      _type = ARElementType.AR_VIDEO
+    } else if (type === ConstToolType.SM_AR_DRAWING_WEB) {
+      _type = ARElementType.AR_WEBVIEW
+    } else {
+      _type = ARElementType.AR_IMAGE
     }
+
+    await addMedia(_type, location)
+  }
   isAddingARElement = false
   AppToolBar.addData({isAlbumFirstAdd:true})
 }
@@ -610,12 +616,22 @@ async function toolbarBack() {
 }
 
 function commit() {
+  const _data: any = ToolbarModule.getData()
   const _params: any = ToolbarModule.getParams()
   if(_params.type === ConstToolType.SM_AR_DRAWING_MODAL
     || _params.type === ConstToolType.SM_AR_DRAWING_ADD_POINT
   ) {
     AppEvent.emitEvent('ar_map_add_end')
   }
+
+  if(_params.type === ConstToolType.SM_AR_DRAWING_ADD_LINE ||
+    _params.type === ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE ||
+    _data.prevType === ConstToolType.SM_AR_DRAWING_ADD_LINE ||
+    _data.prevType === ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE
+  ){
+    addARLineElement()
+  }
+
   global.isNotEndAddEffect = false
   SARMap.setCenterHitTest(false)
   // SARMap.setAction(ARAction.SELECT)
@@ -875,6 +891,92 @@ function arSandtableAlbum(){
   NavigationService.navigate("MapSelectList",{type:'sandTableSelect'})
 }
 
+/** 矢量线节点的添加 */
+async function addARLinePoint(location?: Point3D) {
+  // 根据图层类型添加不同数据源数据集
+  await checkARLayer(ARLayerType.AR_LINE_LAYER)
+  // 获取当前图层
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  // 当前图层是线图层
+  if(layer && layer.type === ARLayerType.AR_LINE_LAYER) {
+    if(location){
+      SARMap.setAction(ARAction.LINE_CREATE_FOUCUS)
+      SARMap.addARLinePoint(layer.name, {translation:location})
+    }else{
+      SARMap.setAction(ARAction.LINE_CREATE)
+      SARMap.addARLinePoint(layer.name, {foucus: false})
+    }
+  }
+}
+
+/** 矢量符号线节点的添加 */
+async function addARMarkerLinePoint(location?: Point3D) {
+  // 根据图层类型添加不同数据源数据集
+  await checkARLayer(ARLayerType.AR_MARKER_LINE_LAYER)
+  // await checkARElementLayer(401)
+  // 获取当前图层
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  // 当前图层是线图层
+  if(layer && layer.type === ARLayerType.AR_MARKER_LINE_LAYER) {
+    // SARMap.addARLinePoint(layer.name, option?.translation)
+    if(location){
+      SARMap.setAction(ARAction.LINE_CREATE_FOUCUS)
+      SARMap.addARLinePoint(layer.name, {translation:location})
+    }else{
+      SARMap.setAction(ARAction.LINE_CREATE)
+      SARMap.addARLinePoint(layer.name, {foucus: false})
+    }
+  }
+}
+
+/** 矢量线节点的添加 */
+async function editAddLinePoint(location?: Point3D) {
+  // 获取当前图层
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  // 当前图层是线图层
+  if (layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+
+    if (location) {
+      SARMap.setAction(ARAction.VERTEX_ADD_FOUCUS)
+      SARMap.addARLinePoint(layer.name, { translation: location })
+    } else {
+      SARMap.setAction(ARAction.VERTEX_ADD)
+      SARMap.addARLinePoint(layer.name, { foucus: false, updatefoucus: false })
+    }
+  }
+}
+
+/** 撤销矢量线或矢量符号线的节点的添加操作 */
+async function cancelAddARLinePoint() {
+  // 获取当前图层
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  // 当前图层是线图层
+  if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+    SARMap.cancelAddARLinePoint(layer.name)
+  }
+}
+
+/** 矢量线或矢量符号线对象的添加 */
+async function addARLineElement() {
+  // 获取当前图层
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+    SARMap.addARLineElement(layer.name)
+  }
+}
+
+/** 矢量线或矢量符号线对象的更新 */
+async function updateARLineElement() {
+  // 获取当前图层
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+    SARMap.updateARLineElement(layer.name)
+  }
+}
+
 
 export default {
   toolbarBack,
@@ -901,6 +1003,12 @@ export default {
   arVideoAlbum,
   arMapBrochor,
   arSandtableAlbum,
+
+  addARLinePoint,
+  addARMarkerLinePoint,
+  cancelAddARLinePoint,
+  editAddLinePoint,
+  updateARLineElement,
 
   download3DExample,
   downloadModelExample,

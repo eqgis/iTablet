@@ -494,7 +494,7 @@ export default class Home extends Component {
             action: this._onToggleAccount,
           },
           {
-            title: getLanguage(this.props.language).Profile.EXIT_APP,
+            title: getLanguage(this.props.language).Profile.LOG_OUT,
             action: this._logoutConfirm,
           },
         ]

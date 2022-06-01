@@ -412,6 +412,7 @@ export const language_cn = {
   AREA: "面",
   LINE: "线",
   POINT: "点",
+  MARKER_LINE:"符号线",
 
   OPEN_MAP: "打开地图",
   UNTITLED_MAP: "未命名地图",

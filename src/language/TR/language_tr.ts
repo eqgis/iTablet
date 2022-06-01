@@ -413,6 +413,7 @@ export const language_tr: typeof language_cn = {
   AREA: "Bölge",
   LINE: "Hat",
   POINT: "Doğru",
+  MARKER_LINE: "Marker line", // to be translated
 
   OPEN_MAP: "Harita Aç",
   UNTITLED_MAP: "Adsız Harita",

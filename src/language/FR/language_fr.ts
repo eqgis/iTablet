@@ -413,6 +413,7 @@ export const language_fr: typeof language_cn = {
   AREA: "Zone",
   LINE: "Ligne",
   POINT: "Point",
+  MARKER_LINE: "Marker line", // to be translated
 
   OPEN_MAP: "Ouvrir la carte",
   UNTITLED_MAP: "Carte sans titre",

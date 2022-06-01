@@ -471,7 +471,7 @@ export const language_cn = {
   BACK: "后",
 
   PARAMETER: "参数",
-  CONFIRM: "确认",
+  CONFIRM: "确定",
 
   ADD: "添加",
   NONE: "无",

@@ -237,6 +237,11 @@ export default function(params: {
         animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
         presentation: 'containedTransparentModal',
       }}/>
+      <Stack.Screen name="Map3DSetting" component={MapSetting} options={{
+        headerShown: false,
+        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+        presentation: 'containedTransparentModal',
+      }}/>
       <Stack.Screen name="CoworkMember" component={CoworkMember} />
       <Stack.Screen name="CoworkMessage" component={CoworkMessage} />
       <Stack.Screen name="GroupSelectPage" component={GroupSelectPage} />

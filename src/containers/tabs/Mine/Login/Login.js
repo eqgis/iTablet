@@ -192,23 +192,14 @@ export default class Login extends React.Component {
           userType: loginUser.userType,
           roles: loginUser.roles,
         }
-        let friendListResult = FriendListFileHandle.initFriendList(user)
-        // // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
-        // const result = await new Promise.race([friendListResult, timeout(30)])
-        // if (result === 'timeout') {
-        //   Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
-        // } else if (result) {
+        FriendListFileHandle.initFriendList(user)
         await this.props.setUser(user)
         global.isLogging = true
         global.getFriend?.().onUserLoggedin()
         AppInfo.setServiceUrl('https://www.supermapol.com/web/')
-        // NavigationService.popToTop('Tabs')
-        NavigationService.navigate('Tabs', {screen: 'Home'})
+        NavigationService.popToTop()
         // 加载用户底图
         await this.loadUserBaseMaps()
-        // } else {
-        //   Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
-        // }
       } else {
         const errorInfo = loginResult.errorInfo
         if (

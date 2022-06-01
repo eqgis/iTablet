@@ -1331,7 +1331,7 @@ export default class SecondMapSettings extends Component {
             <SlideBar
               style={{ width: screen.getScreenWidth() - 20 }}
               range={[0, 100]}
-              defaultValue={this.state.confidence}
+              defaultMaxValue={this.state.confidence}
               onMove={location => {
                 this.setState({
                   confidence: location,

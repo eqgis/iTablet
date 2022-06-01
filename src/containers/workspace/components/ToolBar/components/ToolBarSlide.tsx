@@ -194,7 +194,7 @@ class SlideItem extends React.Component<ItemProps, ItemState> {
           }}
           range={this.props.item.range}
           // defaultValue={this.props.item.defaultValue}
-          defaultValue={this.state.currentValue}
+          defaultMaxValue={this.state.currentValue}
         />
         <Text
           numberOfLines={1}

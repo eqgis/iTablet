@@ -166,7 +166,7 @@ export default class XYZSlide extends Component {
           onStart={this.onStart}
           onEnd={this.onEnd}
           onMove={onMove}
-          defaultValue={defaultValue}
+          defaultMaxValue={defaultValue}
         />
         <Text
           numberOfLines={1}

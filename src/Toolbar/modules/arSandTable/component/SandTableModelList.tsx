@@ -3,7 +3,7 @@ import { FlatList, Image, ListRenderItemInfo, ScaledSize, StyleSheet, Text, Touc
 import { AppStyle, AppToolBar, dp } from '../../../../utils'
 import { SARMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
-import ToolbarSlideCard from '../../../../SMToolbar/component/ToolbarSlideCard'
+import { ToolbarSlideCard } from 'imobile_for_reactnative/components/ToolbarKit'
 import { getImage } from '../../../../assets'
 
 interface Props {

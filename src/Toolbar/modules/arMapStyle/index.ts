@@ -3,7 +3,7 @@ import NavigationService from "@/containers/NavigationService"
 import { ARLayerType, FileTools, RNFS, SARMap } from "imobile_for_reactnative"
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
-import { ToolbarModuleData } from "../../../SMToolbar/ToolbarModuleData"
+import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, AppUser, Toast } from "../../../utils"
 import { getData } from "./Data"
 

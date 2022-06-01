@@ -428,7 +428,7 @@ export default class BufferAnalystViewTab extends Component {
           value={
             this.props.type === 'single'
               ? this.state.bufferRadius +
-                getLanguage(this.props.language).Analyst_Params.METER
+                getLanguage().ABBR_METER
               : getLanguage(this.props.language).Analyst_Labels.GO_TO_SET
           }
           onPress={() => {

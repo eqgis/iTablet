@@ -165,7 +165,7 @@ class LocationSetting extends React.Component {
           <Text style={styles.text}>{getLanguage(global.language).Profile.DISTANCE_LOCATION}</Text>
           {this.state.distanceLocation && !this.state.timeLocation && <TextInput
             value={this.state.distanceLocationText}
-            placeholder={getLanguage(global.language).Profile.DISTANCE}
+            placeholder={getLanguage(global.language).Profile.DISTANCE_METER}
             keyboardType="numeric"
             placeholderTextColor={color.fontColorGray}
             style={styles.textInput}

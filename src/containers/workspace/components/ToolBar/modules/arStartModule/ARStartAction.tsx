@@ -91,7 +91,7 @@ function openMap() {
       })
     }
     data.push({
-      title: getLanguage(global.language).Map_Main_Menu.OPEN_MAP,
+      title: getLanguage(global.language).MAP,
       image: getThemeAssets().mine.my_armap,
       data: userFileList || [],
     })
@@ -219,7 +219,7 @@ async function changeMap(item: ListData) {
     }
     params.setContainerLoading(
       true,
-      getLanguage(params.language).Prompt.SWITCHING,
+      getLanguage(params.language).Prompt.SWITCHING_MAP,
     )
     await SARMap.close()
     await DataHandler.closeARRawDatasource()

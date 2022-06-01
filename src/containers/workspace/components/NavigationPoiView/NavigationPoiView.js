@@ -93,7 +93,7 @@ export default class NavigationPoiView extends React.Component {
       <View style={{ flex: 1, width: '100%' }}>
         {this.state.searchValue.Length && (
           <Text style={styles.info}>
-            {getLanguage(global.language).Map_Main_Menu.DISTANCE +
+            {getLanguage(global.language).Map_Main_Menu.DISTANCE + ": " +
               this.state.searchValue.Length +
               getLanguage(global.language).Map_Main_Menu.METERS}
           </Text>

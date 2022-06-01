@@ -1133,7 +1133,7 @@ class Chat extends React.Component {
     if (!type) return
     global.Loading.setLoading(
       true,
-      getLanguage(global.language).Friends.IMPORT_DATA,
+      getLanguage(global.language).Friends.IMPORTING_DATA,
     )
     let homePath = await FileTools.appendingHomeDirectory()
     let receivePath = homePath + message.originMsg.message.message.filePath

@@ -43,6 +43,7 @@ const RelativePath = {
   ARSandTable: `${Data}ARSandTable/`,
   // ARScene: `${Data}ARScene/`,
   ARSymbol: `${Data}ARSymbol/`,
+  SandTable: `${Data}SandTable/`,
 }
 
 const RelativeFilePath = {

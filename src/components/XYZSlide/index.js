@@ -119,8 +119,8 @@ export default class XYZSlide extends Component {
     let range, onMove, labelLeft, labelRight,defaultValue,num
     switch (dir) {
       case 'x':
-        labelLeft = this.props.isRotation? -180:getLanguage(global.language).Common.LEFT
-        labelRight = this.props.isRotation? 180:getLanguage(global.language).Common.RIGHT
+        labelLeft = this.props.isRotation? -180:getLanguage(global.language).LEFT
+        labelRight = this.props.isRotation? 180:getLanguage(global.language).RIGHT
         if(this.props.isScale){
           labelLeft = 0
           labelRight = 1
@@ -131,16 +131,16 @@ export default class XYZSlide extends Component {
         num = 0
         break
       case 'y':
-        labelLeft = this.props.isRotation? -180:getLanguage(global.language).Common.DOWN
-        labelRight = this.props.isRotation? 180:getLanguage(global.language).Common.UP
+        labelLeft = this.props.isRotation? -180:getLanguage(global.language).DOWN
+        labelRight = this.props.isRotation? 180:getLanguage(global.language).UP
         range = this.props.rangeY
         onMove = value =>{this.onMoveY(value)}
         defaultValue = this.props.defaultValuey
         num = 1
         break
       default:
-        labelLeft = this.props.isRotation? -180:getLanguage(global.language).Common.BACK
-        labelRight = this.props.isRotation? 180:getLanguage(global.language).Common.FRONT
+        labelLeft = this.props.isRotation? -180:getLanguage(global.language).BACK
+        labelRight = this.props.isRotation? 180:getLanguage(global.language).FRONT
         range = this.props.rangeZ
         onMove = value =>{this.onMoveZ(value)}
         defaultValue = this.props.defaultValuez
@@ -166,7 +166,7 @@ export default class XYZSlide extends Component {
           onStart={this.onStart}
           onEnd={this.onEnd}
           onMove={onMove}
-          defaultValue={defaultValue}
+          defaultMaxValue={defaultValue}
         />
         <Text
           numberOfLines={1}

@@ -257,6 +257,11 @@ export default class AlbumView extends React.PureComponent {
     }
   }
 
+  _maxSizeChooseAlert = number =>
+    global.language === 'EN'
+      ? 'You can only choose ' + number + ' photos at most'
+      : '您最多能选择' + number + '张照片'
+
   _onDeletePageFinish = data => {
     const selectedItems = this.state.selectedItems.filter(
       item => data.indexOf(item.uri) >= 0,
@@ -287,7 +292,7 @@ export default class AlbumView extends React.PureComponent {
           selectedItems: [itemuri],
         })
       } else {
-        // Alert.alert('', this.props.route.params.maxSizeChooseAlert(this.props.route.params.maxSize))
+        Alert.alert('', this._maxSizeChooseAlert(this.props.route.params.maxSize))
       }
     } else {
       this.setState({

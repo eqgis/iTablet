@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import PropTypes from 'prop-types'
 import NavigationService from './NavigationService'
 import AppNavigator from '../containers'
 import { NavigationContainer, NavigationState } from '@react-navigation/native'
@@ -17,11 +16,11 @@ interface Props {
 
 export default class RootNavigator extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
-    let prevAppConfig = Object.assign({}, this.props.appConfig)
-    let nextAppConfig = Object.assign({}, nextProps.appConfig)
+    const prevAppConfig = Object.assign({}, this.props.appConfig)
+    const nextAppConfig = Object.assign({}, nextProps.appConfig)
     delete prevAppConfig.currentMapModule
     delete nextAppConfig.currentMapModule
-    let shouldUpdate =
+    const shouldUpdate =
       JSON.stringify(prevAppConfig) !== JSON.stringify(nextAppConfig) ||
       JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device)
     return shouldUpdate
@@ -40,17 +39,16 @@ export default class RootNavigator extends Component<Props> {
       })
     }
     return (
-      
-    <NavigationContainer
-      ref={navigatorRef => {
-        NavigationService.setTopLevelNavigator(navigatorRef)
-      }}
-      onStateChange={(state: NavigationState | undefined) => {
-        this.props.setNav(state)
-      }}
-    >
-      {RootView}
-    </NavigationContainer>
+      <NavigationContainer
+        ref={navigatorRef => {
+          NavigationService.setTopLevelNavigator(navigatorRef)
+        }}
+        onStateChange={(state: NavigationState | undefined) => {
+          this.props.setNav(state)
+        }}
+      >
+        {RootView}
+      </NavigationContainer>
     )
   }
 }

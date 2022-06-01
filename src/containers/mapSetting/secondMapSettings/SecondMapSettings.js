@@ -632,7 +632,7 @@ export default class SecondMapSettings extends Component {
       case 'Bursa-wolf(7-para)':
         this.props.navigation.navigate('SecondMapSettings6', {
           title,
-          rightBtn: getLanguage(global.language).Map_Settings.CONFIRM,
+          rightBtn: getLanguage(global.language).CONFIRM,
           cb: this.state.cb,
         })
         break
@@ -658,9 +658,9 @@ export default class SecondMapSettings extends Component {
         }
         break
       //四至范围点击 跳InputPage
-      case getLanguage(global.language).Map_Settings.LEFT:
+      case getLanguage(global.language).LEFT:
       case getLanguage(global.language).Map_Settings.BOTTOM:
-      case getLanguage(global.language).Map_Settings.RIGHT:
+      case getLanguage(global.language).RIGHT:
       case getLanguage(global.language).Map_Settings.TOP:
         if (newValue !== '' && newValue.match(regExp)) {
           data[index].value = this.formatNumberToString(
@@ -989,9 +989,9 @@ export default class SecondMapSettings extends Component {
                 let data = this.state.data.concat()
                 switch (item.title) {
                   case getLanguage(global.language).Map_Settings.MAP_SCALE:
-                  case getLanguage(global.language).Map_Settings.LEFT:
+                  case getLanguage(global.language).LEFT:
                   case getLanguage(global.language).Map_Settings.BOTTOM:
-                  case getLanguage(global.language).Map_Settings.RIGHT:
+                  case getLanguage(global.language).RIGHT:
                   case getLanguage(global.language).Map_Settings.TOP:
                     data[index].state = true
                     break
@@ -1287,7 +1287,7 @@ export default class SecondMapSettings extends Component {
         <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginRight: scaleSize(30)}} key={'confidence'} onPress={this.setConfidence}>
           <Text style={{color: 'black', fontSize: scaleSize(24)}}>
             {this.state.showConfidence
-              ? getLanguage(global.language).Prompt.CONFIRM
+              ? getLanguage(global.language).CONFIRM
               : getLanguage(global.language).Map_Settings.CONFIDENCE}
           </Text>
           {!this.state.showConfidence && (
@@ -1331,7 +1331,7 @@ export default class SecondMapSettings extends Component {
             <SlideBar
               style={{ width: screen.getScreenWidth() - 20 }}
               range={[0, 100]}
-              defaultValue={this.state.confidence}
+              defaultMaxValue={this.state.confidence}
               onMove={location => {
                 this.setState({
                   confidence: location,
@@ -1364,7 +1364,7 @@ export default class SecondMapSettings extends Component {
                 }}
               >
                 <Text style={styles.headerRight}>
-                  {getLanguage(global.language).Prompt.CONFIRM}
+                  {getLanguage(global.language).CONFIRM}
                 </Text>
               </TouchableOpacity>,
             ],

@@ -105,7 +105,7 @@ function openMap() {
       })
     }
     data.push({
-      title: getLanguage(global.language).Map_Main_Menu.OPEN_MAP,
+      title: getLanguage(global.language).MAP,
       // '我的地图',
       image: getThemeAssets().dataType.icon_map,
       data: userFileList || [],
@@ -560,7 +560,7 @@ async function changeMap(item) {
     params.setOpenOnlineMap(true)
     params.setContainerLoading(
       true,
-      getLanguage(params.language).Prompt.SWITCHING,
+      getLanguage(params.language).Prompt.SWITCHING_MAP,
       // ConstInfo.MAP_CHANGING
     )
     //if (params.map.currentMap.name)
@@ -905,6 +905,11 @@ async function openTemplate(item) {
                 if (item.isVisible) {
                   await SMediaCollector.showMedia(item.name)
                 }
+              }
+
+              // 没有标注图层,则默认打开一个
+              if (taggingLayers.length === 0) {
+                await SMap.openTaggingDataset(params.user.currentUser.userName)
               }
 
               // params.setContainerLoading(false)

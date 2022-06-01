@@ -46,28 +46,28 @@ export default class AnalystRangePage extends React.Component {
     if (this.state.left === undefined) {
       Toast.show(
         getLanguage(this.props.language).Prompt.PLEASE_ENTER +
-          getLanguage(this.props.language).Analyst_Labels.LEFT,
+          getLanguage(this.props.language).LEFT,
       )
       return
     }
     if (this.state.down === undefined) {
       Toast.show(
         getLanguage(this.props.language).Prompt.PLEASE_ENTER +
-          getLanguage(this.props.language).Analyst_Labels.DOWN,
+          getLanguage(this.props.language).DOWN,
       )
       return
     }
     if (this.state.right === undefined) {
       Toast.show(
         getLanguage(this.props.language).Prompt.PLEASE_ENTER +
-          getLanguage(this.props.language).Analyst_Labels.RIGHT,
+          getLanguage(this.props.language).RIGHT,
       )
       return
     }
     if (this.state.up === undefined) {
       Toast.show(
         getLanguage(this.props.language).Prompt.PLEASE_ENTER +
-          getLanguage(this.props.language).Analyst_Labels.UP,
+          getLanguage(this.props.language).UP,
       )
       return
     }
@@ -93,7 +93,7 @@ export default class AnalystRangePage extends React.Component {
           navigation: this.props.navigation,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(this.props.language).Prompt.CONFIRM}
+              btnText={getLanguage(this.props.language).CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this.confirm}
             />
@@ -121,7 +121,7 @@ export default class AnalystRangePage extends React.Component {
           >
             <View key={'content'} style={[styles.content]}>
               <AnalystItem
-                title={getLanguage(this.props.language).Analyst_Labels.LEFT}
+                title={getLanguage(this.props.language).LEFT}
                 value={this.state.left}
                 keyboardType={'numeric'}
                 rightType={'input'}
@@ -135,7 +135,7 @@ export default class AnalystRangePage extends React.Component {
                 }}
               />
               <AnalystItem
-                title={getLanguage(this.props.language).Analyst_Labels.DOWN}
+                title={getLanguage(this.props.language).DOWN}
                 value={this.state.down}
                 keyboardType={'numeric'}
                 rightType={'input'}
@@ -149,7 +149,7 @@ export default class AnalystRangePage extends React.Component {
                 }}
               />
               <AnalystItem
-                title={getLanguage(this.props.language).Analyst_Labels.RIGHT}
+                title={getLanguage(this.props.language).RIGHT}
                 value={this.state.right}
                 keyboardType={'numeric'}
                 rightType={'input'}
@@ -163,7 +163,7 @@ export default class AnalystRangePage extends React.Component {
                 }}
               />
               <AnalystItem
-                title={getLanguage(this.props.language).Analyst_Labels.UP}
+                title={getLanguage(this.props.language).UP}
                 value={this.state.up}
                 keyboardType={'numeric'}
                 rightType={'input'}

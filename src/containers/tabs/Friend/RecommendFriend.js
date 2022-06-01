@@ -368,7 +368,7 @@ class RecommendFriend extends Component {
       <Dialog
         ref={ref => (this.dialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(this.language).Friends.CONFIRM}
+        confirmBtnTitle={getLanguage(this.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.language).Friends.CANCEL}
         confirmAction={this.addFriendRequest}
         opacity={1}
@@ -399,7 +399,7 @@ class RecommendFriend extends Component {
       <Dialog
         ref={ref => (this.permissionDeniedDialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(this.language).Friends.CONFIRM}
+        confirmBtnTitle={getLanguage(this.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.language).Friends.CANCEL}
         confirmAction={() => {
           this.permissionDeniedDialog.setDialogVisible(false)

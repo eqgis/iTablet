@@ -76,6 +76,9 @@ const icon_left_point = require('./left_point.png')
 const icon_right_point = require('./right_point.png')
 const icon_point = require('./point.png')
 
+const export_black = require('./icon_export.png')
+const import_black = require('./icon_Import.png')
+
 export default {
   icon_undo,
   icon_search,
@@ -141,9 +144,9 @@ export default {
   icon_single_check,
   icon_disable_single_check,
   icon_highlight_single_check,
-  
+
   icon_administration,
-  
+
   icon_download,
   icon_downloading,
   icon_complete,
@@ -152,4 +155,7 @@ export default {
   icon_left_point,
   icon_right_point,
   icon_point,
+
+  export_black,
+  import_black,
 }

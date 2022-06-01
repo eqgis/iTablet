@@ -314,7 +314,7 @@ function styleAttributeOption(option: IToolbarOption) {
       ]
     },
     {
-      title: getLanguage().ARMap.POSITION,
+      title: getLanguage().ARMap.TRANSLATION,
       type: 'slide',
       slideData: [
         {

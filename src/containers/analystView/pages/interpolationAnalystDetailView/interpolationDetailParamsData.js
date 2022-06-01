@@ -34,7 +34,7 @@ function getSearchMethod(language, type) {
 function getSemivariogram(language) {
   return [
     {
-      key: getLanguage(language).Analyst_Params.SPHERICAL,
+      key: getLanguage(language).Analyst_Params.SPHERICAL_FUNCTION,
       value: SAnalyst.VariogramMode.SPHERICAL,
     },
     {

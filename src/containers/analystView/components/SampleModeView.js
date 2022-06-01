@@ -193,7 +193,7 @@ export default class SampleModeView extends React.Component {
                 }}
               >
                 <Text style={styles.cancelText}>
-                  {getLanguage(global.language).Analyst_Labels.CONFIRM}
+                  {getLanguage(global.language).CONFIRM}
                 </Text>
               </TouchableOpacity>
             </View>

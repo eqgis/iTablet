@@ -96,7 +96,7 @@ export default class Home extends Component {
       }
     }
     if (Platform.OS === 'android') {
-      this.props.setBackAction({ action: this.showExitPop })
+      this.props.setBackAction({ key: 'Home', action: this.showExitPop })
     }
   }
 
@@ -222,7 +222,7 @@ export default class Home extends Component {
   _logoutConfirm = () => {
     this._closeModal()
     this.SimpleDialog.set({
-      text: getLanguage(this.props.language).Prompt.LOG_OUT,
+      text: getLanguage(this.props.language).Prompt.LOG_OUT_CONFIRM,
       confirmAction: () => {
         this._onLogout()
       },
@@ -494,7 +494,7 @@ export default class Home extends Component {
             action: this._onToggleAccount,
           },
           {
-            title: getLanguage(this.props.language).Profile.LOG_OUT,
+            title: getLanguage(this.props.language).Profile.LOG_OUT_CONFIRM,
             action: this._logoutConfirm,
           },
         ]

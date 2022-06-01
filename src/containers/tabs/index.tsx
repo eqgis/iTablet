@@ -27,6 +27,7 @@ import Mine, {
   SearchMine,
   MyApplet,
   MyAIModel,
+  MySandTable,
 } from './Mine'
 import Find from './Find'
 import FindSettingPage from './Find/FindSettingPage'
@@ -109,6 +110,7 @@ export {
   SearchMine,
   MyApplet,
   MyAIModel,
+  MySandTable,
   /** Home */
   Home,
   Setting,

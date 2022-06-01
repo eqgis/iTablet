@@ -52,7 +52,10 @@ export default class MyDataPage extends Component {
     upload: Object,
     device: Object,
     uploading: () => {},
-    exportWorkspace: () => {},
+    exportWorkspace: (params: any, cb?: () => void) => Promise<{
+      result: boolean,
+      zipPath: string,
+    }>,
   }
 
   constructor(props) {
@@ -94,6 +97,7 @@ export default class MyDataPage extends Component {
     armodel: 'ARMODEL',
     areffect: 'AREFFECT',
     armap: 'ARMAP',
+    sandTable: 'SANDTABLE',
   }
 
   componentDidMount() {
@@ -552,6 +556,8 @@ export default class MyDataPage extends Component {
             } else if (this.itemInfo.section.title === getLanguage(global.language).Profile.MAP_TEMPLATE) {
               type = MsgConstant.MSG_TEMPLATE_MAP
             }
+          } else if (this.type === this.types.sandTable) {
+            type = MsgConstant.MSG_SAND_TABLE
           }
           let action = [
             {
@@ -1016,6 +1022,9 @@ export default class MyDataPage extends Component {
         case this.types.areffect:
           img = getThemeAssets().ar.armap.ar_effect
           break
+        case this.types.sandTable:
+          img = getThemeAssets().layerType.icon_layer_sandtable
+          break
         default:
           if (info.item.img) {
             img = info.item.img
@@ -1276,6 +1285,7 @@ export default class MyDataPage extends Component {
             />
           }
           eatraData={this.state}
+          ListFooterComponent={<View style={{height:8}}/>}
         />
         {this._renderItemPopup()}
         {this._renderPagePopup()}

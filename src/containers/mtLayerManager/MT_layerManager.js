@@ -214,7 +214,7 @@ export default class MT_layerManager extends React.Component {
       this.setState({
         data: [
           {
-            title: getLanguage(this.props.language).Map_Layer.PLOTS,
+            title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
             //'我的标注',
             data: taggingLayers,
             visible:
@@ -228,7 +228,7 @@ export default class MT_layerManager extends React.Component {
               this.state.data.length === 3 ? this.state.data[1].visible : true,
           },
           {
-            title: getLanguage(this.props.language).Map_Layer.BASEMAP,
+            title: getLanguage(this.props.language).Map_Layer.MY_BASEMAP,
             // '我的底图',
             data: baseMap,
             visible:
@@ -243,7 +243,7 @@ export default class MT_layerManager extends React.Component {
       this.setState({
         data: [
           {
-            title: getLanguage(this.props.language).Map_Layer.PLOTS,
+            title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
             //'我的标注',
             data: [],
             visible: true,
@@ -255,7 +255,7 @@ export default class MT_layerManager extends React.Component {
             visible: true,
           },
           {
-            title: getLanguage(this.props.language).Map_Layer.BASEMAP,
+            title: getLanguage(this.props.language).Map_Layer.MY_BASEMAP,
             // '我的底图',
             data: [
               {
@@ -359,7 +359,7 @@ export default class MT_layerManager extends React.Component {
     }
     let data = [...this.state.data]
     data[0] = {
-      title: getLanguage(this.props.language).Map_Layer.PLOTS,
+      title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
       //'我的标注',
       data: dataList,
       visible: true,
@@ -835,11 +835,11 @@ export default class MT_layerManager extends React.Component {
             return true
           }
         } else if (
-          section.title === getLanguage(this.props.language).Map_Layer.BASEMAP
+          section.title === getLanguage(this.props.language).Map_Layer.MY_BASEMAP
         ) {
           action = this.onToolBasePress
         } else if (
-          section.title === getLanguage(this.props.language).Map_Layer.PLOTS
+          section.title === getLanguage(this.props.language).Map_Layer.MY_PLOTS
         ) {
           action = this.taggingTool
         }
@@ -936,7 +936,7 @@ export default class MT_layerManager extends React.Component {
       ? getThemeAssets().publicAssets.icon_drop_down
       : getThemeAssets().publicAssets.icon_drop_up
     let action, rightIcon, publishServiceBtn
-    if (section.title === getLanguage(this.props.language).Map_Layer.PLOTS) {
+    if (section.title === getLanguage(this.props.language).Map_Layer.MY_PLOTS) {
       action = this.tool_row
       rightIcon = getThemeAssets().publicAssets.icon_edit
     } else if (
@@ -1096,6 +1096,7 @@ export default class MT_layerManager extends React.Component {
         initialNumToRender={15}
         // ItemSeparatorComponent={this.renderItemSeparator}
         renderSectionFooter={this.renderSectionFooter}
+        ListFooterComponent={<View style={{height:8}}/>}
       />
     )
   }

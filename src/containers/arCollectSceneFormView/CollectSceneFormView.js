@@ -612,7 +612,7 @@ export default class CollectSceneFormView extends React.Component {
         ref={ref => (this.DatumPointDialog = ref)}
         // type={'modal'}
         cancelBtnVisible={false}
-        confirmBtnTitle={getLanguage(global.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(global.language).CONFIRM}
         confirmAction={async () => {
           let point = this.datumPoint
           //设置基点

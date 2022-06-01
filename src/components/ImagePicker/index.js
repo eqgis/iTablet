@@ -12,11 +12,11 @@ export function ImagePickerStack() {
     <Stack.Navigator
       initialRouteName={PageKeys.album_list}
       screenOptions={{
-          headerShown: false,
-          animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
-          presentation: 'transparentModal',
+        headerShown: false,
+        animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
+        presentation: 'transparentModal',
       }}
-      >
+    >
       <Stack.Screen name={PageKeys.album_list} component={ImagePicker.AlbumListView} />
       <Stack.Screen name={PageKeys.album_view} component={ImagePicker.AlbumView} />
     </Stack.Navigator>

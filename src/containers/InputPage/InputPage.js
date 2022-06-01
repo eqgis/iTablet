@@ -36,7 +36,7 @@ export default class InputPage extends React.Component {
       btnTitle:
         params && params.btnTitle
           ? params.btnTitle
-          : getLanguage(global.language).Prompt.CONFIRM, //'确定',
+          : getLanguage(global.language).CONFIRM, //'确定',
       // keyboardType:
       //   params && params.keyboardType ? params.keyboardType : 'default',
       type: params && params.type ? params.type : 'default', // 输入值类型，关系到值的检测

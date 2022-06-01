@@ -97,6 +97,7 @@ export default class ReferenceAnalystView extends Component {
 
   componentDidMount() {
     this.props.setBackAction({
+      key: 'ReferenceAnalystView',
       action: () => this.back(),
     })
   }

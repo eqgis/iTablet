@@ -50,7 +50,7 @@ export default class Slide extends Component {
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <SlideBar
           style={{ width: screen.getScreenWidth() }}
-          defaultValue={this.props.defaultValue}
+          defaultMaxValue={this.props.defaultValue}
           range={this.props.range}
           onStart={this.onStart}
           onEnd={this.onEnd}
@@ -92,7 +92,7 @@ export default class Slide extends Component {
         </Text>
         <SlideBar
           style={{ width: screen.getScreenWidth() - 20 }}
-          defaultValue={this.props.defaultValue}
+          defaultMaxValue={this.props.defaultValue}
           range={this.props.range}
           onStart={this.onStart}
           onEnd={this.onEnd}

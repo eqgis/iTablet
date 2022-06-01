@@ -142,7 +142,7 @@ export default class MapNavMenu extends React.Component {
             key: module,
             title:
               type === ChunkType.MAP_AR
-                ? getLanguage(global.language).Map_Label.ARMAP
+                ? getLanguage(global.language).Map_Label.AR_SCENE
                 : getLanguage(global.language).Map_Label.MAP,
             //'地图',
             image: getThemeAssets().tabBar.tab_map,

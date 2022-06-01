@@ -336,7 +336,7 @@ export default class CustomModePage extends Component {
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={this._confirm}>
           <Text style={styles.rightText}>
-            {getLanguage(global.language).Map_Settings.CONFIRM}
+            {getLanguage(global.language).CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>
@@ -350,7 +350,7 @@ export default class CustomModePage extends Component {
     return (
       <View style={styles.row}>
         <Text style={styles.itemTitle}>
-          {getLanguage(global.language).Map_Main_Menu.RANGE}
+          {getLanguage(global.language).Map_Main_Menu.RANGES}
         </Text>
 
         <View style={styles.inputView}>

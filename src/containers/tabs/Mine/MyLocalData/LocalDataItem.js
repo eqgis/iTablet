@@ -79,6 +79,9 @@ export default class LocalDataItem extends Component {
       case 'areffect':
         img = getThemeAssets().ar.armap.ar_effect
         break
+      case 'sandtable':
+        img = getThemeAssets().layerType.icon_layer_sandtable
+        break
       default:
         img = require('../../../../assets/Mine/mine_my_import_local_light.png')
         break

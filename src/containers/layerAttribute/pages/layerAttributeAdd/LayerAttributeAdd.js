@@ -215,7 +215,7 @@ export default class LayerAttributeAdd extends React.Component {
           isDefaultValueCanEdit: value,
         })
         break
-      case getLanguage(global.language).Map_Attribute.DEFAULT:
+      case getLanguage(global.language).Map_Attribute.DEFAULT_VALUE:
         this.setState({
           defaultValue: value,
         })
@@ -239,7 +239,7 @@ export default class LayerAttributeAdd extends React.Component {
           maxLength: parseInt(text),
         })
         break
-      case getLanguage(global.language).Map_Attribute.DEFAULT:
+      case getLanguage(global.language).Map_Attribute.DEFAULT_VALUE:
         this.setState({
           defaultValue: text,
         })
@@ -367,7 +367,7 @@ export default class LayerAttributeAdd extends React.Component {
   }
 
   renderDefaultValue = () => {
-    let defaultValueTile = getLanguage(global.language).Map_Attribute.DEFAULT
+    let defaultValueTile = getLanguage(global.language).Map_Attribute.DEFAULT_VALUE
     return !this.state.isRequired ? null : this.state.type === 1 ? (
       <Row
         style={{ marginTop: scaleSize(15) }}

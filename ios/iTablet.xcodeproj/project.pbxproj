@@ -69,8 +69,6 @@
 		0AC8AFEC28082D9E00435541 /* JRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFB12808180800435541 /* JRE.framework */; };
 		0AF850D4282E54BF00287BA5 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF850D3282E54BF00287BA5 /* ZipArchive.framework */; };
 		0AF850D5282E54BF00287BA5 /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF850D3282E54BF00287BA5 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0AF85116282E5AAD00287BA5 /* libReactNativeART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF85115282E5AAD00287BA5 /* libReactNativeART.a */; };
-		0AF85164283221BB00287BA5 /* libCocoaAsyncSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF85163283221AE00287BA5 /* libCocoaAsyncSocket.a */; };
 		0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA7280817BE00435541 /* SuperMap.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -198,13 +196,9 @@
 		0AC8AFE1280819F700435541 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0AC8AFE3280819FE00435541 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0AC8AFE528081A0600435541 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
-		0AC8AFE728081A0A00435541 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = ../../../0_57_4/200622/iTablet/ios/ZipArchive.framework; sourceTree = "<group>"; };
 		0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "iPhoneOS/libstdc++.6.0.9.tbd"; sourceTree = "<group>"; };
 		0AF850D3282E54BF00287BA5 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipArchive.framework; sourceTree = "<group>"; };
-		0AF85115282E5AAD00287BA5 /* libReactNativeART.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReactNativeART.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/iTablet-gmwhicjjcrnqixdiqmxbvwdehkir/Build/Products/Debug-iphoneos/ReactNativeART/libReactNativeART.a"; sourceTree = "<group>"; };
 		0AF851192831DB6800287BA5 /* iTablet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iTablet-Bridging-Header.h"; sourceTree = "<group>"; };
-		0AF85163283221AE00287BA5 /* libCocoaAsyncSocket.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCocoaAsyncSocket.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/iTablet-gmwhicjjcrnqixdiqmxbvwdehkir/Build/Products/Debug-iphoneos/CocoaAsyncSocket/libCocoaAsyncSocket.a"; sourceTree = "<group>"; };
-		0AF85165283221DE00287BA5 /* libJKVValue.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJKVValue.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/iTablet-gmwhicjjcrnqixdiqmxbvwdehkir/Build/Products/Debug-iphoneos/JKVValue/libJKVValue.a"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SuperMap iTablet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SuperMap iTablet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iTablet/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = iTablet/AppDelegate.m; sourceTree = "<group>"; };
@@ -237,7 +231,6 @@
 			files = (
 				0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */,
 				0AC8AF982808176000435541 /* CoreGraphics.framework in Frameworks */,
-				0AF85164283221BB00287BA5 /* libCocoaAsyncSocket.a in Frameworks */,
 				0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */,
 				0A33905628323ED70094AD2F /* libSupermap.a in Frameworks */,
 				0AC8AFE4280819FE00435541 /* UIKit.framework in Frameworks */,
@@ -279,7 +272,6 @@
 				0AC8AF962808175700435541 /* CoreFoundation.framework in Frameworks */,
 				0AC8AFEC28082D9E00435541 /* JRE.framework in Frameworks */,
 				0AC8AFBC2808186400435541 /* libSocketRocket.a in Frameworks */,
-				0AF85116282E5AAD00287BA5 /* libReactNativeART.a in Frameworks */,
 				5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,12 +395,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0AF85165283221DE00287BA5 /* libJKVValue.a */,
-				0AF85163283221AE00287BA5 /* libCocoaAsyncSocket.a */,
-				0AF85115282E5AAD00287BA5 /* libReactNativeART.a */,
 				0AF850D3282E54BF00287BA5 /* ZipArchive.framework */,
 				0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */,
-				0AC8AFE728081A0A00435541 /* ZipArchive.framework */,
 				0AC8AFE528081A0600435541 /* UserNotifications.framework */,
 				0AC8AFE3280819FE00435541 /* UIKit.framework */,
 				0AC8AFE1280819F700435541 /* SystemConfiguration.framework */,
@@ -634,7 +622,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -642,7 +630,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};

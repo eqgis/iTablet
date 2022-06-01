@@ -199,7 +199,7 @@ export default class WeightAndStatistic extends React.Component {
           navigation: this.props.navigation,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(this.props.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(this.props.language).CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this.confirm}
             />

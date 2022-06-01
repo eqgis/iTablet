@@ -987,7 +987,7 @@ class AppRoot extends Component {
             this.import.setDialogVisible(false)
             global.Loading.setLoading(
               true,
-              getLanguage(this.props.language).Friends.IMPORT_DATA,
+              getLanguage(this.props.language).Friends.IMPORTING_DATA,
             )
             let homePath = global.homePath
             let importPath = homePath + '/iTablet/Import'
@@ -1084,7 +1084,7 @@ class AppRoot extends Component {
             },
             cancelText: getLanguage(this.props.language).Protocol.AGAIN,
             cancelAction: () => { this.protocolDialog.setVisible(true) ,this.protocolDialog.setconfirmBtnDisable(true)},
-            confirmText: getLanguage(this.props.language).Protocol.CONFIRM_EXIT,
+            confirmText: getLanguage(this.props.language).Protocol.EXIT_APP,
             confirmAction: () => { this.exitApp() },
           })
           global.SimpleDialog.setVisible(true)

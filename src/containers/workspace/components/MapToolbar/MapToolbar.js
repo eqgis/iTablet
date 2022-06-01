@@ -104,7 +104,7 @@ export default class MapToolbar extends React.Component {
             key: MapTabs.MapView,
             title:
               this.props.isAR
-                ? getLanguage(global.language).Map_Label.ARMAP
+                ? getLanguage(global.language).Map_Label.AR_SCENE
                 : getLanguage(global.language).Map_Label.MAP,
             //'地图',
             image: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene : getThemeAssets().tabBar.tab_map,
@@ -261,7 +261,7 @@ export default class MapToolbar extends React.Component {
     let title
     // if (item.key === MapTabs.MapView) {
     //   title = this.props.isAR
-    //     ? getLanguage(global.language).Map_Label.ARMAP
+    //     ? getLanguage(global.language).Map_Label.AR_SCENE
     //     : getLanguage(global.language).Map_Label.MAP
     // }
     return (

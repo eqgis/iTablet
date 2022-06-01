@@ -658,7 +658,7 @@ export default class ProjectionTransformationPage extends Component {
           backAction: this.back,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(global.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(global.language).CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this.confirm}
             />

@@ -1113,7 +1113,7 @@ export default class ArMappingButton extends React.Component {
       )
     )) {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
-      datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      datasetName = `Default_Tagging_${this.props.user.currentUser.userName}`
     }
     SARMap.setMeasurePath(datasourceAlias, datasetName)
     SARMap.saveMeasureData(datasourceAlias, datasetName).then(result => {

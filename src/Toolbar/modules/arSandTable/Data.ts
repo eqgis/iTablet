@@ -312,6 +312,8 @@ function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
   SARMap.appointEditElement(element.id, element.layerName)
 
   option.bottomData = getPoiEditBottom()
+  option.menuData.isShowView = true
+  option.menuData.defaultIndex = 0
   option.menuData.data = _getTransformTabData()
 }
 

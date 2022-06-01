@@ -69,15 +69,23 @@ class ToolBarMenu extends React.Component<Props, State> {
   componentDidUpdate(prevProps: Props) {
     if(prevProps.data !== this.props.data) {
       this.currentIndex = this.props.data.defaultIndex !== undefined ? this.props.data.defaultIndex : -1
-      this.viewVisible = false
-      this.setState({
-        showMenu: true
-      })
+      this.handleDefaultBehavior(this.currentIndex > -1 && this.currentIndex < this.props.data.data.length)
     }
   }
 
   isVisible = (): boolean => {
     return this.props.toolbarVisible && this.props.data.data.length > 0
+  }
+
+  handleDefaultBehavior = (hasDefaltView: boolean) => {
+    this.viewVisible = hasDefaltView && (this.props.data.isShowView === true)
+    this.setState({
+      showMenu: !this.viewVisible
+    })
+    if(hasDefaltView) {
+      this.props.data.data[this.currentIndex].onPress?.(this.currentIndex)
+      this.showView(this.viewVisible)
+    }
   }
 
   showView = (visible: boolean) => {

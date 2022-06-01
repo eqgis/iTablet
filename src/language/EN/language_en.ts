@@ -413,6 +413,7 @@ export const language_en: typeof language_cn = {
   AREA: "Area",
   LINE: "Line",
   POINT: "Point",
+  MARKER_LINE: "Marker line", // to be translated
 
   OPEN_MAP: "Open Map",
   UNTITLED_MAP: "Untitled Map",

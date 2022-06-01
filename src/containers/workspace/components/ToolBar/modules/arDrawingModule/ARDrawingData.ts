@@ -1,4 +1,4 @@
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType ,ConstPath} from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets, getARSceneAssets, getPublicAssets, getImage } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
@@ -8,7 +8,7 @@ import { SARMap ,ARAction} from 'imobile_for_reactnative'
 import DataHandler from '../../../../../tabs/Mine/DataHandler'
 import { Platform } from 'react-native'
 import { AR3DExample, ARModelExample, AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4 } from '../../../../../tabs/Mine/DataHandler/DataExample'
-import { dataUtil, DialogUtils } from '../../../../../../utils'
+import { dataUtil, DialogUtils ,AppToolBar,AppUser} from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { FileTools } from '@/native'
 
@@ -136,6 +136,40 @@ async function getData(type: string, params: {[name: string]: any}) {
               title: getLanguage().BUBBLE_TEXT,
               action: ARDrawingAction.arBubbleText,
             },
+            {
+              key: 'SM_AR_DRAWING_LINE',
+              image: getThemeAssets().ar.point_line,
+              title: getLanguage().LINE,
+              action: () => {
+                // 切换到添加矢量线的工具栏
+                // AppToolBar.show('ARMAP', 'AR_MAP_ADD_LINE')
+                const _params: any = ToolbarModule.getParams()
+                _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_LINE, {
+                  isFullScreen: false,
+                })
+              }
+            },
+            {
+              key: 'SM_AR_DRAWING_MARKER_LINE',
+              image: getThemeAssets().ar.marker_line,
+              title: getLanguage().MARKER_LINE,
+              action: async () => {
+                const homePath = await FileTools.getHomeDirectory()
+                // 获取当前用户的用户名
+                const userName = AppUser.getCurrentUser().userName
+                // 拼接AR符号库的文件夹路径
+                const arSymbolFilePath = homePath + ConstPath.UserPath + userName + '/' + ConstPath.RelativePath.ARSymbol
+                const filePath = 'file://' + arSymbolFilePath + "/arnavi_arrowcircle.png"
+
+                AppToolBar.addData({markerLineContent: filePath})
+                // 切换到添加矢量线的工具栏
+                // AppToolBar.show('ARMAP', 'AR_MAP_ADD_LINE')
+                const _params: any = ToolbarModule.getParams()
+                _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE, {
+                  isFullScreen: false,
+                })
+              }
+            },
           ],
           onPress: () => {
             // 点击tab后将索引值同步
@@ -232,6 +266,8 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_ADD_ATTRIBUTE_WIDGET:
     case ConstToolType.SM_AR_DRAWING_ADD_WIDGET:
     case ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM:
+    case ConstToolType.SM_AR_DRAWING_ADD_LINE:
+    case ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE:
     case ConstToolType.SM_AR_DRAWING_ADD_SAND:
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
@@ -265,6 +301,13 @@ async function getData(type: string, params: {[name: string]: any}) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
+  }
+  if(type ===  ConstToolType.SM_AR_DRAWING_ADD_LINE ||type === ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE){
+    buttons.splice(3,0, {
+      type: 'ADD_UNDO',
+      image: getThemeAssets().ar.armap.undo,
+      action: () => ARDrawingAction.cancelAddARLinePoint(),
+    })
   }
   return { data, buttons }
 }

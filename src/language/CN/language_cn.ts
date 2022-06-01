@@ -412,6 +412,7 @@ export const language_cn = {
   AREA: "面",
   LINE: "线",
   POINT: "点",
+  MARKER_LINE:"符号线",
 
   OPEN_MAP: "打开地图",
   UNTITLED_MAP: "未命名地图",
@@ -470,7 +471,7 @@ export const language_cn = {
   BACK: "后",
 
   PARAMETER: "参数",
-  CONFIRM: "确认",
+  CONFIRM: "确定",
 
   ADD: "添加",
   NONE: "无",

@@ -4971,6 +4971,27 @@ export default class MapView extends React.Component {
             this.datumPointCalibration?.arEnhancePosition?.startScan()
           }
           }
+          onARElementGeometryTouch={element => {
+            // 点击矢量线和符号线的回调函数
+            // if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
+            if (element.type === ARElementType.AR_LINE
+              || element.type === ARElementType.AR_MARKER_LINE) {
+              {
+                AppToolBar.addData({ addARElement: element })
+                arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
+                ToolbarModule.addData({ selectARElement: element })
+                AppToolBar.addData({ selectARElement: element })
+                SARMap.appointEditElement(element.id, element.layerName)
+                SARMap.setAction(ARAction.MOVE)
+                this.showFullMap(true)
+                this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+                  containerType: ToolbarType.slider,
+                  isFullScreen: false,
+                })
+              }
+            }
+            // }
+          }}
         />
         {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderHeader()}
         {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderBottomBtns()}

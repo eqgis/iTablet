@@ -413,6 +413,7 @@ export const language_ja: typeof language_cn = {
   AREA: "ポリゴン",
   LINE: "ライン",
   POINT: "ポイント",
+  MARKER_LINE: "Marker line", // to be translated
 
   OPEN_MAP: "マップを開く",
   UNTITLED_MAP: "新規マップ",

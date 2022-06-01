@@ -53,6 +53,98 @@ async function getData(type: string, params: {[name: string]: any}) {
       }
       break
     }
+    case ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE:
+      buttons = [
+        {
+          type: 'ADD_QUIT',
+          image: getThemeAssets().toolbar.icon_toolbar_quit,
+          action:async () => {
+            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+            if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+              SARMap.exitAddARLine(layer.name)
+            }
+            const _params: any = ToolbarModule.getParams()
+            const _data = await getData(ConstToolType.SM_AR_EDIT, _params)
+            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
+              isFullScreen: false,
+              buttons: _data.buttons,
+            })
+            SARMap.clearSelection()
+            SARMap.cancel()
+            SARMap.setAction(ARAction.SELECT)
+            ToolbarModule.addData({selectARElement: null})
+          },
+        },
+        {
+          type: 'ADD_LOCATION',
+          image: getThemeAssets().ar.armap.ar_add_location,
+          action: () => {
+            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+            // 当前图层是线图层
+            if (layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+              SARMap.setAction(ARAction.VERTEX_ADD)
+              SARMap.addARLinePoint(layer.name, { foucus: false, updatefoucus: false })
+            }
+          },
+        },
+        {
+          type: 'ADD_POINT',
+          image: getThemeAssets().ar.armap.ar_add_point,
+          action: () => {
+            const _params: any = ToolbarModule.getParams()
+            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE_ATPOINT, {
+              isFullScreen: false,
+            })
+          },
+        },
+        {
+          type: 'ADD_UNDO',
+          image: getThemeAssets().ar.armap.undo,
+          action: () => {
+            // 获取当前图层
+            const _params: any = ToolbarModule.getParams()
+            const layer = _params.arlayer.currentLayer
+            // 当前图层是线图层
+            if (layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+              SARMap.cancelAddARLinePoint(layer.name)
+            }
+          },
+        },
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
+    case ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE_ATPOINT:
+      buttons = [
+        {
+          type: 'ADD_QUIT',
+          image: getThemeAssets().toolbar.icon_toolbar_quit,
+          action:async () => {
+            const _params: any = ToolbarModule.getParams()
+            SARMap.setAction(ARAction.VERTEX_ADD)
+            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE, {
+              isFullScreen: false,
+            })
+          },
+        },
+        {
+          type: 'ADD_POINT',
+          image: getThemeAssets().ar.armap.icon_add_to,
+          action: async () => {
+            const translation = await SARMap.getCurrentCenterHitPoint()
+            if(translation) {
+              // 获取当前图层
+              const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+              // 当前图层是线图层
+              if (layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+                SARMap.setAction(ARAction.VERTEX_ADD_FOUCUS)
+                SARMap.addARLinePoint(layer.name, { translation: translation })
+              }
+            }
+          },
+        },
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+      break
     case ConstToolType.SM_AR_EDIT_ANIMATION_TYPE:
     case ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION:
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION:
@@ -553,6 +645,15 @@ async function getStyleData(type: string) {
     buttons = [
       ToolbarBtnType.TOOLBAR_BACK,
       ToolbarBtnType.MENU,
+      ToolbarBtnType.MENU_FLEX,
+      ToolbarBtnType.TOOLBAR_COMMIT,
+    ]
+  }
+
+  if (_data.selectARElement.type === ARElementType.AR_LINE
+    || _data.selectARElement.type === ARElementType.AR_MARKER_LINE) {
+    buttons = [
+      ToolbarBtnType.TOOLBAR_BACK,
       ToolbarBtnType.MENU_FLEX,
       ToolbarBtnType.TOOLBAR_COMMIT,
     ]
@@ -1275,7 +1376,8 @@ function getHeaderData(type: string) {
     // type === ConstToolType.SM_AR_EDIT ||
     type === ConstToolType.SM_AR_EDIT_SCALE ||
     type === ConstToolType.SM_AR_EDIT_ROTATION ||
-    type === ConstToolType.SM_AR_EDIT_POSITION
+    type === ConstToolType.SM_AR_EDIT_POSITION ||
+    type === ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE
   ) {
     headerData = {
       withoutBack: true,
@@ -1313,6 +1415,45 @@ function getHeaderData(type: string) {
       }
     }
 
+    if(_data.selectARElement.type === ARElementType.AR_LINE
+      || _data.selectARElement.type === ARElementType.AR_MARKER_LINE){
+      headerData.headerRight.push({
+        key: 'line_object_edit',
+        // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+        action: ()=>{
+          SARMap.setAction(ARAction.MOVE)
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+            containerType: ToolbarType.slider,
+            isFullScreen: false,
+          })
+        },
+        size: 'large',
+        image: getImage().icon_edit,
+        style: {
+          width: scaleSize(60),
+          height: scaleSize(60),
+          borderRadius: scaleSize(8),
+          backgroundColor: color.white,
+        },
+      },{
+        key: 'line_point_add',
+        // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+        action: ()=>{
+          SARMap.setAction(ARAction.VERTEX_ADD)
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE, {
+            isFullScreen: false,
+          })
+        },
+        size: 'large',
+        image: getImage().zoom_in,
+        style: {
+          width: scaleSize(60),
+          height: scaleSize(60),
+          borderRadius: scaleSize(8),
+          backgroundColor: color.white,
+        },
+      })
+    }
   }
   return headerData
 }

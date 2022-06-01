@@ -412,6 +412,7 @@ export const language_ar: typeof language_cn = {
   AREA: "منطقة",
   LINE: "خط",
   POINT: "نقطة .",
+  MARKER_LINE: "Marker line", // to be translated
 
   OPEN_MAP: "فتح الخريطة",
   UNTITLED_MAP: "خريطة بدون عنوان",

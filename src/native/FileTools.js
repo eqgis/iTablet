@@ -398,6 +398,18 @@ async function decoder(data = '') {
   }
 }
 
+/**
+ * 初始化文件目录
+ * @param username 用户名
+ */
+async function initARSymbolData(username) {
+  try {
+    return FileTools.initARSymbolData(username)
+  } catch (error) {
+    return false
+  }
+}
+
 export default {
   getHomeDirectory,
   appendingHomeDirectory,
@@ -435,4 +447,5 @@ export default {
   getAvailableFileName,
   encode,
   decoder,
+  initARSymbolData,
 }

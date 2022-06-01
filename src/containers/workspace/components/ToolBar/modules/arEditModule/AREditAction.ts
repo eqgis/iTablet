@@ -181,6 +181,13 @@ function commit() {
 
     _params.setToolbarVisible(false)
 
+  }else if(_params.type === ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE_ATPOINT ||
+    _params.type === ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE){
+    // 获取当前图层
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if (layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+      SARMap.updateARLineElement(layer.name)
+    }
   } else {
     SARMap.submit().then(async () => {
       const _data: any = ToolbarModule.getData()

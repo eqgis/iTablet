@@ -18,7 +18,7 @@ import { MapToolbar } from '../workspace/components'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
 import NavigationService from '../NavigationService'
 import ARLayerMenu from './ARLayerMenu'
-import { ConstToolType } from '../../constants'
+import { ConstToolType, Const } from '../../constants'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -86,6 +86,15 @@ interface Postion {
   y: number,
 }
 
+export const layerTypesObj = {
+  [Const.POI]: [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
+  [Const.VECTOR]: [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
+  [Const.THREE_D]: [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
+  [Const.MODEL]: [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
+  [Const.EFFECT]: [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
+  [Const.WIDGET]: [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
+}
+
 export default class ARLayerManager extends React.Component<Props, State> {
   inputDialog: InputDialog | undefined | null
   backPositon: Postion
@@ -123,22 +132,14 @@ export default class ARLayerManager extends React.Component<Props, State> {
     const length = layers.length
     const type: string | undefined = this.tabType
 
-    // 图层类型分类数组
-    const allTypes = [
-      [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
-      [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
-      [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
-      [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
-      [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
-      // [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
-    ]
-    if(type){
+    if(type && type!= ""){
       // 当类型为有值的情况下，一定是一个数字的字符串
-      const typeIndex = parseInt(type)
+      // const typeIndex = parseInt(type)
+      const aimArr = layerTypesObj[type]
       for(let i = 0; i < length; i ++){
         // 判断该图层的类型是否属于要过滤的类型 false表示不显示的 true表示显示的
         let isFilter = false
-        allTypes[typeIndex].map(item => {
+        aimArr.map((item: Number) => {
           if(item === layers[i].type) {
             isFilter = true
           }
@@ -571,11 +572,12 @@ export default class ARLayerManager extends React.Component<Props, State> {
           GLOBAL.isNotEndAddEffect = false
           let type = this.tabType
           if(!type) {
-            type = "0"
+            type = Const.POI
           }
           ToolbarModule.addData({
             addNewDsetWhenCreate: true,
-            moduleIndex: Number(type),
+            // moduleIndex: Number(type),
+            moduleKey: type,
           })
         },
       }),
@@ -594,10 +596,11 @@ export default class ARLayerManager extends React.Component<Props, State> {
     arDrawingModule().action()
     let type = this.tabType
     if(!type) {
-      type = "0"
+      type = Const.POI
     }
     ToolbarModule.addData({
-      moduleIndex: Number(type),
+      // moduleIndex: Number(type),
+      moduleKey: type,
     })
 
   }

@@ -1,4 +1,4 @@
-import { ConstToolType } from '../../../../../../constants'
+import { Const, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets, getARSceneAssets, getPublicAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
@@ -32,7 +32,8 @@ interface SectionData {
 
 async function getData(type: string, params: {[name: string]: any}) {
   ToolbarModule.setParams(params)
-  ToolbarModule.addData({moduleIndex: 0})
+  // ToolbarModule.addData({moduleIndex: 0})
+  ToolbarModule.addData({moduleKey: 'POI'})
   let data: SectionData[] | SectionItemData[] | string[] = []
   let buttons: any[] = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
   if (type === ConstToolType.SM_AR_DRAWING) {
@@ -44,7 +45,8 @@ async function getData(type: string, params: {[name: string]: any}) {
         image: getThemeAssets().tabBar.tab_layer,
         action: () => {
           // 获取当前所属的tab索引值
-          let tabType = ToolbarModule.getData()?.moduleIndex?.toString()
+          // let tabType = ToolbarModule.getData()?.moduleIndex?.toString()
+          let tabType = ToolbarModule.getData()?.moduleKey
           // 跳转到图层管理页面
           NavigationService.navigate("ARLayerManager", {
             tabType: tabType,
@@ -85,7 +87,8 @@ async function getData(type: string, params: {[name: string]: any}) {
           }],
           onPress: () => {
             // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 0})
+            // ToolbarModule.addData({moduleIndex: 0})
+            ToolbarModule.addData({moduleKey: Const.POI})
             // 转到非特效tab里视为特效图层已经添加完成
             GLOBAL.isNotEndAddEffect = false
           },
@@ -131,7 +134,8 @@ async function getData(type: string, params: {[name: string]: any}) {
           ],
           onPress: () => {
             // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 1})
+            // ToolbarModule.addData({moduleIndex: 1})
+            ToolbarModule.addData({moduleKey: Const.VECTOR})
             // 转到非特效tab里视为特效图层已经添加完成
             GLOBAL.isNotEndAddEffect = false
           },
@@ -141,7 +145,8 @@ async function getData(type: string, params: {[name: string]: any}) {
           containerType: 'list',
           onPress: () => {
             // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 2})
+            // ToolbarModule.addData({moduleIndex: 2})
+            ToolbarModule.addData({moduleKey: Const.THREE_D})
             // 转到非特效tab里视为特效图层已经添加完成
             GLOBAL.isNotEndAddEffect = false
           },
@@ -151,7 +156,8 @@ async function getData(type: string, params: {[name: string]: any}) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
           onPress: () => {
             // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 3})
+            // ToolbarModule.addData({moduleIndex: 3})
+            ToolbarModule.addData({moduleKey: Const.MODEL})
             // 转到非特效tab里视为特效图层已经添加完成
             GLOBAL.isNotEndAddEffect = false
           },
@@ -161,7 +167,8 @@ async function getData(type: string, params: {[name: string]: any}) {
           title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
           onPress: () => {
             // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 4})
+            // ToolbarModule.addData({moduleIndex: 4})
+            ToolbarModule.addData({moduleKey: Const.EFFECT})
           },
           getData: getAREffect,
         },

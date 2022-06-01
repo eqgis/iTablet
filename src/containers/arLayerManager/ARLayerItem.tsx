@@ -5,7 +5,7 @@ import { color, size } from '../../styles'
 import { getARLayerAssets, getPublicAssets, getThemeAssets, getARLayerAssetsGray } from '../../assets'
 import { SARMap, ARLayerType } from 'imobile_for_reactnative'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
-import { ARLayers } from './ARLayerManager'
+import { ARLayers, layerTypesObj } from './ARLayerManager'
 const styles = StyleSheet.create({
   rowOne: {
     height: scaleSize(98),
@@ -69,23 +69,14 @@ export default class LayerItem extends React.Component<ItemProps, ItemState> {
 
   /** 图层判断 */
   FilterGray(){
-    // 图层类型分类数组
-    const allTypes = [
-      [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
-      [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
-      [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
-      [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
-      [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
-      // [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
-    ]
 
     // 判断当前项是否可以被设置为当前图层
-    if(this.props.type){
+    if(this.props.type && this.props.type!= ""){
       // 当类型为有值的情况下，一定是一个数字的字符串
-      const typeIndex = parseInt(this.props.type)
+      // const typeIndex = parseInt(this.props.type)
       let isFilter = false
       // 判断该图层的类型是否属于要过滤的类型 false表示不能设置为当前图层的 true表示可以设置为当前图层的
-      allTypes[typeIndex].map(item => {
+      layerTypesObj[this.props.type].map((item: number) => {
         if(item === this.props.layer.type) {
           isFilter = true
         }

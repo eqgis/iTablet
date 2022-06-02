@@ -117,7 +117,7 @@ export default class PlotAnimationView extends React.Component {
   }
 
   //桌面端顺序7个：路径、闪烁、属性、显隐、旋转、比例、生长
-  getData() {
+  getData = () => {
     let data = []
     data.push({
       name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_WAY,
@@ -184,7 +184,7 @@ export default class PlotAnimationView extends React.Component {
     if (value.indexOf('.') < 0 && value != '') {
       //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
       value = parseFloat(value)
-    } else if (value == '') {
+    } else if (value === '') {
       value = 0
     }
     return value + ''
@@ -199,7 +199,7 @@ export default class PlotAnimationView extends React.Component {
           alignItems: 'center',
           flexDirection: 'column',
           backgroundColor:
-            item.animationMode == this.state.animationMode
+            item.animationMode === this.state.animationMode
               ? color.gray3
               : color.bgW,
         }}
@@ -211,7 +211,7 @@ export default class PlotAnimationView extends React.Component {
             style={{
               position: 'absolute',
               backgroundColor: 'red',
-              // height: item.animationMode == 0 ? scaleSize(15) : 0,
+              // height: item.animationMode === 0 ? scaleSize(15) : 0,
               height:
                 this.state.types && this.state.types[item.animationMode] > 0
                   ? scaleSize(15)
@@ -242,7 +242,37 @@ export default class PlotAnimationView extends React.Component {
     )
   }
 
-  renderView() {
+  renderStartItem = (title, image, action) => {
+    return (
+      <TouchableOpacity onPress={action}>
+        <View style={styles.startTime}>
+          <Text style={styles.startTimeText}>
+            {title}
+          </Text>
+          <View style={styles.startTimeView}>
+            {
+              image &&
+              <Image
+                source={image}
+                style={styles.startModeImage}
+              />
+            }
+          </View>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  renderView = () => {
+    const startFollowLastImg = this.state.startMode === StartMode.START_FOLLOW_LAST
+      ? getThemeAssets().publicAssets.icon_submit
+      : null
+    const startImg = this.state.startMode === StartMode.POINT_START
+      ? getThemeAssets().publicAssets.icon_submit
+      : null
+    const startTogetherImg = this.state.startMode === StartMode.START_TOGETHER_LAST
+      ? getThemeAssets().publicAssets.icon_submit
+      : null
     return (
       <View style={styles.container}>
         <View style={styles.titleView}>
@@ -352,75 +382,16 @@ export default class PlotAnimationView extends React.Component {
             }
           </Text>
         </View>
-        <TouchableOpacity onPress={this.setStratModeFllowLast}>
-          <View style={styles.startTime}>
-            <Text style={styles.startTimeText}>
-              {
-                getLanguage(global.language).Map_Plotting
-                  .PLOTTING_ANIMATION_FLLOW_LAST
-              }
-            </Text>
-            <View style={styles.startTimeView}>
-              <Image
-                source={
-                  this.state.startMode == StartMode.START_FOLLOW_LAST
-                    ? getThemeAssets().publicAssets.icon_submit
-                    : null
-                }
-                style={styles.startModeImage}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.lineStyle} />
-        <TouchableOpacity onPress={this.setStratModePointStart}>
-          <View style={styles.startTime}>
-            <Text style={styles.startTimeText}>
-              {
-                getLanguage(global.language).Map_Plotting
-                  .PLOTTING_ANIMATION_CLICK_START
-              }
-            </Text>
-            <View style={styles.startTimeView}>
-              <Image
-                source={
-                  this.state.startMode == StartMode.POINT_START
-                    ? getThemeAssets().publicAssets.icon_submit
-                    : null
-                }
-                style={styles.startModeImage}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.lineStyle} />
-        <TouchableOpacity onPress={this.setStratModeTogetherLast}>
-          <View style={styles.startTime}>
-            <Text style={styles.startTimeText}>
-              {
-                getLanguage(global.language).Map_Plotting
-                  .PLOTTING_ANIMATION_TOGETHER_LAST
-              }
-            </Text>
-            <View style={styles.startTimeView}>
-              <Image
-                source={
-                  this.state.startMode == StartMode.START_TOGETHER_LAST
-                    ? getThemeAssets().publicAssets.icon_submit
-                    : null
-                }
-                style={styles.startModeImage}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
+        {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_FLLOW_LAST, startFollowLastImg, this.setStratModeFllowLast)}
+        {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_CLICK_START, startImg, this.setStratModePointStart)}
+        {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_TOGETHER_LAST, startTogetherImg, this.setStratModeTogetherLast)}
         {this.state.animationMode != 0 ? null : (
           <View style={styles.endlineStyle} />
         )}
         {this.state.animationMode != 0 ? null : (
           <TouchableOpacity
             style={{
-              height: this.state.animationMode == 0 ? scaleSize(80) : 0,
+              height: this.state.animationMode === 0 ? scaleSize(80) : 0,
             }}
             onPress={this.createAnimationWay}
           >

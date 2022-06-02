@@ -80,7 +80,7 @@
             android:launchMode="singleTop"
             android:exported="true">
         </activity>
-        <meta-data android:name="AmapApiKey" android:value="73aeebfdb83e6137ed9f5cb35deda53a" />
+        <meta-data android:name="AmapApiKey" android:value="1fb2d1e17222e36ce15389c5d037cf5c" />
         <meta-data
             android:name="TencentMapSDK"
             android:value="YSGBZ-3XD3P-W6MDB-V6YPH-RDKUT-EIFUR" />

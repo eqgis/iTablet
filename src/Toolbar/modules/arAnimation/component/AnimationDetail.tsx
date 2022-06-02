@@ -11,7 +11,7 @@ import { AppendID, ARAnimatorWithID, deleteARAnimation, moveARAnimation, setARAn
 import { getLanguage } from '../../../../language'
 import { ToolbarSlideCard } from 'imobile_for_reactnative/components/ToolbarKit'
 import * as ModuleData from '../Actions'
- 
+
 interface Props extends ReduxProps {
   visible: boolean
 }
@@ -36,11 +36,19 @@ class AnimationDetail extends React.Component<Props, State> {
     this.addListener()
   }
 
+  componentWillUnmount() {
+    this.removeListener()
+  }
+
   addListener = () => {
     AppEvent.addListener('ar_animation_save', this.goBack)
     AppEvent.addListener('ar_animation_play', this.play)
   }
 
+  removeListener = () => {
+    AppEvent.removeListener('ar_animation_save', this.goBack)
+    AppEvent.removeListener('ar_animation_play', this.play)
+  }
 
   goBack = () => {
     this.save()

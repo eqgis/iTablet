@@ -36,6 +36,10 @@ class ARAnimationList extends React.Component<Props, State> {
     AppEvent.addListener('ar_animation_exit', this.clearCurrentAnimation)
   }
 
+  componentWillUnmount() {
+    AppEvent.removeListener('ar_animation_exit', this.clearCurrentAnimation)
+  }
+
   componentDidUpdate(prevProps: Props) {
     if(prevProps.visible !== this.props.visible && this.props.visible) {
       this.onVisible()

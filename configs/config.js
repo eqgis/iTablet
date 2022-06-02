@@ -9,7 +9,7 @@ const IPORTAL_IP = iportalMQIP
 const MQ_IP = iportalMQIP
 const FILE_MANAGE_IP = iportalMQIP
 
-export const SYSTEM_QUEUE_ID = '/queue/%2F'
+export const SYSTEM_QUEUE_ID = '/queue/engineering'
 
 export default {
   name: '外业采集系统',

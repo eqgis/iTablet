@@ -60,6 +60,7 @@ import SecondMapSettings from './mapSetting/secondMapSettings'
 import MTLayerManager from './mtLayerManager'
 import Layer3DManager from './Layer3DManager'
 import MapSetting from './mapSetting'
+import Map3DSetting from './setting'
 import {
   LayerSelectionAttribute,
   LayerAttributeAdd,
@@ -237,7 +238,7 @@ export default function(params: {
         animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
         presentation: 'containedTransparentModal',
       }}/>
-      <Stack.Screen name="Map3DSetting" component={MapSetting} options={{
+      <Stack.Screen name="Map3DSetting" component={Map3DSetting} options={{
         headerShown: false,
         animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
         presentation: 'containedTransparentModal',

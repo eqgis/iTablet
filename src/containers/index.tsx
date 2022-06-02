@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   createNativeStackNavigator,
+  ScreenOptions,
 } from '@react-navigation/native-stack'
 
 // 主页
@@ -197,17 +198,31 @@ import Report from '../containers/tabs/Friend/Chat/Report'
 import WebView from '../components/WebView'
 import { ImagePickerStack } from '@/components/ImagePicker'
 import { UserInfo } from '@/types'
-import { UserType } from '@/constants'
 import { Platform } from 'react-native'
 import MapSelectList from '../containers/workspace/components/ToolBar/modules/arDrawingModule/MapSelectList'
+import { DEVICE } from '@/redux/models/device'
 
 const Stack = createNativeStackNavigator()
 
-export default function(params: {
+interface StackNavigatorProps {
   appConfig: any,
-  device: any,
+  device: DEVICE,
   currentUser: UserInfo,
-}) {
+}
+
+/**
+ * 不隐藏上一节面
+ * ios使用transparentModal时,在该页面跳转的页面也需要使用transparentModal,否则跳转的页面会出现在下一层
+ */
+const modalOption = (params: StackNavigatorProps): ScreenOptions => {
+  return {
+    headerShown: false,
+    animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+    presentation: 'transparentModal',
+  }
+}
+
+export default function(params: StackNavigatorProps) {
   return (
     <Stack.Navigator
       initialRouteName='Tabs'
@@ -233,16 +248,8 @@ export default function(params: {
         {() => CoworkTabs(params.device)}
       </Stack.Screen>
       <Stack.Screen name="MapViewSingle" component={MapView} />
-      <Stack.Screen name="MapSetting" component={MapSetting} options={{
-        headerShown: false,
-        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-        presentation: 'containedTransparentModal',
-      }}/>
-      <Stack.Screen name="Map3DSetting" component={Map3DSetting} options={{
-        headerShown: false,
-        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-        presentation: 'containedTransparentModal',
-      }}/>
+      <Stack.Screen name="MapSetting" component={MapSetting} options={modalOption(params)}/>
+      <Stack.Screen name="Map3DSetting" component={Map3DSetting} options={modalOption(params)}/>
       <Stack.Screen name="CoworkMember" component={CoworkMember} />
       <Stack.Screen name="CoworkMessage" component={CoworkMessage} />
       <Stack.Screen name="GroupSelectPage" component={GroupSelectPage} />
@@ -254,18 +261,8 @@ export default function(params: {
       <Stack.Screen name="GroupMessagePage" component={GroupMessagePage} />
       <Stack.Screen name="SelectModulePage" component={SelectModulePage} />
       <Stack.Screen name="GroupSettingPage" component={GroupSettingPage} />
-      <Stack.Screen name="LayerManager" component={MTLayerManager} options={{
-        headerShown: false,
-        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-        // presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
-        // animation: 'none',
-        presentation: 'containedTransparentModal',
-      }}/>
-      <Stack.Screen name="Layer3DManager" component={Layer3DManager} options={{
-        headerShown: false,
-        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-        presentation: 'containedTransparentModal',
-      }}/>
+      <Stack.Screen name="LayerManager" component={MTLayerManager} options={modalOption(params)}/>
+      <Stack.Screen name="Layer3DManager" component={Layer3DManager} options={modalOption(params)}/>
       <Stack.Screen name="LayerSelectionAttribute" component={LayerSelectionAttribute} />
       <Stack.Screen name="LayerAttributeAdd" component={LayerAttributeAdd} />
       <Stack.Screen name="LayerAttributeSearch" component={LayerAttributeSearch} />
@@ -276,7 +273,7 @@ export default function(params: {
       <Stack.Screen name="MapCutDS" component={MapCutDS} />
       <Stack.Screen name="MapToolbarSetting" component={MapToolbarSetting} />
       <Stack.Screen name="TouchProgress" component={TouchProgress} />
-      <Stack.Screen name="InputPage" component={InputPage} />
+      <Stack.Screen name="InputPage" component={InputPage} options={modalOption(params)} />
       <Stack.Screen name="InputStyledText" component={InputStyledText} />
       <Stack.Screen name="AnimationNodeEditView" component={AnimationNodeEditView} />
       <Stack.Screen name="AnimationNodeEditRotateView" component={AnimationNodeEditRotateView} />
@@ -334,15 +331,10 @@ export default function(params: {
       <Stack.Screen name="LicenseJoinEducation" component={LicenseJoinEducation} />
       <Stack.Screen name="Setting" component={Setting} />
       <Stack.Screen name="LanguageSetting" component={LanguageSetting} />
-      <Stack.Screen name="LocationSetting" component={LocationSetting} />
+      <Stack.Screen name="LocationSetting" component={LocationSetting} options={modalOption(params)} />
       <Stack.Screen name="Protocol" component={Protocol} />
       <Stack.Screen name="PublicMap" component={PublicMap} />
-      <Stack.Screen name="PointAnalyst" component={PointAnalyst} options={{
-        // animation: (params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right'),
-        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-        headerShown: false,
-        presentation: 'containedTransparentModal',
-      }}/>
+      <Stack.Screen name="PointAnalyst" component={PointAnalyst} options={modalOption(params)}/>
       <Stack.Screen name="FriendMap" component={FriendMap} />
       <Stack.Screen name="MyLabel" component={MyLabel} />
       <Stack.Screen name="MyBaseMap" component={MyBaseMap} />
@@ -407,34 +399,21 @@ export default function(params: {
       <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
       <Stack.Screen name="InterpolationAnalystView" component={InterpolationAnalystView} />
       <Stack.Screen name="InterpolationAnalystDetailView" component={InterpolationAnalystDetailView} />
-      <Stack.Screen name="SecondMapSettings" component={SecondMapSettings} />
-      <Stack.Screen name="SecondMapSettings1" component={SecondMapSettings} />
-      <Stack.Screen name="SecondMapSettings2" component={SecondMapSettings} />
-      <Stack.Screen name="SecondMapSettings3" component={SecondMapSettings} />
-      <Stack.Screen name="SecondMapSettings4" component={SecondMapSettings} />
-      <Stack.Screen name="SecondMapSettings5" component={SecondMapSettings} />
-      <Stack.Screen name="SecondMapSettings6" component={SecondMapSettings} />
-      <Stack.Screen name="SecondMapSettings7" component={SecondMapSettings} />
-      <Stack.Screen name="NavigationView" component={NavigationView} options={{
-        // animation: Platform.OS === 'ios' ? 'default' : (params.device.orientation.indexOf('LANDSCAPE') >= 0 ? 'slide_from_left' : 'slide_from_right'),
-        headerShown: false,
-        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-        presentation: 'containedTransparentModal',
-      }} />
+      <Stack.Screen name="SecondMapSettings" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="SecondMapSettings1" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="SecondMapSettings2" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="SecondMapSettings3" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="SecondMapSettings4" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="SecondMapSettings5" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="SecondMapSettings6" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="SecondMapSettings7" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="NavigationView" component={NavigationView} options={modalOption(params)} />
       <Stack.Screen name="NavigationDataChangePage" component={NavigationDataChangePage} />
       <Stack.Screen name="CreateNavDataPage" component={CreateNavDataPage} />
       <Stack.Screen name="CollectSceneFormHistoryView" component={CollectSceneFormHistoryView} />
       <Stack.Screen name="CustomModePage" component={CustomModePage} />
-      <Stack.Screen name="ARLayerManager" component={ARLayerManager} options={{
-        headerShown: false,
-        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-        presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
-      }}/>
-      <Stack.Screen name="ARMapSetting" component={ARMapSetting} options={{
-        headerShown: false,
-        animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-        presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
-      }}/>
+      <Stack.Screen name="ARLayerManager" component={ARLayerManager} options={modalOption(params)}/>
+      <Stack.Screen name="ARMapSetting" component={ARMapSetting} options={modalOption(params)}/>
       <Stack.Screen name="ServiceShareSettings" component={ServiceShareSettings} />
       <Stack.Screen name="NavigationView2D" component={NavigationView2D} />
       <Stack.Screen name="RoadNet" component={RoadNet} />

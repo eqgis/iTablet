@@ -166,6 +166,13 @@ function popToTop() {
 }
 // add other navigation functions that you need and export them
 
+function push(name, params) {
+
+  const pushAction = StackActions.push(name, params)
+
+  _navigator.dispatch(pushAction)
+}
+
 export default {
   navigate,
   getTopLevelNavigator,
@@ -175,6 +182,7 @@ export default {
   replace,
   pop,
   popToTop,
+  push,
   isInMap,
   isInMap3D,
   isCurrent,

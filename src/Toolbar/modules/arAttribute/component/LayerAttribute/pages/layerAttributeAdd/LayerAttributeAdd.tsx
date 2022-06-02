@@ -19,7 +19,8 @@ import {
 import styles from './styles'
 import { AppStyle, dp, scaleSize, Toast } from '../../../../../../../utils'
 import { getImage } from '../../../../../../../assets'
-import { CustomModal, Row } from '@/components'
+import { CustomModal } from '@/components'
+import { Row } from '@/components/Row2'
 import { getCurrentLanguage, getLanguage } from '../../../../../../../language'
 import { TFieldType } from 'imobile_for_reactnative'
 import { FieldInfo1 } from 'imobile_for_reactnative/types/data'
@@ -417,7 +418,7 @@ export default class LayerAttributeAdd extends React.Component<Props, State> {
           { title: getLanguage().NO, value: false },
         ]}
         radioColumn={2}
-        getValue={this.getType}
+        getSelected={this.getType}
       />
     ) : (
       <Row
@@ -430,7 +431,7 @@ export default class LayerAttributeAdd extends React.Component<Props, State> {
         defaultValue={this.state.defaultValue + ''}
         type={Row.Type.INPUT_WRAP}
         title={defaultValueTile}
-        getValue={this.getInputValue}
+        labelChange={this.getInputValue}
       />
     )
   }
@@ -515,7 +516,7 @@ export default class LayerAttributeAdd extends React.Component<Props, State> {
           defaultValue={this.state.name}
           type={Row.Type.INPUT_WRAP}
           title={getLanguage().NAME}
-          getValue={this.getInputValue}
+          labelChange={this.getInputValue}
         />
         <Row
           style={{ marginTop: scaleSize(15), flexDirection: 'column' }}
@@ -527,7 +528,7 @@ export default class LayerAttributeAdd extends React.Component<Props, State> {
           defaultValue={this.state.caption}
           type={Row.Type.INPUT_WRAP}
           title={getLanguage().ALIAS}
-          getValue={this.getInputValue}
+          labelChange={this.getInputValue}
         />
         <Row
           style={{ marginTop: scaleSize(30), alignItems: 'flex-start', flexDirection: 'column' }}
@@ -566,7 +567,7 @@ export default class LayerAttributeAdd extends React.Component<Props, State> {
             { title: getLanguage().NO, value: false },
           ]}
           radioColumn={2}
-          getValue={this.getType}
+          getSelected={this.getType}
         />
         {this.renderDefaultValue()}
       </ScrollView>

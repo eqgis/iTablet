@@ -66,7 +66,7 @@ function animationHomeOption(option: IToolbarOption) {
         AppEvent.emitEvent('ar_animation_play')
       }
     }, {
-      image: getImage().setting,
+      image: getImage().icon_basic,
       onPress: () => {
         AppToolBar.show('ARANIMATION', 'AR_MAP_ANIMATION_DETAIL')
       }

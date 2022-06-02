@@ -26,6 +26,7 @@ class ArEditModule extends FunctionModule {
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR:
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_LINE_COLOR:
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_TIME_COLOR:
+      case ConstToolType.SM_AR_EDIT_ANIMATION_BONE_ANIMATION:
         data.autoShowBox = true
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 5 / 2
         data.column = 3

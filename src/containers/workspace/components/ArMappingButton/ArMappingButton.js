@@ -1031,22 +1031,19 @@ export default class ArMappingButton extends React.Component {
             />
           </TouchableOpacity>
         }
-        {
-          item.title &&
-          <Text
-            style={[
-              {
-                marginTop: scaleSize(10),
-                color: color.font_color_white,
-                fontSize: setSpText(15),
-                backgroundColor: 'transparent',
-                textAlign: 'center',
-              },
-            ]}
-          >
-            {item.title}
-          </Text>
-        }
+        <Text
+          style={[
+            {
+              marginTop: scaleSize(10),
+              color: color.font_color_white,
+              fontSize: setSpText(15),
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+            },
+          ]}
+        >
+          {item.title}
+        </Text>
       </View>
     )
   }

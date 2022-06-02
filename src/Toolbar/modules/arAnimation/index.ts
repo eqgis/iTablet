@@ -1,6 +1,6 @@
 import { getImage } from "@/assets"
 import { getLanguage } from "@/language"
-import { ToolbarModuleData } from "@/SMToolbar/ToolbarModuleData"
+import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar } from "@/utils"
 import ARAnimationView from './ARAnimationView'
 import BottomView from "./BottomView"

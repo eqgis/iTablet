@@ -1,10 +1,11 @@
 import React from "react"
 import { connect, ConnectedProps } from "react-redux"
 import { RootState } from "../redux/types"
-import createToolbar from "../SMToolbar/createToolbar"
+import { ToolbarKit } from 'imobile_for_reactnative/components'
 import { AppToolBar } from "../utils"
-import { ToolbarModuleViewProps } from "../SMToolbar/ToolbarModule"
+import { ToolbarModuleViewProps } from "imobile_for_reactnative/components/ToolbarKit"
 import { MainStackScreenNavigationProps } from "@/types"
+import { resource } from './resource'
 import {
   arAnimationData,
   arAttributeData,
@@ -16,7 +17,7 @@ import {
 } from "./modules"
 import { getARLayers } from "@/redux/models/arlayer"
 
-const SToolbar = createToolbar<ModuleList>()
+const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 
 
 export interface Props extends ReduxProps {

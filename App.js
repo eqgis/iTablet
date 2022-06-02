@@ -797,13 +797,8 @@ class AppRoot extends Component {
   }
 
   back = () => {
-    if (this.state.showLaunchGuide) {
-      // this.setState({
-      //   showLaunchGuide: false,
-      // }, () => {
-      //   Orientation.unlockAllOrientations()
-      // })
-      return true
+    if (this.state.showLaunchGuide || !this.props.isAgreeToProtocol) {
+      return false
     } else {
       return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
     }

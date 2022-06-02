@@ -1,7 +1,6 @@
-import { ToolbarOption } from "@/SMToolbar/ToolbarOption"
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
-import { ToolbarModuleData } from "../../../SMToolbar/ToolbarModuleData"
+import { ToolbarModuleData, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar } from "../../../utils"
 import ARMapAddView from "./ARMapAddView"
 

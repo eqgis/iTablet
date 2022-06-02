@@ -225,9 +225,9 @@ export default class MapSetting extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.props.mapModules.modules[
+          title: this.props.mapModules.modules?.[
             this.props.mapModules.currentMapModule
-          ].chunk.title,
+          ]?.chunk?.title,
           navigation: this.props.navigation,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',

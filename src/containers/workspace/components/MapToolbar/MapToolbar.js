@@ -216,17 +216,8 @@ export default class MapToolbar extends React.Component {
             image: getThemeAssets().tabBar.tab_attribute,
             selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
             btnClick: () => {
-              if (this.props.navigation) {
-                if (this.props.navigation.getState().type === 'tab') {
-                  this.props.navigation.navigate(module, { type })
-                } else {
-                  this.props.navigation.replace(module, { type })
-                }
-              }
-              // this.props.navigation &&
-              //   this.props.navigation.navigate('LayerAttribute3D', {
-              //     type: 'MAP_3D',
-              //   })
+              this.props.navigation &&
+                this.props.navigation.navigate('LayerAttribute3D', { type })
             },
           })
           break

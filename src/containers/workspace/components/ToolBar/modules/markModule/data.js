@@ -5,7 +5,7 @@ import ToolbarModule from '../ToolbarModule'
 const showAction = (type, params) => {
   const _params = ToolbarModule.getParams()
   const _data = ToolbarModule.getData()
-  _data.actions?.menu()
+  _data.actions?.menu(type, params.selectKey)
   _params.setToolbarVisible(true, type, {
     ...params,
   })

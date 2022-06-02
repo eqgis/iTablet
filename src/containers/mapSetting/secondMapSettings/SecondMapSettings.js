@@ -282,7 +282,7 @@ export default class SecondMapSettings extends Component {
     data[10].value = await SMap.getFixedTextOrientation()
     data[11].value = await SMap.isOverlapDisplayed()
     data[12].value = await SMap.isMagnifierEnabled()
-    data[13].value = SMap.isShowLocation()
+    data[13].value = await SMap.isShowLocation()
     data[14].value = this.props.isShowCompass
     data.splice(1,1)
 
@@ -1352,6 +1352,7 @@ export default class SecondMapSettings extends Component {
       let data = this.state.data
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1380,6 +1381,7 @@ export default class SecondMapSettings extends Component {
     ) {
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1402,6 +1404,7 @@ export default class SecondMapSettings extends Component {
     ) {
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1426,6 +1429,7 @@ export default class SecondMapSettings extends Component {
       let menuTitle = coordMenuTitle()
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1460,6 +1464,7 @@ export default class SecondMapSettings extends Component {
       }
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1491,6 +1496,7 @@ export default class SecondMapSettings extends Component {
                       data={item.value}
                       extraData={this.state.data}
                       keyExtractor={(item, index) => item + index}
+                      ListFooterComponent={<View style={{height:8}}/>}
                     />
                   </View>
                 )
@@ -1502,6 +1508,7 @@ export default class SecondMapSettings extends Component {
     }
     return (
       <Container
+        navigation={this.props.navigation}
         headerProps={{
           title: this.state.title,
           backAction: this.backAction,
@@ -1517,6 +1524,7 @@ export default class SecondMapSettings extends Component {
           keyExtractor={(item, index) => item + index}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator = {false}
+          ListFooterComponent={<View style={{height:8}}/>}
         />
         {this.renderConfidenceSlide()}
       </Container>

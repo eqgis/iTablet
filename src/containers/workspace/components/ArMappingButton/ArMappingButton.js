@@ -1011,25 +1011,26 @@ export default class ArMappingButton extends React.Component {
           alignItems: 'center',
           // justifyContent: 'center',
         }}>
-        <TouchableOpacity
-          onPress={item.action}
-          style={[{
-            width: scaleSize(80),
-            height: scaleSize(80),
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: scaleSize(40),
-            backgroundColor: '#E5E5E6',
-            backgroundColor: backgroundColor,
-          }]}
-        >
-          <Image
-            resizeMode={'contain'}
-            source={item.image}
-            style={styles.smallIcon}
-          />
-        </TouchableOpacity>
-
+        {
+          item.image &&
+          <TouchableOpacity
+            onPress={item.action}
+            style={{
+              width: scaleSize(80),
+              height: scaleSize(80),
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: scaleSize(40),
+              backgroundColor: backgroundColor,
+            }}
+          >
+            <Image
+              resizeMode={'contain'}
+              source={item.image}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        }
         <Text
           style={[
             {

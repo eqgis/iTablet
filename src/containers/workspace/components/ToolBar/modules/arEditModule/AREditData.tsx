@@ -1342,7 +1342,7 @@ async function getBoneAnimationData(type: string) {
   for (let i = 0; i < modelAnimations.length; i++) {
     const item = modelAnimations[i]
     animationData.push({
-      key: 'none',
+      key: item,
       image: getThemeAssets().ar.armap.ar_scale,
       title: item,
       action: async () => {

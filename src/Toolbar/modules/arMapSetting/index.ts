@@ -1,6 +1,6 @@
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
-import { ToolbarModuleData } from "../../../SMToolbar/ToolbarModuleData"
+import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import { getData } from "./Data"
 
 

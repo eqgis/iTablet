@@ -5,7 +5,7 @@ import { TARTextAlign } from "imobile_for_reactnative/types/data"
 import { ModuleList } from ".."
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
-import { IToolbarOption, ToolBarListItem, ToolbarOption } from "../../../SMToolbar/ToolbarOption"
+import { IToolbarOption, ToolBarListItem, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, AppUser } from "../../../utils"
 
 

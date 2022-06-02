@@ -169,7 +169,11 @@ export default class Container extends Component {
   onBackPress = () => {
     let navigation =
       this.props.navigation ||
-      (this.props.headerProps && this.props.headerProps.navigation)
+      (this.props.headerProps && this.props.headerProps.navigation) ||
+      NavigationService.getTopLevelNavigator()
+    if (!navigation) {
+      return false
+    }
     let backAction
     const navigationState = navigation.getState()
     let headerProps = this.props.headerProps

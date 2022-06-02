@@ -711,12 +711,14 @@ export default class LayerSelectionAttribute extends React.Component {
       {
         title: global.language === 'CN' ? '详情' : 'Detail',
         onPress: () => {
-          (async function() {
-            this.props.showAddModal && this.props.showAddModal(true, {
-              data: {fieldInfo},
-              isDetail: true,
-            })
-          }.bind(this)())
+          this.Popover?.setVisible(false, undefined, undefined, () => {
+            setTimeout(() => {
+              this.props.showAddModal && this.props.showAddModal(true, {
+                data: {fieldInfo},
+                isDetail: true,
+              })
+            }, 300)
+          })
         },
       },
     ]
@@ -742,7 +744,11 @@ export default class LayerSelectionAttribute extends React.Component {
             this.props.onAttributeFieldDelete &&
             typeof this.props.onAttributeFieldDelete === 'function'
           ) {
-            this.props.onAttributeFieldDelete(fieldInfo)
+            this.Popover?.setVisible(false, undefined, undefined, () => {
+              setTimeout(() => {
+                this.props.onAttributeFieldDelete(fieldInfo)
+              }, 300)
+            })
           }
         },
       })

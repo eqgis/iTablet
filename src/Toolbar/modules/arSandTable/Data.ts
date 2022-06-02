@@ -1,8 +1,7 @@
 import { getImage } from "@/assets"
 import DataHandler from "@/containers/tabs/Mine/DataHandler"
 import { getLanguage } from "@/language"
-import { ToolbarTabItem } from "@/SMToolbar/component/ToolbarTab/ToolbarTabView"
-import { IToolbarOption, SelectionListOption, ToolBarBottomItem, ToolbarOption } from "@/SMToolbar/ToolbarOption"
+import { IToolbarOption, SelectionListOption, ToolBarBottomItem, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppEvent, AppLog, AppToolBar, AppUser, Toast } from "@/utils"
 import AppDialog from "@/utils/AppDialog"
 import AppInputDialog from "@/utils/AppInputDialog"
@@ -11,6 +10,7 @@ import { SARMap } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { addModelToSandTable, saveARSandTable } from "./Actions"
 import { ARSAndTableViewOption } from "./BottomView"
+import { ToolBarMenuItem } from "imobile_for_reactnative/components/ToolbarKit/component/ToolBarMenu"
 
 
 export function getData(key: ModuleList['ARSANDTABLE']): IToolbarOption {
@@ -206,18 +206,20 @@ function selectSandboxModel(option: IToolbarOption) {
 
 function addSandBoxModel(option:IToolbarOption) {
 
+  const onAddModel = () => {
+    const isAdding = AppToolBar.getData().isAddingARElement
+    if(isAdding) return
+    AppToolBar.addData({isAddingARElement: true})
+    addModelToSandTable().then(() => {
+      AppToolBar.addData({isAddingARElement: false})
+    }).catch(() => {
+      AppToolBar.addData({ isAddingARElement: false})
+    })
+  }
+
   option.pageAction = () => {
     AppEvent.emitEvent('ar_sandtable_add')
-    AppEvent.addListener('ar_sandtable_on_add', () => {
-      const isAdding = AppToolBar.getData().isAddingARElement
-      if(isAdding) return
-      AppToolBar.addData({isAddingARElement: true})
-      addModelToSandTable().then(() => {
-        AppToolBar.addData({isAddingARElement: false})
-      }).catch(() => {
-        AppToolBar.addData({ isAddingARElement: false})
-      })
-    })
+    AppEvent.addListener('ar_sandtable_on_add', onAddModel)
   }
 
   option.bottomData = [{
@@ -226,6 +228,7 @@ function addSandBoxModel(option:IToolbarOption) {
       AppToolBar.goBack()
       SARMap.cancelSandTableChanges()
       AppEvent.emitEvent('ar_sandtable_add_end')
+      AppEvent.removeListener('ar_sandtable_on_add', onAddModel)
     }
   },
   {
@@ -235,6 +238,7 @@ function addSandBoxModel(option:IToolbarOption) {
       AppToolBar.goBack()
       SARMap.commitSandTableChanges()
       AppEvent.emitEvent('ar_sandtable_add_end')
+      AppEvent.removeListener('ar_sandtable_on_add', onAddModel)
     }
   }
   ]
@@ -344,7 +348,7 @@ function getPoiEditBottom(): ToolBarBottomItem[] {
 }
 
 /** 位置调整通用模版 POI/模型/三维场景/三维图层 */
-function _getTransformTabData(): ToolbarTabItem[] {
+function _getTransformTabData(): ToolBarMenuItem[] {
   const range: {
     scale: [number , number],
     position: [number, number],

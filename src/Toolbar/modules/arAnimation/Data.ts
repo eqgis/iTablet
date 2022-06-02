@@ -1,5 +1,5 @@
 import { getImage } from "@/assets"
-import { IToolbarOption, ToolbarOption } from "@/SMToolbar/ToolbarOption"
+import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppEvent, AppToolBar } from "@/utils"
 import { ARAction } from "imobile_for_reactnative"
 import { SARMap } from "imobile_for_reactnative"
@@ -66,7 +66,7 @@ function animationHomeOption(option: IToolbarOption) {
         AppEvent.emitEvent('ar_animation_play')
       }
     }, {
-      image: getImage().setting,
+      image: getImage().icon_basic,
       onPress: () => {
         AppToolBar.show('ARANIMATION', 'AR_MAP_ANIMATION_DETAIL')
       }

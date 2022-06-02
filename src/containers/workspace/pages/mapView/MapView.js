@@ -1634,6 +1634,11 @@ export default class MapView extends React.Component {
         return
       }
 
+      // 位置校准展示时,禁止Android物理返回
+      if (Platform.OS === 'android' && this.props.showDatumPoint) {
+        return false
+      }
+
       // AR测图-测量/测图界面返回
       if (global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton) {
         this.ARMappingHeaderBack()

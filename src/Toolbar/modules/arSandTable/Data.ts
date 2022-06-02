@@ -206,18 +206,20 @@ function selectSandboxModel(option: IToolbarOption) {
 
 function addSandBoxModel(option:IToolbarOption) {
 
+  const onAddModel = () => {
+    const isAdding = AppToolBar.getData().isAddingARElement
+    if(isAdding) return
+    AppToolBar.addData({isAddingARElement: true})
+    addModelToSandTable().then(() => {
+      AppToolBar.addData({isAddingARElement: false})
+    }).catch(() => {
+      AppToolBar.addData({ isAddingARElement: false})
+    })
+  }
+
   option.pageAction = () => {
     AppEvent.emitEvent('ar_sandtable_add')
-    AppEvent.addListener('ar_sandtable_on_add', () => {
-      const isAdding = AppToolBar.getData().isAddingARElement
-      if(isAdding) return
-      AppToolBar.addData({isAddingARElement: true})
-      addModelToSandTable().then(() => {
-        AppToolBar.addData({isAddingARElement: false})
-      }).catch(() => {
-        AppToolBar.addData({ isAddingARElement: false})
-      })
-    })
+    AppEvent.addListener('ar_sandtable_on_add', onAddModel)
   }
 
   option.bottomData = [{
@@ -226,6 +228,7 @@ function addSandBoxModel(option:IToolbarOption) {
       AppToolBar.goBack()
       SARMap.cancelSandTableChanges()
       AppEvent.emitEvent('ar_sandtable_add_end')
+      AppEvent.removeListener('ar_sandtable_on_add', onAddModel)
     }
   },
   {
@@ -235,6 +238,7 @@ function addSandBoxModel(option:IToolbarOption) {
       AppToolBar.goBack()
       SARMap.commitSandTableChanges()
       AppEvent.emitEvent('ar_sandtable_add_end')
+      AppEvent.removeListener('ar_sandtable_on_add', onAddModel)
     }
   }
   ]

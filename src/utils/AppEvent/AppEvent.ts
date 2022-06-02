@@ -45,7 +45,7 @@ function emitEvent<key extends keyof Event>(...args: undefined extends Event[key
   const param = args[1]
   const listeners : ListenerArr<key> | undefined = events.get(event)
   if(listeners && listeners.length > 0) {
-    listeners.every(listener => {
+    listeners.map(listener => {
       listener(param as Event[key])
     })
   } else {

@@ -29,31 +29,45 @@ class ARMapAddView extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    AppEvent.addListener('ar_map_on_add_element', async (currentAddElement) => {
-      ARMapModule.getAddElements().push(currentAddElement)
-      if(ToolbarModule.getParams().type === ConstToolType.SM_AR_DRAWING_MODAL
-        || ToolbarModule.getParams().type === ConstToolType.SM_AR_DRAWING_ADD_POINT
-      ) {
-        if(currentAddElement.type === ARElementType.AR_MODEL) {
-          const animations = await SARMap.getModelAnimation(currentAddElement.layerName, currentAddElement.id)
-          if(animations.length > 0) {
-            this.setState({addAnimations: animations, currentArElement: currentAddElement})
-          }
-        }
-      }
-    })
-    AppEvent.addListener('ar_map_add_end', () => {
-      ARMapModule.clearAddList()
-      this.setState({addAnimations: [], currentArElement: undefined, showAdd: false})
-    })
-    AppEvent.addListener('ar_map_add_start', () => {
-      this.setState({showAdd: true})
-    })
-    AppEvent.addListener('ar_map_add_undo', () => {
-      this.setState({addAnimations: [], currentArElement: undefined,})
-    })
+    AppEvent.addListener('ar_map_on_add_element', this.onAddElement)
+    AppEvent.addListener('ar_map_add_end', this.onAddEnd)
+    AppEvent.addListener('ar_map_add_start', this.onAddStart)
+    AppEvent.addListener('ar_map_add_undo', this.onAddUndo)
   }
 
+  componentWillUnmount() {
+    AppEvent.removeListener('ar_map_on_add_element', this.onAddElement)
+    AppEvent.removeListener('ar_map_add_end', this.onAddEnd)
+    AppEvent.removeListener('ar_map_add_start', this.onAddStart)
+    AppEvent.removeListener('ar_map_add_undo', this.onAddUndo)
+  }
+
+  onAddElement = async (currentAddElement: ARElement) => {
+    ARMapModule.getAddElements().push(currentAddElement)
+    if(ToolbarModule.getParams().type === ConstToolType.SM_AR_DRAWING_MODAL
+      || ToolbarModule.getParams().type === ConstToolType.SM_AR_DRAWING_ADD_POINT
+    ) {
+      if(currentAddElement.type === ARElementType.AR_MODEL) {
+        const animations = await SARMap.getModelAnimation(currentAddElement.layerName, currentAddElement.id)
+        if(animations.length > 0) {
+          this.setState({addAnimations: animations, currentArElement: currentAddElement})
+        }
+      }
+    }
+  }
+
+  onAddStart = () => {
+    this.setState({showAdd: true})
+  }
+
+  onAddEnd = () => {
+    ARMapModule.clearAddList()
+    this.setState({addAnimations: [], currentArElement: undefined, showAdd: false})
+  }
+
+  onAddUndo = () => {
+    this.setState({addAnimations: [], currentArElement: undefined,})
+  }
 
 
   /** 添加模型时的动画列表 */

@@ -67,6 +67,7 @@ interface ToolBarData {
   /** AR属性表,选中的属性字段名称 */
   selectedAttribute?: string[]
 
+  attributeStyle?: ARAttributeStyle | null
 }
 
 const toolBarData: ToolBarData = {}

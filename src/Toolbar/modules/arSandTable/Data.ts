@@ -36,7 +36,6 @@ export function getData(key: ModuleList['ARSANDTABLE']): IToolbarOption {
       break
     case 'AR_SAND_TABLE_EDIT':
       editElementOption(option)
-      editSandTableBottomOption(option)
       break
     case 'AR_SAND_TABLE_EDIT_ALIGN':
       option.moduleData.sandTable = 'align'
@@ -283,7 +282,6 @@ function sandTableAlignOption(option: ToolbarOption<ARSAndTableViewOption>) {
   _editSandTableBottomNoTouchOption(option)
 }
 
-/** POI/模型位置变换 */
 function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
   const element = AppToolBar.getData().selectARElement
   if(!element)  {
@@ -296,6 +294,9 @@ function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
   }
 
   option.pageAction = () => {
+    SARMap.appointEditElement(element.id, element.layerName)
+    const selectedIndex = AppToolBar.getData().selectedChildIndex
+    selectedIndex !== undefined && SARMap.appointARSandTableModel(selectedIndex)
     AppToolBar.addData({
       transformInfo: {
         layerName: element.layerName,
@@ -313,38 +314,27 @@ function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
     })
   }
 
-  SARMap.appointEditElement(element.id, element.layerName)
 
-  option.bottomData = getPoiEditBottom()
-  option.menuData.isShowView = true
-  option.menuData.defaultIndex = 0
-  option.menuData.data = _getTransformTabData()
-}
-
-/** poi对象编辑时底栏 */
-function getPoiEditBottom(): ToolBarBottomItem[] {
-  const data = [
+  option.bottomData = [
     {
       image: getImage().icon_toolbar_quit,
+      ability: 'back',
       onPress: async() => {
+        SARMap.cancelSandTableChanges()
         AppToolBar.goBack()
-        SARMap.cancel()
       }
     },
     {
       image: getImage().icon_submit,
       onPress: () => {
-        AppToolBar.resetTabData()
-        SARMap.submit().then(() => {
-          SARMap.setAction(ARAction.NULL)
-          SARMap.clearSelection()
-          AppToolBar.goBack()
-        }
-        )}
+        SARMap.commitSandTableChanges()
+        AppToolBar.resetPage()
+      }
     },
   ]
-
-  return data
+  option.menuData.isShowView = true
+  option.menuData.defaultIndex = 0
+  option.menuData.data = _getTransformTabData()
 }
 
 /** 位置调整通用模版 POI/模型/三维场景/三维图层 */
@@ -373,24 +363,7 @@ function _getTransformTabData(): ToolBarMenuItem[] {
     if(!transformData || !editItem) return
     SARMap.setARElementTransform(transformData)
     SARMap.commitSandTableChanges().then(() => {
-      AppToolBar.resetTabData()
-      AppToolBar.addData({
-        transformInfo: {
-          layerName: editItem.layerName,
-          id: editItem.id,
-          touchType: editItem.touchType,
-          type: 'position',
-          positionX: 0,
-          positionY: 0,
-          positionZ: 0,
-          rotationX: 0,
-          rotationY: 0,
-          rotationZ: 0,
-          scale: 0
-        }
-      })
-      SARMap.appointEditElement(editItem.id, editItem.layerName)
-
+      AppToolBar.resetPage()
     })
   }
 

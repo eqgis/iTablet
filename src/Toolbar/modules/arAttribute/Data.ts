@@ -54,7 +54,7 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
     },
     {
       image: getImage().my_color,
-      onPress: () => {
+      onPress: async () => {
         const selectARElement = AppToolBar.getData().selectARElement
 
         if (!selectARElement) {
@@ -64,11 +64,14 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
 
         SARMap.appointEditElement(selectARElement.id, selectARElement.layerName)
 
+        const style = await SARMap.getAttributeStyle(selectARElement.layerName, selectARElement.id)
+
+
         // 清空属性选择
         AppToolBar.addData({
           selectedAttribute: undefined,
+          attributeStyle: style,
         })
-        // SARMap.setCenterHitTest(false)
         AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_STYLE')
       },
     },
@@ -119,14 +122,23 @@ function attributeOption(option: IToolbarOption) {
     },
     {
       image: getImage().my_color,
-      onPress: () => {
+      onPress: async () => {
         SARMap.setAction(ARAction.SELECT)
+        const selectARElement = AppToolBar.getData().selectARElement
+
+        if (!selectARElement) {
+          Toast.show(getLanguage().PLEASE_SELECT_OBJ)
+          return
+        }
+        SARMap.appointEditElement(selectARElement.id, selectARElement.layerName)
+
+        const style = await SARMap.getAttributeStyle(selectARElement.layerName, selectARElement.id)
 
         // 清空属性选择
         AppToolBar.addData({
           selectedAttribute: undefined,
+          attributeStyle: style,
         })
-        // SARMap.setCenterHitTest(false)
         AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_STYLE')
       },
     },
@@ -168,7 +180,7 @@ function attributeOption(option: IToolbarOption) {
 
 /** 属性表风格 */
 function styleAttributeOption(option: IToolbarOption) {
-  const { currentLayerStyle } = AppToolBar.getData() //todo 换成 attribute style
+  const { attributeStyle } = AppToolBar.getData()
   const selectARElement = AppToolBar.getData().selectARElement
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   let layerName = '', elementID = -1
@@ -183,12 +195,11 @@ function styleAttributeOption(option: IToolbarOption) {
     {
       image: getImage().icon_toolbar_quit,
       onPress: () => {
-        SARMap.cancel().then(() => {
-          SARMap.setAttributeStyle(layerName, elementID, {})
-        })
+        SARMap.cancel()
         // 清空属性选择
         AppToolBar.addData({
           selectedAttribute: undefined,
+          attributeStyle: undefined,
         })
         AppToolBar.goBack()
       },
@@ -200,6 +211,7 @@ function styleAttributeOption(option: IToolbarOption) {
         // 清空属性选择
         AppToolBar.addData({
           selectedAttribute: undefined,
+          attributeStyle: undefined,
         })
         AppToolBar.goBack()
       },
@@ -224,13 +236,6 @@ function styleAttributeOption(option: IToolbarOption) {
     height: [0, 1000],
   }
 
-  const defaultValue = {
-    x: [0],
-    y: [0],
-    z: [0],
-    width: [200],
-    height: [100],
-  }
 
   AppToolBar.addData({
     transformInfo: {
@@ -262,10 +267,10 @@ function styleAttributeOption(option: IToolbarOption) {
           range: [1,100],
           onMove: (loc) => {
             if(layerName) {
-              SARMap.setAttributeStyle(layerName, elementID, {FontSize: loc})
+              SARMap.setAttributeStyle(layerName, elementID, {fontSize: loc})
             }
           },
-          defaultValue: currentLayerStyle?.textSize || 1,
+          defaultValue: attributeStyle?.fontSize || 1,
         }
       ]
     },
@@ -274,10 +279,10 @@ function styleAttributeOption(option: IToolbarOption) {
       type: 'color',
       data: {
         colors: COLORS,
-        initColor: currentLayerStyle?.strokeColor,
+        initColor: attributeStyle?.fontColor,
         onSelect: (color) => {
           if(layerName) {
-            SARMap.setAttributeStyle(layerName, elementID, {FontColor: color})
+            SARMap.setAttributeStyle(layerName, elementID, {fontColor: color})
           }
         }
       }
@@ -287,10 +292,10 @@ function styleAttributeOption(option: IToolbarOption) {
       type: 'color',
       data: {
         colors: COLORS,
-        initColor: currentLayerStyle?.fillColor,
+        initColor: attributeStyle?.backgroundColor,
         onSelect: (color) => {
           if(layerName) {
-            SARMap.setAttributeStyle(layerName, elementID, {BackgroundColor: color})
+            SARMap.setAttributeStyle(layerName, elementID, {backgroundColor: color})
           }
         }
       }
@@ -306,10 +311,10 @@ function styleAttributeOption(option: IToolbarOption) {
           range: [0,100],
           onMove: loc => {
             if(layerName) {
-              SARMap.setAttributeStyle(layerName, elementID, {BackgroundOpacity: loc / 100})
+              SARMap.setAttributeStyle(layerName, elementID, {backgroundOpacity: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle ? currentLayerStyle.fillOpacity * 100 : 0,
+          defaultValue: attributeStyle ? parseInt((attributeStyle.backgroundOpacity * 100) + '') : 0,
         }
       ]
     },
@@ -334,7 +339,7 @@ function styleAttributeOption(option: IToolbarOption) {
             AppToolBar.addData({transformInfo: {...transformData}})
             SARMap.setAttributeStyle(layerName, elementID, {positionX: loc})
           },
-          defaultValue: defaultValue.x[0],
+          defaultValue: attributeStyle?.positionX,
           range: position.x,
           increment: 50,
         },
@@ -354,7 +359,7 @@ function styleAttributeOption(option: IToolbarOption) {
             AppToolBar.addData({transformInfo: {...transformData}})
             SARMap.setAttributeStyle(layerName, elementID, {positionY: loc})
           },
-          defaultValue: defaultValue.y[0],
+          defaultValue: attributeStyle?.positionY,
           range: position.y,
           increment: 50,
         },
@@ -374,7 +379,7 @@ function styleAttributeOption(option: IToolbarOption) {
             AppToolBar.addData({transformInfo: {...transformData}})
             SARMap.setAttributeStyle(layerName, elementID, {positionZ: loc})
           },
-          defaultValue: defaultValue.z[0],
+          defaultValue: attributeStyle?.positionZ,
           range: position.z,
           increment: 50,
         }
@@ -386,7 +391,6 @@ function styleAttributeOption(option: IToolbarOption) {
       slideData: [
         {
           type: 'single',
-          // left: {type: 'text', text: 'Width'},
           right: {type: 'text', text: 'W'},
           onMove: (loc) => {
             let transformData = AppToolBar.getData().transformInfo
@@ -399,13 +403,12 @@ function styleAttributeOption(option: IToolbarOption) {
             AppToolBar.addData({transformInfo: {...transformData}})
             SARMap.setAttributeStyle(layerName, elementID, {width: loc})
           },
-          defaultValue: defaultValue.width[0],
+          defaultValue: attributeStyle?.width,
           range: size.width,
           increment: 100,
         },
         {
           type: 'single',
-          // left: {type: 'text', text: getLanguage().DOWN},
           right: {type: 'text', text: 'H'},
           onMove: (loc) => {
             let transformData = AppToolBar.getData().transformInfo
@@ -418,7 +421,7 @@ function styleAttributeOption(option: IToolbarOption) {
             AppToolBar.addData({transformInfo: {...transformData}})
             SARMap.setAttributeStyle(layerName, elementID, {height: loc})
           },
-          defaultValue: defaultValue.height[0],
+          defaultValue: attributeStyle?.height,
           range: size.height,
           increment: 100,
         },

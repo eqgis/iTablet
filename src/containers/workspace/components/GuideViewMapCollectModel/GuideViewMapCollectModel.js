@@ -51,6 +51,10 @@ export default class GuideViewMapCollectModel extends React.Component {
 
   }
 
+  componentDidUpdate() {
+
+  }
+
   renderAddGuide = () => {
     return (
       <View
@@ -203,7 +207,7 @@ export default class GuideViewMapCollectModel extends React.Component {
           height: scaleSize(500),
           width: scaleSize(400),
           bottom: scaleSize(40),
-          left: screen.getScreenSafeWidth() / 2 - scaleSize(510),
+          left: screen.getScreenSafeWidth(this.props.device.orientation) / 2 - scaleSize(510),
           // justifyContent: 'center',
           alignItems: 'center',
         },this.state.landguideStyle]}
@@ -312,7 +316,7 @@ export default class GuideViewMapCollectModel extends React.Component {
         style={[{
           position: 'absolute',
           backgroundColor: 'white',
-          left: screen.getScreenSafeWidth() / 2 + this.state.landSize,
+          left: screen.getScreenSafeWidth(this.props.device.orientation) / 2 + this.state.landSize,
           bottom: scaleSize(20),
           width: scaleSize(100),
           height: scaleSize(100),

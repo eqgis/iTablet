@@ -1,10 +1,10 @@
-import { ARElementType, ARLayerType, SARMap, FileTools, RNFS, ARAction } from 'imobile_for_reactnative'
+import { SARMap} from 'imobile_for_reactnative'
 import React from 'react'
-import { Image, Platform, StyleSheet, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity } from 'react-native'
 import {Animated,  Easing } from 'react-native'
 import { getImage } from '../../../assets'
 import { getLanguage } from '../../../language'
-import {  AppEvent,  AppLog,  AppStyle, AppToolBar, CheckSpell, dp, Toast } from '../../../utils'
+import {  AppEvent,  AppLog,  AppStyle, AppToolBar, dp } from '../../../utils'
 import { ModuleViewProps } from '../../../Toolbar'
 import { ARElement } from 'imobile_for_reactnative/types/interface/ar'
 
@@ -67,7 +67,7 @@ class SandTableView extends React.Component<Props, State> {
   onAddEnd = () => {
     this.setState({currentArElement: undefined, showAdd: false})
   }
-  
+
   chnageDeletePostion = () => {
     const visible = !!this.props.data?.showDelete
     Animated.timing(this.deleteRight, {

@@ -34,7 +34,7 @@ interface SectionData {
 async function getData(type: string, params: {[name: string]: any}) {
   ToolbarModule.setParams(params)
   ToolbarModule.addData({moduleIndex: 0})
-  let data: SectionData[] | SectionItemData[] | string[] = []
+  const data: (SectionData | SectionItemData | string)[] = []
   let buttons: any[] = [ToolbarBtnType.TOOLBAR_BACK, ToolbarBtnType.TOOLBAR_COMMIT]
   if (type === ConstToolType.SM_AR_DRAWING) {
     // buttons = [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
@@ -65,193 +65,206 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_VECTOR:
     case ConstToolType.SM_AR_DRAWING_EFFECT: {
       SARMap.setAction(ARAction.NULL)
-      data = [
-        {
-          title: getLanguage(global.language).Prompt.POI,
-          data: [{
-            key: ConstToolType.SM_AR_DRAWING_IMAGE,
-            image: getThemeAssets().ar.functiontoolbar.ar_picture,
-            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_IMAGE,
-            action: ARDrawingAction.arImage,
-          }, {
-            key: ConstToolType.SM_AR_DRAWING_VIDEO,
-            image: getThemeAssets().ar.functiontoolbar.ar_video,
-            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
-            action: ARDrawingAction.arVideo,
-          }, {
-            key: ConstToolType.SM_AR_DRAWING_WEB,
-            image: getThemeAssets().ar.functiontoolbar.ar_webpage,
-            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEBVIEW,
-            action: ARDrawingAction.arWebView,
-          }],
-          onPress: () => {
-            // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 0})
-            // 转到非特效tab里视为特效图层已经添加完成
-            global.isNotEndAddEffect = false
-          },
+      const poiData = {
+        title: getLanguage(global.language).Prompt.POI,
+        data: [{
+          key: ConstToolType.SM_AR_DRAWING_IMAGE,
+          image: getThemeAssets().ar.functiontoolbar.ar_picture,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_IMAGE,
+          action: ARDrawingAction.arImage,
+        }, {
+          key: ConstToolType.SM_AR_DRAWING_VIDEO,
+          image: getThemeAssets().ar.functiontoolbar.ar_video,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_VIDEO,
+          action: ARDrawingAction.arVideo,
+        }, {
+          key: ConstToolType.SM_AR_DRAWING_WEB,
+          image: getThemeAssets().ar.functiontoolbar.ar_webpage,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_WEBVIEW,
+          action: ARDrawingAction.arWebView,
+        }],
+        onPress: () => {
+          // 点击tab后将索引值同步
+          ToolbarModule.addData({moduleIndex: 0})
+          // 转到非特效tab里视为特效图层已经添加完成
+          global.isNotEndAddEffect = false
         },
-        {
-          title: getLanguage(global.language).ARMap.VECTOR,
-          data: [
-            // {
-            //   key: ConstToolType.SM_AR_DRAWING_POINT,
-            //   image: getThemeAssets().toolbar.icon_toolbar_savespot,
-            //   // selectedImage: any,
-            //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_POINT,
-            //   action: data => {},
-            // },
-            // {
-            //   key: ConstToolType.SM_AR_DRAWING_LINE,
-            //   image: getThemeAssets().toolbar.icon_toolbar_saveline,
-            //   // selectedImage: any,
-            //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_LINE,
-            //   action: data => {},
-            // },
-            // {
-            //   key: ConstToolType.SM_AR_DRAWING_REGION,
-            //   image: getThemeAssets().toolbar.icon_toolbar_region,
-            //   // selectedImage: any,
-            //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_AEREA,
-            //   action: data => {},
-            // },
-            // {
-            //   key: ConstToolType.SM_AR_DRAWING_SUBSTANCE,
-            //   image: getThemeAssets().ar.functiontoolbar.icon_ar_volume_select,
-            //   // selectedImage: any,
-            //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE,
-            //   action: data => {},
-            // },
-            {
-              key: ConstToolType.SM_AR_DRAWING_TEXT,
-              image: getThemeAssets().layerType.layer_text,
-              // selectedImage: any,
-              title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
-              action: ARDrawingAction.arText,
-            },
-            {
-              key: ConstToolType.SM_AR_DRAWING_BUBBLE_TEXT,
-              image: getImage().bubble_text,
-              // selectedImage: any,
-              title: getLanguage().BUBBLE_TEXT,
-              action: ARDrawingAction.arBubbleText,
-            },
-            {
-              key: 'SM_AR_DRAWING_LINE',
-              image: getThemeAssets().ar.point_line,
-              title: getLanguage().LINE,
-              action: () => {
-                // 切换到添加矢量线的工具栏
-                // AppToolBar.show('ARMAP', 'AR_MAP_ADD_LINE')
-                const _params: any = ToolbarModule.getParams()
-                _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_LINE, {
-                  isFullScreen: false,
-                })
-              }
-            },
-            {
-              key: 'SM_AR_DRAWING_MARKER_LINE',
-              image: getThemeAssets().ar.marker_line,
-              title: getLanguage().MARKER_LINE,
-              action: async () => {
-                const homePath = await FileTools.getHomeDirectory()
-                // 获取当前用户的用户名
-                const userName = AppUser.getCurrentUser().userName
-                // 拼接AR符号库的文件夹路径
-                const arSymbolFilePath = homePath + ConstPath.UserPath + userName + '/' + ConstPath.RelativePath.ARSymbol
-                const filePath = 'file://' + arSymbolFilePath + "/arnavi_arrowcircle.png"
+      }
 
-                AppToolBar.addData({markerLineContent: filePath})
-                // 切换到添加矢量线的工具栏
-                // AppToolBar.show('ARMAP', 'AR_MAP_ADD_LINE')
-                const _params: any = ToolbarModule.getParams()
-                _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE, {
-                  isFullScreen: false,
-                })
-              }
-            },
-          ],
-          onPress: () => {
-            // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 1})
-            // 转到非特效tab里视为特效图层已经添加完成
-            global.isNotEndAddEffect = false
+      const vectorData =  {
+        title: getLanguage(global.language).ARMap.VECTOR,
+        data: [
+          // {
+          //   key: ConstToolType.SM_AR_DRAWING_POINT,
+          //   image: getThemeAssets().toolbar.icon_toolbar_savespot,
+          //   // selectedImage: any,
+          //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_POINT,
+          //   action: data => {},
+          // },
+          // {
+          //   key: ConstToolType.SM_AR_DRAWING_LINE,
+          //   image: getThemeAssets().toolbar.icon_toolbar_saveline,
+          //   // selectedImage: any,
+          //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_LINE,
+          //   action: data => {},
+          // },
+          // {
+          //   key: ConstToolType.SM_AR_DRAWING_REGION,
+          //   image: getThemeAssets().toolbar.icon_toolbar_region,
+          //   // selectedImage: any,
+          //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_AEREA,
+          //   action: data => {},
+          // },
+          // {
+          //   key: ConstToolType.SM_AR_DRAWING_SUBSTANCE,
+          //   image: getThemeAssets().ar.functiontoolbar.icon_ar_volume_select,
+          //   // selectedImage: any,
+          //   title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE,
+          //   action: data => {},
+          // },
+          {
+            key: ConstToolType.SM_AR_DRAWING_TEXT,
+            image: getThemeAssets().layerType.layer_text,
+            // selectedImage: any,
+            title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
+            action: ARDrawingAction.arText,
           },
-        },
-        {
-          title: getLanguage(global.language).ARMap.THREE_D,
-          containerType: 'list',
-          onPress: () => {
-            // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 2})
-            // 转到非特效tab里视为特效图层已经添加完成
-            global.isNotEndAddEffect = false
+          {
+            key: ConstToolType.SM_AR_DRAWING_BUBBLE_TEXT,
+            image: getImage().bubble_text,
+            // selectedImage: any,
+            title: getLanguage().BUBBLE_TEXT,
+            action: ARDrawingAction.arBubbleText,
           },
-          getData: get3DData,
-        },
-        {
-          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
-          onPress: () => {
-            // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 3})
-            // 转到非特效tab里视为特效图层已经添加完成
-            global.isNotEndAddEffect = false
+          {
+            key: 'SM_AR_DRAWING_LINE',
+            image: getThemeAssets().ar.point_line,
+            title: getLanguage().LINE,
+            action: () => {
+              // 切换到添加矢量线的工具栏
+              // AppToolBar.show('ARMAP', 'AR_MAP_ADD_LINE')
+              const _params: any = ToolbarModule.getParams()
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_LINE, {
+                isFullScreen: false,
+              })
+            }
           },
-          getData: getARModel,
-        },
-        {
-          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE,
-          onPress: () => {
-            // 点击tab后将索引值同步
-            // ToolbarModule.addData({moduleIndex: 3})
-            // 转到非特效tab里视为特效图层已经添加完成
-            global.isNotEndAddEffect = false
+          {
+            key: 'SM_AR_DRAWING_MARKER_LINE',
+            image: getThemeAssets().ar.marker_line,
+            title: getLanguage().MARKER_LINE,
+            action: async () => {
+              const homePath = await FileTools.getHomeDirectory()
+              // 获取当前用户的用户名
+              const userName = AppUser.getCurrentUser().userName
+              // 拼接AR符号库的文件夹路径
+              const arSymbolFilePath = homePath + ConstPath.UserPath + userName + '/' + ConstPath.RelativePath.ARSymbol
+              const filePath = 'file://' + arSymbolFilePath + "/arnavi_arrowcircle.png"
+
+              AppToolBar.addData({markerLineContent: filePath})
+              // 切换到添加矢量线的工具栏
+              // AppToolBar.show('ARMAP', 'AR_MAP_ADD_LINE')
+              const _params: any = ToolbarModule.getParams()
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE, {
+                isFullScreen: false,
+              })
+            }
           },
-          getData: getARSandTable,
+        ],
+        onPress: () => {
+          // 点击tab后将索引值同步
+          ToolbarModule.addData({moduleIndex: 1})
+          // 转到非特效tab里视为特效图层已经添加完成
+          global.isNotEndAddEffect = false
         },
-        {
-          title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
-          onPress: () => {
-            // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 4})
-          },
-          getData: getAREffect,
+      }
+
+      if(Platform.OS === 'ios') {
+        vectorData.data.splice(1)
+      }
+
+      const threeDData = {
+        title: getLanguage(global.language).ARMap.THREE_D,
+        containerType: 'list',
+        onPress: () => {
+          // 点击tab后将索引值同步
+          ToolbarModule.addData({moduleIndex: 2})
+          // 转到非特效tab里视为特效图层已经添加完成
+          global.isNotEndAddEffect = false
         },
-        {
-          title: getLanguage(global.language).Prompt.WIDGET,
-          data: [{
-            key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
-            image: getThemeAssets().ar.functiontoolbar.ar_picture_collection,
-            title: getLanguage(global.language).Map_Main_Menu.ATTRIBUTE_ALBUM,
-            action: ARDrawingAction.arAttributeAlbum,
-          }, {
-            key: ConstToolType.SM_AR_VIDEO_ALBUM,
-            image: getThemeAssets().ar.functiontoolbar.ar_video_collection,
-            title: getLanguage(global.language).Map_Main_Menu.VIDEO_ALBUM,
-            action: ARDrawingAction.arVideoAlbum,
-          }, {
-            key: ConstToolType.SM_AR_MAPBROCHORE,
-            image: getThemeAssets().ar.functiontoolbar.ar_map_collection,
-            title: getLanguage(global.language).Map_Main_Menu.MAPBROCHORE,
-            action: ARDrawingAction.arMapBrochor,
-          }, {
-            key: ConstToolType.SM_AR_SANDTABLE_ALBUM,
-            image: getThemeAssets().ar.functiontoolbar.sandtable_album,
-            title: getLanguage(global.language).Map_Main_Menu.SANDTABLE_ALBUM,
-            action: ARDrawingAction.arSandtableAlbum,
-          }],
-          onPress: () => {
-            // 点击tab后将索引值同步
-            ToolbarModule.addData({moduleIndex: 5})
-            // 转到非特效tab里视为特效图层已经添加完成
-            global.isNotEndAddEffect = false
-          },
+        getData: get3DData,
+      }
+
+      const modelData =   {
+        title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL,
+        onPress: () => {
+          // 点击tab后将索引值同步
+          ToolbarModule.addData({moduleIndex: 3})
+          // 转到非特效tab里视为特效图层已经添加完成
+          global.isNotEndAddEffect = false
         },
-      ]
-      if (Platform.OS === 'ios') {
-        data.splice(3, 1)
-        data.splice(4, 1)
-      }      
+        getData: getARModel,
+      }
+
+      const sandTableData =  {
+        title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAND_TABLE,
+        onPress: () => {
+          // 点击tab后将索引值同步
+          // ToolbarModule.addData({moduleIndex: 3})
+          // 转到非特效tab里视为特效图层已经添加完成
+          global.isNotEndAddEffect = false
+        },
+        getData: getARSandTable,
+      }
+
+      const effectData =   {
+        title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
+        onPress: () => {
+          // 点击tab后将索引值同步
+          ToolbarModule.addData({moduleIndex: 4})
+        },
+        getData: getAREffect,
+      }
+
+      const widgetData =  {
+        title: getLanguage(global.language).Prompt.WIDGET,
+        data: [{
+          key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
+          image: getThemeAssets().ar.functiontoolbar.ar_picture_collection,
+          title: getLanguage(global.language).Map_Main_Menu.ATTRIBUTE_ALBUM,
+          action: ARDrawingAction.arAttributeAlbum,
+        }, {
+          key: ConstToolType.SM_AR_VIDEO_ALBUM,
+          image: getThemeAssets().ar.functiontoolbar.ar_video_collection,
+          title: getLanguage(global.language).Map_Main_Menu.VIDEO_ALBUM,
+          action: ARDrawingAction.arVideoAlbum,
+        }, {
+          key: ConstToolType.SM_AR_MAPBROCHORE,
+          image: getThemeAssets().ar.functiontoolbar.ar_map_collection,
+          title: getLanguage(global.language).Map_Main_Menu.MAPBROCHORE,
+          action: ARDrawingAction.arMapBrochor,
+        }, {
+          key: ConstToolType.SM_AR_SANDTABLE_ALBUM,
+          image: getThemeAssets().ar.functiontoolbar.sandtable_album,
+          title: getLanguage(global.language).Map_Main_Menu.SANDTABLE_ALBUM,
+          action: ARDrawingAction.arSandtableAlbum,
+        }],
+        onPress: () => {
+          // 点击tab后将索引值同步
+          ToolbarModule.addData({moduleIndex: 5})
+          // 转到非特效tab里视为特效图层已经添加完成
+          global.isNotEndAddEffect = false
+        },
+      }
+
+      data.push(poiData)
+      data.push(vectorData)
+      data.push(threeDData)
+      data.push(modelData)
+      Platform.OS === 'android' && data.push(sandTableData)
+      data.push(effectData)
+      Platform.OS === 'android' && data.push(widgetData)
+
       break
     }
     case ConstToolType.SM_AR_DRAWING_IMAGE:

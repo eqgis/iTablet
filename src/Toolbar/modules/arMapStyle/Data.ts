@@ -71,7 +71,7 @@ function stylePoiOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {opacity: loc / 100})
             }
           },
-          defaultValue:  currentLayerStyle ? currentLayerStyle.opacity * 100 : 0,
+          defaultValue:  currentLayerStyle ? Math.round(currentLayerStyle.opacity * 100) : 0,
         }
       ]
     },
@@ -89,7 +89,7 @@ function stylePoiOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {borderWidth: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle && currentLayerStyle.borderWidth * 100 || 0,
+          defaultValue: currentLayerStyle && Math.round(currentLayerStyle.borderWidth * 100) || 0,
         }
       ]
     },
@@ -156,7 +156,7 @@ function styleTextOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {strokeOpacity: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle ? currentLayerStyle.strokeOpacity * 100 : 0,
+          defaultValue: currentLayerStyle ? Math.round(currentLayerStyle.strokeOpacity * 100) : 0,
         }
       ]
     },
@@ -189,7 +189,7 @@ function styleTextOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {fillOpacity: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle ? currentLayerStyle.fillOpacity * 100 : 0,
+          defaultValue: currentLayerStyle ? Math.round(currentLayerStyle.fillOpacity * 100) : 0,
         }
       ]
     },
@@ -225,7 +225,7 @@ function styleTextOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {borderWidth: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle && currentLayerStyle.borderWidth * 100 || 0,
+          defaultValue: currentLayerStyle && Math.round(currentLayerStyle.borderWidth * 100) || 0,
         }
       ]
     },
@@ -376,7 +376,7 @@ function styleWidgetOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {fillOpacity: loc / 100})
             }
           },
-          defaultValue:  currentLayerStyle ? currentLayerStyle.fillOpacity * 100 : 0,
+          defaultValue:  currentLayerStyle ? Math.round(currentLayerStyle.fillOpacity * 100) : 0,
         }
       ]
     },
@@ -447,7 +447,7 @@ function styleLineOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {lineWidth: loc / 100,pointSize: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle ? currentLayerStyle.lineWidth * 100 : 1,
+          defaultValue: currentLayerStyle ? Math.round(currentLayerStyle.lineWidth * 100) : 1,
         }
       ]
     },
@@ -519,7 +519,7 @@ function styleMarkerLineOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {markerLineRotation: loc})
             }
           },
-          defaultValue: currentLayerStyle?.markerLineRotation ? currentLayerStyle.markerLineRotation: 0,
+          defaultValue: currentLayerStyle?.markerLineRotation ? Math.round(currentLayerStyle.markerLineRotation): 0,
         }
       ]
     },
@@ -540,7 +540,7 @@ function styleMarkerLineOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {pointSize: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle ? currentLayerStyle.pointSize * 100: 3,
+          defaultValue: currentLayerStyle ? Math.round(currentLayerStyle.pointSize * 100): 3,
         }
       ]
     },
@@ -561,7 +561,7 @@ function styleMarkerLineOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {pointInterval: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle?.pointInterval ? currentLayerStyle.pointInterval * 100: 50,
+          defaultValue: currentLayerStyle?.pointInterval ? Math.round(currentLayerStyle.pointInterval * 100): 50,
         }
       ]
     },
@@ -582,7 +582,7 @@ function styleMarkerLineOption(option: IToolbarOption) {
               SARMap.setLayerStyle(layerName, {markerFlowVelocity: loc / 100})
             }
           },
-          defaultValue: currentLayerStyle?.markerFlowVelocity ? currentLayerStyle.markerFlowVelocity * 100: 0,
+          defaultValue: currentLayerStyle?.markerFlowVelocity ? Math.round(currentLayerStyle.markerFlowVelocity * 100): 0,
         }
       ]
     },

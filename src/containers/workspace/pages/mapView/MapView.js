@@ -4889,7 +4889,7 @@ export default class MapView extends React.Component {
           customStyle={this.props.isAR ? null : styles.hidden}
           ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
-          onARElementTouch={async element => {
+          onARElementTouch={async (element, childIndex) => {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT') {
               AppToolBar.addData({ selectARElement: element })
               const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
@@ -4907,7 +4907,7 @@ export default class MapView extends React.Component {
               && (AppToolBar.getCurrentOption()?.key === 'AR_SAND_TABLE_CREATE'
                 || AppToolBar.getCurrentOption()?.key === 'AR_SAND_TABLE_MODIFY'
               )) {
-              AppToolBar.addData({ selectARElement: element })
+              AppToolBar.addData({ selectARElement: element, selectedChildIndex: childIndex })
               AppToolBar.show('ARSANDTABLE', 'AR_SAND_TABLE_EDIT')
             } else if (
               !this.state.showPoiSearch &&

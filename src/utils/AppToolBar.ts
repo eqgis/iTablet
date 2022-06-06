@@ -60,6 +60,8 @@ interface ToolBarData {
   ARSymbolObjList?: Array<ARSymbolObj>
   /** 选中的沙盘模型路径 */
   sandTableModels?: string[]
+  /** AR对象内子节点的序号 */
+  selectedChildIndex?: number
 
   isAlbumFirstAdd?: boolean
   /** AR属性表,选中的属性字段名称 */
@@ -170,9 +172,17 @@ function goBack() {
   }
 }
 
-/** toolbar显示为tab类型时，重置内部数据 */
+/**
+ * toolbar显示为tab类型时，重置内部数据
+ * @deprecated 使用resetPage支持Toolbar所有类型的组件
+ */
 function resetTabData() {
   toolbarRef?.resetTabData()
+}
+
+/** 重置当前toolbar页面， 也会调用PageAction，就和第一次进入当前页面一样 */
+function resetPage() {
+  toolbarRef?.resetPage()
 }
 
 /** 显示/隐藏 toolbarTab 下的 view */
@@ -200,6 +210,7 @@ export default {
   goBack,
   reshow,
   resetTabData,
+  resetPage,
   showTabView,
   getCurrentOption,
   toggleListVisible

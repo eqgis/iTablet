@@ -77,6 +77,8 @@
 	<string>我们需要访问您的麦克风，用于录音</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>我们需要访问您的相册，用于多媒体采集</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>我们需要访问您的相册</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

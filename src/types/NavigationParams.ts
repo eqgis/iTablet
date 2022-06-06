@@ -1,4 +1,6 @@
-import { CAREMA_MEDIA_TYPE } from "@/containers/camera/types";
+import { SelectedItems } from "@/components/ImagePicker/src/types"
+import { CAREMA_MEDIA_TYPE } from "@/containers/camera/types"
+import { AssetType } from '@react-native-community/cameraroll'
 
 export interface NAVIGATION_CAREMA {
   type?: CAREMA_MEDIA_TYPE,
@@ -31,6 +33,17 @@ export interface GroupSourceManagePageParams {
   itemAction?: (params: unknown) => void,
 }
 
+export interface AlbumViewParams {
+  groupName: string,
+  assetType?: AssetType,
+  total: number,
+  maxSize: number,
+  selectedItems?: SelectedItems,
+  column?: number,
+  autoConvertPath?: boolean,
+  callback?: (arams: unknown) => void, // 确定回调
+  onBack?: (groupName: string, params: unknown) => void,   // 返回回调
+}
 
 export interface CoworkManagePageParams {
   callBack: (params?: unknown) => void,

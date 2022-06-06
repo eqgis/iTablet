@@ -4,6 +4,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  ListRenderItemInfo,
   Platform,
   StyleSheet,
   Text,
@@ -17,30 +18,58 @@ import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
 import Orientation from 'react-native-orientation'
 import { ImageUtils } from '.'
+import CameraRoll, { AssetType } from '@react-native-community/cameraroll'
+import { MainStackScreenNavigationProps, MainStackScreenRouteProp } from '@/types'
+import { EmitterSubscription } from 'react-native'
+import { AssetItem, SelectedItems } from './types'
 
-export default class AlbumView extends React.PureComponent {
-  props: {
-    column: number,
-  }
+interface Props {
+  navigation: MainStackScreenNavigationProps<'AlbumView'>,
+  route: MainStackScreenRouteProp<'AlbumView'>,
+}
 
-  static defaultProps = {
-    column: 4,
-  }
+interface State {
+  column: number,
+  selectedItems: SelectedItems,
+  orientation: string,
+  assets: AssetItem[],
+}
 
-  constructor(props) {
+export default class AlbumView extends React.PureComponent<Props, State> {
+
+  groupName: string
+  assetType: AssetType
+  endCursor: string | undefined
+  hasNextPage: boolean
+  pageSize = 30
+  windowChangeListener: EmitterSubscription | undefined | null
+
+  constructor(props: Props) {
     super(props)
-    this.state = {
-      selectedItems: [...props.route.params.selectedItems],
-      orientation: screen.getOrientation(),
+    const params = props.route.params
+    this.groupName = props.route.params.groupName
+    this.assetType = props.route.params.assetType || 'All'
+    const selectItems = JSON.parse(JSON.stringify(params.selectedItems)) || {}
+    if (!selectItems[this.groupName]) {
+      selectItems[this.groupName] = []
     }
+    this.state = {
+      column: params.column || 4,
+      selectedItems: selectItems,
+      orientation: screen.getOrientation(),
+      assets: [],
+    }
+    this.hasNextPage = true
   }
 
   componentDidMount() {
-    Dimensions.addEventListener('change', this._onWindowChanged)
+    this.windowChangeListener = Dimensions.addEventListener('change', this._onWindowChanged)
+    console.warn(this.assetType)
+    this.getPhotos(this.groupName, 50, this.assetType)
   }
 
   componentWillUnmount() {
-    Dimensions.removeEventListener('change', this._onWindowChanged)
+    this.windowChangeListener?.remove()
   }
 
   componentDidUpdate() {
@@ -51,12 +80,51 @@ export default class AlbumView extends React.PureComponent {
     }
   }
 
+  getPhotos = async (groupName: string, count = 50, assetType?: AssetType | undefined) => {
+    let arr: AssetItem[] = []
+    try {
+      if (!this.hasNextPage) return
+      const result = await CameraRoll.getPhotos({
+        first: count,
+        after: this.endCursor,
+        groupName: groupName,
+        groupTypes: Platform.OS === 'ios' && groupName === 'Recent Photos' ? 'All' : 'Album', // 若不设置,iOS会在所有图片分类中去找
+        assetType: assetType || 'All',
+        include: ['location', 'playableDuration', 'fileSize', 'imageSize']
+      })
+      this.hasNextPage = result.page_info.has_next_page
+      if (result.page_info.has_next_page) {
+        this.endCursor = result.page_info.end_cursor
+      } else {
+        this.endCursor = undefined
+      }
+      arr = result.edges.map(item => {
+        const image = item.node.image
+        const node = JSON.parse(JSON.stringify(item.node))
+        delete node.image
+        return Object.assign({}, image, node)
+      })
+    } catch(e) {
+      arr = []
+    } finally {
+      this.setState({
+        assets: this.state.assets.concat(arr),
+      })
+    }
+  }
+
+  getSelectedLength = () => {
+    let length = 0
+    for (const key in this.state.selectedItems) {
+      if (Object.prototype.hasOwnProperty.call(this.state.selectedItems, key)) {
+        const element = this.state.selectedItems[key]
+        length += element.length
+      }
+    }
+    return length
+  }
+
   render() {
-    // const safeArea = getSafeAreaInset()
-    // const style = {
-    //   paddingLeft: safeArea.left,
-    //   paddingRight: safeArea.right,
-    // }
     return (
       <Container
         style={[
@@ -74,15 +142,14 @@ export default class AlbumView extends React.PureComponent {
           styles.view,
         ]}
         showFullInMap={true}
-        ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.props.route.params.groupName,
+          title: this.groupName,
           navigation: this.props.navigation,
           backAction: this._clickBack,
           headerRight: [
             <TouchableOpacity
               key={'addImage'}
-              onPress={this._onFinish.bind(this, [])}
+              onPress={this._onFinish.bind(this, {})}
             >
               <Text style={styles.headerRight}>
                 {getLanguage(global.language).Analyst_Labels.CANCEL}
@@ -98,53 +165,47 @@ export default class AlbumView extends React.PureComponent {
           },
         }}
       >
-        {/*<NaviBar*/}
-        {/*title={this.props.groupName}*/}
-        {/*onLeft={this._clickBack}*/}
-        {/*rightElement={this.props.cancelLabel}*/}
-        {/*onRight={this._onFinish.bind(this, [])}*/}
-        {/*/>*/}
         <FlatList
           key={this._column()}
           style={[styles.list]}
           renderItem={this._renderItem}
-          data={this.props.route.params.photos}
+          data={this.state.assets}
           keyExtractor={item => item.uri}
           numColumns={this._column()}
           extraData={this.state}
+          onEndReached={() => this.getPhotos(this.groupName, 30, this.assetType)}
+          onEndReachedThreshold={0.5}
         />
         {this._renderBottomView()}
       </Container>
     )
   }
 
-  renderDuration = sec => {
-    let m = 0
-    duration = '0'
+  renderDuration = (sec: number) => {
+    let m = 0,
+      duration = '0'
     if (sec !== null) {
       if (sec > 60) {
         m = Math.floor(sec / 60)
         sec -= 60 * m
       }
-      let s = sec.toFixed() - 1 + 1
-  
+      const s = parseInt(sec.toFixed())
+
       duration = (m >= 10 ? '' : '0') + m + ':' + (s >= 10 ? '' : '0') + s
     }
     return <Text style={styles.duration}>{duration}</Text>
   }
 
-  _renderItem = ({ item, index }) => {
-    // const safeArea = getSafeAreaInset()
-    // const edge = (Dimensions.get('window').width - safeArea.left - safeArea.right) / this._column() - 2
+  _renderItem = ({ item, index }: ListRenderItemInfo<AssetItem>) => {
     const edge = Dimensions.get('window').width / this._column() - 2
-    const isSelected = this.state.selectedItems.some(
+    const isSelected = (this.state.selectedItems[this.groupName] || []).some(
       obj => obj.uri === item.uri,
     )
     const backgroundColor = isSelected ? '#e15151' : 'transparent'
     const hasIcon =
-      isSelected || this.state.selectedItems.length < this.props.route.params.maxSize
+      isSelected || this.getSelectedLength() < this.props.route.params.maxSize
     return (
-      <TouchableOpacity onPress={this._clickCell.bind(this, item)}>
+      <TouchableOpacity onPress={() => this._clickCell(item)}>
         <View style={{ padding: 1 }}>
           <Image
             key={index}
@@ -182,23 +243,15 @@ export default class AlbumView extends React.PureComponent {
   }
 
   _renderBottomView = () => {
-    const previewButton =
-      this.state.selectedItems.length > 0 ? this.props.route.params.previewLabel : ''
     const okButton =
       getLanguage(global.language).Analyst_Labels.ADD +
       ' (' +
-      this.state.selectedItems.length +
+      this.getSelectedLength() +
       '/' +
       this.props.route.params.maxSize +
       ')'
-    // const safeArea = getSafeAreaInset()
     return (
       <View style={[styles.bottom]}>
-        {/*<TouchableOpacity onPress={this._clickPreview}>*/}
-        {/*<Text style={styles.previewButton}>*/}
-        {/*{previewButton}*/}
-        {/*</Text>*/}
-        {/*</TouchableOpacity>*/}
         <TouchableOpacity onPress={this._clickOk}>
           <Text style={styles.okButton}>{okButton}</Text>
         </TouchableOpacity>
@@ -206,7 +259,14 @@ export default class AlbumView extends React.PureComponent {
     )
   }
 
-  _onFinish = data => {
+  _onFinish = (selectedItems: SelectedItems) => {
+    let data: AssetItem[] = []
+    for (const key in selectedItems) {
+      if (Object.prototype.hasOwnProperty.call(selectedItems, key)) {
+        const element = selectedItems[key]
+        data = data.concat(element)
+      }
+    }
     if (this.props.route.params.autoConvertPath && Platform.OS === 'ios') {
       const promises = data.map((item, index) => {
         const { uri } = item
@@ -257,62 +317,51 @@ export default class AlbumView extends React.PureComponent {
     }
   }
 
-  _maxSizeChooseAlert = number =>
+  _maxSizeChooseAlert = (number: number) =>
     global.language === 'EN'
       ? 'You can only choose ' + number + ' photos at most'
       : '您最多能选择' + number + '张照片'
 
-  _onDeletePageFinish = data => {
-    const selectedItems = this.state.selectedItems.filter(
-      item => data.indexOf(item.uri) >= 0,
-    )
-    this.setState({ selectedItems })
-  }
-
   _clickBack = () => {
-    this.props.route.params.onBack && this.props.route.params.onBack(this.state.selectedItems)
+    this.props.route.params.onBack && this.props.route.params.onBack(this.groupName, this.state.selectedItems)
     this.props.navigation.goBack()
     // ImageUtils.hide()
   }
 
-  _clickCell = itemuri => {
-    const isSelected = this.state.selectedItems.some(
+  _clickCell = (itemuri: AssetItem) => {
+    let selectedItems: SelectedItems = JSON.parse(JSON.stringify( this.state.selectedItems))
+    const isSelected = selectedItems[this.groupName].some(
       item => item.uri === itemuri.uri,
     )
     if (isSelected) {
-      const selectedItems = this.state.selectedItems.filter(
+      const items = selectedItems[this.groupName].filter(
         item => item.uri !== itemuri.uri,
       )
+      selectedItems[this.groupName] = items
       this.setState({
-        selectedItems: [...selectedItems],
+        selectedItems: selectedItems,
       })
-    } else if (this.state.selectedItems.length >= this.props.route.params.maxSize) {
+    } else if (this.getSelectedLength() >= this.props.route.params.maxSize) {
       if (this.props.route.params.maxSize === 1) {
+        selectedItems = {
+          [this.groupName]: [itemuri],
+        }
         this.setState({
-          selectedItems: [itemuri],
+          selectedItems: selectedItems,
         })
       } else {
         Alert.alert('', this._maxSizeChooseAlert(this.props.route.params.maxSize))
       }
     } else {
+      selectedItems[this.groupName].push(itemuri)
       this.setState({
-        selectedItems: [...this.state.selectedItems, itemuri],
+        selectedItems: selectedItems,
       })
     }
   }
 
-  // _clickPreview = () => {
-  //   if (this.state.selectedItems.length > 0) {
-  //     this.props.navigation.navigate(PageKeys.preview, {
-  //       ...this.props,
-  //       images: this.state.selectedItems,
-  //       callback: this._onDeletePageFinish,
-  //     })
-  //   }
-  // }
-
   _clickOk = () => {
-    if (this.state.selectedItems.length > 0) {
+    if (this.getSelectedLength() > 0) {
       this._onFinish(this.state.selectedItems)
     }
   }
@@ -320,12 +369,10 @@ export default class AlbumView extends React.PureComponent {
   _column = () => {
     const { width, height } = Dimensions.get('window')
     if (width < height) {
-      return this.props.column
+      return this.state.column
     } else {
-      // const safeArea = getSafeAreaInset()
       const edge = (height * 1.0) / 3
-      return parseInt(width / edge)
-      // return parseInt((width - safeArea.left - safeArea.right) / edge)
+      return parseInt(width / edge + '')
     }
   }
 

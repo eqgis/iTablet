@@ -8,35 +8,52 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  EmitterSubscription,
+  ListRenderItemInfo,
 } from 'react-native'
-import CameraRoll from "@react-native-community/cameraroll"
+import CameraRoll, { AssetType } from "@react-native-community/cameraroll"
 import PageKeys from './PageKeys'
 import Container from '../../Container'
 import { InputDialog } from '../../Dialog'
 import { getLanguage } from '../../../language'
 import { scaleSize, screen } from '../../../utils'
 import { size, color } from '../../../styles'
-import { FileTools } from '../../../native'
-import { ConstPath } from '../../../constants'
 import Orientation from 'react-native-orientation'
 import * as ImageUtils from './ImageUtils'
+import { SelectedItems } from './types'
 
-export default class AlbumListView extends React.PureComponent {
-  props: {
-    maxSize: number,
-    autoConvertPath: boolean,
-    assetType: String,
-    groupTypes: String,
-    choosePhotoTitle: String,
-    cancelLabel: String,
-    navigation: Object,
-    device: Object,
-    showDialog?: boolean,
+interface Props {
+  maxSize: number,
+  autoConvertPath: boolean,
+  assetType: AssetType,
+  groupTypes: string,
+  choosePhotoTitle: string,
+  cancelLabel: string,
+  navigation: any,
+  device: Device,
+  showDialog?: boolean,
 
-    callback: () => {},
-    dialogConfirm?: () => {},
-    dialogCancel?: () => {},
-  }
+  callback: () => void,
+  dialogConfirm: (value: string, cb?: () => void) => void,
+  dialogCancel: () => void,
+}
+
+interface State {
+  data: Item[],
+  selectedItems: SelectedItems,
+  orientation: string,
+}
+
+interface Item {
+  image: string;
+  title: string;
+  count: number;
+}
+
+export default class AlbumListView extends React.PureComponent<Props, State> {
+
+  windowChangedListener: EmitterSubscription | undefined
+  dialog: InputDialog | undefined | null
 
   static defaultProps = {
     maxSize: 1,
@@ -48,97 +65,46 @@ export default class AlbumListView extends React.PureComponent {
     dialogCancel: null,
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       data: [],
-      selectedItems: [],
+      selectedItems: {},
       orientation: screen.getOrientation(),
     }
   }
 
   componentDidMount() {
-    this.windowChangedListener = Dimensions.addEventListener('change', this._onWindowChanged)
-    ;(async function() {
+    this.windowChangedListener = Dimensions.addEventListener('change', this._onWindowChanged);
+    (async () => {
       if (this.props.showDialog && this.dialog)
         this.dialog.setDialogVisible(this.props.showDialog)
-      let data
-
-      if (Platform.OS === 'android' && this.props.assetType === 'All') {
-        let photos = await this.getPhotos('Photos')
-        let videos = await this.getPhotos('Videos')
-
-        data = JSON.parse(JSON.stringify(videos))
-        photos.forEach((photoDir, index) => {
-          let exist = false
-          for (let i = 0; i < videos.length; i++) {
-            if (photoDir.name === videos[i].name) {
-              exist = true
-              data[index].value = data[index].value.concat(photoDir.value)
-              data[index].value.sort((a, b) => b - a)
-              break
-            }
-          }
-          if (!exist) {
-            data.push(photoDir)
-          }
-        })
-      } else if (this.props.assetType === 'Videos') {
-        data = await this.getPhotos('Videos')
-      } else {
-        data = await this.getPhotos(this.props.assetType)
-      }
-      if (this.props.assetType !== 'Videos') {
-        let homePath = await FileTools.appendingHomeDirectory()
-        let imgPath = homePath + ConstPath.Images
-        let images = await FileTools.getPathListByFilterDeep(
-          imgPath,
-          'png, jpg, jpeg',
-        )
-        if (images.length) {
-          images.map(item => {
-            item.filename = item.name
-            item.uri = item.path
-            delete item.name
-            delete item.path
-          })
-          images.length && data.unshift({
-            name: 'iTablet',
-            value: images,
-          })
-        }
-      }
+      const data = await this.getAlbums()
       this.setState({ data })
-    }.bind(this)())
+    })()
   }
 
   componentWillUnmount() {
     // Dimensions.removeEventListener('change', this._onWindowChanged)
     this.windowChangedListener?.remove()
   }
-  
+
   componentDidUpdate() {
     if (Platform.OS === 'ios') {
-      Orientation.getSpecificOrientation((e, orientation) => {
-        this.setState({orientation: orientation})
+      Orientation.getSpecificOrientation((e, orientation: string) => {
+        this.setState({ orientation: orientation })
       })
     }
   }
 
   render() {
-    // const safeArea = getSafeAreaInset()
-    // const style = {
-    //   paddingLeft: safeArea.left,
-    //   paddingRight: safeArea.right,
-    //   paddingBottom: safeArea.bottom,
-    // }
     return (
       <Container
         style={[
           {
             paddingTop:
               screen.isIphoneX() &&
-              this.state.orientation.indexOf('PORTRAIT') >= 0
+                this.state.orientation.indexOf('PORTRAIT') >= 0
                 ? screen.X_TOP
                 : 0,
             paddingBottom: screen.getIphonePaddingBottom(),
@@ -149,9 +115,8 @@ export default class AlbumListView extends React.PureComponent {
           styles.view,
         ]}
         showFullInMap={true}
-        ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.title,
+          // title: this.title,
           navigation: this.props.navigation,
           withoutBack: true,
           headerRight: [
@@ -183,7 +148,7 @@ export default class AlbumListView extends React.PureComponent {
           style={[styles.listView]}
           data={this.state.data}
           renderItem={this._renderItem}
-          keyExtractor={item => item.name}
+          keyExtractor={item => item.title}
           extraData={this.state}
         />
         {this.props.dialogConfirm && (
@@ -191,8 +156,8 @@ export default class AlbumListView extends React.PureComponent {
             ref={ref => (this.dialog = ref)}
             title={getLanguage(global.language).Map_Main_Menu.TOUR_NAME}
             confirmAction={value => {
-              this.props.dialogConfirm(value, () =>
-                this.dialog.setDialogVisible(false),
+              this.props.dialogConfirm?.(value, () =>
+                this.dialog?.setDialogVisible(false),
               )
             }}
             cancelAction={() => {
@@ -210,18 +175,14 @@ export default class AlbumListView extends React.PureComponent {
     )
   }
 
-  _renderItem = ({ item }) => {
-    const itemUris = new Set(item.value.map(i => i.uri))
-    const selectedItems = this.state.selectedItems.filter(i =>
-      itemUris.has(i.uri),
-    )
-    const selectedCount = selectedItems.length
-    let uri =
+  _renderItem = ({ item }: ListRenderItemInfo<Item>) => {
+    const selectedCount = this.state.selectedItems[item.title]?.length || 0
+    const uri =
       (Platform.OS === 'android' &&
-      item.value[0].uri.indexOf('file://') === -1 &&
-      item.value[0].uri.indexOf('content://') === -1
+        item.image.indexOf('file://') === -1 &&
+        item.image.indexOf('content://') === -1
         ? 'file://'
-        : '') + item.value[0].uri
+        : '') + item.image
     return (
       <TouchableOpacity onPress={this._clickRow.bind(this, item)}>
         <View style={styles.cell}>
@@ -232,7 +193,8 @@ export default class AlbumListView extends React.PureComponent {
               resizeMode="cover"
             />
             <Text style={styles.text}>
-              {item.name + ' (' + item.value.length + ')'}
+              {/* {item.name + ' (' + item.value.length + ')'} */}
+              {item.title + (item.count < 0 ? '' : (' (' + item.count + ')'))}
             </Text>
           </View>
           <View style={styles.right}>
@@ -249,45 +211,49 @@ export default class AlbumListView extends React.PureComponent {
     )
   }
 
-  getPhotos = async assetType => {
-    let result = await CameraRoll.getPhotos({
-      first: 1000000,
-      groupTypes: Platform.OS === 'ios' ? this.props.groupTypes : undefined,
-      assetType: assetType,
-      include: ['location', 'playableDuration', 'fileSize', 'imageSize']
-    })
-    const arr = result.edges.map(item => item.node)
-    const dict = arr.reduce((prv, cur) => {
-      const curValue = {
-        type: cur.type,
-        location: cur.location,
-        timestamp: cur.timestamp,
-        ...cur.image,
-      }
-      if (!prv[cur.group_name]) {
-        prv[cur.group_name] = [curValue]
-      } else {
-        prv[cur.group_name].push(curValue)
-      }
-      return prv
-    }, {})
-    const data = Object.keys(dict)
-      .sort((a, b) => {
-        const rootIndex = 'Camera Roll'
-        if (a === rootIndex) {
-          return -1
-        } else if (b === rootIndex) {
-          return 1
-        } else {
-          return a < b ? -1 : 1
-        }
+  getAlbums = async () => {
+    const result = await CameraRoll.getAlbums({assetType: this.props.assetType})
+    const albums = []
+    for (const album of result) {
+      const firstAsset = await this.getPhotos(album.title, 1)
+      albums.push({
+        ...album,
+        image: firstAsset[0].uri,
       })
-      .map(key => ({ name: key, value: dict[key] }))
-    return data
+    }
+
+    if (Platform.OS === 'ios') {
+      // 为了iOS查询没有指定相簿的照片
+      const firstAsset = await this.getPhotos('Recent Photos', 1)
+      albums.unshift({
+        title: 'Recent Photos',
+        count: -1,
+        image: firstAsset[0].uri,
+      })
+    }
+
+    return albums
   }
 
-  _onBackFromAlbum = items => {
-    this.setState({ selectedItems: [...items] })
+  getPhotos = async (groupName: string, count: number, assetType?: AssetType | undefined) => {
+    const result = await CameraRoll.getPhotos({
+      first: count,
+      groupName: groupName,
+      groupTypes: Platform.OS === 'ios' && groupName === 'Recent Photos' ? 'All' : 'Album', // 若不设置,iOS会在所有图片分类中去找
+      assetType: assetType || 'All',
+      include: ['location', 'playableDuration', 'fileSize', 'imageSize']
+    })
+    const arr = result.edges.map(item => {
+      const image = item.node.image
+      const node = JSON.parse(JSON.stringify(item.node))
+      delete node.image
+      return Object.assign({}, image, node)
+    })
+    return arr
+  }
+
+  _onBackFromAlbum = (groupName: string, selectedItems: SelectedItems) => {
+    this.setState({ selectedItems: selectedItems })
   }
 
   _clickCancel = () => {
@@ -296,11 +262,12 @@ export default class AlbumListView extends React.PureComponent {
     ImageUtils.hide()
   }
 
-  _clickRow = item => {
+  _clickRow = (item: Item) => {
     this.props.navigation.navigate(PageKeys.album_view, {
       ...this.props,
-      groupName: item.name,
-      photos: item.value,
+      groupName: item.title,
+      // photos: item.value,
+      assetType: this.props.assetType,
       selectedItems: this.state.selectedItems,
       onBack: this._onBackFromAlbum,
     })

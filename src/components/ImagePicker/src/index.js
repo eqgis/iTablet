@@ -1,5 +1,4 @@
 import PageKeys from './PageKeys'
-import PhotoModalPage from './PhotoModalPage'
 import AlbumListView from './AlbumListView'
 import AlbumView from './AlbumView'
 import * as ImageUtils from './ImageUtils'
@@ -12,8 +11,6 @@ export const getAlbum = options => {
 }
 
 export {
-  PhotoModalPage,
-  // PreviewMultiView,
   AlbumListView,
   AlbumView,
   ImageUtils,

@@ -578,6 +578,7 @@ function matchPictureStyle() {
   ImagePicker.getAlbum({
     maxSize: 1,
     callback: async data => {
+      console.warn('match', data[0].uri)
       if (data.length === 1) {
         ToolbarModule.getParams().setContainerLoading &&
           ToolbarModule.getParams().setContainerLoading(

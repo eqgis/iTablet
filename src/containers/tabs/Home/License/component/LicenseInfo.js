@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Image, Text } from 'react-native'
 import { getLanguage } from '../../../../../language/index'
 import { color } from '../../../../../styles'
 import { scaleSize } from '../../../../../utils'
+import moment from 'moment'
 import styles from '../styles'
 
 const LicenseType = {
@@ -122,7 +123,7 @@ export default class LicenseInfo extends Component {
           timeStr.slice(6) +
           ' 00:00'
         let date1 = new Date()
-        let date2 = new Date(tempTimeStr)
+        let date2 = moment(tempTimeStr,"YYYY-MM-DD HH:mm").toDate()
         days = Math.ceil(
           (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24),
         ) + 1

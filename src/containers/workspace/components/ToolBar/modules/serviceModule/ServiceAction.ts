@@ -23,7 +23,7 @@ import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../../../utils/DataHandler'
 
 
 

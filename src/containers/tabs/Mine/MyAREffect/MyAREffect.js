@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { MyDataPage } from '../component'
 import { getLanguage } from '../../../../language'
-import DataHandler from '../DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
 

@@ -19,7 +19,7 @@ import { IARTransform } from '../types'
 import AREditData from './AREditData'
 import { Platform } from 'react-native'
 import { FileTools } from '@/native'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../../../utils/DataHandler'
 
 async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()

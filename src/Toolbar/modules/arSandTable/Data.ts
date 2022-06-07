@@ -1,5 +1,5 @@
 import { getImage } from "@/assets"
-import DataHandler from "@/containers/tabs/Mine/DataHandler"
+import DataHandler from "@/utils/DataHandler"
 import { getLanguage } from "@/language"
 import { IToolbarOption, SelectionListOption, ToolBarBottomItem, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppEvent, AppLog, AppToolBar, AppUser, Toast } from "@/utils"

@@ -14,7 +14,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import constants from '../../../../constants'
 import Utils from '../../utils'
 import NavigationService from '../../../../../NavigationService'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../../../utils/DataHandler'
 
 /**
  * 统一处理方法

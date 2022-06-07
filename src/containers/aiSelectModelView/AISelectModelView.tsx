@@ -9,10 +9,10 @@ import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { dp } from '../../utils'
 import { color } from '../../styles'
-import { ILocalData } from '../tabs/Mine/DataHandler/DataLocal'
+import { ILocalData } from '../../utils/DataHandler/DataLocal'
 import { setAIClassifyModel, setAIDetectModel } from '../../redux/models/setting'
 import { Users } from '../../redux/models/user'
-import DataHandler from '../tabs/Mine/DataHandler'
+import DataHandler from '../../utils/DataHandler'
 
 interface Props extends ReduxProps {
   navigation: any,

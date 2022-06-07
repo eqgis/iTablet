@@ -64,7 +64,7 @@ import { getLanguage } from './src/language/index'
 import { ProtocolDialog } from './src/containers/tabs/Home/components'
 import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHandle'
 import { SimpleDialog } from './src/containers/tabs/Friend'
-import DataHandler from './src/containers/tabs/Mine/DataHandler'
+import DataHandler from './src/utils/DataHandler'
 let AppUtils = NativeModules.AppUtils
 import config from './configs/config'
 import _mapModules, { mapModules } from './configs/mapModules'

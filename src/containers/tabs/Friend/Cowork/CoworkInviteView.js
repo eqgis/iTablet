@@ -6,7 +6,7 @@ import { SMap } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import moment from 'moment'
-import DataHandler from '../../Mine/DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import { Toast } from '../../../../utils'
 
 class CoworkInviteView extends React.Component {

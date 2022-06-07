@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { MyDataPage } from '../component'
-import DataHandler from '../DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import { FileTools } from '../../../../native'
 import { ColorScheme } from '../../../../components'
 

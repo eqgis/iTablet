@@ -16,7 +16,7 @@ import { Users } from '../../../../../redux/models/user'
 import { connect } from 'react-redux'
 import { SCoordination, GroupType } from 'imobile_for_reactnative'
 import { UploadItem } from '../components'
-import DataHandler from '../../../Mine/DataHandler'
+import DataHandler from '../../../../../utils/DataHandler'
 import { exportWorkspace } from '../../../../../redux/models/map'
 import { FileTools } from '../../../../../native'
 

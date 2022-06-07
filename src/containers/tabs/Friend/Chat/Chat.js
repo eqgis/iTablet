@@ -37,7 +37,7 @@ import { getLanguage } from '../../../../language/index'
 import FriendListFileHandle from '../FriendListFileHandle'
 // eslint-disable-next-line import/no-unresolved
 import ImageResizer from 'react-native-image-resizer'
-import DataHandler from '../../Mine/DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import 'moment/locale/zh-cn'
 import CoworkInfo from '../Cowork/CoworkInfo'
 

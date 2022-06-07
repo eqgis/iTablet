@@ -16,7 +16,7 @@ import {
 import { setOldMapModule } from '../../../../redux/models/appConfig'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { AppletAdd } from '../../../../customModule/mapModules'
-import DataHandler from '../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'

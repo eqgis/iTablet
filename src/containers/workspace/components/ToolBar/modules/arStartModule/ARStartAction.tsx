@@ -15,7 +15,7 @@ import { Toast, scaleSize, DialogUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../../../utils/DataHandler'
 
 interface ListData extends FiltedData {
   title: string,

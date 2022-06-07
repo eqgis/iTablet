@@ -1,5 +1,5 @@
 import { ConstPath } from "@/constants"
-import DataHandler from "@/containers/tabs/Mine/DataHandler"
+import DataHandler from "@/utils/DataHandler"
 import { AppLog, AppToolBar } from "@/utils"
 import { FileTools, SARMap } from "imobile_for_reactnative"
 

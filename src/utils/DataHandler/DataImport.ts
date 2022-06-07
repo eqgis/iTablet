@@ -1,6 +1,6 @@
 import { SMap, EngineType, SScene, SARMap, AppInfo, FileInfo } from 'imobile_for_reactnative'
-import { FileTools } from '../../../../native'
-import { ConstPath } from '../../../../constants'
+import { FileTools } from '../../native'
+import { ConstPath } from '../../constants'
 import { ExternalDatasetType, UserInfo } from '@/types'
 import { IExternalData } from './DataExternal'
 import { AppUser } from '@/utils'

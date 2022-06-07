@@ -1,7 +1,7 @@
 import { FileTools,RNFS } from 'imobile_for_reactnative'
-import { ConstPath } from '../../../../constants'
+import { ConstPath } from '../../constants'
 // import RNFS, { downloadFile, DownloadFileOptions} from '../../../../native/RNFS'
-import { OnlineServicesUtils } from '../../../../utils'
+import { OnlineServicesUtils } from '..'
 
 export interface ExampleData {
   /** 数据所在账户名 */

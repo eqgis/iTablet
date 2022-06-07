@@ -29,6 +29,7 @@ import AppUser from './AppUser'
 import AppDialog from './AppDialog'
 import AppInputDialog from './AppInputDialog'
 import AttributeUtils from './AttributeUtils'
+import DataHandler from './DataHandler'
 
 export { CheckSpell } from './CheckUtils'
 export { FloatMath } from './FloatMath'
@@ -72,4 +73,5 @@ export {
   AppDialog,
   AppInputDialog,
   AttributeUtils,
+  DataHandler,
 }

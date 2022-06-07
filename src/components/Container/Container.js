@@ -388,7 +388,7 @@ export default class Container extends Component {
     })
     return (
       <AnimatedView
-        style={[styles.view, { transform: [{ translateX: this.viewX }] }]}
+        style={[styles.view, { transform: [{ translateX: this.viewX }], width: screen.getScreenSafeWidth(this.props.device.orientation) }]}
       >
         {this.props.isOverlayBefore && (
           <AnimatedView style={{ width: width }}>

@@ -218,7 +218,7 @@ const modalOption = (params: StackNavigatorProps): ScreenOptions => {
   return {
     headerShown: false,
     animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
-    presentation: 'transparentModal',
+    presentation: 'containedTransparentModal',
   }
 }
 
@@ -230,7 +230,8 @@ export default function(params: StackNavigatorProps) {
         // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         headerShown: false,
         animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
-        presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
+        // presentation: Platform.OS === 'ios' ? 'card' : 'transparentModal',
+        presentation: 'card',
         gestureEnabled: false,
       }}
     >

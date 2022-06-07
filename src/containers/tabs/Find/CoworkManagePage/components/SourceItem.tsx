@@ -14,7 +14,7 @@ import { getThemeAssets } from '../../../../../assets'
 import { UserType, ConstPath } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { Users } from '../../../../../redux/models/user'
-import DataHandler from '../../../Mine/DataHandler'
+import DataHandler from '../../../../../utils/DataHandler'
 import { Download, IDownloadProps } from '../../../../../redux/models/down'
 
 const styles = StyleSheet.create({

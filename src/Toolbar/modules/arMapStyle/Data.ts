@@ -1,5 +1,5 @@
 import { ImagePicker } from "@/components"
-import DataHandler from "@/containers/tabs/Mine/DataHandler"
+import DataHandler from "@/utils/DataHandler"
 import { ARLayer, ARTextAlign, FileTools, SARMap } from "imobile_for_reactnative"
 import { TARTextAlign } from "imobile_for_reactnative/types/data"
 import { ModuleList } from ".."

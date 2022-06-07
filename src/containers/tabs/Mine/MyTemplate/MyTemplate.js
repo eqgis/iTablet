@@ -1,5 +1,5 @@
 import { MyDataPage } from '../component'
-import DataHandler from '../DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import { FileTools } from '../../../../native'
 import { getLanguage } from '../../../../language/index'
 

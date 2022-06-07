@@ -52,7 +52,7 @@ import ToolbarModule from '../../../workspace/components/ToolBar/modules/Toolbar
 import { themeModule } from '../../../workspace/components/ToolBar/modules'
 
 import collectionModule from '../../../../containers/workspace/components/ToolBar/modules/collectionModule'
-import DataHandler from '../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import CoworkInfo from '../../../tabs/Friend/Cowork/CoworkInfo'
 import { CheckBox } from '../../../../components'
 import {

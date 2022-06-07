@@ -12,7 +12,7 @@ import { Module } from '../../class'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import SampleMapItem from './SampleMapItem'
-import DataHandler from '../tabs/Mine/DataHandler'
+import DataHandler from '../../utils/DataHandler'
 
 export default class SampleMap extends Component {
   props: {

@@ -4,7 +4,7 @@ import { handleActions } from 'redux-actions'
 import { ARLayer, SARMap } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
-import DataHandler from '../../containers/tabs/Mine/DataHandler'
+import DataHandler from '../../utils/DataHandler'
 
 export interface UserMapInfo {
   userName: string,

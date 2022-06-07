@@ -6,7 +6,7 @@ import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { LayerUtils } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'
 import { FileTools } from '../../../../../../native'
-import { ILocalData } from '../../../../../tabs/Mine/DataHandler/DataLocal'
+import { ILocalData } from '../../../../../../utils/DataHandler/DataLocal'
 
 async function getTaggingLayerData() {
   const _params: any = ToolbarModule.getParams()

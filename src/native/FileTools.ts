@@ -7,20 +7,21 @@ import { FileTools } from "imobile_for_reactnative"
  * @param name
  * @returns {Promise}
  */
-async function getAvailableMapName(path, name) {
-  let maps = await FileTools.getPathListByFilter(path, {
+async function getAvailableMapName(path: string, name: string): Promise<string> {
+  const maps = await FileTools.getPathListByFilter(path, {
     name,
     extension: 'xml',
     type: 'file',
   })
   let _name = name
-  let mapNames = []
-  for (let map of maps) {
+  const mapNames = []
+  for (const map of maps) {
     mapNames.push(map.name.replace('.xml', ''))
   }
-  
-  let baseName = name, mapIndex = 0
-  
+
+  const baseName = name
+  let mapIndex = 0
+
   while (mapNames.indexOf(_name) >= 0) {
     _name = baseName + '_' + (++mapIndex)
   }
@@ -36,8 +37,8 @@ async function getAvailableMapName(path, name) {
  * */
 async function getFilterFiles(
   fileDir: string,
-  fileType: Object,
-  arrFilterFile: Array,
+  fileType: any,
+  arrFilterFile: any,
 ) {
   if (arrFilterFile === undefined) {
     arrFilterFile = []
@@ -55,12 +56,12 @@ async function getFilterFiles(
       }
     }
     let isRecordFile = false
-    let arrDirContent = await getDirectoryContent(fileDir)
+    const arrDirContent = await FileTools.getDirectoryContent(fileDir)
     for (let i = 0; i < arrDirContent.length; i++) {
-      let fileContent = arrDirContent[i]
-      let isFile = fileContent.type
+      const fileContent = arrDirContent[i]
+      const isFile = fileContent.type
       let fileName = fileContent.name
-      let newPath = fileDir + '/' + fileName
+      const newPath = fileDir + '/' + fileName
       if (isFile === 'file' && !isRecordFile) {
         if (
           (fileType.smwu && fileName.indexOf(fileType.smwu) !== -1) ||
@@ -102,8 +103,8 @@ async function getFilterFiles(
 /**
  * 获取文件可用名字
  */
-async function getAvailableFileName(path, name, ext) {
-  let result = await FileTools.fileIsExist(path)
+async function getAvailableFileName(path: string, name: string, ext: string) {
+  const result = await FileTools.fileIsExist(path)
   if (!result) {
     await FileTools.createDirectory(path)
   }

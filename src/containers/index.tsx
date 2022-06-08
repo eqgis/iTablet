@@ -201,6 +201,7 @@ import { UserInfo } from '@/types'
 import { Platform } from 'react-native'
 import MapSelectList from '../containers/workspace/components/ToolBar/modules/arDrawingModule/MapSelectList'
 import { DEVICE } from '@/redux/models/device'
+import ChartManager from './ChartManager/ChartManager'
 
 const Stack = createNativeStackNavigator()
 
@@ -425,6 +426,7 @@ export default function(params: StackNavigatorProps) {
         // presentation: 'modal',
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} />
+      <Stack.Screen name="ChartManager" component={ChartManager} />
     </Stack.Navigator>
   )
 }

@@ -48,6 +48,10 @@ const sandtable_album = require('./icon_tool_sandtable.png')
 const icon_tool_relation = require('./icon_tool_relation.png')
 const icon_tool_list = require('./icon_tool_list.png')
 const icon_tool_loop = require('./icon_tool_loop.png')
+// 柱状图图标
+export const bar_chart = require('./icon_tool_bar-chart.png')
+// 饼图图标
+export const pie_chart = require('./icon_tool_pie-chart.png')
 
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
@@ -102,4 +106,6 @@ export default {
   icon_tool_relation,
   icon_tool_list,
   icon_tool_loop,
+  bar_chart,
+  pie_chart,
 }

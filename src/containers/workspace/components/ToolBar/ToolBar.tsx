@@ -12,7 +12,7 @@ import TouchProgress from '../TouchProgress'
 // import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModuleDefault, { getToolbarModule } from './modules/ToolbarModule'
-import { View, Animated, Platform, TouchableOpacity, Image } from 'react-native'
+import { View, Animated, Platform, TouchableOpacity, Image, ScaledSize } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
@@ -72,6 +72,7 @@ interface Props extends Partial<DefaultProps> {
   currentLayer: Object,
   selection: Array,
   device: Object,
+  windowSize: ScaledSize,
   mapLegend?: Object, //图例参数对象
   layerList?: Array, //三维图层
   toolbarStatus: Object,
@@ -893,6 +894,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
         setVisible={this.setVisible}
         showBox={this.showBox}
         customView={this.state.customView}
+        windowSize = { this.props.windowSize}
         getToolbarModule={() => this.ToolbarModule}
       />
     )

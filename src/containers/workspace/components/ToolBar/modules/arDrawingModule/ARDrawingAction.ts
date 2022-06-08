@@ -90,6 +90,10 @@ async function addAtCurrent(type: string, location?: Point3D) {
     await addARMarkerLinePoint(location)
   } else if (type === ConstToolType.SM_AR_DRAWING_ADD_SAND) {
     await addSandTable(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART) {
+    await addARChart(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART) {
+    await addARPieChart(location)
   } else {
     let _type
     if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
@@ -887,6 +891,16 @@ function arSandtableAlbum() {
   NavigationService.navigate("MapSelectList", { type: 'sandTableSelect' })
 }
 
+/** 转到柱状图添加页面 */
+function arBarChart() {
+  NavigationService.navigate("ChartManager", { type: 'barChartAdd' })
+}
+
+/** 转到饼图添加页面 */
+function arPieChart() {
+  NavigationService.navigate("ChartManager", { type: 'pieChartAdd' })
+}
+
 /** 矢量线节点的添加 */
 async function addARLinePoint(location?: Point3D) {
   // 根据图层类型添加不同数据源数据集
@@ -991,6 +1005,32 @@ async function addSandTable(location?: Point3D) {
   }
 }
 
+/** 柱状图的添加 */
+async function addARChart(location?: Point3D) {
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  const data = ToolbarModule.getData()?.chartData
+  if(data && layer) {
+    if(Platform.OS === 'android'){
+      SARMap.addBarChart(layer.name, data, location)
+    }
+  }
+}
+
+/** 饼图的添加 */
+async function addARPieChart(location?: Point3D) {
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  const data = ToolbarModule.getData()?.chartData?.data
+  if(data && layer) {
+    if(Platform.OS === 'android'){
+      SARMap.addARPieChart(layer.name, data, location)
+    }
+  }
+}
+
 export default {
   toolbarBack,
   commit,
@@ -1016,6 +1056,8 @@ export default {
   arVideoAlbum,
   arMapBrochor,
   arSandtableAlbum,
+  arBarChart,
+  arPieChart,
 
   addARLinePoint,
   addARMarkerLinePoint,
@@ -1029,4 +1071,6 @@ export default {
 
   arSandTable,
   addSandTable,
+  addARChart,
+  addARPieChart,
 }

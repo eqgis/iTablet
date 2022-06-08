@@ -1509,6 +1509,16 @@ export const language_cn = {
   LINE_POINT_SIZE: '节点大小',
   BUTTON_TEXT_SIZE: '按钮字号',
 
+  BAR_CHART: '柱状图',
+  HISTOGRAM_ATTRIBUTE: '柱状图属性',
+  ONLY_GRATER_THAN_TWO: '只能输入大于2的整数',
+  PIE_CHART: '饼图',
+  PIE_CHART_ATTRIBUTE: '饼图属性',
+  VALUE: '值',
+  ATTR_NAME: '名称',
+  COUNT: '数量',
+  UNIT: '单位',
+
   PLOTTING_ANIMATION_MODE: "动画类型",
   PLOTTING_ANIMATION_OPERATION: "效果选项",
   PLOTTING_ANIMATION_START_MODE: "开始",

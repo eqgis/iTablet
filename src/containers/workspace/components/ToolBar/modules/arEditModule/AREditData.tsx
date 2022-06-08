@@ -1,6 +1,6 @@
 import React from 'react'
-import { View } from 'react-native'
-import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import { View, Dimensions } from 'react-native'
+import { ConstToolType, Height, ToolbarType } from '../../../../../../constants'
 import { MTBtn } from '../../../../../../components'
 import { scaleSize, Toast, AppToolBar} from '../../../../../../utils'
 import { color } from '../../../../../../styles'
@@ -11,6 +11,9 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
 import AREditAction from './AREditAction'
 import { DATA_ITEM, IARTransform } from '../types'
+import NavigationService from '../../../../../../containers/NavigationService'
+import ToolBarInput from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarInput'
+import { dp } from 'imobile_for_reactnative/utils/size'
 
 interface SectionItemData {
   key: string,
@@ -171,7 +174,7 @@ async function getData(type: string, params: {[name: string]: any}) {
         ToolbarBtnType.TOOLBAR_COMMIT,
       ]
       break
-    case ConstToolType.SM_AR_EDIT_SETTING: 
+    case ConstToolType.SM_AR_EDIT_SETTING:
     case ConstToolType.SM_AR_EDIT_SETTING_ARRAY:{
       const _data = await getStyleData(type)
       if (_data) {
@@ -207,6 +210,10 @@ async function getData(type: string, params: {[name: string]: any}) {
       if (_data) {
         data = _data.data
       }
+      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU]
+      break
+    }
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT: {
       buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU]
       break
     }
@@ -407,6 +414,7 @@ const ARTtitleSettingItems = (language: string) => {
     },
   ]
   const _data: any = ToolbarModule.getData()
+  const params: any = ToolbarModule.getParams()
   const element = _data.selectARElement
   if(element.touchType === 0 && element.videoType === 0){
     items.push(
@@ -425,6 +433,54 @@ const ARTtitleSettingItems = (language: string) => {
         selectKey: getLanguage(language).BUTTON_TEXT_SIZE,
       },
     )
+  }
+  if(element.type == ARElementType.AR_BAR_CHART || element.type === ARElementType.AR_PIE_CHART){
+    items.splice(3, 1)
+    items.splice(0, 2)
+    // 还差标题文字设置  TITLE
+    const titleText = {
+      key: getLanguage(language).TITLE,
+      action: () => {
+        params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT, {
+          containerType: ToolbarType.list,
+          customView: (_props: any) => (
+            <View style = {[{height: dp(50), backgroundColor: '#fff', marginTop: dp(-50), paddingTop: dp(10)}]}>
+              <ToolBarInput
+                textTitle = {getLanguage(language).TITLE}
+                apply = {(text: string) => {
+                  SARMap.setNodeTextTitle(text, element)
+                }}
+                text = {""}
+                windowSize = {_props.windowSize}
+              />
+            </View>
+          ),
+          isFullScreen: false,
+          showMenuDialog: false,
+        })
+      },
+      selectKey: getLanguage(language).FILLCOLOR,
+    }
+    items.unshift(titleText)
+
+    if(element.type == ARElementType.AR_PIE_CHART){
+      // 饼图还要添加标题的背景色
+      const fillColor = {
+        key: getLanguage(language).FILLCOLOR,
+        action: () => {
+          global.toolBox &&
+          global.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND, {
+            containerType: ToolbarType.colorTable,
+            isFullScreen: false,
+            showMenuDialog: false,
+            selectName: getLanguage().FILLCOLOR,
+            selectKey: getLanguage().FILLCOLOR,
+          })
+        },
+        selectKey: getLanguage(language).FILLCOLOR,
+      }
+      items.push(fillColor)
+    }
   }
   return items
 }
@@ -508,6 +564,10 @@ const ARBackgroundSettingItems = (language: string) => {
       },
     )
   }
+  if(element.type == ARElementType.AR_BAR_CHART){
+    // 柱状图的背景设置只有颜色和透明度
+    items.splice(2, 2)
+  }
   return items
 }
 
@@ -531,6 +591,8 @@ function getMenuData(type:any) {
       case ARElementType.AR_VIDEO_ALBUM:
       case ARElementType.AR_SAND_TABLE_ALBUM:
       case ARElementType.AR_SAND_TABLE:
+      case ARElementType.AR_BAR_CHART:
+      case ARElementType.AR_PIE_CHART:
         data = ARStyleItems(_params.language)
         break
     }
@@ -554,6 +616,7 @@ function getMenuData(type:any) {
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ROTATION_ANGLE:
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_OPACITY:
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_BUTTON_TEXT_SIZE:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT:
       data = ARTtitleSettingItems(_params.language)
       break
     case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND:
@@ -790,7 +853,7 @@ async function getStyleData(type: string) {
     //   data = []
     //   break
     case ConstToolType.SM_AR_EDIT_SCALE: {
-      let _defaultValue = transformData.scale === 100 ? transformData.scale : ((transformData.scale + 1) * 100)
+      const _defaultValue = transformData.scale === 100 ? transformData.scale : ((transformData.scale + 1) * 100)
       data = [{
         key: 'scale',
         leftImage: getThemeAssets().ar.armap.ar_scale,
@@ -836,7 +899,16 @@ async function getStyleData(type: string) {
                 selectName: getLanguage().COLOR,
                 selectKey: getLanguage().COLOR,
               })
-            }else{
+            } else if(element?.type === ARElementType.AR_BAR_CHART || element?.type === ARElementType.AR_PIE_CHART){
+              // 柱状图和饼图的设置工具栏里 点击标题去往的界面
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_COLOR, {
+                containerType: ToolbarType.colorTable,
+                isFullScreen: false,
+                showMenuDialog: false,
+                selectName: getLanguage().COLOR,
+                selectKey: getLanguage().COLOR,
+              })
+            } else{
               _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE, {
                 containerType: ToolbarType.table,
                 isFullScreen: false,
@@ -873,8 +945,38 @@ async function getStyleData(type: string) {
             })
           },
         },
+        {
+          key: ConstToolType.SM_AR_EDIT_SETTING_CHART_DATA,
+          image: getThemeAssets().ar.armap.icon_tool_array,
+          title: getLanguage().DATA,
+          action: () => {
+            const _data: any = ToolbarModule.getData()
+            const element = _data.selectARElement
+            if(element.type == ARElementType.AR_BAR_CHART){
+              // 柱状图更新数据
+              NavigationService.navigate("ChartManager", { type: 'update' })
+            } else if(element.type == ARElementType.AR_PIE_CHART){
+              // 饼图更新数据
+              NavigationService.navigate("ChartManager", { type: 'pieChartUpdate' })
+            }
+
+          },
+        },
       ]
       const element = AppToolBar.getData().selectARElement
+
+      if(element?.type === ARElementType.AR_BAR_CHART || element?.type === ARElementType.AR_PIE_CHART){
+        // 柱状图和饼图，去掉排列
+        data.splice(2, 1)
+        if(element?.type === ARElementType.AR_PIE_CHART){
+          // 饼图再去掉背景设置
+          data.splice(1, 1)
+        }
+      } else {
+        // 其他的去掉柱状图和饼图的更新
+        data.splice(3, 1)
+      }
+
       //点击右侧node时不显示标题设置
       if (element?.touchType !== 0) {
         data.splice(0, 1)

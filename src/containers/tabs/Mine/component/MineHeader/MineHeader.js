@@ -155,16 +155,16 @@ export default class MineHeader extends Component {
     return (
       <View style={myProfileStyle}>
         <TouchableOpacity
-          disabled={!isPro}
+          // disabled={!isPro}
           activeOpacity={0.7}
-          onPress={this._onPressAvatar}
+          onPress={isPro ? this._onPressAvatar : this._onPressMore}
           style={avatarContainer}
         >
           <Image style={styles.headImgStyle} source={headerImage} />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={this._onPressMore}
-          disabled={isPro}
+          onPress={isPro ? this._onPressAvatar : this._onPressMore}
+          // disabled={isPro}
           style={[
             profileTextStyle,
             isLandscape && {
@@ -173,8 +173,7 @@ export default class MineHeader extends Component {
             },
           ]}
         >
-          <Text numberOfLines={1} style={styles.userNameStyle}
-                ellipsizeMode={'tail'}>
+          <Text numberOfLines={1} style={styles.userNameStyle} ellipsizeMode={'tail'}>
             {headerTitle}
           </Text>
           <Text style={styles.statusTextStyle}>{statusText}</Text>
@@ -259,17 +258,15 @@ export default class MineHeader extends Component {
               },
             ]}
           >
-            {/*<View style={styles.profileContainerL}>*/}
-              {hasCustomLogo && this._renderLogo()}
-              {!hasCustomLogo && this._renderMyProfile()}
-              {/*{!hasCustomLogo && this._renderSideItem()}*/}
-              <View style={[
-                styles.searchContainerL,
-                { marginLeft: global.isPad ? fixedSize(72) : fixedSize(30) }
-              ]}>
-                {this._renderSearch()}
-              </View>
-            {/*</View>*/}
+            {hasCustomLogo && this._renderLogo()}
+            {!hasCustomLogo && this._renderMyProfile()}
+            {/*{!hasCustomLogo && this._renderSideItem()}*/}
+            <View style={[
+              styles.searchContainerL,
+              { marginLeft: global.isPad ? fixedSize(72) : fixedSize(30) }
+            ]}>
+              {this._renderSearch()}
+            </View>
           </ImageBackground>
         </View>
       )

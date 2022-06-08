@@ -92,7 +92,7 @@ class AnimationList extends React.Component<Props, State> {
           }}
           data={[{
             key: 'anime setting',
-            image: getImage().setting,
+            image: getImage().list,
             action: () => {
               this.showList()
             }

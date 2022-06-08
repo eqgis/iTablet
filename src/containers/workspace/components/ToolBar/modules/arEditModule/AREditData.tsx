@@ -190,14 +190,14 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND:
     case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_COLOR:
       data = getColorTable()
-      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU]
+      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU_FLEX,ToolbarBtnType.MENU]
       break
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE: {
       const _data = await getStyleData(type)
       if (_data) {
         data = _data.data[0].data
       }
-      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU]
+      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU_FLEX,ToolbarBtnType.MENU]
       break
     }
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT_SIZE:
@@ -210,11 +210,11 @@ async function getData(type: string, params: {[name: string]: any}) {
       if (_data) {
         data = _data.data
       }
-      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU]
+      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU_FLEX,ToolbarBtnType.MENU]
       break
     }
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT: {
-      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU]
+      buttons = [ToolbarBtnType.TOOLBAR_BACK,ToolbarBtnType.MENU_FLEX,ToolbarBtnType.MENU]
       break
     }
   }

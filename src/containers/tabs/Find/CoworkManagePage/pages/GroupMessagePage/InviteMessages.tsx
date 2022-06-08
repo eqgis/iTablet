@@ -22,6 +22,7 @@ import { SCoordination, GroupInviteMessageType } from 'imobile_for_reactnative'
 import { InviteItem } from '../../components'
 
 import styles from './styles'
+import { MsgConstant } from '@/constants'
 
 interface Props {
   language: string,
@@ -88,9 +89,9 @@ export default class InviteMessages extends Component<Props, State> {
       pageSize: this.pageSize,
       currentPage: 1,
     })
-    // this.props.readCoworkGroupMsg({
-    //   type: MsgConstant.MSG_ONLINE_GROUP_INVITE,
-    // })
+    this.props.readCoworkGroupMsg({
+      type: MsgConstant.MSG_ONLINE_GROUP_INVITE,
+    })
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {

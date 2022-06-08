@@ -104,7 +104,7 @@ class GroupMessagePage extends Component<Props, State> {
           <RedDot
             style={{
               top: scaleSize(15),
-              right: '38%',
+              right: screen.getScreenWidth(this.props.device.orientation) / 2 / 2 - 60,
             }}
           />
         )

@@ -20,7 +20,6 @@ class ArEditModule extends FunctionModule {
       case ConstToolType.SM_AR_EDIT_SETTING:
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE:
       case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND:
-      case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_OPACITY:
       case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_COLOR:
       case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR:
@@ -29,6 +28,12 @@ class ArEditModule extends FunctionModule {
       case ConstToolType.SM_AR_EDIT_ANIMATION_BONE_ANIMATION:
         data.autoShowBox = true
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 5 / 2
+        data.column = 3
+        data.row = 1
+        break
+      case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_OPACITY:
+        data.autoShowBox = true
+        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
         data.column = 3
         data.row = 1
         break
@@ -41,10 +46,13 @@ class ArEditModule extends FunctionModule {
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT_SIZE:
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE_COLOR:
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ROTATION_ANGLE:
-      case ConstToolType.SM_AR_EDIT_SETTING_IITLE_OPACITY:
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE_BUTTON_TEXT_SIZE:
         data.autoShowBox = true
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 6 / 2
+        break
+      case ConstToolType.SM_AR_EDIT_SETTING_IITLE_OPACITY:
+        data.autoShowBox = true
+        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
         break
       case ConstToolType.SM_AR_EDIT_SCALE:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2

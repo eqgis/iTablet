@@ -45,7 +45,7 @@ async function getData(type: string, params: {[name: string]: any}) {
         image: getThemeAssets().tabBar.tab_layer,
         action: () => {
           // 获取当前所属的tab索引值
-          let tabType = ToolbarModule.getData()?.moduleIndex?.toString()
+          const tabType = ToolbarModule.getData()?.moduleIndex?.toString()
           // 跳转到图层管理页面
           NavigationService.navigate("ARLayerManager", {
             tabType: tabType,
@@ -228,33 +228,34 @@ async function getData(type: string, params: {[name: string]: any}) {
 
       const widgetData =  {
         title: getLanguage(global.language).Prompt.WIDGET,
-        data: [{
-          key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
-          image: getThemeAssets().ar.functiontoolbar.ar_picture_collection,
-          title: getLanguage(global.language).Map_Main_Menu.ATTRIBUTE_ALBUM,
-          action: ARDrawingAction.arAttributeAlbum,
-        }, {
-          key: ConstToolType.SM_AR_VIDEO_ALBUM,
-          image: getThemeAssets().ar.functiontoolbar.ar_video_collection,
-          title: getLanguage(global.language).Map_Main_Menu.VIDEO_ALBUM,
-          action: ARDrawingAction.arVideoAlbum,
-        }, {
-          key: ConstToolType.SM_AR_MAPBROCHORE,
-          image: getThemeAssets().ar.functiontoolbar.ar_map_collection,
-          title: getLanguage(global.language).Map_Main_Menu.MAPBROCHORE,
-          action: ARDrawingAction.arMapBrochor,
-        }, {
-          key: ConstToolType.SM_AR_SANDTABLE_ALBUM,
-          image: getThemeAssets().ar.functiontoolbar.sandtable_album,
-          title: getLanguage(global.language).Map_Main_Menu.SANDTABLE_ALBUM,
-          action: ARDrawingAction.arSandtableAlbum,
-        }],
+        // data: [{
+        //   key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
+        //   image: getThemeAssets().ar.functiontoolbar.ar_picture_collection,
+        //   title: getLanguage(global.language).Map_Main_Menu.ATTRIBUTE_ALBUM,
+        //   action: ARDrawingAction.arAttributeAlbum,
+        // }, {
+        //   key: ConstToolType.SM_AR_VIDEO_ALBUM,
+        //   image: getThemeAssets().ar.functiontoolbar.ar_video_collection,
+        //   title: getLanguage(global.language).Map_Main_Menu.VIDEO_ALBUM,
+        //   action: ARDrawingAction.arVideoAlbum,
+        // }, {
+        //   key: ConstToolType.SM_AR_MAPBROCHORE,
+        //   image: getThemeAssets().ar.functiontoolbar.ar_map_collection,
+        //   title: getLanguage(global.language).Map_Main_Menu.MAPBROCHORE,
+        //   action: ARDrawingAction.arMapBrochor,
+        // }, {
+        //   key: ConstToolType.SM_AR_SANDTABLE_ALBUM,
+        //   image: getThemeAssets().ar.functiontoolbar.sandtable_album,
+        //   title: getLanguage(global.language).Map_Main_Menu.SANDTABLE_ALBUM,
+        //   action: ARDrawingAction.arSandtableAlbum,
+        // }],
         onPress: () => {
           // 点击tab后将索引值同步
           ToolbarModule.addData({moduleIndex: 5})
           // 转到非特效tab里视为特效图层已经添加完成
           global.isNotEndAddEffect = false
         },
+        getData: getWidgetListData,
       }
 
       data.push(poiData)
@@ -282,6 +283,8 @@ async function getData(type: string, params: {[name: string]: any}) {
     case ConstToolType.SM_AR_DRAWING_ADD_LINE:
     case ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE:
     case ConstToolType.SM_AR_DRAWING_ADD_SAND:
+    case ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART:
+    case ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART:
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         {
@@ -465,6 +468,46 @@ async function getARSandTable() {
       },
     }
   }))
+}
+
+/** 获取小组件数据 */
+async function getWidgetListData() {
+  const items = [{
+    key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
+    image: getThemeAssets().ar.functiontoolbar.ar_picture_collection,
+    title: getLanguage(global.language).Map_Main_Menu.ATTRIBUTE_ALBUM,
+    action: ARDrawingAction.arAttributeAlbum,
+  }, {
+    key: ConstToolType.SM_AR_VIDEO_ALBUM,
+    image: getThemeAssets().ar.functiontoolbar.ar_video_collection,
+    title: getLanguage(global.language).Map_Main_Menu.VIDEO_ALBUM,
+    action: ARDrawingAction.arVideoAlbum,
+  }, {
+    key: ConstToolType.SM_AR_MAPBROCHORE,
+    image: getThemeAssets().ar.functiontoolbar.ar_map_collection,
+    title: getLanguage(global.language).Map_Main_Menu.MAPBROCHORE,
+    action: ARDrawingAction.arMapBrochor,
+  }, {
+    key: ConstToolType.SM_AR_SANDTABLE_ALBUM,
+    image: getThemeAssets().ar.functiontoolbar.sandtable_album,
+    title: getLanguage(global.language).Map_Main_Menu.SANDTABLE_ALBUM,
+    action: ARDrawingAction.arSandtableAlbum,
+  }, {
+    key: ConstToolType.SM_AR_BAR_CHART,
+    image: getThemeAssets().ar.functiontoolbar.bar_chart,
+    title: getLanguage(global.language).Map_Main_Menu.BAR_CHART,
+    action: ARDrawingAction.arBarChart,
+  }, {
+    key: ConstToolType.SM_AR_PIE_CHART,
+    image: getThemeAssets().ar.functiontoolbar.pie_chart,
+    title: getLanguage(global.language).Map_Main_Menu.PIE_CHART,
+    action: ARDrawingAction.arPieChart,
+  }]
+
+  if(Platform.OS === 'ios') {
+    items.splice(4, 2)
+  }
+  return items
 }
 
 export default {

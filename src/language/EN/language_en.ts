@@ -1506,6 +1506,16 @@ export const language_en: typeof language_cn = {
   LINE_POINT_SIZE: 'Line point size',  // To be translated
   BUTTON_TEXT_SIZE: 'Button Size',// To be translated
 
+  BAR_CHART: 'Bar chart',  // To be translated
+  HISTOGRAM_ATTRIBUTE: 'Histogram attribute',  // To be translated
+  ONLY_GRATER_THAN_TWO: 'Only integers greater than 2 can be entered',  // To be translated
+  PIE_CHART: 'Pie chart',  // To be translate
+  PIE_CHART_ATTRIBUTE: 'Pie chart attribute',  // To be translate
+  VALUE: 'value',  // To be translate
+  ATTR_NAME: 'name',  // To be translate
+  COUNT: 'number',  // To be translate
+  UNIT: 'unit',  // To be translate
+
   PLOTTING_ANIMATION_MODE: "Animation Mode",
   PLOTTING_ANIMATION_OPERATION: "Result Operation",
   PLOTTING_ANIMATION_START_MODE: "Start",

@@ -39,6 +39,7 @@ async function toolbarBack() {
     case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_COLOR:
     case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
     case ConstToolType.SM_AR_EDIT_SETTING_ARRAY:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT:
       _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING, {
         containerType: ToolbarType.table,
         isFullScreen: false,

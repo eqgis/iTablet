@@ -16,6 +16,7 @@ interface IToolbarType {
   tableTabs: 'tableTabs', // 卡片表格
   typeNull: 'typeNull', //无状态 高度始终为0
   arMeasure: 'arMeasure', //ar测量新增 同级界面弹出二级菜单
+  inputList: 'inputList',  // 输入框列表
 }
 
 

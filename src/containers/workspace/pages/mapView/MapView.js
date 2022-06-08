@@ -4887,6 +4887,8 @@ export default class MapView extends React.Component {
               || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
               || element.type === ARElementType.AR_SAND_TABLE_ALBUM
               || element.type === ARElementType.AR_SAND_TABLE
+              || element.type === ARElementType.AR_BAR_CHART
+              || element.type === ARElementType.AR_PIE_CHART
             ) {
               arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
               ToolbarModule.addData({ selectARElement: element })
@@ -4906,7 +4908,7 @@ export default class MapView extends React.Component {
           onARElementAdd={element => {
             AppToolBar.addData({addARElement: element})
             AppEvent.emitEvent('ar_map_on_add_element', element)
-            if(element.type === ARElementType.AR_ATTRIBUTE_ALBUM || element.type === ARElementType.AR_BROCHOR || element.type === ARElementType.AR_ALBUM|| element.type === ARElementType.AR_VIDEO_ALBUM || element.type === ARElementType.AR_SAND_TABLE_ALBUM){
+            if(element.type === ARElementType.AR_ATTRIBUTE_ALBUM || element.type === ARElementType.AR_BROCHOR || element.type === ARElementType.AR_ALBUM|| element.type === ARElementType.AR_VIDEO_ALBUM || element.type === ARElementType.AR_SAND_TABLE_ALBUM || element.type === ARElementType.AR_BAR_CHART || element.type === ARElementType.AR_PIE_CHART){
               if(AppToolBar.getData().isAlbumFirstAdd){
                 arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
                 ToolbarModule.addData({ selectARElement: element })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Animated, Text, FlatList } from 'react-native'
+import { View, Animated, Text, FlatList, ScaledSize } from 'react-native'
 import {
   ToolbarType,
   ConstToolType,
@@ -26,6 +26,7 @@ export default class ToolbarContentView extends React.Component {
     type: any,
     containerType: string,
     device: Object,
+    windowSize: ScaledSize,
     currentLayer: Object,
     data: Array,
     secdata: Array,
@@ -553,6 +554,9 @@ export default class ToolbarContentView extends React.Component {
           break
         case ToolbarType.tableTabs:
           box = this.renderTableTabs()
+          break
+        case ToolbarType.inputList:
+          box = this.renderInputView()
           break
         case ToolbarType.table:
         default:

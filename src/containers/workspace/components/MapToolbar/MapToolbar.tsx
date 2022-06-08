@@ -1,25 +1,40 @@
 import * as React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { scaleSize, setSpText ,screen, AppToolBar} from '../../../../utils'
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import { scaleSize, setSpText, AppToolBar} from '../../../../utils'
 import { ListSeparator, MTBtn } from '../../../../components'
-import { ChunkType, MapTabs } from '../../../../constants'
-import PropTypes from 'prop-types'
+import ChunkType, { TChunkType } from '../../../../constants/custom/ChunkType'
+import MapTabs, { TMapTabs } from '../../../../constants/custom/MapTabs'
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 
-export default class MapToolbar extends React.Component {
-  static propTypes = {
-    language: PropTypes.string,
-    device: PropTypes.object,
-    type: PropTypes.string,
-    navigation: PropTypes.object,
-    initIndex: PropTypes.number,
-    style: PropTypes.any,
-    mapModules: PropTypes.object,
-    ARView: PropTypes.bool,
-    isAR: PropTypes.bool,
-  }
+interface Props {
+  language: string,
+  device: Device,
+  type: TChunkType[keyof TChunkType],
+  navigation: any,
+  initIndex: number,
+  style?: StyleProp<ViewStyle>,
+  mapModules?: any,
+  ARView?: boolean,
+  isAR?: boolean,
+  currentAction?: () => void, // 点击当前Tab触发的事件
+}
+
+interface TabItem {
+  key: TMapTabs[keyof TMapTabs],
+  title: string,
+  image: any,
+  selectedImage: any,
+  btnClick: () => void,
+}
+
+interface State {
+  data: TabItem[],
+  currentIndex: number,
+}
+
+export default class MapToolbar extends React.Component<Props, State> {
 
   static defaultProps = {
     type: ChunkType.MAP_COLLECTION,
@@ -28,7 +43,9 @@ export default class MapToolbar extends React.Component {
     initIndex: -1,
   }
 
-  constructor(props) {
+  show = false
+
+  constructor(props: Props) {
     super(props)
 
     this.show = false
@@ -36,11 +53,11 @@ export default class MapToolbar extends React.Component {
 
     let current = 0
     if (props.initIndex < 0 && data.length > 0) {
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].key === props.route.name) {
-          current = i
-        }
-      }
+      // for (let i = 0; i < data.length; i++) {
+      //   if (data[i].key === props.route.name) {
+      //     current = i
+      //   }
+      // }
     } else {
       current = props.initIndex
     }
@@ -51,7 +68,7 @@ export default class MapToolbar extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     if (
       this.props.isAR !== nextProps.isAR ||
       this.props.type !== nextProps.type ||
@@ -66,7 +83,7 @@ export default class MapToolbar extends React.Component {
     return false
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (
       this.props.isAR !== prevProps.isAR ||
       this.props.type !== prevProps.type ||
@@ -80,8 +97,8 @@ export default class MapToolbar extends React.Component {
     }
   }
 
-  getToolbar = type => {
-    let list = []
+  getToolbar = (type: TChunkType[keyof TChunkType] | '') => {
+    const list: TabItem[] = []
     if (type === '') return list
     // let tabModules = this.props.mapModules.modules[
     //   this.props.mapModules.currentMapModule
@@ -97,7 +114,7 @@ export default class MapToolbar extends React.Component {
       tabModules = _module.tabModules
     }
 
-    for (let module of tabModules) {
+    for (const module of tabModules) {
       switch (module) {
         case MapTabs.MapView:
           list.push({
@@ -118,6 +135,7 @@ export default class MapToolbar extends React.Component {
           break
         case MapTabs.LayerManager:
         case MapTabs.ARLayerManager:
+        case MapTabs.Layer3DManager:
           list.push({
             key: module,
             title: getLanguage(global.language).Map_Label.LAYER,
@@ -147,11 +165,13 @@ export default class MapToolbar extends React.Component {
             btnClick: () => {
               this.props.navigation &&
                 this.props.navigation.navigate('LayerAttribute', { type })
+              this.props.currentAction?.()
             },
           })
           break
         case MapTabs.MapSetting:
         case MapTabs.ARMapSetting:
+        case MapTabs.Map3DSetting:
           list.push({
             key: module,
             title: getLanguage(global.language).Map_Label.SETTING,
@@ -186,28 +206,6 @@ export default class MapToolbar extends React.Component {
             },
           })
           break
-        case MapTabs.Layer3DManager:
-          list.push({
-            key: module,
-            title: getLanguage(global.language).Map_Label.LAYER,
-            //'图层',
-            image: getThemeAssets().tabBar.tab_layer,
-            selectedImage: getThemeAssets().tabBar.tab_layer_selected,
-            btnClick: () => {
-              if (this.props.navigation) {
-                if (this.props.navigation.getState().type === 'tab') {
-                  this.props.navigation.navigate(module, { type })
-                } else {
-                  this.props.navigation.replace(module, { type })
-                }
-              }
-              // this.props.navigation &&
-              //   this.props.navigation.navigate('Layer3DManager', {
-              //     type: 'MAP_3D',
-              //   })
-            },
-          })
-          break
         case MapTabs.LayerAttribute3D:
           list.push({
             key: module,
@@ -221,34 +219,14 @@ export default class MapToolbar extends React.Component {
             },
           })
           break
-        case MapTabs.Map3DSetting:
-          list.push({
-            key: module,
-            title: getLanguage(global.language).Map_Label.SETTING,
-            //'设置',
-            image: getThemeAssets().tabBar.tab_setting,
-            selectedImage: getThemeAssets().tabBar.tab_setting_selected,
-            btnClick: () => {
-              if (this.props.navigation) {
-                if (this.props.navigation.getState().type === 'tab') {
-                  this.props.navigation.navigate(module, { type })
-                } else {
-                  this.props.navigation.replace(module, { type })
-                }
-              }
-              // this.props.navigation &&
-              //   this.props.navigation.navigate('Map3DSetting', {})
-            },
-          })
-          break
       }
     }
     return list
   }
 
-  _renderItem = ({ item, index }) => {
-    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-    let width = isLandscape ? scaleSize(96) : this.props.device.width /  this.state.data.length
+  _renderItem = ({ item, index }: { item: TabItem, index: number }) => {
+    const isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+    const width = isLandscape ? scaleSize(96) : this.props.device.width /  this.state.data.length
     let title
     // if (item.key === MapTabs.MapView) {
     //   title = this.props.isAR
@@ -277,6 +255,8 @@ export default class MapToolbar extends React.Component {
           }
           if (current !== index) {
             item.btnClick && item.btnClick()
+          } else {
+            this.props.currentAction?.()
           }
         }}
       />
@@ -289,8 +269,8 @@ export default class MapToolbar extends React.Component {
 
   _keyExtractor = item => item.key
 
-  renderItems = data => {
-    let toolbar = []
+  renderItems = (data: TabItem[]) => {
+    const toolbar: JSX.Element[] = []
     data.forEach((item, index) => {
       toolbar.push(this._renderItem({ item, index }))
     })
@@ -298,8 +278,8 @@ export default class MapToolbar extends React.Component {
   }
 
   render() {
-    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
-    let style = isLandscape ? styles.containerL : styles.containerP
+    const isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') === 0
+    const style = isLandscape ? styles.containerL : styles.containerP
     return (
       <View style={[style, this.props.style]}>
         {this.renderItems(this.state.data)}

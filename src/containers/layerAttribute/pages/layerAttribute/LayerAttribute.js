@@ -117,12 +117,10 @@ export default class LayerAttribute extends React.Component {
   }
 
   componentDidMount() {
-    // InteractionManager.runAfterInteractions(() => {
     if (this.type === 'MAP_3D') {
       this.getMap3DAttribute()
     } else if (this.props.currentLayer?.name) {
       this.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
-      //ConstInfo.LOADING_DATA)
       SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
         this.isMediaLayer = result
         this.refresh()
@@ -130,7 +128,8 @@ export default class LayerAttribute extends React.Component {
         this.refresh()
       })
     }
-    // })
+    // 添加导航监听,使每次添加对象等导致属性变化的操作,返回到属性页面时,保持刷新
+    this.props.navigation.addListener('focus', this.resetCurrentPage)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -150,7 +149,6 @@ export default class LayerAttribute extends React.Component {
         attributes: prevProps.attributes,
       })
       this.total = prevProps.attributes.data.length
-      // console.log(prevProps)
     } else if (
       prevProps.currentLayer &&
       JSON.stringify(prevProps.currentLayer) !==
@@ -193,6 +191,7 @@ export default class LayerAttribute extends React.Component {
 
   componentWillUnmount() {
     this.props.setCurrentAttribute({})
+    this.props.navigation.removeListener('focus', this.resetCurrentPage)
   }
 
   getMap3DAttribute = async (cb = () => { }) => {
@@ -265,6 +264,17 @@ export default class LayerAttribute extends React.Component {
         }
       },
     )
+  }
+
+  resetCurrentPage = () => {
+    try {
+      this.getAttribute({
+        type: 'reset',
+        currentPage: this.currentPage,
+      })
+    } catch(e) {
+
+    }
   }
 
   /**
@@ -1278,6 +1288,9 @@ export default class LayerAttribute extends React.Component {
         navigation={this.props.navigation}
         mapModules={this.props.mapModules}
         initIndex={2}
+        currentAction={() => {
+          this.resetCurrentPage()
+        }}
         type={this.type}
       />
     )

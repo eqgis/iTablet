@@ -614,15 +614,6 @@ export default class MapView extends React.Component {
       if (this.toolBox) {
         global.toolBox = this.toolBox
       }
-      // })
-      // SMediaCollector.setMediaService(this.props.user.currentUser.serverUrl)
-      this.unsubscribeFocus = () => {
-        if (this.showFullonBlur) {
-          this.showFullMap(false)
-          this.showFullonBlur = false
-        }
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-      }
 
       this.unsubscribeDidFocus = () => {
         if (this.showFullonBlur) {
@@ -640,33 +631,10 @@ export default class MapView extends React.Component {
         this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
       }
 
-      this.props.navigation.addListener('willFocus', this.unsubscribeFocus)
       //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
-      this.props.navigation.addListener('didFocus', this.unsubscribeDidFocus)
-      this.props.navigation.addListener('willBlur', this.unsubscribeBlur)
+      this.props.navigation.addListener('focus', this.unsubscribeDidFocus)
+      this.props.navigation.addListener('blur', this.unsubscribeBlur)
 
-      //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
-      // this.unsubscribeDidFocus = this.props.navigation.addListener(
-      //   'didFocus',
-      //   () => {
-      //     if (this.showFullonBlur) {
-      //       this.showFullMap(false)
-      //       this.showFullonBlur = false
-      //     }
-      //     this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-      //   },
-      // )
-
-      // this.unsubscribeBlur = this.props.navigation.addListener(
-      //   'willBlur',
-      //   () => {
-      //     if (!this.fullMap) {
-      //       this.showFullMap(true)
-      //       this.showFullonBlur = true
-      //     }
-      //     this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-      //   },
-      // )
       SMap.addMessageCalloutListener(this.onMessageCalloutTap)
       this.addSpeechRecognizeListener()
       if (global.language === 'CN') {
@@ -1039,12 +1007,8 @@ export default class MapView extends React.Component {
       global.MapTabNavigator = null
     }
 
-    this.props.navigation.removeListener('willFocus', this.unsubscribeFocus)
-    this.props.navigation.removeListener('didFocus', this.unsubscribeDidFocus)
-    this.props.navigation.removeListener('willBlur', this.unsubscribeBlur)
-    // this.unsubscribeFocus && this.unsubscribeFocus.remove()
-    // this.unsubscribeBlur && this.unsubscribeBlur.remove()
-    // this.unsubscribeDidFocus && this.unsubscribeDidFocus.remove()
+    this.props.navigation.removeListener('focus', this.unsubscribeDidFocus)
+    this.props.navigation.removeListener('blur', this.unsubscribeBlur)
     //移除手势监听
     global.mapView && SMap.deleteGestureDetector()
 

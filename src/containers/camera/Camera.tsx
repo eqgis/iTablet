@@ -1,7 +1,7 @@
 /**
  * 相机界面
  */
-import React, { forwardRef, ForwardRefRenderFunction, useEffect, useImperativeHandle } from 'react'
+import React, { forwardRef, ForwardRefRenderFunction, useImperativeHandle } from 'react'
 import {
   Text,
   TouchableOpacity,

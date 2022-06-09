@@ -358,7 +358,8 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }
 
     //ARElementLayer 动画范围
-    if(Platform.OS === 'android' && this.state.selectLayer && 'maxAnimationBounds' in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && 'maxAnimationBounds' in this.state.selectLayer
+    && (this.state.selectLayer.type === ARLayerType.AR_TEXT_LAYER || this.state.selectLayer.type === ARLayerType.AR_MODEL_LAYER)) {
       const maxAnimationBounds = this.state.selectLayer.maxAnimationBounds
       const minAnimationBounds = this.state.selectLayer.minAnimationBounds
       AppToolBar.addData({selectARLayer: this.state.selectLayer, maxAnimationBounds, minAnimationBounds})

@@ -18,6 +18,11 @@ class ArEditModule extends FunctionModule {
     const params = ToolbarModule.getParams()
     switch (additional.type) {
       case ConstToolType.SM_AR_EDIT_SETTING:
+        data.autoShowBox = true
+        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 4 / 2
+        data.column = 3
+        data.row = 1
+        break
       case ConstToolType.SM_AR_EDIT_SETTING_IITLE:
       case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND:
       case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_COLOR:

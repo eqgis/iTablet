@@ -559,6 +559,14 @@ async function checkARLayer(type: TARLayerType) {
       case ARLayerType.AR_MODEL_LAYER:
         datasetName = 'defaultArModelLayer'
         break
+      // 矢量线类型的图层
+      case ARLayerType.AR_LINE_LAYER:
+        datasetName = 'defaultArLineLayer'
+        break
+      // 矢量符号线的图层
+      case ARLayerType.AR_MARKER_LINE_LAYER:
+        datasetName = 'defaultArMarkerLineLayer'
+        break
       default:
         datasetName = 'defaultArLayer'
     }
@@ -569,7 +577,18 @@ async function checkARLayer(type: TARLayerType) {
       if (newDatasource) {
         DataHandler.setARRawDatasource(datasourceName)
       }
-      await SARMap.addElementLayer(datasourceName, datasetName, type, false)
+      const layerName = await SARMap.addElementLayer(datasourceName, datasetName, type, false)
+
+      let markerLineContent = AppToolBar.getData()?.markerLineContent
+
+      if(markerLineContent && markerLineContent.indexOf('file://') === 0) {
+        markerLineContent = markerLineContent.substring(7)
+      } else {
+        markerLineContent = ""
+      }
+      if(type === ARLayerType.AR_MARKER_LINE_LAYER) {
+        await SARMap.setLayerStyle(layerName, {markerSymbolPath: markerLineContent})
+      }
       const layers = await _params.getARLayers()
       const defaultLayer = layers.find((item: ARElementLayer) => {
         if (item.type === type) {
@@ -604,6 +623,12 @@ async function toolbarBack() {
     SARMap.setCenterHitTest(false)
     return
   }
+
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+    SARMap.exitAddARLine(layer.name)
+  }
+
   // SARMap.setAction(ARAction.SELECT)
   SARMap.setAction(ARAction.NULL)
   SARMap.clearSelection()

@@ -159,7 +159,7 @@ async function getData(type: string, params: {[name: string]: any}) {
               const userName = AppUser.getCurrentUser().userName
               // 拼接AR符号库的文件夹路径
               const arSymbolFilePath = homePath + ConstPath.UserPath + userName + '/' + ConstPath.RelativePath.ARSymbol
-              const filePath = 'file://' + arSymbolFilePath + "/arnavi_arrowcircle.png"
+              const filePath = 'file://' + arSymbolFilePath + "arnavi_arrowcircle.png"
 
               AppToolBar.addData({markerLineContent: filePath})
               // 切换到添加矢量线的工具栏

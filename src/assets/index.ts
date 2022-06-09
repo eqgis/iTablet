@@ -289,6 +289,8 @@ function getARLayerAssets(type: TARLayerType): any {
     case ARLayerType.AR_LINE_LAYER:
     case ARLayerType.AR_REGION_LAYER:
       return getThemeAssets().ar.armap.ar_vector
+    case ARLayerType.AR_WIDGET_LAYER:
+      return getThemeAssets().ar.armap.ar_widget_layer
     default:
       return getThemeAssets().layerType.icon_unknown
   }

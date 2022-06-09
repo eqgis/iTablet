@@ -355,64 +355,6 @@ export default class ARLayerManager extends React.Component<Props, State> {
           NavigationService.goBack()
         },
       })
-      // 可以删掉
-      // if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer) {
-      //   if('maxAnimationBounds' in this.state.selectLayer) {
-      //     // 非特效图层的可见距离的设置
-      //     menuData[0].data.unshift({
-      //       title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
-      //       image: getThemeAssets().layer.icon_visible_distance,
-      //       action: async () => {
-      //         console.warn("点击了非特效图层的可见距离设置按钮")
-
-      //         let layer = this.state.selectLayer
-      //         if (layer && 'maxVisibleBounds' in layer) {
-      //           const _params: any = ToolbarModule.getParams()
-      //           arEditModule().setModuleData()
-      //           _params.showFullMap(true)
-      //           // 将类型换成特效图层的
-      //           _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_LAYER_VISIBLE_BOUNDS, {
-      //             isTouchProgress: true,
-      //             showMenuDialog: false,
-      //             isFullScreen: true,
-      //           })
-      //           ToolbarModule.addData({selectARElementLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds})
-      //           NavigationService.goBack()
-      //         }
-      //       },
-      //     })
-      //   } else if("secondsToPlay" in this.state.selectLayer) {
-      //     // 特效图层的可见距离的设置
-      //     menuData[0].data.unshift({
-      //       title: getLanguage().Map_Layer.LAYERS_VISIBLE_DISTANCE,
-      //       image: getThemeAssets().layer.icon_visible_distance,
-      //       action: async () => {
-      //         console.warn("点击了特效图层的可见距离设置按钮")
-
-      //         let layer = this.state.selectLayer
-
-      //         if (layer && 'maxVisibleBounds' in layer) {
-      //           // 获取参数对象
-      //           const _params: any = ToolbarModule.getParams()
-      //           // 存放数据到ToolBarModule
-      //           arEditModule().setModuleData()
-      //           _params.showFullMap(true)
-      //           // 设置工具栏是否可见
-      //           _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_EFFECT_LAYER_VISIBLE_BOUNDS, {
-      //             isTouchProgress: true,
-      //             showMenuDialog: false,
-      //             isFullScreen: true,
-      //           })
-      //           // 禁止左右拖动滑块的时候出现上下位移而调用dialog框
-      //           GLOBAL.isEffectProgress = true
-      //           ToolbarModule.addData({selectAREffectLayer: layer, ARElementLayerVisibleBounds: layer.maxVisibleBounds, AREffectLayerVisibleBounds: layer.maxVisibleBounds})
-      //           NavigationService.goBack()
-      //         }
-      //       },
-      //     })
-      //   }
-
-
     }
 
     //ARElementLayer 动画范围
@@ -439,26 +381,6 @@ export default class ARLayerManager extends React.Component<Props, State> {
         action: async () => {
           AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SECONDS_TO_PLAY')
           NavigationService.goBack()
-          // let layer = this.state.selectLayer
-
-          // if("secondsToPlay" in this.state.selectLayer){
-          //   // 获取参数对象
-          //   const _params: any = ToolbarModule.getParams()
-          //   // 存放数据到ToolBarModule
-          //   arEditModule().setModuleData()
-          //   _params.showFullMap(true)
-          //   // 设置工具栏是否可见
-          //   _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_EFFECT_LAYER_SECONDS_TO_PLAY, {
-          //     isTouchProgress: true,
-          //     showMenuDialog: false,
-          //     isFullScreen: true,
-          //   })
-          //   // 禁止左右拖动滑块的时候出现上下位移而调用dialog框
-          //   GLOBAL.isEffectProgress = true
-          //   ToolbarModule.addData({selectAREffectLayer: layer, AREffectLayerSecondsToPlay: layer?.secondsToPlay })
-          //   NavigationService.goBack()
-
-          // }
         },
       })
     }

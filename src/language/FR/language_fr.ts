@@ -1631,6 +1631,8 @@ export const language_fr: typeof language_cn = {
   LAYER_MOVEUP_FAIL: 'Échec du déplacement vers le haut',
   LAYER_MOVEDOWN_SUCCESS: 'Réussite du déménagement',
   LAYER_MOVEDOWN_FAIL: 'Échec du déplacement vers le bas',
+  FIRST_EFFECT_LAYER_NOT_MOVEUP: 'First effect layer is not moveup',  // To be translated
+  LAST_EFFECT_LAYER_NOT_MOVEDOWN: 'Last effect layer is not movedown',  // To be translated
 
   VISIBLE: "Visible",
   NOT_VISIBLE: "Invisible",

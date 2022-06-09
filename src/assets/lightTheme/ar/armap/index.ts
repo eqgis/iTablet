@@ -3,6 +3,7 @@ export const ar_3d = require('./icon_ar_3d.png')
 export const ar_vector= require('./icon_ar_vector_layer.png')
 export const ar_model= require('./icon_ar_model.png')
 export const ar_effect = require('./icon_ar_special_effects.png')
+export const ar_widget_layer = require('./icon_tool_small_objectLayer.png')
 
 // 浅色图标
 export const ar_poi_gray = require('./icon_ar_layer_poi_gray.png')

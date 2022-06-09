@@ -4,10 +4,18 @@ export const ar_vector= require('./icon_ar_vector_layer.png')
 export const ar_model= require('./icon_ar_model.png')
 export const ar_effect = require('./icon_ar_special_effects.png')
 
+// 浅色图标
+export const ar_poi_gray = require('./icon_ar_layer_poi_gray.png')
+export const ar_3d_gray = require('./icon_ar_layer_3d_gray.png')
+export const ar_vector_gray = require('./icon_ar_layer_vector_layer_gray.png')
+export const ar_model_gray = require('./icon_ar_layer_model_gray.png')
+export const ar_effect_gray = require('./icon_ar_layer_effect_gray.png')
+
 export const ar_video = require('./icon_ar_video_Temp.png')
 export const ar_picture = require('./icon_ar_picture_Temp.png')
 export const ar_webvew = require('./icon_ar_webpage_Temp.png')
 export const ar_text = require('./icon_ar_written_words_Temp.png')
+
 
 export const ar_move = require('./icon_ar_translation.png')
 export const ar_rotate = require('./icon_ar_rotate.png')
@@ -24,6 +32,7 @@ export const ar_add_location = require('./icon_ar_add_location.png')
 export const ar_add_point = require('./icon_ar_add_point.png')
 export const icon_add_to = require('./icon_add_to.png')
 export const undo = require('./icon_undo.png')
+
 
 export const translation_x = require('./icon_ar_x_translation.png')
 export const translation_y = require('./icon_ar_y_translation.png')
@@ -68,3 +77,4 @@ export const align_bottom_end = require('./icon_align_lower_end.png')
 export const marker_line = require('./icon_vector_symbol.png')
 
 export const bubble_text = require('./icon_ar_bubble_text.png')
+

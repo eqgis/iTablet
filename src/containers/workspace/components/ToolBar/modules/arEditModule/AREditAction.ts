@@ -128,6 +128,20 @@ function showMenuBox(type: string, selectKey: string, params: any) {
     case ConstToolType.SM_AR_EDIT_ANIMATION_TRANSLATION:
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION:
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION_AXIS:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_LINE_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_TIME_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND:
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_COLOR:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT_SIZE:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ROTATION_ANGLE:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_OPACITY:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_BUTTON_TEXT_SIZE:
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_OPACITY:
+    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
+    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT:
       if (!global.ToolBar.state.showMenuDialog) {
         params.showBox && params.showBox()
       } else {

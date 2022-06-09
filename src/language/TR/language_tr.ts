@@ -1630,6 +1630,8 @@ export const language_tr: typeof language_cn = {
   LAYER_MOVEUP_FAIL: 'Yukarı taşıma başarısız',
   LAYER_MOVEDOWN_SUCCESS: 'Aşağı taşıma başarılı',
   LAYER_MOVEDOWN_FAIL: 'Aşağı taşıma başarısız',
+  FIRST_EFFECT_LAYER_NOT_MOVEUP: 'First effect layer is not moveup',  // To be translated
+  LAST_EFFECT_LAYER_NOT_MOVEDOWN: 'Last effect layer is not movedown',  // To be translated
 
   VISIBLE: "Görülebilir",
   NOT_VISIBLE: "Görülebilir Değil",

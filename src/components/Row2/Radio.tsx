@@ -227,11 +227,11 @@ export default class Radio extends PureComponent<Props, State> {
     //   dotStyle = styles.radioSelectedGray
     // }
 
-    let dotImg = getImage().icon_able_single_check
+    let dotImg = getImage().icon_single_check
     if (this.props.selectable) {
       dotImg = this.state.selected
-        ? getImage().icon_able_single_check
-        : getImage().icon_able_none
+        ? getImage().icon_single_check
+        : getImage().icon_disable_none
     } else {
       dotImg = this.state.selected
         ? getImage().icon_disable_single_check

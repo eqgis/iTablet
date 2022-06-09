@@ -117,7 +117,7 @@ export default class ChooseNumber extends PureComponent<Props, State> {
           accessibilityLabel={'减号'}
           onPress={() => this.minus()}
         >
-          <Image style={styles.imageBtn} source={getImage().icon_minus_white} />
+          <Image style={styles.imageBtn} source={getImage().icon_narrow} />
         </TouchableOpacity>
         <Text style={[styles.numberTitle, this.props.valueStyle]}>{this.state.value + ' ' + this.props.unit}</Text>
         <TouchableOpacity
@@ -127,7 +127,7 @@ export default class ChooseNumber extends PureComponent<Props, State> {
           accessibilityLabel={'加号'}
           onPress={() => this.plus()}
         >
-          <Image style={styles.imageBtn} source={getImage().icon_plus_white} />
+          <Image style={styles.imageBtn} source={getImage().icon_enlarge} />
         </TouchableOpacity>
       </View>
     )

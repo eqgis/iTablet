@@ -497,7 +497,7 @@ async function createARElementDatasource(
     const datasourcePath = homePath + ConstPath.UserPath + user.userName + '/' + ConstPath.RelativePath.ARDatasource
 
     let datasetType
-    if(type === ARLayerType.AR_LINE_LAYER) {
+    if(type === ARLayerType.AR_LINE_LAYER|| type === ARLayerType.AR_MARKER_LINE_LAYER) {
       datasetType = DatasetType.LineZ
     } else if(type === ARLayerType.AR_REGION_LAYER) {
       datasetType = DatasetType.RegionZ

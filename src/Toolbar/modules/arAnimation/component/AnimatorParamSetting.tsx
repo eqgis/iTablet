@@ -747,7 +747,7 @@ class AnimatorParamSetting extends React.Component<Props, State> {
 
 const mapStateToProp = (state: RootState) => ({
   arAnimaton: state.aranimation.arAnimation,
-  windowSize: state.device2.windowSize
+  windowSize: state.device.toJS().windowSize
 })
 
 const mapDispatch = {

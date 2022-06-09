@@ -52,7 +52,7 @@ class Toolbar extends React.Component<Props> {
 }
 
 const mapStateToProp = (state: RootState) => ({
-  windowSize: state.device2.windowSize,
+  windowSize: state.device.toJS().windowSize,
   arMapInfo: state.arlayer.toJS(),
 })
 

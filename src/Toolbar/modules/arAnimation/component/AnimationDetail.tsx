@@ -220,7 +220,7 @@ class AnimationDetail extends React.Component<Props, State> {
 
 const mapStateToProp = (state: RootState) => ({
   arAnimation: state.aranimation.arAnimation,
-  windowSize: state.device2.windowSize
+  windowSize: state.device.toJS().windowSize
 })
 
 

@@ -181,7 +181,7 @@ class ARAnimationList extends React.Component<Props, State> {
 }
 
 const mapStateToProp = (state: RootState) => ({
-  windowSize: state.device2.windowSize
+  windowSize: state.device.toJS().windowSize
 })
 
 const mapDispatch = {

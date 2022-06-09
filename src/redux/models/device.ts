@@ -1,6 +1,9 @@
+import { Dimensions, ScaledSize } from "react-native"
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { screen } from '../../utils'
+import { ThunkAction } from "redux-thunk"
+import { RootState } from "../types"
 // Constants
 // --------------------------------------------------
 export const SHOW_SET = 'SHOW_SET'
@@ -12,11 +15,25 @@ export interface DEVICE {
   safeWidth: number,
   safeHeight: number,
 }
+
+export interface DeviceState {
+  windowSize: ScaledSize,
+  screenSize: ScaledSize,
+  // orientation: OrientationType,
+}
+
+export interface SetWindowSizeAction {
+  type: typeof SHOW_SET,
+  payload: {
+    orientation: string,
+  },
+}
+
 // Actions
 // ---------------------------------.3-----------------
 
 // 横竖屏切换，使用
-export const setShow = (params: {orientation: string}, cb = () => {}) => async dispatch => {
+export const setShow = (params: {orientation: string}, cb?: () => void): ThunkAction<void, RootState, unknown, SetWindowSizeAction> => async dispatch => {
   screen.setOrientation(params.orientation)
   await dispatch({
     type: SHOW_SET,
@@ -34,6 +51,8 @@ const initialState = fromJS({
     safeWidth: screen.getScreenSafeWidth(),
     safeHeight: screen.getScreenSafeHeight(),
   },
+  windowSize: Dimensions.get('window'),
+  screenSize: Dimensions.get('screen'),
 })
 
 export default handleActions(
@@ -45,7 +64,17 @@ export default handleActions(
       device.safeWidth = screen.getScreenSafeWidth(payload.orientation)
       device.safeHeight = screen.getScreenSafeHeight(payload.orientation)
       device.orientation = payload.orientation
-      return state.setIn(['device'], fromJS(device))
+      const windowSize = Dimensions.get('window')
+      const screenSize = Dimensions.get('screen')
+      return state.setIn(['device'], fromJS(device)).setIn(['windowSize'], fromJS({
+        ...windowSize,
+        width: device.width,
+        height: device.height,
+      })).setIn(['screenSize'], fromJS({
+        ...screenSize,
+        width: payload.orientation.indexOf('LANDSCAPE') >= 0 ? Math.max(screenSize.width, screenSize.height) : Math.min(screenSize.width, screenSize.height),
+        height: payload.orientation.indexOf('LANDSCAPE') >= 0 ? Math.min(screenSize.width, screenSize.height) : Math.max(screenSize.width, screenSize.height),
+      }))
     },
     // [REHYDRATE]: (state, { payload }) => {
     //   return payload && payload.device ? fromJS(payload.device) : state

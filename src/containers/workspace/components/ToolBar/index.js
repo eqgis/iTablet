@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 const mapStateToProps = state => {
   return {
     device: state.device.toJS().device,
-    windowSize: state.device2.windowSize,
+    windowSize: state.device.toJS().windowSize,
   }
 }
 

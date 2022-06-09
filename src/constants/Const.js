@@ -89,4 +89,11 @@ export default {
   FORUMOFSUPERMAP: '超图论坛',
   SUPERMAPKNOWN: '超图知道',
   MAPOFAPP: '地图APP',
+
+  // AR图层类型 还有一个POI
+  VECTOR: 'VECTOR',
+  THREE_D: 'THREE_D',
+  MODEL: 'MODEL',
+  EFFECT: 'EFFECT',
+  WIDGET: 'WIDGET',
 }

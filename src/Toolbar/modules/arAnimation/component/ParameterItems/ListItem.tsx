@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View, ScaledSize, ImageRequireSource, Image, ScrollView } from 'react-native'
 import { LANDSCAPE_WIDTH } from 'imobile_for_reactnative/components/ToolbarKit/component/styles'
 import { AppStyle, dp } from '../../../../../utils'
@@ -26,6 +26,10 @@ export const ListItem = (props: ListItemProps): JSX.Element => {
 
   const [selectKey, setSelectKey] = useState(props.selectKey)
 
+  useEffect(() => {
+    setSelectKey(props.selectKey)
+  }, [props.selectKey])
+
   const renderItem = (item: ListItemData, index: number) => {
     const isSelected = selectKey === item.key
     const isDisabled = item.disable
@@ -44,7 +48,7 @@ export const ListItem = (props: ListItemProps): JSX.Element => {
       >
         <Image
           source={item.image}
-          style={[AppStyle.Image_Style, (!isSelected && isDisabled) && {tintColor: AppStyle.Color.LIGHT_GRAY}]}
+          style={[AppStyle.Image_Style, (!isSelected && isDisabled) && {opacity: 0.1}]}
         />
         <Text style={[AppStyle.h3,  (!isSelected && isDisabled) && {color: AppStyle.Color.LIGHT_GRAY}]}>
           {item.text}

@@ -1,7 +1,7 @@
 /**
  * 相机界面
  */
-import React from 'react'
+import React, { forwardRef, ForwardRefRenderFunction, useImperativeHandle } from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -17,7 +17,7 @@ import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
 import { Progress, MediaViewer, ImagePicker } from '../../components'
 import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, RecordVideoOptions, TakePhotoOptions, useCameraDevices, useFrameProcessor, VideoFile } from 'react-native-vision-camera'
-import { SMediaCollector  } from 'imobile_for_reactnative'
+import { SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import { DBRConfig, decode, TextResult } from 'vision-camera-dynamsoft-barcode-reader'
 // import * as REA from 'react-native-reanimated';
@@ -62,6 +62,7 @@ class Camera extends React.Component<Props, State> {
   }) => void) | null | undefined = null
   cancelCb: (() => void) | null | undefined = null
   camera: RNCamera | null | undefined
+  camera2: IRefProps | null | undefined
   index = 0
   attribute = false
   atcb: ((params: {
@@ -116,13 +117,13 @@ class Camera extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    let targetPath = await FileTools.appendingHomeDirectory(
+    const targetPath = await FileTools.appendingHomeDirectory(
       ConstPath.UserPath +
-        this.props.user.currentUser.userName +
-        '/' +
-        ConstPath.RelativeFilePath.Media,
+      this.props.user.currentUser.userName +
+      '/' +
+      ConstPath.RelativeFilePath.Media,
     )
-    
+
     const devices = await RNCamera.getAvailableCameraDevices()
     const sorted = devices.sort()
     const device = sorted.find((d) => d.position === "back")
@@ -138,8 +139,16 @@ class Camera extends React.Component<Props, State> {
     if (this.cancelCb && typeof this.cancelCb === 'function') {
       this.cancelCb()
     }
-    NavigationService.goBack('Camera')
+    this.cameraBackHandler()
     return false
+  }
+
+  /** 停止相机,并返回,否则会导致AR摄像头卡顿 */
+  cameraBackHandler = () => {
+    this.camera2?.setActive(false)
+    setTimeout(() => {
+      NavigationService.goBack()
+    }, 100)
   }
 
   /** 照相 **/
@@ -156,8 +165,7 @@ class Camera extends React.Component<Props, State> {
         recordStatus: RECORD_STATUS.RECORDING,
       })
       const options: TakePhotoOptions = { qualityPrioritization: 'balanced' }
-      // let data = await this.camera.takePictureAsync(options)
-      let data = await this.camera.takePhoto(options)
+      const data = await this.camera.takePhoto(options)
       if (data.path.indexOf('file://') !== 0) {
         data.path = 'file://' + data.path
       }
@@ -182,7 +190,7 @@ class Camera extends React.Component<Props, State> {
       return
     const options: RecordVideoOptions = {
       onRecordingError: (error: CameraCaptureError) => {
-
+        __DEV__ && console.warn(error)
       },
       onRecordingFinished: (data: VideoFile) => {
         if (this.recordTimer) {
@@ -200,15 +208,15 @@ class Camera extends React.Component<Props, State> {
       }
     }
 
-    let startTime = new Date().getTime()
+    const startTime = new Date().getTime()
     this.setState(
       {
         recordStatus: RECORD_STATUS.RECORDING,
       },
       () => {
         this.recordTimer = setInterval(() => {
-          let currentTime = new Date().getTime()
-          let progress = (currentTime - startTime) / 1000 / TIME_LIMIT
+          const currentTime = new Date().getTime()
+          const progress = (currentTime - startTime) / 1000 / TIME_LIMIT
           if (this.mProgress) {
             this.mProgress.progress = progress
           }
@@ -216,9 +224,8 @@ class Camera extends React.Component<Props, State> {
       },
     )
 
-    let data = await this.camera.startRecording(options)
+    await this.camera.startRecording(options)
 
-    
   }
 
   /** 结束录制视频 **/
@@ -247,7 +254,7 @@ class Camera extends React.Component<Props, State> {
   }
 
   addMedia = async (mediaPaths: string[] = []) => {
-    if(global.layerSelection !== undefined){
+    if (global.layerSelection !== undefined) {
       this.ids = global.layerSelection.ids
     }
     // TODO 添加提示
@@ -256,12 +263,12 @@ class Camera extends React.Component<Props, State> {
       datasourceName: this.datasourceAlias,
       datasetName: this.datasetName,
       mediaPaths,
-    }, !this.attribute, { index: this.index, selectionAttribute: this.selectionAttribute, ids: this.ids ,layerAttribute:this.layerAttribute})
-    
-    if (await SMediaCollector.isTourLayer((this.props.currentLayer as LayerInfo).name)&&!this.attribute) {
+    }, !this.attribute, { index: this.index, selectionAttribute: this.selectionAttribute, ids: this.ids, layerAttribute: this.layerAttribute })
+
+    if (await SMediaCollector.isTourLayer((this.props.currentLayer as LayerInfo).name) && !this.attribute) {
       result = await SMediaCollector.updateTour((this.props.currentLayer as LayerInfo).name)
     }
-    if(this.atcb){
+    if (this.atcb) {
       this.atcb({
         datasourceName: this.datasourceAlias,
         datasetName: this.datasetName,
@@ -273,7 +280,7 @@ class Camera extends React.Component<Props, State> {
 
   /** 确认 **/
   confirm = async () => {
-    let sourcePath = this.state.data?.path.replace('file://', '')
+    const sourcePath = this.state.data?.path.replace('file://', '')
     if (!sourcePath) return
     let result = false
     if (this.cb && typeof this.cb === 'function') {
@@ -287,14 +294,8 @@ class Camera extends React.Component<Props, State> {
       result = await this.addMedia([sourcePath])
     }
 
-    // this.state.type === TYPE.PHOTO &&
-    //   this.camera &&
-    //   this.camera.resumePreview()
     if (result) {
-      // this.setState({
-      //   recordStatus: RECORD_STATUS.RECORDED,
-      // })
-      NavigationService.goBack()
+      this.cameraBackHandler()
     }
   }
 
@@ -305,11 +306,10 @@ class Camera extends React.Component<Props, State> {
     ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
     ImagePicker.getAlbum({
       maxSize: this.limit,
-      callback: async (data: {uri: string}[]) => {
-        let mediaPaths: string[] = []
+      callback: async (data: { uri: string }[]) => {
+        const mediaPaths: string[] = []
         if (data.length > 0) {
           data.forEach(item => {
-            // mediaPaths.push(item.uri.replace(Platform.OS === 'ios' ? 'assets-library://' : 'contents://', ''))
             mediaPaths.push(item.uri)
           })
           if (this.cb && typeof this.cb === 'function') {
@@ -318,17 +318,17 @@ class Camera extends React.Component<Props, State> {
               datasetName: this.datasetName,
               mediaPaths: mediaPaths,
             })
-            NavigationService.goBack()
+            this.cameraBackHandler()
           } else {
-            let result = await this.addMedia(mediaPaths)
-            result && NavigationService.goBack()
+            const result = await this.addMedia(mediaPaths)
+            result && this.cameraBackHandler()
           }
         }
       },
     })
   }
 
-  changeType = (type: CAREMA_MEDIA_TYPE, cb = () => {}) => {
+  changeType = (type: CAREMA_MEDIA_TYPE, cb = () => { }) => {
     if (!type || type === this.state.type) return
 
     if (this.state.type === TYPE.VIDEO) {
@@ -350,7 +350,7 @@ class Camera extends React.Component<Props, State> {
   }
 
   /**
-   * 
+   * 读取二维码
    * @param {TextResult[]} event
    */
   _onBarCodeRead = (event: TextResult[]) => {
@@ -365,7 +365,7 @@ class Camera extends React.Component<Props, State> {
       this.qrCb(event)
     }
   }
-  
+
   renderProgress = () => {
     if (
       !(
@@ -509,9 +509,10 @@ class Camera extends React.Component<Props, State> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'black'}} />
-        <MyCamera
+        <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'black' }} />
+        <MyCamera2
           {...this.props}
+          ref={ref => this.camera2 = ref}
           getRef={ref => this.camera = ref}
           type={this.state.type}
           qrCb={this._onBarCodeRead}
@@ -552,23 +553,35 @@ interface MyCameraProps {
   qrCb?: (params: TextResult[]) => void
 }
 
-function MyCamera(props: MyCameraProps) {
+interface IRefProps {
+  setActive: (active: boolean) => void,
+  getActive: () => boolean,
+}
+
+const MyCamera: ForwardRefRenderFunction<IRefProps, MyCameraProps> = (props, ref) => {
   // 获取可用多媒体设备
   const devices = useCameraDevices('wide-angle-camera')
   // 获取后置摄像头
   const device = devices.back
-  // const [barcodeResults, setBarcodeResults] = React.useState([] as TextResult[]);
+  const [isActive, setIsActive] = React.useState(true)
+
+  useImperativeHandle(ref, () => ({
+    setActive: async (active: boolean) => {
+      setIsActive(active)
+    },
+    getActive: () => isActive,
+  }))
 
   let frameProcessor = undefined
   if (props.type === TYPE.BARCODE) {
     // 帧处理
     frameProcessor = useFrameProcessor((frame) => {
       'worklet'
-      const config: DBRConfig = {};
-      config.template="{\"ImageParameter\":{\"BarcodeFormatIds\":[\"BF_QR_CODE\"],\"Description\":\"\",\"Name\":\"Settings\"},\"Version\":\"3.0\"}"; //scan qrcode only
-  
+      const config: DBRConfig = {}
+      config.template = "{\"ImageParameter\":{\"BarcodeFormatIds\":[\"BF_QR_CODE\"],\"Description\":\"\",\"Name\":\"Settings\"},\"Version\":\"3.0\"}" //scan qrcode only
+
       // 二维码解码
-      const results:TextResult[] = decode(frame,config)
+      const results: TextResult[] = decode(frame, config)
       if (props.qrCb && results.length > 0) {
         // REA.runOnJS(props.qrCb)(results);
         props.qrCb(results)
@@ -576,12 +589,12 @@ function MyCamera(props: MyCameraProps) {
     }, [])
   }
 
-  if (!device) return <View style={{backgroundColor: 'yellow'}} />
+  if (!device) return <View style={{ backgroundColor: 'yellow' }} />
 
   return (
     <RNCamera
       style={StyleSheet.absoluteFill}
-      isActive
+      isActive={isActive}
       device={device}
       ref={props.getRef}
       photo={props.type === TYPE.PHOTO}
@@ -591,3 +604,5 @@ function MyCamera(props: MyCameraProps) {
     />
   )
 }
+
+const MyCamera2 = forwardRef(MyCamera)

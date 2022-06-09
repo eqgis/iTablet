@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { AppStyle, dp } from '../../../../../utils'
 import { Picker } from '@react-native-picker/picker'
@@ -19,6 +19,10 @@ interface ItemSelectProps<T> {
  */
 export function SelectItem<T>(props: ItemSelectProps<T>) {
   const [value, setValue] = useState<null | T>(props.defalutValue !== undefined ? props.defalutValue : null)
+
+  useEffect(() => {
+    setValue(props.defalutValue !== undefined ? props.defalutValue : null)
+  }, [props.defalutValue])
 
   return (
     <View

@@ -1,4 +1,4 @@
-import { SARMap, ARLayerType } from 'imobile_for_reactnative'
+import { SARMap, ARLayerType, ARElementLayer } from 'imobile_for_reactnative'
 import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
@@ -17,8 +17,10 @@ import { MapToolbar } from '../workspace/components'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
 import NavigationService from '../NavigationService'
 import ARLayerMenu from './ARLayerMenu'
-import { ConstToolType } from '../../constants'
+import { ConstToolType, Const } from '../../constants'
 import { UserInfo } from '@/types'
+
+
 
 const styles = StyleSheet.create({
   headerBtnTitle: {
@@ -87,10 +89,24 @@ interface Postion {
   y: number,
 }
 
+export const layerTypesObj = {
+  [Const.POI]: [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
+  [Const.VECTOR]: [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
+  [Const.THREE_D]: [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
+  [Const.MODEL]: [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
+  [Const.EFFECT]: [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
+  [Const.WIDGET]: [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
+}
+
 export default class ARLayerManager extends React.Component<Props, State> {
   inputDialog: InputDialog | undefined | null
   backPositon: Postion
   tabType: string
+
+  // 记录最后一个特效图层的索引
+  lastEffectlayerIndex: number
+  // 记录当前图层的索引
+  curLayerIndex: number
 
   constructor(props: Props) {
     super(props)
@@ -103,10 +119,79 @@ export default class ARLayerManager extends React.Component<Props, State> {
     this.backPositon = {x:0, y: 0}
     // 获取由添加页面过来的tab的索引
     this.tabType = params && params?.tabType
+
+    // 记录最后一个特效图层的索引，设置初始值为 -1
+    this.lastEffectlayerIndex = -1
+    // 记录当前图层的索引，设置初始值为 -1
+    this.curLayerIndex = -1
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._getLayer()
+
+    if(!this.props.arlayer.layers) return
+    // 在此处加过滤条件
+    const layers = this.props.arlayer.layers
+    const length = layers.length
+    const type: string | undefined = this.tabType
+
+    if(type && type!= ""){
+      // 当类型为有值的情况下，一定是一个数字的字符串
+      // const typeIndex = parseInt(type)
+      const aimArr = layerTypesObj[type]
+      for(let i = 0; i < length; i ++){
+        // 判断该图层的类型是否属于要过滤的类型 false表示不显示的 true表示显示的
+        let isFilter = false
+        aimArr.map((item: number) => {
+          if(item === layers[i].type) {
+            isFilter = true
+          }
+        } )
+        if(isFilter){
+          // newLayers.push(layers[i])
+          this.props.setCurrentARLayer(layers[i])
+        }
+      }
+    }
+
+
+    this.lastEffectlayerIndex = await this.getLastEffectLayerIndex()
+    // this.curLayerIndex = await this.getLayerIndex()
+
+  }
+
+  /** 获取最后一个特效图层索引值 */
+  getLastEffectLayerIndex = async ():Promise<number> => {
+    if(!this.props.arlayer.layers) return -1
+    // 在此处加过滤条件
+    const layers = this.props.arlayer.layers
+    let lastEffectlayerIndex = 0
+    const layersLength = layers.length
+    for(let i = 0; i < layersLength; i++){
+      if(layers[i].type === ARLayerType.EFFECT_LAYER){
+        lastEffectlayerIndex = i
+      }
+    }
+    return lastEffectlayerIndex
+  }
+
+  /** 获取当前图层索引值 */
+  getLayerIndex = async (layer: ARElementLayer):Promise<number> => {
+    if(!this.props.arlayer.layers) return -1
+    // 在此处加过滤条件
+    const layers = this.props.arlayer.layers
+    let curLayerIndex = -1
+    layers.map((item: ARElementLayer, index: number) => {
+      if(item.name === layer?.name){
+        curLayerIndex = index
+      }
+    })
+    return curLayerIndex
+  }
+
+  async componentDidUpdate(){
+    this._getLayer()
+    this.lastEffectlayerIndex = await this.getLastEffectLayerIndex()
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -201,7 +286,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
               await this._getLayer()
               Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_SUCCESS)
             } else {
-              Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
+              this.curLayerIndex = await this.getLayerIndex(this.state.selectLayer)
+              if(this.curLayerIndex !== this.lastEffectlayerIndex){
+                Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
+              } else {
+                // 最后一个特效图层不能下移
+                Toast.show(getLanguage().Map_Layer.LAST_EFFECT_LAYER_NOT_MOVEDOWN)
+              }
             }
           } else {
             // IOS TODO
@@ -229,7 +320,13 @@ export default class ARLayerManager extends React.Component<Props, State> {
               await this._getLayer()
               Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_SUCCESS)
             } else {
-              Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
+              this.curLayerIndex = await this.getLayerIndex(this.state.selectLayer)
+              if(this.curLayerIndex !== 0){
+                Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
+              } else {
+                // 第一个特效图层不能上移
+                Toast.show(getLanguage().Map_Layer.FIRST_EFFECT_LAYER_NOT_MOVEUP)
+              }
             }
           } else {
             // IOS TODO
@@ -261,7 +358,8 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }
 
     //ARElementLayer 动画范围
-    if(Platform.OS === 'android' && this.state.selectLayer && 'maxAnimationBounds' in this.state.selectLayer) {
+    if(Platform.OS === 'android' && this.state.selectLayer && 'maxAnimationBounds' in this.state.selectLayer
+    && (this.state.selectLayer.type === ARLayerType.AR_TEXT_LAYER || this.state.selectLayer.type === ARLayerType.AR_MODEL_LAYER)) {
       const maxAnimationBounds = this.state.selectLayer.maxAnimationBounds
       const minAnimationBounds = this.state.selectLayer.minAnimationBounds
       AppToolBar.addData({selectARLayer: this.state.selectLayer, maxAnimationBounds, minAnimationBounds})
@@ -319,46 +417,12 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
   _renderLayers = () => {
     if(!this.props.arlayer.layers) return null
-    // 在此处加过滤条件
-    const layers = this.props.arlayer.layers
-    const length = layers.length
     const type: string | undefined = this.tabType
-
-    // 图层类型分类数组
-    const allTypes = [
-      [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
-      [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
-      [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
-      [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
-      [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
-      [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
-    ]
-    let newLayers: ARLayer[] = []
-    if(type){
-      // 当类型为有值的情况下，一定是一个数字的字符串
-      const typeIndex = parseInt(type)
-      for(let i = 0; i < length; i ++){
-        // 判断该图层的类型是否属于要过滤的类型 false表示不显示的 true表示显示的
-        let isFilter = false
-        allTypes[typeIndex].map((item) => {
-          if(item === layers[i].type) {
-            isFilter = true
-          }
-        } )
-        if(isFilter){
-          newLayers.push(layers[i])
-        }
-      }
-    } else {
-      // 当没有过滤类型传过来时，默认显示全部数据
-      newLayers = JSON.parse(JSON.stringify(layers))
-    }
-
 
     return (
       <ARLayers
-        // layers={this.props.arlayer.layers}
-        layers = {newLayers}
+        layers={this.props.arlayer.layers}
+        type = {type}
         currentLayer={this.props.arlayer.currentLayer}
         setCurrentARLayer={this.props.setCurrentARLayer}
         onPress={layer => {
@@ -466,11 +530,12 @@ export default class ARLayerManager extends React.Component<Props, State> {
           global.isNotEndAddEffect = false
           let type = this.tabType
           if(!type) {
-            type = "0"
+            type = Const.POI
           }
           ToolbarModule.addData({
             addNewDsetWhenCreate: true,
-            moduleIndex: Number(type),
+            // moduleIndex: Number(type),
+            moduleKey: type,
           })
         },
       }),
@@ -489,10 +554,11 @@ export default class ARLayerManager extends React.Component<Props, State> {
     arDrawingModule().action()
     let type = this.tabType
     if(!type) {
-      type = "0"
+      type = Const.POI
     }
     ToolbarModule.addData({
-      moduleIndex: Number(type),
+      // moduleIndex: Number(type),
+      moduleKey: type,
     })
 
   }
@@ -592,6 +658,7 @@ interface ARLayersProps {
   onPress: (layer: ARLayer) => void,
   onPressMore: (layer: ARLayer) => void,
   getARLayers: () => Promise<ARLayer[]>,
+  type: string | undefined,
 }
 
 export class ARLayers extends React.Component<ARLayersProps> {
@@ -600,6 +667,7 @@ export class ARLayers extends React.Component<ARLayersProps> {
     return (
       <ARLayerItem
         layer={item}
+        type={this.props.type}
         currentLayer={this.props.currentLayer}
         onPress={layer => {
           this.props.onPress(layer)

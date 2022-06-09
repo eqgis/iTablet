@@ -22,6 +22,14 @@ class SwitchItem extends React.Component<Props, State> {
     }
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if(prevProps.value !== this.props.value) {
+      this.setState({
+        value: this.props.value
+      })
+    }
+  }
+
   onPress = (value: boolean) => {
     this.props.onPress(value)
     this.setState({value})

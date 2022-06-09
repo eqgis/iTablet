@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import { AppInputDialog, AppStyle, CheckSpell, dp } from '../../../../../utils'
 
@@ -24,6 +24,10 @@ export const InputItem = <T,>(props: InputItemProps<T>) : JSX.Element => {
   }
 
   const [valueText, setValueText] = useState<string>(defaultValue + '')
+
+  useEffect(() => {
+    setValueText(props.value + '')
+  }, [props.value])
 
   const changeString = () => {
     if(typeof props.value === 'string') {

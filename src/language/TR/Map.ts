@@ -710,6 +710,8 @@ const Map_Layer: typeof CN.Map_Layer = {
   LAYER_MOVEUP_FAIL: 'Moveup fail',  // To be translated
   LAYER_MOVEDOWN_SUCCESS: 'Movedown success',  // To be translated
   LAYER_MOVEDOWN_FAIL: 'Movedown fail',  // To be translated
+  FIRST_EFFECT_LAYER_NOT_MOVEUP: 'First effect layer is not moveup',  // To be translated
+  LAST_EFFECT_LAYER_NOT_MOVEDOWN: 'Last effect layer is not movedown',  // To be translated
 
   VISIBLE: "Görülebilir",
   NOT_VISIBLE: "Görülebilir Değil",

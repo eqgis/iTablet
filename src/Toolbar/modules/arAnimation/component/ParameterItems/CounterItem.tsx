@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View, Image } from 'react-native'
 import { getImage } from '../../../../../assets'
 import { AppInputDialog, AppStyle, CheckSpell, dp, FloatMath } from '../../../../../utils'
@@ -18,6 +18,14 @@ export const CounterItem = (props: CounterItemProps): JSX.Element => {
   }
 
   const [value, setValue] = useState(defaultValue)
+
+  useEffect(() => {
+    let defaultValue = props.value
+    if(props.numberType === 'float') {
+      defaultValue = parseFloat(props.value.toFixed(2))
+    }
+    setValue(defaultValue)
+  }, [props.value])
 
   const changeValue = (value: number) => {
     setValue(value)

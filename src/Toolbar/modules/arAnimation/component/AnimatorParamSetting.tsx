@@ -410,6 +410,9 @@ class AnimatorParamSetting extends React.Component<Props, State> {
           value={this.state.paramList.name}
           onValueChange={value => {
             this.paramList.name = value
+            this.setState({
+              paramList: {...this.paramList},
+            })
           }}
         />
 
@@ -513,6 +516,9 @@ class AnimatorParamSetting extends React.Component<Props, State> {
           defalutValue={this.state.paramList.order}
           onValueChange={value => {
             this.paramList.order = value as TARAnimatorPlayOrder
+            this.setState({
+              paramList: {...this.paramList}
+            })
           }}
         />
 
@@ -539,6 +545,9 @@ class AnimatorParamSetting extends React.Component<Props, State> {
           defalutValue={this.state.paramList.modelAnimationIndex}
           onValueChange={value => {
             this.paramList.modelAnimationIndex = value as number
+            this.setState({
+              paramList: {...this.paramList}
+            })
           }}
         />
         <InputItem
@@ -550,6 +559,9 @@ class AnimatorParamSetting extends React.Component<Props, State> {
           numberType={'float'}
           onValueChange={value => {
             this.paramList.startFrame = value
+            this.setState({
+              paramList: {...this.paramList},
+            })
           }}
         />
 
@@ -562,6 +574,9 @@ class AnimatorParamSetting extends React.Component<Props, State> {
           numberType={'float'}
           onValueChange={value => {
             this.paramList.endFrame = value
+            this.setState({
+              paramList: {...this.paramList},
+            })
           }}
         />
 
@@ -671,6 +686,9 @@ class AnimatorParamSetting extends React.Component<Props, State> {
           numberType={'float'}
           onValueChange={value => {
             this.paramList.fromDegree = value
+            this.setState({
+              paramList: {...this.paramList},
+            })
           }}
         />}
         <InputItem
@@ -679,6 +697,9 @@ class AnimatorParamSetting extends React.Component<Props, State> {
           numberType={'float'}
           onValueChange={value => {
             this.paramList.degree = value
+            this.setState({
+              paramList: {...this.paramList},
+            })
           }}
         />
       </>
@@ -727,6 +748,9 @@ class AnimatorParamSetting extends React.Component<Props, State> {
             } else if(value === 'hide') {
               this.paramList.category = ARAnimatorCategory.DISAPPEAR
             }
+            this.setState({
+              paramList: {...this.paramList}
+            })
           }}
         />
       </>

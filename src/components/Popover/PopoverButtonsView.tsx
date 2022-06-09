@@ -1,6 +1,6 @@
 import { color, size } from '@/styles'
 import { scaleSize } from '@/utils'
-import React, { SetStateAction, useEffect, useImperativeHandle, useState } from 'react'
+import React, { SetStateAction, useImperativeHandle, useState } from 'react'
 import { forwardRef } from 'react'
 import { TouchableOpacity, View, Text, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import Popover, { Rect } from 'react-native-popover-view'
@@ -31,7 +31,7 @@ function PopoverButtonsView(props: PopoverButtonProps, ref: typeof PopoverButton
   const [from, setFrom] = useState(new Rect(1, 1, 200, 60))
   const [data, setData] = useState(props.data || [])
 
-  useImperativeHandle(ref, () => ({  
+  useImperativeHandle(ref, () => ({
     setVisible: async (isShowPopover: boolean, rect?: SetStateAction<Rect>, data?: ButtonProps[], cb?:(() => void) | null) => {
       setShowPopover(isShowPopover)
       rect && setFrom(rect)

@@ -1,5 +1,5 @@
 import { Vector3 } from 'imobile_for_reactnative/types/data'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View, Image, ImageRequireSource} from 'react-native'
 import { getImage } from '../../../../../assets'
 import { AppInputDialog, AppStyle, CheckSpell, dp } from '../../../../../utils'
@@ -16,6 +16,18 @@ export const VectorItem = (props: VectorItemProps): JSX.Element => {
   const [valueX, setX] = useState(parseFloat(props.value.x.toFixed(2)))
   const [valueY, setY] = useState(parseFloat(props.value.y.toFixed(2)))
   const [valueZ, setZ] = useState(parseFloat(props.value.z.toFixed(2)))
+
+  useEffect(() => {
+    setX(parseFloat(props.value.x.toFixed(2)))
+  }, [props.value.x])
+
+  useEffect(() => {
+    setX(parseFloat(props.value.y.toFixed(2)))
+  }, [props.value.y])
+
+  useEffect(() => {
+    setX(parseFloat(props.value.z.toFixed(2)))
+  }, [props.value.z])
 
   const renderAxis = (label: string, image: ImageRequireSource, value: number, onValueChange:(value: number) => void) => {
     return (

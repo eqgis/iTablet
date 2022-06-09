@@ -4,10 +4,18 @@ export const ar_vector= require('./icon_ar_vector_layer.png')
 export const ar_model= require('./icon_ar_model.png')
 export const ar_effect = require('./icon_ar_special_effects.png')
 
-export const ar_video = require('./icon_ar_video_Temp.png')
-export const ar_picture = require('./icon_ar_picture_Temp.png')
-export const ar_webvew = require('./icon_ar_webpage_Temp.png')
-export const ar_text = require('./icon_ar_written_words_Temp.png')
+// 浅色图标
+const ar_poi_gray = require('./icon_ar_layer_poi_gray.png')
+const ar_3d_gray = require('./icon_ar_layer_3d_gray.png')
+const ar_vector_gray = require('./icon_ar_layer_vector_layer_gray.png')
+const ar_model_gray = require('./icon_ar_layer_model_gray.png')
+const ar_effect_gray = require('./icon_ar_layer_effect_gray.png')
+
+const ar_video = require('./icon_ar_video_Temp.png')
+const ar_picture = require('./icon_ar_picture_Temp.png')
+const ar_webvew = require('./icon_ar_webpage_Temp.png')
+const ar_text = require('./icon_ar_written_words_Temp.png')
+
 
 export const ar_move = require('./icon_ar_translation.png')
 export const ar_rotate = require('./icon_ar_rotate.png')
@@ -24,6 +32,7 @@ export const ar_add_location = require('./icon_ar_add_location.png')
 export const ar_add_point = require('./icon_ar_add_point.png')
 export const icon_add_to = require('./icon_add_to.png')
 export const undo = require('./icon_undo.png')
+
 
 export const translation_x = require('./icon_ar_x_translation.png')
 export const translation_y = require('./icon_ar_y_translation.png')
@@ -68,3 +77,36 @@ export const align_bottom_end = require('./icon_align_lower_end.png')
 export const marker_line = require('./icon_vector_symbol.png')
 
 export const bubble_text = require('./icon_ar_bubble_text.png')
+
+export default {
+  ar_poi,
+  ar_3d,
+  ar_vector,
+  ar_video,
+  ar_model,
+  ar_effect,
+  /** 浅色图标 */
+  ar_poi_gray,
+  ar_3d_gray,
+  ar_vector_gray,
+  ar_model_gray,
+  ar_effect_gray,
+
+  ar_picture,
+  ar_webvew,
+  ar_text,
+  ar_move,
+  ar_rotate,
+  ar_translation,
+  ar_animation_none,
+  ar_scale,
+  ar_opacity,
+  ar_border_width,
+  ar_light,
+  ar_play,
+  ar_distance,
+  ar_add_location,
+  ar_add_point,
+  icon_add_to,
+}
+

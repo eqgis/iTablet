@@ -1,6 +1,6 @@
 import { ARAnimatorCategory, ARAnimatorPlayOrder, ARAnimatorType, ARNodeAnimatorType } from 'imobile_for_reactnative/NativeModule/dataTypes'
 import { ARAnimatorParameter, ARGroupAnimatorParameter } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
-import { TARAnimatorCategory, TARAnimatorPlayOrder, TARAnimatorType, TARNodeAnimatorType, Vector3 } from 'imobile_for_reactnative/types/data'
+import { TARAnimatorCategory, TARAnimatorPlayOrder, TARAnimatorType, TARElementType, TARNodeAnimatorType, Vector3 } from 'imobile_for_reactnative/types/data'
 import React from 'react'
 import { Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import { AppStyle, AppToolBar, dp } from '../../../../utils'
@@ -9,7 +9,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from '../../../../redux/types'
 import { ARAnimatorWithID, editARAnimation, setARAnimation } from '@/redux/models/aranimation'
 import { getLanguage } from '../../../../language'
-import { SARMap } from 'imobile_for_reactnative'
+import { ARElementType, SARMap } from 'imobile_for_reactnative'
 import { ToolbarSlideCard } from 'imobile_for_reactnative/components/ToolbarKit'
 import {
   BoolItem,
@@ -67,7 +67,7 @@ interface ParamList {
 export interface ARAnimatorSettingParam {
   arModelAnimations: string[] | undefined
   editAnimator?: ARAnimatorWithID
-  element: {layerName: string, id: number}
+  element: {layerName: string, id: number, type: TARElementType}
 }
 
 
@@ -150,6 +150,17 @@ class AnimatorParamSetting extends React.Component<Props, State> {
       Object.assign(paramList, list)
     }
     this.paramList = paramList
+
+    // 当是矢量线和符号线时，将选中的设置为显隐界面
+    // const element = AppToolBar.getData().selectARElement
+    const type = setting.element.type
+    if(type === ARElementType.AR_LINE || type === ARElementType.AR_MARKER_LINE){
+      this.paramList.type = ARAnimatorType.NODE_TYPE
+      this.paramList.nodeType = ARNodeAnimatorType.SCALE
+      this.paramList.category = ARAnimatorCategory.APPEAR
+      this.paramList.currentPage = 'show&hide'
+      this.isNew = false
+    }
 
     this.setState({
       modelAnimationList: modelAnimation || [],

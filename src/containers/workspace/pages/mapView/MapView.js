@@ -1765,7 +1765,7 @@ export default class MapView extends React.Component {
             homePath +
             userPath +
             ConstPath.RelativeFilePath.Workspace[
-            global.language === 'CN' ? 'CN' : 'EN'
+              global.language === 'CN' ? 'CN' : 'EN'
             ]
           await this._openWorkspace({
             DSParams: { server: wsPath },
@@ -2002,7 +2002,7 @@ export default class MapView extends React.Component {
         friend.startSendLocation(true)
 
         let messages = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.
-        [this.props.currentTask.groupID]?.[this.props.currentTask.id]?.messages || []
+          [this.props.currentTask.groupID]?.[this.props.currentTask.id]?.messages || []
 
         // 把没有更新/追加/忽略的操作的标志添加到地图上
         for (let i = 0; i < messages.length; i++) {
@@ -3320,26 +3320,26 @@ export default class MapView extends React.Component {
                 {buttonInfos[i] === MapHeaderButton.Share && this.props.online.share[0] &&
                   global.Type === this.props.online.share[0].module &&
                   this.props.online.share[0].progress !== undefined && (
-                    <View
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: scaleSize(4),
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Bar
                       style={{
-                        position: 'absolute',
-                        bottom: scaleSize(4),
-                        justifyContent: 'space-between',
+                        width: scaleSize(size), height: 2, borderWidth: 0,
+                        backgroundColor: 'black', top: scaleSize(4),
                       }}
-                    >
-                      <Bar
-                        style={{
-                          width: scaleSize(size), height: 2, borderWidth: 0,
-                          backgroundColor: 'black', top: scaleSize(4),
-                        }}
-                        progress={
-                          this.props.online.share[this.props.online.share.length - 1]
-                            .progress
-                        }
-                        width={scaleSize(60)}
-                      />
-                    </View>
-                  )}
+                      progress={
+                        this.props.online.share[this.props.online.share.length - 1]
+                          .progress
+                      }
+                      width={scaleSize(60)}
+                    />
+                  </View>
+                )}
               </View>
             )
         } else {
@@ -4945,7 +4945,9 @@ export default class MapView extends React.Component {
           onARElementGeometryTouch={element => {
             // 点击矢量线和符号线的回调函数
             // if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
-            if (element.type === ARElementType.AR_LINE
+            if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
+              onAddARAnimation(element)
+            } else if (element.type === ARElementType.AR_LINE
               || element.type === ARElementType.AR_MARKER_LINE) {
               {
                 AppToolBar.addData({ addARElement: element })
@@ -5082,14 +5084,14 @@ export default class MapView extends React.Component {
           this.props.mapLegend[global.Type] &&
           this.props.mapLegend[global.Type].isShow &&
           !this.noLegend && (
-            <RNLegendView
-              setMapLegend={this.props.setMapLegend}
-              legendSettings={this.props.mapLegend}
-              device={this.props.device}
-              language={this.props.language}
-              ref={ref => (global.legend = ref)}
-            />
-          )}
+          <RNLegendView
+            setMapLegend={this.props.setMapLegend}
+            legendSettings={this.props.mapLegend}
+            device={this.props.device}
+            language={this.props.language}
+            ref={ref => (global.legend = ref)}
+          />
+        )}
         {global.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {global.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}

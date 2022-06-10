@@ -14,7 +14,7 @@ function initArAnimatorSettingParam(): ARAnimatorSettingParam {
   return {
     arModelAnimations: [],
     editAnimator: undefined,
-    element: {layerName: '', id: -1}
+    element: {layerName: '', id: -1, type: 1}
   }
 }
 
@@ -39,6 +39,7 @@ export function getARAnimatorSettingParam () {
   arAnimatorSettingParam.arModelAnimations = animations
   arAnimatorSettingParam.element.layerName = element.layerName
   arAnimatorSettingParam.element.id = element.id
+  arAnimatorSettingParam.element.type = element.type
   AppToolBar.show( 'ARANIMATION', 'AR_MAP_ANIMATION_ADD')
 }
 

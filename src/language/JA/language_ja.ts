@@ -1633,8 +1633,8 @@ export const language_ja: typeof language_cn = {
   LAYER_MOVEUP_FAIL: '上に移動するのに失敗しました',
   LAYER_MOVEDOWN_SUCCESS: '下に移動するのに成功しました',
   LAYER_MOVEDOWN_FAIL: '下に移動するのに失敗しました',
-  FIRST_EFFECT_LAYER: 'Layer is First effect layer',  // To be translated
-  LAST_EFFECT_LAYER: 'Layer is last effect layer',  // To be translated
+  FIRST_EFFECT_LAYER_NOT_MOVEUP: 'First effect layer is not moveup',  // To be translated
+  LAST_EFFECT_LAYER_NOT_MOVEDOWN: 'Last effect layer is not movedown',  // To be translated
 
   VISIBLE: "レイヤーを表示に設定",
   NOT_VISIBLE: "レイヤーを非表示に設定",

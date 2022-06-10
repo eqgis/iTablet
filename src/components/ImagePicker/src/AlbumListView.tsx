@@ -216,7 +216,7 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
     const albums = []
     for (const album of result) {
       const firstAsset = await this.getPhotos(album.title, 1)
-      albums.push({
+      firstAsset.length > 0 && albums.push({
         ...album,
         image: firstAsset[0].uri,
       })
@@ -225,7 +225,7 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
     if (Platform.OS === 'ios') {
       // 为了iOS查询没有指定相簿的照片
       const firstAsset = await this.getPhotos('Recent Photos', 1)
-      albums.unshift({
+      firstAsset.length > 0 && albums.unshift({
         title: 'Recent Photos',
         count: -1,
         image: firstAsset[0].uri,

@@ -15,6 +15,9 @@ function setTopLevelNavigator(navigatorRef) {
 
 function navigate(name, params) {
   (async function() {
+    // 判断是否是从地图跳转到制定的页面,是否显示半屏
+    name = isInMapPage(name) || name
+    console.warn(name)
     if (name === tempRoute) return
     tempRoute = name
     _navigator.navigate(name, params)
@@ -173,6 +176,30 @@ function push(name, params) {
   _navigator.dispatch(pushAction)
 }
 
+const InMapPage = [
+  'MyDatasource',
+  'MyDataset',
+  'NewDataset',
+]
+
+const InMap = '_InMap'
+
+/**
+ * 区分是否在在地图界面跳转到以下界面
+ *
+ * 若存在,则在地图页面显示半屏,以transparentModel形式展示
+ * 反之,则以card方式展示
+ */
+function isInMapPage(name) {
+  if (InMapPage.includes(name) && isInMap()) {
+    return name + InMap
+  } else if (name.endsWith(InMap)) {
+    return name
+  } else {
+    return ''
+  }
+}
+
 export default {
   navigate,
   getTopLevelNavigator,
@@ -187,4 +214,5 @@ export default {
   isInMap3D,
   isCurrent,
   getCurrent,
+  isInMapPage,
 }

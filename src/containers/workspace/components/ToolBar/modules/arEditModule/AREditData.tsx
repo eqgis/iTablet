@@ -444,7 +444,7 @@ const ARTtitleSettingItems = (language: string) => {
         params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT, {
           containerType: ToolbarType.list,
           customView: (_props: any) => (
-            <View style = {[{height: dp(50), backgroundColor: '#fff', marginTop: dp(-50), paddingTop: dp(10)}]}>
+            <View style = {[{height: '100%', backgroundColor: '#fff', paddingTop: dp(10)}]}>
               <ToolBarInput
                 textTitle = {getLanguage(language).TITLE}
                 apply = {(text: string) => {

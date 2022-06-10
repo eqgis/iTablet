@@ -59,6 +59,10 @@ class ArEditModule extends FunctionModule {
         data.autoShowBox = true
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
         break
+      case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT:
+        data.autoShowBox = true
+        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 2 / 2
+        break
       case ConstToolType.SM_AR_EDIT_SCALE:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
         break

@@ -280,9 +280,9 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="AnimationNodeEditView" component={AnimationNodeEditView} />
       <Stack.Screen name="AnimationNodeEditRotateView" component={AnimationNodeEditRotateView} />
       <Stack.Screen name="AddOnlineScense" component={AddOnlineScense} />
-      <Stack.Screen name="TemplateManager" component={TemplateManager} />
-      <Stack.Screen name="TemplateDetail" component={TemplateDetail} />
-      <Stack.Screen name="TemplateSource" component={TemplateSource} />
+      <Stack.Screen name="TemplateManager" component={TemplateManager} options={modalOption(params)} />
+      <Stack.Screen name="TemplateDetail" component={TemplateDetail} options={modalOption(params)} />
+      <Stack.Screen name="TemplateSource" component={TemplateSource} options={modalOption(params)} />
       <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="AddFriend" component={AddFriend} />
       <Stack.Screen name="InformMessage" component={InformMessage} />
@@ -297,18 +297,26 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="ToggleAccount" component={ToggleAccount} />
       <Stack.Screen name="GetBack" component={GetBack} />
+      <Stack.Screen name="SampleMap" component={SampleMap} options={modalOption(params)} />
+
+      {/** 地图页面中跳转到以下界面 */}
+      <Stack.Screen name="MyDatasource_InMap" component={MyDatasource} options={modalOption(params)} />
+      <Stack.Screen name="MyDataset_InMap" component={MyDataset} options={modalOption(params)} />
+      <Stack.Screen name="NewDataset_InMap" component={NewDataset} options={modalOption(params)} />
+      {/** 非地图页面跳转到以下界面 */}
+      <Stack.Screen name="MyDatasource" component={MyDatasource} />
+      <Stack.Screen name="MyDataset" component={MyDataset} />
+      <Stack.Screen name="NewDataset" component={NewDataset} />
+
       <Stack.Screen name="MyLocalData" component={MyLocalData} />
       <Stack.Screen name="MyMap" component={MyMap} />
       <Stack.Screen name="MyARMap" component={MyARMap} />
       <Stack.Screen name="MyARModel" component={MyARModel} />
       <Stack.Screen name="MyAREffect" component={MyAREffect} />
       <Stack.Screen name="MyScene" component={MyScene} />
-      <Stack.Screen name="MyDatasource" component={MyDatasource} />
       <Stack.Screen name="MySymbol" component={MySymbol} />
       <Stack.Screen name="MyTemplate" component={MyTemplate} />
       <Stack.Screen name="MyColor" component={MyColor} />
-      <Stack.Screen name="MyDataset" component={MyDataset} />
-      <Stack.Screen name="NewDataset" component={NewDataset} />
       <Stack.Screen name="SearchMine" component={SearchMine} />
       <Stack.Screen name="MyService" component={MyService} />
       <Stack.Screen name="MyOnlineMap" component={MyOnlineMap} />
@@ -319,7 +327,6 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="MySandTable" component={MySandTable} />
       <Stack.Screen name="ScanOnlineMap" component={ScanOnlineMap} />
       <Stack.Screen name="Personal" component={Personal} />
-      <Stack.Screen name="SampleMap" component={SampleMap} />
       <Stack.Screen name="WebView" component={WebView} />
       <Stack.Screen name="AboutITablet" component={AboutITablet} />
       <Stack.Screen name="LicensePage" component={LicensePage} />

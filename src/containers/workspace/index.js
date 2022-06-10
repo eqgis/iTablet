@@ -7,19 +7,11 @@ import React from 'react'
 import { View } from 'react-native'
 import { MapView, Map3D } from './pages'
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import LayerManager from '../mtLayerManager'
-import Layer3DManager from '../Layer3DManager'
-import Setting from '../setting'
-import MapSetting from '../mapSetting'
 import { Chat } from '../tabs'
 import { LayerAttribute } from '../layerAttribute'
-import ARLayerManager from '../arLayerManager'
-import ARMapSetting from '../arMapSettings/ARMapSetting'
 
-const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
 function MapStack(device) {

@@ -868,8 +868,8 @@ export default class MapView extends React.Component {
       }
     } else if (prevProps.analyst.params && !this.props.analyst.params) {
       this.backAction = null
-      this.container && this.container.setHeaderVisible(true)
-      this.container && this.container.setBottomVisible(true)
+      // this.container && this.container.setHeaderVisible(true)
+      // this.container && this.container.setBottomVisible(true)
       if (this.state.mapTitle !== this.mapTitle) {
         this.setState({ mapTitle: this.mapTitle })
       }
@@ -3101,7 +3101,7 @@ export default class MapView extends React.Component {
   }
 
   renderHeaderRight = () => {
-    if (this.props.analyst.params || global.Type === ChunkType.MAP_AR_MAPPING ? this.props.isAR : this.state.showAIDetect)
+    if (this.props.analyst.params || (global.Type === ChunkType.MAP_AR_MAPPING ? this.props.isAR : this.state.showAIDetect))
       return null
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50

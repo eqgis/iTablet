@@ -150,7 +150,9 @@ class ChartManager extends Component<Props, State> {
       // AppToolBar.addData({chartData})
       // AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_PIE_CHART')
       arEditModule().setModuleData(ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART)
-      global.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART)
+      global.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART, {
+        isFullScreen: false,
+      })
       ToolbarModule.addData({chartData})
 
       // 退出页面（不退出就看不到工具栏）
@@ -175,7 +177,9 @@ class ChartManager extends Component<Props, State> {
       // AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_CHART')
 
       arEditModule().setModuleData(ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART)
-      global.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART)
+      global.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART, {
+        isFullScreen: false,
+      })
       ToolbarModule.addData({chartData})
       // 退出页面（不退出就看不到工具栏）
       this.props.navigation.goBack()

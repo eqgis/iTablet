@@ -209,7 +209,7 @@ export default class Preview extends React.Component<Props, State> {
         {
           item.confidence !== undefined &&
           <Text style={styles.titleConfidence}>
-            {item.confidence.toFixed(2)}
+            {(item.confidence * 100).toFixed(2) + '%'}
           </Text>
         }
       </TouchableOpacity>

@@ -53,9 +53,9 @@ export default class GuideViewMapEditModel extends React.Component {
     let style , arrowstyle ,left
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       if(this.props.language === 'CN'){
-        left = scaleSize(400)
+        left = scaleSize(460)
       }else{
-        left = scaleSize(430)
+        left = scaleSize(490)
       }
       style = {
         position: 'absolute',
@@ -108,7 +108,7 @@ export default class GuideViewMapEditModel extends React.Component {
       style = {
         position: 'absolute',
         backgroundColor: 'transparent',
-        left: screen.getScreenSafeWidth() / 2 - scaleSize(210),
+        left: screen.getScreenSafeWidth() / 2 - scaleSize(150),
         bottom: scaleSize(110),
         flexDirection: 'column',
         justifyContent: 'center',
@@ -127,7 +127,7 @@ export default class GuideViewMapEditModel extends React.Component {
       style = {
         position: 'absolute',
         backgroundColor: 'transparent',
-        top: scaleSize(350) + screen.getIphonePaddingTop(),
+        top: scaleSize(450) + screen.getIphonePaddingTop(),
         right: scaleSize(120),
         flexDirection: 'row',
         justifyContent: 'center',

@@ -131,7 +131,7 @@ export default class ReferenceAnalystView extends Component {
     return available
   }
 
-  analyst = () => {
+  analyst = async () => {
     if (!this.checkData()) return
 
     let optionParameter = {}
@@ -164,88 +164,88 @@ export default class ReferenceAnalystView extends Component {
     }
 
     Toast.show(getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_START)
-    InteractionManager.runAfterInteractions(async () => {
-      try {
-        this.setLoading(
-          true,
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
-        )
+    // InteractionManager.runAfterInteractions(async () => {
+    try {
+      this.setLoading(
+        true,
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
+      )
 
-        let server = await FileTools.appendingHomeDirectory(
-          ConstPath.UserPath +
-            (this.props.currentUser.userName || 'Customer') +
-            '/' +
-            ConstPath.RelativePath.Datasource,
-        )
-        let sourceData = {
-            datasource: this.state.dataSource.value,
-            dataset: this.state.dataSet.value,
-          },
-          resultData = {
-            datasource: this.state.resultDataSource.value,
-            server: server + this.state.resultDataSource.value + '.udb',
-            dataset: this.state.resultDataSet.value,
-          },
-          result = false
-        switch (this.type) {
-          case ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON:
-            if (this.state.isCustomLocale) {
-              if (this.state.selectRegionStatus === CheckStatus.CHECKED) {
-                optionParameter = {
-                  selectRegion: {
-                    layerPath: this.props.selection[0].layerInfo.path,
-                    geoId: this.props.selection[0].ids[0],
-                  },
-                }
-              } else {
-                optionParameter = { drawRegion: true }
+      let server = await FileTools.appendingHomeDirectory(
+        ConstPath.UserPath +
+          (this.props.currentUser.userName || 'Customer') +
+          '/' +
+          ConstPath.RelativePath.Datasource,
+      )
+      let sourceData = {
+          datasource: this.state.dataSource.value,
+          dataset: this.state.dataSet.value,
+        },
+        resultData = {
+          datasource: this.state.resultDataSource.value,
+          server: server + this.state.resultDataSource.value + '.udb',
+          dataset: this.state.resultDataSet.value,
+        },
+        result = false
+      switch (this.type) {
+        case ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON:
+          if (this.state.isCustomLocale) {
+            if (this.state.selectRegionStatus === CheckStatus.CHECKED) {
+              optionParameter = {
+                selectRegion: {
+                  layerPath: this.props.selection[0].layerInfo.path,
+                  geoId: this.props.selection[0].ids[0],
+                },
               }
+            } else {
+              optionParameter = { drawRegion: true }
             }
-            result = await SAnalyst.thiessenAnalyst(
-              sourceData,
-              resultData,
-              optionParameter,
-            )
-            break
-          case ConstToolType.SM_MAP_ANALYSIS_MEASURE_DISTANCE:
-            // result = await SAnalyst.erase(
-            //   sourceData,
-            //   targetData,
-            //   resultData,
-            //   optionParameter,
-            // )
-            break
-        }
-        this.setLoading(false)
-
-        Toast.show(
-          result
-            ? getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS
-            : getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-        )
-        SMap.setAction(Action.SELECT).then(() => {
-          SMap.setAction(Action.PAN)
-        })
-        if (result) {
-          let layers = await this.props.getLayers()
-          layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
-
-          global.ToolBar && global.ToolBar.setVisible(false)
-          NavigationService.goBack('ReferenceAnalystView')
-          if (this.cb && typeof this.cb === 'function') {
-            this.cb()
           }
-        }
-      } catch (e) {
-        SMap.setAction(Action.SELECT).then(() => {
-          SMap.setAction(Action.PAN)
-        })
-        this.setLoading(false)
-        Toast.show(
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-        )
+          result = await SAnalyst.thiessenAnalyst(
+            sourceData,
+            resultData,
+            optionParameter,
+          )
+          break
+        case ConstToolType.SM_MAP_ANALYSIS_MEASURE_DISTANCE:
+          // result = await SAnalyst.erase(
+          //   sourceData,
+          //   targetData,
+          //   resultData,
+          //   optionParameter,
+          // )
+          break
       }
-    })
+      this.setLoading(false)
+
+      Toast.show(
+        result
+          ? getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS
+          : getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+      )
+      SMap.setAction(Action.SELECT).then(() => {
+        SMap.setAction(Action.PAN)
+      })
+      if (result) {
+        let layers = await this.props.getLayers()
+        layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
+
+        global.ToolBar && global.ToolBar.setVisible(false)
+        NavigationService.goBack('ReferenceAnalystView')
+        if (this.cb && typeof this.cb === 'function') {
+          this.cb()
+        }
+      }
+    } catch (e) {
+      SMap.setAction(Action.SELECT).then(() => {
+        SMap.setAction(Action.PAN)
+      })
+      this.setLoading(false)
+      Toast.show(
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+      )
+    }
+    // })
     // ;(async function() {
     //
     // }.bind(this)())

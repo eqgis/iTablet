@@ -1628,8 +1628,9 @@ export const language_en: typeof language_cn = {
   LAYER_MOVEUP_FAIL: 'Moveup fail',
   LAYER_MOVEDOWN_SUCCESS: 'Movedown success',
   LAYER_MOVEDOWN_FAIL: 'Movedown fail',
-  FIRST_EFFECT_LAYER_NOT_MOVEUP: 'The first special-effect layer can\'t go up',
-  LAST_EFFECT_LAYER_NOT_MOVEDOWN: 'The last special-effect layer can\'t go down',
+
+  FIRST_EFFECT_LAYER: 'Layer is First effect layer',  // To be translated
+  LAST_EFFECT_LAYER: 'Layer is last effect layer',  // To be translated
 
 
   VISIBLE: "Visible",

@@ -230,17 +230,18 @@ export default class ARLayerManager extends React.Component<Props, State> {
             const layer = this.state.selectLayer
             // if (this.props.arlayer.currentLayer) {
             if (layer) {
-              DialogUtils.showInputDailog({
-                // value: this.props.arlayer.currentLayer.caption,
+              NavigationService.navigate('InputPage', {
+                headerTitle: getLanguage().Map_Layer.LAYERS_LAYER_NAME,
                 value: layer.caption,
-                confirmAction: async (name: string) => {
+                type: 'name',
+                cb: async name => {
                   if (layer) {
                     await SARMap.setLayerCaption(layer.name, name)
                     await this.props.getARLayers()
-                    DialogUtils.hideInputDailog()
                     this.setState({
                       menuVisible: false,
                     })
+                    NavigationService.goBack()
                   }
                 },
               })
@@ -291,7 +292,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                 Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
               } else {
                 // 最后一个特效图层不能下移
-                Toast.show(getLanguage().Map_Layer.LAST_EFFECT_LAYER_NOT_MOVEDOWN)
+                Toast.show(getLanguage().Map_Layer.LAST_EFFECT_LAYER)
               }
             }
           } else {
@@ -325,7 +326,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                 Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
               } else {
                 // 第一个特效图层不能上移
-                Toast.show(getLanguage().Map_Layer.FIRST_EFFECT_LAYER_NOT_MOVEUP)
+                Toast.show(getLanguage().Map_Layer.FIRST_EFFECT_LAYER)
               }
             }
           } else {

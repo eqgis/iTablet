@@ -98,15 +98,11 @@ class SandTableView extends React.Component<Props, State> {
     return data
   }
 
-
   deleteSelectItem = () => {
-    this.deleteInnerElement()
-  }
-
-  deleteInnerElement = () => {
     const element = AppToolBar.getData().selectARElement
     if(element) {
-      SARMap.deleteModelFromSandTable()
+      SARMap.deleteModelFromSandTable().then(SARMap.commitSandTableChanges)
+      AppToolBar.goBack()
     } else {
       AppLog.error('没有选中对象')
     }

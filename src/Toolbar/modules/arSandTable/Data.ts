@@ -174,6 +174,10 @@ function sandTableModifyOption(option: IToolbarOption) {
 
 function selectSandboxModel(option: IToolbarOption) {
 
+  option.pageAction = () => {
+    SARMap.setAction(ARAction.NULL)
+  }
+
   (option.selectionListData as SelectionListOption<string>) = {
     data: [],
     mode: 'multiple',
@@ -284,7 +288,8 @@ function sandTableAlignOption(option: ToolbarOption<ARSAndTableViewOption>) {
 
 function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
   const element = AppToolBar.getData().selectARElement
-  if(!element)  {
+  const childIndex = AppToolBar.getData().selectedChildIndex
+  if(!element || childIndex === undefined)  {
     AppLog.error('未选中对象！')
     return
   }
@@ -295,8 +300,7 @@ function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
 
   option.pageAction = () => {
     SARMap.appointEditElement(element.id, element.layerName)
-    const selectedIndex = AppToolBar.getData().selectedChildIndex
-    selectedIndex !== undefined && SARMap.appointARSandTableModel(selectedIndex)
+    SARMap.appointARSandTableModel(childIndex)
     AppToolBar.addData({
       transformInfo: {
         layerName: element.layerName,
@@ -332,9 +336,9 @@ function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
       }
     },
   ]
-  option.menuData.isShowView = true
-  option.menuData.defaultIndex = 0
-  option.menuData.data = _getTransformTabData()
+  option.menuOption.isShowView = true
+  option.menuOption.defaultIndex = 0
+  option.menuOption.data = _getTransformTabData()
 }
 
 /** 位置调整通用模版 POI/模型/三维场景/三维图层 */

@@ -55,7 +55,7 @@ function stylePoiOption(option: IToolbarOption) {
     onPress: AppToolBar.goBack,
   }]
 
-  option.menuData.data = [
+  option.menuOption.data = [
     {
       title: getLanguage().OPACITY,
       type: 'slide',
@@ -126,7 +126,7 @@ function styleTextOption(option: IToolbarOption) {
     onPress: AppToolBar.goBack,
   }]
 
-  option.menuData.data = [
+  option.menuOption.data = [
     {
       title: getLanguage().COLOR,
       type: 'color',
@@ -320,7 +320,7 @@ function styleEffect(option: IToolbarOption) {
     }
   },]
 
-  option.menuData.data = [{
+  option.menuOption.data = [{
     title: getLanguage().ARMap.EFFECT,
     type: 'list',
     data: [],
@@ -360,7 +360,7 @@ function styleWidgetOption(option: IToolbarOption) {
     onPress: AppToolBar.goBack,
   }]
 
-  option.menuData.data = [
+  option.menuOption.data = [
     {
       title: getLanguage().OPACITY,
       type: 'slide',
@@ -416,7 +416,7 @@ function styleLineOption(option: IToolbarOption) {
   }]
 
   // 线图层风格类别tab
-  option.menuData.data = [
+  option.menuOption.data = [
     {
       title: getLanguage().COLOR,
       type: 'color',
@@ -497,7 +497,7 @@ function styleMarkerLineOption(option: IToolbarOption) {
   }]
 
   // 符号线图层风格类别tab
-  option.menuData.data = [
+  option.menuOption.data = [
     {
       title: getLanguage().LINE_MARKER,  // 符号切换
       type: 'list',

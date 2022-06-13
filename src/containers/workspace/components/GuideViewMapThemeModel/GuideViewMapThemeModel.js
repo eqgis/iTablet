@@ -39,15 +39,17 @@ export default class GuideViewMapThemeModel extends React.Component {
     this.state = {
       count:1,
       title: getLanguage(this.props.language).Profile.ADD_THEME_DATA,
-      nextText: getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(1/3)',
+      nextText: getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(1/2)',
       sourceImage:getThemeAssets().home.map_add_data,
       rightsourceImage:getThemeAssets().functionBar.icon_tool_add,
       rightTitle:getLanguage(global.language).Map_Main_Menu.OPEN,
       rightViewStyle: {},
       guideStyle: {},
-      landguideStyle: {},
-      landrightViewStyle: {},
-      landSize:- scaleSize(180),
+      // landguideStyle: {},
+      // landrightViewStyle: {},
+      landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(290)},
+      landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(100)},
+      landSize:- scaleSize(60),
     }
   }
 
@@ -346,30 +348,32 @@ export default class GuideViewMapThemeModel extends React.Component {
       this.setState({
         count:2,
         title:getLanguage(this.props.language).Profile.CHOOSE_THEME_TYPE,
-        nextText:getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(2/3)',
+        nextText:getLanguage(this.props.language).Profile.MY_GUIDE_KNOW + '(2/2)',
         sourceImage:getThemeAssets().home.map_making_thematic,
         guideStyle:{top: scaleSize(500) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop('PORTRAIT')},
         rightTitle:getLanguage(global.language).Map_Main_Menu.THEME,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_thematic,
-        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(250)},
-        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(80)},
-        landSize:scaleSize(80),
+        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(40)},
+        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(100)},
+        landSize:- scaleSize(-210),
       })
-    } else if(this.state.count === 2){
-      this.setState({
-        count:3,
-        title:getLanguage(this.props.language).Profile.CHANGE_THEME_STYLE,
-        nextText:getLanguage(this.props.language).Profile.MY_GUIDE_KNOW,
-        sourceImage:getThemeAssets().home.map_style,
-        rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightTitle:getLanguage(global.language).Map_Main_Menu.STYLE,
-        rightsourceImage:getThemeAssets().functionBar.icon_tool_style,
-        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(130)},
-        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(200)},
-        landSize:scaleSize(200),
-      })
-    } else {
+    }
+    // else if(this.state.count === 2){
+    //   this.setState({
+    //     count:3,
+    //     title:getLanguage(this.props.language).Profile.CHANGE_THEME_STYLE,
+    //     nextText:getLanguage(this.props.language).Profile.MY_GUIDE_KNOW,
+    //     sourceImage:getThemeAssets().home.map_style,
+    //     rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop('PORTRAIT')},
+    //     rightTitle:getLanguage(global.language).Map_Main_Menu.STYLE,
+    //     rightsourceImage:getThemeAssets().functionBar.icon_tool_style,
+    //     landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(130)},
+    //     landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(200)},
+    //     landSize:scaleSize(200),
+    //   })
+    // }
+    else {
       this.props.setThemeGuide(false)
     }
   }

@@ -41,8 +41,10 @@ export default class GuideViewMapCollectModel extends React.Component {
       rightTitle:getLanguage(global.language).Map_Main_Menu.START,
       rightViewStyle: {},
       guideStyle: {},
-      landguideStyle: {},
-      landrightViewStyle: {},
+      // landguideStyle: {},
+      // landrightViewStyle: {},
+      landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(530)},
+      landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(100)},
       landSize: - scaleSize(300),
     }
   }
@@ -350,13 +352,13 @@ export default class GuideViewMapCollectModel extends React.Component {
         title:getLanguage(this.props.language).Profile.CHOOSE_COLLECT,
         nextText:getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(2/3)',
         sourceImage:getThemeAssets().home.map_symbol_selection,
-        guideStyle:{top: scaleSize(420) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightViewStyle:{top: scaleSize(395) + screen.getIphonePaddingTop('PORTRAIT')},
+        guideStyle:{top: scaleSize(500) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
         rightTitle:getLanguage(global.language).Map_Main_Menu.COLLECTION,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_collection,
-        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(370)},
-        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(50)},
-        landSize:- scaleSize(50),
+        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(160)},
+        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(100)},
+        landSize:- scaleSize(-70),
       })
     } else if(this.state.count === 2){
       this.setState({
@@ -365,12 +367,12 @@ export default class GuideViewMapCollectModel extends React.Component {
         nextText:getLanguage(this.props.language).Profile.MY_GUIDE_KNOW,
         sourceImage:getThemeAssets().home.map_data_edit,
         guideStyle:{top: scaleSize(500) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop('PORTRAIT')},
         rightTitle:getLanguage(global.language).Map_Main_Menu.EDIT,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_edit,
-        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(250)},
-        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(80)},
-        landSize:scaleSize(80),
+        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(50)},
+        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(100)},
+        landSize:- scaleSize(-210),
       })
     } else {
       this.props.setCollectGuide(false)

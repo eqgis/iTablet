@@ -107,16 +107,23 @@ class ChartManager extends Component<Props, State> {
     } else {
       // 没有状态，默认新增状状态就是，使用默认的数据作为页面渲染的初始数据
       data = [
-        {name:"item1", value: '100.00', color: COLORS[0]},
-        {name:"item2", value: '100.00', color: COLORS[1]},
-        {name:"item3", value: '100.00', color: COLORS[2]},
+        {name:"item1", value: '100', color: COLORS[0]},
+        {name:"item2", value: '100', color: COLORS[1]},
+        {name:"item3", value: '100', color: COLORS[2]},
       ]
     }
 
     const length = data.length
     // 将原生拿回的数据做处理，只显示两位小数
     for(let i = 0; i < length; i ++){
-      const value = Number(data[i].value).toFixed(2) + ""
+      // const value = Number(data[i].value).toFixed(2) + ""
+      const temp = data[i].value + ""
+      // if(temp.indexOf('.') === -1) continue
+      const numberFloat =Number( Number(temp).toFixed(2))
+      let value: number | string = parseInt(temp)
+      if(numberFloat > value ){
+        value = numberFloat + ""
+      }
       data[i].value = value
     }
 
@@ -203,7 +210,7 @@ class ChartManager extends Component<Props, State> {
       number = 0
     }
     const data = JSON.parse(JSON.stringify(this.state.data))
-    data[index].value = number.toFixed(2)
+    data[index].value = number + "" // .toFixed(2)
     this.setState({
       data,
     })

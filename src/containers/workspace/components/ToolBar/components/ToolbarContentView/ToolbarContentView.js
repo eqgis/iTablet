@@ -58,7 +58,7 @@ export default class ToolbarContentView extends React.Component {
       data: props.data,
       type: props.type,
     })
-    this.height = this.props.customView ? 0 : data.height // ToolbarContentView当前类型，未收缩前的高度
+    this.height = this.props.customView ? 0 : (data.height || 0) // ToolbarContentView当前类型，未收缩前的高度
     this.isBoxShow = false
     this.state = {
       column: data.column,

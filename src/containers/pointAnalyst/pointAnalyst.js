@@ -54,6 +54,7 @@ export default class PointAnalyst extends Component {
     }
     //默认搜索半径5km 结果不足十条范围扩大十倍
     this.radius = 5000
+    this.orientation =global.getDevice().orientation
   }
 
   componentDidMount() {
@@ -76,7 +77,8 @@ export default class PointAnalyst extends Component {
     return (
       JSON.stringify(nextState) !== JSON.stringify(this.state) ||
       JSON.stringify(nextProps.mapSearchHistory) !== JSON.stringify(this.props.mapSearchHistory) ||
-      nextProps.language !== this.props.language
+      nextProps.language !== this.props.language ||
+      this.orientation !==  global.getDevice().orientation
     )
   }
 
@@ -449,6 +451,7 @@ export default class PointAnalyst extends Component {
 
   renderIconItem = () => {
     let orientation = global.getDevice().orientation
+    this.orientation =  orientation
     let maxHeight = screen.getScreenHeight(orientation)
     let headerHeight = screen.getHeaderHeight(orientation)
     let data = PoiData()

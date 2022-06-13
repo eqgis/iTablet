@@ -230,17 +230,18 @@ export default class ARLayerManager extends React.Component<Props, State> {
             const layer = this.state.selectLayer
             // if (this.props.arlayer.currentLayer) {
             if (layer) {
-              DialogUtils.showInputDailog({
-                // value: this.props.arlayer.currentLayer.caption,
+              NavigationService.navigate('InputPage', {
+                headerTitle: getLanguage().Map_Layer.LAYERS_LAYER_NAME,
                 value: layer.caption,
-                confirmAction: async (name: string) => {
+                type: 'name',
+                cb: async name => {
                   if (layer) {
                     await SARMap.setLayerCaption(layer.name, name)
                     await this.props.getARLayers()
-                    DialogUtils.hideInputDailog()
                     this.setState({
                       menuVisible: false,
                     })
+                    NavigationService.goBack()
                   }
                 },
               })

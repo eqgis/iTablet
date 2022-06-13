@@ -310,7 +310,6 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     if (!props) props = this.props
     if (!state) state = this.state
     this.ToolbarModule.setParams({
-      type: state.type,
       setToolbarVisible: this.setVisible,
       showBox:this.showBox,
       setLastState: this.setLastState,
@@ -320,6 +319,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
       contentView: this.contentView, // ToolbarContentView ref
       buttonView: this.buttonView, // ToolbarBottomButtons ref
       ...props,
+      type: state.type,
     })
   }
 

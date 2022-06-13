@@ -73,8 +73,6 @@ function animationHomeOption(option: IToolbarOption) {
     }, {
       image: getImage().icon_submit,
       onPress: () => {
-        SARMap.setAction(ARAction.NULL)
-        SARMap.clearSelection()
         AppEvent.emitEvent('ar_animation_save')
       }
     }

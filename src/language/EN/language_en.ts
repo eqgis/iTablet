@@ -413,7 +413,7 @@ export const language_en: typeof language_cn = {
   AREA: "Area",
   LINE: "Line",
   POINT: "Point",
-  MARKER_LINE: "Marker line", // to be translated
+  MARKER_LINE: "Symbolic Line",
 
   OPEN_MAP: "Open Map",
   UNTITLED_MAP: "Untitled Map",
@@ -542,13 +542,13 @@ export const language_en: typeof language_cn = {
 
   DELETE_COMFIRM: 'Would you like to delete it?',
 
-  NULL_DATA: 'Null Data', // to be translated
+  NULL_DATA: 'Null Data',
 
-  PLEASE_SELECT_OBJ: 'Please select object', // to be translated
-  PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or object", // to be translated
-  PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
+  PLEASE_SELECT_OBJ: 'Please select objects',
+  PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or objects",
+  PLEASE_SELECT_AR_OBJECT_LAYER: "Please select the AR object layer",
 
-  ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
+  ATTRIBUTE_ADD_TO_AR_SCENE: "Add the attribute table to AR scene",
 
   ALIGNMENT: 'Alignment',
   LEFT_START: 'Left Top',
@@ -560,25 +560,25 @@ export const language_en: typeof language_cn = {
   BOTTOM_START: 'Bottom Left',
   BOTTOM_END: 'Bottom Right',
 
-  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
-  LINE_MARKER_SPEED: 'Speed', // To be translated
-  LINE_MARKER: 'Line marker',  // To be translated
+  LINE_POINT_INTERVAL: 'Symbol Interval',
+  LINE_MARKER_SPEED: 'Speed',
+  LINE_MARKER: 'Symbol',
 
   BUBBLE_TEXT: 'Bubble Text',
 
-  UPDATE_LOCAL_SERVICE: "Updating local services",
-  SUBMIT_SERVICE: "Submit service",
-  SYNC_SERVICE: "Sync service",//To be translated
+  UPDATE_LOCAL_SERVICE: "Update Local Service",
+  SUBMIT_SERVICE: "Submit Service",
+  SYNC_SERVICE: "Sync Service",
 
-  UPDATE_SUCCESSFUL: "Update successfully",
-  UPDATE_FAILED: "Update failed",
+  UPDATE_SUCCESSFUL: "Updated successfully",
+  UPDATE_FAILED: "Failed to update",
 
   UPLOAD_SUCCESSFUL: "Submit successfully",
-  UPLOAD_FAILED: "Submit failed",
+  UPLOAD_FAILED: "Failed to submit",
 
   PUBLISH: "Publish",
 
-  ERROR_SERVICE_DATA_LOSE_URL: "Online Data URL lost",
+  ERROR_SERVICE_DATA_LOSE_URL: "URL of data lost",
 
   PLEASE_ENTER_SERCICE_NAME: "Please enter a service name",
   SERVICE_SHARING_SETTINGS: "Service sharing settings",
@@ -1470,12 +1470,12 @@ export const language_en: typeof language_cn = {
   MAP_OUTPUT_XML: "Output",
   MAP_LOAD_XML: "Load",
 
-  ATTRIBUTE_ALBUM: "Picture Collection",//to be translate
-  VIDEO_ALBUM:"Viedo Album",//to be translate
-  MAPBROCHORE: "Map Brochore",//to be translate
-  CHOOSE_MAP:"Choose Map",
-  SANDTABLE_ALBUM:"Sand Table Album",//to be translate
-  CHOOSE_SANDTABLE:"Choose Sand Table",//to be translate
+  ATTRIBUTE_ALBUM: "Picture Set",
+  VIDEO_ALBUM:"Viedo Set",
+  MAPBROCHORE: "Map Set",
+  CHOOSE_MAP:"Select Map",
+  SANDTABLE_ALBUM:"Sand Table Set",
+  CHOOSE_SANDTABLE:"Select Sand Table",
   TITLE:'Title',
   BACKGROUND:'BackGround',
   ARRAY:'Array',
@@ -1500,21 +1500,21 @@ export const language_en: typeof language_cn = {
   TEXT_SIZE: 'Size',
   BACKGROUND_OPACITY: 'Background Transparency',
   BACKGROUND_COLOR: 'Background Color',
-  LINE_COLOR_: 'Line Color',// To be translated
-  TIME_COLOR: 'Time Color',// To be translated
-  LINE_WIDTH: 'Line width',  // To be translated
-  LINE_POINT_SIZE: 'Line point size',  // To be translated
-  BUTTON_TEXT_SIZE: 'Button Size',// To be translated
+  LINE_COLOR_: 'Line Color',
+  TIME_COLOR: 'Timestamp Color',
+  LINE_WIDTH: 'Line Width',
+  LINE_POINT_SIZE: 'Node Size',
+  BUTTON_TEXT_SIZE: 'Button Size',
 
-  BAR_CHART: 'Bar chart',  // To be translated
-  HISTOGRAM_ATTRIBUTE: 'Histogram attribute',  // To be translated
-  ONLY_GRATER_THAN_TWO: 'Only integers greater than 2 can be entered',  // To be translated
-  PIE_CHART: 'Pie chart',  // To be translate
-  PIE_CHART_ATTRIBUTE: 'Pie chart attribute',  // To be translate
-  VALUE: 'value',  // To be translate
-  ATTR_NAME: 'name',  // To be translate
-  COUNT: 'number',  // To be translate
-  UNIT: 'unit',  // To be translate
+  BAR_CHART: 'Bar Chart',
+  HISTOGRAM_ATTRIBUTE: 'Histogram Attribute',
+  ONLY_GRATER_THAN_TWO: 'Please enter an integer bigger than 2',
+  PIE_CHART: 'Pie Chart',
+  PIE_CHART_ATTRIBUTE: 'Pie-chart Attribute',
+  VALUE: 'Value',
+  ATTR_NAME: 'Name',
+  COUNT: 'Count',
+  UNIT: 'Unit',
 
   PLOTTING_ANIMATION_MODE: "Animation Mode",
   PLOTTING_ANIMATION_OPERATION: "Result Operation",
@@ -1628,8 +1628,8 @@ export const language_en: typeof language_cn = {
   LAYER_MOVEUP_FAIL: 'Moveup fail',
   LAYER_MOVEDOWN_SUCCESS: 'Movedown success',
   LAYER_MOVEDOWN_FAIL: 'Movedown fail',
-  FIRST_EFFECT_LAYER_NOT_MOVEUP: 'First effect layer is not moveup',  // To be translated
-  LAST_EFFECT_LAYER_NOT_MOVEDOWN: 'Last effect layer is not movedown',  // To be translated
+  FIRST_EFFECT_LAYER_NOT_MOVEUP: 'The first special-effect layer can\'t go up',
+  LAST_EFFECT_LAYER_NOT_MOVEDOWN: 'The last special-effect layer can\'t go down',
 
 
   VISIBLE: "Visible",

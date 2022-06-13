@@ -255,8 +255,8 @@ function styleAttributeOption(option: IToolbarOption) {
     }
   })
 
-  option.menuData.isShowView = true
-  option.menuData.data = [
+  option.menuOption.isShowView = true
+  option.menuOption.data = [
     {
       title: getLanguage().ARMap.TEXT_SIZE,
       type: 'slide',

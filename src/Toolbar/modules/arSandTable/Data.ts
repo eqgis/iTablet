@@ -332,9 +332,9 @@ function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
       }
     },
   ]
-  option.menuData.isShowView = true
-  option.menuData.defaultIndex = 0
-  option.menuData.data = _getTransformTabData()
+  option.menuOption.isShowView = true
+  option.menuOption.defaultIndex = 0
+  option.menuOption.data = _getTransformTabData()
 }
 
 /** 位置调整通用模版 POI/模型/三维场景/三维图层 */

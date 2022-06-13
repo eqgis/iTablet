@@ -178,7 +178,7 @@ function settingAnimation(option: IToolbarOption) {
   let isMinAnimationChange = false
   let keepAnimation = minAnimation === 0 && maxAnimation === 0
 
-  option.menuData.data = [{
+  option.menuOption.data = [{
     type: 'slide',
     title: getLanguage().ANIMATION_BOUNDS,
     slideData: [{

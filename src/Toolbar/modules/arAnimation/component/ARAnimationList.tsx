@@ -78,6 +78,10 @@ class ARAnimationList extends React.Component<Props, State> {
     AppDialog.show({
       text: getLanguage().DELETE_COMFIRM,
       confirm: () => {
+        if(ModuleData.getCurrentAnimationIndex() == index) {
+          ModuleData.setCurrentAnimationIndex(-1)
+          this.props.setARAnimation(undefined)
+        }
         SARMap.deleteARAnimation(index).then(this.onVisible)
       }
     })

@@ -1507,6 +1507,7 @@ export const language_tr: typeof language_cn = {
   LINE_WIDTH: 'Line width',  // To be translated
   LINE_POINT_SIZE: 'Line point size',  // To be translated
   BUTTON_TEXT_SIZE: 'Button Size',// To be translated
+  LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
 
   BAR_CHART: 'Bar chart',  // To be translated
   HISTOGRAM_ATTRIBUTE: 'Histogram attribute',  // To be translated

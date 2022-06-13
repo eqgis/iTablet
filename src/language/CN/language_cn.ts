@@ -1508,6 +1508,7 @@ export const language_cn = {
   LINE_WIDTH: '线宽',
   LINE_POINT_SIZE: '节点大小',
   BUTTON_TEXT_SIZE: '按钮字号',
+  LINE_POINT_ADD_SUCCESSED: '线节点已添加完成',
 
   BAR_CHART: '柱状图',
   HISTOGRAM_ATTRIBUTE: '柱状图属性',

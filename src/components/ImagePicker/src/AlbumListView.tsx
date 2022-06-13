@@ -241,7 +241,7 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
       groupName: groupName,
       groupTypes: Platform.OS === 'ios' && groupName === 'Recent Photos' ? 'All' : 'Album', // 若不设置,iOS会在所有图片分类中去找
       assetType: assetType || 'All',
-      include: ['location', 'playableDuration', 'fileSize', 'imageSize']
+      include: ['location', 'playableDuration', 'fileSize']
     })
     const arr = result.edges.map(item => {
       const image = item.node.image

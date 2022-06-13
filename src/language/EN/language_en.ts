@@ -1505,6 +1505,7 @@ export const language_en: typeof language_cn = {
   LINE_WIDTH: 'Line Width',
   LINE_POINT_SIZE: 'Node Size',
   BUTTON_TEXT_SIZE: 'Button Size',
+  LINE_POINT_ADD_SUCCESSED: 'Successfully added nodes on lines.',
 
   BAR_CHART: 'Bar Chart',
   HISTOGRAM_ATTRIBUTE: 'Histogram Attribute',

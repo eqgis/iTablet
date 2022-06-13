@@ -64,7 +64,6 @@ export default class AlbumView extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.windowChangeListener = Dimensions.addEventListener('change', this._onWindowChanged)
-    console.warn(this.assetType)
     this.getPhotos(this.groupName, 50, this.assetType)
   }
 
@@ -90,7 +89,7 @@ export default class AlbumView extends React.PureComponent<Props, State> {
         groupName: groupName,
         groupTypes: Platform.OS === 'ios' && groupName === 'Recent Photos' ? 'All' : 'Album', // 若不设置,iOS会在所有图片分类中去找
         assetType: assetType || 'All',
-        include: ['location', 'playableDuration', 'fileSize', 'imageSize']
+        include: ['location', 'playableDuration', 'fileSize']
       })
       this.hasNextPage = result.page_info.has_next_page
       if (result.page_info.has_next_page) {

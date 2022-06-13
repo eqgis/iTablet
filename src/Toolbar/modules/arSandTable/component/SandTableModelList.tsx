@@ -89,6 +89,7 @@ class SandTableModelList extends React.Component<Props, State> {
             if(!isVisible) return
             SARMap.appointARSandTableModel(index).then(element => {
               const selectElement = AppToolBar.getData().selectARElement
+              AppToolBar.addData({selectedChildIndex: index})
               if(!selectElement && element) {
                 AppToolBar.addData({selectARElement: element})
               }

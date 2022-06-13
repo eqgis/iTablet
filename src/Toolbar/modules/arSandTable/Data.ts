@@ -174,6 +174,10 @@ function sandTableModifyOption(option: IToolbarOption) {
 
 function selectSandboxModel(option: IToolbarOption) {
 
+  option.pageAction = () => {
+    SARMap.setAction(ARAction.NULL)
+  }
+
   (option.selectionListData as SelectionListOption<string>) = {
     data: [],
     mode: 'multiple',

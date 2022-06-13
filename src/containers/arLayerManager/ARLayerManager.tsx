@@ -291,7 +291,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                 Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
               } else {
                 // 最后一个特效图层不能下移
-                Toast.show(getLanguage().Map_Layer.LAST_EFFECT_LAYER_NOT_MOVEDOWN)
+                Toast.show(getLanguage().Map_Layer.LAST_EFFECT_LAYER)
               }
             }
           } else {
@@ -325,7 +325,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                 Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
               } else {
                 // 第一个特效图层不能上移
-                Toast.show(getLanguage().Map_Layer.FIRST_EFFECT_LAYER_NOT_MOVEUP)
+                Toast.show(getLanguage().Map_Layer.FIRST_EFFECT_LAYER)
               }
             }
           } else {

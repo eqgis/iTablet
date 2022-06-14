@@ -437,6 +437,27 @@ const ARTtitleSettingItems = (language: string) => {
   if(element.type == ARElementType.AR_BAR_CHART || element.type === ARElementType.AR_PIE_CHART){
     items.splice(3, 1)
     items.splice(0, 2)
+    if(element.type == ARElementType.AR_PIE_CHART){
+      // 饼图还要添加标题的背景色
+      const fillColor = {
+        key: getLanguage(language).FILLCOLOR,
+        action: () => {
+          global.toolBox &&
+          global.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND, {
+            containerType: ToolbarType.colorTable,
+            isFullScreen: false,
+            showMenuDialog: false,
+            selectName: getLanguage().FILLCOLOR,
+            selectKey: getLanguage().FILLCOLOR,
+          })
+        },
+        selectKey: getLanguage(language).FILLCOLOR,
+      }
+      items.push(fillColor)
+    }
+  }
+
+  if(element.type !== ARElementType.AR_ALBUM){
     // 还差标题文字设置  TITLE
     const titleText = {
       key: getLanguage(language).TITLE,
@@ -462,26 +483,8 @@ const ARTtitleSettingItems = (language: string) => {
       selectKey: getLanguage(language).FILLCOLOR,
     }
     items.unshift(titleText)
-
-    if(element.type == ARElementType.AR_PIE_CHART){
-      // 饼图还要添加标题的背景色
-      const fillColor = {
-        key: getLanguage(language).FILLCOLOR,
-        action: () => {
-          global.toolBox &&
-          global.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND, {
-            containerType: ToolbarType.colorTable,
-            isFullScreen: false,
-            showMenuDialog: false,
-            selectName: getLanguage().FILLCOLOR,
-            selectKey: getLanguage().FILLCOLOR,
-          })
-        },
-        selectKey: getLanguage(language).FILLCOLOR,
-      }
-      items.push(fillColor)
-    }
   }
+
   return items
 }
 

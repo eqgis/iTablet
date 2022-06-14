@@ -2330,7 +2330,7 @@ export const language_en: typeof language_cn = {
   MAR_AR_DATUM_NORTH: "North",
   MAR_AR_PICTURE_LOCATION_SUCCEED: "Positioned the location successfully",
   MAR_AR_QR_INVALID: "Failed to recognize the code information",
-  MAP_AR_ENHANCE_POSITION: 'Ar enhanced position',
+  MAP_AR_ENHANCE_POSITION: 'AR Location',
   MAP_AR_DATUM_MANUAL_LOCATION: "Manual position",
   MAP_AR_DATUM_GPS_LOCATION: "GPS postion",
   ALIGN_LOCATOR_CODE: 'Please align the locator code',

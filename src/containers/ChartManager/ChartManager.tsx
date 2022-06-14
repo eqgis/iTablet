@@ -115,17 +115,17 @@ class ChartManager extends Component<Props, State> {
 
     const length = data.length
     // 将原生拿回的数据做处理，只显示两位小数
-    for(let i = 0; i < length; i ++){
-      // const value = Number(data[i].value).toFixed(2) + ""
-      const temp = data[i].value + ""
-      // if(temp.indexOf('.') === -1) continue
-      const numberFloat =Number( Number(temp).toFixed(2))
-      let value: number | string = parseInt(temp)
-      if(numberFloat > value ){
-        value = numberFloat
-      }
-      data[i].value = value + ""
-    }
+    // for(let i = 0; i < length; i ++){
+    //   // const value = Number(data[i].value).toFixed(2) + ""
+    //   const temp = data[i].value + ""
+    //   // if(temp.indexOf('.') === -1) continue
+    //   const numberFloat =Number( Number(temp).toFixed(2))
+    //   let value: number | string = parseInt(temp)
+    //   if(numberFloat > value ){
+    //     value = numberFloat
+    //   }
+    //   data[i].value = value + ""
+    // }
 
     this.lastLength = length
     this.setState({data, length, unit})

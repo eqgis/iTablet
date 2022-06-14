@@ -1,9 +1,9 @@
-import { SARMap } from 'imobile_for_reactnative'
+import { ARAction, SARMap } from 'imobile_for_reactnative'
 import { ARAnimatorType } from 'imobile_for_reactnative/NativeModule/dataTypes'
 import { ARGroupAnimatorParameter } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import React from 'react'
 import { Image, ImageRequireSource, Text, TouchableOpacity, View } from 'react-native'
-import { AppEvent, AppLog, AppStyle, AppToolBar, dp, Toast } from '../../../../utils'
+import { AppEvent, AppInputDialog, AppLog, AppStyle, AppToolBar, CheckSpell, dp, Toast } from '../../../../utils'
 import ARAnimation, { SelectItem } from './ARAnimation'
 import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from '../../../../redux/types'
@@ -41,18 +41,35 @@ class AnimationDetail extends React.Component<Props, State> {
   }
 
   addListener = () => {
-    AppEvent.addListener('ar_animation_save', this.goBack)
+    AppEvent.addListener('ar_animation_save', this.onSave)
     AppEvent.addListener('ar_animation_play', this.play)
   }
 
   removeListener = () => {
-    AppEvent.removeListener('ar_animation_save', this.goBack)
+    AppEvent.removeListener('ar_animation_save', this.onSave)
     AppEvent.removeListener('ar_animation_play', this.play)
   }
 
+  onSave = () => {
+    if(ModuleData.getCurrentAnimationIndex() > -1 || !this.props.arAnimation) {
+      this.save()
+      this.goBack()
+    } else {
+      AppInputDialog.show({
+        placeholder: getLanguage().ENTER_ANIMATION_NAME,
+        checkSpell: CheckSpell.defaultCheck,
+        confirm: text => {
+          this.save(text)
+          this.goBack()
+        },
+      })
+    }
+  }
+
   goBack = () => {
-    this.save()
     AppToolBar.goBack()
+    SARMap.setAction(ARAction.NULL)
+    SARMap.clearSelection()
   }
 
   play = () => {
@@ -117,12 +134,16 @@ class AnimationDetail extends React.Component<Props, State> {
     return undefined
   }
 
-  save = () => {
+  save = (name?: string) => {
     if(this.props.arAnimation) {
       if(ModuleData.getCurrentAnimationIndex() > -1) {
         SARMap.editARAnimation(ModuleData.getCurrentAnimationIndex(), JSON.parse(JSON.stringify(this.props.arAnimation)))
       } else {
-        SARMap.addARAnimation(JSON.parse(JSON.stringify(this.props.arAnimation)))
+        const param = {...this.props.arAnimation}
+        if(name) {
+          param.name = name
+        }
+        SARMap.addARAnimation(param)
       }
       ModuleData.setCurrentAnimationIndex(-1)
       this.props.setARAnimation(undefined)

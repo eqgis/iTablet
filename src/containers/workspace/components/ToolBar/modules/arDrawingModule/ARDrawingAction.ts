@@ -942,6 +942,7 @@ async function addARLinePoint(location?: Point3D) {
       SARMap.setAction(ARAction.LINE_CREATE)
       SARMap.addARLinePoint(layer.name, {foucus: false})
     }
+    Toast.show(getLanguage().LINE_POINT_ADD_SUCCESSED)
   }
 }
 
@@ -963,6 +964,7 @@ async function addARMarkerLinePoint(location?: Point3D) {
       SARMap.setAction(ARAction.LINE_CREATE)
       SARMap.addARLinePoint(layer.name, {foucus: false})
     }
+    Toast.show(getLanguage().LINE_POINT_ADD_SUCCESSED)
   }
 }
 

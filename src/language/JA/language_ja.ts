@@ -2620,6 +2620,8 @@ export const language_ja: typeof language_cn = {
   POI: "POI",
   WIDGET: "ウィジェット",
 
+  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
+
   ILLEGAL_DATA: "データは無効です",
 
   UNSUPPORTED_LAYER_TO_SHARE: "このレイヤーの共有はサポートしません",

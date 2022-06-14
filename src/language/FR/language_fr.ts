@@ -2618,6 +2618,8 @@ export const language_fr: typeof language_cn = {
   POI: "POI",
   WIDGET: "Widget",
 
+  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
+
   ILLEGAL_DATA: "Données illégales",
 
   UNSUPPORTED_LAYER_TO_SHARE: "Le partage de cette couche n'est pas encore pris en charge",

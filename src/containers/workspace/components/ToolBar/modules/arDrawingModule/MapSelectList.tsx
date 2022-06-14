@@ -2,7 +2,7 @@
 import { connect, ConnectedProps } from 'react-redux'
 import { Container } from '../../../../../../components'
 import { Image, Text, TouchableOpacity, View ,FlatList} from 'react-native'
-import { scaleSize, dp, setSpText} from '../../../../../../utils'
+import { scaleSize, dp, setSpText,Toast} from '../../../../../../utils'
 import React from 'react'
 import { getThemeAssets ,getImage} from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
@@ -127,6 +127,12 @@ class MapSelectList extends React.Component<Props, State> {
             justifyContent: 'center',
           }}
           onPress={async() => {
+            if(this.state.selectedData.length === 0){
+              Toast.show(
+                getLanguage().Prompt.PLEASE_SELECT_FIRST,
+              )
+              return
+            }
             NavigationService.goBack()
             const type = this.props.route.params?.type
             if (type === 'mapSelect') {

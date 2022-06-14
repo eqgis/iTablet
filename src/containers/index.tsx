@@ -354,7 +354,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="CoworkManagePage" component={CoworkManagePage} />
       <Stack.Screen name="FindSettingPage" component={FindSettingPage} />
       <Stack.Screen name="Laboratory" component={Laboratory} />
-      <Stack.Screen name="MediaEdit" component={MediaEdit} options={modalOption(params)} />
+      <Stack.Screen name="MediaEdit" component={MediaEdit} />
       <Stack.Screen name="Camera" component={Camera} />
       <Stack.Screen name="MeasureView" component={MeasureView} />
       <Stack.Screen name="MeasureAreaView" component={MeasureAreaView} />

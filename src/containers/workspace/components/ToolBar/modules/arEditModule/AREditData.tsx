@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, Dimensions } from 'react-native'
-import { ConstToolType, Height, ToolbarType } from '../../../../../../constants'
+import { View } from 'react-native'
+import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { MTBtn } from '../../../../../../components'
 import { scaleSize, Toast, AppToolBar} from '../../../../../../utils'
 import { color } from '../../../../../../styles'
@@ -14,6 +14,7 @@ import { DATA_ITEM, IARTransform } from '../types'
 import NavigationService from '../../../../../../containers/NavigationService'
 import ToolBarInput from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarInput'
 import { dp } from 'imobile_for_reactnative/utils/size'
+import { ToolBarSlideItem } from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarSlide'
 
 interface SectionItemData {
   key: string,
@@ -647,7 +648,15 @@ async function getStyleData(type: string) {
   const layerName = element?.layerName || currentLayer?.name
   const id = element?.id || 0
 
-  const range = {
+  const range: {
+    scale: [number , number],
+    position: [number, number],
+    rotation: [number, number],
+    size: [number, number],
+    opacity:[number,number],
+    buttonsize: [number, number],
+    width: [number, number],
+  } = {
     scale: [0 , 200],
     position: [-20, 20],
     rotation: [-180, 180],
@@ -732,10 +741,10 @@ async function getStyleData(type: string) {
   }[] = []
   switch(type) {
     case ConstToolType.SM_AR_EDIT_ROTATION:
-      data = [
+      (data as ToolBarSlideItem[]) = [
         {
-          key: 'x',
-          leftText: 'x',
+          type: 'single',
+          left: {type: 'text', text: 'x'},
           onMove: (loc: number) => {
             transformData = {
               ...transformData,
@@ -748,11 +757,11 @@ async function getStyleData(type: string) {
           // defaultValue: defaultValue.rotation[0],
           defaultValue: transformData.rotationX,
           range: range.rotation,
-          unit: '°',
+          right: {type: 'indicator', unit: '°'}
         },
         {
-          key: 'y',
-          leftText: 'y',
+          type: 'single',
+          left: {type: 'text', text: 'y'},
           onMove: (loc: number) => {
             transformData = {
               ...transformData,
@@ -765,11 +774,11 @@ async function getStyleData(type: string) {
           // defaultValue: defaultValue.rotation[0],
           defaultValue: transformData.rotationY,
           range: range.rotation,
-          unit: '°',
+          right: {type: 'indicator', unit: '°'}
         },
         {
-          key: 'z',
-          leftText: 'z',
+          type: 'single',
+          left: {type: 'text', text: 'z'},
           onMove: (loc: number) => {
             transformData = {
               ...transformData,
@@ -782,7 +791,7 @@ async function getStyleData(type: string) {
           // defaultValue: defaultValue.rotation[0],
           defaultValue: transformData.rotationZ,
           range: range.rotation,
-          unit: '°',
+          right: {type: 'indicator', unit: '°'}
         },
       ]
       allData.push({
@@ -791,11 +800,11 @@ async function getStyleData(type: string) {
       })
       break
     case ConstToolType.SM_AR_EDIT_POSITION:
-      data = [
+      (data as ToolBarSlideItem[]) = [
         {
-          key: 'left-right',
-          leftText:  getLanguage(global.language).ARMap.WEST,
-          rightText:  getLanguage(global.language).ARMap.EAST,
+          type: 'single',
+          left: {type: 'text', text: getLanguage().WEST},
+          right: {type: 'text', text: getLanguage().EAST},
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {
@@ -811,9 +820,9 @@ async function getStyleData(type: string) {
           range: range.position,
         },
         {
-          key: 'down-up',
-          leftText:  getLanguage(global.language).DOWN,
-          rightText:  getLanguage(global.language).UP,
+          type: 'single',
+          left: {type: 'text', text: getLanguage().DOWN},
+          right: {type: 'text', text: getLanguage().UP},
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {
@@ -829,9 +838,9 @@ async function getStyleData(type: string) {
           range: range.position,
         },
         {
-          key: 'back-front',
-          leftText:  getLanguage(global.language).ARMap.SOUTH,
-          rightText:  getLanguage(global.language).ARMap.NORTH,
+          type: 'single',
+          left: {type: 'text', text: getLanguage().SOUTH},
+          right: {type: 'text', text: getLanguage().NORTH},
           onMove: (loc: number) => {
             loc = loc / 25
             transformData = {
@@ -857,10 +866,10 @@ async function getStyleData(type: string) {
     //   break
     case ConstToolType.SM_AR_EDIT_SCALE: {
       const _defaultValue = transformData.scale === 100 ? transformData.scale : ((transformData.scale + 1) * 100)
-      data = [{
-        key: 'scale',
-        leftImage: getThemeAssets().ar.armap.ar_scale,
-        unit: '%',
+      ;(data as ToolBarSlideItem[]) = [{
+        type: 'single',
+        left: {type: 'image', image: getImage().ar_scale},
+        right: {type: 'indicator', unit: '%'},
         onMove: (loc: number) => {
           const ratio = loc / 100 - 1
           transformData = {
@@ -1044,11 +1053,10 @@ async function getStyleData(type: string) {
       break
     }
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT_SIZE:{
-      data =[
+      (data as ToolBarSlideItem[]) =[
         {
-          key: 'single',
-          leftText:  ' ',
-          rightText: 'mm',
+          type: 'single',
+          right: {type: 'indicator', unit: 'mm'},
           onMove: (loc: number) => {
             SARMap.setNodeStyle({TextSize:loc},element)
           },
@@ -1063,11 +1071,10 @@ async function getStyleData(type: string) {
       break
     }
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ROTATION_ANGLE: {
-      data =[
+      (data as ToolBarSlideItem[]) =[
         {
-          key: 'single',
-          leftText:  ' ',
-          rightText: '°',
+          type: 'single',
+          right: {type: 'indicator', unit: '°'},
           onMove: (loc: number) => {
             SARMap.setNodeStyle({TextRotation:loc},element)
           },
@@ -1082,11 +1089,10 @@ async function getStyleData(type: string) {
       break
     }
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_OPACITY: {
-      data =[
+      (data as ToolBarSlideItem[]) =[
         {
-          key: 'single',
-          leftText:  ' ',
-          rightText: '%',
+          type: 'single',
+          right: {type: 'indicator', unit: '%'},
           onMove: (loc: number) => {
             SARMap.setNodeStyle({TextOpacity:loc/100},element)
           },
@@ -1101,11 +1107,10 @@ async function getStyleData(type: string) {
       break
     }
     case ConstToolType.SM_AR_EDIT_SETTING_IITLE_BUTTON_TEXT_SIZE: {
-      data =[
+      (data as ToolBarSlideItem[]) =[
         {
-          key: 'single',
-          leftText:  ' ',
-          rightText: 'mm',
+          type: 'single',
+          right: {type: 'indicator', unit: 'mm'},
           onMove: (loc: number) => {
             SARMap.setNodeStyle({ButtonTextSize:loc},element)
           },
@@ -1170,11 +1175,10 @@ async function getStyleData(type: string) {
     }
     case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_OPACITY:
     {
-      data =[
+      (data as ToolBarSlideItem[]) =[
         {
-          key: 'single',
-          leftText:  ' ',
-          rightText: '%',
+          type: 'single',
+          right: {type: 'indicator', unit: '%'},
           onMove: (loc: number) => {
             SARMap.setNodeStyle({opacity:loc/100},element)
           },
@@ -1190,11 +1194,10 @@ async function getStyleData(type: string) {
     }
     case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
     {
-      data =[
+      (data as ToolBarSlideItem[]) =[
         {
-          key: 'single',
-          leftText:  ' ',
-          rightText: 'mm',
+          type: 'single',
+          right: {type: 'indicator', unit: 'mm'},
           onMove: (loc: number) => {
             SARMap.setNodeStyle({borderWidth:loc},element)
           },

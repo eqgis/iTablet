@@ -48,7 +48,7 @@ import { getLanguage } from '../../../language'
 import FileTools from '../../../native/FileTools'
 import { mapSettingModule } from '../../workspace/components/ToolBar/modules'
 import { ConstToolType ,ChunkType} from '../../../constants'
-import SlideBar from '../../../components/SlideBar'
+import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 
 export default class SecondMapSettings extends Component {
   props: {

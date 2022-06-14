@@ -145,15 +145,9 @@ import AIDetectSettingView from './aiDetectSettingView'
 import CastModelOperateView from './arCastModelOperateView'
 import ARProjectModeView from './arProjectModel'
 import ARNavigationView from './arNavigationView'
-import ARVideoView from './arVideoView'
-import ARWeatherView from './arWeatherView'
 import ChooseWeather from './chooseWeather'
-import ARImageView from './arImageView'
 import AIPoseEstimationView from './aiPoseEstimationView'
 import AIGestureBoneView from './aiGestureBoneView'
-import ARWebView from './arWebView'
-import ARTextView from './arTextView'
-import ARSceneView from './arSceneView'
 import ChooseLayer from './chooseLayer'
 
 import NavigationView from './workspace/components/NavigationView'
@@ -377,14 +371,8 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ChooseNaviDataImport" component={ChooseNaviDataImport} />
       <Stack.Screen name="CastModelOperateView" component={CastModelOperateView} />
       <Stack.Screen name="ARNavigationView" component={ARNavigationView} />
-      <Stack.Screen name="ARVideoView" component={ARVideoView} />
-      <Stack.Screen name="ARImageView" component={ARImageView} />
-      <Stack.Screen name="ARWeatherView" component={ARWeatherView} />
       <Stack.Screen name="ChooseWeather" component={ChooseWeather} />
-      <Stack.Screen name="ARWebView" component={ARWebView} />
-      <Stack.Screen name="ARTextView" component={ARTextView} />
       <Stack.Screen name="SuggestionFeedback" component={SuggestionFeedback} />
-      <Stack.Screen name="ARSceneView" component={ARSceneView} />
       <Stack.Screen name="BufferAnalystView" component={BufferAnalystView} />
       <Stack.Screen name="AnalystRadiusSetting" component={AnalystRadiusSetting} />
       <Stack.Screen name="AnalystListEntry" component={AnalystListEntry} />

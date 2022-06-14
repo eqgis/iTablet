@@ -367,7 +367,8 @@ export default class MapView extends React.Component {
       showNavigation: false,
       imageTrackingresultTag: '',
     }
-    this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
+    // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
+    this.props.setDatumPoint(false)
     this.props.showAR(global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS ? true : false)
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
@@ -1950,6 +1951,8 @@ export default class MapView extends React.Component {
             // 导航采集选点提示
             Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_SELECT_POINT, { duration: 2500 })
           }
+          // 在这儿让定位面板显示出来
+          this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
         })
       } catch (e) {
         this.setLoading(false)

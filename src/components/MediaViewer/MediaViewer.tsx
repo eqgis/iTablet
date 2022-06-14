@@ -2,8 +2,8 @@
  * 多媒体预览界面
  */
 import * as React from 'react'
-import { Modal, StyleProp, ViewStyle } from 'react-native'
-import { checkType } from '../../utils'
+import { Modal, StyleProp, ViewStyle, View, StyleSheet } from 'react-native'
+import { checkType, screen } from '../../utils'
 import VideoViewer from './VideoViewer'
 import ImageViewer from './ImageViewer'
 
@@ -15,6 +15,7 @@ interface Props {
   isModal?: boolean,
   containerStyle?: StyleProp<ViewStyle>,
   withBackBtn?: boolean,
+  device: Device,
 }
 
 interface State {
@@ -88,8 +89,8 @@ export default class MediaViewer extends React.Component<Props, State> {
       return (
         <ImageViewer
           uri={this.state.uri}
+          orientation={this.props.device.orientation}
           containerStyle={this.props.containerStyle}
-          backAction={() => {}}
         />
       )
     }

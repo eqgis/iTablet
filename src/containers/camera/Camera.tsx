@@ -535,7 +535,7 @@ class Camera extends React.Component<Props, State> {
         />
         {this.renderProgress()}
 
-        <MediaViewer ref={ref => (this.mediaViewer = ref)} />
+        <MediaViewer ref={ref => (this.mediaViewer = ref)} device={this.props.device} />
         {this.renderBottomBtns()}
         {this.renderCenterBtn()}
         {this.renderChangeBtns()}
@@ -605,7 +605,7 @@ const MyCamera: ForwardRefRenderFunction<IRefProps, MyCameraProps> = (props, ref
     }, [])
   }
 
-  if (!device) return <View style={{ backgroundColor: 'yellow' }} />
+  if (!device) return <View style={{ backgroundColor: 'black' }} />
 
   return (
     <RNCamera

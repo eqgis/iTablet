@@ -128,7 +128,7 @@ class AIDetectSettingView extends React.Component<Props, State> {
   renderFilters = () => {
     return (
       <View style={styles.settingView}>
-        {this.labels.map((item, index) => {
+        {this.labels?.map((item, index) => {
           if(item !== '???' && item !== '') {
             return (
               <SwitchItem

@@ -4,7 +4,8 @@
 import * as React from 'react'
 import { View, Modal, Platform } from 'react-native'
 import { checkType, screen } from '../../utils'
-import Swiper from 'react-native-swiper'
+import { Swiper } from '../../components'
+// import Swiper from 'react-native-swiper'
 import styles from './styles'
 import VideoViewer from './VideoViewer'
 import ImageViewer from './ImageViewer'
@@ -17,7 +18,7 @@ interface Props {
   backHide?: boolean,
   defaultIndex: number,
   device: DEVICE,
-  onVisibleChange?: (visible: boolean)=>{}
+  onVisibleChange?: (visible: boolean) => void,
 }
 
 interface State {
@@ -28,6 +29,7 @@ interface State {
 export default class MediaPager extends React.Component<Props, State> {
 
   dataRef: (VideoViewer | ImageViewer | null)[] = []
+  swiper: Swiper | undefined | null
 
   static defaultProps = {
     isModal: false,
@@ -48,7 +50,7 @@ export default class MediaPager extends React.Component<Props, State> {
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    let shouldUpdate =
+    const shouldUpdate =
       JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     if (shouldUpdate) this.dataRef = []
@@ -56,7 +58,7 @@ export default class MediaPager extends React.Component<Props, State> {
   }
 
   setVisible = (visible = !this.state.visible, index = 0) => {
-    let newState = {
+    const newState = {
       defaultIndex: this.state.defaultIndex,
       visible: this.state.visible,
     }
@@ -71,14 +73,15 @@ export default class MediaPager extends React.Component<Props, State> {
         visible && this.forceUpdate()
       })
     }
+    this.index = index
     this.props.onVisibleChange && this.props.onVisibleChange(visible)
   }
 
   getData = () => {
-    let data = []
+    const data = []
     this.dataRef = []
     for (let i = 0; i < this.props.data.length; i++) {
-      let item = this.props.data[i]
+      const item = this.props.data[i]
       const type = checkType.getMediaTypeByPath(item.uri)
       let uri = item.uri
       if (
@@ -98,21 +101,44 @@ export default class MediaPager extends React.Component<Props, State> {
           />,
         )
       } else {
-        // data.push(
-        //   <Image style={{flex: 1}} source={{uri: uri}} />
-        // )
         data.push(
           <ImageViewer
             ref={ref => (this.dataRef[i] = ref)}
             key={uri}
             uri={uri}
             // containerStyle={this.props.containerStyle}
-            backAction={() => this.setVisible(false)}
+            onClick={() => this.setVisible(false)}
+            orientation={this.props.device.orientation}
           />,
         )
       }
     }
     return data
+  }
+
+  renderScrollView = () => {
+    return (
+      <Swiper
+        index={this.state.defaultIndex}
+        dot={<View style={styles.dot} />}
+        activeDot={<View style={styles.activeDot} />}
+        orientation={this.props.device.orientation}
+        onScrollBegin={(e, state) => {
+          let index = state.index
+          if (index < 0) index = 0
+          else if (index > this.props.data.length - 1) index = this.props.data.length - 1
+          const type = checkType.getMediaTypeByPath(
+            this.props.data[index].uri,
+          )
+          const currentView = this.dataRef[index]
+          if (type === 'video' && currentView instanceof VideoViewer) {
+            currentView.pause()
+          }
+        }}
+      >
+        {this.getData()}
+      </Swiper>
+    )
   }
 
   renderContent = () => {
@@ -131,23 +157,35 @@ export default class MediaPager extends React.Component<Props, State> {
           ),
         }}
       >
-        <Swiper
+        {this.renderScrollView()}
+        {/* <Swiper
+          ref={ref => this.swiper = ref}
+          // width={screen.getScreenSafeWidth(this.props.device.orientation)}
+          // height={screen.getScreenSafeHeight(this.props.device.orientation)}
+          width={this.state.swiperWdith}
+          height={this.state.swiperHeight}
           onScrollBeginDrag={(e, state, context) => {
+            let index = state.index
+            if (index < 0) index = 0
+            else if (index > this.props.data.length - 1) index = this.props.data.length - 1
+            this.index = index
             const type = checkType.getMediaTypeByPath(
-              this.props.data[state.index].uri,
+              this.props.data[index].uri,
             )
-            const currentView = this.dataRef[state.index]
+            const currentView = this.dataRef[index]
             if (type === 'video' && currentView instanceof VideoViewer) {
               currentView.pause()
             }
           }}
+          pagingEnabled
+          scrollEnabled={false}
           dot={<View style={styles.dot} />}
           activeDot={<View style={styles.activeDot} />}
           index={this.state.defaultIndex}
           loop={false}
         >
           {this.getData()}
-        </Swiper>
+        </Swiper> */}
       </View>
     )
   }

@@ -350,7 +350,7 @@ export default class ToolbarContentView extends React.Component {
     return (
       <ToolBarSlide
         ref={ref => (this.currentContentView = ref)}
-        data={this.props.data}
+        data={this.props.data[0]}
       />
     )
   }

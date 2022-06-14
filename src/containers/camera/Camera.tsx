@@ -113,6 +113,8 @@ class Camera extends React.Component<Props, State> {
       clearInterval(this.recordTimer)
       this.recordTimer = null
     }
+    this.props.navigation.removeListener('focus', this.cameraFocus)
+    this.props.navigation.removeListener('blur', this.cameraBlur)
     Platform.OS === 'android' && BackHandler.removeEventListener('hardwareBackPress', this.back)
   }
 
@@ -133,6 +135,20 @@ class Camera extends React.Component<Props, State> {
     SMediaCollector.initMediaCollector(targetPath)
     Platform.OS === 'android' &&
       BackHandler.addEventListener('hardwareBackPress', this.back)
+
+    // 设置监听,相机进入后台,停止相机;相机进入前台,则打开相机
+    this.props.navigation.addListener('focus', this.cameraFocus)
+    this.props.navigation.addListener('blur', this.cameraBlur)
+  }
+
+  cameraFocus = () => {
+    console.warn('focus')
+    this.camera2?.setActive(true)
+  }
+
+  cameraBlur = () => {
+    console.warn('blur')
+    this.camera2?.setActive(false)
   }
 
   back = () => {

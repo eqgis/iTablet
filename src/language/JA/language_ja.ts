@@ -413,7 +413,7 @@ export const language_ja: typeof language_cn = {
   AREA: "ポリゴン",
   LINE: "ライン",
   POINT: "ポイント",
-  MARKER_LINE: "Marker line", // to be translated
+  MARKER_LINE: "マークライン",
 
   OPEN_MAP: "マップを開く",
   UNTITLED_MAP: "新規マップ",
@@ -484,71 +484,71 @@ export const language_ja: typeof language_cn = {
   DEFAULT: 'デフォルト',
 
 
-  PLEASE_SELECT_MODEL: 'Please select model', // To be translated
+  PLEASE_SELECT_MODEL: 'モデルを選択してください',
 
-  SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
-  SHOULD_BE_INTEGER: 'shoud be an integer',
-  SHOULD_BE_POSITIVE_NUMBER: 'shoud be a positive number',
+  SHOULD_BE_DECIMAL_FRACTION: '小数は必要です',
+  SHOULD_BE_INTEGER: '整数は必要です',
+  SHOULD_BE_POSITIVE_NUMBER: '正数は必要です',
 
 
-  TRANVERSE: 'Tranverse',
-  LONGITUDINAL: 'Longitudinal',
-  HORIZONTAL: 'Horizontal',
-  VERTICAL: 'Vertical',
+  TRANVERSE: '横向',
+  LONGITUDINAL: '縦向',
+  HORIZONTAL: '水平',
+  VERTICAL: '垂直',
 
-  EXIT_SAND_TABLE_CONFIRM: 'Do you want to quit editing the sand table?',
-  PLEASE_INPUT_MODEL_NAME: 'Please input model name',
-  SAND_TABLE: 'Sand Table',
-  EXPORT_SAND_TABLE_CONFIRM: 'Do you want to export the sand table?',
-  MODEL_LIST: 'Model List',
+  EXIT_SAND_TABLE_CONFIRM: 'サンドテーブルを閉じますか?',
+  PLEASE_INPUT_MODEL_NAME: 'モデル名を入力してください',
+  SAND_TABLE: 'サンドテーブル',
+  EXPORT_SAND_TABLE_CONFIRM: 'サンドテーブルを出力しますか?',
+  MODEL_LIST: 'モデルリスト',
 
-  ALIGN: 'Alignment',
+  ALIGN: '配置',
 
-  VISIBILITY: 'Visibility', // to be translated
-  SHOW: 'Show', // to be translated
-  HIDE: 'Hide', // to be translated
+  VISIBILITY: '表示可能',
+  SHOW: '表示',
+  HIDE: '非表示',
 
-  CUSTOME_ANIMATION: 'Custome Animation', // to be translated
-  MODEL_ANIMATION: 'Model Animation', // to be translated
-  BONE_ANIMATION: 'Bone Animation', // to be translated
-  ANIMATION_BOUNDS: 'Animation Bounds', // to be translated
-  ANIMATION_SETTING: 'Animation Settings', // to be translated
-  REPEAT_COUNT: 'Repeat Count', // to be translated
+  CUSTOME_ANIMATION: 'カスタム映像',
+  MODEL_ANIMATION: 'モデル映像',
+  BONE_ANIMATION: 'スケルトン映像',
+  ANIMATION_BOUNDS: '映像範囲',
+  ANIMATION_SETTING: '映像設定',
+  REPEAT_COUNT: '回数',
 
-  DELAY: 'Delay', // to be translated
-  ORDER: 'Order', // to be translated
-  AFTER_PREV_ANIMATION: 'Start After Previous', // to be translated
-  WITH_PREV_ANIMATION: 'Start With Previous', // to be translated
-  TOUCH_TO_START: 'Touch To Start', // to be translated
+  DELAY: '遅延',
+  ORDER: ' 順番',
+  AFTER_PREV_ANIMATION: '前の映像の後',
+  WITH_PREV_ANIMATION: '前の映像と同時',
+  TOUCH_TO_START: 'クリックして開始',
 
-  START_FRAME: 'Start Frame', // to be translated
-  END_FRAME: 'End Frame', // to be translated
+  START_FRAME: '開始フレーム',
+  END_FRAME: '終了フレーム',
 
-  START_FROM_CURRENT_POSITION: 'Start From Current Position', // to be translated
-  START_FROM_CURRENT_DGREE: 'Start From Current Degree', // to be translated
+  START_FROM_CURRENT_POSITION: '現在位置から開始',
+  START_FROM_CURRENT_DGREE: '現在角度から開始',
 
-  START_POSITION: 'Start Postion', // to be translated
-  END_POSITION: 'End Position', // to be translated
-  START_DEGREE: 'Start Degree', // to be translated
-  END_DEGREE: 'End Degree', // to be translated
+  START_POSITION: '開始位置',
+  END_POSITION: '終了位置',
+  START_DEGREE: '開始角度',
+  END_DEGREE: '終了角度',
 
-  KEEP_VISIBLE: 'Keep Visible', // to be translated
-  KEEP_REPEATE: 'Keep Repeat',  // to be translated
+  KEEP_VISIBLE: '常時表示',
+  KEEP_REPEATE: '常時重複',
 
-  ANIMATION_LIST: 'Animation list',  // to be translated
-  ANIMATION_WINDOW: 'Animation window',  // to be translated
+  ANIMATION_LIST: '映像リスト',
+  ANIMATION_WINDOW: '映像ウィンドウ',
 
-  PLEASE_SELECT_ANIMATION: 'Please Select Animation',   // to be translated
+  PLEASE_SELECT_ANIMATION: '映像を選択してください',
 
-  DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
+  DELETE_COMFIRM: '削除しますか?',
 
-  NULL_DATA: 'Null Data', // to be translated
+  NULL_DATA: 'Null',
 
-  PLEASE_SELECT_OBJ: 'Please select object', // to be translated
-  PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or object", // to be translated
-  PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
+  PLEASE_SELECT_OBJ: 'オブジェクトを選択してください',
+  PLEASE_SELECT_LAYER_OR_OBJECT: "レイヤー、またはオブジェクトを選択してください",
+  PLEASE_SELECT_AR_OBJECT_LAYER: "ARオブジェクトレイヤーを選択してください",
 
-  ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
+  ATTRIBUTE_ADD_TO_AR_SCENE: "ARシーンに追加",
 
   ALIGNMENT: '配置',
   LEFT_START: '左上',
@@ -561,15 +561,15 @@ export const language_ja: typeof language_cn = {
   BOTTOM_END: '下右',
 
 
-  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
-  LINE_MARKER_SPEED: 'Speed', // To be translated
-  LINE_MARKER: 'Line marker',  // To be translated
+  LINE_POINT_INTERVAL: '間隔',
+  LINE_MARKER_SPEED: '速度',
+  LINE_MARKER: 'マーク',
 
   BUBBLE_TEXT: 'バブルテキスト',
 
   UPDATE_LOCAL_SERVICE: "ローカルサービスの更新",
   SUBMIT_SERVICE: "サービスの送信",
-  SYNC_SERVICE: "Sync service",//To be translated
+  SYNC_SERVICE: "サービス同期中",
 
   UPDATE_SUCCESSFUL: "更新に成功しました",
   UPDATE_FAILED: "更新に失敗しました",
@@ -1475,52 +1475,52 @@ export const language_ja: typeof language_cn = {
   MAP_OUTPUT_XML: "出力",
   MAP_LOAD_XML: "ロード",
 
-  ATTRIBUTE_ALBUM: "Picture Collection",//to be translate
-  VIDEO_ALBUM:"Viedo Album",//to be translate
-  MAPBROCHORE: "Map Brochore",//to be translate
-  CHOOSE_MAP:"Choose Map",//to be translate
-  SANDTABLE_ALBUM:"Sand Table Album",//to be translate
-  CHOOSE_SANDTABLE:"Choose Sand Table",//to be translate
-  TITLE:'Title',//to be translate
-  BACKGROUND:'BackGround',//to be translate
-  ARRAY:'Array',//to be translate
-  TEXT_SHAPE:'Shape',//to be translate
-  BOLD:'Bold',//to be translate
-  TILT:'Tilt',//to be translate
-  UNDERLINE:'UnderLine',//to be translate
-  STRIKETHROUGH:'StrikeThrough',//to be translate
-  SHADOW:'Shadow',//to be translate
-  FILLCOLOR:'FillColor',//to be translate
-  RELATIONSHIP:'RelationShip',//to be translate
-  LIST:'List',//to be translate
-  LOOP:'Loop',//to be translate
+  ATTRIBUTE_ALBUM: "画像アルバム",
+  VIDEO_ALBUM:"映像アルバム",
+  MAPBROCHORE: "マップアルバム",
+  CHOOSE_MAP:"マップ選択",
+  SANDTABLE_ALBUM:"サンドテーブルアルバム",
+  CHOOSE_SANDTABLE:"サンドテーブルの選択",
+  TITLE:'タイトル',
+  BACKGROUND:'背景',
+  ARRAY:'配置',
+  TEXT_SHAPE:'形状',
+  BOLD:'太字',
+  TILT:'斜体',
+  UNDERLINE:'下線',
+  STRIKETHROUGH:'取り消し線',
+  SHADOW:'影付き',
+  FILLCOLOR:'フィルカラー',
+  RELATIONSHIP:'関係',
+  LIST:'リスト',
+  LOOP:'ループ',
   COLOR: '色',
   OPACITY: '透明度',
   BORDER_WIDTH: 'ボーダー幅',
   BORDER_COLOR: 'ボーダー色',
   VISIBLE_DISTANCE:'表示距離',
-  SECONDS_TO_PLAY: 'Seconds to play',  // To be translated
+  SECONDS_TO_PLAY: '維持時間',
   TEXT_OPACITY: 'テキスト透明度',
   TEXT_COLOR: 'テキストカラー',
   TEXT_SIZE: 'テキストサイズ',
   BACKGROUND_OPACITY: '背景透明度',
   BACKGROUND_COLOR: '背景色',
-  LINE_COLOR_: 'Line Color',// To be translated
-  TIME_COLOR: 'Time Color',// To be translated
-  LINE_WIDTH: 'Line width',  // To be translated
-  LINE_POINT_SIZE: 'Line point size',  // To be translated
-  BUTTON_TEXT_SIZE: 'Button Size',// To be translated
+  LINE_COLOR_: 'ラインカラー',
+  TIME_COLOR: '時間カラー',
+  LINE_WIDTH: 'ライン幅',
+  LINE_POINT_SIZE: '頂点サイズ',
+  BUTTON_TEXT_SIZE: 'ボタンサイズ',
   LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
 
-  BAR_CHART: 'Bar chart',  // To be translated
-  HISTOGRAM_ATTRIBUTE: 'Histogram attribute',  // To be translated
-  ONLY_GRATER_THAN_TWO: 'Only integers greater than 2 can be entered',  // To be translated
-  PIE_CHART: 'Pie chart',  // To be translate
-  PIE_CHART_ATTRIBUTE: 'Pie chart attribute',  // To be translate
-  VALUE: 'value',  // To be translate
-  ATTR_NAME: 'name',  // To be translate
-  COUNT: 'number',  // To be translate
-  UNIT: 'unit',  // To be translate
+  BAR_CHART: '棒グラフ',
+  HISTOGRAM_ATTRIBUTE: 'ヒストグラム属性',
+  ONLY_GRATER_THAN_TWO: '2以上の整数値は必要です',
+  PIE_CHART: '円グラフ',
+  PIE_CHART_ATTRIBUTE: '円グラフ属性',
+  VALUE: '値',
+  ATTR_NAME: '名称',
+  COUNT: '数量',
+  UNIT: '単位',
 
   PLOTTING_ANIMATION_MODE: "アニメーションタイプ",
   PLOTTING_ANIMATION_OPERATION: "効果オプション",
@@ -2182,8 +2182,8 @@ export const language_ja: typeof language_cn = {
   DISTANCE_METER:"距離(m)",
   TIME:"時間(s)",
   INPUT_NUMBER:"数字を入力してください",
-  DISTANCE_LOCATION:"距離ポジショニング",
-  TIME_LOCATION:"時間ポジショニング",
+  DISTANCE_LOCATION:"距離測位",
+  TIME_LOCATION:"時間測位",
 
   // ライセンス
   LICENSE: "ライセンス",
@@ -2307,12 +2307,12 @@ export const language_ja: typeof language_cn = {
   MAP_AR_DATUM_LONGITUDE: "経度",
   MAP_AR_DATUM_LATITUDE: "緯度",
   MAP_AR_DATUM_ENTER_CURRENT_POSITION: "現在位置の座標を入力してください",
-  MAP_AR_DATUM_AUTO_LOCATION: "自動ポジショニング",
+  MAP_AR_DATUM_AUTO_LOCATION: "自動測位",
   MAP_AR_DATUM_MAP_SELECT_POINT: "マップから選択",
   MAP_AR_DATUM_SURE: "OK",
-  MAP_AR_DATUM_AUTO_LOCATIONING: "ポジショニング中",
+  MAP_AR_DATUM_AUTO_LOCATIONING: "測位中",
   MAP_AR_DATUM_POSITION: "基点座標",
-  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: "自動ポジショニングに成功",
+  MAP_AR_DATUM_AUTO_LOCATION_SUCCEED: "自動測位に成功",
   MAP_AR_DATUM_MAP_SELECT_POINT_SUCCEED: "マップから選択に成功",
   MAP_AR_DATUM_PLEASE_TOWARDS_NORTH: "携帯電話のバックカメラを北に向けていることを確認してください。",
   MAP_AR_DATUM_SETTING: "設定",
@@ -2332,13 +2332,13 @@ export const language_ja: typeof language_cn = {
   MAR_AR_DATUM_NORTH: "北",
   MAR_AR_PICTURE_LOCATION_SUCCEED: "QR ロケショーンに成功しました",
   MAR_AR_QR_INVALID: "QR コード情報を見つかりませんでした",
-  MAP_AR_ENHANCE_POSITION: 'AR拡張ポジショニング',
-  MAP_AR_DATUM_MANUAL_LOCATION: "手動ポジショニング",
-  MAP_AR_DATUM_GPS_LOCATION: "GPSポジショニング",
+  MAP_AR_ENHANCE_POSITION: 'AR拡張測位',
+  MAP_AR_DATUM_MANUAL_LOCATION: "手動測位",
+  MAP_AR_DATUM_GPS_LOCATION: "GPS測位",
   ALIGN_LOCATOR_CODE: 'ロケーターを設定してください。',
   CALIBRATION_TIMEOUT: 'タイムアウト',
   CALIBRATION_SUCCESSFUL: '成功',
-  AR_ENHANCE_POSITION_EXITED: 'AR拡張ポジショニングを閉じる',
+  AR_ENHANCE_POSITION_EXITED: 'AR拡張測位を閉じる',
 
   // ar地图
   COLLECT_SCENE_RENAME: "名前変更",
@@ -2609,16 +2609,18 @@ export const language_ja: typeof language_cn = {
   GET_LAYER_GROUP_FAILD: "レイヤーグループの取得に失敗",
   TYR_AGAIN_LATER: "後で再度試してください",
 
-  LOCATING: "ポジショニング中",
-  CANNOT_LOCATION: "ポジショニングできません",
+  LOCATING: "測位中",
+  CANNOT_LOCATION: "測位できません",
   INDEX_OUT_OF_BOUNDS: "境界線を越えています",
-  PLEASE_SELECT_LICATION_INFORMATION: "ポジショニング情報を選択してください",
+  PLEASE_SELECT_LICATION_INFORMATION: "測位情報を選択してください",
   OUT_OF_MAP_BOUNDS: "マップ範囲内にありません",
   CANT_USE_TRACK_TO_INCREMENT_ROAD: "現在位置は道路ネットワークデータセット内にありません。トラックインクリメント道路ネットワークを使用できません。",
   AFTER_COLLECT: "表示前に、まず撮影してください",
 
   POI: "POI",
   WIDGET: "ウィジェット",
+
+  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
 
   ILLEGAL_DATA: "データは無効です",
 
@@ -2666,9 +2668,9 @@ export const language_ja: typeof language_cn = {
   ERROR_INFO_ILLEGAL_CHARACTERS: "特殊符号を含むことはできません",
   ERROR_INFO_EMPTY: "空に設定することができません",
 
-  OPEN_LOCATION: "システムにポジショニングサービスを使用する機能を設定してください",
-  REQUEST_LOCATION: "iTabletはポジショニング権限が必要です",
-  LOCATION_ERROR: "ポジショニング異常、後で再度試してください",
+  OPEN_LOCATION: "システムに測位サービスを使用する機能を設定してください",
+  REQUEST_LOCATION: "iTabletは測位権限が必要です",
+  LOCATION_ERROR: "測位異常、後で再度試してください",
 
   OPEN_THRID_PARTY: "サードパーティのアプリケーションにジャンプしようとしています。継続しますか？",
 
@@ -2813,4 +2815,5 @@ export const language_ja: typeof language_cn = {
   CHAR: "定数テキスト",
   WTEXT: "ワイド文字型",
 
+  SLIDE_RATIO: 'スライド係数',
 }

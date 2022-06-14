@@ -2640,6 +2640,8 @@ export const language_ar: typeof language_cn = {
   POI: "نقاط الاهتمام",
   WIDGET: "جهاز صغير",
 
+  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
+
   ILLEGAL_DATA: "بيانات غير قانونية",
 
   UNSUPPORTED_LAYER_TO_SHARE: "لم يتم دعم مشاركة هذه الطبقة بعد",
@@ -2835,4 +2837,5 @@ export const language_ar: typeof language_cn = {
   CHAR: "حرف",
   WTEXT: "نص واسع",
 
+  SLIDE_RATIO: 'Slide ratio', // to be translated
 }

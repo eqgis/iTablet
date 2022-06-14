@@ -67,6 +67,8 @@ class ArEditModule extends FunctionModule {
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3 / 2
         break
       case ConstToolType.SM_AR_EDIT_POSITION:
+        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 4
+        break
       case ConstToolType.SM_AR_EDIT_ROTATION:
         data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 3
         break

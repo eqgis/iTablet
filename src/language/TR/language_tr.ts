@@ -2617,6 +2617,8 @@ export const language_tr: typeof language_cn = {
   POI: "POI",
   WIDGET: "Aygıt",
 
+  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
+
   ILLEGAL_DATA: "Yasadışı Veri",
 
   UNSUPPORTED_LAYER_TO_SHARE: "Bu katmanın paylaşımı henüz desteklenmiyor",
@@ -2810,4 +2812,5 @@ export const language_tr: typeof language_cn = {
   CHAR: "Char",
   WTEXT: "Wide Text",
 
+  SLIDE_RATIO: 'Slide ratio', // to be translated
 }

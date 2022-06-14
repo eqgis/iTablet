@@ -1,9 +1,10 @@
+import { getLanguage } from "@/language"
 import { ToolbarResource } from "imobile_for_reactnative/components/ToolbarKit"
 import { getImage } from "../assets"
 
 
 const text: ToolbarResource['text'] = {
-  slide_ratio: () => '滑动比例',
+  slide_ratio: () => getLanguage().SLIDE_RATIO,
   apply: () => '应用'
 }
 

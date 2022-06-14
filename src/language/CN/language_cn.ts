@@ -2618,6 +2618,8 @@ export const language_cn = {
   POI: "兴趣点",
   WIDGET: "小组件",
 
+  PLEASE_SELECT_FIRST:"请先选择数据",
+
   ILLEGAL_DATA: "无效数据",
 
   UNSUPPORTED_LAYER_TO_SHARE: "暂不支持此图层的分享",
@@ -2811,4 +2813,5 @@ export const language_cn = {
   CHAR: "定长文本",
   WTEXT: "宽字符",
 
+  SLIDE_RATIO: '滑动系数',
 }

@@ -61,8 +61,6 @@ import ColorScheme from './ColorScheme'
 import BottomBar from './BottomBar'
 import MyToast from './MyToast'
 import RedDot from './RedDot'
-import SlideBar from './SlideBar'
-import Slider from './Slider'
 import CompassView from './CompassView'
 import SwitchItem from './SwitchItem'
 import Waitting from './Waitting'
@@ -149,8 +147,6 @@ export {
   BottomBar,
   MyToast,
   RedDot,
-  SlideBar,
-  Slider,
   CompassView,
   SwitchItem,
   Waitting,

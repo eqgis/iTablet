@@ -2813,4 +2813,5 @@ export const language_cn = {
   CHAR: "定长文本",
   WTEXT: "宽字符",
 
+  SLIDE_RATIO: '滑动系数',
 }

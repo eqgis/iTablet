@@ -2815,4 +2815,5 @@ export const language_ja: typeof language_cn = {
   CHAR: "定数テキスト",
   WTEXT: "ワイド文字型",
 
+  SLIDE_RATIO: 'スライド係数',
 }

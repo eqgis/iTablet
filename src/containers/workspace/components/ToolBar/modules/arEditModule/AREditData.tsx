@@ -737,6 +737,7 @@ async function getStyleData(type: string) {
   let data: any[] = []
   const allData: {
     title: string,
+    showRatio?: boolean | undefined
     data: typeof data,
   }[] = []
   switch(type) {
@@ -859,6 +860,7 @@ async function getStyleData(type: string) {
       allData.push({
         title: getLanguage(_params.language).ARMap.TRANSLATION,
         data: data,
+        showRatio: true,
       })
       break
     // case ConstToolType.SM_AR_VISIBLE_DISTANCE:

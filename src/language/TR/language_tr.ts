@@ -2812,4 +2812,5 @@ export const language_tr: typeof language_cn = {
   CHAR: "Char",
   WTEXT: "Wide Text",
 
+  SLIDE_RATIO: 'Slide ratio', // to be translated
 }

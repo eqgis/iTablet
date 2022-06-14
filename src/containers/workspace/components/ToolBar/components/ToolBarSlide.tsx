@@ -1,20 +1,29 @@
 import React from 'react'
-import { Text, View, Dimensions, StyleSheet } from 'react-native'
+import { Text, View, Dimensions, StyleSheet, TextInput } from 'react-native'
 import { color } from '../../../../../styles'
 import { ToolBarSlideItem } from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarSlide'
 import { Slider } from 'imobile_for_reactnative/components'
 import { getImage } from '@/assets'
+import { AppStyle, dp } from '@/utils'
+import { getLanguage } from '@/language'
 
 export interface ToolBarSlideOption {
   title?: string,
   data: ToolBarSlideItem[],
+  showRatio?: boolean
+  /** 页面添加应用功能 */
+  apply?: () => void
 }
 
 interface Props {
   data: ToolBarSlideOption,
 }
 
-class ToolBarSlide extends React.Component<Props> {
+interface State {
+  slideRatio: number
+}
+
+class ToolBarSlide extends React.Component<Props, State> {
   dimensions = Dimensions.get('screen')
   sliderBars = new Map<number, Slider>()
 
@@ -24,12 +33,28 @@ class ToolBarSlide extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props)
+
+    this.state = {
+      slideRatio: 1,
+    }
   }
 
   shouldComponentUpdate(nextProps: Props) {
     return (
       JSON.stringify(nextProps) !== JSON.stringify(this.props)
     )
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if(prevProps.data.data !== this.props.data.data) {
+      this.onDataChange()
+    }
+  }
+
+  onDataChange = () => {
+    this.setState({
+      slideRatio: 1,
+    })
   }
 
   componentWillUnmount() {
@@ -55,6 +80,9 @@ class ToolBarSlide extends React.Component<Props> {
         right={{type: 'indicator'}}
         horizontal={true}
         {...item}
+        onMove={(value, isMin) => {
+          item.onMove(value * this.state.slideRatio, isMin)
+        }}
         incrementImage={getImage().icon_enlarge}
         decrementImage={getImage().icon_narrow}
         checkImage={getImage().icon_check}
@@ -71,6 +99,62 @@ class ToolBarSlide extends React.Component<Props> {
     return items
   }
 
+
+  renderExtra = () => {
+    return (
+      <View style={[
+        {justifyContent: 'space-between', alignItems: 'center'},
+        this.isPortrait ? { flexDirection: 'row'} : {flexDirection: 'column'},
+      ]}>
+        <View
+          style={{
+            height: dp(22),
+            marginLeft: dp(10),
+          }}
+        >
+          {this.props.data.showRatio && (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={AppStyle.h3c}>
+                {`${getLanguage().SLIDE_RATIO}: `}
+              </Text>
+              <TextInput
+                style={{
+                  width: dp(50),
+                  padding: 0,
+                  borderBottomColor: AppStyle.Color.BLACK,
+                  borderBottomWidth: dp(1),
+                  textAlign: 'center',
+                }}
+                placeholderTextColor={'black'}
+                keyboardType={'numeric'}
+                defaultValue={this.state.slideRatio + ''}
+                onChange={e => {
+                  const value = Number(e.nativeEvent.text)
+                  if(!isNaN(value) && value > 0) {
+                    this.setState({
+                      slideRatio: value
+                    })
+                  }
+                }}
+              />
+            </View>
+          ) }
+
+        </View>
+
+        {this.props.data.apply && (
+          // <Button
+          //   onPress={() => this.apply(this.props.data.apply)}
+          //   title={getText().apply()}
+          //   style={{height: dp(30), marginRight: dp(10)}}
+          // />
+          <></>
+        )}
+      </View>
+    )
+  }
+
+  isPortrait = true
   render() {
     return(
       <View style={styles.container}>
@@ -81,6 +165,7 @@ class ToolBarSlide extends React.Component<Props> {
         )}
         <View style={{width: '100%'}} >
           {this.renderItems()}
+          {(this.props.data.showRatio || this.props.data.apply) && this.renderExtra()}
         </View>
       </View>
     )

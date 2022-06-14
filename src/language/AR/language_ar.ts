@@ -2837,4 +2837,5 @@ export const language_ar: typeof language_cn = {
   CHAR: "حرف",
   WTEXT: "نص واسع",
 
+  SLIDE_RATIO: 'Slide ratio', // to be translated
 }

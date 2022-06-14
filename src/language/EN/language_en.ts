@@ -2813,4 +2813,5 @@ export const language_en: typeof language_cn = {
   CHAR: "Char",
   WTEXT: "WText",
 
+  SLIDE_RATIO: 'Sliding Coefficient',
 }

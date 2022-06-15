@@ -401,7 +401,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
             await this.props.setCurrentARLayer(this.state.selectLayer)
           }
           arEditModule().action()
-          NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
+          NavigationService.goBack()
         },
       })
     }

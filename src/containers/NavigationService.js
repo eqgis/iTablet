@@ -17,7 +17,6 @@ function navigate(name, params) {
   (async function() {
     // 判断是否是从地图跳转到制定的页面,是否显示半屏
     name = isInMapPage(name) || name
-    console.warn(name)
     if (name === tempRoute) return
     tempRoute = name
     _navigator.navigate(name, params)

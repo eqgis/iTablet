@@ -83,7 +83,7 @@ export default class Tabs extends React.Component<Props, State> {
       } else if (item.type) {
         switch(item.type) {
           case ToolbarType.slider:
-            tab = <ToolBarSlide data={data}/>
+            tab = <ToolBarSlide data={data[0]}/>
             break
         }
       }

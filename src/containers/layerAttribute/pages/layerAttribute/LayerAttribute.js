@@ -270,10 +270,11 @@ export default class LayerAttribute extends React.Component {
     try {
       this.getAttribute({
         type: 'reset',
-        currentPage: this.currentPage,
+        currentPage: this.currentPage >= 0 ? this.currentPage : 0,
       })
     } catch(e) {
-
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn(e)
     }
   }
 

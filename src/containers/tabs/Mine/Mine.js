@@ -148,7 +148,7 @@ export default class Mine extends Component {
   _getItems = () => {
     let data = []
     for (let module of this.props.mineModules) {
-      if (Platform.OS === 'ios' && module.key === 'ARMODEL') {
+      if (Platform.OS === 'ios' && module.key === 'SANDTABLE') {
         continue
       }
       switch (module.key) {

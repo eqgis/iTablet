@@ -412,7 +412,7 @@ export const language_ar: typeof language_cn = {
   AREA: "منطقة",
   LINE: "خط",
   POINT: "نقطة .",
-  MARKER_LINE: "Marker line", // to be translated
+  MARKER_LINE: "خط العلامة",
 
   OPEN_MAP: "فتح الخريطة",
   UNTITLED_MAP: "خريطة بدون عنوان",
@@ -484,71 +484,71 @@ export const language_ar: typeof language_cn = {
   DEFAULT: 'خرق',
 
 
-  PLEASE_SELECT_MODEL: 'Please select model', // To be translated
+  PLEASE_SELECT_MODEL: 'الرجاء تحديد الموديل',
 
-  SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
-  SHOULD_BE_INTEGER: 'shoud be an integer',
-  SHOULD_BE_POSITIVE_NUMBER: 'shoud be a positive number',
+  SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction', // to be translated
+  SHOULD_BE_INTEGER: 'shoud be an integer', // to be translated
+  SHOULD_BE_POSITIVE_NUMBER: 'shoud be a positive number', // to be translated
 
 
-  TRANVERSE: 'Tranverse',
-  LONGITUDINAL: 'Longitudinal',
-  HORIZONTAL: 'Horizontal',
-  VERTICAL: 'Vertical',
+  TRANVERSE: 'Tranverse', // to be translated
+  LONGITUDINAL: 'Longitudinal', // to be translated
+  HORIZONTAL: 'Horizontal', // to be translated
+  VERTICAL: 'Vertical', // to be translated
 
-  EXIT_SAND_TABLE_CONFIRM: 'Do you want to quit editing the sand table?',
-  PLEASE_INPUT_MODEL_NAME: 'Please input model name',
-  SAND_TABLE: 'Sand Table',
-  EXPORT_SAND_TABLE_CONFIRM: 'Do you want to export the sand table?',
-  MODEL_LIST: 'Model List',
+  EXIT_SAND_TABLE_CONFIRM: 'Do you want to quit editing the sand table?', // to be translated
+  PLEASE_INPUT_MODEL_NAME: 'Please input model name', // to be translated
+  SAND_TABLE: 'Sand Table', // to be translated
+  EXPORT_SAND_TABLE_CONFIRM: 'Do you want to export the sand table?', // to be translated
+  MODEL_LIST: 'Model List', // to be translated
 
-  ALIGN: 'Alignment',
+  ALIGN: 'Alignment', // to be translated
 
-  VISIBILITY: 'Visibility', // to be translated
-  SHOW: 'Show', // to be translated
-  HIDE: 'Hide', // to be translated
+  VISIBILITY: 'الرؤية',
+  SHOW: 'عرض',
+  HIDE: 'يخفي',
 
   CUSTOME_ANIMATION: 'حركات معدلة',
   MODEL_ANIMATION: 'نموذج الرسوم المتحركة',
-  BONE_ANIMATION: 'Bone Animation', // to be translated
+  BONE_ANIMATION: 'الرسوم المتحركة للعظام',
   ANIMATION_BOUNDS: 'حدود الرسوم المتحركة',
-  ANIMATION_SETTING: 'Animation Settings', // to be translated
-  REPEAT_COUNT: 'Repeat Count', // to be translated
+  ANIMATION_SETTING: 'إعدادات الرسوم المتحركة',
+  REPEAT_COUNT: 'تكرار العد',
 
-  DELAY: 'Delay', // to be translated
-  ORDER: 'Order', // to be translated
-  AFTER_PREV_ANIMATION: 'Start After Previous', // to be translated
-  WITH_PREV_ANIMATION: 'Start With Previous', // to be translated
-  TOUCH_TO_START: 'Touch To Start', // to be translated
+  DELAY: 'تأخير',
+  ORDER: 'ترتيب',
+  AFTER_PREV_ANIMATION: 'ابدأ بعد السابق',
+  WITH_PREV_ANIMATION: 'ابدأ بالسابق',
+  TOUCH_TO_START: 'المس للبدء',
 
-  START_FRAME: 'Start Frame', // to be translated
-  END_FRAME: 'End Frame', // to be translated
+  START_FRAME: 'إطار البداية',
+  END_FRAME: 'إطار النهاية',
 
-  START_FROM_CURRENT_POSITION: 'Start From Current Position', // to be translated
-  START_FROM_CURRENT_DGREE: 'Start From Current Degree', // to be translated
+  START_FROM_CURRENT_POSITION: 'تبدأ من الوضعية الحالية',
+  START_FROM_CURRENT_DGREE: 'تبدأ من الدرجة الحالية',
 
-  START_POSITION: 'Start Postion', // to be translated
-  END_POSITION: 'End Position', // to be translated
-  START_DEGREE: 'Start Degree', // to be translated
-  END_DEGREE: 'End Degree', // to be translated
+  START_POSITION: 'وضعية البداية',
+  END_POSITION: 'وضعية النهاية',
+  START_DEGREE: 'درجة البداية',
+  END_DEGREE: 'درجة النهائية',
 
   KEEP_VISIBLE: 'ابق مرئيًا',
-  KEEP_REPEATE: 'Keep Repeat',  // to be translated
+  KEEP_REPEATE: 'حافظ على التكرار',
 
-  ANIMATION_LIST: 'Animation list',  // to be translated
-  ANIMATION_WINDOW: 'Animation window',  // to be translated
+  ANIMATION_LIST: 'قائمة الرسوم المتحركة',
+  ANIMATION_WINDOW: 'نافذة الرسوم المتحركة',
 
-  PLEASE_SELECT_ANIMATION: 'Please Select Animation',   // to be translated
+  PLEASE_SELECT_ANIMATION: 'يرجى تحديد الرسوم المتحركة',
 
-  DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
+  DELETE_COMFIRM: 'هل ترغب في حذفه؟',
 
-  NULL_DATA: 'Null Data', // to be translated
+  NULL_DATA: 'بيانات فارغة',
 
-  PLEASE_SELECT_OBJ: 'Please select object', // to be translated
-  PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or object", // to be translated
-  PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
+  PLEASE_SELECT_OBJ: 'الرجاء تحديد الكائن',
+  PLEASE_SELECT_LAYER_OR_OBJECT: "الرجاء تحديد طبقة أو كائن",
+  PLEASE_SELECT_AR_OBJECT_LAYER: "الرجاء تحديد طبقة كائن الواقع المعزز",
 
-  ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
+  ATTRIBUTE_ADD_TO_AR_SCENE: "أضف جدول السمات إلى مشهد الواقع المعزز",
 
 
   ALIGNMENT: 'انتقام',
@@ -561,16 +561,16 @@ export const language_ar: typeof language_cn = {
   BOTTOM_START: 'بداية من أسفل',
   BOTTOM_END: 'نهاية القاع',
 
-  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
-  LINE_MARKER_SPEED: 'Speed', // To be translated
-  LINE_MARKER: 'Line marker',  // To be translated
+  LINE_POINT_INTERVAL: 'الفاصل الزمني لنقطة الخط',
+  LINE_MARKER_SPEED: 'سرعة',
+  LINE_MARKER: 'خط العلامة',
 
   BUBBLE_TEXT: 'نص فقاعي',
 
 
   UPDATE_LOCAL_SERVICE: "تحديث الخدمات المحلية",
   SUBMIT_SERVICE: "تقديم الخدمات",
-  SYNC_SERVICE: "Sync service",//To be translated
+  SYNC_SERVICE: "خدمة المزامنة",
 
   UPDATE_SUCCESSFUL: " تحديث بنجاح ",
   UPDATE_FAILED: "فشل التحديث",
@@ -1486,51 +1486,51 @@ export const language_ar: typeof language_cn = {
 
   //小组件
   ATTRIBUTE_ALBUM: "ألبوم السمات",
-  VIDEO_ALBUM:"Viedo Album",//to be translate
+  VIDEO_ALBUM:"ألبوم فيديو",
   MAPBROCHORE: "كتيب الخريطة",
-  CHOOSE_MAP:"Choose Map",//to be translate
-  SANDTABLE_ALBUM:"Sand Table Album",//to be translate
-  CHOOSE_SANDTABLE:"Choose Sand Table",//to be translate
-  TITLE:'Title',//to be translate
-  BACKGROUND:'BackGround',//to be translate
-  ARRAY:'Array',//to be translate
-  TEXT_SHAPE:'Shape',//to be translate
-  BOLD:'Bold',//to be translate
-  TILT:'Tilt',//to be translate
-  UNDERLINE:'UnderLine',//to be translate
-  STRIKETHROUGH:'StrikeThrough',//to be translate
-  SHADOW:'Shadow',//to be translate
-  FILLCOLOR:'FillColor',//to be translate
-  RELATIONSHIP:'RelationShip',//to be translate
-  LIST:'List',//to be translate
-  LOOP:'Loop',//to be translate
+  CHOOSE_MAP:"أخترخريطة",
+  SANDTABLE_ALBUM:"ألبوم طاولة الرمل",
+  CHOOSE_SANDTABLE:"اختر طاولة الرمل",
+  TITLE:'عنوان',
+  BACKGROUND:'الخلفية',
+  ARRAY:'مجموعة مصفوفة',
+  TEXT_SHAPE:'شكل',
+  BOLD:'عريض',
+  TILT:'إمالة',
+  UNDERLINE:'تسطير',
+  STRIKETHROUGH:'يتوسطه خط',
+  SHADOW:'ظل',
+  FILLCOLOR:'لون التعبئة',
+  RELATIONSHIP:'صلة',
+  LIST:'قائمة',
+  LOOP:'عقدة',
   COLOR: 'الألوان',
   OPACITY: 'مبهمة',
   BORDER_WIDTH: 'عرض الحدود',
   BORDER_COLOR: 'لون الحدود',
   VISIBLE_DISTANCE:'المسافة المرئية',
-  SECONDS_TO_PLAY: 'Seconds to play',  // To be translated
+  SECONDS_TO_PLAY: 'ثواني للعب',
   TEXT_OPACITY: 'نص التعتيم',
   TEXT_COLOR: 'لون النص',
   TEXT_SIZE: 'حجم النص',
   BACKGROUND_OPACITY: 'خلفية التعتيم',
   BACKGROUND_COLOR: 'لون الخلفية',
-  LINE_COLOR_: 'Line Color',// To be translated
-  TIME_COLOR: 'Time Color',// To be translated
-  LINE_WIDTH: 'Line width',  // To be translated
-  LINE_POINT_SIZE: 'Line point size',  // To be translated
-  BUTTON_TEXT_SIZE: 'Button Size',// To be translated
+  LINE_COLOR_: 'لون الخط',
+  TIME_COLOR: 'لون الوقت',
+  LINE_WIDTH: 'عرض الخط',
+  LINE_POINT_SIZE: 'حجم نقطة الخط',
+  BUTTON_TEXT_SIZE: 'حجم الزر',
   LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
 
-  BAR_CHART: 'Bar chart',  // To be translated
-  HISTOGRAM_ATTRIBUTE: 'Histogram attribute',  // To be translated
-  ONLY_GRATER_THAN_TWO: 'Only integers greater than 2 can be entered',  // To be translated
-  PIE_CHART: 'Pie chart',  // To be translate
-  PIE_CHART_ATTRIBUTE: 'Pie chart attribute',  // To be translate
-  VALUE: 'value',  // To be translate
-  ATTR_NAME: 'name',  // To be translate
-  COUNT: 'number',  // To be translate
-  UNIT: 'unit',  // To be translate
+  BAR_CHART: 'شريط الرسم البياني',
+  HISTOGRAM_ATTRIBUTE: 'سمة المدرج التكراري',
+  ONLY_GRATER_THAN_TWO: 'يمكن إدخال الأعداد الصحيحة الأكبر من 2 فقط',
+  PIE_CHART: 'مخطط دائري',
+  PIE_CHART_ATTRIBUTE: 'سمة المخطط الدائري',
+  VALUE: 'قيمة',
+  ATTR_NAME: 'اسم',
+  COUNT: 'رقم',
+  UNIT: 'وحدة',
 
   PLOTTING_ANIMATION_MODE: "وضع الرسوم المتحركة",
   PLOTTING_ANIMATION_OPERATION: "نتيجة العملية",

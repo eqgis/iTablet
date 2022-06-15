@@ -198,7 +198,12 @@ export default class Cell extends Component {
           editable: true,
         },
         () => {
-          this.cellInput && this.cellInput.focus()
+          // android setState之后直接调用focus,键盘无法立即弹出
+          let cellTimer = setTimeout(() => {
+            this.cellInput && this.cellInput.focus()
+            clearTimeout(cellTimer)
+            cellTimer = null
+          }, 10)
         },
       )
   }

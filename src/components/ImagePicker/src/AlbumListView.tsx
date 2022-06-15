@@ -42,6 +42,7 @@ interface State {
   data: Item[],
   selectedItems: SelectedItems,
   orientation: string,
+  refreshing: boolean,
 }
 
 interface Item {
@@ -71,6 +72,7 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
       data: [],
       selectedItems: {},
       orientation: screen.getOrientation(),
+      refreshing: false,
     }
   }
 
@@ -95,6 +97,18 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
         this.setState({ orientation: orientation })
       })
     }
+  }
+
+  refresh = () => {
+    if (this.state.refreshing) return
+    this.setState({refreshing: true}, async () => {
+      try {
+        const data = await this.getAlbums()
+        this.setState({ data, refreshing: false })
+      } catch (error) {
+        this.setState({ refreshing: false })
+      }
+    })
   }
 
   render() {
@@ -150,6 +164,8 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
           renderItem={this._renderItem}
           keyExtractor={item => item.title}
           extraData={this.state}
+          refreshing={this.state.refreshing}
+          onRefresh={this.getAlbums}
         />
         {this.props.dialogConfirm && (
           <InputDialog

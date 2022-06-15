@@ -7,6 +7,7 @@ import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
 import { IToolbarOption, ToolBarListItem, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, AppUser } from "../../../utils"
+import { Platform } from "react-native"
 
 
 export function getData(key: ModuleList['ARMAP_STYLE']): IToolbarOption {
@@ -334,7 +335,13 @@ function styleEffect(option: IToolbarOption) {
             const currentLayer = AppToolBar.getProps().arMapInfo?.currentLayer
             if(currentLayer) {
               const homePath = await FileTools.getHomeDirectory()
-              SARMap.setAREffect(currentLayer.name, homePath + item.path)
+              if (Platform.OS === 'ios') {
+                const targetPath = item.path.replace('.areffect', '.mp4')
+                await FileTools.copyFile(homePath + item.path, homePath + targetPath)
+                SARMap.setAREffect(currentLayer.name, homePath + targetPath)
+              } else {
+                SARMap.setAREffect(currentLayer.name, homePath + item.path)
+              }
             }
             AppToolBar.goBack()
           }

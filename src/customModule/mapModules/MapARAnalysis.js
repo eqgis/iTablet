@@ -9,15 +9,13 @@ import {
   addModule,
   // aiModule,
   aiCollection,
-  aiAggregate,
   aiVehicle,
   aiCategory,
   markModule,
   toolModule,
   changeMapModule,
 } from '../../containers/workspace/components/ToolBar/modules'
-import Orientation from 'react-native-orientation'
-import { LayerUtils } from '../../utils'
+import { LayerUtils, screen } from '../../utils'
 
 export default class MapARAnalysis extends Module {
   static key = ChunkType.MAP_AR_ANALYSIS
@@ -87,7 +85,7 @@ export default class MapARAnalysis extends Module {
           return false
         }
         SMap.setDynamicviewsetVisible(false)
-        Orientation.lockToPortrait()
+        screen.lockToPortrait()
         return isAvailable
       },
     })

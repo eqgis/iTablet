@@ -19,9 +19,7 @@ import styles from './styles'
 import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
-import { scaleSize } from '../../utils'
-import Orientation from 'react-native-orientation'
-
+import { scaleSize, screen } from '../../utils'
 
 interface IProps {
   navigation: any,
@@ -72,7 +70,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {

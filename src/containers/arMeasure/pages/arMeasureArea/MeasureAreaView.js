@@ -24,7 +24,6 @@ import {
   SMARMapView,
   SARMap,
 } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../../../components/ImageButton'
 import { Container, Dialog ,CustomAlertDialog} from '../../../../components'
@@ -435,7 +434,7 @@ export default class MeasureAreaView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {

@@ -4,9 +4,8 @@ import {
   SGestureBoneView,
   SMap,
 } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
-import { setSpText, scaleSize } from '../../utils'
+import { setSpText, scaleSize, screen } from '../../utils'
 import {
   View,
   TouchableOpacity,
@@ -54,7 +53,7 @@ export default class AIGestureBoneView extends React.Component {
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
     // SPoseEstimationView.setOperMode(this.state.poseMode)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {

@@ -18,7 +18,6 @@ import {
   SMap,
   DatasetType,
 } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
 import styles from './styles'
 import { Container, Dialog, ImageButton } from '../../components'
 import { FileTools } from '../../native'
@@ -211,7 +210,7 @@ export default class CollectSceneFormView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   async componentDidMount() {
@@ -251,7 +250,7 @@ export default class CollectSceneFormView extends React.Component {
 
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(true)
-    Orientation.unlockAllOrientations()
+    screen.unlockAllOrientations()
     SCollectSceneFormView.onPause()
     //移除监听
     this.onTotalLengthChangedListener?.remove()

@@ -15,14 +15,13 @@ import {
   ScrollView,
   Keyboard,
 } from 'react-native'
-import { Toast, scaleSize, OnlineServicesUtils } from '../../../../utils'
+import { Toast, scaleSize, OnlineServicesUtils, screen } from '../../../../utils'
 import { getPublicAssets } from '../../../../assets'
 import { Container } from '../../../../components'
 import NavigationService from '../../../NavigationService'
 import styles, { fontSize } from './Styles'
 import { getLanguage } from '../../../../language/index'
 import { color } from '../../../../styles'
-import Orientation from 'react-native-orientation'
 import Input from '../../../../components/Input/index'
 let JSOnlineService = undefined
 export default class Register extends React.Component {
@@ -45,13 +44,13 @@ export default class Register extends React.Component {
 
   componentDidMount() {
     if (!global.isPad && !global.ORIENTATIONLOCKED) {
-      Orientation.lockToPortrait()
+      screen.lockToPortrait()
     }
   }
 
   componentWillUnmount() {
     if (!global.ORIENTATIONLOCKED) {
-      Orientation.unlockAllOrientations()
+      screen.unlockAllOrientations()
     }
   }
 

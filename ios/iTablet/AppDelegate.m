@@ -336,7 +336,8 @@ static NSString* g_sampleCodeName = @"#";;
 //  } else {
 //    return UIInterfaceOrientationMaskPortrait;
 //  }
-  return self.allowRotation;
+  return [Orientation getOrientation];
+//  return self.allowRotation;
 //  return UIInterfaceOrientationMaskPortrait;
 }
 @end

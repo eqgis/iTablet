@@ -9,13 +9,13 @@ import {
 } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets } from '../../assets'
-import Orientation from 'react-native-orientation'
 import styles from './styles'
 import { Container, Loading } from '../../components'
 import Button from '../../components/Button/Button'
 import FetchUtils from '../../utils/FetchUtils'
 import { FileTools} from '../../native'
 import Toast from '../../utils/Toast'
+import screen from '../../utils/screen'
 import { getLanguage } from '../../language'
 import { ConstPath } from '../../constants'
 import { SAIClassifyView, SMap, RNFS, SARMap  } from 'imobile_for_reactnative'
@@ -58,7 +58,7 @@ export default class ClassifySettingsView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidUpdate(prevProps) {
@@ -147,11 +147,6 @@ export default class ClassifySettingsView extends React.Component {
       }
     }.bind(this)())
     InteractionManager.runAfterInteractions(() => {})
-  }
-
-  componentWillUnmount() {
-    // Orientation.unlockAllOrientations()
-    //移除监听
   }
 
   back = () => {

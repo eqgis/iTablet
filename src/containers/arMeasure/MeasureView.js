@@ -14,11 +14,10 @@ import {
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets } from '../../assets'
 import { SMMeasureView, SMeasureView,SMap  } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
 import styles from './styles'
 import ImageButton from '../../components/ImageButton'
 import { Container, Dialog } from '../../components'
-import { Toast, scaleSize } from '../../utils'
+import { Toast, scaleSize, screen } from '../../utils'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
 // import Button from '../../components/Button/Button'
@@ -56,7 +55,7 @@ export default class MeasureView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {
@@ -101,7 +100,7 @@ export default class MeasureView extends React.Component {
 
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(true)
-    Orientation.unlockAllOrientations()
+    screen.unlockAllOrientations()
     //移除监听
     this.onSearchingSurfacesSucceedListener?.remove()
     this.onSearchingSurfacesSucceedListener = null

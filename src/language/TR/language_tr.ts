@@ -413,7 +413,7 @@ export const language_tr: typeof language_cn = {
   AREA: "Bölge",
   LINE: "Hat",
   POINT: "Doğru",
-  MARKER_LINE: "Marker line", // to be translated
+  MARKER_LINE: "İşaret çizgisi",
 
   OPEN_MAP: "Harita Aç",
   UNTITLED_MAP: "Adsız Harita",
@@ -484,7 +484,7 @@ export const language_tr: typeof language_cn = {
   DEFAULT: 'Varsayılan',
 
 
-  PLEASE_SELECT_MODEL: 'Please select model', // To be translated
+  PLEASE_SELECT_MODEL: 'Lütfen model seçin',
 
   SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
   SHOULD_BE_INTEGER: 'shoud be an integer',
@@ -504,51 +504,51 @@ export const language_tr: typeof language_cn = {
 
   ALIGN: 'Alignment',
 
-  VISIBILITY: 'Visibility', // to be translated
-  SHOW: 'Show', // to be translated
-  HIDE: 'Hide', // to be translated
+  VISIBILITY: 'Görünürlük',
+  SHOW: 'Göster',
+  HIDE: 'Gizle',
 
-  CUSTOME_ANIMATION: 'Custome Animation', // to be translated
-  MODEL_ANIMATION: 'Model Animation', // to be translated
-  BONE_ANIMATION: 'Bone Animation', // to be translated
-  ANIMATION_BOUNDS: 'Animation Bounds', // to be translated
-  ANIMATION_SETTING: 'Animation Settings', // to be translated
-  REPEAT_COUNT: 'Repeat Count', // to be translated
+  CUSTOME_ANIMATION: 'Özel Animasyon',
+  MODEL_ANIMATION: 'Model Animasyon',
+  BONE_ANIMATION: 'Kemik Animasyon',
+  ANIMATION_BOUNDS: 'Animasyon Sınırları',
+  ANIMATION_SETTING: 'Animasyon Ayarları',
+  REPEAT_COUNT: 'Tekrar Sayısı',
 
-  DELAY: 'Delay', // to be translated
-  ORDER: 'Order', // to be translated
-  AFTER_PREV_ANIMATION: 'Start After Previous', // to be translated
-  WITH_PREV_ANIMATION: 'Start With Previous', // to be translated
-  TOUCH_TO_START: 'Touch To Start', // to be translated
+  DELAY: 'Gecikme',
+  ORDER: 'Sıralama',
+  AFTER_PREV_ANIMATION: 'Öncekinden Sonra Başla',
+  WITH_PREV_ANIMATION: 'Öncekiyle Başla',
+  TOUCH_TO_START: 'Başlatmak için dokunun',
 
-  START_FRAME: 'Start Frame', // to be translated
-  END_FRAME: 'End Frame', // to be translated
+  START_FRAME: 'Çerçeveyi Başlat',
+  END_FRAME: 'Çerçeveyi Bitir',
 
-  START_FROM_CURRENT_POSITION: 'Start From Current Position', // to be translated
-  START_FROM_CURRENT_DGREE: 'Start From Current Degree', // to be translated
+  START_FROM_CURRENT_POSITION: 'Mevcut Konumdan Başla',
+  START_FROM_CURRENT_DGREE: 'Mevcut Dereceden Başlayın',
 
-  START_POSITION: 'Start Postion', // to be translated
-  END_POSITION: 'End Position', // to be translated
-  START_DEGREE: 'Start Degree', // to be translated
-  END_DEGREE: 'End Degree', // to be translated
+  START_POSITION: 'Başlangıç ​​konumu',
+  END_POSITION: 'Bitiş Konumu',
+  START_DEGREE: 'Başlangıç Derecesi',
+  END_DEGREE: 'Bitirme Derecesi',
 
-  KEEP_VISIBLE: 'Keep Visible', // to be translated
-  KEEP_REPEATE: 'Keep Repeat',  // to be translated
+  KEEP_VISIBLE: 'Görünür Tut',
+  KEEP_REPEATE: 'Tekrarlamaya Devam Et',
 
-  ANIMATION_LIST: 'Animation list',  // to be translated
-  ANIMATION_WINDOW: 'Animation window',  // to be translated
+  ANIMATION_LIST: 'Animasyon Listesi',
+  ANIMATION_WINDOW: 'Animasyon Penceresi',
 
-  PLEASE_SELECT_ANIMATION: 'Please Select Animation',   // to be translated
+  PLEASE_SELECT_ANIMATION: 'Lütfen Animasyon Seçiniz',
 
-  DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
+  DELETE_COMFIRM: 'Silmek ister misin?',
 
-  NULL_DATA: 'Null Data', // to be translated
+  NULL_DATA: 'Boş Veri',
 
-  PLEASE_SELECT_OBJ: 'Please select object', // to be translated
-  PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or object", // to be translated
-  PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
+  PLEASE_SELECT_OBJ: 'Lütfen nesne seçin',
+  PLEASE_SELECT_LAYER_OR_OBJECT: "Lütfen bir katman veya nesne seçin",
+  PLEASE_SELECT_AR_OBJECT_LAYER: "Lütfen bir nesne katmanı seçin",
 
-  ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
+  ATTRIBUTE_ADD_TO_AR_SCENE: "AR sahnesine Öznitelik tablosu ekle",
 
   ALIGNMENT: 'Hizalama',
   LEFT_START: 'Sol Başlangıç',
@@ -560,15 +560,15 @@ export const language_tr: typeof language_cn = {
   BOTTOM_START: 'Alt Başlangıç',
   BOTTOM_END: 'Alt Uç',
 
-  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
-  LINE_MARKER_SPEED: 'Speed', // To be translated
-  LINE_MARKER: 'Line marker',  // To be translated
+  LINE_POINT_INTERVAL: 'Çizgi noktası aralığı',
+  LINE_MARKER_SPEED: 'Hız',
+  LINE_MARKER: 'Çizgi İşaretleyici',
 
   BUBBLE_TEXT: 'Kabarmış Metin',
 
   UPDATE_LOCAL_SERVICE: "Yerel servislerin güncellenmesi",
   SUBMIT_SERVICE: "Servis gönder",
-  SYNC_SERVICE: "Sync service",//To be translated
+  SYNC_SERVICE: "Senkronizasyon hizmeti",
 
   UPDATE_SUCCESSFUL: "Başarıyla güncellendi",
   UPDATE_FAILED: "Güncelleme başarısız",
@@ -585,8 +585,8 @@ export const language_tr: typeof language_cn = {
   SEARCHABLE: "Aranabilir",
   READABLE: "Okunabilir",
 
-  UPDATE_THEME_ERROR_INFO: "Bu mesaj tematik haritayı güncellemek içindir. Ekleme yapılamaz.", // need to translate
-  CLOSE_MAP_BEFORE_UPDATE_SERVICE: "Hizmet güncelleniyor, lütfen güncelleme tamamlanana kadar haritayı kapatmayın.", // need to translate
+  UPDATE_THEME_ERROR_INFO: "Bu mesaj tematik haritayı güncellemek içindir. Ekleme yapılamaz.",
+  CLOSE_MAP_BEFORE_UPDATE_SERVICE: "Hizmet güncelleniyor, lütfen güncelleme tamamlanana kadar haritayı kapatmayın.",
 
   ERROR_400: "Hatalı istek",
   ERROR_401: "Yetki yok",
@@ -1473,51 +1473,51 @@ export const language_tr: typeof language_cn = {
   MAP_LOAD_XML: "Yükleme",
 
   ATTRIBUTE_ALBUM: "Öznitelik Albümü",
-  VIDEO_ALBUM:"Viedo Album",//to be translate
+  VIDEO_ALBUM:"Video Albümü",
   MAPBROCHORE: "Harita Broşürü",
-  CHOOSE_MAP:"Choose Map",//to be translate
-  SANDTABLE_ALBUM:"Sand Table Album",//to be translate
-  CHOOSE_SANDTABLE:"Choose Sand Table",//to be translate
-  TITLE:'Title',//to be translate
-  BACKGROUND:'BackGround',//to be translate
-  ARRAY:'Array',//to be translate
-  TEXT_SHAPE:'Shape',//to be translate
-  BOLD:'Bold',//to be translate
-  TILT:'Tilt',//to be translate
-  UNDERLINE:'UnderLine',//to be translate
-  STRIKETHROUGH:'StrikeThrough',//to be translate
-  SHADOW:'Shadow',//to be translate
-  FILLCOLOR:'FillColor',//to be translate
-  RELATIONSHIP:'RelationShip',//to be translate
-  LIST:'List',//to be translate
-  LOOP:'Loop',//to be translate
+  CHOOSE_MAP:"Harita Seç",
+  SANDTABLE_ALBUM:"Kum Masa Albümü",
+  CHOOSE_SANDTABLE:"Kum Masası Seçin",
+  TITLE:'Başlık',
+  BACKGROUND:'Arka fon',
+  ARRAY:'Dizi',
+  TEXT_SHAPE:'Şekil',
+  BOLD:'Kalın',
+  TILT:'Eğik',
+  UNDERLINE:'Altı çizili',
+  STRIKETHROUGH:'Vurgulu',
+  SHADOW:'Gölge',
+  FILLCOLOR:'Dolgu rengi',
+  RELATIONSHIP:'İlişki',
+  LIST:'Liste',
+  LOOP:'Döngü',
   COLOR: 'Renk',
   OPACITY: 'Opaklık',
   BORDER_WIDTH: 'Sınır Genişliği',
   BORDER_COLOR: 'Sınır Rengi',
   VISIBLE_DISTANCE:'Görünür Mesafe',
-  SECONDS_TO_PLAY: 'Seconds to play',  // To be translated
+  SECONDS_TO_PLAY: 'Oynatma saniyesi',
   TEXT_OPACITY: 'Yazı Matlığı',
   TEXT_COLOR: 'Yazı Rengi',
   TEXT_SIZE: 'Yazı Boyutu',
   BACKGROUND_OPACITY: 'Arkaplan Matlığı',
   BACKGROUND_COLOR: 'Arkaplan Rengi',
-  LINE_COLOR_: 'Line Color',// To be translated
-  TIME_COLOR: 'Time Color',// To be translated
-  LINE_WIDTH: 'Line width',  // To be translated
-  LINE_POINT_SIZE: 'Line point size',  // To be translated
-  BUTTON_TEXT_SIZE: 'Button Size',// To be translated
+  LINE_COLOR_: 'Çizgi Rengi',
+  TIME_COLOR: 'Zaman Rengi',
+  LINE_WIDTH: 'Hat Genişliği',
+  LINE_POINT_SIZE: 'Çizgi Noktası Boyutu',
+  BUTTON_TEXT_SIZE: 'Düğme Boyutu',
   LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
 
-  BAR_CHART: 'Bar chart',  // To be translated
-  HISTOGRAM_ATTRIBUTE: 'Histogram attribute',  // To be translated
-  ONLY_GRATER_THAN_TWO: 'Only integers greater than 2 can be entered',  // To be translated
-  PIE_CHART: 'Pie chart',  // To be translate
-  PIE_CHART_ATTRIBUTE: 'Pie chart attribute',  // To be translate
-  VALUE: 'value',  // To be translate
-  ATTR_NAME: 'name',  // To be translate
-  COUNT: 'number',  // To be translate
-  UNIT: 'unit',  // To be translate
+  BAR_CHART: 'Grafik Çubuğu',
+  HISTOGRAM_ATTRIBUTE: 'Histogram Özniteliği',
+  ONLY_GRATER_THAN_TWO: "Yalnızca 2''den büyük tam sayılar girilebilir",
+  PIE_CHART: 'Yuvarlak diyagram',
+  PIE_CHART_ATTRIBUTE: 'Pie chart attribute',
+  VALUE: 'Değer',
+  ATTR_NAME: 'Ad',
+  COUNT: 'Numara',
+  UNIT: 'Ünite',
 
   PLOTTING_ANIMATION_MODE: "Animasyon Modu",
   PLOTTING_ANIMATION_OPERATION: "Sonuç İşlemi",
@@ -2066,8 +2066,8 @@ export const language_tr: typeof language_cn = {
   LOCAL: "Lokal",
   SAMPLEDATA: "Örnek Veri",
   ON_DEVICE: "Kullanıcı Verisi",
-  ONLINE_DATA: "Çevrimiçi Veri", // need to translate
-  USER_DATA: "Kullanıcı Verisi", // need to translate
+  ONLINE_DATA: "Çevrimiçi Veri",
+  USER_DATA: "Kullanıcı Verisi",
   EXPORT_DATA: "Verileri Dışa Aktar",
   IMPORT_DATA: "Verileri İçe Aktar",
   UPLOAD_DATA: "Verileri Paylaş",
@@ -2569,7 +2569,7 @@ export const language_tr: typeof language_cn = {
   SHARE_START: "Paylaşmaya Başla",
   SHARE_WX_FILE_SIZE_LIMITE: "Dosya boyutu 10M'den fazla geçemez",
   SHARE_NOT_COMPLRTE: "Paylaşma Tamamlanamadı.",
-  PLEASE_SAVE_MAP: "Lütfen önce haritayı kaydedin",  // To be translated
+  PLEASE_SAVE_MAP: "Lütfen önce haritayı kaydedin",
 
   EXPORTING: "Dışarı Aktarılıyor",
   EXPORT_SUCCESS: "Başarıyla Dışarı Aktarıldı",

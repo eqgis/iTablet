@@ -413,7 +413,7 @@ export const language_fr: typeof language_cn = {
   AREA: "Zone",
   LINE: "Ligne",
   POINT: "Point",
-  MARKER_LINE: "Marker line", // to be translated
+  MARKER_LINE: "Ligne de repère",
 
   OPEN_MAP: "Ouvrir la carte",
   UNTITLED_MAP: "Carte sans titre",
@@ -484,7 +484,7 @@ export const language_fr: typeof language_cn = {
   DEFAULT: 'Defaut',
 
 
-  PLEASE_SELECT_MODEL: 'Please select model', // To be translated
+  PLEASE_SELECT_MODEL: 'Sélectionner le modèle svp',
 
   SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction',
   SHOULD_BE_INTEGER: 'shoud be an integer',
@@ -504,51 +504,51 @@ export const language_fr: typeof language_cn = {
 
   ALIGN: 'Alignment',
 
-  VISIBILITY: 'Visibility', // to be translated
-  SHOW: 'Show', // to be translated
-  HIDE: 'Hide', // to be translated
+  VISIBILITY: 'Visibilité',
+  SHOW: 'Affiché',
+  HIDE: 'Cacher',
 
-  CUSTOME_ANIMATION: 'Custome Animation', // to be translated
-  MODEL_ANIMATION: 'Model Animation', // to be translated
-  BONE_ANIMATION: 'Bone Animation', // to be translated
-  ANIMATION_BOUNDS: 'Animation Bounds', // to be translated
-  ANIMATION_SETTING: 'Animation Settings', // to be translated
-  REPEAT_COUNT: 'Repeat Count', // to be translated
+  CUSTOME_ANIMATION: 'animation personnalisée',
+  MODEL_ANIMATION: 'Animation de modèle',
+  BONE_ANIMATION: 'Animation osseuse',
+  ANIMATION_BOUNDS: "Limites d'animation",
+  ANIMATION_SETTING: "Paramètres d'animation",
+  REPEAT_COUNT: 'Nombre de répétitions',
 
-  DELAY: 'Delay', // to be translated
-  ORDER: 'Order', // to be translated
-  AFTER_PREV_ANIMATION: 'Start After Previous', // to be translated
-  WITH_PREV_ANIMATION: 'Start With Previous', // to be translated
-  TOUCH_TO_START: 'Touch To Start', // to be translated
+  DELAY: 'Delai',
+  ORDER: 'Ordre',
+  AFTER_PREV_ANIMATION: 'Commencer après le précédent',
+  WITH_PREV_ANIMATION: 'Commencer par le précédent',
+  TOUCH_TO_START: 'Touchez pour commencer',
 
-  START_FRAME: 'Start Frame', // to be translated
-  END_FRAME: 'End Frame', // to be translated
+  START_FRAME: 'Cadre de départ',
+  END_FRAME: 'Cadre de fin',
 
-  START_FROM_CURRENT_POSITION: 'Start From Current Position', // to be translated
-  START_FROM_CURRENT_DGREE: 'Start From Current Degree', // to be translated
+  START_FROM_CURRENT_POSITION: 'Commencer à partir de la position actuelle',
+  START_FROM_CURRENT_DGREE: 'Commencer à partir du niveau actuel',
 
-  START_POSITION: 'Start Postion', // to be translated
-  END_POSITION: 'End Position', // to be translated
-  START_DEGREE: 'Start Degree', // to be translated
-  END_DEGREE: 'End Degree', // to be translated
+  START_POSITION: 'La position de départ',
+  END_POSITION: 'Position finale',
+  START_DEGREE: 'Niveau de départ',
+  END_DEGREE: 'Niveau finale',
 
-  KEEP_VISIBLE: 'Keep Visible', // to be translated
-  KEEP_REPEATE: 'Keep Repeat',  // to be translated
+  KEEP_VISIBLE: 'Rester visible',
+  KEEP_REPEATE: 'Continuer à répéter',
 
-  ANIMATION_LIST: 'Animation list',  // to be translated
-  ANIMATION_WINDOW: 'Animation window',  // to be translated
+  ANIMATION_LIST: 'Liste des animations',
+  ANIMATION_WINDOW: "Fenêtre d'animations",
 
-  PLEASE_SELECT_ANIMATION: 'Please Select Animation',   // to be translated
+  PLEASE_SELECT_ANIMATION: "Veuillez sélectionner l'animation",
 
-  DELETE_COMFIRM: 'Would you like to delete it?', // to be translated
+  DELETE_COMFIRM: 'Would you like to delete it?',
 
-  NULL_DATA: 'Null Data', // to be translated
+  NULL_DATA: 'Null Data',
 
-  PLEASE_SELECT_OBJ: 'Please select object', // to be translated
-  PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or object", // to be translated
-  PLEASE_SELECT_AR_OBJECT_LAYER: "Please select ar object layer", // to be translated
+  PLEASE_SELECT_OBJ: 'Veuillez sélectionner un objet',
+  PLEASE_SELECT_LAYER_OR_OBJECT: "Veuillez sélectionner un calque ou un objet",
+  PLEASE_SELECT_AR_OBJECT_LAYER: "Veuillez sélectionner un calque d'objet",
 
-  ATTRIBUTE_ADD_TO_AR_SCENE: "Add Attribute table to AR scene",  // to be translated
+  ATTRIBUTE_ADD_TO_AR_SCENE: "Ajouter une table d'attributs à la scène AR",
 
   ALIGNMENT: 'Alignement',
   LEFT_START: 'Départ à gauche',
@@ -560,15 +560,15 @@ export const language_fr: typeof language_cn = {
   BOTTOM_START: 'Départ en bas',
   BOTTOM_END: 'Fin en bas',
 
-  LINE_POINT_INTERVAL: 'Line point interval',  // To be translated
-  LINE_MARKER_SPEED: 'Speed', // To be translated
-  LINE_MARKER: 'Line marker',  // To be translated
+  LINE_POINT_INTERVAL: 'Intervalle de point de ligne',
+  LINE_MARKER_SPEED: 'La rapidité',
+  LINE_MARKER: 'Marqueur de ligne',
 
   BUBBLE_TEXT: 'Texte bulle',
 
   UPDATE_LOCAL_SERVICE: "mises à jour du service local",
   SUBMIT_SERVICE: "Service soumis",
-  SYNC_SERVICE: "Sync service",//To be translated
+  SYNC_SERVICE: "Service de synchronisation",
 
   UPDATE_SUCCESSFUL: "Mise à jour reussi",
   UPDATE_FAILED: "Echec du mise à jour",
@@ -1474,51 +1474,51 @@ export const language_fr: typeof language_cn = {
   MAP_LOAD_XML: "Charge",
 
   ATTRIBUTE_ALBUM: "Album d'attributs",
-  VIDEO_ALBUM:"Viedo Album",//to be translate
+  VIDEO_ALBUM:"Album vidéo",
   MAPBROCHORE: "Dépliant cartographique",
-  CHOOSE_MAP:"Choose Map",//to be translate
-  SANDTABLE_ALBUM:"Sand Table Album",//to be translate
-  CHOOSE_SANDTABLE:"Choose Sand Table",//to be translate
-  TITLE:'Title',//to be translate
-  BACKGROUND:'BackGround',//to be translate
-  ARRAY:'Array',//to be translate
-  TEXT_SHAPE:'Shape',//to be translate
-  BOLD:'Bold',//to be translate
-  TILT:'Tilt',//to be translate
-  UNDERLINE:'UnderLine',//to be translate
-  STRIKETHROUGH:'StrikeThrough',//to be translate
-  SHADOW:'Shadow',//to be translate
-  FILLCOLOR:'FillColor',//to be translate
-  RELATIONSHIP:'RelationShip',//to be translate
-  LIST:'List',//to be translate
-  LOOP:'Loop',//to be translate
+  CHOOSE_MAP:"Choisissez la carte",
+  SANDTABLE_ALBUM:"Album Table de Sable",
+  CHOOSE_SANDTABLE:"Choisissez la table de sable",
+  TITLE:'Titre',
+  BACKGROUND:'fond',
+  ARRAY:'Déployer',
+  TEXT_SHAPE:'Forme',
+  BOLD:'Gras',
+  TILT:'Inclinaison',
+  UNDERLINE:'Souligner',
+  STRIKETHROUGH:'Barré',
+  SHADOW:'Ombre',
+  FILLCOLOR:'La couleur de remplissage',
+  RELATIONSHIP:'Relation',
+  LIST:'Liste',
+  LOOP:'Loupe',
   COLOR: 'Couleur',
   OPACITY: 'Opacité',
   BORDER_WIDTH: 'Largeur de la bordure',
   BORDER_COLOR: 'Couleur de la bordure',
   VISIBLE_DISTANCE:'Distance de visibilité',
-  SECONDS_TO_PLAY: 'Seconds to play',  // To be translated
+  SECONDS_TO_PLAY: 'Secondes à jouer',
   TEXT_OPACITY: 'Opacité du texte',
   TEXT_COLOR: 'Couleur du texte',
   TEXT_SIZE: 'Taille du texte',
   BACKGROUND_OPACITY: "Opacité d'arrière-plant:",
   BACKGROUND_COLOR: "Couleur d'arrière-plant",
-  LINE_COLOR_: 'Line Color',// To be translated
-  TIME_COLOR: 'Time Color',// To be translated
-  LINE_WIDTH: 'Line width',  // To be translated
-  LINE_POINT_SIZE: 'Line point size',  // To be translated
-  BUTTON_TEXT_SIZE: 'Button Size',// To be translated
+  LINE_COLOR_: 'Ligne de couleur',
+  TIME_COLOR: 'Temps de Couleur',
+  LINE_WIDTH: 'Largeur de ligne',
+  LINE_POINT_SIZE: 'Taille du point de ligne',
+  BUTTON_TEXT_SIZE: 'Taille du bouton',
   LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
 
-  BAR_CHART: 'Bar chart',  // To be translated
-  HISTOGRAM_ATTRIBUTE: 'Histogram attribute',  // To be translated
-  ONLY_GRATER_THAN_TWO: 'Only integers greater than 2 can be entered',  // To be translated
-  PIE_CHART: 'Pie chart',  // To be translate
-  PIE_CHART_ATTRIBUTE: 'Pie chart attribute',  // To be translate
-  VALUE: 'value',  // To be translate
-  ATTR_NAME: 'name',  // To be translate
-  COUNT: 'number',  // To be translate
-  UNIT: 'unit',  // To be translate
+  BAR_CHART: 'Diagramme à bandes',
+  HISTOGRAM_ATTRIBUTE: "Attribut d'histogramme",
+  ONLY_GRATER_THAN_TWO: 'Seuls les nombres entiers supérieurs à 2 peuvent être entrés',
+  PIE_CHART: 'Diagramme circulaire',
+  PIE_CHART_ATTRIBUTE: 'Attribut de graphique à secteurs',
+  VALUE: 'valeur',
+  ATTR_NAME: 'nom',
+  COUNT: 'numéro',
+  UNIT: 'unité',
 
   PLOTTING_ANIMATION_MODE: "Mode d'animation",
   PLOTTING_ANIMATION_OPERATION: "Opération de résultat",

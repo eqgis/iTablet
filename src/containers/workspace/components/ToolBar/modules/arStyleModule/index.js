@@ -47,36 +47,37 @@ class ArStyleModule extends FunctionModule {
       NavigationService.navigate('ARLayerManager')
       return
     }
-    if (
-      _params.arlayer.currentLayer.type !== ARLayerType.AR_MEDIA_LAYER ||
-      _params.arlayer.currentLayer.type === ARLayerType.EFFECT_LAYER
-    ) {
-      // 除了 poi 和 特效图层， 其他由新的 toobar 处理
-      arMapStyleData.action()
-      return
-    }
-    this.setModuleData(this.type)
-    _params.showFullMap && _params.showFullMap(true)
+    arMapStyleData.action()
+    // if (
+    //   _params.arlayer.currentLayer.type !== ARLayerType.AR_MEDIA_LAYER ||
+    //   _params.arlayer.currentLayer.type === ARLayerType.EFFECT_LAYER
+    // ) {
+    //   // 除了 poi 和 特效图层， 其他由新的 toobar 处理
+    //   arMapStyleData.action()
+    //   return
+    // }
+    // this.setModuleData(this.type)
+    // _params.showFullMap && _params.showFullMap(true)
 
-    if (_params.arlayer.currentLayer.type === ARLayerType.EFFECT_LAYER) {
-      _params.setToolbarVisible(true, ConstToolType.SM_AR_STYLE_EFFECT, {
-        containerType: ToolbarType.tableTabs,
-        isFullScreen: false,
-      })
-      return
-    }
+    // if (_params.arlayer.currentLayer.type === ARLayerType.EFFECT_LAYER) {
+    //   _params.setToolbarVisible(true, ConstToolType.SM_AR_STYLE_EFFECT, {
+    //     containerType: ToolbarType.tableTabs,
+    //     isFullScreen: false,
+    //   })
+    //   return
+    // }
 
-    const layerStyle = await SARMap.getLayerStyle(_params.arlayer.currentLayer.name)
-    ToolbarModule.addData({currentARElementStyle: layerStyle})
+    // const layerStyle = await SARMap.getLayerStyle(_params.arlayer.currentLayer.name)
+    // ToolbarModule.addData({currentARElementStyle: layerStyle})
 
-    const _data = await ARStyleData.getData(this.type, _params)
-    _params.setToolbarVisible(true, this.type, {
-      isFullScreen: true,
-      showMenuDialog: true,
-      buttons: _data.buttons,
-    })
+    // const _data = await ARStyleData.getData(this.type, _params)
+    // _params.setToolbarVisible(true, this.type, {
+    //   isFullScreen: true,
+    //   showMenuDialog: true,
+    //   buttons: _data.buttons,
+    // })
 
-    SARMap.clearSelection()
+    // SARMap.clearSelection()
     // SARMap.setAction(ARAction.SELECT)
   }
 }

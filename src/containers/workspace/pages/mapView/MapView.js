@@ -4828,6 +4828,13 @@ export default class MapView extends React.Component {
           customStyle={this.props.isAR ? null : styles.hidden}
           ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
+          onSingleClick={() => {
+            if(AppToolBar.getCurrentOption() === undefined 
+              &&  (ToolbarModule.getParams().type === '' || ToolbarModule.getParams().type === undefined)
+            ) {
+              this.showFullMap(!this.fullMap)
+            }
+          }}
           onARElementTouch={async (element, childIndex) => {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT') {
               AppToolBar.addData({ selectARElement: element })

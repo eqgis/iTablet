@@ -32,6 +32,7 @@ export default class NavigationView extends React.Component {
     setMapNavigation: PropTypes.func,
     setNavigationHistory: PropTypes.func,
     navigationhistory: PropTypes.array,
+    setSampleDataShow: PropTypes.func,
   }
 
   constructor(props) {
@@ -155,6 +156,7 @@ export default class NavigationView extends React.Component {
    * @returns {Promise<void>}
    */
   routeAnalyst = async () => {
+    this.props.setSampleDataShow(false)
     //起点终点都选择完成的情况下，进入路径分析
     if (global.STARTX !== undefined && global.ENDX !== undefined) {
       //重置TouchType，显示Loading组件

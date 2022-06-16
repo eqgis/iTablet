@@ -20,6 +20,8 @@ import { scaleSize, setSpText } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
 import { SMap } from 'imobile_for_reactnative'
+import ImageButton from '../../components/ImageButton'
+import NavigationService from '../NavigationService'
 export default class NavigationDataChangePage extends Component {
   props: {
     navigation: Object,
@@ -303,6 +305,27 @@ export default class NavigationDataChangePage extends Component {
         headerProps={{
           title: getLanguage(global.language).Map_Main_Menu.SWITCH_DATA,
           navigation: this.props.navigation,
+          headerRight: (
+            <ImageButton
+              // containerStyle={styles.capture}
+              iconStyle={{
+                width: scaleSize(40),
+                height: scaleSize(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+              }}
+              activeOpacity={0.5}
+              icon={getThemeAssets().dataType.icon_newdata}
+              onPress={() => {
+                NavigationService.navigate("MapSelectList", { type: 'projectionSelect' ,cb:()=>{
+                  setTimeout(() => {
+                    this._onRefresh()
+                  }, 1000)
+                }})
+              }}
+            />
+          ),
         }}
         style={{ paddingBottom: scaleSize(120) }}
       >

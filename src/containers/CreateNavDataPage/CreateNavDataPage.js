@@ -18,7 +18,6 @@ import {
 import { Container, CustomInputDialog } from '../../components'
 import {
   getLayerIconByType,
-  getLayerWhiteIconByType,
   getPublicAssets,
   getThemeAssets,
 } from '../../assets'
@@ -266,7 +265,10 @@ export default class CreateNavDataPage extends Component {
 
         setTimeout(() => {
           global.Loading.setLoading(false)
-          rel && Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_SUCCESS)
+          if (rel) {
+            Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_SUCCESS)
+            this.props.route.params?.cb?.()
+          }
         }, 1000)
       }
     }

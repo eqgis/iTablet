@@ -493,4 +493,6 @@ const styles = StyleSheet.create({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {forwardRef: true}
 )(SymbolTabs)

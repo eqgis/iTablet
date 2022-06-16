@@ -22,6 +22,8 @@ import {
   ToolbarBottomButtons,
 } from './components'
 import Utils from './utils'
+import { ToolbarModuleKey } from './modules/modulesKeys'
+import { DEVICE } from '@/redux/models/device'
 
 interface ToolbarVisibleParam {
   /** 是否全屏， */
@@ -35,7 +37,7 @@ interface ToolbarVisibleParam {
   /** setVisible之后 global.TouchType的值  */
   touchType: any
   /** setVisible之后是否退出全屏 */
-  isExistFullMap: boolean 
+  isExistFullMap: boolean
   /** 专题类型 */
   themeType: any
   /**  是否显示指滑横向进度条 */
@@ -54,10 +56,10 @@ interface ToolbarVisibleParam {
   cb: () => void
 }
 
-interface Props extends Partial<DefaultProps> {
+export interface Props extends Partial<DefaultProps> {
   language: string,
   children: any,
-  type: string,
+  type: ToolbarModuleKey,
   navigation: Object,
   data: Array,
   existFullMap: () => {},
@@ -71,7 +73,7 @@ interface Props extends Partial<DefaultProps> {
   template: Object,
   currentLayer: Object,
   selection: Array,
-  device: Object,
+  device: DEVICE,
   windowSize: ScaledSize,
   mapLegend?: Object, //图例参数对象
   layerList?: Array, //三维图层
@@ -147,7 +149,7 @@ interface Props extends Partial<DefaultProps> {
   showNavigation: () => {},
 }
 
-interface DefaultProps {
+export interface DefaultProps {
   containerProps: {
     data: [],
     containerType: keyof typeof ToolbarType,
@@ -162,8 +164,8 @@ interface DefaultProps {
 
 
 interface State {
-  type: string
-  containerType: any,
+  type: ToolbarModuleKey
+  containerType: keyof typeof ToolbarType,
   isFullScreen: boolean,
   data: [],
   secdata: [],
@@ -177,7 +179,7 @@ interface State {
   selectKey: string,
   hasSoftMenuBottom: boolean,
   showCustomHeader: boolean,
-  customView: JSX.Element | null,
+  customView: () => JSX.Element | null,
 }
 
 // 工具表格默认高度
@@ -215,7 +217,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
 
   lastState: any
 
-  ToolbarModule: any
+  ToolbarModule: typeof ToolbarModuleDefault
 
   buttonView: ToolbarBottomButtons | null = null
 
@@ -274,11 +276,11 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
   }
 
   shouldComponentUpdate(nextProps: Props & DefaultProps, nextState: State) {
-    let tempNext = Object.assign({}, nextProps)
-    let tempthis = Object.assign({}, this.props)
+    const tempNext = Object.assign({}, nextProps)
+    const tempthis = Object.assign({}, this.props)
     tempNext.nav && delete tempNext.nav
     tempthis.nav && delete tempthis.nav
-    let shouldUpdate =
+    const shouldUpdate =
       JSON.stringify(tempthis) !== JSON.stringify(tempNext) ||
       JSON.stringify(this.state) !== JSON.stringify(nextState)
     // if (shouldUpdate) {
@@ -313,7 +315,6 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
       setToolbarVisible: this.setVisible,
       showBox:this.showBox,
       setLastState: this.setLastState,
-      scrollListToLocation: this.scrollListToLocation,
       showMenuBox: this.showMenuBox,
       mapMoveToCurrent: this.mapMoveToCurrent,
       contentView: this.contentView, // ToolbarContentView ref
@@ -339,11 +340,10 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     this.props.existFullMap && this.props.existFullMap()
   }
 
-  getData = async type => {
-    let toolbarModule = await this.ToolbarModule.getToolBarData(type, {
+  getData = async (type: ToolbarModuleKey) => {
+    const toolbarModule = await this.ToolbarModule.getToolBarData(type, {
       setToolbarVisible: this.setVisible,
       setLastState: this.setLastState,
-      scrollListToLocation: this.scrollListToLocation,
       contentView: this.contentView, // ToolbarContentView ref
       buttonView: this.buttonView, // ToolbarBottomButtons ref
       ...this.props,
@@ -367,7 +367,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
    * @param visible
    */
   setOverlayViewVisible = (visible: boolean) => {
-    let overlay = this.props.getOverlay()
+    const overlay = this.props.getOverlay()
     overlay && overlay.setVisible(visible)
   }
 
@@ -413,7 +413,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
    *   cb:                  setVisible之后的回调函数
    * }
    **/
-  setVisible = (isShow: boolean, type = '', params: Partial<ToolbarVisibleParam> = {}) => {
+  setVisible = (isShow: boolean, type: ToolbarModuleKey = '', params: Partial<ToolbarVisibleParam> = {}) => {
     try {
       if (params.measureType){
         this.measure(params)
@@ -443,7 +443,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
           let customView = params.customView
           let pageAction = params.pageAction
           if (data === undefined || buttons === undefined) {
-            let _data = await this.getData(type)
+            const _data = await this.getData(type)
             data = data || _data.data
             buttons = buttons || _data.buttons
             customView = customView || _data.customView
@@ -459,7 +459,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
           if (this.state.type !== type && params.resetToolModuleData) {
             await this.ToolbarModule.setToolBarData(type)
           }
-          let containerType =
+          const containerType =
             (params && params.containerType) || ToolbarType.table
           let newHeight = this.getContentViewHeight()
           if (!isShow) {
@@ -467,7 +467,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
           } else if (params && typeof params.height === 'number') {
             newHeight = params.height
           } else if (!params || params.height === undefined) {
-            let _size = this.ToolbarModule.getToolbarSize(containerType, {
+            const _size = this.ToolbarModule.getToolbarSize(containerType, {
               data,
               type,
             })
@@ -547,8 +547,8 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
   }
 
   showToolbarAndBox = (isShow: boolean) => {
-    let animatedList = []
-    let position =
+    const animatedList = []
+    const position =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? this.state.right
         : this.state.bottom
@@ -579,7 +579,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     }
     // if (!this.contentView) return
     // Box内容框的显示和隐藏
-    let positionNumber = parseFloat(JSON.stringify(position))
+    const positionNumber = parseFloat(JSON.stringify(position))
     if (positionNumber < 0) {
       animatedList.forEach(animated => animated && animated.start())
     } else if (animatedList.length > 0) {
@@ -603,7 +603,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
 
   // close = (type = this.state.type, actionFirst = false) => {
   close = () => {
-    let newState = { data: [], type: '' }
+    const newState = { data: [], type: '' }
     if (global.Type === ChunkType.MAP_EDIT) {
       global.showMenu = true
       newState.selectKey = ''
@@ -803,7 +803,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
   }
 
   mapMoveToCurrent = async () => {
-    let moveToCurrentResult = await SMap.moveToCurrent()
+    const moveToCurrentResult = await SMap.moveToCurrent()
     if (!moveToCurrentResult) {
       await SMap.moveToPoint({ x: 116.21, y: 39.42 })
     }
@@ -856,9 +856,9 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
       this.state.type === ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST ||
       this.state.type === ConstToolType.SM_MAP_PLOT_ANIMATION_GO_OBJECT_LIST
     ) {
-      let height = 0
+      const height = 0
       this.props.showFullMap && this.props.showFullMap(true)
-      let type = ConstToolType.SM_MAP_PLOT_ANIMATION_START
+      const type = ConstToolType.SM_MAP_PLOT_ANIMATION_START
       this.setVisible(true, type, {
         isFullScreen: false,
         height,
@@ -881,6 +881,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     }
   }
 
+  /** toolbarBottom 上的 ContentView */
   renderView = () => {
     return (
       <ToolbarContentView
@@ -900,6 +901,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     )
   }
 
+  /** toolbarbottom  */
   renderBottomBtns = () => {
     return (
       <ToolbarBottomButtons
@@ -920,6 +922,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     )
   }
 
+  /** toolbarbottom 上的 menu */
   renderMenuDialog = () => {
     return (
       <ToolbarMenuDialog
@@ -935,6 +938,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     )
   }
 
+  /** toolbar header right */
   renderCustomHeaderRight = () => {
     const rightButtons = []
     const headerData = this.ToolbarModule.getHeaderData(this.state.type)
@@ -962,6 +966,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     return rightButtons
   }
 
+  /** tooolbar header 返回事件 */
   customHeaderBack = () => {
     const headerData = this.ToolbarModule.getHeaderData(this.state.type)
     if (headerData && headerData.backAction) {
@@ -971,7 +976,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     }
   }
 
-  /** 自定义Header */
+  /** toolbar header */
   renderCustomHeader = () => {
     // if (!this.state.showCustomHeader) return null
     const headerView = this.ToolbarModule.getHeaderView(this.state.type)
@@ -993,7 +998,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     )
   }
 
-  /** 自定义Header */
+  /** 自定义 View */
   renderCustomView = () => {
     const CustomView = this.ToolbarModule.getCustomView(this.state.type)
     if (!CustomView) return null
@@ -1014,7 +1019,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     if (bottomView) {
       return bottomView
     }
-    let containerStyle =
+    const containerStyle =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? styles.fullContainerLandscape
         : styles.fullContainer
@@ -1032,7 +1037,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
       size.width = this.props.device.width
     }
-    let showContainerRadius = !(this.state.isTouchProgress && this.state.isFullScreen) &&
+    const showContainerRadius = !(this.state.isTouchProgress && this.state.isFullScreen) &&
       this.props.device.orientation.indexOf('LANDSCAPE') < 0
     return (
       <Animated.View

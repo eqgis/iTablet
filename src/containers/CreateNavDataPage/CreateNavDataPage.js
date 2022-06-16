@@ -270,6 +270,8 @@ export default class CreateNavDataPage extends Component {
           if (rel) {
             Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_SUCCESS)
             this.props.route.params?.cb?.()
+          }else{
+            Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_FAILED)
           }
         }, 1000)
       }

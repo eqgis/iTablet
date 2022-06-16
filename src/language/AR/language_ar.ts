@@ -2758,6 +2758,7 @@ export const language_ar: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "الملف موجود بالفعل ، يرجى إعادة إدخال اسم الملف",
   NETWORK_BUILDING: "جاري البناء...",
   ROADNET_BUILD_SUCCESS: "تم بناؤه بنجاح",
+  ROADNET_BUILD_FAILED: "Failed built",//to be translate
   SELECT_LINE_SMOOTH: "الرجاء تحديد الخط الذي يحتاج إلى تجانس",
   SELECT_A_POINT_INLINE: "الرجاء تحديد نقطة على الإنترنت",
   SELECT_POINT_INCURRENTLINE:"حدد نقطة على الخط الحالي أن يقطع",

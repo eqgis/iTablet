@@ -2738,6 +2738,7 @@ export const language_ja: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "ファイルは既に存在しています。ファイル名を再入力してください",
   NETWORK_BUILDING: "ネットワーク作成中...",
   ROADNET_BUILD_SUCCESS: "道路ネットワークの作成に成功しました",
+  ROADNET_BUILD_FAILED: "Failed built",//to be translate
   SELECT_LINE_SMOOTH: "スムーズネスラインを選択してください",
   SELECT_A_POINT_INLINE: "ライン上にあるポイントを選択してください",
   SELECT_POINT_INCURRENTLINE:"切断するためのライン上にあるポイントを選択してください",

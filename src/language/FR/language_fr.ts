@@ -2736,6 +2736,7 @@ export const language_fr: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "Le fichier existe déjà, veuillez saisir à nouveau le nom du fichier",
   NETWORK_BUILDING: "Bâtiment...",
   ROADNET_BUILD_SUCCESS: "Construit avec succès",
+  ROADNET_BUILD_FAILED: "Failed built",//to be translate
   SELECT_LINE_SMOOTH: "Veuillez sélectionner la ligne à lisser",
   SELECT_A_POINT_INLINE: "Veuillez sélectionner un point en ligne",
   SELECT_POINT_INCURRENTLINE:"Sélectionner le point sur la ligne actuelle à interrompre",

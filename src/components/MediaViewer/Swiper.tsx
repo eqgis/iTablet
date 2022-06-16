@@ -135,6 +135,14 @@ export default class Swiper extends React.Component<Props, State> {
     })
   }
 
+  scrollTo = (index: number, animated = true) => {
+    this.setState({
+      index: index,
+    }, () => {
+      this.scrollView?.scrollTo({ x: this.state.width * index, y: 0, animated: animated })
+    })
+  }
+
   render(): ReactNode {
     const page: ReactNode[] = []
     if (this.props.children && this.props.children?.length > 0) {

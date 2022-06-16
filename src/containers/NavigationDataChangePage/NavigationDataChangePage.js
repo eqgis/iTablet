@@ -192,7 +192,7 @@ export default class NavigationDataChangePage extends Component {
    * 跳转到新建室外数据集页面 zhangxt
    */
   _newNavData = () => {
-    this.props.navigation.navigate('CreateNavDataPage')
+    this.props.navigation.navigate('CreateNavDataPage', { cb: this.update })
   }
 
   /**

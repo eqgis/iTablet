@@ -1,12 +1,15 @@
 import { Dimensions, PixelRatio, Platform } from 'react-native'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
+import Orientation, { orientation as orientationType, specificOrientation } from 'react-native-orientation'
+
+export type OrientationType = orientationType | specificOrientation
 
 const defaultPixel = PixelRatio.get() // iphone6的像素密度
-const dp2px = dp => PixelRatio.getPixelSizeForLayoutSize(dp) // DP to PX
-const px2dp = px => PixelRatio.roundToNearestPixel(px) // PX to DP
+const dp2px = (dp: number) => PixelRatio.getPixelSizeForLayoutSize(dp) // DP to PX
+const px2dp = (px: number) => PixelRatio.roundToNearestPixel(px) // PX to DP
 let deviceWidth = getScreenWidth() // Dimensions.get('window').width //设备的宽度
 let deviceHeight = getScreenHeight() // Dimensions.get('window').height //设备的高度
-let deviceSafeHeight // 设备安全高度
+let deviceSafeHeight = getScreenSafeHeight() // 设备安全高度
 // const defaultPixel = 2.25
 // const fontScale = PixelRatio.getFontScale()
 
@@ -27,7 +30,7 @@ const screenHeight = Math.max(
  *
  * 其他大小设备按宽度等比缩放
  */
-export function dp(size) {
+export function dp(size: number) {
   return size * getDpRatio()
 }
 
@@ -42,7 +45,7 @@ function getDpRatio() {
   return 1.36
 }
 
-function getScreenWidth(orientation) {
+function getScreenWidth(orientation?: OrientationType): number {
   deviceWidth = Dimensions.get('window').width
   if (!orientation) return deviceWidth
   if (orientation.indexOf('LANDSCAPE') === 0) {
@@ -58,7 +61,7 @@ function getScreenWidth(orientation) {
   }
   return deviceWidth
 }
-function getScreenHeight(orientation) {
+function getScreenHeight(orientation?: OrientationType): number {
   deviceHeight = Dimensions.get('window').height
   if (!orientation) return deviceHeight
   if (orientation.indexOf('LANDSCAPE') === 0) {
@@ -74,7 +77,7 @@ function getScreenHeight(orientation) {
   }
   return deviceHeight
 }
-function getScreenSafeHeight(orientation) {
+function getScreenSafeHeight(orientation?: OrientationType): number {
   if (Platform.OS === 'ios') {
     const _orientation = orientation || getOrientation()
     let paddings = 0
@@ -92,7 +95,7 @@ function getScreenSafeHeight(orientation) {
       ExtraDimensions.getRealWindowWidth(),
     )
   } else if (orientation.indexOf('PORTRAIT') >= 0) {
-    let screenHeight = Math.max(
+    const screenHeight = Math.max(
       ExtraDimensions.getRealWindowHeight(),
       ExtraDimensions.getRealWindowWidth(),
     )
@@ -106,7 +109,7 @@ function getScreenSafeHeight(orientation) {
   return deviceSafeHeight
 }
 
-function getScreenSafeWidth(orientation) {
+function getScreenSafeWidth(orientation?: OrientationType): number {
   if (Platform.OS === 'ios') {
     const _orientation = orientation || getOrientation()
     let paddings = 0
@@ -127,7 +130,7 @@ function getRatio() {
   } else if (height < 800) {
     ratio = 0.8
   } else if (height < 1000) {
-    ratio = (Math.max(deviceHeight, deviceWidth) / 1000.0).toFixed(2)
+    ratio = parseFloat((Math.max(deviceHeight, deviceWidth) / 1000.0).toFixed(2))
   } else {
     ratio = 1
   }
@@ -138,7 +141,7 @@ function getRatio() {
 // let h2 = deviceWidth > 320 ? 1080 / defaultPixel : 1134 / defaultPixel
 const w2 = 610 / defaultPixel
 const h2 = 1080 / defaultPixel
-let scale // 获取缩放比例
+let scale = 1 // 获取缩放比例
 if (deviceWidth > deviceHeight) {
   scale = Math.min(deviceHeight / w2, deviceWidth / h2)
 } else {
@@ -150,22 +153,22 @@ if (deviceWidth > deviceHeight) {
  * @param size: 单位：px （720*1080为模板标记的原始像素值）
  * return number dp
  */
-export function scaleSize(size) {
+export function scaleSize(size: number) {
   size = Math.round(size * 0.7 * getRatio())
   return size
 }
 
-export function fixedSize(size) {
+export function fixedSize(size: number) {
   size = (size * scale) / defaultPixel
   return size
 }
 
-export function setSpText(size) {
+export function setSpText(size: number) {
   size = size * (Platform.OS === 'ios' ? 0.8 : 0.7) * getRatio()
   return size
 }
 
-export function fixedText(size) {
+export function fixedText(size: number) {
   // size = Math.round(((size * scale + 0.5) * pixelRatio) / fontScale)
   size = Math.round(size * scale + 0.5)
   // if (Platform.OS === 'ios') {
@@ -197,8 +200,8 @@ function isIphoneX() {
   return false
 }
 
-let orientation = ''
-function setOrientation(o) {
+let orientation: OrientationType | '' = ''
+function setOrientation(o: OrientationType) {
   if (o) {
     orientation = o
   }
@@ -215,7 +218,7 @@ function getOrientation() {
  * 获取iphone和iphone X顶部距离
  * @returns {number}
  */
-function getIphonePaddingTop(orientation) {
+function getIphonePaddingTop(orientation?: OrientationType): number {
   let paddingTop = 0
   if (Platform.OS === 'android') {
     return paddingTop
@@ -234,7 +237,7 @@ function getIphonePaddingTop(orientation) {
  * 获取iphone和iphone X底部距离
  * @returns {number}
  */
-function getIphonePaddingBottom(orientation) {
+function getIphonePaddingBottom(orientation?: OrientationType): number {
   let paddingBottom = 0
   if (Platform.OS === 'android') {
     return paddingBottom
@@ -250,7 +253,10 @@ function getIphonePaddingBottom(orientation) {
  * 获取iphone和iphone X左右距离
  * @returns {object}
  */
-function getIphonePaddingHorizontal(orientation) {
+function getIphonePaddingHorizontal(orientation?: OrientationType): {
+  paddingLeft: number,
+  paddingRight: number,
+} {
   const paddingHorizontal = {
     paddingLeft: 0,
     paddingRight: 0,
@@ -266,7 +272,7 @@ function getIphonePaddingHorizontal(orientation) {
   return paddingHorizontal
 }
 
-export function px(size) {
+export function px(size: number) {
   return size / defaultPixel
 }
 
@@ -275,7 +281,7 @@ export function px(size) {
  * @param orientation
  * @returns {*}
  */
-export function getMapChildPageWith(orientation) {
+export function getMapChildPageWith(orientation?: OrientationType): number {
   let { width } = Dimensions.get('screen')
   orientation = orientation || getOrientation()
   const _height = Math.max(
@@ -298,13 +304,50 @@ export function getMapChildPageWith(orientation) {
 
 const HEADER_HEIGHT = scaleSize(100)
 const HEADER_HEIGHT_LANDSCAPE = scaleSize(60)
-function getHeaderHeight(orientation) {
+function getHeaderHeight(orientation?: OrientationType): number {
   let height = HEADER_HEIGHT
   orientation = orientation || getOrientation()
   if (orientation.indexOf('LANDSCAPE') === 0) {
     height = HEADER_HEIGHT_LANDSCAPE
   }
   return height + getIphonePaddingTop(orientation)
+}
+
+/************************************************* 屏幕锁定 ******************************************************/
+let lockOrientation: OrientationType | '' = ''
+/**
+ * 锁定屏幕方向
+ * @param orientation 屏幕方向
+ */
+function lockScreen(orientation: OrientationType) {
+  lockOrientation = orientation
+}
+/**
+ * 解锁屏幕方向
+ */
+function unLockScreen() {
+  lockOrientation = ''
+}
+/**
+ * 获取屏幕方向
+ */
+function getLockScreen() {
+  return lockOrientation
+}
+
+function lockToPortrait() {
+  Orientation.lockToPortrait()
+  lockOrientation = 'PORTRAIT'
+}
+
+function lockToLandscape() {
+  Orientation.lockToLandscape()
+  lockOrientation = 'LANDSCAPE'
+}
+
+function unlockAllOrientations() {
+  Orientation.unlockAllOrientations()
+  lockOrientation = ''
 }
 
 export default {
@@ -332,4 +375,11 @@ export default {
   getIphonePaddingBottom,
   getIphonePaddingHorizontal,
   getHeaderHeight,
+
+  lockScreen,
+  lockToLandscape,
+  unLockScreen,
+  getLockScreen,
+  lockToPortrait,
+  unlockAllOrientations,
 }

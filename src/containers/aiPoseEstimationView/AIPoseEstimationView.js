@@ -4,9 +4,8 @@ import {
   SPoseEstimationView,
   SMap,
 } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
-import { setSpText } from '../../utils'
+import { setSpText, screen } from '../../utils'
 import {
   View,
   TouchableOpacity,
@@ -55,7 +54,7 @@ export default class AIPoseEstimationView extends React.Component {
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
     SPoseEstimationView.setOperMode(this.state.poseMode)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {

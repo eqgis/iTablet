@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Platform, InteractionManager,AppState, } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
-import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import {
@@ -12,7 +11,7 @@ import {
 } from 'imobile_for_reactnative'
 import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
-import { Toast } from '../../utils'
+import { Toast, screen } from '../../utils'
 
 /*
  * 违章采集界面
@@ -52,7 +51,7 @@ export default class IllegallyParkView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {
@@ -106,7 +105,7 @@ export default class IllegallyParkView extends React.Component {
 
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(true)
-    Orientation.unlockAllOrientations()
+    screen.unlockAllOrientations()
     AppState.removeEventListener('change', this.handleStateChange)
     //移除监听
   }

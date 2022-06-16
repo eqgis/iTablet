@@ -7,7 +7,7 @@ import {
   FlatList,
 } from 'react-native'
 import NetInfo from "@react-native-community/netinfo"
-import { Toast, scaleSize } from '../../../../utils/index'
+import { Toast, scaleSize, screen } from '../../../../utils/index'
 import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 import { Container } from '../../../../components'
 import { FileTools } from '../../../../native'
@@ -20,7 +20,6 @@ import FriendListFileHandle from '../../Friend/FriendListFileHandle'
 // import CoworkFileHandle from '../../Find/CoworkManagePage/CoworkFileHandle'
 import OnlineLoginView from './component/OnlineLoginView'
 import IPortalLoginView from './component/IPortalLoginView'
-import Orientation from 'react-native-orientation'
 import { color } from '../../../../styles'
 import { GetUserBaseMapUtil } from '../../../../utils'
 export default class Login extends React.Component {
@@ -50,13 +49,13 @@ export default class Login extends React.Component {
   componentDidMount() {
     this.getData()
     if (!global.isPad) {
-      Orientation.lockToPortrait()
+      screen.lockToPortrait()
       global.ORIENTATIONLOCKED = true
     }
   }
 
   componentWillUnmount() {
-    Orientation.unlockAllOrientations()
+    screen.unlockAllOrientations()
     global.ORIENTATIONLOCKED = false
   }
 

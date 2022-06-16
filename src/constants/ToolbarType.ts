@@ -1,4 +1,4 @@
-interface IToolbarType {
+export interface IToolbarType {
   list: 'list', // 列表
   selectableList: 'selectableList', // 可选择列表，每行左方多选框
   table: 'table', // 固定表格

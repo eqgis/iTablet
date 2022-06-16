@@ -22,8 +22,7 @@ import {
   arAnimation,
   arAttribute,
 } from '../../containers/workspace/components/ToolBar/modules'
-import Orientation from 'react-native-orientation'
-import { LayerUtils } from '../../utils'
+import { LayerUtils, screen } from '../../utils'
 import { Platform } from 'react-native'
 
 export default class MapARConfig extends Module {
@@ -128,7 +127,7 @@ export default class MapARConfig extends Module {
           return false
         }
         SMap.setDynamicviewsetVisible(false)
-        Orientation.lockToPortrait()
+        screen.lockToPortrait()
         return isAvailable
       },
     })

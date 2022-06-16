@@ -881,6 +881,8 @@ class AppRoot extends Component {
   }
 
   orientation = o => {
+    // 适配iOS,判断如果是锁屏,不修改orientation
+    if (screen.getLockScreen() && o.toLowerCase().indexOf(screen.getLockScreen().toLowerCase()) < 0) return
     this.showStatusBar(o)
     // iOS横屏时为LANDSCAPE-LEFT 或 LANDSCAPE-RIGHT，此时平放，o为LANDSCAPE，此时不做处理
     this.props.setShow({

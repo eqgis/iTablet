@@ -8,11 +8,10 @@ import {
   Platform,
 } from 'react-native'
 import NavigationService from '../NavigationService'
-import Orientation from 'react-native-orientation'
 import styles from './styles'
 import { Container, TextBtn } from '../../components'
 import { SAIClassifyView, SMap, SMediaCollector } from 'imobile_for_reactnative'
-import { Toast } from '../../utils'
+import { Toast, screen } from '../../utils'
 import { getLanguage } from '../../language'
 import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
@@ -55,7 +54,7 @@ export default class ClassifyResultEditView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   back = () => {

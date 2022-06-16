@@ -4,6 +4,8 @@
   E-mail: yangshanglong@supermap.com
 */
 
+import { WIDTH } from '@/utils/constUtil'
+import { dp } from 'imobile_for_reactnative/utils/size'
 import * as React from 'react'
 import { ScrollView, View, Dimensions } from 'react-native'
 import styles from './styles'
@@ -154,6 +156,16 @@ export default class TableList extends React.Component {
   render() {
     if (this.getType() === 'scrollTable') {
       const isHorizontalScroll = this.props.horizontal && (this.props.column < this.props.data.length)
+      // 每一个项的宽度
+      const cellWidth = isHorizontalScroll ? Math.min(Dimensions.get('window').width / this.props.column, 100) : (100 / this.props.column + '%')
+      // 滑动部分的宽度（不是滑动部分显示的宽度，而是实际的宽度）
+      const width = isHorizontalScroll ? Math.max(Dimensions.get('window').width, cellWidth * this.props.data.length) : (100 + '%')
+      // console.warn(cellWidth + " - " + cellWidth * this.props.data.length + " - " + Dimensions.get('window').width)
+      const style = {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: width,
+      }
       return (
         <ScrollView
           horizontal={this.props.horizontal}
@@ -166,7 +178,7 @@ export default class TableList extends React.Component {
           ]}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          // contentContainerStyle={{width: 375, backgroundColor: 'transparent'}}
+          contentContainerStyle={style}
         >
           {this.renderRows()}
         </ScrollView>

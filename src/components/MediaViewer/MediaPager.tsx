@@ -26,10 +26,14 @@ interface State {
   visible: boolean,
 }
 
+const SCROLL_THRESHOLD = 60
+
 export default class MediaPager extends React.Component<Props, State> {
 
   dataRef: (VideoViewer | ImageViewer | null)[] = []
   swiper: Swiper | undefined | null
+  currentIndex: number
+  scrolling = false
 
   static defaultProps = {
     isModal: false,
@@ -46,6 +50,7 @@ export default class MediaPager extends React.Component<Props, State> {
       defaultIndex: props.defaultIndex,
       visible: false,
     }
+    this.currentIndex = props.defaultIndex
     this.dataRef = []
   }
 
@@ -73,7 +78,7 @@ export default class MediaPager extends React.Component<Props, State> {
         visible && this.forceUpdate()
       })
     }
-    this.index = index
+    this.currentIndex = index
     this.props.onVisibleChange && this.props.onVisibleChange(visible)
   }
 
@@ -106,9 +111,26 @@ export default class MediaPager extends React.Component<Props, State> {
             ref={ref => (this.dataRef[i] = ref)}
             key={uri}
             uri={uri}
-            // containerStyle={this.props.containerStyle}
             onClick={() => this.setVisible(false)}
             orientation={this.props.device.orientation}
+            horizontalOuterRangeOffset={offsetX => {
+              if (this.scrolling) return
+              if (offsetX >= SCROLL_THRESHOLD && this.currentIndex - 1 >= 0) {
+                this.currentIndex -= 1
+                this.scrolling = true
+                this.swiper?.scrollTo(this.currentIndex)
+              } else if (offsetX <= -SCROLL_THRESHOLD && this.currentIndex + 1 < this.props.data.length) {
+                this.currentIndex += 1
+                this.scrolling = true
+                this.swiper?.scrollTo(this.currentIndex)
+              }
+              if (this.scrolling) {
+                const timer = setTimeout(() => {
+                  this.scrolling = false
+                  clearTimeout(timer)
+                }, 500)
+              }
+            }}
           />,
         )
       }
@@ -119,6 +141,7 @@ export default class MediaPager extends React.Component<Props, State> {
   renderScrollView = () => {
     return (
       <Swiper
+        ref={ref => this.swiper = ref}
         index={this.state.defaultIndex}
         dot={<View style={styles.dot} />}
         activeDot={<View style={styles.activeDot} />}
@@ -131,6 +154,7 @@ export default class MediaPager extends React.Component<Props, State> {
             this.props.data[index].uri,
           )
           const currentView = this.dataRef[index]
+          this.currentIndex = index
           if (type === 'video' && currentView instanceof VideoViewer) {
             currentView.pause()
           }

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import NetInfo from "@react-native-community/netinfo"
 import { Container, DropdownView } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
-import { Toast, scaleSize } from '../../../../../utils'
+import { Toast, scaleSize, screen } from '../../../../../utils'
 import { color } from '../../../../../styles'
 import OnlineLoginView from '../../../Mine/Login/component/OnlineLoginView'
 import { SMap } from 'imobile_for_reactnative'
@@ -13,7 +13,6 @@ import {
   setCloudLicenseSite,
 } from '../../../../../redux/models/license'
 import { getThemeAssets } from '../../../../../assets'
-import Orientation from 'react-native-orientation'
 
 class LoginCloud extends Component {
   props: {
@@ -38,12 +37,12 @@ class LoginCloud extends Component {
   componentDidMount() {
     this.reLogin()
     if (!global.isPad) {
-      Orientation.lockToPortrait()
+      screen.lockToPortrait()
     }
   }
 
   componentWillUnmount() {
-    Orientation.unlockAllOrientations()
+    screen.unlockAllOrientations()
   }
 
   reLogin = async () => {

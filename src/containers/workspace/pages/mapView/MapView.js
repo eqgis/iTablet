@@ -118,7 +118,6 @@ import {
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
-import Orientation from 'react-native-orientation'
 import IncrementData from '../../components/ToolBar/modules/incrementModule/IncrementData'
 import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessageIcon'
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
@@ -624,17 +623,17 @@ export default class MapView extends React.Component {
         this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
       }
 
-      this.unsubscribeBlur = () => {
-        if (!this.fullMap) {
-          this.showFullMap(true)
-          this.showFullonBlur = true
-        }
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-      }
+      // this.unsubscribeBlur = () => {
+      //   if (!this.fullMap) {
+      //     this.showFullMap(true)
+      //     this.showFullonBlur = true
+      //   }
+      //   this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+      // }
 
       //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
       this.props.navigation.addListener('focus', this.unsubscribeDidFocus)
-      this.props.navigation.addListener('blur', this.unsubscribeBlur)
+      // this.props.navigation.addListener('blur', this.unsubscribeBlur)
 
       SMap.addMessageCalloutListener(this.onMessageCalloutTap)
       this.addSpeechRecognizeListener()
@@ -964,7 +963,7 @@ export default class MapView extends React.Component {
       global.Type === ChunkType.MAP_AR_ANALYSIS ||
       global.Type === ChunkType.MAP_AR_MAPPING
     ) {
-      Orientation.unlockAllOrientations()
+      screen.unlockAllOrientations()
     }
     // if (global.Type === ChunkType.MAP_AR_ANALYSIS) {
     //   (async function () {
@@ -1009,7 +1008,7 @@ export default class MapView extends React.Component {
     }
 
     this.props.navigation.removeListener('focus', this.unsubscribeDidFocus)
-    this.props.navigation.removeListener('blur', this.unsubscribeBlur)
+    // this.props.navigation.removeListener('blur', this.unsubscribeBlur)
     //移除手势监听
     global.mapView && SMap.deleteGestureDetector()
 
@@ -3451,8 +3450,8 @@ export default class MapView extends React.Component {
       this.props.showAR(_isAR)
       global.showAIDetect = _isAR
       _isAR
-        ? Orientation.lockToPortrait()
-        : Orientation.unlockAllOrientations()
+        ? screen.lockToPortrait()
+        : screen.unlockAllOrientations()
 
       if (this.props.isAR) {
         // if (Platform.OS === 'android') {
@@ -3471,33 +3470,6 @@ export default class MapView extends React.Component {
       return _isAR
     }
     return false
-
-    // let _showAIDetect = this.state.showAIDetect
-    // if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
-    //   if (showAIDetect !== _showAIDetect) {
-    //     _showAIDetect = showAIDetect
-    //   } else {
-    //     return
-    //   }
-    // } else {
-    //   _showAIDetect = !_showAIDetect
-    // }
-    // this.setState({
-    //   showAIDetect: _showAIDetect,
-    // })
-    // this.props.showAR(_showAIDetect)
-    // global.showAIDetect = _showAIDetect
-    // SMap.setDynamicviewsetVisible(!_showAIDetect)
-    // _showAIDetect
-    //   ? Orientation.lockToPortrait()
-    //   : Orientation.unlockAllOrientations()
-
-    // // 是否进行过多媒体采集 防止AI相机卡死 zcj
-    // if(Platform.OS === 'android' && ToolbarModule.getData().hasCaptureImage){
-    //   ToolbarModule.addData({ hasCaptureImage: false })
-    //   SAIDetectView.onResume()
-    // }
-    // return _showAIDetect
   }
 
   /**

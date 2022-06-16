@@ -4,12 +4,13 @@ import { handleActions } from 'redux-actions'
 import { screen } from '../../utils'
 import { ThunkAction } from "redux-thunk"
 import { RootState } from "../types"
+import { OrientationType } from "@/utils/screen"
 // Constants
 // --------------------------------------------------
 export const SHOW_SET = 'SHOW_SET'
 
 export interface DEVICE {
-  orientation: string,
+  orientation: OrientationType,
   width: number,
   height: number,
   safeWidth: number,
@@ -25,7 +26,7 @@ export interface DeviceState {
 export interface SetWindowSizeAction {
   type: typeof SHOW_SET,
   payload: {
-    orientation: string,
+    orientation: OrientationType,
   },
 }
 
@@ -33,7 +34,7 @@ export interface SetWindowSizeAction {
 // ---------------------------------.3-----------------
 
 // 横竖屏切换，使用
-export const setShow = (params: {orientation: string}, cb?: () => void): ThunkAction<void, RootState, unknown, SetWindowSizeAction> => async dispatch => {
+export const setShow = (params: {orientation: OrientationType}, cb?: () => void): ThunkAction<void, RootState, unknown, SetWindowSizeAction> => async dispatch => {
   screen.setOrientation(params.orientation)
   await dispatch({
     type: SHOW_SET,
@@ -57,7 +58,7 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${SHOW_SET}`]: (state: any, { payload }: { payload: {orientation: string}}) => {
+    [`${SHOW_SET}`]: (state: any, { payload }: { payload: {orientation: OrientationType}}) => {
       const { device } = state.toJS()
       device.width = screen.getScreenWidth(payload.orientation)
       device.height = screen.getScreenHeight(payload.orientation)

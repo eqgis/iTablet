@@ -4,7 +4,7 @@
  E-mail: yangshanglong@supermap.com
  */
 
-/*global GLOBAL*/
+/*global global*/
 import * as React from 'react'
 import {
   SMMapView,

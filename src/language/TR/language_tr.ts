@@ -2735,6 +2735,7 @@ export const language_tr: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "Dosya zaten mevcut, lütfen dosya adını yeniden girin",
   NETWORK_BUILDING: "Uygulanıyor...",
   ROADNET_BUILD_SUCCESS: "Başarıyla uygulandı",
+  ROADNET_BUILD_FAILED: "Failed built",//to be translate
   SELECT_LINE_SMOOTH: "Lütfen düzeltilmesi gereken çizgiyi seçin",
   SELECT_A_POINT_INLINE: "Lütfen bir çevrimiçi nokta seçin",
   SELECT_POINT_INCURRENTLINE:"Kesinti için geçerli satırdaki noktayı seçin",

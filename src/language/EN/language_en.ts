@@ -2736,6 +2736,7 @@ export const language_en: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "The file already exists, please re-enter the file name",
   NETWORK_BUILDING: "Building...",
   ROADNET_BUILD_SUCCESS: "Successfully built",
+  ROADNET_BUILD_FAILED: "Failed built",//to be translate
   SELECT_LINE_SMOOTH: "Please select the line that needs to be smoothed",
   SELECT_A_POINT_INLINE: "Please select an online point",
   SELECT_POINT_INCURRENTLINE:"Please long press to select a point at which the line will be split",

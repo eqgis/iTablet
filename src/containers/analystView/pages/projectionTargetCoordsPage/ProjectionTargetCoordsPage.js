@@ -10,6 +10,8 @@ import { View, Text, SectionList, TouchableOpacity, Image, Platform } from 'reac
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import { SMap, SProcess, DatasetType } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
+import ImageButton from '../../../../components/ImageButton'
+import NavigationService from '../../../NavigationService'
 
 const popTypes = {
   DataSource: 'DataSource',
@@ -925,11 +927,30 @@ export default class ProjectionTargetCoordsPage extends Component {
           navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
-            <TextBtn
-              btnText={getLanguage(global.language).CONFIRM}
-              textStyle={styles.headerBtnTitle}
-              btnClick={this.confirm}
-            />
+            <View
+              style={{flexDirection: 'row'}}
+            >
+              <ImageButton
+                // containerStyle={styles.capture}
+                iconStyle={{
+                  width: scaleSize(40),
+                  height: scaleSize(40),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                }}
+                activeOpacity={0.5}
+                icon={getThemeAssets().dataType.icon_newdata}
+                onPress={() => {
+                  NavigationService.navigate("MapSelectList", { type: 'projectionSelect' })
+                }}
+              />
+              <TextBtn
+                btnText={getLanguage(global.language).CONFIRM}
+                textStyle={styles.headerBtnTitle}
+                btnClick={this.confirm}
+              />
+            </View>
           ),
           // 部分界面国际化下标题过长遮盖
           isResponseHeader: true,

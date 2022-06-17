@@ -28,6 +28,8 @@ import { SMap, DatasetType } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import ModalDropdown from 'react-native-modal-dropdown'
+import NavigationService from '../NavigationService'
+import ImageButton from '../../components/ImageButton'
 
 export default class CreateNavDataPage extends Component {
   props: {
@@ -268,6 +270,8 @@ export default class CreateNavDataPage extends Component {
           if (rel) {
             Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_SUCCESS)
             this.props.route.params?.cb?.()
+          }else{
+            Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_FAILED)
           }
         }, 1000)
       }
@@ -462,6 +466,28 @@ export default class CreateNavDataPage extends Component {
         headerProps={{
           title: getLanguage(global.language).Prompt.NEW_NAV_DATA,
           navigation: this.props.navigation,
+          headerRight: (
+            <ImageButton
+              // containerStyle={styles.capture}
+              iconStyle={{
+                width: scaleSize(40),
+                height: scaleSize(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+              }}
+              activeOpacity={0.5}
+              icon={getThemeAssets().dataType.icon_newdata}
+              onPress={() => {
+                NavigationService.navigate("MapSelectList", { type: 'projectionSelect' ,cb:()=>{
+                  setTimeout(() => {
+                    this.getDatasource()
+                    this.getLineDatasets()
+                  }, 1000)
+                }})
+              }}
+            />
+          ),
         }}
       >
         {this.renderDatasets()}

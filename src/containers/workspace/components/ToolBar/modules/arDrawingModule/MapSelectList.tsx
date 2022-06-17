@@ -6,7 +6,7 @@ import { scaleSize, dp, setSpText,Toast} from '../../../../../../utils'
 import React from 'react'
 import { getThemeAssets ,getImage} from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
-import { SARMap,FileTools } from "imobile_for_reactnative"
+import { SARMap,FileTools,SMap,EngineType } from "imobile_for_reactnative"
 import { ILocalData } from '../../../../../../utils/DataHandler/DataLocal'
 import NavigationService from '../../../../../NavigationService'
 import { Users } from '../../../../../../redux/models/user'
@@ -47,8 +47,11 @@ class MapSelectList extends React.Component<Props, State> {
     if(type === 'mapSelect'){
       const maps = await DataHandler.getLocalData(this.props.user.currentUser, 'MAP')
       this.setState({maps:maps})
-    }else{
+    }else if (type === 'sandTableSelect'){
       const data = await DataHandler.getLocalData(this.props.user.currentUser, 'SANDTABLE')
+      this.setState({maps:data})
+    }else if (type === 'projectionSelect'){
+      const data = await DataHandler.getLocalData(this.props.user.currentUser, 'DATA')
       this.setState({maps:data})
     }
   }
@@ -59,8 +62,10 @@ class MapSelectList extends React.Component<Props, State> {
     const type = this.props.route.params?.type
     if (type === 'mapSelect') {
       title = getLanguage().CHOOSE_MAP
-    }else{
+    }else if (type === 'sandTableSelect'){
       title = getLanguage().CHOOSE_SANDTABLE
+    }else if (type === 'projectionSelect'){
+      title = getLanguage(global.language).Profile.DATA
     }
     return (
       <View style={{
@@ -133,7 +138,6 @@ class MapSelectList extends React.Component<Props, State> {
               )
               return
             }
-            NavigationService.goBack()
             const type = this.props.route.params?.type
             if (type === 'mapSelect') {
               await SARMap.addARBrochoreMap(this.state.selectedData)
@@ -142,7 +146,7 @@ class MapSelectList extends React.Component<Props, State> {
               _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_BROCHORE, {
                 isFullScreen: false,
               })
-            } else {
+            } else if (type === 'sandTableSelect') {
               const homePath = await FileTools.getHomeDirectory()
               const sandTablePath:string[] = []
               this.state.selectedData.map(item => {
@@ -154,12 +158,27 @@ class MapSelectList extends React.Component<Props, State> {
               _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_SAND_TABLE_ALBUM, {
                 isFullScreen: false,
               })
+            } else if (type === 'projectionSelect') {
+              this.state.selectedData.map(async item => {
+                const datasourceParams = {}
+                datasourceParams.server = await FileTools.appendingHomeDirectory(item.path)
+                datasourceParams.engineType = EngineType.UDB
+                datasourceParams.alias = item.name.substring(0, item.name.indexOf('.'))
+                const datasourceAlias = await SMap.openDatasource(datasourceParams)
+                if(datasourceAlias){
+                  Toast.show(getLanguage().Prompt.ADD_SUCCESS)
+                }
+              })
             }
+            if(this.props.route.params?.cb){
+              this.props.route.params?.cb()
+            }
+            NavigationService.goBack()
           }}
         >
           <Text
             style={{
-              textAlign: 'center', 
+              textAlign: 'center',
               fontSize: dp(14),
               color: 'black',
             }}
@@ -187,8 +206,10 @@ class MapSelectList extends React.Component<Props, State> {
     let name
     if(type === 'mapSelect'){
       name = item.name.substring(0, item.name.lastIndexOf('.'))
-    }else{
+    }else if (type === 'sandTableSelect'){
       name = item.name
+    }else if (type === 'projectionSelect'){
+      name = item.name.substring(0,item.name.indexOf('.'))
     }
     return(
       <TouchableOpacity

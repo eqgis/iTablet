@@ -4,6 +4,7 @@ import {
   setMapNavigation,
   setNavigationHistory,
 } from '../../../../redux/models/setting'
+import {setSampleDataShow} from '../../../../redux/models/down'
 
 const mapStateToProps = state => ({
   mapNavigation: state.setting.toJS().mapNavigation,
@@ -13,6 +14,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setMapNavigation,
   setNavigationHistory,
+  setSampleDataShow,
 }
 
 export default connect(

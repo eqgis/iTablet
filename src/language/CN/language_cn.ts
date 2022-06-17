@@ -2736,6 +2736,7 @@ export const language_cn = {
   FILENAME_ALREADY_EXIST: "文件已存在,请重新输入文件名",
   NETWORK_BUILDING: "构网中...",
   ROADNET_BUILD_SUCCESS: "路网构建成功",
+  ROADNET_BUILD_FAILED: "数据集中无数据，生成路网失败",
   SELECT_LINE_SMOOTH: "请选择需要平滑的线",
   SELECT_A_POINT_INLINE: "请长按放大镜选择一个线上点",
   SELECT_POINT_INCURRENTLINE:"请长按选择当前线上的点打断",

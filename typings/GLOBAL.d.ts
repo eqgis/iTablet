@@ -1,185 +1,187 @@
+/* eslint-disable no-var */
 /**
  * 声明全局GLOBAL
  */
+
 import { orientation, specificOrientation } from 'react-native-orientation'
 
-declare namespace GLOBAL {
+declare global {
   /** 语言 */
-  let language: string
+  var language: string
   /** 是否在市场审核期间 */
-  let isAudit: boolean
-  let markerTag: string
+  var isAudit: boolean
+  var markerTag: string
   /** 版本号 */
-  let APP_VERSION: string
+  var APP_VERSION: string
   /** 系统版本号 x32 x64 */
-  let SYSTEM_VERSION: string
+  var SYSTEM_VERSION: string
   /** 新手引导版本号 */
-  let GUIDE_VERSION: string
+  var GUIDE_VERSION: string
   /** TODO 动态切换主题，将 global.ThemeType 放入Redux中管理 */
-  let ThemeType: string
+  var ThemeType: string
   /** 底图数量 */
-  let BaseMapSize: number
+  var BaseMapSize: number
   /** 判断设备是否是Pad */
-  let isPad: boolean
+  var isPad: boolean
   /** 防止重复点击/快速点击不同组件，用于首页（模块和Tabs）和MapView */
-  let clickWait: boolean
+  var clickWait: boolean
   /** 是否是在线协作模式 */
-  let coworkMode: boolean
+  var coworkMode: boolean
   /** 首页模块类型 */
-  let Type: string
+  var Type: string
   /** 地图触摸事件类型 */
-  let TouchType: string
+  var TouchType: string
   /** 三维Action PAN3D | PANSELECT3D | PAN3D_FIX */
-  let action3d: string
+  var action3d: string
   /** 当前导航模式 INDOOR | OUTDOOR */
-  let CURRENT_NAV_MODE: string
+  var CURRENT_NAV_MODE: string
   /** 网络请求数据的文本信息 */
-  let cookie: string
+  var cookie: string
   /** App本地文件Home目录 */
-  let homePath: string
+  var homePath: string
   /** 许可是否合法 */
-  let isLicenseValid: boolean
+  var isLicenseValid: boolean
   /** 三维，是否正在绕点飞行 */
-  let isCircleFlying: boolean
+  var isCircleFlying: boolean
   /** 进入地图，是否打开了工作空间 */
-  let openWorkspace: boolean
+  var openWorkspace: boolean
   /** AR和二维地图切换 */
-  let showAIDetect: boolean
+  var showAIDetect: boolean
 
   //采集属性查看 add jiakai
   /** 是否采集或者标注 */
-  let HAVEATTRIBUTE: boolean
+  var HAVEATTRIBUTE: boolean
 
   // 临时数据，是否移除待定
   /** 离线导航起点x */
-  let STARTX: number
+  var STARTX: number
   /** 离线导航起点y */
-  let STARTY: number
+  var STARTY: number
   /** 离线导航终点x */
-  let ENDX: number
+  var ENDX: number
   /** 离线导航终点y */
-  let ENDY: number
+  var ENDY: number
   /** 导航起点层 */
-  let STARTPOINTFLOOR: number
+  var STARTPOINTFLOOR: number
   /** 导航终点楼层 */
-  let ENDPOINTFLOOR: number
+  var ENDPOINTFLOOR: number
   /** 导航起点名称 */
-  let STARTNAME: string
+  var STARTNAME: string
   /** 导航终点名称 */
-  let ENDNAME: string
+  var ENDNAME: string
   /** 导航数据数组 */
-  let NAV_PARAMS: Array<object>
+  var NAV_PARAMS: Array<object>
   /** 暂存点，返回地图选点时使用 */
-  let SELECTPOINTLATITUDEANDLONGITUDETEMP: Point
+  var SELECTPOINTLATITUDEANDLONGITUDETEMP: Point
   /** 地图选点时使用? */
-  let SELECTPOINTLATITUDEANDLONGITUDE: Point
+  var SELECTPOINTLATITUDEANDLONGITUDE: Point
   /** 标绘动画数据 */
-  let animationWayData: AnimationWayData
+  var animationWayData: AnimationWayData
   /** // TODO 待去除当前图层全局变量 */
-  let currentLayer: object
+  var currentLayer: object
   /** 校准类型 arNavigation ｜ arVideo ｜ arImage ｜ arWebView｜ arText */
-  let EnterDatumPointType: string
+  var EnterDatumPointType: string
   /** AR地图是否从摄像头切换到地图界面 */
-  let arSwitchToMap: boolean
+  var arSwitchToMap: boolean
   /** 导航-增量路网数据 */
-  let INCREMENT_DATA: DATASET_SOURCE
+  var INCREMENT_DATA: DATASET_SOURCE
   /** 导航-采集方式 */
-  let NAVMETHOD: string
+  var NAVMETHOD: string
   /** 判断是否含有CAD图层，如果有CAD图层，屏蔽线性和二次线配准 */
-  let IsHaveCadDataset: boolean
+  var IsHaveCadDataset: boolean
   /** 地图xml，用于保存改变地图之前的状态 */
-  let MapXmlStr: string
+  var MapXmlStr: string
   /** ARMapping中临时存放的数据 */
-  let MeasureCollectData: object
+  var MeasureCollectData: object
   /** 是否更新属性列表 */
-  let NEEDREFRESHTABLE: object
+  var NEEDREFRESHTABLE: object
   /** 注册横竖屏锁 */
-  let ORIENTATIONLOCKED: boolean
+  var ORIENTATIONLOCKED: boolean
   /** 配准临时数据 */
-  let RectifyDatasetInfo: Array<object>
+  var RectifyDatasetInfo: Array<object>
   /** 配准临时数据 */
-  let RectifyReferDatasetInfo: Array<object>
+  var RectifyReferDatasetInfo: Array<object>
   /** 配准-算法模式 */
-  let RegistrationArithmeticMode: number
+  var RegistrationArithmeticMode: number
   /** 被选中的框选属性中的一个属性 */
-  let SelectedSelectionAttribute: object
+  var SelectedSelectionAttribute: object
   /** Toolbar是否显示指滑菜单 */
-  let showMenu: boolean
+  var showMenu: boolean
   /** 场景名字 */
-  let sceneName: string
+  var sceneName: string
   /** 离线场景 */
-  let offlineScene: boolean
+  var offlineScene: boolean
   /** 专题图-地图是否由xml加载 */
-  let IS_MAP_FROM_XML: boolean
+  var IS_MAP_FROM_XML: boolean
   // 组件ref
   /** 地图界面-地图组件 MapView.js SMMapView */
-  let mapView: any
+  var mapView: any
   /** 地图界面-地图比例尺组件 MapView.js ScaleView */
-  let scaleView: any
+  var scaleView: any
   /** 地图界面-地图加载组件 App.js Loading */
-  let Loading: any
+  var Loading: any
   /** 地图界面-半透明遮盖层 MapView.js OverlayView */
-  let OverlayView: any
+  var OverlayView: any
   /** 地图界面-用户自定义输入弹窗 MapView.js CustomInputDialog */
-  let InputDialog: any
+  var InputDialog: any
   /** 地图界面-用户自定义信息弹窗 MapView.js CustomAlertDialog */
-  let AlertDialog: any
+  var AlertDialog: any
   /** 地图界面-删除地图对象弹窗 MapView.js Dialog */
-  let removeObjectDialog: any
+  var removeObjectDialog: any
   /** 地图界面-导航错误提示框（起始点不在路网数据集范围内或起始点附近无路网，是否使用在线路径分析？）Dialog */
-  let NavDialog: any
+  var NavDialog: any
   /** 地图界面-地图控制器 MapView.js MapController */
-  let mapController: any
+  var mapController: any
   /** TODO 待用Toolbar替换。地图界面-工具栏 MapView.js Toolbar */
-  let toolBox: any
+  var toolBox: any
   /** 地图界面-工具栏 MapView.js Toolbar */
-  let ToolBar: any
+  var ToolBar: any
   /** 地图界面-目标识别header MapView.js MapSelectPoint */
-  let AIDETECTCHANGE: any
+  var AIDETECTCHANGE: any
   /** 地图界面-地图选点header MapView.js MapSelectPoint */
-  let MAPSELECTPOINT: any
+  var MAPSELECTPOINT: any
   /** 地图界面-地图选点底部组件 MapSelectPointButton */
-  let MAPSELECTPOINTBUTTON: any
+  var MAPSELECTPOINTBUTTON: any
   /** 含按钮的提示框 App.js SimpleDialog */
-  let SimpleDialog: any
+  var SimpleDialog: any
   /** AR支持设备提示框 App.js SimpleDialog */
-  let ARDeviceListDialog: any
+  var ARDeviceListDialog: any
   /** 地图界面-地图气泡提示消息 MapView.js BubblePane */
-  let bubblePane: any
+  var bubblePane: any
   /** 地图界面-画图组件（画框：RECTANGLE，画圆：CIRCLE） MapView.js SurfaceView */
-  let MapSurfaceView: any
+  var MapSurfaceView: any
   /** 地图界面-室内外路网采集的弹框 MapView.js IncrementRoadDialog */
-  let IncrementRoadDialog: any
+  var IncrementRoadDialog: any
   /** 地图界面-图例组件 MapView.js RNLegendView */
-  let legend: any
+  var legend: any
   /** 地图界面-导航顶部组件 MapView.js NavigationStartHead */
-  let NAVIGATIONSTARTHEAD: any
+  var NAVIGATIONSTARTHEAD: any
   /** 地图界面-POI界面容器 MapView.js PoiInfoContainer */
-  let PoiInfoContainer: any
+  var PoiInfoContainer: any
   /** 地图界面-POI搜索组件 MapView.js PoiTopSearchBar */
-  let PoiTopSearchBar: any
+  var PoiTopSearchBar: any
   // TODO 以下组件ref是否移除待定
   /** 投影消息提示框 MapView.js Dialog */
-  let prjDialog: any
+  var prjDialog: any
   /** 地图界面专题图预览时的header MapView.js PreviewHeader */
-  let PreviewHeader: any
+  var PreviewHeader: any
   /** 地图选点界面 EnterDatumPoint.js MapSelectPointLatitudeAndLongitude */
-  let DATUMPOINTVIEW: any
+  var DATUMPOINTVIEW: any
 
   /** 框选点选属性界面 当前页浏览属性数据 LayerSelectionAttribute.js*/
-  let layerSelection: any
+  var layerSelection: any
 
-  let currentUser: any
+  var currentUser: any
   /** 三维AR管线header ARSceneView.js Container */
-  let ARContainer: any
+  var ARContainer: any
   /** 三维AR管线判断数据是否打开 ARSceneView.js*/
-  let isSceneOpen: boolean
+  var isSceneOpen: boolean
   /** AR模块判断是否定位*/
-  let haslocation: boolean
+  var haslocation: boolean
   /** AR特效图层是否添加完成标识 */
-  let isNotEndAddEffect: boolean
+  var isNotEndAddEffect: boolean
   /** 特效图层的方法调用toolbar是否禁止上下位移调用dialog框  true表示禁止调用 false表示允许调用*/
-  let isEffectProgress: boolean
+  var isEffectProgress: boolean
 
   // 全局方法
   /** 获取设备信息，待优化 App.js*/
@@ -225,3 +227,5 @@ declare interface DATASET_SOURCE {
   datasourceName: string,
   layerName: string,
 }
+
+export { }

@@ -1,4 +1,4 @@
-/*global GLOBAL*/
+/*global global*/
 import React, { Component } from 'react'
 import {
   View,

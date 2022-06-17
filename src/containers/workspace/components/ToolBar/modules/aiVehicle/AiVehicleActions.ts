@@ -1,4 +1,3 @@
-/*global GLOBAL*/
 import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import { Toast, LayerUtils, DateUtil } from '../../../../../../utils'

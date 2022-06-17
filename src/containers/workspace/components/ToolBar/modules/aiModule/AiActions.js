@@ -1,4 +1,4 @@
-/*global GLOBAL*/
+/*global global*/
 import { SAIDetectView, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'

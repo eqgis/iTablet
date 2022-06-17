@@ -1168,7 +1168,7 @@ export default class MediaEdit extends React.Component {
       if (this.backAction) {
         this.backAction()
       } else {
-        NavigationService.goBack('MediaEdit')
+        NavigationService.goBack()
       }
     }
     if (this.info.geoID) {

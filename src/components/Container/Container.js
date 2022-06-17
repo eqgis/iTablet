@@ -399,7 +399,7 @@ export default class Container extends Component {
             />
           </AnimatedView>
         )}
-        <View style={{ flex: 1, height: screen.getScreenSafeHeight(this.props.device.orientation) }}>
+        <View style={[{ flex: 1 }, Platform.OS === 'ios' && { height: screen.getScreenSafeHeight(this.props.device.orientation) }]}>
           <StatusBar animated={true} hidden={global.getDevice().orientation.indexOf('LANDSCAPE') === 0} />
           {headerOnTop && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1, overflow: 'hidden' }, direction]}>

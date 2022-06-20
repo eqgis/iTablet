@@ -106,7 +106,7 @@ export default class FetchUtils {
   static routeAnalyst = async (startX, startY, endX, endY) => {
     let data
     try {
-      let params = `{startPoint:{"x":${startX},"y":${startY}},endPoint:{"x":${endX},"y":${endY}},routeType:MINLENGTH,to:910111}`
+      let params = `{startPoint:{"x":${startX},"y":${startY}},endPoint:{"x":${endX},"y":${endY}},routeType:MINLENGTH}` // ,to:910111 加to表示要将所有坐标都转为目的坐标系的坐标
       let url = `https://www.supermapol.com/iserver/services/navigation/rest/navigationanalyst/China/pathanalystresults.json?pathAnalystParameters=[${params}]&key=fvV2osxwuZWlY0wJb8FEb2i5`
       data = await FetchUtils.getObjJson(url)
     } catch (e) {

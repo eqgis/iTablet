@@ -14,6 +14,7 @@ interface Props {
   orientation: string,
   maxOverflow: number,
   onClick?: () => void,
+  onSwipeDown?: () => void,
   horizontalOuterRangeOffset?: (offsetX: number) => void,
 }
 
@@ -24,6 +25,7 @@ interface State {
 
 export default class ImageViewer extends React.Component<Props, State> {
 
+  imageZoom: ImageZoom | null | undefined
   width = 0
   height = 0
   imageWidth = 0
@@ -51,11 +53,14 @@ export default class ImageViewer extends React.Component<Props, State> {
   componentDidUpdate(prevProps: Props) {
     if (this.props.orientation !== prevProps.orientation) {
       this._getContentSize()
+      this.reset()
     }
   }
 
   _getContentSize = () => {
     Image.getSize(this.props.uri, (width, height) => {
+      this.width = screen.getScreenSafeWidth(this.props.orientation)
+      this.height = screen.getScreenSafeHeight(this.props.orientation)
       this.imageWidth = 200
       this.imageHeight = 200
       if (this.imageWidth !== width || this.imageHeight !== height) {
@@ -96,19 +101,33 @@ export default class ImageViewer extends React.Component<Props, State> {
     this.props.onClick?.()
   }
 
+  _onSwipeDown = () => {
+    this.props.onSwipeDown?.()
+  }
+
+  /**
+   * 重置图片大小
+   */
+  reset = () => {
+    this.imageZoom?.reset()
+  }
+
   render() {
     return (
       <ImageZoom
+        ref={ref => this.imageZoom = ref}
         style={{ backgroundColor: 'black'}}
         cropWidth={screen.getScreenSafeWidth(this.props.orientation)}
         cropHeight={screen.getScreenSafeHeight(this.props.orientation)}
         imageWidth={this.state.width}
         imageHeight={this.state.height}
-        enableSwipeDown
         enableCenterFocus={false}
         minScale={0.2}
         // maxScale={2}
-        onSwipeDown={this._onClick}
+        enableSwipeDown={!!this.props.onSwipeDown}
+        onSwipeDown={this._onSwipeDown}
+        onClick={this._onClick}
+        // onDoubleClick={this.reset}
         maxOverflow={this.props.maxOverflow || 200}
         horizontalOuterRangeOffset={(offsetX) => {
           this.props.horizontalOuterRangeOffset?.(offsetX)

@@ -157,6 +157,8 @@ export default class MediaPager extends React.Component<Props, State> {
           this.currentIndex = index
           if (type === 'video' && currentView instanceof VideoViewer) {
             currentView.pause()
+          } else if (type === 'photo' && currentView instanceof ImageViewer) {
+            currentView.reset()
           }
         }}
       >

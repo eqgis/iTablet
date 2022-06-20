@@ -1,4 +1,3 @@
-/*global GLOBAL*/
 import { Platform } from 'react-native'
 import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'

@@ -550,24 +550,6 @@ const ARBackgroundSettingItems = (language: string) => {
   ]
   const _data: any = ToolbarModule.getData()
   const element = _data.selectARElement
-  if(element.touchType === 0 && element.videoType === 0){
-    items.push(
-      {
-        key: getLanguage(language).BUTTON_TEXT_SIZE,
-        action: () => {
-          global.toolBox &&
-          global.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_BUTTON_TEXT_SIZE, {
-            containerType: ToolbarType.slider,
-            isFullScreen: false,
-            showMenuDialog: false,
-            selectName: getLanguage().BUTTON_TEXT_SIZE,
-            selectKey: getLanguage().BUTTON_TEXT_SIZE,
-          })
-        },
-        selectKey: getLanguage(language).BUTTON_TEXT_SIZE,
-      },
-    )
-  }
   if(element.type == ARElementType.AR_BAR_CHART){
     // 柱状图的背景设置只有颜色和透明度
     items.splice(2, 2)

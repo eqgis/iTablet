@@ -1,4 +1,3 @@
-/*global GLOBAL*/
 import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
 import NavigationService from '../../../../../NavigationService'
 import { ConstToolType, ConstPath } from '../../../../../../constants'

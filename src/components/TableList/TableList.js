@@ -25,10 +25,10 @@ export default class TableList extends React.Component {
     renderCell: (data: { item: any, rowIndex: number, cellIndex: number }) => any, // 自定义Cell， 必填
     type?: string, // normal 固定 | scroll 滚动
     device?: any, // 设备信息
-    isAutoType?: Boolean, // 是否根据个数，自适应滚动或固定表格
+    isAutoType?: boolean, // 是否根据个数，自适应滚动或固定表格
     column?: number, // 列数
     numberOfRows?: number, // 行数限制
-    horizontal?: Boolean, // 是否是横向滚动
+    horizontal?: boolean, // 是否是横向滚动
   }
 
   static defaultProps = {
@@ -156,15 +156,18 @@ export default class TableList extends React.Component {
   render() {
     if (this.getType() === 'scrollTable') {
       const isHorizontalScroll = this.props.horizontal && (this.props.column < this.props.data.length)
-      // 每一个项的宽度
-      const cellWidth = isHorizontalScroll ? Math.min(Dimensions.get('window').width / this.props.column, 100) : (100 / this.props.column + '%')
-      // 滑动部分的宽度（不是滑动部分显示的宽度，而是实际的宽度）
-      const width = isHorizontalScroll ? Math.max(Dimensions.get('window').width, cellWidth * this.props.data.length) : (100 + '%')
-      // console.warn(cellWidth + " - " + cellWidth * this.props.data.length + " - " + Dimensions.get('window').width)
-      const style = {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: width,
+      let style = {}
+      if(isHorizontalScroll) {
+        // 每一个项的宽度
+        const cellWidth = isHorizontalScroll ? Math.min(Dimensions.get('window').width / this.props.column, 100) : (100 / this.props.column + '%')
+        // 滑动部分的宽度（不是滑动部分显示的宽度，而是实际的宽度）
+        const width = isHorizontalScroll ? Math.max(Dimensions.get('window').width, cellWidth * this.props.data.length) : (100 + '%')
+        // console.warn(cellWidth + " - " + cellWidth * this.props.data.length + " - " + Dimensions.get('window').width)
+        style = {
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          width: width,
+        }
       }
       return (
         <ScrollView

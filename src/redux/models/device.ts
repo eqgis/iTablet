@@ -5,6 +5,7 @@ import { screen } from '../../utils'
 import { ThunkAction } from "redux-thunk"
 import { RootState } from "../types"
 import { OrientationType } from "@/utils/screen"
+import { DeviceUtils } from 'imobile_for_reactnative'
 // Constants
 // --------------------------------------------------
 export const SHOW_SET = 'SHOW_SET'
@@ -36,6 +37,10 @@ export interface SetWindowSizeAction {
 // 横竖屏切换，使用
 export const setShow = (params: {orientation: OrientationType}, cb?: () => void): ThunkAction<void, RootState, unknown, SetWindowSizeAction> => async dispatch => {
   screen.setOrientation(params.orientation)
+  const hasNavigationBar = await DeviceUtils.hasNavigationBar()
+  const navigationBarHeight = DeviceUtils.getNavigationBarHeight()
+  screen.setHasNavigationBar(hasNavigationBar)
+  screen.setNavigationBarHeight(navigationBarHeight)
   await dispatch({
     type: SHOW_SET,
     payload: params,

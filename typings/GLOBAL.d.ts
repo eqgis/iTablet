@@ -3,6 +3,7 @@
  * 声明全局GLOBAL
  */
 
+import { TChunkType } from '@/constants/custom/ChunkType'
 import { orientation, specificOrientation } from 'react-native-orientation'
 
 declare global {
@@ -10,7 +11,7 @@ declare global {
   var language: string
   /** 是否在市场审核期间 */
   var isAudit: boolean
-  var markerTag: string
+  var markerTag: number
   /** 版本号 */
   var APP_VERSION: string
   /** 系统版本号 x32 x64 */
@@ -28,7 +29,7 @@ declare global {
   /** 是否是在线协作模式 */
   var coworkMode: boolean
   /** 首页模块类型 */
-  var Type: string
+  var Type: keyof TChunkType | null
   /** 地图触摸事件类型 */
   var TouchType: string
   /** 三维Action PAN3D | PANSELECT3D | PAN3D_FIX */
@@ -54,11 +55,11 @@ declare global {
 
   // 临时数据，是否移除待定
   /** 离线导航起点x */
-  var STARTX: number
+  var STARTX: number | undefined
   /** 离线导航起点y */
   var STARTY: number
   /** 离线导航终点x */
-  var ENDX: number
+  var ENDX: number | undefined
   /** 离线导航终点y */
   var ENDY: number
   /** 导航起点层 */

@@ -1,16 +1,14 @@
-//@ts-nocheck
 import React, { Component } from 'react'
-import {  View, Image, Text, TouchableOpacity, Animated, Platform, Dimensions } from 'react-native'
+import {  View, Image, Text, TouchableOpacity, Animated, Dimensions } from 'react-native'
 import { getThemeAssets } from '../../assets'
 import { getLanguage } from '../../language'
 import Input from '../../components/Input'
-import { scaleSize, Toast } from '../../utils/index'
-import { SMap, SCollectSceneFormView, Action ,SARMap} from 'imobile_for_reactnative'
+import { AppStyle, scaleSize, Toast } from '../../utils/index'
+import { SMap, Action ,SARMap} from 'imobile_for_reactnative'
 import NavigationService from '../../containers/NavigationService'
 import { ChunkType, TouchType } from '../../constants'
 import { Container } from '../../components'
 import styles from './styles'
-import { AppStyle } from '../../styles'
 import { dp } from '../../utils'
 import AREnhancePosition from './AREnhancePosition'
 import Orientation from 'react-native-orientation'
@@ -18,7 +16,7 @@ import Orientation from 'react-native-orientation'
 
 interface IState {
   close: boolean,
-  showStatus: 'main' | 'scan' | 'setting',
+  showStatus: 'main' | 'scan' | 'setting' | 'arEnhance',
   scanning: boolean,
   activeBtn: number,
   latitude: string,
@@ -68,7 +66,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   _onClose = async () => {
     // 点击关闭使用当前定位
     const { onClose } = this.props
-    let curPoint = await SMap.getCurrentPosition()
+    const curPoint = await SMap.getCurrentPosition()
     curPoint.h = 1.5
     onClose && onClose(curPoint)
     this.setState({
@@ -222,7 +220,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       true,
       getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
     )
-    let position = await SMap.getCurrentPosition()
+    const position = await SMap.getCurrentPosition()
 
     this.setState({
       longitude: position.x,
@@ -266,21 +264,21 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       } else {
         //暂存点，返回地图选点时使用
         global.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
-  
+
         global.ToolBar.setVisible(false)
-  
+
         global.MapXmlStr = await SMap.mapToXml()
-  
+
         global.TouchType = TouchType.MAP_SELECT_POINT
         global.MAPSELECTPOINT.setVisible(true)
-  
+
         //导航选点 全屏时保留mapController
         global.mapController && global.mapController.setVisible(true)
-  
+
         // let map = await SMap.getCurrentPosition()
         // let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
         // wsData.layerIndex = 3
-        let licenseStatus = await SMap.getEnvironmentStatus()
+        const licenseStatus = await SMap.getEnvironmentStatus()
         global.isLicenseValid = licenseStatus.isLicenseValid
         NavigationService.navigate('MapView', {
           // NavigationService.navigate('MapViewSingle', {
@@ -453,7 +451,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
 
   _renderBtns = () => {
     const { activeBtn } = this.state
-    let titleWidth = 80
+    const titleWidth = 80
     return (
       <View
         style={{
@@ -495,24 +493,24 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           </Text>
 
           <View style={styles.buttons}>
-             {/* ar增强定位 */}
-             <TouchableOpacity style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }} onPress={() => {
-               
-                // 调用ar增强定位的方法获取定位
-                SARMap.setAREnhancePosition()
-                // 跳转到扫描界面
-                this.setState({
-                  showStatus: 'arEnhance',
-                })
-              }}>
-                <View style={[styles.button, activeBtn == 3 && {borderWidth: 1, borderColor: '#ccc'}]}>
-                  <Image source={getThemeAssets().collection.icon_ar_enhance} style={styles.buttonIcon}/>
-                </View>
-                <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_ENHANCE_POSITION}</Text>
-              </TouchableOpacity>
+            {/* ar增强定位 */}
+            <TouchableOpacity style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }} onPress={() => {
+
+              // 调用ar增强定位的方法获取定位
+              SARMap.setAREnhancePosition()
+              // 跳转到扫描界面
+              this.setState({
+                showStatus: 'arEnhance',
+              })
+            }}>
+              <View style={[styles.button, activeBtn == 3 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                <Image source={getThemeAssets().collection.icon_ar_enhance} style={styles.buttonIcon}/>
+              </View>
+              <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_ENHANCE_POSITION}</Text>
+            </TouchableOpacity>
           </View>
 
 
@@ -583,42 +581,42 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
               <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_GPS_LOCATION}</Text>
             </TouchableOpacity>
           </View>
-          
+
         </View>
 
       </View>
 
 
 
-     
+
     )
   }
 
   _renderContent = () => {
 
-     // 获取屏幕的宽高
-     const screenWidth = Dimensions.get('window').width
-     const screemHeight = Dimensions.get('window').height
- 
-     //设置宽度的最大最小值
-     let widthTemp = 616
-     if(screenWidth > 500) {
-       widthTemp = 656
-     }
-     // 设置高度的最大最小值
-     let heightTemp = 990
-     if(screemHeight > 900){
-       heightTemp = 1000
-     }
-     // 判断当前屏幕的横竖屏
-     const orientation = Orientation.getInitialOrientation()
-     // 横屏状态下，将
-     if(orientation === 'LANDSCAPE') {
-       if(screenWidth > 1000) {
-         widthTemp = 1000
-         heightTemp = 960
-       }
-     }
+    // 获取屏幕的宽高
+    const screenWidth = Dimensions.get('window').width
+    const screemHeight = Dimensions.get('window').height
+
+    //设置宽度的最大最小值
+    let widthTemp = 616
+    if(screenWidth > 500) {
+      widthTemp = 656
+    }
+    // 设置高度的最大最小值
+    let heightTemp = 990
+    if(screemHeight > 900){
+      heightTemp = 1000
+    }
+    // 判断当前屏幕的横竖屏
+    const orientation = Orientation.getInitialOrientation()
+    // 横屏状态下，将
+    if(orientation === 'LANDSCAPE') {
+      if(screenWidth > 1000) {
+        widthTemp = 1000
+        heightTemp = 960
+      }
+    }
 
     return (
       <View style={styles.container}>
@@ -628,10 +626,10 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         }]}>
           <View style={styles.titleBox}>
             <Image style={{
-                height: scaleSize(150),
-                width: scaleSize(150),
-              }} 
-              source={getThemeAssets().mapTools.icon_mobile} 
+              height: scaleSize(150),
+              width: scaleSize(150),
+            }}
+            source={getThemeAssets().mapTools.icon_mobile}
             />
 
             {/* <Text style={styles.title}>{getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}</Text> */}
@@ -799,12 +797,10 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         ref ={(ref) => {this.arEnhancePosition = ref}}
         imageTrackingresultTag = {this.props.imageTrackingresultTag}
         onBack = {() => {
-          SARMap.stopAREnhancePosition().then(() => {
-            // 已退出AR增强定位
-              Toast.show(getLanguage(global.language).Profile.AR_ENHANCE_POSITION_EXITED)
-            })
-          // 关闭校准界面
-          this._onClose()
+          SARMap.stopAREnhancePosition()
+          this.setState({
+            showStatus: 'main'
+          })
 
         }}
         onSuccess = {() => {

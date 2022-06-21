@@ -701,6 +701,11 @@ async function getStyleData(type: string) {
       ToolbarBtnType.MENU_FLEX,
       ToolbarBtnType.TOOLBAR_COMMIT,
     ]
+    if ((element.type === ARElementType.AR_VIDEO_ALBUM && element.touchType !== 0)
+      || (element.type === ARElementType.AR_SAND_TABLE_ALBUM && element.touchType !== 0)
+    ) {
+      buttons.splice(2, 1)
+    }
   } else {
     buttons = [
       ToolbarBtnType.TOOLBAR_BACK,

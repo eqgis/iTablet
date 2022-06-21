@@ -366,7 +366,8 @@ export default class AlbumView extends React.PureComponent<Props, State> {
   }
 
   _column = () => {
-    const { width, height } = Dimensions.get('window')
+    const width = screen.getScreenWidth(this.state.orientation)
+    const height = screen.getScreenHeight(this.state.orientation)
     if (width < height) {
       return this.state.column
     } else {

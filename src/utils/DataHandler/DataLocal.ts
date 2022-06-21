@@ -8,7 +8,7 @@ export interface ILocalData extends FiltedData {
   /** ai模型相关信息 */
   aiModelInfo?: {
     modelName: string
-    lables: string[]
+    labels: string[]
     paramJsonName?: string
   }
   /** 沙盘模型相关信息 */
@@ -50,6 +50,27 @@ async function getLocalData(user: UserInfo, type: LocalDataType): Promise<ILocal
       return await _getAIModelDataList(user)
     case 'SANDTABLE':
       return await _getLocalSandTable(user.userName)
+  }
+}
+
+async function deleteLocalData(item: ILocalData, type: LocalDataType): Promise<boolean> {
+  switch(type) {
+    case 'AIMODEL':
+    case 'AREFFECT':
+    case 'ARMAP':
+    case 'ARMODEL':
+    case 'COLOR':
+    case 'DATA':
+    case 'LABEL':
+    case 'MAP':
+    case 'MAPPING_COLLECTING':
+    case 'SANDTABLE':
+    case 'SCENE':
+    case 'SYMBOL':
+    case 'TEMPLAE_COLLECTING':
+    case 'TEMPLAE_PLOTTING':
+    case 'WORKSPACE3D':
+      return false
   }
 }
 
@@ -126,7 +147,7 @@ async function _getListByFilter(user: UserInfo, type: LocalDataType) {
       path = userPath + ConstPath.RelativePath.AREffect
       filter = {
         type: 'AREFFECT',
-      extension: 'areffect',
+        extension: 'areffect',
       }
       break
   }
@@ -216,7 +237,7 @@ async function _getPlotDataList(user: UserInfo) {
 }
 
 async function _getColorSchemeDataList(user: UserInfo) {
-  let dataList = await _getListByFilter(user, 'COLOR')
+  const dataList = await _getListByFilter(user, 'COLOR')
   for (let i = 0; i < dataList.length; i++) {
     await _getColorFromFile(dataList[i])
   }
@@ -225,13 +246,13 @@ async function _getColorSchemeDataList(user: UserInfo) {
 
 async function _getColorFromFile(item: any) {
   const homePath = await FileTools.appendingHomeDirectory()
-  let colorScheme = await FileTools.readFile(homePath + item.path)
-  let resutl = await dataUtil.xml2js(colorScheme)
-  let { ColorScheme } = resutl
-  let colors = []
+  const colorScheme = await FileTools.readFile(homePath + item.path)
+  const resutl = await dataUtil.xml2js(colorScheme)
+  const { ColorScheme } = resutl
+  const colors = []
   if (ColorScheme && ColorScheme.DataBlock) {
-    for (let key in ColorScheme.DataBlock) {
-      let data = ColorScheme.DataBlock[key]
+    for (const key in ColorScheme.DataBlock) {
+      const data = ColorScheme.DataBlock[key]
       colors.push({
         r: parseInt(data.Red),
         g: parseInt(data.Green),
@@ -242,21 +263,21 @@ async function _getColorFromFile(item: any) {
   item.colors = colors
 }
 
-async function _getAIModelDataList(user: UserInfo) {
-  let list = []
+async function _getAIModelDataList(user: UserInfo): Promise<ILocalData[]> {
+  const list = []
   const homePath = await FileTools.appendingHomeDirectory()
-  let dataList = await _getListByFilter(user, 'AIMODEL')
+  const dataList = await _getListByFilter(user, 'AIMODEL')
   for (let n = 0; n < dataList.length; n++) {
-    let item = dataList[n]
-    let contentList = await FileTools.getDirectoryContent(homePath + item.path)
-    let tflite
-    let labels = []
-    let param
+    const item = dataList[n]
+    const contentList = await FileTools.getDirectoryContent(homePath + item.path)
+    let tflite: string | undefined
+    const labels: string[] = []
+    let param: string | undefined
     for (let i = 0; i < contentList.length; i++) {
       if (contentList[i].type === 'file') {
-        let index = contentList[i].name.lastIndexOf('.')
+        const index = contentList[i].name.lastIndexOf('.')
         if (index > 0) {
-          let type = contentList[i].name.substring(index + 1).toLowerCase()
+          const type = contentList[i].name.substring(index + 1).toLowerCase()
           if (type === 'tflite') {
             tflite = contentList[i].name
           } else if (type === 'txt') {
@@ -268,12 +289,8 @@ async function _getAIModelDataList(user: UserInfo) {
       }
     }
     if (tflite && labels.length > 0) {
-      // item.tflite = tflite
-      // item.labels = labels
-      // item.param = param
-      // list.push(item)
 
-      const info = {
+      const info: ILocalData['aiModelInfo']  = {
         modelName: tflite,
         labels: labels,
         paramJsonName: param,
@@ -292,7 +309,7 @@ async function _getAIModelDataList(user: UserInfo) {
 async function _getLocalSandTable(userName: string): Promise<ILocalData[]> {
   const homePath = await FileTools.getHomeDirectory()
   const userPath = `${homePath + ConstPath.UserPath + userName}/`
- 
+
   const sandTablePath = userPath + ConstPath.RelativePath.ARSandTable
 
   const list = await FileTools.getPathListByFilter(sandTablePath, {type: 'Directory'})
@@ -565,6 +582,7 @@ function _isInlList(name: string, fileList: FileInfo[], type: 'file' | 'director
 
 export default {
   getLocalData,
+  deleteLocalData,
   getPxpContent,
   createDatasourceFile,
   getAvailableFileName,

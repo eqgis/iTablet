@@ -183,8 +183,8 @@ function settingAnimation(option: IToolbarOption) {
     title: getLanguage().ANIMATION_BOUNDS,
     slideData: [{
       type: 'double',
-      left: {type: 'indicator', unit: getLanguage().METER},
-      right: {type: 'indicator', unit: getLanguage().METER},
+      left: {type: 'indicator', unit: 'm'},
+      right: {type: 'indicator', unit: 'm'},
       bottomLeft: {type: 'text', text: getLanguage().ANIMATION_BOUNDS},
       defaultMaxValue: maxAnimation,
       defaultMinValue: minAnimation,

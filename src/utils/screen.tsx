@@ -115,8 +115,8 @@ function getScreenHeight(orientation?: OrientationType): number {
       Dimensions.get('screen').height,
       Dimensions.get('screen').width,
     )
-    // 第一次用window获取的高度有可能和screen相等,导致底部虚拟按钮高度和状态栏高度倍计算到window的height中,需要减去
-    if (deviceScreenHeight === deviceHeight) {
+    // Android第一次用window获取的高度有可能和screen相等,导致底部虚拟按钮高度和状态栏高度倍计算到window的height中,需要减去
+    if (Platform.OS === 'android' && deviceScreenHeight === deviceHeight) {
       // 减去状态栏高度,若有虚拟按键,则继续减去虚拟按钮高度
       deviceHeight -= NativeModules.StatusBarManager.HEIGHT + (hasNavigationBar ? navigationBarHeight : 0)
     }

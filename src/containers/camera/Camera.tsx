@@ -15,7 +15,8 @@ import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
 import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
-import { Progress, MediaViewer, ImagePicker } from '../../components'
+import { screen } from '../../utils'
+import { Progress, MediaViewer, ImagePicker, Container } from '../../components'
 import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, RecordVideoOptions, TakePhotoOptions, useCameraDevices, useFrameProcessor, VideoFile } from 'react-native-vision-camera'
 import { SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
@@ -142,12 +143,10 @@ class Camera extends React.Component<Props, State> {
   }
 
   cameraFocus = () => {
-    console.warn('focus')
     this.camera2?.setActive(true)
   }
 
   cameraBlur = () => {
-    console.warn('blur')
     this.camera2?.setActive(false)
   }
 
@@ -431,7 +430,7 @@ class Camera extends React.Component<Props, State> {
       )
     } else {
       return (
-        <View style={styles.buttonView}>
+        <View style={[styles.buttonView, screen.isIphoneX() && {paddingBottom: styles.buttonView.bottom + screen.getIphonePaddingBottom()}]}>
           <TouchableOpacity
             onPress={this.back}
             style={styles.iconView}
@@ -468,7 +467,7 @@ class Camera extends React.Component<Props, State> {
     if (this.state.type === TYPE.BARCODE || this.state.recordStatus === RECORD_STATUS.RECORDED) return null
     return (
       <ImageButton
-        containerStyle={styles.capture}
+        containerStyle={[styles.capture, screen.isIphoneX() && {paddingBottom: styles.capture.bottom + screen.getIphonePaddingBottom()}]}
         iconStyle={styles.iconView}
         icon={getPublicAssets().common.icon_take_camera}
         onPress={() => {
@@ -489,7 +488,7 @@ class Camera extends React.Component<Props, State> {
   renderChangeBtns = () => {
     if (this.state.type === TYPE.BARCODE || this.state.recordStatus !== RECORD_STATUS.UN_RECORD) return null
     return (
-      <View style={styles.changeView}>
+      <View style={[styles.changeView, screen.isIphoneX() && {paddingBottom: styles.changeView.bottom + screen.getIphonePaddingBottom()}]}>
         <TouchableOpacity
           onPress={() => this.changeType(TYPE.VIDEO)}
           style={styles.typeBtn}

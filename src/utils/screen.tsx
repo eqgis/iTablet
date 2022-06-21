@@ -1,6 +1,7 @@
-import { Dimensions, PixelRatio, Platform } from 'react-native'
+import { Dimensions, PixelRatio, Platform, NativeModules } from 'react-native'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import Orientation, { orientation as orientationType, specificOrientation } from 'react-native-orientation'
+import { DeviceUtils } from 'imobile_for_reactnative'
 
 export type OrientationType = orientationType | specificOrientation
 
@@ -13,6 +14,42 @@ let deviceSafeHeight = getScreenSafeHeight() // 设备安全高度
 // const defaultPixel = 2.25
 // const fontScale = PixelRatio.getFontScale()
 
+/** 是否有虚拟按键 Android */
+let hasNavigationBar = false
+/** 虚拟按键高度 Android */
+let navigationBarHeight = 0
+
+/**
+ * 记录是否有虚拟按键
+ * @param has
+ */
+function setHasNavigationBar(has: boolean) {
+  hasNavigationBar = has
+}
+
+/**
+ * 获取是否有虚拟按键
+ * @returns
+ */
+function getHasNavigationBar() {
+  return hasNavigationBar
+}
+
+/**
+ * 记录虚拟按键高度
+ * @param height
+ */
+function setNavigationBarHeight(height: number) {
+  navigationBarHeight = height
+}
+
+/**
+ * 获取虚拟按键高度
+ * @returns
+ */
+function getNavigationBarHeight() {
+  return navigationBarHeight
+}
 
 const screenWidth = Math.min(
   Dimensions.get('window').width,
@@ -74,6 +111,15 @@ function getScreenHeight(orientation?: OrientationType): number {
       Dimensions.get('window').height,
       Dimensions.get('window').width,
     )
+    const deviceScreenHeight = Math.max(
+      Dimensions.get('screen').height,
+      Dimensions.get('screen').width,
+    )
+    // 第一次用window获取的高度有可能和screen相等,导致底部虚拟按钮高度和状态栏高度倍计算到window的height中,需要减去
+    if (deviceScreenHeight === deviceHeight) {
+      // 减去状态栏高度,若有虚拟按键,则继续减去虚拟按钮高度
+      deviceHeight -= NativeModules.StatusBarManager.HEIGHT + (hasNavigationBar ? navigationBarHeight : 0)
+    }
   }
   return deviceHeight
 }
@@ -382,4 +428,9 @@ export default {
   getLockScreen,
   lockToPortrait,
   unlockAllOrientations,
+
+  setHasNavigationBar,
+  getHasNavigationBar,
+  setNavigationBarHeight,
+  getNavigationBarHeight,
 }

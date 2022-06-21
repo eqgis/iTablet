@@ -161,6 +161,7 @@ export default class Tabs extends React.Component<Props, State> {
           index: this.props.initialIndex || 0,
           routes: this._getRoutes(),
         }}
+        style={{backgroundColor: color.white}}
         onIndexChange={this.goToPage}
         renderTabBar={this.renderTabBar}
         renderScene={this._renderTabs()}

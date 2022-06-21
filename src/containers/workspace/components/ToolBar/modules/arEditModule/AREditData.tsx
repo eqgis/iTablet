@@ -1343,7 +1343,7 @@ async function getAnimationData(type: string) {
     /** 三级 旋转 */
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION:
       allData.push({
-        title: getLanguage(_params.language).ARMap.DIRECTION,
+        title: getLanguage(_params.language).ROTATION_AXIS,
         data: [{
           key: 'x',
           image: getThemeAssets().ar.armap.ar_rotate,
@@ -1362,7 +1362,7 @@ async function getAnimationData(type: string) {
         }],
       })
       allData.push({
-        title: getLanguage(_params.language).ARMap.DISTANCE,
+        title: getLanguage(_params.language).ANIMATION_ROTATE_DIRECTION,
         data: [{
           key: 'axis_x',
           image: getThemeAssets().ar.armap.ar_rotate,

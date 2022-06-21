@@ -351,7 +351,11 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="FindSettingPage" component={FindSettingPage} />
       <Stack.Screen name="Laboratory" component={Laboratory} />
       <Stack.Screen name="MediaEdit" component={MediaEdit} options={modalOption(params)} />
-      <Stack.Screen name="Camera" component={Camera} options={modalOption(params)} />
+      <Stack.Screen name="Camera" component={Camera} options={{
+        headerShown: false,
+        animation: 'none',
+        presentation: 'fullScreenModal',
+      }} />
       <Stack.Screen name="MeasureView" component={MeasureView} />
       <Stack.Screen name="MeasureAreaView" component={MeasureAreaView} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} />
@@ -393,7 +397,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ProjectionTransformationPage" component={ProjectionTransformationPage} />
       <Stack.Screen name="SourceCoordsPage" component={SourceCoordsPage} />
       <Stack.Screen name="ProjectionParameterSetPage" component={ProjectionParameterSetPage} />
-      <Stack.Screen name="ProjectionTargetCoordsPage" component={ProjectionTargetCoordsPage} />
+      <Stack.Screen name="ProjectionTargetCoordsPage" component={ProjectionTargetCoordsPage} options={modalOption(params)}/>
       <Stack.Screen name="RegistrationFastPage" component={RegistrationFastPage} />
       <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
       <Stack.Screen name="InterpolationAnalystView" component={InterpolationAnalystView} />

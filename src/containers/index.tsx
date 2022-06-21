@@ -391,7 +391,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ProjectionTransformationPage" component={ProjectionTransformationPage} />
       <Stack.Screen name="SourceCoordsPage" component={SourceCoordsPage} />
       <Stack.Screen name="ProjectionParameterSetPage" component={ProjectionParameterSetPage} />
-      <Stack.Screen name="ProjectionTargetCoordsPage" component={ProjectionTargetCoordsPage} />
+      <Stack.Screen name="ProjectionTargetCoordsPage" component={ProjectionTargetCoordsPage} options={modalOption(params)}/>
       <Stack.Screen name="RegistrationFastPage" component={RegistrationFastPage} />
       <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
       <Stack.Screen name="InterpolationAnalystView" component={InterpolationAnalystView} />
@@ -418,7 +418,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ImagePickerStack" component={ImagePickerStack} options={{
         headerShown: false,
         animation: 'slide_from_bottom',
-        // presentation: 'modal',
+        presentation: 'containedTransparentModal',
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} />
       <Stack.Screen name="ChartManager" component={ChartManager} />

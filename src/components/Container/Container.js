@@ -388,7 +388,7 @@ export default class Container extends Component {
     })
     return (
       <AnimatedView
-        style={[styles.view, { transform: [{ translateX: this.viewX }] }, Platform.OS === 'ios' && { width: screen.getScreenSafeWidth(this.props.device.orientation) }]}
+        style={[styles.view, { transform: [{ translateX: this.viewX }] }]}
       >
         {this.props.isOverlayBefore && (
           <AnimatedView style={{ width: width }}>
@@ -399,7 +399,7 @@ export default class Container extends Component {
             />
           </AnimatedView>
         )}
-        <View style={[{ flex: 1 }, Platform.OS === 'ios' && { height: screen.getScreenSafeHeight(this.props.device.orientation) }]}>
+        <View style={[{ flex: 1 }]}>
           <StatusBar animated={true} hidden={global.getDevice().orientation.indexOf('LANDSCAPE') === 0} />
           {headerOnTop && this.renderHeader(fixHeader)}
           <View style={[{ flex: 1, overflow: 'hidden' }, direction]}>

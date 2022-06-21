@@ -284,11 +284,14 @@ const ARStyleItems = (language: string) => {
       key: getLanguage(language).ARMap.ANIMATION,
       action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION),
       selectKey: getLanguage(language).ARMap.ANIMATION,
-    },{
-      key: getLanguage(language).BONE_ANIMATION,
-      action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_BONE_ANIMATION),
-      selectKey: getLanguage(language).BONE_ANIMATION,
     })
+    if(_data.hasModelAnimation) {
+      items.push({
+        key: getLanguage(language).BONE_ANIMATION,
+        action: () => AREditAction.showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION_BONE_ANIMATION),
+        selectKey: getLanguage(language).BONE_ANIMATION,
+      })
+    }
   }
   return items
 }

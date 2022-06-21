@@ -867,15 +867,15 @@ function hideAll(members: Array<any>) {
  */
 function showAll(members: Array<any>, messages: Array<any>) {
   try {
-    for (let n = 0; n < members.length; n++) {
-      let member = members[n]
-      let userID = member.id
+    for (const member of members) {
+      const userID = member.id
       if (member.show) {
         SMap.showUserTrack(userID)
       }
-      for (let i = 0; i < messages.length; i++) {
-        let message = messages[i]
-        if (!message.status && message.user.id === userID) {
+      console.warn('showAll')
+      for (const message of messages) {
+        // 专题图消息不添加callout
+        if (!message.status && message.user.id === userID && !message.message.themeType) {
           SMap.isUserGeometryExist(
             message.message.layerPath,
             message.message.id,

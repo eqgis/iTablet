@@ -430,7 +430,7 @@ class Camera extends React.Component<Props, State> {
       )
     } else {
       return (
-        <View style={[styles.buttonView, screen.isIphoneX() && {paddingBottom: styles.buttonView.bottom + screen.getIphonePaddingBottom()}]}>
+        <View style={[styles.buttonView, screen.isIphoneX() && {paddingBottom: styles.buttonView.bottom + screen.X_BOTTOM}]}>
           <TouchableOpacity
             onPress={this.back}
             style={styles.iconView}
@@ -467,7 +467,7 @@ class Camera extends React.Component<Props, State> {
     if (this.state.type === TYPE.BARCODE || this.state.recordStatus === RECORD_STATUS.RECORDED) return null
     return (
       <ImageButton
-        containerStyle={[styles.capture, screen.isIphoneX() && {paddingBottom: styles.capture.bottom + screen.getIphonePaddingBottom()}]}
+        containerStyle={[styles.capture, screen.isIphoneX() && {paddingBottom: styles.capture.bottom + screen.X_BOTTOM}]}
         iconStyle={styles.iconView}
         icon={getPublicAssets().common.icon_take_camera}
         onPress={() => {
@@ -488,7 +488,7 @@ class Camera extends React.Component<Props, State> {
   renderChangeBtns = () => {
     if (this.state.type === TYPE.BARCODE || this.state.recordStatus !== RECORD_STATUS.UN_RECORD) return null
     return (
-      <View style={[styles.changeView, screen.isIphoneX() && {paddingBottom: styles.changeView.bottom + screen.getIphonePaddingBottom()}]}>
+      <View style={[styles.changeView, screen.isIphoneX() && {paddingBottom: styles.changeView.bottom + screen.X_BOTTOM}]}>
         <TouchableOpacity
           onPress={() => this.changeType(TYPE.VIDEO)}
           style={styles.typeBtn}

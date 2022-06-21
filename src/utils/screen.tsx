@@ -290,9 +290,8 @@ function getIphonePaddingBottom(orientation?: OrientationType): number {
   if (Platform.OS === 'android') {
     return paddingBottom
   }
-  // const _orientation = orientation || getOrientation()
-  // if (isIphoneX() && _orientation.indexOf('PORTRAIT') >= 0) {
-  if (isIphoneX()) {
+  const _orientation = orientation || getOrientation()
+  if (isIphoneX() && _orientation.indexOf('PORTRAIT') >= 0) {
     paddingBottom = X_BOTTOM
   }
   return paddingBottom

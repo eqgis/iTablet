@@ -364,6 +364,7 @@ export default class LayerAttribute extends React.Component {
             : others.currentIndex !== undefined
               ? others.currentIndex
               : this.state.currentIndex
+
           let relativeIndex =
             resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
           // : currentIndex - startIndex - 1
@@ -388,6 +389,9 @@ export default class LayerAttribute extends React.Component {
             },
             () => {
               setTimeout(() => {
+                if (currentIndex === -1) {
+                  this.table?.clearSelected()
+                }
                 if (type === 'refresh') {
                   this.table &&
                     this.table.scrollToLocation({

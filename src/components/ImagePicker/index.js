@@ -14,7 +14,7 @@ export function ImagePickerStack() {
       screenOptions={{
         headerShown: false,
         animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
-        presentation: 'transparentModal',
+        // presentation: 'transparentModal',
       }}
     >
       <Stack.Screen name={PageKeys.album_list} component={ImagePicker.AlbumListView} />

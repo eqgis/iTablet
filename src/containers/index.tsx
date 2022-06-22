@@ -214,6 +214,8 @@ const modalOption = (params: StackNavigatorProps): ScreenOptions => {
     headerShown: false,
     animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
     presentation: 'containedTransparentModal',
+    // presentation: Platform.OS === 'ios' ? 'formSheet' : 'containedTransparentModal',
+    // presentation: Platform.OS === 'ios' && params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'card' : 'containedTransparentModal',
   }
 }
 
@@ -349,7 +351,11 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="FindSettingPage" component={FindSettingPage} />
       <Stack.Screen name="Laboratory" component={Laboratory} />
       <Stack.Screen name="MediaEdit" component={MediaEdit} options={modalOption(params)} />
-      <Stack.Screen name="Camera" component={Camera} options={modalOption(params)} />
+      <Stack.Screen name="Camera" component={Camera} options={{
+        headerShown: false,
+        animation: 'none',
+        presentation: 'fullScreenModal',
+      }} />
       <Stack.Screen name="MeasureView" component={MeasureView} />
       <Stack.Screen name="MeasureAreaView" component={MeasureAreaView} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} />
@@ -418,7 +424,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ImagePickerStack" component={ImagePickerStack} options={{
         headerShown: false,
         animation: 'slide_from_bottom',
-        presentation: 'containedTransparentModal',
+        presentation: 'fullScreenModal',
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} options={modalOption(params)}/>
       <Stack.Screen name="ChartManager" component={ChartManager} />

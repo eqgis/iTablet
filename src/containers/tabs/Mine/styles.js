@@ -36,7 +36,7 @@ export default StyleSheet.create({
   },
   itemView: {
     marginVertical: scaleSize(25),
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexWrap: 'nowrap',
   },
@@ -45,7 +45,7 @@ export default StyleSheet.create({
     height: scaleSize(60),
   },
   itemText: {
-    marginTop: scaleSize(4),
+    marginTop: scaleSize(9),
     textAlign: 'center',
     fontSize: scaleSize(24),
     color: color.fontColorGray2,

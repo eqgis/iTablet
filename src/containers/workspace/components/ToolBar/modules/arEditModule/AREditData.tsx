@@ -1505,7 +1505,7 @@ function getHeaderData(type: string) {
           // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
           action: AREditAction.changeARText,
           size: 'large',
-          image: getImage().icon_edit,
+          image: getImage().icon_edit_text,
           style: {
             width: scaleSize(60),
             height: scaleSize(60),

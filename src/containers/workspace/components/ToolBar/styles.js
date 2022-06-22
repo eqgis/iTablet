@@ -28,7 +28,8 @@ export default StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     minHeight: Height.TOOLBAR_BUTTONS,
-    backgroundColor: 'transparent',
+    // backgroundColor: 'transparent',
+    backgroundColor: 'white',
   },
   containerRadius: {
     borderTopLeftRadius: scaleSize(40),

@@ -903,22 +903,23 @@ async function getStyleData(type: string) {
                 selectName: getLanguage().COLOR,
                 selectKey: getLanguage().COLOR,
               })
-            } else if(element?.type === ARElementType.AR_BAR_CHART || element?.type === ARElementType.AR_PIE_CHART){
-              // 柱状图和饼图的设置工具栏里 点击标题去往的界面
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_COLOR, {
-                containerType: ToolbarType.colorTable,
-                isFullScreen: false,
-                showMenuDialog: false,
-                selectName: getLanguage().COLOR,
-                selectKey: getLanguage().COLOR,
-              })
             } else{
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE, {
-                containerType: ToolbarType.table,
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT, {
+                containerType: ToolbarType.list,
+                customView: (_props: any) => (
+                  <View style = {[{height: '100%', backgroundColor: '#fff', paddingTop: dp(10)}]}>
+                    <ToolBarInput
+                      textTitle = {getLanguage(language).TITLE}
+                      apply = {(text: string) => {
+                        SARMap.setNodeTextTitle(text, element)
+                      }}
+                      text = {""}
+                      windowSize = {_props.windowSize}
+                    />
+                  </View>
+                ),
                 isFullScreen: false,
                 showMenuDialog: false,
-                selectName: getLanguage().TEXT_SHAPE,
-                selectKey: getLanguage().TEXT_SHAPE,
               })
             }
           },

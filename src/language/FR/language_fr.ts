@@ -2528,6 +2528,10 @@ export const language_fr: typeof language_cn = {
   PUBLISH_FAILED: "Échec de la publication",
   PUBLISH_FAILED_INFO_1: "Le service a été publié",
   PUBLISH_FAILED_INFO_2: "le service est en cours de publication et ne peut pas être exploité pour le moment",
+  UNPUBLISH: "Unpublish", // need to translate
+  UNPUBLISHING: "Unpublishing", // need to translate
+  UNPUBLISH_SUCCESS: "Unpublished", // need to translate
+  UNPUBLISH_FAILED: "Failed to Unpublish", // need to translate
   SERVICE_SUBMIT_BEFORE_UPDATE: "Veuillez mettre à jour le service avant de soumettre",
   DELETE_CONFIRM: "Voulez-vous vraiment supprimer l'élément?",
   BATCH_DELETE_CONFIRM: "Voulez-vous vraiment supprimer les éléments sélectionnés?",

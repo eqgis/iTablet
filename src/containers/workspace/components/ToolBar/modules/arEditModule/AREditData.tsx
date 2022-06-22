@@ -95,6 +95,7 @@ async function getData(type: string, params: {[name: string]: any}) {
           type: 'ADD_POINT',
           image: getThemeAssets().ar.armap.ar_add_point,
           action: () => {
+            SARMap.setAction(ARAction.VERTEX_ADD_FOUCUS)
             const _params: any = ToolbarModule.getParams()
             _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE_ATPOINT, {
               isFullScreen: false,
@@ -140,7 +141,6 @@ async function getData(type: string, params: {[name: string]: any}) {
               const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
               // 当前图层是线图层
               if (layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
-                SARMap.setAction(ARAction.VERTEX_ADD_FOUCUS)
                 SARMap.addARLinePoint(layer.name, { translation: translation })
               }
             }

@@ -116,9 +116,9 @@ export default class ImageViewer extends React.Component<Props, State> {
     return (
       <ImageZoom
         ref={ref => this.imageZoom = ref}
-        style={{ backgroundColor: 'black'}}
-        cropWidth={screen.getScreenSafeWidth(this.props.orientation)}
-        cropHeight={screen.getScreenSafeHeight(this.props.orientation)}
+        style={{ backgroundColor: 'black', flex: 1 }}
+        cropWidth={screen.getScreenWidth(this.props.orientation)}
+        cropHeight={screen.getScreenHeight(this.props.orientation)}
         imageWidth={this.state.width}
         imageHeight={this.state.height}
         enableCenterFocus={false}

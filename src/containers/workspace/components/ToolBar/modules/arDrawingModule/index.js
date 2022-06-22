@@ -23,7 +23,7 @@ class ArDrawingModule extends FunctionModule {
         data.height = 0
         break
       case ConstToolType.SM_AR_DRAWING:
-        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 5 / 2
+        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 4.5 / 2
         break
       case ConstToolType.SM_AR_ATTRIBUTE_ALBUM:
       case ConstToolType.SM_AR_VIDEO_ALBUM:

@@ -175,7 +175,7 @@ export default class TableItem extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   itemContainer: {
     width: scaleSize(100),
-    height: scaleSize(110),
+    height: scaleSize(95),
     alignItems: 'center',
     // justifyContent: 'center',
     justifyContent: 'space-around',
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     height: scaleSize(50),
   },
   title: {
-    marginTop: scaleSize(10),
+    // marginTop: scaleSize(10),
     color: color.font_color_white,
     fontSize: setSpText(15),
     backgroundColor: 'transparent',

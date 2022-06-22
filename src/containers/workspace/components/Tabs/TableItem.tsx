@@ -175,16 +175,18 @@ export default class TableItem extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   itemContainer: {
     width: scaleSize(100),
+    height: scaleSize(110),
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   imageView: {
-    width: scaleSize(80),
-    height: scaleSize(80),
+    width: scaleSize(50),
+    height: scaleSize(50),
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: scaleSize(40),
-    backgroundColor: color.itemColorGray4,
+    // borderRadius: scaleSize(40),
+    // backgroundColor: color.itemColorGray4,
   },
   selectImageBg: {
     backgroundColor: color.itemColorGray,

@@ -77,10 +77,23 @@
 		4E28CE9228378DEA0045CB07 /* ARWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE8F28378DEA0045CB07 /* ARWebView.xib */; };
 		4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9028378DEA0045CB07 /* publicMap.txt */; };
 		4E28CE9528378DFD0045CB07 /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9428378DFD0045CB07 /* PIL */; };
-		4E28CE9828378E530045CB07 /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9628378E530045CB07 /* Resource */; };
-		4E28CE9928378E530045CB07 /* Model in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9728378E530045CB07 /* Model */; };
 		5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		E565E980286303CF007797E3 /* SegmenationFree-Inception.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = E565E977286303CF007797E3 /* SegmenationFree-Inception.caffemodel */; };
+		E565E981286303CF007797E3 /* SegmenationFree-Inception.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = E565E978286303CF007797E3 /* SegmenationFree-Inception.prototxt */; };
+		E565E982286303CF007797E3 /* HorizonalFinemapping.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = E565E979286303CF007797E3 /* HorizonalFinemapping.caffemodel */; };
+		E565E983286303CF007797E3 /* CharacterRecognization.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = E565E97A286303CF007797E3 /* CharacterRecognization.caffemodel */; };
+		E565E984286303CF007797E3 /* cascade.xml in Resources */ = {isa = PBXBuildFile; fileRef = E565E97B286303CF007797E3 /* cascade.xml */; };
+		E565E985286303CF007797E3 /* Segmentation.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = E565E97C286303CF007797E3 /* Segmentation.prototxt */; };
+		E565E986286303CF007797E3 /* HorizonalFinemapping.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = E565E97D286303CF007797E3 /* HorizonalFinemapping.prototxt */; };
+		E565E987286303CF007797E3 /* Segmentation.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = E565E97E286303CF007797E3 /* Segmentation.caffemodel */; };
+		E565E988286303CF007797E3 /* CharacterRecognization.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = E565E97F286303CF007797E3 /* CharacterRecognization.prototxt */; };
+		E565E990286309A5007797E3 /* mobilenet_quant_224.tflite in Resources */ = {isa = PBXBuildFile; fileRef = E565E98A286309A5007797E3 /* mobilenet_quant_224.tflite */; };
+		E565E991286309A5007797E3 /* labelmap_cn.txt in Resources */ = {isa = PBXBuildFile; fileRef = E565E98B286309A5007797E3 /* labelmap_cn.txt */; };
+		E565E992286309A5007797E3 /* mobilenet_quant_224_cn.txt in Resources */ = {isa = PBXBuildFile; fileRef = E565E98C286309A5007797E3 /* mobilenet_quant_224_cn.txt */; };
+		E565E993286309A5007797E3 /* mobilenet_quant_224.txt in Resources */ = {isa = PBXBuildFile; fileRef = E565E98D286309A5007797E3 /* mobilenet_quant_224.txt */; };
+		E565E994286309A5007797E3 /* labelmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = E565E98E286309A5007797E3 /* labelmap.txt */; };
+		E565E995286309A5007797E3 /* detect.tflite in Resources */ = {isa = PBXBuildFile; fileRef = E565E98F286309A5007797E3 /* detect.tflite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -209,10 +222,23 @@
 		4E28CE8F28378DEA0045CB07 /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
 		4E28CE9028378DEA0045CB07 /* publicMap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = publicMap.txt; sourceTree = "<group>"; };
 		4E28CE9428378DFD0045CB07 /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
-		4E28CE9628378E530045CB07 /* Resource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resource; sourceTree = "<group>"; };
-		4E28CE9728378E530045CB07 /* Model */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Model; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iTablet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iTablet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E565E977286303CF007797E3 /* SegmenationFree-Inception.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SegmenationFree-Inception.caffemodel"; sourceTree = "<group>"; };
+		E565E978286303CF007797E3 /* SegmenationFree-Inception.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SegmenationFree-Inception.prototxt"; sourceTree = "<group>"; };
+		E565E979286303CF007797E3 /* HorizonalFinemapping.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = HorizonalFinemapping.caffemodel; sourceTree = "<group>"; };
+		E565E97A286303CF007797E3 /* CharacterRecognization.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = CharacterRecognization.caffemodel; sourceTree = "<group>"; };
+		E565E97B286303CF007797E3 /* cascade.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = cascade.xml; sourceTree = "<group>"; };
+		E565E97C286303CF007797E3 /* Segmentation.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Segmentation.prototxt; sourceTree = "<group>"; };
+		E565E97D286303CF007797E3 /* HorizonalFinemapping.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HorizonalFinemapping.prototxt; sourceTree = "<group>"; };
+		E565E97E286303CF007797E3 /* Segmentation.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = Segmentation.caffemodel; sourceTree = "<group>"; };
+		E565E97F286303CF007797E3 /* CharacterRecognization.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CharacterRecognization.prototxt; sourceTree = "<group>"; };
+		E565E98A286309A5007797E3 /* mobilenet_quant_224.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = mobilenet_quant_224.tflite; sourceTree = "<group>"; };
+		E565E98B286309A5007797E3 /* labelmap_cn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labelmap_cn.txt; sourceTree = "<group>"; };
+		E565E98C286309A5007797E3 /* mobilenet_quant_224_cn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mobilenet_quant_224_cn.txt; sourceTree = "<group>"; };
+		E565E98D286309A5007797E3 /* mobilenet_quant_224.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mobilenet_quant_224.txt; sourceTree = "<group>"; };
+		E565E98E286309A5007797E3 /* labelmap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = labelmap.txt; sourceTree = "<group>"; };
+		E565E98F286309A5007797E3 /* detect.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = detect.tflite; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F07F69481202071CFF1C167F /* Pods-iTablet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iTablet.debug.xcconfig"; path = "Target Support Files/Pods-iTablet/Pods-iTablet.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -343,8 +369,8 @@
 		0AC8AE812808109E00435541 /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				4E28CE9728378E530045CB07 /* Model */,
-				4E28CE9628378E530045CB07 /* Resource */,
+				E565E989286309A4007797E3 /* Model */,
+				E565E976286303CF007797E3 /* Resource */,
 				4E28CE9428378DFD0045CB07 /* PIL */,
 				4E28CE8F28378DEA0045CB07 /* ARWebView.xib */,
 				4E28CE8C28378DEA0045CB07 /* left_arrow.png */,
@@ -482,6 +508,35 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E565E976286303CF007797E3 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				E565E977286303CF007797E3 /* SegmenationFree-Inception.caffemodel */,
+				E565E978286303CF007797E3 /* SegmenationFree-Inception.prototxt */,
+				E565E979286303CF007797E3 /* HorizonalFinemapping.caffemodel */,
+				E565E97A286303CF007797E3 /* CharacterRecognization.caffemodel */,
+				E565E97B286303CF007797E3 /* cascade.xml */,
+				E565E97C286303CF007797E3 /* Segmentation.prototxt */,
+				E565E97D286303CF007797E3 /* HorizonalFinemapping.prototxt */,
+				E565E97E286303CF007797E3 /* Segmentation.caffemodel */,
+				E565E97F286303CF007797E3 /* CharacterRecognization.prototxt */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		E565E989286309A4007797E3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E565E98A286309A5007797E3 /* mobilenet_quant_224.tflite */,
+				E565E98B286309A5007797E3 /* labelmap_cn.txt */,
+				E565E98C286309A5007797E3 /* mobilenet_quant_224_cn.txt */,
+				E565E98D286309A5007797E3 /* mobilenet_quant_224.txt */,
+				E565E98E286309A5007797E3 /* labelmap.txt */,
+				E565E98F286309A5007797E3 /* detect.tflite */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -592,28 +647,41 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E28CE9928378E530045CB07 /* Model in Resources */,
+				E565E988286303CF007797E3 /* CharacterRecognization.prototxt in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				4E28CE9528378DFD0045CB07 /* PIL in Resources */,
 				0AC8AF042808109F00435541 /* launch_slogan_en.png in Resources */,
-				4E28CE9828378E530045CB07 /* Resource in Resources */,
 				0AC8AF032808109F00435541 /* icon.png in Resources */,
 				4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */,
 				0AC8AF082808109F00435541 /* SuperMapAR.bundle in Resources */,
 				0AC8AF742808109F00435541 /* resources.bundle in Resources */,
+				E565E990286309A5007797E3 /* mobilenet_quant_224.tflite in Resources */,
+				E565E981286303CF007797E3 /* SegmenationFree-Inception.prototxt in Resources */,
+				E565E985286303CF007797E3 /* Segmentation.prototxt in Resources */,
 				4E28CE9128378DEA0045CB07 /* left_arrow.png in Resources */,
+				E565E987286303CF007797E3 /* Segmentation.caffemodel in Resources */,
 				0AC8AF642808109F00435541 /* logo.png in Resources */,
 				0AC8AF072808109F00435541 /* Workspace.zip in Resources */,
+				E565E984286303CF007797E3 /* cascade.xml in Resources */,
+				E565E991286309A5007797E3 /* labelmap_cn.txt in Resources */,
 				4E28CE9228378DEA0045CB07 /* ARWebView.xib in Resources */,
 				0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */,
+				E565E995286309A5007797E3 /* detect.tflite in Resources */,
 				0AC8AF022808109F00435541 /* Images.zip in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */,
+				E565E992286309A5007797E3 /* mobilenet_quant_224_cn.txt in Resources */,
+				E565E993286309A5007797E3 /* mobilenet_quant_224.txt in Resources */,
 				0AC8AF062808109F00435541 /* launch_slogan_cn.png in Resources */,
 				0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */,
+				E565E994286309A5007797E3 /* labelmap.txt in Resources */,
 				0AC8AF052808109F00435541 /* Template.zip in Resources */,
 				0AC8AF092808109F00435541 /* python2.7.zip in Resources */,
+				E565E980286303CF007797E3 /* SegmenationFree-Inception.caffemodel in Resources */,
 				0AC8AF752808109F00435541 /* PlotLibData.zip in Resources */,
+				E565E982286303CF007797E3 /* HorizonalFinemapping.caffemodel in Resources */,
+				E565E983286303CF007797E3 /* CharacterRecognization.caffemodel in Resources */,
+				E565E986286303CF007797E3 /* HorizonalFinemapping.prototxt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,7 +726,7 @@
 		};
 		6F2CB6E42E7136A24DCDFF18 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -668,7 +736,7 @@
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iTablet/Pods-iTablet-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iTablet/Pods-iTablet-resources.sh\"\n";
 			showEnvVarsInLog = 0;

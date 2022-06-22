@@ -2549,6 +2549,10 @@ export const language_ar: typeof language_cn = {
   PUBLISH_FAILED: "فشل النشر",
   PUBLISH_FAILED_INFO_1: "تم نشر هذه الخدمة",
   PUBLISH_FAILED_INFO_2: "الخدمة قيد النشر ، لا يمكن أن تعمل في هذا الوقت",
+  UNPUBLISH: "Unpublish", // need to translate
+  UNPUBLISHING: "Unpublishing", // need to translate
+  UNPUBLISH_SUCCESS: "Unpublished", // need to translate
+  UNPUBLISH_FAILED: "Failed to Unpublish", // need to translate
   SERVICE_SUBMIT_BEFORE_UPDATE: "يرجى تحديث الخدمة قبل التقديم",
   DELETE_CONFIRM: "هل أنت متأكد أنك تريد حذف العنصر؟",
   BATCH_DELETE_CONFIRM: "هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟",

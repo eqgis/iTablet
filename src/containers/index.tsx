@@ -426,7 +426,7 @@ export default function(params: StackNavigatorProps) {
         animation: 'slide_from_bottom',
         presentation: 'fullScreenModal',
       }} />
-      <Stack.Screen name="MapSelectList" component={MapSelectList} />
+      <Stack.Screen name="MapSelectList" component={MapSelectList} options={modalOption(params)}/>
       <Stack.Screen name="ChartManager" component={ChartManager} />
     </Stack.Navigator>
   )

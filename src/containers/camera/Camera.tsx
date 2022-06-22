@@ -16,7 +16,7 @@ import { FileTools } from '../../native'
 import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
 import { screen } from '../../utils'
-import { Progress, MediaViewer, ImagePicker, Container } from '../../components'
+import { Progress, MediaViewer, ImagePicker } from '../../components'
 import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, RecordVideoOptions, TakePhotoOptions, useCameraDevices, useFrameProcessor, VideoFile } from 'react-native-vision-camera'
 import { SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
@@ -467,7 +467,7 @@ class Camera extends React.Component<Props, State> {
     if (this.state.type === TYPE.BARCODE || this.state.recordStatus === RECORD_STATUS.RECORDED) return null
     return (
       <ImageButton
-        containerStyle={[styles.capture, screen.isIphoneX() && {paddingBottom: styles.capture.bottom + screen.X_BOTTOM}]}
+        containerStyle={[styles.capture, screen.isIphoneX() && this.props.device.orientation.indexOf('PORTRAIT') >= 0 && {paddingBottom: styles.capture.bottom + screen.X_BOTTOM}]}
         iconStyle={styles.iconView}
         icon={getPublicAssets().common.icon_take_camera}
         onPress={() => {

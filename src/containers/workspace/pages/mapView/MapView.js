@@ -5000,6 +5000,7 @@ export default class MapView extends React.Component {
 
 
   renderContainer = () => {
+    const width = scaleSize(screen.getScreenWidth())
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -5050,7 +5051,7 @@ export default class MapView extends React.Component {
               global.Type === ChunkType.MAP_AR_ANALYSIS ||
               global.Type === ChunkType.MAP_AR
             ) &&
-            this.props.isAR && { left: 9999 },
+            this.props.isAR && { left: 9999,width:width ,height:width*0.666-scaleSize(50) },
           ]}>
             <SMMapView
               ref={ref => (global.mapView = ref)}

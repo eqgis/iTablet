@@ -1,7 +1,6 @@
 import { Dimensions, PixelRatio, Platform, NativeModules } from 'react-native'
 import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import Orientation, { orientation as orientationType, specificOrientation } from 'react-native-orientation'
-import { DeviceUtils } from 'imobile_for_reactnative'
 
 export type OrientationType = orientationType | specificOrientation
 
@@ -115,8 +114,8 @@ function getScreenHeight(orientation?: OrientationType): number {
       Dimensions.get('screen').height,
       Dimensions.get('screen').width,
     )
-    // 第一次用window获取的高度有可能和screen相等,导致底部虚拟按钮高度和状态栏高度倍计算到window的height中,需要减去
-    if (deviceScreenHeight === deviceHeight) {
+    // Android第一次用window获取的高度有可能和screen相等,导致底部虚拟按钮高度和状态栏高度倍计算到window的height中,需要减去
+    if (Platform.OS === 'android' && deviceScreenHeight === deviceHeight) {
       // 减去状态栏高度,若有虚拟按键,则继续减去虚拟按钮高度
       deviceHeight -= NativeModules.StatusBarManager.HEIGHT + (hasNavigationBar ? navigationBarHeight : 0)
     }
@@ -246,18 +245,21 @@ function isIphoneX() {
   return false
 }
 
-let orientation: OrientationType | '' = ''
+let mOrientation: OrientationType | '' = ''
+let _lastOrientation: OrientationType | '' = ''
 function setOrientation(o: OrientationType) {
   if (o) {
-    orientation = o
+    _lastOrientation = mOrientation
+    mOrientation = o
   }
 }
 
+
 function getOrientation() {
-  if (orientation === '') {
+  if (mOrientation === '') {
     return getScreenHeight() > getScreenWidth() ? 'PORTRAIT' : 'LANDSCAPE'
   }
-  return orientation
+  return mOrientation
 }
 
 /**
@@ -307,11 +309,12 @@ function getIphonePaddingHorizontal(orientation?: OrientationType): {
     paddingLeft: 0,
     paddingRight: 0,
   }
+  // ios 横屏为LANDSCAPE-LEFT或LANDSCAPE-RIGHT,横屏然后平放为LANDSCAPE,要加入判断
   if (!orientation || Platform.OS !== 'ios') return paddingHorizontal
-  if (isIphoneX() && orientation === 'LANDSCAPE-LEFT') {
+  if (isIphoneX() && (orientation === 'LANDSCAPE-LEFT' || _lastOrientation === 'LANDSCAPE-LEFT' && orientation === 'LANDSCAPE')) {
     paddingHorizontal.paddingLeft = X_TOP
     // paddingHorizontal.paddingRight = 34
-  } else if (isIphoneX() && orientation === 'LANDSCAPE-RIGHT') {
+  } else if (isIphoneX() && (orientation === 'LANDSCAPE-RIGHT' || _lastOrientation === 'LANDSCAPE-RIGHT' && orientation === 'LANDSCAPE')) {
     // paddingHorizontal.paddingLeft = 34
     paddingHorizontal.paddingRight = X_TOP
   }

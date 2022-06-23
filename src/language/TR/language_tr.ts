@@ -2526,6 +2526,10 @@ export const language_tr: typeof language_cn = {
   PUBLISH_FAILED: "Yayınlama Başarısız",
   PUBLISH_FAILED_INFO_1: "Servis yayınlandı",
   PUBLISH_FAILED_INFO_2: "Hizmet yayınlanıyor fakat şu anda çalıştırılamıyor",
+  UNPUBLISH: "Unpublish", // need to translate
+  UNPUBLISHING: "Unpublishing", // need to translate
+  UNPUBLISH_SUCCESS: "Unpublished", // need to translate
+  UNPUBLISH_FAILED: "Failed to Unpublish", // need to translate
   SERVICE_SUBMIT_BEFORE_UPDATE: "Lütfen göndermeden önce hizmeti güncelleyin.",
   DELETE_CONFIRM: "Öğeyi silmek istediğinizden emin misiniz?",
   BATCH_DELETE_CONFIRM: "Seçili öğe(ler)i silmek istediğinizden emin misiniz?",

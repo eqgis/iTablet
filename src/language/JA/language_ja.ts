@@ -2529,6 +2529,10 @@ export const language_ja: typeof language_cn = {
   PUBLISH_FAILED: "配信に失敗",
   PUBLISH_FAILED_INFO_1: "当サービスは配信されています",
   PUBLISH_FAILED_INFO_2: "サービス更新中、操作できません",
+  UNPUBLISH: "Unpublish", // need to translate
+  UNPUBLISHING: "Unpublishing", // need to translate
+  UNPUBLISH_SUCCESS: "Unpublished", // need to translate
+  UNPUBLISH_FAILED: "Failed to Unpublish", // need to translate
   SERVICE_SUBMIT_BEFORE_UPDATE: "サービスを更新後で、サブミットしてください",
   DELETE_CONFIRM: "現在データを削除しますか？",
   BATCH_DELETE_CONFIRM: "現在の選択データを削除しますか？",

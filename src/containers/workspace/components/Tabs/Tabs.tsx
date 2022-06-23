@@ -9,6 +9,7 @@ import TableItem from './TableItem'
 import { TableItemType } from './types'
 import { ToolBarSlide } from '../ToolBar/components'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
+import { redo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 
 interface Props {
   data: any[],
@@ -126,7 +127,7 @@ export default class Tabs extends React.Component<Props, State> {
       indicatorStyle={[
         styles.tabBarUnderlineStyle,
         // {marginLeft: this._getWidth() / this.props.data.length / 2 - scaleSize(16)},
-        {marginLeft: scaleSize(43)},
+        {marginLeft: scaleSize(55)},
       ]}
       // onTabPress={({route, preventDefault}) => {
       //   const routes = this._getRoutes()
@@ -147,7 +148,7 @@ export default class Tabs extends React.Component<Props, State> {
       labelStyle={styles.tabTextStyle}
       activeColor={color.themeText2}
       scrollEnabled={true}
-      tabStyle={{width:scaleSize(150)}}
+      tabStyle={{width:scaleSize(140)}}
     />
   )
 
@@ -282,14 +283,14 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   tabBarUnderlineStyle: {
-    backgroundColor: color.black,
+    backgroundColor: '#505050',
     height: scaleSize(4),
-    width: scaleSize(64),
+    width: scaleSize(30),
     borderRadius: scaleSize(2),
     marginBottom: scaleSize(12),
   },
   tabTextStyle: {
-    fontSize: setSpText(22),
+    fontSize: setSpText(20),
     backgroundColor: 'transparent',
     color: color.fontColorBlack,
     textAlign: 'center',

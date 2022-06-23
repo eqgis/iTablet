@@ -165,7 +165,7 @@ export default class TableList extends React.Component {
         // console.warn(cellWidth + " - " + cellWidth * this.props.data.length + " - " + Dimensions.get('window').width)
         style = {
           flexDirection: 'row',
-          justifyContent: 'space-around',
+          // justifyContent: 'space-around',
           width: width,
         }
       }

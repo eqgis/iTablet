@@ -10,6 +10,7 @@ const list_section_spread = require('./list_section_spread.png')
 const icon_arrow_right = require('./icon_arrow_right_light.png')
 const tab_done = require('./tab_done.png')
 const icon_edit = require('./icon_edit.png')
+const icon_edit_text = require('./icon_edit_text.png')
 const icon_drop_down = require('./icon_dropdown.png')
 const icon_drop_up = require('./icon_dropup.png')
 const icon_dropdown_selected = require('./icon_dropdown_selected.png')
@@ -70,6 +71,7 @@ export default {
   icon_arrow_right,
   tab_done,
   icon_edit,
+  icon_edit_text,
   icon_drop_down,
   icon_drop_up,
   icon_dropdown_selected,

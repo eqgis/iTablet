@@ -18,7 +18,8 @@ import LocalDataItem from './LocalDataItem'
 import { getOnlineData } from './Method'
 import LocalDtaHeader from './LocalDataHeader'
 import OnlineDataItem from './OnlineDataItem'
-import { scaleSize, FetchUtils, OnlineServicesUtils } from '../../../../utils'
+import { scaleSize, FetchUtils } from '../../../../utils'
+import OnlineServicesUtils, { setServiceType, getService } from '@/utils/OnlineServicesUtils'
 import DataHandler from '../../../../utils/DataHandler'
 import NavigationService from '../../../NavigationService'
 import Directory from './Directory'
@@ -699,6 +700,43 @@ export default class MyLocalData extends Component {
     }
   }
 
+  _unPublishService = async () => {
+    let _result = false
+    try {
+      let _service
+      if (UserType.isOnlineUser(currentUser)) {
+        _service = getService('online')
+      } else if (UserType.isIPortalUser(currentUser)) {
+        _service = getService('iportal')
+      }
+      if (!_service) return false
+      this.setLoading(true, getLanguage().UNPUBLISHING)
+      const services = this.itemInfo.dataItemServices
+      let results = ''
+      for (const service of services) {
+        const result = await _service.unPublishService(this.itemInfo.id, service.serviceName)
+        if (results !== '') results += '\n'
+        results += service.serviceName + (
+          result.succeed
+            ? getLanguage().UNPUBLISH_SUCCESS
+            : getLanguage().UNPUBLISH_FAILED
+        )
+        if (result.succeed) {
+          _result = result.succeed
+        }
+      }
+      Toast.show(results, _result)
+    } catch(e) {
+
+    } finally {
+      if (_result) {
+        await this.getData()
+      } else {
+        this.setLoading(false)
+      }
+    }
+  }
+
   //发布服务后可以通过id获取item发布服务状态
   addListenOfPublish = async id => {
     let dataUrl = 'https://www.supermapol.com/web/datas/' + id + '.json'
@@ -967,6 +1005,14 @@ export default class MyLocalData extends Component {
         }
         if (item.dataItemServices) {
           if (
+            item.serviceStatus === 'PUBLISHED' ||
+            item.serviceStatus === 'PUBLISH_FAILED'
+          ) {
+            data.push({
+              title: getLanguage().UNPUBLISH,
+              action: this._unPublishService,
+            })
+          } else if (
             item.serviceStatus !== 'PUBLISHED' &&
             item.serviceStatus !== 'PUBLISHING' &&
             item.serviceStatus !== 'DOES_NOT_INVOLVE'

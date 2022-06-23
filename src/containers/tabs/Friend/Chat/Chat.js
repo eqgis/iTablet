@@ -40,6 +40,7 @@ import ImageResizer from 'react-native-image-resizer'
 import DataHandler from '../../../../utils/DataHandler'
 import 'moment/locale/zh-cn'
 import CoworkInfo from '../Cowork/CoworkInfo'
+import SMessageServiceHTTP from '../SMessageServiceHTTP'
 
 let Top = scaleSize(38)
 if (Platform.OS === 'ios') {
@@ -688,11 +689,18 @@ class Chat extends React.Component {
   }
   onReceive(msgId) {
     let talkId = this.targetUser.id
-    let msg = this.friend.getMsgByMsgId(talkId, msgId)
-    let chatMsg = this._loadChatMsg(msg)
+    // let msg = this.friend.getMsgByMsgId(talkId, msgId)
+    // let chatMsg = this._loadChatMsg(msg)
+    const lastMsg = this.state.messages[0]
+    const msgs = this.friend.getMsgFromTime(talkId, lastMsg.createdAt.getTime())
+    const chatMsgs = []
+    for (let msg of msgs) {
+      chatMsgs.push(this._loadChatMsg(msg))
+    }
+
     this.setState(previousState => {
       return {
-        messages: GiftedChat.append(previousState.messages, chatMsg),
+        messages: GiftedChat.append(previousState.messages, chatMsgs),
         showInformSpot: false,
       }
     })

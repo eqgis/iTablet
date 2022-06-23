@@ -383,6 +383,7 @@ class AppRoot extends Component {
 
     // 显示界面，之前的为预加载
     this.setState({ isInit: true }, () => {
+      global.isLogging = true
       this.login()
     })
 

@@ -715,17 +715,17 @@ export default class MyLocalData extends Component {
       let results = ''
       for (const service of services) {
         const result = await _service.unPublishService(this.itemInfo.id, service.serviceName)
-        if (results !== '') results += '\n'
-        results += service.serviceName + (
-          result.succeed
-            ? getLanguage().UNPUBLISH_SUCCESS
-            : getLanguage().UNPUBLISH_FAILED
-        )
+        // if (results !== '') results += '\n'
+        // results += service.serviceName + (
+        //   result.succeed
+        //     ? getLanguage().UNPUBLISH_SUCCESS
+        //     : getLanguage().UNPUBLISH_FAILED
+        // )
         if (result.succeed) {
           _result = result.succeed
         }
       }
-      Toast.show(results, _result)
+      Toast.show(_result ? getLanguage().UNPUBLISH_SUCCESS : getLanguage().UNPUBLISH_FAILED)
     } catch(e) {
 
     } finally {

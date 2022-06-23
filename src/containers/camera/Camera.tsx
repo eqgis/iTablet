@@ -523,7 +523,16 @@ class Camera extends React.Component<Props, State> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          Platform.OS === 'android' && { flex: 1 },
+          Platform.OS === 'ios' && {
+            width: screen.getScreenSafeWidth(this.props.device.orientation),
+            height: screen.getScreenSafeHeight(this.props.device.orientation),
+          }]
+        }
+      >
         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'black' }} />
         <MyCamera2
           {...this.props}

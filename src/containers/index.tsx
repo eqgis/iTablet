@@ -354,7 +354,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="Camera" component={Camera} options={{
         headerShown: false,
         animation: 'none',
-        presentation: 'fullScreenModal',
+        presentation: 'containedTransparentModal',
       }} />
       <Stack.Screen name="MeasureView" component={MeasureView} />
       <Stack.Screen name="MeasureAreaView" component={MeasureAreaView} />
@@ -424,7 +424,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ImagePickerStack" component={ImagePickerStack} options={{
         headerShown: false,
         animation: 'slide_from_bottom',
-        presentation: 'fullScreenModal',
+        presentation: 'containedTransparentModal',
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} options={modalOption(params)}/>
       <Stack.Screen name="ChartManager" component={ChartManager} />

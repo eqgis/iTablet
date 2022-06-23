@@ -391,6 +391,7 @@ export default class Container extends Component {
         style={[
           styles.view,
           { transform: [{ translateX: this.viewX }] },
+          Platform.OS === 'android' && { flex: 1 },
           Platform.OS === 'ios' && {
             width: screen.getScreenSafeWidth(this.props.device.orientation),
             height: screen.getScreenSafeHeight(this.props.device.orientation),

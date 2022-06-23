@@ -127,18 +127,11 @@ export default class AlbumView extends React.PureComponent<Props, State> {
     return (
       <Container
         style={[
-          {
-            paddingTop:
-              screen.isIphoneX() &&
-              this.state.orientation.indexOf('PORTRAIT') >= 0
-                ? screen.X_TOP
-                : 0,
-            paddingBottom: screen.getIphonePaddingBottom(),
-            ...screen.getIphonePaddingHorizontal(
-              this.state.orientation,
-            ),
-          },
-          styles.view,
+          Platform.OS === 'ios' && {
+            width: screen.getScreenSafeWidth(this.state.orientation),
+            height: screen.getScreenSafeHeight(this.state.orientation),
+          }
+          // styles.view,
         ]}
         showFullInMap={true}
         headerProps={{

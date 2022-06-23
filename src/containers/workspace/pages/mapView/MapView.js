@@ -114,6 +114,7 @@ import {
   Animated,
   Dimensions,
   DeviceEventEmitter,
+  PixelRatio,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -4998,9 +4999,12 @@ export default class MapView extends React.Component {
     )
   }
 
+  px=  (size:number) =>{
+    return PixelRatio.getPixelSizeForLayoutSize(size)
+  }
 
   renderContainer = () => {
-    const width = scaleSize(screen.getScreenWidth())
+    const width = this.px(screen.getScreenWidth())
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -5051,7 +5055,7 @@ export default class MapView extends React.Component {
               global.Type === ChunkType.MAP_AR_ANALYSIS ||
               global.Type === ChunkType.MAP_AR
             ) &&
-            this.props.isAR && { left: 9999,width:width ,height:width*0.666-scaleSize(50) },
+            this.props.isAR && { left: 9999,width:width ,height:width*0.666-this.px(50) },
           ]}>
             <SMMapView
               ref={ref => (global.mapView = ref)}

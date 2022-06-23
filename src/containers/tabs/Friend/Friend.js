@@ -532,32 +532,33 @@ export default class Friend extends Component {
           let connection = await SMessageServiceHTTP.getConnection(
             this.props.user.currentUser.userName,
           )
-          //是否是login时调用
+          //是否是login和启动App时调用
           if (global.isLogging) {
-            if (connection) {
-              this.loginTime = Date.parse(new Date())
-              await this._sendMessage(
-                JSON.stringify({
-                  type: MSGConstant.MSG_LOGOUT,
-                  user: {},
-                  time: this.loginTime,
-                  message: '',
-                }),
-                this.props.user.currentUser.userName,
-              )
-              // TODO 防止ios顶号失败
-              // 定时器,延迟执行关闭链接操作
-              // 等待被顶号的一端接收到消息,并登出后,顶号的一端再创建Connection
-              const _time = async function() {
-                return new Promise(function(resolve, reject) {
-                  let timer = setTimeout(function() {
-                    resolve('waitting send close message')
-                    timer && clearTimeout(timer)
-                  }, 1000)
-                })
-              }
-              await _time()
+            this.loginTime = Date.parse(new Date().toString())
+            await this._sendMessage(
+              JSON.stringify({
+                type: MSGConstant.MSG_LOGOUT,
+                user: {},
+                time: this.loginTime,
+                message: '',
+              }),
+              this.props.user.currentUser.userName,
+            )
+            // TODO 防止ios顶号失败
+            // 定时器,延迟执行关闭链接操作
+            // 等待被顶号的一端接收到消息,并登出后,顶号的一端再创建Connection
+            const _time = async function() {
+              return new Promise(function(resolve, reject) {
+                let timer = setTimeout(function() {
+                  resolve('waitting send close message')
+                  timer && clearTimeout(timer)
+                }, 1000)
+              })
+            }
+            await _time()
 
+            if (connection) {
+              // await SMessageService.stopReceiveMessage()
               await SMessageServiceHTTP.closeConnection(connection)
             }
             global.isLogging = false
@@ -568,6 +569,7 @@ export default class Friend extends Component {
                 this.props.user.currentUser.userName,
               )
               if (this.props.chat.consumer === consumer) {
+                await SMessageService.stopReceiveMessage()
                 await SMessageServiceHTTP.closeConnection(connection)
               } else {
                 this._logout()
@@ -1578,6 +1580,26 @@ export default class Friend extends Component {
     }
     return msg
   }
+
+  getMsgFromTime = (talkId, fromTime) => {
+    let userId = this.props.user.currentUser.userName
+    let chatHistory = []
+    let msgs = []
+    if (this.props.chat[userId] && this.props.chat[userId][talkId]) {
+      chatHistory = this.props.chat[userId][talkId].history
+    }
+    if (chatHistory.length !== 0) {
+      for (let i = chatHistory.length - 1; i >= 0; i--) {
+        if (chatHistory[i].originMsg.time > fromTime) {
+          msgs.unshift(chatHistory[i])
+        } else {
+          break
+        }
+      }
+    }
+    return msgs
+  }
+
   /**
    * 使用rabbitMQ发送
    */

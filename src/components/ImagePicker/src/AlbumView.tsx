@@ -127,11 +127,11 @@ export default class AlbumView extends React.PureComponent<Props, State> {
     return (
       <Container
         style={[
+          // styles.view,
           Platform.OS === 'ios' && {
             width: screen.getScreenSafeWidth(this.state.orientation),
             height: screen.getScreenSafeHeight(this.state.orientation),
           }
-          // styles.view,
         ]}
         showFullInMap={true}
         headerProps={{

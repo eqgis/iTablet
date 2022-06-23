@@ -196,6 +196,7 @@ import { Platform } from 'react-native'
 import MapSelectList from '../containers/workspace/components/ToolBar/modules/arDrawingModule/MapSelectList'
 import { DEVICE } from '@/redux/models/device'
 import ChartManager from './ChartManager/ChartManager'
+import * as ImagePicker from '@/components/ImagePicker/src'
 
 const Stack = createNativeStackNavigator()
 
@@ -421,9 +422,19 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="NavigationView2D" component={NavigationView2D} />
       <Stack.Screen name="RoadNet" component={RoadNet} />
       <Stack.Screen name="Report" component={Report} />
-      <Stack.Screen name="ImagePickerStack" component={ImagePickerStack} options={{
+      {/* <Stack.Screen name="ImagePickerStack" component={ImagePickerStack} options={{
         headerShown: false,
         animation: 'slide_from_bottom',
+        presentation: 'containedTransparentModal',
+      }} /> */}
+      <Stack.Screen name={'AlbumListPage'} component={ImagePicker.AlbumListView} options={{
+        headerShown: false,
+        animation: 'slide_from_bottom',
+        presentation: 'containedTransparentModal',
+      }} />
+      <Stack.Screen name={'AlbumViewPage'} component={ImagePicker.AlbumView} options={{
+        headerShown: false,
+        animation: Platform.OS === 'ios' ? 'default' : 'slide_from_right',
         presentation: 'containedTransparentModal',
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} options={modalOption(params)}/>

@@ -1,7 +1,7 @@
 /**
  * 相机界面
  */
-import React, { forwardRef, ForwardRefRenderFunction, useImperativeHandle } from 'react'
+import React, { forwardRef, ForwardRefRenderFunction, useImperativeHandle, useMemo } from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -17,7 +17,7 @@ import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
 import { screen } from '../../utils'
 import { Progress, MediaViewer, ImagePicker } from '../../components'
-import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, RecordVideoOptions, TakePhotoOptions, useCameraDevices, useFrameProcessor, VideoFile } from 'react-native-vision-camera'
+import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, RecordVideoOptions, TakePhotoOptions, useCameraDevices, useFrameProcessor, VideoFile, CameraDeviceFormat } from 'react-native-vision-camera'
 import { SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import { DBRConfig, decode, TextResult } from 'vision-camera-dynamsoft-barcode-reader'
@@ -613,7 +613,29 @@ const MyCamera: ForwardRefRenderFunction<IRefProps, MyCameraProps> = (props, ref
     }, [])
   }
 
+  function getMaxFps(format: CameraDeviceFormat): number {
+    return format.frameRateRanges.reduce((prev, curr) => {
+      if (curr.maxFrameRate > prev) return curr.maxFrameRate
+      else return prev
+    }, 0)
+  }
+
+  const format = useMemo(() => {
+    return device?.formats.reduce((prev, curr) => {
+      if (prev == null) return curr
+      if (getMaxFps(curr) > getMaxFps(prev)) return curr
+      else return prev
+    }, undefined)
+  }, [device?.formats])
+
   if (!device) return <View style={{ backgroundColor: 'black' }} />
+
+  const _formart = Object.assign({}, format)
+
+  const rate = _formart.photoHeight / props.device.height
+
+  _formart.photoWidth = props.device.width * rate
+  _formart.videoWidth = props.device.width * rate
 
   return (
     <RNCamera
@@ -625,6 +647,7 @@ const MyCamera: ForwardRefRenderFunction<IRefProps, MyCameraProps> = (props, ref
       video={props.type === TYPE.VIDEO}
       frameProcessor={props.type === TYPE.BARCODE ? frameProcessor : undefined}
       frameProcessorFps={1}
+      format={_formart}
     />
   )
 }

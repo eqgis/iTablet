@@ -88,7 +88,7 @@ export default class VideoViewer extends React.Component<Props, State> {
       this.player.seek(0, 0)
       if (this.mProgress) this.mProgress.progress = 0
     }
-    let videoPaused = !this.state.videoPaused
+    const videoPaused = !this.state.videoPaused
     this.setState({
       videoPaused: videoPaused,
       videoStatus: videoPaused ? VIDEO_STATUS.PAUSE : VIDEO_STATUS.PLAYING,

@@ -5,7 +5,7 @@ import { size, color } from '../../styles'
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     backgroundColor: 'black',
   },

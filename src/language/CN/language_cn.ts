@@ -2819,4 +2819,6 @@ export const language_cn = {
   WTEXT: "宽字符",
 
   SLIDE_RATIO: '滑动系数',
+
+  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: '当前对象不支持AR属性',
 }

@@ -12,7 +12,7 @@ export function getFromView() {
 
 export function showImagePicker(options: any) {
   setFromView(NavigationService.getCurrent())
-  NavigationService.navigate('ImagePickerStack', options)
+  NavigationService.navigate('AlbumListPage', options)
 }
 
 export function hide () {

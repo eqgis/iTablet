@@ -285,7 +285,21 @@ export default class LayerAttribute extends React.Component {
    * @param resetCurrent 是否重置当前选择的对象
    */
   getAttribute = (params = {}, cb = () => { }, resetCurrent = false) => {
-    if (!this.props.currentLayer.path || params.currentPage < 0) {
+    if (!this.props.currentLayer.path) {
+      // 没有当前图层,则清空属性表
+      this.setState({
+        attributes: {
+          head: [],
+          data: [],
+        },
+        currentFieldInfo: [],
+        relativeIndex: -1,
+        currentIndex: -1,
+        startIndex: 0,
+      })
+      return
+    }
+    if (params.currentPage < 0) {
       this.setLoading(false)
       return
     }

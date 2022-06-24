@@ -15,6 +15,7 @@ import AttributeDetail, { SandTableData } from './LayerAttribute/pages/Attribute
 import { AddResult } from './LayerAttribute/pages/layerAttributeAdd/LayerAttributeAdd'
 import { getImage } from '../../../../assets'
 import { ButtonActionParams } from './LayerAttribute/components/LayerAttributeTable/LayerAttributeTable'
+import { checkSupportARAttributeByElement, checkSupportARAttributeByLayer } from '../Actions'
 
 const PAGE_SIZE = 30
 const ROWS_LIMIT = 120
@@ -458,6 +459,14 @@ class Attribute extends React.Component<Props, State> {
     ]
     const dismissTitles = ['AR_ATTRIBUTE_STYLE']
     const isSingle = this.total === 1 && this.state.attributes.data.length === 1
+    let isSupport = false
+    const selectElement = AppToolBar.getData().selectARElement
+    const currentLayer = AppToolBar.getProps().arMapInfo?.currentLayer
+    if(selectElement?.layerName) {
+      isSupport = checkSupportARAttributeByElement(selectElement.type)
+    } else if(currentLayer) {
+      isSupport = checkSupportARAttributeByLayer(currentLayer.type)
+    }
     return (
       <LayerAttributeTable
         ref={ref => (this.table = ref)}
@@ -491,6 +500,7 @@ class Attribute extends React.Component<Props, State> {
         refresh={cb => this.refresh(cb)}
         loadMore={cb => this.loadMore(cb)}
         changeAction={this.changeAction}
+        checkable={isSupport}
         onChecked={this.onChecked}
         buttonNameFilter={buttonNameFilter}
         buttonActions={buttonActions}
@@ -544,10 +554,18 @@ class Attribute extends React.Component<Props, State> {
   }
 
   renderAddTable = () => {
+    let isSupport = false
+    const selectElement = AppToolBar.getData().selectARElement
+    const currentLayer = AppToolBar.getProps().arMapInfo?.currentLayer
+    if(selectElement?.layerName) {
+      isSupport = checkSupportARAttributeByElement(selectElement.type)
+    } else if(currentLayer) {
+      isSupport = checkSupportARAttributeByLayer(currentLayer.type)
+    }
     const icon = this.state.addToScene
       ? getImage().icon_check
       : getImage().icon_uncheck
-    return (
+    return isSupport ? (
       <TouchableOpacity
         style={{
           flexDirection: 'row',
@@ -564,7 +582,7 @@ class Attribute extends React.Component<Props, State> {
         />
         <Text style={[AppStyle.h2, {marginLeft: dp(10)}]}>{getLanguage().ATTRIBUTE_ADD_TO_AR_SCENE}</Text>
       </TouchableOpacity>
-    )
+    ) : null
   }
 
   render() {

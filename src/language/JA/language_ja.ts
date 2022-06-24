@@ -2821,4 +2821,6 @@ export const language_ja: typeof language_cn = {
   WTEXT: "ワイド文字型",
 
   SLIDE_RATIO: 'スライド係数',
+
+  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
 }

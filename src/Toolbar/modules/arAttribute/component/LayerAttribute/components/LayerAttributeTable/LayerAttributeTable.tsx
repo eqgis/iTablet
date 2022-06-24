@@ -47,6 +47,10 @@ interface Props {
     cellData: any,
     value: string,
   }) => void, // 修改表格中的值的回调
+  /**
+   * 是否可以多选
+   */
+  checkable: boolean
   onChecked?: (selected: string[]) => void, // 表格多选框回调
   onPressHeader?: (params: {
     fieldInfo: FieldInfo2,
@@ -677,7 +681,7 @@ export default class LayerAttributeTable extends React.Component<Props, State> {
           this.itemClickPosition = evt.nativeEvent.pageY
           this.scrollIndex = index
         }}
-        hasChecked={hasChecked}
+        hasChecked={this.props.checkable && hasChecked}
         onChecked={this.onChecked}
         onChangeEnd={this.onChangeEnd}
         buttonIndexes={buttonIndexes}

@@ -2819,4 +2819,6 @@ export const language_en: typeof language_cn = {
   WTEXT: "WText",
 
   SLIDE_RATIO: 'Sliding Coefficient',
+
+  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
 }

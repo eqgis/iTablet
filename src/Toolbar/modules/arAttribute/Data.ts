@@ -5,6 +5,7 @@ import { getLanguage } from "../../../language"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, Toast } from "../../../utils"
 import { ARAttributeViewOption } from "./ARAttributeView"
+import { checkSupportARAttributeByElement } from "./Actions"
 
 
 export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
@@ -31,6 +32,34 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
   return option
 }
 
+async function __styleButtonAction() {
+  const selectARElement = AppToolBar.getData().selectARElement
+
+  if (!selectARElement) {
+    Toast.show(getLanguage().PLEASE_SELECT_OBJ)
+    return
+  }
+
+  // 检查是否支持
+  const isSupport = checkSupportARAttributeByElement(selectARElement.type)
+  if(!isSupport) {
+    Toast.show(getLanguage().AR_ATTRIBUTE_NOT_AVAILABLE_OBJ)
+    return
+  }
+
+  SARMap.appointEditElement(selectARElement.id, selectARElement.layerName)
+
+  const style = await SARMap.getAttributeStyle(selectARElement.layerName, selectARElement.id)
+
+
+  // 清空属性选择
+  AppToolBar.addData({
+    selectedAttribute: undefined,
+    attributeStyle: style,
+  })
+  AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_STYLE')
+}
+
 /** 浏览模型信息 */
 function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
 
@@ -54,26 +83,7 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
     },
     {
       image: getImage().my_color,
-      onPress: async () => {
-        const selectARElement = AppToolBar.getData().selectARElement
-
-        if (!selectARElement) {
-          Toast.show(getLanguage().PLEASE_SELECT_OBJ)
-          return
-        }
-
-        SARMap.appointEditElement(selectARElement.id, selectARElement.layerName)
-
-        const style = await SARMap.getAttributeStyle(selectARElement.layerName, selectARElement.id)
-
-
-        // 清空属性选择
-        AppToolBar.addData({
-          selectedAttribute: undefined,
-          attributeStyle: style,
-        })
-        AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_STYLE')
-      },
+      onPress: __styleButtonAction
     },
     {
       image: getImage().icon_layer_attribute,
@@ -122,25 +132,7 @@ function attributeOption(option: IToolbarOption) {
     },
     {
       image: getImage().my_color,
-      onPress: async () => {
-        SARMap.setAction(ARAction.SELECT)
-        const selectARElement = AppToolBar.getData().selectARElement
-
-        if (!selectARElement) {
-          Toast.show(getLanguage().PLEASE_SELECT_OBJ)
-          return
-        }
-        SARMap.appointEditElement(selectARElement.id, selectARElement.layerName)
-
-        const style = await SARMap.getAttributeStyle(selectARElement.layerName, selectARElement.id)
-
-        // 清空属性选择
-        AppToolBar.addData({
-          selectedAttribute: undefined,
-          attributeStyle: style,
-        })
-        AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_STYLE')
-      },
+      onPress: __styleButtonAction
     },
     {
       image: getImage().icon_submit,
@@ -189,6 +181,10 @@ function styleAttributeOption(option: IToolbarOption) {
     elementID = selectARElement.id
   } else if (layer) {
     layerName = layer.name
+  }
+
+  option.pageAction = () => {
+    SARMap.setAction(ARAction.NULL)
   }
 
   option.bottomData=[

@@ -80,6 +80,7 @@ export default class MyDataPage extends Component {
     this.getItemCallback = params.getItemCallback || undefined
     this.chatCallback = params.chatCallback || undefined
     this.exitCallback = params.exitCallback || undefined
+    this.showNewData = params.showNewData || undefined
     this.exportPath = ''
   }
 
@@ -1092,7 +1093,7 @@ export default class MyDataPage extends Component {
   }
 
   _renderHeaderRight = () => {
-    if (this.getItemCallback || this.chatCallback) return null
+    if ((this.getItemCallback || this.chatCallback) && !this.showNewData) return null
     if (this.state.batchMode) {
       return (
         <TouchableOpacity

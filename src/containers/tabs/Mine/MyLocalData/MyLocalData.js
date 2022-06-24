@@ -449,6 +449,7 @@ export default class MyLocalData extends Component {
 
     NavigationService.navigate('MyDatasource', {
       title: getLanguage(this.props.language).Profile.DATA,
+      showNewData:true,
       getItemCallback: async ({ item }) => {
         NavigationService.goBack()
         if (type === 'tif' || type === 'img') {

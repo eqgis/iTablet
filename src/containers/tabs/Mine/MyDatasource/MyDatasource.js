@@ -101,6 +101,9 @@ class MyDatasource extends MyDataPage {
     if (this.from === 'MapView') {
       return this.getCustomPagePopupData()
     }
+    if(this.showNewData){
+      return this.getCustomPagePopupData()
+    }
     return []
   }
 

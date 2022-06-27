@@ -1477,8 +1477,8 @@ function getHeaderData(type: string) {
     // type === ConstToolType.SM_AR_EDIT ||
     type === ConstToolType.SM_AR_EDIT_SCALE ||
     type === ConstToolType.SM_AR_EDIT_ROTATION ||
-    type === ConstToolType.SM_AR_EDIT_POSITION ||
-    type === ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE
+    type === ConstToolType.SM_AR_EDIT_POSITION
+    // || type === ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE
   ) {
     headerData = {
       withoutBack: true,
@@ -1518,42 +1518,44 @@ function getHeaderData(type: string) {
 
     if(_data.selectARElement.type === ARElementType.AR_LINE
       || _data.selectARElement.type === ARElementType.AR_MARKER_LINE){
-      headerData.headerRight.push({
-        key: 'line_object_edit',
-        // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
-        action: ()=>{
-          SARMap.setAction(ARAction.MOVE)
-          _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-            containerType: ToolbarType.slider,
-            isFullScreen: false,
-          })
-        },
-        size: 'large',
-        image: getImage().icon_edit,
-        style: {
-          width: scaleSize(60),
-          height: scaleSize(60),
-          borderRadius: scaleSize(8),
-          backgroundColor: color.white,
-        },
-      },{
-        key: 'line_point_add',
-        // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
-        action: ()=>{
-          SARMap.setAction(ARAction.VERTEX_ADD)
-          _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE, {
-            isFullScreen: false,
-          })
-        },
-        size: 'large',
-        image: getImage().zoom_in,
-        style: {
-          width: scaleSize(60),
-          height: scaleSize(60),
-          borderRadius: scaleSize(8),
-          backgroundColor: color.white,
-        },
-      })
+      headerData.headerRight.push(
+      //   {
+      //   key: 'line_object_edit',
+      //   // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+      //   action: ()=>{
+      //     SARMap.setAction(ARAction.MOVE)
+      //     _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+      //       containerType: ToolbarType.slider,
+      //       isFullScreen: false,
+      //     })
+      //   },
+      //   size: 'large',
+      //   image: getImage().icon_edit,
+      //   style: {
+      //     width: scaleSize(60),
+      //     height: scaleSize(60),
+      //     borderRadius: scaleSize(8),
+      //     backgroundColor: color.white,
+      //   },
+      // },
+        {
+          key: 'line_point_add',
+          // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+          action: () => {
+            SARMap.setAction(ARAction.VERTEX_ADD)
+            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_VERTEX_ADD_LINE, {
+              isFullScreen: false,
+            })
+          },
+          size: 'large',
+          image: getImage().zoom_in,
+          style: {
+            width: scaleSize(60),
+            height: scaleSize(60),
+            borderRadius: scaleSize(8),
+            backgroundColor: color.white,
+          },
+        })
     }
   }
   return headerData

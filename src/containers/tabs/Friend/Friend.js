@@ -156,6 +156,20 @@ export default class Friend extends Component {
     ) {
       this.updateServices()
     }
+    if (prevProps.language !== this.props.language) {
+      this.setState({
+        routes: [{
+          key: 'FriendMessage',
+          title: getLanguage(this.props.language).Friends.MESSAGES,
+        }, {
+          key: 'FriendList',
+          title: getLanguage(this.props.language).Friends.FRIENDS,
+        }, {
+          key: 'FriendGroup',
+          title: getLanguage(this.props.language).Friends.GROUPS,
+        }],
+      })
+    }
   }
 
   componentWillUnmount() {

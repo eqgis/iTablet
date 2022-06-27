@@ -135,16 +135,16 @@ export default class CoworkFileHandle {
     if (CoworkFileHandle.coworkListFile_ol === '') {
       return false
     }
-    let dataId = await this.service?.getDataIdByName(CoworkFileHandle.coworkFileName_ol + '.zip')
+    const dataId = await this.service?.getDataIdByName(CoworkFileHandle.coworkFileName_ol + '.zip')
     if (this.service && dataId !== undefined) {
-      let promise = new Promise((resolve, reject) => {
-        let callback = async (_value: boolean) => {
+      const promise = new Promise((resolve, reject) => {
+        const callback = async (_value: boolean) => {
           try {
             if (_value === true) {
-              let value = await RNFS.readFile(
+              const value = await RNFS.readFile(
                 CoworkFileHandle.coworkListFile_ol,
               )
-              let onlineVersion = JSON.parse(value)
+              const onlineVersion = JSON.parse(value)
               if (
                 !CoworkFileHandle.cowork ||
                 onlineVersion.rev > CoworkFileHandle.cowork.rev
@@ -303,20 +303,21 @@ export default class CoworkFileHandle {
         return
       }
       CoworkFileHandle.uploading = true
+      const UploadFileName = CoworkFileHandle.coworkFileName_ol + '.zip'
+      let deleteResult
       //上传
       if (UserType.isOnlineUser(CoworkFileHandle.user)) {
-        await SOnlineService.deleteData(CoworkFileHandle.coworkFileName_ol)
+        deleteResult = await SOnlineService.deleteData(UploadFileName)
       } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
-        let dataId = await this.service?.getDataIdByName(CoworkFileHandle.coworkFileName_ol + '.zip')
-        dataId && await SIPortalService.deleteMyData(dataId + '')
+        const _dataId = await this.service?.getDataIdByName(UploadFileName)
+        deleteResult = _dataId && await SIPortalService.deleteMyData(dataId + '')
       }
-      let UploadFileName = CoworkFileHandle.coworkFileName_ol + '.zip'
-      let dataId = await this.service?.getDataIdByName(UploadFileName)
-      let promise = new Promise(resolve => {
+      const dataId = await this.service?.getDataIdByName(UploadFileName)
+      const promise = new Promise(resolve => {
         if (UserType.isOnlineUser(CoworkFileHandle.user)) {
-          if (Platform.OS === 'android') {
-            UploadFileName = CoworkFileHandle.coworkFileName_ol
-          }
+          // if (Platform.OS === 'android') {
+          //   UploadFileName = CoworkFileHandle.coworkFileName_ol
+          // }
           if (dataId) {
             this.service?.updateFileWithCheckCapacity(
               dataId,

@@ -51,7 +51,7 @@ class ConnectServer extends Component {
       this.container && this.container.setLoading(false)
       if (modules) {
         this.props.setPrivateLicenseServer(this.server)
-        this.props.navigation.navigate('LicenseJoinPrivateCloud', {
+        this.props.navigation.replace('LicenseJoinPrivateCloud', {
           modules: modules,
         })
       } else {

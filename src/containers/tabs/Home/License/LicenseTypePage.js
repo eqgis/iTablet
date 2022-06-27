@@ -43,16 +43,12 @@ class LicenseTypePage extends Component {
   }
 
   joinPrivateCloud = () => {
-    if (UserType.isIPortalUser(this.props.currentUser) || UserType.isOnlineUser(this.props.currentUser)) {
-      NavigationService.navigate('LicenseJoinPrivateCloud')
-    } else {
-      NavigationService.navigate('ConnectServer')
-    }
+    NavigationService.navigate('ConnectServer')
   }
 
-  joinEducationLicense = () => {
-    NavigationService.navigate('LicenseJoinEducation')
-  }
+  // joinEducationLicense = () => {
+  //   NavigationService.navigate('LicenseJoinEducation')
+  // }
 
   getType = () => {
     let data = []
@@ -81,11 +77,11 @@ class LicenseTypePage extends Component {
           type: LicenseType.privateClould,
           onPress: this.joinPrivateCloud,
         },
-        {
-          title: getLanguage(global.language).Profile.LICENSE_EDUCATION,
-          type: LicenseType.education,
-          onPress: this.joinEducationLicense,
-        },
+        // {
+        //   title: getLanguage(global.language).Profile.LICENSE_EDUCATION,
+        //   type: LicenseType.education,
+        //   onPress: this.joinEducationLicense,
+        // },
         {
           title: getLanguage(global.language).Profile.LICENSE_TRIAL,
           type: LicenseType.trial,

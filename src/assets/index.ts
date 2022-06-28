@@ -288,6 +288,7 @@ function getARLayerAssets(type: TARLayerType): any {
     case ARLayerType.AR_POINT_LAYER:
     case ARLayerType.AR_LINE_LAYER:
     case ARLayerType.AR_REGION_LAYER:
+    case ARLayerType.AR_MARKER_LINE_LAYER:
       return getThemeAssets().ar.armap.ar_vector
     case ARLayerType.AR_WIDGET_LAYER:
       return getThemeAssets().ar.armap.ar_widget_layer

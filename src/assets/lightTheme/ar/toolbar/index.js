@@ -33,6 +33,7 @@ const icon_ar_pipe_scan = require('./icon_ar_pipe_scan.png')
 const icon_newdata = require('./icon_newdata.png')
 const icon_toolbar_switch = require('./icon_toolbar_switch.png')
 const icon_mapdata = require('./icon_mapdata.png')
+
 export default {
   icon_save_line,
   icon_save_spot,

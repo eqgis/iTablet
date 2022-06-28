@@ -520,6 +520,7 @@ export default class MediaEdit extends React.Component {
     ImagePicker.getAlbum({
       maxSize: maxFiles,
       callback: async data => {
+        console.warn(data)
         if (data.length > 0) {
           this.addMediaFiles({mediaPaths: data})
         }
@@ -530,7 +531,7 @@ export default class MediaEdit extends React.Component {
   addMediaFiles = async ({mediaPaths = []}) => {
     let mediaFilePaths = [...this.state.mediaFilePaths]
 
-    mediaPaths.forEach(item => {
+    for (const item of mediaPaths) {
       let path
       if (typeof item === 'string') {
         path = item
@@ -542,10 +543,16 @@ export default class MediaEdit extends React.Component {
         path = item.path || item.uri
         if (path.indexOf('file://') === 0) {
           path = path.replace('file://', '')
+        } else if(path.indexOf('ph://') === 0) {
+          path = path.replace('ph://', '')
+          path = await FileTools.getContentAbsolutePath(path)
+          if (path.indexOf('file://') === 0) {
+            path = path.replace('file://', '')
+          }
         }
         mediaFilePaths.push(path)
       }
-    })
+    }
     mediaFilePaths = [...new Set(mediaFilePaths)]
 
     let paths = await this.dealData(mediaFilePaths)

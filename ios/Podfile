@@ -26,7 +26,6 @@ target 'iTablet' do
   # you should disable the next line.
   use_flipper!()
   
-  pod 'RMQClient', '~> 0.12.0'
 
   post_install do |installer|
     react_native_post_install(installer)

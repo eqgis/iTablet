@@ -581,7 +581,7 @@ class Chat extends React.Component {
       filePath = newPaths[0]
       fileName = filePath.substr(filePath.lastIndexOf('/') + 1)
     } else if (uri.indexOf('content://') === 0) {
-      filePath = await FileTools.getContentAbsolutePathAndroid(uri)
+      filePath = await FileTools.getContentAbsolutePath(uri)
       fileName = filePath.substr(filePath.lastIndexOf('/') + 1)
     } else if (uri.indexOf('file://') === 0) {
       filePath = filePath.replace('file://', '')

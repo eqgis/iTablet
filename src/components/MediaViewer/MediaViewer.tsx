@@ -2,12 +2,13 @@
  * 多媒体预览界面
  */
 import * as React from 'react'
-import { Modal, StyleProp, ViewStyle, View, StyleSheet } from 'react-native'
-import { checkType, screen } from '../../utils'
+import { Modal, StyleProp, ViewStyle } from 'react-native'
+import { checkType } from '../../utils'
 import VideoViewer from './VideoViewer'
 import ImageViewer from './ImageViewer'
 
 import styles from './styles'
+import { DEVICE } from '@/redux/models/device'
 
 interface Props {
   uri?: string,
@@ -15,7 +16,7 @@ interface Props {
   isModal?: boolean,
   containerStyle?: StyleProp<ViewStyle>,
   withBackBtn?: boolean,
-  device: Device,
+  device: DEVICE,
 }
 
 interface State {
@@ -54,7 +55,7 @@ export default class MediaViewer extends React.Component<Props, State> {
   // }
 
   setVisible = (visible = !this.state.visible, uri?: string) => {
-    let newState = {
+    const newState = {
       uri: this.state.uri || '',
       visible: false,
     }
@@ -62,7 +63,7 @@ export default class MediaViewer extends React.Component<Props, State> {
       newState.visible = visible
     }
     if (uri !== undefined && uri !== this.state.uri) {
-      let type = checkType.getMediaTypeByPath(uri)
+      // let type = checkType.getMediaTypeByPath(uri)
       // if (this.state.type !== type) {
       //   newState.type = type
       // }

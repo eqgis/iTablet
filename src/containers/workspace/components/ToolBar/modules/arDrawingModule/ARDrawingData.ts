@@ -127,7 +127,7 @@ async function getData(type: string, params: {[name: string]: any}) {
           // },
           {
             key: ConstToolType.SM_AR_DRAWING_TEXT,
-            image: getThemeAssets().layerType.layer_text,
+            image: getImage().icon_ar_layer_text,
             // selectedImage: any,
             title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_SAVE_TEXT,
             action: ARDrawingAction.arText,

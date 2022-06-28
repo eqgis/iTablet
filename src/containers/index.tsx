@@ -326,14 +326,14 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="Personal" component={Personal} />
       <Stack.Screen name="WebView" component={WebView} />
       <Stack.Screen name="AboutITablet" component={AboutITablet} />
-      <Stack.Screen name="LicensePage" component={LicensePage} />
-      <Stack.Screen name="LicenseTypePage" component={LicenseTypePage} />
-      <Stack.Screen name="LicenseModule" component={LicenseModule} />
-      <Stack.Screen name="LicenseJoin" component={LicenseJoin} />
-      <Stack.Screen name="LicenseJoinCloud" component={LicenseJoinCloud} />
-      <Stack.Screen name="LoginCloud" component={LoginCloud} />
-      <Stack.Screen name="LicenseJoinPrivateCloud" component={LicenseJoinPrivateCloud} />
-      <Stack.Screen name="ConnectServer" component={ConnectServer} />
+      <Stack.Screen name="LicensePage" component={LicensePage} options={modalOption(params)} />
+      <Stack.Screen name="LicenseTypePage" component={LicenseTypePage} options={modalOption(params)} />
+      <Stack.Screen name="LicenseModule" component={LicenseModule} options={modalOption(params)} />
+      <Stack.Screen name="LicenseJoin" component={LicenseJoin} options={modalOption(params)} />
+      <Stack.Screen name="LicenseJoinCloud" component={LicenseJoinCloud} options={modalOption(params)} />
+      <Stack.Screen name="LoginCloud" component={LoginCloud} options={modalOption(params)} />
+      <Stack.Screen name="LicenseJoinPrivateCloud" component={LicenseJoinPrivateCloud} options={modalOption(params)} />
+      <Stack.Screen name="ConnectServer" component={ConnectServer} options={modalOption(params)} />
       <Stack.Screen name="LicenseJoinEducation" component={LicenseJoinEducation} />
       <Stack.Screen name="Setting" component={Setting} />
       <Stack.Screen name="LanguageSetting" component={LanguageSetting} />

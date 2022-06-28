@@ -2,45 +2,58 @@ import * as React from 'react'
 import {
   View,
   Image,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
 } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
+import { IImageInfo } from 'react-native-image-zoom-viewer/src/image-viewer.type'
 import { scaleSize, screen } from '../../../../utils'
-import { getLanguage } from '../../../../language/index'
 import RootSiblings from 'react-native-root-siblings'
 
-let elements = [], imageViewer
-function show(urls = []) {
-  let sibling = new RootSiblings()
-  sibling.update(
+const elements: {
+  sibling: RootSiblings,
+}[] = []
+function show(urls: IImageInfo[] = []) {
+  const imageViewer = (
     <ChatImageViewer
-      ref={ref => (imageViewer = ref)}
-      receivePicture={this.receivePicture}
       imageUrls={urls}
     />
   )
-  elements.push({sibling, imageViewer})
+  const sibling = new RootSiblings(imageViewer)
+  sibling.update(imageViewer)
+  elements.push({sibling})
 }
 
 function hide () {
-  let { sibling } = elements.pop()
-  sibling && sibling.destroy()
-  sibling = null
+  const element = elements.pop()
+  if (element?.sibling) {
+    element.sibling.destroy()
+    // element = null
+  }
 }
 
 function isShow() {
   return elements.length > 0
 }
 
-class ChatImageViewer extends React.Component {
-  props: {
-    receivePicture: () => {},
-  }
+interface ChatImageViewerProps {
+  // receivePicture?: () => void,
+  imageUrls: IImageInfo[],
+}
 
-  constructor(props) {
+interface ChatImageViewerState {
+  imageUrls: IImageInfo[],
+  visible: boolean,
+  showCover: boolean,
+}
+
+class ChatImageViewer extends React.Component<ChatImageViewerProps, ChatImageViewerState> {
+
+  screenWidth: number
+  ImageViewer: ImageViewer | null | undefined
+
+  constructor(props: ChatImageViewerProps) {
     super(props)
     this.state = {
       imageUrls: props.imageUrls || [],
@@ -50,7 +63,7 @@ class ChatImageViewer extends React.Component {
     this.screenWidth = Dimensions.get('window').width
   }
 
-  setVisible = visible => {
+  setVisible = (visible: boolean) => {
     if (visible !== this.state.visible) {
       this.setState({ visible })
     }
@@ -61,11 +74,11 @@ class ChatImageViewer extends React.Component {
     this.setState({ showCover: true })
   }
 
-  receivePicture = () => {
-    if (this.message && !this.message.originMsg.message.message.filePath) {
-      this.props.receivePicture && this.props.receivePicture(this.message)
-    }
-  }
+  // receivePicture = () => {
+  //   if (this.message && !this.message.originMsg.message.message.filePath) {
+  //     this.props.receivePicture && this.props.receivePicture(this.message)
+  //   }
+  // }
 
   renderCover = () => {
     return (
@@ -76,7 +89,7 @@ class ChatImageViewer extends React.Component {
         style={styles.coverView}
       >
         {this.renderHeader()}
-        {this.renderFooter()}
+        {/* {this.renderFooter()} */}
       </TouchableOpacity>
     )
   }
@@ -99,35 +112,35 @@ class ChatImageViewer extends React.Component {
     )
   }
 
-  renderFooter = () => {
-    if (this.message && !this.message.originMsg.message.message.filePath) {
-      let fileSize = this.message.originMsg.message.message.fileSize
-      let fileSizeText = fileSize.toFixed(2) + 'B'
-      if (fileSize > 1024) {
-        fileSize = fileSize / 1024
-        fileSizeText = fileSize.toFixed(2) + 'KB'
-      }
-      if (fileSize > 1024) {
-        fileSize = fileSize / 1024
-        fileSizeText = fileSize.toFixed(2) + 'MB'
-      }
-      return (
-        <TouchableOpacity
-          onPress={this.receivePicture}
-          style={styles.bottomMenuStyle}
-        >
-          <Text style={styles.text}>
-            {getLanguage(global.language).Friends.LOAD_ORIGIN_PIC +
-              '(' +
-              fileSizeText +
-              ')'}
-          </Text>
-        </TouchableOpacity>
-      )
-    } else {
-      return null
-    }
-  }
+  // renderFooter = () => {
+  //   if (this.message && !this.message.originMsg.message.message.filePath) {
+  //     let fileSize = this.message.originMsg.message.message.fileSize
+  //     let fileSizeText = fileSize.toFixed(2) + 'B'
+  //     if (fileSize > 1024) {
+  //       fileSize = fileSize / 1024
+  //       fileSizeText = fileSize.toFixed(2) + 'KB'
+  //     }
+  //     if (fileSize > 1024) {
+  //       fileSize = fileSize / 1024
+  //       fileSizeText = fileSize.toFixed(2) + 'MB'
+  //     }
+  //     return (
+  //       <TouchableOpacity
+  //         onPress={this.receivePicture}
+  //         style={styles.bottomMenuStyle}
+  //       >
+  //         <Text style={styles.text}>
+  //           {getLanguage(global.language).Friends.LOAD_ORIGIN_PIC +
+  //             '(' +
+  //             fileSizeText +
+  //             ')'}
+  //         </Text>
+  //       </TouchableOpacity>
+  //     )
+  //   } else {
+  //     return null
+  //   }
+  // }
 
   render() {
     this.screenWidth = Dimensions.get('window').width

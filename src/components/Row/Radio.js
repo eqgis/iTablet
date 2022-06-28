@@ -90,10 +90,9 @@ export default class Radio extends PureComponent {
       () => {
         if (this.state.selected && this.props.hasInput) {
           // setTimeout防止focus后无法弹出键盘
-          const timer = setTimeout(() => {
+          let timer = setTimeout(() => {
             this.input && this.input.focus()
             clearTimeout(timer)
-            timer = null
           }, 200)
         }
       },

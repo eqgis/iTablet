@@ -274,30 +274,30 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }]
 
     // 特效图层下移
-    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_DOWN,
         image: getThemeAssets().layer.icon_edit_movedown,
         action: async () => {
 
-          if(Platform.OS === 'android') {
-            const isMoveup = await SARMap.moveLayerDown(this.state.selectLayer.name)
-            if(isMoveup) {
-              // 更新页面数据
-              await this._getLayer()
-              Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_SUCCESS)
-            } else {
-              this.curLayerIndex = await this.getLayerIndex(this.state.selectLayer)
-              if(this.curLayerIndex !== this.lastEffectlayerIndex){
-                Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
-              } else {
-                // 最后一个特效图层不能下移
-                Toast.show(getLanguage().Map_Layer.LAST_EFFECT_LAYER)
-              }
-            }
+          // if(Platform.OS === 'android') {
+          const isMoveup = await SARMap.moveLayerDown(this.state.selectLayer.name)
+          if(isMoveup) {
+            // 更新页面数据
+            await this._getLayer()
+            Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_SUCCESS)
           } else {
-            // IOS TODO
+            this.curLayerIndex = await this.getLayerIndex(this.state.selectLayer)
+            if(this.curLayerIndex !== this.lastEffectlayerIndex){
+              Toast.show(getLanguage().Map_Layer.LAYER_MOVEDOWN_FAIL)
+            } else {
+              // 最后一个特效图层不能下移
+              Toast.show(getLanguage().Map_Layer.LAST_EFFECT_LAYER)
+            }
           }
+          // } else {
+          //   // IOS TODO
+          // }
           // 隐藏菜单列表
           this.setState({
             menuVisible: false,
@@ -309,29 +309,29 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }
 
     // 特效图层上移
-    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_UP,
         image: getThemeAssets().layer.icon_edit_moveup,
         action: async () => {
-          if(Platform.OS === 'android') {
-            const isMoveup = await SARMap.moveLayerUp(this.state.selectLayer.name)
-            if(isMoveup) {
-              // 更新页面数据
-              await this._getLayer()
-              Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_SUCCESS)
-            } else {
-              this.curLayerIndex = await this.getLayerIndex(this.state.selectLayer)
-              if(this.curLayerIndex !== 0){
-                Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
-              } else {
-                // 第一个特效图层不能上移
-                Toast.show(getLanguage().Map_Layer.FIRST_EFFECT_LAYER)
-              }
-            }
+          // if(Platform.OS === 'android') {
+          const isMoveup = await SARMap.moveLayerUp(this.state.selectLayer.name)
+          if(isMoveup) {
+            // 更新页面数据
+            await this._getLayer()
+            Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_SUCCESS)
           } else {
-            // IOS TODO
+            this.curLayerIndex = await this.getLayerIndex(this.state.selectLayer)
+            if(this.curLayerIndex !== 0){
+              Toast.show(getLanguage().Map_Layer.LAYER_MOVEUP_FAIL)
+            } else {
+              // 第一个特效图层不能上移
+              Toast.show(getLanguage().Map_Layer.FIRST_EFFECT_LAYER)
+            }
           }
+          // } else {
+          //   // IOS TODO
+          // }
           // 隐藏菜单列表
           this.setState({
             menuVisible: false,
@@ -343,8 +343,8 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
 
     //ARElementLayer添加可见范围
-    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer
-       && !(Platform.OS === 'ios' && this.state.selectLayer.type === ARLayerType.EFFECT_LAYER)) {
+    // && !(Platform.OS === 'ios' && this.state.selectLayer.type === ARLayerType.EFFECT_LAYER)
+    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer) {
       const maxVisibleBounds = this.state.selectLayer.maxVisibleBounds
       const minVisibleBounds = this.state.selectLayer.minVisibleBounds
       AppToolBar.addData({selectARLayer: this.state.selectLayer, maxVisibleBounds, minVisibleBounds})
@@ -374,7 +374,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
       })
     }
     // 特效图层可持续时间
-    if(Platform.OS === 'android' && this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       const secondsToPlay = this.state.selectLayer.secondsToPlay
       AppToolBar.addData({selectARLayer: this.state.selectLayer,secondsToPlay})
       menuData[0].data.unshift({
@@ -382,7 +382,8 @@ export default class ARLayerManager extends React.Component<Props, State> {
         image: getThemeAssets().layer.icon_tool_duration,
         action: async () => {
           AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SECONDS_TO_PLAY')
-          NavigationService.goBack()
+          // NavigationService.goBack()
+          NavigationService.navigate("MapView")
         },
       })
     }

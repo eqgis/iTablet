@@ -19,7 +19,7 @@ import {
   SystemMessage,
   InputToolbar,
 } from 'react-native-gifted-chat'
-import { SimpleDialog, ImageViewer } from '../index'
+import { SimpleDialog, ImageViewer } from '../Component/index'
 import { SMap, EngineType, DatasetType,RNFS } from 'imobile_for_reactnative'
 import { Container, MTBtn } from '../../../../components'
 import { scaleSize } from '../../../../utils/screen'
@@ -571,16 +571,20 @@ class Chat extends React.Component {
     let filePath = uri
     let fileName
     let hasTempFile = false
-    if (uri.indexOf('assets-library://') === 0) {
+    if (uri.indexOf('assets-library://') === 0 || uri.indexOf('ph://') === 0) {
       // let destPath = userPath + '/' + data.filename
       // await RNFS.copyAssetsFileIOS(uri, destPath, 0, 0)
-      if (uri.toLowerCase().indexOf('.gif') == -1) {
-        hasTempFile = true
-      }
+      // if (uri.toLowerCase().indexOf('.gif') == -1) {
+      //   hasTempFile = true
+      // }
       const newPaths = await FileTools.copyFiles([uri], userPath)
       filePath = newPaths[0]
+      fileName = filePath.substr(filePath.lastIndexOf('/') + 1)
     } else if (uri.indexOf('content://') === 0) {
       filePath = await FileTools.getContentAbsolutePathAndroid(uri)
+      fileName = filePath.substr(filePath.lastIndexOf('/') + 1)
+    } else if (uri.indexOf('file://') === 0) {
+      filePath = filePath.replace('file://', '')
       fileName = filePath.substr(filePath.lastIndexOf('/') + 1)
     } else {
       uri = uri.substr(uri.indexOf('/iTablet'))
@@ -846,11 +850,11 @@ class Chat extends React.Component {
     let uri = message.originMsg.message.message.filePath
     if (uri !== undefined && uri !== '') {
       if (Platform.OS === 'android') {
-        if (uri.indexOf('content://') === -1) {
+        if (uri.indexOf('content://') === -1 && uri.indexOf('file://') === -1) {
           uri = 'file://' + homePath + uri
         }
       } else {
-        if (uri.indexOf('assets-library://') === -1) {
+        if (uri.indexOf('assets-library://') === -1 && uri.indexOf('ph://') === -1) {
           uri = homePath + uri
         }
       }

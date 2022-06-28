@@ -491,11 +491,12 @@ async function addAREffect(fileName: string, filePath: string) {
       addLayerName = await SARMap.addEffectLayer(layerName, homePath + filePath)
     }
     // 先矫正定位
-    if (Platform.OS === 'android') {
-      SARMap.setEffectLayerCenter(fileName.substring(0, fileName.lastIndexOf('.')))
-    } else {
-      // IOS TODO
-    }
+    // if (Platform.OS === 'android') {
+    SARMap.setEffectLayerCenter(fileName.substring(0, fileName.lastIndexOf('.')))
+    console.warn("layer name: " + fileName.substring(0, fileName.lastIndexOf('.')))
+    // } else {
+    //   // IOS TODO
+    // }
     if (addLayerName !== '') {
       global.isNotEndAddEffect = true
       const layers = await _params.getARLayers()

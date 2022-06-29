@@ -40,7 +40,6 @@ const arMapAddData: ToolbarModuleData<ARMAP_ADD> = {
   image: getImage().icon_add,
   getTitle: () => getLanguage().ADD,
   action: () => {
-    console.warn('23')
     AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD')
   },
   getData: getData,

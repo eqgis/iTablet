@@ -49,7 +49,6 @@ class ArDrawingModule extends FunctionModule {
     // })
 
     // SARMap.clearSelection().
-    console.warn("222")
     arMapAddData.action()
   }
 }

@@ -57,9 +57,9 @@ export default class MediaEdit extends React.Component {
       modifiedDate: this.info.modifiedDate || '',
       description: this.info.description || '',
       httpAddress: this.info.httpAddress || '',
-      mediaFilePaths: this.info.mediaFilePaths || [],
-      mediaServiceIds: this.info.mediaServiceIds || [],
-      mediaData: this.info.mediaData && (
+      mediaFilePaths: this.info.mediaFilePaths && this.info.mediaFilePaths !== '-' ? this.info.mediaFilePaths : [],
+      mediaServiceIds: this.info.mediaServiceIds && this.info.mediaServiceIds !== '-' ? this.info.mediaServiceIds : [],
+      mediaData: this.info.mediaData && this.info.mediaData !== '-' && (
         typeof this.info.mediaData === 'string' ? JSON.parse(this.info.mediaData) : this.info.mediaData
       ) || {},
       isRefresh: false,
@@ -520,7 +520,6 @@ export default class MediaEdit extends React.Component {
     ImagePicker.getAlbum({
       maxSize: maxFiles,
       callback: async data => {
-        console.warn(data)
         if (data.length > 0) {
           this.addMediaFiles({mediaPaths: data})
         }

@@ -820,6 +820,7 @@ export default class LayerAttribute extends React.Component {
         if (smID >= 0 && hasMedia) break
       } else if (
         this.state.attributes.data[index][i].name === 'MediaFilePaths' &&
+        this.state.attributes.data[index][i].value !== '-' &&
         this.state.attributes.data[index][i].value != ''
       ) {
         hasMedia = true

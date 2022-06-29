@@ -29,6 +29,7 @@ export default class Chunk {
       props.openDefaultMap !== undefined ? props.openDefaultMap : true // 是否打开默认地图
 
     this.preAction = props.preAction // action之前的检测，返回false则不执行之后的action
+    this.afterAction = props.afterAction // action之前的检测，返回false则不执行之后的action
 
     this.baseMapSource = props.baseMapSource // 默认地图资源
 
@@ -230,6 +231,11 @@ export default class Chunk {
       }
       default:
         break
+    }
+
+    if (this.afterAction && typeof this.afterAction === 'function') {
+      let result = await this.afterAction()
+      if (!result) return false
     }
     return true
   }

@@ -1500,7 +1500,7 @@ function getHeaderData(type: string) {
     if(_data.selectARElement && typeof _data.selectARElement !== 'string') {
       if(_data.selectARElement.type === ARElementType.AR_TEXT
       || _data.selectARElement.type === ARElementType.AR_BUBBLE_TEXT) {
-        headerData.headerRight.push({
+        headerData.headerRight.unshift({
           key: 'edit_text',
           // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
           action: AREditAction.changeARText,
@@ -1511,6 +1511,8 @@ function getHeaderData(type: string) {
             height: scaleSize(60),
             borderRadius: scaleSize(8),
             backgroundColor: color.white,
+            marginTop: scaleSize(120),
+            marginRight: scaleSize(-60),
           },
         })
       }
@@ -1518,7 +1520,7 @@ function getHeaderData(type: string) {
 
     if(_data.selectARElement.type === ARElementType.AR_LINE
       || _data.selectARElement.type === ARElementType.AR_MARKER_LINE){
-      headerData.headerRight.push(
+      headerData.headerRight.unshift(
       //   {
       //   key: 'line_object_edit',
       //   // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
@@ -1554,6 +1556,8 @@ function getHeaderData(type: string) {
             height: scaleSize(60),
             borderRadius: scaleSize(8),
             backgroundColor: color.white,
+            marginTop: scaleSize(120),
+            marginRight: scaleSize(-60),
           },
         })
     }

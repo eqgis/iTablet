@@ -157,13 +157,13 @@ export default class LicenseModule extends Component {
 
   initAllAPPModules = () => {
     let allAPPModules = []
-    allAPPModules.push([18001, 19001])
-    allAPPModules.push([18002, 19002])
-    allAPPModules.push([18003, 19003])
-    allAPPModules.push([18004, 19004])
-    allAPPModules.push([18005, 19005])
-    allAPPModules.push([18006, 19006])
-    allAPPModules.push([18007, 19007])
+    allAPPModules.push([18001, 29001])
+    allAPPModules.push([18002, 29002])
+    allAPPModules.push([18003, 29003])
+    allAPPModules.push([18004, 29004])
+    allAPPModules.push([18005, 29005])
+    allAPPModules.push([18006, 29006])
+    allAPPModules.push([18007, 29007])
 
     return allAPPModules
   }

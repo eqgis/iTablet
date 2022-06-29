@@ -121,11 +121,11 @@ class LicenseJoinPrivateCloud extends Component {
   isEdition = id => {
     if (
       id === '18001' ||
-      id === '19001' ||
+      id === '29001' ||
       id === '18002' ||
-      id === '19002' ||
+      id === '29002' ||
       id === '18003' ||
-      id === '19003'
+      id === '29003'
     ) {
       return true
     } else {
@@ -137,32 +137,32 @@ class LicenseJoinPrivateCloud extends Component {
     let title
     switch (id) {
       case '18001':
-      case '19001':
+      case '29001':
         title = getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD
         break
       case '18002':
-      case '19002':
+      case '29002':
         title = getLanguage(global.language).Profile
           .LICENSE_EDITION_PROFESSIONAL
         break
       case '18003':
-      case '19003':
+      case '29003':
         title = getLanguage(global.language).Profile.LICENSE_EDITION_ADVANCED
         break
       case '18004':
-      case '19004':
+      case '29004':
         title = getLanguage(global.language).Map_Module.MAP_AR
         break
       case '18005':
-      case '19005':
+      case '29005':
         title = getLanguage(global.language).Map_Module.MAP_NAVIGATION
         break
       case '18006':
-      case '19006':
+      case '29006':
         title = getLanguage(global.language).Map_Module.MAP_ANALYST
         break
       case '18007':
-      case '19007':
+      case '29007':
         title = getLanguage(global.language).Map_Module.MAP_PLOTTING
         break
     }

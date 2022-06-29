@@ -2,8 +2,28 @@ import { ARElement, ARElementStyle, IAnimationParam, IARTransform, ARLayer } fro
 import ToolBarContainer from "imobile_for_reactnative/components/ToolbarKit/ToolbarContainer"
 import { Props } from "../Toolbar"
 import { ModuleList } from "../Toolbar/modules"
-
+import CameraRoll from "@react-native-community/cameraroll"
+import { GeometrySelectedEvent } from "imobile_for_reactnative/types/interface/mapping/SMap"
+import { AIRecognitionInfo, ARAttributeStyle, ARNodeStyle } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 let toolbarRef: ToolBarContainer<ModuleList>
+
+export const arLayerType:  {
+  POI: 'POI',
+  VECTOR: 'VECTOR',
+  THREE_D: 'THREE_D',
+  MODEL: 'MODEL',
+  SAND_TABLE: 'SAND_TABLE',
+  EFFECT: 'EFFECT',
+  WIDGET: 'WIDGET',
+} = {
+  POI: 'POI',
+  VECTOR: 'VECTOR',
+  THREE_D: 'THREE_D',
+  MODEL: 'MODEL',
+  SAND_TABLE: 'SAND_TABLE',
+  EFFECT: 'EFFECT',
+  WIDGET: 'WIDGET',
+}
 
 function setToolBar(ref: ToolBarContainer<ModuleList>  | null) {
   if(!ref) return
@@ -28,46 +48,110 @@ interface ARSymbolObj {
   number: number
 }
 
+/** 柱状图数据类型 */
+interface chartDataType {
+  name: string,
+  value: number | string,
+  color: string,
+}
+
+interface chartType {
+  data: Array<chartDataType>,
+  unit: string
+}
+
 /** toolbar 中保存临时数据 */
 interface ToolBarData {
-  transformInfo?: IARTransform
-  /** 选中的AR对象 */
-  selectARElement?: ARElement
-  addNewDsetWhenCreate?: boolean
-  /** 要添加的动画参数 */
-  animationParam?: IAnimationParam
-  /** 当前图层的风格 */
-  currentLayerStyle?: ARElementStyle
-  /** 要操作的AR图层  */
-  selectARLayer?: ARLayer
-  /** 是否正在添加AR对象，控制添加频率 */
-  isAddingARElement?: boolean
-  secondsToPlay?: number
-  /** 添加沙盒路径 */
-  sandTablePath?: string
-  sandTablePaths?:string[]
+    /** 添加 ar 视频图片时的路径 */
+    arContent?: string
+    /** 添加 ar 视频图片时的路径集合 */
+    arPhotos?: CameraRoll.PhotoIdentifier[]
+    /** 相册名称 */
+    albumName?:string
+    videoType?:number
+    /** 添加模型时模型路径 */
+    modelPath?: string
+    /** 设置AR对象变换时的临时数据 */
+    transformInfo?: IARTransform
+    scanCalibration?: {x: number, y: number, h: number}
+    /** 选择的三维场景目录 */
+    sceneFilePath?: string
+    /** 要操作的AR图层  */
+    selectARLayer?: ARLayer
+    /** 选中的AR对象 */
+    selectARElement?: ARElement
+    /** AR对象内子节点的序号 */
+    selectedChildIndex?: number
+    /** 添加的AR对象 */
+    addARElement?: ARElement
+    /** 创建AR数据源时遇到同名是否新建 */
+    addNewDSourceWhenCreate?: boolean
+    /** 创建AR数据集时遇到同名是否新建 */
+    addNewDsetWhenCreate?: boolean
+    /** tab类型toolbar打开时显示的标签序号 */
+    tabShowIndex?: number
+    /** 要添加的动画参数 */
+    animationParam?: IAnimationParam
+    /** 当前图层的风格 */
+    currentLayerStyle?: ARElementStyle
+    /** 几何对象选择事件 */
+    geometrySelectEvent?: GeometrySelectedEvent
+    /** 导航剩余路径长度 */
+    naviRemain?: number
+    /** 选中 callout 的 tag */
+    selectARCalloutTag?:string
+    /** AR图层可见范围 */
+    maxVisibleBounds?: number
+    minVisibleBounds?: number
+    maxAnimationBounds?: number
+    minAnimationBounds?: number
+    /** 是否正在添加AR对象，控制添加频率 */
+    isAddingARElement?: boolean
+    /** 当前点击的AI识别对象 */
+    currentTouchRecognition?: AIRecognitionInfo
+     /** 判断node点击相应 */
+    isNodeTouch?:boolean
+    /** node风格 */
+    nodeStyle?: ARNodeStyle
+    currentNodeStyle?: ARNodeStyle
+    /** 特效图层的持续时间 */
+    secondsToPlay?: number
+    /** 特效图层的中心x坐标 */
+    centerX?: number
+    /** 特效图层的中心y坐标 */
+    centerY?: number
+    /** 点击添加小组件标识 */
+    isAlbumFirstAdd?:boolean
+    /** 添加沙盒路径 */
+    sandTablePath?: string
+    sandTablePaths?:string[]
+    /** 当前所在板块的索引类型 */
+    // moduleIndex?: number
+    moduleKey?: keyof typeof arLayerType | undefined
+    /** 特效图层是否未添加完毕  false表示添加完毕， true表示未添加完毕 */
+    isNotEndAddEffect?: boolean
+    /** AR属性表,选中的属性字段名称 */
+    selectedAttribute?: string[]
 
-  /** AR图层可见范围 */
-  maxVisibleBounds?: number
-  minVisibleBounds?: number
-  maxAnimationBounds?: number
-  minAnimationBounds?: number
-  /** 矢量符号线的符号路径 */
-  markerLineContent?: string
-  /** 矢量线符号的文件夹路径 */
-  arSymbolFilePath?: string
-  /** ar矢量线符号数组 */
-  ARSymbolObjList?: Array<ARSymbolObj>
-  /** 选中的沙盘模型路径 */
-  sandTableModels?: string[]
-  /** AR对象内子节点的序号 */
-  selectedChildIndex?: number
+    /** 矢量线图层是否正在添加 true表示正在添加， false表示已经添加完成 */
+    isLineAdd?: boolean
+    /** 矢量符号线的符号路径 */
+    markerLineContent?: string
+    /** 矢量线符号的文件夹路径 */
+    arSymbolFilePath?: string
+    /** ar矢量线符号数组 */
+    ARSymbolObjList?: Array<ARSymbolObj>
+    /** ar 矢量线编辑的类型 1:对象编辑 2:节点添加 3:节点编辑 */
+    LineEditType?: number
+    /** 编辑里线是焦点添加还是当前位置添加 true：焦点添加  false：当前位置添加 */
+    foucusAddPoint?: boolean
 
-  isAlbumFirstAdd?: boolean
-  /** AR属性表,选中的属性字段名称 */
-  selectedAttribute?: string[]
+    /** 选中的沙盘模型路径 */
+    sandTableModels?: string[]
+    /** 柱状图的数据 */
+    chartData?: chartType  // Array<chartDataType>
 
-  attributeStyle?: ARAttributeStyle | null
+    attributeStyle?: ARAttributeStyle | null
 }
 
 const toolBarData: ToolBarData = {}

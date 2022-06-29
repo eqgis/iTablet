@@ -4897,6 +4897,9 @@ export default class MapView extends React.Component {
             AppEvent.emitEvent('ar_map_on_add_element', element)
             if(element.type === ARElementType.AR_ATTRIBUTE_ALBUM || element.type === ARElementType.AR_BROCHOR || element.type === ARElementType.AR_ALBUM|| element.type === ARElementType.AR_VIDEO_ALBUM || element.type === ARElementType.AR_SAND_TABLE_ALBUM || element.type === ARElementType.AR_BAR_CHART || element.type === ARElementType.AR_PIE_CHART){
               if(AppToolBar.getData().isAlbumFirstAdd){
+                // 小组件添加成功后，会去往编辑界面，编辑界面与添加界面的toolbar不同，所以要将添加页面用的toolbar类型隐藏
+                AppToolBar.hide()
+
                 arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
                 ToolbarModule.addData({ selectARElement: element })
                 AppToolBar.addData({ selectARElement: element, isAlbumFirstAdd: false })

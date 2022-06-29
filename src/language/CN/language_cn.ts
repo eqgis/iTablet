@@ -2823,4 +2823,9 @@ export const language_cn = {
   AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: '当前对象不支持AR属性',
 
   LICENSE_STAFF_TRIAL_APPLY: "申请员工许可",
+
+  INPUT_TEXT: '请输入文字',
+  INPUT_URL: '请输入网址',
+  INPUT_NAME: '请输入名称',
+
 }

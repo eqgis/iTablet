@@ -2847,4 +2847,9 @@ export const language_ar: typeof language_cn = {
   AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
 
   LICENSE_STAFF_TRIAL_APPLY: "Apply staff license",  // to be translated
+
+  INPUT_TEXT: 'الرجاء إدخال النص',
+  INPUT_URL: 'الرجاء إدخال رابط',
+  INPUT_NAME: 'من فضلك أدخل الاسم',
+
 }

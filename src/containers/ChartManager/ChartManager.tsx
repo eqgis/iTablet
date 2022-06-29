@@ -87,7 +87,8 @@ class ChartManager extends Component<Props, State> {
       // const layer01 = this.props.arMapInfo?.currentLayer
       // const element = AppToolBar.getData().selectARElement
       const layer = ToolbarModule.getParams()?.arlayer.currentLayer
-      const element = ToolbarModule.getData().selectARElement
+      // const element = ToolbarModule.getData().selectARElement
+      const element = AppToolBar.getData().selectARElement
 
       console.warn("layer: " + layer.name + " - " + layer.t)
       if(layer && element){
@@ -100,7 +101,8 @@ class ChartManager extends Component<Props, State> {
       // const layer = this.props.arMapInfo?.currentLayer
       // const element = AppToolBar.getData().selectARElement
       const layer = ToolbarModule.getParams()?.arlayer.currentLayer
-      const element = ToolbarModule.getData().selectARElement
+      // const element = ToolbarModule.getData().selectARElement
+      const element = AppToolBar.getData().selectARElement
       if(layer && element){
         data = await SARMap.getPieChartData(layer?.name, element?.id)
       }
@@ -139,7 +141,8 @@ class ChartManager extends Component<Props, State> {
       // const layer = this.props.arMapInfo?.currentLayer
       // const element = AppToolBar.getData().selectARElement
       const layer = ToolbarModule.getParams()?.arlayer.currentLayer
-      const element = ToolbarModule.getData().selectARElement
+      // const element = ToolbarModule.getData().selectARElement
+      const element = AppToolBar.getData().selectARElement
       if(layer && element){
         const chartData = {
           data: this.state.data,
@@ -154,13 +157,15 @@ class ChartManager extends Component<Props, State> {
         data: this.state.data,
         unit: this.state.unit
       }
-      // AppToolBar.addData({chartData})
-      // AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_PIE_CHART')
-      arEditModule().setModuleData(ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART)
-      global.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART, {
-        isFullScreen: false,
-      })
-      ToolbarModule.addData({chartData})
+      AppToolBar.addData({chartData})
+      AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_PIE_CHART')
+
+      // arEditModule().setModuleData(ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART)
+      // global.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART, {
+      //   isFullScreen: false,
+      // })
+      // ToolbarModule.addData({chartData})
+
 
       // 退出页面（不退出就看不到工具栏）
       this.props.navigation.goBack()
@@ -169,7 +174,8 @@ class ChartManager extends Component<Props, State> {
       // const layer = this.props.arMapInfo?.currentLayer
       // const element = AppToolBar.getData().selectARElement
       const layer = ToolbarModule.getParams()?.arlayer.currentLayer
-      const element = ToolbarModule.getData().selectARElement
+      // const element = ToolbarModule.getData().selectARElement
+      const element = AppToolBar.getData().selectARElement
       if(layer && element){
         await SARMap.updatePieChart(layer.name, this.state.data, element.id)
       }
@@ -180,14 +186,14 @@ class ChartManager extends Component<Props, State> {
         data: this.state.data,
         unit: this.state.unit
       }
-      // AppToolBar.addData({chartData})
-      // AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_CHART')
+      AppToolBar.addData({chartData})
+      AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_CHART')
 
-      arEditModule().setModuleData(ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART)
-      global.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART, {
-        isFullScreen: false,
-      })
-      ToolbarModule.addData({chartData})
+      // arEditModule().setModuleData(ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART)
+      // global.toolBox.setVisible(true, ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART, {
+      //   isFullScreen: false,
+      // })
+      // ToolbarModule.addData({chartData})
       // 退出页面（不退出就看不到工具栏）
       this.props.navigation.goBack()
     }

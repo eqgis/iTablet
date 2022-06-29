@@ -2821,4 +2821,6 @@ export const language_cn = {
   SLIDE_RATIO: '滑动系数',
 
   AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: '当前对象不支持AR属性',
+
+  LICENSE_STAFF_TRIAL_APPLY: "申请员工许可",
 }

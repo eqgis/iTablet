@@ -31,26 +31,9 @@ import * as ARMapModule  from "./ModuleData"
 import NavigationService from "@/containers/NavigationService"
 import { ImagePicker } from "@/components"
 // import { arLayerType } from "../../../page/ARLayer"
+import { arLayerType } from "@/utils/AppToolBar"
 
 import { getThemeAssets } from "@/assets"
-
-export const arLayerType:  {
-  POI: 'POI',
-  VECTOR: 'VECTOR',
-  THREE_D: 'THREE_D',
-  MODEL: 'MODEL',
-  SAND_TABLE: 'SAND_TABLE',
-  EFFECT: 'EFFECT',
-  WIDGET: 'WIDGET',
-} = {
-  POI: 'POI',
-  VECTOR: 'VECTOR',
-  THREE_D: 'THREE_D',
-  MODEL: 'MODEL',
-  SAND_TABLE: 'SAND_TABLE',
-  EFFECT: 'EFFECT',
-  WIDGET: 'WIDGET',
-}
 
 export function getData(key: ModuleList['ARMAP_ADD']): IToolbarOption {
   const option = new ToolbarOption<undefined>()

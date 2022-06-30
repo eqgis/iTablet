@@ -30,6 +30,8 @@ import AppDialog from './AppDialog'
 import AppInputDialog from './AppInputDialog'
 import AttributeUtils from './AttributeUtils'
 import DataHandler from './DataHandler'
+import AppPath from './AppPath'
+import { FetchBlob } from './FetchBlob'
 
 export { CheckSpell } from './CheckUtils'
 export { FloatMath } from './FloatMath'
@@ -74,4 +76,6 @@ export {
   AppInputDialog,
   AttributeUtils,
   DataHandler,
+  AppPath,
+  FetchBlob,
 }

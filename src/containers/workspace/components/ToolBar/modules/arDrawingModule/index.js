@@ -6,6 +6,7 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import { SARMap } from 'imobile_for_reactnative'
+import { arMapAddData } from '@/Toolbar/modules'
 
 class ArDrawingModule extends FunctionModule {
   constructor(props) {
@@ -39,15 +40,16 @@ class ArDrawingModule extends FunctionModule {
   }
 
   action = async () => {
-    this.setModuleData(this.type)
-    const params = ToolbarModule.getParams()
-    params.showFullMap && params.showFullMap(true)
-    params.setToolbarVisible(true, this.type, {
-      containerType: ToolbarType.tableTabs,
-      isFullScreen: false,
-    })
+    // this.setModuleData(this.type)
+    // const params = ToolbarModule.getParams()
+    // params.showFullMap && params.showFullMap(true)
+    // params.setToolbarVisible(true, this.type, {
+    //   containerType: ToolbarType.tableTabs,
+    //   isFullScreen: false,
+    // })
 
-    SARMap.clearSelection()
+    // SARMap.clearSelection().
+    arMapAddData.action()
   }
 }
 

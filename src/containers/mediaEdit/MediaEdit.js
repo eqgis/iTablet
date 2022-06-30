@@ -57,9 +57,9 @@ export default class MediaEdit extends React.Component {
       modifiedDate: this.info.modifiedDate || '',
       description: this.info.description || '',
       httpAddress: this.info.httpAddress || '',
-      mediaFilePaths: this.info.mediaFilePaths || [],
-      mediaServiceIds: this.info.mediaServiceIds || [],
-      mediaData: this.info.mediaData && (
+      mediaFilePaths: this.info.mediaFilePaths && this.info.mediaFilePaths !== '-' ? this.info.mediaFilePaths : [],
+      mediaServiceIds: this.info.mediaServiceIds && this.info.mediaServiceIds !== '-' ? this.info.mediaServiceIds : [],
+      mediaData: this.info.mediaData && this.info.mediaData !== '-' && (
         typeof this.info.mediaData === 'string' ? JSON.parse(this.info.mediaData) : this.info.mediaData
       ) || {},
       isRefresh: false,
@@ -530,7 +530,7 @@ export default class MediaEdit extends React.Component {
   addMediaFiles = async ({mediaPaths = []}) => {
     let mediaFilePaths = [...this.state.mediaFilePaths]
 
-    mediaPaths.forEach(item => {
+    for (const item of mediaPaths) {
       let path
       if (typeof item === 'string') {
         path = item
@@ -542,10 +542,16 @@ export default class MediaEdit extends React.Component {
         path = item.path || item.uri
         if (path.indexOf('file://') === 0) {
           path = path.replace('file://', '')
+        } else if(path.indexOf('ph://') === 0) {
+          path = path.replace('ph://', '')
+          path = await FileTools.getContentAbsolutePath(path)
+          if (path.indexOf('file://') === 0) {
+            path = path.replace('file://', '')
+          }
         }
         mediaFilePaths.push(path)
       }
-    })
+    }
     mediaFilePaths = [...new Set(mediaFilePaths)]
 
     let paths = await this.dealData(mediaFilePaths)

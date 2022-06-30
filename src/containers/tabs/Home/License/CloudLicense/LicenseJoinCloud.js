@@ -46,6 +46,7 @@ class LicenseJoinCloud extends Component {
     }
     this.licenseCount = this.state.licenses.length
     this.hasTrial = licenseInfo.hasTrial
+    this.isStaff = licenseInfo.isStaff
   }
 
   _checkCloudLicense = cb => {
@@ -398,7 +399,9 @@ class LicenseJoinCloud extends Component {
       }
     }
     if (showTrial) {
-      title = getLanguage(global.language).Profile.LICENSE_TRIAL_APPLY
+      title = this.isStaff
+        ? getLanguage().LICENSE_STAFF_TRIAL_APPLY
+        : getLanguage(global.language).Profile.LICENSE_TRIAL_APPLY
       enable = true
     } else {
       title = getLanguage(global.language).Profile.LICENSE_ACTIVATE

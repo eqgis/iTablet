@@ -2821,4 +2821,10 @@ export const language_en: typeof language_cn = {
   SLIDE_RATIO: 'Sliding Coefficient',
 
   AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
+
+  LICENSE_STAFF_TRIAL_APPLY: "Apply staff license",  // to be translated
+
+  INPUT_TEXT: 'Please input text',
+  INPUT_URL: 'Please input URL',
+  INPUT_NAME: 'Please input name',
 }

@@ -3,6 +3,7 @@ import { ThemeType as AppThemeType } from '../constants'
 import LightTheme from './lightTheme'
 import publicTheme from './publicTheme'
 import PublicTheme from './publicTheme'
+import * as Mine from './Mine'
 
 const image = {
   ...LightTheme.analyst,
@@ -43,6 +44,7 @@ const image = {
   ...publicTheme.plot,
   ...publicTheme.theme.aggregationColorScheme,
   ...publicTheme.theme.graphColorScheme,
+  ...Mine,
 }
 
 function getImage(): typeof image {

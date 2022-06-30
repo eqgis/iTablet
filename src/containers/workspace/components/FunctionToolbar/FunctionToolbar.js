@@ -413,8 +413,13 @@ export default class FunctionToolbar extends React.Component {
                           name = dataUtil.getUrlQueryVariable(mediaPath, 'id') || ''
                           dest += `${name}.${suffix}`
                           mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
+                        } else if (mediaPath.indexOf('ph://') === 0) { // 处理iOS相册文件
+                          suffix = 'png'
+                          name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
+                          dest += `${name}.${suffix}`
+                          mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
                         } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件
-                          let filePath = await FileTools.getContentAbsolutePathAndroid(mediaPath)
+                          let filePath = await FileTools.getContentAbsolutePath(mediaPath)
                           name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'))
                           suffix = filePath.substr(filePath.lastIndexOf('.') + 1)
                           dest += `${name}.${suffix}`

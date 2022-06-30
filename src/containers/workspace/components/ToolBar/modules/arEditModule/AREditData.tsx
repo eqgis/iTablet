@@ -440,7 +440,7 @@ const ARTtitleSettingItems = (language: string) => {
   }
   if(element.type == ARElementType.AR_BAR_CHART || element.type === ARElementType.AR_PIE_CHART){
     items.splice(3, 1)
-    items.splice(0, 2)
+    items.splice(0, 1)
     if(element.type == ARElementType.AR_PIE_CHART){
       // 饼图还要添加标题的背景色
       const fillColor = {
@@ -1500,7 +1500,7 @@ function getHeaderData(type: string) {
     if(_data.selectARElement && typeof _data.selectARElement !== 'string') {
       if(_data.selectARElement.type === ARElementType.AR_TEXT
       || _data.selectARElement.type === ARElementType.AR_BUBBLE_TEXT) {
-        headerData.headerRight.push({
+        headerData.headerRight.unshift({
           key: 'edit_text',
           // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
           action: AREditAction.changeARText,
@@ -1511,6 +1511,8 @@ function getHeaderData(type: string) {
             height: scaleSize(60),
             borderRadius: scaleSize(8),
             backgroundColor: color.white,
+            marginTop: scaleSize(120),
+            marginRight: scaleSize(-60),
           },
         })
       }
@@ -1518,7 +1520,7 @@ function getHeaderData(type: string) {
 
     if(_data.selectARElement.type === ARElementType.AR_LINE
       || _data.selectARElement.type === ARElementType.AR_MARKER_LINE){
-      headerData.headerRight.push(
+      headerData.headerRight.unshift(
       //   {
       //   key: 'line_object_edit',
       //   // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
@@ -1554,6 +1556,8 @@ function getHeaderData(type: string) {
             height: scaleSize(60),
             borderRadius: scaleSize(8),
             backgroundColor: color.white,
+            marginTop: scaleSize(120),
+            marginRight: scaleSize(-60),
           },
         })
     }

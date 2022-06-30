@@ -2823,4 +2823,11 @@ export const language_ja: typeof language_cn = {
   SLIDE_RATIO: 'スライド係数',
 
   AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
+
+  LICENSE_STAFF_TRIAL_APPLY: "Apply staff license",  // to be translated
+
+  INPUT_TEXT: 'テキストを入力してください',
+  INPUT_URL: 'URLを入力してください',
+  INPUT_NAME: '名前を入力してください',
+
 }

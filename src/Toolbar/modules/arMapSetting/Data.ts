@@ -4,6 +4,7 @@ import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar } from "../../../utils"
+import App from "App"
 
 
 export function getData(key: ModuleList['ARMAP_SETTING']): IToolbarOption {
@@ -87,7 +88,8 @@ function settingViewBounds(option: IToolbarOption) {
             Promise.all(results).then(AppToolBar.getProps().getARLayers)
           }
         }
-        AppToolBar.goBack()
+        // AppToolBar.goBack()
+        AppToolBar.hide()
       }
     }
   ]
@@ -151,7 +153,8 @@ function settingSecondsToPlay(option: IToolbarOption){
             Promise.all(results).then(AppToolBar.getProps().getARLayers)
           }
         }
-        AppToolBar.goBack()
+        // AppToolBar.goBack()
+        AppToolBar.hide()
       }
     }
   ]
@@ -260,7 +263,8 @@ function settingAnimation(option: IToolbarOption) {
             Promise.all(results).then(AppToolBar.getProps().getARLayers)
           }
         }
-        AppToolBar.goBack()
+        // AppToolBar.goBack()
+        AppToolBar.hide()
       }
     }
   ]

@@ -73,6 +73,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		47E7A118286B276500E60851 /* JKVValue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47E7A113286B274700E60851 /* JKVValue.framework */; };
+		47E7A119286B276600E60851 /* JKVValue.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 47E7A113286B274700E60851 /* JKVValue.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		47E7A11A286B277800E60851 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47E7A109286B274600E60851 /* CocoaAsyncSocket.framework */; };
+		47E7A11B286B277800E60851 /* CocoaAsyncSocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 47E7A109286B274600E60851 /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		47E7A11C286B279F00E60851 /* RMQClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47E7A114286B274700E60851 /* RMQClient.framework */; };
+		47E7A11D286B279F00E60851 /* RMQClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 47E7A114286B274700E60851 /* RMQClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4E28CE9128378DEA0045CB07 /* left_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE8C28378DEA0045CB07 /* left_arrow.png */; };
 		4E28CE9228378DEA0045CB07 /* ARWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE8F28378DEA0045CB07 /* ARWebView.xib */; };
 		4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9028378DEA0045CB07 /* publicMap.txt */; };
@@ -111,6 +117,55 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = Supermap;
 		};
+		47ABE6AA28659DB200770561 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF34489A14EB99A700D8449F;
+			remoteInfo = LibUGC;
+		};
+		47ABE6AC28659DB200770561 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF33B1A016F1978A00A19B73;
+			remoteInfo = LibUGC_Base;
+		};
+		47ABE6AE28659DB200770561 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF33B46016F1A08700A19B73;
+			remoteInfo = LibUGC_2D;
+		};
+		47ABE6B028659DB200770561 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF33B61816F1F4B100A19B73;
+			remoteInfo = LibUGC_3D;
+		};
+		47ABE6B228659DB200770561 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03BDDAED1714098D003EC801;
+			remoteInfo = Object_3D;
+		};
+		47ABE6B428659DB200770561 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 00F6D375175F20A9008963A0;
+			remoteInfo = Objects_iOS;
+		};
+		47ABE6B628659DB200770561 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 005EF27D175F5F96005433E1;
+			remoteInfo = Super23D;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -120,7 +175,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				47E7A11D286B279F00E60851 /* RMQClient.framework in Embed Frameworks */,
+				47E7A119286B276600E60851 /* JKVValue.framework in Embed Frameworks */,
 				0AF850D5282E54BF00287BA5 /* ZipArchive.framework in Embed Frameworks */,
+				47E7A11B286B277800E60851 /* CocoaAsyncSocket.framework in Embed Frameworks */,
 				0AC8AFA5280817BA00435541 /* GLTFSceneKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -218,6 +276,10 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iTablet/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iTablet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iTablet/main.m; sourceTree = "<group>"; };
+		47ABE69F28659DB100770561 /* LibUGC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibUGC.xcodeproj; path = ../../../../../../Volumes/System2/Users/001_supermap/Documents/code/sourceCode/UGC/Builds/64_arm_iphone/LibUGC/LibUGC.xcodeproj; sourceTree = "<group>"; };
+		47E7A109286B274600E60851 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		47E7A113286B274700E60851 /* JKVValue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JKVValue.framework; sourceTree = "<group>"; };
+		47E7A114286B274700E60851 /* RMQClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RMQClient.framework; sourceTree = "<group>"; };
 		4E28CE8C28378DEA0045CB07 /* left_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_arrow.png; sourceTree = "<group>"; };
 		4E28CE8F28378DEA0045CB07 /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
 		4E28CE9028378DEA0045CB07 /* publicMap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = publicMap.txt; sourceTree = "<group>"; };
@@ -262,6 +324,7 @@
 				0AC8AFE4280819FE00435541 /* UIKit.framework in Frameworks */,
 				0AC8AFC32808189500435541 /* libc++.1.tbd in Frameworks */,
 				0AC8AFD62808196900435541 /* MediaPlayer.framework in Frameworks */,
+				47E7A11A286B277800E60851 /* CocoaAsyncSocket.framework in Frameworks */,
 				0AC8AFBD2808186400435541 /* libCorePlot.a in Frameworks */,
 				0AC8AF86280816AB00435541 /* Accelerate.framework in Frameworks */,
 				0AC8AFA22808178700435541 /* Foundation.framework in Frameworks */,
@@ -276,6 +339,7 @@
 				0AC8AFD82808197D00435541 /* MobileCoreServices.framework in Frameworks */,
 				0AC8AEF92808109F00435541 /* libWeChatSDK.a in Frameworks */,
 				0AC8AFE2280819F700435541 /* SystemConfiguration.framework in Frameworks */,
+				47E7A11C286B279F00E60851 /* RMQClient.framework in Frameworks */,
 				0AC8AF8E280816C700435541 /* CFNetwork.framework in Frameworks */,
 				0AC8AF8C280816BF00435541 /* AVFoundation.framework in Frameworks */,
 				0AC8AFCD2808191A00435541 /* libsqlite3.0.tbd in Frameworks */,
@@ -297,6 +361,7 @@
 				0AC8AF88280816B100435541 /* AddressBook.framework in Frameworks */,
 				0AC8AF962808175700435541 /* CoreFoundation.framework in Frameworks */,
 				0AC8AFEC28082D9E00435541 /* JRE.framework in Frameworks */,
+				47E7A118286B276500E60851 /* JKVValue.framework in Frameworks */,
 				0AC8AFBC2808186400435541 /* libSocketRocket.a in Frameworks */,
 				5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */,
 			);
@@ -421,6 +486,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				47E7A109286B274600E60851 /* CocoaAsyncSocket.framework */,
+				47E7A113286B274700E60851 /* JKVValue.framework */,
+				47E7A114286B274700E60851 /* RMQClient.framework */,
 				0AF850D3282E54BF00287BA5 /* ZipArchive.framework */,
 				0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */,
 				0AC8AFE528081A0600435541 /* UserNotifications.framework */,
@@ -467,9 +535,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		47ABE6A028659DB100770561 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				47ABE6AB28659DB200770561 /* libLibUGC.a */,
+				47ABE6AD28659DB200770561 /* libLibUGC_Base.a */,
+				47ABE6AF28659DB200770561 /* libLibUGC_2D.a */,
+				47ABE6B128659DB200770561 /* libLibUGC_3D.a */,
+				47ABE6B328659DB200770561 /* libObject_3D.a */,
+				47ABE6B528659DB200770561 /* libObjects_iOS.a */,
+				47ABE6B728659DB200770561 /* Super23D.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				47ABE69F28659DB100770561 /* LibUGC.xcodeproj */,
 				0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */,
 			);
 			name = Libraries;
@@ -613,6 +696,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 47ABE6A028659DB100770561 /* Products */;
+					ProjectRef = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
+				},
+				{
 					ProductGroup = 0AC8AF80280815BF00435541 /* Products */;
 					ProjectRef = 0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */;
 				},
@@ -631,6 +718,55 @@
 			fileType = archive.ar;
 			path = libSupermap.a;
 			remoteRef = 0AC8AF83280815BF00435541 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		47ABE6AB28659DB200770561 /* libLibUGC.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLibUGC.a;
+			remoteRef = 47ABE6AA28659DB200770561 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		47ABE6AD28659DB200770561 /* libLibUGC_Base.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLibUGC_Base.a;
+			remoteRef = 47ABE6AC28659DB200770561 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		47ABE6AF28659DB200770561 /* libLibUGC_2D.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLibUGC_2D.a;
+			remoteRef = 47ABE6AE28659DB200770561 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		47ABE6B128659DB200770561 /* libLibUGC_3D.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLibUGC_3D.a;
+			remoteRef = 47ABE6B028659DB200770561 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		47ABE6B328659DB200770561 /* libObject_3D.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libObject_3D.a;
+			remoteRef = 47ABE6B228659DB200770561 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		47ABE6B528659DB200770561 /* libObjects_iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libObjects_iOS.a;
+			remoteRef = 47ABE6B428659DB200770561 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		47ABE6B728659DB200770561 /* Super23D.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Super23D.app;
+			remoteRef = 47ABE6B628659DB200770561 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -690,7 +826,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -698,7 +834,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
@@ -876,7 +1012,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F07F69481202071CFF1C167F /* Pods-iTablet.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -1027,7 +1162,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 06FACE8019E26F0904A7ACC2 /* Pods-iTablet.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -1051,6 +1185,7 @@
 					"$(PROJECT_DIR)/iPhoneOS.sdk",
 					"$(PROJECT_DIR)",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",

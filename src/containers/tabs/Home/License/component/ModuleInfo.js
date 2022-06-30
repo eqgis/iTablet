@@ -31,16 +31,16 @@ export default class ModuleInfo extends Component {
     return [
       {
         title: getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD,
-        id: Platform.OS === 'ios' ? '18001' : '19001',
+        id: Platform.OS === 'ios' ? '18001' : '29001',
       },
       {
         title: getLanguage(global.language).Profile
           .LICENSE_EDITION_PROFESSIONAL,
-        id: Platform.OS === 'ios' ? '18002' : '19002',
+        id: Platform.OS === 'ios' ? '18002' : '29002',
       },
       {
         title: getLanguage(global.language).Profile.LICENSE_EDITION_ADVANCED,
-        id: Platform.OS === 'ios' ? '18003' : '19003',
+        id: Platform.OS === 'ios' ? '18003' : '29003',
       },
     ]
   }
@@ -49,19 +49,19 @@ export default class ModuleInfo extends Component {
     return [
       {
         title: getLanguage(global.language).Map_Module.MAP_AR_MODULE,
-        id: Platform.OS === 'ios' ? '18004' : '19004',
+        id: Platform.OS === 'ios' ? '18004' : '29004',
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_NAVIGATION,
-        id: Platform.OS === 'ios' ? '18005' : '19005',
+        id: Platform.OS === 'ios' ? '18005' : '29005',
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_ANALYST,
-        id: Platform.OS === 'ios' ? '18006' : '19006',
+        id: Platform.OS === 'ios' ? '18006' : '29006',
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_PLOTTING,
-        id: Platform.OS === 'ios' ? '18007' : '19007',
+        id: Platform.OS === 'ios' ? '18007' : '29007',
       },
     ]
   }

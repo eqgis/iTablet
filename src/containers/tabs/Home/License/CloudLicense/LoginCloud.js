@@ -91,6 +91,11 @@ class LoginCloud extends Component {
         hasTrial: false,
       }
     }
+    result.isStaff = false
+    if(result.licenses.length === 0) {
+      const queryResult = await SMap.queryCloudTrialLicense()
+      result.isStaff = queryResult.staff
+    }
     if(this.state.reLogin) {
       this.container && this.container.setLoading(false)
     } else {

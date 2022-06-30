@@ -3,23 +3,21 @@ import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
 import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo, View, Platform } from 'react-native'
-import { scaleSize, Toast, DialogUtils, AppToolBar } from '../../utils'
+import { scaleSize, Toast, AppToolBar } from '../../utils'
 import { getImage, getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
 import { ARMapInfo } from '../../redux/models/arlayer'
 import { ARMapState } from '../../redux/models/armap'
 import { DEVICE } from '../../redux/models/device'
 import ARLayerItem from './ARLayerItem'
-import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
-import { arDrawingModule, arEditModule } from '../workspace/components/ToolBar/modules'
+import { arEditModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import { MapToolbar } from '../workspace/components'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
 import NavigationService from '../NavigationService'
 import ARLayerMenu from './ARLayerMenu'
-import { ConstToolType, Const } from '../../constants'
 import { UserInfo } from '@/types'
-
+import { arLayerType } from '@/utils/AppToolBar'
 
 
 const styles = StyleSheet.create({
@@ -90,18 +88,19 @@ interface Postion {
 }
 
 export const layerTypesObj = {
-  [Const.POI]: [ARLayerType.AR_MEDIA_LAYER], // poi 0 [105]
-  [Const.VECTOR]: [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量 1  [101, 100, 301, 302]
-  [Const.THREE_D]: [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维 2  [3, 4]
-  [Const.MODEL]: [ARLayerType.AR_MODEL_LAYER], // 模型 3  [106]
-  [Const.EFFECT]: [ARLayerType.EFFECT_LAYER], // 特效 4  [2]
-  [Const.WIDGET]: [ARLayerType.AR_WIDGET_LAYER], // 小组件 5 [107]
+  [arLayerType.POI]: [ARLayerType.AR_MEDIA_LAYER], // poi [105]
+  [arLayerType.VECTOR]: [ARLayerType.AR_TEXT_LAYER, ARLayerType.AR_POINT_LAYER, ARLayerType.AR_LINE_LAYER, ARLayerType.AR_REGION_LAYER], // 矢量  [101, 100, 301, 302]
+  [arLayerType.THREE_D]: [ARLayerType.AR3D_LAYER, ARLayerType.AR_SCENE_LAYER], // 三维  [3, 4]
+  [arLayerType.MODEL]: [ARLayerType.AR_MODEL_LAYER], // 模型  [106]
+  [arLayerType.SAND_TABLE]: [ARLayerType.AR_MODEL_LAYER], // 沙盘 4 [106]  (沙盘和模型在同一图层上面)
+  [arLayerType.EFFECT]: [ARLayerType.EFFECT_LAYER], // 特效  [2]
+  [arLayerType.WIDGET]: [ARLayerType.AR_WIDGET_LAYER], // 小组件 [107]
 }
 
 export default class ARLayerManager extends React.Component<Props, State> {
   inputDialog: InputDialog | undefined | null
   backPositon: Postion
-  tabType: string
+  tabType:  keyof typeof arLayerType | undefined
 
   // 记录最后一个特效图层的索引
   lastEffectlayerIndex: number
@@ -133,9 +132,9 @@ export default class ARLayerManager extends React.Component<Props, State> {
     // 在此处加过滤条件
     const layers = this.props.arlayer.layers
     const length = layers.length
-    const type: string | undefined = this.tabType
+    const type: keyof typeof arLayerType | undefined = this.tabType
 
-    if(type && type!= ""){
+    if(type){
       // 当类型为有值的情况下，一定是一个数字的字符串
       // const typeIndex = parseInt(type)
       const aimArr = layerTypesObj[type]
@@ -419,7 +418,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
   _renderLayers = () => {
     if(!this.props.arlayer.layers) return null
-    const type: string | undefined = this.tabType
+    const type: keyof typeof arLayerType | undefined = this.tabType
 
     return (
       <ARLayers
@@ -526,19 +525,35 @@ export default class ARLayerManager extends React.Component<Props, State> {
         image: getThemeAssets().layer.icon_add_layer,
         title: getLanguage().ARMap.ADD_LAYER,
         action: () => {
-          this.props.navigation.navigate('MapView')
-          arDrawingModule().action()
-          // 点击新建图层，将特效图层是否正在添加中的标识设置为false，即添加完成
-          global.isNotEndAddEffect = false
-          let type = this.tabType
-          if(!type) {
-            type = Const.POI
-          }
-          ToolbarModule.addData({
+          // this.props.navigation.navigate('MapView')
+          // arDrawingModule().action()
+          // // 点击新建图层，将特效图层是否正在添加中的标识设置为false，即添加完成
+          // global.isNotEndAddEffect = false
+          // let type = this.tabType
+          // if(!type) {
+          //   type = Const.POI
+          // }
+          // ToolbarModule.addData({
+          //   addNewDsetWhenCreate: true,
+          //   // moduleIndex: Number(type),
+          //   moduleKey: type,
+          // })
+
+          const type = this.tabType
+          AppToolBar.addData({
             addNewDsetWhenCreate: true,
-            // moduleIndex: Number(type),
-            moduleKey: type,
+            isNotEndAddEffect: false,
           })
+
+          // 从toolbar进入时，需要跳转
+          if(!type) {
+            AppToolBar.addData({
+              moduleKey: type,
+            })
+            AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD')
+          }
+          this.props.navigation.goBack()
+
         },
       }),
       // this._renderHeaderRightBtn({
@@ -552,17 +567,19 @@ export default class ARLayerManager extends React.Component<Props, State> {
   }
   /** 返回按钮执行的方法 */
   _back = () => {
-    this.props.navigation.navigate('MapView')
-    arDrawingModule().action()
-    let type = this.tabType
-    if(!type) {
-      type = Const.POI
-    }
-    ToolbarModule.addData({
-      // moduleIndex: Number(type),
-      moduleKey: type,
-    })
+    // this.props.navigation.navigate('MapView')
+    // arDrawingModule().action()
+    // let type = this.tabType
+    // if(!type) {
+    //   type = arLayerType.POI
+    // }
+    // ToolbarModule.addData({
+    //   // moduleIndex: Number(type),
+    //   moduleKey: type,
+    //   tabShowIndex: layerTypeToIndex[type],
+    // })
 
+    this.props.navigation.goBack()
   }
 
   _renderInputDialog = () => {

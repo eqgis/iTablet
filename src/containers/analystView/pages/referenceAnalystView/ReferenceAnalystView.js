@@ -231,6 +231,7 @@ export default class ReferenceAnalystView extends Component {
         layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
 
         global.ToolBar && global.ToolBar.setVisible(false)
+        global.toolBox.showFullMap(false)
         NavigationService.goBack('ReferenceAnalystView')
         if (this.cb && typeof this.cb === 'function') {
           this.cb()

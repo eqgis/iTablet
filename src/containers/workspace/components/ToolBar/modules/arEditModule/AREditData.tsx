@@ -440,7 +440,7 @@ const ARTtitleSettingItems = (language: string) => {
   }
   if(element.type == ARElementType.AR_BAR_CHART || element.type === ARElementType.AR_PIE_CHART){
     items.splice(3, 1)
-    items.splice(0, 2)
+    items.splice(0, 1)
     if(element.type == ARElementType.AR_PIE_CHART){
       // 饼图还要添加标题的背景色
       const fillColor = {

@@ -57,7 +57,7 @@ import { downloadFile, deleteDownloadFile ,setSampleDataShow} from '../../../../
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
 import { createARMap, openARMap, saveARMap, closeARMap } from '../../../../redux/models/armap'
-import { setCoworkService } from '../../../../redux/models/cowork'
+import { setCoworkService, clearCoworkService } from '../../../../redux/models/cowork'
 import { setAIClassifyModel, setAIDetectModel } from '../../../../redux/models/setting'
 
 const mapStateToProps = state => ({
@@ -171,6 +171,7 @@ const mapDispatchToProps = {
   showAR,
   setSampleDataShow,
   setCoworkService,
+  clearCoworkService,
   arPoiSearch,
   setAIClassifyModel,
   setAIDetectModel,

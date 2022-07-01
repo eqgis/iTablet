@@ -131,7 +131,7 @@ export default class LayerAttributeTable extends React.Component {
       }
       this.dismissIndexes = []
       this.buttonIndexes = []
-      if (this.props.type === 'MULTI_DATA' && this.state.isMultiData) {
+      if (this.props.type === 'MULTI_DATA') {
         for (let index in titles) {
           if (this.props.dismissTitles && this.props.dismissTitles instanceof Array) {
             const dismissIndex = this.props.dismissTitles?.indexOf(titles[index].value)
@@ -191,7 +191,7 @@ export default class LayerAttributeTable extends React.Component {
           JSON.stringify(this.props.tableHead)
       ) {
         let data = []
-        const titles = this.getTitle(data)
+        const titles = this.getTitle(this.props.data)
         this.setIndexexes(titles)
 
         if (!isMultiData && !this.props.isShowSystemFields) {

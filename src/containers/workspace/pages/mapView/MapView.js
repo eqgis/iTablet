@@ -201,6 +201,7 @@ export default class MapView extends React.Component {
     currentGroup: PropTypes.object,
     currentTaskServices: PropTypes.object,
     setCoworkService: PropTypes.func,
+    clearCoworkService: PropTypes.func,
 
     baseMaps: PropTypes.object,
 
@@ -1858,6 +1859,7 @@ export default class MapView extends React.Component {
         // 在线协作-若整个地图数据已发布服务-则初始化数据源-数据集为服务数据
         const service = this.props.route?.params?.service
         if (global.coworkMode && this.props.route?.params?.service && global.Type !== ChunkType.MAP_PLOTTING) {
+          await this.props.clearCoworkService({groupId: this.props.currentTask.groupID, taskId: this.props.currentTask.id})
           await SCoordinationUtils.initMapDataWithService(service.address)
           await ServiceAction.downloadService(service.address, this.NewMessageIcon)
         }

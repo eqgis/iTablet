@@ -40,6 +40,8 @@ export const COWORK_TASK_INFO_MEMBER_LOCATION_SHOW = 'COWORK_TASK_INFO_MEMBER_LO
 
 /** 协作群组数据服务添加/修改 */
 export const COWORK_SERVICE_SET = 'COWORK_SERVICE_SET'
+/** 协作群组数据服务清除 */
+export const COWORK_SERVICE_CLEAR = 'COWORK_SERVICE_CLEAR'
 
 // export interface Task {
 // }
@@ -145,9 +147,12 @@ export interface ServiceInfo {
   progress?: number,
 }
 
-export interface ServiceParams {
+export interface IDParams {
   groupId: string,
   taskId: string,
+}
+
+export interface ServiceParams extends IDParams {
   service: ServiceInfo[] | ServiceInfo,
 }
 
@@ -416,6 +421,19 @@ export const setCoworkService = (params: ServiceParams) => async (dispatch: (arg
   const userId = getState().user.toJS().currentUser.userName || 'Customer'
   let result = await dispatch({
     type: COWORK_SERVICE_SET,
+    payload: params,
+    userId: userId,
+  })
+  return result
+}
+
+/**
+ * 清除指定群组-任务中的redux服务
+ */
+export const clearCoworkService = (params: IDParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
+  const result = await dispatch({
+    type: COWORK_SERVICE_CLEAR,
     payload: params,
     userId: userId,
   })
@@ -1567,6 +1585,15 @@ export default handleActions(
           taskServices.push(payload.service)
           services[userId][payload.groupId][payload.taskId] = taskServices
         }
+      }
+      return state.setIn(['services'], fromJS(services))
+    },
+    [`${COWORK_SERVICE_CLEAR}`]: (state: any, { payload, userId }: {payload: IDParams, userId: string}) => {
+      let services = state.toJS().services
+      let taskServices = services?.[userId]?.[payload.groupId]?.[payload.taskId]
+      if (taskServices) {
+        services[userId][payload.groupId][payload.taskId] = []
+        console.warn(COWORK_SERVICE_CLEAR, services[userId][payload.groupId][payload.taskId])
       }
       return state.setIn(['services'], fromJS(services))
     },

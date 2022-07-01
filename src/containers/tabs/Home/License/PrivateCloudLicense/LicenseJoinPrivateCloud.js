@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import { setLicenseInfo } from '../../../../../redux/models/license'
 import { Container, Button } from '../../../../../components'
 import { color } from '../../../../../styles'
-import { SMap } from 'imobile_for_reactnative'
+import { LicenseModule, SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../../utils'
 import styles from '../styles'
 import { getLanguage } from '../../../../../language'
@@ -120,12 +120,9 @@ class LicenseJoinPrivateCloud extends Component {
 
   isEdition = id => {
     if (
-      id === '18001' ||
-      id === '29001' ||
-      id === '18002' ||
-      id === '29002' ||
-      id === '18003' ||
-      id === '29003'
+      id === '' + LicenseModule.ITABLET_STANDARD ||
+      id === '' + LicenseModule.ITABLET_PROFESSIONAL ||
+      id === '' + LicenseModule.ITABLET_ADVANCED
     ) {
       return true
     } else {
@@ -135,34 +132,27 @@ class LicenseJoinPrivateCloud extends Component {
 
   getTitle = id => {
     let title
-    switch (id) {
-      case '18001':
-      case '29001':
+    switch (parseInt(id)) {
+      case LicenseModule.ITABLET_STANDARD:
         title = getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD
         break
-      case '18002':
-      case '29002':
+      case LicenseModule.ITABLET_PROFESSIONAL:
         title = getLanguage(global.language).Profile
           .LICENSE_EDITION_PROFESSIONAL
         break
-      case '18003':
-      case '29003':
+      case LicenseModule.ITABLET_ADVANCED:
         title = getLanguage(global.language).Profile.LICENSE_EDITION_ADVANCED
         break
-      case '18004':
-      case '29004':
+      case LicenseModule.ITABLET_ARMAP:
         title = getLanguage(global.language).Map_Module.MAP_AR
         break
-      case '18005':
-      case '29005':
+      case LicenseModule.ITABLET_NAVIGATIONMAP:
         title = getLanguage(global.language).Map_Module.MAP_NAVIGATION
         break
-      case '18006':
-      case '29006':
+      case LicenseModule.ITABLET_DATAANALYSIS:
         title = getLanguage(global.language).Map_Module.MAP_ANALYST
         break
-      case '18007':
-      case '29007':
+      case LicenseModule.ITABLET_PLOTTING:
         title = getLanguage(global.language).Map_Module.MAP_PLOTTING
         break
     }

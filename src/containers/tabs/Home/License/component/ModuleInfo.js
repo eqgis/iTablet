@@ -1,3 +1,4 @@
+import { LicenseModule } from 'imobile_for_reactnative'
 import React, { Component } from 'react'
 import {
   View,
@@ -31,16 +32,16 @@ export default class ModuleInfo extends Component {
     return [
       {
         title: getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD,
-        id: Platform.OS === 'ios' ? '18001' : '29001',
+        id: LicenseModule.ITABLET_STANDARD + '',
       },
       {
         title: getLanguage(global.language).Profile
           .LICENSE_EDITION_PROFESSIONAL,
-        id: Platform.OS === 'ios' ? '18002' : '29002',
+        id: LicenseModule.ITABLET_PROFESSIONAL + '',
       },
       {
         title: getLanguage(global.language).Profile.LICENSE_EDITION_ADVANCED,
-        id: Platform.OS === 'ios' ? '18003' : '29003',
+        id: LicenseModule.ITABLET_ADVANCED + '',
       },
     ]
   }
@@ -49,19 +50,19 @@ export default class ModuleInfo extends Component {
     return [
       {
         title: getLanguage(global.language).Map_Module.MAP_AR_MODULE,
-        id: Platform.OS === 'ios' ? '18004' : '29004',
+        id: LicenseModule.ITABLET_ARMAP + '',
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_NAVIGATION,
-        id: Platform.OS === 'ios' ? '18005' : '29005',
+        id: LicenseModule.ITABLET_NAVIGATIONMAP + '',
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_ANALYST,
-        id: Platform.OS === 'ios' ? '18006' : '29006',
+        id: LicenseModule.ITABLET_DATAANALYSIS + '',
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_PLOTTING,
-        id: Platform.OS === 'ios' ? '18007' : '29007',
+        id: LicenseModule.ITABLET_PLOTTING + '',
       },
     ]
   }

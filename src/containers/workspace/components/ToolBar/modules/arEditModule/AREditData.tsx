@@ -1490,9 +1490,9 @@ function getHeaderData(type: string) {
         size: 'large',
         image: getThemeAssets().ar.toolbar.icon_delete,
         style: {
-          width: scaleSize(60),
-          height: scaleSize(60),
-          borderRadius: scaleSize(8),
+          width: scaleSize(80),
+          height: scaleSize(80),
+          borderRadius: scaleSize(10),
           backgroundColor: color.white,
         },
       }],
@@ -1500,6 +1500,10 @@ function getHeaderData(type: string) {
     if(_data.selectARElement && typeof _data.selectARElement !== 'string') {
       if(_data.selectARElement.type === ARElementType.AR_TEXT
       || _data.selectARElement.type === ARElementType.AR_BUBBLE_TEXT) {
+
+        headerData.headerRight[0].style.borderBottomLeftRadius = 0
+        headerData.headerRight[0].style.borderBottomRightRadius = 0
+
         headerData.headerRight.unshift({
           key: 'edit_text',
           // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
@@ -1507,12 +1511,14 @@ function getHeaderData(type: string) {
           size: 'large',
           image: getImage().icon_edit_text,
           style: {
-            width: scaleSize(60),
-            height: scaleSize(60),
-            borderRadius: scaleSize(8),
+            width: scaleSize(80),
+            height: scaleSize(80),
+            // borderRadius: scaleSize(10),
             backgroundColor: color.white,
-            marginTop: scaleSize(120),
-            marginRight: scaleSize(-60),
+            marginTop: scaleSize(160),
+            marginRight: scaleSize(-80),
+            borderBottomLeftRadius: scaleSize(10),
+            borderBottomRightRadius: scaleSize(10),
           },
         })
       }
@@ -1520,6 +1526,10 @@ function getHeaderData(type: string) {
 
     if(_data.selectARElement.type === ARElementType.AR_LINE
       || _data.selectARElement.type === ARElementType.AR_MARKER_LINE){
+
+      headerData.headerRight[0].style.borderBottomLeftRadius = 0
+      headerData.headerRight[0].style.borderBottomRightRadius = 0
+
       headerData.headerRight.unshift(
       //   {
       //   key: 'line_object_edit',
@@ -1552,12 +1562,14 @@ function getHeaderData(type: string) {
           size: 'large',
           image: getImage().zoom_in,
           style: {
-            width: scaleSize(60),
-            height: scaleSize(60),
-            borderRadius: scaleSize(8),
+            width: scaleSize(80),
+            height: scaleSize(80),
+            // borderRadius: scaleSize(10),
             backgroundColor: color.white,
-            marginTop: scaleSize(120),
-            marginRight: scaleSize(-60),
+            marginTop: scaleSize(160),
+            marginRight: scaleSize(-80),
+            borderBottomLeftRadius: scaleSize(10),
+            borderBottomRightRadius: scaleSize(10),
           },
         })
     }

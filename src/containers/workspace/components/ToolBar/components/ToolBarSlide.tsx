@@ -125,6 +125,7 @@ class ToolBarSlide extends React.Component<Props, State> {
                   borderBottomWidth: dp(1),
                   textAlign: 'center',
                 }}
+                returnKeyType ={'done'}
                 placeholderTextColor={'black'}
                 keyboardType={'numeric'}
                 defaultValue={this.state.slideRatio + ''}

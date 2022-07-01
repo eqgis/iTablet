@@ -2529,6 +2529,7 @@ export const language_ja: typeof language_cn = {
   PUBLISH_FAILED: "配信に失敗",
   PUBLISH_FAILED_INFO_1: "当サービスは配信されています",
   PUBLISH_FAILED_INFO_2: "サービス更新中、操作できません",
+  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
   UNPUBLISH: "Unpublish", // need to translate
   UNPUBLISHING: "Unpublishing", // need to translate
   UNPUBLISH_SUCCESS: "Unpublished", // need to translate

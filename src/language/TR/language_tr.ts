@@ -2526,6 +2526,7 @@ export const language_tr: typeof language_cn = {
   PUBLISH_FAILED: "Yayınlama Başarısız",
   PUBLISH_FAILED_INFO_1: "Servis yayınlandı",
   PUBLISH_FAILED_INFO_2: "Hizmet yayınlanıyor fakat şu anda çalıştırılamıyor",
+  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
   UNPUBLISH: "Unpublish", // need to translate
   UNPUBLISHING: "Unpublishing", // need to translate
   UNPUBLISH_SUCCESS: "Unpublished", // need to translate

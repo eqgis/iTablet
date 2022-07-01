@@ -2527,6 +2527,7 @@ export const language_en: typeof language_cn = {
   PUBLISH_FAILED: "Failed to publish",
   PUBLISH_FAILED_INFO_1: "The service has been published",
   PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time",
+  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
   UNPUBLISH: "Unpublish",
   UNPUBLISHING: "Unpublishing",
   UNPUBLISH_SUCCESS: "Unpublished",

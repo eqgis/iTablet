@@ -2549,6 +2549,7 @@ export const language_ar: typeof language_cn = {
   PUBLISH_FAILED: "فشل النشر",
   PUBLISH_FAILED_INFO_1: "تم نشر هذه الخدمة",
   PUBLISH_FAILED_INFO_2: "الخدمة قيد النشر ، لا يمكن أن تعمل في هذا الوقت",
+  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
   UNPUBLISH: "Unpublish", // need to translate
   UNPUBLISHING: "Unpublishing", // need to translate
   UNPUBLISH_SUCCESS: "Unpublished", // need to translate

@@ -230,7 +230,7 @@ async function getData(type: string, params: any) {
                 // _params.setContainerLoading?.(true, getLanguage(_params.language).Prompt.PUBLISHING)
 
                 if (!isTaggingLayer && !datasetDescription && _params?.currentTask?.resource?.resourceId && layerData.datasourceAlias) {
-                  const {result, content} = await ServiceAction.publishService(_params?.currentTask?.resource?.resourceId, layerData.datasourceAlias, [{
+                  const {result, content, error} = await ServiceAction.publishService(_params?.currentTask?.resource?.resourceId, layerData.datasourceAlias, [{
                     groupId: _params.currentGroup.id,
                     groupName: _params.currentGroup.groupName,
                   }])
@@ -248,7 +248,8 @@ async function getData(type: string, params: any) {
                   if (result) {
                     Toast.show(getLanguage(global.language).Prompt.PUBLISH_SUCCESS)
                   } else {
-                    Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)
+                    // Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)
+                    Toast.show(error?.errorMsg && error?.code === 403 ? getLanguage(global.language).Prompt.PUBLISH_FAILED_INFO_3 : getLanguage(global.language).Prompt.PUBLISH_FAILED)
                   }
                 } else {
                   let datasourcePath
@@ -266,7 +267,7 @@ async function getData(type: string, params: any) {
                     layerData.datasourceAlias + '.udb'
                   }
                   if (layerData.datasourceAlias) {
-                    const {result, content} = await ServiceAction.publishServiceToGroup(name, {
+                    const {result, content, error} = await ServiceAction.publishServiceToGroup(name, {
                       layerName: layerData.name,
                       datasourceAlias: layerData.datasourceAlias,
                       datasourcePath,
@@ -300,7 +301,7 @@ async function getData(type: string, params: any) {
                       }
                       Toast.show(getLanguage(global.language).Prompt.PUBLISH_SUCCESS)
                     } else {
-                      Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)
+                      Toast.show(error?.errorMsg && error?.code === 403 ? getLanguage(global.language).Prompt.PUBLISH_FAILED_INFO_3 : getLanguage(global.language).Prompt.PUBLISH_FAILED)
                     }
                   } else {
                     Toast.show(getLanguage(global.language).Prompt.PUBLISH_FAILED)

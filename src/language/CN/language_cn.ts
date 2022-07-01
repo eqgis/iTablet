@@ -2527,7 +2527,7 @@ export const language_cn = {
   PUBLISH_FAILED: "发布失败",
   PUBLISH_FAILED_INFO_1: "已发布过服务",
   PUBLISH_FAILED_INFO_2: "服务正在发布中，当前不允许操作",
-  PUBLISH_FAILED_INFO_3: "可发布的服务额度不够",
+  PUBLISH_FAILED_INFO_3: "可发布的服务额度不足",
   UNPUBLISH: "取消发布",
   UNPUBLISHING: "取消发布中",
   UNPUBLISH_SUCCESS: "取消发布成功",

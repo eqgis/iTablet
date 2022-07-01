@@ -41,7 +41,6 @@ import styles from './styles'
 import { getXmlTemplateData } from './components/LayerManager_tolbar/LayerToolbarData'
 import ServiceAction from '../workspace/components/ToolBar/modules/serviceModule/ServiceAction'
 import { Rect } from 'react-native-popover-view'
-
 export default class MT_layerManager extends React.Component {
   props: {
     language: string,
@@ -91,7 +90,7 @@ export default class MT_layerManager extends React.Component {
       mapName: '',
       refreshing: false,
       currentOpenItemName: '', // 记录左滑的图层的名称
-      data: [],
+      data: this.dealLayers(this.props.layers),
       type: (params && params.type) || global.Type, // 底部Tabbar类型
       allLayersVisible: false,
       isOutput: true, // 点击了输出/加载按钮，用于判断dialog行为
@@ -105,13 +104,19 @@ export default class MT_layerManager extends React.Component {
     this.dialog = undefined
     this.publishMapServiceWatting = undefined // 发布地图服务,只有在线协作可用
     this.Popover = undefined
+
+    this.hasInit = false // 是否初始化,防止第一次进入获取图层后,调用componentDidUpdate中的getData,重复获取
   }
 
   componentDidUpdate(prevProps) {
     if (
       JSON.stringify(prevProps.layers) !== JSON.stringify(this.props.layers)
     ) {
-      this.getData()
+      if (!this.hasInit) {
+        this.hasInit = true
+      } else {
+        this.getData()
+      }
     }
     
     if (this.props.device.orientation !== prevProps.device.orientation) {
@@ -130,11 +135,104 @@ export default class MT_layerManager extends React.Component {
     })
   }
 
+  /**
+   * 获取无图层时的数据
+   */
+  _getDefaultData = () => {
+    return (
+      [
+        {
+          title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
+          //'我的标注',
+          data: [],
+          visible: true,
+        },
+        {
+          title: getLanguage(this.props.language).Map_Layer.LAYERS,
+          //'我的图层',
+          data: [],
+          visible: true,
+        },
+        {
+          title: getLanguage(this.props.language).Map_Layer.MY_BASEMAP,
+          // '我的底图',
+          data: [
+            {
+              caption: 'baseMap',
+              datasetName: '',
+              name: 'baseMap',
+              path: '',
+              themeType: 0,
+              type: 81,
+            },
+          ],
+          visible: true,
+        },
+      ]
+    )
+  }
+
   getData = async () => {
-    // this.container.setLoading(true)
     try {
       this.itemRefs = {}
       let allLayers = await this.props.getLayers()
+
+      let data
+      if (
+        allLayers.length > 0 ||
+        (allLayers.length === 0 && global.Type === ChunkType.MAP_ANALYST)
+      ) {
+        data = this.dealLayers(allLayers)
+      } else if (allLayers.length === 0) {
+        await SMap.openDatasource(
+          ConstOnline.Google.DSParams,
+          global.Type === ChunkType.MAP_COLLECTION
+            ? 1
+            : ConstOnline.Google.layerIndex,
+          false,
+          false, // 分析模块下，显示地图
+        )
+        allLayers = await this.props.getLayers()
+        data = this.dealLayers(allLayers)
+      }
+
+      let taggingLayers = [] // 标注图层
+
+      // 若无标注图层，则去加载
+      if (taggingLayers.length === 0) {
+        taggingLayers = await SMap.getTaggingLayers(
+          this.props.user.currentUser.userName,
+        )
+        data[0].data = taggingLayers
+      }
+      if (this.props.currentLayer.name) {
+        this.prevItemRef = this.currentItemRef
+        this.currentItemRef =
+          this.itemRefs && this.itemRefs[this.props.currentLayer.name]
+      }
+      this.setState({
+        data: data,
+        refreshing: false,
+        allLayersVisible: this.isAllLayersVisible(data[1].data),
+      })
+      // let mapName = await this.map.getName()
+    } catch (e) {
+      this.setState({
+        data: this._getDefaultData(),
+        refreshing: false,
+        allLayersVisible: true,
+      })
+      this.setRefreshing(false)
+    }
+  }
+
+  /**
+   * 处理图层数据
+   */
+  dealLayers = (allLayers = []) => {
+    let data
+    try {
+      this.itemRefs = {}
 
       let baseMap = []
       if (
@@ -166,17 +264,6 @@ export default class MT_layerManager extends React.Component {
             return !LayerUtils.isBaseLayer(layer)
           })
         }
-      } else if (allLayers.length === 0) {
-        await SMap.openDatasource(
-          ConstOnline.Google.DSParams,
-          global.Type === ChunkType.MAP_COLLECTION
-            ? 1
-            : ConstOnline.Google.layerIndex,
-          false,
-          false, // 分析模块下，显示地图
-        )
-        allLayers = await this.props.getLayers()
-        baseMap = allLayers.length > 0 ? [allLayers[allLayers.length - 1]] : []
       }
 
       //baseMap只显示一个，其他的放到subLayers内，删除和显示隐藏时用
@@ -200,81 +287,38 @@ export default class MT_layerManager extends React.Component {
         }
       }
 
-      // 若无标注图层，则去加载
-      if (taggingLayers.length === 0) {
-        taggingLayers = await SMap.getTaggingLayers(
-          this.props.user.currentUser.userName,
-        )
-      }
       if (this.props.currentLayer.name) {
         this.prevItemRef = this.currentItemRef
         this.currentItemRef =
           this.itemRefs && this.itemRefs[this.props.currentLayer.name]
       }
-      this.setState({
-        data: [
-          {
-            title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
-            //'我的标注',
-            data: taggingLayers,
-            visible:
-              this.state.data.length === 3 ? this.state.data[0].visible : true,
-          },
-          {
-            title: getLanguage(this.props.language).Map_Layer.LAYERS,
-            //'我的图层',
-            data: layers,
-            visible:
-              this.state.data.length === 3 ? this.state.data[1].visible : true,
-          },
-          {
-            title: getLanguage(this.props.language).Map_Layer.MY_BASEMAP,
-            // '我的底图',
-            data: baseMap,
-            visible:
-              this.state.data.length === 3 ? this.state.data[2].visible : true,
-          },
-        ],
-        refreshing: false,
-        allLayersVisible: this.isAllLayersVisible(layers),
-      })
-      // let mapName = await this.map.getName()
+      data = [
+        {
+          title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
+          //'我的标注',
+          data: taggingLayers,
+          visible:
+            this.state?.data?.length === 3 ? this.state.data[0].visible : true,
+        },
+        {
+          title: getLanguage(this.props.language).Map_Layer.LAYERS,
+          //'我的图层',
+          data: layers,
+          visible:
+            this.state?.data?.length === 3 ? this.state.data[1].visible : true,
+        },
+        {
+          title: getLanguage(this.props.language).Map_Layer.MY_BASEMAP,
+          // '我的底图',
+          data: baseMap,
+          visible:
+            this.state?.data?.length === 3 ? this.state.data[2].visible : true,
+        },
+      ]
     } catch (e) {
-      this.setState({
-        data: [
-          {
-            title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
-            //'我的标注',
-            data: [],
-            visible: true,
-          },
-          {
-            title: getLanguage(this.props.language).Map_Layer.LAYERS,
-            //'我的图层',
-            data: [],
-            visible: true,
-          },
-          {
-            title: getLanguage(this.props.language).Map_Layer.MY_BASEMAP,
-            // '我的底图',
-            data: [
-              {
-                caption: 'baseMap',
-                datasetName: '',
-                name: 'baseMap',
-                path: '',
-                themeType: 0,
-                type: 81,
-              },
-            ],
-            visible: true,
-          },
-        ],
-        refreshing: false,
-        allLayersVisible: true,
-      })
-      this.setRefreshing(false)
+      data = this._getDefaultData()
     }
+    return data
   }
 
   getItemLayout = (data, index) => {

@@ -105,8 +105,6 @@ export default class LayerAttributeTable extends React.Component {
       currentSelect: -1,
       refreshing: false,
       loading: false,
-
-      isMultiData,
     }
     this.canBeLoadMore = true // 控制是否可以加载更多
     this.isScrolling = false // 防止连续定位滚动
@@ -497,7 +495,7 @@ export default class LayerAttributeTable extends React.Component {
       buttonIndexes = [],
       buttonTitles = []
 
-    if (this.props.type === 'MULTI_DATA' && this.state.isMultiData) {
+    if (this.props.type === 'MULTI_DATA') {
       buttonTitles = this.props.buttonTitles
       buttonIndexes = this.buttonIndexes
       // if (
@@ -757,7 +755,7 @@ export default class LayerAttributeTable extends React.Component {
         style={[styles.container, this.props.contentContainerStyle]}
         keyboardVerticalOffset={this.props.keyboardVerticalOffset}
       >
-        {this.props.type === 'MULTI_DATA' && this.state.isMultiData
+        {this.props.type === 'MULTI_DATA'
           ? this.renderMultiDataTable()
           : this.renderSingleDataTable()}
       </KeyboardAvoidingView>

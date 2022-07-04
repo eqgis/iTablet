@@ -24,8 +24,6 @@
     "fbjs-scripts": "^3.0.1",
     "immutable": "^4.0.0",
     "imobile_for_reactnative": "file:imobile_for_reactnative",
-    "jcore-react-native": "^1.9.5",
-    "jpush-react-native": "^2.9.0",
     "moment": "^2.29.1",
     "react": "17.0.2",
     "react-native": "0.67.4",

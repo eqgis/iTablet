@@ -3,11 +3,10 @@
 #import "FileTools.h"
 #import "AppInfo.h"
 #import "WeiXinUtils.h"
-#import "JPUSHService.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, WXApiDelegate, JPUSHRegisterDelegate>{
+@interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, WXApiDelegate>{
   UIView *launchView;
 }
 

@@ -1,11 +1,14 @@
 import { Platform } from 'react-native'
-import JPushModule from 'jpush-react-native'
+// import JPushModule from 'jpush-react-native'
 import fetch from 'node-fetch'
 import { MsgConstant } from '../../../constants'
 import SMessageServiceHTTP from './SMessageServiceHTTP'
 
+const disable = true
+
 export default class JPushService {
   static async push(messageStr, talkIds) {
+    if(disable) return
     let messageObj = JSON.parse(messageStr)
     //只push以下消息
     if (
@@ -74,6 +77,7 @@ export default class JPushService {
   }
 
   static sendLocalNotification(messageObj) {
+    if(disable) return
     if (Platform.OS === 'android') return
     //只push以下消息
     if (
@@ -121,44 +125,44 @@ export default class JPushService {
       notification.sound = 'default'
       notification.fireTime = Date.parse(new Date()) + 2000
     }
-    JPushModule.sendLocalNotification(notification)
+    // JPushModule.sendLocalNotification(notification)
   }
 
   //userId
   static setAlias(userId) {
     // eslint-disable-next-line no-unused-vars
-    JPushModule.setAlias(userId, result => {})
+    // JPushModule.setAlias(userId, result => {})
   }
 
   static deleteAlias = () => {
     // eslint-disable-next-line no-unused-vars
-    JPushModule.deleteAlias(result => {})
+    // JPushModule.deleteAlias(result => {})
   }
 
   static init(userId) {
-    if (Platform.OS === 'android') return
-    if (Platform.OS === 'android') {
-      JPushModule.initPush()
-      JPushModule.notifyJSDidLoad(resultCode => {
-        // eslint-disable-next-line no-empty
-        if (resultCode === 0) {
-        }
-      })
-      // JPushModule.setStyleBasic()
-    } else {
-      JPushModule.setupPush()
-    }
+    // if (Platform.OS === 'android') return
+    // if (Platform.OS === 'android') {
+    //   JPushModule.initPush()
+    //   JPushModule.notifyJSDidLoad(resultCode => {
+    //     // eslint-disable-next-line no-empty
+    //     if (resultCode === 0) {
+    //     }
+    //   })
+    //   // JPushModule.setStyleBasic()
+    // } else {
+    //   JPushModule.setupPush()
+    // }
 
-    this.removeListeners()
+    // this.removeListeners()
 
-    if (userId === undefined) {
-      this.deleteAlias()
-      JPushModule.stopPush()
-    } else {
-      JPushModule.resumePush()
-      this.setAlias(userId)
-      this.addListeners()
-    }
+    // if (userId === undefined) {
+    //   this.deleteAlias()
+    //   JPushModule.stopPush()
+    // } else {
+    //   JPushModule.resumePush()
+    //   this.setAlias(userId)
+    //   this.addListeners()
+    // }
   }
 
   static addListeners() {
@@ -189,6 +193,6 @@ export default class JPushService {
     // JPushModule.removeReceiveOpenNotificationListener(this.openNotificationListener)
     // JPushModule.removeGetRegistrationIdListener(this.getRegistrationIdListener)
     // console.log('Will clear all notifications')
-    JPushModule.clearAllNotifications()
+    // JPushModule.clearAllNotifications()
   }
 }

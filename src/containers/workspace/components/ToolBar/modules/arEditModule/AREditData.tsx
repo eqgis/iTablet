@@ -624,7 +624,7 @@ async function getStyleData(type: string) {
   const _params: any = ToolbarModule.getParams()
   const element = _data.selectARElement
   const currentLayer = _params.arlayer.currentLayer
-  const style = _data.currentNodeStyle
+  const style = await SARMap.getCurrentNodeStyle(element)
 
   if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER && currentLayer?.type !== ARLayerType.AR3D_LAYER)  {
     Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)

@@ -1496,6 +1496,16 @@ function getHeaderData(type: string) {
           backgroundColor: color.white,
         },
       }],
+      headerRightStyle: {
+        flexDirection: 'column',
+        background: '#fff',
+        borderRadius: scaleSize(10),
+        marginTop: scaleSize(10),
+        top: scaleSize(20),
+        alignItems: 'center',
+        justifyContent: 'center',
+
+      }
     }
     if(_data.selectARElement && typeof _data.selectARElement !== 'string') {
       if(_data.selectARElement.type === ARElementType.AR_TEXT
@@ -1504,7 +1514,7 @@ function getHeaderData(type: string) {
         headerData.headerRight[0].style.borderBottomLeftRadius = 0
         headerData.headerRight[0].style.borderBottomRightRadius = 0
 
-        headerData.headerRight.unshift({
+        headerData.headerRight.push({
           key: 'edit_text',
           // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
           action: AREditAction.changeARText,
@@ -1515,8 +1525,8 @@ function getHeaderData(type: string) {
             height: scaleSize(80),
             // borderRadius: scaleSize(10),
             backgroundColor: color.white,
-            marginTop: scaleSize(160),
-            marginRight: scaleSize(-80),
+            // marginTop: scaleSize(160),
+            // marginRight: scaleSize(-80),
             borderBottomLeftRadius: scaleSize(10),
             borderBottomRightRadius: scaleSize(10),
           },
@@ -1530,7 +1540,7 @@ function getHeaderData(type: string) {
       headerData.headerRight[0].style.borderBottomLeftRadius = 0
       headerData.headerRight[0].style.borderBottomRightRadius = 0
 
-      headerData.headerRight.unshift(
+      headerData.headerRight.push(
       //   {
       //   key: 'line_object_edit',
       //   // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
@@ -1566,8 +1576,8 @@ function getHeaderData(type: string) {
             height: scaleSize(80),
             // borderRadius: scaleSize(10),
             backgroundColor: color.white,
-            marginTop: scaleSize(160),
-            marginRight: scaleSize(-80),
+            // marginTop: scaleSize(160),
+            // marginRight: scaleSize(-80),
             borderBottomLeftRadius: scaleSize(10),
             borderBottomRightRadius: scaleSize(10),
           },

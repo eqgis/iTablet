@@ -85,6 +85,8 @@
 		4E28CE9528378DFD0045CB07 /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9428378DFD0045CB07 /* PIL */; };
 		5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E13A5CAE28752B6C004DFA1E /* InfoPlist.strings */; };
+		E13A5CB128752BFC004DFA1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E13A5CB328752BFC004DFA1E /* InfoPlist.strings */; };
 		E565E980286303CF007797E3 /* SegmenationFree-Inception.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = E565E977286303CF007797E3 /* SegmenationFree-Inception.caffemodel */; };
 		E565E981286303CF007797E3 /* SegmenationFree-Inception.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = E565E978286303CF007797E3 /* SegmenationFree-Inception.prototxt */; };
 		E565E982286303CF007797E3 /* HorizonalFinemapping.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = E565E979286303CF007797E3 /* HorizonalFinemapping.caffemodel */; };
@@ -228,7 +230,6 @@
 		0AC8AEE52808109F00435541 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		0AC8AEF72808109F00435541 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resources.bundle; sourceTree = "<group>"; };
 		0AC8AEF82808109F00435541 /* PlotLibData.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = PlotLibData.zip; sourceTree = "<group>"; };
-		0AC8AF77280810BF00435541 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = iTablet/Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Supermap.xcodeproj; path = ../node_modules/imobile_for_reactnative/ios/Supermap.xcodeproj; sourceTree = "<group>"; };
 		0AC8AF85280816AB00435541 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		0AC8AF87280816B100435541 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -286,6 +287,10 @@
 		4E28CE9428378DFD0045CB07 /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iTablet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iTablet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E13A5CA828752B25004DFA1E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = iTablet/en.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		E13A5CA928752B33004DFA1E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "iTablet/zh-Hans.lproj/LaunchScreen.xib"; sourceTree = "<group>"; };
+		E13A5CAD28752B6C004DFA1E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		E13A5CB228752BFC004DFA1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E565E977286303CF007797E3 /* SegmenationFree-Inception.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SegmenationFree-Inception.caffemodel"; sourceTree = "<group>"; };
 		E565E978286303CF007797E3 /* SegmenationFree-Inception.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SegmenationFree-Inception.prototxt"; sourceTree = "<group>"; };
 		E565E979286303CF007797E3 /* HorizonalFinemapping.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = HorizonalFinemapping.caffemodel; sourceTree = "<group>"; };
@@ -475,6 +480,8 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				E13A5CB328752BFC004DFA1E /* InfoPlist.strings */,
+				E13A5CAE28752B6C004DFA1E /* InfoPlist.strings */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				0AC8AF76280810BF00435541 /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -689,7 +696,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
+				"zh-Hans",
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -788,6 +795,7 @@
 				4E28CE9528378DFD0045CB07 /* PIL in Resources */,
 				0AC8AF042808109F00435541 /* launch_slogan_en.png in Resources */,
 				0AC8AF032808109F00435541 /* icon.png in Resources */,
+				E13A5CB128752BFC004DFA1E /* InfoPlist.strings in Resources */,
 				4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */,
 				0AC8AF082808109F00435541 /* SuperMapAR.bundle in Resources */,
 				0AC8AF742808109F00435541 /* resources.bundle in Resources */,
@@ -808,6 +816,7 @@
 				0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */,
 				E565E992286309A5007797E3 /* mobilenet_quant_224_cn.txt in Resources */,
 				E565E993286309A5007797E3 /* mobilenet_quant_224.txt in Resources */,
+				E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */,
 				0AC8AF062808109F00435541 /* launch_slogan_cn.png in Resources */,
 				0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */,
 				E565E994286309A5007797E3 /* labelmap.txt in Resources */,
@@ -951,9 +960,26 @@
 		0AC8AF76280810BF00435541 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				0AC8AF77280810BF00435541 /* Base */,
+				E13A5CA828752B25004DFA1E /* en */,
+				E13A5CA928752B33004DFA1E /* zh-Hans */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		E13A5CAE28752B6C004DFA1E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E13A5CAD28752B6C004DFA1E /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		E13A5CB328752BFC004DFA1E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E13A5CB228752BFC004DFA1E /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

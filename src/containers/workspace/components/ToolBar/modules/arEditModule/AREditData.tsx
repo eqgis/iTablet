@@ -1096,7 +1096,7 @@ async function getStyleData(type: string) {
           onMove: (loc: number) => {
             SARMap.setNodeStyle({TextOpacity:loc/100},element)
           },
-          defaultValue: style?.TextOpacity? style.TextOpacity*100 : 100,
+          defaultValue: style?.TextOpacity? parseInt(style.TextOpacity*100 + "", 0) : 100,
           range: range.opacity,
         },
       ]

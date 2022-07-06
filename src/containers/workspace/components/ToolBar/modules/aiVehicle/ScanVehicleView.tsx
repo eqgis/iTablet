@@ -86,7 +86,7 @@ export default class ScanVehicleView extends React.Component<Props, State> {
               textContentType={'URL'}
               onChangeText={text => {
                 ToolbarModule.addData({
-                  plateNubmer: text.toLocaleUpperCase(),
+                  plateNubmer: text === '' ? '' : text.toLocaleUpperCase(),
                 })
               }}
               showClear

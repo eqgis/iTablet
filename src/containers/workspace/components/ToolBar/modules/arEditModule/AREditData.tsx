@@ -15,6 +15,7 @@ import NavigationService from '../../../../../../containers/NavigationService'
 import ToolBarInput from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarInput'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { ToolBarSlideItem } from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarSlide'
+import { Platform } from 'react-native'
 
 interface SectionItemData {
   key: string,
@@ -624,7 +625,13 @@ async function getStyleData(type: string) {
   const _params: any = ToolbarModule.getParams()
   const element = _data.selectARElement
   const currentLayer = _params.arlayer.currentLayer
-  const style = await SARMap.getCurrentNodeStyle(element)
+  let style
+  if (Platform.OS === 'ios') {
+    style = _data.currentNodeStyle
+  }else{
+    style = await SARMap.getCurrentNodeStyle(element)
+  }
+
 
   if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER && currentLayer?.type !== ARLayerType.AR3D_LAYER)  {
     Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)

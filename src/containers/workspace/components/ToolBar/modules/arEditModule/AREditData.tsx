@@ -1175,7 +1175,7 @@ async function getStyleData(type: string) {
           onMove: (loc: number) => {
             SARMap.setNodeStyle({opacity:loc/100},element)
           },
-          defaultValue: defaultValue.opacity[0],
+          defaultValue: style?.opacity? style.opacity*100:defaultValue.opacity[0],
           range: range.opacity,
         },
       ]
@@ -1194,7 +1194,7 @@ async function getStyleData(type: string) {
           onMove: (loc: number) => {
             SARMap.setNodeStyle({borderWidth:loc},element)
           },
-          defaultValue: defaultValue.width[0],
+          defaultValue: style?.borderWidth? style.borderWidth:defaultValue.width[0],
           range: range.width,
         },
       ]

@@ -228,7 +228,7 @@ export async function addARSceneLayer(option?: AddOption) {
   let newDatasource = false
   const props = AppToolBar.getProps()
   const mapInfo = props.arMapInfo
-  console.warn("name: " + !mapInfo)
+  // console.warn("name: " + !mapInfo)
   AppToolBar.addData({
     addNewDSourceWhenCreate: false,
     addNewDsetWhenCreate: false,

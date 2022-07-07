@@ -18,6 +18,7 @@ export const COWORK_GROUP_MSG_TASK_SET = 'COWORK_GROUP_MSG_TASK_SET'
 export const COWORK_GROUP_APPLY = 'COWORK_GROUP_APPLY'
 export const COWORK_GROUP_SET = 'COWORK_GROUP_SET'
 export const COWORK_GROUP_EXIT = 'COWORK_GROUP_EXIT'
+export const COWORK_GROUP_DELETE_TASK = 'COWORK_GROUP_DELETE_TASK'
 /** 设置当前协作群组 */
 export const COWORK_GROUP_SET_CURRENT = 'COWORK_GROUP_SET_CURRENT'
 /** 设置当前协作群组任务 */
@@ -39,6 +40,8 @@ export const COWORK_TASK_INFO_MEMBER_LOCATION_SHOW = 'COWORK_TASK_INFO_MEMBER_LO
 
 /** 协作群组数据服务添加/修改 */
 export const COWORK_SERVICE_SET = 'COWORK_SERVICE_SET'
+/** 协作群组数据服务清除 */
+export const COWORK_SERVICE_CLEAR = 'COWORK_SERVICE_CLEAR'
 
 // export interface Task {
 // }
@@ -144,10 +147,13 @@ export interface ServiceInfo {
   progress?: number,
 }
 
-export interface ServiceParams {
+export interface IDParams {
   groupId: string,
   taskId: string,
-  service: ServiceInfo,
+}
+
+export interface ServiceParams extends IDParams {
+  service: ServiceInfo[] | ServiceInfo,
 }
 
 
@@ -256,6 +262,22 @@ export const setCoworkGroup = (params = {}, cb = () => {}) => async (dispatch: (
 }
 
 /**
+ * 删除群组中的任务
+ * @param params
+ * @param cb
+ * @returns
+ */
+export const deleteGroupTasks = (params: {userId: string, groupId: string, taskIds: string[]}, cb = () => {}) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
+  await dispatch({
+    type: COWORK_GROUP_DELETE_TASK,
+    payload: params,
+    userId: userId,
+  })
+  cb && cb()
+}
+
+/**
  * 退出协作群组，删除groups和tasks中的数据
  * @param params {groupID: number | string}
  * @param cb () => {}
@@ -301,7 +323,7 @@ export const setCurrentTask = (params: any, cb = () => {}) => async (dispatch: (
  * 添加消息到地图上
  * @param params TaskInfoParams
  */
-export const addTaskMessage = (params: TaskInfoParams, isRealTime = true) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+export const addTaskMessage = (params: TaskInfoParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
   if (adding) return
   adding = true
   const userId = getState().user.toJS().currentUser.userName || 'Customer'
@@ -309,7 +331,6 @@ export const addTaskMessage = (params: TaskInfoParams, isRealTime = true) => asy
     type: COWORK_TASK_INFO_ADD,
     payload: params,
     userId,
-    isRealTime,
   })
   adding = false
   return result
@@ -406,6 +427,19 @@ export const setCoworkService = (params: ServiceParams) => async (dispatch: (arg
   return result
 }
 
+/**
+ * 清除指定群组-任务中的redux服务
+ */
+export const clearCoworkService = (params: IDParams) => async (dispatch: (arg0: any) => any, getState: () => any) => {
+  const userId = getState().user.toJS().currentUser.userName || 'Customer'
+  const result = await dispatch({
+    type: COWORK_SERVICE_CLEAR,
+    payload: params,
+    userId: userId,
+  })
+  return result
+}
+
 /********************************************** 本地方法 *************************************************/
 
 /**
@@ -443,7 +477,7 @@ export const setCoworkNewMessage = (
  */
 const addTask = (state: any, { payload, userId }: any): {
   tasks: Array<any>,
-  type: number, // 1:add 2:edit 3:delete
+  type: number, // 0:无效类型 1:add 2:edit 3:delete
 } => {
   let allTask = state.toJS().tasks
   let myTasks: any = allTask[userId] || {}
@@ -475,17 +509,25 @@ const addTask = (state: any, { payload, userId }: any): {
     type = 2
     CoworkFileHandle.delTaskGroup(
       payload.groupID,
-      payload.id,
+      [payload.id],
     )
   } else if (!task) { // 添加新消息
-    type = 1
-    // tasks.push(payload)
-    tasks.unshift(payload)
-    // 协作任务群组上传到Online
-    CoworkFileHandle.addTaskGroup({
-      id: payload.groupID,
-      groupName: payload.name,
-    }, payload)
+    // TODO 当前用户本地没有改任务,其他成员本地数据可能仍然存有当前用户的数据,依旧要发送消息
+    // 此处两种可能导致已删除的任务再次出现:
+    //    1.当前用户已删除任务,发消息的成员当时不在线,没有及时修改本地任务数据;
+    //    2.当前用户协作文件丢失
+    if (payload.type !== MsgConstant.MSG_ONLINE_GROUP_TASK_EXIST) {
+      type = 1
+      // tasks.push(payload)
+      tasks.unshift(payload)
+      // 协作任务群组上传到Online
+      CoworkFileHandle.addTaskGroup({
+        id: payload.groupID,
+        groupName: payload.name,
+      }, payload)
+    } else {
+      type = 0 // 接收到其他成员的任务信息,但本地任务已删除
+    }
   } else { // 修改群组消息
     type = 3
     CoworkFileHandle.setTaskGroup(payload.groupID, payload)
@@ -515,6 +557,32 @@ const deleteTask = (state: any, { payload, userId }: any): Array<any> => {
       break
     }
   }
+  allTask[userId] = myTasks
+  return allTask
+}
+
+/**
+ * 删除群组中多个任务
+ */
+const _deleteGroupTasks = (allTask: any, userId: string, groupId: string, taskIds: string[]): Array<any> => {
+  let myTasks: any = allTask[userId] || {}
+  let tasks: any = myTasks[groupId] || []
+  let taskIDs = JSON.parse(JSON.stringify(taskIds))
+  let _tempIDs = []
+  for (let i = tasks.length - 1; i >= 0; i--) {
+    let _task = tasks[i]
+    const index = taskIDs.indexOf(_task.id)
+    if (index >= 0) {
+      tasks.splice(i, 1) // 删除redux中数据
+      SMessageService.exitSession(userId, _task.id) // 退出多人对话
+      taskIDs.splice(index, 1) // 防止删除的id不存在redux中的任务中
+      _tempIDs.push(_task.id)
+      if (taskIDs.length === 0) {
+        break
+      }
+    }
+  }
+  CoworkFileHandle.delTaskGroup(groupId, _tempIDs) // 删除文件中任务数据
   allTask[userId] = myTasks
   return allTask
 }
@@ -681,7 +749,7 @@ function getTaskInfo(
       messages: [],
       prevMessages: [],
       unread: 0,
-      isRealTime: true,
+      isRealTime: false,
       members: [],
     }
   }
@@ -692,12 +760,14 @@ function deleteTaskInfo(
   coworkInfo: any,
   userId: string,
   groupId: string,
-  taskId: string,
+  taskIds: string[],
 ) {
-  if (!coworkInfo?.[userId]?.[groupId]?.[taskId]) {
-    return coworkInfo || {}
+  for (const taskId of taskIds) {
+    if (!coworkInfo?.[userId]?.[groupId]?.[taskId]) {
+      return coworkInfo || {}
+    }
+    coworkInfo?.[userId]?.[groupId]?.[taskId] && delete coworkInfo[userId][groupId][taskId]
   }
-  delete coworkInfo[userId][groupId][taskId]
   return coworkInfo
 }
 
@@ -705,18 +775,23 @@ function deleteTaskMessages(
   messages: {[userId: string]: any},
   userId: string,
   groupId?: string,
-  taskId?: string,
+  taskIds?: string[],
 ) {
-  if (taskId === undefined && groupId === undefined && messages[userId]) {
+  if (taskIds === undefined && groupId === undefined && messages[userId]) {
     delete messages[userId]
   }
-  if (taskId === undefined && groupId !== undefined && messages[userId]?.coworkGroupMessages?.[groupId]) {
+  if (taskIds === undefined && groupId !== undefined && messages[userId]?.coworkGroupMessages?.[groupId]) {
     delete messages[userId].coworkGroupMessages[groupId]
   }
-  if (taskId !== undefined && groupId !== undefined && messages[userId]?.coworkGroupMessages?.[groupId]?.[taskId]) {
-    delete messages[userId].coworkGroupMessages[groupId][taskId]
+  if (taskIds !== undefined && taskIds.length > 0 && groupId !== undefined) {
+    for (const taskId of taskIds) {
+      messages?.[userId]?.coworkGroupMessages?.[groupId]?.[taskId] && delete messages[userId].coworkGroupMessages[groupId][taskId]
+    }
   }
-  return messages
+  // if (taskIds !== undefined && groupId !== undefined && messages[userId]?.coworkGroupMessages?.[groupId]?.[taskId]) {
+  //   delete messages[userId].coworkGroupMessages[groupId][taskId]
+  // }
+  return messages || {}
 }
 
 /**
@@ -810,15 +885,15 @@ function hideAll(members: Array<any>) {
  */
 function showAll(members: Array<any>, messages: Array<any>) {
   try {
-    for (let n = 0; n < members.length; n++) {
-      let member = members[n]
-      let userID = member.id
+    for (const member of members) {
+      const userID = member.id
       if (member.show) {
         SMap.showUserTrack(userID)
       }
-      for (let i = 0; i < messages.length; i++) {
-        let message = messages[i]
-        if (!message.status && message.user.id === userID) {
+      console.warn('showAll')
+      for (const message of messages) {
+        // 专题图消息不添加callout
+        if (!message.status && message.user.id === userID && !message.message.themeType) {
           SMap.isUserGeometryExist(
             message.message.layerPath,
             message.message.id,
@@ -913,6 +988,10 @@ function initMessages(userMessages: MessageType) {
   return userMessages
 }
 
+function isServiceMsg(type: number) {
+  return type === MsgConstant.MSG_COWORK_SERVICE_UPDATE || type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH
+}
+
 export interface MessageType {
   applyMessages: {
     unread: number,
@@ -964,7 +1043,7 @@ const initialState = fromJS({
    *          messages: [],        // 添加到地图上的消息
    *          prevMessages: [],    // 未添加到地图上的消息
    *          unread: 0,
-   *          isRealTime: true,    // 是否是实时添加
+   *          isRealTime: false,    // 是否是实时添加
    *          members: [],         // 本地储存的成员，
    *        }
    *      }
@@ -1047,7 +1126,7 @@ export default handleActions(
         }
         coworkGroupMessages[payload.groupId][payload.taskId].unread++
 
-        return state.setIn(['messages'], fromJS(messages))
+        return state.setIn(['messages'], fromJS(messages || {}))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_APPLY) { // 申请消息
         let messages = state.toJS().messages
         if (!messages[userId]) messages[userId] = {}
@@ -1059,7 +1138,7 @@ export default handleActions(
         }
         applyMessages.unread++
 
-        return state.setIn(['messages'], fromJS(messages))
+        return state.setIn(['messages'], fromJS(messages || {}))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_INVITE) { // 邀请消息
         let messages = state.toJS().messages
         if (!messages[userId]) messages[userId] = {}
@@ -1071,7 +1150,7 @@ export default handleActions(
         }
         inviteMessages.unread++
 
-        return state.setIn(['messages'], fromJS(messages))
+        return state.setIn(['messages'], fromJS(messages || {}))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK) { // 添加/修改任务
         let {tasks, type} = addTask(state, { payload, userId })
         let coworkInfo = state.toJS().coworkInfo
@@ -1097,16 +1176,21 @@ export default handleActions(
             }
           }
           coworkGroupMessages[payload.groupID].unread++
-          return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo)).setIn(['messages'], fromJS(messages))
+          return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo)).setIn(['messages'], fromJS(messages || {}))
         }
 
         return state.setIn(['tasks'], fromJS(tasks)).setIn(['coworkInfo'], fromJS(coworkInfo))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE) { // 删除任务
         let coworkInfo = state.toJS().coworkInfo
         let messages = state.toJS().messages
-        return state.setIn(['tasks'], fromJS(deleteTask(state, { payload, userId })))
-          .setIn(['coworkInfo'], fromJS(deleteTaskInfo(coworkInfo, userId, payload.groupID, payload.id)))
-          .setIn(['messages'], fromJS(deleteTaskMessages(messages, userId, payload.groupID, payload.id)))
+        let allTask = state.toJS().tasks
+        // return state.setIn(['tasks'], fromJS(deleteTask(state, { payload, userId })))
+        return state.setIn(['tasks'], fromJS(_deleteGroupTasks(allTask, userId, payload.groupID, [payload.id])))
+          .setIn(['coworkInfo'], fromJS(deleteTaskInfo(coworkInfo, userId, payload.groupID, [payload.id])))
+          .setIn(['messages'], fromJS(deleteTaskMessages(messages, userId, payload.groupID, [payload.id])))
+      } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_EXIST) { // 成员删除任务
+        let {tasks, type} = addTask(state, { payload, userId })
+        return state.setIn(['tasks'], fromJS(tasks))
       } else if (payload.type === MsgConstant.MSG_ONLINE_GROUP_TASK_MEMBER_JOIN) { // 任务成员加入消息
         let coworkInfo = state.toJS().coworkInfo
         return state.setIn(['tasks'], fromJS(addTaskMembers(state, { payload, userId })))
@@ -1148,7 +1232,7 @@ export default handleActions(
           _messages.unread = 0
         }
       }
-      return state.setIn(['messages'], fromJS(messages))
+      return state.setIn(['messages'], fromJS(messages || {}))
     },
     [`${COWORK_GROUP_MSG_DELETE}`]: (state: any, { payload, userId }: any) => {
       let allTask = state.toJS().tasks
@@ -1172,6 +1256,14 @@ export default handleActions(
       myTasks[payload.groupID] = payload.tasks
       allTask[userId] = myTasks
       return state.setIn(['tasks'], fromJS(allTask))
+    },
+    [`${COWORK_GROUP_DELETE_TASK}`]: (state: any, { payload, userId }: {payload: {groupID: string, taskIds: string[]}, userId: string}) => {
+      let coworkInfo = state.toJS().coworkInfo
+      let messages = state.toJS().messages
+      let allTask = state.toJS().tasks
+      return state.setIn(['tasks'], fromJS(_deleteGroupTasks(allTask, userId, payload.groupID, payload.taskIds)))
+        .setIn(['coworkInfo'], fromJS(deleteTaskInfo(coworkInfo, userId, payload.groupID, payload.taskIds)))
+        .setIn(['messages'], fromJS(deleteTaskMessages(messages, userId, payload.groupID, payload.taskIds)))
     },
     [`${COWORK_GROUP_SET}`]: (state: any, { payload, userId }: any) => {
       let groups = state.toJS().groups
@@ -1311,14 +1403,14 @@ export default handleActions(
       }
       return state.setIn(['coworkNewMessage'], fromJS(num))
     },
-    [`${COWORK_TASK_INFO_ADD}`]: (state: any, { payload, userId, isRealTime }: any) => {
+    [`${COWORK_TASK_INFO_ADD}`]: (state: any, { payload, userId }: any) => {
       let coworkInfo = state.toJS().coworkInfo
       let taskInfo = getTaskInfo(coworkInfo, userId, payload.user.coworkGroupId, payload.user.groupID, true)
-      taskInfo.prevMessages.push(payload)
-      if (!isRealTime) {
-        coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
-        return fromJS(coworkInfo)
+      if (!taskInfo.isRealTime && !isServiceMsg(payload.message.type)) {
+        // coworkInfo[userId][payload.user.coworkGroupId][payload.user.groupID] = taskInfo
+        return state
       }
+      taskInfo.prevMessages.push(payload)
       let {
         prevMessages,
         messages,
@@ -1441,28 +1533,67 @@ export default handleActions(
       if (taskServices && taskServices.length > 0) {
         for (let i = 0; i < taskServices.length; i ++) {
           let service = taskServices[i]
-          if (
-            service.layerName === payload.service.layerName ||
-            service.datasetUrl === payload.service.datasetUrl
-          ) {
-            targetService = Object.assign(service, payload.service)
-            // 若完成，则删除记录
-            if (service.status === 'done') {
-              taskServices.splice(i, 1)
-              services[userId][payload.groupId][payload.taskId] = taskServices
+          if (payload.service instanceof Array) {
+            for (const _service of payload.service) {
+              if (
+                service.layerName && service.layerName === _service.layerName ||
+                service.datasetUrl && service.datasetUrl === _service.datasetUrl
+              ) {
+                targetService = Object.assign(service, _service)
+                // 若完成，则删除记录
+                if (service.status === 'done') {
+                  taskServices.splice(i, 1)
+                  services[userId][payload.groupId][payload.taskId] = taskServices
+                }
+                break
+              }
             }
-            break
+          } else {
+            if (
+              service.layerName && service.layerName === payload.service.layerName ||
+              service.datasetUrl && service.datasetUrl === payload.service.datasetUrl
+            ) {
+              targetService = Object.assign(service, payload.service)
+              // 若完成，则删除记录
+              if (service.status === 'done') {
+                taskServices.splice(i, 1)
+                services[userId][payload.groupId][payload.taskId] = taskServices
+              }
+              break
+            }
           }
         }
       }
       // 若服务不存在，则添加；若完成，则不添加
-      if (!targetService && payload.service.status !== 'done') {
-        if (!services[userId]) services[userId] = {}
-        if (!services[userId][payload.groupId]) services[userId][payload.groupId] = {}
-        if (!services[userId][payload.groupId][payload.taskId]) services[userId][payload.groupId][payload.taskId] = []
-        if (!taskServices) taskServices = []
-        taskServices.push(payload.service)
-        services[userId][payload.groupId][payload.taskId] = taskServices
+      if (!targetService) {
+        if (payload.service instanceof Array) {
+          for (const _service of payload.service) {
+            if (_service.status !== 'done') {
+              if (!services[userId]) services[userId] = {}
+              if (!services[userId][payload.groupId]) services[userId][payload.groupId] = {}
+              if (!services[userId][payload.groupId][payload.taskId]) services[userId][payload.groupId][payload.taskId] = []
+              if (!taskServices) taskServices = []
+              taskServices.push(_service)
+              services[userId][payload.groupId][payload.taskId] = taskServices
+            }
+          }
+        } else {
+          if (!services[userId]) services[userId] = {}
+          if (!services[userId][payload.groupId]) services[userId][payload.groupId] = {}
+          if (!services[userId][payload.groupId][payload.taskId]) services[userId][payload.groupId][payload.taskId] = []
+          if (!taskServices) taskServices = []
+          taskServices.push(payload.service)
+          services[userId][payload.groupId][payload.taskId] = taskServices
+        }
+      }
+      return state.setIn(['services'], fromJS(services))
+    },
+    [`${COWORK_SERVICE_CLEAR}`]: (state: any, { payload, userId }: {payload: IDParams, userId: string}) => {
+      let services = state.toJS().services
+      let taskServices = services?.[userId]?.[payload.groupId]?.[payload.taskId]
+      if (taskServices) {
+        services[userId][payload.groupId][payload.taskId] = []
+        console.warn(COWORK_SERVICE_CLEAR, services[userId][payload.groupId][payload.taskId])
       }
       return state.setIn(['services'], fromJS(services))
     },

@@ -10,11 +10,11 @@ import { Toast, LayerUtils, scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import { LayerAttributeTable } from '../../components'
 import { getLanguage } from '../../../../language'
-import { FileTools } from '../../../../native'
+import { PopoverButtonsView } from '../../../../components'
+import { Rect } from 'react-native-popover-view'
 import NavigationService from '../../../NavigationService'
-import { SMediaCollector ,SMap} from 'imobile_for_reactnative'
-//eslint-disable-next-line
-import { ActionPopover } from 'teaset'
+import { SMediaCollector } from 'imobile_for_reactnative'
+import { View } from 'react-native'
 
 const PAGE_SIZE = 30
 const ROWS_LIMIT = 120
@@ -23,6 +23,7 @@ const COL_HEIGHT = scaleSize(80)
 export default class LayerSelectionAttribute extends React.Component {
   props: {
     navigation: Object,
+    route: Object,
     // currentAttribute: Object,
     // currentLayer: Object,
     map: Object,
@@ -31,6 +32,7 @@ export default class LayerSelectionAttribute extends React.Component {
     setCurrentAttribute: () => {},
     setLayerAttributes: () => {},
     setDataAttributes: () => {},
+    setNaviAttributes: () => {},
     setLoading: () => {},
     selectAction: () => {},
     setAttributeHistory: () => {},
@@ -47,7 +49,7 @@ export default class LayerSelectionAttribute extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.checkToolIsViable()
     this.state = {
       attributes: {
@@ -72,6 +74,7 @@ export default class LayerSelectionAttribute extends React.Component {
     this.noMore = false // 判断是否加载完毕
     this.isLoading = false // 防止同时重复加载多次
     this.isMediaLayer = false // 是否是多媒体图层
+    this.Popover = undefined // 长按弹窗
   }
 
   componentDidMount() {
@@ -92,7 +95,7 @@ export default class LayerSelectionAttribute extends React.Component {
         JSON.stringify(this.props.layerSelection) ||
       JSON.stringify(nextProps.attributesHistory) !==
         JSON.stringify(nextProps.attributesHistory) ||
-      this.props.isShowSystemFields !== nextProps.isShowSystemFields || GLOBAL.NEEDREFRESHTABLE
+      this.props.isShowSystemFields !== nextProps.isShowSystemFields || global.NEEDREFRESHTABLE
     ) {
       return true
     }
@@ -101,14 +104,14 @@ export default class LayerSelectionAttribute extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (
-      GLOBAL.NEEDREFRESHTABLE || (
+      global.NEEDREFRESHTABLE || (
         prevProps.layerSelection &&
         JSON.stringify(prevProps.layerSelection) !==
         JSON.stringify(this.props.layerSelection)
       )
     ) {
-      // GLOBAL.NEEDREFRESHTABLE 在搜索页修改了数据时 为true
-      GLOBAL.NEEDREFRESHTABLE = false
+      // global.NEEDREFRESHTABLE 在搜索页修改了数据时 为true
+      global.NEEDREFRESHTABLE = false
       SMediaCollector.isMediaLayer(this.props.layerSelection.layerInfo.name).then(result => this.isMediaLayer = result)
       let checkData = this.checkToolIsViable()
       // this.isInit = true
@@ -175,7 +178,7 @@ export default class LayerSelectionAttribute extends React.Component {
       }else if(this.state.isCollection){
         result = await LayerUtils.getSelectionAttributeByLayer(
           JSON.parse(JSON.stringify(this.state.attributes)),
-          GLOBAL.currentLayer.name,
+          global.currentLayer.name,
           currentPage,
           pageSize !== undefined ? pageSize : PAGE_SIZE,
           type,
@@ -382,11 +385,11 @@ export default class LayerSelectionAttribute extends React.Component {
    */
   locateToTop = (cb = () => {}) => {
     if (this.state.attributes.data.length === 0 || this.total <= 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.CANNOT_LOCATION)
+      Toast.show(getLanguage(global.language).Prompt.CANNOT_LOCATION)
       //ConstInfo.CANNOT_LOCATION)
       return
     }
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     // ConstInfo.LOCATING)
     this.currentPage = 0
     if (this.state.startIndex === 0) {
@@ -455,11 +458,11 @@ export default class LayerSelectionAttribute extends React.Component {
    */
   locateToBottom = (cb = () => {}) => {
     if (this.state.attributes.data.length === 0 || this.total <= 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.CANNOT_LOCATION)
+      Toast.show(getLanguage(global.language).Prompt.CANNOT_LOCATION)
       // ConstInfo.CANNOT_LOCATION)
       return
     }
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     // ConstInfo.LOCATING)
     this.currentPage =
       this.total > 0 ? Math.floor((this.total - 1) / PAGE_SIZE) : 0
@@ -513,7 +516,7 @@ export default class LayerSelectionAttribute extends React.Component {
    */
   locateToPosition = (data = {}, cb = () => {}) => {
     if (this.state.attributes.data.length === 0 || this.total <= 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.CANNOT_LOCATION)
+      Toast.show(getLanguage(global.language).Prompt.CANNOT_LOCATION)
       //ConstInfo.CANNOT_LOCATION)
       return
     }
@@ -526,7 +529,7 @@ export default class LayerSelectionAttribute extends React.Component {
       // 相对定位
       currentIndex = this.state.currentIndex + data.index
       if (currentIndex < 0 || currentIndex >= this.total) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -547,7 +550,7 @@ export default class LayerSelectionAttribute extends React.Component {
     } else if (data.type === 'absolute') {
       // 绝对定位
       if (data.index <= 0 || data.index > this.total) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -567,7 +570,7 @@ export default class LayerSelectionAttribute extends React.Component {
       currentIndex = data.index - 1
     }
 
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     // if (this.currentPage > 0) {
     //   this.canBeRefresh = true
@@ -706,14 +709,16 @@ export default class LayerSelectionAttribute extends React.Component {
 
     items = [
       {
-        title: GLOBAL.language === 'CN' ? '详情' : 'Detail',
+        title: global.language === 'CN' ? '详情' : 'Detail',
         onPress: () => {
-          (async function() {
-            this.props.showAddModal && this.props.showAddModal(true, {
-              data: {fieldInfo},
-              isDetail: true,
-            })
-          }.bind(this)())
+          this.Popover?.setVisible(false, undefined, undefined, () => {
+            setTimeout(() => {
+              this.props.showAddModal && this.props.showAddModal(true, {
+                data: {fieldInfo},
+                isDetail: true,
+              })
+            }, 300)
+          })
         },
       },
     ]
@@ -733,34 +738,30 @@ export default class LayerSelectionAttribute extends React.Component {
       )
     ) {
       items.push({
-        title: getLanguage(GLOBAL.language).Profile.DELETE,
+        title: getLanguage(global.language).Profile.DELETE,
         onPress: () => {
           if (
             this.props.onAttributeFieldDelete &&
             typeof this.props.onAttributeFieldDelete === 'function'
           ) {
-            this.props.onAttributeFieldDelete(fieldInfo)
+            this.Popover?.setVisible(false, undefined, undefined, () => {
+              setTimeout(() => {
+                this.props.onAttributeFieldDelete(fieldInfo)
+              }, 300)
+            })
           }
         },
       })
     }
     if (pressView) {
       pressView.measure((ox, oy, width, height, px, py) => {
-        ActionPopover.show(
-          {
-            x: px,
-            y: py,
-            width,
-            height,
-          },
-          items,
-        )
+        this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), items)
       })
     }
   }
   /** 点击属性字段回调 **/
   onPressHeader = ({ fieldInfo, index, pressView }) => {
-    if (GLOBAL.Type === ChunkType.MAP_3D) {
+    if (global.Type === ChunkType.MAP_3D) {
       return
     }
     this._showPopover(pressView, index, fieldInfo)
@@ -849,9 +850,68 @@ export default class LayerSelectionAttribute extends React.Component {
           }
         }
       }
-      if(this.props.type === 'MY_DATA'||this.props.type === 'NAVIGATION'){
+      if(this.props.type === 'MY_DATA'){
         this.props
           .setDataAttributes([
+            {
+              mapName: this.props.map.currentMap.name,
+              layerPath: this.props.layerSelection.layerInfo.path,
+              fieldInfo: [
+                {
+                  name: isSingleData ? data.rowData.name : data.cellData.name,
+                  value: data.value,
+                  index: data.index,
+                  columnIndex: data.columnIndex,
+                  smID: isSingleData
+                    ? this.state.attributes.data[0][0].value
+                    : data.rowData[1].value,
+                },
+              ],
+              prevData: [
+                {
+                  name: isSingleData ? data.rowData.name : data.cellData.name,
+                  value: isSingleData ? data.rowData.value : data.cellData.value,
+                  index: data.index,
+                  columnIndex: data.columnIndex,
+                  smID: isSingleData
+                    ? this.state.attributes.data[0][0].value
+                    : data.rowData[1].value,
+                },
+              ],
+              params: {
+                // index: int,      // 当前对象所在记录集中的位置
+                filter: `SmID=${isSingleData
+                  ? this.state.attributes.data[0][0].value
+                  : data.rowData[1].value // 0为序号
+                }`, // 过滤条件
+                cursorType: 2, // 2: DYNAMIC, 3: STATIC
+              },
+            },
+          ])
+          .then(result => {
+            // 成功修改属性后，更新数据
+            let attributes = JSON.parse(JSON.stringify(this.state.attributes))
+            // 如果有序号，column.index要 -1
+            // let column = this.state.attributes.data.length > 1 ? (data.columnIndex - 1) : data.columnIndex
+            if (result) {
+              if (this.state.attributes.data.length > 1) {
+                attributes.data[data.index][data.columnIndex - 1].value =
+                  data.value
+              } else {
+                attributes.data[0][data.index].value = data.value
+              }
+            } else {
+              Toast.show(getLanguage(this.props.language).Prompt.INVALID_DATA_SET_FAILED)
+            }
+
+            this.checkToolIsViable()
+            this.setState({
+              attributes,
+            })
+          })
+      }else if(this.props.type === 'NAVIGATION'){
+        this.props
+          .setNaviAttributes([
             {
               mapName: this.props.map.currentMap.name,
               layerPath: this.props.layerSelection.layerInfo.path,
@@ -996,7 +1056,7 @@ export default class LayerSelectionAttribute extends React.Component {
         }
         break
     }
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOADING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
     //'修改中')
     try {
       this.props.setAttributeHistory &&
@@ -1073,11 +1133,11 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   renderTable = () => {
-    GLOBAL.layerSelection = this.props.layerSelection
+    global.layerSelection = this.props.layerSelection
     // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
-    //   buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
     let buttonNameFilter = this.isMediaLayer ? ['MediaData'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+      buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
@@ -1087,14 +1147,14 @@ export default class LayerSelectionAttribute extends React.Component {
         }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
         if (!has) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+          Toast.show(getLanguage(global.language).Prompt.AFTER_COLLECT)
           return
         }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
-        let layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+        let layerType = LayerUtils.getLayerType(global.currentLayer)
         let isTaggingLayer = layerType === 'TAGGINGLAYER'
         if(isTaggingLayer){
-          Object.assign(info, { addToMap: GLOBAL.currentLayer.isVisible })
+          Object.assign(info, { addToMap: global.currentLayer.isVisible })
         }else{
           Object.assign(info, { addToMap: false })
         }
@@ -1144,8 +1204,8 @@ export default class LayerSelectionAttribute extends React.Component {
         //   NavigationService.navigate('ClassifyResultEditView', {
         //     layerName: layerName,
         //     geoID: geoID,
-        //     datasourceAlias: GLOBAL.currentLayer.datasourceAlias,
-        //     datasetName: GLOBAL.currentLayer.datasetName,
+        //     datasourceAlias: global.currentLayer.datasourceAlias,
+        //     datasetName: global.currentLayer.datasetName,
         //     imagePath: await FileTools.appendingHomeDirectory(info.mediaFilePaths[0]),
         //     mediaName: mediaData.mediaName,
         //     classifyTime: info.modifiedDate,
@@ -1155,11 +1215,11 @@ export default class LayerSelectionAttribute extends React.Component {
         // } else {
         NavigationService.navigate('MediaEdit', {
           info,
-          layerInfo: GLOBAL.currentLayer,
+          layerInfo: global.currentLayer,
           cb: refresh,
           gocb:()=>{
             NavigationService.goBack()
-            GLOBAL.HAVEATTRIBUTE = false
+            global.HAVEATTRIBUTE = false
           },
         })
         // }
@@ -1213,22 +1273,15 @@ export default class LayerSelectionAttribute extends React.Component {
   }
 
   render() {
-    // return (
-    //   <Container
-    //     ref={ref => (this.container = ref)}
-    //     headerProps={{
-    //       title: '属性',
-    //       navigation: this.props.navigation,
-    //     }}
-    //     style={styles.container}
-    //   >
-    //     {this.state.attributes && this.state.attributes.length > 0 ? (
-    //       this.renderTable()
-    //     ) : (
-    //       <View style={{ flex: 1 }} />
-    //     )}
-    //   </Container>
-    // )
-    return this.renderTable()
+    return (
+      <View style={{flex: 1}}>
+        {this.renderTable()}
+        <PopoverButtonsView
+          ref={ref => this.Popover = ref}
+          backgroundStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
+          popoverStyle={{backgroundColor: 'rgba(0, 0, 0, 1)'}}
+        />
+      </View>
+    )
   }
 }

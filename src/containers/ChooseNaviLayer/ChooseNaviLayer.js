@@ -11,6 +11,8 @@ import { getThemeAssets,getLayerWhiteIconByType ,getPublicAssets,getLayerIconByT
 import { getLanguage } from '../../language'
 import { LayerManager_tolbar } from '../mtLayerManager/components/LayerManager_tolbar'
 import { OverlayView } from '../workspace/components'
+import { FileTools } from '../../native'
+import { ConstPath } from '../../constants'
 
 export default class ChooseNaviLayer extends React.Component {
   static propTypes = {
@@ -30,7 +32,7 @@ export default class ChooseNaviLayer extends React.Component {
     super(props)
     this.state = {
       data: [],
-      selectedItem: GLOBAL.INCREMENT_DATA || {},
+      selectedItem: global.INCREMENT_DATA || {},
     }
     this.clickAble = true // 防止重复点击
   }
@@ -70,7 +72,7 @@ export default class ChooseNaviLayer extends React.Component {
     //如果删除的是当前选中 自动选中下一个
     let selectedItem = this.state.selectedItem
     let removeLayer = false
-    GLOBAL.INCREMENT_DATA = this.item
+    global.INCREMENT_DATA = this.item
     if (
       selectedItem.datasourceName === datasourceName &&
       selectedItem.datasetName === datasetName
@@ -78,11 +80,11 @@ export default class ChooseNaviLayer extends React.Component {
       selectedItem = {}
     }
     if (
-      GLOBAL.INCREMENT_DATA.datasourceName === datasourceName &&
-      GLOBAL.INCREMENT_DATA.datasetName === datasetName
+      global.INCREMENT_DATA.datasourceName === datasourceName &&
+      global.INCREMENT_DATA.datasetName === datasetName
     ) {
       removeLayer = true
-      GLOBAL.INCREMENT_DATA = {}
+      global.INCREMENT_DATA = {}
     }
     await SMap.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
     this.setState({
@@ -116,7 +118,7 @@ export default class ChooseNaviLayer extends React.Component {
           selectedItem,
         })
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DATASET_RENAME_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.DATASET_RENAME_FAILED)
       }
     }
 
@@ -124,15 +126,37 @@ export default class ChooseNaviLayer extends React.Component {
       let regExp = /^[a-zA-Z0-9@#_]+$/
       let isValid = regExp.test(text)
       if (isValid) {
-        await SMap.createNaviDataset(text,GLOBAL.INCREMENT_DATA.layerName).then(async returnData => {
+        await SMap.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
           if (returnData.datasetName) {
-            GLOBAL.INCREMENT_DATA = returnData
+            global.INCREMENT_DATA = returnData
             this.setState({selectedItem:returnData})
             this.getData()
           }
         })
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DATASET_RENAME_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.DATASET_RENAME_FAILED)
+      }
+    }
+
+    exportDatasource = async ({ text }) => {
+      let regExp = /^[a-zA-Z0-9@#_]+$/
+      let isValid = regExp.test(text)
+      if (isValid) {
+        const homePath = await FileTools.getHomeDirectory()
+        const udbpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udb"
+        const udbtargetPath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Datasource + text + ".udb"
+        await FileTools.copyFile(udbpath, udbtargetPath, true)
+
+        const uddpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udd"
+        const uddtargetPath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Datasource + text + ".udd"
+        let result = await FileTools.copyFile(uddpath, uddtargetPath, true)
+        if(result){
+          Toast.show(getLanguage(global.language).Prompt.EXPORT_SUCCESS)
+        }else{
+          Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
+        }
+      } else {
+        Toast.show(getLanguage(global.language).Prompt.DATASOURCE_RENAME_FAILED)
       }
     }
 
@@ -143,12 +167,12 @@ export default class ChooseNaviLayer extends React.Component {
   }
 
   onPress = title => {
-    if(title === getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE){
+    if(title === getLanguage(global.language).Map_Layer.LAYERS_REMOVE){
       this._onDeletePress(this.index)
       this.toolBox.setVisible(false)
     }else if (
       title ===
-      getLanguage(GLOBAL.language).Map_Layer.LAYERS_FULL_VIEW_LAYER
+      getLanguage(global.language).Map_Layer.LAYERS_FULL_VIEW_LAYER
     ) {
       //'全幅显示当前图层') {
       (async function () {
@@ -159,7 +183,7 @@ export default class ChooseNaviLayer extends React.Component {
       NavigationService.goBack()
     }else if (
       title ===
-      getLanguage(GLOBAL.language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER
+      getLanguage(global.language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER
     ) {
       this.toolBox.setVisible(false)
       let selectedItem = this.state.selectedItem
@@ -172,23 +196,23 @@ export default class ChooseNaviLayer extends React.Component {
         })
       }
       if (
-        GLOBAL.INCREMENT_DATA.datasetName !==
+        global.INCREMENT_DATA.datasetName !==
         this.item.datasetName ||
-        GLOBAL.INCREMENT_DATA.datasourceName !==
+        global.INCREMENT_DATA.datasourceName !==
         this.item.datasourceName
       ) {
         (async function () {
           let params = {
-            preDatasetName: GLOBAL.INCREMENT_DATA.datasetName || '',
+            preDatasetName: global.INCREMENT_DATA.datasetName || '',
             datasourceName: this.item.datasourceName,
             datasetName: this.item.datasetName,
           }
           await SMap.setCurrentDataset(params)
-          GLOBAL.INCREMENT_DATA = this.item
+          global.INCREMENT_DATA = this.item
         }.bind(this)())
       }
     }else if (
-      title === getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME
+      title === getLanguage(global.language).Map_Layer.LAYERS_RENAME
     ) {
       DialogUtils.showInputDailog({
         label: 'input',
@@ -204,7 +228,7 @@ export default class ChooseNaviLayer extends React.Component {
         },
       })
     }else if (
-      title === getLanguage(GLOBAL.language).Map_Main_Menu.ADD_DATASET
+      title === getLanguage(global.language).Map_Main_Menu.ADD_DATASET
     ){
       NavigationService.navigate('ChooseNaviDataImport',{sourceData:this.item})
     }
@@ -260,7 +284,7 @@ export default class ChooseNaviLayer extends React.Component {
                   height: scaleSize(40),
                   width: scaleSize(40),
                 }}
-                source={getThemeAssets().layerType.layer_cad}
+                source={getThemeAssets().layerType.layer_line}
               />
             </TouchableOpacity>
           </View>
@@ -319,19 +343,19 @@ export default class ChooseNaviLayer extends React.Component {
       }, 1500)
       if(this.state.selectedItem.datasetName){
         if (
-          GLOBAL.INCREMENT_DATA.datasetName !==
+          global.INCREMENT_DATA.datasetName !==
           this.state.selectedItem.datasetName ||
-          GLOBAL.INCREMENT_DATA.datasourceName !==
+          global.INCREMENT_DATA.datasourceName !==
           this.state.selectedItem.datasourceName
         ) {
           (async function () {
             let params = {
-              preDatasetName: GLOBAL.INCREMENT_DATA.datasetName || '',
+              preDatasetName: global.INCREMENT_DATA.datasetName || '',
               datasourceName: this.state.selectedItem.datasourceName,
               datasetName: this.state.selectedItem.datasetName,
             }
             await SMap.setCurrentDataset(params)
-            GLOBAL.INCREMENT_DATA = this.state.selectedItem
+            global.INCREMENT_DATA = this.state.selectedItem
           }.bind(this)())
         }
       }
@@ -356,7 +380,7 @@ export default class ChooseNaviLayer extends React.Component {
 
   //遮盖层
   renderOverLayer = () => {
-    return <OverlayView ref={ref => (GLOBAL.NaviLayerOverlayView = ref)} />
+    return <OverlayView ref={ref => (global.NaviLayerOverlayView = ref)} />
   }
 
   renderTool = () => {
@@ -389,6 +413,27 @@ export default class ChooseNaviLayer extends React.Component {
               legalCheck: true,
               type: 'name',
               confirmAction: text => {
+                this.exportDatasource({ text })
+                DialogUtils.hideInputDailog()
+              },
+            })
+          }}
+        >
+          <Image
+            source={getThemeAssets().nav.icon_nav_export}
+            resizeMode={'contain'}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.imageWrap}
+          onPress={async () => {
+            DialogUtils.showInputDailog({
+              label: 'input',
+              legalCheck: true,
+              type: 'name',
+              title:getLanguage(global.language).Profile.INPUT_DATASET_NAME,
+              confirmAction: text => {
                 this.createDataset({ text })
                 DialogUtils.hideInputDailog()
               },
@@ -417,7 +462,7 @@ export default class ChooseNaviLayer extends React.Component {
         <Container
           ref={ref => (this.container = ref)}
           headerProps={{
-            title: getLanguage(this.props.language).Prompt.CHOOSE_LAYER,
+            title: getLanguage(this.props.language).Map_Main_Menu.DATASET,
             backAction: this.back,
             headerRight: this.renderHeaderRight(),
           }}

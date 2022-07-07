@@ -1,11 +1,59 @@
 import { SMap, DatasetType, ThemeType, TThemeType, TARLayerType, ARLayerType } from 'imobile_for_reactnative'
 import { ThemeType as AppThemeType } from '../constants'
 import LightTheme from './lightTheme'
+import publicTheme from './publicTheme'
 import PublicTheme from './publicTheme'
+import * as Mine from './Mine'
+
+const image = {
+  ...LightTheme.analyst,
+  ...LightTheme.ar.armap,
+  ...LightTheme.ar.functiontoolbar,
+  ...LightTheme.ar.toolbar,
+  ...LightTheme.ar,
+  ...LightTheme.attribute,
+  ...LightTheme.collection,
+  ...LightTheme.cowork,
+  ...LightTheme.dataType,
+  ...LightTheme.edit,
+  ...LightTheme.find,
+  ...LightTheme.friend,
+  ...LightTheme.functionBar,
+  ...LightTheme.home,
+  ...LightTheme.layer,
+  ...LightTheme.layer3dType,
+  ...LightTheme.layerType,
+  ...LightTheme.mapTools,
+  ...LightTheme.mark,
+  ...LightTheme.mine,
+  ...LightTheme.module,
+  ...LightTheme.nav,
+  ...LightTheme.navigation,
+  ...LightTheme.plot,
+  ...LightTheme.publicAssets,
+  ...LightTheme.search,
+  ...LightTheme.setting,
+  ...LightTheme.share,
+  ...LightTheme.start,
+  ...LightTheme.tabBar,
+  ...LightTheme.themeType,
+  ...LightTheme.toolbar,
+  ...publicTheme.attribute,
+  ...publicTheme.common,
+  ...publicTheme.mapTools,
+  ...publicTheme.plot,
+  ...publicTheme.theme.aggregationColorScheme,
+  ...publicTheme.theme.graphColorScheme,
+  ...Mine,
+}
+
+function getImage(): typeof image {
+  return image
+}
 
 function getThemeAssets(): typeof LightTheme {
   let asset
-  switch (GLOBAL.ThemeType) {
+  switch (global.ThemeType) {
     case AppThemeType.DARK_THEME:
       asset = require('./darkTheme').default
       break
@@ -242,9 +290,35 @@ function getARLayerAssets(type: TARLayerType): any {
     case ARLayerType.AR_POINT_LAYER:
     case ARLayerType.AR_LINE_LAYER:
     case ARLayerType.AR_REGION_LAYER:
+    case ARLayerType.AR_MARKER_LINE_LAYER:
       return getThemeAssets().ar.armap.ar_vector
+    case ARLayerType.AR_WIDGET_LAYER:
+      return getThemeAssets().ar.armap.ar_widget_layer
     default:
       return getThemeAssets().layerType.icon_unknown
+  }
+}
+
+/** 根据AR图层类型获取相应的禁用图片 */
+function getARLayerAssetsGray(type: TARLayerType): any {
+  switch (type) {
+    case ARLayerType.EFFECT_LAYER:
+      return getThemeAssets().ar.armap.ar_effect_gray
+    case ARLayerType.AR_MEDIA_LAYER:
+      return getThemeAssets().ar.armap.ar_poi_gray
+    case ARLayerType.AR3D_LAYER:
+      return getThemeAssets().ar.armap.ar_3d_gray
+    case ARLayerType.AR_SCENE_LAYER:
+      return getThemeAssets().ar.armap.ar_3d_gray
+    case ARLayerType.AR_MODEL_LAYER:
+      return getThemeAssets().ar.armap.ar_model_gray
+    case ARLayerType.AR_TEXT_LAYER:
+    case ARLayerType.AR_POINT_LAYER:
+    case ARLayerType.AR_LINE_LAYER:
+    case ARLayerType.AR_REGION_LAYER:
+      return getThemeAssets().ar.armap.ar_vector_gray
+    default:
+      return getThemeAssets().layerType.unknown_gray
   }
 }
 
@@ -263,6 +337,7 @@ function getARSceneAssets(type: number) {
 }
 
 export {
+  getImage,
   getThemeAssets,
   getPublicAssets,
   getThemeIconByType,
@@ -271,4 +346,5 @@ export {
   getLayerWhiteIconByType,
   getARLayerAssets,
   getARSceneAssets,
+  getARLayerAssetsGray,
 }

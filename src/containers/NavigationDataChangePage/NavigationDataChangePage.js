@@ -20,6 +20,8 @@ import { scaleSize, setSpText } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
 import { SMap } from 'imobile_for_reactnative'
+import ImageButton from '../../components/ImageButton'
+import NavigationService from '../NavigationService'
 export default class NavigationDataChangePage extends Component {
   props: {
     navigation: Object,
@@ -27,7 +29,7 @@ export default class NavigationDataChangePage extends Component {
   }
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.state = {
       /**
        * [{
@@ -75,7 +77,7 @@ export default class NavigationDataChangePage extends Component {
   }
 
   componentWillUnmount() {
-    this.focusListener && this.focusListener.remove()
+    this.focusListener && this.focusListener()
   }
 
   /**
@@ -190,7 +192,7 @@ export default class NavigationDataChangePage extends Component {
    * 跳转到新建室外数据集页面 zhangxt
    */
   _newNavData = () => {
-    this.props.navigation.navigate('CreateNavDataPage')
+    this.props.navigation.navigate('CreateNavDataPage', { cb: this.update })
   }
 
   /**
@@ -266,10 +268,10 @@ export default class NavigationDataChangePage extends Component {
     let title,
       separate = false
     if (section.title === 'datasource') {
-      title = getLanguage(GLOBAL.language).Map_Main_Menu.INDOOR_DATASOURCE
+      title = getLanguage(global.language).Map_Main_Menu.INDOOR_DATASOURCE
       separate = false
     } else {
-      title = getLanguage(GLOBAL.language).Map_Main_Menu.OUTDOOR_DATASETS
+      title = getLanguage(global.language).Map_Main_Menu.OUTDOOR_DATASETS
       separate = true
     }
     return (
@@ -285,7 +287,7 @@ export default class NavigationDataChangePage extends Component {
               style={styles.textWrapper}
             >
               <Text style={styles.actionTxt}>
-                {getLanguage(GLOBAL.language).Prompt.CREATE}
+                {getLanguage(global.language).Prompt.NEW}
               </Text>
             </TouchableOpacity>
           ) : (
@@ -301,8 +303,29 @@ export default class NavigationDataChangePage extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.SWITCH_DATA,
+          title: getLanguage(global.language).Map_Main_Menu.SWITCH_DATA,
           navigation: this.props.navigation,
+          headerRight: (
+            <ImageButton
+              // containerStyle={styles.capture}
+              iconStyle={{
+                width: scaleSize(40),
+                height: scaleSize(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+              }}
+              activeOpacity={0.5}
+              icon={getThemeAssets().dataType.icon_newdata}
+              onPress={() => {
+                NavigationService.navigate("MapSelectList", { type: 'projectionSelect' ,cb:()=>{
+                  setTimeout(() => {
+                    this._onRefresh()
+                  }, 1000)
+                }})
+              }}
+            />
+          ),
         }}
         style={{ paddingBottom: scaleSize(120) }}
       >
@@ -314,7 +337,7 @@ export default class NavigationDataChangePage extends Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.REFRESHING}
               enabled={true}
             />
           }
@@ -330,7 +353,7 @@ export default class NavigationDataChangePage extends Component {
         />
         <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
           <Text style={styles.confirmTxt}>
-            {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+            {getLanguage(global.language).CONFIRM}
           </Text>
         </TouchableOpacity>
       </Container>

@@ -6,13 +6,13 @@
 
 import * as React from 'react'
 import {
-  WebView,
   Dimensions,
   View,
   LayoutAnimation,
   Platform,
   UIManager,
 } from 'react-native'
+import { WebView } from 'react-native-webview'
 import { Container } from '../../../../../components'
 import Toast from '../../../../../utils/Toast'
 export default class ScanOnlineMap extends React.Component {
@@ -29,9 +29,9 @@ export default class ScanOnlineMap extends React.Component {
     this.state = {
       isLoadingEnd: false,
       headerType: '',
-      mapTitle: this.props.navigation.getParam('mapTitle', ''),
-      mapUrl: this.props.navigation.getParam('mapUrl', ''),
-      cookie: this.props.navigation.getParam('cookie', ''),
+      mapTitle: this.props.route.params.mapTitle || '',
+      mapUrl: this.props.route.params.mapUrl || '',
+      cookie: this.props.route.paramscookie || '',
       isLoadWebView: false,
       progressWidth: Dimensions.get('window').width * 0.2,
     }

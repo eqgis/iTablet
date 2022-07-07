@@ -56,7 +56,7 @@ export default class OverlayAnalystView extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.cb = params && params.cb
     this.state = {
       title: (params && params.title) || '',
@@ -242,8 +242,9 @@ export default class OverlayAnalystView extends Component {
           let layers = await this.props.getLayers()
           layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
 
-          GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
-          NavigationService.goBack('AnalystListEntry')
+          global.ToolBar && global.ToolBar.setVisible(false)
+          // NavigationService.goBack('AnalystListEntry')
+          NavigationService.navigate('MapStack', {screen: 'MapView'})
           // if (optionParameter.showResult) {
           //   TabNavigationService.navigate('MapAnalystView')
           // }

@@ -16,7 +16,7 @@ import { Users } from '../../../../../redux/models/user'
 import { connect } from 'react-redux'
 import { SCoordination, GroupType } from 'imobile_for_reactnative'
 import { UploadItem } from '../components'
-import DataHandler from '../../../Mine/DataHandler'
+import DataHandler from '../../../../../utils/DataHandler'
 import { exportWorkspace } from '../../../../../redux/models/map'
 import { FileTools } from '../../../../../native'
 
@@ -116,7 +116,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.cb = this.props.navigation?.state?.params?.cb
+    this.cb = this.props.route?.params?.cb
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       SCoordinationUtils.setScoordiantion('online')
@@ -141,7 +141,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
 
     this.popData = [
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE_UPLOAD,
+        title: getLanguage(global.language).Friends.GROUP_RESOURCE_UPLOAD,
         action: () => {
           NavigationService.navigate('MyMap', {
             title: getLanguage(this.props.language).Profile.MAP,
@@ -149,7 +149,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
         },
       },
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE_DELETE,
+        title: getLanguage(global.language).Friends.GROUP_RESOURCE_DELETE,
         action: () => this._setManage(true),
       },
     ]
@@ -200,7 +200,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
 
   _exportData = async (name: string) => {
     let mapName = name
-    let homePath = GLOBAL.homePath
+    let homePath = global.homePath
     let path =
       homePath +
       ConstPath.ExternalData + '/' +
@@ -385,7 +385,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            title={getLanguage(global.language).Friends.REFRESHING}
             enabled={true}
           />
         }
@@ -398,7 +398,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
       <View style={styles.nullView}>
         <View style={styles.nullView}>
           <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_data} />
-          <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_DATA_NULL}</Text>
+          <Text style={styles.nullTitle}>{getLanguage(global.language).Friends.GROUP_DATA_NULL}</Text>
         </View>
         <View style={{ flex: 1, backgroundColor: 'black' }} />
       </View>
@@ -411,7 +411,7 @@ class GroupSourceUploadPage extends Component<Props, State> {
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.GROUP_RESOURCE,
+          title: getLanguage(global.language).Friends.GROUP_RESOURCE,
           navigation: this.props.navigation,
           headerRight: this._renderHeaderRight(),
           // headerLeft: this.state.isManage && this._renderHeaderLeft(),

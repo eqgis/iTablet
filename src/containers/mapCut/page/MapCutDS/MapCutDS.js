@@ -19,7 +19,7 @@ export default class MapCutDS extends React.Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.state = {
       data: params ? params.data : [],
     }
@@ -55,7 +55,7 @@ export default class MapCutDS extends React.Component {
   newDatasource = async () => {
     let homeDir = await FileTools.getHomeDirectory()
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.NEW_DATASOURCE,
+      headerTitle: getLanguage(global.language).Map_Main_Menu.NEW_DATASOURCE,
       type: 'name',
       cb: async value => {
         value = this._getAvailableName(value, this.state.data)
@@ -105,7 +105,7 @@ export default class MapCutDS extends React.Component {
         ref={ref => (this.container = ref)}
         style={styles.container}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_CLIP,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_CLIP,
           navigation: this.props.navigation,
           backAction: () => {
             this.cb && this.cb({ msg: 'showModal' })
@@ -114,7 +114,7 @@ export default class MapCutDS extends React.Component {
           headerRight: [
             <MTBtn
               key={'newDatasource'}
-              title={getLanguage(GLOBAL.language).Map_Main_Menu.NEW_DATASOURCE}
+              title={getLanguage(global.language).Map_Main_Menu.NEW_DATASOURCE}
               textStyle={styles.headerBtnTitle}
               onPress={this.newDatasource}
             />,

@@ -9,7 +9,7 @@ import ListSeparator from './ListSeparator'
 import Container from './Container'
 import EmptyView from './EmptyView'
 import Loading from './Container/Loading'
-import { Button, BtnOne, BtnTwo, ColorBtn, MTBtn } from './Button'
+import { Button, BtnOne, BtnTwo, ColorBtn, MTBtn } from './Button/index'
 import DataSetListSection from './DataSetListSection'
 import {
   Dialog,
@@ -44,7 +44,7 @@ import SurfaceView from './SurfaceView'
 import FingerMenu from './FingerMenu'
 import { ListItem } from './ListItem'
 import ImageViewer from './ImageViewer'
-import { MediaViewer, MediaPager } from './MediaViewer'
+import { MediaViewer, MediaPager, Swiper } from './MediaViewer'
 import LinkageList from './LinkageList'
 import TouchableItem from './TouchableItem'
 import ImagePicker from './ImagePicker'
@@ -61,10 +61,16 @@ import ColorScheme from './ColorScheme'
 import BottomBar from './BottomBar'
 import MyToast from './MyToast'
 import RedDot from './RedDot'
-import SlideBar from './SlideBar'
-import Slider from './Slider'
 import CompassView from './CompassView'
 import SwitchItem from './SwitchItem'
+import Waitting from './Waitting'
+import {
+  PopoverButtonsView,
+} from './Popover'
+import Dialog2 from './Dialog2'
+import InputDialog2 from './InputDialog2'
+import FloatBar from './FloatBar'
+import CustomModal from './CustomModal'
 
 export {
   Container,
@@ -123,6 +129,7 @@ export {
   ImageViewer,
   MediaViewer,
   MediaPager,
+  Swiper,
   LinkageList,
   TouchableItem,
   ImagePicker,
@@ -140,8 +147,12 @@ export {
   BottomBar,
   MyToast,
   RedDot,
-  SlideBar,
-  Slider,
   CompassView,
   SwitchItem,
+  Waitting,
+  PopoverButtonsView,
+  Dialog2,
+  InputDialog2,
+  FloatBar,
+  CustomModal,
 }

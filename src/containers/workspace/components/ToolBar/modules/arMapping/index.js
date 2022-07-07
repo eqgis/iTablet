@@ -32,7 +32,7 @@ class arMapping extends FunctionModule {
 export default function() {
   return new arMapping({
     type: ConstToolType.SM_MAP_AR_MAPPING,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_MAPPING,
+    title: getLanguage(global.language).Map_Main_Menu.MAP_AR_MAPPING,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_ar_mapping,
     getData: ARMappingData.getData,

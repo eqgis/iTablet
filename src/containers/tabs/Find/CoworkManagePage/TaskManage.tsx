@@ -17,6 +17,8 @@ import CoworkInfo from '../../Friend/Cowork/CoworkInfo'
 import NavigationService from '../../../NavigationService'
 import CoworkFileHandle from './CoworkFileHandle'
 import SMessageServiceHTTP from '../../Friend/SMessageServiceHTTP'
+import BatchHeadBar from '../../Mine/component/BatchHeadBar'
+import { DataItemServices } from 'imobile_for_reactnative/types/interface/iserver/types'
 
 import { connect } from 'react-redux'
 
@@ -93,6 +95,31 @@ const styles = StyleSheet.create({
     fontSize: size.fontSize.fontSizeXXXl,
     color: color.white,
   },
+  bottomView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderTopLeftRadius: scaleSize(40),
+    borderTopRightRadius: scaleSize(40),
+    height: scaleSize(160),
+    backgroundColor: 'white',
+    elevation: 1,
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOpacity: 1,
+    shadowRadius: 2,
+  },
+  bottomViewBtn: {
+    // width: scaleSize(100),
+    height: scaleSize(100),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnStyle: {
+    marginTop: scaleSize(8),
+    color: '#1D1D1D',
+    fontSize: size.fontSize.fontSizeMd,
+  },
 })
 
 type Members = Array<{name: string, id: string}>
@@ -111,6 +138,7 @@ interface State {
   dialogInfo: string,
   members: Members2,
   isRefresh: boolean,
+  selectedData: Map<string, any>,
 }
 
 interface Props {
@@ -127,6 +155,7 @@ interface Props {
   mapModules: any,
   language: string,
   sourceDownloads: DownloadData,
+  isMutiChoice?: boolean,
   createTask: () => void,
   setCurrentMapModule: (index: number) => void,
   addCoworkMsg: (params: any, cb?: () => {}) => void,
@@ -136,6 +165,7 @@ interface Props {
   deleteTaskMembers: (params: TaskMemberDeleteParams) => Promise<any>,
   downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
   deleteSourceDownloadFile: (id: number | string) => Promise<any[]>,
+  deleteGroupTasks: (params: {userId: string, groupID: string, taskIds: string[]}, cb?:() => any) => Promise<void>,
 }
 
 class TaskManage extends React.Component<Props, State> {
@@ -145,6 +175,7 @@ class TaskManage extends React.Component<Props, State> {
   currentData: any
   dialog: Dialog | null | undefined
   dialogAction: (() => void) | null | undefined
+  itemRefs: Map<string, any>
 
   static defaultProps = {
     tasks: [],
@@ -155,11 +186,11 @@ class TaskManage extends React.Component<Props, State> {
 
     this.popData = [
       {
-        title: getLanguage(GLOBAL.language).Friends.INVITE_CORWORK_MEMBERS,
+        title: getLanguage(this.props.language).Friends.INVITE_CORWORK_MEMBERS,
         action: this.invite,
       },
       // {
-      //   title: getLanguage(GLOBAL.language).Friends.DELETE_CORWORK_MEMBERS,
+      //   title: getLanguage(this.props.language).Friends.DELETE_CORWORK_MEMBERS,
       //   action: () => {
       //     NavigationService.navigate('GroupFriendListPage', {
       //       mode: 'multiSelect', // 多选模式
@@ -171,11 +202,11 @@ class TaskManage extends React.Component<Props, State> {
       //   },
       // },
       {
-        title: getLanguage(GLOBAL.language).Friends.DELETE_CORWORK_TASK,
+        title: getLanguage(this.props.language).Friends.DELETE_CORWORK_TASK,
         action: () => {
-          this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_TASK_DELETE_INFO)
+          this._setDialogVisible(true, getLanguage(this.props.language).Friends.GROUP_TASK_DELETE_INFO)
           this.dialogAction = () => {
-            this.deleteTask()
+            this.deleteTasks([this.currentData])
           }
         },
       },
@@ -185,14 +216,17 @@ class TaskManage extends React.Component<Props, State> {
       dialogInfo: '',
       members: [],
       isRefresh: false,
+      selectedData: new Map<string, any>(),
     }
+    this.itemRefs = new Map<string, any>()
 
     CoworkInfo.setGroupId(this.props.groupInfo.id)
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    let shouldUpdate = JSON.stringify(nextState) !== JSON.stringify(this.state) ||
-    JSON.stringify(nextProps) !== JSON.stringify(this.props)
+    let shouldUpdate = JSON.stringify(nextState) !== JSON.stringify(this.state)
+      || JSON.stringify(nextProps) !== JSON.stringify(this.props)
+      || !nextState.selectedData.compare(this.state.selectedData)
     return shouldUpdate
   }
 
@@ -210,6 +244,11 @@ class TaskManage extends React.Component<Props, State> {
         //   animated: true,
         // })
       }
+    }
+    if (!this.props.isMutiChoice && prevProps.isMutiChoice) {
+      this.setState({
+        selectedData: new Map<string, any>(),
+      })
     }
   }
 
@@ -239,16 +278,20 @@ class TaskManage extends React.Component<Props, State> {
       refresh && !this.state.isRefresh && this.setState({
         isRefresh: true,
       })
-      if (await CoworkFileHandle.syncOnlineCoworkList()) {
-        const cowork = await CoworkFileHandle.getLocalCoworkList()
-        if (cowork && cowork.groups && cowork.groups[this.props.groupInfo.id]) {
-          let tasks = JSON.parse(JSON.stringify(cowork.groups[this.props.groupInfo.id].tasks))
-          if (tasks.length === 0) return
-          await this.props.setCoworkTaskGroup({
-            groupID: this.props.groupInfo.id,
-            tasks: tasks.reverse(),
+      await CoworkFileHandle.syncOnlineCoworkList()
+      const cowork = await CoworkFileHandle.getLocalCoworkList()
+      if (cowork && cowork.groups && cowork.groups[this.props.groupInfo.id]) {
+        let tasks = JSON.parse(JSON.stringify(cowork.groups[this.props.groupInfo.id].tasks))
+        if (tasks.length === 0) {
+          refresh && this.state.isRefresh && this.setState({
+            isRefresh: false,
           })
+          return
         }
+        await this.props.setCoworkTaskGroup({
+          groupID: this.props.groupInfo.id,
+          tasks: tasks.reverse(),
+        })
       }
       refresh && this.state.isRefresh && this.setState({
         isRefresh: false,
@@ -261,7 +304,7 @@ class TaskManage extends React.Component<Props, State> {
   }
 
   getMembers = async () => {
-    if (!this.props.groupInfo.id) return
+    if (!this.props.groupInfo.id) return []
     let result = await SCoordinationUtils.getScoordiantion()?.getGroupMembers({
       groupId: this.props.groupInfo.id,
     })
@@ -315,57 +358,66 @@ class TaskManage extends React.Component<Props, State> {
   }
 
   /** 删除任务 */
-  deleteTask = async () => {
-    let members = this.currentData.members.concat()
-    let message = this.currentData
-    message.time = new Date().getTime()
-    message.user = {
-      name: this.props.user.currentUser.nickname || '',
-      id: this.props.user.currentUser.userName || '',
-    }
-    if (this.currentData.creator === this.props.user.currentUser.userName) {
-      // 群主删除任务
-      message.type = MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE
-      let temp = []
-      for (const member of members) {
-        if (member.id === this.props.user.currentUser.userName) continue
-        // SMessageService.sendMessage(
-        //   JSON.stringify(message),
-        //   member.id,
-        // )
-        temp.push(member.id)
+  deleteTasks = async (tasks: any[]) => {
+    let taskIds = []
+    for (const task of tasks) {
+      taskIds.push(task.id)
+      let members = task.members.concat()
+      let message = task
+      message.time = new Date().getTime()
+      message.user = {
+        name: this.props.user.currentUser.nickname || '',
+        id: this.props.user.currentUser.userName || '',
       }
-      SMessageServiceHTTP.sendMessage(
-        message,
-        temp,
-      )
-    } else {
-      // 成员退出任务
-      message.type = MsgConstant.MSG_ONLINE_GROUP_TASK
-      for (let i = 0; i < members.length; i++) {
-        let member = members[i]
-        if (member.id === this.props.user.currentUser.userName) {
-          members.splice(i, 1)
+      if (task.creator === this.props.user.currentUser.userName) {
+        // 群主删除任务
+        message.type = MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE
+        let temp = []
+        for (const member of members) {
+          if (member.id === this.props.user.currentUser.userName) continue
+          // SMessageService.sendMessage(
+          //   JSON.stringify(message),
+          //   member.id,
+          // )
+          temp.push(member.id)
         }
+        SMessageServiceHTTP.sendMessage(
+          message,
+          temp,
+        )
+      } else {
+        // 成员退出任务
+        message.type = MsgConstant.MSG_ONLINE_GROUP_TASK_EXIST
+        for (let i = 0; i < members.length; i++) {
+          let member = members[i]
+          if (member.id === this.props.user.currentUser.userName) {
+            members.splice(i, 1)
+          }
+        }
+        message.members = members
+        let temp = []
+        // 给其他成员发送修改任务信息
+        for (const member of members) {
+          // await SMessageService.sendMessage(
+          //   JSON.stringify(message),
+          //   member.id,
+          // )
+          temp.push(member.id)
+        }
+        await SMessageServiceHTTP.sendMessage(
+          message,
+          temp,
+        )
+        // 给自己发送删除信息
+        message.type = MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE
       }
-      message.members = members
-      let temp = []
-      // 给其他成员发送修改任务信息
-      for (const member of members) {
-        // await SMessageService.sendMessage(
-        //   JSON.stringify(message),
-        //   member.id,
-        // )
-        temp.push(member.id)
-      }
-      await SMessageServiceHTTP.sendMessage(
-        message,
-        temp,
-      )
-      // 给自己发送删除信息
-      message.type = MsgConstant.MSG_ONLINE_GROUP_TASK_DELETE
     }
-    await this.props.addCoworkMsg(message)
+    // await this.props.addCoworkMsg(message)
+    taskIds.length > 0 && await this.props.deleteGroupTasks({
+      userId: this.props.user.currentUser.userName,
+      groupID: this.props.groupInfo.id,
+      taskIds: taskIds,
+    })
     this._setDialogVisible(false)
   }
 
@@ -420,8 +472,26 @@ class TaskManage extends React.Component<Props, State> {
     return members
   }
 
-  _onPress = (data: any) => {
+  _onPress = async (data: any) => {
     if (data.map) {
+      let restService = data.resource?.restService
+      try {
+        // 若分配的任务消息中没有服务数据,则去查询
+        // 此情况运用在发布任务时,数据还没有服务,在协作过程中发布后,此后再次进入任务,可以获得数据服务信息
+        if (!restService) {
+          const dataDetail = await SCoordinationUtils.getScoordiantion()?.getResourceDetail(data.resource.resourceId)
+          if (dataDetail?.dataItemServices?.length > 0) {
+            for (const service of dataDetail.dataItemServices) {
+              if (service.serviceType === 'RESTDATA' && service.serviceStatus === 'PUBLISHED') {
+                restService = service
+                break
+              }
+            }
+          }
+        }
+      } catch (error) {
+        restService = data.resource?.restService
+      }
       let index = data.module.index
       let module = this._getModule(data.module.key, index)
       this.props.setCurrentTask(data)
@@ -431,9 +501,9 @@ class TaskManage extends React.Component<Props, State> {
       // CoworkInfo.setMembers(members)
       this._checkMembers(data, _members)
       CoworkInfo.setMessages(this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[data.groupID]?.[data.id]?.messages || [])
-      this.createCowork(data.id, module, index, data.map)
+      this.createCowork(data.id, module, index, data.map, restService)
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_DOWNLOAD_INFO)
+      Toast.show(getLanguage(this.props.language).Friends.RESOURCE_DOWNLOAD_INFO)
     }
   }
 
@@ -445,35 +515,35 @@ class TaskManage extends React.Component<Props, State> {
     })
   }
 
-  createCowork = async (targetId: any, module: { action: (user: UserInfo, map: any) => void }, index: number, map: any) => {
+  createCowork = async (targetId: any, module: { action: (user: UserInfo, map: any, service?: DataItemServices) => void }, index: number, map: any, service?: DataItemServices) => {
     try {
-      GLOBAL.Loading.setLoading(
+      global.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.PREPARING,
+        getLanguage(this.props.language).Prompt.PREPARING,
       )
       let licenseStatus = await SMap.getEnvironmentStatus()
-      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
-      if (!GLOBAL.isLicenseValid) {
-        GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Prompt.APPLY_LICENSE_FIRST,
+      global.isLicenseValid = licenseStatus.isLicenseValid
+      if (!global.isLicenseValid) {
+        global.SimpleDialog.set({
+          text: getLanguage(this.props.language).Prompt.APPLY_LICENSE_FIRST,
         })
-        GLOBAL.SimpleDialog.setVisible(true)
+        global.SimpleDialog.setVisible(true)
         return
       }
       CoworkInfo.setId(targetId)
       // CoworkInfo.setId(this.props.groupInfo.id + '')
       // CoworkInfo.setId(this.props.user.currentUser.userName + '')
-      GLOBAL.getFriend().setCurMod(module)
+      global.getFriend().setCurMod(module)
       this.props.setCurrentMapModule(index).then(() => {
-        module.action(this.props.user.currentUser, map)
+        module.action(this.props.user.currentUser, map, service)
       })
-      GLOBAL.getFriend().curChat &&
-        GLOBAL.getFriend().curChat.setCoworkMode(true)
-      GLOBAL.coworkMode = true
+      global.getFriend().curChat &&
+        global.getFriend().curChat.setCoworkMode(true)
+      global.coworkMode = true
       // CoworkInfo.setGroupId(this.props.groupInfo.id)
-      setTimeout(() => GLOBAL.Loading.setLoading(false), 300)
+      setTimeout(() => global.Loading.setLoading(false), 300)
     } catch (error) {
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }
   }
 
@@ -482,11 +552,32 @@ class TaskManage extends React.Component<Props, State> {
       ?.coworkGroupMessages?.[item.groupID]?.[item.id]?.unread || 0
     return (
       <TaskMessageItem
+        ref={ref => {
+          if (ref) {
+            this.itemRefs.set(item.id, ref)
+          }
+        }}
         data={item}
+        openCheckBox={this.props.isMutiChoice}
+        checked={!!this.state.selectedData.get(item.id)}
         getModule={this._getModule}
         user={this.props.user}
         // isSelf={item?.applicant !== this.props.user.currentUser.id}
         onPress={(data: any) => this._onPress(data)}
+        checkAction={({value, data, download}) => {
+          const _selectedData = new Map().clone(this.state.selectedData)
+          if (this.state.selectedData.has(data.id)) {
+            _selectedData.delete(data.id)
+            this.setState({
+              selectedData: _selectedData,
+            })
+          } else {
+            _selectedData.set(data.id, data)
+            this.setState({
+              selectedData: _selectedData,
+            })
+          }
+        }}
         addCoworkMsg={this.props.addCoworkMsg}
         deleteCoworkMsg={this.props.deleteCoworkMsg}
         showMore={this._showMore}
@@ -518,10 +609,10 @@ class TaskManage extends React.Component<Props, State> {
             }}
           >
             <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
-            <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_TASK_NULL}</Text>
+            <Text style={styles.nullTitle}>{getLanguage(this.props.language).Friends.GROUP_TASK_NULL}</Text>
             {
               this.props.groupInfo.creator === this.props.user.currentUser.userName &&
-              <Text style={styles.nullSubTitle}>{getLanguage(GLOBAL.language).Friends.CREATE_FIRST_GROUP_TASK}</Text>
+              <Text style={styles.nullSubTitle}>{getLanguage(this.props.language).Friends.CREATE_FIRST_GROUP_TASK}</Text>
             }
             {
               this.props.groupInfo.creator === this.props.user.currentUser.userName &&
@@ -579,7 +670,7 @@ class TaskManage extends React.Component<Props, State> {
             this.dialogAction()
           }
         }}
-        confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(this.props.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
       />
     )
@@ -588,13 +679,103 @@ class TaskManage extends React.Component<Props, State> {
   _renderBottom = () => {
     return (
       <TextBtn
-        btnText={getLanguage(GLOBAL.language).Friends.TASK_DISTRIBUTION}
+        btnText={getLanguage(this.props.language).Friends.TASK_DISTRIBUTION}
         containerStyle={styles.bottomBtn}
         textStyle={styles.bottomBtnText}
         btnClick={() => {
           this.props.createTask && this.props.createTask()
         }}
       />
+    )
+  }
+
+  _selectAll = () => {
+    let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userName]
+      && this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]
+      ? this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]
+      : []
+    const selected = new Map<string, any>()
+    if (data.length > this.state.selectedData.size) {
+      data.forEach((item: any) => {
+        selected.set(item.id, item)
+      })
+    }
+    this.setState({ selectedData: selected })
+  }
+
+  _renderBatchHead = () => {
+    if (!this.props.isMutiChoice) return null
+    let data = this.props.tasks && this.props.tasks[this.props.user.currentUser.userName]
+      && this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]
+      ? this.props.tasks[this.props.user.currentUser.userName][this.props.groupInfo.id]
+      : []
+    return (
+      <BatchHeadBar
+        select={this.state.selectedData.size}
+        total={data.length}
+        selectAll={this._selectAll}
+        deselectAll={this._selectAll}
+      />
+    )
+  }
+
+  _renderMutiChoiceButtons = () => {
+    if (!this.props.isMutiChoice) return null
+    return (
+      <View style={styles.bottomView}>
+        <ImageButton
+          key={'download'}
+          containerStyle={styles.bottomViewBtn}
+          icon={getThemeAssets().cowork.icon_nav_import}
+          title={getLanguage(this.props.language).Prompt.DOWNLOAD}
+          titleStyle={styles.btnStyle}
+          onPress={() => {
+            if (this.state.selectedData.size > 0) {
+              const keys = this.state.selectedData.keys()
+              for(let key of keys) {
+                if (this.state.selectedData.get(key)) {
+                  const ref = this.itemRefs.get(key)
+                  if (typeof ref._downloadFile === 'function') {
+                    ref._downloadFile()
+                  }
+                }
+              }
+            }
+          }}
+        />
+        <ImageButton
+          key={'delete'}
+          containerStyle={styles.bottomViewBtn}
+          icon={getThemeAssets().edit.icon_delete}
+          title={getLanguage(this.props.language).Prompt.DELETE}
+          titleStyle={styles.btnStyle}
+          onPress={() => {
+            if (this.state.selectedData.size > 0) {
+              this._setDialogVisible(true, getLanguage(this.props.language).Friends.GROUP_TASK_DELETE_INFO)
+              this.dialogAction = () => {
+                try {
+                  let tasks: any[] = []
+                  this.state.selectedData.forEach(item => {
+                    const _ref = this.itemRefs.get(item.id)
+                    if (_ref?.props?.data) {
+                      tasks.push(_ref?.props?.data)
+                    }
+                  })
+                  this.deleteTasks(tasks)
+                  const selected = new Map<string, any>()
+                  this.setState({
+                    selectedData: selected,
+                  })
+                  this._setDialogVisible(false)
+                } catch(e) {
+                  this._setDialogVisible(false)
+                }
+              }
+              // this.dialog?.setDialogVisible(true)
+            }
+          }}
+        />
+      </View>
     )
   }
 
@@ -605,6 +786,7 @@ class TaskManage extends React.Component<Props, State> {
       : []
     return (
       <View style={{flex: 1}}>
+        {this._renderBatchHead()}
         <FlatList
           ref={ref => this.list = ref}
           // style={styles.list}
@@ -621,7 +803,7 @@ class TaskManage extends React.Component<Props, State> {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(this.props.language).Friends.REFRESHING}
               enabled={true}
             />
           }
@@ -646,7 +828,7 @@ class TaskManage extends React.Component<Props, State> {
                     colors={['orange', 'red']}
                     tintColor={'orange'}
                     titleColor={'orange'}
-                    title={getLanguage(GLOBAL.language).Friends.LOADING}
+                    title={getLanguage(this.props.language).Friends.REFRESHING}
                     enabled={true}
                   />
                 }
@@ -655,10 +837,12 @@ class TaskManage extends React.Component<Props, State> {
             : this._renderNull()
         } */}
         {
+          !this.props.isMutiChoice &&
           data.length > 0 &&
           this.props.user.currentUser.userName === this.props.groupInfo.creator &&
           this._renderBottom()
         }
+        {this._renderMutiChoiceButtons()}
         {this._renderPagePopup()}
         {this._renderDeleteDialog()}
       </View>

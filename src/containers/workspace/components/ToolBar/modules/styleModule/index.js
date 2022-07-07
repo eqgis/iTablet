@@ -71,7 +71,7 @@ class StyleModule extends FunctionModule {
 export default function() {
   return new StyleModule({
     type: ConstToolType.SM_MAP_STYLE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE,
+    title: getLanguage(global.language).Map_Main_Menu.STYLE,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_style,
     getData: StyleData.getData,

@@ -9,7 +9,7 @@ import { PopView, FingerMenu } from '../../../components'
 import { scaleSize } from '../../../utils'
 import { size, color } from '../../../styles'
 import { getLanguage } from '../../../language'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
+import { TabView, SceneMap } from 'react-native-tab-view'
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -63,6 +63,7 @@ export default class PopSwitchList extends React.Component {
       currentTabIndex: 0,
       hasNext: props.data.length > 1,
       hasPrevious: false,
+      routes: this._getRoutes(),
     }
 
     this.fingerMenus = [] // 指滑列表关联对象
@@ -128,9 +129,9 @@ export default class PopSwitchList extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.state.currentTabIndex > 0
-              ? getLanguage(this.props.language || GLOBAL.language)
+              ? getLanguage(this.props.language || global.language)
                 .Analyst_Labels.PREVIOUS
-              : getLanguage(this.props.language || GLOBAL.language)
+              : getLanguage(this.props.language || global.language)
                 .Analyst_Labels.CANCEL}
           </Text>
         </TouchableOpacity>
@@ -160,9 +161,9 @@ export default class PopSwitchList extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.state.currentTabIndex < this.props.data.length - 1
-              ? getLanguage(this.props.language || GLOBAL.language)
+              ? getLanguage(this.props.language || global.language)
                 .Analyst_Labels.NEXT
-              : getLanguage(this.props.language || GLOBAL.language)
+              : getLanguage(this.props.language || global.language)
                 .Analyst_Labels.ADD}
           </Text>
         </TouchableOpacity>
@@ -170,34 +171,50 @@ export default class PopSwitchList extends React.Component {
     )
   }
 
+  _getRoutes = () => {
+    const routes = []
+    this.props.data.forEach((item, index) => {
+      routes.push({
+        key: index + '',
+        title: index + '',
+      })
+    })
+    return routes
+  }
+
+  goToPage = index => {
+    this.state.currentTabIndex !== index &&
+    this.setState({
+      currentTabIndex: index,
+    })
+  }
+
+  renderScene = (() => {
+    const data = {}
+    this.props.data.map((item, index) => {
+      data[index + ''] = () => this.renderFingerList(item, index)
+    })
+    return SceneMap(data)
+  })()
+
   render() {
     return (
       <PopView
         ref={ref => (this.popModal = ref)}
         contentStyle={{ height: scaleSize(80) * 6 }}
       >
-        <ScrollableTabView
-          ref={ref => (this.scrollTab = ref)}
-          style={styles.scrollView}
-          // initialPage={this.state.initialPage}
-          page={this.state.currentTabIndex}
+        <TabView
+          lazy
+          navigationState={{
+            index: this.state.currentTabIndex,
+            routes: this.state.routes,
+          }}
+          onIndexChange={this.goToPage}
+          renderTabBar={() => null}
+          renderScene={this.renderScene}
+          swipeEnabled={true}
           tabBarPosition={'bottom'}
-          onChangeTab={({ i }) => {
-            if (this.state.currentTabIndex !== i) {
-              this.setState({
-                currentTabIndex: i,
-              })
-            }
-          }}
-          scrollWithoutAnimation
-          renderTabBar={() => <View />}
-          tabBarUnderlineStyle={{
-            height: 0,
-          }}
-          prerenderingSiblingsNumber={Infinity}
-        >
-          {this.renderContent()}
-        </ScrollableTabView>
+        />
         {this.renderBottom()}
       </PopView>
     )

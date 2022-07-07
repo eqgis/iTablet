@@ -47,7 +47,7 @@ export default class LayerVisibilityView extends Component {
   }
 
   render() {
-    let orientation = GLOBAL.getDevice().orientation
+    let orientation = global.getDevice().orientation
     let leftStyle = {
       left: (screen.getScreenWidth(orientation) - scaleSize(220)) / 2,
     }
@@ -70,7 +70,7 @@ export default class LayerVisibilityView extends Component {
               (evt.nativeEvent.text !== '' && isNaN(evt.nativeEvent.text)) ||
               evt.nativeEvent.text === ''
             ) {
-              Toast.show(getLanguage(GLOBAL.language).Prompt.TRANSFER_PARAMS)
+              Toast.show(getLanguage(global.language).Prompt.TRANSFER_PARAMS)
             } else {
               mapScale = Number.parseFloat(this.state.mapScale)
               //地图比例尺跟着变

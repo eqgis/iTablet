@@ -4,12 +4,14 @@
 
 // eslint-disable-next-line
 import { Platform } from 'react-native'
-import { SOnlineService,RNFS } from 'imobile_for_reactnative'
+import { SOnlineService, SIPortalService, RNFS } from 'imobile_for_reactnative'
 import { FileTools} from '../../../native'
 import ConstPath from '../../../constants/ConstPath'
-import { OnlineServicesUtils } from '../../../utils'
+import * as OnlineServicesUtils from '../../../utils/OnlineServicesUtils'
 import { UserType } from '../../../constants'
 import { UserInfo } from '../../../types'
+import RNFetchBlob from 'rn-fetch-blob'
+import CookieManager from 'react-native-cookies'
 
 
 function isJSON(str: string) {
@@ -43,7 +45,12 @@ interface Friend {
   name: string,
   id: string,
   info: {
-    isFriend: 0 | 1 | 2
+    /**
+     * 0： 对方删除了自己，此时向对方发消息会提示不是好友
+     * 1： 互为好友，正常显示和收发消息
+     * 2： 申请中，此时不显示此好友
+     */
+    isFriend: 0 | 1 | 2 // 0: 不是好友; 1: 好友; 2: 申请还未同意
   }
 }
 
@@ -66,18 +73,29 @@ export default class FriendListFileHandle {
   static friendListFile_ol = ''
   static uploading = false
   static waitUploading = false
+  static adminInfoFile = ''
+  static adminInfo = {
+    userName: '',
+    password: '',
+  }
+  static adminInfoUploading = false
+  static adminInfoWaitUploading = false
 
   /**
    * 初始化friendlist路径
    * @param {*} user currentUser
    */
   static async init(user: UserInfo) {
+    if (FriendListFileHandle.user?.userName !== user.userName || !UserType.isIPortalUser(user)) {
+      // 非iportal用户使用friend.list文件,或非相同用户初始化清空好友列表
+      // iportal用户使用在线好友数据,则不初始化好友列表
+      FriendListFileHandle.friends = undefined
+    }
     FriendListFileHandle.user = user
-    FriendListFileHandle.friends = undefined
     FriendListFileHandle.friendListFile = ''
     FriendListFileHandle.friendListFile_ol = ''
 
-    if (!UserType.isOnlineUser(user)) {
+    if (!UserType.isOnlineUser(user) && !UserType.isIPortalUser(user)) {
       return
     }
 
@@ -90,6 +108,15 @@ export default class FriendListFileHandle {
 
     FriendListFileHandle.friendListFile = friendListFile
     FriendListFileHandle.friendListFile_ol = onlineList
+
+    FriendListFileHandle.adminInfoFile = userPath + '/adminInfo'
+
+    if (UserType.isIPortalUser(FriendListFileHandle.user) && FriendListFileHandle.user.roles?.indexOf('ADMIN') >= 0) {
+      FriendListFileHandle.adminInfo = {
+        userName: FriendListFileHandle.user.userName,
+        password: FriendListFileHandle.user.password || '',
+      }
+    }
   }
 
   /**
@@ -116,6 +143,20 @@ export default class FriendListFileHandle {
     await FriendListFileHandle.init(user)
     //读取本地文件并刷新
     await FriendListFileHandle.getLocalFriendList()
+
+    if (UserType.isIPortalUser(FriendListFileHandle.user)) {
+      // 判断是否开启公开用户列表
+      const adminInfoId = await FriendListFileHandle.isAdminOpenFriends()
+      if (adminInfoId) {
+        await FriendListFileHandle.getAdminInfo(adminInfoId)
+      } else if (FriendListFileHandle.user.roles?.indexOf('ADMIN') < 0) {
+        // iportal中没有Admin信息,非Admin用户清空当前信息
+        FriendListFileHandle.adminInfo = {
+          userName: '',
+          password: '',
+        }
+      }
+    }
     //同步online文件并刷新
     return await FriendListFileHandle.syncOnlineFriendList()
   }
@@ -124,7 +165,7 @@ export default class FriendListFileHandle {
    * 读取本地列表，删除online列表
    */
   static async getLocalFriendList() {
-    if (FriendListFileHandle.friendListFile !== '') {
+    if (FriendListFileHandle.friendListFile !== '' && FriendListFileHandle.user && !UserType.isIPortalUser(FriendListFileHandle.user)) {
       if (await FileTools.fileIsExist(FriendListFileHandle.friendListFile)) {
         let value = await RNFS.readFile(FriendListFileHandle.friendListFile)
         if (isJSON(value) === true) {
@@ -152,65 +193,138 @@ export default class FriendListFileHandle {
     if (FriendListFileHandle.friendListFile_ol === '') {
       return false
     }
-    let JSOnlineService = new OnlineServicesUtils('online')
-    if (
-      (await JSOnlineService.getDataIdByName('friend.list.zip')) !== undefined
-    ) {
-      let promise = new Promise((resolve, reject) => {
-        SOnlineService.downloadFileWithCallBack(
-          FriendListFileHandle.friendListFile_ol,
-          'friend.list',
-          {
-            onResult: async value => {
-              try {
-                if (value === true) {
-                  let value = await RNFS.readFile(
-                    FriendListFileHandle.friendListFile_ol,
-                  )
-                  let onlineVersion: FriendListInfo = JSON.parse(value)
-                  //确保是当前用户的好友列表
-                  if(onlineVersion.user && onlineVersion.user === FriendListFileHandle.user?.userName) {
-                    if (
-                      !FriendListFileHandle.friends ||
-                      onlineVersion.rev > FriendListFileHandle.friends.rev
-                    ) {
-                      //没有本地friendlist或online的版本较新，更新本地文件
-                      FriendListFileHandle.friends = onlineVersion
-                      await RNFS.writeFile(
-                        FriendListFileHandle.friendListFile,
-                        value,
-                      )
-                      FriendListFileHandle.checkFriendList()
-                      FriendListFileHandle.refreshCallback?.()
-                      FriendListFileHandle.refreshMessageCallback?.()
-                    } else if (
-                      onlineVersion.rev < FriendListFileHandle.friends.rev
-                    ) {
-                      //本地版本较新，将本地文件更新到online
-                      await FriendListFileHandle.upload()
-                    }
-                  } else if(FriendListFileHandle.friends){
-                    await FriendListFileHandle.upload()
-                  }
-                  await RNFS.unlink(FriendListFileHandle.friendListFile_ol)
-                  resolve(true)
-                } else {
-                  resolve(false)
-                }
-              } catch (error) {
-                reject(error)
-              }
-            },
-          },
-        )
-      })
-      return promise
-    } else {
-      if (FriendListFileHandle.friends !== undefined) {
-        //没有online文件，更新本地到online
-        await FriendListFileHandle.upload()
+    const isIPortalUser = UserType.isIPortalUser(FriendListFileHandle.user)
+    let JSOnlineService = OnlineServicesUtils.getService(isIPortalUser ? 'iportal' : 'online')
+    if (isIPortalUser && FriendListFileHandle.adminInfo.userName && FriendListFileHandle.adminInfo.password) {
+      // iportal使用admin中读取的用户列表,不用文件下载;群组使用本地数据
+      let admingLoginResult,
+        cookie = '',
+        isAdmin = FriendListFileHandle.user.roles?.indexOf('ADMIN') >= 0
+      if (!isAdmin) {
+        // admin登录
+        const adminLoginResponse = await RNFetchBlob.config({trusty:true}).fetch('POST', JSOnlineService.serverUrl + '/login.json', {
+          'Content-Type': 'application/json; charset=utf-8',
+        }, JSON.stringify({
+          username: FriendListFileHandle.adminInfo.userName,
+          password: FriendListFileHandle.adminInfo.password,
+          rememberme: true,
+        }))
+        cookie = adminLoginResponse.respInfo.headers['Set-Cookie'].split('; ')[0]
+
+        // let result = await SIPortalService.login(JSOnlineService.serverUrl + '/login.json', FriendListFileHandle.adminInfo.userName, FriendListFileHandle.adminInfo.password, true)
+
+
+        admingLoginResult = await adminLoginResponse.json()
+      } else {
+        cookie = await SIPortalService.getIPortalCookie()
       }
-      return true
+
+      if (isAdmin || admingLoginResult?.succeed && cookie) {
+        // 获取用户列表
+        let adminURL = JSOnlineService.serverUrl.replace('/web', '') + '/manager/security/v811/portalusers.json?t=1641345231317&orderType=ASC&orderBy=USERNAME&pageSize=100&currentPage=1&keywords=%5B%22%22%5D'
+        const response = await RNFetchBlob.config({trusty:true}).fetch('GET', adminURL, {
+          cookie: cookie,
+        })
+        const data = await response.json()
+        if (data) {
+          FriendListFileHandle.friends = {
+            /** 文件版本 */
+            rev: 1,
+            /** 文件所有人的 userName */
+            user: FriendListFileHandle.user.userName,
+            /** 好友列表 */
+            userInfo: data.content.map((item: { name: any; nickname: any }) => {
+              let _item: Friend = {
+                id: item.name,
+                markName: item.nickname,
+                name: item.name,
+                info: {
+                  isFriend: 1,
+                },
+              }
+              return _item
+            }),
+            /** 群组列表 */
+            groupInfo: FriendListFileHandle?.friends?.groupInfo || [],
+          }
+          FriendListFileHandle.refreshCallback?.()
+          FriendListFileHandle.refreshMessageCallback?.()
+
+          // 退出admin登录
+          await RNFetchBlob.config({trusty:true}).fetch('GET', JSOnlineService.serverUrl + '/services/security/logout.json', {
+            cookie: cookie,
+          })
+        }
+      }
+      // cookie发生改变,需要重新登录
+      if (admingLoginResult?.succeed && cookie) {
+        await CookieManager.clearAll()
+        if (FriendListFileHandle.user.password && FriendListFileHandle.user.userName) {
+          await SIPortalService.login(FriendListFileHandle.user.serverUrl, FriendListFileHandle.user.userName, FriendListFileHandle.user.password, true)
+        }
+      }
+    } else {
+      let dataId = await JSOnlineService?.getDataIdByName('friend.list.zip')
+      if (dataId !== undefined) {
+        const callback = async (result: boolean | string | RNFS.DownloadResult, resolve: (value: any) => void, reject: (value: any) => void) => {
+          try {
+            if (result === true || typeof result === 'object' && result.jobId) {
+              let value = await RNFS.readFile(
+                FriendListFileHandle.friendListFile_ol,
+              )
+              let onlineVersion: FriendListInfo = JSON.parse(value)
+              //确保是当前用户的好友列表
+              if(onlineVersion.user && onlineVersion.user === FriendListFileHandle.user?.userName) {
+                if (
+                  !FriendListFileHandle.friends ||
+                  onlineVersion.rev > FriendListFileHandle.friends.rev
+                ) {
+                  //没有本地friendlist或online的版本较新，更新本地文件
+                  FriendListFileHandle.friends = onlineVersion
+                  await RNFS.writeFile(
+                    FriendListFileHandle.friendListFile,
+                    value,
+                  )
+                  FriendListFileHandle.checkFriendList()
+                  FriendListFileHandle.refreshCallback?.()
+                  FriendListFileHandle.refreshMessageCallback?.()
+                } else if (
+                  onlineVersion.rev < FriendListFileHandle.friends.rev
+                ) {
+                  //本地版本较新，将本地文件更新到online
+                  await FriendListFileHandle.upload()
+                }
+              } else if(FriendListFileHandle.friends){
+                await FriendListFileHandle.upload()
+              }
+              await RNFS.unlink(FriendListFileHandle.friendListFile_ol)
+              resolve(true)
+            } else {
+              resolve(false)
+            }
+          } catch (error) {
+            reject(error)
+          }
+        }
+        let promise = new Promise(async (resolve, reject) => {
+          SOnlineService.downloadFileWithCallBack(
+            FriendListFileHandle.friendListFile_ol,
+            'friend.list',
+            {
+              onResult: async value => {
+                callback(value, resolve, reject)
+              },
+            },
+          )
+        })
+        return promise
+      } else {
+        if (FriendListFileHandle.friends !== undefined) {
+          //没有online文件，更新本地到online
+          await FriendListFileHandle.upload()
+        }
+        return true
+      }
     }
   }
 
@@ -222,7 +336,7 @@ export default class FriendListFileHandle {
   }
 
   static checkFriendList() {
-    if(!UserType.isOnlineUser(FriendListFileHandle.user)) {
+    if(!UserType.isOnlineUser(FriendListFileHandle.user) && !UserType.isIPortalUser(FriendListFileHandle.user)) {
       FriendListFileHandle.friends = undefined
       return
     }
@@ -340,6 +454,10 @@ export default class FriendListFileHandle {
   }
 
   static async upload() {
+    // iportal不使用文件保存好友和群组
+    if(UserType.isIPortalUser(FriendListFileHandle.user)) {
+      return
+    }
     if (FriendListFileHandle.uploading) {
       if (FriendListFileHandle.waitUploading) {
         return
@@ -352,24 +470,77 @@ export default class FriendListFileHandle {
     }
     FriendListFileHandle.uploading = true
     //上传
-    await SOnlineService.deleteData('friend.list')
     let UploadFileName = 'friend.list.zip'
-    if (Platform.OS === 'android') {
-      UploadFileName = 'friend.list'
-    }
-    let promise = new Promise(resolve => {
-      SOnlineService.uploadFile(
-        FriendListFileHandle.friendListFile,
-        UploadFileName,
-        {
-          onResult: () => {
-            resolve(true)
+    let promise
+    let dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
+    if (UserType.isIPortalUser(FriendListFileHandle.user)) {
+      // await SIPortalService.deleteMyData(dataId + '')
+      promise = new Promise(resolve => {
+        // let action = OnlineServicesUtils.getService().uploadFileWithCheckCapacity
+        if (dataId) {
+          OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+            dataId,
+            FriendListFileHandle.friendListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
             FriendListFileHandle.uploading = false
             FriendListFileHandle.waitUploading = false
-          },
-        },
-      )
-    })
+          })
+        } else {
+          OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
+            FriendListFileHandle.friendListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            FriendListFileHandle.uploading = false
+            FriendListFileHandle.waitUploading = false
+          })
+        }
+      })
+    } else {
+      if (Platform.OS === 'android') {
+        UploadFileName = 'friend.list'
+      }
+      // await SOnlineService.deleteData('friend.list')
+      promise = new Promise(resolve => {
+        if (dataId) {
+          OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+            dataId,
+            FriendListFileHandle.friendListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            FriendListFileHandle.uploading = false
+            FriendListFileHandle.waitUploading = false
+          })
+        } else {
+          OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
+            FriendListFileHandle.friendListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            FriendListFileHandle.uploading = false
+            FriendListFileHandle.waitUploading = false
+          })
+        }
+        // SOnlineService.uploadFile(
+        //   FriendListFileHandle.friendListFile,
+        //   UploadFileName,
+        //   {
+        //     onResult: () => {
+        //       resolve(true)
+        //       FriendListFileHandle.uploading = false
+        //       FriendListFileHandle.waitUploading = false
+        //     },
+        //   },
+        // )
+      })
+    }
     return promise
   }
 
@@ -688,6 +859,129 @@ export default class FriendListFileHandle {
       FriendListFileHandle.friends['rev'] += 1
       let friendsStr = JSON.stringify(FriendListFileHandle.friends)
       await FriendListFileHandle.saveHelper(friendsStr)
+    }
+  }
+
+  /**
+   * IPortal管理员是否公开用户列表
+   * @returns
+   */
+  static async isAdminOpenFriends() {
+    try {
+      const isIPortalUser = UserType.isIPortalUser(FriendListFileHandle.user)
+      if(!isIPortalUser) return ''
+      const keywords = 'adminInfo.zip'
+      let JSOnlineService = OnlineServicesUtils.getService(isIPortalUser ? 'iportal' : 'online')
+      let data = await JSOnlineService?.getPublicDataByTypes(['WORKSPACE'], {
+        keywords,
+      })
+      let dataId = ''
+      for (const item of data.content) {
+        if (item.fileName === keywords) {
+          dataId = item.id
+          break
+        }
+      }
+      return dataId || ''
+    } catch (error) {
+      return ''
+    }
+  }
+
+  /**
+   * 获取IPortal管理员信息
+   * @param dataId IPortal管理员信息文件ID
+   * @returns
+   */
+  static async getAdminInfo(dataId: string) {
+    try {
+      // FriendListFileHandle.adminInfoFile = userPath + '/adminInfo'
+      const isIPortalUser = UserType.isIPortalUser(FriendListFileHandle.user)
+      if(!isIPortalUser) return ''
+      let JSOnlineService = OnlineServicesUtils.getService(isIPortalUser ? 'iportal' : 'online')
+      const result = await JSOnlineService.downloadFile(
+        `${JSOnlineService.serverUrl}/mycontent/datas/${dataId}/download`,
+        FriendListFileHandle.adminInfoFile,
+      )
+      if (result === true || typeof result === 'object' && result.jobId) {
+        let value = await RNFS.readFile(
+          FriendListFileHandle.adminInfoFile,
+        )
+        const data = await FileTools.decoder(value)
+        FriendListFileHandle.adminInfo = JSON.parse(data)
+        await RNFS.unlink(FriendListFileHandle.adminInfoFile)
+        return value
+      } else {
+        FriendListFileHandle.adminInfo = {
+          userName: '',
+          password: '',
+        }
+        return ''
+      }
+    } catch (error) {
+      return ''
+    }
+  }
+
+  /**
+   * 上传IPortal管理者信息
+   */
+  static async uploadAdminInfo() {
+    try {
+      if (FriendListFileHandle.adminInfoUploading) return
+      const dataId = await FriendListFileHandle.isAdminOpenFriends()
+      // 只有IPortal管理者可以上传
+      if (UserType.isIPortalUser(FriendListFileHandle.user) && FriendListFileHandle.user.roles?.indexOf('ADMIN') >= 0) {
+        FriendListFileHandle.adminInfoUploading = true
+        let UploadFileName = 'adminInfo.zip'
+
+        if (await FileTools.fileIsExist(FriendListFileHandle.adminInfoFile)) {
+          await RNFS.unlink(FriendListFileHandle.adminInfoFile)
+        }
+        const data = await FileTools.encode(JSON.stringify({
+          userName: FriendListFileHandle.user.userName,
+          password: FriendListFileHandle.user.password,
+        }))
+        await RNFS.writeFile(FriendListFileHandle.adminInfoFile, data)
+
+        const servicesUtils = OnlineServicesUtils.getService()
+        if (dataId) {
+          servicesUtils.updateFileWithCheckCapacity(
+            dataId,
+            FriendListFileHandle.adminInfoFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            servicesUtils.setDatasShareConfig(id, true)
+            FriendListFileHandle.adminInfoUploading = false
+            RNFS.unlink(FriendListFileHandle.adminInfoFile)
+          })
+        } else {
+          servicesUtils.uploadFileWithCheckCapacity(
+            FriendListFileHandle.adminInfoFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            servicesUtils.setDatasShareConfig(id, true)
+            FriendListFileHandle.adminInfoUploading = false
+            RNFS.unlink(FriendListFileHandle.adminInfoFile)
+          })
+        }
+      }
+    } catch (error) {
+      FriendListFileHandle.adminInfoUploading = false
+      await RNFS.unlink(FriendListFileHandle.adminInfoFile)
+    }
+  }
+
+  static async deleteAdminInfo() {
+    try {
+      if (!UserType.isIPortalUser(FriendListFileHandle.user) || FriendListFileHandle.user.roles?.indexOf('ADMIN') < 0) return
+      const dataId = await FriendListFileHandle.isAdminOpenFriends()
+      await SIPortalService.deleteMyData(dataId + '')
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn('删除失败')
     }
   }
 }

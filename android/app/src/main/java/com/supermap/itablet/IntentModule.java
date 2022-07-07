@@ -1,13 +1,12 @@
 package com.supermap.itablet;
+
 import android.app.Activity;
 import android.content.Intent;
+
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.supermap.RN.appManager;
-
-import java.util.Stack;
 
 public class IntentModule extends ReactContextBaseJavaModule {
     public IntentModule(ReactApplicationContext reactContext) {

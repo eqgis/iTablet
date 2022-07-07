@@ -6,11 +6,10 @@ import { View, TouchableOpacity, FlatList, Text, ListRenderItemInfo, Image } fro
 import NavigationService from '../NavigationService'
 import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
-import { NavigationScreenProp } from 'react-navigation'
 import  { Downloads, IDownloadProps } from '../../redux/models/down'
 import { getThemeAssets, getPublicAssets } from '../../assets'
 interface IProps {
-  navigation: NavigationScreenProp<{}>
+  navigation: any,
   downloads: Downloads,
   downloadFile: (param: IDownloadProps) => void
 }
@@ -32,7 +31,7 @@ export default class ChooseWeather extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props)
-    let params = this.props.navigation.state.params || {}
+    let params = this.props.route.params || {}
     this.currentItemKey = params.currentItemKey || ''
     this.onSelectCallback = params.onSelectCallback
     this.state = {
@@ -42,27 +41,27 @@ export default class ChooseWeather extends React.Component<IProps, IState> {
 
   weatherData = [
     {
-      title: GLOBAL.language === 'CN' ? '春天' : 'Spring',
+      title: global.language === 'CN' ? '春天' : 'Spring',
       key: 'SpringFlower',
     },
     {
-      title: GLOBAL.language === 'CN' ? '夏天' : 'Summer',
+      title: global.language === 'CN' ? '夏天' : 'Summer',
       key: 'CloudLightening',
     },
     {
-      title: GLOBAL.language === 'CN' ? '秋天' : 'Autumn',
+      title: global.language === 'CN' ? '秋天' : 'Autumn',
       key: 'AutumnLeave',
     },
     {
-      title: GLOBAL.language === 'CN' ? '冬天' : 'Winter',
+      title: global.language === 'CN' ? '冬天' : 'Winter',
       key: 'Snow',
     },
     {
-      title: GLOBAL.language === 'CN' ? '雪花' : 'Snow',
+      title: global.language === 'CN' ? '雪花' : 'Snow',
       key: 'CartoonSnow',
     },
     {
-      title: GLOBAL.language === 'CN' ? '云' : 'Clouds',
+      title: global.language === 'CN' ? '云' : 'Clouds',
       key: 'Clouds',
     },
   ]
@@ -94,7 +93,7 @@ export default class ChooseWeather extends React.Component<IProps, IState> {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_SELECT_EFFECT,
           navigation: this.props.navigation,
         }}
@@ -128,7 +127,7 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
   constructor(props: IWeatherProps) {
     super(props)
     this.path =
-      GLOBAL.homePath + `/iTablet/Common/Weather/${this.props.item.key}.mp4`
+      global.homePath + `/iTablet/Common/Weather/${this.props.item.key}.mp4`
     let isCurrent = this.props.currentItemKey === this.props.item.key
 
     this.state = {
@@ -190,7 +189,7 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
       status: 3,
     })
     try {
-      let path = GLOBAL.homePath + '/iTablet/Common/Weather/'
+      let path = global.homePath + '/iTablet/Common/Weather/'
       await FileTools.createDirectory(path)
       let onlineservice = new OnlineServicesUtils('online')
       let item = await onlineservice.getPublicDataByName(
@@ -213,7 +212,7 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
       this.setState({
         status: 0,
       })
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
     }
   }
 
@@ -266,23 +265,23 @@ class WeatherItem extends React.Component<IWeatherProps, IWeatherState> {
     this.animation && this.animation.stop()
     switch (this.state.status) {
       case 0:
-        // text = getLanguage(GLOBAL.language).Prompt.DOWNLOAD
+        // text = getLanguage(global.language).Prompt.DOWNLOAD
         image = getThemeAssets().collection.icon_ar_effect_download
         buttonContent = this._renderBtnImage(image)
         break
       case 1:
-        // text = getLanguage(GLOBAL.language).Profile.SWITCH
+        // text = getLanguage(global.language).Profile.SWITCH
         image = getThemeAssets().collection.icon_collection_change
         buttonContent = this._renderBtnImage(image)
         break
       case 2:
-        // text = getLanguage(GLOBAL.language).Profile.SWITCH
+        // text = getLanguage(global.language).Profile.SWITCH
         image = getThemeAssets().collection.icon_collection_change
         buttonContent = this._renderBtnImage(image)
         color = { backgroundColor: 'grey' }
         break
       case 3:
-        // text = getLanguage(GLOBAL.language).Prompt.DOWNLOADING
+        // text = getLanguage(global.language).Prompt.DOWNLOADING
         progress = this.getDownloadProgress()
         if (progress > -1) {
           text = progress + '%'

@@ -2,9 +2,10 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { scaleSize, screen } from '../../utils'
 import Bubble from './Bubble'
+import { size } from '../../styles/index'
 
 const DEFAULT_POSITION = {
-  left: 20,
+  // left: 20,
   top: scaleSize(screen.getIphonePaddingTop() + 108),
 }
 
@@ -40,7 +41,8 @@ export default class BubblePane extends React.Component {
           key={item.title + index}
           title={item.title}
           type={item.type}
-          style={index !== 0 && { marginTop: 5 }}
+          style={[index !== 0 && { marginTop: 5 },{backgroundColor: 'black',height:scaleSize(70),borderRadius: scaleSize(10)}]}
+          titleStyle={{color:'white',fontSize: size.fontSize.fontSizeXXl}}
           onPress={() => {
             let bubbles = this.state.bubbles.concat()
             bubbles.splice(index, 1)
@@ -103,7 +105,9 @@ export default class BubblePane extends React.Component {
 
   render() {
     return (
-      <View style={[styles.pane, this.state.position]}>
+      <View style={[styles.pane, this.state.position]}
+        pointerEvents={'box-none'}
+      >
         {this.renderBubbles()}
       </View>
     )
@@ -115,10 +119,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // left: 20,
     // top: 120,
+    left: '-50%',
+    right: '-50%',
     flexDirection: 'column',
     backgroundColor: 'transparent',
     justifyContent: 'center',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     // maxWidth: scaleSize(120),
   },
 })

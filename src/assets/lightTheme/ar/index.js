@@ -1,6 +1,6 @@
 import functiontoolbar from './functiontoolbar'
 import toolbar from './toolbar'
-import armap from './armap'
+import * as armap from './armap'
 
 const icon_ar = require('./icon_ar.png')
 // const icon_ai_assistant = require('./icon_ai_assistant.png')
@@ -36,6 +36,11 @@ const icon_tips_move_away = require('./icon_tips_move_away.png')
 const icon_tool_ardrawing = require('./icon_tool_ardrawing.png')
 const img_default_pic = require('./img_default_pic.png')
 const icon_tool_type = require('./icon_tool_type.png')
+
+// 矢量线图标
+const point_line = require('./icon_layer_line.png')
+// 矢量符号线图标
+const marker_line = require('./icon_vector_symbol.png')
 
 export default {
   functiontoolbar,
@@ -74,4 +79,6 @@ export default {
   icon_tool_ardrawing,
   img_default_pic,
   icon_tool_type,
+  point_line,
+  marker_line,
 }

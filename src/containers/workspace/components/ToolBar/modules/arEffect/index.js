@@ -13,14 +13,14 @@ class arEffect extends FunctionModule {
   action = async () => {
     let isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    global.toolBox && global.toolBox.removeAIDetect(true)
+    if (global.showAIDetect) {
+      global.arSwitchToMap = true
+      ;(await global.toolBox) && global.toolBox.switchAr()
     }
 
     NavigationService.navigate('ARWeatherView')
@@ -30,7 +30,7 @@ class arEffect extends FunctionModule {
 export default function() {
   return new arEffect({
     type: ConstToolType.SM_MAP_AR_EFFECT,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT,
+    title: getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT,
     size: 'large',
     image: getThemeAssets().functionBar.icon_ar_special_effects,
   })

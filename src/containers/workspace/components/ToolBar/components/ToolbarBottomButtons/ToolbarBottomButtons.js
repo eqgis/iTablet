@@ -89,7 +89,7 @@ export default class ToolbarBottomButtons extends React.Component {
   close = async () => {
     let isFinished = false
     // 先设置touch状态再调用自定义close方法 zhangxt
-    GLOBAL.TouchType = TouchType.NORMAL
+    global.TouchType = TouchType.NORMAL
     if (
       this.ToolbarModule.getData().actions &&
       this.ToolbarModule.getData().actions.close

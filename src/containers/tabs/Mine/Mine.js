@@ -57,7 +57,7 @@ export default class Mine extends Component {
         this.props.user.currentUser.userName +
         '/' +
         ConstPath.RelativeFilePath.Workspace[
-          GLOBAL.language === 'CN' ? 'CN' : 'EN'
+          global.language === 'CN' ? 'CN' : 'EN'
         ],
     )
     // 防止多次打开同一个工作空间
@@ -148,7 +148,7 @@ export default class Mine extends Component {
   _getItems = () => {
     let data = []
     for (let module of this.props.mineModules) {
-      if (Platform.OS === 'ios' && module.key === 'ARMODEL') {
+      if (Platform.OS === 'ios' && module.key === 'SANDTABLE') {
         continue
       }
       switch (module.key) {
@@ -279,6 +279,16 @@ export default class Mine extends Component {
               }),
           })
           break
+        case 'SANDTABLE':
+          data.push({
+            title: getLanguage(this.props.language).Common.SAND_TABLE,
+            image: getThemeAssets().layerType.icon_layer_sandtable,
+            onClick: () =>
+              NavigationService.navigate('MySandTable', {
+                title: getLanguage(this.props.language).Common.SAND_TABLE,
+              }),
+          })
+          break
       }
     }
     return data
@@ -361,7 +371,7 @@ export default class Mine extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation} />
+    return <TabBar navigation={this.props.navigation} currentRoute={'Mine'} />
   }
 
   render() {

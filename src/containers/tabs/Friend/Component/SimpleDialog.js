@@ -10,15 +10,18 @@ export default class SimpleDialog extends PureComponent {
     confirmAction?: () => void,
     cancelAction?: () => void,
     dismissAction?: () => void,
+    installAction?: () => void,
     renderExtra?: () => void,
     style?: Object,
     text?: String,
     confirmText?: String,
+    installText?: String,
     cancelText?: String,
     disableBackTouch?: boolean,
     buttonMode?: String,
     confirmTitleStyle?: Object,
     cancelTitleStyle?: Object,
+    installBtnVisible?:boolean,
   }
 
   static defaultProps = {
@@ -36,6 +39,7 @@ export default class SimpleDialog extends PureComponent {
       confirmAction: this.confirm,
       cancelAction: this.cancel,
       dismissAction: this.dismiss,
+      installAction:this.install,
       text: '',
       textStyle: {},
       renderExtra: props.renderExtra ? props.renderExtra : this.renderExtra,
@@ -47,6 +51,7 @@ export default class SimpleDialog extends PureComponent {
       disableBackTouch: this.props.disableBackTouch,
       buttonMode: props.buttonMode,
       cancelBtnVisible:true,
+      installBtnVisible:this.props.installBtnVisible || false,
     }
   }
 
@@ -143,6 +148,10 @@ export default class SimpleDialog extends PureComponent {
     this.setVisible(false)
   }
 
+  install = () => {
+    this.props.installAction && this.props.installAction()
+  }
+
   renderExtra = () => {
     return <View />
   }
@@ -157,18 +166,24 @@ export default class SimpleDialog extends PureComponent {
             ? this.state.confirmText
             : this.props.confirmText !== ''
               ? this.props.confirmText
-              : getLanguage(GLOBAL.language).Friends.CONFIRM
+              : getLanguage(global.language).CONFIRM
+        }
+        installBtnTitle={
+          this.props.installText !== ''
+            ? this.props.installText
+            : getLanguage(global.language).Prompt.INSTALL
         }
         cancelBtnTitle={
           this.state.cancelText !== ''
             ? this.state.cancelText
             : this.props.cancelText !== ''
               ? this.props.cancelText
-              : getLanguage(GLOBAL.language).Friends.CANCEL
+              : getLanguage(global.language).Friends.CANCEL
         }
         confirmAction={this.state.confirmAction}
         cancelAction={this.state.cancelAction}
         dismissAction={this.state.dismissAction}
+        installAction={this.state.installAction}
         confirmTitleStyle={this.props.confirmTitleStyle}
         cancelTitleStyle={this.props.cancelTitleStyle}
         // style={[
@@ -179,6 +194,7 @@ export default class SimpleDialog extends PureComponent {
         disableBackTouch={this.state.disableBackTouch}
         buttonMode={this.state.buttonMode}
         cancelBtnVisible={this.state.cancelBtnVisible}
+        installBtnVisible={this.state.installBtnVisible}
       >
         {this.state.renderCustomeView ? (
           this.state.renderCustomeView()

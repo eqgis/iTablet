@@ -23,7 +23,7 @@ export default class ChooseNaviDataImport extends React.Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.state = {
       sourceData:params.sourceData,
     }

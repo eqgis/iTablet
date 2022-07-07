@@ -7,7 +7,8 @@ import { Platform } from 'react-native'
 import { SOnlineService, SIPortalService, RNFS  } from 'imobile_for_reactnative'
 import { FileTools} from '../../../../native'
 import { ConstPath, UserType } from '../../../../constants'
-import { OnlineServicesUtils } from '../../../../utils'
+import OnlineServicesUtils1 from '../../../../utils/OnlineServicesUtils'
+import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 
 function isJSON(str: any) {
   if (typeof str === 'string') {
@@ -35,7 +36,7 @@ export default class CoworkFileHandle {
   static coworkListFile_ol: string = ''
   static uploading: boolean = false
   static waitUploading: boolean = false
-  static service: OnlineServicesUtils | undefined
+  static service: OnlineServicesUtils1 | undefined
 
 
   /**
@@ -54,9 +55,9 @@ export default class CoworkFileHandle {
     CoworkFileHandle.user = user
 
     if (UserType.isOnlineUser(CoworkFileHandle.user)) {
-      this.service = new OnlineServicesUtils('online')
+      this.service = OnlineServicesUtils.getService('online')
     } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
-      this.service = new OnlineServicesUtils('iportal')
+      this.service = OnlineServicesUtils.getService('iportal')
     }
     // CoworkFileHandle.coworkFileName = this.getCoworkFileName()
 
@@ -134,16 +135,16 @@ export default class CoworkFileHandle {
     if (CoworkFileHandle.coworkListFile_ol === '') {
       return false
     }
-    let dataId = await this.service?.getDataIdByName(CoworkFileHandle.coworkFileName_ol + '.zip')
+    const dataId = await this.service?.getDataIdByName(CoworkFileHandle.coworkFileName_ol + '.zip')
     if (this.service && dataId !== undefined) {
-      let promise = new Promise((resolve, reject) => {
-        let callback = async (_value: boolean) => {
+      const promise = new Promise((resolve, reject) => {
+        const callback = async (_value: boolean) => {
           try {
             if (_value === true) {
-              let value = await RNFS.readFile(
+              const value = await RNFS.readFile(
                 CoworkFileHandle.coworkListFile_ol,
               )
-              let onlineVersion = JSON.parse(value)
+              const onlineVersion = JSON.parse(value)
               if (
                 !CoworkFileHandle.cowork ||
                 onlineVersion.rev > CoworkFileHandle.cowork.rev
@@ -302,40 +303,77 @@ export default class CoworkFileHandle {
         return
       }
       CoworkFileHandle.uploading = true
+      const UploadFileName = CoworkFileHandle.coworkFileName_ol + '.zip'
+      let deleteResult
       //上传
       if (UserType.isOnlineUser(CoworkFileHandle.user)) {
-        await SOnlineService.deleteData(CoworkFileHandle.coworkFileName_ol)
+        deleteResult = await SOnlineService.deleteData(UploadFileName)
       } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
-        let dataId = await this.service?.getDataIdByName(CoworkFileHandle.coworkFileName_ol + '.zip')
-        dataId && await SIPortalService.deleteMyData(dataId + '')
+        const _dataId = await this.service?.getDataIdByName(UploadFileName)
+        deleteResult = _dataId && await SIPortalService.deleteMyData(dataId + '')
       }
-      let UploadFileName = CoworkFileHandle.coworkFileName_ol + '.zip'
-      let promise = new Promise(resolve => {
+      const dataId = await this.service?.getDataIdByName(UploadFileName)
+      const promise = new Promise(resolve => {
         if (UserType.isOnlineUser(CoworkFileHandle.user)) {
-          if (Platform.OS === 'android') {
-            UploadFileName = CoworkFileHandle.coworkFileName_ol
+          // if (Platform.OS === 'android') {
+          //   UploadFileName = CoworkFileHandle.coworkFileName_ol
+          // }
+          if (dataId) {
+            this.service?.updateFileWithCheckCapacity(
+              dataId,
+              CoworkFileHandle.coworkListFile,
+              UploadFileName,
+              'WORKSPACE',
+            ).then(id => {
+              resolve(!!id)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            })
+          } else {
+            this.service?.uploadFileWithCheckCapacity(
+              CoworkFileHandle.coworkListFile,
+              UploadFileName,
+              'WORKSPACE',
+            ).then(id => {
+              resolve(!!id)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            })
           }
-          SOnlineService.uploadFile(
-            CoworkFileHandle.coworkListFile,
-            UploadFileName,
-            {
-              onResult: () => {
-                resolve(true)
-                CoworkFileHandle.uploading = false
-                CoworkFileHandle.waitUploading = false
-              },
-            },
-          )
+          // SOnlineService.uploadFile(
+          //   CoworkFileHandle.coworkListFile,
+          //   UploadFileName,
+          //   {
+          //     onResult: () => {
+          //       resolve(true)
+          //       CoworkFileHandle.uploading = false
+          //       CoworkFileHandle.waitUploading = false
+          //     },
+          //   },
+          // )
         } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
-          this.service?.uploadFile(
-            CoworkFileHandle.coworkListFile,
-            UploadFileName,
-            'WORKSPACE',
-          ).then(result => {
-            resolve(result)
-            CoworkFileHandle.uploading = false
-            CoworkFileHandle.waitUploading = false
-          })
+          if (dataId) {
+            this.service?.updateFileWithCheckCapacity(
+              dataId,
+              CoworkFileHandle.coworkListFile,
+              UploadFileName,
+              'WORKSPACE',
+            ).then(result => {
+              resolve(result)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            })
+          } else {
+            this.service?.uploadFileWithCheckCapacity(
+              CoworkFileHandle.coworkListFile,
+              UploadFileName,
+              'WORKSPACE',
+            ).then(result => {
+              resolve(result)
+              CoworkFileHandle.uploading = false
+              CoworkFileHandle.waitUploading = false
+            })
+          }
         }
       })
       return promise
@@ -490,16 +528,20 @@ export default class CoworkFileHandle {
   /**
    * 删除任务群
    * @param groupId  Online群组
-   * @param taskId   任务群组
+   * @param taskIds   任务群组
    * @param callback 回调函数
    */
-  static async delTaskGroup(groupId: string|number, taskId: string, callback?: () => void) {
+  static async delTaskGroup(groupId: string|number, taskIds: string[], callback?: () => void) {
     let group = CoworkFileHandle.cowork.groups[groupId + '']
     if (CoworkFileHandle.cowork && group) {
-      for (let key = 0; key < group.tasks.length; key++) {
-        if (group.tasks[key].id === taskId) {
+      for (let key = group.tasks.length - 1; key >= 0; key--) {
+        const index = taskIds.indexOf(group.tasks[key].id)
+        if (index >= 0) {
           group.tasks.splice(key, 1)
-          break
+          taskIds.splice(index, 1)
+          if (taskIds.length === 0) {
+            break
+          }
         }
       }
     }

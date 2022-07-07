@@ -171,7 +171,7 @@ export default class GuideViewMapAnalystModel extends React.Component {
           style={styles.btn}
           imageStyle={styles.btnImage}
           key={0}
-          title={getLanguage(GLOBAL.language).Map_Main_Menu.ANALYSIS}
+          title={getLanguage(global.language).Map_Main_Menu.ANALYSIS}
           textColor={'black'}
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
@@ -218,7 +218,7 @@ export default class GuideViewMapAnalystModel extends React.Component {
           style={styles.btn}
           imageStyle={styles.btnImage}
           key={0}
-          title={getLanguage(GLOBAL.language).Map_Main_Menu.PROCESS}
+          title={getLanguage(global.language).Map_Main_Menu.PROCESS}
           textColor={'black'}
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}

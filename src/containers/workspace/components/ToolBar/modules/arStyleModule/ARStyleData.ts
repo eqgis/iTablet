@@ -58,7 +58,7 @@ async function getData(type: string, params: {[name: string]: any}) {
       ]
       const effectData: SectionItemData[] = await ARDrawingData.getAREffect()
       data.push({
-        title: getLanguage(GLOBAL.language).ARMap.EFFECT,
+        title: getLanguage(global.language).ARMap.EFFECT,
         data: effectData,
       })
       break
@@ -74,8 +74,8 @@ async function getData(type: string, params: {[name: string]: any}) {
  * @param params Toolbar setVisible中的params
  */
 async function showSlideToolbar(type: string, language: string, params: any) {
-  GLOBAL.toolBox &&
-  GLOBAL.toolBox.setVisible(true, type, {
+  global.toolBox &&
+  global.toolBox.setVisible(true, type, {
     containerType: ToolbarType.slider,
     isFullScreen: false,
     showMenuDialog: false,
@@ -99,7 +99,7 @@ const ARLayerStyleItems = (language: string) => {
     {
       key: getLanguage(language).Map_Main_Menu.STYLE_FRAME_COLOR,
       action: () => {
-        GLOBAL.toolBox && GLOBAL.toolBox.menu({
+        global.toolBox && global.toolBox.menu({
           type: ConstToolType.SM_AR_STYLE_BORDER_COLOR,
           selectKey: getLanguage(language).Map_Main_Menu.STYLE_FRAME_COLOR,
         })
@@ -143,7 +143,7 @@ const ARTextStyleItems = (language: string) => {
     {
       key: getLanguage(language).ARMap.TEXT_COLOR,
       action: () => {
-        GLOBAL.toolBox && GLOBAL.toolBox.menu({
+        global.toolBox && global.toolBox.menu({
           type: ConstToolType.SM_AR_STYLE_TEXT_COLOR,
           selectKey: getLanguage(language).ARMap.TEXT_COLOR,
         })
@@ -181,7 +181,7 @@ const ARTextStyleItems = (language: string) => {
     {
       key: getLanguage(language).ARMap.BACKGROUND_COLOR,
       action: () => {
-        GLOBAL.toolBox && GLOBAL.toolBox.menu({
+        global.toolBox && global.toolBox.menu({
           type: ConstToolType.SM_AR_STYLE_BACKGROUND_COLOR,
           selectKey: getLanguage(language).ARMap.BACKGROUND_COLOR,
         })

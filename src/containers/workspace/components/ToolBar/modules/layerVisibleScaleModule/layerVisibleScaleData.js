@@ -24,7 +24,7 @@ async function getData(type) {
       data = await getVisibleScalePickerData()
       customView = () => (
         <MultiPicker
-          language={GLOBAL.language}
+          language={global.language}
           confirm={LayerVisibleScaleAction.pickerConfirm}
           cancel={LayerVisibleScaleAction.pickerCancel}
           popData={data}
@@ -60,7 +60,7 @@ async function getVisibleScalePickerData() {
 async function getBasicData(min, max, customMin, customMax) {
   const option = [
     {
-      key: '无',
+      key: getLanguage(global.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_NO,
       value: 0,
     },
     {
@@ -135,7 +135,7 @@ async function getBasicData(min, max, customMin, customMax) {
   const minOption = option.clone()
   let minInitItem =
     min === 0
-      ? { key: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_NO, value: 0 }
+      ? { key: getLanguage(global.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_NO, value: 0 }
       : { key: `1 : ${dataUtil.NumberWithThousandSep(min)}`, value: min }
   let n = 0
   for (; n < minOption.length; n++) {
@@ -153,7 +153,7 @@ async function getBasicData(min, max, customMin, customMax) {
   const maxOption = option.clone()
   let maxInitItem =
     max === 0
-      ? { key: getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_NO, value: 0 }
+      ? { key: getLanguage(global.language).Analyst_Labels.REGISTRATION_SAMPLE_MODE_NO, value: 0 }
       : { key: `1 : ${dataUtil.NumberWithThousandSep(max)}`, value: max }
   n = 0
   for (; n < maxOption.length; n++) {
@@ -169,12 +169,12 @@ async function getBasicData(min, max, customMin, customMax) {
     maxOption.push(maxInitItem)
   }
   const customOptionMin = {
-    key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE,
+    key: getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE,
     value: 0,
     type: 'min',
   }
   const customOptionMax = {
-    key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_UER_DEFINE,
+    key: getLanguage(global.language).Map_Layer.LAYERS_UER_DEFINE,
     value: 0,
     type: 'max',
   }
@@ -182,14 +182,14 @@ async function getBasicData(min, max, customMin, customMax) {
   maxOption.unshift(customOptionMax)
   const pickerData = [
     {
-      key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MINIMUM,
+      key: getLanguage(global.language).Map_Layer.LAYERS_MINIMUM,
       value: '最小可见比例尺',
       children: minOption,
       initItem: minInitItem,
       selectedItem: customMin ? customOptionMin : minInitItem,
     },
     {
-      key: getLanguage(GLOBAL.language).Map_Layer.LAYERS_MAXIMUM,
+      key: getLanguage(global.language).Map_Layer.LAYERS_MAXIMUM,
       value: '最大可见比例尺',
       children: maxOption,
       initItem: maxInitItem,

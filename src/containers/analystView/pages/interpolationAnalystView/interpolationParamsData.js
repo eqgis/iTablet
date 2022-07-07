@@ -46,7 +46,7 @@ function getPixelFormat(language) {
       value: SAnalyst.PixelFormat.BIT32,
     },
     {
-      key: getLanguage(language).Analyst_Params.SINGLE,
+      key: getLanguage(language).Analyst_Params.SINGLE_FLOAT,
       value: SAnalyst.PixelFormat.SINGLE,
     },
     {

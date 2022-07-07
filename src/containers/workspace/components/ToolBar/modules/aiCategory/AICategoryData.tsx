@@ -145,7 +145,7 @@ function getData() {
 
 function _headerLeft() {
   let imgSize
-  if (GLOBAL.getDevice().orientation && GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
+  if (global.getDevice().orientation && global.getDevice().orientation.indexOf('LANDSCAPE') === 0) {
     imgSize = scaleSize(40)
   } else {
     imgSize = scaleSize(60)
@@ -173,7 +173,7 @@ function getHeaderData(type: string) {
     headerLeft: _headerLeft(),
     headerRight: [{
       key: 'setting',
-      // title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+      // title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
       action: AICategoryActions.setting,
       size: 'large',
       image: getThemeAssets().toolbar.icon_toolbar_setting,

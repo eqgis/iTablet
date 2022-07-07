@@ -40,22 +40,30 @@ export default class ToggleAccount extends Component {
         this.props.user.currentUser.userName === userName &&
         this.props.user.currentUser.password === password
       ) {
-        Toast.show(getLanguage(GLOBAL.language).Profile.SWITCH_CURRENT)
+        Toast.show(getLanguage(global.language).Profile.SWITCH_CURRENT)
         return
       }
       if (this.containerRef) {
         this.containerRef.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.SWITCHING,
+          getLanguage(global.language).Profile.SWITCHING,
         )
       }
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        await SOnlineService.logout()
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        await SIPortalService.logout()
+      }
+      await global.getFriend?.().disconnectService()
+      global.isLogging = true
       let result
       let newUser
       if (userType === UserType.COMMON_USER) {
         //使用昵称登录online zhangxt
         result = await SOnlineService.login(item.nickname, password)
         if (result) {
-          result = await FriendListFileHandle.initFriendList(item)
+          global.getFriend().onUserLoggedin()
+          FriendListFileHandle.initFriendList(item)
         }
         // if (result) {
         //   // 初始化协作文件
@@ -85,11 +93,15 @@ export default class ToggleAccount extends Component {
             newUser = {
               serverUrl: url,
               userName: userInfo.name,
+              userId: userInfo.name,
               password: password,
               nickname: userInfo.nickname,
               email: userInfo.email,
               userType: UserType.IPORTAL_COMMON_USER,
+              roles: userInfo.roles,
             }
+            global.getFriend().onUserLoggedin()
+            FriendListFileHandle.initFriendList(newUser) // iportal初始化好友列表信息,防止之前online用户留存信息的存在,把online的好友文件下载到iportal用户中
           }
         }
       }
@@ -101,7 +113,7 @@ export default class ToggleAccount extends Component {
         this.props.setUser(newUser)
         NavigationService.popToTop()
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Profile.SWITCH_FAIL)
+        Toast.show(getLanguage(global.language).Profile.SWITCH_FAIL)
       }
     } catch (e) {
       if (this.containerRef) {
@@ -126,20 +138,20 @@ export default class ToggleAccount extends Component {
         this.props.deleteUser(item)
       }
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
     }
   }
 
   /** 删除自己时弹出对话框 确定后退出并回退到首页*/
   showDeleteSelfDialog = () => {
-    GLOBAL.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Prompt.LOG_OUT,
+    global.SimpleDialog.set({
+      text: getLanguage(global.language).Prompt.LOG_OUT_CONFIRM,
       confirmAction: () => {
         this.logout()
         NavigationService.popToTop()
       },
     })
-    GLOBAL.SimpleDialog.setVisible(true)
+    global.SimpleDialog.setVisible(true)
   }
 
   logout = async () => {
@@ -153,7 +165,7 @@ export default class ToggleAccount extends Component {
       let customPath = await FileTools.appendingHomeDirectory(
         ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-            GLOBAL.language === 'CN' ? 'CN' : 'EN'
+            global.language === 'CN' ? 'CN' : 'EN'
           ],
       )
       this.props.deleteUser(this.props.user.currentUser)
@@ -207,7 +219,7 @@ export default class ToggleAccount extends Component {
     let data
     data = [
       {
-        title: getLanguage(GLOBAL.language).Profile.DELETE_ACCOUNT,
+        title: getLanguage(global.language).Profile.DELETE_ACCOUNT,
         action: this.deleteAccount,
       },
     ]
@@ -254,7 +266,7 @@ export default class ToggleAccount extends Component {
           }}
         >
           <Text style={{ fontSize: fontSize, color: color.fontColorBlack }}>
-            {getLanguage(GLOBAL.language).Profile.ADD_ACCOUNT}
+            {getLanguage(global.language).Profile.ADD_ACCOUNT}
             {/* 添加账号 */}
           </Text>
         </TouchableOpacity>
@@ -267,7 +279,7 @@ export default class ToggleAccount extends Component {
       <Container
         ref={ref => (this.containerRef = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.MANAGE_ACCOUNT,
+          title: getLanguage(global.language).Profile.MANAGE_ACCOUNT,
           //'账号管理',
           navigation: this.props.navigation,
         }}

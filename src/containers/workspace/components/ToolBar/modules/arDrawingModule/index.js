@@ -6,6 +6,7 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import { SARMap } from 'imobile_for_reactnative'
+import { arMapAddData } from '@/Toolbar/modules'
 
 class ArDrawingModule extends FunctionModule {
   constructor(props) {
@@ -23,7 +24,13 @@ class ArDrawingModule extends FunctionModule {
         data.height = 0
         break
       case ConstToolType.SM_AR_DRAWING:
-        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 5 / 2
+        data.height = ConstToolType.TOOLBAR_HEIGHT[0] * 4.5 / 2
+        break
+      case ConstToolType.SM_AR_ATTRIBUTE_ALBUM:
+      case ConstToolType.SM_AR_VIDEO_ALBUM:
+        data.height = ConstToolType.TOOLBAR_HEIGHT[1]
+        data.column = 2
+        data.row = 1
         break
       default:
         data.height = 0
@@ -33,22 +40,23 @@ class ArDrawingModule extends FunctionModule {
   }
 
   action = async () => {
-    this.setModuleData(this.type)
-    const params = ToolbarModule.getParams()
-    params.showFullMap && params.showFullMap(true)
-    params.setToolbarVisible(true, this.type, {
-      containerType: ToolbarType.tableTabs,
-      isFullScreen: false,
-    })
+    // this.setModuleData(this.type)
+    // const params = ToolbarModule.getParams()
+    // params.showFullMap && params.showFullMap(true)
+    // params.setToolbarVisible(true, this.type, {
+    //   containerType: ToolbarType.tableTabs,
+    //   isFullScreen: false,
+    // })
 
-    SARMap.clearSelection()
+    // SARMap.clearSelection().
+    arMapAddData.action()
   }
 }
 
 export default function() {
   return new ArDrawingModule({
     type: ConstToolType.SM_AR_DRAWING,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
+    title: getLanguage(global.language).Map_Main_Menu.OPEN,
     size: 'large',
     // image: getThemeAssets().ar.icon_tool_ardrawing,
     image: getThemeAssets().functionBar.icon_tool_add,

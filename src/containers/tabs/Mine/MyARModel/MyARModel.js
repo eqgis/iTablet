@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { MyDataPage } from '../component'
 import { getLanguage } from '../../../../language'
-import DataHandler from '../DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
 
@@ -22,12 +22,12 @@ class MyARModel extends MyDataPage {
     super(props)
     this.dataType = 'ARMODEL'
     this.type = this.types.armodel
-    if(this.props.navigation.state.params?.showMode) {
-      this.showMode = this.props.navigation.state.params.showMode
+    if(this.props.route.params?.showMode) {
+      this.showMode = this.props.route.params.showMode
     }
     let title = title = getLanguage(this.props.language).Profile.ARMODEL
-    if(this.props.navigation.state.params?.title) {
-      title = this.props.navigation.state.params.title
+    if(this.props.route.params?.title) {
+      title = this.props.route.params.title
     }
     this.state = {
       ...this.state,
@@ -77,7 +77,7 @@ class MyARModel extends MyDataPage {
   exportData = async name => {
     if (!this.itemInfo) return false
     const homePath = await FileTools.appendingHomeDirectory()
-    let path = `${homePath + ConstPath.ExternalData}/`
+    let path = `${homePath + ConstPath.ExternalData}/${ConstPath.RelativeFilePath.ExportData}`
 
     const availableName = await DataHandler.getAvailableFileName(path, name, 'zip')
 

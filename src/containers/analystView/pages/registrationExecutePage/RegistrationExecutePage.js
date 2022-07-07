@@ -33,9 +33,9 @@ export default class RegistrationExecutePage extends Component {
 
   getData = () => {
     (async function() {
-      GLOBAL.Loading.setLoading(
+      global.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.LOADING,
+        getLanguage(global.language).Prompt.LOADING,
       )
       try {
         let data = await SMap.getDatasetsByWorkspaceDatasource()
@@ -56,8 +56,8 @@ export default class RegistrationExecutePage extends Component {
 
         let datasetArr = []
 
-        if (GLOBAL.RectifyDatasetInfo) {
-          let datasourceInfos = GLOBAL.RectifyDatasetInfo
+        if (global.RectifyDatasetInfo) {
+          let datasourceInfos = global.RectifyDatasetInfo
           for (let i = 0; i < datasourceInfos.length; i++) {
             let datasourceInfo = datasourceInfos[i]
             let datasourceInfoDataLength = datasourceInfo.data.length
@@ -94,9 +94,9 @@ export default class RegistrationExecutePage extends Component {
           datasets: datasetArr,
           datasourcesInfo: data,
         })
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       } catch (e) {
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       }
     }.bind(this)())
   }
@@ -107,12 +107,12 @@ export default class RegistrationExecutePage extends Component {
   }
 
   confirm = async () => {
-    GLOBAL.Loading.setLoading(
+    global.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_EXECUTING,
+      getLanguage(global.language).Analyst_Labels.REGISTRATION_EXECUTING,
     )
     try {
-      let arithmeticMode = GLOBAL.RegistrationArithmeticMode
+      let arithmeticMode = global.RegistrationArithmeticMode
       let datasets = this.state.datasets
       let count = 0
       for (let i = 0; i < datasets.length; i++) {
@@ -144,19 +144,19 @@ export default class RegistrationExecutePage extends Component {
       }
       if (count === datasets.length) {
         Toast.show(
-          getLanguage(GLOBAL.language).Analyst_Labels
+          getLanguage(global.language).Analyst_Labels
             .REGISTRATION_EXECUTE_SUCCESS,
         )
       } else {
         Toast.show(
-          getLanguage(GLOBAL.language).Analyst_Labels
+          getLanguage(global.language).Analyst_Labels
             .REGISTRATION_EXECUTE_FAILED,
         )
       }
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
       NavigationService.goBack()
     } catch {
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }
   }
 
@@ -189,31 +189,31 @@ export default class RegistrationExecutePage extends Component {
         >
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_ORIGINAL_DATASOURCE
             }
           </Text>
 
           <Text style={styles.textOriginalStyle}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION_SAVE_AS}
+            {getLanguage(global.language).Analyst_Labels.REGISTRATION_SAVE_AS}
           </Text>
 
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_RESULT_DATASET
             }
           </Text>
 
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_RESULT_DATASOURCE
             }
           </Text>
           <Text style={styles.textOriginalStyle}>
             {
-              getLanguage(GLOBAL.language).Analyst_Labels
+              getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_SAMPLE_MODE
             }
           </Text>
@@ -228,10 +228,10 @@ export default class RegistrationExecutePage extends Component {
 
   editDatasetName(dataset, index) {
     NavigationService.navigate('InputPage', {
-      headerTitle: getLanguage(GLOBAL.language).Analyst_Labels
+      headerTitle: getLanguage(global.language).Analyst_Labels
         .REGISTRATION_RESULT_DATASET,
       value: dataset.outputDatasetName,
-      placeholder: getLanguage(GLOBAL.language).Analyst_Labels
+      placeholder: getLanguage(global.language).Analyst_Labels
         .REGISTRATION_RESULT_DATASET,
       type: 'name',
       cb: async value => {
@@ -394,7 +394,7 @@ export default class RegistrationExecutePage extends Component {
               >
                 {item.sampleModeData && item.sampleModeData.checked
                   ? item.sampleModeData.sampleModeTitle
-                  : getLanguage(GLOBAL.language).Analyst_Labels
+                  : getLanguage(global.language).Analyst_Labels
                     .REGISTRATION_SAMPLE_MODE_NO}
               </Text>
               <Image
@@ -519,13 +519,13 @@ export default class RegistrationExecutePage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Analyst_Labels
+          title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_EXECUTE,
           navigation: this.props.navigation,
           backAction: this.back,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(global.language).CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={() => {
                 this.confirm()

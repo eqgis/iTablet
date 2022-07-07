@@ -23,7 +23,7 @@ const popTypes = {
   Semivariogram: 'Semivariogram',
 }
 
-function getDefaultState(language = GLOBAL.language) {
+function getDefaultState(language = global.language) {
   return {
     // Settings
     radius: 0,
@@ -64,13 +64,13 @@ export default class InterpolationAnalystDetailView extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.data = (params && params.data) || {}
     this.state = {
       title: (params && params.title) || '',
       ...getDefaultState(),
       searchMethod: interpolationDetailParamsData.getSearchMethod(
-        GLOBAL.language,
+        global.language,
         params && params.title,
       )[0],
     }
@@ -186,8 +186,9 @@ export default class InterpolationAnalystDetailView extends Component {
             let layers = await this.props.getLayers()
             layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
 
-            GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
-            NavigationService.goBack('InterpolationAnalystView')
+            global.ToolBar && global.ToolBar.setVisible(false)
+            // NavigationService.goBack('InterpolationAnalystView')
+            NavigationService.navigate('MapStack', {screen: 'MapView'})
             if (this.cb && typeof this.cb === 'function') {
               this.cb()
             }
@@ -585,8 +586,8 @@ export default class InterpolationAnalystDetailView extends Component {
         }}
       />,
       <AnalystItem
-        key={getLanguage(this.props.language).Analyst_Labels.ROTATION}
-        title={getLanguage(this.props.language).Analyst_Labels.ROTATION}
+        key={getLanguage(this.props.language).ROTATION_ANGLE}
+        title={getLanguage(this.props.language).ROTATION_ANGLE}
         value={this.state.rotation + ''}
         keyboardType={'numeric'}
         rightType={'input'}

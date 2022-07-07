@@ -42,7 +42,7 @@ export default class MapSetting extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.type = params && params.type
     this.state = {
       data: [],
@@ -71,10 +71,10 @@ export default class MapSetting extends Component {
 
   getData = async () => {
     let newData = getThematicMapSettings()
-    if (GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) {
+    if (global.Type === ChunkType.MAP_AR_ANALYSIS) {
       newData = newData.concat(getMapARAnalysisSettings())
     }
-    // if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+    // if (global.Type === ChunkType.MAP_NAVIGATION) {
     //   newData = newData.concat(getNavigationSetting())
     // }
     this.setState({
@@ -103,8 +103,8 @@ export default class MapSetting extends Component {
   }
 
   setSaveViewVisible = visible => {
-    GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, {
+    global.SaveMapView &&
+      global.SaveMapView.setVisible(visible, {
         setLoading: this.setLoading,
       })
   }
@@ -167,7 +167,7 @@ export default class MapSetting extends Component {
       <View>
         {this._renderItemSeparatorComponent()}
         {/*<MapSettingItem*/}
-        {/*title={getLanguage(GLOBAL.language).Map_Setting.COLUMN_NAV_BAR}*/}
+        {/*title={getLanguage(global.language).Map_Setting.COLUMN_NAV_BAR}*/}
         {/*type={'switch'}*/}
         {/*rightAction={value => {*/}
         {/*this.props.setColumnNavBar(value)*/}
@@ -179,7 +179,7 @@ export default class MapSetting extends Component {
         {CoworkInfo.coworkId !== '' && (
           <MapSettingItem
             type={'switch'}
-            title={getLanguage(GLOBAL.language).Map_Setting.REAL_TIME_SYNC}
+            title={getLanguage(global.language).Map_Setting.REAL_TIME_SYNC}
             rightAction={value => {
               // CoworkInfo.setIsRealTime(value)
               this.props.setIsRealTime({
@@ -187,11 +187,18 @@ export default class MapSetting extends Component {
                 taskId: this.props.currentTask.id,
                 isRealTime: value,
               })
+              // 显示轨迹和位置
+              this.props.setMemberShow({
+                groupId: this.props.currentTask.groupID,
+                taskId: this.props.currentTask.id,
+                memberId: this.props.user.currentUser.userName,
+                show: value,
+              })
               // this.setState({ isRealTime: value })
             }}
             // value={this.state.isRealTime}
             value={
-              this.props.currentTaskInfo?.isRealTime === undefined ? true : this.props.currentTaskInfo.isRealTime
+              this.props.currentTaskInfo?.isRealTime === undefined ? false : this.props.currentTaskInfo.isRealTime
             }
             leftImage={getThemeAssets().setting.icon_horizontal_screen}
           />
@@ -218,9 +225,9 @@ export default class MapSetting extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.props.mapModules.modules[
+          title: this.props.mapModules.modules?.[
             this.props.mapModules.currentMapModule
-          ].chunk.title,
+          ]?.chunk?.title,
           navigation: this.props.navigation,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
@@ -229,7 +236,8 @@ export default class MapSetting extends Component {
           withoutBack: true,
         }}
         onOverlayPress={() => {
-          this.props.navigation.navigate('MapView')
+          // this.props.navigation.navigate('MapView')
+          this.props.navigation.goBack()
         }}
         bottomBar={this.renderToolBar()}
       >

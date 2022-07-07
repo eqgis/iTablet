@@ -6,7 +6,7 @@
 /* global GLOBAL */
 import * as React from 'react'
 import { TouchableOpacity, Text, SectionList, View, Image } from 'react-native'
-import { Container, MTBtn, Dialog } from '../../components'
+import { Container, MTBtn, Dialog, Waitting, PopoverButtonsView } from '../../components'
 import { Toast, scaleSize, LayerUtils } from '../../utils'
 import { MapToolbar, OverlayView } from '../workspace/components'
 import {
@@ -39,6 +39,8 @@ import NavigationService from '../../containers/NavigationService'
 import { getLanguage } from '../../language'
 import styles from './styles'
 import { getXmlTemplateData } from './components/LayerManager_tolbar/LayerToolbarData'
+import ServiceAction from '../workspace/components/ToolBar/modules/serviceModule/ServiceAction'
+import { Rect } from 'react-native-popover-view'
 export default class MT_layerManager extends React.Component {
   props: {
     language: string,
@@ -68,7 +70,7 @@ export default class MT_layerManager extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.curUserBaseMaps = this.props.baseMaps[
       this.props.user.currentUser.userId
     ]
@@ -88,22 +90,37 @@ export default class MT_layerManager extends React.Component {
       mapName: '',
       refreshing: false,
       currentOpenItemName: '', // 记录左滑的图层的名称
-      data: [],
-      type: (params && params.type) || GLOBAL.Type, // 底部Tabbar类型
+      data: this.dealLayers(this.props.layers),
+      type: (params && params.type) || global.Type, // 底部Tabbar类型
       allLayersVisible: false,
       isOutput: true, // 点击了输出/加载按钮，用于判断dialog行为
+
+      isVisible: false,
+      buttonRect: new Rect(1, 1, 100, 60),
     }
     this.itemRefs = {} // 记录列表items
     this.currentItemRef = {} // 当前被选中的item
     this.prevItemRef = {} // 上一个被选中的item
     this.dialog = undefined
+    this.publishMapServiceWatting = undefined // 发布地图服务,只有在线协作可用
+    this.Popover = undefined
+
+    this.hasInit = false // 是否初始化,防止第一次进入获取图层后,调用componentDidUpdate中的getData,重复获取
   }
 
   componentDidUpdate(prevProps) {
     if (
       JSON.stringify(prevProps.layers) !== JSON.stringify(this.props.layers)
     ) {
-      this.getData()
+      if (!this.hasInit) {
+        this.hasInit = true
+      } else {
+        this.getData()
+      }
+    }
+    
+    if (this.props.device.orientation !== prevProps.device.orientation) {
+      this.Popover?.setVisible(false)
     }
   }
 
@@ -118,21 +135,115 @@ export default class MT_layerManager extends React.Component {
     })
   }
 
+  /**
+   * 获取无图层时的数据
+   */
+  _getDefaultData = () => {
+    return (
+      [
+        {
+          title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
+          //'我的标注',
+          data: [],
+          visible: true,
+        },
+        {
+          title: getLanguage(this.props.language).Map_Layer.LAYERS,
+          //'我的图层',
+          data: [],
+          visible: true,
+        },
+        {
+          title: getLanguage(this.props.language).Map_Layer.MY_BASEMAP,
+          // '我的底图',
+          data: [
+            {
+              caption: 'baseMap',
+              datasetName: '',
+              name: 'baseMap',
+              path: '',
+              themeType: 0,
+              type: 81,
+            },
+          ],
+          visible: true,
+        },
+      ]
+    )
+  }
+
   getData = async () => {
-    // this.container.setLoading(true)
     try {
       this.itemRefs = {}
       let allLayers = await this.props.getLayers()
 
+      let data
+      if (
+        allLayers.length > 0 ||
+        (allLayers.length === 0 && global.Type === ChunkType.MAP_ANALYST)
+      ) {
+        data = this.dealLayers(allLayers)
+      } else if (allLayers.length === 0) {
+        await SMap.openDatasource(
+          ConstOnline.Google.DSParams,
+          global.Type === ChunkType.MAP_COLLECTION
+            ? 1
+            : ConstOnline.Google.layerIndex,
+          false,
+          false, // 分析模块下，显示地图
+        )
+        allLayers = await this.props.getLayers()
+        data = this.dealLayers(allLayers)
+      }
+
+      let taggingLayers = [] // 标注图层
+
+      // 若无标注图层，则去加载
+      if (taggingLayers.length === 0) {
+        taggingLayers = await SMap.getTaggingLayers(
+          this.props.user.currentUser.userName,
+        )
+        data[0].data = taggingLayers
+      }
+      if (this.props.currentLayer.name) {
+        this.prevItemRef = this.currentItemRef
+        this.currentItemRef =
+          this.itemRefs && this.itemRefs[this.props.currentLayer.name]
+      }
+      this.setState({
+        data: data,
+        refreshing: false,
+        allLayersVisible: this.isAllLayersVisible(data[1].data),
+      })
+      // let mapName = await this.map.getName()
+    } catch (e) {
+      this.setState({
+        data: this._getDefaultData(),
+        refreshing: false,
+        allLayersVisible: true,
+      })
+      this.setRefreshing(false)
+    }
+  }
+
+  /**
+   * 处理图层数据
+   */
+  dealLayers = (allLayers = []) => {
+    let data
+    try {
+      this.itemRefs = {}
+
       let baseMap = []
       if (
         allLayers.length > 0 ||
-        (allLayers.length === 0 && GLOBAL.Type === ChunkType.MAP_ANALYST)
+        (allLayers.length === 0 && global.Type === ChunkType.MAP_ANALYST)
       ) {
+        // 当图层数量大于0且最后一个图层不是底图时 或者 图层数量为0且为分析模式的时候
         if (
           (allLayers.length > 0 &&
             !LayerUtils.isBaseLayer(allLayers[allLayers.length - 1])) ||
-          (allLayers.length === 0 && GLOBAL.Type === ChunkType.MAP_ANALYST)
+          (allLayers.length === 0 && global.Type === ChunkType.MAP_ANALYST)
         ) {
           baseMap = [
             {
@@ -145,6 +256,7 @@ export default class MT_layerManager extends React.Component {
             },
           ]
         } else if (allLayers.length > 0) {
+          // 当图层数量大于0，最后一个图层是底图，对图层显示进行分类,底图放进baseMap里，其他图层放进alllayers里
           baseMap = allLayers.filter(layer => {
             return LayerUtils.isBaseLayer(layer)
           })
@@ -152,17 +264,6 @@ export default class MT_layerManager extends React.Component {
             return !LayerUtils.isBaseLayer(layer)
           })
         }
-      } else if (allLayers.length === 0) {
-        await SMap.openDatasource(
-          ConstOnline.Google.DSParams,
-          GLOBAL.Type === ChunkType.MAP_COLLECTION
-            ? 1
-            : ConstOnline.Google.layerIndex,
-          false,
-          false, // 分析模块下，显示地图
-        )
-        allLayers = await this.props.getLayers()
-        baseMap = allLayers.length > 0 ? [allLayers[allLayers.length - 1]] : []
       }
 
       //baseMap只显示一个，其他的放到subLayers内，删除和显示隐藏时用
@@ -186,81 +287,38 @@ export default class MT_layerManager extends React.Component {
         }
       }
 
-      // 若无标注图层，则去加载
-      if (taggingLayers.length === 0) {
-        taggingLayers = await SMap.getTaggingLayers(
-          this.props.user.currentUser.userName,
-        )
-      }
       if (this.props.currentLayer.name) {
         this.prevItemRef = this.currentItemRef
         this.currentItemRef =
           this.itemRefs && this.itemRefs[this.props.currentLayer.name]
       }
-      this.setState({
-        data: [
-          {
-            title: getLanguage(this.props.language).Map_Layer.PLOTS,
-            //'我的标注',
-            data: taggingLayers,
-            visible:
-              this.state.data.length === 3 ? this.state.data[0].visible : true,
-          },
-          {
-            title: getLanguage(this.props.language).Map_Layer.LAYERS,
-            //'我的图层',
-            data: layers,
-            visible:
-              this.state.data.length === 3 ? this.state.data[1].visible : true,
-          },
-          {
-            title: getLanguage(this.props.language).Map_Layer.BASEMAP,
-            // '我的底图',
-            data: baseMap,
-            visible:
-              this.state.data.length === 3 ? this.state.data[2].visible : true,
-          },
-        ],
-        refreshing: false,
-        allLayersVisible: this.isAllLayersVisible(layers),
-      })
-      // let mapName = await this.map.getName()
+      data = [
+        {
+          title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
+          //'我的标注',
+          data: taggingLayers,
+          visible:
+            this.state?.data?.length === 3 ? this.state.data[0].visible : true,
+        },
+        {
+          title: getLanguage(this.props.language).Map_Layer.LAYERS,
+          //'我的图层',
+          data: layers,
+          visible:
+            this.state?.data?.length === 3 ? this.state.data[1].visible : true,
+        },
+        {
+          title: getLanguage(this.props.language).Map_Layer.MY_BASEMAP,
+          // '我的底图',
+          data: baseMap,
+          visible:
+            this.state?.data?.length === 3 ? this.state.data[2].visible : true,
+        },
+      ]
     } catch (e) {
-      this.setState({
-        data: [
-          {
-            title: getLanguage(this.props.language).Map_Layer.PLOTS,
-            //'我的标注',
-            data: [],
-            visible: true,
-          },
-          {
-            title: getLanguage(this.props.language).Map_Layer.LAYERS,
-            //'我的图层',
-            data: [],
-            visible: true,
-          },
-          {
-            title: getLanguage(this.props.language).Map_Layer.BASEMAP,
-            // '我的底图',
-            data: [
-              {
-                caption: 'baseMap',
-                datasetName: '',
-                name: 'baseMap',
-                path: '',
-                themeType: 0,
-                type: 81,
-              },
-            ],
-            visible: true,
-          },
-        ],
-        refreshing: false,
-        allLayersVisible: true,
-      })
-      this.setRefreshing(false)
+      data = this._getDefaultData()
     }
+    return data
   }
 
   getItemLayout = (data, index) => {
@@ -288,7 +346,7 @@ export default class MT_layerManager extends React.Component {
       data.type === DatasetType.MBImage
     ) {
       // 影像图层不能被设为当前图层
-      Toast.show(getLanguage(GLOBAL.language).Prompt.IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER)
+      Toast.show(getLanguage(global.language).Prompt.IMAGE_LAYER_CANNOT_BE_CURRENT_LAYER)
       return
     }
     if (this.props.currentLayer.name === data.name) {
@@ -345,7 +403,7 @@ export default class MT_layerManager extends React.Component {
     }
     let data = [...this.state.data]
     data[0] = {
-      title: getLanguage(this.props.language).Map_Layer.PLOTS,
+      title: getLanguage(this.props.language).Map_Layer.MY_PLOTS,
       //'我的标注',
       data: dataList,
       visible: true,
@@ -358,7 +416,7 @@ export default class MT_layerManager extends React.Component {
     // 防止点击图层图标把底图设置为当前图层
     const isBaseMap = (data.type === DatasetType.IMAGE || data.type === DatasetType.MBImage)
     // this.props.setMapLegend(false)
-    if (GLOBAL.Type === ChunkType.MAP_EDIT) return
+    if (global.Type === ChunkType.MAP_EDIT) return
     !isBaseMap && this.props.setCurrentLayer &&
       this.props.setCurrentLayer(data, () => {
         // 切换地图，清除历史记录
@@ -368,9 +426,9 @@ export default class MT_layerManager extends React.Component {
           this.props.clearAttributeHistory && this.props.clearAttributeHistory()
         }
         if (
-          GLOBAL.Type !== ChunkType.MAP_EDIT &&
-          GLOBAL.Type !== ChunkType.MAP_THEME &&
-          GLOBAL.Type !== ChunkType.MAP_ANALYST
+          global.Type !== ChunkType.MAP_EDIT &&
+          global.Type !== ChunkType.MAP_THEME &&
+          global.Type !== ChunkType.MAP_ANALYST
         ) {
           return
         }
@@ -384,7 +442,7 @@ export default class MT_layerManager extends React.Component {
           // this.mapEdit(data)
           styleModule().actions.layerListAction &&
             styleModule().actions.layerListAction(data)
-        } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
+        } else if (global.Type === ChunkType.MAP_THEME) {
           // this.mapTheme(data)
           themeModule().actions.layerListAction &&
             themeModule().actions.layerListAction(data)
@@ -451,7 +509,7 @@ export default class MT_layerManager extends React.Component {
           this.itemRefs[parent.name].setChildrenList(children)
       }
     }
-    if (GLOBAL.Type === ChunkType.MAP_THEME) {
+    if (global.Type === ChunkType.MAP_THEME) {
       let themeType
       switch (data.themeType) {
         case ThemeType.UNIQUE:
@@ -479,8 +537,8 @@ export default class MT_layerManager extends React.Component {
         resetToolModuleData: true,
       })
     } else if (
-      GLOBAL.Type === ChunkType.MAP_EDIT ||
-      GLOBAL.Type === ChunkType.MAP_ANALYST
+      global.Type === ChunkType.MAP_EDIT ||
+      global.Type === ChunkType.MAP_ANALYST
     ) {
       this.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
         layerData: data,
@@ -488,7 +546,7 @@ export default class MT_layerManager extends React.Component {
         resetToolModuleData: true,
       })
     } else if (
-      GLOBAL.Type === ChunkType.MAP_PLOTTING &&
+      global.Type === ChunkType.MAP_PLOTTING &&
       data.name.substring(0, 9) === 'PlotEdit_'
     ) {
       this.toolBox.setVisible(true, ConstToolType.SM_MAP_PLOT, {
@@ -496,7 +554,7 @@ export default class MT_layerManager extends React.Component {
         refreshParentList: refreshParentList,
         resetToolModuleData: true,
       })
-    } else if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+    } else if (global.Type === ChunkType.MAP_NAVIGATION) {
       this.toolBox.setVisible(true, ConstToolType.SM_MAP_LAYER_NAVIGATION, {
         layerData: data,
         refreshParentList: refreshParentList,
@@ -603,8 +661,10 @@ export default class MT_layerManager extends React.Component {
       }
 
       if (value) {
+        let layerType = LayerUtils.getLayerType(data)
         // 显示多媒体callouts
-        SMediaCollector.showMedia(data.name)
+        // TODO 普通图层显示和多媒体显示逻辑分开,图层显示的时候,暂时不显示多媒体,由多媒体开关来控制
+        layerType === 'TAGGINGLAYER' && SMediaCollector.showMedia(data.name)
       } else {
         // 隐藏多媒体callouts
         SMediaCollector.hideMedia(data.name)
@@ -670,8 +730,8 @@ export default class MT_layerManager extends React.Component {
   }
 
   setSaveViewVisible = visible => {
-    GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, {
+    global.SaveMapView &&
+      global.SaveMapView.setVisible(visible, {
         setLoading: this.setLoading,
       })
   }
@@ -707,7 +767,7 @@ export default class MT_layerManager extends React.Component {
           (async function() {
             await SMap.setLabelColor()
             await SMap.newTaggingDataset(
-              value,
+              `${value}_${this.props.user.currentUser.userName}`,
               this.props.user.currentUser.userName,
             )
             // this.setRefreshing(true)
@@ -735,8 +795,11 @@ export default class MT_layerManager extends React.Component {
     // 类型图标角标
     let cornerMarkImage = null
     try {
+      if (global.coworkMode && !LayerUtils.availableServiceLayer(item.type)) {
+        return cornerMarkImage
+      }
       if (
-        GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
+        global.coworkMode && this.props.cowork?.currentTask?.groupID &&
         this.props.cowork.services?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.length > 0
       ) {
         const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
@@ -747,7 +810,10 @@ export default class MT_layerManager extends React.Component {
             if ((
               dsDescription?.url && service.datasetUrl === dsDescription?.url ||
               service.layerName === item.name
-            ) && service.status !== 'done') {
+            ) &&
+            // item.themeType <= 0 && !item.isHeatmap &&
+            service.status !== 'done'
+            ) {
               return true
             }
           }
@@ -756,15 +822,18 @@ export default class MT_layerManager extends React.Component {
       }
       if (
         cornerMarkImage === null &&
-        GLOBAL.coworkMode && this.props.cowork?.currentTask?.groupID &&
+        global.coworkMode && this.props.cowork?.currentTask?.groupID &&
         this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.messages
       ) {
         const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
-        if (dsDescription.url && dsDescription?.type === 'onlineService') {
+        if (dsDescription?.url && dsDescription?.type === 'onlineService') {
           const currentCoworkMessage = this.props.cowork.coworkInfo[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id].messages
           if (currentCoworkMessage?.length > 0) {
             for (const message of currentCoworkMessage) {
-              if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
+              if (
+                message.message?.serviceUrl === dsDescription.url && message?.status === 0
+                // item.themeType <= 0 && !item.isHeatmap
+              ) {
                 cornerMarkImage = getThemeAssets().cowork.icon_state_update
                 return cornerMarkImage
               }
@@ -810,11 +879,11 @@ export default class MT_layerManager extends React.Component {
             return true
           }
         } else if (
-          section.title === getLanguage(this.props.language).Map_Layer.BASEMAP
+          section.title === getLanguage(this.props.language).Map_Layer.MY_BASEMAP
         ) {
           action = this.onToolBasePress
         } else if (
-          section.title === getLanguage(this.props.language).Map_Layer.PLOTS
+          section.title === getLanguage(this.props.language).Map_Layer.MY_PLOTS
         ) {
           action = this.taggingTool
         }
@@ -860,6 +929,7 @@ export default class MT_layerManager extends React.Component {
               item.path === this.props.currentLayer.path
             }
             onPress={data => this.onPressRow({ ...data, section })}
+            onLongPress={data => this.showPopover(data)}
             onAllPress={data => this.onAllPressRow({ ...data, section })}
             onArrowPress={({ data }) => this.getChildList({ data, section })}
             onToolPress={data => action({ ...data, section })}
@@ -891,12 +961,26 @@ export default class MT_layerManager extends React.Component {
     })
   }
 
+  // showPopover = ({ref, popoverData}) => {
+  //   ref?.measure((ox, oy, width, height, px, py) => {
+  //     this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), popoverData)
+  //   });
+  // }
+
+  showPopover = ({px, py, width, height, popoverData}) => {
+    this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), popoverData)
+  }
+
+  closePopover = () => {
+    this.setState({isVisible: false});
+  }
+
   renderSection = ({ section }) => {
     let image = section.visible
       ? getThemeAssets().publicAssets.icon_drop_down
       : getThemeAssets().publicAssets.icon_drop_up
-    let action, rightIcon
-    if (section.title === getLanguage(this.props.language).Map_Layer.PLOTS) {
+    let action, rightIcon, publishServiceBtn
+    if (section.title === getLanguage(this.props.language).Map_Layer.MY_PLOTS) {
       action = this.tool_row
       rightIcon = getThemeAssets().publicAssets.icon_edit
     } else if (
@@ -906,6 +990,97 @@ export default class MT_layerManager extends React.Component {
       rightIcon = this.state.allLayersVisible
         ? getThemeAssets().layer.icon_invisible
         : getThemeAssets().layer.icon_visible
+      if (global.coworkMode && global.Type !== ChunkType.MAP_PLOTTING) { // 标绘没有发布按钮
+        let isPublishing = false
+        if (
+          this.props.cowork?.currentTask?.groupID &&
+          this.props.cowork.services?.[this.props.user.currentUser.userName]?.[this.props.cowork?.currentTask?.groupID]?.[this.props.cowork?.currentTask?.id]?.length > 0
+        ) {
+          const services = this.props.cowork.services[this.props.user.currentUser.userName][this.props.cowork.currentTask.groupID][this.props.cowork.currentTask.id]
+          if (services?.length > 0) {
+            for (const service of services) {
+              if (service.layerName === 'publish-map-service' && service.status !== 'done') {
+                isPublishing = true
+                break
+              }
+            }
+          }
+        }
+        let mapServiceUrl = ''
+        for (const item of section.data) {
+          const dsDescription = LayerUtils.getDatasetDescriptionByLayer(item)
+          if (dsDescription?.url) {
+            mapServiceUrl = dsDescription.url.substring(0, dsDescription.url.indexOf('/data/datasources'))
+            break
+          }
+        }
+
+        publishServiceBtn =
+          this.props.cowork.currentTask?.resource?.resourceCreator &&
+          this.props.cowork.currentTask?.resource?.resourceCreator === this.props.user.currentUser?.userName &&
+          !mapServiceUrl && (
+            <View style={styles.sectionPublishView}>
+              <MTBtn
+                style={styles.rightIconView}
+                imageStyle={styles.icon}
+                // image={mapServiceUrl ? getThemeAssets().cowork.icon_nav_import : getThemeAssets().edit.icon_redo}
+                image={getThemeAssets().publicAssets.icon_data_upload}
+                onPress={async () => {
+                  // if (mapServiceUrl) {
+                  //   global.SimpleDialog.set({
+                  //     text: getLanguage(global.language).Prompt.WHETHER_DOWNLOAD_ALL_SERVICES,
+                  //     cancelText: getLanguage(global.language).Prompt.NO,
+                  //     cancelAction: async () => {
+                  //       global.Loading.setLoading(false)
+                  //     },
+                  //     confirmText: getLanguage(global.language).Prompt.YES,
+                  //     confirmAction: async () => {
+                  //       ServiceAction.downloadService(mapServiceUrl)
+                  //     },
+                  //   })
+                  // } else {
+                  let datasources = await SMap.getDatasources()
+                  let datasrouceNames = ''
+                  for (const datasource of datasources) {
+                    const datasourceAlias = datasource.alias
+                    // 不发布标注图层
+                    if (
+                      datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') === datasourceAlias?.length - 1 || // 过滤标注数据源
+                      datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
+                    ) {
+                      continue
+                    }
+                    datasrouceNames += (datasrouceNames ? ', ' : '') + datasourceAlias
+                  }
+                  global.SimpleDialog.set({
+                    text: getLanguage(global.language).Profile.PUBLISH_SERVICE + ' ' + datasrouceNames,
+                    cancelText: getLanguage(global.language).Prompt.NO,
+                    cancelAction: async () => {
+                      global.Loading.setLoading(false)
+                    },
+                    confirmText: getLanguage(global.language).Prompt.YES,
+                    confirmAction: async () => {
+                      ServiceAction.publishMapService()
+                    },
+                  })
+                  // }
+                  global.SimpleDialog.setVisible(true)
+                }}
+              />
+              {/* <TextBtn
+                btnText={
+                  mapServiceUrl
+                    ? '下载服务'
+                    : getLanguage(global.language).Profile.PUBLISH_SERVICE
+                }
+                textStyle={styles.title}
+                btnClick={async () => {
+                }}
+              /> */}
+              {isPublishing ? <Waitting isLoading={true}/> : <View style={styles.watting}/>}
+            </View>
+          )
+      }
     }
     return (
       <TouchableOpacity
@@ -920,10 +1095,11 @@ export default class MT_layerManager extends React.Component {
           {section.title ===
             getLanguage(this.props.language).Map_Layer.LAYERS && (
             <Text style={styles.sectionSubTitle}>
-              {getLanguage(GLOBAL.language).Prompt.LONG_PRESS_TO_SORT}
+              {getLanguage(global.language).Prompt.LONG_PRESS_TO_SORT}
             </Text>
           )}
         </View>
+        {publishServiceBtn}
         <TouchableOpacity style={styles.rightIconView} onPress={action}>
           <Image
             resizeMode={'contain'}
@@ -964,6 +1140,7 @@ export default class MT_layerManager extends React.Component {
         initialNumToRender={15}
         // ItemSeparatorComponent={this.renderItemSeparator}
         renderSectionFooter={this.renderSectionFooter}
+        ListFooterComponent={<View style={{height:8}}/>}
       />
     )
   }
@@ -1018,7 +1195,7 @@ export default class MT_layerManager extends React.Component {
 
   //遮盖层
   renderOverLayer = () => {
-    return <OverlayView ref={ref => (GLOBAL.LayerManagerOverlayView = ref)} />
+    return <OverlayView ref={ref => (global.LayerManagerOverlayView = ref)} />
   }
 
   renderTool = () => {
@@ -1038,13 +1215,14 @@ export default class MT_layerManager extends React.Component {
         user={this.props.user}
         navigation={this.props.navigation}
         mapFromXml={this.props.mapFromXml}
+        currentTask={this.props.cowork.currentTask}
       />
     )
   }
 
   // 专题制图导入导出按钮
   _renderHeaderRight = () =>{
-    if(this.state.type !== ChunkType.MAP_THEME || GLOBAL.coworkMode) return null
+    if(this.state.type !== ChunkType.MAP_THEME || global.coworkMode) return null
     let itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
     let size =
@@ -1094,9 +1272,9 @@ export default class MT_layerManager extends React.Component {
     if(isOutput) {
       // 地图输出为xml
       const mapName = this.props.map.currentMap.name || 'DefaultMap'
-      GLOBAL.Loading.setLoading(true)
+      global.Loading.setLoading(true)
       this.props.mapToXml({mapName}, result => {
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
         Toast.show(result ? getLanguage(this.props.language).Prompt.SUCCESS :
           getLanguage(this.props.language).Prompt.FAILED)
       })
@@ -1104,7 +1282,7 @@ export default class MT_layerManager extends React.Component {
       // 打开加载xml到地图的xml模板列表
       const data = await getXmlTemplateData()
       if(data[0].data.length === 0){
-        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_TEMPLATE)
+        Toast.show(getLanguage(global.language).Prompt.NO_TEMPLATE)
         return
       }
       this.toolBox.setVisible(true, "GET_XML_TEMPLATE")
@@ -1117,8 +1295,8 @@ export default class MT_layerManager extends React.Component {
       <Dialog
         ref={ref => (this.dialog = ref)}
         cancelBtnVisible={true}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.YES}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.NO}
+        confirmBtnTitle={getLanguage(global.language).Prompt.YES}
+        cancelBtnTitle={getLanguage(global.language).Prompt.NO}
         confirmAction={async ()=>{
           this.dialog && this._onDialogConfirm()
         }}
@@ -1132,8 +1310,8 @@ export default class MT_layerManager extends React.Component {
         <View style={styles.dialogContent}>
           <Image source={require('../../assets/home/Frenchgrey/icon_prompt.png')} style={styles.dialogTitleImg}/>
           <Text style={styles.dialogTextStyle}>{
-            isOutput ? getLanguage(GLOBAL.language).Prompt.CONFIRM_OUTPUT_TEMPLATE :
-              getLanguage(GLOBAL.language).Prompt.CONFIRM_LOAD_TEMPLATE
+            isOutput ? getLanguage(global.language).Prompt.CONFIRM_OUTPUT_TEMPLATE :
+              getLanguage(global.language).Prompt.CONFIRM_LOAD_TEMPLATE
           }</Text>
         </View>
       </Dialog>
@@ -1147,7 +1325,7 @@ export default class MT_layerManager extends React.Component {
         headerProps={{
           title: this.props.mapModules?.modules?.[
             this.props.mapModules.currentMapModule
-          ]?.chunk?.title || getLanguage(GLOBAL.language).Map_Label.LAYER,
+          ]?.chunk?.title || getLanguage(global.language).Map_Label.LAYER,
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../assets/mapTools/icon_close.png'),
@@ -1159,7 +1337,8 @@ export default class MT_layerManager extends React.Component {
           headerRight: this._renderHeaderRight(),
         }}
         onOverlayPress={() => {
-          this.props.navigation.navigate('MapView')
+          // this.props.navigation.navigate('MapView')
+          this.props.navigation.goBack()
         }}
         bottomBar={this.renderToolBar()}
       >
@@ -1167,6 +1346,11 @@ export default class MT_layerManager extends React.Component {
         {this.renderOverLayer()}
         {this.renderTool()}
         {this._renderDialog()}
+        <PopoverButtonsView
+          ref={ref => this.Popover = ref}
+          backgroundStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
+          popoverStyle={{backgroundColor: 'rgba(0, 0, 0, 1)'}}
+        />
       </Container>
     )
   }

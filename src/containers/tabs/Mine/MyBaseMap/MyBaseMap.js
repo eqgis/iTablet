@@ -14,6 +14,12 @@ import { getLanguage } from '../../../../language/index'
 // import { Toast } from '../../../../utils'
 import styles from './styles'
 import { ConstOnline } from '../../../../constants'
+import RenderServiceItem from '../MyService/RenderServiceItem'
+import { UserType } from '../../../../constants'
+import { SOnlineService, SIPortalService } from 'imobile_for_reactnative'
+
+let _arrPrivateServiceList = []
+let _arrPublishServiceList = []
 export default class MyBaseMap extends Component {
   props: {
     user: any,
@@ -26,13 +32,15 @@ export default class MyBaseMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: getLanguage(GLOBAL.language).Profile.BASEMAP,
+      title: getLanguage(global.language).Profile.BASEMAP,
       //'底图',
       modalIsVisible: false,
     }
+    // 根据当前用户id获取当前用户的底图数组
     this.curUserBaseMaps = this.props.baseMaps[
       this.props.user.currentUser.userId
     ]
+    // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
     if (!this.curUserBaseMaps) {
       this.curUserBaseMaps = this.props.baseMaps['default']
     }
@@ -43,13 +51,12 @@ export default class MyBaseMap extends Component {
     //添加公共底图 zhangxt
     this.curUserBaseMaps = this.getCommonBaseMap().concat(this.curUserBaseMaps)
     let count = this.curUserBaseMaps.length
+    // 矫正当前用户底图数组里元素的index的值，让index的值与他的位置保持相同
     for (let i = 0; i < count; i++) {
       this.curUserBaseMaps[i].index = i
     }
     this.uploadList = []
   }
-
-  componentDidMount() {}
 
   /**
    * @author zhangxt
@@ -65,7 +72,7 @@ export default class MyBaseMap extends Component {
       ConstOnline.OSM,
       ConstOnline.tianditu(),
     ]
-    if(GLOBAL.language === 'CN') {
+    if(global.language === 'CN') {
       maps.splice(3, 1)
     }
     return maps
@@ -82,6 +89,29 @@ export default class MyBaseMap extends Component {
         itemOnPress={this.itemOnPress}
       />
     )
+  }
+
+  _renderServiceItem = ({ item, index }) => {
+    let restTitle = item.restTitle
+    if (restTitle !== undefined) {
+      let imageUri = item.thumbnail
+      let isPublish = item.isPublish
+      let itemId = item.id
+      let scenes = item.scenes
+      let mapInfos = item.mapInfos
+      return (
+        <RenderServiceItem
+          data={item}
+          imageUrl={imageUri}
+          restTitle={restTitle}
+          isPublish={isPublish}
+          itemId={itemId}
+          index={index}
+          scenes={scenes}
+          mapInfos={mapInfos}
+        />
+      )
+    }
   }
 
   _keyExtractor = index => {
@@ -177,7 +207,7 @@ export default class MyBaseMap extends Component {
     let item = this.itemInfo
     if (item) {
       data.push({
-        title: getLanguage(GLOBAL.language).Profile.DELETE_DATA,
+        title: getLanguage(global.language).Profile.DELETE_DATA,
         action: this.deleteData,
       })
     }
@@ -223,6 +253,22 @@ export default class MyBaseMap extends Component {
             />
           )}
         />
+        {/* <FlatList
+          initialNumToRender={20}
+          ref={ref => (this.serviceref = ref)}
+          renderItem={this._renderServiceItem}
+          keyExtractor={(item, index) => index.toString()}
+          data={this.state.arrPrivateServiceList}
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                backgroundColor: color.separateColorGray,
+                flex: 1,
+                height: 1,
+              }}
+            />
+          )}
+        /> */}
         {/*{this._showMyDataPopupModal()}*/}
         {this.renderPopupMenu()}
       </Container>

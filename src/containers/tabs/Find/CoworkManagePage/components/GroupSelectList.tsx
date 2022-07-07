@@ -16,13 +16,10 @@ import {
 import { Toast, scaleSize } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
-// import FriendListFileHandle from '../FriendListFileHandle'
-// eslint-disable-next-line
-// import { ActionPopover } from 'teaset'
 import { getLanguage } from '../../../../../language'
 import { UserType } from '../../../../../constants'
 import { SCoordination } from 'imobile_for_reactnative'
-import { UserInfo } from '../../../../../redux/models/user'
+import { UserInfo } from '../../../../../types'
 
 interface Props {
   user: UserInfo,
@@ -196,7 +193,7 @@ class GroupSelectList extends Component<Props, State> {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.REFRESHING}
               enabled={true}
             />
           }

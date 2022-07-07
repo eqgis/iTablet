@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { persistStore, persistCombineReducers } from 'redux-persist'
 import * as reducers from '../models/index'
@@ -39,8 +39,9 @@ const persistConfig = {
 }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
+export const reducer = persistCombineReducers(persistConfig, reducers)
+
 export default () => {
-  const reducer = persistCombineReducers(persistConfig, reducers)
   const store = createStore(
     reducer,
     composeEnhancers(applyMiddleware(...middlewares)),

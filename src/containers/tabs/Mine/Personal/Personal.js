@@ -29,7 +29,7 @@ export default class Personal extends Component {
 
   _logoutConfirm = () => {
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Prompt.LOG_OUT,
+      text: getLanguage(global.language).Prompt.LOG_OUT_CONFIRM,
       confirmAction: this._logout,
     })
     this.SimpleDialog.setVisible(true)
@@ -51,7 +51,7 @@ export default class Personal extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
             ConstPath.RelativeFilePath.Workspace[
-              GLOBAL.language === 'CN' ? 'CN' : 'EN'
+              global.language === 'CN' ? 'CN' : 'EN'
             ],
         )
         this.props.deleteUser(this.props.user.currentUser)
@@ -80,7 +80,7 @@ export default class Personal extends Component {
     let marginLeft = 15
     let marginRight = 20
     let fontSize = size.fontSize.fontSizeXl
-    if (key !== getLanguage(GLOBAL.language).Profile.PROFILE_PHOTO) {
+    if (key !== getLanguage(global.language).Profile.PROFILE_PHOTO) {
       //'头像') {
       return (
         <View style={{ width: '100%' }}>
@@ -175,7 +175,7 @@ export default class Personal extends Component {
       <View style={{ width: '100%' }}>
         {this._renderItem(
           //'头像'
-          getLanguage(GLOBAL.language).Profile.PROFILE_PHOTO,
+          getLanguage(global.language).Profile.PROFILE_PHOTO,
         )}
         {this._renderItem(
           //'ID'
@@ -184,19 +184,19 @@ export default class Personal extends Component {
         )}
         {this._renderItem(
           //'用户名'
-          getLanguage(GLOBAL.language).Profile.USERNAME,
+          getLanguage(global.language).Profile.USERNAME,
           this.props.user.currentUser.nickname,
         )}
         {this._renderItem(
           //'手机号'
-          getLanguage(GLOBAL.language).Profile.PHONE,
+          getLanguage(global.language).Profile.PHONE,
           this.props.user.currentUser.phone,
         )}
         {this._renderItem(
           //'邮箱'
-          getLanguage(GLOBAL.language).Profile.E_MAIL,
+          getLanguage(global.language).Profile.E_MAIL,
           this.props.user.currentUser.email === ' 立即绑定'
-            ? getLanguage(GLOBAL.language).Profile.CONNECT
+            ? getLanguage(global.language).Profile.CONNECT
             : this.props.user.currentUser.email,
         )}
       </View>
@@ -232,7 +232,7 @@ export default class Personal extends Component {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Profile.SWITCH_ACCOUNT}
+          {getLanguage(global.language).Profile.SWITCH_ACCOUNT}
           {/* 切换账号 */}
         </Text>
       </TouchableOpacity>
@@ -260,7 +260,7 @@ export default class Personal extends Component {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Profile.CANCELLATION}
+          {getLanguage(global.language).Profile.CANCELLATION}
           {/* 注销 */}
         </Text>
       </TouchableOpacity>
@@ -282,7 +282,7 @@ export default class Personal extends Component {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Profile.LOG_OUT}
+          {getLanguage(global.language).Profile.LOG_OUT}
           {/* 退出登录 */}
         </Text>
       </TouchableOpacity>
@@ -298,20 +298,20 @@ export default class Personal extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.MY_ACCOUNT,
+          title: getLanguage(global.language).Profile.MY_ACCOUNT,
           //'个人主页',
           navigation: this.props.navigation,
         }}
       >
         <ScrollView
           style={{ flex: 1 }}
-          contentContainerStyle={[styles.container]}
+          // contentContainerStyle={[styles.container]}
         >
           {this.renderHeader()}
           {this._renderLine()}
           {this._renderToggleAccount()}
           {this._renderLine()}
-          {this._renderCancelLog()}
+          {UserType.isOnlineUser(this.props.user.currentUser) && this._renderCancelLog()}
           {this._renderLine()}
           {this._renderLogout()}
           {this._renderSimpleDialog()}

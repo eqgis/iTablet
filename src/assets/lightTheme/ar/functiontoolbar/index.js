@@ -41,6 +41,18 @@ const icon_ar_volume_select = require('./icon_ar_volume_select.png')
 const icon_ar_volume = require('./icon_ar_volume.png')
 const icon_ar_cuboid = require('./icon_ar_cuboid.png')
 const icon_ar_cylinder = require('./icon_ar_cylinder.png')
+const ar_picture_collection = require('./icon_collection_picture.png')
+const ar_video_collection = require('./icon_collection_video.png')
+const ar_map_collection = require('./icon_collection_map.png')
+const sandtable_album = require('./icon_tool_sandtable.png')
+const icon_tool_relation = require('./icon_tool_relation.png')
+const icon_tool_list = require('./icon_tool_list.png')
+const icon_tool_loop = require('./icon_tool_loop.png')
+// 柱状图图标
+export const bar_chart = require('./icon_tool_bar-chart.png')
+// 饼图图标
+export const pie_chart = require('./icon_tool_pie-chart.png')
+
 export default {
   rightbar_ai_aggregate_collect_light, // 态势采集
   rightbar_ai_classify_light, // 目标分类
@@ -87,4 +99,13 @@ export default {
   icon_ar_volume,
   icon_ar_cuboid,
   icon_ar_cylinder,
+  ar_picture_collection,
+  ar_video_collection,
+  ar_map_collection,
+  sandtable_album,
+  icon_tool_relation,
+  icon_tool_list,
+  icon_tool_loop,
+  bar_chart,
+  pie_chart,
 }

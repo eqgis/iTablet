@@ -30,8 +30,8 @@ export default class InformSpot extends Component {
   getContacts = () => {
     let bInform = false
     let currentUser
-    if (this.props.chat.hasOwnProperty(this.props.user.currentUser.userId)) {
-      currentUser = this.props.chat[this.props.user.currentUser.userId]
+    if (this.props.chat.hasOwnProperty(this.props.user.currentUser.userName)) {
+      currentUser = this.props.chat[this.props.user.currentUser.userName]
       let keys = Object.keys(currentUser)
       for (let i = 0, key = ''; i < keys.length; i++) {
         key = keys[i]
@@ -57,7 +57,8 @@ export default class InformSpot extends Component {
     if (
       JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user) ||
       JSON.stringify(prevProps.chat) !== JSON.stringify(this.props.chat) ||
-      JSON.stringify(prevState) !== JSON.stringify(this.state)
+      JSON.stringify(prevState) !== JSON.stringify(this.state) ||
+      JSON.stringify(prevProps.style) !== JSON.stringify(this.props.style)
     ) {
       return true
     }

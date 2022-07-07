@@ -84,18 +84,18 @@ export default class ModuleItem extends Component {
     let width =
       this.props.style && this.props.style.width
         ? this.props.style.width
-        : SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad)
+        : SizeUtil.getItemWidth(this.props.device.orientation, global.isPad)
     let height =
       this.props.style && this.props.style.height
         ? this.props.style.height
-        : SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad)
+        : SizeUtil.getItemHeight(this.props.device.orientation, global.isPad)
     return { width, height }
   }
 
   setDownloading = (downloading = false) => {
     this.downloading = downloading
   }
-  
+
   spin = (isLoading = true) => {
     if (!this.state.isLoading && isLoading) {
       this.setState({
@@ -104,11 +104,12 @@ export default class ModuleItem extends Component {
         if (!this.aniMotion && this.state.isLoading) {
           this.rotateValue.setValue(0)
           this.aniMotion = Animated.timing(this.rotateValue,{
+            isInteraction: false,
             toValue: this.rotateValue._value === 0 ? 1 : 0,
             duration: 800,
             easing: Easing.linear,
             useNativeDriver: true,
-          });
+          })
           Animated.loop(this.aniMotion).start()
         }
       })
@@ -201,7 +202,7 @@ export default class ModuleItem extends Component {
           },
         ]}
       >
-        <View
+        <Animated.View
           style={[
             this.isLandscape() ? styles.moduleViewL : styles.moduleViewP,
             {
@@ -261,7 +262,7 @@ export default class ModuleItem extends Component {
               source={getPublicAssets().common.icon_downloading}
             />
           }
-        </View>
+        </Animated.View>
       </TouchableOpacity>
     )
   }

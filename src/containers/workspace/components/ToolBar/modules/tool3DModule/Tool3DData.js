@@ -57,7 +57,7 @@ async function getData(type, params) {
         //     .TOOLS_PLANE_CLIP,
         //   //'平面裁剪',
         //   action: () => {
-        //     if (!GLOBAL.openWorkspace) {
+        //     if (!global.openWorkspace) {
         //       Toast.show(
         //         getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE,
         //       )
@@ -80,7 +80,7 @@ async function getData(type, params) {
         //     .TOOLS_CROSS_CLIP,
         //   //'cross裁剪',
         //   action: () => {
-        //     if (!GLOBAL.openWorkspace) {
+        //     if (!global.openWorkspace) {
         //       Toast.show(
         //         getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE,
         //       )
@@ -112,7 +112,7 @@ async function getData(type, params) {
       data = [
         {
           key: 'cancel',
-          title: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          title: getLanguage(global.language).Prompt.CANCEL,
           action: () => {
             SScene.clearSelection()
             params.setAttributes && params.setAttributes({})
@@ -150,10 +150,10 @@ async function getData(type, params) {
       data = [
         {
           key: 'startFly',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY_AROUND_POINT,
+          title: getLanguage(global.language).Map_Main_Menu.FLY_AROUND_POINT,
           // '绕点飞行',
           action: () => {
-            GLOBAL.isCircleFlying = true
+            global.isCircleFlying = true
             SScene.startCircleFly()
           },
           size: 'large',
@@ -226,39 +226,39 @@ async function getClipData(type) {
 
 // const BoxClipData = () => [
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_LAYER,
+//     title: getLanguage(global.language).Map_Main_Menu.CLIP_LAYER,
 //     data: [], //获取图层数据
 //   },
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_AREA_SETTINGS,
+//     title: getLanguage(global.language).Map_Main_Menu.CLIP_AREA_SETTINGS,
 //     data: [
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_LENGTH,
 //         value: 0,
 //         iconType: 'Text',
 //       },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_WIDTH,
 //         value: 0,
 //         iconType: 'Text',
 //       },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_HEIGHT,
 //         value: 0,
 //         iconType: 'Text',
 //       },
 //       // {
-//       //   title:getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_AREA_SETTINGS_ZROT,
+//       //   title:getLanguage(global.language).Map_Main_Menu.CLIP_AREA_SETTINGS_ZROT,
 //       //   value:0,
 //       //   iconType:"Input",
 //       // },
 //     ],
 //   },
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.POSITION,
+//     title: getLanguage(global.language).Map_Main_Menu.POSITION,
 //     data: [
 //       {
 //         title: 'X',
@@ -278,14 +278,14 @@ async function getClipData(type) {
 //     ],
 //   },
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_SETTING,
+//     title: getLanguage(global.language).Map_Main_Menu.CLIP_SETTING,
 //     data: [
 //       // {
-//       //   title:getLanguage(GLOBAL.language).Map_Main_Menu.LINE_COLOR,
+//       //   title:getLanguage(global.language).Map_Main_Menu.LINE_COLOR,
 //       //   iconType:"Arrow",
 //       // },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_INNER,
+//         title: getLanguage(global.language).Map_Main_Menu.CLIP_INNER,
 //         iconType: 'Switch',
 //       },
 //     ],
@@ -294,31 +294,31 @@ async function getClipData(type) {
 //
 // const CrossClipData = () => [
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_LAYER,
+//     title: getLanguage(global.language).Map_Main_Menu.CLIP_LAYER,
 //     data: [],
 //   },
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_SETTING,
+//     title: getLanguage(global.language).Map_Main_Menu.CLIP_SETTING,
 //     data: [
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu.LINE_COLOR,
+//         title: getLanguage(global.language).Map_Main_Menu.LINE_COLOR,
 //         iconType: 'Arrow',
 //       },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu.LINE_OPACITY,
+//         title: getLanguage(global.language).Map_Main_Menu.LINE_OPACITY,
 //         value: 100,
 //         maxValue: 100,
 //         minValue: 0,
 //         iconType: 'Input',
 //       },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu.SHOW_OTHER_SIDE,
+//         title: getLanguage(global.language).Map_Main_Menu.SHOW_OTHER_SIDE,
 //         iconType: 'Switch',
 //       },
 //     ],
 //   },
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.POSITION,
+//     title: getLanguage(global.language).Map_Main_Menu.POSITION,
 //     data: [
 //       {
 //         title: 'X',
@@ -338,22 +338,22 @@ async function getClipData(type) {
 //     ],
 //   },
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.ROTATE_SETTINGS,
+//     title: getLanguage(global.language).Map_Main_Menu.ROTATE_SETTINGS,
 //     data: [
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_XROT,
 //         value: 0,
 //         iconType: 'Input',
 //       },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_YROT,
 //         value: 0,
 //         iconType: 'Input',
 //       },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_ZROT,
 //         value: 0,
 //         iconType: 'Input',
@@ -364,26 +364,26 @@ async function getClipData(type) {
 //
 // const PlaneClipData = () => [
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_LAYER,
+//     title: getLanguage(global.language).Map_Main_Menu.CLIP_LAYER,
 //     data: [],
 //   },
 //   {
-//     title: getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_SURFACE_SETTING,
+//     title: getLanguage(global.language).Map_Main_Menu.CLIP_SURFACE_SETTING,
 //     data: [
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_LENGTH,
 //         value: 10,
 //         iconType: 'Input',
 //       },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_WIDTH,
 //         value: 10,
 //         iconType: 'Input',
 //       },
 //       {
-//         title: getLanguage(GLOBAL.language).Map_Main_Menu
+//         title: getLanguage(global.language).Map_Main_Menu
 //           .CLIP_AREA_SETTINGS_HEIGHT,
 //         value: 0,
 //         iconType: 'Input',

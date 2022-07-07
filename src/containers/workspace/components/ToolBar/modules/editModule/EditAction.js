@@ -48,16 +48,20 @@ async function commit(type) {
             }
           }
           //协作时同步编辑对象
-          if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-            let event = ToolbarModule.getData().event
-            //TODO 增加类型判断
-            let friend = GLOBAL.getFriend()
-            friend.onGeometryEdit(
-              event.layerInfo,
-              event.fieldInfo,
-              event.id,
-              event.geometryType,
-            )
+          if (global.coworkMode && global.getFriend) {
+            let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+            let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
+            if (isRealTime) {
+              let event = ToolbarModule.getData().event
+              //TODO 增加类型判断
+              let friend = global.getFriend()
+              friend.onGeometryEdit(
+                event.layerInfo,
+                event.fieldInfo,
+                event.id,
+                event.geometryType,
+              )
+            }
           }
           currentToolbarType = ConstToolType.SM_MAP_EDIT
           // 编辑完成关闭Toolbar
@@ -109,14 +113,6 @@ function close() {
 /** 地图点选对象回调 **/
 async function geometrySelected(event) {
   const params = ToolbarModule.getParams()
-  params.setSelection &&
-    params.setSelection([
-      {
-        layerInfo: event.layerInfo,
-        geometryType: event.geometryType,
-        ids: [event.id],
-      },
-    ])
   if (event.fieldInfo) {
     ToolbarModule.addData({
       layerInfo: event.layerInfo,
@@ -194,7 +190,7 @@ function redo(type) {
 
 function remove() {
   // TODO remove
-  GLOBAL.removeObjectDialog && GLOBAL.removeObjectDialog.setDialogVisible(true)
+  global.removeObjectDialog && global.removeObjectDialog.setDialogVisible(true)
 }
 
 /** 添加点 * */
@@ -257,7 +253,7 @@ async function deleteLabel() {
   const _params = ToolbarModule.getParams()
   const _selection = _params.selection
   if (_selection.length === 0) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
+    Toast.show(getLanguage(global.language).Prompt.NON_SELECTED_OBJ)
     return
   }
   

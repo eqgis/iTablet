@@ -29,6 +29,7 @@ export default class Chunk {
       props.openDefaultMap !== undefined ? props.openDefaultMap : true // 是否打开默认地图
 
     this.preAction = props.preAction // action之前的检测，返回false则不执行之后的action
+    this.afterAction = props.afterAction // action之前的检测，返回false则不执行之后的action
 
     this.baseMapSource = props.baseMapSource // 默认地图资源
 
@@ -43,7 +44,7 @@ export default class Chunk {
 
   getTitle = () => this.title
 
-  action = async (user, lastMap) => {
+  action = async (user, lastMap, service) => {
     if (this.preAction && typeof this.preAction === 'function') {
       let result = await this.preAction()
       if (!result) return false
@@ -56,7 +57,7 @@ export default class Chunk {
       await this.props.action()
       return true
     }
-    GLOBAL.Type = this.key
+    global.Type = this.key
     SMap.setCurrentModule(this.licenceType)
     const homePath = await FileTools.appendingHomeDirectory()
 
@@ -72,7 +73,7 @@ export default class Chunk {
         }
         //三维也先获取一下上次场景 add xiezhy
         if(isOpenLastMap){
-          NavigationService.navigate('Map3D', {name:lastMap.name})
+          NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {name:lastMap.name}})
         }else{
           let fileName = 'OlympicGreen_EXAMPLE'
           const homePath = await FileTools.appendingHomeDirectory()
@@ -80,11 +81,11 @@ export default class Chunk {
           const fileDirPath = cachePath + fileName
           const arrFile = await FileTools.getFilterFiles(fileDirPath)
           if (arrFile.length === 0) {
-            NavigationService.navigate('Map3D', {})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {}})
           } else {
             // const name = 'OlympicGreen_EXAMPLE'
             const name = 'OlympicGreen'
-            NavigationService.navigate('Map3D', { name })
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name }})
           }
         }
         break
@@ -93,7 +94,7 @@ export default class Chunk {
         // 二维地图
         let data = this.baseMapSource
         data.layerIndex = this.baseMapIndex
-        GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
+        global.BaseMapSize = data instanceof Array ? data.length : 1
 
         let userPath = ConstPath.CustomerPath
         if (user && user.userName) {
@@ -103,7 +104,7 @@ export default class Chunk {
           homePath +
           userPath +
           ConstPath.RelativeFilePath.Workspace[
-            GLOBAL.language === 'CN' ? 'CN' : 'EN'
+            global.language === 'CN' ? 'CN' : 'EN'
           ]
 
         let wsData
@@ -150,10 +151,13 @@ export default class Chunk {
           mapTitle: this.title,
           isExample: this.isExample,
         }
-        // if (GLOBAL.coworkMode) {
+        if (service) {
+          param = Object.assign(param, {service: service})
+        }
+        // if (global.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)
         // } else {
-        NavigationService.navigate('MapView', param)
+        NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
         // }
         break
       }
@@ -161,7 +165,7 @@ export default class Chunk {
         // 二维地图
         let data = this.baseMapSource
         data.layerIndex = this.baseMapIndex
-        GLOBAL.BaseMapSize = data instanceof Array ? data.length : 1
+        global.BaseMapSize = data instanceof Array ? data.length : 1
 
         let userPath = ConstPath.CustomerPath
         if (user && user.userName) {
@@ -171,7 +175,7 @@ export default class Chunk {
           homePath +
           userPath +
           ConstPath.RelativeFilePath.Workspace[
-            GLOBAL.language === 'CN' ? 'CN' : 'EN'
+            global.language === 'CN' ? 'CN' : 'EN'
           ]
 
         let wsData
@@ -218,15 +222,20 @@ export default class Chunk {
           mapTitle: this.title,
           isExample: this.isExample,
         }
-        // if (GLOBAL.coworkMode) {
+        // if (global.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)
         // } else {
-        NavigationService.navigate('MapView', param)
+        NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
         // }
         break
       }
       default:
         break
+    }
+
+    if (this.afterAction && typeof this.afterAction === 'function') {
+      let result = await this.afterAction()
+      if (!result) return false
     }
     return true
   }

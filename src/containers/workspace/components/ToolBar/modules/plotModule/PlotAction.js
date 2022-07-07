@@ -45,7 +45,7 @@ async function geometrySelected(event) {
       )
       if (type === -1) {
         Toast.show(
-          getLanguage(GLOBAL.language).Prompt.PLEASE_SELECT_PLOT_SYMBOL,
+          getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_SYMBOL,
         )
         SMap.setAction(Action.PAN)
       } else {
@@ -87,8 +87,8 @@ async function geometrySelected(event) {
                   if (createInfo.animationMode !== -1) {
                     SMap.createAnimationGo(createInfo, params.map.currentMap.name)
                   }
-                  GLOBAL.TouchType = TouchType.NULL
-                  GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
+                  global.TouchType = TouchType.NULL
+                  global.animationWayData && (global.animationWayData = null)
 
                   const height = 0
                   params.showFullMap && params.showFullMap(true)
@@ -170,7 +170,7 @@ async function showCollection(libId, symbolCode, type) {
 }
 
 function cancelAnimationWay() {
-  // GLOBAL.animationWayData && (GLOBAL.animationWayData.points = null)
+  // global.animationWayData && (global.animationWayData.points = null)
   // SMap.endAnimationWayPoint(false)
   const params = ToolbarModule.getParams()
   SMap.refreshAnimationWayPoint()
@@ -186,7 +186,7 @@ function cancelAnimationWay() {
 async function endAnimationWayPoint() {
   const params = ToolbarModule.getParams()
   const wayPoints = await SMap.endAnimationWayPoint(true)
-  GLOBAL.animationWayData && (GLOBAL.animationWayData.wayPoints = wayPoints)
+  global.animationWayData && (global.animationWayData.wayPoints = wayPoints)
 
   const type = ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE
   params.setToolbarVisible(true, type, {
@@ -220,9 +220,11 @@ async function collectionSubmit(libId, symbolCode) {
         // if (plotLayer) {
         //   ToolbarModule.getParams().setCurrentLayer(plotLayer)
         let layerType = LayerUtils.getLayerType(params.currentLayer)
-        if (layerType !== 'TAGGINGLAYER' && GLOBAL.coworkMode && GLOBAL.getFriend) {
-          let friend = GLOBAL.getFriend()
-          friend.onGeometryAdd(params.currentLayer)
+        if (layerType !== 'TAGGINGLAYER' && global.coworkMode && global.getFriend) {
+          let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+          let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
+          let friend = global.getFriend()
+          isRealTime && friend.onGeometryAdd(params.currentLayer)
         }
       })
     }
@@ -304,26 +306,26 @@ async function animationSave() {
   )
   const defaultAnimationName = mapName
   NavigationService.navigate('InputPage', {
-    headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.PLOT_SAVE_ANIMATION,
+    headerTitle: getLanguage(global.language).Map_Main_Menu.PLOT_SAVE_ANIMATION,
     // '保存推演动画',
     value: defaultAnimationName,
-    placeholder: getLanguage(GLOBAL.language).Prompt.ENTER_ANIMATION_NAME,
+    placeholder: getLanguage(global.language).Prompt.ENTER_ANIMATION_NAME,
     type: 'name',
     cb: async value => {
       try {
-        GLOBAL.Loading &&
-          GLOBAL.Loading.setLoading(
+        global.Loading &&
+          global.Loading.setLoading(
             true,
-            getLanguage(GLOBAL.language).Prompt.SAVEING,
+            getLanguage(global.language).Prompt.SAVEING,
           )
         await SMap.animationSave(savePath, value)
 
-        GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
+        global.Loading && global.Loading.setLoading(false)
 
         NavigationService.goBack()
         Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
       } catch (error) {
-        GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
+        global.Loading && global.Loading.setLoading(false)
       }
     },
   })
@@ -386,8 +388,8 @@ function close() {
     SMap.animationClose()
     SMap.setAction(Action.PAN)
     SMap.endAnimationWayPoint(false)
-    GLOBAL.TouchType = TouchType.NULL
-    GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
+    global.TouchType = TouchType.NULL
+    global.animationWayData && (global.animationWayData = null)
     params.setToolbarVisible(false)
   } else if (
     data.type === ConstToolType.SM_MAP_PLOT_ANIMATION_PLAY ||

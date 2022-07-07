@@ -27,6 +27,9 @@ export default StyleSheet.create({
     paddingHorizontal: scaleSize(20),
     backgroundColor: color.contentWhite,
   },
+  wrapper: {
+    flex: 1,
+  },
   // closeBox: {
   //   position: 'absolute',
   //   right: 0,

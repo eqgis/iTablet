@@ -20,8 +20,6 @@ import { color, size } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 import { getPinYinFirstCharacter } from '../../../../utils/pinyin'
 import FriendListFileHandle from '../FriendListFileHandle'
-// eslint-disable-next-line
-import { ActionPopover } from 'teaset'
 import { getLanguage } from '../../../../language/index'
 
 export interface FriendInfo {
@@ -59,6 +57,17 @@ class FriendList extends Component {
     this.getContacts()
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextProps.language !== this.props.language ||
+      JSON.stringify(nextProps.user) !== JSON.stringify(this.props.user) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
+  }
+
   refresh = () => {
     this.getContacts()
     this.setState({ isRefresh: false })
@@ -85,7 +94,7 @@ class FriendList extends Component {
             frend['markName'] = result[key].markName
             frend['name'] = result[key].name
             frend['info'] = result[key].info
-            if (frend['info'].isFriend !== 2) {
+            if (frend['info'].isFriend !== 2 && this.props.user.userName !== result[key].name) {
               srcFriendData.push(frend)
             }
           }
@@ -193,10 +202,11 @@ class FriendList extends Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(this.props.language).Friends.LOADING}
+              title={getLanguage(this.props.language).Friends.REFRESHING}
               enabled={true}
             />
           }
+          ListFooterComponent={<View style={{height:0}}/>}
         />
         {this.state.sections.length > 30 && (
           <View style={styles.FlatListViewStyle}>
@@ -215,6 +225,7 @@ class FriendList extends Component {
                   </Text>
                 </TouchableOpacity>
               )}
+              ListFooterComponent={<View style={{height:0}}/>}
             />
           </View>
         )}

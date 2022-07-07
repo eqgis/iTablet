@@ -13,6 +13,7 @@ import {
   PopModal,
   InfoView,
   Dialog,
+  PopoverButtonsView,
 } from '../../../../components'
 import {
   Toast,
@@ -30,7 +31,6 @@ import {
   LocationView,
 } from '../../components'
 import { getThemeAssets } from '../../../../assets'
-import { FileTools } from '../../../../native'
 import styles from './styles'
 import {
   SMap,
@@ -44,10 +44,9 @@ import {
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
-//eslint-disable-next-line
-import { ActionPopover } from 'teaset'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
+import { Rect } from 'react-native-popover-view'
 
 const SINGLE_ATTRIBUTE = 'singleAttribute'
 const PAGE_SIZE = 30
@@ -75,13 +74,16 @@ export default class LayerAttribute extends React.Component {
     setLayerAttributes: () => {},
     setAttributeHistory: () => {},
     clearAttributeHistory: () => {},
+    getLayers: () => {},
     device: Object,
+    currentTask: Object,
+    currentUser: Object,
   }
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
-    this.type = (params && params.type) || GLOBAL.Type
+    const { params } = this.props.route
+    this.type = (params && params.type) || global.Type
     let checkData = this.checkToolIsViable()
     this.state = {
       attributes: {
@@ -111,15 +113,14 @@ export default class LayerAttribute extends React.Component {
     this.isLoading = false // 防止同时重复加载多次
     this.filter = '' // 属性查询过滤
     this.isMediaLayer = false // 是否是多媒体图层
+    this.Popover = undefined // 长按弹窗
   }
 
   componentDidMount() {
-    // InteractionManager.runAfterInteractions(() => {
     if (this.type === 'MAP_3D') {
       this.getMap3DAttribute()
     } else if (this.props.currentLayer?.name) {
       this.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
-      //ConstInfo.LOADING_DATA)
       SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
         this.isMediaLayer = result
         this.refresh()
@@ -127,7 +128,8 @@ export default class LayerAttribute extends React.Component {
         this.refresh()
       })
     }
-    // })
+    // 添加导航监听,使每次添加对象等导致属性变化的操作,返回到属性页面时,保持刷新
+    this.props.navigation.addListener('focus', this.resetCurrentPage)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -147,7 +149,6 @@ export default class LayerAttribute extends React.Component {
         attributes: prevProps.attributes,
       })
       this.total = prevProps.attributes.data.length
-      // console.log(prevProps)
     } else if (
       prevProps.currentLayer &&
       JSON.stringify(prevProps.currentLayer) !==
@@ -171,8 +172,8 @@ export default class LayerAttribute extends React.Component {
       this.setState({
         ...checkData,
       })
-    } else if (GLOBAL.NEEDREFRESHTABLE) {
-      GLOBAL.NEEDREFRESHTABLE = false
+    } else if (global.NEEDREFRESHTABLE) {
+      global.NEEDREFRESHTABLE = false
       let startIndex = this.state.startIndex - PAGE_SIZE
       if (startIndex <= 0) {
         startIndex = 0
@@ -190,6 +191,7 @@ export default class LayerAttribute extends React.Component {
 
   componentWillUnmount() {
     this.props.setCurrentAttribute({})
+    this.props.navigation.removeListener('focus', this.resetCurrentPage)
   }
 
   getMap3DAttribute = async (cb = () => { }) => {
@@ -264,6 +266,18 @@ export default class LayerAttribute extends React.Component {
     )
   }
 
+  resetCurrentPage = () => {
+    try {
+      this.getAttribute({
+        type: 'reset',
+        currentPage: this.currentPage >= 0 ? this.currentPage : 0,
+      })
+    } catch(e) {
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn(e)
+    }
+  }
+
   /**
    * 获取属性
    * @param params 参数
@@ -271,7 +285,21 @@ export default class LayerAttribute extends React.Component {
    * @param resetCurrent 是否重置当前选择的对象
    */
   getAttribute = (params = {}, cb = () => { }, resetCurrent = false) => {
-    if (!this.props.currentLayer.path || params.currentPage < 0) {
+    if (!this.props.currentLayer.path) {
+      // 没有当前图层,则清空属性表
+      this.setState({
+        attributes: {
+          head: [],
+          data: [],
+        },
+        currentFieldInfo: [],
+        relativeIndex: -1,
+        currentIndex: -1,
+        startIndex: 0,
+      })
+      return
+    }
+    if (params.currentPage < 0) {
       this.setLoading(false)
       return
     }
@@ -311,6 +339,7 @@ export default class LayerAttribute extends React.Component {
             ...others,
           })
           this.setLoading(false)
+          cb && cb(attributes)
         } else {
           let newAttributes = JSON.parse(JSON.stringify(attributes))
           let startIndex =
@@ -349,6 +378,7 @@ export default class LayerAttribute extends React.Component {
             : others.currentIndex !== undefined
               ? others.currentIndex
               : this.state.currentIndex
+
           let relativeIndex =
             resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
           // : currentIndex - startIndex - 1
@@ -373,6 +403,9 @@ export default class LayerAttribute extends React.Component {
             },
             () => {
               setTimeout(() => {
+                if (currentIndex === -1) {
+                  this.table?.clearSelected()
+                }
                 if (type === 'refresh') {
                   this.table &&
                     this.table.scrollToLocation({
@@ -409,7 +442,7 @@ export default class LayerAttribute extends React.Component {
    * 定位到首位
    */
   locateToTop = () => {
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     this.currentPage = 0
     if (this.state.startIndex === 0) {
@@ -471,7 +504,7 @@ export default class LayerAttribute extends React.Component {
    */
   locateToBottom = () => {
     if (this.total <= 0) return
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     this.currentPage =
       this.total > 0 ? Math.floor((this.total - 1) / PAGE_SIZE) : 0
@@ -528,7 +561,7 @@ export default class LayerAttribute extends React.Component {
       // 相对定位
       currentIndex = this.state.currentIndex + data.index
       if (currentIndex < 0 || currentIndex >= this.total) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -549,7 +582,7 @@ export default class LayerAttribute extends React.Component {
     } else if (data.type === 'absolute') {
       // 绝对定位
       if (data.index <= 0 || data.index > this.total) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.INDEX_OUT_OF_BOUNDS)
+        Toast.show(getLanguage(global.language).Prompt.INDEX_OUT_OF_BOUNDS)
         //'位置越界')
         return
       }
@@ -569,7 +602,7 @@ export default class LayerAttribute extends React.Component {
       currentIndex = data.index - 1
     }
 
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOCATING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOCATING)
     //ConstInfo.LOCATING)
     if (startIndex !== 0) {
       this.canBeRefresh = true
@@ -650,7 +683,7 @@ export default class LayerAttribute extends React.Component {
       })
     }
 
-    // GLOBAL.SelectedSelectionAttribute = {
+    // global.SelectedSelectionAttribute = {
     //   index:this.state.startIndex + index,
     //   layerInfo:this.props.layerSelection.layerInfo,
     //   data,
@@ -663,21 +696,22 @@ export default class LayerAttribute extends React.Component {
 
     items = [
       {
-        title: getLanguage(GLOBAL.language).Map_Attribute.DETAIL,
+        title: getLanguage(global.language).Map_Attribute.DETAIL,
         onPress: () => {
-          (async function () {
-            this.addPopModal &&
-              this.addPopModal.setVisible(true, {
+          this.Popover?.setVisible(false, undefined, undefined, () => {
+            setTimeout(() => {
+              this.addPopModal?.setVisible(true, {
                 data: { fieldInfo },
                 isDetail: true,
               })
-          }.bind(this)())
+            }, 300);
+          })
         },
       },
     ]
     if (this.state.attributes.data.length > 1) {
       items.push({
-        title: getLanguage(GLOBAL.language).Map_Attribute.ASCENDING,
+        title: getLanguage(global.language).Map_Attribute.ASCENDING,
         onPress: () => {
           this.canBeRefresh = true
           this.filter = fieldInfo.name + ' ASC'
@@ -690,7 +724,7 @@ export default class LayerAttribute extends React.Component {
         },
       })
       items.push({
-        title: getLanguage(GLOBAL.language).Map_Attribute.DESCENDING,
+        title: getLanguage(global.language).Map_Attribute.DESCENDING,
         onPress: () => {
           this.canBeRefresh = true
           this.filter = fieldInfo.name + ' DESC'
@@ -720,13 +754,17 @@ export default class LayerAttribute extends React.Component {
       )
     ) {
       items.push({
-        title: getLanguage(GLOBAL.language).Profile.DELETE,
+        title: getLanguage(global.language).Profile.DELETE,
         onPress: () => {
           if (!fieldInfo) {
             return
           }
-          deleteFieldData = fieldInfo
-          this.deleteFieldDialog.setDialogVisible(true)
+          this.Popover?.setVisible(false, undefined, undefined, () => {
+            deleteFieldData = fieldInfo
+            setTimeout(() => {
+              this.deleteFieldDialog.setDialogVisible(true)
+            }, 300);
+          })
         },
       })
     }
@@ -739,48 +777,32 @@ export default class LayerAttribute extends React.Component {
         fieldInfo.type === FieldType.DOUBLE)
     ) {
       items.push({
-        title: getLanguage(GLOBAL.language).Map_Attribute.ATTRIBUTE_STATISTIC,
+        title: getLanguage(global.language).Map_Attribute.ATTRIBUTE_STATISTIC,
         onPress: () => {
           NavigationService.navigate('LayerAttributeStatistic', {
             fieldInfo,
             layer: this.props.currentLayer,
           })
+          this.Popover?.setVisible(false)
         },
       })
     }
     if (pressView) {
       pressView.measure((ox, oy, width, height, px, py) => {
-        let screenWidth = screen.getScreenWidth(),
-          allWidth = width * items.length
-        // let dx = screenWidth - allWidth / 2 + width / 2
-        // let x = px > dx ? dx : px
-        let option = {}
-        if (px > screenWidth - allWidth / 2 + width / 2) {
-          option.direction = 'left'
-        }
-        ActionPopover.show(
-          {
-            x: px,
-            y: py,
-            width,
-            height,
-          },
-          items,
-          option,
-        )
+        this.Popover?.setVisible(true, new Rect(px + 1, py + 1, width, height), items)
       })
     }
   }
   /** 点击属性字段回调 **/
   onPressHeader = ({ fieldInfo, index, pressView }) => {
-    if (GLOBAL.Type === ChunkType.MAP_3D) {
+    if (global.Type === ChunkType.MAP_3D) {
       return
     }
     this._showPopover(pressView, index, fieldInfo)
   }
 
   showLayerAddView = () => {
-    // GLOBAL.ToolBar.showFullMap(true)
+    // global.ToolBar.showFullMap(true)
     this.addPopModal && this.addPopModal.setVisible(true)
   }
 
@@ -798,6 +820,7 @@ export default class LayerAttribute extends React.Component {
         if (smID >= 0 && hasMedia) break
       } else if (
         this.state.attributes.data[index][i].name === 'MediaFilePaths' &&
+        this.state.attributes.data[index][i].value !== '-' &&
         this.state.attributes.data[index][i].value != ''
       ) {
         hasMedia = true
@@ -819,6 +842,10 @@ export default class LayerAttribute extends React.Component {
       result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, index, false)
     }
     if (result) {
+      if (global.coworkMode) {
+        SMap.setLayerModified(this.props.currentLayer.path, true) // 在线协作-成功删除数据,修改图层状态
+        this.props.getLayers?.()
+      }
       Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
     } else {
       Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_DELETE)
@@ -912,8 +939,8 @@ export default class LayerAttribute extends React.Component {
           this.props.navigation.navigate('MapView', {
             hideMapController: true,
           })
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setVisible(
+        global.toolBox &&
+          global.toolBox.setVisible(
             true,
             ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
             {
@@ -923,9 +950,9 @@ export default class LayerAttribute extends React.Component {
           )
       })
 
-      GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
-      if ((GLOBAL.Type === ChunkType.MAP_AR || GLOBAL.Type === ChunkType.MAP_AR_ANALYSIS) && GLOBAL.showAIDetect) {
-        GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+      global.toolBox && global.toolBox.showFullMap()
+      if ((global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS) && global.showAIDetect) {
+        global.toolBox && global.toolBox.switchAr()
       }
 
       StyleUtils.setSelectionStyle(this.props.currentLayer.path)
@@ -940,12 +967,12 @@ export default class LayerAttribute extends React.Component {
     //   this.state.currentFieldInfo[0].value,
     // ]).then(data => {
     //   this.props.navigation && this.props.navigation.navigate('MapView')
-    //   GLOBAL.toolBox &&
-    //     GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE, {
+    //   global.toolBox &&
+    //     global.toolBox.setVisible(true, ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE, {
     //       isFullScreen: false,
     //       height: 0,
     //     })
-    //   GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
+    //   global.toolBox && global.toolBox.showFullMap()
     //
     //   StyleUtils.setSelectionStyle(this.props.currentLayer.path)
     //   if (data instanceof Array && data.length > 0) {
@@ -962,8 +989,8 @@ export default class LayerAttribute extends React.Component {
   }
 
   setSaveViewVisible = visible => {
-    GLOBAL.SaveMapView &&
-      GLOBAL.SaveMapView.setVisible(visible, {
+    global.SaveMapView &&
+      global.SaveMapView.setVisible(visible, {
         setLoading: this.setLoading,
       })
   }
@@ -1035,7 +1062,7 @@ export default class LayerAttribute extends React.Component {
               // 单条数据修改属性
               attributes.data[0][data.index].value = data.value
             }
-
+            this.props.getLayers?.()
             let checkData = this.checkToolIsViable()
             this.setState({
               attributes,
@@ -1101,7 +1128,7 @@ export default class LayerAttribute extends React.Component {
         }
         break
     }
-    this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOADING)
+    this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
     //'修改中')
     try {
       this.props.setAttributeHistory &&
@@ -1262,7 +1289,7 @@ export default class LayerAttribute extends React.Component {
             )
           }
         }}
-        confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
+        confirmBtnTitle={getLanguage(this.props.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
         opacity={1}
         opacityStyle={[styles.opacityView, { height: scaleSize(250) }]}
@@ -1281,6 +1308,9 @@ export default class LayerAttribute extends React.Component {
         navigation={this.props.navigation}
         mapModules={this.props.mapModules}
         initIndex={2}
+        currentAction={() => {
+          this.resetCurrentPage()
+        }}
         type={this.type}
       />
     )
@@ -1288,9 +1318,9 @@ export default class LayerAttribute extends React.Component {
 
   renderMapLayerAttribute = () => {
     // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
-    //   buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW, getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+    //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
     let buttonNameFilter = this.isMediaLayer ? ['MediaData'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(GLOBAL.language).Map_Tools.VIEW] : []
+      buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.currentLayer.name,
@@ -1300,7 +1330,7 @@ export default class LayerAttribute extends React.Component {
         }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
         if(!has){
-          Toast.show(getLanguage(GLOBAL.language).Prompt.AFTER_COLLECT)
+          Toast.show(getLanguage(global.language).Prompt.AFTER_COLLECT)
           return
         }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
@@ -1349,6 +1379,8 @@ export default class LayerAttribute extends React.Component {
           if (isDelete) {
             this.setState({currentIndex:-1})
             this.table.setSelected(data.rowIndex)
+            this.refresh()
+          }else{
             this.refresh()
           }
         }
@@ -1608,7 +1640,7 @@ export default class LayerAttribute extends React.Component {
         headerProps={{
           title: this.props.mapModules.modules[
             this.props.mapModules.currentMapModule
-          ].chunk.title,
+          ].chunk?.title || '',
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../../../assets/mapTools/icon_close.png'),
@@ -1626,13 +1658,13 @@ export default class LayerAttribute extends React.Component {
         {this.type !== 'MAP_3D' && (
           <LayerTopBar
             orientation={this.props.device.orientation}
-            hasAddField={!GLOBAL.coworkMode}
-            hasCamera={GLOBAL.coworkMode && this.isMediaLayer || !GLOBAL.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
+            hasAddField={!global.coworkMode}
+            hasCamera={global.coworkMode && this.isMediaLayer || !global.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
             canLocated={this.state.attributes.data.length > 1}
             canRelated={this.state.currentIndex >= 0}
             canDelete={this.state.currentIndex >= 0}
             canAddField={
-              !(dsDescription?.url && dsDescription?.type === 'onlineService') &&
+              !(global.coworkMode && dsDescription?.url && dsDescription?.type === 'onlineService') &&
               this.props.currentLayer.name !== undefined &&
               this.props.currentLayer.name !== '' &&
               this.props.currentLayer.type !== DatasetType.IMAGE &&
@@ -1647,7 +1679,10 @@ export default class LayerAttribute extends React.Component {
             refreshAction={this.refreshAction}
             layerAttribute={true}
             attributes={this.state.attributes}
-            layerName={this.props.currentLayer.name}
+            // layerName={this.props.currentLayer.name}
+            layerInfo={this.props.currentLayer}
+            currentTask={this.props.currentTask}
+            currentUser={this.props.currentUser}
           />
         )}
         <View
@@ -1711,6 +1746,11 @@ export default class LayerAttribute extends React.Component {
           }}
         />
         {this.renderDeleteFieldDialog()}
+        <PopoverButtonsView
+          ref={ref => this.Popover = ref}
+          backgroundStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
+          popoverStyle={{backgroundColor: 'rgba(0, 0, 0, 1)'}}
+        />
       </Container>
     )
   }

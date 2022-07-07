@@ -36,6 +36,7 @@ export default {
   MSG_TEMPLATE_PLOT: 18, //标绘模板
   MSG_TEMPLATE_MAP: 19, //地图模板
   MSG_INVITE_COWORK: 21, // 协作邀请
+  MSG_SAND_TABLE: 22, // AI模型
 
   // MSG_COWORK 中的message的type
   MSG_JOIN_COWORK: 1, // 加入协作群
@@ -69,4 +70,6 @@ export default {
   MSG_ONLINE_MEMBER_DELETE: 407,
   /** 群组聊天消息 */
   MSG_ONLINE_GROUP_CHAT: 408,
+  /** 群组成员退出任务 */
+  MSG_ONLINE_GROUP_TASK_EXIST: 409,
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Text, Animated } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import { scaleSize } from '../../utils/index'
 import { size, color } from '../../styles/index'
 
@@ -8,6 +8,7 @@ export default class Bubble extends React.PureComponent {
     title: String,
     type: String, // info | error | warning | success
     style?: Object,
+    titleStyle?:Object,
     onPress?: () => {},
   }
 
@@ -50,11 +51,11 @@ export default class Bubble extends React.PureComponent {
   render() {
     const { bubbleStyle, titleStyle } = this.getStyle()
     return (
-      <Animated.View style={[bubbleStyle, this.props.style]}>
+      <View style={[bubbleStyle, this.props.style]}>
         <TouchableOpacity onPress={this._onPress}>
-          <Text style={titleStyle}>{this.props.title}</Text>
+          <Text style={[titleStyle,this.props.titleStyle]}>{this.props.title}</Text>
         </TouchableOpacity>
-      </Animated.View>
+      </View>
     )
   }
 }

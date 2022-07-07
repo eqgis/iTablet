@@ -68,7 +68,7 @@ export default class SelectList extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
-          {getLanguage(GLOBAL.language).Map_Main_Menu.CLIP_LAYER}
+          {getLanguage(global.language).Map_Main_Menu.CLIP_LAYER}
         </Text>
         {this._renderLine()}
         <FlatList

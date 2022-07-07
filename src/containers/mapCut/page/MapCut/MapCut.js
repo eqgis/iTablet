@@ -55,8 +55,8 @@ export default class MapCut extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
-    COMPLETE = getLanguage(this.props.language).Prompt.CONFIRM
+    const { params } = props.route
+    COMPLETE = getLanguage(this.props.language).CONFIRM
     EDIT = getLanguage(this.props.language).Map_Main_Menu.EDIT
     CANCEL = getLanguage(this.props.language).Prompt.CANCEL
     this.state = {
@@ -284,8 +284,8 @@ export default class MapCut extends React.Component {
                 this.container && this.container.setLoading(false)
                 this.isCutting = false
 
-                GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
-                GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false)
+                global.MapSurfaceView && global.MapSurfaceView.show(false)
+                global.toolBox && global.toolBox.setVisible(false)
                 NavigationService.goBack()
                 Toast.show(
                   getLanguage(this.props.language).Prompt.CLIPPED_SUCCESS,
@@ -888,11 +888,11 @@ export default class MapCut extends React.Component {
         ref={ref => (this.addLayerModal = ref)}
         layers={this.state.outLayers}
         confirmTitle={
-          getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+          getLanguage(this.props.language || global.language)
             .CONFIRM
         }
         cancelTitle={
-          getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+          getLanguage(this.props.language || global.language).Analyst_Labels
             .CANCEL
         }
         configAction={addLayers => {

@@ -22,16 +22,19 @@ import { ImagePicker } from '../../../../../../components'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
+import { TYPE } from '../../../../../camera/types'
+import LocateUtils from '../../../../../pointAnalyst/LocateUtils'
+import { launchImageLibrary } from 'react-native-image-picker'
 
 function begin() {
-  GLOBAL.GPS = setInterval(() => {
+  global.GPS = setInterval(() => {
     SMap.gpsBegin()
   }, 2000)
 }
 
 function stop() {
-  if (GLOBAL.GPS !== undefined) {
-    clearInterval(GLOBAL.GPS)
+  if (global.GPS !== undefined) {
+    clearInterval(global.GPS)
   }
 }
 
@@ -119,7 +122,7 @@ function rectangleCut() {
   if (!_params.setToolbarVisible) return
   _params.showFullMap && _params.showFullMap(true)
   // addMapCutListener()
-  GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(true)
+  global.MapSurfaceView && global.MapSurfaceView.show(true)
 
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_RECTANGLE_CUT, {
     isFullScreen: false,
@@ -394,12 +397,12 @@ async function setting() {
 
 // function name() {
 //   return NavigationService.navigate('InputPage', {
-//     headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_NAME,
+//     headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_NAME,
 //     cb: async value => {
 //       if (value !== '') {
 //         (async function() {
 //           await SMap.addRecordset(
-//             GLOBAL.TaggingDatasetName,
+//             global.TaggingDatasetName,
 //             'name',
 //             value,
 //             ToolbarModule.getParams().user.currentUser.userName,
@@ -413,12 +416,12 @@ async function setting() {
 
 // function remark() {
 //   return NavigationService.navigate('InputPage', {
-//     headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_REMARKS,
+//     headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_REMARKS,
 //     cb: async value => {
 //       if (value !== '') {
 //         (async function() {
 //           await SMap.addRecordset(
-//             GLOBAL.TaggingDatasetName,
+//             global.TaggingDatasetName,
 //             'remark',
 //             value,
 //             ToolbarModule.getParams().user.currentUser.userName,
@@ -432,12 +435,12 @@ async function setting() {
 //
 // function address() {
 //   return NavigationService.navigate('InputPage', {
-//     headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS_HTTP,
+//     headerTitle: getLanguage(global.language).Map_Main_Menu.TOOLS_HTTP,
 //     cb: async value => {
 //       if (value !== '') {
 //         (async function() {
 //           await SMap.addRecordset(
-//             GLOBAL.TaggingDatasetName,
+//             global.TaggingDatasetName,
 //             'address',
 //             value,
 //             ToolbarModule.getParams().user.currentUser.userName,
@@ -486,6 +489,7 @@ function captureImage() {
 
 function tour() {
   (async function() {
+    await SMap.checkCurrentModule()
     const _params = ToolbarModule.getParams()
     const targetPath = await FileTools.appendingHomeDirectory(
       `${ConstPath.UserPath + _params.user.currentUser.userName}/${
@@ -496,12 +500,12 @@ function tour() {
 
     let tourLayer
     ImagePicker.AlbumListView.defaultProps.showDialog = true
-    ImagePicker.AlbumListView.defaultProps.dialogConfirm = (
+    ImagePicker.AlbumListView.defaultProps.dialogConfirm = async (
       value = '',
       cb = () => {},
     ) => {
-      if (value !== '') {
-        (async function() {
+      try {
+        if (value !== '') {
           await SMap.setLabelColor()
           const tagginData = await SMap.newTaggingDataset(
             value,
@@ -511,9 +515,13 @@ function tour() {
           )
           tourLayer = tagginData.layerName
           cb && cb()
-        })()
+        }
+        Toast.show(value)
+      } catch (error) {
+        if (error?.code === 'INVALID_MODULE') {
+          ImagePicker.hide()
+        }
       }
-      Toast.show(value)
     }
 
     ImagePicker.AlbumListView.defaultProps.assetType = 'All'
@@ -524,7 +532,7 @@ function tour() {
       callback: async data => {
         if (data.length <= 1) {
           Toast.show(
-            getLanguage(GLOBAL.language).Prompt.SELECT_TWO_MEDIAS_AT_LEAST,
+            getLanguage(global.language).Prompt.SELECT_TWO_MEDIAS_AT_LEAST,
           )
           return
         }
@@ -534,6 +542,27 @@ function tour() {
         }
       },
     })
+
+    
+
+  //   launchImageLibrary({
+  //     title: 'asdfasdfas',
+  //     mediaType: 'mixed',
+  //     selectionLimit: 9,
+  //     includeExtra: true,
+  //   }, res => {
+  //     console.warn(JSON.stringify(res))
+  //     if (data.assets.length <= 1) {
+  //       Toast.show(
+  //         getLanguage(global.language).Prompt.SELECT_TWO_MEDIAS_AT_LEAST,
+  //       )
+  //       return
+  //     }
+  //     if (tourLayer) {
+  //       const res = await SMediaCollector.addTour(tourLayer, data)
+  //       res.result && (await SMap.setLayerFullView(tourLayer))
+  //     }
+  //   })
   })()
 }
 
@@ -549,18 +578,19 @@ function matchPictureStyle() {
   ImagePicker.getAlbum({
     maxSize: 1,
     callback: async data => {
+      console.warn('match', data[0].uri)
       if (data.length === 1) {
         ToolbarModule.getParams().setContainerLoading &&
           ToolbarModule.getParams().setContainerLoading(
             true,
-            getLanguage(GLOBAL.language).Prompt.IMAGE_RECOGNITION_ING,
+            getLanguage(global.language).Prompt.IMAGE_RECOGNITION_ING,
           )
         await SMap.matchPictureStyle(data[0].uri, res => {
           ToolbarModule.getParams().setContainerLoading &&
             ToolbarModule.getParams().setContainerLoading(false)
           if (!res || !res.result) {
             Toast.show(
-              getLanguage(GLOBAL.language).Prompt.IMAGE_RECOGNITION_FAILED,
+              getLanguage(global.language).Prompt.IMAGE_RECOGNITION_FAILED,
             )
           }
         })
@@ -573,6 +603,37 @@ function matchPictureStyle() {
       })
     },
   })
+}
+
+
+// 二维码识别
+async function qrCode() {
+  try {
+    const _params = ToolbarModule.getParams()
+    NavigationService.navigate('Camera', {
+      type: TYPE.BARCODE,
+      qrCb: event => {
+        if (event.length <= 0) return
+        _params.setToolbarVisible(false)
+        NavigationService.goBack('Camera')
+        LocateUtils.SearchGeoInCurrentLayer(
+          {
+            title: event[0].barcodeText,
+            value: event[0].barcodeText,
+            radius: 5000,
+            is3D: false,
+          },
+          async data => {
+            // eslint-disable-next-line no-console
+            __DEV__ && console.warn(data)
+          },
+        )
+      },
+    })
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    __DEV__ && console.warn(error)
+  }
 }
 
 // 设置我的图层的可选择性
@@ -680,7 +741,7 @@ function commit(type) {
     }
   } else if (type === ConstToolType.SM_MAP_TOOL_RECTANGLE_CUT) {
     NavigationService.navigate('MapCut', {
-      points: GLOBAL.MapSurfaceView.getResult(),
+      points: global.MapSurfaceView.getResult(),
     })
   } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
     // ToolbarPicker.hide()
@@ -699,7 +760,7 @@ async function showAttribute() {
   const _params = ToolbarModule.getParams()
   const _selection = _params.selection
   if (_selection.length === 0) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
+    Toast.show(getLanguage(global.language).Prompt.NON_SELECTED_OBJ)
     return
   }
 
@@ -709,7 +770,7 @@ async function showAttribute() {
     1,
   )
   if (attributes.total === 0) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
+    Toast.show(getLanguage(global.language).Prompt.NON_SELECTED_OBJ)
     return
   }
 
@@ -718,13 +779,13 @@ async function showAttribute() {
     selectObjNums += item.ids.length
   })
   selectObjNums === 0 &&
-    Toast.show(getLanguage(GLOBAL.language).Prompt.NON_SELECTED_OBJ)
+    Toast.show(getLanguage(global.language).Prompt.NON_SELECTED_OBJ)
 
   let params = {
     preType: _params.type,
   }
-  GLOBAL.SelectedSelectionAttribute &&
-    (params.selectionAttribute = GLOBAL.SelectedSelectionAttribute)
+  global.SelectedSelectionAttribute &&
+    (params.selectionAttribute = global.SelectedSelectionAttribute)
   NavigationService.navigate('LayerSelectionAttribute', params)
 }
 
@@ -792,7 +853,7 @@ async function close(type) {
     type === ConstToolType.SM_MAP_TOOL_INCREMENT ||
     type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT
   ) {
-    GLOBAL.FloorListView.setVisible(true)
+    global.FloorListView.setVisible(true)
     await SMap.removeNetworkDataset()
     SMap.setAction(Action.PAN)
     _params.setToolbarVisible(false)
@@ -839,7 +900,7 @@ async function close(type) {
     _params.showMeasureResult(false)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_RECTANGLE_CUT) {
-    GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
+    global.MapSurfaceView && global.MapSurfaceView.show(false)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE) {
     // 返回图层属性界面，并清除属性关联选中的对象
@@ -850,7 +911,7 @@ async function close(type) {
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
     // 返回框选/点选属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerSelectionAttribute', {
-      selectionAttribute: GLOBAL.SelectedSelectionAttribute,
+      selectionAttribute: global.SelectedSelectionAttribute,
       preType: _data.preType,
       preAction: async () => {
         const selection = []
@@ -864,8 +925,8 @@ async function close(type) {
         await SMap.clearTrackingLayer()
         await SMap.selectObjs(selection)
   
-        GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, _data.preType, {
+        global.toolBox &&
+        global.toolBox.setVisible(true, _data.preType, {
           containerType: 'table',
           isFullScreen: false,
         })
@@ -885,36 +946,36 @@ async function close(type) {
 function getMatchPictureMode(arr) {
   let mode
   switch (arr[arr.length - 1]) {
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BRIGHTNESS:
-      if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.FILL) {
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS:
+      if (arr[0] === getLanguage(global.language).Map_Main_Menu.FILL) {
         mode = FixColorMode.FCM_FB
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.BORDER) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.BORDER) {
         mode = FixColorMode.FCM_BB
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.LINE) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.LINE) {
         mode = FixColorMode.FCM_LB
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.MARK) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.MARK) {
         mode = FixColorMode.FCM_TB
       }
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST:
-      if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.FILL) {
+    case getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST:
+      if (arr[0] === getLanguage(global.language).Map_Main_Menu.FILL) {
         mode = FixColorMode.FCM_FH
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.BORDER) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.BORDER) {
         mode = FixColorMode.FCM_BH
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.LINE) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.LINE) {
         mode = FixColorMode.FCM_LH
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.MARK) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.MARK) {
         mode = FixColorMode.FCM_TH
       }
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION:
-      if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.FILL) {
+    case getLanguage(global.language).Map_Main_Menu.SATURATION:
+      if (arr[0] === getLanguage(global.language).Map_Main_Menu.FILL) {
         mode = FixColorMode.FCM_FS
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.BORDER) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.BORDER) {
         mode = FixColorMode.FCM_BS
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.LINE) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.LINE) {
         mode = FixColorMode.FCM_LS
-      } else if (arr[0] === getLanguage(GLOBAL.language).Map_Main_Menu.MARK) {
+      } else if (arr[0] === getLanguage(global.language).Map_Main_Menu.MARK) {
         mode = FixColorMode.FCM_TS
       }
       break
@@ -965,7 +1026,7 @@ function setTouchProgressInfo(title, value) {
   if (value > range[1]) value = range[1]
   else if (value <= range[0]) value = range[0]
 
-  let arr = GLOBAL.toolBox && GLOBAL.toolBox.state && GLOBAL.toolBox.state.selectName || ''
+  let arr = global.toolBox && global.toolBox.state && global.toolBox.state.selectName || ''
   if (arr instanceof Array) {
     let mode = getMatchPictureMode(arr)
     SMap.updateMapFixColorsMode(mode, value)
@@ -1002,6 +1063,7 @@ export default {
   rectangleCut,
   captureImage,
   tour,
+  qrCode,
 
   setting,
 }

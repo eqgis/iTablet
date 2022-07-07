@@ -33,7 +33,7 @@ export default class AppletList extends React.Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.refreshApplets = params.refresh || (() => {})
     this.state = {
       data: params && params.data || [],

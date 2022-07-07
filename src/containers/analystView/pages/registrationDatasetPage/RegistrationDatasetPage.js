@@ -19,7 +19,7 @@ export default class RegistrationDatasetPage extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.pageType = params && params.pageType //pageType等于1表示快速配准，否则是新建配准
     this.userName = params && params.userName
 
@@ -42,7 +42,7 @@ export default class RegistrationDatasetPage extends Component {
 
   getData = () => {
     (async function () {
-      this.setLoading(true, getLanguage(GLOBAL.language).Prompt.LOADING)
+      this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
       try {
         let data = await SMap.getDatasetsByWorkspaceDatasource()
         for (let i = 0; i < data.length;) {
@@ -175,8 +175,8 @@ export default class RegistrationDatasetPage extends Component {
     let length = this.getRectifyDatasetInfoLength(_rectifyDatasetInfo)
     if (length > 0) {
       let bHaveCadDataset = this.isHaveCadDataset(_rectifyDatasetInfo)
-      GLOBAL.IsHaveCadDataset = bHaveCadDataset
-      GLOBAL.RectifyDatasetInfo = _rectifyDatasetInfo
+      global.IsHaveCadDataset = bHaveCadDataset
+      global.RectifyDatasetInfo = _rectifyDatasetInfo
       if (this.pageType && this.pageType == 1) {
         NavigationService.navigate('RegistrationFastPage', {
           userName: this.userName,
@@ -186,7 +186,7 @@ export default class RegistrationDatasetPage extends Component {
       }
     } else {
       Toast.show(
-        getLanguage(GLOBAL.language).Analyst_Labels
+        getLanguage(global.language).Analyst_Labels
           .REGISTRATION_NOT_SETLECT_DATASET,
       )
     }
@@ -365,8 +365,8 @@ export default class RegistrationDatasetPage extends Component {
         <Button
           title={
             this.pageType && this.pageType == 1
-              ? getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION
-              : getLanguage(GLOBAL.language).Analyst_Labels
+              ? getLanguage(global.language).Analyst_Labels.REGISTRATION
+              : getLanguage(global.language).Analyst_Labels
                 .REGISTRATION_REFER_DATASET_ADD
           }
           ref={ref => (this.sureButton = ref)}
@@ -489,7 +489,7 @@ export default class RegistrationDatasetPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Analyst_Labels
+          title: getLanguage(global.language).Analyst_Labels
             .REGISTRATION_DATASET,
           navigation: this.props.navigation,
           backAction: this.exit,
@@ -498,12 +498,12 @@ export default class RegistrationDatasetPage extends Component {
         <LinkageList
           // ref={ref => (this.linkageList = ref)}
           ref={ref => (this.RegistrationLinkageList = ref)}
-          language={GLOBAL.language}
+          language={global.language}
           adjustmentWidth={true}
           data={this.state.dataSourceAndSets}
           titles={[
-            getLanguage(GLOBAL.language).Analyst_Labels.DATA_SOURCE,
-            getLanguage(GLOBAL.language).Analyst_Labels.DATA_SET,
+            getLanguage(global.language).Analyst_Labels.DATA_SOURCE,
+            getLanguage(global.language).Analyst_Labels.DATA_SET,
           ]}
           onRightPress={this.listRightAction}
           isMultiple={true}
@@ -513,8 +513,8 @@ export default class RegistrationDatasetPage extends Component {
           <Button
             title={
               this.pageType && this.pageType == 1
-                ? getLanguage(GLOBAL.language).Analyst_Labels.REGISTRATION
-                : getLanguage(GLOBAL.language).Analyst_Labels
+                ? getLanguage(global.language).Analyst_Labels.REGISTRATION
+                : getLanguage(global.language).Analyst_Labels
                   .REGISTRATION_REFER_DATASET_ADD
             }
             ref={ref => (this.sureButton = ref)}

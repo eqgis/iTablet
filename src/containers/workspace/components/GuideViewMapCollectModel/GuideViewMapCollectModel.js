@@ -38,16 +38,22 @@ export default class GuideViewMapCollectModel extends React.Component {
       nextText: getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(1/3)',
       sourceImage:getThemeAssets().home.map_newmap,
       rightsourceImage:getThemeAssets().functionBar.icon_tool_start,
-      rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.START,
+      rightTitle:getLanguage(global.language).Map_Main_Menu.START,
       rightViewStyle: {},
       guideStyle: {},
-      landguideStyle: {},
-      landrightViewStyle: {},
+      // landguideStyle: {},
+      // landrightViewStyle: {},
+      landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(530)},
+      landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(100)},
       landSize: - scaleSize(300),
     }
   }
 
   componentDidMount() {
+
+  }
+
+  componentDidUpdate() {
 
   }
 
@@ -203,7 +209,7 @@ export default class GuideViewMapCollectModel extends React.Component {
           height: scaleSize(500),
           width: scaleSize(400),
           bottom: scaleSize(40),
-          left: screen.getScreenSafeWidth() / 2 - scaleSize(510),
+          left: screen.getScreenSafeWidth(this.props.device.orientation) / 2 - scaleSize(510),
           // justifyContent: 'center',
           alignItems: 'center',
         },this.state.landguideStyle]}
@@ -312,7 +318,7 @@ export default class GuideViewMapCollectModel extends React.Component {
         style={[{
           position: 'absolute',
           backgroundColor: 'white',
-          left: screen.getScreenSafeWidth() / 2 + this.state.landSize,
+          left: screen.getScreenSafeWidth(this.props.device.orientation) / 2 + this.state.landSize,
           bottom: scaleSize(20),
           width: scaleSize(100),
           height: scaleSize(100),
@@ -346,13 +352,13 @@ export default class GuideViewMapCollectModel extends React.Component {
         title:getLanguage(this.props.language).Profile.CHOOSE_COLLECT,
         nextText:getLanguage(this.props.language).Profile.MY_GUIDE_NEXT + '(2/3)',
         sourceImage:getThemeAssets().home.map_symbol_selection,
-        guideStyle:{top: scaleSize(420) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightViewStyle:{top: scaleSize(395) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
+        guideStyle:{top: scaleSize(500) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightTitle:getLanguage(global.language).Map_Main_Menu.COLLECTION,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_collection,
-        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(370)},
-        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(50)},
-        landSize:- scaleSize(50),
+        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(160)},
+        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(100)},
+        landSize:- scaleSize(-70),
       })
     } else if(this.state.count === 2){
       this.setState({
@@ -361,12 +367,12 @@ export default class GuideViewMapCollectModel extends React.Component {
         nextText:getLanguage(this.props.language).Profile.MY_GUIDE_KNOW,
         sourceImage:getThemeAssets().home.map_data_edit,
         guideStyle:{top: scaleSize(500) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightViewStyle:{top: scaleSize(495) + screen.getIphonePaddingTop('PORTRAIT')},
-        rightTitle:getLanguage(GLOBAL.language).Map_Main_Menu.EDIT,
+        rightViewStyle:{top: scaleSize(595) + screen.getIphonePaddingTop('PORTRAIT')},
+        rightTitle:getLanguage(global.language).Map_Main_Menu.EDIT,
         rightsourceImage:getThemeAssets().functionBar.icon_tool_edit,
-        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(250)},
-        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(80)},
-        landSize:scaleSize(80),
+        landguideStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 - scaleSize(50)},
+        landrightViewStyle:{left: screen.getScreenSafeWidth('LANDSCAPE') / 2 + scaleSize(100)},
+        landSize:- scaleSize(-210),
       })
     } else {
       this.props.setCollectGuide(false)

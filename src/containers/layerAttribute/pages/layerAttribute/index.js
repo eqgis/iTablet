@@ -7,6 +7,7 @@ import {
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,
+  getLayers,
 } from '../../../../redux/models/layers'
 
 const mapStateToProps = state => ({
@@ -21,6 +22,8 @@ const mapStateToProps = state => ({
   appConfig: state.appConfig.toJS(),
   mapModules: state.mapModules.toJS(),
   device: state.device.toJS().device,
+  currentTask: state.cowork.toJS().currentTask,
+  currentUser: state.user.toJS().currentUser,
 })
 
 const mapDispatchToProps = {
@@ -30,6 +33,7 @@ const mapDispatchToProps = {
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,
+  getLayers,
 }
 
 export default connect(

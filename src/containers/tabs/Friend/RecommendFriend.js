@@ -13,6 +13,7 @@ import {
   Animated,
 } from 'react-native'
 import { Container, Dialog } from '../../../components'
+import { UserType } from '../../../constants'
 import { dialogStyles } from './Styles'
 import { getLanguage } from '../../../language'
 // eslint-disable-next-line
@@ -24,7 +25,6 @@ import FriendListFileHandle from './FriendListFileHandle'
 import { MsgConstant } from '../../../constants'
 import NavigationService from '../../NavigationService'
 
-const JSOnlineServices = new OnlineServicesUtils('online')
 class RecommendFriend extends Component {
   props: {
     navigation: Object,
@@ -35,18 +35,23 @@ class RecommendFriend extends Component {
     super(props)
     this.screenWidth = Dimensions.get('window').width
     this.target
-    this.friend = this.props.navigation.getParam('friend')
-    this.user = this.props.navigation.getParam('user')
+    this.friend = this.props.route.params.friend
+    this.user = this.props.route.params.user
     this.state = {
       loading: false,
       contacts: [],
     }
-    this.language = this.props.navigation.getParam('language')
+    this.language = this.props.route.params.language
     this.search = this.search.bind(this)
     this._renderItem = this._renderItem.bind(this)
     this.addFriendRequest = this.addFriendRequest.bind(this)
     this.exit = false
     this.loadingHeight = new Animated.Value(0)
+    if (UserType.isOnlineUser(this.props.user?.currentUser)) {
+      this.service = new OnlineServicesUtils('online')
+    } else if (UserType.isIPortalUser(this.props.user?.currentUser)) {
+      this.service = new OnlineServicesUtils('iportal')
+    }
   }
 
   componentDidMount() {
@@ -55,6 +60,23 @@ class RecommendFriend extends Component {
 
   componentWillUnmount() {
     this.exit = true
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      JSON.stringify(nextState) !== JSON.stringify(this.state) ||
+      JSON.stringify(nextProps.user?.currentUser) !== JSON.stringify(this.props.user?.currentUser)
+    )
+  }
+
+  componentDidUpdate(prevProps) {
+    if (JSON.stringify(prevProps.user?.currentUser) !== JSON.stringify(this.props.user?.currentUser)) {
+      if (UserType.isOnlineUser(this.props.user?.currentUser)) {
+        this.service = new OnlineServicesUtils('online')
+      } else if (UserType.isIPortalUser(this.props.user?.currentUser)) {
+        this.service = new OnlineServicesUtils('iportal')
+      }
+    }
   }
 
   requestPermission = async () => {
@@ -95,6 +117,7 @@ class RecommendFriend extends Component {
     Animated.timing(this.loadingHeight, {
       toValue: visible ? 40 : 0,
       duration: 800,
+      useNativeDriver: false,
     }).start()
     this.setState({
       loading: visible,
@@ -138,7 +161,7 @@ class RecommendFriend extends Component {
                 }),
               )
               if (this.exit) {
-                GLOBAL.Loading.setLoading(false)
+                global.Loading.setLoading(false)
                 return
               }
             }
@@ -162,11 +185,11 @@ class RecommendFriend extends Component {
         break
       }
       let number = this.formatPhoneNumber(val.phoneNumbers[i].number)
-      let result = await JSOnlineServices.getUserInfo(number, false)
+      let result = await this.service.getUserInfo(number, false)
       if (result !== false && result !== '获取用户id失败') {
         if (
           result.userId &&
-          result.userId !== this.user.userId &&
+          result.userId !== this.user.userName &&
           !FriendListFileHandle.isFriend(result.userId) &&
           result.nickname
         ) {
@@ -187,11 +210,11 @@ class RecommendFriend extends Component {
       }
     }
     for (let i = 0; i < val.emails.length; i++) {
-      let result = await JSOnlineServices.getUserInfo(val.emails[i].email, true)
+      let result = await this.service.getUserInfo(val.emails[i].email, true)
       if (result !== false && result !== '获取用户id失败') {
         if (
           result.userId &&
-          result.userId !== this.user.userId &&
+          result.userId !== this.user.userName &&
           !FriendListFileHandle.isFriend(result.userId) &&
           result.nickname
         ) {
@@ -229,8 +252,8 @@ class RecommendFriend extends Component {
       type: MsgConstant.MSG_ADD_FRIEND,
       user: {
         name: this.user.nickname,
-        id: this.user.userId,
-        groupID: this.user.userId,
+        id: this.user.userName,
+        groupID: this.user.userName,
         groupName: '',
       },
       time: time,
@@ -251,7 +274,7 @@ class RecommendFriend extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.RECOMMEND_FRIEND,
+          title: getLanguage(global.language).Friends.RECOMMEND_FRIEND,
           withoutBack: false,
           navigation: this.props.navigation,
         }}
@@ -301,7 +324,7 @@ class RecommendFriend extends Component {
           activeOpacity={0.75}
           onPress={() => {
             this.target = item //[id,name]
-            if (this.target.id === this.user.userId) {
+            if (this.target.id === this.user.userName) {
               Toast.show(getLanguage(this.language).Friends.ADD_SELF)
               return
             }
@@ -345,7 +368,7 @@ class RecommendFriend extends Component {
       <Dialog
         ref={ref => (this.dialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(this.language).Friends.CONFIRM}
+        confirmBtnTitle={getLanguage(this.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.language).Friends.CANCEL}
         confirmAction={this.addFriendRequest}
         opacity={1}
@@ -376,7 +399,7 @@ class RecommendFriend extends Component {
       <Dialog
         ref={ref => (this.permissionDeniedDialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(this.language).Friends.CONFIRM}
+        confirmBtnTitle={getLanguage(this.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.language).Friends.CANCEL}
         confirmAction={() => {
           this.permissionDeniedDialog.setDialogVisible(false)

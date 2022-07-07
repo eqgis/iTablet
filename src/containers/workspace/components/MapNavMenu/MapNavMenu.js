@@ -51,7 +51,7 @@ export default class MapNavMenu extends React.Component {
     let current = 0
     if (props.initIndex < 0 && data.length > 0) {
       for (let i = 0; i < data.length; i++) {
-        if (data[i].key === props.navigation.state.key) {
+        if (data[i].key === props.route.name) {
           current = i
         }
       }
@@ -96,6 +96,7 @@ export default class MapNavMenu extends React.Component {
     Animated.timing(this.right, {
       toValue: right,
       duration: 0,
+      useNativeDriver: false,
     }).start()
   }
 
@@ -105,6 +106,7 @@ export default class MapNavMenu extends React.Component {
     Animated.timing(this.right, {
       toValue: right,
       duration: immediately ? 0 : Const.ANIMATED_DURATION,
+      useNativeDriver: false,
     }).start()
   }
 
@@ -118,6 +120,7 @@ export default class MapNavMenu extends React.Component {
     Animated.timing(this.right, {
       toValue: right,
       duration: Const.ANIMATED_DURATION,
+      useNativeDriver: false,
     }).start()
   }
 
@@ -139,8 +142,8 @@ export default class MapNavMenu extends React.Component {
             key: module,
             title:
               type === ChunkType.MAP_AR
-                ? getLanguage(GLOBAL.language).Map_Label.ARMAP
-                : getLanguage(GLOBAL.language).Map_Label.MAP,
+                ? getLanguage(global.language).Map_Label.AR_SCENE
+                : getLanguage(global.language).Map_Label.MAP,
             //'地图',
             image: getThemeAssets().tabBar.tab_map,
             selectedImage: getThemeAssets().tabBar.tab_map_selected,
@@ -154,7 +157,7 @@ export default class MapNavMenu extends React.Component {
         case MapTabs.ARLayerManager:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.LAYER,
+            title: getLanguage(global.language).Map_Label.LAYER,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
@@ -167,7 +170,7 @@ export default class MapNavMenu extends React.Component {
         case MapTabs.LayerAttribute:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
+            title: getLanguage(global.language).Map_Label.ATTRIBUTE,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
             selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
@@ -181,7 +184,7 @@ export default class MapNavMenu extends React.Component {
         case MapTabs.ARMapSetting:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.SETTING,
+            title: getLanguage(global.language).Map_Label.SETTING,
             //'设置',
             image: getThemeAssets().tabBar.tab_setting,
             selectedImage: getThemeAssets().tabBar.tab_setting_selected,
@@ -194,7 +197,7 @@ export default class MapNavMenu extends React.Component {
         case MapTabs.Scene:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.SCENE,
+            title: getLanguage(global.language).Map_Label.SCENE,
             //'场景',
             image: getThemeAssets().tabBar.tab_scene,
             selectedImage: getThemeAssets().tabBar.tab_scene_selected,
@@ -209,7 +212,7 @@ export default class MapNavMenu extends React.Component {
         case MapTabs.Layer3DManager:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.LAYER,
+            title: getLanguage(global.language).Map_Label.LAYER,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
@@ -224,7 +227,7 @@ export default class MapNavMenu extends React.Component {
         case MapTabs.LayerAttribute3D:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
+            title: getLanguage(global.language).Map_Label.ATTRIBUTE,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
             selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
@@ -239,7 +242,7 @@ export default class MapNavMenu extends React.Component {
         case MapTabs.Map3DSetting:
           list.push({
             key: module,
-            title: getLanguage(GLOBAL.language).Map_Label.SETTING,
+            title: getLanguage(global.language).Map_Label.SETTING,
             //'设置',
             image: getThemeAssets().tabBar.tab_setting,
             selectedImage: getThemeAssets().tabBar.tab_setting_selected,
@@ -267,7 +270,7 @@ export default class MapNavMenu extends React.Component {
         onPress={() => {
           let current = this.props.initIndex
           for (let i = 0; i < this.state.data.length; i++) {
-            if (this.state.data[i].key === this.props.navigation.state.key) {
+            if (this.state.data[i].key === this.props.route.key) {
               current = i
             }
           }

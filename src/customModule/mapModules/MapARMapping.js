@@ -13,8 +13,7 @@ import {
   toolModule,
   changeMapModule,
 } from '../../containers/workspace/components/ToolBar/modules'
-import Orientation from 'react-native-orientation'
-import { LayerUtils } from '../../utils'
+import { LayerUtils, screen } from '../../utils'
 
 export default class MapARMapping extends Module {
   static key = ChunkType.MAP_AR_MAPPING
@@ -81,8 +80,21 @@ export default class MapARMapping extends Module {
           return false
         }
         SMap.setDynamicviewsetVisible(false)
-        Orientation.lockToPortrait()
+        // 竖屏时,锁定竖屏
+        if (screen.getOrientation().indexOf('LANDSCAPE') < 0) {
+          screen.lockToPortrait()
+        }
         return isAvailable
+      },
+      afterAction: async () => {
+        // 横屏时,等跳转后,再锁定竖屏
+        if (screen.getOrientation().indexOf('LANDSCAPE') >= 0) {
+          let timer = setTimeout(() => {
+            screen.lockToPortrait()
+            clearTimeout(timer)
+          }, 100)
+        }
+        return true
       },
     })
   }

@@ -15,14 +15,13 @@ import {
   ScrollView,
   Keyboard,
 } from 'react-native'
-import { Toast, scaleSize, OnlineServicesUtils } from '../../../../utils'
+import { Toast, scaleSize, OnlineServicesUtils, screen } from '../../../../utils'
 import { getPublicAssets } from '../../../../assets'
 import { Container } from '../../../../components'
 import NavigationService from '../../../NavigationService'
 import styles, { fontSize } from './Styles'
 import { getLanguage } from '../../../../language/index'
 import { color } from '../../../../styles'
-import Orientation from 'react-native-orientation'
 import Input from '../../../../components/Input/index'
 let JSOnlineService = undefined
 export default class Register extends React.Component {
@@ -44,14 +43,14 @@ export default class Register extends React.Component {
   }
 
   componentDidMount() {
-    if (!GLOBAL.isPad && !GLOBAL.ORIENTATIONLOCKED) {
-      Orientation.lockToPortrait()
+    if (!global.isPad && !global.ORIENTATIONLOCKED) {
+      screen.lockToPortrait()
     }
   }
 
   componentWillUnmount() {
-    if (!GLOBAL.ORIENTATIONLOCKED) {
-      Orientation.unlockAllOrientations()
+    if (!global.ORIENTATIONLOCKED) {
+      screen.unlockAllOrientations()
     }
   }
 
@@ -355,11 +354,11 @@ export default class Register extends React.Component {
         <View
           style={[
             styles.protocalTextView,
-            { flexDirection: GLOBAL.language === 'EN' ? 'column' : 'row' },
+            { flexDirection: global.language === 'EN' ? 'column' : 'row' },
           ]}
         >
           <Text style={styles.protocalText}>
-            {getLanguage(GLOBAL.language).Profile.REGISTER_READ_PROTOCAL}
+            {getLanguage(global.language).Profile.REGISTER_READ_PROTOCAL}
           </Text>
           <TouchableOpacity
             onPress={() =>
@@ -369,7 +368,7 @@ export default class Register extends React.Component {
             }
           >
             <Text style={[styles.protocalText, { color: '#4680DF' }]}>
-              {getLanguage(GLOBAL.language).Profile.REGISTER_ONLINE_PROTOCAL}
+              {getLanguage(global.language).Profile.REGISTER_ONLINE_PROTOCAL}
             </Text>
           </TouchableOpacity>
         </View>

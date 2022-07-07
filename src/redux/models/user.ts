@@ -3,6 +3,7 @@ import { handleActions } from 'redux-actions'
 import { } from '../../utils'
 import { ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 import { UserInfo } from '../../types'
+import AppUser from '@/utils/AppUser'
 // Constants
 // --------------------------------------------------
 export const USER_SET = 'USER_SET'
@@ -42,6 +43,8 @@ export interface UserInfoParams {
   password?: string,
   /** 用户类型，详见UserType */
   userType: string,
+  /** 用户角色 */
+  roles: string[],
   /** iportal用户所使用的服务器地址 */
   serverUrl?: string,
   /** @deprecated 同userName */
@@ -61,7 +64,8 @@ export interface Users {
 // Actions
 // ---------------------------------.3-----------------
 export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
-  GLOBAL.currentUser = params
+  global.currentUser = params
+  AppUser.setCurrentUser(params)
   await dispatch({
     type: USER_SET,
     payload: params,
@@ -70,7 +74,8 @@ export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (ar
 }
 
 export const setUsers = (params: UserInfo[], cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
-  GLOBAL.currentUser = params[0]
+  global.currentUser = params[0]
+  AppUser.setCurrentUser(params[0])
   await dispatch({
     type: USERS_SET,
     payload: params,
@@ -93,7 +98,7 @@ const initialState = fromJS({
 
 export default handleActions(
   {
-    [`${USER_SET}`]: (state: { toJS: () => { users: any }; setIn: (arg0: string[], arg1: any) => { (): any; new(): any; setIn: { (arg0: string[], arg1: any): any; new(): any } } }, { payload }: any) => {
+    [`${USER_SET}`]: (state: { toJS: () => Users; setIn: (arg0: string[], arg1: any) => { (): any; new(): any; setIn: { (arg0: string[], arg1: any): any; new(): any } } }, { payload }: any) => {
       const { users } = state.toJS()
       for (let i = 0; i < users.length; i++) {
         //判断类型后有id判断id，没有id判断userName
@@ -121,7 +126,7 @@ export default handleActions(
       }
       return state.setIn(['users'], fromJS(payload))
     },
-    [`${USER_DELETE}`]: (state: { toJS: () => { users: any }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
+    [`${USER_DELETE}`]: (state: { toJS: () => { users: UserInfo[] }; setIn: (arg0: string[], arg1: any) => any }, { payload }: any) => {
       const { users } = state.toJS()
       for (let i = 0; i < users.length; i++) {
         //判断类型后有id判断id，没有id判断userName

@@ -82,6 +82,27 @@ export default class ToolBarSectionList extends React.Component {
     }
   }
 
+  findeSelectItem = (selectList, name) => {
+    try {
+      let _index = -1
+      for (const x in selectList) {
+        const _item = selectList[x]
+        if (
+          _item.title === name ||
+          _item.name === name ||
+          _item.expression === name ||
+          _item.datasetName === name
+        ) {
+          _index = parseInt(x)
+          break
+        }
+      }
+      return _index
+    } catch (error) {
+      return -1
+    }
+  }
+
   dealSelectList = sections => {
     let moduleData = this.props.getToolbarModule().getData()
     let selectList = moduleData.selectList || [],
@@ -95,11 +116,11 @@ export default class ToolBarSectionList extends React.Component {
           item.title || item.name || item.expression || item.datasetName
         if (
           item.isSelected &&
-          selectList[section.title].indexOf(pushName) < 0
+          this.findeSelectItem(selectList[section.title], pushName) < 0
         ) {
-          selectList[section.title].push(pushName)
+          selectList[section.title].push(item)
         } else if (
-          selectList[section.title].indexOf(pushName) >= 0 &&
+          this.findeSelectItem(selectList[section.title], pushName) >= 0 &&
           this.props.listSelectable
         ) {
           item.isSelected = true
@@ -151,12 +172,13 @@ export default class ToolBarSectionList extends React.Component {
 
         let pushName =
           item.title || item.name || item.expression || item.datasetName
-        let _index = selectList[title].indexOf(pushName)
+        let _index = this.findeSelectItem(selectList[section.title], pushName)
+        // let _index = selectList[title].indexOf(pushName)
         if (_index >= 0 && isSelected) {
           // 取消选中并删除selectList中记录
           selectList[title].splice(_index, 1)
         } else {
-          selectList[title].push(pushName)
+          selectList[title].push(item)
         }
       }
       break
@@ -212,8 +234,8 @@ export default class ToolBarSectionList extends React.Component {
             // 全部取消
             selectList[title] && delete selectList[title]
           } else {
-            if (selectList[title].indexOf(pushName) < 0) {
-              selectList[title].push(pushName)
+            if (this.findeSelectItem(selectList[section.title], pushName) < 0) {
+              selectList[title].push(sections[i].data[k])
             }
           }
         }
@@ -328,7 +350,7 @@ export default class ToolBarSectionList extends React.Component {
             <Image
               source={section.image}
               resizeMode={'contain'}
-              style={[styles.section_dataset_type, section.allSelectType && {marginLeft: scaleSize(10)}]}
+              style={[styles.section_dataset_type, section.allSelectType && {marginLeft: scaleSize(6)}]}
             />
           )}
           <Text
@@ -337,7 +359,7 @@ export default class ToolBarSectionList extends React.Component {
             style={[styles.sectionTitle, this.props.sectionTitleStyle,
               isLandscape && (section.expressionType || section.buttons || section.extraData) &&{
                 maxWidth: scaleSize(120),
-              }]}
+              },{marginLeft:scaleSize(16)}]}
           >
             {section.title}
           </Text>
@@ -353,7 +375,7 @@ export default class ToolBarSectionList extends React.Component {
               />
               {/* <Text style={[styles.sectionSelectedTitle]}> */}
               {/* {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .THEME_HIDE_SYSTEM_FIELDS
                 } */}
               {/* 隐藏系统字段 */}
@@ -404,7 +426,7 @@ export default class ToolBarSectionList extends React.Component {
     let selectImg = item.isSelected
       ? require('../../../../../assets/mapTools/icon_multi_selected_disable_black.png')
       : require('../../../../../assets/mapTools/icon_multi_unselected_disable_black.png')
-    let selectedTextStyle = item.isSelected ? { color: 'white' } : {}
+    let selectedTextStyle = !this.props.listSelectable && item.isSelected ? { color: 'white' } : {}
     return (
       <TouchableOpacity
         style={[
@@ -454,7 +476,7 @@ export default class ToolBarSectionList extends React.Component {
               </Text>
               {item.subTitle && (
                 <Text style={styles.subTitle} numberOfLines={1} ellipsizeMode={'tail'}>
-                  {getLanguage(GLOBAL.language).Prompt.LATEST}
+                  {getLanguage(global.language).Prompt.LATEST}
                   {item.subTitle}
                 </Text>
               )}
@@ -507,18 +529,20 @@ export default class ToolBarSectionList extends React.Component {
     let info
     if (item.info.infoType === 'mtime') {
       info =
-        getLanguage(GLOBAL.language).Prompt.LATEST + item.info.lastModifiedDate
+        getLanguage(global.language).Prompt.LATEST + item.info.lastModifiedDate
     } else if (item.info.infoType === 'fieldType') {
       info =
-        getLanguage(GLOBAL.language).Prompt.FIELD_TYPE + item.info.fieldType
+        getLanguage(global.language).Prompt.FIELD_TYPE + ': ' + item.info.fieldType
     } else if (item.info.infoType === 'dataset') {
       let geoCoordSysType = item.info.geoCoordSysType
       let prjCoordSysType = item.info.prjCoordSysType
       info =
-        getLanguage(GLOBAL.language).Prompt.GEOGRAPHIC_COORDINATE_SYSTEM +
+        getLanguage(global.language).Prompt.GEOGRAPHIC_COORDINATE_SYSTEM +
+        ': ' +
         geoCoordSysType +
         ', ' +
-        getLanguage(GLOBAL.language).Prompt.PROJECTED_COORDINATE_SYSTEM +
+        getLanguage(global.language).Prompt.PROJECTED_COORDINATE_SYSTEM +
+        ': ' +
         prjCoordSysType
     } else {
       return
@@ -540,7 +564,7 @@ export default class ToolBarSectionList extends React.Component {
             : { color: color.item_separate_white },
         ]}
         ellipsizeMode="tail"
-        numberOfLines={1}
+        // numberOfLines={1}
       >
         {info}
       </Text>
@@ -908,8 +932,8 @@ const styles = StyleSheet.create({
     width: scaleSize(520),
     marginLeft: scaleSize(30),
     marginTop: scaleSize(4),
-    fontSize: setSpText(16),
-    height: scaleSize(30),
+    fontSize: setSpText(14),
+    height: scaleSize(40),
     backgroundColor: 'transparent',
     textAlignVertical: 'center',
     color: color.item_separate_white,

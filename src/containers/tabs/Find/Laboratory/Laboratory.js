@@ -187,7 +187,7 @@ class Laboratory extends React.Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Find.LABORATORY,
+          title: getLanguage(global.language).Find.LABORATORY,
           navigation: this.props.navigation,
         }}
       >

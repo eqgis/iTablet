@@ -16,13 +16,18 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
-import { SThemeCartography, SMap } from 'imobile_for_reactnative'
+import { SThemeCartography, SMap ,ThemeType } from 'imobile_for_reactnative'
 import { Container } from '../../components'
 import { color } from '../../styles'
-import { scaleSize, setSpText, Toast, screen } from '../../utils'
+import { scaleSize, setSpText, Toast } from '../../utils'
 import ToolbarModule from '../workspace/components/ToolBar/modules/ToolbarModule'
+import ThemeAction from '../workspace/components/ToolBar/modules/themeModule/ThemeAction'
 import { ConstToolType, ToolbarType, TouchType } from '../../constants'
 import { getLanguage } from '../../language'
+import constants from '../workspace/constants'
+import {
+  themeModule,
+} from '../workspace/components/ToolBar/modules'
 
 export default class CustomModePage extends Component {
   props: {
@@ -33,7 +38,7 @@ export default class CustomModePage extends Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.type = (params && params.type) || ToolbarModule.getData().customType
     this.state = {
       originData: [],
@@ -74,18 +79,97 @@ export default class CustomModePage extends Component {
         length,
       },
       () => {
-        GLOBAL.ToolBar?.showFullMap(true)
+        global.ToolBar?.showFullMap(true)
       },
     )
   }
 
   _back = async () => {
-    let mapXml = ToolbarModule.getData().mapXml
-    await SMap.mapFromXml(mapXml) // 不保存专题图修改，还原地图
+    // let mapXml = ToolbarModule.getData().mapXml
+    // await SMap.mapFromXml(mapXml) // 不保存专题图修改，还原地图
     this.props.navigation.goBack()
-    GLOBAL.PreviewHeader?.setVisible(false)
-    GLOBAL.ToolBar?.setVisible(false)
-    GLOBAL.ToolBar?.existFullMap()
+    // global.PreviewHeader?.setVisible(false)
+    // global.ToolBar?.setVisible(false)
+    // global.ToolBar?.existFullMap()
+    const params = ToolbarModule.getParams()
+    this.layerListAction(params.currentLayer)
+  }
+
+  layerListAction = async data => {
+    const _params = ToolbarModule.getParams()
+    let curThemeType
+    if (data.isHeatmap) {
+      curThemeType = constants.THEME_HEATMAP
+    } else {
+      switch (data.themeType) {
+        case ThemeType.UNIQUE:
+          curThemeType = constants.THEME_UNIQUE_STYLE
+          break
+        case ThemeType.RANGE:
+          curThemeType = constants.THEME_RANGE_STYLE
+          break
+        case ThemeType.LABEL:
+          curThemeType = constants.THEME_UNIFY_LABEL
+          break
+        case ThemeType.LABELUNIQUE:
+          curThemeType = constants.THEME_UNIQUE_LABEL
+          break
+        case ThemeType.LABELRANGE:
+          curThemeType = constants.THEME_RANGE_LABEL
+          break
+        case ThemeType.DOTDENSITY:
+          curThemeType = constants.THEME_DOT_DENSITY
+          break
+        case ThemeType.GRADUATEDSYMBOL:
+          curThemeType = constants.THEME_GRADUATED_SYMBOL
+          break
+        case ThemeType.GRAPH:
+          curThemeType = constants.THEME_GRAPH_STYLE
+          break
+        case ThemeType.GRIDRANGE:
+          curThemeType = constants.THEME_GRID_RANGE
+          break
+        case ThemeType.GRIDUNIQUE:
+          curThemeType = constants.THEME_GRID_UNIQUE
+          break
+        default:
+          Toast.show(
+            getLanguage(_params.language).Prompt
+              .CURRENT_LAYER_DOSE_NOT_SUPPORT_MODIFICATION,
+          )
+          break
+      }
+    }
+    if (curThemeType) {
+      const _type =
+        curThemeType === constants.THEME_GRAPH_STYLE
+          ? ConstToolType.SM_MAP_THEME_PARAM_GRAPH
+          : ConstToolType.SM_MAP_THEME_PARAM
+      _params.showFullMap(true)
+      // const { orientation } = _params.device
+      const xml = await SMap.mapToXml()
+      ToolbarModule.setData({
+        type: _type,
+        getData: themeModule.getData,
+        actions:themeModule.actions,
+        currentThemeData: data,
+        themeCreateType: curThemeType,
+        mapXml: xml,
+      })
+      _params.setToolbarVisible(true, _type, {
+        containerType: ToolbarType.list,
+        isFullScreen: true,
+        // height:
+        //   orientation.indexOf('PORTRAIT') >= 0
+        //     ? ConstToolType.THEME_HEIGHT[3]
+        //     : ConstToolType.TOOLBAR_HEIGHT_2[3],
+        // column: orientation.indexOf('PORTRAIT') >= 0 ? 8 : 4,
+        themeType: curThemeType,
+        isTouchProgress: false,
+        showMenuDialog: true,
+      })
+      _params.navigation.navigate('MapView')
+    }
   }
 
   _changeItemVisible = index => {
@@ -97,7 +181,7 @@ export default class CustomModePage extends Component {
   }
   _changeItemValue = (index, text) => {
     if (isNaN(Math.round(text)) || text.indexOf('.') > 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.ONLY_INTEGER)
+      Toast.show(getLanguage(global.language).Prompt.ONLY_INTEGER)
       return
     }
     let data = JSON.parse(JSON.stringify(this.state.data))
@@ -122,7 +206,7 @@ export default class CustomModePage extends Component {
   _changeLength = length => {
     if (isNaN(Math.round(length)) || length.includes('.') || length < 3) {
       Toast.show(
-        getLanguage(GLOBAL.language).Prompt.ONLY_INTEGER_GREATER_THAN_2,
+        getLanguage(global.language).Prompt.ONLY_INTEGER_GREATER_THAN_2,
       )
       return
     }
@@ -172,14 +256,14 @@ export default class CustomModePage extends Component {
     if (rel) {
       const params = ToolbarModule.getParams()
       params.showFullMap && params.showFullMap(true)
-      GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(true)
+      global.PreviewHeader && global.PreviewHeader.setVisible(true)
       ToolbarModule.addData({
         customModeData: this.state.data,
         customType: this.type,
       })
       this.props.navigation.goBack()
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.PARAMS_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.PARAMS_ERROR)
     }
   }
 
@@ -190,13 +274,18 @@ export default class CustomModePage extends Component {
     }
     let rel = await this._setAttrToMap(data)
     if (rel) {
-      GLOBAL.PreviewHeader && GLOBAL.PreviewHeader.setVisible(false)
-      GLOBAL.ToolBar && GLOBAL.ToolBar.existFullMap()
-      GLOBAL.TouchType = TouchType.NORMAL
+      global.PreviewHeader && global.PreviewHeader.setVisible(false)
+      global.ToolBar && global.ToolBar.existFullMap()
+      global.TouchType = TouchType.NORMAL
+      // 在线协作,专题,实时同步
+      if (global.coworkMode) {
+        let layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
+        ThemeAction.sendUpdateThemeMsg(layerInfo)
+      }
       ToolbarModule.setData({})
       this.props.navigation.goBack()
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.PARAMS_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.PARAMS_ERROR)
     }
   }
 
@@ -242,12 +331,12 @@ export default class CustomModePage extends Component {
       <View style={styles.rightContainer}>
         <TouchableOpacity style={styles.btn} onPress={this._preView}>
           <Text style={styles.rightText}>
-            {getLanguage(GLOBAL.language).Map_Main_Menu.PREVIEW}
+            {getLanguage(global.language).Map_Main_Menu.PREVIEW}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={this._confirm}>
           <Text style={styles.rightText}>
-            {getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
+            {getLanguage(global.language).CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>
@@ -261,7 +350,7 @@ export default class CustomModePage extends Component {
     return (
       <View style={styles.row}>
         <Text style={styles.itemTitle}>
-          {getLanguage(GLOBAL.language).Map_Main_Menu.RANGE}
+          {getLanguage(global.language).Map_Main_Menu.RANGES}
         </Text>
 
         <View style={styles.inputView}>
@@ -384,23 +473,23 @@ export default class CustomModePage extends Component {
     let title, hasSubTitle
     switch (this.type) {
       case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
-        title = getLanguage(GLOBAL.language).Map_Main_Menu
+        title = getLanguage(global.language).Map_Main_Menu
           .THEME_RANGES_LABEL_MAP_TITLE
         hasSubTitle = true
         break
       case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
         hasSubTitle = true
-        title = getLanguage(GLOBAL.language).Map_Main_Menu
+        title = getLanguage(global.language).Map_Main_Menu
           .THEME_RANGES_MAP_TITLE
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
         hasSubTitle = false
-        title = getLanguage(GLOBAL.language).Map_Main_Menu
+        title = getLanguage(global.language).Map_Main_Menu
           .THEME_UNIQUE_VALUES_MAP_TITLE
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
         hasSubTitle = false
-        title = getLanguage(GLOBAL.language).Map_Main_Menu
+        title = getLanguage(global.language).Map_Main_Menu
           .THEME_UNIQUE_VALUE_LABEL_MAP_TITLE
         break
     }

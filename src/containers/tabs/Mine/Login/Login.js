@@ -1,13 +1,14 @@
 import * as React from 'react'
 import {
-  NetInfo,
   View,
   TouchableOpacity,
   Text,
   Animated,
   FlatList,
 } from 'react-native'
-import { Toast, OnlineServicesUtils, scaleSize } from '../../../../utils/index'
+import NetInfo from "@react-native-community/netinfo"
+import { Toast, scaleSize, screen } from '../../../../utils/index'
+import * as OnlineServicesUtils from '../../../../utils/OnlineServicesUtils'
 import { Container } from '../../../../components'
 import { FileTools } from '../../../../native'
 import { SIPortalService, AppInfo } from 'imobile_for_reactnative'
@@ -16,13 +17,11 @@ import NavigationService from '../../../NavigationService'
 import UserType from '../../../../constants/UserType'
 import { getLanguage } from '../../../../language/index'
 import FriendListFileHandle from '../../Friend/FriendListFileHandle'
-import CoworkFileHandle from '../../Find/CoworkManagePage/CoworkFileHandle'
+// import CoworkFileHandle from '../../Find/CoworkManagePage/CoworkFileHandle'
 import OnlineLoginView from './component/OnlineLoginView'
 import IPortalLoginView from './component/IPortalLoginView'
-import Orientation from 'react-native-orientation'
 import { color } from '../../../../styles'
-
-const JSOnlineService = new OnlineServicesUtils('online')
+import { GetUserBaseMapUtil } from '../../../../utils'
 export default class Login extends React.Component {
   props: {
     language: string,
@@ -35,7 +34,7 @@ export default class Login extends React.Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.show =
       params && params.show && params.show.length > 0 ? params.show : []
     this.state = {
@@ -49,15 +48,15 @@ export default class Login extends React.Component {
 
   componentDidMount() {
     this.getData()
-    if (!GLOBAL.isPad) {
-      Orientation.lockToPortrait()
-      GLOBAL.ORIENTATIONLOCKED = true
+    if (!global.isPad) {
+      screen.lockToPortrait()
+      global.ORIENTATIONLOCKED = true
     }
   }
 
   componentWillUnmount() {
-    Orientation.unlockAllOrientations()
-    GLOBAL.ORIENTATIONLOCKED = false
+    screen.unlockAllOrientations()
+    global.ORIENTATIONLOCKED = false
   }
 
   getData = () => {
@@ -143,7 +142,7 @@ export default class Login extends React.Component {
         return
       }
 
-      let isConnected = await NetInfo.isConnected.fetch()
+      let isConnected = (await NetInfo.fetch()).isConnected
       if(!isConnected) {
         Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
         return
@@ -160,7 +159,7 @@ export default class Login extends React.Component {
       }
 
       //使用邮箱或昵称登录的用户可以在此处检查是否已经登录
-      const userInfo = await JSOnlineService.getUserInfo(userName)
+      const userInfo = await OnlineServicesUtils.getService('online')?.getUserInfo(userName)
       if (
         userInfo !== false &&
           userInfo.userId === this.props.user.currentUser.userId
@@ -169,9 +168,11 @@ export default class Login extends React.Component {
         return
       }
 
-      const loginResult = await JSOnlineService.login(userName, password)
-
-      if (loginResult.userInfo) {
+      const loginResult = await OnlineServicesUtils.getService('online')?.login(userName, password)
+      const result = await new Promise.race([loginResult, timeout(30)])
+      if (result === 'timeout') {
+        Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
+      } else if (loginResult.userInfo) {
         const loginUser = loginResult.userInfo
         if(loginUser.userName === this.props.user.currentUser.userId) {
           Toast.show(getLanguage().Profile.LOGIN_CURRENT)
@@ -188,20 +189,16 @@ export default class Login extends React.Component {
           userId: loginUser.userName,
           isEmail: isEmail,
           userType: loginUser.userType,
+          roles: loginUser.roles,
         }
-        let friendListResult = FriendListFileHandle.initFriendList(user)
-        // let coworkListResult = CoworkFileHandle.initCoworkList(user) // 初始化协作文件
-        const result = await new Promise.race([friendListResult, timeout(30)])
-        if (result === 'timeout') {
-          Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
-        } else if (result) {
-          GLOBAL.isLogging = true
-          this.props.setUser(user)
-          AppInfo.setServiceUrl('https://www.supermapol.com/web/')
-          NavigationService.popToTop('Tabs')
-        } else {
-          Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)
-        }
+        FriendListFileHandle.initFriendList(user)
+        await this.props.setUser(user)
+        global.isLogging = true
+        global.getFriend?.().onUserLoggedin()
+        AppInfo.setServiceUrl('https://www.supermapol.com/web/')
+        NavigationService.popToTop()
+        // 加载用户底图
+        await this.loadUserBaseMaps()
       } else {
         const errorInfo = loginResult.errorInfo
         if (
@@ -257,22 +254,27 @@ export default class Login extends React.Component {
         if (info) {
           let userInfo = JSON.parse(info)
           await this.initUserDirectories(userInfo.name)
+          OnlineServicesUtils.getService('iportal') // 初始化OnlineServicesUtils
           const user = {
             serverUrl: url,
             userName: userInfo.name,
+            userId: userInfo.name,
             password: password,
             nickname: userInfo.nickname,
             email: userInfo.email,
             userType: UserType.IPORTAL_COMMON_USER,
+            roles: userInfo.roles,
           }
-          this.props.setUser(user)
-
+          global.isLogging = true
+          await this.props.setUser(user)
+          global.getFriend?.().onUserLoggedin()
           AppInfo.setServiceUrl(url)
           FriendListFileHandle.initFriendList(user) // iportal初始化好友列表信息,防止之前online用户留存信息的存在,把online的好友文件下载到iportal用户中
+          // 加载用户底图
+          await this.loadUserBaseMaps()
         }
         this.iportalLogin.loginResult()
         this.setState({covered:false})
-        GLOBAL.isLogging = true
         // this.container.setLoading(false)
         NavigationService.popToTop()
       } else {
@@ -301,6 +303,37 @@ export default class Login extends React.Component {
 
   _connect = (value)  => {
     this.setState({covered:value})
+  }
+
+
+  async loadUserBaseMaps(){
+    let curUserBaseMaps = []
+    // 根据当前用户id获取当前用户的底图数组
+    if(this.props.user.currentUser.userId){
+      curUserBaseMaps = this.props.baseMaps[this.props.user.currentUser.userId]
+    }
+     
+    // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
+    if (!curUserBaseMaps) {
+      curUserBaseMaps = this.props.baseMaps['default']
+    }
+    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
+    // 当公有服务列表数组有元素时，就遍历这个数组
+    if (arrPublishServiceList.length > 0) {
+      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
+        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
+        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl){
+          let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
+          // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
+          this.props.setBaseMap &&
+            this.props.setBaseMap({
+              userId: currentUser.userId,
+              baseMaps: list,
+            })
+        }
+      }
+    }
+
   }
 
   renderItem = ({ item, index }) => {
@@ -395,10 +428,12 @@ export default class Login extends React.Component {
                 Animated.timing(this.scaleL, {
                   toValue: this.offset,
                   duration: 0,
+                  useNativeDriver: false,
                 }),
                 Animated.timing(this.scaleR, {
                   toValue: this.offset,
                   duration: 0,
+                  useNativeDriver: false,
                 }),
               ]).start()
 
@@ -424,12 +459,12 @@ export default class Login extends React.Component {
   renderLogin = () => {
     if (this.state.type === 'Online') {
       return (
-        <OnlineLoginView language={GLOBAL.language} login={this._loginOnline} ref={ref => (this.onlineLogin = ref)}/>
+        <OnlineLoginView language={global.language} login={this._loginOnline} ref={ref => (this.onlineLogin = ref)}/>
       )
     } else if (this.state.type === 'iPortal') {
       return (
         <IPortalLoginView
-          language={GLOBAL.language}
+          language={global.language}
           login={this._loginIPortal}
           connect={this._connect}
           setMessageService={this.props.setMessageService}

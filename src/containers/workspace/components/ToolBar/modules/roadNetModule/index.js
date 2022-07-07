@@ -81,7 +81,7 @@ class RoadNetModule extends FunctionModule {
 export default function() {
   return new RoadNetModule({
     type: 'MAP_ROAD_NET_MODULE',
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.NETWORK_MODULE,
+    title: getLanguage(global.language).Map_Main_Menu.NETWORK_MODULE,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_network,
   })

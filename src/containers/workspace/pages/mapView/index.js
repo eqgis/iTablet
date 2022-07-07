@@ -3,7 +3,6 @@ import MapView from './MapView'
 import {
   setEditLayer,
   setSelection,
-  setAnalystLayer,
   getLayers,
   setCurrentAttribute,
   setCurrentLayer,
@@ -30,8 +29,6 @@ import {
   getSymbolPlots,
 } from '../../../../redux/models/template'
 import {
-  setBufferSetting,
-  setOverlaySetting,
   getMapSetting,
   setMapLegend,
   setMapNavigation,
@@ -60,13 +57,13 @@ import { downloadFile, deleteDownloadFile ,setSampleDataShow} from '../../../../
 import { setToolbarStatus } from '../../../../redux/models/toolbarStatus'
 import { setCurrentARLayer, getARLayers } from '../../../../redux/models/arlayer'
 import { createARMap, openARMap, saveARMap, closeARMap } from '../../../../redux/models/armap'
-import { setCoworkService } from '../../../../redux/models/cowork'
+import { setCoworkService, clearCoworkService } from '../../../../redux/models/cowork'
+import { setAIClassifyModel, setAIDetectModel } from '../../../../redux/models/setting'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   nav: state.nav.toJS(),
   editLayer: state.layers.toJS().editLayer,
-  analystLayer: state.layers.toJS().analystLayer,
   selection: state.layers.toJS().selection,
   latestMap: state.map.toJS().latestMap,
   map: state.map.toJS(),
@@ -118,15 +115,14 @@ const mapStateToProps = state => ({
   showSampleData: state.down.toJS().showSampleData,
   baseMaps: state.map.toJS().baseMaps,
   isShowCompass: state.setting.toJS().isShowCompass,
+  aiDetectData: state.setting.toJS().aiDetectData,
+  aiClassifyData: state.setting.toJS().aiClassifyData,
 })
 
 const mapDispatchToProps = {
   setEditLayer,
   setSelection,
   setLatestMap,
-  setBufferSetting,
-  setOverlaySetting,
-  setAnalystLayer,
   setCurrentMap,
   getLayers,
   setCollectionInfo,
@@ -175,7 +171,10 @@ const mapDispatchToProps = {
   showAR,
   setSampleDataShow,
   setCoworkService,
+  clearCoworkService,
   arPoiSearch,
+  setAIClassifyModel,
+  setAIDetectModel,
 }
 
 export default connect(

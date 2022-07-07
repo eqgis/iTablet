@@ -1,3 +1,4 @@
+import { LicenseModule } from 'imobile_for_reactnative'
 import React, { Component } from 'react'
 import {
   View,
@@ -30,17 +31,17 @@ export default class ModuleInfo extends Component {
   getEditionData = () => {
     return [
       {
-        title: getLanguage(GLOBAL.language).Profile.LICENSE_EDITION_STANDARD,
-        id: Platform.OS === 'ios' ? '18001' : '19001',
+        title: getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD,
+        id: LicenseModule.ITABLET_STANDARD,
       },
       {
-        title: getLanguage(GLOBAL.language).Profile
+        title: getLanguage(global.language).Profile
           .LICENSE_EDITION_PROFESSIONAL,
-        id: Platform.OS === 'ios' ? '18002' : '19002',
+        id: LicenseModule.ITABLET_PROFESSIONAL,
       },
       {
-        title: getLanguage(GLOBAL.language).Profile.LICENSE_EDITION_ADVANCED,
-        id: Platform.OS === 'ios' ? '18003' : '19003',
+        title: getLanguage(global.language).Profile.LICENSE_EDITION_ADVANCED,
+        id: LicenseModule.ITABLET_ADVANCED,
       },
     ]
   }
@@ -48,20 +49,20 @@ export default class ModuleInfo extends Component {
   getModuleData = () => {
     return [
       {
-        title: getLanguage(GLOBAL.language).Map_Module.MAP_AR_MODULE,
-        id: Platform.OS === 'ios' ? '18004' : '19004',
+        title: getLanguage(global.language).Map_Module.MAP_AR_MODULE,
+        id: LicenseModule.ITABLET_ARMAP,
       },
       {
-        title: getLanguage(GLOBAL.language).Map_Module.MAP_NAVIGATION,
-        id: Platform.OS === 'ios' ? '18005' : '19005',
+        title: getLanguage(global.language).Map_Module.MAP_NAVIGATION,
+        id: LicenseModule.ITABLET_NAVIGATIONMAP,
       },
       {
-        title: getLanguage(GLOBAL.language).Map_Module.MAP_ANALYST,
-        id: Platform.OS === 'ios' ? '18006' : '19006',
+        title: getLanguage(global.language).Map_Module.MAP_ANALYST,
+        id: LicenseModule.ITABLET_DATAANALYSIS,
       },
       {
-        title: getLanguage(GLOBAL.language).Map_Module.MAP_PLOTTING,
-        id: Platform.OS === 'ios' ? '18007' : '19007',
+        title: getLanguage(global.language).Map_Module.MAP_PLOTTING,
+        id: LicenseModule.ITABLET_PLOTTING,
       },
     ]
   }
@@ -103,7 +104,7 @@ export default class ModuleInfo extends Component {
       <View>
         <View style={styles.moduleTitle}>
           <Text style={styles.moduleTitleText}>
-            {getLanguage(GLOBAL.language).Profile.LICENSE_EDITION}
+            {getLanguage(global.language).Profile.LICENSE_EDITION}
           </Text>
         </View>
         <FlatList
@@ -121,7 +122,7 @@ export default class ModuleInfo extends Component {
       <View style={{ marginTop: 10 }}>
         <View style={styles.moduleTitle}>
           <Text style={styles.moduleTitleText}>
-            {getLanguage(GLOBAL.language).Profile.LICENSE_MODULE}
+            {getLanguage(global.language).Profile.LICENSE_MODULE}
           </Text>
         </View>
         <FlatList

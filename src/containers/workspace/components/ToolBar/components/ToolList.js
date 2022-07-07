@@ -163,8 +163,8 @@ export default class ToolList extends React.Component {
           placeholder: getLanguage(this.props.language).Prompt.ENTER_MAP_NAME,
           type: 'name',
           cb: async value => {
-            GLOBAL.Loading &&
-              GLOBAL.Loading.setLoading(
+            global.Loading &&
+              global.Loading.setLoading(
                 true,
                 getLanguage(this.props.language).Prompt.CREATING,
                 //ConstInfo.MAP_SYMBOL_COLLECTION_CREATING,
@@ -181,7 +181,7 @@ export default class ToolList extends React.Component {
             const customerPath =
               ConstPath.CustomerPath +
               ConstPath.RelativeFilePath.Workspace[
-                GLOBAL.language === 'CN' ? 'CN' : 'EN'
+                global.language === 'CN' ? 'CN' : 'EN'
               ]
             let wsPath
             if (this.props.user.currentUser.userName) {
@@ -190,7 +190,7 @@ export default class ToolList extends React.Component {
                 this.props.user.currentUser.userName +
                 '/' +
                 ConstPath.RelativeFilePath.Workspace[
-                  GLOBAL.language === 'CN' ? 'CN' : 'EN'
+                  global.language === 'CN' ? 'CN' : 'EN'
                 ]
               wsPath = await FileTools.appendingHomeDirectory(userWSPath)
             } else {
@@ -223,17 +223,17 @@ export default class ToolList extends React.Component {
             this.props.saveMap &&
               (await this.props.saveMap({
                 mapName: value,
-                nModule: GLOBAL.Type,
+                nModule: global.Type,
                 notSaveToXML: true,
               }))
 
-            GLOBAL.Loading && GLOBAL.Loading.setLoading(false)
+            global.Loading && global.Loading.setLoading(false)
             NavigationService.goBack()
             setTimeout(async () => {
               this.props.setToolbarVisible(false)
-              if (GLOBAL.legend) {
+              if (global.legend) {
                 await SMap.addLegendListener({
-                  legendContentChange: GLOBAL.legend._contentChange,
+                  legendContentChange: global.legend._contentChange,
                 })
               }
               Toast.show(

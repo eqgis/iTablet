@@ -18,13 +18,15 @@ class MyDataset extends MyDataPage {
   constructor(props) {
     super(props)
     this.type = this.types.dataset
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
+    this.datasourceName = params.data.name && params.data.name.substr(0, params.data.name.lastIndexOf('.')) // 加入到工作空间时,数据源的名称,防止同名不同文件的数据源
     this.state = {
       ...this.state,
       shareToLocal: true,
-      title:
-        params.data.name &&
-        params.data.name.substr(0, params.data.name.lastIndexOf('.')),
+      shareToOnline: false,
+      shareToIPortal: false,
+      shareToWechat: false,
+      title: this.datasourceName, // 数据源文件名称,不一定是数据源的名称
       data: params.data,
     }
     this.from = params.from
@@ -49,7 +51,8 @@ class MyDataset extends MyDataPage {
 
   componentWillUnmount() {
     if (!this.isAlreadyOpen) {
-      SMap.closeDatasource(this.state.title)
+      // SMap.closeDatasource(this.datasourceName)
+      this.from === 'MapView' ? SMap.closeTempDatasource() :  SMap.closeDatasource(this.datasourceName)
     }
     this.container && this.container.setLoading(false)
   }
@@ -57,32 +60,42 @@ class MyDataset extends MyDataPage {
   _openDatasource = async () => {
     try {
       let datasources = await SMap.getDatasources()
+      let homePath = await FileTools.appendingHomeDirectory()
       this.isAlreadyOpen = false
       if (datasources.length !== 0) {
         for (let i = 0; i < datasources.length; i++) {
-          if (datasources[i].alias === this.state.title) {
+          if (
+            datasources[i].server === (homePath + this.state.data.path)
+          ) {
+            this.datasourceName = datasources[i].alias
             this.isAlreadyOpen = true
             break
           }
         }
       }
       if (!this.isAlreadyOpen) {
-        let homePath = await FileTools.appendingHomeDirectory()
         let datasourceParams = {}
         datasourceParams.server = homePath + this.state.data.path
         datasourceParams.engineType = EngineType.UDB
         datasourceParams.alias = this.state.title
-        await SMap.openDatasource2(datasourceParams)
+        await SMap.openDatasource2(datasourceParams, this.from === 'MapView')
       }
+      // let datasourceParams = {}
+      // datasourceParams.server = homePath + this.state.data.path
+      // datasourceParams.engineType = EngineType.UDB
+      // datasourceParams.alias = this.state.title
+      // await SMap.openTempDatasource(datasourceParams)
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Profile.OPEN_DATASROUCE_FAILED)
+      Toast.show(getLanguage(global.language).Profile.OPEN_DATASROUCE_FAILED)
     }
   }
 
   getData = async () => {
+    let userTempWorkspace = !this.isAlreadyOpen && this.from === 'MapView'
     let dataset = await SMap.getDatasetsByDatasource({
-      alias: this.state.title,
-    })
+      alias: userTempWorkspace ? this.datasourceName : this.state.title,
+      server: await FileTools.appendingHomeDirectory(this.state.data.path),
+    }, false, {}, userTempWorkspace)
     let data = dataset.list
 
     let sectionData = []
@@ -98,7 +111,7 @@ class MyDataset extends MyDataPage {
     try {
       if (!this.itemInfo) return false
       let datasetName = this.itemInfo.item.datasetName
-      let result = await SMap.deleteDataset(this.state.title, datasetName)
+      let result  = await SMap.deleteDataset(this.datasourceName, datasetName, !this.isAlreadyOpen && this.from === 'MapView')
       return result
     } catch (e) {
       return false
@@ -108,64 +121,71 @@ class MyDataset extends MyDataPage {
   exportData = async (name, exportToTemp = true) => {
     let datasetParams = Object.assign({}, this.itemInfo.item)
     let homePath = await FileTools.appendingHomeDirectory()
-    let targetPath
+
+    //先导出，再根据情况是否打包
+    let exportPath = homePath + this.getRelativeExportPath()
+    let availableName = await this._getAvailableFileName(
+      exportPath,
+      name,
+      this.exportType,
+    )
+    /** 单个文件 */
+    let filePath = exportPath + availableName
+    let result = await SMap.exportDataset(
+      this.exportType,
+      filePath,
+      datasetParams,
+    )
+
+    if(!result) return false
+
     if (exportToTemp) {
       let tempPath = homePath + this.getRelativeTempPath()
-      let availableName = await this._getAvailableFileName(
+      let zipName = await this._getAvailableFileName(
         tempPath,
         'MyExport',
         'zip',
       )
-      targetPath = tempPath + availableName
+      let targetPath = tempPath + zipName
+
+      result = await FileTools.zipFile(filePath, targetPath)
+      FileTools.deleteFile(filePath)
       this.exportPath = targetPath
     } else {
-      let exportPath = homePath + this.getRelativeExportPath()
-      let availableName = await this._getAvailableFileName(
-        exportPath,
-        name,
-        this.exportType,
-      )
-      targetPath = exportPath + availableName
       this.exportPath = this.getRelativeExportPath() + availableName
     }
-
-    let result = false
-    result = await SMap.exportDataset(
-      this.exportType,
-      targetPath,
-      datasetParams,
-    )
 
     return result
   }
 
   showAttribute = () => {
-    GLOBAL.NEEDREFRESHTABLE = true
+    global.NEEDREFRESHTABLE = true
     NavigationService.navigate('LayerSelectionAttribute',{type:'MY_DATA',datasetName:this.itemInfo.item.datasetName})
   }
 
   setProjection = () => {
     NavigationService.navigate('ProjectionTargetCoordsPage', {
-      title: getLanguage(GLOBAL.language).Analyst_Labels.PRJCOORDSYS,
+      title: getLanguage(global.language).Analyst_Labels.PRJCOORDSYS,
       cb: async targetCoords => {
         NavigationService.goBack()
-        GLOBAL.Loading.setLoading(
+        global.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.SET_PROJECTION,
+          getLanguage(global.language).Profile.SET_PROJECTION,
         )
         let result = false
         //设置数据集投影
         let datasetName = this.itemInfo.item.datasetName
         result = await SProcess.setPrjCoordSys(
-          this.state.title,
+          this.datasourceName,
           datasetName,
           targetCoords.value+"",
+          !this.isAlreadyOpen && this.from === 'MapView',
         )
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
         if (result) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
+          Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
         }
       },
     })
@@ -174,24 +194,24 @@ class MyDataset extends MyDataPage {
   buildPyramid = () => {
     let build = async () => {
       try {
-        GLOBAL.Loading.setLoading(
+        global.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.BUILDING,
+          getLanguage(global.language).Profile.BUILDING,
         )
         let datasetName = this.itemInfo.item.datasetName
-        let result = await SMap.buildPyramid(this.state.title, datasetName)
-        GLOBAL.Loading.setLoading(false)
+        let result = await SMap.buildPyramid(this.datasourceName, datasetName)
+        global.Loading.setLoading(false)
         Toast.show(
           result
-            ? getLanguage(GLOBAL.language).Profile.BUILD_SUCCESS
-            : getLanguage(GLOBAL.language).Profile.BUILD_FAILED,
+            ? getLanguage(global.language).Profile.BUILD_SUCCESS
+            : getLanguage(global.language).Profile.BUILD_FAILED,
         )
       } catch (e) {
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       }
     }
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Profile.TIME_SPEND_OPERATION,
+      text: getLanguage(global.language).Profile.TIME_SPEND_OPERATION,
       confirmAction: build,
     })
     this.SimpleDialog.setVisible(true)
@@ -200,24 +220,24 @@ class MyDataset extends MyDataPage {
   updataStatistics = async () => {
     let build = async () => {
       try {
-        GLOBAL.Loading.setLoading(
+        global.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.BUILDING,
+          getLanguage(global.language).Profile.BUILDING,
         )
         let datasetName = this.itemInfo.item.datasetName
-        let result = await SMap.updataStatistics(this.state.title, datasetName)
-        GLOBAL.Loading.setLoading(false)
+        let result = await SMap.updataStatistics(this.datasourceName, datasetName)
+        global.Loading.setLoading(false)
         Toast.show(
           result
-            ? getLanguage(GLOBAL.language).Profile.BUILD_SUCCESS
-            : getLanguage(GLOBAL.language).Profile.BUILD_FAILED,
+            ? getLanguage(global.language).Profile.BUILD_SUCCESS
+            : getLanguage(global.language).Profile.BUILD_FAILED,
         )
       } catch (e) {
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       }
     }
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Profile.TIME_SPEND_OPERATION,
+      text: getLanguage(global.language).Profile.TIME_SPEND_OPERATION,
       confirmAction: build,
     })
     this.SimpleDialog.setVisible(true)
@@ -229,8 +249,8 @@ class MyDataset extends MyDataPage {
       return customedata.concat([
         {
           title:
-            getLanguage(GLOBAL.language).Profile[`DELETE_${this.type}`] ||
-            getLanguage(GLOBAL.language).Profile.DELETE_DATA,
+            getLanguage(global.language).Profile[`DELETE_${this.type}`] ||
+            getLanguage(global.language).Profile.DELETE_DATA,
           action: this._onDeleteData,
         },
       ])
@@ -241,11 +261,11 @@ class MyDataset extends MyDataPage {
   getCustomItemPopupData = () => {
     let data = [
       {
-        title: getLanguage(GLOBAL.language).Map_Label.ATTRIBUTE,
+        title: getLanguage(global.language).Map_Label.ATTRIBUTE,
         action: this.showAttribute,
       },
       {
-        title: getLanguage(GLOBAL.language).Profile.SET_PROJECTION,
+        title: getLanguage(global.language).Profile.SET_PROJECTION,
         action: this.setProjection,
       },
     ]
@@ -255,11 +275,11 @@ class MyDataset extends MyDataPage {
         this.itemInfo.item.datasetType === DatasetType.MBImage)
     ) {
       data.push({
-        title: getLanguage(GLOBAL.language).Profile.DATASET_BUILD_PYRAMID,
+        title: getLanguage(global.language).Profile.DATASET_BUILD_PYRAMID,
         action: this.buildPyramid,
       })
       data.push({
-        title: getLanguage(GLOBAL.language).Profile.DATASET_BUILD_STATISTICS,
+        title: getLanguage(global.language).Profile.DATASET_BUILD_STATISTICS,
         action: this.updataStatistics,
       })
     }
@@ -275,11 +295,12 @@ class MyDataset extends MyDataPage {
 
   getCustomPagePopupData = () => [
     {
-      title: getLanguage(GLOBAL.language).Profile.NEW_DATASET,
+      title: getLanguage(global.language).Profile.NEW_DATASET,
       action: () => {
         this._closeModal()
         NavigationService.navigate('NewDataset', {
-          title: this.state.title,
+          title: this.datasourceName,
+          userTempWorkspace: !this.isAlreadyOpen && this.from === 'MapView',
           getDatasets: () => this.state.sectionData[0].data,
           refreshCallback: async () => {
             await this._getSectionData()
@@ -308,7 +329,7 @@ class MyDataset extends MyDataPage {
 
   showUnableExportDialog = () => {
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Profile.DATASET_EXPORT_NOT_SUPPORTED,
+      text: getLanguage(global.language).Profile.DATASET_EXPORT_NOT_SUPPORTED,
     })
     this.SimpleDialog.setVisible(true)
   }
@@ -356,7 +377,7 @@ class MyDataset extends MyDataPage {
     let dialogHeight =
       scaleSize(130) + Math.ceil(data.length / 2) * scaleSize(70)
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Profile.SELECT_DATASET_EXPORT_TYPE,
+      text: getLanguage(global.language).Profile.SELECT_DATASET_EXPORT_TYPE,
       confirmAction: async () => {
         if (
           this.exportType === this.exportTypes.KML ||
@@ -366,7 +387,7 @@ class MyDataset extends MyDataPage {
           let datasetParams = Object.assign({}, this.itemInfo.item)
           if (!(await SMap.isPrgCoordSysWGS1984(datasetParams))) {
             this.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Prompt.REQUIRE_PRJ_1984,
+              text: getLanguage(global.language).Prompt.REQUIRE_PRJ_1984,
               cancelBtnVisible:false,
             })
             this.SimpleDialog.setVisible(true)

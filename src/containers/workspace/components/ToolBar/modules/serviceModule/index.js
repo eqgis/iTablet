@@ -1,6 +1,7 @@
 /**
  * 数据服务接口测试
  */
+import { SMap } from 'imobile_for_reactnative'
 import ServiceAction from './ServiceAction'
 import ServiceData from './ServiceData'
 import ToolbarModule from '../ToolbarModule'
@@ -19,37 +20,16 @@ class ServiceModule extends FunctionModule {
     this.setModuleData(this.type)
 
     const params = ToolbarModule.getParams()
-    ServiceData.getData(this.type, params)
-    const result = await ServiceAction.getGroupServices(params.currentTask.groupID)
+    const _data = await ServiceData.getData(this.type, params)
 
-    let _data = [{
-      title: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
-      image: getThemeAssets().mine.my_service,
-      data: [],
-    }]
-    if (result?.content?.length > 0) {
-      let services = []
-      result.content.forEach(item => {
-        services.push({
-          key: item.resourceId,
-          title: item.resourceName,
-          subTitle: new Date(item.createTime).Format("yyyy-MM-dd hh:mm:ss"),
-          data: item,
-          size: 'large',
-          image: getThemeAssets().dataType.icon_data_source,
-        })
-      })
-      _data[0].data = services || []
-    }
     ToolbarModule.addData({
-      services: _data,
+      services: _data.data,
     })
     params.showFullMap && params.showFullMap(true)
     params.setToolbarVisible(true, ConstToolType.SM_MAP_SERVICE_LIST, {
-      data: _data,
-      buttons: [],
       containerType: ToolbarType.list,
       isFullScreen: true,
+      ..._data,
     })
   }
 }
@@ -62,7 +42,7 @@ export default function(serviceType) {
 
   return new ServiceModule({
     type: ConstToolType.SM_MAP_SERVICE,
-    title: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
+    title: getLanguage(global.language).Profile.MY_SERVICE,
     size: 'large',
     image: getThemeAssets().mine.my_service,
     getData: ServiceData.getData,

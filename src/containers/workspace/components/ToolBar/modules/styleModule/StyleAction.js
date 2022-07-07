@@ -15,8 +15,8 @@ import Utils from '../../utils'
 async function commit() {
   const _params = ToolbarModule.getParams()
 
-  if (GLOBAL.Type === ChunkType.MAP_EDIT) {
-    GLOBAL.showMenu = true
+  if (global.Type === ChunkType.MAP_EDIT) {
+    global.showMenu = true
   }
 
   ToolbarModule.setData()
@@ -26,7 +26,7 @@ async function commit() {
     showMenuDialog: false,
     selectKey: '',
   })
-  GLOBAL.TouchType = TouchType.NORMAL
+  global.TouchType = TouchType.NORMAL
 }
 
 async function close() {
@@ -109,22 +109,22 @@ function layerListAction(data) {
 function setTextFont(param) {
   const layerName = ToolbarModule.getParams().currentLayer.name
   switch (param.title) {
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BOLD:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
       SCartography.setTextFontOfLayer('BOLD', layerName)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ITALIC:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
       SCartography.setTextFontOfLayer('ITALIC', layerName)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_UNDERLINE:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
       SCartography.setTextFontOfLayer('UNDERLINE', layerName)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_STRIKEOUT:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
       SCartography.setTextFontOfLayer('STRIKEOUT', layerName)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SHADOW:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
       SCartography.setTextFontOfLayer('SHADOW', layerName)
       break
-    case getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_OUTLINE:
+    case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
       SCartography.setTextFontOfLayer('OUTLINE', layerName)
       break
   }
@@ -135,10 +135,10 @@ function menu(type, selectKey, params = {}) {
   let isFullScreen
   let showMenuDialog
   let isTouchProgress
-  // const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
+  // const isBoxShow = global.ToolBar && global.ToolBar.getBoxShow()
   const showBox = function() {
     if (
-      GLOBAL.Type === ChunkType.MAP_EDIT ||
+      global.Type === ChunkType.MAP_EDIT ||
       type === ConstToolType.SM_MAP_STYLE_GRID ||
       type === ConstToolType.SM_MAP_STYLE ||
       type === ConstToolType.SM_MAP_LAYER_BASE_DEFAULT ||
@@ -159,7 +159,7 @@ function menu(type, selectKey, params = {}) {
   const setData = function() {
     let buttons
     if (
-      GLOBAL.Type === ChunkType.MAP_EDIT ||
+      global.Type === ChunkType.MAP_EDIT ||
       type === ConstToolType.SM_MAP_STYLE_GRID ||
       type === ConstToolType.SM_MAP_STYLE ||
       type === ConstToolType.SM_MAP_LAYER_BASE_DEFAULT ||
@@ -174,7 +174,7 @@ function menu(type, selectKey, params = {}) {
       type === ConstToolType.SM_MAP_LEGEND
     ) {
       if (type.indexOf('LEGEND') >= 0) {
-        if (_params.mapLegend[GLOBAL.Type].isShow) {
+        if (_params.mapLegend[global.Type].isShow) {
           buttons = [
             ToolbarBtnType.CANCEL,
             ToolbarBtnType.NOT_VISIBLE,
@@ -211,14 +211,14 @@ function menu(type, selectKey, params = {}) {
 
   if (Utils.isTouchProgress(selectKey)) {
     isFullScreen = true
-    showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
-    isTouchProgress = GLOBAL.ToolBar.state.showMenuDialog
+    showMenuDialog = !global.ToolBar.state.showMenuDialog
+    isTouchProgress = global.ToolBar.state.showMenuDialog
     setData()
   } else {
-    isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
-    showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
+    isFullScreen = !global.ToolBar.state.showMenuDialog
+    showMenuDialog = !global.ToolBar.state.showMenuDialog
     isTouchProgress = false
-    if (!GLOBAL.ToolBar.state.showMenuDialog) {
+    if (!global.ToolBar.state.showMenuDialog) {
       // 先滑出box，再显示Menu
       showBox()
       setTimeout(setData, Const.ANIMATED_DURATION_2)

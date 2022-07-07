@@ -3,23 +3,17 @@
  */
 
 import React, { Component } from 'react'
-import {
-  Text,
-  TouchableOpacity,
-} from 'react-native'
 import { connect } from 'react-redux'
 import { scaleSize, screen } from '../../../../../../utils'
 import { Container, PopMenu, RedDot } from '../../../../../../components'
 import { UserType, MsgConstant } from '../../../../../../constants'
-import { size } from '../../../../../../styles'
+import { size, color } from '../../../../../../styles'
 import { getLanguage } from '../../../../../../language'
 import { Users } from '../../../../../../redux/models/user'
 import { readCoworkGroupMsg, ReadMsgParams } from '../../../../../../redux/models/cowork'
 import NavigationService from '../../../../../NavigationService'
 import { SCoordination } from 'imobile_for_reactnative'
-import ScrollableTabView, {
-  DefaultTabBar,
-} from 'react-native-scrollable-tab-view'
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import ApplyMessages from './ApplyMessages'
 import InviteMessages from './InviteMessages'
 
@@ -33,7 +27,8 @@ interface Props {
 }
 
 type State = {
-  scrollTabViewLocked: boolean,
+  index: number,
+  routes: {key: string, title: string}[],
 }
 
 class GroupMessagePage extends Component<Props, State> {
@@ -45,7 +40,7 @@ class GroupMessagePage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.callBack = this.props.navigation?.state?.params?.callBack
+    this.callBack = this.props.route?.params?.callBack
 
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
@@ -53,8 +48,28 @@ class GroupMessagePage extends Component<Props, State> {
       this.servicesUtils = new SCoordination('iportal')
     }
     this.state = {
-      scrollTabViewLocked: false,
+      index: 0,
+      routes: [{
+        key: 'ApplyMessages',
+        title: getLanguage(this.props.language).Friends.APPLY_MESSAGE,
+      }, {
+        key: 'InviteMessages',
+        title: getLanguage(this.props.language).Friends.INVITE_MESSAGE,
+      }],
     }
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    if (
+      nextProps.language !== this.props.language ||
+      JSON.stringify(nextProps.user) !== JSON.stringify(this.props.user) ||
+      JSON.stringify(nextProps.cowork) !== JSON.stringify(this.props.cowork) ||
+      JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
   }
 
   _getWidth = () => {
@@ -62,115 +77,96 @@ class GroupMessagePage extends Component<Props, State> {
     return width
   }
 
-  _renderTabs = () => {
-    return (
-      <ScrollableTabView
-        renderTabBar={() => (
-          <DefaultTabBar
-            style={{
-              height: scaleSize(80),
-              marginTop: scaleSize(20),
-              borderWidth: 0,
-            }}
-            renderTab={(name: string, page: number, isTabActive: boolean, onPressHandler: (page: number) => void) => {
-              let activeTextColor = 'rgba(70,128,223,1.0)'
-              let inactiveTextColor = 'black'
-              const textColor = isTabActive
-                ? activeTextColor
-                : inactiveTextColor
-              const fontWeight = isTabActive ? 'bold' : 'normal'
+  goToPage = (index: number) => {
+    this.state.index !== index &&
+      this.setState({
+        index,
+      })
+  }
 
-              return (
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    paddingTop: scaleSize(20),
-                    paddingBottom: scaleSize(10),
-                  }}
-                  key={name}
-                  activeOpacity={1}
-                  accessible={true}
-                  accessibilityLabel={name}
-                  accessibilityTraits="button"
-                  onPress={() => {
-                    onPressHandler(page)
-                    let type = MsgConstant.MSG_ONLINE_GROUP_APPLY
-                    if (name === getLanguage(this.props.language).Friends.INVITE_MESSAGE) {
-                      type = MsgConstant.MSG_ONLINE_GROUP_INVITE
-                    }
-                    this.props.readCoworkGroupMsg({
-                      type: type,
-                    })
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: textColor,
-                      fontWeight,
-                      fontSize: size.fontSize.fontSizeLg,
-                      textAlign: 'center',
-                    }}
-                  >
-                    {name}
-                  </Text>
-                  {
-                    (
-                      name === getLanguage(this.props.language).Friends.APPLY_MESSAGE &&
-                      this.props.cowork.messages[this.props.user.currentUser.userName]?.applyMessages.unread > 0 ||
-                      name === getLanguage(this.props.language).Friends.INVITE_MESSAGE &&
-                      this.props.cowork.messages[this.props.user.currentUser.userName]?.inviteMessages.unread > 0
-                    ) &&
-                    (
-                      <RedDot
-                        style={{
-                          top: scaleSize(15),
-                          right: '38%',
-                        }}
-                      />
-                    )
-                  }
-                </TouchableOpacity>
-              )
+  _renderTabBar = (props: any) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{
+        backgroundColor: 'rgba(70,128,223,1.0)',
+        height: scaleSize(3),
+        width: scaleSize(30),
+        marginLeft: screen.getScreenWidth(this.props.device.orientation) / 2 / 2 - 10,
+      }}
+      renderBadge={scene => (
+        (
+          scene.route.key ==='ApplyMessages' &&
+          this.props.cowork.messages[this.props.user.currentUser.userName]?.applyMessages.unread > 0 ||
+          scene.route.key === 'InviteMessages' &&
+          this.props.cowork.messages[this.props.user.currentUser.userName]?.inviteMessages.unread > 0
+        ) &&
+        (
+          <RedDot
+            style={{
+              top: scaleSize(15),
+              right: screen.getScreenWidth(this.props.device.orientation) / 2 / 2 - 60,
             }}
           />
-        )}
-        initialPage={0}
-        prerenderingSiblingsNumber={1}
-        tabBarUnderlineStyle={{
-          backgroundColor: 'rgba(70,128,223,1.0)',
-          height: scaleSize(6),
-          width: scaleSize(6),
-          borderRadius: scaleSize(3),
-          marginLeft: this._getWidth() / 4 - 3,
-          marginBottom: scaleSize(12),
-        }}
-      >
-        <ApplyMessages
-          // ref={ref => (this.applyMessages = ref)}
-          tabLabel={getLanguage(this.props.language).Friends.APPLY_MESSAGE}
-          language={this.props.language}
-          user={this.props.user}
-          device={this.props.device}
-          servicesUtils={this.servicesUtils}
-          readCoworkGroupMsg={this.props.readCoworkGroupMsg}
-          unread={this.props.cowork.messages[this.props.user.currentUser.userName]?.applyMessages.unread || 0}
-        />
-        <InviteMessages
-          // ref={ref => (this.inviteMessages = ref)}
-          tabLabel={getLanguage(this.props.language).Friends.INVITE_MESSAGE}
-          language={this.props.language}
-          user={this.props.user}
-          device={this.props.device}
-          servicesUtils={this.servicesUtils}
-          callBack={this.callBack}
-          readCoworkGroupMsg={this.props.readCoworkGroupMsg}
-          unread={this.props.cowork.messages[this.props.user.currentUser.userName]?.inviteMessages.unread || 0}
-        />
-      </ScrollableTabView>
-    )
-  }
+        )
+      )}
+      onTabPress={({route, preventDefault}) => {
+        const routes = this.state.routes
+        for (const index in routes) {
+          if (Object.hasOwnProperty.call(routes, index)) {
+            const element = routes[index];
+            if (element.key === route.key) {
+              this.setState({
+                index: parseInt(index),
+              })
+              // preventDefault()
+              break
+            }
+          }
+        }
+      }}
+      style={{
+        height: scaleSize(80),
+        marginTop: scaleSize(20),
+        borderWidth: 0,
+        backgroundColor: color.white,
+        elevation: 0,
+        shadowRadius: 0,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0,
+      }}
+      labelStyle={{
+        color: 'black',
+        // fontWeight: true ? 'bold' : 'normal',
+        fontSize: size.fontSize.fontSizeLg,
+        textAlign: 'center',
+      }}
+      activeColor={'rgba(70,128,223,1.0)'}
+    />
+  )
+
+  private renderScene = SceneMap({
+    'ApplyMessages': () => (
+      <ApplyMessages
+        language={this.props.language}
+        user={this.props.user}
+        device={this.props.device}
+        servicesUtils={this.servicesUtils}
+        readCoworkGroupMsg={this.props.readCoworkGroupMsg}
+        unread={this.props.cowork.messages[this.props.user.currentUser.userName]?.applyMessages.unread || 0}
+      />
+    ),
+    'InviteMessages': () => (
+      <InviteMessages
+        language={this.props.language}
+        user={this.props.user}
+        device={this.props.device}
+        servicesUtils={this.servicesUtils}
+        callBack={this.callBack}
+        readCoworkGroupMsg={this.props.readCoworkGroupMsg}
+        unread={this.props.cowork.messages[this.props.user.currentUser.userName]?.inviteMessages.unread || 0}
+      />
+    ),
+  })
 
   _back = () => {
     // 退出消息页面，把第一页未读消息归0
@@ -180,11 +176,22 @@ class GroupMessagePage extends Component<Props, State> {
     NavigationService.goBack('GroupMessagePage', null)
   }
 
+  _getRoute = () => ({
+    index: 0,
+    routes: [{
+      key: 'ApplyMessages',
+      title: getLanguage(this.props.language).Friends.APPLY_MESSAGE,
+    }, {
+      key: 'InviteMessages',
+      title: getLanguage(this.props.language).Friends.INVITE_MESSAGE,
+    }],
+  })
+
   render() {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE,
+          title: getLanguage(this.props.language).Friends.GROUP_MESSAGE,
           navigation: this.props.navigation,
           // headerRight: this._renderHeaderRight(),
           headerTitleViewStyle: {
@@ -194,7 +201,14 @@ class GroupMessagePage extends Component<Props, State> {
           backAction: this._back,
         }}
       >
-        {this._renderTabs()}
+        <TabView
+          lazy
+          navigationState={this.state}
+          onIndexChange={this.goToPage}
+          renderTabBar={this._renderTabBar}
+          renderScene={this.renderScene}
+          swipeEnabled={true}
+        />
         {/* {this._renderPagePopup()} */}
       </Container>
     )

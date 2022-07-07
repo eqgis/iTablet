@@ -11,7 +11,7 @@ export default class AddOnlineScense extends Component {
   }
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params.cb
 
     this.state = {
@@ -22,11 +22,11 @@ export default class AddOnlineScense extends Component {
 
   save = () => {
     // if (this.state.name === '') {
-    //   Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_ENTER + getLanguage(GLOBAL.language).Map_Setting.SCENE_NAME)
+    //   Toast.show(getLanguage(global.language).Prompt.PLEASE_ENTER + getLanguage(global.language).Map_Setting.SCENE_NAME)
     //   return
     // }
     if (this.state.server === '') {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_SERVICE_ADDRESS)
+      Toast.show(getLanguage(global.language).Prompt.ENTER_SERVICE_ADDRESS)
       return
     }
 
@@ -46,7 +46,7 @@ export default class AddOnlineScense extends Component {
       this.cb && this.cb(data)
     } else {
       Toast.show(
-        getLanguage(GLOBAL.language).Profile.ENTER_VALID_SERVER_ADDRESS,
+        getLanguage(global.language).Profile.ENTER_VALID_SERVER_ADDRESS,
       )
     }
   }
@@ -76,7 +76,7 @@ export default class AddOnlineScense extends Component {
         }}
       >
         <Text style={[styles.text, { color: color.black1 }]}>
-          {getLanguage(GLOBAL.language).Profile.SAVE}
+          {getLanguage(global.language).Profile.SAVE}
         </Text>
       </TouchableOpacity>
     )
@@ -87,7 +87,7 @@ export default class AddOnlineScense extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.SERVICE_ADDRESS,
+          title: getLanguage(global.language).Profile.SERVICE_ADDRESS,
           //'服务地址',
           navigation: this.props.navigation,
           headerRight: this._renderHeaderBtn(),
@@ -95,7 +95,7 @@ export default class AddOnlineScense extends Component {
       >
         {/* <TextInput
           value={this.state.name}
-          placeholder={getLanguage(GLOBAL.language).Map_Setting.SCENE_NAME}
+          placeholder={getLanguage(global.language).Map_Setting.SCENE_NAME}
           placeholderTextColor={color.fontColorGray}
           style={styles.textInput}
           ref={ref => (this.name = ref)}
@@ -109,7 +109,7 @@ export default class AddOnlineScense extends Component {
         <TextInput
           value={this.state.server}
           placeholder={
-            getLanguage(GLOBAL.language).Profile.ENTER_SERVICE_ADDRESS
+            getLanguage(global.language).Profile.ENTER_SERVICE_ADDRESS
           }
           placeholderTextColor={color.fontColorGray}
           style={[styles.textInput, { marginTop: 20 }]}

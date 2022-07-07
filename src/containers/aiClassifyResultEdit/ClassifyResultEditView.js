@@ -8,11 +8,10 @@ import {
   Platform,
 } from 'react-native'
 import NavigationService from '../NavigationService'
-import Orientation from 'react-native-orientation'
 import styles from './styles'
 import { Container, TextBtn } from '../../components'
 import { SAIClassifyView, SMap, SMediaCollector } from 'imobile_for_reactnative'
-import { Toast } from '../../utils'
+import { Toast, screen } from '../../utils'
 import { getLanguage } from '../../language'
 import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
@@ -30,7 +29,7 @@ export default class ClassifyResultEditView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.layerName = params.layerName || ''
     this.geoID = params.geoID || -1 // 有geoID则是修改
     this.datasourceAlias = params.datasourceAlias || ''
@@ -55,7 +54,7 @@ export default class ClassifyResultEditView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   back = () => {
@@ -135,7 +134,7 @@ export default class ClassifyResultEditView extends React.Component {
         <View style={styles.infocontainer}>
           <View style={styles.classifyTitleView}>
             <Text style={styles.title}>
-              {getLanguage(GLOBAL.language).AI.CATEGORY}
+              {getLanguage(global.language).AI.CATEGORY}
             </Text>
             <TextInput
               underlineColorAndroid={'transparent'}
@@ -148,7 +147,7 @@ export default class ClassifyResultEditView extends React.Component {
           <View style={styles.classifyTitleView}>
             <Text style={styles.title}>
               {
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_TIME
               }
             </Text>
@@ -157,7 +156,7 @@ export default class ClassifyResultEditView extends React.Component {
           <View style={styles.classifyTitleView}>
             <Text style={styles.title}>
               {
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_REMARKS
               }
             </Text>
@@ -168,7 +167,7 @@ export default class ClassifyResultEditView extends React.Component {
               onChangeText={text => this.setState({ remarks: text })}
               value={this.state.remarks}
               placeholder={
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT_PLEA_REMARKS
               }
               placeholderTextColor={'#A0A0A0'}
@@ -184,7 +183,7 @@ export default class ClassifyResultEditView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_CLASSIFY,
           navigation: this.props.navigation,
           backAction: this.back,
@@ -192,7 +191,7 @@ export default class ClassifyResultEditView extends React.Component {
           headerRight: [
             <TextBtn
               key={'confirm'}
-              btnText={getLanguage(GLOBAL.language).Common.CONFIRM}
+              btnText={getLanguage(global.language).CONFIRM}
               textStyle={
                 this.state.mediaName
                   ? styles.headerBtnTitle

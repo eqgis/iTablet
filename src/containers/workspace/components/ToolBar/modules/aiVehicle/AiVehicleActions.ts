@@ -1,4 +1,3 @@
-/*global GLOBAL*/
 import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import { Toast, LayerUtils, DateUtil } from '../../../../../../utils'
@@ -16,45 +15,48 @@ async function close() {
     default:
       SARMap.endCarPlateRead()
       // SARMap.removeCarPlateReadListener()
-      GLOBAL.ToolBar?.removeAIDetect(false)
-      GLOBAL.ToolBar?.close()
+      global.ToolBar?.removeAIDetect(false)
+      global.ToolBar?.close()
   }
 }
 
 // 违章采集
-function illegallyParkCollect() {
-  (async function() {
-    const _params: any = ToolbarModule.getParams()
+async function illegallyParkCollect() {
+  const _params: any = ToolbarModule.getParams()
+  const dataList = await SMap.getTaggingLayers(
+    _params.user.currentUser.userName,
+  )
+  global.toolBox && global.toolBox.removeAIDetect(true)
+  if (dataList.length > 0) {
+    let taggingLayerData = await getTaggingLayerData()
     const dataList = await SMap.getTaggingLayers(
       _params.user.currentUser.userName,
     )
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    if (dataList.length > 0) {
-      let taggingLayerData = await getTaggingLayerData()
-      const dataList = await SMap.getTaggingLayers(
-        _params.user.currentUser.userName,
-      )
-      for (let layer of dataList) {
-        if (
-          taggingLayerData.datasourceAlias === layer.datasourceAlias &&
-          taggingLayerData.datasetName === layer.datasetName
-        ) {
-          GLOBAL.currentLayer = layer
-          break
-        }
+    for (let layer of dataList) {
+      if (
+        taggingLayerData.datasourceAlias === layer.datasourceAlias &&
+        taggingLayerData.datasetName === layer.datasetName
+      ) {
+        global.currentLayer = layer
+        break
       }
-      ToolbarModule.addData({
-        type: ConstToolType.SM_MAP_AI_VEHICLE_DETECT,
-      })
-      _params.setToolbarVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_DETECT, {
-        isFullScreen: false,
-        height: 0,
-      })
-    } else {
-      Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
-      _params.navigation.navigate('LayerManager')
     }
-  })()
+    ToolbarModule.addData({
+      type: ConstToolType.SM_MAP_AI_VEHICLE_DETECT,
+    })
+    // _params.setToolbarVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_DETECT, {
+    //   isFullScreen: false,
+    //   height: 0,
+    // })
+    global.toolBox?.setVisible(true, ConstToolType.SM_MAP_AI_VEHICLE_DETECT, {
+      isFullScreen: false,
+      height: 0,
+    })
+    _params.showFullMap && _params.showFullMap(true)
+  } else {
+    Toast.show(getLanguage(_params.language).Prompt.PLEASE_NEW_PLOT_LAYER)
+    _params.navigation.navigate('LayerManager')
+  }
 }
 
 /**
@@ -137,7 +139,7 @@ async function goToResultView() {
 
 async function getTaggingLayerData() {
   const _params: any = ToolbarModule.getParams()
-  let currentLayer: any = GLOBAL.currentLayer
+  let currentLayer: any = global.currentLayer
   let isTaggingLayer = false
   if (currentLayer) {
     let layerType = LayerUtils.getLayerType(currentLayer)
@@ -150,12 +152,12 @@ async function getTaggingLayerData() {
     )
     if (!hasDefaultTagging) {
       await SMap.newTaggingDataset(
-        'Default_Tagging',
+        `Default_Tagging_${_params.user.currentUser.userName}`,
         _params.user.currentUser.userName,
       )
     }
     let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-    let datasetName = 'Default_Tagging'
+    let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
     taggingLayerData = {
       datasourceAlias,
       datasetName,

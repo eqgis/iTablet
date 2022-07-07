@@ -7,39 +7,39 @@ import { getLanguage } from '../../../../language'
  */
 function isTouchProgress(selectKey) {
   if (
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_LINE_WIDTH ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SIZE ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.STYLE_SIZE ||
     selectKey ===
-      getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_TRANSPARENCY ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.CONTRAST ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_CONTRAST ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.SATURATION ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BRIGHTNESS ||
+      getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.CONTRAST ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.STYLE_CONTRAST ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.SATURATION ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS ||
     selectKey ===
-      getLanguage(GLOBAL.language).Map_Main_Menu.NUMBER_OF_SEGMENTS ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_FONT_SIZE ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.DOT_VALUE ||
+      getLanguage(global.language).Map_Main_Menu.NUMBER_OF_SEGMENTS ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.DOT_VALUE ||
     selectKey ===
-      getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_SYMBOL_SIZE ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_WIDTH ||
+      getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH ||
     selectKey ===
-      getLanguage(GLOBAL.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_COLUMN ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_HEIGHT ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_WIDTH ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_FONT ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_ICON ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.RANGE_COUNT ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.DATUM_VALUE ||
+      getLanguage(global.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.LEGEND_COLUMN ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.LEGEND_HEIGHT ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.LEGEND_WIDTH ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.LEGEND_FONT ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.LEGEND_ICON ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.RANGE_COUNT ||
+    selectKey === getLanguage(global.language).Map_Main_Menu.DATUM_VALUE ||
     selectKey ===
-      getLanguage(GLOBAL.language).Map_Main_Menu.THEME_HEATMAP_RADIUS ||
+      getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP_RADIUS ||
     selectKey ===
-      getLanguage(GLOBAL.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE ||
+      getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE ||
     selectKey ===
-      getLanguage(GLOBAL.language).Map_Main_Menu
+      getLanguage(global.language).Map_Main_Menu
         .THEME_HEATMAP_MAXCOLOR_WEIGHT ||
-    selectKey === getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_BORDER_WIDTH
+    selectKey === getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH
   ) {
     return true
   }

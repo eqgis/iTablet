@@ -18,6 +18,7 @@ import {
   SMap,
   SMediaCollector,
   RNFS,
+  SCoordination,
 } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 
@@ -49,7 +50,10 @@ export default class LayerTopBar extends React.Component {
     layerAttribute?:Object,//是否为地图界面跳转属性
     type?:String,//我的里面会传一个type过来
     attributes?:Object,
-    layerName?:String,
+    // layerName?:String,
+    layerInfo?: Object,
+    currentTask?: Object,
+    currentUser?: Object,
   }
 
   static defaultProps = {
@@ -72,6 +76,15 @@ export default class LayerTopBar extends React.Component {
     this.state = {
       attribute: {},
       showTable: false,
+    }
+    if (global.coworkMode && global.Type.indexOf('3D') < 0 && this.props.currentUser) {
+      if (UserType.isOnlineUser(this.props.currentUser)) {
+        this.servicesUtils = new SCoordination('online')
+        this.onlineServicesUtils = new OnlineServicesUtils('online')
+      } else if (UserType.isIPortalUser(this.props.currentUser)){
+        this.servicesUtils = new SCoordination('iportal')
+        this.onlineServicesUtils = new OnlineServicesUtils('iportal')
+      }
     }
   }
 
@@ -124,26 +137,36 @@ export default class LayerTopBar extends React.Component {
       } else if (
         this.props.attributes.data[this.props.currentIndex][i].name === 'MediaFilePaths'
       ) {
-        let info = await SMediaCollector.getMediaInfo(this.props.layerName, smID)
+        let info = await SMediaCollector.getMediaInfo(this.props.layerInfo.name, smID)
         let maxFiles = 9 - info.mediaFilePaths.length
         limit = maxFiles
         if(maxFiles <= 0){
-          Toast.show(getLanguage(GLOBAL.language).Prompt.CANT_PICTURE)
+          Toast.show(getLanguage(global.language).Prompt.CANT_PICTURE)
           return
         }
       }
     }
     const selectionAttribute = this.props.selectionAttribute
     const index = this.props.currentIndex
-    const _params = ToolbarModule.getParams()
-    const { currentLayer } = _params
+    // const _params = ToolbarModule.getParams()
+    // const { currentLayer } = _params
+
     const layerAttribute = this.props.layerAttribute
 
-    if (currentLayer) {
-      let { datasourceAlias } = currentLayer // 标注数据源名称
-      let { datasetName } = currentLayer // 标注图层名称
+    let layerInfo = this.props.layerInfo
+    if (layerInfo) {
+      let datasourceAlias = layerInfo?.datasourceAlias // 标注数据源名称
+      let datasetName = layerInfo?.datasetName // 标注图层名称
+      if (
+        datasourceAlias === '' || datasourceAlias === undefined || datasourceAlias === null ||
+        datasetName === '' || datasetName === undefined || datasetName === null
+      ) {
+        layerInfo = await SMap.getLayerInfo(this.props.layerInfo.path)
+        datasourceAlias = layerInfo.datasourceAlias // 标注数据源名称
+        datasetName = layerInfo.datasetName // 标注图层名称
+      }
       if(this.props.islayerSelection){
-        let info = await SMap.getDataNameByLayer(GLOBAL.SelectedSelectionAttribute.layerInfo.path)
+        let info = await SMap.getDataNameByLayer(global.SelectedSelectionAttribute.layerInfo.path)
         datasetName = info.datasetName
         datasourceAlias = info.datasourceAlias
       }
@@ -155,25 +178,32 @@ export default class LayerTopBar extends React.Component {
         selectionAttribute,
         layerAttribute,
         limit:limit,
-        atcb: async ({
-          // datasourceName,
-          // datasetName,
+        cb: async ({
+          datasourceName,
+          datasetName,
           mediaPaths,
         }) => {
+        // cb: async mediaPaths => {
           try {
-            if (GLOBAL.coworkMode) {
+            if (global.coworkMode) {
               let resourceIds = [],
                 _mediaPaths = [] // 保存修改名称后的图片地址
               let name = '', suffix = ''
-              for (let mediaPath of mediaPaths) {
-                let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + _params.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+              let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+              const newPaths = await FileTools.copyFiles(mediaPaths, dest)
+              for (let mediaPath of newPaths) {
                 if (mediaPath.indexOf('assets-library://') === 0) { // 处理iOS相册文件
-                  suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext')?.toLowerCase() || ''
-                  name = dataUtil.getUrlQueryVariable(mediaPath, 'id')?.toLowerCase() || ''
+                  suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext') || ''
+                  name = dataUtil.getUrlQueryVariable(mediaPath, 'id') || ''
+                  dest += `${name}.${suffix}`
+                  mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
+                } else if (mediaPath.indexOf('ph://') === 0) { // 处理iOS相册文件
+                  suffix = 'png'
+                  name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
                   dest += `${name}.${suffix}`
                   mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
                 } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件
-                  let filePath = await FileTools.getContentAbsolutePathAndroid(mediaPath)
+                  let filePath = await FileTools.getContentAbsolutePath(mediaPath)
                   name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'))
                   suffix = filePath.substr(filePath.lastIndexOf('.') + 1)
                   dest += `${name}.${suffix}`
@@ -184,13 +214,7 @@ export default class LayerTopBar extends React.Component {
                   suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
                   dest += `${name}.${suffix}`
                 }
-                let onlineServicesUtils
-                if (UserType.isOnlineUser(_params.user.currentUser)) {
-                  onlineServicesUtils = new OnlineServicesUtils('online')
-                } else if (UserType.isIPortalUser(_params.user.currentUser)){
-                  onlineServicesUtils = new OnlineServicesUtils('iportal')
-                }
-                let resourceId = await onlineServicesUtils.uploadFileWithCheckCapacity(
+                let resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
                   mediaPath,
                   `${name}.${suffix}`,
                   'PHOTOS',
@@ -203,21 +227,38 @@ export default class LayerTopBar extends React.Component {
                   _mediaPaths.push(_newPath)
                 }
               }
+              if (resourceIds.length > 0) {
+                let result = await SMediaCollector.addMedia({
+                  datasourceName,
+                  datasetName,
+                  mediaPaths,
+                  mediaIds: resourceIds,
+                }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+              } else {
+                Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
+              }
               // 分享到群组中
-              if (resourceIds.length > 0 && _params.currentTask.groupID) {
+              if (resourceIds.length > 0 && this.props.currentTask?.groupID) {
                 this.servicesUtils?.shareDataToGroup({
-                  groupId: _params.currentTask.groupID,
+                  groupId: this.props.currentTask.groupID,
                   ids: resourceIds,
                 }).then(result => {
                   if (result.succeed) {
-                    Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_UPLOAD_SUCCESS)
+                    Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_SUCCESS)
+                    this.cb && this.cb()
                   } else {
-                    Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_UPLOAD_FAILED)
+                    Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
                   }
                 }).catch(() => {
-                  Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_UPLOAD_FAILED)
+                  Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
                 })
               }
+            } else {
+              let result = await SMediaCollector.addMedia({
+                datasourceName: datasourceAlias,
+                datasetName: datasetName,
+                mediaPaths,
+              }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
             }
             if (
               this.props.refreshAction &&
@@ -226,6 +267,7 @@ export default class LayerTopBar extends React.Component {
               this.props.refreshAction()
             }
           } catch (e) {
+            // eslint-disable-next-line no-console
             __DEV__ && console.warn('error')
           }
         },
@@ -250,7 +292,7 @@ export default class LayerTopBar extends React.Component {
           ? getPublicAssets().common.icon_plus
           : getPublicAssets().common.icon_plus_gray,
         key: '添加',
-        title: getLanguage(GLOBAL.language).Map_Attribute
+        title: getLanguage(global.language).Map_Attribute
           .ATTRIBUTE_FIELD_ADD,
         action: this.addAttributeFieldAction,
         enabled: this.props.canAddField,
@@ -264,7 +306,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_relation
             : getThemeAssets().attribute.icon_unrelation,
           key: '关联',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_ASSOCIATION,
           action: this.relateAction,
           enabled: this.props.canRelated,
@@ -274,7 +316,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_delete_select
             : getThemeAssets().attribute.icon_delete_un_select,
           key: '删除',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .EDIT_DELETE,
           action: this.deleteAction,
           enabled: this.props.canDelete,
@@ -287,7 +329,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_location
             : getThemeAssets().attribute.icon_unlocation,
           key: '定位',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_LOCATION,
           action: this.locateAction,
           enabled: this.props.canLocated,
@@ -297,7 +339,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_relation
             : getThemeAssets().attribute.icon_unrelation,
           key: '关联',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_ASSOCIATION,
           action: this.relateAction,
           enabled: this.props.canRelated,
@@ -307,7 +349,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_delete_select
             : getThemeAssets().attribute.icon_delete_un_select,
           key: '删除',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .EDIT_DELETE,
           action: this.deleteAction,
           enabled: this.props.canDelete,
@@ -315,13 +357,13 @@ export default class LayerTopBar extends React.Component {
       ])
     }
 
-    if ((!GLOBAL.showAIDetect || this.props.selectionAttribute) && this.props.hasCamera) {
+    if ((!global.showAIDetect || this.props.selectionAttribute) && this.props.hasCamera) {
       data.push({
         icon: this.props.canRelated
           ? getThemeAssets().mapTools.icon_tool_multi_media
           : getThemeAssets().mapTools.icon_tool_multi_media_ash,
         key: '拍照',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+        title: getLanguage(global.language).Map_Main_Menu.CAMERA,
         action: this.captureImage,
         enabled: this.props.canRelated,
       })
@@ -334,7 +376,7 @@ export default class LayerTopBar extends React.Component {
             ? getPublicAssets().common.icon_plus
             : getPublicAssets().common.icon_plus_gray,
           key: '添加',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_FIELD_ADD,
           action: this.addAttributeFieldAction,
           enabled: this.props.canAddField,
@@ -344,7 +386,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_location
             : getThemeAssets().attribute.icon_unlocation,
           key: '定位',
-          title: getLanguage(GLOBAL.language).Map_Attribute
+          title: getLanguage(global.language).Map_Attribute
             .ATTRIBUTE_LOCATION,
           action: this.locateAction,
           enabled: this.props.canLocated,
@@ -354,7 +396,7 @@ export default class LayerTopBar extends React.Component {
             ? getThemeAssets().attribute.icon_delete_select
             : getThemeAssets().attribute.icon_delete_un_select,
           key: '删除',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .EDIT_DELETE,
           action: this.deleteAction,
           enabled: this.props.canDelete,

@@ -25,13 +25,14 @@ export default class CoworkTouchableView extends Component {
     Animated.timing(this.state.top, {
       toValue: visible ? scaleSize(88) : scaleSize(-200),
       duration: Const.ANIMATED_DURATION,
+      useNativeDriver: false,
     }).start()
   }
 
   render() {
     let text = ''
     if (this.props.screen === 'Chat') {
-      text = getLanguage(GLOBAL.language).Friends.GO_COWORK
+      text = getLanguage(global.language).Friends.GO_COWORK
     }
     return (
       <AnimatedView

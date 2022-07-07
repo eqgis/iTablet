@@ -19,13 +19,10 @@ import styles from './styles'
 import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
-import { scaleSize } from '../../utils'
-import Orientation from 'react-native-orientation'
-import { NavigationScreenProp } from 'react-navigation'
-
+import { scaleSize, screen } from '../../utils'
 
 interface IProps {
-  navigation: NavigationScreenProp<{}>,
+  navigation: any,
   language: string,
   user: Object,
   nav: Object,
@@ -73,7 +70,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {
@@ -111,7 +108,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
   getModuleListData(): ModuleItem[] {
     let data = []
     data.push({
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_OPREATE_MODEL_ARCHITECTURE,
       type: 'architecture',
       show: false,
@@ -119,7 +116,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
       index: 0,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_OPREATE_MODEL_PATH,
       type: 'path',
       show: false,
@@ -127,7 +124,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
       index: 1,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_OPREATE_MODEL_MARKER,
       type: 'maker',
       show: false,
@@ -212,7 +209,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
           <View style={styles.titleView}>
             <Text style={styles.text}>
               {
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_OPREATE_MODEL
               }
             </Text>
@@ -239,8 +236,8 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
 
       NavigationService.goBack('ARProjectModeView')
   
-      GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-      GLOBAL.toolBox.switchAr()
+      global.toolBox && global.toolBox.removeAIDetect(false)
+      global.toolBox.switchAr()
     }
   }
 
@@ -271,7 +268,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
 
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_LEFT_ROTATE
                 }
               </Text>
@@ -302,7 +299,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_RIGHT_ROTATE
                 }
               </Text>
@@ -337,9 +334,9 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
               />
               <Text style={styles.buttonname}>
                 {this.state.showSandTable
-                  ? getLanguage(GLOBAL.language).Map_Main_Menu
+                  ? getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_SAND_TABLE_HIDE
-                  : getLanguage(GLOBAL.language).Map_Main_Menu
+                  : getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_SAND_TABLE}
               </Text>
             </View>
@@ -383,7 +380,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
                 ]}
               >
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AR_AI_ASSISTANT_SAND_TABLE_MODEL
                 }
               </Text>
@@ -407,7 +404,7 @@ export default class ARProjectModeView extends React.Component<IProps, IState> {
           >
             <Container
               headerProps={{
-                title: getLanguage(GLOBAL.language).Map_Main_Menu
+                title: getLanguage(global.language).Map_Main_Menu
                   .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
                 navigation: this.props.navigation,
                 backAction: this.back,

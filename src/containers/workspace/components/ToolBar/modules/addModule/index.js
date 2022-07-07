@@ -30,8 +30,8 @@ class AddModule extends FunctionModule {
   }
 
   action = async () => {
-    // if (GLOBAL.coworkMode && CoworkInfo.coworkId !== '') {
-    //   Toast.show(getLanguage(GLOBAL.language).Friends.ONLINECOWORK_DISABLE_ADD)
+    // if (global.coworkMode && CoworkInfo.coworkId !== '') {
+    //   Toast.show(getLanguage(global.language).Friends.ONLINECOWORK_DISABLE_ADD)
     //   return
     // }
     this.setModuleData(this.type)
@@ -54,7 +54,7 @@ class AddModule extends FunctionModule {
 export default function() {
   return new AddModule({
     type: ConstToolType.SM_MAP_ADD,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.OPEN,
+    title: getLanguage(global.language).Map_Main_Menu.OPEN,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_add,
     getData: AddData.getData,

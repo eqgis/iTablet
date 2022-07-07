@@ -31,8 +31,8 @@ class NavigationView2D extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      destinationName: this.props.navigation?.state?.params?.destinationName,
-      result: this.props.navigation?.state?.params?.analystResult
+      destinationName: this.props.route?.params?.destinationName,
+      result: this.props.route?.params?.analystResult
     }
   }
 
@@ -95,7 +95,7 @@ class NavigationView2D extends React.Component<Props, State> {
                 fontSize: scaleSize(22),
                 color: '#959595', marginRight: scaleSize(5)
               }}>
-                {getLanguage(GLOBAL.language).ARMap.DISTANCE}
+                {getLanguage(global.language).ARMap.DISTANCE}
               </Text>
               <Text style={{
                 fontSize: scaleSize(32),
@@ -113,7 +113,7 @@ class NavigationView2D extends React.Component<Props, State> {
 
             <View style={{ flexDirection: 'row', alignItems: 'baseline', marginLeft: scaleSize(20) }}>
               <Text style={{ fontSize: scaleSize(22), color: '#959595', marginRight: scaleSize(5) }}>
-                {getLanguage(GLOBAL.language).ARMap.DURATION}
+                {getLanguage(global.language).ARMap.DURATION}
               </Text>
               <Text style={{
                 fontSize: scaleSize(32),
@@ -132,7 +132,7 @@ class NavigationView2D extends React.Component<Props, State> {
         </View>
 
         <Button
-          title={getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION}
+          title={getLanguage(global.language).Prompt.AR_NAVIGATION}
           style={{ width: scaleSize(150), height: scaleSize(80), paddingHorizontal: scaleSize(20) ,borderRadius: scaleSize(50)}}
           onPress={async () => {
             try {

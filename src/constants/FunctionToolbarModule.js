@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 
 async function OpenData(data, index, callback) {
-  GLOBAL.Loading?.setLoading(true)
+  global.Loading?.setLoading(true)
   const layers = await SMap.getLayersByType()
   let isOpen
   if (data instanceof Array) {
@@ -24,35 +24,87 @@ async function OpenData(data, index, callback) {
   // Layer index = 0 为顶层
   if (isOpen) {
     let info = await SMap.getMapInfo()
-    if (layers.length > 0) {
-      let baseMap = layers.filter(layer => {
-        return LayerUtils.isBaseLayer(layer)
-      })
-      for (let i = 0; i < baseMap.length; i++) {
-        await SMap.removeLayer(baseMap[i].path)
-      }
-      for (let i = 0; i < baseMap.length; i++) {
-        await SMap.closeDatasource(baseMap[i].datasourceAlias)
+    if(!data?.userAdd){  // 当是系统自带的底图时就移除，是用户自定义的底图时，就不移除原底图 lyx
+      if (layers.length > 0) {
+        // 获取底图数组
+        let baseMap = layers.filter(layer => {
+          return LayerUtils.isBaseLayer(layer)
+        })
+        // 移除所有的图层
+        for (let i = 0; i < baseMap.length; i++) {
+          await SMap.removeLayer(baseMap[i].path)
+        }
+        // 关闭数据源
+        for (let i = 0; i < baseMap.length; i++) {
+          await SMap.closeDatasource(baseMap[i].datasourceAlias)
+        }
       }
     }
+
+    
+    // 从data里获取当前最后一个图层的名字,并解码（解码主要是对有中文编码的部分进行解码） lyx
+    let name = decodeURIComponent(data.layerName)
+    // 是加了英文标识的图层
+    let rexE = /^en-/g
+    if(rexE.test(name)){
+      // 加了英文标识的将标识去掉，就是图层的真实名字
+      name = name.replace('en-', '')
+    }
+    // 记录当前要添加的底图是否是重复添加的图层的标识，true表示是重复添加的，false表示第一次添加
+    let isReAdd = false 
+    // 是用户自定义的底图时，查找当前底图是否已经被添加过了
+    if(data?.userAdd) {
+      // 所有以当前底图名字为开头的图层对象的数组
+      let layerAddArray = layers.filter(value => new RegExp('^' +name, 'i').test(value.name))
+      // 当前底图被添加形成的图层数组的长度不为0时，表示当前底图已经被添加过了
+      isReAdd = !!(layerAddArray.length)
+    }
+
+    // 最后一个图层是否是底图的标识
+    let isBaseLayerEnd = LayerUtils.isBaseLayer(layers[layers.length - 1])
+    // 设置新的底图
     if (data instanceof Array) {
-      for (let i = 0; i < data.length; i++) {
-        await SMap.openDatasource(data[i].DSParams, index, false)
+      
+      // 当不是重复添加的底图时，就打开数据源(并添加图层)
+      if(!isReAdd) {
+        for (let i = 0; i < data.length; i++) {
+          await SMap.openDatasource(data[i].DSParams, index, false)
+        }
+
+        // 当前底图为用户自定义的，并且layers的最后一个图层是系统自带的底图时，将用户的底图上移 lyx
+        if(data?.userAdd && isBaseLayerEnd){  
+          for(let i = 0; i <  global.BaseMapSize; i++) {
+            await SMap.moveUpLayer(name)
+          }
+        } else {
+          global.BaseMapSize = data.length
+        }
       }
-      GLOBAL.BaseMapSize = data.length
+      // 如果回调存在且为为函数就调用回调函数
       if (callback && typeof callback === 'function') {
         callback()
       }
     } else {
-      await SMap.openDatasource(data.DSParams, index, false)
-      GLOBAL.BaseMapSize = 1
+      // 当不是重复添加的底图时，就打开数据源(并添加图层)
+      if(!isReAdd) {
+        await SMap.openDatasource(data.DSParams, index, false)
+        // 当前底图为用户自定义的，并且layers的最后一个图层是系统自带的底图时，将用户的底图上移 lyx
+        if(data?.userAdd && isBaseLayerEnd){  
+          for(let i = 0; i <  global.BaseMapSize; i++) {
+            await SMap.moveUpLayer(name)
+          }
+        } else {
+          global.BaseMapSize = 1
+        }
+      }
+      // 如果回调存在且为为函数就调用回调函数
       if (callback && typeof callback === 'function') {
         callback()
       }
     }
 
     // 切换底图，坐标系可能变化，导致多媒体callout位置错误，重新加载一次
-    let taggingLayers = await SMap.getTaggingLayers(GLOBAL.currentUser.userName)
+    let taggingLayers = await SMap.getTaggingLayers(global.currentUser.userName)
     for (let _layer of taggingLayers) {
       let isMediaLayer = await SMediaCollector.isMediaLayer(_layer.name)
       if (_layer.isVisible && isMediaLayer) {
@@ -65,11 +117,11 @@ async function OpenData(data, index, callback) {
     SMap.setMapInfo({scale:info.scale,centerx:info.center.x,centery:info.center.y,prjCoordSys:info.prjCoordSys})
 
     // SMap.viewEntire()
-    Toast.show(getLanguage(GLOBAL.language).Prompt.CHANGE_SUCCESS)
+    Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
+    Toast.show(getLanguage(global.language).Prompt.NETWORK_REQUEST_FAILED)
   }
-  GLOBAL.Loading?.setLoading(false)
+  global.Loading?.setLoading(false)
   return true
 }
 
@@ -105,7 +157,7 @@ async function OpenData2(data, index, callback) {
       }
     }
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_REQUEST_FAILED)
+    Toast.show(getLanguage(global.language).Prompt.NETWORK_REQUEST_FAILED)
   }
   return true
 }
@@ -313,13 +365,13 @@ function layerManagerData() {
     {
       title: 'Tianditu',
       action: ({callback}) => {
-        GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-          cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+        global.SimpleDialog.set({
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
           confirmAction: () => {
             let data = []
-            if (GLOBAL.language === 'CN') {
+            if (global.language === 'CN') {
               data.push(ConstOnline.tiandituCN())
             } else {
               data.push(ConstOnline.tiandituEN())
@@ -329,7 +381,7 @@ function layerManagerData() {
           },
           cancelAction: () => OpenData(ConstOnline.tianditu(), 0, callback),
         })
-        GLOBAL.SimpleDialog.setVisible(true)
+        global.SimpleDialog.setVisible(true)
       },
       data: [],
       image: getThemeAssets().layerType.layer_image,
@@ -339,13 +391,13 @@ function layerManagerData() {
     {
       title: 'Tianditu Image',
       action: ({callback}) => {
-        GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-          cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+        global.SimpleDialog.set({
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
           confirmAction: () => {
             let data = []
-            if (GLOBAL.language === 'CN') {
+            if (global.language === 'CN') {
               data.push(ConstOnline.tiandituImgCN())
             } else {
               data.push(ConstOnline.tiandituImgEN())
@@ -355,7 +407,7 @@ function layerManagerData() {
           },
           cancelAction: () => OpenData(ConstOnline.tiandituImg(), 0, callback),
         })
-        GLOBAL.SimpleDialog.setVisible(true)
+        global.SimpleDialog.setVisible(true)
       },
       data: [],
       image: getThemeAssets().layerType.layer_image,
@@ -365,10 +417,10 @@ function layerManagerData() {
     {
       title: 'Tianditu Terrain',
       action: ({callback}) => {
-        GLOBAL.SimpleDialog.set({
-          text: getLanguage(GLOBAL.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(GLOBAL.language).Prompt.YES,
-          cancelText: getLanguage(GLOBAL.language).Prompt.NO,
+        global.SimpleDialog.set({
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
           confirmAction: () => {
             let data = []
             data.push(ConstOnline.tiandituTerCN())
@@ -377,7 +429,7 @@ function layerManagerData() {
           },
           cancelAction: () => OpenData(ConstOnline.tiandituTer(), 0, callback),
         })
-        GLOBAL.SimpleDialog.setVisible(true)
+        global.SimpleDialog.setVisible(true)
       },
       data: [],
       image: getThemeAssets().layerType.layer_image,
@@ -456,7 +508,7 @@ function layerManagerData() {
     // },
   ]
   data = data.filter(item => {
-    if (GLOBAL.language === 'CN') {
+    if (global.language === 'CN') {
       return (
         item.title.indexOf('Google') === -1 &&
         item.title.indexOf('OSM') === -1
@@ -497,9 +549,9 @@ const legendMenuInfo = (param, orientation) => [
         height = ConstToolType.THEME_HEIGHT[2]
         column = 16
       }
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
+      global.toolBox && global.toolBox.menu()
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
           containerType: ToolbarType.colorTable,
           column,
           isFullScreen: false,
@@ -521,8 +573,8 @@ const legendMenuInfo = (param, orientation) => [
   {
     key: getLanguage(param).Map_Main_Menu.LEGEND_COLUMN,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.LEGEND_COLUMN,
@@ -542,8 +594,8 @@ const legendMenuInfo = (param, orientation) => [
   {
     key: getLanguage(param).Map_Main_Menu.LEGEND_WIDTH,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.LEGEND_WIDTH,
@@ -563,8 +615,8 @@ const legendMenuInfo = (param, orientation) => [
   {
     key: getLanguage(param).Map_Main_Menu.LEGEND_HEIGHT,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.LEGEND_HEIGHT,
@@ -597,9 +649,9 @@ const legendMenuInfoNotVisible = (param, orientation) => [
         height = ConstToolType.THEME_HEIGHT[2]
         column = 16
       }
-      GLOBAL.toolBox && GLOBAL.toolBox.menu()
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
+      global.toolBox && global.toolBox.menu()
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
           containerType: ToolbarType.colorTable,
           column,
           isFullScreen: false,
@@ -621,8 +673,8 @@ const legendMenuInfoNotVisible = (param, orientation) => [
   {
     key: getLanguage(param).Map_Main_Menu.LEGEND_COLUMN,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.LEGEND_COLUMN,
@@ -642,8 +694,8 @@ const legendMenuInfoNotVisible = (param, orientation) => [
   {
     key: getLanguage(param).Map_Main_Menu.LEGEND_WIDTH,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.LEGEND_WIDTH,
@@ -663,8 +715,8 @@ const legendMenuInfoNotVisible = (param, orientation) => [
   {
     key: getLanguage(param).Map_Main_Menu.LEGEND_HEIGHT,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.LEGEND_HEIGHT,
@@ -688,8 +740,8 @@ const legendMenuInfoNotVisible = (param, orientation) => [
 //   {
 //     key: getLanguage(param).Map_Main_Menu.STYLE_BRIGHTNESS,
 //     action: () => {
-//       GLOBAL.toolBox &&
-//         GLOBAL.toolBox.setState({
+//       global.toolBox &&
+//         global.toolBox.setState({
 //           isTouchProgress: true,
 //           showMenuDialog: false,
 //           selectName: getLanguage(param).Map_Main_Menu.STYLE_BRIGHTNESS,
@@ -707,8 +759,8 @@ const legendMenuInfoNotVisible = (param, orientation) => [
 //   {
 //     key: getLanguage(param).Map_Main_Menu.STYLE_CONTRAST,
 //     action: () => {
-//       GLOBAL.toolBox &&
-//         GLOBAL.toolBox.setState({
+//       global.toolBox &&
+//         global.toolBox.setState({
 //           isTouchProgress: true,
 //           showMenuDialog: false,
 //           selectName: getLanguage(param).Map_Main_Menu.STYLE_CONTRAST,
@@ -726,8 +778,8 @@ const legendMenuInfoNotVisible = (param, orientation) => [
 //   {
 //     key: getLanguage(param).Map_Main_Menu.SATURATION,
 //     action: () => {
-//       GLOBAL.toolBox &&
-//         GLOBAL.toolBox.setState({
+//       global.toolBox &&
+//         global.toolBox.setState({
 //           isTouchProgress: true,
 //           showMenuDialog: false,
 //           selectName: getLanguage(param).Map_Main_Menu.SATURATION,

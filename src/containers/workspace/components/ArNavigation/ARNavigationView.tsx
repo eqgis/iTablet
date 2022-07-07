@@ -86,13 +86,13 @@ class ARNavigationView extends React.Component<Props, State> {
               fontSize: scaleSize(20),
               color: 'black', 
               marginTop: scaleSize(5)
-            }}>{getLanguage(GLOBAL.language).Prompt.EXIT}</Text>
+            }}>{getLanguage(global.language).Prompt.EXIT}</Text>
           </TouchableOpacity>
           <View style={styles.columnSep}/>
           <View style={{flex: 1}}>
             {disDes && (
               <Text style={{fontSize: scaleSize(28) ,color:'#959595' , textAlign: 'center'}}>
-                {`${getLanguage(GLOBAL.language).ARMap.REMAIN} ${disDes}  ${time}min`}
+                {`${getLanguage(global.language).ARMap.REMAIN} ${disDes}  ${time}min`}
               </Text>
             )}
           </View>
@@ -122,7 +122,7 @@ class ARNavigationView extends React.Component<Props, State> {
               color: 'black',
               marginTop: scaleSize(5)
             }}>
-              {getLanguage(GLOBAL.language).ARMap.ROUTE_NAVI}</Text>
+              {getLanguage(global.language).ARMap.ROUTE_NAVI}</Text>
           </TouchableOpacity>
         </View>
       </View >

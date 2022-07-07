@@ -35,23 +35,27 @@ class LicenseTypePage extends Component {
   }
 
   joinCloud = () => {
-    NavigationService.navigate('LicenseJoinCloud')
+    // if (UserType.isIPortalUser(this.props.currentUser) || UserType.isOnlineUser(this.props.currentUser)) {
+    //   NavigationService.navigate('LicenseJoinCloud')
+    // } else {
+    NavigationService.navigate('LoginCloud')
+    // }
   }
 
   joinPrivateCloud = () => {
-    NavigationService.navigate('LicenseJoinPrivateCloud')
+    NavigationService.navigate('ConnectServer')
   }
 
-  joinEducationLicense = () => {
-    NavigationService.navigate('LicenseJoinEducation')
-  }
+  // joinEducationLicense = () => {
+  //   NavigationService.navigate('LicenseJoinEducation')
+  // }
 
   getType = () => {
     let data = []
     if (UserType.isIPortalUser(this.props.currentUser)) {
       data = [
         {
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
+          title: getLanguage(global.language).Profile.LICENSE_OFFLINE,
           type: LicenseType.local,
           onPress: this.joinLicense,
         },
@@ -59,27 +63,27 @@ class LicenseTypePage extends Component {
     } else {
       data = [
         {
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_OFFLINE,
+          title: getLanguage(global.language).Profile.LICENSE_OFFLINE,
           type: LicenseType.local,
           onPress: this.joinLicense,
         },
         {
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_CLOUD,
+          title: getLanguage(global.language).Profile.LICENSE_CLOUD,
           type: LicenseType.clould,
           onPress: this.joinCloud,
         },
         {
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_PRIVATE_CLOUD,
+          title: getLanguage(global.language).Profile.LICENSE_PRIVATE_CLOUD,
           type: LicenseType.privateClould,
           onPress: this.joinPrivateCloud,
         },
+        // {
+        //   title: getLanguage(global.language).Profile.LICENSE_EDUCATION,
+        //   type: LicenseType.education,
+        //   onPress: this.joinEducationLicense,
+        // },
         {
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_EDUCATION,
-          type: LicenseType.education,
-          onPress: this.joinEducationLicense,
-        },
-        {
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL,
+          title: getLanguage(global.language).Profile.LICENSE_TRIAL,
           type: LicenseType.trial,
         },
       ]
@@ -151,8 +155,8 @@ class LicenseTypePage extends Component {
               >
                 {this.props.licenseInfo.licenseType === LicenseType.trial &&
                 this.props.licenseInfo.isLicenseValid
-                  ? getLanguage(GLOBAL.language).Profile.LICENSE_IN_TRIAL
-                  : getLanguage(GLOBAL.language).Profile.LICENSE_TRIAL_END}
+                  ? getLanguage(global.language).Profile.LICENSE_IN_TRIAL
+                  : getLanguage(global.language).Profile.LICENSE_TRIAL_END}
               </Text>
             )}
           </View>
@@ -165,7 +169,7 @@ class LicenseTypePage extends Component {
     return (
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.LICENSE_TYPE,
+          title: getLanguage(global.language).Profile.LICENSE_TYPE,
           navigation: this.props.navigation,
         }}
       >

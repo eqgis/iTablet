@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 
-import com.supermap.interfaces.utils.SLanguage;
 import com.supermap.itablet.R;
 
 import java.lang.ref.WeakReference;

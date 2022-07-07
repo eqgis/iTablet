@@ -9,6 +9,7 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import Cell from './Cell'
+import CellButton from './CellButton'
 
 const ROW_HEIGHT = scaleSize(80)
 const CELL_WIDTH = 100
@@ -128,6 +129,10 @@ export default class Row extends Component {
     }
   }
 
+  _isSystomField = fieldInfo => {
+    return fieldInfo?.isSystemField || fieldInfo?.name?.toUpperCase().indexOf('SS_') === 0 || fieldInfo?.name?.toUpperCase().indexOf('SM') === 0
+  }
+
   changeEnd = data => {
     if (
       this.props.onChangeEnd &&
@@ -182,7 +187,7 @@ export default class Row extends Component {
         editable = false
       } else {
         let isHead = this.props.data.fieldInfo === undefined
-        editable = !isHead && !this.props.data.fieldInfo.isSystemField && this.props.data.fieldInfo.name?.indexOf('SS_') !== 0
+        editable = !isHead && !this._isSystomField(this.props.data.fieldInfo)
         isRequired = !isHead && this.props.data.fieldInfo.isRequired
         defaultValue =
           !isHead && this.props.data.fieldInfo.defaultValue !== undefined
@@ -190,7 +195,7 @@ export default class Row extends Component {
             : ''
       }
     } else {
-      editable = item.fieldInfo && !item.fieldInfo.isSystemField && item.fieldInfo.name?.indexOf('SS_') !== 0
+      editable = item.fieldInfo && !this._isSystomField(item.fieldInfo)
       isRequired = item.fieldInfo && item.fieldInfo.isRequired
       defaultValue =
         item.fieldInfo && item.fieldInfo.defaultValue !== undefined
@@ -265,22 +270,17 @@ export default class Row extends Component {
       }
       let iTemView
       return (
-        <TouchableOpacity
-          ref={ref => (iTemView = ref)}
-          activeOpacity={1}
-          key={index}
+        <CellButton
           style={[
             width ? { width } : { flex: 1 },
             borderStyle,
             cellStyle,
-            // { width },
           ]}
-          onPress={() => this._action(iTemView, index)}
-        >
-          <Text style={[textStyle, width && { width: width - 4 }]}>
-            {value + ''}
-          </Text>
-        </TouchableOpacity>
+          textStyle={[textStyle, width && { width: width - 4 }]}
+          onPress={this._action}
+          index={index}
+          text={value + ''}
+        />
       )
     } else {
       return (
@@ -324,9 +324,13 @@ export default class Row extends Component {
             this.props.isShowSystemFields ||
             typeof item === 'string' ||
             typeof item === 'number' ||
-            (item.fieldInfo &&
-              !(item.fieldInfo && item.fieldInfo.isSystemField)) ||
-            (item.isSystemField !== undefined && !item.isSystemField)
+            (
+              item.fieldInfo ? !this._isSystomField(item.fieldInfo) : (
+                item.isSystemField !== undefined && !this._isSystomField(item)
+              )
+            )
+            // (item.fieldInfo && !this._isSystomField(item.fieldInfo)) ||
+            // (item.isSystemField !== undefined && !this._isSystomField(item))
           )
         ) {
           cells.push(this._renderCell(item, index))
@@ -335,7 +339,7 @@ export default class Row extends Component {
     } else if (this.props.data instanceof Object) {
       if (
         this.props.isShowSystemFields ||
-        !this.props.data.fieldInfo.isSystemField
+        !this._isSystomField(this.props.data.fieldInfo)
       ) {
         cells.push(this._renderCell(this.props.data['name'], 0))
         cells.push(this._renderCell(this.props.data['value'], 1))

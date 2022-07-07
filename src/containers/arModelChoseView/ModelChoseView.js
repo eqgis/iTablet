@@ -2,7 +2,7 @@ import * as React from 'react'
 import { InteractionManager, View, Image, Text, ScrollView } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
 import { getThemeAssets } from '../../assets'
-import Orientation from 'react-native-orientation'
+import { screen } from '../../utils'
 import styles from './styles'
 import { Container } from '../../components'
 import Button from '../../components/Button/Button'
@@ -21,7 +21,7 @@ export default class ModelChoseView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName
 
@@ -34,7 +34,7 @@ export default class ModelChoseView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     // SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {
@@ -42,11 +42,6 @@ export default class ModelChoseView extends React.Component {
       // 初始化数据
       (async function() {}.bind(this)())
     })
-  }
-
-  componentWillUnmount() {
-    // Orientation.unlockAllOrientations()
-    //移除监听
   }
 
   back = () => {

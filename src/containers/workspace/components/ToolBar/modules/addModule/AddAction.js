@@ -66,7 +66,7 @@ async function listAction(type, params = {}) {
     } else if (
       params.section &&
       params.section.title ===
-        getLanguage(_params.language).Map_Main_Menu.OPEN_MAP
+        getLanguage(_params.language).MAP
     ) {
       // 添加地图
       _params.setContainerLoading &&
@@ -99,7 +99,7 @@ async function listAction(type, params = {}) {
       params.section &&
       params.section.title === getLanguage(_params.language).Profile.SYMBOL
     ) {
-      let filePath = GLOBAL.homePath + params.item.path
+      let filePath = global.homePath + params.item.path
       ToolbarModule.addData({
         currentSymbolFile: filePath,
         lastData: ToolbarModule.getData().data,
@@ -116,20 +116,20 @@ async function listAction(type, params = {}) {
       if (resultArr.length > 0) {
         SMap.refreshMap()
         SMediaCollector.showMedia(resultArr[0].layerName, false)
-        Toast.show(getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.ADD_SUCCESS)
         _params.setToolbarVisible(false)
       } else {
-        SMap.refreshMap(getLanguage(GLOBAL.language).Prompt.ADD_FAILED)
+        SMap.refreshMap(getLanguage(global.language).Prompt.ADD_FAILED)
       }
     }
   } else if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     // 数据集列表点击事件
     let data = ToolbarModule.getData()
-    if (data && data.selectList) {
-      data = Object.assign(data.selectList, params.selectList)
-    } else {
-      data = Object.assign(data, { selectList: params.selectList })
-    }
+    // if (data && data.selectList) {
+    //   data = Object.assign(data.selectList, params.selectList)
+    // } else {
+    data = Object.assign(data || {}, { selectList: params.selectList })
+    // }
     ToolbarModule.addData(data)
   }
 }
@@ -178,12 +178,17 @@ async function commit() {
     (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
   if (!_params) return
   if (Object.keys(selectList).length === 0) {
-    Toast.show(getLanguage(_params.language).Prompt.PLEASE_ADD_DATASET)
+    Toast.show(getLanguage(_params.language).Prompt.PLEASE_SELECT_DATASET_TO_ADD)
     return
   }
   const result = {}
   for (const key of Object.keys(selectList)) {
-    const resultArr = await SMap.addLayers(selectList[key], key)
+    const datasetNames = []
+    for (const item of selectList[key]) {
+      datasetNames.push(item.datasetName)
+    }
+    if (datasetNames.length === 0) continue
+    const resultArr = await SMap.addLayers(datasetNames, key)
 
     // 找出有默认样式的数据集，并给对应图层设置
     for (let i = 0; i < resultArr.length; i++) {
@@ -217,7 +222,7 @@ async function commit() {
     })
 
     _params.setToolbarVisible(false)
-    GLOBAL.prjDialog.setDialogVisible(true)
+    global.prjDialog.setDialogVisible(true)
     Toast.show(getLanguage(_params.language).Prompt.ADD_SUCCESS)
   } else {
     Toast.show(getLanguage(_params.language).Prompt.CHOOSE_DATASET)

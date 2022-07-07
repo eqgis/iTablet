@@ -23,10 +23,11 @@ class AICollectionModule extends FunctionModule {
       actionAble = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
     }
     if (!actionAble) {
-      Toast.show(getLanguage(GLOBAL.language).AI.SUPPORT_POINT_AND_CAD)
+      Toast.show(getLanguage(global.language).AI.SUPPORT_POINT_AND_CAD)
       return
     }
     this.setModuleData(this.type)
+    AiCollectionActions.setSelectedModel(params.language)
     params.showFullMap && params.showFullMap(true)
     AiCollectionActions.aiDetect()
   }
@@ -35,7 +36,7 @@ class AICollectionModule extends FunctionModule {
 export default function() {
   return new AICollectionModule({
     type: ConstToolType.SM_MAP_AI_ANALYSIS,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
+    title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_TARGET_COLLECT,
     size: 'large',
     image: getThemeAssets().ar.functiontoolbar.rightbar_ai_collect_light,
     getData: AiCollectionData.getData,

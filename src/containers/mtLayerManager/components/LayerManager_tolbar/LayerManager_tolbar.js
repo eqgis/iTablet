@@ -28,6 +28,7 @@ import {
   layerNavigationSetting,
   getXmlTemplateData,
   layerImageSetting,
+  getNaviData,
 } from './LayerToolbarData'
 import {
   View,
@@ -51,7 +52,7 @@ import ToolbarModule from '../../../workspace/components/ToolBar/modules/Toolbar
 import { themeModule } from '../../../workspace/components/ToolBar/modules'
 
 import collectionModule from '../../../../containers/workspace/components/ToolBar/modules/collectionModule'
-import DataHandler from '../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import CoworkInfo from '../../../tabs/Friend/Cowork/CoworkInfo'
 import { CheckBox } from '../../../../components'
 import {
@@ -73,12 +74,13 @@ export default class LayerManager_tolbar extends React.Component {
     containerProps?: Object,
     // data: Array,
     layerData?: Object,
+    currentTask?: Object,
     // existFullMap: () => {},
     getLayers: () => {}, // 更新数据（包括其他界面）
     setCurrentLayer: () => {},
-    onPress: () => {},
-    onThisPress: () => {},
-    updateTagging: () => {},
+    onPress?: () => {},
+    onThisPress?: () => {},
+    updateTagging?: () => {},
     getOverlayView: () => {},
     updateData?: () => {},
     currentLayer: Object,
@@ -86,9 +88,10 @@ export default class LayerManager_tolbar extends React.Component {
     // layers: Object,
     user: Object,
     navigation: Object,
-    curUserBaseMaps: Array,
+    curUserBaseMaps?: Array,
     currentScale: Number,
-    mapFromXml?: () => {}
+    mapFromXml?: () => {},
+    Onavipress?: () => {},
   }
 
   static defaultProps = {
@@ -163,7 +166,7 @@ export default class LayerManager_tolbar extends React.Component {
       length = length > 8 ? 8 : length // 竖屏最多显示8行的高度
       boxHeight = length * ConstToolType.TOOLBAR_HEIGHT[0]
       if (
-        !GLOBAL.isPad &&
+        !global.isPad &&
         device.orientation.indexOf('LANDSCAPE') === 0 &&
         length > 3
       ) {
@@ -227,7 +230,7 @@ export default class LayerManager_tolbar extends React.Component {
           data[0].headers = headerData
           break
         case ConstToolType.SM_MAP_LAYER_BASE_DEFAULT:
-          data = layereditsetting(GLOBAL.language)
+          data = layereditsetting(global.language)
           break
         case ConstToolType.SM_MAP_LAYER_BASE_CHANGE: {
           let layerManagerDataArr = [...layerManagerData()]
@@ -262,20 +265,23 @@ export default class LayerManager_tolbar extends React.Component {
           break
         }
         case ConstToolType.SM_MAP_EDIT_TAGGING:
-          data = taggingData(GLOBAL.language)
+          data = taggingData(global.language)
           break
         case "GET_XML_TEMPLATE":
           data = await getXmlTemplateData()
           break
+        case "NAVI_LAYER":
+          data = await getNaviData(global.language)
+          break
       }
     }
     // 屏蔽在线协作-移除图层，分享图层
-    if (GLOBAL.coworkMode && GLOBAL.Type !== ChunkType.MAP_PLOTTING) {
+    if (global.coworkMode && global.Type !== ChunkType.MAP_PLOTTING) {
       for(let i = data.length - 1; i >= 0; i--) {
         for(let j = data[i].data?.length - 1; j >= 0; j--) {
           if (
-            data[i].data[j].title === getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE ||
-            data[i].data[j].title === getLanguage(GLOBAL.language).Map_Layer.LAYERS_SHARE
+            data[i].data[j].title === getLanguage(global.language).Map_Layer.LAYERS_REMOVE ||
+            data[i].data[j].title === getLanguage(global.language).Map_Layer.LAYERS_SHARE
           ) {
             data[i].data.splice(j, 1)
           }
@@ -283,14 +289,23 @@ export default class LayerManager_tolbar extends React.Component {
       }
 
       const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
-      if (dsDescription?.type === 'onlineService') {
-        let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE)
+      if (dsDescription?.type === 'onlineService' && LayerUtils.availableServiceLayer(layerData.type)) {
+        let serviceData = await ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPDATE)
         data[0]?.data?.unshift(...serviceData.data)
       }
       // else if (layerData?.datasourceAlias?.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0) {
-      else if (layerData?.name && await SMediaCollector.isMediaLayer(layerData.name)) {
-        let serviceData = ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
-        data[0]?.data?.unshift(...serviceData.data)
+      // else if (layerData?.name && await SMediaCollector.isMediaLayer(layerData.name)) {
+      else if (layerData.themeType <= 0 && !layerData.isHeatmap) {
+        // 当前群组地图资源拥有者可以发布任务,其他成员只能更新和提交服务;标注图层可以发布任务
+        if (
+          layerData?.datasourceAlias?.indexOf(`Label_${this.props.user.currentUser?.userName}`) === 0
+          // ||
+          // this.props.currentTask?.resource?.resourceCreator &&
+          // this.props.currentTask?.resource?.resourceCreator === this.props.user.currentUser?.userName
+        ) {
+          let serviceData = await ServiceData.getData(ConstToolType.SM_MAP_SERVICE_UPLOAD)
+          data[0]?.data?.unshift(...serviceData.data)
+        }
       }
     }
     return data
@@ -305,6 +320,7 @@ export default class LayerManager_tolbar extends React.Component {
           ? 0
           : -Math.max(this.props.device.height, this.props.device.width),
         duration: 300,
+        useNativeDriver: false,
       }).start()
       this.isShow = isShow
     }
@@ -313,6 +329,7 @@ export default class LayerManager_tolbar extends React.Component {
       Animated.timing(this.state.boxHeight, {
         toValue: 0,
         duration: 300,
+        useNativeDriver: false,
       }).start()
       this.isBoxShow = false
     } else {
@@ -320,6 +337,7 @@ export default class LayerManager_tolbar extends React.Component {
         Animated.timing(this.state.boxHeight, {
           toValue: this.height,
           duration: 300,
+          useNativeDriver: false,
         }).start()
       }
       this.isBoxShow = true
@@ -335,6 +353,7 @@ export default class LayerManager_tolbar extends React.Component {
           ? 0
           : -Math.max(this.props.device.height, this.props.device.width),
         duration: 300,
+        useNativeDriver: false,
       }).start()
       this.isShow = isShow
     }
@@ -343,6 +362,7 @@ export default class LayerManager_tolbar extends React.Component {
       Animated.timing(this.state.boxHeight, {
         toValue: this.height,
         duration: 300,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -372,7 +392,7 @@ export default class LayerManager_tolbar extends React.Component {
         params.layerData.type &&
         params.layerData.type === 'layerGroup'
       let data = await this.getData(type, isGroup, params.layerData)
-      newState = this.updateMenuState(data, params.layerData)
+      newState = await this.updateMenuState(data, params.layerData)
     }
     if (isShow) {
       this.refreshParentList = params.refreshParentList
@@ -389,7 +409,7 @@ export default class LayerManager_tolbar extends React.Component {
       () => {
         this.showToolbarAndBox(isShow)
         // !isShow && this.props.existFullMap && this.props.existFullMap()
-        // this.updateMenuState()
+        // await this.updateMenuState()
         this.updateOverlayView()
       },
     )
@@ -400,17 +420,19 @@ export default class LayerManager_tolbar extends React.Component {
    * @param visible
    */
   setOverlayViewVisible = visible => {
-    GLOBAL.LayerManagerOverlayView &&
-      GLOBAL.LayerManagerOverlayView.setVisible(visible)
+    global.LayerManagerOverlayView &&
+      global.LayerManagerOverlayView.setVisible(visible)
+    global.NaviLayerOverlayView &&
+      global.NaviLayerOverlayView.setVisible(visible)
   }
 
   //更新菜单按钮状态
-  updateMenuState = (data, layerData) => {
+  updateMenuState = async (data, layerData) => {
     data = data.deepClone()
     let newState = {}
     if(layerData){
       newState = { layerData }
-      if (data && data[0] && data[0].headers && GLOBAL.Type !== 'MAP_3D') {
+      if (data && data[0] && data[0].headers && global.Type !== 'MAP_3D') {
         let tempheader0 = layerData.isVisible
           ? layerSettingCanVisit(this.props.language)
           : layerSettingCanNotVisit(this.props.language)
@@ -439,6 +461,43 @@ export default class LayerManager_tolbar extends React.Component {
           layerSettingCanNotSnap(this.props.language)
         }
         data[0].headers = data[0].headers.concat(/*tempheader2,*/ tempheader3)
+
+        if (await SMediaCollector.isMediaLayer(layerData.name)) {
+          let isShowMedia = false
+          if (layerData) {
+            const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+            isShowMedia = !!dsDescription?.isShowMedia
+          }
+          data[0].headers.push({
+            title: '设置多媒体可见',
+            image: isShowMedia ? getThemeAssets().layer.icon_media : getThemeAssets().layer.icon_media_unvisible,
+            action: async layerData => {
+              let newLayerData = dataUtil.deepClone(this.state.layerData)
+              let dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+              if (isShowMedia) {
+                await SMediaCollector.hideMedia(layerData.name)
+                if (dsDescription) {
+                  dsDescription.isShowMedia = false
+                } else {
+                  dsDescription = {isShowMedia: false}
+                }
+              } else {
+                await SMediaCollector.showMedia(layerData.name, false)
+                if (dsDescription) {
+                  dsDescription.isShowMedia = true
+                } else {
+                  dsDescription = {isShowMedia: true}
+                }
+              }
+              newLayerData.datasetDescription = JSON.stringify(dsDescription)
+              let newState = await this.updateMenuState(this.state.data, newLayerData)
+              this.setState(newState, async () => {
+                this.props.updateData && (await this.props.updateData())
+                this.setThislayer()
+              })
+            },
+          })
+        }
       }
     }
     newState.data = data
@@ -486,10 +545,15 @@ export default class LayerManager_tolbar extends React.Component {
   }
 
   listAction = ({ section, type }) => {
+    //单独在导航采集界面自己处理点击事件
+    if(this.state.type === "NAVI_LAYER"){
+      this.props.Onavipress(section.title)
+      return
+    }
     if (section.action) {
       (async function() {
         try {
-          // GLOBAL.Loading?.setLoading(true)
+          // global.Loading?.setLoading(true)
           if (section.title === 'Tianditu' || section.title === 'Tianditu Image' || section.title === 'Tianditu Terrain') {
             await section.action({
               callback: async () => {
@@ -501,24 +565,24 @@ export default class LayerManager_tolbar extends React.Component {
           }
           await this.props.getLayers()
           this.setVisible(false)
-          // GLOBAL.Loading?.setLoading(false)
+          // global.Loading?.setLoading(false)
         } catch (error) {
-          GLOBAL.Loading?.setLoading(false)
+          global.Loading?.setLoading(false)
         }
       }.bind(this)())
     }
     if (
-      section.title === getLanguage(GLOBAL.language).Map_Layer.LAYERS_REMOVE
+      section.title === getLanguage(global.language).Map_Layer.LAYERS_REMOVE
     ) {
       //'移除'
       (async function() {
         if (
           this.state.section.title ===
-          getLanguage(GLOBAL.language).Map_Layer.BASEMAP
+          getLanguage(global.language).Map_Layer.MY_BASEMAP
         ) {
           if (this.state.layerData.caption === 'baseMap') {
             // 没有底图时，不能移除
-            Toast.show(getLanguage(GLOBAL.language).Prompt.NO_BASE_MAP)
+            Toast.show(getLanguage(global.language).Prompt.NO_BASE_MAP)
             return
           }
           let layers = []
@@ -532,7 +596,7 @@ export default class LayerManager_tolbar extends React.Component {
           for (let i = 0; i < layers.length; i++) {
             await SMap.closeDatasource(layers[i].datasourceAlias)
           }
-          GLOBAL.BaseMapSize = 0
+          global.BaseMapSize = 0
         } else {
           if (this.state.layerData.path === this.props.currentLayer.name) {
             this.props.setCurrentLayer()
@@ -546,14 +610,14 @@ export default class LayerManager_tolbar extends React.Component {
       this.setVisible(false)
     } else if (
       section.title ===
-      getLanguage(GLOBAL.language).Map_Layer.LAYERS_FULL_VIEW_LAYER
+      getLanguage(global.language).Map_Layer.LAYERS_FULL_VIEW_LAYER
     ) {
       //'全幅显示当前图层') {
       this.setVisible(false)
       SMap.setLayerFullView(this.state.layerData.path)
       this.props.navigation.navigate('MapView')
     } else if (
-      section.title === getLanguage(GLOBAL.language).Map_Layer.BASEMAP_SWITH
+      section.title === getLanguage(global.language).Map_Layer.BASEMAP_SWITH
     ) {
       //'切换底图') {
       this.setVisible(true, ConstToolType.SM_MAP_LAYER_BASE_CHANGE, {
@@ -562,14 +626,14 @@ export default class LayerManager_tolbar extends React.Component {
       })
     } else if (
       section.title ===
-      getLanguage(GLOBAL.language).Map_Layer.LAYERS_LAYER_STYLE
+      getLanguage(global.language).Map_Layer.LAYERS_LAYER_STYLE
     ) {
       // '图层风格'
       this.mapStyle()
       this.setVisible(false)
     } else if (
       section.title ===
-      getLanguage(GLOBAL.language).Map_Layer.LAYERS_SET_VISIBLE_SCALE
+      getLanguage(global.language).Map_Layer.LAYERS_SET_VISIBLE_SCALE
     ) {
       (async function() {
         let mapScale = await SMap.getMapScale()
@@ -591,14 +655,14 @@ export default class LayerManager_tolbar extends React.Component {
         )
       }.bind(this)())
     } else if (
-      section.title === getLanguage(GLOBAL.language).Map_Layer.LAYERS_COLLECT
+      section.title === getLanguage(global.language).Map_Layer.LAYERS_COLLECT
     ) {
       if (
         this.state.layerData.themeType > 0 ||
         this.state.layerData.isHeatmap
       ) {
         Toast.show(
-          getLanguage(GLOBAL.language).Prompt.CANNOT_COLLECT_IN_THEMATIC_LAYERS,
+          getLanguage(global.language).Prompt.CANNOT_COLLECT_IN_THEMATIC_LAYERS,
         )
       } else {
         let type = ''
@@ -624,11 +688,11 @@ export default class LayerManager_tolbar extends React.Component {
         this.props.navigation.navigate('MapView')
       }
     } else if (
-      section.title === getLanguage(GLOBAL.language).Map_Layer.LAYERS_RENAME
+      section.title === getLanguage(global.language).Map_Layer.LAYERS_RENAME
     ) {
       //'重命名') {
       NavigationService.navigate('InputPage', {
-        headerTitle: getLanguage(GLOBAL.language).Map_Layer.LAYERS_LAYER_NAME,
+        headerTitle: getLanguage(global.language).Map_Layer.LAYERS_LAYER_NAME,
         //'图层名称',
         value: this.state.layerData ? this.state.layerData.caption : '',
         type: 'name',
@@ -647,7 +711,7 @@ export default class LayerManager_tolbar extends React.Component {
       // this.dialog.setDialogVisible(true)
     } else if (
       section.title ===
-      getLanguage(GLOBAL.language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER
+      getLanguage(global.language).Map_Layer.LAYERS_SET_AS_CURRENT_LAYER
     ) {
       (async function() {
         // 设置为当前图层，若该图层为不可见，则设置为可见
@@ -656,7 +720,7 @@ export default class LayerManager_tolbar extends React.Component {
         let newLayerData = dataUtil.deepClone(this.state.layerData)
         newLayerData.isVisible = true
         newLayerData.isVisible = true
-        let newState = this.updateMenuState(this.state.data, newLayerData)
+        let newState = await this.updateMenuState(this.state.data, newLayerData)
         this.setState(newState, async () => {
           this.props.setCurrentLayer &&
             this.props.setCurrentLayer(this.state.layerData)
@@ -665,7 +729,7 @@ export default class LayerManager_tolbar extends React.Component {
         })
         Toast.show(
           //'当前图层为'
-          getLanguage(GLOBAL.language).Prompt.THE_CURRENT_LAYER +
+          getLanguage(global.language).Prompt.THE_CURRENT_LAYER +
             '  ' +
             this.state.layerData.caption,
         )
@@ -673,21 +737,21 @@ export default class LayerManager_tolbar extends React.Component {
       }.bind(this)())
     } else if (
       section.title ===
-      getLanguage(GLOBAL.language).Map_Layer.LAYERS_MODIFY_THEMATIC_MAP
+      getLanguage(global.language).Map_Layer.LAYERS_MODIFY_THEMATIC_MAP
     ) {
       //'修改专题图') {
       this.mapStyle()
       this.setVisible(false)
     } else if (
       section.title ===
-      getLanguage(GLOBAL.language).Map_Layer.LAYERS_CREATE_THEMATIC_MAP
+      getLanguage(global.language).Map_Layer.LAYERS_CREATE_THEMATIC_MAP
     ) {
       //'新建专题图') {
       let themeType = this.state.layerData.themeType
       let type = this.state.layerData.type
       if (parseInt(themeType) > 0) {
         Toast.show(
-          getLanguage(GLOBAL.language).Prompt.LAYER_CANNOT_CREATE_THEMATIC_MAP,
+          getLanguage(global.language).Prompt.LAYER_CANNOT_CREATE_THEMATIC_MAP,
           //'不支持由该图层创建专题图'
         )
       } else if (
@@ -698,8 +762,8 @@ export default class LayerManager_tolbar extends React.Component {
       ) {
         //由图层创建专题图(点，线，面, 栅格)
         this.setVisible(false)
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setVisible(
+        global.toolBox &&
+          global.toolBox.setVisible(
             true,
             ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER,
             {
@@ -707,7 +771,7 @@ export default class LayerManager_tolbar extends React.Component {
               // createThemeByLayer: this.state.layerData.path,
             },
           )
-        GLOBAL.toolBox && GLOBAL.toolBox.showFullMap()
+        global.toolBox && global.toolBox.showFullMap()
         ToolbarModule.setData({
           type: ConstToolType.SM_MAP_THEME_CREATE_BY_LAYER,
           getData: themeModule().getData,
@@ -717,27 +781,27 @@ export default class LayerManager_tolbar extends React.Component {
         this.props.navigation.navigate('MapView')
       } else {
         Toast.show(
-          getLanguage(GLOBAL.language).Prompt.LAYER_CANNOT_CREATE_THEMATIC_MAP,
+          getLanguage(global.language).Prompt.LAYER_CANNOT_CREATE_THEMATIC_MAP,
           //'不支持由该图层创建专题图'
         )
       }
     } else if (
-      section.title === getLanguage(GLOBAL.language).Map_Layer.LAYERS_SHARE
+      section.title === getLanguage(global.language).Map_Layer.LAYERS_SHARE
     ) {
       //分享图层
       //this.setVisible(true, 'Share', { layerData: this.state.layerData })
       this._onShare('friend')
     } else if (type && type === 'GET_XML_TEMPLATE'){
       this.setVisible(false)
-      GLOBAL.Loading.setLoading(true)
+      global.Loading.setLoading(true)
       this.props.mapFromXml({xmlFile: section.title}, res => {
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
         Toast.show(res ? getLanguage(this.props.language).Prompt.SUCCESS :
           getLanguage(this.props.language).Prompt.FAILED)
         if(res){
           this.props.getLayers()
           // 地图是否是xml加载而来，用于在保存地图时判断
-          GLOBAL.IS_MAP_FROM_XML = true
+          global.IS_MAP_FROM_XML = true
         }
       })
     }
@@ -748,9 +812,13 @@ export default class LayerManager_tolbar extends React.Component {
     (async function() {
       let layerData = JSON.parse(JSON.stringify(this.state.layerData))
       let rel
+      if (item.action) {
+        item.action(layerData)
+        return
+      }
       switch (item.title) {
         case getLanguage(this.props.language).Map_Layer.VISIBLE:
-        case getLanguage(this.props.language).Map_Layer.NOT_VISIBLE:
+        case getLanguage(this.props.language).Map_Layer.NOT_VISIBLE: {
           layerData.isVisible = !layerData.isVisible
           if (
             !layerData.isVisible &&
@@ -759,7 +827,18 @@ export default class LayerManager_tolbar extends React.Component {
             this.props.setCurrentLayer(null)
           }
           rel = await SMap.setLayerVisible(layerData.path, layerData.isVisible)
+          let dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+          if (item.title ===  getLanguage(this.props.language).Map_Layer.VISIBLE) {
+            await SMediaCollector.hideMedia(layerData.name)
+            if (dsDescription) {
+              dsDescription.isShowMedia = false
+            } else {
+              dsDescription = {isShowMedia: false}
+            }
+            layerData.datasetDescription = JSON.stringify(dsDescription)
+          }
           break
+        }
         case getLanguage(this.props.language).Map_Layer.EDITABLE:
         case getLanguage(this.props.language).Map_Layer.NOT_EDITABLE:
           layerData.isEditable = !layerData.isEditable
@@ -786,7 +865,7 @@ export default class LayerManager_tolbar extends React.Component {
           break
       }
       if (rel) {
-        let newState = this.updateMenuState(this.state.data, layerData)
+        let newState = await this.updateMenuState(this.state.data, layerData)
         this.setState(
           newState,
           () => {
@@ -800,14 +879,14 @@ export default class LayerManager_tolbar extends React.Component {
             } else {
               this.props.updateData && this.props.updateData()
             }
-            Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
+            Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
           },
           () => {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_FAILED)
+            Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
           },
         )
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
       }
     }.bind(this)())
   }
@@ -943,10 +1022,10 @@ export default class LayerManager_tolbar extends React.Component {
 
   _onShare = async type => {
     if (!UserType.isOnlineUser(this.props.user.currentUser)) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_LOGIN_AND_SHARE)
+      Toast.show(getLanguage(global.language).Prompt.PLEASE_LOGIN_AND_SHARE)
       return
     }
-    //Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_PREPARE)
+    //Toast.show(getLanguage(global.language).Prompt.SHARE_PREPARE)
     let layerData = JSON.parse(JSON.stringify(this.state.layerData))
     this.setVisible(false)
     if (
@@ -955,15 +1034,15 @@ export default class LayerManager_tolbar extends React.Component {
       layerData.type !== DatasetType.LINE &&
       layerData.type !== DatasetType.REGION
     ) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.UNSUPPORTED_LAYER_TO_SHARE)
+      Toast.show(getLanguage(global.language).Prompt.UNSUPPORTED_LAYER_TO_SHARE)
       return
     }
     this.shareDataset = false
     let share = async () => {
       try {
-        GLOBAL.Loading.setLoading(
+        global.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Prompt.SHARING,
+          getLanguage(global.language).Prompt.SHARING,
         )
 
         let homePath = await FileTools.appendingHomeDirectory()
@@ -1023,47 +1102,47 @@ export default class LayerManager_tolbar extends React.Component {
           }
           action.push(datasetAction)
         }
-        if (GLOBAL.coworkMode && CoworkInfo.coworkId == '') {
-          let Chat = GLOBAL.getFriend().curChat
+        if (global.coworkMode && CoworkInfo.coworkId == '') {
+          let Chat = global.getFriend().curChat
           Chat._handleAciton(action)
         } else {
           action.map(item => {
             this.onSendFile(item)
           })
         }
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       } catch (error) {
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       }
     }
 
     if (type === 'friend') {
-      if (GLOBAL.coworkMode) {
+      if (global.coworkMode) {
         if (CoworkInfo.coworkId !== '') {
-          this.targetUser = GLOBAL.getFriend().getTargetUser(CoworkInfo.coworkId)
+          this.targetUser = global.getFriend().getTargetUser(CoworkInfo.coworkId)
         } else {
-          this.targetUser = GLOBAL.getFriend().curChat.targetUser
+          this.targetUser = global.getFriend().curChat.targetUser
         }
-        GLOBAL.SimpleDialog.set({
+        global.SimpleDialog.set({
           renderCustomeView: this.renderShare,
           confirmAction: share,
           dialogStyle: {
             height: scaleSize(350),
           },
         })
-        GLOBAL.SimpleDialog.setVisible(true)
+        global.SimpleDialog.setVisible(true)
       } else {
         NavigationService.navigate('SelectFriend', {
           callBack: item => {
-            this.targetUser = GLOBAL.getFriend().getTargetUser(item.id)
-            GLOBAL.SimpleDialog.set({
+            this.targetUser = global.getFriend().getTargetUser(item.id)
+            global.SimpleDialog.set({
               renderCustomeView: this.renderShare,
               confirmAction: share,
               dialogStyle: {
                 height: scaleSize(350),
               },
             })
-            GLOBAL.SimpleDialog.setVisible(true)
+            global.SimpleDialog.setVisible(true)
           },
         })
       }
@@ -1110,10 +1189,10 @@ export default class LayerManager_tolbar extends React.Component {
       Object.assign(informMsg.message.message, extraInfo)
     }
 
-    let msgId = GLOBAL.getFriend().getMsgId(this.targetUser.id)
+    let msgId = global.getFriend().getMsgId(this.targetUser.id)
     //保存
-    GLOBAL.getFriend().storeMessage(informMsg, this.targetUser.id, msgId)
-    GLOBAL.getFriend().sendFile(
+    global.getFriend().storeMessage(informMsg, this.targetUser.id, msgId)
+    global.getFriend().sendFile(
       informMsg,
       filePath,
       this.targetUser.id,
@@ -1121,14 +1200,14 @@ export default class LayerManager_tolbar extends React.Component {
       result => {
         FileTools.deleteFile(filePath)
         if (!result) {
-          GLOBAL.getFriend().onReceiveProgress({
+          global.getFriend().onReceiveProgress({
             talkId: this.state.targetUser.id,
             msgId: msgId,
             percentage: 0,
           })
-          Toast.show(getLanguage(GLOBAL.language).Friends.SEND_FAIL_NETWORK)
+          Toast.show(getLanguage(global.language).Friends.SEND_FAIL_NETWORK)
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Friends.SEND_SUCCESS)
+          Toast.show(getLanguage(global.language).Friends.SEND_SUCCESS)
         }
       },
     )
@@ -1163,7 +1242,7 @@ export default class LayerManager_tolbar extends React.Component {
             fontSize: setSpText(28),
           }}
         >
-          {GLOBAL.language === 'CN' ? '发送给:' : 'Send to:'}
+          {global.language === 'CN' ? '发送给:' : 'Send to:'}
         </Text>
         <View
           style={{
@@ -1267,7 +1346,7 @@ export default class LayerManager_tolbar extends React.Component {
             }}
           />
           <Text style={{ marginLeft: scaleSize(5), fontSize: scaleSize(24) }}>
-            {getLanguage(GLOBAL.language).Friends.SHARE_DATASET}
+            {getLanguage(global.language).Friends.SHARE_DATASET}
           </Text>
         </View>
       </View>
@@ -1289,6 +1368,7 @@ export default class LayerManager_tolbar extends React.Component {
           case ConstToolType.SM_MAP_LAYER_BASE_CHANGE:
           case ConstToolType.SM_MAP_LAYER_NAVIGATION:
           case 'GET_XML_TEMPLATE':
+          case 'NAVI_LAYER':
             box = this.renderList()
             break
         }

@@ -4,7 +4,7 @@ import { handleActions } from 'redux-actions'
 import { ARLayer, SARMap } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
-import DataHandler from '../../containers/tabs/Mine/DataHandler'
+import DataHandler from '../../utils/DataHandler'
 
 export interface UserMapInfo {
   userName: string,
@@ -251,17 +251,14 @@ export default handleActions(
         mapName: payload.mapName,
       }))
     },
-    [REHYDRATE]: (state: any, { payload }: ARMapAction<ARMapState>) => {
-      if (payload?.maps) {
-        let data: ARMapState = {
-          maps: [],
-          currentMap: undefined,
-        }
-        data.maps = payload.maps || []
+    [REHYDRATE]: (state: any, { payload }: any) => {
+      if (payload?.armap) {
+        let data: ARMapState = payload?.armap
+        data.maps = data.maps || []
         data.currentMap = undefined
         return fromJS(data)
       }
-      return fromJS(state)
+      return state
     },
   },
   initialState,

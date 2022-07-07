@@ -104,7 +104,7 @@ export default class PopMenu extends PureComponent {
     let arrow
     if (
       this.props.fixOnPhone &&
-      !GLOBAL.isPad &&
+      !global.isPad &&
       this.props.device.orientation.indexOf('PORTRAIT') === 0
     ) {
       container = {}
@@ -333,8 +333,12 @@ export default class PopMenu extends PureComponent {
 
   _renderHeader = () => {
     return (
-      <View key={this.props.title} style={styles.item}>
-        <Text style={styles.title}>{this.props.title}</Text>
+      <View key={this.props.title} style={[styles.item,{height: scaleSize(95)}]}>
+        <Text style={styles.title}
+          numberOfLines={3}
+          ellipsizeMode={'clip'}>
+          {this.props.title}
+        </Text>
       </View>
     )
   }
@@ -344,7 +348,7 @@ export default class PopMenu extends PureComponent {
       <Button
         style={styles.item}
         titleStyle={styles.btnTitle}
-        title={getLanguage(GLOBAL.language).Prompt.CANCEL}
+        title={getLanguage(global.language).Prompt.CANCEL}
         key={'取消'}
         onPress={this.close}
         activeOpacity={0.5}

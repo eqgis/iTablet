@@ -21,6 +21,7 @@ export default class SettingSection extends Component {
       duration: 200,
       easing: Easing.out(Easing.quad), // 一个用于定义曲线的渐变函数
       delay: 0, // 在一段时间之后开始动画（单位是毫秒），默认为0。
+      useNativeDriver: false,
     }).start()
     this.props.onPress && this.props.onPress(section)
   }

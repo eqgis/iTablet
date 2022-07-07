@@ -24,7 +24,7 @@ export default class TemplateSource extends React.Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.type = (params && params.type) || 'datasource'
     this.state = {
       data: [],
@@ -39,7 +39,7 @@ export default class TemplateSource extends React.Component {
   }
 
   getSources = async () => {
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     let data = []
     if (this.type && params.datasource) {
       // 选择数据集
@@ -75,7 +75,7 @@ export default class TemplateSource extends React.Component {
   }
 
   onItemPress = ({ item, index }) => {
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     let cb = params && params.cb
     if (cb && typeof cb === 'function') {
       cb({ data: item, index, type: this.type })

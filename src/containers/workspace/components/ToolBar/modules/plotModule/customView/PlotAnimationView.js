@@ -86,14 +86,14 @@ export default class PlotAnimationView extends React.Component {
 
     let types = await SMap.getGeoAnimationTypes(this.props.geoId)
 
-    if (GLOBAL.animationWayData) {
+    if (global.animationWayData) {
       this.setState({
         data: subData,
-        animationMode: GLOBAL.animationWayData.animationMode,
-        startTime: GLOBAL.animationWayData.startTime,
-        durationTime: GLOBAL.animationWayData.durationTime,
-        startMode: GLOBAL.animationWayData.startMode,
-        wayPoints: GLOBAL.animationWayData.wayPoints,
+        animationMode: global.animationWayData.animationMode,
+        startTime: global.animationWayData.startTime,
+        durationTime: global.animationWayData.durationTime,
+        startMode: global.animationWayData.startMode,
+        wayPoints: global.animationWayData.wayPoints,
 
         types: types,
       })
@@ -117,41 +117,41 @@ export default class PlotAnimationView extends React.Component {
   }
 
   //桌面端顺序7个：路径、闪烁、属性、显隐、旋转、比例、生长
-  getData() {
+  getData = () => {
     let data = []
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_WAY,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_WAY,
       image: getThemeAssets().plot.plot_animation_grow,
       animationMode: AnimationMode.WAY,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_BLINK,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_BLINK,
       image: getThemeAssets().plot.plot_animation_appear,
       animationMode: AnimationMode.BLINK,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting
+      name: getLanguage(global.language).Map_Plotting
         .PLOTTING_ANIMATION_ATTRIBUTE,
       image: getThemeAssets().plot.plot_animation_arcs,
       animationMode: AnimationMode.ATTRIBUTE,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_SHOW,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_SHOW,
       image: getThemeAssets().plot.plot_animation_shrink,
       animationMode: AnimationMode.SHOW,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_ROTATE,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_ROTATE,
       image: getThemeAssets().plot.plot_animation_fade_in,
       animationMode: AnimationMode.ROTATE,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_SCALE,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_SCALE,
       image: getThemeAssets().plot.plot_animation_fade_out,
       animationMode: AnimationMode.SCALE,
     })
     data.push({
-      name: getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_GROW,
+      name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_GROW,
       image: getThemeAssets().plot.plot_animation_flash,
       animationMode: AnimationMode.GROW,
     })
@@ -184,7 +184,7 @@ export default class PlotAnimationView extends React.Component {
     if (value.indexOf('.') < 0 && value != '') {
       //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
       value = parseFloat(value)
-    } else if (value == '') {
+    } else if (value === '') {
       value = 0
     }
     return value + ''
@@ -199,7 +199,7 @@ export default class PlotAnimationView extends React.Component {
           alignItems: 'center',
           flexDirection: 'column',
           backgroundColor:
-            item.animationMode == this.state.animationMode
+            item.animationMode === this.state.animationMode
               ? color.gray3
               : color.bgW,
         }}
@@ -211,7 +211,7 @@ export default class PlotAnimationView extends React.Component {
             style={{
               position: 'absolute',
               backgroundColor: 'red',
-              // height: item.animationMode == 0 ? scaleSize(15) : 0,
+              // height: item.animationMode === 0 ? scaleSize(15) : 0,
               height:
                 this.state.types && this.state.types[item.animationMode] > 0
                   ? scaleSize(15)
@@ -242,12 +242,42 @@ export default class PlotAnimationView extends React.Component {
     )
   }
 
-  renderView() {
+  renderStartItem = (title, image, action) => {
+    return (
+      <TouchableOpacity onPress={action}>
+        <View style={styles.startTime}>
+          <Text style={styles.startTimeText}>
+            {title}
+          </Text>
+          <View style={styles.startTimeView}>
+            {
+              image &&
+              <Image
+                source={image}
+                style={styles.startModeImage}
+              />
+            }
+          </View>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  renderView = () => {
+    const startFollowLastImg = this.state.startMode === StartMode.START_FOLLOW_LAST
+      ? getThemeAssets().publicAssets.icon_submit
+      : null
+    const startImg = this.state.startMode === StartMode.POINT_START
+      ? getThemeAssets().publicAssets.icon_submit
+      : null
+    const startTogetherImg = this.state.startMode === StartMode.START_TOGETHER_LAST
+      ? getThemeAssets().publicAssets.icon_submit
+      : null
     return (
       <View style={styles.container}>
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
-            {getLanguage(GLOBAL.language).Map_Plotting.PLOTTING_ANIMATION_MODE}
+            {getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_MODE}
           </Text>
         </View>
 
@@ -260,7 +290,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_OPERATION
             }
           </Text>
@@ -268,7 +298,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_START_TIME
             }
           </Text>
@@ -307,7 +337,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.startTime}>
           <Text style={styles.startTimeText}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_DURATION
             }
           </Text>
@@ -347,87 +377,28 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.titleView}>
           <Text style={styles.textTitle}>
             {
-              getLanguage(GLOBAL.language).Map_Plotting
+              getLanguage(global.language).Map_Plotting
                 .PLOTTING_ANIMATION_START_MODE
             }
           </Text>
         </View>
-        <TouchableOpacity onPress={this.setStratModeFllowLast}>
-          <View style={styles.startTime}>
-            <Text style={styles.startTimeText}>
-              {
-                getLanguage(GLOBAL.language).Map_Plotting
-                  .PLOTTING_ANIMATION_FLLOW_LAST
-              }
-            </Text>
-            <View style={styles.startTimeView}>
-              <Image
-                source={
-                  this.state.startMode == StartMode.START_FOLLOW_LAST
-                    ? getThemeAssets().publicAssets.icon_submit
-                    : null
-                }
-                style={styles.startModeImage}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.lineStyle} />
-        <TouchableOpacity onPress={this.setStratModePointStart}>
-          <View style={styles.startTime}>
-            <Text style={styles.startTimeText}>
-              {
-                getLanguage(GLOBAL.language).Map_Plotting
-                  .PLOTTING_ANIMATION_CLICK_START
-              }
-            </Text>
-            <View style={styles.startTimeView}>
-              <Image
-                source={
-                  this.state.startMode == StartMode.POINT_START
-                    ? getThemeAssets().publicAssets.icon_submit
-                    : null
-                }
-                style={styles.startModeImage}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.lineStyle} />
-        <TouchableOpacity onPress={this.setStratModeTogetherLast}>
-          <View style={styles.startTime}>
-            <Text style={styles.startTimeText}>
-              {
-                getLanguage(GLOBAL.language).Map_Plotting
-                  .PLOTTING_ANIMATION_TOGETHER_LAST
-              }
-            </Text>
-            <View style={styles.startTimeView}>
-              <Image
-                source={
-                  this.state.startMode == StartMode.START_TOGETHER_LAST
-                    ? getThemeAssets().publicAssets.icon_submit
-                    : null
-                }
-                style={styles.startModeImage}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
+        {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_FLLOW_LAST, startFollowLastImg, this.setStratModeFllowLast)}
+        {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_CLICK_START, startImg, this.setStratModePointStart)}
+        {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_TOGETHER_LAST, startTogetherImg, this.setStratModeTogetherLast)}
         {this.state.animationMode != 0 ? null : (
           <View style={styles.endlineStyle} />
         )}
         {this.state.animationMode != 0 ? null : (
           <TouchableOpacity
             style={{
-              height: this.state.animationMode == 0 ? scaleSize(80) : 0,
+              height: this.state.animationMode === 0 ? scaleSize(80) : 0,
             }}
             onPress={this.createAnimationWay}
           >
             <View style={styles.startTime}>
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .PLOTTING_ANIMATION_WAY_SET
                 }
               </Text>
@@ -451,7 +422,7 @@ export default class PlotAnimationView extends React.Component {
               />
               <Text style={styles.saveAndContinueText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .PLOTTING_ANIMATION_CONTINUE
                 }
               </Text>
@@ -463,7 +434,7 @@ export default class PlotAnimationView extends React.Component {
   }
   saveAndContinue = async () => {
     this.props.saveAndContinue()
-    GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
+    global.animationWayData && (global.animationWayData = null)
     // this.scrollView.scrollTo(0,0)
     this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
     // let types=await SMap.getGeoAnimationTypes(this.props.geoId);
@@ -546,8 +517,8 @@ export default class PlotAnimationView extends React.Component {
   cancle = () => {
     // SMap.endAnimationWayPoint(false)
     SMap.cancelAnimationWayPoint()
-    GLOBAL.TouchType = TouchType.NULL
-    GLOBAL.animationWayData && (GLOBAL.animationWayData = null)
+    global.TouchType = TouchType.NULL
+    global.animationWayData && (global.animationWayData = null)
     let height = 0
     // this.props.showFullMap && this.props.showFullMap(true)
     let type = ConstToolType.SM_MAP_PLOT_ANIMATION_START
@@ -560,7 +531,7 @@ export default class PlotAnimationView extends React.Component {
 
   createAnimationWay = () => {
     if (this.state.animationMode === 0) {
-      GLOBAL.animationWayData = this.getCreateInfo()
+      global.animationWayData = this.getCreateInfo()
       this.props.showToolbar(true, ConstToolType.SM_MAP_PLOT_ANIMATION_WAY, {
         containerType: 'table',
         height: ConstToolType.HEIGHT[0],
@@ -577,7 +548,7 @@ export default class PlotAnimationView extends React.Component {
         <View style={styles.headerItem}>
           <TouchableOpacity style={styles.startTimeText} onPress={this.cancle}>
             <Text style={styles.startTimeText}>
-              {getLanguage(GLOBAL.language).Map_Settings.CANCEL}
+              {getLanguage(global.language).Map_Settings.CANCEL}
             </Text>
           </TouchableOpacity>
 
@@ -588,7 +559,7 @@ export default class PlotAnimationView extends React.Component {
             >
               <Text style={styles.startTimeText}>
                 {
-                  getLanguage(GLOBAL.language).Map_Plotting
+                  getLanguage(global.language).Map_Plotting
                     .PLOTTING_ANIMATION_SAVE
                 }
               </Text>

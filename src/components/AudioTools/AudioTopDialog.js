@@ -168,14 +168,17 @@ export default class AudioTopDialog extends PureComponent {
       Animated.timing(this.left, {
         toValue: this.getFixDistance(orientation),
         duration: 0,
+        useNativeDriver: false,
       }),
       Animated.timing(this.right, {
         toValue: this.getFixDistance(orientation),
         duration: 0,
+        useNativeDriver: false,
       }),
       Animated.timing(this.top, {
         toValue: this.getTopDistance(orientation),
         duration: 300,
+        useNativeDriver: false,
       }),
     ]).start()
   }

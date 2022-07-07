@@ -162,8 +162,8 @@ export default class AppletManagement extends React.Component {
         refreshData={this.getData}
         onDownloaded={result => {
           if (result) {
-            GLOBAL.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Find.APPLET_DOWNLOADED_RELOAD,
+            global.SimpleDialog.set({
+              text: getLanguage(global.language).Find.APPLET_DOWNLOADED_RELOAD,
               confirmText: getLanguage(this.props.language).Find.RELOAD,
               confirmAction: async () => {
                 let titleName = ''
@@ -188,9 +188,9 @@ export default class AppletManagement extends React.Component {
                 appUtilsModule.reloadBundle()
               },
             })
-            GLOBAL.SimpleDialog.setVisible(true)
+            global.SimpleDialog.setVisible(true)
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+            Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
           }
         }}
       />

@@ -14,7 +14,7 @@ export default class SourceCoordsPage extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.paramsData = params && params.paramsData
     let tempData = this.getData(this.paramsData)
 
@@ -27,70 +27,70 @@ export default class SourceCoordsPage extends Component {
     let unitName = ''
     switch (coordUnitType) {
       case 10:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.MILIMETER
+        unitName = getLanguage(global.language).Convert_Unit.MILIMETER
         break
       case 11:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREMILIMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMILIMETER
         break
       case 100:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.CENTIMETER
+        unitName = getLanguage(global.language).Convert_Unit.CENTIMETER
         break
       case 101:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUARECENTIMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUARECENTIMETER
         break
       case 254:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.INCH
+        unitName = getLanguage(global.language).Convert_Unit.INCH
         break
       case 255:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREINCH
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREINCH
         break
       case 1000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.DECIMETER
+        unitName = getLanguage(global.language).Convert_Unit.DECIMETER
         break
       case 1001:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREDECIMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREDECIMETER
         break
       case 3048:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.FOOT
+        unitName = getLanguage(global.language).Convert_Unit.FOOT
         break
       case 3049:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREFOOT
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREFOOT
         break
       case 9144:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.YARD
+        unitName = getLanguage(global.language).Convert_Unit.YARD
         break
       case 9145:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREYARD
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREYARD
         break
       case 10000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.METER
+        unitName = getLanguage(global.language).Convert_Unit.METER
         break
       case 10001:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMETER
         break
       case 10000000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.KILOMETER
+        unitName = getLanguage(global.language).Convert_Unit.KILOMETER
         break
       case 10000001:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREKILOMETER
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREKILOMETER
         break
       case 16090000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.MILE
+        unitName = getLanguage(global.language).Convert_Unit.MILE
         break
       case 16090001:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SQUAREMILE
+        unitName = getLanguage(global.language).Convert_Unit.SQUAREMILE
         break
       case 1000000000 + 485:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.SECOND
+        unitName = getLanguage(global.language).Convert_Unit.SECOND
         break
       case 1000000000 + 29089:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.MINUTE
+        unitName = getLanguage(global.language).Convert_Unit.MINUTE
         break
       case 1000000000 + 1745329:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.DEGREE
+        unitName = getLanguage(global.language).Convert_Unit.DEGREE
         break
       case 100000000 + 1000000000:
-        unitName = getLanguage(GLOBAL.language).Convert_Unit.RADIAN
+        unitName = getLanguage(global.language).Convert_Unit.RADIAN
         break
     }
     return unitName
@@ -99,21 +99,21 @@ export default class SourceCoordsPage extends Component {
   getData(paramsData) {
     let data = []
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.PROJECTION_COORDS_NAME,
+      title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_NAME,
       value: paramsData.coordName,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels.PROJECTION_COORDS_UNIT,
+      title: getLanguage(global.language).Analyst_Labels.PROJECTION_COORDS_UNIT,
       // value: paramsData.coordUnit,
       value: this.getUnitName(paramsData.coordUnit),
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels
+      title: getLanguage(global.language).Analyst_Labels
         .PROJECTION_GROUND_DATUM,
       value: paramsData.geoDatumName,
     })
     data.push({
-      title: getLanguage(GLOBAL.language).Analyst_Labels
+      title: getLanguage(global.language).Analyst_Labels
         .PROJECTION_REFERENCE_ELLIPSOID,
       value: paramsData.geoSpheroid,
     })
@@ -154,7 +154,7 @@ export default class SourceCoordsPage extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Analyst_Labels
+          title: getLanguage(global.language).Analyst_Labels
             .PROJECTION_SOURCE_COORDS,
           navigation: this.props.navigation,
           backAction: this.back,

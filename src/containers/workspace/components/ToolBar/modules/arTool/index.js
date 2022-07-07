@@ -32,7 +32,7 @@ class arTool extends FunctionModule {
 export default function() {
   return new arTool({
     type: ConstToolType.SM_MAP_AR_TOOL,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TOOL,
+    title: getLanguage(global.language).Map_Main_Menu.MAP_AR_TOOL,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_launch,
     getData: ARToolData.getData,

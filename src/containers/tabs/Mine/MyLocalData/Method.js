@@ -1,4 +1,4 @@
-import { NetInfo } from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 import {
   SOnlineService,
   SIPortalService,
@@ -20,8 +20,11 @@ async function getOnlineData(
   cb = () => {},
 ) {
   const newData = []
+  let objDataList = {
+    content: [],
+    total: 0,
+  }
   try {
-    let objDataList
     if (UserType.isOnlineUser(currentUser)) {
       objDataList = await SOnlineService.getMyContentData({currentPage, pageSize, types, orderType: 'DESC', orderBy: 'CREATETIME'})
     } else if (UserType.isIPortalUser(currentUser)) {
@@ -31,7 +34,10 @@ async function getOnlineData(
     if (objDataList.content) {
       // 过滤friendlist
       for (let i = objDataList.content.length - 1; i > -1; i--) {
-        if (objDataList.content[i].fileName.indexOf('friend.list') !== -1 || objDataList.content[i].fileName.indexOf('cowork.list') !== -1) {
+        // if (objDataList.content[i].fileName.indexOf('friend.list') !== -1 || objDataList.content[i].fileName.indexOf('cowork.list') !== -1) {
+        let fileName = objDataList.content[i].fileName
+        // 过滤后缀为.list | (n).list | .list(n)
+        if (fileName.lastIndexOf('.list') !== -1) {
           objDataList.content.splice(i, 1)
           objDataList.total -= 1
         }
@@ -46,16 +52,23 @@ async function getOnlineData(
         objContent.id += ''
         newData.push(objContent)
       }
+      objDataList.content = newData
     }
   } catch (e) {
-    const result = await NetInfo.getConnectionInfo()
+    // const result = await NetInfo.getConnectionInfo()
+    // if (result.type === 'unknown' || result.type === 'none') {
+    const result = await NetInfo.fetch()
     if (result.type === 'unknown' || result.type === 'none') {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     } else {
       // Toast.show('登录失效，请重新登录')
     }
+    objDataList = {
+      content: [],
+      total: 0,
+    }
   }
-  return newData
+  return objDataList
 }
 
 export {

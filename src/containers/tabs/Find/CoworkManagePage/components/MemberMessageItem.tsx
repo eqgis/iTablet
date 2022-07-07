@@ -23,18 +23,18 @@ export default class MemberMessageItem extends MessageItem {
     let state = {}
     if (props.isSelf) {
       state = {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY_TITLE,
+        title: getLanguage(global.language).Friends.GROUP_APPLY_TITLE,
         content: [{
-          title: getLanguage(GLOBAL.language).Friends.GROUP_NAME,
+          title: getLanguage(global.language).Friends.GROUP_NAME,
           value: props.data.groupName,
         }, {
-          title: getLanguage(GLOBAL.language).Friends.APPLICANT,
+          title: getLanguage(global.language).Friends.APPLICANT,
           value: props.data.applicantNick,
         }, {
-          title: getLanguage(GLOBAL.language).Friends.APPLY_REASON,
+          title: getLanguage(global.language).Friends.APPLY_REASON,
           value: props.data.applyReason,
         }, {
-          title: getLanguage(GLOBAL.language).Friends.APPLY_TIME,
+          title: getLanguage(global.language).Friends.APPLY_TIME,
           value: new Date(props.data.applyTime).Format("yyyy-MM-dd hh:mm:ss"),
         }],
         isSelf: props.isSelf,
@@ -42,17 +42,17 @@ export default class MemberMessageItem extends MessageItem {
       }
     } else {
       state = {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY_ALRADY_TITLE,
+        title: getLanguage(global.language).Friends.GROUP_APPLY_ALRADY_TITLE,
         content: [{
-          title: getLanguage(GLOBAL.language).Friends.GROUP_NAME,
+          title: getLanguage(global.language).Friends.GROUP_NAME,
           value: props.data.groupName,
         }, {
-          title: getLanguage(GLOBAL.language).Friends.CHECK_RESULT,
+          title: getLanguage(global.language).Friends.CHECK_RESULT,
           value: props.data.checkStatus === 'ACCEPT'
-            ? getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE
-            : getLanguage(GLOBAL.language).Friends.GROUP_APPLY_REFUSE,
+            ? getLanguage(global.language).Friends.GROUP_APPLY_AGREE
+            : getLanguage(global.language).Friends.GROUP_APPLY_REFUSE,
         }, {
-          title: getLanguage(GLOBAL.language).Friends.CHECK_TIME,
+          title: getLanguage(global.language).Friends.CHECK_TIME,
           value: new Date(props.data.applyTime).Format("yyyy-MM-dd hh:mm:ss"),
         }],
         isSelf: props.isSelf,
@@ -83,8 +83,8 @@ export default class MemberMessageItem extends MessageItem {
       if (this.props.data.checkStatus === 'WAITING') {
         return (
           <View style={styles.buttons}>
-            <Button style={styles.button} title={getLanguage(GLOBAL.language).Friends.GROUP_APPLY_DISAGREE} onPress={this._disAgreeAction} />
-            <Button style={[styles.button, {marginLeft: 20}]} title={getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE} onPress={this._agreeAction} />
+            <Button style={styles.button} title={getLanguage(global.language).Friends.GROUP_APPLY_DISAGREE} onPress={this._disAgreeAction} />
+            <Button style={[styles.button, {marginLeft: 20}]} title={getLanguage(global.language).Friends.GROUP_APPLY_AGREE} onPress={this._agreeAction} />
           </View>
         )
       } else {
@@ -94,8 +94,8 @@ export default class MemberMessageItem extends MessageItem {
             style={styles.button}
             title={
               this.props.data.checkStatus === 'ACCEPTED'
-                ? getLanguage(GLOBAL.language).Friends.GROUP_APPLY_ALREADY_AGREE
-                : getLanguage(GLOBAL.language).Friends.GROUP_APPLY_ALREADY_DISAGREE
+                ? getLanguage(global.language).Friends.GROUP_APPLY_ALREADY_AGREE
+                : getLanguage(global.language).Friends.GROUP_APPLY_ALREADY_DISAGREE
             }
           />
         )

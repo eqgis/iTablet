@@ -23,7 +23,8 @@ interface Props {
 
 interface State {
   messages: Array<any>,
-  selected: Array<any>,
+  // selected: Array<any>,
+  selected: Map<number, any>,
 }
 
 class CoworkMessage extends Component<Props, State> {
@@ -31,7 +32,7 @@ class CoworkMessage extends Component<Props, State> {
     super(props)
     this.state = {
       messages: [],
-      selected: [],
+      selected: new Map<number, any>(),
     }
   }
 
@@ -64,15 +65,13 @@ class CoworkMessage extends Component<Props, State> {
 
   selecteAll = () => {
     if (this.state.messages.length !== 0) {
-      let selected = []
-      if (this.state.messages.length !== this.state.selected.length) {
-        for (let message of this.state.messages) {
-          if (message.status === 2 || this.state.selected.includes(message.messageID)) continue
-          selected.push(message.messageID)
-        }
-        // selected不为空,则表示之前没有全部选中,则加上原来被选中的ID
-        if (selected.length > 0) {
-          selected = selected.concat(this.state.selected)
+      const selected = new Map<number, any>()
+      if (this.state.messages.length !== this.state.selected.size) {
+
+        if (this.state.messages.length > this.state.selected.size) {
+          this.state.messages.forEach((item: any) => {
+            selected.set(item.messageID, item)
+          })
         }
       }
       this.setState({ selected })
@@ -81,32 +80,35 @@ class CoworkMessage extends Component<Props, State> {
 
   onButtomPress = async (type: string) => {
     try {
-      if (this.state.selected.length > 0) {
-        let notify = this.state.selected.length === 1
-        let selection = this.state.selected.clone()
-        selection.sort((a: number, b: number) => b - a)
+      if (this.state.selected.size > 0) {
+        let notify = this.state.selected.size === 1
+        let selection = new Map().clone(this.state.selected)
+        // selection.sort((a: number, b: number) => b - a)
         let result = false
-        for (let i = selection.length - 1; i >= 0; i--) {
-          GLOBAL.Loading.setLoading(
-            true,
-            getLanguage(GLOBAL.language).Friends.UPDATING,
-          )
-          let messageID = selection[i]
-          if (type === 'update') {
-            result = await CoworkInfo.update(messageID, false, notify)
-          } else if (type === 'add') {
-            result = await CoworkInfo.add(messageID, false, notify)
-          } else if (type === 'ignore') {
-            selection.splice(i, 1)
-            await CoworkInfo.ignore(messageID)
-          }
-          const coworkMessages = this.props.cowork.coworkInfo?.[this.props.currentUser.userName]?.[this.props.cowork.currentTask?.groupID]?.[this.props.cowork.currentTask?.id]?.messages || []
-          if (coworkMessages.length > 0) {
-            const serviceUrl = coworkMessages[messageID]?.message?.serviceUrl
-            if (serviceUrl) {
-              for (const message of coworkMessages) {
-                if (message.message?.serviceUrl === serviceUrl && message.status === 0) {
-                  CoworkInfo.consumeMessage(message.messageID)
+        if (selection.size > 0) {
+          const keys = selection.keys()
+          for(let key of keys) {
+            global.Loading.setLoading(
+              true,
+              getLanguage(global.language).Friends.UPDATING,
+            )
+            let messageID = selection.get(key).messageID
+            if (type === 'update') {
+              result = await CoworkInfo.update(messageID, false, notify)
+            } else if (type === 'add') {
+              result = await CoworkInfo.add(messageID, false, notify)
+            } else if (type === 'ignore') {
+              selection.delete(key)
+              await CoworkInfo.ignore(messageID)
+            }
+            const coworkMessages = this.props.cowork.coworkInfo?.[this.props.currentUser.userName]?.[this.props.cowork.currentTask?.groupID]?.[this.props.cowork.currentTask?.id]?.messages || []
+            if (coworkMessages.length > 0) {
+              const serviceUrl = coworkMessages[messageID]?.message?.serviceUrl
+              if (serviceUrl) {
+                for (const message of coworkMessages) {
+                  if (message.message?.serviceUrl === serviceUrl && message.status === 0) {
+                    CoworkInfo.consumeMessage(message.messageID)
+                  }
                 }
               }
             }
@@ -114,19 +116,19 @@ class CoworkMessage extends Component<Props, State> {
         }
         result && NavigationService.goBack('CoworkMessage', null)
         this.getMessage(selection)
-        GLOBAL.Loading.setLoading(false)
+        global.Loading.setLoading(false)
       } else {
         Toast.show(
-          getLanguage(GLOBAL.language).Friends.SELECT_MESSAGE_TO_UPDATE,
+          getLanguage(global.language).Friends.SELECT_MESSAGE_TO_UPDATE,
         )
       }
     } catch (error) {
       this.getMessage()
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     }
   }
 
-  _renderButton = (item: {title: string, image: any, action: () => void}) => {
+  _renderButton = (item: {title: string, image: any, disableImage?: any, disable?: boolean, action: () => void}) => {
     return (
       <MTBtn
         key={item.title}
@@ -136,11 +138,11 @@ class CoworkMessage extends Component<Props, State> {
           justifyContent: 'center',
         }}
         title={item.title}
-        textColor={'#1D1D1D'}
+        textColor={item.disable ? color.fontColorGray : '#1D1D1D'}
         textStyle={{ fontSize: setSpText(20) }}
-        image={item.image}
+        image={item.disable && item.disableImage ? item.disableImage : item.image}
         onPress={async () => {
-          if (item.action) {
+          if (item.action && !item.disable) {
             item.action()
           }
         }}
@@ -149,6 +151,19 @@ class CoworkMessage extends Component<Props, State> {
   }
 
   renderButtons = () => {
+    // MSG_COWORK_SERVICE_UPDATE: 15, // 数据服务更新
+    // MSG_COWORK_SERVICE_PUBLISH: 16, // 数据服务发布
+    let canAdd = true
+    const keys = this.state.selected.keys()
+    for(let key of keys) {
+      if (
+        this.state.selected.get(key).message.type === MsgConstant.MSG_COWORK_SERVICE_UPDATE ||
+        this.state.selected.get(key).message.type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH
+      ) {
+        canAdd = false
+        break
+      }
+    }
     return (
       <View
         style={{
@@ -163,17 +178,19 @@ class CoworkMessage extends Component<Props, State> {
         }}
       >
         {this._renderButton({
-          title: getLanguage(GLOBAL.language).Friends.COWORK_UPDATE,
+          title: getLanguage(global.language).Friends.COWORK_UPDATE,
           image: getThemeAssets().edit.icon_redo,
           action: () => this.onButtomPress('update'),
         })}
         {this._renderButton({
-          title: getLanguage(GLOBAL.language).Friends.COWORK_ADD,
+          title: getLanguage(global.language).Friends.COWORK_ADD,
           image: getThemeAssets().publicAssets.icon_add,
+          disableImage: getThemeAssets().publicAssets.icon_add_disable,
+          disable: !canAdd,
           action: () => this.onButtomPress('add'),
         })}
         {this._renderButton({
-          title: getLanguage(GLOBAL.language).Friends.COWORK_IGNORE,
+          title: getLanguage(global.language).Friends.COWORK_IGNORE,
           image: getThemeAssets().publicAssets.icon_ignore,
           action: () => this.onButtomPress('ignore'),
         })}
@@ -186,15 +203,15 @@ class CoworkMessage extends Component<Props, State> {
       <CoworkMessageItem
         key={item.time + '_' + item.messageID}
         data={item}
-        selected={this.state.selected.includes(item.messageID)}
+        selected={this.state.selected.has(item.messageID)}
         onPress={data => {
           // 忽略之后不可点击
           if (data.status === 2) return
-          let selected = this.state.selected.clone()
-          if (selected.includes(data.messageID)) {
-            selected.splice(selected.indexOf(data.messageID), 1)
+          let selected = new Map().clone(this.state.selected)
+          if (selected.has(data.messageID)) {
+            selected.delete(data.messageID)
           } else {
-            selected.push(data.messageID)
+            selected.set(data.messageID, data)
           }
           this.setState({ selected })
         }}
@@ -206,7 +223,7 @@ class CoworkMessage extends Component<Props, State> {
     return (
       <TouchableOpacity onPress={this.selecteAll}>
         <Text style={{ fontSize: scaleSize(26), color: color.fontColorBlack }}>
-          {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
+          {getLanguage(global.language).Profile.SELECT_ALL}
         </Text>
       </TouchableOpacity>
     )
@@ -217,7 +234,7 @@ class CoworkMessage extends Component<Props, State> {
       <Container
         style={{ backgroundColor: 'rgba(240,240,240,1.0)' }}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.NEW_MESSAGE,
+          title: getLanguage(global.language).Friends.NEW_MESSAGE,
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: this.renderHeaderRight(),
@@ -272,51 +289,51 @@ class CoworkMessageItem extends PureComponent<ItemProps, {}> {
     let geoType = ''
     switch (message.message.type) {
       case MsgConstant.MSG_COWORK_ADD:
-        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_ADDED
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_ADDED2
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_ADDED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_ADDED2
         break
       case MsgConstant.MSG_COWORK_DELETE:
-        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_DELETED
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_DELETED2
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_DELETED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_DELETED2
         break
       case MsgConstant.MSG_COWORK_UPDATE:
-        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED2
         break
       case MsgConstant.MSG_COWORK_SERVICE_UPDATE:
-        action = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED + ' ' + getLanguage(GLOBAL.language).Profile.SERVICE
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
+        action = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED + ' ' + getLanguage(global.language).Profile.SERVICE
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED2
         geoType = message.message.datasetName
         break
       case MsgConstant.MSG_COWORK_SERVICE_PUBLISH:
-        action = getLanguage(GLOBAL.language).Cowork.PUBLISH + ' ' + getLanguage(GLOBAL.language).Profile.SERVICE
-        actionAfter = getLanguage(GLOBAL.language).Friends.SYS_MSG_GEO_UPDATED2
+        action = getLanguage(global.language).Cowork.PUBLISH + ' ' + getLanguage(global.language).Profile.SERVICE
+        actionAfter = getLanguage(global.language).Friends.SYS_MSG_GEO_UPDATED2
         geoType = message.message.datasetName
         break
     }
     if (!geoType) {
       switch (message.message.geoType) {
         case GeometryType.GEOPOINT:
-          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_POINT
+          geoType = getLanguage(global.language).Profile.DATASET_TYPE_POINT
           break
         case GeometryType.GEOLINE:
-          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_LINE
+          geoType = getLanguage(global.language).Profile.DATASET_TYPE_LINE
           break
         case GeometryType.GEOREGION:
-          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_REGION
+          geoType = getLanguage(global.language).Profile.DATASET_TYPE_REGION
           break
         case GeometryType.GEOTEXT:
-          geoType = getLanguage(GLOBAL.language).Profile.DATASET_TYPE_TEXT
+          geoType = getLanguage(global.language).Profile.DATASET_TYPE_TEXT
           break
         case GeometryType.GEOGRAPHICOBJECT:
-          geoType = getLanguage(GLOBAL.language).Map_Main_Menu.PLOTTING
+          geoType = getLanguage(global.language).Map_Main_Menu.PLOTTING
       }
     }
     if (!geoType && message.message.themeType) {
-      geoType = getLanguage(GLOBAL.language).Map_Main_Menu.THEME
+      geoType = getLanguage(global.language).Map_Main_Menu.THEME
     }
     if (!geoType && message.message.isHeatmap) {
-      geoType = getLanguage(GLOBAL.language).Map_Main_Menu.THEME_HEATMAP
+      geoType = getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP
     }
     if (action) {
       action = action + ' '

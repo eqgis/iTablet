@@ -59,7 +59,7 @@ class CollectionModule extends FunctionModule {
           params.currentLayer.isHeatmap
         ) {
           NavigationService.navigate('LayerManager')
-          Toast.show(getLanguage(GLOBAL.language).Prompt.CANNOT_COLLECT_IN_THEMATIC_LAYERS, {
+          Toast.show(getLanguage(global.language).Prompt.CANNOT_COLLECT_IN_THEMATIC_LAYERS, {
             duration: 3500,
           })
           return
@@ -92,7 +92,7 @@ export default function(type = ConstToolType.SM_MAP_COLLECTION) {
     case ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE:
       return new CollectionModule({
         type: ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE,
-        title: getLanguage(GLOBAL.language).Profile.TEMPLATE,
+        title: getLanguage(global.language).Profile.TEMPLATE,
         size: 'large',
         image: getThemeAssets().functionBar.icon_tool_template,
         getData: CollectionData.getData,
@@ -102,7 +102,7 @@ export default function(type = ConstToolType.SM_MAP_COLLECTION) {
     default:
       return new CollectionModule({
         type: ConstToolType.SM_MAP_COLLECTION,
-        title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
+        title: getLanguage(global.language).Map_Main_Menu.COLLECTION,
         size: 'large',
         image: getThemeAssets().functionBar.icon_tool_collection,
         getData: CollectionData.getData,

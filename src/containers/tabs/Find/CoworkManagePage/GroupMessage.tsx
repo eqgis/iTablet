@@ -122,13 +122,13 @@ class GroupMessage extends React.Component<Props, State> {
       // this.refresh()
       if (
         // 判断新群组信息
-        !prevProps.messages[this.props.user.currentUser.userId] ||
-        !prevProps.messages[this.props.user.currentUser.userId][this.props.groupInfo.id] ||
-        !this.props.messages[this.props.user.currentUser.userId] ||
-        !this.props.messages[this.props.user.currentUser.userId][this.props.groupInfo.id] ||
+        !prevProps.messages?.[this.props.user.currentUser.userId] ||
+        !prevProps.messages?.[this.props.user.currentUser.userId][this.props.groupInfo.id] ||
+        !this.props.messages?.[this.props.user.currentUser.userId] ||
+        !this.props.messages?.[this.props.user.currentUser.userId][this.props.groupInfo.id] ||
         // 判断新增message信息
-        prevProps.messages[this.props.user.currentUser.userId][this.props.groupInfo.id] && this.props.messages[this.props.user.currentUser.userId][this.props.groupInfo.id] &&
-        prevProps.messages[this.props.user.currentUser.userId][this.props.groupInfo.id].length < this.props.messages[this.props.user.currentUser.userId][this.props.groupInfo.id].length
+        prevProps.messages?.[this.props.user.currentUser.userId][this.props.groupInfo.id] && this.props.messages?.[this.props.user.currentUser.userId][this.props.groupInfo.id] &&
+        prevProps.messages?.[this.props.user.currentUser.userId][this.props.groupInfo.id].length < this.props.messages?.[this.props.user.currentUser.userId][this.props.groupInfo.id].length
       ) {
         this.refresh()
         // this.list && this.list.scrollToEnd({
@@ -212,7 +212,7 @@ class GroupMessage extends React.Component<Props, State> {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.REFRESHING}
               enabled={true}
             />
           }

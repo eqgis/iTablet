@@ -20,7 +20,7 @@ export default class AnalystRadiusSetting extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
     this.backcb = params && params.backcb
     let bufferRadiuses = params && params.bufferRadiuses
@@ -147,7 +147,7 @@ export default class AnalystRadiusSetting extends React.Component {
         stepSizeStatus = CheckStatus.CHECKED
         segmentsStatus = CheckStatus.UN_CHECK
         break
-      case getLanguage(this.props.language).Analyst_Labels.RANGE_COUNT:
+      case getLanguage(this.props.language).Analyst_Labels.RANGE_COUNT_2:
         stepSizeStatus = CheckStatus.UN_CHECK
         segmentsStatus = CheckStatus.CHECKED
         break
@@ -276,12 +276,12 @@ export default class AnalystRadiusSetting extends React.Component {
           radioStatus={this.state.segmentsStatus}
           style={{ borderBottomWidth: 0 }}
           rightType={'input'}
-          title={getLanguage(this.props.language).Analyst_Labels.RANGE_COUNT}
+          title={getLanguage(this.props.language).Analyst_Labels.RANGE_COUNT_2}
           value={this.state.segments}
           keyboardType={'numeric'}
           onRadioPress={() =>
             this.changeBufferType(
-              getLanguage(this.props.language).Analyst_Labels.RANGE_COUNT,
+              getLanguage(this.props.language).Analyst_Labels.RANGE_COUNT_2,
             )
           }
           onSubmitEditing={value => {
@@ -329,7 +329,7 @@ export default class AnalystRadiusSetting extends React.Component {
           navigation: this.props.navigation,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(this.props.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(this.props.language).CONFIRM}
               textStyle={
                 this.state.clickAble
                   ? styles.headerBtnTitle

@@ -12,18 +12,17 @@ import {
 } from 'react-native'
 import { Toast } from '../../../../../../utils'
 import { ListSeparator, PopMenu } from '../../../../../../components'
-import { MsgConstant } from '../../../../../../constants'
 import { color } from '../../../../../../styles'
 import { getThemeAssets } from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
 import SMessageServiceHTTP from '../../../../Friend/SMessageServiceHTTP'
 import { Users } from '../../../../../../redux/models/user'
 import { ReadMsgParams } from '../../../../../../redux/models/cowork'
-import { SCoordination, SMessageService, GroupInviteMessageType } from 'imobile_for_reactnative'
-import { Person } from '../../types'
+import { SCoordination, GroupInviteMessageType } from 'imobile_for_reactnative'
 import { InviteItem } from '../../components'
 
 import styles from './styles'
+import { MsgConstant } from '@/constants'
 
 interface Props {
   language: string,
@@ -63,7 +62,7 @@ export default class InviteMessages extends Component<Props, State> {
     this.currentDataIndex = -1
     this.popData = [
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE,
+        title: getLanguage(props.language).Friends.GROUP_APPLY_AGREE,
         action: () => {
           this.currentData.feedbackStatus = 'ACCEPTED'
           this.currentData.feedbackInfo = 'ACCEPTED'
@@ -71,7 +70,7 @@ export default class InviteMessages extends Component<Props, State> {
         },
       },
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY_DISAGREE,
+        title: getLanguage(props.language).Friends.GROUP_APPLY_DISAGREE,
         action: () => {
           this.currentData.feedbackStatus = 'REFUSED'
           this.currentData.feedbackInfo = 'REFUSED'
@@ -90,9 +89,9 @@ export default class InviteMessages extends Component<Props, State> {
       pageSize: this.pageSize,
       currentPage: 1,
     })
-    // this.props.readCoworkGroupMsg({
-    //   type: MsgConstant.MSG_ONLINE_GROUP_INVITE,
-    // })
+    this.props.readCoworkGroupMsg({
+      type: MsgConstant.MSG_ONLINE_GROUP_INVITE,
+    })
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -133,7 +132,7 @@ export default class InviteMessages extends Component<Props, State> {
   }
 
   getMessages = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'inviteTime', orderType = 'DESC', groupInviteRole = 'INVITEE', cb = () => {}}: any) => {
-    this.props.servicesUtils.getInvite({
+    this.props.servicesUtils?.getInvite({
       currentPage: currentPage,
       pageSize: pageSize,
       orderBy: orderBy,
@@ -198,10 +197,6 @@ export default class InviteMessages extends Component<Props, State> {
       feedbackInfo: data.feedbackInfo,
     }).then(result => {
       if (result.succeed) {
-        // SMessageService.sendMessage(
-        //   JSON.stringify(data),
-        //   data.inviter,
-        // )
         SMessageServiceHTTP.sendMessage(
           data,
           [data.inviter],
@@ -263,7 +258,7 @@ export default class InviteMessages extends Component<Props, State> {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            title={getLanguage(this.props.language).Friends.REFRESHING}
             enabled={true}
           />
         }
@@ -279,7 +274,7 @@ export default class InviteMessages extends Component<Props, State> {
       <View style={[styles.nullView]}>
         <View style={styles.nullSubView}>
           <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
-          <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE_NULL}</Text>
+          <Text style={styles.nullTitle}>{getLanguage(this.props.language).Friends.GROUP_MESSAGE_NULL}</Text>
         </View>
         <View style={{flex: 1, backgroundColor: 'black'}} />
       </View>

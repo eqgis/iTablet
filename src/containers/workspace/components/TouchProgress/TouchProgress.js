@@ -18,6 +18,7 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Dimensions,
 } from 'react-native'
 import { scaleSize, setSpText, screen } from '../../../../utils'
 import { Height } from '../../../../constants'
@@ -95,7 +96,7 @@ export default class TouchProgress extends Component {
   getHeightByOrientation = () => {
     let height = this.props.device.safeHeight
     if (this.props.device.orientation.indexOf('LANDSCAPE') < 0) {
-      height -= height.TOOLBAR_BUTTONS
+      height -= Height.TOOLBAR_BUTTONS
     }
     return height
   }
@@ -179,7 +180,9 @@ export default class TouchProgress extends Component {
   _handlePanResponderMove = (evt, gestureState) => {
     if (Math.abs(gestureState.dy) > Math.abs(gestureState.dx)) {
       if (Math.abs(gestureState.dy) > 20) {
-        this.showMenu()
+        if(!global.isEffectProgress){
+          this.showMenu()
+        }
       }
     } else {
       let progressWidth = this.getWidthByOrientation() - MARGIN * 2
@@ -349,6 +352,17 @@ export default class TouchProgress extends Component {
       // shadowRadius: 2,
       // elevation: 20,
     }
+
+    // 获取屏幕的宽度
+    const screenWidth =screen.getScreenSafeWidth(this.props.device.orientation)
+    // 判断当前屏幕的横竖屏
+    if(this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
+      if(screenWidth > 900) {
+        // 将屏幕宽度大于900的平板的高度改为80
+      container.height = scaleSize(80)
+      }
+    }
+   
     let num, strArray
     if (this.state.tips !== '') {
       let matchRel = this.state.tips.match(/([-0-9][0-9]*)/)
@@ -374,7 +388,7 @@ export default class TouchProgress extends Component {
           style={[styles.panView, { flex: 1, width: this.getWidthByOrientation(), height: this.getHeightByOrientation()}]}
           {...this._panResponder.panHandlers}
         >
-          <View style={[styles.containerRadius, styles.containerShadow]}>
+          <View style={[styles.containerRadius, styles.containerShadow, {backgroundColor: '#fff'}]}>
             <View style={[styles.containerRadius, styles.hidden]} >
               {this.state.tips !== '' && (
                 <TouchableOpacity

@@ -32,7 +32,7 @@ class StartModule extends FunctionModule {
 export default function() {
   return new StartModule({
     type: ConstToolType.SM_AR_START,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.START,
+    title: getLanguage(global.language).Map_Main_Menu.START,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_start,
     getData: StartData.getData,

@@ -47,8 +47,8 @@ import { getThemeAssets } from '../../../assets'
 import { getLanguage } from '../../../language'
 import FileTools from '../../../native/FileTools'
 import { mapSettingModule } from '../../workspace/components/ToolBar/modules'
-import { ConstToolType } from '../../../constants'
-import SlideBar from '../../../components/SlideBar'
+import { ConstToolType ,ChunkType} from '../../../constants'
+import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 
 export default class SecondMapSettings extends Component {
   props: {
@@ -64,7 +64,7 @@ export default class SecondMapSettings extends Component {
   }
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.state = {
       data: [],
       title: params.title,
@@ -88,7 +88,7 @@ export default class SecondMapSettings extends Component {
   /** 初始化状态 */
   initState = async () => {
     //获取置信度初始值 zhangxt
-    if(this.state.title === getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE) {
+    if(this.state.title === getLanguage(global.language).Map_Settings.DETECT_TYPE) {
       let confidence = await SAIDetectView.getConfidence()
       confidence = Math.round(confidence * 100)
       this.setState({
@@ -118,46 +118,46 @@ export default class SecondMapSettings extends Component {
       dataSourceAndSets,
       homeDirectory
     switch (this.state.title) {
-      case getLanguage(GLOBAL.language).Map_Settings.BASIC_SETTING:
+      case getLanguage(global.language).Map_Settings.BASIC_SETTING:
         data = await this.getBasicData()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.RANGE_SETTING:
+      case getLanguage(global.language).Map_Settings.RANGE_SETTING:
         data = await this.getRangeData()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.COORDINATE_SYSTEM_SETTING:
+      case getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM_SETTING:
         data = await this.getCoordinateSystemData()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.ADVANCED_SETTING:
+      case getLanguage(global.language).Map_Settings.ADVANCED_SETTING:
         data = await this.getAdvanceData()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.MAP_CENTER:
+      case getLanguage(global.language).Map_Settings.MAP_CENTER:
         data = { title: 'centerPoint' }
         data.value = await SMap.getMapCenter()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.MAP_SCALE:
+      case getLanguage(global.language).Map_Settings.MAP_SCALE:
         data = { title: 'scale' }
         data.value = await SMap.getMapScale()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.COORDINATE_SYSTEM:
+      case getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM:
         data = await coordinateData()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.CURRENT_VIEW_BOUNDS:
+      case getLanguage(global.language).Map_Settings.CURRENT_VIEW_BOUNDS:
         data = await this.getFourRangeData()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.TRANSFER_METHOD:
+      case getLanguage(global.language).Map_Settings.TRANSFER_METHOD:
         data = transferData()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.COPY_COORDINATE_SYSTEM:
+      case getLanguage(global.language).Map_Settings.COPY_COORDINATE_SYSTEM:
         data = copyCoordinate()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASOURCE:
+      case getLanguage(global.language).Map_Settings.FROM_DATASOURCE:
         data = await this.getDatasources()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASET:
+      case getLanguage(global.language).Map_Settings.FROM_DATASET:
         data = await this.getDatasources()
         dataSourceAndSets = await this.getDatasets({ data })
         break
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_FILE:
+      case getLanguage(global.language).Map_Settings.FROM_FILE:
         homeDirectory = await FileTools.getHomeDirectory()
         Platform.OS === 'android' && (homeDirectory += '/iTablet')
         data = await FileTools.getPathListByFilterDeep(
@@ -167,10 +167,10 @@ export default class SecondMapSettings extends Component {
           'xml,prj',
         )
         break
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE:
         data = await this.getDetectTypesSettings()
         break
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_STYLE:
+      case getLanguage(global.language).Map_Settings.DETECT_STYLE:
         data = getDetectStyleSettings()
         data[0].value = await SAIDetectView.isDrawTileEnable()
         data[1].value = await SAIDetectView.isDrawConfidenceEnable()
@@ -257,20 +257,20 @@ export default class SecondMapSettings extends Component {
     //原生层返回的是中文，做一个映射，转换成对应语言
     let colorMode = await SMap.getMapColorMode()
     let allColorMode = {
-      默认色彩模式: getLanguage(GLOBAL.language).Map_Settings
+      默认色彩模式: getLanguage(global.language).Map_Settings
         .DEFAULT_COLOR_MODE,
-      DEFAULT: getLanguage(GLOBAL.language).Map_Settings.DEFAULT_COLOR_MODE,
-      黑白模式: getLanguage(GLOBAL.language).Map_Settings.BLACK_AND_WHITE,
-      BLACKWHITE: getLanguage(GLOBAL.language).Map_Settings.BLACK_AND_WHITE,
-      灰度模式: getLanguage(GLOBAL.language).Map_Settings.GRAY_SCALE_MODE,
-      GRAY: getLanguage(GLOBAL.language).Map_Settings.GRAY_SCALE_MODE,
-      黑白反色模式: getLanguage(GLOBAL.language).Map_Settings
+      DEFAULT: getLanguage(global.language).Map_Settings.DEFAULT_COLOR_MODE,
+      黑白模式: getLanguage(global.language).Map_Settings.BLACK_AND_WHITE,
+      BLACKWHITE: getLanguage(global.language).Map_Settings.BLACK_AND_WHITE,
+      灰度模式: getLanguage(global.language).Map_Settings.GRAY_SCALE_MODE,
+      GRAY: getLanguage(global.language).Map_Settings.GRAY_SCALE_MODE,
+      黑白反色模式: getLanguage(global.language).Map_Settings
         .ANTI_BLACK_AND_WHITE,
-      BLACK_WHITE_REVERSE: getLanguage(GLOBAL.language).Map_Settings
+      BLACK_WHITE_REVERSE: getLanguage(global.language).Map_Settings
         .ANTI_BLACK_AND_WHITE,
-      '黑白反色，其他颜色不变': getLanguage(GLOBAL.language).Map_Settings
+      '黑白反色，其他颜色不变': getLanguage(global.language).Map_Settings
         .ANTI_BLACK_AND_WHITE_2,
-      ONLY_BLACK_WHITE_REVERSE: getLanguage(GLOBAL.language).Map_Settings
+      ONLY_BLACK_WHITE_REVERSE: getLanguage(global.language).Map_Settings
         .ANTI_BLACK_AND_WHITE_2,
     }
     data[5].value = allColorMode[colorMode]
@@ -282,9 +282,13 @@ export default class SecondMapSettings extends Component {
     data[10].value = await SMap.getFixedTextOrientation()
     data[11].value = await SMap.isOverlapDisplayed()
     data[12].value = await SMap.isMagnifierEnabled()
-    data[13].value = SMap.isShowLocation()
+    data[13].value = await SMap.isShowLocation()
     data[14].value = this.props.isShowCompass
     data.splice(1,1)
+
+    if (global.Type === ChunkType.MAP_NAVIGATION) {
+      data.splice(11,1)
+    }
     return data
   }
 
@@ -325,7 +329,7 @@ export default class SecondMapSettings extends Component {
     data[2].value = isDynamicProjection
     data[3].value = isDynamicProjection
       ? transferMethod
-      : getLanguage(GLOBAL.language).Map_Settings.OFF
+      : getLanguage(global.language).Map_Settings.OFF
     this.setState({
       transferMethod,
     })
@@ -361,19 +365,19 @@ export default class SecondMapSettings extends Component {
       case getLanguage().Map_Settings.SHOW_COMPASS:
         this.props.showCompass(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.SHOW_LOCATION:
+      case getLanguage(global.language).Map_Settings.SHOW_LOCATION:
         await SMap.setShowLocation(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.ROTATION_GESTURE:
+      case getLanguage(global.language).Map_Settings.ROTATION_GESTURE:
         await SMap.enableRotateTouch(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.ROTATION_GESTURE:
+      case getLanguage(global.language).Map_Settings.ROTATION_GESTURE:
         await SMap.enableRotateTouch(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.PITCH_GESTURE:
+      case getLanguage(global.language).Map_Settings.PITCH_GESTURE:
         await SMap.enableSlantTouch(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.MAP_ANTI_ALIASING:
+      case getLanguage(global.language).Map_Settings.MAP_ANTI_ALIASING:
         //IOS接口内写的是int类型的参数 所以转成数字
         if (Platform.OS === 'ios') {
           await SMap.setAntialias(+value)
@@ -381,76 +385,76 @@ export default class SecondMapSettings extends Component {
           await SMap.setAntialias(value)
         }
         break
-      case getLanguage(GLOBAL.language).Map_Settings.FIX_SYMBOL_ANGLE:
+      case getLanguage(global.language).Map_Settings.FIX_SYMBOL_ANGLE:
         await SMap.setMarkerFixedAngle(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.FIX_TEXT_ANGLE:
+      case getLanguage(global.language).Map_Settings.FIX_TEXT_ANGLE:
         await SMap.setTextFixedAngle(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.SHOW_OVERLAYS:
+      case getLanguage(global.language).Map_Settings.SHOW_OVERLAYS:
         await SMap.setOverlapDisplayed(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.FIX_TEXT_DIRECTION:
+      case getLanguage(global.language).Map_Settings.FIX_TEXT_DIRECTION:
         await SMap.setFixedTextOrientation(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.FIX_SCALE_LEVEL:
+      case getLanguage(global.language).Map_Settings.FIX_SCALE_LEVEL:
         await SMap.setVisibleScalesEnabled(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.ENABLE_MAP_MAGNIFER:
+      case getLanguage(global.language).Map_Settings.ENABLE_MAP_MAGNIFER:
         await SMap.setIsMagnifierEnabled(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.DYNAMIC_PROJECTION:
+      case getLanguage(global.language).Map_Settings.DYNAMIC_PROJECTION:
         await SMap.setMapDynamicProjection(value)
         data[index + 1].value = value
           ? this.state.transferMethod
-          : getLanguage(GLOBAL.language).Map_Settings.OFF
+          : getLanguage(global.language).Map_Settings.OFF
         break
-      case getLanguage(GLOBAL.language).Map_Settings
+      case getLanguage(global.language).Map_Settings
         .POI_SETTING_PROJECTION_MODE:
         await SAIDetectView.setProjectionModeEnable(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.POI_SETTING_OVERLAP_MODE:
+      case getLanguage(global.language).Map_Settings.POI_SETTING_OVERLAP_MODE:
         await SAIDetectView.setPOIOverlapEnable(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings
+      case getLanguage(global.language).Map_Settings
         .POI_SETTING_POLYMERIZE_MODE:
         await SAIDetectView.setIsPolymerize(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_STYLE_IS_DRAW_TITLE:
+      case getLanguage(global.language).Map_Settings.DETECT_STYLE_IS_DRAW_TITLE:
         await SAIDetectView.setDrawTileEnable(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings
+      case getLanguage(global.language).Map_Settings
         .DETECT_STYLE_IS_DRAW_CONFIDENCE:
         await SAIDetectView.setDrawConfidenceEnable(value)
         break
-      case getLanguage(GLOBAL.language).Map_Settings.COUNTRACKED:
+      case getLanguage(global.language).Map_Settings.COUNTRACKED:
         if (value) {
           await SAIDetectView.startCountTrackedObjs()
         } else {
           await SAIDetectView.stopCountTrackedObjs()
         }
         break
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_PERSON:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BICYCLE:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CAR:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_MOTORCYCLE:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BUS:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TRUCK:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TRAFFICLIGHT:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_FIREHYDRANT:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CUP:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CHAIR:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BIRD:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CAT:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_DOG:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_POTTEDPLANT:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_TV:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_LAPTOP:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_MOUSE:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_KEYBOARD:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_CELLPHONE:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BOOK:
-      case getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE_BOTTLE:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_PERSON:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_BICYCLE:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_CAR:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_MOTORCYCLE:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_BUS:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_TRUCK:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_TRAFFICLIGHT:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_FIREHYDRANT:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_CUP:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_CHAIR:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_BIRD:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_CAT:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_DOG:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_POTTEDPLANT:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_TV:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_LAPTOP:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_MOUSE:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_KEYBOARD:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_CELLPHONE:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_BOOK:
+      case getLanguage(global.language).Map_Settings.DETECT_TYPE_BOTTLE:
         await SAIDetectView.setDetectItemEnable(item.key, value)
         break
     }
@@ -467,35 +471,35 @@ export default class SecondMapSettings extends Component {
       let toastTip
       !title && (title = this.state.title)
       switch (title) {
-        case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASOURCE:
+        case getLanguage(global.language).Map_Settings.FROM_DATASOURCE:
           prjCoordSysName = await SMap.copyPrjCoordSysFromDatasource(
             item.server,
             item.engineType,
           )
           toastTip = prjCoordSysName
-            ? getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
-            : getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL
+            ? getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
+            : getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL
           break
-        case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASET:
+        case getLanguage(global.language).Map_Settings.FROM_DATASET:
           prjCoordSysName = await SMap.copyPrjCoordSysFromDataset(
             item.parentTitle,
             item.title,
           )
           toastTip = prjCoordSysName
-            ? getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
-            : getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL
+            ? getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
+            : getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL
           break
-        case getLanguage(GLOBAL.language).Map_Settings.FROM_FILE:
+        case getLanguage(global.language).Map_Settings.FROM_FILE:
           prjCoordSysName = await SMap.copyPrjCoordSysFromFile(
             item.path,
             item.name.substring(item.name.lastIndexOf('.'), item.name.length),
           )
           if (prjCoordSysName.error) {
-            toastTip = getLanguage(GLOBAL.language).Prompt[prjCoordSysName.error]
+            toastTip = getLanguage(global.language).Prompt[prjCoordSysName.error]
           } else {
             toastTip = prjCoordSysName
-              ? getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
-              : getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL
+              ? getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
+              : getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL
           }
           break
       }
@@ -504,7 +508,7 @@ export default class SecondMapSettings extends Component {
         this.state.cb(prjCoordSysName)
       }
     }catch(e){
-      Toast.show(getLanguage(GLOBAL.language).Prompt.COPY_COORD_SYSTEM_FAIL_NO_COORD)
+      Toast.show(getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL_NO_COORD)
     }
   }
 
@@ -513,7 +517,7 @@ export default class SecondMapSettings extends Component {
     let title = item.title
     let data = this.state.data.concat()
     switch (title) {
-      case getLanguage(GLOBAL.language).Map_Settings.ROTATION_ANGLE:
+      case getLanguage(global.language).Map_Settings.ROTATION_ANGLE:
         this.props.navigation.navigate('InputPage', {
           headerTitle: title,
           // keyboardType: 'numeric',
@@ -525,7 +529,7 @@ export default class SecondMapSettings extends Component {
               isSetSuccess = await SMap.setMapAngle(+value)
             } else {
               Toast.show(
-                getLanguage(GLOBAL.language).Prompt.ROTATION_ANGLE_ERROR,
+                getLanguage(global.language).Prompt.ROTATION_ANGLE_ERROR,
               )
             }
 
@@ -543,11 +547,11 @@ export default class SecondMapSettings extends Component {
           },
         })
         break
-      case getLanguage(GLOBAL.language).Map_Settings.COLOR_MODE:
-      case getLanguage(GLOBAL.language).Map_Settings.BACKGROUND_COLOR:
+      case getLanguage(global.language).Map_Settings.COLOR_MODE:
+      case getLanguage(global.language).Map_Settings.BACKGROUND_COLOR:
         {
           let type =
-            title === getLanguage(GLOBAL.language).Map_Settings.COLOR_MODE
+            title === getLanguage(global.language).Map_Settings.COLOR_MODE
               ? ConstToolType.SM_MAP_SETTINGS_COLOR_MODE
               : ConstToolType.SM_MAP_SETTINGS_BACKGROUND_COLOR
           mapSettingModule().action(type)
@@ -564,25 +568,25 @@ export default class SecondMapSettings extends Component {
         //   )
         // }
         break
-      case getLanguage(GLOBAL.language).Map_Settings.MAP_CENTER:
+      case getLanguage(global.language).Map_Settings.MAP_CENTER:
         this.props.navigation.navigate('SecondMapSettings1', {
           title,
           cb: this.saveInput,
         })
         break
-      case getLanguage(GLOBAL.language).Map_Settings.COORDINATE_SYSTEM:
+      case getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM:
         this.props.navigation.navigate('SecondMapSettings2', {
           title,
           cb: this.setMapCoordinate,
         })
         break
-      case getLanguage(GLOBAL.language).Map_Settings.CURRENT_VIEW_BOUNDS:
+      case getLanguage(global.language).Map_Settings.CURRENT_VIEW_BOUNDS:
         this.props.navigation.navigate('SecondMapSettings3', {
           title,
-          rightBtn: getLanguage(GLOBAL.language).Map_Settings.COPY,
+          rightBtn: getLanguage(global.language).Map_Settings.COPY,
         })
         break
-      case getLanguage(GLOBAL.language).Map_Settings.COPY_COORDINATE_SYSTEM:
+      case getLanguage(global.language).Map_Settings.COPY_COORDINATE_SYSTEM:
         this.props.navigation.navigate('SecondMapSettings7', {
           title,
           cb:
@@ -597,9 +601,9 @@ export default class SecondMapSettings extends Component {
               },
         })
         break
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASOURCE:
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_DATASET:
-      case getLanguage(GLOBAL.language).Map_Settings.FROM_FILE:
+      case getLanguage(global.language).Map_Settings.FROM_DATASOURCE:
+      case getLanguage(global.language).Map_Settings.FROM_DATASET:
+      case getLanguage(global.language).Map_Settings.FROM_FILE:
         this.props.navigation.navigate('SecondMapSettings4', {
           title,
           cb:
@@ -614,7 +618,7 @@ export default class SecondMapSettings extends Component {
               },
         })
         break
-      case getLanguage(GLOBAL.language).Map_Settings.TRANSFER_METHOD:
+      case getLanguage(global.language).Map_Settings.TRANSFER_METHOD:
         this.props.navigation.navigate('SecondMapSettings5', {
           title,
           cb: this.setTransferMethod,
@@ -628,7 +632,7 @@ export default class SecondMapSettings extends Component {
       case 'Bursa-wolf(7-para)':
         this.props.navigation.navigate('SecondMapSettings6', {
           title,
-          rightBtn: getLanguage(GLOBAL.language).Map_Settings.CONFIRM,
+          rightBtn: getLanguage(global.language).CONFIRM,
           cb: this.state.cb,
         })
         break
@@ -642,7 +646,7 @@ export default class SecondMapSettings extends Component {
     let data = this.state.data.concat()
     let tips = ''
     switch (item.title) {
-      case getLanguage(GLOBAL.language).Map_Settings.MAP_SCALE:
+      case getLanguage(global.language).Map_Settings.MAP_SCALE:
         if (newValue !== '' && newValue.match(regExp)) {
           isSuccess = await SMap.setMapScale(1 / newValue)
           data[index].value = `1:${this.formatNumberToString(
@@ -650,14 +654,14 @@ export default class SecondMapSettings extends Component {
           )}`
           data[index].state = false
         } else {
-          tips = getLanguage(GLOBAL.language).Prompt.MAP_SCALE_ERROR
+          tips = getLanguage(global.language).Prompt.MAP_SCALE_ERROR
         }
         break
       //四至范围点击 跳InputPage
-      case getLanguage(GLOBAL.language).Map_Settings.LEFT:
-      case getLanguage(GLOBAL.language).Map_Settings.BOTTOM:
-      case getLanguage(GLOBAL.language).Map_Settings.RIGHT:
-      case getLanguage(GLOBAL.language).Map_Settings.TOP:
+      case getLanguage(global.language).LEFT:
+      case getLanguage(global.language).Map_Settings.BOTTOM:
+      case getLanguage(global.language).RIGHT:
+      case getLanguage(global.language).Map_Settings.TOP:
         if (newValue !== '' && newValue.match(regExp)) {
           data[index].value = this.formatNumberToString(
             Number.parseFloat(newValue).toFixed(6),
@@ -674,13 +678,13 @@ export default class SecondMapSettings extends Component {
             top,
           })
           !isSuccess &&
-            (tips = getLanguage(GLOBAL.language).Prompt.VIEW_BOUNDS_RANGE_ERROR)
+            (tips = getLanguage(global.language).Prompt.VIEW_BOUNDS_RANGE_ERROR)
         } else {
-          tips = getLanguage(GLOBAL.language).Prompt.VIEW_BOUNDS_ERROR
+          tips = getLanguage(global.language).Prompt.VIEW_BOUNDS_ERROR
         }
         break
       //转换参数设置点击
-      case getLanguage(GLOBAL.language).Map_Settings.PROPORTIONAL_DIFFERENCE:
+      case getLanguage(global.language).Map_Settings.PROPORTIONAL_DIFFERENCE:
       case 'X':
       case 'Y':
       case 'Z':
@@ -691,10 +695,10 @@ export default class SecondMapSettings extends Component {
           data[item.pos].value[index].state = false
           isSuccess = true
         } else {
-          tips = getLanguage(GLOBAL.language).Prompt.TRANSFER_PARAMS
+          tips = getLanguage(global.language).Prompt.TRANSFER_PARAMS
         }
         break
-      case getLanguage(GLOBAL.language).Map_Settings.MAP_CENTER:
+      case getLanguage(global.language).Map_Settings.MAP_CENTER:
         data[index].value = `${this.formatNumberToString(
           this.inputvalue,
         )}/${this.formatNumberToString(Number.parseFloat(newValue).toFixed(6))}`
@@ -718,7 +722,7 @@ export default class SecondMapSettings extends Component {
     let regExp = /^\d+(\.\d+)?$/
     let data = this.state.data.concat()
     switch (title) {
-      case getLanguage(GLOBAL.language).Map_Settings.MAP_CENTER:
+      case getLanguage(global.language).Map_Settings.MAP_CENTER:
         if (
           newValue.x &&
           newValue.x.match(regExp) &&
@@ -731,7 +735,7 @@ export default class SecondMapSettings extends Component {
             '/' +
             this.formatNumberToString(newValue.y)
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.MAP_CENTER_ERROR)
+          Toast.show(getLanguage(global.language).Prompt.MAP_CENTER_ERROR)
         }
         break
     }
@@ -787,7 +791,7 @@ export default class SecondMapSettings extends Component {
   renderLine = index => {
     if (
       this.state.title ===
-        getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE &&
+        getLanguage(global.language).Map_Settings.DETECT_TYPE &&
       index === 9
     ) {
       return (
@@ -809,7 +813,7 @@ export default class SecondMapSettings extends Component {
           >
             <Text style={styles.betaName1}>{'Beta'}</Text>
             <Text style={styles.betaName}>
-              {getLanguage(GLOBAL.language).Map_Settings.Beta}
+              {getLanguage(global.language).Map_Settings.Beta}
             </Text>
           </View>
           <View
@@ -841,11 +845,11 @@ export default class SecondMapSettings extends Component {
     let rightImagePath = require('../../../assets/Mine/mine_my_arrow.png')
     let hasValue = item.value !== undefined
     let isBackGroundColor =
-      item.title === getLanguage(GLOBAL.language).Map_Settings.BACKGROUND_COLOR
+      item.title === getLanguage(global.language).Map_Settings.BACKGROUND_COLOR
     if (
       item.title ===
-        getLanguage(GLOBAL.language).Map_Settings.TRANSFER_METHOD &&
-      item.value === getLanguage(GLOBAL.language).Map_Settings.OFF
+        getLanguage(global.language).Map_Settings.TRANSFER_METHOD &&
+      item.value === getLanguage(global.language).Map_Settings.OFF
     ) {
       return (
         <View>
@@ -956,7 +960,7 @@ export default class SecondMapSettings extends Component {
             <View style={styles.row}>
               <Text style={styles.itemName}>{item.title}</Text>
               {item.title ===
-                getLanguage(GLOBAL.language).Map_Settings.MAP_SCALE && (
+                getLanguage(global.language).Map_Settings.MAP_SCALE && (
                 <Text style={styles.rightText}>1:</Text>
               )}
               <TextInput
@@ -984,17 +988,17 @@ export default class SecondMapSettings extends Component {
               onLongPress={() => {
                 let data = this.state.data.concat()
                 switch (item.title) {
-                  case getLanguage(GLOBAL.language).Map_Settings.MAP_SCALE:
-                  case getLanguage(GLOBAL.language).Map_Settings.LEFT:
-                  case getLanguage(GLOBAL.language).Map_Settings.BOTTOM:
-                  case getLanguage(GLOBAL.language).Map_Settings.RIGHT:
-                  case getLanguage(GLOBAL.language).Map_Settings.TOP:
+                  case getLanguage(global.language).Map_Settings.MAP_SCALE:
+                  case getLanguage(global.language).LEFT:
+                  case getLanguage(global.language).Map_Settings.BOTTOM:
+                  case getLanguage(global.language).RIGHT:
+                  case getLanguage(global.language).Map_Settings.TOP:
                     data[index].state = true
                     break
                   case 'X':
                   case 'Y':
                   case 'Z':
-                  case getLanguage(GLOBAL.language).Map_Settings
+                  case getLanguage(global.language).Map_Settings
                     .PROPORTIONAL_DIFFERENCE:
                     data[item.pos].value[index].state = true
                     break
@@ -1028,7 +1032,7 @@ export default class SecondMapSettings extends Component {
       let keys = []
       let values = []
       switch (item.title) {
-        case getLanguage(GLOBAL.language).Map_Settings.MAP_CENTER:
+        case getLanguage(global.language).Map_Settings.MAP_CENTER:
           keys = ['x:', 'y:']
           values = item.value
             .split('/')
@@ -1078,7 +1082,7 @@ export default class SecondMapSettings extends Component {
               onLongPress={() => {
                 let data = this.state.data.concat()
                 switch (item.title) {
-                  case getLanguage(GLOBAL.language).Map_Settings.MAP_CENTER:
+                  case getLanguage(global.language).Map_Settings.MAP_CENTER:
                     data[index].state = true
                     break
                 }
@@ -1131,7 +1135,7 @@ export default class SecondMapSettings extends Component {
     )
     let isSuccess = await Clipboard.getString()
     if (isSuccess !== undefined) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.COPY_SUCCESS)
+      Toast.show(getLanguage(global.language).Prompt.COPY_SUCCESS)
     }
   }
 
@@ -1247,9 +1251,9 @@ export default class SecondMapSettings extends Component {
     if (isSuccess) {
       this.state.cb(this.state.title)
       this.backAction()
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
+      Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
     }
   }
 
@@ -1278,13 +1282,13 @@ export default class SecondMapSettings extends Component {
         </TouchableOpacity>
       )
     }
-    if(this.state.title === getLanguage(GLOBAL.language).Map_Settings.DETECT_TYPE) {
+    if(this.state.title === getLanguage(global.language).Map_Settings.DETECT_TYPE) {
       return (
         <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginRight: scaleSize(30)}} key={'confidence'} onPress={this.setConfidence}>
           <Text style={{color: 'black', fontSize: scaleSize(24)}}>
             {this.state.showConfidence
-              ? getLanguage(GLOBAL.language).Prompt.CONFIRM
-              : getLanguage(GLOBAL.language).Map_Settings.CONFIDENCE}
+              ? getLanguage(global.language).CONFIRM
+              : getLanguage(global.language).Map_Settings.CONFIDENCE}
           </Text>
           {!this.state.showConfidence && (
             <Text style={{color: 'black', fontSize: scaleSize(20)}}>
@@ -1327,7 +1331,7 @@ export default class SecondMapSettings extends Component {
             <SlideBar
               style={{ width: screen.getScreenWidth() - 20 }}
               range={[0, 100]}
-              defaultValue={this.state.confidence}
+              defaultMaxValue={this.state.confidence}
               onMove={location => {
                 this.setState({
                   confidence: location,
@@ -1348,6 +1352,7 @@ export default class SecondMapSettings extends Component {
       let data = this.state.data
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1360,7 +1365,7 @@ export default class SecondMapSettings extends Component {
                 }}
               >
                 <Text style={styles.headerRight}>
-                  {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+                  {getLanguage(global.language).CONFIRM}
                 </Text>
               </TouchableOpacity>,
             ],
@@ -1372,10 +1377,11 @@ export default class SecondMapSettings extends Component {
     }
     if (
       this.state.title ===
-      getLanguage(GLOBAL.language).Map_Settings.COORDINATE_SYSTEM
+      getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM
     ) {
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1394,10 +1400,11 @@ export default class SecondMapSettings extends Component {
     }
     if (
       this.state.title ===
-      getLanguage(GLOBAL.language).Map_Settings.FROM_DATASET
+      getLanguage(global.language).Map_Settings.FROM_DATASET
     ) {
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1407,8 +1414,8 @@ export default class SecondMapSettings extends Component {
             language={this.props.language}
             data={this.state.dataSourceAndSets}
             titles={[
-              getLanguage(GLOBAL.language).Map_Settings.DATASOURCES,
-              getLanguage(GLOBAL.language).Map_Settings.DATASETS,
+              getLanguage(global.language).Map_Settings.DATASOURCES,
+              getLanguage(global.language).Map_Settings.DATASETS,
             ]}
             onRightPress={this.onTextItemPress}
           />
@@ -1416,12 +1423,13 @@ export default class SecondMapSettings extends Component {
       )
     }
     if (
-      this.state.title === getLanguage(GLOBAL.language).Map_Settings.FROM_FILE
+      this.state.title === getLanguage(global.language).Map_Settings.FROM_FILE
     ) {
       let menuData = coordMenuData()
       let menuTitle = coordMenuTitle()
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1456,6 +1464,7 @@ export default class SecondMapSettings extends Component {
       }
       return (
         <Container
+          navigation={this.props.navigation}
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
@@ -1487,6 +1496,7 @@ export default class SecondMapSettings extends Component {
                       data={item.value}
                       extraData={this.state.data}
                       keyExtractor={(item, index) => item + index}
+                      ListFooterComponent={<View style={{height:8}}/>}
                     />
                   </View>
                 )
@@ -1498,6 +1508,7 @@ export default class SecondMapSettings extends Component {
     }
     return (
       <Container
+        navigation={this.props.navigation}
         headerProps={{
           title: this.state.title,
           backAction: this.backAction,
@@ -1513,6 +1524,7 @@ export default class SecondMapSettings extends Component {
           keyExtractor={(item, index) => item + index}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator = {false}
+          ListFooterComponent={<View style={{height:8}}/>}
         />
         {this.renderConfidenceSlide()}
       </Container>

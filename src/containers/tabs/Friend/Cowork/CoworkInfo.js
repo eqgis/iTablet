@@ -1,4 +1,3 @@
-// import { AsyncStorage } from 'react-native'
 import { SMap, ThemeType, SThemeCartography } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
@@ -44,8 +43,8 @@ export default class CoworkInfo {
         CoworkInfo.closeMapHandle && CoworkInfo.closeMapHandle({baskFrom: 'CoworkManagePage'})
         Toast.show(
           messageObj.message.type === MsgConstant.MSG_ONLINE_MEMBER_DELETE
-            ? getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_DELETE_INFO2
-            : getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2
+            ? getLanguage(global.language).Friends.GROUP_MEMBER_DELETE_INFO2
+            : getLanguage(global.language).Friends.GROUP_DELETE_INFO2
         )
         break
       } else if (nav.routes[i].routeName === 'CoworkManagePage' && messageObj.message.groupId === this.groupId) {
@@ -53,7 +52,7 @@ export default class CoworkInfo {
         CoworkInfo.getGroupHandle && CoworkInfo.getGroupHandle()
         CoworkInfo.exitGroup && CoworkInfo.exitGroup({ groupID: messageObj.message.groupId })
         NavigationService.goBack('CoworkManagePage', null)
-        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_DELETE_INFO2)
+        Toast.show(getLanguage(global.language).Friends.GROUP_DELETE_INFO2)
         break
       }
     }
@@ -102,6 +101,16 @@ export default class CoworkInfo {
       taskId: this.coworkId,
       messageID: messageID,
     })
+  }
+
+  /**根据Layer路径已读图层相关所有消息 */
+  static consumeMessageByLayerPath(layerPath) {
+    for (let i = this.messages.length - 1; i >= 0; i--) {
+      const item = this.messages[i]
+      if (item.message.layerPath === layerPath && item.status == 0) {
+        this.consumeMessage(item.messageID)
+      }
+    }
   }
 
   /**
@@ -160,13 +169,21 @@ export default class CoworkInfo {
           } else {
             this.consumeMessage(message.messageID)
           }
+        } else {
+          if (message.message.themeType > 0 && message.message.theme) {
+            Toast.show(getLanguage(global.language).Cowork.UPDATE_THEME_ERROR_INFO)
+          }
         }
       } else if (type === MsgConstant.MSG_COWORK_DELETE) {
         notify &&
-          Toast.show(getLanguage(GLOBAL.language).Friends.ADD_DELETE_ERROR)
+          Toast.show(getLanguage(global.language).Friends.ADD_DELETE_ERROR)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE || type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
         let url = message.message.serviceUrl
-        result = await serviceModule().actions.downloadToLocal(url, message?.message?.DatasourceAlias)
+        if (url.endsWith('/rest') && url.indexOf('/rest/data/datasources/') === -1) { // 下载地图服务
+          result = await serviceModule().actions.downloadService(url)
+        } else { // 下载数据集服务
+          result = await serviceModule().actions.downloadToLocal(url, message?.message?.datasourceAlias)
+        }
         result && this.consumeMessage(message.messageID)
       }
       return result
@@ -246,9 +263,10 @@ export default class CoworkInfo {
               message.message.geometry,
             )
           } else {
+            SMap.removeMessageCallout(messageID)
             notify &&
               Toast.show(
-                getLanguage(GLOBAL.language).Friends.UPDATE_NOT_EXIST_OBJ,
+                getLanguage(global.language).Friends.UPDATE_NOT_EXIST_OBJ,
               )
           }
         } else if (message.message.isHeatmap && message.message.layerHeatmap) {
@@ -290,11 +308,15 @@ export default class CoworkInfo {
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_UPDATE) {
         let url = message.message.serviceUrl
-        result = await serviceModule().actions.updateToLocal({ url })
+        result = await serviceModule().actions.updateToLocal({ url, datasourceAlias: message.message.datasourceAlias })
         result && this.consumeMessage(message.messageID)
       } else if (type === MsgConstant.MSG_COWORK_SERVICE_PUBLISH) {
         let url = message.message.serviceUrl
-        result = await serviceModule().actions.downloadToLocal(url, message?.message?.datasourceAlias)
+        if (url.endsWith('/rest') && url.indexOf('/rest/data/datasources/') === -1) { // 下载地图服务
+          result = await serviceModule().actions.downloadService(url)
+        } else { // 下载数据集服务
+          result = await serviceModule().actions.downloadToLocal(url, message?.message?.datasourceAlias)
+        }
         result && this.consumeMessage(message.messageID)
       }
       return result

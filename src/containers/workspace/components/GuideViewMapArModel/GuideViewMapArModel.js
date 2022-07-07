@@ -135,7 +135,7 @@ export default class GuideViewMapArModel extends React.Component {
           style={styles.btn}
           imageStyle={styles.btnImage}
           key={0}
-          title={getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_EFFECT}
+          title={getLanguage(global.language).Map_Main_Menu.MAP_AR_EFFECT}
           textColor={'black'}
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
@@ -166,7 +166,7 @@ export default class GuideViewMapArModel extends React.Component {
           style={styles.btn}
           imageStyle={styles.btnImage}
           key={0}
-          title={getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_TOOL}
+          title={getLanguage(global.language).Map_Main_Menu.MAP_AR_TOOL}
           textColor={'black'}
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}

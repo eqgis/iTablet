@@ -57,7 +57,7 @@ export default class AboutITablet extends Component {
         this.props.setMapSceneGuide(true)
         NavigationService.goBack('Setting')
       },
-      value: getLanguage(GLOBAL.language).Profile.START_GUIDE,
+      value: getLanguage(global.language).Profile.START_GUIDE,
       contentHeight: scaleSize(200),
     })
   }
@@ -91,7 +91,7 @@ renderCustomAlertDialog = () => {
         >
           SuperMap iTablet
         </Text>
-        <Text style={styles.version}>10i(2021)</Text>
+        <Text style={styles.version}>11i(2022)</Text>
       </View>
     )
   }
@@ -274,7 +274,7 @@ renderCustomAlertDialog = () => {
     return (
       <View style={styles.informationView}>
         <Text style={styles.information}>
-          Copyright 2018-2021 SuperMap Software Co.,Ltd.All rights reserved
+          Copyright 2018-2022 SuperMap Software Co.,Ltd.All rights reserved
         </Text>
       </View>
     )

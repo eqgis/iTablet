@@ -34,10 +34,10 @@ class RoadNet extends React.Component<Props, State> {
   }
 
   reopen = () => {
-    const datasourceInfo = this.props.navigation?.state?.params?.datasource
+    const datasourceInfo = this.props.route?.params?.datasource
     if(datasourceInfo) {
       let index
-      const dataset = this.props.navigation?.state?.params?.dataset
+      const dataset = this.props.route?.params?.dataset
       if(dataset) {
         index = datasourceInfo.datasets.findIndex(item => item.datasetName ===  dataset.datasetName)
       }
@@ -183,7 +183,7 @@ class RoadNet extends React.Component<Props, State> {
     return(
       <Container
         headerProps={{
-          title: getLanguage(GLOBAL.language).ARMap.ROADNET_DATA,
+          title: getLanguage(global.language).ARMap.ROADNET_DATA,
           headerRight: this.renderHeaderRight(),
           backAction: () => {
             this.props.navigation.goBack()

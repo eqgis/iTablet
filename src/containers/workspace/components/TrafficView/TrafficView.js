@@ -73,11 +73,13 @@ export default class TrafficView extends React.Component {
       Animated.timing(this.state.left, {
         toValue: scaleSize(20),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
     } else {
       Animated.timing(this.state.left, {
         toValue: scaleSize(-200),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -122,7 +124,7 @@ export default class TrafficView extends React.Component {
           styles.container,
           {
             left: this.state.left,
-            top: scaleSize(GLOBAL.coworkMode ? 200 : 143) + screen.getIphonePaddingTop(),
+            top: scaleSize(global.coworkMode ? 200 : 143) + screen.getIphonePaddingTop(),
           },
         ]}
       >

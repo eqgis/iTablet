@@ -62,7 +62,7 @@ class ArMeasure extends FunctionModule {
 export default function() {
   return new ArMeasure({
     type: ConstToolType.SM_MAP_AR_MEASURE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_MEASURE,
+    title: getLanguage(global.language).Map_Main_Menu.MAP_AR_MEASURE,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_ar_measure,
     getData: ARMeasureData.getData,

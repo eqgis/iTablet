@@ -17,10 +17,13 @@ import {
   arEditModule,
   arStyleModule,
   arNaviModule,
+  arSandTable,
   changeMapModule,
+  arAnimation,
+  arAttribute,
 } from '../../containers/workspace/components/ToolBar/modules'
-import Orientation from 'react-native-orientation'
-import { LayerUtils } from '../../utils'
+import { LayerUtils, screen } from '../../utils'
+import { Platform } from 'react-native'
 
 export default class MapARConfig extends Module {
   static key = ChunkType.MAP_AR
@@ -59,7 +62,16 @@ export default class MapARConfig extends Module {
     let modules = []
     switch(type) {
       case 'ar':
-        modules = [
+        modules = Platform.OS === 'android' ? [
+          arStartModule,
+          arDrawingModule,
+          arEditModule,
+          arStyleModule,
+          arNaviModule,
+          arSandTable,
+          arAnimation,
+          arAttribute,
+        ] : [
           arStartModule,
           arDrawingModule,
           arEditModule,
@@ -115,8 +127,21 @@ export default class MapARConfig extends Module {
           return false
         }
         SMap.setDynamicviewsetVisible(false)
-        Orientation.lockToPortrait()
+        // 竖屏时,锁定竖屏
+        if (screen.getOrientation().indexOf('LANDSCAPE') < 0) {
+          screen.lockToPortrait()
+        }
         return isAvailable
+      },
+      afterAction: async () => {
+        // 横屏时,等跳转后,再锁定竖屏
+        if (screen.getOrientation().indexOf('LANDSCAPE') >= 0) {
+          let timer = setTimeout(() => {
+            screen.lockToPortrait()
+            clearTimeout(timer)
+          }, 100)
+        }
+        return true
       },
     })
   }

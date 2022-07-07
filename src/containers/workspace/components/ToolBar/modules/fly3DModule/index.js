@@ -37,7 +37,7 @@ class Fly3DModule extends FunctionModule {
 export default function() {
   return new Fly3DModule({
     type: ConstToolType.SM_MAP3D_FLY_LIST,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.FLY,
+    title: getLanguage(global.language).Map_Main_Menu.FLY,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_flight,
     getData: Fly3DData.getData,

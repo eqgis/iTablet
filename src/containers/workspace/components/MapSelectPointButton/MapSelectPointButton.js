@@ -6,6 +6,7 @@ import { SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../../containers/NavigationService'
 import { getLanguage } from '../../../../language'
 import { TouchType } from '../../../../constants'
+import { zIndexLevel } from '../../../../styles'
 
 export default class MapSelectPointButton extends React.Component {
   props: {
@@ -34,66 +35,66 @@ export default class MapSelectPointButton extends React.Component {
   setButton = async () => {
     if (
       this.state.button ===
-      getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_START_POINT
+      getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT
     ) {
-      if (GLOBAL.STARTX) {
-        GLOBAL.STARTNAME =
-          (await FetchUtils.getPointName(GLOBAL.STARTX, GLOBAL.STARTY)) ||
+      if (global.STARTX) {
+        global.STARTNAME =
+          (await FetchUtils.getPointName(global.STARTX, global.STARTY)) ||
           `${
-            getLanguage(GLOBAL.language).Map_Main_Menu.START_POINT
-          }(${GLOBAL.STARTX.toFixed(6)},${GLOBAL.STARTY.toFixed(6)})`
+            getLanguage(global.language).Map_Main_Menu.START_POINT
+          }(${global.STARTX.toFixed(6)},${global.STARTY.toFixed(6)})`
         if (this.state.firstpage) {
-          GLOBAL.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
-          GLOBAL.TouchType = TouchType.NORMAL
+          global.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
+          global.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
           })
           this.setState({
             show: false,
           })
-          GLOBAL.MAPSELECTPOINT?.setState({
+          global.MAPSELECTPOINT?.setState({
             show: false,
           })
         } else {
           await SMap.getEndPoint(
-            GLOBAL.ENDX,
-            GLOBAL.ENDY,
+            global.ENDX,
+            global.ENDY,
             false,
-            GLOBAL.ENDPOINTFLOOR,
+            global.ENDPOINTFLOOR,
           )
           this.routeAnalyst()
         }
       }
     } else {
-      if (GLOBAL.ENDX) {
-        GLOBAL.ENDNAME =
-          (await FetchUtils.getPointName(GLOBAL.ENDX, GLOBAL.ENDY)) ||
+      if (global.ENDX) {
+        global.ENDNAME =
+          (await FetchUtils.getPointName(global.ENDX, global.ENDY)) ||
           `${
-            getLanguage(GLOBAL.language).Map_Main_Menu.END_POINT
-          }(${GLOBAL.ENDX.toFixed(6)},${GLOBAL.ENDY.toFixed(6)})`
+            getLanguage(global.language).Map_Main_Menu.END_POINT
+          }(${global.ENDX.toFixed(6)},${global.ENDY.toFixed(6)})`
         if (this.state.firstpage) {
-          GLOBAL.ENDPOINTFLOOR = await SMap.getCurrentFloorID()
-          GLOBAL.TouchType = TouchType.NORMAL
+          global.ENDPOINTFLOOR = await SMap.getCurrentFloorID()
+          global.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
           })
           this.setState({
             show: false,
           })
-          GLOBAL.MAPSELECTPOINT?.setState({
+          global.MAPSELECTPOINT?.setState({
             show: false,
           })
         } else {
           await SMap.getStartPoint(
-            GLOBAL.STARTX,
-            GLOBAL.STARTY,
+            global.STARTX,
+            global.STARTY,
             false,
-            GLOBAL.STARTPOINTFLOOR,
+            global.STARTPOINTFLOOR,
           )
           this.routeAnalyst()
         }
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.TOUCH_TO_ADD_END)
+        Toast.show(getLanguage(global.language).Prompt.TOUCH_TO_ADD_END)
       }
     }
   }
@@ -115,19 +116,19 @@ export default class MapSelectPointButton extends React.Component {
   }
 
   routeAnalyst = async () => {
-    if (GLOBAL.STARTX !== undefined && GLOBAL.ENDX !== undefined) {
+    if (global.STARTX !== undefined && global.ENDX !== undefined) {
       this.props.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.ROUTE_ANALYSING,
+        getLanguage(global.language).Prompt.ROUTE_ANALYSING,
       )
       let startPointInfo
       let endPointInfo
       try {
         startPointInfo = await SMap.getPointBelongs(
-          GLOBAL.STARTX,
-          GLOBAL.STARTY,
+          global.STARTX,
+          global.STARTY,
         )
-        endPointInfo = await SMap.getPointBelongs(GLOBAL.ENDX, GLOBAL.ENDY)
+        endPointInfo = await SMap.getPointBelongs(global.ENDX, global.ENDY)
       } catch (e) {
         this.props.setLoading(false)
         Toast.show(' 获取数据失败')
@@ -189,32 +190,32 @@ export default class MapSelectPointButton extends React.Component {
         // await SMap.clearPoint
         try {
           await SMap.getStartPoint(
-            GLOBAL.STARTX,
-            GLOBAL.STARTY,
+            global.STARTX,
+            global.STARTY,
             true,
-            GLOBAL.STARTPOINTFLOOR,
+            global.STARTPOINTFLOOR,
           )
           await SMap.getEndPoint(
-            GLOBAL.ENDX,
-            GLOBAL.ENDY,
+            global.ENDX,
+            global.ENDY,
             true,
-            GLOBAL.ENDPOINTFLOOR,
+            global.ENDPOINTFLOOR,
           )
           await SMap.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
           let rel = await SMap.beginIndoorNavigation()
           if (!rel) {
             this.props.setLoading(false)
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
+            Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
             return
           }
         } catch (e) {
           this.props.setLoading(false)
-          Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           return
         }
         pathLength = await SMap.getNavPathLength(true)
         path = await SMap.getPathInfos(true)
-        GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
+        global.CURRENT_NAV_MODE = 'INDOOR'
       } else if (commonOutdoorInfo.length > 0) {
         //有公共室外数据集，分情况
         if (startIndoorInfo.length > 0 && endIndoorInfo.length > 0) {
@@ -223,18 +224,18 @@ export default class MapSelectPointButton extends React.Component {
         } else if (startIndoorInfo.length > 0) {
           //起点室内数据源 两段室内外一体化导航 先室内
           let params = {
-            startX: GLOBAL.STARTX,
-            startY: GLOBAL.STARTY,
-            endX: GLOBAL.ENDX,
-            endY: GLOBAL.ENDY,
+            startX: global.STARTX,
+            startY: global.STARTY,
+            endX: global.ENDX,
+            endY: global.ENDY,
             datasourceName: startIndoorInfo[0].datasourceName,
           }
           let doorPoint = await SMap.getDoorPoint(params)
           if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
-            GLOBAL.NAV_PARAMS = [
+            global.NAV_PARAMS = [
               {
-                startX: GLOBAL.STARTX,
-                startY: GLOBAL.STARTY,
+                startX: global.STARTX,
+                startY: global.STARTY,
                 endX: doorPoint.x,
                 endY: doorPoint.y,
                 datasourceName: startIndoorInfo[0].datasourceName,
@@ -245,9 +246,9 @@ export default class MapSelectPointButton extends React.Component {
                 startX: doorPoint.x,
                 startY: doorPoint.y,
                 startFloor: doorPoint.floorID,
-                endX: GLOBAL.ENDX,
-                endY: GLOBAL.ENDY,
-                endFloor: GLOBAL.ENDPOINTFLOOR || doorPoint.floorID,
+                endX: global.ENDX,
+                endY: global.ENDY,
+                endFloor: global.ENDPOINTFLOOR || doorPoint.floorID,
                 isIndoor: false,
                 hasNaved: false,
                 datasourceName: commonOutdoorInfo[0].datasourceName,
@@ -257,10 +258,10 @@ export default class MapSelectPointButton extends React.Component {
             ]
             try {
               await SMap.getStartPoint(
-                GLOBAL.STARTX,
-                GLOBAL.STARTY,
+                global.STARTX,
+                global.STARTY,
                 true,
-                GLOBAL.STARTPOINTFLOOR || doorPoint.floorID,
+                global.STARTPOINTFLOOR || doorPoint.floorID,
               )
               await SMap.getEndPoint(
                 doorPoint.x,
@@ -275,18 +276,18 @@ export default class MapSelectPointButton extends React.Component {
               if (!rel) {
                 this.props.setLoading(false)
                 Toast.show(
-                  getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED,
+                  getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
                 )
                 return
               }
               await SMap.addLineOnTrackingLayer(doorPoint, {
-                x: GLOBAL.ENDX,
-                y: GLOBAL.ENDY,
+                x: global.ENDX,
+                y: global.ENDY,
               })
             } catch (e) {
               this.props.setLoading(false)
               Toast.show(
-                getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED,
+                getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
               )
               SMap.clearPoint()
               return
@@ -294,27 +295,27 @@ export default class MapSelectPointButton extends React.Component {
 
             pathLength = await SMap.getNavPathLength(true)
             path = await SMap.getPathInfos(true)
-            GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
+            global.CURRENT_NAV_MODE = 'INDOOR'
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
             this.props.setLoading(false)
-            GLOBAL.NavDialog && GLOBAL.NavDialog.setDialogVisible(true)
+            global.NavDialog && global.NavDialog.setDialogVisible(true)
           }
         } else if (endIndoorInfo.length > 0) {
           //终点室内数据源 两段室内外一体化导航 先室外
           let params = {
-            startX: GLOBAL.STARTX,
-            startY: GLOBAL.STARTY,
-            endX: GLOBAL.ENDX,
-            endY: GLOBAL.ENDY,
+            startX: global.STARTX,
+            startY: global.STARTY,
+            endX: global.ENDX,
+            endY: global.ENDY,
             datasourceName: endIndoorInfo[0].datasourceName,
           }
           let doorPoint = await SMap.getDoorPoint(params)
           if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
-            GLOBAL.NAV_PARAMS = [
+            global.NAV_PARAMS = [
               {
-                startX: GLOBAL.STARTX,
-                startY: GLOBAL.STARTY,
+                startX: global.STARTX,
+                startY: global.STARTY,
                 endX: doorPoint.x,
                 endY: doorPoint.y,
                 isIndoor: false,
@@ -327,9 +328,9 @@ export default class MapSelectPointButton extends React.Component {
                 startX: doorPoint.x,
                 startY: doorPoint.y,
                 startFloor: doorPoint.floorID,
-                endX: GLOBAL.ENDX,
-                endY: GLOBAL.ENDY,
-                endFloor: GLOBAL.ENDPOINTFLOOR || doorPoint.floorID,
+                endX: global.ENDX,
+                endY: global.ENDY,
+                endFloor: global.ENDPOINTFLOOR || doorPoint.floorID,
                 datasourceName: endIndoorInfo[0].datasourceName,
                 isIndoor: true,
                 hasNaved: false,
@@ -337,33 +338,33 @@ export default class MapSelectPointButton extends React.Component {
             ]
 
             try {
-              await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
-              await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
-              await SMap.startNavigation(GLOBAL.NAV_PARAMS[0])
+              await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+              await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+              await SMap.startNavigation(global.NAV_PARAMS[0])
               await SMap.beginNavigation(
-                GLOBAL.STARTX,
-                GLOBAL.STARTY,
+                global.STARTX,
+                global.STARTY,
                 doorPoint.x,
                 doorPoint.y,
               )
               await SMap.addLineOnTrackingLayer(doorPoint, {
-                x: GLOBAL.ENDX,
-                y: GLOBAL.ENDY,
+                x: global.ENDX,
+                y: global.ENDY,
               })
             } catch (e) {
               this.props.setLoading(false)
               Toast.show(
-                getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED,
+                getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
               )
               return
             }
             pathLength = await SMap.getNavPathLength(false)
             path = await SMap.getPathInfos(false)
-            GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
+            global.CURRENT_NAV_MODE = 'OUTDOOR'
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
             this.props.setLoading(false)
-            GLOBAL.NavDialog && GLOBAL.NavDialog.setDialogVisible(true)
+            global.NavDialog && global.NavDialog.setDialogVisible(true)
           }
         } else {
           //无室内数据源  室外导航
@@ -371,52 +372,52 @@ export default class MapSelectPointButton extends React.Component {
           try {
             await SMap.startNavigation(commonOutdoorInfo[0])
             let result = await SMap.beginNavigation(
-              GLOBAL.STARTX,
-              GLOBAL.STARTY,
-              GLOBAL.ENDX,
-              GLOBAL.ENDY,
+              global.STARTX,
+              global.STARTY,
+              global.ENDX,
+              global.ENDY,
             )
             if (result) {
               pathLength = await SMap.getNavPathLength(false)
               path = await SMap.getPathInfos(false)
-              GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
+              global.CURRENT_NAV_MODE = 'OUTDOOR'
             } else {
               //分析失败(500m范围内找不到路网点的情况) 进行在线路径分析
               this.props.setLoading(false)
-              GLOBAL.NavDialog && GLOBAL.NavDialog.setDialogVisible(true)
+              global.NavDialog && global.NavDialog.setDialogVisible(true)
             }
           } catch (e) {
             this.props.setLoading(false)
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
+            Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
             return
           }
         }
       } else {
         //在线路径分析
         this.props.setLoading(false)
-        GLOBAL.NavDialog && GLOBAL.NavDialog.setDialogVisible(true)
+        global.NavDialog && global.NavDialog.setDialogVisible(true)
       }
       if (path && pathLength) {
-        GLOBAL.TouchType = TouchType.NORMAL
+        global.TouchType = TouchType.NORMAL
         this.props.setLoading(false)
-        GLOBAL.NAVIGATIONSTARTBUTTON.setVisible(true, false)
-        GLOBAL.NAVIGATIONSTARTHEAD.setVisible(true)
+        global.NAVIGATIONSTARTBUTTON.setVisible(true, false)
+        global.NAVIGATIONSTARTHEAD.setVisible(true)
         this.setVisible(false)
-        GLOBAL.MAPSELECTPOINT.setVisible(false)
+        global.MAPSELECTPOINT.setVisible(false)
         this.props.changeNavPathInfo &&
           this.props.changeNavPathInfo({ path, pathLength })
 
         let history = this.props.navigationhistory
         history.push({
-          sx: GLOBAL.STARTX,
-          sy: GLOBAL.STARTY,
-          ex: GLOBAL.ENDX,
-          ey: GLOBAL.ENDY,
-          sFloor: GLOBAL.STARTPOINTFLOOR,
-          eFloor: GLOBAL.ENDPOINTFLOOR,
-          address: GLOBAL.STARTNAME + '---' + GLOBAL.ENDNAME,
-          start: GLOBAL.STARTNAME,
-          end: GLOBAL.ENDNAME,
+          sx: global.STARTX,
+          sy: global.STARTY,
+          ex: global.ENDX,
+          ey: global.ENDY,
+          sFloor: global.STARTPOINTFLOOR,
+          eFloor: global.ENDPOINTFLOOR,
+          address: global.STARTNAME + '---' + global.ENDNAME,
+          start: global.STARTNAME,
+          end: global.ENDNAME,
         })
         this.props.setNavigationHistory(history)
       }
@@ -425,7 +426,7 @@ export default class MapSelectPointButton extends React.Component {
 
   render() {
     let width =
-      GLOBAL.getDevice().orientation.indexOf('LANDSCAPE') === 0 ? '50%' : '80%'
+      global.getDevice().orientation.indexOf('LANDSCAPE') === 0 ? '50%' : '80%'
     if (this.state.show) {
       return (
         <View
@@ -435,6 +436,7 @@ export default class MapSelectPointButton extends React.Component {
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            zIndex: zIndexLevel.FOUR,
           }}
         >
           <TouchableOpacity

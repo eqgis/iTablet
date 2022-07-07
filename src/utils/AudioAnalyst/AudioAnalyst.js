@@ -35,7 +35,7 @@ function analyst(content = '') {
   switch (value) {
     case keywords.LOCATION:
       (async function() {
-        if (GLOBAL.Type === ChunkType.MAP_3D) {
+        if (global.Type === ChunkType.MAP_3D) {
           await SScene.setHeading()
           // 定位到当前位置
           await SScene.location()
@@ -53,7 +53,7 @@ function analyst(content = '') {
       }.bind(this)())
       break
     case keywords.CLOSE:
-      GLOBAL.back && GLOBAL.back()
+      global.back && global.back()
       isMapControl = true
       break
     case keywords.ZOOM_IN:

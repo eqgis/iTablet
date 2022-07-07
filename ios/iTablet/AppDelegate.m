@@ -1,20 +1,12 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
 #import "AppDelegate.h"
-#import <RCTJPushModule.h>
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
 #endif
 
+#import <React/RCTBridge.h>
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
 #import "RNFSManager.h"
-#import "HWNetworkReachabilityManager.h"
 #import "NativeUtil.h"
 #import "Orientation.h"
 #import "MyLaunchScreenViewController.h"
@@ -22,54 +14,89 @@
 
 #define IS_PAD (UI_USER_INTERFACE_IDIOM()== UIUserInterfaceIdiomPad)
 
+#ifdef FB_SONARKIT_ENABLED
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
+#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
+#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
+#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
+#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+
+static void InitializeFlipper(UIApplication *application) {
+  FlipperClient *client = [FlipperClient sharedClient];
+  SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
+  [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
+  [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
+  [client addPlugin:[FlipperKitReactPlugin new]];
+  [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
+  [client start];
+}
+#endif
 
 static NSString* g_sampleCodeName = @"#";;
 @implementation AppDelegate
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
-{
-  [JPUSHService registerDeviceToken:deviceToken];
-}
+//注册 APNS 成功并上报 DeviceToken
+//- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+//  [JPUSHService registerDeviceToken:deviceToken];
+//}
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-  [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object:userInfo];
-}
+////iOS 7 APNS
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:  (NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+//  // iOS 10 以下 Required
+//  NSLog(@"iOS 7 APNS");
+//  [JPUSHService handleRemoteNotification:userInfo];
+//  [[NSNotificationCenter defaultCenter] postNotificationName:J_APNS_NOTIFICATION_ARRIVED_EVENT object:userInfo];
+//  completionHandler(UIBackgroundFetchResultNewData);
+//}
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-  [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object: notification.userInfo];
-}
+//iOS 10 前台收到消息
+//- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center  willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
+//  NSDictionary * userInfo = notification.request.content.userInfo;
+//  if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+//    // Apns
+//    NSLog(@"iOS 10 APNS 前台收到消息");
+//    [JPUSHService handleRemoteNotification:userInfo];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:J_APNS_NOTIFICATION_ARRIVED_EVENT object:userInfo];
+//  }
+//  else {
+//    // 本地通知 todo
+//    NSLog(@"iOS 10 本地通知 前台收到消息");
+//    [[NSNotificationCenter defaultCenter] postNotificationName:J_LOCAL_NOTIFICATION_ARRIVED_EVENT object:userInfo];
+//  }
+//  //需要执行这个方法，选择是否提醒用户，有 Badge、Sound、Alert 三种类型可以选择设置
+//  completionHandler(UNNotificationPresentationOptionAlert);
+//}
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)   (UIBackgroundFetchResult))completionHandler
-{
-  [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object:userInfo];
-}
+//iOS 10 消息事件回调
+//- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler: (void (^)(void))completionHandler {
+//  NSDictionary * userInfo = response.notification.request.content.userInfo;
+//  if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+//    // Apns
+//    NSLog(@"iOS 10 APNS 消息事件回调");
+//    [JPUSHService handleRemoteNotification:userInfo];
+//    // 保障应用被杀死状态下，用户点击推送消息，打开app后可以收到点击通知事件
+//    [[RCTJPushEventQueue sharedInstance]._notificationQueue insertObject:userInfo atIndex:0];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:J_APNS_NOTIFICATION_OPENED_EVENT object:userInfo];
+//  }
+//  else {
+//    // 本地通知
+//    NSLog(@"iOS 10 本地通知 消息事件回调");
+//    // 保障应用被杀死状态下，用户点击推送消息，打开app后可以收到点击通知事件
+//    [[RCTJPushEventQueue sharedInstance]._localNotificationQueue insertObject:userInfo atIndex:0];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:J_LOCAL_NOTIFICATION_OPENED_EVENT object:userInfo];
+//  }
+//  // 系统要求执行这个方法
+//  completionHandler();
+//}
 
-- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler
-{
-  NSDictionary * userInfo = notification.request.content.userInfo;
-  if ([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
-    [JPUSHService handleRemoteNotification:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object:userInfo];
-  }
-
-  completionHandler(UNNotificationPresentationOptionAlert);
-}
-
-- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
-{
-  NSDictionary * userInfo = response.notification.request.content.userInfo;
-  if ([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
-    [JPUSHService handleRemoteNotification:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kJPFOpenNotification object:userInfo];
-  }
-
-  completionHandler();
-}
+//- (void)jpushNotificationAuthorization:(JPAuthorizationStatus)status withInfo:(NSDictionary *)info {
+//
+//}
 
 
-- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
+
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler
 {
   [RNFSManager setCompletionHandlerForIdentifier:identifier completionHandler:completionHandler];
 }
@@ -99,10 +126,26 @@ static NSString* g_sampleCodeName = @"#";;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#ifdef FB_SONARKIT_ENABLED
+  InitializeFlipper(application);
+#endif
+
+//  [JPUSHService setupWithOption:launchOptions appKey:@"7d2470baad20e273cd6e53cc"
+//                        channel:nil apsForProduction:nil];
+  // APNS
+//  JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+//  if (@available(iOS 12.0, *)) {
+//    entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound|JPAuthorizationOptionProvidesAppNotificationSettings;
+//  }
+//  [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+//  [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
   
-  [JPUSHService setupWithOption:launchOptions appKey:@"7d2470baad20e273cd6e53cc"
-                        channel:nil apsForProduction:nil];
-  RCTRootView *rootView = [AppDelegate loadBunle:launchOptions];
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                   moduleName:@"iTablet"
+                                            initialProperties:nil];
+  
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -135,17 +178,22 @@ static NSString* g_sampleCodeName = @"#";;
   [[NSNotificationCenter defaultCenter] postNotificationName:@"dowloadFile"
                                                       object:nil];
   // 开启网络监听
-  [[HWNetworkReachabilityManager shareManager] monitorNetworkStatus];
+//  [[HWNetworkReachabilityManager shareManager] monitorNetworkStatus];
     
-  @try {
-    //初始化极光推送
-    JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
-    entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound|JPAuthorizationOptionProvidesAppNotificationSettings;
-    [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
-    
-  } @catch (NSException *exception) {
-    NSLog(@"%@", exception.description);
-  }
+//  @try {
+//    //初始化极光推送
+//    JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+//    if (@available(iOS 12.0, *)) {
+//      entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound|JPAuthorizationOptionProvidesAppNotificationSettings;
+//    } else {
+//      // Fallback on earlier versions
+//      entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
+//    }
+//    [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+//    
+//  } @catch (NSException *exception) {
+//    NSLog(@"%@", exception.description);
+//  }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [NativeUtil openGPS];
     });
@@ -158,8 +206,19 @@ static NSString* g_sampleCodeName = @"#";;
   NSNumber* mask = info.object;
   self.allowRotation = (UIInterfaceOrientationMask)mask.intValue;
 }
+
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+#if DEBUG
+  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
+}
+
 #pragma mark - 微信打开压缩包
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
   if(![[url absoluteString] containsString:@"platformId=wechat"]){
        [FileTools getUriState:url];
@@ -167,38 +226,7 @@ static NSString* g_sampleCodeName = @"#";;
   return [WXApi handleOpenURL:url delegate:self];
 }
 
-#pragma mark - 初始化license
-//- (void)initEnvironment {
-////  [Environment setOpenGLMode:false];
-//
-//  NSString *srclic = [[NSBundle mainBundle] pathForResource:@"Trial_License" ofType:@"slm"];
-//  if (srclic) {
-//    NSString* deslic = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/license/%@",@"Trial_License.slm"];
-//    if([[NSFileManager defaultManager] fileExistsAtPath:deslic isDirectory:nil]){
-//      NSString* srcTime = [NSString stringWithContentsOfFile:srclic encoding:NSUTF8StringEncoding error:nil];
-//      NSString* desTime = [NSString stringWithContentsOfFile:deslic encoding:NSUTF8StringEncoding error:nil];
-//      NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:@"ExpiredDate=([0-9]+)" options:0 error:nil];
-//
-//      NSTextCheckingResult *match = [regular firstMatchInString:srcTime options:0 range:NSMakeRange(0, [srcTime length])];
-//      NSTextCheckingResult *match1 = [regular firstMatchInString:desTime options:0 range:NSMakeRange(0, [desTime length])];
-//
-//      if (match && match1) {
-//          NSString *result = [srcTime substringWithRange:[match rangeAtIndex:1] ];
-//          NSLog(@"time: %@",result);
-//          NSString *result1 = [desTime substringWithRange:[match1 rangeAtIndex:1] ];
-//          NSLog(@"time: %@",result);
-//        if(result1.longLongValue < result.longLongValue){
-//          [[NSFileManager defaultManager] removeItemAtPath:deslic error:nil];
-//        }
-//      }
-//    }
-//    [FileTools createFileDirectories:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/license/%@",@""]];
-//    if(![[NSFileManager defaultManager] copyItemAtPath:srclic toPath:deslic error:nil])
-//      NSLog(@"拷贝数据失败");
-//    [Environment setLicensePath:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/iTablet/%@/",@"license"]];
-//  }
-//}
-
+#pragma mark - 加载bundle包,App初始化不使用该方法
 +(RCTRootView *)loadBunle:(NSDictionary *)launchOptions {
   NSURL *jsCodeLocation;
   NSString* jsBundlePath = [AppInfo getBundleFile];
@@ -207,7 +235,7 @@ static NSString* g_sampleCodeName = @"#";;
   } else {
     #if DEBUG
 //    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.187.250"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.199"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
@@ -307,7 +335,8 @@ static NSString* g_sampleCodeName = @"#";;
 //  } else {
 //    return UIInterfaceOrientationMaskPortrait;
 //  }
-  return self.allowRotation;
+  return [Orientation getOrientation];
+//  return self.allowRotation;
 //  return UIInterfaceOrientationMaskPortrait;
 }
 @end

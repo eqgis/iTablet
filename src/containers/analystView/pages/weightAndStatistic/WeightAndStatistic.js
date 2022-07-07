@@ -26,7 +26,7 @@ export default class WeightAndStatistic extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
 
     let popData = [
@@ -199,7 +199,7 @@ export default class WeightAndStatistic extends React.Component {
           navigation: this.props.navigation,
           headerRight: (
             <TextBtn
-              btnText={getLanguage(this.props.language).Analyst_Labels.CONFIRM}
+              btnText={getLanguage(this.props.language).CONFIRM}
               textStyle={styles.headerBtnTitle}
               btnClick={this.confirm}
             />

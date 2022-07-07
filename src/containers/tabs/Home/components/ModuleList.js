@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, NetInfo, ScrollView ,  PermissionsAndroid ,NativeModules ,Platform} from 'react-native'
+import { View, StyleSheet, ScrollView ,  PermissionsAndroid ,NativeModules ,Platform} from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { Module } from '../../../../class'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
-import { SMap ,SMeasureView } from 'imobile_for_reactnative'
+import { SMap ,SMeasureView, SLocation } from 'imobile_for_reactnative'
 import {
   downloadFile,
   deleteDownloadFile,
@@ -15,7 +16,7 @@ import {
 import { setOldMapModule } from '../../../../redux/models/appConfig'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import { AppletAdd } from '../../../../customModule/mapModules'
-import DataHandler from '../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 
 import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
@@ -24,12 +25,12 @@ import SizeUtil from '../SizeUtil'
 let AppUtils = NativeModules.AppUtils
 
 async function composeWaiting(action) {
-  if (GLOBAL.clickWait) return
-  GLOBAL.clickWait = true
+  if (global.clickWait) return
+  global.clickWait = true
   if (action && typeof action === 'function') {
     await action()
   }
-  setTimeout(() => (GLOBAL.clickWait = false), 2000)
+  setTimeout(() => (global.clickWait = false), 2000)
 }
 
 const STAR_MODULE = ChunkType.MAP_AR_MAPPING
@@ -107,7 +108,7 @@ class ModuleList extends Component {
     }
 
     //市场不允许出现添加小程序，在审核期间把标去掉 add xiezhy
-    // if(GLOBAL.isAudit){
+    // if(global.isAudit){
     //   data.splice(data.length-1, 1)
     // }
     return data
@@ -120,7 +121,7 @@ class ModuleList extends Component {
       let keyword = item.name.endsWith('_EXAMPLE')
         ? item.name
         : item.name + '_EXAMPLE'
-      let isConnected = await NetInfo.isConnected.fetch() // 检测网络，有网的时候再去检查数据
+      let isConnected = (await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
         let result = await FetchUtils.getDataInfoByUrl(
@@ -166,7 +167,7 @@ class ModuleList extends Component {
         fileName: item.name,
         progressDivider: 1,
         key: downloadData.key,
-        module: GLOBAL.Type,
+        module: global.Type,
       }
       this.props
         .downloadFile(downloadOptions)
@@ -174,7 +175,7 @@ class ModuleList extends Component {
           await FileTools.unZipFile(fileCachePath, cachePath)
           let tempData = await DataHandler.getExternalData(fileDirPath) || []
           if (downloadData.itemData.mapType === Module.MapType.SCENE || downloadData.itemData.mapType === Module.MapType.AR) {
-            await DataHandler.importWorkspace3D(this.props.currentUser, tempData[0])
+            await DataHandler.importWorkspace3D(tempData[0])
           } else if (downloadData.itemData.mapType === Module.MapType.MAP) {
             await DataHandler.importWorkspace(tempData[0])
           }
@@ -316,8 +317,12 @@ class ModuleList extends Component {
         //申请 android 11 读写权限
         let permisson11 = await AppUtils.requestStoragePermissionR()
         if (isAllGranted && permisson11) {
-          SMap.setPermisson(true)
+          await SMap.setPermisson(true)
           // this.init()
+
+          // 重新设置权限后，重新打开定位
+          await SLocation.openGPS()
+
         } else {
           this.props.itemAction()
           item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
@@ -325,10 +330,10 @@ class ModuleList extends Component {
         }
       }
 
-      if (item.key === ChunkType.MAP_AR_MAPPING) {
+      if (item.key === ChunkType.MAP_AR_MAPPING || item.key === ChunkType.MAP_AR || item.key === ChunkType.MAP_AR_ANALYSIS) {
         const isSupportedARCore = await SMeasureView.isSupportedARCore()
         if (!isSupportedARCore) {
-          GLOBAL.ARDeviceListDialog.setVisible(true)
+          global.ARDeviceListDialog.setVisible(true)
           return
         }
       }
@@ -349,8 +354,8 @@ class ModuleList extends Component {
       }
 
       let licenseStatus = await SMap.getEnvironmentStatus()
-      GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
-      if (!GLOBAL.isLicenseValid) {
+      global.isLicenseValid = licenseStatus.isLicenseValid
+      if (!global.isLicenseValid) {
         this.props.setCurrentMapModule(index).then(async () => {
           item.action && (await item.action(tmpCurrentUser, latestMap))
           item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
@@ -473,7 +478,7 @@ class ModuleList extends Component {
   }
 
   _renderItem = ({ item, index }) => {
-    let downloadData = this.getDownloadData(GLOBAL.language, item, index)
+    let downloadData = this.getDownloadData(global.language, item, index)
     return (
       <ModuleItem
         key={item.key}
@@ -485,7 +490,7 @@ class ModuleList extends Component {
             width:
               SizeUtil.getItemWidth(
                 this.props.device.orientation,
-                GLOBAL.isPad,
+                global.isPad,
               ) *
                 2 +
               SizeUtil.getItemGap(),
@@ -500,7 +505,7 @@ class ModuleList extends Component {
         isBeta={
           //市场不允许出现beta标志，在审核期间把标去掉 add xiezhy
           //去掉beta标识吧，一年了，继续加油！！！
-          /*!GLOBAL.isAudit*/ false && (
+          /*!global.isAudit*/ false && (
           item.key === ChunkType.MAP_AR ||
           item.key === ChunkType.MAP_AR_MAPPING ||
           item.key === ChunkType.MAP_AR_ANALYSIS)
@@ -528,7 +533,7 @@ class ModuleList extends Component {
   _renderPortraitRows = () => {
     let data = this.state.data
     let width =
-      SizeUtil.getItemWidth(this.props.device.orientation, GLOBAL.isPad) * 2 +
+      SizeUtil.getItemWidth(this.props.device.orientation, global.isPad) * 2 +
       SizeUtil.getItemGap() * 2
     let rowStyle = [styles.row, { width }]
     let _list = [],
@@ -572,7 +577,7 @@ class ModuleList extends Component {
   _renderLandscapeColumns = () => {
     let data = this.state.data
     let height =
-      SizeUtil.getItemHeight(this.props.device.orientation, GLOBAL.isPad) * 2 +
+      SizeUtil.getItemHeight(this.props.device.orientation, global.isPad) * 2 +
       SizeUtil.getItemGap() * 2
     let columnStyle = [styles.column, { height }]
     let _list = [],
@@ -625,7 +630,7 @@ class ModuleList extends Component {
           styles.container,
           this.props.device.orientation.indexOf('LANDSCAPE') === 0
             ? {
-              paddingLeft: GLOBAL.isPad ? scaleSize(88) : scaleSize(28),
+              paddingLeft: global.isPad ? scaleSize(88) : scaleSize(28),
             }
             : { marginTop: scaleSize(20) },
         ]}

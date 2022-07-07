@@ -85,6 +85,7 @@ export default class MapNavIcon extends React.Component {
     Animated.timing(this.right, {
       toValue: right,
       duration: 0,
+      useNativeDriver: false,
     }).start()
     this.changStyle(this.props.navBarDisplay)
   }
@@ -101,6 +102,7 @@ export default class MapNavIcon extends React.Component {
     Animated.timing(this.rotate, {
       toValue: show ? 1 : 0,
       duration: Const.ANIMATED_DURATION,
+      useNativeDriver: false,
     }).start()
   }
 
@@ -113,6 +115,7 @@ export default class MapNavIcon extends React.Component {
       Animated.timing(this.shadowVisible, {
         toValue: value,
         duration: 300,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -126,6 +129,7 @@ export default class MapNavIcon extends React.Component {
       Animated.timing(this.elevation, {
         toValue: value,
         duration: 0,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -140,10 +144,12 @@ export default class MapNavIcon extends React.Component {
     Animated.timing(this.color, {
       toValue: color,
       duration: 150,
+      useNativeDriver: false,
     }).start()
     Animated.timing(this.opacity, {
       toValue: opacity,
       duration: 150,
+      useNativeDriver: false,
     }).start()
   }
 
@@ -155,6 +161,7 @@ export default class MapNavIcon extends React.Component {
     Animated.timing(this.imageX, {
       toValue: value,
       duration: 150,
+      useNativeDriver: false,
     }).start()
   }
 
@@ -164,6 +171,7 @@ export default class MapNavIcon extends React.Component {
     Animated.timing(this.right, {
       toValue: right,
       duration: 300,
+      useNativeDriver: false,
     }).start()
     const menu = this.props.getNavMenuRef()
     if (menu) {
@@ -187,6 +195,7 @@ export default class MapNavIcon extends React.Component {
     Animated.timing(this.right, {
       toValue: right,
       duration: 300,
+      useNativeDriver: false,
     }).start()
     if (menu) {
       menu.locationChange()

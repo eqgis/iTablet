@@ -37,7 +37,7 @@ export default class RenderFindItem extends Component {
           : this.props.data.fileName.substring(0, index)
     }
     this.state = {
-      progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+      progress: getLanguage(global.language).Prompt.DOWNLOAD,
       // '下载',
       isDownloading: 0,//0 未下载，1 下载中，2 已完成
     }
@@ -78,12 +78,12 @@ export default class RenderFindItem extends Component {
       this.exist = await FileTools.fileIsExist(this.path)
       if (this.exist) {//文件存在，下载完成
         this.setState({
-          progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+          progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
           isDownloading: 2,
         })
       } else {//文件不存在，可以下载
         this.setState({
-          progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD,
+          progress: getLanguage(global.language).Prompt.DOWNLOAD,
           isDownloading: 0,
         })
       }
@@ -114,10 +114,10 @@ export default class RenderFindItem extends Component {
           this.exist = await FileTools.fileIsExist(this.path) // 下载完成，检测本地文件是否存在
           if(this.exist)
           {
-            Toast.show(getLanguage(GLOBAL.language).Find.DOWNLOADED)
+            Toast.show(getLanguage(global.language).Find.DOWNLOADED)
           }
           this.setState({
-            progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY,
+            progress: getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY,
             isDownloading: 2,
           })
           this.removeDownloadListner()
@@ -152,8 +152,8 @@ export default class RenderFindItem extends Component {
   _downloadFile = async () => {
     if (this.exist) {
       await this.unZipFile()
-      Toast.show(getLanguage(GLOBAL.language).Find.DOWNLOADED)
-      // Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      Toast.show(getLanguage(global.language).Find.DOWNLOADED)
+      // Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return
     }
     if (
@@ -164,12 +164,12 @@ export default class RenderFindItem extends Component {
           this.props.user.currentUser.userName !== ''))
     ) {
       if (this.state.isDownloading == 1) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+        Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
         //'正在下载...')
         return
       }
       this.setState({
-        progress: getLanguage(GLOBAL.language).Prompt.DOWNLOADING,
+        progress: getLanguage(global.language).Prompt.DOWNLOADING,
         isDownloading: 1,
       })
       // RNFS.writeFile(this.downloadingPath, '0%', 'utf8')
@@ -188,9 +188,9 @@ export default class RenderFindItem extends Component {
         this.props.downloadFile(downloadOptions)
         this.addDownloadListener()
       } catch (e) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+        Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
         FileTools.deleteFile(this.path)
-        this.setState({ progress: getLanguage(GLOBAL.language).Prompt.DOWNLOAD, isDownloading: 0 })
+        this.setState({ progress: getLanguage(global.language).Prompt.DOWNLOAD, isDownloading: 0 })
       }
     } else {
       Toast.show('登录后可下载')

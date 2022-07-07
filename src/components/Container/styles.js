@@ -4,7 +4,7 @@ import { scaleSize } from '../../utils'
 
 export default StyleSheet.create({
   view: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
   },
   container: {

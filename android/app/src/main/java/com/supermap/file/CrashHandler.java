@@ -5,10 +5,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Process;
 import android.util.Log;
-
 
 import com.supermap.RNUtils.FileUtil;
 import com.supermap.itablet.MainApplication;
@@ -22,7 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;

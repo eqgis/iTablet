@@ -27,7 +27,7 @@ const popTypes = {
   PixelFormat: 'PixelFormat',
 }
 
-function getDefaultState(language = GLOBAL.language) {
+function getDefaultState(language = global.language) {
   return {
     method: InterpolationParamsData.getInterpolationMethod(language)[0],
     // 源数据
@@ -65,7 +65,7 @@ export default class InterpolationAnalystView extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.cb = params && params.cb
     this.state = {
       title: (params && params.title) || '',
@@ -526,7 +526,7 @@ export default class InterpolationAnalystView extends Component {
           </Text>
         </View>
         <AnalystItem
-          title={getLanguage(this.props.language).Analyst_Labels.LEFT}
+          title={getLanguage(this.props.language).LEFT}
           value={this.state.left}
           keyboardType={'numeric'}
           rightType={'input'}
@@ -540,7 +540,7 @@ export default class InterpolationAnalystView extends Component {
           }}
         />
         <AnalystItem
-          title={getLanguage(this.props.language).Analyst_Labels.DOWN}
+          title={getLanguage(this.props.language).DOWN}
           value={this.state.bottom}
           keyboardType={'numeric'}
           rightType={'input'}
@@ -554,7 +554,7 @@ export default class InterpolationAnalystView extends Component {
           }}
         />
         <AnalystItem
-          title={getLanguage(this.props.language).Analyst_Labels.RIGHT}
+          title={getLanguage(this.props.language).RIGHT}
           value={this.state.right}
           keyboardType={'numeric'}
           rightType={'input'}
@@ -568,7 +568,7 @@ export default class InterpolationAnalystView extends Component {
           }}
         />
         <AnalystItem
-          title={getLanguage(this.props.language).Analyst_Labels.UP}
+          title={getLanguage(this.props.language).UP}
           value={this.state.top}
           keyboardType={'numeric'}
           rightType={'input'}
@@ -769,8 +769,9 @@ export default class InterpolationAnalystView extends Component {
         }}
       >
         <KeyboardAvoidingView
+          style={{flex: 1}}
           behavior={Platform.OS === 'ios' && 'padding'}
-          keyboardVerticalOffset={-Const.BOTTOM_HEIGHT}
+          // keyboardVerticalOffset={-Const.BOTTOM_HEIGHT}
         >
           <ScrollView
             style={[styles.scrollView, { paddingBottom: -Const.BOTTOM_HEIGHT }]}

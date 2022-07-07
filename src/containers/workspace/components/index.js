@@ -36,7 +36,6 @@ import NavigationPoiView from './NavigationPoiView'
 import PreviewHeader from './PreviewHeader'
 import IncrementRoadDialog from './IncrementRoadDialog'
 import AddOnlineScense from './AddOnlineScense'
-import FloatBar from './ArNavigation/FloatBar'
 import Button from './ArNavigation/Button'
 import ARNavigationView from './ArNavigation/ARNavigationView'
 import NavigationView2D from './ArNavigation/NavigationView2D'
@@ -80,7 +79,6 @@ export {
   PreviewHeader,
   IncrementRoadDialog,
   AddOnlineScense,
-  FloatBar,
   Button,
   ARNavigationView,
   NavigationView2D,

@@ -41,11 +41,11 @@ export default class BatchHeadBar extends Component {
             <Image style={styles.btn_image} source={icon} />
           </TouchableOpacity>
           <Text style={styles.batchCheckTextStyle}>
-            {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
+            {getLanguage(global.language).Profile.SELECT_ALL}
           </Text>
         </View>
         <Text style={styles.batchHeadTextStyle}>
-          {GLOBAL.language === 'CN'
+          {global.language === 'CN'
             ? '已选择' + this.props.select + '个数据'
             : this.props.select + ' item(s) selected'}
         </Text>

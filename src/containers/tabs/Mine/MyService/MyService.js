@@ -49,10 +49,10 @@ export default class MyService extends Component {
     super(props)
     this.screenWidth = Dimensions.get('window').width
     ;(this.publishServiceTitle = getLanguage(
-      GLOBAL.language,
+      global.language,
     ).Profile.PUBLIC_SERVICE),
     (this.privateServiceTitle = getLanguage(
-      GLOBAL.language,
+      global.language,
     ).Profile.PRIVATE_SERVICE),
     (this.state = {
       arrPrivateServiceList: _arrPrivateServiceList,
@@ -218,7 +218,7 @@ export default class MyService extends Component {
       )
     }
     if (typeof result === 'boolean' && result) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_SUCCESS)
+      Toast.show(getLanguage(global.language).Prompt.SETTING_SUCCESS)
       this._onModalRefresh2(
         null,
         this.onClickItemIsPublish,
@@ -226,16 +226,16 @@ export default class MyService extends Component {
         this.onClickItemIndex,
       )
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SETTING_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.SETTING_FAILED)
     }
   }
 
   _deleteService = async () => {
     try {
       this._onCloseModal()
-      GLOBAL.Loading.setLoading(
+      global.Loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.DELETING_SERVICE,
+        getLanguage(global.language).Prompt.DELETING_SERVICE,
       )
 
       let deletPromise
@@ -270,7 +270,7 @@ export default class MyService extends Component {
           true,
           this.onClickItemIndex,
         )
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DELETED_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.DELETED_SUCCESS)
         //'删除成功')
       } else if (typeof result === 'boolean' && !result) {
         this.deleteService = true
@@ -280,16 +280,16 @@ export default class MyService extends Component {
           true,
           this.onClickItemIndex,
         )
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DELETED_SUCCESS)
+        Toast.show(getLanguage(global.language).Prompt.DELETED_SUCCESS)
         //'删除成功')
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+        Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
         //'删除失败')
       }
-      GLOBAL.Loading.setLoading(false)
+      global.Loading.setLoading(false)
     } catch (error) {
-      GLOBAL.Loading.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+      global.Loading.setLoading(false)
+      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
       //'删除失败')
     }
   }
@@ -382,7 +382,7 @@ export default class MyService extends Component {
             { backgroundColor: color.content_white, textAlign: 'center' },
           ]}
         >
-          {getLanguage(GLOBAL.language).Profile.NO_SERVICE}
+          {getLanguage(global.language).Profile.NO_SERVICE}
           {/* 没有服务 */}
         </Text>
       </View>
@@ -423,16 +423,16 @@ export default class MyService extends Component {
     let data = [
       {
         title: this.onClickItemIsPublish
-          ? getLanguage(GLOBAL.language).Profile.SET_AS_PRIVATE_SERVICE
-          : getLanguage(GLOBAL.language).Profile.SET_AS_PUBLIC_SERVICE,
+          ? getLanguage(global.language).Profile.SET_AS_PRIVATE_SERVICE
+          : getLanguage(global.language).Profile.SET_AS_PUBLIC_SERVICE,
         action: this._publishService,
       },
       {
-        title: getLanguage(GLOBAL.language).Cowork.SERVICE_SHARING_SETTINGS,
+        title: getLanguage(global.language).Cowork.SERVICE_SHARING_SETTINGS,
         action: this._shareToGroup,
       },
       {
-        title: getLanguage(GLOBAL.language).Profile.DELETE,
+        title: getLanguage(global.language).Profile.DELETE,
         action: this._deleteService,
       },
     ]
@@ -636,7 +636,7 @@ export default class MyService extends Component {
               color: color.font_color_white,
             }}
           >
-            {getLanguage(GLOBAL.language).Prompt.LOADING}
+            {getLanguage(global.language).Prompt.LOADING}
             {/* //加载中... */}
           </Text>
         </View>
@@ -720,7 +720,7 @@ export default class MyService extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.MY_SERVICE,
+          title: getLanguage(global.language).Profile.MY_SERVICE,
 
           //'我的服务',
           withoutBack: false,

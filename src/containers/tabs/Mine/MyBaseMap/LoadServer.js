@@ -25,7 +25,7 @@ export default class LoadServer extends Component {
   }
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.baseMaps = params.baseMaps || []
     this.setBaseMap = params.setBaseMap
     this.user = params.user
@@ -92,7 +92,7 @@ export default class LoadServer extends Component {
         })
       } else {
         Toast.show(
-          getLanguage(GLOBAL.language).Prompt.INCORRECT_IPORTAL_ADDRESS,
+          getLanguage(global.language).Prompt.INCORRECT_IPORTAL_ADDRESS,
         )
         this.setState({
           datasetArr: [],
@@ -147,7 +147,7 @@ export default class LoadServer extends Component {
       >
         <View style={[styles.titleView, { backgroundColor: color.white }]}>
           <Text style={styles.title}>
-            {getLanguage(GLOBAL.language).Analyst_Labels.Dataset}
+            {getLanguage(global.language).Analyst_Labels.Dataset}
           </Text>
         </View>
         <FlatList
@@ -169,13 +169,13 @@ export default class LoadServer extends Component {
               return
             }
             if (this.state.name === '') {
-              Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_MAP_NAME)
+              Toast.show(getLanguage(global.language).Prompt.ENTER_MAP_NAME)
               //'请输入底图名称')
               return
             }
             if (this.state.server === '') {
               Toast.show(
-                getLanguage(GLOBAL.language).Prompt.ENTER_SERVICE_ADDRESS,
+                getLanguage(global.language).Prompt.ENTER_SERVICE_ADDRESS,
               )
               //'请输入服务地址')
               return
@@ -246,11 +246,11 @@ export default class LoadServer extends Component {
               })
             NavigationService.goBack()
           } catch (error) {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+            Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
             //'保存失败')
           }
 
-          // console.log(this.props.navigation.state)
+          // console.log(this.props.route)
         }}
       >
         <Text
@@ -259,7 +259,7 @@ export default class LoadServer extends Component {
             { color: this.state.isCanSave ? color.fontColorBlack : color.gray },
           ]}
         >
-          {getLanguage(GLOBAL.language).Profile.SAVE}
+          {getLanguage(global.language).Profile.SAVE}
 
           {/* {'保存'} */}
         </Text>
@@ -273,7 +273,7 @@ export default class LoadServer extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.SERVICE_ADDRESS,
+          title: getLanguage(global.language).Profile.SERVICE_ADDRESS,
           //'服务地址',
           navigation: this.props.navigation,
           headerRight: this._renderHeaderBtn(),
@@ -281,7 +281,7 @@ export default class LoadServer extends Component {
       >
         <TextInput
           value={this.state.name}
-          placeholder={getLanguage(GLOBAL.language).Profile.MAP_NAME}
+          placeholder={getLanguage(global.language).Profile.MAP_NAME}
           placeholderTextColor={color.fontColorGray}
           style={styles.textInput}
           ref={ref => (this.name = ref)}
@@ -290,7 +290,7 @@ export default class LoadServer extends Component {
         <TextInput
           value={this.state.server}
           placeholder={
-            getLanguage(GLOBAL.language).Profile.ENTER_SERVICE_ADDRESS
+            getLanguage(global.language).Profile.ENTER_SERVICE_ADDRESS
           }
           placeholderTextColor={color.fontColorGray}
           style={[styles.textInput, { marginTop: 20 }]}
@@ -307,7 +307,7 @@ export default class LoadServer extends Component {
           }}
         >
           <Text state={styles.textRadio}>
-            {getLanguage(GLOBAL.language).Profile.DATASOURCE_TYPE + ' :'}
+            {getLanguage(global.language).Profile.DATASOURCE_TYPE + ' :'}
           </Text>
           <TouchableOpacity
             style={[styles.itemView, { alignItems: 'center' }]}
@@ -371,7 +371,7 @@ export default class LoadServer extends Component {
             }}
           >
             <Text state={styles.textRadio}>
-              {getLanguage(GLOBAL.language).Profile.SERVICE_TYPE + ' :'}
+              {getLanguage(global.language).Profile.SERVICE_TYPE + ' :'}
             </Text>
             <View
               style={{
@@ -468,7 +468,7 @@ export default class LoadServer extends Component {
 
         <View style={{ alignItems: 'center' }}>
           <Button
-            title={getLanguage(GLOBAL.language).Prompt.CONFIRM}
+            title={getLanguage(global.language).Prompt.CONFIRM}
             ref={ref => (this.sureButton = ref)}
             type={_isCanSure ? 'BLUE' : 'GRAY'}
             style={{

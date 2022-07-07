@@ -32,17 +32,17 @@ export default class InformMessage extends React.Component {
     this.screenWidth = Dimensions.get('window').width
     this.friend = {}
     this.state = {
-      messageInfo: this.props.navigation.getParam('messageInfo', ''),
-      currentUser: this.props.navigation.getParam('user', ''),
+      messageInfo: this.props.route.params.messageInfo,
+      currentUser: this.props.route.params.user,
     }
-    this.language = this.props.navigation.getParam('language', '')
-    this.friend = this.props.navigation.getParam('friend')
+    this.language = this.props.route.params.language
+    this.friend = this.props.route.params.friend
   }
   componentDidMount() {
     this.setState(() => {
       return {
-        messageInfo: this.props.navigation.getParam('messageInfo'),
-        currentUser: this.props.navigation.getParam('user', ''),
+        messageInfo: this.props.route.params.messageInfo,
+        currentUser: this.props.route.params.user,
       }
     })
   }
@@ -62,7 +62,7 @@ export default class InformMessage extends React.Component {
               this._acceptFriend(item)
               item.originMsg.consumed = true
               MessageDataHandle.editMessage({
-                userId: this.state.currentUser.userId,
+                userId: this.state.currentUser.userName,
                 talkId: item.originMsg.user.groupID,
                 msgId: item.msgId,
                 type: item.type,
@@ -77,7 +77,7 @@ export default class InformMessage extends React.Component {
         } else {
           item.originMsg.consumed = true
           MessageDataHandle.editMessage({
-            userId: this.state.currentUser.userId,
+            userId: this.state.currentUser.userName,
             talkId: item.originMsg.user.groupID,
             msgId: item.msgId,
             type: item.type,
@@ -95,7 +95,7 @@ export default class InformMessage extends React.Component {
 
   _acceptFriend = item => {
     let curUserName = this.state.currentUser.nickname
-    let uuid = this.state.currentUser.userId
+    let uuid = this.state.currentUser.userName
     let ctime = new Date()
     let time = Date.parse(ctime)
     let message = {
@@ -111,7 +111,7 @@ export default class InformMessage extends React.Component {
     }
     this.friend._sendMessage(
       JSON.stringify(message),
-      item.originMsg.user.id,
+      item.originMsg.user.id || item.originMsg.user.name,
       false,
     )
 

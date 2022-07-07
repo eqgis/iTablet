@@ -19,8 +19,6 @@ import { Toast, scaleSize } from '../../../../utils'
 import { size, color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 import FriendListFileHandle from '../FriendListFileHandle'
-// eslint-disable-next-line
-import { ActionPopover } from 'teaset'
 import { getLanguage } from '../../../../language/index'
 
 class FriendGroup extends Component {
@@ -134,7 +132,7 @@ class FriendGroup extends Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(this.props.language).Friends.LOADING}
+              title={getLanguage(this.props.language).Friends.REFRESHING}
               enabled={true}
             />
           }

@@ -54,7 +54,7 @@ export default class ColorTable extends React.Component {
   }
 
   getColumn = () => {
-    if (GLOBAL.isPad) {
+    if (global.isPad) {
       return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 4 : 8
     } else {
       return this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 4 : 6
@@ -75,7 +75,7 @@ export default class ColorTable extends React.Component {
     // let { width } = event.nativeEvent.layout
     let size
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) {
-      size = GLOBAL.toolBox?.height
+      size = global.toolBox?.height
     } else {
       // size = event.nativeEvent.layout.width
       size = this.props.device.width

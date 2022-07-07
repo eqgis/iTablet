@@ -20,15 +20,15 @@ class ManageGroup extends Component {
 
   constructor(props) {
     super(props)
-    this.friend = this.props.navigation.getParam('friend')
-    this.user = this.props.navigation.getParam('user')
-    this.targetId = this.props.navigation.getParam('targetId')
+    this.friend = this.props.route.params.friend
+    this.user = this.props.route.params.user
+    this.targetId = this.props.route.params.targetId
     this.targetUser = this.friend.getTargetUser(this.targetId)
-    this.language = GLOBAL.language
-    this.chat = this.props.navigation.getParam('chat')
+    this.language = global.language
+    this.chat = this.props.route.params.chat
     this.masterID = FriendListFileHandle.getGroup(this.targetUser.id).masterID
     this.state = {
-      coworkMode: GLOBAL.coworkMode,
+      coworkMode: global.coworkMode,
     }
   }
 
@@ -41,7 +41,7 @@ class ManageGroup extends Component {
       JSON.stringify({
         user: {
           name: this.user.nickname,
-          id: this.user.userId,
+          id: this.user.userName,
           groupID: this.targetUser.id,
           groupName: FriendListFileHandle.getGroup(this.targetUser.id)
             .groupName,
@@ -64,7 +64,7 @@ class ManageGroup extends Component {
       JSON.stringify({
         user: {
           name: this.user.nickname,
-          id: this.user.userId,
+          id: this.user.userName,
           groupID: this.targetUser.id,
           groupName: FriendListFileHandle.getGroup(this.targetUser.id)
             .groupName,
@@ -74,7 +74,7 @@ class ManageGroup extends Component {
         message: {
           members: [
             {
-              id: this.user.userId,
+              id: this.user.userName,
               name: this.user.nickname,
             },
           ],
@@ -82,9 +82,9 @@ class ManageGroup extends Component {
       }),
       this.targetUser.id,
     )
-    SMessageService.exitSession(this.user.userId, this.targetUser.id)
+    SMessageService.exitSession(this.user.userName, this.targetUser.id)
     MessageDataHandle.delMessage({
-      userId: this.user.userId, //当前登录账户的id
+      userId: this.user.userName, //当前登录账户的id
       talkId: this.targetUser.id, //会话ID
     })
     FriendListFileHandle.delFromGroupList(this.targetUser.id)
@@ -98,7 +98,7 @@ class ManageGroup extends Component {
       JSON.stringify({
         user: {
           name: this.user.nickname,
-          id: this.user.userId,
+          id: this.user.userName,
           groupID: this.targetUser.id,
           groupName: FriendListFileHandle.getGroup(this.targetUser.id)
             .groupName,
@@ -114,7 +114,7 @@ class ManageGroup extends Component {
       SMessageService.exitSession(members[member].id, this.targetUser.id)
     }
     MessageDataHandle.delMessage({
-      userId: this.user.userId, //当前登录账户的id
+      userId: this.user.userName, //当前登录账户的id
       talkId: this.targetUser.id, //会话ID
     })
     FriendListFileHandle.delFromGroupList(this.targetUser.id)
@@ -146,7 +146,7 @@ class ManageGroup extends Component {
           <TouchableItemView
             //地图协作
             image={getThemeAssets().friend.friend_map}
-            text={getLanguage(GLOBAL.language).Friends.COWORK}
+            text={getLanguage(global.language).Friends.COWORK}
             onPress={() => {
               NavigationService.navigate('SelectModule')
             }}
@@ -156,7 +156,7 @@ class ManageGroup extends Component {
           <TouchableItemView
             //退出协作
             image={getThemeAssets().friend.friend_map}
-            text={getLanguage(GLOBAL.language).Friends.EXIT_COWORK}
+            text={getLanguage(global.language).Friends.EXIT_COWORK}
             onPress={() => {
               this.chat.back()
               // this.friend.setCurMap(undefined)
@@ -241,7 +241,7 @@ class ManageGroup extends Component {
             })
           }}
         />
-        {this.user.userId === this.masterID ? (
+        {this.user.userName === this.masterID ? (
           <TouchableItemView
             //移除群员
             image={getThemeAssets().friend.friend_group}
@@ -264,7 +264,7 @@ class ManageGroup extends Component {
         <TouchableOpacity
           style={{ alignItems: 'center', paddingVertical: scaleSize(20) }}
           onPress={() => {
-            if (this.user.userId === this.masterID) {
+            if (this.user.userName === this.masterID) {
               this.SimpleDialog.set({
                 text: getLanguage(this.language).Friends.DEL_GROUP_CONFIRM2,
                 confirmAction: () => {
@@ -283,7 +283,7 @@ class ManageGroup extends Component {
           }}
         >
           <Text style={{ color: 'red', fontSize: scaleSize(26) }}>
-            {this.user.userId === this.masterID
+            {this.user.userName === this.masterID
               ? getLanguage(this.language).Friends.DISBAND_GROUP
               : getLanguage(this.language).Friends.LEAVE_GROUP}
           </Text>

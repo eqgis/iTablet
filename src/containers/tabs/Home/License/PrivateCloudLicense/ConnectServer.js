@@ -32,7 +32,7 @@ class ConnectServer extends Component {
   queryLicense = async () => {
     try {
       if (this.server === '') {
-        Toast.show(getLanguage(GLOBAL.language).Profile.ENTER_SERVER_ADDRESS)
+        Toast.show(getLanguage(global.language).Profile.ENTER_SERVER_ADDRESS)
         return
       }
       if (
@@ -44,22 +44,22 @@ class ConnectServer extends Component {
       this.container &&
         this.container.setLoading(
           true,
-          getLanguage(GLOBAL.language).Profile.LICENSE_QUERYING,
+          getLanguage(global.language).Profile.LICENSE_QUERYING,
         )
       await SMap.setPrivateServer(this.server)
       let modules = await SMap.queryPrivateCloudLicense()
       this.container && this.container.setLoading(false)
       if (modules) {
         this.props.setPrivateLicenseServer(this.server)
-        this.props.navigation.navigate('LicenseJoinPrivateCloud', {
+        this.props.navigation.replace('LicenseJoinPrivateCloud', {
           modules: modules,
         })
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_QUERY_FAIL)
+        Toast.show(getLanguage(global.language).Profile.LICENSE_QUERY_FAIL)
       }
     } catch (e) {
       this.container && this.container.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Profile.LICENSE_QUERY_FAIL)
+      Toast.show(getLanguage(global.language).Profile.LICENSE_QUERY_FAIL)
     }
   }
 
@@ -71,7 +71,7 @@ class ConnectServer extends Component {
             clearButtonMode={'while-editing'}
             keyboardType={'default'}
             placeholder={
-              getLanguage(GLOBAL.language).Profile.ENTER_SERVER_ADDRESS
+              getLanguage(global.language).Profile.ENTER_SERVER_ADDRESS
             }
             placeholderTextColor={'#A7A7A7'}
             multiline={false}
@@ -92,7 +92,7 @@ class ConnectServer extends Component {
           }}
         >
           <Text style={styles.titleText}>
-            {getLanguage(GLOBAL.language).Profile.LICENSE_QUERY}
+            {getLanguage(global.language).Profile.LICENSE_QUERY}
           </Text>
         </TouchableOpacity>
       </View>
@@ -104,7 +104,7 @@ class ConnectServer extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile
+          title: getLanguage(global.language).Profile
             .LICENSE_PRIVATE_CLOUD_SERVER,
           navigation: this.props.navigation,
         }}

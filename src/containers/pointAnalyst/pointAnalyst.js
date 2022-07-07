@@ -38,11 +38,11 @@ export default class PointAnalyst extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.type = params.type
     this.searchClickedInfo = params.searchClickedInfo || {}
     this.changeNavPathInfo = params.changeNavPathInfo || {}
-    this.is3D = GLOBAL.Type === ChunkType.MAP_3D
+    this.is3D = global.Type === ChunkType.MAP_3D
     this.PointType = null
     this.state = {
       searchValue: null,
@@ -54,6 +54,7 @@ export default class PointAnalyst extends Component {
     }
     //默认搜索半径5km 结果不足十条范围扩大十倍
     this.radius = 5000
+    this.orientation =global.getDevice().orientation
   }
 
   componentDidMount() {
@@ -76,7 +77,8 @@ export default class PointAnalyst extends Component {
     return (
       JSON.stringify(nextState) !== JSON.stringify(this.state) ||
       JSON.stringify(nextProps.mapSearchHistory) !== JSON.stringify(this.props.mapSearchHistory) ||
-      nextProps.language !== this.props.language
+      nextProps.language !== this.props.language ||
+      this.orientation !==  global.getDevice().orientation
     )
   }
 
@@ -119,24 +121,24 @@ export default class PointAnalyst extends Component {
     if (this.searchClickedInfo.isClicked) {
       let title = this.searchClickedInfo.title
       if (
-        title === getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_START_POINT
+        title === getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT
       ) {
         //设置起点
-        GLOBAL.STARTX = item.x
-        GLOBAL.STARTY = item.y
-        GLOBAL.STARTNAME = item.pointName
-        await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
-        if (GLOBAL.ENDX && GLOBAL.ENDY) {
-          await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
+        global.STARTX = item.x
+        global.STARTY = item.y
+        global.STARTNAME = item.pointName
+        await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+        if (global.ENDX && global.ENDY) {
+          await SMap.getEndPoint(global.ENDX, global.ENDY, false)
         }
       } else {
         //设置终点
-        GLOBAL.ENDX = item.x
-        GLOBAL.ENDY = item.y
-        GLOBAL.ENDNAME = item.pointName
-        await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
-        if (GLOBAL.STARTX && GLOBAL.STARTY) {
-          await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
+        global.ENDX = item.x
+        global.ENDY = item.y
+        global.ENDNAME = item.pointName
+        await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+        if (global.STARTX && global.STARTY) {
+          await SMap.getStartPoint(global.STARTX, global.STARTY, false)
         }
       }
       NavigationService.navigate('NavigationView', {
@@ -206,7 +208,7 @@ export default class PointAnalyst extends Component {
             await SScene.savePoint(index, this.PointType)
             this.container.setLoading(
               true,
-              getLanguage(GLOBAL.language).Prompt.ANALYSING,
+              getLanguage(global.language).Prompt.ANALYSING,
             )
             //'路径分析中')
             this.setState({ secondPoint: pointName, analystData: [] })
@@ -215,14 +217,14 @@ export default class PointAnalyst extends Component {
               this.container.setLoading(false)
               NavigationService.goBack()
             } else {
-              Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+              Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
               //'网络错误')
             }
           }
         } else {
           this.container.setLoading(
             true,
-            getLanguage(GLOBAL.language).Prompt.SERCHING,
+            getLanguage(global.language).Prompt.SERCHING,
           )
           // '位置搜索中')
           this.setState({ searchValue: pointName, searchData: [] })
@@ -231,20 +233,20 @@ export default class PointAnalyst extends Component {
             this.container.setLoading(false)
             NavigationService.goBack()
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+            Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
             //'网络错误')
           }
         }
       } else {
         this.container.setLoading(
           true,
-          getLanguage(GLOBAL.language).Prompt.SEARCHING,
+          getLanguage(global.language).Prompt.SEARCHING,
         )
         let x = item.x
         let y = item.y
         let address = item.address
         this.setState({ searchValue: pointName, searchData: [] })
-        if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+        if (global.Type === ChunkType.MAP_NAVIGATION) {
           await SMap.clearTrackingLayer()
           this.props.setMapNavigation({
             isShow: true,
@@ -253,10 +255,10 @@ export default class PointAnalyst extends Component {
         }
         let result = await SMap.toLocationPoint(item)
         if (result) {
-          GLOBAL.PoiTopSearchBar.setVisible(true)
-          GLOBAL.PoiTopSearchBar.setState({ defaultValue: item.pointName })
-          GLOBAL.PoiInfoContainer &&
-            GLOBAL.PoiInfoContainer.setState(
+          global.PoiTopSearchBar.setVisible(true)
+          global.PoiTopSearchBar.setState({ defaultValue: item.pointName })
+          global.PoiInfoContainer &&
+            global.PoiInfoContainer.setState(
               {
                 destination: this.state.searchValue,
                 location: { x, y },
@@ -267,17 +269,17 @@ export default class PointAnalyst extends Component {
                 resultList: [],
               },
               () => {
-                GLOBAL.PoiInfoContainer.setVisible(true, this.radius)
+                global.PoiInfoContainer.setVisible(true, {radius: this.radius})
                 this.container.setLoading(false)
                 NavigationService.goBack()
               },
             )
         } else {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+          Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
         }
       }
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
       this.container && this.container.setLoading(false)
       //'网络错误')
     }
@@ -307,7 +309,7 @@ export default class PointAnalyst extends Component {
                 value={this.state.firstPoint}
                 style={styles.onInput}
                 placeholder={
-                  getLanguage(GLOBAL.language).Prompt.CHOOSE_STARTING_POINT
+                  getLanguage(global.language).Prompt.CHOOSE_STARTING_POINT
                 }
                 placeholderTextColor={color.fontColorGray}
               />
@@ -331,7 +333,7 @@ export default class PointAnalyst extends Component {
                 value={this.state.secondPoint}
                 style={styles.secondInput}
                 placeholder={
-                  getLanguage(GLOBAL.language).Prompt.CHOOSE_DESTINATION
+                  getLanguage(global.language).Prompt.CHOOSE_DESTINATION
                 }
                 placeholderTextColor={color.fontColorGray}
               />
@@ -437,18 +439,19 @@ export default class PointAnalyst extends Component {
           }
         }}
         onSubmitEditing={async searchKey => {
-          // this.setLoading(true, getLanguage(GLOBAL.language).Prompt.SERCHING)
+          // this.setLoading(true, getLanguage(global.language).Prompt.SERCHING)
           //zhangxt 2020-10-12 通过关键字搜索,其他参数在方法内获得
           this.getSearchResult(searchKey)
         }}
-        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
+        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
         placeholderTextColor={color.fontColorGray}
       />
     )
   }
 
   renderIconItem = () => {
-    let orientation = GLOBAL.getDevice().orientation
+    let orientation = global.getDevice().orientation
+    this.orientation =  orientation
     let maxHeight = screen.getScreenHeight(orientation)
     let headerHeight = screen.getHeaderHeight(orientation)
     let data = PoiData()
@@ -499,7 +502,7 @@ export default class PointAnalyst extends Component {
                 fontSize: setSpText(20),
               }}
             >
-              {getLanguage(GLOBAL.language).Prompt.CLEAR_HISTORY}
+              {getLanguage(global.language).Prompt.CLEAR_SEARCH_HISTORY}
             </Text>
           </TouchableOpacity>
         )}
@@ -520,8 +523,8 @@ export default class PointAnalyst extends Component {
               },
               async () => {
                 if (!this.is3D) {
-                  if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
-                    GLOBAL.TouchType = TouchType.NORMAL
+                  if (global.Type === ChunkType.MAP_NAVIGATION) {
+                    global.TouchType = TouchType.NORMAL
                     await SMap.clearTrackingLayer()
                     // this.props.setNavigationChangeAR(true)
                     this.props.setMapNavigation({
@@ -564,10 +567,10 @@ export default class PointAnalyst extends Component {
           // navigation: this.props.navigation,
           backAction: () => {
             // if (this.searchClickedInfo.isClicked) {
-            //   GLOBAL.LocationView && GLOBAL.LocationView.setVisible(true, true)
+            //   global.LocationView && global.LocationView.setVisible(true, true)
             // }
             this.props.navigation.goBack()
-            GLOBAL.PoiTopSearchBar && GLOBAL.PoiTopSearchBar.setVisible(false)
+            global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
           },
           headerCenter:
             this.type === 'pointSearch' ? this.renderSearchBar() : null,

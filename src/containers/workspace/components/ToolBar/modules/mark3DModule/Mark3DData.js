@@ -75,7 +75,7 @@ async function getData(type, params) {
           type: ToolbarBtnType.BACK,
           image: getThemeAssets().edit.icon_back_off,
           action: () => {
-            if (GLOBAL.Type === ChunkType.MAP_3D) SScene.symbolback()
+            if (global.Type === ChunkType.MAP_3D) SScene.symbolback()
           },
         },
         {
@@ -83,7 +83,7 @@ async function getData(type, params) {
           image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: async () => {
             try {
-              if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
+              if (global.Type === ChunkType.MAP_3D) await SScene.save()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
             } catch (error) {
               Toast.show(getLanguage(params.language).Prompt.SAVE_FAILED)
@@ -101,7 +101,7 @@ async function getData(type, params) {
           type: ToolbarBtnType.BACK,
           image: getThemeAssets().edit.icon_back_off,
           action: () => {
-            if (GLOBAL.Type === ChunkType.MAP_3D) SScene.symbolback()
+            if (global.Type === ChunkType.MAP_3D) SScene.symbolback()
           },
         },
         {
@@ -114,7 +114,7 @@ async function getData(type, params) {
           image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: async () => {
             try {
-              if (GLOBAL.Type === ChunkType.MAP_3D) await SScene.save()
+              if (global.Type === ChunkType.MAP_3D) await SScene.save()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
             } catch (error) {
               Toast.show(getLanguage(params.language).Prompt.SAVE_FAILED)

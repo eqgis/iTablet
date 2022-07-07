@@ -50,7 +50,7 @@ export default class TemplateTab extends React.Component {
     if (layer) {
       Toast.show(
         //'当前选择为:'
-        getLanguage(GLOBAL.language).Prompt.THE_CURRENT_SELECTION +
+        getLanguage(global.language).Prompt.THE_CURRENT_SELECTION +
           item.code +
           ' ' +
           item.name,
@@ -82,7 +82,7 @@ export default class TemplateTab extends React.Component {
       //   },
       // })
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.THE_LAYER_DOES_NOT_EXIST)
+      Toast.show(getLanguage(global.language).Prompt.THE_LAYER_DOES_NOT_EXIST)
     }
   }
 

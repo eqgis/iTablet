@@ -55,7 +55,7 @@ function getData(type) {
   ) {
     data.push({
       key: 'addGPSPoint',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_ADD_POINT,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_ADD_POINT,
       action: () => SCollector.addGPSPoint(type),
       size: 'large',
       image: getThemeAssets().collection.icon_collect_point,
@@ -67,14 +67,14 @@ function getData(type) {
   ) {
     data.push({
       key: 'start',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_START,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
       action: () => SCollector.startCollect(type),
       size: 'large',
       image: getThemeAssets().collection.icon_track_start,
     })
     data.push({
       key: 'stop',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_STOP,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_STOP,
       action: () => SCollector.pauseCollect(type),
       size: 'large',
       image: getThemeAssets().collection.icon_track_stop,
@@ -86,14 +86,14 @@ function getData(type) {
   ) {
     data.push({
       key: constants.UNDO,
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
       action: () => CollectionAction.undo(type),
       size: 'large',
       image: getThemeAssets().edit.icon_undo,
     })
     data.push({
       key: constants.REDO,
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
       action: () => CollectionAction.redo(type),
       size: 'large',
       image: getThemeAssets().edit.icon_redo,
@@ -101,14 +101,14 @@ function getData(type) {
   }
   data.push({
     key: constants.CANCEL,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_CANCEL,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_CANCEL,
     action: () => CollectionAction.cancel(type),
     size: 'large',
     image: getThemeAssets().publicAssets.icon_cancel,
   })
   data.push({
     key: constants.SUBMIT,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_SUBMIT,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
     action: () => CollectionAction.collectionSubmit(type),
     size: 'large',
     image: getThemeAssets().publicAssets.icon_submit,
@@ -169,7 +169,7 @@ function getOperationData(type) {
         : SMCollectorType.REGION_GPS_POINT
   data.push({
     key: 'gpsPoint',
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_POINTS_BY_GPS,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_POINTS_BY_GPS,
     action: () =>
       CollectionAction.showCollection(gpsPointType, _params.currentLayer.path),
     size: 'large',
@@ -182,7 +182,7 @@ function getOperationData(type) {
         : SMCollectorType.REGION_GPS_PATH
     data.push({
       key: 'gpsPath',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_LINE_BY_GPS,
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_LINE_BY_GPS,
       action: () =>
         CollectionAction.showCollection(gpsPathType, _params.currentLayer.path),
       size: 'large',
@@ -195,7 +195,7 @@ function getOperationData(type) {
       data.push(
         {
           key: 'pointDraw',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_POINT_DRAW,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_POINT_DRAW,
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.POINT_HAND,
@@ -210,7 +210,7 @@ function getOperationData(type) {
       data.push(
         {
           key: 'pointDraw',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_POINT_DRAW,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_POINT_DRAW,
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.LINE_HAND_POINT,
@@ -221,7 +221,7 @@ function getOperationData(type) {
         },
         {
           key: 'freeDraw',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_FREE_DRAW,
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_FREE_DRAW,
           action: () =>
             CollectionAction.showCollection(
               SMCollectorType.LINE_HAND_PATH,
@@ -236,7 +236,7 @@ function getOperationData(type) {
       data.push(
         {
           key: 'pointDraw',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .COLLECTION_POINT_DRAW,
           // '点绘式',
           action: () =>
@@ -249,7 +249,7 @@ function getOperationData(type) {
         },
         {
           key: 'freeDraw',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .COLLECTION_FREE_DRAW,
           // '自由式',
           action: () =>

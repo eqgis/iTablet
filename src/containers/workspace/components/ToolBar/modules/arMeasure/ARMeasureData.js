@@ -9,7 +9,7 @@ function getData() {
     {
       //AR测距
       key: 'arMeasureArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
       action: ARMeasureAction.arMeasureLength,
       size: 'large',
@@ -18,7 +18,7 @@ function getData() {
     {
       //AR测高
       key: 'arMeasureHeitht',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
       action: ARMeasureAction.arMeasureHeight,
       size: 'large',
@@ -27,7 +27,7 @@ function getData() {
     {
       //AR面积
       key: 'arMeasureArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
       action: ARMeasureAction.arMeasureArea,
       size: 'large',
@@ -36,7 +36,7 @@ function getData() {
     {
       //AR测量角度
       key: 'arMeasureAngle',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
       action: ARMeasureAction.arMeasureAngle,
       size: 'large',
@@ -45,7 +45,7 @@ function getData() {
     {
       //体积测量
       key: 'arMeasureAngle',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_VOLUME,
       action: ARMeasureAction.arMeasureVolume,
       size: 'large',
@@ -61,7 +61,7 @@ function getMeasureAreaData() {
     {
       //AR测距
       key: 'arMeasureArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
       action: ARMeasureAction.arMeasureLength,
       size: 'large',
@@ -70,7 +70,7 @@ function getMeasureAreaData() {
     {
       //AR测高
       key: 'arMeasureHeitht',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
       action: ARMeasureAction.arMeasureHeight,
       size: 'large',
@@ -79,7 +79,7 @@ function getMeasureAreaData() {
     {
       //AR面积
       key: 'arMeasureArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
       action: ARMeasureAction.arMeasureArea,
       size: 'large',
@@ -88,7 +88,7 @@ function getMeasureAreaData() {
     {
       //AR测量角度
       key: 'arMeasureAngle',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
       action: ARMeasureAction.arMeasureAngle,
       size: 'large',
@@ -97,7 +97,7 @@ function getMeasureAreaData() {
     {
       //体积测量
       key: 'arMeasureVolume',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_VOLUME,
       action: ARMeasureAction.arMeasureVolume,
       size: 'large',
@@ -109,7 +109,7 @@ function getMeasureAreaData() {
     {
       //AR测距
       key: 'arMeasureArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
       action: ARMeasureAction.arMeasureLength,
       size: 'large',
@@ -118,7 +118,7 @@ function getMeasureAreaData() {
     {
       //AR测高
       key: 'arMeasureHeitht',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
       action: ARMeasureAction.arMeasureHeight,
       size: 'large',
@@ -127,7 +127,7 @@ function getMeasureAreaData() {
     {
       //AR面积
       key: 'arMeasureArea',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
       action: ARMeasureAction.arMeasureArea,
       size: 'large',
@@ -136,7 +136,7 @@ function getMeasureAreaData() {
     {
       //AR测量角度
       key: 'arMeasureAngle',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
       action: ARMeasureAction.arMeasureAngle,
       size: 'large',
@@ -145,7 +145,7 @@ function getMeasureAreaData() {
     {
       //体积测量
       key: 'arMeasureVolume',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_VOLUME,
       action: ARMeasureAction.arMeasureVolume,
       size: 'large',
@@ -157,7 +157,7 @@ function getMeasureAreaData() {
     {
       //AR面积 多边形
       key: 'polygon',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON,
       action: ARMeasureAction.arMeasurePolygon,
       size: 'large',
@@ -166,7 +166,7 @@ function getMeasureAreaData() {
     {
       //AR面积 矩形
       key: 'rectangle',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
       action: ARMeasureAction.arMeasureRectanglet,
       size: 'large',
@@ -175,7 +175,7 @@ function getMeasureAreaData() {
     {
       //AR面积 圆
       key: 'circular',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
       action: ARMeasureAction.arMeasureCircular,
       size: 'large',
@@ -187,7 +187,7 @@ function getMeasureAreaData() {
     {
       //AR体积 长方体
       key: 'cuboid',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID,
       action: ARMeasureAction.arMeasureCuboid,
       size: 'large',
@@ -196,7 +196,7 @@ function getMeasureAreaData() {
     {
       //AR体积 圆柱体
       key: 'cylinder',
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER,
       action: ARMeasureAction.arMeasureCylinder,
       size: 'large',

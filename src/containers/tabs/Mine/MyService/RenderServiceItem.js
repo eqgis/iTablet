@@ -35,7 +35,7 @@ export default class RenderServiceItem extends PureComponent {
         mapInfos: this.props.mapInfos,
       })
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Profile.NO_MAP_SERVICE)
+      Toast.show(getLanguage(global.language).Profile.NO_MAP_SERVICE)
     }
   }
 

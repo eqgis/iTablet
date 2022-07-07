@@ -2,8 +2,8 @@ import LicensePage from './LicensePage'
 import LicenseTypePage from './LicenseTypePage'
 import LicenseModule from './LicenseModule'
 import LicenseJoin from './LicenseJoin'
-import LicenseJoinCloud from './CloudLicense'
-import LicenseJoinPrivateCloud from './PrivateCloudLicense'
+import { LicenseJoinCloud, LoginCloud } from './CloudLicense'
+import { LicenseJoinPrivateCloud, ConnectServer } from './PrivateCloudLicense'
 import LicenseJoinEducation from './LicenseJoinEducation'
 
 export {
@@ -12,6 +12,8 @@ export {
   LicenseModule,
   LicenseJoin,
   LicenseJoinCloud,
+  LoginCloud,
   LicenseJoinPrivateCloud,
+  ConnectServer,
   LicenseJoinEducation,
 }

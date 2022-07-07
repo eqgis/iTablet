@@ -18,7 +18,6 @@ import {
 import { Container, CustomInputDialog } from '../../components'
 import {
   getLayerIconByType,
-  getLayerWhiteIconByType,
   getPublicAssets,
   getThemeAssets,
 } from '../../assets'
@@ -29,6 +28,8 @@ import { SMap, DatasetType } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import ModalDropdown from 'react-native-modal-dropdown'
+import NavigationService from '../NavigationService'
+import ImageButton from '../../components/ImageButton'
 
 export default class CreateNavDataPage extends Component {
   props: {
@@ -64,6 +65,7 @@ export default class CreateNavDataPage extends Component {
       datasource: [],
       selectedDataset: {},
       selectedDatasource: {},
+      sleectedData:[],
     }
   }
 
@@ -104,13 +106,13 @@ export default class CreateNavDataPage extends Component {
         datasource: data,
       })
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NO_DATASOURCE)
+      Toast.show(getLanguage(global.language).Prompt.NO_DATASOURCE)
       setTimeout(() => {
         this.dialog.setDialogVisible(true, {
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.NEW_DATASOURCE,
+          title: getLanguage(global.language).Map_Main_Menu.NEW_DATASOURCE,
           value: 'default_roadnet_datasource',
-          confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
-          cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          confirmBtnTitle: getLanguage(global.language).CONFIRM,
+          cancelBtnTitle: getLanguage(global.language).Prompt.CANCEL,
           placeholder: '',
           returnKeyType: 'done',
           keyboardAppearance: 'dark',
@@ -126,29 +128,33 @@ export default class CreateNavDataPage extends Component {
   _confirm = () => {
     let { selectedDatasource, selectedDataset } = this.state
     if (!selectedDataset.datasetName) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+      Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
       return
     }
-    if (
-      selectedDataset.fieldInfo.length > 0 &&
-      !selectedDataset.selectedFieldInfo
-    ) {
-      Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
-      )
-      return
+    let data = JSON.parse(JSON.stringify(this.state.sleectedData))
+    for (let i = 0; i < data.length; i++) {
+      if (
+        data[i].fieldInfo.length > 0 &&
+        !data[i].selectedFieldInfo
+      ) {
+        Toast.show(
+          getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD,
+        )
+        return
+      }
     }
+
     if (!selectedDatasource.datasourceName) {
       Toast.show(
-        getLanguage(GLOBAL.language).Prompt.SELECT_DESTINATION_DATASOURCE,
+        getLanguage(global.language).Prompt.SELECT_DESTINATION_DATASOURCE,
       )
       return
     }
     this.dialog.setDialogVisible(true, {
-      title: getLanguage(GLOBAL.language).Prompt.INPUT_MODEL_FILE_NAME,
+      title: getLanguage(global.language).Prompt.INPUT_MODEL_FILE_NAME,
       value: this.state.selectedDataset.datasetName,
-      confirmBtnTitle: getLanguage(GLOBAL.language).Prompt.CONFIRM,
-      cancelBtnTitle: getLanguage(GLOBAL.language).Prompt.CANCEL,
+      confirmBtnTitle: getLanguage(global.language).CONFIRM,
+      cancelBtnTitle: getLanguage(global.language).Prompt.CANCEL,
       placeholder: '',
       returnKeyType: 'done',
       keyboardAppearance: 'dark',
@@ -163,10 +169,10 @@ export default class CreateNavDataPage extends Component {
   _createDatasource = async datasourceName => {
     this.container.setLoading(
       true,
-      getLanguage(GLOBAL.language).Prompt.CREATING,
+      getLanguage(global.language).Prompt.CREATING,
     )
     let datasourcePath =
-      GLOBAL.homePath +
+      global.homePath +
       ConstPath.UserPath +
       this.props.currentUser.userName +
       '/' +
@@ -181,7 +187,7 @@ export default class CreateNavDataPage extends Component {
     if (rel) {
       this.getDatasource()
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.CREATE_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.CREATE_FAILED)
     }
     this.container.setLoading(false)
     return true
@@ -217,7 +223,7 @@ export default class CreateNavDataPage extends Component {
    * @param {*} fileName
    */
   _dialogConfirm = async fileName => {
-    let { selectedDatasource, selectedDataset } = this.state
+    let { selectedDatasource, selectedDataset ,sleectedData} = this.state
     let { result, error } = dataUtil.isLegalName(fileName)
     if (!result) {
       Toast.show(error)
@@ -233,29 +239,40 @@ export default class CreateNavDataPage extends Component {
       )
       let isFileExist = await FileTools.fileIsExist(filePath)
       if (isFileExist) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.FILENAME_ALREADY_EXIST)
+        Toast.show(getLanguage(global.language).Prompt.FILENAME_ALREADY_EXIST)
       } else {
         this.dialog.setDialogVisible(false)
-        let sourceDataset = {
-          sourceDatasourceName: selectedDataset.datasourceName,
-          sourceDatasetName: selectedDataset.datasetName,
-        }
-        //没有RoadName字段则要带上选择的道路名称字段
-        if (selectedDataset.selectedFieldInfo) {
-          sourceDataset.sourceDatasetFiled = selectedDataset.selectedFieldInfo
-        }
-        GLOBAL.Loading.setLoading(
+
+        global.Loading.setLoading(
           true,
-          getLanguage(GLOBAL.language).Prompt.NETWORK_BUILDING,
+          getLanguage(global.language).Prompt.NETWORK_BUILDING,
         )
-        let rel = await SMap.buildOutdoorNetwork({
-          ...sourceDataset,
-          ...selectedDatasource,
-          filePath,
-        })
+        let rel = false
+        let data = JSON.parse(JSON.stringify(sleectedData))
+        for (let i = 0; i < data.length; i++) {
+          let sourceDataset = {
+            sourceDatasourceName: data[i].datasourceName,
+            sourceDatasetName: data[i].datasetName,
+          }
+          //没有RoadName字段则要带上选择的道路名称字段
+          if (data[i].selectedFieldInfo) {
+            sourceDataset.sourceDatasetFiled = data[i].selectedFieldInfo
+          }
+          rel = await SMap.buildOutdoorNetwork({
+            ...sourceDataset,
+            ...selectedDatasource,
+            filePath,
+          })
+        }
+
         setTimeout(() => {
-          GLOBAL.Loading.setLoading(false)
-          rel && Toast.show(getLanguage(GLOBAL.language).Prompt.BUILD_SUCCESS)
+          global.Loading.setLoading(false)
+          if (rel) {
+            Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_SUCCESS)
+            this.props.route.params?.cb?.()
+          }else{
+            Toast.show(getLanguage(global.language).Prompt.ROADNET_BUILD_FAILED)
+          }
         }, 1000)
       }
     }
@@ -303,16 +320,59 @@ export default class CreateNavDataPage extends Component {
 
   renderItem = ({ section, item }) => {
     if (!section.visible) return null
-    let selected =
-      this.state.selectedDataset.datasourceName === item.datasourceName &&
-      this.state.selectedDataset.datasetName === item.datasetName
+    let sleectedData = JSON.parse(JSON.stringify(this.state.sleectedData))
+    let selected = false
+    for (let i = 0; i < sleectedData.length; i++) {
+      if (sleectedData[i].datasourceName === item.datasourceName &&
+        sleectedData[i].datasetName === item.datasetName) {
+        selected = true
+        break
+      }
+    }
     return (
       <Item
         item={item}
         selected={selected}
-        onSelect={item => {
-          this.setState({ selectedDataset: item })
+        onSelect={async item => {
+          let result = await SMap.isPrgCoordSysWGS1984({...item})
+          if(result){
+            let data = JSON.parse(JSON.stringify(this.state.sleectedData))
+            let has = false
+            let index
+            for (let i = 0; i < data.length; i++) {
+              if (data[i].datasourceName === item.datasourceName &&
+                data[i].datasetName === item.datasetName) {
+                has = true
+                index = i
+                break
+              }
+            }
+            if(!has){
+              data.push(item)
+              this.setState({ selectedDataset: item , sleectedData: data})
+            }else{
+              data.splice(index,1)
+              this.setState({sleectedData: data})
+            }
+          }else{
+            Toast.show(getLanguage(global.language).Prompt.NOT_LONGITUDE)
+          }
         }}
+        selectedField={async item => {
+          let data = JSON.parse(JSON.stringify(this.state.sleectedData))
+          let index
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].datasourceName === item.datasourceName &&
+              data[i].datasetName === item.datasetName) {
+              index = i
+              break
+            }
+          }
+          data.splice(index,1)
+          data.push(item)
+          this.setState({sleectedData: data})
+        }
+        }
       />
     )
   }
@@ -329,7 +389,7 @@ export default class CreateNavDataPage extends Component {
             backgroundColor: color.content_white,
           }}
         >
-          <Text>{getLanguage(GLOBAL.language).Prompt.LINE_DATASET}</Text>
+          <Text>{getLanguage(global.language).Prompt.LINE_DATASET}</Text>
         </View>
         <SectionList
           keyExtractor={(item, index) => item.toString() + index}
@@ -382,7 +442,7 @@ export default class CreateNavDataPage extends Component {
           }}
         >
           <Text>
-            {getLanguage(GLOBAL.language).Prompt.DESTINATION_DATASOURCE}
+            {getLanguage(global.language).Prompt.DESTINATION_DATASOURCE}
           </Text>
         </View>
         <FlatList
@@ -404,8 +464,30 @@ export default class CreateNavDataPage extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Prompt.NEW_NAV_DATA,
+          title: getLanguage(global.language).Prompt.NEW_NAV_DATA,
           navigation: this.props.navigation,
+          headerRight: (
+            <ImageButton
+              // containerStyle={styles.capture}
+              iconStyle={{
+                width: scaleSize(40),
+                height: scaleSize(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+              }}
+              activeOpacity={0.5}
+              icon={getThemeAssets().dataType.icon_newdata}
+              onPress={() => {
+                NavigationService.navigate("MapSelectList", { type: 'projectionSelect' ,cb:()=>{
+                  setTimeout(() => {
+                    this.getDatasource()
+                    this.getLineDatasets()
+                  }, 1000)
+                }})
+              }}
+            />
+          ),
         }}
       >
         {this.renderDatasets()}
@@ -413,7 +495,7 @@ export default class CreateNavDataPage extends Component {
         {this.state.datasource.length > 0 && (
           <TouchableOpacity style={styles.confirm} onPress={this._confirm}>
             <Text style={styles.confirmTxt}>
-              {getLanguage(GLOBAL.language).Prompt.CONFIRM}
+              {getLanguage(global.language).CONFIRM}
             </Text>
           </TouchableOpacity>
         )}
@@ -428,6 +510,7 @@ class Item extends Component {
     item: Object,
     selected: Boolean,
     onSelect: () => {},
+    selectedField: () => {},
   }
 
   constructor(props) {
@@ -462,7 +545,7 @@ class Item extends Component {
       this.props.item.fieldInfo.length === 0 &&
       !this.props.item.hasRoadName
     ) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
+      Toast.show(getLanguage(global.language).Prompt.HAS_NO_ROADNAME_FIELD_DATA)
     } else {
       this.props.onSelect && this.props.onSelect(this.props.item)
     }
@@ -473,10 +556,12 @@ class Item extends Component {
     let backgroundColor = {}
     let fontColor = {}
     let selected = this.props.selected
+    let selectedImg = getPublicAssets().common.icon_none
     if (selected) {
-      img = getLayerWhiteIconByType(DatasetType.LINE)
-      backgroundColor = { backgroundColor: color.item_selected_bg }
-      fontColor = { color: color.white }
+      // img = getLayerWhiteIconByType(DatasetType.LINE)
+      // backgroundColor = { backgroundColor: color.item_selected_bg }
+      // fontColor = { color: color.white }
+      selectedImg = getPublicAssets().common.icon_select
     }
     return (
       <View>
@@ -496,40 +581,44 @@ class Item extends Component {
             backgroundColor,
           ]}
         >
+          <Image
+            source={selectedImg}
+            resizeMode={'contain'}
+            style={styles.image}
+          />
           <Image source={img} style={styles.image} resizeMode={'contain'} />
           <Text style={[{ marginLeft: scaleSize(10), fontSize: setSpText(18) }, fontColor]}>
             {this.props.item.datasetName}
           </Text>
+          {selected && this.props.item.fieldInfo?.length > 0 && (
+            <View
+              style={{
+                flexDirection: 'row',
+                flex:1,
+                height: scaleSize(60),
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+              }}
+            >
+              <ModalDropdown
+                textStyle={{
+                  color: color.item_selected_bg,
+                  fontSize: setSpText(18),
+                }}
+                onSelect={(selectIndex, value) => {
+                  //选中道路名称字段
+                  this.props.item.selectedFieldInfo = value
+                  this.props.selectedField(this.props.item)
+                }}
+                defaultValue={
+                  this.props.item.selectedFieldInfo ||
+                  getLanguage(global.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
+                }
+                options={this.props.item.fieldInfo}
+              />
+            </View>
+          )}
         </TouchableOpacity>
-        {selected && this.props.item.fieldInfo?.length > 0 && (
-          <View
-            style={{
-              flexDirection: 'row',
-              marginLeft: 60,
-              height: scaleSize(60),
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              borderBottomWidth: 1,
-              borderBottomColor: color.USUAL_SEPARATORCOLOR,
-            }}
-          >
-            <ModalDropdown
-              textStyle={{
-                color: color.item_selected_bg,
-                fontSize: setSpText(18),
-              }}
-              onSelect={(selectIndex, value) => {
-                //选中道路名称字段
-                this.props.item.selectedFieldInfo = value
-              }}
-              defaultValue={
-                this.props.item.selectedFieldInfo ||
-                getLanguage(GLOBAL.language).Map_Main_Menu.SELECT_ROADNAME_FIELD
-              }
-              options={this.props.item.fieldInfo}
-            />
-          </View>
-        )}
       </View>
     )
   }

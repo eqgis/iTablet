@@ -44,7 +44,7 @@ class GroupApplyPage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.callBack = params?.callBack
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
@@ -65,7 +65,7 @@ class GroupApplyPage extends Component<Props, State> {
 
   _itemPress = (groupInfo: any) => {
     if (groupInfo.creator === this.props.user.currentUser.userName) {
-      Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_ALREADY_JOINED)
+      Toast.show(getLanguage(global.language).Friends.GROUP_ALREADY_JOINED)
       return
     }
     this.groupInfo = groupInfo
@@ -124,7 +124,7 @@ class GroupApplyPage extends Component<Props, State> {
     return (
       <InputDialog
         ref={ref => (this.applyDialog = ref)}
-        title={getLanguage(GLOBAL.language).Friends.GROUP_APPLY_REASON}
+        title={getLanguage(global.language).Friends.GROUP_APPLY_REASON}
         multiline={true}
         legalCheck={false}
         confirmAction={value => {
@@ -133,8 +133,8 @@ class GroupApplyPage extends Component<Props, State> {
         cancelAction={() => {
           this.applyDialog?.setDialogVisible(false)
         }}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Friends.APPLY}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Friends.CANCEL}
+        confirmBtnTitle={getLanguage(global.language).Friends.APPLY}
+        cancelBtnTitle={getLanguage(global.language).Friends.CANCEL}
       />
     )
   }
@@ -156,7 +156,7 @@ class GroupApplyPage extends Component<Props, State> {
             resizeMode={'contain'}
             source={getThemeAssets().cowork.icon_group_join}
           />
-          <Text style={styles.rightText}>{getLanguage(GLOBAL.language).Friends.JOIN}</Text>
+          <Text style={styles.rightText}>{getLanguage(global.language).Friends.JOIN}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -168,9 +168,9 @@ class GroupApplyPage extends Component<Props, State> {
         style={styles.searchBar}
         ref={ref => (this.searchBar = ref)}
         onSubmitEditing={async searchKey => {
-          GLOBAL.Loading.setLoading(
+          global.Loading.setLoading(
             true,
-            getLanguage(GLOBAL.language).Prompt.SEARCHING,
+            getLanguage(global.language).Prompt.SEARCHING,
           )
           // this.search(searchKey)
           await this.list?.getGroups({
@@ -179,7 +179,7 @@ class GroupApplyPage extends Component<Props, State> {
             pageSize: 1000,
             currentPage: 1,
           })
-          GLOBAL.Loading.setLoading(false)
+          global.Loading.setLoading(false)
         }}
         onClear={() => {
           this.list?.getGroups({
@@ -187,7 +187,7 @@ class GroupApplyPage extends Component<Props, State> {
             joinTypes: ['CANJOIN'],
           })
         }}
-        placeholder={getLanguage(GLOBAL.language).Prompt.ENTER_KEY_WORDS}
+        placeholder={getLanguage(global.language).Prompt.ENTER_KEY_WORDS}
       />
     )
   }
@@ -198,7 +198,7 @@ class GroupApplyPage extends Component<Props, State> {
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY,
+          title: getLanguage(global.language).Friends.GROUP_APPLY,
           navigation: this.props.navigation,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',

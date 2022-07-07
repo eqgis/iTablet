@@ -5,18 +5,6 @@
     <string name="title_activity_scroller_menu">ScrollerMenuActivity</string>
     <string name="progress">Progress</string>
     <string name="selected_menu">Selected Menu</string>
-    <string-array name="menu_items">
-        <item>菜单一</item>
-        <item>菜单二</item>
-        <item>菜单三</item>
-        <item>菜单四</item>
-        <item>菜单五</item>
-        <item>菜单六</item>
-        <!--  <item>菜单七</item>
-          <item>菜单八</item>
-          <item>菜单九</item>
-          <item>菜单十</item>-->
-    </string-array>
-    <string name="copyright">Copyright © 2018-2021 SuperMap</string>
+    <string name="copyright">Copyright © 2018-2022 SuperMap</string>
     <string name="company">All Right Reserved</string>
 </resources>

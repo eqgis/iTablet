@@ -66,7 +66,7 @@ export default class SMLegendView extends React.Component {
         >
           <LegendView
             device={this.props.device}
-            ref={ref => (GLOBAL.legend = ref)}
+            ref={ref => (global.legend = ref)}
           />
         </View>
       </View>

@@ -114,7 +114,7 @@ export default class FunctionToolbar extends React.Component {
     this.previousOpacity = new Animated.Value(0)
     this.nextOpacity = new Animated.Value(0)
 
-    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
+    if (global.coworkMode && global.Type.indexOf('3D') < 0 && this.props.user?.currentUser) {
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
         this.servicesUtils = new SCoordination('online')
         this.onlineServicesUtils = new OnlineServicesUtils('online')
@@ -136,6 +136,8 @@ export default class FunctionToolbar extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (
+      JSON.stringify(this.props.language) !==
+        JSON.stringify(nextProps.language) ||
       JSON.stringify(this.props.online.share) !==
         JSON.stringify(nextProps.online.share) ||
       JSON.stringify(this.props.currentTaskServices) !==
@@ -157,7 +159,7 @@ export default class FunctionToolbar extends React.Component {
       const data = this.getData(this.props.type)
       this.setState({data: data})
     }
-    if (GLOBAL.coworkMode) {
+    if (global.coworkMode) {
       // 数据服务下载动画
       if (
         this.props.currentTask?.groupID &&
@@ -200,10 +202,12 @@ export default class FunctionToolbar extends React.Component {
         Animated.timing(this.state.top, {
           toValue: top,
           duration: 300,
+          useNativeDriver: false,
         }),
         Animated.timing(this.state.right, {
           toValue: right,
           duration: 300,
+          useNativeDriver: false,
         }),
       ]).start()
     } else {
@@ -215,6 +219,7 @@ export default class FunctionToolbar extends React.Component {
       Animated.timing(this.state.top, {
         toValue: top,
         duration: 300,
+        useNativeDriver: false,
       }).start()
     }
     this.handlePosition()
@@ -260,6 +265,7 @@ export default class FunctionToolbar extends React.Component {
       Animated.timing(this.previousOpacity, {
         toValue: onPrevious ? 0 : 1,
         duration: 150,
+        useNativeDriver: false,
       }).start()
     }
     if (onNext !== this.onNext) {
@@ -267,6 +273,7 @@ export default class FunctionToolbar extends React.Component {
       Animated.timing(this.nextOpacity, {
         toValue: onNext ? 0 : 1,
         duration: 150,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -281,10 +288,12 @@ export default class FunctionToolbar extends React.Component {
       Animated.timing(this.state.bottom, {
         toValue: visible ? BOTTOM_LANDSCAPE : scaleSize(-120),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start(),
       Animated.timing(this.state.right, {
         toValue: visible ? RIGHT : scaleSize(-100),
         duration: immediately ? 0 : Const.ANIMATED_DURATION,
+        useNativeDriver: false,
       }).start(),
     ]).start()
     this.visible = visible
@@ -334,7 +343,7 @@ export default class FunctionToolbar extends React.Component {
             layerSettingImageModule().actions.showSetting()
           } else if (currentLayer.themeType <= 0 && !currentLayer.isHeatmap) {
             styleModule().action(ConstToolType.SM_MAP_STYLE)
-          } else if (GLOBAL.Type === ChunkType.MAP_THEME) {
+          } else if (global.Type === ChunkType.MAP_THEME) {
             themeModule().actions.layerListAction(this.props.currentLayer)
           } else {
             Toast.show(
@@ -345,9 +354,9 @@ export default class FunctionToolbar extends React.Component {
         }
       }
       if (
-        !GLOBAL.coworkMode ||
-        GLOBAL.coworkMode &&
-        // _item.type !== ConstToolType.SM_MAP_ADD &&
+        !global.coworkMode ||
+        global.coworkMode &&
+        _item.type !== ConstToolType.SM_MAP_ADD &&
         _item.type !== ConstToolType.SM_MAP_COLLECTION_TEMPLATE_CREATE &&
         _item.type !== ConstToolType.SM_MAP_NAVIGATION_MODULE
         //  && _item.type !== ConstToolType.SM_MAP_PLOT_ANIMATION
@@ -356,18 +365,18 @@ export default class FunctionToolbar extends React.Component {
       }
     })
     // 在线协作非三维模块，侧边栏新增多媒体采集
-    if (GLOBAL.coworkMode && GLOBAL.Type.indexOf('3D') < 0) {
-      GLOBAL.Type !== ChunkType.MAP_PLOTTING && data.push({
+    if (global.coworkMode && global.Type.indexOf('3D') < 0) {
+      global.Type !== ChunkType.MAP_PLOTTING && data.push({
         isLoading: false,
         ...serviceModule(UserType.isIPortalUser(this.props.user.currentUser) ? 'iportal' : 'online'),
       })
       data.push({
         type: ConstToolType.SM_MAP_MEDIA,
-        getTitle: () => getLanguage(GLOBAL.language).Map_Main_Menu.CAMERA,
+        getTitle: () => getLanguage(global.language).Map_Main_Menu.CAMERA,
         size: 'large',
         image: getThemeAssets().mapTools.icon_tool_multi_media,
         disableImage: getThemeAssets().mapTools.icon_tool_multi_media_ash,
-        action: () => {
+        action: async () => {
           if (this.props.currentLayer) {
             if (this.props.currentLayer.themeType) {
               Toast.show(
@@ -376,9 +385,10 @@ export default class FunctionToolbar extends React.Component {
               )
               return
             }
-            const layerType = LayerUtils.getLayerType(this.props.currentLayer)
-            const isTaggingLayer = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
-            if (isTaggingLayer) {
+            // const layerType = LayerUtils.getLayerType(this.props.currentLayer)
+            // const isTaggingLayer = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
+            const isMediaLayer = await SMediaCollector.isMediaLayer(this.props.currentLayer.name)
+            if (isMediaLayer) {
               const { datasourceAlias } = this.props.currentLayer // 标注数据源名称
               const { datasetName } = this.props.currentLayer // 标注图层名称
               NavigationService.navigate('Camera', {
@@ -391,19 +401,25 @@ export default class FunctionToolbar extends React.Component {
                 }) => {
                 // cb: async mediaPaths => {
                   try {
-                    if (GLOBAL.coworkMode) {
+                    if (global.coworkMode) {
                       let resourceIds = [],
                         _mediaPaths = [] // 保存修改名称后的图片地址
                       let name = '', suffix = ''
-                      for (let mediaPath of mediaPaths) {
-                        let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+                      let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+                      const newPaths = await FileTools.copyFiles(mediaPaths, dest)
+                      for (let mediaPath of newPaths) {
                         if (mediaPath.indexOf('assets-library://') === 0) { // 处理iOS相册文件
-                          suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext')?.toLowerCase() || ''
-                          name = dataUtil.getUrlQueryVariable(mediaPath, 'id')?.toLowerCase() || ''
+                          suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext') || ''
+                          name = dataUtil.getUrlQueryVariable(mediaPath, 'id') || ''
+                          dest += `${name}.${suffix}`
+                          mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
+                        } else if (mediaPath.indexOf('ph://') === 0) { // 处理iOS相册文件
+                          suffix = 'png'
+                          name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
                           dest += `${name}.${suffix}`
                           mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
                         } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件
-                          let filePath = await FileTools.getContentAbsolutePathAndroid(mediaPath)
+                          let filePath = await FileTools.getContentAbsolutePath(mediaPath)
                           name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'))
                           suffix = filePath.substr(filePath.lastIndexOf('.') + 1)
                           dest += `${name}.${suffix}`
@@ -414,16 +430,6 @@ export default class FunctionToolbar extends React.Component {
                           suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
                           dest += `${name}.${suffix}`
                         }
-                        //获取缩略图
-                        // let resizedImageUri = await ImageResizer.createResizedImage(
-                        //   mediaPath,
-                        //   60,
-                        //   100,
-                        //   'PNG',
-                        //   1,
-                        //   0,
-                        //   userPath,
-                        // )
                         let resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
                           mediaPath,
                           `${name}.${suffix}`,
@@ -448,9 +454,6 @@ export default class FunctionToolbar extends React.Component {
                       } else {
                         Toast.show(getLanguage(this.props.language).Friends.RESOURCE_UPLOAD_FAILED)
                       }
-                      // if (await SMediaCollector.isTourLayer(this.props.currentLayer.name)) {
-                      //   result = await SMediaCollector.updateTour(this.props.currentLayer.name)
-                      // }
                       // 分享到群组中
                       if (resourceIds.length > 0 && this.props.currentTask.groupID) {
                         this.servicesUtils?.shareDataToGroup({
@@ -469,7 +472,8 @@ export default class FunctionToolbar extends React.Component {
                       }
                     }
                   } catch (e) {
-                    console.warn('error')
+                    // eslint-disable-next-line no-console
+                    __DEV__ && console.warn('error')
                   }
                 },
               })
@@ -604,7 +608,7 @@ export default class FunctionToolbar extends React.Component {
         />
         {item.title === '分享' &&
           this.props.online.share[0] &&
-          GLOBAL.Type === this.props.online.share[0].module &&
+          global.Type === this.props.online.share[0].module &&
           this.props.online.share[0].progress !== undefined && (
           <Bar
             style={styles.progress}
@@ -619,7 +623,7 @@ export default class FunctionToolbar extends React.Component {
         {this._renderLoading({ item, index })}
         {/*{item.title === '分享' &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1] &&*/}
-        {/*GLOBAL.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}
+        {/*global.Type === this.props.online.share[this.props.online.share.length - 1].module &&*/}
         {/*this.props.online.share[this.props.online.share.length - 1].progress !== undefined && (*/}
         {/*<Text>{this.props.online.share[this.props.online.share.length - 1].progress}</Text>*/}
         {/*)}*/}

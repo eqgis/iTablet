@@ -79,7 +79,7 @@ export default class ReferenceAnalystView extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.cb = params && params.cb
     this.type = params && params.type
     this.defaultState = params && params.defaultState
@@ -97,6 +97,7 @@ export default class ReferenceAnalystView extends Component {
 
   componentDidMount() {
     this.props.setBackAction({
+      key: 'ReferenceAnalystView',
       action: () => this.back(),
     })
   }
@@ -130,7 +131,7 @@ export default class ReferenceAnalystView extends Component {
     return available
   }
 
-  analyst = () => {
+  analyst = async () => {
     if (!this.checkData()) return
 
     let optionParameter = {}
@@ -163,88 +164,89 @@ export default class ReferenceAnalystView extends Component {
     }
 
     Toast.show(getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_START)
-    InteractionManager.runAfterInteractions(async () => {
-      try {
-        this.setLoading(
-          true,
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
-        )
+    // InteractionManager.runAfterInteractions(async () => {
+    try {
+      this.setLoading(
+        true,
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
+      )
 
-        let server = await FileTools.appendingHomeDirectory(
-          ConstPath.UserPath +
-            (this.props.currentUser.userName || 'Customer') +
-            '/' +
-            ConstPath.RelativePath.Datasource,
-        )
-        let sourceData = {
-            datasource: this.state.dataSource.value,
-            dataset: this.state.dataSet.value,
-          },
-          resultData = {
-            datasource: this.state.resultDataSource.value,
-            server: server + this.state.resultDataSource.value + '.udb',
-            dataset: this.state.resultDataSet.value,
-          },
-          result = false
-        switch (this.type) {
-          case ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON:
-            if (this.state.isCustomLocale) {
-              if (this.state.selectRegionStatus === CheckStatus.CHECKED) {
-                optionParameter = {
-                  selectRegion: {
-                    layerPath: this.props.selection[0].layerInfo.path,
-                    geoId: this.props.selection[0].ids[0],
-                  },
-                }
-              } else {
-                optionParameter = { drawRegion: true }
+      let server = await FileTools.appendingHomeDirectory(
+        ConstPath.UserPath +
+          (this.props.currentUser.userName || 'Customer') +
+          '/' +
+          ConstPath.RelativePath.Datasource,
+      )
+      let sourceData = {
+          datasource: this.state.dataSource.value,
+          dataset: this.state.dataSet.value,
+        },
+        resultData = {
+          datasource: this.state.resultDataSource.value,
+          server: server + this.state.resultDataSource.value + '.udb',
+          dataset: this.state.resultDataSet.value,
+        },
+        result = false
+      switch (this.type) {
+        case ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON:
+          if (this.state.isCustomLocale) {
+            if (this.state.selectRegionStatus === CheckStatus.CHECKED) {
+              optionParameter = {
+                selectRegion: {
+                  layerPath: this.props.selection[0].layerInfo.path,
+                  geoId: this.props.selection[0].ids[0],
+                },
               }
+            } else {
+              optionParameter = { drawRegion: true }
             }
-            result = await SAnalyst.thiessenAnalyst(
-              sourceData,
-              resultData,
-              optionParameter,
-            )
-            break
-          case ConstToolType.SM_MAP_ANALYSIS_MEASURE_DISTANCE:
-            // result = await SAnalyst.erase(
-            //   sourceData,
-            //   targetData,
-            //   resultData,
-            //   optionParameter,
-            // )
-            break
-        }
-        this.setLoading(false)
-
-        Toast.show(
-          result
-            ? getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS
-            : getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-        )
-        SMap.setAction(Action.SELECT).then(() => {
-          SMap.setAction(Action.PAN)
-        })
-        if (result) {
-          let layers = await this.props.getLayers()
-          layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
-
-          GLOBAL.ToolBar && GLOBAL.ToolBar.setVisible(false)
-          NavigationService.goBack('ReferenceAnalystView')
-          if (this.cb && typeof this.cb === 'function') {
-            this.cb()
           }
-        }
-      } catch (e) {
-        SMap.setAction(Action.SELECT).then(() => {
-          SMap.setAction(Action.PAN)
-        })
-        this.setLoading(false)
-        Toast.show(
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-        )
+          result = await SAnalyst.thiessenAnalyst(
+            sourceData,
+            resultData,
+            optionParameter,
+          )
+          break
+        case ConstToolType.SM_MAP_ANALYSIS_MEASURE_DISTANCE:
+          // result = await SAnalyst.erase(
+          //   sourceData,
+          //   targetData,
+          //   resultData,
+          //   optionParameter,
+          // )
+          break
       }
-    })
+      this.setLoading(false)
+
+      Toast.show(
+        result
+          ? getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS
+          : getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+      )
+      SMap.setAction(Action.SELECT).then(() => {
+        SMap.setAction(Action.PAN)
+      })
+      if (result) {
+        let layers = await this.props.getLayers()
+        layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
+
+        global.ToolBar && global.ToolBar.setVisible(false)
+        global.toolBox.showFullMap(false)
+        NavigationService.goBack('ReferenceAnalystView')
+        if (this.cb && typeof this.cb === 'function') {
+          this.cb()
+        }
+      }
+    } catch (e) {
+      SMap.setAction(Action.SELECT).then(() => {
+        SMap.setAction(Action.PAN)
+      })
+      this.setLoading(false)
+      Toast.show(
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+      )
+    }
+    // })
     // ;(async function() {
     //
     // }.bind(this)())
@@ -257,8 +259,8 @@ export default class ReferenceAnalystView extends Component {
     NavigationService.goBack('ReferenceAnalystView')
     //{
     //泰森多边形分析自定义区域后返回未全屏问题 jiakai
-    GLOBAL.toolBox.showFullMap(true)
-    GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_ANALYSIS, {
+    global.toolBox.showFullMap(true)
+    global.toolBox.setVisible(true, ConstToolType.SM_MAP_ANALYSIS, {
       isFullScreen: true,
     })
     //}
@@ -539,7 +541,7 @@ export default class ReferenceAnalystView extends Component {
                   () => {
                     let params = Object.assign(
                       {},
-                      this.props.navigation.state.params,
+                      this.props.route.params,
                       { defaultState: this.state },
                     )
                     this.props
@@ -588,7 +590,7 @@ export default class ReferenceAnalystView extends Component {
                   () => {
                     let params = Object.assign(
                       {},
-                      this.props.navigation.state.params,
+                      this.props.route.params,
                       { defaultState: this.state },
                     )
                     this.props
@@ -605,7 +607,7 @@ export default class ReferenceAnalystView extends Component {
                         },
                       })
                       .then(() => {
-                        GLOBAL.TouchType = TouchType.REFERENCE
+                        global.TouchType = TouchType.REFERENCE
                         SMap.getAction().then(type => {
                           if (type !== Action.CREATEPOLYGON) {
                             SMap.setAction(Action.CREATEPOLYGON)

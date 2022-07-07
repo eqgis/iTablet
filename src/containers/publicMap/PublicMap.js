@@ -246,7 +246,7 @@ export default class PublicMap extends Component {
               color: 'orange',
             }}
           >
-            {getLanguage(GLOBAL.language).Prompt.LOADING}
+            {getLanguage(global.language).Prompt.LOADING}
             {/* 加载中... */}
           </Text>
         </View>
@@ -320,7 +320,7 @@ export default class PublicMap extends Component {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            title={getLanguage(global.language).Friends.REFRESHING}
             enabled={true}
           />
         }
@@ -337,7 +337,7 @@ export default class PublicMap extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Prompt.PUBLIC_MAP,
+          title: getLanguage(global.language).Prompt.PUBLIC_MAP,
           //'公共地图',
           navigation: this.props.navigation,
         }}

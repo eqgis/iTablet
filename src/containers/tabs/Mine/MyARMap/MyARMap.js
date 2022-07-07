@@ -6,7 +6,7 @@ import { UserInfo } from '../../../../redux/models/user'
 import { SARMap , RNFS} from 'imobile_for_reactnative'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
-import DataHandler from '../DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
@@ -27,12 +27,12 @@ class MyARMap extends MyDataPage {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.type = this.types.armap
     this.showMore = !!params?.showMore
     this.state = {
       ...this.state,
-      title: getLanguage(GLOBAL.language).Profile.ARMAP,
+      title: getLanguage(global.language).Profile.ARMAP,
       shareToLocal: true,
       shareToOnline: true,
       shareToIPortal: true,
@@ -61,24 +61,24 @@ class MyARMap extends MyDataPage {
   }
 
   _getItemCallback = ({item}) => {
-    GLOBAL.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Prompt.OPEN_MAP_CONFIRM,
+    global.SimpleDialog.set({
+      text: getLanguage(global.language).Prompt.OPEN_MAP_CONFIRM,
       confirmAction: () => {
         const mapName = item.name.substring(0, item.name.lastIndexOf('.'))
         if(this.props.armap.currentMap?.mapName === mapName) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.THE_MAP_IS_OPENED)
+          Toast.show(getLanguage(global.language).Prompt.THE_MAP_IS_OPENED)
         } else {
           this.openMap(item).then(result => {
             if(result) {
               this.props.navigation.goBack()
             } else {
-              Toast.show(getLanguage(GLOBAL.language).Prompt.CHANGE_FAULT)
+              Toast.show(getLanguage(global.language).Prompt.CHANGE_FAULT)
             }
           })
         }
       },
     })
-    GLOBAL.SimpleDialog.setVisible(true)
+    global.SimpleDialog.setVisible(true)
   }
 
   openMap = async item => {
@@ -138,7 +138,7 @@ class MyARMap extends MyDataPage {
   exportData = async name => {
     if (!this.itemInfo) return false
     const homePath = await FileTools.appendingHomeDirectory()
-    let path = `${homePath + ConstPath.ExternalData}/`
+    let path = `${homePath + ConstPath.ExternalData}/${ConstPath.RelativeFilePath.ExportData}`
 
     const availableName = await DataHandler.getAvailableFileName(
       path,

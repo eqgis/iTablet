@@ -17,9 +17,6 @@ import NavigationService from '../../../../NavigationService'
 import { Toast, scaleSize } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
 import { getThemeAssets } from '../../../../../assets'
-// import FriendListFileHandle from '../FriendListFileHandle'
-// eslint-disable-next-line
-// import { ActionPopover } from 'teaset'
 import { getLanguage } from '../../../../../language'
 import { UserType } from '../../../../../constants'
 import { SCoordination, QueryParam } from 'imobile_for_reactnative'
@@ -217,7 +214,7 @@ export default class GroupList extends Component<Props, State> {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.REFRESHING}
               enabled={true}
             />
           }

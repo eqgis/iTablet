@@ -9,12 +9,12 @@ const line = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '符号线',
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
           buttons: [
@@ -33,8 +33,8 @@ const line = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_LINE_WIDTH,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           buttons: [
@@ -54,12 +54,12 @@ const line = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE_LINE_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_LINE_COLOR, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_LINE_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [
@@ -80,12 +80,12 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE,
         selectKey: getLanguage(param).Map_Main_Menu.THEME_MARKER_SYMBOL
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
           buttons: [
@@ -104,8 +104,8 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL_SIZE,
@@ -124,12 +124,12 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE_POINT_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_POINT_COLOR, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_POINT_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [
@@ -148,8 +148,8 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.STYLE_ROTATION,
@@ -167,8 +167,8 @@ const point = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
@@ -190,12 +190,12 @@ const region = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL,
     // '面符号',
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_SYMBOL
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE, {
           containerType: ToolbarType.symbol,
           isFullScreen: false,
           buttons: [
@@ -213,12 +213,12 @@ const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_FOREGROUND
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [
@@ -235,7 +235,7 @@ const region = param => [
   // {
   //   key: getLanguage(param).Map_Main_Menu.STYLE_BACKGROUND,
   //   action: () => {
-  //     GLOBAL.toolBox && GLOBAL.toolBox.menu()
+  //     global.toolBox && global.toolBox.menu()
   //     let height, column
   //     if (orientation.indexOf('PORTRAIT') >= 0) {
   //       height = ConstToolType.THEME_HEIGHT[3]
@@ -244,8 +244,8 @@ const region = param => [
   //       height = ConstToolType.TOOLBAR_HEIGHT_2[3]
   //       column = 12
   //     }
-  //     GLOBAL.toolBox &&
-  //       GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR, {
+  //     global.toolBox &&
+  //       global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR, {
   //         containerType: ToolbarType.colorTable,
   //         column,
   //         isFullScreen: false,
@@ -264,12 +264,12 @@ const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_BORDER
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [
@@ -286,8 +286,8 @@ const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_BORDER_WIDTH,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           buttons: [
@@ -305,8 +305,8 @@ const region = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           buttons: [
@@ -324,7 +324,7 @@ const region = param => [
   // {
   //   key: '渐变',
   //   action: () => {
-  //     GLOBAL.toolBox && GLOBAL.toolBox.setState({
+  //     global.toolBox && global.toolBox.setState({
   //       isTouchProgress: true,
   //       showMenuDialog: false,
   //       buttons: [
@@ -341,8 +341,8 @@ const grid = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.STYLE_TRANSPARENCY,
@@ -360,8 +360,8 @@ const grid = param => [
   {
     key: getLanguage(param).Map_Main_Menu.CONTRAST,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.CONTRAST,
@@ -379,8 +379,8 @@ const grid = param => [
   {
     key: getLanguage(param).Map_Main_Menu.STYLE_BRIGHTNESS,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           selectName: getLanguage(param).Map_Main_Menu.STYLE_BRIGHTNESS,
@@ -402,12 +402,12 @@ const text = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE_TEXT_FONT,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_TEXT_FONT, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_TEXT_FONT, {
           isFullScreen: false,
           buttons: [
             ToolbarBtnType.CANCEL,
@@ -424,8 +424,8 @@ const text = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_FONT_SIZE,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           buttons: [
@@ -440,11 +440,11 @@ const text = param => [
     },
   },
   {
-    key: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION,
-    selectKey: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION,
+    key: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
+    selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
     action: () => {
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setState({
+      global.toolBox &&
+        global.toolBox.setState({
           isTouchProgress: true,
           showMenuDialog: false,
           buttons: [
@@ -453,8 +453,8 @@ const text = param => [
             ToolbarBtnType.MENU_FLEX,
             ToolbarBtnType.TOOLBAR_COMMIT,
           ],
-          selectName: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION,
-          selectKey: getLanguage(GLOBAL.language).Map_Main_Menu.STYLE_ROTATION,
+          selectName: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
+          selectKey: getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION,
         })
     },
   },
@@ -462,12 +462,12 @@ const text = param => [
     key: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR,
     action: () => {
-      GLOBAL.toolBox && GLOBAL.toolBox.menu({
+      global.toolBox && global.toolBox.menu({
         type: ConstToolType.SM_MAP_STYLE_TEXT_COLOR,
         selectKey: getLanguage(param).Map_Main_Menu.STYLE_COLOR
       })
-      GLOBAL.toolBox &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_TEXT_COLOR, {
+      global.toolBox &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_STYLE_TEXT_COLOR, {
           containerType: ToolbarType.colorTable,
           isFullScreen: false,
           buttons: [

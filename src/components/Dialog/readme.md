@@ -4,7 +4,7 @@
     - MapView上已添加
 * 用法
 ```javascript
-  GLOBAL.AlertDialog.setDialogVisible(true, {
+  global.AlertDialog.setDialogVisible(true, {
     title: String,              //弹窗标题 可选 建议不传
     value: String,              //弹出内容 必选 在图片下方的文字
     confirmBtnTitle: String,    //确定按钮文字 必选
@@ -21,7 +21,7 @@
     - MapView上已添加
 * 用法
 ```javascript
-GLOBAL.InputDialog.setDialogVisible(true, {
+global.InputDialog.setDialogVisible(true, {
           title: String,            //标题 必填 默认为空
           value: String,            //初始值 可选 默认为空
           confirmBtnTitle: String,  //确定按钮文字 可选 默认为 是

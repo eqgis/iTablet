@@ -24,12 +24,12 @@ class GroupMemberList extends Component {
   constructor(props) {
     super(props)
 
-    this.friend = this.props.navigation.getParam('friend')
-    this.user = this.props.navigation.getParam('user')
-    this.language = this.props.navigation.getParam('language')
-    this.groupID = this.props.navigation.getParam('groupID')
-    this.mode = this.props.navigation.getParam('mode')
-    this.CallBack = this.props.navigation.getParam('cb')
+    this.friend = this.props.route.params.friend
+    this.user = this.props.route.param.user
+    this.language = this.props.route.params.language
+    this.groupID = this.props.route.params.groupID
+    this.mode = this.props.route.params.mode
+    this.CallBack = this.props.route.params.cb
     this.state = {
       contacts: this.getGroupMembers(),
       selectArr: [],
@@ -69,7 +69,7 @@ class GroupMemberList extends Component {
         ref={ref => (this.container = ref)}
         headerProps={{
           withoutBack: false,
-          title: getLanguage(GLOBAL.language).Friends.MEMBERS,
+          title: getLanguage(global.language).Friends.MEMBERS,
           navigation: this.props.navigation,
           headerRight:
             this.mode === 'view' ? null : (
@@ -120,7 +120,7 @@ class GroupMemberList extends Component {
       <TouchableItemView
         text={item.name}
         disableTouch={
-          this.mode === 'select' && this.user.userId === item.id ? true : false
+          this.mode === 'select' && this.user.userName === item.id ? true : false
         }
         renderImage={() => (
           <Image

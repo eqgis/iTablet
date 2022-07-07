@@ -113,7 +113,7 @@ export const openMap = (params, cb = () => { }) => async (
       return
     const absolutePath = await FileTools.appendingHomeDirectory(params.path)
     const userName = getState().user.toJS().currentUser.userName || 'Customer'
-    const moduleName = GLOBAL.Type
+    const moduleName = global.Type
     const module = params.module || ''
     const fileName = params.name || params.title
     const isCustomerPath = params.path.indexOf(ConstPath.CustomerPath) >= 0
@@ -211,7 +211,7 @@ export const saveMap = (params = {}, cb = () => { }) => async (
         payload: mapInfo,
         extData: {
           userName,
-          moduleName: GLOBAL.Type,
+          moduleName: global.Type,
         },
       })
     }
@@ -226,7 +226,7 @@ export const saveMap = (params = {}, cb = () => { }) => async (
 // 关闭地图
 export const closeMap = (cb = () => { }) => async dispatch => {
   try {
-    if (GLOBAL.coworkMode) {
+    if (global.coworkMode) {
       await SMap.removeUserCallout()
       await SMap.clearUserTrack()
     }
@@ -283,7 +283,7 @@ export const exportWorkspace = (params, cb = () => { }) => async (
   getState,
 ) => {
   if (isExporting) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.TYR_AGAIN_LATER)
+    Toast.show(getLanguage(global.language).Prompt.TYR_AGAIN_LATER)
     // ''请稍后再试')
     return false
   }
@@ -360,7 +360,7 @@ export const exportWorkspace = (params, cb = () => { }) => async (
   } catch (e) {
     isExporting = false
     if (!exportResult) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
       // ConstInfo.EXPORT_WORKSPACE_FAILED)
     } else if (!zipResult) {
       Toast.show(ConstInfo.ZIP_FAILED)
@@ -382,7 +382,7 @@ export const exportmap3DWorkspace = (params, cb = () => { }) => async (
   const userName = getState().user.toJS().currentUser.userName || 'Customer'
   if (params.name) {
     if (isExporting) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.TYR_AGAIN_LATER)
+      Toast.show(getLanguage(global.language).Prompt.TYR_AGAIN_LATER)
       // '请稍后再试')
       return false
     }
@@ -398,13 +398,13 @@ export const exportmap3DWorkspace = (params, cb = () => { }) => async (
       result = await FileTools.zipFile(path, zipPath)
       if (result) {
         await FileTools.deleteFile(path)
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_START)
+        Toast.show(getLanguage(global.language).Prompt.SHARE_START)
         // '导出成功,开始分享')
         isExporting = false
         cb && cb(result, zipPath)
       }
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
       // '导出失败')
     }
   }
@@ -519,9 +519,12 @@ export default handleActions(
           newData[extData.userName][extData.moduleName].unshift(payload)
         }
 
+        state = state.setIn(['currentMap'], fromJS(payload))
+        if (!global.coworkMode) { // 协作不记录上一次打开的地图,从而影响普通模块
+          state = state.setIn(['latestMap'], fromJS(newData))
+        }
+
         return state
-          .setIn(['currentMap'], fromJS(payload))
-          .setIn(['latestMap'], fromJS(newData))
       }
       return state.setIn(['currentMap'], fromJS(payload))
     },

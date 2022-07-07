@@ -52,12 +52,15 @@ export default class MyDataPage extends Component {
     upload: Object,
     device: Object,
     uploading: () => {},
-    exportWorkspace: () => {},
+    exportWorkspace: (params: any, cb?: () => void) => Promise<{
+      result: boolean,
+      zipPath: string,
+    }>,
   }
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.state = {
       shareToLocal: true,
       shareToOnline: true,
@@ -77,6 +80,7 @@ export default class MyDataPage extends Component {
     this.getItemCallback = params.getItemCallback || undefined
     this.chatCallback = params.chatCallback || undefined
     this.exitCallback = params.exitCallback || undefined
+    this.showNewData = params.showNewData || undefined
     this.exportPath = ''
   }
 
@@ -94,6 +98,7 @@ export default class MyDataPage extends Component {
     armodel: 'ARMODEL',
     areffect: 'AREFFECT',
     armap: 'ARMAP',
+    sandTable: 'SANDTABLE',
   }
 
   componentDidMount() {
@@ -191,7 +196,7 @@ export default class MyDataPage extends Component {
       showLoading &&
         this.container.setLoading(
           true,
-          getLanguage(GLOBAL.language).Prompt.LOADING,
+          getLanguage(global.language).Prompt.LOADING,
         )
       let sectionData = await this.getData()
       this.setState({
@@ -205,7 +210,7 @@ export default class MyDataPage extends Component {
       // console.log(e)
       setTimeout(() => {
         showLoading && this.container && this.container.setLoading(false)
-        Toast.show(getLanguage(GLOBAL.language).Profile.GET_DATA_FAILED)
+        Toast.show(getLanguage(global.language).Profile.GET_DATA_FAILED)
       }, 1000)
     }
   }
@@ -230,13 +235,13 @@ export default class MyDataPage extends Component {
         }
       }
       if (this.itemInfo !== undefined && this.itemInfo !== null) {
-        this.setLoading(true, getLanguage(GLOBAL.language).Prompt.DELETING_DATA)
+        this.setLoading(true, getLanguage(global.language).Prompt.DELETING_DATA)
         let result = false
         result = await this.deleteData()
         Toast.show(
           result
-            ? getLanguage(GLOBAL.language).Prompt.DELETED_SUCCESS
-            : getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE,
+            ? getLanguage(global.language).Prompt.DELETED_SUCCESS
+            : getLanguage(global.language).Prompt.FAILED_TO_DELETE,
         )
         if (result) {
           this.itemInfo = null
@@ -246,7 +251,7 @@ export default class MyDataPage extends Component {
         Toast.show(ConstInfo.PLEASE_CHOOSE_DELETE_OBJ)
       }
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
       this._closeModal()
     } finally {
       this.setLoading(false)
@@ -280,7 +285,7 @@ export default class MyDataPage extends Component {
         this.itemInfo = info
         return await this.deleteData()
       }
-      this.setLoading(true, getLanguage(GLOBAL.language).Prompt.DELETING_DATA)
+      this.setLoading(true, getLanguage(global.language).Prompt.DELETING_DATA)
       let result = false
       for (let i = 0; i < deleteArr.length; i++) {
         result = await deleteItem(deleteArr[i])
@@ -291,11 +296,11 @@ export default class MyDataPage extends Component {
       this._getSectionData()
       Toast.show(
         result
-          ? getLanguage(GLOBAL.language).Prompt.DELETED_SUCCESS
-          : getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE,
+          ? getLanguage(global.language).Prompt.DELETED_SUCCESS
+          : getLanguage(global.language).Prompt.FAILED_TO_DELETE,
       )
     } catch (error) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.FAILED_TO_DELETE)
+      Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
     } finally {
       this.setLoading(false)
     }
@@ -306,7 +311,7 @@ export default class MyDataPage extends Component {
       if (this.state.batchMode) {
         let list = this._getSelectedList()
         if (list.length === 0) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_AT_LEAST_ONE)
+          Toast.show(getLanguage(global.language).Prompt.SELECT_AT_LEAST_ONE)
           return
         }
       }
@@ -328,8 +333,8 @@ export default class MyDataPage extends Component {
       this.setLoading(
         true,
         type === 'local' || type === 'template'
-          ? getLanguage(GLOBAL.language).Prompt.EXPORTING
-          : getLanguage(GLOBAL.language).Prompt.SHARING,
+          ? getLanguage(global.language).Prompt.EXPORTING
+          : getLanguage(global.language).Prompt.SHARING,
       )
 
       await SMap.checkLicense()
@@ -380,18 +385,18 @@ export default class MyDataPage extends Component {
           } else {
             Toast.show(
               type === 'local' || type === 'template'
-                ? getLanguage(GLOBAL.language).Prompt.EXPORT_SUCCESS
-                : getLanguage(GLOBAL.language).Prompt.SHARE_SUCCESS,
+                ? getLanguage(global.language).Prompt.EXPORT_SUCCESS
+                : getLanguage(global.language).Prompt.SHARE_SUCCESS,
             )
           }
         } else {
           if(type === 'template'){
-            Toast.show( getLanguage(GLOBAL.language).Prompt.EXPORT_TEMP_FAILED )
+            Toast.show( getLanguage(global.language).Prompt.EXPORT_TEMP_FAILED )
           } else {
             Toast.show(
               type === 'local'
-                ? getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED
-                : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
+                ? getLanguage(global.language).Prompt.EXPORT_FAILED
+                : getLanguage(global.language).Prompt.SHARE_FAILED,
             )
           }
         }
@@ -399,8 +404,8 @@ export default class MyDataPage extends Component {
     } catch (error) {
       Toast.show(
         type === 'local' || type === 'template'
-          ? getLanguage(GLOBAL.language).Prompt.EXPORT_FAILED
-          : getLanguage(GLOBAL.language).Prompt.SHARE_FAILED,
+          ? getLanguage(global.language).Prompt.EXPORT_FAILED
+          : getLanguage(global.language).Prompt.SHARE_FAILED,
       )
     } finally {
       this.setLoading(false)
@@ -424,7 +429,7 @@ export default class MyDataPage extends Component {
         let copyPath
         if (Platform.OS === 'android') {
           copyPath =
-            GLOBAL.homePath + this.getRelativeTempPath() + 'MyExportWX.zip'
+            global.homePath + this.getRelativeTempPath() + 'MyExportWX.zip'
           await FileTools.copyFile(path, copyPath, true)
         }
         result = await appUtilsModule.sendFileOfWechat({
@@ -434,16 +439,16 @@ export default class MyDataPage extends Component {
         })
         await FileTools.deleteFile(path)
         if (!result) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.WX_SHARE_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.WX_SHARE_FAILED)
           return undefined
         }
       } else {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.WX_NOT_INSTALLED)
+        Toast.show(getLanguage(global.language).Prompt.WX_NOT_INSTALLED)
       }
       return result === false ? result : undefined
     } catch (error) {
       if (error.message.includes('File size cannot exceeds 10M')) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+        Toast.show(getLanguage(global.language).Prompt.SHARE_WX_FILE_SIZE_LIMITE)
       }
     }
   }
@@ -508,9 +513,9 @@ export default class MyDataPage extends Component {
     this.exportPath = ''
     // 细分模板类型
     let tempType = undefined
-    if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE) {
+    if(this.itemInfo.section.title === getLanguage(global.language).Profile.PLOTTING_TEMPLATE) {
       tempType = 'plot'
-    } else if (this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.MAP_TEMPLATE) {
+    } else if (this.itemInfo.section.title === getLanguage(global.language).Profile.MAP_TEMPLATE) {
       tempType = 'map'
     }
     this.chatCallback && this.chatCallback(path, fileName, tempType)
@@ -522,9 +527,9 @@ export default class MyDataPage extends Component {
       callBack: async item => {
         try {
           let targetId = item.id
-          GLOBAL.Loading.setLoading(
+          global.Loading.setLoading(
             true,
-            getLanguage(GLOBAL.language).Prompt.SHARE_PREPARE,
+            getLanguage(global.language).Prompt.SHARE_PREPARE,
           )
           await this.exportData(fileName)
           let path = this.exportPath
@@ -547,11 +552,13 @@ export default class MyDataPage extends Component {
           } else if (this.type === this.types.aimodel) {
             type = MsgConstant.MSG_AI_MODEL
           } else if (this.type === this.types.template) {
-            if(this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.PLOTTING_TEMPLATE) {
+            if(this.itemInfo.section.title === getLanguage(global.language).Profile.PLOTTING_TEMPLATE) {
               type = MsgConstant.MSG_TEMPLATE_PLOT
-            } else if (this.itemInfo.section.title === getLanguage(GLOBAL.language).Profile.MAP_TEMPLATE) {
+            } else if (this.itemInfo.section.title === getLanguage(global.language).Profile.MAP_TEMPLATE) {
               type = MsgConstant.MSG_TEMPLATE_MAP
             }
+          } else if (this.type === this.types.sandTable) {
+            type = MsgConstant.MSG_SAND_TABLE
           }
           let action = [
             {
@@ -566,9 +573,9 @@ export default class MyDataPage extends Component {
             action: action,
           })
         } catch (error) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.SHARE_FAILED)
         } finally {
-          GLOBAL.Loading.setLoading(false)
+          global.Loading.setLoading(false)
         }
       },
     })
@@ -763,7 +770,7 @@ export default class MyDataPage extends Component {
   //页面公共选项
   getCommonPagePopupData = () => [
     {
-      title: getLanguage(GLOBAL.language).Profile.BATCH_OPERATE,
+      title: getLanguage(global.language).Profile.BATCH_OPERATE,
       action: () => {
         this.setState({
           batchMode: !this.state.batchMode,
@@ -776,8 +783,8 @@ export default class MyDataPage extends Component {
   getCommonItemPopupData = () => [
     {
       title:
-        getLanguage(GLOBAL.language).Profile[`UPLOAD_${this.type}`] ||
-        getLanguage(GLOBAL.language).Profile.UPLOAD_DATA,
+        getLanguage(global.language).Profile[`UPLOAD_${this.type}`] ||
+        getLanguage(global.language).Profile.UPLOAD_DATA,
       action: () => {
         this._closeModal()
         this.exportType = ''
@@ -786,8 +793,8 @@ export default class MyDataPage extends Component {
     },
     {
       title:
-        getLanguage(GLOBAL.language).Profile[`DELETE_${this.type}`] ||
-        getLanguage(GLOBAL.language).Profile.DELETE_DATA,
+        getLanguage(global.language).Profile[`DELETE_${this.type}`] ||
+        getLanguage(global.language).Profile.DELETE_DATA,
       action: this._onDeleteData,
     },
   ]
@@ -804,7 +811,7 @@ export default class MyDataPage extends Component {
     if (this.getItemPopupData().length > 0) {
       return this.getItemPopupData()
     } else {
-      if(this.showMode === 'tap' || (this.itemInfo&&this.itemInfo.section.title===getLanguage(GLOBAL.language).Profile.COLLECTION_TEMPLATE)){
+      if(this.showMode === 'tap' || (this.itemInfo&&this.itemInfo.section.title===getLanguage(global.language).Profile.COLLECTION_TEMPLATE)){
         return this.getCustomItemPopupData().concat(this.getCommonItemPopupData().splice(1,1))
       }else{
         return this.getCustomItemPopupData().concat(this.getCommonItemPopupData())
@@ -848,7 +855,7 @@ export default class MyDataPage extends Component {
 
   showDeleteConfirmDialog = ({ confirmAction }) => {
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Prompt.DELETE_CONFIRM,
+      text: getLanguage(global.language).Prompt.DELETE_CONFIRM,
       confirmAction: confirmAction || this._onDeleteData,
     })
     this.SimpleDialog.setVisible(true)
@@ -857,11 +864,11 @@ export default class MyDataPage extends Component {
   showBatchDeleteConfirmDialog = ({ confirmAction }) => {
     let deleteArr = this._getSelectedList()
     if (deleteArr.length === 0) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_AT_LEAST_ONE)
+      Toast.show(getLanguage(global.language).Prompt.SELECT_AT_LEAST_ONE)
       return
     }
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Prompt.BATCH_DELETE_CONFIRM,
+      text: getLanguage(global.language).Prompt.BATCH_DELETE_CONFIRM,
       confirmAction: confirmAction || this._batchDelete,
     })
     this.SimpleDialog.setVisible(true)
@@ -869,7 +876,7 @@ export default class MyDataPage extends Component {
 
   showRelatedMapsDialog = ({ confirmAction, relatedMaps }) => {
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Prompt.DELETE_MAP_RELATE_DATA,
+      text: getLanguage(global.language).Prompt.DELETE_MAP_RELATE_DATA,
       confirmAction: confirmAction,
       renderExtra: () => this.renderRelatedMap(relatedMaps),
     })
@@ -878,7 +885,7 @@ export default class MyDataPage extends Component {
 
   showExportPathDialog = () => {
     this.SimpleDialog.set({
-      text: getLanguage(GLOBAL.language).Prompt.EXPORT_TO,
+      text: getLanguage(global.language).Prompt.EXPORT_TO,
       textStyle: { fontSize: scaleSize(28) },
       renderExtra: () => {
         return (
@@ -1016,6 +1023,9 @@ export default class MyDataPage extends Component {
         case this.types.areffect:
           img = getThemeAssets().ar.armap.ar_effect
           break
+        case this.types.sandTable:
+          img = getThemeAssets().layerType.icon_layer_sandtable
+          break
         default:
           if (info.item.img) {
             img = info.item.img
@@ -1083,7 +1093,7 @@ export default class MyDataPage extends Component {
   }
 
   _renderHeaderRight = () => {
-    if (this.getItemCallback || this.chatCallback) return null
+    if ((this.getItemCallback || this.chatCallback) && !this.showNewData) return null
     if (this.state.batchMode) {
       return (
         <TouchableOpacity
@@ -1094,7 +1104,7 @@ export default class MyDataPage extends Component {
           style={styles.moreView}
         >
           <Text style={styles.headerRightTextStyle}>
-            {getLanguage(GLOBAL.language).Prompt.COMPLETE}
+            {getLanguage(global.language).Prompt.COMPLETE}
           </Text>
         </TouchableOpacity>
       )
@@ -1145,7 +1155,7 @@ export default class MyDataPage extends Component {
               source={getThemeAssets().share.share}
             />
             <Text style={{ fontSize: scaleSize(20) }}>
-              {getLanguage(GLOBAL.language).Profile.BATCH_SHARE}
+              {getLanguage(global.language).Profile.BATCH_SHARE}
             </Text>
           </TouchableOpacity>
         )}
@@ -1162,7 +1172,7 @@ export default class MyDataPage extends Component {
             source={getThemeAssets().attribute.icon_delete}
           />
           <Text style={{ fontSize: scaleSize(20) }}>
-            {getLanguage(GLOBAL.language).Profile.BATCH_DELETE}
+            {getLanguage(global.language).Profile.BATCH_DELETE}
           </Text>
         </TouchableOpacity>
       </View>
@@ -1173,7 +1183,7 @@ export default class MyDataPage extends Component {
     return (
       <SimpleDialog
         ref={ref => (this.SimpleDialog = ref)}
-        text={getLanguage(GLOBAL.language).Prompt.DELETE_MAP_RELATE_DATA}
+        text={getLanguage(global.language).Prompt.DELETE_MAP_RELATE_DATA}
         disableBackTouch={true}
       />
     )
@@ -1208,10 +1218,10 @@ export default class MyDataPage extends Component {
     return (
       <InputDialog
         ref={ref => (this.InputDialog = ref)}
-        title={getLanguage(GLOBAL.language).Prompt.ENTER_DATA_NAME}
+        title={getLanguage(global.language).Prompt.ENTER_DATA_NAME}
         confirmAction={name => {
           if (name === null || name === '') {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.ENTER_DATA_NAME)
+            Toast.show(getLanguage(global.language).Prompt.ENTER_DATA_NAME)
             return
           }
           this.InputDialog.setDialogVisible(false)
@@ -1220,8 +1230,8 @@ export default class MyDataPage extends Component {
         cancelAction={() => {
           this.InputDialog.setDialogVisible(false)
         }}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.SHARE}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.CANCEL}
+        confirmBtnTitle={getLanguage(global.language).Prompt.SHARE}
+        cancelBtnTitle={getLanguage(global.language).Prompt.CANCEL}
       />
     )
   }
@@ -1276,6 +1286,7 @@ export default class MyDataPage extends Component {
             />
           }
           eatraData={this.state}
+          ListFooterComponent={<View style={{height:8}}/>}
         />
         {this._renderItemPopup()}
         {this._renderPagePopup()}

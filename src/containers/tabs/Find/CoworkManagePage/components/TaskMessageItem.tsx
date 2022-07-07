@@ -1,13 +1,13 @@
 import React from 'react'
 import { View, TouchableOpacity, Text, Image, Platform } from 'react-native'
-import { ListSeparator, Progress, RedDot } from '../../../../../components'
+import { ListSeparator, Progress, RedDot, CheckBox } from '../../../../../components'
 import { ConstPath, UserType } from '../../../../../constants'
 import { getLanguage } from '../../../../../language'
 import { getThemeAssets } from '../../../../../assets'
 import { color, size } from '../../../../../styles'
 import { Toast, scaleSize } from '../../../../../utils'
 import * as OnlineServicesUtils from '../../../../../utils/OnlineServicesUtils'
-import DataHandler from '../../../Mine/DataHandler'
+import DataHandler from '../../../../../utils/DataHandler'
 import { FileTools } from '../../../../../native'
 import { RNFS  } from 'imobile_for_reactnative'
 import { IDownloadProps, Download } from '../../../../../redux/models/down'
@@ -20,6 +20,8 @@ interface Props {
   // isSelf: boolean,
   unread: number,
   downloadData: Download,
+  openCheckBox?: boolean,
+  checked?: boolean,
   onPress: (data: any) => void,
   addCoworkMsg: (data: any) => void,
   deleteCoworkMsg: (data: any) => void,
@@ -27,6 +29,7 @@ interface Props {
   getModule?: (key: string, index: number) => any,
   downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
   deleteSourceDownloadFile: (id: number | string) => Promise<any[]>,
+  checkAction?: (checkParams: {value: boolean, data: any, download: () => Promise<void>}) => void,
 }
 
 interface State {
@@ -172,17 +175,17 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     // if (this.state.exist) {
     if (await this.fileExist()) {
       await this.unZipFile()
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
       return
     }
     if (this.state.isDownloading) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
       return
     }
     // let downloadData = this.getDownloadData(this.props.downloadData, this.props.data.id)
     // let downloadData = this.props.downloadData
     // if (downloadData && downloadData.progress < 100) {
-    //   Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+    //   Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
     //   return
     // }
     this.setState({
@@ -237,14 +240,14 @@ export default class TaskMessageItem extends React.Component<Props, State> {
               e.message.includes('no such file or directory') || // Android提示
               e.message.includes('Failed to open target resource') // iOS提示
             ) {
-              Toast.show(getLanguage(GLOBAL.language).Friends.RESOURCE_NOT_EXIST)
+              Toast.show(this.props.data.resource.resourceName + ' ' + getLanguage(global.language).Friends.RESOURCE_NOT_EXIST)
             } else {
-              Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+              Toast.show(this.props.data.resource.resourceName + ' ' + getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
             }
           })
         })
     } catch (e) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.NETWORK_ERROR)
+      Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
       FileTools.deleteFile(this.path)
       this.setState({
         isDownloading: false,
@@ -286,7 +289,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
         this.setState({
           isDownloading: false,
         })
-        Toast.show(getLanguage(GLOBAL.language).Prompt.ONLINE_DATA_ERROR)
+        Toast.show(getLanguage(global.language).Prompt.ONLINE_DATA_ERROR)
       } else {
         this.setState({
           isDownloading: false,
@@ -320,6 +323,10 @@ export default class TaskMessageItem extends React.Component<Props, State> {
       result,
       path: fileDir,
     }
+  }
+
+  _checkAction = (value: boolean) => {
+    this.props.checkAction && this.props.checkAction({value, data: this.props.data, download: this._downloadFile})
   }
 
   _renderButton = ({ image, title, action, style }: any) => {
@@ -394,7 +401,8 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Friends.TASK_TITLE + ': ' + this.state.module.title}
+          {/* {getLanguage(global.language).Friends.TASK_TITLE + ': ' + this.state.module.title} */}
+          {getLanguage(global.language).Friends.TASK_TITLE + ': ' + this.props.data.resource.resourceName.replace('.zip', '')}
         </Text>
         <Text
           numberOfLines={1}
@@ -403,7 +411,8 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             color: color.fontColorBlack,
           }}
         >
-          {getLanguage(GLOBAL.language).Friends.TASK_MAP + ': ' + this.props.data.resource.resourceName.replace('.zip', '')}
+          {/* {getLanguage(global.language).Friends.TASK_MAP + ': ' + this.props.data.resource.resourceName.replace('.zip', '')} */}
+          {getLanguage(global.language).Friends.TASK_MODULE + ': ' + this.state.module.title}
         </Text>
         <Text
           numberOfLines={1}
@@ -412,7 +421,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
             color: color.fontColorGray3,
           }}
         >
-          {getLanguage(GLOBAL.language).Friends.TASK_CREATE_TIME + ': ' + new Date(this.props.data.time).Format("yyyy-MM-dd hh:mm:ss")}
+          {getLanguage(global.language).Friends.TASK_CREATE_TIME + ': ' + new Date(this.props.data.time).Format("yyyy-MM-dd hh:mm:ss")}
         </Text>
       </View>
     )
@@ -424,37 +433,57 @@ export default class TaskMessageItem extends React.Component<Props, State> {
     }
     return (
       <View>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={this._onPress}
+        <View
           style={styles.rowContainer}
         >
-          <Image style={styles.itemImage} source={this.state.module.moduleImage} />
-          <View
-            style={{ flex: 1, flexDirection: 'column', marginLeft: scaleSize(40) }}
+          {
+            this.props.openCheckBox &&
+            <CheckBox
+              style={{
+                marginLeft: scaleSize(20),
+                marginRight: scaleSize(32),
+                height: scaleSize(30),
+                width: scaleSize(30),
+              }}
+              checked={this.props.checked}
+              onChange={this._checkAction}
+            />
+          }
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={this._onPress}
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              height: scaleSize(160),
+              marginLeft: scaleSize(10),
+              paddingVertical: scaleSize(24),
+              alignItems: 'center',
+            }}
           >
-            {this._renderContentView()}
-          </View>
-          {
-            !this.state.exist && this._renderButton({
-              image: getThemeAssets().cowork.icon_nav_import,
-              title: this.state.progress,
-              action: this._downloadFile,
-            })
-          }
-          {
-            // this.state.exist &&
-            this._renderButton({
-              image: getThemeAssets().publicAssets.icon_move,
-              action: this._showMore,
-              style: {marginLeft: scaleSize(24)},
-            })
-          }
-          {/* {this._renderButton({
-            image: getThemeAssets().edit.icon_delete,
-            action: () => this.props.deleteCoworkMsg(this.props.data),
-          })} */}
-        </TouchableOpacity>
+            <Image style={styles.itemImage} source={this.state.module.moduleImage} />
+            <View
+              style={{ flex: 1, flexDirection: 'column', marginLeft: scaleSize(40) }}
+            >
+              {this._renderContentView()}
+            </View>
+            {
+              !this.state.exist && this._renderButton({
+                image: getThemeAssets().cowork.icon_nav_import,
+                title: this.state.progress,
+                action: this._downloadFile,
+              })
+            }
+            {
+              // this.state.exist &&
+              this._renderButton({
+                image: getThemeAssets().publicAssets.icon_move,
+                action: this._showMore,
+                style: {marginLeft: scaleSize(24)},
+              })
+            }
+          </TouchableOpacity>
+        </View>
         {
           this.props.unread > 0 &&
           <RedDot style={{position: 'absolute', top: scaleSize(30), left: scaleSize(30)}} />

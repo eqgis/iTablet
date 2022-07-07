@@ -1,0 +1,5 @@
+{
+    "bs-dependencies": [
+        "@rescript-react-native/netinfo"
+    ]
+}

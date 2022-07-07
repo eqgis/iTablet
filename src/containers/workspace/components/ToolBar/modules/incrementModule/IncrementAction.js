@@ -16,14 +16,15 @@ import BackgroundTimer from 'react-native-background-timer'
 import { SMap, Action } from 'imobile_for_reactnative'
 import { Toast, LayerUtils } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
+import NavigationService from '../../../../../NavigationService'
 
 async function start() {
-  if (GLOBAL.INCREMENT_DATA.datasetName) {
+  if (global.INCREMENT_DATA.datasetName) {
     BackgroundTimer.runBackgroundTimer(async () => {
       await SMap.startGpsIncrement()
     }, 2000)
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+    Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
   }
 }
 function stop() {
@@ -53,10 +54,10 @@ async function cancel() {
 }
 
 async function addPoint() {
-  if (GLOBAL.INCREMENT_DATA.datasetName) {
+  if (global.INCREMENT_DATA.datasetName) {
     await SMap.startGpsIncrement()
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+    Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
   }
 }
 
@@ -64,7 +65,7 @@ async function addPoint() {
  * 提交
  */
 async function submit() {
-  if (GLOBAL.INCREMENT_DATA.datasetName) {
+  if (global.INCREMENT_DATA.datasetName) {
     const _params = ToolbarModule.getParams()
     let type = _params.type
     switch (type) {
@@ -83,7 +84,7 @@ async function submit() {
         break
     }
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+    Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
   }
 }
 
@@ -135,14 +136,15 @@ async function changeMethod(type = ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD)
       containerType,
       isFullScreen: false,
     })
+  global.NAVMETHOD = type
 }
 
 function showAttribute() {
-  if (GLOBAL.INCREMENT_DATA.datasetName){
-    GLOBAL.NEEDREFRESHTABLE = true
-    NavigationService.navigate('LayerSelectionAttribute',{type:'NAVIGATION',datasetName:GLOBAL.INCREMENT_DATA.datasetName})
+  if (global.INCREMENT_DATA.datasetName){
+    global.NEEDREFRESHTABLE = true
+    NavigationService.navigate('LayerSelectionAttribute',{type:'NAVIGATION',datasetName:global.INCREMENT_DATA.datasetName})
   }else{
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SELECT_LINE_DATASET)
+    Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
   }
 }
 
@@ -150,17 +152,18 @@ function showAttribute() {
  * 切换数据集
  */
 function changeNetwork() {
-  const _params = ToolbarModule.getParams()
-  let type = _params.type
-  _params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK, {
-    isFullScreen: false,
-    containerType: ToolbarType.list,
-    height:
-      _params.device.orientation === 'PORTRAIT'
-        ? Height.LIST_HEIGHT_P
-        : Height.LIST_HEIGHT_L,
-  })
-  ToolbarModule.addData({ preType: type })
+  NavigationService.navigate('ChooseNaviLayer')
+  // const _params = ToolbarModule.getParams()
+  // let type = _params.type
+  // _params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK, {
+  //   isFullScreen: false,
+  //   containerType: ToolbarType.list,
+  //   height:
+  //     _params.device.orientation === 'PORTRAIT'
+  //       ? Height.LIST_HEIGHT_P
+  //       : Height.LIST_HEIGHT_L,
+  // })
+  // ToolbarModule.addData({ preType: type })
 }
 
 //底部增量方式图片
@@ -219,33 +222,34 @@ async function methodSelected(type) {
   changeMethod(type)
 }
 function close() {
-  GLOBAL.SimpleDialog.set({
-    text: getLanguage(GLOBAL.language).Prompt.CONFIRM_EXIT,
+  global.SimpleDialog.set({
+    text: getLanguage(global.language).Prompt.CONFIRM_EXIT,
     confirmAction: dialogConfirm,
   })
-  GLOBAL.SimpleDialog.setVisible(true)
+  global.SimpleDialog.setVisible(true)
 }
 
 function dialogConfirm() {
   const _params = ToolbarModule.getParams()
-  if (GLOBAL.INCREMENT_DATA.datasetName) {
+  if (global.INCREMENT_DATA.datasetName) {
     BackgroundTimer.stopBackgroundTimer()
     SMap.clearIncrementPoints()
-    SMap.cancelIncrement(GLOBAL.INCREMENT_DATA)
+    SMap.cancelIncrement(global.INCREMENT_DATA)
   }
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
   let layers = _params.layers.layers
   LayerUtils.setLayersSelectable(layers, true, true)
-  GLOBAL.FloorListView?.setVisible(true)
-  GLOBAL.mapController?.setVisible(true)
-  GLOBAL.TouchType = TouchType.NORMAL
+  global.FloorListView?.setVisible(true)
+  global.mapController?.setVisible(true)
+  global.TouchType = TouchType.NORMAL
 }
 
 /**
  * 拓扑编辑
  */
 async function topoEdit() {
+  Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_OBJECT)
   const _params = ToolbarModule.getParams()
   //切换方式 清除上次增量的数据
   await SMap.clearIncrementPoints()

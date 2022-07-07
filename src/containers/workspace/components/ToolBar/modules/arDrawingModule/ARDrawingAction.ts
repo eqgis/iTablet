@@ -1,4 +1,4 @@
-/* global GLOBAL */
+/* global global */
 import {
   ARLayerType,
   TARLayerType,
@@ -12,22 +12,23 @@ import {
   SCoordination,
   IServerService,
 } from 'imobile_for_reactnative'
-import { IVector3, Point3D } from "imobile_for_reactnative/types/data"
+import { Point3D } from "imobile_for_reactnative/types/data"
 import {
   ConstToolType,
   ToolbarType,
   ConstPath,
 } from '../../../../../../constants'
-import { Toast, AppProgress, DialogUtils, dataUtil } from '../../../../../../utils'
+import { Toast, AppProgress, DialogUtils, dataUtil, AppToolBar, AppEvent } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import { ImagePicker } from '../../../../../../components'
 import ToolbarModule from '../ToolbarModule'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
-import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffectExample3, AREffectExample4, ExampleData } from '../../../../../tabs/Mine/DataHandler/DataExample'
-import { ExternalDataType, ToolBarListItem } from '../types'
-import { Downloads, Download } from '../../../../../../redux/models/down'
+import DataHandler from '../../../../../../utils/DataHandler'
+import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffectExample3, AREffectExample4, ExampleData } from '../../../../../../utils/DataHandler/DataExample'
+import { ExternalDataType } from '../types'
 import { Platform } from 'react-native'
+import { getThemeAssets } from '../../../../../../assets'
+import ToolbarBtnType from '../../ToolbarBtnType'
 
 interface AssetType {
   Photos: 'Photos',
@@ -35,17 +36,17 @@ interface AssetType {
   All: 'All'
 }
 
-function openSourcePicker(assetType: keyof AssetType, callback: (data: any) => void) {
+function openSourcePicker(assetType: keyof AssetType, callback: (data: any) => void, size: number) {
   ImagePicker.AlbumListView.defaultProps.showDialog = false
   ImagePicker.AlbumListView.defaultProps.assetType = assetType
   ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
   ImagePicker.getAlbum({
-    maxSize: 1,
+    maxSize: size,
     callback: callback,
   })
 }
 
-function setARToolbar(type: string, data?: {[name: string]: any}) {
+function setARToolbar(type: string, data?: { [name: string]: any }) {
   const _params: any = ToolbarModule.getParams()
   // const _data: any = ToolbarModule.getData()
   ToolbarModule.addData({
@@ -57,21 +58,42 @@ function setARToolbar(type: string, data?: {[name: string]: any}) {
   })
 }
 
-let isAddingARElement: boolean = false
+let isAddingARElement = false
 /**
  * 添加到当前位置
  * @param type
  */
-async function addAtCurrent(type: string, location?: IVector3) {
-  if(isAddingARElement) return
+async function addAtCurrent(type: string, location?: Point3D) {
+  if (isAddingARElement) return
   isAddingARElement = true
-  const _params: any = ToolbarModule.getParams()
   if (type === ConstToolType.SM_AR_DRAWING_SCENE) {
     await addARScene(location)
   } else if (type === ConstToolType.SM_AR_DRAWING_MODAL) {
     await addARModel(location)
   } else if (type === ConstToolType.SM_AR_DRAWING_TEXT) {
     await addText(location)
+  } else if(type === ConstToolType.SM_AR_DRAWING_BUBBLE_TEXT) {
+    await addBubbleText(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_BROCHORE) {
+    await addBrochore(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_SAND_TABLE_ALBUM) {
+    await addARSandTableAlbum(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_ATTRIBUTE_WIDGET) {
+    await addARAttriubutWidget(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_WIDGET) {
+    await addARWidget(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM) {
+    await addARVideoAlbum(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_LINE) {
+    await addARLinePoint(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE) {
+    await addARMarkerLinePoint(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_SAND) {
+    await addSandTable(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_BAR_CHART) {
+    await addARChart(location)
+  } else if (type === ConstToolType.SM_AR_DRAWING_ADD_PIE_CHART) {
+    await addARPieChart(location)
   } else {
     let _type
     if (type === ConstToolType.SM_AR_DRAWING_VIDEO) {
@@ -85,6 +107,7 @@ async function addAtCurrent(type: string, location?: IVector3) {
     await addMedia(_type, location)
   }
   isAddingARElement = false
+  AppToolBar.addData({ isAlbumFirstAdd: true })
 }
 
 /**
@@ -92,8 +115,8 @@ async function addAtCurrent(type: string, location?: IVector3) {
  * @param type
  */
 async function addAtPoint(type: string) {
-  const _params: any = ToolbarModule.getParams()
-  const _data: any = ToolbarModule.getData()
+  // const _params: any = ToolbarModule.getParams()
+  // const _data: any = ToolbarModule.getData()
   SARMap.setCenterHitTest(true)
   // _params.setToolbarVisible && _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_POINT, {
   //   isFullScreen: false,
@@ -108,19 +131,19 @@ async function addAtPoint(type: string) {
 async function arVideo() {
   openSourcePicker('Videos', data => {
     if (data && data.length > 0) {
-      let path = data[0].uri
+      const path = data[0].uri
       setARToolbar(ConstToolType.SM_AR_DRAWING_VIDEO, { arContent: path })
     }
-  })
+  }, 1)
 }
 
 async function arImage() {
   openSourcePicker('Photos', data => {
     if (data && data.length > 0) {
-      let path = data[0].uri
+      const path = data[0].uri
       setARToolbar(ConstToolType.SM_AR_DRAWING_IMAGE, { arContent: path })
     }
-  })
+  }, 1)
 }
 
 async function arWebView() {
@@ -144,12 +167,22 @@ async function arText() {
   })
 }
 
+function arBubbleText() {
+  DialogUtils.showInputDailog({
+    value: '',
+    confirmAction: async (value: string) => {
+      setARToolbar(ConstToolType.SM_AR_DRAWING_BUBBLE_TEXT, { arContent: value })
+      DialogUtils.hideInputDailog()
+    },
+  })
+}
+
 async function ar3D(path: string) {
   setARToolbar(ConstToolType.SM_AR_DRAWING_SCENE, { arContent: path })
 }
 
 /** 打开三维场景 */
-export async function addARScene(location?: IVector3) {
+export async function addARScene(location?: Point3D) {
   try {
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
@@ -159,7 +192,7 @@ export async function addARScene(location?: IVector3) {
       addNewDSourceWhenCreate: false,
       addNewDsetWhenCreate: false,
     })
-    if(!mapName){
+    if (!mapName) {
       await _params.createARMap()
       newDatasource = true
     }
@@ -168,30 +201,30 @@ export async function addARScene(location?: IVector3) {
     const sceneLayers = _params.arlayer?.layers?.filter((layer: ARLayer) => {
       return layer.type === ARLayerType.AR_SCENE_LAYER
     })
-    if(sceneLayers && sceneLayers.length > 0) {
+    if (sceneLayers && sceneLayers.length > 0) {
       await SARMap.removeARLayer(sceneLayers[0].name)
     }
 
     let datasourceName = _params.armap.currentMap?.mapName || DataHandler.getARRawDatasource()
     let datasetName = 'scene'
     const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
-    if(result.success) {
+    if (result.success) {
       datasourceName = result.datasourceName
-      datasetName = result.datasetName
-      if(newDatasource) {
+      datasetName = result.datasetName || ''
+      if (newDatasource) {
         DataHandler.setARRawDatasource(datasourceName)
       }
 
       const homePath = await FileTools.getHomeDirectory()
-      let path = _data.arContent
-      if(!path) {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.NO_SCENE_SELECTED)
+      let path: string = _data.arContent
+      if (!path) {
+        Toast.show(getLanguage(global.language).Prompt.NO_SCENE_SELECTED)
         return
       }
 
       try {
         let addLayerName: string
-        if(path.indexOf('http') === 0) {
+        if (path.indexOf('http') === 0) {
           //double check
           const isValidUrl = dataUtil.checkOnline3DServiceUrl(path) === ''
           if (!isValidUrl) {
@@ -200,45 +233,45 @@ export async function addARScene(location?: IVector3) {
           }
           const iserverSrv = new IServerService()
           const info = await iserverSrv.getSceneInfo(path)
-          if('error' in info) {
+          if ('error' in info) {
             Toast.show(getLanguage().Profile.ONLINE_DATA_UNAVAILABLE)
             return
           }
-          const {serverUrl, sceneName, datasetUrl} = getOnlineSceneFromUrl(path)
+          const { serverUrl, sceneName, datasetUrl } = getOnlineSceneFromUrl(path)
           const co = new SCoordination('online')
-          const recordinfo = await co.downloadRecordset(datasetUrl, 0 , 1)
-          const sceneOffset: Point3D = {x: 0, y: 0, z: 0}
-          if(recordinfo.length > 0) {
+          const recordinfo = await co.downloadRecordset(datasetUrl, 0, 1)
+          const sceneOffset: Point3D = { x: 0, y: 0, z: 0 }
+          if (recordinfo.length > 0) {
             recordinfo[0].featureInfo.forEach(feature => {
-              if(feature.name === 'AR_SCENE_X') {
+              if (feature.name === 'AR_SCENE_X') {
                 sceneOffset.x = feature.value as number
               }
-              if(feature.name === 'AR_SCENE_Y') {
+              if (feature.name === 'AR_SCENE_Y') {
                 sceneOffset.y = feature.value as number
               }
-              if(feature.name === 'AR_SCENE_Z') {
+              if (feature.name === 'AR_SCENE_Z') {
                 sceneOffset.z = feature.value as number
               }
             })
           }
           addLayerName = await SARMap.addSceneLayerOnline(datasourceName, datasetName, serverUrl, sceneName, location, sceneOffset)
         } else {
-          path = homePath + _data.arContent.substring(0, _data.arContent.lastIndexOf('.'))
-          // 得到的是工作空间所在目录 需要去找到sxwu文件路径
-          const list = await FileTools.getPathListByFilter(path,{ extension:'sxwu', type: 'file'})
-          if(list.length == 0) return
-          addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, homePath + list[0].path, location)
+          path = homePath + _data.arContent
+          const pxp = await DataHandler.getPxpContent(path)
+          if (pxp === null) return
+          const wsPath = path.substring(0, path.lastIndexOf('/')) + '/' + pxp.Workspace.server
+          addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, location)
         }
-        if(addLayerName !== ''){
+        if (addLayerName !== '') {
           const layers: ARLayer[] = await _params.getARLayers()
           const defaultLayer = layers.find(item => {
             return item.type === ARLayerType.AR_SCENE_LAYER
           })
-          if(defaultLayer) {
+          if (defaultLayer) {
             _params.setCurrentARLayer(defaultLayer)
           }
         }
-      } catch(e){
+      } catch (e) {
         console.warn(e)
       } finally {
         // AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ADD')
@@ -249,7 +282,7 @@ export async function addARScene(location?: IVector3) {
   }
 }
 
-function getOnlineSceneFromUrl(url: string):  {serverUrl: string, datasetUrl: string, sceneName: string} {
+function getOnlineSceneFromUrl(url: string): { serverUrl: string, datasetUrl: string, sceneName: string } {
   const pattern = /(.+\/services)\/3D-(.+)\/rest\/realspace\/scenes\/(.+)/
   const result = url.match(pattern)
   let servicesUrl = ''
@@ -279,29 +312,29 @@ async function arModel(path: string) {
 }
 
 /** 添加模型 */
-export async function addARModel(location?: IVector3) {
+export async function addARModel(location?: Point3D) {
   try {
     await checkARLayer(ARLayerType.AR_MODEL_LAYER)
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
     const layer = _params.arlayer.currentLayer
-    if(layer){
-      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, 0, location)
+    if (layer) {
+      SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + _data.arContent, location)
     }
   } catch (error) {
     Toast.show(error)
   }
 }
 
-async function addMedia(type: TARElementType, location?: IVector3) {
+async function addMedia(type: TARElementType, location?: Point3D) {
   try {
     await checkARLayer(ARLayerType.AR_MEDIA_LAYER)
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
     let content = _data.arContent
     const layer = _params.arlayer.currentLayer
-    if(content && layer && layer.type === ARLayerType.AR_MEDIA_LAYER) {
-      if((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
+    if (content && layer && layer.type === ARLayerType.AR_MEDIA_LAYER) {
+      if ((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
         content = content.substring(7)
       }
       SARMap.addARMedia(layer.name, type, content, location)
@@ -312,7 +345,22 @@ async function addMedia(type: TARElementType, location?: IVector3) {
   }
 }
 
-async function addText(location?: IVector3) {
+async function addText(location?: Point3D) {
+  try {
+    await checkARLayer(ARLayerType.AR_TEXT_LAYER)
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    const content = _data.arContent
+    const layer = _params.arlayer.currentLayer
+    if (content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
+      SARMap.addARText(layer.name, content, location)
+    }
+  } catch (error) {
+    Toast.show(error)
+  }
+}
+
+async function addBubbleText(location?: Point3D) {
   try {
     await checkARLayer(ARLayerType.AR_TEXT_LAYER)
     const _params: any = ToolbarModule.getParams()
@@ -320,10 +368,70 @@ async function addText(location?: IVector3) {
     let content = _data.arContent
     const layer = _params.arlayer.currentLayer
     if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-      SARMap.addARText(layer.name, content, location)
+      SARMap.addARBubbleText(layer.name, content, location)
     }
   } catch (error) {
     Toast.show(error)
+  }
+}
+
+async function addBrochore(location?: Point3D){
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  if (layer) {
+    SARMap.addARBrochore(layer.name, ARElementType.AR_BROCHOR, albumName, location)
+  }
+}
+
+async function addARSandTableAlbum(location?: Point3D) {
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  const { sandTablePaths } = _data
+  if (layer && sandTablePaths) {
+    await SARMap.addARSandTableAlbum(layer.name, sandTablePaths, albumName, location)
+  }
+}
+
+async function addARAttriubutWidget(location?: Point3D) {
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  const arPhotos = _data.arPhotos
+  if (arPhotos && layer) {
+    SARMap.addARAttributeWidget(layer.name, ARElementType.AR_ATTRIBUTE_ALBUM, arPhotos, albumName, location)
+  }
+}
+
+async function addARWidget(location?: Point3D) {
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  const arPhotos = _data.arPhotos
+  if (arPhotos && layer) {
+    SARMap.addARWidget(layer.name, ARElementType.AR_ALBUM, arPhotos, albumName, location)
+  }
+}
+
+async function addARVideoAlbum(location?: Point3D) {
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const _data: any = ToolbarModule.getData()
+  const layer = _params.arlayer.currentLayer
+  const albumName = _data.albumName
+  const arPhotos = _data.arPhotos
+  const videoType = _data.videoType
+  if (arPhotos && layer) {
+    SARMap.addARVideoAlbum(layer.name, ARElementType.AR_VIDEO_ALBUM, arPhotos, albumName, videoType, location)
   }
 }
 
@@ -336,21 +444,29 @@ async function addText(location?: IVector3) {
 async function addAREffect(fileName: string, filePath: string) {
   try {
     const _params: any = ToolbarModule.getParams()
-    const _data: any = ToolbarModule.getData()
     const homePath = await FileTools.getHomeDirectory()
-    const layers = _params.arlayer.layers
     let effectLayer: ARLayer | undefined = undefined
-    if(layers) {
-      effectLayer = layers.find((item: ARLayer) => item.type === ARLayerType.EFFECT_LAYER)
+
+    // 是否允许新建图层添加
+    // 特效图层是否未添加完毕  false表示添加完毕， true表示未添加完毕
+    // const isNotEnd = _data.isNotEndAddEffect
+    const isNotEnd = global.isNotEndAddEffect
+
+    // 获取当前图层
+    const layer = _params?.arlayer?.currentLayer
+    // 若当前图层是特效图层
+    if (layer?.type === ARLayerType.EFFECT_LAYER) {
+      effectLayer = layer
     }
-    // 若已有特效图层，则替换
-    if(effectLayer) {
+
+    // 若当前图层是特效图层,且为正在添加状态，则替换
+    if (isNotEnd && effectLayer) {
       const homePath = await FileTools.getHomeDirectory()
       if (Platform.OS === 'ios') {
-        let targetPath = filePath.replace('.areffect','.mp4')
-        await FileTools.copyFile(homePath+filePath, homePath+targetPath)
+        const targetPath = filePath.replace('.areffect', '.mp4')
+        await FileTools.copyFile(homePath + filePath, homePath + targetPath)
         SARMap.setAREffect(effectLayer.name, homePath + targetPath)
-      }else{
+      } else {
         SARMap.setAREffect(effectLayer.name, homePath + filePath)
       }
       const layerName = fileName.substring(0, fileName.lastIndexOf('.'))
@@ -362,24 +478,32 @@ async function addAREffect(fileName: string, filePath: string) {
     const mapName = _params.armap.currentMap?.mapName
 
     // 若无当前地图，则新建地图
-    if(!mapName){
+    if (!mapName) {
       await _params.createARMap()
     }
     const layerName = fileName.substring(0, fileName.lastIndexOf('.'))
-    let addLayerName 
+    let addLayerName
     if (Platform.OS === 'ios') {
-      let targetPath = filePath.replace('.areffect','.mp4')
-      await FileTools.copyFile(homePath+filePath, homePath+targetPath)
+      const targetPath = filePath.replace('.areffect', '.mp4')
+      await FileTools.copyFile(homePath + filePath, homePath + targetPath)
       addLayerName = await SARMap.addEffectLayer(layerName, homePath + targetPath)
-    }else{
+    } else {
       addLayerName = await SARMap.addEffectLayer(layerName, homePath + filePath)
     }
-    if(addLayerName !== '') {
+    // 先矫正定位
+    // if (Platform.OS === 'android') {
+    SARMap.setEffectLayerCenter(fileName.substring(0, fileName.lastIndexOf('.')))
+    console.warn("layer name: " + fileName.substring(0, fileName.lastIndexOf('.')))
+    // } else {
+    //   // IOS TODO
+    // }
+    if (addLayerName !== '') {
+      global.isNotEndAddEffect = true
       const layers = await _params.getARLayers()
       const defaultLayer = layers.find((item: ARLayer) => {
         return item.type === ARLayerType.EFFECT_LAYER
       })
-      if(defaultLayer) {
+      if (defaultLayer) {
         _params.setCurrentARLayer(defaultLayer)
       }
     }
@@ -394,7 +518,7 @@ async function addAREffect(fileName: string, filePath: string) {
  * 不支持特效层
  */
 async function checkARLayer(type: TARLayerType) {
-  if(type === ARLayerType.EFFECT_LAYER) return
+  if (type === ARLayerType.EFFECT_LAYER) return
   const _params: any = ToolbarModule.getParams()
   const _data: any = ToolbarModule.getData()
   let newDatasource = _data.addNewDSourceWhenCreate === true
@@ -406,8 +530,8 @@ async function checkARLayer(type: TARLayerType) {
   // const props = AppToolBar.getProps()
   const currentLayer = _params.arlayer.currentLayer
   let satisfy = false
-  if(currentLayer) {
-    if(!newDataset && currentLayer && currentLayer.type === type) {
+  if (currentLayer) {
+    if (!newDataset && currentLayer && currentLayer.type === type) {
       satisfy = true
     } else {
       newDataset = true
@@ -423,10 +547,10 @@ async function checkARLayer(type: TARLayerType) {
     newDatasource = true
   }
 
-  if(!satisfy) {
+  if (!satisfy) {
     let datasourceName = DataHandler.getARRawDatasource() || _params.armap.currentMap?.mapName || 'ARMAP_DEFAULT'
     let datasetName: string
-    switch(type) {
+    switch (type) {
       case ARLayerType.AR_MEDIA_LAYER:
         datasetName = 'defaultArPoiLayer'
         break
@@ -436,26 +560,45 @@ async function checkARLayer(type: TARLayerType) {
       case ARLayerType.AR_MODEL_LAYER:
         datasetName = 'defaultArModelLayer'
         break
+      // 矢量线类型的图层
+      case ARLayerType.AR_LINE_LAYER:
+        datasetName = 'defaultArLineLayer'
+        break
+      // 矢量符号线的图层
+      case ARLayerType.AR_MARKER_LINE_LAYER:
+        datasetName = 'defaultArMarkerLineLayer'
+        break
       default:
         datasetName = 'defaultArLayer'
     }
     const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, newDataset, type)
-    if(result.success) {
+    if (result.success) {
       datasourceName = result.datasourceName
       datasetName = result.datasetName
-      if(newDatasource) {
+      if (newDatasource) {
         DataHandler.setARRawDatasource(datasourceName)
       }
-      await SARMap.addElementLayer(datasourceName, datasetName, type, false)
+      const layerName = await SARMap.addElementLayer(datasourceName, datasetName, type, false)
+
+      let markerLineContent = AppToolBar.getData()?.markerLineContent
+
+      if(markerLineContent && markerLineContent.indexOf('file://') === 0) {
+        markerLineContent = markerLineContent.substring(7)
+      } else {
+        markerLineContent = ""
+      }
+      if(type === ARLayerType.AR_MARKER_LINE_LAYER) {
+        await SARMap.setLayerStyle(layerName, {markerSymbolPath: markerLineContent})
+      }
       const layers = await _params.getARLayers()
       const defaultLayer = layers.find((item: ARElementLayer) => {
-        if(item.type === type) {
+        if (item.type === type) {
           const layer = item
           return layer.datasourceAlias === datasourceName && layer.datasetName === datasetName
         }
         return false
       })
-      if(defaultLayer) {
+      if (defaultLayer) {
         await _params.setCurrentARLayer(defaultLayer)
       }
     } else {
@@ -468,6 +611,10 @@ async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
   const _data: any = ToolbarModule.getData()
 
+  if(_params.type === ConstToolType.SM_AR_DRAWING_MODAL) {
+    AppEvent.emitEvent('ar_map_add_end')
+  }
+
   if (_params.type === ConstToolType.SM_AR_DRAWING_ADD_POINT) {
     // 点选添加对象界面，返回上一级
     setARToolbar(_data.prevType, { arContent: _data.arContent })
@@ -477,6 +624,12 @@ async function toolbarBack() {
     SARMap.setCenterHitTest(false)
     return
   }
+
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+    SARMap.exitAddARLine(layer.name)
+  }
+
   // SARMap.setAction(ARAction.SELECT)
   SARMap.setAction(ARAction.NULL)
   SARMap.clearSelection()
@@ -485,10 +638,27 @@ async function toolbarBack() {
     containerType: ToolbarType.tableTabs,
     isFullScreen: false,
   })
-  ToolbarModule.addData({selectARElement: null})
+  ToolbarModule.addData({ selectARElement: null })
 }
 
 function commit() {
+  const _data: any = ToolbarModule.getData()
+  const _params: any = ToolbarModule.getParams()
+  if(_params.type === ConstToolType.SM_AR_DRAWING_MODAL
+    || _params.type === ConstToolType.SM_AR_DRAWING_ADD_POINT
+  ) {
+    AppEvent.emitEvent('ar_map_add_end')
+  }
+
+  if(_params.type === ConstToolType.SM_AR_DRAWING_ADD_LINE ||
+    _params.type === ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE ||
+    _data.prevType === ConstToolType.SM_AR_DRAWING_ADD_LINE ||
+    _data.prevType === ConstToolType.SM_AR_DRAWING_ADD_MARKER_LINE
+  ){
+    addARLineElement()
+  }
+
+  global.isNotEndAddEffect = false
   SARMap.setCenterHitTest(false)
   // SARMap.setAction(ARAction.SELECT)
   SARMap.setAction(ARAction.NULL)
@@ -503,7 +673,7 @@ function close() {
   SARMap.setCenterHitTest(false)
   // SARMap.setAction(ARAction.SELECT)
   SARMap.setAction(ARAction.NULL)
-  ToolbarModule.addData({selectARElement: null})
+  ToolbarModule.addData({ selectARElement: null })
   _params.setToolbarVisible(false)
   return true
 }
@@ -548,17 +718,17 @@ export async function downloadEffectlExample(downloadKeys?: string[]) {
 }
 
 async function _downloadExamples(type: ExternalDataType, examples: ExampleData[]) {
-  for(const example of examples) {
+  for (const example of examples) {
     const downloadKey = example.userName + '_' + example.downloadName
     // const downloadData: Download | undefined = _getDownload(downloadKey)
     // if(downloadData && downloadData.progress < 100) {
-    if(AppProgress.isInProgress(downloadKey)) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+    if (AppProgress.isInProgress(downloadKey)) {
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
       return
     }
   }
 
-  for(let i = 0; i < examples.length; i++) {
+  for (let i = 0; i < examples.length; i++) {
     await _downloadExample(type, examples[i])
   }
 }
@@ -580,10 +750,10 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
   const downloadKey = exampleData.userName + '_' + exampleData.downloadName
   // const downloadData: Download | undefined = _getDownload(downloadKey)
   // if(downloadData && downloadData.progress < 100) {
-  //   Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+  //   Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
   //   return false
   // }
-  if(AppProgress.isInProgress(downloadKey)) {
+  if (AppProgress.isInProgress(downloadKey)) {
     Toast.show(getLanguage().Prompt.DOWNLOADING)
     return false
   }
@@ -591,8 +761,8 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
   let result: boolean = true
   //尝试读取以前下载的示范数据
   const items = await DataHandler.getExternalData(homePath + ConstPath.Common + exampleData.dir, [type])
-  if(items.length === 0) {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOADING)
+  if (items.length === 0) {
+    Toast.show(getLanguage(global.language).Prompt.DOWNLOADING)
     AppProgress.addProgress(downloadKey)
     result = await DataHandler.downloadExampleData(exampleData, progress => {
       AppProgress.updateProgress(downloadKey, progress)
@@ -607,7 +777,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
     //     progressDivider: 1,
     //     key: downloadOption.id,
     //     // key: downloadKey,
-    //     module: GLOBAL.Type,
+    //     module: global.Type,
     //   }
     //   result = await _params.downloadFile(downloadOptions)
 
@@ -616,35 +786,278 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
     //     result && FileTools.deleteFile(downloadOption.toFile)
     //   }
     // }
-    if(result) {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING)
+    if (result) {
+      Toast.show(getLanguage(global.language).Prompt.IMPORTING)
       const items = await DataHandler.getExternalData(homePath + ConstPath.Common + exampleData.dir, [type])
-      if(items.length > 0) {
+      if (items.length > 0) {
         //TODO 导入所有数据
         for (const item of items) {
           result = await DataHandler.importExternalData(_params.user.currentUser, item) && result
         }
         // result && AppToolBar.resetTabData()
-        Toast.show(result ? getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS : getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
+        Toast.show(result ? getLanguage(global.language).Prompt.IMPORTED_SUCCESS : getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
       } else {
         Toast.show('没有数据')
       }
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.DOWNLOAD_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
     }
     AppProgress.onProgressEnd(downloadKey)
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.IMPORTING)
+    Toast.show(getLanguage(global.language).Prompt.IMPORTING)
     // result = await DataHandler.importExternalData(_params.user.currentUser, items[0])
     for (const item of items) {
       result = await DataHandler.importExternalData(_params.user.currentUser, item) && result
     }
     // result && AppToolBar.resetTabData()
     AppProgress.onProgressEnd(downloadKey)
-    Toast.show(result ? getLanguage(GLOBAL.language).Prompt.IMPORTED_SUCCESS : getLanguage(GLOBAL.language).Prompt.FAILED_TO_IMPORT)
+    Toast.show(result ? getLanguage(global.language).Prompt.IMPORTED_SUCCESS : getLanguage(global.language).Prompt.FAILED_TO_IMPORT)
   }
 }
 
+function arAttributeAlbum() {
+  const _params: any = ToolbarModule.getParams()
+  const data = []
+  data.push({
+    key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
+    title: getLanguage(global.language).Map_Main_Menu.RELATIONSHIP,
+    action: () => {
+      openSourcePicker('Photos', data => {
+        if (data && data.length > 0) {
+          ToolbarModule.addData({ arPhotos: data, albumName: getLanguage().ATTRIBUTE_ALBUM })
+          const _params: any = ToolbarModule.getParams()
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_WIDGET, {
+            isFullScreen: false,
+          })
+        }
+      }, 10)
+    },
+    size: 'large',
+    image: getThemeAssets().ar.functiontoolbar.icon_tool_relation,
+  }, {
+    key: ConstToolType.SM_AR_ATTRIBUTE_ALBUM,
+    title: getLanguage(global.language).Map_Main_Menu.LIST,
+    action: () => {
+      openSourcePicker('Photos', data => {
+        if (data && data.length > 0) {
+          ToolbarModule.addData({ arPhotos: data, albumName: getLanguage().ATTRIBUTE_ALBUM })
+          const _params: any = ToolbarModule.getParams()
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_ATTRIBUTE_WIDGET, {
+            isFullScreen: false,
+          })
+        }
+      }, 10)
+    },
+    size: 'large',
+    image: getThemeAssets().ar.functiontoolbar.icon_tool_list,
+  })
+  const buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+  ]
+  _params.setToolbarVisible(true, ConstToolType.SM_AR_ATTRIBUTE_ALBUM, {
+    isFullScreen: false,
+    containerType: ToolbarType.table,
+    data,
+    buttons,
+  })
+}
+
+function arVideoAlbum() {
+  const _params: any = ToolbarModule.getParams()
+  const data = []
+  data.push({
+    key: ConstToolType.SM_AR_VIDEO_ALBUM,
+    title: getLanguage(global.language).Map_Main_Menu.LOOP,
+    action: () => {
+      openSourcePicker('Videos', data => {
+        if (data && data.length > 0) {
+          ToolbarModule.addData({ arPhotos: data, albumName: getLanguage().VIDEO_ALBUM, videoType: 0 })
+          const _params: any = ToolbarModule.getParams()
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM, {
+            isFullScreen: false,
+          })
+        }
+      }, 5)
+    },
+    size: 'large',
+    image: getThemeAssets().ar.functiontoolbar.icon_tool_loop,
+  }, {
+    key: ConstToolType.SM_AR_VIDEO_ALBUM,
+    title: getLanguage(global.language).Map_Main_Menu.LIST,
+    action: () => {
+      openSourcePicker('Videos', data => {
+        if (data && data.length > 0) {
+          ToolbarModule.addData({ arPhotos: data, albumName: getLanguage().VIDEO_ALBUM, videoType: 1 })
+          const _params: any = ToolbarModule.getParams()
+          _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_VIDEO_ALBUM, {
+            isFullScreen: false,
+          })
+        }
+      }, 10)
+    },
+    size: 'large',
+    image: getThemeAssets().ar.functiontoolbar.icon_tool_list,
+  })
+  const buttons = [
+    ToolbarBtnType.TOOLBAR_BACK,
+  ]
+  _params.setToolbarVisible(true, ConstToolType.SM_AR_VIDEO_ALBUM, {
+    isFullScreen: false,
+    containerType: ToolbarType.table,
+    data,
+    buttons,
+  })
+}
+
+function arMapBrochor() {
+  NavigationService.navigate("MapSelectList", { type: 'mapSelect' })
+}
+
+function arSandtableAlbum() {
+  NavigationService.navigate("MapSelectList", { type: 'sandTableSelect' })
+}
+
+/** 转到柱状图添加页面 */
+function arBarChart() {
+  NavigationService.navigate("ChartManager", { type: 'barChartAdd' })
+}
+
+/** 转到饼图添加页面 */
+function arPieChart() {
+  NavigationService.navigate("ChartManager", { type: 'pieChartAdd' })
+}
+
+/** 矢量线节点的添加 */
+async function addARLinePoint(location?: Point3D) {
+  // 根据图层类型添加不同数据源数据集
+  await checkARLayer(ARLayerType.AR_LINE_LAYER)
+  // 获取当前图层
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  // 当前图层是线图层
+  if(layer && layer.type === ARLayerType.AR_LINE_LAYER) {
+    if(location){
+      SARMap.setAction(ARAction.LINE_CREATE_FOUCUS)
+      SARMap.addARLinePoint(layer.name, {translation:location})
+    }else{
+      SARMap.setAction(ARAction.LINE_CREATE)
+      SARMap.addARLinePoint(layer.name, {foucus: false})
+    }
+    Toast.show(getLanguage().LINE_POINT_ADD_SUCCESSED)
+  }
+}
+
+/** 矢量符号线节点的添加 */
+async function addARMarkerLinePoint(location?: Point3D) {
+  // 根据图层类型添加不同数据源数据集
+  await checkARLayer(ARLayerType.AR_MARKER_LINE_LAYER)
+  // await checkARElementLayer(401)
+  // 获取当前图层
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  // 当前图层是线图层
+  if(layer && layer.type === ARLayerType.AR_MARKER_LINE_LAYER) {
+    // SARMap.addARLinePoint(layer.name, option?.translation)
+    if(location){
+      SARMap.setAction(ARAction.LINE_CREATE_FOUCUS)
+      SARMap.addARLinePoint(layer.name, {translation:location})
+    }else{
+      SARMap.setAction(ARAction.LINE_CREATE)
+      SARMap.addARLinePoint(layer.name, {foucus: false})
+    }
+    Toast.show(getLanguage().LINE_POINT_ADD_SUCCESSED)
+  }
+}
+
+/** 矢量线节点的添加 */
+async function editAddLinePoint(location?: Point3D) {
+  // 获取当前图层
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  // 当前图层是线图层
+  if (layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+
+    if (location) {
+      SARMap.setAction(ARAction.VERTEX_ADD_FOUCUS)
+      SARMap.addARLinePoint(layer.name, { translation: location })
+    } else {
+      SARMap.setAction(ARAction.VERTEX_ADD)
+      SARMap.addARLinePoint(layer.name, { foucus: false, updatefoucus: false })
+    }
+  }
+}
+
+/** 撤销矢量线或矢量符号线的节点的添加操作 */
+async function cancelAddARLinePoint() {
+  // 获取当前图层
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  // 当前图层是线图层
+  if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+    SARMap.cancelAddARLinePoint(layer.name)
+  }
+}
+
+/** 矢量线或矢量符号线对象的添加 */
+async function addARLineElement() {
+  // 获取当前图层
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+    SARMap.addARLineElement(layer.name)
+  }
+}
+
+/** 矢量线或矢量符号线对象的更新 */
+async function updateARLineElement() {
+  // 获取当前图层
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+    SARMap.updateARLineElement(layer.name)
+  }
+}
+
+function arSandTable(path: string) {
+  setARToolbar(ConstToolType.SM_AR_DRAWING_ADD_SAND, { arContent: path })
+}
+
+async function addSandTable(location?: Point3D) {
+  try {
+    await checkARLayer(ARLayerType.AR_MODEL_LAYER)
+    const _params: any = ToolbarModule.getParams()
+    const _data: any = ToolbarModule.getData()
+    const layer = _params.arlayer.currentLayer
+    if (layer && _data.arContent) {
+      await SARMap.addARSandTable(layer.name, _data.arContent, location)
+    }
+  } catch (e) {
+    Toast.show(e)
+  }
+}
+
+/** 柱状图的添加 */
+async function addARChart(location?: Point3D) {
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  const data = ToolbarModule.getData()?.chartData
+  if(data && layer) {
+    if(Platform.OS === 'android'){
+      SARMap.addBarChart(layer.name, data, location)
+    }
+  }
+}
+
+/** 饼图的添加 */
+async function addARPieChart(location?: Point3D) {
+  await checkARLayer(ARLayerType.AR_WIDGET_LAYER)
+  const _params: any = ToolbarModule.getParams()
+  const layer = _params.arlayer.currentLayer
+  const data = ToolbarModule.getData()?.chartData?.data
+  if(data && layer) {
+    if(Platform.OS === 'android'){
+      SARMap.addARPieChart(layer.name, data, location)
+    }
+  }
+}
 
 export default {
   toolbarBack,
@@ -659,6 +1072,7 @@ export default {
   arImage,
   arWebView,
   arText,
+  arBubbleText,
   addText,
   ar3D,
   addARScene,
@@ -666,7 +1080,25 @@ export default {
   addARModel,
   addAREffect,
 
+  arAttributeAlbum,
+  arVideoAlbum,
+  arMapBrochor,
+  arSandtableAlbum,
+  arBarChart,
+  arPieChart,
+
+  addARLinePoint,
+  addARMarkerLinePoint,
+  cancelAddARLinePoint,
+  editAddLinePoint,
+  updateARLineElement,
+
   download3DExample,
   downloadModelExample,
   downloadEffectlExample,
+
+  arSandTable,
+  addSandTable,
+  addARChart,
+  addARPieChart,
 }

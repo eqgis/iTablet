@@ -62,14 +62,14 @@ export default class ApplyMessages extends Component<Props, State> {
     this.currentDataIndex = -1
     this.popData = [
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY_AGREE,
+        title: getLanguage(global.language).Friends.GROUP_APPLY_AGREE,
         action: () => {
           this.currentData.checkStatus = 'ACCEPTED'
           this._popPress(this.currentData, this.currentDataIndex)
         },
       },
       {
-        title: getLanguage(GLOBAL.language).Friends.GROUP_APPLY_DISAGREE,
+        title: getLanguage(global.language).Friends.GROUP_APPLY_DISAGREE,
         action: () => {
           this.currentData.checkStatus = 'REFUSED'
           this._popPress(this.currentData, this.currentDataIndex)
@@ -274,7 +274,7 @@ export default class ApplyMessages extends Component<Props, State> {
             colors={['orange', 'red']}
             tintColor={'orange'}
             titleColor={'orange'}
-            title={getLanguage(GLOBAL.language).Friends.LOADING}
+            title={getLanguage(global.language).Friends.REFRESHING}
             enabled={true}
           />
         }
@@ -290,7 +290,7 @@ export default class ApplyMessages extends Component<Props, State> {
       <View style={[styles.nullView]}>
         <View style={styles.nullSubView}>
           <Image style={styles.nullImage} source={getThemeAssets().cowork.bg_photo_task} />
-          <Text style={styles.nullTitle}>{getLanguage(GLOBAL.language).Friends.GROUP_MESSAGE_NULL}</Text>
+          <Text style={styles.nullTitle}>{getLanguage(global.language).Friends.GROUP_MESSAGE_NULL}</Text>
         </View>
         <View style={{flex: 1, backgroundColor: 'black'}} />
       </View>

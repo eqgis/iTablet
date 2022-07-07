@@ -11,7 +11,7 @@ let isClickMeasurePoint = true // 用于量算判断是否是选择点，true为
 /** 距离量算 * */
 function measureDistance() {
   const _params = ToolbarModule.getParams()
-  if (!GLOBAL.openWorkspace) {
+  if (!global.openWorkspace) {
     Toast.show(getLanguage(_params.language).Prompt.PLEASE_OPEN_SCENE)
     // '请打开场景')
     return
@@ -45,7 +45,7 @@ function measureDistance() {
 /** 面积量算 * */
 function measureArea() {
   const _params = ToolbarModule.getParams()
-  if (!GLOBAL.openWorkspace) {
+  if (!global.openWorkspace) {
     Toast.show(getLanguage(_params.language).Prompt.PLEASE_OPEN_SCENE)
     // '请打开场景')
     return
@@ -91,7 +91,7 @@ function pathAnalyst() {
 function select() {
   const params = ToolbarModule.getParams()
   SScene.setAction('PANSELECT3D')
-  GLOBAL.action3d = 'PANSELECT3D'
+  global.action3d = 'PANSELECT3D'
   // this.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_SELECT)
   const type = ConstToolType.SM_MAP3D_TOOL_SELECT
   params.setToolbarVisible(true, type, {
@@ -103,13 +103,13 @@ function select() {
 /** box裁剪 * */
 function boxClip() {
   const params = ToolbarModule.getParams()
-  GLOBAL.action3d = 'PAN3D_FIX'
-  if (!GLOBAL.openWorkspace) {
+  global.action3d = 'PAN3D_FIX'
+  if (!global.openWorkspace) {
     Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
     // '请打开场景')
     return
   }
-  GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(true)
+  global.MapSurfaceView && global.MapSurfaceView.show(true)
   params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING, {
     isFullScreen: false,
     // height: 0,
@@ -119,7 +119,7 @@ function boxClip() {
 /** 三维裁剪参数获取 * */
 async function map3dCut() {
   const params = ToolbarModule.getParams()
-  const data = GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.getResult()
+  const data = global.MapSurfaceView && global.MapSurfaceView.getResult()
   if (data[0].x !== data[0].y) {
     const clipSetting = {
       startX: ~~data[0].x,
@@ -165,7 +165,7 @@ async function map3dCut() {
       if (rel[key] * 1 === rel[key])
         rel[key] = parseFloat(rel[key].toFixed(num))
     })
-    GLOBAL.MapSurfaceView.show(false)
+    global.MapSurfaceView.show(false)
     // this.props.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_BOX_CLIP)
     params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIP, {
       isFullScreen: false,
@@ -173,7 +173,7 @@ async function map3dCut() {
     })
     params.setClipSetting && params.setClipSetting(rel)
   } else {
-    Toast.show(getLanguage(GLOBAL.language).Map_Main_Menu.CUT_FIRST)
+    Toast.show(getLanguage(global.language).Map_Main_Menu.CUT_FIRST)
   }
 }
 
@@ -320,7 +320,7 @@ function clearMeasure(type) {
       _params.clearClip && _params.clearClip()
       // ToolbarModule.setData()
       SScene.clipSenceClear()
-      GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show()
+      global.MapSurfaceView && global.MapSurfaceView.show()
       _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING, {
         isFullScreen: false,
         // height: 0,
@@ -330,7 +330,7 @@ function clearMeasure(type) {
       // 清除裁剪面 返回上个界面
       _params.clearClip && _params.clearClip()
       SScene.clipSenceClear()
-      GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show()
+      global.MapSurfaceView && global.MapSurfaceView.show()
       _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING, {
         isFullScreen: false,
       })
@@ -373,25 +373,25 @@ async function close(type) {
     type === ConstToolType.SM_MAP3D_TOOL_PLANE_CLIP
   ) {
     await SScene.clipSenceClear()
-    GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
+    global.MapSurfaceView && global.MapSurfaceView.show(false)
     _params.setToolbarVisible(false)
   } else {
     SScene.checkoutListener('startTouchAttribute')
     SScene.setAction('PAN3D')
-    GLOBAL.action3d = 'PAN3D'
+    global.action3d = 'PAN3D'
     ToolbarModule.setData()
     return false
   }
   SScene.checkoutListener('startTouchAttribute')
   SScene.setAction('PAN3D')
-  GLOBAL.action3d = 'PAN3D'
+  global.action3d = 'PAN3D'
   ToolbarModule.setData()
 }
 
 function circleFly() {
   const _params = ToolbarModule.getParams()
   _params.showFullMap && _params.showFullMap(true)
-  GLOBAL.action3d = 'PAN3D_FIX'
+  global.action3d = 'PAN3D_FIX'
   SScene.stopCircleFly()
   _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_CIRCLE_FLY, {
     containerType: ToolbarType.table,
@@ -475,7 +475,7 @@ function closeClip() {
   _params.setClipSetting && _params.setClipSetting({})
   _params.clearClip && _params.clearClip()
   ToolbarModule.setData()
-  GLOBAL.MapSurfaceView && GLOBAL.MapSurfaceView.show(false)
+  global.MapSurfaceView && global.MapSurfaceView.show(false)
 }
 export default {
   close,

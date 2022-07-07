@@ -1,4 +1,4 @@
-import { scaleSize } from '../utils'
+import { scaleSize } from '../utils/screen'
 
 export default {
   UNIQUE: '单值专题图',
@@ -89,4 +89,11 @@ export default {
   FORUMOFSUPERMAP: '超图论坛',
   SUPERMAPKNOWN: '超图知道',
   MAPOFAPP: '地图APP',
+
+  // AR图层类型 还有一个POI
+  VECTOR: 'VECTOR',
+  THREE_D: 'THREE_D',
+  MODEL: 'MODEL',
+  EFFECT: 'EFFECT',
+  WIDGET: 'WIDGET',
 }

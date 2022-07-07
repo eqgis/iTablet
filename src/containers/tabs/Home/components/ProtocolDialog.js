@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {
-  WebView,
   View,
   StyleSheet,
   Text,
   TouchableOpacity,
   Platform,
 } from 'react-native'
+import { WebView } from 'react-native-webview'
 import { Dialog, CheckBox, MTBtn } from '../../../../components'
 import { setSpText, Toast, fixedSize } from '../../../../utils'
 import { color } from '../../../../styles'
@@ -54,16 +54,16 @@ export default class ProtocolDialog extends Component {
       source =
         this.props.language === 'CN'
           ? {
-            uri: 'file:///android_asset/SuperMapUserServiceAgreement_CN.html',
+            uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
           }
           : {
-            uri: 'file:///android_asset/SuperMapUserServiceAgreement_EN.html',
+            uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
           }
     } else {
       source =
         this.props.language === 'CN'
-          ? require('../../../../assets/Protocol/SuperMapUserServiceAgreement_CN.html')
-          : require('../../../../assets/Protocol/SuperMapUserServiceAgreement_EN.html')
+          ? require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_CN.html')
+          : require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_EN.html')
     }
     return (
       <WebView

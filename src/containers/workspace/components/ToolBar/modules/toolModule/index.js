@@ -40,7 +40,7 @@ class ToolModule extends FunctionModule {
 export default function() {
   return new ToolModule({
     type: ConstToolType.SM_MAP_TOOL,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.TOOLS,
+    title: getLanguage(global.language).Map_Main_Menu.TOOLS,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_tools,
     getData: ToolData.getData,

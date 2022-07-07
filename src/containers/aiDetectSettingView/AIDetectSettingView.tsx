@@ -2,7 +2,8 @@ import { SARMap } from 'imobile_for_reactnative'
 import { AIDetectStyle } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import React from 'react'
 import { ScrollView, StyleSheet, View, Text } from 'react-native'
-import { Container, Slider, SwitchItem } from '../../components'
+import { Container, SwitchItem } from '../../components'
+import { Slider } from 'imobile_for_reactnative/components'
 import { getLanguage } from '../../language'
 import { dp } from '../../utils'
 import { color, size } from '../../styles'
@@ -71,9 +72,10 @@ class AIDetectSettingView extends React.Component<Props, State> {
   renderConfidece = () => {
     return (
       <Slider
-        leftText={getLanguage().Map_Settings.CONFIDENCE}
+        type={'single'}
+        left={{type: 'text', text: getLanguage().Map_Settings.CONFIDENCE}}
         defaultValue={this.defautConfidence || 0}
-        unit={'%'}
+        right={{type: 'indicator', unit: '%'}}
         onMove={(value: number) => {
           this.currentConfidence = value
           this.setState({
@@ -90,7 +92,6 @@ class AIDetectSettingView extends React.Component<Props, State> {
   renderCommonSettings = () => {
     return (
       <View style={styles.settingView}>
-        <Text style={styles.commonSettingTitle}>{getLanguage().Map_Layer.ADD_ATTRIBUTE_FOR_LAYER}</Text>
         {this.renderConfidece()}
       </View>
     )
@@ -127,7 +128,7 @@ class AIDetectSettingView extends React.Component<Props, State> {
   renderFilters = () => {
     return (
       <View style={styles.settingView}>
-        {this.labels.map((item, index) => {
+        {this.labels?.map((item, index) => {
           if(item !== '???' && item !== '') {
             return (
               <SwitchItem

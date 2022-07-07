@@ -9,7 +9,7 @@ interface Error {
 }
 
 function resultError(error: Error) {
-  let msg: string | undefined = getLanguage(GLOBAL.language).RequestError[`ERROR_${error.code}`]
+  let msg: string | undefined = getLanguage(global.language).RequestError[`ERROR_${error.code}`]
   if (!msg && error.errorMsg) {
     msg = error.errorMsg
   }

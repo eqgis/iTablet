@@ -89,10 +89,10 @@ function showMsg(type, isSuccess, language = 'CN') {
   //     duration: Toast.DURATION.TOAST_LONG,
   //   })
   //路径分析后修改点位置提示信息未更新问题 jiakai
-  GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+  global.bubblePane && global.bubblePane.clear()
   msg &&
-    GLOBAL.bubblePane &&
-    GLOBAL.bubblePane.addBubble(
+    global.bubblePane &&
+    global.bubblePane.addBubble(
       {
         title: msg,
         type: isSuccess ? 'success' : 'error',

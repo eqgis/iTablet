@@ -44,6 +44,7 @@ export default class NavigationStartHead extends React.Component {
       Animated.timing(this.state.width, {
         toValue: width,
         duration: 300,
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -56,11 +57,11 @@ export default class NavigationStartHead extends React.Component {
     await SMap.clearTrackingLayer()
     this.setVisible(false)
     let { orientation } = this.props.device
-    GLOBAL.NAVIGATIONSTARTBUTTON.setState({
+    global.NAVIGATIONSTARTBUTTON.setState({
       show: false,
       isroad: orientation.indexOf('LANDSCAPE') !== 0,
       isLandScape: orientation.indexOf('LANDSCAPE') === 0,
-      road: getLanguage(GLOBAL.language).Map_Main_Menu.ROAD_DETAILS,
+      road: getLanguage(global.language).Map_Main_Menu.ROAD_DETAILS,
       height:
         orientation.indexOf('LANDSCAPE') === 0
           ? new Animated.Value(
@@ -70,40 +71,40 @@ export default class NavigationStartHead extends React.Component {
       length: '',
       path: [],
     })
-    GLOBAL.toolBox.existFullMap()
+    global.toolBox.existFullMap()
     this.props.setMapNavigation({
       isShow: false,
       name: '',
     })
-    GLOBAL.STARTNAME = getLanguage(
-      GLOBAL.language,
+    global.STARTNAME = getLanguage(
+      global.language,
     ).Map_Main_Menu.SELECT_START_POINT
-    GLOBAL.ENDNAME = getLanguage(
-      GLOBAL.language,
+    global.ENDNAME = getLanguage(
+      global.language,
     ).Map_Main_Menu.SELECT_DESTINATION
-    GLOBAL.STARTX = undefined
-    GLOBAL.STARTY = undefined
-    GLOBAL.ENDX = undefined
-    GLOBAL.ENDY = undefined
-    GLOBAL.CURRENT_NAV_MODE = ''
-    GLOBAL.NAV_PARAMS = []
-    GLOBAL.TouchType = TouchType.NORMAL
+    global.STARTX = undefined
+    global.STARTY = undefined
+    global.ENDX = undefined
+    global.ENDY = undefined
+    global.CURRENT_NAV_MODE = ''
+    global.NAV_PARAMS = []
+    global.TouchType = TouchType.NORMAL
     await SMap.clearPoint()
-    GLOBAL.mapController?.changeBottom(false)
-    GLOBAL.FloorListView?.floatToRight(false)
-    GLOBAL.FloorListView?.changeBottom(false)
+    global.mapController?.changeBottom(false)
+    global.FloorListView?.floatToRight(false)
+    global.FloorListView?.changeBottom(false)
   }
 
   _onSelectPointPress = async isStart => {
     let button = isStart
-      ? getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_START_POINT
-      : getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_DESTINATION
-    GLOBAL.TouchType = isStart
+      ? getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT
+      : getLanguage(global.language).Map_Main_Menu.SET_AS_DESTINATION
+    global.TouchType = isStart
       ? TouchType.NAVIGATION_TOUCH_BEGIN
       : TouchType.NAVIGATION_TOUCH_END
-    GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
-    GLOBAL.MAPSELECTPOINT.setVisible(true)
-    GLOBAL.MAPSELECTPOINTBUTTON.setVisible(
+    global.mapController && global.mapController.setVisible(true)
+    global.MAPSELECTPOINT.setVisible(true)
+    global.MAPSELECTPOINTBUTTON.setVisible(
       true,
       {
         button,
@@ -111,17 +112,17 @@ export default class NavigationStartHead extends React.Component {
       false,
     )
     this.setVisible(false)
-    GLOBAL.NAVIGATIONSTARTBUTTON.setVisible(false)
+    global.NAVIGATIONSTARTBUTTON.setVisible(false)
     await SMap.clearTrackingLayer()
     await SMap.clearPoint()
     if (isStart) {
-      GLOBAL.STARTX = null
-      GLOBAL.STARTY = null
-      GLOBAL.STRATNAME = null
+      global.STARTX = null
+      global.STARTY = null
+      global.STRATNAME = null
     } else {
-      GLOBAL.ENDX = null
-      GLOBAL.ENDY = null
-      GLOBAL.ENDNAME = null
+      global.ENDX = null
+      global.ENDY = null
+      global.ENDNAME = null
     }
   }
 
@@ -172,7 +173,7 @@ export default class NavigationStartHead extends React.Component {
         paddingHorizontal: scaleSize(5),
         marginVertical: scaleSize(10),
       }}>
-        {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButton(
+        {global.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButton(
           0,
           getLanguage().Map_Main_Menu.CAR_NAVIGATION,
         )}
@@ -180,17 +181,17 @@ export default class NavigationStartHead extends React.Component {
           3,
           getLanguage().Map_Main_Menu.WALK_NAVIGATION,
         )}
-        {/* {GLOBAL.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButton(
+        {/* {global.CURRENT_NAV_MODE === 'OUTDOOR' && this.renderButton(
           2,
           getLanguage().Map_Main_Menu.CRUISE_NAVIGATION ,
         )} */}
         {this.renderButton(
           1,
-          getLanguage(GLOBAL.language).Map_Main_Menu.SIMULATED_NAVIGATION,
+          getLanguage(global.language).Map_Main_Menu.SIMULATED_NAVIGATION,
         )}
         {/* {Platform.OS === 'ios' && this.renderButton(
           4,
-          getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION,
+          getLanguage(global.language).Prompt.AR_NAVIGATION,
         )} */}
       </View>
     )
@@ -272,7 +273,7 @@ export default class NavigationStartHead extends React.Component {
                       },
                       ]}
                     >
-                      {GLOBAL.STARTNAME}
+                      {global.STARTNAME}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -319,7 +320,7 @@ export default class NavigationStartHead extends React.Component {
                       },
                       ]}
                     >
-                      {GLOBAL.ENDNAME}
+                      {global.ENDNAME}
                     </Text>
                   </TouchableOpacity>
                 </View>

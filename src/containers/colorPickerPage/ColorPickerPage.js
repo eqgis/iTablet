@@ -25,7 +25,7 @@ export default class ColorPickerPage extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state
+    const { params } = this.props.route
     this.cb = params && params.cb
     this.defaultColor = (params && params.defaultColor) || '#000000'
     let colorHex =
@@ -137,7 +137,7 @@ export default class ColorPickerPage extends React.Component {
     }
     rows.push(
       this.renderColorAttrRow(
-        GLOBAL.language === 'CN' ? '16进制' : 'Hexadecimal',
+        global.language === 'CN' ? '16进制' : 'Hexadecimal',
         this.state.color,
       ),
     )
@@ -163,11 +163,11 @@ export default class ColorPickerPage extends React.Component {
       <View style={styles.btns}>
         <Button
           type={Button.Type.GRAY}
-          title={getLanguage(GLOBAL.language).Analyst_Labels.RESET}
+          title={getLanguage(global.language).Analyst_Labels.RESET}
           onPress={this.reset}
         />
         <Button
-          title={getLanguage(GLOBAL.language).Analyst_Labels.CONFIRM}
+          title={getLanguage(global.language).CONFIRM}
           onPress={this.confirm}
         />
       </View>
@@ -179,7 +179,7 @@ export default class ColorPickerPage extends React.Component {
       <Container
         style={styles.container}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.CHOOSE_COLOR,
+          title: getLanguage(global.language).Profile.CHOOSE_COLOR,
           navigation: this.props.navigation,
         }}
       >

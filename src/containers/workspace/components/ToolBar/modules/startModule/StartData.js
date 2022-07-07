@@ -15,45 +15,45 @@ function getData(type, params) {
       data = [
         {
           key: constants.OPEN,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_OPEN_MAP,
+          title: getLanguage(global.language).Map_Main_Menu.START_OPEN_MAP,
           action: StartAction.openMap,
           size: 'large',
           image: getThemeAssets().start.icon_open_map,
         },
         {
           key: constants.CREATE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_NEW_MAP,
+          title: getLanguage(global.language).Map_Main_Menu.START_NEW_MAP,
           size: 'large',
           action: () => StartAction.isNeedToSave(StartAction.create),
           image: getThemeAssets().start.icon_new_map,
         },
         {
           key: constants.HISTORY,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_RECENT,
+          title: getLanguage(global.language).Map_Main_Menu.START_RECENT,
           size: 'large',
           action: StartAction.showHistory,
           image: getThemeAssets().start.icon_historical_records,
         },
         {
           key: constants.SAVE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_MAP,
+          title: getLanguage(global.language).Map_Main_Menu.START_SAVE_MAP,
           size: 'large',
           action: () => StartAction.saveMap('TempMap'),
           image: getThemeAssets().start.icon_save,
         },
         {
           key: constants.SAVE_AS,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_AS_MAP,
+          title: getLanguage(global.language).Map_Main_Menu.START_SAVE_AS_MAP,
           size: 'large',
           action: StartAction.saveMapAs,
           image: getThemeAssets().start.icon_save_as,
         },
       ]
-      if (GLOBAL.coworkMode && CoworkInfo.coworkId !== '') {
+      if (global.coworkMode && CoworkInfo.coworkId !== '') {
         data = [
           {
             key: constants.SAVE,
-            title: getLanguage(GLOBAL.language).Map_Main_Menu.START_SAVE_MAP,
+            title: getLanguage(global.language).Map_Main_Menu.START_SAVE_MAP,
             size: 'large',
             action: () => StartAction.saveMap('TempMap'),
             image: getThemeAssets().start.icon_save,

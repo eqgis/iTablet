@@ -11,6 +11,7 @@ import {
   TextInput,
   FlatList,
   Image,
+  dismissKeyboard,
 } from 'react-native'
 import NavigationService from '../../NavigationService'
 import { scaleSize } from '../../../utils/screen'
@@ -23,13 +24,11 @@ import { Toast, OnlineServicesUtils } from '../../../utils'
 import { size, color } from '../../../styles'
 import { getThemeAssets } from '../../../assets'
 import MSGConstant from '../../../constants/MsgConstant'
+import { UserType } from '../../../constants'
 
-const dismissKeyboard = require('dismissKeyboard')
-const JSOnlineServices = new OnlineServicesUtils('online')
 class AddFriend extends Component {
   props: {
     navigation: Object,
-    user: Object,
   }
 
   constructor(props) {
@@ -37,17 +36,22 @@ class AddFriend extends Component {
     this.screenWidth = Dimensions.get('window').width
     this.target
     this.friend = {}
-    this.user = this.props.navigation.getParam('user')
+    this.user = this.props.route.params.user
     this.state = {
       list: [],
       isLoading: false,
       text: '',
     }
-    this.language = this.props.navigation.getParam('language')
+    this.language = this.props.route.params.language
+    if (UserType.isIPortalUser(this.user)) {
+      this.onlineServices = new OnlineServicesUtils('iportal')
+    } else {
+      this.onlineServices = new OnlineServicesUtils('online')
+    }
   }
   componentDidMount() {
-    this.friend = this.props.navigation.getParam('friend')
-    this.user = this.props.navigation.getParam('user')
+    this.friend = this.props.route.params.friend
+    this.user = this.props.route.params.user
   }
 
   renderSearchBar = () => {
@@ -89,7 +93,7 @@ class AddFriend extends Component {
     )
     let reg = /^[0-9]{11}$/
     let isEmail = !reg.test(val)
-    let result = await JSOnlineServices.getUserInfo(val, isEmail)
+    let result = await this.onlineServices.getUserInfo(val, isEmail)
     if (result === false || result === '获取用户id失败') {
       result = {
         userId: '0',
@@ -122,7 +126,7 @@ class AddFriend extends Component {
 
     let item = this.target
     let curUserName = this.user.nickname
-    let uuid = this.user.userId
+    let uuid = this.user.userName
     let ctime = new Date()
     let time = Date.parse(ctime)
     let message = {
@@ -189,7 +193,7 @@ class AddFriend extends Component {
       <Dialog
         ref={ref => (this.dialog = ref)}
         type={'modal'}
-        confirmBtnTitle={getLanguage(this.language).Friends.CONFIRM}
+        confirmBtnTitle={getLanguage(this.language).CONFIRM}
         cancelBtnTitle={getLanguage(this.language).Friends.CANCEL}
         confirmAction={this.addFriendRequest}
         opacity={1}
@@ -246,7 +250,7 @@ class AddFriend extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Friends.ADD_FRIENDS,
+          title: getLanguage(global.language).Friends.ADD_FRIENDS,
           //'添加好友',
           withoutBack: false,
           navigation: this.props.navigation,

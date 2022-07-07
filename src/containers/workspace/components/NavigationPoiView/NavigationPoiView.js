@@ -35,7 +35,7 @@ export default class NavigationPoiView extends React.Component {
       analystData: [],
       bottom: new Animated.Value(-scaleSize(200)),
       height: new Animated.Value(scaleSize(200)),
-      road: getLanguage(GLOBAL.language).Map_Main_Menu.ROAD_DETAILS,
+      road: getLanguage(global.language).Map_Main_Menu.ROAD_DETAILS,
       isroad: true,
     }
   }
@@ -50,13 +50,13 @@ export default class NavigationPoiView extends React.Component {
 
   renderItem = ({ item }) => {
     if (!item.roadName || item.roadName === 'null') {
-      item.roadName = GLOBAL.language === 'CN' ? '无名路' : 'anonymous road'
+      item.roadName = global.language === 'CN' ? '无名路' : 'anonymous road'
     }
     return (
       <View>
         <TouchableOpacity style={styles.itemView1}>
           <Text style={styles.info}>
-            {GLOBAL.language === 'CN'
+            {global.language === 'CN'
               ? '途经路线：沿' + item.roadName + '直行' + item.roadLength + '米'
               : `Go straight along the ${item.roadName} for ${
                 item.roadLength
@@ -93,9 +93,9 @@ export default class NavigationPoiView extends React.Component {
       <View style={{ flex: 1, width: '100%' }}>
         {this.state.searchValue.Length && (
           <Text style={styles.info}>
-            {getLanguage(GLOBAL.language).Map_Main_Menu.DISTANCE +
+            {getLanguage(global.language).Map_Main_Menu.DISTANCE + ": " +
               this.state.searchValue.Length +
-              getLanguage(GLOBAL.language).Map_Main_Menu.METERS}
+              getLanguage(global.language).Map_Main_Menu.METERS}
           </Text>
         )}
         {this.renderRoad()}
@@ -106,7 +106,7 @@ export default class NavigationPoiView extends React.Component {
   close = async () => {
     await SMap.clearTrackingLayer() //移除线，线在trackingLayer
     await SMap.removePOICallout() //移除点，点在DynamicView或者callout
-    GLOBAL.PoiInfoContainer.setVisible(false)
+    global.PoiInfoContainer.setVisible(false)
     this.props.setMapNavigation({
       isShow: false,
       name: '',
@@ -119,26 +119,28 @@ export default class NavigationPoiView extends React.Component {
     if (this.state.isroad) {
       this.setState(
         {
-          road: getLanguage(GLOBAL.language).Map_Main_Menu.DISPLAY_MAP,
+          road: getLanguage(global.language).Map_Main_Menu.DISPLAY_MAP,
           isroad: false,
         },
         () => {
           Animated.timing(this.state.height, {
             toValue: scaleSize(650),
             duration: 300,
+            useNativeDriver: false,
           }).start()
         },
       )
     } else {
       this.setState(
         {
-          road: getLanguage(GLOBAL.language).Map_Main_Menu.ROAD_DETAILS,
+          road: getLanguage(global.language).Map_Main_Menu.ROAD_DETAILS,
           isroad: true,
         },
         () => {
           Animated.timing(this.state.height, {
             toValue: scaleSize(200),
             duration: 300,
+            useNativeDriver: false,
           }).start()
         },
       )

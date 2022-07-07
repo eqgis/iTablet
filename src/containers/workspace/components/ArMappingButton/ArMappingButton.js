@@ -65,7 +65,7 @@ export default class ArMappingButton extends React.Component {
       {
         //新建开始
         key: 'replease',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_NEWDATA,
         action: () => { this.switchStatus() },
         size: 'large',
@@ -74,7 +74,7 @@ export default class ArMappingButton extends React.Component {
       {
         //清除
         key: 'critical',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
+        title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_CLEAR,
         action: () => { this.clearTrack() },
         size: 'large',
         image: getThemeAssets().ar.toolbar.icon_delete,
@@ -82,13 +82,13 @@ export default class ArMappingButton extends React.Component {
       {
         //线
         key: 'line',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
+        title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_LINE,
         action: () => {
           this.getLayerType()
           if (!this.disbaleLine) {
             this.saveline()
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
+            Toast.show(getLanguage(global.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
           }
         },
         size: 'large',
@@ -97,14 +97,14 @@ export default class ArMappingButton extends React.Component {
       {
         //保存点
         key: 'POINT',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_SAVE_POINT,
         action: () => {
           this.getLayerType()
           if (!this.disablePoint) {
             this.savepoint()
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
+            Toast.show(getLanguage(global.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
           }
         },
         size: 'large',
@@ -113,14 +113,14 @@ export default class ArMappingButton extends React.Component {
       {
         //保存面
         key: 'REGION',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_SAVE_REGION,
         action: () => {
           this.getLayerType()
           if (!this.disableArea) {
             this.saveRegion()
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
+            Toast.show(getLanguage(global.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
           }
         },
         size: 'large',
@@ -140,7 +140,7 @@ export default class ArMappingButton extends React.Component {
       {
         //轨迹
         key: 'critical',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_SCENE_TRACK_COLLECT,
         action: ()=>{ this.trackCollect()},
         size: 'large',
@@ -149,7 +149,7 @@ export default class ArMappingButton extends React.Component {
       {
         //点
         key: 'point',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_SCENE_POINT_COLLECT,
         action: ()=>{ this.pointCollect()},
         size: 'large',
@@ -168,7 +168,7 @@ export default class ArMappingButton extends React.Component {
       {
         //轨迹
         key: 'critical',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .TRACK,
         action: () => {
           this.arCollect()
@@ -179,7 +179,7 @@ export default class ArMappingButton extends React.Component {
       {
         //点
         key: 'point',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
         action: async () => {
           let is = await SARMap.isMeasuring()
@@ -190,7 +190,7 @@ export default class ArMappingButton extends React.Component {
           if (!this.disablePoint) {
             this.drawPoint()
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
+            Toast.show(getLanguage(global.language).Prompt.PLEASE_CHOOSE_POINT_LAYER)
           }
         },
         size: 'large',
@@ -199,7 +199,7 @@ export default class ArMappingButton extends React.Component {
       {
         //线
         key: 'line',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_LINE,
         action: async () => {
           let is = await SARMap.isMeasuring()
@@ -210,7 +210,7 @@ export default class ArMappingButton extends React.Component {
           if (!this.disbaleLine) {
             this.drawLine()
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
+            Toast.show(getLanguage(global.language).Prompt.PLEASE_CHOOSE_LINE_LAYER)
           }
         },
         size: 'large',
@@ -219,7 +219,7 @@ export default class ArMappingButton extends React.Component {
       {
         //面
         key: 'region',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_AEREA,
         action: async () => {
           let is = await SARMap.isMeasuring()
@@ -230,7 +230,7 @@ export default class ArMappingButton extends React.Component {
           if (!this.disableArea) {
             this.setState({ data: this.areadata })
           } else {
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
+            Toast.show(getLanguage(global.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
           }
         },
         size: 'large',
@@ -239,7 +239,7 @@ export default class ArMappingButton extends React.Component {
       // {
       //   //体
       //   key: 'substance',
-      //   title: getLanguage(GLOBAL.language).Map_Main_Menu
+      //   title: getLanguage(global.language).Map_Main_Menu
       //     .MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE,
       //   action: ()=>{},
       //   size: 'large',
@@ -251,7 +251,7 @@ export default class ArMappingButton extends React.Component {
       {
         // 多边形
         key: 'polygon',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON,
         action: () => {
           this.drawPolygon()
@@ -262,7 +262,7 @@ export default class ArMappingButton extends React.Component {
       {
         // 矩形
         key: 'rectangle',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
         action: () => {
           this.drawRectangle()
@@ -273,7 +273,7 @@ export default class ArMappingButton extends React.Component {
       {
         // 圆
         key: 'circular',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
         action: () => {
           this.drawCircular()
@@ -287,7 +287,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR面积 多边形
         key: 'polygon',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON,
         action: () => {
           this.canContinuousDraw = true
@@ -305,7 +305,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR面积 矩形
         key: 'rectangle',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE,
         action: () => {
           this.canContinuousDraw = false
@@ -323,7 +323,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR面积 圆
         key: 'circular',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR,
         action: () => {
           this.canContinuousDraw = false
@@ -344,7 +344,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR体积 长方体
         key: 'cuboid',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID,
         action: () => {
           this.canContinuousDraw = false
@@ -362,7 +362,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR体积 圆柱体
         key: 'cylinder',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER,
         action: () => {
           this.canContinuousDraw = false
@@ -397,7 +397,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR测距
         key: 'arMeasureArea',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_LENGTH,
         action: () => {
           this.canContinuousDraw = true
@@ -415,7 +415,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR测高
         key: 'arMeasureHeitht',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT,
         action: () => {
           this.canContinuousDraw = false
@@ -432,7 +432,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR面积
         key: 'arMeasureArea',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_AREA,
         action: () => {
           this.setState({
@@ -445,7 +445,7 @@ export default class ArMappingButton extends React.Component {
       {
         //AR测量角度
         key: 'arMeasureAngle',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_ANGLE,
         action: () => {
           this.canContinuousDraw = true
@@ -463,7 +463,7 @@ export default class ArMappingButton extends React.Component {
       {
         //体积测量
         key: 'arMeasureAngle',
-        title: getLanguage(GLOBAL.language).Map_Main_Menu
+        title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_MEASURE_VOLUME,
         action: () => {
           this.setState({
@@ -509,7 +509,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   getLayerType = () =>{
-    const layerType = LayerUtils.getLayerType(GLOBAL.currentLayer)
+    const layerType = LayerUtils.getLayerType(global.currentLayer)
     let disablePoint = true,
       disableArea = true,
       disbaleLine = true
@@ -532,7 +532,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   saveLog = () => {
-    Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_SUCCESSFULLY)
+    Toast.show(getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY)
   }
 
   switchStatus = () => {
@@ -543,7 +543,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isnew()
     Toast.show(
-      getLanguage(GLOBAL.language).Map_Main_Menu
+      getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START,
     )
   }
@@ -563,17 +563,17 @@ export default class ArMappingButton extends React.Component {
         SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingLine()
         if (!result) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_LINE_FAIL)
+          Toast.show(getLanguage(global.language).Prompt.SAVE_LINE_FAIL)
         }
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingLine()
-        Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+        Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
-      GLOBAL.Loading.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      global.Loading.setLoading(false)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
   }
 
@@ -584,17 +584,17 @@ export default class ArMappingButton extends React.Component {
         SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingPoint()
         if (!result) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAIL_POINT)
+          Toast.show(getLanguage(global.language).Prompt.SAVE_FAIL_POINT)
         }
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingPoint()
-        Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+        Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
-      GLOBAL.Loading.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      global.Loading.setLoading(false)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
   }
 
@@ -605,17 +605,17 @@ export default class ArMappingButton extends React.Component {
         SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingRegion()
         if (!result) {
-          Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
+          Toast.show(getLanguage(global.language).Prompt.SAVE_REGION_FAIL)
         }
       } else {
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
         let result = await SARMap.saveTrackingRegion()
-        Toast.show(result ? getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+        Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
-      GLOBAL.Loading.setLoading(false)
-      Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAILED)
+      global.Loading.setLoading(false)
+      Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
     }
   }
 
@@ -661,7 +661,7 @@ export default class ArMappingButton extends React.Component {
     this.props.showSwitch(false)
     this.setState({ isCollect: true, data: this.collectdata, showSwitch: true })
     this.isDrawing = false
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({ isExistFullMap: false, measureType: 'arCollect' ,haslocation:true})
+    global.toolBox && global.toolBox.measure({ isExistFullMap: false, measureType: 'arCollect' ,haslocation:true})
   }
 
   drawPoint = async () => {
@@ -678,13 +678,13 @@ export default class ArMappingButton extends React.Component {
     SARMap.setMeasureMode('DRAW_POINT')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
     })
     this.props.showSwitch(false)
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -703,20 +703,20 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
     } else {
       const datasourceAlias = currentLayer.datasourceAlias
       const datasetName = currentLayer.datasetName
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -724,9 +724,9 @@ export default class ArMappingButton extends React.Component {
     
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
-    GLOBAL.MeasureCollectData.point = point
-    GLOBAL.MeasureCollectData.measureType = 'arDrawPoint'
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName,haslocation:true})
+    global.MeasureCollectData.point = point
+    global.MeasureCollectData.measureType = 'arDrawPoint'
+    global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName,haslocation:true})
   }
 
   drawLine = async () => {
@@ -743,13 +743,13 @@ export default class ArMappingButton extends React.Component {
     SARMap.setMeasureMode('DRAW_LINE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
     })
     this.props.showSwitch(false)
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -767,13 +767,13 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -781,7 +781,7 @@ export default class ArMappingButton extends React.Component {
       // 否则画到当前图层
       const datasourceAlias = currentLayer.datasourceAlias
       const datasetName = currentLayer.datasetName
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -789,9 +789,9 @@ export default class ArMappingButton extends React.Component {
 
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
-    GLOBAL.MeasureCollectData.point = point
-    GLOBAL.MeasureCollectData.measureType = 'drawLine'
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName,haslocation:true})
+    global.MeasureCollectData.point = point
+    global.MeasureCollectData.measureType = 'drawLine'
+    global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName,haslocation:true})
   }
 
   drawPolygon = async () => {
@@ -808,14 +808,14 @@ export default class ArMappingButton extends React.Component {
     SARMap.setMeasureMode('DRAW_AREA')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
     })
     this.props.showSwitch(false)
 
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -834,20 +834,20 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
     } else {
       const datasourceAlias = currentLayer.datasourceAlias
       const datasetName = currentLayer.datasetName
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -855,9 +855,9 @@ export default class ArMappingButton extends React.Component {
 
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
-    GLOBAL.MeasureCollectData.point = point
-    GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName,haslocation:true})
+    global.MeasureCollectData.point = point
+    global.MeasureCollectData.measureType = 'arDrawArea'
+    global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName,haslocation:true})
   }
 
   drawRectangle = async () => {
@@ -874,13 +874,13 @@ export default class ArMappingButton extends React.Component {
     SARMap.setMeasureMode('DRAW_RECTANGLE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
     })
     this.props.showSwitch(false)
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -899,20 +899,20 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
     } else {
       const datasourceAlias = currentLayer.datasourceAlias
       const datasetName = currentLayer.datasetName
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -920,9 +920,9 @@ export default class ArMappingButton extends React.Component {
 
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
-    GLOBAL.MeasureCollectData.point = point
-    GLOBAL.MeasureCollectData.measureType = 'arDrawRectangle'
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawRectangle',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+    global.MeasureCollectData.point = point
+    global.MeasureCollectData.measureType = 'arDrawRectangle'
+    global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'arDrawRectangle',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   }
 
   drawCircular = async () => {
@@ -939,13 +939,13 @@ export default class ArMappingButton extends React.Component {
     SARMap.setMeasureMode('DRAW_CIRCLE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
-        GLOBAL.language,
+        global.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA, data: this.data,
     })
     this.props.showSwitch(false)
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -964,20 +964,20 @@ export default class ArMappingButton extends React.Component {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
     } else {
       const datasourceAlias = currentLayer.datasourceAlias
       const datasetName = currentLayer.datasetName
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -985,9 +985,9 @@ export default class ArMappingButton extends React.Component {
 
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
-    GLOBAL.MeasureCollectData.point = point
-    GLOBAL.MeasureCollectData.measureType = 'arDrawCircular'
-    GLOBAL.toolBox && GLOBAL.toolBox.measure({isExistFullMap:false,measureType:'arDrawCircular',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+    global.MeasureCollectData.point = point
+    global.MeasureCollectData.measureType = 'arDrawCircular'
+    global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'arDrawCircular',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   }
 
   renderItems = () => {
@@ -1011,25 +1011,26 @@ export default class ArMappingButton extends React.Component {
           alignItems: 'center',
           // justifyContent: 'center',
         }}>
-        <TouchableOpacity
-          onPress={item.action}
-          style={[{
-            width: scaleSize(80),
-            height: scaleSize(80),
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: scaleSize(40),
-            backgroundColor: '#E5E5E6',
-            backgroundColor: backgroundColor,
-          }]}
-        >
-          <Image
-            resizeMode={'contain'}
-            source={item.image}
-            style={styles.smallIcon}
-          />
-        </TouchableOpacity>
-
+        {
+          item.image &&
+          <TouchableOpacity
+            onPress={item.action}
+            style={{
+              width: scaleSize(80),
+              height: scaleSize(80),
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: scaleSize(40),
+              backgroundColor: backgroundColor,
+            }}
+          >
+            <Image
+              resizeMode={'contain'}
+              source={item.image}
+              style={styles.smallIcon}
+            />
+          </TouchableOpacity>
+        }
         <Text
           style={[
             {
@@ -1113,7 +1114,7 @@ export default class ArMappingButton extends React.Component {
       )
     )) {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
-      datasetName = 'Default_Tagging'
+      datasetName = `Default_Tagging_${this.props.user.currentUser.userName}`
     }
     SARMap.setMeasurePath(datasourceAlias, datasetName)
     SARMap.saveMeasureData(datasourceAlias, datasetName).then(result => {
@@ -1122,11 +1123,11 @@ export default class ArMappingButton extends React.Component {
     // if (!result) {
     //   //await SMeasureAreaView.clearAll()
     //   if(this.saveType === 'savepoint'){
-    //     Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_FAIL_POINT)
+    //     Toast.show(getLanguage(global.language).Prompt.SAVE_FAIL_POINT)
     //   }else if(this.saveType === 'saveline'){
-    //     Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_LINE_FAIL)
+    //     Toast.show(getLanguage(global.language).Prompt.SAVE_LINE_FAIL)
     //   }else if(this.saveType === 'saveRegion'){
-    //     Toast.show(getLanguage(GLOBAL.language).Prompt.SAVE_REGION_FAIL)
+    //     Toast.show(getLanguage(global.language).Prompt.SAVE_REGION_FAIL)
     //   }
     // }else{
     //   // this.saveLog()

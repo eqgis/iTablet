@@ -40,17 +40,17 @@ class CreateGroupChat extends Component {
     }
 
     this._renderSectionHeader = this._renderSectionHeader.bind(this)
-    this.language = this.props.navigation.getParam('language')
-    this.groupID = this.props.navigation.getParam('groupID')
-    this.refreshListCallBack = this.props.navigation.getParam('cb')
+    this.language = this.props.route.params.language
+    this.groupID = this.props.route.params.groupID
+    this.refreshListCallBack = this.props.route.params.cb
   }
 
   refresh = () => {
     this.getContacts()
   }
   componentDidMount() {
-    this.friend = this.props.navigation.getParam('friend')
-    this.user = this.props.navigation.getParam('user')
+    this.friend = this.props.route.params.friend
+    this.user = this.props.route.params.user
     this.getContacts()
   }
 

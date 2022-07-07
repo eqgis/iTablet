@@ -4,11 +4,12 @@
  E-mail: yangshanglong@supermap.com
  */
 import React, { Component } from 'react'
-import { View, ART, PanResponder, Dimensions } from 'react-native'
+import { View, PanResponder, Dimensions } from 'react-native'
 import { SMap } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
 import { color } from '../../styles'
+import { screen } from '../../utils'
 import styles from './styles'
+import { Path, Surface, Shape } from '@react-native-community/art'
 
 const ShapeType = {
   RECTANGLE: 'RECTANGLE',
@@ -62,7 +63,7 @@ export default class SurfaceView extends Component {
       onPanResponderTerminate: this._handlePanResponderEnd,
     })
 
-    this.path = ART.Path()
+    this.path = Path()
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -154,14 +155,14 @@ export default class SurfaceView extends Component {
     if (newState.isShow) {
       if (this.props.orientation.indexOf('LANDSCAPE') === 0) {
         SMap.setDynamicviewsetVisible(true)
-        Orientation.lockToLandscape()
+        screen.lockToLandscape()
       } else {
         SMap.setDynamicviewsetVisible(true)
-        Orientation.lockToPortrait()
+        screen.lockToPortrait()
       }
     } else {
       SMap.setDynamicviewsetVisible(false)
-      Orientation.unlockAllOrientations()
+      screen.unlockAllOrientations()
     }
     this.setState(newState)
   }
@@ -194,7 +195,7 @@ export default class SurfaceView extends Component {
 
   /** 画矩形 **/
   _drawRectangle = () => {
-    this.path = ART.Path()
+    this.path = Path()
     this.path
       .moveTo(this.state.startPoint.x, this.state.startPoint.y)
       .lineTo(this.state.endPoint.x, this.state.startPoint.y)
@@ -205,7 +206,7 @@ export default class SurfaceView extends Component {
 
   /** 画圆 **/
   _drawCircle = () => {
-    this.path = ART.Path()
+    this.path = Path()
     const dx = Math.abs(this.state.endPoint.x - this.state.startPoint.x)
     const dy = Math.abs(this.state.endPoint.y - this.state.startPoint.y)
     let circleRadius = Math.max(dx, dy) / 2
@@ -230,9 +231,9 @@ export default class SurfaceView extends Component {
     const dHeight = Dimensions.get('window').height
     return (
       <View {...this._panResponder.panHandlers} style={this.props.style}>
-        <ART.Surface width={dWidth} height={dHeight}>
-          <ART.Shape d={this.path} stroke={color.switch} strokeWidth={5} />
-        </ART.Surface>
+        <Surface width={dWidth} height={dHeight}>
+          <Shape d={this.path} stroke={color.switch} strokeWidth={5} />
+        </Surface>
       </View>
     )
   }

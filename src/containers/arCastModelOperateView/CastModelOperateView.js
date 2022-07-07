@@ -1,9 +1,9 @@
 import * as React from 'react'
 // import { InteractionManager } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
-import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
 import { getLanguage } from '../../language'
+import { screen } from '../../utils'
 import {
   // SMediaCollector,
   SMCastModelOperateView,
@@ -26,7 +26,7 @@ export default class CastModelOperateView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName || ''
 
@@ -38,32 +38,7 @@ export default class CastModelOperateView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
-  }
-
-  componentDidMount() {
-    // InteractionManager.runAfterInteractions(() => {
-    //   // 初始化数据
-    //   (async function() {}.bind(this)())
-    // })
-    //
-    // {
-    //   (async function() {
-    //     let targetPath = await FileTools.appendingHomeDirectory(
-    //       ConstPath.UserPath +
-    //         this.props.user.currentUser.userName +
-    //         '/' +
-    //         ConstPath.RelativeFilePath.Media,
-    //     )
-    //     SMediaCollector.initMediaCollector(targetPath)
-    //   }.bind(this)())
-    // }
-  }
-
-  componentWillUnmount() {
-    // Orientation.unlockAllOrientations()
-    //移除监听
-    // SCastModelOperateView.onDestroy()
+    screen.lockToPortrait()
   }
 
   back = () => {
@@ -79,7 +54,7 @@ export default class CastModelOperateView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_CAST_MODEL_OPERATE,
           navigation: this.props.navigation,
           backAction: this.back,

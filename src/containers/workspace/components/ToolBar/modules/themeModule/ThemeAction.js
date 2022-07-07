@@ -14,7 +14,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import constants from '../../../../constants'
 import Utils from '../../utils'
 import NavigationService from '../../../../../NavigationService'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../../../utils/DataHandler'
 
 /**
  * 统一处理方法
@@ -90,7 +90,7 @@ async function _appendMyColor(data) {
       item.fileName = name
     })
     data.unshift({
-      title: getLanguage(GLOBAL.language).Profile.MY_COLOR_SCHEME,
+      title: getLanguage(global.language).Profile.MY_COLOR_SCHEME,
       data: myColor,
     })
   }
@@ -1203,12 +1203,17 @@ async function commit(type) {
   const { selectList } = _data
   if (!_params) return
   if (selectList && Object.keys(selectList).length === 0) {
-    Toast.show(getLanguage(_params.language).Prompt.PLEASE_ADD_DATASET)
+    Toast.show(getLanguage(_params.language).Prompt.PLEASE_SELECT_DATASET_TO_ADD)
     return
   }
   if (type === ConstToolType.SM_MAP_ADD_DATASET) {
     for (const key of Object.keys(selectList)) {
-      const resultArr = await SMap.addLayers(selectList[key], key)
+      const datasetNames = []
+      for (const item of selectList[key]) {
+        datasetNames.push(item.datasetName)
+      }
+      if (datasetNames.length === 0) continue
+      const resultArr = await SMap.addLayers(datasetNames, key)
       // 找出有默认样式的数据集，并给对应图层设置
       for (let i = 0; i < resultArr.length; i++) {
         const description =
@@ -1231,14 +1236,17 @@ async function commit(type) {
         })
 
         _params.setToolbarVisible(false)
-        GLOBAL.prjDialog.setDialogVisible(true)
+        global.prjDialog.setDialogVisible(true)
         Toast.show(getLanguage(_params.language).Prompt.ADD_SUCCESS)
       } else {
         Toast.show(getLanguage(_params.language).Prompt.ADD_FAILED)
       }
     }
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION) {
-    const expressions = selectList[_data.themeDatasetName] || []
+    const expressions = []
+    for (const item of selectList[_data.themeDatasetName]) {
+      expressions.push(item.expression)
+    }
     // 数据集->创建统计专题图
     const params = {
       DatasourceAlias: _data.themeDatasourceAlias,
@@ -1256,7 +1264,7 @@ async function commit(type) {
       })
     if (result) {
       _params.setToolbarVisible(false)
-      GLOBAL.prjDialog.setDialogVisible(true)
+      global.prjDialog.setDialogVisible(true)
       Toast.show(getLanguage(_params.language).Prompt.CREATE_SUCCESSFULLY)
     } else {
       Toast.show(getLanguage(_params.language).Prompt.CREATE_THEME_FAILED)
@@ -1264,7 +1272,10 @@ async function commit(type) {
   } else if (
     type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME
   ) {
-    const expressions = selectList[Object.keys(selectList)[0]] || []
+    const expressions = []
+    for (const item of selectList[Object.keys(selectList)[0]]) {
+      expressions.push(item.expression)
+    }
     // 图层->创建统计专题图
     const params = {
       LayerName: _data.currentLayer.name || '', // 图层名称
@@ -1281,7 +1292,7 @@ async function commit(type) {
       })
     if (result) {
       _params.setToolbarVisible(false)
-      GLOBAL.prjDialog.setDialogVisible(true)
+      global.prjDialog.setDialogVisible(true)
       Toast.show(getLanguage(_params.language).Prompt.CREATE_SUCCESSFULLY)
     } else {
       Toast.show(getLanguage(_params.language).Prompt.CREATE_THEME_FAILED)
@@ -1526,7 +1537,7 @@ function menu(type, selectKey, params = {}) {
   let isFullScreen
   let showMenuDialog
   let isTouchProgress
-  const isBoxShow = GLOBAL.ToolBar && GLOBAL.ToolBar.getBoxShow()
+  const isBoxShow = global.ToolBar && global.ToolBar.getBoxShow()
   const showBox = function() {
     if (type.indexOf('SM_MAP_THEME_PARAM') >= 0 && isBoxShow) {
       params.showBox && params.showBox()
@@ -1554,14 +1565,14 @@ function menu(type, selectKey, params = {}) {
     type !== ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_ROTATION
   ) {
     isFullScreen = true
-    showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
-    isTouchProgress = GLOBAL.ToolBar.state.showMenuDialog
+    showMenuDialog = !global.ToolBar.state.showMenuDialog
+    isTouchProgress = global.ToolBar.state.showMenuDialog
     setData()
   } else {
-    isFullScreen = !GLOBAL.ToolBar.state.showMenuDialog
-    showMenuDialog = !GLOBAL.ToolBar.state.showMenuDialog
+    isFullScreen = !global.ToolBar.state.showMenuDialog
+    showMenuDialog = !global.ToolBar.state.showMenuDialog
     isTouchProgress = false
-    if (!GLOBAL.ToolBar.state.showMenuDialog) {
+    if (!global.ToolBar.state.showMenuDialog) {
       // 先滑出box，再显示Menu
       showBox()
       setTimeout(setData, Const.ANIMATED_DURATION_2)
@@ -1581,9 +1592,9 @@ function showMenuBox(type, selectKey, params = {}) {
   ) {
     params.showBox &&
       params.showBox({
-        isTouchProgress: !GLOBAL.ToolBar.state.isTouchProgress,
+        isTouchProgress: !global.ToolBar.state.isTouchProgress,
         showMenuDialog: false,
-        isFullScreen: !GLOBAL.ToolBar.state.isTouchProgress,
+        isFullScreen: !global.ToolBar.state.isTouchProgress,
       })
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE) {
     switch (selectKey) {
@@ -1619,7 +1630,7 @@ function showMenuBox(type, selectKey, params = {}) {
 // 修改统计专题图类型
 async function changeGraphType(type) {
   const _params = ToolbarModule.getParams()
-  let isBoxShow = GLOBAL.ToolBar && !GLOBAL.ToolBar.getBoxShow()
+  let isBoxShow = global.ToolBar && !global.ToolBar.getBoxShow()
   if (type !== ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE) {
     // 其他Box展开到修改专题图类型Box展开
     type = ConstToolType.SM_MAP_THEME_PARAM_GRAPH_TYPE
@@ -1631,8 +1642,8 @@ async function changeGraphType(type) {
 
   const setData = async function() {
     const data = await ThemeMenuData.getThemeGraphType()
-    GLOBAL.ToolBar &&
-      GLOBAL.ToolBar.setState({
+    global.ToolBar &&
+      global.ToolBar.setState({
         isFullScreen: false,
         isTouchProgress: false,
         showMenuDialog: false,
@@ -1645,7 +1656,7 @@ async function changeGraphType(type) {
       })
   }
 
-  if (!GLOBAL.ToolBar.state.showMenuDialog) {
+  if (!global.ToolBar.state.showMenuDialog) {
     // 先滑出box，再显示Menu
     showBox()
     setTimeout(setData, Const.ANIMATED_DURATION_2)
@@ -1694,7 +1705,7 @@ async function getTouchProgressInfo(title) {
   let value = 0
   let step = 1
   let unit = ''
-  // let title = GLOBAL.toolBox?.state?.selectName
+  // let title = global.toolBox?.state?.selectName
   switch (title) {
     // 热力图
     case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_RADIUS:
@@ -1719,7 +1730,7 @@ async function getTouchProgressInfo(title) {
       unit = '%'
       break
     // 其他专题图
-    case getLanguage(GLOBAL.language).Map_Main_Menu.RANGE_COUNT:
+    case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:
       if (
         themeType === ThemeType.RANGE ||
         themeType === ThemeType.LABELRANGE
@@ -1813,7 +1824,7 @@ function setTouchProgressInfo(title, value) {
       SThemeCartography.setHeatMapMaxColorWeight(_params)
       break
     // 其他专题图
-    case getLanguage(GLOBAL.language).Map_Main_Menu.RANGE_COUNT:
+    case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:
       _params = {
         LayerName: Params.currentLayer.name,
         RangeParameter: parseInt(value),
@@ -1883,20 +1894,26 @@ function setTouchProgressInfo(title, value) {
 }
 
 function sendUpdateThemeMsg(layerInfo) {
-  if (GLOBAL.coworkMode && GLOBAL.getFriend && layerInfo) {
+  if (global.coworkMode && global.getFriend && layerInfo) {
     let layerType = LayerUtils.getLayerType(layerInfo)
     if (layerType !== 'TAGGINGLAYER') {
-      let friend = GLOBAL.getFriend()
-      friend.onThemeEdit(layerInfo)
+      const params = ToolbarModule.getParams()
+      let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+      let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
+      let friend = global.getFriend()
+      isRealTime && friend.onThemeEdit(layerInfo)
     }
   }
 }
 
 function sendAddThemeMsg(layerInfo) {
   //协作时同步编辑对象
-  if (GLOBAL.coworkMode && GLOBAL.getFriend) {
-    let friend = GLOBAL.getFriend()
-    friend.onThemeLayerAdd(layerInfo)
+  if (global.coworkMode && global.getFriend) {
+    const params = ToolbarModule.getParams()
+    let currentTaskInfo = params.coworkInfo?.[params.user.currentUser.userName]?.[params.currentTask.groupID]?.[params.currentTask.id]
+    let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
+    let friend = global.getFriend()
+    isRealTime && friend.onThemeLayerAdd(layerInfo)
   }
 }
 

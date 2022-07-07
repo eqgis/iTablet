@@ -1,19 +1,22 @@
-//@ts-nocheck
 import React, { Component } from 'react'
-import {  View, Image, Text, TouchableOpacity, Animated, Platform } from 'react-native'
+import {  View, Image, Text, TouchableOpacity, Animated, Dimensions } from 'react-native'
 import { getThemeAssets } from '../../assets'
 import { getLanguage } from '../../language'
 import Input from '../../components/Input'
-import { scaleSize, Toast } from '../../utils/index'
-import { SMap, SCollectSceneFormView, Action } from 'imobile_for_reactnative'
+import { AppStyle, scaleSize, Toast } from '../../utils/index'
+import { SMap, Action ,SARMap} from 'imobile_for_reactnative'
 import NavigationService from '../../containers/NavigationService'
-import { ConstOnline, TouchType } from '../../constants'
+import { ChunkType, TouchType } from '../../constants'
 import { Container } from '../../components'
 import styles from './styles'
+import { dp } from '../../utils'
+import AREnhancePosition from './AREnhancePosition'
+import Orientation from 'react-native-orientation'
+
 
 interface IState {
   close: boolean,
-  showStatus: 'main' | 'scan' | 'setting',
+  showStatus: 'main' | 'scan' | 'setting' | 'arEnhance',
   scanning: boolean,
   activeBtn: number,
   latitude: string,
@@ -27,6 +30,7 @@ interface IProps {
   startScan: Function, // 调用各自界面的camera进行二维码扫描
   routeName: string,
   routeData: Object,
+  imageTrackingresultTag: string, // ar增强定位的返回结果
 }
 
 export default class DatumPointCalibration extends Component<IProps,IState> {
@@ -48,8 +52,8 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
 
   async componentDidMount(){
     let position
-    if (GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
-      position = GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE
+    if (global.SELECTPOINTLATITUDEANDLONGITUDE) {
+      position = global.SELECTPOINTLATITUDEANDLONGITUDE
     }else {
       position = await SMap.getCurrentPosition()
     }
@@ -62,7 +66,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   _onClose = async () => {
     // 点击关闭使用当前定位
     const { onClose } = this.props
-    let curPoint = await SMap.getCurrentPosition()
+    const curPoint = await SMap.getCurrentPosition()
     curPoint.h = 1.5
     onClose && onClose(curPoint)
     this.setState({
@@ -163,7 +167,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       })
       this.scanTimes = 0
       this._stopAnim()
-      Toast.show(getLanguage(GLOBAL.language).Profile.MAR_AR_PICTURE_LOCATION_SUCCEED)
+      Toast.show(getLanguage(global.language).Profile.MAR_AR_PICTURE_LOCATION_SUCCEED)
     }else if(this.scanTimes < 100){
       this.scanTimes++
       setTimeout(()=>{
@@ -175,7 +179,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         scanning: false,
       })
       this.scanTimes = 0
-      Toast.show(getLanguage(GLOBAL.language).Profile.MAR_AR_QR_INVALID)
+      Toast.show(getLanguage(global.language).Profile.MAR_AR_QR_INVALID)
     }
   }
 
@@ -209,13 +213,14 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     return value + ''
   }
 
+
   // 自动定位
   _autoLocation = async () => {
-    GLOBAL.Loading.setLoading(
+    global.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
+      getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
     )
-    let position = await SMap.getCurrentPosition()
+    const position = await SMap.getCurrentPosition()
 
     this.setState({
       longitude: position.x,
@@ -224,9 +229,9 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       activeBtn: 2,
     })
 
-    GLOBAL.Loading.setLoading(false)
+    global.Loading.setLoading(false)
     Toast.show(
-      getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATION_SUCCEED,
+      getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION_SUCCEED,
     )
   }
 
@@ -240,41 +245,41 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       NavigationService.navigate('SelectLocation', {
         cb: () => {
           this.setState({
-            longitude: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.x,
-            latitude: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.y,
+            longitude: global.SELECTPOINTLATITUDEANDLONGITUDETEMP.x,
+            latitude: global.SELECTPOINTLATITUDEANDLONGITUDETEMP.y,
           })
         },
       })
-      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(longitude), y: Number(latitude) }
+      global.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(longitude), y: Number(latitude) }
     } else {
       if (this.state.type === 'ARNAVIGATION_INDOOR') {
         //暂存点，返回地图选点时使用
-        GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(longitude), y: Number(latitude) }
+        global.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(longitude), y: Number(latitude) }
 
-        GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-        GLOBAL.MAPSELECTPOINT.setVisible(true)
+        global.TouchType = TouchType.MAP_SELECT_POINT
+        global.MAPSELECTPOINT.setVisible(true)
 
         NavigationService.navigate('MapView', {selectPointType: 'SELECTPOINTFORARNAVIGATION_INDOOR'})
         SMap.setAction(Action.PAN)
       } else {
         //暂存点，返回地图选点时使用
-        GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
-  
-        GLOBAL.ToolBar.setVisible(false)
-  
-        GLOBAL.MapXmlStr = await SMap.mapToXml()
-  
-        GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
-        GLOBAL.MAPSELECTPOINT.setVisible(true)
-  
+        global.SELECTPOINTLATITUDEANDLONGITUDETEMP = {x: Number(longitude), y: Number(latitude)}
+
+        global.ToolBar.setVisible(false)
+
+        global.MapXmlStr = await SMap.mapToXml()
+
+        global.TouchType = TouchType.MAP_SELECT_POINT
+        global.MAPSELECTPOINT.setVisible(true)
+
         //导航选点 全屏时保留mapController
-        GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
-  
+        global.mapController && global.mapController.setVisible(true)
+
         // let map = await SMap.getCurrentPosition()
         // let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
         // wsData.layerIndex = 3
-        let licenseStatus = await SMap.getEnvironmentStatus()
-        GLOBAL.isLicenseValid = licenseStatus.isLicenseValid
+        const licenseStatus = await SMap.getEnvironmentStatus()
+        global.isLicenseValid = licenseStatus.isLicenseValid
         NavigationService.navigate('MapView', {
           // NavigationService.navigate('MapViewSingle', {
           // wsData,
@@ -290,17 +295,17 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           backPage: this.props.routeName,
           routeData: this.props.routeData,
         })
-        GLOBAL.toolBox.showFullMap(true)
-        GLOBAL.TouchType = TouchType.MAP_SELECT_POINT
+        global.toolBox.showFullMap(true)
+        global.TouchType = TouchType.MAP_SELECT_POINT
         // let point = {
         // x: map.x,
         // y: map.y,
         // }
-        // GLOBAL.MAPSELECTPOINT.openSelectPointMap(wsData, point)
+        // global.MAPSELECTPOINT.openSelectPointMap(wsData, point)
         SMap.setAction(Action.PAN)
-        GLOBAL.scaleView.isvisible(false)
-        GLOBAL.mapController.setVisible(true)
-        GLOBAL.mapController.move({
+        global.scaleView.isvisible(false)
+        global.mapController.setVisible(true)
+        global.mapController.move({
           bottom: scaleSize(50),
           left: 'default',
         })
@@ -308,13 +313,13 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     }
   }
 
-  _renderInputs = () => {
+  _renderInputs01 = () => {
     const { longitude, latitude, height } = this.state
     return (
       <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
           <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={longitude + ''}
             onChangeText={text => {
@@ -328,7 +333,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         </View>
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
           <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={latitude + ''}
             onChangeText={text => {
@@ -340,7 +345,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         </View>
         <View style={styles.inputBox}>
           <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
           <Input style={styles.input} showClear={height != 0} textAlign={'left'} keyboardType={'number-pad'}
             value={height + ''}
             onChangeText={text => {
@@ -354,7 +359,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     )
   }
 
-  _renderBtns = () => {
+  _renderBtns01 = () => {
     const { activeBtn } = this.state
     return (
       <View style={styles.buttons}>
@@ -370,7 +375,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <View style={[styles.button, activeBtn == 0 && {borderWidth: 1, borderColor: '#007aff'}]}>
             <Image source={getThemeAssets().collection.icon_scan} style={styles.buttonIcon}/>
           </View>
-          <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAR_AR_DATUM_PICTURE_LOCATION}</Text>
+          <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAR_AR_DATUM_PICTURE_LOCATION}</Text>
         </TouchableOpacity>
 
         {/* 地图选点 */}
@@ -381,7 +386,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <View style={[styles.button, activeBtn == 1 && {borderWidth: 1, borderColor: '#007aff'}]}>
             <Image source={getThemeAssets().collection.icon_map_selection} style={styles.buttonIcon}/>
           </View>
-          <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}</Text>
+          <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}</Text>
         </TouchableOpacity>
 
         {/* 自动定位 */}
@@ -392,29 +397,255 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <View style={[styles.button, activeBtn == 2 && {borderWidth: 1, borderColor: '#007aff'}]}>
             <Image source={getThemeAssets().collection.icon_location} style={styles.buttonIcon}/>
           </View>
-          <Text style={styles.buttonText}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}</Text>
+          <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}</Text>
         </TouchableOpacity>
       </View>
     )
   }
 
+  _renderInputs = () => {
+    const { longitude, latitude, height } = this.state
+    return (
+      <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
+        <View style={styles.inputBox}>
+          {/* <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/> */}
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
+          <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
+            value={longitude + ''}
+            onChangeText={text => {
+              this.setState({longitude: this.clearNoNum(text)})
+            }}
+            onClear={() => {
+              // 多次clear value都是0 不会引起Input更新 但是Input自己把value设置为了‘’
+              // 所以值为0时 不显示clear按钮
+              this.setState({longitude: "0"})
+            }}/>
+        </View>
+        <View style={styles.inputBox}>
+          {/* <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/> */}
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
+          <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
+            value={latitude + ''}
+            onChangeText={text => {
+              this.setState({latitude: this.clearNoNum(text)})
+            }}
+            onClear={() => {
+              this.setState({latitude: "0"})
+            }}/>
+        </View>
+        <View style={styles.inputBox}>
+          {/* <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/> */}
+          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
+          <Input style={styles.input} showClear={height != 0} textAlign={'left'} keyboardType={'number-pad'}
+            value={height + ''}
+            onChangeText={text => {
+              this.setState({height: this.clearNoNum(text)})
+            }}
+            onClear={() => {
+              this.setState({height: "0"})
+            }}/>
+        </View>
+      </View>
+    )
+  }
+
+  _renderBtns = () => {
+    const { activeBtn } = this.state
+    const titleWidth = 80
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          // marginTop: dp(6),
+          marginBottom: dp(6),
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          flex:1
+        }}
+      >
+        {/* 自动定位部分 */}
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flex:1,
+            borderRightWidth: dp(1),
+            borderColor: '#F8F8F8',
+            paddingRight: dp(2),
+          }}
+        >
+          <Text
+            numberOfLines={2}
+            style={[AppStyle.h3c,
+              { color: '#707070',
+                maxWidth: dp(titleWidth + 20),
+                width: dp(titleWidth),
+                fontSize: dp(14),
+                textAlign: 'left',
+                paddingBottom: dp(6),
+              },
+              // styleTemp
+            ]
+            }
+          >
+            {getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}
+          </Text>
+
+          <View style={styles.buttons}>
+            {/* ar增强定位 */}
+            <TouchableOpacity style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }} onPress={() => {
+
+              // 调用ar增强定位的方法获取定位
+              SARMap.setAREnhancePosition()
+              // 跳转到扫描界面
+              this.setState({
+                showStatus: 'arEnhance',
+              })
+            }}>
+              <View style={[styles.button, activeBtn == 3 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                <Image source={getThemeAssets().collection.icon_ar_enhance} style={styles.buttonIcon}/>
+              </View>
+              <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_ENHANCE_POSITION}</Text>
+            </TouchableOpacity>
+          </View>
+
+
+
+        </View>
+
+        {/* 手动定位部分 */}
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flex:3,
+            paddingLeft: dp(6),
+          }}
+        >
+          <Text
+            numberOfLines={2}
+            style={[AppStyle.h3,
+              { color: '#707070',
+                maxWidth: dp(titleWidth + 20),
+                width: dp(titleWidth),
+                fontSize: dp(14),
+                textAlign: 'center',
+                paddingBottom: dp(6),
+              },
+              // styleTemp
+            ]}
+          >
+            {getLanguage(global.language).Profile.MAP_AR_DATUM_MANUAL_LOCATION}
+          </Text>
+
+          <View style={styles.buttons}>
+            {/* 图片定位 */}
+            <TouchableOpacity style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }} onPress={() => {
+              this.setState({
+                showStatus: 'scan',
+              })
+            }}>
+              <View style={[styles.button, activeBtn == 0 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                <Image source={getThemeAssets().collection.icon_scan} style={styles.buttonIcon}/>
+              </View>
+              <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAR_AR_DATUM_PICTURE_LOCATION}</Text>
+            </TouchableOpacity>
+
+            {/* 地图选点 */}
+            <TouchableOpacity style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }} onPress={this._mapSelectPoint}>
+              <View style={[styles.button, activeBtn == 1 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                <Image source={getThemeAssets().collection.icon_map_selection} style={styles.buttonIcon}/>
+              </View>
+              <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}</Text>
+            </TouchableOpacity>
+
+            {/* GPS定位 */}
+            <TouchableOpacity style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }} onPress={this._autoLocation}>
+              <View style={[styles.button, activeBtn == 2 && {borderWidth: 1, borderColor: '#ccc'}]}>
+                <Image source={getThemeAssets().collection.icon_location} style={styles.buttonIcon}/>
+              </View>
+              <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_GPS_LOCATION}</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
+      </View>
+
+
+
+
+    )
+  }
+
   _renderContent = () => {
+
+    // 获取屏幕的宽高
+    const screenWidth = Dimensions.get('window').width
+    const screemHeight = Dimensions.get('window').height
+
+    //设置宽度的最大最小值
+    let widthTemp = 616
+    if(screenWidth > 500) {
+      widthTemp = 656
+    }
+    // 设置高度的最大最小值
+    let heightTemp = 990
+    if(screemHeight > 900){
+      heightTemp = 1000
+    }
+    // 判断当前屏幕的横竖屏
+    const orientation = Orientation.getInitialOrientation()
+    // 横屏状态下，将
+    if(orientation === 'LANDSCAPE') {
+      if(screenWidth > 1000) {
+        widthTemp = 1000
+        heightTemp = 960
+      }
+    }
+
     return (
       <View style={styles.container}>
-        <View style={styles.viewBox}>
+        <View style={[styles.viewBox, {
+          height: scaleSize(heightTemp),
+          width: scaleSize(widthTemp),
+        }]}>
           <View style={styles.titleBox}>
-            <Text style={styles.title}>{getLanguage(GLOBAL.language).Profile.MAR_AR_POSITION_CORRECT}</Text>
+            <Image style={{
+              height: scaleSize(150),
+              width: scaleSize(150),
+            }}
+            source={getThemeAssets().mapTools.icon_mobile}
+            />
+
+            {/* <Text style={styles.title}>{getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}</Text> */}
             <TouchableOpacity
               style={{
                 position: 'absolute',
                 right: scaleSize(-20),
+                top: scaleSize(16),
               }}
               onPress={this._onClose}
             >
               <Image style={styles.titleBtn} source={getThemeAssets().mapTools.icon_tool_cancel} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.subTitle}>{getLanguage(GLOBAL.language).Profile.MAP_AR_TOWARDS_NORTH}</Text>
+          <Text style={styles.title}>{getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}</Text>
+          <Text style={styles.subTitle}>{getLanguage(global.language).Profile.MAP_AR_TOWARDS_NORTH}</Text>
           {this._renderInputs()}
           {this._renderBtns()}
           <TouchableOpacity style={{
@@ -429,7 +660,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
             <Text style={{
               color: '#ffffff',
               fontSize: scaleSize(22),
-            }}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_SURE}</Text>
+            }}>{getLanguage(global.language).Profile.MAP_AR_DATUM_SURE}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -437,6 +668,9 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   }
 
   _renderScan = () => {
+    if(global.Type === ChunkType.MAP_AR_MAPPING){
+      SARMap.measuerPause(true)
+    }
     const { scanning } = this.state
     const transY = this.state.animValue.interpolate({
       inputRange: [0,1],
@@ -450,7 +684,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       <View style={styles.scanContainer}>
         <View style={styles.scanMask}>
           <Image source={getThemeAssets().collection.scan_tip} style={styles.scanTipImg} />
-          <Text style={styles.scanTip}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_TIP}</Text>
+          <Text style={styles.scanTip}>{getLanguage(global.language).Profile.MAP_AR_SCAN_TIP}</Text>
         </View>
         <View style={styles.scanMaskCenter}>
           <View style={styles.scanMask}></View>
@@ -472,7 +706,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
         <View style={styles.scanMask}>
           {!scanning && <TouchableOpacity style={styles.scanButton} onPress={this._onScanClick}>
             <Image source={getThemeAssets().collection.icon_scanit} style={styles.scanButtonImg} />
-            <Text style={{color: '#ffffff', textAlign: 'center'}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_SCAN_IT}</Text>
+            <Text style={{color: '#ffffff', textAlign: 'center'}}>{getLanguage(global.language).Profile.MAP_AR_SCAN_IT}</Text>
           </TouchableOpacity>}
         </View>
         <TouchableOpacity style={{
@@ -497,7 +731,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       <View style={styles.bgContainer}>
         <Container
           headerProps={{
-            title: getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_SETTING,
+            title: getLanguage(global.language).Profile.MAP_AR_DATUM_SETTING,
             backAction:()=>{
               this.setState({
                 showStatus: 'main',
@@ -508,10 +742,10 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           <View style={{paddingHorizontal: scaleSize(60)}}>
             <View style={styles.listItem}>
               <Image source={getThemeAssets().collection.icon_coordinate} style={styles.listIcon} />
-              <Text>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_POSITION}</Text>
+              <Text>{getLanguage(global.language).Profile.MAP_AR_DATUM_POSITION}</Text>
             </View>
             <View style={styles.listItem}>
-              <Text style={styles.itemL}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
+              <Text style={styles.itemL}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
               <Input style={styles.itemR} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
                 value={longitude}
                 onChangeText={text => {
@@ -522,7 +756,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
                 }}/>
             </View>
             <View style={styles.listItem}>
-              <Text style={styles.itemL}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
+              <Text style={styles.itemL}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
               <Input style={styles.itemR} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
                 value={latitude}
                 onChangeText={text => {
@@ -533,7 +767,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
                 }}/>
             </View>
             <View style={styles.listItem}>
-              <Text style={styles.itemL}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
+              <Text style={styles.itemL}>{getLanguage(global.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
               <Input style={styles.itemR} showClear={true} textAlign={'left'} keyboardType={'number-pad'}
                 value={height}
                 onChangeText={text => {
@@ -544,8 +778,8 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
                 }}/>
             </View>
             <View style={styles.listItem}>
-              <Text style={styles.itemL}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_DIRECTION}</Text>
-              <Text style={[styles.itemR,{ paddingHorizontal: scaleSize(20)}]}>{getLanguage(GLOBAL.language).Profile.MAR_AR_DATUM_NORTH}</Text>
+              <Text style={styles.itemL}>{getLanguage(global.language).Profile.MAP_AR_DATUM_DIRECTION}</Text>
+              <Text style={[styles.itemR,{ paddingHorizontal: scaleSize(20)}]}>{getLanguage(global.language).Profile.MAR_AR_DATUM_NORTH}</Text>
             </View>
             <View style={{marginTop: scaleSize(60)}}>
               {this._renderBtns()}
@@ -553,6 +787,28 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
           </View>
         </Container>
       </View>
+    )
+  }
+
+  /** ar增强定位的扫描界面的渲染 */
+  _renderEnhanceScan = () => {
+    return (
+      <AREnhancePosition
+        ref ={(ref) => {this.arEnhancePosition = ref}}
+        imageTrackingresultTag = {this.props.imageTrackingresultTag}
+        onBack = {() => {
+          SARMap.stopAREnhancePosition()
+          this.setState({
+            showStatus: 'main'
+          })
+
+        }}
+        onSuccess = {() => {
+          // 定位成功走的方法
+          // 关闭校准界面
+          this._onClose()
+        }}
+      />
     )
   }
 
@@ -565,6 +821,8 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       case 'scan': content = this._renderScan()
         break
       case 'setting': content = this._renderSetting()
+        break
+      case 'arEnhance' : content = this._renderEnhanceScan()
         break
     }
     return (

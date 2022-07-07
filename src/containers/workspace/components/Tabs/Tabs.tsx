@@ -5,17 +5,17 @@ import { scaleSize, setSpText, screen } from '../../../../utils'
 import { Height, ToolbarType } from '../../../../constants'
 import { DEVICE } from '../../../../redux/models/device'
 import { TableList } from '../../../../components'
-import DefaultTabBar from './DefaultTabBar'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TableItem from './TableItem'
 import { TableItemType } from './types'
-import { ToolbarTableList } from '../ToolBar/components'
 import { ToolBarSlide } from '../ToolBar/components'
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
+import { redo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 
 interface Props {
   data: any[],
   device: DEVICE,
   column?: number,
+  initialIndex?: number,
   style?: {[name: string]: any},
 }
 
@@ -28,6 +28,7 @@ interface TableData {
   data: any,
   type?: string,
   getData?: () => Promise<any>,
+  opPress?: () => void,
 }
 
 
@@ -64,6 +65,7 @@ export default class Tabs extends React.Component<Props, State> {
       this.setState({
         currentPage: index,
       })
+    this.props.data[index]?.onPress?.()
   }
 
   _getWidth = () => {
@@ -74,16 +76,6 @@ export default class Tabs extends React.Component<Props, State> {
     return width
   }
 
-  // _renderItem = (data: { item: TableItemType, rowIndex: number, cellIndex: number }) => {
-  //   return(
-  //     <TableItem
-  //       data={data.item}
-  //       rowIndex={data.rowIndex}
-  //       cellIndex={data.cellIndex}
-  //     />
-  //   )
-  // }
-
   _renderTab = (item: TableData) => {
     let tab, data = item.data
     if (data) {
@@ -92,7 +84,7 @@ export default class Tabs extends React.Component<Props, State> {
       } else if (item.type) {
         switch(item.type) {
           case ToolbarType.slider:
-            tab = <ToolBarSlide data={data}/>
+            tab = <ToolBarSlide data={data[0]}/>
             break
         }
       }
@@ -106,65 +98,76 @@ export default class Tabs extends React.Component<Props, State> {
           device={this.props.device}
         />
       )
-      // tab = (
-      //   <TableList
-      //     style={styles.table}
-      //     data={data}
-      //     type={ToolbarType.scrollTable}
-      //     column={data.length < 5 ? data.length : this.props.column}
-      //     renderCell={this._renderItem}
-      //     device={this.props.device}
-      //     isAutoType={false}
-      //     cellStyle={styles.cellStyle}
-      //     horizontal={true}
-      //     // rowStyle={{height: scaleSize(200)}}
-      //   />
-      // )
     }
     return React.cloneElement(tab, {tabLabel: item.title})
   }
 
-  _renderTabs = () => {
-    const data: any[] = []
+  _getRoutes = () => {
+    const routes: {key: string, title: string}[] = []
     this.props.data.forEach(item => {
-      data.push(this._renderTab(item))
+      routes.push({
+        key: item.title,
+        title: item.title,
+      })
     })
-    return data
+    return routes
   }
+
+  _renderTabs = () => {
+    const data: any = {}
+    this.props.data.forEach(item => {
+      data[item.title] = () => this._renderTab(item)
+    })
+    return SceneMap(data)
+  }
+
+  renderTabBar = (props: any) => (
+    <TabBar
+      {...props}
+      indicatorStyle={[
+        styles.tabBarUnderlineStyle,
+        // {marginLeft: this._getWidth() / this.props.data.length / 2 - scaleSize(16)},
+        {marginLeft: scaleSize(55)},
+      ]}
+      // onTabPress={({route, preventDefault}) => {
+      //   const routes = this._getRoutes()
+      //   for (const index in routes) {
+      //     if (Object.hasOwnProperty.call(routes, index)) {
+      //       const element = routes[index];
+      //       if (element.key === route.key) {
+      //         this.setState({
+      //           currentPage: parseInt(index),
+      //         })
+      //         preventDefault()
+      //         break
+      //       }
+      //     }
+      //   }
+      // }}
+      style={styles.tabStyle}
+      labelStyle={styles.tabTextStyle}
+      activeColor={color.themeText2}
+      scrollEnabled={true}
+      tabStyle={{width:scaleSize(140)}}
+    />
+  )
 
   render() {
     if (!this.props.data || this.props.data.length === 0) {
       return null
     }
     return (
-      <ScrollableTabView
-        // ref={ref => (this.scrollTab = ref)}
-        style={[styles.container, this.props.style]}
-        initialPage={0}
-        page={this.state.currentPage}
-        onChangeTab={(data: {
-          i: number,
-          ref: typeof TableList,
-          from: number,
-        }) => this.goToPage(data.i)}
-        locked={true}
-        renderTabBar={(props: {[name: string]: any}) => (
-          <DefaultTabBar
-            {...props}
-            activeBackgroundColor={'transparent'}
-            activeTextColor={color.themeText2}
-            inactiveTextColor={color.white}
-            textStyle={styles.tabTextStyle}
-            tabStyle={styles.tabStyle}
-          />
-        )}
-        tabBarUnderlineStyle={[
-          styles.tabBarUnderlineStyle,
-          {marginLeft: this._getWidth() / this.props.data.length / 2 - scaleSize(32)},
-        ]}
-      >
-        {this._renderTabs()}
-      </ScrollableTabView>
+      <TabView
+        navigationState={{
+          index: this.props.initialIndex || 0,
+          routes: this._getRoutes(),
+        }}
+        style={{backgroundColor: color.white}}
+        onIndexChange={this.goToPage}
+        renderTabBar={this.renderTabBar}
+        renderScene={this._renderTabs()}
+        swipeEnabled={false}
+      />
     )
   }
 }
@@ -280,23 +283,24 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   tabBarUnderlineStyle: {
-    backgroundColor: color.black,
+    backgroundColor: '#505050',
     height: scaleSize(4),
-    width: scaleSize(64),
+    width: scaleSize(30),
     borderRadius: scaleSize(2),
     marginBottom: scaleSize(12),
   },
   tabTextStyle: {
-    fontSize: setSpText(22),
+    fontSize: setSpText(20),
     backgroundColor: 'transparent',
     color: color.fontColorBlack,
     textAlign: 'center',
   },
   tabStyle: {
-    // backgroundColor: color.subTheme,
-    // marginTop: scaleSize(20),
     backgroundColor: color.white,
-    // height: scaleSize(40),
+    elevation: 0,
+    shadowRadius: 0,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0,
   },
   table: {
     flex: 1,

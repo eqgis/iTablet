@@ -133,16 +133,16 @@ class Report extends Component {
             backgroundColor: backgroundColor,
           }}
           onPress={() => {
-            GLOBAL.Loading?.setLoading(true,getLanguage(this.language).Friends.SENDING)
+            global.Loading?.setLoading(true,getLanguage(this.language).Friends.SENDING)
             this.timer = setTimeout(() => {
               // SMessageServiceHTTP.sendMessage(
               //   {
               //     "message": this.state.selectedData,
               //     "type": 1,
               //     "user": {
-              //       "name": this.props.navigation.getParam('user').userName,
-              //       "id": this.props.navigation.getParam('user').userId,
-              //       "groupID": this.props.navigation.getParam('user').userId,
+              //       "name": this.props.route.params('user').userName,
+              //       "id": this.props.route.params('user').userId,
+              //       "groupID": this.props.route.params('user').userId,
               //     },
               //     "time": new Date().getTime(),
               //   },
@@ -151,7 +151,7 @@ class Report extends Component {
               Toast.show(
                 getLanguage(this.language).Friends.REPORT_SUCCESS
               )
-              GLOBAL.Loading?.setLoading(false)
+              global.Loading?.setLoading(false)
               clearTimeout(this.timer)
               this.timer = null
             }, 2000)

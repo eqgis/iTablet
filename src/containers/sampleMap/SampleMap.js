@@ -12,7 +12,7 @@ import { Module } from '../../class'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import SampleMapItem from './SampleMapItem'
-import DataHandler from '../tabs/Mine/DataHandler'
+import DataHandler from '../../utils/DataHandler'
 
 export default class SampleMap extends Component {
   props: {
@@ -29,7 +29,7 @@ export default class SampleMap extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.refreshAction = params && params.refreshAction
     this.screenWidth = Dimensions.get('window').width
     this.state = {
@@ -100,13 +100,13 @@ export default class SampleMap extends Component {
         fileName: fileName,
         progressDivider: 1,
         key: downloadData.id,
-        module: GLOBAL.Type,
+        module: global.Type,
       }
       await this.props.downloadFile(downloadOptions)
       await FileTools.unZipFile(fileCachePath, cachePath)
       let tempData = await DataHandler.getExternalData(fileDirPath) || []
       if (downloadData.mapType === Module.MapType.SCENE || downloadData.mapType === Module.MapType.AR) {
-        await DataHandler.importWorkspace3D(downloadData.tmpCurrentUser, tempData[0])
+        await DataHandler.importWorkspace3D(tempData[0])
       } else if (downloadData.mapType === Module.MapType.MAP) {
         await DataHandler.importWorkspace(tempData[0])
       }
@@ -157,7 +157,7 @@ export default class SampleMap extends Component {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Profile.SAMPLEDATA,
+          title: getLanguage(global.language).Profile.SAMPLEDATA,
           //'公共地图',
           navigation: this.props.navigation,
           backAction: () => {
@@ -185,7 +185,7 @@ export default class SampleMap extends Component {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(GLOBAL.language).Friends.LOADING}
+              title={getLanguage(global.language).Friends.REFRESHING}
               enabled={true}
             />
           }

@@ -70,10 +70,12 @@ export default class PopView extends PureComponent {
       Animated.timing(this.opacity, {
         toValue: opacity,
         duration: time,
+        useNativeDriver: false,
       }),
       Animated.timing(this.height, {
         toValue: height,
         duration: time2,
+        useNativeDriver: false,
       }),
     ]).start()
   }

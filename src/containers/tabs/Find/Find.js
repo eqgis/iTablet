@@ -9,14 +9,16 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  AsyncStorage,
+  // AsyncStorage,
 } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Container } from '../../../components'
 import { UserType } from '../../../constants'
 import NavigationService from '../../NavigationService'
 import { color } from '../../../styles'
 import Toast from '../../../utils/Toast'
-import { scaleSize, OnlineServicesUtils } from '../../../utils'
+import { scaleSize } from '../../../utils'
+import * as OnlineServicesUtils from '../../../utils/OnlineServicesUtils'
 import { getLanguage } from '../../../language/index'
 import { getPublicAssets, getThemeAssets } from '../../../assets'
 import TabBar from '../TabBar'
@@ -29,7 +31,6 @@ var SUPERMAPGROUP_UPDATE_TIME = 'SUPERMAPGROUP_UPDATE_TIME'
 
 var superMapKnownTime
 var superMapGroupTime
-let JSOnlineService = null
 
 export default class Find extends Component {
   props: {
@@ -49,7 +50,14 @@ export default class Find extends Component {
       superMapGroup: false,
       appletInfo: false,
     }
-    JSOnlineService = new OnlineServicesUtils('online')
+    if (UserType.isOnlineUser(this.props.user.currentUser)) {
+      this.service = OnlineServicesUtils.getService('online')
+    } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+      this.service = OnlineServicesUtils.getService('iportal')
+      if (this.service.serverUrl === '' && this.props.user.currentUser?.serverUrl) {
+        this.service.serverUrl = this.props.user.currentUser.serverUrl
+      }
+    }
   }
 
   componentDidMount() {
@@ -69,13 +77,21 @@ export default class Find extends Component {
     if (
       JSON.stringify(prevProps.user.currentUser) !== JSON.stringify(this.props.user.currentUser)
     ) {
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        this.service = OnlineServicesUtils.getService('online')
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        this.service = OnlineServicesUtils.getService('iportal')
+        if (this.service.serverUrl === '' && this.props.user.currentUser?.serverUrl) {
+          this.service.serverUrl = this.props.user.currentUser.serverUrl
+        }
+      }
       CoworkFileHandle.initCoworkList(this.props.user.currentUser)
     }
   }
 
   _getSuperMapGroupData = async () => {
     try {
-      let data = await JSOnlineService.getPublicDataByName(
+      let data = await this.service?.getPublicDataByName(
         '927528',
         'SuperMapGroup.geojson',
       )
@@ -98,7 +114,7 @@ export default class Find extends Component {
 
   _getSuperMapKnownData = async () => {
     try {
-      let data = await JSOnlineService.getPublicDataByName(
+      let data = await this.service?.getPublicDataByName(
         '927528',
         'zhidao.geojson',
       )
@@ -132,7 +148,7 @@ export default class Find extends Component {
   //     if (!this.JSOnlineService) {
   //       this.JSOnlineService = new OnlineServicesUtils('online')
   //     }
-  //     data = await this.JSOnlineService.getPublicDataByTypes(
+  //     data = await this.this.service?.getPublicDataByTypes(
   //       this.dataTypes,
   //       searchParams,
   //     )
@@ -217,8 +233,8 @@ export default class Find extends Component {
   }
 
   _selectionRender = () => {
-    let applyMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.applyMessages?.unread || 0
-    let inviteMessagesUnread = this.props.coworkMessages[this.props.user.currentUser.userName]?.inviteMessages?.unread || 0
+    let applyMessagesUnread = this.props.coworkMessages?.[this.props.user.currentUser.userName]?.applyMessages?.unread || 0
+    let inviteMessagesUnread = this.props.coworkMessages?.[this.props.user.currentUser.userName]?.inviteMessages?.unread || 0
     return (
       <View opacity={1} style={{ flex: 1, backgroundColor: color.bgW }}>
         <ScrollView
@@ -358,7 +374,7 @@ export default class Find extends Component {
   }
 
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation} />
+    return <TabBar navigation={this.props.navigation} currentRoute={'Find'} />
   }
 
   renderHeaderRight = () => {

@@ -9,7 +9,14 @@ import IncrementAction from './IncrementAction'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { ConstToolType } from '../../../../../../constants'
+import { ConstToolType ,ToolbarType,TouchType} from '../../../../../../constants'
+import ToolbarModule from '../../../../components/ToolBar/modules/ToolbarModule'
+import {
+  SMap,
+} from 'imobile_for_reactnative'
+import {
+  StyleUtils,
+} from '../../../../../../utils'
 
 class IncrementModule extends FunctionModule {
   constructor(props) {
@@ -17,15 +24,40 @@ class IncrementModule extends FunctionModule {
     this.getMenuData = IncrementAction.getMenuData
   }
 
-  action = () => {
-    GLOBAL.IncrementRoadDialog && GLOBAL.IncrementRoadDialog.setVisible(true)
+  action = async() => {
+    const params = ToolbarModule.getParams()
+    const containerType = ToolbarType.table
+    const _data = await IncrementData.getData(ConstToolType.SM_MAP_INCREMENT_GPS_TRACK)
+    const data = ToolbarModule.getToolbarSize(containerType, {
+      data: _data.data,
+    })
+    global.toolBox.showFullMap(true)
+    SMap.createDefaultDataset().then(async returnData => {
+      if (returnData.datasetName) {
+        params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD, {
+          containerType,
+          isFullScreen: false,
+          resetToolModuleData: true,
+          // height:data.height,
+          // column:data.column,
+          ...data,
+        })
+        global.INCREMENT_DATA = returnData
+      }
+    })
+    //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
+    global.TouchType = TouchType.NULL
+    global.IncrementRoadDialog.setVisible(false)
+    global.NAVMETHOD = ConstToolType.SM_MAP_INCREMENT_GPS_TRACK
+    // global.IncrementRoadDialog && global.IncrementRoadDialog.setVisible(true)
+    StyleUtils.setDefaultMapControlStyle()
   }
 }
 
 export default function() {
   return new IncrementModule({
     type: ConstToolType.SM_MAP_INCREMENT,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_collection,
     getData: IncrementData.getData,

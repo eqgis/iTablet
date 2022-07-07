@@ -23,7 +23,7 @@ class AIVehicleModule extends FunctionModule {
       actionAble = layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'POINTLAYER'
     }
     if (!actionAble) {
-      Toast.show(getLanguage(GLOBAL.language).AI.SUPPORT_POINT_AND_CAD)
+      Toast.show(getLanguage(global.language).AI.SUPPORT_POINT_AND_CAD)
       return
     }
     this.setModuleData(this.type)
@@ -35,7 +35,7 @@ class AIVehicleModule extends FunctionModule {
 export default function() {
   return new AIVehicleModule({
     type: ConstToolType.SM_MAP_AI_VEHICLE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT,
+    title: getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT,
     size: 'large',
     image: getThemeAssets().ar.functiontoolbar.rightbar_ai_violation_light,
     getData: AiVehicleData.getData,

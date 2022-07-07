@@ -17,23 +17,23 @@ function collectSceneForm() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
 
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
     // let _point = await SMap.getCurrentLocation()
     // let point = { x: _point.longitude, y: _point.latitude }
-    // GLOBAL.MeasureCollectData.point = point
+    // global.MeasureCollectData.point = point
     SARMap.changeTrackingMode(1)
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arCollect'})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arCollect'})
 
     // let time = await SCollectSceneFormView.getSystemTime()
-    // GLOBAL.mapView.setState({ map: { height: 0 } })
+    // global.mapView.setState({ map: { height: 0 } })
     // const datasourceAlias = time
     // const datasetName = 'CollectSceneForm'
     // const datasetPointName = 'CollectPointSceneForm'
@@ -43,16 +43,16 @@ function collectSceneForm() {
     //   datasetPointName,
     // })
 
-    // GLOBAL.EnterDatumPointType = 'arCollectSceneForm'
+    // global.EnterDatumPointType = 'arCollectSceneForm'
     // // NavigationService.navigate('EnterDatumPoint')
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
+    // global.toolBox && global.toolBox.removeAIDetect(true)
     // NavigationService.navigate('CollectSceneFormView')
 
     // NavigationService.navigate('InputPage', {
-    //   headerTitle: getLanguage(GLOBAL.language).Map_Main_Menu
+    //   headerTitle: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_NEWDATA,
     //   value: '',
-    //   placeholder: getLanguage(GLOBAL.language).Map_Main_Menu
+    //   placeholder: getLanguage(global.language).Map_Main_Menu
     //     .MAP_AR_AI_ASSISTANT_SCENE_NEW_DATANAME,
     //   type: 'name',
     //   cb: async value => {
@@ -60,9 +60,9 @@ function collectSceneForm() {
     //   },
     //   backcb: () => {
     //     NavigationService.goBack()
-    //     if (GLOBAL.arSwitchToMap) {
-    //       GLOBAL.arSwitchToMap = false
-    //       GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+    //     if (global.arSwitchToMap) {
+    //       global.arSwitchToMap = false
+    //       global.toolBox && global.toolBox.switchAr()
     //     }
     //   },
     // })
@@ -75,10 +75,10 @@ function arMeasureCollect() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     let isTaggingLayer = false
     if (currentLayer) {
       let layerType = LayerUtils.getLayerType(currentLayer)
@@ -90,32 +90,32 @@ function arMeasureCollect() {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
     } else {
       const datasourceAlias = currentLayer.datasourceAlias // 标注数据源名称
       const datasetName = currentLayer.datasetName // 标注图层名称
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
     }
 
-    // NavigationService.navigate('MeasureView', GLOBAL.MeasureCollectData)
-    GLOBAL.EnterDatumPointType = 'arMeasureCollect'
+    // NavigationService.navigate('MeasureView', global.MeasureCollectData)
+    global.EnterDatumPointType = 'arMeasureCollect'
     NavigationService.navigate('EnterDatumPoint')
 
-    if (GLOBAL.showAIDetect) {
-      GLOBAL.arSwitchToMap = true
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    if (global.showAIDetect) {
+      global.arSwitchToMap = true
+      ;(await global.toolBox) && global.toolBox.switchAr()
     }
   })()
 }
@@ -126,7 +126,7 @@ function arDrawLine() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
     /*
@@ -140,7 +140,7 @@ function arDrawLine() {
      * 改为如果绘制类型和图层类型相同，或者图层是CAD图层，则绘制在当前图层，否则绘制到标注图层
      * by zhaochaojie
      */
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -158,13 +158,13 @@ function arDrawLine() {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -172,7 +172,7 @@ function arDrawLine() {
       // 否则画到当前图层
       const datasourceAlias = currentLayer.datasourceAlias
       const datasetName = currentLayer.datasetName
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -180,17 +180,17 @@ function arDrawLine() {
 
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
-    GLOBAL.MeasureCollectData.point = point
+    global.MeasureCollectData.point = point
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
-    GLOBAL.MeasureCollectData.measureType = 'drawLine'
-    // NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
+    global.MeasureCollectData.measureType = 'drawLine'
+    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
 
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
 }
 
@@ -200,10 +200,10 @@ function arDrawArea() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -222,20 +222,20 @@ function arDrawArea() {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
     } else {
       const datasourceAlias = currentLayer.datasourceAlias
       const datasetName = currentLayer.datasetName
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -243,17 +243,17 @@ function arDrawArea() {
 
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
-    GLOBAL.MeasureCollectData.point = point
+    global.MeasureCollectData.point = point
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
-    GLOBAL.MeasureCollectData.measureType = 'arDrawArea'
-    // NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+    global.MeasureCollectData.measureType = 'arDrawArea'
+    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
 }
 
@@ -263,10 +263,10 @@ function arDrawPoint() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
     if (!isSupportedARCore) {
-      GLOBAL.ARDeviceListDialog.setVisible(true)
+      global.ARDeviceListDialog.setVisible(true)
       return
     }
-    let currentLayer = GLOBAL.currentLayer
+    let currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -285,20 +285,20 @@ function arDrawPoint() {
       )
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
-          'Default_Tagging',
+          `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
       }
       let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = 'Default_Tagging'
-      GLOBAL.MeasureCollectData = {
+      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
     } else {
       const datasourceAlias = currentLayer.datasourceAlias
       const datasetName = currentLayer.datasetName
-      GLOBAL.MeasureCollectData = {
+      global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
       }
@@ -306,17 +306,17 @@ function arDrawPoint() {
     
     let _point = await SMap.getCurrentLocation()
     let point = { x: _point.longitude, y: _point.latitude }
-    GLOBAL.MeasureCollectData.point = point
+    global.MeasureCollectData.point = point
 
-    // GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(true)
-    // if (GLOBAL.showAIDetect) {
-    //   GLOBAL.arSwitchToMap = true
-    //   ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+    // global.toolBox && global.toolBox.removeAIDetect(true)
+    // if (global.showAIDetect) {
+    //   global.arSwitchToMap = true
+    //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
-    GLOBAL.MeasureCollectData.measureType = 'arDrawPoint'
-    // NavigationService.navigate('MeasureAreaView', GLOBAL.MeasureCollectData)
-    GLOBAL.toolBox && GLOBAL.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:GLOBAL.MeasureCollectData.datasourceAlias,datasetName:GLOBAL.MeasureCollectData.datasetName})
+    global.MeasureCollectData.measureType = 'arDrawPoint'
+    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
+    global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
 }
 

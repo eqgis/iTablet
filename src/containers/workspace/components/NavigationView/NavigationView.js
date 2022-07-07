@@ -32,11 +32,12 @@ export default class NavigationView extends React.Component {
     setMapNavigation: PropTypes.func,
     setNavigationHistory: PropTypes.func,
     navigationhistory: PropTypes.array,
+    setSampleDataShow: PropTypes.func,
   }
 
   constructor(props) {
     super(props)
-    let { params } = this.props.navigation.state
+    let { params } = this.props.route
     this.getNavigationDatas = ToolbarModule.getParams().getNavigationDatas
     this.setNavigationDatas = ToolbarModule.getParams().setNavigationDatas
     this.changeNavPathInfo = params.changeNavPathInfo
@@ -59,18 +60,18 @@ export default class NavigationView extends React.Component {
     this.backClicked = true
     //清空相关数据 隐藏相关组件 退出全图 清除点 返回上一级
     this.props.setMapNavigation({ isShow: false, name: '' })
-    GLOBAL.MAPSELECTPOINT.setVisible(false)
-    GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false)
-    GLOBAL.STARTNAME = getLanguage(
-      GLOBAL.language,
+    global.MAPSELECTPOINT.setVisible(false)
+    global.MAPSELECTPOINTBUTTON.setVisible(false)
+    global.STARTNAME = getLanguage(
+      global.language,
     ).Map_Main_Menu.SELECT_START_POINT
-    GLOBAL.ENDNAME = getLanguage(
-      GLOBAL.language,
+    global.ENDNAME = getLanguage(
+      global.language,
     ).Map_Main_Menu.SELECT_DESTINATION
-    GLOBAL.STARTX = undefined
-    GLOBAL.ENDX = undefined
-    GLOBAL.TouchType = TouchType.NORMAL
-    GLOBAL.ToolBar?.existFullMap()
+    global.STARTX = undefined
+    global.ENDX = undefined
+    global.TouchType = TouchType.NORMAL
+    global.ToolBar?.existFullMap()
     await SMap.clearPoint()
     NavigationService.goBack()
   }
@@ -84,22 +85,25 @@ export default class NavigationView extends React.Component {
     if (this.backClicked) return
     this.backClicked = true
     //改变GLOBAL.TouchType 使GestureDetectListener的单击事件进入选择起点的逻辑
-    GLOBAL.TouchType = TouchType.NAVIGATION_TOUCH_BEGIN
+    // global.TouchType = TouchType.NAVIGATION_TOUCH_BEGIN
+    global.TouchType = TouchType.NORMAL
     //显示选点界面的顶部 底部组件
-    GLOBAL.MAPSELECTPOINT.setVisible(true)
-    GLOBAL.MAPSELECTPOINTBUTTON.setVisible(true, {
-      button: getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_START_POINT,
+    global.MAPSELECTPOINT.setVisible(true)
+    global.MAPSELECTPOINTBUTTON.setVisible(true, {
+      button: getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT,
     })
-    //全幅
-    GLOBAL.toolBox.showFullMap(true)
-    //导航选点 全屏时保留mapController
-    GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
+    // //全幅
+    global.toolBox.showFullMap(true)
+    // //导航选点 全屏时保留mapController
+    global.mapController && global.mapController.setVisible(true)
     this.props.setMapNavigation({
       isShow: true,
       name: '',
     })
     //考虑搜索界面跳转，不能直接goBack
-    NavigationService.navigate('MapView')
+    NavigationService.navigate('MapStack', {screen: 'MapView'})
+    // 点击后给一个长按选择起点的提示 lyx
+    Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_START_POINT, {duration: 2500})
   }
 
   /**
@@ -109,19 +113,21 @@ export default class NavigationView extends React.Component {
   selectEndPoint = async () => {
     if (this.backClicked) return
     this.backClicked = true
-    GLOBAL.TouchType = TouchType.NAVIGATION_TOUCH_END
-    GLOBAL.MAPSELECTPOINT.setVisible(true)
-    GLOBAL.MAPSELECTPOINTBUTTON.setVisible(true, {
-      button: getLanguage(GLOBAL.language).Map_Main_Menu.SET_AS_DESTINATION,
+    global.TouchType = TouchType.NAVIGATION_TOUCH_END
+    global.MAPSELECTPOINT.setVisible(true)
+    global.MAPSELECTPOINTBUTTON.setVisible(true, {
+      button: getLanguage(global.language).Map_Main_Menu.SET_AS_DESTINATION,
     })
-    GLOBAL.toolBox.showFullMap(true)
+    global.toolBox.showFullMap(true)
     //导航选点 全屏时保留mapController
-    GLOBAL.mapController && GLOBAL.mapController.setVisible(true)
+    global.mapController && global.mapController.setVisible(true)
     this.props.setMapNavigation({
       isShow: true,
       name: '',
     })
-    NavigationService.navigate('MapView')
+    NavigationService.navigate('MapStack', {screen: 'MapView'})
+    // 点击后给一个长按选择终点的提示 lyx
+    Toast.show(getLanguage(this.props.language).Prompt.LONG_PRESS_END_POINT, {duration: 2500})
   }
 
   // [{datasourceName:'',datasetName:'',name:''}]
@@ -150,23 +156,24 @@ export default class NavigationView extends React.Component {
    * @returns {Promise<void>}
    */
   routeAnalyst = async () => {
+    this.props.setSampleDataShow(false)
     //起点终点都选择完成的情况下，进入路径分析
-    if (GLOBAL.STARTX !== undefined && GLOBAL.ENDX !== undefined) {
+    if (global.STARTX !== undefined && global.ENDX !== undefined) {
       //重置TouchType，显示Loading组件
-      GLOBAL.TouchType = TouchType.NORMAL
+      global.TouchType = TouchType.NORMAL
       this.loading.setLoading(
         true,
-        getLanguage(GLOBAL.language).Prompt.ROUTE_ANALYSING,
+        getLanguage(global.language).Prompt.ROUTE_ANALYSING,
       )
       let startPointInfo //起点所在室内数据源/室外数据集的数组
       let endPointInfo //终点所在室内数据源/室外数据集的数组
       try {
         //获取起点 终点 所在室内外的数据信息
         startPointInfo = await SMap.getPointBelongs(
-          GLOBAL.STARTX,
-          GLOBAL.STARTY,
+          global.STARTX,
+          global.STARTY,
         )
-        endPointInfo = await SMap.getPointBelongs(GLOBAL.ENDX, GLOBAL.ENDY)
+        endPointInfo = await SMap.getPointBelongs(global.ENDX, global.ENDY)
       } catch (e) {
         this.loading.setLoading(false)
         Toast.show(' 获取数据失败')
@@ -277,17 +284,17 @@ export default class NavigationView extends React.Component {
         try {
           //添加起点
           await SMap.getStartPoint(
-            GLOBAL.STARTX,
-            GLOBAL.STARTY,
+            global.STARTX,
+            global.STARTY,
             true,
-            GLOBAL.STARTPOINTFLOOR,
+            global.STARTPOINTFLOOR,
           )
           //添加终点
           await SMap.getEndPoint(
-            GLOBAL.ENDX,
-            GLOBAL.ENDY,
+            global.ENDX,
+            global.ENDY,
             true,
-            GLOBAL.ENDPOINTFLOOR,
+            global.ENDPOINTFLOOR,
           )
           //设置室内导航参数
           await SMap.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
@@ -295,19 +302,19 @@ export default class NavigationView extends React.Component {
           let rel = await SMap.beginIndoorNavigation()
           if (!rel) {
             this.loading.setLoading(false)
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
+            Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
             return
           }
         } catch (e) {
           this.loading.setLoading(false)
-          Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
+          Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           return
         }
         //获取路径长度、路径详情
         pathLength = await SMap.getNavPathLength(true)
         path = await SMap.getPathInfos(true)
         //设置当前导航模式为室内
-        GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
+        global.CURRENT_NAV_MODE = 'INDOOR'
         //存在室外公共数据集
       } else if (commonOutdoorInfo.length > 0) {
         //起点和终点存在不同的室内数据源
@@ -318,24 +325,24 @@ export default class NavigationView extends React.Component {
         } else if (startIndoorInfo.length > 0) {
           //构造参数，获取临界点
           let params = {
-            startX: GLOBAL.STARTX,
-            startY: GLOBAL.STARTY,
-            endX: GLOBAL.ENDX,
-            endY: GLOBAL.ENDY,
+            startX: global.STARTX,
+            startY: global.STARTY,
+            endX: global.ENDX,
+            endY: global.ENDY,
             datasourceName: startIndoorInfo[0].datasourceName,
           }
           let doorPoint = await SMap.getDoorPoint(params)
           //临界点获取成功，存在坐标及楼层信息
           if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航相关参数
-            GLOBAL.NAV_PARAMS = [
+            global.NAV_PARAMS = [
               {
-                startX: GLOBAL.STARTX,
-                startY: GLOBAL.STARTY,
+                startX: global.STARTX,
+                startY: global.STARTY,
                 endX: doorPoint.x,
                 endY: doorPoint.y,
                 datasourceName: startIndoorInfo[0].datasourceName,
-                startFloor: GLOBAL.STARTPOINTFLOOR,
+                startFloor: global.STARTPOINTFLOOR,
                 endFloor: doorPoint.floorID,
                 isIndoor: true,
                 hasNaved: true,
@@ -343,8 +350,8 @@ export default class NavigationView extends React.Component {
               {
                 startX: doorPoint.x,
                 startY: doorPoint.y,
-                endX: GLOBAL.ENDX,
-                endY: GLOBAL.ENDY,
+                endX: global.ENDX,
+                endY: global.ENDY,
                 isIndoor: false,
                 hasNaved: false,
                 datasourceName: commonOutdoorInfo[0].datasourceName,
@@ -356,10 +363,10 @@ export default class NavigationView extends React.Component {
             try {
               //添加起点终点
               await SMap.getStartPoint(
-                GLOBAL.STARTX,
-                GLOBAL.STARTY,
+                global.STARTX,
+                global.STARTY,
                 true,
-                GLOBAL.STARTPOINTFLOOR || doorPoint.floorID,
+                global.STARTPOINTFLOOR || doorPoint.floorID,
               )
               await SMap.getEndPoint(
                 doorPoint.x,
@@ -376,20 +383,20 @@ export default class NavigationView extends React.Component {
               if (!rel) {
                 this.loading.setLoading(false)
                 Toast.show(
-                  getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED,
+                  getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
                 )
                 SMap.clearPoint()
                 return
               }
               //添加引导线到跟踪层 室内导航终点到室外导航终点
               await SMap.addLineOnTrackingLayer(doorPoint, {
-                x: GLOBAL.ENDX,
-                y: GLOBAL.ENDY,
+                x: global.ENDX,
+                y: global.ENDY,
               })
             } catch (e) {
               this.loading.setLoading(false)
               Toast.show(
-                getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED,
+                getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
               )
               return
             }
@@ -398,7 +405,7 @@ export default class NavigationView extends React.Component {
             pathLength = await SMap.getNavPathLength(true)
             path = await SMap.getPathInfos(true)
             //设置导航模式为室内
-            GLOBAL.CURRENT_NAV_MODE = 'INDOOR'
+            global.CURRENT_NAV_MODE = 'INDOOR'
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
             this.loading.setLoading(false)
@@ -408,20 +415,20 @@ export default class NavigationView extends React.Component {
         } else if (endIndoorInfo.length > 0) {
           //构造参数获取临界点
           let params = {
-            startX: GLOBAL.STARTX,
-            startY: GLOBAL.STARTY,
-            endX: GLOBAL.ENDX,
-            endY: GLOBAL.ENDY,
+            startX: global.STARTX,
+            startY: global.STARTY,
+            endX: global.ENDX,
+            endY: global.ENDY,
             datasourceName: endIndoorInfo[0].datasourceName,
           }
           let doorPoint = await SMap.getDoorPoint(params)
           //获取成功，拿到坐标和楼层id
           if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航参数
-            GLOBAL.NAV_PARAMS = [
+            global.NAV_PARAMS = [
               {
-                startX: GLOBAL.STARTX,
-                startY: GLOBAL.STARTY,
+                startX: global.STARTX,
+                startY: global.STARTY,
                 endX: doorPoint.x,
                 endY: doorPoint.y,
                 isIndoor: false,
@@ -434,9 +441,9 @@ export default class NavigationView extends React.Component {
                 startX: doorPoint.x,
                 startY: doorPoint.y,
                 startFloor: doorPoint.floorID,
-                endX: GLOBAL.ENDX,
-                endY: GLOBAL.ENDY,
-                endFloor: GLOBAL.ENDPOINTFLOOR || doorPoint.floorID,
+                endX: global.ENDX,
+                endY: global.ENDY,
+                endFloor: global.ENDPOINTFLOOR || doorPoint.floorID,
                 datasourceName: endIndoorInfo[0].datasourceName,
                 isIndoor: true,
                 hasNaved: false,
@@ -445,12 +452,12 @@ export default class NavigationView extends React.Component {
 
             try {
               //添加起点，添加终点 设置室外导航参数 进行室外路径分析
-              await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
-              await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
-              await SMap.startNavigation(GLOBAL.NAV_PARAMS[0])
+              await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+              await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+              await SMap.startNavigation(global.NAV_PARAMS[0])
               let canNav = await SMap.beginNavigation(
-                GLOBAL.STARTX,
-                GLOBAL.STARTY,
+                global.STARTX,
+                global.STARTY,
                 doorPoint.x,
                 doorPoint.y,
               )
@@ -463,13 +470,13 @@ export default class NavigationView extends React.Component {
               }
               //添加引导线到跟踪层 临界点到导航终点
               await SMap.addLineOnTrackingLayer(doorPoint, {
-                x: GLOBAL.ENDX,
-                y: GLOBAL.ENDY,
+                x: global.ENDX,
+                y: global.ENDY,
               })
             } catch (e) {
               this.loading.setLoading(false)
               Toast.show(
-                getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED,
+                getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
               )
               return
             }
@@ -477,7 +484,7 @@ export default class NavigationView extends React.Component {
             pathLength = await SMap.getNavPathLength(false)
             path = await SMap.getPathInfos(false)
             //设置当前导航模式为室外
-            GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
+            global.CURRENT_NAV_MODE = 'OUTDOOR'
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
             this.loading.setLoading(false)
@@ -490,17 +497,17 @@ export default class NavigationView extends React.Component {
             //设置室外导航相关参数，进行室外导航路径分析
             await SMap.startNavigation(commonOutdoorInfo[0])
             let result = await SMap.beginNavigation(
-              GLOBAL.STARTX,
-              GLOBAL.STARTY,
-              GLOBAL.ENDX,
-              GLOBAL.ENDY,
+              global.STARTX,
+              global.STARTY,
+              global.ENDX,
+              global.ENDY,
             )
             if (result) {
               //室外路径分析成功 获取路径长度 路径信息
               pathLength = await SMap.getNavPathLength(false)
               path = await SMap.getPathInfos(false)
               //当前全局导航模式设置为室外
-              GLOBAL.CURRENT_NAV_MODE = 'OUTDOOR'
+              global.CURRENT_NAV_MODE = 'OUTDOOR'
             } else {
               //分析失败(500m范围内找不到路网点的情况)或者选择的点不在选择的路网数据集bounds范围内
               Toast.show(
@@ -511,7 +518,7 @@ export default class NavigationView extends React.Component {
             }
           } catch (e) {
             this.loading.setLoading(false)
-            Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
+            Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
             return
           }
         }
@@ -526,31 +533,31 @@ export default class NavigationView extends React.Component {
         //设置MapView的路径信息
         this.changeNavPathInfo({ path, pathLength })
         //隐藏地图选点相关组件
-        GLOBAL.MAPSELECTPOINT.setVisible(false)
-        GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false, {
+        global.MAPSELECTPOINT.setVisible(false)
+        global.MAPSELECTPOINTBUTTON.setVisible(false, {
           button: '',
         })
         //显示导航路径结果相关组件
-        GLOBAL.NAVIGATIONSTARTBUTTON.setVisible(true, false)
-        GLOBAL.NAVIGATIONSTARTHEAD.setVisible(true)
+        global.NAVIGATIONSTARTBUTTON.setVisible(true, false)
+        global.NAVIGATIONSTARTHEAD.setVisible(true)
         this.props.setMapNavigation({
           isShow: true,
           name: '',
         })
         //退出全图
-        GLOBAL.toolBox.showFullMap(true)
+        global.toolBox.showFullMap(true)
         //存历史记录
         let history = this.props.navigationhistory
         history.push({
-          sx: GLOBAL.STARTX,
-          sy: GLOBAL.STARTY,
-          ex: GLOBAL.ENDX,
-          ey: GLOBAL.ENDY,
-          sFloor: GLOBAL.STARTPOINTFLOOR,
-          eFloor: GLOBAL.ENDPOINTFLOOR,
-          address: GLOBAL.STARTNAME + '---' + GLOBAL.ENDNAME,
-          start: GLOBAL.STARTNAME,
-          end: GLOBAL.ENDNAME,
+          sx: global.STARTX,
+          sy: global.STARTY,
+          ex: global.ENDX,
+          ey: global.ENDY,
+          sFloor: global.STARTPOINTFLOOR,
+          eFloor: global.ENDPOINTFLOOR,
+          address: global.STARTNAME + '---' + global.ENDNAME,
+          start: global.STARTNAME,
+          end: global.ENDNAME,
         })
         if (this.historyclick) {
           this.props.setNavigationHistory(history)
@@ -559,11 +566,11 @@ export default class NavigationView extends React.Component {
         if (this.clickable) {
           this.clickable = false
           this.loading.setLoading(false)
-          GLOBAL.TouchType = TouchType.NULL
+          global.TouchType = TouchType.NULL
           //考虑搜索界面跳转，不能直接goBack
-          NavigationService.navigate('MapView')
-          GLOBAL.mapController?.changeBottom(true)
-          GLOBAL.FloorListView?.changeBottom(true)
+          NavigationService.navigate('MapStack', {screen: 'MapView'})
+          global.mapController?.changeBottom(true)
+          global.FloorListView?.changeBottom(true)
         }
       }
     }
@@ -575,18 +582,18 @@ export default class NavigationView extends React.Component {
     this.dialog.setDialogVisible(false)
     this.loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Prompt.ROUTE_ANALYSING,
+      getLanguage(global.language).Prompt.ROUTE_ANALYSING,
     )
     //添加起点。终点
-    await SMap.getStartPoint(GLOBAL.STARTX, GLOBAL.STARTY, false)
-    await SMap.getEndPoint(GLOBAL.ENDX, GLOBAL.ENDY, false)
+    await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+    await SMap.getEndPoint(global.ENDX, global.ENDY, false)
     let path, pathLength
     //js请求online，获取路径数据
     let result = await FetchUtils.routeAnalyst(
-      GLOBAL.STARTX,
-      GLOBAL.STARTY,
-      GLOBAL.ENDX,
-      GLOBAL.ENDY,
+      global.STARTX,
+      global.STARTY,
+      global.ENDX,
+      global.ENDY,
     )
     //数据获取成功
     if (result && result[0] && result[0].pathInfos) {
@@ -595,39 +602,39 @@ export default class NavigationView extends React.Component {
       path = result[0].pathInfos
       //绘制路径到跟踪层 移动到起点
       await SMap.drawOnlinePath(result[0].pathPoints)
-      await SMap.moveToPoint({ x: GLOBAL.STARTX, y: GLOBAL.STARTY })
+      await SMap.moveToPoint({ x: global.STARTX, y: global.STARTY })
     } else {
-      Toast.show(getLanguage(GLOBAL.language).Prompt.PATH_ANALYSIS_FAILED)
+      Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
       this.loading.setLoading(false)
     }
     if (pathLength && path) {
       //设置MapView的路径信息
       this.changeNavPathInfo({ path, pathLength })
       //隐藏地图选点相关组件
-      GLOBAL.MAPSELECTPOINT.setVisible(false)
-      GLOBAL.MAPSELECTPOINTBUTTON.setVisible(false, {
+      global.MAPSELECTPOINT.setVisible(false)
+      global.MAPSELECTPOINTBUTTON.setVisible(false, {
         button: '',
       })
       //显示导航路径结果相关组件
-      GLOBAL.NAVIGATIONSTARTBUTTON.setVisible(true, true)
-      GLOBAL.NAVIGATIONSTARTHEAD.setVisible(true)
+      global.NAVIGATIONSTARTBUTTON.setVisible(true, true)
+      global.NAVIGATIONSTARTHEAD.setVisible(true)
       this.props.setMapNavigation({
         isShow: true,
         name: '',
       })
       //退出全图 存历史记录
-      GLOBAL.toolBox.showFullMap(true)
+      global.toolBox.showFullMap(true)
       let history = this.props.navigationhistory
       history.push({
-        sx: GLOBAL.STARTX,
-        sy: GLOBAL.STARTY,
-        ex: GLOBAL.ENDX,
-        ey: GLOBAL.ENDY,
-        sFloor: GLOBAL.STARTPOINTFLOOR,
-        eFloor: GLOBAL.ENDPOINTFLOOR,
-        address: GLOBAL.STARTNAME + '---' + GLOBAL.ENDNAME,
-        start: GLOBAL.STARTNAME,
-        end: GLOBAL.ENDNAME,
+        sx: global.STARTX,
+        sy: global.STARTY,
+        ex: global.ENDX,
+        ey: global.ENDY,
+        sFloor: global.STARTPOINTFLOOR,
+        eFloor: global.ENDPOINTFLOOR,
+        address: global.STARTNAME + '---' + global.ENDNAME,
+        start: global.STARTNAME,
+        end: global.ENDNAME,
       })
       if (this.historyclick) {
         this.props.setNavigationHistory(history)
@@ -636,11 +643,11 @@ export default class NavigationView extends React.Component {
       if (this.clickable) {
         this.clickable = false
         this.loading.setLoading(false)
-        GLOBAL.TouchType = TouchType.NULL
+        global.TouchType = TouchType.NULL
         //考虑搜索界面跳转，不能直接goBack
-        NavigationService.navigate('MapView')
-        GLOBAL.mapController && GLOBAL.mapController.changeBottom(true)
-        GLOBAL.FloorListView && GLOBAL.FloorListView.changeBottom(true)
+        NavigationService.navigate('MapStack', {screen: 'MapView'})
+        global.mapController && global.mapController.changeBottom(true)
+        global.FloorListView && global.FloorListView.changeBottom(true)
       }
     }
   }
@@ -740,7 +747,7 @@ export default class NavigationView extends React.Component {
                     },
                     ]}
                   >
-                    {this.state.startName || GLOBAL.STARTNAME}
+                    {this.state.startName || global.STARTNAME}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -787,7 +794,7 @@ export default class NavigationView extends React.Component {
                     },
                     ]}
                   >
-                    {this.state.endName || GLOBAL.ENDNAME}
+                    {this.state.endName || global.ENDNAME}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -805,7 +812,7 @@ export default class NavigationView extends React.Component {
                 borderRadius: 5,
               }}
               data={renderHistory}
-              extraData={GLOBAL.STARTX}
+              extraData={global.STARTX}
               keyExtractor={(item, index) => item.toString() + index}
               renderItem={this.renderItem}
             />
@@ -830,7 +837,7 @@ export default class NavigationView extends React.Component {
                     fontSize: setSpText(20),
                   }}
                 >
-                  {getLanguage(GLOBAL.language).Map_Main_Menu.CLEAR_NAV_HISTORY}
+                  {getLanguage(global.language).Map_Main_Menu.CLEAR_NAV_HISTORY}
                 </Text>
               </TouchableOpacity>
             )}
@@ -866,7 +873,7 @@ export default class NavigationView extends React.Component {
                 color: color.white,
               }}
             >
-              {getLanguage(GLOBAL.language).Map_Main_Menu.ROUTE_ANALYST}
+              {getLanguage(global.language).Map_Main_Menu.ROUTE_ANALYST}
             </Text>
           </TouchableOpacity>
         </View>
@@ -877,8 +884,8 @@ export default class NavigationView extends React.Component {
           opacity={1}
           opacityStyle={styles.dialogBackground}
           style={styles.dialogBackground}
-          confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.YES}
-          cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.NO}
+          confirmBtnTitle={getLanguage(global.language).Prompt.YES}
+          cancelBtnTitle={getLanguage(global.language).Prompt.NO}
         >
           <View style={styles.dialogHeaderView}>
             <Image
@@ -886,7 +893,7 @@ export default class NavigationView extends React.Component {
               style={styles.dialogHeaderImg}
             />
             <Text style={styles.promptTitle}>
-              {getLanguage(GLOBAL.language).Prompt.USE_ONLINE_ROUTE_ANALYST}
+              {getLanguage(global.language).Prompt.USE_ONLINE_ROUTE_ANALYST}
             </Text>
           </View>
         </Dialog>
@@ -895,15 +902,15 @@ export default class NavigationView extends React.Component {
   }
 
   onItemPress = async item => {
-    GLOBAL.STARTNAME = item.start
-    GLOBAL.ENDNAME = item.end
+    global.STARTNAME = item.start
+    global.ENDNAME = item.end
 
-    GLOBAL.STARTX = item.sx
-    GLOBAL.STARTY = item.sy
-    GLOBAL.ENDX = item.ex
-    GLOBAL.ENDY = item.ey
-    GLOBAL.STARTPOINTFLOOR = item.sFloor
-    GLOBAL.ENDPOINTFLOOR = item.eFloor
+    global.STARTX = item.sx
+    global.STARTY = item.sy
+    global.ENDX = item.ex
+    global.ENDY = item.ey
+    global.STARTPOINTFLOOR = item.sFloor
+    global.ENDPOINTFLOOR = item.eFloor
 
     await SMap.getStartPoint(item.sx, item.sy, false, item.sFloor)
 

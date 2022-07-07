@@ -34,7 +34,7 @@ export default class AnalystListEntry extends Component {
 
   constructor(props) {
     super(props)
-    const { params } = props.navigation.state
+    const { params } = props.route
     this.cb = params && params.cb
     this.type =
       (params && params.type) || ConstToolType.SM_MAP_ANALYSIS_ONLINE_ANALYSIS

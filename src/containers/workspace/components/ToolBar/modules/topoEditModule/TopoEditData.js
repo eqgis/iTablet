@@ -49,49 +49,49 @@ async function getData(type) {
       data = [
         {
           key: constants.MAP_TOPO_SMOOTH,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_smooth,
         },
         {
           key: constants.MAP_TOPO_SPLIT_LINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT_LINE,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_SPLIT_LINE,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_line_split_line,
         },
         {
           key: constants.MAP_TOPO_SPLIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_SPLIT,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_incremnent_split,
         },
         {
           key: constants.MAP_TOPO_EXTEND,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EXTEND,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_EXTEND,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_extend,
         },
         {
           key: constants.MAP_TOPO_TRIM,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_TRIM,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_TRIM,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_incremnent_trim,
         },
         {
           key: constants.MAP_TOPO_RESAMPLE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_RESAMPLE,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_RESAMPLE,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_resample,
         },
         {
           key: constants.MAP_TOPO_CHANGE_DIRECTION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_TOPO_CHANGE_DIRECTION,
           action: TopoEditAction.switchType,
           size: 'large',
@@ -99,7 +99,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_TOPO_OBJECT_EDIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
+          title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().mark.icon_edit,
@@ -109,58 +109,58 @@ async function getData(type) {
     case ConstToolType.SM_MAP_TOPO_OBJECT_EDIT_SELECTED:
       data = [
         {
-          key: constants.MAP_TOPO_SMOOTH,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getThemeAssets().navigation.icon_increment_smooth,
-        },
-        {
-          key: constants.MAP_TOPO_SPLIT_LINE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT_LINE,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getThemeAssets().navigation.icon_increment_line_split_line,
-        },
-        {
           key: constants.MAP_TOPO_SPLIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_SPLIT,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_SPLIT,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_incremnent_split,
         },
         {
+          key: constants.MAP_TOPO_SPLIT_LINE,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_SPLIT_LINE,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getThemeAssets().navigation.icon_increment_line_split_line,
+        },
+        {
           key: constants.MAP_TOPO_EXTEND,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EXTEND,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_EXTEND,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_extend,
         },
         {
           key: constants.MAP_TOPO_TRIM,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_TRIM,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_TRIM,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_incremnent_trim,
         },
         {
+          key: constants.MAP_TOPO_SMOOTH,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_SMOOTH,
+          action: TopoEditAction.switchType,
+          size: 'large',
+          image: getThemeAssets().navigation.icon_increment_smooth,
+        },
+        {
           key: constants.MAP_TOPO_RESAMPLE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_RESAMPLE,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_RESAMPLE,
           action: TopoEditAction.switchType,
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_resample,
         },
-        {
-          key: constants.MAP_TOPO_CHANGE_DIRECTION,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
-            .MAP_TOPO_CHANGE_DIRECTION,
-          action: TopoEditAction.switchType,
-          size: 'large',
-          image: getThemeAssets().navigation.icon_increment_change_direction,
-        },
+        // {
+        //   key: constants.MAP_TOPO_CHANGE_DIRECTION,
+        //   title: getLanguage(global.language).Map_Main_Menu
+        //     .MAP_TOPO_CHANGE_DIRECTION,
+        //   action: TopoEditAction.switchType,
+        //   size: 'large',
+        //   image: getThemeAssets().navigation.icon_increment_change_direction,
+        // },
         // {
         //   key: constants.MAP_TOPO_OBJECT_EDIT,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.OBJ_EDIT,
+        //   title: getLanguage(global.language).Map_Main_Menu.OBJ_EDIT,
         //   action: TopoEditAction.switchType,
         //   size: 'large',
         //   image: getThemeAssets().mark.icon_edit,
@@ -168,14 +168,14 @@ async function getData(type) {
 ///////////////////////////////////////////////////
         {
           key: constants.MAP_TOPO_MOVE_OBJECT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
           action: TopoEditAction.changeAction,
           size: 'large',
           image: getThemeAssets().edit.icon_translation,
         },
         {
           key: constants.MAP_TOPO_DELETE_OBJECT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_TOPO_DELETE_OBJECT,
           action: TopoEditAction.changeAction,
           size: 'large',
@@ -183,35 +183,35 @@ async function getData(type) {
         },
         // {
         //   key: constants.UNDO,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_UNDO,
+        //   title: getLanguage(global.language).Map_Main_Menu.COLLECTION_UNDO,
         //   action: TopoEditAction.undo,
         //   size: 'large',
         //   image: getThemeAssets().edit.icon_undo,
         // },
         // {
         //   key: constants.REDO,
-        //   title: getLanguage(GLOBAL.language).Map_Main_Menu.COLLECTION_REDO,
+        //   title: getLanguage(global.language).Map_Main_Menu.COLLECTION_REDO,
         //   action: TopoEditAction.redo,
         //   size: 'large',
         //   image: getThemeAssets().edit.icon_redo,
         // },
         {
           key: constants.MAP_TOPO_ADD_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_ADD_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_ADD_NODE,
           action: TopoEditAction.changeAction,
           size: 'large',
           image: getThemeAssets().edit.icon_add_node,
         },
         {
           key: constants.MAP_TOPO_EDIT_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu.MAP_TOPO_EDIT_NODE,
+          title: getLanguage(global.language).Map_Main_Menu.MAP_TOPO_EDIT_NODE,
           action: TopoEditAction.changeAction,
           size: 'large',
           image: getThemeAssets().navigation.icon_increment_edit_node,
         },
         {
           key: constants.MAP_TOPO_DELETE_NODE,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_TOPO_DELETE_NODE,
           action: TopoEditAction.changeAction,
           size: 'large',
@@ -219,7 +219,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_COMMIT,
           action: TopoEditAction.submit,
           size: 'large',
@@ -233,7 +233,7 @@ async function getData(type) {
       data = [
         {
           key: constants.CANCEL_SELECT,
-          title: getLanguage(GLOBAL.language).Prompt.CANCEL,
+          title: getLanguage(global.language).Prompt.CANCEL,
           // constants.CANCEL_SELECT,
           action: TopoEditAction.editCancel,
           size: 'large',
@@ -241,7 +241,7 @@ async function getData(type) {
         },
         {
           key: constants.MAP_INCREMENT_COMMIT,
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_INCREMENT_COMMIT,
           action: TopoEditAction.editConfirm,
           size: 'large',

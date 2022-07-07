@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Switch, Text, View, StatusBar, AsyncStorage } from 'react-native'
+import { Switch, Text, View, StatusBar } from 'react-native'
 import color from '../../../../styles/color'
 import { scaleSize } from '../../../../utils'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default class RenderSettingItem extends Component {
   props: {

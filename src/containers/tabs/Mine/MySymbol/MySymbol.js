@@ -1,5 +1,5 @@
 import { MyDataPage } from '../component'
-import DataHandler from '../DataHandler'
+import DataHandler from '../../../../utils/DataHandler'
 import { FileTools } from '../../../../native'
 
 class MySymbol extends MyDataPage {

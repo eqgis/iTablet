@@ -21,9 +21,8 @@ import ImageButton from '../../components/ImageButton'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import RadioButton from './RadioButton'
-import { scaleSize, Toast, LayerUtils, DateUtil } from '../../utils'
-import { RNCamera } from 'react-native-camera'
-import Orientation from 'react-native-orientation'
+import { scaleSize, Toast, LayerUtils, DateUtil, screen } from '../../utils'
+import { Camera as RNCamera } from 'react-native-vision-camera'
 // const { ClassifyView }= NativeModules;
 // const iOSEventEmitter = new NativeEventEmitter(ClassifyView)
 const SMessageServiceClassifyiOS = NativeModules.SAIClassifyView
@@ -45,7 +44,7 @@ export default class ClassifyView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.datasourceAlias = params.datasourceAlias
     this.datasetName = params.datasetName
     this.checkedItem = 0
@@ -72,7 +71,7 @@ export default class ClassifyView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {
@@ -151,7 +150,7 @@ export default class ClassifyView extends React.Component {
       })
     } else {
       Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu
+        getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED,
       )
       this.clear()
@@ -222,7 +221,7 @@ export default class ClassifyView extends React.Component {
     if (!this.camera) return
     this.Loading.setLoading(
       true,
-      getLanguage(GLOBAL.language).Map_Main_Menu
+      getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_CLASSIFY_LOADING,
     )
     const options = {
@@ -242,7 +241,7 @@ export default class ClassifyView extends React.Component {
     if (!result) {
       this.Loading.setLoading(false)
       Toast.show(
-        getLanguage(GLOBAL.language).Map_Main_Menu
+        getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_CLASSIFY_FAILED,
       )
       this.clear()
@@ -339,7 +338,7 @@ export default class ClassifyView extends React.Component {
         //     // NavigationService.goBack()
         //     // NavigationService.goBack()
         //     this.clear()
-        //     // GLOBAL.Toolbar?.switchAr()
+        //     // global.Toolbar?.switchAr()
         //   },
         // })
       //   }
@@ -349,7 +348,7 @@ export default class ClassifyView extends React.Component {
       //   )
       //   this.props.navigation.navigate('LayerManager')
       } else {
-        Toast.show(getLanguage(GLOBAL.language).AI.SUPPORT_POINT_AND_CAD)
+        Toast.show(getLanguage(global.language).AI.SUPPORT_POINT_AND_CAD)
       }
     }.bind(this)())
   }
@@ -365,8 +364,8 @@ export default class ClassifyView extends React.Component {
   back = () => {
     NavigationService.goBack()
     this.props.setIsClassifyView(false)
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    global.toolBox && global.toolBox.removeAIDetect(false)
+    global.toolBox.switchAr()
     return true
   }
 
@@ -416,7 +415,7 @@ export default class ClassifyView extends React.Component {
           )
         } else {
           Toast.show(
-            getLanguage(GLOBAL.language).Map_Main_Menu
+            getLanguage(global.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_CLASSIFY_NOPICS,
           )
         }
@@ -615,13 +614,13 @@ export default class ClassifyView extends React.Component {
         <View style={styles.takeplace} />
         <Text style={styles.title}>
           {
-            getLanguage(GLOBAL.language).Map_Main_Menu
+            getLanguage(global.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_CLASSIFY_RESULT
           }
         </Text>
         <Text style={styles.titleConfidence}>
           {
-            getLanguage(GLOBAL.language).Map_Main_Menu
+            getLanguage(global.language).Map_Main_Menu
               .MAP_AR_AI_ASSISTANT_CLASSIFY_CONFIDENCE
           }
         </Text>
@@ -710,7 +709,7 @@ export default class ClassifyView extends React.Component {
                 this.RadioButtonOnChange(3)
               }}
             />
-            <Text style={styles.title}>{getLanguage(GLOBAL.language).AI.ALL_WRONG}</Text>
+            <Text style={styles.title}>{getLanguage(global.language).AI.ALL_WRONG}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -754,8 +753,8 @@ export default class ClassifyView extends React.Component {
         onPress={async() => {
           NavigationService.goBack()
           this.props.setIsClassifyView(false)
-          GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-          GLOBAL.toolBox.switchAr()
+          global.toolBox && global.toolBox.removeAIDetect(false)
+          global.toolBox.switchAr()
           return true
         }}
       />
@@ -768,7 +767,7 @@ export default class ClassifyView extends React.Component {
         ref={ref => (this.Container = ref)}
         headerProps={{
           type: 'floatNoTitle',
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_CLASSIFY,
           navigation: this.props.navigation,
           headerLeft: this.renderHeaderLeft(),

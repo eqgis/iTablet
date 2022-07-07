@@ -54,13 +54,13 @@ export default class SelectLocation extends React.Component<Props, State>{
     super(props)
     this.homePath = ''
     this.state = {
-      x: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.x,
-      y: GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP.y,
+      x: global.SELECTPOINTLATITUDEANDLONGITUDETEMP.x,
+      y: global.SELECTPOINTLATITUDEANDLONGITUDETEMP.y,
       bottom: new Animated.Value(
         -Math.max(this.props.device.height, this.props.device.width),
       ),
     }
-    this.cb = this.props.navigation?.state?.params?.cb
+    this.cb = this.props.route?.params?.cb
     this.isShow = false
   }
 
@@ -99,7 +99,7 @@ export default class SelectLocation extends React.Component<Props, State>{
         x: point.x,
         y: point.y,
       })
-      GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(this.state.x), y: Number(this.state.y) }
+      global.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(this.state.x), y: Number(this.state.y) }
     }
   }
 
@@ -128,13 +128,13 @@ export default class SelectLocation extends React.Component<Props, State>{
         <View style={styles.inputView}>
           <View style={styles.inputBox}>
             <Image style={styles.inputIcon} source={getThemeAssets().collection.icon_lines} />
-            <Text style={{marginLeft:scaleSize(10)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LONGITUDE + ': '}</Text>
+            <Text style={{marginLeft:scaleSize(10)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE + ': '}</Text>
             <Input style={styles.input} editable={false} showClear={false} value={this.state.x} textAlign="left" />
           </View>
           <View style={styles.line}></View>
           <View style={styles.inputBox}>
             <Image style={styles.inputIcon} source={getThemeAssets().collection.icon_latitudes} />
-            <Text style={{marginLeft:scaleSize(10)}}>{getLanguage(GLOBAL.language).Profile.MAP_AR_DATUM_LATITUDE + ': '}</Text>
+            <Text style={{marginLeft:scaleSize(10)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE + ': '}</Text>
             <Input style={styles.input} editable={false} showClear={false} value={this.state.y} textAlign="left" />
           </View>
         </View>
@@ -175,7 +175,7 @@ export default class SelectLocation extends React.Component<Props, State>{
     // if (Platform.OS === 'ios') {
     //   SMap.moveToCurrent2().then(result => {
     //     !result &&
-    //       Toast.show(getLanguage(GLOBAL.language).Prompt.OUT_OF_MAP_BOUNDS)
+    //       Toast.show(getLanguage(global.language).Prompt.OUT_OF_MAP_BOUNDS)
     //   })
     //   point = await SMap.getCurrentPoint2()
     // } else 
@@ -187,7 +187,7 @@ export default class SelectLocation extends React.Component<Props, State>{
       x: point.x,
       y: point.y,
     })
-    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(this.state.x), y: Number(this.state.y) }
+    global.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(this.state.x), y: Number(this.state.y) }
   }
 
   zoomin = () => {
@@ -246,7 +246,7 @@ export default class SelectLocation extends React.Component<Props, State>{
           }}
         >
           <Text style={styles.textConfirm}>
-            {getLanguage(GLOBAL.language).Map_Settings.CONFIRM}
+            {getLanguage(global.language).Map_Settings.CONFIRM}
           </Text>
         </TouchableOpacity>
       </View>
@@ -262,6 +262,7 @@ export default class SelectLocation extends React.Component<Props, State>{
           ? 0
           : -Math.max(this.props.device.height, this.props.device.width),
         duration: 300,
+        useNativeDriver: false,
       }).start()
       this.isShow = isShow
     }
@@ -350,7 +351,7 @@ export default class SelectLocation extends React.Component<Props, State>{
           case 'Tianditu':
             {
               let data = []
-              if (GLOBAL.language === 'CN') {
+              if (global.language === 'CN') {
                 data.push(ConstOnline.tiandituCN())
               } else {
                 data.push(ConstOnline.tiandituEN())
@@ -362,7 +363,7 @@ export default class SelectLocation extends React.Component<Props, State>{
           case 'Tianditu Image':
             {
               let data = []
-              if (GLOBAL.language === 'CN') {
+              if (global.language === 'CN') {
                 data.push(ConstOnline.tiandituImgCN())
               } else {
                 data.push(ConstOnline.tiandituImgEN())

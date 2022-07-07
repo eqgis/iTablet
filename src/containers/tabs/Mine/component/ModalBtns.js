@@ -40,7 +40,7 @@ export default class ModalBtns extends Component {
           {this.props.actionOfLocal && (
             <MTBtn
               key={'lcoal'}
-              title={getLanguage(GLOBAL.language).Profile.LOCAL}
+              title={getLanguage(global.language).Profile.LOCAL}
               style={styles.button}
               image={getThemeAssets().share.local}
               imageStyle={styles.headerBtn}
@@ -80,13 +80,13 @@ export default class ModalBtns extends Component {
           {this.props.actionOfWechat && (
             <MTBtn
               key={'wechat'}
-              title={getLanguage(GLOBAL.language).Prompt.WECHAT}
+              title={getLanguage(global.language).Prompt.WECHAT}
               style={styles.button}
               image={getThemeAssets().share.wechat}
               imageStyle={styles.headerBtn}
               onPress={() => {
                 this.SimpleDialog.set({
-                  text: getLanguage(GLOBAL.language).Prompt.OPEN_THRID_PARTY,
+                  text: getLanguage(global.language).Prompt.OPEN_THRID_PARTY,
                   confirmAction: () => {
                     this.props.actionOfWechat && this.props.actionOfWechat()
                   },
@@ -98,7 +98,7 @@ export default class ModalBtns extends Component {
           {this.props.actionOfFriend && (
             <MTBtn
               key={'friend'}
-              title={getLanguage(GLOBAL.language).Navigator_Label.FRIENDS}
+              title={getLanguage(global.language).Navigator_Label.ADDRESS_BOOK}
               style={styles.button}
               image={getThemeAssets().share.friend}
               imageStyle={styles.headerBtn}
@@ -115,7 +115,7 @@ export default class ModalBtns extends Component {
           {this.showCancel && (
             <MTBtn
               key={'cancel'}
-              title={getLanguage(GLOBAL.language).Prompt.CANCEL}
+              title={getLanguage(global.language).Prompt.CANCEL}
               style={styles.button}
               image={getThemeAssets().mapTools.icon_tool_cancel}
               imageStyle={styles.headerBtn}
@@ -134,7 +134,7 @@ export default class ModalBtns extends Component {
           {
             <MTBtn
               key={'lcoal'}
-              title={getLanguage(GLOBAL.language).Profile.MAP}
+              title={getLanguage(global.language).Profile.MAP}
               style={styles.button}
               image={getThemeAssets().mine.my_map}
               imageStyle={styles.headerBtn}
@@ -147,7 +147,7 @@ export default class ModalBtns extends Component {
           {
             <MTBtn
               key={'wechat'}
-              title={getLanguage(GLOBAL.language).Profile.TEMPLATE}
+              title={getLanguage(global.language).Profile.TEMPLATE}
               style={styles.button}
               image={getThemeAssets().mine.icon_my_template}
               imageStyle={styles.headerBtn}
@@ -162,7 +162,7 @@ export default class ModalBtns extends Component {
           {
             <MTBtn
               key={'cancel'}
-              title={getLanguage(GLOBAL.language).Prompt.CANCEL}
+              title={getLanguage(global.language).Prompt.CANCEL}
               style={styles.button}
               image={getThemeAssets().mapTools.icon_tool_cancel}
               imageStyle={styles.headerBtn}

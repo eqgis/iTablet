@@ -1,6 +1,6 @@
 // NavigationService.js
 
-import { StackActions, NavigationActions } from 'react-navigation'
+import { StackActions, CommonActions } from '@react-navigation/native'
 
 let _navigator
 let tempRoute
@@ -13,17 +13,19 @@ function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef
 }
 
-function navigate(routeName, params) {
+function navigate(name, params) {
   (async function() {
-    if (routeName === tempRoute) return
-    tempRoute = routeName
-    await _navigator.dispatch(
-      NavigationActions.navigate({
-        type: NavigationActions.NAVIGATE,
-        routeName,
-        params,
-      }),
-    )
+    // 判断是否是从地图跳转到制定的页面,是否显示半屏
+    name = isInMapPage(name) || name
+    if (name === tempRoute) return
+    tempRoute = name
+    _navigator.navigate(name, params)
+    // await _navigator.dispatch(
+    //   NavigationActions.navigate({
+    //     name,
+    //     params,
+    //   }),
+    // )
     setTimeout(() => {
       tempRoute = undefined
     }, 1000)
@@ -32,13 +34,14 @@ function navigate(routeName, params) {
 
 function isInMap() {
   if (_navigator) {
-    let routes = _navigator.state.nav.routes
+    const _state = _navigator.getRootState()
+    let routes = _state.routes
     for (let i = routes.length - 1; i >= 0; i--) {
-      if (routes[i].routeName === 'MapStack') {
+      if (routes[i].name === 'MapStack') {
         return true
       } else if (
-        routes[i].routeName === 'CoworkTabs' &&
-        routes[i].index === 1
+        routes[i].name === 'CoworkTabs' &&
+        routes[i].state.index === 1
       ) {
         return true
       }
@@ -50,9 +53,10 @@ function isInMap() {
 
 function isInMap3D() {
   if (_navigator) {
-    let routes = _navigator.state.nav.routes
+    const _state = _navigator.getRootState()
+    let routes = _state.routes
     for (let i = routes.length - 1; i >= 0; i--) {
-      if (routes[i].routeName === 'Map3DStack') {
+      if (routes[i].name === 'Map3DStack') {
         return true
       }
     }
@@ -63,41 +67,42 @@ function isInMap3D() {
 
 /**
  *
- * @param routeName 从该页面返回
+ * @param name 从该页面返回
  * @param immediate
  */
-function goBack(routeName = '', immediate = null) {
+function goBack(name = '', immediate = null) {
   (async function _goBack() {
     let key
-    if (routeName) {
-      const { routes } = _navigator.state.nav
+    if (name) {
+      const _state = _navigator.getRootState()
+      let routes = _state.routes
       for (let i = routes.length - 1; i >= 0; i--) {
-        if (routes[i].routeName === routeName) {
+        if (routes[i].name === name) {
           key = routes[i].key
           break
         }
       }
     }
     if (
-      (routeName && !key) ||
-      (routeName !== undefined &&
-        routeName !== '' &&
-        routeName === tempRoute) ||
+      (name && !key) ||
+      (name !== undefined &&
+        name !== '' &&
+        name === tempRoute) ||
       tempRoute === 'temp'
     ) {
       return
-    } else if (routeName) {
-      tempRoute = routeName
+    } else if (name) {
+      tempRoute = name
     } else {
       tempRoute = 'temp'
     }
 
-    await _navigator.dispatch(
-      NavigationActions.back({
-        key,
-        immediate,
-      }),
-    )
+    _navigator.goBack(key)
+    // await _navigator.dispatch({
+    //   ...CommonActions.goBack(),
+    //   source: name,
+    //   target: name,
+    // })
     if (tempRoute) {
       setTimeout(() => {
         tempRoute = undefined
@@ -107,17 +112,28 @@ function goBack(routeName = '', immediate = null) {
 }
 
 function isCurrent(name) {
-  const { routes } = _navigator.state.nav
+  const _state = _navigator.getRootState()
+  let routes = _state.routes
   if (routes.length > 0) {
     let currentRoute = routes[routes.length - 1]
     while (currentRoute.routes) {
       currentRoute = currentRoute.routes[currentRoute.index]
     }
-    if (currentRoute.routeName === name) {
+    if (currentRoute.name === name) {
       return true
     }
   }
   return false
+}
+
+function getCurrent() {
+  const _state = _navigator.getRootState()
+  let routes = _state.routes
+  if (routes.length > 0) {
+    let currentRoute = routes[routes.length - 1]
+    return currentRoute.name
+  }
+  return ''
 }
 
 function pop(index = 1) {
@@ -131,16 +147,16 @@ function pop(index = 1) {
 }
 
 function reset(index, actions) {
-  const resetAction = NavigationActions.reset({
-    index,
-    actions,
-  })
-  _navigator.dispatch(resetAction)
+  // const resetAction = NavigationActions.reset({
+  //   index,
+  //   actions,
+  // })
+  // _navigator.dispatch(resetAction)
 }
 
-function replace(routeName, params) {
+function replace(name, params) {
   const resetAction = StackActions.replace({
-    routeName,
+    name,
     params,
   })
   _navigator.dispatch(resetAction)
@@ -152,6 +168,37 @@ function popToTop() {
 }
 // add other navigation functions that you need and export them
 
+function push(name, params) {
+
+  const pushAction = StackActions.push(name, params)
+
+  _navigator.dispatch(pushAction)
+}
+
+const InMapPage = [
+  'MyDatasource',
+  'MyDataset',
+  'NewDataset',
+]
+
+const InMap = '_InMap'
+
+/**
+ * 区分是否在在地图界面跳转到以下界面
+ *
+ * 若存在,则在地图页面显示半屏,以transparentModel形式展示
+ * 反之,则以card方式展示
+ */
+function isInMapPage(name) {
+  if (InMapPage.includes(name) && isInMap()) {
+    return name + InMap
+  } else if (name.endsWith(InMap)) {
+    return name
+  } else {
+    return ''
+  }
+}
+
 export default {
   navigate,
   getTopLevelNavigator,
@@ -161,7 +208,10 @@ export default {
   replace,
   pop,
   popToTop,
+  push,
   isInMap,
   isInMap3D,
   isCurrent,
+  getCurrent,
+  isInMapPage,
 }

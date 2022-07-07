@@ -48,7 +48,7 @@ function commit() {
     cb: () => {
       SMap.setAction(Action.PAN)
       STransportationAnalyst.clear()
-      GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+      global.bubblePane && global.bubblePane.clear()
     },
   })
 }

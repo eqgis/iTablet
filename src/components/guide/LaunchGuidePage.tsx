@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import { View, PanResponder, PanResponderInstance, Text, Image, Animated, Easing, NativeModules, Platform } from 'react-native'
 import Swiper from 'react-native-swiper' // eslint-disable-line
-import Orientation from 'react-native-orientation'
 import styles from './styles'
+import { screen } from '@/utils'
 let AppUtils = NativeModules.AppUtils
 export interface GuideDataType {
   title: string,
@@ -77,16 +77,16 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
     })
     if (Platform.OS === 'ios') {
       if (!Platform.isPad) {
-        Orientation.lockToPortrait()
+        screen.lockToPortrait()
       } else {
-        Orientation.unlockAllOrientations()
+        screen.unlockAllOrientations()
       }
     } else {
       AppUtils.isPad().then((result: boolean) => {
         if (!result) {
-          Orientation.lockToPortrait()
+          screen.lockToPortrait()
         } else {
-          Orientation.unlockAllOrientations()
+          screen.unlockAllOrientations()
         }
       })
     }
@@ -107,10 +107,11 @@ export default class LaunchGuidePage extends PureComponent<Props, State> {
         if (!visible && this.props.dismissCallback) {
           this.props.dismissCallback()
         }
-        if (!visible &&!GLOBAL.isPad) {
-          Orientation.unlockAllOrientations()
+        if (!visible &&!global.isPad) {
+          screen.unlockAllOrientations()
         }
       })
+      this.isAnimated = false
     } else {
       this.isAnimated = false
     }

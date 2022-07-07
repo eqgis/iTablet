@@ -163,7 +163,7 @@ function layersetting(language, isGroup = false) {
       // },
     ]
   }
-  if (GLOBAL.Type === ChunkType.MAP_EDIT) {
+  if (global.Type === ChunkType.MAP_EDIT) {
     data.splice(3, 1)
   }
   return [
@@ -622,7 +622,7 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
     ]
     if (layerData) {
       if (
-        GLOBAL.Type.indexOf(ChunkType.MAP_AR) >= 0 ||
+        global.Type.indexOf(ChunkType.MAP_AR) >= 0 ||
         layerData.themeType > 0 ||
         layerData.isHeatmap ||
         (layerData.type >= 0 &&
@@ -630,7 +630,7 @@ function layerCollectionSetting(language, isGroup = false, layerData) {
             layerData.type === DatasetType.IMAGE ||
             layerData.type === DatasetType.MBImage ||
             layerData.type === DatasetType.TEXT ||
-            GLOBAL.Type === ChunkType.MAP_PLOTTING))
+            global.Type === ChunkType.MAP_PLOTTING))
       ) {
         data.splice(3, 1) // 若当前图层为CAD或者TEXT，或当前模块为则没有'当前图层采集'选项
       }

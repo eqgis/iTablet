@@ -9,10 +9,10 @@ import { FileTools } from '../../native'
 import { getLanguage } from '../../language'
 import { dp } from '../../utils'
 import { color } from '../../styles'
-import { ILocalData } from '../tabs/Mine/DataHandler/DataLocal'
+import { ILocalData } from '../../utils/DataHandler/DataLocal'
 import { setAIClassifyModel, setAIDetectModel } from '../../redux/models/setting'
 import { Users } from '../../redux/models/user'
-import DataHandler from '../tabs/Mine/DataHandler'
+import DataHandler from '../../utils/DataHandler'
 
 interface Props extends ReduxProps {
   navigation: any,
@@ -37,7 +37,7 @@ class AISelectModelView extends React.Component<Props, State> {
     this.state = {
       data: [],
     }
-    this.modelType = this.props.navigation.state.params?.modelType === 'detect' || !this.props.navigation.state.params?.modelType ? 'detect' : 'classify'
+    this.modelType = this.props.route.params?.modelType === 'detect' || !this.props.route.params?.modelType ? 'detect' : 'classify'
   }
 
   componentDidMount() {
@@ -83,10 +83,10 @@ class AISelectModelView extends React.Component<Props, State> {
             labelPath = homePath + model.path + '/' + model.aiModelInfo.labels[0]
           }
 
-          if(GLOBAL.language === 'CN') {
+          if(global.language === 'CN') {
             const name = model.aiModelInfo.labels.find(item => item.toLowerCase().indexOf('_cn.txt') > -1)
             name && (labelPath = homePath + model.path + '/' + name)
-          } else if(GLOBAL.language === 'JP') {
+          } else if(global.language === 'JP') {
             const name = model.aiModelInfo.labels.find(item => item.toLowerCase().indexOf('_jp.txt') > -1)
             name && (labelPath = homePath + model.path + '/' + name)
           }
@@ -133,14 +133,14 @@ class AISelectModelView extends React.Component<Props, State> {
         if(this.props.aiDetectData !== undefined) {
           this.container?.setLoading(true, getLanguage().Prompt.CHANGING)
           this.props.setAIDetectModel(undefined)
-          await SARMap.setAIDetectDefaultModel(GLOBAL.language)
+          await SARMap.setAIDetectDefaultModel(global.language)
           this.container?.setLoading(false)
         }
       } else {
         if(this.props.aiClassifyData !== undefined) {
           this.container?.setLoading(true, getLanguage().Prompt.CHANGING)
           this.props.setAIClassifyModel(undefined)
-          await SARMap.setAIClassifyDefaultModel(GLOBAL.language)
+          await SARMap.setAIClassifyDefaultModel(global.language)
           this.container?.setLoading(false)
         }
       }

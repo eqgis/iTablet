@@ -1,7 +1,7 @@
 import mapModules from './mapModules/index'
 import tabModules from './tabModules/index'
 
-const iportalMQIP = '192.168.11.206'
+const iportalMQIP = '192.168.11.21'
 
 export default {
   // name: '全功能移动GIS软件',
@@ -34,10 +34,11 @@ export default {
     {key: 'MyColor'},
     {key: 'MyApplet'},
     {key: 'AIModel'},
+    {key: 'SANDTABLE'},
   ],
   infoServer: {
-    url: 'https://www.supermapol.com/web/datas/235674088/download',
-    fileName: 'ServerInfo.geojson',
+    // url: 'https://www.supermapol.com/web/datas/547487753/download',
+    // fileName: 'ServerInfo.geojson',
   },
   messageServer: {
     MSG_ADDRESS: `http://${iportalMQIP}:8190/iportal/web`,

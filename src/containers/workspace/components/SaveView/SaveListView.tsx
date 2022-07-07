@@ -125,7 +125,7 @@ export default class SaveListView extends React.Component<Props, State> {
     try {
       let result: {mapResult?: boolean, armapResult?: boolean} = {}
       if (this.state.selectedData.size === 0) return false
-      this._setLoading && this._setLoading(true, getLanguage(GLOBAL.language).Prompt.SAVING)
+      this._setLoading && this._setLoading(true, getLanguage(global.language).Prompt.SAVING)
       for (const map of this.state.selectedData.values()) {
         switch(map.mapType) {
           case 'map':
@@ -157,7 +157,7 @@ export default class SaveListView extends React.Component<Props, State> {
       let mapName = name
       // 导出(保存)工作空间中地图到模块
       let result = await this.props.saveMap({ mapName: mapName, nModule: '', addition })
-      if (GLOBAL.Type === ChunkType.MAP_NAVIGATION) {
+      if (global.Type === ChunkType.MAP_NAVIGATION) {
         //这里先处理下异常 add xiezhy
         try {
           await SMap.stopGuide()
@@ -270,7 +270,7 @@ export default class SaveListView extends React.Component<Props, State> {
 
   renderItem = (item: any) => {
     return (
-      <View style={styles.item}>
+      <View key={item.name} style={styles.item}>
         <CheckBox
           style={styles.checkBox}
           checked={this.state.selectedData.has(item.name)}
@@ -322,9 +322,9 @@ export default class SaveListView extends React.Component<Props, State> {
         style={styles.dialogStyle}
         disableBackTouch={false}
         opacityStyle={styles.dialogStyle}
-        info={getLanguage(GLOBAL.language).Prompt.SAVE_TITLE}
-        confirmBtnTitle={getLanguage(GLOBAL.language).Prompt.SAVE_YES}
-        cancelBtnTitle={getLanguage(GLOBAL.language).Prompt.SAVE_NO}
+        info={getLanguage(global.language).Prompt.SAVE_TITLE}
+        confirmBtnTitle={getLanguage(global.language).Prompt.SAVE_YES}
+        cancelBtnTitle={getLanguage(global.language).Prompt.SAVE_NO}
         confirmTitleStyle={[styles.confirmTitleStyle, this.state.selectedData.size === 0 && {color: color.fontColorGray}]}
       >
         {this.renderItems()}

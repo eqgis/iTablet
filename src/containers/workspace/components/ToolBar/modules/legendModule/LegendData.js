@@ -20,16 +20,16 @@ function getData(type) {
     case ConstToolType.SM_MAP_LEGEND_POSITION:
       {
         let currentPopData
-        if (GLOBAL.Type) {
-          data = getPickerData(_params.mapLegend[GLOBAL.Type].legendPosition)
-          currentPopData = _params.mapLegend[GLOBAL.Type].legendPosition
+        if (global.Type) {
+          data = getPickerData(_params.mapLegend[global.Type].legendPosition)
+          currentPopData = _params.mapLegend[global.Type].legendPosition
         } else {
           data = []
           currentPopData = {}
         }
         customView = () => (
           <MultiPicker
-            language={GLOBAL.language}
+            language={global.language}
             confirm={LegendAction.changePosition}
             cancel={LegendAction.cancelSelect}
             popData={data}
@@ -50,27 +50,27 @@ function getData(type) {
 function getPickerData(selectKey) {
   const options = [
     {
-      key: getLanguage(GLOBAL.language).Map_Main_Menu.TOP_LEFT,
+      key: getLanguage(global.language).Map_Main_Menu.TOP_LEFT,
       value: 'topLeft',
     },
     {
-      key: getLanguage(GLOBAL.language).Map_Main_Menu.TOP_RIGHT,
+      key: getLanguage(global.language).Map_Main_Menu.TOP_RIGHT,
       value: 'topRight',
     },
     {
-      key: getLanguage(GLOBAL.language).Map_Main_Menu.LEFT_BOTTOM,
+      key: getLanguage(global.language).Map_Main_Menu.LEFT_BOTTOM,
       value: 'leftBottom',
     },
     {
-      key: getLanguage(GLOBAL.language).Map_Main_Menu.RIGHT_BOTTOM,
+      key: getLanguage(global.language).Map_Main_Menu.RIGHT_BOTTOM,
       value: 'rightBottom',
     },
   ]
   const selectedItem = options.filter(item => item.value === selectKey)[0]
   return [
     {
-      key: getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_POSITION,
-      value: getLanguage(GLOBAL.language).Map_Main_Menu.LEGEND_POSITION,
+      key: getLanguage(global.language).Map_Main_Menu.LEGEND_POSITION,
+      value: getLanguage(global.language).Map_Main_Menu.LEGEND_POSITION,
       initItem: selectedItem,
       children: options,
       selectedItem,
@@ -84,12 +84,12 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLOR,
       action: () => {
-        GLOBAL.toolBox && GLOBAL.toolBox.menu({
+        global.toolBox && global.toolBox.menu({
           type: ConstToolType.SM_MAP_LEGEND,
           selectKey: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLOR
         })
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
+        global.toolBox &&
+          global.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND, {
             containerType: ToolbarType.colorTable,
             // column,
             isFullScreen: false,
@@ -106,8 +106,8 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_COLUMN,
       action: () => {
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setState({
+        global.toolBox &&
+          global.toolBox.setState({
             isTouchProgress: true,
             showMenuDialog: false,
             selectName: getLanguage(_params.language).Map_Main_Menu
@@ -123,8 +123,8 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_WIDTH,
       action: () => {
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setState({
+        global.toolBox &&
+          global.toolBox.setState({
             isTouchProgress: true,
             showMenuDialog: false,
             selectName: getLanguage(_params.language).Map_Main_Menu
@@ -139,8 +139,8 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_HEIGHT,
       action: () => {
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setState({
+        global.toolBox &&
+          global.toolBox.setState({
             isTouchProgress: true,
             showMenuDialog: false,
             selectName: getLanguage(_params.language).Map_Main_Menu
@@ -156,8 +156,8 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_FONT,
       action: () => {
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setState({
+        global.toolBox &&
+          global.toolBox.setState({
             isTouchProgress: true,
             showMenuDialog: false,
             selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_FONT,
@@ -171,8 +171,8 @@ function getMenuData(type) {
     {
       key: getLanguage(_params.language).Map_Main_Menu.LEGEND_ICON,
       action: () => {
-        GLOBAL.toolBox &&
-          GLOBAL.toolBox.setState({
+        global.toolBox &&
+          global.toolBox.setState({
             isTouchProgress: true,
             showMenuDialog: false,
             selectName: getLanguage(_params.language).Map_Main_Menu.LEGEND_ICON,
@@ -187,8 +187,8 @@ function getMenuData(type) {
     //   key: getLanguage(_params.language).Map_Main_Menu.LEGEND_POSITION,
     //   action: () => {
     //     const _data = getData(ConstToolType.SM_MAP_LEGEND_POSITION)
-    //     GLOBAL.toolBox &&
-    //       GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND_POSITION, {
+    //     global.toolBox &&
+    //       global.toolBox.setVisible(true, ConstToolType.SM_MAP_LEGEND_POSITION, {
     //         containerType: ToolbarType.picker,
     //         isFullScreen: false,
     //         selectName: getLanguage(_params.language).Map_Main_Menu
@@ -212,7 +212,7 @@ function getButtons(type) {
   switch (type) {
     case ConstToolType.SM_MAP_LEGEND:
     default:
-      if (legendData[GLOBAL.Type].isShow) {
+      if (legendData[global.Type].isShow) {
         buttons = [
           ToolbarBtnType.CANCEL,
           {

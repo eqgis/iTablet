@@ -48,7 +48,7 @@ export default class MapExample extends Module {
       // 点击时模块高亮图片
       moduleImageTouch: require('../../src/assets/userDefine/userDefineTab.png'),
       // 默认地图名称
-      defaultMapName: GLOBAL.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
+      defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
       // 地图默认底图数据
       baseMapSource: {...ConstOnline.Google},
       // 地图默认底图当前显示的地图

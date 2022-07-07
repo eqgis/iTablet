@@ -11,6 +11,8 @@ const icon_collect_free_line = require('./icon_collect_free_line.png')
 const icon_collect_point = require('./icon_collect_point.png')
 const icon_ar_effect_download = require('./ar_effect_download.png')
 const icon_scan = require('./icon_scan.png')
+// ar增强定位图标
+const icon_ar_enhance = require('./icon_ar_enhance.png')
 const icon_map_selection = require('./icon_map_selection.png')
 const icon_location = require('./icon_location.png')
 const icon_latitudes = require('./icon_latitudes.png')
@@ -40,6 +42,7 @@ export default {
 
   // 位置校准
   icon_scan,
+  icon_ar_enhance,
   icon_map_selection,
   icon_location,
   icon_latitudes,

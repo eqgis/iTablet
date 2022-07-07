@@ -8,7 +8,7 @@ import { dataUtil, scaleSize, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import ToolbarModule from '../ToolbarModule'
-import DataHandler from '../../../../../tabs/Mine/DataHandler'
+import DataHandler from '../../../../../../utils/DataHandler'
 import { TreeList } from '../../../../../../components'
 import NavigationService from '../../../../../NavigationService'
 import React from 'react'
@@ -108,7 +108,7 @@ async function getUDBsAndMaps() {
         image: getThemeAssets().dataType.icon_newdata,
         action: () => {
           NavigationService.navigate('MyDatasource', {
-            title: getLanguage(GLOBAL.language).Profile.DATA,
+            title: getLanguage(global.language).Profile.DATA,
             from: 'MapView',
             exitCallback: async () => {
               const params = ToolbarModule.getParams()
@@ -138,8 +138,7 @@ async function getUDBsAndMaps() {
       data: labelDatasets,
     },
     {
-      title: getLanguage(ToolbarModule.getParams().language).Map_Main_Menu
-        .OPEN_MAP,
+      title: getLanguage(ToolbarModule.getParams().language).MAP,
       // Const.MAP,
       // image: require('../../../../../../assets/mapToolbar/list_type_map.png'),
       image: getThemeAssets().dataType.icon_map,
@@ -276,24 +275,24 @@ async function getSymbolsFromFile() {
             )
             Toast.show(
               result
-                ? getLanguage(GLOBAL.language).Prompt.ADD_SUCCESS
-                : getLanguage(GLOBAL.language).Prompt.ADD_FAILED,
+                ? getLanguage(global.language).Prompt.ADD_SUCCESS
+                : getLanguage(global.language).Prompt.ADD_FAILED,
             )
           }
           if (!isEixst) {
             addSymbol(mapName, currentSymbolFile, data.id, false)
           } else {
-            GLOBAL.SimpleDialog.set({
-              text: getLanguage(GLOBAL.language).Prompt.OVERRIDE_SYMBOL,
+            global.SimpleDialog.set({
+              text: getLanguage(global.language).Prompt.OVERRIDE_SYMBOL,
               confirmAction: () =>
                 addSymbol(mapName, currentSymbolFile, data.id, true),
               cancelAction: () =>
                 addSymbol(mapName, currentSymbolFile, data.id, false),
-              confirmText: getLanguage(GLOBAL.language).Prompt.OVERWRITE,
-              cancelText: getLanguage(GLOBAL.language).Prompt.CREATE,
+              confirmText: getLanguage(global.language).Prompt.OVERWRITE,
+              cancelText: getLanguage(global.language).Prompt.NEW,
               disableBackTouch: false,
             })
-            GLOBAL.SimpleDialog.setVisible(true)
+            global.SimpleDialog.setVisible(true)
           }
         }}
       />

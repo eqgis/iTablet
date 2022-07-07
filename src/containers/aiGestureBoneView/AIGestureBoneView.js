@@ -4,9 +4,8 @@ import {
   SGestureBoneView,
   SMap,
 } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
-import { setSpText, scaleSize } from '../../utils'
+import { setSpText, scaleSize, screen } from '../../utils'
 import {
   View,
   TouchableOpacity,
@@ -33,13 +32,13 @@ export default class AIGestureBoneView extends React.Component {
 
   constructor(props) {
     super(props)
-    let params = this.props.navigation.state.params || {}
+    let params = this.props.route.params || {}
     this.point = params.point
 
     this.state = {
       associationMap: false, //关联地图
       poseOverLook: true, //忽略姿态
-      poseTitle: getLanguage(GLOBAL.language).Map_Main_Menu
+      poseTitle: getLanguage(global.language).Map_Main_Menu
         .MAP_AI_POSE_ESTIMATION_PAN, //姿态标题
 
       poseData: this.poseData,
@@ -54,7 +53,7 @@ export default class AIGestureBoneView extends React.Component {
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
     // SPoseEstimationView.setOperMode(this.state.poseMode)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {
@@ -72,10 +71,10 @@ export default class AIGestureBoneView extends React.Component {
   onPoseChanged = info => {
     // let title = null
     // if (info.poseType === 'ZOOM') {
-    //   title = getLanguage(GLOBAL.language).Map_Main_Menu
+    //   title = getLanguage(global.language).Map_Main_Menu
     //     .MAP_AI_POSE_ESTIMATION_ZOOM
     // } else if (info.poseType === 'PAN') {
-    //   title = getLanguage(GLOBAL.language).Map_Main_Menu
+    //   title = getLanguage(global.language).Map_Main_Menu
     //     .MAP_AI_POSE_ESTIMATION_PAN
     // } else {
     //   title = ''
@@ -96,13 +95,13 @@ export default class AIGestureBoneView extends React.Component {
 
     if (this.state.poseMode === 'MODE_ZOOM') {
       _poseCallBackData.push(
-        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ZOOM +
+        getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_ZOOM +
           ':' +
           _poseTitle,
       )
     } else if (this.state.poseMode === 'MODE_PAN') {
       _poseCallBackData.push(
-        getLanguage(GLOBAL.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_PAN +
+        getLanguage(global.language).Map_Main_Menu.MAP_AI_POSE_ESTIMATION_PAN +
           ':' +
           _poseTitle,
       )
@@ -120,27 +119,27 @@ export default class AIGestureBoneView extends React.Component {
     let _poseTitle = ''
     switch (arrStrs[0]) {
       case 'up':
-        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_UP
         break
       case 'down':
-        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_DOWN
         break
       case 'left':
-        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_LEFT
         break
       case 'right':
-        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_RIGHT
         break
       case 'shrink':
-        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_SHRINK
         break
       case 'magnify':
-        _poseTitle = getLanguage(GLOBAL.language).Map_Main_Menu
+        _poseTitle = getLanguage(global.language).Map_Main_Menu
           .MAP_AI_POSE_ESTIMATION_ASSOCIATION_MAGNIFY
         break
     }
@@ -150,8 +149,8 @@ export default class AIGestureBoneView extends React.Component {
 
   back = () => {
     NavigationService.goBack('AIGestureBoneView')
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    global.toolBox && global.toolBox.removeAIDetect(false)
+    global.toolBox.switchAr()
     return true
   }
 
@@ -183,9 +182,9 @@ export default class AIGestureBoneView extends React.Component {
 
               <Text style={styles.buttonname}>
                 {this.state.associationMap
-                  ? getLanguage(GLOBAL.language).Map_Main_Menu
+                  ? getLanguage(global.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_ASSOCIATION_CANCEL
-                  : getLanguage(GLOBAL.language).Map_Main_Menu
+                  : getLanguage(global.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_ASSOCIATION}
               </Text>
             </View>
@@ -216,9 +215,9 @@ export default class AIGestureBoneView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {this.state.poseOverLook
-                  ? getLanguage(GLOBAL.language).Map_Main_Menu
+                  ? getLanguage(global.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_LOOK
-                  : getLanguage(GLOBAL.language).Map_Main_Menu
+                  : getLanguage(global.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_OVERLOOK}
               </Text>
             </View>
@@ -248,7 +247,7 @@ export default class AIGestureBoneView extends React.Component {
               />
               <Text style={styles.buttonname}>
                 {
-                  getLanguage(GLOBAL.language).Map_Main_Menu
+                  getLanguage(global.language).Map_Main_Menu
                     .MAP_AI_POSE_ESTIMATION_SWITCH_CAMERA
                 }
               </Text>
@@ -287,19 +286,19 @@ export default class AIGestureBoneView extends React.Component {
 
   poseData = [
     {
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AI_POSE_ESTIMATION_ZOOM,
       mode: 'MODE_ZOOM',
       index: 0,
     },
     {
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AI_POSE_ESTIMATION_PAN,
       mode: 'MODE_PAN',
       index: 1,
     },
     {
-      title: getLanguage(GLOBAL.language).Map_Main_Menu
+      title: getLanguage(global.language).Map_Main_Menu
         .MAP_AI_POSE_ESTIMATION_OVERLOOK,
       mode: 'MODE_OVERLOOK',
       index: 2,
@@ -378,7 +377,7 @@ export default class AIGestureBoneView extends React.Component {
           <View style={styles.titleView}>
             <Text style={[styles.text, { color: color.white }]}>
               {
-                getLanguage(GLOBAL.language).Map_Main_Menu
+                getLanguage(global.language).Map_Main_Menu
                   .MAP_AI_POSE_ESTIMATION_LOOK
               }
             </Text>
@@ -412,7 +411,7 @@ export default class AIGestureBoneView extends React.Component {
             <Container
               ref={ref => (this.Container = ref)}
               headerProps={{
-                title: getLanguage(GLOBAL.language).Map_Main_Menu
+                title: getLanguage(global.language).Map_Main_Menu
                   .MAP_AI_POSE_ESTIMATION,
                 navigation: this.props.navigation,
                 type: 'fix',

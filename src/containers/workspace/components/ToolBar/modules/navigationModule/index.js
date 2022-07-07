@@ -21,7 +21,7 @@ class NavigationModule extends FunctionModule {
 export default function() {
   return new NavigationModule({
     type: ConstToolType.SM_MAP_NAVIGATION_MODULE,
-    title: getLanguage(GLOBAL.language).Map_Main_Menu.NAVIGATION_START,
+    title: getLanguage(global.language).Map_Main_Menu.NAVIGATION_START,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_navigation,
   })

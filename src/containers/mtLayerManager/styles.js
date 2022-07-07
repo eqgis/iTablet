@@ -35,6 +35,15 @@ export default StyleSheet.create({
     fontSize: scaleSize(20),
     color: '#A0A0A0',
   },
+  sectionPublishView: {
+    height: scaleSize(80),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  watting: {
+    width: scaleSize(32),
+    height: scaleSize(32),
+  },
   rightIconView: {
     height: '100%',
     width: scaleSize(60),

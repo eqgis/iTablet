@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Platform, InteractionManager,AppState, } from 'react-native'
 import NavigationService from '../../containers/NavigationService'
-import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
 import { getLanguage } from '../../language'
 import {
@@ -12,7 +11,7 @@ import {
 } from 'imobile_for_reactnative'
 import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
-import { Toast } from '../../utils'
+import { Toast, screen } from '../../utils'
 
 /*
  * 违章采集界面
@@ -27,7 +26,7 @@ export default class IllegallyParkView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.datasourceAlias = params.datasourceAlias || ''
     this.datasetName = params.datasetName || ''
 
@@ -52,7 +51,7 @@ export default class IllegallyParkView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {
@@ -106,7 +105,7 @@ export default class IllegallyParkView extends React.Component {
 
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(true)
-    Orientation.unlockAllOrientations()
+    screen.unlockAllOrientations()
     AppState.removeEventListener('change', this.handleStateChange)
     //移除监听
   }
@@ -114,8 +113,8 @@ export default class IllegallyParkView extends React.Component {
   back = () => {
     NavigationService.goBack('IllegallyParkView')
 
-    GLOBAL.toolBox && GLOBAL.toolBox.removeAIDetect(false)
-    GLOBAL.toolBox.switchAr()
+    global.toolBox && global.toolBox.removeAIDetect(false)
+    global.toolBox.switchAr()
     return true
   }
 
@@ -126,7 +125,7 @@ export default class IllegallyParkView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Map_Main_Menu
+          title: getLanguage(global.language).Map_Main_Menu
             .MAP_AR_AI_ASSISTANT_VIOLATION_COLLECT,
           navigation: this.props.navigation,
           backAction: this.back,

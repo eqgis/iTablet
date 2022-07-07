@@ -18,6 +18,7 @@ const icon_img_zip = require('./icon_img_zip.png')
 
 const icon_state_published = require('./icon_state_published.png')
 const icon_state_update = require('./icon_state_update.png')
+const icon_complate = require('./icon_complate.png')
 
 const bg_photo_data = require('./bg_photo_data.png')
 const bg_photo_news = require('./bg_photo_news.png')
@@ -44,6 +45,7 @@ export default {
 
   icon_state_published,
   icon_state_update,
+  icon_complate,
 
   bg_photo_data,
   bg_photo_news,

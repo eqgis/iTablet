@@ -27,7 +27,7 @@ class ChooseLayer extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const params = this.props.navigation.state.params
+    const params = this.props.route.params
     if(params && params.filters && params.filters.length > 0) {
       this.hasPointLayer = params.filters.indexOf(DatasetType.POINT) > -1
       this.hasLineLayer =  params.filters.indexOf(DatasetType.LINE) > -1

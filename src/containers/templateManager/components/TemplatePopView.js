@@ -276,28 +276,64 @@ export default class TemplatePopView extends React.Component {
         >
           <Text style={styles.btnText}>
             {this.props.cancelTitle ||
-              getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
+              getLanguage(this.props.language || global.language).Analyst_Labels
                 .CANCEL}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.btnView, { justifyContent: 'flex-end' }]}
-          onPress={() => {
-            if (
-              this.props.confirm &&
-              typeof this.props.confirm === 'function'
-            ) {
-              this.props.confirm(this.state.data)
-            }
-          }}
+        <View
+          style={[styles.btnView,{justifyContent: 'flex-end' }]}
         >
-          <Text style={styles.btnText}>
-            {this.props.confirmTitle ||
-              getLanguage(this.props.language || GLOBAL.language).Analyst_Labels
-                .CONFIRM}
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              height: scaleSize(80),
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight:scaleSize(40),
+            }}
+            onPress={() => {
+              let newData = JSON.parse(JSON.stringify(this.state.data))
+              newData[1].data[1].value = ''
+              newData[2].data = []
+              newData[1].data[1].type = ''
+              newData[1].data[1].value = ''
+              newData[1].data[0].data = ''
+              newData[1].data[0].value = ''
+              this.setState({
+                data: newData,
+              })
+            }}
+          >
+            <Text style={styles.btnText}>
+              {this.props.confirmTitle ||
+                getLanguage(this.props.language || global.language).Analyst_Labels
+                  .RESET}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              height: scaleSize(80),
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => {
+              if (
+                this.props.confirm &&
+                typeof this.props.confirm === 'function'
+              ) {
+                this.props.confirm(this.state.data)
+              }
+            }}
+          >
+            <Text style={styles.btnText}>
+              {this.props.confirmTitle ||
+                getLanguage(this.props.language || global.language).Analyst_Labels
+                  .CONFIRM}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View >
     )
   }
 
@@ -307,14 +343,14 @@ export default class TemplatePopView extends React.Component {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' && 'padding'}
           keyboardVerticalOffset={
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !GLOBAL.isPad
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !global.isPad
               ? 0
               : (this.props.device.height - this.props.height || 0)
           }
           style={[
             styles.popView,
             this.props.height >= 0 && { height: this.props.height },
-            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !GLOBAL.isPad &&
+            this.props.device.orientation.indexOf('LANDSCAPE') === 0 && !global.isPad &&
             { height: this.props.device.height },
             {
               flexDirection: 'column',

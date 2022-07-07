@@ -26,7 +26,7 @@ export default class ChooseTaggingLayer extends React.Component {
 
   constructor(props) {
     super(props)
-    const { params } = this.props.navigation.state || {}
+    const { params } = this.props.route || {}
     this.type = params.type
     this.state = {
       show: false,
@@ -68,14 +68,14 @@ export default class ChooseTaggingLayer extends React.Component {
           image: require('../../assets/mapTools/ai_setting.png'),
         },
       ]
-      ;(await GLOBAL.toolBox) &&
-        GLOBAL.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
+      ;(await global.toolBox) &&
+        global.toolBox.setVisible(true, ConstToolType.SM_MAP_AI_ANALYSIS_DETECT, {
           buttons: buttons,
           isFullScreen: false,
           height: 0,
         })
-      GLOBAL.AIDETECTCHANGE.setVisible(true)
-      ;(await GLOBAL.toolBox) && GLOBAL.toolBox.switchAr()
+      global.AIDETECTCHANGE.setVisible(true)
+      ;(await global.toolBox) && global.toolBox.switchAr()
       NavigationService.goBack()
     } else if (this.type === 'aiClassify') {
       let currentLayer = item
@@ -216,9 +216,9 @@ export default class ChooseTaggingLayer extends React.Component {
       setTimeout(() => {
         this.clickAble = true
       }, 1500)
-      if (GLOBAL.arSwitchToMap) {
-        GLOBAL.arSwitchToMap = false
-        GLOBAL.toolBox && GLOBAL.toolBox.switchAr()
+      if (global.arSwitchToMap) {
+        global.arSwitchToMap = false
+        global.toolBox && global.toolBox.switchAr()
       }
       NavigationService.goBack()
     }

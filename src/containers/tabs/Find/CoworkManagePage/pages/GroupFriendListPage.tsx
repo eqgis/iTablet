@@ -75,11 +75,11 @@ class GroupFriendListPage extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.callBack = this.props.navigation?.state?.params?.callBack
-    this.mode = this.props.navigation?.state?.params?.mode === undefined ? 'select' : this.props.navigation?.state?.params?.mode
-    this.includeMe = this.props.navigation?.state?.params?.includeMe === undefined ? true : this.props.navigation?.state?.params?.includeMe
-    this.title = this.props.navigation?.state?.params?.title || getLanguage(this.props.language).Friends.TITLE_CHOOSE_MEMBER
-    this.filter = this.props.navigation?.state?.params?.filter
+    this.callBack = this.props.route?.params?.callBack
+    this.mode = this.props.route?.params?.mode === undefined ? 'select' : this.props.route?.params?.mode
+    this.includeMe = this.props.route?.params?.includeMe === undefined ? true : this.props.route?.params?.includeMe
+    this.title = this.props.route?.params?.title || getLanguage(this.props.language).Friends.TITLE_CHOOSE_MEMBER
+    this.filter = this.props.route?.params?.filter
 
     this.state = {
       allData: [], // 所有数组
@@ -305,18 +305,18 @@ class GroupFriendListPage extends Component<Props, State> {
     if (this.mode === 'select') return null
     let isMultiSelect = this.mode === 'multiSelect'
     if (isMultiSelect) {
-      if (this.state.selectedMembers.size === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
-        return
-      }
+      // if (this.state.selectedMembers.size === 0) {
+      //   Toast.show(getLanguage(global.language).Friends.GROUP_SELECT_MEMBER)
+      //   return
+      // }
       this._multiSelectConfirm()
     } else if (this.state.isManage) {
-      if (this.state.selectedMembers.size === 0) {
-        Toast.show(getLanguage(GLOBAL.language).Friends.GROUP_SELECT_MEMBER)
-        return
-      }
+      // if (this.state.selectedMembers.size === 0) {
+      //   Toast.show(getLanguage(global.language).Friends.GROUP_SELECT_MEMBER)
+      //   return
+      // }
 
-      this._setDialogVisible(true, getLanguage(GLOBAL.language).Friends.GROUP_MEMBER_DELETE_INFO)
+      this._setDialogVisible(true, getLanguage(this.props.language).Friends.GROUP_MEMBER_DELETE_INFO)
       this.dialogAction = () => {
         let userIds: Array<string> = []
         this.state.selectedMembers.forEach((member: any) => {
@@ -327,27 +327,6 @@ class GroupFriendListPage extends Component<Props, State> {
           userIds: userIds,
         }).then(async result => {
           if (result.succeed) {
-            // 给删除对象发送被删除消息
-            // let timeStr = new Date().getTime()
-            // let message = {
-            //   type: MsgConstant.MSG_ONLINE_MEMBER_DELETE,
-            //   user: {
-            //     name: this.props.user.currentUser.nickname || '',
-            //     id: this.props.user.currentUser.userName || '',
-            //   },
-            //   group: {
-            //     groupID: this.props.currentGroup.id,
-            //     groupName: this.props.currentGroup.groupName,
-            //     groupCreator: this.props.currentGroup.creator,
-            //   },
-            //   time: timeStr,
-            // }
-            // for (let i = 0; i < userIds.length; i++) {
-            //   SMessageService.sendMessage(
-            //     JSON.stringify(message),
-            //     userIds[i],
-            //   )
-            // }
             this._sendDeleteMsg(userIds)
             await this.getContacts()
             this.callBack && this.callBack()
@@ -379,33 +358,34 @@ class GroupFriendListPage extends Component<Props, State> {
         {
           (this.state.isManage || this.mode === 'multiSelect') &&
           (
-            this.props.user.currentUser.userName !== item.userName
-              ? (
-                <CheckBox
-                  type={'circle'}
-                  style={styles.checkBtn}
-                  checked={!!this.state.selectedMembers.get(item.userName + '')}
-                  onChange={value => {
-                    this.setState(state => {
-                      const selected = new Map(state.selectedMembers)
-                      const isSelected = selected.has(item.userName + '')
-                      if (value && !isSelected) {
-                        selected.set(item.userName + '', item)
-                      } else {
-                        selected.delete(item.userName + '')
-                      }
-                      return { selectedMembers: selected }
-                    })
-                  }}
-                />
-              )
-              : (
-                <View style={{
-                  marginLeft: scaleSize(32),
-                  height: scaleSize(30),
-                  width: scaleSize(30),
-                }} />
-              )
+            // this.props.user.currentUser.userName !== item.userName
+            //   ? (
+            <CheckBox
+              type={'circle'}
+              style={styles.checkBtn}
+              disable={this.props.user.currentUser.userName === item.userName}
+              checked={this.props.user.currentUser.userName === item.userName ? true : (!!this.state.selectedMembers.get(item.userName + ''))}
+              onChange={value => {
+                this.setState(state => {
+                  const selected = new Map(state.selectedMembers)
+                  const isSelected = selected.has(item.userName + '')
+                  if (value && !isSelected) {
+                    selected.set(item.userName + '', item)
+                  } else {
+                    selected.delete(item.userName + '')
+                  }
+                  return { selectedMembers: selected }
+                })
+              }}
+            />
+            // )
+            // : (
+            //   <View style={{
+            //     marginLeft: scaleSize(32),
+            //     height: scaleSize(30),
+            //     width: scaleSize(30),
+            //   }} />
+            // )
           )
         }
         <Image
@@ -472,13 +452,13 @@ class GroupFriendListPage extends Component<Props, State> {
             style={styles.checkBtn}
             checked={
               this.state.selectedMembers.size === this.state.allData.length &&
-              this.state.selectedMembers.size > 0
+              this.state.selectedMembers.size >= 0
             } // -1是减去管理者自己
             onChange={value => {
               this.setState(state => {
                 const selected = new Map(state.selectedMembers)
                 this.state.allData.forEach(item => {
-                  if (this.props.user.currentUser.userName === item.userName) return
+                  // if (this.props.user.currentUser.userName === item.userName) return
                   const isSelected = selected.has(item.userName + '')
                   if (value && !isSelected) {
                     selected.set(item.userName + '', item)
@@ -498,15 +478,15 @@ class GroupFriendListPage extends Component<Props, State> {
               {color: color.itemColorGray3},
             ]}
           >
-            {getLanguage(GLOBAL.language).Profile.SELECT_ALL}
+            {getLanguage(this.props.language).Profile.SELECT_ALL}
           </Text>
           {/* <TouchableOpacity></TouchableOpacity> */}
           <TextBtn
             btnText={getLanguage(this.props.language).Prompt.CONFIRM}
             containerStyle={[
               styles.bottomBtn,
-              this.state.selectedMembers.size === 0 &&
-              {backgroundColor: color.itemColorGray3},
+              // this.state.selectedMembers.size === 0 &&
+              // {backgroundColor: color.itemColorGray3},
             ]}
             textStyle={styles.bottomBtnText}
             btnClick={this._btnAction}
@@ -550,7 +530,7 @@ class GroupFriendListPage extends Component<Props, State> {
               colors={['orange', 'red']}
               tintColor={'orange'}
               titleColor={'orange'}
-              title={getLanguage(this.props.language).Friends.LOADING}
+              title={getLanguage(this.props.language).Friends.REFRESHING}
               enabled={true}
             />
           }

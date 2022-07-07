@@ -194,14 +194,14 @@ function getOptimalPathData() {
     {
       key: getLanguage(_params.language).Analyst_Labels.ADD_STATIONS,
       title: getLanguage(_params.language).Analyst_Labels.ADD_STATIONS,
-      action: () => (GLOBAL.TouchType = TouchType.ADD_STATIONS),
+      action: () => (global.TouchType = TouchType.ADD_STATIONS),
       size: 'large',
       image: getThemeAssets().analyst.analysis_stop,
     },
     {
       key: getLanguage(_params.language).Analyst_Labels.ADD_BARRIER_NODES,
       title: getLanguage(_params.language).Analyst_Labels.ADD_BARRIER_NODES,
-      action: () => (GLOBAL.TouchType = TouchType.ADD_BARRIER_NODES),
+      action: () => (global.TouchType = TouchType.ADD_BARRIER_NODES),
       size: 'large',
       image: getThemeAssets().analyst.analysis_barrier,
     },
@@ -224,7 +224,7 @@ function getOptimalPathData() {
       title: getLanguage(_params.language).Analyst_Labels.CLEAR,
       action: () => {
         STransportationAnalyst.clear()
-        GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+        global.bubblePane && global.bubblePane.clear()
       },
       size: 'large',
       image: getThemeAssets().mark.icon_mark_erase,
@@ -252,14 +252,14 @@ function getConnectivityData() {
     {
       key: getLanguage(_params.language).Analyst_Labels.SET_AS_START_STATION,
       title: getLanguage(_params.language).Analyst_Labels.SET_AS_START_STATION,
-      action: () => (GLOBAL.TouchType = TouchType.SET_AS_START_STATION),
+      action: () => (global.TouchType = TouchType.SET_AS_START_STATION),
       size: 'large',
       image: getThemeAssets().analyst.analysis_startpoint,
     },
     {
       key: getLanguage(_params.language).Analyst_Labels.SET_AS_END_STATION,
       title: getLanguage(_params.language).Analyst_Labels.SET_AS_END_STATION,
-      action: () => (GLOBAL.TouchType = TouchType.SET_AS_END_STATION),
+      action: () => (global.TouchType = TouchType.SET_AS_END_STATION),
       size: 'large',
       image: getThemeAssets().analyst.analysis_endpoint,
     },
@@ -282,7 +282,7 @@ function getConnectivityData() {
       title: getLanguage(_params.language).Analyst_Labels.CLEAR,
       action: () => {
         STransportationAnalyst.clear()
-        GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+        global.bubblePane && global.bubblePane.clear()
       },
       size: 'large',
       image: getThemeAssets().mark.icon_mark_erase,
@@ -308,14 +308,14 @@ function getTSPData() {
     {
       key: getLanguage(_params.language).Analyst_Labels.ADD_STATIONS,
       title: getLanguage(_params.language).Analyst_Labels.ADD_STATIONS,
-      action: () => (GLOBAL.TouchType = TouchType.ADD_STATIONS),
+      action: () => (global.TouchType = TouchType.ADD_STATIONS),
       size: 'large',
       image: getThemeAssets().analyst.analysis_stop,
     },
     {
       key: getLanguage(_params.language).Analyst_Labels.ADD_BARRIER_NODES,
       title: getLanguage(_params.language).Analyst_Labels.ADD_BARRIER_NODES,
-      action: () => (GLOBAL.TouchType = TouchType.ADD_BARRIER_NODES),
+      action: () => (global.TouchType = TouchType.ADD_BARRIER_NODES),
       size: 'large',
       image: getThemeAssets().analyst.analysis_barrier,
     },
@@ -338,7 +338,7 @@ function getTSPData() {
       title: getLanguage(_params.language).Analyst_Labels.CLEAR,
       action: () => {
         STransportationAnalyst.clear()
-        GLOBAL.bubblePane && GLOBAL.bubblePane.clear()
+        global.bubblePane && global.bubblePane.clear()
       },
       size: 'large',
       image: getThemeAssets().mark.icon_mark_erase,

@@ -13,19 +13,19 @@ import {
   NativeEventEmitter,
   Platform,
   AppState,
-  NetInfo,
-  AsyncStorage,
+  // AsyncStorage,
+  Switch,
+  DeviceEventEmitter,
 } from 'react-native'
-import ScrollableTabView, {
-  DefaultTabBar,
-} from 'react-native-scrollable-tab-view'
+import { TabView, SceneMap, TabBar as FriendTabBar } from 'react-native-tab-view'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // eslint-disable-next-line
-import { SMessageService, SOnlineService, SMap, SCoordination } from 'imobile_for_reactnative'
+import { SMessageService, SOnlineService, SIPortalService, SMap, SCoordination } from 'imobile_for_reactnative'
 import NavigationService from '../../NavigationService'
 import screen, { scaleSize } from '../../../utils/screen'
 import { Toast, OnlineServicesUtils } from '../../../utils'
-import { size } from '../../../styles'
+import { size, color } from '../../../styles'
 import { styles } from './Styles'
 
 import { getThemeAssets } from '../../../assets'
@@ -44,7 +44,6 @@ import { FileTools } from '../../../native'
 import { RNFS  } from 'imobile_for_reactnative'
 import ConstPath from '../../../constants/ConstPath'
 // eslint-disable-next-line import/no-unresolved
-import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter'
 import { EventConst } from '../../../constants'
 import JPushService from './JPushService'
 import { Buffer } from 'buffer'
@@ -60,6 +59,7 @@ const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
 
 let g_connectService = false
+let count = 0
 export default class Friend extends Component {
   props: {
     language: string,
@@ -105,14 +105,25 @@ export default class Friend extends Component {
       data: [{}],
       bHasUserInfo: false,
       showPop: false,
+      openFriends: false,
+      currentPage: 1,
+      routes: [{
+        key: 'FriendMessage',
+        title: getLanguage(this.props.language).Friends.MESSAGES,
+      }, {
+        key: 'FriendList',
+        title: getLanguage(this.props.language).Friends.FRIENDS,
+      }, {
+        key: 'FriendGroup',
+        title: getLanguage(this.props.language).Friends.GROUPS,
+      }],
     }
     this.messageQueue = []
     AppState.addEventListener('change', this.handleStateChange)
-    NetInfo.addEventListener('connectionChange', this.handleNetworkState)
     this.addFileListener()
     this.stateChangeCount = 0
     this._receiveMessage = this._receiveMessage.bind(this)
-    GLOBAL.getFriend = this._getFriend
+    global.getFriend = this._getFriend
     this._setHomePath()
   }
 
@@ -127,6 +138,7 @@ export default class Friend extends Component {
   shouldComponentUpdate(prevProps, prevState) {
     if (
       JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user) ||
+      JSON.stringify(prevProps.navigation) !== JSON.stringify(this.props.navigation) ||
       JSON.stringify(prevProps.chat) !== JSON.stringify(this.props.chat) ||
       JSON.stringify(prevState) !== JSON.stringify(this.state) ||
       prevProps.language !== this.props.language ||
@@ -142,15 +154,27 @@ export default class Friend extends Component {
       JSON.stringify(prevProps.user.currentUser.userName) !==
       JSON.stringify(this.props.user.currentUser.userName)
     ) {
-
       this.updateServices()
+    }
+    if (prevProps.language !== this.props.language) {
+      this.setState({
+        routes: [{
+          key: 'FriendMessage',
+          title: getLanguage(this.props.language).Friends.MESSAGES,
+        }, {
+          key: 'FriendList',
+          title: getLanguage(this.props.language).Friends.FRIENDS,
+        }, {
+          key: 'FriendGroup',
+          title: getLanguage(this.props.language).Friends.GROUPS,
+        }],
+      })
     }
   }
 
   componentWillUnmount() {
     this.removeFileListener()
     AppState.removeEventListener('change', this.handleStateChange)
-    NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
   }
 
   _getWidth = () => {
@@ -176,7 +200,7 @@ export default class Friend extends Component {
   }
 
   _setHomePath = async () => {
-    GLOBAL.homePath = await FileTools.appendingHomeDirectory()
+    global.homePath = await FileTools.appendingHomeDirectory()
   }
 
   getOnlineGroup = async type => {
@@ -206,7 +230,7 @@ export default class Friend extends Component {
       )
       let servicesUtils = new OnlineServicesUtils(type)
       let data
-      let Info
+      let Info, useConfigServer = false
       if (type === 'iportal' && this.props.appConfig.messageServer) {
         data = this.props.appConfig.messageServer
         if (
@@ -221,8 +245,9 @@ export default class Friend extends Component {
         ) {
           Info = data
         }
-      } else if (this.props.appConfig.infoServer) {
+      } else if (this.props.appConfig.infoServer?.url && this.props.appConfig.infoServer?.fileName) {
         data = this.props.appConfig.infoServer
+        useConfigServer = true
       } else {
         data = await servicesUtils.getPublicDataByName(
           '927528',
@@ -231,7 +256,7 @@ export default class Friend extends Component {
       }
       if (!Info && data && (data.url || data.id !== undefined)) {
         let url =
-          data.url || `${servicesUtils.serverUrl}/datas/${data.id}/download`
+        data.url || `${servicesUtils.serverUrl}/datas/${data.id}/download`
 
         let filePath = commonPath + data.fileName
 
@@ -249,6 +274,7 @@ export default class Friend extends Component {
 
         await RNFS.downloadFile(downloadOptions).promise
         let info = await RNFS.readFile(filePath)
+        info = await FileTools.decoder(info)
         RNFS.unlink(filePath)
         let serverInfo = JSON.parse(info)
         Info = serverInfo
@@ -296,11 +322,11 @@ export default class Friend extends Component {
         this.onReceiveProgress,
       )
     } else {
-      this.receiveFileListener = RCTDeviceEventEmitter.addListener(
+      this.receiveFileListener = DeviceEventEmitter.addListener(
         EventConst.MESSAGE_SERVICE_RECEIVE_FILE,
         this.onReceiveProgress,
       )
-      this.sendFileListener = RCTDeviceEventEmitter.addListener(
+      this.sendFileListener = DeviceEventEmitter.addListener(
         EventConst.MESSAGE_SERVICE_SEND_FILE,
         this.onReceiveProgress,
       )
@@ -412,6 +438,16 @@ export default class Friend extends Component {
     }
     this.restartService()
     JPushService.init(this.props.user.currentUser.userName)
+
+    // iportal管理员获取是否公开用户列表
+    if (UserType.isIPortalUser(this.props.user.currentUser) && this.props.user.currentUser.roles.indexOf('ADMIN') >= 0) {
+      const iportalAdminInfoId = await FriendListFileHandle.isAdminOpenFriends()
+      if (this.state.openFriends !== !!iportalAdminInfoId) {
+        this.setState({
+          openFriends: !!iportalAdminInfoId,
+        })
+      }
+    }
     if (this.props.user.currentUser.userName === undefined) {
       FriendListFileHandle.initFriendList(this.props.user.currentUser)
       // CoworkFileHandle.initCoworkList(this.props.user.currentUser)
@@ -429,7 +465,7 @@ export default class Friend extends Component {
       if(this.disconnectBreak){
         return
       }
-      setTimeout(this.restartService, 3000)
+      setTimeout(this.restartService, 60000)
     } else {
       this.restarting = true
       if(g_connectService){
@@ -490,38 +526,56 @@ export default class Friend extends Component {
         await this.initServerInfo(UserType.isOnlineUser(this.props.user.currentUser) ? 'online' : 'iportal')
         let res = await SMessageService.connectService(
           SMessageServiceHTTP.serviceInfo.MSG_IP,
-          SMessageServiceHTTP.serviceInfo.MSG_Port,
+          Number(SMessageServiceHTTP.serviceInfo.MSG_Port),
           SMessageServiceHTTP.serviceInfo.MSG_HostName,
           SMessageServiceHTTP.serviceInfo.MSG_UserName,
           SMessageServiceHTTP.serviceInfo.MSG_Password,
           this.props.user.currentUser.userName,
         )
         if (!res) {
-
-          // Toast.show(
-          //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          // )
+          if(count%600 === 0 || count === 0){
+            Toast.show(
+              getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+            )
+          }
+          count++
+          this.connectService()
         } else {
+          count = 0
           //是否有其他连接
           let connection = await SMessageServiceHTTP.getConnection(
             this.props.user.currentUser.userName,
           )
-          //是否是login时调用
-          if (GLOBAL.isLogging) {
+          //是否是login和启动App时调用
+          if (global.isLogging) {
+            this.loginTime = Date.parse(new Date().toString())
+            await this._sendMessage(
+              JSON.stringify({
+                type: MSGConstant.MSG_LOGOUT,
+                user: {},
+                time: this.loginTime,
+                message: '',
+              }),
+              this.props.user.currentUser.userName,
+            )
+            // TODO 防止ios顶号失败
+            // 定时器,延迟执行关闭链接操作
+            // 等待被顶号的一端接收到消息,并登出后,顶号的一端再创建Connection
+            const _time = async function() {
+              return new Promise(function(resolve, reject) {
+                let timer = setTimeout(function() {
+                  resolve('waitting send close message')
+                  timer && clearTimeout(timer)
+                }, 1000)
+              })
+            }
+            await _time()
+
             if (connection) {
-              this.loginTime = Date.parse(new Date())
-              await this._sendMessage(
-                JSON.stringify({
-                  type: MSGConstant.MSG_LOGOUT,
-                  user: {},
-                  time: this.loginTime,
-                  message: '',
-                }),
-                this.props.user.currentUser.userName,
-              )
+              // await SMessageService.stopReceiveMessage()
               await SMessageServiceHTTP.closeConnection(connection)
             }
-            GLOBAL.isLogging = false
+            global.isLogging = false
           } else {
             if (connection) {
               //检查是否之前consumer
@@ -529,6 +583,7 @@ export default class Friend extends Component {
                 this.props.user.currentUser.userName,
               )
               if (this.props.chat.consumer === consumer) {
+                await SMessageService.stopReceiveMessage()
                 await SMessageServiceHTTP.closeConnection(connection)
               } else {
                 this._logout()
@@ -550,6 +605,7 @@ export default class Friend extends Component {
 
         // Toast.show(getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED)
         this.disconnectService()
+        // this.connectService()
       }
     }
   }
@@ -938,19 +994,21 @@ export default class Friend extends Component {
       if (this.props.cowork.currentTask.id !== '') {
         let geometry = await SMap.getUserEditGeometry(layerInfo.path, id)
         let geoUserID = ''
-        for (let i = 0; i < fieldInfos.length; i++) {
-          let fieldInfo = fieldInfos[i]
-          if (fieldInfo.name === 'userID') {
-            geoUserID = fieldInfo.value
-            break
-          }
-        }
         let geoID = id
-        for (let i = 0; i < fieldInfos.length; i++) {
-          let fieldInfo = fieldInfos[i]
-          if (fieldInfo.name === 'geoID') {
-            geoID = isNaN(fieldInfo.value) || fieldInfo.value === '' ? id : parseInt(fieldInfo.value)
-            break
+        if (fieldInfos) {
+          for (let i = 0; i < fieldInfos.length; i++) {
+            let fieldInfo = fieldInfos[i]
+            if (fieldInfo.name === 'userID') {
+              geoUserID = fieldInfo.value
+              break
+            }
+          }
+          for (let i = 0; i < fieldInfos.length; i++) {
+            let fieldInfo = fieldInfos[i]
+            if (fieldInfo.name === 'geoID') {
+              geoID = isNaN(fieldInfo.value) || fieldInfo.value === '' ? id : parseInt(fieldInfo.value)
+              break
+            }
           }
         }
         let msgObj = {
@@ -1069,10 +1127,19 @@ export default class Friend extends Component {
     }
   }
 
-  onGeometryDelete = async (layerInfo, geoID, geoType) => {
+  onGeometryDelete = async (layerInfo, fieldInfos, geoID, geoType) => {
     try {
       if (this.props.cowork.currentTask.id !== '') {
-        // const geoXML = await SMap.getUserEditGeometry(layerInfo.path, geoID)
+        let geoUserID = ''
+        if (fieldInfos) {
+          for (let i = 0; i < fieldInfos.length; i++) {
+            let fieldInfo = fieldInfos[i]
+            if (fieldInfo.name === 'userID') {
+              geoUserID = fieldInfo.value
+              break
+            }
+          }
+        }
         let msgObj = {
           type: MSGConstant.MSG_COWORK,
           time: new Date().getTime(),
@@ -1091,7 +1158,7 @@ export default class Friend extends Component {
             layerName: layerInfo.name,
             caption: layerInfo.caption,
             id: geoID,
-            geoUserID: this.props.user.currentUser.userName,
+            geoUserID: geoUserID,
             // geometry: geoXML,
             geoType: geoType,
           },
@@ -1183,7 +1250,7 @@ export default class Friend extends Component {
           this.lastLocation = location
         })
         // let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
-        // let isRealTime = currentTaskInfo?.isRealTime === undefined ? true : currentTaskInfo.isRealTime
+        // let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
         // if (
         //   isRealTime &&
         //   // CoworkInfo.isRealTime &&
@@ -1249,7 +1316,7 @@ export default class Friend extends Component {
         talkIds.push(talkId)
         queueExist = await SMessageServiceHTTP.declare('Message_' + talkId, true)
 
-      } else if (talkId.includes('Group_Task_') && GLOBAL.coworkMode) {
+      } else if (talkId.includes('Group_Task_') && global.coworkMode) {
         let currentTaskInfo = this.props.cowork.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.cowork.currentTask.groupID]?.[this.props.cowork.currentTask.id]
         queueExist = currentTaskInfo.members && await SMessageServiceHTTP.declareSession(talkId, currentTaskInfo.members, true)
 
@@ -1293,10 +1360,10 @@ export default class Friend extends Component {
               : null
         }
 
-        Toast.show(
-          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          option,
-        )
+        // Toast.show(
+        //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+        //   option,
+        // )
       }
 
       cb && cb(result)
@@ -1311,10 +1378,10 @@ export default class Friend extends Component {
               : null
         }
 
-        Toast.show(
-          getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
-          option,
-        )
+        // Toast.show(
+        //   getLanguage(this.props.language).Friends.MSG_SERVICE_FAILED,
+        //   option,
+        // )
       }
       cb && cb(false)
       return false
@@ -1527,6 +1594,26 @@ export default class Friend extends Component {
     }
     return msg
   }
+
+  getMsgFromTime = (talkId, fromTime) => {
+    let userId = this.props.user.currentUser.userName
+    let chatHistory = []
+    let msgs = []
+    if (this.props.chat[userId] && this.props.chat[userId][talkId]) {
+      chatHistory = this.props.chat[userId][talkId].history
+    }
+    if (chatHistory.length !== 0) {
+      for (let i = chatHistory.length - 1; i >= 0; i--) {
+        if (chatHistory[i].originMsg.time > fromTime) {
+          msgs.unshift(chatHistory[i])
+        } else {
+          break
+        }
+      }
+    }
+    return msgs
+  }
+
   /**
    * 使用rabbitMQ发送
    */
@@ -1690,11 +1777,13 @@ export default class Friend extends Component {
 
   _logout = async (message = '') => {
     try {
-      if (this.props.user.userType !== UserType.PROBATION_USER) {
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
         SOnlineService.logout()
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        SIPortalService.logout()
       }
-      GLOBAL.coworkMode = false
-      if (this.props.cowork.currentTask.id !== '') {
+      global.coworkMode = false
+      if (this.props.cowork.currentTask.id !== '' && this.props.cowork.currentTask.id !== undefined) {
         this.leaveCowork()
       }
       this.props.closeWorkspace(async () => {
@@ -1711,7 +1800,8 @@ export default class Friend extends Component {
           nickname: 'Customer',
           userType: UserType.PROBATION_USER,
         })
-        NavigationService.popToTop('Tabs')
+        // NavigationService.popToTop('Tabs')
+        NavigationService.navigate('Tabs', {screen: 'Home'})
         this.props.openWorkspace({ server: customPath })
         Toast.show(
           message === ''
@@ -1756,7 +1846,7 @@ export default class Friend extends Component {
            * 对象添加更改的协作消息
            */
           // CoworkInfo.pushMessage(messageObj)
-          this.props.addTaskMessage(messageObj, true)
+          this.props.addTaskMessage(messageObj)
         }
       }
     }
@@ -1875,7 +1965,7 @@ export default class Friend extends Component {
       } else {
         //处理单人消息
         let isFriend = FriendListFileHandle.getIsFriend(messageObj.user.id)
-        if (isFriend === undefined || isFriend === 0) {
+        if (!UserType.isIPortalUser(this.props.user.currentUser) && (isFriend === undefined || isFriend === 0)) {
           //非好友,正常情况下不应该收到非好友的消息，收到后让对方删除
           let delMessage = {
             message: '',
@@ -2153,8 +2243,54 @@ export default class Friend extends Component {
     }
   }
 
+  goToPage = index => {
+    this.state.currentPage !== index &&
+      this.setState({
+        currentPage: index,
+      })
+  }
+
   renderTabBar = () => {
-    return <TabBar navigation={this.props.navigation} />
+    return <TabBar navigation={this.props.navigation} currentRoute={'Friend'} />
+  }
+
+  renderIPortalAdminView = () => {
+    if (!UserType.isIPortalUser(this.props.user.currentUser)) return null
+    if (this.props.user.currentUser.roles.indexOf('ADMIN') < 0) return null
+    return (
+      <View
+        style={{
+          backgroundColor: color.itemColorGray2,
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: scaleSize(80),
+          paddingHorizontal: scaleSize(30),
+        }}
+      >
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: scaleSize(26), marginLeft: scaleSize(40) }}>{getLanguage(this.props.language).Friends.PUBLIC_FRIENDS}</Text>
+        </View>
+        <Switch
+          trackColor={{ false: color.bgG, true: color.switch }}
+          thumbColor={this.state.openFriends ? color.bgW : color.bgW}
+          ios_backgroundColor={
+            this.state.openFriends ? color.switch : color.bgG
+          }
+          value={this.state.openFriends}
+          onValueChange={value => {
+            this.setState({
+              openFriends: value,
+            }, () => {
+              if (value) {
+                FriendListFileHandle.uploadAdminInfo()
+              } else {
+                FriendListFileHandle.deleteAdminInfo()
+              }
+            })
+          }}
+        />
+      </View>
+    )
   }
 
   render() {
@@ -2164,10 +2300,10 @@ export default class Friend extends Component {
         hideInBackground={false}
         showFullInMap={true}
         headerProps={{
-          title: getLanguage(this.props.language).Navigator_Label.FRIENDS,
+          title: getLanguage(this.props.language).Navigator_Label.ADDRESS_BOOK,
           headerStyle: { borderBottomWidth: 0 },
           headerRight:
-            this.props.user.currentUser.userType === UserType.COMMON_USER ? (
+            this.props.user.currentUser.userType === UserType.COMMON_USER || this.props.user.currentUser.userType === UserType.IPORTAL_COMMON_USER ? (
               <TouchableOpacity
                 style={styles.addFriendView}
                 onPress={() => {
@@ -2185,12 +2321,14 @@ export default class Friend extends Component {
         }}
         bottomBar={this.renderTabBar()}
       >
-        {this.props.user.currentUser.userType === UserType.COMMON_USER
+        {this.renderIPortalAdminView()}
+        {this.props.user.currentUser.userType === UserType.COMMON_USER || this.props.user.currentUser.userType === UserType.IPORTAL_COMMON_USER
           ? this.renderTab()
           : this.renderNOFriend()}
         <AddMore
           show={this.state.showPop}
           device={this.props.device}
+          user={this.props.user.currentUser}
           closeModal={show => {
             this.setState({ showPop: show })
           }}
@@ -2200,102 +2338,111 @@ export default class Friend extends Component {
     )
   }
 
+  renderScene = SceneMap({
+    'FriendMessage': () => (
+      <FriendMessage
+        ref={ref => (this.friendMessage = ref)}
+        tabLabel={getLanguage(this.props.language).Friends.MESSAGES}
+        //"消息"
+        language={this.props.language}
+        user={this.props.user.currentUser}
+        chat={this.props.chat}
+        friend={this}
+      />
+    ),
+    'FriendList': () => (
+      <FriendList
+        ref={ref => (this.friendList = ref)}
+        tabLabel={getLanguage(this.props.language).Friends.FRIENDS}
+        //"好友"
+        language={this.props.language}
+        user={this.props.user.currentUser}
+        friend={this}
+      />
+    ),
+    'FriendGroup': () => (
+      <FriendGroup
+        ref={ref => (this.friendGroup = ref)}
+        tabLabel={getLanguage(this.props.language).Friends.GROUPS}
+        //"群组"
+        language={this.props.language}
+        user={this.props.user.currentUser}
+        friend={this}
+        joinTypes={['CREATE', 'JOINED']}
+      />
+    ),
+  })
+
+  _renderTabBar = props => (
+    <FriendTabBar
+      {...props}
+      indicatorStyle={{
+        // backgroundColor: 'rgba(70,128,223,1.0)',
+        height: scaleSize(6),
+        width: scaleSize(6),
+        borderRadius: scaleSize(3),
+        marginLeft: this._getWidth() / 3 / 2 - 3,
+        marginBottom: scaleSize(12),
+      }}
+      renderBadge={scene => (
+        scene.route.key === 'FriendMessage' &&
+        <InformSpot
+          style={{
+            top: scaleSize(15),
+            // right: '38%',
+            right: this._getWidth() / 3 / 2 - 25,
+          }}
+        />
+      )}
+      onTabPress={({route, preventDefault}) => {
+        const routes = this.state.routes
+        for (const index in routes) {
+          if (Object.hasOwnProperty.call(routes, index)) {
+            const element = routes[index]
+            if (element.key === route.key) {
+              this.setState({
+                currentPage: parseInt(index),
+              })
+              preventDefault()
+              break
+            }
+          }
+        }
+      }}
+      style={{
+        height: scaleSize(80),
+        marginTop: scaleSize(20),
+        borderWidth: 0,
+        backgroundColor: color.white,
+        elevation: 0,
+        shadowRadius: 0,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0,
+      }}
+      labelStyle={{
+        color: 'black',
+        // fontWeight: true ? 'bold' : 'normal',
+        fontSize: size.fontSize.fontSizeLg,
+        textAlign: 'center',
+      }}
+      activeColor={'rgba(70,128,223,1.0)'}
+    />
+  )
+
   renderTab() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <ScrollableTabView
-          renderTabBar={() => (
-            <DefaultTabBar
-              style={{
-                height: scaleSize(80),
-                marginTop: scaleSize(20),
-                borderWidth: 0,
-              }}
-              renderTab={(name, page, isTabActive, onPressHandler) => {
-                let activeTextColor = 'rgba(70,128,223,1.0)'
-                let inactiveTextColor = 'black'
-                const textColor = isTabActive
-                  ? activeTextColor
-                  : inactiveTextColor
-                const fontWeight = isTabActive ? 'bold' : 'normal'
-
-                return (
-                  <TouchableOpacity
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      paddingTop: scaleSize(20),
-                      paddingBottom: scaleSize(10),
-                    }}
-                    key={name}
-                    accessible={true}
-                    accessibilityLabel={name}
-                    accessibilityTraits="button"
-                    onPress={() => onPressHandler(page)}
-                  >
-                    <Text
-                      style={{
-                        color: textColor,
-                        fontWeight,
-                        fontSize: size.fontSize.fontSizeLg,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {name}
-                    </Text>
-                    {name ===
-                      getLanguage(this.props.language).Friends.MESSAGES && (
-                      <InformSpot
-                        style={{
-                          top: scaleSize(15),
-                          right: '38%',
-                        }}
-                      />
-                    )}
-                  </TouchableOpacity>
-                )
-              }}
-            />
-          )}
-          initialPage={1}
-          prerenderingSiblingsNumber={1}
-          tabBarUnderlineStyle={{
-            backgroundColor: 'rgba(70,128,223,1.0)',
-            height: scaleSize(6),
-            width: scaleSize(6),
-            borderRadius: scaleSize(3),
-            marginLeft: this._getWidth() / 3 / 2 - 3,
-            marginBottom: scaleSize(12),
+        <TabView
+          lazy
+          navigationState={{
+            index: this.state.currentPage,
+            routes: this.state.routes,
           }}
-        >
-          <FriendMessage
-            ref={ref => (this.friendMessage = ref)}
-            tabLabel={getLanguage(this.props.language).Friends.MESSAGES}
-            //"消息"
-            language={this.props.language}
-            user={this.props.user.currentUser}
-            chat={this.props.chat}
-            friend={this}
-          />
-          <FriendList
-            ref={ref => (this.friendList = ref)}
-            tabLabel={getLanguage(this.props.language).Friends.FRIENDS}
-            //"好友"
-            language={this.props.language}
-            user={this.props.user.currentUser}
-            friend={this}
-          />
-          <FriendGroup
-            ref={ref => (this.friendGroup = ref)}
-            tabLabel={getLanguage(this.props.language).Friends.GROUPS}
-            //"群组"
-            language={this.props.language}
-            user={this.props.user.currentUser}
-            friend={this}
-            joinTypes={['CREATE', 'JOINED']}
-          />
-        </ScrollableTabView>
+          onIndexChange={this.goToPage}
+          renderTabBar={this._renderTabBar}
+          renderScene={this.renderScene}
+          swipeEnabled={true}
+        />
       </View>
     )
   }
@@ -2313,10 +2460,10 @@ export default class Friend extends Component {
               style={styles.imagStyle}
               source={require('../../../assets/Mine/online_white.png')}
             />
-            <Text style={styles.textStyle}>{'Online'}</Text>
+            <Text style={styles.textStyle}>{getLanguage(this.props.language).Profile.LOGIN_NOW}</Text>
           </View>
         </TouchableOpacity>
-        <View>
+        {/* <View>
           <Text
             style={{
               fontSize: scaleSize(20),
@@ -2326,7 +2473,7 @@ export default class Friend extends Component {
           >
             {getLanguage(this.props.language).Friends.LOGOUT}
           </Text>
-        </View>
+        </View> */}
       </View>
     )
   }

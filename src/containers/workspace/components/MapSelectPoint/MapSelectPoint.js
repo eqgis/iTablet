@@ -30,8 +30,8 @@ export default class MapSelectPoint extends React.Component {
 
   componentDidMount = async () => {
     let position
-    if (GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE) {
-      position = GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE
+    if (global.SELECTPOINTLATITUDEANDLONGITUDE) {
+      position = global.SELECTPOINTLATITUDEANDLONGITUDE
     } else {
       position = await SMap.getCurrentPosition()
     }
@@ -55,13 +55,13 @@ export default class MapSelectPoint extends React.Component {
     // if(this.pointLatitudeAndLongitude)
     // {
     //   this.pointLatitudeAndLongitude.updateLatitudeAndLongitude(point)
-    //   GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+    //   global.SELECTPOINTLATITUDEANDLONGITUDE = point
     // }
     this.setState({
       longitude: point.x,
       latitude: point.y,
     })
-    GLOBAL.SELECTPOINTLATITUDEANDLONGITUDE = point
+    global.SELECTPOINTLATITUDEANDLONGITUDE = point
   }
 
   setVisible = (iShow, title = this.props.headerProps.title || '') => {
@@ -101,13 +101,13 @@ export default class MapSelectPoint extends React.Component {
         <View style={styles.inputView}>
           <View style={styles.inputBox}>
             <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location}/>
-            <Text>{GLOBAL.language ==='CN' ? getLanguage(GLOBAL.language).Profile.X_COORDINATE : 'X'}</Text>
+            <Text>{global.language ==='CN' ? getLanguage(global.language).Profile.X_COORDINATE : 'X'}</Text>
             <Input style={styles.input} editable={false} showClear={false} value={this.state.longitude} textAlign="left"/>
           </View>
           <View style={styles.line}></View>
           <View style={styles.inputBox}>
             <Image style={styles.inputIcon} source={getThemeAssets().setting.icon_location}/>
-            <Text>{GLOBAL.language ==='CN' ? getLanguage(GLOBAL.language).Profile.X_COORDINATE : 'Y'}</Text>
+            <Text>{global.language ==='CN' ? getLanguage(global.language).Profile.X_COORDINATE : 'Y'}</Text>
             <Input style={styles.input} editable={false} showClear={false} value={this.state.latitude} textAlign="left"/>
           </View>
         </View>

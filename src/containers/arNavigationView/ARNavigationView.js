@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { SMARNavigationView, SARNavigationView,SMap  } from 'imobile_for_reactnative'
-import Orientation from 'react-native-orientation'
 import { Container } from '../../components'
-import { Toast } from '../../utils'
+import { Toast, screen } from '../../utils'
 import { SimpleDialog } from '../tabs/Friend'
 import { getLanguage } from '../../language'
 
@@ -16,7 +15,7 @@ export default class ARNavigationView extends React.Component {
 
   constructor(props) {
     super(props)
-    let params = this.props.navigation.state.params || {}
+    let params = this.props.route.params || {}
     this.point = params.point
     this.floorID = params.floorID || ''
   }
@@ -24,7 +23,7 @@ export default class ARNavigationView extends React.Component {
   // eslint-disable-next-line
   componentWillMount() {
     SMap.setDynamicviewsetVisible(false)
-    Orientation.lockToPortrait()
+    screen.lockToPortrait()
   }
 
   componentDidMount() {
@@ -42,7 +41,7 @@ export default class ARNavigationView extends React.Component {
 
   componentWillUnmount() {
     SMap.setDynamicviewsetVisible(true)
-    Orientation.unlockAllOrientations()
+    screen.unlockAllOrientations()
     SARNavigationView.removeListener()
   }
 
@@ -50,12 +49,12 @@ export default class ARNavigationView extends React.Component {
     SARNavigationView.addListener({
       onDestination: () => {
         this.Dialog.set({
-          text: getLanguage(GLOBAL.language).Prompt.ARRIVE_DESTINATION,
+          text: getLanguage(global.language).Prompt.ARRIVE_DESTINATION,
         })
         this.Dialog.setVisible(true)
       },
       onDeviated: () => {
-        Toast.show(getLanguage(GLOBAL.language).Prompt.DEVIATE_NAV_PATH)
+        Toast.show(getLanguage(global.language).Prompt.DEVIATE_NAV_PATH)
       },
     })
   }
@@ -65,7 +64,7 @@ export default class ARNavigationView extends React.Component {
       <Container
         ref={ref => (this.Container = ref)}
         headerProps={{
-          title: getLanguage(GLOBAL.language).Prompt.AR_NAVIGATION,
+          title: getLanguage(global.language).Prompt.AR_NAVIGATION,
           navigation: this.props.navigation,
           type: 'fix',
         }}

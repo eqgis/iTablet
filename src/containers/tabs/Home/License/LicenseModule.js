@@ -26,18 +26,18 @@ export default class LicenseModule extends Component {
     let ids = []
     for (let i = 0; i < modules.length; i++) {
       ids.push(modules[i])
-      if (modules[i] === SMLicenseModule.ITABLET_PROFESSIONAL + '') {
+      if (modules[i] === SMLicenseModule.ITABLET_PROFESSIONAL) {
         ids = ids.concat([
-          SMLicenseModule.ITABLET_ARMAP + '',
-          SMLicenseModule.ITABLET_NAVIGATIONMAP + '',
+          SMLicenseModule.ITABLET_ARMAP,
+          SMLicenseModule.ITABLET_NAVIGATIONMAP,
         ])
       }
-      if (modules[i] === SMLicenseModule.ITABLET_ADVANCED + '') {
+      if (modules[i] === SMLicenseModule.ITABLET_ADVANCED) {
         ids = ids.concat([
-          SMLicenseModule.ITABLET_ARMAP + '',
-          SMLicenseModule.ITABLET_NAVIGATIONMAP + '',
-          // SMLicenseModule.ITABLET_DATAANALYSIS + '',
-          // SMLicenseModule.ITABLET_PLOTTING + '',
+          SMLicenseModule.ITABLET_ARMAP,
+          SMLicenseModule.ITABLET_NAVIGATIONMAP,
+          // SMLicenseModule.ITABLET_DATAANALYSIS,
+          // SMLicenseModule.ITABLET_PLOTTING,
         ])
       }
     }

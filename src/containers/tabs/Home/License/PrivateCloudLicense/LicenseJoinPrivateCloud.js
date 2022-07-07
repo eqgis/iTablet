@@ -120,9 +120,9 @@ class LicenseJoinPrivateCloud extends Component {
 
   isEdition = id => {
     if (
-      id === '' + LicenseModule.ITABLET_STANDARD ||
-      id === '' + LicenseModule.ITABLET_PROFESSIONAL ||
-      id === '' + LicenseModule.ITABLET_ADVANCED
+      id === LicenseModule.ITABLET_STANDARD ||
+      id === LicenseModule.ITABLET_PROFESSIONAL ||
+      id === LicenseModule.ITABLET_ADVANCED
     ) {
       return true
     } else {
@@ -132,7 +132,7 @@ class LicenseJoinPrivateCloud extends Component {
 
   getTitle = id => {
     let title
-    switch (parseInt(id)) {
+    switch (id) {
       case LicenseModule.ITABLET_STANDARD:
         title = getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD
         break

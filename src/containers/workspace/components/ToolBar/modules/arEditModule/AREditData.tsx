@@ -629,7 +629,11 @@ async function getStyleData(type: string) {
   if (Platform.OS === 'ios') {
     style = _data.currentNodeStyle
   }else{
-    style = await SARMap.getCurrentNodeStyle(element)
+    // style = await SARMap.getCurrentNodeStyle(element)
+    if(currentLayer?.type !== ARLayerType.AR_SCENE_LAYER &&
+      currentLayer?.type !== ARLayerType.AR3D_LAYER){
+      style = await SARMap.getCurrentNodeStyle(element)
+    }
   }
 
 

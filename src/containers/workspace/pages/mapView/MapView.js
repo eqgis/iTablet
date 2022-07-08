@@ -4957,6 +4957,13 @@ export default class MapView extends React.Component {
             }
             // }
           }}
+          onToast={(type) => {
+            if(type === 0){
+              Toast.show(getLanguage().THE_FIRST)
+            }else{
+              Toast.show(getLanguage().THE_LAST)
+            }
+          }}
         />
         {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderHeader()}
         {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderBottomBtns()}

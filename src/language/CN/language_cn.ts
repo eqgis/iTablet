@@ -2829,4 +2829,7 @@ export const language_cn = {
   INPUT_URL: '请输入网址',
   INPUT_NAME: '请输入名称',
 
+  THE_FIRST: '已经是第一张了',
+  THE_LAST: '已经是最后一张了',
+
 }

@@ -91,12 +91,15 @@ class ToolBarSlide extends React.Component<Props, State> {
     )
   }
 
-  renderItems = (): JSX.Element[] => {
+  renderItems = (): JSX.Element[] | null => {
     const items = []
-    for(let i = 0; i < this.props.data.data.length; i++) {
-      items.push(this.renderItem(this.props.data.data[i], i))
+    if(this.props.data && this.props.data.data && this.props.data.data instanceof Array){
+      for(let i = 0; i < this.props.data.data.length; i++) {
+        items.push(this.renderItem(this.props.data.data[i], i))
+      }
+      return items
     }
-    return items
+    return null
   }
 
 

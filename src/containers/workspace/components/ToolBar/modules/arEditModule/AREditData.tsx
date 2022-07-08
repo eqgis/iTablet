@@ -620,605 +620,617 @@ function getMenuData(type:any) {
   return data
 }
 
-async function getStyleData(type: string) {
-  const _data: any = ToolbarModule.getData()
-  const _params: any = ToolbarModule.getParams()
-  const element = _data.selectARElement
-  const currentLayer = _params.arlayer.currentLayer
-  let style
-  if (Platform.OS === 'ios') {
-    style = _data.currentNodeStyle
-  }else{
-    // style = await SARMap.getCurrentNodeStyle(element)
-    if(currentLayer?.type !== ARLayerType.AR_SCENE_LAYER &&
-      currentLayer?.type !== ARLayerType.AR3D_LAYER){
-      style = await SARMap.getCurrentNodeStyle(element)
+async function getStyleData(type: string){
+  try{
+    const _data = ToolbarModule.getData()
+    const _params = ToolbarModule.getParams()
+    const element = _data.selectARElement
+    const currentLayer = _params.arlayer.currentLayer
+    let style
+    if (Platform.OS === 'ios') {
+      style = _data.currentNodeStyle
+    }else{
+      // style = await SARMap.getCurrentNodeStyle(element)
+      if(currentLayer?.type !== ARLayerType.AR_SCENE_LAYER &&
+        currentLayer?.type !== ARLayerType.AR3D_LAYER){
+        style = await SARMap.getCurrentNodeStyle(element)
+      }
     }
-  }
 
 
-  if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER && currentLayer?.type !== ARLayerType.AR3D_LAYER)  {
-    Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)
-    return
-  }
-  const layerName = element?.layerName || currentLayer?.name
-  const id = element?.id || 0
+    if(!element && currentLayer?.type !== ARLayerType.AR_SCENE_LAYER && currentLayer?.type !== ARLayerType.AR3D_LAYER)  {
+      Toast.show(getLanguage(_params.language).Prompt.UNSELECTED_OBJECT)
+      return
+    }
+    const layerName = element?.layerName || currentLayer?.name
+    const id = element?.id || 0
 
-  const range: {
-    scale: [number , number],
-    position: [number, number],
-    rotation: [number, number],
-    size: [number, number],
-    opacity:[number,number],
-    buttonsize: [number, number],
-    width: [number, number],
-  } = {
-    scale: [0 , 200],
-    position: [-20, 20],
-    rotation: [-180, 180],
-    size: [10, 40],
-    opacity:[0,100],
-    buttonsize: [12, 30],
-    width: [0, 20],
-  }
+    const range: {
+      scale: [number , number],
+      position: [number, number],
+      rotation: [number, number],
+      size: [number, number],
+      opacity:[number,number],
+      buttonsize: [number, number],
+      width: [number, number],
+    } = {
+      scale: [0 , 200],
+      position: [-20, 20],
+      rotation: [-180, 180],
+      size: [10, 40],
+      opacity:[0,100],
+      buttonsize: [12, 30],
+      width: [0, 20],
+    }
 
-  const defaultValue = {
-    opacity: [95],
-    width: [0],
-  }
+    const defaultValue = {
+      opacity: [95],
+      width: [0],
+    }
 
-  let transformData: IARTransform = {
-    layerName: layerName,
-    id: id,
-    type: 'position',
-    positionX: 0,
-    positionY: 0,
-    positionZ: 0,
-    rotationX: 0,
-    rotationY: 0,
-    rotationZ: 0,
-    scale: 100,
-  }
-  if (
-    _data?.transformData &&
-    _data?.transformData.layerName === layerName &&
-    _data?.transformData.id === id
-  ) {
-    Object.assign(transformData, _data.transformData)
-  }
-  let buttons
-  if (type === ConstToolType.SM_AR_EDIT) {
-    buttons = [
-      ToolbarBtnType.CANCEL,
-      ToolbarBtnType.MENU,
-      ToolbarBtnType.TOOLBAR_COMMIT,
-    ]
-  } else if (currentLayer?.type === ARLayerType.AR_WIDGET_LAYER){
-    buttons = [
-      ToolbarBtnType.TOOLBAR_BACK,
-      ToolbarBtnType.MENU,
-      {
-        type: 'Setting',
-        image: getThemeAssets().toolbar.icon_toolbar_setting,
-        action: async () => {
-          const _params: any = ToolbarModule.getParams()
-          _params.showFullMap && _params.showFullMap(true)
-          _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING, {
-            containerType: ToolbarType.table,
-            isFullScreen: false,
-          })
-        },
-      },
-      ToolbarBtnType.MENU_FLEX,
-      ToolbarBtnType.TOOLBAR_COMMIT,
-    ]
-    if ((element.type === ARElementType.AR_VIDEO_ALBUM && element.touchType !== 0)
-      || (element.type === ARElementType.AR_SAND_TABLE_ALBUM && element.touchType !== 0)
+    let transformData: IARTransform = {
+      layerName: layerName,
+      id: id,
+      type: 'position',
+      positionX: 0,
+      positionY: 0,
+      positionZ: 0,
+      rotationX: 0,
+      rotationY: 0,
+      rotationZ: 0,
+      scale: 100,
+    }
+    if (
+      _data?.transformData &&
+      _data?.transformData.layerName === layerName &&
+      _data?.transformData.id === id
     ) {
-      buttons.splice(2, 1)
+      Object.assign(transformData, _data.transformData)
     }
-  } else {
-    buttons = [
-      ToolbarBtnType.TOOLBAR_BACK,
-      ToolbarBtnType.MENU,
-      ToolbarBtnType.MENU_FLEX,
-      ToolbarBtnType.TOOLBAR_COMMIT,
-    ]
-  }
-
-  if (_data.selectARElement.type === ARElementType.AR_LINE
-    || _data.selectARElement.type === ARElementType.AR_MARKER_LINE) {
-    buttons = [
-      ToolbarBtnType.TOOLBAR_BACK,
-      ToolbarBtnType.MENU_FLEX,
-      ToolbarBtnType.TOOLBAR_COMMIT,
-    ]
-  }
-
-  let data: any[] = []
-  const allData: {
-    title: string,
-    showRatio?: boolean | undefined
-    data: typeof data,
-  }[] = []
-  switch(type) {
-    case ConstToolType.SM_AR_EDIT_ROTATION:
-      (data as ToolBarSlideItem[]) = [
-        {
-          type: 'single',
-          left: {type: 'text', text: 'x'},
-          onMove: (loc: number) => {
-            transformData = {
-              ...transformData,
-              rotationX: loc,
-              type: 'rotation',
-            }
-            SARMap.setARElementTransform(transformData)
-            ToolbarModule.addData({transformData})
-          },
-          // defaultValue: defaultValue.rotation[0],
-          defaultValue: transformData.rotationX,
-          range: range.rotation,
-          right: {type: 'indicator', unit: '°'}
-        },
-        {
-          type: 'single',
-          left: {type: 'text', text: 'y'},
-          onMove: (loc: number) => {
-            transformData = {
-              ...transformData,
-              rotationY: loc,
-              type: 'rotation',
-            }
-            SARMap.setARElementTransform(transformData)
-            ToolbarModule.addData({transformData})
-          },
-          // defaultValue: defaultValue.rotation[0],
-          defaultValue: transformData.rotationY,
-          range: range.rotation,
-          right: {type: 'indicator', unit: '°'}
-        },
-        {
-          type: 'single',
-          left: {type: 'text', text: 'z'},
-          onMove: (loc: number) => {
-            transformData = {
-              ...transformData,
-              rotationZ: loc,
-              type: 'rotation',
-            }
-            SARMap.setARElementTransform(transformData)
-            ToolbarModule.addData({transformData})
-          },
-          // defaultValue: defaultValue.rotation[0],
-          defaultValue: transformData.rotationZ,
-          range: range.rotation,
-          right: {type: 'indicator', unit: '°'}
-        },
+    let buttons
+    if (type === ConstToolType.SM_AR_EDIT) {
+      buttons = [
+        ToolbarBtnType.CANCEL,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.TOOLBAR_COMMIT,
       ]
-      allData.push({
-        title: getLanguage(_params.language).ARMap.ROTATION,
-        data: data,
-      })
-      break
-    case ConstToolType.SM_AR_EDIT_POSITION:
-      (data as ToolBarSlideItem[]) = [
+    } else if (currentLayer?.type === ARLayerType.AR_WIDGET_LAYER){
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU,
         {
-          type: 'single',
-          left: {type: 'text', text: getLanguage().WEST},
-          right: {type: 'text', text: getLanguage().EAST},
-          onMove: (loc: number) => {
-            loc = loc / 25
-            transformData = {
-              ...transformData,
-              positionX: loc,
-              type: 'position',
-            }
-            SARMap.setARElementTransform(transformData)
-            ToolbarModule.addData({transformData})
-          },
-          // defaultValue: defaultValue.position[0],
-          defaultValue: transformData.positionX * 25,
-          range: range.position,
-        },
-        {
-          type: 'single',
-          left: {type: 'text', text: getLanguage().DOWN},
-          right: {type: 'text', text: getLanguage().UP},
-          onMove: (loc: number) => {
-            loc = loc / 25
-            transformData = {
-              ...transformData,
-              positionY: loc,
-              type: 'position',
-            }
-            SARMap.setARElementTransform(transformData)
-            ToolbarModule.addData({transformData})
-          },
-          // defaultValue: defaultValue.position[0],
-          defaultValue: transformData.positionY * 25,
-          range: range.position,
-        },
-        {
-          type: 'single',
-          left: {type: 'text', text: getLanguage().SOUTH},
-          right: {type: 'text', text: getLanguage().NORTH},
-          onMove: (loc: number) => {
-            loc = loc / 25
-            transformData = {
-              ...transformData,
-              positionZ: loc,
-              type: 'position',
-            }
-            SARMap.setARElementTransform(transformData)
-            ToolbarModule.addData({transformData})
-          },
-          // defaultValue: defaultValue.position[0],
-          defaultValue: transformData.positionZ * 25,
-          range: range.position,
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).ARMap.TRANSLATION,
-        data: data,
-        showRatio: true,
-      })
-      break
-    // case ConstToolType.SM_AR_VISIBLE_DISTANCE:
-    //   data = []
-    //   break
-    case ConstToolType.SM_AR_EDIT_SCALE: {
-      const _defaultValue = transformData.scale === 100 ? transformData.scale : ((transformData.scale + 1) * 100)
-      ;(data as ToolBarSlideItem[]) = [{
-        type: 'single',
-        left: {type: 'image', image: getImage().ar_scale},
-        right: {type: 'indicator', unit: '%'},
-        onMove: (loc: number) => {
-          const ratio = loc / 100 - 1
-          transformData = {
-            ...transformData,
-            scale: ratio,
-            type: 'scale',
-          }
-          SARMap.setARElementTransform(transformData)
-          ToolbarModule.addData({transformData})
-        },
-        // defaultValue: defaultValue.scale[0],
-        defaultValue: Math.ceil(_defaultValue),
-        range: range.scale,
-      }]
-      allData.push({
-        title: getLanguage(_params.language).ARMap.SCALE,
-        data: data,
-      })
-      break
-    }
-    case ConstToolType.SM_AR_EDIT_SETTING:{
-      data = [
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
-          image: getThemeAssets().ar.armap.icon_tool_title,
-          title: getLanguage().TITLE,
+          type: 'Setting',
+          image: getThemeAssets().toolbar.icon_toolbar_setting,
           action: async () => {
-            const element = AppToolBar.getData().selectARElement
-            const style = await SARMap.getCurrentNodeStyle(element)
-            ToolbarModule.addData({ currentNodeStyle: style })
             const _params: any = ToolbarModule.getParams()
             _params.showFullMap && _params.showFullMap(true)
-
-            if(element?.type === ARElementType.AR_ALBUM){
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR, {
-                containerType: ToolbarType.colorTable,
-                isFullScreen: false,
-                showMenuDialog: false,
-                selectName: getLanguage().COLOR,
-                selectKey: getLanguage().COLOR,
-              })
-            } else{
-              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT, {
-                containerType: ToolbarType.list,
-                customView: (_props: any) => (
-                  <View style = {[{height: '100%', backgroundColor: '#fff', paddingTop: dp(10)}]}>
-                    <ToolBarInput
-                      textTitle = {getLanguage(language).TITLE}
-                      apply = {(text: string) => {
-                        SARMap.setNodeTextTitle(text, element)
-                      }}
-                      text = {""}
-                      windowSize = {_props.windowSize}
-                    />
-                  </View>
-                ),
-                isFullScreen: false,
-                showMenuDialog: false,
-              })
-            }
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND,
-          image: getThemeAssets().ar.armap.icon_tool_background,
-          title: getLanguage().BACKGROUND,
-          action: () => {
-            const _params: any = ToolbarModule.getParams()
-            _params.showFullMap && _params.showFullMap(true)
-            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND, {
-              containerType: ToolbarType.colorTable,
-              isFullScreen: false,
-            })
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
-          image: getThemeAssets().ar.armap.icon_tool_array,
-          title: getLanguage().ARRAY,
-          action: () => {
-            const _params: any = ToolbarModule.getParams()
-            _params.showFullMap && _params.showFullMap(true)
-            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_ARRAY, {
+            _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING, {
               containerType: ToolbarType.table,
               isFullScreen: false,
             })
           },
         },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_CHART_DATA,
-          image: getThemeAssets().ar.armap.icon_tool_array,
-          title: getLanguage().DATA,
-          action: () => {
-            const _data: any = ToolbarModule.getData()
-            const element = _data.selectARElement
-            if(element.type == ARElementType.AR_BAR_CHART){
-              // 柱状图更新数据
-              NavigationService.navigate("ChartManager", { type: 'update' })
-            } else if(element.type == ARElementType.AR_PIE_CHART){
-              // 饼图更新数据
-              NavigationService.navigate("ChartManager", { type: 'pieChartUpdate' })
-            }
-
-          },
-        },
+        ToolbarBtnType.MENU_FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
       ]
-      const element = AppToolBar.getData().selectARElement
+      if ((element.type === ARElementType.AR_VIDEO_ALBUM && element.touchType !== 0)
+        || (element.type === ARElementType.AR_SAND_TABLE_ALBUM && element.touchType !== 0)
+      ) {
+        buttons.splice(2, 1)
+      }
+    } else {
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.MENU_FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+    }
 
-      if(element?.type === ARElementType.AR_BAR_CHART || element?.type === ARElementType.AR_PIE_CHART){
-        // 柱状图和饼图，去掉排列
-        data.splice(2, 1)
-        if(element?.type === ARElementType.AR_PIE_CHART){
-          // 饼图再去掉背景设置
+    if (_data.selectARElement.type === ARElementType.AR_LINE
+      || _data.selectARElement.type === ARElementType.AR_MARKER_LINE) {
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU_FLEX,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+    }
+
+    let data = []
+    const allData: {
+      title: string,
+      showRatio?: boolean | undefined
+      data: typeof data,
+    }[] = []
+    switch(type) {
+      case ConstToolType.SM_AR_EDIT_ROTATION:
+        (data as ToolBarSlideItem[]) = [
+          {
+            type: 'single',
+            left: {type: 'text', text: 'x'},
+            onMove: (loc: number) => {
+              transformData = {
+                ...transformData,
+                rotationX: loc,
+                type: 'rotation',
+              }
+              SARMap.setARElementTransform(transformData)
+              ToolbarModule.addData({transformData})
+            },
+            // defaultValue: defaultValue.rotation[0],
+            defaultValue: transformData.rotationX,
+            range: range.rotation,
+            right: {type: 'indicator', unit: '°'}
+          },
+          {
+            type: 'single',
+            left: {type: 'text', text: 'y'},
+            onMove: (loc: number) => {
+              transformData = {
+                ...transformData,
+                rotationY: loc,
+                type: 'rotation',
+              }
+              SARMap.setARElementTransform(transformData)
+              ToolbarModule.addData({transformData})
+            },
+            // defaultValue: defaultValue.rotation[0],
+            defaultValue: transformData.rotationY,
+            range: range.rotation,
+            right: {type: 'indicator', unit: '°'}
+          },
+          {
+            type: 'single',
+            left: {type: 'text', text: 'z'},
+            onMove: (loc: number) => {
+              transformData = {
+                ...transformData,
+                rotationZ: loc,
+                type: 'rotation',
+              }
+              SARMap.setARElementTransform(transformData)
+              ToolbarModule.addData({transformData})
+            },
+            // defaultValue: defaultValue.rotation[0],
+            defaultValue: transformData.rotationZ,
+            range: range.rotation,
+            right: {type: 'indicator', unit: '°'}
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).ARMap.ROTATION,
+          data: data,
+        })
+        break
+      case ConstToolType.SM_AR_EDIT_POSITION:
+        (data as ToolBarSlideItem[]) = [
+          {
+            type: 'single',
+            left: {type: 'text', text: getLanguage().WEST},
+            right: {type: 'text', text: getLanguage().EAST},
+            onMove: (loc: number) => {
+              loc = loc / 25
+              transformData = {
+                ...transformData,
+                positionX: loc,
+                type: 'position',
+              }
+              SARMap.setARElementTransform(transformData)
+              ToolbarModule.addData({transformData})
+            },
+            // defaultValue: defaultValue.position[0],
+            defaultValue: transformData.positionX * 25,
+            range: range.position,
+          },
+          {
+            type: 'single',
+            left: {type: 'text', text: getLanguage().DOWN},
+            right: {type: 'text', text: getLanguage().UP},
+            onMove: (loc: number) => {
+              loc = loc / 25
+              transformData = {
+                ...transformData,
+                positionY: loc,
+                type: 'position',
+              }
+              SARMap.setARElementTransform(transformData)
+              ToolbarModule.addData({transformData})
+            },
+            // defaultValue: defaultValue.position[0],
+            defaultValue: transformData.positionY * 25,
+            range: range.position,
+          },
+          {
+            type: 'single',
+            left: {type: 'text', text: getLanguage().SOUTH},
+            right: {type: 'text', text: getLanguage().NORTH},
+            onMove: (loc: number) => {
+              loc = loc / 25
+              transformData = {
+                ...transformData,
+                positionZ: loc,
+                type: 'position',
+              }
+              SARMap.setARElementTransform(transformData)
+              ToolbarModule.addData({transformData})
+            },
+            // defaultValue: defaultValue.position[0],
+            defaultValue: transformData.positionZ * 25,
+            range: range.position,
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).ARMap.TRANSLATION,
+          data: data,
+          showRatio: true,
+        })
+        break
+      // case ConstToolType.SM_AR_VISIBLE_DISTANCE:
+      //   data = []
+      //   break
+      case ConstToolType.SM_AR_EDIT_SCALE: {
+        const _defaultValue = transformData.scale === 100 ? transformData.scale : ((transformData.scale + 1) * 100)
+        ;(data as ToolBarSlideItem[]) = [{
+          type: 'single',
+          left: {type: 'image', image: getImage().ar_scale},
+          right: {type: 'indicator', unit: '%'},
+          onMove: (loc: number) => {
+            const ratio = loc / 100 - 1
+            transformData = {
+              ...transformData,
+              scale: ratio,
+              type: 'scale',
+            }
+            SARMap.setARElementTransform(transformData)
+            ToolbarModule.addData({transformData})
+          },
+          // defaultValue: defaultValue.scale[0],
+          defaultValue: Math.ceil(_defaultValue),
+          range: range.scale,
+        }]
+        allData.push({
+          title: getLanguage(_params.language).ARMap.SCALE,
+          data: data,
+        })
+        break
+      }
+      case ConstToolType.SM_AR_EDIT_SETTING:{
+        data = [
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
+            image: getThemeAssets().ar.armap.icon_tool_title,
+            title: getLanguage().TITLE,
+            action: async () => {
+              const element = AppToolBar.getData().selectARElement
+              const style = await SARMap.getCurrentNodeStyle(element)
+              ToolbarModule.addData({ currentNodeStyle: style })
+              const _params: any = ToolbarModule.getParams()
+              _params.showFullMap && _params.showFullMap(true)
+
+              if(element?.type === ARElementType.AR_ALBUM){
+                _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_ALBUM_COLOR, {
+                  containerType: ToolbarType.colorTable,
+                  isFullScreen: false,
+                  showMenuDialog: false,
+                  selectName: getLanguage().COLOR,
+                  selectKey: getLanguage().COLOR,
+                })
+              } else{
+                _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT, {
+                  containerType: ToolbarType.list,
+                  customView: (_props: any) => (
+                    <View style = {[{height: '100%', backgroundColor: '#fff', paddingTop: dp(10)}]}>
+                      <ToolBarInput
+                        textTitle = {getLanguage(language).TITLE}
+                        apply = {(text: string) => {
+                          SARMap.setNodeTextTitle(text, element)
+                        }}
+                        text = {""}
+                        windowSize = {_props.windowSize}
+                      />
+                    </View>
+                  ),
+                  isFullScreen: false,
+                  showMenuDialog: false,
+                })
+              }
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND,
+            image: getThemeAssets().ar.armap.icon_tool_background,
+            title: getLanguage().BACKGROUND,
+            action: () => {
+              const _params: any = ToolbarModule.getParams()
+              _params.showFullMap && _params.showFullMap(true)
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND, {
+                containerType: ToolbarType.colorTable,
+                isFullScreen: false,
+              })
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
+            image: getThemeAssets().ar.armap.icon_tool_array,
+            title: getLanguage().ARRAY,
+            action: () => {
+              const _params: any = ToolbarModule.getParams()
+              _params.showFullMap && _params.showFullMap(true)
+              _params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT_SETTING_ARRAY, {
+                containerType: ToolbarType.table,
+                isFullScreen: false,
+              })
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_CHART_DATA,
+            image: getThemeAssets().ar.armap.icon_tool_array,
+            title: getLanguage().DATA,
+            action: () => {
+              const _data: any = ToolbarModule.getData()
+              const element = _data.selectARElement
+              if(element.type == ARElementType.AR_BAR_CHART){
+                // 柱状图更新数据
+                NavigationService.navigate("ChartManager", { type: 'update' })
+              } else if(element.type == ARElementType.AR_PIE_CHART){
+                // 饼图更新数据
+                NavigationService.navigate("ChartManager", { type: 'pieChartUpdate' })
+              }
+
+            },
+          },
+        ]
+        const element = AppToolBar.getData().selectARElement
+
+        if(element?.type === ARElementType.AR_BAR_CHART || element?.type === ARElementType.AR_PIE_CHART){
+          // 柱状图和饼图，去掉排列
+          data.splice(2, 1)
+          if(element?.type === ARElementType.AR_PIE_CHART){
+            // 饼图再去掉背景设置
+            data.splice(1, 1)
+          }
+        } else {
+          // 其他的去掉柱状图和饼图的更新
+          data.splice(3, 1)
+        }
+
+        //点击右侧node时不显示标题设置
+        if (element?.touchType !== 0) {
+          data.splice(0, 1)
           data.splice(1, 1)
         }
-      } else {
-        // 其他的去掉柱状图和饼图的更新
-        data.splice(3, 1)
+        if (element?.type === ARElementType.AR_ALBUM || element?.videoType === 0 || element?.type === ARElementType.AR_SAND_TABLE_ALBUM) {
+          data.splice(2, 1)
+        }
+        allData.push({
+          title: getLanguage(_params.language).SETTING,
+          data: data,
+        })
+        break
       }
-
-      //点击右侧node时不显示标题设置
-      if (element?.touchType !== 0) {
-        data.splice(0, 1)
-        data.splice(1, 1)
+      case ConstToolType.SM_AR_EDIT_SETTING_IITLE:{
+        data = [
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
+            image: getThemeAssets().ar.armap.icon_tool_bold,
+            title: getLanguage().BOLD,
+            action: () => {
+              SARMap.setNodeStyle({TextBold:1},element)
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
+            image: getThemeAssets().ar.armap.icon_tool_tilt,
+            title: getLanguage().TILT,
+            action: () => {
+              SARMap.setNodeStyle({TextBold:2},element)
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
+            image: getThemeAssets().ar.armap.icon_tool_underline,
+            title: getLanguage().UNDERLINE,
+            action: () => {
+              SARMap.setNodeStyle({Flags:3},element)
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
+            image: getThemeAssets().ar.armap.icon_tool_strikethrough,
+            title: getLanguage().STRIKETHROUGH,
+            action: () => {
+              SARMap.setNodeStyle({Flags:4},element)
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
+            image: getThemeAssets().ar.armap.icon_tool_shadow,
+            title: getLanguage().SHADOW,
+            action: () => {
+              SARMap.setNodeStyle({TextShadow:5},element)
+            },
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).TEXT_SHAPE,
+          data: data,
+        })
+        break
       }
-      if (element?.type === ARElementType.AR_ALBUM || element?.videoType === 0 || element?.type === ARElementType.AR_SAND_TABLE_ALBUM) {
-        data.splice(2, 1)
+      case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT_SIZE:{
+        (data as ToolBarSlideItem[]) =[
+          {
+            type: 'single',
+            right: {type: 'indicator', unit: 'mm'},
+            onMove: (loc: number) => {
+              SARMap.setNodeStyle({TextSize:loc},element)
+            },
+            defaultValue:  style?.TextSize,
+            range: range.size,
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).TEXT_SIZE,
+          data: data,
+        })
+        break
       }
-      allData.push({
-        title: getLanguage(_params.language).SETTING,
-        data: data,
-      })
-      break
+      case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ROTATION_ANGLE: {
+        (data as ToolBarSlideItem[]) =[
+          {
+            type: 'single',
+            right: {type: 'indicator', unit: '°'},
+            onMove: (loc: number) => {
+              SARMap.setNodeStyle({TextRotation:loc},element)
+            },
+            defaultValue:  style?.TextRotation,
+            range: range.rotation,
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).ROTATION_ANGLE,
+          data: data,
+        })
+        break
+      }
+      case ConstToolType.SM_AR_EDIT_SETTING_IITLE_OPACITY: {
+        (data as ToolBarSlideItem[]) =[
+          {
+            type: 'single',
+            right: {type: 'indicator', unit: '%'},
+            onMove: (loc: number) => {
+              SARMap.setNodeStyle({TextOpacity:loc/100},element)
+            },
+            defaultValue: style?.TextOpacity? parseInt(style.TextOpacity*100 + "", 0) : 100,
+            range: range.opacity,
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).OPACITY,
+          data: data,
+        })
+        break
+      }
+      case ConstToolType.SM_AR_EDIT_SETTING_IITLE_BUTTON_TEXT_SIZE: {
+        (data as ToolBarSlideItem[]) =[
+          {
+            type: 'single',
+            right: {type: 'indicator', unit: 'mm'},
+            onMove: (loc: number) => {
+              SARMap.setNodeStyle({ButtonTextSize:loc},element)
+            },
+            defaultValue: style?.ButtonTextSize,
+            range: range.buttonsize,
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).BUTTON_TEXT_SIZE,
+          data: data,
+        })
+        break
+      }
+      case ConstToolType.SM_AR_EDIT_SETTING_ARRAY:{
+        data = [
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
+            image: getThemeAssets().ar.armap.icon_array_1_3,
+            size:'large',
+            action: () => {
+              SARMap.setNodeStyle({Array:0},element)
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
+            image: getThemeAssets().ar.armap.icon_array_2_3,
+            size:'large',
+            action: () => {
+              SARMap.setNodeStyle({Array:1},element)
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
+            image: getThemeAssets().ar.armap.icon_array_2_4,
+            size:'large',
+            action: () => {
+              SARMap.setNodeStyle({Array:2},element)
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
+            image: getThemeAssets().ar.armap.icon_array_3_3,
+            size:'large',
+            action: () => {
+              SARMap.setNodeStyle({Array:3},element)
+            },
+          },
+          {
+            key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
+            image: getThemeAssets().ar.armap.icon_array_4_4,
+            size:'large',
+            action: () => {
+              SARMap.setNodeStyle({Array:4},element)
+            },
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).ARRAY,
+          data: data,
+        })
+        break
+      }
+      case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_OPACITY:
+      {
+        (data as ToolBarSlideItem[]) =[
+          {
+            type: 'single',
+            right: {type: 'indicator', unit: '%'},
+            onMove: (loc: number) => {
+              SARMap.setNodeStyle({opacity:loc/100},element)
+            },
+            defaultValue: style?.opacity? style.opacity*100:defaultValue.opacity[0],
+            range: range.opacity,
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).BACKGROUND_OPACITY,
+          data: data,
+        })
+        break
+      }
+      case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
+      {
+        (data as ToolBarSlideItem[]) =[
+          {
+            type: 'single',
+            right: {type: 'indicator', unit: 'mm'},
+            onMove: (loc: number) => {
+              SARMap.setNodeStyle({borderWidth:loc},element)
+            },
+            defaultValue: style?.borderWidth? style.borderWidth:defaultValue.width[0],
+            range: range.width,
+          },
+        ]
+        allData.push({
+          title: getLanguage(_params.language).BORDER_WIDTH,
+          data: data,
+        })
+        break
+      }
     }
-    case ConstToolType.SM_AR_EDIT_SETTING_IITLE:{
-      data = [
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
-          image: getThemeAssets().ar.armap.icon_tool_bold,
-          title: getLanguage().BOLD,
-          action: () => {
-            SARMap.setNodeStyle({TextBold:1},element)
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
-          image: getThemeAssets().ar.armap.icon_tool_tilt,
-          title: getLanguage().TILT,
-          action: () => {
-            SARMap.setNodeStyle({TextBold:2},element)
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
-          image: getThemeAssets().ar.armap.icon_tool_underline,
-          title: getLanguage().UNDERLINE,
-          action: () => {
-            SARMap.setNodeStyle({Flags:3},element)
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
-          image: getThemeAssets().ar.armap.icon_tool_strikethrough,
-          title: getLanguage().STRIKETHROUGH,
-          action: () => {
-            SARMap.setNodeStyle({Flags:4},element)
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_IITLE,
-          image: getThemeAssets().ar.armap.icon_tool_shadow,
-          title: getLanguage().SHADOW,
-          action: () => {
-            SARMap.setNodeStyle({TextShadow:5},element)
-          },
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).TEXT_SHAPE,
-        data: data,
-      })
-      break
+    return {
+      buttons,
+      data: allData,
     }
-    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_TEXT_SIZE:{
-      (data as ToolBarSlideItem[]) =[
-        {
-          type: 'single',
-          right: {type: 'indicator', unit: 'mm'},
-          onMove: (loc: number) => {
-            SARMap.setNodeStyle({TextSize:loc},element)
-          },
-          defaultValue:  style?.TextSize,
-          range: range.size,
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).TEXT_SIZE,
-        data: data,
-      })
-      break
+  } catch(e){
+    console.error("AREditdata.tsx --> getStyleData error : " + JSON.stringify(e))
+    const _params = ToolbarModule.getParams()
+    const buttons = [
+      ToolbarBtnType.TOOLBAR_BACK,
+    ]
+    return {
+      buttons,
+      data: [{title: getLanguage(_params.language).ARMap.NO_DATA, data: []}]
     }
-    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_ROTATION_ANGLE: {
-      (data as ToolBarSlideItem[]) =[
-        {
-          type: 'single',
-          right: {type: 'indicator', unit: '°'},
-          onMove: (loc: number) => {
-            SARMap.setNodeStyle({TextRotation:loc},element)
-          },
-          defaultValue:  style?.TextRotation,
-          range: range.rotation,
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).ROTATION_ANGLE,
-        data: data,
-      })
-      break
-    }
-    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_OPACITY: {
-      (data as ToolBarSlideItem[]) =[
-        {
-          type: 'single',
-          right: {type: 'indicator', unit: '%'},
-          onMove: (loc: number) => {
-            SARMap.setNodeStyle({TextOpacity:loc/100},element)
-          },
-          defaultValue: style?.TextOpacity? parseInt(style.TextOpacity*100 + "", 0) : 100,
-          range: range.opacity,
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).OPACITY,
-        data: data,
-      })
-      break
-    }
-    case ConstToolType.SM_AR_EDIT_SETTING_IITLE_BUTTON_TEXT_SIZE: {
-      (data as ToolBarSlideItem[]) =[
-        {
-          type: 'single',
-          right: {type: 'indicator', unit: 'mm'},
-          onMove: (loc: number) => {
-            SARMap.setNodeStyle({ButtonTextSize:loc},element)
-          },
-          defaultValue: style?.ButtonTextSize,
-          range: range.buttonsize,
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).BUTTON_TEXT_SIZE,
-        data: data,
-      })
-      break
-    }
-    case ConstToolType.SM_AR_EDIT_SETTING_ARRAY:{
-      data = [
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
-          image: getThemeAssets().ar.armap.icon_array_1_3,
-          size:'large',
-          action: () => {
-            SARMap.setNodeStyle({Array:0},element)
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
-          image: getThemeAssets().ar.armap.icon_array_2_3,
-          size:'large',
-          action: () => {
-            SARMap.setNodeStyle({Array:1},element)
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
-          image: getThemeAssets().ar.armap.icon_array_2_4,
-          size:'large',
-          action: () => {
-            SARMap.setNodeStyle({Array:2},element)
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
-          image: getThemeAssets().ar.armap.icon_array_3_3,
-          size:'large',
-          action: () => {
-            SARMap.setNodeStyle({Array:3},element)
-          },
-        },
-        {
-          key: ConstToolType.SM_AR_EDIT_SETTING_ARRAY,
-          image: getThemeAssets().ar.armap.icon_array_4_4,
-          size:'large',
-          action: () => {
-            SARMap.setNodeStyle({Array:4},element)
-          },
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).ARRAY,
-        data: data,
-      })
-      break
-    }
-    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_OPACITY:
-    {
-      (data as ToolBarSlideItem[]) =[
-        {
-          type: 'single',
-          right: {type: 'indicator', unit: '%'},
-          onMove: (loc: number) => {
-            SARMap.setNodeStyle({opacity:loc/100},element)
-          },
-          defaultValue: style?.opacity? style.opacity*100:defaultValue.opacity[0],
-          range: range.opacity,
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).BACKGROUND_OPACITY,
-        data: data,
-      })
-      break
-    }
-    case ConstToolType.SM_AR_EDIT_SETTING_BACKGROUND_BORDER_WIDTH:
-    {
-      (data as ToolBarSlideItem[]) =[
-        {
-          type: 'single',
-          right: {type: 'indicator', unit: 'mm'},
-          onMove: (loc: number) => {
-            SARMap.setNodeStyle({borderWidth:loc},element)
-          },
-          defaultValue: style?.borderWidth? style.borderWidth:defaultValue.width[0],
-          range: range.width,
-        },
-      ]
-      allData.push({
-        title: getLanguage(_params.language).BORDER_WIDTH,
-        data: data,
-      })
-      break
-    }
-  }
-  return {
-    buttons,
-    data: allData,
   }
 }
 

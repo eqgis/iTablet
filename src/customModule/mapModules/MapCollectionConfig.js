@@ -59,7 +59,6 @@ export default class MapCollectionConfig extends Module {
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
-      licenceType: 0x08,
       mapType: this.mapType,
     })
   }

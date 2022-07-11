@@ -103,7 +103,6 @@ export default class MapARConfig extends Module {
       baseMapIndex: 1,
       openDefaultMap: false,
       mapType: this.mapType,
-      licenceType: 0x10,
       preAction: async () => {
         let isAvailable = await SAIDetectView.checkIfAvailable()
         if (!isAvailable) {

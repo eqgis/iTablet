@@ -36,6 +36,18 @@ public class AppUtils extends ReactContextBaseJavaModule {
     public String getName() {
         return "AppUtils";
     }
+
+    @ReactMethod
+    public void initApp(Promise promise){
+        try {
+            appManager.getAppManager().registerWechat(mReactContext);
+            promise.resolve(null);
+        } catch (Exception e) {
+            promise.resolve(null);
+        }
+    }
+
+
     @ReactMethod
     public void AppExit(){
         SLocation.closeGPS();

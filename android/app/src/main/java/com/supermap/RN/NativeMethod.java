@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.supermap.RNUtils.AppInfo;
 
 import java.io.File;
 
@@ -25,7 +26,7 @@ public class NativeMethod extends ReactContextBaseJavaModule {
         super(reactContext);
     }
 
-    public static final String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+    public static final String SDCARD = AppInfo.getSdcard() + "/";
 
     @Override
     public String getName() {

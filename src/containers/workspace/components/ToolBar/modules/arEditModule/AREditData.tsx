@@ -16,6 +16,7 @@ import ToolBarInput from 'imobile_for_reactnative/components/ToolbarKit/componen
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { ToolBarSlideItem } from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarSlide'
 import { Platform } from 'react-native'
+import { IAnimationParam } from 'imobile_for_reactnative/types/interface/ar'
 
 interface SectionItemData {
   key: string,
@@ -1251,8 +1252,8 @@ async function getAnimationData(type: string) {
   }
   // const layerName = element?.layerName || currentLayer?.name
   // const id = element?.id || 0
-
-  const buttons = [
+  let buttons
+  buttons = [
     ToolbarBtnType.TOOLBAR_BACK,
     ToolbarBtnType.MENU,
     ToolbarBtnType.MENU_FLEX,
@@ -1339,17 +1340,35 @@ async function getAnimationData(type: string) {
           key: 'x',
           image: getThemeAssets().ar.armap.ar_translation,
           title: 'x',
-          action: () => AREditAction.createAnimation({ direction: 'x' }),
+          action: () => {
+            // AREditAction.createAnimation({ direction: 'x' })
+            if(_data.animationParam){
+              _data.animationParam.direction = 'x'
+              ToolbarModule.addData({ animationParam: _data.animationParam })
+            }
+          },
         }, {
           key: 'y',
           image: getThemeAssets().ar.armap.ar_translation,
           title: 'y',
-          action: () => AREditAction.createAnimation({ direction: 'y' }),
+          action: () => {
+            // AREditAction.createAnimation({ direction: 'y' })
+            if(_data.animationParam){
+              _data.animationParam.direction = 'y'
+              ToolbarModule.addData({ animationParam: _data.animationParam })
+            }
+          },
         }, {
           key: 'z',
           image: getThemeAssets().ar.armap.ar_translation,
           title: 'z',
-          action: () => AREditAction.createAnimation({ direction: 'z' }),
+          action: () => {
+            // AREditAction.createAnimation({ direction: 'z' })
+            if(_data.animationParam){
+              _data.animationParam.direction = 'z'
+              ToolbarModule.addData({ animationParam: _data.animationParam })
+            }
+          },
         }],
       })
       allData.push({
@@ -1362,6 +1381,7 @@ async function getAnimationData(type: string) {
             onMove: (loc: number) => {
               if (_data.animationParam) {
                 _data.animationParam.distance = loc
+                ToolbarModule.addData({ animationParam: _data.animationParam })
               }
               // AREditAction.createAnimation({ distance: loc })
             },
@@ -1371,6 +1391,37 @@ async function getAnimationData(type: string) {
           }],
         }],
       })
+      allData.push({
+        title: getLanguage(_params.language).DURATION,
+        type: ToolbarType.slider,
+        data: [{
+          // title: getLanguage(global.language).ARMap.DISTANCE,
+          type: ToolbarType.slider,
+          data: [{
+            onMove: (loc: number) => {
+              if(_data.animationParam){
+                _data.animationParam.duration = loc * 1000
+                ToolbarModule.addData({ animationParam: _data.animationParam })
+              }
+            },
+            defaultValue: 10,
+            range: [1, 20],
+            unit: 's',
+          }],
+        }],
+      })
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.MENU_FLEX,
+        {
+          type: ToolbarBtnType.TOOLBAR_COMMIT,
+          image: getThemeAssets().toolbar.icon_toolbar_submit,
+          action: () => {
+            AREditAction.createAnimation(_data.animationParam)
+          },
+        },
+      ]
       break
     /** 三级 旋转 */
     case ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION:
@@ -1380,17 +1431,38 @@ async function getAnimationData(type: string) {
           key: 'x',
           image: getThemeAssets().ar.armap.ar_rotate,
           title: 'x',
-          action: () => AREditAction.createAnimation({ rotationAxis:  {x: 1, y: 0, z: 0} }),
+          action: () => {
+            // AREditAction.createAnimation({ rotationAxis:  {x: 1, y: 0, z: 0} })
+            if(_data.animationParam){
+              _data.animationParam.rotationAxis =  {x: 1, y: 0, z: 0}
+              ToolbarModule.addData({ animationParam: _data.animationParam })
+            }
+
+          },
         }, {
           key: 'y',
           image: getThemeAssets().ar.armap.ar_rotate,
           title: 'y',
-          action: () => AREditAction.createAnimation({ rotationAxis:  {x: 0, y: 1, z: 0} }),
+          action: () => {
+            // AREditAction.createAnimation({ rotationAxis:  {x: 0, y: 1, z: 0} })
+            if(_data.animationParam){
+              _data.animationParam.rotationAxis =  {x: 0, y: 1, z: 0}
+              ToolbarModule.addData({ animationParam: _data.animationParam })
+            }
+
+          },
         }, {
           key: 'z',
           image: getThemeAssets().ar.armap.ar_rotate,
           title: 'z',
-          action: () => AREditAction.createAnimation({ rotationAxis:  {x: 0, y: 0, z: 1} }),
+          action: () => {
+            // AREditAction.createAnimation({ rotationAxis:  {x: 0, y: 0, z: 1} })
+            if(_data.animationParam){
+              _data.animationParam.rotationAxis = {x: 0, y: 0, z: 1}
+              ToolbarModule.addData({ animationParam: _data.animationParam })
+            }
+
+          },
         }],
       })
       allData.push({
@@ -1400,7 +1472,11 @@ async function getAnimationData(type: string) {
           image: getThemeAssets().ar.armap.ar_rotate,
           title: getLanguage(_params.language).ARMap.CLOCKWISE,
           action: () => {
-            _data.animationParam.clockwise = true
+            if(_data.animationParam){
+              _data.animationParam.clockwise = true
+              ToolbarModule.addData({ animationParam: _data.animationParam })
+            }
+
             // AREditAction.createAnimation({ clockwise: true })
           },
         }, {
@@ -1408,11 +1484,49 @@ async function getAnimationData(type: string) {
           image: getThemeAssets().ar.armap.ar_rotate,
           title: getLanguage(_params.language).ARMap.COUNTER_CLOCKWISE,
           action: () => {
-            _data.animationParam.clockwise = false
+            if(_data.animationParam){
+              _data.animationParam.clockwise = false
+              ToolbarModule.addData({ animationParam: _data.animationParam })
+            }
             // AREditAction.createAnimation({ clockwise: false })
           },
         }],
       })
+
+      allData.push({
+        title: getLanguage(_params.language).DURATION,
+        type: ToolbarType.slider,
+        data: [{
+          // title: getLanguage(global.language).ARMap.DISTANCE,
+          type: ToolbarType.slider,
+          data: [{
+            onMove: (loc: number) => {
+              if(_data.animationParam){
+                _data.animationParam.duration = loc * 1000
+                ToolbarModule.addData({ animationParam: _data.animationParam })
+              }
+            },
+            defaultValue: 10,
+            range: [1, 20],
+            unit: 's',
+          }],
+        }],
+      })
+
+      buttons = [
+        ToolbarBtnType.TOOLBAR_BACK,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.MENU_FLEX,
+        {
+          type: 'commit',
+          image: getThemeAssets().toolbar.icon_toolbar_submit,
+          action: () => {
+            AREditAction.createAnimation(_data.animationParam)
+            // NavigationService.goBack()
+          },
+        },
+      ]
+
       break
   }
   return { buttons, data: allData }

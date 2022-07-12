@@ -63,7 +63,7 @@ export default class CustomView extends React.Component {
       if (uri !== undefined && uri !== '') {
         if (Platform.OS === 'android') {
           if (uri.indexOf('content://') === -1) {
-            uri = 'file://' + homePath + uri
+            uri = 'file://'  + uri
           }
         } else {
           if (uri.indexOf('assets-library://') === -1) {

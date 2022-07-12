@@ -1074,8 +1074,8 @@ export default class Home extends Component {
       isAllGranted = results[key] === 'granted' && isAllGranted
     }
     //申请 android 11 读写权限
-    let permisson11 = await appUtilsModule.requestStoragePermissionR()
-    if (isAllGranted && permisson11) {
+    // let permisson11 = await appUtilsModule.requestStoragePermissionR()
+    if (isAllGranted) {
       SMap.setPermisson(true)
       // this.init()
     } else {

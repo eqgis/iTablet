@@ -54,7 +54,6 @@ export default class Map3DConfig extends Module {
       moduleImageTouch: getThemeAssets().module.icon_map_3d_touch,
       defaultMapName: this.getExampleName(language)[0].mapName,
       mapType: this.mapType,
-      licenceType: 0x02,
     })
   }
 }

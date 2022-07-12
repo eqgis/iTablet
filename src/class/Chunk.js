@@ -39,7 +39,6 @@ export default class Chunk {
 
     this.mapType = props.mapType || '' // 二维，三维地图，默认为空   'MAP' ｜ 'SCENE' ｜ ''
 
-    this.licenceType = props.licenceType || 255 // TODO 临时方法
   }
 
   getTitle = () => this.title
@@ -58,7 +57,6 @@ export default class Chunk {
       return true
     }
     global.Type = this.key
-    SMap.setCurrentModule(this.licenceType)
     const homePath = await FileTools.appendingHomeDirectory()
 
     switch (this.mapType) {

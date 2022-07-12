@@ -390,6 +390,7 @@ class AppRoot extends Component {
   }
 
   initEnvironment = async () => {
+    AppUtils.initApp()
     await SMap.initEnvironment('iTablet')
     await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
     SOnlineService.init()

@@ -14,6 +14,15 @@
 
 @implementation AppUtils
 RCT_EXPORT_MODULE();
+
+RCT_REMAP_METHOD(initApp, initAppWithResolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+  @try {
+    resolve(nil);
+  }@catch (NSException *exception) {
+    resolve(nil);
+  }
+}
+
 RCT_REMAP_METHOD(AppExit,AppExit:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
   // NSString* home = NSHomeDirectory();
   dispatch_async(dispatch_get_main_queue(), ^{

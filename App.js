@@ -352,8 +352,8 @@ class AppRoot extends Component {
       isAllGranted = results[key] === 'granted' && isAllGranted
     }
     //申请 android 11 读写权限
-    let permisson11 = await AppUtils.requestStoragePermissionR()
-    if (isAllGranted && permisson11) {
+    // let permisson11 = await AppUtils.requestStoragePermissionR()
+    if (isAllGranted) {
       await SMap.setPermisson(true)
       await this.init()
       global.Loading.setLoading(false)

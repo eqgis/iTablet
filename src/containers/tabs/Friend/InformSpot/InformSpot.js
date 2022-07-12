@@ -57,7 +57,8 @@ export default class InformSpot extends Component {
     if (
       JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user) ||
       JSON.stringify(prevProps.chat) !== JSON.stringify(this.props.chat) ||
-      JSON.stringify(prevState) !== JSON.stringify(this.state)
+      JSON.stringify(prevState) !== JSON.stringify(this.state) ||
+      JSON.stringify(prevProps.style) !== JSON.stringify(this.props.style)
     ) {
       return true
     }

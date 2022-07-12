@@ -2831,4 +2831,7 @@ export const language_ja: typeof language_cn = {
   INPUT_URL: 'URLを入力してください',
   INPUT_NAME: '名前を入力してください',
 
+  THE_FIRST: '最初の画像',
+  THE_LAST: '最後の画像',
+
 }

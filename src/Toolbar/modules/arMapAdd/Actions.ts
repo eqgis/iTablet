@@ -9,7 +9,6 @@ import { FetchBlob } from "@/utils/FetchBlob"
 import DataLocal from "@/utils/DataHandler/DataLocal"
 import { UserRoot } from "@/utils/AppPath"
 import AppProgress from "imobile_for_reactnative/utils/AppProgress"
-import ToolbarModule from "../../../../src/containers/workspace/components/ToolBar/modules/ToolbarModule"
 import { ConstPath } from "../../../../src/constants"
 
 export interface AddOption {
@@ -227,17 +226,17 @@ export async function addARPieChart(option?: AddOption) {
 /** 打开三维场景 */
 export async function addARSceneLayer(option?: AddOption) {
   let newDatasource = false
-  const _params: any = ToolbarModule.getParams()
   const props = AppToolBar.getProps()
   const mapInfo = props.arMapInfo
-  console.warn("name: " + !mapInfo)
+  // console.warn("name: " + !mapInfo)
   AppToolBar.addData({
     addNewDSourceWhenCreate: false,
     addNewDsetWhenCreate: false,
   })
-  if(!mapInfo){
-    // await AppToolBar.getProps().createARMap()
-    await _params.createARMap()
+  if(!props.arMap.currentMap){
+    await AppToolBar.getProps().createARMap()
+    newDatasource = true
+  } else if( !mapInfo) {
     newDatasource = true
   }
 
@@ -251,7 +250,7 @@ export async function addARSceneLayer(option?: AddOption) {
 
   let datasourceName = DataHandler.getARRawDatasource()
   let datasetName = 'scene'
-  const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
+  const result = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, datasetName, newDatasource, true, ARLayerType.AR3D_LAYER)
   if(result.success) {
     datasourceName = result.datasourceName
     datasetName = result.datasetName || ''
@@ -302,7 +301,7 @@ export async function addARSceneLayer(option?: AddOption) {
       path = homePath + path
       const pxp = await DataLocal.getPxpContent(path)
       if(pxp === null) return
-      const wsPath = homePath + AppPath.User.path + '/' + _params.user.currentUser.userName + UserRoot.Data.ARScene.path +  '/' + pxp.Workspace.server
+      const wsPath = homePath + AppPath.User.path + '/' + props.currentUser.userName + UserRoot.Data.ARScene.path +  '/' + pxp.Workspace.server
       addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, option?.translation)
     }
     if(addLayerName !== ''){
@@ -311,8 +310,7 @@ export async function addARSceneLayer(option?: AddOption) {
         return item.type === ARLayerType.AR_SCENE_LAYER
       })
       if(defaultLayer) {
-        // props.setCurrentARLayer(defaultLayer)
-        _params.setCurrentARLayer(defaultLayer)
+        props.setCurrentARLayer(defaultLayer)
       }
     }
   }
@@ -346,13 +344,10 @@ function getOnlineSceneFromUrl(url: string):  {serverUrl: string, datasetUrl: st
 export async function addEffectLayer(fileName: string, path: string) {
   try {
     const homePath = await FileTools.getHomeDirectory()
-    const _params: any = ToolbarModule.getParams()
     const props = AppToolBar.getProps()
-    const mapInfo = props.arMapInfo
 
-    if(!mapInfo){
-      // await AppToolBar.getProps().createARMap()
-      await _params.createARMap()
+    if(!props.arMap.currentMap){
+      await AppToolBar.getProps().createARMap()
     }
     const layerName = fileName.substring(0, fileName.lastIndexOf('.'))
 
@@ -371,8 +366,7 @@ export async function addEffectLayer(fileName: string, path: string) {
         return item.type === ARLayerType.EFFECT_LAYER
       })
       if(defaultLayer) {
-        // props.setCurrentARLayer(defaultLayer)
-        _params.setCurrentARLayer(defaultLayer)
+        props.setCurrentARLayer(defaultLayer)
       }
     }
   } catch (e) {
@@ -397,20 +391,22 @@ async function checkARElementLayer(type: TARLayerType) {
     addNewDSourceWhenCreate: false,
     addNewDsetWhenCreate: false,
   })
-  const _params: any = ToolbarModule.getParams()
   const props = AppToolBar.getProps()
   const mapInfo = props.arMapInfo
   let satisfy = false
-  if(mapInfo) {
-    const layer = mapInfo.currentLayer
-    if(!newDataset && layer && layer.type === type) {
-      satisfy = true
+  if(props.arMap.currentMap){
+    if(mapInfo) {
+      const layer = mapInfo.currentLayer
+      if(!newDataset && layer && layer.type === type) {
+        satisfy = true
+      } else {
+        newDataset = true
+      }
     } else {
       newDataset = true
     }
   } else {
-    // await AppToolBar.getProps().createARMap()
-    await _params.createARMap()
+    await AppToolBar.getProps().createARMap()
     newDatasource = true
   }
 
@@ -438,10 +434,10 @@ async function checkARElementLayer(type: TARLayerType) {
       default:
         datasetName = 'defaultArLayer'
     }
-    const result = await DataHandler.createARElementDatasource(_params.user.currentUser, datasourceName, datasetName, newDatasource, newDataset, type)
+    const result = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, datasetName, newDatasource, newDataset, type)
     if(result.success) {
       datasourceName = result.datasourceName
-      datasetName = result.datasetName
+      datasetName = result.datasetName || ''
       if(newDatasource) {
         DataHandler.setARRawDatasource(datasourceName)
       }
@@ -466,8 +462,7 @@ async function checkARElementLayer(type: TARLayerType) {
         return false
       })
       if(defaultLayer) {
-        // props.setCurrentARLayer(defaultLayer)
-        _params.setCurrentARLayer(defaultLayer)
+        props.setCurrentARLayer(defaultLayer)
       }
     } else {
       AppLog.error(result.error)

@@ -96,7 +96,6 @@ export default class MapThemeConfig extends Module {
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 3,
-      licenceType: 0x04,
       mapType: this.mapType,
     })
   }

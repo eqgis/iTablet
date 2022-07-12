@@ -2829,4 +2829,7 @@ export const language_fr: typeof language_cn = {
   INPUT_URL: "Veuillez saisir l'URL",
   INPUT_NAME: 'Veuillez saisir le nom',
 
+  THE_FIRST: 'la première image',
+  THE_LAST: 'la dernière photo',
+
 }

@@ -15,7 +15,9 @@ import {
   arSandTableData,
   ModuleList,
 } from "./modules"
-import { getARLayers } from "@/redux/models/arlayer"
+import { getLayers, setCurrentLayer } from "@/redux/models/layers"
+import { getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
+import {closeARMap, createARMap, saveARMap} from '@/redux/models/armap'
 
 const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 
@@ -54,10 +56,18 @@ class Toolbar extends React.Component<Props> {
 const mapStateToProp = (state: RootState) => ({
   windowSize: state.device.toJS().windowSize,
   arMapInfo: state.arlayer.toJS(),
+  arMap: state.armap.toJS(),
+  currentUser: state.user.toJS().currentUser,
 })
 
 const mapDispatch = {
-  getARLayers
+  getARLayers,
+  createARMap,
+  saveARMap,
+  closeARMap,
+  setCurrentLayer,
+  getLayers,
+  setCurrentARLayer,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

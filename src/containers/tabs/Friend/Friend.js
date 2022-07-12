@@ -2389,7 +2389,8 @@ export default class Friend extends Component {
         <InformSpot
           style={{
             top: scaleSize(15),
-            right: '38%',
+            // right: '38%',
+            right: this._getWidth() / 3 / 2 - 25,
           }}
         />
       )}
@@ -2397,7 +2398,7 @@ export default class Friend extends Component {
         const routes = this.state.routes
         for (const index in routes) {
           if (Object.hasOwnProperty.call(routes, index)) {
-            const element = routes[index];
+            const element = routes[index]
             if (element.key === route.key) {
               this.setState({
                 currentPage: parseInt(index),

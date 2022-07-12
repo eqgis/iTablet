@@ -2828,4 +2828,7 @@ export const language_tr: typeof language_cn = {
   INPUT_URL: "Lütfen URL''yi Girin",
   INPUT_NAME: 'Lütfen adı girin',
 
+  THE_FIRST: 'İlk Resim',
+  THE_LAST: 'Son Resim',
+
 }

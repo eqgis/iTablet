@@ -32,16 +32,16 @@ export default class ModuleInfo extends Component {
     return [
       {
         title: getLanguage(global.language).Profile.LICENSE_EDITION_STANDARD,
-        id: LicenseModule.ITABLET_STANDARD + '',
+        id: LicenseModule.ITABLET_STANDARD,
       },
       {
         title: getLanguage(global.language).Profile
           .LICENSE_EDITION_PROFESSIONAL,
-        id: LicenseModule.ITABLET_PROFESSIONAL + '',
+        id: LicenseModule.ITABLET_PROFESSIONAL,
       },
       {
         title: getLanguage(global.language).Profile.LICENSE_EDITION_ADVANCED,
-        id: LicenseModule.ITABLET_ADVANCED + '',
+        id: LicenseModule.ITABLET_ADVANCED,
       },
     ]
   }
@@ -50,19 +50,19 @@ export default class ModuleInfo extends Component {
     return [
       {
         title: getLanguage(global.language).Map_Module.MAP_AR_MODULE,
-        id: LicenseModule.ITABLET_ARMAP + '',
+        id: LicenseModule.ITABLET_ARMAP,
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_NAVIGATION,
-        id: LicenseModule.ITABLET_NAVIGATIONMAP + '',
+        id: LicenseModule.ITABLET_NAVIGATIONMAP,
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_ANALYST,
-        id: LicenseModule.ITABLET_DATAANALYSIS + '',
+        id: LicenseModule.ITABLET_DATAANALYSIS,
       },
       {
         title: getLanguage(global.language).Map_Module.MAP_PLOTTING,
-        id: LicenseModule.ITABLET_PLOTTING + '',
+        id: LicenseModule.ITABLET_PLOTTING,
       },
     ]
   }

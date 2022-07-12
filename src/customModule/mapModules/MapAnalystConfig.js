@@ -49,7 +49,6 @@ export default class MapAnalystConfig extends Module {
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
       mapType: this.mapType,
-      licenceType: 0x40,
     })
   }
 }

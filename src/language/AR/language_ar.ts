@@ -2853,4 +2853,7 @@ export const language_ar: typeof language_cn = {
   INPUT_URL: 'الرجاء إدخال رابط',
   INPUT_NAME: 'من فضلك أدخل الاسم',
 
+  THE_FIRST: 'الصورة الأولى',
+  THE_LAST: 'الصورة الأخيرة',
+
 }

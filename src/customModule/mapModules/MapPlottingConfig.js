@@ -53,7 +53,6 @@ export default class MapPlottingConfig extends Module {
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
-      licenceType: 0x80,
       mapType: this.mapType,
     })
   }

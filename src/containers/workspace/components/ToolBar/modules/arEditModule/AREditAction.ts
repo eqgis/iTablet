@@ -224,7 +224,7 @@ function commit() {
         id = _data.selectARElement.id
         SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
       }
-      let transformData: IARTransform = {
+      const transformData: IARTransform = {
         layerName: _params.arlayer.currentLayer.name,
         id,
         type: 'position',

@@ -2828,4 +2828,7 @@ export const language_en: typeof language_cn = {
   INPUT_TEXT: 'Please input text',
   INPUT_URL: 'Please input URL',
   INPUT_NAME: 'Please input name',
+
+  THE_FIRST: 'This is the first picture',
+  THE_LAST: 'This is the last picture',
 }

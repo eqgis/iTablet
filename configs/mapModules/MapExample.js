@@ -53,7 +53,6 @@ export default class MapExample extends Module {
       baseMapSource: {...ConstOnline.Google},
       // 地图默认底图当前显示的地图
       baseMapIndex: 3,
-      licenceType: 0x04,
       // 地图类型，二维/三维
       mapType: this.mapType,
     })

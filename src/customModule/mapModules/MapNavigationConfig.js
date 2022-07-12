@@ -48,7 +48,6 @@ export default class MapNavigationConfig extends Module {
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 1,
-      licenceType: 0x20,
       mapType: this.mapType,
     })
   }

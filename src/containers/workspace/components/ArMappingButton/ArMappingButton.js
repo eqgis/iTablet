@@ -58,7 +58,7 @@ export default class ArMappingButton extends React.Component {
     this.isDrawing = this.props.isDrawing
     this.isMeasure = this.props.isMeasure
     this.canContinuousDraw = this.props.canContinuousDraw
-    this.measureType = this.props.measureType
+    // this.measureType = this.props.measureType
     this.isCollect = this.props.isCollect
 
     this.collectdata = [
@@ -228,7 +228,7 @@ export default class ArMappingButton extends React.Component {
           }
           this.getLayerType()
           if (!this.disableArea) {
-            this.setState({ data: this.areadata })
+            this.setState({ data: this.areadata, measureType: 'arDrawArea' })
           } else {
             Toast.show(getLanguage(global.language).Prompt.PLEASE_CHOOSE_REGION_LAYER)
           }
@@ -502,11 +502,19 @@ export default class ArMappingButton extends React.Component {
       title: this.title,
       data: this.isCollect?this.collectdata:this.data,
       showGenera: false,
-      showDatumPoint: this.measureType ? this.isDrawing : true,
+      showDatumPoint: this.props.measureType ? this.isDrawing : true,
       showSave: this.props.showSave,
       isCollect:this.props.isCollect,
+      measureType: this.props.measureType
     }
   }
+  // shouldComponentUpdate(nextProps, nextState){
+  //   return (
+  //     JSON.stringify(nextProps) !== JSON.stringify(this.props)
+  //     || JSON.stringify(nextState) !== JSON.stringify(this.state)
+  //     // || this.measureType !== this.props.measureType
+  //   )
+  // }
 
   getLayerType = () =>{
     const layerType = LayerUtils.getLayerType(global.currentLayer)
@@ -665,7 +673,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPoint = async () => {
-    if(this.measureType==='arCollect'){
+    if(this.state.measureType==='arCollect'){
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
@@ -680,6 +688,7 @@ export default class ArMappingButton extends React.Component {
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT,
+      measureType: 'arDrawPoint',
     })
     this.props.showSwitch(false)
 
@@ -730,7 +739,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawLine = async () => {
-    if(this.measureType==='arCollect'){
+    if(this.state.measureType==='arCollect'){
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
@@ -745,6 +754,7 @@ export default class ArMappingButton extends React.Component {
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
       ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE,
+      measureType: 'drawLine',
     })
     this.props.showSwitch(false)
 
@@ -795,7 +805,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPolygon = async () => {
-    if(this.measureType==='arCollect'){
+    if(this.state.measureType==='arCollect'){
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
@@ -861,7 +871,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawRectangle = async () => {
-    if(this.measureType==='arCollect'){
+    if(this.state.measureType==='arCollect'){
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
@@ -926,7 +936,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawCircular = async () => {
-    if(this.measureType==='arCollect'){
+    if(this.state.measureType==='arCollect'){
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
@@ -1075,7 +1085,7 @@ export default class ArMappingButton extends React.Component {
   /** 撤销 **/
   undo = async () => {
     await SARMap.undoDraw()
-    if (this.measureType === 'arMeasureHeight') {
+    if (this.state.measureType === 'arMeasureHeight') {
       let height = await SARMap.getCurrentHeight()
       // this.setState({
       //   currentHeight: height + 'm',
@@ -1092,7 +1102,7 @@ export default class ArMappingButton extends React.Component {
   /** 清除 **/
   clearAll = async () => {
     await SARMap.clearMeasure()
-    if (this.measureType === 'arMeasureHeight'||this.measureType === 'measureLength') {
+    if (this.state.measureType === 'arMeasureHeight'||this.state.measureType === 'measureLength') {
       this.props.setCurrentHeight('0m')
       // this.setState({
       //   currentHeight: '0m',
@@ -1108,9 +1118,9 @@ export default class ArMappingButton extends React.Component {
     if (this.props.currentLayer.themeType !== 0 || (
       this.props.currentLayer.type !== DatasetType.CAD &&
       (
-        (this.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
-        (this.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
-        (this.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT)
+        (this.state.measureType === 'drawLine' && this.props.currentLayer.type !== DatasetType.LINE) ||
+        (this.state.measureType === 'arDrawArea' && this.props.currentLayer.type !== DatasetType.REGION) ||
+        (this.state.measureType === 'arDrawPoint' && this.props.currentLayer.type !== DatasetType.POINT)
       )
     )) {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'

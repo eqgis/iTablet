@@ -1338,7 +1338,7 @@ async function getAnimationData(type: string) {
         title: getLanguage(_params.language).ARMap.DIRECTION,
         data: [{
           key: 'x',
-          image: getThemeAssets().ar.armap.ar_translation,
+          image: getThemeAssets().ar.armap.translation_x,
           title: 'x',
           action: () => {
             // AREditAction.createAnimation({ direction: 'x' })
@@ -1349,7 +1349,7 @@ async function getAnimationData(type: string) {
           },
         }, {
           key: 'y',
-          image: getThemeAssets().ar.armap.ar_translation,
+          image: getThemeAssets().ar.armap.translation_y,
           title: 'y',
           action: () => {
             // AREditAction.createAnimation({ direction: 'y' })
@@ -1360,7 +1360,7 @@ async function getAnimationData(type: string) {
           },
         }, {
           key: 'z',
-          image: getThemeAssets().ar.armap.ar_translation,
+          image: getThemeAssets().ar.armap.translation_z,
           title: 'z',
           action: () => {
             // AREditAction.createAnimation({ direction: 'z' })
@@ -1429,7 +1429,7 @@ async function getAnimationData(type: string) {
         title: getLanguage(_params.language).ROTATION_AXIS,
         data: [{
           key: 'x',
-          image: getThemeAssets().ar.armap.ar_rotate,
+          image: getThemeAssets().ar.armap.rotation_x,
           title: 'x',
           action: () => {
             // AREditAction.createAnimation({ rotationAxis:  {x: 1, y: 0, z: 0} })
@@ -1441,7 +1441,7 @@ async function getAnimationData(type: string) {
           },
         }, {
           key: 'y',
-          image: getThemeAssets().ar.armap.ar_rotate,
+          image: getThemeAssets().ar.armap.rotation_y,
           title: 'y',
           action: () => {
             // AREditAction.createAnimation({ rotationAxis:  {x: 0, y: 1, z: 0} })
@@ -1453,7 +1453,7 @@ async function getAnimationData(type: string) {
           },
         }, {
           key: 'z',
-          image: getThemeAssets().ar.armap.ar_rotate,
+          image: getThemeAssets().ar.armap.rotation_z,
           title: 'z',
           action: () => {
             // AREditAction.createAnimation({ rotationAxis:  {x: 0, y: 0, z: 1} })
@@ -1469,7 +1469,7 @@ async function getAnimationData(type: string) {
         title: getLanguage(_params.language).ANIMATION_ROTATE_DIRECTION,
         data: [{
           key: 'axis_x',
-          image: getThemeAssets().ar.armap.ar_rotate,
+          image: getThemeAssets().ar.armap.clockwise_rotate,
           title: getLanguage(_params.language).ARMap.CLOCKWISE,
           action: () => {
             if(_data.animationParam){
@@ -1481,7 +1481,7 @@ async function getAnimationData(type: string) {
           },
         }, {
           key: 'axis_y',
-          image: getThemeAssets().ar.armap.ar_rotate,
+          image: getThemeAssets().ar.armap.anticlockwise_rotate,
           title: getLanguage(_params.language).ARMap.COUNTER_CLOCKWISE,
           action: () => {
             if(_data.animationParam){

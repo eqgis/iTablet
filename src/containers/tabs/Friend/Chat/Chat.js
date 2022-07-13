@@ -717,7 +717,6 @@ class Chat extends React.Component {
     )
 
     message.downloading = true
-
     this.friend.receiveFile(
       message,
       receivePath,
@@ -725,7 +724,7 @@ class Chat extends React.Component {
       this.targetUser.id,
       async res => {
         message.originMsg.message.message.filePath =
-          receivePath + '/' + storeFileName
+        receivePath + '/' + storeFileName
         if (res === false) {
           message.downloading = false
           this.friend.onReceiveProgress({
@@ -750,7 +749,7 @@ class Chat extends React.Component {
     }
     let homePath = await FileTools.appendingHomeDirectory()
     let userPath = ConstPath.UserPath + this.curUser.userName
-    let receivePath = userPath + '/ReceivedFiles'
+    let receivePath = homePath+userPath + '/ReceivedFiles'
     if (Platform.OS === 'android') {
       homePath = 'file://' + homePath
     }

@@ -2766,6 +2766,7 @@ export const language_fr: typeof language_cn = {
   ONLY_INTEGER: "Seuls les nombres entiers peuvent être saisis!",
   ONLY_INTEGER_GREATER_THAN_2: "Seuls les nombres entiers supérieurs à 2 peuvent être saisis!",
   PARAMS_ERROR: "Erreur de paramètres! Échec de paramètres!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "You may say \n'Agrandir'，'Dézoomer'，'Localiser'，'Proche',\n 'Rechercher 'ou n'importe quelle adresse",
   SPEECH_ERROR: "Reconnaître l'erreur, veuillez réessayer plus tard",

@@ -2765,6 +2765,7 @@ export const language_tr: typeof language_cn = {
   ONLY_INTEGER: "Yalnızca tamsayılar girilebilir!",
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
   PARAMS_ERROR: "Parametre hatası, ayar başarısız!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "Aşağıdakileri seçebilirsiniz: \n'Yaklaş'，'Uzaklaş'，'Yerleştir'，'Kapat',\n 'Ara' ya da herhangi bir Adres",
   SPEECH_ERROR: "Tanımlı hata, lütfen daha sonra tekrar deneyiniz",

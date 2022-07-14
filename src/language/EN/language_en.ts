@@ -2766,6 +2766,7 @@ export const language_en: typeof language_cn = {
   ONLY_INTEGER: "Only integers can be entered!",
   ONLY_INTEGER_GREATER_THAN_2: "Only integers greater than 2 can be entered!",
   PARAMS_ERROR: "Params error! Failed to set!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "You may say:\n'Zoom in'，'Zoom out'，'Locate'，'Close',\n 'Search' or any Address",
   SPEECH_ERROR: "Recognize error, please try again later",

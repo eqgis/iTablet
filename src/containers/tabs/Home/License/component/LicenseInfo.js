@@ -187,7 +187,7 @@ export default class LicenseInfo extends Component {
           />
         </View>
 
-        {licenseType === LicenseType.trial && this.renderTrial()}
+        {/* {licenseType === LicenseType.trial && this.renderTrial()} */}
         {licenseType !== LicenseType.trial &&
           licenseType !== LicenseType.none &&
           this.renderModule()}

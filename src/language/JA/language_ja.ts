@@ -2768,6 +2768,7 @@ export const language_ja: typeof language_cn = {
   ONLY_INTEGER: "整数を入力してください",
   ONLY_INTEGER_GREATER_THAN_2: "２より大きい整数を入力してください",
   PARAMS_ERROR: "パラメタエラー、設定に失敗しました！",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "使用可能語句：\n\"拡大\"、\"縮小\"、\"ポジショニング\"、\"閉じる\"",
   SPEECH_ERROR: "識別に異常が発生します。後で再度試してください。",

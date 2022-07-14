@@ -2788,6 +2788,7 @@ export const language_ar: typeof language_cn = {
   ONLY_INTEGER: "يمكن إدخال الأعداد الصحيحة فقط!",
   ONLY_INTEGER_GREATER_THAN_2: "يمكن إدخال الأعداد الصحيحة الأكبر من 2 فقط!",
   PARAMS_ERROR: "خطاء فى المعاملات! فشل التعيين!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "يمكنك أن تقول",
   SPEECH_ERROR: "التعرف على الخطأ ، يرجى المحاولة مرة أخرى في وقت لاحق",

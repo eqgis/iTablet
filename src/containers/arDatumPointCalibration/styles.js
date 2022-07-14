@@ -190,8 +190,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: scaleSize(12),
-    borderBottomWidth: dp(1),
-    borderBottomColor: '#ECECEC'
+    // borderBottomWidth: dp(1),
+    // borderBottomColor: '#ECECEC'
   },
   inputIcon: {
     height: scaleSize(80),
@@ -202,6 +202,8 @@ export default StyleSheet.create({
     flex: 1,
     height: scaleSize(80),
     backgroundColor: 'rgba(0,0,0,0)',
+    borderBottomWidth: dp(1),
+    borderBottomColor: '#ECECEC'
   },
   closeBtn: {
     width: scaleSize(80),

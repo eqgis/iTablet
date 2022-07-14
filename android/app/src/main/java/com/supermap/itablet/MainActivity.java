@@ -132,33 +132,6 @@ public class MainActivity extends ReactActivity {
     }
   }
 
-  private void requestPermissions() {
-    RxPermissions rxPermission = new RxPermissions(this);
-    rxPermission
-        .requestEach(android.Manifest.permission.READ_PHONE_STATE,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.KILL_BACKGROUND_PROCESSES,
-            android.Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.CAMERA)
-        .subscribe(new Consumer<Permission>() {
-          @Override
-          public void accept(Permission permission) throws Exception {
-            if (permission.granted) {
-              // 用户已经同意该权限
-              Log.d("RxPermissionTest", permission.name + " is granted.");
-            } else if (permission.shouldShowRequestPermissionRationale) {
-              // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
-              Log.d("RxPermissionTest", permission.name + " is denied. More info should be provided.");
-            } else {
-              // 用户拒绝了该权限，并且选中『不再询问』
-              Log.d("RxPermissionTest", permission.name + " is denied.");
-            }
-          }
-        });
-  }
-
   private boolean isTablet(Activity context) {
     return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
   }

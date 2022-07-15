@@ -689,13 +689,14 @@ async function getStyleData(type: string){
       Object.assign(transformData, _data.transformData)
     }
     let buttons
-    if (type === ConstToolType.SM_AR_EDIT) {
-      buttons = [
-        ToolbarBtnType.CANCEL,
-        ToolbarBtnType.MENU,
-        ToolbarBtnType.TOOLBAR_COMMIT,
-      ]
-    } else if (currentLayer?.type === ARLayerType.AR_WIDGET_LAYER){
+    if (element.type === ARElementType.AR_ALBUM
+      || element.type === ARElementType.AR_BROCHOR
+      || element.type === ARElementType.AR_VIDEO_ALBUM
+      || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
+      || element.type === ARElementType.AR_SAND_TABLE_ALBUM
+      || element.type === ARElementType.AR_BAR_CHART
+      || element.type === ARElementType.AR_PIE_CHART){
+      // currentLayer?.type === ARLayerType.AR_WIDGET_LAYER
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         ToolbarBtnType.MENU,
@@ -719,7 +720,13 @@ async function getStyleData(type: string){
       ) {
         buttons.splice(2, 1)
       }
-    } else {
+    } else if (type === ConstToolType.SM_AR_EDIT) {
+      buttons = [
+        ToolbarBtnType.CANCEL,
+        ToolbarBtnType.MENU,
+        ToolbarBtnType.TOOLBAR_COMMIT,
+      ]
+    }  else {
       buttons = [
         ToolbarBtnType.TOOLBAR_BACK,
         ToolbarBtnType.MENU,

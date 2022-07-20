@@ -2190,8 +2190,6 @@ export const language_tr: typeof language_cn = {
   LICENSE_OFFICIAL: "Resmi Lisans",
   LICENSE_STATE: "Lisans Durumu",
   LICENSE_SURPLUS: "Fazla",
-  LICENSE_YEAR: "Yıl",
-  LICENSE_DAY: " Gün",
   LICENSE_PERMANENT: "kalıcı",
   LICENSE_CONTAIN_MODULE: "Lisans Modülü İçerir",
   LICENSE_CONTAIN_EXPAND_MODULE: "Lisans Modülü İçerir",
@@ -2832,4 +2830,10 @@ export const language_tr: typeof language_cn = {
   THE_FIRST: 'İlk Resim',
   THE_LAST: 'Son Resim',
 
+  INVALID: 'Invalid',  // to be translated
+  YEARS: 'year(s)',  // to be translated
+  DAYS: 'day(s)',  // to be translated
+  HOURS: 'hour(s)', // to be translated
+  MINUTES: 'minute(s)', // to be translated
+  SECONDS: 'second(s)', // to be translated
 }

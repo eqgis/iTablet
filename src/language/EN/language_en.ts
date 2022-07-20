@@ -2191,8 +2191,6 @@ export const language_en: typeof language_cn = {
   LICENSE_OFFICIAL: "Official License",
   LICENSE_STATE: "License Status",
   LICENSE_SURPLUS: "Remain ",
-  LICENSE_YEAR: "YEAR",
-  LICENSE_DAY: " Day",
   LICENSE_PERMANENT: "Permanent",
   LICENSE_CONTAIN_MODULE: "Contained Modules",
   LICENSE_CONTAIN_EXPAND_MODULE: "Contained Extension Modules",
@@ -2832,4 +2830,11 @@ export const language_en: typeof language_cn = {
 
   THE_FIRST: 'This is the first picture',
   THE_LAST: 'This is the last picture',
+
+  INVALID: 'Invalid',
+  YEARS: 'year(s)',
+  DAYS: 'day(s)',
+  HOURS: 'hour(s)',
+  MINUTES: 'minute(s)',
+  SECONDS: 'second(s)',
 }

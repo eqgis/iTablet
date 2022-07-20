@@ -3,8 +3,8 @@ import { View, TouchableOpacity, Image, Text } from 'react-native'
 import { getLanguage } from '../../../../../language/index'
 import { color } from '../../../../../styles'
 import { scaleSize } from '../../../../../utils'
-import moment from 'moment'
 import styles from '../styles'
+import { SMap } from 'imobile_for_reactnative'
 
 const LicenseType = {
   none: -1,
@@ -17,7 +17,7 @@ const LicenseType = {
 
 export default class LicenseInfo extends Component {
   props: {
-    licenseInfo: Object,
+    licenseInfo: SMap.LicenseInfo,
     selectLicenseType: () => {},
     recycleLicense: () => {},
     containModule: () => {},
@@ -113,38 +113,39 @@ export default class LicenseInfo extends Component {
       let days = 0
       let yearDays = 365
       if (licenseInfo.expireDate) {
-        let timeStr = ''
-        timeStr = licenseInfo.expireDate
-        let tempTimeStr =
-          timeStr.slice(0, 4) +
-          '-' +
-          timeStr.slice(4, 6) +
-          '-' +
-          timeStr.slice(6) +
-          ' 00:00'
-        let date1 = new Date()
-        let date2 = moment(tempTimeStr,"YYYY-MM-DD HH:mm").toDate()
-        days = Math.ceil(
-          (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24),
-        ) + 1
-        if (days < 0) {
-          days = 0
-        }
+        const expireDate = licenseInfo.expireDate
+        const year = expireDate.substring(0, 4)
+        const month = expireDate.substring(4, 6)
+        const date = expireDate.substring(6)
+        const data = new Date(parseInt(year), parseInt(month) -1, parseInt(date))
+
+        const current = new Date()
+        days = (data  - current) / (1000 * 60 * 60 * 24)
       }
       if (days >= yearDays * 20) {
         daysStr = getLanguage(global.language).Profile.LICENSE_LONG_EFFECTIVE
       } else if (days > yearDays) {
-        daysStr =
-          getLanguage(global.language).Profile.LICENSE_SURPLUS +
-          days / yearDays +
-          getLanguage(global.language).Profile.LICENSE_YEAR +
-          (days % yearDays) +
-          getLanguage(global.language).Profile.LICENSE_DAY
+        daysStr = `${getLanguage().LICENSE_SURPLUS} ${Math.floor(days / yearDays)} ${getLanguage().YEARS} ${Math.floor(days % yearDays)}  ${getLanguage().DAYS}`
+      } else if(days > 1){
+        daysStr = `${getLanguage().LICENSE_SURPLUS} ${Math.floor(days)} ${getLanguage().DAYS}`
+      } else if(days > 0) {
+        //一天内精确到小时
+        const hours = days * 24
+        if(Math.floor(hours) > 0) {
+          daysStr = `${getLanguage().LICENSE_SURPLUS} ${Math.floor(hours)} ${getLanguage().HOURS}`
+        } else {
+          //一小时内精确到分钟
+          const minutes = days * 24 * 60
+          if(Math.floor(minutes) > 0) {
+            daysStr = `${getLanguage().LICENSE_SURPLUS} s ${Math.floor(minutes)}  ${getLanguage().MINUTES}`
+          } else {
+            //一分钟内精确到秒
+            const seconds = days * 24 * 60 * 60
+            daysStr = `${getLanguage().LICENSE_SURPLUS} s ${Math.floor(seconds)}  ${getLanguage().SECONDS}`
+          }
+        }
       } else {
-        daysStr =
-          getLanguage(global.language).Profile.LICENSE_SURPLUS +
-          days +
-          getLanguage(global.language).Profile.LICENSE_DAY
+        daysStr = getLanguage().INVALID
       }
     }
 
@@ -154,6 +155,9 @@ export default class LicenseInfo extends Component {
       licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_OFFLINE
     } else if (licenseType === LicenseType.cloud) {
       licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_CLOUD
+      if(licenseInfo.isCloudTrial) {
+        licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_TRIAL
+      }
     } else if (licenseType === LicenseType.privateCloud) {
       licenseTypeTitle = getLanguage(global.language).Profile
         .LICENSE_PRIVATE_CLOUD
@@ -189,10 +193,11 @@ export default class LicenseInfo extends Component {
 
         {/* {licenseType === LicenseType.trial && this.renderTrial()} */}
         {licenseType !== LicenseType.trial &&
+          !licenseInfo.isCloudTrial &&
           licenseType !== LicenseType.none &&
           this.renderModule()}
         {(licenseType === LicenseType.local ||
-          licenseType === LicenseType.cloud) &&
+          (licenseType === LicenseType.cloud && !licenseInfo.isCloudTrial)) &&
           this.renderRecycle()}
       </View>
     )
@@ -201,8 +206,8 @@ export default class LicenseInfo extends Component {
 
 class InfoItem extends Component {
   props: {
-    text: String,
-    info: String,
+    text: string,
+    info: string,
     rightImage: Object,
     action: () => {},
   }

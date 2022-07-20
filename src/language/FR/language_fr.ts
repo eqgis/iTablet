@@ -2192,8 +2192,6 @@ export const language_fr: typeof language_cn = {
   LICENSE_OFFICIAL: "Licence Officielle",
   LICENSE_STATE: "État de licence",
   LICENSE_SURPLUS: "Excédent de licence",
-  LICENSE_YEAR: "Année",
-  LICENSE_DAY: "Jour",
   LICENSE_PERMANENT: "Permanent",
   LICENSE_CONTAIN_MODULE: "Module contenant la licence",
   LICENSE_CONTAIN_EXPAND_MODULE: "Module contenant la licence prolongée",
@@ -2833,4 +2831,10 @@ export const language_fr: typeof language_cn = {
   THE_FIRST: 'la première image',
   THE_LAST: 'la dernière photo',
 
+  INVALID: 'Invalid',  // to be translated
+  YEARS: 'year(s)',  // to be translated
+  DAYS: 'day(s)',  // to be translated
+  HOURS: 'hour(s)', // to be translated
+  MINUTES: 'minute(s)', // to be translated
+  SECONDS: 'second(s)', // to be translated
 }

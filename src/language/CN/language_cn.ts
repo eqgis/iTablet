@@ -2192,8 +2192,6 @@ export const language_cn = {
   LICENSE_OFFICIAL: "正式许可",
   LICENSE_STATE: "许可状态",
   LICENSE_SURPLUS: "剩余",
-  LICENSE_YEAR: "年",
-  LICENSE_DAY: "天",
   LICENSE_PERMANENT: "永久",
   LICENSE_CONTAIN_MODULE: "所含模块",
   LICENSE_CONTAIN_EXPAND_MODULE: "所含拓展模块",
@@ -2832,5 +2830,12 @@ export const language_cn = {
 
   THE_FIRST: '已经是第一张了',
   THE_LAST: '已经是最后一张了',
+
+  INVALID: '无效',
+  YEARS: '年',
+  DAYS: '天',
+  HOURS: '小时',
+  MINUTES: '分钟',
+  SECONDS: '秒',
 
 }

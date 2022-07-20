@@ -2206,8 +2206,6 @@ export const language_ar: typeof language_cn = {
   LICENSE_OFFICIAL: "الرخصة الرسمية",
   LICENSE_STATE: "حالة الرخصة",
   LICENSE_SURPLUS: "فائض ارخصة",
-  LICENSE_YEAR: "السنة",
-  LICENSE_DAY: "يوم",
   LICENSE_PERMANENT: "دائم",
   LICENSE_CONTAIN_MODULE: "ترخيص يحتوي على وحدة",
   LICENSE_CONTAIN_EXPAND_MODULE: "الترخيص يحتوي على توسيع محتوى الوحدة ",
@@ -2857,4 +2855,10 @@ export const language_ar: typeof language_cn = {
   THE_FIRST: 'الصورة الأولى',
   THE_LAST: 'الصورة الأخيرة',
 
+  INVALID: 'Invalid',  // to be translated
+  YEARS: 'year(s)',  // to be translated
+  DAYS: 'day(s)',  // to be translated
+  HOURS: 'hour(s)', // to be translated
+  MINUTES: 'minute(s)', // to be translated
+  SECONDS: 'second(s)', // to be translated
 }

@@ -85,6 +85,7 @@ class LicenseTypePage extends Component {
         {
           title: getLanguage(global.language).Profile.LICENSE_TRIAL,
           type: LicenseType.trial,
+          onPress: this.joinCloud,
         },
       ]
     }
@@ -95,6 +96,15 @@ class LicenseTypePage extends Component {
   }
 
   renderItem = ({ item }) => {
+    let isSelected = false
+    if(this.props.licenseInfo) {
+      isSelected = this.props.licenseInfo.licenseType === item.type
+      if(item.type === LicenseType.clould && this.props.licenseInfo.isCloudTrial) {
+        isSelected = false
+      } else if(item.type === LicenseType.trial && this.props.licenseInfo.isCloudTrial) {
+        isSelected = true
+      }
+    }
     return (
       <View style={{ width: '100%', backgroundColor: color.content_white }}>
         <TouchableOpacity
@@ -114,8 +124,7 @@ class LicenseTypePage extends Component {
               alignItems: 'center',
             }}
           >
-            {this.props.licenseInfo &&
-              this.props.licenseInfo.licenseType === item.type && (
+            {isSelected && (
               <Image
                 source={require('../../../../assets/public/settings_selected.png')}
                 style={{ height: scaleSize(55), width: scaleSize(55) }}
@@ -132,33 +141,20 @@ class LicenseTypePage extends Component {
             }}
           >
             <Text style={{ fontSize: scaleSize(20) }}>{item.title}</Text>
-            {item.type !== LicenseType.trial ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginRight: 15,
-                  alignItems: 'center',
-                }}
-              >
-                <Image
-                  source={require('../../../../assets/Mine/mine_my_arrow.png')}
-                  style={{ height: scaleSize(28), width: scaleSize(28) }}
-                />
-              </View>
-            ) : (
-              <Text
-                style={{
-                  fontSize: scaleSize(20),
-                  marginRight: 15,
-                  color: color.gray2,
-                }}
-              >
-                {this.props.licenseInfo.licenseType === LicenseType.trial &&
-                this.props.licenseInfo.isLicenseValid
-                  ? getLanguage(global.language).Profile.LICENSE_IN_TRIAL
-                  : getLanguage(global.language).Profile.LICENSE_TRIAL_END}
-              </Text>
-            )}
+
+            <View
+              style={{
+                flexDirection: 'row',
+                marginRight: 15,
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                source={require('../../../../assets/Mine/mine_my_arrow.png')}
+                style={{ height: scaleSize(28), width: scaleSize(28) }}
+              />
+            </View>
+
           </View>
         </TouchableOpacity>
       </View>

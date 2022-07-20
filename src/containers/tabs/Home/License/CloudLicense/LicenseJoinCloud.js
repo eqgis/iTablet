@@ -342,7 +342,7 @@ class LicenseJoinCloud extends Component {
     let remainText = ''
     if (this.state.currentLicense.remainDays !== undefined) {
       let remainDays = this.state.currentLicense.remainDays
-      remainText = remainDays + getLanguage(global.language).Profile.LICENSE_DAY
+      remainText = remainDays + getLanguage(global.language).Profile.DAYS
       if (remainDays === 73000) {
         remainText = getLanguage(global.language).Profile.LICENSE_PERMANENT
       }

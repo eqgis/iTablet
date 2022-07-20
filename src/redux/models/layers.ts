@@ -497,6 +497,17 @@ export const setCurrentLayer3d = (
   })
   cb && cb()
 }
+/** 重置3d图层列表为空数组 lyx */
+export const resetLayer3dList = () => async (dispatch) =>{
+  try {
+    await dispatch({
+      type: GET_LAYER3DLIST,
+      payload: [],
+    })
+  } catch (error) {
+    console.error("resetLayer3dList error: " + JSON.stringify(error))
+  }
+}
 
 export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) => {
   let language = getState().setting.toJS().language
@@ -580,7 +591,7 @@ export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) 
   ]
   await dispatch({
     type: GET_LAYER3DLIST,
-    payload: data || {},
+    payload: data || [],
   })
   cb && cb(data)
 }
@@ -720,9 +731,9 @@ export default handleActions<SettingStateType>(
     },
     [`${GET_LAYER3DLIST}`]: (state, { payload }) => {
       let { layer3dList } = state.toJS()
-      if (payload.length > 0) {
-        layer3dList = payload
-      }
+      // if (payload.length > 0) {
+      layer3dList = payload
+      // }
       return state.setIn(['layer3dList'], fromJS(layer3dList))
     },
     [`${SET_CURRENTLAYER3D}`]: (state, { payload }) => {

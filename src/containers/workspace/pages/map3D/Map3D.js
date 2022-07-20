@@ -66,6 +66,7 @@ export default class Map3D extends React.Component {
     setAttributes: () => {},
     exportmap3DWorkspace: () => {},
     refreshLayer3dList: () => {},
+    resetLayer3dList: () => {},
     user: Object,
     device: Object,
     appConfig: Object,
@@ -507,6 +508,8 @@ export default class Map3D extends React.Component {
         // await SScene.saveWorkspace()
       this.mapController?.stopCompass()
       await SScene.closeWorkspace()
+      // 重置redux里的3d图层数据
+      this.props.resetLayer3dList && await this.props.resetLayer3dList()
       this.container && this.container.setLoading(false)
       this.closeSample()
       NavigationService.goBack()

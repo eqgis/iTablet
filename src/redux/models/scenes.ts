@@ -39,12 +39,8 @@ export interface sceneInfoType {
 // --------------------------------------------------
 
 // 保存当前场景的信息
-export const setCurSceneInfo = (params: sceneInfoType, cb = () => { }) => async (dispatch) => {
+export const setCurSceneInfo = (params: sceneInfoType | null, cb = () => { }) => async (dispatch) => {
   try {
-    if (params === null
-      || params === undefined
-      || (!params.isOnlineScence && !params.name)
-    ) return
     const defaultSceneInfo: sceneInfoType = {
       name: '',
       server: '',
@@ -85,6 +81,12 @@ export default handleActions<SettingStateType>(
   {
     [`${SET_SCENE_INFO}`]: (state, { payload }) => {
       return state.setIn(['sceneInfo'], fromJS(payload))
+    },
+    [REHYDRATE]: (state, { payload }) => {
+      if (payload && payload.scenes) {
+        return fromJS(payload.scenes)
+      }
+      return state
     },
   },
   initialState,

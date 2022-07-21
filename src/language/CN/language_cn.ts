@@ -2831,11 +2831,16 @@ export const language_cn = {
   THE_FIRST: '已经是第一张了',
   THE_LAST: '已经是最后一张了',
 
+
   INVALID: '无效',
   YEARS: '年',
   DAYS: '天',
   HOURS: '小时',
   MINUTES: '分钟',
   SECONDS: '秒',
+
+  OPEN_3D_SCENE: '请先打开三维场景',
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: '在线三维场景不支持分享',
+
 
 }

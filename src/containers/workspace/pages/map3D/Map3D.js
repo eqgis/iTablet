@@ -48,6 +48,7 @@ import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { BackHandlerUtil } from '../../util'
 import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
 import { Bar } from 'react-native-progress'
+import sceneInfoType from '@/redux/models/scenes'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
@@ -67,6 +68,7 @@ export default class Map3D extends React.Component {
     exportmap3DWorkspace: () => {},
     refreshLayer3dList: () => {},
     resetLayer3dList: () => {},
+    setCurSceneInfo: (params: typeof sceneInfoType | null) => void,
     user: Object,
     device: Object,
     appConfig: Object,
@@ -510,6 +512,7 @@ export default class Map3D extends React.Component {
       await SScene.closeWorkspace()
       // 重置redux里的3d图层数据
       this.props.resetLayer3dList && await this.props.resetLayer3dList()
+      this.props.setCurSceneInfo()
       this.container && this.container.setLoading(false)
       this.closeSample()
       NavigationService.goBack()

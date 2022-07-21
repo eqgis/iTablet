@@ -7,6 +7,7 @@ import {
   setAttributes,
   resetLayer3dList,
 } from '../../../../redux/models/layers'
+import { setCurSceneInfo } from '@/redux/models/scenes'
 import {
   setLatestMap,
   setCurrentMap,
@@ -43,6 +44,7 @@ const mapStateToProps = state => ({
   backActions: state.backActions.toJS(),
   mapSceneGuide: state.home.toJS().mapSceneGuide,
   showSampleData: state.down.toJS().showSampleData,
+  sceneInfo: state.scenes.toJS().sceneInfo,
 })
 
 const mapDispatchToProps = {
@@ -61,6 +63,7 @@ const mapDispatchToProps = {
   setNavBarDisplay,
   setSampleDataShow,
   resetLayer3dList,
+  setCurSceneInfo,
 }
 
 export default connect(

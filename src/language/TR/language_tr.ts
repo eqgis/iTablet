@@ -2830,10 +2830,15 @@ export const language_tr: typeof language_cn = {
   THE_FIRST: 'İlk Resim',
   THE_LAST: 'Son Resim',
 
+
   INVALID: 'Invalid',  // to be translated
   YEARS: 'year(s)',  // to be translated
   DAYS: 'day(s)',  // to be translated
   HOURS: 'hour(s)', // to be translated
   MINUTES: 'minute(s)', // to be translated
   SECONDS: 'second(s)', // to be translated
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
 }

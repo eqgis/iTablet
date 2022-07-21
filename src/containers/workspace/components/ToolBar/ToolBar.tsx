@@ -24,6 +24,7 @@ import {
 import Utils from './utils'
 import { ToolbarModuleKey } from './modules/modulesKeys'
 import { DEVICE } from '@/redux/models/device'
+import sceneInfoType from '@/redux/models/scenes'
 
 interface ToolbarVisibleParam {
   /** 是否全屏， */
@@ -80,6 +81,7 @@ export interface Props extends Partial<DefaultProps> {
   toolbarStatus: Object,
   laboratory: Object,
   selectPointType: string, // 地图点选组件类型
+  sceneInfo: sceneInfoType, // 三维场景信息类型
 
   confirm: () => {},
   showDialog: () => {},
@@ -114,6 +116,7 @@ export interface Props extends Partial<DefaultProps> {
   getMapSetting: () => {},
   showMeasureResult: () => {},
   refreshLayer3dList: () => {},
+  setCurSceneInfo: (params: typeof sceneInfoType | null) => void, // 设置三维场景信息
   setCurrentSymbols: () => {},
   saveMap: () => {},
   measureShow: () => {},

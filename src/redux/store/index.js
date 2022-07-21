@@ -20,6 +20,7 @@ const persistConfig = {
     'home',
     'ar',
     'armap',
+    'scenes',
   ],
   blacklist: [
     'nav',

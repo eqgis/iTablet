@@ -2837,4 +2837,9 @@ export const language_en: typeof language_cn = {
   HOURS: 'hour(s)',
   MINUTES: 'minute(s)',
   SECONDS: 'second(s)',
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+
 }

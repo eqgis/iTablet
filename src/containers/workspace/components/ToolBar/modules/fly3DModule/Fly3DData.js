@@ -35,6 +35,7 @@ async function getFlyList() {
   ]
   try {
     const flyData = await SScene.getFlyRouteNames()
+    console.warn("fly data : " + JSON.stringify(flyData))
     flyData.forEach(
       item =>
         (item.image = require('../../../../../../assets/function/Frenchgrey/icon_symbolFly.png')),

@@ -81,7 +81,7 @@ export interface Props extends Partial<DefaultProps> {
   toolbarStatus: Object,
   laboratory: Object,
   selectPointType: string, // 地图点选组件类型
-  sceneInfo: sceneInfoType, // 三维场景信息类型
+  sceneInfo:typeof sceneInfoType, // 三维场景信息类型
 
   confirm: () => {},
   showDialog: () => {},

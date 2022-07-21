@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable'
+import { fromJS, Record } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
 import { SMap, SScene, RNFS as fs } from 'imobile_for_reactnative'
@@ -66,6 +66,9 @@ export const setCurSceneInfo = (params: sceneInfoType, cb = () => { }) => async 
 }
 
 
+interface SceneState {
+  sceneInfo:sceneInfoType,
+}
 const initialState = fromJS({
   sceneInfo:{
     name: "",
@@ -77,7 +80,8 @@ const initialState = fromJS({
   },
 })
 
-export default handleActions(
+type SettingStateType = Record<SceneState> & SceneState
+export default handleActions<SettingStateType>(
   {
     [`${SET_SCENE_INFO}`]: (state, { payload }) => {
       return state.setIn(['sceneInfo'], fromJS(payload))

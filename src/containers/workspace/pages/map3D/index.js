@@ -7,7 +7,7 @@ import {
   setAttributes,
   resetLayer3dList,
 } from '../../../../redux/models/layers'
-import { setCurSceneInfo } from '@/redux/models/scenes'
+import { setCurSceneInfo } from '../../../../redux/models/scenes'
 import {
   setLatestMap,
   setCurrentMap,

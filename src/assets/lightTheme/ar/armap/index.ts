@@ -43,6 +43,9 @@ export const rotation_x = require('./icon_ar_x_rotate.png')
 export const rotation_y = require('./icon_ar_y_rotate.png')
 export const rotation_z = require('./icon_ar_z_rotate.png')
 
+export const anticlockwise_rotate = require('./icon_ar_anticlockwise_rotate.png')
+export const clockwise_rotate = require('./icon_ar_clockwise_rotate.png')
+
 export const ar_animation = require('./icon_tool_deduction.png')
 
 export const icon_tool_title = require('./icon_tool_title.png')
@@ -79,4 +82,5 @@ export const marker_line = require('./icon_vector_symbol.png')
 
 export const bubble_text = require('./icon_ar_bubble_text.png')
 export const icon_ar_layer_text = require('./icon_ar_layer_text.png')
+
 

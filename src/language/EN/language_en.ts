@@ -2191,8 +2191,6 @@ export const language_en: typeof language_cn = {
   LICENSE_OFFICIAL: "Official License",
   LICENSE_STATE: "License Status",
   LICENSE_SURPLUS: "Remain ",
-  LICENSE_YEAR: "YEAR",
-  LICENSE_DAY: " Day",
   LICENSE_PERMANENT: "Permanent",
   LICENSE_CONTAIN_MODULE: "Contained Modules",
   LICENSE_CONTAIN_EXPAND_MODULE: "Contained Extension Modules",
@@ -2766,6 +2764,7 @@ export const language_en: typeof language_cn = {
   ONLY_INTEGER: "Only integers can be entered!",
   ONLY_INTEGER_GREATER_THAN_2: "Only integers greater than 2 can be entered!",
   PARAMS_ERROR: "Params error! Failed to set!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "You may say:\n'Zoom in'，'Zoom out'，'Locate'，'Close',\n 'Search' or any Address",
   SPEECH_ERROR: "Recognize error, please try again later",
@@ -2831,4 +2830,11 @@ export const language_en: typeof language_cn = {
 
   THE_FIRST: 'This is the first picture',
   THE_LAST: 'This is the last picture',
+
+  INVALID: 'Invalid',
+  YEARS: 'year(s)',
+  DAYS: 'day(s)',
+  HOURS: 'hour(s)',
+  MINUTES: 'minute(s)',
+  SECONDS: 'second(s)',
 }

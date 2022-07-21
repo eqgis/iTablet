@@ -2206,8 +2206,6 @@ export const language_ar: typeof language_cn = {
   LICENSE_OFFICIAL: "الرخصة الرسمية",
   LICENSE_STATE: "حالة الرخصة",
   LICENSE_SURPLUS: "فائض ارخصة",
-  LICENSE_YEAR: "السنة",
-  LICENSE_DAY: "يوم",
   LICENSE_PERMANENT: "دائم",
   LICENSE_CONTAIN_MODULE: "ترخيص يحتوي على وحدة",
   LICENSE_CONTAIN_EXPAND_MODULE: "الترخيص يحتوي على توسيع محتوى الوحدة ",
@@ -2788,6 +2786,7 @@ export const language_ar: typeof language_cn = {
   ONLY_INTEGER: "يمكن إدخال الأعداد الصحيحة فقط!",
   ONLY_INTEGER_GREATER_THAN_2: "يمكن إدخال الأعداد الصحيحة الأكبر من 2 فقط!",
   PARAMS_ERROR: "خطاء فى المعاملات! فشل التعيين!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "يمكنك أن تقول",
   SPEECH_ERROR: "التعرف على الخطأ ، يرجى المحاولة مرة أخرى في وقت لاحق",
@@ -2856,4 +2855,10 @@ export const language_ar: typeof language_cn = {
   THE_FIRST: 'الصورة الأولى',
   THE_LAST: 'الصورة الأخيرة',
 
+  INVALID: 'Invalid',  // to be translated
+  YEARS: 'year(s)',  // to be translated
+  DAYS: 'day(s)',  // to be translated
+  HOURS: 'hour(s)', // to be translated
+  MINUTES: 'minute(s)', // to be translated
+  SECONDS: 'second(s)', // to be translated
 }

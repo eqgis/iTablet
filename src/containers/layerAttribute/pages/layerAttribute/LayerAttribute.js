@@ -537,7 +537,7 @@ export default class LayerAttribute extends React.Component {
                 itemIndex: remainder,
                 sectionIndex: 0,
                 viewOffset: 0,
-                viewPosition: 1,
+                viewPosition: 0,
               })
           }
           this.setLoading(false)

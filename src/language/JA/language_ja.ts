@@ -2193,8 +2193,6 @@ export const language_ja: typeof language_cn = {
   LICENSE_OFFICIAL: "正式ライセンス",
   LICENSE_STATE: "ライセンス状態",
   LICENSE_SURPLUS: "残り",
-  LICENSE_YEAR: "年",
-  LICENSE_DAY: "日",
   LICENSE_PERMANENT: "無期限",
   LICENSE_CONTAIN_MODULE: "モジュール",
   LICENSE_CONTAIN_EXPAND_MODULE: "拡張モジュール",
@@ -2768,6 +2766,7 @@ export const language_ja: typeof language_cn = {
   ONLY_INTEGER: "整数を入力してください",
   ONLY_INTEGER_GREATER_THAN_2: "２より大きい整数を入力してください",
   PARAMS_ERROR: "パラメタエラー、設定に失敗しました！",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "使用可能語句：\n\"拡大\"、\"縮小\"、\"ポジショニング\"、\"閉じる\"",
   SPEECH_ERROR: "識別に異常が発生します。後で再度試してください。",
@@ -2834,4 +2833,10 @@ export const language_ja: typeof language_cn = {
   THE_FIRST: '最初の画像',
   THE_LAST: '最後の画像',
 
+  INVALID: 'Invalid',  // to be translated
+  YEARS: 'year(s)',  // to be translated
+  DAYS: 'day(s)',  // to be translated
+  HOURS: 'hour(s)', // to be translated
+  MINUTES: 'minute(s)', // to be translated
+  SECONDS: 'second(s)', // to be translated
 }

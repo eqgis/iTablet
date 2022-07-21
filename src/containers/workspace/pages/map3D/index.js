@@ -5,6 +5,7 @@ import {
   setCurrentAttribute,
   refreshLayer3dList,
   setAttributes,
+  resetLayer3dList,
 } from '../../../../redux/models/layers'
 import {
   setLatestMap,
@@ -59,6 +60,7 @@ const mapDispatchToProps = {
   setToolbarStatus,
   setNavBarDisplay,
   setSampleDataShow,
+  resetLayer3dList,
 }
 
 export default connect(

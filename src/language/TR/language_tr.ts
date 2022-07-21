@@ -2190,8 +2190,6 @@ export const language_tr: typeof language_cn = {
   LICENSE_OFFICIAL: "Resmi Lisans",
   LICENSE_STATE: "Lisans Durumu",
   LICENSE_SURPLUS: "Fazla",
-  LICENSE_YEAR: "Yıl",
-  LICENSE_DAY: " Gün",
   LICENSE_PERMANENT: "kalıcı",
   LICENSE_CONTAIN_MODULE: "Lisans Modülü İçerir",
   LICENSE_CONTAIN_EXPAND_MODULE: "Lisans Modülü İçerir",
@@ -2765,6 +2763,7 @@ export const language_tr: typeof language_cn = {
   ONLY_INTEGER: "Yalnızca tamsayılar girilebilir!",
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
   PARAMS_ERROR: "Parametre hatası, ayar başarısız!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "Aşağıdakileri seçebilirsiniz: \n'Yaklaş'，'Uzaklaş'，'Yerleştir'，'Kapat',\n 'Ara' ya da herhangi bir Adres",
   SPEECH_ERROR: "Tanımlı hata, lütfen daha sonra tekrar deneyiniz",
@@ -2831,4 +2830,10 @@ export const language_tr: typeof language_cn = {
   THE_FIRST: 'İlk Resim',
   THE_LAST: 'Son Resim',
 
+  INVALID: 'Invalid',  // to be translated
+  YEARS: 'year(s)',  // to be translated
+  DAYS: 'day(s)',  // to be translated
+  HOURS: 'hour(s)', // to be translated
+  MINUTES: 'minute(s)', // to be translated
+  SECONDS: 'second(s)', // to be translated
 }

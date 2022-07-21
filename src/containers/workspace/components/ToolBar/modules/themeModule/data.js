@@ -57,7 +57,7 @@ async function showDatasetsList(type, filter = {}) {
           }
           if (await SMap.openDatasource(datasourceParams, 0, true)) {
             await showDatasetsList(type, filter)
-            NavigationService.goBack('MyDatasource')
+            NavigationService.goBack()
             _params.setContainerLoading && _params.setContainerLoading(false)
           } else {
             _params.setContainerLoading && _params.setContainerLoading(false)

@@ -1,5 +1,5 @@
 import { ARAnimatorCategory, ARAnimatorPlayOrder, ARAnimatorType, ARNodeAnimatorType } from 'imobile_for_reactnative/NativeModule/dataTypes'
-import { ARAnimatorParameter, ARGroupAnimatorParameter } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { ARAnimatorParameter, ARGroupAnimatorParameter, ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { TARAnimatorCategory, TARAnimatorPlayOrder, TARAnimatorType, TARElementType, TARNodeAnimatorType, Vector3 } from 'imobile_for_reactnative/types/data'
 import React from 'react'
 import { Text, TouchableOpacity, View, ScrollView } from 'react-native'
@@ -28,7 +28,7 @@ interface Props extends ReduxProps {
 }
 
 interface State {
-  modelAnimationList: string[]
+  modelAnimationList: ModelAnimation[]
   paramList: ParamList
   listVisible: boolean
 }
@@ -65,7 +65,7 @@ interface ParamList {
 }
 
 export interface ARAnimatorSettingParam {
-  arModelAnimations: string[] | undefined
+  arModelAnimations: ModelAnimation[] | undefined
   editAnimator?: ARAnimatorWithID
   element: {layerName: string, id: number, type: TARElementType}
 }
@@ -539,10 +539,10 @@ class AnimatorParamSetting extends React.Component<Props, State> {
 
 
   renderModelParam = () => {
-    const data = this.state.modelAnimationList.map((item, index) => {
+    const data = this.state.modelAnimationList.map(item=> {
       return {
-        label: item,
-        value: index,
+        label: item.name,
+        value: item,
       }
     })
     return (
@@ -553,9 +553,10 @@ class AnimatorParamSetting extends React.Component<Props, State> {
           name={getLanguage().ANIMATION}
           mode={'list'}
           data={data}
-          defalutValue={this.state.paramList.modelAnimationIndex}
+          defalutValue={data[0] && data[0].value}
           onValueChange={value => {
-            this.paramList.modelAnimationIndex = value as number
+            this.paramList.modelAnimationIndex = value.id
+            this.paramList.duration = value.duration
             this.setState({
               paramList: {...this.paramList}
             })

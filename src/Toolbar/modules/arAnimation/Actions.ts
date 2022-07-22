@@ -4,6 +4,7 @@ import { SARMap } from "imobile_for_reactnative"
 import { ARAnimatorSettingParam } from "./component/AnimatorParamSetting"
 import { AppToolBar } from "@/utils"
 import { ARElement } from "imobile_for_reactnative/types/interface/ar"
+import { ModelAnimation } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 let arAnimatorSettingParam: ARAnimatorSettingParam = initArAnimatorSettingParam()
 
@@ -26,8 +27,8 @@ export function getARAnimatorSettingParam () {
  * 点击添加对应ARElement的动画
  * @param element
  */
- export async function onAddARAnimation(element: ARElement) {
-  let animations: string[] = []
+export async function onAddARAnimation(element: ARElement) {
+  let animations: ModelAnimation[] = []
 
   if(element.type == ARElementType.AR_MODEL) {
     animations = await SARMap.getModelAnimation(
@@ -45,7 +46,7 @@ export function getARAnimatorSettingParam () {
 
 
 export async function onEditARAnimation(animator: ARAnimatorWithID) {
-  let animations: string[] = []
+  let animations: ModelAnimation[] = []
   if(animator.type === ARAnimatorType.MODEL_TYPE) {
     animations = await SARMap.getModelAnimation(
       animator.layerName,

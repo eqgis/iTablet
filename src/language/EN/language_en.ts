@@ -1711,6 +1711,7 @@ export const language_en: typeof language_cn = {
   ALIAS: "Alias",
   ASCENDING: "Ascending",
   DESCENDING: "Descending",
+  UNIQUE: "Unique",
 
   THEME_LEGEND: "Theme Legend",
   COLUMN_NAV_BAR: "Vertical Navigation Bar when Landscape",

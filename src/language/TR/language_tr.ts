@@ -1710,6 +1710,7 @@ export const language_tr: typeof language_cn = {
   ALIAS: "Takma Ad",
   ASCENDING: "Artan",
   DESCENDING: "Azalan",
+  UNIQUE: "Miktar",
 
   THEME_LEGEND: "Tema Lejantı",
   COLUMN_NAV_BAR: "Dikey Gezinme Çubuğu Yatay Olduğunda",

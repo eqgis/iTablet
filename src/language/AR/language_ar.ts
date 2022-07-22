@@ -1724,6 +1724,7 @@ export const language_ar: typeof language_cn = {
   ALIAS: "الاسم الاخر",
   ASCENDING: "تصاعدي",
   DESCENDING: "تنازلى",
+  UNIQUE: "عدد",
 
   THEME_LEGEND: "عنوان تفسيرى للموضوع",
   COLUMN_NAV_BAR: "شريط التنقل العمودي عند الأفقي",

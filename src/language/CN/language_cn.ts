@@ -1713,6 +1713,7 @@ export const language_cn = {
   ALIAS: "别名",
   ASCENDING: "升序",
   DESCENDING: "降序",
+  UNIQUE: "单值",
 
   THEME_LEGEND: "专题图图例",
   COLUMN_NAV_BAR: "横屏时纵向显示导航栏",

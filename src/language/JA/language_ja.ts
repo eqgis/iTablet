@@ -1713,6 +1713,7 @@ export const language_ja: typeof language_cn = {
   ALIAS: "識別名",
   ASCENDING: "昇順",
   DESCENDING: "降順",
+  UNIQUE: "個別値",
 
   THEME_LEGEND: "主題図凡例",
   COLUMN_NAV_BAR: "横向きの時にツールバーを縦表示",

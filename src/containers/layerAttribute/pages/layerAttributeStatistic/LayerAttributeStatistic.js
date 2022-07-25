@@ -396,7 +396,7 @@ export default class LayerAttributeStatistic extends React.Component {
         value = item.value
     })
 
-    if (section.visible) {
+    if (section.visible && value!=='' && value!==null) {
       return (
         <View style={styles.contentBottom}>
           <View style={styles.contentBottomTextRow}>

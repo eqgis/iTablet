@@ -2191,7 +2191,6 @@ export const language_en: typeof language_cn = {
   LICENSE_TRIAL: "Trial License",
   LICENSE_OFFICIAL: "Official License",
   LICENSE_STATE: "License Status",
-  LICENSE_SURPLUS: "Remain ",
   LICENSE_PERMANENT: "Permanent",
   LICENSE_CONTAIN_MODULE: "Contained Modules",
   LICENSE_CONTAIN_EXPAND_MODULE: "Contained Extension Modules",
@@ -2223,7 +2222,6 @@ export const language_en: typeof language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "Please add license file \"Official_License\" in the folder /iTablet/license/",
   LICENSE_NOT_ITABLET_OFFICAL: "This official license is not activated on iTablet. Please go to the license page to clear the license and reactivate it",
   LICENSE_NATIVE_EXPIRE: "The local license is invalid",
-  LICENSE_LONG_EFFECTIVE: "Long Effective",
   LICENSE_OFFLINE: "OffLine License",
   LICENSE_CLOUD: "Cloud License",
   LICENSE_PRIVATE_CLOUD: "Private Cloud License",
@@ -2832,12 +2830,8 @@ export const language_en: typeof language_cn = {
   THE_FIRST: 'This is the first picture',
   THE_LAST: 'This is the last picture',
 
-  INVALID: 'Invalid',
-  YEARS: 'year(s)',
   DAYS: 'day(s)',
-  HOURS: 'hour(s)',
-  MINUTES: 'minute(s)',
-  SECONDS: 'second(s)',
+  EXPIRE_DATE: 'Expire date',
 
   OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated

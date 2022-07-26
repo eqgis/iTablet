@@ -2206,7 +2206,6 @@ export const language_ar: typeof language_cn = {
   LICENSE_TRIAL: "رخصة تجريبية",
   LICENSE_OFFICIAL: "الرخصة الرسمية",
   LICENSE_STATE: "حالة الرخصة",
-  LICENSE_SURPLUS: "فائض ارخصة",
   LICENSE_PERMANENT: "دائم",
   LICENSE_CONTAIN_MODULE: "ترخيص يحتوي على وحدة",
   LICENSE_CONTAIN_EXPAND_MODULE: "الترخيص يحتوي على توسيع محتوى الوحدة ",
@@ -2240,7 +2239,6 @@ export const language_ar: typeof language_cn = {
   LICENSE_NATIVE_EXPIRE: "رخصة أصلية غير صالحة",
 
 
-  LICENSE_LONG_EFFECTIVE: "طويل الأمد",
   LICENSE_OFFLINE: "ترخيص بدون الاتصال بالإنترنت",
   LICENSE_CLOUD: "ترخيص السحابي",
   LICENSE_PRIVATE_CLOUD: "ترخيص سحابي خاص",
@@ -2857,12 +2855,8 @@ export const language_ar: typeof language_cn = {
   THE_LAST: 'الصورة الأخيرة',
 
 
-  INVALID: 'Invalid',  // to be translated
-  YEARS: 'year(s)',  // to be translated
   DAYS: 'day(s)',  // to be translated
-  HOURS: 'hour(s)', // to be translated
-  MINUTES: 'minute(s)', // to be translated
-  SECONDS: 'second(s)', // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
 
   OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated

@@ -22,6 +22,14 @@ export const AR3DExample: ExampleData = {
 
 export const ARModelExample: ExampleData[] = [{
   userName: '927528',
+  downloadName: 'SM@anim01.zip',
+  dir: 'ARModal/SM@anim01',
+}, {
+  userName: '927528',
+  downloadName: 'SM@anim02.zip',
+  dir: 'ARModal/SM@anim02',
+}, {
+  userName: '927528',
   downloadName: 'flag.zip',
   dir: 'ARModal/flag',
 }, {

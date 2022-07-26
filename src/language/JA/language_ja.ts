@@ -2193,7 +2193,6 @@ export const language_ja: typeof language_cn = {
   LICENSE_TRIAL: "トライアルライセンス",
   LICENSE_OFFICIAL: "正式ライセンス",
   LICENSE_STATE: "ライセンス状態",
-  LICENSE_SURPLUS: "残り",
   LICENSE_PERMANENT: "無期限",
   LICENSE_CONTAIN_MODULE: "モジュール",
   LICENSE_CONTAIN_EXPAND_MODULE: "拡張モジュール",
@@ -2225,7 +2224,6 @@ export const language_ja: typeof language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "ローカル正式ライセンスファイルはありません。/iTablet/license/フォルダにOfficial_Licenseライセンスファイルを追加してください",
   LICENSE_NOT_ITABLET_OFFICAL: "当正式ライセンスはiTablet内でアクティブするライセンスではありません。iTabletの部分の機能を使用できません。ライセンスページでライセンスをクリアして、再申請ください",
   LICENSE_NATIVE_EXPIRE: "ローカルライセンス无效",
-  LICENSE_LONG_EFFECTIVE: "無期限",
   LICENSE_OFFLINE: "オフラインライセンス",
   LICENSE_CLOUD: "クラウドライセンス",
   LICENSE_PRIVATE_CLOUD: "プライベートクラウドライセンス",
@@ -2835,12 +2833,8 @@ export const language_ja: typeof language_cn = {
   THE_LAST: '最後の画像',
 
 
-  INVALID: 'Invalid',  // to be translated
-  YEARS: 'year(s)',  // to be translated
   DAYS: 'day(s)',  // to be translated
-  HOURS: 'hour(s)', // to be translated
-  MINUTES: 'minute(s)', // to be translated
-  SECONDS: 'second(s)', // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
 
   OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated

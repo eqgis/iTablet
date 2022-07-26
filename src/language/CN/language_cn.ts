@@ -2192,7 +2192,6 @@ export const language_cn = {
   LICENSE_TRIAL: "试用许可",
   LICENSE_OFFICIAL: "正式许可",
   LICENSE_STATE: "许可状态",
-  LICENSE_SURPLUS: "剩余",
   LICENSE_PERMANENT: "永久",
   LICENSE_CONTAIN_MODULE: "所含模块",
   LICENSE_CONTAIN_EXPAND_MODULE: "所含拓展模块",
@@ -2224,7 +2223,6 @@ export const language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "没有本地正式许可文件，请在/iTablet/license/文件夹下添加Official_License许可文件",
   LICENSE_NOT_ITABLET_OFFICAL: "该正式许可不是iTablet内激活的许可，将导致iTablet部分功能不可用，请到许可页面清除许可后重新申请",
   LICENSE_NATIVE_EXPIRE: "本地许可无效",
-  LICENSE_LONG_EFFECTIVE: "长期有效",
   LICENSE_OFFLINE: "离线许可",
   LICENSE_CLOUD: "云许可",
   LICENSE_PRIVATE_CLOUD: "私有云许可",
@@ -2833,12 +2831,8 @@ export const language_cn = {
   THE_LAST: '已经是最后一张了',
 
 
-  INVALID: '无效',
-  YEARS: '年',
   DAYS: '天',
-  HOURS: '小时',
-  MINUTES: '分钟',
-  SECONDS: '秒',
+  EXPIRE_DATE: '有效期',
 
   OPEN_3D_SCENE: '请先打开三维场景',
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: '在线三维场景不支持分享',

@@ -371,6 +371,14 @@ export default class LayerAttributeStatistic extends React.Component {
   }
 
   renderSection = ({ section }) => {
+    let value
+    this.state.resultData.forEach((item) => {
+      if (item.name === this.fieldInfo.name)
+        value = item.value
+    })
+    if(value===undefined){
+      return
+    }
     let image = section.visible
       ? getThemeAssets().publicAssets.icon_drop_down
       : getThemeAssets().publicAssets.icon_drop_up
@@ -396,7 +404,7 @@ export default class LayerAttributeStatistic extends React.Component {
         value = item.value
     })
 
-    if (section.visible && value!=='' && value!==null) {
+    if (section.visible && value!=='' && value!==null&& value!==undefined) {
       return (
         <View style={styles.contentBottom}>
           <View style={styles.contentBottomTextRow}>

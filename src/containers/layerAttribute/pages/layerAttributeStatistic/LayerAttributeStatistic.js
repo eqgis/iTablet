@@ -372,7 +372,7 @@ export default class LayerAttributeStatistic extends React.Component {
 
   renderSection = ({ section }) => {
     let value
-    this.state.resultData.forEach((item) => {
+    this.state.resultData[0].forEach((item) => {
       if (item.name === this.fieldInfo.name)
         value = item.value
     })

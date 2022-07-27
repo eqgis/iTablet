@@ -2837,5 +2837,5 @@ export const language_cn = {
   OPEN_3D_SCENE: '请先打开三维场景',
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: '在线三维场景不支持分享',
 
-
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: '该许可已在其他设备上激活',
 }

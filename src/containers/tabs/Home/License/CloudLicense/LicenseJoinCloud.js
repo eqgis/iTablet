@@ -134,9 +134,12 @@ class LicenseJoinCloud extends Component {
           )
         let returnId = await SMap.applyCloudLicense(licenseId)
         if (!returnId) {
-          Toast.show(
-            getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL,
-          )
+          let activated = this.state.currentLicense.lockMacAddr !== ''
+          if(activated) {
+            Toast.show(getLanguage().LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE)
+          } else {
+            Toast.show(getLanguage().LICENSE_ACTIVATION_FAIL)
+          }
         } else {
           AsyncStorage.setItem(constants.LICENSE_CLOUD_ID, licenseId)
           AsyncStorage.setItem(constants.LICENSE_CLOUD_RETURN_ID, returnId)

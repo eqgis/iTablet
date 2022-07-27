@@ -2861,5 +2861,5 @@ export const language_ar: typeof language_cn = {
   OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
-
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
 }

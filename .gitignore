@@ -74,8 +74,8 @@ android/app/src/main/assets/python_android_assets/*.so
 android/app/src/main/assets/python_android_assets/*PIL.zip
 android/app/src/main/assets/python_android_assets/*python2.7.zip
 
-ios/SuperMap.*
-ios/JRE.*
+ios/iPhoneOS.sdk/SuperMap.framework
+ios/iPhoneOS.sdk/JRE.framework
 ios/Trial_License.slm
 ios/iPhoneSimulator.sdk
 ios/MessageQueue.sdk

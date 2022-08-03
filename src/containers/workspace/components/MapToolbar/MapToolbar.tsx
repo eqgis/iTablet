@@ -7,10 +7,11 @@ import MapTabs, { TMapTabs } from '../../../../constants/custom/MapTabs'
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
+import { DEVICE } from '@/redux/models/device'
 
 interface Props {
   language: string,
-  device: Device,
+  device: DEVICE,
   type: TChunkType[keyof TChunkType],
   navigation: any,
   initIndex: number,

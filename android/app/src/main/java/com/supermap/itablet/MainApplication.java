@@ -12,8 +12,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.soloader.SoLoader;
-import com.supermap.itablet.BuildConfig;
-import com.supermap.RNUtils.AppInfo;
+import com.supermap.RNUtils.FileTools;
+import com.supermap.RNUtils.Utils;
+import com.supermap.itablet.bundleCore.BundleUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -25,12 +26,15 @@ public class MainApplication extends Application implements ReactApplication {
   public static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
   private static MainApplication sInstance = null;
   private static ReactInstanceManager mReactInstanceManager;
+  // 打包或测试bundle时为true，需要打包base.bundle，调试iTablet代码时为false
+  public static boolean isBundle = true;
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
+//            return false;
         }
 
         @Override
@@ -47,14 +51,24 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
+
+//        @Override
+//        protected String getBundleAssetName() {
+////            return "bundles/common.bundle";
+//            return "bundles/base/index.android.bundle";
+//        }
+
         @Nullable
         @Override
         protected String getJSBundleFile() {
-          String path = AppInfo.getBundleFile();
+          if (!isBundle) return null;
+          String path = getFilesDir().getAbsolutePath() + "/bundles/base/index.android.bundle";
+//          String path = getFilesDir().getAbsolutePath() + "/bundles/base/common.bundle";
           if (!(new File(path).exists())) {
             path = null;
           }
           return path;
+//            return null;
         }
 
         @Override
@@ -67,6 +81,7 @@ public class MainApplication extends Application implements ReactApplication {
               .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
 //                    .setUIImplementationProvider(getUIImplementationProvider())
               .setJSIModulesPackage(getJSIModulePackage())
+//              .setUseDeveloperSupport(BuildConfig.DEBUG)
               .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
 
           for (ReactPackage reactPackage : getPackages()) {
@@ -96,6 +111,10 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     sInstance = this;
+    // 打包或测试bundle时开启，必须在initializeFlipper之前执行
+    if (isBundle) {
+      BundleUtils.initBundle(this);
+    }
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }

@@ -5,6 +5,7 @@ import {
 } from '../../../redux/models/online'
 import {
   setMapModule,
+  addMapModule,
 } from '../../../redux/models/mapModules'
 import AppletManagement from './AppletManagement'
 
@@ -19,6 +20,7 @@ const mapDispatchToProps = {
   updateDownList,
   removeItemOfDownList,
   setMapModule,
+  addMapModule,
 }
 
 export default connect(

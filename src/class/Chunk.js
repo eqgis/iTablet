@@ -4,7 +4,6 @@
 import NavigationService from '../containers/NavigationService'
 import { FileTools } from '../native'
 import { ConstPath } from '../constants'
-import { SMap } from 'imobile_for_reactnative'
 
 export default class Chunk {
   static MapType = {

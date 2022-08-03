@@ -88,7 +88,7 @@ import {
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
-import { FileTools } from '../../../../native'
+import { FileTools, IntentModule } from '../../../../native'
 import {
   ConstPath,
   ConstToolType,
@@ -139,6 +139,7 @@ import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
 import Toolbar from '@/Toolbar'
 import { onAddARAnimation } from '@/Toolbar/modules/arAnimation/Actions'
+import { CommonActions } from '@react-navigation/native'
 
 global.markerTag = 118082
 
@@ -269,6 +270,10 @@ export default class MapView extends React.Component {
 
   constructor(props) {
     super(props)
+    const intentData = IntentModule.getNavParam('MapView')
+    if (intentData) {
+      this.props.navigation.dispatch(CommonActions.setParams(intentData))
+    }
     let { params } = this.props.route
     if (!params) {
       let parent = this.props.navigation.dangerouslyGetParent()

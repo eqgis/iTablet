@@ -34,7 +34,7 @@ interface Props {
   showDialog?: boolean,
 
   callback: () => void,
-  dialogConfirm: (value: string, cb?: () => void) => void,
+  dialogConfirm: null | ((value: string, cb?: () => void) => void),
   dialogCancel: () => void,
 }
 

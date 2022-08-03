@@ -190,7 +190,6 @@ import NavigationView2D from './workspace/components/ArNavigation/NavigationView
 import RoadNet from './workspace/components/ArNavigation/RoadNet'
 import Report from '../containers/tabs/Friend/Chat/Report'
 import WebView from '../components/WebView'
-import { ImagePickerStack } from '@/components/ImagePicker'
 import { UserInfo } from '@/types'
 import { Platform } from 'react-native'
 import MapSelectList from '../containers/workspace/components/ToolBar/modules/arDrawingModule/MapSelectList'

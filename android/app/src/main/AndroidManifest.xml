@@ -33,6 +33,19 @@
       tools:replace="android:label"
       android:theme="@style/AppTheme">
       <uses-library android:name="org.apache.http.legacy" android:required="false" />
+<!--      <activity-->
+<!--        android:name=".SplashActivity"-->
+<!--        android:label="@string/app_name"-->
+<!--        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"-->
+<!--        android:launchMode="singleInstance"-->
+<!--        android:windowSoftInputMode="stateAlwaysHidden|adjustPan"-->
+<!--        tools:ignore="AppLinkUrlError"-->
+<!--        android:exported="true">-->
+<!--        <intent-filter>-->
+<!--          <action android:name="android.intent.action.MAIN" />-->
+<!--          <category android:name="android.intent.category.LAUNCHER" />-->
+<!--        </intent-filter>-->
+<!--      </activity>-->
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -62,6 +75,18 @@
         android:name="JPUSH_CHANNEL"
         android:value="${APP_CHANNEL}" />
 
+      <activity
+        android:name=".bundleCore.DispatchActivity"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+        android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+        android:exported="true"
+        android:theme="@style/TransparentTheme"/>
+      <activity
+        android:name=".bundleCore.AppActivity"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+        android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+        android:exported="true"
+        android:theme="@style/TransparentTheme"/>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
       <activity
         android:name=".wxapi.WXEntryActivity"

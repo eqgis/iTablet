@@ -24,7 +24,6 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import { TYPE } from '../../../../../camera/types'
 import LocateUtils from '../../../../../pointAnalyst/LocateUtils'
-import { launchImageLibrary } from 'react-native-image-picker'
 
 function begin() {
   global.GPS = setInterval(() => {
@@ -542,27 +541,6 @@ function tour() {
         }
       },
     })
-
-    
-
-  //   launchImageLibrary({
-  //     title: 'asdfasdfas',
-  //     mediaType: 'mixed',
-  //     selectionLimit: 9,
-  //     includeExtra: true,
-  //   }, res => {
-  //     console.warn(JSON.stringify(res))
-  //     if (data.assets.length <= 1) {
-  //       Toast.show(
-  //         getLanguage(global.language).Prompt.SELECT_TWO_MEDIAS_AT_LEAST,
-  //       )
-  //       return
-  //     }
-  //     if (tourLayer) {
-  //       const res = await SMediaCollector.addTour(tourLayer, data)
-  //       res.result && (await SMap.setLayerFullView(tourLayer))
-  //     }
-  //   })
   })()
 }
 

@@ -194,7 +194,7 @@ export default class FriendListFileHandle {
       return false
     }
     const isIPortalUser = UserType.isIPortalUser(FriendListFileHandle.user)
-    let JSOnlineService = OnlineServicesUtils.getService(isIPortalUser ? 'iportal' : 'online')
+    const JSOnlineService = OnlineServicesUtils.getService(isIPortalUser ? 'iportal' : 'online')
     if (isIPortalUser && FriendListFileHandle.adminInfo.userName && FriendListFileHandle.adminInfo.password) {
       // iportal使用admin中读取的用户列表,不用文件下载;群组使用本地数据
       let admingLoginResult,
@@ -264,7 +264,32 @@ export default class FriendListFileHandle {
         }
       }
     } else {
-      let dataId = await JSOnlineService?.getDataIdByName('friend.list.zip')
+      // TODO 临时用于删除online上多余的friend.list 和 friend.list.zip
+      const allFriendData = await JSOnlineService?.findMyCreateData({
+        keywords: 'friend',
+        pageSize: 10000,
+        currentPage: 1,
+        typeId: 4,
+      })
+      if (allFriendData?.content?.length > 0) {
+        for (const item of allFriendData.content) {
+          if (item.title === 'friend.list.zip') {
+            continue
+          }
+          if (
+            item.title.startsWith('friend')
+            && (
+              item.title.endsWith('.list') ||
+              item.title.endsWith('.zip')
+            )
+          ) {
+            JSOnlineService?.deleteMyCreateData(item.iptResId)
+          }
+        }
+      }
+      // TODO end
+
+      const dataId = await JSOnlineService?.getDataIdByName('friend.list.zip')
       if (dataId !== undefined) {
         const callback = async (result: boolean | string | RNFS.DownloadResult, resolve: (value: any) => void, reject: (value: any) => void) => {
           try {
@@ -306,7 +331,7 @@ export default class FriendListFileHandle {
             reject(error)
           }
         }
-        let promise = new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
           SOnlineService.downloadFileWithCallBack(
             FriendListFileHandle.friendListFile_ol,
             'friend.list',
@@ -317,7 +342,6 @@ export default class FriendListFileHandle {
             },
           )
         })
-        return promise
       } else {
         if (FriendListFileHandle.friends !== undefined) {
           //没有online文件，更新本地到online
@@ -470,78 +494,78 @@ export default class FriendListFileHandle {
     }
     FriendListFileHandle.uploading = true
     //上传
-    let UploadFileName = 'friend.list.zip'
-    let promise
-    let dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
-    if (UserType.isIPortalUser(FriendListFileHandle.user)) {
-      // await SIPortalService.deleteMyData(dataId + '')
-      promise = new Promise(resolve => {
-        // let action = OnlineServicesUtils.getService().uploadFileWithCheckCapacity
-        if (dataId) {
-          OnlineServicesUtils.getService().updateFileWithCheckCapacity(
-            dataId,
-            FriendListFileHandle.friendListFile,
-            UploadFileName,
-            'WORKSPACE',
-          ).then(id => {
-            resolve(!!id)
-            FriendListFileHandle.uploading = false
-            FriendListFileHandle.waitUploading = false
-          })
-        } else {
-          OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
-            FriendListFileHandle.friendListFile,
-            UploadFileName,
-            'WORKSPACE',
-          ).then(id => {
-            resolve(!!id)
-            FriendListFileHandle.uploading = false
-            FriendListFileHandle.waitUploading = false
-          })
-        }
-      })
-    } else {
-      if (Platform.OS === 'android') {
-        UploadFileName = 'friend.list'
+    const UploadFileName = 'friend.list.zip'
+    // let promise
+    const dataId = await OnlineServicesUtils.getService().getDataIdByName('friend.list.zip')
+    // if (UserType.isIPortalUser(FriendListFileHandle.user)) {
+    // await SIPortalService.deleteMyData(dataId + '')
+    return new Promise(resolve => {
+      // let action = OnlineServicesUtils.getService().uploadFileWithCheckCapacity
+      if (dataId) {
+        OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+          dataId,
+          FriendListFileHandle.friendListFile,
+          UploadFileName,
+          'WORKSPACE',
+        ).then(id => {
+          resolve(!!id)
+          FriendListFileHandle.uploading = false
+          FriendListFileHandle.waitUploading = false
+        })
+      } else {
+        OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
+          FriendListFileHandle.friendListFile,
+          UploadFileName,
+          'WORKSPACE',
+        ).then(id => {
+          resolve(!!id)
+          FriendListFileHandle.uploading = false
+          FriendListFileHandle.waitUploading = false
+        })
       }
-      // await SOnlineService.deleteData('friend.list')
-      promise = new Promise(resolve => {
-        if (dataId) {
-          OnlineServicesUtils.getService().updateFileWithCheckCapacity(
-            dataId,
-            FriendListFileHandle.friendListFile,
-            UploadFileName,
-            'WORKSPACE',
-          ).then(id => {
-            resolve(!!id)
-            FriendListFileHandle.uploading = false
-            FriendListFileHandle.waitUploading = false
-          })
-        } else {
-          OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
-            FriendListFileHandle.friendListFile,
-            UploadFileName,
-            'WORKSPACE',
-          ).then(id => {
-            resolve(!!id)
-            FriendListFileHandle.uploading = false
-            FriendListFileHandle.waitUploading = false
-          })
-        }
-        // SOnlineService.uploadFile(
-        //   FriendListFileHandle.friendListFile,
-        //   UploadFileName,
-        //   {
-        //     onResult: () => {
-        //       resolve(true)
-        //       FriendListFileHandle.uploading = false
-        //       FriendListFileHandle.waitUploading = false
-        //     },
-        //   },
-        // )
-      })
-    }
-    return promise
+    })
+    // } else {
+    //   // if (Platform.OS === 'android') {
+    //   //   UploadFileName = 'friend.list'
+    //   // }
+    //   // await SOnlineService.deleteData('friend.list')
+    //   promise = new Promise(resolve => {
+    //     if (dataId) {
+    //       OnlineServicesUtils.getService().updateFileWithCheckCapacity(
+    //         dataId,
+    //         FriendListFileHandle.friendListFile,
+    //         UploadFileName,
+    //         'WORKSPACE',
+    //       ).then(id => {
+    //         resolve(!!id)
+    //         FriendListFileHandle.uploading = false
+    //         FriendListFileHandle.waitUploading = false
+    //       })
+    //     } else {
+    //       OnlineServicesUtils.getService().uploadFileWithCheckCapacity(
+    //         FriendListFileHandle.friendListFile,
+    //         UploadFileName,
+    //         'WORKSPACE',
+    //       ).then(id => {
+    //         resolve(!!id)
+    //         FriendListFileHandle.uploading = false
+    //         FriendListFileHandle.waitUploading = false
+    //       })
+    //     }
+    //     // SOnlineService.uploadFile(
+    //     //   FriendListFileHandle.friendListFile,
+    //     //   UploadFileName,
+    //     //   {
+    //     //     onResult: () => {
+    //     //       resolve(true)
+    //     //       FriendListFileHandle.uploading = false
+    //     //       FriendListFileHandle.waitUploading = false
+    //     //     },
+    //     //   },
+    //     // )
+    //   })
+    // }
+    // return promise
   }
 
   static async saveHelper(friendsStr: string) {

@@ -1268,7 +1268,7 @@ export default class OnlineServicesUtils {
     typeId?: number, // 无:全部 1:地图 2:服务 3:场景 4:数据 5:洞察 6:大屏
   }): Promise<ResultDataBase<MyCreateData>> => {
     try {
-      const url = `https://www.supermapol.com/web/online/resource/mycreate/datas?_t=${new Date().getTime().toString()}` + this._obj2params(params)
+      const url = `https://www.supermapol.com/web/online/resource/mycreate/datas?${this._obj2params(params)}&_t=${new Date().getTime().toString()}`
 
       let headers = {}
       const cookie = await this.getCookie(true)
@@ -1278,10 +1278,8 @@ export default class OnlineServicesUtils {
         }
       }
 
-      const result = await request(encodeURI(url), 'GET', {
-        headers: headers,
-        body: true,
-      })
+      const response = await RNFetchBlob.config({ trusty: true }).fetch('GET', encodeURI(url), headers)
+      const result = await response.json()
       return result
     } catch(e) {
       return {
@@ -1303,11 +1301,8 @@ export default class OnlineServicesUtils {
         }
       }
 
-      const result = await request(encodeURI(url), 'DELETE', {
-        headers: headers,
-        body: true,
-      })
-      console.warn('deleteMyCreateData', dataId, result)
+      const response = await RNFetchBlob.config({ trusty: true }).fetch('DELETE', encodeURI(url), headers)
+      const result = await response.json()
       return result
     } catch(e) {
       return false

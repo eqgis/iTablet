@@ -259,6 +259,7 @@ function openScene(item) {
     // '场景已打开,请勿重复打开场景')
     return
   }
+  _params.setCurSceneInfo(item)
   SScene.openScence(item.name).then(async () => {
     SScene.setNavigationControlVisible(false)
     SScene.setListener()
@@ -301,7 +302,9 @@ function openOnlineScene(item) {
     )
     SScene.openOnlineScene(item.name, item.server).then(async result => {
       // SScene.openOnlineScene(name,server).then((result) => {
-  
+
+      _params.setCurSceneInfo(item)
+
       if (!result) {
         _params.setContainerLoading && _params.setContainerLoading(false)
         Toast.show(getLanguage(_params.language).Prompt.NO_SCENE)

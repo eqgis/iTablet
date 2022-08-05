@@ -263,6 +263,7 @@ class GroupSourceManagePage extends Component<Props, State> {
 
   componentDidMount() {
     this.servicesUtils?.getGroupInfo(this.props.currentGroup.id).then(groupInfo => {
+      if (!groupInfo) return
       this.props.setCurrentGroup(groupInfo.basicInfo)
       this.getGroupResources({
         pageSize: this.pageSize,

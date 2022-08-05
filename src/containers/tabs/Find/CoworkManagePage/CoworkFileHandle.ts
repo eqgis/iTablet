@@ -313,70 +313,30 @@ export default class CoworkFileHandle {
         deleteResult = _dataId && await SIPortalService.deleteMyData(dataId + '')
       }
       const dataId = await this.service?.getDataIdByName(UploadFileName)
-      const promise = new Promise(resolve => {
-        if (UserType.isOnlineUser(CoworkFileHandle.user)) {
-          // if (Platform.OS === 'android') {
-          //   UploadFileName = CoworkFileHandle.coworkFileName_ol
-          // }
-          if (dataId) {
-            this.service?.updateFileWithCheckCapacity(
-              dataId,
-              CoworkFileHandle.coworkListFile,
-              UploadFileName,
-              'WORKSPACE',
-            ).then(id => {
-              resolve(!!id)
-              CoworkFileHandle.uploading = false
-              CoworkFileHandle.waitUploading = false
-            })
-          } else {
-            this.service?.uploadFileWithCheckCapacity(
-              CoworkFileHandle.coworkListFile,
-              UploadFileName,
-              'WORKSPACE',
-            ).then(id => {
-              resolve(!!id)
-              CoworkFileHandle.uploading = false
-              CoworkFileHandle.waitUploading = false
-            })
-          }
-          // SOnlineService.uploadFile(
-          //   CoworkFileHandle.coworkListFile,
-          //   UploadFileName,
-          //   {
-          //     onResult: () => {
-          //       resolve(true)
-          //       CoworkFileHandle.uploading = false
-          //       CoworkFileHandle.waitUploading = false
-          //     },
-          //   },
-          // )
-        } else if (UserType.isIPortalUser(CoworkFileHandle.user)) {
-          if (dataId) {
-            this.service?.updateFileWithCheckCapacity(
-              dataId,
-              CoworkFileHandle.coworkListFile,
-              UploadFileName,
-              'WORKSPACE',
-            ).then(result => {
-              resolve(result)
-              CoworkFileHandle.uploading = false
-              CoworkFileHandle.waitUploading = false
-            })
-          } else {
-            this.service?.uploadFileWithCheckCapacity(
-              CoworkFileHandle.coworkListFile,
-              UploadFileName,
-              'WORKSPACE',
-            ).then(result => {
-              resolve(result)
-              CoworkFileHandle.uploading = false
-              CoworkFileHandle.waitUploading = false
-            })
-          }
+      return new Promise(resolve => {
+        if (dataId) {
+          this.service?.updateFileWithCheckCapacity(
+            dataId,
+            CoworkFileHandle.coworkListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            CoworkFileHandle.uploading = false
+            CoworkFileHandle.waitUploading = false
+          })
+        } else {
+          this.service?.uploadFileWithCheckCapacity(
+            CoworkFileHandle.coworkListFile,
+            UploadFileName,
+            'WORKSPACE',
+          ).then(id => {
+            resolve(!!id)
+            CoworkFileHandle.uploading = false
+            CoworkFileHandle.waitUploading = false
+          })
         }
       })
-      return promise
     } catch(e) {
       CoworkFileHandle.uploading = false
       CoworkFileHandle.waitUploading = false

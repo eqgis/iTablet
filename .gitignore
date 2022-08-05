@@ -59,6 +59,10 @@ buck-out/
 # Bundle artifact
 *.jsbundle
 
+bundle/*
+applets/*
+package_*
+
 .idea/
 .gradle/
 android/keystores/
@@ -74,9 +78,9 @@ android/app/src/main/assets/python_android_assets/*.so
 android/app/src/main/assets/python_android_assets/*PIL.zip
 android/app/src/main/assets/python_android_assets/*python2.7.zip
 
-ios/SuperMap.framework
+ios/iPhoneOS.sdk/SuperMap.framework
+ios/iPhoneOS.sdk/JRE.framework
 ios/Trial_License.slm
-ios/iPhoneOS.sdk
 ios/iPhoneSimulator.sdk
 ios/MessageQueue.sdk
 ios/iTablet-tvOS
@@ -87,7 +91,7 @@ ios/Pods
 package-lock.json
 yarn.lock
 .vscode/
-Trial_License.slm
+JRE.frameworkTrial_License.slm
 *.txt
 *.bin
 *.json

@@ -10,6 +10,7 @@ import { UserType } from '../constants'
 import { getLanguage } from '../language'
 import { Toast } from '../utils'
 import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
+import { MyCreateData, ResultDataBase } from 'imobile_for_reactnative/types/interface/iserver/types'
 import RNFetchBlob from 'rn-fetch-blob'
 import { TLoginUserType } from '../constants/UserType'
 import { UserInfo } from '../types'
@@ -572,18 +573,21 @@ export default class OnlineServicesUtils {
    * 上传文件前检查空间是否足够
    */
   async uploadFileWithCheckCapacity(filePath: string, fileName: string, fileType: keyof OnlineDataType, callback?: UploadCallBack, info?: { isCapacityEnough: boolean }) {
-    const capacity = await this.getMyDataCapacity()
-    if (capacity) {
-      const stat = await RNFetchBlob.fs.stat(filePath)
-      const isEnough = parseInt(stat.size) + capacity.usedCapacity < capacity.maxCapacity
-      info && (info.isCapacityEnough = isEnough)
-      if (!isEnough) {
-        return false
+    try {
+      const capacity = await this.getMyDataCapacity()
+      if (capacity) {
+        const stat = await RNFetchBlob.fs.stat(filePath)
+        const isEnough = parseInt(stat.size) + capacity.usedCapacity < capacity.maxCapacity
+        info && (info.isCapacityEnough = isEnough)
+        if (!isEnough) {
+          return false
+        }
       }
+
+      return await this.uploadFile(filePath, fileName, fileType, callback)
+    } catch (e) {
+      return false
     }
-
-    return await this.uploadFile(filePath, fileName, fileType, callback)
-
   }
 
   /**
@@ -1253,6 +1257,55 @@ export default class OnlineServicesUtils {
     } catch (e) {
       // AppLog.error(e)
       return null
+    }
+  }
+
+  // https://www.supermapol.com/web/online/resource/mycreate/datas?typeId=1&pageSize=12&currentPage=1&orderBy=UPDATE_TIME&orderType=DESC&keywords=friend&_t=1659506540333
+  findMyCreateData = async (params: {
+    keywords?: string,
+    pageSize?: number,
+    currentPage?: number,
+    typeId?: number, // 无:全部 1:地图 2:服务 3:场景 4:数据 5:洞察 6:大屏
+  }): Promise<ResultDataBase<MyCreateData>> => {
+    try {
+      const url = `https://www.supermapol.com/web/online/resource/mycreate/datas?${this._obj2params(params)}&_t=${new Date().getTime().toString()}`
+
+      let headers = {}
+      const cookie = await this.getCookie(true)
+      if (cookie) {
+        headers = {
+          cookie: cookie,
+        }
+      }
+
+      const response = await RNFetchBlob.config({ trusty: true }).fetch('GET', encodeURI(url), headers)
+      const result = await response.json()
+      return result
+    } catch(e) {
+      return {
+        total: 0,
+        content: [],
+      }
+    }
+  }
+
+  deleteMyCreateData = async (dataId: number): Promise<boolean> => {
+    try {
+      const url = `https://www.supermapol.com/web/mycontent/datas/` + dataId
+
+      let headers = {}
+      const cookie = await this.getCookie(true)
+      if (cookie) {
+        headers = {
+          cookie: cookie,
+        }
+      }
+
+      const response = await RNFetchBlob.config({ trusty: true }).fetch('DELETE', encodeURI(url), headers)
+      const result = await response.json()
+      return result
+    } catch(e) {
+      return false
     }
   }
 

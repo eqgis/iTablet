@@ -1710,6 +1710,7 @@ export const language_tr: typeof language_cn = {
   ALIAS: "Takma Ad",
   ASCENDING: "Artan",
   DESCENDING: "Azalan",
+  UNIQUE: "Miktar",
 
   THEME_LEGEND: "Tema Lejantı",
   COLUMN_NAV_BAR: "Dikey Gezinme Çubuğu Yatay Olduğunda",
@@ -2189,9 +2190,6 @@ export const language_tr: typeof language_cn = {
   LICENSE_TRIAL: "Deneme Lisansı",
   LICENSE_OFFICIAL: "Resmi Lisans",
   LICENSE_STATE: "Lisans Durumu",
-  LICENSE_SURPLUS: "Fazla",
-  LICENSE_YEAR: "Yıl",
-  LICENSE_DAY: " Gün",
   LICENSE_PERMANENT: "kalıcı",
   LICENSE_CONTAIN_MODULE: "Lisans Modülü İçerir",
   LICENSE_CONTAIN_EXPAND_MODULE: "Lisans Modülü İçerir",
@@ -2223,7 +2221,6 @@ export const language_tr: typeof language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "Yerel resmi lisans dosyası yok, Lütfen '/ iTablet / license /' file 'dosyasına 'Official_License' lisans dosyasını ekleyin",
   LICENSE_NOT_ITABLET_OFFICAL: "Bu resmi lisans iTablette aktif değil, lütfen lisansı temizlemek ve yeniden etkinleştirmek için lisans sayfasına gidin",
   LICENSE_NATIVE_EXPIRE: "Yerel Lisans Geçersiz",
-  LICENSE_LONG_EFFECTIVE: "Uzun vadeli etkili",
   LICENSE_OFFLINE: "Çevrimdışı Lisans",
   LICENSE_CLOUD: "Bulut Lisans",
   LICENSE_PRIVATE_CLOUD: "Özel Bulut Lisans",
@@ -2832,4 +2829,12 @@ export const language_tr: typeof language_cn = {
   THE_FIRST: 'İlk Resim',
   THE_LAST: 'Son Resim',
 
+
+  DAYS: 'day(s)',  // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
 }

@@ -86,13 +86,11 @@ class ChartManager extends Component<Props, State> {
       // 是柱状图 修改状态，就获取数据作为页面的初始化数据
       // const layer01 = this.props.arMapInfo?.currentLayer
       // const element = AppToolBar.getData().selectARElement
-      const layer = ToolbarModule.getParams()?.arlayer.currentLayer
       // const element = ToolbarModule.getData().selectARElement
       const element = AppToolBar.getData().selectARElement
 
-      console.warn("layer: " + layer.name + " - " + layer.t)
-      if(layer && element){
-        const charData = await SARMap.getBarChartData(layer?.name, element?.id)
+      if(element){
+        const charData = await SARMap.getBarChartData(element?.layerName, element?.id)
         data = charData.data
         unit = charData.unit
       }
@@ -100,11 +98,10 @@ class ChartManager extends Component<Props, State> {
       // 饼图 更新状态，就获取饼图的数据作为页面的初始化数据
       // const layer = this.props.arMapInfo?.currentLayer
       // const element = AppToolBar.getData().selectARElement
-      const layer = ToolbarModule.getParams()?.arlayer.currentLayer
       // const element = ToolbarModule.getData().selectARElement
       const element = AppToolBar.getData().selectARElement
-      if(layer && element){
-        data = await SARMap.getPieChartData(layer?.name, element?.id)
+      if(element){
+        data = await SARMap.getPieChartData(element?.layerName, element?.id)
       }
     } else {
       // 没有状态，默认新增状状态就是，使用默认的数据作为页面渲染的初始数据
@@ -140,15 +137,14 @@ class ChartManager extends Component<Props, State> {
       // 当type为柱状图更新时，就调用更新的方法，并退出这个界面
       // const layer = this.props.arMapInfo?.currentLayer
       // const element = AppToolBar.getData().selectARElement
-      const layer = ToolbarModule.getParams()?.arlayer.currentLayer
       // const element = ToolbarModule.getData().selectARElement
       const element = AppToolBar.getData().selectARElement
-      if(layer && element){
+      if(element){
         const chartData = {
           data: this.state.data,
           unit: this.state.unit
         }
-        await SARMap.updateBarChart(layer.name, chartData, element.id)
+        await SARMap.updateBarChart(element?.layerName, chartData, element.id)
       }
       this.props.navigation.goBack()
     }else if(type === 'pieChartAdd'){
@@ -173,11 +169,10 @@ class ChartManager extends Component<Props, State> {
       // 饼图更新
       // const layer = this.props.arMapInfo?.currentLayer
       // const element = AppToolBar.getData().selectARElement
-      const layer = ToolbarModule.getParams()?.arlayer.currentLayer
       // const element = ToolbarModule.getData().selectARElement
       const element = AppToolBar.getData().selectARElement
-      if(layer && element){
-        await SARMap.updatePieChart(layer.name, this.state.data, element.id)
+      if(element){
+        await SARMap.updatePieChart(element?.layerName, this.state.data, element.id)
       }
       this.props.navigation.goBack()
     } else {

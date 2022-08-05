@@ -9,10 +9,11 @@ import { ARElement } from 'imobile_for_reactnative/types/interface/ar'
 import * as ARMapModule from './ModuleData'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { ConstToolType } from '@/constants'
+import { ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 type Props = ModuleViewProps<unknown>
 
 interface State {
-  addAnimations: string[]
+  addAnimations: ModelAnimation[]
   currentArElement?: ARElement
   showAdd: boolean
 }

@@ -76,7 +76,7 @@
 		4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9028378DEA0045CB07 /* publicMap.txt */; };
 		4E28CE9528378DFD0045CB07 /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9428378DFD0045CB07 /* PIL */; };
 		5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */; };
-		657E3D50288FC06600CC0448 /* ARListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 657E3D4F288FC06600CC0448 /* ARListView.xib */; };
+		65B76A7E289D0E62001888E6 /* ARListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65B76A7D289D0E62001888E6 /* ARListView.xib */; };
 		65D43B92288E759D00C3391B /* ARImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65D43B91288E759D00C3391B /* ARImageView.xib */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E13A5CAE28752B6C004DFA1E /* InfoPlist.strings */; };
@@ -283,7 +283,7 @@
 		4E28CE8F28378DEA0045CB07 /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
 		4E28CE9028378DEA0045CB07 /* publicMap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = publicMap.txt; sourceTree = "<group>"; };
 		4E28CE9428378DFD0045CB07 /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
-		657E3D4F288FC06600CC0448 /* ARListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARListView.xib; sourceTree = "<group>"; };
+		65B76A7D289D0E62001888E6 /* ARListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARListView.xib; sourceTree = "<group>"; };
 		65D43B91288E759D00C3391B /* ARImageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARImageView.xib; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iTablet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iTablet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -461,7 +461,7 @@
 				0AC8AEF72808109F00435541 /* resources.bundle */,
 				0AC8AEF82808109F00435541 /* PlotLibData.zip */,
 				65D43B91288E759D00C3391B /* ARImageView.xib */,
-				657E3D4F288FC06600CC0448 /* ARListView.xib */,
+				65B76A7D289D0E62001888E6 /* ARListView.xib */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -818,7 +818,7 @@
 				65D43B92288E759D00C3391B /* ARImageView.xib in Resources */,
 				0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */,
 				E565E995286309A5007797E3 /* detect.tflite in Resources */,
-				657E3D50288FC06600CC0448 /* ARListView.xib in Resources */,
+				65B76A7E289D0E62001888E6 /* ARListView.xib in Resources */,
 				0AC8AF022808109F00435541 /* Images.zip in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */,
@@ -843,7 +843,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -851,7 +851,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};

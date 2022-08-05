@@ -68,6 +68,8 @@ export {
   pinyin,
   DownloadUtil,
   AppStyle,
+  AppLog,
+  AppToolBar,
   AppEvent,
   AppUser,
   AppDialog,

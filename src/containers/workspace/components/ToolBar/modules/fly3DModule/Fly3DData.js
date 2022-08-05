@@ -34,7 +34,11 @@ async function getFlyList() {
     },
   ]
   try {
-    const flyData = await SScene.getFlyRouteNames()
+    let flyData = []
+    // 只有本地场景才有飞行列表数据，在线场景没有飞行列表数据
+    if(!params.sceneInfo.isOnlineScence){
+      flyData = await SScene.getFlyRouteNames()
+    }
     flyData.forEach(
       item =>
         (item.image = require('../../../../../../assets/function/Frenchgrey/icon_symbolFly.png')),

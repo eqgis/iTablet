@@ -149,6 +149,7 @@ static NSString* g_sampleCodeName = @"#";;
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  [AppInfo setKeyWindow:self.window];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   _nav=[[UINavigationController alloc]initWithRootViewController:rootViewController];
@@ -210,7 +211,8 @@ static NSString* g_sampleCodeName = @"#";;
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
-  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
+//  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
+  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.65"];
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
@@ -235,7 +237,8 @@ static NSString* g_sampleCodeName = @"#";;
   } else {
     #if DEBUG
 //    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.199"];
+//    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.199"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.65"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

@@ -61,7 +61,6 @@ export default class MapEditConfig extends Module {
       defaultMapName: this.getExampleName(language)[0].mapName,
       baseMapSource: LayerUtils.getDefaultBaseMapData(language),
       baseMapIndex: 3,
-      licenceType: 0x01,
       mapType: this.mapType,
     })
   }

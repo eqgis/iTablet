@@ -4,7 +4,7 @@ import { color } from '../../../../../styles'
 import { ToolBarSlideItem } from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarSlide'
 import { Slider } from 'imobile_for_reactnative/components'
 import { getImage } from '@/assets'
-import { AppStyle, dp } from '@/utils'
+import { AppStyle, dp, Toast } from '@/utils'
 import { getLanguage } from '@/language'
 
 export interface ToolBarSlideOption {
@@ -39,9 +39,10 @@ class ToolBarSlide extends React.Component<Props, State> {
     }
   }
 
-  shouldComponentUpdate(nextProps: Props) {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
       JSON.stringify(nextProps) !== JSON.stringify(this.props)
+      || JSON.stringify(nextState) !== JSON.stringify(this.state)
     )
   }
 
@@ -91,12 +92,15 @@ class ToolBarSlide extends React.Component<Props, State> {
     )
   }
 
-  renderItems = (): JSX.Element[] => {
+  renderItems = (): JSX.Element[] | null => {
     const items = []
-    for(let i = 0; i < this.props.data.data.length; i++) {
-      items.push(this.renderItem(this.props.data.data[i], i))
+    if(this.props.data && this.props.data.data && this.props.data.data instanceof Array){
+      for(let i = 0; i < this.props.data.data.length; i++) {
+        items.push(this.renderItem(this.props.data.data[i], i))
+      }
+      return items
     }
-    return items
+    return null
   }
 
 
@@ -128,12 +132,21 @@ class ToolBarSlide extends React.Component<Props, State> {
                 returnKeyType ={'done'}
                 placeholderTextColor={'black'}
                 keyboardType={'numeric'}
+                value={this.state.slideRatio + ''}
                 defaultValue={this.state.slideRatio + ''}
                 onChange={e => {
                   const value = Number(e.nativeEvent.text)
-                  if(!isNaN(value) && value > 0) {
+                  if(!isNaN(value) && value >= 0) {
                     this.setState({
                       slideRatio: value
+                    })
+                  }
+                }}
+                onEndEditing={() => {
+                  if(this.state.slideRatio <= 0) {
+                    Toast.show(getLanguage().ONLY_POSITIVE_INTEGER)
+                    this.setState({
+                      slideRatio: 1
                     })
                   }
                 }}

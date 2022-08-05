@@ -1710,6 +1710,7 @@ export const language_tr: typeof language_cn = {
   ALIAS: "Takma Ad",
   ASCENDING: "Artan",
   DESCENDING: "Azalan",
+  UNIQUE: "Miktar",
 
   THEME_LEGEND: "Tema Lejantı",
   COLUMN_NAV_BAR: "Dikey Gezinme Çubuğu Yatay Olduğunda",
@@ -2189,9 +2190,6 @@ export const language_tr: typeof language_cn = {
   LICENSE_TRIAL: "Deneme Lisansı",
   LICENSE_OFFICIAL: "Resmi Lisans",
   LICENSE_STATE: "Lisans Durumu",
-  LICENSE_SURPLUS: "Fazla",
-  LICENSE_YEAR: "Yıl",
-  LICENSE_DAY: " Gün",
   LICENSE_PERMANENT: "kalıcı",
   LICENSE_CONTAIN_MODULE: "Lisans Modülü İçerir",
   LICENSE_CONTAIN_EXPAND_MODULE: "Lisans Modülü İçerir",
@@ -2223,7 +2221,6 @@ export const language_tr: typeof language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "Yerel resmi lisans dosyası yok, Lütfen '/ iTablet / license /' file 'dosyasına 'Official_License' lisans dosyasını ekleyin",
   LICENSE_NOT_ITABLET_OFFICAL: "Bu resmi lisans iTablette aktif değil, lütfen lisansı temizlemek ve yeniden etkinleştirmek için lisans sayfasına gidin",
   LICENSE_NATIVE_EXPIRE: "Yerel Lisans Geçersiz",
-  LICENSE_LONG_EFFECTIVE: "Uzun vadeli etkili",
   LICENSE_OFFLINE: "Çevrimdışı Lisans",
   LICENSE_CLOUD: "Bulut Lisans",
   LICENSE_PRIVATE_CLOUD: "Özel Bulut Lisans",
@@ -2765,6 +2762,7 @@ export const language_tr: typeof language_cn = {
   ONLY_INTEGER: "Yalnızca tamsayılar girilebilir!",
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
   PARAMS_ERROR: "Parametre hatası, ayar başarısız!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "Aşağıdakileri seçebilirsiniz: \n'Yaklaş'，'Uzaklaş'，'Yerleştir'，'Kapat',\n 'Ara' ya da herhangi bir Adres",
   SPEECH_ERROR: "Tanımlı hata, lütfen daha sonra tekrar deneyiniz",
@@ -2828,4 +2826,15 @@ export const language_tr: typeof language_cn = {
   INPUT_URL: "Lütfen URL''yi Girin",
   INPUT_NAME: 'Lütfen adı girin',
 
+  THE_FIRST: 'İlk Resim',
+  THE_LAST: 'Son Resim',
+
+
+  DAYS: 'day(s)',  // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
 }

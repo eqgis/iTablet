@@ -3,8 +3,8 @@ import { View, TouchableOpacity, Image, Text } from 'react-native'
 import { getLanguage } from '../../../../../language/index'
 import { color } from '../../../../../styles'
 import { scaleSize } from '../../../../../utils'
-import moment from 'moment'
 import styles from '../styles'
+import { SMap } from 'imobile_for_reactnative'
 
 const LicenseType = {
   none: -1,
@@ -17,7 +17,7 @@ const LicenseType = {
 
 export default class LicenseInfo extends Component {
   props: {
-    licenseInfo: Object,
+    licenseInfo: SMap.LicenseInfo,
     selectLicenseType: () => {},
     recycleLicense: () => {},
     containModule: () => {},
@@ -110,41 +110,13 @@ export default class LicenseInfo extends Component {
       daysStr = ''
     } else {
       licenseType = licenseInfo.licenseType
-      let days = 0
-      let yearDays = 365
       if (licenseInfo.expireDate) {
-        let timeStr = ''
-        timeStr = licenseInfo.expireDate
-        let tempTimeStr =
-          timeStr.slice(0, 4) +
-          '-' +
-          timeStr.slice(4, 6) +
-          '-' +
-          timeStr.slice(6) +
-          ' 00:00'
-        let date1 = new Date()
-        let date2 = moment(tempTimeStr,"YYYY-MM-DD HH:mm").toDate()
-        days = Math.ceil(
-          (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24),
-        ) + 1
-        if (days < 0) {
-          days = 0
-        }
-      }
-      if (days >= yearDays * 20) {
-        daysStr = getLanguage(global.language).Profile.LICENSE_LONG_EFFECTIVE
-      } else if (days > yearDays) {
-        daysStr =
-          getLanguage(global.language).Profile.LICENSE_SURPLUS +
-          days / yearDays +
-          getLanguage(global.language).Profile.LICENSE_YEAR +
-          (days % yearDays) +
-          getLanguage(global.language).Profile.LICENSE_DAY
-      } else {
-        daysStr =
-          getLanguage(global.language).Profile.LICENSE_SURPLUS +
-          days +
-          getLanguage(global.language).Profile.LICENSE_DAY
+        const expireDate = licenseInfo.expireDate
+        const year = expireDate.substring(0, 4)
+        const month = expireDate.substring(4, 6)
+        const date = expireDate.substring(6)
+
+        daysStr = `${year}/${month}/${date}`
       }
     }
 
@@ -154,6 +126,9 @@ export default class LicenseInfo extends Component {
       licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_OFFLINE
     } else if (licenseType === LicenseType.cloud) {
       licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_CLOUD
+      if(licenseInfo.isCloudTrial) {
+        licenseTypeTitle = getLanguage(global.language).Profile.LICENSE_TRIAL
+      }
     } else if (licenseType === LicenseType.privateCloud) {
       licenseTypeTitle = getLanguage(global.language).Profile
         .LICENSE_PRIVATE_CLOUD
@@ -178,7 +153,7 @@ export default class LicenseInfo extends Component {
             action={this.props.selectLicenseType}
           />
           <InfoItem
-            text={getLanguage(global.language).Profile.LICENSE_STATE}
+            text={getLanguage(global.language).Profile.EXPIRE_DATE}
             info={daysStr}
           />
           <InfoItem
@@ -187,12 +162,13 @@ export default class LicenseInfo extends Component {
           />
         </View>
 
-        {licenseType === LicenseType.trial && this.renderTrial()}
+        {/* {licenseType === LicenseType.trial && this.renderTrial()} */}
         {licenseType !== LicenseType.trial &&
+          !licenseInfo.isCloudTrial &&
           licenseType !== LicenseType.none &&
           this.renderModule()}
         {(licenseType === LicenseType.local ||
-          licenseType === LicenseType.cloud) &&
+          (licenseType === LicenseType.cloud && !licenseInfo.isCloudTrial)) &&
           this.renderRecycle()}
       </View>
     )
@@ -201,8 +177,8 @@ export default class LicenseInfo extends Component {
 
 class InfoItem extends Component {
   props: {
-    text: String,
-    info: String,
+    text: string,
+    info: string,
     rightImage: Object,
     action: () => {},
   }

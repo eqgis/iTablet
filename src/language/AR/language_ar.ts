@@ -1724,6 +1724,7 @@ export const language_ar: typeof language_cn = {
   ALIAS: "الاسم الاخر",
   ASCENDING: "تصاعدي",
   DESCENDING: "تنازلى",
+  UNIQUE: "عدد",
 
   THEME_LEGEND: "عنوان تفسيرى للموضوع",
   COLUMN_NAV_BAR: "شريط التنقل العمودي عند الأفقي",
@@ -2205,9 +2206,6 @@ export const language_ar: typeof language_cn = {
   LICENSE_TRIAL: "رخصة تجريبية",
   LICENSE_OFFICIAL: "الرخصة الرسمية",
   LICENSE_STATE: "حالة الرخصة",
-  LICENSE_SURPLUS: "فائض ارخصة",
-  LICENSE_YEAR: "السنة",
-  LICENSE_DAY: "يوم",
   LICENSE_PERMANENT: "دائم",
   LICENSE_CONTAIN_MODULE: "ترخيص يحتوي على وحدة",
   LICENSE_CONTAIN_EXPAND_MODULE: "الترخيص يحتوي على توسيع محتوى الوحدة ",
@@ -2241,7 +2239,6 @@ export const language_ar: typeof language_cn = {
   LICENSE_NATIVE_EXPIRE: "رخصة أصلية غير صالحة",
 
 
-  LICENSE_LONG_EFFECTIVE: "طويل الأمد",
   LICENSE_OFFLINE: "ترخيص بدون الاتصال بالإنترنت",
   LICENSE_CLOUD: "ترخيص السحابي",
   LICENSE_PRIVATE_CLOUD: "ترخيص سحابي خاص",
@@ -2788,6 +2785,7 @@ export const language_ar: typeof language_cn = {
   ONLY_INTEGER: "يمكن إدخال الأعداد الصحيحة فقط!",
   ONLY_INTEGER_GREATER_THAN_2: "يمكن إدخال الأعداد الصحيحة الأكبر من 2 فقط!",
   PARAMS_ERROR: "خطاء فى المعاملات! فشل التعيين!",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "يمكنك أن تقول",
   SPEECH_ERROR: "التعرف على الخطأ ، يرجى المحاولة مرة أخرى في وقت لاحق",
@@ -2853,4 +2851,15 @@ export const language_ar: typeof language_cn = {
   INPUT_URL: 'الرجاء إدخال رابط',
   INPUT_NAME: 'من فضلك أدخل الاسم',
 
+  THE_FIRST: 'الصورة الأولى',
+  THE_LAST: 'الصورة الأخيرة',
+
+
+  DAYS: 'day(s)',  // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
 }

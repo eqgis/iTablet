@@ -1713,6 +1713,7 @@ export const language_cn = {
   ALIAS: "别名",
   ASCENDING: "升序",
   DESCENDING: "降序",
+  UNIQUE: "单值",
 
   THEME_LEGEND: "专题图图例",
   COLUMN_NAV_BAR: "横屏时纵向显示导航栏",
@@ -2191,9 +2192,6 @@ export const language_cn = {
   LICENSE_TRIAL: "试用许可",
   LICENSE_OFFICIAL: "正式许可",
   LICENSE_STATE: "许可状态",
-  LICENSE_SURPLUS: "剩余",
-  LICENSE_YEAR: "年",
-  LICENSE_DAY: "天",
   LICENSE_PERMANENT: "永久",
   LICENSE_CONTAIN_MODULE: "所含模块",
   LICENSE_CONTAIN_EXPAND_MODULE: "所含拓展模块",
@@ -2225,7 +2223,6 @@ export const language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "没有本地正式许可文件，请在/iTablet/license/文件夹下添加Official_License许可文件",
   LICENSE_NOT_ITABLET_OFFICAL: "该正式许可不是iTablet内激活的许可，将导致iTablet部分功能不可用，请到许可页面清除许可后重新申请",
   LICENSE_NATIVE_EXPIRE: "本地许可无效",
-  LICENSE_LONG_EFFECTIVE: "长期有效",
   LICENSE_OFFLINE: "离线许可",
   LICENSE_CLOUD: "云许可",
   LICENSE_PRIVATE_CLOUD: "私有云许可",
@@ -2766,6 +2763,7 @@ export const language_cn = {
   ONLY_INTEGER: "只能输入整数！",
   ONLY_INTEGER_GREATER_THAN_2: "只能输入大于2的整数！",
   PARAMS_ERROR: "参数错误，设置失败！",
+  ONLY_POSITIVE_INTEGER: "只能输入正整数！",
 
   SPEECH_TIP: "您可以说:\n\"放大\"，\"缩小\"，\"定位\"，\"关闭\"，\"搜索\"或者地名",
   SPEECH_ERROR: "识别出错，请稍后再试",
@@ -2829,4 +2827,15 @@ export const language_cn = {
   INPUT_URL: '请输入网址',
   INPUT_NAME: '请输入名称',
 
+  THE_FIRST: '已经是第一张了',
+  THE_LAST: '已经是最后一张了',
+
+
+  DAYS: '天',
+  EXPIRE_DATE: '有效期',
+
+  OPEN_3D_SCENE: '请先打开三维场景',
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: '在线三维场景不支持分享',
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: '该许可已在其他设备上激活',
 }

@@ -1713,6 +1713,7 @@ export const language_ja: typeof language_cn = {
   ALIAS: "識別名",
   ASCENDING: "昇順",
   DESCENDING: "降順",
+  UNIQUE: "個別値",
 
   THEME_LEGEND: "主題図凡例",
   COLUMN_NAV_BAR: "横向きの時にツールバーを縦表示",
@@ -2192,9 +2193,6 @@ export const language_ja: typeof language_cn = {
   LICENSE_TRIAL: "トライアルライセンス",
   LICENSE_OFFICIAL: "正式ライセンス",
   LICENSE_STATE: "ライセンス状態",
-  LICENSE_SURPLUS: "残り",
-  LICENSE_YEAR: "年",
-  LICENSE_DAY: "日",
   LICENSE_PERMANENT: "無期限",
   LICENSE_CONTAIN_MODULE: "モジュール",
   LICENSE_CONTAIN_EXPAND_MODULE: "拡張モジュール",
@@ -2226,7 +2224,6 @@ export const language_ja: typeof language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "ローカル正式ライセンスファイルはありません。/iTablet/license/フォルダにOfficial_Licenseライセンスファイルを追加してください",
   LICENSE_NOT_ITABLET_OFFICAL: "当正式ライセンスはiTablet内でアクティブするライセンスではありません。iTabletの部分の機能を使用できません。ライセンスページでライセンスをクリアして、再申請ください",
   LICENSE_NATIVE_EXPIRE: "ローカルライセンス无效",
-  LICENSE_LONG_EFFECTIVE: "無期限",
   LICENSE_OFFLINE: "オフラインライセンス",
   LICENSE_CLOUD: "クラウドライセンス",
   LICENSE_PRIVATE_CLOUD: "プライベートクラウドライセンス",
@@ -2768,6 +2765,7 @@ export const language_ja: typeof language_cn = {
   ONLY_INTEGER: "整数を入力してください",
   ONLY_INTEGER_GREATER_THAN_2: "２より大きい整数を入力してください",
   PARAMS_ERROR: "パラメタエラー、設定に失敗しました！",
+  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
 
   SPEECH_TIP: "使用可能語句：\n\"拡大\"、\"縮小\"、\"ポジショニング\"、\"閉じる\"",
   SPEECH_ERROR: "識別に異常が発生します。後で再度試してください。",
@@ -2830,5 +2828,17 @@ export const language_ja: typeof language_cn = {
   INPUT_TEXT: 'テキストを入力してください',
   INPUT_URL: 'URLを入力してください',
   INPUT_NAME: '名前を入力してください',
+
+  THE_FIRST: '最初の画像',
+  THE_LAST: '最後の画像',
+
+
+  DAYS: 'day(s)',  // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
 
 }

@@ -72,7 +72,6 @@ public class MainActivity extends ReactActivity {
 //        initEnvironment();
 //        initDefaultData();
     appManager.getAppManager().addActivity(this);
-    IWXAPI iwxapi=appManager.getAppManager().registerWechat(this);
     FileTools.saveUri(this);
 
     //注册网络状态监听广播

@@ -48,6 +48,7 @@ import ToolbarModule from '../../components/ToolBar/modules/ToolbarModule'
 import { BackHandlerUtil } from '../../util'
 import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
 import { Bar } from 'react-native-progress'
+import sceneInfoType from '../../../../redux/models/scenes'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
@@ -66,6 +67,8 @@ export default class Map3D extends React.Component {
     setAttributes: () => {},
     exportmap3DWorkspace: () => {},
     refreshLayer3dList: () => {},
+    resetLayer3dList: () => {},
+    setCurSceneInfo: (params: typeof sceneInfoType | null) => void,
     user: Object,
     device: Object,
     appConfig: Object,
@@ -116,8 +119,8 @@ export default class Map3D extends React.Component {
         true,
         getLanguage(this.props.language).Prompt.LOADING,
       )
-      
-      
+
+
       this.unsubscribeFocus = () => {
         if (this.showFullonBlur) {
           this.showFullMap(false)
@@ -322,6 +325,15 @@ export default class Map3D extends React.Component {
         }
         this.getLayers()
         this.props.refreshLayer3dList && this.props.refreshLayer3dList()
+        const defaultSceneInfo: sceneInfoType = {
+          name: this.name,
+          server: '',
+          mtime: '',
+          isOnlineScence: false,
+          image: 611,
+          rightView: undefined,
+        }
+        this.props.setCurSceneInfo && this.props.setCurSceneInfo(defaultSceneInfo)
       }).catch(() =>{
         //reject异常处理 zhangxt
         setTimeout(() => {
@@ -507,6 +519,9 @@ export default class Map3D extends React.Component {
         // await SScene.saveWorkspace()
       this.mapController?.stopCompass()
       await SScene.closeWorkspace()
+      // 重置redux里的3d图层数据
+      this.props.resetLayer3dList && await this.props.resetLayer3dList()
+      this.props.setCurSceneInfo && await this.props.setCurSceneInfo()
       this.container && this.container.setLoading(false)
       this.closeSample()
       NavigationService.goBack()
@@ -1131,71 +1146,71 @@ export default class Map3D extends React.Component {
     )
   }
 
-    //三维浏览引导界面 add jiakai
-    renderMapSceneGuideView = () => {
-      return(
-        <GuideViewMapSceneModel
-          language={this.props.language}
-          device={this.props.device}
-        />
-      )
-    }
+  //三维浏览引导界面 add jiakai
+  renderMapSceneGuideView = () => {
+    return(
+      <GuideViewMapSceneModel
+        language={this.props.language}
+        device={this.props.device}
+      />
+    )
+  }
 
   //隐藏示范数据按钮
   closeSample = () =>{
     this.props.setSampleDataShow(false)
   }
 
-    /** 示范数据 */
-    _renderSampleData = () => {
-      let right
-      if (
-        this.props.device.orientation.indexOf('LANDSCAPE') === 0
-      ) {
-        right = {
-          right: scaleSize(120),
-          bottom: scaleSize(26),
-        }
-      } else {
-        right = {
-          right: scaleSize(20),
-          bottom: scaleSize(135),
-        }
+  /** 示范数据 */
+  _renderSampleData = () => {
+    let right
+    if (
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0
+    ) {
+      right = {
+        right: scaleSize(120),
+        bottom: scaleSize(26),
       }
-      return (
-        <View
-          style={[styles.iconSap, right]}
-        >
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => {
-              // this.closeSample()
-              NavigationService.navigate('SampleMap')
-            }}
-          >
-            <Animated.Image
-              style={{ width: scaleSize(120), height: scaleSize(120) ,transform:[{scale:this.state.samplescale}]}}
-              resizeMode={'contain'}
-              source={getThemeAssets().publicAssets.icon_tool_download}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={{
-              position: 'absolute',
-              width: scaleSize(40),
-              height: scaleSize(35),
-              right: 0,
-              top: 0,
-            }}
-            onPress={() => {
-              this.closeSample()
-            }}
-          ></TouchableOpacity>
-        </View>
-      )
+    } else {
+      right = {
+        right: scaleSize(20),
+        bottom: scaleSize(135),
+      }
     }
+    return (
+      <View
+        style={[styles.iconSap, right]}
+      >
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            // this.closeSample()
+            NavigationService.navigate('SampleMap')
+          }}
+        >
+          <Animated.Image
+            style={{ width: scaleSize(120), height: scaleSize(120) ,transform:[{scale:this.state.samplescale}]}}
+            resizeMode={'contain'}
+            source={getThemeAssets().publicAssets.icon_tool_download}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={{
+            position: 'absolute',
+            width: scaleSize(40),
+            height: scaleSize(35),
+            right: 0,
+            top: 0,
+          }}
+          onPress={() => {
+            this.closeSample()
+          }}
+        ></TouchableOpacity>
+      </View>
+    )
+  }
 
   renderContainer = () => {
     return (
@@ -1228,7 +1243,11 @@ export default class Map3D extends React.Component {
         bottomProps={{ type: 'fix' }}
       >
         {global.isLicenseValid && (
-          <SMSceneView style={styles.map} onGetScene={this._onGetInstance} />
+          <SMSceneView
+            style={styles.map}
+            moduleId={0x02}
+            onGetScene={this._onGetInstance}
+          />
         )}
         <SurfaceView
           ref={ref => (global.MapSurfaceView = ref)}

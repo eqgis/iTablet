@@ -224,7 +224,7 @@ function commit() {
         id = _data.selectARElement.id
         SARMap.appointEditElement(_data.selectARElement.id, _data.selectARElement.layerName)
       }
-      let transformData: IARTransform = {
+      const transformData: IARTransform = {
         layerName: _params.arlayer.currentLayer.name,
         id,
         type: 'position',
@@ -283,6 +283,7 @@ function showAnimationAction(type: string) {
       startPosition: { x: 0, y: 0, z: 0 },
       direction: 'x',
       distance: 1,
+      duration: 10 * 1000,
     }
     ToolbarModule.addData({ animationParam })
   } else if (type === ConstToolType.SM_AR_EDIT_ANIMATION_ROTATION) {
@@ -291,6 +292,7 @@ function showAnimationAction(type: string) {
       type: 'rotation',
       rotationAxis: { x: 1, y: 0, z: 0 },
       clockwise: true,
+      duration: 10 * 1000,
     }
     ToolbarModule.addData({ animationParam })
   }
@@ -321,7 +323,16 @@ function createAnimation(params?: IAnimation) {
         params && Object.assign(_data.animationParam, params)
         _data.animationParam.name = name
         // NavigationService.goBack('InputPage')
-        await SARMap.addNodeAnimation(_data.animationParam)
+        const id = await SARMap.addNodeAnimation(_data.animationParam)
+        if(id > -1) {
+          const selectARElement = _data?.selectARElement
+          if(selectARElement) {
+            await SARMap.clearAnimation(selectARElement.layerName, selectARElement.id)
+            SARMap.setAnimation(selectARElement.layerName, selectARElement.id, id)
+          } else{
+            console.error('没有选中对象')
+          }
+        }
         ToolbarModule.addData({ animationParam: null })
         DialogUtils.getInputDialog()?.setDialogVisible(false)
         showAnimationAction(ConstToolType.SM_AR_EDIT_ANIMATION)

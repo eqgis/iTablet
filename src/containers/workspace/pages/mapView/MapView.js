@@ -959,7 +959,6 @@ export default class MapView extends React.Component {
     if (global.Type === ChunkType.MAP_AR) {
       Dimensions.removeEventListener('change', this.onChange)
     }
-    SMap.setCurrentModule(0)
     if (
       global.Type === ChunkType.MAP_AR ||
       global.Type === ChunkType.MAP_AR_ANALYSIS ||
@@ -4957,6 +4956,13 @@ export default class MapView extends React.Component {
             }
             // }
           }}
+          onToast={(type) => {
+            if(type === 0){
+              Toast.show(getLanguage().THE_FIRST)
+            }else{
+              Toast.show(getLanguage().THE_LAST)
+            }
+          }}
         />
         {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderHeader()}
         {global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton && !this.props.showDatumPoint && this.renderBottomBtns()}
@@ -5006,6 +5012,29 @@ export default class MapView extends React.Component {
 
   px=  (size:number) =>{
     return PixelRatio.getPixelSizeForLayoutSize(size)
+  }
+
+  getModueId = () => {
+    switch(global.Type) {
+      case ChunkType.MAP_EDIT:
+        return 0x01
+      case ChunkType.MAP_THEME:
+        return 0x04
+      case ChunkType.MAP_COLLECTION:
+        return 0x08
+      case ChunkType.MAP_AR:
+      case ChunkType.MAP_AR_ANALYSIS:
+      case ChunkType.MAP_AR_MAPPING:
+        return 0x10
+      case ChunkType.MAP_NAVIGATION:
+        return 0x20
+      case ChunkType.MAP_ANALYST:
+        return 0x40
+      case ChunkType.MAP_PLOTTING:
+        return 0x80
+      default:
+        return undefined
+    }
   }
 
   renderContainer = () => {
@@ -5064,7 +5093,7 @@ export default class MapView extends React.Component {
           ]}>
             <SMMapView
               ref={ref => (global.mapView = ref)}
-              style={styles.map}
+              moduleId={this.getModueId()}
               onGetInstance={this._onGetInstance}
             />
           </View>

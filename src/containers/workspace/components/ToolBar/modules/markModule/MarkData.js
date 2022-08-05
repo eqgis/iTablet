@@ -276,13 +276,13 @@ async function getData(type, params) {
       // isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
       isTourLayer = await SMediaCollector.isTourLayer(event?.layerInfo?.name)
       data = [
-        {
-          key: constants.MOVE,
-          title: getLanguage(global.language).Map_Main_Menu.MOVE,
-          action: MarkAction.move,
-          size: 'large',
-          image: getThemeAssets().edit.icon_translation,
-        },
+        // {
+        //   key: constants.MOVE,
+        //   title: getLanguage(global.language).Map_Main_Menu.MOVE,
+        //   action: MarkAction.move,
+        //   size: 'large',
+        //   image: getThemeAssets().edit.icon_translation,
+        // },
         {
           key: constants.DELETE,
           title: getLanguage(global.language).Map_Main_Menu.EDIT_DELETE,
@@ -301,6 +301,13 @@ async function getData(type, params) {
       ]
       // if (!LayerUtils.isMediaData(event?.fieldInfo)&&!isTourLayer) {
       if (!isTourLayer) {
+        data.unshift({
+          key: constants.MOVE,
+          title: getLanguage(global.language).Map_Main_Menu.MOVE,
+          action: MarkAction.move,
+          size: 'large',
+          image: getThemeAssets().edit.icon_translation,
+        })
         data = data.concat([
           {
             key: constants.UNDO,

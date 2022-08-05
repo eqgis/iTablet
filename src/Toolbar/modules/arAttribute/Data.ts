@@ -103,8 +103,7 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
           layer.type !== ARLayerType.AR_TEXT_LAYER &&
           layer.type !== ARLayerType.AR_MODEL_LAYER &&
           layer.type !== ARLayerType.AR_WIDGET_LAYER &&
-          layer.type !== ARLayerType.AR_MEDIA_LAYER &&
-          layer.type !== ARLayerType.AR_SCENE_LAYER
+          layer.type !== ARLayerType.AR_MEDIA_LAYER
         ) {
           Toast.show(getLanguage().PLEASE_SELECT_AR_OBJECT_LAYER)
           return

@@ -76,8 +76,6 @@
 		4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9028378DEA0045CB07 /* publicMap.txt */; };
 		4E28CE9528378DFD0045CB07 /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9428378DFD0045CB07 /* PIL */; };
 		5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */; };
-		657E3D50288FC06600CC0448 /* ARListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 657E3D4F288FC06600CC0448 /* ARListView.xib */; };
-		65D43B92288E759D00C3391B /* ARImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65D43B91288E759D00C3391B /* ARImageView.xib */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E13A5CAE28752B6C004DFA1E /* InfoPlist.strings */; };
 		E13A5CB128752BFC004DFA1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E13A5CB328752BFC004DFA1E /* InfoPlist.strings */; };
@@ -283,8 +281,6 @@
 		4E28CE8F28378DEA0045CB07 /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
 		4E28CE9028378DEA0045CB07 /* publicMap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = publicMap.txt; sourceTree = "<group>"; };
 		4E28CE9428378DFD0045CB07 /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
-		657E3D4F288FC06600CC0448 /* ARListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARListView.xib; sourceTree = "<group>"; };
-		65D43B91288E759D00C3391B /* ARImageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARImageView.xib; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iTablet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iTablet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E13A5CA828752B25004DFA1E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = iTablet/en.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -460,8 +456,6 @@
 				0AC8AEE52808109F00435541 /* logo.png */,
 				0AC8AEF72808109F00435541 /* resources.bundle */,
 				0AC8AEF82808109F00435541 /* PlotLibData.zip */,
-				65D43B91288E759D00C3391B /* ARImageView.xib */,
-				657E3D4F288FC06600CC0448 /* ARListView.xib */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -815,10 +809,8 @@
 				E565E984286303CF007797E3 /* cascade.xml in Resources */,
 				E565E991286309A5007797E3 /* labelmap_cn.txt in Resources */,
 				4E28CE9228378DEA0045CB07 /* ARWebView.xib in Resources */,
-				65D43B92288E759D00C3391B /* ARImageView.xib in Resources */,
 				0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */,
 				E565E995286309A5007797E3 /* detect.tflite in Resources */,
-				657E3D50288FC06600CC0448 /* ARListView.xib in Resources */,
 				0AC8AF022808109F00435541 /* Images.zip in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */,

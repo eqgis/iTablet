@@ -430,7 +430,7 @@ function _getAddTab(): ToolbarTabItem[] {
   ]
 
   if(Platform.OS === 'ios') {
-    // tabData.splice(6, 1)
+    tabData.splice(6, 1)
     tabData.splice(4, 1)
   }
 

@@ -133,7 +133,6 @@ import Camera from './camera'
 import ClassifyView from './aiClassifyView'
 import ModelChoseView from './arModelChoseView'
 import ClassifyResultEditView from './aiClassifyResultEdit'
-import CollectSceneFormView from './arCollectSceneFormView'
 import EnterDatumPoint from './arEnterDatumPoint/EnterDatumPoint'
 import CollectSceneFormSet from './arEnterDatumPoint/CollectSceneFormSet'
 import ClassifySettingsView from './ClassifySettingsView'
@@ -359,7 +358,6 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ClassifyView" component={ClassifyView} />
       <Stack.Screen name="ModelChoseView" component={ModelChoseView} />
       <Stack.Screen name="ClassifyResultEditView" component={ClassifyResultEditView} />
-      <Stack.Screen name="CollectSceneFormView" component={CollectSceneFormView} />
       <Stack.Screen name="EnterDatumPoint" component={EnterDatumPoint} />
       <Stack.Screen name="CollectSceneFormSet" component={CollectSceneFormSet} />
       <Stack.Screen name="ClassifySettingsView" component={ClassifySettingsView} />

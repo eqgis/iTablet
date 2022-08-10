@@ -140,7 +140,6 @@ import ClassifySettingsView from './ClassifySettingsView'
 import IllegallyParkView from './aiIllegallyPark'
 import AISelectModelView from './aiSelectModelView'
 import AIDetectSettingView from './aiDetectSettingView'
-import CastModelOperateView from './arCastModelOperateView'
 import ARProjectModeView from './arProjectModel'
 import ARNavigationView from './arNavigationView'
 import ChooseWeather from './chooseWeather'
@@ -372,7 +371,6 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ChooseTaggingLayer" component={ChooseTaggingLayer} />
       <Stack.Screen name="ChooseNaviLayer" component={ChooseNaviLayer} />
       <Stack.Screen name="ChooseNaviDataImport" component={ChooseNaviDataImport} />
-      <Stack.Screen name="CastModelOperateView" component={CastModelOperateView} />
       <Stack.Screen name="ARNavigationView" component={ARNavigationView} />
       <Stack.Screen name="ChooseWeather" component={ChooseWeather} />
       <Stack.Screen name="SuggestionFeedback" component={SuggestionFeedback} />

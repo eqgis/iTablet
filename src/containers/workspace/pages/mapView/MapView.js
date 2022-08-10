@@ -5119,25 +5119,7 @@ export default class MapView extends React.Component {
         {global.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {global.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
-        {/* {!this.isExample &&
-          global.isLicenseValid &&
-          global.Type &&
-          // global.Type.indexOf(ChunkType.MAP_AR) === 0 &&
-          !this.state.bGoneAIDetect &&
-          global.Type === ChunkType.MAP_AR_ANALYSIS &&
-          (
-            <SMAIDetectView
-              style={
-                screen.isIphoneX() && {
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                }
-              }
-              customStyle={this.state.showAIDetect ? null : styles.hidden}
-              language={this.props.language}
-              // isDetect={global.Type === ChunkType.MAP_AR_ANALYSIS}
-              onArObjectClick={this._onArObjectClick}
-            />
-          )} */}
+
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (global.MapSurfaceView = ref)}

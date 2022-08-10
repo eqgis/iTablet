@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Platform } from 'react-native'
-import { SMeasureView } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../../../NavigationService'
 import ARMeasureData from './ARMeasureData'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
@@ -17,7 +17,7 @@ function commit() {}
 // AR测量面积
 function arMeasureArea() {
   (async function() {
-    // const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    // const isSupportedARCore = await SARMap.isARAvailable()
     // if (!isSupportedARCore) {
     //   global.ARDeviceListDialog.setVisible(true)
     //   return
@@ -45,7 +45,7 @@ function arMeasureArea() {
 // AR测量体积
 function arMeasureVolume() {
   (async function() {
-    // const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    // const isSupportedARCore = await SARMap.isARAvailable()
     // if (!isSupportedARCore) {
     //   global.ARDeviceListDialog.setVisible(true)
     //   return
@@ -74,7 +74,7 @@ function arMeasureVolume() {
 //AR测量面积 多边形
 function arMeasurePolygon() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -94,7 +94,7 @@ function arMeasurePolygon() {
 //AR测量面积 矩形
 function arMeasureRectanglet() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -114,7 +114,7 @@ function arMeasureRectanglet() {
 //AR测量面积 圆
 function arMeasureCircular() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -134,7 +134,7 @@ function arMeasureCircular() {
 //AR体积 长方体
 function arMeasureCuboid() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -155,7 +155,7 @@ function arMeasureCuboid() {
 //AR体积 圆柱体
 function arMeasureCylinder() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -175,7 +175,7 @@ function arMeasureCylinder() {
 // AR测量距离
 function arMeasureLength() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -198,7 +198,7 @@ function arMeasureAngle() {
     // if (Platform.OS === 'android') {
     //   return
     // }
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -217,7 +217,7 @@ function arMeasureAngle() {
 // AR测量距离
 function arMeasureHeight() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return

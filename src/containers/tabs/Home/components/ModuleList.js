@@ -6,7 +6,7 @@ import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { Module } from '../../../../class'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
-import { SMap ,SMeasureView, SLocation } from 'imobile_for_reactnative'
+import { SMap ,SARMap, SLocation } from 'imobile_for_reactnative'
 import {
   downloadFile,
   deleteDownloadFile,
@@ -331,7 +331,7 @@ class ModuleList extends Component {
       }
 
       if (item.key === ChunkType.MAP_AR_MAPPING || item.key === ChunkType.MAP_AR || item.key === ChunkType.MAP_AR_ANALYSIS) {
-        const isSupportedARCore = await SMeasureView.isSupportedARCore()
+        const isSupportedARCore = await SARMap.isARAvailable()
         if (!isSupportedARCore) {
           global.ARDeviceListDialog.setVisible(true)
           return

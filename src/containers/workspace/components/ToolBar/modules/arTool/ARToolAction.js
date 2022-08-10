@@ -1,6 +1,6 @@
 /* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
-import { SMeasureView } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'
@@ -24,7 +24,7 @@ function commit() {}
 function arCastModelOperate() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -117,7 +117,7 @@ function _downloadData(downloadData) {
 }
 
 async function arVideo() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isARAvailable()
   if (!isSupportedARCore) {
     global.ARDeviceListDialog.setVisible(true)
     return
@@ -133,7 +133,7 @@ async function arVideo() {
 }
 
 async function arImage() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isARAvailable()
   if (!isSupportedARCore) {
     global.ARDeviceListDialog.setVisible(true)
     return
@@ -149,7 +149,7 @@ async function arImage() {
 }
 
 async function arWebView() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isARAvailable()
   if (!isSupportedARCore) {
     global.ARDeviceListDialog.setVisible(true)
     return
@@ -165,7 +165,7 @@ async function arWebView() {
 }
 
 async function arText() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isARAvailable()
   if (!isSupportedARCore) {
     global.ARDeviceListDialog.setVisible(true)
     return
@@ -181,7 +181,7 @@ async function arText() {
 }
 
 async function ar3D() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isARAvailable()
   if (!isSupportedARCore) {
     global.ARDeviceListDialog.setVisible(true)
     return

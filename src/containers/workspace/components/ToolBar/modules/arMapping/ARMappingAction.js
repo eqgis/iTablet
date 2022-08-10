@@ -1,6 +1,6 @@
 /* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
-import { SMeasureView, SMap ,SARMap } from 'imobile_for_reactnative'
+import { SMap ,SARMap } from 'imobile_for_reactnative'
 import { LayerUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 
@@ -15,7 +15,7 @@ function commit() {}
 // 高精度采集
 function collectSceneForm() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -72,7 +72,7 @@ function collectSceneForm() {
 function arMeasureCollect() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -122,7 +122,7 @@ function arMeasureCollect() {
 function arDrawLine() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -195,7 +195,7 @@ function arDrawLine() {
 function arDrawArea() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return
@@ -257,7 +257,7 @@ function arDrawArea() {
 function arDrawPoint() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return

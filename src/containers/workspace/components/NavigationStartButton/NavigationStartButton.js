@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import { scaleSize, screen, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
-import { SMap, SMeasureView } from 'imobile_for_reactnative'
+import { SMap, SARMap } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
@@ -275,7 +275,7 @@ export default class NavigationStartButton extends React.Component {
   }
 
   arNavigation = async () => {
-    let isSupportedARCore = await SMeasureView.isSupportedARCore()
+    let isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return

@@ -3,7 +3,7 @@ import FunctionModule from '../../../../../../class/FunctionModule'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import NavigationService from '../../../../../NavigationService'
-import { SMeasureView } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 
 class arEffect extends FunctionModule {
   constructor(props) {
@@ -11,7 +11,7 @@ class arEffect extends FunctionModule {
   }
 
   action = async () => {
-    let isSupportedARCore = await SMeasureView.isSupportedARCore()
+    let isSupportedARCore = await SARMap.isARAvailable()
     if (!isSupportedARCore) {
       global.ARDeviceListDialog.setVisible(true)
       return

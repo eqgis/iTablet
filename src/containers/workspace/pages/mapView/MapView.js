@@ -4828,7 +4828,6 @@ export default class MapView extends React.Component {
             }
           }
           customStyle={this.props.isAR ? null : styles.hidden}
-          ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
           onSingleClick={() => {
             if(AppToolBar.getCurrentOption() === undefined 

@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { MyDataPage } from '../component'
 import { getLanguage } from '../../../../language'
-import { ChunkType } from '../../../../constants'
+import { ChunkType, ConstPath } from '../../../../constants'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import { scaleSize, Toast } from '../../../../utils'
-import { ConfigUtils } from 'imobile_for_reactnative'
+import { ConfigUtils, BundleTools, FileTools } from 'imobile_for_reactnative'
 import _mapModules, { mapModules } from '../../../../../configs/mapModules'
 import styles from './styles'
 
@@ -19,6 +19,7 @@ class MyApplet extends MyDataPage {
     this.state = {
       ...this.state,
       showSectionHeader: true,
+      shareToLocal: true,
       batchMode: false, // 1是批量添加，2是批量删除
     }
   }
@@ -30,33 +31,55 @@ class MyApplet extends MyDataPage {
     let othersApplets = []
 
     // applets为有序数组
-    for (let i = 0; i < _applets.length; i++) {
-      // 检测本地记录中的小程序是否在当前版本中存在
-      if (_mapModules.indexOf(_applets[i]) >= 0) {
-        !ChunkType[_applets[i]] &&
-          applets.push({
-            name: _applets[i],
-            img: getThemeAssets().find.app,
-          })
+    // for (let i = 0; i < _applets.length; i++) {
+    //   // 检测本地记录中的小程序是否在当前版本中存在
+    //   if (_mapModules.indexOf(_applets[i]) >= 0) {
+    //     !ChunkType[_applets[i]] &&
+    //       applets.push({
+    //         name: _applets[i],
+    //         img: getThemeAssets().find.app,
+    //       })
+    //   }
+    // }
+    // for (let i = 0; i < _mapModules.length; i++) {
+    //   if (_applets.indexOf(_mapModules[i]) < 0 && !ChunkType[_mapModules[i]]) {
+    //     othersApplets.push({
+    //       name: _mapModules[i],
+    //       img: getThemeAssets().find.app,
+    //     })
+    //   }
+    // }
+
+    const unusedModules = await BundleTools.getUnusedBundles()
+    // const assetsModules = await BundleTools.getAssetsBundles()
+    const files = await BundleTools.getBundles()
+    const _files = []
+    for (const file of files) {
+      if (file.name !== 'iTablet') {
+        _files.push(file)
+        // for (let index = 0; index < unusedModules.length; index++) {
+        //   if (unusedModules[index].name === file.name) {
+        //     unusedModules.splice(index, 1)
+        //     break
+        //   }
+        // }
       }
     }
-    for (let i = 0; i < _mapModules.length; i++) {
-      if (_applets.indexOf(_mapModules[i]) < 0 && !ChunkType[_mapModules[i]]) {
-        othersApplets.push({
-          name: _mapModules[i],
-          img: getThemeAssets().find.app,
-        })
-      }
-    }
+    // this.setState({
+    //   unusedModules: unusedModules,
+    //   dynamicModules: _files,
+    // })
+
+
     let sectionData = []
     sectionData.push({
       title: getLanguage(this.props.language).Find.APPLET,
-      data: applets || [],
+      data: _files || [],
       isShowItem: true,
     })
     sectionData.push({
-      title: getLanguage(global.language).Profile.MY_APPLET,
-      data: othersApplets || [],
+      title: getLanguage(this.props.language).Profile.MY_APPLET,
+      data: unusedModules || [],
       isShowItem: true,
     })
     return sectionData
@@ -92,7 +115,7 @@ class MyApplet extends MyDataPage {
     ConfigUtils.recordApplets(this.props.user.currentUser.userName, _applets)
   }
 
-  getItemPopupData = () => {
+  getCustomItemPopupData = () => {
     if (!this.itemInfo) return []
     let index = this.itemInfo.index
     let item = this.itemInfo.item
@@ -153,6 +176,20 @@ class MyApplet extends MyDataPage {
             }
           },
         },
+        // {
+        //   title: getLanguage(global.language).SHA,
+        //   action: () => {
+        //     this._closeModal()
+        //     // if (index < _section1.data.length - 1) {
+        //     //   _section1.data[index] = _section1.data.splice(
+        //     //     index + 1,
+        //     //     1,
+        //     //     _section1.data[index],
+        //     //   )[0]
+        //     //   this.setApplets(_sectionData)
+        //     // }
+        //   },
+        // },
       ]
       if (defaultModules.indexOf(item.name) < 0) {
         popData.push({
@@ -400,6 +437,18 @@ class MyApplet extends MyDataPage {
       },
     },
   ]
+
+  exportData = async () => {
+    try {
+      console.warn(this.itemInfo?.item?.path)
+      if (this.itemInfo?.item?.path) {
+        const toPath = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.RelativeFilePath.ExportBundle)
+        await BundleTools.exportBundles(this.itemInfo.item.path, toPath)
+      }
+    } catch (e) {
+
+    }
+  }
 
   renderBatchBottom = () => {
     let title, action, img

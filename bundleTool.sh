@@ -31,7 +31,7 @@ buildCommon() {
     echoc "创建base.bundle"
     mkdir -p bundle/android/base
     echoc "生成base.bundle"
-    react-native bundle --entry-file index.ts --platform android --dev false --config package.config.js --bundle-output bundle/android/base/index.android.bundle --assets-dest bundle/android/base
+    react-native bundle --entry-file index.ts --platform android --dev false --config package.config.js --bundle-output bundle/android/base/base.bundle --assets-dest bundle/android/base
     # echoc "创建demo.bundle"
     # mkdir -p bundle/android/demo
     # echoc "生成demo.bundle"
@@ -119,7 +119,7 @@ moveBundle() {
   # echoc "拷贝base.bundle文件"
   # cp bundle/android/base.zip android/app/src/main/assets/bundles
   echoc "拷贝base.bundle文件"
-  node makeBundleConfig bundle/android/base/index.android.bundle package.json
+  node makeBundleConfig bundle/android/base/base.bundle package.json
   cp bundle/android/base.zip android/app/src/main/assets
 
   echoc "demo.bundle配置文件"

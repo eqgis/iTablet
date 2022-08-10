@@ -26,57 +26,10 @@ function setNavParam(name: string, params: {[key: string]: any}) {
   }
 }
 
-function openModel(modulePath = '', bundleType: string, options?: {
-  name: string,
-  params: {[key: string]: any},
-}) {
-  try {
-    if (!modulePath) return false
-    if (options?.params) {
-      navParams[options.name] = options?.params
-    }
-    return IntentModule.openModel(modulePath, bundleType)
-  } catch(e) {
-    return false
-  }
-}
-
 function open(url = '') {
   try {
     if (!open) return false
     return IntentModule.open(url)
-  } catch(e) {
-    return false
-  }
-}
-
-function getAssetsBundles() {
-  try {
-    return IntentModule.getAssetsBundles()
-  } catch(e) {
-    return []
-  }
-}
-
-function getBundles() {
-  try {
-    return IntentModule.getBundles()
-  } catch(e) {
-    return []
-  }
-}
-
-function getUnusedBundles() {
-  try {
-    return IntentModule.getUnusedBundles()
-  } catch(e) {
-    return []
-  }
-}
-
-function loadModel(modelPath: string) {
-  try {
-    return IntentModule.loadModel(modelPath)
   } catch(e) {
     return false
   }
@@ -90,15 +43,19 @@ function goBack() {
   }
 }
 
+function loadBundle(bundlePath) {
+  try {
+    return IntentModule.loadBundle(bundlePath)
+  } catch(e) {
+    return false
+  }
+}
+
 export default {
   getNavParams,
   getNavParam,
   setNavParam,
-  openModel,
   open,
-  getAssetsBundles,
-  getBundles,
-  getUnusedBundles,
-  loadModel,
   goBack,
+  loadBundle,
 }

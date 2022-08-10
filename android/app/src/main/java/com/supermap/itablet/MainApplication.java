@@ -12,9 +12,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.soloader.SoLoader;
-import com.supermap.RNUtils.FileTools;
-import com.supermap.RNUtils.Utils;
-import com.supermap.itablet.bundleCore.BundleUtils;
+import com.supermap.bundleCore.BundleUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -33,8 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
       new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
-          return BuildConfig.DEBUG;
-//            return false;
+//          return BuildConfig.DEBUG;
+            return false;
         }
 
         @Override
@@ -47,55 +45,54 @@ public class MainApplication extends Application implements ReactApplication {
           return packages;
         }
 
-        @Override
-        protected String getJSMainModuleName() {
-          return "index";
-        }
+        // Debug模式必备
+//        @Override
+//        protected String getJSMainModuleName() {
+//          return "index";
+//        }
 
 //        @Override
 //        protected String getBundleAssetName() {
 ////            return "bundles/common.bundle";
-//            return "bundles/base/index.android.bundle";
+//            return "bundles/base/base.bundle";
 //        }
 
         @Nullable
         @Override
         protected String getJSBundleFile() {
           if (!isBundle) return null;
-          String path = getFilesDir().getAbsolutePath() + "/bundles/base/index.android.bundle";
-//          String path = getFilesDir().getAbsolutePath() + "/bundles/base/common.bundle";
+          String path = getFilesDir().getAbsolutePath() + "/bundles/base/base.bundle";
           if (!(new File(path).exists())) {
             path = null;
           }
           return path;
-//            return null;
         }
 
-        @Override
-        protected ReactInstanceManager createReactInstanceManager() {
-          ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
-              .setApplication(getApplication())
-              .setJSMainModulePath(getJSMainModuleName())
-              .setUseDeveloperSupport(getUseDeveloperSupport())
-              .setRedBoxHandler(getRedBoxHandler())
-              .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
-//                    .setUIImplementationProvider(getUIImplementationProvider())
-              .setJSIModulesPackage(getJSIModulePackage())
-//              .setUseDeveloperSupport(BuildConfig.DEBUG)
-              .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
-
-          for (ReactPackage reactPackage : getPackages()) {
-            builder.addPackage(reactPackage);
-          }
-          String jsBundleFile = getJSBundleFile();
-          if (jsBundleFile != null) {
-            builder.setJSBundleFile(jsBundleFile);
-          } else {
-            builder.setBundleAssetName(Assertions.assertNotNull(getBundleAssetName()));
-          }
-          mReactInstanceManager = builder.build();
-          return mReactInstanceManager;
-        }
+//        @Override
+//        protected ReactInstanceManager createReactInstanceManager() {
+//          ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
+//              .setApplication(getApplication())
+//              .setJSMainModulePath(getJSMainModuleName())
+//              .setUseDeveloperSupport(getUseDeveloperSupport())
+//              .setRedBoxHandler(getRedBoxHandler())
+//              .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
+////                    .setUIImplementationProvider(getUIImplementationProvider())
+//              .setJSIModulesPackage(getJSIModulePackage())
+////              .setUseDeveloperSupport(BuildConfig.DEBUG)
+//              .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
+//
+//          for (ReactPackage reactPackage : getPackages()) {
+//            builder.addPackage(reactPackage);
+//          }
+//          String jsBundleFile = getJSBundleFile();
+//          if (jsBundleFile != null) {
+//            builder.setJSBundleFile(jsBundleFile);
+//          } else {
+//            builder.setBundleAssetName(Assertions.assertNotNull(getBundleAssetName()));
+//          }
+//          mReactInstanceManager = builder.build();
+//          return mReactInstanceManager;
+//        }
       };
 
   @Override

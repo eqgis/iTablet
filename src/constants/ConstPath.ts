@@ -48,6 +48,7 @@ const RelativePath = {
 
 const RelativeFilePath = {
   ExportData: 'ExportData/',
+  ExportBundle: 'ExportBundle/',
   WorkspaceFile: Workspace,
   // Workspace: Data + 'Workspace.smwu', // 工作空间
   DefaultData, // 默认数据文件夹目录

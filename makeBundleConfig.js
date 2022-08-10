@@ -56,11 +56,61 @@ async function compressAndMove(bundlePath) {
   // await fs.unlink(`${androidAssets}/${dirName}.zip`, () => {})
 }
 
+
+async function recordAddingImages(sourceFile) {
+  const sourceArr = []
+  return new Promise((resolve, rejects) => {
+    fs.readdir(sourceFile, function (err, files) {
+      if (err) return console.log(err)
+
+      for (const file of files) {
+        console.log('----------------recordAddingImages------------------', file)
+        sourceArr.push(file)
+      }
+      resolve(sourceArr)
+    })
+  })
+}
+
+
 /**
  * TODO 记录新增图片
  */
-async function recordAddingImages(bundlePath) {
+async function recordAddingSource(bundlePath) {
+  console.log('----------------recordAddingSource start------------------')
+  let sources = {}
+  return new Promise((resolve, rejects) => {
+    fs.readdir(bundlePath, async function (err, files) {
+      if (err) return console.log(err)
 
+      const getDirFiles = async function (file) {
+        return new Promise((resolve, rejects) => {
+          fs.lstat(bundlePath + '/' + file, async function(err,stats){
+            if(err) return console.log(err)
+            console.log('----------------------------------', file, stats.isDirectory())
+            if(stats.isDirectory()) {
+              if (!sources[file]) {
+                sources[file] = []
+              }
+              const subArr = await recordAddingImages(bundlePath + '/' + file, sources[file])
+              console.log('-----------------dir-----------------', subArr)
+              sources[file] = sources[file].concat(subArr)
+            }
+            resolve(sources[file])
+          })
+        })
+      }
+
+      for (const file of files) {
+        const arr = await getDirFiles(file)
+        if (arr?.length > 0) {
+          sources[file] = arr
+        }
+      }
+      console.log('----------------recordAddingSource end------------------', JSON.stringify(sources))
+      resolve(sources)
+    })
+  })
 }
 
 async function main() {
@@ -73,10 +123,12 @@ async function main() {
   const info = await readPackageInfo(_[1])
   const bundlePath = _[0].substring(0, _[0].lastIndexOf('/'))
   const fileName = _[0].substring(_[0].lastIndexOf('/') + 1, _[0].lastIndexOf('.'))
+  const sources = await recordAddingSource(bundlePath)
   const config = {
     create_date: new Date().getTime(),
     md5: md5,
     ...info,
+    sources: sources,
   }
   await writeToFile(config, bundlePath + '/config.json')
 

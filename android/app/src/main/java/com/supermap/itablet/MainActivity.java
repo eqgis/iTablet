@@ -19,10 +19,10 @@ import com.rnfs.RNFSManager;
 import com.supermap.RN.AppUtils;
 import com.supermap.RN.appManager;
 import com.supermap.RNUtils.FileTools;
-import com.supermap.RNUtils.Utils;
+import com.supermap.bundleCore.BundleBean;
+import com.supermap.bundleCore.BundleUtils;
 import com.supermap.component.activity.AiGestureBoneActivity;
-import com.supermap.itablet.bundleCore.BundleBean;
-import com.supermap.itablet.bundleCore.BundleUtils;
+import com.supermap.interfaces.utils.BundleTools;
 import com.supermap.itablet.splashscreen.SplashScreen;
 
 import java.io.File;
@@ -51,11 +51,6 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-//        if ((getApplicationContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        } else {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        }
     SplashScreen.show(this);
     super.onCreate(savedInstanceState);
     // 在JS申请权限以免没有权限导致崩溃
@@ -74,9 +69,9 @@ public class MainActivity extends ReactActivity {
     registerReceiver(netWorkChangReceiver, filter);
     sInstance = this;
 
-    if (MainApplication.isBundle) {
-      createContext();
-    }
+//    if (MainApplication.isBundle) {
+//      createContext();
+//    }
   }
 
   @Override
@@ -135,7 +130,7 @@ public class MainActivity extends ReactActivity {
     // 若没有加载bundle则加载，并记录到DispatchUtils中
     if (!BundleUtils.findLoadedBundle(bundle)) {
       String bundlePath = "assets://bundles/" + bundle + "/" + bundle + ".bundle";
-      IntentModule.loadBundleFromAssets(bundlePath);
+      BundleTools.loadBundleFromAssets(bundlePath);
       BundleBean bundleBean = new BundleBean();
       bundleBean.setPath(bundlePath);
       BundleUtils.addLoadedBundle(bundleBean);
@@ -181,91 +176,5 @@ public class MainActivity extends ReactActivity {
 //
 //  private boolean isTablet(Activity context) {
 //    return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-//  }
-
-//  public void loadBundle() {
-//    final ReactInstanceManager instanceManager;
-//    try {
-//
-//      instanceManager = resolveInstanceManager();
-//      if (instanceManager == null) {
-//        return;
-//      }
-//
-//      //获取本地的js代码 这里就不给出代码了。 如果本地没有就返回assets目录的
-////            String latestJSBundleFile = Utils.getJSBundleFileInternal();
-//      String latestJSBundleFile = getJSBundleFileInternal();
-//
-//      setJSBundle(instanceManager, latestJSBundleFile);
-//
-//      new Handler(Looper.getMainLooper()).post(new Runnable() {
-//        @Override
-//        public void run() {
-//          try {
-//
-//            instanceManager.recreateReactContextInBackground();
-//          } catch (Exception e) {
-//            // The recreation method threw an unknown exception
-//            // so just simply fallback to restarting the Activity (if it exists)
-//            loadBundleLegacy();
-//          }
-//        }
-//      });
-//    }  catch (Exception e) {
-//      e.printStackTrace();
-//      loadBundleLegacy();
-//    }
-//  }
-
-//  private String getJSBundleFileInternal() {
-//    String path = AppInfo.getBundleFile();
-//    if (path != null && new File(path).exists()) {
-//      return path;
-//    }
-//    return "assets://index.android.bundle";
-//  }
-
-//  private ReactInstanceManager resolveInstanceManager(){
-//    ReactInstanceManager instanceManager;
-//    final Activity currentActivity = MainActivity.this;
-//    if (currentActivity == null) {
-//      return null;
-//    }
-//    ReactApplication reactApplication = (ReactApplication) currentActivity.getApplication();
-//    instanceManager = reactApplication.getReactNativeHost().getReactInstanceManager();
-//
-//    return instanceManager;
-//  }
-//
-//  private void setJSBundle(ReactInstanceManager instanceManager, String latestJSBundleFile) throws IllegalAccessException {
-//    try {
-//      JSBundleLoader latestJSBundleLoader;
-//      if (latestJSBundleFile.toLowerCase().startsWith("assets://")) {
-//        latestJSBundleLoader = JSBundleLoader.createAssetLoader(getApplicationContext(), latestJSBundleFile, false);
-//      } else {
-//        latestJSBundleLoader = JSBundleLoader.createFileLoader(latestJSBundleFile);
-//      }
-//      Field bundleLoaderField = instanceManager.getClass().getDeclaredField("mBundleLoader");
-//      bundleLoaderField.setAccessible(true);
-//      bundleLoaderField.set(instanceManager, latestJSBundleLoader);
-//    } catch (Exception e) {
-//      throw new IllegalAccessException("Could not setJSBundle");
-//    }
-//  }
-//
-//  private void loadBundleLegacy() {
-//    Log.d("loadBundleLegacy","loadBundle #3 loadBundleLegacy...");
-//    final Activity currentActivity =  MainActivity.this;
-//    if (currentActivity == null) {
-//      // The currentActivity can be null if it is backgrounded / destroyed, so we simply
-//      // no-op to prevent any null pointer exceptions.
-//      return;
-//    }
-//    currentActivity.runOnUiThread(new Runnable() {
-//      @Override
-//      public void run() {
-//        currentActivity.recreate();
-//      }
-//    });
 //  }
 }

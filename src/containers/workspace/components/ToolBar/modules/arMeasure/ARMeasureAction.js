@@ -39,9 +39,6 @@ function arMeasureArea() {
       secdata:_data.measureAreadata,
       ...data,
     })
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'measureArea',
-    // })
   })()
 }
 
@@ -70,9 +67,6 @@ function arMeasureVolume() {
       secdata:_data.measureAreadata1,
       ...data,
     })
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'measureArea',
-    // })
   })()
 }
 
@@ -92,9 +86,7 @@ function arMeasurePolygon() {
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'measureArea',
-    // })
+
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureArea'})
   })()
 }
@@ -114,9 +106,6 @@ function arMeasureRectanglet() {
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'arMeasureRectangle',
-    // })
 
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureRectangle'})
   })()
@@ -137,9 +126,7 @@ function arMeasureCircular() {
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'arMeasureCircle',
-    // })
+
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCircle'})
   })()
 }
@@ -159,9 +146,7 @@ function arMeasureCuboid() {
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'arMeasureCuboid',
-    // })
+
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCuboid'})
   })()
 }
@@ -182,9 +167,7 @@ function arMeasureCylinder() {
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
 
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'arMeasureCylinder',
-    // })
+
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureCylinder'})
   })()
 }
@@ -203,9 +186,7 @@ function arMeasureLength() {
     //   global.arSwitchToMap = true
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'measureLength',
-    // })
+
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureLength'})
   })()
 }
@@ -228,9 +209,6 @@ function arMeasureAngle() {
     //   global.arSwitchToMap = true
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'measureAngle',
-    // })
 
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'measureAngle'})
   })()
@@ -250,9 +228,7 @@ function arMeasureHeight() {
     //   global.arSwitchToMap = true
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
-    // NavigationService.navigate('MeasureAreaView', {
-    //   measureType: 'arMeasureHeight',
-    // })
+
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arMeasureHeight'})
   })()
 }

@@ -44,7 +44,6 @@ function collectSceneForm() {
     // })
 
     // global.EnterDatumPointType = 'arCollectSceneForm'
-    // // NavigationService.navigate('EnterDatumPoint')
     // global.toolBox && global.toolBox.removeAIDetect(true)
     // NavigationService.navigate('CollectSceneFormView')
 
@@ -109,7 +108,6 @@ function arMeasureCollect() {
       }
     }
 
-    // NavigationService.navigate('MeasureView', global.MeasureCollectData)
     global.EnterDatumPointType = 'arMeasureCollect'
     NavigationService.navigate('EnterDatumPoint')
 
@@ -188,7 +186,6 @@ function arDrawLine() {
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
     global.MeasureCollectData.measureType = 'drawLine'
-    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
 
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
@@ -252,7 +249,6 @@ function arDrawArea() {
     // }
 
     global.MeasureCollectData.measureType = 'arDrawArea'
-    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
 }
@@ -315,7 +311,6 @@ function arDrawPoint() {
     // }
 
     global.MeasureCollectData.measureType = 'arDrawPoint'
-    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
 }

@@ -129,7 +129,6 @@ async function arVideo() {
   }
   global.toolBox && global.toolBox.removeAIDetect(true)
   global.EnterDatumPointType = 'arVideo'
-  // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARVideoView')
 }
 
@@ -146,7 +145,6 @@ async function arImage() {
   }
   global.toolBox && global.toolBox.removeAIDetect(true)
   global.EnterDatumPointType = 'arImage'
-  // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARImageView')
 }
 
@@ -163,7 +161,6 @@ async function arWebView() {
   }
   global.toolBox && global.toolBox.removeAIDetect(true)
   global.EnterDatumPointType = 'arWebView'
-  // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARWebView')
 }
 
@@ -180,7 +177,6 @@ async function arText() {
   }
   global.toolBox && global.toolBox.removeAIDetect(true)
   global.EnterDatumPointType = 'arText'
-  // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARTextView')
 }
 

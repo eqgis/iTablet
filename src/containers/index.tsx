@@ -130,7 +130,6 @@ import {
 
 import MediaEdit from './mediaEdit'
 import Camera from './camera'
-import MeasureView from './arMeasure'
 import ClassifyView from './aiClassifyView'
 import ModelChoseView from './arModelChoseView'
 import ClassifyResultEditView from './aiClassifyResultEdit'
@@ -356,7 +355,6 @@ export default function(params: StackNavigatorProps) {
         animation: 'none',
         presentation: 'containedTransparentModal',
       }} />
-      <Stack.Screen name="MeasureView" component={MeasureView} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} />
       <Stack.Screen name="ARProjectModeView" component={ARProjectModeView} />
       <Stack.Screen name="ClassifyView" component={ClassifyView} />

@@ -1173,7 +1173,7 @@ class AppRoot extends Component {
           { flex: 1 },
           screen.isIphoneX() && // global.getDevice().orientation.indexOf('LANDSCAPE') >= 0 && // global.getDevice() &&
           {
-            backgroundColor: '#201F20',
+            backgroundColor: '#FFFFFF',
           },
           {
             paddingTop:

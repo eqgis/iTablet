@@ -60,9 +60,8 @@ buck-out/
 *.jsbundle
 
 bundle/*
-applets/*
-
-package_*
+applets/demo*
+package_demo*
 
 .idea/
 .gradle/

@@ -314,8 +314,7 @@ export default class AppletManagement extends React.Component<Props, State> {
               //   refresh: this.getBundles,
               // })
               NavigationService.navigate('MyApplet', {
-                // data: this.state.myApplets,
-                // refresh: this.getBundles,
+                refresh: this.getBundles,
               })
             }}
           />
@@ -337,7 +336,7 @@ export default class AppletManagement extends React.Component<Props, State> {
     return (
       <View style={styles.contentView}>
         <View style={styles.contentHeaderView}>
-          <Text style={styles.contentHeaderTitle}>{getLanguage(this.props.language).Profile.UN_DOWNLOADED_APPLET}</Text>
+          <Text style={styles.contentHeaderTitle}>{getLanguage(this.props.language).Profile.LOCAL_APPLET}</Text>
         </View>
         <View style={styles.rows}>
           {/* {this._renderRows(this.state.data, false)} */}

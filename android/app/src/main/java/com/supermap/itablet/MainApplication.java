@@ -31,8 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
       new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
-//          return BuildConfig.DEBUG;
-            return false;
+          return BuildConfig.DEBUG;
+//            return false;
         }
 
         @Override
@@ -46,10 +46,10 @@ public class MainApplication extends Application implements ReactApplication {
         }
 
         // Debug模式必备
-//        @Override
-//        protected String getJSMainModuleName() {
-//          return "index";
-//        }
+        @Override
+        protected String getJSMainModuleName() {
+          return "index";
+        }
 
 //        @Override
 //        protected String getBundleAssetName() {

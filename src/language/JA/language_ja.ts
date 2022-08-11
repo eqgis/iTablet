@@ -2098,6 +2098,8 @@ export const language_ja: typeof language_cn = {
   BATCH_OPERATE: "バッチ操作",
   MY_APPLET: "使用できるアプレット",
   UN_DOWNLOADED_APPLET: "アプレットダウンロードの取り消し", // 带下载
+  NOT_LOADED_APPLET: "Applets that have not been loaded", // need to translate
+  LOCAL_APPLET: "Local Applets", // need to translate
   DELETE_APPLET: "アプレットの削除",
   ADD_APPLET: "アプレットの追加",
   MOVE_UP: "上へ",

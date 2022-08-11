@@ -2097,6 +2097,8 @@ export const language_cn = {
   BATCH_OPERATE: "批量操作",
   MY_APPLET: "我的小程序",
   UN_DOWNLOADED_APPLET: "未下载的小程序",
+  NOT_LOADED_APPLET: "未加载的小程序",
+  LOCAL_APPLET: "本地小程序",
   DELETE_APPLET: "删除小程序",
   ADD_APPLET: "添加小程序",
   MOVE_UP: "上移",

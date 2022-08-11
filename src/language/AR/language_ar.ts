@@ -2111,6 +2111,8 @@ export const language_ar: typeof language_cn = {
 
   MY_APPLET: "تطبيقاتي المصغرة",
   UN_DOWNLOADED_APPLET: "التطبيق الصغير الذي تم تنزيله",
+  NOT_LOADED_APPLET: "Applets that have not been loaded", // need to translate
+  LOCAL_APPLET: "Local Applets", // need to translate
   DELETE_APPLET: "حذف التطبيق الصغير",
   ADD_APPLET: "إضافة برنامج صغير",
   MOVE_UP: "تحريك لأعلى",

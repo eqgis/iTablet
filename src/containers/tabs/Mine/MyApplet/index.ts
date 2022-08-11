@@ -4,7 +4,7 @@ import { importWorkspace } from '../../../../redux/models/template'
 import { setUser } from '../../../../redux/models/user'
 import { uploading } from '../../../../redux/models/online'
 import { exportWorkspace } from '../../../../redux/models/map'
-import { setMapModule } from '../../../../redux/models/mapModules'
+import { setMapModule, deleteMapModule, addMapModule } from '../../../../redux/models/mapModules'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -19,6 +19,8 @@ const mapDispatchToProps = {
   uploading,
   exportWorkspace,
   setMapModule,
+  addMapModule,
+  deleteMapModule,
 }
 export default connect(
   mapStateToProps,

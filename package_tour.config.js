@@ -1,7 +1,7 @@
 const pathSep = require('path').sep
 
 function postProcessModulesFilter(module) {
-  if (module['path'].indexOf(__dirname + pathSep + 'applets' + pathSep + 'tour' + pathSep) == 0) {
+  if (module['path'].indexOf(pathSep + 'applets/tour' + pathSep) > 0) {
     return true
   }
   return false

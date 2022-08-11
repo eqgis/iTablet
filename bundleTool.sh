@@ -31,7 +31,7 @@ buildCommon() {
     echoc "创建base.bundle"
     mkdir -p bundle/android/base
     echoc "生成base.bundle"
-    react-native bundle --entry-file index.ts --platform android --dev false --config package.config.js --bundle-output bundle/android/base/base.bundle --assets-dest bundle/android/base
+    react-native bundle --entry-file index.js --platform android --dev false --config package.config.js --bundle-output bundle/android/base/base.bundle --assets-dest bundle/android/base
     # echoc "创建demo.bundle"
     # mkdir -p bundle/android/demo
     # echoc "生成demo.bundle"
@@ -52,7 +52,7 @@ buildApplets() {
     # echoc "创建base.bundle"
     # mkdir -p bundle/android/base
     # echoc "生成base.bundle"
-    # react-native bundle --entry-file index.ts --platform android --dev false --config package.config.js --bundle-output bundle/android/base/index.android.bundle --assets-dest bundle/android/base/assets
+    # react-native bundle --entry-file index.js --platform android --dev false --config package.config.js --bundle-output bundle/android/base/index.android.bundle --assets-dest bundle/android/base/assets
     
     echoc "创建demo.bundle"
     mkdir -p bundle/android/demo

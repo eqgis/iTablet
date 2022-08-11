@@ -68,31 +68,31 @@ public class MainApplication extends Application implements ReactApplication {
           return path;
         }
 
-//        @Override
-//        protected ReactInstanceManager createReactInstanceManager() {
-//          ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
-//              .setApplication(getApplication())
-//              .setJSMainModulePath(getJSMainModuleName())
-//              .setUseDeveloperSupport(getUseDeveloperSupport())
-//              .setRedBoxHandler(getRedBoxHandler())
-//              .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
-////                    .setUIImplementationProvider(getUIImplementationProvider())
-//              .setJSIModulesPackage(getJSIModulePackage())
-////              .setUseDeveloperSupport(BuildConfig.DEBUG)
-//              .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
-//
-//          for (ReactPackage reactPackage : getPackages()) {
-//            builder.addPackage(reactPackage);
-//          }
-//          String jsBundleFile = getJSBundleFile();
-//          if (jsBundleFile != null) {
-//            builder.setJSBundleFile(jsBundleFile);
-//          } else {
-//            builder.setBundleAssetName(Assertions.assertNotNull(getBundleAssetName()));
-//          }
-//          mReactInstanceManager = builder.build();
-//          return mReactInstanceManager;
-//        }
+        @Override
+        protected ReactInstanceManager createReactInstanceManager() {
+          ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
+              .setApplication(getApplication())
+              .setJSMainModulePath(getJSMainModuleName())
+              .setUseDeveloperSupport(getUseDeveloperSupport())
+              .setRedBoxHandler(getRedBoxHandler())
+              .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
+//                    .setUIImplementationProvider(getUIImplementationProvider())
+              .setJSIModulesPackage(getJSIModulePackage())
+//              .setUseDeveloperSupport(BuildConfig.DEBUG)
+              .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
+
+          for (ReactPackage reactPackage : getPackages()) {
+            builder.addPackage(reactPackage);
+          }
+          String jsBundleFile = getJSBundleFile();
+          if (jsBundleFile != null) {
+            builder.setJSBundleFile(jsBundleFile);
+          } else {
+            builder.setBundleAssetName(Assertions.assertNotNull(getBundleAssetName()));
+          }
+          mReactInstanceManager = builder.build();
+          return mReactInstanceManager;
+        }
       };
 
   @Override

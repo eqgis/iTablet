@@ -1,0 +1,12 @@
+{
+  "name": "tour",
+  "version": "0.0.1",
+  "bundleType": "CONFIG_MODULE",
+  "description": "旅行轨迹模块示例",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1205,11 +1205,6 @@ export default class MapView extends React.Component {
   }
 
   _onLoad = async () => {
-    // if (Platform.OS === 'ios') {
-    //   SARMap.setMeasureMode('arCollect')
-    // }else{
-    SARMap.showMeasureView(false)
-    SARMap.showTrackView(false)
     SARMap.showPointCloud(false)
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
@@ -1443,8 +1438,6 @@ export default class MapView extends React.Component {
         global.Type === ChunkType.MAP_AR_ANALYSIS
       ) {
         if (Platform.OS === 'android') {
-          await SARMap.showMeasureView(false)
-          await SARMap.showTrackView(false)
           await SARMap.showPointCloud(false)
         }
         // this.props.showAR(false)
@@ -2673,12 +2666,12 @@ export default class MapView extends React.Component {
     this.measureType = params.measureType
     if (this.measureType) {
       if (this.measureType === 'measureArea') {
-        SARMap.setMeasureMode('MEASURE_AREA')
+        SARMap.setAction(ARAction.MEASURE_POLYGON)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE
       } else if (this.measureType === 'measureLength') {
-        SARMap.setMeasureMode('MEASURE_LINE')
+        SARMap.setAction(ARAction.MEASURE_LENGTH)
         this.setState({
           showCurrentHeightView: true,
         })
@@ -2686,7 +2679,7 @@ export default class MapView extends React.Component {
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_LENGTH
       } else if (this.measureType === 'drawLine') {
-        SARMap.setMeasureMode('DRAW_LINE')
+        SARMap.setAction(ARAction.SURVEY_LINE)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
@@ -2694,7 +2687,7 @@ export default class MapView extends React.Component {
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arDrawArea') {
-        SARMap.setMeasureMode('DRAW_AREA')
+        SARMap.setAction(ARAction.SURVEY_POLYGON)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
@@ -2702,7 +2695,7 @@ export default class MapView extends React.Component {
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arDrawPoint') {
-        SARMap.setMeasureMode('DRAW_POINT')
+        SARMap.setAction(ARAction.SURVEY_POINT)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
@@ -2710,7 +2703,7 @@ export default class MapView extends React.Component {
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arMeasureHeight') {
-        SARMap.setMeasureMode('MEASURE_HEIGHT')
+        SARMap.setAction(ARAction.MEASURE_HEIGHT)
         this.setState({
           showCurrentHeightView: true,
         })
@@ -2718,27 +2711,27 @@ export default class MapView extends React.Component {
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
       } else if (this.measureType === 'arMeasureCircle') {
-        SARMap.setMeasureMode('MEASURE_AREA_CIRCLE')
+        SARMap.setAction(ARAction.MEASURE_CIRCLE)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE
       } else if (this.measureType === 'arMeasureRectangle') {
-        SARMap.setMeasureMode('MEASURE_AREA_RECTANGLE')
+        SARMap.setAction(ARAction.MEASURE_RECTANGLE)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE
       } else if (this.measureType === 'measureAngle') {
-        SARMap.setMeasureMode('MEASURE_AREA_ANGLE')
+        SARMap.setAction(ARAction.MEASURE_ANGLE)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_ANGLE
       } else if (this.measureType === 'arMeasureCuboid') {
-        SARMap.setMeasureMode('MEASURE_VOLUME_CUBOID')
+        SARMap.setAction(ARAction.MEASURE_CUBOID)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE
       } else if (this.measureType === 'arMeasureCylinder') {
-        SARMap.setMeasureMode('MEASURE_VOLUME_CYLINDER')
+        SARMap.setAction(ARAction.MEASURE_CYLINDER)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE
@@ -2750,10 +2743,12 @@ export default class MapView extends React.Component {
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arDrawRectangle') {
+        SARMap.setAction(ARAction.SURVEY_RECTANGLE)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
       } else if (this.measureType === 'arDrawCircular') {
+        SARMap.setAction(ARAction.SURVEY_CIRCLE)
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
@@ -2788,18 +2783,7 @@ export default class MapView extends React.Component {
         this.point = params.point
         this.isCollect = true
         this.isnew = false
-        if (Platform.OS === 'android') {
-          SARMap.setMeasureMode('NULL')
-          SARMap.showMeasureView(true)
-          SARMap.showTrackView(true)
-        } else {
-          SARMap.setMeasureMode('arCollect')
-        }
-      } else {
-        if (Platform.OS === 'android') {
-          SARMap.showTrackView(true)
-          SARMap.showMeasureView(true)
-        }
+        SARMap.setAction(ARAction.TRACK)
       }
 
       SARMap.showPointCloud(true)
@@ -4582,8 +4566,7 @@ export default class MapView extends React.Component {
     SARMap.clearMeasure()
     this.listeners && this.listeners.infoListener?.remove()
     this.listeners && this.listeners.addListener?.remove()
-    SARMap.showMeasureView(false)
-    SARMap.showTrackView(false)
+    SARMap.setAction(ARAction.NULL)
     SARMap.showPointCloud(false)
     if (Platform.OS === 'android') {
       SARMap.stopTracking()

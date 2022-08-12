@@ -23,6 +23,7 @@ import {
   SMap,
   DatasetType,
   SARMap,
+  ARAction,
 } from 'imobile_for_reactnative'
 import { color } from '../../../../styles'
 import NavigationService from '../../../../containers/NavigationService'
@@ -630,11 +631,7 @@ export default class ArMappingButton extends React.Component {
   /** 轨迹式 **/
   trackCollect = () => {
     try {
-      if (Platform.OS === 'android') {
-        SARMap.changeTrackingMode(0)
-      } else {
-        SARMap.setMeasureMode('arCollect_auto')
-      }
+      SARMap.changeTrackingMode(0)
       this.props.isTrack(true)
       this.setState({ data: this.collectdata })
     } catch (e) {
@@ -645,11 +642,7 @@ export default class ArMappingButton extends React.Component {
   /** 打点式 **/
   pointCollect = () => {
     try {
-      if (Platform.OS === 'android') {
-        SARMap.changeTrackingMode(1)
-      }else{
-        SARMap.setMeasureMode('arCollect')
-      }
+      SARMap.changeTrackingMode(1)
       this.props.isTrack(false)
       this.setState({data:this.collectdata})
     } catch (e) {
@@ -658,13 +651,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   arCollect = () => {
-    // SARMap.clearMeasure()
-    if (Platform.OS === 'android') {
-      SARMap.setMeasureMode('NULL')
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-      SARMap.changeTrackingMode(1)
-    }
+    SARMap.changeTrackingMode(1)
     this.props.isTrack(false)
     this.props.showSwitch(false)
     this.setState({ isCollect: true, data: this.collectdata, showSwitch: true })
@@ -677,13 +664,8 @@ export default class ArMappingButton extends React.Component {
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_POINT')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -743,13 +725,8 @@ export default class ArMappingButton extends React.Component {
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_LINE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -809,13 +786,8 @@ export default class ArMappingButton extends React.Component {
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_AREA')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -875,13 +847,8 @@ export default class ArMappingButton extends React.Component {
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_RECTANGLE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -940,13 +907,8 @@ export default class ArMappingButton extends React.Component {
       SARMap.clearAllTracking()
     }
     SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_CIRCLE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -1127,7 +1089,7 @@ export default class ArMappingButton extends React.Component {
       datasetName = `Default_Tagging_${this.props.user.currentUser.userName}`
     }
     SARMap.setMeasurePath(datasourceAlias, datasetName)
-    SARMap.saveMeasureData(datasourceAlias, datasetName).then(result => {
+    SARMap.saveMeasureData().then(result => {
       Toast.show(result ? getLanguage().Prompt.SAVE_SUCCESSFULLY : getLanguage().Prompt.SAVE_FAILED)
     })
   }

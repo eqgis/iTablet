@@ -47,9 +47,9 @@ async function writeToFile(info, configPath) {
   })
 }
 
-async function compressAndMove(bundlePath) {
-  const androidAssets = 'android/app/src/main/assets/bundles'
-  const dirName = bundlePath.substring(bundlePath.lastIndexOf('/') + 1)
+async function compress(bundlePath) {
+  // const androidAssets = 'android/app/src/main/assets/bundles'
+  // const dirName = bundlePath.substring(bundlePath.lastIndexOf('/') + 1)
   await compressing.zip.compressDir(bundlePath, `${bundlePath}.zip`)
   // await fs.copyFileSync(`${bundlePath}.zip`, `${androidAssets}/${dirName}.zip`)
   // await compressing.zip.uncompress(`${androidAssets}/${dirName}.zip`, `${androidAssets}`)
@@ -64,7 +64,6 @@ async function recordAddingImages(sourceFile) {
       if (err) return console.log(err)
 
       for (const file of files) {
-        console.log('----------------recordAddingImages------------------', file)
         sourceArr.push(file)
       }
       resolve(sourceArr)
@@ -87,13 +86,12 @@ async function recordAddingSource(bundlePath) {
         return new Promise((resolve, rejects) => {
           fs.lstat(bundlePath + '/' + file, async function(err,stats){
             if(err) return console.log(err)
-            console.log('----------------------------------', file, stats.isDirectory())
             if(stats.isDirectory()) {
               if (!sources[file]) {
                 sources[file] = []
               }
               const subArr = await recordAddingImages(bundlePath + '/' + file, sources[file])
-              console.log('-----------------dir-----------------', subArr)
+              console.log(file, subArr)
               sources[file] = sources[file].concat(subArr)
             }
             resolve(sources[file])
@@ -107,7 +105,7 @@ async function recordAddingSource(bundlePath) {
           sources[file] = arr
         }
       }
-      console.log('----------------recordAddingSource end------------------', JSON.stringify(sources))
+      console.log('----------------recordAddingSource end------------------')
       resolve(sources)
     })
   })
@@ -122,7 +120,7 @@ async function main() {
   const md5 = await generateMd5(_[0])
   const info = await readPackageInfo(_[1])
   const bundlePath = _[0].substring(0, _[0].lastIndexOf('/'))
-  const fileName = _[0].substring(_[0].lastIndexOf('/') + 1, _[0].lastIndexOf('.'))
+  // const fileName = _[0].substring(_[0].lastIndexOf('/') + 1, _[0].lastIndexOf('.'))
   const sources = await recordAddingSource(bundlePath)
   const config = {
     create_date: new Date().getTime(),
@@ -142,7 +140,7 @@ async function main() {
   //   })
   // } else {
   // await compressing.zip.compressDir(bundlePath, `${bundlePath}.zip`)
-  await compressAndMove(bundlePath)
+  await compress(bundlePath)
   // }
 }
 

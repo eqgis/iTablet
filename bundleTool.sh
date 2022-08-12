@@ -37,12 +37,12 @@ buildCommon() {
 }
 
 buildApplets() {
-    echoc "创建demo.bundle"
-    mkdir -p bundle/android/demo
-    echoc "生成demo.bundle"
-    react-native bundle --entry-file applets/demo/index.ts --platform android --config package_demo.config.js --dev false --bundle-output bundle/android/demo/demo.bundle --assets-dest bundle/android/demo
-    echoc "demo.bundle配置文件"
-    node makeBundleConfig bundle/android/demo/demo.bundle applets/demo/package.json
+    # echoc "创建demo.bundle"
+    # mkdir -p bundle/android/demo
+    # echoc "生成demo.bundle"
+    # react-native bundle --entry-file applets/demo/index.ts --platform android --config package_demo.config.js --dev false --bundle-output bundle/android/demo/demo.bundle --assets-dest bundle/android/demo
+    # echoc "demo.bundle配置文件"
+    # node makeBundleConfig bundle/android/demo/demo.bundle applets/demo/package.json
 
     # echoc "创建demo2.bundle"
     # mkdir -p bundle/android/demo2
@@ -73,6 +73,15 @@ buildApplet() {
 }
 
 #-------------------------------
+#   clearBase
+#   清除小程序bundle和zip
+#-------------------------------
+clearBase() {
+  echoc "清除base"
+  rm android/app/src/main/assets/base.zip
+}
+
+#-------------------------------
 #   clearApplet
 #   清除小程序bundle和zip
 #-------------------------------
@@ -81,6 +90,16 @@ clearApplet() {
   rm -rf bundle/android/$clearName bundle/android/$clearName.zip
   adb shell rm -rf sdcard/iTablet/Bundles/$clearName
 }
+
+#-------------------------------
+#   moveBase
+#   拷贝base到指定位置
+#-------------------------------
+moveBase() {
+  echoc "拷贝base.bundle文件"
+  cp bundle/android/base.zip android/app/src/main/assets
+}
+
 
 #-------------------------------
 #   clearApplet
@@ -128,8 +147,8 @@ moveBundle() {
   echoc "拷贝base.bundle文件"
   cp bundle/android/base.zip android/app/src/main/assets
 
-  echoc "拷贝demo.bundle文件"
-  adb push bundle/android/demo.zip sdcard/iTablet/Bundles
+  # echoc "拷贝demo.bundle文件"
+  # adb push bundle/android/demo.zip sdcard/iTablet/Bundles
 
   # echoc "拷贝demo2.bundle文件"
   # adb push bundle/android/demo2.zip sdcard/iTablet/Bundles
@@ -145,26 +164,6 @@ moveBundle() {
 clear() {
   echoc "清除bundle"
   rm -rf bundle/android/*
-}
-
-#-------------------------------
-#   clear
-#   清除文件
-#-------------------------------
-clearAndroid() {
-  echoc "清除Android assets"
-  rm -rf android/app/src/main/assets/bundles
-  rm android/app/src/main/assets/base.zip
-}
-
-#-------------------------------
-#   clear
-#   清除文件
-#-------------------------------
-clearApplets() {
-  echoc "清除Android applets"
-  # rm -rf bundle/android/demo*
-  adb shell rm -rf sdcard/iTablet/Bundles/*
 }
 
 key=$(echo $1 | awk -F"=" '{print $1}')
@@ -192,10 +191,14 @@ elif [ $key == "-bc" ];then
   buildCommon
 elif [ $key == "-ba" ];then
   buildApplets
+elif [[ $key == "-ca" && $val == "base" ]];then
+  clearBase
 elif [[ $key == "-ca" && $val ]];then
   clearApplet
 elif [ $key == "-c" ];then
   clear
+elif [[ $key == "-m" && $val == "base" ]];then
+  moveBase
 elif [[ $key == "-m" && $val ]];then
   moveApplet
 elif [ $key == "-m" ];then

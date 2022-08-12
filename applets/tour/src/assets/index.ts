@@ -1,7 +1,7 @@
-const pika = require('./pika.gif')
+const flight = require('./icon_flightpath.png')
 
 const image = {
-  pika,
+  flight,
 }
 
 function getImage(): typeof image {

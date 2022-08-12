@@ -116,9 +116,9 @@ export default class TourModule extends Module {
       // 根据语言获取地图模块名称
       title: getLanguage(global.language).Map_Main_Menu.TOUR,
       // 模块图片
-      moduleImage: getImage().pika,
+      moduleImage: getImage().flight,
       // 点击时模块高亮图片
-      moduleImageTouch: getImage().pika,
+      moduleImageTouch: getImage().flight,
       // 默认地图名称
       defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
       // 地图默认底图数据

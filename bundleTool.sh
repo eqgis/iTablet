@@ -201,15 +201,31 @@ elif [[ $key == "-m" && $val ]];then
 elif [ $key == "-m" ];then
   moveBundle
 else
-  echo 
-  "
+  echo "
   -b xxx:     创建xxx.bundle和xxx.zip;
-  -b:         创建base和小程序包;
-  -ba:        创建buildApplets中指定的applets;
-  -bc:        创建base bundle;
-  -ca xxx:    清除xxx小程序包;
-  -c:         清除 bundle/android/ 中的所有包;
-  -m xxx:     移动xxx小程序到iTablet文件目录;
-  -m:         移动base和所有小程序到默认位置;
+              eg: bundleTools.sh -b=tour
+              "
+          
+  echo "  -b:         创建base和小程序包;
+  "
+
+  echo "  -ba:        创建buildApplets中指定的applets;
+  "
+
+  echo "  -bc:        创建base bundle;
+  "
+
+  echo  "  -ca xxx:    清除xxx小程序包;
+              eg: bundleTools.sh -ca=tour
+              "
+
+  echo "  -c:         清除 bundle/android/ 中的所有包;
+  "
+
+  echo "  -m xxx:     移动xxx小程序到iTablet文件目录;
+              eg: bundleTools.sh -m=tour
+              "
+
+  echo "  -m:         移动base和所有小程序到默认位置;
   "
 fi

@@ -184,24 +184,24 @@ if [[ $key == "-b" && $val == "base" ]];then
   buildCommon
 elif [[ $key == "-b" && $val ]];then
   buildApplet
-elif [ $key == "-b" ];then
+elif [[ $key == "-b" ]];then
   buildCommon
   buildApplets
-elif [ $key == "-bc" ];then
+elif [[ $key == "-bc" ]];then
   buildCommon
-elif [ $key == "-ba" ];then
+elif [[ $key == "-ba" ]];then
   buildApplets
 elif [[ $key == "-ca" && $val == "base" ]];then
   clearBase
 elif [[ $key == "-ca" && $val ]];then
   clearApplet
-elif [ $key == "-c" ];then
+elif [[ $key == "-c" ]];then
   clear
 elif [[ $key == "-m" && $val == "base" ]];then
   moveBase
 elif [[ $key == "-m" && $val ]];then
   moveApplet
-elif [ $key == "-m" ];then
+elif [[ $key == "-m" ]];then
   moveBundle
 else
   echo "

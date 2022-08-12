@@ -2783,7 +2783,6 @@ export default class MapView extends React.Component {
         this.point = params.point
         this.isCollect = true
         this.isnew = false
-        SARMap.setAction(ARAction.TRACK)
       }
 
       SARMap.showPointCloud(true)

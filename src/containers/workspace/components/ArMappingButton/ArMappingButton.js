@@ -631,7 +631,7 @@ export default class ArMappingButton extends React.Component {
   /** 轨迹式 **/
   trackCollect = () => {
     try {
-      SARMap.changeTrackingMode(0)
+      SARMap.setAction(ARAction.TRACK_AUTO)
       this.props.isTrack(true)
       this.setState({ data: this.collectdata })
     } catch (e) {
@@ -642,7 +642,7 @@ export default class ArMappingButton extends React.Component {
   /** 打点式 **/
   pointCollect = () => {
     try {
-      SARMap.changeTrackingMode(1)
+      SARMap.setAction(ARAction.TRACK_MANUAL)
       this.props.isTrack(false)
       this.setState({data:this.collectdata})
     } catch (e) {
@@ -651,7 +651,7 @@ export default class ArMappingButton extends React.Component {
   }
 
   arCollect = () => {
-    SARMap.changeTrackingMode(1)
+    SARMap.setAction(ARAction.TRACK_MANUAL)
     this.props.isTrack(false)
     this.props.showSwitch(false)
     this.setState({ isCollect: true, data: this.collectdata, showSwitch: true })

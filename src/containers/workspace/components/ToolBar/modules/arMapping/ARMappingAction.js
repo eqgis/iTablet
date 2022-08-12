@@ -1,6 +1,6 @@
 /* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
-import { SMap ,SARMap } from 'imobile_for_reactnative'
+import { SMap ,SARMap, ARAction } from 'imobile_for_reactnative'
 import { LayerUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 
@@ -29,7 +29,7 @@ function collectSceneForm() {
     // let _point = await SMap.getCurrentLocation()
     // let point = { x: _point.longitude, y: _point.latitude }
     // global.MeasureCollectData.point = point
-    SARMap.changeTrackingMode(1)
+    SARMap.setAction(ARAction.TRACK_MANUAL)
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arCollect'})
 
     // let time = await SCollectSceneFormView.getSystemTime()

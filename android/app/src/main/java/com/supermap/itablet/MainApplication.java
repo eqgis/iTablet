@@ -61,6 +61,7 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected String getJSBundleFile() {
           if (!isBundle) return null;
+          // 指定base.bundle路径
           String path = getFilesDir().getAbsolutePath() + "/bundles/base/base.bundle";
           if (!(new File(path).exists())) {
             path = null;
@@ -76,9 +77,7 @@ public class MainApplication extends Application implements ReactApplication {
               .setUseDeveloperSupport(getUseDeveloperSupport())
               .setRedBoxHandler(getRedBoxHandler())
               .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
-//                    .setUIImplementationProvider(getUIImplementationProvider())
               .setJSIModulesPackage(getJSIModulePackage())
-//              .setUseDeveloperSupport(BuildConfig.DEBUG)
               .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
 
           for (ReactPackage reactPackage : getPackages()) {

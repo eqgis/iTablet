@@ -1,11 +1,6 @@
-// import '../../common/index'
-console.log('--------tour 1---------')
-// import { Toast } from '@/utils'
 import BundleUtils from '@/utils/BundleUtils'
 import { TourModule } from './src/mapModules'
 import Toast from 'react-native-root-toast'
-
-console.log('--------tour 2---------')
 
 Toast.show('tour loaded')
 

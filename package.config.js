@@ -1,11 +1,11 @@
 const pathSep = require('path').sep
 
-function postProcessModulesFilter(module) {
-  if (module['path'].indexOf(__dirname + pathSep + 'applets' + pathSep) == 0) {
-    return false
-  }
-  return true
-}
+// function postProcessModulesFilter(module) {
+//   if (module['path'].indexOf(__dirname + pathSep + 'applets' + pathSep) == 0) {
+//     return false
+//   }
+//   return true
+// }
 
 function createModuleIdFactory() {
   const projectRootPath = __dirname

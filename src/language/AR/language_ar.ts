@@ -547,6 +547,8 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'الرجاء تحديد الكائن',
   PLEASE_SELECT_LAYER_OR_OBJECT: "الرجاء تحديد طبقة أو كائن",
   PLEASE_SELECT_AR_OBJECT_LAYER: "الرجاء تحديد طبقة كائن الواقع المعزز",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "أضف جدول السمات إلى مشهد الواقع المعزز",
 

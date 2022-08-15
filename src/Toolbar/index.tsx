@@ -18,6 +18,7 @@ import {
 import { getLayers, setCurrentLayer } from "@/redux/models/layers"
 import { getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
 import {closeARMap, createARMap, saveARMap} from '@/redux/models/armap'
+import { setPipeLineAttribute } from "@/redux/models/arlayer"
 
 const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 
@@ -68,6 +69,7 @@ const mapDispatch = {
   setCurrentLayer,
   getLayers,
   setCurrentARLayer,
+  setPipeLineAttribute,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

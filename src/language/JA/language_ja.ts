@@ -547,6 +547,8 @@ export const language_ja: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'オブジェクトを選択してください',
   PLEASE_SELECT_LAYER_OR_OBJECT: "レイヤー、またはオブジェクトを選択してください",
   PLEASE_SELECT_AR_OBJECT_LAYER: "ARオブジェクトレイヤーを選択してください",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "ARシーンに追加",
 

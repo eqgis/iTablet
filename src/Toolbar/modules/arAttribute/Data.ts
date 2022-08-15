@@ -6,6 +6,8 @@ import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/component
 import { AppToolBar, Toast } from "../../../utils"
 import { ARAttributeViewOption } from "./ARAttributeView"
 import { checkSupportARAttributeByElement } from "./Actions"
+// import { attribute3DHeadtype, attribute3DItemType, attribute3DType } from "@/utils/AppToolBar"
+import {PipeLineAttributeType} from './component/pipeLineAttribute/PipeLineAttribute'
 
 
 export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
@@ -32,8 +34,15 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
   return option
 }
 
+let isPipeLine = true
 async function __styleButtonAction() {
+  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   const selectARElement = AppToolBar.getData().selectARElement
+
+  if(!isPipeLine || (layer && layer.type === ARLayerType.AR_SCENE_LAYER)){
+    Toast.show(getLanguage().PIPE_LINE_ATTRIBUTE_NOT_STYLE)
+    return
+  }
 
   if (!selectARElement) {
     Toast.show(getLanguage().PLEASE_SELECT_OBJ)
@@ -63,15 +72,51 @@ async function __styleButtonAction() {
 /** 浏览模型信息 */
 function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
 
-  option.pageAction = () => {
+  option.pageAction = async () => {
+
     SARMap.setAction(ARAction.SELECT)
+    SARMap.setSceneAction("PANSELECT3D")
+
+    await SARMap.addAttributeListener({
+      callback: (result: any) => {
+        // console.warn("result01: " + JSON.stringify(result))
+        const arr: Array<PipeLineAttributeType> = []
+        Object.keys(result).forEach(key => {
+          const item: PipeLineAttributeType = {
+            title: key,
+            value: result[key],
+          }
+
+          if (key === 'id') {
+            arr.unshift(item)
+          } else {
+            arr.push(item)
+          }
+        })
+        // 将数据放入redux里
+        AppToolBar.getProps().setPipeLineAttribute(arr)
+        if(arr.length > 0) {
+          AppToolBar.addData({
+            selectedAttribute: undefined,
+            selectARElement: undefined,
+          })
+          SARMap.clearSelection()
+          isPipeLine = false
+        } else {
+          isPipeLine = true
+        }
+
+      }
+    })
   }
 
   option.bottomData = [
     {
       image: getImage().icon_toolbar_quit,
       onPress: async() => {
+        AppToolBar.getProps().setPipeLineAttribute([])
         SARMap.setAction(ARAction.NULL)
+        SARMap.setSceneAction("PAN3D")
         SARMap.clearSelection()
         AppToolBar.addData({
           selectedAttribute: undefined,
@@ -91,10 +136,16 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
         const selectARElement = AppToolBar.getData().selectARElement
         const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
 
-        if (!layer && !selectARElement) {
-          Toast.show(getLanguage().PLEASE_SELECT_LAYER_OR_OBJECT)
+        if (!isPipeLine || (!layer && !selectARElement)) {
+          Toast.show(getLanguage().PIPE_LINE_ATTRIBUTE_NOT_EDIT)
           return
         }
+
+        if( !selectARElement && layer && layer.type === ARLayerType.AR_SCENE_LAYER){
+          Toast.show(getLanguage().PIPE_LINE_ATTRIBUTE_NOT_EDIT)
+          return
+        }
+
         if (
           !selectARElement && layer &&
           layer.type !== ARLayerType.AR_LINE_LAYER &&
@@ -122,6 +173,7 @@ function attributeOption(option: IToolbarOption) {
       image: getImage().icon_toolbar_quit,
       onPress: () => {
         SARMap.setAction(ARAction.NULL)
+        SARMap.setSceneAction("PAN3D")
         // 清空属性选择
         // AppToolBar.addData({
         //   selectedAttribute: undefined,
@@ -159,8 +211,14 @@ function attributeOption(option: IToolbarOption) {
         // 清空属性选择
         AppToolBar.addData({
           selectedAttribute: undefined,
+          attribute3D: undefined,
         })
-        SARMap.setAction(ARAction.SELECT)
+
+        if(layer && layer.type === ARLayerType.AR_SCENE_LAYER) {
+          SARMap.setSceneAction("PANSELECT3D")
+        } else {
+          SARMap.setAction(ARAction.SELECT)
+        }
         // SARMap.setCenterHitTest(false)
         // AppToolBar.show('ARMAP', 'AR_MAP_BROWSE_ELEMENT')
         AppToolBar.goBack()

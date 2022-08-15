@@ -7,6 +7,7 @@ import { ModuleViewProps } from '../..'
 import { getImage } from '../../../assets'
 import { dp } from '../../../utils'
 import Attribute from './component/Attribute'
+import PipeLineAttribute from './component/pipeLineAttribute'
 
 export interface ARAttributeViewOption {
   attribute: 'null' | 'attribute'
@@ -21,6 +22,7 @@ class ARAttributeView extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props)
+    this.props.setPipeLineAttribute([])
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -70,17 +72,25 @@ class ARAttributeView extends React.Component<Props> {
     )
   }
 
+  renderPipeLineAttribute = () => {
+    return (
+      <PipeLineAttribute/>
+    )
+  }
+
   isPortrait = true
   render() {
     this.isPortrait = this.props.windowSize.height > this.props.windowSize.width
     return(
       <>
         {this.renderLayer()}
+        {this.renderPipeLineAttribute()}
         {this.props.data?.attribute === 'attribute' && <Attribute  />}
       </>
     )
   }
 }
+
 
 export default ARAttributeView
 

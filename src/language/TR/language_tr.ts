@@ -547,6 +547,8 @@ export const language_tr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Lütfen nesne seçin',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Lütfen bir katman veya nesne seçin",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Lütfen bir nesne katmanı seçin",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "AR sahnesine Öznitelik tablosu ekle",
 

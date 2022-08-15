@@ -547,6 +547,8 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Veuillez sélectionner un objet',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Veuillez sélectionner un calque ou un objet",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Veuillez sélectionner un calque d'objet",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Ajouter une table d'attributs à la scène AR",
 

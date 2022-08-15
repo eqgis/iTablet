@@ -547,6 +547,8 @@ export const language_cn = {
   PLEASE_SELECT_OBJ: '请选择对象',
   PLEASE_SELECT_LAYER_OR_OBJECT: "请选择图层或对象",
   PLEASE_SELECT_AR_OBJECT_LAYER: "请选择AR对象图层",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: '三维管线属性没有风格',
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: '三维管线属性不能编辑',
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "添加到AR场景",
 

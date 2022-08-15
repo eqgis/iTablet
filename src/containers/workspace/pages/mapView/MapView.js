@@ -4848,6 +4848,8 @@ export default class MapView extends React.Component {
                 } else {
                   SARMap.showAttribute(element.layerName, element.id, attributes)
                 }
+              } else {
+                SARMap.showAttribute(element.layerName, element.id, null)
               }
             } else if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
               onAddARAnimation(element)

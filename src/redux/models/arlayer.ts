@@ -12,6 +12,7 @@ import {
 
 const GET_AR_LAYERS = 'GET_AR_LAYERS'
 const SET_CURRENT_AR_LAYER = 'SET_CURRENT_AR_LAYER'
+export const MAP_AR_PIPE_LINE_ATTRIBUTE = 'MAP_AR_PIPE_LINE_ATTRIBUTE'
 
 export interface ARMapInfo {
   layers: ARLayer[],
@@ -35,6 +36,15 @@ interface ARLayerAction<T> {
 interface DispatchParams {
   type: string,
   [name: string]: any,
+}
+
+interface PipeLineAttributeType {
+  title: string
+  value: string
+}
+interface PipeLineAttribute {
+  type: string,
+  payload: Array<PipeLineAttributeType> | null,
 }
 
 // Actions
@@ -63,9 +73,22 @@ export const setCurrentARLayer = (
   })
 }
 
+/** 设置ar三维管线属性 */
+export const setPipeLineAttribute = (attributeArr: Array<PipeLineAttributeType> = []) => async (dispatch:(params: PipeLineAttribute) => void) => {
+  try {
+    dispatch({
+      type: MAP_AR_PIPE_LINE_ATTRIBUTE,
+      payload: attributeArr,
+    })
+  } catch (error) {
+    console.warn("设置ar三维管线属性出错啦！")
+  }
+}
+
 const initialState = fromJS({
   layers: [],
   currentLayer: undefined,
+  pipeLineAttribute:[], // AR管线的属性数组
 })
 
 export default handleActions(
@@ -89,6 +112,9 @@ export default handleActions(
         currentLayer = payload.layers[0]
       }
       return state.setIn(['layers'], fromJS(payload.layers)).setIn(['currentLayer'], fromJS(currentLayer))
+    },
+    [`${MAP_AR_PIPE_LINE_ATTRIBUTE}`]: (state: any, { payload }) => {
+      return  state.setIn(['pipeLineAttribute'], fromJS(payload))
     },
     // [REHYDRATE]: (state: any, { payload }: ARLayerAction<ARMapInfo>) => {
     //   return state

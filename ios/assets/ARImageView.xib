@@ -17,26 +17,26 @@
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RT9-tQ-8O4">
                     <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PdS-bX-c5Z" userLabel="back">
-                    <rect key="frame" x="20" y="20" width="30" height="30"/>
+                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PdS-bX-c5Z" userLabel="back">
+                    <rect key="frame" x="30" y="20" width="50" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="a8H-J4-fXl"/>
-                        <constraint firstAttribute="width" constant="30" id="c4Q-o6-zy7"/>
+                        <constraint firstAttribute="height" constant="50" id="a8H-J4-fXl"/>
+                        <constraint firstAttribute="width" constant="50" id="c4Q-o6-zy7"/>
                     </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" backgroundImage="tab_icon_back.png"/>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQR-kK-AdB" userLabel="close">
-                    <rect key="frame" x="1020" y="30" width="30" height="30"/>
+                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQR-kK-AdB" userLabel="close">
+                    <rect key="frame" x="970" y="20" width="80" height="80"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="aHh-DE-wjp"/>
-                        <constraint firstAttribute="width" constant="30" id="uSl-oQ-6MB"/>
+                        <constraint firstAttribute="height" constant="80" id="aHh-DE-wjp"/>
+                        <constraint firstAttribute="width" constant="80" id="uSl-oQ-6MB"/>
                     </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" backgroundImage="tab_icon_close01.png"/>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23y-Kr-vda" userLabel="name">
-                    <rect key="frame" x="40" y="500" width="500" height="100"/>
+                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23y-Kr-vda" userLabel="name">
+                    <rect key="frame" x="40" y="460" width="500" height="100"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="C0f-EM-FOe"/>
                         <constraint firstAttribute="width" constant="500" id="d3b-jt-Mh7"/>
@@ -45,55 +45,45 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vte-b6-oBO" userLabel="btnBackView">
-                    <rect key="frame" x="240" y="680" width="600" height="100"/>
+                <view tag="8" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vte-b6-oBO" userLabel="btnBackView">
+                    <rect key="frame" x="240" y="640" width="600" height="140"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="22V-MU-7Lw">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_toolbar_bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="22V-MU-7Lw">
+                            <rect key="frame" x="0.0" y="10" width="600" height="130"/>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="71W-mw-swN" userLabel="last">
-                            <rect key="frame" x="110" y="30" width="40" height="40"/>
-                            <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                        <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="71W-mw-swN" userLabel="last">
+                            <rect key="frame" x="95" y="45" width="50" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="2Qd-eN-v2f"/>
-                                <constraint firstAttribute="width" constant="40" id="McZ-NO-uqg"/>
+                                <constraint firstAttribute="height" constant="50" id="2Qd-eN-v2f"/>
+                                <constraint firstAttribute="width" constant="50" id="McZ-NO-uqg"/>
                             </constraints>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Button">
-                                <backgroundConfiguration key="background"/>
-                            </buttonConfiguration>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" backgroundImage="icon_tool_previous.png"/>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAC-bn-zXu" userLabel="play">
-                            <rect key="frame" x="280" y="30" width="40" height="40"/>
-                            <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                        <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAC-bn-zXu" userLabel="play">
+                            <rect key="frame" x="275" y="45" width="50" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="gFK-g4-8Dw"/>
-                                <constraint firstAttribute="width" constant="40" id="nlJ-EC-S9c"/>
+                                <constraint firstAttribute="height" constant="50" id="gFK-g4-8Dw"/>
+                                <constraint firstAttribute="width" constant="50" id="nlJ-EC-S9c"/>
                             </constraints>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Button">
-                                <backgroundConfiguration key="background"/>
-                            </buttonConfiguration>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" backgroundImage="icon_tool_play.png"/>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k7y-NJ-hIh" userLabel="next">
-                            <rect key="frame" x="450" y="30" width="40" height="40"/>
-                            <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                        <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k7y-NJ-hIh" userLabel="next">
+                            <rect key="frame" x="455" y="45" width="50" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="dG0-L5-CZI"/>
-                                <constraint firstAttribute="height" constant="40" id="vgS-Ue-Ypf"/>
+                                <constraint firstAttribute="width" constant="50" id="dG0-L5-CZI"/>
+                                <constraint firstAttribute="height" constant="50" id="vgS-Ue-Ypf"/>
                             </constraints>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Button">
-                                <backgroundConfiguration key="background"/>
-                            </buttonConfiguration>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" backgroundImage="icon_tool_next.png"/>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemPinkColor"/>
                     <constraints>
                         <constraint firstItem="zAC-bn-zXu" firstAttribute="centerY" secondItem="vte-b6-oBO" secondAttribute="centerY" id="0as-9e-3mU"/>
                         <constraint firstItem="zAC-bn-zXu" firstAttribute="leading" secondItem="71W-mw-swN" secondAttribute="trailing" constant="130" id="2it-fa-Pe4"/>
-                        <constraint firstAttribute="height" constant="100" id="55U-Pi-Hkj"/>
-                        <constraint firstItem="22V-MU-7Lw" firstAttribute="top" secondItem="vte-b6-oBO" secondAttribute="top" id="ClF-fB-Vhb"/>
+                        <constraint firstAttribute="height" constant="140" id="55U-Pi-Hkj"/>
+                        <constraint firstItem="22V-MU-7Lw" firstAttribute="top" secondItem="vte-b6-oBO" secondAttribute="top" constant="10" id="ClF-fB-Vhb"/>
                         <constraint firstItem="71W-mw-swN" firstAttribute="centerY" secondItem="vte-b6-oBO" secondAttribute="centerY" id="EUH-BR-J1E"/>
                         <constraint firstItem="k7y-NJ-hIh" firstAttribute="centerY" secondItem="vte-b6-oBO" secondAttribute="centerY" id="PWK-6h-2HI"/>
                         <constraint firstItem="k7y-NJ-hIh" firstAttribute="leading" secondItem="zAC-bn-zXu" secondAttribute="trailing" constant="130" id="a0x-g8-qqf"/>
@@ -107,31 +97,31 @@
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="gQR-kK-AdB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="2Xx-K7-LhN"/>
-                <constraint firstItem="RT9-tQ-8O4" firstAttribute="centerX" secondItem="vte-b6-oBO" secondAttribute="centerX" id="E4F-1R-l2a"/>
-                <constraint firstItem="PdS-bX-c5Z" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="Oyg-jV-lCW"/>
-                <constraint firstAttribute="bottom" secondItem="RT9-tQ-8O4" secondAttribute="bottom" id="Qgn-VW-gK9"/>
+                <constraint firstItem="gQR-kK-AdB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="2Xx-K7-LhN"/>
+                <constraint firstItem="RT9-tQ-8O4" firstAttribute="centerX" secondItem="vte-b6-oBO" secondAttribute="centerX" id="2aI-NS-qt2"/>
+                <constraint firstItem="RT9-tQ-8O4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3dI-CW-iXa"/>
+                <constraint firstItem="RT9-tQ-8O4" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="4QO-c9-bQ2"/>
+                <constraint firstItem="RT9-tQ-8O4" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="FCU-ji-rF3"/>
+                <constraint firstItem="PdS-bX-c5Z" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="Oyg-jV-lCW"/>
                 <constraint firstAttribute="bottom" secondItem="vte-b6-oBO" secondAttribute="bottom" constant="30" id="UEo-WE-bkc"/>
-                <constraint firstItem="RT9-tQ-8O4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bNz-Pa-koF"/>
                 <constraint firstItem="23y-Kr-vda" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="40" id="bn5-rx-5Vk"/>
                 <constraint firstItem="vte-b6-oBO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="bvx-gw-xiq"/>
                 <constraint firstItem="23y-Kr-vda" firstAttribute="top" secondItem="vte-b6-oBO" secondAttribute="top" constant="-180" id="cPk-oN-jRd"/>
                 <constraint firstItem="PdS-bX-c5Z" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="kdF-6A-47A"/>
                 <constraint firstAttribute="trailing" secondItem="gQR-kK-AdB" secondAttribute="trailing" constant="30" id="mQs-Dp-Aau"/>
-                <constraint firstItem="RT9-tQ-8O4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xuX-6a-O2k"/>
             </constraints>
             <point key="canvasLocation" x="131.66666666666666" y="62.962962962962962"/>
         </view>
     </objects>
     <resources>
+        <image name="btn_toolbar_bg.png" width="704" height="192"/>
+        <image name="icon_tool_next.png" width="80" height="80"/>
+        <image name="icon_tool_play.png" width="96" height="96"/>
+        <image name="icon_tool_previous.png" width="80" height="80"/>
+        <image name="tab_icon_back.png" width="50" height="50"/>
+        <image name="tab_icon_close01.png" width="50" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

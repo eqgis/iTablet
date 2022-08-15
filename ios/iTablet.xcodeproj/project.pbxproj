@@ -22,7 +22,6 @@
 		0AC8AF052808109F00435541 /* Template.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE852808109E00435541 /* Template.zip */; };
 		0AC8AF062808109F00435541 /* launch_slogan_cn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE862808109E00435541 /* launch_slogan_cn.png */; };
 		0AC8AF072808109F00435541 /* Workspace.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE872808109E00435541 /* Workspace.zip */; };
-		0AC8AF082808109F00435541 /* SuperMapAR.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE882808109E00435541 /* SuperMapAR.bundle */; };
 		0AC8AF092808109F00435541 /* python2.7.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE892808109E00435541 /* python2.7.zip */; };
 		0AC8AF642808109F00435541 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE52808109F00435541 /* logo.png */; };
 		0AC8AF742808109F00435541 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF72808109F00435541 /* resources.bundle */; };
@@ -76,7 +75,16 @@
 		4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9028378DEA0045CB07 /* publicMap.txt */; };
 		4E28CE9528378DFD0045CB07 /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9428378DFD0045CB07 /* PIL */; };
 		5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */; };
+		6547809B28A1FF8400C044DA /* SuperMapAR.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6547809A28A1FF8400C044DA /* SuperMapAR.bundle */; };
+		6547809E28A2020600C044DA /* tab_icon_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 6547809D28A2020600C044DA /* tab_icon_close.png */; };
 		65B76A7E289D0E62001888E6 /* ARListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65B76A7D289D0E62001888E6 /* ARListView.xib */; };
+		65CDD18D28A4F53400B5A2C8 /* tab_icon_close01.png in Resources */ = {isa = PBXBuildFile; fileRef = 65CDD18A28A4F53400B5A2C8 /* tab_icon_close01.png */; };
+		65CDD18E28A4F53400B5A2C8 /* tab_icon_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 65CDD18C28A4F53400B5A2C8 /* tab_icon_back.png */; };
+		65CDD19028A4F6CD00B5A2C8 /* btn_toolbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 65CDD18F28A4F6CC00B5A2C8 /* btn_toolbar_bg.png */; };
+		65CDD19528A4F99000B5A2C8 /* icon_tool_next.png in Resources */ = {isa = PBXBuildFile; fileRef = 65CDD19128A4F98F00B5A2C8 /* icon_tool_next.png */; };
+		65CDD19628A4F99000B5A2C8 /* icon_tool_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 65CDD19228A4F99000B5A2C8 /* icon_tool_pause.png */; };
+		65CDD19728A4F99000B5A2C8 /* icon_tool_previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 65CDD19328A4F99000B5A2C8 /* icon_tool_previous.png */; };
+		65CDD19828A4F99000B5A2C8 /* icon_tool_play.png in Resources */ = {isa = PBXBuildFile; fileRef = 65CDD19428A4F99000B5A2C8 /* icon_tool_play.png */; };
 		65D43B92288E759D00C3391B /* ARImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65D43B91288E759D00C3391B /* ARImageView.xib */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E13A5CAE28752B6C004DFA1E /* InfoPlist.strings */; };
@@ -227,7 +235,6 @@
 		0AC8AE852808109E00435541 /* Template.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Template.zip; sourceTree = "<group>"; };
 		0AC8AE862808109E00435541 /* launch_slogan_cn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_slogan_cn.png; sourceTree = "<group>"; };
 		0AC8AE872808109E00435541 /* Workspace.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Workspace.zip; sourceTree = "<group>"; };
-		0AC8AE882808109E00435541 /* SuperMapAR.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SuperMapAR.bundle; sourceTree = "<group>"; };
 		0AC8AE892808109E00435541 /* python2.7.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = python2.7.zip; sourceTree = "<group>"; };
 		0AC8AEE52808109F00435541 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		0AC8AEF72808109F00435541 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resources.bundle; sourceTree = "<group>"; };
@@ -283,7 +290,16 @@
 		4E28CE8F28378DEA0045CB07 /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
 		4E28CE9028378DEA0045CB07 /* publicMap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = publicMap.txt; sourceTree = "<group>"; };
 		4E28CE9428378DFD0045CB07 /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
+		6547809A28A1FF8400C044DA /* SuperMapAR.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SuperMapAR.bundle; sourceTree = "<group>"; };
+		6547809D28A2020600C044DA /* tab_icon_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_icon_close.png; sourceTree = "<group>"; };
 		65B76A7D289D0E62001888E6 /* ARListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARListView.xib; sourceTree = "<group>"; };
+		65CDD18A28A4F53400B5A2C8 /* tab_icon_close01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_icon_close01.png; sourceTree = "<group>"; };
+		65CDD18C28A4F53400B5A2C8 /* tab_icon_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_icon_back.png; sourceTree = "<group>"; };
+		65CDD18F28A4F6CC00B5A2C8 /* btn_toolbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_toolbar_bg.png; sourceTree = "<group>"; };
+		65CDD19128A4F98F00B5A2C8 /* icon_tool_next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_tool_next.png; sourceTree = "<group>"; };
+		65CDD19228A4F99000B5A2C8 /* icon_tool_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_tool_pause.png; sourceTree = "<group>"; };
+		65CDD19328A4F99000B5A2C8 /* icon_tool_previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_tool_previous.png; sourceTree = "<group>"; };
+		65CDD19428A4F99000B5A2C8 /* icon_tool_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_tool_play.png; sourceTree = "<group>"; };
 		65D43B91288E759D00C3391B /* ARImageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARImageView.xib; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iTablet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iTablet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -443,6 +459,8 @@
 		0AC8AE812808109E00435541 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				6547809C28A2020600C044DA /* ARAlbumImage */,
+				6547809A28A1FF8400C044DA /* SuperMapAR.bundle */,
 				E565E989286309A4007797E3 /* Model */,
 				E565E976286303CF007797E3 /* Resource */,
 				4E28CE9428378DFD0045CB07 /* PIL */,
@@ -455,7 +473,6 @@
 				0AC8AE852808109E00435541 /* Template.zip */,
 				0AC8AE862808109E00435541 /* launch_slogan_cn.png */,
 				0AC8AE872808109E00435541 /* Workspace.zip */,
-				0AC8AE882808109E00435541 /* SuperMapAR.bundle */,
 				0AC8AE892808109E00435541 /* python2.7.zip */,
 				0AC8AEE52808109F00435541 /* logo.png */,
 				0AC8AEF72808109F00435541 /* resources.bundle */,
@@ -560,6 +577,21 @@
 				47ABE6B728659DB200770561 /* Super23D.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		6547809C28A2020600C044DA /* ARAlbumImage */ = {
+			isa = PBXGroup;
+			children = (
+				65CDD19128A4F98F00B5A2C8 /* icon_tool_next.png */,
+				65CDD19228A4F99000B5A2C8 /* icon_tool_pause.png */,
+				65CDD19428A4F99000B5A2C8 /* icon_tool_play.png */,
+				65CDD19328A4F99000B5A2C8 /* icon_tool_previous.png */,
+				65CDD18F28A4F6CC00B5A2C8 /* btn_toolbar_bg.png */,
+				65CDD18C28A4F53400B5A2C8 /* tab_icon_back.png */,
+				65CDD18A28A4F53400B5A2C8 /* tab_icon_close01.png */,
+				6547809D28A2020600C044DA /* tab_icon_close.png */,
+			);
+			path = ARAlbumImage;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -797,23 +829,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				E565E988286303CF007797E3 /* CharacterRecognization.prototxt in Resources */,
+				65CDD19728A4F99000B5A2C8 /* icon_tool_previous.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				4E28CE9528378DFD0045CB07 /* PIL in Resources */,
 				0AC8AF042808109F00435541 /* launch_slogan_en.png in Resources */,
 				0AC8AF032808109F00435541 /* icon.png in Resources */,
 				E13A5CB128752BFC004DFA1E /* InfoPlist.strings in Resources */,
 				4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */,
-				0AC8AF082808109F00435541 /* SuperMapAR.bundle in Resources */,
 				0AC8AF742808109F00435541 /* resources.bundle in Resources */,
 				E565E990286309A5007797E3 /* mobilenet_quant_224.tflite in Resources */,
+				65CDD19528A4F99000B5A2C8 /* icon_tool_next.png in Resources */,
 				E565E981286303CF007797E3 /* SegmenationFree-Inception.prototxt in Resources */,
 				E565E985286303CF007797E3 /* Segmentation.prototxt in Resources */,
+				65CDD19028A4F6CD00B5A2C8 /* btn_toolbar_bg.png in Resources */,
 				4E28CE9128378DEA0045CB07 /* left_arrow.png in Resources */,
 				E565E987286303CF007797E3 /* Segmentation.caffemodel in Resources */,
 				0AC8AF642808109F00435541 /* logo.png in Resources */,
+				65CDD19628A4F99000B5A2C8 /* icon_tool_pause.png in Resources */,
 				0AC8AF072808109F00435541 /* Workspace.zip in Resources */,
 				E565E984286303CF007797E3 /* cascade.xml in Resources */,
 				E565E991286309A5007797E3 /* labelmap_cn.txt in Resources */,
+				65CDD18E28A4F53400B5A2C8 /* tab_icon_back.png in Resources */,
 				4E28CE9228378DEA0045CB07 /* ARWebView.xib in Resources */,
 				65D43B92288E759D00C3391B /* ARImageView.xib in Resources */,
 				0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */,
@@ -822,6 +858,7 @@
 				0AC8AF022808109F00435541 /* Images.zip in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */,
+				65CDD18D28A4F53400B5A2C8 /* tab_icon_close01.png in Resources */,
 				E565E992286309A5007797E3 /* mobilenet_quant_224_cn.txt in Resources */,
 				E565E993286309A5007797E3 /* mobilenet_quant_224.txt in Resources */,
 				E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */,
@@ -829,6 +866,9 @@
 				0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */,
 				E565E994286309A5007797E3 /* labelmap.txt in Resources */,
 				0AC8AF052808109F00435541 /* Template.zip in Resources */,
+				6547809B28A1FF8400C044DA /* SuperMapAR.bundle in Resources */,
+				65CDD19828A4F99000B5A2C8 /* icon_tool_play.png in Resources */,
+				6547809E28A2020600C044DA /* tab_icon_close.png in Resources */,
 				0AC8AF092808109F00435541 /* python2.7.zip in Resources */,
 				E565E980286303CF007797E3 /* SegmenationFree-Inception.caffemodel in Resources */,
 				0AC8AF752808109F00435541 /* PlotLibData.zip in Resources */,

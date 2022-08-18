@@ -4831,7 +4831,6 @@ export default class MapView extends React.Component {
           ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
           onSingleClick={async () => {
-            console.warn("single click")
             if(AppToolBar.getCurrentOption() === undefined
               &&  (ToolbarModule.getParams().type === '' || ToolbarModule.getParams().type === undefined)
             ) {
@@ -4852,7 +4851,6 @@ export default class MapView extends React.Component {
             }
           }}
           onARElementTouch={async (element, childIndex) => {
-            console.warn("touch element")
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT' && Platform.OS === 'android') {
               const element01 = AppToolBar.getData().selectARElement
               if(element01) {
@@ -4893,7 +4891,6 @@ export default class MapView extends React.Component {
                 // || element.type === ARElementType.AR_BAR_CHART
                 // || element.type === ARElementType.AR_PIE_CHART
               ) {
-                console.warn('111')
                 const preElement = AppToolBar.getData().selectARElement
                 // 当上一个触摸的对象存在，且与此次触摸对象不同时，要关闭上一个显示的属性表
                 if(preElement && (preElement.layerName !== element.layerName || preElement.id !== element.id)) {
@@ -4932,7 +4929,6 @@ export default class MapView extends React.Component {
             }
           }}
           onARElementSelect={async (element, childIndex) => {
-            console.warn("select element")
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ATTRIBUTE_SELECTED') {
               if( element.type === ARElementType.AR_IMAGE
                 || element.type === ARElementType.AR_VIDEO
@@ -5047,7 +5043,6 @@ export default class MapView extends React.Component {
           }
           }
           onARElementGeometryTouch={element => {
-            console.warn("line touch")
             // 点击矢量线和符号线的回调函数
             // if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {

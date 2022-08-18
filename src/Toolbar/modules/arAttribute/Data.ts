@@ -29,6 +29,9 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
     case 'AR_MAP_ATTRIBUTE_STYLE':
       styleAttributeOption(option)
       break
+    case 'AR_MAP_ATTRIBUTE_SELECTED':
+      selectElementOption(option)
+      break
   }
 
   return option
@@ -39,10 +42,10 @@ async function __styleButtonAction() {
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   const selectARElement = AppToolBar.getData().selectARElement
 
-  if(!isPipeLine || (layer && layer.type === ARLayerType.AR_SCENE_LAYER)){
-    Toast.show(getLanguage().PIPE_LINE_ATTRIBUTE_NOT_STYLE)
-    return
-  }
+  // if(!isPipeLine || (layer && layer.type === ARLayerType.AR_SCENE_LAYER)){
+  //   Toast.show(getLanguage().PIPE_LINE_ATTRIBUTE_NOT_STYLE)
+  //   return
+  // }
 
   if (!selectARElement) {
     Toast.show(getLanguage().PLEASE_SELECT_OBJ)
@@ -68,46 +71,13 @@ async function __styleButtonAction() {
   })
   AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_STYLE')
 }
-
-/** 浏览模型信息 */
-function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
+/** 选择模型对象 */
+function selectElementOption(option: ToolbarOption<ARAttributeViewOption>) {
 
   option.pageAction = async () => {
 
     SARMap.setAction(ARAction.SELECT)
     SARMap.setSceneAction("PANSELECT3D")
-
-    await SARMap.addAttributeListener({
-      callback: (result: any) => {
-        // console.warn("result01: " + JSON.stringify(result))
-        const arr: Array<PipeLineAttributeType> = []
-        Object.keys(result).forEach(key => {
-          const item: PipeLineAttributeType = {
-            title: key,
-            value: result[key],
-          }
-
-          if (key === 'id') {
-            arr.unshift(item)
-          } else {
-            arr.push(item)
-          }
-        })
-        // 将数据放入redux里
-        AppToolBar.getProps().setPipeLineAttribute(arr)
-        if(arr.length > 0) {
-          AppToolBar.addData({
-            selectedAttribute: undefined,
-            selectARElement: undefined,
-          })
-          SARMap.clearSelection()
-          isPipeLine = false
-        } else {
-          isPipeLine = true
-        }
-
-      }
-    })
   }
 
   option.bottomData = [
@@ -116,7 +86,39 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
       onPress: async() => {
         AppToolBar.getProps().setPipeLineAttribute([])
         SARMap.setAction(ARAction.NULL)
-        SARMap.setSceneAction("PAN3D")
+        // SARMap.setSceneAction("PAN3D")
+        // SARMap.clearSelection()
+        AppToolBar.addData({
+          selectedAttribute: undefined,
+          selectARElement: undefined,
+        })
+        AppToolBar.goBack()
+        SARMap.cancel()
+      }
+    },
+  ]
+}
+
+/** 浏览模型信息 */
+function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
+
+  option.pageAction = async () => {
+    SARMap.setAction(ARAction.NULL)
+    SARMap.setSceneAction("PAN3D")
+  }
+
+  option.bottomData = [
+    {
+      image: getImage().icon_toolbar_quit,
+      onPress: async() => {
+        AppToolBar.getProps().setPipeLineAttribute([])
+        // SARMap.setAction(ARAction.NULL)
+        // SARMap.setSceneAction("PAN3D")
+        SARMap.setSceneAction("PANSELECT3D")
+        const preElement = AppToolBar.getData().selectARElement
+        if(preElement) {
+          await SARMap.hideAttribute(preElement.layerName, preElement.id)
+        }
         SARMap.clearSelection()
         AppToolBar.addData({
           selectedAttribute: undefined,
@@ -182,10 +184,10 @@ function attributeOption(option: IToolbarOption) {
         AppToolBar.goBack()
       },
     },
-    {
-      image: getImage().my_color,
-      onPress: __styleButtonAction
-    },
+    // {
+    //   image: getImage().my_color,
+    //   onPress: __styleButtonAction
+    // },
     {
       image: getImage().icon_submit,
       onPress: () => {

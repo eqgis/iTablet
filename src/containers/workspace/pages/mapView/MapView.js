@@ -4830,27 +4830,133 @@ export default class MapView extends React.Component {
           customStyle={this.props.isAR ? null : styles.hidden}
           ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
-          onSingleClick={() => {
-            if(AppToolBar.getCurrentOption() === undefined 
+          onSingleClick={async () => {
+            console.warn("single click")
+            if(AppToolBar.getCurrentOption() === undefined
               &&  (ToolbarModule.getParams().type === '' || ToolbarModule.getParams().type === undefined)
             ) {
-              this.showFullMap(!this.fullMap)
+              const preElement = AppToolBar.getData().selectARElement
+              // 当三维管线的属性表和其他的属性表有显示时，就关闭属性表，没有才显隐界面上的按钮
+              if(AppToolBar.getProps().pipeLineAttribute.length <= 0 && !preElement) {
+                this.showFullMap(!this.fullMap)
+              }
+
+              if(preElement) {
+                await SARMap.hideAttribute(preElement.layerName, preElement.id)
+                AppToolBar.addData({ selectARElement: undefined })
+              }
             }
+
+            AppToolBar.getProps().setPipeLineAttribute([])
           }}
           onARElementTouch={async (element, childIndex) => {
+            console.warn("touch element")
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT') {
-              AppToolBar.addData({ selectARElement: element })
-              const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
-              if (attributes) {
-                const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
-                if (isShowAttribute) {
-                  // SARMap.hideAttribute(element.layerName, element.id)
+              const element01 = AppToolBar.getData().selectARElement
+              if(element01) {
+                if(element01.layerName === element.layerName && element01.id === element.id) {
+                  const attributes = await SARMap.getShowAttribute(element01.layerName, element01.id)
+                  AppToolBar.getProps().setPipeLineAttribute([])
+                  if (attributes) {
+                    const isShowAttribute = await SARMap.isShowAttribute(element01.layerName, element01.id)
+                    if (isShowAttribute) {
+                      SARMap.hideAttribute(element.layerName, element.id)
+                    } else {
+                      SARMap.showAttribute(element01.layerName, element01.id, attributes)
+                    }
+                  } else {
+                    SARMap.showAttribute(element01.layerName, element01.id, null)
+                  }
+                }
+              }
+
+            } else if(AppToolBar.getCurrentOption() === undefined
+              && (ToolbarModule.getParams().type === '' || ToolbarModule.getParams().type === undefined)
+            )  {
+              if( element.type === ARElementType.AR_IMAGE
+                || element.type === ARElementType.AR_VIDEO
+                // || element.type === ARElementType.AR_WEBVIEW
+                || element.type === ARElementType.AR_TEXT
+                || element.type === ARElementType.AR_BUBBLE_TEXT
+                || element.type === ARElementType.AR_MODEL
+                || element.type === ARElementType.AR_LINE
+                || element.type === ARElementType.AR_MARKER_LINE
+                // || element.type === ARElementType.AR_ALBUM
+                // || element.type === ARElementType.AR_BROCHOR
+                // || element.type === ARElementType.AR_VIDEO_ALBUM
+                // || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
+                // || element.type === ARElementType.AR_SAND_TABLE_ALBUM
+                // || element.type === ARElementType.AR_SAND_TABLE
+                // || element.type === ARElementType.AR_BAR_CHART
+                // || element.type === ARElementType.AR_PIE_CHART
+              ) {
+                console.warn('111')
+                const preElement = AppToolBar.getData().selectARElement
+                // 当上一个触摸的对象存在，且与此次触摸对象不同时，要关闭上一个显示的属性表
+                if(preElement && (preElement.layerName !== element.layerName || preElement.id !== element.id)) {
+                  await SARMap.hideAttribute(preElement.layerName, preElement.id)
+                }
+
+                AppToolBar.addData({ selectARElement: element })
+                AppToolBar.getProps().setPipeLineAttribute([])
+                // 获取已选择的属性
+                const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
+                if (attributes) {
+                // 当已选择的属性存在时
+                  const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
+                  if (isShowAttribute) {
+                  // 当已选择的属性存在且面板已显示时，关闭
+                    SARMap.hideAttribute(element.layerName, element.id)
+                  } else {
+                  // 当已选择的属性存在且面板未显示时，显示
+                    SARMap.showAttribute(element.layerName, element.id, attributes)
+                  }
                 } else {
-                  SARMap.showAttribute(element.layerName, element.id, attributes)
+                // 当没有已选择的属性时
+                  SARMap.showAttribute(element.layerName, element.id, null)
                 }
               } else {
-                SARMap.showAttribute(element.layerName, element.id, null)
+                const preElement = AppToolBar.getData().selectARElement
+                if(preElement) {
+                  await SARMap.hideAttribute(preElement.layerName, preElement.id)
+                  if (AppToolBar.getCurrentOption()?.key !== 'AR_MAP_BROWSE_ELEMENT'){
+                    AppToolBar.addData({ selectARElement: undefined })
+                  }
+                }
               }
+
+
+            }
+          }}
+          onARElementSelect={async (element, childIndex) => {
+            console.warn("select element")
+            if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ATTRIBUTE_SELECTED') {
+              if( element.type === ARElementType.AR_IMAGE
+                || element.type === ARElementType.AR_VIDEO
+                // || element.type === ARElementType.AR_WEBVIEW
+                || element.type === ARElementType.AR_TEXT
+                || element.type === ARElementType.AR_BUBBLE_TEXT
+                || element.type === ARElementType.AR_MODEL
+                || element.type === ARElementType.AR_LINE
+                || element.type === ARElementType.AR_MARKER_LINE
+              ){
+                // 在属性选择页面。选中对象后，跳转到属性编辑页面
+                AppToolBar.addData({ selectARElement: element })
+                AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+                const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
+                AppToolBar.getProps().setPipeLineAttribute([])
+                if (attributes) {
+                  const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
+                  if (isShowAttribute) {
+                  // SARMap.hideAttribute(element.layerName, element.id)
+                  } else {
+                    SARMap.showAttribute(element.layerName, element.id, attributes)
+                  }
+                } else {
+                  SARMap.showAttribute(element.layerName, element.id, null)
+                }
+              }
+
             } else if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
               onAddARAnimation(element)
             } else if (element.type === ARElementType.AR_SAND_TABLE
@@ -4859,40 +4965,42 @@ export default class MapView extends React.Component {
               )) {
               AppToolBar.addData({ selectARElement: element, selectedChildIndex: childIndex })
               AppToolBar.show('ARSANDTABLE', 'AR_SAND_TABLE_EDIT')
-            } else if (
-              !this.state.showPoiSearch &&
-              element.type === ARElementType.AR_IMAGE
-              || element.type === ARElementType.AR_VIDEO
-              || element.type === ARElementType.AR_WEBVIEW
-              || element.type === ARElementType.AR_TEXT
-              || element.type === ARElementType.AR_BUBBLE_TEXT
-              || element.type === ARElementType.AR_MODEL
-              || element.type === ARElementType.AR_ALBUM
-              || element.type === ARElementType.AR_BROCHOR
-              || element.type === ARElementType.AR_VIDEO_ALBUM
-              || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
-              || element.type === ARElementType.AR_SAND_TABLE_ALBUM
-              || element.type === ARElementType.AR_SAND_TABLE
-              || element.type === ARElementType.AR_BAR_CHART
-              || element.type === ARElementType.AR_PIE_CHART
-            ) {
-              arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
-              if(element.type === ARElementType.AR_MODEL) {
-                const animations = await SARMap.getModelAnimation(element.layerName, element.id)
-                ToolbarModule.addData({ hasModelAnimation: animations.length > 0 })
+            } else { // if(ToolbarModule.getData().type === ConstToolType.SM_AR_EDIT)
+              if (
+                !this.state.showPoiSearch &&
+                element.type === ARElementType.AR_IMAGE
+                || element.type === ARElementType.AR_VIDEO
+                || element.type === ARElementType.AR_WEBVIEW
+                || element.type === ARElementType.AR_TEXT
+                || element.type === ARElementType.AR_BUBBLE_TEXT
+                || element.type === ARElementType.AR_MODEL
+                || element.type === ARElementType.AR_ALBUM
+                || element.type === ARElementType.AR_BROCHOR
+                || element.type === ARElementType.AR_VIDEO_ALBUM
+                || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
+                || element.type === ARElementType.AR_SAND_TABLE_ALBUM
+                || element.type === ARElementType.AR_SAND_TABLE
+                || element.type === ARElementType.AR_BAR_CHART
+                || element.type === ARElementType.AR_PIE_CHART
+              ) {
+                arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
+                if(element.type === ARElementType.AR_MODEL) {
+                  const animations = await SARMap.getModelAnimation(element.layerName, element.id)
+                  ToolbarModule.addData({ hasModelAnimation: animations.length > 0 })
+                }
+                ToolbarModule.addData({ selectARElement: element })
+                AppToolBar.addData({ selectARElement: element })
+                SARMap.appointEditElement(element.id, element.layerName)
+                SARMap.setAction(ARAction.MOVE)
+                this.showFullMap(true)
+                this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+                  containerType: ToolbarType.slider,
+                  isFullScreen: false,
+                  showMenuDialog: false,
+                  selectName: getLanguage(this.props.language).ARMap.TRANSLATION,
+                  selectKey: getLanguage(this.props.language).ARMap.TRANSLATION,
+                })
               }
-              ToolbarModule.addData({ selectARElement: element })
-              AppToolBar.addData({ selectARElement: element })
-              SARMap.appointEditElement(element.id, element.layerName)
-              SARMap.setAction(ARAction.MOVE)
-              this.showFullMap(true)
-              this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-                containerType: ToolbarType.slider,
-                isFullScreen: false,
-                showMenuDialog: false,
-                selectName: getLanguage(this.props.language).ARMap.TRANSLATION,
-                selectKey: getLanguage(this.props.language).ARMap.TRANSLATION,
-              })
             }
           }}
           onARElementAdd={element => {
@@ -4936,24 +5044,27 @@ export default class MapView extends React.Component {
           }
           }
           onARElementGeometryTouch={element => {
+            console.warn("line touch")
             // 点击矢量线和符号线的回调函数
             // if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
               onAddARAnimation(element)
-            } else if (element.type === ARElementType.AR_LINE
-              || element.type === ARElementType.AR_MARKER_LINE) {
-              {
-                AppToolBar.addData({ addARElement: element })
-                arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
-                ToolbarModule.addData({ selectARElement: element })
-                AppToolBar.addData({ selectARElement: element })
-                SARMap.appointEditElement(element.id, element.layerName)
-                SARMap.setAction(ARAction.MOVE)
-                this.showFullMap(true)
-                this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-                  containerType: ToolbarType.slider,
-                  isFullScreen: false,
-                })
+            } else if(ToolbarModule.getData().type === ConstToolType.SM_AR_EDIT) {
+              if (element.type === ARElementType.AR_LINE
+                || element.type === ARElementType.AR_MARKER_LINE) {
+                {
+                  AppToolBar.addData({ addARElement: element })
+                  arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
+                  ToolbarModule.addData({ selectARElement: element })
+                  AppToolBar.addData({ selectARElement: element })
+                  SARMap.appointEditElement(element.id, element.layerName)
+                  SARMap.setAction(ARAction.MOVE)
+                  this.showFullMap(true)
+                  this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
+                    containerType: ToolbarType.slider,
+                    isFullScreen: false,
+                  })
+                }
               }
             }
             // }

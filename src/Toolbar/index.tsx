@@ -59,6 +59,7 @@ const mapStateToProp = (state: RootState) => ({
   arMapInfo: state.arlayer.toJS(),
   arMap: state.armap.toJS(),
   currentUser: state.user.toJS().currentUser,
+  pipeLineAttribute: state.arlayer.toJS().pipeLineAttribute,
 })
 
 const mapDispatch = {

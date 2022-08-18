@@ -13,6 +13,8 @@ export interface KEYS {
   //属性
   AR_MAP_ATTRIBUTE: 'AR_MAP_ATTRIBUTE'
   AR_MAP_ATTRIBUTE_STYLE: 'AR_MAP_ATTRIBUTE_STYLE'
+  /** 选择对象 */
+  AR_MAP_ATTRIBUTE_SELECTED: 'AR_MAP_ATTRIBUTE_SELECTED'
 
 }
 
@@ -28,7 +30,7 @@ const arAttributeData: ToolbarModuleData<ARATTRIBUTE> = {
     AppToolBar.addData({
       selectARElement: undefined,
     })
-    AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+    AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_SELECTED')
   },
   getData: getData,
   customView: ARAttributeView,

@@ -1,13 +1,15 @@
 import FloatBar, { FloatItem } from '@/components/FloatBar'
 import NavigationService from '@/containers/NavigationService'
+import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Animated,  Easing } from 'react-native'
 import { ModuleViewProps } from '../..'
 import { getImage } from '../../../assets'
-import { dp } from '../../../utils'
+import { AppToolBar, dp } from '../../../utils'
 import Attribute from './component/Attribute'
 import PipeLineAttribute from './component/pipeLineAttribute'
+import { PipeLineAttributeType } from './component/pipeLineAttribute/PipeLineAttribute'
 
 export interface ARAttributeViewOption {
   attribute: 'null' | 'attribute'
@@ -23,6 +25,41 @@ class ARAttributeView extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
     this.props.setPipeLineAttribute([])
+  }
+  componentDidMount = async () => {
+    SARMap.setSceneAction("PANSELECT3D")
+    await SARMap.addAttributeListener({
+      callback: async (result: any) => {
+        // console.warn("result01: " + JSON.stringify(result))
+        const arr: Array<PipeLineAttributeType> = []
+        Object.keys(result).forEach(key => {
+          const item: PipeLineAttributeType = {
+            title: key,
+            value: result[key],
+          }
+
+          if (key === 'id') {
+            arr.unshift(item)
+          } else {
+            arr.push(item)
+          }
+        })
+        // 将数据放入redux里
+        AppToolBar.getProps().setPipeLineAttribute(arr)
+        if(arr.length > 0) {
+          const preElement = AppToolBar.getData().selectARElement
+          if(preElement) {
+            await SARMap.hideAttribute(preElement.layerName, preElement.id)
+          }
+          AppToolBar.addData({
+            selectedAttribute: undefined,
+            selectARElement: undefined,
+          })
+          SARMap.clearSelection()
+        }
+
+      }
+    })
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -83,7 +120,7 @@ class ARAttributeView extends React.Component<Props> {
     this.isPortrait = this.props.windowSize.height > this.props.windowSize.width
     return(
       <>
-        {this.renderLayer()}
+        {/* {this.renderLayer()} */}
         {this.renderPipeLineAttribute()}
         {this.props.data?.attribute === 'attribute' && <Attribute  />}
       </>

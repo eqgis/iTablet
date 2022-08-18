@@ -3,6 +3,8 @@ import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { AppToolBar } from "@/utils"
+import { SARMap } from "imobile_for_reactnative"
 
 class ArNaviModule extends FunctionModule {
   constructor(props) {
@@ -12,6 +14,14 @@ class ArNaviModule extends FunctionModule {
 
 
   action = async () => {
+
+    const preElement = AppToolBar.getData().selectARElement
+    if(preElement) {
+      await SARMap.hideAttribute(preElement.layerName, preElement.id)
+      AppToolBar.addData({ selectARElement: undefined })
+    }
+    AppToolBar.getProps().setPipeLineAttribute([])
+
     const _params = ToolbarModule.getParams()
 
     _params.showArNavi && _params.showArNavi(true)

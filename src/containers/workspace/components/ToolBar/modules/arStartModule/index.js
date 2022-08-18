@@ -5,13 +5,23 @@ import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { AppToolBar } from "@/utils"
+import { SARMap } from "imobile_for_reactnative"
 
 class StartModule extends FunctionModule {
   constructor(props) {
     super(props)
   }
 
-  action = () => {
+  action = async () => {
+
+    const preElement = AppToolBar.getData().selectARElement
+    if(preElement) {
+      await SARMap.hideAttribute(preElement.layerName, preElement.id)
+      AppToolBar.addData({ selectARElement: undefined })
+    }
+    AppToolBar.getProps().setPipeLineAttribute([])
+
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
     const _data = StartData.getData(this.type, params)

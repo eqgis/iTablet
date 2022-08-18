@@ -2,7 +2,7 @@ import FloatBar, { FloatItem } from '@/components/FloatBar'
 import NavigationService from '@/containers/NavigationService'
 import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import { Animated,  Easing } from 'react-native'
 import { ModuleViewProps } from '../..'
 import { getImage } from '../../../assets'
@@ -27,6 +27,9 @@ class ARAttributeView extends React.Component<Props> {
     this.props.setPipeLineAttribute([])
   }
   componentDidMount = async () => {
+    if(Platform.OS === 'ios'){
+      return
+    }
     SARMap.setSceneAction("PANSELECT3D")
     await SARMap.addAttributeListener({
       callback: async (result: any) => {
@@ -48,7 +51,7 @@ class ARAttributeView extends React.Component<Props> {
         AppToolBar.getProps().setPipeLineAttribute(arr)
         if(arr.length > 0) {
           const preElement = AppToolBar.getData().selectARElement
-          if(preElement) {
+          if(preElement && Platform.OS === 'android') {
             await SARMap.hideAttribute(preElement.layerName, preElement.id)
           }
           AppToolBar.addData({

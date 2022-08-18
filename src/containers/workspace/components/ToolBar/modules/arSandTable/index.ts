@@ -3,6 +3,7 @@ import FunctionModule from "@/class/FunctionModule"
 import { getLanguage } from "@/language"
 import { AppToolBar } from "@/utils"
 import { SARMap } from "imobile_for_reactnative"
+import { Platform } from "react-native"
 
 
 
@@ -11,7 +12,7 @@ class ArSandTable extends FunctionModule {
 
   action = async (type: any) => {
     const preElement = AppToolBar.getData().selectARElement
-    if(preElement) {
+    if(preElement && Platform.OS === 'android') {
       await SARMap.hideAttribute(preElement.layerName, preElement.id)
       AppToolBar.addData({ selectARElement: undefined })
     }

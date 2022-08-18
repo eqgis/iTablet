@@ -4841,17 +4841,19 @@ export default class MapView extends React.Component {
                 this.showFullMap(!this.fullMap)
               }
 
-              if(preElement) {
+              if(preElement && Platform.OS === 'android') {
                 await SARMap.hideAttribute(preElement.layerName, preElement.id)
                 AppToolBar.addData({ selectARElement: undefined })
               }
             }
 
-            AppToolBar.getProps().setPipeLineAttribute([])
+            if(Platform.OS === 'android') {
+              AppToolBar.getProps().setPipeLineAttribute([])
+            }
           }}
           onARElementTouch={async (element, childIndex) => {
             console.warn("touch element")
-            if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT') {
+            if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT' && Platform.OS === 'android') {
               const element01 = AppToolBar.getData().selectARElement
               if(element01) {
                 if(element01.layerName === element.layerName && element01.id === element.id) {
@@ -4872,6 +4874,7 @@ export default class MapView extends React.Component {
 
             } else if(AppToolBar.getCurrentOption() === undefined
               && (ToolbarModule.getParams().type === '' || ToolbarModule.getParams().type === undefined)
+              && Platform.OS === 'android'
             )  {
               if( element.type === ARElementType.AR_IMAGE
                 || element.type === ARElementType.AR_VIDEO

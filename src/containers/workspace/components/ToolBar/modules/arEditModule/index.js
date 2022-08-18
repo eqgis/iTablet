@@ -7,6 +7,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import { SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
 import { AppToolBar } from "@/utils"
+import { Platform } from 'react-native'
 
 class ArEditModule extends FunctionModule {
   constructor(props) {
@@ -104,7 +105,7 @@ class ArEditModule extends FunctionModule {
     const _data = await AREditData.getData(this.type, params)
 
     const preElement = AppToolBar.getData().selectARElement
-    if(preElement) {
+    if(preElement  && Platform.OS === 'android') {
       await SARMap.hideAttribute(preElement.layerName, preElement.id)
       AppToolBar.addData({ selectARElement: undefined })
     }

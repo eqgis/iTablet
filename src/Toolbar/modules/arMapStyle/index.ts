@@ -6,6 +6,7 @@ import { getLanguage } from "../../../language"
 import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, AppUser, Toast } from "../../../utils"
 import { getData } from "./Data"
+import { Platform } from "react-native"
 
 /** ar矢量线符号数据格式 */
 interface ARSymbolObj {
@@ -37,7 +38,7 @@ const arMapStyleData: ToolbarModuleData<ARMAP_STYLE> = {
   action: async () => {
 
     const preElement = AppToolBar.getData().selectARElement
-    if(preElement) {
+    if(preElement && Platform.OS === 'android') {
       await SARMap.hideAttribute(preElement.layerName, preElement.id)
       AppToolBar.addData({ selectARElement: undefined })
     }

@@ -2481,7 +2481,7 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Veuillez sélectionner une couche de point, CAD ou de parcelle",
   PLEASE_SELECT_CAD_LAYER: "Veuillez sélectionner une couche CAD ",
   DONOT_SUPPORT_ARCORE: "Installer ou mettre à niveau ARCore",
-  DONOT_SUPPORT_ARENGINE: "Installer ou mettre à niveau AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Afficher la liste des appareils pris en charge",
   PLEASE_NEW_PLOT_LAYER: "Veuillez créer une nouvelle couche de tracé",
   DOWNLOADING_PLEASE_WAIT: "Téléchargement en cours, veuillez patienter",

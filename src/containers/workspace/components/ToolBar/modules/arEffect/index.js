@@ -12,7 +12,8 @@ class arEffect extends FunctionModule {
 
   action = async () => {
     let isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }

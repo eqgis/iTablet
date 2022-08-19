@@ -2482,7 +2482,7 @@ export const language_ja: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "ポイント、複合、またはマークレイヤーを選択してください",
   PLEASE_SELECT_CAD_LAYER: "複合レイヤーを選択してください",
   DONOT_SUPPORT_ARCORE: "ARCoreをインストール、または更新してください",
-  DONOT_SUPPORT_ARENGINE: "AREngineをインストール、または更新してください",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "対応しているデバイスのリストを表示",
   PLEASE_NEW_PLOT_LAYER: "新規マークレイヤーを作成しますか",
   DOWNLOADING_PLEASE_WAIT: "ダウンロード中、お待ちください",

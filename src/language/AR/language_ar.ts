@@ -2502,7 +2502,7 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "حدد نقطة ، كندي ، أو طبقة الطباعة",
   PLEASE_SELECT_CAD_LAYER: "الرجاء اختيار طبقة كندي",
   DONOT_SUPPORT_ARCORE: "تثبيت أو ترقية ARCore",
-  DONOT_SUPPORT_ARENGINE: "تثبيت أو ترقية AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "عرض قائمة الأجهزة المدعومة",
   PLEASE_NEW_PLOT_LAYER: "من فضلك أنشىء طبقة نقاط جديدة",
   DOWNLOADING_PLEASE_WAIT: "من فضلك انتظر جارى التنزيل",

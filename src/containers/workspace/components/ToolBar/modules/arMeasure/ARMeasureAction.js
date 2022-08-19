@@ -81,7 +81,8 @@ function arMeasureVolume() {
 function arMeasurePolygon() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -103,7 +104,8 @@ function arMeasurePolygon() {
 function arMeasureRectanglet() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -126,7 +128,8 @@ function arMeasureRectanglet() {
 function arMeasureCircular() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -148,7 +151,8 @@ function arMeasureCircular() {
 function arMeasureCuboid() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -171,7 +175,8 @@ function arMeasureCuboid() {
 function arMeasureCylinder() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -193,7 +198,8 @@ function arMeasureCylinder() {
 function arMeasureLength() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -218,7 +224,8 @@ function arMeasureAngle() {
     //   return
     // }
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -240,7 +247,8 @@ function arMeasureAngle() {
 function arMeasureHeight() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }

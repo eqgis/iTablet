@@ -1114,10 +1114,6 @@ class AppRoot extends Component {
       <SimpleDialog
         ref={ref => global.ARDeviceListDialog = ref}
         buttonMode={'list'}
-        text={this.isHuawei
-          ? getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARENGINE
-          : getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE
-        }
         confirmText={getLanguage(this.props.language).Prompt.GET_SUPPORTED_DEVICE_LIST}
         installText={getLanguage(global.language).Prompt.INSTALL}
         confirmAction={() => {
@@ -1125,7 +1121,12 @@ class AppRoot extends Component {
             type: this.isHuawei ? 'AREngineDevice' : 'ARDevice',
           })
         }}
-        installBtnVisible={true}
+        installBtnVisible={global.ARServiceAction === -1?true:false}
+        text={ 
+          global.ARServiceAction === 0
+          ? getLanguage(this.props.language).Prompt.DEVICE_DOES_NOT_SUPPORT_AR 
+          : getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE
+        }
         installAction={()=>{SARMap.installARCore()}}
         confirmTitleStyle={{ color: '#4680DF' }}
         cancelTitleStyle={{ color: '#4680DF' }}
@@ -1205,7 +1206,7 @@ class AppRoot extends Component {
       <>
         {this.state.showLaunchGuide ? this.renderGuidePage() : this.renderRoot()}
         {this.renderImportDialog()}
-        {this.state.isInit && this.renderARDeviceListDialog()}
+        {this.state.isInit && global.ARServiceAction !==undefined && this.renderARDeviceListDialog()}
         {this._renderProtocolDialog()}
         <Loading ref={ref => global.Loading = ref} initLoading={false} />
         <MyToast ref={ref => global.Toast = ref} />

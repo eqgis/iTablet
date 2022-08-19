@@ -16,7 +16,8 @@ function commit() {}
 function collectSceneForm() {
   (async function() {
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -74,7 +75,8 @@ function arMeasureCollect() {
   (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -125,7 +127,8 @@ function arDrawLine() {
   (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -199,7 +202,8 @@ function arDrawArea() {
   (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -262,7 +266,8 @@ function arDrawPoint() {
   (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }

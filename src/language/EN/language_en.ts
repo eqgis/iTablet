@@ -2480,7 +2480,7 @@ export const language_en: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer",
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer",
   DONOT_SUPPORT_ARCORE: "Please install or upgrade ARCore",
-  DONOT_SUPPORT_ARENGINE: "Please install or upgrade AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Get the list of supportive devices",
   PLEASE_NEW_PLOT_LAYER: "Please create a new plot layer",
   DOWNLOADING_PLEASE_WAIT: "Please wait a minute",

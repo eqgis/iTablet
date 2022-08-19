@@ -2479,7 +2479,7 @@ export const language_tr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Lütfen bir nokta, CAD veya çizim katmanı seçin",
   PLEASE_SELECT_CAD_LAYER: "Lütfen bir CAD katmanı seçin",
   DONOT_SUPPORT_ARCORE: "ARCore'u kurun veya yükseltin",
-  DONOT_SUPPORT_ARENGINE: "AREngine'i kurun veya yükseltin",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Desteklenen cihaz listesini gör",
   PLEASE_NEW_PLOT_LAYER: "Lütfen Yeni Çizim Katmanı Oluşturun",
   DOWNLOADING_PLEASE_WAIT: "İndiriliyor, lütfen bekleyin",

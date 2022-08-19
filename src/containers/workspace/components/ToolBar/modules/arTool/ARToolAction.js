@@ -25,7 +25,8 @@ function arCastModelOperate() {
   (async function() {
     const _params = ToolbarModule.getParams()
     const isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }
@@ -118,7 +119,8 @@ function _downloadData(downloadData) {
 
 async function arVideo() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  if (!isSupportedARCore) {
+  if (isSupportedARCore != 1) {
+    global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
     return
   }
@@ -135,7 +137,8 @@ async function arVideo() {
 
 async function arImage() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  if (!isSupportedARCore) {
+  if (isSupportedARCore != 1) {
+    global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
     return
   }
@@ -152,7 +155,8 @@ async function arImage() {
 
 async function arWebView() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  if (!isSupportedARCore) {
+  if (isSupportedARCore != 1) {
+    global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
     return
   }
@@ -169,7 +173,8 @@ async function arWebView() {
 
 async function arText() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  if (!isSupportedARCore) {
+  if (isSupportedARCore != 1) {
+    global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
     return
   }
@@ -186,7 +191,8 @@ async function arText() {
 
 async function ar3D() {
   let isSupportedARCore = await SMeasureView.isSupportedARCore()
-  if (!isSupportedARCore) {
+  if (isSupportedARCore != 1) {
+    global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
     return
   }

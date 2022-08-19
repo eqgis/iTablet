@@ -276,7 +276,8 @@ export default class NavigationStartButton extends React.Component {
 
   arNavigation = async () => {
     let isSupportedARCore = await SMeasureView.isSupportedARCore()
-    if (!isSupportedARCore) {
+    if (isSupportedARCore != 1) {
+      global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
       return
     }

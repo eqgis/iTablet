@@ -92,7 +92,7 @@ function selectElementOption(option: ToolbarOption<ARAttributeViewOption>) {
           selectedAttribute: undefined,
           selectARElement: undefined,
         })
-        AppToolBar.goBack()
+        AppToolBar.hide()
         SARMap.cancel()
       }
     },

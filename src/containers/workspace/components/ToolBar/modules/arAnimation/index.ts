@@ -25,7 +25,7 @@ class ArAnimation extends FunctionModule {
 export default function() {
   return new ArAnimation({
     type: 'AR_ANIMATION',
-    title: getLanguage().ANIMATION,
+    title: getLanguage().PANE_ANIMATION,
     size: 'large',
     image: getImage().ar_animation
   })

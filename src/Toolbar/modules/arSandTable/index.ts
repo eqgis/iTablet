@@ -29,7 +29,7 @@ export interface ARSANDTABLE {
 const arSandTableData: ToolbarModuleData<ARSANDTABLE> = {
   name: 'ARSANDTABLE',
   image: getImage().ar_sandtable,
-  getTitle: () => getLanguage().SAND_TABLE,
+  getTitle: () => getLanguage().SAND_TABLE_MAKE,
   action: () => {
     AppToolBar.show('ARSANDTABLE', 'AR_SAND_TABLE_ADD')
   },

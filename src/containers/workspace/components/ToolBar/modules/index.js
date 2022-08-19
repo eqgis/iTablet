@@ -47,6 +47,7 @@ import changeMapModule from './changeMapModule'
 import arSandTable from './arSandTable'
 import arAnimation from './arAnimation'
 import arAttribute from './arAttribute'
+import arToolbox from './arToolbox'
 
 export {
   startModule,
@@ -97,6 +98,7 @@ export {
   arSandTable,
   arAnimation,
   arAttribute,
+  arToolbox,
 
   changeMapModule,
 }

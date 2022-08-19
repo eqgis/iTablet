@@ -2840,4 +2840,7 @@ export const language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: '在线三维场景不支持分享',
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: '该许可已在其他设备上激活',
+  ATTRIBUTE_MAKE: '属性制作',
+  SAND_TABLE_MAKE: '沙盘制作',
+  PANE_ANIMATION: '窗格动画',
 }

@@ -12,6 +12,7 @@ import {
   arMapAddData,
   arMapSettingData,
   arMapStyleData,
+  arMapToolbox,
   arSandTableData,
   ModuleList,
 } from "./modules"
@@ -49,6 +50,7 @@ class Toolbar extends React.Component<Props> {
         <SToolbar.Module name={'ARMAP_ADD'} data={arMapAddData}/>
         <SToolbar.Module name={'ARMAP_STYLE'} data={arMapStyleData}/>
         <SToolbar.Module name={'ARMAP_SETTING'} data={arMapSettingData}/>
+        <SToolbar.Module name={'ARMAP_TOOLBOX'} data={arMapToolbox}/>
       </SToolbar.Container>
     )
   }

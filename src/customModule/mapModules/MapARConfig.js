@@ -17,10 +17,8 @@ import {
   arEditModule,
   arStyleModule,
   arNaviModule,
-  arSandTable,
   changeMapModule,
-  arAnimation,
-  arAttribute,
+  arToolbox,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils, screen } from '../../utils'
 import { Platform } from 'react-native'
@@ -68,9 +66,7 @@ export default class MapARConfig extends Module {
           arEditModule,
           arStyleModule,
           arNaviModule,
-          arSandTable,
-          arAnimation,
-          arAttribute,
+          arToolbox,
         ] : [
           arStartModule,
           arDrawingModule,

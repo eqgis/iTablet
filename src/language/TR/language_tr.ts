@@ -2839,4 +2839,7 @@ export const language_tr: typeof language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
 }

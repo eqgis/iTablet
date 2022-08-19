@@ -25,7 +25,7 @@ class ArSandTable extends FunctionModule {
 export default function() {
   return new ArSandTable({
     type: 'AR_SAND_TABLE',
-    title: getLanguage().SAND_TABLE,
+    title: getLanguage().SAND_TABLE_MAKE,
     size: 'large',
     image: getImage().ar_sandtable
   })

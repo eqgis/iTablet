@@ -1,6 +1,7 @@
 import { getImage } from "@/assets";
 import FunctionModule from "@/class/FunctionModule";
 import { getLanguage } from "@/language";
+import { arMapToolbox } from "@/Toolbar/modules";
 import { AppToolBar } from "@/utils";
 import { SARMap } from "imobile_for_reactnative";
 import { Platform } from "react-native";
@@ -25,7 +26,7 @@ class ArAttribute extends FunctionModule {
 export default function() {
   return new ArAttribute({
     type: 'AR_ATTRIBUTE',
-    title: getLanguage().ATTRIBUTE,
+    title: getLanguage().ATTRIBUTE_MAKE,
     size: 'large',
     image: getImage().icon_bar_attribute
   })

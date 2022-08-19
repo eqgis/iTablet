@@ -25,7 +25,7 @@ export interface ARATTRIBUTE{
 const arAttributeData: ToolbarModuleData<ARATTRIBUTE> = {
   name: 'ARATTRIBUTE',
   image: getImage().icon_layer_attribute, //todo image
-  getTitle: () => getLanguage().ATTRIBUTE,
+  getTitle: () => getLanguage().ATTRIBUTE_MAKE,
   action: () => {
     AppToolBar.addData({
       selectARElement: undefined,

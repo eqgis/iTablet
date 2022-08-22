@@ -424,19 +424,19 @@ class TaskManage extends React.Component<Props, State> {
   _getModule = (key: string, index: number) => {
     let module
     if (index === undefined) {
-      for (let i = 0; i < this.props.mapModules.modules.length; i++) {
-        if (key === this.props.mapModules.modules[i].key) {
+      for (let i = 0; i < this.props.mapModules.modules[this.props.user.currentUser.userName].length; i++) {
+        if (key === this.props.mapModules.modules[this.props.user.currentUser.userName][i].key) {
           index = i
-          module = this.props.mapModules.modules[i].chunk
-            ? this.props.mapModules.modules[i].chunk
-            : this.props.mapModules.modules[i].getChunk()
+          module = this.props.mapModules.modules[this.props.user.currentUser.userName][i].chunk
+            ? this.props.mapModules.modules[this.props.user.currentUser.userName][i].chunk
+            : this.props.mapModules.modules[this.props.user.currentUser.userName][i].getChunk()
           break
         }
       }
     } else {
-      module = this.props.mapModules.modules[index].chunk
-        ? this.props.mapModules.modules[index].chunk
-        : this.props.mapModules.modules[index].getChunk()
+      module = this.props.mapModules.modules[this.props.user.currentUser.userName][index].chunk
+        ? this.props.mapModules.modules[this.props.user.currentUser.userName][index].chunk
+        : this.props.mapModules.modules[this.props.user.currentUser.userName][index].getChunk()
     }
     return module
   }

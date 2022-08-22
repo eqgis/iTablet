@@ -14,7 +14,7 @@ import CoworkInfo from '../tabs/Friend/Cowork/CoworkInfo'
 import MapSettingItem from './MapSettingItem'
 import { legendModule } from '../workspace/components/ToolBar/modules'
 import { TaskRealTimeParams } from '../../redux/models/cowork'
-import { UserInfo } from '../../redux/models/user'
+import { Users } from '../../redux/models/user'
 
 export default class MapSetting extends Component {
   props: {
@@ -26,6 +26,7 @@ export default class MapSetting extends Component {
     setMapSetting: () => {},
     closeMap: () => {},
     mapSetting: any,
+    user: Users,
     // cowork: any,
     // currentUser: UserInfo,
     currentTaskInfo: any,
@@ -225,7 +226,7 @@ export default class MapSetting extends Component {
         style={styles.container}
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.props.mapModules.modules?.[
+          title: this.props.mapModules.modules?.[this.props.user.currentUser.userName]?.[
             this.props.mapModules.currentMapModule
           ]?.chunk?.title,
           navigation: this.props.navigation,

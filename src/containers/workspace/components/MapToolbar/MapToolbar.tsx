@@ -8,10 +8,12 @@ import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 import { DEVICE } from '@/redux/models/device'
+import { Users } from '@/redux/models/user'
 
 interface Props {
   language: string,
   device: DEVICE,
+  user: Users,
   type: TChunkType[keyof TChunkType],
   navigation: any,
   initIndex: number,
@@ -101,10 +103,7 @@ export default class MapToolbar extends React.Component<Props, State> {
   getToolbar = (type: TChunkType[keyof TChunkType] | '') => {
     const list: TabItem[] = []
     if (type === '') return list
-    // let tabModules = this.props.mapModules.modules[
-    //   this.props.mapModules.currentMapModule
-    // ].tabModules
-    const _module = this.props.mapModules.modules[
+    const _module = this.props.mapModules.modules[this.props.user.currentUser.userName][
       this.props.mapModules.currentMapModule
     ]
 

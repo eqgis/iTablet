@@ -56,9 +56,9 @@ export default class AppletList extends React.Component<Props, State> {
   getApplets = async () => {
     try {
       const applets = []
-      if (this.props.mapModules.modules.length > 0) {
+      if (this.props.mapModules.modules[this.props.user.currentUser.userName].length > 0) {
         const defaultValues = Object.values(ChunkType)
-        for (const module of this.props.mapModules.modules) {
+        for (const module of this.props.mapModules.modules[this.props.user.currentUser.userName]) {
           if (!defaultValues.includes(module.key)) {
             applets.push(module)
           }

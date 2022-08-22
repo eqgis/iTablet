@@ -68,7 +68,7 @@ buildApplet() {
     mkdir -p bundle/android/$buildName
     echoc "生成$buildName.bundle"
     react-native bundle --entry-file applets/$buildName/index.ts --platform android --config package_$buildName.config.js --dev false --bundle-output bundle/android/$buildName/$buildName.bundle --assets-dest bundle/android/$buildName
-    echoc "$buildNamedemo.bundle配置文件"
+    echoc "$buildName.bundle配置文件"
     node makeBundleConfig bundle/android/$buildName/$buildName.bundle applets/$buildName/package.json
 }
 
@@ -88,7 +88,7 @@ clearBase() {
 clearApplet() {
   echoc "清除$clearName"
   rm -rf bundle/android/$clearName bundle/android/$clearName.zip
-  adb shell rm -rf sdcard/iTablet/Bundles/$clearName
+  adb shell rm -rf sdcard/iTablet/ExternalData/Bundles/$clearName
 }
 
 #-------------------------------
@@ -107,7 +107,7 @@ moveBase() {
 #-------------------------------
 moveApplet() {
   echoc "拷贝$moveName.bundle文件"
-  adb push bundle/android/$moveName.zip sdcard/iTablet/Bundles
+  adb push bundle/android/$moveName.zip sdcard/iTablet/ExternalData/Bundles
 }
 
 #-------------------------------
@@ -148,13 +148,13 @@ moveBundle() {
   cp bundle/android/base.zip android/app/src/main/assets
 
   # echoc "拷贝demo.bundle文件"
-  # adb push bundle/android/demo.zip sdcard/iTablet/Bundles
+  # adb push bundle/android/demo.zip sdcard/iTablet/ExternalData/Bundles
 
   # echoc "拷贝demo2.bundle文件"
-  # adb push bundle/android/demo2.zip sdcard/iTablet/Bundles
+  # adb push bundle/android/demo2.zip sdcard/iTablet/ExternalData/Bundles
 
   echoc "拷贝tour.bundle文件"
-  adb push bundle/android/tour.zip sdcard/iTablet/Bundles
+  adb push bundle/android/tour.zip sdcard/iTablet/ExternalData/Bundles
 }
 
 #-------------------------------

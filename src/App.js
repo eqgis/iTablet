@@ -41,13 +41,13 @@ import {
   setTemplate,
 } from './redux/models/template'
 import { setModules } from './redux/models/appConfig'
-import { setMapModule, addMapModule } from './redux/models/mapModules'
+import { setMapModule, addMapModule, loadAddedModule } from './redux/models/mapModules'
 import { Dialog, Loading, MyToast, InputDialog, Dialog2, InputDialog2 } from './components'
 import { setAnalystParams } from './redux/models/analyst'
 import { setCollectionInfo } from './redux/models/collection'
 import { setShow } from './redux/models/device'
 import { setLicenseInfo } from './redux/models/license'
-import { RNFS as fs } from 'imobile_for_reactnative'
+import { BundleTools, RNFS as fs } from 'imobile_for_reactnative'
 import { FileTools, SplashScreen} from './native'
 import ConfigStore from './redux/store'
 import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil } from './utils'
@@ -204,6 +204,7 @@ class AppRoot extends Component {
     setMapArGuide: PropTypes.func,
     setMapArMappingGuide: PropTypes.func,
     setMapAnalystGuide: PropTypes.func,
+    loadAddedModule: PropTypes.func,
   }
 
   /** 是否是华为设备 */
@@ -733,34 +734,42 @@ class AppRoot extends Component {
   getUserApplets = async userName => {
     try {
       // 获取当前用户的小程序
-      let applets = await ConfigUtils.getApplets(userName)
+      // let applets = await ConfigUtils.getApplets(userName)
+      // let myMapModules = []
+      // if (applets === null || userName === 'Customer' && applets.length === 0) {
+      //   await ConfigUtils.recordApplets(userName, _mapModules)
+      //   applets = _mapModules
+      // } else {
+      //   // APP默认模块不能改动
+      //   let defaultValues = Object.values(ChunkType)
+      //   let tempArr = defaultValues.concat(applets)
+      //   applets = Array.from(new Set(tempArr))
+      // }
+      // let needToUpdate = false
+      // applets.map(key => {
+      //   if (key !== 'APPLET_ADD') {
+      //     for (let item of mapModules) {
+      //       needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
+      //       if (item.key === key || needToUpdate) {
+      //         myMapModules.push(item)
+      //         break
+      //       }
+      //     }
+      //   }
+      // })
+
+      let applets = await BundleTools.getBundles()
       let myMapModules = []
-      if (applets === null || userName === 'Customer' && applets.length === 0) {
-        await ConfigUtils.recordApplets(userName, _mapModules)
-        applets = _mapModules
-      } else {
-        // APP默认模块不能改动
-        let defaultValues = Object.values(ChunkType)
-        let tempArr = defaultValues.concat(applets)
-        applets = Array.from(new Set(tempArr))
+      // 系统自带模块
+      for (let item of mapModules) {
+        myMapModules.push(item)
       }
-      let needToUpdate = false
-      applets.map(key => {
-        if (key !== 'APPLET_ADD') {
-          for (let item of mapModules) {
-            needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
-            if (item.key === key || needToUpdate) {
-              myMapModules.push(item)
-              break
-            }
-          }
+      await this.props.setMapModule(myMapModules, () => {
+        // 加载用户小插件
+        for (let item of applets) {
+          this.props.loadAddedModule(item.name)
         }
       })
-      // 添加新的小程序后，直接显示在首页，并记录到本地文件
-      if (needToUpdate) {
-        await ConfigUtils.recordApplets(userName, _mapModules)
-      }
-      await this.props.setMapModule(myMapModules)
     } catch (e) {
       await ConfigUtils.recordApplets(userName, _mapModules)
     }
@@ -1278,6 +1287,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   deleteUser,
   closeWorkspace,
   setBaseMap,
+  loadAddedModule,
 })(AppRoot)
 
 const App = () =>

@@ -1,6 +1,7 @@
 const AppPath = '/iTablet/'
 const Data = 'Data/'
 const DefaultData = 'DefaultData/'
+const Bundles = 'Bundles/'
 const Collection = 'Collection'
 const MapEdit = 'MapEdit'
 const MapTheme = 'Map/MapTheme'
@@ -22,6 +23,7 @@ const RelativePath = {
   License: 'License/',
   Log: 'Log/',
   Data,
+  Bundles,
   Label: `${Data}Label/`,
   Datasource: `${Data}Datasource/`,
   Scene: `${Data}Scene/`,
@@ -88,7 +90,7 @@ export default {
   // SampleDataPath: AppPath + '/SampleData/', // 存放示例数据
   UserPath: `${AppPath}User/`, // 存放用户数据
   UserPath2: `${AppPath}User`, // 存放用户数据
-  BundlesPath: `${AppPath}Bundles/`, // Bundle数据
+  BundlesPath: `${AppPath}ExternalData/Bundles/`, // Bundle数据
   Common: `${AppPath}Common/`, // 公共数据
   Images: `${AppPath}Common/Images`, // 公共图片
   Common_AIDetectModel: `${AppPath}Common/AI/DetectModel/`, // 公共数据:检测模型

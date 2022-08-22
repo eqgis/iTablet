@@ -15,7 +15,7 @@ import { UserInfo } from '@/types'
  * 首页显示的旅行轨迹模块
  */
 export default class TourModule extends Module {
-  static key = 'Tour'
+  static key = 'tour'
   constructor() {
     super({
       key: TourModule.key,

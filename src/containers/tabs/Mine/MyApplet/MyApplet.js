@@ -7,7 +7,8 @@ import styles from './styles'
 
 class MyApplet extends MyDataPage {
   props: {
-    setMapModule: () => {},
+    setMapModule: () => void,
+    deleteMapModule: () => void,
   }
   constructor(props) {
     super(props)
@@ -156,6 +157,7 @@ class MyApplet extends MyDataPage {
       const result = await BundleTools.deleteBundle(this.itemInfo.item.path)
       if (result) {
         this._getSectionData()
+        this.props.deleteMapModule(this.itemInfo.item.name)
         this.refresh?.()
       }
       return true

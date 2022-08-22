@@ -18,6 +18,7 @@ import NavigationService from '../NavigationService'
 import ARLayerMenu from './ARLayerMenu'
 import { UserInfo } from '@/types'
 import { arLayerType } from '@/utils/AppToolBar'
+import { MapModules } from '@/redux/models/mapModules'
 
 
 const styles = StyleSheet.create({
@@ -64,10 +65,7 @@ interface Props {
   navigation: any,
   route: any,
   device: DEVICE,
-  mapModules: {
-    modules: any[],
-    currentMapModule: number,
-  },
+  mapModules: MapModules,
 
   setCurrentARLayer: (layer?: ARLayer) => void,
   getARLayers: () => Promise<ARLayer[]>,
@@ -647,7 +645,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
       <Container
         ref={ref => (this.container = ref)}
         headerProps={{
-          title: this.props.mapModules.modules[
+          title: this.props.mapModules.modules[this.props.currentUser.userName][
             this.props.mapModules.currentMapModule
           ].chunk.title,
           navigation: this.props.navigation,

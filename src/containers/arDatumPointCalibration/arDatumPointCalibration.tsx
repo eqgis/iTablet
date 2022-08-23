@@ -792,6 +792,9 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
 
   /** ar增强定位的扫描界面的渲染 */
   _renderEnhanceScan = () => {
+    if(global.Type === ChunkType.MAP_AR_MAPPING){
+      SARMap.measuerPause(true)
+    }
     return (
       <AREnhancePosition
         ref ={(ref) => {this.arEnhancePosition = ref}}

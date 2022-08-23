@@ -33,6 +33,11 @@ const icon_layer_rename02 = require('./icon_layer_rename02.png')
 // 删除图标 AR
 const icon_tool_delete = require('./icon_tool_delete.png')
 
+// 始终面向屏幕图标
+const icon_tool_face = require('./icon_tool_face.png')
+// 方向固定图标
+const icon_tool_rotation_fixed = require('./icon_tool_rotation_fixed.png')
+
 export default {
   icon_layer_uneditable,
   icon_layer_editable,
@@ -63,5 +68,8 @@ export default {
   icon_tool_duration,
   icon_layer_rename02,
   icon_tool_delete,
+
+  icon_tool_face,
+  icon_tool_rotation_fixed,
 
 }

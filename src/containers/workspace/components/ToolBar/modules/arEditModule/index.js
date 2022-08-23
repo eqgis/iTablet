@@ -6,6 +6,7 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import { SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
+import { AppToolBar } from "@/utils"
 
 class ArEditModule extends FunctionModule {
   constructor(props) {
@@ -101,6 +102,9 @@ class ArEditModule extends FunctionModule {
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
     const _data = await AREditData.getData(this.type, params)
+
+    AppToolBar.getProps().setPipeLineAttribute([])
+    AppToolBar.getProps().changeShowAttributeElement()
 
     params.showFullMap && params.showFullMap(true)
     if (

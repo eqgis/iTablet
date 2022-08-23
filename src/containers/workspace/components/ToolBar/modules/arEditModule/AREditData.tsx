@@ -1587,9 +1587,9 @@ async function getBoneAnimationData(type: string) {
   for (let i = 0; i < modelAnimations.length; i++) {
     const item = modelAnimations[i]
     animationData.push({
-      key: item,
+      key: item.id + '',
       image: getThemeAssets().ar.armap.ar_scale,
-      title: item,
+      title: item.name,
       action: async () => {
         if(element && typeof element !== 'string') {
           SARMap.setModelAnimation(element.layerName, element.id, i)

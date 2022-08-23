@@ -547,6 +547,8 @@ export const language_en: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Please select objects',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or objects",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Please select the AR object layer",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Add the attribute table to AR scene",
 
@@ -1711,6 +1713,7 @@ export const language_en: typeof language_cn = {
   ALIAS: "Alias",
   ASCENDING: "Ascending",
   DESCENDING: "Descending",
+  UNIQUE: "Unique",
 
   THEME_LEGEND: "Theme Legend",
   COLUMN_NAV_BAR: "Vertical Navigation Bar when Landscape",
@@ -2192,7 +2195,6 @@ export const language_en: typeof language_cn = {
   LICENSE_TRIAL: "Trial License",
   LICENSE_OFFICIAL: "Official License",
   LICENSE_STATE: "License Status",
-  LICENSE_SURPLUS: "Remain ",
   LICENSE_PERMANENT: "Permanent",
   LICENSE_CONTAIN_MODULE: "Contained Modules",
   LICENSE_CONTAIN_EXPAND_MODULE: "Contained Extension Modules",
@@ -2224,7 +2226,6 @@ export const language_en: typeof language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "Please add license file \"Official_License\" in the folder /iTablet/license/",
   LICENSE_NOT_ITABLET_OFFICAL: "This official license is not activated on iTablet. Please go to the license page to clear the license and reactivate it",
   LICENSE_NATIVE_EXPIRE: "The local license is invalid",
-  LICENSE_LONG_EFFECTIVE: "Long Effective",
   LICENSE_OFFLINE: "OffLine License",
   LICENSE_CLOUD: "Cloud License",
   LICENSE_PRIVATE_CLOUD: "Private Cloud License",
@@ -2481,7 +2482,7 @@ export const language_en: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer",
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer",
   DONOT_SUPPORT_ARCORE: "Please install or upgrade ARCore",
-  DONOT_SUPPORT_ARENGINE: "Please install or upgrade AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Get the list of supportive devices",
   PLEASE_NEW_PLOT_LAYER: "Please create a new plot layer",
   DOWNLOADING_PLEASE_WAIT: "Please wait a minute",
@@ -2833,10 +2834,15 @@ export const language_en: typeof language_cn = {
   THE_FIRST: 'This is the first picture',
   THE_LAST: 'This is the last picture',
 
-  INVALID: 'Invalid',
-  YEARS: 'year(s)',
   DAYS: 'day(s)',
-  HOURS: 'hour(s)',
-  MINUTES: 'minute(s)',
-  SECONDS: 'second(s)',
+  EXPIRE_DATE: 'Expire date',
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+
 }

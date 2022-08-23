@@ -769,12 +769,13 @@ export default class LayerAttribute extends React.Component {
       })
     }
     if (
-      this.state.attributes.data.length > 1 &&
-      (fieldInfo.type === FieldType.INT16 ||
-        fieldInfo.type === FieldType.INT32 ||
-        fieldInfo.type === FieldType.INT64 ||
-        fieldInfo.type === FieldType.SINGLE ||
-        fieldInfo.type === FieldType.DOUBLE)
+      this.state.attributes.data.length > 1
+      //  &&
+      // (fieldInfo.type === FieldType.INT16 ||
+      //   fieldInfo.type === FieldType.INT32 ||
+      //   fieldInfo.type === FieldType.INT64 ||
+      //   fieldInfo.type === FieldType.SINGLE ||
+      //   fieldInfo.type === FieldType.DOUBLE)
     ) {
       items.push({
         title: getLanguage(global.language).Map_Attribute.ATTRIBUTE_STATISTIC,

@@ -12,12 +12,14 @@ import {
   arMapAddData,
   arMapSettingData,
   arMapStyleData,
+  arMapToolbox,
   arSandTableData,
   ModuleList,
 } from "./modules"
 import { getLayers, setCurrentLayer } from "@/redux/models/layers"
 import { getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
 import {closeARMap, createARMap, saveARMap} from '@/redux/models/armap'
+import { setPipeLineAttribute, changeShowAttributeElement } from "@/redux/models/arattribute"
 
 const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 
@@ -48,6 +50,7 @@ class Toolbar extends React.Component<Props> {
         <SToolbar.Module name={'ARMAP_ADD'} data={arMapAddData}/>
         <SToolbar.Module name={'ARMAP_STYLE'} data={arMapStyleData}/>
         <SToolbar.Module name={'ARMAP_SETTING'} data={arMapSettingData}/>
+        <SToolbar.Module name={'ARMAP_TOOLBOX'} data={arMapToolbox}/>
       </SToolbar.Container>
     )
   }
@@ -58,6 +61,8 @@ const mapStateToProp = (state: RootState) => ({
   arMapInfo: state.arlayer.toJS(),
   arMap: state.armap.toJS(),
   currentUser: state.user.toJS().currentUser,
+  pipeLineAttribute: state.arattribute.pipeLineAttribute,
+  elementAttribute: state.arattribute.elementAttribute,
 })
 
 const mapDispatch = {
@@ -68,6 +73,8 @@ const mapDispatch = {
   setCurrentLayer,
   getLayers,
   setCurrentARLayer,
+  setPipeLineAttribute,
+  changeShowAttributeElement,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

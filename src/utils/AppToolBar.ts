@@ -152,7 +152,31 @@ interface ToolBarData {
     chartData?: chartType  // Array<chartDataType>
 
     attributeStyle?: ARAttributeStyle | null
+
+    /** 三维管线的Ar属性 */
+    attribute3D?: attribute3DType
 }
+
+export interface attribute3DType {
+  head: Array<attribute3DHeadtype>,
+  data: Array<Array<attribute3DItemType>>,
+}
+export interface attribute3DHeadtype {
+  caption: string,
+  defaultValue?: string,
+  isRequired?: boolean,
+  isSystemField?: boolean,
+  maxLength?: number,
+  name?: string,
+  type?: number,
+
+}
+export interface attribute3DItemType {
+  fieldInfo: attribute3DHeadtype,
+  name: string,
+  value: string,
+}
+
 
 const toolBarData: ToolBarData = {}
 

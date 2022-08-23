@@ -341,7 +341,10 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
     //ARElementLayer添加可见范围
     // && !(Platform.OS === 'ios' && this.state.selectLayer.type === ARLayerType.EFFECT_LAYER)
-    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer) {
+    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer
+      && this.state.selectLayer?.type !== ARLayerType.AR_LINE_LAYER
+      && this.state.selectLayer?.type !== ARLayerType.AR_MARKER_LINE_LAYER
+    ) {
       const maxVisibleBounds = this.state.selectLayer.maxVisibleBounds
       const minVisibleBounds = this.state.selectLayer.minVisibleBounds
       AppToolBar.addData({selectARLayer: this.state.selectLayer, maxVisibleBounds, minVisibleBounds})

@@ -5,6 +5,7 @@ import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { AppToolBar } from "@/utils"
 
 class StartModule extends FunctionModule {
   constructor(props) {
@@ -12,6 +13,10 @@ class StartModule extends FunctionModule {
   }
 
   action = () => {
+
+    AppToolBar.getProps().setPipeLineAttribute([])
+    AppToolBar.getProps().changeShowAttributeElement()
+
     this.setModuleData(this.type)
     const params = ToolbarModule.getParams()
     const _data = StartData.getData(this.type, params)

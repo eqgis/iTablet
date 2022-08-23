@@ -6,6 +6,8 @@ import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/component
 import { AppToolBar, Toast } from "../../../utils"
 import { ARAttributeViewOption } from "./ARAttributeView"
 import { checkSupportARAttributeByElement } from "./Actions"
+// import { attribute3DHeadtype, attribute3DItemType, attribute3DType } from "@/utils/AppToolBar"
+import {PipeLineAttributeType} from './component/pipeLineAttribute/PipeLineAttribute'
 
 
 export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
@@ -27,6 +29,9 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
     case 'AR_MAP_ATTRIBUTE_STYLE':
       styleAttributeOption(option)
       break
+    case 'AR_MAP_ATTRIBUTE_SELECTED':
+      selectElementOption(option)
+      break
   }
 
   return option
@@ -34,6 +39,7 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
 
 async function __styleButtonAction() {
   const selectARElement = AppToolBar.getData().selectARElement
+
 
   if (!selectARElement) {
     Toast.show(getLanguage().PLEASE_SELECT_OBJ)
@@ -59,11 +65,11 @@ async function __styleButtonAction() {
   })
   AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_STYLE')
 }
+/** 选择模型对象 */
+function selectElementOption(option: ToolbarOption<ARAttributeViewOption>) {
 
-/** 浏览模型信息 */
-function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
+  option.pageAction = async () => {
 
-  option.pageAction = () => {
     SARMap.setAction(ARAction.SELECT)
   }
 
@@ -71,7 +77,37 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
     {
       image: getImage().icon_toolbar_quit,
       onPress: async() => {
+        AppToolBar.getProps().setPipeLineAttribute([])
         SARMap.setAction(ARAction.NULL)
+        // SARMap.clearSelection()
+        AppToolBar.addData({
+          selectedAttribute: undefined,
+          selectARElement: undefined,
+        })
+        AppToolBar.hide()
+        SARMap.cancel()
+      }
+    },
+  ]
+}
+
+/** 浏览模型信息 */
+function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
+
+  option.pageAction = async () => {
+    SARMap.setAction(ARAction.NULL)
+  }
+
+  option.bottomData = [
+    {
+      image: getImage().icon_toolbar_quit,
+      onPress: async() => {
+        AppToolBar.getProps().setPipeLineAttribute([])
+        // SARMap.setAction(ARAction.NULL)
+        const preElement = AppToolBar.getData().selectARElement
+        if(preElement) {
+          await SARMap.hideAttribute(preElement.layerName, preElement.id)
+        }
         SARMap.clearSelection()
         AppToolBar.addData({
           selectedAttribute: undefined,
@@ -92,7 +128,7 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
         const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
 
         if (!layer && !selectARElement) {
-          Toast.show(getLanguage().PLEASE_SELECT_LAYER_OR_OBJECT)
+          Toast.show(getLanguage().ARMap.PLEASE_SELECT_LAYER_OR_OBJECT)
           return
         }
         if (
@@ -130,10 +166,10 @@ function attributeOption(option: IToolbarOption) {
         AppToolBar.goBack()
       },
     },
-    {
-      image: getImage().my_color,
-      onPress: __styleButtonAction
-    },
+    // {
+    //   image: getImage().my_color,
+    //   onPress: __styleButtonAction
+    // },
     {
       image: getImage().icon_submit,
       onPress: () => {
@@ -159,7 +195,9 @@ function attributeOption(option: IToolbarOption) {
         // 清空属性选择
         AppToolBar.addData({
           selectedAttribute: undefined,
+          attribute3D: undefined,
         })
+
         SARMap.setAction(ARAction.SELECT)
         // SARMap.setCenterHitTest(false)
         // AppToolBar.show('ARMAP', 'AR_MAP_BROWSE_ELEMENT')

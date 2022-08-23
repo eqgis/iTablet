@@ -110,42 +110,13 @@ export default class LicenseInfo extends Component {
       daysStr = ''
     } else {
       licenseType = licenseInfo.licenseType
-      let days = 0
-      let yearDays = 365
       if (licenseInfo.expireDate) {
         const expireDate = licenseInfo.expireDate
         const year = expireDate.substring(0, 4)
         const month = expireDate.substring(4, 6)
         const date = expireDate.substring(6)
-        const data = new Date(parseInt(year), parseInt(month) -1, parseInt(date))
 
-        const current = new Date()
-        days = (data  - current) / (1000 * 60 * 60 * 24)
-      }
-      if (days >= yearDays * 20) {
-        daysStr = getLanguage(global.language).Profile.LICENSE_LONG_EFFECTIVE
-      } else if (days > yearDays) {
-        daysStr = `${getLanguage().LICENSE_SURPLUS} ${Math.floor(days / yearDays)} ${getLanguage().YEARS} ${Math.floor(days % yearDays)}  ${getLanguage().DAYS}`
-      } else if(days > 1){
-        daysStr = `${getLanguage().LICENSE_SURPLUS} ${Math.floor(days)} ${getLanguage().DAYS}`
-      } else if(days > 0) {
-        //一天内精确到小时
-        const hours = days * 24
-        if(Math.floor(hours) > 0) {
-          daysStr = `${getLanguage().LICENSE_SURPLUS} ${Math.floor(hours)} ${getLanguage().HOURS}`
-        } else {
-          //一小时内精确到分钟
-          const minutes = days * 24 * 60
-          if(Math.floor(minutes) > 0) {
-            daysStr = `${getLanguage().LICENSE_SURPLUS} s ${Math.floor(minutes)}  ${getLanguage().MINUTES}`
-          } else {
-            //一分钟内精确到秒
-            const seconds = days * 24 * 60 * 60
-            daysStr = `${getLanguage().LICENSE_SURPLUS} s ${Math.floor(seconds)}  ${getLanguage().SECONDS}`
-          }
-        }
-      } else {
-        daysStr = getLanguage().INVALID
+        daysStr = `${year}/${month}/${date}`
       }
     }
 
@@ -182,7 +153,7 @@ export default class LicenseInfo extends Component {
             action={this.props.selectLicenseType}
           />
           <InfoItem
-            text={getLanguage(global.language).Profile.LICENSE_STATE}
+            text={getLanguage(global.language).Profile.EXPIRE_DATE}
             info={daysStr}
           />
           <InfoItem

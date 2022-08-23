@@ -547,6 +547,8 @@ export const language_tr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Lütfen nesne seçin',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Lütfen bir katman veya nesne seçin",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Lütfen bir nesne katmanı seçin",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "AR sahnesine Öznitelik tablosu ekle",
 
@@ -1710,6 +1712,7 @@ export const language_tr: typeof language_cn = {
   ALIAS: "Takma Ad",
   ASCENDING: "Artan",
   DESCENDING: "Azalan",
+  UNIQUE: "Miktar",
 
   THEME_LEGEND: "Tema Lejantı",
   COLUMN_NAV_BAR: "Dikey Gezinme Çubuğu Yatay Olduğunda",
@@ -2191,7 +2194,6 @@ export const language_tr: typeof language_cn = {
   LICENSE_TRIAL: "Deneme Lisansı",
   LICENSE_OFFICIAL: "Resmi Lisans",
   LICENSE_STATE: "Lisans Durumu",
-  LICENSE_SURPLUS: "Fazla",
   LICENSE_PERMANENT: "kalıcı",
   LICENSE_CONTAIN_MODULE: "Lisans Modülü İçerir",
   LICENSE_CONTAIN_EXPAND_MODULE: "Lisans Modülü İçerir",
@@ -2223,7 +2225,6 @@ export const language_tr: typeof language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "Yerel resmi lisans dosyası yok, Lütfen '/ iTablet / license /' file 'dosyasına 'Official_License' lisans dosyasını ekleyin",
   LICENSE_NOT_ITABLET_OFFICAL: "Bu resmi lisans iTablette aktif değil, lütfen lisansı temizlemek ve yeniden etkinleştirmek için lisans sayfasına gidin",
   LICENSE_NATIVE_EXPIRE: "Yerel Lisans Geçersiz",
-  LICENSE_LONG_EFFECTIVE: "Uzun vadeli etkili",
   LICENSE_OFFLINE: "Çevrimdışı Lisans",
   LICENSE_CLOUD: "Bulut Lisans",
   LICENSE_PRIVATE_CLOUD: "Özel Bulut Lisans",
@@ -2480,7 +2481,7 @@ export const language_tr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Lütfen bir nokta, CAD veya çizim katmanı seçin",
   PLEASE_SELECT_CAD_LAYER: "Lütfen bir CAD katmanı seçin",
   DONOT_SUPPORT_ARCORE: "ARCore'u kurun veya yükseltin",
-  DONOT_SUPPORT_ARENGINE: "AREngine'i kurun veya yükseltin",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Desteklenen cihaz listesini gör",
   PLEASE_NEW_PLOT_LAYER: "Lütfen Yeni Çizim Katmanı Oluşturun",
   DOWNLOADING_PLEASE_WAIT: "İndiriliyor, lütfen bekleyin",
@@ -2832,10 +2833,15 @@ export const language_tr: typeof language_cn = {
   THE_FIRST: 'İlk Resim',
   THE_LAST: 'Son Resim',
 
-  INVALID: 'Invalid',  // to be translated
-  YEARS: 'year(s)',  // to be translated
+
   DAYS: 'day(s)',  // to be translated
-  HOURS: 'hour(s)', // to be translated
-  MINUTES: 'minute(s)', // to be translated
-  SECONDS: 'second(s)', // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
 }

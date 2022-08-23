@@ -547,6 +547,8 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Veuillez sélectionner un objet',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Veuillez sélectionner un calque ou un objet",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Veuillez sélectionner un calque d'objet",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Ajouter une table d'attributs à la scène AR",
 
@@ -1712,6 +1714,7 @@ export const language_fr: typeof language_cn = {
   ALIAS: "Alias",
   ASCENDING: "Ascendant",
   DESCENDING: "Descendant",
+  UNIQUE: "Unique",
 
   THEME_LEGEND: "Légende du thème",
   COLUMN_NAV_BAR: "Barre de navigation verticale en mode paysage",
@@ -2193,7 +2196,6 @@ export const language_fr: typeof language_cn = {
   LICENSE_TRIAL: "Essai de licence",
   LICENSE_OFFICIAL: "Licence Officielle",
   LICENSE_STATE: "État de licence",
-  LICENSE_SURPLUS: "Excédent de licence",
   LICENSE_PERMANENT: "Permanent",
   LICENSE_CONTAIN_MODULE: "Module contenant la licence",
   LICENSE_CONTAIN_EXPAND_MODULE: "Module contenant la licence prolongée",
@@ -2225,7 +2227,6 @@ export const language_fr: typeof language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "Pas de fichier de licence officiel natif, veuillez ajouter le fichier de licence Official_License à / iTablet / license / file ",
   LICENSE_NOT_ITABLET_OFFICAL: "Cette licence officielle n'est pas activée sur iTablet, veuillez vous rendre sur la page de licence pour effacer la licence et la réactiver",
   LICENSE_NATIVE_EXPIRE: "Licence native non valide",
-  LICENSE_LONG_EFFECTIVE: "Longue efficacité",
   LICENSE_OFFLINE: "Licence hors ligne",
   LICENSE_CLOUD: "Cloud de licence",
   LICENSE_PRIVATE_CLOUD: "Licence Cloud privé",
@@ -2482,7 +2483,7 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Veuillez sélectionner une couche de point, CAD ou de parcelle",
   PLEASE_SELECT_CAD_LAYER: "Veuillez sélectionner une couche CAD ",
   DONOT_SUPPORT_ARCORE: "Installer ou mettre à niveau ARCore",
-  DONOT_SUPPORT_ARENGINE: "Installer ou mettre à niveau AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Afficher la liste des appareils pris en charge",
   PLEASE_NEW_PLOT_LAYER: "Veuillez créer une nouvelle couche de tracé",
   DOWNLOADING_PLEASE_WAIT: "Téléchargement en cours, veuillez patienter",
@@ -2833,10 +2834,15 @@ export const language_fr: typeof language_cn = {
   THE_FIRST: 'la première image',
   THE_LAST: 'la dernière photo',
 
-  INVALID: 'Invalid',  // to be translated
-  YEARS: 'year(s)',  // to be translated
+
   DAYS: 'day(s)',  // to be translated
-  HOURS: 'hour(s)', // to be translated
-  MINUTES: 'minute(s)', // to be translated
-  SECONDS: 'second(s)', // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
 }

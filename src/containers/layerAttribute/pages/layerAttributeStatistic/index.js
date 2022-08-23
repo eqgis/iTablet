@@ -6,6 +6,7 @@ const mapStateToProps = state => ({
   currentAttribute: state.layers.toJS().currentAttribute,
   selection: state.layers.toJS().selection,
   language: state.setting.toJS().language,
+  device: state.device.toJS().device,
 })
 
 const mapDispatchToProps = {

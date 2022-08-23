@@ -547,6 +547,8 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'الرجاء تحديد الكائن',
   PLEASE_SELECT_LAYER_OR_OBJECT: "الرجاء تحديد طبقة أو كائن",
   PLEASE_SELECT_AR_OBJECT_LAYER: "الرجاء تحديد طبقة كائن الواقع المعزز",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "أضف جدول السمات إلى مشهد الواقع المعزز",
 
@@ -1724,6 +1726,7 @@ export const language_ar: typeof language_cn = {
   ALIAS: "الاسم الاخر",
   ASCENDING: "تصاعدي",
   DESCENDING: "تنازلى",
+  UNIQUE: "عدد",
 
   THEME_LEGEND: "عنوان تفسيرى للموضوع",
   COLUMN_NAV_BAR: "شريط التنقل العمودي عند الأفقي",
@@ -2207,7 +2210,6 @@ export const language_ar: typeof language_cn = {
   LICENSE_TRIAL: "رخصة تجريبية",
   LICENSE_OFFICIAL: "الرخصة الرسمية",
   LICENSE_STATE: "حالة الرخصة",
-  LICENSE_SURPLUS: "فائض ارخصة",
   LICENSE_PERMANENT: "دائم",
   LICENSE_CONTAIN_MODULE: "ترخيص يحتوي على وحدة",
   LICENSE_CONTAIN_EXPAND_MODULE: "الترخيص يحتوي على توسيع محتوى الوحدة ",
@@ -2241,7 +2243,6 @@ export const language_ar: typeof language_cn = {
   LICENSE_NATIVE_EXPIRE: "رخصة أصلية غير صالحة",
 
 
-  LICENSE_LONG_EFFECTIVE: "طويل الأمد",
   LICENSE_OFFLINE: "ترخيص بدون الاتصال بالإنترنت",
   LICENSE_CLOUD: "ترخيص السحابي",
   LICENSE_PRIVATE_CLOUD: "ترخيص سحابي خاص",
@@ -2503,7 +2504,7 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "حدد نقطة ، كندي ، أو طبقة الطباعة",
   PLEASE_SELECT_CAD_LAYER: "الرجاء اختيار طبقة كندي",
   DONOT_SUPPORT_ARCORE: "تثبيت أو ترقية ARCore",
-  DONOT_SUPPORT_ARENGINE: "تثبيت أو ترقية AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "عرض قائمة الأجهزة المدعومة",
   PLEASE_NEW_PLOT_LAYER: "من فضلك أنشىء طبقة نقاط جديدة",
   DOWNLOADING_PLEASE_WAIT: "من فضلك انتظر جارى التنزيل",
@@ -2857,10 +2858,15 @@ export const language_ar: typeof language_cn = {
   THE_FIRST: 'الصورة الأولى',
   THE_LAST: 'الصورة الأخيرة',
 
-  INVALID: 'Invalid',  // to be translated
-  YEARS: 'year(s)',  // to be translated
+
   DAYS: 'day(s)',  // to be translated
-  HOURS: 'hour(s)', // to be translated
-  MINUTES: 'minute(s)', // to be translated
-  SECONDS: 'second(s)', // to be translated
+  EXPIRE_DATE: 'Expire date',  // to be translated
+
+  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
 }

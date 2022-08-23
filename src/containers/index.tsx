@@ -130,20 +130,15 @@ import {
 
 import MediaEdit from './mediaEdit'
 import Camera from './camera'
-import MeasureView from './arMeasure'
-import { MeasureAreaView } from './arMeasure/pages'
 import ClassifyView from './aiClassifyView'
 import ModelChoseView from './arModelChoseView'
 import ClassifyResultEditView from './aiClassifyResultEdit'
-import CollectSceneFormView from './arCollectSceneFormView'
 import EnterDatumPoint from './arEnterDatumPoint/EnterDatumPoint'
 import CollectSceneFormSet from './arEnterDatumPoint/CollectSceneFormSet'
 import ClassifySettingsView from './ClassifySettingsView'
 import IllegallyParkView from './aiIllegallyPark'
 import AISelectModelView from './aiSelectModelView'
 import AIDetectSettingView from './aiDetectSettingView'
-import CastModelOperateView from './arCastModelOperateView'
-import ARProjectModeView from './arProjectModel'
 import ARNavigationView from './arNavigationView'
 import ChooseWeather from './chooseWeather'
 import AIPoseEstimationView from './aiPoseEstimationView'
@@ -356,14 +351,10 @@ export default function(params: StackNavigatorProps) {
         animation: 'none',
         presentation: 'containedTransparentModal',
       }} />
-      <Stack.Screen name="MeasureView" component={MeasureView} />
-      <Stack.Screen name="MeasureAreaView" component={MeasureAreaView} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} />
-      <Stack.Screen name="ARProjectModeView" component={ARProjectModeView} />
       <Stack.Screen name="ClassifyView" component={ClassifyView} />
       <Stack.Screen name="ModelChoseView" component={ModelChoseView} />
       <Stack.Screen name="ClassifyResultEditView" component={ClassifyResultEditView} />
-      <Stack.Screen name="CollectSceneFormView" component={CollectSceneFormView} />
       <Stack.Screen name="EnterDatumPoint" component={EnterDatumPoint} />
       <Stack.Screen name="CollectSceneFormSet" component={CollectSceneFormSet} />
       <Stack.Screen name="ClassifySettingsView" component={ClassifySettingsView} />
@@ -375,7 +366,6 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ChooseTaggingLayer" component={ChooseTaggingLayer} />
       <Stack.Screen name="ChooseNaviLayer" component={ChooseNaviLayer} />
       <Stack.Screen name="ChooseNaviDataImport" component={ChooseNaviDataImport} />
-      <Stack.Screen name="CastModelOperateView" component={CastModelOperateView} />
       <Stack.Screen name="ARNavigationView" component={ARNavigationView} />
       <Stack.Screen name="ChooseWeather" component={ChooseWeather} />
       <Stack.Screen name="SuggestionFeedback" component={SuggestionFeedback} />

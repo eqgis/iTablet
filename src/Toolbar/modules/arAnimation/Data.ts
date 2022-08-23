@@ -53,7 +53,7 @@ function animationHomeOption(option: IToolbarOption) {
         SARMap.setAction(ARAction.NULL)
         SARMap.clearSelection()
         AppEvent.emitEvent('ar_animation_exit')
-        AppToolBar.goBack()
+        AppToolBar.hide()
       }
     }, {
       image: getImage().icon_list,

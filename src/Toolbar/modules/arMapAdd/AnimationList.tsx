@@ -1,4 +1,5 @@
 import { ARElementType, SARMap } from 'imobile_for_reactnative'
+import { ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { ARElement } from 'imobile_for_reactnative/types/interface/ar'
 import React from 'react'
 import { FlatList, ListRenderItemInfo, Text, TouchableOpacity, Animated, Easing } from 'react-native'
@@ -7,7 +8,7 @@ import { FloatBar } from '../../../components'
 import { AppStyle, dp } from '../../../utils'
 
 interface Props {
-    addAnimations: string[]
+    addAnimations: ModelAnimation[]
     arElement: ARElement
 }
 
@@ -56,7 +57,7 @@ class AnimationList extends React.Component<Props, State> {
     this.isShowList = show
   }
 
-  _renderAnimationItem = (item: ListRenderItemInfo<string>) => {
+  _renderAnimationItem = (item: ListRenderItemInfo<ModelAnimation>) => {
     const isSelected = this.state.selectIndex === item.index
     return (
       <TouchableOpacity
@@ -75,7 +76,7 @@ class AnimationList extends React.Component<Props, State> {
         }}
       >
         <Text style={{...AppStyle.h2, marginLeft: dp(5)}} numberOfLines={1}>
-          {item.item}
+          {item.item.name}
         </Text>
       </TouchableOpacity>
     )
@@ -115,7 +116,7 @@ class AnimationList extends React.Component<Props, State> {
           <FlatList
             data={this.props.addAnimations}
             renderItem={this._renderAnimationItem}
-            keyExtractor={item => item}
+            keyExtractor={item => item.name}
           />
 
         </Animated.View>

@@ -39,6 +39,7 @@ function settingViewBounds(option: IToolbarOption) {
     data: [{
       type: 'double',
       bottomLeft: {type: 'text', text: getLanguage().VISIBLE_DISTANCE},
+      left: {type: 'indicator'},
       defaultMaxValue: maxVisible,
       defaultMinValue: minVisible,
       range: [0, 100],

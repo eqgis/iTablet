@@ -211,7 +211,8 @@ static NSString* g_sampleCodeName = @"#";;
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
-  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
+//  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
+  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.65"];
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
@@ -236,7 +237,8 @@ static NSString* g_sampleCodeName = @"#";;
   } else {
     #if DEBUG
 //    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"localhost"];
-    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.199"];
+//    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.199"];
+    [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.65"];
 
     #endif
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

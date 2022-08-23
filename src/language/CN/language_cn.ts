@@ -547,6 +547,8 @@ export const language_cn = {
   PLEASE_SELECT_OBJ: '请选择对象',
   PLEASE_SELECT_LAYER_OR_OBJECT: "请选择图层或对象",
   PLEASE_SELECT_AR_OBJECT_LAYER: "请选择AR对象图层",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: '三维管线属性没有风格',
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: '三维管线属性不能编辑',
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "添加到AR场景",
 
@@ -1713,6 +1715,7 @@ export const language_cn = {
   ALIAS: "别名",
   ASCENDING: "升序",
   DESCENDING: "降序",
+  UNIQUE: "单值",
 
   THEME_LEGEND: "专题图图例",
   COLUMN_NAV_BAR: "横屏时纵向显示导航栏",
@@ -2193,7 +2196,6 @@ export const language_cn = {
   LICENSE_TRIAL: "试用许可",
   LICENSE_OFFICIAL: "正式许可",
   LICENSE_STATE: "许可状态",
-  LICENSE_SURPLUS: "剩余",
   LICENSE_PERMANENT: "永久",
   LICENSE_CONTAIN_MODULE: "所含模块",
   LICENSE_CONTAIN_EXPAND_MODULE: "所含拓展模块",
@@ -2225,7 +2227,6 @@ export const language_cn = {
   LICENSE_NO_NATIVE_OFFICAL: "没有本地正式许可文件，请在/iTablet/license/文件夹下添加Official_License许可文件",
   LICENSE_NOT_ITABLET_OFFICAL: "该正式许可不是iTablet内激活的许可，将导致iTablet部分功能不可用，请到许可页面清除许可后重新申请",
   LICENSE_NATIVE_EXPIRE: "本地许可无效",
-  LICENSE_LONG_EFFECTIVE: "长期有效",
   LICENSE_OFFLINE: "离线许可",
   LICENSE_CLOUD: "云许可",
   LICENSE_PRIVATE_CLOUD: "私有云许可",
@@ -2480,8 +2481,8 @@ export const language_cn = {
   PLEASE_SELECT_PLOT_LAYER: "请选择或新建标注图层",
   PLEASE_SELECT_MEDIA_LAYER: "请选择点、CAD和标注图层",
   PLEASE_SELECT_CAD_LAYER: "请选CAD图层",
-  DONOT_SUPPORT_ARCORE: "请安装或升级ARCore",
-  DONOT_SUPPORT_ARENGINE: "请安装或升级AREngine",
+  DONOT_SUPPORT_ARCORE: "当前AR服务不可用,请安装或升级",
+  DEVICE_DOES_NOT_SUPPORT_AR:"当前设备硬件不支持AR功能",
   GET_SUPPORTED_DEVICE_LIST: "获取受支持的设备列表",
   PLEASE_NEW_PLOT_LAYER: "请新建标注图层",
   DOWNLOADING_PLEASE_WAIT: "下载中请稍等",
@@ -2833,11 +2834,15 @@ export const language_cn = {
   THE_FIRST: '已经是第一张了',
   THE_LAST: '已经是最后一张了',
 
-  INVALID: '无效',
-  YEARS: '年',
-  DAYS: '天',
-  HOURS: '小时',
-  MINUTES: '分钟',
-  SECONDS: '秒',
 
+  DAYS: '天',
+  EXPIRE_DATE: '有效期',
+
+  OPEN_3D_SCENE: '请先打开三维场景',
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: '在线三维场景不支持分享',
+
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: '该许可已在其他设备上激活',
+  ATTRIBUTE_MAKE: '属性制作',
+  SAND_TABLE_MAKE: '沙盘制作',
+  PANE_ANIMATION: '窗格动画',
 }

@@ -1,6 +1,6 @@
 /* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
-import { SMeasureView } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'
@@ -24,7 +24,7 @@ function commit() {}
 function arCastModelOperate() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isSupportAR()
     if (isSupportedARCore != 1) {
       global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
@@ -118,7 +118,7 @@ function _downloadData(downloadData) {
 }
 
 async function arVideo() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isSupportAR()
   if (isSupportedARCore != 1) {
     global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
@@ -131,12 +131,11 @@ async function arVideo() {
   }
   global.toolBox && global.toolBox.removeAIDetect(true)
   global.EnterDatumPointType = 'arVideo'
-  // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARVideoView')
 }
 
 async function arImage() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isSupportAR()
   if (isSupportedARCore != 1) {
     global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
@@ -149,12 +148,11 @@ async function arImage() {
   }
   global.toolBox && global.toolBox.removeAIDetect(true)
   global.EnterDatumPointType = 'arImage'
-  // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARImageView')
 }
 
 async function arWebView() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isSupportAR()
   if (isSupportedARCore != 1) {
     global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
@@ -167,12 +165,11 @@ async function arWebView() {
   }
   global.toolBox && global.toolBox.removeAIDetect(true)
   global.EnterDatumPointType = 'arWebView'
-  // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARWebView')
 }
 
 async function arText() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isSupportAR()
   if (isSupportedARCore != 1) {
     global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)
@@ -185,12 +182,11 @@ async function arText() {
   }
   global.toolBox && global.toolBox.removeAIDetect(true)
   global.EnterDatumPointType = 'arText'
-  // NavigationService.navigate('EnterDatumPoint')
   NavigationService.navigate('ARTextView')
 }
 
 async function ar3D() {
-  let isSupportedARCore = await SMeasureView.isSupportedARCore()
+  let isSupportedARCore = await SARMap.isSupportAR()
   if (isSupportedARCore != 1) {
     global.ARServiceAction = isSupportedARCore
     global.ARDeviceListDialog.setVisible(true)

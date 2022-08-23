@@ -37,12 +37,8 @@ const arMapStyleData: ToolbarModuleData<ARMAP_STYLE> = {
   getTitle: () => getLanguage().STYLE,
   action: async () => {
 
-    const preElement = AppToolBar.getData().selectARElement
-    if(preElement && Platform.OS === 'android') {
-      await SARMap.hideAttribute(preElement.layerName, preElement.id)
-      AppToolBar.addData({ selectARElement: undefined })
-    }
     AppToolBar.getProps().setPipeLineAttribute([])
+    AppToolBar.getProps().changeShowAttributeElement()
 
     const currentLayer = AppToolBar.getProps().arMapInfo?.currentLayer
     if(currentLayer) {

@@ -37,15 +37,9 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
   return option
 }
 
-let isPipeLine = true
 async function __styleButtonAction() {
-  const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   const selectARElement = AppToolBar.getData().selectARElement
 
-  // if(!isPipeLine || (layer && layer.type === ARLayerType.AR_SCENE_LAYER)){
-  //   Toast.show(getLanguage().PIPE_LINE_ATTRIBUTE_NOT_STYLE)
-  //   return
-  // }
 
   if (!selectARElement) {
     Toast.show(getLanguage().PLEASE_SELECT_OBJ)
@@ -77,7 +71,6 @@ function selectElementOption(option: ToolbarOption<ARAttributeViewOption>) {
   option.pageAction = async () => {
 
     SARMap.setAction(ARAction.SELECT)
-    SARMap.setSceneAction("PANSELECT3D")
   }
 
   option.bottomData = [
@@ -86,7 +79,6 @@ function selectElementOption(option: ToolbarOption<ARAttributeViewOption>) {
       onPress: async() => {
         AppToolBar.getProps().setPipeLineAttribute([])
         SARMap.setAction(ARAction.NULL)
-        // SARMap.setSceneAction("PAN3D")
         // SARMap.clearSelection()
         AppToolBar.addData({
           selectedAttribute: undefined,
@@ -104,7 +96,6 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
 
   option.pageAction = async () => {
     SARMap.setAction(ARAction.NULL)
-    SARMap.setSceneAction("PAN3D")
   }
 
   option.bottomData = [
@@ -113,8 +104,6 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
       onPress: async() => {
         AppToolBar.getProps().setPipeLineAttribute([])
         // SARMap.setAction(ARAction.NULL)
-        // SARMap.setSceneAction("PAN3D")
-        SARMap.setSceneAction("PANSELECT3D")
         const preElement = AppToolBar.getData().selectARElement
         if(preElement) {
           await SARMap.hideAttribute(preElement.layerName, preElement.id)
@@ -138,16 +127,10 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
         const selectARElement = AppToolBar.getData().selectARElement
         const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
 
-        if (!isPipeLine || (!layer && !selectARElement)) {
-          Toast.show(getLanguage().PIPE_LINE_ATTRIBUTE_NOT_EDIT)
+        if (!layer && !selectARElement) {
+          Toast.show(getLanguage().ARMap.PLEASE_SELECT_LAYER_OR_OBJECT)
           return
         }
-
-        if( !selectARElement && layer && layer.type === ARLayerType.AR_SCENE_LAYER){
-          Toast.show(getLanguage().PIPE_LINE_ATTRIBUTE_NOT_EDIT)
-          return
-        }
-
         if (
           !selectARElement && layer &&
           layer.type !== ARLayerType.AR_LINE_LAYER &&
@@ -175,7 +158,6 @@ function attributeOption(option: IToolbarOption) {
       image: getImage().icon_toolbar_quit,
       onPress: () => {
         SARMap.setAction(ARAction.NULL)
-        SARMap.setSceneAction("PAN3D")
         // 清空属性选择
         // AppToolBar.addData({
         //   selectedAttribute: undefined,
@@ -216,11 +198,7 @@ function attributeOption(option: IToolbarOption) {
           attribute3D: undefined,
         })
 
-        if(layer && layer.type === ARLayerType.AR_SCENE_LAYER) {
-          SARMap.setSceneAction("PANSELECT3D")
-        } else {
-          SARMap.setAction(ARAction.SELECT)
-        }
+        SARMap.setAction(ARAction.SELECT)
         // SARMap.setCenterHitTest(false)
         // AppToolBar.show('ARMAP', 'AR_MAP_BROWSE_ELEMENT')
         AppToolBar.goBack()

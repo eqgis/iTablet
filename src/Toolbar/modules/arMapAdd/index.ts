@@ -1,11 +1,9 @@
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
-import { ToolbarModuleData, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
+import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar } from "../../../utils"
 import ARMapAddView from "./ARMapAddView"
 import { getData } from "./Data"
-import { SARMap } from "imobile_for_reactnative"
-import { Platform } from "react-native"
 
 interface KEYS {
  //todo 现在使用 iTablet 以前的 toolbar 实现添加功能
@@ -41,14 +39,9 @@ const arMapAddData: ToolbarModuleData<ARMAP_ADD> = {
   name: 'ARMAP_ADD',
   image: getImage().icon_add,
   getTitle: () => getLanguage().ADD,
-  action: async () => {
-    const preElement = AppToolBar.getData().selectARElement
-    if(preElement && Platform.OS === 'android') {
-      await SARMap.hideAttribute(preElement.layerName, preElement.id)
-      AppToolBar.addData({ selectARElement: undefined })
-    }
+  action: () => {
     AppToolBar.getProps().setPipeLineAttribute([])
-
+    AppToolBar.getProps().changeShowAttributeElement()
     AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD')
   },
   getData: getData,

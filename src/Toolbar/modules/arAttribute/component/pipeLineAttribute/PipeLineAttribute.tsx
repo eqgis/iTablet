@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, ListRenderItemInfo } from 'react-native'
 import styles from './styles'
 
 export interface PipeLineAttributeType {
@@ -13,28 +13,20 @@ interface Props {
   setPipeLineAttribute?: (params: Array<PipeLineAttributeType>) => void
 }
 
-interface State {
-  // data: Array<PipeLineAttributeType>
-}
-
-class PipeLineAttribute extends Component<Props, State> {
+class PipeLineAttribute extends Component<Props> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      // data: this.props.pipeLineAttribute || [],
     }
   }
 
-  // componentDidUpdate = () => {
-  //   console.warn('pipe line attribute update ')
-  // }
 
   componentWillUnmount = () => {
     this.props.setPipeLineAttribute && this.props.setPipeLineAttribute([])
   }
 
 
-  renderItem = ({item}) => {
+  renderItem = ({item} : ListRenderItemInfo<PipeLineAttributeType>) => {
     return (
       <View style = {[styles.row]} >
         <View style = {[styles.col]} >
@@ -72,7 +64,6 @@ class PipeLineAttribute extends Component<Props, State> {
       <View
         style = {[styles.container]}
       >
-        {/* <Text style = {[styles.textStyle]} >{"这是管线属性表"}</Text> */}
         { this.renderHead()}
         <FlatList
           data = {this.props.pipeLineAttribute}

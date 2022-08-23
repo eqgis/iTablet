@@ -2,11 +2,11 @@ import PipeLineAttribute from "./PipeLineAttribute"
 
 import { connect } from 'react-redux'
 import { RootState } from '../../../../../redux/types'
-import { setPipeLineAttribute } from "@/redux/models/arlayer"
+import { setPipeLineAttribute } from "@/redux/models/arattribute"
 
 const mapStateToProp = (state: RootState) => ({
   device: state.device.toJS().device,
-  pipeLineAttribute: state.arlayer.toJS().pipeLineAttribute,
+  pipeLineAttribute: state.arattribute.pipeLineAttribute,
 })
 
 const mapDispatch = {

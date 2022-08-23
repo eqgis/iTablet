@@ -2,20 +2,14 @@ import { getImage } from "@/assets"
 import FunctionModule from "@/class/FunctionModule"
 import { getLanguage } from "@/language"
 import { AppToolBar } from "@/utils"
-import { SARMap } from "imobile_for_reactnative"
-import { Platform } from "react-native"
 
 
 
 class ArAnimation extends FunctionModule {
 
-  action = async (type: any) => {
-    const preElement = AppToolBar.getData().selectARElement
-    if(preElement && Platform.OS === 'android') {
-      await SARMap.hideAttribute(preElement.layerName, preElement.id)
-      AppToolBar.addData({ selectARElement: undefined })
-    }
+  action = (type: any) => {
     AppToolBar.getProps().setPipeLineAttribute([])
+    AppToolBar.getProps().changeShowAttributeElement()
 
     AppToolBar.show('ARANIMATION', 'AR_MAP_ANIMATION_HOME')
   }

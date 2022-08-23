@@ -30,37 +30,57 @@ class ARAttributeView extends React.Component<Props> {
     if(Platform.OS === 'ios'){
       return
     }
-    SARMap.setSceneAction("PANSELECT3D")
     await SARMap.addAttributeListener({
       callback: async (result: any) => {
-        // console.warn("result01: " + JSON.stringify(result))
-        const arr: Array<PipeLineAttributeType> = []
-        Object.keys(result).forEach(key => {
-          const item: PipeLineAttributeType = {
-            title: key,
-            value: result[key],
+        try {
+          if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT'){
+            return
           }
+          // console.warn("result01: " + JSON.stringify(result))
+          const arr: Array<PipeLineAttributeType> = []
+          let srcId = ''
+          Object.keys(result).forEach(key => {
+            const item: PipeLineAttributeType = {
+              title: key,
+              value: result[key],
+            }
 
-          if (key === 'id') {
-            arr.unshift(item)
-          } else {
-            arr.push(item)
-          }
-        })
-        // 将数据放入redux里
-        AppToolBar.getProps().setPipeLineAttribute(arr)
-        if(arr.length > 0) {
-          const preElement = AppToolBar.getData().selectARElement
-          if(preElement && Platform.OS === 'android') {
-            await SARMap.hideAttribute(preElement.layerName, preElement.id)
-          }
-          AppToolBar.addData({
-            selectedAttribute: undefined,
-            selectARElement: undefined,
+
+            if (key === 'id') {
+              arr.unshift(item)
+            } else if(key !== 'action') {
+              arr.push(item)
+            }
+            // 记录点击管线的唯一id
+            if(key === 'srcID'){
+              srcId =  result[key]
+            }
           })
-          SARMap.clearSelection()
-        }
+          // 将数据放入redux里
 
+          const prePipeLineAttribute = AppToolBar.getProps().pipeLineAttribute
+          let preSrcId: string | undefined = undefined
+          if(prePipeLineAttribute && prePipeLineAttribute.length > 0){
+            const value = prePipeLineAttribute?.find((element: PipeLineAttributeType) => {
+              if(element.title === 'srcID') {
+                return element
+              }
+            })
+            preSrcId = value && value.value
+          }
+
+          if(arr.length > 0) {
+            // 若此次点击与上一次点击的是同一个管，就是隐藏，即将数据置为空数组
+            if(preSrcId && preSrcId === srcId) {
+              AppToolBar.getProps().setPipeLineAttribute([])
+            } else {
+              AppToolBar.getProps().setPipeLineAttribute(arr)
+            }
+          }
+
+        } catch (error) {
+          console.error("三维管线监听回调函数出错")
+        }
       }
     })
   }

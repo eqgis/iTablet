@@ -4834,26 +4834,14 @@ export default class MapView extends React.Component {
             if(AppToolBar.getCurrentOption() === undefined
               &&  (ToolbarModule.getParams().type === '' || ToolbarModule.getParams().type === undefined)
             ) {
-              const preElement = AppToolBar.getData().selectARElement
-              // 当三维管线的属性表和其他的属性表有显示时，就关闭属性表，没有才显隐界面上的按钮
-              if(AppToolBar.getProps().pipeLineAttribute.length <= 0 && !preElement) {
-                this.showFullMap(!this.fullMap)
-              }
-
-              if(preElement && Platform.OS === 'android') {
-                await SARMap.hideAttribute(preElement.layerName, preElement.id)
-                AppToolBar.addData({ selectARElement: undefined })
-              }
-            }
-
-            if(Platform.OS === 'android') {
-              AppToolBar.getProps().setPipeLineAttribute([])
+              this.showFullMap(!this.fullMap)
             }
           }}
           onARElementTouch={async (element, childIndex) => {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT' && Platform.OS === 'android') {
               const element01 = AppToolBar.getData().selectARElement
               if(element01) {
+                // 只有当点击对象与选择对象相同时，才显隐属性表
                 if(element01.layerName === element.layerName && element01.id === element.id) {
                   const attributes = await SARMap.getShowAttribute(element01.layerName, element01.id)
                   AppToolBar.getProps().setPipeLineAttribute([])
@@ -4891,16 +4879,9 @@ export default class MapView extends React.Component {
                 // || element.type === ARElementType.AR_BAR_CHART
                 // || element.type === ARElementType.AR_PIE_CHART
               ) {
-                const preElement = AppToolBar.getData().selectARElement
-                // 当上一个触摸的对象存在，且与此次触摸对象不同时，要关闭上一个显示的属性表
-                if(preElement && (preElement.layerName !== element.layerName || preElement.id !== element.id)) {
-                  await SARMap.hideAttribute(preElement.layerName, preElement.id)
-                }
-
-                AppToolBar.addData({ selectARElement: element })
-                AppToolBar.getProps().setPipeLineAttribute([])
                 // 获取已选择的属性
                 const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
+                AppToolBar.getProps().changeShowAttributeElement(element)
                 if (attributes) {
                 // 当已选择的属性存在时
                   const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
@@ -4914,14 +4895,6 @@ export default class MapView extends React.Component {
                 } else {
                 // 当没有已选择的属性时
                   SARMap.showAttribute(element.layerName, element.id, null)
-                }
-              } else {
-                const preElement = AppToolBar.getData().selectARElement
-                if(preElement) {
-                  await SARMap.hideAttribute(preElement.layerName, preElement.id)
-                  if (AppToolBar.getCurrentOption()?.key !== 'AR_MAP_BROWSE_ELEMENT'){
-                    AppToolBar.addData({ selectARElement: undefined })
-                  }
                 }
               }
 

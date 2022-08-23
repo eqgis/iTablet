@@ -7,7 +7,6 @@ import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import { SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
 import { AppToolBar } from "@/utils"
-import { Platform } from 'react-native'
 
 class ArEditModule extends FunctionModule {
   constructor(props) {
@@ -104,12 +103,8 @@ class ArEditModule extends FunctionModule {
     const params = ToolbarModule.getParams()
     const _data = await AREditData.getData(this.type, params)
 
-    const preElement = AppToolBar.getData().selectARElement
-    if(preElement  && Platform.OS === 'android') {
-      await SARMap.hideAttribute(preElement.layerName, preElement.id)
-      AppToolBar.addData({ selectARElement: undefined })
-    }
     AppToolBar.getProps().setPipeLineAttribute([])
+    AppToolBar.getProps().changeShowAttributeElement()
 
     params.showFullMap && params.showFullMap(true)
     if (

@@ -38,9 +38,7 @@ class TourCreate extends CustomFunctionModule {
     TourAction.tour()
   }
 
-  getTitle = () => {
-    getLanguage(global.language).Profile.CREATE
-  }
+  getTitle = () => getLanguage(global.language).Profile.CREATE
 }
 
 const _TourCreate = new TourCreate({

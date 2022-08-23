@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, View, TouchableOpacity } from 'react-native'
+import { Image, View, TouchableOpacity, Text } from 'react-native'
 import { DEVICE } from '../../../src/redux/models/device'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
 import { ARLayerType, SARMap } from 'imobile_for_reactnative'
@@ -61,7 +61,7 @@ class ARLayerMenu extends React.Component<Props, State> {
           flexDirection: 'row',
           justifyContent: 'space-evenly',
           alignItems: 'center',
-          height: dp(40),
+          height: dp(50),
         }}>
           <TouchableOpacity
             onPress={() => {
@@ -129,6 +129,15 @@ class ARLayerMenu extends React.Component<Props, State> {
     return(
       <>
         {this.renderHeader()}
+
+        {/* 这是一条分割线 */}
+        <View style={[{width:'100%', justifyContent:'center', alignItems:'center', backgroundColor: '#fff'}]}>
+          <View style={[{
+            width: '90%',
+            height: dp(1),
+            backgroundColor: '#ebedf0',
+          }]}></View>
+        </View>
 
         <ToolBarSectionList
           sections={this.props.sections}

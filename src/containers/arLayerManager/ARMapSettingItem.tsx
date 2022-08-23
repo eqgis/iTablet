@@ -1,25 +1,19 @@
 import React from 'react'
-import { StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { scaleSize, setSpText } from '../../utils'
 import { color } from '../../styles'
 import { ARLayer } from 'imobile_for_reactnative'
 
-const imgSize = scaleSize(44)
 const styles = StyleSheet.create({
   item: {
     height: scaleSize(86),
     backgroundColor: color.content_white,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  image: {
-    marginLeft: scaleSize(60),
-    height: imgSize,
-    width: imgSize,
+    justifyContent: 'center',
   },
   text: {
     fontSize: setSpText(24),
-    marginLeft: scaleSize(60),
     textAlign: 'center',
     backgroundColor: 'transparent',
   },
@@ -56,13 +50,6 @@ export default class ARMapSettingItem extends React.PureComponent<ItemProps, Ite
           this._onPress()
         }}
       >
-        {this.props.data.image && (
-          <Image
-            resizeMode={'contain'}
-            style={styles.image}
-            source={this.props.data.image}
-          />
-        )}
         <Text style={styles.text}>
           {this.props.data.title}
         </Text>

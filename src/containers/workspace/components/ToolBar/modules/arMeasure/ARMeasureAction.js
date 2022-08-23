@@ -17,17 +17,6 @@ function commit() {}
 // AR测量面积
 function arMeasureArea() {
   (async function() {
-    // const isSupportedARCore = await SARMap.isARAvailable()
-    // if (!isSupportedARCore) {
-    //   global.ARDeviceListDialog.setVisible(true)
-    //   return
-    // }
-
-    // global.toolBox && global.toolBox.removeAIDetect(true)
-    // if (global.showAIDetect) {
-    //   global.arSwitchToMap = true
-    //   ;(await global.toolBox) && global.toolBox.switchAr()
-    // }
     const _data = ARMeasureData.getMeasureAreaData()
     const containerType = ToolbarType.arMeasure
     const data = ToolbarModule.getToolbarSize(containerType, {
@@ -45,17 +34,6 @@ function arMeasureArea() {
 // AR测量体积
 function arMeasureVolume() {
   (async function() {
-    // const isSupportedARCore = await SARMap.isARAvailable()
-    // if (!isSupportedARCore) {
-    //   global.ARDeviceListDialog.setVisible(true)
-    //   return
-    // }
-
-    // global.toolBox && global.toolBox.removeAIDetect(true)
-    // if (global.showAIDetect) {
-    //   global.arSwitchToMap = true
-    //   ;(await global.toolBox) && global.toolBox.switchAr()
-    // }
     const _data = ARMeasureData.getMeasureAreaData()
     const containerType = ToolbarType.arMeasure
     const data = ToolbarModule.getToolbarSize(containerType, {

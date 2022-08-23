@@ -1,6 +1,6 @@
 /* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
-import { SMeasureView, SMap ,SARMap } from 'imobile_for_reactnative'
+import { SMap ,SARMap } from 'imobile_for_reactnative'
 import { LayerUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 
@@ -15,7 +15,7 @@ function commit() {}
 // 高精度采集
 function collectSceneForm() {
   (async function() {
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isSupportAR()
     if (isSupportedARCore != 1) {
       global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
@@ -45,7 +45,6 @@ function collectSceneForm() {
     // })
 
     // global.EnterDatumPointType = 'arCollectSceneForm'
-    // // NavigationService.navigate('EnterDatumPoint')
     // global.toolBox && global.toolBox.removeAIDetect(true)
     // NavigationService.navigate('CollectSceneFormView')
 
@@ -74,7 +73,7 @@ function collectSceneForm() {
 function arMeasureCollect() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isSupportAR()
     if (isSupportedARCore != 1) {
       global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
@@ -111,7 +110,6 @@ function arMeasureCollect() {
       }
     }
 
-    // NavigationService.navigate('MeasureView', global.MeasureCollectData)
     global.EnterDatumPointType = 'arMeasureCollect'
     NavigationService.navigate('EnterDatumPoint')
 
@@ -126,7 +124,7 @@ function arMeasureCollect() {
 function arDrawLine() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isSupportAR()
     if (isSupportedARCore != 1) {
       global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
@@ -191,7 +189,6 @@ function arDrawLine() {
     //   ;(await global.toolBox) && global.toolBox.switchAr()
     // }
     global.MeasureCollectData.measureType = 'drawLine'
-    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
 
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
@@ -201,7 +198,7 @@ function arDrawLine() {
 function arDrawArea() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isSupportAR()
     if (isSupportedARCore != 1) {
       global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
@@ -256,7 +253,6 @@ function arDrawArea() {
     // }
 
     global.MeasureCollectData.measureType = 'arDrawArea'
-    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
 }
@@ -265,7 +261,7 @@ function arDrawArea() {
 function arDrawPoint() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const isSupportedARCore = await SMeasureView.isSupportedARCore()
+    const isSupportedARCore = await SARMap.isSupportAR()
     if (isSupportedARCore != 1) {
       global.ARServiceAction = isSupportedARCore
       global.ARDeviceListDialog.setVisible(true)
@@ -320,7 +316,6 @@ function arDrawPoint() {
     // }
 
     global.MeasureCollectData.measureType = 'arDrawPoint'
-    // NavigationService.navigate('MeasureAreaView', global.MeasureCollectData)
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   })()
 }

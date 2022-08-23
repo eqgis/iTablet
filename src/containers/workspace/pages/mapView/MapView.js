@@ -19,7 +19,6 @@ import {
   SMARMapView,
   SARMap,
   SMMeasureARGeneraView,
-  // SMeasureAreaView,
   DatasetType,
   // SCollectSceneFormView,
   ARElementType,
@@ -654,37 +653,6 @@ export default class MapView extends React.Component {
     }
     if (global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS) {
       (async function () {
-        //提供测量等界面添加按钮及提示语的回调方法 add jiakai
-        // if (Platform.OS === 'ios') {
-        // iOSEventEmi.addListener(
-        //   'com.supermap.RN.SMeasureAreaView.ADD',
-        //   this.onAdd,
-        // )
-        // iOSEventEmi.addListener(
-        //   'com.supermap.RN.SMeasureAreaView.CLOSE',
-        //   this.onshowLog,
-        // )
-        // iOSEventEmi.addListener(
-        //   'onCurrentHeightChanged',
-        //   this.onCurrentHeightChanged,
-        // )
-        // } else {
-
-        // SMeasureAreaView.setAddListener({
-        //   callback: async result => {
-        //     if (result) {
-        //       // Toast.show("add******")
-        //       if (this.state.isfirst) {
-        //         this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
-        //       } else {
-        //         this.setState({ showADD: true })
-        //       }
-        //     } else {
-        //       this.setState({ showADD: false, showADDPoint: false })
-        //     }
-        //   },
-        // })
-
         SARMap.addOnHeightChangeListener({
           onHeightChange: height => {
             height = height.toFixed(2)
@@ -2854,12 +2822,6 @@ export default class MapView extends React.Component {
         this.canContinuousDraw = true
       }
 
-      // if (this.isDrawing) {
-      //   SMeasureAreaView.initMeasureCollector(
-      //     this.datasourceAlias,
-      //     this.datasetName,
-      //   )
-      // }
 
       if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
       let datasourceAlias = this.props.currentLayer.datasourceAlias
@@ -3456,17 +3418,9 @@ export default class MapView extends React.Component {
         : screen.unlockAllOrientations()
 
       if (this.props.isAR) {
-        // if (Platform.OS === 'android') {
         SARMap.onPause()
-        // } else {
-        //   SMeasureAreaView.onPause()
-        // }
       } else {
-        // if (Platform.OS === 'android') {
         SARMap.onResume()
-        // } else {
-        //   SMeasureAreaView.onResume()
-        // }
       }
 
       return _isAR
@@ -4534,7 +4488,6 @@ export default class MapView extends React.Component {
       point: this.point,
       fixedPositions: point => {
         NavigationService.goBack()
-        // SMeasureAreaView.fixedPosition(false, point.x, point.y, 0)
       },
       showType: 'newDatumPoint', // 新的位置校准界面
       reshowDatumPoint: () => {
@@ -4627,14 +4580,6 @@ export default class MapView extends React.Component {
     SARMap.stopLocation()
     SARMap.cancelCurrent()
     SARMap.clearMeasure()
-    // SARMap.removeOnHeightChangeListeners()
-    // if (Platform.OS === 'ios') {
-    //   SMeasureAreaView.setMeasureMode('arCollect')
-    //   // iOSEventEmi.removeListener(
-    //   //   'com.supermap.RN.SMeasureAreaView.CLOSE',
-    //   //   this.onshowLog,
-    //   // )
-    // }else{
     this.listeners && this.listeners.infoListener?.remove()
     this.listeners && this.listeners.addListener?.remove()
     SARMap.showMeasureView(false)
@@ -4828,7 +4773,6 @@ export default class MapView extends React.Component {
             }
           }
           customStyle={this.props.isAR ? null : styles.hidden}
-          ref={ref => (this.SMMeasureAreaView = ref)}
           onLoad={this._onLoad}
           onSingleClick={async () => {
             if(AppToolBar.getCurrentOption() === undefined
@@ -5198,25 +5142,7 @@ export default class MapView extends React.Component {
         {global.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {global.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
-        {/* {!this.isExample &&
-          global.isLicenseValid &&
-          global.Type &&
-          // global.Type.indexOf(ChunkType.MAP_AR) === 0 &&
-          !this.state.bGoneAIDetect &&
-          global.Type === ChunkType.MAP_AR_ANALYSIS &&
-          (
-            <SMAIDetectView
-              style={
-                screen.isIphoneX() && {
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                }
-              }
-              customStyle={this.state.showAIDetect ? null : styles.hidden}
-              language={this.props.language}
-              // isDetect={global.Type === ChunkType.MAP_AR_ANALYSIS}
-              onArObjectClick={this._onArObjectClick}
-            />
-          )} */}
+
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (global.MapSurfaceView = ref)}

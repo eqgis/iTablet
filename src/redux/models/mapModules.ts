@@ -21,9 +21,9 @@ interface handleParams<P> {
   payload: P,
 }
 
-export interface MapModules {modules: {[userName: string]: Module[]}, currentMapModule: number}
-export interface SetMapModule {modules: Module[], userName: string}
-export interface AddMapModule {module: Module, userName: string}
+export interface MapModules {modules: {[userName: string]: typeof Module[]}, currentMapModule: number}
+export interface SetMapModule {modules: typeof Module[], userName: string}
+export interface AddMapModule {module: typeof Module, userName: string}
 export interface DeleteMapModule {moduleKey: string, userName: string}
 export interface LoadAddedModule {moduleKey: string, userName: string}
 
@@ -31,7 +31,7 @@ export interface LoadAddedModule {moduleKey: string, userName: string}
 // Actions
 // --------------------------------------------------
 export const setMapModule = (
-  params: Module[],
+  params: typeof Module[],
   cb?: () => void,
 ) => async (dispatch: (params: MapModule<typeof MODULES_SET_MAP_MODULE, SetMapModule>) => any, getState: () => any) => {
   const userName = getState().user.toJS().currentUser.userName
@@ -59,7 +59,7 @@ export const setCurrentMapModule = (
 }
 
 export const addMapModule = (
-  params: Module,
+  params: typeof Module,
   cb?: () => void,
 ) => async (dispatch: (params: MapModule<typeof MODULES_ADD_MAP_MODULE, AddMapModule>) => any, getState: () => any) => {
   const userName = getState().user.toJS().currentUser.userName
@@ -123,19 +123,20 @@ export default handleActions(
     },
     [`${MODULES_ADD_MAP_MODULE}`]: (state: any, { payload }: handleParams<AddMapModule>) => {
       const modules = state.toJS().modules
+      const payloadModule = new payload.module()
       let _module
       for (const module of modules[payload.userName]) {
-        if (module.key === payload.module.key) {
-          _module = payload.module
+        if (module.key === payloadModule.key) {
+          _module = payloadModule
           break
         }
       }
       if (!_module) {
-        modules[payload.userName].push(payload.module)
+        modules[payload.userName].push(payloadModule)
       }
 
       const applets = state.toJS().applets || {}
-      applets[payload.module.key] = payload.module
+      applets[payloadModule.key] = payload.module
 
       return state.setIn(['modules'], fromJS(modules)).setIn(['applets'], fromJS(applets))
     },
@@ -143,7 +144,7 @@ export default handleActions(
       const modules = state.toJS().modules
       for (const index in modules[payload.userName]) {
         const module = modules[payload.userName][index]
-        if (module?.key === payload) {
+        if (module?.key === payload.moduleKey) {
           // BundleTools.deleteBundle(module.key)
           modules[payload.userName].splice(index, 1)
           break
@@ -152,20 +153,24 @@ export default handleActions(
       return state.setIn(['modules'], fromJS(modules))
     },
     [`${MODULES_LOAD_ADDED_APPLETS}`]: (state: any, { payload }: handleParams<LoadAddedModule>) => {
-      const applets = state.toJS().applets
-      const modules = state.toJS().modules
-      const addedModule = applets[payload.moduleKey]
-      if (addedModule) {
-        let exist = false
-        for (const module of modules[payload.userName]) {
-          if (module.key === payload.moduleKey) {
-            exist = true
-            break
+      const applets: {[key: string]: typeof Module} = state.toJS().applets
+      const modules: {[key: string]: Module[]} = state.toJS().modules
+      try {
+        const addedModule = applets[payload.moduleKey]
+        if (addedModule) {
+          let exist = false
+          for (const module of modules[payload.userName]) {
+            if (module.key === payload.moduleKey) {
+              exist = true
+              break
+            }
+          }
+          if (!exist) {
+            modules[payload.userName].push(new addedModule())
           }
         }
-        if (!exist) {
-          modules[payload.userName].push(addedModule)
-        }
+      } catch(e) {
+        console.warn(e)
       }
       return state.setIn(['modules'], fromJS(modules))
     },

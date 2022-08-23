@@ -97,8 +97,7 @@ class ModuleList extends Component {
       if (item && item.getChunk) {
         data.push(item.getChunk(this.props.language))
       } else {
-        data = []
-        break
+        continue
       }
     }
     if (

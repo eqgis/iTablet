@@ -764,9 +764,12 @@ class AppRoot extends Component {
       for (let item of mapModules) {
         myMapModules.push(item)
       }
+      console.warn('======1=====', myMapModules.length)
       await this.props.setMapModule(myMapModules, () => {
+        console.warn('======2=====', applets.length)
         // 加载用户小插件
         for (let item of applets) {
+          console.warn('======22=====', item.name)
           this.props.loadAddedModule(item.name)
         }
       })

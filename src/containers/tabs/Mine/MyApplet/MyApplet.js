@@ -153,8 +153,23 @@ class MyApplet extends MyDataPage {
   deleteData = async () => {
     try {
       this._closeModal()
+      let _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
+      let sectionIndex = -1
+      for (let i in _sectionData) {
+        if (this.itemInfo.section.title === _sectionData[i].title) {
+          sectionIndex = parseInt(i)
+          break
+        }
+      }
       // 删除bundle
-      const result = await BundleTools.deleteBundle(this.itemInfo.item.path)
+      let result = false
+      if (sectionIndex) {
+        // 删除本地小程序
+        result = await BundleTools.deleteBundle(this.itemInfo.item.path)
+      } else {
+        // 卸载已加载的小程序
+        result = await BundleTools.unloadBundle(this.itemInfo.item.path)
+      }
       if (result) {
         this._getSectionData()
         this.props.deleteMapModule(this.itemInfo.item.name)

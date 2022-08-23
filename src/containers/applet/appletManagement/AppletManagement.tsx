@@ -159,7 +159,6 @@ export default class AppletManagement extends React.Component<Props, State> {
           {/* {this._renderRows(this.state.myApplets, true)} */}
           {
             this.renderRows(this.state.dynamicModules, (path, bundleType) => {
-              console.warn(2, path, bundleType)
               BundleTools.openModel(path, bundleType)
             })
           }

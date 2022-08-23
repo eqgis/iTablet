@@ -1,16 +1,16 @@
 import { Module } from "@/class"
 
 interface BundleUtilParams {
-  addMapModule: (module: Module, cb?: () => void) => Promise<void>,
+  addMapModule: (module: typeof Module, cb?: () => void) => Promise<void>,
 }
 
-let _addMapModule: (module: Module, cb?: () => void) => Promise<void>
+let _addMapModule: (module: typeof Module, cb?: () => void) => Promise<void>
 
 function init(params: BundleUtilParams) {
   _addMapModule = params.addMapModule
 }
 
-function loadModule(module: Module, cb?: () => void) {
+function loadModule(module: typeof Module, cb?: () => void) {
   try {
     if (!_addMapModule) return false
     _addMapModule(module, cb)

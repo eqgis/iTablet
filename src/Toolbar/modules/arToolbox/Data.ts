@@ -25,21 +25,21 @@ function selectTool(option: IToolbarOption) {
 
   option.listData.data = [
     {
-      image: getImage().icon_bar_attribute,
+      image: getImage().attribute_make,
       text: getLanguage().ATTRIBUTE_MAKE,
       onPress: () => {
         AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_SELECTED')
       }
     },
     {
-      image: getImage().ar_sandtable,
+      image: getImage().sandtable_make,
       text: getLanguage().SAND_TABLE_MAKE,
       onPress: () => {
         AppToolBar.show('ARSANDTABLE', 'AR_SAND_TABLE_CREATE')
       }
     },
     {
-      image: getImage().ar_animation,
+      image: getImage().ar_pane_annimation,
       text: getLanguage().PANE_ANIMATION,
       onPress: () => {
         AppToolBar.show('ARANIMATION', 'AR_MAP_ANIMATION_HOME')

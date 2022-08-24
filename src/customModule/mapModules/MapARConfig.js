@@ -9,7 +9,6 @@ import {
   addModule,
   styleModule,
   // arEffecModule,
-  // arToolModule,
   markModule,
   toolModule,
   arDrawingModule,

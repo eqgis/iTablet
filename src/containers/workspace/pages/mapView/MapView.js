@@ -123,7 +123,6 @@ import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessage
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 import { Bar } from 'react-native-progress'
-import GuideViewMapArModel from '../../components/GuideViewMapArModel'
 import GuideViewMapArMappingModel from '../../components/GuideViewMapArMappingModel'
 import GuideViewMapAnalystModel from '../../components/GuideViewMapAnalystModel'
 import GuideViewMapThemeModel from '../../components/GuideViewMapThemeModel'
@@ -4311,14 +4310,6 @@ export default class MapView extends React.Component {
     )
   }
 
-  //AR地图引导界面 add jiakai
-  renderMapArGuideView = () => {
-    return (
-      <GuideViewMapArModel
-        language={this.props.language}
-      />
-    )
-  }
 
   //AR测图引导界面 add jiakai
   renderMapArMappingGuideView = () => {

@@ -5,8 +5,8 @@ import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
-import { AppToolBar } from "@/utils"
+import { ARLayerType } from 'imobile_for_reactnative'
+import { arMapEditData } from '@/Toolbar/modules'
 
 class ArEditModule extends FunctionModule {
   constructor(props) {
@@ -99,37 +99,7 @@ class ArEditModule extends FunctionModule {
   }
 
   action = async () => {
-    this.setModuleData(this.type)
-    const params = ToolbarModule.getParams()
-    const _data = await AREditData.getData(this.type, params)
-
-    AppToolBar.getProps().setPipeLineAttribute([])
-    AppToolBar.getProps().changeShowAttributeElement()
-
-    params.showFullMap && params.showFullMap(true)
-    if (
-      params.arlayer.currentLayer?.type === ARLayerType.AR_SCENE_LAYER ||
-      params.arlayer.currentLayer?.type === ARLayerType.AR3D_LAYER
-    ) {
-      SARMap.setAction(ARAction.MOVE)
-
-      ToolbarModule.addData({selectARElement: params.arlayer.currentLayer.name})
-      SARMap.appointEditAR3DLayer(params.arlayer.currentLayer.name)
-      params.setToolbarVisible(true, ConstToolType.SM_AR_EDIT, {
-        isFullScreen: false,
-        showMenuDialog: true,
-      })
-      return
-    }
-
-    params.setToolbarVisible(true, this.type, {
-      isFullScreen: false,
-      buttons: _data.buttons,
-    })
-
-    // SARMap.clearSelection()
-    // SARMap.setAction(ARAction.MOVE)
-    SARMap.setAction(ARAction.SELECT)
+    arMapEditData.action()
   }
 }
 

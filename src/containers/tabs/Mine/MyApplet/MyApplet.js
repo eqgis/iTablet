@@ -88,17 +88,22 @@ class MyApplet extends MyDataPage {
     return []
   }
 
+  getSectionIndex = () => {
+    let _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
+    let sectionIndex = -1
+    for (let i in _sectionData) {
+      if (this.itemInfo.section.title === _sectionData[i].title) {
+        sectionIndex = parseInt(i)
+        break
+      }
+    }
+    return sectionIndex
+  }
+
   deleteData = async () => {
     try {
       this._closeModal()
-      let _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
-      let sectionIndex = -1
-      for (let i in _sectionData) {
-        if (this.itemInfo.section.title === _sectionData[i].title) {
-          sectionIndex = parseInt(i)
-          break
-        }
-      }
+      let sectionIndex = this.getSectionIndex()
       // 删除bundle
       let result = false
       if (sectionIndex) {
@@ -141,11 +146,19 @@ class MyApplet extends MyDataPage {
   exportData = async () => {
     try {
       this.exportPath = ''
-      if (this.itemInfo?.item?.path) {
+      let sectionIndex = this.getSectionIndex()
+      let result = false
+      if (sectionIndex) {
+        // 导出本地小程序
+        const targetPath = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.RelativeFilePath.ExportBundle + this.itemInfo.item.name + '.zip', true)
+        result = await FileTools.copyFile(this.itemInfo.item.path, targetPath)
+      } else {
+        // 导出已加载的小程序
         const toPath = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.RelativeFilePath.ExportBundle)
         this.exportPath = await BundleTools.exportBundles(this.itemInfo.item.path, toPath)
+        result = !!this.exportPath
       }
-      return !!this.exportPath
+      return result
     } catch (e) {
       // eslint-disable-next-line no-undef
       __DEV__ && console.warn(e)

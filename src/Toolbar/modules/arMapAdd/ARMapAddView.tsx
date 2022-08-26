@@ -1,14 +1,12 @@
 import { ARElementType, SARMap } from 'imobile_for_reactnative'
 import React from 'react'
-import { Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { Image, Platform, StyleSheet, TouchableOpacity } from 'react-native'
 import {  getImage } from '../../../assets'
 import { AppEvent, AppStyle, AppToolBar, dp } from '../../../utils'
 import { ModuleViewProps } from '../../../Toolbar'
 import AnimationList from './AnimationList'
 import { ARElement } from 'imobile_for_reactnative/types/interface/ar'
 import * as ARMapModule from './ModuleData'
-import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
-import { ConstToolType } from '@/constants'
 import { ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 type Props = ModuleViewProps<unknown>
 
@@ -45,10 +43,8 @@ class ARMapAddView extends React.Component<Props, State> {
 
   onAddElement = async (currentAddElement: ARElement) => {
     ARMapModule.getAddElements().push(currentAddElement)
-    if(ToolbarModule.getParams().type === ConstToolType.SM_AR_DRAWING_MODAL
-      || ToolbarModule.getParams().type === ConstToolType.SM_AR_DRAWING_ADD_POINT
-    ) {
-      if(currentAddElement.type === ARElementType.AR_MODEL) {
+    if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_ADD_MODEL') {
+      if(currentAddElement.type === ARElementType.AR_MODEL && Platform.OS === 'ios') {
         const animations = await SARMap.getModelAnimation(currentAddElement.layerName, currentAddElement.id)
         if(animations.length > 0) {
           this.setState({addAnimations: animations, currentArElement: currentAddElement})

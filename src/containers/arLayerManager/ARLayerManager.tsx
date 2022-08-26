@@ -3,14 +3,13 @@ import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
 import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo, View, Platform } from 'react-native'
-import { scaleSize, Toast, AppToolBar } from '../../utils'
-import { getImage, getThemeAssets } from '../../assets'
+import { scaleSize, Toast, AppToolBar, AppLog } from '../../utils'
+import { getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
 import { ARMapInfo } from '../../redux/models/arlayer'
 import { ARMapState } from '../../redux/models/armap'
 import { DEVICE } from '../../redux/models/device'
 import ARLayerItem from './ARLayerItem'
-import { arEditModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import { MapToolbar } from '../workspace/components'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
@@ -405,7 +404,12 @@ export default class ARLayerManager extends React.Component<Props, State> {
           if (this.props.arlayer.currentLayer?.name !== this.state.selectLayer?.name) {
             await this.props.setCurrentARLayer(this.state.selectLayer)
           }
-          arEditModule().action()
+          if(!this.state.selectLayer) {
+            AppLog.error('没选中图层')
+            return
+          }
+          AppToolBar.addData({selectARLayer: this.state.selectLayer})
+          AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_3DLAYER')
           NavigationService.goBack()
         },
       })

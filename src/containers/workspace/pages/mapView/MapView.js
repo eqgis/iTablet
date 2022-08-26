@@ -4758,12 +4758,6 @@ export default class MapView extends React.Component {
     return (
       <>
         <SMARMapView
-          style={
-            screen.isIphoneX() && {
-              paddingBottom: screen.getIphonePaddingBottom(),
-            }
-          }
-          customStyle={this.props.isAR ? null : styles.hidden}
           onLoad={this._onLoad}
           onSingleClick={async () => {
             if(AppToolBar.getCurrentOption() === undefined
@@ -4866,10 +4860,8 @@ export default class MapView extends React.Component {
               )) {
               AppToolBar.addData({ selectARElement: element, selectedChildIndex: childIndex })
               AppToolBar.show('ARSANDTABLE', 'AR_SAND_TABLE_EDIT')
-            } else { // if(ToolbarModule.getData().type === ConstToolType.SM_AR_EDIT)
-              if (
-                !this.state.showPoiSearch &&
-                element.type === ARElementType.AR_IMAGE
+            } else if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
+              if (element.type === ARElementType.AR_IMAGE
                 || element.type === ARElementType.AR_VIDEO
                 || element.type === ARElementType.AR_WEBVIEW
                 || element.type === ARElementType.AR_TEXT
@@ -4879,28 +4871,14 @@ export default class MapView extends React.Component {
                 || element.type === ARElementType.AR_BROCHOR
                 || element.type === ARElementType.AR_VIDEO_ALBUM
                 || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
-                || element.type === ARElementType.AR_SAND_TABLE_ALBUM
                 || element.type === ARElementType.AR_SAND_TABLE
+                || element.type === ARElementType.AR_ELEMENT_GROUP
+                || element.type === ARElementType.AR_SAND_TABLE_ALBUM
                 || element.type === ARElementType.AR_BAR_CHART
                 || element.type === ARElementType.AR_PIE_CHART
               ) {
-                arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
-                if(element.type === ARElementType.AR_MODEL) {
-                  const animations = await SARMap.getModelAnimation(element.layerName, element.id)
-                  ToolbarModule.addData({ hasModelAnimation: animations.length > 0 })
-                }
-                ToolbarModule.addData({ selectARElement: element })
-                AppToolBar.addData({ selectARElement: element })
-                SARMap.appointEditElement(element.id, element.layerName)
-                SARMap.setAction(ARAction.MOVE)
-                this.showFullMap(true)
-                this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-                  containerType: ToolbarType.slider,
-                  isFullScreen: false,
-                  showMenuDialog: false,
-                  selectName: getLanguage(this.props.language).ARMap.TRANSLATION,
-                  selectKey: getLanguage(this.props.language).ARMap.TRANSLATION,
-                })
+                AppToolBar.addData({selectARElement: element})
+                AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ELEMENT')
               }
             }
           }}
@@ -4909,22 +4887,8 @@ export default class MapView extends React.Component {
             AppEvent.emitEvent('ar_map_on_add_element', element)
             if(element.type === ARElementType.AR_ATTRIBUTE_ALBUM || element.type === ARElementType.AR_BROCHOR || element.type === ARElementType.AR_ALBUM|| element.type === ARElementType.AR_VIDEO_ALBUM || element.type === ARElementType.AR_SAND_TABLE_ALBUM || element.type === ARElementType.AR_BAR_CHART || element.type === ARElementType.AR_PIE_CHART){
               if(AppToolBar.getData().isAlbumFirstAdd){
-                // 小组件添加成功后，会去往编辑界面，编辑界面与添加界面的toolbar不同，所以要将添加页面用的toolbar类型隐藏
-                AppToolBar.hide()
-
-                arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
-                ToolbarModule.addData({ selectARElement: element })
-                AppToolBar.addData({ selectARElement: element, isAlbumFirstAdd: false })
-                SARMap.appointEditElement(element.id, element.layerName)
-                SARMap.setAction(ARAction.MOVE)
-                this.showFullMap(true)
-                this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-                  containerType: ToolbarType.slider,
-                  isFullScreen: false,
-                  showMenuDialog: false,
-                  selectName: getLanguage(this.props.language).ARMap.TRANSLATION,
-                  selectKey: getLanguage(this.props.language).ARMap.TRANSLATION,
-                })
+                AppToolBar.addData({selectARElement: element,isAlbumFirstAdd:false})
+                AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ELEMENT')
               }
             }
           }}
@@ -4953,17 +4917,8 @@ export default class MapView extends React.Component {
               if (element.type === ARElementType.AR_LINE
                 || element.type === ARElementType.AR_MARKER_LINE) {
                 {
-                  AppToolBar.addData({ addARElement: element })
-                  arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
-                  ToolbarModule.addData({ selectARElement: element })
-                  AppToolBar.addData({ selectARElement: element })
-                  SARMap.appointEditElement(element.id, element.layerName)
-                  SARMap.setAction(ARAction.MOVE)
-                  this.showFullMap(true)
-                  this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-                    containerType: ToolbarType.slider,
-                    isFullScreen: false,
-                  })
+                  AppToolBar.addData({selectARElement: element})
+                  AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_GEOMETRY')
                 }
               }
             }

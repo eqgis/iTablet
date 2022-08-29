@@ -3,14 +3,13 @@ import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
 import { Image, Text, TouchableOpacity, FlatList, StyleSheet, ListRenderItemInfo, View, Platform } from 'react-native'
-import { scaleSize, Toast, AppToolBar } from '../../utils'
-import { getImage, getThemeAssets } from '../../assets'
+import { scaleSize, Toast, AppToolBar, AppLog } from '../../utils'
+import { getThemeAssets } from '../../assets'
 import { size, color } from '../../styles'
 import { ARMapInfo } from '../../redux/models/arlayer'
 import { ARMapState } from '../../redux/models/armap'
 import { DEVICE } from '../../redux/models/device'
 import ARLayerItem from './ARLayerItem'
-import { arEditModule } from '../workspace/components/ToolBar/modules'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import { MapToolbar } from '../workspace/components'
 import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
@@ -80,6 +79,7 @@ interface State {
   menuVisible: boolean,
   selectLayer?: ARLayer,
   type: string,
+  tabbarVisible: boolean,
 }
 
 interface Postion {
@@ -114,6 +114,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
     this.state = {
       menuVisible: false,
       type: (params && params.type) || global.Type, // 底部Tabbar类型
+      tabbarVisible: true,
     }
     this.backPositon = {x:0, y: 0}
     // 获取由添加页面过来的tab的索引
@@ -224,7 +225,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         // },
         {
           title: getLanguage(global.language).Map_Layer.LAYERS_RENAME,
-          image: getThemeAssets().layer.icon_layer_rename02,
+          // image: getThemeAssets().layer.icon_layer_rename02,
           action: async () => {
             const layer = this.state.selectLayer
             // if (this.props.arlayer.currentLayer) {
@@ -239,6 +240,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                     await this.props.getARLayers()
                     this.setState({
                       menuVisible: false,
+                      tabbarVisible: true,
                     })
                     NavigationService.goBack()
                   }
@@ -249,7 +251,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
         },
         {
           title: getLanguage(global.language).Map_Layer.LAYERS_REMOVE,
-          image: getThemeAssets().layer.icon_tool_delete,
+          // image: getThemeAssets().layer.icon_tool_delete,
           action: async () => {
             global.SimpleDialog.set({
               text: getLanguage(global.language).Prompt.DELETE_LAYER,
@@ -262,6 +264,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                   await this.props.getARLayers()
                   this.setState({
                     menuVisible: false,
+                    tabbarVisible: true,
                   })
                 }
               },
@@ -276,7 +279,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
     if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_DOWN,
-        image: getThemeAssets().layer.icon_edit_movedown,
+        // image: getThemeAssets().layer.icon_edit_movedown,
         action: async () => {
 
           // if(Platform.OS === 'android') {
@@ -300,6 +303,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           // 隐藏菜单列表
           this.setState({
             menuVisible: false,
+            tabbarVisible: true,
           })
 
 
@@ -311,7 +315,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
     if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_UP,
-        image: getThemeAssets().layer.icon_edit_moveup,
+        // image: getThemeAssets().layer.icon_edit_moveup,
         action: async () => {
           // if(Platform.OS === 'android') {
           const isMoveup = await SARMap.moveLayerUp(this.state.selectLayer.name)
@@ -334,6 +338,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           // 隐藏菜单列表
           this.setState({
             menuVisible: false,
+            tabbarVisible: true,
           })
 
         },
@@ -343,13 +348,16 @@ export default class ARLayerManager extends React.Component<Props, State> {
 
     //ARElementLayer添加可见范围
     // && !(Platform.OS === 'ios' && this.state.selectLayer.type === ARLayerType.EFFECT_LAYER)
-    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer) {
+    if(this.state.selectLayer && 'maxVisibleBounds' in this.state.selectLayer
+      && this.state.selectLayer?.type !== ARLayerType.AR_LINE_LAYER
+      && this.state.selectLayer?.type !== ARLayerType.AR_MARKER_LINE_LAYER
+    ) {
       const maxVisibleBounds = this.state.selectLayer.maxVisibleBounds
       const minVisibleBounds = this.state.selectLayer.minVisibleBounds
       AppToolBar.addData({selectARLayer: this.state.selectLayer, maxVisibleBounds, minVisibleBounds})
       menuData[0].data.unshift({
         title: getLanguage().LAYERS_VISIBLE_DISTANCE,
-        image: getImage().icon_visible_distance,
+        // image: getImage().icon_visible_distance,
         action: async () => {
           AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SETTING_VIEW_BOUNDS')
           NavigationService.goBack()
@@ -365,7 +373,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
       AppToolBar.addData({selectARLayer: this.state.selectLayer, maxAnimationBounds, minAnimationBounds})
       menuData[0].data.unshift({
         title: getLanguage().ANIMATION_SETTING,
-        image: getImage().icon_edit,
+        // image: getImage().icon_edit,
         action: async () => {
           AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SETTING_ANIMATION')
           NavigationService.goBack()
@@ -378,7 +386,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
       AppToolBar.addData({selectARLayer: this.state.selectLayer,secondsToPlay})
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_SECONDS_TO_PLAY,
-        image: getThemeAssets().layer.icon_tool_duration,
+        // image: getThemeAssets().layer.icon_tool_duration,
         action: async () => {
           AppToolBar.show('ARMAP_SETTING', 'AR_MAP_SECONDS_TO_PLAY')
           // NavigationService.goBack()
@@ -395,12 +403,17 @@ export default class ARLayerManager extends React.Component<Props, State> {
     ) {
       menuData[0].data.unshift({
         title: getLanguage(global.language).Map_Main_Menu.EDIT,
-        image: getThemeAssets().functionBar.icon_tool_edit,
+        // image: getThemeAssets().functionBar.icon_tool_edit,
         action: async () => {
           if (this.props.arlayer.currentLayer?.name !== this.state.selectLayer?.name) {
             await this.props.setCurrentARLayer(this.state.selectLayer)
           }
-          arEditModule().action()
+          if(!this.state.selectLayer) {
+            AppLog.error('没选中图层')
+            return
+          }
+          AppToolBar.addData({selectARLayer: this.state.selectLayer})
+          AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_3DLAYER')
           NavigationService.goBack()
         },
       })
@@ -434,6 +447,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           this.setState({
             menuVisible: true,
             selectLayer: layer,
+            tabbarVisible: false,
           })
         }}
         getARLayers={this.props.getARLayers}
@@ -607,7 +621,9 @@ export default class ARLayerManager extends React.Component<Props, State> {
   }
 
   _renderList = () => {
-    if (!this.state.selectLayer || !this.state.menuVisible || this._getMenuData().length === 0) return
+    if (!this.state.selectLayer || !this.state.menuVisible || this._getMenuData().length === 0) {
+      return
+    }
     return (
       <>
         <TouchableOpacity
@@ -615,6 +631,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           onPress={() => {
             this.setState({
               menuVisible: false,
+              tabbarVisible: true,
             })
           }}
           style={styles.overlay}
@@ -645,7 +662,6 @@ export default class ARLayerManager extends React.Component<Props, State> {
   render() {
     return(
       <Container
-        ref={ref => (this.container = ref)}
         headerProps={{
           title: this.props.mapModules.modules[
             this.props.mapModules.currentMapModule
@@ -661,7 +677,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           backBtnType: 'gray',
           backAction: this._back,
         }}
-        bottomBar={!this.tabType && this.renderToolBar()}
+        bottomBar={!this.tabType && this.state.tabbarVisible && this.renderToolBar()}
       >
         {this._renderLayers()}
         {this._renderInputDialog()}

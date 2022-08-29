@@ -85,6 +85,10 @@ export interface SandTableData {
 interface Props {
   device: any, //todo
   confirm: (modelID: number, data: SandTableData) => void,
+  close?: () => void,
+  visible?: boolean,
+  modelID?: number,
+  data?:SandTableData | null,
 }
 
 interface State {
@@ -108,6 +112,12 @@ export default class AttributeDetail extends React.Component<Props, State> {
       SandTable: {
         Model: [],
       },
+    }
+  }
+
+  componentDidMount = () => {
+    if(this.props.visible && this.props.data) {
+      this.setVisible(this.props.visible, this.props.modelID, this.props.data)
     }
   }
 
@@ -138,6 +148,7 @@ export default class AttributeDetail extends React.Component<Props, State> {
     this.setState({
       visible: false,
     })
+    this.props.close && this.props.close()
   }
 
   confirm = () => {

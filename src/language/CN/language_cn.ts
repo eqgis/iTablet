@@ -547,6 +547,8 @@ export const language_cn = {
   PLEASE_SELECT_OBJ: '请选择对象',
   PLEASE_SELECT_LAYER_OR_OBJECT: "请选择图层或对象",
   PLEASE_SELECT_AR_OBJECT_LAYER: "请选择AR对象图层",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: '三维管线属性没有风格',
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: '三维管线属性不能编辑',
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "添加到AR场景",
 
@@ -2477,8 +2479,8 @@ export const language_cn = {
   PLEASE_SELECT_PLOT_LAYER: "请选择或新建标注图层",
   PLEASE_SELECT_MEDIA_LAYER: "请选择点、CAD和标注图层",
   PLEASE_SELECT_CAD_LAYER: "请选CAD图层",
-  DONOT_SUPPORT_ARCORE: "请安装或升级ARCore",
-  DONOT_SUPPORT_ARENGINE: "请安装或升级AREngine",
+  DONOT_SUPPORT_ARCORE: "当前AR服务不可用,请安装或升级",
+  DEVICE_DOES_NOT_SUPPORT_AR:"当前设备硬件不支持AR功能",
   GET_SUPPORTED_DEVICE_LIST: "获取受支持的设备列表",
   PLEASE_NEW_PLOT_LAYER: "请新建标注图层",
   DOWNLOADING_PLEASE_WAIT: "下载中请稍等",
@@ -2838,4 +2840,7 @@ export const language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: '在线三维场景不支持分享',
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: '该许可已在其他设备上激活',
+  ATTRIBUTE_MAKE: '属性制作',
+  SAND_TABLE_MAKE: '沙盘制作',
+  PANE_ANIMATION: '窗格动画',
 }

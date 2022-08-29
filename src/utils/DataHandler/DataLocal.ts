@@ -166,7 +166,7 @@ interface IPxpContent {
     type: number | string //todo 这里android和ios的类型不一样，暂时在js层做兼容
     server: string
   }
-  Type: number //todo
+  Type?: number //todo
 }
 
 /** 获取3维pxp文件内内容 */
@@ -176,7 +176,7 @@ async function getPxpContent(pxpPath: string): Promise<IPxpContent | null> {
   if('Name' in pxp && typeof pxp['Name'] === 'string' &&
    ('Workspace' in pxp && ('type' in pxp['Workspace'] && (typeof pxp['Workspace']['type'] === 'string') || (typeof pxp['Workspace']['type'] === 'number')) &&
    ('server' in pxp['Workspace'] && typeof pxp['Workspace']['server'] === 'string')) &&
-   'Type' in pxp && typeof pxp['Type'] === 'number'
+   (typeof pxp['Type'] === 'number' || typeof pxp['Type'] === 'undefined')
   ) {
     return pxp
   }

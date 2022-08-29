@@ -547,6 +547,8 @@ export const language_ja: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'オブジェクトを選択してください',
   PLEASE_SELECT_LAYER_OR_OBJECT: "レイヤー、またはオブジェクトを選択してください",
   PLEASE_SELECT_AR_OBJECT_LAYER: "ARオブジェクトレイヤーを選択してください",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "ARシーンに追加",
 
@@ -2480,7 +2482,7 @@ export const language_ja: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "ポイント、複合、またはマークレイヤーを選択してください",
   PLEASE_SELECT_CAD_LAYER: "複合レイヤーを選択してください",
   DONOT_SUPPORT_ARCORE: "ARCoreをインストール、または更新してください",
-  DONOT_SUPPORT_ARENGINE: "AREngineをインストール、または更新してください",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "対応しているデバイスのリストを表示",
   PLEASE_NEW_PLOT_LAYER: "新規マークレイヤーを作成しますか",
   DOWNLOADING_PLEASE_WAIT: "ダウンロード中、お待ちください",
@@ -2840,5 +2842,8 @@ export const language_ja: typeof language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
 
 }

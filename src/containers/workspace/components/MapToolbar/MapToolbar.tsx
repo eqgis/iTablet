@@ -239,8 +239,9 @@ export default class MapToolbar extends React.Component<Props, State> {
         opacity={1}
         title={title || item.title}
         textColor={'#505050'}
-        textStyle={{ fontSize: setSpText(20) }}
+        textStyle={{ fontSize: setSpText(18), marginTop: scaleSize(5), }}
         selected={this.state.currentIndex === index}
+        imageStyle= {{width: scaleSize(48), height: scaleSize(48)}}
         image={item.image}
         style={{ width: width }}
         // style={styles.btn}

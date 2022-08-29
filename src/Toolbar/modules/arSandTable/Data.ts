@@ -67,7 +67,7 @@ function sandTableCreateOption(option: IToolbarOption) {
             SARMap.closeARSandTable()
             SARMap.setAction(ARAction.NULL)
             SARMap.cancel()
-            AppToolBar.goBack()
+            AppToolBar.hide()
           }
         })
       }
@@ -98,7 +98,7 @@ function sandTableCreateOption(option: IToolbarOption) {
             SARMap.setAction(ARAction.NULL)
             saveARSandTable(text).then(result => {
               if(result) {
-                AppToolBar.goBack()
+                AppToolBar.hide()
                 SARMap.closeARSandTable()
                 Toast.show(getLanguage().EXPORT_SUCCESS)
               } else {
@@ -161,7 +161,7 @@ function sandTableModifyOption(option: IToolbarOption) {
         SARMap.setAction(ARAction.NULL)
         SARMap.saveARSandTable().then(result => {
           if(result) {
-            AppToolBar.goBack()
+            AppToolBar.hide()
             SARMap.closeARSandTable()
           } else {
             Toast.show(getLanguage().SAVE_FAILED)

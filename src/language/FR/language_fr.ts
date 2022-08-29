@@ -547,6 +547,8 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Veuillez sélectionner un objet',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Veuillez sélectionner un calque ou un objet",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Veuillez sélectionner un calque d'objet",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Ajouter une table d'attributs à la scène AR",
 
@@ -2479,7 +2481,7 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Veuillez sélectionner une couche de point, CAD ou de parcelle",
   PLEASE_SELECT_CAD_LAYER: "Veuillez sélectionner une couche CAD ",
   DONOT_SUPPORT_ARCORE: "Installer ou mettre à niveau ARCore",
-  DONOT_SUPPORT_ARENGINE: "Installer ou mettre à niveau AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Afficher la liste des appareils pris en charge",
   PLEASE_NEW_PLOT_LAYER: "Veuillez créer une nouvelle couche de tracé",
   DOWNLOADING_PLEASE_WAIT: "Téléchargement en cours, veuillez patienter",
@@ -2838,4 +2840,7 @@ export const language_fr: typeof language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
 }

@@ -55,6 +55,7 @@ const img_add_upload = require('./img_add_upload.png')
 const icon_data_upload = require('./icon_data_upload.png')
 
 const zoom_in = require('./icon_zoom_in.png')
+const icon_add_node = require('./icon_add_node.png')
 
 export default {
   icon_undo,
@@ -109,4 +110,5 @@ export default {
 
 
   zoom_in,
+  icon_add_node,
 }

@@ -141,7 +141,7 @@ function addOption(option: IToolbarOption){
       AppToolBar.goBack()
     }
   },{
-    image: getThemeAssets().tabBar.tab_layer,
+    image: getImage().ar_layer,
     onPress: () => {
       // 跳转到图层列表页面
       // AppNavigation.navigate('ARLayer', {
@@ -1018,7 +1018,7 @@ function _getSwitchAlbumData(): ToolBarListOption {
               AppToolBar.addData({ arPhotos: data, albumName: getLanguage().ATTRIBUTE_ALBUM })
               AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_WIDGET')
             }
-          }, 10)
+          }, -1)
 
         }
       }
@@ -1051,7 +1051,7 @@ function _getSwitchAlbumData(): ToolBarListOption {
               AppToolBar.addData({ arPhotos: data, albumName: getLanguage().ATTRIBUTE_ALBUM })
               AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_ATTRIBUT_WIDGET')
             }
-          }, 10)
+          }, -1)
         }
       }
     },
@@ -1092,7 +1092,7 @@ function _getSwitchVideoAlbumData(): ToolBarListOption {
               AppToolBar.addData({ arPhotos: data, albumName: getLanguage().VIDEO_ALBUM ,videoType:0})
               AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_VIDEO_ALBUM')
             }
-          }, 5)
+          }, -1)
         }
       }
     },

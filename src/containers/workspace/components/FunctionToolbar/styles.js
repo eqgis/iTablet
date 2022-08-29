@@ -64,8 +64,8 @@ export default StyleSheet.create({
     width: '100%',
   },
   btnImage: {
-    width: scaleSize(44),
-    height: scaleSize(44),
+    width: scaleSize(40),
+    height: scaleSize(40),
   },
   indicatorViewP: {
     alignItems: 'center',

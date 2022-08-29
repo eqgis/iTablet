@@ -547,6 +547,8 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'الرجاء تحديد الكائن',
   PLEASE_SELECT_LAYER_OR_OBJECT: "الرجاء تحديد طبقة أو كائن",
   PLEASE_SELECT_AR_OBJECT_LAYER: "الرجاء تحديد طبقة كائن الواقع المعزز",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "أضف جدول السمات إلى مشهد الواقع المعزز",
 
@@ -2500,7 +2502,7 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "حدد نقطة ، كندي ، أو طبقة الطباعة",
   PLEASE_SELECT_CAD_LAYER: "الرجاء اختيار طبقة كندي",
   DONOT_SUPPORT_ARCORE: "تثبيت أو ترقية ARCore",
-  DONOT_SUPPORT_ARENGINE: "تثبيت أو ترقية AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "عرض قائمة الأجهزة المدعومة",
   PLEASE_NEW_PLOT_LAYER: "من فضلك أنشىء طبقة نقاط جديدة",
   DOWNLOADING_PLEASE_WAIT: "من فضلك انتظر جارى التنزيل",
@@ -2862,4 +2864,7 @@ export const language_ar: typeof language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
 }

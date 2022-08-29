@@ -6,6 +6,7 @@ import { getLanguage } from "../../../language"
 import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, AppUser, Toast } from "../../../utils"
 import { getData } from "./Data"
+import { Platform } from "react-native"
 
 /** ar矢量线符号数据格式 */
 interface ARSymbolObj {
@@ -35,6 +36,10 @@ const arMapStyleData: ToolbarModuleData<ARMAP_STYLE> = {
   image: getImage().my_color,
   getTitle: () => getLanguage().STYLE,
   action: async () => {
+
+    AppToolBar.getProps().setPipeLineAttribute([])
+    AppToolBar.getProps().changeShowAttributeElement()
+
     const currentLayer = AppToolBar.getProps().arMapInfo?.currentLayer
     if(currentLayer) {
       if(currentLayer.type === ARLayerType.AR_MEDIA_LAYER) {

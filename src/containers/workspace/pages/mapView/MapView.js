@@ -4758,6 +4758,7 @@ export default class MapView extends React.Component {
     return (
       <>
         <SMARMapView
+          customStyle={this.props.isAR ? undefined : styles.hidden}
           onLoad={this._onLoad}
           onSingleClick={async () => {
             if(AppToolBar.getCurrentOption() === undefined

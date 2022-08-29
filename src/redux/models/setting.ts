@@ -1,7 +1,7 @@
 import { fromJS, Record } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { Action, handleActions } from 'redux-actions'
-import { DatasetType, SMap, SLanguage } from 'imobile_for_reactnative'
+import { DatasetType, SMap, SLanguage, SLocation } from 'imobile_for_reactnative'
 import { NativeModules } from 'react-native'
 import { getMapSettings } from '../../containers/mapSetting/settingData'
 import { ModelUtils } from '../../utils'
@@ -115,10 +115,10 @@ export const setLanguage = (params: string, isConfig = false, cb = () => {}) => 
   }
   cb && cb()
 }
-export const setDevice = (params = {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const setDevice = (params: SLocation.LocationConnectionParam) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   await dispatch({
     type: SETTING_DEVICE,
-    payload: params || false,
+    payload: params,
   })
 }
 export const setMapLegend = (params = {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
@@ -313,7 +313,7 @@ const initialState = fromJS({
   language: 'CN',
   autoLanguage: true,
   configLangSet: false,
-  peripheralDevice: 'local',
+  peripheralDevice: {type: 'local'},
   mapLegend: { ...defaultMapLegend },
   mapNavigation: {
     isShow: false,
@@ -373,7 +373,7 @@ interface SettingState {
   language: string,
   autoLanguage: true,
   configLangSet: false,
-  peripheralDevice: 'local',
+  peripheralDevice: SLocation.LocationConnectionParam,
   mapLegend: Legend,
   mapNavigation: {
     isShow: boolean,

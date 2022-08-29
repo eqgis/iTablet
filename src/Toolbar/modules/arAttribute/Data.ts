@@ -1,13 +1,11 @@
-import { ARAction, ARLayerType, SARMap } from "imobile_for_reactnative"
+import { ARAction, ARElementType, ARLayerType, SARMap } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, Toast } from "../../../utils"
 import { ARAttributeViewOption } from "./ARAttributeView"
-import { checkSupportARAttributeByElement } from "./Actions"
-// import { attribute3DHeadtype, attribute3DItemType, attribute3DType } from "@/utils/AppToolBar"
-import {PipeLineAttributeType} from './component/pipeLineAttribute/PipeLineAttribute'
+import { checkSupportARAttributeByElement, getSandtableAttributeData } from "./Actions"
 
 
 export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
@@ -17,13 +15,19 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
     attribute: 'null',
     showLayer: false
   }
+  const selectARElement = AppToolBar.getData().selectARElement
   switch(key) {
     case 'AR_MAP_BROWSE_ELEMENT':
       option.moduleData.showLayer = true
+      option.moduleData.attribute = 'null'
       browseElementOption(option)
       break
     case 'AR_MAP_ATTRIBUTE':
-      option.moduleData.attribute = 'attribute'
+      if(selectARElement && selectARElement.type === ARElementType.AR_SAND_TABLE) {
+        option.moduleData.attribute = 'sandattribute'
+      } else {
+        option.moduleData.attribute = 'attribute'
+      }
       attributeOption(option)
       break
     case 'AR_MAP_ATTRIBUTE_STYLE':
@@ -113,7 +117,7 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
           selectedAttribute: undefined,
           selectARElement: undefined,
         })
-        AppToolBar.goBack()
+        AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_SELECTED')
         SARMap.cancel()
       }
     },
@@ -123,7 +127,7 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
     },
     {
       image: getImage().icon_layer_attribute,
-      onPress: () => {
+      onPress: async () => {
         const selectARElement = AppToolBar.getData().selectARElement
         const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
 
@@ -143,6 +147,10 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
         ) {
           Toast.show(getLanguage().PLEASE_SELECT_AR_OBJECT_LAYER)
           return
+        }
+
+        if(selectARElement && selectARElement.type === ARElementType.AR_SAND_TABLE){
+          await getSandtableAttributeData()
         }
 
         AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE')
@@ -201,7 +209,11 @@ function attributeOption(option: IToolbarOption) {
         SARMap.setAction(ARAction.SELECT)
         // SARMap.setCenterHitTest(false)
         // AppToolBar.show('ARMAP', 'AR_MAP_BROWSE_ELEMENT')
-        AppToolBar.goBack()
+        if(selectARElement && selectARElement.type === ARElementType.AR_SAND_TABLE) {
+          AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+        } else {
+          AppToolBar.goBack()
+        }
       },
     }
   ]

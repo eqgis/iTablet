@@ -4799,7 +4799,7 @@ export default class MapView extends React.Component {
                 || element.type === ARElementType.AR_MODEL
                 || element.type === ARElementType.AR_LINE
                 || element.type === ARElementType.AR_MARKER_LINE
-                || element.type === ARElementType.AR_SAND_TABLE
+                // || element.type === ARElementType.AR_SAND_TABLE
               ) {
                 // 获取已选择的属性
                 const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
@@ -4833,7 +4833,7 @@ export default class MapView extends React.Component {
                 || element.type === ARElementType.AR_MODEL
                 || element.type === ARElementType.AR_LINE
                 || element.type === ARElementType.AR_MARKER_LINE
-                || element.type === ARElementType.AR_SAND_TABLE
+                // || element.type === ARElementType.AR_SAND_TABLE
               ){
                 // 在属性选择页面。选中对象后，跳转到属性编辑页面
                 AppToolBar.addData({ selectARElement: element })
@@ -4850,6 +4850,9 @@ export default class MapView extends React.Component {
                 } else {
                   SARMap.showAttribute(element.layerName, element.id, null)
                 }
+              } else if(element.type === ARElementType.AR_SAND_TABLE) {
+                AppToolBar.addData({ selectARElement: element })
+                AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
               }
 
             } else if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {

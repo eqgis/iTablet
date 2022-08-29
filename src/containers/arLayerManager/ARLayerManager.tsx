@@ -240,6 +240,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                     await this.props.getARLayers()
                     this.setState({
                       menuVisible: false,
+                      tabbarVisible: true,
                     })
                     NavigationService.goBack()
                   }
@@ -263,6 +264,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
                   await this.props.getARLayers()
                   this.setState({
                     menuVisible: false,
+                    tabbarVisible: true,
                   })
                 }
               },
@@ -301,6 +303,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           // 隐藏菜单列表
           this.setState({
             menuVisible: false,
+            tabbarVisible: true,
           })
 
 
@@ -335,6 +338,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
           // 隐藏菜单列表
           this.setState({
             menuVisible: false,
+            tabbarVisible: true,
           })
 
         },

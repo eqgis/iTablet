@@ -12,48 +12,60 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H0x-Z8-Ifc">
-                    <rect key="frame" x="10" y="0.0" width="1070" height="80"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="80" id="ESH-N2-lxA"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cni-be-0Uf">
-                    <rect key="frame" x="1010" y="10" width="60" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="60" id="1AC-cF-iva"/>
-                        <constraint firstAttribute="height" constant="60" id="Wgf-mH-7oA"/>
-                    </constraints>
-                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                    <state key="normal" backgroundImage="tab_icon_close.png"/>
-                </button>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="D0M-ib-lhA">
-                    <rect key="frame" x="0.0" y="80" width="1080" height="730"/>
+                <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WDv-HC-6iN" customClass="ARBaseView">
+                    <rect key="frame" x="352.5" y="157.5" width="375" height="495"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o6B-gw-QAO">
+                            <rect key="frame" x="10" y="0.0" width="365" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="syV-lE-pDP"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9D-T9-CLa">
+                            <rect key="frame" x="325" y="10" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="Ajg-3t-mKd"/>
+                                <constraint firstAttribute="height" constant="40" id="Uo0-nL-OIe"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" backgroundImage="tab_icon_close.png"/>
+                        </button>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="1Xd-K4-EIA">
+                            <rect key="frame" x="0.0" y="50" width="375" height="445"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="wof-NR-PB9">
+                                <size key="itemSize" width="128" height="128"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
+                    </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="px9-a8-fy3">
-                        <size key="itemSize" width="128" height="128"/>
-                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    </collectionViewFlowLayout>
-                </collectionView>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="o6B-gw-QAO" secondAttribute="trailing" id="0YF-sc-MTO"/>
+                        <constraint firstItem="s9D-T9-CLa" firstAttribute="top" secondItem="WDv-HC-6iN" secondAttribute="top" constant="10" id="4Xa-pn-Wqq"/>
+                        <constraint firstAttribute="width" constant="375" id="60j-GP-7nL"/>
+                        <constraint firstAttribute="height" constant="495" id="Pli-Qv-2A6"/>
+                        <constraint firstItem="1Xd-K4-EIA" firstAttribute="leading" secondItem="WDv-HC-6iN" secondAttribute="leading" id="Tb0-Vo-0yA"/>
+                        <constraint firstAttribute="trailing" secondItem="1Xd-K4-EIA" secondAttribute="trailing" id="fN1-YM-udu"/>
+                        <constraint firstAttribute="bottom" secondItem="1Xd-K4-EIA" secondAttribute="bottom" id="nSb-jf-LoS"/>
+                        <constraint firstAttribute="trailing" secondItem="s9D-T9-CLa" secondAttribute="trailing" constant="10" id="qpc-bt-vVb"/>
+                        <constraint firstItem="o6B-gw-QAO" firstAttribute="top" secondItem="WDv-HC-6iN" secondAttribute="top" id="rml-7z-eSz"/>
+                        <constraint firstItem="1Xd-K4-EIA" firstAttribute="top" secondItem="o6B-gw-QAO" secondAttribute="bottom" id="sZk-3q-5Ep"/>
+                        <constraint firstItem="o6B-gw-QAO" firstAttribute="leading" secondItem="WDv-HC-6iN" secondAttribute="leading" constant="10" id="uEl-Vk-Z5X"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" systemColor="secondaryLabelColor"/>
             <constraints>
-                <constraint firstItem="H0x-Z8-Ifc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="17M-uV-tqg"/>
-                <constraint firstItem="D0M-ib-lhA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="58v-Yg-YWo"/>
-                <constraint firstAttribute="trailing" secondItem="H0x-Z8-Ifc" secondAttribute="trailing" id="Puw-7I-XiT"/>
-                <constraint firstAttribute="trailing" secondItem="cni-be-0Uf" secondAttribute="trailing" constant="10" id="RmT-3B-VEO"/>
-                <constraint firstAttribute="trailing" secondItem="D0M-ib-lhA" secondAttribute="trailing" id="YOe-Kn-PL8"/>
-                <constraint firstAttribute="bottom" secondItem="D0M-ib-lhA" secondAttribute="bottom" id="eou-J7-t2G"/>
-                <constraint firstItem="H0x-Z8-Ifc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="mrA-cR-97x"/>
-                <constraint firstItem="D0M-ib-lhA" firstAttribute="top" secondItem="H0x-Z8-Ifc" secondAttribute="bottom" id="pae-8K-vdp"/>
-                <constraint firstItem="cni-be-0Uf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="yrZ-hC-xah"/>
+                <constraint firstItem="WDv-HC-6iN" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Xeo-kG-HcG"/>
+                <constraint firstItem="WDv-HC-6iN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="dU7-cl-Htd"/>
             </constraints>
             <point key="canvasLocation" x="132.77777777777777" y="49.629629629629626"/>
         </view>

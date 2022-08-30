@@ -10,6 +10,7 @@
 #import "NativeUtil.h"
 #import "Orientation.h"
 #import "MyLaunchScreenViewController.h"
+#import "BundleUtils.h"
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 
 #define IS_PAD (UI_USER_INTERFACE_IDIOM()== UIUserInterfaceIdiomPad)
@@ -33,7 +34,8 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
-static NSString* g_sampleCodeName = @"#";;
+static NSString* g_sampleCodeName = @"#";
+static BOOL isBundle = YES;
 @implementation AppDelegate
 
 //注册 APNS 成功并上报 DeviceToken
@@ -129,6 +131,9 @@ static NSString* g_sampleCodeName = @"#";;
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
+  
+  // 初始化bundle
+  [BundleUtils initBundle];
 
 //  [JPUSHService setupWithOption:launchOptions appKey:@"7d2470baad20e273cd6e53cc"
 //                        channel:nil apsForProduction:nil];
@@ -143,7 +148,7 @@ static NSString* g_sampleCodeName = @"#";;
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"iTablet"
+                                                   moduleName:@"base"
                                             initialProperties:nil];
   
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
@@ -210,13 +215,23 @@ static NSString* g_sampleCodeName = @"#";;
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
-#if DEBUG
-//  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
-  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.7.65"];
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-#else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
+  NSURL* jsCoreLocation;
+  NSString* jsBundlePath = NSHomeDirectory();
+  NSString* baseBundePath = [jsBundlePath stringByAppendingFormat:@"/Documents/Bundles/base/base.bundle"];
+
+  NSFileManager* fileManager = [NSFileManager defaultManager];
+  if (isBundle && [fileManager fileExistsAtPath:baseBundePath]) {
+    // 加载本地base.bundle
+    return [NSURL URLWithString:baseBundePath];
+  } else {
+    #if DEBUG
+    //  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
+      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.6.51"];
+      return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+    #else
+      return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+    #endif
+  }
 }
 
 #pragma mark - 微信打开压缩包

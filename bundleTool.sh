@@ -28,12 +28,11 @@ buildCommon() {
     # echoc "生成common.bundle"
     # react-native bundle --entry-file common/index.ts --platform android --dev false --config package_common.config.js --bundle-output bundle/android/common/common.bundle --assets-dest bundle/android/common
 
-    echoc "创建base.bundle"
-    mkdir -p bundle/android/base
+    mkdir -p bundle/$platform/base
     echoc "生成base.bundle"
-    react-native bundle --entry-file index.js --platform android --dev false --config package.config.js --bundle-output bundle/android/base/base.bundle --assets-dest bundle/android/base
+    react-native bundle --entry-file index.js --platform $platform --dev false --config package.config.js --bundle-output bundle/$platform/base/base.bundle --assets-dest bundle/$platform/base
     echoc "base.bundle配置文件"
-    node makeBundleConfig bundle/android/base/base.bundle package.json
+    node makeBundleConfig $platform bundle/$platform/base/base.bundle package.json
 }
 
 buildApplets() {
@@ -42,21 +41,21 @@ buildApplets() {
     # echoc "生成demo.bundle"
     # react-native bundle --entry-file applets/demo/index.ts --platform android --config package_demo.config.js --dev false --bundle-output bundle/android/demo/demo.bundle --assets-dest bundle/android/demo
     # echoc "demo.bundle配置文件"
-    # node makeBundleConfig bundle/android/demo/demo.bundle applets/demo/package.json
+    # node makeBundleConfig $platform bundle/android/demo/demo.bundle applets/demo/package.json
 
     # echoc "创建demo2.bundle"
     # mkdir -p bundle/android/demo2
     # echoc "生成demo2.bundle"
     # react-native bundle --entry-file applets/demo2/index.ts --platform android --config package_demo2.config.js --dev false --bundle-output bundle/android/demo2/demo2.bundle --assets-dest bundle/android/demo2
     # echoc "demo2.bundle配置文件"
-    # node makeBundleConfig bundle/android/demo2/demo2.bundle applets/demo2/package.json
+    # node makeBundleConfig $platform bundle/android/demo2/demo2.bundle applets/demo2/package.json
     
     echoc "创建tour.bundle"
-    mkdir -p bundle/android/tour
+    mkdir -p bundle/$platform/tour
     echoc "生成tour.bundle"
-    react-native bundle --entry-file applets/tour/index.ts --platform android --config package_tour.config.js --dev false --bundle-output bundle/android/tour/tour.bundle --assets-dest bundle/android/tour
+    react-native bundle --entry-file applets/tour/index.ts --platform $platform --config package_tour.config.js --dev false --bundle-output bundle/$platform/tour/tour.bundle --assets-dest bundle/$platform/tour
     echoc "tour.bundle配置文件"
-    node makeBundleConfig bundle/android/tour/tour.bundle applets/tour/package.json
+    node makeBundleConfig $platform bundle/$platform/tour/tour.bundle applets/tour/package.json
 }
 
 #-------------------------------
@@ -65,11 +64,11 @@ buildApplets() {
 #-------------------------------
 buildApplet() {
     echoc "创建$buildName.bundle"
-    mkdir -p bundle/android/$buildName
+    mkdir -p bundle/$platform/$buildName
     echoc "生成$buildName.bundle"
-    react-native bundle --entry-file applets/$buildName/index.ts --platform android --config package_$buildName.config.js --dev false --bundle-output bundle/android/$buildName/$buildName.bundle --assets-dest bundle/android/$buildName
+    react-native bundle --entry-file applets/$buildName/index.ts --platform $platform --config package_$buildName.config.js --dev false --bundle-output bundle/$platform/$buildName/$buildName.bundle --assets-dest bundle/$platform/$buildName
     echoc "$buildName.bundle配置文件"
-    node makeBundleConfig bundle/android/$buildName/$buildName.bundle applets/$buildName/package.json
+    node makeBundleConfig $platform bundle/$platform/$buildName/$buildName.bundle applets/$buildName/package.json
 }
 
 #-------------------------------
@@ -78,7 +77,11 @@ buildApplet() {
 #-------------------------------
 clearBase() {
   echoc "清除base"
-  rm android/app/src/main/assets/base.zip
+  if [[ $platform == 'ios' ]];then
+    rm ios/app/src/main/assets/base.zip
+  else
+    rm android/app/src/main/assets/base.zip
+  fi
 }
 
 #-------------------------------
@@ -87,8 +90,13 @@ clearBase() {
 #-------------------------------
 clearApplet() {
   echoc "清除$clearName"
-  rm -rf bundle/android/$clearName bundle/android/$clearName.zip
-  adb shell rm -rf sdcard/iTablet/ExternalData/Bundles/$clearName
+  rm -rf bundle/$platform/$clearName bundle/$platform/$clearName.zip
+  if [[ $platform == 'ios' ]];then
+    # cp ios/app/src/main/assets/base.zip
+    echoc "ios待做"
+  else
+    adb shell rm -rf sdcard/iTablet/ExternalData/Bundles/$clearName
+  fi
 }
 
 #-------------------------------
@@ -97,7 +105,11 @@ clearApplet() {
 #-------------------------------
 moveBase() {
   echoc "拷贝base.bundle文件"
-  cp bundle/android/base.zip android/app/src/main/assets
+  if [[ $platform == 'ios' ]];then
+    cp bundle/ios/base.zip ios/assets
+  else
+    cp bundle/android/base.zip android/app/src/main/assets/base.zip
+  fi
 }
 
 
@@ -107,7 +119,12 @@ moveBase() {
 #-------------------------------
 moveApplet() {
   echoc "拷贝$moveName.bundle文件"
-  adb push bundle/android/$moveName.zip sdcard/iTablet/ExternalData/Bundles
+  if [[ $platform == 'ios' ]];then
+    # cp ios/
+    echoc "ios待做"
+  else
+    adb push bundle/android/$moveName.zip sdcard/iTablet/ExternalData/Bundles
+  fi
 }
 
 #-------------------------------
@@ -119,7 +136,7 @@ moveApplet() {
 #   # echoc "生成差分base.bundle文件"
 #   # comm -2 -3 bundle/android/base/index.android.bundle bundle/android/common/common.bundle > bundle/android/base/base.bundle
 #   # echoc "生成差分base.bundle配置文件"
-#   # node makeBundleConfig bundle/android/base/base.bundle package.json
+#   # node makeBundleConfig $platform bundle/android/base/base.bundle package.json
 #   # echoc "删除bundle/android/base/index.android.bundle"
 #   # rm bundle/android/base/index.android.bundle
 
@@ -163,11 +180,20 @@ moveBundle() {
 #-------------------------------
 clear() {
   echoc "清除bundle"
-  rm -rf bundle/android/*
+  rm -rf bundle/$platform/*
 }
 
-key=$(echo $1 | awk -F"=" '{print $1}')
-val=$(echo $1 | awk -F"=" '{print $2}')
+if [[ $1 == '-ios' || $1 == '-android' ]];then
+  platform=$1
+  platform=${platform:1}
+  key=$(echo $2 | awk -F"=" '{print $1}')
+  val=$(echo $2 | awk -F"=" '{print $2}')
+else
+  platform='android'
+  key=$(echo $1 | awk -F"=" '{print $1}')
+  val=$(echo $1 | awk -F"=" '{print $2}')
+fi
+
 case $key in
     -b)
         buildName=$val

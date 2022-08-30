@@ -48,27 +48,25 @@ async function writeToFile(info, configPath) {
 }
 
 async function compress(bundlePath) {
-  // const androidAssets = 'android/app/src/main/assets/bundles'
-  // const dirName = bundlePath.substring(bundlePath.lastIndexOf('/') + 1)
   await compressing.zip.compressDir(bundlePath, `${bundlePath}.zip`)
-  // await fs.copyFileSync(`${bundlePath}.zip`, `${androidAssets}/${dirName}.zip`)
-  // await compressing.zip.uncompress(`${androidAssets}/${dirName}.zip`, `${androidAssets}`)
-  // await fs.unlink(`${androidAssets}/${dirName}.zip`, () => {})
 }
 
 
-async function recordAddingImages(sourceFile) {
-  const sourceArr = []
-  return new Promise((resolve, rejects) => {
-    fs.readdir(sourceFile, function (err, files) {
-      if (err) return console.log(err)
-
-      for (const file of files) {
-        sourceArr.push(file)
-      }
-      resolve(sourceArr)
-    })
-  })
+function recordAddingImages(sourceFile) {
+  let sourceArr = []
+  const files = fs.readdirSync(sourceFile)
+  for (const file of files) {
+    let filePath = sourceFile + '/' + file
+    const stats = fs.lstatSync(filePath)
+    if(stats.isDirectory()) {
+      const subArr = recordAddingImages(filePath, sourceArr)
+      sourceArr = sourceArr.concat(subArr)
+    } else {
+      filePath = _platform === 'ios' ? filePath.replace(_bundlePath + '/assets/', '') : file
+      sourceArr.push(filePath)
+    }
+  }
+  return sourceArr
 }
 
 
@@ -76,72 +74,53 @@ async function recordAddingImages(sourceFile) {
  * TODO 记录新增图片
  */
 async function recordAddingSource(bundlePath) {
-  console.log('----------------recordAddingSource start------------------')
-  let sources = {}
-  return new Promise((resolve, rejects) => {
-    fs.readdir(bundlePath, async function (err, files) {
-      if (err) return console.log(err)
+  console.log('----------------recordAddingSource start------------------', bundlePath)
+  const sources = {}
+  const files = fs.readdirSync(bundlePath)
 
-      const getDirFiles = async function (file) {
-        return new Promise((resolve, rejects) => {
-          fs.lstat(bundlePath + '/' + file, async function(err,stats){
-            if(err) return console.log(err)
-            if(stats.isDirectory()) {
-              if (!sources[file]) {
-                sources[file] = []
-              }
-              const subArr = await recordAddingImages(bundlePath + '/' + file, sources[file])
-              console.log(file, subArr)
-              sources[file] = sources[file].concat(subArr)
-            }
-            resolve(sources[file])
-          })
-        })
-      }
+  const getDirFiles = function (file) {
+    let _sources = []
+    const stats = fs.lstatSync(bundlePath + '/' + file)
+    if(stats.isDirectory()) {
+      const subArr = recordAddingImages(bundlePath + '/' + file)
+      _sources = subArr
+    }
+    return _sources
+  }
 
-      for (const file of files) {
-        const arr = await getDirFiles(file)
-        if (arr?.length > 0) {
-          sources[file] = arr
-        }
-      }
-      console.log('----------------recordAddingSource end------------------')
-      resolve(sources)
-    })
-  })
+  for (const file of files) {
+    const arr = getDirFiles(file)
+    if (arr?.length > 0 || Object.keys(arr).length > 0) {
+      sources[file] = arr
+    }
+  }
+  console.log('----------------recordAddingSource end------------------', sources)
+  return sources
 }
+
+let _bundlePath, _platform
 
 async function main() {
   const _ = process.argv.splice(2)
   if (_.length < 2) {
-    console.error('需要两个参数,第一个为bundle,第二个为package.json')
+    console.error('需要三个参数,第一个为platform,第二个为bundle,第二个为package.json')
     return
   }
-  const md5 = await generateMd5(_[0])
-  const info = await readPackageInfo(_[1])
-  const bundlePath = _[0].substring(0, _[0].lastIndexOf('/'))
+  _platform = _[0]
+  const md5 = await generateMd5(_[1])
+  const info = await readPackageInfo(_[2])
+  _bundlePath = _[1].substring(0, _[1].lastIndexOf('/'))
   // const fileName = _[0].substring(_[0].lastIndexOf('/') + 1, _[0].lastIndexOf('.'))
-  const sources = await recordAddingSource(bundlePath)
+  const sources = await recordAddingSource(_bundlePath)
   const config = {
     create_date: new Date().getTime(),
     md5: md5,
     ...info,
     sources: sources,
   }
-  await writeToFile(config, bundlePath + '/config.json')
+  await writeToFile(config, _bundlePath + '/config.json')
 
-
-  // if (fs.existsSync(bundlePath + '/index.android.bundle')) {
-  //   fs.unlink(bundlePath + '/index.android.bundle', async () => {
-  //     // await compressing.zip.compressDir(bundlePath, `${bundlePath}.zip`)
-  //     // await fs.copyFileSync(`${bundlePath}.zip`, 'android/app/src/main/assets')
-  //     // await compressing.zip.uncompress()
-  //     await compressAndMove(bundlePath)
-  //   })
-  // } else {
-  // await compressing.zip.compressDir(bundlePath, `${bundlePath}.zip`)
-  await compress(bundlePath)
-  // }
+  await compress(_bundlePath)
 }
 
 main()

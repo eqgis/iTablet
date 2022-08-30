@@ -112,13 +112,14 @@ class MyApplet extends MyDataPage {
       } else {
         // 卸载已加载的小程序
         result = await BundleTools.unloadBundle(this.itemInfo.item.path)
+        // 卸载后,删除首页对应小程序
+        result && this.props.deleteMapModule(this.itemInfo.item.name)
       }
       if (result) {
         this._getSectionData()
-        this.props.deleteMapModule(this.itemInfo.item.name)
         this.refresh?.()
       }
-      return true
+      return result
     } catch (e) {
       return false
     }

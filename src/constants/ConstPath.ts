@@ -91,6 +91,7 @@ export default {
   UserPath: `${AppPath}User/`, // 存放用户数据
   UserPath2: `${AppPath}User`, // 存放用户数据
   BundlesPath: `${AppPath}ExternalData/Bundles/`, // Bundle数据
+  ExportBundlePath: `${AppPath}ExternalData/ExportBundle/`, // Bundle数据
   Common: `${AppPath}Common/`, // 公共数据
   Images: `${AppPath}Common/Images`, // 公共图片
   Common_AIDetectModel: `${AppPath}Common/AI/DetectModel/`, // 公共数据:检测模型

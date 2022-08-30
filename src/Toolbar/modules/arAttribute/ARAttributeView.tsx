@@ -1,26 +1,32 @@
 import FloatBar, { FloatItem } from '@/components/FloatBar'
 import NavigationService from '@/containers/NavigationService'
-import { SARMap } from 'imobile_for_reactnative'
+import { RootState } from '@/redux/types'
+import { ARAction, SARMap } from 'imobile_for_reactnative'
 import React from 'react'
-import { Platform, StyleSheet } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import { Animated,  Easing } from 'react-native'
+import { connect, ConnectedProps } from 'react-redux'
 import { ModuleViewProps } from '../..'
 import { getImage } from '../../../assets'
 import { AppToolBar, dp } from '../../../utils'
+import { getSandtableData } from './Actions'
 import Attribute from './component/Attribute'
+import { AttributeDetail } from './component/LayerAttribute'
+import { SandTableData } from './component/LayerAttribute/pages/AttributeDetail'
 import PipeLineAttribute from './component/pipeLineAttribute'
 import { PipeLineAttributeType } from './component/pipeLineAttribute/PipeLineAttribute'
 
 export interface ARAttributeViewOption {
-  attribute: 'null' | 'attribute'
+  attribute: 'null' | 'attribute' | 'sandattribute'
   showLayer: boolean
 }
 
-type Props = ModuleViewProps<ARAttributeViewOption>
+type Props = ModuleViewProps<ARAttributeViewOption> & ReduxProps
 
 class ARAttributeView extends React.Component<Props> {
 
   layerRight = new Animated.Value(-dp(80))
+  detailPopModal: AttributeDetail | null | undefined
 
   constructor(props: Props) {
     super(props)
@@ -113,6 +119,24 @@ class ARAttributeView extends React.Component<Props> {
     return data
   }
 
+  modifyModelInfo = (modelID: number, data: SandTableData) => {
+    try {
+      const selectARElement = AppToolBar.getData().selectARElement
+      if(selectARElement) {
+        SARMap.setARSandTableData(selectARElement.layerName, modelID, JSON.stringify(data))
+      }
+
+      SARMap.setAction(ARAction.SELECT)
+      AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      __DEV__ && console.warn(error)
+    }
+  }
+  close = () => {
+    AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+  }
+
   renderLayer = () => {
     return (
       <Animated.View style={
@@ -138,6 +162,28 @@ class ARAttributeView extends React.Component<Props> {
     )
   }
 
+  renderSandtableAttribute = () => {
+    const obj = getSandtableData()
+    if(obj.modelID !== -1 && obj.data){
+      return (
+        <View style={[
+          {flex: 1, backgroundColor: 'white'}
+        ]}>
+          <AttributeDetail
+            ref={ref => (this.detailPopModal = ref)}
+            device={this.props.device}
+            confirm={this.modifyModelInfo}
+            close= {this.close}
+            visible={true}
+            modelID={obj.modelID}
+            data={obj.data}
+          />
+        </View>
+      )
+    }
+    return null
+  }
+
   isPortrait = true
   render() {
     this.isPortrait = this.props.windowSize.height > this.props.windowSize.width
@@ -145,6 +191,7 @@ class ARAttributeView extends React.Component<Props> {
       <>
         {/* {this.renderLayer()} */}
         {this.renderPipeLineAttribute()}
+        {this.props.data?.attribute === 'sandattribute' && this.renderSandtableAttribute()}
         {this.props.data?.attribute === 'attribute' && <Attribute  />}
       </>
     )
@@ -152,7 +199,21 @@ class ARAttributeView extends React.Component<Props> {
 }
 
 
-export default ARAttributeView
+// export default ARAttributeView
+
+const mapStateToProp = (state: RootState) => ({
+  device: state.device.toJS().device
+})
+
+const mapDispatch = {
+
+}
+
+type ReduxProps = ConnectedProps<typeof connector>
+const connector = connect(mapStateToProp, mapDispatch)
+
+export default connector(ARAttributeView)
+
 
 const styles = StyleSheet.create({
   settingButton: {

@@ -418,9 +418,6 @@ class AppRoot extends Component {
 
   initLocation = async () => {
     await SLocation.openGPS()
-    if (this.props.peripheralDevice !== 'local') {
-      SLocation.changeDevice(this.props.peripheralDevice)
-    }
   }
 
   initLicense = async () => {

@@ -456,7 +456,7 @@ function layereditsetting(language) {
       data: [
         {
           title: getLanguage(language).Map_Layer.BASEMAP_SWITH,
-          image: getThemeAssets().start.icon_open_map,
+          image: getThemeAssets().mine.my_basemap,
         },
         {
           title: getLanguage(language).Map_Layer.LAYERS_REMOVE,

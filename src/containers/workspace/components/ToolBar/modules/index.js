@@ -31,7 +31,6 @@ import layerVisibleScaleModule from './layerVisibleScaleModule'
 import layerSettingImageModule from './layerSettingImageModule'
 import templateModule from './templateModule'
 import arMeasureModule from './arMeasure'
-import arToolModule from './arTool'
 import arEffecModule from './arEffect'
 import arMappingModule from './arMapping'
 import baseMapModule from './baseMapModule'
@@ -83,7 +82,6 @@ export {
   layerSettingImageModule,
   templateModule,
   arMeasureModule,
-  arToolModule,
   arEffecModule,
   arMappingModule,
   baseMapModule,

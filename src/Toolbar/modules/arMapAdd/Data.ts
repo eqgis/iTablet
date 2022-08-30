@@ -141,7 +141,7 @@ function addOption(option: IToolbarOption){
       AppToolBar.goBack()
     }
   },{
-    image: getThemeAssets().tabBar.tab_layer,
+    image: getImage().ar_layer,
     onPress: () => {
       // 跳转到图层列表页面
       // AppNavigation.navigate('ARLayer', {

@@ -38,6 +38,8 @@ export default class Chunk {
 
     this.mapType = props.mapType || '' // 二维，三维地图，默认为空   'MAP' ｜ 'SCENE' ｜ ''
 
+    this.onMapLoad = props.onMapLoad //地图/AR地图/三维场景加载完成回调
+
   }
 
   getTitle = () => this.title
@@ -48,7 +50,7 @@ export default class Chunk {
       if (!result) return false
     }
     if (
-      this.mapType === '' &&
+      // this.mapType === '' &&
       this.props.action &&
       typeof this.props.action === 'function'
     ) {
@@ -78,11 +80,11 @@ export default class Chunk {
           const fileDirPath = cachePath + fileName
           const arrFile = await FileTools.getFilterFiles(fileDirPath)
           if (arrFile.length === 0) {
-            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {}})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {mapType:  this.mapType,  onMapLoad: this.onMapLoad,}})
           } else {
             // const name = 'OlympicGreen_EXAMPLE'
             const name = 'OlympicGreen'
-            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name }})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name, mapType:  this.mapType,  onMapLoad: this.onMapLoad,}})
           }
         }
         break
@@ -147,6 +149,8 @@ export default class Chunk {
           wsData,
           mapTitle: this.title,
           isExample: this.isExample,
+          mapType:  this.mapType,
+          onMapLoad: this.onMapLoad,
         }
         if (service) {
           param = Object.assign(param, {service: service})
@@ -218,6 +222,8 @@ export default class Chunk {
           wsData,
           mapTitle: this.title,
           isExample: this.isExample,
+          mapType:  this.mapType,
+          onMapLoad: this.onMapLoad,
         }
         // if (global.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)

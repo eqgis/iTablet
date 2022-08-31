@@ -90,6 +90,8 @@ ios/iTablet-tvOSTests
 ios/Build
 ios/Index
 ios/Pods
+ios/assets/base.zip
+
 package-lock.json
 yarn.lock
 .vscode/

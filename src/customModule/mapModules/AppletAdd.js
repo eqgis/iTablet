@@ -11,7 +11,7 @@ export default class AppletAdd extends Module {
       key: AppletAdd.key,
     })
   }
-  
+
   getChunk = language => {
     return this.createChunk(language, {
       key: AppletAdd.key,
@@ -19,7 +19,8 @@ export default class AppletAdd extends Module {
       moduleImage: getThemeAssets().module.icon_map_add,
       moduleImageTouch: getThemeAssets().module.icon_map_3d_touch,
       action: () => {
-        NavigationService.navigate('AppletManagement')
+        // NavigationService.navigate('AppletManagement')
+        NavigationService.navigate('MyApplet')
       },
     })
   }

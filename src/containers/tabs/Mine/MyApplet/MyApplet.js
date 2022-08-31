@@ -19,6 +19,7 @@ class MyApplet extends MyDataPage {
       ...this.state,
       showSectionHeader: true,
       shareToLocal: true,
+      shareToWechat: false,
       batchMode: false, // 1是批量添加，2是批量删除
       title: getLanguage(this.props.language).Find.APPLET,
     }

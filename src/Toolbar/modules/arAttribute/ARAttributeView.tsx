@@ -55,7 +55,12 @@ class ARAttributeView extends React.Component<Props> {
             if (key === 'id') {
               arr.unshift(item)
             } else if(key !== 'action') {
-              arr.push(item)
+              // 不以sm开头， 或是以下四种情况之一
+              if(key.substring(0,2)!== 'Sm'
+              || key === 'SmLength' || key === 'SmTNode'
+              || key === 'SmEdgeID' || key === 'SmGeoPosition') {
+                arr.push(item)
+              }
             }
             // 记录点击管线的唯一id
             if(key === 'srcID'){

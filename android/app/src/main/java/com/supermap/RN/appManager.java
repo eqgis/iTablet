@@ -102,14 +102,16 @@ public class appManager {
     public void AppExit(final Context context) {
         try {
 //            android.os.Process.killProcess(android.os.Process.myPid());
-            finishAllActivity();
+
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    android.os.Process.killProcess(android.os.Process.myPid());
+//                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(0);
                 }
             }, 1000);//1秒后执行Runnable中的run方法
+            finishAllActivity();
         } catch (Exception e) {
             System.out.println(e);
         }

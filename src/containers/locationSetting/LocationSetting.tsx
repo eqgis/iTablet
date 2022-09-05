@@ -6,6 +6,8 @@ import { scaleSize ,Toast} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import color from '../../styles/color'
+import { getImage } from '@/assets'
+import { getSelectDevice } from './deviceUtil'
 
 const radio_on = require('../../assets/public/radio_select.png')
 const radio_off = require('../../assets/public/radio_select_no.png')
@@ -19,12 +21,13 @@ interface Props {
 interface State {
   devices: SLocation.LocationConnectionParam[]
   currentOption: SLocation.LocationConnectionParam
-  showSearch: boolean
-  searchNotify: string
+  // showSearch: boolean
+  // searchNotify: string
   distanceLocation: boolean
   timeLocation: boolean
   distanceLocationText: string
   timeLocationText: string
+  selectDevicesType: string
 }
 
 class LocationSetting extends React.Component<Props, State> {
@@ -36,19 +39,20 @@ class LocationSetting extends React.Component<Props, State> {
     this.state = {
       devices: [{type: 'local'}],
       currentOption: this.prevOption,
-      showSearch: true,
-      searchNotify: getLanguage(global.language).Prompt.SEARCHING,
+      // showSearch: true,
+      // searchNotify: getLanguage(global.language).Prompt.SEARCHING,
       distanceLocation: false,
       timeLocation:false,
       distanceLocationText: "",
       timeLocationText: "",
+      selectDevicesType: this.prevOption.type,
     }
   }
 
   componentDidMount() {
-    this.addListener()
-    SLocation.searchDevice(true)
-    this.startShowSearching()
+    // this.addListener()
+    // SLocation.searchDevice(true)
+    // this.startShowSearching()
     this.getLocationType()
   }
 
@@ -57,24 +61,24 @@ class LocationSetting extends React.Component<Props, State> {
     SLocation.removeDeviceListener()
   }
 
-  addListener() {
-    SLocation.addDeviceListener(device => {
-      const devices = this.state.devices.clone()
-      if (devices.indexOf(device) === -1) {
-        devices.push(device)
-        this.setState({ devices })
-      }
-    })
-  }
+  // addListener() {
+  //   SLocation.addDeviceListener(device => {
+  //     const devices = this.state.devices.clone()
+  //     if (devices.indexOf(device) === -1) {
+  //       devices.push(device)
+  //       this.setState({ devices })
+  //     }
+  //   })
+  // }
 
-  changeDevice = async () => {
+  changeDevice = () => {
     if(this.state.distanceLocation){
       SLocation.setDistanceLocation(true)
       SLocation.setTimeLocation(false)
       if(this.state.distanceLocationText === ""){
         SLocation.setLocationDistance(0+"")
       }else{
-        if(isNaN(this.state.distanceLocationText)){
+        if(isNaN(Number(this.state.distanceLocationText))){
           Toast.show(getLanguage(global.language).Profile.INPUT_NUMBER)
           return
         }else{
@@ -87,7 +91,7 @@ class LocationSetting extends React.Component<Props, State> {
       if(this.state.timeLocationText === ""){
         SLocation.setLocationTime(0+"")
       }else{
-        if(isNaN(this.state.timeLocationText)){
+        if(isNaN(Number(this.state.timeLocationText))){
           Toast.show(getLanguage(global.language).Profile.INPUT_NUMBER)
           return
         }else{
@@ -98,24 +102,35 @@ class LocationSetting extends React.Component<Props, State> {
       SLocation.setDistanceLocation(false)
       SLocation.setTimeLocation(false)
     }
-    const currentOption = this.state.currentOption
+
+    // 当选择此设备时，需要修改redux里的设置，其他类型的在他们自己的页面已经设置过了，直接用就好
+    let currentOption
+    if(this.state.selectDevicesType === 'local') {
+      currentOption = this.state.currentOption
+      this.props.setDevice(currentOption)
+    } else {
+      currentOption = getSelectDevice()
+    }
+
+    console.warn("save device: " + JSON.stringify(currentOption))
+    // const currentOption = this.state.currentOption
     this.props.setDevice(currentOption)
     SLocation.changeLocationDevice(currentOption)
     NavigationService.goBack()
   }
 
-  startShowSearching = async () => {
-    await new Promise(resolve => {
-      setTimeout(() => {
-        resolve(true)
-      }, 10000)
-    })
-    if(this.state.devices.length === 1) {
-      this.setState({ searchNotify: getLanguage(global.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
-    } else if(this.state.devices.length > 1) {
-      this.setState({ showSearch: false})
-    }
-  }
+  // startShowSearching = async () => {
+  //   await new Promise(resolve => {
+  //     setTimeout(() => {
+  //       resolve(true)
+  //     }, 10000)
+  //   })
+  //   if(this.state.devices.length === 1) {
+  //     this.setState({ searchNotify: getLanguage(global.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
+  //   } else if(this.state.devices.length > 1) {
+  //     this.setState({ showSearch: false})
+  //   }
+  // }
 
   getLocationType = async () => {
     if (await SLocation.getTimeLocation()) {
@@ -128,47 +143,71 @@ class LocationSetting extends React.Component<Props, State> {
     }
   }
 
-  renderItem = (device: SLocation.LocationConnectionParam) => {
-    let title
-    // switch (key.type) {
-    //   case 'local':
-        title = getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL
-        // break
-    //   default:
-    //     title = key
-    //     //外部设备添加前缀
-    //     key = 'external_' + key
-    //     break
-    // }
-    console.log(device)
-    return (
-      <View key={device.type}>
-        <TouchableOpacity
-          style={styles.itemView}
-          activeOpacity={0.9}
-          onPress={() => {
-            this.setState({ currentOption: device })
-          }}
-        >
-          <Text style={styles.text}>{title}</Text>
-          <Image
-            style={styles.image}
-            source={this.state.currentOption === device ? radio_on : radio_off}
-          />
-        </TouchableOpacity>
-        {this.renderSeperator()}
-      </View>
-    )
-  }
-
-  renderItems = () => {
-    return this.state.devices.map(device => {
-      return this.renderItem(device)
+  selectLocalDevice = () => {
+    this.setState({
+      selectDevicesType: 'local',
+      currentOption: {
+        type: 'local',
+      },
     })
   }
 
+  selectExternalDevice = () => {
+    this.setState({
+      selectDevicesType: 'external',
+    })
+    NavigationService.navigate("ExternalDevices")
+  }
+
+  selectBluetoothDevice = () => {
+    this.setState({
+      selectDevicesType: 'bluetooth',
+    })
+    NavigationService.navigate("BluetoothDevices")
+  }
+
+  gotoNtripSettingPage = () => {
+    NavigationService.navigate("NtripSetting")
+  }
+
+  // renderItem = (device: SLocation.LocationConnectionParam) => {
+  //   const title = getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL
+  //   console.log(device)
+  //   return (
+  //     <View key={device.type}>
+  //       <TouchableOpacity
+  //         style={styles.itemView}
+  //         activeOpacity={0.9}
+  //         onPress={() => {
+  //           this.setState({ currentOption: device })
+  //         }}
+  //       >
+  //         <Text style={styles.text}>{title}</Text>
+  //         <Image
+  //           style={styles.image}
+  //           source={this.state.currentOption === device ? radio_on : radio_off}
+  //         />
+  //       </TouchableOpacity>
+  //       {this.renderSeperator()}
+  //     </View>
+  //   )
+  // }
+
+  // renderItems = () => {
+  //   return this.state.devices.map(device => {
+  //     return this.renderItem(device)
+  //   })
+  // }
+
   renderList = () => {
-    return <View style={{ flexDirection: 'column' }}>{this.renderItems()}</View>
+    return (
+      <View style={{ flexDirection: 'column' }}>
+        {/* {this.renderItems()} */}
+        {this.renderDevicesSelectItem('local', getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL, this.selectLocalDevice)}
+        {this.renderDevicesSelectItem('external', getLanguage(global.language).Profile.SETTING_LOCATION_EXTERNAL, this.selectExternalDevice)}
+        {this.renderDevicesSelectItem('bluetooth', getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH, this.selectBluetoothDevice)}
+      </View>
+    )
   }
 
   renderLocation = () => {
@@ -226,6 +265,20 @@ class LocationSetting extends React.Component<Props, State> {
     )
   }
 
+  renderOtherSetting = () => {
+    return(
+      <View style={{ flexDirection: 'column' }}>
+        <TouchableOpacity
+          style={styles.itemView}
+          onPress={this.gotoNtripSettingPage}
+        >
+          <Text style={styles.text}>{getLanguage(global.language).Profile.NTRIP_SETTING}</Text>
+        </TouchableOpacity>
+        {this.renderSeperator()}
+      </View>
+    )
+  }
+
   renderSeperator = () => {
     return <View style={styles.seperator} />
   }
@@ -251,14 +304,55 @@ class LocationSetting extends React.Component<Props, State> {
     )
   }
 
-  renderSearch() {
-    return (
-      <View style={styles.searchItem}>
-        {this.state.searchNotify === getLanguage(global.language).Prompt.SEARCHING && (<ActivityIndicator size="small" color="#505050" />)}
-        <Text style={styles.searchText}>
-          {this.state.searchNotify}
-        </Text>
+  // renderSearch() {
+  //   return (
+  //     <View style={styles.searchItem}>
+  //       {this.state.searchNotify === getLanguage(global.language).Prompt.SEARCHING && (<ActivityIndicator size="small" color="#505050" />)}
+  //       <Text style={styles.searchText}>
+  //         {this.state.searchNotify}
+  //       </Text>
 
+  //     </View>
+  //   )
+  // }
+
+  renderDevicesSelectItem = (type: SLocation.DevicesType, title: string, action?: () => void) => {
+    return (
+      <View>
+        <TouchableOpacity
+          style={styles.itemView}
+          activeOpacity={0.9}
+          onPress={() => {
+            // this.setState({ currentOption: device })
+            if(action){
+              action()
+            } else {
+              this.setState({
+                selectDevicesType: type,
+              })
+            }
+          }}
+        >
+          <View
+            style={[styles.itemViewLeft]}
+          >
+            <Image
+              style={styles.ImageSize50}
+              source={this.state.selectDevicesType === type ? radio_on : radio_off}
+            />
+            <Text style={styles.text}>{title}</Text>
+
+          </View>
+
+
+          {type !== 'local' && (
+            <Image
+              style={styles.ImageSize35}
+              source={getImage().arrow}
+            />
+          )}
+        </TouchableOpacity>
+        {this.renderSeperator()}
       </View>
     )
   }
@@ -277,7 +371,8 @@ class LocationSetting extends React.Component<Props, State> {
         <View style={styles.container}>
           {this.renderList()}
           {this.renderLocation()}
-          {this.state.showSearch && this.renderSearch()}
+          {this.renderOtherSetting()}
+          {/* {this.state.showSearch && this.renderSearch()} */}
         </View>
       </Container>
     )
@@ -297,6 +392,12 @@ const styles = StyleSheet.create({
     height:scaleSize(80),
     // marginVertical: scaleSize(20),
   },
+  itemViewLeft: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
   searchItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -314,6 +415,14 @@ const styles = StyleSheet.create({
   image: {
     height: scaleSize(60),
     width: scaleSize(60),
+  },
+  ImageSize50: {
+    height: scaleSize(50),
+    width: scaleSize(50),
+  },
+  ImageSize35: {
+    height: scaleSize(35),
+    width: scaleSize(35),
   },
   seperator: {
     height: 1,

@@ -5013,7 +5013,6 @@ export default class MapView extends React.Component {
 
   renderContainer = () => {
     const width = this.px(screen.getScreenWidth())
-    console.log('zxt', global.Type)
     return (
       <Container
         ref={ref => (this.container = ref)}
@@ -5273,7 +5272,6 @@ export default class MapView extends React.Component {
           imageTrackingresultTag={this.state.imageTrackingresultTag}
         />}
         {this._renderExitSaveView()}
-        <ToolbarDebugView/>
       </View>
     )
   }

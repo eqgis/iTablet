@@ -40,6 +40,8 @@ export default class Chunk {
 
     this.onMapLoad = props.onMapLoad //地图/AR地图/三维场景加载完成回调
 
+    this.toobarModuleData = props.toolbarModuleData ? props.toolbarModuleData : []
+
   }
 
   getTitle = () => this.title
@@ -80,11 +82,11 @@ export default class Chunk {
           const fileDirPath = cachePath + fileName
           const arrFile = await FileTools.getFilterFiles(fileDirPath)
           if (arrFile.length === 0) {
-            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {mapType:  this.mapType,  onMapLoad: this.onMapLoad,}})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toobarModuleData,}})
           } else {
             // const name = 'OlympicGreen_EXAMPLE'
             const name = 'OlympicGreen'
-            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name, mapType:  this.mapType,  onMapLoad: this.onMapLoad,}})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name, mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toobarModuleData,}})
           }
         }
         break
@@ -151,6 +153,7 @@ export default class Chunk {
           isExample: this.isExample,
           mapType:  this.mapType,
           onMapLoad: this.onMapLoad,
+          toolbarModuleData: this.toobarModuleData,
         }
         if (service) {
           param = Object.assign(param, {service: service})
@@ -224,6 +227,7 @@ export default class Chunk {
           isExample: this.isExample,
           mapType:  this.mapType,
           onMapLoad: this.onMapLoad,
+          toolbarModuleData: this.toobarModuleData,
         }
         // if (global.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)

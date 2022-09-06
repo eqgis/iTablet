@@ -1607,6 +1607,47 @@ function _getPoiSettingData_title(editItem: ARElement): ToolBarMenuItem[] {
     }
     return data
   }else{
+    const text_shape = [
+      {
+        image: getImage().icon_tool_bold,
+        text: getLanguage().ARMap.BOLD,
+        onPress: async () => {
+          SARMap.setNodeStyle({TextBold:1},editItem)
+        }
+      },
+      {
+        image: getImage().icon_tool_tilt,
+        text: getLanguage().ARMap.TILT,
+        onPress: async () => {
+          SARMap.setNodeStyle({TextBold:2},editItem)
+        }
+      },
+      {
+        image: getImage().icon_tool_underline,
+        text: getLanguage().ARMap.UNDERLINE,
+        onPress: async () => {
+          SARMap.setNodeStyle({Flags:3},editItem)
+        }
+      },
+      {
+        image: getImage().icon_tool_strikethrough,
+        text: getLanguage().ARMap.STRIKETHROUGH,
+        onPress: async () => {
+          SARMap.setNodeStyle({Flags:4},editItem)
+        }
+      },
+      {
+        image: getImage().icon_tool_shadow,
+        text: getLanguage().ARMap.SHADOW,
+        onPress: async () => {
+          SARMap.setNodeStyle({TextShadow:5},editItem)
+        }
+      },
+    ]
+    if(Platform.OS === 'ios'){
+      text_shape.splice(1,1)
+    }
+
     data =  [
       {
         title: getLanguage().ARMap.TITLE,
@@ -1624,43 +1665,7 @@ function _getPoiSettingData_title(editItem: ARElement): ToolBarMenuItem[] {
         onPress: () => {
         },
         type: 'list',
-        data: [
-          {
-            image: getImage().icon_tool_bold,
-            text: getLanguage().ARMap.BOLD,
-            onPress: async () => {
-              SARMap.setNodeStyle({TextBold:1},editItem)
-            }
-          },
-          {
-            image: getImage().icon_tool_tilt,
-            text: getLanguage().ARMap.TILT,
-            onPress: async () => {
-              SARMap.setNodeStyle({TextBold:2},editItem)
-            }
-          },
-          {
-            image: getImage().icon_tool_underline,
-            text: getLanguage().ARMap.UNDERLINE,
-            onPress: async () => {
-              SARMap.setNodeStyle({Flags:3},editItem)
-            }
-          },
-          {
-            image: getImage().icon_tool_strikethrough,
-            text: getLanguage().ARMap.STRIKETHROUGH,
-            onPress: async () => {
-              SARMap.setNodeStyle({Flags:4},editItem)
-            }
-          },
-          {
-            image: getImage().icon_tool_shadow,
-            text: getLanguage().ARMap.SHADOW,
-            onPress: async () => {
-              SARMap.setNodeStyle({TextShadow:5},editItem)
-            }
-          },
-        ]
+        data: text_shape
       },
       {
         title: getLanguage().ARMap.TEXT_SIZE,
@@ -1720,6 +1725,10 @@ function _getPoiSettingData_title(editItem: ARElement): ToolBarMenuItem[] {
         }]
       },
     ]
+
+    if(Platform.OS === 'ios'){
+      data.splice(4,1)
+    }
 
     if(editItem.touchType === 0 && editItem.videoType === 0){
       data.push({

@@ -1,3 +1,6 @@
+/**
+ * 加载bundle包工具
+ */
 import { Module } from "@/class"
 
 interface BundleUtilParams {

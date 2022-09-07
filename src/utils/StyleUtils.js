@@ -10,7 +10,7 @@ import { Platform } from 'react-native'
  * @param geoStyle
  * @returns {Promise.<void>}
  */
-async function setSelectionStyle(layerPath = '', geoStyle) {
+async function setSelectionStyle(layerPath = '', geoStyle = null) {
   if (!geoStyle) {
     geoStyle = new GeoStyle()
     geoStyle.setFillForeColor(0, 255, 0, 0.5)

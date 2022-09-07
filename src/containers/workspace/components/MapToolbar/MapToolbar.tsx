@@ -14,7 +14,7 @@ interface Props {
   language: string,
   device: DEVICE,
   user: Users,
-  type: TChunkType[keyof TChunkType],
+  type?: TChunkType[keyof TChunkType],
   navigation: any,
   initIndex: number,
   style?: StyleProp<ViewStyle>,
@@ -219,6 +219,9 @@ export default class MapToolbar extends React.Component<Props, State> {
             },
           })
           break
+      }
+      if (typeof module !== 'string') {
+        list.push(module)
       }
     }
     return list

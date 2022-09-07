@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from "react-redux"
 import { RootState } from "../redux/types"
 import { ToolbarKit } from 'imobile_for_reactnative/components'
 import { AppToolBar } from "../utils"
-import { ToolbarModuleViewProps } from "imobile_for_reactnative/components/ToolbarKit"
+import { ToolbarModuleData, ToolbarModuleViewProps } from "imobile_for_reactnative/components/ToolbarKit"
 import { MainStackScreenNavigationProps } from "@/types"
 import { resource } from './resource'
 import {
@@ -29,6 +29,7 @@ const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 export interface Props extends ReduxProps {
   navigation: MainStackScreenNavigationProps<'Camera'>
   visibleChange: (visible: boolean) => void
+  extraModule: ToolbarModuleData<unknown>[]
 }
 
 export type ModuleViewProps<ModuleOption> = Props & ToolbarModuleViewProps<ModuleOption>
@@ -55,6 +56,7 @@ class Toolbar extends React.Component<Props> {
         <SToolbar.Module name={'ARMAP_TOOLBOX'} data={arMapToolbox}/>
         <SToolbar.Module name={'ARMAP'} data={arMapData}/>
         <SToolbar.Module name={'ARMAP_EDIT'} data={arMapEditData}/>
+        {this.props.extraModule.map(module => <SToolbar.Module name={module.name} data={module}/>)}
       </SToolbar.Container>
     )
   }

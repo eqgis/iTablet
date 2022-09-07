@@ -138,6 +138,7 @@ import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
 import Toolbar from '@/Toolbar'
 import { onAddARAnimation } from '@/Toolbar/modules/arAnimation/Actions'
 import { CommonActions } from '@react-navigation/native'
+import { Module } from '@/class'
 
 global.markerTag = 118082
 
@@ -310,7 +311,13 @@ export default class MapView extends React.Component {
     this.showMarker = params && params.showMarker
     /** 页面标题 */
     this.mapTitle = params.mapTitle
-
+    /** 模块地图类型 */
+    this.mapType = params.mapType
+    /**
+     * 地图/ar/scene
+     */
+    this.onMapLoad = params.onMapLoad
+    this.toolbarModuleData = params.toolbarModuleData
     this.path = (params && params.path) || ''
     this.showDialogCaption =
       // params && params.path ? !params.path.endsWith('.smwu') : true
@@ -326,10 +333,7 @@ export default class MapView extends React.Component {
       measureResult: 0,
       canBeUndo: false,
       canBeRedo: false,
-      showAIDetect:
-        global.Type === ChunkType.MAP_AR ||
-        global.Type === ChunkType.MAP_AR_ANALYSIS ||
-        global.Type === ChunkType.MAP_AR_MAPPING,
+      showAIDetect: this.isARModule(),
       bGoneAIDetect: false,
       showArModeIcon: true,
       showIncrement: false,
@@ -369,7 +373,7 @@ export default class MapView extends React.Component {
     }
     // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
     this.props.setDatumPoint(false)
-    this.props.showAR(global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS ? true : false)
+    this.props.showAR(this.isARModule())
     // this.currentFloorID = ''//有坑，id有可能就是‘’
     this.currentFloorID = undefined
     //导航  地图选点界面的搜索按钮被点击,当前设置按钮title
@@ -421,6 +425,10 @@ export default class MapView extends React.Component {
 
     // 分享按钮是否可点击标识，true为可点击
     this.isShareCanClick = true
+  }
+
+  isARModule = () => {
+    return this.mapType === Module.MapType.AR
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -651,7 +659,7 @@ export default class MapView extends React.Component {
       })
       global.SimpleDialog.setVisible(true)
     }
-    if (global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS) {
+    if (this.isARModule()) {
       (async function () {
         SARMap.addOnHeightChangeListener({
           onHeightChange: height => {
@@ -928,9 +936,7 @@ export default class MapView extends React.Component {
       Dimensions.removeEventListener('change', this.onChange)
     }
     if (
-      global.Type === ChunkType.MAP_AR ||
-      global.Type === ChunkType.MAP_AR_ANALYSIS ||
-      global.Type === ChunkType.MAP_AR_MAPPING
+      this.isARModule()
     ) {
       screen.unlockAllOrientations()
     }
@@ -1202,6 +1208,7 @@ export default class MapView extends React.Component {
   _onGetInstance = async mapView => {
     this.mapView = mapView
     this._addMap()
+    this.onMapLoad?.('map')
   }
 
   _onLoad = async () => {
@@ -1213,6 +1220,7 @@ export default class MapView extends React.Component {
     SARMap.showPointCloud(false)
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
+    this.onMapLoad?.('ar')
   }
 
   onChange = event => {
@@ -1438,9 +1446,7 @@ export default class MapView extends React.Component {
         await this.props.setCurrentARLayer()
       }
       if (
-        global.Type === ChunkType.MAP_AR_MAPPING ||
-        global.Type === ChunkType.MAP_AR ||
-        global.Type === ChunkType.MAP_AR_ANALYSIS
+        this.isARModule()
       ) {
         if (Platform.OS === 'android') {
           await SARMap.showMeasureView(false)
@@ -2352,7 +2358,7 @@ export default class MapView extends React.Component {
         openOnlineMap={this.props.openOnlineMap}
         mapModules={this.props.mapModules}
         currentTaskServices={this.props.currentTaskServices}
-        ARView={global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR_ANALYSIS || global.Type === ChunkType.MAP_AR ? this.props.isAR : this.state.showAIDetect}
+        ARView={this.isARModule() ? this.props.isAR : this.state.showAIDetect}
       />
     )
   }
@@ -2444,9 +2450,7 @@ export default class MapView extends React.Component {
 
     //只有AR模块走这段代码 add xiezhy
     if (
-      global.Type === ChunkType.MAP_AR ||
-      global.Type === ChunkType.MAP_AR_ANALYSIS ||
-      global.Type === ChunkType.MAP_AR_MAPPING
+      this.isARModule()
     ) {
       this.setState({ showArModeIcon: full })
     }
@@ -3397,9 +3401,7 @@ export default class MapView extends React.Component {
    */
   switchAr = showAIDetect => {
     if (
-      global.Type === ChunkType.MAP_AR_MAPPING ||
-      global.Type === ChunkType.MAP_AR_ANALYSIS ||
-      global.Type === ChunkType.MAP_AR
+      this.isARModule()
     ) {
       let _isAR = this.props.isAR
       if (showAIDetect !== undefined && typeof showAIDetect === 'boolean') {
@@ -3442,9 +3444,7 @@ export default class MapView extends React.Component {
   /** AR和二维地图切换图标 */
   _renderArModeIcon = () => {
     let show =
-      global.Type === ChunkType.MAP_AR_MAPPING ||
-        global.Type === ChunkType.MAP_AR_ANALYSIS ||
-        global.Type === ChunkType.MAP_AR ? this.props.isAR : this.state.showAIDetect
+      this.isARModule() ? this.props.isAR : this.state.showAIDetect
     let right
     if (
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 &&
@@ -4752,9 +4752,10 @@ export default class MapView extends React.Component {
   //ar测图界面
   _renderMeasureAreaView = () => {
     if (
-      global.Type !== ChunkType.MAP_AR_MAPPING &&
-      global.Type !== ChunkType.MAP_AR_ANALYSIS &&
-      global.Type !== ChunkType.MAP_AR ||
+      // global.Type !== ChunkType.MAP_AR_MAPPING &&
+      // global.Type !== ChunkType.MAP_AR_ANALYSIS &&
+      // global.Type !== ChunkType.MAP_AR
+      !this.isARModule() ||
       this.isExample
     ) return null
     return (
@@ -5059,9 +5060,7 @@ export default class MapView extends React.Component {
             StyleSheet.absoluteFill,
             Platform.OS === 'android' &&
             (
-              global.Type === ChunkType.MAP_AR_MAPPING ||
-              global.Type === ChunkType.MAP_AR_ANALYSIS ||
-              global.Type === ChunkType.MAP_AR
+              this.isARModule()
             ) &&
             this.props.isAR && { left: 9999,width:width ,height:width*0.666-this.px(50) },
           ]}>
@@ -5138,9 +5137,7 @@ export default class MapView extends React.Component {
           !this.props.analyst.params &&
           this.renderMeasureLabel()}
         {!this.isExample &&
-          (global.Type === ChunkType.MAP_AR ||
-            global.Type === ChunkType.MAP_AR_ANALYSIS ||
-            global.Type === ChunkType.MAP_AR_MAPPING) &&
+          this.isARModule() &&
           this.state.showArModeIcon &&
           this._renderArModeIcon()}
         {!this.isExample && this.props.showSampleData && this._renderSampleData()}
@@ -5246,6 +5243,7 @@ export default class MapView extends React.Component {
           visibleChange={visible => {
             this.showFullMap(visible)
           }}
+          extraModule={this.toolbarModuleData}
         />
       </Container>
     )

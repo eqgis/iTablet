@@ -35,6 +35,7 @@ import { FetchBlob } from './FetchBlob'
 
 export { CheckSpell } from './CheckUtils'
 export { FloatMath } from './FloatMath'
+import NavigatorUtil from './NavigatorUtil'
 
 export {
   screen,
@@ -78,4 +79,5 @@ export {
   DataHandler,
   AppPath,
   FetchBlob,
+  NavigatorUtil,
 }

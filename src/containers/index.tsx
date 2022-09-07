@@ -198,6 +198,7 @@ interface StackNavigatorProps {
   appConfig: any,
   device: DEVICE,
   currentUser: UserInfo,
+  otherNavigators?: any,
 }
 
 /**
@@ -428,6 +429,10 @@ export default function(params: StackNavigatorProps) {
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} options={modalOption(params)}/>
       <Stack.Screen name="ChartManager" component={ChartManager} />
+
+      {
+        params?.otherNavigators
+      }
     </Stack.Navigator>
   )
 }

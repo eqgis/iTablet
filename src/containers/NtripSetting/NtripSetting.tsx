@@ -1,23 +1,27 @@
-import { Container, Input } from '../../components'
+import { Container } from '../../components'
 import { getLanguage } from "@/language"
 import { MainStackScreenNavigationProps } from "@/types/NavigationTypes"
 import React, {Component} from "react"
-import { Image, TouchableOpacity, View, Text } from "react-native"
+import { TouchableOpacity, View, Text, TextInput } from "react-native"
 import { SLocation } from "imobile_for_reactnative"
 import styles from "./style"
 import { Picker } from '@react-native-picker/picker'
-import { ScrollView } from 'react-native-gesture-handler'
-import { DialogUtils } from '@/utils'
+import { Toast } from '@/utils'
 import { NtripMountPoint } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
+import NavigationService from '../NavigationService'
 
 interface Props{
   navigation: MainStackScreenNavigationProps<'NtripSetting'>,
-  // route: MainStackScreenRouteProp<'BluetoothDevices'>,
+}
+
+interface PickerItemType {
+  label: string
+  value: string | NtripMountPoint
 }
 
 interface State {
   /** 协议 */
-  agreement: 'NTRIPVE'
+  agreement: 'NTRIPV1'
   address: string
   port: string
   userName: string
@@ -25,31 +29,90 @@ interface State {
   /** 当前选中的加载点 */
   selectLoadPoint: NtripMountPoint
   /** 加载点数组 */
-  loadPointArray: Array<NtripMountPoint>
+  // loadPointArray: Array<NtripMountPoint>
+  loadPointNameArray: Array<PickerItemType>
 }
+
 
 class NtripSetting extends Component<Props, State> {
 
   agreementArray = [
-    {label: 'NTRIPVE', value: 'NTRIPVE'},
+    {label: 'NTRIPV1', value: 'NTRIPV1'},
   ]
 
   constructor(props: Props) {
     super(props)
     this.state = {
-      agreement: 'NTRIPVE',
-      address: '',
-      port: '',
-      userName: '',
-      password: '',
+      agreement: 'NTRIPV1',
+      address: 'www.geodetic.gov.hk',
+      port: '2101',
+      userName: 'sms01',
+      password: 'sms711',
       selectLoadPoint: {
         name: '',
         requireGGA: false,
       },
-      loadPointArray:[],
+      // loadPointArray:[],
+      loadPointNameArray:[],
     }
   }
 
+  componentDidMount = async () => {
+    await this.refreshLoadPoint()
+  }
+
+  refreshLoadPoint = async () => {
+    try {
+      if(this.state.address !== '' && this.state.port !== '' && this.state.userName !== '' && this.state.password !== '') {
+        const info = {
+          address: this.state.address,
+          port: Number(this.state.port),
+          userName: this.state.userName,
+          password: this.state.password,
+        }
+        const tempArray = await SLocation.getNtripSourceTable(info)
+        const nameArray: Array<PickerItemType> = []
+        // 构造picker的item的类型
+        for(let i = 0; i < tempArray.length; i ++) {
+          const item = tempArray[i]
+          const obj = {
+            label: item.name,
+            value: item,
+          }
+          nameArray.push(obj)
+        }
+        // 修改state里的值
+        this.setState({
+          // loadPointArray: tempArray,
+          loadPointNameArray: nameArray,
+        })
+      }
+    } catch (error) {
+      console.warn("refreshLoadPoint: " + JSON.stringify(error))
+    }
+  }
+
+  setNtrip = async () => {
+    try {
+      const info = {
+        address: this.state.address,
+        port: Number(this.state.port),
+        userName: this.state.userName,
+        password: this.state.password,
+        name: this.state.selectLoadPoint.name,
+        requireGGA: this.state.selectLoadPoint.requireGGA,
+      }
+      const isSetSuccess = await SLocation.setNtripInfo(info)
+      if(isSetSuccess) {
+        Toast.show(getLanguage().SUCCESS)
+        NavigationService.goBack()
+      } else {
+        Toast.show(getLanguage().FAILED)
+      }
+    } catch (error) {
+      console.warn("setNtrip: " + JSON.stringify(error))
+    }
+  }
   /** 确认按钮 */
   renderRight = () => {
     const textColor = 'black'
@@ -57,7 +120,7 @@ class NtripSetting extends Component<Props, State> {
       <View>
         <TouchableOpacity
           // disabled={isDisabled}
-          // onPress={this.changeDevice}
+          onPress={this.setNtrip}
         >
           <Text style={[styles.headerRightText, { color: textColor }]}>
             {getLanguage(global.language).Profile.CONFIRM}
@@ -69,7 +132,7 @@ class NtripSetting extends Component<Props, State> {
 
   /** 分割线 */
   renderSeperator = () => {
-    return <View style={styles.seperator} />
+    return  <View style={styles.seperator} />
   }
 
   /** 协议 */
@@ -103,8 +166,17 @@ class NtripSetting extends Component<Props, State> {
 
           </Picker>
         </View>
+
         {this.renderSeperator()}
 
+      </View>
+    )
+  }
+
+  renderItemSeperator = () => {
+    return (
+      <View style={[styles.itemSeperator]}>
+        <View style={[styles.itemSeperatorLine]}></View>
       </View>
     )
   }
@@ -115,109 +187,96 @@ class NtripSetting extends Component<Props, State> {
       <View>
         {/* 头 */}
         <View
-          style={[styles.listTitleView, styles.marginT40]}
+          style={[styles.listTitleView]}
         >
           <Text style={[styles.listTitle]} >{'基本信息'}</Text>
         </View>
+        {/* 地址 */}
+        <View
+          style={[styles.itemView]}
+        >
+          <Text style={styles.text}>{"服务地址:"}</Text>
+          <TextInput
+            style={[styles.itemValueBtn]}
+            autoFocus={false}
+            // placeholder={this.state.placeholder}
+            value={this.state.address}
+            onChangeText={async (text: string) => {
+              this.setState({
+                address: text,
+              })
+              await this.refreshLoadPoint()
+            }}
+          />
+
+        </View>
+        {this.renderItemSeperator()}
+        {/* 端口号 */}
+        <View
+          style={[styles.itemView]}
+        >
+          <Text style={styles.text}>{"端口号:"}</Text>
+
+          <TextInput
+            style={[styles.itemValueBtn]}
+            autoFocus={false}
+            // placeholder={this.state.placeholder}
+            value={this.state.port}
+            onChangeText={async (text: string) => {
+              // 类型验证，限制输入非法字符
+              if(Number(text).toString() !== 'NaN') {
+                this.setState({
+                  port: text,
+                })
+                await this.refreshLoadPoint()
+              }
+            }}
+          />
+        </View>
+        {this.renderItemSeperator()}
+
         {/* 用户名 */}
         <View
           style={[styles.itemView]}
         >
-          <Text style={styles.text}>{"用户名"}</Text>
-          <TouchableOpacity
-            style={styles.itemValueBtn}
-            activeOpacity={0.9}
-            onPress={() => {
+          <Text style={styles.text}>{"用户名:"}</Text>
 
-              DialogUtils.showInputDailog({
-                value: this.state.userName,
-                confirmAction: async (value: string) => {
-                  this.setState({
-                    userName: value,
-                  })
-                  DialogUtils.hideInputDailog()
-                },
+          <TextInput
+            style={[styles.itemValueBtn]}
+            autoFocus={false}
+            // placeholder={this.state.placeholder}
+            value={this.state.userName}
+            onChangeText={async (text: string) => {
+              this.setState({
+                userName: text,
               })
+              await this.refreshLoadPoint()
             }}
-          >
-            <Text style={[styles.itemValueBtnText]}>{this.state.userName}</Text>
-          </TouchableOpacity>
+          />
         </View>
-        {this.renderSeperator()}
+        {this.renderItemSeperator()}
 
         {/* 密码 */}
         <View
           style={[styles.itemView]}
         >
-          <Text style={styles.text}>{"密码"}</Text>
-          <TouchableOpacity
-            style={styles.itemValueBtn}
-            activeOpacity={0.9}
-            onPress={() => {
+          <Text style={styles.text}>{"密码:"}</Text>
 
-              DialogUtils.showInputDailog({
-                value: this.state.password,
-                confirmAction: async (value: string) => {
-                  this.setState({
-                    password: value,
-                  })
-                  DialogUtils.hideInputDailog()
-                },
+          <TextInput
+            style={[styles.itemValueBtn]}
+            autoFocus={false}
+            // placeholder={this.state.placeholder}
+            textContentType = {'password'}
+            secureTextEntry = {true}
+            value={this.state.password}
+            onChangeText={async (text: string) => {
+              this.setState({
+                password: text,
               })
+              await this.refreshLoadPoint()
             }}
-          >
-            <Text style={[styles.itemValueBtnText]}>{this.state.password}</Text>
-          </TouchableOpacity>
-        </View>
-        {this.renderSeperator()}
-        {/* 地址 */}
-        <View
-          style={[styles.itemView]}
-        >
-          <Text style={styles.text}>{"服务地址"}</Text>
-          <TouchableOpacity
-            style={styles.itemValueBtn}
-            activeOpacity={0.9}
-            onPress={() => {
+          />
 
-              DialogUtils.showInputDailog({
-                value: this.state.address,
-                confirmAction: async (value: string) => {
-                  this.setState({
-                    address: value,
-                  })
-                  DialogUtils.hideInputDailog()
-                },
-              })
-            }}
-          >
-            <Text style={[styles.itemValueBtnText]}>{this.state.address}</Text>
-          </TouchableOpacity>
-        </View>
-        {this.renderSeperator()}
-        {/* 端口号 */}
-        <View
-          style={[styles.itemView]}
-        >
-          <Text style={styles.text}>{"端口号"}</Text>
-          <TouchableOpacity
-            style={styles.itemValueBtn}
-            activeOpacity={0.9}
-            onPress={() => {
-
-              DialogUtils.showInputDailog({
-                value: this.state.port,
-                confirmAction: async (value: string) => {
-                  this.setState({
-                    port: value,
-                  })
-                  DialogUtils.hideInputDailog()
-                },
-              })
-            }}
-          >
-            <Text style={[styles.itemValueBtnText]}>{this.state.port}</Text>
-          </TouchableOpacity>
         </View>
         {this.renderSeperator()}
       </View>
@@ -232,7 +291,7 @@ class NtripSetting extends Component<Props, State> {
       >
         {/* 头 */}
         <View
-          style={[styles.listTitleView, styles.marginT40]}
+          style={[styles.listTitleView]}
         >
           <Text style={[styles.listTitle]} >{'加载点'}</Text>
         </View>
@@ -246,17 +305,16 @@ class NtripSetting extends Component<Props, State> {
             mode={'dropdown'}
             style={[styles.pickerSize]}
             onValueChange={value => {
-              // setValue(value)
-              // value !== null && props.onValueChange(value)
               this.setState({selectLoadPoint: value})
             } }
           >
-            {this.agreementArray.map((item, index) => {
+            {this.state.loadPointNameArray.map((item, index) => {
               return <Picker.Item label={item.label} value={item.value} key={item.label + index} />
             })}
 
           </Picker>
         </View>
+
         {this.renderSeperator()}
 
       </View>
@@ -279,7 +337,9 @@ class NtripSetting extends Component<Props, State> {
         <View style={styles.container}>
           {this.renderAgreement()}
           {this.renderInputList()}
-          {this.renderLoadPoint()}
+          {this.state.address !== '' && this.state.port !== '' && this.state.userName !== '' && this.state.password !== ''
+          && this.renderLoadPoint()}
+          {/* {this.renderLoadPoint()} */}
         </View>
       </Container>
     )

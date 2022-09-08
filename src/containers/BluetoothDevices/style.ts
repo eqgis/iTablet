@@ -33,8 +33,9 @@ const styles = StyleSheet.create({
     width: dp(30),
   },
   seperator: {
-    height: 1,
-    backgroundColor: '#E0E0E0',
+    height: dp(10),
+    backgroundColor: '#f9f9f9',
+    marginTop: dp(20),
   },
   headerRightText: {
     fontSize: dp(16),
@@ -44,9 +45,10 @@ const styles = StyleSheet.create({
   pickerView:{
     width: '100%',
     flexDirection: 'column',
+    paddingHorizontal: dp(10),
   },
   pickerSize: {
-    width: dp(200),
+    width: dp(140),
     height: dp(30),
   },
   pickerItem: {
@@ -54,18 +56,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: dp(10),
+    paddingLeft: dp(40),
     height:dp(50),
   },
   listContainer: {
     width: '100%',
     flexDirection: 'column',
+    paddingHorizontal: dp(10),
   },
   listTitleView: {
     width:'100%',
     height: dp(40),
     flexDirection: 'row',
-    paddingHorizontal: dp(10),
-    backgroundColor: '#E0E0E0',
+    paddingHorizontal: dp(20),
+    // backgroundColor: '#E0E0E0',
     alignItems: 'center',
   },
   marginT40: {
@@ -77,6 +81,8 @@ const styles = StyleSheet.create({
   },
   listContentView: {
     width: '100%',
+    paddingHorizontal: dp(10),
+    paddingLeft: dp(30),
     flexDirection: 'column',
   },
 

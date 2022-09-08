@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator ,Switch,TextInput} from 'react-native'
 import { SLocation } from 'imobile_for_reactnative'
 import Container from '../../components/Container'
-import { scaleSize ,Toast} from '../../utils'
+import { dp, scaleSize ,Toast} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import color from '../../styles/color'
@@ -111,8 +111,6 @@ class LocationSetting extends React.Component<Props, State> {
     } else {
       currentOption = getSelectDevice()
     }
-
-    console.warn("save device: " + JSON.stringify(currentOption))
     // const currentOption = this.state.currentOption
     this.props.setDevice(currentOption)
     SLocation.changeLocationDevice(currentOption)
@@ -201,7 +199,7 @@ class LocationSetting extends React.Component<Props, State> {
 
   renderList = () => {
     return (
-      <View style={{ flexDirection: 'column' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly',paddingVertical: dp(20) }}>
         {/* {this.renderItems()} */}
         {this.renderDevicesSelectItem('local', getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL, this.selectLocalDevice)}
         {this.renderDevicesSelectItem('external', getLanguage(global.language).Profile.SETTING_LOCATION_EXTERNAL, this.selectExternalDevice)}
@@ -304,23 +302,24 @@ class LocationSetting extends React.Component<Props, State> {
     )
   }
 
-  // renderSearch() {
-  //   return (
-  //     <View style={styles.searchItem}>
-  //       {this.state.searchNotify === getLanguage(global.language).Prompt.SEARCHING && (<ActivityIndicator size="small" color="#505050" />)}
-  //       <Text style={styles.searchText}>
-  //         {this.state.searchNotify}
-  //       </Text>
-
-  //     </View>
-  //   )
-  // }
-
   renderDevicesSelectItem = (type: SLocation.DevicesType, title: string, action?: () => void) => {
+    let imageSource = getImage().icon_devices_local
+    switch(type){
+      case 'local':
+        imageSource = getImage().icon_devices_local
+        break
+      case 'external':
+        imageSource = getImage().icon_devices_external
+        break
+      case 'bluetooth':
+        imageSource = getImage().icon_devices_bluetooth
+        break
+    }
     return (
       <View>
         <TouchableOpacity
-          style={styles.itemView}
+          style={[styles.devicesItemView,
+            this.state.selectDevicesType === type && styles.devicesItemViewSelecter]}
           activeOpacity={0.9}
           onPress={() => {
             // this.setState({ currentOption: device })
@@ -334,25 +333,23 @@ class LocationSetting extends React.Component<Props, State> {
           }}
         >
           <View
-            style={[styles.itemViewLeft]}
+            style={[styles.devicesItenContent]}
           >
             <Image
-              style={styles.ImageSize50}
-              source={this.state.selectDevicesType === type ? radio_on : radio_off}
+              style={styles.ImageSize80}
+              source={imageSource}
             />
-            <Text style={styles.text}>{title}</Text>
+
+            <Text style={styles.devicesText}>{title}</Text>
 
           </View>
 
+          <Image
+            style={[styles.ImageSize50, styles.devicesSelecter]}
+            source={this.state.selectDevicesType === type ? radio_on : radio_off}
+          />
 
-          {type !== 'local' && (
-            <Image
-              style={styles.ImageSize35}
-              source={getImage().arrow}
-            />
-          )}
         </TouchableOpacity>
-        {this.renderSeperator()}
       </View>
     )
   }
@@ -371,7 +368,7 @@ class LocationSetting extends React.Component<Props, State> {
         <View style={styles.container}>
           {this.renderList()}
           {this.renderLocation()}
-          {this.renderOtherSetting()}
+          {this.state.selectDevicesType === 'bluetooth' && this.renderOtherSetting()}
           {/* {this.state.showSearch && this.renderSearch()} */}
         </View>
       </Container>
@@ -439,5 +436,41 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: color.bgG,
   },
+
+  devicesItemView: {
+    width: dp(116),
+    height: dp(100),
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    backgroundColor: '#f8f8f8',
+    borderRadius: dp(20),
+    borderWidth: dp(1),
+    borderColor: '#f8f8f8'
+  },
+  devicesItemViewSelecter: {
+    // borderColor: '#007aff',
+    borderColor: '#ccc',
+  },
+  devicesItenContent: {
+    width: dp(80),
+    height: dp(80),
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  ImageSize80: {
+    width: dp(55),
+    height: dp(55),
+  },
+  devicesSelecter: {
+    position: 'absolute',
+    top: dp(3),
+    right: dp(3),
+  },
+  devicesText: {
+    fontSize: scaleSize(24),
+  }
 })
 export default LocationSetting

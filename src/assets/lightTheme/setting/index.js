@@ -8,6 +8,10 @@ const icon_detection_type = require('./icon_detection_type.png')
 const icon_checkbox_style = require('./icon_checkbox_style.png')
 const icon_poi_setting = require('./icon_poi_setting.png')
 
+const icon_devices_local = require('./icon_devices_local.png')
+const icon_devices_external = require('./icon_devices_external.png')
+const icon_devices_bluetooth = require('./icon_devices_bluetooth.png')
+
 export default {
   icon_basic,
   icon_coordinate,
@@ -18,4 +22,8 @@ export default {
   icon_detection_type,
   icon_checkbox_style,
   icon_poi_setting,
+  icon_devices_local,
+  icon_devices_external,
+  icon_devices_bluetooth,
+
 }

@@ -134,7 +134,7 @@ class BluetoothDevices extends Component<Props, State> {
   renderPickers = () => {
     return (
       <View
-        style={[styles.pickerView]}
+        style={[styles.pickerView, styles.marginT40]}
       >
         {/* 头 */}
         <View
@@ -164,7 +164,6 @@ class BluetoothDevices extends Component<Props, State> {
 
           </Picker>
         </View>
-        {this.renderSeperator()}
 
         {/* 仪器类型 */}
         <View
@@ -188,6 +187,7 @@ class BluetoothDevices extends Component<Props, State> {
 
           </Picker>
         </View>
+
         {this.renderSeperator()}
 
       </View>
@@ -218,7 +218,6 @@ class BluetoothDevices extends Component<Props, State> {
             source={JSON.stringify(this.state.currentOption) === JSON.stringify(device) || JSON.stringify(getSelectDevice()) === JSON.stringify(device) ? radio_on : radio_off}
           />
         </TouchableOpacity>
-        {this.renderSeperator()}
       </View>
     )
   }
@@ -248,6 +247,7 @@ class BluetoothDevices extends Component<Props, State> {
         >
           {this.renderItems()}
         </ScrollView>
+        {this.renderSeperator()}
       </View>
     )
   }

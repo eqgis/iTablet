@@ -2181,7 +2181,7 @@ export const language_cn = {
   SETTING_LOCATION_LOCAL: "此设备",
   SETTING_LOCATION_EXTERNAL: "网络设备",
   SETTING_LOCATION_BLUETOOTH: "蓝牙",
-  NTRIP_SETTING: "Ntrip 设置",
+  NTRIP_SETTING: "差分服务",
   SETTING_CLEAR_CACHE: "清除缓存",
   SETTING_CLEAR_CACHE_SUCCESS: "清除成功",
   DISTANCE_METER: "距离(单位m)",

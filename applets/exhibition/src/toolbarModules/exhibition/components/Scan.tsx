@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, ScaledSize, View, Animated, Easing, StyleSheet } from 'react-native'
 import { getImage } from '../../../assets'
-import HollowView from '../../../../../../src/components/HollowView'
+import HollowView from './HollowView'
 
 interface Props {
   windowSize: ScaledSize
@@ -42,7 +42,6 @@ class Scan extends React.Component<Props> {
   renderScan = () => {
     const minWidth = Math.min(this.props.windowSize.width, this.props.windowSize.height)
     const width = minWidth * 0.9
-    console.log(width)
 
     const degree = this.spinValue.interpolate({
       inputRange: [0, 1],

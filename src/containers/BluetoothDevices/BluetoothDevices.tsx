@@ -140,14 +140,13 @@ class BluetoothDevices extends Component<Props, State> {
         <View
           style={[styles.listTitleView]}
         >
-          <Text style={[styles.listTitle]} >{'设备信息设置'}</Text>
+          <Text style={[styles.listTitle]} >{getLanguage(global.language).Profile.DEVICE_INFORMATION_SETTING}</Text>
         </View>
         {/* 仪器厂家 */}
         <View
           style={[styles.pickerItem]}
         >
-          {/* <Text style={styles.text}>{getLanguage(global.language).Profile.DISTANCE_LOCATION}</Text> */}
-          <Text style={styles.text}>{'仪器厂家'}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.INSTRUMENT_MANUFACTURER}</Text>
           <Picker
             selectedValue={this.state.brand}
             mode={'dropdown'}
@@ -169,8 +168,7 @@ class BluetoothDevices extends Component<Props, State> {
         <View
           style={[styles.pickerItem]}
         >
-          {/* <Text style={styles.text}>{getLanguage(global.language).Profile.DISTANCE_LOCATION}</Text> */}
-          <Text style={styles.text}>{'仪器类型'}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.INSTRUMENT_TYPE}</Text>
           <Picker
             selectedValue={this.state.gnssTppe}
             mode={'dropdown'}
@@ -239,7 +237,7 @@ class BluetoothDevices extends Component<Props, State> {
         <View
           style={[styles.listTitleView, styles.marginT40]}
         >
-          <Text style={[styles.listTitle]} >{'蓝牙设备列表'}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.BLUETOOTH_DEVICE_LIST}</Text>
         </View>
         {/* 列表 */}
         <ScrollView

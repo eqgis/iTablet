@@ -145,13 +145,13 @@ class NtripSetting extends Component<Props, State> {
         <View
           style={[styles.listTitleView]}
         >
-          <Text style={[styles.listTitle]} >{'协议'}</Text>
+          <Text style={[styles.listTitle]} >{getLanguage(global.language).Profile.NTRIP_AGREEMENT}</Text>
         </View>
         {/* 协议类型 */}
         <View
           style={[styles.pickerItem]}
         >
-          <Text style={styles.text}>{'协议类型'}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.PROTOCOL_TYPE}</Text>
           <Picker
             selectedValue={this.state.agreement}
             mode={'dropdown'}
@@ -189,13 +189,13 @@ class NtripSetting extends Component<Props, State> {
         <View
           style={[styles.listTitleView]}
         >
-          <Text style={[styles.listTitle]} >{'基本信息'}</Text>
+          <Text style={[styles.listTitle]} >{getLanguage(global.language).Profile.ESSENTIAL_INFORMATION}</Text>
         </View>
         {/* 地址 */}
         <View
           style={[styles.itemView]}
         >
-          <Text style={styles.text}>{"服务地址:"}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.SERVICE_ADDRESS + ":"}</Text>
           <TextInput
             style={[styles.itemValueBtn]}
             autoFocus={false}
@@ -215,7 +215,7 @@ class NtripSetting extends Component<Props, State> {
         <View
           style={[styles.itemView]}
         >
-          <Text style={styles.text}>{"端口号:"}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.PORT_NUMBER + ":"}</Text>
 
           <TextInput
             style={[styles.itemValueBtn]}
@@ -239,7 +239,7 @@ class NtripSetting extends Component<Props, State> {
         <View
           style={[styles.itemView]}
         >
-          <Text style={styles.text}>{"用户名:"}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.USERNAME + ":"}</Text>
 
           <TextInput
             style={[styles.itemValueBtn]}
@@ -260,7 +260,7 @@ class NtripSetting extends Component<Props, State> {
         <View
           style={[styles.itemView]}
         >
-          <Text style={styles.text}>{"密码:"}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.PASSWORD + ":"}</Text>
 
           <TextInput
             style={[styles.itemValueBtn]}
@@ -293,13 +293,13 @@ class NtripSetting extends Component<Props, State> {
         <View
           style={[styles.listTitleView]}
         >
-          <Text style={[styles.listTitle]} >{'加载点'}</Text>
+          <Text style={[styles.listTitle]} >{getLanguage(global.language).Profile.LOADING_POINT}</Text>
         </View>
         {/* 加载点 */}
         <View
           style={[styles.pickerItem]}
         >
-          <Text style={styles.text}>{'加载点'}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.LOADING_POINT}</Text>
           <Picker
             selectedValue={this.state.selectLoadPoint}
             mode={'dropdown'}

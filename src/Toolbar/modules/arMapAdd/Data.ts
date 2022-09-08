@@ -430,7 +430,7 @@ function _getAddTab(): ToolbarTabItem[] {
   ]
 
   if(Platform.OS === 'ios') {
-    tabData.splice(6, 1)
+    // tabData.splice(6, 1)
     tabData.splice(4, 1)
   }
 
@@ -514,7 +514,7 @@ function getWidgetListData(): ToolBarListItem[]{
     }
   ]
   if(Platform.OS === 'ios') {
-    data.splice(4, 2)
+    data.splice(1, 5)
   }
   return data
 }
@@ -1056,6 +1056,9 @@ function _getSwitchAlbumData(): ToolBarListOption {
       }
     },
   ]
+  if (Platform.OS === 'ios'){
+    data.splice(0,1)
+  }
   return{
     data: data
   }

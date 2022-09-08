@@ -22,6 +22,7 @@ import { getLayers, setCurrentLayer } from "@/redux/models/layers"
 import { getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
 import {closeARMap, createARMap, saveARMap} from '@/redux/models/armap'
 import { setPipeLineAttribute, changeShowAttributeElement } from "@/redux/models/arattribute"
+import { ScaledSize } from "react-native"
 
 const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 
@@ -63,7 +64,7 @@ class Toolbar extends React.Component<Props> {
 }
 
 const mapStateToProp = (state: RootState) => ({
-  windowSize: state.device.toJS().windowSize,
+  windowSize: state.device.toJS().windowSize as ScaledSize,
   arMapInfo: state.arlayer.toJS(),
   arMap: state.armap.toJS(),
   currentUser: state.user.toJS().currentUser,

@@ -60,8 +60,6 @@ buck-out/
 *.jsbundle
 
 bundle/*
-applets/*
-package_*
 
 .idea/
 .gradle/
@@ -98,5 +96,4 @@ yarn.lock
 JRE.frameworkTrial_License.slm
 *.txt
 *.bin
-*.json
 *.log

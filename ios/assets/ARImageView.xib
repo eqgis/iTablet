@@ -17,7 +17,7 @@
                 <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fzE-cd-Y2N" customClass="ARBaseView">
                     <rect key="frame" x="352.5" y="265" width="375" height="280"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RT9-tQ-8O4">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RT9-tQ-8O4" customClass="UIImageView_Gesture">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
                         </imageView>
                         <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PdS-bX-c5Z" userLabel="back">

@@ -291,7 +291,7 @@ class AnimationSetting extends React.Component<Props, State> {
 
     const node_translation: ListItemData = {
       image: getImage().ar_translation,
-      text: getLanguage().POSITION,
+      text: getLanguage().TRANSLATION,
       key: '2',
       onPress: () => {
         this.paramList.type = ARAnimatorType.NODE_TYPE
@@ -578,7 +578,7 @@ class AnimationSetting extends React.Component<Props, State> {
   renderNodeTranslationParam = () => {
     return (
       <>
-        <Seperator text={getLanguage().POSITION}/>
+        <Seperator text={getLanguage().TRANSLATION}/>
 
         <BoolItem
           name={getLanguage().START_FROM_CURRENT_POSITION}

@@ -424,7 +424,7 @@ function _getTransformTabData(editItem: ARElement | string): ToolBarMenuItem[] {
 
   return[
     {
-      title: getLanguage().ARMap.POSITION,
+      title: getLanguage().ARMap.TRANSLATION,
       onPress: () => {
         SARMap.setAction(ARAction.MOVE)
       },
@@ -647,7 +647,7 @@ function _getGeometryLineObjectTabData(): ToolBarMenuItem[] {
 
   return[
     {
-      title: getLanguage().ARMap.POSITION,
+      title: getLanguage().ARMap.TRANSLATION,
       onPress: () => {
         SARMap.setAction(ARAction.MOVE)
       },
@@ -852,7 +852,7 @@ function _getModelAnimationTabList(element: ARElement): ToolBarMenuItem {
     },
     {
       image: getImage().ar_translation,
-      text: getLanguage().ARMap.POSITION,
+      text: getLanguage().ARMap.TRANSLATION,
       onPress: async () => {
         AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ADD_ANIME_TRANSLATION')
       }
@@ -1093,7 +1093,7 @@ function addTransAnimeOption(option: IToolbarOption) {
       onPress: () => {
         AppInputDialog.show({
           'placeholder': getLanguage().Common.INPUT_NAME,
-          'defaultValue': getLanguage().ARMap.POSITION,
+          'defaultValue': getLanguage().ARMap.TRANSLATION,
           'checkSpell': CheckSpell.checkLayerCaption,
           title: 'getLanguage().Common.SAVE_ANIMATION',
           descripton: 'getLanguage().Common.SAVE_ANIMATION_WITH_NAME',

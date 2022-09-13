@@ -317,7 +317,7 @@ export default class MapView extends React.Component {
      * 地图/ar/scene
      */
     this.onMapLoad = params.onMapLoad
-    this.toolbarModuleData = params.toolbarModuleData
+    this.toolbarModuleData = params.toolbarModuleData || []
     this.path = (params && params.path) || ''
     this.showDialogCaption =
       // params && params.path ? !params.path.endsWith('.smwu') : true

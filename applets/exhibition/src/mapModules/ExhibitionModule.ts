@@ -8,7 +8,7 @@ import { exhibitionData } from '../toolbarModules/exhibition'
  * 首页显示的旅行轨迹模块
  */
 export default class ExhibitionModule extends Module {
-  static key = 'tour'
+  static key = 'exhibition'
   constructor() {
     super({
       key: ExhibitionModule.key,

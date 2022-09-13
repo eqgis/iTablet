@@ -76,6 +76,7 @@
 		4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9028378DEA0045CB07 /* publicMap.txt */; };
 		4E28CE9528378DFD0045CB07 /* PIL in Resources */ = {isa = PBXBuildFile; fileRef = 4E28CE9428378DFD0045CB07 /* PIL */; };
 		5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F32E8BC920E9C5FE77F2B /* libPods-iTablet.a */; };
+		650BA19828C9DFB600246390 /* ARVideoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650BA19728C9DFB600246390 /* ARVideoView.xib */; };
 		6547809B28A1FF8400C044DA /* SuperMapAR.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6547809A28A1FF8400C044DA /* SuperMapAR.bundle */; };
 		6547809E28A2020600C044DA /* tab_icon_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 6547809D28A2020600C044DA /* tab_icon_close.png */; };
 		65B76A7E289D0E62001888E6 /* ARListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65B76A7D289D0E62001888E6 /* ARListView.xib */; };
@@ -293,6 +294,7 @@
 		4E28CE8F28378DEA0045CB07 /* ARWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARWebView.xib; sourceTree = "<group>"; };
 		4E28CE9028378DEA0045CB07 /* publicMap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = publicMap.txt; sourceTree = "<group>"; };
 		4E28CE9428378DFD0045CB07 /* PIL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PIL; sourceTree = "<group>"; };
+		650BA19728C9DFB600246390 /* ARVideoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARVideoView.xib; sourceTree = "<group>"; };
 		6547809A28A1FF8400C044DA /* SuperMapAR.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SuperMapAR.bundle; sourceTree = "<group>"; };
 		6547809D28A2020600C044DA /* tab_icon_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_icon_close.png; sourceTree = "<group>"; };
 		65B76A7D289D0E62001888E6 /* ARListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ARListView.xib; sourceTree = "<group>"; };
@@ -484,6 +486,7 @@
 				0AC8AEF82808109F00435541 /* PlotLibData.zip */,
 				65D43B91288E759D00C3391B /* ARImageView.xib */,
 				65B76A7D289D0E62001888E6 /* ARListView.xib */,
+				650BA19728C9DFB600246390 /* ARVideoView.xib */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -871,6 +874,7 @@
 				0AC8AF062808109F00435541 /* launch_slogan_cn.png in Resources */,
 				0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */,
 				E565E994286309A5007797E3 /* labelmap.txt in Resources */,
+				650BA19828C9DFB600246390 /* ARVideoView.xib in Resources */,
 				0AC8AF052808109F00435541 /* Template.zip in Resources */,
 				6547809B28A1FF8400C044DA /* SuperMapAR.bundle in Resources */,
 				65CDD19828A4F99000B5A2C8 /* icon_tool_play.png in Resources */,

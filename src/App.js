@@ -354,6 +354,10 @@ class AppRoot extends Component {
       'android.permission.WRITE_EXTERNAL_STORAGE',
       // 'android.permission.CAMERA',
       // 'android.permission.RECORD_AUDIO',
+      'android.permission.BLUETOOTH',
+      'android.permission.BLUETOOTH_ADMIN',
+      'android.permission.BLUETOOTH_CONNECT',
+      'android.permission.BLUETOOTH_SCAN',
     ])
     let isAllGranted = true
     for (let key in results) {

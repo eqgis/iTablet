@@ -514,7 +514,7 @@ function getWidgetListData(): ToolBarListItem[]{
     }
   ]
   if(Platform.OS === 'ios') {
-    data.splice(1, 5)
+    data.splice(2, 4)
   }
   return data
 }
@@ -1133,6 +1133,9 @@ function _getSwitchVideoAlbumData(): ToolBarListOption {
       }
     },
   ]
+  if(Platform.OS === 'ios') {
+    data.splice(0, 1)
+  }
   return{
     data: data
   }

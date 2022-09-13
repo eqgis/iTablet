@@ -10,6 +10,7 @@ import { Tour } from '../mapFunctionModules'
 import { FileTools, IntentModule } from '@/native'
 import { getImage } from '../assets'
 import { UserInfo } from '@/types'
+import NavigationService from '@/containers/NavigationService'
 
 /**
  * 首页显示的旅行轨迹模块
@@ -30,85 +31,86 @@ export default class TourModule extends Module {
       mapType: Module.MapType.MAP,
     })
   }
-  action = async (user: UserInfo, lastMap, service) => {
-    try {
-      const homePath = await FileTools.appendingHomeDirectory()
+  // action = async (user: UserInfo, lastMap, service) => {
+  //   try {
+  //     const homePath = await FileTools.appendingHomeDirectory()
 
-      let userPath = ConstPath.CustomerPath
-      if (user && user.userName) {
-        userPath = `${ConstPath.UserPath + user.userName}/`
-      }
-      const wsPath =
-        homePath +
-        userPath +
-        ConstPath.RelativeFilePath.Workspace[
-          global.language === 'CN' ? 'CN' : 'EN'
-        ]
+  //     let userPath = ConstPath.CustomerPath
+  //     if (user && user.userName) {
+  //       userPath = `${ConstPath.UserPath + user.userName}/`
+  //     }
+  //     const wsPath =
+  //       homePath +
+  //       userPath +
+  //       ConstPath.RelativeFilePath.Workspace[
+  //         global.language === 'CN' ? 'CN' : 'EN'
+  //       ]
 
-      let wsData
-      let isOpenLastMap = false
+  //     let wsData
+  //     let isOpenLastMap = false
 
-      if (lastMap) {
-        isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(
-          lastMap.path,
-        )
-      }
+  //     if (lastMap) {
+  //       isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(
+  //         lastMap.path,
+  //       )
+  //     }
 
-      let data
-      if (isOpenLastMap) {
-        data = {
-          type: 'Map',
-          ...lastMap,
-        }
-      } else if (this.getDefaultData().openDefaultMap) {
-        const moduleMapFullName = `${this.getDefaultData().defaultMapName}.xml`
-        // 地图用相对路径
-        const moduleMapPath =
-          userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
-        if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
-          data = {
-            type: 'Map',
-            path: moduleMapPath,
-            name: this.getDefaultData().defaultMapName,
-          }
-        }
-      } else {
-        data = [ConstOnline.tiandituCN, ConstOnline.tianditu]
-        // data.layerIndex = this.getDefaultData().baseMapIndex
-        global.BaseMapSize = data.length
-      }
+  //     let data
+  //     if (isOpenLastMap) {
+  //       data = {
+  //         type: 'Map',
+  //         ...lastMap,
+  //       }
+  //     } else if (this.getDefaultData().openDefaultMap) {
+  //       const moduleMapFullName = `${this.getDefaultData().defaultMapName}.xml`
+  //       // 地图用相对路径
+  //       const moduleMapPath =
+  //         userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
+  //       if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
+  //         data = {
+  //           type: 'Map',
+  //           path: moduleMapPath,
+  //           name: this.getDefaultData().defaultMapName,
+  //         }
+  //       }
+  //     } else {
+  //       data = [ConstOnline.tiandituCN, ConstOnline.tianditu]
+  //       // data.layerIndex = this.getDefaultData().baseMapIndex
+  //       global.BaseMapSize = data.length
+  //     }
 
-      wsData = [
-        {
-          DSParams: { server: wsPath },
-          type: 'Workspace',
-        },
-      ]
-      if (data instanceof Array) {
-        wsData = wsData.concat(data)
-      } else {
-        wsData.push(data)
-      }
-      let param = {
-        wsData,
-        mapTitle: this.getDefaultData().title,
-        isExample: this.getDefaultData().isExample,
-      }
-      if (service) {
-        param = Object.assign(param, { service: service })
-      }
+  //     wsData = [
+  //       {
+  //         DSParams: { server: wsPath },
+  //         type: 'Workspace',
+  //       },
+  //     ]
+  //     if (data instanceof Array) {
+  //       wsData = wsData.concat(data)
+  //     } else {
+  //       wsData.push(data)
+  //     }
+  //     let param = {
+  //       wsData,
+  //       mapTitle: this.getDefaultData().title,
+  //       isExample: this.getDefaultData().isExample,
+  //       type: 'tour',
+  //     }
+  //     if (service) {
+  //       param = Object.assign(param, { service: service })
+  //     }
 
-      IntentModule.setNavParam('MapView', param)
-      this.props.navigation.navigate('MapStack', { screen: 'MapView', params: param })
+  //     // IntentModule.setNavParam('MapView', param)
+  //     NavigationService.navigate('MapStack', { screen: 'MapView', params: param })
 
-      // if (global.coworkMode) {
-      //   NavigationService.navigate('CoworkMapStack', param)
-      // } else {
-      // NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
-    } catch (e) {
-      __DEV__ && console.warn(e)
-    }
-  }
+  //     // if (global.coworkMode) {
+  //     //   NavigationService.navigate('CoworkMapStack', param)
+  //     // } else {
+  //     // NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
+  //   } catch (e) {
+  //     __DEV__ && console.warn(e)
+  //   }
+  // }
 
   getDefaultData = () => {
     return {

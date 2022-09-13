@@ -564,7 +564,6 @@ function _getTransformTabData(editItem: ARElement | string): ToolBarMenuItem[] {
       apply: apply,
       slideData: [{
         type: 'single',
-        left: {type: 'image', image: getImage().ar_scale},
         right: {type: 'indicator', unit: '%'},
         onMove: (loc) => {
           let transformData = AppToolBar.getData().transformInfo

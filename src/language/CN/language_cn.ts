@@ -833,7 +833,7 @@ export const language_cn = {
   GROUP_TYPE_PRIVATE: "私有",
   GROUP_TYPE_PRIVATE_INFO: "由创建者邀请用户加入群组",
   GROUP_TYPE_PUBLIC: "共有",
-  GROUP_TYPE_PUBLIC_INFO: "可有创建者邀请，或者用户申请加入群组",
+  GROUP_TYPE_PUBLIC_INFO: "可由创建者邀请，或者用户申请加入群组",
   GROUP_TYPE_PUBLIC_CHECK_INFO: "用户申请加入该群组时需要审核",
   GROUP_CREATE_SUCCUESS: "创建群组成功",
   GROUP_CREATE_FAILED: "创建群组失败",

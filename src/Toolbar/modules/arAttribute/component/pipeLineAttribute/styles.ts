@@ -1,21 +1,22 @@
 
 import { dp } from '@/utils'
-import { WIDTH } from '@/utils/constUtil'
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    width: dp(200),
-    height: dp(150),
-    backgroundColor: 'rgba(0,0,0,.5)',
+    width: dp(220),
+    height: dp(135),
     top: dp(90),
     left: dp(10),
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    // borderColor: '#fff',
-    // borderWidth: dp(1),
+    borderColor: '#007AFF' ,
+    borderWidth: dp(1),
+    borderRadius: dp(15),
+    overflow: 'hidden',
   },
   textStyle: {
     color: '#fff',
@@ -24,17 +25,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   row: {
-    width: dp(200),
+    width: dp(220),
     flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
   },
-  col: {
-    flex: 1,
-    borderColor: '#fff',
+  colLeft: {
+    flex: 2,
+    borderColor: 'rgba(255, 255, 255, .1)',
+    backgroundColor: 'rgba(0, 45, 99, 0.8)',
+    paddingHorizontal: dp(3),
     borderWidth: dp(1),
     justifyContent: 'center',
     alignContent: 'center',
+    marginTop: -dp(1),
+    marginLeft: -dp(1),
+  },
+  colRight: {
+    flex: 3,
+    borderColor: 'rgba(255, 255, 255, .1)',
+    backgroundColor: 'rgba(0, 45, 99, 0.7)',
+    borderWidth: dp(1),
+    paddingHorizontal: dp(3),
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginTop: -dp(1),
+    marginLeft: -dp(1),
   }
 })
 

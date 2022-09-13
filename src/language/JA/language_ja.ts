@@ -2180,6 +2180,19 @@ export const language_ja: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "システムと同様",
   SETTING_LOCATION_DEVICE: "デバイスにポジショニング",
   SETTING_LOCATION_LOCAL: "当デバイス",
+  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
+  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
+  NTRIP_SETTING: "Differential service",  // To be translated
+  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
+  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
+  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
+  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
+  NTRIP_AGREEMENT: 'Protocol',  // To be translated
+  PROTOCOL_TYPE: 'Protocol type',  // To be translated
+  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
+  PORT_NUMBER: 'Port',  // To be translated
+  PASSWORD: 'Password',  // To be translated
+  LOADING_POINT: 'Loading point',  // To be translated
   SETTING_CLEAR_CACHE: "キャッシュのクリア",
   SETTING_CLEAR_CACHE_SUCCESS:"クリアに成功",
   DISTANCE_METER:"距離(m)",

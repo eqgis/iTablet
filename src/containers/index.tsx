@@ -192,6 +192,9 @@ import MapSelectList from '../containers/workspace/components/ToolBar/modules/ar
 import { DEVICE } from '@/redux/models/device'
 import ChartManager from './ChartManager/ChartManager'
 import * as ImagePicker from '@/components/ImagePicker/src'
+import ExternalDevices from './ExternalDevices'
+import BluetoothDevices from './BluetoothDevices'
+import NtripSetting from './NtripSetting'
 
 const Stack = createNativeStackNavigator()
 
@@ -429,6 +432,9 @@ export default function(params: StackNavigatorProps) {
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} options={modalOption(params)}/>
       <Stack.Screen name="ChartManager" component={ChartManager} />
+      <Stack.Screen name="ExternalDevices" component={ExternalDevices} />
+      <Stack.Screen name="BluetoothDevices" component={BluetoothDevices} />
+      <Stack.Screen name="NtripSetting" component={NtripSetting} />
     </Stack.Navigator>
   )
 }

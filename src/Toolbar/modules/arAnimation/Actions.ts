@@ -47,7 +47,6 @@ export async function onAddARAnimation(element: ARElement) {
 
 export async function onEditARAnimation(animator: ARAnimatorWithID) {
   let animations: ModelAnimation[] = []
-  console.warn("onEditARAnimation: " + JSON.stringify(animator))
   if(animator.type === ARAnimatorType.MODEL_TYPE) {
     animations = await SARMap.getModelAnimation(
       animator.layerName,

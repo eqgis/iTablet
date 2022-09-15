@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, View, TouchableOpacity, Text, Platform } from 'react-native'
+import { Image, View, TouchableOpacity, Text } from 'react-native'
 import { DEVICE } from '../../../src/redux/models/device'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
 import { ARLayerType, SARMap } from 'imobile_for_reactnative'
@@ -101,7 +101,6 @@ class ARLayerMenu extends React.Component<Props, State> {
           {/* 是否属性表方向是否固定 */}
           {
             (layer.type === ARLayerType.AR_MEDIA_LAYER || layer.type === ARLayerType.AR_MODEL_LAYER || layer.type === ARLayerType.AR_TEXT_LAYER)
-            && Platform.OS === 'android'
             && (
               <TouchableOpacity
                 onPress={async () => {

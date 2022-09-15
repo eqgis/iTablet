@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View, Platform } from 'react-native'
+import DropDownPicker from 'react-native-dropdown-picker'
 import { AppStyle, dp } from '../../../../../utils'
 import { Picker } from '@react-native-picker/picker'
 
@@ -19,10 +20,15 @@ interface ItemSelectProps<T> {
  */
 export function SelectItem<T>(props: ItemSelectProps<T>) {
   const [value, setValue] = useState<null | T>(props.defalutValue !== undefined ? props.defalutValue : null)
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     setValue(props.defalutValue !== undefined ? props.defalutValue : null)
   }, [props.defalutValue])
+
+  useEffect(() => {
+    Platform.OS === 'ios' && value && props.onValueChange(value)
+  }, [value])
 
   return (
     <View
@@ -70,7 +76,7 @@ export function SelectItem<T>(props: ItemSelectProps<T>) {
             })}
           </>
         )
-        : (
+        : (Platform.OS === 'android' ? (
           <>
             <Text style={AppStyle.h3g}>
               {props.name}
@@ -90,7 +96,24 @@ export function SelectItem<T>(props: ItemSelectProps<T>) {
 
             </Picker>
           </>
-        )
+        ) : (
+          <View style={{flex: 1, flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center'}}>
+            <Text style={AppStyle.h3g}>
+              {props.name}
+            </Text>
+            <View style={{ width: dp(200), height: dp(50), }}>
+
+              <DropDownPicker
+                items={props.data as any} //todo
+                open={open}
+                setOpen={setOpen}
+                value={value as any}
+                setValue={setValue}
+                listMode={'MODAL'}
+              />
+            </View>
+          </View>
+        ))
       }
     </View>
   )

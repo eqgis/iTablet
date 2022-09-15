@@ -4,7 +4,6 @@ import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/component
 import { AppToolBar } from "../../../utils"
 import { getLanguage } from "@/language"
 import { Platform } from "react-native"
-import { SARMap } from "imobile_for_reactnative"
 
 
 export function getData(key: ModuleList['ARMAP_TOOLBOX']): IToolbarOption {
@@ -46,6 +45,16 @@ function selectTool(option: IToolbarOption) {
       }
     },
   ]
+
+  if(Platform.OS === 'ios') {
+    option.listData.data = [{
+      image: getImage().ar_pane_annimation,
+      text: getLanguage().PANE_ANIMATION,
+      onPress: () => {
+        AppToolBar.show('ARANIMATION', 'AR_MAP_ANIMATION_HOME')
+      }
+    }]
+  }
 }
 
 

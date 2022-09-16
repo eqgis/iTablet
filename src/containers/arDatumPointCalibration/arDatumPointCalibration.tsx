@@ -21,6 +21,7 @@ interface IState {
   activeBtn: number,
   latitude: string,
   longitude: string,
+  height: string,
   animValue: any,
 }
 
@@ -43,7 +44,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       activeBtn: 2,
       longitude: '',
       latitude: '',
-      height: 1.5,
+      height: "1.5",
       animValue: new Animated.Value(0),
     }
     this.scanAnimation = null
@@ -76,7 +77,11 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
 
   _onConfirm = () => {
     // 定义确定使用修改过的值定位
-    const { longitude, latitude, height } = this.state
+    let { longitude, latitude, height } = this.state
+    longitude = parseFloat(longitude).toString() === "NaN" ? "0" : longitude
+    latitude = parseFloat(latitude).toString() === "NaN" ? "0" : latitude
+    height = parseFloat(height).toString() === "NaN" ? "0" : height
+
     const { onConfirm } = this.props
     onConfirm && onConfirm({
       x: longitude,
@@ -196,19 +201,24 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   }
 
   // 过滤输入值
-  clearNoNum = value => {
-    value = value.replace(/[^\d.]/g, '') //清除“数字”和“.”以外的字符
+  clearNoNum = (value: string) => {
+    value = value.replace(/[^[\d-]\d.]/g, '') //清除“数字”和“.”以外的字符 （开始以数字或“-”号）
     value = value.replace(/\.{2,}/g, '.') //只保留第一个. 清除多余的
     value = value
       .replace('.', '$#$')
       .replace(/\./g, '')
       .replace('$#$', '.')
     // value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
-    if (value.indexOf('.') < 0 && value != '') {
-      //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
-      value = parseFloat(value)
-    } else if (value == '') {
-      value = 0
+    if(value.indexOf("-") === 0 && parseFloat(value).toString() === "NaN") {
+      value = "-"
+    } else {
+      if (value.indexOf('.') < 0 && value != '') {
+        //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+        console.warn("value 01: " +  parseFloat(value))
+        value = parseFloat(value)
+      } else if (value == '') {
+        // value = 0
+      }
     }
     return value + ''
   }

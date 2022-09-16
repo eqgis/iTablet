@@ -20,7 +20,6 @@ import {
   arToolbox,
 } from '../../containers/workspace/components/ToolBar/modules'
 import { LayerUtils, screen } from '../../utils'
-import { Platform } from 'react-native'
 
 export default class MapARConfig extends Module {
   static key = ChunkType.MAP_AR
@@ -59,19 +58,13 @@ export default class MapARConfig extends Module {
     let modules = []
     switch(type) {
       case 'ar':
-        modules = Platform.OS === 'android' ? [
+        modules = [
           arStartModule,
           arDrawingModule,
           arEditModule,
           arStyleModule,
           arNaviModule,
           arToolbox,
-        ] : [
-          arStartModule,
-          arDrawingModule,
-          arEditModule,
-          arStyleModule,
-          arNaviModule,
         ]
         break
       case 'map':

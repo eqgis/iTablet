@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   colLeft: {
     flex: 2,
-    height: dp(30),
+    minHeight: dp(30),
     borderColor: 'rgba(255, 255, 255, .1)',
     // backgroundColor: 'rgba(0, 45, 99, 0.8)',
     backgroundColor: 'rgba(255, 255, 255, .8)',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   colRight: {
     flex: 3,
-    height: dp(30),
+    minHeight: dp(30),
     borderColor: 'rgba(255, 255, 255, .1)',
     // backgroundColor: 'rgba(0, 45, 99, 0.7)',
     backgroundColor: 'rgba(255, 255, 255, .7)',

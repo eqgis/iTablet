@@ -99,25 +99,20 @@ class ARLayerMenu extends React.Component<Props, State> {
           </TouchableOpacity>
 
           {/* 是否属性表方向是否固定 */}
-          {
-            (layer.type === ARLayerType.AR_MEDIA_LAYER || layer.type === ARLayerType.AR_MODEL_LAYER || layer.type === ARLayerType.AR_TEXT_LAYER)
-            && (
-              <TouchableOpacity
-                onPress={async () => {
-                  const rotationFix = this.state.rotationFix
-                  this.setState({
-                    rotationFix: !rotationFix,
-                  })
-                  await SARMap.setLayerStyle(layer.name, {rotationFix: !rotationFix})
-                }}
-              >
-                <Image
-                  style={{width: dp(25), height: dp(25)}}
-                  source={this.state.rotationFix ? getThemeAssets().layer.icon_tool_face : getThemeAssets().layer.icon_tool_rotation_fixed}
-                />
-              </TouchableOpacity>
-            )
-          }
+          <TouchableOpacity
+            onPress={async () => {
+              const rotationFix = this.state.rotationFix
+              this.setState({
+                rotationFix: !rotationFix,
+              })
+              await SARMap.setLayerStyle(layer.name, {rotationFix: !rotationFix})
+            }}
+          >
+            <Image
+              style={{width: dp(25), height: dp(25)}}
+              source={this.state.rotationFix ? getThemeAssets().layer.icon_tool_face : getThemeAssets().layer.icon_tool_rotation_fixed}
+            />
+          </TouchableOpacity>
 
         </View>
       )

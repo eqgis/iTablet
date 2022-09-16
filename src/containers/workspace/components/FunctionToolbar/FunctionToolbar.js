@@ -365,7 +365,7 @@ export default class FunctionToolbar extends React.Component {
       }
     })
     // 在线协作非三维模块，侧边栏新增多媒体采集
-    if (global.coworkMode && global.Type.indexOf('3D') < 0) {
+    if (global.coworkMode && global.Type.indexOf('3D') < 0 && Object.keys(ChunkType).indexOf(global.Type) >= 0) {
       global.Type !== ChunkType.MAP_PLOTTING && data.push({
         isLoading: false,
         ...serviceModule(UserType.isIPortalUser(this.props.user.currentUser) ? 'iportal' : 'online'),

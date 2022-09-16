@@ -3088,7 +3088,7 @@ export default class MapView extends React.Component {
     const currentMapModule = this.props.mapModules.modules[this.props.user.currentUser.userName].find(item => {
       return item.key === this.type
     })
-    let buttonInfos = global.coworkMode && [
+    let buttonInfos = global.coworkMode && Object.keys(ChunkType).indexOf(global.Type) >= 0 && [
       MapHeaderButton.CoworkChat,
     ] || (currentMapModule && currentMapModule.headerButtons) || [
       // MapHeaderButton.BaseMap,
@@ -3337,7 +3337,7 @@ export default class MapView extends React.Component {
         }
       }
     }
-    if (global.coworkMode && this.state.onlineCowork) {
+    if (global.coworkMode && this.state.onlineCowork && Object.keys(ChunkType).indexOf(global.Type) >= 0) {
       buttons.push(
         <MTBtn
           key={'CoworkMember'}

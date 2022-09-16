@@ -111,7 +111,8 @@ export const openMap = (params, cb = () => { }) => async (
       !params.path
     )
       return
-    const absolutePath = await FileTools.appendingHomeDirectory(params.path)
+    const homePath = await FileTools.appendingHomeDirectory()
+    const absolutePath = params.path.indexOf(homePath) === 0 ? params.path : (homePath + params.path)
     const userName = getState().user.toJS().currentUser.userName || 'Customer'
     const moduleName = global.Type
     const module = params.module || ''

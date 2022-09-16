@@ -114,6 +114,11 @@ export default class LayerAttribute extends React.Component {
     this.filter = '' // 属性查询过滤
     this.isMediaLayer = false // 是否是多媒体图层
     this.Popover = undefined // 长按弹窗
+
+    this.buttonNameFilter = params?.buttonNameFilter || []
+    this.buttonTitles = params?.buttonTitles || []
+    this.buttonActions = params?.buttonActions || []
+    this.dismissTitles = params?.dismissTitles || []
   }
 
   componentDidMount() {
@@ -1320,8 +1325,8 @@ export default class LayerAttribute extends React.Component {
   renderMapLayerAttribute = () => {
     // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
     //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
-    let buttonNameFilter = this.isMediaLayer ? ['MediaData'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []
+    let buttonNameFilter = (this.isMediaLayer ? ['MediaData'] : []).concat(this.buttonNameFilter), // 属性表cell显示 查看 按钮
+      buttonTitles = (this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []).concat(this.buttonTitles)
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.currentLayer.name,
@@ -1408,7 +1413,8 @@ export default class LayerAttribute extends React.Component {
 
       },
     ] : []
-    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds']
+    buttonActions = buttonActions.concat(this.buttonActions)
+    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds'].concat(this.dismissTitles)
     const isSingle = this.total === 1 && this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable

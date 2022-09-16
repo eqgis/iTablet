@@ -161,6 +161,14 @@ export default class LayerAttributeTabs extends React.Component {
     this.currentTabRefs = []
     this.init = !!selectionAttribute
     this.backClicked = false
+    this.buttonNameFilter = params?.buttonNameFilter || []
+    this.buttonTitles = params?.buttonTitles || []
+    this.buttonActions = params?.buttonActions || []
+    this.dismissTitles = params?.dismissTitles || []
+
+    this.hasAddField = params?.hasAddField !== undefined ? params?.hasAddField : true
+
+    this.customButtons = params?.customButtons || []
   }
 
   async componentDidMount() {
@@ -907,6 +915,10 @@ export default class LayerAttributeTabs extends React.Component {
         refreshCurrent={()=>{this.setState({currentIndex:-1})}}
         type={this.type}
         datasetName={this.datasetName}
+        buttonNameFilter={this.props.route.params?.buttonNameFilter || []}
+        buttonTitles={this.props.route.params?.buttonTitles || []}
+        buttonActions={this.props.route.params?.buttonActions || []}
+        dismissTitles={this.props.route.params?.dismissTitles || []}
       />
     )
   }
@@ -1070,7 +1082,7 @@ export default class LayerAttributeTabs extends React.Component {
       >
         <LayerTopBar
           hasTabBtn
-          hasAddField={!global.coworkMode}
+          hasAddField={!global.coworkMode && this.hasAddField}
           hasCamera={global.coworkMode && this.state.isMediaLayer || !global.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
           orientation={this.props.device.orientation}
           tabsAction={this.showDrawer}
@@ -1097,6 +1109,7 @@ export default class LayerAttributeTabs extends React.Component {
               : this.props.currentLayer
           }
           // layerName={this.props.selection?.[this.state.currentTabIndex]?.layerInfo?.name || this.props.currentLayer.name}
+          customButtons={this.customButtons || []}
         />
         {this.state.isShowView && (
           <View

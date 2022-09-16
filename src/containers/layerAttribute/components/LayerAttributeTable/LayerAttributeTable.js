@@ -548,29 +548,56 @@ export default class LayerAttributeTable extends React.Component {
               buttonTitles = [this.props.buttonTitles[filterIndex]] || []
             }
             buttonIndexes = [1]
-            this.props.buttonActions &&
-              this.props.buttonActions instanceof Array &&
-              this.props.buttonActions.forEach(action => {
+
+            if (this.props.buttonActions.length > 0 && this.props.buttonActions.length - 1 < filterIndex) {
+              buttonActions = [this.props.buttonActions[this.props.buttonActions.length - 1]]
+            } else {
+              const action = this.props.buttonActions[filterIndex]
+              if (typeof action === 'function') {
                 buttonActions.push(row => {
-                  if (typeof action === 'function') {
-                    if (item && item instanceof Array) {
-                      action({
-                        rowData: item,
-                        rowIndex: index,
-                        cellData: row.data,
-                        cellIndex: row.index,
-                      })
-                    } else {
-                      action({
-                        rowData: this.props.data,
-                        rowIndex: 0,
-                        cellData: item,
-                        cellIndex: index,
-                      })
-                    }
+                  if (item && item instanceof Array) {
+                    action({
+                      rowData: item,
+                      rowIndex: index,
+                      cellData: row.data,
+                      cellIndex: row.index,
+                    })
+                  } else {
+                    action({
+                      rowData: this.props.data,
+                      rowIndex: 0,
+                      cellData: item,
+                      cellIndex: index,
+                    })
                   }
                 })
-              })
+              }
+              // buttonActions = [this.props.buttonActions[filterIndex]] || []
+            }
+
+            // this.props.buttonActions &&
+            //   this.props.buttonActions instanceof Array &&
+            //   this.props.buttonActions.forEach(action => {
+            //     buttonActions.push(row => {
+            //       if (typeof action === 'function') {
+            //         if (item && item instanceof Array) {
+            //           action({
+            //             rowData: item,
+            //             rowIndex: index,
+            //             cellData: row.data,
+            //             cellIndex: row.index,
+            //           })
+            //         } else {
+            //           action({
+            //             rowData: this.props.data,
+            //             rowIndex: 0,
+            //             cellData: item,
+            //             cellIndex: index,
+            //           })
+            //         }
+            //       }
+            //     })
+            //   })
             break
           }
         }

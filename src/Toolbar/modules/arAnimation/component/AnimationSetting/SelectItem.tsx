@@ -26,9 +26,16 @@ export function SelectItem<T>(props: ItemSelectProps<T>) {
     setValue(props.defalutValue !== undefined ? props.defalutValue : null)
   }, [props.defalutValue])
 
-  useEffect(() => {
-    Platform.OS === 'ios' && value && props.onValueChange(value)
-  }, [value])
+  const wrapSetValue: React.Dispatch<React.SetStateAction<null | T>> = (a) => {
+    if(typeof a === 'function') {
+      const newValue = (a as (prevT: T | null) => T | null)(value)
+      newValue && props.onValueChange(newValue)
+    } else {
+      const newValue = a as T | null
+      newValue && props.onValueChange(newValue)
+    }
+    setValue(a)
+  }
 
   return (
     <View
@@ -108,7 +115,7 @@ export function SelectItem<T>(props: ItemSelectProps<T>) {
                 open={open}
                 setOpen={setOpen}
                 value={value as any}
-                setValue={setValue}
+                setValue={wrapSetValue}
                 listMode={'MODAL'}
               />
             </View>

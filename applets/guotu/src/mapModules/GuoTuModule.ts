@@ -1,4 +1,4 @@
-import { ConstOnline, MapHeaderButton, MapTabs } from '@/constants'
+import { ConstOnline, MapTabs } from '@/constants'
 import { Module } from '@/class'
 import {
   toolModule,
@@ -6,7 +6,7 @@ import {
 } from '@/containers/workspace/components/ToolBar/modules'
 import { getImage } from '../assets'
 import { checkModule } from '../mapFunctionModules'
-import { LayerUtils, NavigatorUtil, SCoordinationUtils } from '@/utils'
+import { LayerUtils, NavigatorUtil } from '@/utils'
 import navigators from '../containers'
 import { getLanguage } from '../language'
 import NavigationService from '@/containers/NavigationService'
@@ -18,7 +18,7 @@ import { guotu } from '../reduxModels'
 import ServiceAction from '@/containers/workspace/components/ToolBar/modules/serviceModule/ServiceAction'
 
 /**
- * 首页显示的旅行轨迹模块
+ * 首页显示的土地调查模块
  */
 export default class GuoTuModule extends Module {
   static key = 'guotu'
@@ -27,10 +27,10 @@ export default class GuoTuModule extends Module {
       key: GuoTuModule.key,
       // 右侧工具条加载项
       functionModules: [
-        locationModule(),
-        changeMapModule(),      // 底图
-        checkModule(),        // 核查
-        toolModule(),       // 工具
+        locationModule(),       // 自定义模块-地区
+        changeMapModule(),      // 系统自带模块-底图
+        checkModule(),          // 自定义模块-核查
+        toolModule(),           // 系统自带模块-工具
       ],
       // 地图类型（三维/二维）
       mapType: Module.MapType.MAP,
@@ -38,7 +38,13 @@ export default class GuoTuModule extends Module {
 
     // 自定义地图右上角按钮
     this.headerButtons = [
-      // MapHeaderButton.CoworkChat,
+      // MapHeaderButton 中自带功能
+      // MapHeaderButton.Audio,  // 语音
+      // MapHeaderButton.Undo,   // 回退
+      // MapHeaderButton.Search, // 搜索
+      // MapHeaderButton.Share,  // 分享
+
+      // 自定义功能
       {
         key: 'save',
         image: getImage().save,
@@ -48,14 +54,16 @@ export default class GuoTuModule extends Module {
         image: getImage().upload,
         action: this.upload,
       }
-    ],
+    ]
 
-    // 自定义地图地步Tab
+    // 自定义地图底部Tab
     this.tabModules = [
-      MapTabs.MapView,
-      MapTabs.LayerManager,
-      MapTabs.LayerAttribute,
-      // MapTabs.MapSetting,
+      // 系统自带Tab
+      MapTabs.MapView,          // 系统自带Tab-地图
+      MapTabs.LayerManager,     // 系统自带Tab-图层
+      MapTabs.LayerAttribute,   // 系统自带Tab-属性
+      // MapTabs.MapSetting,    // 系统自带Tab-设置
+      // 用户自定义Tab页面
       {
         key: module,
         title: getLanguage().TASK,
@@ -80,6 +88,9 @@ export default class GuoTuModule extends Module {
       list: 'whitelist', //白名单,持久化数据
     })
 
+    /**
+     * 打开在线协作,数据服务
+     */
     global.coworkMode = true
   }
 

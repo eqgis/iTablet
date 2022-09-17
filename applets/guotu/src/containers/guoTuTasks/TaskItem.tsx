@@ -100,6 +100,7 @@ interface Props {
   onPress?: (item?: {
     path: string,
     name: string,
+    data: any,
   }) => void,
   /** 是否可以下载 */
   // hasDownload?: boolean,
@@ -373,6 +374,7 @@ export default class TaskItem extends Component<Props, State> {
       this.props.onPress && this.props.onPress({
         path: this.mapPath,
         name: mapName,
+        data: this.props.data,
       })
     } else {
       Toast.show('请先下载任务')

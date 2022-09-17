@@ -14,7 +14,7 @@ const defaultCheckModule = function () {
 }
 
 /**
- * 地图右侧工具栏创建旅行轨迹功能
+ * 地图右侧工具栏核查功能
  */
 class CheckModule extends CustomFunctionModule {
   constructor(props: {
@@ -28,6 +28,13 @@ class CheckModule extends CustomFunctionModule {
     super(props)
   }
 
+  /**
+   * 核查中Toolbar各类型自定义高度
+   * @param containerType
+   * @param orientation
+   * @param additional
+   * @returns
+   */
   getToolbarSize = (containerType, orientation, additional) => { // containerType, orientation, additional
     if (additional.type === AppletsToolType.APPLETS_CHECK_EDIT) {
       return { height: Height.TOOLBAR_BUTTONS + scaleSize(300) }
@@ -35,19 +42,25 @@ class CheckModule extends CustomFunctionModule {
     return null
   }
 
+  /**
+   * 右侧工具栏核查入口方法
+   */
   action = () => {
+    // 设置当前Toolbar类型
     this.setModuleData(this.type)
+    // 获取iTablet公共方法,和redux持久化数据
     const params = ToolbarModule.getParams()
+    // 调用核查,打开核查界面
     CheckAction.startCheck()
     Toast.show(getLanguage(params.language).Prompt.PLEASE_SELECT_OBJECT)
   }
 }
 
 const _CheckModule = new CheckModule({
-  type: AppletsToolType.APPLETS_CHECK_EDIT,                               // 自定义类型
-  title: '核查', // title
-  size: 'large',                                      // 图片尺寸
-  image: getImage().check,             // 图片
+  type: AppletsToolType.APPLETS_CHECK_EDIT,            // 自定义类型
+  title: '核查',                                        // title
+  size: 'large',                                       // 图片尺寸
+  image: getImage().check,                             // 图片
   getData: CheckData.getData,                          // 当前Function模块获取数据的方法
   actions: CheckAction,                                // 当前Function模块所有事件
 })

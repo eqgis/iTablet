@@ -13,10 +13,10 @@ import { UserType } from '@/constants'
 import { getThemeAssets } from '@/assets'
 import { downloadSourceFile, deleteSourceDownloadFile } from '@/redux/models/down'
 import { openMap, closeMap } from '@/redux/models/map'
-import { setCurrentGroup } from '@/redux/models/cowork'
+import { setCurrentGroup, setCurrentTask } from '@/redux/models/cowork'
 import { getLayers } from '@/redux/models/layers'
 import { connect, ConnectedProps } from 'react-redux'
-import { SCoordination, SMediaCollector } from 'imobile_for_reactnative'
+import { SCoordination, SMap, SMediaCollector, SMessageService } from 'imobile_for_reactnative'
 import { ResultDataBase, ResourceType } from 'imobile_for_reactnative/types/interface/iserver/types'
 import TaskItem, { MoreParams } from './TaskItem'
 // import BatchHeadBar from '../../../Mine/component/BatchHeadBar'
@@ -25,6 +25,7 @@ import NavigationService from '@/containers/NavigationService'
 import { MapToolbar } from '@/containers/workspace/components'
 import ServiceAction from '@/containers/workspace/components/ToolBar/modules/serviceModule/ServiceAction'
 import { getImage } from '../../assets'
+import CoworkInfo from '@/containers/tabs/Friend/Cowork/CoworkInfo'
 
 const ITEM_HEIGHT = scaleSize(80)
 
@@ -308,7 +309,7 @@ class GuoTuTasks extends Component<Props, State> {
    *    cb: () => void,
    * }
    */
-  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', orderBy = 'UPDATETIME', keywords = this.keywords, resourceSubTypes = this.isManage ? [] : ['WORKSPACE'], cb = () => { } }: any) => {
+  getGroupResources = ({ pageSize = this.pageSize, currentPage = 1, orderType = 'DESC', orderBy = 'UPDATETIME', keywords = this.keywords, resourceSubTypes = ['WORKSPACE'], cb = () => { } }: any) => {
     if (!this.props?.currentGroup?.id) {
       Toast.show('请选择地区')
       return
@@ -317,13 +318,14 @@ class GuoTuTasks extends Component<Props, State> {
       const _data = []
       for (const item of data) {
         const description = item.description && JSON.parse(item.description)
-        if (resourceSubTypes.length === 0 && description?.executor === this.props.user.currentUser.userName) {
-          _data.push(item)
-        } else if (
-          resourceSubTypes.indexOf(item.sourceSubtype) >= 0 &&
+        const executor = (description?.executor || '').split(',')
+        if (
+          (
+            resourceSubTypes.length === 0 || resourceSubTypes.indexOf(item.sourceSubtype) >= 0
+          ) &&
           (
             this.props.user.currentUser.userName === 'admin' ||
-            description?.executor === this.props.user.currentUser.userName // 判断该任务是否是当前用户
+            executor.indexOf(this.props.user.currentUser.userName) >= 0 // 判断该任务是否是当前用户
           )
         ) {
           _data.push(item)
@@ -495,9 +497,37 @@ class GuoTuTasks extends Component<Props, State> {
     return false
   }
 
+  createCowork = async (targetId: any) => {
+    try {
+      global.Loading.setLoading(
+        true,
+        getLanguage(this.props.language).Prompt.PREPARING,
+      )
+      const licenseStatus = await SMap.getEnvironmentStatus()
+      global.isLicenseValid = licenseStatus.isLicenseValid
+      if (!global.isLicenseValid) {
+        global.SimpleDialog.set({
+          text: getLanguage(this.props.language).Prompt.APPLY_LICENSE_FIRST,
+        })
+        global.SimpleDialog.setVisible(true)
+        return
+      }
+      CoworkInfo.setId(targetId)
+      // global.getFriend().setCurMod(module)
+      global.getFriend().curChat &&
+        global.getFriend().curChat.setCoworkMode(true)
+      global.coworkMode = true
+      // CoworkInfo.setGroupId(this.props.groupInfo.id)
+      setTimeout(() => global.Loading.setLoading(false), 300)
+    } catch (error) {
+      global.Loading.setLoading(false)
+    }
+  }
+
   _onPress = async (data: {
     path: string,
     name: string,
+    data: any,
   }) => {
     try {
       console.warn(data)
@@ -511,7 +541,7 @@ class GuoTuTasks extends Component<Props, State> {
       // 移除地图上所有callout
       await SMediaCollector.removeMedias()
       Toast.show('正在打开地图')
-      await this.props.openMap({
+      const mapInfo = await this.props.openMap({
         path: data.path,
         name: data.name,
       })
@@ -524,6 +554,45 @@ class GuoTuTasks extends Component<Props, State> {
           ServiceAction.downloadService(result?.content?.[0].linkPage)
         }
       })
+
+      const description = data.data.description && JSON.parse(data.data.description)
+      const members = (description?.executor || '').split(',')
+      // admin默认为每个组的成员
+      if (members.indexOf('admin') < 0) {
+        members.push('admin')
+      }
+      const id = `Group_Task_${this.props.currentGroup.id}`
+      await SMessageService.declareSession(members, id)
+
+      this.props.setCurrentTask && this.props.setCurrentTask({
+        creator: data.data.resourceCreator,
+        groupID: this.props.currentGroup.id,
+        id: id,
+        map: {
+          name: mapInfo.name,
+          path: mapInfo.path,
+        },
+        members: members,
+        module: {
+          key: 'guotu',
+          // index: 1
+        },
+        name: mapInfo.name,
+        resource: {
+          resourceId: data.data.resourceId,
+          resourceName: data.data.resourceName,
+          nickname: data.data.nickname,
+          resourceCreator: data.data.resourceCreator,
+          restService: {},
+        },
+        time: new Date().getTime(),
+        type: 403,
+        user: {
+          name: this.props.user.currentUser.userName,
+          id: this.props.user.currentUser.userName,
+        },
+      })
+      this.createCowork(id)
     } catch (error) {
       Toast.show('地图打开失败,请检查地图诗句是否完整')
       __DEV__ && console.warn(error)
@@ -759,6 +828,7 @@ const mapDispatchToProps = {
   openMap,
   closeMap,
   getLayers,
+  setCurrentTask,
 }
 
 const connector = connect(

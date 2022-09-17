@@ -5,13 +5,10 @@ import ToolbarBtnType from '@/containers/workspace/components/ToolBar/ToolbarBtn
 import { getLanguage } from '@/language'
 import CheckAction from './CheckAction'
 import { AppletsToolType } from '../../constants'
-import { LayerUtils } from '@/utils'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { CheckButtons } from './component'
-import { ToolBarBottomItem } from '@/containers/workspace/components/ToolBar/modules/types'
 import { ConstPath } from '@/constants'
 import { FileTools } from 'imobile_for_reactnative'
-import NavigationService from '@/containers/NavigationService'
 
 interface DataItem {
   key: string;
@@ -29,12 +26,14 @@ interface DataItem {
  * @returns {{data: Array, buttons: Array}}
  */
 function getData(type: string | number) {
-  let data: DataItem[] = []
-  let buttons: ToolBarBottomItem[] = []
-  let customView = null
+  let data: DataItem[] = [] // 底部弹出工具栏内容
+  let buttons: any[] = []   // 底部弹出工具栏内容下面的按钮(例如:返回,收缩,确认等)
+  let customView = null     // 自定义组件,代替data显示
   if (typeof type === 'string' && type.indexOf(AppletsToolType.APPLETS_CHECK_EDIT) === -1) {
     return { data, buttons }
   }
+  // 核查工具类型为 APPLETS_CHECK_EDIT
+  // 其子类型 同一命名 APPLETS_CHECK_EDIT_XXXXX (必须)
   switch (type) {
     case AppletsToolType.APPLETS_CHECK_EDIT_POINT:
       data = [
@@ -388,7 +387,17 @@ function getData(type: string | number) {
   return { data, buttons, customView }
 }
 
-interface MapTaskItem { title: string, image: any, name: string, path: string, info: {infoType: string, lastModifiedDate: string, isTemplate: boolean}}
+interface MapTaskItem {
+  title: string,
+  image: any,
+  name: string,
+  path: string,
+  info: {
+    infoType: string,
+    lastModifiedDate: string,
+    isTemplate: boolean,
+  },
+}
 async function getTasks(): Promise<MapTaskItem[]> {
   const userList: MapTaskItem[] = []
   try {

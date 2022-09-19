@@ -913,13 +913,6 @@ export default class MapView extends React.Component {
       })
     }
 
-    if (
-      global.Type === ChunkType.MAP_AR &&
-      JSON.stringify(prevProps.armap.currentMap) !== JSON.stringify(this.props.armap.currentMap) &&
-      this.props.armap.currentMap?.mapName
-    ) {
-      SARMap.setAction(ARAction.NULL)
-    }
   }
 
   componentWillUnmount() {

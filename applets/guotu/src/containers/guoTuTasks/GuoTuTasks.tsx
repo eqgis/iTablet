@@ -235,7 +235,6 @@ class GuoTuTasks extends Component<Props, State> {
         title: getLanguage(this.props.language).Cowork.UPDATE_LOCAL_SERVICE,
         action: () => {
           this.getGroupServices(this.props.currentGroup.id).then(result => {
-            console.warn(result)
             if (result?.content?.[0].linkPage) {
               ServiceAction.downloadService(result?.content?.[0].linkPage)
             }
@@ -263,7 +262,6 @@ class GuoTuTasks extends Component<Props, State> {
     const shouldUpdate = JSON.stringify(nextState) !== JSON.stringify(this.state) ||
       JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
       !this.state.selectedData.compare(nextState.selectedData)
-    console.warn(JSON.stringify(nextProps.currentGroup) !== JSON.stringify(this.props.currentGroup))
     return shouldUpdate
   }
 
@@ -503,6 +501,14 @@ class GuoTuTasks extends Component<Props, State> {
         true,
         getLanguage(this.props.language).Prompt.PREPARING,
       )
+
+      // global.getFriend().setCurMod(module)
+      global.getFriend().curChat &&
+        global.getFriend().curChat.setCoworkMode(true)
+      global.coworkMode = true
+      CoworkInfo.setGroupId(this.props.currentGroup.id)
+      CoworkInfo.setId(targetId)
+
       const licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
@@ -512,12 +518,6 @@ class GuoTuTasks extends Component<Props, State> {
         global.SimpleDialog.setVisible(true)
         return
       }
-      CoworkInfo.setId(targetId)
-      // global.getFriend().setCurMod(module)
-      global.getFriend().curChat &&
-        global.getFriend().curChat.setCoworkMode(true)
-      global.coworkMode = true
-      // CoworkInfo.setGroupId(this.props.groupInfo.id)
       setTimeout(() => global.Loading.setLoading(false), 300)
     } catch (error) {
       global.Loading.setLoading(false)
@@ -530,7 +530,6 @@ class GuoTuTasks extends Component<Props, State> {
     data: any,
   }) => {
     try {
-      console.warn(data)
       if (this.props.map.currentMap.name === data.name) {
         Toast.show('地图已经打开')
         return
@@ -545,11 +544,11 @@ class GuoTuTasks extends Component<Props, State> {
         path: data.path,
         name: data.name,
       })
-      await this.props.getLayers()
+      await this.props.getLayers() // 获取图层
+      await SMap.viewEntire() // 显示全幅
 
       Toast.show('正在加载服务')
       this.getGroupServices(this.props.currentGroup.id).then(result => {
-        console.warn(result)
         if (result?.content?.[0].linkPage) {
           ServiceAction.downloadService(result?.content?.[0].linkPage)
         }
@@ -557,13 +556,21 @@ class GuoTuTasks extends Component<Props, State> {
 
       const description = data.data.description && JSON.parse(data.data.description)
       const members = (description?.executor || '').split(',')
+      const _members: {id: string, name: string}[] = []
       // admin默认为每个组的成员
       if (members.indexOf('admin') < 0) {
         members.push('admin')
       }
+      for (const member of members) {
+        _members.push({
+          id: member,
+          name: member,
+        })
+      }
       const id = `Group_Task_${this.props.currentGroup.id}`
-      await SMessageService.declareSession(members, id)
+      const declareResult = await SMessageService.declareSession(_members, id)
 
+      const time = new Date().getTime()
       this.props.setCurrentTask && this.props.setCurrentTask({
         creator: data.data.resourceCreator,
         groupID: this.props.currentGroup.id,
@@ -572,7 +579,7 @@ class GuoTuTasks extends Component<Props, State> {
           name: mapInfo.name,
           path: mapInfo.path,
         },
-        members: members,
+        members: _members,
         module: {
           key: 'guotu',
           // index: 1
@@ -585,13 +592,14 @@ class GuoTuTasks extends Component<Props, State> {
           resourceCreator: data.data.resourceCreator,
           restService: {},
         },
-        time: new Date().getTime(),
+        time: time,
         type: 403,
         user: {
           name: this.props.user.currentUser.userName,
           id: this.props.user.currentUser.userName,
         },
       })
+
       this.createCowork(id)
     } catch (error) {
       Toast.show('地图打开失败,请检查地图诗句是否完整')

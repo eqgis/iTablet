@@ -12,7 +12,7 @@ import TouchProgress from '../TouchProgress'
 // import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModuleDefault, { getToolbarModule } from './modules/ToolbarModule'
-import { View, Animated, Platform, TouchableOpacity, Image, ScaledSize } from 'react-native'
+import { View, Animated, Platform, TouchableOpacity, Image, ScaledSize, Text } from 'react-native'
 import { SMap, SScene, Action } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
@@ -961,8 +961,11 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
             resizeMode={'contain'}
             // source={getThemeAssets().ar.toolbar.ai_setting}
             source={item.image}
-            style={styles.headerRightImg}
+            style={[styles.headerRightImg, item.imgStyle]}
           />
+          {
+            item.title && <Text style={[styles.headerRightTxt, item.titleStyle]}>{item.title}</Text>
+          }
         </TouchableOpacity>
       )
     })

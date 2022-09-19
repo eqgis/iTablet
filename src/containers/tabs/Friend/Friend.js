@@ -2256,7 +2256,7 @@ export default class Friend extends Component {
 
   renderIPortalAdminView = () => {
     if (!UserType.isIPortalUser(this.props.user.currentUser)) return null
-    if (this.props.user.currentUser.roles.indexOf('ADMIN') < 0) return null
+    if (this.props.user.currentUser.roles?.indexOf('ADMIN') < 0) return null
     return (
       <View
         style={{

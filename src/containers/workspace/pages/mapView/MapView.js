@@ -929,6 +929,12 @@ export default class MapView extends React.Component {
     ) {
       SARMap.setAction(ARAction.NULL)
     }
+
+    if (this.state.onlineCowork !== (CoworkInfo.coworkId !== '')) {
+      this.setState({
+        onlineCowork: CoworkInfo.coworkId !== '',
+      })
+    }
   }
 
   componentWillUnmount() {

@@ -9,6 +9,10 @@ import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/Too
 import { CheckButtons } from './component'
 import { ConstPath } from '@/constants'
 import { FileTools } from 'imobile_for_reactnative'
+import { MTBtn } from '@/components'
+import { getImage } from '../../assets'
+import { scaleSize, setSpText } from '@/utils'
+import NavigationService from '@/containers/NavigationService'
 
 interface DataItem {
   key: string;
@@ -434,7 +438,76 @@ async function getTasks(): Promise<MapTaskItem[]> {
   }
 }
 
+// function _headerLeft() {
+//   return (
+//     <MTBtn
+//       key={'change_layer'}
+//       image={getImage().layer}
+//       style={{
+//         backgroundColor: '#rgba(255, 255, 255, 0.8)',
+//         borderRadius: scaleSize(8),
+//         width: scaleSize(80),
+//         height: scaleSize(80),
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         marginVertical: scaleSize(8),
+//       }}
+//       imageStyle={{
+//         width: scaleSize(44),
+//         height: scaleSize(44),
+//       }}
+//       textStyle={{
+//         width: scaleSize(70),
+//         textAlign: 'center',
+//         fontSize: setSpText(16),
+//       }}
+//       title={'切换图层'}
+//       onPress={async() => {
+//         // 切换图层
+//         NavigationService.navigate('ChooseLayer')
+//       }}
+//     />
+//   )
+// }
+
+/** 自定义Header数据 */
+function getHeaderData(type: string) {
+  if (type !== AppletsToolType.APPLETS_CHECK_EDIT) return
+  const headerData = {
+    type: 'floatNoTitle',
+    withoutBack: true,
+    headerRight: [{
+      key: 'change_layer',
+      title: '切换图层',
+      action: () => NavigationService.navigate('ChooseLayer'),
+      size: 'large',
+      image: getImage().layer,
+      style: [{
+        marginTop: scaleSize(20),
+        backgroundColor: '#rgba(255, 255, 255, 0.8)',
+        borderRadius: scaleSize(8),
+        width: scaleSize(74),
+        height: scaleSize(80),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: scaleSize(8),
+      }],
+      imgStyle: [{
+        width: scaleSize(44),
+        height: scaleSize(44),
+      }],
+      titleStyle: [{
+        width: scaleSize(70),
+        textAlign: 'center',
+        fontSize: setSpText(14),
+      }],
+    }],
+  }
+  return headerData
+}
+
 export default {
   getData,
   getTasks,
+  getHeaderData,
 }

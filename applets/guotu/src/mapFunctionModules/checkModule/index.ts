@@ -37,7 +37,7 @@ class CheckModule extends CustomFunctionModule {
    */
   getToolbarSize = (containerType, orientation, additional) => { // containerType, orientation, additional
     if (additional.type === AppletsToolType.APPLETS_CHECK_EDIT) {
-      return { height: Height.TOOLBAR_BUTTONS + scaleSize(300) }
+      return { height: Height.TOOLBAR_BUTTONS + scaleSize(160) }
     }
     return null
   }
@@ -63,6 +63,7 @@ const _CheckModule = new CheckModule({
   image: getImage().check,                             // 图片
   getData: CheckData.getData,                          // 当前Function模块获取数据的方法
   actions: CheckAction,                                // 当前Function模块所有事件
+  getHeaderData: CheckData.getHeaderData,              // 自定义Toolbar header
 })
 
 export default defaultCheckModule

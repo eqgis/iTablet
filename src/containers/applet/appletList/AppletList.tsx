@@ -96,7 +96,7 @@ export default class AppletList extends React.Component<Props, State> {
       }
     })
 
-    // 添加自定义已添加小程序
+    // 添加自定义已添加小插件
     this.state.selected.forEach(async (value, key) => {
       for (let i = 0; i < mapModules.length; i++) {
         if (key !== mapModules[i].key && _applets.indexOf(mapModules[i].key) < 0) {

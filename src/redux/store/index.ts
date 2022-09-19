@@ -69,7 +69,7 @@ export const injectReducer = (params: InjectParams) => {
 }
 
 export default () => {
-  // 小程序与主业务代码数据共同关键代码
+  // 小插件与主业务代码数据共同关键代码
   if (persistor && store) {
     return { persistor, store }
   }

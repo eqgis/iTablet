@@ -107,7 +107,7 @@ class ModuleList extends Component {
       data.push(new AppletAdd().getChunk(this.props.language))
     }
 
-    //市场不允许出现添加小程序，在审核期间把标去掉 add xiezhy
+    //市场不允许出现添加小插件，在审核期间把标去掉 add xiezhy
     // if(global.isAudit){
     //   data.splice(data.length-1, 1)
     // }

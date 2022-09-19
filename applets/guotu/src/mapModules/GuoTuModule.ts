@@ -155,11 +155,11 @@ export default class GuoTuModule extends Module {
     return {
       key: GuoTuModule.key,
       // 根据语言获取地图模块名称
-      title: '国土调查',
+      title: '土地核查',
       // 模块图片
-      moduleImage: getImage().flight,
+      moduleImage: getImage().check,
       // 点击时模块高亮图片
-      moduleImageTouch: getImage().flight,
+      moduleImageTouch: getImage().check,
       // 默认地图名称
       defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
       // 地图默认底图数据

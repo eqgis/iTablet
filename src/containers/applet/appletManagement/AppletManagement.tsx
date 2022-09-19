@@ -175,7 +175,7 @@ export default class AppletManagement extends React.Component<Props, State> {
         </View>
         <View style={styles.rows}>
           {this.renderRows(this.state.unusedModules, path => {
-            // 加载小程序bundle包
+            // 加载小插件bundle包
             BundleTools.loadModel(path).then(result => {
               if (result) {
                 // 如已经加载过,则从redux记录中直接放到首页

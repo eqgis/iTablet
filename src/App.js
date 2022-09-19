@@ -241,7 +241,7 @@ class AppRoot extends Component {
       BackHandler.addEventListener('hardwareBackPress', this.back)
     NetInfo.addEventListener(this.handleNetworkState)
 
-    // 初始化bundle工具,用于加载小程序
+    // 初始化bundle工具,用于加载小插件
     BundleUtils.init({
       addMapModule: this.props.addMapModule,
     })
@@ -734,7 +734,7 @@ class AppRoot extends Component {
 
   getUserApplets = async userName => {
     try {
-      // 获取当前用户的小程序
+      // 获取当前用户的小插件
       // let applets = await ConfigUtils.getApplets(userName)
       // let myMapModules = []
       // if (applets === null || userName === 'Customer' && applets.length === 0) {

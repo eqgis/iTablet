@@ -134,7 +134,7 @@ export default class AppletItem extends React.Component<Props, State> {
   _action = async () => {
     // const filePath = global.homePath + ConstPath.BundlesPath + this.props.data.fileName
     if (_mapModules.indexOf(this.props.data.fileName) >= 0) {
-      // 判断redux中是否存在未显示的小程序
+      // 判断redux中是否存在未显示的小插件
       const applets = [] // redux使用的对象数组
       const _applets = [] // 本地文件的字符串数组
 
@@ -159,8 +159,8 @@ export default class AppletItem extends React.Component<Props, State> {
       await ConfigUtils.recordApplets(this.props.user.currentUser.userName, _applets)
       this.props.refreshData && this.props.refreshData()
     } else {
-      // 判断本地是否有小程序bundle
-      // 下载小程序
+      // 判断本地是否有小插件bundle
+      // 下载小插件
       this._downloadFile()
     }
   }

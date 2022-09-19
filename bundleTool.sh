@@ -60,7 +60,7 @@ buildApplets() {
 
 #-------------------------------
 #   buildApplet
-#   创建小程序bundle和zip
+#   创建小插件bundle和zip
 #-------------------------------
 buildApplet() {
     echoc "创建$buildName.bundle"
@@ -73,7 +73,7 @@ buildApplet() {
 
 #-------------------------------
 #   clearBase
-#   清除小程序bundle和zip
+#   清除小插件bundle和zip
 #-------------------------------
 clearBase() {
   echoc "清除base"
@@ -86,7 +86,7 @@ clearBase() {
 
 #-------------------------------
 #   clearApplet
-#   清除小程序bundle和zip
+#   清除小插件bundle和zip
 #-------------------------------
 clearApplet() {
   echoc "清除$clearName"
@@ -115,7 +115,7 @@ moveBase() {
 
 #-------------------------------
 #   clearApplet
-#   清除小程序bundle和zip
+#   清除小插件bundle和zip
 #-------------------------------
 moveApplet() {
   echoc "拷贝$moveName.bundle文件"
@@ -235,7 +235,7 @@ else
               eg: bundleTools.sh -b=tour
               "
           
-  echo "  -b:         创建base和小程序包;
+  echo "  -b:         创建base和小插件包;
   "
 
   echo "  -ba:        创建buildApplets中指定的applets;
@@ -244,17 +244,17 @@ else
   echo "  -bc:        创建base bundle;
   "
 
-  echo  "  -ca xxx:    清除xxx小程序包;
+  echo  "  -ca xxx:    清除xxx小插件包;
               eg: bundleTools.sh -ca=tour
               "
 
   echo "  -c:         清除 bundle/android/ 中的所有包;
   "
 
-  echo "  -m xxx:     移动xxx小程序到iTablet文件目录;
+  echo "  -m xxx:     移动xxx小插件到iTablet文件目录;
               eg: bundleTools.sh -m=tour
               "
 
-  echo "  -m:         移动base和所有小程序到默认位置;
+  echo "  -m:         移动base和所有小插件到默认位置;
   "
 fi

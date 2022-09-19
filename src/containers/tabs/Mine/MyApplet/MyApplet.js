@@ -108,12 +108,12 @@ class MyApplet extends MyDataPage {
       // 删除bundle
       let result = false
       if (sectionIndex) {
-        // 删除本地小程序
+        // 删除本地小插件
         result = await BundleTools.deleteBundle(this.itemInfo.item.path)
       } else {
-        // 卸载已加载的小程序
+        // 卸载已加载的小插件
         result = await BundleTools.unloadBundle(this.itemInfo.item.path)
-        // 卸载后,删除首页对应小程序
+        // 卸载后,删除首页对应小插件
         result && this.props.deleteMapModule(this.itemInfo.item.name)
       }
       if (result) {
@@ -151,11 +151,11 @@ class MyApplet extends MyDataPage {
       let sectionIndex = this.getSectionIndex()
       let result = false
       if (sectionIndex) {
-        // 导出本地小程序
+        // 导出本地小插件
         const targetPath = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.RelativeFilePath.ExportBundle + this.itemInfo.item.name + '.zip', true)
         result = await FileTools.copyFile(this.itemInfo.item.path, targetPath)
       } else {
-        // 导出已加载的小程序
+        // 导出已加载的小插件
         const toPath = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.RelativeFilePath.ExportBundle)
         this.exportPath = await BundleTools.exportBundles(this.itemInfo.item.path, toPath)
         result = !!this.exportPath

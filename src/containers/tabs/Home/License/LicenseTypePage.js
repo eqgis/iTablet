@@ -59,11 +59,6 @@ class LicenseTypePage extends Component {
           type: LicenseType.local,
           onPress: this.joinLicense,
         },
-        {
-          title: getLanguage(global.language).Profile.LICENSE_CLOUD,
-          type: LicenseType.clould,
-          onPress: this.joinCloud,
-        },
       ]
     } else {
       data = [

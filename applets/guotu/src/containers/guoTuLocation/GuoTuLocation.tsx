@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import NavigationService from '@/containers/NavigationService'
 
 import { setCurrentGroup } from '../../reduxModels/guotu'
+import { Color } from '@/utils/AppStyle'
 
 interface Props {
   navigation: any,
@@ -229,7 +230,7 @@ class GuoTuLocation extends Component<Props, State> {
   }
 
   _renderItemSeparatorComponent = () => {
-    return <ListSeparator />
+    return <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(110), marginRight: scaleSize(42)}} />
   }
 
   _renderGroupList = () => {

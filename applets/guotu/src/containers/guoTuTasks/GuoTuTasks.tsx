@@ -544,6 +544,10 @@ class GuoTuTasks extends Component<Props, State> {
         path: data.path,
         name: data.name,
       })
+      if (!mapInfo) {
+        Toast.show('打开地图失败,请检查地图数据是否存在')
+        return
+      }
       await this.props.getLayers() // 获取图层
       await SMap.viewEntire() // 显示全幅
 

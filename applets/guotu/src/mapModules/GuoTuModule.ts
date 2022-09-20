@@ -124,7 +124,7 @@ export default class GuoTuModule extends Module {
   /**
    * 上传数据服务
    */
-  upload = async () => {
+  upload = () => {
     try {
       const params: any = ToolbarModule.getParams()
 

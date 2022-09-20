@@ -20,6 +20,7 @@ import {
   SMap,
   SOnlineService,
   SIPortalService,
+  SLocation,
 } from 'imobile_for_reactnative'
 import FileTools from '../../../native/FileTools'
 import ConstPath from '../../../constants/ConstPath'

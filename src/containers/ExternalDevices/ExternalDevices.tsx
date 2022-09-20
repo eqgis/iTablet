@@ -1,4 +1,3 @@
-import { getPublicAssets } from "@/assets"
 import { Container } from '../../components'
 import { getLanguage } from "@/language"
 import { MainStackScreenNavigationProps } from "@/types/NavigationTypes"
@@ -6,7 +5,6 @@ import React, {Component} from "react"
 import { Image, TouchableOpacity, View, Text, ActivityIndicator } from "react-native"
 import styles from "./styles"
 import { SLocation } from "imobile_for_reactnative"
-import { getSelectDevice, setSelectDevice } from "../locationSetting/deviceUtil"
 import NavigationService from "../NavigationService"
 
 
@@ -90,8 +88,8 @@ class ExternalDevices extends Component<Props, State> {
     const currentOption = this.state.currentOption
     if(currentOption.type === 'external') {
       // 不能直接修改redux里的设备  to do
-      // this.props.setDevice(currentOption)
-      setSelectDevice(currentOption)
+      this.props.setDevice(currentOption)
+      // setSelectDevice(currentOption)
     }
     NavigationService.goBack()
   }
@@ -145,7 +143,7 @@ class ExternalDevices extends Component<Props, State> {
           <Text style={styles.text}>{title}</Text>
           <Image
             style={styles.image}
-            source={JSON.stringify(this.state.currentOption) === JSON.stringify(device) || JSON.stringify(getSelectDevice()) === JSON.stringify(device) ? radio_on : radio_off}
+            source={JSON.stringify(this.state.currentOption) === JSON.stringify(device) || JSON.stringify(this.props.peripheralDevice) === JSON.stringify(device) ? radio_on : radio_off}
           />
         </TouchableOpacity>
         {this.renderSeperator()}

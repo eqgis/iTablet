@@ -290,6 +290,7 @@ class AppRoot extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
+    SLocation.removeChangeDeviceSuccessListener()
     // NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
   }
 
@@ -421,6 +422,9 @@ class AppRoot extends Component {
 
   initLocation = async () => {
     await SLocation.openGPS()
+    SLocation.addSlocationStateListener((type: string) => {
+      Toast.show(getLanguage().SLOCATION_STATE_CURRENT + ":( " + type + " )")
+    })
   }
 
   initLicense = async () => {

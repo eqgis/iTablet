@@ -2198,6 +2198,11 @@ export const language_tr: typeof language_cn = {
   DISTANCE_LOCATION:"Uzaklık Konumu",
   TIME_LOCATION:"Zamansal Konum",
 
+  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
+  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
+  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
+  SLOCATION_STATE_CURRENT: "The current positioning status",  // To be translated
+
   // 许可
   LICENSE: "Lisans",
   LICENSE_CURRENT: "Mevcut Lisans",

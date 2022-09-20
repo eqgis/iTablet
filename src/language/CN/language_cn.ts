@@ -2200,6 +2200,11 @@ export const language_cn = {
   DISTANCE_LOCATION: "距离定位",
   TIME_LOCATION: "时间定位",
 
+  CHANGE_DEVICE_LOCAL: "已切换到此设备",
+  CHANGE_DEVICE_EXTERNAL: "已切换到网络设备",
+  CHANGE_DEVICE_BLUETOOTH: "已切换到蓝牙设备",
+  SLOCATION_STATE_CURRENT: "当前使用的定位状态",
+
   // 许可
   LICENSE: "许可",
   LICENSE_CURRENT: "当前许可",

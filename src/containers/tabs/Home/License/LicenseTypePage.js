@@ -52,43 +52,48 @@ class LicenseTypePage extends Component {
 
   getType = () => {
     let data = []
-    if (UserType.isIPortalUser(this.props.currentUser)) {
-      data = [
-        {
-          title: getLanguage(global.language).Profile.LICENSE_OFFLINE,
-          type: LicenseType.local,
-          onPress: this.joinLicense,
-        },
-      ]
-    } else {
-      data = [
-        {
-          title: getLanguage(global.language).Profile.LICENSE_OFFLINE,
-          type: LicenseType.local,
-          onPress: this.joinLicense,
-        },
-        {
-          title: getLanguage(global.language).Profile.LICENSE_CLOUD,
-          type: LicenseType.clould,
-          onPress: this.joinCloud,
-        },
-        {
-          title: getLanguage(global.language).Profile.LICENSE_PRIVATE_CLOUD,
-          type: LicenseType.privateClould,
-          onPress: this.joinPrivateCloud,
-        },
-        // {
-        //   title: getLanguage(global.language).Profile.LICENSE_EDUCATION,
-        //   type: LicenseType.education,
-        //   onPress: this.joinEducationLicense,
-        // },
-        {
-          title: getLanguage(global.language).Profile.LICENSE_TRIAL,
-          type: LicenseType.trial,
-          onPress: this.joinCloud,
-        },
-      ]
-    }
+    // if (UserType.isIPortalUser(this.props.currentUser)) {
+    //   data = [
+    //     {
+    //       title: getLanguage(global.language).Profile.LICENSE_OFFLINE,
+    //       type: LicenseType.local,
+    //       onPress: this.joinLicense,
+    //     },
+    //     {
+    //       title: getLanguage(global.language).Profile.LICENSE_CLOUD,
+    //       type: LicenseType.clould,
+    //       onPress: this.joinCloud,
+    //     },
+    //   ]
+    // } else {
+    data = [
+      {
+        title: getLanguage(global.language).Profile.LICENSE_OFFLINE,
+        type: LicenseType.local,
+        onPress: this.joinLicense,
+      },
+      {
+        title: getLanguage(global.language).Profile.LICENSE_CLOUD,
+        type: LicenseType.clould,
+        onPress: this.joinCloud,
+      },
+      {
+        title: getLanguage(global.language).Profile.LICENSE_PRIVATE_CLOUD,
+        type: LicenseType.privateClould,
+        onPress: this.joinPrivateCloud,
+      },
+      // {
+      //   title: getLanguage(global.language).Profile.LICENSE_EDUCATION,
+      //   type: LicenseType.education,
+      //   onPress: this.joinEducationLicense,
+      // },
+      {
+        title: getLanguage(global.language).Profile.LICENSE_TRIAL,
+        type: LicenseType.trial,
+        onPress: this.joinCloud,
+      },
+    ]
+    // }
     // if (Platform.OS === 'ios') {
     //   data.splice(3, 1)
     // }

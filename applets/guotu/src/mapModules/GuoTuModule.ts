@@ -171,7 +171,7 @@ export default class GuoTuModule extends Module {
       // 默认地图名称
       defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
       // 地图默认底图数据
-      baseMapSource: [ConstOnline.tiandituCN(), ConstOnline.tianditu()],
+      baseMapSource: [ConstOnline.tiandituImg(), ConstOnline.tianditu()],
       // 地图默认底图当前显示的地图
       baseMapIndex: 3,
       mapType: this.mapType,

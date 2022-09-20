@@ -3243,6 +3243,10 @@ export default class MapView extends React.Component {
               }
               break
             case MapHeaderButton.CoworkChat:
+              // 有协作任务在有群聊
+              if (CoworkInfo.coworkId === '') {
+                continue
+              }
               info = {
                 key: MapHeaderButton.CoworkChat,
                 image: getThemeAssets().cowork.icon_nav_chat,

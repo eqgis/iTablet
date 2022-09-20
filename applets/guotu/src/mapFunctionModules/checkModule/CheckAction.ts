@@ -7,7 +7,7 @@ import {
   TGeometryType,
   TAction,
 } from 'imobile_for_reactnative'
-import { ToolbarType } from '@/constants'
+import { ConstToolType, ToolbarType } from '@/constants'
 import { LayerUtils, StyleUtils, Toast } from '@/utils'
 import { getLanguage } from '@/language'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
@@ -154,8 +154,39 @@ function toolbarBack(type: string | number) {
   }
 }
 
-function close() {
+async function close(type: string) {
   try {
+    if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
+      const data: any = ToolbarModule.getData()
+      const params = ToolbarModule.getParams()
+
+      if (
+        data.preType === AppletsToolType.APPLETS_CHECK_EDIT_POINT ||
+        data.preType === AppletsToolType.APPLETS_CHECK_EDIT_LINE ||
+        data.preType === AppletsToolType.APPLETS_CHECK_EDIT_REGION ||
+        data.preType === AppletsToolType.APPLETS_CHECK_EDIT_ADD_REGION
+      ) {
+        params.showFullMap && params.showFullMap(true)
+        params.setToolbarVisible &&
+          params.setToolbarVisible(true, data.preType, {
+            isFullScreen: false,
+            containerType: ToolbarType.table,
+            cb: () => {
+              if (data.preType === AppletsToolType.APPLETS_CHECK_EDIT_ADD_REGION) {
+                SMap.setAction(Action.CREATEPOLYGON)
+                ToolbarModule.addData({MarkType:'CREATEPOLYGON'})
+              } else {
+                SMap.appointEditGeometry(data.event.id, data.event.layerInfo.path)
+              }
+            },
+          })
+      }
+
+      showAttribute(data.preType)
+      await SMap.clearTrackingLayer()
+
+      return
+    }
     const params = ToolbarModule.getParams()
     params.existFullMap && params.existFullMap()
     // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态
@@ -403,22 +434,22 @@ async function addRegion() {
   }
 }
 
-async function showAttribute() {
+async function showAttribute(type?: string) {
   try {
     const _params: any = ToolbarModule.getParams()
+    const _type = type || _params.type
     if (
       (
-        _params.type === AppletsToolType.APPLETS_CHECK_EDIT_POINT ||
-        _params.type === AppletsToolType.APPLETS_CHECK_EDIT_LINE ||
-        _params.type === AppletsToolType.APPLETS_CHECK_EDIT_REGION
+        _type === AppletsToolType.APPLETS_CHECK_EDIT_POINT ||
+        _type === AppletsToolType.APPLETS_CHECK_EDIT_LINE ||
+        _type === AppletsToolType.APPLETS_CHECK_EDIT_REGION
       ) &&
       _params.layers?.selection?.length > 0
     ) {
       NavigationService.navigate('LayerSelectionAttribute',{
-        preType: AppletsToolType.APPLETS_CHECK_EDIT_ADD_REGION,
+        preType: _type,
         buttonNameFilter: ['LandChecked'],
         buttonTitles: [(data) => {
-          console.warn('buttonTitles 核查', data)
           return data?.value ? '已核查' : '核查'
         }],
         buttonActions: [(data) => {
@@ -446,7 +477,6 @@ async function showAttribute() {
             }
             _params.setSelection([selection])
           })
-          console.warn('核查', data)
         }],
         hasAddField: false,
         // customButtons: [
@@ -470,7 +500,7 @@ async function showAttribute() {
       if(global.HAVEATTRIBUTE){
         NavigationService.navigate('LayerSelectionAttribute',{
           isCollection:true,
-          preType: AppletsToolType.APPLETS_CHECK_EDIT_ADD_REGION,
+          preType: _type,
           // buttonNameFilter: ['LandChecked'],
           // buttonTitles: ['核查'],
           // buttonActions: [(data) => {

@@ -16,7 +16,8 @@ import { COLORS } from "@/utils/AppStyle"
 import { ToolBarMenuItem } from "imobile_for_reactnative/components/ToolbarKit/component/ToolBarMenu"
 
 
-
+/** 是否是回退到达的编辑工具栏 */
+let isBackEdit = false
 
 export function getData(key: ModuleList['ARMAP_EDIT']): IToolbarOption {
   const option = new ToolbarOption<ARMapEditViewOption>()
@@ -117,6 +118,12 @@ function editElementOption(option: ToolbarOption<ARMapEditViewOption>) {
   option.menuOption.isShowView = false
   if(element.type === ARElementType.AR_MODEL || element.type === ARElementType.AR_ELEMENT_GROUP) {
     const tabData = _getTransformTabData(element)
+    // 不是从编辑的入口进入的编辑工具栏（是从动画添加回退的）
+    if(option.moduleData && isBackEdit) {
+      option.menuOption.defaultIndex = 3
+      option.menuOption.isShowView = true
+      isBackEdit = false
+    }
     option.menuOption.data = tabData.concat([Platform.OS === 'ios' ? _getModelAnimationTabList(element) : _getAnimationTabList(element)])
   } else {
     option.menuOption.data = _getTransformTabData(element)
@@ -995,6 +1002,7 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
       text: getLanguage().ADD,
       image: getImage().icon_add,
       onPress: () => {
+        isBackEdit = true
         if(animatonMode === 'custome') {
           AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ADD_ANIME_NODE')
         } else {

@@ -449,10 +449,10 @@ async function showAttribute(type?: string) {
       NavigationService.navigate('LayerSelectionAttribute',{
         preType: _type,
         buttonNameFilter: ['LandChecked'],
-        buttonTitles: [(data) => {
+        buttonTitles: [(data: any) => {
           return data?.value ? '已核查' : '核查'
         }],
-        buttonActions: [(data) => {
+        buttonActions: [(data: any) => {
           const selection = _params.layers.selection[0]
           const isCheck = !data.cellData.value // 核查后修改的值
           // 修改核查结果

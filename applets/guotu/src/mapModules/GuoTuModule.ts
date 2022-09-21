@@ -6,7 +6,7 @@ import {
 } from '@/containers/workspace/components/ToolBar/modules'
 import { getImage } from '../assets'
 import { checkModule } from '../mapFunctionModules'
-import { LayerUtils, NavigatorUtil } from '@/utils'
+import { LayerUtils, NavigatorUtil, Toast } from '@/utils'
 import navigators from '../containers'
 import { getLanguage } from '../language'
 import NavigationService from '@/containers/NavigationService'
@@ -124,37 +124,25 @@ export default class GuoTuModule extends Module {
   /**
    * 上传数据服务
    */
-  upload = () => {
+  upload = async () => {
+    const params: any = ToolbarModule.getParams()
     try {
-      const params: any = ToolbarModule.getParams()
-
-      this.save()
-
-      for (const layerData of params.layers.layers) {
-        const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
-        if (!datasetDescription || datasetDescription.type !== 'onlineService') continue
-        // ServiceAction.updateToLocal({
-        //   url: datasetDescription.url,
-        //   datasourceAlias: layerData.datasourceAlias,
-        //   datasetName: layerData.datasetName,
-        // }, result => {
-        //   result && ServiceAction.uploadToService({
-        //     // layerName: layerData.name,
-        //     url: datasetDescription.url,
-        //     datasourceAlias: layerData.datasourceAlias,
-        //     datasetName: layerData.datasetName,
-        //     onlineDatasourceAlias: datasetDescription.datasourceAlias,
-        //   })
-        // })
-        ServiceAction.uploadToService({
-          // layerName: layerData.name,
-          url: datasetDescription.url,
-          datasourceAlias: layerData.datasourceAlias,
-          datasetName: layerData.datasetName,
-          onlineDatasourceAlias: datasetDescription.datasourceAlias,
-        })
+      if (!params.map.currentMap.name) {
+        Toast.show('请先打开任务')
+        return
       }
+      Toast.show('开始提交数据服务')
+      // params.setContainerLoading(true, '正在保存地图')
+      await this.save()
+
+      // params.setContainerLoading(true, '正在正在提交服务')
+      for (const layerData of params.layers.layers) {
+        await ServiceAction.uploadLayerService({layerData})
+      }
+      // params.setContainerLoading(false)
     } catch (error) {
+      // params.setContainerLoading(false)
+      Toast.show('提交服务失败')
       __DEV__ && console.warn(error)
     }
   }

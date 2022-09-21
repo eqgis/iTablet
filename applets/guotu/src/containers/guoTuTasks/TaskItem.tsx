@@ -509,7 +509,7 @@ export default class TaskItem extends Component<Props, State> {
             />
           }
           <TouchableOpacity
-            activeOpacity={1}
+            activeOpacity={0.2}
             onPress={this._onPress}
             style={styles.contentView}
           >

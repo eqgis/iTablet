@@ -239,7 +239,7 @@ class GuoTuLocation extends Component<Props, State> {
         style={{ flex: 1 }}
         data={this.state.data}
         renderItem={this._renderItem}
-        keyExtractor={item => item.name}
+        keyExtractor={item => item.groupName}
         ItemSeparatorComponent={this._renderItemSeparatorComponent}
       />
     )

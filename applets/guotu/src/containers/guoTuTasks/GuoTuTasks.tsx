@@ -149,7 +149,7 @@ class GuoTuTasks extends Component<Props, State> {
   popSourceData: Array<any>
   pagePopModal: PopMenu | null | undefined
   sourcePopModal: PopMenu | null | undefined
-  container: any
+  container: Container
   pageSize: number
   currentPage: number
   isLoading: boolean // 防止同时重复加载多次
@@ -235,6 +235,7 @@ class GuoTuTasks extends Component<Props, State> {
         title: getLanguage(this.props.language).Cowork.UPDATE_LOCAL_SERVICE,
         action: () => {
           this.getGroupServices(this.props.currentGroup.id).then(result => {
+            // this.container?.setLoading(true, '正在更新服务')
             if (result?.content?.[0].linkPage) {
               ServiceAction.downloadService(result?.content?.[0].linkPage)
             }
@@ -539,19 +540,22 @@ class GuoTuTasks extends Component<Props, State> {
       }
       // 移除地图上所有callout
       await SMediaCollector.removeMedias()
-      Toast.show('正在打开地图')
+      // Toast.show('正在打开地图')
+      this.container?.setLoading(true, '正在打开地图')
       const mapInfo = await this.props.openMap({
         path: data.path,
         name: data.name,
       })
       if (!mapInfo) {
         Toast.show('打开地图失败,请检查地图数据是否存在')
+        this.container?.setLoading(false)
         return
       }
       await this.props.getLayers() // 获取图层
       await SMap.viewEntire() // 显示全幅
 
-      Toast.show('正在加载服务')
+      // Toast.show('正在加载服务')
+      this.container?.setLoading(true, '正在加载服务')
       this.getGroupServices(this.props.currentGroup.id).then(result => {
         if (result?.content?.[0].linkPage) {
           ServiceAction.downloadService(result?.content?.[0].linkPage)
@@ -572,7 +576,7 @@ class GuoTuTasks extends Component<Props, State> {
         })
       }
       const id = `Group_Task_${this.props.currentGroup.id}`
-      const declareResult = await SMessageService.declareSession(_members, id)
+      await SMessageService.declareSession(_members, id)
 
       const time = new Date().getTime()
       this.props.setCurrentTask && this.props.setCurrentTask({
@@ -605,8 +609,10 @@ class GuoTuTasks extends Component<Props, State> {
       })
 
       this.createCowork(id)
+      this.container?.setLoading(false)
     } catch (error) {
       Toast.show('地图打开失败,请检查地图诗句是否完整')
+      this.container?.setLoading(false)
       __DEV__ && console.warn(error)
     }
   }
@@ -797,6 +803,7 @@ class GuoTuTasks extends Component<Props, State> {
   render() {
     return (
       <Container
+        ref={ref => this.container = ref}
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{

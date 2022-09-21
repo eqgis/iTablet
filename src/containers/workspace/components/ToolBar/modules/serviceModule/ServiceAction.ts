@@ -472,18 +472,17 @@ async function listAction(type: string, params: any = {}) {
 }
 
 let  g_messageIcon:any
-async function downloadService(url: string,messageIcon:any) {
+async function downloadService(url: string, messageIcon?:any) {
   try {
     if (!url) return false
     const _params: any = ToolbarModule.getParams()
 
     _params.setToolbarVisible(false)
     _params.showFullMap && _params.showFullMap(false)
-      let result = false
-      const serviceData = await SCoordinationUtils.initMapDataWithService(url)
-    let services = []
+    const serviceData = await SCoordinationUtils.initMapDataWithService(url)
+    const services = []
     for (const datasource of serviceData) {
-      let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
+      const datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
       const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
         let canAdd = true

@@ -833,7 +833,7 @@ export const language_cn = {
   GROUP_TYPE_PRIVATE: "私有",
   GROUP_TYPE_PRIVATE_INFO: "由创建者邀请用户加入群组",
   GROUP_TYPE_PUBLIC: "共有",
-  GROUP_TYPE_PUBLIC_INFO: "可有创建者邀请，或者用户申请加入群组",
+  GROUP_TYPE_PUBLIC_INFO: "可由创建者邀请，或者用户申请加入群组",
   GROUP_TYPE_PUBLIC_CHECK_INFO: "用户申请加入该群组时需要审核",
   GROUP_CREATE_SUCCUESS: "创建群组成功",
   GROUP_CREATE_FAILED: "创建群组失败",
@@ -2201,6 +2201,11 @@ export const language_cn = {
   INPUT_NUMBER: "请输入数字",
   DISTANCE_LOCATION: "距离定位",
   TIME_LOCATION: "时间定位",
+
+  CHANGE_DEVICE_LOCAL: "已切换到此设备",
+  CHANGE_DEVICE_EXTERNAL: "已切换到网络设备",
+  CHANGE_DEVICE_BLUETOOTH: "已切换到蓝牙设备",
+  SLOCATION_STATE_CURRENT: "当前使用的定位状态",
 
   // 许可
   LICENSE: "许可",

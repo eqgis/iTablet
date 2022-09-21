@@ -2,12 +2,11 @@ import { Container } from '../../components'
 import { getLanguage } from "@/language"
 import { MainStackScreenNavigationProps } from "@/types/NavigationTypes"
 import React, {Component} from "react"
-import { Image, TouchableOpacity, View, Text, ActivityIndicator } from "react-native"
+import { Image, TouchableOpacity, View, Text } from "react-native"
 import { SLocation } from "imobile_for_reactnative"
 import styles from "./style"
 import { Picker } from '@react-native-picker/picker'
 import { ScrollView } from 'react-native-gesture-handler'
-import { getSelectDevice, setSelectDevice } from '../locationSetting/deviceUtil'
 import NavigationService from '../NavigationService'
 
 
@@ -100,7 +99,8 @@ class BluetoothDevices extends Component<Props, State> {
   changeDevice = () => {
     const currentOption = this.state.currentOption
     if(currentOption.type === 'bluetooth') {
-      setSelectDevice(currentOption)
+      // setSelectDevice(currentOption)
+      this.props.setDevice(currentOption)
     }
     NavigationService.goBack()
   }
@@ -213,7 +213,7 @@ class BluetoothDevices extends Component<Props, State> {
           <Text style={styles.text}>{title}</Text>
           <Image
             style={styles.image}
-            source={JSON.stringify(this.state.currentOption) === JSON.stringify(device) || JSON.stringify(getSelectDevice()) === JSON.stringify(device) ? radio_on : radio_off}
+            source={JSON.stringify(this.state.currentOption) === JSON.stringify(device) || JSON.stringify(this.props.peripheralDevice) === JSON.stringify(device) ? radio_on : radio_off}
           />
         </TouchableOpacity>
       </View>

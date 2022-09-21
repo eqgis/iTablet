@@ -262,16 +262,16 @@ async function geometrySelected(event: { fieldInfo: FieldInfo; layerInfo: { path
     __DEV__ && console.warn(error)
   }
 }
-
+/*对象平移*/
 function move() {
   return SMap.setAction(Action.MOVE_GEOMETRY)
 }
-
+/*撤销*/ 
 function undo(type?: number) {
   // return SCollector.undo(type)
   return SMap.undo(type)
 }
-
+/*重做*/ 
 function redo(type?: number) {
   // return SCollector.redo(type)
   return SMap.redo(type)

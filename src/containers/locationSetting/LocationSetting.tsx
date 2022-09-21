@@ -7,7 +7,6 @@ import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import color from '../../styles/color'
 import { getImage } from '@/assets'
-import { getSelectDevice } from './deviceUtil'
 
 const radio_on = require('../../assets/public/radio_select.png')
 const radio_off = require('../../assets/public/radio_select_no.png')
@@ -27,7 +26,7 @@ interface State {
   timeLocation: boolean
   distanceLocationText: string
   timeLocationText: string
-  selectDevicesType: string
+  // selectDevicesType: string
 }
 
 class LocationSetting extends React.Component<Props, State> {
@@ -45,7 +44,7 @@ class LocationSetting extends React.Component<Props, State> {
       timeLocation:false,
       distanceLocationText: "",
       timeLocationText: "",
-      selectDevicesType: this.prevOption.type,
+      // selectDevicesType: this.prevOption.type,
     }
   }
 
@@ -54,6 +53,7 @@ class LocationSetting extends React.Component<Props, State> {
     // SLocation.searchDevice(true)
     // this.startShowSearching()
     this.getLocationType()
+   
   }
 
   componentWillUnmount() {
@@ -103,32 +103,24 @@ class LocationSetting extends React.Component<Props, State> {
       SLocation.setTimeLocation(false)
     }
 
-    // 当选择此设备时，需要修改redux里的设置，其他类型的在他们自己的页面已经设置过了，直接用就好
-    let currentOption
-    if(this.state.selectDevicesType === 'local') {
-      currentOption = this.state.currentOption
-      this.props.setDevice(currentOption)
-    } else {
-      currentOption = getSelectDevice()
-    }
-    // const currentOption = this.state.currentOption
-    this.props.setDevice(currentOption)
-    SLocation.changeLocationDevice(currentOption)
+    // 直接将redux里的值拿给原生, 选择好的设备先放在了redux里，所以保存的时候直接修改原生的设备就好了
+    SLocation.changeLocationDevice(this.props.peripheralDevice).then(() => {
+      let toastText = getLanguage().CHANGE_DEVICE_LOCAL
+      switch (this.props.peripheralDevice.type) {
+        case "local":
+          toastText = getLanguage().CHANGE_DEVICE_LOCAL
+          break
+        case "external" :
+          toastText = getLanguage().CHANGE_DEVICE_EXTERNAL
+          break
+        case "bluetooth" :
+          toastText = getLanguage().CHANGE_DEVICE_BLUETOOTH
+          break
+      }
+      Toast.show(toastText)
+    })
     NavigationService.goBack()
   }
-
-  // startShowSearching = async () => {
-  //   await new Promise(resolve => {
-  //     setTimeout(() => {
-  //       resolve(true)
-  //     }, 10000)
-  //   })
-  //   if(this.state.devices.length === 1) {
-  //     this.setState({ searchNotify: getLanguage(global.language).Prompt.SEARCHING_DEVICE_NOT_FOUND})
-  //   } else if(this.state.devices.length > 1) {
-  //     this.setState({ showSearch: false})
-  //   }
-  // }
 
   getLocationType = async () => {
     if (await SLocation.getTimeLocation()) {
@@ -142,8 +134,10 @@ class LocationSetting extends React.Component<Props, State> {
   }
 
   selectLocalDevice = () => {
+    // 与其他类型的设备同步，先更改redux里的设备，在保存的时候再去修改原生的设备
+    this.props.setDevice({type: 'local',})
     this.setState({
-      selectDevicesType: 'local',
+      // selectDevicesType: 'local',
       currentOption: {
         type: 'local',
       },
@@ -151,16 +145,10 @@ class LocationSetting extends React.Component<Props, State> {
   }
 
   selectExternalDevice = () => {
-    this.setState({
-      selectDevicesType: 'external',
-    })
     NavigationService.navigate("ExternalDevices")
   }
 
   selectBluetoothDevice = () => {
-    this.setState({
-      selectDevicesType: 'bluetooth',
-    })
     NavigationService.navigate("BluetoothDevices")
   }
 
@@ -168,34 +156,12 @@ class LocationSetting extends React.Component<Props, State> {
     NavigationService.navigate("NtripSetting")
   }
 
-  // renderItem = (device: SLocation.LocationConnectionParam) => {
-  //   const title = getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL
-  //   console.log(device)
-  //   return (
-  //     <View key={device.type}>
-  //       <TouchableOpacity
-  //         style={styles.itemView}
-  //         activeOpacity={0.9}
-  //         onPress={() => {
-  //           this.setState({ currentOption: device })
-  //         }}
-  //       >
-  //         <Text style={styles.text}>{title}</Text>
-  //         <Image
-  //           style={styles.image}
-  //           source={this.state.currentOption === device ? radio_on : radio_off}
-  //         />
-  //       </TouchableOpacity>
-  //       {this.renderSeperator()}
-  //     </View>
-  //   )
-  // }
-
-  // renderItems = () => {
-  //   return this.state.devices.map(device => {
-  //     return this.renderItem(device)
-  //   })
-  // }
+  back = () => {
+    // 恢复之前的设备
+    this.props.setDevice(this.prevOption)
+    // 返回上一个页面
+    this.props.navigation.goBack()
+  }
 
   renderList = () => {
     return (
@@ -319,17 +285,10 @@ class LocationSetting extends React.Component<Props, State> {
       <View>
         <TouchableOpacity
           style={[styles.devicesItemView,
-            this.state.selectDevicesType === type && styles.devicesItemViewSelecter]}
+            this.props.peripheralDevice.type === type && styles.devicesItemViewSelecter]}
           activeOpacity={0.9}
           onPress={() => {
-            // this.setState({ currentOption: device })
-            if(action){
-              action()
-            } else {
-              this.setState({
-                selectDevicesType: type,
-              })
-            }
+            action && action()
           }}
         >
           <View
@@ -346,7 +305,7 @@ class LocationSetting extends React.Component<Props, State> {
 
           <Image
             style={[styles.ImageSize50, styles.devicesSelecter]}
-            source={this.state.selectDevicesType === type ? radio_on : radio_off}
+            source={this.props.peripheralDevice.type === type ? radio_on : radio_off}
           />
 
         </TouchableOpacity>
@@ -363,12 +322,13 @@ class LocationSetting extends React.Component<Props, State> {
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
           isResponseHeader: true,
+          backAction: this.back,
         }}
       >
         <View style={styles.container}>
           {this.renderList()}
           {this.renderLocation()}
-          {this.state.selectDevicesType === 'bluetooth' && this.renderOtherSetting()}
+          {this.props.peripheralDevice.type === 'bluetooth' && this.renderOtherSetting()}
           {/* {this.state.showSearch && this.renderSearch()} */}
         </View>
       </Container>

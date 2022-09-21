@@ -2202,6 +2202,11 @@ export const language_fr: typeof language_cn = {
   DISTANCE_LOCATION:"Emplacement à distance",
   TIME_LOCATION:"Temps d'emplacement",
 
+  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
+  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
+  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
+  SLOCATION_STATE_CURRENT: "The current positioning status",  // To be translated
+
   // 许可
   LICENSE: "License",
   LICENSE_CURRENT: "Licence actuelle",

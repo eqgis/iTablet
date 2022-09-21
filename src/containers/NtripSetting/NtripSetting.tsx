@@ -9,23 +9,21 @@ import { Picker } from '@react-native-picker/picker'
 import { Toast } from '@/utils'
 import { NtripMountPoint } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
 import NavigationService from '../NavigationService'
+import { EssentialInfo } from '@/redux/models/location'
 
 interface Props{
   navigation: MainStackScreenNavigationProps<'NtripSetting'>,
+  essentialInfo: EssentialInfo
+  selectLoadPoint: NtripMountPoint
+  updateNtripInfo: (essentialInfo:EssentialInfo, selectLoadPoint: NtripMountPoint) => void
 }
 
-interface PickerItemType {
+export interface PickerItemType {
   label: string
   value: string | NtripMountPoint
 }
 
-interface State {
-  /** 协议 */
-  agreement: 'NTRIPV1'
-  address: string
-  port: string
-  userName: string
-  password: string
+interface State extends EssentialInfo {
   /** 当前选中的加载点 */
   selectLoadPoint: NtripMountPoint
   /** 加载点数组 */
@@ -42,16 +40,16 @@ class NtripSetting extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
+    const essentialInfo: EssentialInfo =  this.props.essentialInfo
+    const selelectLoadPoint: NtripMountPoint = this.props.selectLoadPoint
+    console.warn("essentialInfo: " + JSON.stringify(essentialInfo))
     this.state = {
-      agreement: 'NTRIPV1',
-      address: 'www.geodetic.gov.hk',
-      port: '2101',
-      userName: 'sms01',
-      password: 'sms711',
-      selectLoadPoint: {
-        name: '',
-        requireGGA: false,
-      },
+      agreement: essentialInfo.agreement,
+      address: essentialInfo.address,
+      port: essentialInfo.port,
+      userName: essentialInfo.userName,
+      password: essentialInfo.password,
+      selectLoadPoint: selelectLoadPoint,
       // loadPointArray:[],
       loadPointNameArray:[],
     }
@@ -104,6 +102,14 @@ class NtripSetting extends Component<Props, State> {
       }
       const isSetSuccess = await SLocation.setNtripInfo(info)
       if(isSetSuccess) {
+        const essentialInfo = {
+          agreement: this.state.agreement,
+          address: this.state.address,
+          port: this.state.port,
+          userName: this.state.userName,
+          password: this.state.password,
+        }
+        this.props.updateNtripInfo(essentialInfo, this.state.selectLoadPoint)
         Toast.show(getLanguage().SUCCESS)
         NavigationService.goBack()
       } else {

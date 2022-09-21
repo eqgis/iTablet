@@ -8,10 +8,10 @@ export interface PipeLineAttributeType {
 }
 
 interface Props {
-  // data?:Array<PipeLineAttributeType>
   pipeLineAttribute?:Array<PipeLineAttributeType>
   setPipeLineAttribute?: (params: Array<PipeLineAttributeType>) => void
 }
+
 
 class PipeLineAttribute extends Component<Props> {
   constructor(props: Props) {
@@ -26,27 +26,17 @@ class PipeLineAttribute extends Component<Props> {
   }
 
 
-  renderItem = ({item} : ListRenderItemInfo<PipeLineAttributeType>) => {
+  renderItem = ({item}: ListRenderItemInfo<PipeLineAttributeType> ) => {
+    if(item.title === 'SmID') {
+      return null
+    }
     return (
       <View style = {[styles.row]} >
-        <View style = {[styles.col]} >
+        <View style = {[styles.colLeft]} >
           <Text style = {[styles.textStyle]} >{item.title}</Text>
         </View>
-        <View style = {[styles.col]} >
+        <View style = {[styles.colRight]} >
           <Text style = {[styles.textStyle]} >{item.value}</Text>
-        </View>
-      </View>
-    )
-  }
-
-  renderHead = () => {
-    return (
-      <View style = {[styles.row]} >
-        <View style = {[styles.col]} >
-          <Text style = {[styles.textStyle]} >{'title'}</Text>
-        </View>
-        <View style = {[styles.col]} >
-          <Text style = {[styles.textStyle]} >{'value'}</Text>
         </View>
       </View>
     )
@@ -64,12 +54,12 @@ class PipeLineAttribute extends Component<Props> {
       <View
         style = {[styles.container]}
       >
-        { this.renderHead()}
+
         <FlatList
           data = {this.props.pipeLineAttribute}
           renderItem = {this.renderItem}
           keyExtractor = {item => item.title}
-          // ListHeaderComponent = {this.renderHead}
+          showsVerticalScrollIndicator = {true}
         />
       </View>
     )

@@ -21,6 +21,7 @@ interface IState {
   activeBtn: number,
   latitude: string,
   longitude: string,
+  height: string,
   animValue: any,
 }
 
@@ -43,7 +44,7 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
       activeBtn: 2,
       longitude: '',
       latitude: '',
-      height: 1.5,
+      height: "1.5",
       animValue: new Animated.Value(0),
     }
     this.scanAnimation = null
@@ -76,7 +77,11 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
 
   _onConfirm = () => {
     // 定义确定使用修改过的值定位
-    const { longitude, latitude, height } = this.state
+    let { longitude, latitude, height } = this.state
+    longitude = parseFloat(longitude).toString() === "NaN" ? "0" : longitude
+    latitude = parseFloat(latitude).toString() === "NaN" ? "0" : latitude
+    height = parseFloat(height).toString() === "NaN" ? "0" : height
+
     const { onConfirm } = this.props
     onConfirm && onConfirm({
       x: longitude,
@@ -196,19 +201,24 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   }
 
   // 过滤输入值
-  clearNoNum = value => {
-    value = value.replace(/[^\d.]/g, '') //清除“数字”和“.”以外的字符
+  clearNoNum = (value: string) => {
+    value = value.replace(/[^[\d-]\d.]/g, '') //清除“数字”和“.”以外的字符 （开始以数字或“-”号）
     value = value.replace(/\.{2,}/g, '.') //只保留第一个. 清除多余的
     value = value
       .replace('.', '$#$')
       .replace(/\./g, '')
       .replace('$#$', '.')
     // value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
-    if (value.indexOf('.') < 0 && value != '') {
-      //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
-      value = parseFloat(value)
-    } else if (value == '') {
-      value = 0
+    if(value.indexOf("-") === 0 && parseFloat(value).toString() === "NaN") {
+      value = "-"
+    } else {
+      if (value.indexOf('.') < 0 && value != '') {
+        //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+        console.warn("value 01: " +  parseFloat(value))
+        value = parseFloat(value)
+      } else if (value == '') {
+        // value = 0
+      }
     }
     return value + ''
   }
@@ -313,95 +323,6 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     }
   }
 
-  _renderInputs01 = () => {
-    const { longitude, latitude, height } = this.state
-    return (
-      <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
-        <View style={styles.inputBox}>
-          <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LONGITUDE}</Text>
-          <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={longitude + ''}
-            onChangeText={text => {
-              this.setState({longitude: this.clearNoNum(text)})
-            }}
-            onClear={() => {
-              // 多次clear value都是0 不会引起Input更新 但是Input自己把value设置为了‘’
-              // 所以值为0时 不显示clear按钮
-              this.setState({longitude: "0"})
-            }}/>
-        </View>
-        <View style={styles.inputBox}>
-          <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_LATITUDE}</Text>
-          <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={latitude + ''}
-            onChangeText={text => {
-              this.setState({latitude: this.clearNoNum(text)})
-            }}
-            onClear={() => {
-              this.setState({latitude: "0"})
-            }}/>
-        </View>
-        <View style={styles.inputBox}>
-          <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/>
-          <Text style={{paddingLeft: scaleSize(8)}}>{getLanguage(global.language).Profile.MAP_AR_DATUM_HEIGHT}</Text>
-          <Input style={styles.input} showClear={height != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={height + ''}
-            onChangeText={text => {
-              this.setState({height: this.clearNoNum(text)})
-            }}
-            onClear={() => {
-              this.setState({height: "0"})
-            }}/>
-        </View>
-      </View>
-    )
-  }
-
-  _renderBtns01 = () => {
-    const { activeBtn } = this.state
-    return (
-      <View style={styles.buttons}>
-        {/* 图片定位 */}
-        <TouchableOpacity style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }} onPress={() => {
-          this.setState({
-            showStatus: 'scan',
-          })
-        }}>
-          <View style={[styles.button, activeBtn == 0 && {borderWidth: 1, borderColor: '#007aff'}]}>
-            <Image source={getThemeAssets().collection.icon_scan} style={styles.buttonIcon}/>
-          </View>
-          <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAR_AR_DATUM_PICTURE_LOCATION}</Text>
-        </TouchableOpacity>
-
-        {/* 地图选点 */}
-        <TouchableOpacity style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }} onPress={this._mapSelectPoint}>
-          <View style={[styles.button, activeBtn == 1 && {borderWidth: 1, borderColor: '#007aff'}]}>
-            <Image source={getThemeAssets().collection.icon_map_selection} style={styles.buttonIcon}/>
-          </View>
-          <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_MAP_SELECT_POINT}</Text>
-        </TouchableOpacity>
-
-        {/* 自动定位 */}
-        <TouchableOpacity style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }} onPress={this._autoLocation}>
-          <View style={[styles.button, activeBtn == 2 && {borderWidth: 1, borderColor: '#007aff'}]}>
-            <Image source={getThemeAssets().collection.icon_location} style={styles.buttonIcon}/>
-          </View>
-          <Text style={styles.buttonText}>{getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATION}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
 
   _renderInputs = () => {
     const { longitude, latitude, height } = this.state

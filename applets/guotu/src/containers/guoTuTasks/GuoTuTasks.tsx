@@ -234,10 +234,12 @@ class GuoTuTasks extends Component<Props, State> {
       {
         title: getLanguage(this.props.language).Cowork.UPDATE_LOCAL_SERVICE,
         action: () => {
-          this.getGroupServices(this.props.currentGroup.id).then(result => {
+          this.container?.setLoading(true, '正在加载服务')
+          this.getGroupServices(this.props.currentGroup.id).then(async result => {
             // this.container?.setLoading(true, '正在更新服务')
             if (result?.content?.[0].linkPage) {
-              ServiceAction.downloadService(result?.content?.[0].linkPage)
+              await ServiceAction.downloadService(result?.content?.[0].linkPage)
+              this.container?.setLoading(false)
             }
           })
         },

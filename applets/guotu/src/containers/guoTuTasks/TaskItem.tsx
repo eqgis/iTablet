@@ -374,7 +374,7 @@ export default class TaskItem extends Component<Props, State> {
     }
     return {
       result,
-      path: this.path,
+      path: fileDir,
     }
   }
 

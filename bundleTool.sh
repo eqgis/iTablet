@@ -26,11 +26,11 @@ buildCommon() {
     # echoc "创建common.bundle"
     # mkdir -p bundle/android/common
     # echoc "生成common.bundle"
-    # react-native bundle --entry-file common/index.ts --platform android --dev false --config package_common.config.js --bundle-output bundle/android/common/common.bundle --assets-dest bundle/android/common
+    # npx react-native bundle --entry-file common/index.ts --platform android --dev false --config package_common.config.js --bundle-output bundle/android/common/common.bundle --assets-dest bundle/android/common
 
     mkdir -p bundle/$platform/base
     echoc "生成base.bundle"
-    react-native bundle --entry-file index.js --platform $platform --dev false --config package.config.js --bundle-output bundle/$platform/base/base.bundle --assets-dest bundle/$platform/base
+    npx react-native bundle --entry-file index.js --platform $platform --dev false --config package.config.js --bundle-output bundle/$platform/base/base.bundle --assets-dest bundle/$platform/base
     echoc "base.bundle配置文件"
     node makeBundleConfig $platform bundle/$platform/base/base.bundle package.json
 }
@@ -39,21 +39,21 @@ buildApplets() {
     # echoc "创建demo.bundle"
     # mkdir -p bundle/android/demo
     # echoc "生成demo.bundle"
-    # react-native bundle --entry-file applets/demo/index.ts --platform android --config package_demo.config.js --dev false --bundle-output bundle/android/demo/demo.bundle --assets-dest bundle/android/demo
+    # npx react-native bundle --entry-file applets/demo/index.ts --platform android --config package_demo.config.js --dev false --bundle-output bundle/android/demo/demo.bundle --assets-dest bundle/android/demo
     # echoc "demo.bundle配置文件"
     # node makeBundleConfig $platform bundle/android/demo/demo.bundle applets/demo/package.json
 
     # echoc "创建demo2.bundle"
     # mkdir -p bundle/android/demo2
     # echoc "生成demo2.bundle"
-    # react-native bundle --entry-file applets/demo2/index.ts --platform android --config package_demo2.config.js --dev false --bundle-output bundle/android/demo2/demo2.bundle --assets-dest bundle/android/demo2
+    # npx react-native bundle --entry-file applets/demo2/index.ts --platform android --config package_demo2.config.js --dev false --bundle-output bundle/android/demo2/demo2.bundle --assets-dest bundle/android/demo2
     # echoc "demo2.bundle配置文件"
     # node makeBundleConfig $platform bundle/android/demo2/demo2.bundle applets/demo2/package.json
     
     echoc "创建tour.bundle"
     mkdir -p bundle/$platform/tour
     echoc "生成tour.bundle"
-    react-native bundle --entry-file applets/tour/index.ts --platform $platform --config package_tour.config.js --dev false --bundle-output bundle/$platform/tour/tour.bundle --assets-dest bundle/$platform/tour
+    npx react-native bundle --entry-file applets/tour/index.ts --platform $platform --config package_tour.config.js --dev false --bundle-output bundle/$platform/tour/tour.bundle --assets-dest bundle/$platform/tour
     echoc "tour.bundle配置文件"
     node makeBundleConfig $platform bundle/$platform/tour/tour.bundle applets/tour/package.json
 }
@@ -66,7 +66,7 @@ buildApplet() {
     echoc "创建$buildName.bundle"
     mkdir -p bundle/$platform/$buildName
     echoc "生成$buildName.bundle"
-    react-native bundle --entry-file applets/$buildName/index.ts --platform $platform --config package_$buildName.config.js --dev false --bundle-output bundle/$platform/$buildName/$buildName.bundle --assets-dest bundle/$platform/$buildName
+    npx react-native bundle --entry-file applets/$buildName/index.ts --platform $platform --config package_$buildName.config.js --dev false --bundle-output bundle/$platform/$buildName/$buildName.bundle --assets-dest bundle/$platform/$buildName
     echoc "$buildName.bundle配置文件"
     node makeBundleConfig $platform bundle/$platform/$buildName/$buildName.bundle applets/$buildName/package.json
 }
@@ -231,7 +231,7 @@ elif [[ $key == "-m" ]];then
   moveBundle
 else
   echo "
-  -b xxx:     创建xxx.bundle和xxx.zip;
+  -b=xxx:     创建xxx.bundle和xxx.zip;
               eg: bundleTools.sh -b=tour
               "
           
@@ -244,14 +244,14 @@ else
   echo "  -bc:        创建base bundle;
   "
 
-  echo  "  -ca xxx:    清除xxx小插件包;
+  echo  "  -ca=xxx:    清除xxx小插件包;
               eg: bundleTools.sh -ca=tour
               "
 
   echo "  -c:         清除 bundle/android/ 中的所有包;
   "
 
-  echo "  -m xxx:     移动xxx小插件到iTablet文件目录;
+  echo "  -m=xxx:     移动xxx小插件到iTablet文件目录;
               eg: bundleTools.sh -m=tour
               "
 

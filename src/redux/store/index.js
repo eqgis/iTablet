@@ -21,6 +21,7 @@ const persistConfig = {
     'ar',
     'armap',
     'scenes',
+    'location',
   ],
   blacklist: [
     'nav',
@@ -37,7 +38,6 @@ const persistConfig = {
     'toolbarStatus',
     'mapModules',
     'arattribute',
-    'location',
   ],
 }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

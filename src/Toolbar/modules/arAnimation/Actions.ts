@@ -53,9 +53,10 @@ export async function onEditARAnimation(animator: ARAnimatorWithID) {
       animator.elementID
     )
   }
-  arAnimatorSettingParam = initArAnimatorSettingParam()
+  // arAnimatorSettingParam = initArAnimatorSettingParam()
   arAnimatorSettingParam.arModelAnimations = animations
   arAnimatorSettingParam.editAnimator = animator
+
   AppToolBar.show( 'ARANIMATION', 'AR_MAP_ANIMATION_ADD')
 }
 

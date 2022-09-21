@@ -22,11 +22,11 @@ export const VectorItem = (props: VectorItemProps): JSX.Element => {
   }, [props.value.x])
 
   useEffect(() => {
-    setX(parseFloat(props.value.y.toFixed(2)))
+    setY(parseFloat(props.value.y.toFixed(2)))
   }, [props.value.y])
 
   useEffect(() => {
-    setX(parseFloat(props.value.z.toFixed(2)))
+    setZ(parseFloat(props.value.z.toFixed(2)))
   }, [props.value.z])
 
   const renderAxis = (label: string, image: ImageRequireSource, value: number, onValueChange:(value: number) => void) => {

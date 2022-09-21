@@ -922,14 +922,6 @@ export default class MapView extends React.Component {
       })
     }
 
-    if (
-      global.Type === ChunkType.MAP_AR &&
-      JSON.stringify(prevProps.armap.currentMap) !== JSON.stringify(this.props.armap.currentMap) &&
-      this.props.armap.currentMap?.mapName
-    ) {
-      SARMap.setAction(ARAction.NULL)
-    }
-
     if (this.state.onlineCowork !== (CoworkInfo.coworkId !== '')) {
       this.setState({
         onlineCowork: CoworkInfo.coworkId !== '',
@@ -4938,7 +4930,7 @@ export default class MapView extends React.Component {
             // if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
               onAddARAnimation(element)
-            } else if(ToolbarModule.getData().type === ConstToolType.SM_AR_EDIT) {
+            } else if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
               if (element.type === ARElementType.AR_LINE
                 || element.type === ARElementType.AR_MARKER_LINE) {
                 {

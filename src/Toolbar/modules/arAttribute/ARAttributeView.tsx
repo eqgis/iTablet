@@ -56,14 +56,14 @@ class ARAttributeView extends React.Component<Props> {
               arr.unshift(item)
             } else if(key !== 'action') {
               // 不以sm开头， 或是以下四种情况之一
-              if(key.substring(0,2)!== 'Sm'
+              if(key.substring(0,2)!== 'Sm' || key === 'SmID'
               || key === 'SmLength' || key === 'SmTNode'
               || key === 'SmEdgeID' || key === 'SmGeoPosition') {
                 arr.push(item)
               }
             }
             // 记录点击管线的唯一id
-            if(key === 'srcID'){
+            if(key === 'SmID'){
               srcId =  result[key]
             }
           })
@@ -72,8 +72,8 @@ class ARAttributeView extends React.Component<Props> {
           const prePipeLineAttribute = AppToolBar.getProps().pipeLineAttribute
           let preSrcId: string | undefined = undefined
           if(prePipeLineAttribute && prePipeLineAttribute.length > 0){
-            const value = prePipeLineAttribute?.find((element: PipeLineAttributeType) => {
-              if(element.title === 'srcID') {
+            const value = prePipeLineAttribute?.find((element) => {
+              if(element.title === 'SmID') {
                 return element
               }
             })

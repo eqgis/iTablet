@@ -298,6 +298,7 @@ class AppRoot extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
+    SLocation.removeChangeDeviceSuccessListener()
     // NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
   }
 
@@ -347,7 +348,7 @@ class AppRoot extends Component {
 
   requestPermission = async () => {
     global.Loading.setLoading(true, 'Loading')
-    const results = await PermissionsAndroid.requestMultiple([
+    const permissionList = [
       'android.permission.READ_PHONE_STATE',
       // 'android.permission.ACCESS_FINE_LOCATION',
       'android.permission.READ_EXTERNAL_STORAGE',
@@ -356,9 +357,16 @@ class AppRoot extends Component {
       // 'android.permission.RECORD_AUDIO',
       'android.permission.BLUETOOTH',
       'android.permission.BLUETOOTH_ADMIN',
-      // 'android.permission.BLUETOOTH_CONNECT',
-      // 'android.permission.BLUETOOTH_SCAN',
-    ])
+    ]
+    if(Platform.OS === 'android') {
+      const sdkVesion = Platform.Version
+      // android 12 的版本api编号 31 32 android 13的版本api编号 33
+      if(sdkVesion >= 31) {
+        permissionList.push('android.permission.BLUETOOTH_CONNECT')
+        permissionList.push('android.permission.BLUETOOTH_SCAN')
+      }
+    }
+    const results = await PermissionsAndroid.requestMultiple(permissionList)
     let isAllGranted = true
     for (let key in results) {
       isAllGranted = results[key] === 'granted' && isAllGranted
@@ -422,6 +430,9 @@ class AppRoot extends Component {
 
   initLocation = async () => {
     await SLocation.openGPS()
+    SLocation.addSlocationStateListener((type: string) => {
+      Toast.show(getLanguage().SLOCATION_STATE_CURRENT + ":( " + type + " )")
+    })
   }
 
   initLicense = async () => {

@@ -1,4 +1,4 @@
-import { ConstOnline, ConstPath } from '@/constants'
+import { ConstOnline } from '@/constants'
 import { Module } from '@/class'
 import { getLanguage } from '@/language'
 import {
@@ -7,10 +7,7 @@ import {
   markModule,
 } from '@/containers/workspace/components/ToolBar/modules'
 import { Tour } from '../mapFunctionModules'
-import { FileTools, IntentModule } from '@/native'
 import { getImage } from '../assets'
-import { UserInfo } from '@/types'
-import NavigationService from '@/containers/NavigationService'
 
 /**
  * 首页显示的旅行轨迹模块
@@ -124,13 +121,13 @@ export default class TourModule extends Module {
       // 默认地图名称
       defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
       // 地图默认底图数据
-      baseMapSource: [ConstOnline.tiandituCN, ConstOnline.tianditu],
+      baseMapSource: [ConstOnline.tiandituImg(), ConstOnline.tianditu()],
       // 地图默认底图当前显示的地图
       baseMapIndex: 3,
       mapType: this.mapType,
       isExample: false,
       openDefaultMap: true,
-      action: this.action,
+      // action: this.action,
     }
   }
 

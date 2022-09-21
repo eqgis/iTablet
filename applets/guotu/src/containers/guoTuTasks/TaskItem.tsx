@@ -116,6 +116,7 @@ export default class TaskItem extends Component<Props, State> {
   mapPath: string
   downloading: boolean
   downloadingPath: string
+  progressTag: string
   titleName: string
   itemProgress: Progress | undefined | null
 
@@ -168,7 +169,16 @@ export default class TaskItem extends Component<Props, State> {
       ConstPath.RelativePath.UserData +
       this.props.data.resourceId
 
-    let exist = await FileTools.fileIsExist(this.downloadingPath + '_')
+    this.progressTag =
+      (await FileTools.getHomeDirectory()) +
+      ConstPath.UserPath +
+      this.props.user.currentUser.userName +
+      '/' +
+      ConstPath.RelativePath.UserData +
+      this.props.data.resourceName.replace('.zip', '') + '/' +
+      this.props.data.resourceId + '_'
+
+    let exist = await FileTools.fileIsExist(this.progressTag)
     if (exist) {
       this.setState({
         exist: true,
@@ -180,7 +190,7 @@ export default class TaskItem extends Component<Props, State> {
       if (exist) {
         this.downloading = true
         const timer = setInterval(async () => {
-          exist = await FileTools.fileIsExist(this.downloadingPath + '_')
+          exist = await FileTools.fileIsExist(this.progressTag)
           if (exist) {
             clearInterval(timer)
             this.setState({
@@ -323,12 +333,12 @@ export default class TaskItem extends Component<Props, State> {
               })
             }
             FileTools.deleteFile(this.downloadingPath)
-            RNFS.writeFile(this.downloadingPath + '_', '100%', 'utf8')
+            RNFS.writeFile(this.progressTag, '100%', 'utf8')
           })
           .catch(() => {
             Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
             this.path && FileTools.deleteFile(this.path)
-            FileTools.deleteFile(this.downloadingPath + '_')
+            FileTools.deleteFile(this.progressTag)
             this.setState({
               isDownloading: false,
             })
@@ -352,7 +362,7 @@ export default class TaskItem extends Component<Props, State> {
         path: '',
       }
     }
-    const index = this.path.lastIndexOf('.')
+    const index = this.path.lastIndexOf('/')
     const fileDir = this.path.substring(0, index)
     const exists = await RNFS.exists(fileDir)
     if (!exists) {
@@ -499,7 +509,7 @@ export default class TaskItem extends Component<Props, State> {
             />
           }
           <TouchableOpacity
-            activeOpacity={1}
+            activeOpacity={0.2}
             onPress={this._onPress}
             style={styles.contentView}
           >

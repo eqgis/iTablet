@@ -1153,8 +1153,70 @@ async function commit() {
       }
     }
   } catch (error) {
-    
+    __DEV__ && console.warn(error)
   }
+}
+
+/**
+ * 先检测是否需要更新,然后再提交
+ */
+async function uploadLayerService({ layerData }: {
+  layerData: SMap.LayerInfo,
+}) {
+  const _params: any = ToolbarModule.getParams()
+  const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+  if (datasetDescription?.type !== 'onlineService') {
+    return
+  }
+  let exist = false
+  if (
+    _params.currentTask?.groupID &&
+    _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params?.currentTask?.groupID]?.[_params?.currentTask?.id]?.messages
+  ) {
+    const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+    if (dsDescription.url && dsDescription?.type === 'onlineService') {
+      const currentCoworkMessage = _params.coworkInfo[_params.user.currentUser.userName][_params.currentTask.groupID][_params.currentTask.id].messages
+      if (currentCoworkMessage?.length > 0) {
+        for (const message of currentCoworkMessage) {
+          if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
+            exist = true
+            global.SimpleDialog.set({
+              text: getLanguage(global.language).Prompt.SERVICE_SUBMIT_BEFORE_UPDATE,
+              cancelText: getLanguage(global.language).Prompt.CANCEL,
+              cancelAction: async () => {
+                global.Loading.setLoading(false)
+              },
+              confirmText: getLanguage(global.language).Prompt.SUBMIT,
+              confirmAction: async () => {
+                updateToLocal({
+                  url: datasetDescription.url,
+                  datasourceAlias: layerData.datasourceAlias,
+                  datasetName: layerData.datasetName,
+                }, result => {
+                  uploadToService({
+                    // layerName: layerData.name,
+                    url: datasetDescription.url,
+                    datasourceAlias: layerData.datasourceAlias,
+                    datasetName: layerData.datasetName,
+                    onlineDatasourceAlias: datasetDescription.datasourceAlias,
+                  })
+                })
+              },
+            })
+            global.SimpleDialog.setVisible(true)
+            break
+          }
+        }
+      }
+    }
+  }
+  !exist && uploadToService({
+    // layerName: layerData.name,
+    url: datasetDescription.url,
+    datasourceAlias: layerData.datasourceAlias,
+    datasetName: layerData.datasetName,
+    onlineDatasourceAlias: datasetDescription.datasourceAlias,
+  })
 }
 
 export default {
@@ -1175,4 +1237,5 @@ export default {
   publishService,
   publishMapService,
   setDataService,
+  uploadLayerService,
 }

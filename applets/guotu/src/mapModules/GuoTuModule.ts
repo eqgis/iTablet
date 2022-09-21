@@ -40,17 +40,17 @@ export default class GuoTuModule extends Module {
     this.headerButtons = [
       // MapHeaderButton 中自带功能
       MapHeaderButton.Audio,  // 语音
-      // MapHeaderButton.Undo,   // 回退
+      MapHeaderButton.Undo,   // 回退
       // MapHeaderButton.Search, // 搜索
       // MapHeaderButton.Share,  // 分享
 
-      // 自定义功能
+      // to do 自定义功能
       {
-        key: 'save',
+        key: 'save',//地图保存
         image: getImage().save,
         action: this.save,
       }, {
-        key: 'upload',
+        key: 'upload',//数据提交
         image: getImage().upload,
         action: this.upload,
       },
@@ -64,7 +64,7 @@ export default class GuoTuModule extends Module {
       MapTabs.LayerManager,     // 系统自带Tab-图层
       MapTabs.LayerAttribute,   // 系统自带Tab-属性
       MapTabs.MapSetting,       // 系统自带Tab-设置
-      // 用户自定义Tab页面
+      // todo 用户自定义Tab页面
       {
         key: module,
         title: getLanguage().TASK,
@@ -94,7 +94,27 @@ export default class GuoTuModule extends Module {
      */
     global.coworkMode = true
   }
-
+  getDefaultData = () => {
+    return {
+      key: GuoTuModule.key,
+      // 根据语言获取地图模块名称
+      title: '土地核查',
+      // 模块图片
+      moduleImage: getImage().check,
+      // 点击时模块高亮图片
+      moduleImageTouch: getImage().check,
+      // 默认地图名称
+      defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
+      // 地图默认底图数据
+      baseMapSource: [ConstOnline.tiandituImg(), ConstOnline.tianditu()],
+      // 地图默认底图当前显示的地图
+      baseMapIndex: 3,
+      mapType: this.mapType,
+      isExample: false,
+      openDefaultMap: true,
+      // action: this.action,
+    }
+  }
   /**
    * 保存地图
    */
@@ -158,29 +178,6 @@ export default class GuoTuModule extends Module {
       __DEV__ && console.warn(error)
     }
   }
-
-  getDefaultData = () => {
-    return {
-      key: GuoTuModule.key,
-      // 根据语言获取地图模块名称
-      title: '土地核查',
-      // 模块图片
-      moduleImage: getImage().check,
-      // 点击时模块高亮图片
-      moduleImageTouch: getImage().check,
-      // 默认地图名称
-      defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
-      // 地图默认底图数据
-      baseMapSource: [ConstOnline.tiandituImg(), ConstOnline.tianditu()],
-      // 地图默认底图当前显示的地图
-      baseMapIndex: 3,
-      mapType: this.mapType,
-      isExample: false,
-      openDefaultMap: true,
-      // action: this.action,
-    }
-  }
-
   // 首页模块数据
   getChunk = (language: string) => {
     return this.createChunk(language, this.getDefaultData())

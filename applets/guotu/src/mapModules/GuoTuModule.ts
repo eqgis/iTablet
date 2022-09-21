@@ -6,13 +6,12 @@ import {
 } from '@/containers/workspace/components/ToolBar/modules'
 import { getImage } from '../assets'
 import { checkModule } from '../mapFunctionModules'
-import { LayerUtils, NavigatorUtil, Toast } from '@/utils'
+import { NavigatorUtil, Toast } from '@/utils'
 import navigators from '../containers'
 import { getLanguage } from '../language'
 import NavigationService from '@/containers/NavigationService'
 import { SMap } from 'imobile_for_reactnative'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
-import locationModule from '../mapFunctionModules/locationModule'
 import { injectReducer } from "@/redux/store"
 import { guotu } from '../reduxModels'
 import ServiceAction from '@/containers/workspace/components/ToolBar/modules/serviceModule/ServiceAction'
@@ -98,7 +97,7 @@ export default class GuoTuModule extends Module {
   /**
    * 保存地图
    */
-  save = async () => {
+  save = () => {
     try {
       const params: any = ToolbarModule.getParams()
       const currentMap = params.map.currentMap
@@ -106,7 +105,7 @@ export default class GuoTuModule extends Module {
       if (currentMap?.Template) {
         addition.Template = this.props.map.currentMap.Template
       }
-      const mapName = await SMap.saveMapName(
+      SMap.saveMapName(
         currentMap.name,
         params.nModule || '',
         params.addition,
@@ -114,8 +113,9 @@ export default class GuoTuModule extends Module {
         false,
         false,
         true,
-      )
-      console.warn(mapName)
+      ).then(mapName => {
+        Toast.show(mapName + '已保存')
+      })
     } catch (error) {
       __DEV__ && console.warn(error)
     }
@@ -131,13 +131,17 @@ export default class GuoTuModule extends Module {
         Toast.show('请先打开任务')
         return
       }
-      Toast.show('开始提交数据服务')
       // params.setContainerLoading(true, '正在保存地图')
       await this.save()
 
+      Toast.show('开始提交数据服务')
+
       // params.setContainerLoading(true, '正在正在提交服务')
       for (const layerData of params.layers.layers) {
-        await ServiceAction.uploadLayerService({layerData})
+        // 提交所有被修改过的图层
+        if (layerData.isModified) {
+          await ServiceAction.uploadLayerService({layerData})
+        }
       }
       // params.setContainerLoading(false)
     } catch (error) {

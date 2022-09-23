@@ -325,6 +325,7 @@ class GuoTuTasks extends Component<Props, State> {
             resourceSubTypes.length === 0 || resourceSubTypes.indexOf(item.sourceSubtype) >= 0
           ) &&
           (
+            executor.indexOf('*') >= 0 ||
             this.props.user.currentUser.userName === 'admin' ||
             executor.indexOf(this.props.user.currentUser.userName) >= 0 // 判断该任务是否是当前用户
           )

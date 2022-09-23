@@ -45,13 +45,35 @@ const styles = StyleSheet.create({
     marginLeft: scaleSize(40),
     width: '100%',
   },
+  contentTopView: {
+    flexDirection: 'row',
+    // marginLeft: scaleSize(40),
+    width: '100%',
+    alignItems: 'center',
+  },
   restTitleTextStyle: {
-    width: '80%',
+    maxWidth: '80%',
+    paddingRight: scaleSize(20),
     fontSize: size.fontSize.fontSizeXXl,
     fontWeight: 'bold',
     textAlign: 'left',
     flexWrap: 'wrap',
     color: color.fontColorBlack,
+  },
+  currentTag: {
+    marginRight: scaleSize(10),
+    paddingHorizontal: scaleSize(8),
+    // height: scaleSize(30),
+    // width: scaleSize(140),
+    borderRadius: scaleSize(4),
+    backgroundColor: color.bgG,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  currentTagTxt: {
+    fontSize: size.fontSize.fontSizeSm,
+    color: 'white',
+    backgroundColor: 'transparent',
   },
 
   viewStyle2: {
@@ -96,6 +118,8 @@ interface Props {
   openCheckBox?: boolean,
   /** CheckBox是否被选中 */
   checked?: boolean,
+  /** 当前打开的地图 */
+  currentMapPath: string,
   checkAction?: (checkParams: {value: boolean, data: ResourceType, download: () => Promise<void>}) => void,
   onChecked?: (checkParams: {value: boolean, data: ResourceType, download: () => Promise<void>}) => void,
   onMoreAction?: (data: MoreParams) => void,
@@ -477,12 +501,23 @@ export default class TaskItem extends Component<Props, State> {
     }
     return (
       <View style={styles.contentSubView}>
-        <Text
-          style={styles.restTitleTextStyle}
-          numberOfLines={1}
-        >
-          {this.props.data.resourceName.replace('.zip', '')}
-        </Text>
+        <View style={styles.contentTopView}>
+          <Text
+            style={styles.restTitleTextStyle}
+            numberOfLines={1}
+          >
+            {this.props.data.resourceName.replace('.zip', '')}
+            {/* {this.props.currentMapPath === this.mapPath ? '当前地图' : ''} */}
+          </Text>
+          {
+            this.props.currentMapPath === this.mapPath &&
+            <View style={styles.currentTag}>
+              <Text style={styles.currentTagTxt}>
+                {'当前任务'}
+              </Text>
+            </View>
+          }
+        </View>
         <View style={[styles.viewStyle2, {marginTop: scaleSize(20)}]}>
           <Image
             style={[styles.imageStyle2, { tintColor: color.fontColorGray }]}

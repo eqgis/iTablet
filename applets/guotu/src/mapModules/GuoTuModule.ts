@@ -88,11 +88,6 @@ export default class GuoTuModule extends Module {
       list: 'whitelist', //白名单,持久化数据
     })
 
-    /**
-     * 打开在线协作,数据服务
-     */
-    global.coworkMode = true
-
     CheckService.setCheckServiceUpload(() => {
       const params: any = ToolbarModule.getParams()
       if (global.Type !== 'guotu') return true
@@ -107,6 +102,15 @@ export default class GuoTuModule extends Module {
       return true
     })
   }
+
+  preAction = () => {
+    /**
+     * 打开在线协作,数据服务
+     */
+    global.coworkMode = true
+    return true
+  }
+
   getDefaultData = () => {
     return {
       key: GuoTuModule.key,
@@ -126,6 +130,7 @@ export default class GuoTuModule extends Module {
       isExample: false,
       openDefaultMap: true,
       // action: this.action,
+      preAction: this.preAction,
     }
   }
   /**

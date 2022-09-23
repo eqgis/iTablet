@@ -534,7 +534,7 @@ class GuoTuTasks extends Component<Props, State> {
     data: any,
   }) => {
     try {
-      if (this.props.map.currentMap.name === data.name) {
+      if (this.props.map.currentMap.path === data.path) {
         Toast.show('地图已经打开')
         return
       }
@@ -659,6 +659,7 @@ class GuoTuTasks extends Component<Props, State> {
       <TaskItem
         user={this.props.user}
         data={item}
+        currentMapPath={this.props.map.currentMap.path}
         onPress={this._onPress}
         openCheckBox={this.state.isMutiChoice}
         // hasDownload={this.hasDownload}

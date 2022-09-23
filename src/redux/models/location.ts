@@ -1,5 +1,6 @@
 import { fromJS } from "immutable"
 import { handleActions } from 'redux-actions'
+import { REHYDRATE } from 'redux-persist'
 import { NtripMountPoint } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 
 
@@ -87,9 +88,13 @@ export default handleActions(
         ['selectLoadPoint'], fromJS(selectLoadPoint)
       )
     },
-    // [REHYDRATE]: (state, { payload }) => {
-    //   return payload && payload.device ? fromJS(payload.device) : state
-    // },
+    [REHYDRATE]: (state, { payload }) => {
+      // 写这个属性，必须要放在白名单里，并且要保存出值的话，要在payload里面的对应模块里去取
+      if(payload && payload.location) {
+        return fromJS(payload.location)
+      }
+      return state
+    },
   },
   initialState,
 )

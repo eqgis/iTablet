@@ -42,7 +42,6 @@ class NtripSetting extends Component<Props, State> {
     super(props)
     const essentialInfo: EssentialInfo =  this.props.essentialInfo
     const selelectLoadPoint: NtripMountPoint = this.props.selectLoadPoint
-    console.warn("essentialInfo: " + JSON.stringify(essentialInfo))
     this.state = {
       agreement: essentialInfo.agreement,
       address: essentialInfo.address,

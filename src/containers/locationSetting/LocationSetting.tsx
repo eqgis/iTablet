@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator ,Switch,TextInput} from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator ,Switch,TextInput, Platform} from 'react-native'
 import { SLocation } from 'imobile_for_reactnative'
 import Container from '../../components/Container'
 import { dp, scaleSize ,Toast} from '../../utils'
@@ -169,7 +169,7 @@ class LocationSetting extends React.Component<Props, State> {
         {/* {this.renderItems()} */}
         {this.renderDevicesSelectItem('local', getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL, this.selectLocalDevice)}
         {this.renderDevicesSelectItem('external', getLanguage(global.language).Profile.SETTING_LOCATION_EXTERNAL, this.selectExternalDevice)}
-        {this.renderDevicesSelectItem('bluetooth', getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH, this.selectBluetoothDevice)}
+        {Platform.OS === "android" && this.renderDevicesSelectItem('bluetooth', getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH, this.selectBluetoothDevice)}
       </View>
     )
   }

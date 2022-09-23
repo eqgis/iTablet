@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     padding: 0,
     fontSize: size.fontSize.fontSizeLg,
     paddingLeft: 5,
+    maxWidth: '70%',
   },
   separateViewStyle: {
     width: '100%',

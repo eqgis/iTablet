@@ -149,7 +149,7 @@ class GuoTuTasks extends Component<Props, State> {
   popSourceData: Array<any>
   pagePopModal: PopMenu | null | undefined
   sourcePopModal: PopMenu | null | undefined
-  container: Container
+  container: Container | null | undefined
   pageSize: number
   currentPage: number
   isLoading: boolean // 防止同时重复加载多次

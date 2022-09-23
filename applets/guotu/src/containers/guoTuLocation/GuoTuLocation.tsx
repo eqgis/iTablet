@@ -46,6 +46,7 @@ class GuoTuLocation extends Component<Props, State> {
     creator: string,
   } | undefined // 新建群组基本信息
   onlineDefualtGroup: GroupInfo
+  container: Container | null | undefined
 
   constructor(props: Props) {
     super(props)
@@ -147,6 +148,7 @@ class GuoTuLocation extends Component<Props, State> {
 
   getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC'}) => {
     try {
+      this.container?.setLoading(true, '正在加载地区')
       // online用户自动加入Land_Chengdu示例群组
       if (UserType.isOnlineUser(this.props.user.currentUser)) {
         const groupResult = await SCoordinationUtils.getScoordiantion()?.getGroupInfos({
@@ -166,12 +168,11 @@ class GuoTuLocation extends Component<Props, State> {
           }
         }
         if (this.onlineDefualtGroup?.id) {
-          const result = await SCoordinationUtils.getScoordiantion()?.applyToGroup({
+          await SCoordinationUtils.getScoordiantion()?.applyToGroup({
             groupIds: [this.onlineDefualtGroup.id],
             applicant: this.props.user.currentUser.userName,
             applyReason: '',
           })
-          console.warn(result)
         }
       }
 
@@ -216,8 +217,13 @@ class GuoTuLocation extends Component<Props, State> {
           this.state.isRefresh && this.setState({ isRefresh: false, data: [] })
           this.isLoading = false
         }
+        this.container?.setLoading(false)
+      }).catch(e => {
+        this.isLoading = false
+        this.container?.setLoading(false)
       })
     } catch (error) {
+      this.container?.setLoading(false)
       this.isLoading = false
       this.state.isRefresh && this.setState({ isRefresh: false })
       Toast.show(error.message)
@@ -278,6 +284,7 @@ class GuoTuLocation extends Component<Props, State> {
   render() {
     return (
       <Container
+        ref={ref => this.container = ref}
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{

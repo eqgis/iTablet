@@ -82,6 +82,7 @@ export interface MoreParams {
 interface State {
   // progress: number | string,
   exist: boolean,
+  mapExist: boolean,
   isDownloading: boolean,
   selectedData: Map<string, any>,
 }
@@ -139,7 +140,8 @@ export default class TaskItem extends Component<Props, State> {
           : this.props.data.resourceName.substring(0, index)
     }
     this.state = {
-      exist: false,
+      exist: false,    // 下载解压后的地图数据是否存在
+      mapExist: false, // 导入后的地图文件是否存在
       isDownloading: false,
       selectedData: new Map(),
     }
@@ -180,8 +182,15 @@ export default class TaskItem extends Component<Props, State> {
 
     let exist = await FileTools.fileIsExist(this.progressTag)
     if (exist) {
+      const tagStr = await FileTools.readFile(this.progressTag)
+      const tag = tagStr && JSON.parse(tagStr)
+      if (tag?.mapPath) {
+        this.mapPath = tag.mapPath
+      }
+      const mapExist = await FileTools.fileIsExist(this.mapPath)
       this.setState({
         exist: true,
+        mapExist: mapExist,
         isDownloading: false,
       })
     } else {
@@ -192,14 +201,22 @@ export default class TaskItem extends Component<Props, State> {
         const timer = setInterval(async () => {
           exist = await FileTools.fileIsExist(this.progressTag)
           if (exist) {
+            const tagStr = await FileTools.readFile(this.progressTag)
+            const tag = tagStr && JSON.parse(tagStr)
+            if (tag?.mapPath) {
+              this.mapPath = tag.mapPath
+            }
+            const mapExist = await FileTools.fileIsExist(this.mapPath)
             clearInterval(timer)
             this.setState({
               exist: true,
+              mapExist: mapExist,
               isDownloading: false,
             })
           } else {
             this.setState({
               exist: false,
+              mapExist: false,
               isDownloading: true,
             })
           }
@@ -329,11 +346,15 @@ export default class TaskItem extends Component<Props, State> {
             } else {
               this.setState({
                 exist: true,
+                mapExist: true,
                 isDownloading: false,
               })
             }
             FileTools.deleteFile(this.downloadingPath)
-            RNFS.writeFile(this.progressTag, '100%', 'utf8')
+            RNFS.writeFile(this.progressTag, JSON.stringify({
+              progress: '100%',
+              mapPath: this.mapPath,
+            }), 'utf8')
           })
           .catch(() => {
             Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)

@@ -23,6 +23,7 @@ import PropTypes from 'prop-types'
 import { setNav } from './src/redux/models/nav'
 import { setUser, setUsers, deleteUser } from './src/redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting } from './src/redux/models/setting'
+import { setPointStateText } from './src/redux/models/location'
 import {
   setEditLayer,
   setSelection,
@@ -202,6 +203,7 @@ class AppRoot extends Component {
     setMapArGuide: PropTypes.func,
     setMapArMappingGuide: PropTypes.func,
     setMapAnalystGuide: PropTypes.func,
+    setPointStateText: PropTypes.func,
   }
 
   /** 是否是华为设备 */
@@ -423,7 +425,13 @@ class AppRoot extends Component {
   initLocation = async () => {
     await SLocation.openGPS()
     SLocation.addSlocationStateListener((type: string) => {
-      Toast.show(getLanguage().SLOCATION_STATE_CURRENT + ":( " + type + " )")
+      // Toast.show(getLanguage().SLOCATION_STATE_CURRENT + ":( " + type + " )")
+      let text = type.replace(/:/, " ")
+      if(text.toLowerCase().includes("invalid") | text.toLowerCase().includes("no data")) {
+        text = getLanguage().WEAK_POSITIONING_SIGNAL
+      }
+      this.props.setPointStateText(getLanguage().SLOCATION_STATE_CURRENT + ": "+ text)
+
     })
   }
 
@@ -1283,6 +1291,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   deleteUser,
   closeWorkspace,
   setBaseMap,
+  setPointStateText,
 })(AppRoot)
 
 const App = () =>

@@ -24,6 +24,7 @@ export interface NtripInfoType {
 // Constants
 // --------------------------------------------------
 const UPDATE_NTRIP_INFO = 'UPDATE_NTRIP_INFO'
+const SET_POINT_STATE_TEXT = 'SET_POINT_STATE_TEXT'
 
 
 // Actions Type
@@ -32,6 +33,11 @@ const UPDATE_NTRIP_INFO = 'UPDATE_NTRIP_INFO'
 export interface upDateNtripInfoAction {
   type: typeof UPDATE_NTRIP_INFO
   payload: NtripInfoType
+}
+
+export interface pointStateTextAction {
+  type: typeof SET_POINT_STATE_TEXT
+  payload: string
 }
 
 
@@ -59,6 +65,22 @@ export const updateNtripInfo = (
   }
 }
 
+/** 设置定位状态的提示文字 */
+export const setPointStateText = (
+  text: string
+) => async (
+  dispatch: (arg0: pointStateTextAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POINT_STATE_TEXT,
+      payload: text,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
 // 初始值
 // --------------------------------------------------
 const initialState = fromJS({
@@ -72,7 +94,8 @@ const initialState = fromJS({
   selectLoadPoint: {
     name: '',
     requireGGA: false,
-  }
+  },
+  pointStateText: '',
 })
 
 
@@ -88,10 +111,16 @@ export default handleActions(
         ['selectLoadPoint'], fromJS(selectLoadPoint)
       )
     },
+    [`${SET_POINT_STATE_TEXT}`]: (state: any, { payload }) => {
+      return state.setIn(['pointStateText'], fromJS(payload))
+    },
+
     [REHYDRATE]: (state, { payload }) => {
       // 写这个属性，必须要放在白名单里，并且要保存出值的话，要在payload里面的对应模块里去取
       if(payload && payload.location) {
-        return fromJS(payload.location)
+        const location = payload.location
+        location.pointStateText = ""
+        return fromJS(location)
       }
       return state
     },

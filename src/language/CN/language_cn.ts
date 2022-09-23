@@ -2203,7 +2203,8 @@ export const language_cn = {
   CHANGE_DEVICE_LOCAL: "已切换到此设备",
   CHANGE_DEVICE_EXTERNAL: "已切换到网络设备",
   CHANGE_DEVICE_BLUETOOTH: "已切换到蓝牙设备",
-  SLOCATION_STATE_CURRENT: "当前使用的定位状态",
+  SLOCATION_STATE_CURRENT: "定位状态",
+  WEAK_POSITIONING_SIGNAL: "定位信号弱",
 
   // 许可
   LICENSE: "许可",

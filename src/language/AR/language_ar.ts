@@ -2217,7 +2217,8 @@ export const language_ar: typeof language_cn = {
   CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
   CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
   CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
-  SLOCATION_STATE_CURRENT: "The current positioning status",  // To be translated
+  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
+  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
 
   // 许可
   LICENSE: "الرخصة",

@@ -137,6 +137,7 @@ import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
 import Toolbar from '@/Toolbar'
 import { onAddARAnimation } from '@/Toolbar/modules/arAnimation/Actions'
+import PositionStateView from '../../components/PositionStateView'
 
 global.markerTag = 118082
 
@@ -192,6 +193,10 @@ export default class MapView extends React.Component {
     themeGuide: PropTypes.bool,
     collectGuide: PropTypes.bool,
     mapEditGuide: PropTypes.bool,
+
+    peripheralDevice: PropTypes.object,
+    essentialInfo: PropTypes.object,
+    pointStateText: PropTypes.string,
 
     coworkInfo: PropTypes.object,
     currentTask: PropTypes.object,
@@ -3714,6 +3719,12 @@ export default class MapView extends React.Component {
     )
   }
 
+  _renderPositionStateView = () => {
+    return (
+      <PositionStateView/>
+    )
+  }
+
   /**
    * 室内路网采集页面 zhangxt
    */
@@ -5093,6 +5104,14 @@ export default class MapView extends React.Component {
         {global.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {global.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
+
+
+        {/* 是否使用了差分服务的定位状态提示 */}
+        {this.props?.peripheralDevice?.type === "bluetooth"
+        && this.props?.essentialInfo?.userName !== ""
+        && this.props.pointStateText !== ""
+        && this._renderPositionStateView()
+        }
 
         {this._renderAIDetectChange()}
         <SurfaceView

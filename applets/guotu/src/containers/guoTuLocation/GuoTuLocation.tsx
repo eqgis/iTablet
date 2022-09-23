@@ -12,6 +12,7 @@ import NavigationService from '@/containers/NavigationService'
 
 import { setCurrentGroup } from '../../reduxModels/guotu'
 import { Color } from '@/utils/AppStyle'
+import { GroupInfo } from 'imobile_for_reactnative/types/interface/iserver/types'
 
 interface Props {
   navigation: any,
@@ -44,6 +45,7 @@ class GuoTuLocation extends Component<Props, State> {
     groupName: string,
     creator: string,
   } | undefined // 新建群组基本信息
+  onlineDefualtGroup: GroupInfo
 
   constructor(props: Props) {
     super(props)
@@ -145,6 +147,34 @@ class GuoTuLocation extends Component<Props, State> {
 
   getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC'}) => {
     try {
+      // online用户自动加入Land_Chengdu示例群组
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        const groupResult = await SCoordinationUtils.getScoordiantion()?.getGroupInfos({
+          orderBy: orderBy,
+          orderType: orderType,
+          pageSize: pageSize,
+          currentPage: currentPage,
+          keywords: 'Land_Chengdu',
+        })
+        if (groupResult.total > 0) {
+          for (const group of groupResult.content) {
+            if (group.groupName === 'Land_Chengdu') {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              this.onlineDefualtGroup = group
+              break
+            }
+          }
+        }
+        if (this.onlineDefualtGroup?.id) {
+          const result = await SCoordinationUtils.getScoordiantion()?.applyToGroup({
+            groupIds: [this.onlineDefualtGroup.id],
+            applicant: this.props.user.currentUser.userName,
+            applyReason: '',
+          })
+          console.warn(result)
+        }
+      }
+
       SCoordinationUtils.getScoordiantion()?.getGroupInfos({
         orderBy: orderBy,
         orderType: orderType,

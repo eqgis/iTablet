@@ -471,7 +471,7 @@ export default class TaskItem extends Component<Props, State> {
             style={[styles.textStyle2, { color: color.fontColorGray }]}
             numberOfLines={1}
           >
-            {name}
+            {name === '*' ? '所有人' : name}
           </Text>
         </View>
         <View style={[styles.viewStyle2, {marginTop: scaleSize(15)}]}>

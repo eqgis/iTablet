@@ -1,7 +1,7 @@
 const AppPath = '/iTablet/'
 const Data = 'Data/'
 const DefaultData = 'DefaultData/'
-const Bundles = 'Bundles/'
+// const Bundles = 'Bundles/'
 const Collection = 'Collection'
 const MapEdit = 'MapEdit'
 const MapTheme = 'Map/MapTheme'
@@ -23,7 +23,7 @@ const RelativePath = {
   License: 'License/',
   Log: 'Log/',
   Data,
-  Bundles,
+  // Bundles,
   Label: `${Data}Label/`,
   Datasource: `${Data}Datasource/`,
   Scene: `${Data}Scene/`,

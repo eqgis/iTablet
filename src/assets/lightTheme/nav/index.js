@@ -37,6 +37,11 @@ const network = require('./icon_layer_network_Temp.png')
 const setting = require('./icon_install.png')
 const my_armap = require('./icon_my_armap.png')
 
+const swith_animation_type = require('./icon_switch_animation_type.png')
+const ar_body_posture = require('./icon_ar_body_posture.png')
+const ar_3dmodle = require('./icon_ar_3dmodle.png')
+
+
 export default {
   icon_back,
   icon_nav_close,
@@ -76,4 +81,7 @@ export default {
   network,
   setting,
   my_armap,
+  swith_animation_type,
+  ar_body_posture,
+  ar_3dmodle,
 }

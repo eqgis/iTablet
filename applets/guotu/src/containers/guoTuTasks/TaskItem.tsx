@@ -45,13 +45,35 @@ const styles = StyleSheet.create({
     marginLeft: scaleSize(40),
     width: '100%',
   },
+  contentTopView: {
+    flexDirection: 'row',
+    // marginLeft: scaleSize(40),
+    width: '100%',
+    alignItems: 'center',
+  },
   restTitleTextStyle: {
-    width: '80%',
+    maxWidth: '80%',
+    paddingRight: scaleSize(20),
     fontSize: size.fontSize.fontSizeXXl,
     fontWeight: 'bold',
     textAlign: 'left',
     flexWrap: 'wrap',
     color: color.fontColorBlack,
+  },
+  currentTag: {
+    marginRight: scaleSize(10),
+    paddingHorizontal: scaleSize(8),
+    // height: scaleSize(30),
+    // width: scaleSize(140),
+    borderRadius: scaleSize(4),
+    backgroundColor: color.bgG,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  currentTagTxt: {
+    fontSize: size.fontSize.fontSizeSm,
+    color: 'white',
+    backgroundColor: 'transparent',
   },
 
   viewStyle2: {
@@ -66,6 +88,7 @@ const styles = StyleSheet.create({
     padding: 0,
     fontSize: size.fontSize.fontSizeLg,
     paddingLeft: 5,
+    maxWidth: '70%',
   },
   separateViewStyle: {
     width: '100%',
@@ -82,6 +105,7 @@ export interface MoreParams {
 interface State {
   // progress: number | string,
   exist: boolean,
+  mapExist: boolean,
   isDownloading: boolean,
   selectedData: Map<string, any>,
 }
@@ -94,6 +118,8 @@ interface Props {
   openCheckBox?: boolean,
   /** CheckBox是否被选中 */
   checked?: boolean,
+  /** 当前打开的地图 */
+  currentMapPath: string,
   checkAction?: (checkParams: {value: boolean, data: ResourceType, download: () => Promise<void>}) => void,
   onChecked?: (checkParams: {value: boolean, data: ResourceType, download: () => Promise<void>}) => void,
   onMoreAction?: (data: MoreParams) => void,
@@ -139,7 +165,8 @@ export default class TaskItem extends Component<Props, State> {
           : this.props.data.resourceName.substring(0, index)
     }
     this.state = {
-      exist: false,
+      exist: false,    // 下载解压后的地图数据是否存在
+      mapExist: false, // 导入后的地图文件是否存在
       isDownloading: false,
       selectedData: new Map(),
     }
@@ -180,8 +207,15 @@ export default class TaskItem extends Component<Props, State> {
 
     let exist = await FileTools.fileIsExist(this.progressTag)
     if (exist) {
+      const tagStr = await FileTools.readFile(this.progressTag)
+      const tag = tagStr && JSON.parse(tagStr)
+      if (tag?.mapPath) {
+        this.mapPath = tag.mapPath
+      }
+      const mapExist = await FileTools.fileIsExist(this.mapPath)
       this.setState({
         exist: true,
+        mapExist: mapExist,
         isDownloading: false,
       })
     } else {
@@ -192,14 +226,22 @@ export default class TaskItem extends Component<Props, State> {
         const timer = setInterval(async () => {
           exist = await FileTools.fileIsExist(this.progressTag)
           if (exist) {
+            const tagStr = await FileTools.readFile(this.progressTag)
+            const tag = tagStr && JSON.parse(tagStr)
+            if (tag?.mapPath) {
+              this.mapPath = tag.mapPath
+            }
+            const mapExist = await FileTools.fileIsExist(this.mapPath)
             clearInterval(timer)
             this.setState({
               exist: true,
+              mapExist: mapExist,
               isDownloading: false,
             })
           } else {
             this.setState({
               exist: false,
+              mapExist: false,
               isDownloading: true,
             })
           }
@@ -329,11 +371,15 @@ export default class TaskItem extends Component<Props, State> {
             } else {
               this.setState({
                 exist: true,
+                mapExist: true,
                 isDownloading: false,
               })
             }
             FileTools.deleteFile(this.downloadingPath)
-            RNFS.writeFile(this.progressTag, '100%', 'utf8')
+            RNFS.writeFile(this.progressTag, JSON.stringify({
+              progress: '100%',
+              mapPath: this.mapPath,
+            }), 'utf8')
           })
           .catch(() => {
             Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
@@ -455,12 +501,23 @@ export default class TaskItem extends Component<Props, State> {
     }
     return (
       <View style={styles.contentSubView}>
-        <Text
-          style={styles.restTitleTextStyle}
-          numberOfLines={1}
-        >
-          {this.props.data.resourceName.replace('.zip', '')}
-        </Text>
+        <View style={styles.contentTopView}>
+          <Text
+            style={styles.restTitleTextStyle}
+            numberOfLines={1}
+          >
+            {this.props.data.resourceName.replace('.zip', '')}
+            {/* {this.props.currentMapPath === this.mapPath ? '当前地图' : ''} */}
+          </Text>
+          {
+            this.props.currentMapPath === this.mapPath &&
+            <View style={styles.currentTag}>
+              <Text style={styles.currentTagTxt}>
+                {'当前任务'}
+              </Text>
+            </View>
+          }
+        </View>
         <View style={[styles.viewStyle2, {marginTop: scaleSize(20)}]}>
           <Image
             style={[styles.imageStyle2, { tintColor: color.fontColorGray }]}
@@ -471,7 +528,7 @@ export default class TaskItem extends Component<Props, State> {
             style={[styles.textStyle2, { color: color.fontColorGray }]}
             numberOfLines={1}
           >
-            {name}
+            {name === '*' ? '所有人' : name}
           </Text>
         </View>
         <View style={[styles.viewStyle2, {marginTop: scaleSize(15)}]}>

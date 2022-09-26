@@ -1,4 +1,4 @@
-import { ConstOnline, MapHeaderButton, MapTabs } from '@/constants'
+import { ConstOnline, MapHeaderButton, MapTabs, UserType } from '@/constants'
 import { Module } from '@/class'
 import {
   toolModule,
@@ -6,7 +6,7 @@ import {
 } from '@/containers/workspace/components/ToolBar/modules'
 import { getImage } from '../assets'
 import { checkModule } from '../mapFunctionModules'
-import { NavigatorUtil, Toast } from '@/utils'
+import { CheckService, NavigatorUtil, Toast } from '@/utils'
 import navigators from '../containers'
 import { getLanguage } from '../language'
 import NavigationService from '@/containers/NavigationService'
@@ -88,11 +88,29 @@ export default class GuoTuModule extends Module {
       list: 'whitelist', //白名单,持久化数据
     })
 
+    CheckService.setCheckServiceUpload(() => {
+      const params: any = ToolbarModule.getParams()
+      if (global.Type !== 'guotu') return true
+      if (!params.user.currentUser?.userName || params.user.currentUser?.userName === 'Customer') {
+        Toast.show('请先登录')
+        return false
+      }
+      if (UserType.isOnlineUser(params.user.currentUser)) {
+        Toast.show('小插件示例,online用户不能提交')
+        return false
+      }
+      return true
+    })
+  }
+
+  preAction = () => {
     /**
      * 打开在线协作,数据服务
      */
     global.coworkMode = true
+    return true
   }
+
   getDefaultData = () => {
     return {
       key: GuoTuModule.key,
@@ -105,13 +123,14 @@ export default class GuoTuModule extends Module {
       // 默认地图名称
       defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
       // 地图默认底图数据
-      baseMapSource: [ConstOnline.tiandituImg(), ConstOnline.tianditu()],
+      baseMapSource: [ConstOnline.tiandituImg()],
       // 地图默认底图当前显示的地图
       baseMapIndex: 3,
       mapType: this.mapType,
       isExample: false,
       openDefaultMap: true,
       // action: this.action,
+      preAction: this.preAction,
     }
   }
   /**
@@ -147,25 +166,23 @@ export default class GuoTuModule extends Module {
   upload = async () => {
     const params: any = ToolbarModule.getParams()
     try {
+      if (!CheckService.checkServiceUpload()) {
+        return
+      }
       if (!params.map.currentMap.name) {
         Toast.show('请先打开任务')
         return
       }
-      // params.setContainerLoading(true, '正在保存地图')
-      await this.save()
 
       Toast.show('开始提交数据服务')
 
-      // params.setContainerLoading(true, '正在正在提交服务')
       for (const layerData of params.layers.layers) {
         // 提交所有被修改过的图层
         if (layerData.isModified) {
           await ServiceAction.uploadLayerService({layerData})
         }
       }
-      // params.setContainerLoading(false)
     } catch (error) {
-      // params.setContainerLoading(false)
       Toast.show('提交服务失败')
       __DEV__ && console.warn(error)
     }

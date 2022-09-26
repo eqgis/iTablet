@@ -149,7 +149,7 @@ class GuoTuTasks extends Component<Props, State> {
   popSourceData: Array<any>
   pagePopModal: PopMenu | null | undefined
   sourcePopModal: PopMenu | null | undefined
-  container: Container
+  container: Container | null | undefined
   pageSize: number
   currentPage: number
   isLoading: boolean // 防止同时重复加载多次
@@ -325,6 +325,7 @@ class GuoTuTasks extends Component<Props, State> {
             resourceSubTypes.length === 0 || resourceSubTypes.indexOf(item.sourceSubtype) >= 0
           ) &&
           (
+            executor.indexOf('*') >= 0 ||
             this.props.user.currentUser.userName === 'admin' ||
             executor.indexOf(this.props.user.currentUser.userName) >= 0 // 判断该任务是否是当前用户
           )
@@ -533,7 +534,7 @@ class GuoTuTasks extends Component<Props, State> {
     data: any,
   }) => {
     try {
-      if (this.props.map.currentMap.name === data.name) {
+      if (this.props.map.currentMap.path === data.path) {
         Toast.show('地图已经打开')
         return
       }
@@ -658,6 +659,7 @@ class GuoTuTasks extends Component<Props, State> {
       <TaskItem
         user={this.props.user}
         data={item}
+        currentMapPath={this.props.map.currentMap.path}
         onPress={this._onPress}
         openCheckBox={this.state.isMutiChoice}
         // hasDownload={this.hasDownload}

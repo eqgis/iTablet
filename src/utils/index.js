@@ -33,7 +33,7 @@ import DataHandler from './DataHandler'
 import AppPath from './AppPath'
 import { FetchBlob } from './FetchBlob'
 
-export { CheckSpell } from './CheckUtils'
+export { CheckSpell, CheckService } from './CheckUtils'
 export { FloatMath } from './FloatMath'
 import NavigatorUtil from './NavigatorUtil'
 

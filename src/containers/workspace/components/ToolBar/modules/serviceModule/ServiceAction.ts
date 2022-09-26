@@ -15,7 +15,7 @@ import {
   UserType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin, LayerUtils } from '../../../../../../utils'
+import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin, LayerUtils, CheckService } from '../../../../../../utils'
 import { OnlineDataType } from '../../../../../../utils/OnlineServicesUtils'
 import * as Type from '../../../../../../types'
 import { getThemeAssets } from '../../../../../../assets'
@@ -1162,6 +1162,10 @@ async function commit() {
 async function uploadLayerService({ layerData }: {
   layerData: SMap.LayerInfo,
 }) {
+  // 检测是否可以提交服务
+  if (!CheckService.checkServiceUpload()) {
+    return
+  }
   const _params: any = ToolbarModule.getParams()
   const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
   if (datasetDescription?.type !== 'onlineService') {

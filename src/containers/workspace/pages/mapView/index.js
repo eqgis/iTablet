@@ -117,6 +117,8 @@ const mapStateToProps = state => ({
   isShowCompass: state.setting.toJS().isShowCompass,
   aiDetectData: state.setting.toJS().aiDetectData,
   aiClassifyData: state.setting.toJS().aiClassifyData,
+  peripheralDevice: state.setting.toJS().peripheralDevice,
+  essentialInfo: state.location.toJS().essentialInfo,
 })
 
 const mapDispatchToProps = {

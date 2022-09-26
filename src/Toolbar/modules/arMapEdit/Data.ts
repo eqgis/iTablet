@@ -18,6 +18,8 @@ import { ToolBarMenuItem } from "imobile_for_reactnative/components/ToolbarKit/c
 
 /** 是否是回退到达的编辑工具栏 */
 let isBackEdit = false
+/** 是否显示了动画类型切换按钮 */
+let isShowAnimationChangeBtn = false
 
 export function getData(key: ModuleList['ARMAP_EDIT']): IToolbarOption {
   const option = new ToolbarOption<ARMapEditViewOption>()
@@ -115,6 +117,7 @@ function editElementOption(option: ToolbarOption<ARMapEditViewOption>) {
 
   option.bottomData = getPoiEditBottom(element)
   // option.tabOption.isShowToggle = true
+  option.menuOption.defaultIndex = 0
   option.menuOption.isShowView = false
   if(element.type === ARElementType.AR_MODEL || element.type === ARElementType.AR_ELEMENT_GROUP) {
     const tabData = _getTransformTabData(element)
@@ -123,6 +126,23 @@ function editElementOption(option: ToolbarOption<ARMapEditViewOption>) {
       option.menuOption.defaultIndex = 3
       option.menuOption.isShowView = true
       isBackEdit = false
+    }
+
+    if(option.menuOption.defaultIndex === 3 && AppToolBar.getData().ownModelAnimation) {
+      const buttons = getPoiEditBottom(element)
+      const button =  {
+        image: getImage().swith_animation_type,
+        onPress: () => {
+          if(animatonMode === 'custome') {
+            animatonMode = 'model'
+          } else if(animatonMode === 'model'){
+            animatonMode = 'custome'
+          }
+          AppToolBar.resetPage()
+        }
+      }
+      buttons.splice(1, 0, button)
+      option.bottomData = buttons
     }
     option.menuOption.data = tabData.concat([Platform.OS === 'ios' ? _getModelAnimationTabList(element) : _getAnimationTabList(element)])
   } else {
@@ -434,6 +454,10 @@ function _getTransformTabData(editItem: ARElement | string): ToolBarMenuItem[] {
       title: getLanguage().ARMap.TRANSLATION,
       onPress: () => {
         SARMap.setAction(ARAction.MOVE)
+        if(isShowAnimationChangeBtn) {
+          AppToolBar.deleteBottomBtn(1, 1)
+          isShowAnimationChangeBtn = false
+        }
       },
       type: 'slide',
       apply: apply,
@@ -502,6 +526,10 @@ function _getTransformTabData(editItem: ARElement | string): ToolBarMenuItem[] {
       title: getLanguage().ARMap.ROTATION,
       onPress: () => {
         SARMap.setAction(ARAction.ROTATE)
+        if(isShowAnimationChangeBtn) {
+          AppToolBar.deleteBottomBtn(1, 1)
+          isShowAnimationChangeBtn = false
+        }
       },
       type: 'slide',
       apply: apply,
@@ -566,6 +594,10 @@ function _getTransformTabData(editItem: ARElement | string): ToolBarMenuItem[] {
       title: getLanguage().ARMap.SCALE,
       onPress: () => {
         SARMap.setAction(ARAction.SCALE)
+        if(isShowAnimationChangeBtn) {
+          AppToolBar.deleteBottomBtn(1, 1)
+          isShowAnimationChangeBtn = false
+        }
       },
       type: 'slide',
       apply: apply,
@@ -881,7 +913,6 @@ function _getModelAnimationTabList(element: ARElement): ToolBarMenuItem {
     data: [],
     getExtraData: async () => {
       const modelAnimations = await SARMap.getModelAnimation(element.layerName, element.id)
-
       if(modelAnimations.length > 0 && animatonMode === 'model') {
         const headData: ToolBarListItem[] = [{
           image: getImage().toolbar_switch,
@@ -967,22 +998,18 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
 
   const changeA: ToolBarListItem[] = [
     {
-      image: getImage().toolbar_switch,
-      text: getLanguage().CUSTOME_ANIMATION,
+      image: getImage().ar_body_posture,
+      text: getLanguage().BONE_ANIMATION,
       onPress: () => {
-        animatonMode = 'custome'
-        AppToolBar.resetPage()
       }
     },
   ]
 
   const changeB: ToolBarListItem[] = [
     {
-      image: getImage().toolbar_switch,
-      text: getLanguage().BONE_ANIMATION,
+      image: getImage().ar_3dmodle,
+      text: getLanguage().CUSTOME_ANIMATION,
       onPress: () => {
-        animatonMode = 'model'
-        AppToolBar.resetPage()
       }
     },
   ]
@@ -1012,12 +1039,6 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
     }
   ]
 
-  // const more: ToolBarListItem = {
-  //   image: getImage().icon_more,
-  //   onPress: () => {
-  //     NavigationService.navigate('ARAnimation')
-  //   }
-  // }
 
   return {
     title: getLanguage().ANIMATION,
@@ -1025,6 +1046,23 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
     onPress: () => {
       SARMap.setAction(ARAction.NULL)
       AppToolBar.showTabView(true)
+      if(AppToolBar.getData().ownModelAnimation) {
+        const button =  {
+          image: getImage().swith_animation_type,
+          onPress: () => {
+            if(animatonMode === 'custome') {
+              animatonMode = 'model'
+            } else if(animatonMode === 'model'){
+              animatonMode = 'custome'
+            }
+            AppToolBar.resetPage()
+          }
+        }
+        if(!isShowAnimationChangeBtn) {
+          AppToolBar.addBottomBtn([button], 1)
+          isShowAnimationChangeBtn = true
+        }
+      }
     },
     data: [],
     getExtraData: async () => {

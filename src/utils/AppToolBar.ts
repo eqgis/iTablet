@@ -155,6 +155,8 @@ interface ToolBarData {
 
     /** 三维管线的Ar属性 */
     attribute3D?: attribute3DType
+    /** 选中的对象是否拥有骨骼动画 true表示有骨骼动画， false表示没有骨骼动画 */
+    ownModelAnimation?: boolean
 }
 
 export interface attribute3DType {
@@ -294,6 +296,24 @@ function resetPage() {
   toolbarRef?.resetPage()
 }
 
+/**
+ * 在底部的按钮里添加新的按钮  deleteBottomBtn
+ * @param newBottoms  新插入的按钮数组
+ * @param index 插入的位置(如果用的是menu会忽略自动在第一个按钮后面插入的两个按钮)
+ */
+function addBottomBtn(newBottoms: Array<ToolBarBottomItem>, index: number) {
+  toolbarRef?.addBottomBtn(newBottoms, index)
+}
+
+/**
+ * 在底部的按钮里移除某个按钮
+ * @param index 要移除按钮的位置
+ * @param count 移除的个数
+ */
+function deleteBottomBtn(index: number, count: number) {
+  toolbarRef?.deleteBottomBtn(index, count)
+}
+
 /** 显示/隐藏 toolbarTab 下的 view */
 function showTabView(visible: boolean) {
   toolbarRef.showTabView(visible)
@@ -322,6 +342,8 @@ export default {
   resetPage,
   showTabView,
   getCurrentOption,
-  toggleListVisible
+  toggleListVisible,
+  addBottomBtn,
+  deleteBottomBtn,
 }
 

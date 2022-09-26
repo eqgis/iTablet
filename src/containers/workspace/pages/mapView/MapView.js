@@ -4893,7 +4893,12 @@ export default class MapView extends React.Component {
                 || element.type === ARElementType.AR_BAR_CHART
                 || element.type === ARElementType.AR_PIE_CHART
               ) {
-                AppToolBar.addData({selectARElement: element})
+                const modelAnimations = await SARMap.getModelAnimation(element.layerName, element.id)
+                let ownModelAnimation = false
+                if(modelAnimations.length > 0) {
+                  ownModelAnimation = true
+                }
+                AppToolBar.addData({selectARElement: element, ownModelAnimation})
                 AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ELEMENT')
               }
             }

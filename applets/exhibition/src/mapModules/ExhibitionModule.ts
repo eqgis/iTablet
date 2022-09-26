@@ -1,7 +1,6 @@
 import { Module } from '@/class'
 import { getImage } from '../assets'
-import { LayerUtils, screen } from '@/utils'
-import { SARMap } from 'imobile_for_reactnative'
+import { AppToolBar, LayerUtils } from '@/utils'
 import { exhibitionData } from '../toolbarModules/exhibition'
 
 /**
@@ -42,23 +41,10 @@ export default class ExhibitionModule extends Module {
       mapType:  Module.MapType.AR,
       onMapLoad: (type) => { // ar, map
         if(type === 'ar') {
-          SARMap.setAREnhancePosition()
-          SARMap.setImageTrackingMode(2)
+          AppToolBar.show('EXHIBITION', 'EXHIBITION_HOME')
         }
       },
       toolbarModuleData: [exhibitionData],
-      preAction: async () => {
-          screen.lockToPortrait()
-        return true
-      },
-      afterAction: async () => {
-        // 横屏时,等跳转后,再锁定竖屏
-        let timer = setTimeout(() => {
-          screen.unLockScreen()
-          clearTimeout(timer)
-        }, 100)
-        return true
-      },
     }
   }
 

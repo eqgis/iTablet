@@ -89,7 +89,7 @@ class Scan extends React.Component<Props> {
             source={getImage().scan_net}
           />
           <Animated.Image
-             style={{
+            style={{
               position: 'absolute',
               width: width,
               opacity,
@@ -98,7 +98,7 @@ class Scan extends React.Component<Props> {
             source={getImage().scan_line}
           />
         </View>
-      </View> 
+      </View>
     )
   }
 
@@ -109,10 +109,10 @@ class Scan extends React.Component<Props> {
     return (
       <>
         <HollowView
-        style={{
-          ...StyleSheet.absoluteFillObject,
-          flex: 1,
-        }}
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            flex: 1,
+          }}
           hollowStyle={{
             width: width * 0.8,
             height: width * 0.8,

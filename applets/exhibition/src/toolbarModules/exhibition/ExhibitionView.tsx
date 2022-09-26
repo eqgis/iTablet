@@ -3,10 +3,11 @@ import React from 'react'
 import { ModuleViewProps } from '@/Toolbar'
 import { EmitterSubscription } from 'react-native'
 import Scan from './components/Scan'
+import Home from './components/Home'
 
 
 export interface ExhibitionViewOption {
-  tracked: boolean
+  page: 'home' | 'show' | 'infrastructure' | 'scan'
 }
 
 type Props = ModuleViewProps<ExhibitionViewOption>
@@ -39,6 +40,10 @@ class ExhibitionView extends React.Component<Props, State> {
     this.imgListener?.remove()
   }
 
+  renderHome = () => {
+    return <Home windowSize={this.props.windowSize} />
+  }
+
   renderScan = () => {
     return <Scan windowSize={this.props.windowSize} />
   }
@@ -46,7 +51,8 @@ class ExhibitionView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        {!this.state.tracked && this.renderScan()}
+        {this.props.data?.page === 'home' && this.renderHome()}
+        {this.props.data?.page === 'scan' &&!this.state.tracked && this.renderScan()}
       </>
     )
   }

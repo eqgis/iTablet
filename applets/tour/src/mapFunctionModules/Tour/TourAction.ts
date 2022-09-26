@@ -6,6 +6,7 @@ import { Toast } from '@/utils'
 import { getLanguage } from '@/language'
 import { ImagePicker } from '@/components'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
+import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMediaCollector'
 
 /**
  * 右侧创建轨迹事件
@@ -13,7 +14,7 @@ import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/Too
 async function tour() {
   try {
     await SMap.checkCurrentModule()
-    const _params = ToolbarModule.getParams()
+    const _params: any = ToolbarModule.getParams()
     const targetPath = await FileTools.appendingHomeDirectory(
       `${ConstPath.UserPath + _params.user.currentUser.userName}/${
         ConstPath.RelativeFilePath.Media
@@ -21,7 +22,7 @@ async function tour() {
     )
     SMediaCollector.initMediaCollector(targetPath)
 
-    let tourLayer: SMap.LayerInfo
+    let tourLayer: string
     ImagePicker.AlbumListView.defaultProps.showDialog = true
     ImagePicker.AlbumListView.defaultProps.dialogConfirm = async (
       value = '',
@@ -40,7 +41,7 @@ async function tour() {
           cb && cb()
         }
         Toast.show(value)
-      } catch (error) {
+      } catch (error: any) {
         if (error?.code === 'INVALID_MODULE') {
           ImagePicker.hide()
         }
@@ -52,7 +53,7 @@ async function tour() {
 
     ImagePicker.getAlbum({
       maxSize: 9,
-      callback: async data => {
+      callback: async (data: MediaData[]) => {
         if (data.length <= 1) {
           Toast.show(
             getLanguage(global.language).Prompt.SELECT_TWO_MEDIAS_AT_LEAST,
@@ -66,7 +67,7 @@ async function tour() {
       },
     })
   } catch(e) {
-
+    __DEV__ && console.warn(e)
   }
 }
 

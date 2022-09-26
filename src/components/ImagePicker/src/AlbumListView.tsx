@@ -36,8 +36,8 @@ interface Props {
   showDialog?: boolean,
 
   callback: () => void,
-  dialogConfirm?:((value: string, cb?: () => void) => void),
-  dialogCancel?: () => void,
+  dialogConfirm?:((value: string, cb?: () => void) => void) | undefined,
+  dialogCancel?: (() => void) | undefined,
 }
 
 interface State {
@@ -64,8 +64,8 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
     assetType: 'Photos',
     groupTypes: 'All',
     showDialog: false,
-    // dialogConfirm: null,
-    // dialogCancel: null,
+    dialogConfirm: () => {},
+    dialogCancel: () => {},
   }
 
   constructor(props: Props) {

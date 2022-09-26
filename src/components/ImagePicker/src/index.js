@@ -10,8 +10,13 @@ export const getAlbum = options => {
   ImageUtils.showImagePicker(PageKeys.album_list, options)
 }
 
+function hide() {
+  ImageUtils.hide()
+}
+
 export {
   AlbumListView,
   AlbumView,
   ImageUtils,
+  hide,
 }

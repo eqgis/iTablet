@@ -15,17 +15,19 @@ import FriendListFileHandle from '../FriendListFileHandle'
 import { getLanguage } from '../../../../language/index'
 import { getThemeAssets } from '../../../../assets'
 import { color } from '../../../../styles'
+import { MainStackScreenRouteProp } from '../../../../types'
 
 class GroupMemberList extends Component {
   props: {
     navigation: Object,
+    route: MainStackScreenRouteProp<'GroupMemberList'>
   }
 
   constructor(props) {
     super(props)
 
     this.friend = this.props.route.params.friend
-    this.user = this.props.route.param.user
+    this.user = this.props.route.params.user
     this.language = this.props.route.params.language
     this.groupID = this.props.route.params.groupID
     this.mode = this.props.route.params.mode

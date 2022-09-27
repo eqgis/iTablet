@@ -344,7 +344,6 @@ export default class MyLocalData extends Component {
               tempPath,
             )
             if (contents.length === 0) {
-              console.warn("tempPath: " + tempPath)
               await FileTools.deleteFile(tempPath)
               tempPath = tempPath.substring(0, tempPath.lastIndexOf("/"))
             } else {

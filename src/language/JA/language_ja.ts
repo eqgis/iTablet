@@ -479,6 +479,8 @@ export const language_ja: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "現在のオブジェクトを削除しますか?",
   NO_SELECTED_OBJ: "選択中のオブジェクトはありません",
 
+  ANIMATION_MANAGEMENT: 'アニメーション管理',
+
   CURRENT: '現在',
   SELECTED: '選択',
   DEFAULT: 'デフォルト',

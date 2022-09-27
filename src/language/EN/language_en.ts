@@ -479,6 +479,8 @@ export const language_en: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "Do you want to delete current object?",
   NO_SELECTED_OBJ: "No selected object",
 
+  ANIMATION_MANAGEMENT: 'Animation Management',
+
   CURRENT: 'Current',
   SELECTED: 'Selected',
   DEFAULT: 'Default',

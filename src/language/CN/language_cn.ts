@@ -479,6 +479,8 @@ export const language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "是否删除当前对象？",
   NO_SELECTED_OBJ: "没有选中对象",
 
+  ANIMATION_MANAGEMENT: '动画管理',
+
   CURRENT: '当前',
   SELECTED: '选择',
   DEFAULT: '默认',

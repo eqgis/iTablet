@@ -195,6 +195,7 @@ import * as ImagePicker from '@/components/ImagePicker/src'
 import ExternalDevices from './ExternalDevices'
 import BluetoothDevices from './BluetoothDevices'
 import NtripSetting from './NtripSetting'
+import ARAnimation from './ARAnimation/ARAnimation'
 
 const Stack = createNativeStackNavigator()
 
@@ -435,6 +436,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ExternalDevices" component={ExternalDevices} />
       <Stack.Screen name="BluetoothDevices" component={BluetoothDevices} />
       <Stack.Screen name="NtripSetting" component={NtripSetting} />
+      <Stack.Screen name="ARAnimation" component={ARAnimation} />
     </Stack.Navigator>
   )
 }

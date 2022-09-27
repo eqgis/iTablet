@@ -479,6 +479,8 @@ export const language_tr: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "Ağımdaki nesni silmek ister misiniz?",
   NO_SELECTED_OBJ: "Seçili nesne yok",
 
+  ANIMATION_MANAGEMENT: 'Animasyon Yönetimi',
+
   CURRENT: 'Mevcut',
   SELECTED: 'Seçili',
   DEFAULT: 'Varsayılan',

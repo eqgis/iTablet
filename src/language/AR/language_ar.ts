@@ -479,6 +479,8 @@ export const language_ar: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "هل تريد حذف الكائن الحالي ؟",
   NO_SELECTED_OBJ: "لا توجد كائنات مختارة",
 
+  ANIMATION_MANAGEMENT: 'إدارة الرسوم المتحركة',
+
   CURRENT: 'حالي',
   SELECTED: 'اختار',
   DEFAULT: 'خرق',

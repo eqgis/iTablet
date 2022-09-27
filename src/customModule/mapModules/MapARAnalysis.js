@@ -22,7 +22,7 @@ export default class MapARAnalysis extends Module {
   constructor() {
     super({
       key: MapARAnalysis.key,
-      mapType: Module.MapType.MAP,
+      mapType: Module.MapType.AR,
     })
     this.functionModules = this.getFunctionModules('ar')
   }

@@ -329,12 +329,29 @@ export default class MyLocalData extends Component {
       if (result || result === undefined) {
 
         if (await FileTools.fileIsExist(this.itemInfo.item.directory)) {
-          let contents = await FileTools.getDirectoryContent(
-            this.itemInfo.item.directory,
-          )
-          if (contents.length === 0) {
-            await FileTools.deleteFile(this.itemInfo.item.directory)
+          // let contents = await FileTools.getDirectoryContent(
+          //   this.itemInfo.item.directory,
+          // )
+          // if (contents.length === 0) {
+          //   await FileTools.deleteFile(this.itemInfo.item.directory)
+          // }
+
+          // 一级一级往上找，结束条件（1，找到了external文件夹，2. 找到了不为空的文件夹）
+          let tempPath = this.itemInfo.item.directory
+          let isNotNulldirectory = false
+          while(tempPath !== exportDir && !isNotNulldirectory) {
+            let contents = await FileTools.getDirectoryContent(
+              tempPath,
+            )
+            if (contents.length === 0) {
+              console.warn("tempPath: " + tempPath)
+              await FileTools.deleteFile(tempPath)
+              tempPath = tempPath.substring(0, tempPath.lastIndexOf("/"))
+            } else {
+              isNotNulldirectory = true
+            }
           }
+
         }
         let sectionData = [...this.state.sectionData]
         for (let i = 0; i < sectionData.length; i++) {

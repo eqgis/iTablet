@@ -7,6 +7,7 @@ import ExhibitionView from "./ExhibitionView"
 export interface KEYS {
   EXHIBITION_HOME: 'EXHIBITION_HOME'
   EXHIBITION_SCAN: 'EXHIBITION_SCAN'
+  EXHIBITION_PRESENTATION: 'EXHIBITION_PRESENTATION'
 }
 
 export interface EXHIBITION {

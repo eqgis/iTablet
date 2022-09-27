@@ -3,22 +3,33 @@ import { Image, ScaledSize, View, Animated, Easing, StyleSheet } from 'react-nat
 import { getImage } from '../../../assets'
 import HollowView from './HollowView'
 
-interface Props {
+interface Props extends Partial<DefaultProps> {
   windowSize: ScaledSize
 }
 
-class Scan extends React.Component<Props> {
+interface DefaultProps {
+  color: 'blue' | 'red'
+  auto: boolean
+}
+
+const defaultProps: DefaultProps = {
+  color: 'blue',
+  auto: true,
+}
+class Scan extends React.Component<Props & DefaultProps> {
+
+  static defaultProps = defaultProps
 
   spinValue = new Animated.Value(0)
 
   scanValue = new Animated.Value(0)
 
-  constructor(props: Props) {
+  constructor(props: Props & DefaultProps) {
     super(props)
   }
 
   componentDidMount(): void {
-    this.scan()
+    this.props.auto && this.scan()
   }
 
   scan = () => {
@@ -72,21 +83,21 @@ class Scan extends React.Component<Props> {
             height: width,
           }}
         >
-          <Animated.Image
-            style={{
-              width: width,
-              height: width,
-              transform: [{rotate: degree}],
-            }}
-            source={getImage().scan_circle}
-          />
           <Image
             style={{
               position: 'absolute',
               width: width,
               height: width,
             }}
-            source={getImage().scan_net}
+            source={this.props.color === 'blue' ? getImage().scan_net : getImage().scan_net_red}
+          />
+          <Animated.Image
+            style={{
+              width: width,
+              height: width,
+              transform: [{rotate: degree}],
+            }}
+            source={this.props.color === 'blue' ? getImage().scan_circle : getImage().scan_circle_red}
           />
           <Animated.Image
             style={{
@@ -95,7 +106,7 @@ class Scan extends React.Component<Props> {
               opacity,
               transform: [{translateY: transY}]
             }}
-            source={getImage().scan_line}
+            source={this.props.color === 'blue' ? getImage().scan_line : getImage().scan_line_red}
           />
         </View>
       </View>

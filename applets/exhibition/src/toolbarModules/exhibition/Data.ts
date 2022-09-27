@@ -17,6 +17,10 @@ export function getData(key: ModuleList['EXHIBITION']): IToolbarOption {
     case 'EXHIBITION_SCAN':
       option.moduleData.page = 'scan'
       scanOption(option)
+      break
+    case 'EXHIBITION_PRESENTATION':
+      option.moduleData.page = 'show'
+      break
   }
 
   return option

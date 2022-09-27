@@ -61,6 +61,7 @@ async function commit(type: string) {
       SMap.setLayerEditable(currentLayer.name, true).then(() => {
         SMap.submit().then(result => {
           if (result) {
+            params.getLayers?.()
             SMap.refreshMap()
             //提交标注后 需要刷新属性表
             global.NEEDREFRESHTABLE = true
@@ -111,6 +112,7 @@ async function commit(type: string) {
                 )
               }
             }
+            params.getLayers?.()
             currentToolbarType = AppletsToolType.APPLETS_CHECK_EDIT
             // 编辑完成关闭Toolbar
             // 若为编辑点线面状态，点击关闭则返回没有选中对象的状态

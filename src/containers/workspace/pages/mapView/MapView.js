@@ -3328,6 +3328,8 @@ export default class MapView extends React.Component {
                 )}
               </View>
             )
+        } else if (typeof info === 'function') {
+          buttons.push(info(this.props))
         } else {
           info &&
             buttons.push(

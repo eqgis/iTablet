@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { ConstOnline, MapHeaderButton, MapTabs, UserType } from '@/constants'
 import { Module } from '@/class'
 import {
@@ -6,7 +7,7 @@ import {
 } from '@/containers/workspace/components/ToolBar/modules'
 import { getImage } from '../assets'
 import { checkModule } from '../mapFunctionModules'
-import { CheckService, NavigatorUtil, Toast } from '@/utils'
+import { CheckService, NavigatorUtil, scaleSize, screen, Toast } from '@/utils'
 import navigators from '../containers'
 import { getLanguage } from '../language'
 import NavigationService from '@/containers/NavigationService'
@@ -15,12 +16,40 @@ import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/Too
 import { injectReducer } from "@/redux/store"
 import { guotu } from '../reduxModels'
 import ServiceAction from '@/containers/workspace/components/ToolBar/modules/serviceModule/ServiceAction'
+import { MTBtn } from '@/components'
+import { Animated, Easing, StyleSheet, View } from 'react-native'
+import { getPublicAssets } from '@/assets'
+
+
+const styles = StyleSheet.create({
+  headerBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: scaleSize(80),
+    width: scaleSize(80),
+  },
+  headerBtnImg: {
+    height: scaleSize(60),
+    width: scaleSize(60),
+  },
+  cornerMark: {
+    position: 'absolute',
+    right: scaleSize(0),
+    top: scaleSize(0),
+    width: scaleSize(32),
+    height: scaleSize(32),
+  },
+})
 
 /**
  * 首页显示的土地调查模块
  */
 export default class GuoTuModule extends Module {
   static key = 'guotu'
+  serviceLoading = new Animated.Value(0)
+  aniMotion: Animated.CompositeAnimation | null | undefined
+  isUploading = false
+
   constructor() {
     super({
       key: GuoTuModule.key,
@@ -48,10 +77,70 @@ export default class GuoTuModule extends Module {
         key: 'save',//地图保存
         image: getImage().save,
         action: this.save,
-      }, {
-        key: 'upload',//数据提交
-        image: getImage().upload,
-        action: this.upload,
+      }, (mapViewProps: any) => {
+        // 从redux中取出当前用户-群组(地区)-任务的正在执行的服务
+        if (
+          mapViewProps.currentTask?.groupID &&
+          mapViewProps.currentTaskServices?.[mapViewProps.user.currentUser.userName]?.[mapViewProps.currentTask?.groupID]?.[mapViewProps.currentTask?.id]
+        ) {
+          const services = mapViewProps.currentTaskServices[mapViewProps.user.currentUser.userName][mapViewProps.currentTask.groupID][mapViewProps.currentTask.id]
+          // 判断是否有服务正在执行
+          if (services?.length > 0) {
+            for (const service of services) {
+              // 判断是否有服务正在上传
+              this.isUploading = service.status === 'upload'
+              break
+            }
+          } else {
+            // 服务上传完成后,重置isUploading,并刷新图层,更新图层状态
+            if (this.isUploading) {
+              Toast.show('上传完成')
+              mapViewProps.getLayers?.()
+            }
+            this.isUploading = false
+          }
+        } else {
+          // 服务上传完成后,重置isUploading,并刷新图层,更新图层状态
+          if (this.isUploading) {
+            Toast.show('上传完成')
+            mapViewProps.getLayers?.()
+          }
+          this.isUploading = false
+        }
+        // let info = {
+        //   key: 'upload',//数据提交
+        //   image: isUploading ? getImage().upload,
+        //   action: this.upload,
+        // }
+        const size = mapViewProps.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
+        return (
+          <View>
+            <MTBtn
+              key={'upload'}
+              style={[styles.headerBtn, mapViewProps.device.orientation.indexOf('LANDSCAPE') === 0 && {
+                height: screen.HEADER_HEIGHT_LANDSCAPE - 2,
+              }]}
+              imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+              image={getImage().upload}
+              onPress={this.upload}
+            />
+            {
+              this.isUploading &&
+              <Animated.Image
+                resizeMode={'contain'}
+                style={[
+                  styles.cornerMark,
+                  {
+                    transform: [{rotate: this.serviceLoading
+                      .interpolate({inputRange: [0, 1],outputRange: ['0deg', '360deg']}),
+                    }],
+                  },
+                ]}
+                source={getPublicAssets().common.icon_downloading}
+              />
+            }
+          </View>
+        )
       },
       MapHeaderButton.CoworkChat,
     ]
@@ -142,7 +231,7 @@ export default class GuoTuModule extends Module {
       const currentMap = params.map.currentMap
       const addition: {Template?: string} = {}
       if (currentMap?.Template) {
-        addition.Template = this.props.map.currentMap.Template
+        addition.Template = params.map.currentMap.Template
       }
       SMap.saveMapName(
         currentMap.name,
@@ -174,19 +263,55 @@ export default class GuoTuModule extends Module {
         return
       }
 
+      if (this.isUploading) {
+        Toast.show('正在提交数据服务')
+        return
+      }
+
       Toast.show('开始提交数据服务')
 
+      let needUpload = false
       for (const layerData of params.layers.layers) {
         // 提交所有被修改过的图层
         if (layerData.isModified) {
+          needUpload = true
+          // 服务上传,开启动画
+          !this.isUploading && this.loading()
           await ServiceAction.uploadLayerService({layerData})
         }
       }
+      if (needUpload && !this.isUploading) {
+        // this.aniMotion = null
+        // this.loading()
+      } else {
+        this.isUploading = false
+        this.aniMotion = null
+        Toast.show('不需要提交服务')
+      }
     } catch (error) {
       Toast.show('提交服务失败')
+      this.isUploading = false
+      this.aniMotion = null
       __DEV__ && console.warn(error)
     }
   }
+
+  /**
+   * 上传转圈动画
+   */
+  loading = () => {
+    if (!this.aniMotion) {
+      this.serviceLoading.setValue(0)
+      this.aniMotion = Animated.timing(this.serviceLoading, {
+        toValue: this.serviceLoading._value === 0 ? 1 : 0,
+        duration: 800,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+      Animated.loop(this.aniMotion).start()
+    }
+  }
+
   // 首页模块数据
   getChunk = (language: string) => {
     return this.createChunk(language, this.getDefaultData())

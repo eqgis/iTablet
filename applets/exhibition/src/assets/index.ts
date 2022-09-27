@@ -7,6 +7,9 @@ const ar_przt = require('./img-icon-ar_presentation.png')
 const ar_infra = require('./img-icon-ar_infrastructure.png')
 const background_red = require('./background_red.png')
 const background_transparent = require('./background_transparent.png')
+const scan_circle_red = require('./scan_circle_red.png')
+const scan_line_red = require('./scan_line_red.png')
+const scan_net_red = require('./scan_inner_red.png')
 
 const image = {
   scan,
@@ -18,6 +21,9 @@ const image = {
   ar_infra,
   background_red,
   background_transparent,
+  scan_circle_red,
+  scan_line_red,
+  scan_net_red,
 }
 
 function getImage(): typeof image {

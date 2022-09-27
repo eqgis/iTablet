@@ -58,7 +58,7 @@ class Home extends React.Component<Props, State> {
         title: 'AR展示',
         desc: '实景窗口投放虚拟内容，与投放内容进行互动',
         action: () => {
-
+          AppToolBar.show('EXHIBITION', 'EXHIBITION_PRESENTATION')
         }
       },
       {

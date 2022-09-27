@@ -4,6 +4,7 @@ import { ModuleViewProps } from '@/Toolbar'
 import { EmitterSubscription } from 'react-native'
 import Scan from './components/Scan'
 import Home from './components/Home'
+import Presentation from './components/Presentation'
 
 
 export interface ExhibitionViewOption {
@@ -48,11 +49,16 @@ class ExhibitionView extends React.Component<Props, State> {
     return <Scan windowSize={this.props.windowSize} />
   }
 
+  renderPresentation = () => {
+    return <Presentation windowSize={this.props.windowSize}/>
+  }
+
   render() {
     return(
       <>
         {this.props.data?.page === 'home' && this.renderHome()}
         {this.props.data?.page === 'scan' &&!this.state.tracked && this.renderScan()}
+        {this.props.data?.page === 'show' && this.renderPresentation()}
       </>
     )
   }

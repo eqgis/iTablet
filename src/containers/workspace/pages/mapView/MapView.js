@@ -1803,7 +1803,7 @@ export default class MapView extends React.Component {
 
         await SMap.setLabelColor()
         // 示例地图不加载标注图层
-        if (!this.isExample) {
+        if (!this.isExample && !global.coworkMode) {
           await SMap.openTaggingDataset(this.props.user.currentUser.userName)
           let hasDefaultTagging = await SMap.hasDefaultTagging(
             this.props.user.currentUser.userName,

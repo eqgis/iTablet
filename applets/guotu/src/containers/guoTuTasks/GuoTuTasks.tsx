@@ -234,12 +234,15 @@ class GuoTuTasks extends Component<Props, State> {
       {
         title: getLanguage(this.props.language).Cowork.UPDATE_LOCAL_SERVICE,
         action: () => {
+          if (!this.currentSelectData?.data?.resourceId) return
           this.container?.setLoading(true, '正在加载服务')
-          this.getGroupServices(this.props.currentGroup.id).then(async result => {
-            // this.container?.setLoading(true, '正在更新服务')
-            if (result?.content?.[0].linkPage) {
-              await ServiceAction.downloadService(result?.content?.[0].linkPage)
-              this.container?.setLoading(false)
+          this.getResourceDetail(this.currentSelectData.data.resourceId + '').then(async result => {
+            for (const service of result.dataItemServices) {
+              if (service.serviceType === 'RESTDATA') {
+                await ServiceAction.downloadService(service.address)
+                this.container?.setLoading(false)
+                break
+              }
             }
           })
         },
@@ -396,17 +399,8 @@ class GuoTuTasks extends Component<Props, State> {
     })
   }
 
-  getGroupServices = async (groupID: string, keywords?: string[]) => {
-    return SCoordinationUtils.getScoordiantion().getGroupResources({
-      groupId: groupID,
-      keywords: keywords,
-      // resourceCreator: _params.user.currentUser.userId,
-      currentPage: 1,
-      pageSize: 10000,
-      orderType: 'DESC',
-      orderBy: 'UPDATETIME',
-      groupResourceType: 'SERVICE',
-    })
+  getResourceDetail = async (recourceID: string) => {
+    return SCoordinationUtils.getScoordiantion().getResourceDetail(recourceID)
   }
 
   refresh = (cb?: () => any) => {
@@ -539,6 +533,7 @@ class GuoTuTasks extends Component<Props, State> {
         return
       }
       if (this.props.map.currentMap.name) {
+        this.container?.setLoading(true, '正在关闭当前地图')
         await this.props.closeMap()
       }
       // 移除地图上所有callout
@@ -557,11 +552,13 @@ class GuoTuTasks extends Component<Props, State> {
       await this.props.getLayers() // 获取图层
       await SMap.viewEntire() // 显示全幅
 
-      // Toast.show('正在加载服务')
       this.container?.setLoading(true, '正在加载服务')
-      this.getGroupServices(this.props.currentGroup.id).then(result => {
-        if (result?.content?.[0].linkPage) {
-          ServiceAction.downloadService(result?.content?.[0].linkPage)
+      this.getResourceDetail(data.resourceId + '').then(async result => {
+        for (const service of result.dataItemServices) {
+          if (service.serviceType === 'RESTDATA') {
+            await ServiceAction.downloadService(service.address)
+            break
+          }
         }
       })
 

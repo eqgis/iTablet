@@ -785,6 +785,7 @@ export default class Map3D extends React.Component {
         device={this.props.device}
         online={this.props.online}
         mapModules={this.props.mapModules}
+        user={this.props.user}
       />
     )
   }

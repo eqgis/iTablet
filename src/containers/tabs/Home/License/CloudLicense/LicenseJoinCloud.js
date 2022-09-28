@@ -6,6 +6,7 @@ import {
   Text,
   FlatList,
   ScrollView,
+  Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -17,16 +18,18 @@ import { Container, Button } from '../../../../../components'
 import { color } from '../../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import ModuleInfo from '../component/ModuleInfo'
-import { scaleSize, Toast } from '../../../../../utils'
+import { AccountUtils, scaleSize, Toast } from '../../../../../utils'
 import styles from '../styles'
 import { getPublicAssets } from '../../../../../assets'
 import { getLanguage } from '../../../../../language'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Users } from '../../../../../redux/models/user'
 
 class LicenseJoinCloud extends Component {
   props: {
     navigation: Object,
     licenseInfo: Object,
+    user: Users,
     setLicenseInfo: () => {},
     setCloudLicenseUser: () => {},
   }
@@ -206,6 +209,8 @@ class LicenseJoinCloud extends Component {
           getLanguage(global.language).Profile.LICENSE_EXIT + '...',
         )
       let result = await SMap.logoutCloudLicense()
+      // ios 退出云许可,需要重新登录账号,覆盖cookie,才能正常使用fetch请求
+      Platform.OS === 'ios' && await AccountUtils.login(this.props.user.currentUser)
       this.container && this.container.setLoading(false)
       if (result) {
         this.props.setCloudLicenseUser({})
@@ -476,6 +481,7 @@ class LicenseJoinCloud extends Component {
 const mapStateToProps = state => ({
   licenseInfo: state.license.toJS().licenseInfo,
   cloudLicenseUser: state.license.toJS().cloudLicenseUser,
+  user: state.user.toJS(),
 })
 
 const mapDispatchToProps = {

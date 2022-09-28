@@ -565,15 +565,31 @@ class GuoTuTasks extends Component<Props, State> {
       const description = data.data.description && JSON.parse(data.data.description)
       const members = (description?.executor || '').split(',')
       const _members: {id: string, name: string}[] = []
+
+      if (members.length === 1 && members[0] === '*' && this.props?.currentGroup?.id) {
+        const result = await SCoordinationUtils.getScoordiantion()?.getGroupMembers({
+          groupId: this.props.currentGroup.id,
+        })
+        if (result?.content?.length) {
+          for (const member of result.content) {
+            _members.push({
+              id: member.userName,
+              name: member.userName,
+            })
+          }
+        }
+      } else {
+        for (const member of members) {
+          if (member === '*') continue
+          _members.push({
+            id: member,
+            name: member,
+          })
+        }
+      }
       // admin默认为每个组的成员
       if (members.indexOf('admin') < 0) {
         members.push('admin')
-      }
-      for (const member of members) {
-        _members.push({
-          id: member,
-          name: member,
-        })
       }
       const id = `Group_Task_${this.props.currentGroup.id}`
       await SMessageService.declareSession(_members, id)

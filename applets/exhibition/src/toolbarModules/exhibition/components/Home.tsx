@@ -205,7 +205,7 @@ class Home extends React.Component<Props, State> {
     this.isPortrait = this.props.windowSize.height > this.props.windowSize.width
     return(
       <View
-        style={[StyleSheet.absoluteFill, {backgroundColor: 'black', justifyContent: 'center'}]}
+        style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'center'}]}
       >
         {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
       </View>

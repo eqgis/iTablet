@@ -342,14 +342,14 @@ class AppRoot extends Component {
     if (Platform.OS === 'android') {
       this.requestPermission()
     } else {
-      global.Loading.setLoading(true, 'Loading')
+      global.Loading.setLoading(true, getLanguage().LOADING)
       await this.init()
       global.Loading.setLoading(false)
     }
   }
 
   requestPermission = async () => {
-    global.Loading.setLoading(true, 'Loading')
+    global.Loading.setLoading(true, getLanguage().LOADING)
     const permissionList = [
       'android.permission.READ_PHONE_STATE',
       // 'android.permission.ACCESS_FINE_LOCATION',

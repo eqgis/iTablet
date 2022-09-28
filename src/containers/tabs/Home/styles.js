@@ -6,7 +6,7 @@ import size from '../../../styles/size'
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.white,
+    backgroundColor: color.black,
   },
   header: {
     width: '100%',

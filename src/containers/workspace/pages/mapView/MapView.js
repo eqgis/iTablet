@@ -1646,36 +1646,36 @@ export default class MapView extends React.Component {
         }
       }
 
-      let result = await SMap.mapIsModified() // 是否保存普通地图
-      const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
-      if ((result || needSaveARMap) && !this.isExample) {
-        this.setSaveViewVisible(true, null, async () => {
-          if(Platform.OS === 'ios'){
-            SARMap.setARTouch(true)
-          }
-          this.props.showAR(false)
-          await this.props.setCurrentAttribute({})
-          // this.setState({ showScaleView: false })
-          await this._removeGeometrySelectedListener()
-          if (global.Type === ChunkType.MAP_NAVIGATION) {
-            await this._removeNavigationListeners()
-          }
-          await this.closeMapHandler(params?.baskFrom)
-        })
-      } else {
-        try {
-          this.props.showAR(false)
-          this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
-          if (global.Type === ChunkType.MAP_NAVIGATION) {
-            await this._removeNavigationListeners()
-            await SMap.clearPoint()
-            await SMap.stopGuide()
-          }
-          await this.closeMapHandler(params?.baskFrom)
-        } catch (e) {
-          this.setLoading(false)
-        }
-      }
+      // let result = await SMap.mapIsModified() // 是否保存普通地图
+      // const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
+      // if ((result || needSaveARMap) && !this.isExample) {
+      //   this.setSaveViewVisible(true, null, async () => {
+      //     if(Platform.OS === 'ios'){
+      //       SARMap.setARTouch(true)
+      //     }
+      //     this.props.showAR(false)
+      //     await this.props.setCurrentAttribute({})
+      //     // this.setState({ showScaleView: false })
+      //     await this._removeGeometrySelectedListener()
+      //     if (global.Type === ChunkType.MAP_NAVIGATION) {
+      //       await this._removeNavigationListeners()
+      //     }
+      //     await this.closeMapHandler(params?.baskFrom)
+      //   })
+      // } else {
+      //   try {
+      //     this.props.showAR(false)
+      //     this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+      //     if (global.Type === ChunkType.MAP_NAVIGATION) {
+      //       await this._removeNavigationListeners()
+      //       await SMap.clearPoint()
+      //       await SMap.stopGuide()
+      //     }
+      //     await this.closeMapHandler(params?.baskFrom)
+      //   } catch (e) {
+      //     this.setLoading(false)
+      //   }
+      // }
       return true
     } catch (e) {
       return true

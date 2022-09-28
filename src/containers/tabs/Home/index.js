@@ -28,6 +28,7 @@ import {
   setMapArGuide,
   setMapArMappingGuide,
 } from '../../../redux/models/ar'
+import { setCurrentMapModule } from '../../../redux/models/mapModules'
 
 const mapStateToProps = state => ({
   language: state.setting.toJS().language,
@@ -62,6 +63,7 @@ const mapDispatchToProps = {
   setCollectGuide,
   setMapEditGuide,
   setMapSceneGuide,
+  setCurrentMapModule,
 }
 export default connect(
   mapStateToProps,

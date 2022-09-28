@@ -21,6 +21,7 @@ import {
   SOnlineService,
   SIPortalService,
   BundleTools,
+  SLocation,
 } from 'imobile_for_reactnative'
 import FileTools from '../../../native/FileTools'
 import ConstPath from '../../../constants/ConstPath'
@@ -69,6 +70,7 @@ export default class Home extends Component {
     setCollectGuide: () => {},
     setMapEditGuide: () => {},
     setMapSceneGuide: () => {},
+    setCurrentMapModule: (index: number) => void,
   }
 
   constructor(props) {
@@ -97,6 +99,7 @@ export default class Home extends Component {
       }
     }
 
+    this.container?.setLoading(true, getLanguage().LOADING)
     this._loadModel()
 
     if (Platform.OS === 'android') {
@@ -125,7 +128,7 @@ export default class Home extends Component {
     }
   }
 
-  _loadModel = () => {
+  _loadModel = async () => {
     try {
       BundleTools.getBundles().then(async bundles => {
         for (const bundle of bundles) {
@@ -134,7 +137,74 @@ export default class Home extends Component {
           })
         }
       })
+
+      const modules = this.props.mapModules.modules[this.props.currentUser.userName] || []
+      for (let index = 0; index < modules.length; index++) {
+        const item = modules[index]
+        if (item && item.getChunk) {
+          const module = item.getChunk(this.props.language)
+          if (module.key === 'exhibition') {
+            if (Platform.OS === 'android') {
+              const permissionList = [
+                'android.permission.READ_PHONE_STATE',
+                'android.permission.ACCESS_FINE_LOCATION',
+                'android.permission.READ_EXTERNAL_STORAGE',
+                'android.permission.WRITE_EXTERNAL_STORAGE',
+                'android.permission.CAMERA',
+                'android.permission.RECORD_AUDIO',
+                'android.permission.BLUETOOTH',
+                'android.permission.BLUETOOTH_ADMIN',
+              ]
+              const sdkVesion = Platform.Version
+              // android 12 的版本api编号 31 32 android 13的版本api编号 33
+              if(sdkVesion >= 31) {
+                permissionList.push('android.permission.BLUETOOTH_CONNECT')
+                permissionList.push('android.permission.BLUETOOTH_SCAN')
+              }
+              const results = await PermissionsAndroid.requestMultiple(permissionList)
+      
+              let isAllGranted = true
+              for (let key in results) {
+                isAllGranted = results[key] === 'granted' && isAllGranted
+              }
+              //申请 android 11 读写权限
+              let permisson11 = await appUtilsModule.requestStoragePermissionR()
+              if (isAllGranted && permisson11) {
+                await SMap.setPermisson(true)
+                // this.init()
+      
+                // 重新设置权限后，重新打开定位
+                await SLocation.openGPS()
+      
+              } else {
+                // this.props.itemAction()
+                // item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
+                // return
+              }
+            }
+            await this.props.setCurrentMapModule(index)
+            const tmpCurrentUser = this.props.currentUser
+            const currentUserName = tmpCurrentUser.userName
+              ? tmpCurrentUser.userName
+              : 'Customer'
+
+            let latestMap
+            if (
+              this.props.latestMap[currentUserName] &&
+              this.props.latestMap[currentUserName][item.key] &&
+              this.props.latestMap[currentUserName][item.key].length > 0
+            ) {
+              latestMap = this.props.latestMap[currentUserName][item.key][0]
+            }
+            await module.action(tmpCurrentUser, latestMap)
+          }
+        } else {
+          continue
+        }
+      }
+      this.container?.setLoading(false)
     } catch(e) {
+      this.container?.setLoading(false)
       // eslint-disable-next-line no-undef
       __DEV__ && console.warn(e)
     }
@@ -1148,13 +1218,13 @@ export default class Home extends Component {
           hideInBackground={false}
           showFullInMap={true}
           withoutHeader
-          headerProps={{
-            backAction: this.showExitPop,
-          }}
+          // headerProps={{
+          //   backAction: this.showExitPop,
+          // }}
           style={styles.container}
-          bottomBar={this.renderTabBar()}
+          // bottomBar={this.renderTabBar()}
         >
-          {this.renderHeader()}
+          {/* {this.renderHeader()}
           <View
             style={{
               flex: 1,
@@ -1186,10 +1256,10 @@ export default class Home extends Component {
             {this.renderDialog()}
             {this.renderExitDialog()}
             {this._renderSimpleDialog()}
-          </View>
+          </View> */}
         </Container>
-        {this.props.guideshow && this.state.mineguide && this.renderGuide()}
-        {this.props.guideshow && this.state.slide && this.renderSlide()}
+        {/* {this.props.guideshow && this.state.mineguide && this.renderGuide()}
+        {this.props.guideshow && this.state.slide && this.renderSlide()} */}
       </View>
     )
   }

@@ -20,7 +20,7 @@ export default class MapARMapping extends Module {
   constructor() {
     super({
       key: MapARMapping.key,
-      mapType: Module.MapType.MAP,
+      mapType: Module.MapType.AR,
     })
     this.functionModules = this.getFunctionModules('ar')
   }

@@ -781,6 +781,7 @@ function getPoiEditBottom(editItem: ARElement | string): ToolBarBottomItem[] {
           // }
           AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ELEMENT')
         }else{
+          SARMap.setAction(ARAction.NULL)
           AppToolBar.goBack()
         }
         SARMap.cancel()
@@ -829,6 +830,7 @@ function getPoiEditBottom(editItem: ARElement | string): ToolBarBottomItem[] {
               }
             })
             SARMap.appointEditAR3DLayer(editItem)
+            SARMap.setAction(ARAction.NULL)
           } else {
             AppToolBar.addData({
               transformInfo: {

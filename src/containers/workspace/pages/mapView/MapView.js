@@ -185,6 +185,7 @@ export default class MapView extends React.Component {
     mapSearchHistory: PropTypes.array,
     toolbarStatus: PropTypes.object,
     laboratory: PropTypes.object,
+    showARLabel: PropTypes.bool,
 
     isClassifyView: PropTypes.bool,
     mapArGuide: PropTypes.bool,
@@ -1208,6 +1209,7 @@ export default class MapView extends React.Component {
     SARMap.showMeasureView(false)
     SARMap.showTrackView(false)
     SARMap.showPointCloud(false)
+    SARMap.showARLabel(this.props.showARLabel)
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
   }

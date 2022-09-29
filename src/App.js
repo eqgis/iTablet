@@ -247,7 +247,7 @@ class AppRoot extends Component {
     BundleUtils.init({
       addMapModule: this.props.addMapModule,
     })
-
+    global.coworkMode = false // 初始化协作模块标识
   }
 
   initGlobal = () => {

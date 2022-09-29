@@ -4941,6 +4941,7 @@ export default class MapView extends React.Component {
             await this.setState({ imageTrackingresultTag: tag })
             // 调用AREnhancePosition的startScan方法
             this.datumPointCalibration?.arEnhancePosition?.startScan()
+            AppEvent.emitEvent('ar_image_tracking_result', tag === 'ImageTracking success')
           }
           }
           onARElementGeometryTouch={element => {

@@ -1,11 +1,8 @@
-import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { ModuleViewProps } from '@/Toolbar'
-import { EmitterSubscription } from 'react-native'
-import Scan from './components/Scan'
 import Home from './components/Home'
-import Presentation from './components/Presentation'
-
+import PresentationView from './components/PresentationView'
+import ScanView from './components/ScanView'
 
 export interface ExhibitionViewOption {
   page: 'home' | 'show' | 'infrastructure' | 'scan'
@@ -13,32 +10,9 @@ export interface ExhibitionViewOption {
 
 type Props = ModuleViewProps<ExhibitionViewOption>
 
-interface State {
-  tracked: boolean
-}
-
-class ExhibitionView extends React.Component<Props, State> {
-
-  imgListener: EmitterSubscription | null = null
-
+class ExhibitionView extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
-
-    this.state = {
-      tracked: false
-    }
-  }
-
-  componentDidMount(): void {
-    this.imgListener = SARMap.addImgTrackingStateChangeListener(state => {
-      this.setState({
-        tracked: state.tracked
-      })
-    })
-  }
-
-  componentWillUnmount(): void {
-    this.imgListener?.remove()
   }
 
   renderHome = () => {
@@ -46,18 +20,18 @@ class ExhibitionView extends React.Component<Props, State> {
   }
 
   renderScan = () => {
-    return <Scan windowSize={this.props.windowSize} />
+    return <ScanView windowSize={this.props.windowSize} />
   }
 
   renderPresentation = () => {
-    return <Presentation windowSize={this.props.windowSize}/>
+    return <PresentationView windowSize={this.props.windowSize}/>
   }
 
   render() {
     return(
       <>
         {this.props.data?.page === 'home' && this.renderHome()}
-        {this.props.data?.page === 'scan' &&!this.state.tracked && this.renderScan()}
+        {this.props.data?.page === 'scan' && this.renderScan()}
         {this.props.data?.page === 'show' && this.renderPresentation()}
       </>
     )

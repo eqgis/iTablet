@@ -125,8 +125,8 @@ class Scan extends React.Component<Props & DefaultProps> {
             flex: 1,
           }}
           hollowStyle={{
-            width: width * 0.8,
-            height: width * 0.8,
+            width: width * (this.props.color === 'blue' ? 0.8 : 0.7),
+            height: width * (this.props.color === 'blue' ? 0.8 : 0.7),
             borderRadius: 1000,
             borderColor: 'rgba(0,0,0,0.6)',
           }}

@@ -18,6 +18,7 @@ import DataHandler from '@/utils/DataHandler'
 import { Download, IDownloadProps } from '@/redux/models/down'
 import { ResourceType } from '@/containers/tabs/Find/CoworkManagePage/types'
 import DataImport from '@/utils/DataHandler/DataImport'
+import { DownloadResult } from 'imobile_for_reactnative/types/fs'
 
 const styles = StyleSheet.create({
   rowContainer: {
@@ -123,7 +124,7 @@ interface Props {
   checkAction?: (checkParams: {value: boolean, data: ResourceType, download: () => Promise<void>}) => void,
   onChecked?: (checkParams: {value: boolean, data: ResourceType, download: () => Promise<void>}) => void,
   onMoreAction?: (data: MoreParams) => void,
-  onPress?: (item?: {
+  onPress?: (item: {
     path: string,
     name: string,
     data: any,
@@ -132,8 +133,8 @@ interface Props {
   // hasDownload?: boolean,
   // downloadData: Download[],
   downloadData: Download,
-  downloadSourceFile: (params: IDownloadProps) => Promise<any[]>,
-  deleteSourceDownloadFile: (id: number | string) => Promise<any[]>,
+  downloadSourceFile: (params: IDownloadProps) => Promise<DownloadResult>,
+  deleteSourceDownloadFile: (id: number | string) => Promise<void>,
 }
 
 export default class TaskItem extends Component<Props, State> {
@@ -170,6 +171,7 @@ export default class TaskItem extends Component<Props, State> {
       isDownloading: false,
       selectedData: new Map(),
     }
+    this.progressTag = ''
   }
 
   async componentDidMount() {

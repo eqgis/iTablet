@@ -175,15 +175,15 @@ export default class TaskItem extends Component<Props, State> {
   }
 
   async componentDidMount() {
+    const homePath = await FileTools.getHomeDirectory()
     this.mapPath =
-      (await FileTools.getHomeDirectory()) +
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
       ConstPath.RelativePath.Map +
       this.props.data.resourceName.replace('.zip', '.xml')
     this.path =
-      (await FileTools.getHomeDirectory()) +
+      homePath +
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
@@ -191,7 +191,7 @@ export default class TaskItem extends Component<Props, State> {
       this.props.data.resourceName
 
     this.downloadingPath =
-      (await FileTools.getHomeDirectory()) +
+      homePath +
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
@@ -199,7 +199,7 @@ export default class TaskItem extends Component<Props, State> {
       this.props.data.resourceId
 
     this.progressTag =
-      (await FileTools.getHomeDirectory()) +
+      homePath +
       ConstPath.UserPath +
       this.props.user.currentUser.userName +
       '/' +
@@ -214,7 +214,7 @@ export default class TaskItem extends Component<Props, State> {
       if (tag?.mapPath) {
         this.mapPath = tag.mapPath
       }
-      const mapExist = await FileTools.fileIsExist(this.mapPath)
+      const mapExist = await FileTools.fileIsExist(homePath + this.mapPath)
       this.setState({
         exist: true,
         mapExist: mapExist,
@@ -233,7 +233,7 @@ export default class TaskItem extends Component<Props, State> {
             if (tag?.mapPath) {
               this.mapPath = tag.mapPath
             }
-            const mapExist = await FileTools.fileIsExist(this.mapPath)
+            const mapExist = await FileTools.fileIsExist(homePath + this.mapPath)
             clearInterval(timer)
             this.setState({
               exist: true,
@@ -282,7 +282,7 @@ export default class TaskItem extends Component<Props, State> {
   _downloadFile = async () => {
     if (this.state.exist) {
       // 判断地图文件是否导入
-      const exist = await FileTools.fileIsExist(this.mapPath)
+      const exist = await FileTools.fileIsExist(homePath + this.mapPath)
       if (!exist) {
         await this.unZipFile()
       }
@@ -352,8 +352,7 @@ export default class TaskItem extends Component<Props, State> {
                 for (const dataItem of dataList) {
                   const _result = await DataImport.importWorkspace(dataItem)
                   if (_result instanceof Array && _result.length > 0) {
-                    this.mapPath = (await FileTools.getHomeDirectory()) +
-                      ConstPath.UserPath +
+                    this.mapPath = ConstPath.UserPath +
                       this.props.user.currentUser.userName +
                       '/' +
                       ConstPath.RelativePath.Map + _result[0] + '.xml'

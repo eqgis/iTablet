@@ -473,14 +473,15 @@ async function listAction(type: string, params: any = {}) {
 
 let  g_messageIcon:any
 async function downloadService(url: string, messageIcon?:any) {
+  const _params: any = ToolbarModule.getParams()
+  const services = []
   try {
     if (!url) return false
-    const _params: any = ToolbarModule.getParams()
 
     _params.setToolbarVisible(false)
     _params.showFullMap && _params.showFullMap(false)
     const serviceData = await SCoordinationUtils.initMapDataWithService(url)
-    const services = []
+    let showError = true // 用于控制重复提示错误信息
     for (const datasource of serviceData) {
       const datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
       const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
@@ -502,10 +503,23 @@ async function downloadService(url: string, messageIcon?:any) {
           datasetUrl: dataset.datasetUrl,
           status: 'download',
         })
-        downloadToLocal(dataset.datasetUrl, datasourceName)
+        downloadToLocal(dataset.datasetUrl, datasourceName).then().catch(e => {
+          if (showError && e.message === 'INVALID_MODULE') {
+            showError = false
+            Toast.show('激活许可后,需要重新更新服务')
+          }
+          // 下载服务失败(或无许可),则把下载状态的服务改为done,防止无法退出地图
+          _params.setCoworkService({
+            groupId: _params.currentTask.groupID,
+            taskId: _params.currentTask.id,
+            service: [{
+              datasetUrl: dataset.datasetUrl,
+              status: 'done',
+            }],
+          })
+        })
       }
     }
-
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,
@@ -513,6 +527,19 @@ async function downloadService(url: string, messageIcon?:any) {
     })
     return true
   } catch (error) {
+    if (services.length > 0) {
+      // 下载服务失败(或无许可),则把下载状态的服务改为done,防止无法退出地图
+      services.map(item => {
+        item.status = 'done'
+        return item
+      })
+      _params.setCoworkService({
+        groupId: _params.currentTask.groupID,
+        taskId: _params.currentTask.id,
+        service: services,
+      })
+    }
+    console.warn(2)
     return false
   }
 }

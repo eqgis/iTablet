@@ -549,16 +549,6 @@ class GuoTuTasks extends Component<Props, State> {
       await this.props.getLayers() // 获取图层
       await SMap.viewEntire() // 显示全幅
 
-      this.container?.setLoading(true, '开始加载服务')
-      this.getResourceDetail(data.data.resourceId + '').then(async result => {
-        for (const service of result.dataItemServices) {
-          if (service.serviceType === 'RESTDATA') {
-            await ServiceAction.downloadService(service.address)
-            break
-          }
-        }
-      })
-
       const description = data.data.description && JSON.parse(data.data.description)
       const members = (description?.executor || '').split(',')
       const _members: {id: string, name: string}[] = []
@@ -622,6 +612,17 @@ class GuoTuTasks extends Component<Props, State> {
       })
 
       this.createCowork(id)
+
+      this.container?.setLoading(true, '开始加载服务')
+      this.getResourceDetail(data.data.resourceId + '').then(async result => {
+        for (const service of result.dataItemServices) {
+          if (service.serviceType === 'RESTDATA') {
+            await ServiceAction.downloadService(service.address)
+            break
+          }
+        }
+      })
+
       this.container?.setLoading(false)
     } catch (error) {
       Toast.show('地图打开失败,请检查地图诗句是否完整')

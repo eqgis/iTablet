@@ -2825,6 +2825,7 @@ export const language_fr: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "Êtes-vous sûr d'exporter la carte?",
 
   SHOW_AR_SCENE_NOTIFY: "Afficher les astuces de détection de scène RA",
+  SHOW_AR_LABEL: 'Afficher les résultats des annotations',
 
   CANT_PICTURE:"Impossible de continuer, la limite de la collecte est de 9 photos",
 
@@ -2864,4 +2865,5 @@ export const language_fr: typeof language_cn = {
   ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
 }

@@ -2825,6 +2825,7 @@ export const language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "确定输出地图模板？",
 
   SHOW_AR_SCENE_NOTIFY: "显示场景检测提示",
+  SHOW_AR_LABEL: '显示标注结果',
 
   CANT_PICTURE:"无法继续采集，最多可添加9张图片",
 
@@ -2864,4 +2865,6 @@ export const language_cn = {
   ATTRIBUTE_MAKE: '属性制作',
   SAND_TABLE_MAKE: '沙盘制作',
   PANE_ANIMATION: '窗格动画',
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: '当前对象不支持属性制作',
+
 }

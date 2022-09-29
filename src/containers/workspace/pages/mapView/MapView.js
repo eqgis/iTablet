@@ -4868,6 +4868,10 @@ export default class MapView extends React.Component {
               } else if(element.type === ARElementType.AR_SAND_TABLE) {
                 AppToolBar.addData({ selectARElement: element })
                 AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+              } else {
+                // 不支持属性的对象
+                Toast.show(getLanguage().CUR_ELE_NOT_SUPPORT_ATTRIBUTE)
+                SARMap.clearSelection()
               }
 
             } else if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {

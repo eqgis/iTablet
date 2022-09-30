@@ -11,8 +11,7 @@ import { getThemeAssets, getPublicAssets } from '../../../../assets'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { ConstPath, UserType } from '../../../../constants'
-import { scaleSize, Toast, dataUtil, OnlineServicesUtils } from '../../../../utils'
-import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
+import { scaleSize, Toast, dataUtil, OnlineServicesUtils, LayerUtils } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import {
   SMap,
@@ -186,6 +185,7 @@ export default class LayerTopBar extends React.Component {
         }) => {
         // cb: async mediaPaths => {
           try {
+            const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerInfo)
             if (global.coworkMode) {
               let resourceIds = [],
                 _mediaPaths = [] // 保存修改名称后的图片地址
@@ -229,12 +229,12 @@ export default class LayerTopBar extends React.Component {
                 }
               }
               if (resourceIds.length > 0) {
-                let result = await SMediaCollector.addMedia({
+                await SMediaCollector.addMedia({
                   datasourceName,
                   datasetName,
                   mediaPaths,
                   mediaIds: resourceIds,
-                }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+                }, !!dsDescription?.isShowMedia, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
               } else {
                 Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
               }
@@ -255,11 +255,11 @@ export default class LayerTopBar extends React.Component {
                 })
               }
             } else {
-              let result = await SMediaCollector.addMedia({
+              await SMediaCollector.addMedia({
                 datasourceName: datasourceAlias,
                 datasetName: datasetName,
                 mediaPaths,
-              }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+              }, !!dsDescription?.isShowMedia, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
             }
             if (
               this.props.refreshAction &&

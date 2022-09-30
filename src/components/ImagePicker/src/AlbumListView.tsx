@@ -64,8 +64,8 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
     assetType: 'Photos',
     groupTypes: 'All',
     showDialog: false,
-    dialogConfirm: () => {},
-    dialogCancel: () => {},
+    dialogConfirm: undefined,
+    dialogCancel: undefined,
   }
 
   constructor(props: Props) {

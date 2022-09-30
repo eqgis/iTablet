@@ -316,7 +316,7 @@ class Camera extends React.Component<Props, State> {
 
   openAlbum = () => {
     ImagePicker.AlbumListView.defaultProps.showDialog = false
-    ImagePicker.AlbumListView.defaultProps.dialogConfirm = undefined
+    ImagePicker.AlbumListView.defaultProps.dialogConfirm = null
     ImagePicker.AlbumListView.defaultProps.assetType = 'All'
     ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
     ImagePicker.getAlbum({

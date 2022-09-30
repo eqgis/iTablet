@@ -2,7 +2,7 @@ import { AppEvent, AppStyle, AppToolBar, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Animated, Easing, EmitterSubscription, Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from './Scan'
 import { FileTools, SARMap } from 'imobile_for_reactnative'
 import { ConstPath } from '@/constants'
@@ -13,29 +13,53 @@ interface Props {
 
 interface State {
   showScan: boolean
+  targetPosition: 0 | 1 | 2
 }
 
 class PresentationView extends React.Component<Props, State> {
 
   scanRef: Scan | null = null
 
+  event: EmitterSubscription | null = null
+
+  moveValue = new Animated.Value(0)
+
   constructor(props: Props) {
     super(props)
 
     this.state = {
       showScan: true,
+      targetPosition: 0,
     }
   }
 
   componentDidMount(): void {
-    this.openARMap('DefaultARMap')
+    this.openARMap('DefaultARMap_5')
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        Toast.show('定位成功')
+        Toast.show('请按照箭头引导转动屏幕查看地图集')
+        SARMap.startExhibition()
+        this._startMoveArrow()
       }
     })
+    this.event = SARMap.addExhibitionTargetPositionChangeListenre(mode => {
+      if(this.state.targetPosition === 0 && mode !== 0) {
+        this._startMoveArrow()
+      }
+      this.setState({targetPosition: mode})
+    })
+  }
+
+  _startMoveArrow = () => {
+    const animation = Animated.timing(this.moveValue, {
+      toValue: 1,
+      duration: 500,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    })
+    Animated.loop(animation).start()
   }
 
   openARMap = async (mapName: string) => {
@@ -50,6 +74,8 @@ class PresentationView extends React.Component<Props, State> {
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
+    SARMap.endExhibition()
+    this.event?.remove()
     SARMap.close()
     AppToolBar.goBack()
   }
@@ -80,6 +106,31 @@ class PresentationView extends React.Component<Props, State> {
           source={getImage().icon_return}
         />
       </TouchableOpacity>
+    )
+  }
+
+  renderArrow = () => {
+    if(this.state.targetPosition == 0) return
+    const move = this.moveValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, this.state.targetPosition === 1 ? -dp(20) : dp(20)]
+    })
+    return (
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: '40%',
+          alignSelf: 'center',
+          width: dp(80),
+          height: dp(80),
+          transform:[{translateX: move}, {rotateY: this.state.targetPosition === 1 ? '0deg' : '180deg'}]
+        }}
+      >
+        <Image
+          source={getImage().guide_arrow}
+          style={{width: '100%', height: '100%' }}
+        />
+      </Animated.View>
     )
   }
 
@@ -160,6 +211,7 @@ class PresentationView extends React.Component<Props, State> {
       <>
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
+        {this.renderArrow()}
       </>
     )
   }

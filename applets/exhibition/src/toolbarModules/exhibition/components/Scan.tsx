@@ -8,6 +8,7 @@ interface Props extends Partial<DefaultProps> {
 }
 
 interface DefaultProps {
+  scanSize?: number
   color: 'blue' | 'red'
   auto: boolean
 }
@@ -52,7 +53,10 @@ class Scan extends React.Component<Props & DefaultProps> {
 
   renderScan = () => {
     const minWidth = Math.min(this.props.windowSize.width, this.props.windowSize.height)
-    const width = minWidth * 0.9
+    let width = minWidth * 0.9
+    if(this.props.scanSize) {
+      width = this.props.scanSize * 1.2
+    }
 
     const degree = this.spinValue.interpolate({
       inputRange: [0, 1],
@@ -125,8 +129,8 @@ class Scan extends React.Component<Props & DefaultProps> {
             flex: 1,
           }}
           hollowStyle={{
-            width: width * (this.props.color === 'blue' ? 0.8 : 0.7),
-            height: width * (this.props.color === 'blue' ? 0.8 : 0.7),
+            width: this.props.scanSize ? this.props.scanSize : width * (this.props.color === 'blue' ? 0.8 : 0.7),
+            height: this.props.scanSize ? this.props.scanSize : width * (this.props.color === 'blue' ? 0.8 : 0.7),
             borderRadius: 1000,
             borderColor: 'rgba(0,0,0,0.6)',
           }}

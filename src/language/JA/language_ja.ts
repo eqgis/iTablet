@@ -968,6 +968,7 @@ export const language_ja: typeof language_cn = {
   ANIMATION_NODE_NAME: "アニメーションノード名",
 
   OPEN_ONLINE_DATA: "オンラインデータを開く",
+  SAVE_ANIMATION_WITH_NAME: "当アニメーションを保存して、他のモデルに使用できます",
 
   PLOT: "進路プロット",
 

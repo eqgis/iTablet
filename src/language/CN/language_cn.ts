@@ -965,6 +965,7 @@ export const language_cn = {
   PLOT_SAVE_ANIMATION: "保存动画",
   ANIMATION_NODE_NAME: "动画节点名称",
   OPEN_ONLINE_DATA: "打开在线数据",
+  SAVE_ANIMATION_WITH_NAME: '此动画将被保存到”自定义"中，您可以将其应用到其他模型',
 
   PLOT: "标绘",
 
@@ -2853,6 +2854,7 @@ export const language_cn = {
 
   THE_FIRST: '已经是第一张了',
   THE_LAST: '已经是最后一张了',
+
 
 
   DAYS: '天',

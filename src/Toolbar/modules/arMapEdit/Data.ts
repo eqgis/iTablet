@@ -1149,8 +1149,8 @@ function addTransAnimeOption(option: IToolbarOption) {
           'placeholder': getLanguage().Common.INPUT_NAME,
           'defaultValue': getLanguage().ARMap.TRANSLATION,
           'checkSpell': CheckSpell.checkLayerCaption,
-          title: 'getLanguage().Common.SAVE_ANIMATION',
-          descripton: 'getLanguage().Common.SAVE_ANIMATION_WITH_NAME',
+          title: getLanguage().PLOT_SAVE_ANIMATION,
+          descripton: getLanguage().Common.SAVE_ANIMATION_WITH_NAME,
           confirm: text => {
             const param = AppToolBar.getData().animationParam
             if(param) {
@@ -1277,8 +1277,8 @@ function addRotateAnimeOption(option: IToolbarOption) {
           'placeholder': getLanguage().Common.INPUT_NAME,
           'defaultValue': getLanguage().ARMap.ROTATION,
           'checkSpell': CheckSpell.checkLayerCaption,
-          title: 'getLanguage().Common.SAVE_ANIMATION',
-          descripton: 'getLanguage().Common.SAVE_ANIMATION_WITH_NAME',
+          title: getLanguage().PLOT_SAVE_ANIMATION,
+          descripton: getLanguage().Common.SAVE_ANIMATION_WITH_NAME,
           confirm: text => {
             const param = AppToolBar.getData().animationParam
             if(param) {

@@ -965,6 +965,7 @@ export const language_fr: typeof language_cn = {
   ANIMATION_NODE_NAME: "Nom du nœud d'animation",
 
   OPEN_ONLINE_DATA: "Ouvrir les données en ligne",
+  SAVE_ANIMATION_WITH_NAME: "Cette animation sera sauvegardée et vous pourrez l'appliquer à d'autres modèles.",
 
   PLOT: "Traçage",
 

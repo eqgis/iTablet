@@ -479,6 +479,8 @@ export const language_ar: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "هل تريد حذف الكائن الحالي ؟",
   NO_SELECTED_OBJ: "لا توجد كائنات مختارة",
 
+  ANIMATION_MANAGEMENT: 'إدارة الرسوم المتحركة',
+
   CURRENT: 'حالي',
   SELECTED: 'اختار',
   DEFAULT: 'خرق',
@@ -2849,6 +2851,7 @@ export const language_ar: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "هل أنت متأكد من إخراج الخريطة؟",
 
   SHOW_AR_SCENE_NOTIFY: "عرض ع المشهد كشف تلميح",
+  SHOW_AR_LABEL: 'عرض نتائج الشرح',
 
   CANT_PICTURE:"لا يمكن الاستمرار في جمع ما يصل إلى 9 صور",
 
@@ -2888,4 +2891,5 @@ export const language_ar: typeof language_cn = {
   ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
 }

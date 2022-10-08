@@ -96,3 +96,7 @@ JRE.frameworkTrial_License.slm
 *.txt
 *.bin
 *.log
+*.lock
+bundle/
+bundles/
+

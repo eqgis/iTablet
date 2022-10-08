@@ -479,6 +479,8 @@ export const language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "是否删除当前对象？",
   NO_SELECTED_OBJ: "没有选中对象",
 
+  ANIMATION_MANAGEMENT: '动画管理',
+
   CURRENT: '当前',
   SELECTED: '选择',
   DEFAULT: '默认',
@@ -2825,6 +2827,7 @@ export const language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "确定输出地图模板？",
 
   SHOW_AR_SCENE_NOTIFY: "显示场景检测提示",
+  SHOW_AR_LABEL: '显示标注结果',
 
   CANT_PICTURE:"无法继续采集，最多可添加9张图片",
 
@@ -2864,4 +2867,6 @@ export const language_cn = {
   ATTRIBUTE_MAKE: '属性制作',
   SAND_TABLE_MAKE: '沙盘制作',
   PANE_ANIMATION: '窗格动画',
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: '当前对象不支持属性制作',
+
 }

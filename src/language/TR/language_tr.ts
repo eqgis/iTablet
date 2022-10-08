@@ -479,6 +479,8 @@ export const language_tr: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "Ağımdaki nesni silmek ister misiniz?",
   NO_SELECTED_OBJ: "Seçili nesne yok",
 
+  ANIMATION_MANAGEMENT: 'Animasyon Yönetimi',
+
   CURRENT: 'Mevcut',
   SELECTED: 'Seçili',
   DEFAULT: 'Varsayılan',
@@ -2824,6 +2826,7 @@ export const language_tr: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "Haritanın çıktısını alacağınızdan emin misiniz?",
 
   SHOW_AR_SCENE_NOTIFY: "AR Scene keşfetme tiplerini göster",
+  SHOW_AR_LABEL: 'Ek açıklama sonuçlarını görüntüle',
 
   CANT_PICTURE:"Koleksiyona devam edilemiyor, en fazla 9 resim eklenebilir'",
 
@@ -2863,4 +2866,5 @@ export const language_tr: typeof language_cn = {
   ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
 }

@@ -119,6 +119,7 @@ const mapStateToProps = state => ({
   aiClassifyData: state.setting.toJS().aiClassifyData,
   peripheralDevice: state.setting.toJS().peripheralDevice,
   essentialInfo: state.location.toJS().essentialInfo,
+  showARLabel: state.setting.toJS().showARLabel,
 })
 
 const mapDispatchToProps = {

@@ -479,6 +479,8 @@ export const language_ja: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "現在のオブジェクトを削除しますか?",
   NO_SELECTED_OBJ: "選択中のオブジェクトはありません",
 
+  ANIMATION_MANAGEMENT: 'アニメーション管理',
+
   CURRENT: '現在',
   SELECTED: '選択',
   DEFAULT: 'デフォルト',
@@ -2827,6 +2829,7 @@ export const language_ja: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "マップを出力しますか?",
 
   SHOW_AR_SCENE_NOTIFY: "ARシーン検知ヒントの表示",
+  SHOW_AR_LABEL: 'ラベル結果の表示',
 
   CANT_PICTURE:"コレクションを続きません。最高9個の画像は追加できます",
 
@@ -2866,5 +2869,6 @@ export const language_ja: typeof language_cn = {
   ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
 
 }

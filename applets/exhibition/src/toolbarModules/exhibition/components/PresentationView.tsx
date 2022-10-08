@@ -13,7 +13,7 @@ interface Props {
 
 interface State {
   showScan: boolean
-  targetPosition: 0 | 1 | 2
+  targetPosition: 0 | 1 | 2 | 3 | 4
 }
 
 class PresentationView extends React.Component<Props, State> {
@@ -45,7 +45,7 @@ class PresentationView extends React.Component<Props, State> {
         SARMap.loadUnityScene()
       }
     })
-    this.event = SARMap.addExhibitionTargetPositionChangeListenre(mode => {
+    this.event = SARMap.addExhibitionTargetPositionChangeListener(mode => {
       if(this.state.targetPosition === 0 && mode !== 0) {
         this._startMoveArrow()
       }
@@ -117,6 +117,11 @@ class PresentationView extends React.Component<Props, State> {
       inputRange: [0, 1],
       outputRange: [0, this.state.targetPosition === 1 ? -dp(30) : dp(30)]
     })
+    const moveUpDown = this.moveValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, this.state.targetPosition === 4 ? -dp(30) : dp(30)]
+    })
+    const isLR = this.state.targetPosition === 1 || this.state.targetPosition === 2
     return (
       <Animated.View
         style={{
@@ -125,7 +130,9 @@ class PresentationView extends React.Component<Props, State> {
           alignSelf: 'center',
           width: dp(100),
           height: dp(100),
-          transform:[{translateX: move}, {rotateY: this.state.targetPosition === 1 ? '0deg' : '180deg'}]
+          transform:
+            isLR ? [{translateX: move}, {rotateY: this.state.targetPosition === 1 ? '0deg' : '180deg'}]
+              : [{translateY: moveUpDown}, {rotate: this.state.targetPosition === 4 ? '90deg' : '270deg'}]
         }}
       >
         <Image

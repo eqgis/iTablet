@@ -36,6 +36,7 @@ import { FetchBlob } from './FetchBlob'
 export { CheckSpell, CheckService } from './CheckUtils'
 export { FloatMath } from './FloatMath'
 import NavigatorUtil from './NavigatorUtil'
+import AccountUtils from './AccountUtils'
 
 export {
   screen,
@@ -80,4 +81,5 @@ export {
   AppPath,
   FetchBlob,
   NavigatorUtil,
+  AccountUtils,
 }

@@ -781,6 +781,7 @@ function getPoiEditBottom(editItem: ARElement | string): ToolBarBottomItem[] {
           // }
           AppToolBar.show('ARMAP', 'AR_MAP_SELECT_ELEMENT')
         }else{
+          SARMap.setAction(ARAction.NULL)
           AppToolBar.goBack()
         }
         SARMap.cancel()
@@ -829,6 +830,7 @@ function getPoiEditBottom(editItem: ARElement | string): ToolBarBottomItem[] {
               }
             })
             SARMap.appointEditAR3DLayer(editItem)
+            SARMap.setAction(ARAction.NULL)
           } else {
             AppToolBar.addData({
               transformInfo: {
@@ -916,7 +918,7 @@ function _getModelAnimationTabList(element: ARElement): ToolBarMenuItem {
       if(modelAnimations.length > 0 && animatonMode === 'model') {
         const headData: ToolBarListItem[] = [{
           image: getImage().toolbar_switch,
-          text: getLanguage().CUSTOME_ANIMATION,
+          text: getLanguage().MODEL_ANIMATION,
           onPress: () => {
             animatonMode = 'custome'
             AppToolBar.resetTabData()
@@ -1039,13 +1041,20 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
     }
   ]
 
+  const more: ToolBarListItem = {
+    image: getImage().icon_more,
+    onPress: () => {
+      NavigationService.navigate('ARAnimation')
+    }
+  }
+
 
   return {
     title: getLanguage().ANIMATION,
     type: 'list',
     onPress: () => {
       SARMap.setAction(ARAction.NULL)
-      AppToolBar.showTabView(true)
+      AppToolBar.showMenuView(true)
       if(AppToolBar.getData().ownModelAnimation) {
         const button =  {
           image: getImage().swith_animation_type,
@@ -1090,7 +1099,7 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
             }
           }
         })
-        return changeA.concat(general, modelAnimationData/** , more*/)
+        return changeA.concat(general, modelAnimationData , more)
       } else {
         const animationData: ToolBarListItem[] = nodeAnimation.map((item => {
           return {
@@ -1105,7 +1114,7 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
             }
           }
         }))
-        return changeB.concat(general, animationData/** , more*/)
+        return changeB.concat(general, animationData, more)
       }
     }
   }

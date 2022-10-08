@@ -479,6 +479,8 @@ export const language_en: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "Do you want to delete current object?",
   NO_SELECTED_OBJ: "No selected object",
 
+  ANIMATION_MANAGEMENT: 'Animation Management',
+
   CURRENT: 'Current',
   SELECTED: 'Selected',
   DEFAULT: 'Default',
@@ -2825,6 +2827,7 @@ export const language_en: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "Are you sure you want to output the map?",
 
   SHOW_AR_SCENE_NOTIFY: "Show Tips of AR Scene Detection",
+  SHOW_AR_LABEL: 'Display Annotation Results',
 
   CANT_PICTURE:"You could add 9 pictures at most",
 
@@ -2863,5 +2866,6 @@ export const language_en: typeof language_cn = {
   ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
 
 }

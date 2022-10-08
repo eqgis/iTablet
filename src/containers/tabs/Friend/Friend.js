@@ -670,9 +670,9 @@ export default class Friend extends Component {
   getTargetUser = targetId => {
     let name = ''
     if (targetId.indexOf('Group_') != -1 && targetId.indexOf('Group_Task_') === -1) {
-      name = FriendListFileHandle.getGroup(targetId).groupName
+      name = FriendListFileHandle.getGroup(targetId)?.groupName
     } else if (targetId.indexOf('Group_Task_') === -1) {
-      name = FriendListFileHandle.getFriend(targetId).markName
+      name = FriendListFileHandle.getFriend(targetId)?.markName
     }
 
     let chatObj = {}

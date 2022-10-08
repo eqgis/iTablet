@@ -11,13 +11,13 @@ import { scaleSize, setSpText } from '../utils'
 import { color } from '../styles'
 
 interface Props extends Partial<DefaultProps> {
-  containerStyle: ViewStyle,
-  titleStyle: TextStyle,
-  iconBtnStyle: ViewStyle,
-  iconStyle: ImageStyle,
+  containerStyle?: ViewStyle,
+  titleStyle?: TextStyle,
+  iconBtnStyle?: ViewStyle,
+  iconStyle?: ImageStyle,
   onPress: (event: GestureResponderEvent) => void,
-  icon: ImageSourcePropType,
-  title: string,
+  icon?: ImageSourcePropType,
+  title?: string,
 }
 
 interface DefaultProps {

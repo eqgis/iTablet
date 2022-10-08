@@ -2,7 +2,7 @@ import { AppEvent, AppStyle, AppToolBar, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Animated, Easing, EmitterSubscription, Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from './Scan'
 import { FileTools, SARMap } from 'imobile_for_reactnative'
 import { ConstPath } from '@/constants'
@@ -13,29 +13,54 @@ interface Props {
 
 interface State {
   showScan: boolean
+  targetPosition: 0 | 1 | 2
 }
 
 class PresentationView extends React.Component<Props, State> {
 
   scanRef: Scan | null = null
 
+  event: EmitterSubscription | null = null
+
+  moveValue = new Animated.Value(0)
+
   constructor(props: Props) {
     super(props)
 
     this.state = {
       showScan: true,
+      targetPosition: 0,
     }
   }
 
   componentDidMount(): void {
-    this.openARMap('DefaultARMap')
+    this.openARMap('DefaultARMap_5')
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        Toast.show('定位成功')
+        Toast.show('请按照箭头引导转动屏幕查看地图集')
+        SARMap.startExhibition()
+        this._startMoveArrow()
+        SARMap.loadUnityScene()
       }
     })
+    this.event = SARMap.addExhibitionTargetPositionChangeListenre(mode => {
+      if(this.state.targetPosition === 0 && mode !== 0) {
+        this._startMoveArrow()
+      }
+      this.setState({targetPosition: mode})
+    })
+  }
+
+  _startMoveArrow = () => {
+    const animation = Animated.timing(this.moveValue, {
+      toValue: 1,
+      duration: 1000,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    })
+    Animated.loop(animation).start()
   }
 
   openARMap = async (mapName: string) => {
@@ -50,7 +75,10 @@ class PresentationView extends React.Component<Props, State> {
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
+    SARMap.endExhibition()
+    this.event?.remove()
     SARMap.close()
+    SARMap.unloadUnityScene()
     AppToolBar.goBack()
   }
 
@@ -83,14 +111,63 @@ class PresentationView extends React.Component<Props, State> {
     )
   }
 
+  renderArrow = () => {
+    if(this.state.targetPosition == 0) return
+    const move = this.moveValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, this.state.targetPosition === 1 ? -dp(30) : dp(30)]
+    })
+    return (
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: '40%',
+          alignSelf: 'center',
+          width: dp(100),
+          height: dp(100),
+          transform:[{translateX: move}, {rotateY: this.state.targetPosition === 1 ? '0deg' : '180deg'}]
+        }}
+      >
+        <Image
+          source={getImage().guide_arrow}
+          style={{width: '100%', height: '100%' }}
+        />
+      </Animated.View>
+    )
+  }
+
   renderScan = () => {
     const isPortrait = this.props.windowSize.width < this.props.windowSize.height
     const width = Math.min(this.props.windowSize.width, this.props.windowSize.height)
     const height = Math.max(this.props.windowSize.width, this.props.windowSize.height)
+    const isLargeScreen = width > 400 //平板
 
-    const space = width * 0.3 / 2
+    const scanSize = dp(300)
 
-    const position = width * 0.7 / 2 + height / 2 + dp(40)
+    let space: number
+    let position: number
+    let maxWidth: number
+
+    const positionLargeLand = width / 2 + scanSize / 2 + dp(40)
+    const positionLargePortrait = height / 2 + scanSize / 2 + dp(40)
+    const postionSmallLand = width * 0.7 / 2 + width / 2 + dp(40)
+    const postionSmallPortrait = width * 0.7 / 2 + height / 2 + dp(40)
+
+    const spaceLarge = width - scanSize / 2
+    const spaceSmall = width * 0.3 / 2
+
+    const maxWidthLarge = (height / 2- scanSize / 2 ) * 0.9
+    const maxWidthSmall = (height / 2- width * 0.7 / 2 ) * 0.9
+
+    if(isLargeScreen) {
+      space = spaceLarge
+      position = isPortrait ? positionLargePortrait : positionLargeLand
+      maxWidth = maxWidthLarge
+    } else {
+      space = spaceSmall
+      position = isPortrait ? postionSmallPortrait : postionSmallLand
+      maxWidth = maxWidthSmall
+    }
 
     let style : ViewStyle = {
       position: 'absolute',
@@ -105,7 +182,7 @@ class PresentationView extends React.Component<Props, State> {
       style = {
         position: 'absolute',
         flex: 1,
-        maxWidth: (height / 2- width * 0.7 / 2 ) * 0.9,
+        maxWidth: maxWidth,
         alignItems: 'center',
         top: width / 2,
         right: 0,
@@ -117,8 +194,10 @@ class PresentationView extends React.Component<Props, State> {
         <Scan
           ref={ref => this.scanRef = ref}
           windowSize={this.props.windowSize}
+          scanSize={scanSize}
           auto={false}
-          color='red' />
+          color='red'
+        />
 
         <View
           style={style}
@@ -160,6 +239,7 @@ class PresentationView extends React.Component<Props, State> {
       <>
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
+        {this.renderArrow()}
       </>
     )
   }

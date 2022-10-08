@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, FlatList, RefreshControl, Text, View, Image } from 'react-native'
 import { Container, PopMenu, ListSeparator, ImageButton, Dialog } from '@/components'
+import ContainerClass from '@/components/Container/Container'
 import { getLanguage } from '@/language'
 import { getLanguage as getMyLanguage } from '../../language'
 import { scaleSize, Toast, ResultInfo, SCoordinationUtils } from '@/utils'
@@ -20,7 +21,7 @@ import { SCoordination, SMap, SMediaCollector, SMessageService } from 'imobile_f
 import { ResultDataBase, ResourceType } from 'imobile_for_reactnative/types/interface/iserver/types'
 import TaskItem, { MoreParams } from './TaskItem'
 // import BatchHeadBar from '../../../Mine/component/BatchHeadBar'
-import { MainStackScreenNavigationProps, MainStackScreenRouteProp } from '@/types'
+import { GuotuStackScreenNavigationProps, GuotuStackScreenRouteProp } from '../../types/NavigationTypes'
 import NavigationService from '@/containers/NavigationService'
 import { MapToolbar } from '@/containers/workspace/components'
 import ServiceAction from '@/containers/workspace/components/ToolBar/modules/serviceModule/ServiceAction'
@@ -121,8 +122,8 @@ const styles = StyleSheet.create({
 })
 
 interface Props extends ReduxProps {
-  navigation: MainStackScreenNavigationProps<'GuoTuTasks'>
-  route: MainStackScreenRouteProp<'GuoTuTasks'>
+  navigation: GuotuStackScreenNavigationProps<'GuoTuTasks'>
+  route: GuotuStackScreenRouteProp<'GuoTuTasks'>
 }
 
 type SelectedData = {
@@ -149,12 +150,11 @@ class GuoTuTasks extends Component<Props, State> {
   popSourceData: Array<any>
   pagePopModal: PopMenu | null | undefined
   sourcePopModal: PopMenu | null | undefined
-  container: Container | null | undefined
+  container: ContainerClass | null | undefined
   pageSize: number
   currentPage: number
   isLoading: boolean // 防止同时重复加载多次
   isNoMore: boolean // 是否能加载更多
-  isManage: boolean // 是否是资源管理模式
   hasDownload: boolean // 是否有下载按钮
   keywords: string // 获取数据的关键词
   list: FlatList<any> | null | undefined
@@ -168,9 +168,6 @@ class GuoTuTasks extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.title = this.props.route?.params?.title || getMyLanguage().MY_TASK
-    this.isManage = this.props.route?.params?.isManage !== undefined
-      ? this.props.route?.params?.isManage
-      : true
     this.hasDownload = this.props.route?.params?.hasDownload !== undefined
       ? this.props.route?.params?.hasDownload
       : true
@@ -181,13 +178,7 @@ class GuoTuTasks extends Component<Props, State> {
       this.servicesUtils = new SCoordination('iportal')
     }
 
-    if (!this.isManage) {
-      this.modules = this.props.mapModules.modules[this.props.user.currentUser.userName].map(item =>
-        item.getChunk(this.props.language),
-      )
-    } else {
-      this.modules = []
-    }
+    this.modules = []
 
     this.state = {
       data: [],
@@ -233,24 +224,12 @@ class GuoTuTasks extends Component<Props, State> {
       },
       {
         title: getLanguage(this.props.language).Cowork.UPDATE_LOCAL_SERVICE,
-        action: () => {
-          if (!this.currentSelectData?.data?.resourceId) return
-          this.container?.setLoading(true, '正在加载服务')
-          this.getResourceDetail(this.currentSelectData.data.resourceId + '').then(async result => {
-            for (const service of result.dataItemServices) {
-              if (service.serviceType === 'RESTDATA') {
-                await ServiceAction.downloadService(service.address)
-                this.container?.setLoading(false)
-                break
-              }
-            }
-          })
-        },
+        action: () => this.updateService(this.currentSelectData?.data?.resourceId + ''),
       },
       {
         title: getLanguage(this.props.language).Prompt.DELETE,
         action: () => {
-          this.currentSelectData?.data.resourceId && this._delete([this.currentSelectData?.data.resourceId])
+          this.currentSelectData?.data.resourceId && this._delete([this.currentSelectData?.data.resourceId + ''])
         },
       },
       // {
@@ -424,12 +403,30 @@ class GuoTuTasks extends Component<Props, State> {
     })
   }
 
+  updateService = (resourceId: string) => {
+    try {
+      if (!resourceId) return
+      this.container?.setLoading(true, '开始加载服务')
+      this.getResourceDetail(resourceId + '').then(async result => {
+        for (const service of result.dataItemServices) {
+          if (service.serviceType === 'RESTDATA') {
+            await ServiceAction.downloadService(service.address)
+            this.container?.setLoading(false)
+            break
+          }
+        }
+      })
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
+  }
+
   _setMutiChoice = (isMutiChoice?: boolean, resetSelectData?: boolean) => {
     if (isMutiChoice === undefined) {
       isMutiChoice = !this.state.isMutiChoice
     }
     if (resetSelectData) {
-      this.setState(state => {
+      this.setState((state: State) => {
         const selected = new Map(state.selectedData)
         selected.clear()
         return { selectedData: selected, isMutiChoice }
@@ -483,9 +480,9 @@ class GuoTuTasks extends Component<Props, State> {
         Toast.show(getLanguage(this.props.language).Friends.GROUP_SELECT_MEMBER)
         return false
       }
-      let ids: Array<string> = []
+      const ids: Array<string> = []
       this.state.selectedData.forEach(item => {
-        ids.push(item.resourceId)
+        ids.push(item.resourceId + '')
       })
       this._delete(ids)
       return true
@@ -552,16 +549,6 @@ class GuoTuTasks extends Component<Props, State> {
       await this.props.getLayers() // 获取图层
       await SMap.viewEntire() // 显示全幅
 
-      this.container?.setLoading(true, '正在加载服务')
-      this.getResourceDetail(data.resourceId + '').then(async result => {
-        for (const service of result.dataItemServices) {
-          if (service.serviceType === 'RESTDATA') {
-            await ServiceAction.downloadService(service.address)
-            break
-          }
-        }
-      })
-
       const description = data.data.description && JSON.parse(data.data.description)
       const members = (description?.executor || '').split(',')
       const _members: {id: string, name: string}[] = []
@@ -601,7 +588,7 @@ class GuoTuTasks extends Component<Props, State> {
         id: id,
         map: {
           name: mapInfo.name,
-          path: mapInfo.path,
+          path: data.path,
         },
         members: _members,
         module: {
@@ -625,6 +612,17 @@ class GuoTuTasks extends Component<Props, State> {
       })
 
       this.createCowork(id)
+
+      this.container?.setLoading(true, '开始加载服务')
+      this.getResourceDetail(data.data.resourceId + '').then(async result => {
+        for (const service of result.dataItemServices) {
+          if (service.serviceType === 'RESTDATA') {
+            await ServiceAction.downloadService(service.address)
+            break
+          }
+        }
+      })
+
       this.container?.setLoading(false)
     } catch (error) {
       Toast.show('地图打开失败,请检查地图诗句是否完整')
@@ -679,23 +677,23 @@ class GuoTuTasks extends Component<Props, State> {
         downloadData={this.props.sourceDownloads[item.resourceId]}
         downloadSourceFile={this.props.downloadSourceFile}
         deleteSourceDownloadFile={this.props.deleteSourceDownloadFile}
-        checked={!!this.state.selectedData.get(item.resourceId)}
+        checked={!!this.state.selectedData.get(item.resourceId + '')}
         onChecked={({ value, data, download }) => {
-          let selected = new Map(this.tempSelectedData)
-          const isSelected = selected.has(data.resourceId)
+          const selected = new Map(this.tempSelectedData)
+          const isSelected = selected.has(data.resourceId + '')
           if (isSelected) {
             if (!value) {
-              selected.delete(data.resourceId)
+              selected.delete(data.resourceId + '')
               this.setState({ selectedData: selected })
             } else {
-              const item = selected.get(data.resourceId)
+              const item = selected.get(data.resourceId + '')
               if (!item?.download) {
-                selected.set(data.resourceId, { ...data, download: download })
+                selected.set(data.resourceId + '', { ...data, download: download })
                 this.setState({ selectedData: selected })
               }
             }
           } else if (value) {
-            selected.set(data.resourceId, { ...data, download: download })
+            selected.set(data.resourceId + '', { ...data, download: download })
             this.setState({ selectedData: selected })
           }
           this.tempSelectedData = selected
@@ -703,11 +701,11 @@ class GuoTuTasks extends Component<Props, State> {
         checkAction={({ value, data, download }) => {
           this.setState(state => {
             const selected = new Map(state.selectedData)
-            const isSelected = selected.has(data.resourceId)
+            const isSelected = selected.has(data.resourceId + '')
             if (value && !isSelected) {
-              selected.set(data.resourceId, { ...data, download: download })
+              selected.set(data.resourceId + '', { ...data, download: download })
             } else {
-              selected.delete(data.resourceId)
+              selected.delete(data.resourceId + '')
             }
             this.tempSelectedData = selected
             return { selectedData: selected }
@@ -820,7 +818,7 @@ class GuoTuTasks extends Component<Props, State> {
   render() {
     return (
       <Container
-        ref={ref => this.container = ref}
+        ref={(ref: ContainerClass | null | undefined) => this.container = ref}
         showFullInMap={true}
         hideInBackground={false}
         headerProps={{

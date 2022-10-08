@@ -187,6 +187,7 @@ export default class MapView extends React.Component {
     mapSearchHistory: PropTypes.array,
     toolbarStatus: PropTypes.object,
     laboratory: PropTypes.object,
+    showARLabel: PropTypes.bool,
 
     isClassifyView: PropTypes.bool,
     mapArGuide: PropTypes.bool,
@@ -1221,6 +1222,7 @@ export default class MapView extends React.Component {
     SARMap.showMeasureView(false)
     SARMap.showTrackView(false)
     SARMap.showPointCloud(false)
+    SARMap.showARLabel(this.props.showARLabel)
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
     this.onMapLoad?.('ar')
@@ -4880,6 +4882,10 @@ export default class MapView extends React.Component {
               } else if(element.type === ARElementType.AR_SAND_TABLE) {
                 AppToolBar.addData({ selectARElement: element })
                 AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+              } else {
+                // 不支持属性的对象
+                Toast.show(getLanguage().CUR_ELE_NOT_SUPPORT_ATTRIBUTE)
+                SARMap.clearSelection()
               }
 
             } else if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {

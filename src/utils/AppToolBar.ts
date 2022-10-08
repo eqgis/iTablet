@@ -319,6 +319,11 @@ function showTabView(visible: boolean) {
   toolbarRef.showTabView(visible)
 }
 
+/** 显示/隐藏 toolbarMenu 下的 view */
+function showMenuView(visible: boolean) {
+  toolbarRef.showMenuView(visible)
+}
+
 /** 切换 ToolbarList 的显隐 */
 function toggleListVisible() {
   toolbarRef.toggleListVisible()
@@ -345,5 +350,6 @@ export default {
   toggleListVisible,
   addBottomBtn,
   deleteBottomBtn,
+  showMenuView,
 }
 

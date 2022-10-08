@@ -30,6 +30,7 @@ export default class Login extends React.Component {
     setUser: () => {},
     setMessageService: (data: any) => void,
     appConfig: Object,
+    device: Object,
   }
 
   constructor(props) {
@@ -44,6 +45,7 @@ export default class Login extends React.Component {
     }
     this.scaleL = new Animated.Value(1)
     this.scaleR = new Animated.Value(0.7)
+    this.lockScreen = screen.getLockScreen() // 获取进入当前页面之前是否有锁屏
   }
 
   componentDidMount() {
@@ -55,8 +57,18 @@ export default class Login extends React.Component {
   }
 
   componentWillUnmount() {
-    screen.unlockAllOrientations()
-    global.ORIENTATIONLOCKED = false
+    // screen.unlockAllOrientations()
+    // global.ORIENTATIONLOCKED = false
+
+    // 返回上一页面时,恢复之前是否锁屏的状态
+    if (this.lockScreen.includes('PORTRAIT')) {
+      screen.lockToPortrait()
+    } else if (this.lockScreen.includes('LANDSCAPE')) {
+      screen.lockToLandscape()
+    } else {
+      screen.unlockAllOrientations()
+      global.ORIENTATIONLOCKED = false
+    }
   }
 
   getData = () => {

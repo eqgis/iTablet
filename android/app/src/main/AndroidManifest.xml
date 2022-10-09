@@ -86,6 +86,17 @@
         </intent-filter>
       </receiver>
       <meta-data android:name="com.google.ar.core" android:value="optional" />
+      <provider
+          android:name="com.supermap.RN.WeChatShareProvider"
+          android:authorities="${applicationId}.wechatShare"
+          android:exported="false"
+          android:grantUriPermissions="true"
+          tools:replace="name,authorities,exported,grantUriPermissions">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/wechat_share_provider_paths"
+            tools:replace="name,resource" />
+      </provider>
     </application>
 
     <supports-screens

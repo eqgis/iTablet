@@ -996,6 +996,7 @@ function _getModelAnimationTabList(element: ARElement): ToolBarMenuItem {
   return tab
 }
 
+/** android的动画 */
 function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
 
   const changeA: ToolBarListItem[] = [
@@ -1010,7 +1011,7 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
   const changeB: ToolBarListItem[] = [
     {
       image: getImage().ar_3dmodle,
-      text: getLanguage().CUSTOME_ANIMATION,
+      text: getLanguage().MODEL_ANIMATION,
       onPress: () => {
       }
     },
@@ -1149,8 +1150,8 @@ function addTransAnimeOption(option: IToolbarOption) {
           'placeholder': getLanguage().Common.INPUT_NAME,
           'defaultValue': getLanguage().ARMap.TRANSLATION,
           'checkSpell': CheckSpell.checkLayerCaption,
-          title: 'getLanguage().Common.SAVE_ANIMATION',
-          descripton: 'getLanguage().Common.SAVE_ANIMATION_WITH_NAME',
+          title: getLanguage().PLOT_SAVE_ANIMATION,
+          descripton: getLanguage().Common.SAVE_ANIMATION_WITH_NAME,
           confirm: text => {
             const param = AppToolBar.getData().animationParam
             if(param) {
@@ -1277,8 +1278,8 @@ function addRotateAnimeOption(option: IToolbarOption) {
           'placeholder': getLanguage().Common.INPUT_NAME,
           'defaultValue': getLanguage().ARMap.ROTATION,
           'checkSpell': CheckSpell.checkLayerCaption,
-          title: 'getLanguage().Common.SAVE_ANIMATION',
-          descripton: 'getLanguage().Common.SAVE_ANIMATION_WITH_NAME',
+          title: getLanguage().PLOT_SAVE_ANIMATION,
+          descripton: getLanguage().Common.SAVE_ANIMATION_WITH_NAME,
           confirm: text => {
             const param = AppToolBar.getData().animationParam
             if(param) {

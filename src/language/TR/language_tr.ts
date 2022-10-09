@@ -965,6 +965,7 @@ export const language_tr: typeof language_cn = {
   ANIMATION_NODE_NAME: "Animasyon Nod Adı",
 
   OPEN_ONLINE_DATA: "Çevrimiçi Veri Aç",
+  SAVE_ANIMATION_WITH_NAME: 'Bu Animasyon kaydedilecek ve bu animasyonu diğer modellere uygulayabilirsiniz',
 
   PLOT: "Çizim",
 

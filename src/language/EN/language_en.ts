@@ -963,6 +963,7 @@ export const language_en: typeof language_cn = {
   PLOT_SAVE_ANIMATION: "Save Animation",
   ANIMATION_NODE_NAME: "Animation Node Name",
   OPEN_ONLINE_DATA: "Open Online Data",
+  SAVE_ANIMATION_WITH_NAME: "This animation will be saved in the Customization. You can apply it to other models",
 
   PLOT: "Plot",
 

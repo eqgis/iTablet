@@ -30,7 +30,7 @@ export default class MapNavigationConfig extends Module {
         changeMapModule,
         addModule,
         // markModule,
-        // navigationModule,
+        navigationModule,
         roadNetModule,
         incrementModule,
         toolModule,

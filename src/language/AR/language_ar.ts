@@ -971,6 +971,7 @@ export const language_ar: typeof language_cn = {
   ANIMATION_NODE_NAME: "اسم عقدة الرسوم المتحركة",
 
   OPEN_ONLINE_DATA: "هذا الحساب قد يكون مختلس",
+  SAVE_ANIMATION_WITH_NAME: 'هذه الرسوم المتحركة سيتم حفظها ، يمكنك تطبيقها على نماذج أخرى',
 
   PLOT: "رسم بيانى",
 

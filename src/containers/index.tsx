@@ -433,9 +433,9 @@ export default function(params: StackNavigatorProps) {
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} options={modalOption(params)}/>
       <Stack.Screen name="ChartManager" component={ChartManager} />
-      <Stack.Screen name="ExternalDevices" component={ExternalDevices} />
-      <Stack.Screen name="BluetoothDevices" component={BluetoothDevices} />
-      <Stack.Screen name="NtripSetting" component={NtripSetting} />
+      <Stack.Screen name="ExternalDevices" component={ExternalDevices} options={modalOption(params)} />
+      <Stack.Screen name="BluetoothDevices" component={BluetoothDevices} options={modalOption(params)} />
+      <Stack.Screen name="NtripSetting" component={NtripSetting} options={modalOption(params)} />
       <Stack.Screen name="ARAnimation" component={ARAnimation} />
     </Stack.Navigator>
   )

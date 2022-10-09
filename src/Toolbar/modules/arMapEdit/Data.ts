@@ -996,6 +996,7 @@ function _getModelAnimationTabList(element: ARElement): ToolBarMenuItem {
   return tab
 }
 
+/** android的动画 */
 function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
 
   const changeA: ToolBarListItem[] = [
@@ -1010,7 +1011,7 @@ function _getAnimationTabList(element: ARElement): ToolBarMenuItem {
   const changeB: ToolBarListItem[] = [
     {
       image: getImage().ar_3dmodle,
-      text: getLanguage().CUSTOME_ANIMATION,
+      text: getLanguage().MODEL_ANIMATION,
       onPress: () => {
       }
     },

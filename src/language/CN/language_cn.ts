@@ -2868,5 +2868,6 @@ export const language_cn = {
   SAND_TABLE_MAKE: '沙盘制作',
   PANE_ANIMATION: '窗格动画',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: '当前对象不支持属性制作',
+  MODEL_DATA: '模型数据',
 
 }

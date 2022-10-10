@@ -457,7 +457,7 @@ class Attribute extends React.Component<Props, State> {
         }
       },
     ]
-    const dismissTitles = ['AR_ATTRIBUTE_STYLE']
+    const dismissTitles = ['AR_ATTRIBUTE_STYLE', 'AR_MODEL_INFO']
     const isSingle = this.total === 1 && this.state.attributes.data.length === 1
     let isSupport = false
     const selectElement = AppToolBar.getData().selectARElement

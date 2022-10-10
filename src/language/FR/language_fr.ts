@@ -2867,4 +2867,5 @@ export const language_fr: typeof language_cn = {
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
+  MODEL_DATA: 'Model data',   // To be tanslated
 }

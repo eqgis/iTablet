@@ -238,13 +238,13 @@ export default function(params: StackNavigatorProps) {
         {() => Tabs(params.appConfig.tabModules)}
       </Stack.Screen>
       <Stack.Screen name="CreateGroupPage" component={CreateGroupPage} options={modalOption(params)} />
-      <Stack.Screen name="MapStack" >
+      <Stack.Screen name="MapStack" options={modalOption(params)} >
         {() => MapStack(params.device)}
       </Stack.Screen>
-      <Stack.Screen name="Map3DStack" >
+      <Stack.Screen name="Map3DStack" options={modalOption(params)} >
         {() => Map3DStack(params.device)}
       </Stack.Screen>
-      <Stack.Screen name="CoworkTabs" >
+      <Stack.Screen name="CoworkTabs" options={modalOption(params)} >
         {() => CoworkTabs(params.device)}
       </Stack.Screen>
       <Stack.Screen name="MapViewSingle" component={MapView} />

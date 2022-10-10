@@ -963,6 +963,7 @@ export const language_en: typeof language_cn = {
   PLOT_SAVE_ANIMATION: "Save Animation",
   ANIMATION_NODE_NAME: "Animation Node Name",
   OPEN_ONLINE_DATA: "Open Online Data",
+  SAVE_ANIMATION_WITH_NAME: "This animation will be saved in the Customization. You can apply it to other models",
 
   PLOT: "Plot",
 
@@ -2867,5 +2868,6 @@ export const language_en: typeof language_cn = {
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
+  MODEL_DATA: 'Model data',   // To be tanslated
 
 }

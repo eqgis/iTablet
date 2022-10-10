@@ -968,6 +968,7 @@ export const language_ja: typeof language_cn = {
   ANIMATION_NODE_NAME: "アニメーションノード名",
 
   OPEN_ONLINE_DATA: "オンラインデータを開く",
+  SAVE_ANIMATION_WITH_NAME: "当アニメーションを保存して、他のモデルに使用できます",
 
   PLOT: "進路プロット",
 
@@ -2870,5 +2871,6 @@ export const language_ja: typeof language_cn = {
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
+  MODEL_DATA: 'Model data',   // To be tanslated
 
 }

@@ -965,6 +965,7 @@ export const language_cn = {
   PLOT_SAVE_ANIMATION: "保存动画",
   ANIMATION_NODE_NAME: "动画节点名称",
   OPEN_ONLINE_DATA: "打开在线数据",
+  SAVE_ANIMATION_WITH_NAME: '此动画将被保存到”自定义"中，您可以将其应用到其他模型',
 
   PLOT: "标绘",
 
@@ -2857,6 +2858,7 @@ export const language_cn = {
   THE_LAST: '已经是最后一张了',
 
 
+
   DAYS: '天',
   EXPIRE_DATE: '有效期',
 
@@ -2868,5 +2870,6 @@ export const language_cn = {
   SAND_TABLE_MAKE: '沙盘制作',
   PANE_ANIMATION: '窗格动画',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: '当前对象不支持属性制作',
+  MODEL_DATA: '模型数据',
 
 }

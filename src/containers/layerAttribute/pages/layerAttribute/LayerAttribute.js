@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { View } from 'react-native'
+import { InteractionManager, View } from 'react-native'
 import NavigationService from '../../../NavigationService'
 import {
   Container,
@@ -58,7 +58,6 @@ let deleteFieldData //删除属性字段
 export default class LayerAttribute extends React.Component {
   props: {
     language: string,
-    nav: Object,
     navigation: Object,
     currentAttribute: Object,
     currentLayer: Object,
@@ -68,7 +67,7 @@ export default class LayerAttribute extends React.Component {
     mapModules: Object,
     attributesHistory: Array,
     attributes: Object, // 此时用于3D属性
-    // setAttributes: () => {},
+    setAttributes: () => {},
     setCurrentAttribute: () => {},
     // getAttributes: () => {},
     setLayerAttributes: () => {},
@@ -85,25 +84,33 @@ export default class LayerAttribute extends React.Component {
     const { params } = this.props.route
     this.type = (params && params.type) || global.Type
     let checkData = this.checkToolIsViable()
-    this.state = {
-      attributes: {
-        head: [],
-        data: [],
-      },
-      showTable: false,
-      editControllerVisible: false,
-      addControllerVisible: false,
-      currentFieldInfo: [],
-      relativeIndex: -1, // 当前页面从startIndex开始的被选中的index, 0 -> this.total - 1
-      currentIndex: -1,
-      startIndex: 0,
-
-      canBeUndo: checkData.canBeUndo,
-      canBeRedo: checkData.canBeRedo,
-      canBeRevert: checkData.canBeRevert,
-
-      isShowSystemFields: true,
-      descending:false, //属性排列倒序时为true add jiakai
+    const LayerAttributeState = LayerUtils.getMapLayerAttributeState()
+    if (LayerAttributeState && LayerAttributeState.layerPath === this.props.currentLayer.path) {
+      if (LayerAttributeState.attributes.head[0].value === getLanguage().ATTRIBUTE_NO) {
+        LayerAttributeState.attributes.head.splice(0, 1)
+      }
+      this.state = Object.assign({}, LayerAttributeState)
+    } else {
+      this.state = {
+        attributes: {
+          head: [],
+          data: [],
+        },
+        showTable: false,
+        editControllerVisible: false,
+        addControllerVisible: false,
+        currentFieldInfo: [],
+        relativeIndex: -1, // 当前页面从startIndex开始的被选中的index, 0 -> this.total - 1
+        currentIndex: -1,
+        startIndex: 0,
+  
+        canBeUndo: checkData.canBeUndo,
+        canBeRedo: checkData.canBeRedo,
+        canBeRevert: checkData.canBeRevert,
+  
+        isShowSystemFields: true,
+        descending:false, //属性排列倒序时为true add jiakai
+      }
     }
 
     this.currentPage = 0
@@ -120,6 +127,33 @@ export default class LayerAttribute extends React.Component {
     if (this.type === 'MAP_3D') {
       this.getMap3DAttribute()
     } else if (this.props.currentLayer?.name) {
+      const LayerAttributeState = LayerUtils.getMapLayerAttributeState()
+      if (LayerAttributeState && LayerAttributeState.layerPath === this.props.currentLayer.path) {
+        SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
+          this.isMediaLayer = result
+          this.table?.setSelected(this.state.relativeIndex, false, () => {
+            setTimeout(() => {
+              this.table?.scrollToLocation({
+                animated: false,
+                itemIndex: this.state.relativeIndex,
+                sectionIndex: 0,
+                viewPosition: 0,
+                viewOffset: COL_HEIGHT,
+              })
+            }, 100)
+          })
+        }).catch(() =>{
+          this.table?.setSelected(this.state.relativeIndex, false)
+          this.table?.scrollToLocation({
+            animated: false,
+            itemIndex: this.state.relativeIndex,
+            sectionIndex: 0,
+            viewPosition: 0,
+            viewOffset: COL_HEIGHT,
+          })
+        })
+        return
+      }
       this.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
       SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
         this.isMediaLayer = result
@@ -129,7 +163,7 @@ export default class LayerAttribute extends React.Component {
       })
     }
     // 添加导航监听,使每次添加对象等导致属性变化的操作,返回到属性页面时,保持刷新
-    this.props.navigation.addListener('focus', this.resetCurrentPage)
+    // this.props.navigation.addListener('focus', this.resetCurrentPage)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -191,7 +225,7 @@ export default class LayerAttribute extends React.Component {
 
   componentWillUnmount() {
     this.props.setCurrentAttribute({})
-    this.props.navigation.removeListener('focus', this.resetCurrentPage)
+    // this.props.navigation.removeListener('focus', this.resetCurrentPage)
   }
 
   getMap3DAttribute = async (cb = () => { }) => {
@@ -268,9 +302,11 @@ export default class LayerAttribute extends React.Component {
 
   resetCurrentPage = () => {
     try {
-      this.getAttribute({
-        type: 'reset',
-        currentPage: this.currentPage >= 0 ? this.currentPage : 0,
+      InteractionManager.runAfterInteractions(() => {
+        this.getAttribute({
+          type: 'reset',
+          currentPage: this.currentPage >= 0 ? this.currentPage : 0,
+        })
       })
     } catch(e) {
       // eslint-disable-next-line no-console
@@ -337,6 +373,10 @@ export default class LayerAttribute extends React.Component {
             startIndex: 0,
             ...checkData,
             ...others,
+          }, () => {
+            const LayerAttributeState = Object.assign({}, this.state)
+            LayerAttributeState.layerPath = this.props.currentLayer.path
+            LayerUtils.setMapLayerAttributeState(LayerAttributeState)
           })
           this.setLoading(false)
           cb && cb(attributes)
@@ -402,6 +442,9 @@ export default class LayerAttribute extends React.Component {
               // ...others,
             },
             () => {
+              const LayerAttributeState = Object.assign({}, this.state)
+              LayerAttributeState.layerPath = this.props.currentLayer.path
+              LayerUtils.setMapLayerAttributeState(LayerAttributeState)
               setTimeout(() => {
                 if (currentIndex === -1) {
                   this.table?.clearSelected()
@@ -675,8 +718,18 @@ export default class LayerAttribute extends React.Component {
         relativeIndex: index,
         currentIndex: this.state.startIndex + index,
       })
+      LayerUtils.setMapLayerAttributeState({
+        currentFieldInfo: data,
+        relativeIndex: index,
+        currentIndex: this.state.startIndex + index,
+      })
     } else {
       this.setState({
+        currentFieldInfo: [],
+        relativeIndex: -1,
+        currentIndex: -1,
+      })
+      LayerUtils.setMapLayerAttributeState({
         currentFieldInfo: [],
         relativeIndex: -1,
         currentIndex: -1,
@@ -1457,6 +1510,7 @@ export default class LayerAttribute extends React.Component {
         keyboardVerticalOffset={
           screen.getHeaderHeight(this.props.device.orientation) + scaleSize(130)
         }
+        currentIndex={this.state.currentIndex}
       />
     )
   }

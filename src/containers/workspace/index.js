@@ -23,8 +23,8 @@ function MapStack(device) {
       }}
       tabBar={() => <View style={{height: 0, width: '100%'}} />}
     >
-      <Tab.Screen name="MapView" component={MapView} />
-      <Tab.Screen name="LayerAttribute" component={LayerAttribute} />
+      <Tab.Screen name="MapView" component={MapView} options={{freezeOnBlur: true}} />
+      {/* <Tab.Screen name="LayerAttribute" component={LayerAttribute} /> */}
     </Tab.Navigator>
   )
 }
@@ -54,7 +54,7 @@ function Map3DStack(device) {
       tabBar={() => <View style={{height: 0, width: '100%'}} />}
     >
       <Tab.Screen name="Map3D" component={Map3D} />
-      <Tab.Screen name="LayerAttribute3D" component={LayerAttribute} />
+      {/* <Tab.Screen name="LayerAttribute3D" component={LayerAttribute} /> */}
     </Tab.Navigator>
   )
 }

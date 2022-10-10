@@ -92,7 +92,7 @@ export default class MT_layerManager extends React.Component {
       currentOpenItemName: '', // 记录左滑的图层的名称
       data: this.dealLayers(this.props.layers),
       type: (params && params.type) || global.Type, // 底部Tabbar类型
-      allLayersVisible: false,
+      allLayersVisible: true,
       isOutput: true, // 点击了输出/加载按钮，用于判断dialog行为
 
       isVisible: false,

@@ -876,7 +876,7 @@ function getPoiEditBottom(editItem: ARElement | string): ToolBarBottomItem[] {
 
 let animatonMode: 'model' | 'custome' = 'custome'
 
-/** 获取AR模型动画Tab的数据 */
+/** ios获取AR模型动画Tab的数据 */
 function _getModelAnimationTabList(element: ARElement): ToolBarMenuItem {
   /** 自定义动画 */
   const customeAnimationData:ToolBarListItem[] = [
@@ -910,18 +910,37 @@ function _getModelAnimationTabList(element: ARElement): ToolBarMenuItem {
     type: 'list',
     onPress: () => {
       SARMap.setAction(ARAction.NULL)
-      AppToolBar.showTabView(true)
+      // AppToolBar.showTabView(true)
+      AppToolBar.showMenuView(true)
+      if(AppToolBar.getData().ownModelAnimation) {
+        const button =  {
+          image: getImage().swith_animation_type,
+          onPress: () => {
+            if(animatonMode === 'custome') {
+              animatonMode = 'model'
+            } else if(animatonMode === 'model'){
+              animatonMode = 'custome'
+            }
+            AppToolBar.resetPage()
+          }
+        }
+        if(!isShowAnimationChangeBtn) {
+          AppToolBar.addBottomBtn([button], 1)
+          isShowAnimationChangeBtn = true
+        }
+      }
     },
     data: [],
     getExtraData: async () => {
       const modelAnimations = await SARMap.getModelAnimation(element.layerName, element.id)
       if(modelAnimations.length > 0 && animatonMode === 'model') {
         const headData: ToolBarListItem[] = [{
-          image: getImage().toolbar_switch,
-          text: getLanguage().MODEL_ANIMATION,
+          image: getImage().ar_body_posture,
+          text: getLanguage().BONE_ANIMATION,
           onPress: () => {
-            animatonMode = 'custome'
-            AppToolBar.resetTabData()
+            // animatonMode = 'custome'
+            // // AppToolBar.resetTabData()
+            // AppToolBar.resetPage()
           }
         },
         {
@@ -954,11 +973,12 @@ function _getModelAnimationTabList(element: ARElement): ToolBarMenuItem {
       } else {
         animatonMode = 'custome'
         const change: ToolBarListItem[] = (modelAnimations.length > 0) ? [{
-          image: getImage().toolbar_switch,
-          text: getLanguage().BONE_ANIMATION,
+          image: getImage().ar_3dmodle,
+          text: getLanguage().MODEL_ANIMATION,
           onPress: () => {
-            animatonMode = 'model'
-            AppToolBar.resetTabData()
+            // animatonMode = 'model'
+            // // AppToolBar.resetTabData()
+            // AppToolBar.resetPage()
           }
         }] : []
         const more: ToolBarListItem = {

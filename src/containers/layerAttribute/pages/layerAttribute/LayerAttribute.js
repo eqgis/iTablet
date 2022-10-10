@@ -84,12 +84,22 @@ export default class LayerAttribute extends React.Component {
     const { params } = this.props.route
     this.type = (params && params.type) || global.Type
     let checkData = this.checkToolIsViable()
+
+    this.currentPage = 0
+    this.total = 0 // 属性总数
+    this.canBeRefresh = true // 是否可以刷新
+    this.noMore = false // 是否可以加载更多
+    this.isLoading = false // 防止同时重复加载多次
+    this.filter = '' // 属性查询过滤
+    this.isMediaLayer = false // 是否是多媒体图层
+    this.Popover = undefined // 长按弹窗
+
     const LayerAttributeState = LayerUtils.getMapLayerAttributeState()
     if (this.type !== 'MAP_3D' && LayerAttributeState?.layerPath && LayerAttributeState.layerPath === this.props.currentLayer.path) {
       if (LayerAttributeState.attributes?.head > 0 && LayerAttributeState.attributes?.head?.[0].value === getLanguage().ATTRIBUTE_NO) {
         LayerAttributeState.attributes?.head.splice(0, 1)
       }
-      console.warn(LayerAttributeState.attributes?.head)
+      this.total = LayerAttributeState.attributes?.data?.length || 0
       this.state = Object.assign({}, LayerAttributeState)
     } else {
       this.state = {
@@ -113,15 +123,6 @@ export default class LayerAttribute extends React.Component {
         descending:false, //属性排列倒序时为true add jiakai
       }
     }
-
-    this.currentPage = 0
-    this.total = 0 // 属性总数
-    this.canBeRefresh = true // 是否可以刷新
-    this.noMore = false // 是否可以加载更多
-    this.isLoading = false // 防止同时重复加载多次
-    this.filter = '' // 属性查询过滤
-    this.isMediaLayer = false // 是否是多媒体图层
-    this.Popover = undefined // 长按弹窗
   }
 
   componentDidMount() {

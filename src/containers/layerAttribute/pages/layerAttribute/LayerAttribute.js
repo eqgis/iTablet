@@ -85,10 +85,11 @@ export default class LayerAttribute extends React.Component {
     this.type = (params && params.type) || global.Type
     let checkData = this.checkToolIsViable()
     const LayerAttributeState = LayerUtils.getMapLayerAttributeState()
-    if (LayerAttributeState && LayerAttributeState.layerPath === this.props.currentLayer.path) {
-      if (LayerAttributeState.attributes.head[0].value === getLanguage().ATTRIBUTE_NO) {
-        LayerAttributeState.attributes.head.splice(0, 1)
+    if (this.type !== 'MAP_3D' && LayerAttributeState?.layerPath && LayerAttributeState.layerPath === this.props.currentLayer.path) {
+      if (LayerAttributeState.attributes?.head > 0 && LayerAttributeState.attributes?.head?.[0].value === getLanguage().ATTRIBUTE_NO) {
+        LayerAttributeState.attributes?.head.splice(0, 1)
       }
+      console.warn(LayerAttributeState.attributes?.head)
       this.state = Object.assign({}, LayerAttributeState)
     } else {
       this.state = {

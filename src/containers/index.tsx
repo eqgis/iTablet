@@ -214,8 +214,17 @@ interface StackNavigatorProps {
 const modalOption = (params: StackNavigatorProps): ScreenOptions => {
   return {
     headerShown: false,
-    animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+    animation: 'none',
     presentation: 'containedTransparentModal',
+    // presentation: Platform.OS === 'ios' ? 'formSheet' : 'containedTransparentModal',
+    // presentation: Platform.OS === 'ios' && params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'card' : 'containedTransparentModal',
+  }
+}
+const modalOption2 = (params: StackNavigatorProps): ScreenOptions => {
+  return {
+    headerShown: false,
+    animation: 'none',
+    // presentation: 'containedTransparentModal',
     // presentation: Platform.OS === 'ios' ? 'formSheet' : 'containedTransparentModal',
     // presentation: Platform.OS === 'ios' && params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'card' : 'containedTransparentModal',
   }
@@ -238,10 +247,10 @@ export default function(params: StackNavigatorProps) {
         {() => Tabs(params.appConfig.tabModules)}
       </Stack.Screen>
       <Stack.Screen name="CreateGroupPage" component={CreateGroupPage} options={modalOption(params)} />
-      <Stack.Screen name="MapStack" options={modalOption(params)} >
+      <Stack.Screen name="MapStack" >
         {() => MapStack(params.device)}
       </Stack.Screen>
-      <Stack.Screen name="Map3DStack" options={modalOption(params)} >
+      <Stack.Screen name="Map3DStack" >
         {() => Map3DStack(params.device)}
       </Stack.Screen>
       <Stack.Screen name="CoworkTabs" options={modalOption(params)} >
@@ -252,7 +261,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="Map3DSetting" component={Map3DSetting} options={modalOption(params)}/>
       <Stack.Screen name="CoworkMember" component={CoworkMember} options={modalOption(params)} />
       <Stack.Screen name="CoworkMessage" component={CoworkMessage} options={modalOption(params)} />
-      <Stack.Screen name="GroupSelectPage" component={GroupSelectPage} options={modalOption(params)} />
+      <Stack.Screen name="GroupSelectPage" component={GroupSelectPage} options={modalOption2(params)} />
       <Stack.Screen name="GroupFriendListPage" component={GroupFriendListPage} options={modalOption(params)} />
       <Stack.Screen name="GroupApplyPage" component={GroupApplyPage} options={modalOption(params)} />
       <Stack.Screen name="GroupInvitePage" component={GroupInvitePage} options={modalOption(params)} />
@@ -342,16 +351,16 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="LanguageSetting" component={LanguageSetting} options={modalOption(params)} />
       <Stack.Screen name="LocationSetting" component={LocationSetting} options={modalOption(params)} />
       <Stack.Screen name="Protocol" component={Protocol} options={modalOption(params)} />
-      <Stack.Screen name="PublicMap" component={PublicMap} options={modalOption(params)} />
+      <Stack.Screen name="PublicMap" component={PublicMap} options={modalOption2(params)} />
       <Stack.Screen name="PointAnalyst" component={PointAnalyst} options={modalOption(params)}/>
       <Stack.Screen name="FriendMap" component={FriendMap} options={modalOption(params)} />
       <Stack.Screen name="MyLabel" component={MyLabel} options={modalOption(params)} />
-      <Stack.Screen name="MyBaseMap" component={MyBaseMap} options={modalOption(params)} />
+      <Stack.Screen name="MyBaseMap" component={MyBaseMap} options={modalOption2(params)} />
       <Stack.Screen name="LoadServer" component={LoadServer} options={modalOption(params)} />
       <Stack.Screen name="SuperMapKnown" component={SuperMapKnown} options={modalOption(params)} />
       <Stack.Screen name="PublicData" component={PublicData} options={modalOption(params)} />
       <Stack.Screen name="Applet" component={Applet} options={modalOption(params)} />
-      <Stack.Screen name="CoworkManagePage" component={CoworkManagePage} options={modalOption(params)} />
+      <Stack.Screen name="CoworkManagePage" component={CoworkManagePage} options={modalOption2(params)} />
       <Stack.Screen name="FindSettingPage" component={FindSettingPage} options={modalOption(params)} />
       <Stack.Screen name="Laboratory" component={Laboratory} options={modalOption(params)} />
       <Stack.Screen name="MediaEdit" component={MediaEdit} options={modalOption(params)} />

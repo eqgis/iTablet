@@ -197,6 +197,7 @@ import ExternalDevices from './ExternalDevices'
 import BluetoothDevices from './BluetoothDevices'
 import NtripSetting from './NtripSetting'
 import ARAnimation from './ARAnimation/ARAnimation'
+import AttributeDetail from './AttributeDetail'
 
 const Stack = createNativeStackNavigator()
 
@@ -440,6 +441,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="BluetoothDevices" component={BluetoothDevices} options={modalOption(params)} />
       <Stack.Screen name="NtripSetting" component={NtripSetting} options={modalOption(params)} />
       <Stack.Screen name="ARAnimation" component={ARAnimation} options={modalOption(params)} />
+      <Stack.Screen name="AttributeDetail" component={AttributeDetail} options={modalOption(params)} />
     </Stack.Navigator>
   )
 }

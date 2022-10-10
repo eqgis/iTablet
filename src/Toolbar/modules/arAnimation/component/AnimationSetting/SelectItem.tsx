@@ -117,11 +117,17 @@ export function SelectItem<T>(props: ItemSelectProps<T>) {
                 value={value as any}
                 listItemContainerStyle={{
                   justifyContent: 'flex-start',
-                  width: '100%',
+                  width: '95%',
                   backgroundColor: '#fff',
                   opacity: 1,
+                  borderRadius: dp(15),
+                  marginLeft: dp(5),
+                  paddingLeft: dp(5),
                 }}
                 setValue={wrapSetValue}
+                arrowIconStyle={{
+                  marginRight: dp(5),
+                }}
                 listMode={'FLATLIST'}
               />
             </View>

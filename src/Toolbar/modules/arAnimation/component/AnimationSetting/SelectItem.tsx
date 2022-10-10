@@ -44,7 +44,8 @@ export function SelectItem<T>(props: ItemSelectProps<T>) {
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: dp(30),
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        zIndex: 100,
       }}
     >
       {props.mode === 'flat'
@@ -104,19 +105,24 @@ export function SelectItem<T>(props: ItemSelectProps<T>) {
             </Picker>
           </>
         ) : (
-          <View style={{flex: 1, flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center'}}>
+          <View style={{height: dp(50),flex: 1, flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center'}}>
             <Text style={AppStyle.h3g}>
               {props.name}
             </Text>
-            <View style={{ width: dp(200), height: dp(50), }}>
-
+            <View style={{ width: dp(200), height: dp(50)}}>
               <DropDownPicker
                 items={props.data as any} //todo
                 open={open}
                 setOpen={setOpen}
                 value={value as any}
+                listItemContainerStyle={{
+                  justifyContent: 'flex-start',
+                  width: '100%',
+                  backgroundColor: '#fff',
+                  opacity: 1,
+                }}
                 setValue={wrapSetValue}
-                listMode={'MODAL'}
+                listMode={'FLATLIST'}
               />
             </View>
           </View>

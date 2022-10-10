@@ -1,4 +1,4 @@
-import { ARElementType, SARMap, TARElementType } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import * as React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { connect, ConnectedProps } from 'react-redux'
@@ -6,15 +6,11 @@ import { getLanguage } from '../../../../language'
 import { RootState } from '../../../../redux/types'
 import { AppLog, AppStyle, AppToolBar, AttributeUtils, dp, Toast, dataUtil as DataUtil, scaleSize } from '../../../../utils'
 import { Attributes, AttributesResp } from '../../../../utils/AttributeUtils'
-// import { Container } from '../../../../component'
-// import { MainStackScreenNavigationProp, MainStackScreenRouteProp } from '../../../../page/types'
 import LayerAttributeTable from './LayerAttribute/components/LayerAttributeTable'
 import LayerTopBar from './LayerAttribute/components/LayerTopBar'
 import LayerAttributeAdd from './LayerAttribute/pages/layerAttributeAdd'
-import AttributeDetail, { SandTableData } from './LayerAttribute/pages/AttributeDetail'
 import { AddResult } from './LayerAttribute/pages/layerAttributeAdd/LayerAttributeAdd'
 import { getImage } from '../../../../assets'
-import { ButtonActionParams } from './LayerAttribute/components/LayerAttributeTable/LayerAttributeTable'
 import { checkSupportARAttributeByElement, checkSupportARAttributeByLayer } from '../Actions'
 
 const PAGE_SIZE = 30
@@ -48,7 +44,6 @@ class Attribute extends React.Component<Props, State> {
   layerName = ''
   addPopModal: LayerAttributeAdd | null | undefined
   table: LayerAttributeTable | null | undefined
-  detailPopModal: AttributeDetail | null | undefined
   selectedAttributeList: string[]
 
   constructor(props: Props) {
@@ -403,14 +398,6 @@ class Attribute extends React.Component<Props, State> {
     })
   }
 
-  modifyModelInfo = (modelID: number, data: SandTableData) => {
-    try {
-      SARMap.setARSandTableData(this.layerName, modelID, JSON.stringify(data))
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      __DEV__ && console.warn(error)
-    }
-  }
 
   renderTopBar = () => {
     return (
@@ -427,36 +414,7 @@ class Attribute extends React.Component<Props, State> {
   }
 
   renderMapLayerAttribute = () => {
-    const buttonNameFilter = ['AR_MODEL_INFO'], // 属性表cell显示 查看 按钮
-      buttonTitles = [getLanguage().VIEW]
-    // const buttonNameFilter: string[] = [], // 属性表cell显示 查看 按钮
-    //   buttonTitles: string[] = []
-    const buttonActions: ((data: ButtonActionParams) => void)[] | undefined = [
-      async data => {
-        let modelID = -1
-        let elementType: TARElementType | null = null
-        for (const key in data.rowData) {
-          if (Object.prototype.hasOwnProperty.call(data.rowData, key)) {
-            const element = data.rowData[key]
-            if (element.name.toLowerCase() === 'smid') {
-              modelID = element.value
-            } else if(element.name.toLowerCase() === 'ar_eletype') {
-              elementType = element.value as TARElementType
-            }
-          }
-        }
-        if (modelID >= 0 && elementType === ARElementType.AR_SAND_TABLE) {
-          const modalData = await SARMap.getARSandTableData(this.layerName, modelID)
-          let data = undefined
-          try {
-            data = JSON.parse(modalData)
-          } catch (e) {/** */}
-          this.detailPopModal?.setVisible(true, modelID, data)
-        } else {
-          Toast.show(getLanguage().NULL_DATA)
-        }
-      },
-    ]
+    const buttonNameFilter = ['AR_MODEL_INFO'] // 属性表cell显示 查看 按钮
     const dismissTitles = ['AR_ATTRIBUTE_STYLE', 'AR_MODEL_INFO']
     const isSingle = this.total === 1 && this.state.attributes.data.length === 1
     let isSupport = false
@@ -503,9 +461,7 @@ class Attribute extends React.Component<Props, State> {
         checkable={isSupport}
         onChecked={this.onChecked}
         buttonNameFilter={buttonNameFilter}
-        buttonActions={buttonActions}
         dismissTitles={dismissTitles}
-        buttonTitles={buttonTitles}
         isShowSystemFields={this.state.isShowSystemFields}
       />
     )
@@ -543,15 +499,6 @@ class Attribute extends React.Component<Props, State> {
     )
   }
 
-  renderDetail = () => {
-    return (
-      <AttributeDetail
-        ref={ref => (this.detailPopModal = ref)}
-        device={this.props.device}
-        confirm={this.modifyModelInfo}
-      />
-    )
-  }
 
   renderAddTable = () => {
     let isSupport = false
@@ -593,7 +540,6 @@ class Attribute extends React.Component<Props, State> {
           {this.renderMapLayerAttribute()}
           {this.renderAddTable()}
           {this.renderAdd()}
-          {this.renderDetail()}
         </View>
       </View>
     )

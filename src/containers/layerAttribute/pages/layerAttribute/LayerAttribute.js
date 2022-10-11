@@ -67,13 +67,13 @@ export default class LayerAttribute extends React.Component {
     mapModules: Object,
     attributesHistory: Array,
     attributes: Object, // 此时用于3D属性
-    setAttributes: () => {},
-    setCurrentAttribute: () => {},
+    setAttributes: () => void,
+    setCurrentAttribute: () => void,
     // getAttributes: () => {},
-    setLayerAttributes: () => {},
-    setAttributeHistory: () => {},
-    clearAttributeHistory: () => {},
-    getLayers: () => {},
+    setLayerAttributes: () => void,
+    setAttributeHistory: () => void,
+    clearAttributeHistory: () => void,
+    getLayers: () => void,
     device: Object,
     currentTask: Object,
     currentUser: Object,
@@ -122,15 +122,16 @@ export default class LayerAttribute extends React.Component {
         relativeIndex: -1, // 当前页面从startIndex开始的被选中的index, 0 -> this.total - 1
         currentIndex: -1,
         startIndex: 0,
-  
+
         canBeUndo: checkData.canBeUndo,
         canBeRedo: checkData.canBeRedo,
         canBeRevert: checkData.canBeRevert,
-  
+
         isShowSystemFields: true,
-        descending:false, //属性排列倒序时为true add jiakai
+        descending: false, //属性排列倒序时为true add jiakai
       }
     }
+    this.canRelate = true // 是否可点击关联
   }
 
   componentDidMount() {
@@ -155,7 +156,7 @@ export default class LayerAttribute extends React.Component {
               scrollTimer = null
             }, 0)
           })
-        }).catch(() =>{
+        }).catch(() => {
           this.table?.setSelected(this.state.relativeIndex, false)
           this.table?.scrollToLocation({
             animated: false,
@@ -171,7 +172,7 @@ export default class LayerAttribute extends React.Component {
       SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
         this.isMediaLayer = result
         this.refresh()
-      }).catch(() =>{
+      }).catch(() => {
         this.refresh()
       })
     }
@@ -334,7 +335,7 @@ export default class LayerAttribute extends React.Component {
           currentPage: this.currentPage >= 0 ? this.currentPage : 0,
         })
       })
-    } catch(e) {
+    } catch (e) {
       // eslint-disable-next-line no-console
       __DEV__ && console.warn(e)
     }
@@ -368,143 +369,143 @@ export default class LayerAttribute extends React.Component {
     let { currentPage, pageSize, type, ...others } = params
     let result = {},
       attributes = {}
-    ; (async function () {
-      try {
-        let checkData = this.checkToolIsViable()
-        result = await LayerUtils.getLayerAttribute(
-          JSON.parse(JSON.stringify(this.state.attributes)),
-          this.props.currentLayer.path,
-          currentPage,
-          pageSize !== undefined ? pageSize : PAGE_SIZE,
-          {
-            filter: this.filter,
-          },
-          type,
-        )
-
-        this.total = result.total || 0
-        attributes = result.attributes || []
-
-        // this.noMore =
-        //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
-        //   attributes.data.length < PAGE_SIZE
-
-        if (this.total === 1 && attributes.data.length === 1) {
-          this.setState({
-            showTable: true,
-            attributes,
-            currentIndex: 0,
-            relativeIndex: 0,
-            currentFieldInfo: attributes.data[0],
-            startIndex: 0,
-            ...checkData,
-            ...others,
-          }, () => {
-            const LayerAttributeState = Object.assign({}, this.state)
-            LayerAttributeState.layerPath = this.props.currentLayer.path
-            LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
-          })
-          this.setLoading(false)
-          cb && cb(attributes)
-        } else {
-          let newAttributes = JSON.parse(JSON.stringify(attributes))
-          let startIndex =
-            others.startIndex >= 0
-              ? others.startIndex
-              : this.state.startIndex || 0
-          // 截取数据，最多显示 ROWS_LIMIT 行
-          if (attributes.data.length > ROWS_LIMIT) {
-            if (type === 'refresh') {
-              newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
-              startIndex = result.startIndex
-            } else {
-              startIndex = result.startIndex + result.resLength - ROWS_LIMIT
-              startIndex =
-                parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
-
-              let sliceStartIndex = 0
-              if (attributes.data.length >= ROWS_LIMIT) {
-                sliceStartIndex =
-                  parseInt(
-                    (
-                      (attributes.data.length - ROWS_LIMIT) /
-                      PAGE_SIZE
-                    ).toFixed(),
-                  ) * PAGE_SIZE
-              }
-              newAttributes.data = newAttributes.data.slice(
-                sliceStartIndex,
-                attributes.data.length,
-              )
-            }
-          }
-
-          let currentIndex = resetCurrent
-            ? -1
-            : others.currentIndex !== undefined
-              ? others.currentIndex
-              : this.state.currentIndex
-
-          let relativeIndex =
-            resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
-          // : currentIndex - startIndex - 1
-          let prevStartIndex = this.state.startIndex
-          this.currentPage = Math.floor(
-            (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
-          )
-          this.noMore = startIndex + newAttributes.data.length === this.total
-          this.setState(
+      ; (async function () {
+        try {
+          let checkData = this.checkToolIsViable()
+          result = await LayerUtils.getLayerAttribute(
+            JSON.parse(JSON.stringify(this.state.attributes)),
+            this.props.currentLayer.path,
+            currentPage,
+            pageSize !== undefined ? pageSize : PAGE_SIZE,
             {
-              showTable: true,
-              attributes: newAttributes,
-              currentIndex,
-              relativeIndex,
-              currentFieldInfo:
-                relativeIndex >= 0 && relativeIndex < newAttributes.data.length
-                  ? newAttributes.data[relativeIndex]
-                  : this.state.currentFieldInfo,
-              startIndex,
-              ...checkData,
-              // ...others,
+              filter: this.filter,
             },
-            () => {
+            type,
+          )
+
+          this.total = result.total || 0
+          attributes = result.attributes || []
+
+          // this.noMore =
+          //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
+          //   attributes.data.length < PAGE_SIZE
+
+          if (this.total === 1 && attributes.data.length === 1) {
+            this.setState({
+              showTable: true,
+              attributes,
+              currentIndex: 0,
+              relativeIndex: 0,
+              currentFieldInfo: attributes.data[0],
+              startIndex: 0,
+              ...checkData,
+              ...others,
+            }, () => {
               const LayerAttributeState = Object.assign({}, this.state)
               LayerAttributeState.layerPath = this.props.currentLayer.path
               LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
-              setTimeout(() => {
-                if (currentIndex === -1) {
-                  this.table?.clearSelected()
+            })
+            this.setLoading(false)
+            cb && cb(attributes)
+          } else {
+            let newAttributes = JSON.parse(JSON.stringify(attributes))
+            let startIndex =
+              others.startIndex >= 0
+                ? others.startIndex
+                : this.state.startIndex || 0
+            // 截取数据，最多显示 ROWS_LIMIT 行
+            if (attributes.data.length > ROWS_LIMIT) {
+              if (type === 'refresh') {
+                newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
+                startIndex = result.startIndex
+              } else {
+                startIndex = result.startIndex + result.resLength - ROWS_LIMIT
+                startIndex =
+                  parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
+
+                let sliceStartIndex = 0
+                if (attributes.data.length >= ROWS_LIMIT) {
+                  sliceStartIndex =
+                    parseInt(
+                      (
+                        (attributes.data.length - ROWS_LIMIT) /
+                        PAGE_SIZE
+                      ).toFixed(),
+                    ) * PAGE_SIZE
                 }
-                if (type === 'refresh') {
-                  this.table &&
-                    this.table.scrollToLocation({
-                      animated: false,
-                      itemIndex: prevStartIndex - startIndex,
-                      sectionIndex: 0,
-                      viewPosition: 0,
-                      viewOffset: COL_HEIGHT,
-                    })
-                } else if (type === 'loadMore') {
-                  this.table &&
-                    this.table.scrollToLocation({
-                      animated: false,
-                      itemIndex: newAttributes.data.length - result.resLength,
-                      sectionIndex: 0,
-                      viewPosition: 1,
-                    })
-                }
-                this.setLoading(false)
-                cb && cb(attributes)
-              }, 0)
-            },
-          )
+                newAttributes.data = newAttributes.data.slice(
+                  sliceStartIndex,
+                  attributes.data.length,
+                )
+              }
+            }
+
+            let currentIndex = resetCurrent
+              ? -1
+              : others.currentIndex !== undefined
+                ? others.currentIndex
+                : this.state.currentIndex
+
+            let relativeIndex =
+              resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
+            // : currentIndex - startIndex - 1
+            let prevStartIndex = this.state.startIndex
+            this.currentPage = Math.floor(
+              (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
+            )
+            this.noMore = startIndex + newAttributes.data.length === this.total
+            this.setState(
+              {
+                showTable: true,
+                attributes: newAttributes,
+                currentIndex,
+                relativeIndex,
+                currentFieldInfo:
+                  relativeIndex >= 0 && relativeIndex < newAttributes.data.length
+                    ? newAttributes.data[relativeIndex]
+                    : this.state.currentFieldInfo,
+                startIndex,
+                ...checkData,
+                // ...others,
+              },
+              () => {
+                const LayerAttributeState = Object.assign({}, this.state)
+                LayerAttributeState.layerPath = this.props.currentLayer.path
+                LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
+                setTimeout(() => {
+                  if (currentIndex === -1) {
+                    this.table?.clearSelected()
+                  }
+                  if (type === 'refresh') {
+                    this.table &&
+                      this.table.scrollToLocation({
+                        animated: false,
+                        itemIndex: prevStartIndex - startIndex,
+                        sectionIndex: 0,
+                        viewPosition: 0,
+                        viewOffset: COL_HEIGHT,
+                      })
+                  } else if (type === 'loadMore') {
+                    this.table &&
+                      this.table.scrollToLocation({
+                        animated: false,
+                        itemIndex: newAttributes.data.length - result.resLength,
+                        sectionIndex: 0,
+                        viewPosition: 1,
+                      })
+                  }
+                  this.setLoading(false)
+                  cb && cb(attributes)
+                }, 0)
+              },
+            )
+          }
+        } catch (e) {
+          this.isLoading = false
+          this.setLoading(false)
+          cb && cb(attributes)
         }
-      } catch (e) {
-        this.isLoading = false
-        this.setLoading(false)
-        cb && cb(attributes)
-      }
-    }.bind(this)())
+      }.bind(this)())
   }
 
   /**
@@ -736,7 +737,8 @@ export default class LayerAttribute extends React.Component {
   }
 
   selectRow = ({ data, index }) => {
-    if (!data || index < 0 || this.total === 1 && this.state.attributes.data.length === 1) return
+    // 没有数据,只有一个数据,或在关联中,无法选择行
+    if (!data || index < 0 || this.total === 1 && this.state.attributes.data.length === 1 || !this.canRelate) return
 
     if (this.state.relativeIndex !== index) {
       this.setState({
@@ -799,7 +801,7 @@ export default class LayerAttribute extends React.Component {
             currentPage: 0,
             startIndex: 0,
           })
-          this.setState({descending:false})
+          this.setState({ descending: false })
         },
       })
       items.push({
@@ -812,7 +814,7 @@ export default class LayerAttribute extends React.Component {
             currentPage: 0,
             startIndex: 0,
           })
-          this.setState({descending:true})
+          this.setState({ descending: true })
         },
       })
     }
@@ -914,9 +916,9 @@ export default class LayerAttribute extends React.Component {
     } else {
       //此处计算数据倒序时后实际上的数据index add jiakai
       let index
-      if(this.state.descending){
-        index = this.total - this.state.currentIndex -1
-      }else{
+      if (this.state.descending) {
+        index = this.total - this.state.currentIndex - 1
+      } else {
         index = this.state.currentIndex
       }
       result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, index, false)
@@ -977,92 +979,100 @@ export default class LayerAttribute extends React.Component {
 
   /** 关联事件 **/
   relateAction = () => {
-    if (this.state.currentFieldInfo.length === 0) return
-    SMap.setAction(Action.PAN)
-    SMap.setLayerEditable(this.props.currentLayer.path, false)
-    let geoStyle = new GeoStyle()
-    geoStyle.setFillForeColor(0, 255, 0, 0.5)
-    geoStyle.setLineWidth(1)
-    geoStyle.setLineColor(70, 128, 223)
-    geoStyle.setMarkerHeight(5)
-    geoStyle.setMarkerWidth(5)
-    geoStyle.setMarkerSize(10)
-    // 检查是否是文本对象，若是，则使用TextStyle
-    for (let j = 0; j < this.state.currentFieldInfo.length; j++) {
-      if (
-        this.state.currentFieldInfo[j].name === 'SmGeoType' &&
-        this.state.currentFieldInfo[j].value === GeometryType.GEOTEXT
-      ) {
-        geoStyle = new TextStyle()
-        geoStyle.setForeColor(0, 255, 0, 0.5)
-        break
+    try {
+      let time = new Date().getTime()
+      if (this.state.currentFieldInfo.length === 0 || !this.canRelate) return
+      this.canRelate = false
+      SMap.setAction(Action.PAN)
+      SMap.setLayerEditable(this.props.currentLayer.path, false)
+      let geoStyle = new GeoStyle()
+      geoStyle.setFillForeColor(0, 255, 0, 0.5)
+      geoStyle.setLineWidth(1)
+      geoStyle.setLineColor(70, 128, 223)
+      geoStyle.setMarkerHeight(5)
+      geoStyle.setMarkerWidth(5)
+      geoStyle.setMarkerSize(10)
+      // 检查是否是文本对象，若是，则使用TextStyle
+      for (let j = 0; j < this.state.currentFieldInfo.length; j++) {
+        if (
+          this.state.currentFieldInfo[j].name === 'SmGeoType' &&
+          this.state.currentFieldInfo[j].value === GeometryType.GEOTEXT
+        ) {
+          geoStyle = new TextStyle()
+          geoStyle.setForeColor(0, 255, 0, 0.5)
+          break
+        }
       }
-    }
-    SMap.setTrackingLayer(
-      [
-        {
-          layerPath: this.props.currentLayer.path,
-          ids: [
-            this.state.currentFieldInfo[0].name === 'SmID'
-              ? this.state.currentFieldInfo[0].value
-              : this.state.currentFieldInfo[1].value,
-          ],
-          style: JSON.stringify(geoStyle),
-        },
-      ],
-      true,
-    ).then(data => {
-      ToolbarModule.setToolBarData(
-        ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
-      ).then(() => {
-        this.props.navigation &&
-          this.props.navigation.navigate('MapView', {
-            hideMapController: true,
-          })
-        global.toolBox &&
-          global.toolBox.setVisible(
-            true,
-            ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
-            {
-              isFullScreen: false,
-              // height: 0,
-            },
-          )
-        global.toolBox && global.toolBox.showFullMap()
-      })
-
-      // global.toolBox && global.toolBox.showFullMap()
-      if ((global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS) && global.showAIDetect) {
-        global.toolBox && global.toolBox.switchAr()
-      }
-
-      StyleUtils.setSelectionStyle(this.props.currentLayer.path)
-      if (data instanceof Array && data.length > 0) {
-        SMap.moveToPoint({
-          x: data[0].x,
-          y: data[0].y,
+      SMap.setTrackingLayer(
+        [
+          {
+            layerPath: this.props.currentLayer.path + '',
+            ids: [
+              (this.state.currentFieldInfo[0].name === 'SmID'
+                ? this.state.currentFieldInfo[0].value
+                : this.state.currentFieldInfo[1].value) + 1 - 1,
+            ],
+            style: JSON.stringify(geoStyle),
+          },
+        ],
+        true,
+      ).then(data => {
+        ToolbarModule.setToolBarData(
+          ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
+        ).then(() => {
+          this.props.navigation &&
+            this.props.navigation.navigate('MapView', {
+              hideMapController: true,
+            })
+          global.toolBox &&
+            global.toolBox.setVisible(
+              true,
+              ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
+              {
+                isFullScreen: false,
+                // height: 0,
+              },
+            )
+          global.toolBox && global.toolBox.showFullMap()
         })
-      }
-    })
-    // SMap.selectObj(this.props.currentLayer.path, [
-    //   this.state.currentFieldInfo[0].value,
-    // ]).then(data => {
-    //   this.props.navigation && this.props.navigation.navigate('MapView')
-    //   global.toolBox &&
-    //     global.toolBox.setVisible(true, ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE, {
-    //       isFullScreen: false,
-    //       height: 0,
-    //     })
-    //   global.toolBox && global.toolBox.showFullMap()
-    //
-    //   StyleUtils.setSelectionStyle(this.props.currentLayer.path)
-    //   if (data instanceof Array && data.length > 0) {
-    //     SMap.moveToPoint({
-    //       x: data[0].x,
-    //       y: data[0].y,
-    //     })
-    //   }
-    // })
+
+        // global.toolBox && global.toolBox.showFullMap()
+        if ((global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS) && global.showAIDetect) {
+          global.toolBox && global.toolBox.switchAr()
+        }
+
+        StyleUtils.setSelectionStyle(this.props.currentLayer.path)
+        if (data instanceof Array && data.length > 0) {
+          SMap.moveToPoint({
+            x: data[0].x,
+            y: data[0].y,
+          })
+          this.canRelate = true
+          let time2 = new Date().getTime()
+        }
+      })
+      // SMap.selectObj(this.props.currentLayer.path, [
+      //   this.state.currentFieldInfo[0].value,
+      // ]).then(data => {
+      //   this.props.navigation && this.props.navigation.navigate('MapView')
+      //   global.toolBox &&
+      //     global.toolBox.setVisible(true, ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE, {
+      //       isFullScreen: false,
+      //       height: 0,
+      //     })
+      //   global.toolBox && global.toolBox.showFullMap()
+      //
+      //   StyleUtils.setSelectionStyle(this.props.currentLayer.path)
+      //   if (data instanceof Array && data.length > 0) {
+      //     SMap.moveToPoint({
+      //       x: data[0].x,
+      //       y: data[0].y,
+      //     })
+      //   }
+      // })
+    } catch (error) {
+      this.canRelate = true
+    }
   }
 
   setLoading = (loading = false, info, extra) => {
@@ -1124,7 +1134,7 @@ export default class LayerAttribute extends React.Component {
               filter: `SmID=${isSingleData
                 ? this.state.attributes.data[0][0].value
                 : data.rowData[1].value // 0为序号
-              }`, // 过滤条件
+                }`, // 过滤条件
               cursorType: 2, // 2: DYNAMIC, 3: STATIC
             },
           },
@@ -1406,20 +1416,20 @@ export default class LayerAttribute extends React.Component {
       async data => {
         let layerName = this.props.currentLayer.name,
           geoID = data.rowData[1].value
-        if(this.total === 1 && this.state.attributes.data.length === 1){
+        if (this.total === 1 && this.state.attributes.data.length === 1) {
           geoID = data.rowData[0].value
         }
         let has = await SMediaCollector.haveMediaInfo(layerName, geoID)
-        if(!has){
+        if (!has) {
           Toast.show(getLanguage(global.language).Prompt.AFTER_COLLECT)
           return
         }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
         let layerType = LayerUtils.getLayerType(this.props.currentLayer)
         let isTaggingLayer = layerType === 'TAGGINGLAYER'
-        if(isTaggingLayer){
+        if (isTaggingLayer) {
           Object.assign(info, { addToMap: this.props.currentLayer.isVisible })
-        }else{
+        } else {
           Object.assign(info, { addToMap: false })
         }
 
@@ -1458,10 +1468,10 @@ export default class LayerAttribute extends React.Component {
             }
           }
           if (isDelete) {
-            this.setState({currentIndex:-1})
+            this.setState({ currentIndex: -1 })
             this.table.setSelected(data.rowIndex)
             this.refresh()
-          }else{
+          } else {
             this.refresh()
           }
         }
@@ -1710,9 +1720,9 @@ export default class LayerAttribute extends React.Component {
 
     //此处计算数据倒序时后实际上的数据index add jiakai
     let index
-    if(this.state.descending){
-      index = this.total - this.state.currentIndex -1
-    }else{
+    if (this.state.descending) {
+      index = this.total - this.state.currentIndex - 1
+    } else {
       index = this.state.currentIndex
     }
 
@@ -1831,8 +1841,8 @@ export default class LayerAttribute extends React.Component {
         {this.renderDeleteFieldDialog()}
         <PopoverButtonsView
           ref={ref => this.Popover = ref}
-          backgroundStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
-          popoverStyle={{backgroundColor: 'rgba(0, 0, 0, 1)'}}
+          backgroundStyle={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}
+          popoverStyle={{ backgroundColor: 'rgba(0, 0, 0, 1)' }}
         />
       </Container>
     )

@@ -161,6 +161,7 @@ export default class LayerAttributeTabs extends React.Component {
     this.currentTabRefs = []
     this.init = !!selectionAttribute
     this.backClicked = false
+    this.canRelate = true
   }
 
   async componentDidMount() {
@@ -579,90 +580,97 @@ export default class LayerAttributeTabs extends React.Component {
 
   /** 关联事件 **/
   relateAction = () => {
-    if (
-      this.state.currentTabIndex >= this.currentTabRefs.length &&
-      !this.currentTabRefs[this.state.currentTabIndex]
-    )
-      return
-    let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
-        .layerSelection.layerInfo.path,
-      selection = this.currentTabRefs[this.state.currentTabIndex].getSelection()
+    try {
+      if (
+        this.state.currentTabIndex >= this.currentTabRefs.length &&
+        !this.currentTabRefs[this.state.currentTabIndex]
+        || !this.canRelate
+      )
+        return
+      this.canRelate = false
+      let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
+          .layerSelection.layerInfo.path,
+        selection = this.currentTabRefs[this.state.currentTabIndex].getSelection()
 
-    if (!selection || !selection.data) return
+      if (!selection || !selection.data) return
 
-    SMap.setLayerEditable(layerPath, false)
-    let objs = []
-    let geoStyle = new GeoStyle()
-    geoStyle.setFillForeColor(0, 255, 0, 0.5)
-    geoStyle.setLineWidth(1)
-    geoStyle.setLineColor(70, 128, 223)
-    geoStyle.setMarkerHeight(5)
-    geoStyle.setMarkerWidth(5)
-    geoStyle.setMarkerSize(10)
-    // 检查是否是文本对象，若是，则使用TextStyle
-    for (let i = 0; i < this.props.selection.length; i++) {
-      if (this.props.selection[i].layerInfo.path === layerPath) {
-        for (let j = 0; j < selection.data.length; j++) {
-          if (
-            selection.data[j].name === 'SmGeoType' &&
-            selection.data[j].value === GeometryType.GEOTEXT
-          ) {
-            geoStyle = new TextStyle()
-            geoStyle.setForeColor(0, 255, 0, 0.5)
-            break
+      SMap.setLayerEditable(layerPath, false)
+      let objs = []
+      let geoStyle = new GeoStyle()
+      geoStyle.setFillForeColor(0, 255, 0, 0.5)
+      geoStyle.setLineWidth(1)
+      geoStyle.setLineColor(70, 128, 223)
+      geoStyle.setMarkerHeight(5)
+      geoStyle.setMarkerWidth(5)
+      geoStyle.setMarkerSize(10)
+      // 检查是否是文本对象，若是，则使用TextStyle
+      for (let i = 0; i < this.props.selection.length; i++) {
+        if (this.props.selection[i].layerInfo.path === layerPath) {
+          for (let j = 0; j < selection.data.length; j++) {
+            if (
+              selection.data[j].name === 'SmGeoType' &&
+              selection.data[j].value === GeometryType.GEOTEXT
+            ) {
+              geoStyle = new TextStyle()
+              geoStyle.setForeColor(0, 255, 0, 0.5)
+              break
+            }
           }
-        }
 
-        objs.push({
-          layerPath: layerPath,
-          // ids: [selection.data[0].value],
-          ids: [
-            selection.data[0].name === 'SmID'
-              ? selection.data[0].value
-              : selection.data[1].value,
-          ], // 多条数据有序号时：0为序号，1为SmID；无序号时0为SmID
-          style: JSON.stringify(geoStyle),
-        })
-      } else {
-        objs.push({
-          layerPath: this.props.selection[i].layerInfo.path,
-          ids: [],
-        })
-      }
-    }
-
-    SMap.setAction(Action.PAN)
-
-    SMap.clearSelection().then(() => {
-      // SMap.selectObjs(objs).then(data => {
-      SMap.setTrackingLayer(objs, true).then(data => {
-        // TODO 选中对象跳转到地图
-        // this.props.navigation && this.props.navigation.navigate('MapView')
-        // NavigationService.navigate('MapView')
-        this.props.navigation.goBack()
-        global.toolBox &&
-          global.toolBox.setVisible(
-            true,
-            ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE,
-            {
-              isFullScreen: false,
-              // height: 0,
-            },
-          )
-        global.toolBox && global.toolBox.showFullMap()
-        ToolbarModule.addData({ preType: this.preToolbarType })
-        StyleUtils.setSelectionStyle(
-          // this.props.currentLayer.path || objs[0].layerPath,
-          layerPath,
-        )
-        if (data instanceof Array && data.length > 0) {
-          SMap.moveToPoint({
-            x: data[0].x,
-            y: data[0].y,
+          objs.push({
+            layerPath: layerPath,
+            // ids: [selection.data[0].value],
+            ids: [
+              selection.data[0].name === 'SmID'
+                ? selection.data[0].value
+                : selection.data[1].value,
+            ], // 多条数据有序号时：0为序号，1为SmID；无序号时0为SmID
+            style: JSON.stringify(geoStyle),
+          })
+        } else {
+          objs.push({
+            layerPath: this.props.selection[i].layerInfo.path,
+            ids: [],
           })
         }
+      }
+
+      SMap.setAction(Action.PAN)
+
+      SMap.clearSelection().then(() => {
+        // SMap.selectObjs(objs).then(data => {
+        SMap.setTrackingLayer(objs, true).then(data => {
+          // TODO 选中对象跳转到地图
+          // this.props.navigation && this.props.navigation.navigate('MapView')
+          // NavigationService.navigate('MapView')
+          this.props.navigation.goBack()
+          global.toolBox &&
+            global.toolBox.setVisible(
+              true,
+              ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE,
+              {
+                isFullScreen: false,
+                // height: 0,
+              },
+            )
+          global.toolBox && global.toolBox.showFullMap()
+          ToolbarModule.addData({ preType: this.preToolbarType })
+          StyleUtils.setSelectionStyle(
+            // this.props.currentLayer.path || objs[0].layerPath,
+            layerPath,
+          )
+          if (data instanceof Array && data.length > 0) {
+            SMap.moveToPoint({
+              x: data[0].x,
+              y: data[0].y,
+            })
+          }
+          this.canRelate = true
+        })
       })
-    })
+    } catch (error) {
+      this.canRelate = true
+    }
   }
 
   drawerOnChange = async({ index }) => {

@@ -426,6 +426,8 @@ export default class MapView extends React.Component {
 
     // 分享按钮是否可点击标识，true为可点击
     this.isShareCanClick = true
+    /** 提示语回调 提示显示的控制定时器 */
+    this.timer = null
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -694,34 +696,49 @@ export default class MapView extends React.Component {
 
   /**提示语回调 */
   onshowLog = result => {
-    if (result.close) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
-      })
-    }
+    if(!this.timer) {
+      this.timer = setTimeout(() => {
+        clearTimeout(this.timer)
+        this.timer = null
+      }, 2000)
 
-    if (result.dark) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
-      })
-    }
-
-    if (result.fast) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
-      })
-    }
-
-    if (result.nofeature) {
-      if (this.state.dioLog != getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+      if (result.close) {
         this.setState({
           dioLog: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+            .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
         })
+      }
+
+      if(result.far) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_FAR, showLog: true
+        })
+      }
+
+      if (result.dark) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
+        })
+      }
+
+      if (result.fast) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
+        })
+      }
+
+      if (result.nofeature) {
+        if (this.state.dioLog != getLanguage(global.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+          this.setState({
+            dioLog: getLanguage(global.language).Map_Main_Menu
+              .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+          })
+      }
+
     }
 
     if (result.none) {
@@ -4694,6 +4711,11 @@ export default class MapView extends React.Component {
       case getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:
         img = getThemeAssets().ar.icon_tips_approach
+        break
+      case getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_FAR:
+        // 换为近一点图标 to do
+        img = getThemeAssets().ar.icon_tips_move_away
         break
       default:
         img = getThemeAssets().ar.icon_tips_move_away

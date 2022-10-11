@@ -1344,6 +1344,7 @@ export const language_tr: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "Yüzey Arama",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "Görüş Mesafesi: ",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"Uzaklaş",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"Çok Loş, Daha Fazla Işık Alın",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"Çok Hızlı, Lütfen Yavaşlayın",

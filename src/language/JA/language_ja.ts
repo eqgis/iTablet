@@ -1347,6 +1347,7 @@ export const language_ja: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "平面を検索中",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "ビューポイント距離:",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"離れてください",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"現在の環境は暗すぎます。適切な照明を提供してください",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"デバイスの動きが速すぎます。速度を落としてください",

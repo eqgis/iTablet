@@ -1352,6 +1352,7 @@ export const language_ar: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "جارى بحث السطح",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "رؤيه المسافة",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"ابق بعيدا",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"خافت للغاية ، خذ المزيد من الضوء",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"سريع جدًا ، يرجى الإبطاء",

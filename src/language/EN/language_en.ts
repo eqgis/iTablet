@@ -1341,6 +1341,7 @@ export const language_en: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "Searching Surface",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "View Distance:",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"Keep Far Away",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"Please light the current environment",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"Please move your device slowly",
@@ -1495,7 +1496,7 @@ export const language_en: typeof language_cn = {
   LIST:'List',
   LOOP:'Loop',
   COLOR: 'Color',
-  OPACITY: 'Opactiy',
+  OPACITY: 'Opacity',
   BORDER_WIDTH: 'Border Width',
   BORDER_COLOR: 'Border Color',
   VISIBLE_DISTANCE:'Visible Distance',
@@ -2353,7 +2354,7 @@ export const language_en: typeof language_cn = {
   MAR_AR_QR_INVALID: "Failed to recognize the code information",
   MAP_AR_ENHANCE_POSITION: 'AR Location',
   MAP_AR_DATUM_MANUAL_LOCATION: "Manual position",
-  MAP_AR_DATUM_GPS_LOCATION: "GPS postion",
+  MAP_AR_DATUM_GPS_LOCATION: "GPS position",
   ALIGN_LOCATOR_CODE: 'Please align the locator code',
   CALIBRATION_TIMEOUT: 'Calibration timeout',
   CALIBRATION_SUCCESSFUL: 'Calibration successful',

@@ -1465,6 +1465,7 @@ export default class MapView extends React.Component {
         const libIds = params.template.plotLibIds
         await SMap.removePlotSymbolLibraryArr(libIds)
       }
+      LayerUtils.setMapLayerAttributeState({}, true)
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
 

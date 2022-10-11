@@ -158,7 +158,8 @@ public class appManager {
                 e.printStackTrace();
             }
             String filePath = map.get("filePath").toString();
-            if (checkAndroidNotBelowN()) {
+            // Android 11 分享到微信需要使用FileProvider
+            if (checkAndroidNotBelowN() || isHarmonyOs()) {
                 Context context = activityStack.get(0);
 //                String wechatShareCachePath = context.getCacheDir().getPath() + "/wechatShare";
                 String wechatShareCachePath = context.getExternalFilesDir(null) + "/shareData";
@@ -214,6 +215,16 @@ public class appManager {
     // 判断Android版本是否11 及以上
     public boolean checkAndroidNotBelowN() {
         return android.os.Build.VERSION.SDK_INT >= 30;
+    }
+
+    public static boolean isHarmonyOs() {
+        try {
+            Class<?> buildExClass = Class.forName("com.huawei.system.BuildEx");
+            Object osBrand = buildExClass.getMethod("getOsBrand").invoke(buildExClass);
+            return "Harmony".equalsIgnoreCase(osBrand.toString());
+        } catch (Throwable x) {
+            return false;
+        }
     }
 
     private String buildTransaction(String type) {

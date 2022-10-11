@@ -1,8 +1,7 @@
 /* global global */
 import { TOnlineData } from '@/constants/ConstOnline'
 import { SMap, DatasetType, FieldType, FieldInfo2, TDatasetType, FieldInfo1, TFieldType } from 'imobile_for_reactnative'
-import { DatasourceConnectionInfo } from 'imobile_for_reactnative/types/data'
-import { AttributesResp, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { AttributesResp, FieldInfo, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import { ConstOnline } from '../constants'
 import { getLanguage } from '../language'
 
@@ -626,6 +625,45 @@ function availableServiceLayer(datasetType: TDatasetType) {
   return datasetType === DatasetType.CAD || datasetType === DatasetType.POINT || datasetType === DatasetType.LINE || datasetType === DatasetType.REGION
 }
 
+interface MapLayerAttributeState {
+  layerPath?: string,
+  attributes?: Attributes,
+  showTable?: boolean,
+  editControllerVisible?: boolean,
+  addControllerVisible?: boolean,
+  currentFieldInfo?: [],
+  relativeIndex?: -1, // 当前页面从startIndex开始的被选中的index, 0 -> this.total - 1
+  currentIndex?: -1,
+  startIndex?: 0,
+
+  canBeUndo?: boolean,
+  canBeRedo?: boolean,
+  canBeRevert?: boolean,
+
+  isShowSystemFields?: boolean,
+  descending?: boolean, //属性排列倒序时为true add jiakai
+}
+
+let layerAttributeState: MapLayerAttributeState = {}
+/**
+ * 设置二维地图属性界面state
+ */
+function setMapLayerAttributeState(mapLayerAttributeState: MapLayerAttributeState, reset?: false) {
+  if (reset) {
+    layerAttributeState = mapLayerAttributeState
+  } else {
+    Object.assign(layerAttributeState, mapLayerAttributeState)
+  }
+}
+
+/**
+ * 获取二维地图属性界面state
+ * @returns MapLayerAttribute
+ */
+function getMapLayerAttributeState() {
+  return layerAttributeState
+}
+
 export default {
   getLayerAttribute,
   searchLayerAttribute,
@@ -660,4 +698,7 @@ export default {
   deleteNavigationAttributeByData,
 
   availableServiceLayer,
+
+  setMapLayerAttributeState,
+  getMapLayerAttributeState,
 }

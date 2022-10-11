@@ -971,6 +971,7 @@ export const language_ar: typeof language_cn = {
   ANIMATION_NODE_NAME: "اسم عقدة الرسوم المتحركة",
 
   OPEN_ONLINE_DATA: "هذا الحساب قد يكون مختلس",
+  SAVE_ANIMATION_WITH_NAME: 'هذه الرسوم المتحركة سيتم حفظها ، يمكنك تطبيقها على نماذج أخرى',
 
   PLOT: "رسم بيانى",
 
@@ -2892,4 +2893,5 @@ export const language_ar: typeof language_cn = {
   SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
+  MODEL_DATA: 'Model data',   // To be tanslated
 }

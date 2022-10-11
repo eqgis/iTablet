@@ -5,7 +5,8 @@ import { getLanguage } from "../../../language"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, Toast } from "../../../utils"
 import { ARAttributeViewOption } from "./ARAttributeView"
-import { checkSupportARAttributeByElement, getSandtableAttributeData } from "./Actions"
+import { checkSupportARAttributeByElement, getSandtableAttributeData, getSandtableData } from "./Actions"
+import NavigationService from "@/containers/NavigationService"
 
 
 export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
@@ -15,19 +16,13 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
     attribute: 'null',
     showLayer: false
   }
-  const selectARElement = AppToolBar.getData().selectARElement
   switch(key) {
     case 'AR_MAP_BROWSE_ELEMENT':
       option.moduleData.showLayer = true
-      option.moduleData.attribute = 'null'
       browseElementOption(option)
       break
     case 'AR_MAP_ATTRIBUTE':
-      if(selectARElement && selectARElement.type === ARElementType.AR_SAND_TABLE) {
-        option.moduleData.attribute = 'sandattribute'
-      } else {
-        option.moduleData.attribute = 'attribute'
-      }
+      option.moduleData.attribute = 'attribute'
       attributeOption(option)
       break
     case 'AR_MAP_ATTRIBUTE_STYLE':
@@ -152,9 +147,19 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
 
         if(selectARElement && selectARElement.type === ARElementType.AR_SAND_TABLE){
           await getSandtableAttributeData()
+
+          const obj = getSandtableData()
+          if(obj.modelID !== -1 && obj.data){
+            NavigationService.navigate("AttributeDetail", {
+              modelID: obj.modelID,
+              data: obj.data,
+            })
+          }
+        } else {
+          AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE')
         }
 
-        AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE')
+        // AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE')
       }
     }
   ]
@@ -210,11 +215,7 @@ function attributeOption(option: IToolbarOption) {
         SARMap.setAction(ARAction.SELECT)
         // SARMap.setCenterHitTest(false)
         // AppToolBar.show('ARMAP', 'AR_MAP_BROWSE_ELEMENT')
-        if(selectARElement && selectARElement.type === ARElementType.AR_SAND_TABLE) {
-          AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
-        } else {
-          AppToolBar.goBack()
-        }
+        AppToolBar.goBack()
       },
     }
   ]

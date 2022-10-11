@@ -2,8 +2,13 @@ package com.supermap.RN;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 
+import androidx.core.content.FileProvider;
+
+import com.supermap.RNUtils.FileManager;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXFileObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -152,7 +157,20 @@ public class appManager {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            WXFileObject fileObject = new WXFileObject(map.get("filePath").toString());
+            String filePath = map.get("filePath").toString();
+            if (checkAndroidNotBelowN()) {
+                Context context = activityStack.get(0);
+//                String wechatShareCachePath = context.getCacheDir().getPath() + "/wechatShare";
+                String wechatShareCachePath = context.getExternalFilesDir(null) + "/shareData";
+                FileManager.getInstance().deleteDir(wechatShareCachePath);
+                FileManager.getInstance().deleteFile(wechatShareCachePath);
+                if (!new File(wechatShareCachePath).exists()) {
+                    new File(wechatShareCachePath).mkdirs();
+                }
+                result = FileManager.getInstance().copy(filePath, wechatShareCachePath + "/" + file.getName());
+                filePath = getFileUri(context, new File(wechatShareCachePath + "/" + file.getName()));
+            }
+            WXFileObject fileObject = new WXFileObject(filePath);
             msg.mediaObject = fileObject;
         }
         req.transaction = buildTransaction("file");
@@ -170,6 +188,32 @@ public class appManager {
             }
         }
         return result;
+    }
+
+    public String getFileUri(Context context, File file) {
+        if (file == null || !file.exists()) {
+            return null;
+        }
+
+        Uri contentUri = FileProvider.getUriForFile(context,
+                context.getPackageName() + ".wechatShare",  // 要与`AndroidManifest.xml`里配置的`authorities`一致，假设你的应用包名为com.example.app
+                file);
+
+        // 授权给微信访问路径
+        context.grantUriPermission("com.tencent.mm",  // 这里填微信包名
+                contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        return contentUri.toString();   // contentUri.toString() 即是以"content://"开头的用于共享的路径
+    }
+
+    // 判断微信版本是否为7.0.13及以上
+    public boolean checkVersionValid() {
+        return iwxapi.getWXAppSupportAPI() >= 0x27000D00;
+    }
+
+    // 判断Android版本是否11 及以上
+    public boolean checkAndroidNotBelowN() {
+        return android.os.Build.VERSION.SDK_INT >= 30;
     }
 
     private String buildTransaction(String type) {

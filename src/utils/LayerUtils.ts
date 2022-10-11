@@ -664,7 +664,7 @@ const layerAttribute: {
 /**
  * 记录二维地图属性界面state和标记
  */
-function setMapLayerAttribute(mapLayerAttributeState: MapLayerAttributeState, tag: MapLayerAttributeTag, reset?: false) {
+function setMapLayerAttribute(mapLayerAttributeState?: MapLayerAttributeState, tag?: MapLayerAttributeTag, reset?: false) {
   if (reset) {
     layerAttribute.state = mapLayerAttributeState || {}
     layerAttribute.tag = tag || {}

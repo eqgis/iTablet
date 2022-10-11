@@ -66,7 +66,7 @@ class Home extends React.Component<Props, State> {
         title: 'AR隐蔽设施',
         desc: '查看地下、墙面、屋顶等隐蔽管线',
         action: () => {
-
+          AppToolBar.show('EXHIBITION', 'EXHIBITION_INFRA')
         }
       },
       {

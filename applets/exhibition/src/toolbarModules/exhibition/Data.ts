@@ -21,6 +21,9 @@ export function getData(key: ModuleList['EXHIBITION']): IToolbarOption {
     case 'EXHIBITION_PRESENTATION':
       option.moduleData.page = 'show'
       break
+    case 'EXHIBITION_INFRA':
+      option.moduleData.page = 'infa'
+      break
   }
 
   return option

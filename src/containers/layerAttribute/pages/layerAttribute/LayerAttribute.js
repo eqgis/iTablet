@@ -94,12 +94,20 @@ export default class LayerAttribute extends React.Component {
     this.isMediaLayer = false // 是否是多媒体图层
     this.Popover = undefined // 长按弹窗
 
-    const LayerAttributeState = LayerUtils.getMapLayerAttributeState()
+    const LayerAttributeTempData = LayerUtils.getMapLayerAttribute()
+    const LayerAttributeState = LayerAttributeTempData.state
+    const LayerAttributeTag = LayerAttributeTempData.tag
     if (this.type !== 'MAP_3D' && LayerAttributeState?.layerPath && LayerAttributeState.layerPath === this.props.currentLayer.path) {
       if (LayerAttributeState.attributes?.head > 0 && LayerAttributeState.attributes?.head?.[0].value === getLanguage().ATTRIBUTE_NO) {
         LayerAttributeState.attributes?.head.splice(0, 1)
       }
       this.total = LayerAttributeState.attributes?.data?.length || 0
+      this.currentPage = LayerAttributeTag.currentPage || 0
+      this.canBeRefresh = LayerAttributeTag.canBeRefresh || true // 是否可以刷新
+      this.noMore = LayerAttributeTag.noMore || false // 是否可以加载更多
+      this.isLoading = LayerAttributeTag.isLoading || false // 防止同时重复加载多次
+      this.filter = LayerAttributeTag.filter || '' // 属性查询过滤
+      this.isMediaLayer = LayerAttributeTag.isMediaLayer || false // 是否是多媒体图层
       this.state = Object.assign({}, LayerAttributeState)
     } else {
       this.state = {
@@ -129,12 +137,13 @@ export default class LayerAttribute extends React.Component {
     if (this.type === 'MAP_3D') {
       this.getMap3DAttribute()
     } else if (this.props.currentLayer?.name) {
-      const LayerAttributeState = LayerUtils.getMapLayerAttributeState()
+      const LayerAttributeTempData = LayerUtils.getMapLayerAttribute()
+      const LayerAttributeState = LayerAttributeTempData.state
       if (LayerAttributeState && LayerAttributeState.layerPath === this.props.currentLayer.path) {
         SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
           this.isMediaLayer = result
           this.table?.setSelected(this.state.relativeIndex, false, () => {
-            setTimeout(() => {
+            let scrollTimer = setTimeout(() => {
               this.table?.scrollToLocation({
                 animated: false,
                 itemIndex: this.state.relativeIndex,
@@ -142,7 +151,9 @@ export default class LayerAttribute extends React.Component {
                 viewPosition: 0,
                 viewOffset: COL_HEIGHT,
               })
-            }, 100)
+              clearTimeout(scrollTimer)
+              scrollTimer = null
+            }, 0)
           })
         }).catch(() =>{
           this.table?.setSelected(this.state.relativeIndex, false)
@@ -226,7 +237,8 @@ export default class LayerAttribute extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.setCurrentAttribute({})
+    this.table = null
+    // this.props.setCurrentAttribute({})
     // this.props.navigation.removeListener('focus', this.resetCurrentPage)
   }
 
@@ -239,6 +251,18 @@ export default class LayerAttribute extends React.Component {
       this.total = this.props.attributes.data.length
     }
     cb && cb()
+  }
+
+  getTags = () => {
+    return {
+      currentPage: this.currentPage,
+      total: this.total,
+      canBeRefresh: this.canBeRefresh,
+      noMore: this.noMore,
+      isLoading: this.isLoading,
+      filter: this.filter,
+      isMediaLayer: this.isMediaLayer,
+    }
   }
 
   /** 下拉刷新 **/
@@ -378,7 +402,7 @@ export default class LayerAttribute extends React.Component {
           }, () => {
             const LayerAttributeState = Object.assign({}, this.state)
             LayerAttributeState.layerPath = this.props.currentLayer.path
-            LayerUtils.setMapLayerAttributeState(LayerAttributeState)
+            LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
           })
           this.setLoading(false)
           cb && cb(attributes)
@@ -446,7 +470,7 @@ export default class LayerAttribute extends React.Component {
             () => {
               const LayerAttributeState = Object.assign({}, this.state)
               LayerAttributeState.layerPath = this.props.currentLayer.path
-              LayerUtils.setMapLayerAttributeState(LayerAttributeState)
+              LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
               setTimeout(() => {
                 if (currentIndex === -1) {
                   this.table?.clearSelected()
@@ -720,22 +744,22 @@ export default class LayerAttribute extends React.Component {
         relativeIndex: index,
         currentIndex: this.state.startIndex + index,
       })
-      LayerUtils.setMapLayerAttributeState({
+      LayerUtils.setMapLayerAttribute({
         currentFieldInfo: data,
         relativeIndex: index,
         currentIndex: this.state.startIndex + index,
-      })
+      }, this.getTags())
     } else {
       this.setState({
         currentFieldInfo: [],
         relativeIndex: -1,
         currentIndex: -1,
       })
-      LayerUtils.setMapLayerAttributeState({
+      LayerUtils.setMapLayerAttribute({
         currentFieldInfo: [],
         relativeIndex: -1,
         currentIndex: -1,
-      })
+      }, this.getTags())
     }
 
     // global.SelectedSelectionAttribute = {
@@ -1503,6 +1527,7 @@ export default class LayerAttribute extends React.Component {
         loadMore={cb => this.loadMore(cb)}
         changeAction={this.changeAction}
         buttonNameFilter={buttonNameFilter}
+        navigation={this.props.navigation}
         buttonActions={buttonActions}
         buttonTitles={buttonTitles}
         dismissTitles={dismissTitles}

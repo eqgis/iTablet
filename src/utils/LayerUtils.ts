@@ -644,15 +644,33 @@ interface MapLayerAttributeState {
   descending?: boolean, //属性排列倒序时为true add jiakai
 }
 
-let layerAttributeState: MapLayerAttributeState = {}
+interface MapLayerAttributeTag {
+  currentPage?: number
+  tota?: number // 属性总数
+  canBeRefresh?: boolean // 是否可以刷新
+  noMore?: boolean // 是否可以加载更多
+  isLoading?: boolean // 防止同时重复加载多次
+  filter?: string // 属性查询过滤
+  isMediaLayer?: boolean // 是否是多媒体图层
+}
+
+const layerAttribute: {
+  state: MapLayerAttributeState,
+  tag: MapLayerAttributeTag
+} = {
+  state: {},
+  tag: {},
+}
 /**
- * 设置二维地图属性界面state
+ * 记录二维地图属性界面state和标记
  */
-function setMapLayerAttributeState(mapLayerAttributeState: MapLayerAttributeState, reset?: false) {
+function setMapLayerAttribute(mapLayerAttributeState: MapLayerAttributeState, tag: MapLayerAttributeTag, reset?: false) {
   if (reset) {
-    layerAttributeState = mapLayerAttributeState
+    layerAttribute.state = mapLayerAttributeState || {}
+    layerAttribute.tag = tag || {}
   } else {
-    Object.assign(layerAttributeState, mapLayerAttributeState)
+    Object.assign(layerAttribute.state, mapLayerAttributeState)
+    Object.assign(layerAttribute.tag, tag)
   }
 }
 
@@ -660,8 +678,8 @@ function setMapLayerAttributeState(mapLayerAttributeState: MapLayerAttributeStat
  * 获取二维地图属性界面state
  * @returns MapLayerAttribute
  */
-function getMapLayerAttributeState() {
-  return layerAttributeState
+function getMapLayerAttribute() {
+  return layerAttribute
 }
 
 export default {
@@ -699,6 +717,6 @@ export default {
 
   availableServiceLayer,
 
-  setMapLayerAttributeState,
-  getMapLayerAttributeState,
+  setMapLayerAttribute,
+  getMapLayerAttribute,
 }

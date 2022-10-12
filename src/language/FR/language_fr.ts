@@ -1344,6 +1344,7 @@ export const language_fr: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "Surface de recherche",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "Distance de vue:",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"Restez loin",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"Trop faible, prenez plus de lumière",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"Trop rapide, veuillez ralentir",

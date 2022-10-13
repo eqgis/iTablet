@@ -6,7 +6,7 @@ import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { Module } from '../../../../class'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
-import { SMap ,SMeasureView, SLocation } from 'imobile_for_reactnative'
+import { SMap ,SARMap, SLocation } from 'imobile_for_reactnative'
 import {
   downloadFile,
   deleteDownloadFile,
@@ -302,14 +302,24 @@ class ModuleList extends Component {
   itemAction = async (language, { item, index }) => {
     try {
       if (Platform.OS === 'android') {
-        const results = await PermissionsAndroid.requestMultiple([
+        const permissionList = [
           'android.permission.READ_PHONE_STATE',
           'android.permission.ACCESS_FINE_LOCATION',
           'android.permission.READ_EXTERNAL_STORAGE',
           'android.permission.WRITE_EXTERNAL_STORAGE',
           'android.permission.CAMERA',
           'android.permission.RECORD_AUDIO',
-        ])
+          'android.permission.BLUETOOTH',
+          'android.permission.BLUETOOTH_ADMIN',
+        ]
+        const sdkVesion = Platform.Version
+        // android 12 的版本api编号 31 32 android 13的版本api编号 33
+        if(sdkVesion >= 31) {
+          permissionList.push('android.permission.BLUETOOTH_CONNECT')
+          permissionList.push('android.permission.BLUETOOTH_SCAN')
+        }
+        const results = await PermissionsAndroid.requestMultiple(permissionList)
+
         let isAllGranted = true
         for (let key in results) {
           isAllGranted = results[key] === 'granted' && isAllGranted
@@ -331,8 +341,9 @@ class ModuleList extends Component {
       }
 
       if (item.key === ChunkType.MAP_AR_MAPPING || item.key === ChunkType.MAP_AR || item.key === ChunkType.MAP_AR_ANALYSIS) {
-        const isSupportedARCore = await SMeasureView.isSupportedARCore()
-        if (!isSupportedARCore) {
+        const isSupportedARCore = await SARMap.isSupportAR()
+        if (isSupportedARCore != 1) {
+          global.ARServiceAction = isSupportedARCore
           global.ARDeviceListDialog.setVisible(true)
           return
         }

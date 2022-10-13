@@ -67,6 +67,7 @@ import {
   LayerAttributeAdd,
   LayerAttributeSearch,
   LayerAttributeStatistic,
+  LayerAttribute,
 } from './layerAttribute'
 // import dataSourcelist from './dataSourcelist'
 import ColorPickerPage from './colorPickerPage'
@@ -130,20 +131,15 @@ import {
 
 import MediaEdit from './mediaEdit'
 import Camera from './camera'
-import MeasureView from './arMeasure'
-import { MeasureAreaView } from './arMeasure/pages'
 import ClassifyView from './aiClassifyView'
 import ModelChoseView from './arModelChoseView'
 import ClassifyResultEditView from './aiClassifyResultEdit'
-import CollectSceneFormView from './arCollectSceneFormView'
 import EnterDatumPoint from './arEnterDatumPoint/EnterDatumPoint'
 import CollectSceneFormSet from './arEnterDatumPoint/CollectSceneFormSet'
 import ClassifySettingsView from './ClassifySettingsView'
 import IllegallyParkView from './aiIllegallyPark'
 import AISelectModelView from './aiSelectModelView'
 import AIDetectSettingView from './aiDetectSettingView'
-import CastModelOperateView from './arCastModelOperateView'
-import ARProjectModeView from './arProjectModel'
 import ARNavigationView from './arNavigationView'
 import ChooseWeather from './chooseWeather'
 import AIPoseEstimationView from './aiPoseEstimationView'
@@ -197,6 +193,11 @@ import MapSelectList from '../containers/workspace/components/ToolBar/modules/ar
 import { DEVICE } from '@/redux/models/device'
 import ChartManager from './ChartManager/ChartManager'
 import * as ImagePicker from '@/components/ImagePicker/src'
+import ExternalDevices from './ExternalDevices'
+import BluetoothDevices from './BluetoothDevices'
+import NtripSetting from './NtripSetting'
+import ARAnimation from './ARAnimation/ARAnimation'
+import AttributeDetail from './AttributeDetail'
 
 const Stack = createNativeStackNavigator()
 
@@ -213,8 +214,17 @@ interface StackNavigatorProps {
 const modalOption = (params: StackNavigatorProps): ScreenOptions => {
   return {
     headerShown: false,
-    animation: params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'none' : 'fade',
+    animation: 'none',
     presentation: 'containedTransparentModal',
+    // presentation: Platform.OS === 'ios' ? 'formSheet' : 'containedTransparentModal',
+    // presentation: Platform.OS === 'ios' && params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'card' : 'containedTransparentModal',
+  }
+}
+const modalOption2 = (params: StackNavigatorProps): ScreenOptions => {
+  return {
+    headerShown: false,
+    animation: 'none',
+    // presentation: 'containedTransparentModal',
     // presentation: Platform.OS === 'ios' ? 'formSheet' : 'containedTransparentModal',
     // presentation: Platform.OS === 'ios' && params.device.orientation.indexOf('PORTRAIT') >= 0 ? 'card' : 'containedTransparentModal',
   }
@@ -236,64 +246,66 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="Tabs">
         {() => Tabs(params.appConfig.tabModules)}
       </Stack.Screen>
-      <Stack.Screen name="CreateGroupPage" component={CreateGroupPage} />
+      <Stack.Screen name="CreateGroupPage" component={CreateGroupPage} options={modalOption(params)} />
       <Stack.Screen name="MapStack" >
         {() => MapStack(params.device)}
       </Stack.Screen>
       <Stack.Screen name="Map3DStack" >
         {() => Map3DStack(params.device)}
       </Stack.Screen>
-      <Stack.Screen name="CoworkTabs" >
+      <Stack.Screen name="CoworkTabs" options={modalOption(params)} >
         {() => CoworkTabs(params.device)}
       </Stack.Screen>
       <Stack.Screen name="MapViewSingle" component={MapView} />
       <Stack.Screen name="MapSetting" component={MapSetting} options={modalOption(params)}/>
       <Stack.Screen name="Map3DSetting" component={Map3DSetting} options={modalOption(params)}/>
-      <Stack.Screen name="CoworkMember" component={CoworkMember} />
-      <Stack.Screen name="CoworkMessage" component={CoworkMessage} />
-      <Stack.Screen name="GroupSelectPage" component={GroupSelectPage} />
-      <Stack.Screen name="GroupFriendListPage" component={GroupFriendListPage} />
-      <Stack.Screen name="GroupApplyPage" component={GroupApplyPage} />
-      <Stack.Screen name="GroupInvitePage" component={GroupInvitePage} />
-      <Stack.Screen name="GroupSourceManagePage" component={GroupSourceManagePage} />
-      <Stack.Screen name="GroupSourceUploadPage" component={GroupSourceUploadPage} />
-      <Stack.Screen name="GroupMessagePage" component={GroupMessagePage} />
-      <Stack.Screen name="SelectModulePage" component={SelectModulePage} />
-      <Stack.Screen name="GroupSettingPage" component={GroupSettingPage} />
+      <Stack.Screen name="CoworkMember" component={CoworkMember} options={modalOption(params)} />
+      <Stack.Screen name="CoworkMessage" component={CoworkMessage} options={modalOption(params)} />
+      <Stack.Screen name="GroupSelectPage" component={GroupSelectPage} options={modalOption2(params)} />
+      <Stack.Screen name="GroupFriendListPage" component={GroupFriendListPage} options={modalOption(params)} />
+      <Stack.Screen name="GroupApplyPage" component={GroupApplyPage} options={modalOption(params)} />
+      <Stack.Screen name="GroupInvitePage" component={GroupInvitePage} options={modalOption(params)} />
+      <Stack.Screen name="GroupSourceManagePage" component={GroupSourceManagePage} options={modalOption(params)} />
+      <Stack.Screen name="GroupSourceUploadPage" component={GroupSourceUploadPage} options={modalOption(params)} />
+      <Stack.Screen name="GroupMessagePage" component={GroupMessagePage} options={modalOption(params)} />
+      <Stack.Screen name="SelectModulePage" component={SelectModulePage} options={modalOption(params)} />
+      <Stack.Screen name="GroupSettingPage" component={GroupSettingPage} options={modalOption(params)} />
       <Stack.Screen name="LayerManager" component={MTLayerManager} options={modalOption(params)}/>
       <Stack.Screen name="Layer3DManager" component={Layer3DManager} options={modalOption(params)}/>
-      <Stack.Screen name="LayerSelectionAttribute" component={LayerSelectionAttribute} />
-      <Stack.Screen name="LayerAttributeAdd" component={LayerAttributeAdd} />
-      <Stack.Screen name="LayerAttributeSearch" component={LayerAttributeSearch} />
-      <Stack.Screen name="LayerAttributeStatistic" component={LayerAttributeStatistic} />
-      <Stack.Screen name="ChooseLayer" component={ChooseLayer} />
-      <Stack.Screen name="ColorPickerPage" component={ColorPickerPage} />
-      <Stack.Screen name="MapCut" component={MapCut} />
-      <Stack.Screen name="MapCutDS" component={MapCutDS} />
-      <Stack.Screen name="MapToolbarSetting" component={MapToolbarSetting} />
-      <Stack.Screen name="TouchProgress" component={TouchProgress} />
+      <Stack.Screen name="LayerSelectionAttribute" component={LayerSelectionAttribute} options={modalOption(params)} />
+      <Stack.Screen name="LayerAttribute" component={LayerAttribute} options={modalOption(params)} />
+      <Stack.Screen name="LayerAttribute3D" component={LayerAttribute} options={modalOption(params)} />
+      <Stack.Screen name="LayerAttributeAdd" component={LayerAttributeAdd} options={modalOption(params)} />
+      <Stack.Screen name="LayerAttributeSearch" component={LayerAttributeSearch} options={modalOption(params)} />
+      <Stack.Screen name="LayerAttributeStatistic" component={LayerAttributeStatistic} options={modalOption(params)} />
+      <Stack.Screen name="ChooseLayer" component={ChooseLayer} options={modalOption(params)} />
+      <Stack.Screen name="ColorPickerPage" component={ColorPickerPage} options={modalOption(params)} />
+      <Stack.Screen name="MapCut" component={MapCut} options={modalOption(params)} />
+      <Stack.Screen name="MapCutDS" component={MapCutDS} options={modalOption(params)} />
+      <Stack.Screen name="MapToolbarSetting" component={MapToolbarSetting} options={modalOption(params)} />
+      <Stack.Screen name="TouchProgress" component={TouchProgress} options={modalOption(params)} />
       <Stack.Screen name="InputPage" component={InputPage} options={modalOption(params)} />
-      <Stack.Screen name="InputStyledText" component={InputStyledText} />
-      <Stack.Screen name="AnimationNodeEditView" component={AnimationNodeEditView} />
-      <Stack.Screen name="AnimationNodeEditRotateView" component={AnimationNodeEditRotateView} />
-      <Stack.Screen name="AddOnlineScense" component={AddOnlineScense} />
+      <Stack.Screen name="InputStyledText" component={InputStyledText} options={modalOption(params)} />
+      <Stack.Screen name="AnimationNodeEditView" component={AnimationNodeEditView} options={modalOption(params)} />
+      <Stack.Screen name="AnimationNodeEditRotateView" component={AnimationNodeEditRotateView} options={modalOption(params)} />
+      <Stack.Screen name="AddOnlineScense" component={AddOnlineScense} options={modalOption(params)} />
       <Stack.Screen name="TemplateManager" component={TemplateManager} options={modalOption(params)} />
       <Stack.Screen name="TemplateDetail" component={TemplateDetail} options={modalOption(params)} />
       <Stack.Screen name="TemplateSource" component={TemplateSource} options={modalOption(params)} />
-      <Stack.Screen name="Chat" component={Chat} />
-      <Stack.Screen name="AddFriend" component={AddFriend} />
-      <Stack.Screen name="InformMessage" component={InformMessage} />
-      <Stack.Screen name="CreateGroupChat" component={CreateGroupChat} />
-      <Stack.Screen name="RecommendFriend" component={RecommendFriend} />
-      <Stack.Screen name="ManageFriend" component={ManageFriend} />
-      <Stack.Screen name="ManageGroup" component={ManageGroup} />
-      <Stack.Screen name="SelectModule" component={SelectModule} />
-      <Stack.Screen name="GroupMemberList" component={GroupMemberList} />
-      <Stack.Screen name="SelectFriend" component={SelectFriend} />
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="ToggleAccount" component={ToggleAccount} />
-      <Stack.Screen name="GetBack" component={GetBack} />
+      <Stack.Screen name="Chat" component={Chat} options={modalOption(params)} />
+      <Stack.Screen name="AddFriend" component={AddFriend} options={modalOption(params)} />
+      <Stack.Screen name="InformMessage" component={InformMessage} options={modalOption(params)} />
+      <Stack.Screen name="CreateGroupChat" component={CreateGroupChat} options={modalOption(params)} />
+      <Stack.Screen name="RecommendFriend" component={RecommendFriend} options={modalOption(params)} />
+      <Stack.Screen name="ManageFriend" component={ManageFriend} options={modalOption(params)} />
+      <Stack.Screen name="ManageGroup" component={ManageGroup} options={modalOption(params)} />
+      <Stack.Screen name="SelectModule" component={SelectModule} options={modalOption(params)} />
+      <Stack.Screen name="GroupMemberList" component={GroupMemberList}  options={modalOption(params)}/>
+      <Stack.Screen name="SelectFriend" component={SelectFriend} options={modalOption(params)} />
+      <Stack.Screen name="Register" component={Register} options={modalOption(params)} />
+      <Stack.Screen name="Login" component={Login} options={modalOption(params)} />
+      <Stack.Screen name="ToggleAccount" component={ToggleAccount} options={modalOption(params)} />
+      <Stack.Screen name="GetBack" component={GetBack} options={modalOption(params)} />
       <Stack.Screen name="SampleMap" component={SampleMap} options={modalOption(params)} />
 
       {/** 地图页面中跳转到以下界面 */}
@@ -301,31 +313,31 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="MyDataset_InMap" component={MyDataset} options={modalOption(params)} />
       <Stack.Screen name="NewDataset_InMap" component={NewDataset} options={modalOption(params)} />
       {/** 非地图页面跳转到以下界面 */}
-      <Stack.Screen name="MyDatasource" component={MyDatasource} />
-      <Stack.Screen name="MyDataset" component={MyDataset} />
-      <Stack.Screen name="NewDataset" component={NewDataset} />
+      <Stack.Screen name="MyDatasource" component={MyDatasource} options={modalOption(params)} />
+      <Stack.Screen name="MyDataset" component={MyDataset} options={modalOption(params)} />
+      <Stack.Screen name="NewDataset" component={NewDataset} options={modalOption(params)} />
 
-      <Stack.Screen name="MyLocalData" component={MyLocalData} />
-      <Stack.Screen name="MyMap" component={MyMap} />
-      <Stack.Screen name="MyARMap" component={MyARMap} />
-      <Stack.Screen name="MyARModel" component={MyARModel} />
-      <Stack.Screen name="MyAREffect" component={MyAREffect} />
-      <Stack.Screen name="MyScene" component={MyScene} />
-      <Stack.Screen name="MySymbol" component={MySymbol} />
-      <Stack.Screen name="MyTemplate" component={MyTemplate} />
-      <Stack.Screen name="MyColor" component={MyColor} />
-      <Stack.Screen name="SearchMine" component={SearchMine} />
-      <Stack.Screen name="MyService" component={MyService} />
-      <Stack.Screen name="MyOnlineMap" component={MyOnlineMap} />
-      <Stack.Screen name="MyApplet" component={MyApplet} />
-      <Stack.Screen name="AppletManagement" component={AppletManagement} />
-      <Stack.Screen name="AppletList" component={AppletList} />
-      <Stack.Screen name="MyAIModel" component={MyAIModel} />
-      <Stack.Screen name="MySandTable" component={MySandTable} />
-      <Stack.Screen name="ScanOnlineMap" component={ScanOnlineMap} />
-      <Stack.Screen name="Personal" component={Personal} />
-      <Stack.Screen name="WebView" component={WebView} />
-      <Stack.Screen name="AboutITablet" component={AboutITablet} />
+      <Stack.Screen name="MyLocalData" component={MyLocalData} options={modalOption(params)} />
+      <Stack.Screen name="MyMap" component={MyMap} options={modalOption(params)} />
+      <Stack.Screen name="MyARMap" component={MyARMap} options={modalOption(params)} />
+      <Stack.Screen name="MyARModel" component={MyARModel} options={modalOption(params)} />
+      <Stack.Screen name="MyAREffect" component={MyAREffect} options={modalOption(params)} />
+      <Stack.Screen name="MyScene" component={MyScene} options={modalOption(params)} />
+      <Stack.Screen name="MySymbol" component={MySymbol} options={modalOption(params)} />
+      <Stack.Screen name="MyTemplate" component={MyTemplate} options={modalOption(params)} />
+      <Stack.Screen name="MyColor" component={MyColor} options={modalOption(params)} />
+      <Stack.Screen name="SearchMine" component={SearchMine} options={modalOption(params)} />
+      <Stack.Screen name="MyService" component={MyService} options={modalOption(params)} />
+      <Stack.Screen name="MyOnlineMap" component={MyOnlineMap} options={modalOption(params)} />
+      <Stack.Screen name="MyApplet" component={MyApplet} options={modalOption(params)} />
+      <Stack.Screen name="AppletManagement" component={AppletManagement} options={modalOption(params)} />
+      <Stack.Screen name="AppletList" component={AppletList} options={modalOption(params)} />
+      <Stack.Screen name="MyAIModel" component={MyAIModel} options={modalOption(params)} />
+      <Stack.Screen name="MySandTable" component={MySandTable} options={modalOption(params)} />
+      <Stack.Screen name="ScanOnlineMap" component={ScanOnlineMap} options={modalOption(params)} />
+      <Stack.Screen name="Personal" component={Personal} options={modalOption(params)} />
+      <Stack.Screen name="WebView" component={WebView} options={modalOption(params)} />
+      <Stack.Screen name="AboutITablet" component={AboutITablet} options={modalOption(params)} />
       <Stack.Screen name="LicensePage" component={LicensePage} options={modalOption(params)} />
       <Stack.Screen name="LicenseTypePage" component={LicenseTypePage} options={modalOption(params)} />
       <Stack.Screen name="LicenseModule" component={LicenseModule} options={modalOption(params)} />
@@ -334,94 +346,89 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="LoginCloud" component={LoginCloud} options={modalOption(params)} />
       <Stack.Screen name="LicenseJoinPrivateCloud" component={LicenseJoinPrivateCloud} options={modalOption(params)} />
       <Stack.Screen name="ConnectServer" component={ConnectServer} options={modalOption(params)} />
-      <Stack.Screen name="LicenseJoinEducation" component={LicenseJoinEducation} />
-      <Stack.Screen name="Setting" component={Setting} />
-      <Stack.Screen name="LanguageSetting" component={LanguageSetting} />
+      <Stack.Screen name="LicenseJoinEducation" component={LicenseJoinEducation} options={modalOption(params)} />
+      <Stack.Screen name="Setting" component={Setting} options={modalOption(params)} />
+      <Stack.Screen name="LanguageSetting" component={LanguageSetting} options={modalOption(params)} />
       <Stack.Screen name="LocationSetting" component={LocationSetting} options={modalOption(params)} />
-      <Stack.Screen name="Protocol" component={Protocol} />
-      <Stack.Screen name="PublicMap" component={PublicMap} />
+      <Stack.Screen name="Protocol" component={Protocol} options={modalOption(params)} />
+      <Stack.Screen name="PublicMap" component={PublicMap} options={modalOption2(params)} />
       <Stack.Screen name="PointAnalyst" component={PointAnalyst} options={modalOption(params)}/>
-      <Stack.Screen name="FriendMap" component={FriendMap} />
-      <Stack.Screen name="MyLabel" component={MyLabel} />
-      <Stack.Screen name="MyBaseMap" component={MyBaseMap} />
-      <Stack.Screen name="LoadServer" component={LoadServer} />
-      <Stack.Screen name="SuperMapKnown" component={SuperMapKnown} />
-      <Stack.Screen name="PublicData" component={PublicData} />
-      <Stack.Screen name="Applet" component={Applet} />
-      <Stack.Screen name="CoworkManagePage" component={CoworkManagePage} />
-      <Stack.Screen name="FindSettingPage" component={FindSettingPage} />
-      <Stack.Screen name="Laboratory" component={Laboratory} />
+      <Stack.Screen name="FriendMap" component={FriendMap} options={modalOption(params)} />
+      <Stack.Screen name="MyLabel" component={MyLabel} options={modalOption(params)} />
+      <Stack.Screen name="MyBaseMap" component={MyBaseMap} options={modalOption2(params)} />
+      <Stack.Screen name="LoadServer" component={LoadServer} options={modalOption(params)} />
+      <Stack.Screen name="SuperMapKnown" component={SuperMapKnown} options={modalOption(params)} />
+      <Stack.Screen name="PublicData" component={PublicData} options={modalOption(params)} />
+      <Stack.Screen name="Applet" component={Applet} options={modalOption(params)} />
+      <Stack.Screen name="CoworkManagePage" component={CoworkManagePage} options={modalOption2(params)} />
+      <Stack.Screen name="FindSettingPage" component={FindSettingPage} options={modalOption(params)} />
+      <Stack.Screen name="Laboratory" component={Laboratory} options={modalOption(params)} />
       <Stack.Screen name="MediaEdit" component={MediaEdit} options={modalOption(params)} />
       <Stack.Screen name="Camera" component={Camera} options={{
         headerShown: false,
         animation: 'none',
         presentation: 'containedTransparentModal',
       }} />
-      <Stack.Screen name="MeasureView" component={MeasureView} />
-      <Stack.Screen name="MeasureAreaView" component={MeasureAreaView} />
-      <Stack.Screen name="SelectLocation" component={SelectLocation} />
-      <Stack.Screen name="ARProjectModeView" component={ARProjectModeView} />
-      <Stack.Screen name="ClassifyView" component={ClassifyView} />
-      <Stack.Screen name="ModelChoseView" component={ModelChoseView} />
-      <Stack.Screen name="ClassifyResultEditView" component={ClassifyResultEditView} />
-      <Stack.Screen name="CollectSceneFormView" component={CollectSceneFormView} />
-      <Stack.Screen name="EnterDatumPoint" component={EnterDatumPoint} />
-      <Stack.Screen name="CollectSceneFormSet" component={CollectSceneFormSet} />
-      <Stack.Screen name="ClassifySettingsView" component={ClassifySettingsView} />
-      <Stack.Screen name="AIDetectSettingView" component={AIDetectSettingView} />
-      <Stack.Screen name="AISelectModelView" component={AISelectModelView} />
-      <Stack.Screen name="IllegallyParkView" component={IllegallyParkView} />
-      <Stack.Screen name="AIPoseEstimationView" component={AIPoseEstimationView} />
-      <Stack.Screen name="AIGestureBoneView" component={AIGestureBoneView} />
-      <Stack.Screen name="ChooseTaggingLayer" component={ChooseTaggingLayer} />
-      <Stack.Screen name="ChooseNaviLayer" component={ChooseNaviLayer} />
-      <Stack.Screen name="ChooseNaviDataImport" component={ChooseNaviDataImport} />
-      <Stack.Screen name="CastModelOperateView" component={CastModelOperateView} />
-      <Stack.Screen name="ARNavigationView" component={ARNavigationView} />
-      <Stack.Screen name="ChooseWeather" component={ChooseWeather} />
-      <Stack.Screen name="SuggestionFeedback" component={SuggestionFeedback} />
-      <Stack.Screen name="BufferAnalystView" component={BufferAnalystView} />
-      <Stack.Screen name="AnalystRadiusSetting" component={AnalystRadiusSetting} />
-      <Stack.Screen name="AnalystListEntry" component={AnalystListEntry} />
-      <Stack.Screen name="OverlayAnalystView" component={OverlayAnalystView} />
-      <Stack.Screen name="OnlineAnalystView" component={OnlineAnalystView} />
-      <Stack.Screen name="IServerLoginPage" component={IServerLoginPage} />
-      <Stack.Screen name="SourceDatasetPage" component={SourceDatasetPage} />
-      <Stack.Screen name="AnalystRangePage" component={AnalystRangePage} />
-      <Stack.Screen name="WeightAndStatistic" component={WeightAndStatistic} />
-      <Stack.Screen name="LocalAnalystView" component={LocalAnalystView} />
-      <Stack.Screen name="ReferenceAnalystView" component={ReferenceAnalystView} />
-      <Stack.Screen name="RegistrationDatasetPage" component={RegistrationDatasetPage} />
-      <Stack.Screen name="RegistrationReferDatasetPage" component={RegistrationReferDatasetPage} />
-      <Stack.Screen name="RegistrationArithmeticPage" component={RegistrationArithmeticPage} />
-      <Stack.Screen name="RegistrationExecutePage" component={RegistrationExecutePage} />
-      <Stack.Screen name="ProjectionTransformationPage" component={ProjectionTransformationPage} />
-      <Stack.Screen name="SourceCoordsPage" component={SourceCoordsPage} />
-      <Stack.Screen name="ProjectionParameterSetPage" component={ProjectionParameterSetPage} />
+      <Stack.Screen name="SelectLocation" component={SelectLocation} options={modalOption(params)} />
+      <Stack.Screen name="ClassifyView" component={ClassifyView} options={modalOption(params)} />
+      <Stack.Screen name="ModelChoseView" component={ModelChoseView} options={modalOption(params)} />
+      <Stack.Screen name="ClassifyResultEditView" component={ClassifyResultEditView} options={modalOption(params)} />
+      <Stack.Screen name="EnterDatumPoint" component={EnterDatumPoint} options={modalOption(params)} />
+      <Stack.Screen name="CollectSceneFormSet" component={CollectSceneFormSet} options={modalOption(params)} />
+      <Stack.Screen name="ClassifySettingsView" component={ClassifySettingsView} options={modalOption(params)} />
+      <Stack.Screen name="AIDetectSettingView" component={AIDetectSettingView} options={modalOption(params)} />
+      <Stack.Screen name="AISelectModelView" component={AISelectModelView} options={modalOption(params)} />
+      <Stack.Screen name="IllegallyParkView" component={IllegallyParkView} options={modalOption(params)} />
+      <Stack.Screen name="AIPoseEstimationView" component={AIPoseEstimationView} options={modalOption(params)} />
+      <Stack.Screen name="AIGestureBoneView" component={AIGestureBoneView} options={modalOption(params)} />
+      <Stack.Screen name="ChooseTaggingLayer" component={ChooseTaggingLayer} options={modalOption(params)} />
+      <Stack.Screen name="ChooseNaviLayer" component={ChooseNaviLayer} options={modalOption(params)} />
+      <Stack.Screen name="ChooseNaviDataImport" component={ChooseNaviDataImport} options={modalOption(params)} />
+      <Stack.Screen name="ARNavigationView" component={ARNavigationView} options={modalOption(params)} />
+      <Stack.Screen name="ChooseWeather" component={ChooseWeather} options={modalOption(params)} />
+      <Stack.Screen name="SuggestionFeedback" component={SuggestionFeedback} options={modalOption(params)} />
+      <Stack.Screen name="BufferAnalystView" component={BufferAnalystView} options={modalOption(params)} />
+      <Stack.Screen name="AnalystRadiusSetting" component={AnalystRadiusSetting} options={modalOption(params)} />
+      <Stack.Screen name="AnalystListEntry" component={AnalystListEntry} options={modalOption(params)} />
+      <Stack.Screen name="OverlayAnalystView" component={OverlayAnalystView} options={modalOption(params)} />
+      <Stack.Screen name="OnlineAnalystView" component={OnlineAnalystView} options={modalOption(params)} />
+      <Stack.Screen name="IServerLoginPage" component={IServerLoginPage} options={modalOption(params)} />
+      <Stack.Screen name="SourceDatasetPage" component={SourceDatasetPage} options={modalOption(params)} />
+      <Stack.Screen name="AnalystRangePage" component={AnalystRangePage} options={modalOption(params)} />
+      <Stack.Screen name="WeightAndStatistic" component={WeightAndStatistic} options={modalOption(params)} />
+      <Stack.Screen name="LocalAnalystView" component={LocalAnalystView} options={modalOption(params)} />
+      <Stack.Screen name="ReferenceAnalystView" component={ReferenceAnalystView} options={modalOption(params)} />
+      <Stack.Screen name="RegistrationDatasetPage" component={RegistrationDatasetPage} options={modalOption(params)} />
+      <Stack.Screen name="RegistrationReferDatasetPage" component={RegistrationReferDatasetPage} options={modalOption(params)} />
+      <Stack.Screen name="RegistrationArithmeticPage" component={RegistrationArithmeticPage} options={modalOption(params)} />
+      <Stack.Screen name="RegistrationExecutePage" component={RegistrationExecutePage} options={modalOption(params)} />
+      <Stack.Screen name="ProjectionTransformationPage" component={ProjectionTransformationPage} options={modalOption(params)} />
+      <Stack.Screen name="SourceCoordsPage" component={SourceCoordsPage} options={modalOption(params)} />
+      <Stack.Screen name="ProjectionParameterSetPage" component={ProjectionParameterSetPage} options={modalOption(params)} />
       <Stack.Screen name="ProjectionTargetCoordsPage" component={ProjectionTargetCoordsPage} options={modalOption(params)}/>
-      <Stack.Screen name="RegistrationFastPage" component={RegistrationFastPage} />
-      <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
-      <Stack.Screen name="InterpolationAnalystView" component={InterpolationAnalystView} />
+      <Stack.Screen name="RegistrationFastPage" component={RegistrationFastPage} options={modalOption(params)} />
+      <Stack.Screen name="RegistrationPage" component={RegistrationPage} options={modalOption(params)} />
+      <Stack.Screen name="InterpolationAnalystView" component={InterpolationAnalystView} options={modalOption(params)} />
       <Stack.Screen name="InterpolationAnalystDetailView" component={InterpolationAnalystDetailView} />
-      <Stack.Screen name="SecondMapSettings" component={SecondMapSettings} options={modalOption(params)}  />
-      <Stack.Screen name="SecondMapSettings1" component={SecondMapSettings} options={modalOption(params)}  />
-      <Stack.Screen name="SecondMapSettings2" component={SecondMapSettings} options={modalOption(params)}  />
-      <Stack.Screen name="SecondMapSettings3" component={SecondMapSettings} options={modalOption(params)}  />
-      <Stack.Screen name="SecondMapSettings4" component={SecondMapSettings} options={modalOption(params)}  />
-      <Stack.Screen name="SecondMapSettings5" component={SecondMapSettings} options={modalOption(params)}  />
-      <Stack.Screen name="SecondMapSettings6" component={SecondMapSettings} options={modalOption(params)}  />
-      <Stack.Screen name="SecondMapSettings7" component={SecondMapSettings} options={modalOption(params)}  />
+      <Stack.Screen name="SecondMapSettings" component={SecondMapSettings} options={modalOption(params)} />
+      <Stack.Screen name="SecondMapSettings1" component={SecondMapSettings} options={modalOption(params)} />
+      <Stack.Screen name="SecondMapSettings2" component={SecondMapSettings} options={modalOption(params)} />
+      <Stack.Screen name="SecondMapSettings3" component={SecondMapSettings} options={modalOption(params)} />
+      <Stack.Screen name="SecondMapSettings4" component={SecondMapSettings} options={modalOption(params)} />
+      <Stack.Screen name="SecondMapSettings5" component={SecondMapSettings} options={modalOption(params)} />
+      <Stack.Screen name="SecondMapSettings6" component={SecondMapSettings} options={modalOption(params)} />
+      <Stack.Screen name="SecondMapSettings7" component={SecondMapSettings} options={modalOption(params)} />
       <Stack.Screen name="NavigationView" component={NavigationView} options={modalOption(params)} />
-      <Stack.Screen name="NavigationDataChangePage" component={NavigationDataChangePage} />
-      <Stack.Screen name="CreateNavDataPage" component={CreateNavDataPage} />
-      <Stack.Screen name="CollectSceneFormHistoryView" component={CollectSceneFormHistoryView} />
-      <Stack.Screen name="CustomModePage" component={CustomModePage} />
+      <Stack.Screen name="NavigationDataChangePage" component={NavigationDataChangePage} options={modalOption(params)} />
+      <Stack.Screen name="CreateNavDataPage" component={CreateNavDataPage} options={modalOption(params)} />
+      <Stack.Screen name="CollectSceneFormHistoryView" component={CollectSceneFormHistoryView} options={modalOption(params)} />
+      <Stack.Screen name="CustomModePage" component={CustomModePage} options={modalOption(params)} />
       <Stack.Screen name="ARLayerManager" component={ARLayerManager} options={modalOption(params)}/>
       <Stack.Screen name="ARMapSetting" component={ARMapSetting} options={modalOption(params)}/>
       <Stack.Screen name="ServiceShareSettings" component={ServiceShareSettings} />
-      <Stack.Screen name="NavigationView2D" component={NavigationView2D} />
-      <Stack.Screen name="RoadNet" component={RoadNet} />
-      <Stack.Screen name="Report" component={Report} />
+      <Stack.Screen name="NavigationView2D" component={NavigationView2D} options={modalOption(params)} />
+      <Stack.Screen name="RoadNet" component={RoadNet} options={modalOption(params)} />
+      <Stack.Screen name="Report" component={Report} options={modalOption(params)} />
       {/* <Stack.Screen name="ImagePickerStack" component={ImagePickerStack} options={{
         headerShown: false,
         animation: 'slide_from_bottom',
@@ -438,7 +445,12 @@ export default function(params: StackNavigatorProps) {
         presentation: 'containedTransparentModal',
       }} />
       <Stack.Screen name="MapSelectList" component={MapSelectList} options={modalOption(params)}/>
-      <Stack.Screen name="ChartManager" component={ChartManager} />
+      <Stack.Screen name="ChartManager" component={ChartManager} options={modalOption(params)} />
+      <Stack.Screen name="ExternalDevices" component={ExternalDevices} options={modalOption(params)} />
+      <Stack.Screen name="BluetoothDevices" component={BluetoothDevices} options={modalOption(params)} />
+      <Stack.Screen name="NtripSetting" component={NtripSetting} options={modalOption(params)} />
+      <Stack.Screen name="ARAnimation" component={ARAnimation} options={modalOption(params)} />
+      <Stack.Screen name="AttributeDetail" component={AttributeDetail} options={modalOption(params)} />
     </Stack.Navigator>
   )
 }

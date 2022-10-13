@@ -1,8 +1,7 @@
 /* global global */
 import { TOnlineData } from '@/constants/ConstOnline'
 import { SMap, DatasetType, FieldType, FieldInfo2, TDatasetType, FieldInfo1, TFieldType } from 'imobile_for_reactnative'
-import { DatasourceConnectionInfo } from 'imobile_for_reactnative/types/data'
-import { AttributesResp, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { AttributesResp, FieldInfo, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import { ConstOnline } from '../constants'
 import { getLanguage } from '../language'
 
@@ -626,6 +625,63 @@ function availableServiceLayer(datasetType: TDatasetType) {
   return datasetType === DatasetType.CAD || datasetType === DatasetType.POINT || datasetType === DatasetType.LINE || datasetType === DatasetType.REGION
 }
 
+interface MapLayerAttributeState {
+  layerPath?: string,
+  attributes?: Attributes,
+  showTable?: boolean,
+  editControllerVisible?: boolean,
+  addControllerVisible?: boolean,
+  currentFieldInfo?: [],
+  relativeIndex?: -1, // 当前页面从startIndex开始的被选中的index, 0 -> this.total - 1
+  currentIndex?: -1,
+  startIndex?: 0,
+
+  canBeUndo?: boolean,
+  canBeRedo?: boolean,
+  canBeRevert?: boolean,
+
+  isShowSystemFields?: boolean,
+  descending?: boolean, //属性排列倒序时为true add jiakai
+}
+
+interface MapLayerAttributeTag {
+  currentPage?: number
+  tota?: number // 属性总数
+  canBeRefresh?: boolean // 是否可以刷新
+  noMore?: boolean // 是否可以加载更多
+  isLoading?: boolean // 防止同时重复加载多次
+  filter?: string // 属性查询过滤
+  isMediaLayer?: boolean // 是否是多媒体图层
+}
+
+const layerAttribute: {
+  state: MapLayerAttributeState,
+  tag: MapLayerAttributeTag
+} = {
+  state: {},
+  tag: {},
+}
+/**
+ * 记录二维地图属性界面state和标记
+ */
+function setMapLayerAttribute(mapLayerAttributeState?: MapLayerAttributeState, tag?: MapLayerAttributeTag, reset?: false) {
+  if (reset) {
+    layerAttribute.state = mapLayerAttributeState || {}
+    layerAttribute.tag = tag || {}
+  } else {
+    Object.assign(layerAttribute.state, mapLayerAttributeState)
+    Object.assign(layerAttribute.tag, tag)
+  }
+}
+
+/**
+ * 获取二维地图属性界面state
+ * @returns MapLayerAttribute
+ */
+function getMapLayerAttribute() {
+  return layerAttribute
+}
+
 export default {
   getLayerAttribute,
   searchLayerAttribute,
@@ -660,4 +716,7 @@ export default {
   deleteNavigationAttributeByData,
 
   availableServiceLayer,
+
+  setMapLayerAttribute,
+  getMapLayerAttribute,
 }

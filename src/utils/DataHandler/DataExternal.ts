@@ -1305,7 +1305,7 @@ function _isSHP(name: string) {
 }
 
 function _isSubSHP(name: string) {
-  return _isType(name, ['dbf', 'prj', 'shx'])
+  return _isType(name, ['dbf', 'prj', 'shx', 'cpg'])
 }
 
 function _isRelatedSHP(name: string, checkName: string) {

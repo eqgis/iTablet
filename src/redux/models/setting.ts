@@ -1,7 +1,7 @@
 import { fromJS, Record } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { Action, handleActions } from 'redux-actions'
-import { DatasetType, SMap, SLanguage } from 'imobile_for_reactnative'
+import { DatasetType, SMap, SLanguage, SLocation } from 'imobile_for_reactnative'
 import { NativeModules } from 'react-native'
 import { getMapSettings } from '../../containers/mapSetting/settingData'
 import { ModelUtils } from '../../utils'
@@ -40,6 +40,7 @@ const SHOW_COMPASS = 'SHOW_COMPASS'
 export const ARPOISEARCH_VIEW = 'ARPOISEARCH_VIEW'
 export const SET_AI_DETECT_MODEL = 'SET_AI_DETECT_MODEL'
 export const SET_AI_CLASSIFY_MODEL = 'SET_AI_CLASSIFY_MODEL'
+const SET_ARLABEL = 'SET_ARLABEL'
 // Actions
 // --------------------------------------------------
 
@@ -115,10 +116,10 @@ export const setLanguage = (params: string, isConfig = false, cb = () => {}) => 
   }
   cb && cb()
 }
-export const setDevice = (params = {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const setDevice = (params: SLocation.LocationConnectionParam) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   await dispatch({
     type: SETTING_DEVICE,
-    payload: params || false,
+    payload: params,
   })
 }
 export const setMapLegend = (params = {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
@@ -260,6 +261,14 @@ export const setShowARSceneNotify = (show: any) => async (dispatch: (arg0: { typ
   })
 }
 
+/** ar显示标注结果 */
+export const setARLabel = (show: any) => async (dispatch: (arg0: { type: string; payload: any }) => any) => {
+  await dispatch({
+    type: SET_ARLABEL,
+    payload: show,
+  })
+}
+
 /** AR场景提示 */
 export const showCompass = (show: any) => async (dispatch: (arg0: { type: string; payload: any }) => any) => {
   await dispatch({
@@ -313,7 +322,7 @@ const initialState = fromJS({
   language: 'CN',
   autoLanguage: true,
   configLangSet: false,
-  peripheralDevice: 'local',
+  peripheralDevice: {type: 'local'},
   mapLegend: { ...defaultMapLegend },
   mapNavigation: {
     isShow: false,
@@ -347,6 +356,8 @@ const initialState = fromJS({
   isAR: false,
   /** AR场景提示 */
   showARSceneNotify: true,
+  /** ar显示标注结果 */
+  showARLabel: true,
   /** 指南针 */
   isShowCompass: false,
   /** ar导航设置跳转 */
@@ -373,7 +384,7 @@ interface SettingState {
   language: string,
   autoLanguage: true,
   configLangSet: false,
-  peripheralDevice: 'local',
+  peripheralDevice: SLocation.LocationConnectionParam,
   mapLegend: Legend,
   mapNavigation: {
     isShow: boolean,
@@ -407,6 +418,8 @@ interface SettingState {
   isAR: boolean,
   /** AR场景提示 */
   showARSceneNotify: boolean,
+  /** ar显示标注结果 */
+  showARLabel: boolean,
   /** 指南针 */
   isShowCompass: boolean,
   /** ar导航设置跳转 */
@@ -551,6 +564,9 @@ export default handleActions<SettingStateType>(
     [`${SHOW_AR_SCENE_NOTIFY}`]: (state, { payload }) => {
       return state.setIn(['showARSceneNotify'], fromJS(payload))
     },
+    [`${SET_ARLABEL}`]: (state, { payload }) => {
+      return state.setIn(['showARLabel'], fromJS(payload))
+    },
     [`${SHOW_COMPASS}`]: (state, { payload }) => {
       return state.setIn(['isShowCompass'], fromJS(payload))
     },
@@ -580,6 +596,7 @@ export default handleActions<SettingStateType>(
       data.showDatumPoint = false
       data.isAR = false
       data.poiSearch = false
+      // data.showARLabel = true
       return fromJS(data)
     },
   },

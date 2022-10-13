@@ -60,11 +60,12 @@ const styles = StyleSheet.create({
   tabText: {
     textAlign: 'center',
     color: color.itemColorGray,
-    fontSize: scaleSize(20),
+    fontSize: scaleSize(18),
+    marginTop: scaleSize(5),
   },
   icon: {
-    width: scaleSize(60),
-    height: scaleSize(60),
+    width: scaleSize(48),
+    height: scaleSize(48),
   },
   touchView: {
     alignItems: 'center',

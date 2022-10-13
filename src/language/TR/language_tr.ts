@@ -479,6 +479,8 @@ export const language_tr: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "Ağımdaki nesni silmek ister misiniz?",
   NO_SELECTED_OBJ: "Seçili nesne yok",
 
+  ANIMATION_MANAGEMENT: 'Animasyon Yönetimi',
+
   CURRENT: 'Mevcut',
   SELECTED: 'Seçili',
   DEFAULT: 'Varsayılan',
@@ -547,6 +549,8 @@ export const language_tr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Lütfen nesne seçin',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Lütfen bir katman veya nesne seçin",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Lütfen bir nesne katmanı seçin",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "AR sahnesine Öznitelik tablosu ekle",
 
@@ -961,6 +965,7 @@ export const language_tr: typeof language_cn = {
   ANIMATION_NODE_NAME: "Animasyon Nod Adı",
 
   OPEN_ONLINE_DATA: "Çevrimiçi Veri Aç",
+  SAVE_ANIMATION_WITH_NAME: 'Bu Animasyon kaydedilecek ve bu animasyonu diğer modellere uygulayabilirsiniz',
 
   PLOT: "Çizim",
 
@@ -1339,6 +1344,7 @@ export const language_tr: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "Yüzey Arama",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "Görüş Mesafesi: ",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"Uzaklaş",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"Çok Loş, Daha Fazla Işık Alın",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"Çok Hızlı, Lütfen Yavaşlayın",
@@ -2175,6 +2181,19 @@ export const language_tr: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "Otomatik",
   SETTING_LOCATION_DEVICE: "Konumlandır",
   SETTING_LOCATION_LOCAL: "Bu cihaz",
+  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
+  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
+  NTRIP_SETTING: "Differential service",  // To be translated
+  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
+  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
+  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
+  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
+  NTRIP_AGREEMENT: 'Protocol',  // To be translated
+  PROTOCOL_TYPE: 'Protocol type',  // To be translated
+  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
+  PORT_NUMBER: 'Port',  // To be translated
+  PASSWORD: 'Password',  // To be translated
+  LOADING_POINT: 'Loading point',  // To be translated
   SETTING_CLEAR_CACHE: "Çerezleri temizle",
   SETTING_CLEAR_CACHE_SUCCESS:"Temizleme başarılı",
   DISTANCE_METER:"Mesafe(m)",
@@ -2182,6 +2201,12 @@ export const language_tr: typeof language_cn = {
   INPUT_NUMBER:"Lütfen sayı girin",
   DISTANCE_LOCATION:"Uzaklık Konumu",
   TIME_LOCATION:"Zamansal Konum",
+
+  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
+  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
+  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
+  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
+  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
 
   // 许可
   LICENSE: "Lisans",
@@ -2477,7 +2502,7 @@ export const language_tr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Lütfen bir nokta, CAD veya çizim katmanı seçin",
   PLEASE_SELECT_CAD_LAYER: "Lütfen bir CAD katmanı seçin",
   DONOT_SUPPORT_ARCORE: "ARCore'u kurun veya yükseltin",
-  DONOT_SUPPORT_ARENGINE: "AREngine'i kurun veya yükseltin",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Desteklenen cihaz listesini gör",
   PLEASE_NEW_PLOT_LAYER: "Lütfen Yeni Çizim Katmanı Oluşturun",
   DOWNLOADING_PLEASE_WAIT: "İndiriliyor, lütfen bekleyin",
@@ -2801,6 +2826,7 @@ export const language_tr: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "Haritanın çıktısını alacağınızdan emin misiniz?",
 
   SHOW_AR_SCENE_NOTIFY: "AR Scene keşfetme tiplerini göster",
+  SHOW_AR_LABEL: 'Ek açıklama sonuçlarını görüntüle',
 
   CANT_PICTURE:"Koleksiyona devam edilemiyor, en fazla 9 resim eklenebilir'",
 
@@ -2837,4 +2863,9 @@ export const language_tr: typeof language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
+  MODEL_DATA: 'Model data',   // To be tanslated
 }

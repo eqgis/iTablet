@@ -1130,18 +1130,6 @@ export default class ArMappingButton extends React.Component {
     SARMap.saveMeasureData(datasourceAlias, datasetName).then(result => {
       Toast.show(result ? getLanguage().Prompt.SAVE_SUCCESSFULLY : getLanguage().Prompt.SAVE_FAILED)
     })
-    // if (!result) {
-    //   //await SMeasureAreaView.clearAll()
-    //   if(this.saveType === 'savepoint'){
-    //     Toast.show(getLanguage(global.language).Prompt.SAVE_FAIL_POINT)
-    //   }else if(this.saveType === 'saveline'){
-    //     Toast.show(getLanguage(global.language).Prompt.SAVE_LINE_FAIL)
-    //   }else if(this.saveType === 'saveRegion'){
-    //     Toast.show(getLanguage(global.language).Prompt.SAVE_REGION_FAIL)
-    //   }
-    // }else{
-    //   // this.saveLog()
-    // }
   }
 
   renderBottomBtn() {

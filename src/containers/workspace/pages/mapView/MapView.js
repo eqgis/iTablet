@@ -19,7 +19,6 @@ import {
   SMARMapView,
   SARMap,
   SMMeasureARGeneraView,
-  // SMeasureAreaView,
   DatasetType,
   // SCollectSceneFormView,
   ARElementType,
@@ -124,7 +123,6 @@ import NewMessageIcon from '../../../../containers/tabs/Friend/Cowork/NewMessage
 import CoworkInfo from '../../../../containers/tabs/Friend/Cowork/CoworkInfo'
 import { BackHandlerUtil } from '../../util'
 import { Bar } from 'react-native-progress'
-import GuideViewMapArModel from '../../components/GuideViewMapArModel'
 import GuideViewMapArMappingModel from '../../components/GuideViewMapArMappingModel'
 import GuideViewMapAnalystModel from '../../components/GuideViewMapAnalystModel'
 import GuideViewMapThemeModel from '../../components/GuideViewMapThemeModel'
@@ -139,6 +137,7 @@ import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
 import Toolbar from '@/Toolbar'
 import { onAddARAnimation } from '@/Toolbar/modules/arAnimation/Actions'
+import PositionStateView from '../../components/PositionStateView'
 
 global.markerTag = 118082
 
@@ -186,6 +185,7 @@ export default class MapView extends React.Component {
     mapSearchHistory: PropTypes.array,
     toolbarStatus: PropTypes.object,
     laboratory: PropTypes.object,
+    showARLabel: PropTypes.bool,
 
     isClassifyView: PropTypes.bool,
     mapArGuide: PropTypes.bool,
@@ -194,6 +194,10 @@ export default class MapView extends React.Component {
     themeGuide: PropTypes.bool,
     collectGuide: PropTypes.bool,
     mapEditGuide: PropTypes.bool,
+
+    peripheralDevice: PropTypes.object,
+    essentialInfo: PropTypes.object,
+    pointStateText: PropTypes.string,
 
     coworkInfo: PropTypes.object,
     currentTask: PropTypes.object,
@@ -422,6 +426,8 @@ export default class MapView extends React.Component {
 
     // 分享按钮是否可点击标识，true为可点击
     this.isShareCanClick = true
+    /** 提示语回调 提示显示的控制定时器 */
+    this.timer = null
   }
 
   _handleStartShouldSetPanResponder = () => {
@@ -654,37 +660,6 @@ export default class MapView extends React.Component {
     }
     if (global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS) {
       (async function () {
-        //提供测量等界面添加按钮及提示语的回调方法 add jiakai
-        // if (Platform.OS === 'ios') {
-        // iOSEventEmi.addListener(
-        //   'com.supermap.RN.SMeasureAreaView.ADD',
-        //   this.onAdd,
-        // )
-        // iOSEventEmi.addListener(
-        //   'com.supermap.RN.SMeasureAreaView.CLOSE',
-        //   this.onshowLog,
-        // )
-        // iOSEventEmi.addListener(
-        //   'onCurrentHeightChanged',
-        //   this.onCurrentHeightChanged,
-        // )
-        // } else {
-
-        // SMeasureAreaView.setAddListener({
-        //   callback: async result => {
-        //     if (result) {
-        //       // Toast.show("add******")
-        //       if (this.state.isfirst) {
-        //         this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
-        //       } else {
-        //         this.setState({ showADD: true })
-        //       }
-        //     } else {
-        //       this.setState({ showADD: false, showADDPoint: false })
-        //     }
-        //   },
-        // })
-
         SARMap.addOnHeightChangeListener({
           onHeightChange: height => {
             height = height.toFixed(2)
@@ -721,34 +696,49 @@ export default class MapView extends React.Component {
 
   /**提示语回调 */
   onshowLog = result => {
-    if (result.close) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
-      })
-    }
+    if(!this.timer) {
+      this.timer = setTimeout(() => {
+        clearTimeout(this.timer)
+        this.timer = null
+      }, 2000)
 
-    if (result.dark) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
-      })
-    }
-
-    if (result.fast) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
-      })
-    }
-
-    if (result.nofeature) {
-      if (this.state.dioLog != getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+      if (result.close) {
         this.setState({
           dioLog: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+            .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
         })
+      }
+
+      if(result.far) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_FAR, showLog: true
+        })
+      }
+
+      if (result.dark) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
+        })
+      }
+
+      if (result.fast) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
+        })
+      }
+
+      if (result.nofeature) {
+        if (this.state.dioLog != getLanguage(global.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+          this.setState({
+            dioLog: getLanguage(global.language).Map_Main_Menu
+              .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+          })
+      }
+
     }
 
     if (result.none) {
@@ -946,13 +936,6 @@ export default class MapView extends React.Component {
       })
     }
 
-    if (
-      global.Type === ChunkType.MAP_AR &&
-      JSON.stringify(prevProps.armap.currentMap) !== JSON.stringify(this.props.armap.currentMap) &&
-      this.props.armap.currentMap?.mapName
-    ) {
-      SARMap.setAction(ARAction.NULL)
-    }
   }
 
   componentWillUnmount() {
@@ -1243,6 +1226,7 @@ export default class MapView extends React.Component {
     SARMap.showMeasureView(false)
     SARMap.showTrackView(false)
     SARMap.showPointCloud(false)
+    SARMap.showARLabel(this.props.showARLabel)
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
   }
@@ -1486,6 +1470,7 @@ export default class MapView extends React.Component {
         const libIds = params.template.plotLibIds
         await SMap.removePlotSymbolLibraryArr(libIds)
       }
+      LayerUtils.setMapLayerAttribute(undefined, undefined, true)
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
 
@@ -1673,6 +1658,9 @@ export default class MapView extends React.Component {
       const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
       if ((result || needSaveARMap) && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {
+          if(Platform.OS === 'ios'){
+            SARMap.setARTouch(true)
+          }
           this.props.showAR(false)
           await this.props.setCurrentAttribute({})
           // this.setState({ showScaleView: false })
@@ -2156,6 +2144,11 @@ export default class MapView extends React.Component {
     let loadingAction = this.setLoading
     if (setLoading && typeof setLoading === 'function') {
       loadingAction = setLoading
+    }
+    if(visible){
+      if(Platform.OS === 'ios'){
+        SARMap.setARTouch(false)
+      }
     }
     global.SaveMapView &&
       global.SaveMapView.setVisible(
@@ -2854,12 +2847,6 @@ export default class MapView extends React.Component {
         this.canContinuousDraw = true
       }
 
-      // if (this.isDrawing) {
-      //   SMeasureAreaView.initMeasureCollector(
-      //     this.datasourceAlias,
-      //     this.datasetName,
-      //   )
-      // }
 
       if (!this.props.currentLayer.datasourceAlias || !this.props.currentLayer.datasetName) return
       let datasourceAlias = this.props.currentLayer.datasourceAlias
@@ -3456,17 +3443,9 @@ export default class MapView extends React.Component {
         : screen.unlockAllOrientations()
 
       if (this.props.isAR) {
-        // if (Platform.OS === 'android') {
         SARMap.onPause()
-        // } else {
-        //   SMeasureAreaView.onPause()
-        // }
       } else {
-        // if (Platform.OS === 'android') {
         SARMap.onResume()
-        // } else {
-        //   SMeasureAreaView.onResume()
-        // }
       }
 
       return _isAR
@@ -3757,6 +3736,12 @@ export default class MapView extends React.Component {
         setLoading={this.setLoading}
       // showModelList={this.showModelList}
       />
+    )
+  }
+
+  _renderPositionStateView = () => {
+    return (
+      <PositionStateView/>
     )
   }
 
@@ -4357,14 +4342,6 @@ export default class MapView extends React.Component {
     )
   }
 
-  //AR地图引导界面 add jiakai
-  renderMapArGuideView = () => {
-    return (
-      <GuideViewMapArModel
-        language={this.props.language}
-      />
-    )
-  }
 
   //AR测图引导界面 add jiakai
   renderMapArMappingGuideView = () => {
@@ -4534,7 +4511,6 @@ export default class MapView extends React.Component {
       point: this.point,
       fixedPositions: point => {
         NavigationService.goBack()
-        // SMeasureAreaView.fixedPosition(false, point.x, point.y, 0)
       },
       showType: 'newDatumPoint', // 新的位置校准界面
       reshowDatumPoint: () => {
@@ -4627,14 +4603,6 @@ export default class MapView extends React.Component {
     SARMap.stopLocation()
     SARMap.cancelCurrent()
     SARMap.clearMeasure()
-    // SARMap.removeOnHeightChangeListeners()
-    // if (Platform.OS === 'ios') {
-    //   SMeasureAreaView.setMeasureMode('arCollect')
-    //   // iOSEventEmi.removeListener(
-    //   //   'com.supermap.RN.SMeasureAreaView.CLOSE',
-    //   //   this.onshowLog,
-    //   // )
-    // }else{
     this.listeners && this.listeners.infoListener?.remove()
     this.listeners && this.listeners.addListener?.remove()
     SARMap.showMeasureView(false)
@@ -4744,6 +4712,11 @@ export default class MapView extends React.Component {
         .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:
         img = getThemeAssets().ar.icon_tips_approach
         break
+      case getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_FAR:
+        // 换为近一点图标 to do
+        img = getThemeAssets().ar.icon_tips_move_away
+        break
       default:
         img = getThemeAssets().ar.icon_tips_move_away
         break
@@ -4822,33 +4795,108 @@ export default class MapView extends React.Component {
     return (
       <>
         <SMARMapView
-          style={
-            screen.isIphoneX() && {
-              paddingBottom: screen.getIphonePaddingBottom(),
-            }
-          }
-          customStyle={this.props.isAR ? null : styles.hidden}
-          ref={ref => (this.SMMeasureAreaView = ref)}
+          customStyle={this.props.isAR ? undefined : styles.hidden}
           onLoad={this._onLoad}
-          onSingleClick={() => {
-            if(AppToolBar.getCurrentOption() === undefined 
+          onSingleClick={async () => {
+            if(AppToolBar.getCurrentOption() === undefined
               &&  (ToolbarModule.getParams().type === '' || ToolbarModule.getParams().type === undefined)
             ) {
               this.showFullMap(!this.fullMap)
             }
           }}
           onARElementTouch={async (element, childIndex) => {
-            if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT') {
-              AppToolBar.addData({ selectARElement: element })
-              const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
-              if (attributes) {
-                const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
-                if (isShowAttribute) {
-                  // SARMap.hideAttribute(element.layerName, element.id)
-                } else {
-                  SARMap.showAttribute(element.layerName, element.id, attributes)
+            if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT' && Platform.OS === 'android') {
+              const element01 = AppToolBar.getData().selectARElement
+              if(element01) {
+                // 只有当点击对象与选择对象相同时，才显隐属性表
+                if(element01.layerName === element.layerName && element01.id === element.id) {
+                  const attributes = await SARMap.getShowAttribute(element01.layerName, element01.id)
+                  AppToolBar.getProps().setPipeLineAttribute([])
+                  if (attributes) {
+                    const isShowAttribute = await SARMap.isShowAttribute(element01.layerName, element01.id)
+                    if (isShowAttribute) {
+                      SARMap.hideAttribute(element.layerName, element.id)
+                    } else {
+                      SARMap.showAttribute(element01.layerName, element01.id, attributes)
+                    }
+                  } else {
+                    SARMap.showAttribute(element01.layerName, element01.id, null)
+                  }
                 }
               }
+
+            } else if(AppToolBar.getCurrentOption() === undefined
+              && (ToolbarModule.getParams().type === '' || ToolbarModule.getParams().type === undefined)
+              && Platform.OS === 'android'
+            )  {
+              if( element.type === ARElementType.AR_IMAGE
+                || element.type === ARElementType.AR_VIDEO
+                // || element.type === ARElementType.AR_WEBVIEW
+                || element.type === ARElementType.AR_TEXT
+                || element.type === ARElementType.AR_BUBBLE_TEXT
+                || element.type === ARElementType.AR_MODEL
+                || element.type === ARElementType.AR_LINE
+                || element.type === ARElementType.AR_MARKER_LINE
+                // || element.type === ARElementType.AR_SAND_TABLE
+              ) {
+                // 获取已选择的属性
+                const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
+                AppToolBar.getProps().changeShowAttributeElement(element)
+                if (attributes) {
+                // 当已选择的属性存在时
+                  const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
+                  if (isShowAttribute) {
+                  // 当已选择的属性存在且面板已显示时，关闭
+                    SARMap.hideAttribute(element.layerName, element.id)
+                  } else {
+                  // 当已选择的属性存在且面板未显示时，显示
+                    SARMap.showAttribute(element.layerName, element.id, attributes)
+                  }
+                } else {
+                // 当没有已选择的属性时
+                  SARMap.showAttribute(element.layerName, element.id, null)
+                }
+              }
+
+
+            }
+          }}
+          onARElementSelect={async (element, childIndex) => {
+            if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ATTRIBUTE_SELECTED') {
+              if( element.type === ARElementType.AR_IMAGE
+                || element.type === ARElementType.AR_VIDEO
+                // || element.type === ARElementType.AR_WEBVIEW
+                || element.type === ARElementType.AR_TEXT
+                || element.type === ARElementType.AR_BUBBLE_TEXT
+                || element.type === ARElementType.AR_MODEL
+                || element.type === ARElementType.AR_LINE
+                || element.type === ARElementType.AR_MARKER_LINE
+                // || element.type === ARElementType.AR_SAND_TABLE
+              ){
+                // 在属性选择页面。选中对象后，跳转到属性编辑页面
+                AppToolBar.addData({ selectARElement: element })
+                AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+                const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
+                AppToolBar.getProps().setPipeLineAttribute([])
+                if (attributes) {
+                  const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
+                  if (isShowAttribute) {
+                  // SARMap.hideAttribute(element.layerName, element.id)
+                  } else {
+                    SARMap.showAttribute(element.layerName, element.id, attributes)
+                  }
+                } else {
+                  SARMap.showAttribute(element.layerName, element.id, null)
+                }
+              } else if(element.type === ARElementType.AR_SAND_TABLE) {
+                AppToolBar.addData({ selectARElement: element })
+                AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
+              } else {
+                // 不支持属性的对象
+                Toast.show(getLanguage().CUR_ELE_NOT_SUPPORT_ATTRIBUTE)
+                SARMap.clearSelection()
+              }
+
             } else if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
               onAddARAnimation(element)
             } else if (element.type === ARElementType.AR_SAND_TABLE
@@ -4857,40 +4905,31 @@ export default class MapView extends React.Component {
               )) {
               AppToolBar.addData({ selectARElement: element, selectedChildIndex: childIndex })
               AppToolBar.show('ARSANDTABLE', 'AR_SAND_TABLE_EDIT')
-            } else if (
-              !this.state.showPoiSearch &&
-              element.type === ARElementType.AR_IMAGE
-              || element.type === ARElementType.AR_VIDEO
-              || element.type === ARElementType.AR_WEBVIEW
-              || element.type === ARElementType.AR_TEXT
-              || element.type === ARElementType.AR_BUBBLE_TEXT
-              || element.type === ARElementType.AR_MODEL
-              || element.type === ARElementType.AR_ALBUM
-              || element.type === ARElementType.AR_BROCHOR
-              || element.type === ARElementType.AR_VIDEO_ALBUM
-              || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
-              || element.type === ARElementType.AR_SAND_TABLE_ALBUM
-              || element.type === ARElementType.AR_SAND_TABLE
-              || element.type === ARElementType.AR_BAR_CHART
-              || element.type === ARElementType.AR_PIE_CHART
-            ) {
-              arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
-              if(element.type === ARElementType.AR_MODEL) {
-                const animations = await SARMap.getModelAnimation(element.layerName, element.id)
-                ToolbarModule.addData({ hasModelAnimation: animations.length > 0 })
+            } else if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
+              if (element.type === ARElementType.AR_IMAGE
+                || element.type === ARElementType.AR_VIDEO
+                || element.type === ARElementType.AR_WEBVIEW
+                || element.type === ARElementType.AR_TEXT
+                || element.type === ARElementType.AR_BUBBLE_TEXT
+                || element.type === ARElementType.AR_MODEL
+                || element.type === ARElementType.AR_ALBUM
+                || element.type === ARElementType.AR_BROCHOR
+                || element.type === ARElementType.AR_VIDEO_ALBUM
+                || element.type === ARElementType.AR_ATTRIBUTE_ALBUM
+                || element.type === ARElementType.AR_SAND_TABLE
+                || element.type === ARElementType.AR_ELEMENT_GROUP
+                || element.type === ARElementType.AR_SAND_TABLE_ALBUM
+                || element.type === ARElementType.AR_BAR_CHART
+                || element.type === ARElementType.AR_PIE_CHART
+              ) {
+                const modelAnimations = await SARMap.getModelAnimation(element.layerName, element.id)
+                let ownModelAnimation = false
+                if(modelAnimations.length > 0) {
+                  ownModelAnimation = true
+                }
+                AppToolBar.addData({selectARElement: element, ownModelAnimation})
+                AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ELEMENT')
               }
-              ToolbarModule.addData({ selectARElement: element })
-              AppToolBar.addData({ selectARElement: element })
-              SARMap.appointEditElement(element.id, element.layerName)
-              SARMap.setAction(ARAction.MOVE)
-              this.showFullMap(true)
-              this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-                containerType: ToolbarType.slider,
-                isFullScreen: false,
-                showMenuDialog: false,
-                selectName: getLanguage(this.props.language).ARMap.TRANSLATION,
-                selectKey: getLanguage(this.props.language).ARMap.TRANSLATION,
-              })
             }
           }}
           onARElementAdd={element => {
@@ -4898,22 +4937,8 @@ export default class MapView extends React.Component {
             AppEvent.emitEvent('ar_map_on_add_element', element)
             if(element.type === ARElementType.AR_ATTRIBUTE_ALBUM || element.type === ARElementType.AR_BROCHOR || element.type === ARElementType.AR_ALBUM|| element.type === ARElementType.AR_VIDEO_ALBUM || element.type === ARElementType.AR_SAND_TABLE_ALBUM || element.type === ARElementType.AR_BAR_CHART || element.type === ARElementType.AR_PIE_CHART){
               if(AppToolBar.getData().isAlbumFirstAdd){
-                // 小组件添加成功后，会去往编辑界面，编辑界面与添加界面的toolbar不同，所以要将添加页面用的toolbar类型隐藏
-                AppToolBar.hide()
-
-                arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
-                ToolbarModule.addData({ selectARElement: element })
-                AppToolBar.addData({ selectARElement: element, isAlbumFirstAdd: false })
-                SARMap.appointEditElement(element.id, element.layerName)
-                SARMap.setAction(ARAction.MOVE)
-                this.showFullMap(true)
-                this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-                  containerType: ToolbarType.slider,
-                  isFullScreen: false,
-                  showMenuDialog: false,
-                  selectName: getLanguage(this.props.language).ARMap.TRANSLATION,
-                  selectKey: getLanguage(this.props.language).ARMap.TRANSLATION,
-                })
+                AppToolBar.addData({selectARElement: element,isAlbumFirstAdd:false})
+                AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ELEMENT')
               }
             }
           }}
@@ -4938,20 +4963,13 @@ export default class MapView extends React.Component {
             // if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ANIMATION_HOME') {
               onAddARAnimation(element)
-            } else if (element.type === ARElementType.AR_LINE
-              || element.type === ARElementType.AR_MARKER_LINE) {
-              {
-                AppToolBar.addData({ addARElement: element })
-                arEditModule().setModuleData(ConstToolType.SM_AR_EDIT_POSITION)
-                ToolbarModule.addData({ selectARElement: element })
-                AppToolBar.addData({ selectARElement: element })
-                SARMap.appointEditElement(element.id, element.layerName)
-                SARMap.setAction(ARAction.MOVE)
-                this.showFullMap(true)
-                this.toolBox.setVisible(true, ConstToolType.SM_AR_EDIT_POSITION, {
-                  containerType: ToolbarType.slider,
-                  isFullScreen: false,
-                })
+            } else if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {
+              if (element.type === ARElementType.AR_LINE
+                || element.type === ARElementType.AR_MARKER_LINE) {
+                {
+                  AppToolBar.addData({selectARElement: element})
+                  AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_GEOMETRY')
+                }
               }
             }
             // }
@@ -5120,25 +5138,15 @@ export default class MapView extends React.Component {
         {global.Type === ChunkType.MAP_NAVIGATION &&
           this._renderFloorListView()}
         {global.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
-        {/* {!this.isExample &&
-          global.isLicenseValid &&
-          global.Type &&
-          // global.Type.indexOf(ChunkType.MAP_AR) === 0 &&
-          !this.state.bGoneAIDetect &&
-          global.Type === ChunkType.MAP_AR_ANALYSIS &&
-          (
-            <SMAIDetectView
-              style={
-                screen.isIphoneX() && {
-                  paddingBottom: screen.getIphonePaddingBottom(),
-                }
-              }
-              customStyle={this.state.showAIDetect ? null : styles.hidden}
-              language={this.props.language}
-              // isDetect={global.Type === ChunkType.MAP_AR_ANALYSIS}
-              onArObjectClick={this._onArObjectClick}
-            />
-          )} */}
+
+
+        {/* 是否使用了差分服务的定位状态提示 */}
+        {this.props?.peripheralDevice?.type === "bluetooth"
+        && this.props?.essentialInfo?.userName !== ""
+        && this.props.pointStateText !== ""
+        && this._renderPositionStateView()
+        }
+
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (global.MapSurfaceView = ref)}

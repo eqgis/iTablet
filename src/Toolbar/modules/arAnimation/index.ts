@@ -22,7 +22,7 @@ export interface ARANIMATION {
 const arAnimationData: ToolbarModuleData<ARANIMATION> = {
   name: 'ARANIMATION',
   image: getImage().ar_animation,
-  getTitle: () => getLanguage().ANIMATION,
+  getTitle: () => getLanguage().PANE_ANIMATION,
   action: () => {
     AppToolBar.show('ARANIMATION', 'AR_MAP_ANIMATION_HOME')
   },

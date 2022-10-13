@@ -136,8 +136,8 @@ android {
         applicationId "com.supermap.itablet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 112
-        versionName "11.0.9"
+        versionCode 115
+        versionName "11.0.10"
         manifestPlaceholders = [
                 JPUSH_APPKEY: "7d2470baad20e273cd6e53cc",
                 APP_CHANNEL : "default"
@@ -159,10 +159,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            keyAlias 'supermap'
+            keyPassword 'supermap321'
+            storeFile file('../keystores/release.keystore')
+            storePassword 'supermap123'
         }
         release_config {
             keyAlias 'supermap'

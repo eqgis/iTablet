@@ -21,7 +21,7 @@ import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, Record
 import { SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import { DBRConfig, decode, TextResult } from 'vision-camera-dynamsoft-barcode-reader'
-// import * as REA from 'react-native-reanimated';
+import * as REA from 'react-native-reanimated'
 
 import styles from './styles'
 import ImageButton from '../../components/ImageButton'
@@ -607,8 +607,8 @@ const MyCamera: ForwardRefRenderFunction<IRefProps, MyCameraProps> = (props, ref
       // 二维码解码
       const results: TextResult[] = decode(frame, config)
       if (props.qrCb && results.length > 0) {
-        // REA.runOnJS(props.qrCb)(results);
-        props.qrCb(results)
+        REA.runOnJS(props.qrCb)(results)
+        // props.qrCb(results)
       }
     }, [])
   }

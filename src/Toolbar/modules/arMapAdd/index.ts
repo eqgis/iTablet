@@ -1,6 +1,6 @@
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
-import { ToolbarModuleData, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
+import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar } from "../../../utils"
 import ARMapAddView from "./ARMapAddView"
 import { getData } from "./Data"
@@ -40,6 +40,8 @@ const arMapAddData: ToolbarModuleData<ARMAP_ADD> = {
   image: getImage().icon_add,
   getTitle: () => getLanguage().ADD,
   action: () => {
+    AppToolBar.getProps().setPipeLineAttribute([])
+    AppToolBar.getProps().changeShowAttributeElement()
     AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD')
   },
   getData: getData,

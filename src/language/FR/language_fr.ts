@@ -479,6 +479,8 @@ export const language_fr: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "Voulez-vous supprimer l'objet actuel ?",
   NO_SELECTED_OBJ: "Aucun objet sélectionné",
 
+  ANIMATION_MANAGEMENT: "Gestion de l'animation",
+
   CURRENT: 'Actuel',
   SELECTED: 'Sélectionné',
   DEFAULT: 'Defaut',
@@ -547,6 +549,8 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Veuillez sélectionner un objet',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Veuillez sélectionner un calque ou un objet",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Veuillez sélectionner un calque d'objet",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Ajouter une table d'attributs à la scène AR",
 
@@ -961,6 +965,7 @@ export const language_fr: typeof language_cn = {
   ANIMATION_NODE_NAME: "Nom du nœud d'animation",
 
   OPEN_ONLINE_DATA: "Ouvrir les données en ligne",
+  SAVE_ANIMATION_WITH_NAME: "Cette animation sera sauvegardée et vous pourrez l'appliquer à d'autres modèles.",
 
   PLOT: "Traçage",
 
@@ -1339,6 +1344,7 @@ export const language_fr: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "Surface de recherche",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "Distance de vue:",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"Restez loin",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"Trop faible, prenez plus de lumière",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"Trop rapide, veuillez ralentir",
@@ -2177,6 +2183,19 @@ export const language_fr: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "Auto",
   SETTING_LOCATION_DEVICE: "Dispositif de localisation",
   SETTING_LOCATION_LOCAL: "Cet appareil",
+  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
+  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
+  NTRIP_SETTING: "Differential service",  // To be translated
+  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
+  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
+  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
+  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
+  NTRIP_AGREEMENT: 'Protocol',  // To be translated
+  PROTOCOL_TYPE: 'Protocol type',  // To be translated
+  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
+  PORT_NUMBER: 'Port',  // To be translated
+  PASSWORD: 'Password',  // To be translated
+  LOADING_POINT: 'Loading point',  // To be translated
   SETTING_CLEAR_CACHE: "Vider le cache",
   SETTING_CLEAR_CACHE_SUCCESS:"Suppression réussie",
   DISTANCE_METER:"Distance(m)",
@@ -2184,6 +2203,12 @@ export const language_fr: typeof language_cn = {
   INPUT_NUMBER:"Veuillez saisir le numéro",
   DISTANCE_LOCATION:"Emplacement à distance",
   TIME_LOCATION:"Temps d'emplacement",
+
+  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
+  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
+  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
+  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
+  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
 
   // 许可
   LICENSE: "License",
@@ -2479,7 +2504,7 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Veuillez sélectionner une couche de point, CAD ou de parcelle",
   PLEASE_SELECT_CAD_LAYER: "Veuillez sélectionner une couche CAD ",
   DONOT_SUPPORT_ARCORE: "Installer ou mettre à niveau ARCore",
-  DONOT_SUPPORT_ARENGINE: "Installer ou mettre à niveau AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "Afficher la liste des appareils pris en charge",
   PLEASE_NEW_PLOT_LAYER: "Veuillez créer une nouvelle couche de tracé",
   DOWNLOADING_PLEASE_WAIT: "Téléchargement en cours, veuillez patienter",
@@ -2802,6 +2827,7 @@ export const language_fr: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "Êtes-vous sûr d'exporter la carte?",
 
   SHOW_AR_SCENE_NOTIFY: "Afficher les astuces de détection de scène RA",
+  SHOW_AR_LABEL: 'Afficher les résultats des annotations',
 
   CANT_PICTURE:"Impossible de continuer, la limite de la collecte est de 9 photos",
 
@@ -2838,4 +2864,9 @@ export const language_fr: typeof language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
+  MODEL_DATA: 'Model data',   // To be tanslated
 }

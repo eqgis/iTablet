@@ -3,6 +3,7 @@ import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { AppToolBar } from "@/utils"
 
 class ArNaviModule extends FunctionModule {
   constructor(props) {
@@ -11,7 +12,10 @@ class ArNaviModule extends FunctionModule {
 
 
 
-  action = async () => {
+  action = () => {
+    AppToolBar.getProps().setPipeLineAttribute([])
+    AppToolBar.getProps().changeShowAttributeElement()
+
     const _params = ToolbarModule.getParams()
 
     _params.showArNavi && _params.showArNavi(true)

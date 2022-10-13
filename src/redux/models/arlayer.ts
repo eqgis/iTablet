@@ -37,6 +37,7 @@ interface DispatchParams {
   [name: string]: any,
 }
 
+
 // Actions
 // --------------------------------------------------
 
@@ -62,6 +63,7 @@ export const setCurrentARLayer = (
     payload: layer,
   })
 }
+
 
 const initialState = fromJS({
   layers: [],

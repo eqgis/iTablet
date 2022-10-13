@@ -141,7 +141,7 @@ function addOption(option: IToolbarOption){
       AppToolBar.goBack()
     }
   },{
-    image: getThemeAssets().tabBar.tab_layer,
+    image: getImage().ar_layer,
     onPress: () => {
       // 跳转到图层列表页面
       // AppNavigation.navigate('ARLayer', {
@@ -430,7 +430,7 @@ function _getAddTab(): ToolbarTabItem[] {
   ]
 
   if(Platform.OS === 'ios') {
-    tabData.splice(6, 1)
+    // tabData.splice(6, 1)
     tabData.splice(4, 1)
   }
 
@@ -514,7 +514,7 @@ function getWidgetListData(): ToolBarListItem[]{
     }
   ]
   if(Platform.OS === 'ios') {
-    data.splice(4, 2)
+    data.splice(2, 4)
   }
   return data
 }
@@ -1018,7 +1018,7 @@ function _getSwitchAlbumData(): ToolBarListOption {
               AppToolBar.addData({ arPhotos: data, albumName: getLanguage().ATTRIBUTE_ALBUM })
               AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_WIDGET')
             }
-          }, 10)
+          }, -1)
 
         }
       }
@@ -1051,11 +1051,14 @@ function _getSwitchAlbumData(): ToolBarListOption {
               AppToolBar.addData({ arPhotos: data, albumName: getLanguage().ATTRIBUTE_ALBUM })
               AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_ATTRIBUT_WIDGET')
             }
-          }, 10)
+          }, -1)
         }
       }
     },
   ]
+  if (Platform.OS === 'ios'){
+    data.splice(0,1)
+  }
   return{
     data: data
   }
@@ -1092,7 +1095,7 @@ function _getSwitchVideoAlbumData(): ToolBarListOption {
               AppToolBar.addData({ arPhotos: data, albumName: getLanguage().VIDEO_ALBUM ,videoType:0})
               AppToolBar.show('ARMAP_ADD', 'AR_MAP_ADD_VIDEO_ALBUM')
             }
-          }, 5)
+          }, -1)
         }
       }
     },
@@ -1130,6 +1133,9 @@ function _getSwitchVideoAlbumData(): ToolBarListOption {
       }
     },
   ]
+  if(Platform.OS === 'ios') {
+    data.splice(0, 1)
+  }
   return{
     data: data
   }

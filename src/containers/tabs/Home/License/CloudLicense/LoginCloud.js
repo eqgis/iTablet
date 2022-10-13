@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import NetInfo from "@react-native-community/netinfo"
 import { Container, DropdownView } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
-import { Toast, scaleSize, screen } from '../../../../../utils'
+import { Toast, scaleSize, screen, AccountUtils } from '../../../../../utils'
 import { color } from '../../../../../styles'
 import OnlineLoginView from '../../../Mine/Login/component/OnlineLoginView'
 import { SMap } from 'imobile_for_reactnative'
@@ -12,12 +12,14 @@ import {
   setCloudLicenseUser,
   setCloudLicenseSite,
 } from '../../../../../redux/models/license'
+import { Users } from '../../../../../redux/models/user'
 import { getThemeAssets } from '../../../../../assets'
 
 class LoginCloud extends Component {
   props: {
     navigation: Object,
     device: Object,
+    user: Users,
     cloudLicenseUser: Object,
     cloudLicenseSite: String,
     setCloudLicenseUser: () => {},
@@ -32,6 +34,7 @@ class LoginCloud extends Component {
       reLogin: true,
     }
     this.cb = (params && params.callback) || null
+    this.lockScreen = screen.getLockScreen() // 获取进入当前页面之前是否有锁屏
   }
 
   componentDidMount() {
@@ -42,7 +45,14 @@ class LoginCloud extends Component {
   }
 
   componentWillUnmount() {
-    screen.unlockAllOrientations()
+    // 返回上一页面时,恢复之前是否锁屏的状态
+    if (this.lockScreen.includes('PORTRAIT')) {
+      screen.lockToPortrait()
+    } else if (this.lockScreen.includes('LANDSCAPE')) {
+      screen.lockToLandscape()
+    } else {
+      screen.unlockAllOrientations()
+    }
   }
 
   reLogin = async () => {
@@ -160,6 +170,8 @@ class LoginCloud extends Component {
           userName,
           password,
         })
+        // ios 登录云许可,需要重新登录账号,覆盖cookie,才能正常使用fetch请求
+        await AccountUtils.login(this.props.user.currentUser)
         return true
       } else {
         Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
@@ -348,6 +360,7 @@ const mapStateToProps = state => ({
   cloudLicenseUser: state.license.toJS().cloudLicenseUser,
   cloudLicenseSite: state.license.toJS().cloudLicenseSite,
   device: state.device.toJS().device,
+  user: state.user.toJS(),
 })
 
 const mapDispatchToProps = {

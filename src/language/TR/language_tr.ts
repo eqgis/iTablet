@@ -2259,6 +2259,7 @@ export const language_tr: typeof language_cn = {
   LICENSE_ACTIVATING: "Aktivasyon yapılıyor",
   LICENSE_ACTIVATION_SUCCESS: "Aktivasyon Başarılı",
   LICENSE_ACTIVATION_FAIL: "Aktivasyon Başarısız",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
   LICENSE_SELECT_LICENSE: "Lisans seçin",
   LICENSE_REAMIN_DAYS: "Kalan günler",
   LICENSE_SHOW_DETAIL: "Detayları göster",

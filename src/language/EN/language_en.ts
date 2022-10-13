@@ -2260,6 +2260,7 @@ export const language_en: typeof language_cn = {
   LICENSE_ACTIVATING: "Activating",
   LICENSE_ACTIVATION_SUCCESS: "Activated",
   LICENSE_ACTIVATION_FAIL: "Failed to activate",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
   LICENSE_SELECT_LICENSE: "Select License",
   LICENSE_REAMIN_DAYS: "Left Days",
   LICENSE_SHOW_DETAIL: "Show details",

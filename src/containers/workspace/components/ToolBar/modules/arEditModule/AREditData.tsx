@@ -1714,7 +1714,7 @@ function getHeaderData(type: string) {
             })
           },
           size: 'large',
-          image: getImage().zoom_in,
+          image: getImage().icon_add_node,
           style: {
             width: scaleSize(80),
             height: scaleSize(80),

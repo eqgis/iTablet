@@ -1,11 +1,12 @@
-import { ARAction, ARLayerType, SARMap } from "imobile_for_reactnative"
+import { ARAction, ARElementType, ARLayerType, SARMap } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, Toast } from "../../../utils"
 import { ARAttributeViewOption } from "./ARAttributeView"
-import { checkSupportARAttributeByElement } from "./Actions"
+import { checkSupportARAttributeByElement, getSandtableAttributeData, getSandtableData } from "./Actions"
+import NavigationService from "@/containers/NavigationService"
 
 
 export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
@@ -27,6 +28,9 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
     case 'AR_MAP_ATTRIBUTE_STYLE':
       styleAttributeOption(option)
       break
+    case 'AR_MAP_ATTRIBUTE_SELECTED':
+      selectElementOption(option)
+      break
   }
 
   return option
@@ -34,6 +38,7 @@ export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {
 
 async function __styleButtonAction() {
   const selectARElement = AppToolBar.getData().selectARElement
+
 
   if (!selectARElement) {
     Toast.show(getLanguage().PLEASE_SELECT_OBJ)
@@ -59,11 +64,11 @@ async function __styleButtonAction() {
   })
   AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_STYLE')
 }
+/** 选择模型对象 */
+function selectElementOption(option: ToolbarOption<ARAttributeViewOption>) {
 
-/** 浏览模型信息 */
-function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
+  option.pageAction = async () => {
 
-  option.pageAction = () => {
     SARMap.setAction(ARAction.SELECT)
   }
 
@@ -71,13 +76,43 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
     {
       image: getImage().icon_toolbar_quit,
       onPress: async() => {
+        AppToolBar.getProps().setPipeLineAttribute([])
         SARMap.setAction(ARAction.NULL)
+        // SARMap.clearSelection()
+        AppToolBar.addData({
+          selectedAttribute: undefined,
+          selectARElement: undefined,
+        })
+        AppToolBar.hide()
+        SARMap.cancel()
+      }
+    },
+  ]
+}
+
+/** 浏览模型信息 */
+function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
+
+  option.pageAction = async () => {
+    SARMap.setAction(ARAction.NULL)
+  }
+
+  option.bottomData = [
+    {
+      image: getImage().icon_toolbar_quit,
+      onPress: async() => {
+        AppToolBar.getProps().setPipeLineAttribute([])
+        // SARMap.setAction(ARAction.NULL)
+        const preElement = AppToolBar.getData().selectARElement
+        if(preElement) {
+          await SARMap.hideAttribute(preElement.layerName, preElement.id)
+        }
         SARMap.clearSelection()
         AppToolBar.addData({
           selectedAttribute: undefined,
           selectARElement: undefined,
         })
-        AppToolBar.goBack()
+        AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE_SELECTED')
         SARMap.cancel()
       }
     },
@@ -87,12 +122,12 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
     },
     {
       image: getImage().icon_layer_attribute,
-      onPress: () => {
+      onPress: async () => {
         const selectARElement = AppToolBar.getData().selectARElement
         const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
 
         if (!layer && !selectARElement) {
-          Toast.show(getLanguage().PLEASE_SELECT_LAYER_OR_OBJECT)
+          Toast.show(getLanguage().ARMap.PLEASE_SELECT_LAYER_OR_OBJECT)
           return
         }
         if (
@@ -103,13 +138,28 @@ function browseElementOption(option: ToolbarOption<ARAttributeViewOption>) {
           layer.type !== ARLayerType.AR_TEXT_LAYER &&
           layer.type !== ARLayerType.AR_MODEL_LAYER &&
           layer.type !== ARLayerType.AR_WIDGET_LAYER &&
-          layer.type !== ARLayerType.AR_MEDIA_LAYER
+          layer.type !== ARLayerType.AR_MEDIA_LAYER &&
+          layer.type !== ARLayerType.AR_SCENE_LAYER
         ) {
           Toast.show(getLanguage().PLEASE_SELECT_AR_OBJECT_LAYER)
           return
         }
 
-        AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE')
+        if(selectARElement && selectARElement.type === ARElementType.AR_SAND_TABLE){
+          await getSandtableAttributeData()
+
+          const obj = getSandtableData()
+          if(obj.modelID !== -1 && obj.data){
+            NavigationService.navigate("AttributeDetail", {
+              modelID: obj.modelID,
+              data: obj.data,
+            })
+          }
+        } else {
+          AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE')
+        }
+
+        // AppToolBar.show('ARATTRIBUTE', 'AR_MAP_ATTRIBUTE')
       }
     }
   ]
@@ -130,10 +180,10 @@ function attributeOption(option: IToolbarOption) {
         AppToolBar.goBack()
       },
     },
-    {
-      image: getImage().my_color,
-      onPress: __styleButtonAction
-    },
+    // {
+    //   image: getImage().my_color,
+    //   onPress: __styleButtonAction
+    // },
     {
       image: getImage().icon_submit,
       onPress: () => {
@@ -159,7 +209,9 @@ function attributeOption(option: IToolbarOption) {
         // 清空属性选择
         AppToolBar.addData({
           selectedAttribute: undefined,
+          attribute3D: undefined,
         })
+
         SARMap.setAction(ARAction.SELECT)
         // SARMap.setCenterHitTest(false)
         // AppToolBar.show('ARMAP', 'AR_MAP_BROWSE_ELEMENT')

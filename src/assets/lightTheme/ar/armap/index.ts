@@ -11,6 +11,7 @@ export const ar_3d_gray = require('./icon_ar_layer_3d_gray.png')
 export const ar_vector_gray = require('./icon_ar_layer_vector_layer_gray.png')
 export const ar_model_gray = require('./icon_ar_layer_model_gray.png')
 export const ar_effect_gray = require('./icon_ar_layer_effect_gray.png')
+export const ar_widget_layer_gray = require('./icon_tool_small_objectLayer_gray.png')
 
 export const ar_video = require('./icon_ar_video_Temp.png')
 export const ar_picture = require('./icon_ar_picture_Temp.png')
@@ -58,11 +59,11 @@ export const icon_tool_underline = require('./icon_tool_underline.png')
 export const icon_tool_strikethrough = require('./icon_tool_strikethrough.png')
 export const icon_tool_shadow = require('./icon_tool_shadow.png')
 
-export const icon_array_1_3 = require('./icon_array_1＊3.png')
-export const icon_array_2_3 = require('./icon_array_2＊3.png')
-export const icon_array_2_4 = require('./icon_array_2＊4.png')
-export const icon_array_3_3 = require('./icon_array_3＊3.png')
-export const icon_array_4_4 = require('./icon_array_4＊4.png')
+export const icon_array_1_3 = require('./icon_array_1_3.png')
+export const icon_array_2_3 = require('./icon_array_2_3.png')
+export const icon_array_2_4 = require('./icon_array_2_4.png')
+export const icon_array_3_3 = require('./icon_array_3_3.png')
+export const icon_array_4_4 = require('./icon_array_4_4.png')
 
 export const align_left = require('./icon_align_left.png')
 export const align_left_start = require('./icon_align_left_start.png')
@@ -77,8 +78,6 @@ export const align_bottom = require('./icon_align_lower.png')
 export const align_bottom_start = require('./icon_align_lower_start.png')
 export const align_bottom_end = require('./icon_align_lower_end.png')
 
-
-export const marker_line = require('./icon_vector_symbol.png')
 
 export const bubble_text = require('./icon_ar_bubble_text.png')
 export const icon_ar_layer_text = require('./icon_ar_layer_text.png')

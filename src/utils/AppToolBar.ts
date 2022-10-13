@@ -152,7 +152,33 @@ interface ToolBarData {
     chartData?: chartType  // Array<chartDataType>
 
     attributeStyle?: ARAttributeStyle | null
+
+    /** 三维管线的Ar属性 */
+    attribute3D?: attribute3DType
+    /** 选中的对象是否拥有骨骼动画 true表示有骨骼动画， false表示没有骨骼动画 */
+    ownModelAnimation?: boolean
 }
+
+export interface attribute3DType {
+  head: Array<attribute3DHeadtype>,
+  data: Array<Array<attribute3DItemType>>,
+}
+export interface attribute3DHeadtype {
+  caption: string,
+  defaultValue?: string,
+  isRequired?: boolean,
+  isSystemField?: boolean,
+  maxLength?: number,
+  name?: string,
+  type?: number,
+
+}
+export interface attribute3DItemType {
+  fieldInfo: attribute3DHeadtype,
+  name: string,
+  value: string,
+}
+
 
 const toolBarData: ToolBarData = {}
 
@@ -270,9 +296,32 @@ function resetPage() {
   toolbarRef?.resetPage()
 }
 
+/**
+ * 在底部的按钮里添加新的按钮  deleteBottomBtn
+ * @param newBottoms  新插入的按钮数组
+ * @param index 插入的位置(如果用的是menu会忽略自动在第一个按钮后面插入的两个按钮)
+ */
+function addBottomBtn(newBottoms: Array<ToolBarBottomItem>, index: number) {
+  toolbarRef?.addBottomBtn(newBottoms, index)
+}
+
+/**
+ * 在底部的按钮里移除某个按钮
+ * @param index 要移除按钮的位置
+ * @param count 移除的个数
+ */
+function deleteBottomBtn(index: number, count: number) {
+  toolbarRef?.deleteBottomBtn(index, count)
+}
+
 /** 显示/隐藏 toolbarTab 下的 view */
 function showTabView(visible: boolean) {
   toolbarRef.showTabView(visible)
+}
+
+/** 显示/隐藏 toolbarMenu 下的 view */
+function showMenuView(visible: boolean) {
+  toolbarRef.showMenuView(visible)
 }
 
 /** 切换 ToolbarList 的显隐 */
@@ -298,6 +347,9 @@ export default {
   resetPage,
   showTabView,
   getCurrentOption,
-  toggleListVisible
+  toggleListVisible,
+  addBottomBtn,
+  deleteBottomBtn,
+  showMenuView,
 }
 

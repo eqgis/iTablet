@@ -479,6 +479,8 @@ export const language_ar: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "هل تريد حذف الكائن الحالي ؟",
   NO_SELECTED_OBJ: "لا توجد كائنات مختارة",
 
+  ANIMATION_MANAGEMENT: 'إدارة الرسوم المتحركة',
+
   CURRENT: 'حالي',
   SELECTED: 'اختار',
   DEFAULT: 'خرق',
@@ -547,6 +549,8 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'الرجاء تحديد الكائن',
   PLEASE_SELECT_LAYER_OR_OBJECT: "الرجاء تحديد طبقة أو كائن",
   PLEASE_SELECT_AR_OBJECT_LAYER: "الرجاء تحديد طبقة كائن الواقع المعزز",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "أضف جدول السمات إلى مشهد الواقع المعزز",
 
@@ -967,6 +971,7 @@ export const language_ar: typeof language_cn = {
   ANIMATION_NODE_NAME: "اسم عقدة الرسوم المتحركة",
 
   OPEN_ONLINE_DATA: "هذا الحساب قد يكون مختلس",
+  SAVE_ANIMATION_WITH_NAME: 'هذه الرسوم المتحركة سيتم حفظها ، يمكنك تطبيقها على نماذج أخرى',
 
   PLOT: "رسم بيانى",
 
@@ -1347,6 +1352,7 @@ export const language_ar: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "جارى بحث السطح",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "رؤيه المسافة",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"ابق بعيدا",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"خافت للغاية ، خذ المزيد من الضوء",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"سريع جدًا ، يرجى الإبطاء",
@@ -2191,6 +2197,19 @@ export const language_ar: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "تلقائى",
   SETTING_LOCATION_DEVICE: "موقع الجهاز",
   SETTING_LOCATION_LOCAL: "هذا الجهاز",
+  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
+  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
+  NTRIP_SETTING: "Differential service",  // To be translated
+  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
+  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
+  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
+  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
+  NTRIP_AGREEMENT: 'Protocol',  // To be translated
+  PROTOCOL_TYPE: 'Protocol type',  // To be translated
+  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
+  PORT_NUMBER: 'Port',  // To be translated
+  PASSWORD: 'Password',  // To be translated
+  LOADING_POINT: 'Loading point',  // To be translated
   SETTING_CLEAR_CACHE: "مسح ذاكرة التخزين المؤقت",
   SETTING_CLEAR_CACHE_SUCCESS:"إزالة بنجاح",
   DISTANCE_METER:"المسافة(m)",
@@ -2198,6 +2217,12 @@ export const language_ar: typeof language_cn = {
   INPUT_NUMBER:"الرجاء إدخال رقم",
   DISTANCE_LOCATION:"بعد التعريب",
   TIME_LOCATION:"الوقت والمكان",
+
+  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
+  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
+  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
+  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
+  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
 
   // 许可
   LICENSE: "الرخصة",
@@ -2500,7 +2525,7 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "حدد نقطة ، كندي ، أو طبقة الطباعة",
   PLEASE_SELECT_CAD_LAYER: "الرجاء اختيار طبقة كندي",
   DONOT_SUPPORT_ARCORE: "تثبيت أو ترقية ARCore",
-  DONOT_SUPPORT_ARENGINE: "تثبيت أو ترقية AREngine",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "عرض قائمة الأجهزة المدعومة",
   PLEASE_NEW_PLOT_LAYER: "من فضلك أنشىء طبقة نقاط جديدة",
   DOWNLOADING_PLEASE_WAIT: "من فضلك انتظر جارى التنزيل",
@@ -2826,6 +2851,7 @@ export const language_ar: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "هل أنت متأكد من إخراج الخريطة؟",
 
   SHOW_AR_SCENE_NOTIFY: "عرض ع المشهد كشف تلميح",
+  SHOW_AR_LABEL: 'عرض نتائج الشرح',
 
   CANT_PICTURE:"لا يمكن الاستمرار في جمع ما يصل إلى 9 صور",
 
@@ -2862,4 +2888,9 @@ export const language_ar: typeof language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
+  MODEL_DATA: 'Model data',   // To be tanslated
 }

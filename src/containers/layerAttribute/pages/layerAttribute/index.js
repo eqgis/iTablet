@@ -3,7 +3,7 @@ import LayerAttribute from './LayerAttribute'
 import {
   setCurrentAttribute,
   // getAttributes,
-  // setAttributes,
+  setAttributes,
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,
@@ -18,7 +18,6 @@ const mapStateToProps = state => ({
   attributesHistory: state.layers.toJS().attributesHistory,
   attributes: state.layers.toJS().attributes,
   map: state.map.toJS(),
-  nav: state.nav.toJS(),
   appConfig: state.appConfig.toJS(),
   mapModules: state.mapModules.toJS(),
   device: state.device.toJS().device,
@@ -29,7 +28,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setCurrentAttribute,
   // getAttributes,
-  // setAttributes,
+  setAttributes,
   setLayerAttributes,
   setAttributeHistory,
   clearAttributeHistory,

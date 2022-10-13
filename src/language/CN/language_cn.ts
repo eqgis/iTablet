@@ -479,6 +479,8 @@ export const language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "是否删除当前对象？",
   NO_SELECTED_OBJ: "没有选中对象",
 
+  ANIMATION_MANAGEMENT: '动画管理',
+
   CURRENT: '当前',
   SELECTED: '选择',
   DEFAULT: '默认',
@@ -547,6 +549,8 @@ export const language_cn = {
   PLEASE_SELECT_OBJ: '请选择对象',
   PLEASE_SELECT_LAYER_OR_OBJECT: "请选择图层或对象",
   PLEASE_SELECT_AR_OBJECT_LAYER: "请选择AR对象图层",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: '三维管线属性没有风格',
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: '三维管线属性不能编辑',
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "添加到AR场景",
 
@@ -831,7 +835,7 @@ export const language_cn = {
   GROUP_TYPE_PRIVATE: "私有",
   GROUP_TYPE_PRIVATE_INFO: "由创建者邀请用户加入群组",
   GROUP_TYPE_PUBLIC: "共有",
-  GROUP_TYPE_PUBLIC_INFO: "可有创建者邀请，或者用户申请加入群组",
+  GROUP_TYPE_PUBLIC_INFO: "可由创建者邀请，或者用户申请加入群组",
   GROUP_TYPE_PUBLIC_CHECK_INFO: "用户申请加入该群组时需要审核",
   GROUP_CREATE_SUCCUESS: "创建群组成功",
   GROUP_CREATE_FAILED: "创建群组失败",
@@ -961,6 +965,7 @@ export const language_cn = {
   PLOT_SAVE_ANIMATION: "保存动画",
   ANIMATION_NODE_NAME: "动画节点名称",
   OPEN_ONLINE_DATA: "打开在线数据",
+  SAVE_ANIMATION_WITH_NAME: '此动画将被保存到”自定义"中，您可以将其应用到其他模型',
 
   PLOT: "标绘",
 
@@ -1338,6 +1343,7 @@ export const language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "正在寻找平面",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "视点距离:",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"离近一些",
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"离远一些",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"当前环境太暗,请提供良好的照明",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"设备移动过快,请减速",
@@ -2177,6 +2183,19 @@ export const language_cn = {
   SETTING_LANGUAGE_AUTO: "跟随系统",
   SETTING_LOCATION_DEVICE: "定位设备",
   SETTING_LOCATION_LOCAL: "此设备",
+  SETTING_LOCATION_EXTERNAL: "网络设备",
+  SETTING_LOCATION_BLUETOOTH: "蓝牙",
+  NTRIP_SETTING: "差分服务",
+  DEVICE_INFORMATION_SETTING: '设备信息设置',
+  INSTRUMENT_MANUFACTURER: '仪器厂家',
+  INSTRUMENT_TYPE: '仪器类型',
+  BLUETOOTH_DEVICE_LIST: '蓝牙设备列表',
+  NTRIP_AGREEMENT: '协议',
+  PROTOCOL_TYPE: '协议类型',
+  ESSENTIAL_INFORMATION: '基本信息',
+  PORT_NUMBER: '端口号',
+  PASSWORD: '密码',
+  LOADING_POINT: '加载点',
   SETTING_CLEAR_CACHE: "清除缓存",
   SETTING_CLEAR_CACHE_SUCCESS: "清除成功",
   DISTANCE_METER: "距离(单位m)",
@@ -2184,6 +2203,12 @@ export const language_cn = {
   INPUT_NUMBER: "请输入数字",
   DISTANCE_LOCATION: "距离定位",
   TIME_LOCATION: "时间定位",
+
+  CHANGE_DEVICE_LOCAL: "已切换到此设备",
+  CHANGE_DEVICE_EXTERNAL: "已切换到网络设备",
+  CHANGE_DEVICE_BLUETOOTH: "已切换到蓝牙设备",
+  SLOCATION_STATE_CURRENT: "定位状态",
+  WEAK_POSITIONING_SIGNAL: "定位信号弱",
 
   // 许可
   LICENSE: "许可",
@@ -2477,8 +2502,8 @@ export const language_cn = {
   PLEASE_SELECT_PLOT_LAYER: "请选择或新建标注图层",
   PLEASE_SELECT_MEDIA_LAYER: "请选择点、CAD和标注图层",
   PLEASE_SELECT_CAD_LAYER: "请选CAD图层",
-  DONOT_SUPPORT_ARCORE: "请安装或升级ARCore",
-  DONOT_SUPPORT_ARENGINE: "请安装或升级AREngine",
+  DONOT_SUPPORT_ARCORE: "当前AR服务不可用,请安装或升级",
+  DEVICE_DOES_NOT_SUPPORT_AR:"当前设备硬件不支持AR功能",
   GET_SUPPORTED_DEVICE_LIST: "获取受支持的设备列表",
   PLEASE_NEW_PLOT_LAYER: "请新建标注图层",
   DOWNLOADING_PLEASE_WAIT: "下载中请稍等",
@@ -2802,6 +2827,7 @@ export const language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "确定输出地图模板？",
 
   SHOW_AR_SCENE_NOTIFY: "显示场景检测提示",
+  SHOW_AR_LABEL: '显示标注结果',
 
   CANT_PICTURE:"无法继续采集，最多可添加9张图片",
 
@@ -2831,6 +2857,7 @@ export const language_cn = {
   THE_LAST: '已经是最后一张了',
 
 
+
   DAYS: '天',
   EXPIRE_DATE: '有效期',
 
@@ -2838,4 +2865,10 @@ export const language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: '在线三维场景不支持分享',
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: '该许可已在其他设备上激活',
+  ATTRIBUTE_MAKE: '属性制作',
+  SAND_TABLE_MAKE: '沙盘制作',
+  PANE_ANIMATION: '窗格动画',
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: '当前对象不支持属性制作',
+  MODEL_DATA: '模型数据',
+
 }

@@ -173,7 +173,7 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   componentDidMount() {
-    this.scrollToLocation({}) // 防止初始化iOS顶部显示RefreshControl空白高度
+    // this.scrollToLocation({}) // 防止初始化iOS顶部显示RefreshControl空白高度
   }
 
   componentDidUpdate(prevProps) {
@@ -362,7 +362,7 @@ export default class LayerAttributeTable extends React.Component {
    * index:    行序号
    * isToggle: 若行已被选中，是否取消被选择状态
    **/
-  setSelected = (index, isToggle = true) => {
+  setSelected = (index, isToggle = true, cb?: () => void) => {
     if (index === undefined || isNaN(index) || index < 0) return
     let _value = this.state.tableData?.[0]?.data?.[index]?.[0]?.value
     if (
@@ -382,6 +382,8 @@ export default class LayerAttributeTable extends React.Component {
 
         selected.set(_value, !target) // toggle
         return { selected }
+      }, () => {
+        cb?.()
       })
     }
 
@@ -611,7 +613,7 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   _renderSectionHeader = ({ section }) => {
-    let titles = section.title
+    let titles = [...section.title]
     if (
       this.props.startIndex >= 0 &&
       titles && titles.length > 0 &&

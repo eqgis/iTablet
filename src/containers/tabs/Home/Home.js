@@ -20,6 +20,7 @@ import {
   SMap,
   SOnlineService,
   SIPortalService,
+  SLocation,
 } from 'imobile_for_reactnative'
 import FileTools from '../../../native/FileTools'
 import ConstPath from '../../../constants/ConstPath'
@@ -1061,14 +1062,25 @@ export default class Home extends Component {
   }
 
   requestPermission = async () => {
-    const results = await PermissionsAndroid.requestMultiple([
+    const permissionList = [
       'android.permission.READ_PHONE_STATE',
       'android.permission.ACCESS_FINE_LOCATION',
       'android.permission.READ_EXTERNAL_STORAGE',
       'android.permission.WRITE_EXTERNAL_STORAGE',
       'android.permission.CAMERA',
       'android.permission.RECORD_AUDIO',
-    ])
+      'android.permission.BLUETOOTH',
+      'android.permission.BLUETOOTH_ADMIN',
+    ]
+    if(Platform.OS === 'android') {
+      const sdkVesion = Platform.Version
+      // android 12 的版本api编号 31 32 android 13的版本api编号 33
+      if(sdkVesion >= 31) {
+        permissionList.push('android.permission.BLUETOOTH_CONNECT')
+        permissionList.push('android.permission.BLUETOOTH_SCAN')
+      }
+    }
+    const results = await PermissionsAndroid.requestMultiple(permissionList)
     let isAllGranted = true
     for (let key in results) {
       isAllGranted = results[key] === 'granted' && isAllGranted

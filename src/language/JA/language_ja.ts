@@ -479,6 +479,8 @@ export const language_ja: typeof language_cn = {
   DELETE_CURRENT_OBJ_CONFIRM: "現在のオブジェクトを削除しますか?",
   NO_SELECTED_OBJ: "選択中のオブジェクトはありません",
 
+  ANIMATION_MANAGEMENT: 'アニメーション管理',
+
   CURRENT: '現在',
   SELECTED: '選択',
   DEFAULT: 'デフォルト',
@@ -547,6 +549,8 @@ export const language_ja: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'オブジェクトを選択してください',
   PLEASE_SELECT_LAYER_OR_OBJECT: "レイヤー、またはオブジェクトを選択してください",
   PLEASE_SELECT_AR_OBJECT_LAYER: "ARオブジェクトレイヤーを選択してください",
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "ARシーンに追加",
 
@@ -964,6 +968,7 @@ export const language_ja: typeof language_cn = {
   ANIMATION_NODE_NAME: "アニメーションノード名",
 
   OPEN_ONLINE_DATA: "オンラインデータを開く",
+  SAVE_ANIMATION_WITH_NAME: "当アニメーションを保存して、他のモデルに使用できます",
 
   PLOT: "進路プロット",
 
@@ -1342,6 +1347,7 @@ export const language_ja: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "平面を検索中",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "ビューポイント距離:",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"離れてください",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"現在の環境は暗すぎます。適切な照明を提供してください",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"デバイスの動きが速すぎます。速度を落としてください",
@@ -2178,6 +2184,19 @@ export const language_ja: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "システムと同様",
   SETTING_LOCATION_DEVICE: "デバイスにポジショニング",
   SETTING_LOCATION_LOCAL: "当デバイス",
+  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
+  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
+  NTRIP_SETTING: "Differential service",  // To be translated
+  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
+  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
+  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
+  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
+  NTRIP_AGREEMENT: 'Protocol',  // To be translated
+  PROTOCOL_TYPE: 'Protocol type',  // To be translated
+  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
+  PORT_NUMBER: 'Port',  // To be translated
+  PASSWORD: 'Password',  // To be translated
+  LOADING_POINT: 'Loading point',  // To be translated
   SETTING_CLEAR_CACHE: "キャッシュのクリア",
   SETTING_CLEAR_CACHE_SUCCESS:"クリアに成功",
   DISTANCE_METER:"距離(m)",
@@ -2185,6 +2204,12 @@ export const language_ja: typeof language_cn = {
   INPUT_NUMBER:"数字を入力してください",
   DISTANCE_LOCATION:"距離測位",
   TIME_LOCATION:"時間測位",
+
+  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
+  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
+  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
+  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
+  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
 
   // ライセンス
   LICENSE: "ライセンス",
@@ -2480,7 +2505,7 @@ export const language_ja: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "ポイント、複合、またはマークレイヤーを選択してください",
   PLEASE_SELECT_CAD_LAYER: "複合レイヤーを選択してください",
   DONOT_SUPPORT_ARCORE: "ARCoreをインストール、または更新してください",
-  DONOT_SUPPORT_ARENGINE: "AREngineをインストール、または更新してください",
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
   GET_SUPPORTED_DEVICE_LIST: "対応しているデバイスのリストを表示",
   PLEASE_NEW_PLOT_LAYER: "新規マークレイヤーを作成しますか",
   DOWNLOADING_PLEASE_WAIT: "ダウンロード中、お待ちください",
@@ -2804,6 +2829,7 @@ export const language_ja: typeof language_cn = {
   CONFIRM_OUTPUT_TEMPLATE: "マップを出力しますか?",
 
   SHOW_AR_SCENE_NOTIFY: "ARシーン検知ヒントの表示",
+  SHOW_AR_LABEL: 'ラベル結果の表示',
 
   CANT_PICTURE:"コレクションを続きません。最高9個の画像は追加できます",
 
@@ -2840,5 +2866,10 @@ export const language_ja: typeof language_cn = {
   ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
 
   LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
+  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
+  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
+  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
+  MODEL_DATA: 'Model data',   // To be tanslated
 
 }

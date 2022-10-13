@@ -194,8 +194,11 @@ export default class AlbumView extends React.PureComponent<Props, State> {
       obj => obj.uri === item.uri,
     )
     const backgroundColor = isSelected ? '#e15151' : 'transparent'
-    const hasIcon =
+    let hasIcon =
       isSelected || this.getSelectedLength() < this.props.route.params.maxSize
+    if(this.props.route.params.maxSize === -1) {
+      hasIcon = true
+    }
     return (
       <TouchableOpacity onPress={() => this._clickCell(item)}>
         <View style={{ padding: 1 }}>
@@ -235,13 +238,20 @@ export default class AlbumView extends React.PureComponent<Props, State> {
   }
 
   _renderBottomView = () => {
-    const okButton =
+    let okButton =
       getLanguage(global.language).Analyst_Labels.ADD +
       ' (' +
       this.getSelectedLength() +
       '/' +
       this.props.route.params.maxSize +
       ')'
+    if(this.props.route.params.maxSize === -1){
+      okButton =
+      getLanguage(global.language).Analyst_Labels.ADD +
+      ' (' +
+      this.getSelectedLength() +
+      ')'
+    }
     return (
       <View style={[styles.bottom]}>
         <TouchableOpacity onPress={this._clickOk}>
@@ -333,7 +343,7 @@ export default class AlbumView extends React.PureComponent<Props, State> {
       this.setState({
         selectedItems: selectedItems,
       })
-    } else if (this.getSelectedLength() >= this.props.route.params.maxSize) {
+    } else if (this.getSelectedLength() >= this.props.route.params.maxSize && this.props.route.params.maxSize !== -1) {
       if (this.props.route.params.maxSize === 1) {
         selectedItems = {
           [this.groupName]: [itemuri],

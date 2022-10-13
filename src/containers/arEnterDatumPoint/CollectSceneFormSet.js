@@ -13,12 +13,12 @@ import { Container } from '../../components'
 import { getThemeAssets } from '../../assets'
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { SMap, SCollectSceneFormView} from 'imobile_for_reactnative'
+import { SMap, SCollectSceneFormView, SARMap} from 'imobile_for_reactnative'
 import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
 import NavigationService from '../../containers/NavigationService'
 import MapSelectPointLatitudeAndLongitude from '../workspace/components/MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
-import { setShowARSceneNotify } from '../../redux/models/setting'
+import { setShowARSceneNotify, setARLabel } from '../../redux/models/setting'
 import { connect } from 'react-redux'
 class CollectSceneFormSet extends Component {
   props: {
@@ -27,7 +27,10 @@ class CollectSceneFormSet extends Component {
     autoCatch: Function,//AR测量等方法调用开启捕捉 add jiakai
     setTolerance: Function,//AR测量等方法设置捕捉容限 add jiakai
     showARSceneNotify: boolean,
+    /** 是否显示标注结果标识 add lyx */
+    showARLabel: boolean,
     setShowARSceneNotify(value: boolean): Promise<void>,
+    setARLabel(value: boolean): Promise<void>,
   }
 
   constructor(props) {
@@ -380,6 +383,38 @@ class CollectSceneFormSet extends Component {
     )
   }
 
+  /**
+   * ar显示标注结果
+   */
+  _renderShowARLabel = () => {
+    return (
+      <View style={{ backgroundColor: color.background }}>
+        <View style={styles.separateLine} />
+        <View style={styles.item}>
+          <Text style={styles.itemtitle}>
+            {getLanguage().Prompt.SHOW_AR_LABEL}
+          </Text>
+
+          <View style={styles.switchItem}>
+
+            <Switch
+              trackColor={{ false: color.bgG, true: color.switch }}
+              thumbColor={color.bgW}
+              ios_backgroundColor={
+                this.props.showARLabel ? color.switch : color.bgG
+              }
+              value={this.props.showARLabel}
+              onValueChange={value => {
+                this.props.setARLabel(value)
+                SARMap.showARLabel(value)
+              }}
+            />
+          </View>
+        </View>
+      </View>
+    )
+  }
+
   renderContent() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: color.background }}>
@@ -392,6 +427,7 @@ class CollectSceneFormSet extends Component {
           {this.autoCatch&&this.state.isSnap&&this.renderSnapTolerance()}
           {!this.collectScene&&!this.isMeasure&&this.renderShowGenera()}
           {this._renderShowToast()}
+          {this._renderShowARLabel()}
         </View>
       </ScrollView>
     )
@@ -416,11 +452,13 @@ class CollectSceneFormSet extends Component {
 
 const mapStateToProps = state => ({
   showARSceneNotify: state.setting.toJS().showARSceneNotify,
+  showARLabel: state.setting.toJS().showARLabel,
 })
 
 
 const mapDispatchToProps = {
   setShowARSceneNotify,
+  setARLabel,
 }
 
 export default connect(

@@ -16,6 +16,7 @@ import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import DataHandler from '../../../../../../utils/DataHandler'
+import { ARAction } from 'imobile_for_reactnative/NativeModule/dataTypes'
 
 interface ListData extends FiltedData {
   title: string,
@@ -233,6 +234,7 @@ async function changeMap(item: ListData) {
         addNewDSourceWhenCreate: false,
       })
       params.setContainerLoading(false)
+      SARMap.setAction(ARAction.NULL)
       Toast.show(getLanguage(params.language).Prompt.SWITCHING_SUCCESS)
       params.setToolbarVisible(false)
     } else {

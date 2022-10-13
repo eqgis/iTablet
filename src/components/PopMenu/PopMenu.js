@@ -49,6 +49,12 @@ const styles = StyleSheet.create({
   },
 })
 
+
+export interface PopMenuItem {
+  title: string,
+  action?: () => void | Promise<void>
+}
+
 const bottomStyle = {
   bottom: 0,
   left: 0,

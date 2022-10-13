@@ -34,6 +34,11 @@ const icon_newdata = require('./icon_newdata.png')
 const icon_toolbar_switch = require('./icon_toolbar_switch.png')
 const icon_mapdata = require('./icon_mapdata.png')
 
+const sandtable_make  = require('./icon_tool_sandtable_make.png')
+const attribute_make = require('./icon_tool_attribute_make.png')
+const ar_pane_annimation  = require('./icon_tool_pane_annimation.png')
+const ar_layer = require('./icon_ar_layer.png')
+
 export default {
   icon_save_line,
   icon_save_spot,
@@ -68,4 +73,8 @@ export default {
   icon_toolbar_switch,
   icon_mapdata,
   icon_ar_edit,
+  sandtable_make,
+  attribute_make,
+  ar_pane_annimation,
+  ar_layer,
 }

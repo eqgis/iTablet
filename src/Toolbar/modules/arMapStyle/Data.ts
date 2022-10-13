@@ -582,6 +582,7 @@ function styleMarkerLineOption(option: IToolbarOption) {
           right: {type: 'indicator', unit: ''},
           range: [0,50],
           increment: 10,
+          upperLimitMaxValue: 100,
           onMove: loc => {
             // 符号线的符号流速
             const layerName = selectARLayer?.name

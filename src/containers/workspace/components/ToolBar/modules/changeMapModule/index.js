@@ -68,6 +68,6 @@ export default function() {
     type: ConstToolType.SM_AR_NAVI,
     title: getLanguage(global.language).Profile.BASEMAP,
     size: 'large',
-    image: getThemeAssets().publicAssets.icon_layer,
+    image: getThemeAssets().mine.my_basemap,
   })
 }

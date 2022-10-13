@@ -17,6 +17,7 @@ import { getLanguage } from '../../../../language/index'
 import NavigationService from '../../../NavigationService'
 import { FileTools } from '../../../../native'
 import { RNFS } from 'imobile_for_reactnative'
+import { getImage } from '@/assets'
 export default class Setting extends Component {
   props: {
     navigation: Object,
@@ -186,7 +187,7 @@ renderCustomAlertDialog = () => {
               // onPress={action}
             >
               <Image
-                source={require('../../../../assets/Mine/mine_my_arrow.png')}
+                source={getImage().arrow}
                 style={{ height: scaleSize(28), width: scaleSize(28) }}
               />
             </View>

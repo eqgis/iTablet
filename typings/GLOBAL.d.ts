@@ -147,6 +147,8 @@ declare global {
   var SimpleDialog: any
   /** AR支持设备提示框 App.js SimpleDialog */
   var ARDeviceListDialog: any
+   /** AR服务状态 1:正常，0:设备不支持 -1:未安装AR服务*/
+  var ARServiceAction: number
   /** 地图界面-地图气泡提示消息 MapView.js BubblePane */
   var bubblePane: any
   /** 地图界面-画图组件（画框：RECTANGLE，画圆：CIRCLE） MapView.js SurfaceView */

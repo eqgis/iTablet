@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { View, Animated } from 'react-native'
 import { MTBtn } from '../../../../components'
-import { Const } from '../../../../constants'
+import { Const, ChunkType, TouchType } from '../../../../constants'
 import { scaleSize, Toast, screen } from '../../../../utils'
 import { getThemeAssets } from '../../../../assets'
 import { SMap, SScene } from 'imobile_for_reactnative'
@@ -292,19 +292,52 @@ export default class MapController extends React.Component {
     //通讯录点击定位和显示位置冲突
     SMap.deleteMarker(global.markerTag)
 
-    SMap.moveToCurrent().then(result => {
-      !result &&
-        Toast.show(getLanguage(global.language).Prompt.OUT_OF_MAP_BOUNDS)
-    })
+    // 将定位位置移动到当前定位
+    const result = await SMap.moveToCurrent()
 
     //{{ 更新地图选点控件 add jiakai
-      let map = await SMap.getCurrentPosition()
-      let point = {
-        x: map.x,
-        y: map.y,
+    let map = await SMap.getCurrentPosition()
+    let point = {
+      x: map.x,
+      y: map.y,
+    }
+
+    if (global.Type === ChunkType.MAP_NAVIGATION){
+      // const point = await SMap.getCurrentPosition()
+
+      // 当触摸状态为 ‘NORMAL’ 且在地图选点页面里面时，点击定位到当前位置起始点位置也跟着变化
+      if(global.TouchType === TouchType.NORMAL
+          && global.MAPSELECTPOINT.state.show
+      ){
+        // 导航采集里选择起始点
+        await SMap.getStartPoint(point.x, point.y, false)
+        global.STARTX = point.x
+        global.STARTY = point.y
+        //显示选点界面的顶部 底部组件
+        global.MAPSELECTPOINT.setVisible(true)
+        global.MAPSELECTPOINTBUTTON.setVisible(true, {
+          button: getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT,
+        })
+        //全幅
+        global.toolBox.showFullMap(true)
+        //导航选点 全屏时保留mapController
+        global.mapController && global.mapController.setVisible(true)
+
+      } else if(global.TouchType === TouchType.NAVIGATION_TOUCH_END) {
+        // 导航采集里选择结束点
+        await SMap.getEndPoint(point.x, point.y, false)
+        global.ENDX = point.x
+        global.ENDY = point.y
       }
-      global.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
-   // }}
+    }
+
+    !result &&
+        Toast.show(
+          getLanguage(global.language).Prompt.OUT_OF_MAP_BOUNDS,
+        )
+
+    global.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
+    // }}
   }
 
   renderCompass = () => {

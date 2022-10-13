@@ -1,26 +1,97 @@
 import FloatBar, { FloatItem } from '@/components/FloatBar'
 import NavigationService from '@/containers/NavigationService'
+import { RootState } from '@/redux/types'
+import { ARAction, SARMap } from 'imobile_for_reactnative'
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import { Animated,  Easing } from 'react-native'
+import { connect, ConnectedProps } from 'react-redux'
 import { ModuleViewProps } from '../..'
 import { getImage } from '../../../assets'
-import { dp } from '../../../utils'
+import { AppToolBar, dp } from '../../../utils'
 import Attribute from './component/Attribute'
+import { AttributeDetail } from './component/LayerAttribute'
+import PipeLineAttribute from './component/pipeLineAttribute'
+import { PipeLineAttributeType } from './component/pipeLineAttribute/PipeLineAttribute'
 
 export interface ARAttributeViewOption {
   attribute: 'null' | 'attribute'
   showLayer: boolean
 }
 
-type Props = ModuleViewProps<ARAttributeViewOption>
+type Props = ModuleViewProps<ARAttributeViewOption> & ReduxProps
 
 class ARAttributeView extends React.Component<Props> {
 
   layerRight = new Animated.Value(-dp(80))
+  detailPopModal: AttributeDetail | null | undefined
 
   constructor(props: Props) {
     super(props)
+    this.props.setPipeLineAttribute([])
+  }
+  componentDidMount = async () => {
+    if(Platform.OS === 'ios'){
+      return
+    }
+    await SARMap.addAttributeListener({
+      callback: async (result: any) => {
+        try {
+          if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT'){
+            return
+          }
+          // console.warn("result01: " + JSON.stringify(result))
+          const arr: Array<PipeLineAttributeType> = []
+          let srcId = ''
+          Object.keys(result).forEach(key => {
+            const item: PipeLineAttributeType = {
+              title: key,
+              value: result[key],
+            }
+
+
+            if (key === 'id') {
+              arr.unshift(item)
+            } else if(key !== 'action') {
+              // 不以sm开头， 或是以下四种情况之一
+              if(key.substring(0,2)!== 'Sm' || key === 'SmID'
+              || key === 'SmLength' || key === 'SmTNode'
+              || key === 'SmEdgeID' || key === 'SmGeoPosition') {
+                arr.push(item)
+              }
+            }
+            // 记录点击管线的唯一id
+            if(key === 'SmID'){
+              srcId =  result[key]
+            }
+          })
+          // 将数据放入redux里
+
+          const prePipeLineAttribute = AppToolBar.getProps().pipeLineAttribute
+          let preSrcId: string | undefined = undefined
+          if(prePipeLineAttribute && prePipeLineAttribute.length > 0){
+            const value = prePipeLineAttribute?.find((element) => {
+              if(element.title === 'SmID') {
+                return element
+              }
+            })
+            preSrcId = value && value.value
+          }
+
+          if(arr.length > 0) {
+            // 若此次点击与上一次点击的是同一个管，就是隐藏，即将数据置为空数组
+            if(preSrcId && preSrcId === srcId) {
+              AppToolBar.getProps().setPipeLineAttribute([])
+            } else {
+              AppToolBar.getProps().setPipeLineAttribute(arr)
+            }
+          }
+
+        } catch (error) {
+          console.error("三维管线监听回调函数出错")
+        }
+      }
+    })
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -70,19 +141,41 @@ class ARAttributeView extends React.Component<Props> {
     )
   }
 
+  renderPipeLineAttribute = () => {
+    return (
+      <PipeLineAttribute/>
+    )
+  }
+
   isPortrait = true
   render() {
     this.isPortrait = this.props.windowSize.height > this.props.windowSize.width
     return(
       <>
-        {this.renderLayer()}
+        {/* {this.renderLayer()} */}
+        {this.renderPipeLineAttribute()}
         {this.props.data?.attribute === 'attribute' && <Attribute  />}
       </>
     )
   }
 }
 
-export default ARAttributeView
+
+// export default ARAttributeView
+
+const mapStateToProp = (state: RootState) => ({
+  device: state.device.toJS().device
+})
+
+const mapDispatch = {
+
+}
+
+type ReduxProps = ConnectedProps<typeof connector>
+const connector = connect(mapStateToProp, mapDispatch)
+
+export default connector(ARAttributeView)
+
 
 const styles = StyleSheet.create({
   settingButton: {

@@ -133,7 +133,7 @@ android {
 //            abiFilters "armeabi-v7a"
             abiFilters "arm64-v8a"
         }
-        applicationId "com.supermap.itablet"
+        applicationId "com.supermap.bjExhibition"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 115

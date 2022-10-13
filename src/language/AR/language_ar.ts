@@ -2277,6 +2277,7 @@ export const language_ar: typeof language_cn = {
   LICENSE_ACTIVATING: "التنشيط",
   LICENSE_ACTIVATION_SUCCESS: "نجح التنشيط",
   LICENSE_ACTIVATION_FAIL: "فشل التنشيط",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
   LICENSE_SELECT_LICENSE: "اختار الترخيص",
   LICENSE_REAMIN_DAYS: "الأيام المتبقية",
   LICENSE_SHOW_DETAIL: "إظهار التفاصيل",

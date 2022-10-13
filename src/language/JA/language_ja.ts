@@ -2262,6 +2262,7 @@ export const language_ja: typeof language_cn = {
   LICENSE_ACTIVATING: "アクティブ中",
   LICENSE_ACTIVATION_SUCCESS: "アクティブに成功",
   LICENSE_ACTIVATION_FAIL: "アクティブに失敗",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
   LICENSE_SELECT_LICENSE: "ライセンスの選択",
   LICENSE_REAMIN_DAYS: "残り",
   LICENSE_SHOW_DETAIL: "詳細の表示",

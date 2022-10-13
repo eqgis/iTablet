@@ -2261,6 +2261,7 @@ export const language_fr: typeof language_cn = {
   LICENSE_ACTIVATING: "Activation",
   LICENSE_ACTIVATION_SUCCESS: "Activer avec succès",
   LICENSE_ACTIVATION_FAIL: "Activation échouée",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
   LICENSE_SELECT_LICENSE: "Sélectionnez la licence",
   LICENSE_REAMIN_DAYS: "Jours restants",
   LICENSE_SHOW_DETAIL: "Afficher les détails",

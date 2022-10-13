@@ -73,7 +73,7 @@ export default class MyOnlineMap extends Component {
         return
       }
       this._showLoadProgressView()
-      let objDataJson = await FetchUtils.getObjJson(uri)
+      let objDataJson = await FetchUtils.getObjJson(uri, 10000)
       let arrDataItemServices = objDataJson.dataItemServices
       if (arrDataItemServices === undefined) {
         this._showInfo('资源不存在或无权访问')
@@ -90,10 +90,12 @@ export default class MyOnlineMap extends Component {
         if (restUrl === undefined || restUrl === '') {
           this._showInfo('数据没有发布服务')
         } else {
-          let subUrl = restUrl.substring(5, restUrl.length)
-          restUrl = 'https' + subUrl + '/maps.json'
-          let arrMapJson = await FetchUtils.getObjJson(restUrl)
-          if (arrMapJson.errorMsg !== undefined) {
+          // let subUrl = restUrl.substring(5, restUrl.length)
+          restUrl = restUrl + '/maps.json'
+          let arrMapJson = await FetchUtils.getObjJson(restUrl, 10000)
+          if (arrMapJson.errorMsg?.indexOf('timeout') >= 0) {
+            this._showInfo(getLanguage().REQUEST_TIMEOUT)
+          } else if (arrMapJson.errorMsg !== undefined) {
             this._showInfo('数据没有公开已有服务，无权限浏览')
           } else {
             let arrMapInfos = []

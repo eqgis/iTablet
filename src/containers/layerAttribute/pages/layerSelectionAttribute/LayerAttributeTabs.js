@@ -161,7 +161,6 @@ export default class LayerAttributeTabs extends React.Component {
     this.currentTabRefs = []
     this.init = !!selectionAttribute
     this.backClicked = false
-    this.canRelate = true
   }
 
   async componentDidMount() {
@@ -584,10 +583,9 @@ export default class LayerAttributeTabs extends React.Component {
       if (
         this.state.currentTabIndex >= this.currentTabRefs.length &&
         !this.currentTabRefs[this.state.currentTabIndex]
-        || !this.canRelate
       )
         return
-      this.canRelate = false
+      this.setLoading(true, getLanguage().LOADING)
       let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
           .layerSelection.layerInfo.path,
         selection = this.currentTabRefs[this.state.currentTabIndex].getSelection()
@@ -643,7 +641,6 @@ export default class LayerAttributeTabs extends React.Component {
           // TODO 选中对象跳转到地图
           // this.props.navigation && this.props.navigation.navigate('MapView')
           // NavigationService.navigate('MapView')
-          this.props.navigation.goBack()
           global.toolBox &&
             global.toolBox.setVisible(
               true,
@@ -651,6 +648,10 @@ export default class LayerAttributeTabs extends React.Component {
               {
                 isFullScreen: false,
                 // height: 0,
+                cb: () => {
+                  this.props.navigation.goBack()
+                  this.setLoading(false)
+                }
               },
             )
           global.toolBox && global.toolBox.showFullMap()
@@ -665,11 +666,10 @@ export default class LayerAttributeTabs extends React.Component {
               y: data[0].y,
             })
           }
-          this.canRelate = true
         })
       })
     } catch (error) {
-      this.canRelate = true
+      this.setLoading(false)
     }
   }
 

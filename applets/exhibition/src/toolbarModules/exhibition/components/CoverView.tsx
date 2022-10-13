@@ -13,6 +13,7 @@ interface Props {
 
 interface State {
   showScan: boolean
+  showCover: boolean
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -23,7 +24,8 @@ class CoverView extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      showScan: true,
+      showScan: false,
+      showCover: false,
     }
   }
 
@@ -136,15 +138,20 @@ class CoverView extends React.Component<Props, State> {
 
   cover = () => {
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-    SARMap.startARCover(layer.name)
+    if(layer){
+      SARMap.startARCover(layer.name)
+    }
   }
 
-  back = () => {
+  back = async () => {
     AppEvent.removeListener('ar_image_tracking_result')
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
-    SARMap.close()
+    // SARMap.close()
+    const props = AppToolBar.getProps()
+    await props.closeARMap()
+    await props.setCurrentARLayer()
     AppToolBar.goBack()
   }
 
@@ -177,29 +184,153 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 
-  renderCover = () => {
+  renderLocation = () => {
     return (
-      <TouchableOpacity
+      <View
         style={{
           position: 'absolute',
-          top: dp(20),
-          right: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(25),
+          top: dp(100),
+          right: dp(10),
+          width: dp(50),
+          height: dp(50),
+          borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor: 'white',
         }}
-        onPress={this.cover}
       >
-        <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
-          source={getImage().icon_cover}
-        />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+          onPress={()=>{
+            if(this.state.showScan){
+              this.setState({showScan: false})
+            }else{
+              this.setState({showScan: true})
+            }
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_cover}
+          />
+        </TouchableOpacity>
+
+        <Text
+          style={{
+            fontSize:10,
+          }}
+        >
+          {'定位'}
+        </Text>
+      </View>
     )
   }
+
+  renderWindow = () => {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          top: dp(160),
+          right: dp(10),
+          width: dp(50),
+          height: dp(50),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor: 'white',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+          onPress={()=>{
+            if(this.state.showCover){
+              this.setState({showCover:false})
+            }else{
+              const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+              if(layer){
+                this.setState({showCover:true})
+              }
+            }
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_window}
+          />
+        </TouchableOpacity>
+
+        <Text
+          style={{
+            fontSize:10,
+          }}
+        >
+          {'视口模式'}
+        </Text>
+      </View>
+    )
+  }
+
+  renderCover = () => {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          top: dp(160),
+          right: dp(70),
+          width: dp(50),
+          height: dp(50),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor: 'white',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+          onPress={()=>{
+            this.setState({showCover:false})
+            this.cover()
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_tool_rectangle}
+          />
+        </TouchableOpacity>
+
+        <Text
+          style={{
+            fontSize:10,
+          }}
+        >
+          {'立方体'}
+        </Text>
+      </View>
+    )
+  }
+
 
   renderScan = () => {
     const isPortrait = this.props.windowSize.width < this.props.windowSize.height
@@ -278,7 +409,9 @@ class CoverView extends React.Component<Props, State> {
       <>
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
-        {this.renderCover()}
+        {this.renderLocation()}
+        {this.renderWindow()}
+        {this.state.showCover && this.renderCover()}
       </>
     )
   }

@@ -144,6 +144,11 @@ class CoverView extends React.Component<Props, State> {
   }
 
   back = async () => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SARMap.stopARCover(layer.name)
+    }
+
     AppEvent.removeListener('ar_image_tracking_result')
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
@@ -186,7 +191,7 @@ class CoverView extends React.Component<Props, State> {
 
   renderLocation = () => {
     return (
-      <View
+      <TouchableOpacity
         style={{
           position: 'absolute',
           top: dp(100),
@@ -199,8 +204,15 @@ class CoverView extends React.Component<Props, State> {
           overflow: 'hidden',
           backgroundColor: 'white',
         }}
+        onPress={()=>{
+          if(this.state.showScan){
+            this.setState({showScan: false})
+          }else{
+            this.setState({showScan: true})
+          }
+        }}
       >
-        <TouchableOpacity
+        <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -208,19 +220,12 @@ class CoverView extends React.Component<Props, State> {
             width: dp(30),
             height: dp(30),
           }}
-          onPress={()=>{
-            if(this.state.showScan){
-              this.setState({showScan: false})
-            }else{
-              this.setState({showScan: true})
-            }
-          }}
         >
           <Image
             style={{ position: 'absolute', width: '100%', height: '100%' }}
             source={getImage().icon_cover}
           />
-        </TouchableOpacity>
+        </View>
 
         <Text
           style={{
@@ -229,13 +234,13 @@ class CoverView extends React.Component<Props, State> {
         >
           {'定位'}
         </Text>
-      </View>
+      </TouchableOpacity>
     )
   }
 
   renderWindow = () => {
     return (
-      <View
+      <TouchableOpacity
         style={{
           position: 'absolute',
           top: dp(160),
@@ -248,8 +253,18 @@ class CoverView extends React.Component<Props, State> {
           overflow: 'hidden',
           backgroundColor: 'white',
         }}
+        onPress={()=>{
+          if(this.state.showCover){
+            this.setState({showCover:false})
+          }else{
+            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+            if(layer){
+              this.setState({showCover:true})
+            }
+          }
+        }}
       >
-        <TouchableOpacity
+        <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -257,22 +272,12 @@ class CoverView extends React.Component<Props, State> {
             width: dp(30),
             height: dp(30),
           }}
-          onPress={()=>{
-            if(this.state.showCover){
-              this.setState({showCover:false})
-            }else{
-              const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-              if(layer){
-                this.setState({showCover:true})
-              }
-            }
-          }}
         >
           <Image
             style={{ position: 'absolute', width: '100%', height: '100%' }}
             source={getImage().icon_window}
           />
-        </TouchableOpacity>
+        </View>
 
         <Text
           style={{
@@ -281,13 +286,13 @@ class CoverView extends React.Component<Props, State> {
         >
           {'视口模式'}
         </Text>
-      </View>
+      </TouchableOpacity>
     )
   }
 
   renderCover = () => {
     return (
-      <View
+      <TouchableOpacity
         style={{
           position: 'absolute',
           top: dp(160),
@@ -300,8 +305,12 @@ class CoverView extends React.Component<Props, State> {
           overflow: 'hidden',
           backgroundColor: 'white',
         }}
+        onPress={()=>{
+          this.setState({showCover:false})
+          this.cover()
+        }}
       >
-        <TouchableOpacity
+        <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -309,16 +318,12 @@ class CoverView extends React.Component<Props, State> {
             width: dp(30),
             height: dp(30),
           }}
-          onPress={()=>{
-            this.setState({showCover:false})
-            this.cover()
-          }}
         >
           <Image
             style={{ position: 'absolute', width: '100%', height: '100%' }}
             source={getImage().icon_tool_rectangle}
           />
-        </TouchableOpacity>
+        </View>
 
         <Text
           style={{
@@ -327,7 +332,7 @@ class CoverView extends React.Component<Props, State> {
         >
           {'立方体'}
         </Text>
-      </View>
+      </TouchableOpacity>
     )
   }
 

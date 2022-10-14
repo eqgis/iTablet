@@ -10,10 +10,14 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
+  UIManager,
+  findNodeHandle,
 } from 'react-native'
 import { ImageButton, Row, Header, PopModal } from '../../../../components'
 import { Toast, scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import KeyboardScrollView from '../../../../components/KeyboardScrollView'
 
 import styles from './styles'
 import { color } from '../../../../styles'
@@ -396,6 +400,11 @@ export default class LayerAttributeAdd extends React.Component {
         type={Row.Type.INPUT_WRAP}
         title={defaultValueTile}
         getValue={this.getInputValue}
+        onFocus={(event) => {
+          UIManager.measure(findNodeHandle(event.target),(x,y,width,height,pageX,pageY)=>{
+            this.ScrollView?.setPageY(pageY + height)
+          })
+        }}
       />
     )
   }
@@ -456,10 +465,9 @@ export default class LayerAttributeAdd extends React.Component {
 
   renderRows = () => {
     return (
-      <ScrollView
-        style={styles.rows}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
+      <KeyboardScrollView
+        ref={ref => (this.ScrollView = ref)}
+        scrollViewstyle ={styles.rows}
       >
         <Row
           style={{ marginTop: scaleSize(30) }}
@@ -524,7 +532,7 @@ export default class LayerAttributeAdd extends React.Component {
           getValue={this.getType}
         />
         {this.renderDefaultValue()}
-      </ScrollView>
+      </KeyboardScrollView>
     )
   }
 

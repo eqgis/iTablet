@@ -71,6 +71,7 @@ import Dialog2 from './Dialog2'
 import InputDialog2 from './InputDialog2'
 import FloatBar from './FloatBar'
 import CustomModal from './CustomModal'
+import keyboardScrollView from './KeyboardScrollView'
 
 export {
   Container,
@@ -155,4 +156,5 @@ export {
   InputDialog2,
   FloatBar,
   CustomModal,
+  keyboardScrollView,
 }

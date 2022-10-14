@@ -108,7 +108,7 @@ export default class CreateNavDataPage extends Component {
     } else {
       Toast.show(getLanguage(global.language).Prompt.NO_DATASOURCE)
       setTimeout(() => {
-        this.dialog.setDialogVisible(true, {
+        this.dialog?.setDialogVisible(true, {
           title: getLanguage(global.language).Map_Main_Menu.NEW_DATASOURCE,
           value: 'default_roadnet_datasource',
           confirmBtnTitle: getLanguage(global.language).CONFIRM,

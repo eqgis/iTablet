@@ -5,7 +5,6 @@ import React from 'react'
 import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from './Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
-import { ConstPath } from '@/constants'
 
 interface Props {
   windowSize: ScaledSize
@@ -24,12 +23,13 @@ class CoverView extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      showScan: false,
+      showScan: true,
       showCover: false,
     }
   }
 
   componentDidMount(): void {
+    SARMap.setAREnhancePosition()
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
@@ -341,10 +341,34 @@ class CoverView extends React.Component<Props, State> {
     const isPortrait = this.props.windowSize.width < this.props.windowSize.height
     const width = Math.min(this.props.windowSize.width, this.props.windowSize.height)
     const height = Math.max(this.props.windowSize.width, this.props.windowSize.height)
+    const isLargeScreen = width > 400 //平板
 
-    const space = width * 0.3 / 2
+    const scanSize = dp(300)
 
-    const position = width * 0.7 / 2 + height / 2 + dp(40)
+    let space: number
+    let position: number
+    let maxWidth: number
+
+    const positionLargeLand = width / 2 + scanSize / 2 + dp(40)
+    const positionLargePortrait = height / 2 + scanSize / 2 + dp(40)
+    const postionSmallLand = width * 0.7 / 2 + width / 2 + dp(40)
+    const postionSmallPortrait = width * 0.7 / 2 + height / 2 + dp(40)
+
+    const spaceLarge = width - scanSize / 2
+    const spaceSmall = width * 0.3 / 2
+
+    const maxWidthLarge = (height / 2- scanSize / 2 ) * 0.9
+    const maxWidthSmall = (height / 2- width * 0.7 / 2 ) * 0.9
+
+    if(isLargeScreen) {
+      space = spaceLarge
+      position = isPortrait ? positionLargePortrait : positionLargeLand
+      maxWidth = maxWidthLarge
+    } else {
+      space = spaceSmall
+      position = isPortrait ? postionSmallPortrait : postionSmallLand
+      maxWidth = maxWidthSmall
+    }
 
     let style : ViewStyle = {
       position: 'absolute',
@@ -359,7 +383,7 @@ class CoverView extends React.Component<Props, State> {
       style = {
         position: 'absolute',
         flex: 1,
-        maxWidth: (height / 2- width * 0.7 / 2 ) * 0.9,
+        maxWidth: maxWidth,
         alignItems: 'center',
         top: width / 2,
         right: 0,
@@ -371,8 +395,9 @@ class CoverView extends React.Component<Props, State> {
         <Scan
           ref={ref => this.scanRef = ref}
           windowSize={this.props.windowSize}
-          auto={false}
-          color='red' />
+          scanSize={scanSize}
+          color='red'
+        />
 
         <View
           style={style}
@@ -384,7 +409,7 @@ class CoverView extends React.Component<Props, State> {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={this.startScan}
+            // onPress={this.startScan}
           >
             <Image
               style={{ position: 'absolute', width: '100%', height: '100%' }}
@@ -412,11 +437,11 @@ class CoverView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        {this.state.showScan && this.renderScan()}
-        {this.renderBack()}
         {this.renderLocation()}
         {this.renderWindow()}
         {this.state.showCover && this.renderCover()}
+        {this.state.showScan && this.renderScan()}
+        {this.renderBack()}
       </>
     )
   }

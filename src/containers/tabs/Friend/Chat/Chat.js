@@ -945,7 +945,7 @@ class Chat extends React.Component {
             this.showImportDataDialog('aimodel', message)
             break
           case MSGConstant.MSG_TEMPLATE_PLOT:
-            this.showImportDataDialog('plot', message)
+            this.showImportDataDialog('plotting', message)
             break
           case MSGConstant.MSG_TEMPLATE_MAP:
             this.showImportDataDialog('xml_template', message)
@@ -1380,7 +1380,7 @@ class Chat extends React.Component {
           } else if (type === 10) {
             this.onSendFile(MSGConstant.MSG_ARMODAL, value, fileName)
           } else if (type === 11) {
-            const msgType = tempType === 'plot' ? MSGConstant.MSG_TEMPLATE_PLOT : MSGConstant.MSG_TEMPLATE_MAP
+            const msgType = tempType === 'plotting' ? MSGConstant.MSG_TEMPLATE_PLOT : MSGConstant.MSG_TEMPLATE_MAP
             this.onSendFile(msgType, value, fileName)
           }
         }}

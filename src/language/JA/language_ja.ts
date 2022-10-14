@@ -258,7 +258,7 @@ export const language_ja: typeof language_cn = {
   CONVERT_SUCCESS: "変換に成功しました",
   CONVERT_FAILED: "変換に失敗しました",
   ARITHMETIC: "アルゴリズム",
-  COORDSYS:"座標系",
+  COORDSYS: "座標系",
 
   ///  毫米。
   MILIMETER: "ミリメートル",
@@ -460,10 +460,10 @@ export const language_ja: typeof language_cn = {
   PROTOCOL: "SuperMapサービス規約",
   AGREE: "同意",
   READ_AND_AGREE: "閲読済み、同意",
-  AGAIN:"もう一度確認",
-  EXIT_APP:"アプリケーションを終了",
-  REMINDER:"リマインダー",
-  AGREEMENT:"弊社は個人情報の保護を非常に重要視し、「個人情報保護方針」に厳密に従ってあなたの個人情報を保護および処理することを約束します。あなたがこのポリシーに同意しない場合、残念ながら、サービスを提供することはできません",
+  AGAIN: "もう一度確認",
+  EXIT_APP: "アプリケーションを終了",
+  REMINDER: "リマインダー",
+  AGREEMENT: "弊社は個人情報の保護を非常に重要視し、「個人情報保護方針」に厳密に従ってあなたの個人情報を保護および処理することを約束します。あなたがこのポリシーに同意しない場合、残念ながら、サービスを提供することはできません",
 
   UP: "上",
   DOWN: "下",
@@ -549,8 +549,8 @@ export const language_ja: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'オブジェクトを選択してください',
   PLEASE_SELECT_LAYER_OR_OBJECT: "レイヤー、またはオブジェクトを選択してください",
   PLEASE_SELECT_AR_OBJECT_LAYER: "ARオブジェクトレイヤーを選択してください",
-  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
-  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3Dパイプライン属性はスタイルがありません",
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3Dパイプライン属性を編集できません",
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "ARシーンに追加",
 
@@ -917,16 +917,16 @@ export const language_ja: typeof language_cn = {
   REPORT: "レポート",
   SENDING: "送信中",
   REPORT_SUCCESS: "レポート送信成功",
-  PRIVATE_REPORT:"プライベートレポート",
+  PRIVATE_REPORT: "プライベートレポート",
 
   INAPPROPRIATE: "不適切なコンテンツです",
   ADVERTISING: "スパム広告、偽物の販売など",
   PORNOGRAPHIC: "ポルノ",
   ILLEGAL: "違法、犯罪",
   INFORMATION: "この情報は真実ではありません",
-  MINOR:"未成年関連",
-  SUSPECTED:"詐欺の疑い",
-  EMBEZZLED:"このアカウントは盗まれた可能性があります",
+  MINOR: "未成年関連",
+  SUSPECTED: "詐欺の疑い",
+  EMBEZZLED: "このアカウントは盗まれた可能性があります",
 
   MAP_EDIT: "マップ表示",
   MODULE_3D: "シーン表示",
@@ -1305,7 +1305,7 @@ export const language_ja: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA: "ARポリゴン描画",
   MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT: "ARドローポイント",
   MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT: "高さ計測",
-  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME:"体積計測",
+  MAP_AR_AI_ASSISTANT_MEASURE_VOLUME: "体積計測",
   MAP_AR_VIDEO: "動画", //jp0730
   MAP_AR_IMAGE: "画像",
   MAP_AR_EFFECT: "特殊効果",
@@ -1348,10 +1348,10 @@ export const language_ja: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "ビューポイント距離:",
 
   MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
-  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"離れてください",
-  MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"現在の環境は暗すぎます。適切な照明を提供してください",
-  MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"デバイスの動きが速すぎます。速度を落としてください",
-  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE:"現在の平面の特徴点が少なくなっています。引き続き電話を動かしてください",
+  MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE: "離れてください",
+  MAP_AR_AI_ASSISTANT_LAYOUT_DARK: "現在の環境は暗すぎます。適切な照明を提供してください",
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAST: "デバイスの動きが速すぎます。速度を落としてください",
+  MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE: "現在の平面の特徴点が少なくなっています。引き続き電話を動かしてください",
 
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOTALLENGTH: "総長さ:",
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_TOLASTLENGTH: "現在長さ:",
@@ -1361,7 +1361,7 @@ export const language_ja: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_START: "レコードを開始",
   MAP_AR_AI_ASSISTANT_SCENE_FORM_COLLECT_STOP: "レコードを一時停止",
   MAP_AR_AI_ASSISTANT_SAVE_SUBSTANCE: "体",
-  MAP_AR_AI_ASSISTANT_SAVE_AEREA:"ポリゴン",
+  MAP_AR_AI_ASSISTANT_SAVE_AEREA: "ポリゴン",
   MAP_AR_AI_ASSISTANT_SAVE_LINE: "ライン",
   MAP_AR_AI_ASSISTANT_SAVE_POINT: "ポイント",
   MAP_AR_AI_ASSISTANT_SAVE_TEXT: "テキスト",
@@ -1482,29 +1482,29 @@ export const language_ja: typeof language_cn = {
   MAP_LOAD_XML: "ロード",
 
   ATTRIBUTE_ALBUM: "画像アルバム",
-  VIDEO_ALBUM:"映像アルバム",
+  VIDEO_ALBUM: "映像アルバム",
   MAPBROCHORE: "マップアルバム",
-  CHOOSE_MAP:"マップ選択",
-  SANDTABLE_ALBUM:"サンドテーブルアルバム",
-  CHOOSE_SANDTABLE:"サンドテーブルの選択",
-  TITLE:'タイトル',
-  BACKGROUND:'背景',
-  ARRAY:'配置',
-  TEXT_SHAPE:'形状',
-  BOLD:'太字',
-  TILT:'斜体',
-  UNDERLINE:'下線',
-  STRIKETHROUGH:'取り消し線',
-  SHADOW:'影付き',
-  FILLCOLOR:'フィルカラー',
-  RELATIONSHIP:'関係',
-  LIST:'リスト',
-  LOOP:'ループ',
+  CHOOSE_MAP: "マップ選択",
+  SANDTABLE_ALBUM: "サンドテーブルアルバム",
+  CHOOSE_SANDTABLE: "サンドテーブルの選択",
+  TITLE: 'タイトル',
+  BACKGROUND: '背景',
+  ARRAY: '配置',
+  TEXT_SHAPE: '形状',
+  BOLD: '太字',
+  TILT: '斜体',
+  UNDERLINE: '下線',
+  STRIKETHROUGH: '取り消し線',
+  SHADOW: '影付き',
+  FILLCOLOR: 'フィルカラー',
+  RELATIONSHIP: '関係',
+  LIST: 'リスト',
+  LOOP: 'ループ',
   COLOR: '色',
   OPACITY: '透明度',
   BORDER_WIDTH: 'ボーダー幅',
   BORDER_COLOR: 'ボーダー色',
-  VISIBLE_DISTANCE:'表示距離',
+  VISIBLE_DISTANCE: '表示距離',
   SECONDS_TO_PLAY: '維持時間',
   TEXT_OPACITY: 'テキスト透明度',
   TEXT_COLOR: 'テキストカラー',
@@ -1516,7 +1516,7 @@ export const language_ja: typeof language_cn = {
   LINE_WIDTH: 'ライン幅',
   LINE_POINT_SIZE: '頂点サイズ',
   BUTTON_TEXT_SIZE: 'ボタンサイズ',
-  LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
+  LINE_POINT_ADD_SUCCESSED: 'ライン頂点の追加に成功しました',
 
   BAR_CHART: '棒グラフ',
   HISTOGRAM_ATTRIBUTE: 'ヒストグラム属性',
@@ -1640,8 +1640,8 @@ export const language_ja: typeof language_cn = {
   LAYER_MOVEUP_FAIL: '上に移動するのに失敗しました',
   LAYER_MOVEDOWN_SUCCESS: '下に移動するのに成功しました',
   LAYER_MOVEDOWN_FAIL: '下に移動するのに失敗しました',
-  FIRST_EFFECT_LAYER: 'Layer is First effect layer',  // To be translated
-  LAST_EFFECT_LAYER: 'Layer is last effect layer',  // To be translated
+  FIRST_EFFECT_LAYER: 'レイヤーは既に最上にあります',
+  LAST_EFFECT_LAYER: 'レイヤーは既に最下にあります',
 
   VISIBLE: "レイヤーを表示に設定",
   NOT_VISIBLE: "レイヤーを非表示に設定",
@@ -1961,31 +1961,31 @@ export const language_ja: typeof language_cn = {
 
   // 我的  提示语
   MY_GUIDE: "「データ」をインポートした後\n、ホームページモジュールで開いて表示できます",
-  MY_GUIDE_KNOW:"了解しました",
+  MY_GUIDE_KNOW: "了解しました",
   MY_GUIDE_SLIDE: "上にスライドして詳細を表示",
-  MY_GUIDE_SLIDE_LAND:"左にスライドして詳細を表示",
-  EFFECT_GUIDE:"AR特殊効果をシーンに追加",
-  LAUNCH_GUIDE:"ビデオ、テキスト、写真、Webページ、その他の情報をシーンに入れる",
-  MEASURE_GUIDE:"距離、高さ、および面積を測定する",
-  MY_GUIDE_NEXT:"次へ",
-  MY_GUIDE_SKIP:"スキップ",
-  ANALYST_GUIDE:"ネットワーク解析、ベクトル解析などを実行できます",
-  PROCESS_GUIDE:"幾何補正、投影変換などを実行できます",
-  CHOOSE_TYPE:"プット情報のタイプを選択してください",
-  CHOOSE_MEASURE_TYPE:"測定タイプを選択してください",
-  SELECT_DATASET:"「チェック」してデータセットを追加します",
-  ADD_SELECT_DATASET:"データを追加",
-  MOVE_BROWSING:"左右に移動して完全な情報を閲覧する",
-  ADD_THEME_DATA:"1.主題図データを追加",
-  CHOOSE_THEME_TYPE:"2.主題図タイプを選択",
-  CHANGE_THEME_STYLE:"3.主題図スタイルを選択",
-  START_COLLECT:"1.テンプレートに基づいて、フィールドマップを作成",
-  CHOOSE_COLLECT:"2.シンボルを選択",
-  EDIT_COLLECT:"3.フィールドデータを編集",
-  MAP_BROWSE:"マップを開く",
-  MAP_TAGGINGL:"マーク方式を選択",
-  SCENE_BROWSE:"シーンを開き",
-  SCENE_FLY:"飛行ルートを設定",
+  MY_GUIDE_SLIDE_LAND: "左にスライドして詳細を表示",
+  EFFECT_GUIDE: "AR特殊効果をシーンに追加",
+  LAUNCH_GUIDE: "ビデオ、テキスト、写真、Webページ、その他の情報をシーンに入れる",
+  MEASURE_GUIDE: "距離、高さ、および面積を測定する",
+  MY_GUIDE_NEXT: "次へ",
+  MY_GUIDE_SKIP: "スキップ",
+  ANALYST_GUIDE: "ネットワーク解析、ベクトル解析などを実行できます",
+  PROCESS_GUIDE: "幾何補正、投影変換などを実行できます",
+  CHOOSE_TYPE: "プット情報のタイプを選択してください",
+  CHOOSE_MEASURE_TYPE: "測定タイプを選択してください",
+  SELECT_DATASET: "「チェック」してデータセットを追加します",
+  ADD_SELECT_DATASET: "データを追加",
+  MOVE_BROWSING: "左右に移動して完全な情報を閲覧する",
+  ADD_THEME_DATA: "1.主題図データを追加",
+  CHOOSE_THEME_TYPE: "2.主題図タイプを選択",
+  CHANGE_THEME_STYLE: "3.主題図スタイルを選択",
+  START_COLLECT: "1.テンプレートに基づいて、フィールドマップを作成",
+  CHOOSE_COLLECT: "2.シンボルを選択",
+  EDIT_COLLECT: "3.フィールドデータを編集",
+  MAP_BROWSE: "マップを開く",
+  MAP_TAGGINGL: "マーク方式を選択",
+  SCENE_BROWSE: "シーンを開き",
+  SCENE_FLY: "飛行ルートを設定",
 
   // 我的——登录
   LOGIN: "ログイン",
@@ -2034,7 +2034,7 @@ export const language_ja: typeof language_cn = {
 
   SWITCH_ACCOUNT: "アカウントの切替",
   LOG_OUT: "ログアウト",
-  CANCELLATION:"キャンセル",
+  CANCELLATION: "キャンセル",
 
   SWITCH: "切替",
   SWITCH_CURRENT: "現在ユーザーを使用中、切替できません",
@@ -2051,7 +2051,7 @@ export const language_ja: typeof language_cn = {
   MY_SERVICE: "サービス",
   PRIVATE_SERVICE: "プライベートサービス",
   PUBLIC_SERVICE: "パブリックサービス",
-  NO_MAP_SERVICE:"サービスに表示できるマップはありません",
+  NO_MAP_SERVICE: "サービスに表示できるマップはありません",
 
   INVALID_SERVER_ADDRESS: "無効なサービスアドレス",
 
@@ -2130,7 +2130,7 @@ export const language_ja: typeof language_cn = {
   PRIVACY_POLICY: "プライバシーポリシー",
   HELP_MANUAL: "ヘルプ",
   NOVICE_GUIDE: "開始ガイド",
-  START_GUIDE:"ガイドを使用",
+  START_GUIDE: "ガイドを使用",
 
   MAP_ONLINE: "オンラインマップ",
   MAP_2D: "2Dマップ",
@@ -2184,32 +2184,32 @@ export const language_ja: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "システムと同様",
   SETTING_LOCATION_DEVICE: "デバイスにポジショニング",
   SETTING_LOCATION_LOCAL: "当デバイス",
-  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
-  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
-  NTRIP_SETTING: "Differential service",  // To be translated
-  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
-  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
-  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
-  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
-  NTRIP_AGREEMENT: 'Protocol',  // To be translated
-  PROTOCOL_TYPE: 'Protocol type',  // To be translated
-  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
-  PORT_NUMBER: 'Port',  // To be translated
-  PASSWORD: 'Password',  // To be translated
-  LOADING_POINT: 'Loading point',  // To be translated
+  SETTING_LOCATION_EXTERNAL: "ネットワークデバイス",
+  SETTING_LOCATION_BLUETOOTH: "ブルートゥース",
+  NTRIP_SETTING: "差分サービス",
+  DEVICE_INFORMATION_SETTING: 'デバイス情報の設定',
+  INSTRUMENT_MANUFACTURER: 'デバイスメーカ',
+  INSTRUMENT_TYPE: 'デバイスタイプ',
+  BLUETOOTH_DEVICE_LIST: 'ブルートゥースデバイスリスト',
+  NTRIP_AGREEMENT: 'プロトコル',
+  PROTOCOL_TYPE: 'プロトコルタイプ',
+  ESSENTIAL_INFORMATION: '基本情報',
+  PORT_NUMBER: 'ポート',
+  PASSWORD: 'パスワード',
+  LOADING_POINT: 'ポイントのロード',
   SETTING_CLEAR_CACHE: "キャッシュのクリア",
-  SETTING_CLEAR_CACHE_SUCCESS:"クリアに成功",
-  DISTANCE_METER:"距離(m)",
-  TIME:"時間(s)",
-  INPUT_NUMBER:"数字を入力してください",
-  DISTANCE_LOCATION:"距離測位",
-  TIME_LOCATION:"時間測位",
+  SETTING_CLEAR_CACHE_SUCCESS: "クリアに成功",
+  DISTANCE_METER: "距離(m)",
+  TIME: "時間(s)",
+  INPUT_NUMBER: "数字を入力してください",
+  DISTANCE_LOCATION: "距離測位",
+  TIME_LOCATION: "時間測位",
 
-  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
-  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
-  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
-  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
-  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
+  CHANGE_DEVICE_LOCAL: "当デバイスに切替",
+  CHANGE_DEVICE_EXTERNAL: "ネットワークデバイスに切替",
+  CHANGE_DEVICE_BLUETOOTH: "ブルートゥースデバイスに切替",
+  SLOCATION_STATE_CURRENT: "測位状態",
+  WEAK_POSITIONING_SIGNAL: "測位信号は弱いです",
 
   // ライセンス
   LICENSE: "ライセンス",
@@ -2427,7 +2427,7 @@ export const language_ja: typeof language_cn = {
   REQUEST_PERMISSION: "権限の申請",
 
   COMPLETE: "完了",
-  INSTALL:"インストール",
+  INSTALL: "インストール",
 
   OPENING: "いま開いています",
 
@@ -2483,7 +2483,7 @@ export const language_ja: typeof language_cn = {
   TURN_ON: "はい",
   CREATE_FAILED: "作成に失敗",
   INVALID_DATASET_NAME: "データセット名は無効で、または存在します",
-  SAVE_FAIL_POINT:"無効なポイントセットの長さ、1以上に設定してください",
+  SAVE_FAIL_POINT: "無効なポイントセットの長さ、1以上に設定してください",
   SAVE_LINE_FAIL: "無効なポイントセットの長さ、2以上に設定してください ",
   SAVE_REGION_FAIL: "無効なポイントセットの長さ、3以上に設定してください",
 
@@ -2506,7 +2506,7 @@ export const language_ja: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "ポイント、複合、またはマークレイヤーを選択してください",
   PLEASE_SELECT_CAD_LAYER: "複合レイヤーを選択してください",
   DONOT_SUPPORT_ARCORE: "ARCoreをインストール、または更新してください",
-  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
+  DEVICE_DOES_NOT_SUPPORT_AR: "当デバイスはARをサポートしません",
   GET_SUPPORTED_DEVICE_LIST: "対応しているデバイスのリストを表示",
   PLEASE_NEW_PLOT_LAYER: "新規マークレイヤーを作成しますか",
   DOWNLOADING_PLEASE_WAIT: "ダウンロード中、お待ちください",
@@ -2516,9 +2516,9 @@ export const language_ja: typeof language_cn = {
   CHOOSE_LAYER: "選択レイヤー",
 
   COLLECT_SUCCESS: "コレクションに成功",
-  LONG_PRESS_SELECT_POINT: "Long press to select point",
-  LONG_PRESS_END_POINT: "Long press to select the end point",
-  LONG_PRESS_START_POINT: "Long press to select the starting point",
+  LONG_PRESS_SELECT_POINT: "長押ししてポイントを選択",
+  LONG_PRESS_END_POINT: "長押しして終了ポイントを選択",
+  LONG_PRESS_START_POINT: "長押しして開始ポイントを選択",
 
   SELECT_TWO_MEDIAS_AT_LEAST: "少なくとも2つのメディアファイルを選択してください",
   DELETE_OBJ_WITHOUT_MEDIA_TIPS: "当オブジェクトにメディアファイルはありません。削除しますか?",
@@ -2552,11 +2552,11 @@ export const language_ja: typeof language_cn = {
   PUBLISH_FAILED: "配信に失敗",
   PUBLISH_FAILED_INFO_1: "当サービスは配信されています",
   PUBLISH_FAILED_INFO_2: "サービス更新中、操作できません",
-  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
-  UNPUBLISH: "Unpublish", // need to translate
-  UNPUBLISHING: "Unpublishing", // need to translate
-  UNPUBLISH_SUCCESS: "Unpublished", // need to translate
-  UNPUBLISH_FAILED: "Failed to Unpublish", // need to translate
+  PUBLISH_FAILED_INFO_3: "配信サービスのクオータは足りません",
+  UNPUBLISH: "配信キャンセル",
+  UNPUBLISHING: "配信キャンセル中",
+  UNPUBLISH_SUCCESS: "配信キャンセルに成功しました",
+  UNPUBLISH_FAILED: "配信キャンセルに失敗しました",
   SERVICE_SUBMIT_BEFORE_UPDATE: "サービスを更新後で、サブミットしてください",
   DELETE_CONFIRM: "現在データを削除しますか？",
   BATCH_DELETE_CONFIRM: "現在の選択データを削除しますか？",
@@ -2648,7 +2648,7 @@ export const language_ja: typeof language_cn = {
   POI: "POI",
   WIDGET: "ウィジェット",
 
-  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
+  PLEASE_SELECT_FIRST: "まずデータを選択してください",
 
   ILLEGAL_DATA: "データは無効です",
 
@@ -2755,7 +2755,7 @@ export const language_ja: typeof language_cn = {
   DATASOURCE_RENAME_FAILED: "データソース名はアルファベット、数字、「_」、「@」、「＃」で構成することが必要です",
   SWITCH_LINE: "データの切替",
   HAS_NO_ROADNAME_FIELD_DATA: "道路名フィールド情報を選択されていないデータセットがあります",
-  NOT_LONGITUDE:"選択データの座標系は地理座標系ではありません。変換してください",
+  NOT_LONGITUDE: "選択データの座標系は地理座標系ではありません。変換してください",
   MERGE_SUCCESS: "マージに成功しました",
   MERGE_FAILD: "マージに失敗しました",
   NOT_SUPPORT_PRJCOORDSYS: "以下のデータセットの座標系はマージをサポートしていません",
@@ -2766,13 +2766,13 @@ export const language_ja: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "ファイルは既に存在しています。ファイル名を再入力してください",
   NETWORK_BUILDING: "ネットワーク作成中...",
   ROADNET_BUILD_SUCCESS: "道路ネットワークの作成に成功しました",
-  ROADNET_BUILD_FAILED: "Failed built",//to be translate
+  ROADNET_BUILD_FAILED: "作成に失敗しました",
   SELECT_LINE_SMOOTH: "スムーズネスラインを選択してください",
   SELECT_A_POINT_INLINE: "ライン上にあるポイントを選択してください",
-  SELECT_POINT_INCURRENTLINE:"切断するためのライン上にあるポイントを選択してください",
-  SELECT_LINE_WITH_INTERRUPT:"切断するラインを選択してください",
-  SELECT_LINE_EXTENSION:"延長するラインを選択してください",
-  SELECT_LINE_TO_TRIM:"トリミングするラインを選択してください",
+  SELECT_POINT_INCURRENTLINE: "切断するためのライン上にあるポイントを選択してください",
+  SELECT_LINE_WITH_INTERRUPT: "切断するラインを選択してください",
+  SELECT_LINE_EXTENSION: "延長するラインを選択してください",
+  SELECT_LINE_TO_TRIM: "トリミングするラインを選択してください",
   LINE_DATASET: "ラインデータセット",
   DESTINATION_DATASOURCE: "目標データソース",
   SMOOTH_FACTOR: "スムーズ係数を入力してください",
@@ -2791,7 +2791,7 @@ export const language_ja: typeof language_cn = {
   ONLY_INTEGER: "整数を入力してください",
   ONLY_INTEGER_GREATER_THAN_2: "２より大きい整数を入力してください",
   PARAMS_ERROR: "パラメタエラー、設定に失敗しました！",
-  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
+  ONLY_POSITIVE_INTEGER: "正整数しか入力できません!",
 
   SPEECH_TIP: "使用可能語句：\n\"拡大\"、\"縮小\"、\"ポジショニング\"、\"閉じる\"",
   SPEECH_ERROR: "識別に異常が発生します。後で再度試してください。",
@@ -2832,7 +2832,7 @@ export const language_ja: typeof language_cn = {
   SHOW_AR_SCENE_NOTIFY: "ARシーン検知ヒントの表示",
   SHOW_AR_LABEL: 'ラベル結果の表示',
 
-  CANT_PICTURE:"コレクションを続きません。最高9個の画像は追加できます",
+  CANT_PICTURE: "コレクションを続きません。最高9個の画像は追加できます",
 
   BOOLEAN: "ブール型",
   BYTE: "バイト型",
@@ -2848,9 +2848,9 @@ export const language_ja: typeof language_cn = {
 
   SLIDE_RATIO: 'スライド係数',
 
-  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
+  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: '現在オブジェクトはAR属性をサポートしません',
 
-  LICENSE_STAFF_TRIAL_APPLY: "Apply staff license",  // to be translated
+  LICENSE_STAFF_TRIAL_APPLY: "スタッフライセンスの申請",
 
   INPUT_TEXT: 'テキストを入力してください',
   INPUT_URL: 'URLを入力してください',
@@ -2860,16 +2860,16 @@ export const language_ja: typeof language_cn = {
   THE_LAST: '最後の画像',
 
 
-  DAYS: 'day(s)',  // to be translated
-  EXPIRE_DATE: 'Expire date',  // to be translated
+  DAYS: '日(s)',
+  EXPIRE_DATE: '有効期限',
 
-  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
-  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+  OPEN_3D_SCENE: 'まずシーンを開いてください',
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'オンランシーンは共有できません',
 
-  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
-  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
-  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
-  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: '当ライセンスは他のデバイスでアクティブされました',
+  ATTRIBUTE_MAKE: 'Attribute to make',
+  SAND_TABLE_MAKE: 'サンドテーブルの作成',
+  PANE_ANIMATION: 'ペインのアニメーション',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
 

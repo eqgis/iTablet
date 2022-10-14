@@ -549,8 +549,8 @@ export const language_en: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Please select objects',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Please select a layer or objects",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Please select the AR object layer",
-  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
-  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "The attributes of 3D pipelines have no styles",
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "The attributes of 3D pipelines are not editable",
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Add the attribute table to AR scene",
 
@@ -1496,7 +1496,7 @@ export const language_en: typeof language_cn = {
   LIST:'List',
   LOOP:'Loop',
   COLOR: 'Color',
-  OPACITY: 'Opacity',
+  OPACITY: 'Opactiy',
   BORDER_WIDTH: 'Border Width',
   BORDER_COLOR: 'Border Color',
   VISIBLE_DISTANCE:'Visible Distance',
@@ -1636,8 +1636,8 @@ export const language_en: typeof language_cn = {
   LAYER_MOVEDOWN_SUCCESS: 'Movedown success',
   LAYER_MOVEDOWN_FAIL: 'Movedown fail',
 
-  FIRST_EFFECT_LAYER: 'Layer is First effect layer',  // To be translated
-  LAST_EFFECT_LAYER: 'Layer is last effect layer',  // To be translated
+  FIRST_EFFECT_LAYER: 'The layer is at the top',
+  LAST_EFFECT_LAYER: 'The layer is at the bottom',
 
 
   VISIBLE: "Visible",
@@ -2181,20 +2181,20 @@ export const language_en: typeof language_cn = {
   SETTING_LANGUAGE: "Language",
   SETTING_LANGUAGE_AUTO: "Auto",
   SETTING_LOCATION_DEVICE: "Location Device",
-  SETTING_LOCATION_LOCAL: "This device",
-  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
-  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
-  NTRIP_SETTING: "Differential service",  // To be translated
-  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
-  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
-  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
-  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
-  NTRIP_AGREEMENT: 'Protocol',  // To be translated
-  PROTOCOL_TYPE: 'Protocol type',  // To be translated
-  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
-  PORT_NUMBER: 'Port',  // To be translated
-  PASSWORD: 'Password',  // To be translated
-  LOADING_POINT: 'Loading point',  // To be translated
+  SETTING_LOCATION_LOCAL: "This Device",
+  SETTING_LOCATION_EXTERNAL: "Network Device",
+  SETTING_LOCATION_BLUETOOTH: "Bluetooth",
+  NTRIP_SETTING: "DiffServ",
+  DEVICE_INFORMATION_SETTING: 'Set Device',
+  INSTRUMENT_MANUFACTURER: 'Manufacturer',
+  INSTRUMENT_TYPE: 'Type',
+  BLUETOOTH_DEVICE_LIST: 'Bluetooth List',
+  NTRIP_AGREEMENT: 'Protocol',
+  PROTOCOL_TYPE: 'Protocol Type',
+  ESSENTIAL_INFORMATION: 'Basic Info',
+  PORT_NUMBER: 'Port',
+  PASSWORD: 'Password',
+  LOADING_POINT: 'Load Point',
   SETTING_CLEAR_CACHE: "Clear Cache",
   SETTING_CLEAR_CACHE_SUCCESS:"Cleared",
   DISTANCE_METER:"Distance(m)",
@@ -2203,11 +2203,11 @@ export const language_en: typeof language_cn = {
   DISTANCE_LOCATION:"Position by Distance",
   TIME_LOCATION:"Position by Time",
 
-  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
-  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
-  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
-  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
-  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
+  CHANGE_DEVICE_LOCAL: "Switched to this device", 
+  CHANGE_DEVICE_EXTERNAL: "Switched to the network device",
+  CHANGE_DEVICE_BLUETOOTH: "Switched to the Bluetooth device",
+  SLOCATION_STATE_CURRENT: "Positioning Status",
+  WEAK_POSITIONING_SIGNAL: "Low Signal",
 
   // 许可
   LICENSE: "License",
@@ -2355,7 +2355,7 @@ export const language_en: typeof language_cn = {
   MAR_AR_QR_INVALID: "Failed to recognize the code information",
   MAP_AR_ENHANCE_POSITION: 'AR Location',
   MAP_AR_DATUM_MANUAL_LOCATION: "Manual position",
-  MAP_AR_DATUM_GPS_LOCATION: "GPS position",
+  MAP_AR_DATUM_GPS_LOCATION: "GPS postion",
   ALIGN_LOCATOR_CODE: 'Please align the locator code',
   CALIBRATION_TIMEOUT: 'Calibration timeout',
   CALIBRATION_SUCCESSFUL: 'Calibration successful',
@@ -2504,7 +2504,7 @@ export const language_en: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Please select a point, CAD or plot layer",
   PLEASE_SELECT_CAD_LAYER: "Please select a CAD layer",
   DONOT_SUPPORT_ARCORE: "Please install or upgrade ARCore",
-  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
+  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support for AR",
   GET_SUPPORTED_DEVICE_LIST: "Get the list of supportive devices",
   PLEASE_NEW_PLOT_LAYER: "Please create a new plot layer",
   DOWNLOADING_PLEASE_WAIT: "Please wait a minute",
@@ -2550,7 +2550,7 @@ export const language_en: typeof language_cn = {
   PUBLISH_FAILED: "Failed to publish",
   PUBLISH_FAILED_INFO_1: "The service has been published",
   PUBLISH_FAILED_INFO_2: "The service is being published and cannot be operated at this time",
-  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
+  PUBLISH_FAILED_INFO_3: "There are no more times to publish services",
   UNPUBLISH: "Unpublish",
   UNPUBLISHING: "Unpublishing",
   UNPUBLISH_SUCCESS: "Unpublished",
@@ -2646,7 +2646,7 @@ export const language_en: typeof language_cn = {
   POI: "POI",
   WIDGET: "Widget",
 
-  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
+  PLEASE_SELECT_FIRST:"Please select data first",
 
   ILLEGAL_DATA: "Valid Data",
 
@@ -2764,7 +2764,7 @@ export const language_en: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "The file already exists, please re-enter the file name",
   NETWORK_BUILDING: "Building...",
   ROADNET_BUILD_SUCCESS: "Successfully built",
-  ROADNET_BUILD_FAILED: "Failed built",//to be translate
+  ROADNET_BUILD_FAILED: "Since the dataset is null, the application failed to build road network",
   SELECT_LINE_SMOOTH: "Please select the line that needs to be smoothed",
   SELECT_A_POINT_INLINE: "Please select an online point",
   SELECT_POINT_INCURRENTLINE:"Please long press to select a point at which the line will be split",
@@ -2789,7 +2789,7 @@ export const language_en: typeof language_cn = {
   ONLY_INTEGER: "Only integers can be entered!",
   ONLY_INTEGER_GREATER_THAN_2: "Only integers greater than 2 can be entered!",
   PARAMS_ERROR: "Params error! Failed to set!",
-  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
+  ONLY_POSITIVE_INTEGER: "Please enter a positive integer.",
 
   SPEECH_TIP: "You may say:\n'Zoom in'，'Zoom out'，'Locate'，'Close',\n 'Search' or any Address",
   SPEECH_ERROR: "Recognize error, please try again later",
@@ -2846,9 +2846,9 @@ export const language_en: typeof language_cn = {
 
   SLIDE_RATIO: 'Sliding Coefficient',
 
-  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
+  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'The element does not support for AR attribute',
 
-  LICENSE_STAFF_TRIAL_APPLY: "Apply staff license",  // to be translated
+  LICENSE_STAFF_TRIAL_APPLY: "Apply for a staff license",
 
   INPUT_TEXT: 'Please input text',
   INPUT_URL: 'Please input URL',
@@ -2860,13 +2860,13 @@ export const language_en: typeof language_cn = {
   DAYS: 'day(s)',
   EXPIRE_DATE: 'Expire date',
 
-  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
-  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+  OPEN_3D_SCENE: 'Please open 3D scene first',
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'An online 3D scene could not be shared',
 
-  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
-  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
-  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
-  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already been activated on another device',
+  ATTRIBUTE_MAKE: 'Create Attribute',
+  SAND_TABLE_MAKE: 'Create Sandtable',
+  PANE_ANIMATION: 'Pane Animation',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
 

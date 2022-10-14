@@ -144,6 +144,10 @@ class CoverView extends React.Component<Props, State> {
   }
 
   back = async () => {
+    if(this.state.showScan) {
+      this.setState({showScan: false})
+      return
+    }
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
       SARMap.stopARCover(layer.name)

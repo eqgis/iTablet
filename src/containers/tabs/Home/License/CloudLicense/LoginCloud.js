@@ -173,6 +173,10 @@ class LoginCloud extends Component {
         // ios 登录云许可,需要重新登录账号,覆盖cookie,才能正常使用fetch请求
         await AccountUtils.login(this.props.user.currentUser)
         return true
+      } else if (result.indexOf('Wrong user name and password') >= 0) {
+        // Login Failed:Wrong user name and password
+        Toast.show(getLanguage(global.language).Prompt.INCORRECT_USER_INFO)
+        SMap.logoutCloudLicense()
       } else {
         Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
         SMap.logoutCloudLicense()

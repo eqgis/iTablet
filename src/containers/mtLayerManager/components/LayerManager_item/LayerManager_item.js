@@ -338,31 +338,31 @@ export default class LayerManager_item extends React.Component {
   _longPress = (ref) => {
     if (this.props.onLongPress) {
       const popoverData = this._showPopover(ref, this.state.data)
-      if (this.PressViewPosition !== undefined) {
+      // if (this.PressViewPosition !== undefined) {
+      //   this.props.onLongPress({
+      //     data: this.state.data,
+      //     parentData: this.props.parentData,
+      //     popoverData: popoverData,
+      //     ...this.PressViewPosition,
+      //   })
+      // } else {
+      // 设置菜单的显示的位置坐标
+      ref?.measure((ox, oy, width, height, px, py) => {
+        this.PressViewPosition = {
+          width,
+          height,
+          px,
+          py,
+        }
+
         this.props.onLongPress({
           data: this.state.data,
           parentData: this.props.parentData,
           popoverData: popoverData,
           ...this.PressViewPosition,
         })
-      } else {
-        // 设置菜单的显示的位置坐标
-        ref?.measure((ox, oy, width, height, px, py) => {
-          this.PressViewPosition = {
-            width,
-            height,
-            px,
-            py,
-          }
-          
-          this.props.onLongPress({
-            data: this.state.data,
-            parentData: this.props.parentData,
-            popoverData: popoverData,
-            ...this.PressViewPosition,
-          })
-        })
-      }
+      })
+      // }
       // await SMap.setLayerEditable(this.state.data.path, true)
     } else return
   }

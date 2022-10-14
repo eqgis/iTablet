@@ -256,7 +256,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="CoworkTabs" options={modalOption(params)} >
         {() => CoworkTabs(params.device)}
       </Stack.Screen>
-      <Stack.Screen name="MapViewSingle" component={MapView} />
+      <Stack.Screen name="MapViewSingle" component={MapView} options={modalOption(params)}/>
       <Stack.Screen name="MapSetting" component={MapSetting} options={modalOption(params)}/>
       <Stack.Screen name="Map3DSetting" component={Map3DSetting} options={modalOption(params)}/>
       <Stack.Screen name="CoworkMember" component={CoworkMember} options={modalOption(params)} />

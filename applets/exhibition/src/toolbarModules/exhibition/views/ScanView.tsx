@@ -1,7 +1,7 @@
 import { AppToolBar, dp } from '@/utils'
 import React from 'react'
 import { EmitterSubscription, Image, ScaledSize, TouchableOpacity } from 'react-native'
-import Scan from './Scan'
+import Scan from '../components/Scan'
 import { getImage } from '../../../assets'
 import { SARMap } from 'imobile_for_reactnative'
 

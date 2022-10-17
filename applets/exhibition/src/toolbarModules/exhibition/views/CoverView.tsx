@@ -3,7 +3,7 @@ import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import Scan from './Scan'
+import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
 
 interface Props {

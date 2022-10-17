@@ -4,7 +4,7 @@ import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Animated, Easing, EmitterSubscription, Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from './Scan'
-import { FileTools, SARMap } from 'imobile_for_reactnative'
+import { FileTools, SARMap, SExhibition } from 'imobile_for_reactnative'
 import { ConstPath } from '@/constants'
 
 interface Props {
@@ -40,12 +40,12 @@ class PresentationView extends React.Component<Props, State> {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
         Toast.show('请按照箭头引导转动屏幕查看地图集')
-        SARMap.startExhibition()
+        SExhibition.startExhibition()
         this._startMoveArrow()
         SARMap.loadUnityScene()
       }
     })
-    this.event = SARMap.addExhibitionTargetPositionChangeListener(mode => {
+    this.event = SExhibition.addExhibitionTargetPositionChangeListener(mode => {
       if(this.state.targetPosition === 0 && mode !== 0) {
         this._startMoveArrow()
       }
@@ -71,11 +71,15 @@ class PresentationView extends React.Component<Props, State> {
   }
 
   back = () => {
+    if(this.state.showScan) {
+      this.setState({showScan: false})
+      return
+    }
     AppEvent.removeListener('ar_image_tracking_result')
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
-    SARMap.endExhibition()
+    SExhibition.endExhibition()
     this.event?.remove()
     SARMap.close()
     SARMap.unloadUnityScene()
@@ -202,7 +206,6 @@ class PresentationView extends React.Component<Props, State> {
           ref={ref => this.scanRef = ref}
           windowSize={this.props.windowSize}
           scanSize={scanSize}
-          auto={false}
           color='red'
         />
 
@@ -216,7 +219,7 @@ class PresentationView extends React.Component<Props, State> {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={this.startScan}
+            // onPress={this.startScan}
           >
             <Image
               style={{ position: 'absolute', width: '100%', height: '100%' }}

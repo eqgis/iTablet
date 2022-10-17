@@ -2,8 +2,8 @@ import React from 'react'
 import { ModuleViewProps } from '@/Toolbar'
 import Home from './components/Home'
 import PresentationView from './components/PresentationView'
-import ScanView from './components/ScanView'
-import CoverView from './components/CoverView'
+import ScanView from './views/ScanView'
+import CoverView from './views/CoverView'
 
 export interface ExhibitionViewOption {
   page: 'home' //首页

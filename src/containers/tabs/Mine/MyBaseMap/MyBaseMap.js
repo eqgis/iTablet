@@ -35,28 +35,28 @@ export default class MyBaseMap extends Component {
       //'底图',
       modalIsVisible: false,
       isRefreshing: false,
-      curUserBaseMaps: this.getCommonBaseMap(),
+      curUserBaseMaps: [],
     }
-    // 根据当前用户id获取当前用户的底图数组
-    this.curUserBaseMaps = this.props.baseMaps[
-      this.props.user.currentUser.userId
-    ]
-    // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
-    if (!this.curUserBaseMaps) {
-      this.curUserBaseMaps = this.props.baseMaps['default']
-    }
-    //仅获取用户自定义底图 zhangxt
-    this.curUserBaseMaps = this.curUserBaseMaps.filter(item => {
-      return item.userAdd
-    })
-    //添加公共底图 zhangxt
-    this.curUserBaseMaps = this.getCommonBaseMap().concat(this.curUserBaseMaps)
-    let count = this.curUserBaseMaps.length
-    // 矫正当前用户底图数组里元素的index的值，让index的值与他的位置保持相同
-    for (let i = 0; i < count; i++) {
-      this.curUserBaseMaps[i].index = i
-    }
-    this.setState({curUserBaseMaps: this.curUserBaseMaps})
+    // // 根据当前用户id获取当前用户的底图数组
+    // this.curUserBaseMaps = this.props.baseMaps[
+    //   this.props.user.currentUser.userId
+    // ]
+    // // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
+    // if (!this.curUserBaseMaps) {
+    //   this.curUserBaseMaps = this.props.baseMaps['default']
+    // }
+    // //仅获取用户自定义底图 zhangxt
+    // this.curUserBaseMaps = this.curUserBaseMaps.filter(item => {
+    //   return item.userAdd
+    // })
+    // //添加公共底图 zhangxt
+    // this.curUserBaseMaps = this.getCommonBaseMap().concat(this.curUserBaseMaps)
+    // let count = this.curUserBaseMaps.length
+    // // 矫正当前用户底图数组里元素的index的值，让index的值与他的位置保持相同
+    // for (let i = 0; i < count; i++) {
+    //   this.curUserBaseMaps[i].index = i
+    // }
+    // this.setState({curUserBaseMaps: this.curUserBaseMaps})
     this.uploadList = []
   }
 
@@ -92,6 +92,7 @@ export default class MyBaseMap extends Component {
       curUserBaseMaps = this.props.baseMaps['default']
     }
     let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
+    console.warn(arrPublishServiceList)
     let listResult = []
     // 当公有服务列表数组有元素时，就遍历这个数组
     if (arrPublishServiceList.length > 0) {
@@ -109,6 +110,7 @@ export default class MyBaseMap extends Component {
         }
       }
     }
+    console.warn(listResult)
     if(listResult.length <= 0) {
       listResult = this.getCommonBaseMap()
     }

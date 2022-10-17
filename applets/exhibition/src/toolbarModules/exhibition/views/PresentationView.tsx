@@ -3,7 +3,7 @@ import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Animated, Easing, EmitterSubscription, Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import Scan from './Scan'
+import Scan from '../components/Scan'
 import { FileTools, SARMap, SExhibition } from 'imobile_for_reactnative'
 import { ConstPath } from '@/constants'
 

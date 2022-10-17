@@ -5,6 +5,10 @@ const scan_net = require('./scan_net.png')
 const ar_scan = require('./img-icon-ar_scan.png')
 const ar_przt = require('./img-icon-ar_presentation.png')
 const ar_infra = require('./img-icon-ar_infrastructure.png')
+const ar_dr_supermap = require('./ar_dr_supermap.png')
+const ar_3d_map = require('./ar_3d_map.png')
+const ar_flat_map = require('./ar_flat_map.png')
+const ar_supermap_building = require('./ar_supermap_building.png')
 const background_red = require('./background_red.png')
 const background_transparent = require('./background_transparent.png')
 const scan_circle_red = require('./scan_circle_red.png')
@@ -34,6 +38,10 @@ const image = {
   icon_cover,
   icon_window,
   icon_tool_rectangle,
+  ar_dr_supermap,
+  ar_3d_map,
+  ar_flat_map,
+  ar_supermap_building,
 }
 
 function getImage(): typeof image {

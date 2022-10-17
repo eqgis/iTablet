@@ -22,7 +22,19 @@ export function getData(key: ModuleList['EXHIBITION']): IToolbarOption {
       option.moduleData.page = 'show'
       break
     case 'EXHIBITION_INFRA':
-      option.moduleData.page = 'infa'
+      option.moduleData.page = 'infra'
+      break
+    case 'EXHIBITION_DR_SUPERMAP':
+      option.moduleData.page = 'dr_supermap'
+      break
+    case 'EXHIBITION_SUPERMAP_BUILDING':
+      option.moduleData.page = 'supermap_building'
+      break
+    case 'EXHIBTION_AR_3D_MAP':
+      option.moduleData.page = 'ar_3d_map'
+      break
+    case 'EXHIBITION_FLAT_MAP':
+      option.moduleData.page = 'flat'
       break
   }
 

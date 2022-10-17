@@ -53,30 +53,70 @@ class Home extends React.Component<Props, State> {
 
   getItems = (): Item[]  => {
     return [
+      // {
+      //   image: getImage().ar_przt,
+      //   title: 'AR展示',
+      //   desc: '实景窗口投放虚拟内容，与投放内容进行互动',
+      //   action: () => {
+      //     AppToolBar.show('EXHIBITION', 'EXHIBITION_PRESENTATION')
+      //   }
+      // },
+      // {
+      //   image: getImage().ar_infra,
+      //   title: 'AR隐蔽设施',
+      //   desc: '查看地下、墙面、屋顶等隐蔽管线',
+      //   action: () => {
+      //     AppToolBar.show('EXHIBITION', 'EXHIBITION_INFRA')
+      //   }
+      // },
+      // {
+      //   image: getImage().ar_scan,
+      //   title: 'AR识别',
+      //   desc: 'AR扫一扫，图片内容增强显示',
+      //   action: () => {
+      //     AppToolBar.show('EXHIBITION', 'EXHIBITION_SCAN')
+      //   }
+      // },
       {
-        image: getImage().ar_przt,
-        title: 'AR展示',
-        desc: '实景窗口投放虚拟内容，与投放内容进行互动',
+        image: getImage().ar_dr_supermap,
+        title: 'AR超超博士',
+        desc: '虚拟人物互动，一件换装，合影留念',
         action: () => {
-          AppToolBar.show('EXHIBITION', 'EXHIBITION_PRESENTATION')
+          AppToolBar.show('EXHIBITION', 'EXHIBITION_DR_SUPERMAP')
         }
       },
       {
         image: getImage().ar_infra,
-        title: 'AR隐蔽设施',
-        desc: '查看地下、墙面、屋顶等隐蔽管线',
+        title: 'AR室内管线',
+        desc: '地下、墙面、屋顶隐蔽管线浏览',
         action: () => {
           AppToolBar.show('EXHIBITION', 'EXHIBITION_INFRA')
         }
       },
       {
-        image: getImage().ar_scan,
-        title: 'AR识别',
-        desc: 'AR扫一扫，图片内容增强显示',
+        image: getImage().ar_supermap_building,
+        title: 'AR超图大厦',
+        desc: '建筑立体模型浏览、剖切，灯效显示',
         action: () => {
-          AppToolBar.show('EXHIBITION', 'EXHIBITION_SCAN')
+          AppToolBar.show('EXHIBITION', 'EXHIBITION_SUPERMAP_BUILDING')
         }
       },
+      {
+        image: getImage().ar_3d_map,
+        title: 'AR立体地图',
+        desc: '立体地图交互浏览，车辆模拟',
+        action: () => {
+          AppToolBar.show('EXHIBITION', 'EXHIBTION_AR_3D_MAP')
+        }
+      },
+      {
+        image: getImage().ar_flat_map,
+        title: 'AR平面地图',
+        desc: '二维地图浏览、配图、分析、查询',
+        action: () => {
+          AppToolBar.show('EXHIBITION', 'EXHIBITION_FLAT_MAP')
+        }
+      }
     ]
   }
 

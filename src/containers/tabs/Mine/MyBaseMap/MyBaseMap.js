@@ -92,7 +92,6 @@ export default class MyBaseMap extends Component {
       curUserBaseMaps = this.props.baseMaps['default']
     }
     let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
-    console.warn(arrPublishServiceList)
     let listResult = []
     // 当公有服务列表数组有元素时，就遍历这个数组
     if (arrPublishServiceList.length > 0) {
@@ -110,7 +109,6 @@ export default class MyBaseMap extends Component {
         }
       }
     }
-    console.warn(listResult)
     if(listResult.length <= 0) {
       listResult = this.getCommonBaseMap()
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ModuleViewProps } from '@/Toolbar'
-import Home from './components/Home'
+import Home from './views/Home'
 import PresentationView from './views/PresentationView'
 import ScanView from './views/ScanView'
 import CoverView from './views/CoverView'

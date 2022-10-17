@@ -1,6 +1,6 @@
 import { getImage } from '../../../assets'
 import React from 'react'
-import { Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { AppStyle, AppToolBar, dp } from '@/utils'
 import { Easing } from 'react-native'
@@ -229,12 +229,15 @@ class Home extends React.Component<Props, State> {
 
   renderStatic = () => {
     return (
-      <View>
-        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+      <View style={{paddingHorizontal: dp(10)}}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
           {this.getItems().map((item, index) => {
             return this.renderLItem(item, index)
           })}
-        </View>
+        </ScrollView>
       </View>
     )
   }

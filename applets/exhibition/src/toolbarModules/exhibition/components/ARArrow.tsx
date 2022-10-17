@@ -17,6 +17,10 @@ class ARArrow extends React.Component<unknown, State> {
 
   constructor(props: unknown) {
     super(props)
+
+    this.state = {
+      targetPosition: 0
+    }
   }
 
   componentDidMount(): void {
@@ -43,7 +47,7 @@ class ARArrow extends React.Component<unknown, State> {
   }
 
   renderArrow = () => {
-    if(this.state.targetPosition == 0) return
+    if(this.state.targetPosition == 0) return null
     const move = this.moveValue.interpolate({
       inputRange: [0, 1],
       outputRange: [0, this.state.targetPosition === 1 ? -dp(30) : dp(30)]

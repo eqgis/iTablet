@@ -1,5 +1,5 @@
 import { ARAnimatorWithID } from "@/redux/models/aranimation"
-import { ARAnimatorType, ARElementType } from "imobile_for_reactnative/NativeModule/dataTypes"
+import { ARAnimatorType, ARElementType, ARNodeAnimatorType } from "imobile_for_reactnative/NativeModule/dataTypes"
 import { SARMap } from "imobile_for_reactnative"
 import { ARAnimatorSettingParam } from "./component/AnimatorParamSetting"
 import { AppToolBar } from "@/utils"
@@ -53,7 +53,16 @@ export async function onEditARAnimation(animator: ARAnimatorWithID) {
       animator.elementID
     )
   }
-  // arAnimatorSettingParam = initArAnimatorSettingParam()
+
+  arAnimatorSettingParam = initArAnimatorSettingParam()
+  // element.id和element.layerName必须要设置，不然原生找不到动画的对象
+  if(animator.type === ARAnimatorType.MODEL_TYPE
+    || animator.type === ARAnimatorType.NODE_TYPE
+  ){
+    arAnimatorSettingParam.element.layerName = animator.layerName
+    arAnimatorSettingParam.element.id = animator.elementID
+  }
+
   arAnimatorSettingParam.arModelAnimations = animations
   arAnimatorSettingParam.editAnimator = animator
 

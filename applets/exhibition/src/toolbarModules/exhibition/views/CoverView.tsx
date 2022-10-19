@@ -5,6 +5,7 @@ import React from 'react'
 import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
+import { Slider } from 'imobile_for_reactnative/components'
 
 interface Props {
   windowSize: ScaledSize
@@ -13,18 +14,21 @@ interface Props {
 interface State {
   showScan: boolean
   showCover: boolean
+  showSlider:boolean
 }
 
 class CoverView extends React.Component<Props, State> {
-
+  currentRadius = 1
+  currentDepth = 1
   scanRef: Scan | null = null
 
   constructor(props: Props) {
     super(props)
 
     this.state = {
-      showScan: true,
+      showScan: false,
       showCover: false,
+      showSlider: false,
     }
   }
 
@@ -33,7 +37,7 @@ class CoverView extends React.Component<Props, State> {
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
-        this.setState({showScan: false})
+        this.setState({showScan: false })
         this.openARModel()
         Toast.show('定位成功')
       }
@@ -140,6 +144,13 @@ class CoverView extends React.Component<Props, State> {
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
       SARMap.startARCover(layer.name)
+    }
+  }
+
+  fix = () => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SARMap.startARFix(layer.name)
     }
   }
 
@@ -294,13 +305,13 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 
-  renderCover = () => {
+  renderCancel = () => {
     return (
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(160),
-          right: dp(70),
+          top: dp(220),
+          right: dp(10),
           width: dp(50),
           height: dp(50),
           borderRadius: dp(10),
@@ -310,7 +321,55 @@ class CoverView extends React.Component<Props, State> {
           backgroundColor: 'white',
         }}
         onPress={()=>{
-          this.setState({showCover:false})
+          if(this.state.showSlider){
+            this.setState({ showSlider: false })
+            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+            if (layer) {
+              SARMap.stopARCover(layer.name)
+            }
+          }
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_cancel}
+          />
+        </View>
+
+        <Text
+          style={{
+            fontSize:10,
+          }}
+        >
+          {'退出裁剪'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderCover = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          width: dp(50),
+          height: dp(50),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor: 'white',
+        }}
+        onPress={()=>{
+          this.setState({showCover:false,showSlider:true})
           this.cover()
         }}
       >
@@ -335,6 +394,49 @@ class CoverView extends React.Component<Props, State> {
           }}
         >
           {'立方体'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderFix = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          width: dp(50),
+          height: dp(50),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor: 'white',
+        }}
+        onPress={()=>{
+          this.setState({showCover:false})
+          this.fix()
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_tool_fix}
+          />
+        </View>
+
+        <Text
+          style={{
+            fontSize:10,
+          }}
+        >
+          {'固定'}
         </Text>
       </TouchableOpacity>
     )
@@ -438,12 +540,150 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 
+  slider = () => {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          bottom: dp(20),
+          left: dp(40),
+          width: dp(350),
+          height: dp(100),
+          borderRadius: dp(10),
+          alignItems: 'center',
+          backgroundColor: 'white',
+          paddingHorizontal:dp(10),
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden',
+              width: dp(30),
+              height: dp(30),
+            }}
+          >
+            <Image
+              style={{ position: 'absolute', width: '100%', height: '100%' }}
+              source={getImage().icon_tool_radius}
+            />
+          </View>
+          <View
+            style={{
+              width: '90%',
+              height: '100%',
+              justifyContent: 'center',
+              paddingLeft: dp(10),
+            }}
+          >
+            <Slider
+              type={'single'}
+              left={{ type: 'text', text: '半径' }}
+              defaultValue={this.currentRadius}
+              right={{ type: 'indicator', unit: '' }}
+              range = {[0,5]}
+              onMove={(value: number) => {
+                this.currentRadius = value
+              }}
+              onEnd={() => {
+                const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+                if(layer){
+                  SARMap.setARCoverRadius(layer.name,this.currentRadius)
+                }
+              }}
+            />
+
+          </View>
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden',
+              width: dp(30),
+              height: dp(30),
+            }}
+          >
+            <Image
+              style={{ position: 'absolute', width: '100%', height: '100%' }}
+              source={getImage().icon_tool_depth}
+            />
+          </View>
+          <View
+            style={{
+              width: '90%',
+              height: '100%',
+              justifyContent: 'center',
+              paddingLeft: dp(10),
+            }}
+          >
+            <Slider
+              type={'single'}
+              left={{ type: 'text', text: '深度' }}
+              defaultValue={this.currentDepth}
+              right={{ type: 'indicator', unit: '' }}
+              range = {[0,5]}
+              onMove={(value: number) => {
+                this.currentDepth = value
+              }}
+              onEnd={() => {
+                const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+                if(layer){
+                  SARMap.setARCoverDepth(layer.name,this.currentDepth)
+                }
+              }}
+            />
+
+          </View>
+        </View>
+
+      </View>
+    )
+
+  }
+
   render() {
     return(
       <>
         {this.renderLocation()}
         {this.renderWindow()}
-        {this.state.showCover && this.renderCover()}
+        {this.renderCancel()}
+        {this.state.showCover&&<View
+          style={{
+            position: 'absolute',
+            top: dp(160),
+            right: dp(70),
+            width: dp(50),
+            height: dp(110),
+            borderRadius: dp(10),
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            backgroundColor: 'white',
+          }}
+        >
+          {this.renderCover()}
+          {this.renderFix()}
+        </View>}
+
+        {this.state.showSlider && this.slider()}
+
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
       </>

@@ -111,7 +111,7 @@ class ARLayerMenu extends React.Component<Props, State> {
             >
               <Image
                 style={{width: dp(25), height: dp(25)}}
-                source={this.state.rotationFix ? getThemeAssets().layer.icon_tool_face : getThemeAssets().layer.icon_tool_rotation_fixed}
+                source={this.state.rotationFix ? getThemeAssets().layer.icon_tool_rotation_fixed : getThemeAssets().layer.icon_tool_face}
               />
             </TouchableOpacity>
           )}

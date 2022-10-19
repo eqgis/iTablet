@@ -19,6 +19,10 @@ const guide_arrow = require('./icon_exhibition_guide.png')
 const icon_cover = require('./location_on.png')
 const icon_window = require('./window.png')
 const icon_tool_rectangle = require('./icon_tool_rectangle.png')
+const icon_tool_fix = require('./icon_tool_fix.png')
+const icon_tool_radius = require('./icon_tool_radius.png')
+const icon_tool_depth = require('./icon_tool_depth.png')
+const icon_cancel = require('./icon_cancel.png')
 
 const image = {
   scan,
@@ -42,6 +46,10 @@ const image = {
   ar_3d_map,
   ar_flat_map,
   ar_supermap_building,
+  icon_tool_fix,
+  icon_tool_radius,
+  icon_tool_depth,
+  icon_cancel,
 }
 
 function getImage(): typeof image {

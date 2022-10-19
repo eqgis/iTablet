@@ -331,11 +331,12 @@ class AppRoot extends Component {
   }
 
   showUserProtocol = () => {
-    if (this.props.isAgreeToProtocol) {
-      this.prevLoad()
-    } else {
-      this.protocolDialog?.setVisible(true)
-    }
+    this.prevLoad()
+    // if (this.props.isAgreeToProtocol) {
+    //   this.prevLoad()
+    // } else {
+    //   this.protocolDialog?.setVisible(true)
+    // }
   }
 
   prevLoad = async () => {

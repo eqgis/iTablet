@@ -425,7 +425,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="CustomModePage" component={CustomModePage} options={modalOption(params)} />
       <Stack.Screen name="ARLayerManager" component={ARLayerManager} options={modalOption(params)}/>
       <Stack.Screen name="ARMapSetting" component={ARMapSetting} options={modalOption(params)}/>
-      <Stack.Screen name="ServiceShareSettings" component={ServiceShareSettings} />
+      <Stack.Screen name="ServiceShareSettings" component={ServiceShareSettings} options={modalOption(params)}/>
       <Stack.Screen name="NavigationView2D" component={NavigationView2D} options={modalOption(params)} />
       <Stack.Screen name="RoadNet" component={RoadNet} options={modalOption(params)} />
       <Stack.Screen name="Report" component={Report} options={modalOption(params)} />

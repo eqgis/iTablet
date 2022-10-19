@@ -20,6 +20,20 @@ const icon_cover = require('./location_on.png')
 const icon_window = require('./window.png')
 const icon_tool_rectangle = require('./icon_tool_rectangle.png')
 
+const tool_advertise_selected = require('./tool_advertise_selected.png')
+const tool_advertise = require('./tool_advertise.png')
+const tool_attribute_selected = require('./tool_attribute_selected.png')
+const tool_attribute = require('./tool_attribute.png')
+const tool_lighting_selected = require('./tool_lighting_selected.png')
+const tool_lighting = require('./tool_lighting.png')
+const tool_location_selected = require('./tool_location_selected.png')
+const tool_location = require('./tool_location.png')
+const tool_sectioning_selected = require('./tool_sectioning_selected.png')
+const tool_sectioning = require('./tool_sectioning.png')
+const icon_close = require('./icon_close.png')
+const icon_other_scan = require('./icon_other_scan.png')
+
+
 const image = {
   scan,
   scan_circle,
@@ -42,6 +56,20 @@ const image = {
   ar_3d_map,
   ar_flat_map,
   ar_supermap_building,
+
+  tool_advertise_selected,
+  tool_advertise,
+  tool_attribute_selected,
+  tool_attribute,
+  tool_lighting_selected,
+  tool_lighting,
+  tool_location_selected,
+  tool_location,
+  tool_sectioning_selected,
+  tool_sectioning,
+
+  icon_close,
+  icon_other_scan,
 }
 
 function getImage(): typeof image {

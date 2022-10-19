@@ -302,7 +302,9 @@ export async function addARSceneLayer(option?: AddOption) {
       const pxp = await DataLocal.getPxpContent(path)
       if(pxp === null) return
       const wsPath = homePath + AppPath.User.path + '/' + props.currentUser.userName + UserRoot.Data.ARScene.path +  '/' + pxp.Workspace.server
-      addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, option?.translation)
+      addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, option?.translation && {
+        location: option?.translation,
+      })
     }
     if(addLayerName !== ''){
       const layers = await props.getARLayers()

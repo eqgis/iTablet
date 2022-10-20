@@ -37,6 +37,7 @@ class FlatMapVIew extends React.Component<Props, State> {
     })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
+        SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
         Toast.show('请按照箭头引导转动屏幕查看地图集')
@@ -48,6 +49,7 @@ class FlatMapVIew extends React.Component<Props, State> {
             y: 0,
             z: -1,
           }
+          SExhibition.removeTempPoint()
           SExhibition.addFlatMap({
             pose: result,
             translation: relativePositin

@@ -1,12 +1,13 @@
-import { AppEvent, AppStyle, AppToolBar, Toast } from '@/utils'
+import { AppEvent, AppStyle, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from '../components/Scan'
-import { SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
+import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
+import { ConstPath } from '@/constants'
 
 interface Props {
   windowSize: ScaledSize
@@ -29,7 +30,11 @@ class FlatMapVIew extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    SARMap.setAREnhancePosition()
+    this.importData().then(() => {
+      if(this.state.showScan) {
+        SARMap.setAREnhancePosition()
+      }
+    })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
@@ -55,6 +60,26 @@ class FlatMapVIew extends React.Component<Props, State> {
         })
       }
     })
+  }
+
+  importData = async () => {
+    const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
+    const hasFlatMap = data.some(item => {
+      return item.name === '台风登陆路径.xml'
+    })
+    if(!hasFlatMap) {
+      const homePath = await FileTools.getHomeDirectory()
+      const path = homePath + ConstPath.Common + 'Exhibition/AR平面地图/台风登陆路径'
+      const data = await DataHandler.getExternalData(path)
+      if(data.length > 0 && data[0].fileType === 'workspace') {
+        await DataHandler.importExternalData(AppUser.getCurrentUser(), data[0])
+        // console.warn('imported')
+      } else {
+        // console.warn('failed to load data')
+      }
+    } else {
+      // console.warn('data already loaded')
+    }
   }
 
   back = () => {

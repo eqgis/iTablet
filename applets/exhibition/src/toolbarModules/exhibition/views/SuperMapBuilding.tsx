@@ -4,14 +4,15 @@ import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from '../components/Scan'
-import { SARMap, ARLayerType, FileTools, IARTransform, ARLayer, ARAction } from 'imobile_for_reactnative'
-import { Point3D } from 'imobile_for_reactnative/types/data'
+import { SARMap, ARLayerType, FileTools, IARTransform, ARLayer, ARAction, SExhibition } from 'imobile_for_reactnative'
+import { Point3D, Vector3 } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
 import DataLocal from '@/utils/DataHandler/DataLocal'
 import { UserRoot } from '@/utils/AppPath'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
+import ARArrow from '../components/ARArrow'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -195,13 +196,27 @@ class SuperMapBuilding extends React.Component<Props, State> {
       if (result) {
         SARMap.stopAREnhancePosition()
         this.setState({ showScan: false })
+        const relativePositin: Vector3 = {
+          x: 0,
+          y: 0,
+          z: -1,
+        }
         const targetPxpPath = await this.importData()
         if (targetPxpPath) {
           await this.addARSceneLayer(targetPxpPath, {
+            location: {
+              x: 0,
+              y: 0,
+              z: 0,
+            },
             scale: -0.995,
           })
+          SExhibition.setTrackingTarget({
+            pose: result,
+            translation: relativePositin,
+          })
+          SExhibition.startTrackingTarget()
         }
-        // Toast.show('定位成功')
       }
     })
   }
@@ -695,6 +710,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       <>
         {this.renderFunctionBar()}
         {this.state.showCover && this.renderCover()}
+        <ARArrow />
         {this.state.showScan && this.renderScan()}
         {this.renderToolView()}
         {this.renderBack()}

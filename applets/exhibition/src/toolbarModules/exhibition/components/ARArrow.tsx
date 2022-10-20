@@ -54,7 +54,7 @@ class ARArrow extends React.Component<unknown, State> {
     })
     const moveUpDown = this.moveValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, this.state.targetPosition === 4 ? -dp(30) : dp(30)]
+      outputRange: [0, this.state.targetPosition === 3 ? -dp(30) : dp(30)]
     })
     const isLR = this.state.targetPosition === 1 || this.state.targetPosition === 2
     return (
@@ -67,7 +67,7 @@ class ARArrow extends React.Component<unknown, State> {
           height: dp(100),
           transform:
             isLR ? [{translateX: move}, {rotateY: this.state.targetPosition === 1 ? '0deg' : '180deg'}]
-              : [{translateY: moveUpDown}, {rotate: this.state.targetPosition === 4 ? '90deg' : '270deg'}]
+              : [{translateY: moveUpDown}, {rotate: this.state.targetPosition === 3 ? '90deg' : '270deg'}]
         }}
       >
         <Image

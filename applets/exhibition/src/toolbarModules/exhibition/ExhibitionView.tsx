@@ -6,6 +6,7 @@ import ScanView from './views/ScanView'
 import CoverView from './views/CoverView'
 import SuperMapBuilding from './views/SuperMapBuilding'
 import FlatMapView from './views/FlatMapView'
+import AR3DMapView from './views/AR3DMapView'
 
 export interface ExhibitionViewOption {
   page: 'home' //首页
@@ -46,7 +47,7 @@ class ExhibitionView extends React.Component<Props> {
   }
 
   render3DMap = () => {
-    return null
+    return <AR3DMapView windowSize={this.props.windowSize} />
   }
 
   renderDrSuperMap = () => {

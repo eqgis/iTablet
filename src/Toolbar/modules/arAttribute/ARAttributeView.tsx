@@ -37,10 +37,12 @@ class ARAttributeView extends React.Component<Props> {
     await SARMap.addAttributeListener({
       callback: async (result: any) => {
         try {
-          if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT'){
+          if(
+            AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT' ||
+            AppToolBar.getData().allowedShowAttribute !== undefined && !AppToolBar.getData().allowedShowAttribute
+          ){
             return
           }
-          // console.warn("result01: " + JSON.stringify(result))
           const arr: Array<PipeLineAttributeType> = []
           let srcId = ''
           Object.keys(result).forEach(key => {
@@ -142,6 +144,10 @@ class ARAttributeView extends React.Component<Props> {
   }
 
   renderPipeLineAttribute = () => {
+    const CustomAttributeView = AppToolBar.getData().PipeLineAttribute
+    if (CustomAttributeView) {
+      return <CustomAttributeView/>
+    }
     return (
       <PipeLineAttribute/>
     )

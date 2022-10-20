@@ -1,4 +1,4 @@
-import { AppEvent, AppStyle, AppToolBar, Toast, DataHandler, AppPath } from '@/utils'
+import { AppEvent, AppStyle, AppToolBar, Toast, DataHandler, AppPath, AppLog } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
@@ -11,6 +11,7 @@ import DataLocal from '@/utils/DataHandler/DataLocal'
 import { UserRoot } from '@/utils/AppPath'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import CircleBar from '../components/CircleBar'
+import PipeLineAttribute from '../components/pipeLineAttribute'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -19,7 +20,6 @@ const styles = StyleSheet.create({
     left: dp(20),
     width: dp(60),
     height: dp(60),
-    // borderRadius: dp(25),
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     left: dp(20),
     width: dp(60),
     height: dp(60),
-    // borderRadius: dp(25),
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -45,7 +44,6 @@ const styles = StyleSheet.create({
     height: dp(50),
     justifyContent: 'center',
     alignItems: 'center',
-    // overflow: 'hidden',
     borderRightWidth: dp(2),
     borderRightColor: 'white',
     backgroundColor: 'white',
@@ -53,7 +51,6 @@ const styles = StyleSheet.create({
   rightSubBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    // overflow: 'hidden',
     width: dp(26),
     height: dp(26),
   },
@@ -78,11 +75,19 @@ const styles = StyleSheet.create({
     width: dp(30),
     height: dp(30),
   },
-  functionBar: {
+  functionBarView: {
     position: 'absolute',
     flexDirection: 'column',
-    top: dp(60),
+    top: dp(0),
+    bottom: dp(0),
     right: dp(0),
+    width: dp(60),
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  functionBar: {
+    flexDirection: 'column',
     width: dp(60),
     borderTopLeftRadius: dp(10),
     borderBottomLeftRadius: dp(10),
@@ -101,7 +106,6 @@ const styles = StyleSheet.create({
     right: dp(10),
     width: dp(40),
     height: dp(40),
-    // borderRadius: dp(25),
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -116,12 +120,8 @@ const styles = StyleSheet.create({
     left: dp(22),
     bottom: dp(22),
     width: dp(360),
-    // paddingBottom: dp(20),
-    // height: dp(200),
     backgroundColor: '#rgba(255,255,255,0.8)',
     borderRadius: dp(10),
-    // justifyContent: 'center',
-    // alignItems: 'center',
     overflow: 'hidden',
   },
   toolRow: {
@@ -182,6 +182,10 @@ class SuperMapBuilding extends React.Component<Props, State> {
 
       toolType: '',
     }
+    this.showAttribute(false)
+    AppToolBar.addData({
+      PipeLineAttribute: PipeLineAttribute,
+    })
   }
 
   componentDidMount(): void {
@@ -194,10 +198,10 @@ class SuperMapBuilding extends React.Component<Props, State> {
         const targetPxpPath = await this.importData()
         if (targetPxpPath) {
           await this.addARSceneLayer(targetPxpPath, {
-            scale: -1,
+            scale: -0.995,
           })
         }
-        Toast.show('定位成功')
+        // Toast.show('定位成功')
       }
     })
   }
@@ -205,11 +209,10 @@ class SuperMapBuilding extends React.Component<Props, State> {
   importData = async () => {
     try {
       const home = await FileTools.getHomeDirectory()
-      const importPath = home + ConstPath.Common + 'Exhibition/ChengDuSuperMap'
+      const importPath = home + ConstPath.Common + 'Exhibition/AR超图大厦/ChengDuSuperMap'
       const targetHomePath = home + ConstPath.CustomerPath + 'Data/Scene/ChengDuSuperMap/'
       const targetPath = targetHomePath + 'ChengDuSuperMap.sxwu'
       const targetPxpPath = home + ConstPath.CustomerPath + 'Data/Scene/ChengDuSuperMap.pxp'
-      console.warn(targetPath)
       if (await FileTools.fileIsExist(targetPxpPath)) {
         if (await FileTools.fileIsExist(targetPath)) {
           Toast.show('已经导入数据')
@@ -293,6 +296,34 @@ class SuperMapBuilding extends React.Component<Props, State> {
     }
   }
 
+  showAttribute = (isShow: boolean) => {
+    try {
+      AppToolBar.addData({
+        allowedShowAttribute: isShow,
+      })
+      const props = AppToolBar.getProps()
+      const mapInfo = props.arMapInfo
+      if (!isShow) {
+        AppToolBar.getProps().setPipeLineAttribute([])
+        if (mapInfo?.currentLayer?.ar3DLayers?.length > 0) {
+          for (let i = 0; i < mapInfo.currentLayer.ar3DLayers.length; i++) {
+            const layer = mapInfo.currentLayer.ar3DLayers[i]
+            SARMap.setLayerVisible(layer.name, layer.isVisible)
+          }
+        }
+      } else {
+        if (mapInfo?.currentLayer?.ar3DLayers?.length > 0) {
+          for (let i = 0; i < mapInfo.currentLayer.ar3DLayers.length; i++) {
+            const layer = mapInfo.currentLayer.ar3DLayers[i]
+            SARMap.setLayerVisible(layer.name, !layer.isVisible)
+          }
+        }
+      }
+    } catch (error) {
+      __DEV__ && AppLog.error(error)
+    }
+  }
+
   cover = () => {
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if (layer) {
@@ -310,12 +341,16 @@ class SuperMapBuilding extends React.Component<Props, State> {
       this.setState({
         toolType: '',
       })
+      this.showAttribute(false)
       return
     }
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if (layer) {
       SARMap.stopARCover(layer.name)
     }
+    AppToolBar.addData({
+      PipeLineAttribute: undefined,
+    })
 
     AppEvent.removeListener('ar_image_tracking_result')
     if (this.state.showScan) {
@@ -334,11 +369,11 @@ class SuperMapBuilding extends React.Component<Props, State> {
   }
 
   checkSence = () => {
-    // const props = AppToolBar.getProps()
-    // if (!props.arMap.currentMap) {
-    //   Toast.show('请先扫描二维码,打开超图大厦')
-    //   return false
-    // }
+    const props = AppToolBar.getProps()
+    if (!props.arMap.currentMap) {
+      Toast.show('请先扫描二维码,打开超图大厦')
+      return false
+    }
     return true
   }
 
@@ -408,6 +443,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       imageSelected: getImage().tool_location_selected,
       onPress: () => {
         if (!this.checkSence()) return
+        this.showAttribute(false)
         this.setState({
           toolType: 'position',
         })
@@ -427,6 +463,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       imageSelected: getImage().tool_sectioning_selected,
       onPress: () => {
         if (!this.checkSence()) return
+        this.showAttribute(false)
         this.setState({
           toolType: 'sectioning',
         })
@@ -446,6 +483,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         this.setState({
           toolType: 'attribute',
         })
+        this.showAttribute(true)
       },
       key: 'attribute',
       title: '属性',
@@ -459,6 +497,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       imageSelected: getImage().tool_lighting_selected,
       onPress: () => {
         if (!this.checkSence()) return
+        this.showAttribute(false)
         this.setState({
           toolType: 'lighting',
         })
@@ -475,6 +514,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       imageSelected: getImage().tool_advertise_selected,
       onPress: () => {
         if (!this.checkSence()) return
+        this.showAttribute(false)
         this.setState({
           toolType: 'advertising',
         })
@@ -638,12 +678,14 @@ class SuperMapBuilding extends React.Component<Props, State> {
 
   renderFunctionBar = () => {
     return (
-      <View style={styles.functionBar}>
-        {this.renderPosition()}
-        {this.renderSectioning()}
-        {this.renderAttribute()}
-        {this.renderLightingEffect()}
-        {this.renderAdvertising()}
+      <View style={styles.functionBarView} pointerEvents={'box-none'}>
+        <View style={styles.functionBar}>
+          {this.renderPosition()}
+          {this.renderSectioning()}
+          {this.renderAttribute()}
+          {this.renderLightingEffect()}
+          {this.renderAdvertising()}
+        </View>
       </View>
     )
   }
@@ -724,11 +766,11 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
           <Text style={{textAlign: 'center', fontSize: dp(12)}}>缩放</Text>
           <SlideBar
             style={styles.slideBar}
-            range={[0, 400]}
-            defaultMaxValue={200}
+            range={[0, 200]}
+            defaultMaxValue={100}
             barColor={'#FF6E51'}
             onMove={loc => {
-              const scale = loc / 100 - 2
+              const scale = loc / 100 - 1
               transformData = {
                 ...transformData,
                 scale: scale,

@@ -36,6 +36,8 @@ const tool_sectioning_selected = require('./tool_sectioning_selected.png')
 const tool_sectioning = require('./tool_sectioning.png')
 const icon_close = require('./icon_close.png')
 const icon_other_scan = require('./icon_other_scan.png')
+const bg_01 = require('./bg_01.png')
+const bg_02 = require('./bg_02.png')
 
 
 const image = {
@@ -78,6 +80,8 @@ const image = {
   icon_tool_radius,
   icon_tool_depth,
   icon_cancel,
+  bg_01,
+  bg_02,
 }
 
 function getImage(): typeof image {

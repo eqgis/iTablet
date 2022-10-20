@@ -5,6 +5,7 @@ import { ModuleList } from "../Toolbar/modules"
 import CameraRoll from "@react-native-community/cameraroll"
 import { GeometrySelectedEvent } from "imobile_for_reactnative/types/interface/mapping/SMap"
 import { AIRecognitionInfo, ARAttributeStyle, ARNodeStyle } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import React from "react"
 let toolbarRef: ToolBarContainer<ModuleList>
 
 export const arLayerType:  {
@@ -157,6 +158,10 @@ interface ToolBarData {
     attribute3D?: attribute3DType
     /** 选中的对象是否拥有骨骼动画 true表示有骨骼动画， false表示没有骨骼动画 */
     ownModelAnimation?: boolean
+
+    /** 是否点击场景对象,可显示属性 */
+    allowedShowAttribute?: boolean
+    PipeLineAttribute?: (typeof React.Component) | unknown
 }
 
 export interface attribute3DType {

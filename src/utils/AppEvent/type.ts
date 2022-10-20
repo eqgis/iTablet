@@ -1,3 +1,4 @@
+import { Pose } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ARElement } from "imobile_for_reactnative/types/interface/ar"
 
 
@@ -25,6 +26,6 @@ export interface Event {
   'ar_animation_play': undefined
   'ar_animation_exit': undefined
 
-  'ar_image_tracking_result': boolean
+  'ar_image_tracking_result': Pose
 
 }

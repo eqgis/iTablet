@@ -260,7 +260,9 @@ export async function addARScene(location?: Point3D) {
           const pxp = await DataHandler.getPxpContent(path)
           if (pxp === null) return
           const wsPath = path.substring(0, path.lastIndexOf('/')) + '/' + pxp.Workspace.server
-          addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, location)
+          addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, {
+            location: location,
+          })
         }
         if (addLayerName !== '') {
           const layers: ARLayer[] = await _params.getARLayers()

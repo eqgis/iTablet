@@ -422,8 +422,8 @@ async function createDefaultDatasource(
   datasourceName: string,
   datasetName: string,
   datastType: TDatasetType,
-  newDatasource: string,
-  newDataset: string,
+  newDatasource: boolean,
+  newDataset: boolean,
 ) {
   let result = false
   try {
@@ -505,8 +505,8 @@ async function createARElementDatasource(
   user: UserInfo,
   datasourceName: string,
   datasetName: string,
-  newDatasource: string,
-  newDataset: string,
+  newDatasource: boolean,
+  newDataset: boolean,
   type: TARLayerType,
 ) {
   try {

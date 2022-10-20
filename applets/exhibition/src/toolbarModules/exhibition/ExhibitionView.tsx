@@ -4,6 +4,8 @@ import Home from './views/Home'
 import PresentationView from './views/PresentationView'
 import ScanView from './views/ScanView'
 import CoverView from './views/CoverView'
+import SuperMapBuilding from './views/SuperMapBuilding'
+import FlatMapView from './views/FlatMapView'
 
 export interface ExhibitionViewOption {
   page: 'home' //首页
@@ -40,7 +42,7 @@ class ExhibitionView extends React.Component<Props> {
   }
 
   renderFlatMap = () => {
-    return null
+    return <FlatMapView windowSize={this.props.windowSize}/>
   }
 
   render3DMap = () => {
@@ -52,7 +54,8 @@ class ExhibitionView extends React.Component<Props> {
   }
 
   renderSuerMapBuilding = () => {
-    return null
+    return <SuperMapBuilding windowSize={this.props.windowSize}/>
+    // return null
   }
 
   render() {

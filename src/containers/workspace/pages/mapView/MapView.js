@@ -1775,12 +1775,12 @@ export default class MapView extends React.Component {
           await SMap.importSymbolLibrary('DefaultMapLib', lineLibPath) // 导入线符号库
           await SMap.importSymbolLibrary('DefaultMapLib', markerLibPath) // 导入点符号库
         }
-        if (global.Type === ChunkType.MAP_PLOTTING) {
-          this.setLoading(
-            true,
-            //ConstInfo.TEMPLATE_READING
-            getLanguage(this.props.language).Prompt.READING_TEMPLATE,
-          )
+        // if (global.Type === ChunkType.MAP_PLOTTING) {
+          // this.setLoading(
+          //   true,
+          //   //ConstInfo.TEMPLATE_READING
+          //   getLanguage(this.props.language).Prompt.READING_TEMPLATE,
+          // )
           let plotIconPath = await FileTools.appendingHomeDirectory(
             ConstPath.UserPath +
             this.props.user.currentUser.userName +
@@ -1792,7 +1792,7 @@ export default class MapView extends React.Component {
             path: plotIconPath,
             isFirst: true,
           })
-        }
+        // }
 
         // global.Type === ChunkType.MAP_COLLECTION && this.initCollectorDatasource()
 
@@ -4943,12 +4943,12 @@ export default class MapView extends React.Component {
           onAIRecognitionTouch={info => {
             ToolbarModule.getData()?.actions?.goToPreview?.([info])
           }}
-          onImageTrackingResult={async (tag) => {
+          onImageTrackingResult={async result => {
             // ar增强定位执行的回调函数
-            await this.setState({ imageTrackingresultTag: tag })
+            await this.setState({ imageTrackingresultTag: result.tag })
             // 调用AREnhancePosition的startScan方法
             this.datumPointCalibration?.arEnhancePosition?.startScan()
-            AppEvent.emitEvent('ar_image_tracking_result', tag === 'ImageTracking success')
+            AppEvent.emitEvent('ar_image_tracking_result', result.pose)
           }
           }
           onARElementGeometryTouch={element => {

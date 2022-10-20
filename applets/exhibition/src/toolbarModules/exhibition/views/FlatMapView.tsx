@@ -1,12 +1,13 @@
-import { AppEvent, AppStyle, AppToolBar, Toast } from '@/utils'
+import { AppEvent, AppStyle, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from '../components/Scan'
-import { FileTools, SARMap, SExhibition } from 'imobile_for_reactnative'
-import { ConstPath } from '@/constants'
+import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
+import { Vector3 } from 'imobile_for_reactnative/types/data'
+import { ConstPath } from '@/constants'
 
 interface Props {
   windowSize: ScaledSize
@@ -16,7 +17,7 @@ interface State {
   showScan: boolean
 }
 
-class PresentationView extends React.Component<Props, State> {
+class FlatMapVIew extends React.Component<Props, State> {
 
   scanRef: Scan | null = null
 
@@ -29,38 +30,67 @@ class PresentationView extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    SARMap.setAREnhancePosition()
-    this.openARMap('DefaultARMap')
+    this.importData().then(() => {
+      if(this.state.showScan) {
+        SARMap.setAREnhancePosition()
+      }
+    })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
         Toast.show('请按照箭头引导转动屏幕查看地图集')
-        SExhibition.startTrackingTarget()
-        SARMap.loadUnityScene()
+
+        SMap.openMapName('台风登陆路径').then(async () => {
+          await SMap.openMap('台风登陆路径')
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -1,
+          }
+          SExhibition.addFlatMap({
+            pose: result,
+            translation: relativePositin
+          })
+          SExhibition.setTrackingTarget({
+            pose: result,
+            translation: relativePositin
+          })
+          SExhibition.startTrackingTarget()
+        })
       }
     })
   }
 
-  openARMap = async (mapName: string) => {
-    const homePath = await FileTools.getHomeDirectory()
-    const mapPath = homePath + ConstPath.UserPath + 'Customer' + '/' + ConstPath.RelativePath.ARMap
-    const path = mapPath + mapName + '.arxml'
-    SARMap.open(path)
+  importData = async () => {
+    const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
+    const hasFlatMap = data.some(item => {
+      return item.name === '台风登陆路径.xml'
+    })
+    if(!hasFlatMap) {
+      const homePath = await FileTools.getHomeDirectory()
+      const path = homePath + ConstPath.Common + 'Exhibition/AR平面地图/台风登陆路径'
+      const data = await DataHandler.getExternalData(path)
+      if(data.length > 0 && data[0].fileType === 'workspace') {
+        await DataHandler.importExternalData(AppUser.getCurrentUser(), data[0])
+        // console.warn('imported')
+      } else {
+        // console.warn('failed to load data')
+      }
+    } else {
+      // console.warn('data already loaded')
+    }
   }
 
   back = () => {
     if(this.state.showScan) {
+      SARMap.stopAREnhancePosition()
       this.setState({showScan: false})
       return
     }
     AppEvent.removeListener('ar_image_tracking_result')
-    if(this.state.showScan) {
-      SARMap.stopAREnhancePosition()
-    }
     SExhibition.stopTrackingTarget()
-    SARMap.close()
-    SARMap.unloadUnityScene()
+    SExhibition.removeFlatMap()
     AppToolBar.goBack()
   }
 
@@ -196,9 +226,10 @@ class PresentationView extends React.Component<Props, State> {
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
         <ARArrow />
+
       </>
     )
   }
 }
 
-export default PresentationView
+export default FlatMapVIew

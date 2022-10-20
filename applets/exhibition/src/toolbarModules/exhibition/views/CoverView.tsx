@@ -209,9 +209,9 @@ class CoverView extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: dp(80),
-          right: dp(10),
+          // position: 'absolute',
+          // top: dp(80),
+          // right: dp(10),
           width: dp(50),
           height: dp(50),
           borderRadius: dp(10),
@@ -258,16 +258,16 @@ class CoverView extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: dp(140),
-          right: dp(10),
+          // position: 'absolute',
+          // top: dp(140),
+          // right: dp(10),
           width: dp(50),
           height: dp(50),
-          borderRadius: dp(10),
+          // borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
         }}
         onPress={()=>{
           if(this.state.showCover){
@@ -310,16 +310,16 @@ class CoverView extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: dp(200),
-          right: dp(10),
+          // position: 'absolute',
+          // top: dp(200),
+          // right: dp(10),
           width: dp(50),
           height: dp(50),
-          borderRadius: dp(10),
+          // borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
         }}
         onPress={()=>{
           if(this.state.showSlider){
@@ -360,16 +360,16 @@ class CoverView extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: dp(260),
-          right: dp(10),
+          // position: 'absolute',
+          // top: dp(260),
+          // right: dp(10),
           width: dp(50),
           height: dp(50),
-          borderRadius: dp(10),
+          // borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
         }}
         onPress={() => {
           this.setState({ showSlider: false })
@@ -760,27 +760,63 @@ class CoverView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        {this.renderLocation()}
-        {this.renderWindow()}
-        {this.renderSliderContorl()}
-        {this.renderCancel()}
-        {this.state.showCover&&<View
+        <View
           style={{
             position: 'absolute',
-            top: dp(160),
-            right: dp(70),
-            width: dp(50),
-            height: dp(110),
-            borderRadius: dp(10),
+            right: 0,
+            width: dp(180),
+            height: '100%',
             justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            backgroundColor: 'white',
+            alignItems: 'flex-end',
           }}
         >
-          {this.renderCover()}
-          {this.renderFix()}
-        </View>}
+
+          <View
+            style={{
+              right: dp(20),
+              flexDirection: 'row',
+            }}
+          >
+
+            {this.state.showCover && <View
+              style={{
+                // position: 'absolute',
+                top: dp(60),
+                right: dp(10),
+                width: dp(50),
+                height: dp(110),
+                borderRadius: dp(10),
+                justifyContent: 'center',
+                alignItems: 'center',
+                // overflow: 'hidden',
+                backgroundColor: 'white',
+              }}
+            >
+              {this.renderCover()}
+              {this.renderFix()}
+            </View>}
+
+
+            <View>
+              {this.renderLocation()}
+              <View
+                style={{
+                  top: dp(10),
+                  borderRadius: dp(10),
+                  backgroundColor: 'white',
+                }}
+              >
+                {this.renderWindow()}
+                {this.renderSliderContorl()}
+                {this.renderCancel()}
+              </View>
+            </View>
+
+          </View>
+
+        </View>
+
+
 
         {this.state.showSlider && this.slider()}
 

@@ -6,6 +6,7 @@ import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'reac
 import Scan from '../components/Scan'
 import { SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
+import { Vector3 } from 'imobile_for_reactnative/types/data'
 
 interface Props {
   windowSize: ScaledSize
@@ -28,18 +29,30 @@ class FlatMapVIew extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    // SARMap.setAREnhancePosition()
-    SMap.openMapName('台风登陆路径').then(async () => {
-      await SMap.openMap('台风登陆路径')
-      SExhibition.addFlatMap()
-    })
+    SARMap.setAREnhancePosition()
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
         Toast.show('请按照箭头引导转动屏幕查看地图集')
-        SExhibition.startExhibition()
-        SARMap.loadUnityScene()
+
+        SMap.openMapName('台风登陆路径').then(async () => {
+          await SMap.openMap('台风登陆路径')
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -1,
+          }
+          SExhibition.addFlatMap({
+            pose: result,
+            translation: relativePositin
+          })
+          SExhibition.setTrackingTarget({
+            pose: result,
+            translation: relativePositin
+          })
+          SExhibition.startTrackingTarget()
+        })
       }
     })
   }
@@ -51,9 +64,8 @@ class FlatMapVIew extends React.Component<Props, State> {
       return
     }
     AppEvent.removeListener('ar_image_tracking_result')
-    SExhibition.endExhibition()
-    SARMap.close()
-    SARMap.unloadUnityScene()
+    SExhibition.stopTrackingTarget()
+    SExhibition.removeFlatMap()
     AppToolBar.goBack()
   }
 
@@ -186,7 +198,7 @@ class FlatMapVIew extends React.Component<Props, State> {
   render() {
     return(
       <>
-        {/* {this.state.showScan && this.renderScan()} */}
+        {this.state.showScan && this.renderScan()}
         {this.renderBack()}
         <ARArrow />
 

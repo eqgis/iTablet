@@ -36,7 +36,7 @@ class PresentationView extends React.Component<Props, State> {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
         Toast.show('请按照箭头引导转动屏幕查看地图集')
-        SExhibition.startExhibition()
+        SExhibition.startTrackingTarget()
         SARMap.loadUnityScene()
       }
     })
@@ -58,7 +58,7 @@ class PresentationView extends React.Component<Props, State> {
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
-    SExhibition.endExhibition()
+    SExhibition.stopTrackingTarget()
     SARMap.close()
     SARMap.unloadUnityScene()
     AppToolBar.goBack()

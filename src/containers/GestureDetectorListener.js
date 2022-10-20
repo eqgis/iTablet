@@ -169,14 +169,14 @@ async function touchCallback(event) {
         (!global.MAPSELECTPOINT ||
           !global.MAPSELECTPOINT.state.show)
       ) {
-        if (!(await isDoubleTouchComing())) {
-          if (isfull) {
-            global.toolBox && global.toolBox.existFullMap()
-          } else {
-            global.toolBox && global.toolBox.showFullMap()
-          }
-          isfull = !isfull
-        }
+        // if (!(await isDoubleTouchComing())) {
+        //   if (isfull) {
+        //     global.toolBox && global.toolBox.existFullMap()
+        //   } else {
+        //     global.toolBox && global.toolBox.showFullMap()
+        //   }
+        //   isfull = !isfull
+        // }
       }
       break
     case TouchType.MAP_NAVIGATION:

@@ -1,11 +1,13 @@
-import { AppEvent, AppStyle, AppToolBar, Toast } from '@/utils'
+import { AppEvent, AppStyle, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from '../components/Scan'
-import { SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
+import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
+import { Vector3 } from 'imobile_for_reactnative/types/data'
+import { ConstPath } from '@/constants'
 
 interface Props {
   windowSize: ScaledSize
@@ -28,20 +30,58 @@ class FlatMapVIew extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    // SARMap.setAREnhancePosition()
-    SMap.openMapName('台风登陆路径').then(async () => {
-      await SMap.openMap('台风登陆路径')
-      SExhibition.addFlatMap()
+    this.importData().then(() => {
+      if(this.state.showScan) {
+        SARMap.setAREnhancePosition()
+      }
     })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
+        SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
         Toast.show('请按照箭头引导转动屏幕查看地图集')
-        SExhibition.startExhibition()
-        SARMap.loadUnityScene()
+
+        SMap.openMapName('台风登陆路径').then(async () => {
+          await SMap.openMap('台风登陆路径')
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -1,
+          }
+          SExhibition.removeTempPoint()
+          SExhibition.addFlatMap({
+            pose: result,
+            translation: relativePositin
+          })
+          SExhibition.setTrackingTarget({
+            pose: result,
+            translation: relativePositin
+          })
+          SExhibition.startTrackingTarget()
+        })
       }
     })
+  }
+
+  importData = async () => {
+    const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
+    const hasFlatMap = data.some(item => {
+      return item.name === '台风登陆路径.xml'
+    })
+    if(!hasFlatMap) {
+      const homePath = await FileTools.getHomeDirectory()
+      const path = homePath + ConstPath.Common + 'Exhibition/AR平面地图/台风登陆路径'
+      const data = await DataHandler.getExternalData(path)
+      if(data.length > 0 && data[0].fileType === 'workspace') {
+        await DataHandler.importExternalData(AppUser.getCurrentUser(), data[0])
+        // console.warn('imported')
+      } else {
+        // console.warn('failed to load data')
+      }
+    } else {
+      // console.warn('data already loaded')
+    }
   }
 
   back = () => {
@@ -51,9 +91,8 @@ class FlatMapVIew extends React.Component<Props, State> {
       return
     }
     AppEvent.removeListener('ar_image_tracking_result')
-    SExhibition.endExhibition()
-    SARMap.close()
-    SARMap.unloadUnityScene()
+    SExhibition.stopTrackingTarget()
+    SExhibition.removeFlatMap()
     AppToolBar.goBack()
   }
 
@@ -186,7 +225,7 @@ class FlatMapVIew extends React.Component<Props, State> {
   render() {
     return(
       <>
-        {/* {this.state.showScan && this.renderScan()} */}
+        {this.state.showScan && this.renderScan()}
         {this.renderBack()}
         <ARArrow />
 

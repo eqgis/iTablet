@@ -23,6 +23,9 @@ const icon_tool_fix = require('./icon_tool_fix.png')
 const icon_tool_radius = require('./icon_tool_radius.png')
 const icon_tool_depth = require('./icon_tool_depth.png')
 const icon_cancel = require('./icon_cancel.png')
+const icon_tool_distance = require('./icon_tool_distance.png')
+const icon_tool_length = require('./icon_tool_length.png')
+const icon_tool_slider = require('./icon_tool_slider.png')
 
 const tool_advertise_selected = require('./tool_advertise_selected.png')
 const tool_advertise = require('./tool_advertise.png')
@@ -82,6 +85,9 @@ const image = {
   icon_cancel,
   bg_01,
   bg_02,
+  icon_tool_distance,
+  icon_tool_length,
+  icon_tool_slider,
 }
 
 function getImage(): typeof image {

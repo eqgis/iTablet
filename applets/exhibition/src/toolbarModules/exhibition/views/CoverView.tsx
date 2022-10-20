@@ -18,7 +18,8 @@ interface State {
 }
 
 class CoverView extends React.Component<Props, State> {
-  currentRadius = 1
+  currentRadiusx = 1
+  currentRadiusy = 1
   currentDepth = 1
   scanRef: Scan | null = null
 
@@ -26,7 +27,7 @@ class CoverView extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      showScan: false,
+      showScan: true,
       showCover: false,
       showSlider: false,
     }
@@ -208,9 +209,9 @@ class CoverView extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: dp(100),
-          right: dp(10),
+          // position: 'absolute',
+          // top: dp(80),
+          // right: dp(10),
           width: dp(50),
           height: dp(50),
           borderRadius: dp(10),
@@ -257,16 +258,16 @@ class CoverView extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: dp(160),
-          right: dp(10),
+          // position: 'absolute',
+          // top: dp(140),
+          // right: dp(10),
           width: dp(50),
           height: dp(50),
-          borderRadius: dp(10),
+          // borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
         }}
         onPress={()=>{
           if(this.state.showCover){
@@ -305,28 +306,76 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 
-  renderCancel = () => {
+  renderSliderContorl = () => {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: dp(220),
-          right: dp(10),
+          // position: 'absolute',
+          // top: dp(200),
+          // right: dp(10),
           width: dp(50),
           height: dp(50),
-          borderRadius: dp(10),
+          // borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
         }}
         onPress={()=>{
           if(this.state.showSlider){
             this.setState({ showSlider: false })
-            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-            if (layer) {
-              SARMap.stopARCover(layer.name)
-            }
+          }else{
+            this.setState({ showSlider: true })
+          }
+
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_tool_slider}
+          />
+        </View>
+
+        <Text
+          style={{
+            fontSize:10,
+          }}
+        >
+          {'坑洞调整'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderCancel = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          // position: 'absolute',
+          // top: dp(260),
+          // right: dp(10),
+          width: dp(50),
+          height: dp(50),
+          // borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          // backgroundColor: 'white',
+        }}
+        onPress={() => {
+          this.setState({ showSlider: false })
+          const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+          if (layer) {
+            SARMap.stopARCover(layer.name)
           }
         }}
       >
@@ -369,7 +418,7 @@ class CoverView extends React.Component<Props, State> {
           backgroundColor: 'white',
         }}
         onPress={()=>{
-          this.setState({showCover:false,showSlider:true})
+          this.setState({showCover:false})
           this.cover()
         }}
       >
@@ -547,12 +596,13 @@ class CoverView extends React.Component<Props, State> {
           position: 'absolute',
           bottom: dp(20),
           left: dp(40),
-          width: dp(350),
+          width: dp(300),
           height: dp(100),
           borderRadius: dp(10),
           alignItems: 'center',
           backgroundColor: 'white',
           paddingHorizontal:dp(10),
+          opacity:0.7,
         }}
       >
         <View
@@ -573,7 +623,7 @@ class CoverView extends React.Component<Props, State> {
           >
             <Image
               style={{ position: 'absolute', width: '100%', height: '100%' }}
-              source={getImage().icon_tool_radius}
+              source={getImage().icon_tool_length}
             />
           </View>
           <View
@@ -586,17 +636,66 @@ class CoverView extends React.Component<Props, State> {
           >
             <Slider
               type={'single'}
-              left={{ type: 'text', text: '半径' }}
-              defaultValue={this.currentRadius}
+              left={{ type: 'text', text: '长度' }}
+              defaultValue={this.currentRadiusx}
               right={{ type: 'indicator', unit: '' }}
               range = {[0,5]}
               onMove={(value: number) => {
-                this.currentRadius = value
+                this.currentRadiusx = value
               }}
               onEnd={() => {
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
-                  SARMap.setARCoverRadius(layer.name,this.currentRadius)
+                  SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx)
+                }
+              }}
+            />
+
+          </View>
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden',
+              width: dp(30),
+              height: dp(30),
+            }}
+          >
+            <Image
+              style={{ position: 'absolute', width: '100%', height: '100%' }}
+              source={getImage().icon_tool_distance}
+            />
+          </View>
+          <View
+            style={{
+              width: '90%',
+              height: '100%',
+              justifyContent: 'center',
+              paddingLeft: dp(10),
+            }}
+          >
+            <Slider
+              type={'single'}
+              left={{ type: 'text', text: '宽度' }}
+              defaultValue={this.currentRadiusy}
+              right={{ type: 'indicator', unit: '' }}
+              range = {[0,5]}
+              onMove={(value: number) => {
+                this.currentRadiusy = value
+              }}
+              onEnd={() => {
+                const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+                if(layer){
+                  SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy)
                 }
               }}
             />
@@ -661,26 +760,63 @@ class CoverView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        {this.renderLocation()}
-        {this.renderWindow()}
-        {this.renderCancel()}
-        {this.state.showCover&&<View
+        <View
           style={{
             position: 'absolute',
-            top: dp(160),
-            right: dp(70),
-            width: dp(50),
-            height: dp(110),
-            borderRadius: dp(10),
+            right: 0,
+            width: dp(180),
+            height: '100%',
             justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            backgroundColor: 'white',
+            alignItems: 'flex-end',
           }}
         >
-          {this.renderCover()}
-          {this.renderFix()}
-        </View>}
+
+          <View
+            style={{
+              right: dp(20),
+              flexDirection: 'row',
+            }}
+          >
+
+            {this.state.showCover && <View
+              style={{
+                // position: 'absolute',
+                top: dp(60),
+                right: dp(10),
+                width: dp(50),
+                height: dp(110),
+                borderRadius: dp(10),
+                justifyContent: 'center',
+                alignItems: 'center',
+                // overflow: 'hidden',
+                backgroundColor: 'white',
+              }}
+            >
+              {this.renderCover()}
+              {this.renderFix()}
+            </View>}
+
+
+            <View>
+              {this.renderLocation()}
+              <View
+                style={{
+                  top: dp(10),
+                  borderRadius: dp(10),
+                  backgroundColor: 'white',
+                }}
+              >
+                {this.renderWindow()}
+                {this.renderSliderContorl()}
+                {this.renderCancel()}
+              </View>
+            </View>
+
+          </View>
+
+        </View>
+
+
 
         {this.state.showSlider && this.slider()}
 

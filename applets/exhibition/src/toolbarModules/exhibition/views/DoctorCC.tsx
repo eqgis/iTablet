@@ -67,7 +67,7 @@ class DoctorCC extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      showScan: false,
+      showScan: true,
       selectType: 'null',
       animations: [],
       selectAnimationKey: -1,
@@ -784,27 +784,30 @@ class DoctorCC extends Component<Props, State> {
           } else {
             if(indexTemp >= 0) {
               // console.warn("list: " + JSON.stringify(list[index]))
-              // 播放窗格动画
-              SARMap.playARAnimation(list[indexTemp])
+              // 播放窗格动画 延迟300ms 等上一个推演动画的stop方法走完
+              const tempTimer =  setTimeout(() => {
+                SARMap.playARAnimation(list[indexTemp])
+                clearTimeout(tempTimer)
+              },300)
               this.isPlay = true
+              this.timer = setTimeout(()=>{
+
+                if(this.isPlay) {
+                  SARMap.stopARAnimation()
+                  this.isPlay = false
+                  this.setState({
+                    isSecondaryShow: true,
+                    selectSpeakKey: 'null',
+                  })
+                }
+                if(this.timer) {
+                  clearTimeout(this.timer)
+                  this.timer = null
+                }
+  
+              }, time * 1000)
             }
 
-            this.timer = setTimeout(()=>{
-
-              if(this.isPlay) {
-                SARMap.stopARAnimation()
-                this.isPlay = false
-                this.setState({
-                  isSecondaryShow: true,
-                  selectSpeakKey: 'null',
-                })
-              }
-              if(this.timer) {
-                clearTimeout(this.timer)
-                this.timer = null
-              }
-
-            }, time * 1000)
           }
 
           this.setState({
@@ -888,9 +891,12 @@ class DoctorCC extends Component<Props, State> {
           }
         ]}
         onPress={async ()=>{
-          this.setState({selectAnimationKey: item.id})
           const currentElement = this.ARModel
           if(currentElement) {
+            // 当两次点击同一动作动画时需要将之前的动画清掉
+            if(this.state.selectAnimationKey === item.id) {
+              await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+            }
             const isAdd = this.animationList.get(item.id)
             if(!isAdd) {
               const params: ARModelAnimatorParameter = {
@@ -925,6 +931,8 @@ class DoctorCC extends Component<Props, State> {
             }
 
           }
+
+          this.setState({selectAnimationKey: item.id})
         }}
       >
         <Text
@@ -1044,7 +1052,7 @@ class DoctorCC extends Component<Props, State> {
         {/* 扫描界面 */}
         {!this.state.isShowFull && this.state.showScan && this.renderScan()}
         {/* 左边按钮 */}
-        {!this.state.isShowFull && !this.state.showScan && this.renderScanBtn()}
+        {!this.state.isShowFull && this.renderScanBtn()}
         {!this.state.isShowFull && this.renderBackBtn()}
 
         <ARArrow />

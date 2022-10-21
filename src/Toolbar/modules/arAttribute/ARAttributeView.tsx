@@ -87,6 +87,8 @@ class ARAttributeView extends React.Component<Props> {
             } else {
               AppToolBar.getProps().setPipeLineAttribute(arr)
             }
+          } else {
+            AppToolBar.getProps().setPipeLineAttribute([])
           }
 
         } catch (error) {

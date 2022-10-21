@@ -88,16 +88,30 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   functionBar: {
+    position: 'absolute',
     flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    top: dp(40),
+    right: dp(0),
     width: dp(60),
+    height: dp(120),
     borderTopLeftRadius: dp(10),
     borderBottomLeftRadius: dp(10),
-    justifyContent: 'center',
-    alignItems: 'center',
     overflow: 'hidden',
     backgroundColor: 'white',
-    paddingVertical: dp(10),
   },
+  // functionBar: {
+  //   flexDirection: 'column',
+  //   width: dp(60),
+  //   borderTopLeftRadius: dp(10),
+  //   borderBottomLeftRadius: dp(10),
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   overflow: 'hidden',
+  //   backgroundColor: 'white',
+  //   paddingVertical: dp(10),
+  // },
 
   // ToolView
   closeBtn: {
@@ -173,6 +187,13 @@ export interface AddOption {
 class SuperMapBuilding extends React.Component<Props, State> {
 
   scanRef: Scan | null = null
+  clickWait = false
+  pose: SARMap.Pose | undefined
+  relativePositin: Point3D = {
+    x: 0,
+    y: 0,
+    z: -1,
+  }
 
   constructor(props: Props) {
     super(props)
@@ -193,32 +214,47 @@ class SuperMapBuilding extends React.Component<Props, State> {
     SARMap.setAREnhancePosition()
     SARMap.setAction(ARAction.NULL)
     AppEvent.addListener('ar_image_tracking_result', async result => {
+      this.pose = result
       if (result) {
         SARMap.stopAREnhancePosition()
         this.setState({ showScan: false })
-        const relativePositin: Vector3 = {
-          x: 0,
-          y: 0,
-          z: -1,
+        this.relativePositin = {
+          x: result.x,
+          y: result.y,
+          z: result.z - 1,
         }
         const targetPxpPath = await this.importData()
         if (targetPxpPath) {
           await this.addARSceneLayer(targetPxpPath, {
             location: {
-              x: 0,
-              y: 0,
-              z: 0,
+              x: result.x,
+              y: result.y,
+              z: result.z - 1,
             },
-            scale: -0.995,
+            pose: {
+              x: result.qx,
+              y: result.qy,
+              z: result.qz,
+              w: result.qw,
+            },
+            scale: -0.99,
           })
-          SExhibition.setTrackingTarget({
-            pose: result,
-            translation: relativePositin,
-          })
-          SExhibition.startTrackingTarget()
+          this.arrowTricker(true)
         }
       }
     })
+  }
+
+  arrowTricker = (isOpen: boolean) => {
+    if (isOpen && this.pose && this.relativePositin) {
+      SExhibition.setTrackingTarget({
+        pose: this.pose,
+        translation: this.relativePositin,
+      })
+      SExhibition.startTrackingTarget()
+    } else {
+      SExhibition.stopTrackingTarget()
+    }
   }
 
   importData = async () => {
@@ -256,7 +292,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     }
   }
 
-  addARSceneLayer = async (pxpPath: string, option?: {location?: Point3D, rotation?: Point3D, scale?: number}) => {
+  addARSceneLayer = async (pxpPath: string, option?: {location?: Point3D, rotation?: Vector3, pose?: {x:number,y:number,z:number,w:number}, scale?: number}) => {
     try {
       let newDatasource = false
       const props = AppToolBar.getProps()
@@ -320,6 +356,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       const mapInfo = props.arMapInfo
       if (!isShow) {
         AppToolBar.getProps().setPipeLineAttribute([])
+        this.arrowTricker(true)
         if (mapInfo?.currentLayer?.ar3DLayers?.length > 0) {
           for (let i = 0; i < mapInfo.currentLayer.ar3DLayers.length; i++) {
             const layer = mapInfo.currentLayer.ar3DLayers[i]
@@ -328,6 +365,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         }
       } else {
         if (mapInfo?.currentLayer?.ar3DLayers?.length > 0) {
+          this.arrowTricker(false)
           for (let i = 0; i < mapInfo.currentLayer.ar3DLayers.length; i++) {
             const layer = mapInfo.currentLayer.ar3DLayers[i]
             SARMap.setLayerVisible(layer.name, !layer.isVisible)
@@ -347,16 +385,22 @@ class SuperMapBuilding extends React.Component<Props, State> {
   }
 
   back = async () => {
+    if (this.clickWait) return
+    this.clickWait = true
     if (this.state.showScan) {
-      this.setState({ showScan: false })
+      this.setState({ showScan: false }, () => {
+        this.clickWait = false
+      })
       return
     }
     if (this.state.toolType) {
       await SARMap.submit()
       this.setState({
         toolType: '',
+      }, () => {
+        this.showAttribute(false)
+        this.clickWait = false
       })
-      this.showAttribute(false)
       return
     }
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
@@ -376,6 +420,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     await props.closeARMap()
     await props.setCurrentARLayer()
     AppToolBar.goBack()
+    this.clickWait = false
   }
 
   startScan = () => {
@@ -404,17 +449,20 @@ class SuperMapBuilding extends React.Component<Props, State> {
             source={getImage().icon_return}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.scanBtn}
-          onPress={() => {
-            this.setState({ showScan: true })
-          }}
-        >
-          <Image
-            style={styles.backImg}
-            source={getImage().icon_other_scan}
-          />
-        </TouchableOpacity>
+        {
+          !this.state.showScan &&
+          <TouchableOpacity
+            style={styles.scanBtn}
+            onPress={() => {
+              this.setState({ showScan: true })
+            }}
+          >
+            <Image
+              style={styles.backImg}
+              source={getImage().icon_other_scan}
+            />
+          </TouchableOpacity>
+        }
       </>
     )
   }
@@ -693,16 +741,25 @@ class SuperMapBuilding extends React.Component<Props, State> {
 
   renderFunctionBar = () => {
     return (
-      <View style={styles.functionBarView} pointerEvents={'box-none'}>
-        <View style={styles.functionBar}>
-          {this.renderPosition()}
-          {this.renderSectioning()}
-          {this.renderAttribute()}
-          {this.renderLightingEffect()}
-          {this.renderAdvertising()}
-        </View>
+      <View style={styles.functionBar}>
+        {this.renderPosition()}
+        {/* {this.renderSectioning()} */}
+        {this.renderAttribute()}
+        {/* {this.renderLightingEffect()} */}
+        {/* {this.renderAdvertising()} */}
       </View>
     )
+    // return (
+    //   // <View style={styles.functionBarView} pointerEvents={'box-none'}>
+    //   <View style={styles.functionBar}>
+    //     {this.renderPosition()}
+    //     {/* {this.renderSectioning()} */}
+    //     {this.renderAttribute()}
+    //     {/* {this.renderLightingEffect()} */}
+    //     {/* {this.renderAdvertising()} */}
+    //   </View>
+    //   // </View>
+    // )
   }
 
   render() {
@@ -923,7 +980,7 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
       <View style={styles.toolView}>
         {/* <View style={styles.toolBgView}/> */}
         {this.props.type === 'position' && this.renderPosition()}
-        {/* {this.props.type === 'sectioning' && this.renderSectioning()} */}
+        {this.props.type === 'sectioning' && this.renderSectioning()}
         {/* {this.props.type === 'lighting' && this.renderLighting()} */}
         {/* {this.props.type === 'advertising' && this.renderAdvertising()} */}
       </View>

@@ -16,6 +16,7 @@ interface Props {
 
 interface State {
   attribute: Array<PipeLineAttributeType>,
+  data: Array<{title: string, value: string}>,
 }
 
 class PipeLineAttribute extends Component<Props, State> {
@@ -24,6 +25,13 @@ class PipeLineAttribute extends Component<Props, State> {
     const attribute = this.getFilterData()
     this.state = {
       attribute: attribute,
+      data: [
+        { title: '类别', value: ''},
+        { title: '族', value: ''},
+        { title: '标高', value: ''},
+        { title: '偏移', value: ''},
+        { title: '流量', value: ''},
+      ],
     }
   }
 
@@ -36,31 +44,34 @@ class PipeLineAttribute extends Component<Props, State> {
     }
   }
 
+  componentDidMount(): void {
+    if(!this.props?.pipeLineAttribute
+      || (this.props.pipeLineAttribute && this.props.pipeLineAttribute.length <= 0)
+    ) {
+      return
+    }
+    const attribute = this.getFilterData()
+    this.setState({
+      attribute: attribute,
+    })
+  }
+
   componentWillUnmount = () => {
     this.props.setPipeLineAttribute && this.props.setPipeLineAttribute([])
   }
 
   getFilterData = () => {
     const attribute = []
-    if (this.props.pipeLineAttribute) {
-      for (const item of this.props.pipeLineAttribute) {
-        if(item.title === 'SmID' || item.value === '' || item.value === undefined) {
-          continue
-        } else {
-          attribute.push(item)
-        }
-      }
-    }
-    return attribute
-  }
-
-
-  render() {
-    if(!this.props?.pipeLineAttribute
-      || (this.props.pipeLineAttribute && this.props.pipeLineAttribute.length <= 0)
-    ) {
-      return null
-    }
+    if (!this.props.pipeLineAttribute) return []
+    // if (this.props.pipeLineAttribute) {
+    //   for (const item of this.props.pipeLineAttribute) {
+    //     if(item.title === 'SmID' || item.value === '' || item.value === undefined) {
+    //       continue
+    //     } else {
+    //       attribute.push(item)
+    //     }
+    //   }
+    // }
 
     const data1 = { title: '类别', value: ''}
     const data2 = { title: '族', value: ''}
@@ -80,33 +91,48 @@ class PipeLineAttribute extends Component<Props, State> {
         data5.value = item.value || '0m³/h'
       }
     }
+    attribute.push(data1)
+    attribute.push(data2)
+    attribute.push(data3)
+    attribute.push(data4)
+    attribute.push(data5)
 
+    return attribute
+  }
+
+
+  render() {
+    if(!this.props?.pipeLineAttribute
+      || (this.props.pipeLineAttribute && this.props.pipeLineAttribute.length <= 0)
+    ) {
+      return null
+    }
     return (
       <View
         style = {[styles.container]}
       >
         <ImageBackground source={getImage().bg_02} resizeMode={'stretch'} style={styles.row}>
-          <Text style={styles.title}>{data1.title}</Text>
-          <Text style={styles.valueText}>{data1.value}</Text>
+          <Text style={styles.title}>{this.state.attribute[0].title}</Text>
+          <Text style={styles.valueText}>{this.state.attribute[0].value}</Text>
         </ImageBackground>
 
         <ImageBackground source={getImage().bg_02} resizeMode={'stretch'} style={[styles.row, { marginTop: dp(10)}]}>
-          <Text style={styles.title}>{data2.title}</Text>
-          <Text style={styles.valueText}>{data2.value}</Text>
+          <Text style={styles.title}>{this.state.attribute[1].title}</Text>
+          <Text style={styles.valueText}>{this.state.attribute[1].value}</Text>
         </ImageBackground>
 
         <View style={[styles.row2, { marginTop: dp(10)}]}>
           <ImageBackground source={getImage().bg_01} resizeMode={'stretch'} style={styles.column}>
-            <Text style={styles.title2}>{data3.title}</Text>
-            <Text style={styles.valueText2}>{data3.value}</Text>
+            <Text style={styles.title2}>{this.state.attribute[2].title}</Text>
+            <Text style={styles.valueText2}>{this.state.attribute[2].value}</Text>
           </ImageBackground>
           <ImageBackground source={getImage().bg_01} resizeMode={'stretch'} style={styles.column}>
-            <Text style={styles.title2}>{data4.title}</Text>
-            <Text style={styles.valueText2}>{data4.value}</Text>
+            <Text style={styles.title2}>{this.state.attribute[3].title}</Text>
+            <Text style={styles.valueText2}>{this.state.attribute[3].value}</Text>
           </ImageBackground>
           <ImageBackground source={getImage().bg_01} resizeMode={'stretch'} style={styles.column}>
-            <Text style={styles.title2}>{data5.title}</Text>
-            <Text style={styles.valueText2}>{data5.value}</Text>
+            <Text style={styles.title2}>{this.state.attribute[4].title}</Text>
+            <Text style={styles.valueText2}>{this.state.attribute[4].value}</Text>
           </ImageBackground>
         </View>
         {/* <View style={styles.close} /> */}

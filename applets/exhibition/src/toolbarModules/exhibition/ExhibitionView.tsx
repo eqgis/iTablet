@@ -7,6 +7,7 @@ import CoverView from './views/CoverView'
 import SuperMapBuilding from './views/SuperMapBuilding'
 import FlatMapView from './views/FlatMapView'
 import AR3DMapView from './views/AR3DMapView'
+import DoctorCC from './views/DoctorCC'
 
 export interface ExhibitionViewOption {
   page: 'home' //首页
@@ -51,7 +52,7 @@ class ExhibitionView extends React.Component<Props> {
   }
 
   renderDrSuperMap = () => {
-    return null
+    return <DoctorCC windowSize={this.props.windowSize} />
   }
 
   renderSuerMapBuilding = () => {

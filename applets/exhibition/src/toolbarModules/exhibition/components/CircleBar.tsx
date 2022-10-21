@@ -63,6 +63,10 @@ export default class CircleBar extends Component<Props, State> {
 
   _panResponder: PanResponderInstance
   lastValue: number
+  lastPostion: {
+    x: number,
+    y: number,
+  } = { x: 0, y: 0 }
 
   constructor(props: Props) {
     super(props)
@@ -91,11 +95,15 @@ export default class CircleBar extends Component<Props, State> {
       },
       onPanResponderMove: (evt, gestureState) => {
         if (this.props.enTouch) {
+          this.lastValue = this.state.value
           let x = evt.nativeEvent.locationX
           let y = evt.nativeEvent.locationY
-          if (Platform.OS === 'android') {
-            x = evt.nativeEvent.locationX + gestureState.dx
-            y = evt.nativeEvent.locationY + gestureState.dy
+          if (gestureState.dx === 0 && gestureState.dy === 0) {
+            this.lastPostion = { x, y }
+            return
+          } else {
+            x = this.lastPostion.x + gestureState.dx
+            y = this.lastPostion.y + gestureState.dy
           }
           this.parseToDeg(x, y)
         }
@@ -114,14 +122,6 @@ export default class CircleBar extends Component<Props, State> {
       onShouldBlockNativeResponder: () => true,
     })
   }
-
-  // componentWillReceiveProps(nextProps: Props) {
-  //   if (nextProps.value != this.state.value) {
-  //     this.state = {
-  //       value: nextProps.value,
-  //     }
-  //   }
-  // }
 
   parseToDeg = (x: number, y: number) => {
     const cx = this.props.width / 2

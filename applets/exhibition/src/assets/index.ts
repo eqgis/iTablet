@@ -26,6 +26,21 @@ const icon_cancel = require('./icon_cancel.png')
 const icon_tool_distance = require('./icon_tool_distance.png')
 const icon_tool_length = require('./icon_tool_length.png')
 const icon_tool_slider = require('./icon_tool_slider.png')
+const icon_speak_selected = require('./icon_speak_selected.png')
+const icon_speak = require('./icon_speak.png')
+const icon_action_selected = require('./icon_action_selected.png')
+const icon_action = require('./icon_action.png')
+const icon_reloader_selected = require('./icon_reloader_selected.png')
+const icon_reloader = require('./icon_reloader.png')
+const icon_photo_seleted = require('./icon_photo_seleted.png')
+const icon_photo = require('./icon_photo.png')
+const icon_video = require('./icon_video.png')
+const icon_video_selected = require('./icon_video_selected.png')
+
+const icon_doctor = require('./icon_doctor.png')
+const icon_doctor_selected = require('./icon_doctor_selected.png')
+const icon_superman = require('./icon_superman.png')
+const icon_superman_selected = require('./icon_superman_selected.png')
 
 const tool_advertise_selected = require('./tool_advertise_selected.png')
 const tool_advertise = require('./tool_advertise.png')
@@ -88,6 +103,20 @@ const image = {
   icon_tool_distance,
   icon_tool_length,
   icon_tool_slider,
+  icon_speak_selected,
+  icon_speak,
+  icon_action_selected,
+  icon_action,
+  icon_reloader_selected,
+  icon_reloader,
+  icon_photo_seleted,
+  icon_photo,
+  icon_video_selected,
+  icon_video,
+  icon_doctor_selected,
+  icon_doctor,
+  icon_superman_selected,
+  icon_superman,
 }
 
 function getImage(): typeof image {

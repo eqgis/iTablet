@@ -194,6 +194,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     y: 0,
     z: -1,
   }
+  isOpen = false // 是否已经打开模型
 
   constructor(props: Props) {
     super(props)
@@ -239,7 +240,6 @@ class SuperMapBuilding extends React.Component<Props, State> {
             },
             scale: -0.99,
           })
-          this.arrowTricker(true)
         }
       }
     })
@@ -342,7 +342,10 @@ class SuperMapBuilding extends React.Component<Props, State> {
           }
         }
       }
+      this.isOpen = true
+      this.arrowTricker(true)
     } catch(e) {
+      this.isOpen = false
       __DEV__ && console.warn(e)
     }
   }
@@ -388,6 +391,9 @@ class SuperMapBuilding extends React.Component<Props, State> {
     if (this.clickWait) return
     this.clickWait = true
     if (this.state.showScan) {
+      if (this.isOpen) {
+        this.arrowTricker(true)
+      }
       this.setState({ showScan: false }, () => {
         this.clickWait = false
       })
@@ -454,6 +460,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
           <TouchableOpacity
             style={styles.scanBtn}
             onPress={() => {
+              this.arrowTricker(false)
               this.setState({ showScan: true })
             }}
           >

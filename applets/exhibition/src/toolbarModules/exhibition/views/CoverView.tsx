@@ -15,6 +15,7 @@ interface State {
   showScan: boolean
   showCover: boolean
   showSlider:boolean
+  backClick:boolean
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -30,6 +31,7 @@ class CoverView extends React.Component<Props, State> {
       showScan: true,
       showCover: false,
       showSlider: false,
+      backClick: true,
     }
   }
 
@@ -41,6 +43,7 @@ class CoverView extends React.Component<Props, State> {
         this.setState({showScan: false })
         this.openARModel()
         Toast.show('定位成功')
+        this.setState({backClick:false})
       }
     })
   }
@@ -53,6 +56,16 @@ class CoverView extends React.Component<Props, State> {
     // console.warn(layer)
     await SARMap.addARCover(layer.name, undefined)
     // }
+    const _time = async function() {
+      return new Promise(function(resolve, reject) {
+        const timer = setTimeout(function() {
+          resolve('waitting send close message')
+          timer && clearTimeout(timer)
+        }, 3000)
+      })
+    }
+    await _time()
+    this.setState({backClick:true})
   }
 
   checkARElementLayer = async (type: TARLayerType) => {
@@ -156,24 +169,26 @@ class CoverView extends React.Component<Props, State> {
   }
 
   back = async () => {
-    if(this.state.showScan) {
-      this.setState({showScan: false})
-      return
-    }
-    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-    if(layer){
-      SARMap.stopARCover(layer.name)
-    }
+    if (this.state.backClick) {
+      if (this.state.showScan) {
+        this.setState({ showScan: false })
+        return
+      }
+      const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+      if (layer) {
+        SARMap.stopARCover(layer.name)
+      }
 
-    AppEvent.removeListener('ar_image_tracking_result')
-    if(this.state.showScan) {
-      SARMap.stopAREnhancePosition()
+      AppEvent.removeListener('ar_image_tracking_result')
+      if (this.state.showScan) {
+        SARMap.stopAREnhancePosition()
+      }
+      // SARMap.close()
+      const props = AppToolBar.getProps()
+      await props.closeARMap()
+      await props.setCurrentARLayer()
+      AppToolBar.goBack()
     }
-    // SARMap.close()
-    const props = AppToolBar.getProps()
-    await props.closeARMap()
-    await props.setCurrentARLayer()
-    AppToolBar.goBack()
   }
 
   startScan = () => {
@@ -213,8 +228,9 @@ class CoverView extends React.Component<Props, State> {
           // top: dp(80),
           // right: dp(10),
           width: dp(50),
-          height: dp(50),
-          borderRadius: dp(10),
+          height: dp(60),
+          borderTopLeftRadius: dp(10),
+          borderBottomLeftRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
@@ -263,7 +279,7 @@ class CoverView extends React.Component<Props, State> {
           // top: dp(140),
           // right: dp(10),
           width: dp(50),
-          height: dp(50),
+          height: dp(60),
           // borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
@@ -316,7 +332,7 @@ class CoverView extends React.Component<Props, State> {
           // top: dp(200),
           // right: dp(10),
           width: dp(50),
-          height: dp(50),
+          height: dp(60),
           // borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
@@ -367,7 +383,7 @@ class CoverView extends React.Component<Props, State> {
           // top: dp(260),
           // right: dp(10),
           width: dp(50),
-          height: dp(50),
+          height: dp(60),
           // borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
@@ -414,7 +430,7 @@ class CoverView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           width: dp(50),
-          height: dp(50),
+          height: dp(60),
           borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
@@ -458,7 +474,7 @@ class CoverView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           width: dp(50),
-          height: dp(50),
+          height: dp(60),
           borderRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'center',
@@ -788,7 +804,7 @@ class CoverView extends React.Component<Props, State> {
 
           <View
             style={{
-              right: dp(20),
+              right: dp(0),
               flexDirection: 'row',
             }}
           >
@@ -796,7 +812,7 @@ class CoverView extends React.Component<Props, State> {
             {this.state.showCover && <View
               style={{
                 // position: 'absolute',
-                top: dp(60),
+                top: dp(75),
                 right: dp(10),
                 width: dp(50),
                 height: dp(110),
@@ -817,7 +833,8 @@ class CoverView extends React.Component<Props, State> {
               <View
                 style={{
                   top: dp(10),
-                  borderRadius: dp(10),
+                  borderTopLeftRadius: dp(10),
+                  borderBottomLeftRadius: dp(10),
                   backgroundColor: 'white',
                 }}
               >

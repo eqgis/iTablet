@@ -173,8 +173,8 @@ class AR3DMapView extends React.Component<Props, State> {
         flex: 1,
         maxWidth: maxWidth,
         alignItems: 'center',
-        top: width / 2,
-        right: 0,
+        // top: width / 2,
+        bottom: dp(10),
       }
     }
 

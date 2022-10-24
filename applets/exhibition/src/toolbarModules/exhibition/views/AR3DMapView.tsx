@@ -186,11 +186,20 @@ class AR3DMapView extends React.Component<Props, State> {
           scanSize={scanSize}
           color='red'
         />
-
         <View
-          style={style}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bottom: dp(10),
+          }}
         >
-          <TouchableOpacity
+          <View
+            style={style}
+          >
+            {/* <TouchableOpacity
             style={{
               width: dp(100),
               height: dp(40),
@@ -206,18 +215,18 @@ class AR3DMapView extends React.Component<Props, State> {
             <Text style={[AppStyle.h3, { color: 'white' }]}>
               {'扫一扫'}
             </Text>
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: 'white',
-              marginTop: dp(10),
-              textAlign: 'center',
-            }}
-          >
-            {'请扫描演示台上的二维码加载展示内容'}
-          </Text>
+          </TouchableOpacity> */}
+            <Text
+              style={{
+                color: 'white',
+                marginTop: dp(10),
+                textAlign: 'center',
+              }}
+            >
+              {'请扫描演示台上的二维码加载展示内容'}
+            </Text>
+          </View>
         </View>
-
       </>
     )
   }

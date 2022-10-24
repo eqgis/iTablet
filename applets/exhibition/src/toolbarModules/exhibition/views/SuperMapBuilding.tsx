@@ -13,6 +13,7 @@ import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
+import { SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -40,9 +41,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
   },
+  resetBtn: {
+    borderTopLeftRadius: dp(10),
+    borderBottomLeftRadius: dp(10),
+  },
   rightBtn: {
     width: dp(60),
-    height: dp(50),
+    height: dp(60),
     justifyContent: 'center',
     alignItems: 'center',
     borderRightWidth: dp(2),
@@ -79,39 +84,39 @@ const styles = StyleSheet.create({
   functionBarView: {
     position: 'absolute',
     flexDirection: 'column',
-    top: dp(0),
-    bottom: dp(0),
+    top: dp(40),
     right: dp(0),
     width: dp(60),
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
   },
-  functionBar: {
-    position: 'absolute',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    top: dp(40),
-    right: dp(0),
-    width: dp(60),
-    height: dp(120),
-    borderTopLeftRadius: dp(10),
-    borderBottomLeftRadius: dp(10),
-    overflow: 'hidden',
-    backgroundColor: 'white',
-  },
   // functionBar: {
+  //   position: 'absolute',
   //   flexDirection: 'column',
+  //   justifyContent: 'space-around',
+  //   alignItems: 'center',
+  //   top: dp(40),
+  //   right: dp(0),
   //   width: dp(60),
+  //   // height: dp(120),
   //   borderTopLeftRadius: dp(10),
   //   borderBottomLeftRadius: dp(10),
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
   //   overflow: 'hidden',
   //   backgroundColor: 'white',
-  //   paddingVertical: dp(10),
   // },
+  functionBar: {
+    flexDirection: 'column',
+    marginTop: dp(8),
+    width: dp(60),
+    borderTopLeftRadius: dp(10),
+    borderBottomLeftRadius: dp(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    paddingVertical: dp(10),
+  },
 
   // ToolView
   closeBtn: {
@@ -167,7 +172,7 @@ interface Props {
   windowSize: ScaledSize
 }
 
-type ToolType = 'position' | 'sectioning' | 'attribute' | 'lighting' | 'advertising'
+type ToolType = 'position' | 'sectioning' | 'attribute' | 'lighting' | 'advertising' | 'reset'
 
 interface State {
   showScan: boolean
@@ -195,6 +200,8 @@ class SuperMapBuilding extends React.Component<Props, State> {
     z: -1,
   }
   isOpen = false // 是否已经打开模型
+  layerStatus: SceneLayerStatus | undefined
+  toolView: ToolView | undefined | null
 
   constructor(props: Props) {
     super(props)
@@ -337,8 +344,9 @@ class SuperMapBuilding extends React.Component<Props, State> {
           const defaultLayer = layers.find(item => {
             return item.type === ARLayerType.AR_SCENE_LAYER
           })
-          if (defaultLayer) {
+          if (defaultLayer?.name) {
             props.setCurrentARLayer(defaultLayer)
+            this.layerStatus = await SARMap.getSceneLayerStatus(defaultLayer.name)
           }
         }
       }
@@ -460,8 +468,14 @@ class SuperMapBuilding extends React.Component<Props, State> {
           <TouchableOpacity
             style={styles.scanBtn}
             onPress={() => {
+              let toolType = this.state.toolType
+              if (this.state.toolType) {
+                toolType = ''
+                SARMap.submit()
+                this.showAttribute(false)
+              }
               this.arrowTricker(false)
-              this.setState({ showScan: true })
+              this.setState({ showScan: true, toolType })
             }}
           >
             <Image
@@ -478,7 +492,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     style?: ViewStyle,
     onPress: () => void,
     image: ImageSourcePropType,
-    imageSelected: ImageSourcePropType,
+    imageSelected?: ImageSourcePropType,
     key: ToolType,
     title: string,
   }) => {
@@ -495,7 +509,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         <View style={styles.rightSubBtn}>
           <Image
             style={styles.btnImg}
-            source={props.key === this.state.toolType ? props.imageSelected : props.image}
+            source={props.key === this.state.toolType && props.imageSelected ? props.imageSelected : props.image}
           />
         </View>
 
@@ -504,6 +518,24 @@ class SuperMapBuilding extends React.Component<Props, State> {
         </Text>
       </TouchableOpacity>
     )
+  }
+
+  renderReset = () => {
+    return this.renderRightButton({
+      image: getImage().icon_tool_reset,
+      onPress: async () => {
+        if (!this.checkSence()) return
+        if (this.layerStatus) {
+          const props = AppToolBar.getProps()
+          const layerName = props.arMapInfo.currentLayer.name
+          this.toolView?.reset()
+          layerName && await SARMap.setSceneLayerStatus(layerName, this.layerStatus)
+        }
+      },
+      style: styles.resetBtn,
+      key: 'reset',
+      title: '复位',
+    })
   }
 
   /** 位置调整 */
@@ -738,6 +770,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     }
     return (
       <ToolView
+        ref={ref => this.toolView = ref}
         type={this.state.toolType}
         data={{
           layerName: mapInfo.currentLayer.name,
@@ -757,12 +790,15 @@ class SuperMapBuilding extends React.Component<Props, State> {
 
   renderFunctionBar = () => {
     return (
-      <View style={styles.functionBar}>
-        {this.renderPosition()}
-        {/* {this.renderSectioning()} */}
-        {this.renderAttribute()}
-        {/* {this.renderLightingEffect()} */}
-        {/* {this.renderAdvertising()} */}
+      <View style={styles.functionBarView}>
+        {this.renderReset()}
+        <View style={styles.functionBar}>
+          {this.renderPosition()}
+          {/* {this.renderSectioning()} */}
+          {this.renderAttribute()}
+          {/* {this.renderLightingEffect()} */}
+          {/* {this.renderAdvertising()} */}
+        </View>
       </View>
     )
     // return (
@@ -816,12 +852,33 @@ const circleR = dp(30)
 const circleStrokeWidth = dp(4)
 
 class ToolView extends React.Component<ToolViewProps, unknown> {
+  scaleBar: SlideBar | undefined | null
+  rotationX: CircleBar | undefined | null
+  rotationY: CircleBar | undefined | null
+  rotationZ: CircleBar | undefined | null
+
   constructor(props: ToolViewProps) {
     super(props)
   }
 
   close = () => {
     this.props.close?.()
+  }
+
+  reset = () => {
+    this.resetPosition()
+  }
+
+  resetPosition = () => {
+    try {
+      if (this.props.type !== 'position') return
+      this.scaleBar?.onClear()
+      this.rotationX?.reset()
+      this.rotationY?.reset()
+      this.rotationZ?.reset()
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
   }
 
   renderPosition = () => {
@@ -854,6 +911,7 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
         <View style={styles.toolRow}>
           <Text style={{textAlign: 'center', fontSize: dp(12)}}>缩放</Text>
           <SlideBar
+            ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
             range={[0, 200]}
             defaultMaxValue={100}
@@ -873,6 +931,7 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
           <Text style={{textAlign: 'center', fontSize: dp(12)}}>旋转</Text>
           <View style={styles.circleBarRow}>
             <CircleBar
+              ref={ref => this.rotationX = ref}
               width={circleSize}
               height={circleSize}
               strokeWidth={circleStrokeWidth}
@@ -895,6 +954,7 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
               }}
             />
             <CircleBar
+              ref={ref => this.rotationY = ref}
               width={circleSize}
               height={circleSize}
               strokeWidth={circleStrokeWidth}
@@ -917,6 +977,7 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
               }}
             />
             <CircleBar
+              ref={ref => this.rotationZ = ref}
               width={circleSize}
               height={circleSize}
               strokeWidth={circleStrokeWidth}

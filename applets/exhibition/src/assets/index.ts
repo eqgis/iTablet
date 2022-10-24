@@ -58,6 +58,7 @@ const icon_save_local = require('./icon_save_local.png')
 const icon_cancel02 = require('./icon_cancel02.png')
 const bg_01 = require('./bg_01.png')
 const bg_02 = require('./bg_02.png')
+const icon_tool_reset = require('./icon_tool_reset.png')
 
 const icon_action_follow_me = require('./icon_action_follow_me.png')
 const icon_action_greet = require('./icon_action_greet.png')
@@ -112,6 +113,7 @@ const image = {
   icon_cancel,
   bg_01,
   bg_02,
+  icon_tool_reset,
   icon_tool_distance,
   icon_tool_length,
   icon_tool_slider,

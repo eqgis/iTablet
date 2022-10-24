@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: dp(10),
   },
   rightBtn: {
-    width: dp(60),
+    width: dp(50),
     height: dp(60),
     justifyContent: 'center',
     alignItems: 'center',
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
   rightSubBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: dp(26),
-    height: dp(26),
+    width: dp(30),
+    height: dp(30),
   },
   btnImg: { position: 'absolute', width: '100%', height: '100%' },
-  rightBtnTxt: { fontSize: 10, color: '#0E0E0E' },
+  rightBtnTxt: { fontSize: dp(10), color: '#0E0E0E' },
   cover: {
     position: 'absolute',
     top: dp(160),
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     top: dp(40),
     right: dp(0),
-    width: dp(60),
+    width: dp(50),
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   functionBar: {
     flexDirection: 'column',
     marginTop: dp(8),
-    width: dp(60),
+    width: dp(50),
     borderTopLeftRadius: dp(10),
     borderBottomLeftRadius: dp(10),
     justifyContent: 'center',
@@ -437,11 +437,6 @@ class SuperMapBuilding extends React.Component<Props, State> {
     this.clickWait = false
   }
 
-  startScan = () => {
-    this.scanRef?.scan()
-    SARMap.setAREnhancePosition()
-  }
-
   checkSence = () => {
     const props = AppToolBar.getProps()
     if (!props.arMap.currentMap) {
@@ -475,6 +470,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
                 this.showAttribute(false)
               }
               this.arrowTricker(false)
+              SARMap.setAREnhancePosition()
               this.setState({ showScan: true, toolType })
             }}
           >
@@ -675,7 +671,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     const spaceSmall = width * 0.3 / 2
 
     const maxWidthLarge = (height / 2 - scanSize / 2) * 0.9
-    const maxWidthSmall = (height / 2 - width * 0.7 / 2) * 0.9
+    const maxWidthSmall = (height / 2 - width * 0.7 / 2)
 
     if (isLargeScreen) {
       space = spaceLarge

@@ -57,11 +57,22 @@ const tool_sectioning_selected = require('./tool_sectioning_selected.png')
 const tool_sectioning = require('./tool_sectioning.png')
 const icon_close = require('./icon_close.png')
 const icon_other_scan = require('./icon_other_scan.png')
+const icon_save_local = require('./icon_save_local.png')
+const icon_cancel02 = require('./icon_cancel02.png')
 const bg_01 = require('./bg_01.png')
 const bg_02 = require('./bg_02.png')
+const icon_tool_reset = require('./icon_tool_reset.png')
 
+const icon_action_follow_me = require('./icon_action_follow_me.png')
+const icon_action_greet = require('./icon_action_greet.png')
+const icon_action_handshake = require('./icon_action_handshake.png')
+const icon_action_please = require('./icon_action_please.png')
+const icon_action_risus = require('./icon_action_risus.png')
+const icon_action_speak = require('./icon_action_speak.png')
+const icon_action_stand_by = require('./icon_action_stand_by.png')
+const icon_action_turn_around = require('./icon_action_turn_around.png')
+const icon_action_walk = require('./icon_action_walk.png')
 const logo_supermap = require('./logo-supermap.png')
-
 
 const image = {
   scan,
@@ -107,6 +118,7 @@ const image = {
   icon_cancel,
   bg_01,
   bg_02,
+  icon_tool_reset,
   icon_tool_distance,
   icon_tool_length,
   icon_tool_slider,
@@ -125,7 +137,18 @@ const image = {
   icon_doctor,
   icon_superman_selected,
   icon_superman,
+  icon_save_local,
+  icon_cancel02,
 
+  icon_action_follow_me,
+  icon_action_greet,
+  icon_action_handshake,
+  icon_action_please,
+  icon_action_risus,
+  icon_action_speak,
+  icon_action_stand_by,
+  icon_action_turn_around,
+  icon_action_walk,
   logo_supermap,
 }
 

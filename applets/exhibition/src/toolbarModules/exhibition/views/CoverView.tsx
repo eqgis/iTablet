@@ -535,7 +535,7 @@ class CoverView extends React.Component<Props, State> {
     const spaceSmall = width * 0.3 / 2
 
     const maxWidthLarge = (height / 2- scanSize / 2 ) * 0.9
-    const maxWidthSmall = (height / 2- width * 0.7 / 2 ) * 0.9
+    const maxWidthSmall = (height / 2- width * 0.7 / 2 )
 
     if(isLargeScreen) {
       space = spaceLarge

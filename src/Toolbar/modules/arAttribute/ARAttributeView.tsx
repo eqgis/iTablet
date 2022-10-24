@@ -1,14 +1,15 @@
 import FloatBar, { FloatItem } from '@/components/FloatBar'
 import NavigationService from '@/containers/NavigationService'
+import { getLanguage } from '@/language'
 import { RootState } from '@/redux/types'
-import { ARAction, SARMap } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import { Animated,  Easing } from 'react-native'
 import { connect, ConnectedProps } from 'react-redux'
 import { ModuleViewProps } from '../..'
 import { getImage } from '../../../assets'
-import { AppToolBar, dp } from '../../../utils'
+import { AppLog, AppToolBar, dp, Toast } from '../../../utils'
 import Attribute from './component/Attribute'
 import { AttributeDetail } from './component/LayerAttribute'
 import PipeLineAttribute from './component/pipeLineAttribute'
@@ -90,9 +91,28 @@ class ARAttributeView extends React.Component<Props> {
           } else {
             AppToolBar.getProps().setPipeLineAttribute([])
           }
+          global.Loading.setLoading(false)
 
         } catch (error) {
+          global.Loading.setLoading(false)
           console.error("三维管线监听回调函数出错")
+        }
+      },
+      waittingCallback: async () => {
+        try {
+          if(
+            AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT' ||
+            AppToolBar.getData().allowedShowAttribute !== undefined && !AppToolBar.getData().allowedShowAttribute
+          ){
+            return
+          }
+          global.Loading.setLoading(
+            true,
+            getLanguage().LOADING,
+          )
+        } catch (error) {
+          global.Loading.setLoading(false)
+          __DEV__ && AppLog.error(error)
         }
       }
     })

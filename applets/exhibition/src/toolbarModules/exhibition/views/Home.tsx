@@ -157,13 +157,14 @@ class Home extends React.Component<Props, State> {
             alignItems: 'center',
           }}
           activeOpacity={0.9}
-          onPress={() => {
-            // this.scale(index)
-            this.setState({
-              currentIndex: index
-            })
-          }}
-          disabled={true /**this.isPortrait */}
+          // onPress={() => {
+          //   // this.scale(index)
+          //   this.setState({
+          //     currentIndex: index
+          //   })
+          // }}
+          // disabled={true /**this.isPortrait */}
+          onPress={item.action}
         >
           <Image
             style={{position: 'absolute', width: '100%', height: '100%'}}
@@ -250,6 +251,16 @@ class Home extends React.Component<Props, State> {
       <View
         style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'center'}]}
       >
+        <Image
+          style={{
+            position: 'absolute',
+            top: dp(25),
+            right: dp(20),
+            width: dp(100),
+            height: dp(30)
+          }}
+          source={getImage().logo_supermap}
+        />
         {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
       </View>
     )

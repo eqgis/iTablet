@@ -80,8 +80,10 @@ class PipeLineAttribute extends Component<Props, State> {
     const data5 = { title: '流量', value: ''}
     for(const item of this.props.pipeLineAttribute) {
       if (item.title === data1.title) {
+        data1.title = '名称'
         data1.value = item.value
       } else if (item.title === '族') {
+        data2.title = '类别'
         data2.value = item.value
       } else if (item.title === data3.title) {
         data3.value = item.value || '0'

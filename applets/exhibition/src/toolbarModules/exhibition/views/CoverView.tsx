@@ -221,6 +221,12 @@ class CoverView extends React.Component<Props, State> {
   }
 
   renderLocation = () => {
+    let image
+    if(this.state.showScan){
+      image = getImage().icon_cover_select
+    }else{
+      image = getImage().icon_cover
+    }
     return (
       <TouchableOpacity
         style={{
@@ -255,7 +261,7 @@ class CoverView extends React.Component<Props, State> {
         >
           <Image
             style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={getImage().icon_cover}
+            source={image}
           />
         </View>
 
@@ -272,6 +278,12 @@ class CoverView extends React.Component<Props, State> {
   }
 
   renderWindow = () => {
+    let image
+    if(this.state.showCover){
+      image = getImage().icon_window_select
+    }else {
+      image = getImage().icon_window
+    }
     return (
       <TouchableOpacity
         style={{
@@ -308,7 +320,7 @@ class CoverView extends React.Component<Props, State> {
         >
           <Image
             style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={getImage().icon_window}
+            source={image}
           />
         </View>
 
@@ -325,6 +337,12 @@ class CoverView extends React.Component<Props, State> {
   }
 
   renderSliderContorl = () => {
+    let image
+    if(this.state.showSlider){
+      image = getImage().icon_tool_slider_select
+    }else{
+      image = getImage().icon_tool_slider
+    }
     return (
       <TouchableOpacity
         style={{
@@ -359,7 +377,7 @@ class CoverView extends React.Component<Props, State> {
         >
           <Image
             style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={getImage().icon_tool_slider}
+            source={image}
           />
         </View>
 

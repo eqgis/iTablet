@@ -17,7 +17,9 @@ const scan_net_red = require('./scan_inner_red.png')
 const icon_return = require('./icon_other_return.png')
 const guide_arrow = require('./icon_exhibition_guide.png')
 const icon_cover = require('./location_on.png')
+const icon_cover_select = require('./location_on_select.png')
 const icon_window = require('./window.png')
+const icon_window_select = require('./icon_window_select.png')
 const icon_tool_rectangle = require('./icon_tool_rectangle.png')
 const icon_tool_fix = require('./icon_tool_fix.png')
 const icon_tool_radius = require('./icon_tool_radius.png')
@@ -26,6 +28,7 @@ const icon_cancel = require('./icon_cancel.png')
 const icon_tool_distance = require('./icon_tool_distance.png')
 const icon_tool_length = require('./icon_tool_length.png')
 const icon_tool_slider = require('./icon_tool_slider.png')
+const icon_tool_slider_select = require('./icon_tool_slider_select.png')
 const icon_speak_selected = require('./icon_speak_selected.png')
 const icon_speak = require('./icon_speak.png')
 const icon_action_selected = require('./icon_action_selected.png')
@@ -76,7 +79,9 @@ const image = {
   icon_return,
   guide_arrow,
   icon_cover,
+  icon_cover_select,
   icon_window,
+  icon_window_select,
   icon_tool_rectangle,
   ar_dr_supermap,
   ar_3d_map,
@@ -105,6 +110,7 @@ const image = {
   icon_tool_distance,
   icon_tool_length,
   icon_tool_slider,
+  icon_tool_slider_select,
   icon_speak_selected,
   icon_speak,
   icon_action_selected,

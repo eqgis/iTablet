@@ -101,6 +101,35 @@ class AR3DMapView extends React.Component<Props, State> {
     SARMap.setAREnhancePosition()
   }
 
+  showScan = () => {
+    this.setState({showScan:true})
+  }
+
+  /** 扫描按钮 */
+  renderScanBtn = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: dp(80),
+          left: dp(20),
+          width: dp(60),
+          height: dp(60),
+          borderRadius: dp(5),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+        onPress={this.startScan}
+      >
+        <Image
+          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          source={getImage().icon_other_scan}
+        />
+      </TouchableOpacity>
+    )
+  }
+
   renderBack = () => {
     return (
       <TouchableOpacity
@@ -235,6 +264,7 @@ class AR3DMapView extends React.Component<Props, State> {
     return(
       <>
         {this.state.showScan && this.renderScan()}
+        {this.renderScanBtn()}
         {this.renderBack()}
         <ARArrow />
       </>

@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     height: dp(26),
   },
   btnImg: { position: 'absolute', width: '100%', height: '100%' },
-  rightBtnTxt: { fontSize: 10 },
+  rightBtnTxt: { fontSize: 10, color: '#0E0E0E' },
   cover: {
     position: 'absolute',
     top: dp(160),
@@ -266,7 +266,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       const targetPxpPath = home + ConstPath.CustomerPath + 'Data/Scene/ChengDuSuperMap.pxp'
       if (await FileTools.fileIsExist(targetPxpPath)) {
         if (await FileTools.fileIsExist(targetPath)) {
-          Toast.show('已经导入数据')
+          // Toast.show('已经导入数据')
           return targetPxpPath // 已经导入
         } else {
           await FileTools.deleteFile(targetPxpPath)
@@ -276,18 +276,18 @@ class SuperMapBuilding extends React.Component<Props, State> {
           await FileTools.deleteFile(targetHomePath)
         }
       }
-      Toast.show('开始导入数据')
+      // Toast.show('开始导入数据')
       const tempData = await DataHandler.getExternalData(importPath) || []
       const result = await DataHandler.importWorkspace3D(tempData[0])
       if (result) {
-        Toast.show('导入数据成功')
+        // Toast.show('导入数据成功')
         return targetPxpPath
       } else {
-        Toast.show('导入数据失败')
+        // Toast.show('导入数据失败')
         return ''
       }
     } catch (error) {
-      Toast.show('导入数据失败')
+      // Toast.show('导入数据失败')
       __DEV__ && console.warn(error)
     }
   }
@@ -410,7 +410,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     AppToolBar.addData({
       PipeLineAttribute: undefined,
     })
-
+    this.arrowTricker(false)
     AppEvent.removeListener('ar_image_tracking_result')
     if (this.state.showScan) {
       SARMap.stopAREnhancePosition()

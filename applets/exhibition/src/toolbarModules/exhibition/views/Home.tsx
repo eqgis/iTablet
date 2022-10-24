@@ -251,6 +251,16 @@ class Home extends React.Component<Props, State> {
       <View
         style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'center'}]}
       >
+        <Image
+          style={{
+            position: 'absolute',
+            top: dp(25),
+            right: dp(20),
+            width: dp(100),
+            height: dp(30)
+          }}
+          source={getImage().logo_supermap}
+        />
         {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
       </View>
     )

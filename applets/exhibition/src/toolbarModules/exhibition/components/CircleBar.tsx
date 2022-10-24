@@ -123,6 +123,12 @@ export default class CircleBar extends Component<Props, State> {
     })
   }
 
+  reset = () => {
+    this.setState({
+      value: this.props.value,
+    })
+  }
+
   parseToDeg = (x: number, y: number) => {
     const cx = this.props.width / 2
     const cy = this.props.height / 2

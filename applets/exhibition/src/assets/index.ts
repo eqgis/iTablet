@@ -56,6 +56,7 @@ const icon_close = require('./icon_close.png')
 const icon_other_scan = require('./icon_other_scan.png')
 const bg_01 = require('./bg_01.png')
 const bg_02 = require('./bg_02.png')
+const icon_tool_reset = require('./icon_tool_reset.png')
 
 
 const image = {
@@ -100,6 +101,7 @@ const image = {
   icon_cancel,
   bg_01,
   bg_02,
+  icon_tool_reset,
   icon_tool_distance,
   icon_tool_length,
   icon_tool_slider,

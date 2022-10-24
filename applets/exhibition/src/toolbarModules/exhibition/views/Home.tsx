@@ -157,13 +157,14 @@ class Home extends React.Component<Props, State> {
             alignItems: 'center',
           }}
           activeOpacity={0.9}
-          onPress={() => {
-            // this.scale(index)
-            this.setState({
-              currentIndex: index
-            })
-          }}
-          disabled={true /**this.isPortrait */}
+          // onPress={() => {
+          //   // this.scale(index)
+          //   this.setState({
+          //     currentIndex: index
+          //   })
+          // }}
+          // disabled={true /**this.isPortrait */}
+          onPress={item.action}
         >
           <Image
             style={{position: 'absolute', width: '100%', height: '100%'}}

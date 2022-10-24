@@ -8,6 +8,7 @@ import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
+import { flatMapImported, shouldRefreshFlatMapData } from './Actions'
 
 interface Props {
   windowSize: ScaledSize
@@ -66,21 +67,38 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   importData = async () => {
     const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
-    const hasFlatMap = data.some(item => {
+    const hasFlatMap = data.find(item => {
       return item.name === '台风登陆路径.xml'
     })
-    if(!hasFlatMap) {
+    let needToImport = await shouldRefreshFlatMapData()
+
+    if(needToImport && hasFlatMap) {
+      //remove
+      // console.warn('remove')
+      const homePath = await FileTools.getHomeDirectory()
+      const mapPath = homePath + hasFlatMap.path
+      const mapExpPath = mapPath.substring(0, mapPath.lastIndexOf('.')) + '.exp'
+      await FileTools.deleteFile(mapPath)
+      await FileTools.deleteFile(mapExpPath)
+      const animationPath = homePath + ConstPath.UserPath + 'Customer/Data/Animation/台风登陆路径'
+      await FileTools.deleteFile(animationPath)
+    } else if(!hasFlatMap) {
+      needToImport = true
+    }
+
+    if(needToImport) {
       const homePath = await FileTools.getHomeDirectory()
       const path = homePath + ConstPath.Common + 'Exhibition/AR平面地图/台风登陆路径'
       const data = await DataHandler.getExternalData(path)
       if(data.length > 0 && data[0].fileType === 'workspace') {
         await DataHandler.importExternalData(AppUser.getCurrentUser(), data[0])
+        flatMapImported()
         // console.warn('imported')
       } else {
         // console.warn('failed to load data')
       }
     } else {
-      // console.warn('data already loaded')
+      // console.warn('no need to import')
     }
   }
 

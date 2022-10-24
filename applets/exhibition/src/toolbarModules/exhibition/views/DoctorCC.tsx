@@ -1,15 +1,18 @@
 import React, { Component } from "react"
-import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType } from "react-native"
+import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, NativeModules } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { AppEvent, AppStyle, AppToolBar, Toast ,DataHandler} from '@/utils'
-import { SARMap ,ARLayerType, FileTools, ARAction, SExhibition} from 'imobile_for_reactnative'
+import { SARMap ,ARLayerType, FileTools, ARAction, SExhibition, SMediaCollector} from 'imobile_for_reactnative'
 import Scan from "../components/Scan"
 import { ConstPath } from "@/constants"
 import { ARElement, ARLayer, ARModelAnimatorParameter, ModelAnimation } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_reactnative/NativeModule/dataTypes"
 import ARArrow from "../components/ARArrow"
 import { Vector3 } from "imobile_for_reactnative/types/data"
+import { getLanguage } from "@/language"
+
+const appUtilsModule = NativeModules.AppUtils
 
 
 interface animationListType {
@@ -43,6 +46,8 @@ interface State {
   selectSpeakKey: 'doctor' | 'pipeLine' | 'mansion' | '3dMap' | 'map' | 'null'
   /** 二级目录是否显示 true显示 false不显示 */
   isSecondaryShow: boolean,
+  /** 点击合影按钮后截屏获取的图片uri */
+  uri: string,
 }
 
 class DoctorCC extends Component<Props, State> {
@@ -63,6 +68,10 @@ class DoctorCC extends Component<Props, State> {
   isPlay = false
   // 窗格动画播放的定时器
   timer: NodeJS.Timeout | null | undefined = null
+  /** 截屏的内容句柄 */
+  viewShotRef: ViewShot | undefined | null = null
+  /** 合影图片保存的本地路径 */
+  imgPath: string
 
   constructor(props: Props) {
     super(props)
@@ -75,11 +84,14 @@ class DoctorCC extends Component<Props, State> {
       isShowFull: false,
       selectSpeakKey: 'null',
       isSecondaryShow: true,
+      uri: 'null',
     }
+    this.imgPath = ''
   }
 
   componentDidMount = async () => {
     this.getData()
+    await this.openDoctorARMap()
     // 启用增强定位
     SARMap.setAREnhancePosition()
     // 添加监听
@@ -87,7 +99,7 @@ class DoctorCC extends Component<Props, State> {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        await this.openDoctorARMap()
+        // await this.openDoctorARMap()
 
         const relativePositin: Vector3 = {
           x: 0,
@@ -101,7 +113,7 @@ class DoctorCC extends Component<Props, State> {
         })
         SExhibition.startTrackingTarget()
 
-        // Toast.show('定位成功')
+        Toast.show('定位成功')
       }
     })
   }
@@ -186,7 +198,7 @@ class DoctorCC extends Component<Props, State> {
         addNewDSourceWhenCreate: false,
       })
       SARMap.setAction(ARAction.NULL)
-      Toast.show("地图打开成功")
+      // Toast.show("地图打开成功")
     } else {
       Toast.show("该地图不存在")
     }
@@ -280,6 +292,7 @@ class DoctorCC extends Component<Props, State> {
       animations: animations,
       isSecondaryShow: true,
       selectSpeakKey: 'null',
+      selectAnimationKey: -1,
     })
     if(this.isPlay) {
       SARMap.stopARAnimation()
@@ -340,15 +353,26 @@ class DoctorCC extends Component<Props, State> {
       this.timer = null
     }
 
-    if(this.ARModel) {
-      SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    // if(this.ARModel) {
+    //   SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    // }
+
+    const currentElement = this.ARModel
+    let animations: Array<ModelAnimation> = []
+    if(currentElement) {
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      // 将图层的动画重复播放次数设置为1，对应传参为0
+      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 1)
+      animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     }
+
     this.setState({
       selectType: 'photo',
       // isShowFull: true,
       selectAnimationKey: -1,
       isSecondaryShow: true,
       selectSpeakKey: 'null',
+      animations: animations,
     })
   }
 
@@ -380,6 +404,106 @@ class DoctorCC extends Component<Props, State> {
       isSecondaryShow: true,
       selectSpeakKey: 'null',
     })
+  }
+
+
+  /** 点击合影(截屏)按钮响应的方法 */
+  shot = async () => {
+    try {
+
+      // 截屏03
+      const date = new Date().getTime().toString()
+      // const location = await SMap.getCurrentPosition()
+      const homePath = await FileTools.getHomeDirectory()
+      const targetPath = homePath + ConstPath.UserPath
+        + 'Customer/' +
+        ConstPath.RelativeFilePath.Media
+      await SMediaCollector.initMediaCollector(targetPath)
+      let imgPath = targetPath + `IMG_${date}.jpg`
+      const result = await SARMap.captureImage(imgPath)
+      console.warn("result: " + JSON.stringify(result))
+      if(result) {
+        this.imgPath = imgPath
+        if (
+          Platform.OS === 'android' &&
+          imgPath.toLowerCase().indexOf('content://') !== 0
+        ) {
+          imgPath = 'file://' + imgPath
+        }
+      }
+
+      this.setState({
+        uri: imgPath,
+        isShowFull: false,
+      })
+    } catch (error) {
+      console.warn("error: " + JSON.stringify(error))
+    }
+
+
+  }
+
+  /** 保存合影到本地的方法 */
+  savePhotoLocal = () => {
+    this.imgPath = ''
+    this.setState({
+      uri: 'null',
+      isSecondaryShow: true,
+    })
+  }
+
+  /** 取消保存合影图片的方法 */
+  cancelPhoto = async () => {
+    // 因为在截屏时就已经保存到本地里，所以如果取消保存的话，得删去之前保存的图片
+    if(await FileTools.fileIsExist(this.imgPath)) {
+      FileTools.deleteFile(this.imgPath)
+    }
+    this.imgPath = ''
+    this.setState({
+      uri: 'null',
+      isSecondaryShow: true,
+    })
+  }
+
+
+  /** 合影分享到微信 */
+  shareToWechat = async () => {
+    try {
+
+      this.imgPath = ''
+      this.setState({
+        uri: 'null',
+        isSecondaryShow: true,
+      })
+
+      let result
+      let isInstalled
+      if (Platform.OS === 'ios') {
+        isInstalled = true
+      } else {
+        isInstalled = await appUtilsModule.isWXInstalled()
+      }
+      // let isInstalled = await appUtilsModule.isWXInstalled()
+      if (isInstalled) {
+        result = await appUtilsModule.sendFileOfWechat({
+          filePath: this.imgPath,
+          title: this.imgPath,
+          description: 'SuperMap iTablet',
+        })
+
+        if (!result) {
+          Toast.show(getLanguage().Prompt.WX_SHARE_FAILED)
+          return undefined
+        }
+      } else {
+        Toast.show(getLanguage().Prompt.WX_NOT_INSTALLED)
+      }
+      return result === false ? result : undefined
+    } catch (error) {
+      if (error.message.includes('File size cannot exceeds 10M')) {
+        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+      }
+    }
   }
 
   /** 返回按钮 */
@@ -626,7 +750,7 @@ class DoctorCC extends Component<Props, State> {
           <Text style={[styles.functionItemText]}> {'动作'} </Text>
         </TouchableOpacity>
 
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={[
             styles.functionItem,
             this.state.selectType === 'reloader' && {
@@ -644,9 +768,9 @@ class DoctorCC extends Component<Props, State> {
             />
           </View>
           <Text style={[styles.functionItemText]}> {'换装'} </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={[
             styles.functionItem,
             this.state.selectType === 'photo' && {
@@ -664,9 +788,9 @@ class DoctorCC extends Component<Props, State> {
             />
           </View>
           <Text style={[styles.functionItemText]}> {'合影'} </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={[
             styles.functionItem,
             this.state.selectType === 'video' && {
@@ -684,7 +808,7 @@ class DoctorCC extends Component<Props, State> {
             />
           </View>
           <Text style={[styles.functionItemText]}> {'录像'} </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
     )
   }
@@ -706,6 +830,7 @@ class DoctorCC extends Component<Props, State> {
           horizontal
           showsHorizontalScrollIndicator={false}
           style={[{maxWidth: dp(550)}]}
+          contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
         >
           {
             this.speakData.map((item) => {
@@ -735,6 +860,8 @@ class DoctorCC extends Component<Props, State> {
             shadowOffset: { width: 1, height: 1 },
             shadowColor: 'black',
             shadowOpacity: 1,
+            width: dp(112),
+            height: dp(112),
           },
         ]}
         onPress={async () => {
@@ -804,7 +931,7 @@ class DoctorCC extends Component<Props, State> {
                   clearTimeout(this.timer)
                   this.timer = null
                 }
-  
+
               }, time * 1000)
             }
 
@@ -818,11 +945,21 @@ class DoctorCC extends Component<Props, State> {
 
         }}
       >
-        <Image source={item.image} style={[{width: dp(60), height: dp(60),marginTop: dp(10)}]} />
+        <Image
+          source={item.image}
+          style={[
+            {width: dp(60), height: dp(60),marginTop: dp(10)},
+            this.state.selectSpeakKey === item.key && {
+              width: dp(69),
+              height: dp(69),
+            }
+          ]}
+        />
         <View style={[
           {backgroundColor: '#fff', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
           this.state.selectSpeakKey === item.key && {
             backgroundColor:"#f24f02",
+            height: dp(23)
           },
         ]} >
           <Text style={[
@@ -1012,28 +1149,312 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
-  /** 合影被选中时显示的拍照页面 to do */
+  /** 合影按钮被选中时显示的选择合影动画的页面 */
   renderPhotoSelected = () => {
     return (
-      <TouchableOpacity
-        style={{
+      <View
+        style={[{
           position: 'absolute',
-          top: dp(20),
-          right: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          bottom: dp(15),
+          left: 0,
           justifyContent: 'center',
           alignItems: 'center',
-          overflow: 'hidden',
-        }}
-        // onPress={this.back}
+          width: '100%',
+        }]}
       >
-        {/* <Image
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={[{maxWidth: dp(600),}]}
+          contentContainerStyle= {[{height: dp(84), alignItems: 'center'}]}
+        >
+          {
+            this.state.animations.map((item) => {
+              return this.renderPhotoItem(item)
+            })
+          }
+        </ScrollView>
+      </View>
+    )
+  }
+
+  /** 合影的动画具体选择项 */
+  renderPhotoItem = (item: ModelAnimation) => {
+    let image = getImage().icon_action_stand_by
+    switch(item.name){
+      case 'stand-by':
+        image = getImage().icon_action_stand_by
+        break
+      case '打招呼':
+        image = getImage().icon_action_greet
+        break
+      case '行走':
+        image = getImage().icon_action_walk
+        break
+      case '转圈':
+        image = getImage().icon_action_turn_around
+        break
+      case '握手':
+        image = getImage().icon_action_handshake
+        break
+      case '说话':
+        image = getImage().icon_action_speak
+        break
+      case '请':
+        image = getImage().icon_action_please
+        break
+      case '跟我走':
+        image = getImage().icon_action_follow_me
+        break
+      case '大笑':
+        image = getImage().icon_action_risus
+        break
+      default:
+        return null
+    }
+
+    return (
+      <TouchableOpacity
+        key={item.id}
+        style={[
+          {
+            width: dp(56),
+            height: dp(74),
+            marginVertical: dp(2),
+            marginHorizontal: dp(5),
+            paddingVertical: dp(2),
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            backgroundColor: 'rgba(255, 255, 255, .9)',
+            // borderRadius: dp(10),
+          },
+          this.state.selectAnimationKey === item.id && {
+            width: dp(60),
+            height: dp(82)
+          }
+        ]}
+        onPress={async ()=>{
+          const currentElement = this.ARModel
+          if(currentElement) {
+            // 当两次点击同一动作动画时需要将之前的动画清掉
+            if(this.state.selectAnimationKey === item.id) {
+              await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+            }
+            const isAdd = this.animationList.get(item.id)
+            if(!isAdd) {
+              const params: ARModelAnimatorParameter = {
+                category: ARAnimatorCategory.DISAPPEAR,
+                // type: ARAnimatorType.NODE_TYPE,
+                name: item.name,
+                layerName: currentElement.layerName,
+                elementID: currentElement.id,
+                type: ARAnimatorType.MODEL_TYPE,
+                modelAnimationIndex: item.id,
+
+                repeatCount: 0,
+                delay:0,
+
+                /** 模型动画时长 单位秒 */
+                duration: item.duration,
+                // // /** 模型动画开始帧时间 单位秒 */
+                startFrame: 0,
+                // /** 模型动画结束帧时间 单位秒 */
+                endFrame: -1,
+              }
+              const id = await SARMap.addAnimation(params)
+              await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
+              const animationItemtemp = {
+                id,
+                name: item.name,
+              }
+              this.animationList.set(item.id, animationItemtemp)
+            } else {
+              // 动画已经存在了
+              await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+            }
+
+          }
+
+          this.setState({
+            selectAnimationKey: item.id,
+            isShowFull: true,
+            isSecondaryShow: false,
+          })
+        }}
+      >
+        <Image
+          source={image}
+          style={[
+            {width: dp(33), height: dp(49),marginTop: dp(10)},
+            this.state.selectAnimationKey === item.id && {
+              width: dp(38),
+              height: dp(53),
+            }
+          ]}
+        />
+        <View style={[
+          {backgroundColor: '#fff', width: '100%', height: dp(18), justifyContent: 'center', alignItems: 'center'},
+          this.state.selectAnimationKey === item.id && {
+            height: dp(22),
+            backgroundColor: '#f24f02',
+          }
+        ]} >
+          <Text style={[
+            {fontSize:dp(10), color: '#000'},
+            this.state.selectAnimationKey === item.id && {
+              color: '#fff',
+            }
+          ]}>{item.name === 'stand-by' ? "站立" : item.name}</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  /** 合影被选中时显示的拍照页面 */
+  renderPhotoShot = () => {
+    return (
+      <View
+        style={[{
+          position:'absolute',
+          top: 0,
+          right: dp(10),
+          bottom: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }]}
+      >
+        <TouchableOpacity
+          style={{
+            width: dp(56),
+            height: dp(56),
+            borderRadius: dp(28),
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            borderColor: 'rgba(255, 255, 255, .3)',
+            borderWidth: dp(3),
+          }}
+          onPress={this.shot}
+        >
+          {/* <Image
           style={{ position: 'absolute', width: '100%', height: '100%' }}
           source={getImage().icon_return}
         /> */}
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  /** 合影预览界面 */
+  renderPhotoImage = () => {
+    return (
+      <View
+        style={[{
+          position:'absolute',
+          width:"100%",
+          height: '100%',
+          top: 0,
+          bottom:0,
+          left: 0,
+          right: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }]}
+      >
+        {/* 遮罩 */}
+        <View style={[{
+          position:'absolute',
+          width:"100%",
+          height: '100%',
+          top: 0,
+          bottom:0,
+          left: 0,
+          right: 0,
+          backgroundColor: "#000",
+          opacity: 0.5,
+        }]}></View>
+        {/* 具体的内容 */}
+        <View
+        >
+          <Image
+            source={{uri:this.state.uri}}
+            style={[{
+              width: dp(400),
+              height: dp(248),
+              borderRadius: dp(15),
+            }]}
+          />
+
+          <View
+            style={[{
+              maxWidth: dp(400),
+              marginTop: dp(10),
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+            }]}
+          >
+            <TouchableOpacity
+              style={[styles.imageBtn]}
+              onPress={this.savePhotoLocal}
+            >
+              <View
+                style={[styles.imageBtnView]}
+              >
+                <Image
+                  style={[styles.imageBtnImg]}
+                  source={getImage().icon_save_local}
+                />
+              </View>
+
+              <Text style={[styles.imageBtnText]} >
+                {'保存到本地'}
+              </Text>
+            </TouchableOpacity>
+
+            {/* <TouchableOpacity
+              style={[styles.imageBtn]}
+              onPress={this.shareToWechat}
+            >
+              <View
+                style={[styles.imageBtnView]}
+              >
+                <Image
+                  style={[styles.imageBtnImg]}
+                  source={getImage().icon_cancel02}
+                />
+              </View>
+
+              <Text style={[styles.imageBtnText]} >
+                {'分享到微信'}
+              </Text>
+            </TouchableOpacity> */}
+
+            <TouchableOpacity
+              style={[styles.imageBtn]}
+              onPress={this.cancelPhoto}
+            >
+              <View
+                style={[styles.imageBtnView]}
+              >
+                <Image
+                  style={[styles.imageBtnImg]}
+                  source={getImage().icon_cancel02}
+                />
+              </View>
+
+              <Text style={[styles.imageBtnText]} >
+                {'取消'}
+              </Text>
+            </TouchableOpacity>
+
+          </View>
+
+        </View>
+      </View>
     )
   }
 
@@ -1044,6 +1465,7 @@ class DoctorCC extends Component<Props, State> {
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
+        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'photo' && this.renderPhotoSelected()}
 
         {/* 右边按钮 */}
         {!this.state.isShowFull && this.renderSpeak()}
@@ -1054,6 +1476,10 @@ class DoctorCC extends Component<Props, State> {
         {/* 左边按钮 */}
         {!this.state.isShowFull && this.renderScanBtn()}
         {!this.state.isShowFull && this.renderBackBtn()}
+
+        {/* 合影的界面 */}
+        {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
+        {this.state.selectType === 'photo' && this.state.uri !== 'null' && this.renderPhotoImage()}
 
         <ARArrow />
 
@@ -1102,6 +1528,34 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: 'white',
     borderRightColor: '#fff',
+  },
+
+  imageBtn: {
+    width: dp(60),
+    height: dp(70),
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    marginHorizontal: dp(10),
+  },
+  imageBtnView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    width: dp(45),
+    height: dp(45),
+    backgroundColor: '#fff',
+    borderRadius: dp(10),
+  },
+  imageBtnImg: {
+    position: 'absolute',
+    width: dp(26),
+    height: dp(26)
+  },
+  imageBtnText: {
+    marginTop: dp(5),
+    fontSize:10,
+    color: '#fff',
   },
 
 })

@@ -58,6 +58,8 @@ const bg_01 = require('./bg_01.png')
 const bg_02 = require('./bg_02.png')
 const icon_tool_reset = require('./icon_tool_reset.png')
 
+const logo_supermap = require('./logo-supermap.png')
+
 
 const image = {
   scan,
@@ -119,6 +121,8 @@ const image = {
   icon_doctor,
   icon_superman_selected,
   icon_superman,
+
+  logo_supermap,
 }
 
 function getImage(): typeof image {

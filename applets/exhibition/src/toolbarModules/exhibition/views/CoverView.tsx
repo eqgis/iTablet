@@ -244,10 +244,18 @@ class CoverView extends React.Component<Props, State> {
           overflow: 'hidden',
           backgroundColor: 'white',
         }}
-        onPress={()=>{
+        onPress={async()=>{
           if(this.state.showScan){
             this.setState({showScan: false})
           }else{
+            this.startScan()
+            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+            if (layer) {
+              SARMap.stopARCover(layer.name)
+            }
+            const props = AppToolBar.getProps()
+            await props.closeARMap()
+            await props.setCurrentARLayer()
             this.setState({showScan: true})
           }
         }}
@@ -828,6 +836,45 @@ class CoverView extends React.Component<Props, State> {
 
   }
 
+  /** 扫描按钮 */
+  renderScanBtn = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: dp(80),
+          left: dp(20),
+          width: dp(60),
+          height: dp(60),
+          borderRadius: dp(5),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+        onPress={async () => {
+          if (this.state.showScan) {
+            this.setState({ showScan: false })
+          } else {
+            this.startScan()
+            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+            if (layer) {
+              SARMap.stopARCover(layer.name)
+            }
+            const props = AppToolBar.getProps()
+            await props.closeARMap()
+            await props.setCurrentARLayer()
+            this.setState({ showScan: true })
+          }
+        }}
+      >
+        <Image
+          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          source={getImage().icon_other_scan}
+        />
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     return(
       <>
@@ -837,13 +884,14 @@ class CoverView extends React.Component<Props, State> {
             right: 0,
             width: dp(180),
             height: '100%',
-            justifyContent: 'center',
+            // justifyContent: 'center',
             alignItems: 'flex-end',
           }}
         >
 
           <View
             style={{
+              top: dp(50),
               right: dp(0),
               flexDirection: 'row',
             }}
@@ -852,7 +900,7 @@ class CoverView extends React.Component<Props, State> {
             {this.state.showCover && <View
               style={{
                 // position: 'absolute',
-                top: dp(75),
+                top: dp(15),
                 right: dp(10),
                 width: dp(50),
                 height: dp(110),
@@ -869,7 +917,7 @@ class CoverView extends React.Component<Props, State> {
 
 
             <View>
-              {this.renderLocation()}
+              {/* {this.renderLocation()} */}
               <View
                 style={{
                   top: dp(10),
@@ -894,6 +942,7 @@ class CoverView extends React.Component<Props, State> {
 
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
+        {this.renderScanBtn()}
       </>
     )
   }

@@ -141,9 +141,12 @@ class AR3DMapView extends React.Component<Props, State> {
   }
 
   startScan = () => {
+    SExhibition.stopTrackingTarget()
+    SExhibition.removeMapviewElement()
+    SMap.exitMap()
     this.setState({showScan: true})
-    // this.scanRef?.scan()
-    // SARMap.setAREnhancePosition()
+    this.scanRef?.scan()
+    SARMap.setAREnhancePosition()
   }
 
   showScan = () => {

@@ -23,6 +23,8 @@ class CoverView extends React.Component<Props, State> {
   currentRadiusy = 1
   currentDepth = 1
   scanRef: Scan | null = null
+  coverClick = false
+  fixClick = false
 
   constructor(props: Props) {
     super(props)
@@ -409,6 +411,8 @@ class CoverView extends React.Component<Props, State> {
           // backgroundColor: 'white',
         }}
         onPress={() => {
+          this.coverClick = false
+          this.fixClick = false
           this.setState({ showSlider: false })
           const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
           if (layer) {
@@ -444,6 +448,12 @@ class CoverView extends React.Component<Props, State> {
   }
 
   renderCover = () => {
+    let image
+    if (this.coverClick) {
+      image = getImage().icon_tool_rectangle_select
+    }else{
+      image = getImage().icon_tool_rectangle
+    }
     return (
       <TouchableOpacity
         style={{
@@ -456,6 +466,8 @@ class CoverView extends React.Component<Props, State> {
           backgroundColor: 'white',
         }}
         onPress={()=>{
+          this.coverClick = true
+          this.fixClick = false
           this.setState({showCover:false})
           this.cover()
         }}
@@ -471,7 +483,7 @@ class CoverView extends React.Component<Props, State> {
         >
           <Image
             style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={getImage().icon_tool_rectangle}
+            source={image}
           />
         </View>
 
@@ -488,6 +500,12 @@ class CoverView extends React.Component<Props, State> {
   }
 
   renderFix = () => {
+    let image
+    if(this.fixClick){
+      image = getImage().icon_tool_fix_select
+    }else{
+      image = getImage().icon_tool_fix
+    }
     return (
       <TouchableOpacity
         style={{
@@ -500,6 +518,7 @@ class CoverView extends React.Component<Props, State> {
           backgroundColor: 'white',
         }}
         onPress={()=>{
+          this.fixClick = true
           this.setState({showCover:false})
           this.fix()
         }}
@@ -515,7 +534,7 @@ class CoverView extends React.Component<Props, State> {
         >
           <Image
             style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={getImage().icon_tool_fix}
+            source={image}
           />
         </View>
 
@@ -693,6 +712,7 @@ class CoverView extends React.Component<Props, State> {
                 this.currentRadiusx = value
               }}
               onEnd={() => {
+                this.fixClick = false
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
                   SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx)
@@ -742,6 +762,7 @@ class CoverView extends React.Component<Props, State> {
                 this.currentRadiusy = value
               }}
               onEnd={() => {
+                this.fixClick = false
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
                   SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy)
@@ -791,6 +812,7 @@ class CoverView extends React.Component<Props, State> {
                 this.currentDepth = value
               }}
               onEnd={() => {
+                this.fixClick = false
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
                   SARMap.setARCoverDepth(layer.name,this.currentDepth)

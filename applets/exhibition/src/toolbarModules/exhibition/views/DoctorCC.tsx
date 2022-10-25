@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, NativeModules } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
-import { AppEvent, AppStyle, AppToolBar, Toast ,DataHandler} from '@/utils'
+import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
 import { SARMap ,ARLayerType, FileTools, ARAction, SExhibition, SMediaCollector} from 'imobile_for_reactnative'
 import Scan from "../components/Scan"
 import { ConstPath } from "@/constants"
@@ -11,6 +11,8 @@ import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_r
 import ARArrow from "../components/ARArrow"
 import { Vector3 } from "imobile_for_reactnative/types/data"
 import { getLanguage } from "@/language"
+// import RecordScreen from 'react-native-record-screen'
+import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -48,14 +50,20 @@ interface State {
   isSecondaryShow: boolean,
   /** 点击合影按钮后截屏获取的图片uri */
   uri: string,
+  /** 是否正在录像 */
+  isVideoStart: boolean,
+  /** 解说模块的按钮引导 */
+  isSpeakGuideShow: boolean,
 }
 
 class DoctorCC extends Component<Props, State> {
 
   /** 扫描界面的句柄 */
   scanRef: Scan | null = null
-  /** 已添加的动画列表 */
+  /** 博士已添加的动画列表 */
   animationList: Map<number, animationListType> = new Map<number, animationListType>()
+  /** 超人已添加的动画列表 */
+  supermanAnimationList: Map<number, animationListType> = new Map<number, animationListType>()
   /** 当前地图的图层数 */
   layers: Array<ARLayer> = []
   /** 博士的element 播放动画需要 */
@@ -68,10 +76,10 @@ class DoctorCC extends Component<Props, State> {
   isPlay = false
   // 窗格动画播放的定时器
   timer: NodeJS.Timeout | null | undefined = null
-  /** 截屏的内容句柄 */
-  viewShotRef: ViewShot | undefined | null = null
   /** 合影图片保存的本地路径 */
   imgPath: string
+  /** 模型图层的名字列表 */
+  modelMap = new Map<string, ARElement>()
 
   constructor(props: Props) {
     super(props)
@@ -85,12 +93,14 @@ class DoctorCC extends Component<Props, State> {
       selectSpeakKey: 'null',
       isSecondaryShow: true,
       uri: 'null',
+      isVideoStart: false,
+      isSpeakGuideShow: true,
     }
     this.imgPath = ''
   }
 
   componentDidMount = async () => {
-    this.getData()
+    this.getDoctorData()
     await this.openDoctorARMap()
     // 启用增强定位
     SARMap.setAREnhancePosition()
@@ -101,25 +111,39 @@ class DoctorCC extends Component<Props, State> {
         this.setState({showScan: false})
         // await this.openDoctorARMap()
 
-        const relativePositin: Vector3 = {
-          x: 0,
-          y: 0,
-          z: -1,
+        // let relativePositin: Vector3 = {
+        //   x: 0,
+        //   y: 0,
+        //   z: -1,
+        // }
+
+        if(this.ARModel) {
+          const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+          console.warn("relativePositin: " + JSON.stringify(relativePositin))
+          if(relativePositin) {
+            SExhibition.setTrackingTarget(relativePositin)
+            SExhibition.startTrackingTarget()
+          }
         }
-        // SExhibition.removeTempPoint()
-        SExhibition.setTrackingTarget({
-          pose: result,
-          translation: relativePositin
-        })
-        SExhibition.startTrackingTarget()
 
         Toast.show('定位成功')
       }
     })
   }
 
-  /** 定义解说数据 */
-  getData = () => {
+  componentDidUpdate = () => {
+    if(!this.state.showScan && this.state.isSpeakGuideShow) {
+      const timer = setTimeout(() => {
+        this.setState({
+          isSpeakGuideShow: false,
+        })
+        clearTimeout(timer)
+      },2000)
+    }
+  }
+
+  /** 博士的解说数据 */
+  getDoctorData = () => {
     this.speakData = [
       {
         key: 'doctor',
@@ -144,6 +168,37 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'map',
         title: 'AR平面地图',
+        image: getImage().ar_flat_map,
+      },
+    ]
+  }
+
+  /** 超人的解说数据 */
+  getSupermanData = () => {
+    this.speakData = [
+      {
+        key: 'doctor',
+        title: 'AR超超博士_学',
+        image: getImage().ar_dr_supermap,
+      },
+      {
+        key: 'pipeLine',
+        title: 'AR室内管线_学',
+        image: getImage().ar_infra,
+      },
+      {
+        key: 'mansion',
+        title: 'AR超图大厦_学',
+        image: getImage().ar_supermap_building,
+      },
+      {
+        key: '3dMap',
+        title: 'AR立体地图_学',
+        image: getImage().ar_3d_map,
+      },
+      {
+        key: 'map',
+        title: 'AR平面地图_学',
         image: getImage().ar_flat_map,
       },
     ]
@@ -176,17 +231,36 @@ class DoctorCC extends Component<Props, State> {
       if (length > 0) {
         for(let i = 0; i < length; i ++) {
           const layer = this.layers[i]
-          if(layer.type === ARLayerType.AR_MODEL_LAYER && layer.caption === '博士') {
-            SARMap.setLayerVisible(layer.name, true)
-            // 把博士设为当前对象
-            this.ARModel = {
-              layerName: layer.name,
-              id: 1,
-              type: ARElementType.AR_MODEL,
-              touchType: 0,
-              select: true,
-              videoType: 1,
+          // console.warn("layer: " + JSON.stringify(layer))
+          if(layer.type === ARLayerType.AR_MODEL_LAYER) {
+
+            SARMap.setLayerMaxAnimationBounds(layer.name, 15)
+            if(layer.caption === '博士') {
+              SARMap.setLayerVisible(layer.name, true)
+              const model = {
+                layerName: layer.name,
+                id: 1,
+                type: ARElementType.AR_MODEL,
+                touchType: 0,
+                select: true,
+                videoType: 1,
+              }
+              this.modelMap.set(layer.caption, model)
+              // 把博士设为当前对象
+              this.ARModel = model
+            } else if(layer.caption === '博士_学') {
+              SARMap.setLayerVisible(layer.name, false)
+              const model = {
+                layerName: layer.name,
+                id: 2,
+                type: ARElementType.AR_MODEL,
+                touchType: 0,
+                select: true,
+                videoType: 1,
+              }
+              this.modelMap.set(layer.caption, model)
             }
+
           } else {
             // 将除博士图层外的其他图层隐藏掉
             SARMap.setLayerVisible(layer.name, false)
@@ -247,6 +321,7 @@ class DoctorCC extends Component<Props, State> {
       selectType: 'null',
       selectAnimationKey: -1,
       selectSpeakKey: 'null',
+      isSpeakGuideShow: false,
     })
   }
 
@@ -266,6 +341,7 @@ class DoctorCC extends Component<Props, State> {
       selectType: 'speak',
       selectAnimationKey: -1,
       isSecondaryShow: true,
+      isSpeakGuideShow: false,
     })
   }
 
@@ -293,6 +369,7 @@ class DoctorCC extends Component<Props, State> {
       isSecondaryShow: true,
       selectSpeakKey: 'null',
       selectAnimationKey: -1,
+      isSpeakGuideShow: false,
     })
     if(this.isPlay) {
       SARMap.stopARAnimation()
@@ -323,6 +400,7 @@ class DoctorCC extends Component<Props, State> {
       selectAnimationKey: -1,
       isSecondaryShow: true,
       selectSpeakKey: 'null',
+      isSpeakGuideShow: false,
     })
     if(this.isPlay) {
       SARMap.stopARAnimation()
@@ -373,6 +451,7 @@ class DoctorCC extends Component<Props, State> {
       isSecondaryShow: true,
       selectSpeakKey: 'null',
       animations: animations,
+      isSpeakGuideShow: false,
     })
   }
 
@@ -403,6 +482,8 @@ class DoctorCC extends Component<Props, State> {
       selectAnimationKey: -1,
       isSecondaryShow: true,
       selectSpeakKey: 'null',
+      // isShowFull: true,
+      isSpeakGuideShow: false,
     })
   }
 
@@ -463,6 +544,30 @@ class DoctorCC extends Component<Props, State> {
       uri: 'null',
       isSecondaryShow: true,
     })
+  }
+
+  /** 录像按钮被点击时的响应方法 */
+  videoRecord = async () => {
+    // if(this.state.isVideoStart) {
+    //   const res = await RecordScreen.stopRecording().catch((error) =>
+    //     console.warn(error)
+    //   )
+    //   if (res) {
+    //     const url = res.result.outputURL
+    //     console.warn("url : " + JSON.stringify(url))
+    //   }
+    //   // 停止录像
+    //   this.setState({
+    //     isVideoStart: false,
+    //   })
+    // } else {
+    //   RecordScreen.startRecording().catch((error) => console.error(error))
+    //   // 开始录像
+    //   this.setState({
+    //     isVideoStart: true,
+    //   })
+    // }
+
   }
 
 
@@ -897,7 +1002,7 @@ class DoctorCC extends Component<Props, State> {
           let time = 22
           let indexTemp = -1
           list.map((animation, index) => {
-            if(animation.name.toLocaleUpperCase().indexOf(item.title.toLocaleUpperCase()) !== -1) {
+            if(item.title.toLocaleUpperCase() === animation.name.toLocaleUpperCase()) {
               // console.warn(animation.name + " ----- " + item.title)
               if(animation.type === ARAnimatorType.MODEL_TYPE || animation.type === ARAnimatorType.NODE_TYPE) {
                 time += (animation.duration || 0 ) * ((animation.repeatCount || 0) + 1) + (animation.delay || 0)
@@ -1043,7 +1148,14 @@ class DoctorCC extends Component<Props, State> {
             if(this.state.selectAnimationKey === item.id) {
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
             }
-            const isAdd = this.animationList.get(item.id)
+            let isAdd = null
+            if(this.state.selectReloaderKey === 'doctor'){
+              isAdd = this.animationList.get(item.id)
+            } else if(this.state.selectReloaderKey === 'superman'){
+              // supermanAnimationList
+              isAdd = this.supermanAnimationList.get(item.id)
+            }
+            // const isAdd = this.animationList.get(item.id)
             if(!isAdd) {
               const params: ARModelAnimatorParameter = {
                 category: ARAnimatorCategory.DISAPPEAR,
@@ -1070,7 +1182,13 @@ class DoctorCC extends Component<Props, State> {
                 id,
                 name: item.name,
               }
-              this.animationList.set(item.id, animationItemtemp)
+
+              if(this.state.selectReloaderKey === 'doctor'){
+                this.animationList.set(item.id, animationItemtemp)
+              } else if(this.state.selectReloaderKey === 'superman'){
+                this.supermanAnimationList.set(item.id, animationItemtemp)
+              }
+              // this.animationList.set(item.id, animationItemtemp)
             } else {
               // 动画已经存在了
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
@@ -1091,7 +1209,7 @@ class DoctorCC extends Component<Props, State> {
       </TouchableOpacity>)
   }
 
-  /** 换装被选中时显示装扮页面 to do */
+  /** 换装被选中时显示的换装页面 */
   renderReloaderSelected = () => {
     return(
       <View
@@ -1113,12 +1231,22 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.ReloaderItem,
-            // this.state.selectType === 'action' && {
-            //   borderRightColor: '#f24f02'
-            // }
           ]}
           onPress={() => {
-            this.setState({selectReloaderKey: 'superman'})
+            const newModel = this.modelMap.get('博士_学')
+            if(newModel && this.ARModel) {
+              // 更新解说数据为超人的数据
+              this.getSupermanData()
+              // 先隐藏之前的模型图层
+              const layerName = this.ARModel.layerName
+              SARMap.setLayerVisible(layerName, false)
+              // 再显示新的模型图层
+              SARMap.setLayerVisible(newModel.layerName, true)
+              // 然后将模型给替换为新图层的模型
+              this.ARModel = newModel
+              // 修改选择模型的类型
+              this.setState({selectReloaderKey: 'superman'})
+            }
           }}
         >
           <View
@@ -1140,7 +1268,21 @@ class DoctorCC extends Component<Props, State> {
             // }
           ]}
           onPress={() => {
-            this.setState({selectReloaderKey: 'doctor'})
+            const newModel = this.modelMap.get('博士')
+            if(newModel && this.ARModel) {
+              // 更新解说数据为博士的数据
+              this.getDoctorData()
+              // 先隐藏之前的模型图层
+              const layerName = this.ARModel.layerName
+              SARMap.setLayerVisible(layerName, false)
+              // 再显示新的模型图层
+              SARMap.setLayerVisible(newModel.layerName, true)
+              // 然后将模型给替换为新图层的模型
+              this.ARModel = newModel
+              // 修改选择模型的类型
+              this.setState({selectReloaderKey: 'doctor'})
+            }
+
           }}
         >
           <View
@@ -1250,7 +1392,14 @@ class DoctorCC extends Component<Props, State> {
             if(this.state.selectAnimationKey === item.id) {
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
             }
-            const isAdd = this.animationList.get(item.id)
+            let isAdd = null
+            if(this.state.selectReloaderKey === 'doctor'){
+              isAdd = this.animationList.get(item.id)
+            } else if(this.state.selectReloaderKey === 'superman'){
+              // supermanAnimationList
+              isAdd = this.supermanAnimationList.get(item.id)
+            }
+            // const isAdd = this.animationList.get(item.id)
             if(!isAdd) {
               const params: ARModelAnimatorParameter = {
                 category: ARAnimatorCategory.DISAPPEAR,
@@ -1277,7 +1426,13 @@ class DoctorCC extends Component<Props, State> {
                 id,
                 name: item.name,
               }
-              this.animationList.set(item.id, animationItemtemp)
+
+              if(this.state.selectReloaderKey === 'doctor'){
+                this.animationList.set(item.id, animationItemtemp)
+              } else if(this.state.selectReloaderKey === 'superman'){
+                this.supermanAnimationList.set(item.id, animationItemtemp)
+              }
+              // this.animationList.set(item.id, animationItemtemp)
             } else {
               // 动画已经存在了
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
@@ -1467,6 +1622,85 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  /** 录像被选中时的录相界面 */
+  renderVideoSelected = () => {
+    return (
+      <View
+        style={[{
+          position:'absolute',
+          top: 0,
+          right: dp(10),
+          bottom: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }]}
+      >
+        <TouchableOpacity
+          style={{
+            width: dp(56),
+            height: dp(56),
+            borderRadius: dp(28),
+            // backgroundColor: 'rgba(255, 255, 255, 1)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            borderColor: 'rgba(255, 255, 255, 1)',
+            borderWidth: dp(2),
+          }}
+          onPress={this.videoRecord}
+        >
+          <View
+            style={[{
+              width: dp(28),
+              height: dp(28),
+              backgroundColor: '#F24F02',
+              borderRadius: dp(5),
+            }]}
+          ></View>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+
+  /** 解说模块的按钮引导界面 */
+  renderStartGuide = () => {
+    const style = {
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      right: dp(80),
+      top: dp(23),
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+    }
+    const arrowstyle = {
+      right: -dp(96),
+      top: dp(30),
+      borderTopWidth: 9,
+      borderTopColor: 'transparent',
+      borderLeftWidth: 8,
+      borderLeftColor: 'rgba(0, 0, 0, .5)',
+      borderRightWidth: 8,
+      borderRightColor: 'transparent',
+    }
+    return (
+      <GuideView
+        title={"查看各模块应用讲解"}
+        style={style}
+        type={1}
+        arrowstyle={arrowstyle}
+        winstyle={{backgroundColor: 'rgba(0, 0, 0, .5)'}}
+        titlestyle={{color: 'white'}}
+        delete={false}
+        deleteAction={() =>{
+          return {}
+        }}
+      />
+    )
+  }
+
   render() {
     return (
       <>
@@ -1489,6 +1723,12 @@ class DoctorCC extends Component<Props, State> {
         {/* 合影的界面 */}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
         {this.state.selectType === 'photo' && this.state.uri !== 'null' && this.renderPhotoImage()}
+
+        {/* 录屏的界面 */}
+        {this.state.isShowFull && this.state.selectType === 'video' && this.renderVideoSelected()}
+
+        {/* 解说模块的按钮引导 */}
+        {!this.state.showScan && this.state.isSpeakGuideShow && this.renderStartGuide()}
 
         <ARArrow />
 

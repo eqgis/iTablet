@@ -200,7 +200,8 @@ class SuperMapBuilding extends React.Component<Props, State> {
     z: -1,
   }
   isOpen = false // 是否已经打开模型
-  layerStatus: SceneLayerStatus | undefined
+  oraginLayerStatus: SceneLayerStatus | undefined // 图层原始大小比例
+  lastLayerStatus: SceneLayerStatus | undefined // 图层上一次大小比例
   toolView: ToolView | undefined | null
 
   constructor(props: Props) {
@@ -346,7 +347,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
           })
           if (defaultLayer?.name) {
             props.setCurrentARLayer(defaultLayer)
-            this.layerStatus = await SARMap.getSceneLayerStatus(defaultLayer.name)
+            this.oraginLayerStatus = await SARMap.getSceneLayerStatus(defaultLayer.name)
           }
         }
       }
@@ -408,11 +409,17 @@ class SuperMapBuilding extends React.Component<Props, State> {
       return
     }
     if (this.state.toolType) {
-      await SARMap.submit()
-      this.setState({
-        toolType: '',
-      }, () => {
+      if(this.state.toolType === 'attribute') {
+        const props = AppToolBar.getProps()
+        const mapInfo = props.arMapInfo
+        // 退出属性,还原比例
+        mapInfo?.currentLayer?.name && this.lastLayerStatus && await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, this.lastLayerStatus)
         this.showAttribute(false)
+      } else {
+        await SARMap.submit()
+      }
+
+      this.switchTool('', () => {
         this.clickWait = false
       })
       return
@@ -437,7 +444,24 @@ class SuperMapBuilding extends React.Component<Props, State> {
     this.clickWait = false
   }
 
-  checkSence = () => {
+  switchTool = async (toolType: ToolType | '', cb?: () => void) => {
+    if (this.state.toolType === 'attribute' && toolType !== 'attribute') {
+      const props = AppToolBar.getProps()
+      const mapInfo = props.arMapInfo
+      // 退出属性,还原比例
+      mapInfo?.currentLayer?.name && this.lastLayerStatus && await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, this.lastLayerStatus)
+      this.showAttribute(false)
+    }
+    if (this.state.toolType !== toolType) {
+      this.setState({
+        toolType: toolType,
+      }, () => {
+        cb?.()
+      })
+    }
+  }
+
+  checkSenceAndToolType = () => {
     const props = AppToolBar.getProps()
     if (!props.arMap.currentMap) {
       Toast.show('请先扫描二维码,打开超图大厦')
@@ -520,12 +544,12 @@ class SuperMapBuilding extends React.Component<Props, State> {
     return this.renderRightButton({
       image: getImage().icon_tool_reset,
       onPress: async () => {
-        if (!this.checkSence()) return
-        if (this.layerStatus) {
+        if (!this.checkSenceAndToolType()) return
+        if (this.oraginLayerStatus) {
           const props = AppToolBar.getProps()
           const layerName = props.arMapInfo.currentLayer.name
           this.toolView?.reset()
-          layerName && await SARMap.setSceneLayerStatus(layerName, this.layerStatus)
+          layerName && await SARMap.setSceneLayerStatus(layerName, this.oraginLayerStatus)
         }
       },
       style: styles.resetBtn,
@@ -540,14 +564,14 @@ class SuperMapBuilding extends React.Component<Props, State> {
       image: getImage().tool_location,
       imageSelected: getImage().tool_location_selected,
       onPress: () => {
-        if (!this.checkSence()) return
+        if (!this.checkSenceAndToolType()) return
         this.showAttribute(false)
-        this.setState({
-          toolType: 'position',
+
+        this.switchTool('position', () => {
+          const props = AppToolBar.getProps()
+          const mapInfo = props.arMapInfo
+          mapInfo?.currentLayer?.name && SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
         })
-        const props = AppToolBar.getProps()
-        const mapInfo = props.arMapInfo
-        mapInfo?.currentLayer?.name && SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
       },
       key: 'position',
       title: '调整位置',
@@ -560,11 +584,9 @@ class SuperMapBuilding extends React.Component<Props, State> {
       image: getImage().tool_sectioning,
       imageSelected: getImage().tool_sectioning_selected,
       onPress: () => {
-        if (!this.checkSence()) return
+        if (!this.checkSenceAndToolType()) return
         this.showAttribute(false)
-        this.setState({
-          toolType: 'sectioning',
-        })
+        this.switchTool('sectioning')
       },
       key: 'sectioning',
       title: '剖切',
@@ -576,12 +598,28 @@ class SuperMapBuilding extends React.Component<Props, State> {
     return this.renderRightButton({
       image: getImage().tool_attribute,
       imageSelected: getImage().tool_attribute_selected,
-      onPress: () => {
-        if (!this.checkSence()) return
-        this.setState({
-          toolType: 'attribute',
+      onPress: async () => {
+        if (!this.checkSenceAndToolType()) return
+        this.switchTool('attribute', async () => {
+          this.showAttribute(true)
+
+          const props = AppToolBar.getProps()
+          const mapInfo = props.arMapInfo
+          const status = await SARMap.getSceneLayerStatus(mapInfo?.currentLayer?.name)
+          this.lastLayerStatus = {...status}
+
+          status.rx = 0
+          status.ry = 0
+          status.rz = 0
+          status.sx = 0.04
+          status.sy = 0.04
+          status.sz = 0.04
+          status.x = 0
+          status.y = 0
+          status.z = -2
+
+          await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, status)
         })
-        this.showAttribute(true)
       },
       key: 'attribute',
       title: '属性',
@@ -594,11 +632,9 @@ class SuperMapBuilding extends React.Component<Props, State> {
       image: getImage().tool_lighting,
       imageSelected: getImage().tool_lighting_selected,
       onPress: () => {
-        if (!this.checkSence()) return
+        if (!this.checkSenceAndToolType()) return
         this.showAttribute(false)
-        this.setState({
-          toolType: 'lighting',
-        })
+        this.switchTool('lighting')
       },
       key: 'lighting',
       title: '光效',
@@ -611,11 +647,9 @@ class SuperMapBuilding extends React.Component<Props, State> {
       image: getImage().tool_advertise,
       imageSelected: getImage().tool_advertise_selected,
       onPress: () => {
-        if (!this.checkSence()) return
+        if (!this.checkSenceAndToolType()) return
         this.showAttribute(false)
-        this.setState({
-          toolType: 'advertising',
-        })
+        this.switchTool('advertising')
       },
       key: 'advertising',
       title: '广告牌',
@@ -774,9 +808,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         close={async () => {
           if (this.state.toolType) {
             await SARMap.submit()
-            this.setState({
-              toolType: '',
-            })
+            this.switchTool('')
             return
           }
         }}

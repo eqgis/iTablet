@@ -392,8 +392,8 @@ function _getTransformTabData(editItem: ARElement | string): ToolBarMenuItem[] {
     position: [number, number],
     rotation: [number, number],
   } = {
-    scale: [0 , 200],
-    position: [-20, 20],
+    scale: [0, 200 ],
+    position: [-20 , 20],
     rotation: [-180, 180],
   }
 
@@ -461,7 +461,10 @@ function _getTransformTabData(editItem: ARElement | string): ToolBarMenuItem[] {
       },
       type: 'slide',
       apply: apply,
-      showRatio: true,
+      showRatio: 1,
+      ratioChange: () => {
+        // console.warn("value: " + value)
+      },
       slideData: [
         {
           type: 'single',
@@ -691,7 +694,10 @@ function _getGeometryLineObjectTabData(): ToolBarMenuItem[] {
       },
       apply: apply,
       type: 'slide',
-      showRatio: true,
+      showRatio: 1,
+      ratioChange: () => {
+        // console.warn("value: " + value)
+      },
       slideData: [
         {
           type: 'single',

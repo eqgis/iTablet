@@ -55,7 +55,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
     }
     let location = await SMap.getMapcenterPosition()
     if (result?.data?.length > 0) {
-      NavigationService.navigate('MapStack', {screen: 'MapView'})
+      NavigationService.getCurrent() !== 'MapStack' && NavigationService.navigate('MapStack', {screen: 'MapView'})
 
       const resultList = []
       for (const dataItem of result.data) {

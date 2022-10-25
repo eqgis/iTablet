@@ -54,7 +54,7 @@ export default class LayerManager_item extends React.Component {
     onAllPress: PropTypes.func,
     onToolPress: PropTypes.func,
     onOpen: PropTypes.func,
-    getLayers: PropTypes.func,
+    popItemActionCB: PropTypes.func,
     refreshParent: PropTypes.func,
   }
 
@@ -338,31 +338,31 @@ export default class LayerManager_item extends React.Component {
   _longPress = (ref) => {
     if (this.props.onLongPress) {
       const popoverData = this._showPopover(ref, this.state.data)
-      if (this.PressViewPosition !== undefined) {
+      // if (this.PressViewPosition !== undefined) {
+      //   this.props.onLongPress({
+      //     data: this.state.data,
+      //     parentData: this.props.parentData,
+      //     popoverData: popoverData,
+      //     ...this.PressViewPosition,
+      //   })
+      // } else {
+      // 设置菜单的显示的位置坐标
+      ref?.measure((ox, oy, width, height, px, py) => {
+        this.PressViewPosition = {
+          width,
+          height,
+          px,
+          py,
+        }
+
         this.props.onLongPress({
           data: this.state.data,
           parentData: this.props.parentData,
           popoverData: popoverData,
           ...this.PressViewPosition,
         })
-      } else {
-        // 设置菜单的显示的位置坐标
-        ref?.measure((ox, oy, width, height, px, py) => {
-          this.PressViewPosition = {
-            width,
-            height,
-            px,
-            py,
-          }
-          
-          this.props.onLongPress({
-            data: this.state.data,
-            parentData: this.props.parentData,
-            popoverData: popoverData,
-            ...this.PressViewPosition,
-          })
-        })
-      }
+      })
+      // }
       // await SMap.setLayerEditable(this.state.data.path, true)
     } else return
   }
@@ -489,7 +489,7 @@ export default class LayerManager_item extends React.Component {
             this.props.refreshParent &&
               this.props.refreshParent(this.props.parentData)
           } else {
-            await this.props.getLayers()
+            await this.props.popItemActionCB(true)
           }
           // 重新确定按钮的显示位置
           let { px, py, width, height } = this.PressViewPosition
@@ -527,7 +527,7 @@ export default class LayerManager_item extends React.Component {
             this.props.refreshParent &&
               this.props.refreshParent(this.props.parentData)
           } else {
-            await this.props.getLayers()
+            await this.props.popItemActionCB(true)
           }
           let { px, py, width, height } = this.PressViewPosition
           if (layer.index < layer.layerCount - 1) {
@@ -574,7 +574,7 @@ export default class LayerManager_item extends React.Component {
             this.props.refreshParent &&
               this.props.refreshParent(this.props.parentData)
           } else {
-            await this.props.getLayers()
+            await this.props.popItemActionCB(false)
           }
         }.bind(this)())
       },
@@ -600,7 +600,7 @@ export default class LayerManager_item extends React.Component {
           this.props.refreshParent &&
             this.props.refreshParent(this.props.parentData)
         } else {
-          this.props.getLayers()
+          this.props.popItemActionCB(false)
         }
       },
     }

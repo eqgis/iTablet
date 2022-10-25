@@ -131,7 +131,6 @@ export default class LayerAttribute extends React.Component {
         descending: false, //属性排列倒序时为true add jiakai
       }
     }
-    this.canRelate = true // 是否可点击关联
   }
 
   componentDidMount() {
@@ -738,7 +737,7 @@ export default class LayerAttribute extends React.Component {
 
   selectRow = ({ data, index }) => {
     // 没有数据,只有一个数据,或在关联中,无法选择行
-    if (!data || index < 0 || this.total === 1 && this.state.attributes.data.length === 1 || !this.canRelate) return
+    if (!data || index < 0 || this.total === 1 && this.state.attributes.data.length === 1) return
 
     if (this.state.relativeIndex !== index) {
       this.setState({
@@ -980,9 +979,8 @@ export default class LayerAttribute extends React.Component {
   /** 关联事件 **/
   relateAction = () => {
     try {
-      let time = new Date().getTime()
-      if (this.state.currentFieldInfo.length === 0 || !this.canRelate) return
-      this.canRelate = false
+      if (this.state.currentFieldInfo.length === 0) return
+      this.setLoading(true, getLanguage().LOADING)
       SMap.setAction(Action.PAN)
       SMap.setLayerEditable(this.props.currentLayer.path, false)
       let geoStyle = new GeoStyle()
@@ -1020,10 +1018,6 @@ export default class LayerAttribute extends React.Component {
         ToolbarModule.setToolBarData(
           ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
         ).then(() => {
-          this.props.navigation &&
-            this.props.navigation.navigate('MapView', {
-              hideMapController: true,
-            })
           global.toolBox &&
             global.toolBox.setVisible(
               true,
@@ -1031,6 +1025,13 @@ export default class LayerAttribute extends React.Component {
               {
                 isFullScreen: false,
                 // height: 0,
+                cb: () => {
+                  this.props.navigation &&
+                  this.props.navigation.navigate('MapView', {
+                    hideMapController: true,
+                  })
+                  this.setLoading(false)
+                }
               },
             )
           global.toolBox && global.toolBox.showFullMap()
@@ -1047,8 +1048,6 @@ export default class LayerAttribute extends React.Component {
             x: data[0].x,
             y: data[0].y,
           })
-          this.canRelate = true
-          let time2 = new Date().getTime()
         }
       })
       // SMap.selectObj(this.props.currentLayer.path, [
@@ -1071,7 +1070,7 @@ export default class LayerAttribute extends React.Component {
       //   }
       // })
     } catch (error) {
-      this.canRelate = true
+      this.setLoading(false)
     }
   }
 

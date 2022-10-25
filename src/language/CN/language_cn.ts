@@ -2261,6 +2261,7 @@ export const language_cn = {
   LICENSE_ACTIVATING: "激活中",
   LICENSE_ACTIVATION_SUCCESS: "激活成功",
   LICENSE_ACTIVATION_FAIL: "激活失败",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "当前许可已在其他设备激活",
   LICENSE_SELECT_LICENSE: "选择许可",
   LICENSE_REAMIN_DAYS: "剩余天数",
   LICENSE_SHOW_DETAIL: "显示详细信息",

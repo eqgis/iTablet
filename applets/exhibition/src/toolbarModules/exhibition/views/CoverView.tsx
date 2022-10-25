@@ -288,7 +288,7 @@ class CoverView extends React.Component<Props, State> {
     }
     return (
       <TouchableOpacity
-        style={{
+        style={[{
           // position: 'absolute',
           // top: dp(140),
           // right: dp(10),
@@ -299,7 +299,7 @@ class CoverView extends React.Component<Props, State> {
           alignItems: 'center',
           overflow: 'hidden',
           // backgroundColor: 'white',
-        }}
+        },this.state.showCover&&{ borderRightWidth: dp(2), borderRightColor: '#F24F02'}]}
         onPress={()=>{
           if(this.state.showCover){
             this.setState({showCover:false})
@@ -347,7 +347,7 @@ class CoverView extends React.Component<Props, State> {
     }
     return (
       <TouchableOpacity
-        style={{
+        style={[{
           // position: 'absolute',
           // top: dp(200),
           // right: dp(10),
@@ -358,7 +358,7 @@ class CoverView extends React.Component<Props, State> {
           alignItems: 'center',
           overflow: 'hidden',
           // backgroundColor: 'white',
-        }}
+        },this.state.showSlider&&{borderRightWidth: dp(2),borderRightColor: '#F24F02'}]}
         onPress={()=>{
           if(this.state.showSlider){
             this.setState({ showSlider: false })

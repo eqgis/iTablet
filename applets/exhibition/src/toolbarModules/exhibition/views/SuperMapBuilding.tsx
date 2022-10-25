@@ -13,7 +13,7 @@ import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
-import { SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { Pose, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -228,24 +228,19 @@ class SuperMapBuilding extends React.Component<Props, State> {
         SARMap.stopAREnhancePosition()
         this.setState({ showScan: false })
         this.relativePositin = {
-          x: result.x,
-          y: result.y,
-          z: result.z - 1,
+          x: 0,
+          y: 0,
+          z: -1,
         }
         const targetPxpPath = await this.importData()
         if (targetPxpPath) {
           await this.addARSceneLayer(targetPxpPath, {
-            location: {
-              x: result.x,
-              y: result.y,
-              z: result.z - 1,
+            translation: {
+              x: 0,
+              y: 0,
+              z: -1,
             },
-            pose: {
-              x: result.qx,
-              y: result.qy,
-              z: result.qz,
-              w: result.qw,
-            },
+            pose: JSON.parse(JSON.stringify(result)),
             scale: -0.99,
           })
         }
@@ -300,7 +295,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     }
   }
 
-  addARSceneLayer = async (pxpPath: string, option?: {location?: Point3D, rotation?: Vector3, pose?: {x:number,y:number,z:number,w:number}, scale?: number}) => {
+  addARSceneLayer = async (pxpPath: string, option: { pose: Pose, translation: Vector3, scale?: number}) => {
     try {
       let newDatasource = false
       const props = AppToolBar.getProps()

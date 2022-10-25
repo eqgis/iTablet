@@ -53,9 +53,52 @@ class AR3DMapView extends React.Component<Props, State> {
             pose: result,
             translation: relativePositin
           })
+
+          const _time = async function() {
+            return new Promise(function(resolve, reject) {
+              const timer = setTimeout(function() {
+                resolve('waitting send close message')
+                timer && clearTimeout(timer)
+              }, 1500)
+            })
+          }
+          await _time()
+
+          const loca = await SExhibition.getMapviewLocation()
+
+          const center: Vector3 = {
+            x: loca.centerx,
+            y: loca.centery,
+            z: loca.centerz,
+          }
+
+          const vertice0: Vector3 = {
+            x: loca.vertices[0].x,
+            y: loca.vertices[0].y,
+            z: loca.vertices[0].z,
+          }
+
+          const vertice1: Vector3 = {
+            x: loca.vertices[1].x,
+            y: loca.vertices[1].y,
+            z: loca.vertices[1].z,
+          }
+
+          const vertice2: Vector3 = {
+            x: loca.vertices[2].x,
+            y: loca.vertices[2].y,
+            z: loca.vertices[2].z,
+          }
+
+          const vertice3: Vector3 = {
+            x: loca.vertices[3].x,
+            y: loca.vertices[3].y,
+            z: loca.vertices[3].z,
+          }
+
           SExhibition.setTrackingTarget({
-            pose: result,
-            translation: relativePositin
+            center: center,
+            vertices: [vertice0,vertice1,vertice2,vertice3]
           })
           SExhibition.startTrackingTarget()
 
@@ -93,12 +136,14 @@ class AR3DMapView extends React.Component<Props, State> {
     AppEvent.removeListener('ar_image_tracking_result')
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
+    SMap.exitMap()
     AppToolBar.goBack()
   }
 
   startScan = () => {
-    this.scanRef?.scan()
-    SARMap.setAREnhancePosition()
+    this.setState({showScan: true})
+    // this.scanRef?.scan()
+    // SARMap.setAREnhancePosition()
   }
 
   showScan = () => {

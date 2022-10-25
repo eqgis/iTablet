@@ -2,8 +2,9 @@ import { getImage } from '../../../assets'
 import React from 'react'
 import { Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { AppStyle, AppToolBar, dp } from '@/utils'
+import { AppStyle, AppToolBar, dp ,Toast} from '@/utils'
 import { Easing } from 'react-native'
+import { SARMap } from 'imobile_for_reactnative'
 
 interface Props {
   windowSize: ScaledSize
@@ -89,7 +90,13 @@ class Home extends React.Component<Props, State> {
         image: getImage().ar_infra,
         title: 'AR室内管线',
         desc: '地下、墙面、屋顶隐蔽管线浏览',
-        action: () => {
+        action: async() => {
+          const hw = await SARMap.isHuawei()
+          console.warn(hw)
+          if(hw){
+            Toast.show('暂不支持此功能')
+            return
+          }
           AppToolBar.show('EXHIBITION', 'EXHIBITION_INFRA')
         }
       },

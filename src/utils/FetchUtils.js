@@ -27,13 +27,15 @@ export default class FetchUtils {
             .catch(error => reject(error))
         })
         const timeoutRequest = new Promise((resolve, reject) => {
-          setTimeout(reject, timeout, 'Request time out')
+          setTimeout(reject, timeout, 'Request timeout')
         })
         return Promise.race([request, timeoutRequest]).then(
           res => {
             return res
           },
-          () => ({}),
+          e => ({
+            errorMsg: e,
+          }),
         )
       }
     } catch (e) {

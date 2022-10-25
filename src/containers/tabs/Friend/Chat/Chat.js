@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   Animated,
   BackHandler,
+  NativeModules,
+  PermissionsAndroid,
 } from 'react-native'
 import {
   GiftedChat,
@@ -20,7 +22,7 @@ import {
   InputToolbar,
 } from 'react-native-gifted-chat'
 import { SimpleDialog, ImageViewer } from '../Component/index'
-import { SMap, EngineType, DatasetType,RNFS } from 'imobile_for_reactnative'
+import { SMap, EngineType, DatasetType,RNFS, SLocation } from 'imobile_for_reactnative'
 import { Container, MTBtn } from '../../../../components'
 import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
@@ -40,7 +42,7 @@ import ImageResizer from 'react-native-image-resizer'
 import DataHandler from '../../../../utils/DataHandler'
 import 'moment/locale/zh-cn'
 import CoworkInfo from '../Cowork/CoworkInfo'
-import SMessageServiceHTTP from '../SMessageServiceHTTP'
+const AppUtils = NativeModules.AppUtils
 
 let Top = scaleSize(38)
 if (Platform.OS === 'ios') {
@@ -83,7 +85,7 @@ class Chat extends React.Component {
 
     this.onSend = this.onSend.bind(this)
     this.onSendFile = this.onSendFile.bind(this)
-    this.onSendLocation = this.onSendLocation.bind(this)
+    // this.onSendLocation = this.onSendLocation.bind(this)
     this.onReceive = this.onReceive.bind(this)
     this.renderCustomActions = this.renderCustomActions.bind(this)
     this.renderBubble = this.renderBubble.bind(this)
@@ -101,6 +103,7 @@ class Chat extends React.Component {
     this.setState({ title: newTitle })
   }
   componentDidMount() {
+    this.setPermission()
     Platform.OS === 'android' && BackHandler.addEventListener('hardwareBackPress', this.back)
     // Platform.OS === 'android' && this.props.setBackAction({
     //   key: this.props.route.name,
@@ -136,6 +139,28 @@ class Chat extends React.Component {
     })
 
     this.action && this._handleAciton(this.action)
+  }
+
+  setPermission = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const permissionList = [
+          'android.permission.READ_PHONE_STATE',
+          'android.permission.ACCESS_FINE_LOCATION',
+        ]
+        const results = await PermissionsAndroid.requestMultiple(permissionList)
+
+        let isAllGranted = true
+        for (let key in results) {
+          isAllGranted = results[key] === 'granted' && isAllGranted
+        }
+        if (isAllGranted) {
+          await SLocation.openGPS()
+        }
+      }
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
   }
 
   _handleAciton = async action => {
@@ -389,7 +414,7 @@ class Chat extends React.Component {
     this.friend._sendMessage(JSON.stringify(message), this.targetUser.id, false)
   }
 
-  onSendLocation(value) {
+  onSendLocation = async (value) => {
     let positionStr = value.address
     let bGroup = 1
     let groupID = this.curUser.userName
@@ -876,7 +901,7 @@ class Chat extends React.Component {
       wsData.layerIndex = 0
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
-      NavigationService.navigate('MapView', {
+      NavigationService.navigate('MapViewSingle', {
         wsData,
         isExample: true,
         noLegend: true,
@@ -944,7 +969,7 @@ class Chat extends React.Component {
             this.showImportDataDialog('aimodel', message)
             break
           case MSGConstant.MSG_TEMPLATE_PLOT:
-            this.showImportDataDialog('plot', message)
+            this.showImportDataDialog('plotting', message)
             break
           case MSGConstant.MSG_TEMPLATE_MAP:
             this.showImportDataDialog('xml_template', message)
@@ -1379,7 +1404,7 @@ class Chat extends React.Component {
           } else if (type === 10) {
             this.onSendFile(MSGConstant.MSG_ARMODAL, value, fileName)
           } else if (type === 11) {
-            const msgType = tempType === 'plot' ? MSGConstant.MSG_TEMPLATE_PLOT : MSGConstant.MSG_TEMPLATE_MAP
+            const msgType = tempType === 'plotting' ? MSGConstant.MSG_TEMPLATE_PLOT : MSGConstant.MSG_TEMPLATE_MAP
             this.onSendFile(msgType, value, fileName)
           }
         }}

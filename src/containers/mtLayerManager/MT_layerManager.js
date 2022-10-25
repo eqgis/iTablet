@@ -923,7 +923,10 @@ export default class MT_layerManager extends React.Component {
                 currentOpenItemName: data.name,
               })
             }}
-            getLayers={this.props.getLayers}
+            popItemActionCB={isStayPop => {
+              this.props.getLayers()
+              !isStayPop && this.Popover?.setVisible(isStayPop)
+            }}
             isSelected={
               item.name === this.props.currentLayer.name &&
               item.path === this.props.currentLayer.path

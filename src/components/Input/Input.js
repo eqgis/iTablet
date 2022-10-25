@@ -36,7 +36,7 @@ export default class Input extends PureComponent {
     textAlign?: string,
     onChangeText?: (text: string) => void, // 输入回调
     onClear?: () => void, // 自定义清除事件
-    onFocus?: () => void,
+    onFocus?: (e) => void,
   }
 
   static defaultProps = {
@@ -148,7 +148,9 @@ export default class Input extends PureComponent {
           keyboardAppearance={this.props.keyboardAppearance}
           returnKeyType={this.props.returnKeyType}
           keyboardType={this.props.keyboardType}
-          onFocus={this.props.onFocus}
+          onFocus={(e) => {
+            this.props.onFocus && this.props.onFocus(e)
+          }}
           textAlign={this.props.textAlign || 'center'}
         />
         {this.props.showClear && this.renderClearBtn()}

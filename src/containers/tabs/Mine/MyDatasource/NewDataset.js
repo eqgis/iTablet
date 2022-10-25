@@ -7,7 +7,13 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Platform,
+  Keyboard,
+  UIManager,
+  findNodeHandle,
+  Dimensions,
 } from 'react-native'
+import { connect } from 'react-redux'
 import { Container, Input } from '../../../../components'
 import { SMap, DatasetType, SProcess } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
@@ -27,7 +33,10 @@ const CADImg = require('../../../../assets/mapToolbar/dataset_type_cad_black.png
 class NewDataset extends Component {
   props: {
     navigation: Object,
+    device: any,
   }
+  keyboardDidShowListener
+  keyboardDidHideListener
 
   constructor(props) {
     super(props)
@@ -37,9 +46,16 @@ class NewDataset extends Component {
       title: params.title,
       datasets: [],
       errorMap: (new Map(): Map<string, Object>),
+      keyboardHeight: 0,
+      isNotShow: false,
     }
     this.getDatasets = params.getDatasets
     this.refreshCallback = params.refreshCallback || undefined
+
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',         
+    this._keyboardDidShow.bind(this))
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', 
+    this._keyboardDidHide.bind(this))
   }
 
   componentDidMount() {
@@ -53,6 +69,35 @@ class NewDataset extends Component {
           datasetPrjValue: 53004,
         },
       ],
+    })
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    //this.keyboardDidHideListener.remove();
+  }
+  _keyboardDidShow(e){
+      const { getKeyBoardHeight } = this.props;
+      getKeyBoardHeight && getKeyBoardHeight(e.endCoordinates.height)
+      // let isLandscape = this.props.windowSize.height < this.props.windowSize.width
+      const ScHeight = Dimensions.get('window').height
+
+      if(this.pageY > ScHeight - e.endCoordinates.height) {
+        this.setState({
+          isNotShow: true,
+          keyboardHeight:e.endCoordinates.height,
+        })
+      } else {
+        this.setState({
+          isNotShow: false,
+          keyboardHeight:e.endCoordinates.height,
+        })
+      }
+  }
+  _keyboardDidHide(e){
+    this.setState({
+        isNotShow: false,
+        keyboardHeight:0,
     })
   }
 
@@ -333,6 +378,11 @@ class NewDataset extends Component {
               this.setErrorMap(item.key, error)
             }}
             showClear={true}
+            onFocus= {(e) => {
+              UIManager.measure(findNodeHandle(e.target),(x,y,width,height,pageX,pageY)=>{
+                this.pageY = pageY
+            })
+            }}
           />
         </View>
         <View style={styles.errorView}>
@@ -442,7 +492,12 @@ class NewDataset extends Component {
 
   _renderScroll = () => {
     return (
-      <ScrollView ref={ref => (this.ScrollView = ref)}>
+      <ScrollView 
+        ref={ref => (this.ScrollView = ref)}
+        onScroll={event => {
+          this.offsetY = event.nativeEvent.contentOffset.y
+        }}
+      >
         <View style={styles.scrollViewStyle}>
           <FlatList
             style={styles.flatListStyle}
@@ -490,6 +545,18 @@ class NewDataset extends Component {
         }}
       >
         {this._renderScroll()}
+        {this.state.keyboardHeight > 0 && this.state.isNotShow && Platform.OS === "ios" && (
+          <View 
+            style={{height: this.state.keyboardHeight}}
+            onLayout={()=> {
+              if(this.state.keyboardHeight > 0 && this.state.isNotShow) {
+                this.ScrollView?.scrollTo({
+                  y: this.offsetY + this.state.keyboardHeight
+                })
+              }
+            }}
+          ></View>
+        )}
         {this._renderBottom()}
       </Container>
     )
@@ -593,4 +660,14 @@ const styles = StyleSheet.create({
   },
 })
 
-export default NewDataset
+const mapStateToProps = state => ({
+  windowSize: state.device.toJS().windowSize,
+})
+
+const mapDispatchToProps = {
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NewDataset)

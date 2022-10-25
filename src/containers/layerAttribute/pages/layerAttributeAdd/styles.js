@@ -51,7 +51,9 @@ export default StyleSheet.create({
   rows: {
     flex: 1,
     flexDirection: 'column',
-    marginHorizontal: scaleSize(60),
+    // marginHorizontal: scaleSize(60),
+    marginLeft: scaleSize(60),
+    paddingRight: scaleSize(60),
     backgroundColor: 'transparent',
   },
   row: {

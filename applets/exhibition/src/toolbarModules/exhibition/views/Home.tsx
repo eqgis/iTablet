@@ -92,7 +92,6 @@ class Home extends React.Component<Props, State> {
         desc: '地下、墙面、屋顶隐蔽管线浏览',
         action: async() => {
           const hw = await SARMap.isHuawei()
-          console.warn(hw)
           if(hw){
             Toast.show('暂不支持此功能')
             return

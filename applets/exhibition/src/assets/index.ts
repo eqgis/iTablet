@@ -21,7 +21,9 @@ const icon_cover_select = require('./location_on_select.png')
 const icon_window = require('./window.png')
 const icon_window_select = require('./icon_window_select.png')
 const icon_tool_rectangle = require('./icon_tool_rectangle.png')
+const icon_tool_rectangle_select = require('./icon_tool_rectangle_select.png')
 const icon_tool_fix = require('./icon_tool_fix.png')
+const icon_tool_fix_select = require('./icon_tool_fix_select.png')
 const icon_tool_radius = require('./icon_tool_radius.png')
 const icon_tool_depth = require('./icon_tool_depth.png')
 const icon_cancel = require('./icon_cancel.png')
@@ -94,6 +96,7 @@ const image = {
   icon_window,
   icon_window_select,
   icon_tool_rectangle,
+  icon_tool_rectangle_select,
   ar_dr_supermap,
   ar_3d_map,
   ar_flat_map,
@@ -113,6 +116,7 @@ const image = {
   icon_close,
   icon_other_scan,
   icon_tool_fix,
+  icon_tool_fix_select,
   icon_tool_radius,
   icon_tool_depth,
   icon_cancel,

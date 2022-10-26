@@ -9,11 +9,8 @@ import { ConstPath } from "@/constants"
 import { ARElement, ARLayer, ARModelAnimatorParameter, ModelAnimation } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_reactnative/NativeModule/dataTypes"
 import ARArrow from "../components/ARArrow"
-import { getLanguage } from "@/language"
 import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 import Video from 'react-native-video'
-
-const appUtilsModule = NativeModules.AppUtils
 
 
 interface animationListType {
@@ -40,7 +37,7 @@ interface State {
   /** 选中的动画的key */
   selectAnimationKey: number
   /** 选中皮肤的key */
-  selectReloaderKey: 'doctor' | 'superman'
+  selectReloaderKey: 'doctor' | 'doctorStudy'
   /** 是否全屏显示地图 true表示全屏显示 */
   isShowFull: boolean
   /** 选中解说模块儿的key */
@@ -95,7 +92,7 @@ class DoctorCC extends Component<Props, State> {
       selectType: 'null',
       animations: [],
       selectAnimationKey: -1,
-      selectReloaderKey: 'doctor',
+      selectReloaderKey: 'doctorStudy',
       isShowFull: false,
       selectSpeakKey: 'null',
       isSecondaryShow: true,
@@ -110,7 +107,8 @@ class DoctorCC extends Component<Props, State> {
   }
 
   componentDidMount = async () => {
-    this.getDoctorData()
+    // this.getDoctorData()
+    this.getSupermanData()
     await this.openDoctorARMap()
     // 启用增强定位
     SARMap.setAREnhancePosition()
@@ -129,7 +127,7 @@ class DoctorCC extends Component<Props, State> {
 
         if(this.ARModel) {
           const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-          console.warn("relativePositin: " + JSON.stringify(relativePositin))
+          // console.warn("relativePositin: " + JSON.stringify(relativePositin))
           if(relativePositin) {
             SExhibition.setTrackingTarget(relativePositin)
             SExhibition.startTrackingTarget()
@@ -246,7 +244,7 @@ class DoctorCC extends Component<Props, State> {
 
             SARMap.setLayerMaxAnimationBounds(layer.name, 15)
             if(layer.caption === '博士') {
-              SARMap.setLayerVisible(layer.name, true)
+              SARMap.setLayerVisible(layer.name, false)
               const model = {
                 layerName: layer.name,
                 id: 1,
@@ -256,10 +254,8 @@ class DoctorCC extends Component<Props, State> {
                 videoType: 1,
               }
               this.modelMap.set(layer.caption, model)
-              // 把博士设为当前对象
-              this.ARModel = model
             } else if(layer.caption === '博士_学') {
-              SARMap.setLayerVisible(layer.name, false)
+              SARMap.setLayerVisible(layer.name, true)
               const model = {
                 layerName: layer.name,
                 id: 2,
@@ -269,6 +265,8 @@ class DoctorCC extends Component<Props, State> {
                 videoType: 1,
               }
               this.modelMap.set(layer.caption, model)
+              // 把博士设为当前对象
+              this.ARModel = model
             }
 
           } else {
@@ -639,47 +637,6 @@ class DoctorCC extends Component<Props, State> {
     this.setState({
       videoUrl: 'null',
     })
-  }
-
-
-  /** 合影分享到微信 */
-  shareToWechat = async () => {
-    try {
-
-      this.imgPath = ''
-      this.setState({
-        uri: 'null',
-        isSecondaryShow: true,
-      })
-
-      let result
-      let isInstalled
-      if (Platform.OS === 'ios') {
-        isInstalled = true
-      } else {
-        isInstalled = await appUtilsModule.isWXInstalled()
-      }
-      // let isInstalled = await appUtilsModule.isWXInstalled()
-      if (isInstalled) {
-        result = await appUtilsModule.sendFileOfWechat({
-          filePath: this.imgPath,
-          title: this.imgPath,
-          description: 'SuperMap iTablet',
-        })
-
-        if (!result) {
-          Toast.show(getLanguage().Prompt.WX_SHARE_FAILED)
-          return undefined
-        }
-      } else {
-        Toast.show(getLanguage().Prompt.WX_NOT_INSTALLED)
-      }
-      return result === false ? result : undefined
-    } catch (error) {
-      if (error.message.includes('File size cannot exceeds 10M')) {
-        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
-      }
-    }
   }
 
   /** 返回按钮 */
@@ -1223,7 +1180,7 @@ class DoctorCC extends Component<Props, State> {
             let isAdd = null
             if(this.state.selectReloaderKey === 'doctor'){
               isAdd = this.animationList.get(item.id)
-            } else if(this.state.selectReloaderKey === 'superman'){
+            } else if(this.state.selectReloaderKey === 'doctorStudy'){
               // supermanAnimationList
               isAdd = this.supermanAnimationList.get(item.id)
             }
@@ -1257,7 +1214,7 @@ class DoctorCC extends Component<Props, State> {
 
               if(this.state.selectReloaderKey === 'doctor'){
                 this.animationList.set(item.id, animationItemtemp)
-              } else if(this.state.selectReloaderKey === 'superman'){
+              } else if(this.state.selectReloaderKey === 'doctorStudy'){
                 this.supermanAnimationList.set(item.id, animationItemtemp)
               }
               // this.animationList.set(item.id, animationItemtemp)
@@ -1303,38 +1260,6 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.ReloaderItem,
-          ]}
-          onPress={() => {
-            const newModel = this.modelMap.get('博士_学')
-            if(newModel && this.ARModel) {
-              // 更新解说数据为超人的数据
-              this.getSupermanData()
-              // 先隐藏之前的模型图层
-              const layerName = this.ARModel.layerName
-              SARMap.setLayerVisible(layerName, false)
-              // 再显示新的模型图层
-              SARMap.setLayerVisible(newModel.layerName, true)
-              // 然后将模型给替换为新图层的模型
-              this.ARModel = newModel
-              // 修改选择模型的类型
-              this.setState({selectReloaderKey: 'superman'})
-            }
-          }}
-        >
-          <View
-            style={[styles.functionItemImageView]}
-          >
-            <Image
-              style={[styles.functionItemImagee]}
-              source={this.state.selectReloaderKey === 'superman'? getImage().icon_superman_selected : getImage().icon_superman}
-            />
-          </View>
-
-          <Text style={[styles.functionItemText]}> {'超人'} </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.ReloaderItem,
             // this.state.selectType === 'action' && {
             //   borderRightColor: '#f24f02'
             // }
@@ -1362,7 +1287,39 @@ class DoctorCC extends Component<Props, State> {
           >
             <Image
               style={[styles.functionItemImagee]}
-              source={this.state.selectReloaderKey === 'doctor'? getImage().icon_doctor_selected : getImage().icon_doctor}
+              source={this.state.selectReloaderKey === 'doctor'? getImage().icon_superman_selected : getImage().icon_superman}
+            />
+          </View>
+
+          <Text style={[styles.functionItemText]}> {'超人'} </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.ReloaderItem,
+          ]}
+          onPress={() => {
+            const newModel = this.modelMap.get('博士_学')
+            if(newModel && this.ARModel) {
+              // 更新解说数据为超人的数据
+              this.getSupermanData()
+              // 先隐藏之前的模型图层
+              const layerName = this.ARModel.layerName
+              SARMap.setLayerVisible(layerName, false)
+              // 再显示新的模型图层
+              SARMap.setLayerVisible(newModel.layerName, true)
+              // 然后将模型给替换为新图层的模型
+              this.ARModel = newModel
+              // 修改选择模型的类型
+              this.setState({selectReloaderKey: 'doctorStudy'})
+            }
+          }}
+        >
+          <View
+            style={[styles.functionItemImageView]}
+          >
+            <Image
+              style={[styles.functionItemImagee]}
+              source={this.state.selectReloaderKey === 'doctorStudy'? getImage().icon_doctor_selected : getImage().icon_doctor}
             />
           </View>
 
@@ -1467,7 +1424,7 @@ class DoctorCC extends Component<Props, State> {
             let isAdd = null
             if(this.state.selectReloaderKey === 'doctor'){
               isAdd = this.animationList.get(item.id)
-            } else if(this.state.selectReloaderKey === 'superman'){
+            } else if(this.state.selectReloaderKey === 'doctorStudy'){
               // supermanAnimationList
               isAdd = this.supermanAnimationList.get(item.id)
             }
@@ -1501,7 +1458,7 @@ class DoctorCC extends Component<Props, State> {
 
               if(this.state.selectReloaderKey === 'doctor'){
                 this.animationList.set(item.id, animationItemtemp)
-              } else if(this.state.selectReloaderKey === 'superman'){
+              } else if(this.state.selectReloaderKey === 'doctorStudy'){
                 this.supermanAnimationList.set(item.id, animationItemtemp)
               }
               // this.animationList.set(item.id, animationItemtemp)
@@ -1650,24 +1607,6 @@ class DoctorCC extends Component<Props, State> {
                 {'保存到本地'}
               </Text>
             </TouchableOpacity>
-
-            {/* <TouchableOpacity
-              style={[styles.imageBtn]}
-              onPress={this.shareToWechat}
-            >
-              <View
-                style={[styles.imageBtnView]}
-              >
-                <Image
-                  style={[styles.imageBtnImg]}
-                  source={getImage().icon_cancel02}
-                />
-              </View>
-
-              <Text style={[styles.imageBtnText]} >
-                {'分享到微信'}
-              </Text>
-            </TouchableOpacity> */}
 
             <TouchableOpacity
               style={[styles.imageBtn]}

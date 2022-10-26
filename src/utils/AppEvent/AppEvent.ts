@@ -49,7 +49,7 @@ function emitEvent<key extends keyof Event>(...args: undefined extends Event[key
       listener(param as Event[key])
     })
   } else {
-    AppLog.error('没有添加监听！')
+    AppLog.log('没有添加监听！', event)
   }
 }
 

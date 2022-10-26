@@ -540,6 +540,10 @@ class SuperMapBuilding extends React.Component<Props, State> {
       image: getImage().icon_tool_reset,
       onPress: async () => {
         if (!this.checkSenceAndToolType()) return
+        // 若是属性功能,点击复位,则退出ToolView
+        if (this.state.toolType === 'attribute') {
+          this.switchTool('')
+        }
         if (this.oraginLayerStatus) {
           const props = AppToolBar.getProps()
           const layerName = props.arMapInfo.currentLayer.name
@@ -609,9 +613,9 @@ class SuperMapBuilding extends React.Component<Props, State> {
           status.sx = 0.04
           status.sy = 0.04
           status.sz = 0.04
-          status.x = 0
-          status.y = 0
-          status.z = 1
+          status.x = status.x || 0
+          status.y = status.y || 0
+          status.z = (status.z || 0) + 1
 
           await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, status)
         })

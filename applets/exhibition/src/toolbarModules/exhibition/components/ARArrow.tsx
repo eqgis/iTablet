@@ -15,6 +15,8 @@ class ARArrow extends React.Component<unknown, State> {
 
   event: EmitterSubscription | null = null
 
+  loopAnimation: Animated.CompositeAnimation | null = null
+
   constructor(props: unknown) {
     super(props)
 
@@ -27,6 +29,8 @@ class ARArrow extends React.Component<unknown, State> {
     this.event = SExhibition.addExhibitionTargetPositionChangeListener(mode => {
       if(this.state.targetPosition === 0 && mode !== 0) {
         this._startMoveArrow()
+      } else if(mode === 0 && this.state.targetPosition !== 0) {
+        this._stopMoveArrow()
       }
       this.setState({targetPosition: mode})
     })
@@ -36,14 +40,25 @@ class ARArrow extends React.Component<unknown, State> {
     this.event?.remove()
   }
 
+  _getLoopAnimation = () => {
+    if(this.loopAnimation === null) {
+      const animation = Animated.timing(this.moveValue, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+      this.loopAnimation = Animated.loop(animation)
+    }
+    return this.loopAnimation
+  }
+
+  _stopMoveArrow = () => {
+    this._getLoopAnimation().reset()
+  }
+
   _startMoveArrow = () => {
-    const animation = Animated.timing(this.moveValue, {
-      toValue: 1,
-      duration: 1000,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    })
-    Animated.loop(animation).start()
+    this._getLoopAnimation().start()
   }
 
   renderArrow = () => {

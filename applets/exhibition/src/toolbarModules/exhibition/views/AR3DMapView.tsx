@@ -19,6 +19,7 @@ interface State {
 
 class AR3DMapView extends React.Component<Props, State> {
   scanRef: Scan | null = null
+  showScanBt = false
 
   constructor(props: Props) {
     super(props)
@@ -36,6 +37,7 @@ class AR3DMapView extends React.Component<Props, State> {
     })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
+        this.showScanBt = true
         SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
@@ -128,6 +130,7 @@ class AR3DMapView extends React.Component<Props, State> {
   }
 
   back = () => {
+    this.showScanBt = true
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
       this.setState({showScan: false})
@@ -141,6 +144,7 @@ class AR3DMapView extends React.Component<Props, State> {
   }
 
   startScan = () => {
+    this.showScanBt = false
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
     SMap.exitMap()
@@ -312,7 +316,7 @@ class AR3DMapView extends React.Component<Props, State> {
     return(
       <>
         {this.state.showScan && this.renderScan()}
-        {this.renderScanBtn()}
+        {this.showScanBt && this.renderScanBtn()}
         {this.renderBack()}
         <ARArrow />
       </>

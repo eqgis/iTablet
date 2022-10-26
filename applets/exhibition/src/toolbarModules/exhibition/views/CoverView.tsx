@@ -25,6 +25,7 @@ class CoverView extends React.Component<Props, State> {
   scanRef: Scan | null = null
   coverClick = false
   fixClick = false
+  showScanBt = false
 
   constructor(props: Props) {
     super(props)
@@ -41,6 +42,7 @@ class CoverView extends React.Component<Props, State> {
     SARMap.setAREnhancePosition()
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
+        this.showScanBt = true
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false })
         this.openARModel()
@@ -172,6 +174,7 @@ class CoverView extends React.Component<Props, State> {
 
   back = async () => {
     if (this.state.backClick) {
+      this.showScanBt = true
       if (this.state.showScan) {
         this.setState({ showScan: false })
         return
@@ -855,6 +858,7 @@ class CoverView extends React.Component<Props, State> {
           if (this.state.showScan) {
             this.setState({ showScan: false })
           } else {
+            this.showScanBt = false
             this.startScan()
             const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
             if (layer) {
@@ -942,7 +946,7 @@ class CoverView extends React.Component<Props, State> {
 
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
-        {this.renderScanBtn()}
+        {this.showScanBt && this.renderScanBtn()}
       </>
     )
   }

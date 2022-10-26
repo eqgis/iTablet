@@ -1,3 +1,4 @@
+import { SException } from "imobile_for_reactnative"
 
 
 /** debug模式下输出log */
@@ -18,3 +19,11 @@ export function error(message?: any, ...optionalParams: any[]): void {
     console.error(message, optionalParams)
   }
 }
+
+export function addExceptionHandler() {
+  SException.addNativeExceptionListener(e => {
+    error(e)
+  })
+}
+
+addExceptionHandler()

@@ -611,7 +611,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
           status.sz = 0.04
           status.x = 0
           status.y = 0
-          status.z = -2
+          status.z = 1
 
           await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, status)
         })

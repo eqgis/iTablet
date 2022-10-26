@@ -1,4 +1,4 @@
-import { AppEvent, AppStyle, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
+import { AppEvent, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
@@ -9,6 +9,7 @@ import ARArrow from '../components/ARArrow'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
 import { flatMapImported, shouldRefreshFlatMapData } from './Actions'
+import { Pose } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface Props {
   windowSize: ScaledSize
@@ -21,6 +22,8 @@ interface State {
 class FlatMapVIew extends React.Component<Props, State> {
 
   scanRef: Scan | null = null
+
+  isMapOpend = false
 
   constructor(props: Props) {
     super(props)
@@ -41,29 +44,37 @@ class FlatMapVIew extends React.Component<Props, State> {
         SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        Toast.show('请按照箭头引导转动屏幕查看地图集')
+        Toast.show('请按照箭头引导转动屏幕查看地图')
 
-        SMap.openMapName('台风登陆路径').then(async () => {
-          await SMap.openMap('台风登陆路径')
-          const relativePositin: Vector3 = {
-            x: 0,
-            y: 0,
-            z: -1,
-          }
-          SExhibition.removeTempPoint()
-          SExhibition.addFlatMap({
-            pose: result,
-            translation: relativePositin
-          })
-          SExhibition.setTrackingTarget({
-            pose: result,
-            translation: relativePositin
-          })
-          SExhibition.startTrackingTarget()
-        })
+        this.addMap(result)
       }
     })
   }
+
+  addMap = async (pose: Pose) => {
+    if(!this.isMapOpend) {
+      SExhibition.addTempPoint()
+      await SMap.openMapName('台风登陆路径')
+      await SMap.openMap('台风登陆路径')
+      this.isMapOpend = true
+    }
+    const relativePositin: Vector3 = {
+      x: 0,
+      y: 0,
+      z: -0.5,
+    }
+    SExhibition.removeTempPoint()
+    SExhibition.addFlatMap({
+      pose: pose,
+      translation: relativePositin
+    })
+    SExhibition.setTrackingTarget({
+      pose: pose,
+      translation: relativePositin
+    })
+    SExhibition.startTrackingTarget()
+  }
+
 
   importData = async () => {
     const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
@@ -105,6 +116,7 @@ class FlatMapVIew extends React.Component<Props, State> {
   back = () => {
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
+      SExhibition.resumeTrackingTarget()
       this.setState({showScan: false})
       return
     }
@@ -115,7 +127,9 @@ class FlatMapVIew extends React.Component<Props, State> {
   }
 
   startScan = () => {
-    this.scanRef?.scan()
+    if(this.state.showScan) return
+    SExhibition.pauseTrackingTarget()
+    this.setState({showScan: true})
     SARMap.setAREnhancePosition()
   }
 
@@ -138,6 +152,30 @@ class FlatMapVIew extends React.Component<Props, State> {
         <Image
           style={{ position: 'absolute', width: '100%', height: '100%' }}
           source={getImage().icon_return}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  renderScanIcon = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: dp(80),
+          left: dp(20),
+          width: dp(60),
+          height: dp(60),
+          borderRadius: dp(25),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+        onPress={this.startScan}
+      >
+        <Image
+          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          source={getImage().icon_other_scan}
         />
       </TouchableOpacity>
     )
@@ -254,6 +292,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       <>
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
+        {!this.state.showScan && this.renderScanIcon()}
         <ARArrow />
 
       </>

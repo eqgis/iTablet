@@ -407,6 +407,19 @@ async function getAvailableFileName (path: string, name: string, ext: string) {
   }
 }
 
+interface ICreateResultSuccess {
+  success: true
+  datasourceName: string
+  datasetName: string
+}
+
+interface ICreateResultFail {
+  success: false
+  error: string
+}
+
+type ICreateResult = ICreateResultSuccess | ICreateResultFail
+
 /**
  * 创建数据源文件和指定的数据集
  * @param datasourcePath 要创建的数据源存放路径
@@ -422,9 +435,9 @@ async function createDefaultDatasource(
   datasourceName: string,
   datasetName: string,
   datastType: TDatasetType,
-  newDatasource: string,
-  newDataset: string,
-) {
+  newDatasource: boolean,
+  newDataset: boolean,
+): Promise<ICreateResult> {
   let result = false
   try {
     let server = datasourcePath + datasourceName + '.udb'
@@ -496,7 +509,7 @@ async function createDefaultDatasource(
   } catch(e) {
     return {
       success: false,
-      error: e,
+      error: 'error',
     }
   }
 }
@@ -508,7 +521,7 @@ async function createARElementDatasource(
   newDatasource: string,
   newDataset: string,
   type: TARLayerType,
-) {
+): Promise<ICreateResult> {
   try {
     const homePath = await FileTools.getHomeDirectory()
     const datasourcePath = homePath + ConstPath.UserPath + user.userName + '/' + ConstPath.RelativePath.ARDatasource
@@ -525,7 +538,7 @@ async function createARElementDatasource(
   } catch (e) {
     return {
       success: false,
-      error: e,
+      error: 'error',
     }
   }
 }
@@ -539,7 +552,7 @@ async function createPoiSearchDatasource(
     const datasourceName = 'naviDatasource'
     const datasetName = 'naviDataset'
 
-    return await createDefaultDatasource(datasourcePath, datasourceName, datasetName, DatasetType.PointZ, '', '')
+    return await createDefaultDatasource(datasourcePath, datasourceName, datasetName, DatasetType.PointZ, false, false)
   } catch (e) {
     return {
       success: false,

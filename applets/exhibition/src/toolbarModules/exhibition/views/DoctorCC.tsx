@@ -21,6 +21,7 @@ interface animationListType {
 interface speakItemType {
   key: 'doctor' | 'pipeLine' | 'mansion' | '3dMap' | 'map' | 'null',
   title: string,
+  name: string,
   image: ImageSourcePropType,
 }
 interface Props {
@@ -84,6 +85,8 @@ class DoctorCC extends Component<Props, State> {
   modelMap = new Map<string, ARElement>()
   /** 视屏录屏的定时器 */
   videoTimer: NodeJS.Timer | null | undefined = null
+  /** 是否能够推出超超博士模块 true可以退出 false不可以退出 */
+  isBack: boolean
 
   constructor(props: Props) {
     super(props)
@@ -92,7 +95,7 @@ class DoctorCC extends Component<Props, State> {
       selectType: 'null',
       animations: [],
       selectAnimationKey: -1,
-      selectReloaderKey: 'doctorStudy',
+      selectReloaderKey: 'doctor',
       isShowFull: false,
       selectSpeakKey: 'null',
       isSecondaryShow: true,
@@ -104,11 +107,11 @@ class DoctorCC extends Component<Props, State> {
       videoTime: -1,
     }
     this.imgPath = ''
+    this.isBack = false
   }
 
   componentDidMount = async () => {
-    // this.getDoctorData()
-    this.getSupermanData()
+    this.getDoctorData()
     await this.openDoctorARMap()
     // 启用增强定位
     SARMap.setAREnhancePosition()
@@ -156,26 +159,31 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'doctor',
         title: 'AR超超博士',
+        name: 'AR超超博士',
         image: getImage().ar_dr_supermap,
       },
       {
         key: 'pipeLine',
         title: 'AR室内管线',
+        name: 'AR室内管线',
         image: getImage().ar_infra,
       },
       {
         key: 'mansion',
         title: 'AR超图大厦',
+        name: 'AR超图大厦',
         image: getImage().ar_supermap_building,
       },
       {
         key: '3dMap',
         title: 'AR立体地图',
+        name: 'AR立体地图',
         image: getImage().ar_3d_map,
       },
       {
         key: 'map',
         title: 'AR平面地图',
+        name: 'AR平面地图',
         image: getImage().ar_flat_map,
       },
     ]
@@ -187,26 +195,31 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'doctor',
         title: 'AR超超博士_学',
+        name: 'AR超超博士',
         image: getImage().ar_dr_supermap,
       },
       {
         key: 'pipeLine',
         title: 'AR室内管线_学',
+        name: 'AR室内管线',
         image: getImage().ar_infra,
       },
       {
         key: 'mansion',
         title: 'AR超图大厦_学',
+        name: 'AR超图大厦',
         image: getImage().ar_supermap_building,
       },
       {
         key: '3dMap',
         title: 'AR立体地图_学',
+        name: 'AR立体地图',
         image: getImage().ar_3d_map,
       },
       {
         key: 'map',
         title: 'AR平面地图_学',
+        name: 'AR平面地图',
         image: getImage().ar_flat_map,
       },
     ]
@@ -224,8 +237,17 @@ class DoctorCC extends Component<Props, State> {
     const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
     // 导入之后的地图路径
     const arMapPath = homePath + ConstPath.UserPath + 'Customer/Data/ARMap/AR超超博士.arxml'
-    // 判断导入之后的地图路径是否存在，不存在才导入
-    if(!(await FileTools.fileIsExist(arMapPath))) {
+
+    // 1. 数据是否更新
+    const dataUpate =  await SARMap.needToImport()
+    // 2. 导入之后的地图路径是否存在
+    const mapExist = await FileTools.fileIsExist(arMapPath)
+    // 当数据更新且存在导入后的地图，删掉原来的导入地图
+    if(dataUpate && mapExist) {
+      FileTools.deleteFile(arMapPath)
+    }
+    // 当数据更新或没有导入后的地图，才进行重新导入
+    if(dataUpate || !mapExist) {
       await SARMap.importMap(path)
     }
     // 打开指定路径的地图
@@ -244,7 +266,7 @@ class DoctorCC extends Component<Props, State> {
 
             SARMap.setLayerMaxAnimationBounds(layer.name, 15)
             if(layer.caption === '博士') {
-              SARMap.setLayerVisible(layer.name, false)
+              SARMap.setLayerVisible(layer.name, true)
               const model = {
                 layerName: layer.name,
                 id: 1,
@@ -254,19 +276,19 @@ class DoctorCC extends Component<Props, State> {
                 videoType: 1,
               }
               this.modelMap.set(layer.caption, model)
+              // 把博士设为当前对象
+              this.ARModel = model
             } else if(layer.caption === '博士_学') {
-              SARMap.setLayerVisible(layer.name, true)
+              SARMap.setLayerVisible(layer.name, false)
               const model = {
                 layerName: layer.name,
-                id: 2,
+                id: 3,
                 type: ARElementType.AR_MODEL,
                 touchType: 0,
                 select: true,
                 videoType: 1,
               }
               this.modelMap.set(layer.caption, model)
-              // 把博士设为当前对象
-              this.ARModel = model
             }
 
           } else {
@@ -280,6 +302,7 @@ class DoctorCC extends Component<Props, State> {
         addNewDSourceWhenCreate: false,
       })
       SARMap.setAction(ARAction.NULL)
+      this.isBack = true
       // Toast.show("地图打开成功")
     } else {
       Toast.show("该地图不存在")
@@ -291,6 +314,11 @@ class DoctorCC extends Component<Props, State> {
     // 扫描界面未关闭时，关闭扫描界面
     if(this.state.showScan) {
       this.setState({showScan: false})
+      return
+    }
+    // 数据未加载完成，点击返回无效
+    if(!this.isBack) {
+      Toast.show("请等待数据加载完成再退出!")
       return
     }
     // 移除监听
@@ -788,7 +816,7 @@ class DoctorCC extends Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描演示台上的二维码加载展示内容'}
+              {'请扫描地面上的二维码加载展示内容'}
             </Text>
           </View>
         </View>
@@ -819,34 +847,23 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'speak' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.speakBtnOnpress}
         >
           <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              overflow: 'hidden',
-              width: dp(30),
-              height: dp(30),
-            }}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'speak' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
-              style={{ position: 'absolute', width: '100%', height: '100%' }}
+              style={[styles.functionItemImagee]}
               source={this.state.selectType === 'speak'? getImage().icon_speak_selected : getImage().icon_speak}
             />
+            <Text style={[styles.functionItemText]}> {'详解'} </Text>
           </View>
-
-          <Text
-            style={{
-              fontSize:10,
-            }}
-          >
-            {'详解'}
-          </Text>
         </TouchableOpacity>
       </View>
     )
@@ -874,82 +891,89 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'action' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.actionBtnOnPress}
         >
           <View
-            style={[styles.functionItemImageView]}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'action' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
               style={[styles.functionItemImagee]}
               source={this.state.selectType === 'action'? getImage().icon_action_selected: getImage().icon_action}
             />
+            <Text style={[styles.functionItemText]}> {'动作'} </Text>
           </View>
-
-          <Text style={[styles.functionItemText]}> {'动作'} </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'reloader' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.reloaderBtnOnPress}
         >
           <View
-            style={[styles.functionItemImageView]}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'reloader' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
               style={[styles.functionItemImagee]}
               source={this.state.selectType === 'reloader' ? getImage().icon_reloader_selected : getImage().icon_reloader}
             />
+            <Text style={[styles.functionItemText]}> {'换装'} </Text>
           </View>
-          <Text style={[styles.functionItemText]}> {'换装'} </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'photo' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.photoBtnOnPress}
         >
           <View
-            style={[styles.functionItemImageView]}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'photo' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
               style={[styles.functionItemImagee]}
               source={this.state.selectType === 'photo'? getImage().icon_photo_seleted : getImage().icon_photo}
             />
+            <Text style={[styles.functionItemText]}> {'合影'} </Text>
           </View>
-          <Text style={[styles.functionItemText]}> {'合影'} </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'video' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.videoBtnOnPress}
         >
           <View
-            style={[styles.functionItemImageView]}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'video' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
               style={[styles.functionItemImagee]}
               source={this.state.selectType === 'video'? getImage().icon_video_selected : getImage().icon_video}
             />
+            <Text style={[styles.functionItemText]}> {'录像'} </Text>
           </View>
-          <Text style={[styles.functionItemText]}> {'录像'} </Text>
         </TouchableOpacity>
       </View>
     )
@@ -994,6 +1018,8 @@ class DoctorCC extends Component<Props, State> {
             height: dp(100),
             marginHorizontal: dp(5),
             backgroundColor: 'rgba(255, 255, 255, .9)',
+            borderRadius: dp(8),
+            overflow: 'hidden',
             // opacity: 0.9,
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -1110,7 +1136,7 @@ class DoctorCC extends Component<Props, State> {
               color:"#fff",
             },
 
-          ]}>{item.title}</Text>
+          ]}>{item.name}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -1127,7 +1153,7 @@ class DoctorCC extends Component<Props, State> {
             position: 'absolute',
             top: dp(100),
             right: dp(60),
-            width: dp(80),
+            width: dp(60),
             // height: dp(100),
             maxHeight: dp(240),
             borderRadius: dp(10),
@@ -1156,7 +1182,7 @@ class DoctorCC extends Component<Props, State> {
         key={item.id}
         style={[
           {
-            width: dp(70),
+            width: dp(50),
             height: dp(33),
             marginVertical: dp(2),
             paddingVertical: dp(2),
@@ -1230,7 +1256,7 @@ class DoctorCC extends Component<Props, State> {
       >
         <Text
           style={{
-            fontSize:14,
+            fontSize:10,
           }}
         >
           {item.name === 'stand-by' ? "站立" : item.name}
@@ -1246,10 +1272,10 @@ class DoctorCC extends Component<Props, State> {
           position: 'absolute',
           top: dp(160),
           right: dp(60),
-          width: dp(54),
+          width: dp(52),
           maxHeight: dp(120),
           borderRadius: dp(10),
-          paddingVertical: dp(10),
+          // paddingVertical: dp(5),
           // paddingHorizontal: dp(5),
           justifyContent: 'center',
           alignItems: 'center',
@@ -1289,9 +1315,8 @@ class DoctorCC extends Component<Props, State> {
               style={[styles.functionItemImagee]}
               source={this.state.selectReloaderKey === 'doctor'? getImage().icon_superman_selected : getImage().icon_superman}
             />
+            <Text style={[styles.functionItemText]}> {'超人服'} </Text>
           </View>
-
-          <Text style={[styles.functionItemText]}> {'超人'} </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -1321,9 +1346,8 @@ class DoctorCC extends Component<Props, State> {
               style={[styles.functionItemImagee]}
               source={this.state.selectReloaderKey === 'doctorStudy'? getImage().icon_doctor_selected : getImage().icon_doctor}
             />
+            <Text style={[styles.functionItemText]}> {'博士服'} </Text>
           </View>
-
-          <Text style={[styles.functionItemText]}> {'博士'} </Text>
         </TouchableOpacity>
       </View>
     )
@@ -1407,7 +1431,7 @@ class DoctorCC extends Component<Props, State> {
             alignItems: 'center',
             overflow: 'hidden',
             backgroundColor: 'rgba(255, 255, 255, .9)',
-            // borderRadius: dp(10),
+            borderRadius: dp(8),
           },
           this.state.selectAnimationKey === item.id && {
             width: dp(60),
@@ -1900,26 +1924,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   functionItem: {
-    width: dp(48),
+    width: dp(50),
     height: dp(55),
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
     backgroundColor: 'white',
-    borderRightWidth: dp(2),
-    borderRightColor: '#fff',
+    // borderRightWidth: dp(2),
+    // borderRightColor: '#fff',
   },
   functionItemImageView: {
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    width: dp(30),
-    height: dp(30),
+    width: dp(50),
+    height: dp(42),
+    borderRightWidth: dp(2),
+    borderRightColor: '#fff',
   },
   functionItemImagee: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+    // position: 'absolute',
+    width:  dp(30),
+    height:  dp(30),
   },
   functionItemText: {
     fontSize:10,

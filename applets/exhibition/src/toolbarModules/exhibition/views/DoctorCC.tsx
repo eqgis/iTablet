@@ -1018,6 +1018,8 @@ class DoctorCC extends Component<Props, State> {
             height: dp(100),
             marginHorizontal: dp(5),
             backgroundColor: 'rgba(255, 255, 255, .9)',
+            borderRadius: dp(8),
+            overflow: 'hidden',
             // opacity: 0.9,
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -1429,7 +1431,7 @@ class DoctorCC extends Component<Props, State> {
             alignItems: 'center',
             overflow: 'hidden',
             backgroundColor: 'rgba(255, 255, 255, .9)',
-            // borderRadius: dp(10),
+            borderRadius: dp(8),
           },
           this.state.selectAnimationKey === item.id && {
             width: dp(60),

@@ -74,7 +74,7 @@ class PipeLineAttribute extends Component<Props, State> {
     // }
 
     const data1 = { title: '类别', value: ''}
-    const data2 = { title: '族', value: ''}
+    const data2 = { title: '族与类型', value: ''}
     const data3 = { title: '标高', value: ''}
     const data4 = { title: '偏移', value: ''}
     const data5 = { title: '流量', value: ''}
@@ -82,7 +82,7 @@ class PipeLineAttribute extends Component<Props, State> {
       if (item.title === data1.title) {
         data1.title = '名称'
         data1.value = item.value
-      } else if (item.title === '族') {
+      } else if (item.title === '族与类型') {
         data2.title = '类别'
         data2.value = item.value
       } else if (item.title === data3.title) {

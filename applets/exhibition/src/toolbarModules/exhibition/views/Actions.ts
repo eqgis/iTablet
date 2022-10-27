@@ -11,3 +11,14 @@ export async function flatMapImported() {
   const needToImport = await SARMap.needToImport()
   flatMapRefresh = needToImport
 }
+
+let buildingRefresh = false
+export async function shouldBuildingMapData(): Promise<boolean> {
+  const needToImport = await SARMap.needToImport()
+  return needToImport && !buildingRefresh
+}
+
+export async function buildingImported() {
+  const needToImport = await SARMap.needToImport()
+  buildingRefresh = needToImport
+}

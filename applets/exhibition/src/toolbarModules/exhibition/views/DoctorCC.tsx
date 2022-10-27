@@ -99,7 +99,7 @@ class DoctorCC extends Component<Props, State> {
       isSecondaryShow: true,
       uri: 'null',
       isVideoStart: false,
-      isSpeakGuideShow: true,
+      isSpeakGuideShow: false,
       videoUrl: 'null',
       rate: 1,
       videoTime: -1,
@@ -141,15 +141,19 @@ class DoctorCC extends Component<Props, State> {
     // 添加语音结束的监听
     SARMap.addSpeakStopListener({
       callback: async () => {
-        // 语音结束停止推演动画
-        if(this.isPlay) {
-          SARMap.stopARAnimation()
-          this.isPlay = false
-          this.setState({
-            isSecondaryShow: true,
-            selectSpeakKey: 'null',
-          })
-        }
+        // 语音结束三秒后停止推演动画
+        const speakStopTimer = setTimeout(() => {
+          if(this.isPlay) {
+            SARMap.stopARAnimation()
+            this.isPlay = false
+            this.setState({
+              isSecondaryShow: true,
+              selectSpeakKey: 'null',
+            })
+            clearTimeout(speakStopTimer)
+          }
+        }, 3000)
+
       },
     })
   }
@@ -315,6 +319,10 @@ class DoctorCC extends Component<Props, State> {
       })
       SARMap.setAction(ARAction.NULL)
       this.isBack = true
+      // 博士加载完成值后再允许显示引导内容
+      this.setState({
+        isSpeakGuideShow: true,
+      })
       // Toast.show("地图打开成功")
     } else {
       Toast.show("该地图不存在")
@@ -1937,7 +1945,11 @@ class DoctorCC extends Component<Props, State> {
         {/* 解说模块的按钮引导 */}
         {!this.state.showScan && this.state.isSpeakGuideShow && this.renderStartGuide()}
 
-        <ARArrow />
+        <ARArrow
+          arrowShowed={() => {
+            Toast.show('请按照箭头引导转动屏幕查看内容')
+          }}
+        />
 
       </>
     )

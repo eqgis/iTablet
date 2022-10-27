@@ -788,7 +788,7 @@ class DoctorCC extends Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描演示台上的二维码加载展示内容'}
+              {'请扫描地面上的二维码加载展示内容'}
             </Text>
           </View>
         </View>
@@ -819,34 +819,23 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'speak' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.speakBtnOnpress}
         >
           <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              overflow: 'hidden',
-              width: dp(30),
-              height: dp(30),
-            }}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'speak' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
-              style={{ position: 'absolute', width: '100%', height: '100%' }}
+              style={[styles.functionItemImagee]}
               source={this.state.selectType === 'speak'? getImage().icon_speak_selected : getImage().icon_speak}
             />
+            <Text style={[styles.functionItemText]}> {'详解'} </Text>
           </View>
-
-          <Text
-            style={{
-              fontSize:10,
-            }}
-          >
-            {'详解'}
-          </Text>
         </TouchableOpacity>
       </View>
     )
@@ -874,82 +863,89 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'action' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.actionBtnOnPress}
         >
           <View
-            style={[styles.functionItemImageView]}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'action' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
               style={[styles.functionItemImagee]}
               source={this.state.selectType === 'action'? getImage().icon_action_selected: getImage().icon_action}
             />
+            <Text style={[styles.functionItemText]}> {'动作'} </Text>
           </View>
-
-          <Text style={[styles.functionItemText]}> {'动作'} </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'reloader' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.reloaderBtnOnPress}
         >
           <View
-            style={[styles.functionItemImageView]}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'reloader' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
               style={[styles.functionItemImagee]}
               source={this.state.selectType === 'reloader' ? getImage().icon_reloader_selected : getImage().icon_reloader}
             />
+            <Text style={[styles.functionItemText]}> {'换装'} </Text>
           </View>
-          <Text style={[styles.functionItemText]}> {'换装'} </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'photo' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.photoBtnOnPress}
         >
           <View
-            style={[styles.functionItemImageView]}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'photo' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
               style={[styles.functionItemImagee]}
               source={this.state.selectType === 'photo'? getImage().icon_photo_seleted : getImage().icon_photo}
             />
+            <Text style={[styles.functionItemText]}> {'合影'} </Text>
           </View>
-          <Text style={[styles.functionItemText]}> {'合影'} </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.functionItem,
-            this.state.selectType === 'video' && {
-              borderRightColor: '#f24f02'
-            }
           ]}
           onPress={this.videoBtnOnPress}
         >
           <View
-            style={[styles.functionItemImageView]}
+            style={[
+              styles.functionItemImageView,
+              this.state.selectType === 'video' && {
+                borderRightColor: '#f24f02'
+              }
+            ]}
           >
             <Image
               style={[styles.functionItemImagee]}
               source={this.state.selectType === 'video'? getImage().icon_video_selected : getImage().icon_video}
             />
+            <Text style={[styles.functionItemText]}> {'录像'} </Text>
           </View>
-          <Text style={[styles.functionItemText]}> {'录像'} </Text>
         </TouchableOpacity>
       </View>
     )
@@ -1127,7 +1123,7 @@ class DoctorCC extends Component<Props, State> {
             position: 'absolute',
             top: dp(100),
             right: dp(60),
-            width: dp(80),
+            width: dp(60),
             // height: dp(100),
             maxHeight: dp(240),
             borderRadius: dp(10),
@@ -1156,7 +1152,7 @@ class DoctorCC extends Component<Props, State> {
         key={item.id}
         style={[
           {
-            width: dp(70),
+            width: dp(50),
             height: dp(33),
             marginVertical: dp(2),
             paddingVertical: dp(2),
@@ -1230,7 +1226,7 @@ class DoctorCC extends Component<Props, State> {
       >
         <Text
           style={{
-            fontSize:14,
+            fontSize:10,
           }}
         >
           {item.name === 'stand-by' ? "站立" : item.name}
@@ -1246,10 +1242,10 @@ class DoctorCC extends Component<Props, State> {
           position: 'absolute',
           top: dp(160),
           right: dp(60),
-          width: dp(54),
+          width: dp(52),
           maxHeight: dp(120),
           borderRadius: dp(10),
-          paddingVertical: dp(10),
+          // paddingVertical: dp(5),
           // paddingHorizontal: dp(5),
           justifyContent: 'center',
           alignItems: 'center',
@@ -1289,9 +1285,8 @@ class DoctorCC extends Component<Props, State> {
               style={[styles.functionItemImagee]}
               source={this.state.selectReloaderKey === 'doctor'? getImage().icon_superman_selected : getImage().icon_superman}
             />
+            <Text style={[styles.functionItemText]}> {'超人服'} </Text>
           </View>
-
-          <Text style={[styles.functionItemText]}> {'超人'} </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -1321,9 +1316,8 @@ class DoctorCC extends Component<Props, State> {
               style={[styles.functionItemImagee]}
               source={this.state.selectReloaderKey === 'doctorStudy'? getImage().icon_doctor_selected : getImage().icon_doctor}
             />
+            <Text style={[styles.functionItemText]}> {'博士服'} </Text>
           </View>
-
-          <Text style={[styles.functionItemText]}> {'博士'} </Text>
         </TouchableOpacity>
       </View>
     )
@@ -1900,26 +1894,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   functionItem: {
-    width: dp(48),
+    width: dp(50),
     height: dp(55),
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
     backgroundColor: 'white',
-    borderRightWidth: dp(2),
-    borderRightColor: '#fff',
+    // borderRightWidth: dp(2),
+    // borderRightColor: '#fff',
   },
   functionItemImageView: {
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    width: dp(30),
-    height: dp(30),
+    width: dp(50),
+    height: dp(42),
+    borderRightWidth: dp(2),
+    borderRightColor: '#fff',
   },
   functionItemImagee: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+    // position: 'absolute',
+    width:  dp(30),
+    height:  dp(30),
   },
   functionItemText: {
     fontSize:10,

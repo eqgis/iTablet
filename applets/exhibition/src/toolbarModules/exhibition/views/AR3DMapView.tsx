@@ -48,7 +48,7 @@ class AR3DMapView extends React.Component<Props, State> {
           const relativePositin: Vector3 = {
             x: 0,
             y: 0,
-            z: -1,
+            z: -0.5,
           }
           SExhibition.removeTempPoint()
           SExhibition.addMapviewElement({

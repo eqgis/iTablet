@@ -14,6 +14,7 @@ import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
 import { Pose, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { shouldBuildingMapData, buildingImported } from './Actions'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -267,22 +268,31 @@ class SuperMapBuilding extends React.Component<Props, State> {
       const targetHomePath = home + ConstPath.CustomerPath + 'Data/Scene/ChengDuSuperMap/'
       const targetPath = targetHomePath + 'ChengDuSuperMap.sxwu'
       const targetPxpPath = home + ConstPath.CustomerPath + 'Data/Scene/ChengDuSuperMap.pxp'
-      if (await FileTools.fileIsExist(targetPxpPath)) {
-        if (await FileTools.fileIsExist(targetPath)) {
-          // Toast.show('已经导入数据')
-          return targetPxpPath // 已经导入
-        } else {
-          await FileTools.deleteFile(targetPxpPath)
-        }
+
+      const needToImport = await shouldBuildingMapData()
+
+      if (needToImport && await FileTools.fileIsExist(targetHomePath)) {
+        await FileTools.deleteFile(targetHomePath)
       } else {
-        if (await FileTools.fileIsExist(targetHomePath)) {
-          await FileTools.deleteFile(targetHomePath)
+        if (await FileTools.fileIsExist(targetPxpPath)) {
+          if (await FileTools.fileIsExist(targetPath)) {
+            // Toast.show('已经导入数据')
+            return targetPxpPath // 已经导入
+          } else {
+            await FileTools.deleteFile(targetPxpPath)
+          }
+        } else {
+          if (await FileTools.fileIsExist(targetHomePath)) {
+            await FileTools.deleteFile(targetHomePath)
+          }
         }
       }
+
       // Toast.show('开始导入数据')
       const tempData = await DataHandler.getExternalData(importPath) || []
       const result = await DataHandler.importWorkspace3D(tempData[0])
       if (result) {
+        buildingImported()
         // Toast.show('导入数据成功')
         return targetPxpPath
       } else {
@@ -608,11 +618,11 @@ class SuperMapBuilding extends React.Component<Props, State> {
           this.lastLayerStatus = {...status}
 
           status.rx = 0
-          status.ry = 0
+          status.ry = 166.23
           status.rz = 0
-          status.sx = 0.04
-          status.sy = 0.04
-          status.sz = 0.04
+          status.sx = 0.06
+          status.sy = 0.06
+          status.sz = 0.06
           status.x = status.x || 0
           status.y = status.y || 0
           status.z = (status.z || 0) + 1

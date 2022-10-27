@@ -61,7 +61,7 @@ class FlatMapVIew extends React.Component<Props, State> {
     const relativePositin: Vector3 = {
       x: 0,
       y: 0,
-      z: -0.5,
+      z: -1,
     }
     SExhibition.removeTempPoint()
     SExhibition.addFlatMap({

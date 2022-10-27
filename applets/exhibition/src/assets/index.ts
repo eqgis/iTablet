@@ -74,7 +74,7 @@ const icon_action_speak = require('./icon_action_speak.png')
 const icon_action_stand_by = require('./icon_action_stand_by.png')
 const icon_action_turn_around = require('./icon_action_turn_around.png')
 const icon_action_walk = require('./icon_action_walk.png')
-const logo_supermap = require('./logo-supermap.png')
+const close = require('./close.png')
 
 const image = {
   scan,
@@ -153,7 +153,7 @@ const image = {
   icon_action_stand_by,
   icon_action_turn_around,
   icon_action_walk,
-  logo_supermap,
+  close,
 }
 
 function getImage(): typeof image {

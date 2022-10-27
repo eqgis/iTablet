@@ -77,8 +77,6 @@ class DoctorCC extends Component<Props, State> {
   curShowSpeakLayers: Array<ARLayer> = []
   // 窗格动画是否在播放 true表示在播放 false表示未在播放
   isPlay = false
-  // 窗格动画播放的定时器
-  timer: NodeJS.Timeout | null | undefined = null
   /** 合影图片保存的本地路径 */
   imgPath: string
   /** 模型图层的名字列表 */
@@ -139,6 +137,20 @@ class DoctorCC extends Component<Props, State> {
 
         Toast.show('定位成功')
       }
+    })
+    // 添加语音结束的监听
+    SARMap.addSpeakStopListener({
+      callback: async () => {
+        // 语音结束停止推演动画
+        if(this.isPlay) {
+          SARMap.stopARAnimation()
+          this.isPlay = false
+          this.setState({
+            isSecondaryShow: true,
+            selectSpeakKey: 'null',
+          })
+        }
+      },
     })
   }
 
@@ -323,6 +335,8 @@ class DoctorCC extends Component<Props, State> {
     }
     // 移除监听
     AppEvent.removeListener('ar_image_tracking_result')
+    // 移除语音结束监听
+    SARMap.removeSpeakStopListener()
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
@@ -342,10 +356,6 @@ class DoctorCC extends Component<Props, State> {
     if(this.isPlay) {
       SARMap.stopARAnimation()
       this.isPlay = false
-    }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
     }
 
     if(this.ARModel) {
@@ -413,10 +423,6 @@ class DoctorCC extends Component<Props, State> {
       SARMap.stopARAnimation()
       this.isPlay = false
     }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
 
   }
 
@@ -444,10 +450,6 @@ class DoctorCC extends Component<Props, State> {
       SARMap.stopARAnimation()
       this.isPlay = false
     }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
   }
 
   /** 点击合影按钮执行的方法 */
@@ -464,14 +466,6 @@ class DoctorCC extends Component<Props, State> {
       SARMap.stopARAnimation()
       this.isPlay = false
     }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
-
-    // if(this.ARModel) {
-    //   SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
-    // }
 
     const currentElement = this.ARModel
     let animations: Array<ModelAnimation> = []
@@ -505,10 +499,6 @@ class DoctorCC extends Component<Props, State> {
     if(this.isPlay) {
       SARMap.stopARAnimation()
       this.isPlay = false
-    }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
     }
 
     // 将播放的动画停止播放
@@ -1037,10 +1027,6 @@ class DoctorCC extends Component<Props, State> {
             SARMap.stopARAnimation()
             this.isPlay = false
           }
-          if(this.timer) {
-            clearTimeout(this.timer)
-            this.timer = null
-          }
           // 当再次点击同一解说模块儿时，停止该模块儿的动画和取消选中状态
           if(this.state.selectSpeakKey === item.key){
             this.setState({
@@ -1085,22 +1071,6 @@ class DoctorCC extends Component<Props, State> {
                 clearTimeout(tempTimer)
               },300)
               this.isPlay = true
-              this.timer = setTimeout(()=>{
-
-                if(this.isPlay) {
-                  SARMap.stopARAnimation()
-                  this.isPlay = false
-                  this.setState({
-                    isSecondaryShow: true,
-                    selectSpeakKey: 'null',
-                  })
-                }
-                if(this.timer) {
-                  clearTimeout(this.timer)
-                  this.timer = null
-                }
-
-              }, time * 1000)
             }
 
           }

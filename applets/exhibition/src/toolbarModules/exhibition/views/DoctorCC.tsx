@@ -92,7 +92,7 @@ class DoctorCC extends Component<Props, State> {
       selectType: 'null',
       animations: [],
       selectAnimationKey: -1,
-      selectReloaderKey: 'doctorStudy',
+      selectReloaderKey: 'doctor',
       isShowFull: false,
       selectSpeakKey: 'null',
       isSecondaryShow: true,
@@ -107,8 +107,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
   componentDidMount = async () => {
-    // this.getDoctorData()
-    this.getSupermanData()
+    this.getDoctorData()
     await this.openDoctorARMap()
     // 启用增强定位
     SARMap.setAREnhancePosition()
@@ -224,8 +223,17 @@ class DoctorCC extends Component<Props, State> {
     const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
     // 导入之后的地图路径
     const arMapPath = homePath + ConstPath.UserPath + 'Customer/Data/ARMap/AR超超博士.arxml'
-    // 判断导入之后的地图路径是否存在，不存在才导入
-    if(!(await FileTools.fileIsExist(arMapPath))) {
+
+    // 1. 数据是否更新
+    const dataUpate =  await SARMap.needToImport()
+    // 2. 导入之后的地图路径是否存在
+    const mapExist = await FileTools.fileIsExist(arMapPath)
+    // 当数据更新且存在导入后的地图，删掉原来的导入地图
+    if(dataUpate && mapExist) {
+      FileTools.deleteFile(arMapPath)
+    }
+    // 当数据更新或没有导入后的地图，才进行重新导入
+    if(dataUpate || !mapExist) {
       await SARMap.importMap(path)
     }
     // 打开指定路径的地图
@@ -244,7 +252,7 @@ class DoctorCC extends Component<Props, State> {
 
             SARMap.setLayerMaxAnimationBounds(layer.name, 15)
             if(layer.caption === '博士') {
-              SARMap.setLayerVisible(layer.name, false)
+              SARMap.setLayerVisible(layer.name, true)
               const model = {
                 layerName: layer.name,
                 id: 1,
@@ -254,8 +262,10 @@ class DoctorCC extends Component<Props, State> {
                 videoType: 1,
               }
               this.modelMap.set(layer.caption, model)
+              // 把博士设为当前对象
+              this.ARModel = model
             } else if(layer.caption === '博士_学') {
-              SARMap.setLayerVisible(layer.name, true)
+              SARMap.setLayerVisible(layer.name, false)
               const model = {
                 layerName: layer.name,
                 id: 2,
@@ -265,8 +275,6 @@ class DoctorCC extends Component<Props, State> {
                 videoType: 1,
               }
               this.modelMap.set(layer.caption, model)
-              // 把博士设为当前对象
-              this.ARModel = model
             }
 
           } else {

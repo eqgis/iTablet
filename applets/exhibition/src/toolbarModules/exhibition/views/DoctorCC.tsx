@@ -328,6 +328,18 @@ class DoctorCC extends Component<Props, State> {
       this.setState({showScan: false})
       return
     }
+
+    // 当在拍照界面或录像界面时，点击返回按钮退出拍照或录像界面
+    if(this.state.isShowFull && (this.state.selectType === 'photo' || this.state.selectType === 'video')) {
+      if(this.ARModel) {
+        SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+      }
+      this.setState({
+        isShowFull: false,
+        selectAnimationKey: -1,
+      })
+      return
+    }
     // 数据未加载完成，点击返回无效
     if(!this.isBack) {
       Toast.show("请等待数据加载完成再退出!")
@@ -370,6 +382,13 @@ class DoctorCC extends Component<Props, State> {
       selectAnimationKey: -1,
       selectSpeakKey: 'null',
       isSpeakGuideShow: false,
+    })
+  }
+
+  /** 点击合影界面的动作按钮执行的方法 */
+  photoBtnOnpress = async () => {
+    this.setState({
+      isSecondaryShow: !this.state.isSecondaryShow,
     })
   }
 
@@ -455,12 +474,12 @@ class DoctorCC extends Component<Props, State> {
   /** 点击合影按钮执行的方法 */
   photoBtnOnPress = async () => {
 
-    if(this.state.selectType === 'photo') {
-      this.setState({
-        isSecondaryShow: !this.state.isSecondaryShow,
-      })
-      return
-    }
+    // if(this.state.selectType === 'photo') {
+    //   this.setState({
+    //     isSecondaryShow: !this.state.isSecondaryShow,
+    //   })
+    //   return
+    // }
 
     if(this.isPlay) {
       SARMap.stopARAnimation()
@@ -472,13 +491,13 @@ class DoctorCC extends Component<Props, State> {
     if(currentElement) {
       await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
-      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 1)
+      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     }
 
     this.setState({
       selectType: 'photo',
-      // isShowFull: true,
+      isShowFull: true,
       selectAnimationKey: -1,
       isSecondaryShow: true,
       selectSpeakKey: 'null',
@@ -558,6 +577,7 @@ class DoctorCC extends Component<Props, State> {
     this.setState({
       uri: 'null',
       isSecondaryShow: true,
+      isShowFull: true,
     })
   }
 
@@ -571,6 +591,7 @@ class DoctorCC extends Component<Props, State> {
     this.setState({
       uri: 'null',
       isSecondaryShow: true,
+      isShowFull: true,
     })
   }
 
@@ -643,6 +664,7 @@ class DoctorCC extends Component<Props, State> {
     }
     this.setState({
       videoUrl: 'null',
+      isShowFull: true,
     })
   }
 
@@ -654,6 +676,7 @@ class DoctorCC extends Component<Props, State> {
     }
     this.setState({
       videoUrl: 'null',
+      isShowFull: true,
     })
   }
 
@@ -702,6 +725,31 @@ class DoctorCC extends Component<Props, State> {
         <Image
           style={{ position: 'absolute', width: '100%', height: '100%' }}
           source={getImage().icon_other_scan}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  /** 合影里动作显隐按钮 */
+  renderPhotoBtn = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: dp(80),
+          left: dp(20),
+          width: dp(60),
+          height: dp(60),
+          borderRadius: dp(5),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+        onPress={this.photoBtnOnpress}
+      >
+        <Image
+          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          source={this.state.isSecondaryShow ? getImage().icon_btn_action_selected : getImage().icon_btn_action}
         />
       </TouchableOpacity>
     )
@@ -1261,6 +1309,10 @@ class DoctorCC extends Component<Props, State> {
             // }
           ]}
           onPress={() => {
+            // 如果当前就是该模型就不做任何改动
+            if(this.state.selectReloaderKey === 'doctor') {
+              return
+            }
             const newModel = this.modelMap.get('博士')
             if(newModel && this.ARModel) {
               // 更新解说数据为博士的数据
@@ -1293,6 +1345,10 @@ class DoctorCC extends Component<Props, State> {
             styles.ReloaderItem,
           ]}
           onPress={() => {
+            // 如果当前就是该模型就不做任何改动
+            if(this.state.selectReloaderKey === 'doctorStudy') {
+              return
+            }
             const newModel = this.modelMap.get('博士_学')
             if(newModel && this.ARModel) {
               // 更新解说数据为超人的数据
@@ -1433,7 +1489,7 @@ class DoctorCC extends Component<Props, State> {
                 type: ARAnimatorType.MODEL_TYPE,
                 modelAnimationIndex: item.id,
 
-                repeatCount: 0,
+                // repeatCount: 0,
                 delay:0,
 
                 /** 模型动画时长 单位秒 */
@@ -1465,7 +1521,7 @@ class DoctorCC extends Component<Props, State> {
 
           this.setState({
             selectAnimationKey: item.id,
-            isShowFull: true,
+            // isShowFull: true,
             isSecondaryShow: false,
           })
         }}
@@ -1856,7 +1912,7 @@ class DoctorCC extends Component<Props, State> {
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'photo' && this.renderPhotoSelected()}
+        {this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'photo' && this.renderPhotoSelected()}
 
         {/* 右边按钮 */}
         {!this.state.isShowFull && this.renderSpeak()}
@@ -1866,7 +1922,8 @@ class DoctorCC extends Component<Props, State> {
         {!this.state.isShowFull && this.state.showScan && this.renderScan()}
         {/* 左边按钮 */}
         {!this.state.isShowFull && !this.state.showScan && this.renderScanBtn()}
-        {!this.state.isShowFull && this.renderBackBtn()}
+        {!this.state.isVideoStart && this.renderBackBtn()}
+        {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoBtn()}
 
         {/* 合影的界面 */}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}

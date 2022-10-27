@@ -75,6 +75,8 @@ const icon_action_stand_by = require('./icon_action_stand_by.png')
 const icon_action_turn_around = require('./icon_action_turn_around.png')
 const icon_action_walk = require('./icon_action_walk.png')
 const close = require('./close.png')
+const icon_btn_action = require('./icon_btn_action.png')
+const icon_btn_action_selected = require('./icon_btn_action_selected.png')
 
 const image = {
   scan,
@@ -154,6 +156,8 @@ const image = {
   icon_action_turn_around,
   icon_action_walk,
   close,
+  icon_btn_action,
+  icon_btn_action_selected,
 }
 
 function getImage(): typeof image {

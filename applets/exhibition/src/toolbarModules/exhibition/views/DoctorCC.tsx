@@ -21,6 +21,7 @@ interface animationListType {
 interface speakItemType {
   key: 'doctor' | 'pipeLine' | 'mansion' | '3dMap' | 'map' | 'null',
   title: string,
+  name: string,
   image: ImageSourcePropType,
 }
 interface Props {
@@ -158,26 +159,31 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'doctor',
         title: 'AR超超博士',
+        name: 'AR超超博士',
         image: getImage().ar_dr_supermap,
       },
       {
         key: 'pipeLine',
         title: 'AR室内管线',
+        name: 'AR室内管线',
         image: getImage().ar_infra,
       },
       {
         key: 'mansion',
         title: 'AR超图大厦',
+        name: 'AR超图大厦',
         image: getImage().ar_supermap_building,
       },
       {
         key: '3dMap',
         title: 'AR立体地图',
+        name: 'AR立体地图',
         image: getImage().ar_3d_map,
       },
       {
         key: 'map',
         title: 'AR平面地图',
+        name: 'AR平面地图',
         image: getImage().ar_flat_map,
       },
     ]
@@ -189,26 +195,31 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'doctor',
         title: 'AR超超博士_学',
+        name: 'AR超超博士',
         image: getImage().ar_dr_supermap,
       },
       {
         key: 'pipeLine',
         title: 'AR室内管线_学',
+        name: 'AR室内管线',
         image: getImage().ar_infra,
       },
       {
         key: 'mansion',
         title: 'AR超图大厦_学',
+        name: 'AR超图大厦',
         image: getImage().ar_supermap_building,
       },
       {
         key: '3dMap',
         title: 'AR立体地图_学',
+        name: 'AR立体地图',
         image: getImage().ar_3d_map,
       },
       {
         key: 'map',
         title: 'AR平面地图_学',
+        name: 'AR平面地图',
         image: getImage().ar_flat_map,
       },
     ]
@@ -1123,7 +1134,7 @@ class DoctorCC extends Component<Props, State> {
               color:"#fff",
             },
 
-          ]}>{item.title}</Text>
+          ]}>{item.name}</Text>
         </View>
       </TouchableOpacity>
     )

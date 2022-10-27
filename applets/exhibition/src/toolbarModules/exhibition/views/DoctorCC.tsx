@@ -84,6 +84,8 @@ class DoctorCC extends Component<Props, State> {
   modelMap = new Map<string, ARElement>()
   /** 视屏录屏的定时器 */
   videoTimer: NodeJS.Timer | null | undefined = null
+  /** 是否能够推出超超博士模块 true可以退出 false不可以退出 */
+  isBack: boolean
 
   constructor(props: Props) {
     super(props)
@@ -104,6 +106,7 @@ class DoctorCC extends Component<Props, State> {
       videoTime: -1,
     }
     this.imgPath = ''
+    this.isBack = false
   }
 
   componentDidMount = async () => {
@@ -288,6 +291,7 @@ class DoctorCC extends Component<Props, State> {
         addNewDSourceWhenCreate: false,
       })
       SARMap.setAction(ARAction.NULL)
+      this.isBack = true
       // Toast.show("地图打开成功")
     } else {
       Toast.show("该地图不存在")
@@ -299,6 +303,11 @@ class DoctorCC extends Component<Props, State> {
     // 扫描界面未关闭时，关闭扫描界面
     if(this.state.showScan) {
       this.setState({showScan: false})
+      return
+    }
+    // 数据未加载完成，点击返回无效
+    if(!this.isBack) {
+      Toast.show("请等待数据加载完成再退出!")
       return
     }
     // 移除监听

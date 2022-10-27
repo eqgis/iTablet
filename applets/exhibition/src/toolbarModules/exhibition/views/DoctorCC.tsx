@@ -271,7 +271,7 @@ class DoctorCC extends Component<Props, State> {
               SARMap.setLayerVisible(layer.name, false)
               const model = {
                 layerName: layer.name,
-                id: 2,
+                id: 3,
                 type: ARElementType.AR_MODEL,
                 touchType: 0,
                 select: true,

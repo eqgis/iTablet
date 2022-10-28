@@ -78,6 +78,12 @@ const close = require('./close.png')
 const icon_btn_action = require('./icon_btn_action.png')
 const icon_btn_action_selected = require('./icon_btn_action_selected.png')
 
+const icon_tool_shape = require('./icon_tool_shape.png')
+const icon_tool_shape_select = require('./icon_tool_shape_select.png')
+const icon_tool_juxing = require('./icon_tool_juxing.png')
+const icon_tool_yuan = require('./icon_tool_yuan.png')
+const icon_tool_yuanjiaojx = require('./icon_tool_yuanjiaojx.png')
+
 const image = {
   scan,
   scan_circle,
@@ -155,6 +161,12 @@ const image = {
   icon_action_stand_by,
   icon_action_turn_around,
   icon_action_walk,
+
+  icon_tool_shape,
+  icon_tool_shape_select,
+  icon_tool_juxing,
+  icon_tool_yuan,
+  icon_tool_yuanjiaojx,
   close,
   icon_btn_action,
   icon_btn_action_selected,

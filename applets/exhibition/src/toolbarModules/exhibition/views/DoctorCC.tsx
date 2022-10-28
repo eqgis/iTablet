@@ -494,14 +494,18 @@ class DoctorCC extends Component<Props, State> {
       this.isPlay = false
     }
 
-    const currentElement = this.ARModel
-    let animations: Array<ModelAnimation> = []
-    if(currentElement) {
-      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-      // 将图层的动画重复播放次数设置为1，对应传参为0
-      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
-      animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
+    if(this.ARModel) {
+      SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
+
+    // const currentElement = this.ARModel
+    // let animations: Array<ModelAnimation> = []
+    // if(currentElement) {
+    //   await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+    //   // 将图层的动画重复播放次数设置为1，对应传参为0
+    //   SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
+    //   animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
+    // }
 
     this.setState({
       selectType: 'photo',
@@ -509,7 +513,7 @@ class DoctorCC extends Component<Props, State> {
       selectAnimationKey: -1,
       isSecondaryShow: true,
       selectSpeakKey: 'null',
-      animations: animations,
+      // animations: animations,
       isSpeakGuideShow: false,
     })
   }
@@ -529,11 +533,20 @@ class DoctorCC extends Component<Props, State> {
     }
 
     // 将播放的动画停止播放
-    if(this.ARModel) {
-      SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    // if(this.ARModel) {
+    //   SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    // }
+    const currentElement = this.ARModel
+    let animations: Array<ModelAnimation> = []
+    if(currentElement) {
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      // 将图层的动画重复播放次数设置为1，对应传参为0
+      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
+      animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     }
     this.setState({
       selectType: 'video',
+      animations:animations,
       selectAnimationKey: -1,
       isSecondaryShow: true,
       selectSpeakKey: 'null',

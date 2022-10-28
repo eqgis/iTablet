@@ -25,4 +25,5 @@ export interface Event {
   'ar_animation_play': undefined
   'ar_animation_exit': undefined
 
+  'ar_tracking_image_result': {success: boolean}
 }

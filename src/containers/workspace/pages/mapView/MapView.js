@@ -370,7 +370,6 @@ export default class MapView extends React.Component {
       samplescale: new Animated.Value(0.1),
       showPoiSearch: false,
       showNavigation: false,
-      imageTrackingresultTag: '',
     }
     // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
     this.props.setDatumPoint(false)
@@ -4578,11 +4577,7 @@ export default class MapView extends React.Component {
     })
   }
 
-  _startScan = () => {
-    return SARMap.startScan()
-  }
-
-  _onDatumPointClose = point => {
+  _onDatumPointClose = () => {
     this.props.setDatumPoint(false)
     if (global.Type === ChunkType.MAP_AR_MAPPING) {
       SARMap.measuerPause(false)
@@ -4952,10 +4947,7 @@ export default class MapView extends React.Component {
             ToolbarModule.getData()?.actions?.goToPreview?.([info])
           }}
           onImageTrackingResult={async (tag) => {
-            // ar增强定位执行的回调函数
-            await this.setState({ imageTrackingresultTag: tag })
-            // 调用AREnhancePosition的startScan方法
-            this.datumPointCalibration?.arEnhancePosition?.startScan()
+            AppEvent.emitEvent('ar_tracking_image_result', {success: tag === 'ImageTracking success'})
           }
           }
           onARElementGeometryTouch={element => {
@@ -5316,16 +5308,9 @@ export default class MapView extends React.Component {
         {!this.props.currentGroup.id && (global.Type === ChunkType.MAP_THEME) && this.props.themeGuide && this.renderMapThemeGuideView()}
         {!this.props.currentGroup.id && (global.Type === ChunkType.MAP_COLLECTION) && this.props.collectGuide && this.renderMapCollectGuideView()}
         {!this.props.currentGroup.id && (global.Type === ChunkType.MAP_EDIT) && this.props.mapEditGuide && this.renderMapEditGuideView()}
-        {this.props.showDatumPoint && <DatumPointCalibration routeName="MapView"
-          routeData={{
-            measureType: this.measureType,
-          }}
-          startScan={this._startScan}
+        {this.props.showDatumPoint && <DatumPointCalibration
           onClose={this._onDatumPointClose}
           onConfirm={this._onDatumPointConfirm}
-          ref={(ref) => { this.datumPointCalibration = ref }}
-          // 通过属性让回调拿到的结过往子组件传
-          imageTrackingresultTag={this.state.imageTrackingresultTag}
         />}
         {this._renderExitSaveView()}
       </View>

@@ -9,23 +9,35 @@ import ARArrow from '../components/ARArrow'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
 
+
 interface Props {
   windowSize: ScaledSize
 }
 
 interface State {
   showScan: boolean
+  showShape:boolean
 }
-
 class AR3DMapView extends React.Component<Props, State> {
   scanRef: Scan | null = null
   showScanBt = false
+  open = false
+  result = {
+    x: 0,
+    y: 0,
+    z: 0,
+    qx: 0,
+    qy: 0,
+    qz: 0,
+    qw: 0
+  }
 
   constructor(props: Props) {
     super(props)
 
     this.state = {
       showScan: true,
+      showShape:false
     }
   }
 
@@ -51,7 +63,8 @@ class AR3DMapView extends React.Component<Props, State> {
             z: -0.5,
           }
           SExhibition.removeTempPoint()
-          SExhibition.addMapviewElement({
+          this.result = result
+          SExhibition.addMapviewElement(0,{
             pose: result,
             translation: relativePositin
           })
@@ -104,6 +117,7 @@ class AR3DMapView extends React.Component<Props, State> {
           })
           SExhibition.startTrackingTarget()
 
+          this.open = true
         })
       }
     })
@@ -312,9 +326,315 @@ class AR3DMapView extends React.Component<Props, State> {
     )
   }
 
+  renderMapControl = () => {
+    let image
+    if(this.state.showShape){
+      image = getImage().icon_tool_shape_select
+    }else {
+      image = getImage().icon_tool_shape
+    }
+    return (
+      <TouchableOpacity
+        style={[{
+          width: dp(50),
+          height: dp(60),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        },this.state.showShape&&{ borderRightWidth: dp(2), borderRightColor: '#F24F02'}]}
+        onPress={()=>{
+          if(this.state.showShape){
+            this.setState({showShape:false})
+          }else{
+            if(this.open){
+              this.setState({showShape:true})
+            }
+          }
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={image}
+          />
+        </View>
+
+        <Text
+          style={{
+            color: 'black',
+            fontSize:10,
+          }}
+        >
+          {'地图形状'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderjx = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          width: dp(50),
+          height: dp(60),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor: 'white',
+        }}
+        onPress={async ()=>{
+          this.setState({showShape:false})
+          SExhibition.removeMapviewElement()
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -0.5,
+          }
+          SExhibition.removeTempPoint()
+          SExhibition.addMapviewElement(0,{
+            pose: this.result,
+            translation: relativePositin
+          })
+          const _time = async function() {
+            return new Promise(function(resolve, reject) {
+              const timer = setTimeout(function() {
+                resolve('waitting send close message')
+                timer && clearTimeout(timer)
+              }, 1500)
+            })
+          }
+          await _time()
+          await SExhibition.getMapviewLocation()
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_tool_juxing}
+          />
+        </View>
+
+        <Text
+          style={{
+            color: 'black',
+            fontSize:10,
+          }}
+        >
+          {'矩形'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderyjx = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          width: dp(50),
+          height: dp(60),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor: 'white',
+        }}
+        onPress={async ()=>{
+          this.setState({showShape:false})
+          SExhibition.removeMapviewElement()
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -0.5,
+          }
+          SExhibition.removeTempPoint()
+          SExhibition.addMapviewElement(1,{
+            pose: this.result,
+            translation: relativePositin
+          })
+
+          const _time = async function() {
+            return new Promise(function(resolve, reject) {
+              const timer = setTimeout(function() {
+                resolve('waitting send close message')
+                timer && clearTimeout(timer)
+              }, 1500)
+            })
+          }
+          await _time()
+
+          await SExhibition.getMapviewLocation()
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_tool_yuanjiaojx}
+          />
+        </View>
+
+        <Text
+          style={{
+            color: 'black',
+            fontSize:10,
+          }}
+        >
+          {'圆角矩形'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderyx = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          width: dp(50),
+          height: dp(60),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor: 'white',
+        }}
+        onPress={async ()=>{
+          this.setState({showShape:false})
+          SExhibition.removeMapviewElement()
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -0.5,
+          }
+          SExhibition.removeTempPoint()
+          SExhibition.addMapviewElement(4,{
+            pose: this.result,
+            translation: relativePositin
+          })
+
+          const _time = async function() {
+            return new Promise(function(resolve, reject) {
+              const timer = setTimeout(function() {
+                resolve('waitting send close message')
+                timer && clearTimeout(timer)
+              }, 1500)
+            })
+          }
+          await _time()
+
+          await SExhibition.getMapviewLocation()
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_tool_yuan}
+          />
+        </View>
+
+        <Text
+          style={{
+            color: 'black',
+            fontSize:10,
+          }}
+        >
+          {'圆形'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     return(
       <>
+        <View
+          style={{
+            position: 'absolute',
+            right: 0,
+            width: dp(180),
+            height: '100%',
+            // justifyContent: 'center',
+            alignItems: 'flex-end',
+          }}
+        >
+
+          <View
+            style={{
+              top: dp(50),
+              right: dp(0),
+              flexDirection: 'row',
+            }}
+          >
+
+            {this.state.showShape && <View
+              style={{
+                // position: 'absolute',
+                top: dp(15),
+                right: dp(10),
+                width: dp(50),
+                height: dp(180),
+                borderRadius: dp(10),
+                justifyContent: 'center',
+                alignItems: 'center',
+                // overflow: 'hidden',
+                backgroundColor: 'white',
+              }}
+            >
+              {this.renderjx()}
+              {this.renderyjx()}
+              {this.renderyx()}
+            </View>}
+
+
+            <View>
+              <View
+                style={{
+                  top: dp(10),
+                  borderTopLeftRadius: dp(10),
+                  borderBottomLeftRadius: dp(10),
+                  backgroundColor: 'white',
+                }}
+              >
+                {this.renderMapControl()}
+              </View>
+            </View>
+
+          </View>
+
+        </View>
+
+
         {this.state.showScan && this.renderScan()}
         {this.showScanBt && this.renderScanBtn()}
         {this.renderBack()}

@@ -41,14 +41,13 @@ class AR3DMapView extends React.Component<Props, State> {
         SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        Toast.show('请按照箭头引导转动屏幕查看立体地图')
 
         SMap.openMapName('MapClip').then(async () => {
           await SMap.openMap('MapClip')
           const relativePositin: Vector3 = {
             x: 0,
             y: 0,
-            z: -1,
+            z: -0.5,
           }
           SExhibition.removeTempPoint()
           SExhibition.addMapviewElement({
@@ -318,7 +317,9 @@ class AR3DMapView extends React.Component<Props, State> {
         {this.state.showScan && this.renderScan()}
         {this.showScanBt && this.renderScanBtn()}
         {this.renderBack()}
-        <ARArrow />
+        <ARArrow
+          arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图')}
+        />
       </>
     )
   }

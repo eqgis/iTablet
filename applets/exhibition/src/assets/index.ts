@@ -74,7 +74,9 @@ const icon_action_speak = require('./icon_action_speak.png')
 const icon_action_stand_by = require('./icon_action_stand_by.png')
 const icon_action_turn_around = require('./icon_action_turn_around.png')
 const icon_action_walk = require('./icon_action_walk.png')
-const logo_supermap = require('./logo-supermap.png')
+const close = require('./close.png')
+const icon_btn_action = require('./icon_btn_action.png')
+const icon_btn_action_selected = require('./icon_btn_action_selected.png')
 
 const icon_tool_shape = require('./icon_tool_shape.png')
 const icon_tool_shape_select = require('./icon_tool_shape_select.png')
@@ -159,13 +161,15 @@ const image = {
   icon_action_stand_by,
   icon_action_turn_around,
   icon_action_walk,
-  logo_supermap,
 
   icon_tool_shape,
   icon_tool_shape_select,
   icon_tool_juxing,
   icon_tool_yuan,
   icon_tool_yuanjiaojx,
+  close,
+  icon_btn_action,
+  icon_btn_action_selected,
 }
 
 function getImage(): typeof image {

@@ -5,11 +5,15 @@ import { dp } from '@/utils'
 import { SExhibition } from 'imobile_for_reactnative'
 
 
+interface Props {
+  arrowShowed?: () => void
+}
+
 interface State {
   targetPosition: 0 | 1 | 2 | 3 | 4
 }
 
-class ARArrow extends React.Component<unknown, State> {
+class ARArrow extends React.Component<Props, State> {
 
   moveValue = new Animated.Value(0)
 
@@ -17,7 +21,9 @@ class ARArrow extends React.Component<unknown, State> {
 
   loopAnimation: Animated.CompositeAnimation | null = null
 
-  constructor(props: unknown) {
+  started = false
+
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -29,6 +35,10 @@ class ARArrow extends React.Component<unknown, State> {
     this.event = SExhibition.addExhibitionTargetPositionChangeListener(mode => {
       if(this.state.targetPosition === 0 && mode !== 0) {
         this._startMoveArrow()
+        if(!this.started) {
+          this.started = true
+          this.props.arrowShowed?.()
+        }
       } else if(mode === 0 && this.state.targetPosition !== 0) {
         this._stopMoveArrow()
       }

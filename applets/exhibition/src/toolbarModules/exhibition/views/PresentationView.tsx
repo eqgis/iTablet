@@ -35,7 +35,6 @@ class PresentationView extends React.Component<Props, State> {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        Toast.show('请按照箭头引导转动屏幕查看地图集')
         SExhibition.startTrackingTarget()
         SARMap.loadUnityScene()
       }
@@ -204,7 +203,9 @@ class PresentationView extends React.Component<Props, State> {
       <>
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
-        <ARArrow />
+        <ARArrow
+          arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看地图集')}
+        />
       </>
     )
   }

@@ -77,8 +77,6 @@ class DoctorCC extends Component<Props, State> {
   curShowSpeakLayers: Array<ARLayer> = []
   // 窗格动画是否在播放 true表示在播放 false表示未在播放
   isPlay = false
-  // 窗格动画播放的定时器
-  timer: NodeJS.Timeout | null | undefined = null
   /** 合影图片保存的本地路径 */
   imgPath: string
   /** 模型图层的名字列表 */
@@ -101,7 +99,7 @@ class DoctorCC extends Component<Props, State> {
       isSecondaryShow: true,
       uri: 'null',
       isVideoStart: false,
-      isSpeakGuideShow: true,
+      isSpeakGuideShow: false,
       videoUrl: 'null',
       rate: 1,
       videoTime: -1,
@@ -139,6 +137,24 @@ class DoctorCC extends Component<Props, State> {
 
         Toast.show('定位成功')
       }
+    })
+    // 添加语音结束的监听
+    SARMap.addSpeakStopListener({
+      callback: async () => {
+        // 语音结束三秒后停止推演动画
+        const speakStopTimer = setTimeout(() => {
+          if(this.isPlay) {
+            SARMap.stopARAnimation()
+            this.isPlay = false
+            this.setState({
+              isSecondaryShow: true,
+              selectSpeakKey: 'null',
+            })
+            clearTimeout(speakStopTimer)
+          }
+        }, 3000)
+
+      },
     })
   }
 
@@ -303,6 +319,10 @@ class DoctorCC extends Component<Props, State> {
       })
       SARMap.setAction(ARAction.NULL)
       this.isBack = true
+      // 博士加载完成值后再允许显示引导内容
+      this.setState({
+        isSpeakGuideShow: true,
+      })
       // Toast.show("地图打开成功")
     } else {
       Toast.show("该地图不存在")
@@ -316,6 +336,18 @@ class DoctorCC extends Component<Props, State> {
       this.setState({showScan: false})
       return
     }
+
+    // 当在拍照界面或录像界面时，点击返回按钮退出拍照或录像界面
+    if(this.state.isShowFull && (this.state.selectType === 'photo' || this.state.selectType === 'video')) {
+      if(this.ARModel) {
+        SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+      }
+      this.setState({
+        isShowFull: false,
+        selectAnimationKey: -1,
+      })
+      return
+    }
     // 数据未加载完成，点击返回无效
     if(!this.isBack) {
       Toast.show("请等待数据加载完成再退出!")
@@ -323,6 +355,8 @@ class DoctorCC extends Component<Props, State> {
     }
     // 移除监听
     AppEvent.removeListener('ar_image_tracking_result')
+    // 移除语音结束监听
+    SARMap.removeSpeakStopListener()
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
@@ -343,10 +377,6 @@ class DoctorCC extends Component<Props, State> {
       SARMap.stopARAnimation()
       this.isPlay = false
     }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
 
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
@@ -360,6 +390,13 @@ class DoctorCC extends Component<Props, State> {
       selectAnimationKey: -1,
       selectSpeakKey: 'null',
       isSpeakGuideShow: false,
+    })
+  }
+
+  /** 点击合影界面的动作按钮执行的方法 */
+  photoBtnOnpress = async () => {
+    this.setState({
+      isSecondaryShow: !this.state.isSecondaryShow,
     })
   }
 
@@ -413,10 +450,6 @@ class DoctorCC extends Component<Props, State> {
       SARMap.stopARAnimation()
       this.isPlay = false
     }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
 
   }
 
@@ -444,51 +477,43 @@ class DoctorCC extends Component<Props, State> {
       SARMap.stopARAnimation()
       this.isPlay = false
     }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
   }
 
   /** 点击合影按钮执行的方法 */
   photoBtnOnPress = async () => {
 
-    if(this.state.selectType === 'photo') {
-      this.setState({
-        isSecondaryShow: !this.state.isSecondaryShow,
-      })
-      return
-    }
+    // if(this.state.selectType === 'photo') {
+    //   this.setState({
+    //     isSecondaryShow: !this.state.isSecondaryShow,
+    //   })
+    //   return
+    // }
 
     if(this.isPlay) {
       SARMap.stopARAnimation()
       this.isPlay = false
     }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
+
+    if(this.ARModel) {
+      SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
 
-    // if(this.ARModel) {
-    //   SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    // const currentElement = this.ARModel
+    // let animations: Array<ModelAnimation> = []
+    // if(currentElement) {
+    //   await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+    //   // 将图层的动画重复播放次数设置为1，对应传参为0
+    //   SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
+    //   animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     // }
-
-    const currentElement = this.ARModel
-    let animations: Array<ModelAnimation> = []
-    if(currentElement) {
-      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-      // 将图层的动画重复播放次数设置为1，对应传参为0
-      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 1)
-      animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
-    }
 
     this.setState({
       selectType: 'photo',
-      // isShowFull: true,
+      isShowFull: true,
       selectAnimationKey: -1,
       isSecondaryShow: true,
       selectSpeakKey: 'null',
-      animations: animations,
+      // animations: animations,
       isSpeakGuideShow: false,
     })
   }
@@ -506,17 +531,22 @@ class DoctorCC extends Component<Props, State> {
       SARMap.stopARAnimation()
       this.isPlay = false
     }
-    if(this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
 
     // 将播放的动画停止播放
-    if(this.ARModel) {
-      SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    // if(this.ARModel) {
+    //   SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    // }
+    const currentElement = this.ARModel
+    let animations: Array<ModelAnimation> = []
+    if(currentElement) {
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      // 将图层的动画重复播放次数设置为1，对应传参为0
+      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
+      animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     }
     this.setState({
       selectType: 'video',
+      animations:animations,
       selectAnimationKey: -1,
       isSecondaryShow: true,
       selectSpeakKey: 'null',
@@ -568,6 +598,7 @@ class DoctorCC extends Component<Props, State> {
     this.setState({
       uri: 'null',
       isSecondaryShow: true,
+      isShowFull: true,
     })
   }
 
@@ -581,6 +612,7 @@ class DoctorCC extends Component<Props, State> {
     this.setState({
       uri: 'null',
       isSecondaryShow: true,
+      isShowFull: true,
     })
   }
 
@@ -653,6 +685,7 @@ class DoctorCC extends Component<Props, State> {
     }
     this.setState({
       videoUrl: 'null',
+      isShowFull: true,
     })
   }
 
@@ -664,6 +697,7 @@ class DoctorCC extends Component<Props, State> {
     }
     this.setState({
       videoUrl: 'null',
+      isShowFull: true,
     })
   }
 
@@ -712,6 +746,31 @@ class DoctorCC extends Component<Props, State> {
         <Image
           style={{ position: 'absolute', width: '100%', height: '100%' }}
           source={getImage().icon_other_scan}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  /** 合影里动作显隐按钮 */
+  renderPhotoBtn = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: dp(80),
+          left: dp(20),
+          width: dp(60),
+          height: dp(60),
+          borderRadius: dp(5),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+        onPress={this.photoBtnOnpress}
+      >
+        <Image
+          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          source={this.state.isSecondaryShow ? getImage().icon_btn_action_selected : getImage().icon_btn_action}
         />
       </TouchableOpacity>
     )
@@ -1037,10 +1096,6 @@ class DoctorCC extends Component<Props, State> {
             SARMap.stopARAnimation()
             this.isPlay = false
           }
-          if(this.timer) {
-            clearTimeout(this.timer)
-            this.timer = null
-          }
           // 当再次点击同一解说模块儿时，停止该模块儿的动画和取消选中状态
           if(this.state.selectSpeakKey === item.key){
             this.setState({
@@ -1085,22 +1140,6 @@ class DoctorCC extends Component<Props, State> {
                 clearTimeout(tempTimer)
               },300)
               this.isPlay = true
-              this.timer = setTimeout(()=>{
-
-                if(this.isPlay) {
-                  SARMap.stopARAnimation()
-                  this.isPlay = false
-                  this.setState({
-                    isSecondaryShow: true,
-                    selectSpeakKey: 'null',
-                  })
-                }
-                if(this.timer) {
-                  clearTimeout(this.timer)
-                  this.timer = null
-                }
-
-              }, time * 1000)
             }
 
           }
@@ -1291,6 +1330,10 @@ class DoctorCC extends Component<Props, State> {
             // }
           ]}
           onPress={() => {
+            // 如果当前就是该模型就不做任何改动
+            if(this.state.selectReloaderKey === 'doctor') {
+              return
+            }
             const newModel = this.modelMap.get('博士')
             if(newModel && this.ARModel) {
               // 更新解说数据为博士的数据
@@ -1323,6 +1366,10 @@ class DoctorCC extends Component<Props, State> {
             styles.ReloaderItem,
           ]}
           onPress={() => {
+            // 如果当前就是该模型就不做任何改动
+            if(this.state.selectReloaderKey === 'doctorStudy') {
+              return
+            }
             const newModel = this.modelMap.get('博士_学')
             if(newModel && this.ARModel) {
               // 更新解说数据为超人的数据
@@ -1463,7 +1510,7 @@ class DoctorCC extends Component<Props, State> {
                 type: ARAnimatorType.MODEL_TYPE,
                 modelAnimationIndex: item.id,
 
-                repeatCount: 0,
+                // repeatCount: 0,
                 delay:0,
 
                 /** 模型动画时长 单位秒 */
@@ -1495,7 +1542,7 @@ class DoctorCC extends Component<Props, State> {
 
           this.setState({
             selectAnimationKey: item.id,
-            isShowFull: true,
+            // isShowFull: true,
             isSecondaryShow: false,
           })
         }}
@@ -1886,7 +1933,7 @@ class DoctorCC extends Component<Props, State> {
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'photo' && this.renderPhotoSelected()}
+        {this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'video' && this.renderPhotoSelected()}
 
         {/* 右边按钮 */}
         {!this.state.isShowFull && this.renderSpeak()}
@@ -1896,7 +1943,8 @@ class DoctorCC extends Component<Props, State> {
         {!this.state.isShowFull && this.state.showScan && this.renderScan()}
         {/* 左边按钮 */}
         {!this.state.isShowFull && !this.state.showScan && this.renderScanBtn()}
-        {!this.state.isShowFull && this.renderBackBtn()}
+        {!this.state.isVideoStart && this.renderBackBtn()}
+        {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoBtn()}
 
         {/* 合影的界面 */}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
@@ -1910,7 +1958,11 @@ class DoctorCC extends Component<Props, State> {
         {/* 解说模块的按钮引导 */}
         {!this.state.showScan && this.state.isSpeakGuideShow && this.renderStartGuide()}
 
-        <ARArrow />
+        <ARArrow
+          arrowShowed={() => {
+            Toast.show('请按照箭头引导转动屏幕查看内容')
+          }}
+        />
 
       </>
     )

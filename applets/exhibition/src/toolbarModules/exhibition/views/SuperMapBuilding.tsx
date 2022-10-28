@@ -242,7 +242,8 @@ class SuperMapBuilding extends React.Component<Props, State> {
               z: -1,
             },
             pose: JSON.parse(JSON.stringify(result)),
-            scale: -0.99,
+            // scale: -0.99,
+            scale: 0.01,
           })
         }
       }

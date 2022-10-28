@@ -44,7 +44,6 @@ class FlatMapVIew extends React.Component<Props, State> {
         SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        Toast.show('请按照箭头引导转动屏幕查看地图')
 
         this.addMap(result)
       }
@@ -293,7 +292,11 @@ class FlatMapVIew extends React.Component<Props, State> {
         {this.state.showScan && this.renderScan()}
         {this.renderBack()}
         {!this.state.showScan && this.renderScanIcon()}
-        <ARArrow />
+        <ARArrow
+          arrowShowed={() => {
+            Toast.show('请按照箭头引导转动屏幕查看地图')
+          }}
+        />
 
       </>
     )

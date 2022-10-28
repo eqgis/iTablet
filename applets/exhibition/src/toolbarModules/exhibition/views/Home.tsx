@@ -1,11 +1,12 @@
 import { getImage } from '../../../assets'
 import React from 'react'
-import { Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
+import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { AppStyle, AppToolBar, dp ,Toast} from '@/utils'
+import { AppDialog, AppStyle, AppToolBar, dp ,Toast} from '@/utils'
 import { Easing } from 'react-native'
 import { SARMap } from 'imobile_for_reactnative'
 
+const AppUtils = NativeModules.AppUtils
 interface Props {
   windowSize: ScaledSize
 }
@@ -257,16 +258,27 @@ class Home extends React.Component<Props, State> {
       <View
         style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'center'}]}
       >
-        <Image
+        <TouchableOpacity
           style={{
             position: 'absolute',
             top: dp(25),
             right: dp(20),
-            width: dp(100),
-            height: dp(30)
           }}
-          source={getImage().logo_supermap}
-        />
+          onPress={() => {
+            AppDialog.show({
+              text: '是否退出展厅应用？',
+              confirm: AppUtils.AppExit
+            })
+          }}
+        >
+          <Image
+            style={{
+              width: dp(50),
+              height: dp(50)
+            }}
+            source={getImage().close}
+          />
+        </TouchableOpacity>
         {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
       </View>
     )

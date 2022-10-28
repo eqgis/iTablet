@@ -1920,7 +1920,7 @@ class DoctorCC extends Component<Props, State> {
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-        {this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'photo' && this.renderPhotoSelected()}
+        {this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'video' && this.renderPhotoSelected()}
 
         {/* 右边按钮 */}
         {!this.state.isShowFull && this.renderSpeak()}
@@ -1931,7 +1931,7 @@ class DoctorCC extends Component<Props, State> {
         {/* 左边按钮 */}
         {!this.state.isShowFull && !this.state.showScan && this.renderScanBtn()}
         {!this.state.isVideoStart && this.renderBackBtn()}
-        {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoBtn()}
+        {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoBtn()}
 
         {/* 合影的界面 */}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}

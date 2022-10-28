@@ -79,8 +79,13 @@ class LocationCalibration extends React.Component<Props, State> {
     this.props.onScan()
   }
 
+  getValue = (n: string): number => {
+    const value = parseFloat(n)
+    return isNaN(value) ? 0 : value
+  }
+
   onConfirm = () =>{
-    this.props.onConfirm({x:parseFloat(this.state.x), y:parseFloat(this.state.y), z:parseFloat(this.state.z)})
+    this.props.onConfirm({x: this.getValue(this.state.x), y: this.getValue(this.state.y), z: this.getValue(this.state.z)})
   }
 
 
@@ -107,7 +112,9 @@ class LocationCalibration extends React.Component<Props, State> {
           defaultValue={props.value}
           value={props.value}
           onChangeText={(text: string) => {
-            text = formatFloat(text)
+            if(text !== '' && text !== '-') {
+              text = formatFloat(text)
+            }
             props.onChange(text)
           }}
         />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {  View, Image, Text, TouchableOpacity, Animated, Dimensions } from 'react-native'
+import {  View, Image, Text, TouchableOpacity, Animated } from 'react-native'
 import { getThemeAssets } from '../../assets'
 import { getLanguage } from '../../language'
 import Input from '../../components/Input'
@@ -11,7 +11,7 @@ import { Container } from '../../components'
 import styles from './styles'
 import { dp } from '../../utils'
 import AREnhancePosition from './AREnhancePosition'
-import Orientation from 'react-native-orientation'
+import LocationCalibration from './LocationCalibration'
 
 
 interface IState {
@@ -137,14 +137,6 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   //   }
   // }
 
-  getPositionData = () => {
-    const { longitude, latitude, height } = this.state
-    return {
-      x: Number(longitude),
-      y: Number(latitude),
-      h: Number(height),
-    }
-  }
 
   _checkInfoValid = info => {
     try {
@@ -324,52 +316,6 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
   }
 
 
-  _renderInputs = () => {
-    const { longitude, latitude, height } = this.state
-    return (
-      <View style={{marginTop: scaleSize(40), marginBottom: scaleSize(20)}}>
-        <View style={styles.inputBox}>
-          {/* <Image source={getThemeAssets().collection.icon_lines} style={styles.inputIcon}/> */}
-          <Text style={{paddingRight: scaleSize(18)}}>{"X"}</Text>
-          <Input style={styles.input} showClear={longitude != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={longitude + ''}
-            onChangeText={text => {
-              this.setState({longitude: this.clearNoNum(text)})
-            }}
-            onClear={() => {
-              // 多次clear value都是0 不会引起Input更新 但是Input自己把value设置为了‘’
-              // 所以值为0时 不显示clear按钮
-              this.setState({longitude: "0"})
-            }}/>
-        </View>
-        <View style={styles.inputBox}>
-          {/* <Image source={getThemeAssets().collection.icon_latitudes} style={styles.inputIcon}/> */}
-          <Text style={{paddingRight: scaleSize(18)}}>{"Y"}</Text>
-          <Input style={styles.input} showClear={latitude != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={latitude + ''}
-            onChangeText={text => {
-              this.setState({latitude: this.clearNoNum(text)})
-            }}
-            onClear={() => {
-              this.setState({latitude: "0"})
-            }}/>
-        </View>
-        <View style={styles.inputBox}>
-          {/* <Image source={getThemeAssets().collection.icon_ar_height} style={styles.inputIcon}/> */}
-          <Text style={{paddingRight: scaleSize(18)}}>{"H"}</Text>
-          <Input style={styles.input} showClear={height != 0} textAlign={'left'} keyboardType={'number-pad'}
-            value={height + ''}
-            onChangeText={text => {
-              this.setState({height: this.clearNoNum(text)})
-            }}
-            onClear={() => {
-              this.setState({height: "0"})
-            }}/>
-        </View>
-      </View>
-    )
-  }
-
   _renderBtns = () => {
     const { activeBtn } = this.state
     const titleWidth = 80
@@ -510,81 +456,6 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
 
 
 
-    )
-  }
-
-  _renderContent = () => {
-
-    // 获取屏幕的宽高
-    const screenWidth = Dimensions.get('window').width
-    const screemHeight = Dimensions.get('window').height
-
-    //设置宽度的最大最小值
-    let widthTemp = 616
-    if(screenWidth > 500) {
-      widthTemp = 656
-    }
-    // 设置高度的最大最小值
-    let heightTemp = 990
-    if(screemHeight > 900){
-      heightTemp = 1000
-    }
-    // 判断当前屏幕的横竖屏
-    const orientation = Orientation.getInitialOrientation()
-    // 横屏状态下，将
-    if(orientation === 'LANDSCAPE') {
-      if(screenWidth > 1000) {
-        widthTemp = 1000
-        heightTemp = 960
-      }
-    }
-
-    return (
-      <View style={styles.container}>
-        <View style={[styles.viewBox, {
-          height: scaleSize(heightTemp),
-          width: scaleSize(widthTemp),
-        }]}>
-          <View style={styles.titleBox}>
-            <Image style={{
-              height: scaleSize(150),
-              width: scaleSize(150),
-            }}
-            source={getThemeAssets().mapTools.icon_mobile}
-            />
-
-            {/* <Text style={styles.title}>{getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}</Text> */}
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: scaleSize(-20),
-                top: scaleSize(16),
-              }}
-              onPress={this._onClose}
-            >
-              <Image style={styles.titleBtn} source={getThemeAssets().mapTools.icon_tool_cancel} />
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.title}>{getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}</Text>
-          <Text style={styles.subTitle}>{getLanguage(global.language).Profile.MAP_AR_TOWARDS_NORTH}</Text>
-          {this._renderInputs()}
-          {this._renderBtns()}
-          <TouchableOpacity style={{
-            width: scaleSize(200),
-            height: scaleSize(60),
-            borderRadius: scaleSize(30),
-            backgroundColor: '#505050',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: scaleSize(100),
-          }} onPress={this._onConfirm}>
-            <Text style={{
-              color: '#ffffff',
-              fontSize: scaleSize(22),
-            }}>{getLanguage(global.language).Profile.MAP_AR_DATUM_SURE}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     )
   }
 
@@ -736,11 +607,48 @@ export default class DatumPointCalibration extends Component<IProps,IState> {
     )
   }
 
+  renderMain = () => {
+    return (
+      <LocationCalibration
+        visible
+        param={{
+          x: this.state.longitude + '',
+          y: this.state.latitude + '',
+          z: this.state.height + ''}}
+        close={this._onClose}
+        onConfirm={param => {
+          this.props.onConfirm?.({
+            x: param.x + '',
+            y: param.y + '',
+            h: param.z + '',
+          })
+          this.setState({
+            close: true,
+          })
+        }}
+        onEnhance={() => {
+          // 调用ar增强定位的方法获取定位
+          SARMap.setAREnhancePosition()
+          // 跳转到扫描界面
+          this.setState({
+            showStatus: 'arEnhance',
+          })
+        }}
+        onSelectPoint={this._mapSelectPoint}
+        onScan={() => {
+          this.setState({
+            showStatus: 'scan',
+          })
+        }}
+      />
+    )
+  }
+
   render() {
     const { close, showStatus } = this.state
     let content = null
     switch(showStatus){
-      case 'main': content = this._renderContent()
+      case 'main': content = this.renderMain()
         break
       case 'scan': content = this._renderScan()
         break

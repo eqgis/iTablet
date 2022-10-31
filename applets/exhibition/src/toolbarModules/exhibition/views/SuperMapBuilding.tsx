@@ -250,15 +250,15 @@ class SuperMapBuilding extends React.Component<Props, State> {
     })
   }
 
-  arrowTricker = (isOpen: boolean) => {
+  arrowTricker = async (isOpen: boolean) => {
     if (isOpen && this.pose && this.relativePositin) {
-      SExhibition.setTrackingTarget({
+      await SExhibition.setTrackingTarget({
         pose: this.pose,
         translation: this.relativePositin,
       })
-      SExhibition.startTrackingTarget()
+      await SExhibition.startTrackingTarget()
     } else {
-      SExhibition.stopTrackingTarget()
+      await SExhibition.stopTrackingTarget()
     }
   }
 
@@ -365,7 +365,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
     }
   }
 
-  showAttribute = (isShow: boolean) => {
+  showAttribute = async (isShow: boolean) => {
     try {
       AppToolBar.addData({
         allowedShowAttribute: isShow,
@@ -378,7 +378,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         if (mapInfo?.currentLayer?.ar3DLayers?.length > 0) {
           for (let i = 0; i < mapInfo.currentLayer.ar3DLayers.length; i++) {
             const layer = mapInfo.currentLayer.ar3DLayers[i]
-            SARMap.setLayerVisible(layer.name, layer.isVisible)
+            await SARMap.setLayerVisible(layer.name, layer.isVisible)
           }
         }
       } else {
@@ -386,7 +386,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
           this.arrowTricker(false)
           for (let i = 0; i < mapInfo.currentLayer.ar3DLayers.length; i++) {
             const layer = mapInfo.currentLayer.ar3DLayers[i]
-            SARMap.setLayerVisible(layer.name, !layer.isVisible)
+            await SARMap.setLayerVisible(layer.name, !layer.isVisible)
           }
         }
       }
@@ -414,33 +414,33 @@ class SuperMapBuilding extends React.Component<Props, State> {
       })
       return
     }
-    if (this.state.toolType) {
-      if(this.state.toolType === 'attribute') {
-        const props = AppToolBar.getProps()
-        const mapInfo = props.arMapInfo
-        // 退出属性,还原比例
-        mapInfo?.currentLayer?.name && this.lastLayerStatus && await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, this.lastLayerStatus)
-        this.showAttribute(false)
-      } else {
-        await SARMap.submit()
-      }
+    // if (this.state.toolType) {
+    //   if(this.state.toolType === 'attribute') {
+    //     const props = AppToolBar.getProps()
+    //     const mapInfo = props.arMapInfo
+    //     // 退出属性,还原比例
+    //     mapInfo?.currentLayer?.name && this.lastLayerStatus && await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, this.lastLayerStatus)
+    //     this.showAttribute(false)
+    //   } else {
+    //     await SARMap.submit()
+    //   }
 
-      this.switchTool('', () => {
-        this.clickWait = false
-      })
-      return
-    }
+    //   this.switchTool('', () => {
+    //     this.clickWait = false
+    //   })
+    //   return
+    // }
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if (layer) {
-      SARMap.stopARCover(layer.name)
+      await SARMap.stopARCover(layer.name)
     }
     AppToolBar.addData({
       PipeLineAttribute: undefined,
     })
-    this.arrowTricker(false)
+    await this.arrowTricker(false)
     AppEvent.removeListener('ar_image_tracking_result')
     if (this.state.showScan) {
-      SARMap.stopAREnhancePosition()
+      await SARMap.stopAREnhancePosition()
     }
     // SARMap.close()
     const props = AppToolBar.getProps()
@@ -457,12 +457,29 @@ class SuperMapBuilding extends React.Component<Props, State> {
       // 退出属性,还原比例
       mapInfo?.currentLayer?.name && this.lastLayerStatus && await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, this.lastLayerStatus)
       this.showAttribute(false)
+    } else if (this.state.toolType === 'sectioning' && toolType !== 'sectioning') {
+      SARMap.clearAR3DClipPlane()
     }
     if (this.state.toolType !== toolType) {
       this.setState({
         toolType: toolType,
       }, () => {
         cb?.()
+      })
+    } else if (this.state.toolType && this.state.toolType === toolType) {
+      if(this.state.toolType === 'attribute') {
+        const props = AppToolBar.getProps()
+        const mapInfo = props.arMapInfo
+        // 退出属性,还原比例
+        mapInfo?.currentLayer?.name && this.lastLayerStatus && await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, this.lastLayerStatus)
+        this.showAttribute(false)
+      } else {
+        await SARMap.submit()
+      }
+      this.setState({
+        toolType: '',
+      }, () => {
+        this.clickWait = false
       })
     }
   }
@@ -611,22 +628,23 @@ class SuperMapBuilding extends React.Component<Props, State> {
       onPress: async () => {
         if (!this.checkSenceAndToolType()) return
         this.switchTool('attribute', async () => {
-          this.showAttribute(true)
-
+          await this.showAttribute(true)
           const props = AppToolBar.getProps()
           const mapInfo = props.arMapInfo
+          mapInfo?.currentLayer?.name && await SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
+          console.warn(mapInfo?.currentLayer?.name)
           const status = await SARMap.getSceneLayerStatus(mapInfo?.currentLayer?.name)
           this.lastLayerStatus = {...status}
 
-          status.rx = 0
-          status.ry = 166.23
-          status.rz = 0
+          // status.rx = 0
+          // status.ry = 166.23
+          // status.rz = 0
           status.sx = 0.06
           status.sy = 0.06
           status.sz = 0.06
           status.x = status.x || 0
           status.y = status.y || 0
-          status.z = (status.z || 0) + 1
+          status.z = (status.z || 0) - 1
 
           await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, status)
         })

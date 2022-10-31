@@ -593,7 +593,15 @@ class DoctorCC extends Component<Props, State> {
   }
 
   /** 保存合影到本地的方法 */
-  savePhotoLocal = () => {
+  savePhotoLocal = async () => {
+
+    if(await FileTools.fileIsExist(this.imgPath)) {
+      await SARMap.saveImgFileToAlbum(this.imgPath)
+      // console.warn("合影保存成功: " + album)
+      FileTools.deleteFile(this.imgPath)
+      Toast.show("合影保存成功")
+    }
+
     this.imgPath = ''
     this.setState({
       uri: 'null',
@@ -672,17 +680,13 @@ class DoctorCC extends Component<Props, State> {
 
   /** 视屏保存到本地 */
   saveVideoLocal = async () => {
-    // 根路径
-    const homePath = await FileTools.getHomeDirectory()
-    // 视屏的存储文件夹
-    const mediaPath = homePath + ConstPath.UserPath + 'Customer/Data/Media'
-    if(await FileTools.fileIsExist(mediaPath) && await FileTools.fileIsExist(this.state.videoUrl)) {
-      // 视屏的名字
-      const name = this.state.videoUrl.substring(this.state.videoUrl.lastIndexOf("/"),this.state.videoUrl.length)
-      await FileTools.copyFile(this.state.videoUrl, mediaPath + name, true)
-      // 删掉录屏原来的文件
+    if(await FileTools.fileIsExist(this.state.videoUrl)){
+      const result = await SARMap.saveVideoFileToAlbum(this.state.videoUrl)
       FileTools.deleteFile(this.state.videoUrl)
+      // console.warn("录屏保存成功: " + result)
+      Toast.show("录屏保存成功")
     }
+
     this.setState({
       videoUrl: 'null',
       isShowFull: true,
@@ -1944,7 +1948,7 @@ class DoctorCC extends Component<Props, State> {
         {/* 左边按钮 */}
         {!this.state.isShowFull && !this.state.showScan && this.renderScanBtn()}
         {!this.state.isVideoStart && this.renderBackBtn()}
-        {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoBtn()}
+        {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
 
         {/* 合影的界面 */}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}

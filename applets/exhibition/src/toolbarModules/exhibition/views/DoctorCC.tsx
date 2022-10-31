@@ -1573,8 +1573,6 @@ class DoctorCC extends Component<Props, State> {
           style={[{maxWidth: dp(600),}]}
           contentContainerStyle= {[{height: dp(84), alignItems: 'center'}]}
           onLayout={(event:any) => {
-            // console.warn("onLayout :" + event)
-            // console.warn("onLayout: " + this.offsetY + " - " + this.maxOffsetY)
             const layout = event.nativeEvent.layout
             const contentWidth = 9 * dp(56)
             if(layout.width < contentWidth) {
@@ -1582,16 +1580,6 @@ class DoctorCC extends Component<Props, State> {
                 videoGuideText: "请滑动，选择录像动画"
               })
             }
-            // console.warn("onLayout :" + layout.width + " - " + layout.height + " - " + layout.x + " -" + layout.y + " - " + contentWidth)
-          }}
-          onScroll={(event:any) => {
-            const offsetX = event.nativeEvent.contentOffset.x
-            // console.warn(JSON.stringify(event.nativeEvent))
-            const maxOffsetX = event.nativeEvent.contentSize.width -
-              event.nativeEvent.layoutMeasurement.width
-            // this.measurementY = event.nativeEvent.layoutMeasurement.height
-            // this.handlePositionY()
-            console.warn(offsetX + " - " + maxOffsetX)
           }}
         >
           {

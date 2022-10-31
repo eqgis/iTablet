@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, NativeModules } from "react-native"
+import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, Animated, StyleProp } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
@@ -11,6 +11,8 @@ import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_r
 import ARArrow from "../components/ARArrow"
 import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 import Video from 'react-native-video'
+import { getPublicAssets } from "@/assets"
+import { ImageStyle } from "react-native"
 
 
 interface animationListType {
@@ -57,7 +59,14 @@ interface State {
   rate: number,
   /** 视屏录制的时间 */
   videoTime: number,
+  isShowUpDown: boolean,
 }
+
+
+const PREVIOUS = 'previous'
+const NEXT = 'next'
+const UP = 'up'
+const DOWN = 'down'
 
 class DoctorCC extends Component<Props, State> {
 
@@ -86,6 +95,18 @@ class DoctorCC extends Component<Props, State> {
   /** 是否能够推出超超博士模块 true可以退出 false不可以退出 */
   isBack: boolean
 
+  /** 当前的y轴位置 */
+  offsetY: number
+  /** y轴能到达的最大位置 */
+  maxOffsetY: number
+  /** 可上滑箭头是否出现 */
+  onUp: boolean
+  /** 可下滑箭头是否出现 */
+  onDown: boolean
+
+  upOpacity = new Animated.Value(0)
+  downOpacity = new Animated.Value(1)
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -103,9 +124,16 @@ class DoctorCC extends Component<Props, State> {
       videoUrl: 'null',
       rate: 1,
       videoTime: -1,
+      isShowUpDown: true,
     }
     this.imgPath = ''
     this.isBack = false
+
+
+    this.offsetY = 0
+    this.maxOffsetY = 100
+    this.onUp = true
+    this.onDown = true
   }
 
   componentDidMount = async () => {
@@ -570,7 +598,7 @@ class DoctorCC extends Component<Props, State> {
       await SMediaCollector.initMediaCollector(targetPath)
       let imgPath = targetPath + `IMG_${date}.jpg`
       const result = await SARMap.captureImage(imgPath)
-      console.warn("result: " + JSON.stringify(result))
+      // console.warn("result: " + JSON.stringify(result))
       if(result) {
         this.imgPath = imgPath
         if (
@@ -654,6 +682,7 @@ class DoctorCC extends Component<Props, State> {
       this.setState({
         isVideoStart: true,
         videoTime: 0,
+        isSecondaryShow: false,
       })
       this.videoTimer = setInterval(() => {
         this.setState({
@@ -681,7 +710,7 @@ class DoctorCC extends Component<Props, State> {
   /** 视屏保存到本地 */
   saveVideoLocal = async () => {
     if(await FileTools.fileIsExist(this.state.videoUrl)){
-      const result = await SARMap.saveVideoFileToAlbum(this.state.videoUrl)
+      await SARMap.saveVideoFileToAlbum(this.state.videoUrl)
       FileTools.deleteFile(this.state.videoUrl)
       // console.warn("录屏保存成功: " + result)
       Toast.show("录屏保存成功")
@@ -704,6 +733,101 @@ class DoctorCC extends Component<Props, State> {
       isShowFull: true,
     })
   }
+
+  handlePositionY = () => {
+    let onUp, onDown
+    // let contentHeight = (this.listViewY && this.listViewY._listRef._totalCellLength) || 0
+    if(this.maxOffsetY <= 0) {
+      // 当内容比容器高度低时，两个都不显示
+      onUp = true
+      onDown = true
+    } else {
+      if(this.offsetY <= 0) {
+        onUp = true
+        onDown = false
+      } else if(this.offsetY >= this.maxOffsetY) {
+        onUp = false
+        onDown = true
+      } else {
+        onUp = false
+        onDown = false
+      }
+    }
+
+    if (onUp !== this.onUp) {
+      this.onUp = onUp
+      Animated.timing(this.upOpacity, {
+        toValue: onUp ? 0 : 1,
+        duration: 150,
+        useNativeDriver: false,
+      }).start()
+    }
+    if (onDown !== this.onDown) {
+      this.onDown = onDown
+      Animated.timing(this.downOpacity, {
+        toValue: onDown ? 0 : 1,
+        duration: 150,
+        useNativeDriver: false,
+      }).start()
+    }
+
+
+  }
+
+
+
+  renderIndicator = (location: string) => {
+    let source
+    const style: StyleProp<ImageStyle> = {}
+
+    switch(location){
+      // case PREVIOUS:
+      //   source = getPublicAssets().common.icon_slide_left
+      //   style.opacity = this.previousOpacity
+      //   break
+      // case NEXT:
+      //   source = getPublicAssets().common.icon_slide_right
+      //   style.opacity = this.nextOpacity
+      //   break
+      case UP:
+        source = getPublicAssets().common.icon_slide_up
+        style.opacity = this.upOpacity
+        style.width = dp(20)
+        break
+      case DOWN:
+        source = getPublicAssets().common.icon_slide_down
+        style.opacity = this.downOpacity
+        style.width = dp(20)
+        break
+    }
+
+    return (
+      <TouchableOpacity
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: dp(20),
+          height: dp(20),
+          backgroundColor: 'transparent',
+        }}
+        activeOpacity={1}
+      >
+        <Animated.Image
+          resizeMode={'contain'}
+          style={[
+            {
+              height: '100%',
+              width: dp(20),
+            },
+            style,
+          ]}
+          source={source}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+
 
   /** 返回按钮 */
   renderBackBtn = () => {
@@ -1200,12 +1324,18 @@ class DoctorCC extends Component<Props, State> {
             // height: dp(100),
             maxHeight: dp(240),
             borderRadius: dp(10),
-            paddingVertical: dp(10),
+            // paddingVertical: dp(10),
             paddingHorizontal: dp(5),
             // justifyContent: 'center',
             // alignItems: 'center',
             // overflow: 'hidden',
             backgroundColor: '#fff',
+          }}
+          onScroll={(event:any) => {
+            this.offsetY = event.nativeEvent.contentOffset.y
+            this.maxOffsetY = event.nativeEvent.contentSize.height -
+              event.nativeEvent.layoutMeasurement.height
+            this.handlePositionY()
           }}
         >
           {this.state.animations.map((item) => {
@@ -1547,7 +1677,7 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             selectAnimationKey: item.id,
             // isShowFull: true,
-            isSecondaryShow: false,
+            // isSecondaryShow: false,
           })
         }}
       >
@@ -1958,6 +2088,25 @@ class DoctorCC extends Component<Props, State> {
         {this.state.isShowFull && this.state.selectType === 'video' && this.renderVideoSelected()}
         {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoTime >= 0 && this.renderVideotime()}
         {this.state.selectType === 'video' && this.state.videoUrl !== 'null' && this.renderVideo()}
+
+
+        {/* 动作的可滑动提示 */}
+        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.state.isShowUpDown && (
+          <View style={{height:dp(20), width: '100%', alignItems: 'flex-end', position: 'absolute',
+            top: dp(100),
+            right: dp(60)}}
+          >
+            {this.renderIndicator(UP)}
+          </View>
+        )}
+        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.state.isShowUpDown && (
+          <View style={{height:dp(20), width: '100%', alignItems: 'flex-end', position: 'absolute',
+            top: dp(320),
+            right: dp(60)}}
+          >
+            {this.renderIndicator(DOWN)}
+          </View>
+        )}
 
         {/* 解说模块的按钮引导 */}
         {!this.state.showScan && this.state.isSpeakGuideShow && this.renderStartGuide()}

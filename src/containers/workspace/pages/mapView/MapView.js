@@ -1211,6 +1211,7 @@ export default class MapView extends React.Component {
   /** 原生mapview加载完成回调 */
   _onGetInstance = async mapView => {
     this.mapView = mapView
+    this.setLoading(false)
     this._addMap()
     this.onMapLoad?.('map')
   }

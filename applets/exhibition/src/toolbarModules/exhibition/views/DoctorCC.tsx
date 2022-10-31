@@ -59,7 +59,12 @@ interface State {
   rate: number,
   /** 视屏录制的时间 */
   videoTime: number,
+  /** 动作可上下滑的箭头是否能显示 */
   isShowUpDown: boolean,
+  /** 录像界面的动画选择引导 */
+  isVideoGuideShow: boolean,
+  /** 录像里面的引导提示文字 */
+  videoGuideText: string,
 }
 
 
@@ -125,6 +130,8 @@ class DoctorCC extends Component<Props, State> {
       rate: 1,
       videoTime: -1,
       isShowUpDown: true,
+      isVideoGuideShow: true,
+      videoGuideText: "请选择录像动作",
     }
     this.imgPath = ''
     this.isBack = false
@@ -194,6 +201,15 @@ class DoctorCC extends Component<Props, State> {
         })
         clearTimeout(timer)
       },2000)
+    }
+
+    if(this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow) {
+      const videoGuideTimer = setTimeout(() => {
+        this.setState({
+          isVideoGuideShow: false,
+        })
+        clearTimeout(videoGuideTimer)
+      }, 2000)
     }
   }
 
@@ -373,6 +389,7 @@ class DoctorCC extends Component<Props, State> {
       this.setState({
         isShowFull: false,
         selectAnimationKey: -1,
+        isVideoGuideShow: false,
       })
       return
     }
@@ -425,6 +442,7 @@ class DoctorCC extends Component<Props, State> {
   photoBtnOnpress = async () => {
     this.setState({
       isSecondaryShow: !this.state.isSecondaryShow,
+      isVideoGuideShow: false,
     })
   }
 
@@ -683,6 +701,7 @@ class DoctorCC extends Component<Props, State> {
         isVideoStart: true,
         videoTime: 0,
         isSecondaryShow: false,
+        isVideoGuideShow: false,
       })
       this.videoTimer = setInterval(() => {
         this.setState({
@@ -734,6 +753,7 @@ class DoctorCC extends Component<Props, State> {
     })
   }
 
+  /** 处理动作里上下滑动箭头显隐的方法 */
   handlePositionY = () => {
     let onUp, onDown
     // let contentHeight = (this.listViewY && this.listViewY._listRef._totalCellLength) || 0
@@ -775,7 +795,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
 
-
+  /** 可上下滑的箭头组件 */
   renderIndicator = (location: string) => {
     let source
     const style: StyleProp<ImageStyle> = {}
@@ -1341,7 +1361,7 @@ class DoctorCC extends Component<Props, State> {
           {this.state.animations.map((item) => {
             return this.renderActionListItem(item)
           })}
-          <View style={[{width: '100%',height: dp(20)}]}></View>
+          <View style={[{width: '100%',height: dp(10)}]}></View>
         </ScrollView>
       )
     }
@@ -1552,6 +1572,15 @@ class DoctorCC extends Component<Props, State> {
           showsHorizontalScrollIndicator={false}
           style={[{maxWidth: dp(600),}]}
           contentContainerStyle= {[{height: dp(84), alignItems: 'center'}]}
+          onLayout={(event:any) => {
+            const layout = event.nativeEvent.layout
+            const contentWidth = 9 * dp(56)
+            if(layout.width < contentWidth) {
+              this.setState({
+                videoGuideText: "请滑动，选择录像动画"
+              })
+            }
+          }}
         >
           {
             this.state.animations.map((item) => {
@@ -1678,6 +1707,7 @@ class DoctorCC extends Component<Props, State> {
             selectAnimationKey: item.id,
             // isShowFull: true,
             // isSecondaryShow: false,
+            isVideoGuideShow: false,
           })
         }}
       >
@@ -2060,6 +2090,44 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  /** 录屏模块的选择动画引导界面 */
+  renderVideoGuide = () => {
+    const style = {
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      left: dp(175),
+      bottom: dp(110),
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+    }
+    const arrowstyle = {
+      left: -dp(20),
+      bottom: -dp(63),
+      borderTopWidth: 9,
+      borderTopColor: 'rgba(0, 0, 0, .5)',
+      borderLeftWidth: 8,
+      borderLeftColor: 'transparent',
+      borderRightWidth: 8,
+      borderRightColor: 'transparent',
+    }
+    return (
+      <GuideView
+        title={this.state.videoGuideText}
+        style={style}
+        type={1}
+        arrowstyle={arrowstyle}
+        winstyle={{backgroundColor: 'rgba(0, 0, 0, .5)'}}
+        titlestyle={{color: 'white'}}
+        delete={false}
+        deleteAction={() =>{
+          return {}
+        }}
+      />
+    )
+  }
+
   render() {
     return (
       <>
@@ -2110,6 +2178,8 @@ class DoctorCC extends Component<Props, State> {
 
         {/* 解说模块的按钮引导 */}
         {!this.state.showScan && this.state.isSpeakGuideShow && this.renderStartGuide()}
+
+        {this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow && this.renderVideoGuide()}
 
         <ARArrow
           arrowShowed={() => {

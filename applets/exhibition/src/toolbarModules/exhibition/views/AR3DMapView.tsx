@@ -325,6 +325,47 @@ class AR3DMapView extends React.Component<Props, State> {
     )
   }
 
+  renderReset = () =>{
+    return (
+      <TouchableOpacity
+        style={{
+          width: dp(50),
+          height: dp(60),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+        onPress={()=>{
+          SExhibition.map3Dreset()
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_tool_reset}
+          />
+        </View>
+
+        <Text
+          style={{
+            color: 'black',
+            fontSize:10,
+          }}
+        >
+          {'复位'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
   renderMapControl = () => {
     let image
     if(this.state.showShape){
@@ -599,7 +640,7 @@ class AR3DMapView extends React.Component<Props, State> {
             {this.state.showShape && <View
               style={{
                 // position: 'absolute',
-                top: dp(15),
+                top: dp(80),
                 right: dp(10),
                 width: dp(50),
                 height: dp(180),
@@ -620,6 +661,18 @@ class AR3DMapView extends React.Component<Props, State> {
               <View
                 style={{
                   top: dp(10),
+                  borderTopLeftRadius: dp(10),
+                  borderBottomLeftRadius: dp(10),
+                  backgroundColor: 'white',
+                }}
+              >
+                {this.renderReset()}
+              </View>
+
+
+              <View
+                style={{
+                  top: dp(20),
                   borderTopLeftRadius: dp(10),
                   borderBottomLeftRadius: dp(10),
                   backgroundColor: 'white',

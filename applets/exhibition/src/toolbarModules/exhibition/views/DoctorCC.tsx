@@ -14,6 +14,8 @@ import Video from 'react-native-video'
 import { getPublicAssets, getThemeAssets } from "@/assets"
 import { ImageStyle } from "react-native"
 import { getLanguage } from "@/language"
+import ARGuide from '../components/ARGuide'
+import { getGlobalPose, isDoctorMapGuided, setDoctorMapGuided, setGolbalPose } from "../Actions"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -68,6 +70,8 @@ interface State {
   isVideoGuideShow: boolean,
   /** 录像里面的引导提示文字 */
   videoGuideText: string,
+  /** 模块解说引导 */
+  showGuide: boolean
 }
 
 
@@ -135,6 +139,7 @@ class DoctorCC extends Component<Props, State> {
       isShowUpDown: true,
       isVideoGuideShow: true,
       videoGuideText: "请选择录像动作",
+      showGuide: false,
     }
     this.imgPath = ''
     this.isBack = false
@@ -156,13 +161,12 @@ class DoctorCC extends Component<Props, State> {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        // await this.openDoctorARMap()
+        setGolbalPose(result)
 
-        // let relativePositin: Vector3 = {
-        //   x: 0,
-        //   y: 0,
-        //   z: -1,
-        // }
+        if(!isDoctorMapGuided()) {
+          setDoctorMapGuided()
+          this.showGuide(true)
+        }
 
         if(this.ARModel) {
           const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
@@ -188,8 +192,9 @@ class DoctorCC extends Component<Props, State> {
               isSecondaryShow: true,
               selectSpeakKey: 'null',
             })
-            clearTimeout(speakStopTimer)
           }
+          clearTimeout(speakStopTimer)
+          this.showGuide(false)
         }, 3000)
 
       },
@@ -197,7 +202,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
   componentDidUpdate = () => {
-    if(!this.state.showScan && this.state.isSpeakGuideShow) {
+    if(!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow) {
       const timer = setTimeout(() => {
         this.setState({
           isSpeakGuideShow: false,
@@ -215,6 +220,11 @@ class DoctorCC extends Component<Props, State> {
       }, 2000)
     }
   }
+
+  showGuide = (show: boolean) => {
+    this.setState({showGuide: show})
+  }
+
 
   /** 博士的解说数据 */
   getDoctorData = () => {
@@ -288,7 +298,7 @@ class DoctorCC extends Component<Props, State> {
     ]
   }
 
-  /** 导入和打开地图 */
+  /** 打开地图 */
   openDoctorARMap = async () => {
     // 关闭之前的地图
     await SARMap.close()
@@ -296,23 +306,24 @@ class DoctorCC extends Component<Props, State> {
 
     // 路径
     const homePath = await FileTools.getHomeDirectory()
-    // 源数据路径
-    const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
+    // // 源数据路径
+    // const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
     // 导入之后的地图路径
     const arMapPath = homePath + ConstPath.UserPath + 'Customer/Data/ARMap/AR超超博士.arxml'
 
-    // 1. 数据是否更新
-    const dataUpate =  await SARMap.needToImport()
-    // 2. 导入之后的地图路径是否存在
-    const mapExist = await FileTools.fileIsExist(arMapPath)
-    // 当数据更新且存在导入后的地图，删掉原来的导入地图
-    if(dataUpate && mapExist) {
-      FileTools.deleteFile(arMapPath)
-    }
-    // 当数据更新或没有导入后的地图，才进行重新导入
-    if(dataUpate || !mapExist) {
-      await SARMap.importMap(path)
-    }
+    // // 1. 数据是否更新
+    // const dataUpate =  await SARMap.needToImport()
+    // // 2. 导入之后的地图路径是否存在
+    // const mapExist = await FileTools.fileIsExist(arMapPath)
+    // // 当数据更新且存在导入后的地图，删掉原来的导入地图
+    // if(dataUpate && mapExist) {
+    //   FileTools.deleteFile(arMapPath)
+    // }
+    // // 当数据更新或没有导入后的地图，才进行重新导入
+    // if(dataUpate || !mapExist) {
+    //   await SARMap.importMap(path)
+    // }
+
     // 打开指定路径的地图
     const result = await SARMap.open(arMapPath)
 
@@ -2252,14 +2263,14 @@ class DoctorCC extends Component<Props, State> {
         {this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'video' && this.renderPhotoSelected()}
 
         {/* 右边按钮 */}
-        {!this.state.isShowFull && this.renderSpeak()}
-        {!this.state.isShowFull && this.renderFunctionList()}
+        {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
+        {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()}
 
         {/* 扫描界面 */}
         {!this.state.isShowFull && this.state.showScan && this.renderScan()}
         {/* 左边按钮 */}
-        {!this.state.isShowFull && !this.state.showScan && this.renderScanBtn()}
-        {!this.state.isVideoStart && this.renderBackBtn()}
+        {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
+        {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
         {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
 
         {/* 合影的界面 */}
@@ -2291,13 +2302,28 @@ class DoctorCC extends Component<Props, State> {
         )}
 
         {/* 解说模块的按钮引导 */}
-        {!this.state.showScan && this.state.isSpeakGuideShow && this.renderStartGuide()}
+        {!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow && this.renderStartGuide()}
 
         {this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow && this.renderVideoGuide()}
 
         <ARArrow
           arrowShowed={() => {
             Toast.show('请按照箭头引导转动屏幕查看内容')
+          }}
+        />
+
+        <ARGuide
+          show={this.state.showGuide}
+          animationName={'Ar超超博士'}
+          onSkip={() => {
+            this.showGuide(false)
+          }}
+          onGuideEnd={() => {
+            SARMap.stopARAnimation()
+            // const globlaPose = getGlobalPose()
+            // if(globlaPose != null) {
+            //   this.start(globlaPose)
+            // }
           }}
         />
 

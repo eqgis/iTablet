@@ -27,11 +27,13 @@ class ARGuide extends React.Component<Props> {
   }
 
   startGuide = async () => {
-    const mapName = 'AR超超博士'
-    const homePath = await FileTools.getHomeDirectory()
-    const mapPath = homePath + ConstPath.UserPath + 'Customer' + '/' + ConstPath.RelativePath.ARMap
-    const path = mapPath + mapName + '.arxml'
-    await SARMap.open(path)
+    if(this.props.animationName !== 'Ar超超博士') {
+      const mapName = 'AR超超博士'
+      const homePath = await FileTools.getHomeDirectory()
+      const mapPath = homePath + ConstPath.UserPath + 'Customer' + '/' + ConstPath.RelativePath.ARMap
+      const path = mapPath + mapName + '.arxml'
+      await SARMap.open(path)
+    }
 
     const animations = await SARMap.getARAnimations()
 
@@ -45,10 +47,12 @@ class ARGuide extends React.Component<Props> {
   }
 
   endGuide = async () => {
-    await SARMap.stopARAnimation()
-    setTimeout(() => {
-      SARMap.close()
-    }, 500)
+    if(this.props.animationName !== 'Ar超超博士') {
+      await SARMap.stopARAnimation()
+      setTimeout(() => {
+        SARMap.close()
+      }, 500)
+    }
     this.props.onGuideEnd()
   }
 

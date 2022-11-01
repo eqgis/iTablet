@@ -8,8 +8,9 @@ import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
-import { flatMapImported, shouldRefreshFlatMapData } from './Actions'
+import { flatMapImported, getGlobalPose, isFlatMapGuided, setFlatMapGuided, setGolbalPose, shouldRefreshFlatMapData } from '../Actions'
 import { Pose } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import ARGuide from '../components/ARGuide'
 
 interface Props {
   windowSize: ScaledSize
@@ -17,6 +18,7 @@ interface Props {
 
 interface State {
   showScan: boolean
+  showGuide: boolean
 }
 
 class FlatMapVIew extends React.Component<Props, State> {
@@ -29,7 +31,8 @@ class FlatMapVIew extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      showScan: true,
+      showScan: getGlobalPose() == null,
+      showGuide: false
     }
   }
 
@@ -41,13 +44,37 @@ class FlatMapVIew extends React.Component<Props, State> {
     })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
-        SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
 
-        this.addMap(result)
+        setGolbalPose(result)
+
+        if(!isFlatMapGuided()) {
+          setFlatMapGuided()
+          this.showGuide(true)
+        } else {
+          this.start(result)
+        }
       }
     })
+    const globlaPose = getGlobalPose()
+    if(globlaPose != null) {
+      if(!isFlatMapGuided()) {
+        setFlatMapGuided()
+        this.showGuide(true)
+      } else {
+        this.start(globlaPose)
+      }
+    }
+  }
+
+  showGuide = (show: boolean) => {
+    this.setState({showGuide: show})
+  }
+
+  start = (pose: Pose) => {
+    SExhibition.addTempPoint()
+    this.addMap(pose)
   }
 
   addMap = async (pose: Pose) => {
@@ -290,11 +317,24 @@ class FlatMapVIew extends React.Component<Props, State> {
     return(
       <>
         {this.state.showScan && this.renderScan()}
-        {this.renderBack()}
-        {!this.state.showScan && this.renderScanIcon()}
+        {!this.state.showGuide && this.renderBack()}
+        {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}
         <ARArrow
           arrowShowed={() => {
             Toast.show('请按照箭头引导转动屏幕查看地图')
+          }}
+        />
+        <ARGuide
+          show={this.state.showGuide}
+          animationName={'Ar平面地图'}
+          onSkip={() => {
+            this.showGuide(false)
+          }}
+          onGuideEnd={() => {
+            const globlaPose = getGlobalPose()
+            if(globlaPose != null) {
+              this.start(globlaPose)
+            }
           }}
         />
 

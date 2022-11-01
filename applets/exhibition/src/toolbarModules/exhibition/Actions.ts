@@ -1,4 +1,17 @@
 import { SARMap } from "imobile_for_reactnative"
+import { Pose } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+
+/** 进模块后扫描图片的的通用pose */
+let globalScanPose: Pose | null = null
+
+export function getGlobalPose(): Pose | null {
+  return globalScanPose ? JSON.parse(JSON.stringify(globalScanPose)) : null
+}
+
+export function setGolbalPose(pose: Pose) {
+  globalScanPose = JSON.parse(JSON.stringify(pose))
+}
+
 
 
 let flatMapRefresh = false
@@ -21,4 +34,14 @@ export async function shouldBuildingMapData(): Promise<boolean> {
 export async function buildingImported() {
   const needToImport = await SARMap.needToImport()
   buildingRefresh = needToImport
+}
+
+
+let flatMapGuided = false
+export function setFlatMapGuided() {
+  flatMapGuided = true
+}
+
+export function isFlatMapGuided() {
+  return flatMapGuided
 }

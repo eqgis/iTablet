@@ -14,7 +14,7 @@ import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
 import { Pose, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
-import { shouldBuildingMapData, buildingImported } from './Actions'
+import { shouldBuildingMapData, buildingImported } from '../Actions'
 
 const styles = StyleSheet.create({
   backBtn: {

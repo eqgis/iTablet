@@ -851,7 +851,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         <View style={styles.functionBar}>
           {this.renderPosition()}
           {/* {this.renderSectioning()} */}
-          {this.renderAttribute()}
+          {/* {this.renderAttribute()} */}
           {/* {this.renderLightingEffect()} */}
           {/* {this.renderAdvertising()} */}
         </View>

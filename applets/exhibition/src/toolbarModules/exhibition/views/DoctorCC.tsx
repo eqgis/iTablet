@@ -2058,15 +2058,16 @@ class DoctorCC extends Component<Props, State> {
       position: 'absolute',
       backgroundColor: 'transparent',
       right: dp(80),
-      top: dp(23),
+      top: dp(38),
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
+      // alignItems: 'center',
+      // alignSelf: 'center',
     }
     const arrowstyle = {
-      right: -dp(96),
-      top: dp(30),
+      position: 'absolute',
+      right: -15,
+      top: 12,
       borderTopWidth: 9,
       borderTopColor: 'transparent',
       borderLeftWidth: 8,
@@ -2095,7 +2096,7 @@ class DoctorCC extends Component<Props, State> {
     const style = {
       position: 'absolute',
       backgroundColor: 'transparent',
-      left: dp(175),
+      left: dp(185),
       bottom: dp(110),
       flexDirection: 'column',
       justifyContent: 'center',
@@ -2103,8 +2104,9 @@ class DoctorCC extends Component<Props, State> {
       alignSelf: 'center',
     }
     const arrowstyle = {
-      left: -dp(20),
-      bottom: -dp(63),
+      position: 'absolute',
+      left:50,
+      bottom: -17,
       borderTopWidth: 9,
       borderTopColor: 'rgba(0, 0, 0, .5)',
       borderLeftWidth: 8,
@@ -2112,13 +2114,21 @@ class DoctorCC extends Component<Props, State> {
       borderRightWidth: 8,
       borderRightColor: 'transparent',
     }
+
+    const winstyle = {
+      backgroundColor: 'rgba(0, 0, 0, .5)',
+      paddingHorizontal: dp(17),
+      paddingVertical: dp(11),
+    }
+
     return (
       <GuideView
         title={this.state.videoGuideText}
         style={style}
         type={1}
         arrowstyle={arrowstyle}
-        winstyle={{backgroundColor: 'rgba(0, 0, 0, .5)'}}
+        // winstyle={{backgroundColor: 'rgba(0, 0, 0, .5)'}}
+        winstyle={winstyle}
         titlestyle={{color: 'white'}}
         delete={false}
         deleteAction={() =>{

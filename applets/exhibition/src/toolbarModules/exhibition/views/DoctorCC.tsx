@@ -675,7 +675,9 @@ class DoctorCC extends Component<Props, State> {
 
   /** 合影分享到微信 */
   shareImageToWechat = async () => {
-    await this.shareToWechat(this.imgPath)
+    const date = new Date()
+    const name = "ZT_Image_" + date.getTime()
+    await this.shareToWechat(this.imgPath, name)
 
     if(await FileTools.fileIsExist(this.imgPath)) {
       FileTools.deleteFile(this.imgPath)
@@ -688,7 +690,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
   /** 分享到微信 */
-  shareToWechat = async (filePath: string) => {
+  shareToWechat = async (filePath: string, name: string) => {
     try {
 
       let result
@@ -702,7 +704,7 @@ class DoctorCC extends Component<Props, State> {
       if (isInstalled) {
         result = await appUtilsModule.sendFileOfWechat({
           filePath: filePath,
-          title: filePath,
+          title: name,
           description: 'SuperMap iTablet',
         })
 
@@ -795,7 +797,9 @@ class DoctorCC extends Component<Props, State> {
 
   /** 视屏分享到微信 */
   shareVideoToWechat = async () => {
-    await this.shareToWechat(this.state.videoUrl)
+    const date = new Date()
+    const name = "ZT_Video_" + date.getTime()
+    await this.shareToWechat(this.state.videoUrl, name)
     if(await FileTools.fileIsExist(this.state.videoUrl)) {
       // 删掉录屏原来的文件
       FileTools.deleteFile(this.state.videoUrl)

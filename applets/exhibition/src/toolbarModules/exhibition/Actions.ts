@@ -45,3 +45,21 @@ export function setFlatMapGuided() {
 export function isFlatMapGuided() {
   return flatMapGuided
 }
+
+let ar3dMapGuided = false
+export function setAr3dMapGuided() {
+  ar3dMapGuided = true
+}
+
+export function isAr3dMapGuided() {
+  return ar3dMapGuided
+}
+
+let coverGuided = false
+export function setCoverGuided() {
+  coverGuided = true
+}
+
+export function isCoverGuided() {
+  return coverGuided
+}

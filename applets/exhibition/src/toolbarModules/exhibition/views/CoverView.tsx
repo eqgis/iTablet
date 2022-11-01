@@ -6,6 +6,8 @@ import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'reac
 import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
+import { getGlobalPose, isCoverGuided, setCoverGuided, setGolbalPose } from '../Actions'
+import ARGuide from '../components/ARGuide'
 
 interface Props {
   windowSize: ScaledSize
@@ -16,6 +18,7 @@ interface State {
   showCover: boolean
   showSlider:boolean
   backClick:boolean
+  showGuide:boolean
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -25,31 +28,54 @@ class CoverView extends React.Component<Props, State> {
   scanRef: Scan | null = null
   coverClick = false
   fixClick = false
-  showScanBt = false
 
   constructor(props: Props) {
     super(props)
 
     this.state = {
-      showScan: true,
+      showScan: getGlobalPose() == null,
       showCover: false,
       showSlider: false,
       backClick: true,
+      showGuide: false,
     }
   }
 
   componentDidMount(): void {
-    SARMap.setAREnhancePosition()
+    if(this.state.showScan) {
+      SARMap.setAREnhancePosition()
+    }
+
+    const globlaPose = getGlobalPose()
+    if(globlaPose != null) {
+      if(!isCoverGuided()) {
+        setCoverGuided()
+        this.showGuide(true)
+      } else {
+        this.openARModel()
+      }
+    }
+
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
-        this.showScanBt = true
         SARMap.stopAREnhancePosition()
-        this.setState({showScan: false })
-        this.openARModel()
+        this.setState({showScan: false ,backClick:false})
+
+        setGolbalPose(result)
+
+        if(!isCoverGuided()) {
+          setCoverGuided()
+          this.showGuide(true)
+        } else {
+          this.openARModel()
+        }
         Toast.show('定位成功')
-        this.setState({backClick:false})
       }
     })
+  }
+
+  showGuide = (show: boolean) => {
+    this.setState({showGuide: show})
   }
 
   openARModel = async () => {
@@ -174,7 +200,6 @@ class CoverView extends React.Component<Props, State> {
 
   back = async () => {
     if (this.state.backClick) {
-      this.showScanBt = true
       if (this.state.showScan) {
         this.setState({ showScan: false })
         return
@@ -858,7 +883,6 @@ class CoverView extends React.Component<Props, State> {
           if (this.state.showScan) {
             this.setState({ showScan: false })
           } else {
-            this.showScanBt = false
             this.startScan()
             const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
             if (layer) {
@@ -945,8 +969,23 @@ class CoverView extends React.Component<Props, State> {
         {this.state.showSlider && this.slider()}
 
         {this.state.showScan && this.renderScan()}
-        {this.renderBack()}
-        {this.showScanBt && this.renderScanBtn()}
+        {!this.state.showGuide && this.renderBack()}
+        {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
+
+
+        <ARGuide
+          show={this.state.showGuide}
+          animationName={'AR室内管线'}
+          onSkip={() => {
+            this.showGuide(false)
+          }}
+          onGuideEnd={() => {
+            const globlaPose = getGlobalPose()
+            if (globlaPose != null) {
+              this.openARModel()
+            }
+          }}
+        />
       </>
     )
   }

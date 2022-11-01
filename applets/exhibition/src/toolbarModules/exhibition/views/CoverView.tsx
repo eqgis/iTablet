@@ -33,7 +33,7 @@ class CoverView extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      showScan: getGlobalPose() == null,
+      showScan: true,
       showCover: false,
       showSlider: false,
       backClick: true,
@@ -46,22 +46,10 @@ class CoverView extends React.Component<Props, State> {
       SARMap.setAREnhancePosition()
     }
 
-    const globlaPose = getGlobalPose()
-    if(globlaPose != null) {
-      if(!isCoverGuided()) {
-        setCoverGuided()
-        this.showGuide(true)
-      } else {
-        this.openARModel()
-      }
-    }
-
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false ,backClick:false})
-
-        setGolbalPose(result)
 
         if(!isCoverGuided()) {
           setCoverGuided()

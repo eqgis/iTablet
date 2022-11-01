@@ -5,7 +5,7 @@ import { Pose } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 let globalScanPose: Pose | null = null
 
 export function getGlobalPose(): Pose | null {
-  return globalScanPose ? JSON.parse(JSON.stringify(globalScanPose)) : null
+  return null // globalScanPose ? JSON.parse(JSON.stringify(globalScanPose)) : null
 }
 
 export function setGolbalPose(pose: Pose) {
@@ -37,7 +37,7 @@ export async function buildingImported() {
 }
 
 
-let flatMapGuided = false
+let flatMapGuided = true
 export function setFlatMapGuided() {
   flatMapGuided = true
 }

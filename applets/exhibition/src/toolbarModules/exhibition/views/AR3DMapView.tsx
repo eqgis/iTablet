@@ -39,7 +39,7 @@ class AR3DMapView extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      showScan: getGlobalPose() == null,
+      showScan: true,
       showShape:false,
       showGuide: false
     }
@@ -52,23 +52,12 @@ class AR3DMapView extends React.Component<Props, State> {
       }
     })
 
-    const globlaPose = getGlobalPose()
-    if(globlaPose != null) {
-      if(!isAr3dMapGuided()) {
-        setAr3dMapGuided()
-        this.showGuide(true)
-      } else {
-        this.start(globlaPose)
-      }
-    }
 
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-
-        setGolbalPose(result)
 
         if(!isAr3dMapGuided()) {
           setAr3dMapGuided()

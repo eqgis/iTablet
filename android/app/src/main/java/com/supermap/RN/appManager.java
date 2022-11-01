@@ -123,7 +123,7 @@ public class appManager {
     }
 
     public IWXAPI registerWechat(Context context) {
-        String APP_ID = "wx06e9572a1d069aaa";
+        String APP_ID = "wxb38479195902d0cc"; // "wx06e9572a1d069aaa";
         iwxapi = WXAPIFactory.createWXAPI(context, APP_ID, false);
         iwxapi.registerApp(APP_ID);
         return iwxapi;

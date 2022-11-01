@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, Animated, StyleProp } from "react-native"
+import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, Animated, StyleProp, NativeModules } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
@@ -11,8 +11,11 @@ import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_r
 import ARArrow from "../components/ARArrow"
 import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 import Video from 'react-native-video'
-import { getPublicAssets } from "@/assets"
+import { getPublicAssets, getThemeAssets } from "@/assets"
 import { ImageStyle } from "react-native"
+import { getLanguage } from "@/language"
+
+const appUtilsModule = NativeModules.AppUtils
 
 
 interface animationListType {
@@ -670,6 +673,55 @@ class DoctorCC extends Component<Props, State> {
     })
   }
 
+  /** 合影分享到微信 */
+  shareImageToWechat = async () => {
+    await this.shareToWechat(this.imgPath)
+
+    if(await FileTools.fileIsExist(this.imgPath)) {
+      FileTools.deleteFile(this.imgPath)
+    }
+    this.imgPath = ''
+    this.setState({
+      uri: 'null',
+      isSecondaryShow: true,
+    })
+  }
+
+  /** 分享到微信 */
+  shareToWechat = async (filePath: string) => {
+    try {
+
+      let result
+      let isInstalled
+      if (Platform.OS === 'ios') {
+        isInstalled = true
+      } else {
+        isInstalled = await appUtilsModule.isWXInstalled()
+      }
+      // let isInstalled = await appUtilsModule.isWXInstalled()
+      if (isInstalled) {
+        result = await appUtilsModule.sendFileOfWechat({
+          filePath: filePath,
+          title: filePath,
+          description: 'SuperMap iTablet',
+        })
+
+        if (!result) {
+          Toast.show(getLanguage().Prompt.WX_SHARE_FAILED)
+          return undefined
+        }
+      } else {
+        Toast.show(getLanguage().Prompt.WX_NOT_INSTALLED)
+      }
+      return result === false ? result : undefined
+    } catch (error) {
+      if (error.message.includes('File size cannot exceeds 10M')) {
+        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+      }
+    }
+  }
+
+
   /** 录像按钮被点击时的响应方法 */
   videoRecord = async () => {
     if(this.state.isVideoStart) {
@@ -735,6 +787,19 @@ class DoctorCC extends Component<Props, State> {
       Toast.show("录屏保存成功")
     }
 
+    this.setState({
+      videoUrl: 'null',
+      isShowFull: true,
+    })
+  }
+
+  /** 视屏分享到微信 */
+  shareVideoToWechat = async () => {
+    await this.shareToWechat(this.state.videoUrl)
+    if(await FileTools.fileIsExist(this.state.videoUrl)) {
+      // 删掉录屏原来的文件
+      FileTools.deleteFile(this.state.videoUrl)
+    }
     this.setState({
       videoUrl: 'null',
       isShowFull: true,
@@ -1842,6 +1907,23 @@ class DoctorCC extends Component<Props, State> {
                 {'保存到本地'}
               </Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.imageBtn]}
+              onPress={this.shareImageToWechat}
+            >
+              <View
+                style={[styles.imageBtnView]}
+              >
+                <Image
+                  style={[styles.imageBtnImg]}
+                  source={getThemeAssets().share.wechat}
+                />
+              </View>
+
+              <Text style={[styles.imageBtnText]} >
+                {'分享到微信'}
+              </Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.imageBtn]}
@@ -2023,6 +2105,24 @@ class DoctorCC extends Component<Props, State> {
 
               <Text style={[styles.imageBtnText]} >
                 {'保存到本地'}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.imageBtn]}
+              onPress={this.shareVideoToWechat}
+            >
+              <View
+                style={[styles.imageBtnView]}
+              >
+                <Image
+                  style={[styles.imageBtnImg]}
+                  source={getThemeAssets().share.wechat}
+                />
+              </View>
+
+              <Text style={[styles.imageBtnText]} >
+                {'分享到微信'}
               </Text>
             </TouchableOpacity>
 

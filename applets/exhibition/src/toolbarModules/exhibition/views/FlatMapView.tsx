@@ -11,6 +11,7 @@ import { ConstPath } from '@/constants'
 import { flatMapImported, getGlobalPose, isFlatMapGuided, setFlatMapGuided, setGolbalPose, shouldRefreshFlatMapData } from '../Actions'
 import { Pose } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import ARGuide from '../components/ARGuide'
+import { ILocalData } from '@/utils/DataHandler/DataLocal'
 
 interface Props {
   windowSize: ScaledSize
@@ -21,6 +22,25 @@ interface State {
   showGuide: boolean
 }
 
+interface FlatMap {
+  extFolderName: string
+  mapName: string
+}
+
+const flatMaps: FlatMap[] = [
+  {
+    extFolderName: '台风登陆路径',
+    mapName: '2021年7号台风查帕卡(CEMPAKA)'
+  },
+  {
+    extFolderName: '玛多地震',
+    mapName: '玛多地震'
+  },
+  {
+    extFolderName: '红色足迹_71',
+    mapName: '红色足迹'
+  },
+]
 class FlatMapVIew extends React.Component<Props, State> {
 
   scanRef: Scan | null = null
@@ -80,8 +100,8 @@ class FlatMapVIew extends React.Component<Props, State> {
   addMap = async (pose: Pose) => {
     if(!this.isMapOpend) {
       SExhibition.addTempPoint()
-      await SMap.openMapName('台风登陆路径')
-      await SMap.openMap('台风登陆路径')
+      await SMap.openMapName(flatMaps[0].mapName)
+      await SMap.openMap(flatMaps[0].mapName)
       this.isMapOpend = true
     }
     const relativePositin: Vector3 = {
@@ -104,10 +124,19 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   importData = async () => {
     const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
-    const hasFlatMap = data.find(item => {
-      return item.name === '台风登陆路径.xml'
+    const needToImport = await shouldRefreshFlatMapData()
+
+    const ps = flatMaps.map(async map => {
+      return this.importMap(map, data, needToImport)
     })
-    let needToImport = await shouldRefreshFlatMapData()
+
+    await Promise.all(ps)
+  }
+
+  importMap = async (map: FlatMap, localMaps: ILocalData[], needToImport: boolean) => {
+    const hasFlatMap = localMaps.find(item => {
+      return item.name === `${map.mapName}.xml`
+    })
 
     if(needToImport && hasFlatMap) {
       //remove
@@ -117,7 +146,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       const mapExpPath = mapPath.substring(0, mapPath.lastIndexOf('.')) + '.exp'
       await FileTools.deleteFile(mapPath)
       await FileTools.deleteFile(mapExpPath)
-      const animationPath = homePath + ConstPath.UserPath + 'Customer/Data/Animation/台风登陆路径'
+      const animationPath = homePath + ConstPath.UserPath + `Customer/Data/Animation/${map.mapName}`
       await FileTools.deleteFile(animationPath)
     } else if(!hasFlatMap) {
       needToImport = true
@@ -125,7 +154,7 @@ class FlatMapVIew extends React.Component<Props, State> {
 
     if(needToImport) {
       const homePath = await FileTools.getHomeDirectory()
-      const path = homePath + ConstPath.Common + 'Exhibition/AR平面地图/台风登陆路径'
+      const path = homePath + ConstPath.Common + `Exhibition/AR平面地图/${map.extFolderName}`
       const data = await DataHandler.getExternalData(path)
       if(data.length > 0 && data[0].fileType === 'workspace') {
         await DataHandler.importExternalData(AppUser.getCurrentUser(), data[0])

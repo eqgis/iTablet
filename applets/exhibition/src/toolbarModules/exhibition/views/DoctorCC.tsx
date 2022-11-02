@@ -15,7 +15,7 @@ import { getPublicAssets, getThemeAssets } from "@/assets"
 import { ImageStyle } from "react-native"
 import { getLanguage } from "@/language"
 import ARGuide from '../components/ARGuide'
-import { getGlobalPose, isDoctorMapGuided, setDoctorMapGuided, setGolbalPose } from "../Actions"
+import { isDoctorMapGuided, setDoctorMapGuided } from "../Actions"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -161,12 +161,12 @@ class DoctorCC extends Component<Props, State> {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        setGolbalPose(result)
 
-        if(!isDoctorMapGuided()) {
-          setDoctorMapGuided()
-          this.showGuide(true)
-        }
+        // 进入模块儿暂时屏蔽模块引导讲解
+        // if(!isDoctorMapGuided()) {
+        //   setDoctorMapGuided()
+        //   this.showGuide(true)
+        // }
 
         if(this.ARModel) {
           const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)

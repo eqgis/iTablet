@@ -11,8 +11,7 @@ import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_r
 import ARArrow from "../components/ARArrow"
 import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 import Video from 'react-native-video'
-import { getPublicAssets, getThemeAssets } from "@/assets"
-import { ImageStyle } from "react-native"
+import { getThemeAssets } from "@/assets"
 import { getLanguage } from "@/language"
 import ARGuide from '../components/ARGuide'
 import { isDoctorMapGuided, setDoctorMapGuided } from "../Actions"
@@ -24,6 +23,7 @@ const appUtilsModule = NativeModules.AppUtils
 interface animationListType {
   id:number,
   name: string,
+  duration: number,
 }
 
 interface speakItemType {
@@ -104,6 +104,8 @@ class DoctorCC extends Component<Props, State> {
 
   /** 音效播放器 */
   whoosh: Sound | null = null
+  /** 动画重读播放的定时器 */
+  animationTimer: NodeJS.Timer | null | undefined = null
 
   constructor(props: Props) {
     super(props)
@@ -383,6 +385,11 @@ class DoctorCC extends Component<Props, State> {
       if(this.ARModel) {
         SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
       }
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
+
       this.setState({
         isShowFull: false,
         selectAnimationKey: -1,
@@ -423,6 +430,10 @@ class DoctorCC extends Component<Props, State> {
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
+    }
 
     SExhibition.stopTrackingTarget()
     SARMap.setAREnhancePosition()
@@ -453,6 +464,10 @@ class DoctorCC extends Component<Props, State> {
     }
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    }
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
     }
 
     this.setState({
@@ -509,6 +524,11 @@ class DoctorCC extends Component<Props, State> {
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
+    }
+
     this.setState({
       selectType: 'reloader',
       selectAnimationKey: -1,
@@ -539,6 +559,11 @@ class DoctorCC extends Component<Props, State> {
 
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    }
+
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
     }
 
     // const currentElement = this.ARModel
@@ -584,9 +609,15 @@ class DoctorCC extends Component<Props, State> {
     if(currentElement) {
       await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
-      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
+      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     }
+
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
+    }
+
     this.setState({
       selectType: 'video',
       animations:animations,
@@ -1510,8 +1541,25 @@ class DoctorCC extends Component<Props, State> {
             // 当两次点击同一动作动画时需要将之前的动画清掉
             if(this.state.selectAnimationKey === item.id) {
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+
+              if(this.animationTimer !== null){
+                clearInterval(this.animationTimer)
+                this.animationTimer = null
+              }
+              this.setState({
+                selectAnimationKey: -1,
+                // isShowFull: true,
+                // isSecondaryShow: false,
+                isVideoGuideShow: false,
+              })
+              return
             }
-            let isAdd = null
+            // 清掉上一个动画的定时器
+            if(this.animationTimer !== null){
+              clearInterval(this.animationTimer)
+              this.animationTimer = null
+            }
+            let isAdd: animationListType | null | undefined = null
             if(this.state.selectReloaderKey === 'doctor'){
               isAdd = this.animationList.get(item.id)
             } else if(this.state.selectReloaderKey === 'doctorStudy'){
@@ -1541,9 +1589,19 @@ class DoctorCC extends Component<Props, State> {
               }
               const id = await SARMap.addAnimation(params)
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
+
+              // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+              this.animationTimer = setInterval(async () => {
+                if(this.state.selectAnimationKey === item.id) {
+                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+                }
+                await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
+              },(item.duration + 2) * 1000)
+
               const animationItemtemp = {
                 id,
                 name: item.name,
+                duration: item.duration,
               }
 
               if(this.state.selectReloaderKey === 'doctor'){
@@ -1555,6 +1613,13 @@ class DoctorCC extends Component<Props, State> {
             } else {
               // 动画已经存在了
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+              // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+              this.animationTimer = setInterval(async () => {
+                if(this.state.selectAnimationKey === item.id) {
+                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+                }
+                await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+              },(isAdd.duration + 2) * 1000)
             }
 
             if(this.state.selectType === 'action') {

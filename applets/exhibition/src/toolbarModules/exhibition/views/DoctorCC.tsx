@@ -65,8 +65,6 @@ interface State {
   rate: number,
   /** 视屏录制的时间 */
   videoTime: number,
-  /** 动作可上下滑的箭头是否能显示 */
-  isShowUpDown: boolean,
   /** 录像界面的动画选择引导 */
   isVideoGuideShow: boolean,
   /** 录像里面的引导提示文字 */
@@ -74,9 +72,6 @@ interface State {
   /** 模块解说引导 */
   showGuide: boolean
 }
-
-const UP = 'up'
-const DOWN = 'down'
 
 homePath = ""
 
@@ -107,18 +102,6 @@ class DoctorCC extends Component<Props, State> {
   /** 是否能够推出超超博士模块 true可以退出 false不可以退出 */
   isBack: boolean
 
-  /** 当前的y轴位置 */
-  offsetY: number
-  /** y轴能到达的最大位置 */
-  maxOffsetY: number
-  /** 可上滑箭头是否出现 */
-  onUp: boolean
-  /** 可下滑箭头是否出现 */
-  onDown: boolean
-
-  upOpacity = new Animated.Value(0)
-  downOpacity = new Animated.Value(1)
-
   /** 音效播放器 */
   whoosh: Sound | null = null
 
@@ -139,7 +122,6 @@ class DoctorCC extends Component<Props, State> {
       videoUrl: 'null',
       rate: 1,
       videoTime: -1,
-      isShowUpDown: true,
       isVideoGuideShow: true,
       videoGuideText: "请选择录像动作",
       showGuide: false,
@@ -147,11 +129,6 @@ class DoctorCC extends Component<Props, State> {
     this.imgPath = ''
     this.isBack = false
 
-
-    this.offsetY = 0
-    this.maxOffsetY = 100
-    this.onUp = true
-    this.onDown = true
   }
 
   componentDidMount = async () => {
@@ -839,102 +816,6 @@ class DoctorCC extends Component<Props, State> {
     })
   }
 
-  /** 处理动作里上下滑动箭头显隐的方法 */
-  handlePositionY = () => {
-    let onUp, onDown
-    // let contentHeight = (this.listViewY && this.listViewY._listRef._totalCellLength) || 0
-    if(this.maxOffsetY <= 0) {
-      // 当内容比容器高度低时，两个都不显示
-      onUp = true
-      onDown = true
-    } else {
-      if(this.offsetY <= 0) {
-        onUp = true
-        onDown = false
-      } else if(this.offsetY >= this.maxOffsetY) {
-        onUp = false
-        onDown = true
-      } else {
-        onUp = false
-        onDown = false
-      }
-    }
-
-    if (onUp !== this.onUp) {
-      this.onUp = onUp
-      Animated.timing(this.upOpacity, {
-        toValue: onUp ? 0 : 1,
-        duration: 150,
-        useNativeDriver: false,
-      }).start()
-    }
-    if (onDown !== this.onDown) {
-      this.onDown = onDown
-      Animated.timing(this.downOpacity, {
-        toValue: onDown ? 0 : 1,
-        duration: 150,
-        useNativeDriver: false,
-      }).start()
-    }
-
-
-  }
-
-
-  /** 可上下滑的箭头组件 */
-  renderIndicator = (location: string) => {
-    let source
-    const style: StyleProp<ImageStyle> = {}
-
-    switch(location){
-      // case PREVIOUS:
-      //   source = getPublicAssets().common.icon_slide_left
-      //   style.opacity = this.previousOpacity
-      //   break
-      // case NEXT:
-      //   source = getPublicAssets().common.icon_slide_right
-      //   style.opacity = this.nextOpacity
-      //   break
-      case UP:
-        source = getPublicAssets().common.icon_slide_up
-        style.opacity = this.upOpacity
-        style.width = dp(20)
-        break
-      case DOWN:
-        source = getPublicAssets().common.icon_slide_down
-        style.opacity = this.downOpacity
-        style.width = dp(20)
-        break
-    }
-
-    return (
-      <TouchableOpacity
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: dp(20),
-          height: dp(20),
-          backgroundColor: 'transparent',
-        }}
-        activeOpacity={1}
-      >
-        <Animated.Image
-          resizeMode={'contain'}
-          style={[
-            {
-              height: '100%',
-              width: dp(20),
-            },
-            style,
-          ]}
-          source={source}
-        />
-      </TouchableOpacity>
-    )
-  }
-
-
-
   /** 返回按钮 */
   renderBackBtn = () => {
     return (
@@ -1413,134 +1294,6 @@ class DoctorCC extends Component<Props, State> {
         </View>
       </TouchableOpacity>
     )
-  }
-
-  /** 动作被选中时显示动画列表 */
-  renderActionSelected = () => {
-    if(this.state.animations?.length <= 0) {
-      return null
-    } else {
-      return(
-        <ScrollView
-          style={{
-            position: 'absolute',
-            top: dp(100),
-            right: dp(60),
-            width: dp(60),
-            // height: dp(100),
-            maxHeight: dp(240),
-            borderRadius: dp(10),
-            // paddingVertical: dp(10),
-            paddingHorizontal: dp(5),
-            // justifyContent: 'center',
-            // alignItems: 'center',
-            // overflow: 'hidden',
-            backgroundColor: '#fff',
-          }}
-          onScroll={(event:any) => {
-            this.offsetY = event.nativeEvent.contentOffset.y
-            this.maxOffsetY = event.nativeEvent.contentSize.height -
-              event.nativeEvent.layoutMeasurement.height
-            this.handlePositionY()
-          }}
-        >
-          {this.state.animations.map((item) => {
-            return this.renderActionListItem(item)
-          })}
-          <View style={[{width: '100%',height: dp(10)}]}></View>
-        </ScrollView>
-      )
-    }
-
-  }
-
-  /** 动作里具体的动画的项 */
-  renderActionListItem = (item: ModelAnimation) => {
-    return (
-      <TouchableOpacity
-        key={item.id}
-        style={[
-          {
-            width: dp(50),
-            height: dp(33),
-            marginVertical: dp(2),
-            paddingVertical: dp(2),
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            // backgroundColor: '#f00',
-            borderRadius: dp(10),
-          },
-          this.state.selectAnimationKey === item.id && {
-            backgroundColor: '#EFEFEF'
-          }
-        ]}
-        onPress={async ()=>{
-          const currentElement = this.ARModel
-          if(currentElement) {
-            // 当两次点击同一动作动画时需要将之前的动画清掉
-            if(this.state.selectAnimationKey === item.id) {
-              await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-            }
-            let isAdd = null
-            if(this.state.selectReloaderKey === 'doctor'){
-              isAdd = this.animationList.get(item.id)
-            } else if(this.state.selectReloaderKey === 'doctorStudy'){
-              // supermanAnimationList
-              isAdd = this.supermanAnimationList.get(item.id)
-            }
-            // const isAdd = this.animationList.get(item.id)
-            if(!isAdd) {
-              const params: ARModelAnimatorParameter = {
-                category: ARAnimatorCategory.DISAPPEAR,
-                // type: ARAnimatorType.NODE_TYPE,
-                name: item.name,
-                layerName: currentElement.layerName,
-                elementID: currentElement.id,
-                type: ARAnimatorType.MODEL_TYPE,
-                modelAnimationIndex: item.id,
-
-                repeatCount: 0,
-                delay:0,
-
-                /** 模型动画时长 单位秒 */
-                duration: item.duration,
-                // // /** 模型动画开始帧时间 单位秒 */
-                startFrame: 0,
-                // /** 模型动画结束帧时间 单位秒 */
-                endFrame: -1,
-              }
-              const id = await SARMap.addAnimation(params)
-              await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
-              const animationItemtemp = {
-                id,
-                name: item.name,
-              }
-
-              if(this.state.selectReloaderKey === 'doctor'){
-                this.animationList.set(item.id, animationItemtemp)
-              } else if(this.state.selectReloaderKey === 'doctorStudy'){
-                this.supermanAnimationList.set(item.id, animationItemtemp)
-              }
-              // this.animationList.set(item.id, animationItemtemp)
-            } else {
-              // 动画已经存在了
-              await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-            }
-
-          }
-
-          this.setState({selectAnimationKey: item.id})
-        }}
-      >
-        <Text
-          style={{
-            fontSize:10,
-          }}
-        >
-          {item.name === 'stand-by' ? "站立" : item.name}
-        </Text>
-      </TouchableOpacity>)
   }
 
   /** 换装被选中时显示的换装页面 */
@@ -2341,24 +2094,6 @@ class DoctorCC extends Component<Props, State> {
         {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoTime >= 0 && this.renderVideotime()}
         {this.state.selectType === 'video' && this.state.videoUrl !== 'null' && this.renderVideo()}
 
-
-        {/* 动作的可滑动提示 */}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.state.isShowUpDown && (
-          <View style={{height:dp(20), width: '100%', alignItems: 'flex-end', position: 'absolute',
-            top: dp(100),
-            right: dp(60)}}
-          >
-            {this.renderIndicator(UP)}
-          </View>
-        )}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.state.isShowUpDown && (
-          <View style={{height:dp(20), width: '100%', alignItems: 'flex-end', position: 'absolute',
-            top: dp(320),
-            right: dp(60)}}
-          >
-            {this.renderIndicator(DOWN)}
-          </View>
-        )}
 
         {/* 解说模块的按钮引导 */}
         {!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow && this.renderStartGuide()}

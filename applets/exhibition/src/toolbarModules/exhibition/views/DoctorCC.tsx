@@ -16,6 +16,7 @@ import { ImageStyle } from "react-native"
 import { getLanguage } from "@/language"
 import ARGuide from '../components/ARGuide'
 import { isDoctorMapGuided, setDoctorMapGuided } from "../Actions"
+import Sound from 'react-native-sound'
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -74,11 +75,10 @@ interface State {
   showGuide: boolean
 }
 
-
-const PREVIOUS = 'previous'
-const NEXT = 'next'
 const UP = 'up'
 const DOWN = 'down'
+
+homePath = ""
 
 class DoctorCC extends Component<Props, State> {
 
@@ -119,6 +119,9 @@ class DoctorCC extends Component<Props, State> {
   upOpacity = new Animated.Value(0)
   downOpacity = new Animated.Value(1)
 
+  /** 音效播放器 */
+  whoosh: Sound | null = null
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -152,6 +155,9 @@ class DoctorCC extends Component<Props, State> {
   }
 
   componentDidMount = async () => {
+    // Enable playback in silence mode
+    Sound.setCategory('Playback')
+
     this.getDoctorData()
     await this.openDoctorARMap()
     // 启用增强定位
@@ -305,7 +311,7 @@ class DoctorCC extends Component<Props, State> {
     await DataHandler.closeARRawDatasource()
 
     // 路径
-    const homePath = await FileTools.getHomeDirectory()
+    homePath = await FileTools.getHomeDirectory()
     // // 源数据路径
     // const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
     // 导入之后的地图路径
@@ -1675,38 +1681,55 @@ class DoctorCC extends Component<Props, State> {
   /** 合影的动画具体选择项 */
   renderPhotoItem = (item: ModelAnimation) => {
     let image = getImage().icon_action_stand_by
+    let title = item.name
+    let source = "greet.mp3"
     switch(item.name){
       case 'stand-by':
         image = getImage().icon_action_stand_by
+        title = "站立"
         break
       case '打招呼':
         image = getImage().icon_action_greet
+        source = "greet.mp3"
         break
       case '行走':
         image = getImage().icon_action_walk
+        source = "walk.mp3"
         break
       case '转圈':
         image = getImage().icon_action_turn_around
+        source = "turnaround.mp3"
         break
       case '握手':
         image = getImage().icon_action_handshake
+        source = "handshake.mp3"
         break
       case '说话':
         image = getImage().icon_action_speak
+        source = "speak.mp3"
         break
       case '请':
         image = getImage().icon_action_please
+        source = "please.mp3"
         break
       case '跟我走':
         image = getImage().icon_action_follow_me
+        source = "followme.mp3"
         break
       case '大笑':
         image = getImage().icon_action_risus
+        source = "risus.mp3"
+        title = "高兴"
+        break
+      case '点击':
+        image = getImage().icon_action_stand_by
+        source = "click.mp3"
         break
       default:
         return null
     }
-
+    // 源数据路径
+    // const audioPath = `${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/Audio/${source}`
     return (
       <TouchableOpacity
         key={item.id}
@@ -1781,6 +1804,41 @@ class DoctorCC extends Component<Props, State> {
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
             }
 
+            if(this.state.selectType === 'action') {
+
+              if(this.whoosh !== null) {
+                this.whoosh.release()
+                this.whoosh = null
+              }
+
+              // 音频播放 音频文件的要求，音频文件的名字只能包含小写字母和数字之间，有其他字符该方法就会失效
+              // 参数一简介：可为xxx.音频格式 单需要放在 `android\app\src\main\res\raw`目录下，也可为手机本地路径和网络路径
+              this.whoosh = new Sound(source, Sound.MAIN_BUNDLE, (error) => {
+                if (error) {
+                  console.log('failed to load the sound', error)
+                  return
+                }
+                if(this.whoosh !== null) {
+                  // loaded successfully
+                  console.log('duration in seconds: ' +  this.whoosh.getDuration() + 'number of channels: ' +  this.whoosh.getNumberOfChannels())
+
+                  // Play the sound with an onEnd callback
+                  this.whoosh.play((success) => {
+                    if (success) {
+                      // 播放成功完成了
+                      this.whoosh !== null && this.whoosh.release()
+                    } else {
+                      // 播放失败了
+                      console.log('playback failed due to audio decoding errors')
+                      this.whoosh !== null && this.whoosh.release()
+                    }
+                  })
+                }
+
+              })
+
+            }
+
           }
 
           this.setState({
@@ -1813,7 +1871,7 @@ class DoctorCC extends Component<Props, State> {
             this.state.selectAnimationKey === item.id && {
               color: '#fff',
             }
-          ]}>{item.name === 'stand-by' ? "站立" : item.name}</Text>
+          ]}>{title}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -2258,7 +2316,8 @@ class DoctorCC extends Component<Props, State> {
       <>
         {/* 右边按钮的响应界面 */}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
+        {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()} */}
+        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderPhotoSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
         {this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'video' && this.renderPhotoSelected()}
 

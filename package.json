@@ -52,6 +52,7 @@
     "react-native-screens": "^3.13.1",
     "react-native-scrollable-tab-view": "^1.0.0",
     "react-native-slider": "^0.11.0",
+    "react-native-sound": "^0.11.2",
     "react-native-svg": "^12.3.0",
     "react-native-swipeout": "^2.3.6",
     "react-native-swiper": "^1.6.0",

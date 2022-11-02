@@ -1,6 +1,6 @@
 import { getImage } from '../../../assets'
 import React from 'react'
-import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
+import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView, ImageBackground } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { AppDialog, AppStyle, AppToolBar, dp ,Toast} from '@/utils'
 import { Easing } from 'react-native'
@@ -12,7 +12,12 @@ interface Props {
 }
 
 interface State {
-  currentIndex: number
+  scales: {
+    bgWidth: Animated.Value,
+    bgHeight: Animated.Value,
+    imgSize: Animated.Value,
+    imgBottom: Animated.Value,
+  }[],
 }
 
 interface Item {
@@ -22,35 +27,156 @@ interface Item {
   action: () => void
 }
 
+const BG_WIDTH = dp(151)
+const BG_HEIGTH = dp(210)
+const IMG_SIZE = dp(110)
+const IMG_BOTTOM = dp(100)
+
 class Home extends React.Component<Props, State> {
 
-  scales: [
-    Animated.Value,
-    Animated.Value,
-    Animated.Value
-  ] = [
-      new Animated.Value(1),
-      new Animated.Value(1),
-      new Animated.Value(1)
-    ]
+  // scales: [
+  //   Animated.Value,
+  //   Animated.Value,
+  //   Animated.Value
+  // ] = [
+  //     new Animated.Value(1),
+  //     new Animated.Value(1),
+  //     new Animated.Value(1)
+  //   ]
 
+  lastIndex = -1
   constructor(props: Props) {
     super(props)
+    const scales = []
+    for (let i = 0; i < this.getItems().length; i++) {
+      scales.push({
+        bgWidth: new Animated.Value(BG_WIDTH),
+        bgHeight: new Animated.Value(BG_HEIGTH),
+        imgSize: new Animated.Value(IMG_SIZE),
+        imgBottom: new Animated.Value(IMG_BOTTOM),
+      })
+    }
 
     this.state = {
-      currentIndex: 1
+      scales: scales,
     }
   }
 
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    if (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    ) {
+      return true
+    }
+    return false
+  }
+
   scale = (current: number) => {
-    this.scales.map((scale, index) => {
-      Animated.timing(scale, {
-        toValue: current === index ? 2: 1,
-        duration: 1000,
-        easing: Easing.linear,
-        useNativeDriver: false,
-      }).start()
-    })
+    let animates: Animated.CompositeAnimation[] = []
+
+    if (current !== this.lastIndex && current >= 0) {
+      if (this.lastIndex >= 0) {
+        // 还原上一个
+        animates = animates.concat([
+          Animated.timing(this.state.scales[this.lastIndex].bgHeight, {
+            toValue: BG_HEIGTH,
+            duration: 120,
+            easing: Easing.linear,
+            useNativeDriver: false,
+          }),
+          Animated.timing(this.state.scales[this.lastIndex].bgWidth, {
+            toValue: BG_WIDTH,
+            duration: 120,
+            easing: Easing.linear,
+            useNativeDriver: false,
+          }),
+          Animated.timing(this.state.scales[this.lastIndex].imgSize, {
+            toValue: IMG_SIZE,
+            duration: 120,
+            easing: Easing.linear,
+            useNativeDriver: false,
+          }),
+          Animated.timing(this.state.scales[this.lastIndex].imgBottom, {
+            toValue: IMG_BOTTOM,
+            duration: 120,
+            easing: Easing.linear,
+            useNativeDriver: false,
+          }),
+        ])
+      }
+      // 选中放大动画
+      animates = animates.concat([
+        Animated.timing(this.state.scales[current].bgHeight, {
+          toValue: BG_HEIGTH * 1.1,
+          duration: 160,
+          easing: Easing.linear,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.scales[current].bgWidth, {
+          toValue: BG_WIDTH * 1.1,
+          duration: 160,
+          easing: Easing.linear,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.scales[current].imgSize, {
+          toValue: IMG_SIZE * 1.2,
+          duration: 160,
+          easing: Easing.linear,
+          useNativeDriver: false,
+        }),
+        // Animated.timing(this.state.scales[current].imgBottom, {
+        //   toValue: IMG_BOTTOM * 1.2,
+        //   duration: 140,
+        //   easing: Easing.linear,
+        //   useNativeDriver: false,
+        // }),
+      ])
+      this.lastIndex = current
+
+      // 点击缩小动画
+      const animates1 = [
+        Animated.timing(this.state.scales[current].bgHeight, {
+          toValue: BG_HEIGTH * 0.9,
+          duration: 200,
+          easing: Easing.linear,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.scales[current].bgWidth, {
+          toValue: BG_WIDTH * 0.9,
+          duration: 200,
+          easing: Easing.linear,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.scales[current].imgSize, {
+          toValue: IMG_SIZE * 0.9,
+          duration: 200,
+          easing: Easing.linear,
+          useNativeDriver: false,
+        }),
+      ]
+
+      // 先缩小,再放大
+      const a1 = Animated.parallel(animates1)
+      const a2 = Animated.parallel(animates)
+      const a3 = Animated.parallel([
+        Animated.timing(this.state.scales[current].imgBottom, {
+          toValue: IMG_BOTTOM * 1.2,
+          duration: 200,
+          easing: Easing.linear,
+          useNativeDriver: false,
+          // delay: 200,
+        }),
+        // Animated.timing(this.state.scales[current].imgSize, {
+        //   toValue: IMG_SIZE * 1.2,
+        //   duration: 200,
+        //   easing: Easing.linear,
+        //   useNativeDriver: false,
+        //   delay: 200,
+        // }),
+      ])
+      Animated.sequence([a1, a2, a3]).start()
+    }
   }
 
   getItems = (): Item[]  => {
@@ -137,85 +263,94 @@ class Home extends React.Component<Props, State> {
   }
 
   renderLItem = (item: Item, index: number) => {
-    // const isSelected = this.state.currentIndex === index
-    // const awidth = this.scales[index].interpolate({
-    //   inputRange: [1, 2],
-    //   outputRange: [dp(151), dp(151) * 1.2]
-    // })
-    // const aheight = this.scales[index].interpolate({
-    //   inputRange: [1, 2],
-    //   outputRange: [dp(210), dp(210) * 1.2]
-    // })
     return (
-      <Animated.View
+      <View
         style={{
-          width: dp(151), // (this.isPortrait || !isSelected) ? dp(151) : awidth,
-          height: dp(210), // (this.isPortrait || !isSelected) ? dp(210) : aheight,
-          marginHorizontal: dp(13),
+          width: BG_WIDTH * 1.2,
+          // height: this.state.scales[index].bgHeight,
+          // marginHorizontal: dp(13),
           alignItems: 'center',
         }}
       >
-
-        <TouchableOpacity
+        <Animated.View
           style={{
-            width: dp(151),
-            height: dp(210),
-            // marginHorizontal: dp(13),
+            width: this.state.scales[index].bgWidth,
+            height: this.state.scales[index].bgHeight,
+            marginHorizontal: dp(13),
             alignItems: 'center',
           }}
-          activeOpacity={0.9}
-          // onPress={() => {
-          //   // this.scale(index)
-          //   this.setState({
-          //     currentIndex: index
-          //   })
-          // }}
-          // disabled={true /**this.isPortrait */}
-          onPress={item.action}
         >
-          <Image
-            style={{position: 'absolute', width: '100%', height: '100%'}}
-            source={getImage().background_transparent}
-            resizeMode="stretch"
-          />
-          <Image
-            source={item.image}
-            style={{width: dp(110),height: dp(110)}}
-          />
-          <View style={{marginHorizontal: dp(8)}}>
-            <Text style={AppStyle.h2}>
-              {item.title}
-            </Text>
-            <Text style={[AppStyle.h3, {color: '#191919'}]}>
-              {item.desc}
-            </Text>
-            <TouchableOpacity
-              style={{
-                alignSelf: 'flex-end',
-                width: dp(70),
-                height: dp(30),
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: dp(20),
-                overflow: 'hidden',
-                marginTop: dp(5),
-              }}
-              onPress={item.action}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              alignItems: 'center',
+            }}
+            activeOpacity={0.9}
+            // onPress={() => {
+            //   this.scale(index)
+            // }}
+            onPressIn={() => {
+              this.scale(index)
+            }}
+            // onPressOut={() => {
+            //   this.scale(index)
+            // }}
+            // disabled={true /**this.isPortrait */}
+            // onPress={item.action}
+          >
+            <ImageBackground
+              style={{position: 'absolute', width: '100%', height: '100%', justifyContent: 'flex-end'}}
+              source={getImage().background_transparent}
+              resizeMode="stretch"
             >
-              <Image
-                style={{position: 'absolute', width: '100%', height: '100%'}}
-                source={getImage().background_red}
-                resizeMode="stretch"
-              />
-              <Text style={[AppStyle.h3, {color: 'white'}]}>
-                {'进入'}
-              </Text>
-            </TouchableOpacity>
-
-          </View>
-        </TouchableOpacity>
-
-      </Animated.View>
+              <View style={{marginHorizontal: dp(8), paddingVertical: dp(13)}}>
+                <View style={{width: '100%', alignItems: 'center'}}>
+                  <View style={{width: dp(140), justifyContent: 'center'}}>
+                    <Text style={[AppStyle.h2, {fontWeight: 'bold'}]}>
+                      {item.title}
+                    </Text>
+                    <Text style={[AppStyle.h3, {color: '#191919'}]}>
+                      {item.desc}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  style={{
+                    alignSelf: 'flex-end',
+                    width: dp(70),
+                    height: dp(30),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: dp(20),
+                    overflow: 'hidden',
+                    marginTop: dp(5),
+                  }}
+                  onPress={item.action}
+                >
+                  <Image
+                    style={{position: 'absolute', width: '100%', height: '100%'}}
+                    source={getImage().background_red}
+                    resizeMode="stretch"
+                  />
+                  <Text style={[AppStyle.h3, {color: 'white'}]}>
+                    {'进入'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </ImageBackground>
+            <Animated.Image
+              source={item.image}
+              style={{
+                position: 'absolute',
+                width: this.state.scales[index].imgSize,
+                height: this.state.scales[index].imgSize,
+                // top: -20,
+                bottom: this.state.scales[index].imgBottom,
+              }}
+            />
+          </TouchableOpacity>
+        </Animated.View>
+      </View>
     )
   }
 
@@ -240,6 +375,14 @@ class Home extends React.Component<Props, State> {
       <View style={{paddingHorizontal: dp(10)}}>
         <ScrollView
           horizontal
+          style={{
+            height: BG_HEIGTH * 1.5,
+          }}
+          contentContainerStyle={{
+            paddingTop: dp(40),
+            alignItems: 'flex-start',
+            // backgroundColor: 'yellow',
+          }}
           showsHorizontalScrollIndicator={false}
         >
           {this.getItems().map((item, index) => {
@@ -258,6 +401,7 @@ class Home extends React.Component<Props, State> {
       <View
         style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'center'}]}
       >
+        {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
         <TouchableOpacity
           style={{
             position: 'absolute',
@@ -279,7 +423,6 @@ class Home extends React.Component<Props, State> {
             source={getImage().close}
           />
         </TouchableOpacity>
-        {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
       </View>
     )
   }

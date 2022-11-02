@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, Animated, StyleProp } from "react-native"
+import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, Animated, StyleProp, NativeModules } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
@@ -11,13 +11,19 @@ import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_r
 import ARArrow from "../components/ARArrow"
 import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 import Video from 'react-native-video'
-import { getPublicAssets } from "@/assets"
-import { ImageStyle } from "react-native"
+import { getThemeAssets } from "@/assets"
+import { getLanguage } from "@/language"
+import ARGuide from '../components/ARGuide'
+import { isDoctorMapGuided, setDoctorMapGuided } from "../Actions"
+import Sound from 'react-native-sound'
+
+const appUtilsModule = NativeModules.AppUtils
 
 
 interface animationListType {
   id:number,
   name: string,
+  duration: number,
 }
 
 interface speakItemType {
@@ -59,19 +65,15 @@ interface State {
   rate: number,
   /** 视屏录制的时间 */
   videoTime: number,
-  /** 动作可上下滑的箭头是否能显示 */
-  isShowUpDown: boolean,
   /** 录像界面的动画选择引导 */
   isVideoGuideShow: boolean,
   /** 录像里面的引导提示文字 */
   videoGuideText: string,
+  /** 模块解说引导 */
+  showGuide: boolean
 }
 
-
-const PREVIOUS = 'previous'
-const NEXT = 'next'
-const UP = 'up'
-const DOWN = 'down'
+homePath = ""
 
 class DoctorCC extends Component<Props, State> {
 
@@ -100,17 +102,10 @@ class DoctorCC extends Component<Props, State> {
   /** 是否能够推出超超博士模块 true可以退出 false不可以退出 */
   isBack: boolean
 
-  /** 当前的y轴位置 */
-  offsetY: number
-  /** y轴能到达的最大位置 */
-  maxOffsetY: number
-  /** 可上滑箭头是否出现 */
-  onUp: boolean
-  /** 可下滑箭头是否出现 */
-  onDown: boolean
-
-  upOpacity = new Animated.Value(0)
-  downOpacity = new Animated.Value(1)
+  /** 音效播放器 */
+  whoosh: Sound | null = null
+  /** 动画重读播放的定时器 */
+  animationTimer: NodeJS.Timer | null | undefined = null
 
   constructor(props: Props) {
     super(props)
@@ -129,21 +124,19 @@ class DoctorCC extends Component<Props, State> {
       videoUrl: 'null',
       rate: 1,
       videoTime: -1,
-      isShowUpDown: true,
       isVideoGuideShow: true,
       videoGuideText: "请选择录像动作",
+      showGuide: false,
     }
     this.imgPath = ''
     this.isBack = false
 
-
-    this.offsetY = 0
-    this.maxOffsetY = 100
-    this.onUp = true
-    this.onDown = true
   }
 
   componentDidMount = async () => {
+    // Enable playback in silence mode
+    Sound.setCategory('Playback')
+
     this.getDoctorData()
     await this.openDoctorARMap()
     // 启用增强定位
@@ -153,12 +146,11 @@ class DoctorCC extends Component<Props, State> {
       if(result) {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
-        // await this.openDoctorARMap()
 
-        // let relativePositin: Vector3 = {
-        //   x: 0,
-        //   y: 0,
-        //   z: -1,
+        // 进入模块儿暂时屏蔽模块引导讲解
+        // if(!isDoctorMapGuided()) {
+        //   setDoctorMapGuided()
+        //   this.showGuide(true)
         // }
 
         if(this.ARModel) {
@@ -185,8 +177,9 @@ class DoctorCC extends Component<Props, State> {
               isSecondaryShow: true,
               selectSpeakKey: 'null',
             })
-            clearTimeout(speakStopTimer)
           }
+          clearTimeout(speakStopTimer)
+          this.showGuide(false)
         }, 3000)
 
       },
@@ -194,7 +187,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
   componentDidUpdate = () => {
-    if(!this.state.showScan && this.state.isSpeakGuideShow) {
+    if(!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow) {
       const timer = setTimeout(() => {
         this.setState({
           isSpeakGuideShow: false,
@@ -212,6 +205,11 @@ class DoctorCC extends Component<Props, State> {
       }, 2000)
     }
   }
+
+  showGuide = (show: boolean) => {
+    this.setState({showGuide: show})
+  }
+
 
   /** 博士的解说数据 */
   getDoctorData = () => {
@@ -285,31 +283,32 @@ class DoctorCC extends Component<Props, State> {
     ]
   }
 
-  /** 导入和打开地图 */
+  /** 打开地图 */
   openDoctorARMap = async () => {
     // 关闭之前的地图
     await SARMap.close()
     await DataHandler.closeARRawDatasource()
 
     // 路径
-    const homePath = await FileTools.getHomeDirectory()
-    // 源数据路径
-    const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
+    homePath = await FileTools.getHomeDirectory()
+    // // 源数据路径
+    // const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
     // 导入之后的地图路径
     const arMapPath = homePath + ConstPath.UserPath + 'Customer/Data/ARMap/AR超超博士.arxml'
 
-    // 1. 数据是否更新
-    const dataUpate =  await SARMap.needToImport()
-    // 2. 导入之后的地图路径是否存在
-    const mapExist = await FileTools.fileIsExist(arMapPath)
-    // 当数据更新且存在导入后的地图，删掉原来的导入地图
-    if(dataUpate && mapExist) {
-      FileTools.deleteFile(arMapPath)
-    }
-    // 当数据更新或没有导入后的地图，才进行重新导入
-    if(dataUpate || !mapExist) {
-      await SARMap.importMap(path)
-    }
+    // // 1. 数据是否更新
+    // const dataUpate =  await SARMap.needToImport()
+    // // 2. 导入之后的地图路径是否存在
+    // const mapExist = await FileTools.fileIsExist(arMapPath)
+    // // 当数据更新且存在导入后的地图，删掉原来的导入地图
+    // if(dataUpate && mapExist) {
+    //   FileTools.deleteFile(arMapPath)
+    // }
+    // // 当数据更新或没有导入后的地图，才进行重新导入
+    // if(dataUpate || !mapExist) {
+    //   await SARMap.importMap(path)
+    // }
+
     // 打开指定路径的地图
     const result = await SARMap.open(arMapPath)
 
@@ -386,6 +385,11 @@ class DoctorCC extends Component<Props, State> {
       if(this.ARModel) {
         SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
       }
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
+
       this.setState({
         isShowFull: false,
         selectAnimationKey: -1,
@@ -426,6 +430,10 @@ class DoctorCC extends Component<Props, State> {
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
+    }
 
     SExhibition.stopTrackingTarget()
     SARMap.setAREnhancePosition()
@@ -456,6 +464,10 @@ class DoctorCC extends Component<Props, State> {
     }
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    }
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
     }
 
     this.setState({
@@ -512,6 +524,11 @@ class DoctorCC extends Component<Props, State> {
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
+    }
+
     this.setState({
       selectType: 'reloader',
       selectAnimationKey: -1,
@@ -542,6 +559,11 @@ class DoctorCC extends Component<Props, State> {
 
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    }
+
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
     }
 
     // const currentElement = this.ARModel
@@ -587,9 +609,15 @@ class DoctorCC extends Component<Props, State> {
     if(currentElement) {
       await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
-      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
+      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     }
+
+    if(this.animationTimer !== null){
+      clearInterval(this.animationTimer)
+      this.animationTimer = null
+    }
+
     this.setState({
       selectType: 'video',
       animations:animations,
@@ -670,6 +698,57 @@ class DoctorCC extends Component<Props, State> {
     })
   }
 
+  /** 合影分享到微信 */
+  shareImageToWechat = async () => {
+    const date = new Date()
+    const name = "ZT_Image_" + date.getTime()
+    await this.shareToWechat(this.imgPath, name)
+
+    if(await FileTools.fileIsExist(this.imgPath)) {
+      FileTools.deleteFile(this.imgPath)
+    }
+    this.imgPath = ''
+    this.setState({
+      uri: 'null',
+      isSecondaryShow: true,
+    })
+  }
+
+  /** 分享到微信 */
+  shareToWechat = async (filePath: string, name: string) => {
+    try {
+
+      let result
+      let isInstalled
+      if (Platform.OS === 'ios') {
+        isInstalled = true
+      } else {
+        isInstalled = await appUtilsModule.isWXInstalled()
+      }
+      // let isInstalled = await appUtilsModule.isWXInstalled()
+      if (isInstalled) {
+        result = await appUtilsModule.sendFileOfWechat({
+          filePath: filePath,
+          title: name,
+          description: 'SuperMap iTablet',
+        })
+
+        if (!result) {
+          Toast.show(getLanguage().Prompt.WX_SHARE_FAILED)
+          return undefined
+        }
+      } else {
+        Toast.show(getLanguage().Prompt.WX_NOT_INSTALLED)
+      }
+      return result === false ? result : undefined
+    } catch (error) {
+      if (error.message.includes('File size cannot exceeds 10M')) {
+        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+      }
+    }
+  }
+
+
   /** 录像按钮被点击时的响应方法 */
   videoRecord = async () => {
     if(this.state.isVideoStart) {
@@ -741,6 +820,21 @@ class DoctorCC extends Component<Props, State> {
     })
   }
 
+  /** 视屏分享到微信 */
+  shareVideoToWechat = async () => {
+    const date = new Date()
+    const name = "ZT_Video_" + date.getTime()
+    await this.shareToWechat(this.state.videoUrl, name)
+    if(await FileTools.fileIsExist(this.state.videoUrl)) {
+      // 删掉录屏原来的文件
+      FileTools.deleteFile(this.state.videoUrl)
+    }
+    this.setState({
+      videoUrl: 'null',
+      isShowFull: true,
+    })
+  }
+
   /** 录屏取消保存 */
   cancelVideo = async () => {
     if(await FileTools.fileIsExist(this.state.videoUrl)) {
@@ -752,102 +846,6 @@ class DoctorCC extends Component<Props, State> {
       isShowFull: true,
     })
   }
-
-  /** 处理动作里上下滑动箭头显隐的方法 */
-  handlePositionY = () => {
-    let onUp, onDown
-    // let contentHeight = (this.listViewY && this.listViewY._listRef._totalCellLength) || 0
-    if(this.maxOffsetY <= 0) {
-      // 当内容比容器高度低时，两个都不显示
-      onUp = true
-      onDown = true
-    } else {
-      if(this.offsetY <= 0) {
-        onUp = true
-        onDown = false
-      } else if(this.offsetY >= this.maxOffsetY) {
-        onUp = false
-        onDown = true
-      } else {
-        onUp = false
-        onDown = false
-      }
-    }
-
-    if (onUp !== this.onUp) {
-      this.onUp = onUp
-      Animated.timing(this.upOpacity, {
-        toValue: onUp ? 0 : 1,
-        duration: 150,
-        useNativeDriver: false,
-      }).start()
-    }
-    if (onDown !== this.onDown) {
-      this.onDown = onDown
-      Animated.timing(this.downOpacity, {
-        toValue: onDown ? 0 : 1,
-        duration: 150,
-        useNativeDriver: false,
-      }).start()
-    }
-
-
-  }
-
-
-  /** 可上下滑的箭头组件 */
-  renderIndicator = (location: string) => {
-    let source
-    const style: StyleProp<ImageStyle> = {}
-
-    switch(location){
-      // case PREVIOUS:
-      //   source = getPublicAssets().common.icon_slide_left
-      //   style.opacity = this.previousOpacity
-      //   break
-      // case NEXT:
-      //   source = getPublicAssets().common.icon_slide_right
-      //   style.opacity = this.nextOpacity
-      //   break
-      case UP:
-        source = getPublicAssets().common.icon_slide_up
-        style.opacity = this.upOpacity
-        style.width = dp(20)
-        break
-      case DOWN:
-        source = getPublicAssets().common.icon_slide_down
-        style.opacity = this.downOpacity
-        style.width = dp(20)
-        break
-    }
-
-    return (
-      <TouchableOpacity
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: dp(20),
-          height: dp(20),
-          backgroundColor: 'transparent',
-        }}
-        activeOpacity={1}
-      >
-        <Animated.Image
-          resizeMode={'contain'}
-          style={[
-            {
-              height: '100%',
-              width: dp(20),
-            },
-            style,
-          ]}
-          source={source}
-        />
-      </TouchableOpacity>
-    )
-  }
-
-
 
   /** 返回按钮 */
   renderBackBtn = () => {
@@ -1329,134 +1327,6 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
-  /** 动作被选中时显示动画列表 */
-  renderActionSelected = () => {
-    if(this.state.animations?.length <= 0) {
-      return null
-    } else {
-      return(
-        <ScrollView
-          style={{
-            position: 'absolute',
-            top: dp(100),
-            right: dp(60),
-            width: dp(60),
-            // height: dp(100),
-            maxHeight: dp(240),
-            borderRadius: dp(10),
-            // paddingVertical: dp(10),
-            paddingHorizontal: dp(5),
-            // justifyContent: 'center',
-            // alignItems: 'center',
-            // overflow: 'hidden',
-            backgroundColor: '#fff',
-          }}
-          onScroll={(event:any) => {
-            this.offsetY = event.nativeEvent.contentOffset.y
-            this.maxOffsetY = event.nativeEvent.contentSize.height -
-              event.nativeEvent.layoutMeasurement.height
-            this.handlePositionY()
-          }}
-        >
-          {this.state.animations.map((item) => {
-            return this.renderActionListItem(item)
-          })}
-          <View style={[{width: '100%',height: dp(10)}]}></View>
-        </ScrollView>
-      )
-    }
-
-  }
-
-  /** 动作里具体的动画的项 */
-  renderActionListItem = (item: ModelAnimation) => {
-    return (
-      <TouchableOpacity
-        key={item.id}
-        style={[
-          {
-            width: dp(50),
-            height: dp(33),
-            marginVertical: dp(2),
-            paddingVertical: dp(2),
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            // backgroundColor: '#f00',
-            borderRadius: dp(10),
-          },
-          this.state.selectAnimationKey === item.id && {
-            backgroundColor: '#EFEFEF'
-          }
-        ]}
-        onPress={async ()=>{
-          const currentElement = this.ARModel
-          if(currentElement) {
-            // 当两次点击同一动作动画时需要将之前的动画清掉
-            if(this.state.selectAnimationKey === item.id) {
-              await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-            }
-            let isAdd = null
-            if(this.state.selectReloaderKey === 'doctor'){
-              isAdd = this.animationList.get(item.id)
-            } else if(this.state.selectReloaderKey === 'doctorStudy'){
-              // supermanAnimationList
-              isAdd = this.supermanAnimationList.get(item.id)
-            }
-            // const isAdd = this.animationList.get(item.id)
-            if(!isAdd) {
-              const params: ARModelAnimatorParameter = {
-                category: ARAnimatorCategory.DISAPPEAR,
-                // type: ARAnimatorType.NODE_TYPE,
-                name: item.name,
-                layerName: currentElement.layerName,
-                elementID: currentElement.id,
-                type: ARAnimatorType.MODEL_TYPE,
-                modelAnimationIndex: item.id,
-
-                repeatCount: 0,
-                delay:0,
-
-                /** 模型动画时长 单位秒 */
-                duration: item.duration,
-                // // /** 模型动画开始帧时间 单位秒 */
-                startFrame: 0,
-                // /** 模型动画结束帧时间 单位秒 */
-                endFrame: -1,
-              }
-              const id = await SARMap.addAnimation(params)
-              await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
-              const animationItemtemp = {
-                id,
-                name: item.name,
-              }
-
-              if(this.state.selectReloaderKey === 'doctor'){
-                this.animationList.set(item.id, animationItemtemp)
-              } else if(this.state.selectReloaderKey === 'doctorStudy'){
-                this.supermanAnimationList.set(item.id, animationItemtemp)
-              }
-              // this.animationList.set(item.id, animationItemtemp)
-            } else {
-              // 动画已经存在了
-              await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-            }
-
-          }
-
-          this.setState({selectAnimationKey: item.id})
-        }}
-      >
-        <Text
-          style={{
-            fontSize:10,
-          }}
-        >
-          {item.name === 'stand-by' ? "站立" : item.name}
-        </Text>
-      </TouchableOpacity>)
-  }
-
   /** 换装被选中时显示的换装页面 */
   renderReloaderSelected = () => {
     return(
@@ -1595,38 +1465,55 @@ class DoctorCC extends Component<Props, State> {
   /** 合影的动画具体选择项 */
   renderPhotoItem = (item: ModelAnimation) => {
     let image = getImage().icon_action_stand_by
+    let title = item.name
+    let source = "greet.mp3"
     switch(item.name){
       case 'stand-by':
         image = getImage().icon_action_stand_by
+        title = "站立"
         break
       case '打招呼':
         image = getImage().icon_action_greet
+        source = "greet.mp3"
         break
       case '行走':
         image = getImage().icon_action_walk
+        source = "walk.mp3"
         break
       case '转圈':
         image = getImage().icon_action_turn_around
+        source = "turnaround.mp3"
         break
       case '握手':
         image = getImage().icon_action_handshake
+        source = "handshake.mp3"
         break
       case '说话':
         image = getImage().icon_action_speak
+        source = "speak.mp3"
         break
       case '请':
         image = getImage().icon_action_please
+        source = "please.mp3"
         break
       case '跟我走':
         image = getImage().icon_action_follow_me
+        source = "followme.mp3"
         break
       case '大笑':
         image = getImage().icon_action_risus
+        source = "risus.mp3"
+        title = "高兴"
+        break
+      case '点击':
+        image = getImage().icon_action_stand_by
+        source = "click.mp3"
         break
       default:
         return null
     }
-
+    // 源数据路径
+    // const audioPath = `${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/Audio/${source}`
     return (
       <TouchableOpacity
         key={item.id}
@@ -1654,8 +1541,25 @@ class DoctorCC extends Component<Props, State> {
             // 当两次点击同一动作动画时需要将之前的动画清掉
             if(this.state.selectAnimationKey === item.id) {
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+
+              if(this.animationTimer !== null){
+                clearInterval(this.animationTimer)
+                this.animationTimer = null
+              }
+              this.setState({
+                selectAnimationKey: -1,
+                // isShowFull: true,
+                // isSecondaryShow: false,
+                isVideoGuideShow: false,
+              })
+              return
             }
-            let isAdd = null
+            // 清掉上一个动画的定时器
+            if(this.animationTimer !== null){
+              clearInterval(this.animationTimer)
+              this.animationTimer = null
+            }
+            let isAdd: animationListType | null | undefined = null
             if(this.state.selectReloaderKey === 'doctor'){
               isAdd = this.animationList.get(item.id)
             } else if(this.state.selectReloaderKey === 'doctorStudy'){
@@ -1685,9 +1589,19 @@ class DoctorCC extends Component<Props, State> {
               }
               const id = await SARMap.addAnimation(params)
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
+
+              // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+              this.animationTimer = setInterval(async () => {
+                if(this.state.selectAnimationKey === item.id) {
+                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+                }
+                await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
+              },(item.duration + 2) * 1000)
+
               const animationItemtemp = {
                 id,
                 name: item.name,
+                duration: item.duration,
               }
 
               if(this.state.selectReloaderKey === 'doctor'){
@@ -1699,6 +1613,48 @@ class DoctorCC extends Component<Props, State> {
             } else {
               // 动画已经存在了
               await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+              // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+              this.animationTimer = setInterval(async () => {
+                if(this.state.selectAnimationKey === item.id) {
+                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+                }
+                await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+              },(isAdd.duration + 2) * 1000)
+            }
+
+            if(this.state.selectType === 'action') {
+
+              if(this.whoosh !== null) {
+                this.whoosh.release()
+                this.whoosh = null
+              }
+
+              // 音频播放 音频文件的要求，音频文件的名字只能包含小写字母和数字之间，有其他字符该方法就会失效
+              // 参数一简介：可为xxx.音频格式 单需要放在 `android\app\src\main\res\raw`目录下，也可为手机本地路径和网络路径
+              this.whoosh = new Sound(source, Sound.MAIN_BUNDLE, (error) => {
+                if (error) {
+                  console.log('failed to load the sound', error)
+                  return
+                }
+                if(this.whoosh !== null) {
+                  // loaded successfully
+                  console.log('duration in seconds: ' +  this.whoosh.getDuration() + 'number of channels: ' +  this.whoosh.getNumberOfChannels())
+
+                  // Play the sound with an onEnd callback
+                  this.whoosh.play((success) => {
+                    if (success) {
+                      // 播放成功完成了
+                      this.whoosh !== null && this.whoosh.release()
+                    } else {
+                      // 播放失败了
+                      console.log('playback failed due to audio decoding errors')
+                      this.whoosh !== null && this.whoosh.release()
+                    }
+                  })
+                }
+
+              })
+
             }
 
           }
@@ -1733,7 +1689,7 @@ class DoctorCC extends Component<Props, State> {
             this.state.selectAnimationKey === item.id && {
               color: '#fff',
             }
-          ]}>{item.name === 'stand-by' ? "站立" : item.name}</Text>
+          ]}>{title}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -1840,6 +1796,23 @@ class DoctorCC extends Component<Props, State> {
 
               <Text style={[styles.imageBtnText]} >
                 {'保存到本地'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.imageBtn]}
+              onPress={this.shareImageToWechat}
+            >
+              <View
+                style={[styles.imageBtnView]}
+              >
+                <Image
+                  style={[styles.imageBtnImg]}
+                  source={getThemeAssets().share.wechat}
+                />
+              </View>
+
+              <Text style={[styles.imageBtnText]} >
+                {'分享到微信'}
               </Text>
             </TouchableOpacity>
 
@@ -2028,6 +2001,24 @@ class DoctorCC extends Component<Props, State> {
 
             <TouchableOpacity
               style={[styles.imageBtn]}
+              onPress={this.shareVideoToWechat}
+            >
+              <View
+                style={[styles.imageBtnView]}
+              >
+                <Image
+                  style={[styles.imageBtnImg]}
+                  source={getThemeAssets().share.wechat}
+                />
+              </View>
+
+              <Text style={[styles.imageBtnText]} >
+                {'分享到微信'}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.imageBtn]}
               onPress={this.cancelVideo}
             >
               <View
@@ -2058,15 +2049,16 @@ class DoctorCC extends Component<Props, State> {
       position: 'absolute',
       backgroundColor: 'transparent',
       right: dp(80),
-      top: dp(23),
+      top: dp(38),
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
+      // alignItems: 'center',
+      // alignSelf: 'center',
     }
     const arrowstyle = {
-      right: -dp(96),
-      top: dp(30),
+      position: 'absolute',
+      right: -15,
+      top: 12,
       borderTopWidth: 9,
       borderTopColor: 'transparent',
       borderLeftWidth: 8,
@@ -2095,7 +2087,7 @@ class DoctorCC extends Component<Props, State> {
     const style = {
       position: 'absolute',
       backgroundColor: 'transparent',
-      left: dp(175),
+      left: dp(185),
       bottom: dp(110),
       flexDirection: 'column',
       justifyContent: 'center',
@@ -2103,8 +2095,9 @@ class DoctorCC extends Component<Props, State> {
       alignSelf: 'center',
     }
     const arrowstyle = {
-      left: -dp(20),
-      bottom: -dp(63),
+      position: 'absolute',
+      left:50,
+      bottom: -17,
       borderTopWidth: 9,
       borderTopColor: 'rgba(0, 0, 0, .5)',
       borderLeftWidth: 8,
@@ -2112,13 +2105,21 @@ class DoctorCC extends Component<Props, State> {
       borderRightWidth: 8,
       borderRightColor: 'transparent',
     }
+
+    const winstyle = {
+      backgroundColor: 'rgba(0, 0, 0, .5)',
+      paddingHorizontal: dp(17),
+      paddingVertical: dp(11),
+    }
+
     return (
       <GuideView
         title={this.state.videoGuideText}
         style={style}
         type={1}
         arrowstyle={arrowstyle}
-        winstyle={{backgroundColor: 'rgba(0, 0, 0, .5)'}}
+        // winstyle={{backgroundColor: 'rgba(0, 0, 0, .5)'}}
+        winstyle={winstyle}
         titlestyle={{color: 'white'}}
         delete={false}
         deleteAction={() =>{
@@ -2133,19 +2134,20 @@ class DoctorCC extends Component<Props, State> {
       <>
         {/* 右边按钮的响应界面 */}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
+        {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()} */}
+        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderPhotoSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
         {this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'video' && this.renderPhotoSelected()}
 
         {/* 右边按钮 */}
-        {!this.state.isShowFull && this.renderSpeak()}
-        {!this.state.isShowFull && this.renderFunctionList()}
+        {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
+        {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()}
 
         {/* 扫描界面 */}
         {!this.state.isShowFull && this.state.showScan && this.renderScan()}
         {/* 左边按钮 */}
-        {!this.state.isShowFull && !this.state.showScan && this.renderScanBtn()}
-        {!this.state.isVideoStart && this.renderBackBtn()}
+        {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
+        {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
         {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
 
         {/* 合影的界面 */}
@@ -2158,32 +2160,29 @@ class DoctorCC extends Component<Props, State> {
         {this.state.selectType === 'video' && this.state.videoUrl !== 'null' && this.renderVideo()}
 
 
-        {/* 动作的可滑动提示 */}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.state.isShowUpDown && (
-          <View style={{height:dp(20), width: '100%', alignItems: 'flex-end', position: 'absolute',
-            top: dp(100),
-            right: dp(60)}}
-          >
-            {this.renderIndicator(UP)}
-          </View>
-        )}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.state.isShowUpDown && (
-          <View style={{height:dp(20), width: '100%', alignItems: 'flex-end', position: 'absolute',
-            top: dp(320),
-            right: dp(60)}}
-          >
-            {this.renderIndicator(DOWN)}
-          </View>
-        )}
-
         {/* 解说模块的按钮引导 */}
-        {!this.state.showScan && this.state.isSpeakGuideShow && this.renderStartGuide()}
+        {!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow && this.renderStartGuide()}
 
         {this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow && this.renderVideoGuide()}
 
         <ARArrow
           arrowShowed={() => {
             Toast.show('请按照箭头引导转动屏幕查看内容')
+          }}
+        />
+
+        <ARGuide
+          show={this.state.showGuide}
+          animationName={'Ar超超博士'}
+          onSkip={() => {
+            this.showGuide(false)
+          }}
+          onGuideEnd={() => {
+            SARMap.stopARAnimation()
+            // const globlaPose = getGlobalPose()
+            // if(globlaPose != null) {
+            //   this.start(globlaPose)
+            // }
           }}
         />
 

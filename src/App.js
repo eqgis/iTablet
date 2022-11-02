@@ -473,8 +473,32 @@ class AppRoot extends Component {
       await this.getUserApplets(userName)
       this.createXmlTemplate()
       await FileTools.initARSymbolData(userName)
+      await this.importExhibitionData()
     } catch (e) {
       //
+    }
+  }
+
+  /** 导入AR展厅超超博士的地图 */
+  importExhibitionData = async () => {
+    // 路径
+    const homePath = await FileTools.getHomeDirectory()
+    // 源数据路径
+    const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
+    // 导入之后的地图路径
+    const arMapPath = homePath + ConstPath.UserPath + 'Customer/Data/ARMap/AR超超博士.arxml'
+
+    // 1. 数据是否更新
+    const dataUpate =  await SARMap.needToImport()
+    // 2. 导入之后的地图路径是否存在
+    const mapExist = await FileTools.fileIsExist(arMapPath)
+    // 当数据更新且存在导入后的地图，删掉原来的导入地图
+    if(dataUpate && mapExist) {
+      FileTools.deleteFile(arMapPath)
+    }
+    // 当数据更新或没有导入后的地图，才进行重新导入
+    if(dataUpate || !mapExist) {
+      await SARMap.importMap(path)
     }
   }
 

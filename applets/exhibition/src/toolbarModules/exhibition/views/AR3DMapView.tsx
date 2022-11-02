@@ -8,6 +8,9 @@ import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
+import { getGlobalPose, isAr3dMapGuided, setAr3dMapGuided, setGolbalPose } from '../Actions'
+import { Pose } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import ARGuide from '../components/ARGuide'
 
 
 interface Props {
@@ -17,10 +20,10 @@ interface Props {
 interface State {
   showScan: boolean
   showShape:boolean
+  showGuide:boolean
 }
 class AR3DMapView extends React.Component<Props, State> {
   scanRef: Scan | null = null
-  showScanBt = false
   open = false
   result = {
     x: 0,
@@ -37,7 +40,8 @@ class AR3DMapView extends React.Component<Props, State> {
 
     this.state = {
       showScan: true,
-      showShape:false
+      showShape:false,
+      showGuide: false
     }
   }
 
@@ -47,78 +51,92 @@ class AR3DMapView extends React.Component<Props, State> {
         SARMap.setAREnhancePosition()
       }
     })
+
+
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
-        this.showScanBt = true
         SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
 
-        SMap.openMapName('MapClip').then(async () => {
-          await SMap.openMap('MapClip')
-          const relativePositin: Vector3 = {
-            x: 0,
-            y: 0,
-            z: -0.5,
-          }
-          SExhibition.removeTempPoint()
-          this.result = result
-          SExhibition.addMapviewElement(0,{
-            pose: result,
-            translation: relativePositin
-          })
+        if(!isAr3dMapGuided()) {
+          setAr3dMapGuided()
+          this.showGuide(true)
+        } else {
+          this.start(result)
+        }
+      }
+    })
+  }
 
-          const _time = async function() {
-            return new Promise(function(resolve, reject) {
-              const timer = setTimeout(function() {
-                resolve('waitting send close message')
-                timer && clearTimeout(timer)
-              }, 1500)
-            })
-          }
-          await _time()
+  showGuide = (show: boolean) => {
+    this.setState({showGuide: show})
+  }
 
-          const loca = await SExhibition.getMapviewLocation()
+  start = (pose: Pose) => {
+    SMap.openMapName('MapClip').then(async () => {
+      await SMap.openMap('MapClip')
+      const relativePositin: Vector3 = {
+        x: 0,
+        y: 0,
+        z: -0.5,
+      }
+      SExhibition.removeTempPoint()
+      this.result = pose
+      SExhibition.addMapviewElement(0,{
+        pose: pose,
+        translation: relativePositin
+      })
 
-          const center: Vector3 = {
-            x: loca.centerx,
-            y: loca.centery,
-            z: loca.centerz,
-          }
-
-          const vertice0: Vector3 = {
-            x: loca.vertices[0].x,
-            y: loca.vertices[0].y,
-            z: loca.vertices[0].z,
-          }
-
-          const vertice1: Vector3 = {
-            x: loca.vertices[1].x,
-            y: loca.vertices[1].y,
-            z: loca.vertices[1].z,
-          }
-
-          const vertice2: Vector3 = {
-            x: loca.vertices[2].x,
-            y: loca.vertices[2].y,
-            z: loca.vertices[2].z,
-          }
-
-          const vertice3: Vector3 = {
-            x: loca.vertices[3].x,
-            y: loca.vertices[3].y,
-            z: loca.vertices[3].z,
-          }
-
-          SExhibition.setTrackingTarget({
-            center: center,
-            vertices: [vertice0,vertice1,vertice2,vertice3]
-          })
-          SExhibition.startTrackingTarget()
-
-          this.open = true
+      const _time = async function() {
+        return new Promise(function(resolve, reject) {
+          const timer = setTimeout(function() {
+            resolve('waitting send close message')
+            timer && clearTimeout(timer)
+          }, 1500)
         })
       }
+      await _time()
+
+      const loca = await SExhibition.getMapviewLocation()
+
+      const center: Vector3 = {
+        x: loca.centerx,
+        y: loca.centery,
+        z: loca.centerz,
+      }
+
+      const vertice0: Vector3 = {
+        x: loca.vertices[0].x,
+        y: loca.vertices[0].y,
+        z: loca.vertices[0].z,
+      }
+
+      const vertice1: Vector3 = {
+        x: loca.vertices[1].x,
+        y: loca.vertices[1].y,
+        z: loca.vertices[1].z,
+      }
+
+      const vertice2: Vector3 = {
+        x: loca.vertices[2].x,
+        y: loca.vertices[2].y,
+        z: loca.vertices[2].z,
+      }
+
+      const vertice3: Vector3 = {
+        x: loca.vertices[3].x,
+        y: loca.vertices[3].y,
+        z: loca.vertices[3].z,
+      }
+
+      SExhibition.setTrackingTarget({
+        center: center,
+        vertices: [vertice0,vertice1,vertice2,vertice3]
+      })
+      SExhibition.startTrackingTarget()
+
+      this.open = true
     })
   }
 
@@ -143,7 +161,6 @@ class AR3DMapView extends React.Component<Props, State> {
   }
 
   back = () => {
-    this.showScanBt = true
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
       this.setState({showScan: false})
@@ -157,7 +174,6 @@ class AR3DMapView extends React.Component<Props, State> {
   }
 
   startScan = () => {
-    this.showScanBt = false
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
     SMap.exitMap()
@@ -688,11 +704,26 @@ class AR3DMapView extends React.Component<Props, State> {
 
 
         {this.state.showScan && this.renderScan()}
-        {this.showScanBt && this.renderScanBtn()}
-        {this.renderBack()}
+        {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
+        {!this.state.showGuide && this.renderBack()}
         <ARArrow
           arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图')}
         />
+
+        <ARGuide
+          show={this.state.showGuide}
+          animationName={'Ar立体地图'}
+          onSkip={() => {
+            this.showGuide(false)
+          }}
+          onGuideEnd={() => {
+            const globlaPose = getGlobalPose()
+            if (globlaPose != null) {
+              this.start(globlaPose)
+            }
+          }}
+        />
+
       </>
     )
   }

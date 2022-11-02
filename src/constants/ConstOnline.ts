@@ -7,25 +7,36 @@ export interface TOnlineData {
   mapName: string,
 }
 
-const tiandituTokens = [
-  '31e87ef3554f75c1c9e6198ecb89d8eb',
-  '5cf044fdb0e9b5954c9fe936a15a09d3',
-  '241c3cb9c3c9666f822d4f9ab7b3e183',
-  '59071e185f4c7a30305e20b06f919c94',
-  '7d04ae15b6bb9d59d438cf7b2dadc867',
-  '06251553ded6308d9a5fce2b89270327',
-  '1b9a39b63a731de1ae2a328063f55297',
-  'afb813b539bdb93f10d4332bce28ac83',
-  '33757333f15cccf21c5c950de7699ac9',
-  '03dffb412a3f96f6404979826ec3651d',
-]
+// const tiandituTokens = [
+//   '31e87ef3554f75c1c9e6198ecb89d8eb',
+//   '5cf044fdb0e9b5954c9fe936a15a09d3',
+//   '241c3cb9c3c9666f822d4f9ab7b3e183',
+//   '59071e185f4c7a30305e20b06f919c94',
+//   '7d04ae15b6bb9d59d438cf7b2dadc867',
+//   '06251553ded6308d9a5fce2b89270327',
+//   '1b9a39b63a731de1ae2a328063f55297',
+//   'afb813b539bdb93f10d4332bce28ac83',
+//   '33757333f15cccf21c5c950de7699ac9',
+//   '03dffb412a3f96f6404979826ec3651d',
+// ]
 
+const tiandituTokens = [
+  '5345b22cb104489b013b6970fe34acc5',
+  '5345b22cb104489b013b6970fe34acc5',
+  '5345b22cb104489b013b6970fe34acc5',
+  '5345b22cb104489b013b6970fe34acc5',
+  '5345b22cb104489b013b6970fe34acc5',
+  '67ccdbe6cc313cfc77842ebe01756b1a',
+  '67ccdbe6cc313cfc77842ebe01756b1a',
+  '67ccdbe6cc313cfc77842ebe01756b1a',
+  '67ccdbe6cc313cfc77842ebe01756b1a',
+  '67ccdbe6cc313cfc77842ebe01756b1a',
+]
 function _getToken() {
   const rad = Math.ceil(Math.random() * 10) - 1
   const token = tiandituTokens[rad]
   return token
 }
-
 function tianditu(): TOnlineData {
   return {
     type: 'Datasource',

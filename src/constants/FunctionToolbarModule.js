@@ -338,22 +338,6 @@ function layerManagerData() {
       type: DatasetType.IMAGE,
       themeType: -1,
     },
-    // {
-    //   title: 'GaoDe',
-    //   action: () => OpenData(ConstOnline.GAODE, 0),
-    //   data: [],
-    //   image: getThemeAssets().layerType.layer_image,
-    //   type: DatasetType.IMAGE,
-    //   themeType: -1,
-    // },
-    // {
-    //   title: 'GaoDe Image',
-    //   action: () => OpenData(ConstOnline.GAODE, 1),
-    //   data: [],
-    //   image: getThemeAssets().layerType.layer_image,
-    //   type: DatasetType.IMAGE,
-    //   themeType: -1,
-    // },
     {
       title: 'BingMap',
       action: () => OpenData(ConstOnline.BingMap, 0),
@@ -431,6 +415,22 @@ function layerManagerData() {
         })
         global.SimpleDialog.setVisible(true)
       },
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'GaoDe',
+      action: () => OpenData(ConstOnline.GAODE, 0),
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'GaoDe Image',
+      action: () => OpenData(ConstOnline.GAODE, 1),
       data: [],
       image: getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,

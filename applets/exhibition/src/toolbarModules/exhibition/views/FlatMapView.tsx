@@ -12,6 +12,8 @@ import { flatMapImported, getGlobalPose, isFlatMapGuided, setFlatMapGuided, setG
 import { Pose } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import ARGuide from '../components/ARGuide'
 import { ILocalData } from '@/utils/DataHandler/DataLocal'
+import SideBar, { Item } from '../components/SideBar'
+import ImageList, { ImageItem } from '../components/ImageList'
 
 interface Props {
   windowSize: ScaledSize
@@ -20,6 +22,7 @@ interface Props {
 interface State {
   showScan: boolean
   showGuide: boolean
+  imageList: ImageItem[]
 }
 
 interface FlatMap {
@@ -30,14 +33,14 @@ interface FlatMap {
 const flatMaps: FlatMap[] = [
   {
     extFolderName: '台风登陆路径',
-    mapName: '2021年7号台风查帕卡(CEMPAKA)'
+    mapName: '台风登陆路径'
   },
   {
     extFolderName: '玛多地震',
     mapName: '玛多地震'
   },
   {
-    extFolderName: '红色足迹_71',
+    extFolderName: '红色足迹',
     mapName: '红色足迹'
   },
 ]
@@ -47,12 +50,135 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   isMapOpend = false
 
+  imageList: ImageList | null = null
+
   constructor(props: Props) {
     super(props)
 
     this.state = {
       showScan: getGlobalPose() == null,
-      showGuide: false
+      showGuide: false,
+      imageList: [],
+    }
+  }
+
+  getSideBarItems = (): Item[] => {
+    return [
+      {
+        image: getImage().icon_tool_reset,
+        title: '复位',
+        action: () => {
+          this.hideListIfAny()
+          SExhibition.onFlatFunctionPress('reset')
+        }
+      },
+      {
+        image: getImage().flat_ai_pic,
+        title: '配图',
+        action: () => {
+          this.setState({
+            imageList: this.getAiList()
+          })
+        }
+      },
+      {
+        image: getImage().flat_search,
+        title: '查询',
+        action: () => {
+          this.hideListIfAny()
+          SExhibition.onFlatFunctionPress('search')
+
+        }
+      },
+      {
+        image: getImage().flat_buffer,
+        title: '分析',
+        action: () => {
+          this.hideListIfAny()
+          SExhibition.onFlatFunctionPress('buffer')
+        }
+      },
+      {
+        image: getImage().flat_plot,
+        title: '标绘',
+        action: () => {
+          this.hideListIfAny()
+          SExhibition.onFlatFunctionPress('plot')
+        }
+      }
+    ]
+  }
+
+  getSideBarMapItems = (): Item[] => {
+    return [
+      {
+        image: getImage().flat_change_map,
+        action: () => {
+          this.setState({
+            imageList: this.getMapList()
+          })
+        }
+      }
+    ]
+  }
+
+  getMapList = (): ImageItem[] => {
+    return [
+      {
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail.png'},
+        path: '',
+        onTouch: () => {
+          this.hideListIfAny()
+          SExhibition.changeFlatMap(flatMaps[0].mapName)
+        }
+      },
+      {
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail2.png'},
+        path: '',
+        onTouch: () => {
+          this.hideListIfAny()
+          SExhibition.changeFlatMap(flatMaps[1].mapName)
+        }
+      },
+      {
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail3.png'},
+        path: '',
+        onTouch: () => {
+          this.hideListIfAny()
+          SExhibition.changeFlatMap(flatMaps[2].mapName)
+        }
+      },
+    ]
+  }
+
+  getAiList = (): ImageItem[] => {
+    return [
+      {
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/1.jpg'},
+        path: '/sdcard/iTablet/Common/Exhibition/AR平面地图/1.jpg',
+        onTouch: SExhibition.setAiPicture
+      },
+      {
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/2.jpg'},
+        path: '/sdcard/iTablet/Common/Exhibition/AR平面地图/2.jpg',
+        onTouch: SExhibition.setAiPicture
+      },
+      {
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/3.jpg'},
+        path: '/sdcard/iTablet/Common/Exhibition/AR平面地图/3.jpg',
+        onTouch: SExhibition.setAiPicture
+      },
+      {
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/4.jpg'},
+        path: '/sdcard/iTablet/Common/Exhibition/AR平面地图/4.jpg',
+        onTouch: SExhibition.setAiPicture
+      },
+    ]
+  }
+
+  hideListIfAny = () => {
+    if(this.state.imageList.length != 0) {
+      this.imageList?.hideList()
     }
   }
 
@@ -334,10 +460,28 @@ class FlatMapVIew extends React.Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描演示台上的二维码加载展示内容'}
+              {'请对准演示台上二维码进行扫描'}
             </Text>
           </View>
         </View>
+      </>
+    )
+  }
+
+  renderSideBar = () => {
+    return (
+      <>
+        <ImageList
+          ref={ref => this.imageList = ref}
+          data={this.state.imageList}
+        />
+        <SideBar
+          sections={[
+            this.getSideBarItems(),
+            this.getSideBarMapItems()
+          ]}
+          showIndicator
+        />
       </>
     )
   }
@@ -348,6 +492,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         {this.state.showScan && this.renderScan()}
         {!this.state.showGuide && this.renderBack()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}
+        {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
         <ARArrow
           arrowShowed={() => {
             Toast.show('请按照箭头引导转动屏幕查看地图')

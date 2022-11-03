@@ -8,7 +8,7 @@ import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
-import { getGlobalPose, isAr3dMapGuided, setAr3dMapGuided, setGolbalPose } from '../Actions'
+import { getGlobalPose, isAr3dMapGuided, setAr3dMapGuided, shouldRefresh3dMapData } from '../Actions'
 import { Pose } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import ARGuide from '../components/ARGuide'
 
@@ -142,10 +142,24 @@ class AR3DMapView extends React.Component<Props, State> {
 
   importData = async () => {
     const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
-    const hasFlatMap = data.some(item => {
+    const hasFlatMap = data.find(item => {
       return item.name === 'MapClip.xml'
     })
-    if(!hasFlatMap) {
+    let needToImport = await shouldRefresh3dMapData()
+
+    if(needToImport && hasFlatMap) {
+      //remove
+      // console.warn('remove')
+      const homePath = await FileTools.getHomeDirectory()
+      const mapPath = homePath + hasFlatMap.path
+      const mapExpPath = mapPath.substring(0, mapPath.lastIndexOf('.')) + '.exp'
+      await FileTools.deleteFile(mapPath)
+      await FileTools.deleteFile(mapExpPath)
+    } else if(!hasFlatMap) {
+      needToImport = true
+    }
+
+    if(needToImport) {
       const homePath = await FileTools.getHomeDirectory()
       const path = homePath + ConstPath.Common + 'Exhibition/AR立体地图/ChengduNew'
       const data = await DataHandler.getExternalData(path)
@@ -659,7 +673,7 @@ class AR3DMapView extends React.Component<Props, State> {
                 top: dp(80),
                 right: dp(10),
                 width: dp(50),
-                height: dp(180),
+                height: dp(120),
                 borderRadius: dp(10),
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -668,7 +682,7 @@ class AR3DMapView extends React.Component<Props, State> {
               }}
             >
               {this.renderjx()}
-              {this.renderyjx()}
+              {/* {this.renderyjx()} */}
               {this.renderyx()}
             </View>}
 

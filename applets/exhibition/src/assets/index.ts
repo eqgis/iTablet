@@ -84,6 +84,8 @@ const icon_tool_juxing = require('./icon_tool_juxing.png')
 const icon_tool_yuan = require('./icon_tool_yuan.png')
 const icon_tool_yuanjiaojx = require('./icon_tool_yuanjiaojx.png')
 
+import * as home_img from './home'
+
 const flat_ai_pic = require('./ar_exhibition_ai_pic.png')
 const flat_buffer = require('./ar_exhibition_buffer.png')
 const flat_plot = require('./ar_exhibition_plot.png')
@@ -177,6 +179,7 @@ const image = {
   icon_btn_action,
   icon_btn_action_selected,
 
+  ...home_img,
   flat_ai_pic,
   flat_buffer,
   flat_plot,

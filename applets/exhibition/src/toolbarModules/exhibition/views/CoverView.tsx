@@ -2,7 +2,7 @@ import { AppEvent, AppStyle, AppToolBar, Toast ,DataHandler} from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle,  Animated, } from 'react-native'
 import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
@@ -19,6 +19,8 @@ interface State {
   showSlider:boolean
   backClick:boolean
   showGuide:boolean
+  btRight:Animated.Value
+  btLeft:Animated.Value
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -28,6 +30,7 @@ class CoverView extends React.Component<Props, State> {
   scanRef: Scan | null = null
   coverClick = false
   fixClick = false
+  show = true
 
   constructor(props: Props) {
     super(props)
@@ -38,6 +41,12 @@ class CoverView extends React.Component<Props, State> {
       showSlider: false,
       backClick: true,
       showGuide: false,
+      btRight:new Animated.Value(
+        0,
+      ),
+      btLeft:new Animated.Value(
+        dp(20),
+      ),
     }
   }
 
@@ -219,8 +228,6 @@ class CoverView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(20),
-          left: dp(20),
           width: dp(60),
           height: dp(60),
           borderRadius: dp(25),
@@ -858,8 +865,7 @@ class CoverView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(80),
-          left: dp(20),
+          top: dp(60),
           width: dp(60),
           height: dp(60),
           borderRadius: dp(5),
@@ -894,21 +900,45 @@ class CoverView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        <View
+        <TouchableOpacity
           style={{
             position: 'absolute',
             right: 0,
-            width: dp(180),
+            width: '100%',
             height: '100%',
             // justifyContent: 'center',
             alignItems: 'flex-end',
           }}
+          onPress={()=>{
+            let right
+            let left
+            if (this.show) {
+              right = -200
+              left = -200
+            }else {
+              right = 0
+              left = dp(20)
+            }
+            this.show = !this.show
+            Animated.parallel([
+              Animated.timing(this.state.btRight, {
+                toValue: right,
+                duration: 300,
+                useNativeDriver: false,
+              }),
+              Animated.timing(this.state.btLeft, {
+                toValue: left,
+                duration: 300,
+                useNativeDriver: false,
+              }),
+            ]).start()
+          }}
         >
 
-          <View
+          <Animated.View
             style={{
               top: dp(50),
-              right: dp(0),
+              right: this.state.btRight,
               flexDirection: 'row',
             }}
           >
@@ -948,17 +978,28 @@ class CoverView extends React.Component<Props, State> {
               </View>
             </View>
 
-          </View>
+          </Animated.View>
 
-        </View>
+        </TouchableOpacity>
 
-
-
-        {this.state.showSlider && this.slider()}
 
         {this.state.showScan && this.renderScan()}
-        {!this.state.showGuide && this.renderBack()}
-        {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
+        {this.state.showSlider && this.slider()}
+        <Animated.View
+          style={{
+            position: 'absolute',
+            top: dp(20),
+            left: this.state.btLeft,
+            width: dp(60),
+            height: dp(200),
+            overflow: 'hidden',
+          }}
+        >
+
+          {!this.state.showGuide && this.renderBack()}
+          {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
+        </Animated.View>
+
 
 
         <ARGuide

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle ,Animated} from 'react-native'
 import { AppEvent, AppStyle, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
@@ -21,6 +21,8 @@ interface State {
   showScan: boolean
   showShape:boolean
   showGuide:boolean
+  btRight:Animated.Value
+  btLeft:Animated.Value
 }
 class AR3DMapView extends React.Component<Props, State> {
   scanRef: Scan | null = null
@@ -34,6 +36,7 @@ class AR3DMapView extends React.Component<Props, State> {
     qz: 0,
     qw: 0
   }
+  show = true
 
   constructor(props: Props) {
     super(props)
@@ -41,7 +44,13 @@ class AR3DMapView extends React.Component<Props, State> {
     this.state = {
       showScan: true,
       showShape:false,
-      showGuide: false
+      showGuide: false,
+      btRight:new Animated.Value(
+        0,
+      ),
+      btLeft:new Animated.Value(
+        dp(20),
+      ),
     }
   }
 
@@ -206,8 +215,7 @@ class AR3DMapView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(80),
-          left: dp(20),
+          top: dp(60),
           width: dp(60),
           height: dp(60),
           borderRadius: dp(5),
@@ -230,8 +238,6 @@ class AR3DMapView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(20),
-          left: dp(20),
           width: dp(60),
           height: dp(60),
           borderRadius: dp(25),
@@ -648,21 +654,45 @@ class AR3DMapView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        <View
+        <TouchableOpacity
           style={{
             position: 'absolute',
             right: 0,
-            width: dp(180),
+            width: '100%',
             height: '100%',
             // justifyContent: 'center',
             alignItems: 'flex-end',
           }}
+          onPress={()=>{
+            let right
+            let left
+            if (this.show) {
+              right = -200
+              left = -200
+            }else {
+              right = 0
+              left = dp(20)
+            }
+            this.show = !this.show
+            Animated.parallel([
+              Animated.timing(this.state.btRight, {
+                toValue: right,
+                duration: 300,
+                useNativeDriver: false,
+              }),
+              Animated.timing(this.state.btLeft, {
+                toValue: left,
+                duration: 300,
+                useNativeDriver: false,
+              }),
+            ]).start()
+          }}
         >
 
-          <View
+          <Animated.View
             style={{
               top: dp(50),
-              right: dp(0),
+              right: this.state.btRight,
               flexDirection: 'row',
             }}
           >
@@ -712,14 +742,29 @@ class AR3DMapView extends React.Component<Props, State> {
               </View>
             </View>
 
-          </View>
+          </Animated.View>
 
-        </View>
+        </TouchableOpacity>
 
 
         {this.state.showScan && this.renderScan()}
-        {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
-        {!this.state.showGuide && this.renderBack()}
+
+        <Animated.View
+          style={{
+            position: 'absolute',
+            top: dp(20),
+            left: this.state.btLeft,
+            width: dp(60),
+            height: dp(200),
+            overflow: 'hidden',
+          }}
+        >
+
+          {!this.state.showGuide && this.renderBack()}
+          {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
+        </Animated.View>
+
+
         <ARArrow
           arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图')}
         />

@@ -43,7 +43,6 @@ class CoverView extends React.Component<Props, State> {
 
   componentDidMount(): void {
     if(this.state.showScan) {
-      Toast.show('请对准地面上的二维码进行扫描')
       SARMap.setAREnhancePosition()
     }
 
@@ -674,7 +673,7 @@ class CoverView extends React.Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描演示台上的二维码加载展示内容'}
+              {'请扫描地面上的二维码加载展示内容'}
             </Text>
           </View>
         </View>

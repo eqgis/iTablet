@@ -48,7 +48,6 @@ class AR3DMapView extends React.Component<Props, State> {
   componentDidMount(): void {
     this.importData().then(() => {
       if(this.state.showScan) {
-        Toast.show('请对准演示台上二维码进行扫描')
         SARMap.setAREnhancePosition()
       }
     })

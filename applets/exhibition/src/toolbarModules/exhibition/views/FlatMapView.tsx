@@ -33,14 +33,14 @@ interface FlatMap {
 const flatMaps: FlatMap[] = [
   {
     extFolderName: '台风登陆路径',
-    mapName: '2021年7号台风查帕卡(CEMPAKA)'
+    mapName: '台风登陆路径'
   },
   {
     extFolderName: '玛多地震',
     mapName: '玛多地震'
   },
   {
-    extFolderName: '红色足迹_71',
+    extFolderName: '红色足迹',
     mapName: '红色足迹'
   },
 ]
@@ -129,7 +129,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         path: '',
         onTouch: () => {
           this.hideListIfAny()
-          SExhibition.changeFlatMap(0)
+          SExhibition.changeFlatMap(flatMaps[0].mapName)
         }
       },
       {
@@ -137,7 +137,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         path: '',
         onTouch: () => {
           this.hideListIfAny()
-          SExhibition.changeFlatMap(1)
+          SExhibition.changeFlatMap(flatMaps[1].mapName)
         }
       },
       {
@@ -145,7 +145,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         path: '',
         onTouch: () => {
           this.hideListIfAny()
-          SExhibition.changeFlatMap(2)
+          SExhibition.changeFlatMap(flatMaps[2].mapName)
         }
       },
     ]
@@ -460,7 +460,7 @@ class FlatMapVIew extends React.Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描演示台上的二维码加载展示内容'}
+              {'请对准演示台上二维码进行扫描'}
             </Text>
           </View>
         </View>

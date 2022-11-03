@@ -1466,10 +1466,11 @@ class DoctorCC extends Component<Props, State> {
   renderPhotoItem = (item: ModelAnimation) => {
     let image = getImage().icon_action_stand_by
     let title = item.name
-    let source = "greet.mp3"
+    let source = "standby.mp3"
     switch(item.name){
       case 'stand-by':
         image = getImage().icon_action_stand_by
+        source = "standby.mp3"
         title = "站立"
         break
       case '打招呼':

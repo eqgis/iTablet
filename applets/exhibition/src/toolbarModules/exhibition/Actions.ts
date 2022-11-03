@@ -36,6 +36,17 @@ export async function buildingImported() {
   buildingRefresh = needToImport
 }
 
+let ar3dMapRefresh = false
+export async function shouldRefresh3dMapData(): Promise<boolean> {
+  const needToImport = await SARMap.needToImport()
+  return needToImport && !ar3dMapRefresh
+}
+
+export async function ar3dMapImported() {
+  const needToImport = await SARMap.needToImport()
+  ar3dMapRefresh = needToImport
+}
+
 
 let flatMapGuided = true
 export function setFlatMapGuided() {

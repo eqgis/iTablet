@@ -43,6 +43,7 @@ class CoverView extends React.Component<Props, State> {
 
   componentDidMount(): void {
     if(this.state.showScan) {
+      Toast.show('请对准地面上的二维码进行扫描')
       SARMap.setAREnhancePosition()
     }
 

@@ -2421,7 +2421,7 @@ export const language_cn = {
   COMPLETE: "完成",
   INSTALL:"安装",
 
-  NO_PERMISSION: "应用缺少运行所需的权限!",
+  NO_PERMISSION: "应用缺少运行所需的权限,请在\"设置\"开启!",
   NO_PERMISSION_ALERT: "应用缺少运行所需的权限,\n会导致部分功能不能正常使用！",
   EXIT: "退出",
   CONTINUE: "继续",

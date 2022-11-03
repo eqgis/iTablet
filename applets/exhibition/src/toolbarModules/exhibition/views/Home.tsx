@@ -1,10 +1,13 @@
 import { getImage } from '../../../assets'
 import React from 'react'
-import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView, ImageBackground } from 'react-native'
+import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView, ImageBackground, PanResponder, PanResponderInstance, GestureResponderEvent } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { AppDialog, AppStyle, AppToolBar, dp ,Toast} from '@/utils'
+import { AppDialog, AppLog, AppStyle, AppToolBar, dp ,Toast} from '@/utils'
 import { Easing } from 'react-native'
 import { SARMap } from 'imobile_for_reactnative'
+import AnimatedUnit from '../components/AnimatedUnit'
+import Sound from 'react-native-sound'
+
 
 const AppUtils = NativeModules.AppUtils
 interface Props {
@@ -18,10 +21,18 @@ interface State {
     imgSize: Animated.Value,
     imgBottom: Animated.Value,
   }[],
+  initialPosition: {
+    left: number,
+    top: number,
+    right: number,
+    bottom: number,
+  },
+  currentIndex: number,
 }
 
 interface Item {
   image: ImageSourcePropType
+  selectedImage: ImageSourcePropType
   title: string
   desc: string
   action: () => void
@@ -31,6 +42,7 @@ const BG_WIDTH = dp(151)
 const BG_HEIGTH = dp(210)
 const IMG_SIZE = dp(110)
 const IMG_BOTTOM = dp(100)
+const CIRCLE_SIZE = dp(120)
 
 class Home extends React.Component<Props, State> {
 
@@ -43,6 +55,11 @@ class Home extends React.Component<Props, State> {
   //     new Animated.Value(1),
   //     new Animated.Value(1)
   //   ]
+  animatedUnit: AnimatedUnit | undefined | null
+  _panResponder: PanResponderInstance
+  container: View | undefined | null
+  containerHeight = 0
+  clickSound: Sound | undefined | null
 
   lastIndex = -1
   constructor(props: Props) {
@@ -59,7 +76,76 @@ class Home extends React.Component<Props, State> {
 
     this.state = {
       scales: scales,
+      initialPosition: {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+      },
+      currentIndex: -1,
     }
+
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: () => {
+        return true
+      },
+      onMoveShouldSetPanResponder: () => {
+        return true
+      },
+      onPanResponderGrant: () => {
+      },
+      onPanResponderMove: () => {
+        this._onPanResponderMove()
+      },
+      onPanResponderRelease: (evt: GestureResponderEvent) => {
+        this._onPanResponderRelease(evt)
+      },
+      onPanResponderTerminate: () => {
+      },
+    })
+  }
+
+  componentDidMount() {
+    try {
+      Sound.setCategory('Playback')
+      this.clickSound = new Sound('click.mp3', Sound.MAIN_BUNDLE, (error) => {
+        if (error) {
+          console.log('failed to load the sound', error)
+          return
+        }
+      })
+    } catch (error) {
+      __DEV__ && AppLog.error(error)
+    }
+  }
+
+  componentWillUnmount() {
+    this.clickSound?.stop()
+    this.clickSound?.release()
+  }
+
+  _onPanResponderMove = () => { }
+
+  _onPanResponderRelease = ({ nativeEvent }: GestureResponderEvent) => {
+    this.setState({
+      initialPosition: {
+        ...this.state.initialPosition,
+        left: nativeEvent.pageX,
+        top: nativeEvent.pageY - this.containerHeight + CIRCLE_SIZE / 3,
+      },
+    }, () => {
+      this.animatedUnit?.startAnimation()
+
+      this.clickSound?.stop(() => {
+        this.clickSound?.play((success) => {
+          if (success) {
+            console.log('successfully finished playing')
+          } else {
+            console.log('playback failed due to audio decoding errors')
+          }
+        })
+      })
+    })
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -70,6 +156,29 @@ class Home extends React.Component<Props, State> {
       return true
     }
     return false
+  }
+
+  _clickAction = ({ nativeEvent }: GestureResponderEvent, action?: () => void, delay = 0) => {
+    this.setState({
+      initialPosition: {
+        ...this.state.initialPosition,
+        left: nativeEvent.pageX,
+        top: nativeEvent.pageY - this.containerHeight + CIRCLE_SIZE / 3,
+      },
+    }, () => {
+      this.animatedUnit?.startAnimation()
+
+      this.clickSound?.stop(() => {
+        this.clickSound?.play()
+        if (delay > 0) {
+          setTimeout(() => {
+            action?.()
+          }, delay)
+        } else {
+          action?.()
+        }
+      })
+    })
   }
 
   scale = (current: number) => {
@@ -119,12 +228,12 @@ class Home extends React.Component<Props, State> {
           easing: Easing.linear,
           useNativeDriver: false,
         }),
-        Animated.timing(this.state.scales[current].imgSize, {
-          toValue: IMG_SIZE * 1.2,
-          duration: 160,
-          easing: Easing.linear,
-          useNativeDriver: false,
-        }),
+        // Animated.timing(this.state.scales[current].imgSize, {
+        //   toValue: IMG_SIZE * 1.2,
+        //   duration: 160,
+        //   easing: Easing.linear,
+        //   useNativeDriver: false,
+        // }),
         // Animated.timing(this.state.scales[current].imgBottom, {
         //   toValue: IMG_BOTTOM * 1.2,
         //   duration: 140,
@@ -165,15 +274,15 @@ class Home extends React.Component<Props, State> {
           duration: 200,
           easing: Easing.linear,
           useNativeDriver: false,
-          // delay: 200,
+          delay: 20,
         }),
-        // Animated.timing(this.state.scales[current].imgSize, {
-        //   toValue: IMG_SIZE * 1.2,
-        //   duration: 200,
-        //   easing: Easing.linear,
-        //   useNativeDriver: false,
-        //   delay: 200,
-        // }),
+        Animated.timing(this.state.scales[current].imgSize, {
+          toValue: IMG_SIZE * 1.2,
+          duration: 200,
+          easing: Easing.linear,
+          useNativeDriver: false,
+          delay: 20,
+        }),
       ])
       Animated.sequence([a1, a2, a3]).start()
     }
@@ -181,32 +290,9 @@ class Home extends React.Component<Props, State> {
 
   getItems = (): Item[]  => {
     return [
-      // {
-      //   image: getImage().ar_przt,
-      //   title: 'AR展示',
-      //   desc: '实景窗口投放虚拟内容，与投放内容进行互动',
-      //   action: () => {
-      //     AppToolBar.show('EXHIBITION', 'EXHIBITION_PRESENTATION')
-      //   }
-      // },
-      // {
-      //   image: getImage().ar_infra,
-      //   title: 'AR隐蔽设施',
-      //   desc: '查看地下、墙面、屋顶等隐蔽管线',
-      //   action: () => {
-      //     AppToolBar.show('EXHIBITION', 'EXHIBITION_INFRA')
-      //   }
-      // },
-      // {
-      //   image: getImage().ar_scan,
-      //   title: 'AR识别',
-      //   desc: 'AR扫一扫，图片内容增强显示',
-      //   action: () => {
-      //     AppToolBar.show('EXHIBITION', 'EXHIBITION_SCAN')
-      //   }
-      // },
       {
-        image: getImage().ar_dr_supermap,
+        image: getImage().ar_ccdoctor_unselected,
+        selectedImage: getImage().ar_ccdoctor_selected,
         title: 'AR超超博士',
         desc: '虚拟人物互动，一件换装，合影留念',
         action: () => {
@@ -214,7 +300,8 @@ class Home extends React.Component<Props, State> {
         }
       },
       {
-        image: getImage().ar_infra,
+        image: getImage().ar_infra_unselected,
+        selectedImage: getImage().ar_infra_selected,
         title: 'AR室内管线',
         desc: '地下、墙面、屋顶隐蔽管线浏览',
         action: async() => {
@@ -227,15 +314,18 @@ class Home extends React.Component<Props, State> {
         }
       },
       {
-        image: getImage().ar_supermap_building,
-        title: 'AR超图大厦',
+        image: getImage().ar_sandbox_unselected,
+        selectedImage: getImage().ar_sandbox_selected,
+        title: 'AR景区沙盘',
         desc: '建筑立体模型浏览、剖切，灯效显示',
         action: () => {
           AppToolBar.show('EXHIBITION', 'EXHIBITION_SUPERMAP_BUILDING')
+          // AppToolBar.show('EXHIBITION', 'EXHIBITION_SANDBOX')
         }
       },
       {
-        image: getImage().ar_3d_map,
+        image: getImage().ar_3d_map_unselected,
+        selectedImage: getImage().ar_3d_map_selected,
         title: 'AR立体地图',
         desc: '立体地图交互浏览，车辆模拟',
         action: () => {
@@ -243,7 +333,8 @@ class Home extends React.Component<Props, State> {
         }
       },
       {
-        image: getImage().ar_flat_map,
+        image: getImage().ar_flat_map_unselected,
+        selectedImage: getImage().ar_flat_map_selected,
         title: 'AR平面地图',
         desc: '二维地图浏览、配图、分析、查询',
         action: () => {
@@ -266,7 +357,7 @@ class Home extends React.Component<Props, State> {
     return (
       <View
         style={{
-          width: BG_WIDTH * 1.2,
+          width: BG_WIDTH,
           // height: this.state.scales[index].bgHeight,
           // marginHorizontal: dp(13),
           alignItems: 'center',
@@ -286,68 +377,24 @@ class Home extends React.Component<Props, State> {
               alignItems: 'center',
             }}
             activeOpacity={0.9}
-            // onPress={() => {
-            //   this.scale(index)
-            // }}
-            onPressIn={() => {
-              this.scale(index)
+            onPressOut={(e) => {
+              // this.scale(index)
+              // this.setState({
+              //   currentIndex: index,
+              // })
+              this._clickAction(e, () => {
+                this.setState({
+                  currentIndex: index,
+                })
+              })
             }}
-            // onPressOut={() => {
-            //   this.scale(index)
-            // }}
-            // disabled={true /**this.isPortrait */}
-            // onPress={item.action}
           >
             <ImageBackground
               style={{position: 'absolute', width: '100%', height: '100%', justifyContent: 'flex-end'}}
-              source={getImage().background_transparent}
-              resizeMode="stretch"
+              source={this.state.currentIndex === index ? item.selectedImage : item.image}
+              resizeMode='contain'
             >
-              <View style={{marginHorizontal: dp(8), paddingVertical: dp(13)}}>
-                <View style={{width: '100%', alignItems: 'center'}}>
-                  <View style={{width: dp(140), justifyContent: 'center'}}>
-                    <Text style={[AppStyle.h2, {fontWeight: 'bold'}]}>
-                      {item.title}
-                    </Text>
-                    <Text style={[AppStyle.h3, {color: '#191919'}]}>
-                      {item.desc}
-                    </Text>
-                  </View>
-                </View>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    width: dp(70),
-                    height: dp(30),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: dp(20),
-                    overflow: 'hidden',
-                    marginTop: dp(5),
-                  }}
-                  onPress={item.action}
-                >
-                  <Image
-                    style={{position: 'absolute', width: '100%', height: '100%'}}
-                    source={getImage().background_red}
-                    resizeMode="stretch"
-                  />
-                  <Text style={[AppStyle.h3, {color: 'white'}]}>
-                    {'进入'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
             </ImageBackground>
-            <Animated.Image
-              source={item.image}
-              style={{
-                position: 'absolute',
-                width: this.state.scales[index].imgSize,
-                height: this.state.scales[index].imgSize,
-                // top: -20,
-                bottom: this.state.scales[index].imgBottom,
-              }}
-            />
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -393,36 +440,109 @@ class Home extends React.Component<Props, State> {
     )
   }
 
+  renderStartButton = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          bottom: dp(26),
+          left: '50%',
+          right: '50%',
+          width: dp(160),
+          height: dp(41),
+          marginLeft: dp(-80),
+        }}
+        onPress={(e: GestureResponderEvent) => {
+          if (this.state.currentIndex === -1) {
+            Toast.show('请选择模块')
+            return
+          }
+          this._clickAction(e, () => {
+            const item = this.getItems()[this.state.currentIndex]
+            item?.action()
+          }, 1000)
+        }}
+      >
+        <Image
+          style={{
+            width: dp(160),
+            height: dp(41),
+          }}
+          source={this.state.currentIndex > -1 ? getImage().btn_start_selected : getImage().btn_start_unselected}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  onLayout = () => {
+    this.container?.measure((x, y, width, height) => {
+      this.containerHeight = height
+    })
+  }
 
   isPortrait = this.props.windowSize.height > this.props.windowSize.width
   render() {
     this.isPortrait = this.props.windowSize.height > this.props.windowSize.width
     return(
       <View
-        style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'center'}]}
+        ref={ref => { this.container = ref }}
+        style={[StyleSheet.absoluteFill, { justifyContent: 'center' }]}
+        {...this._panResponder.panHandlers}
+        onLayout={this.onLayout}
+        pointerEvents={'box-none'}
       >
-        {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
-        <TouchableOpacity
-          style={{
+        <ImageBackground
+          style={[StyleSheet.absoluteFill, {
             position: 'absolute',
-            top: dp(25),
-            right: dp(20),
-          }}
-          onPress={() => {
-            AppDialog.show({
-              text: '是否退出展厅应用？',
-              confirm: AppUtils.AppExit
-            })
-          }}
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            justifyContent: 'center',
+          }]}
+          source={getImage().img_bg}
+          resizeMode="stretch"
         >
+
           <Image
             style={{
-              width: dp(50),
-              height: dp(50)
+              position: 'absolute',
+              top: dp(0),
+              bottom: dp(176),
+              left: '50%',
+              right: '50%',
+              marginLeft: dp(-176),
+              width: dp(352),
+              height: dp(139),
             }}
-            source={getImage().close}
+            source={getImage().img_bg_title}
+            resizeMode="contain"
           />
-        </TouchableOpacity>
+          {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
+          {this.renderStartButton()}
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              top: dp(21),
+              right: dp(24),
+            }}
+            onPress={() => {
+              AppDialog.show({
+                text: '是否退出展厅应用？',
+                confirm: AppUtils.AppExit
+              })
+            }}
+          >
+            <Image
+              style={{
+                width: dp(50),
+                height: dp(50)
+              }}
+              source={getImage().icon_other_quit}
+            />
+          </TouchableOpacity>
+          <AnimatedUnit ref={ref => this.animatedUnit = ref} initialPosition={this.state.initialPosition} endDiameter={CIRCLE_SIZE} />
+        </ImageBackground>
       </View>
     )
   }

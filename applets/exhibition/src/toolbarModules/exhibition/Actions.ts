@@ -74,3 +74,12 @@ export function setCoverGuided() {
 export function isCoverGuided() {
   return coverGuided
 }
+
+let doctorMapGuided = false
+export function setDoctorMapGuided() {
+  doctorMapGuided = true
+}
+
+export function isDoctorMapGuided() {
+  return doctorMapGuided
+}

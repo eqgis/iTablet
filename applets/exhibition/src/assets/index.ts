@@ -84,6 +84,12 @@ const icon_tool_juxing = require('./icon_tool_juxing.png')
 const icon_tool_yuan = require('./icon_tool_yuan.png')
 const icon_tool_yuanjiaojx = require('./icon_tool_yuanjiaojx.png')
 
+const flat_ai_pic = require('./ar_exhibition_ai_pic.png')
+const flat_buffer = require('./ar_exhibition_buffer.png')
+const flat_plot = require('./ar_exhibition_plot.png')
+const flat_search = require('./ar_exhibition_search.png')
+const flat_change_map = require('./flat_map.png')
+
 const image = {
   scan,
   scan_circle,
@@ -170,6 +176,12 @@ const image = {
   close,
   icon_btn_action,
   icon_btn_action_selected,
+
+  flat_ai_pic,
+  flat_buffer,
+  flat_plot,
+  flat_search,
+  flat_change_map,
 }
 
 function getImage(): typeof image {

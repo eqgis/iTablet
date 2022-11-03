@@ -487,7 +487,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
   checkSenceAndToolType = () => {
     const props = AppToolBar.getProps()
     if (!props.arMap.currentMap) {
-      Toast.show('请先扫描二维码,打开超图大厦')
+      Toast.show('请对准演示台上二维码进行扫描')
       return false
     }
     return true
@@ -810,7 +810,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描演示台上的二维码加载展示内容'}
+              {'请对准演示台上二维码进行扫描'}
             </Text>
           </View>
         </View>

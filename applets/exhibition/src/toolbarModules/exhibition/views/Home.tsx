@@ -108,7 +108,7 @@ class Home extends React.Component<Props, State> {
   componentDidMount() {
     try {
       Sound.setCategory('Playback')
-      this.clickSound = new Sound('click.mp3', Sound.MAIN_BUNDLE, (error) => {
+      this.clickSound = new Sound('homeclick.mp3', Sound.MAIN_BUNDLE, (error) => {
         if (error) {
           console.log('failed to load the sound', error)
           return

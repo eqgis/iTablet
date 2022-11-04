@@ -92,6 +92,13 @@ const flat_plot = require('./ar_exhibition_plot.png')
 const flat_search = require('./ar_exhibition_search.png')
 const flat_change_map = require('./flat_map.png')
 
+const icon_tool_rolling = require('./icon_tool_rolling.png')
+const icon_tool_rolling_select = require('./icon_tool_rolling_select.png')
+const icon_tool_horizontal = require('./icon_tool_horizontal.png')
+const icon_tool_horizontal_select = require('./icon_tool_horizontal_select.png')
+const icon_tool_vertical = require('./icon_tool_vertical.png')
+const icon_tool_vertical_select = require('./icon_tool_vertical_select.png')
+
 const image = {
   scan,
   scan_circle,
@@ -185,6 +192,13 @@ const image = {
   flat_plot,
   flat_search,
   flat_change_map,
+
+  icon_tool_rolling,
+  icon_tool_rolling_select,
+  icon_tool_horizontal,
+  icon_tool_horizontal_select,
+  icon_tool_vertical,
+  icon_tool_vertical_select,
 }
 
 function getImage(): typeof image {

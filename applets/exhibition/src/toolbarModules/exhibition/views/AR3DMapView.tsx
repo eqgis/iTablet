@@ -693,6 +693,7 @@ class AR3DMapView extends React.Component<Props, State> {
           <Animated.View
             style={{
               top: dp(50),
+              height: '100%',
               right: this.state.btRight,
               flexDirection: 'row',
             }}
@@ -701,7 +702,7 @@ class AR3DMapView extends React.Component<Props, State> {
             {this.state.showShape && <View
               style={{
                 // position: 'absolute',
-                top: dp(80),
+                top: dp(70),
                 right: dp(10),
                 width: dp(50),
                 height: dp(120),
@@ -721,7 +722,6 @@ class AR3DMapView extends React.Component<Props, State> {
             <View>
               <View
                 style={{
-                  top: dp(10),
                   borderTopLeftRadius: dp(10),
                   borderBottomLeftRadius: dp(10),
                   backgroundColor: 'rgba(30,30,30,0.65)',
@@ -733,7 +733,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
               <View
                 style={{
-                  top: dp(20),
+                  top: dp(10),
                   borderTopLeftRadius: dp(10),
                   borderBottomLeftRadius: dp(10),
                   backgroundColor: 'rgba(30,30,30,0.65)',

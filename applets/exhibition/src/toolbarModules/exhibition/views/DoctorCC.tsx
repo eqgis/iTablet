@@ -850,6 +850,9 @@ class DoctorCC extends Component<Props, State> {
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     }
 
+    // 暂时隐藏箭头追踪功能
+    SExhibition.stopTrackingTarget()
+
     this.setState({
       selectType: 'photo',
       isShowFull: true,

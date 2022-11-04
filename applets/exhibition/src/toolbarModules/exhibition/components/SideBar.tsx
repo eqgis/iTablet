@@ -109,13 +109,7 @@ class SideBar extends React.Component<Props, State> {
 
   render() {
     return (
-      <View
-        style={{
-          position: 'absolute',
-          top: dp(10),
-          right: 0,
-        }}
-      >
+      <View>
         {
           this.props.sections.map((section, index) => {
             return this.renderSection(section, index)

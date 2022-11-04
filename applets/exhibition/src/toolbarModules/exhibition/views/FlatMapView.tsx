@@ -2,7 +2,7 @@ import { AppEvent, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle, Animated } from 'react-native'
 import Scan from '../components/Scan'
 import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
@@ -23,6 +23,7 @@ interface State {
   showScan: boolean
   showGuide: boolean
   imageList: ImageItem[]
+  showSide: boolean
 }
 
 interface FlatMap {
@@ -59,6 +60,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       showScan: getGlobalPose() == null,
       showGuide: false,
       imageList: [],
+      showSide: true
     }
   }
 
@@ -212,6 +214,11 @@ class FlatMapVIew extends React.Component<Props, State> {
         this.start(globlaPose)
       }
     }
+    AppEvent.addListener('ar_single_click', this.onSingleClick)
+  }
+
+  onSingleClick = () => {
+    this.setState({showSide: !this.state.showSide})
   }
 
   showGuide = (show: boolean) => {
@@ -302,6 +309,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       return
     }
     AppEvent.removeListener('ar_image_tracking_result')
+    AppEvent.removeListener('ar_single_click', this.onSingleClick)
     SExhibition.stopTrackingTarget()
     SExhibition.removeFlatMap()
     AppToolBar.goBack()
@@ -316,49 +324,63 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   renderBack = () => {
     return (
-      <TouchableOpacity
+      <AnimationWrap
+        range={[-100, dp(20)]}
+        animated={'left'}
+        visible={this.state.showSide}
         style={{
           position: 'absolute',
           top: dp(20),
-          left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(25),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
         }}
-        onPress={this.back}
       >
-        <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
-          source={getImage().icon_return}
-        />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: dp(60),
+            height: dp(60),
+            borderRadius: dp(25),
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+          }}
+          onPress={this.back}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_return}
+          />
+        </TouchableOpacity>
+      </AnimationWrap>
     )
   }
 
   renderScanIcon = () => {
     return (
-      <TouchableOpacity
+      <AnimationWrap
+        range={[-100, dp(20)]}
+        animated={'left'}
+        visible={this.state.showSide}
         style={{
           position: 'absolute',
           top: dp(80),
-          left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(25),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
         }}
-        onPress={this.startScan}
       >
-        <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
-          source={getImage().icon_other_scan}
-        />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: dp(60),
+            height: dp(60),
+            borderRadius: dp(25),
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+          }}
+          onPress={this.startScan}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={getImage().icon_other_scan}
+          />
+        </TouchableOpacity>
+      </AnimationWrap>
     )
   }
 
@@ -475,13 +497,25 @@ class FlatMapVIew extends React.Component<Props, State> {
           ref={ref => this.imageList = ref}
           data={this.state.imageList}
         />
-        <SideBar
-          sections={[
-            this.getSideBarItems(),
-            this.getSideBarMapItems()
-          ]}
-          showIndicator
-        />
+        <AnimationWrap
+          range={[-100, 0]}
+          animated={'right'}
+          visible={this.state.showSide}
+          style={{
+            position: 'absolute',
+            top: dp(10),
+            // right: 0,
+          }}
+        >
+          <SideBar
+            sections={[
+              this.getSideBarItems(),
+              this.getSideBarMapItems()
+            ]}
+            showIndicator
+          />
+        </AnimationWrap>
+
       </>
     )
   }
@@ -518,3 +552,67 @@ class FlatMapVIew extends React.Component<Props, State> {
 }
 
 export default FlatMapVIew
+
+
+
+interface AnimationWrapProps extends React.ClassAttributes<AnimationWrap>{
+  visible: boolean
+  style: ViewStyle
+  range: [number, number]
+  animated: 'left' | 'right' | 'top' | 'bottom'
+}
+
+class AnimationWrap extends React.Component<AnimationWrapProps> {
+
+
+  value: Animated.Value
+
+  constructor(props: AnimationWrapProps) {
+    super(props)
+
+    this.value = new Animated.Value(props.range[props.visible ? 1 : 0])
+  }
+
+  componentDidUpdate(prevProps: Readonly<AnimationWrapProps>): void {
+    if(prevProps.visible !== this.props.visible) {
+      if(this.props.visible) {
+        this.show()
+      } else {
+        this.hide()
+      }
+    }
+  }
+
+  show = () => {
+    Animated.timing(this.value, {
+      toValue: this.props.range[1],
+      duration: 500,
+      useNativeDriver: false
+    }).start()
+  }
+
+  hide = () =>{
+    Animated.timing(this.value, {
+      toValue: this.props.range[0],
+      duration: 300,
+      useNativeDriver: false
+    }).start()
+  }
+
+  render(): React.ReactNode {
+    return (
+      <Animated.View
+        style={[
+          this.props.style,
+          this.props.animated === 'bottom' && { bottom: this.value},
+          this.props.animated === 'top' && { top: this.value},
+          this.props.animated === 'left' && { left: this.value},
+          this.props.animated === 'right' && { right: this.value},
+        ]}
+      >
+        {this.props.children}
+      </Animated.View>
+    )
+  }
+
+}

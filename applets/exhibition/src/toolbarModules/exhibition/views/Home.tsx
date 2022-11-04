@@ -422,8 +422,8 @@ class Home extends React.Component<Props, State> {
 
   renderStatic = () => {
     return (
-      <View style={{paddingHorizontal: dp(10)}}>
-        <ScrollView
+      <View style={{paddingHorizontal: dp(10), flexDirection: 'row', justifyContent: 'space-around'}}>
+        {/* <ScrollView
           horizontal
           style={{
             height: BG_HEIGTH * 1.5,
@@ -434,11 +434,11 @@ class Home extends React.Component<Props, State> {
             // backgroundColor: 'yellow',
           }}
           showsHorizontalScrollIndicator={false}
-        >
-          {this.getItems().map((item, index) => {
-            return this.renderLItem(item, index)
-          })}
-        </ScrollView>
+        > */}
+        {this.getItems().map((item, index) => {
+          return this.renderLItem(item, index)
+        })}
+        {/* </ScrollView> */}
       </View>
     )
   }

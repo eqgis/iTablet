@@ -61,6 +61,30 @@ class AR3DMapView extends React.Component<Props, State> {
       }
     })
 
+    AppEvent.addListener('ar_single_click', () =>{
+      let right
+      let left
+      if (this.show) {
+        right = -200
+        left = -200
+      }else {
+        right = 0
+        left = dp(20)
+      }
+      this.show = !this.show
+      Animated.parallel([
+        Animated.timing(this.state.btRight, {
+          toValue: right,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.btLeft, {
+          toValue: left,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+      ]).start()
+    })
 
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
@@ -190,6 +214,7 @@ class AR3DMapView extends React.Component<Props, State> {
       return
     }
     AppEvent.removeListener('ar_image_tracking_result')
+    AppEvent.removeListener('ar_single_click')
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
     SMap.exitMap()
@@ -654,7 +679,7 @@ class AR3DMapView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        <TouchableOpacity
+        <View
           style={{
             position: 'absolute',
             right: 0,
@@ -662,30 +687,6 @@ class AR3DMapView extends React.Component<Props, State> {
             height: '100%',
             // justifyContent: 'center',
             alignItems: 'flex-end',
-          }}
-          onPress={()=>{
-            let right
-            let left
-            if (this.show) {
-              right = -200
-              left = -200
-            }else {
-              right = 0
-              left = dp(20)
-            }
-            this.show = !this.show
-            Animated.parallel([
-              Animated.timing(this.state.btRight, {
-                toValue: right,
-                duration: 300,
-                useNativeDriver: false,
-              }),
-              Animated.timing(this.state.btLeft, {
-                toValue: left,
-                duration: 300,
-                useNativeDriver: false,
-              }),
-            ]).start()
           }}
         >
 
@@ -744,7 +745,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
           </Animated.View>
 
-        </TouchableOpacity>
+        </View>
 
 
         {this.state.showScan && this.renderScan()}

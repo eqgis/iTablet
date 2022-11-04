@@ -28,4 +28,5 @@ export interface Event {
 
   'ar_image_tracking_result': Pose
 
+  'ar_single_click':undefined
 }

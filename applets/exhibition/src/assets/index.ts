@@ -91,6 +91,9 @@ const flat_buffer = require('./ar_exhibition_buffer.png')
 const flat_plot = require('./ar_exhibition_plot.png')
 const flat_search = require('./ar_exhibition_search.png')
 const flat_change_map = require('./flat_map.png')
+const icon_weChat = require('./icon_weChat.png')
+const icon_route = require('./icon_route.png')
+const icon_route_selected = require('./icon_route_selected.png')
 
 const image = {
   scan,
@@ -185,6 +188,9 @@ const image = {
   flat_plot,
   flat_search,
   flat_change_map,
+  icon_weChat,
+  icon_route_selected,
+  icon_route,
 }
 
 function getImage(): typeof image {

@@ -487,6 +487,8 @@ class DoctorCC extends Component<Props, State> {
         isShowFull: false,
         selectAnimationKey: -1,
         isVideoGuideShow: false,
+        selectRouteKey: 'null',
+        photoBtnKey: 'null',
       })
       return
     }
@@ -1062,17 +1064,18 @@ class DoctorCC extends Component<Props, State> {
           position: 'absolute',
           top: dp(20),
           left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.back}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={getImage().icon_return}
         />
       </TouchableOpacity>
@@ -1085,19 +1088,20 @@ class DoctorCC extends Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(80),
+          top: dp(75),
           left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.showScan}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={getImage().icon_other_scan}
         />
       </TouchableOpacity>
@@ -1110,23 +1114,24 @@ class DoctorCC extends Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(80),
+          top: dp(75),
           left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.photoBtnOnpress}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={this.state.isSecondaryShow && (
             (this.state.selectType === 'photo' && this.state.photoBtnKey === 'action')
           )
-            ? getImage().icon_btn_action_selected : getImage().icon_btn_action}
+            ? getImage().icon_action_selected : getImage().icon_action}
         />
       </TouchableOpacity>
     )
@@ -1140,26 +1145,25 @@ class DoctorCC extends Component<Props, State> {
           position: 'absolute',
           top: dp(130),
           left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         },
-        { backgroundColor: '#fff', opacity: 0.7, width: dp(43), height: dp(43), borderRadius: dp(14), top: dp(140),left: dp(29),},
         ]}
         onPress={this.routeBtnOnpress}
       >
         <Image
           style={[
-            { position: 'absolute', width: '100%', height: '100%' },
-            {width: dp(30), height: dp(30)}
+            { position: 'absolute', width: dp(30), height: dp(30)},
           ]}
           source={this.state.isSecondaryShow && (
             (this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')
           )
-            ? getImage().tool_location_selected : getImage().tool_location}
+            ? getImage().icon_route_selected : getImage().icon_route}
         />
       </TouchableOpacity>
     )
@@ -1171,23 +1175,22 @@ class DoctorCC extends Component<Props, State> {
       <TouchableOpacity
         style={[{
           position: 'absolute',
-          top: dp(150),
+          top: dp(185),
           left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         },
-        { backgroundColor: '#fff', opacity: 0.7, width: dp(43), height: dp(43), borderRadius: dp(14), top: dp(190),left: dp(29),},
         ]}
         onPress={this.operationBtnOnpress}
       >
         <Image
           style={[
-            { position: 'absolute', width: '100%', height: '100%' },
-            {width: dp(30), height: dp(30)}
+            { position: 'absolute', width: dp(30), height: dp(30) },
           ]}
           source={this.state.isSecondaryShow && (
             (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation')
@@ -1297,7 +1300,7 @@ class DoctorCC extends Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描地面上的二维码加载展示内容'}
+              {'请对准地面上的二维码进行扫描'}
             </Text>
           </View>
         </View>
@@ -1313,16 +1316,16 @@ class DoctorCC extends Component<Props, State> {
         style={{
           position: 'absolute',
           top: dp(40),
-          right: dp(0),
+          right: dp(10),
           width: dp(50),
           height: dp(50),
-          // borderRadius: dp(5),
-          borderTopLeftRadius: dp(10),
-          borderBottomLeftRadius: dp(10),
+          borderRadius: dp(10),
+          // borderTopLeftRadius: dp(10),
+          // borderBottomLeftRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'flex-end',
           overflow: 'hidden',
-          backgroundColor: '#fff',
+          backgroundColor: 'transparent',
         }}
       >
         <TouchableOpacity
@@ -1334,9 +1337,9 @@ class DoctorCC extends Component<Props, State> {
           <View
             style={[
               styles.functionItemImageView,
-              this.state.selectType === 'speak' && {
-                borderRightColor: '#f24f02'
-              }
+              // this.state.selectType === 'speak' && {
+              //   borderRightColor: '#f24f02'
+              // }
             ]}
           >
             <Image
@@ -1357,16 +1360,16 @@ class DoctorCC extends Component<Props, State> {
         style={{
           position: 'absolute',
           top: dp(100),
-          right: dp(0),
+          right: dp(10),
           width: dp(50),
           // height: dp(50),
-          // borderRadius: dp(5),
-          borderTopLeftRadius: dp(10),
-          borderBottomLeftRadius: dp(10),
+          borderRadius: dp(10),
+          // borderTopLeftRadius: dp(10),
+          // borderBottomLeftRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'flex-end',
           overflow: 'hidden',
-          backgroundColor: '#fff',
+          backgroundColor: 'transparent',
         }}
       >
         <TouchableOpacity
@@ -1378,9 +1381,9 @@ class DoctorCC extends Component<Props, State> {
           <View
             style={[
               styles.functionItemImageView,
-              this.state.selectType === 'action' && {
-                borderRightColor: '#f24f02'
-              }
+              // this.state.selectType === 'action' && {
+              //   borderRightColor: '#f24f02'
+              // }
             ]}
           >
             <Image
@@ -1498,7 +1501,7 @@ class DoctorCC extends Component<Props, State> {
             width: dp(100),
             height: dp(100),
             marginHorizontal: dp(5),
-            backgroundColor: 'rgba(255, 255, 255, .9)',
+            backgroundColor: 'rgba(0, 0, 0, .5)',
             borderRadius: dp(8),
             overflow: 'hidden',
             // opacity: 0.9,
@@ -1585,14 +1588,14 @@ class DoctorCC extends Component<Props, State> {
           ]}
         />
         <View style={[
-          {backgroundColor: '#fff', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
+          {backgroundColor: '#000', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
           this.state.selectSpeakKey === item.key && {
             backgroundColor:"#f24f02",
             height: dp(23)
           },
         ]} >
           <Text style={[
-            {fontSize:dp(12), color: '#000'},
+            {fontSize:dp(12), color: '#fff'},
             this.state.selectSpeakKey === item.key && {
               color:"#fff",
             },
@@ -1804,7 +1807,7 @@ class DoctorCC extends Component<Props, State> {
             justifyContent: 'center',
             alignItems: 'center',
             overflow: 'hidden',
-            backgroundColor: 'rgba(255, 255, 255, .9)',
+            backgroundColor: 'rgba(0, 0, 0, .5)',
             borderRadius: dp(8),
           },
           this.state.selectAnimationKey === item.id && {
@@ -1955,14 +1958,14 @@ class DoctorCC extends Component<Props, State> {
           ]}
         />
         <View style={[
-          {backgroundColor: '#fff', width: '100%', height: dp(18), justifyContent: 'center', alignItems: 'center'},
+          {backgroundColor: '#000', width: '100%', height: dp(18), justifyContent: 'center', alignItems: 'center'},
           this.state.selectAnimationKey === item.id && {
             height: dp(22),
             backgroundColor: '#f24f02',
           }
         ]} >
           <Text style={[
-            {fontSize:dp(10), color: '#000'},
+            {fontSize:dp(10), color: '#fff'},
             this.state.selectAnimationKey === item.id && {
               color: '#fff',
             }
@@ -2010,7 +2013,7 @@ class DoctorCC extends Component<Props, State> {
             width: dp(100),
             height: dp(100),
             marginHorizontal: dp(5),
-            backgroundColor: 'rgba(255, 255, 255, .9)',
+            backgroundColor: 'rgba(0, 0, 0, .5)',
             borderRadius: dp(8),
             overflow: 'hidden',
             // opacity: 0.9,
@@ -2040,14 +2043,14 @@ class DoctorCC extends Component<Props, State> {
           ]}
         />
         <View style={[
-          {backgroundColor: '#fff', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
+          {backgroundColor: '#000', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
           this.state.selectRouteKey === item.key && {
             backgroundColor:"#f24f02",
             height: dp(23)
           },
         ]} >
           <Text style={[
-            {fontSize:dp(12), color: '#000'},
+            {fontSize:dp(12), color: '#fff'},
             this.state.selectRouteKey === item.key && {
               color:"#fff",
             },
@@ -2171,7 +2174,7 @@ class DoctorCC extends Component<Props, State> {
               >
                 <Image
                   style={[styles.imageBtnImg]}
-                  source={getThemeAssets().share.wechat}
+                  source={getImage().icon_weChat}
                 />
               </View>
 
@@ -2372,7 +2375,7 @@ class DoctorCC extends Component<Props, State> {
               >
                 <Image
                   style={[styles.imageBtnImg]}
-                  source={getThemeAssets().share.wechat}
+                  source={getImage().icon_weChat}
                 />
               </View>
 
@@ -2502,7 +2505,7 @@ class DoctorCC extends Component<Props, State> {
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
         {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'video' || (this.state.selectType === 'photo' && this.state.photoBtnKey === 'action')) && this.renderActionSelected()}
-        {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'video' || (this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')) && this.renderPhotoPositionSelected()}
+        {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')) && this.renderPhotoPositionSelected()}
 
         {/* 右边按钮 */}
         {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
@@ -2515,7 +2518,7 @@ class DoctorCC extends Component<Props, State> {
         {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
         {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
-        {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()}
+        {/* {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()} */}
 
         {/* 合影的界面 */}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
@@ -2570,9 +2573,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: 'white',
+    backgroundColor: '#000',
     // borderRightWidth: dp(2),
     // borderRightColor: '#fff',
+    opacity: 0.6
   },
   functionItemImageView: {
     justifyContent: 'center',
@@ -2580,8 +2584,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: dp(50),
     height: dp(42),
-    borderRightWidth: dp(2),
-    borderRightColor: '#fff',
+    // borderRightWidth: dp(2),
+    // borderRightColor: '#fff',
   },
   functionItemImagee: {
     // position: 'absolute',
@@ -2590,6 +2594,7 @@ const styles = StyleSheet.create({
   },
   functionItemText: {
     fontSize:10,
+    color: '#fff',
   },
 
   ReloaderItem: {
@@ -2616,7 +2621,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: dp(45),
     height: dp(45),
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
+    opacity: 0.7,
     borderRadius: dp(10),
   },
   imageBtnImg: {

@@ -380,7 +380,7 @@ class AR3DMapView extends React.Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描演示台上的二维码加载展示内容'}
+              {'请对准演示台上二维码进行扫描'}
             </Text>
           </View>
         </View>

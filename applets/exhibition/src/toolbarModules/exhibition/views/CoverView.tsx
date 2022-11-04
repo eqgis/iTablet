@@ -705,7 +705,7 @@ class CoverView extends React.Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描地面上的二维码加载展示内容'}
+              {'请对准地面上的二维码进行扫描'}
             </Text>
           </View>
         </View>

@@ -64,6 +64,7 @@ const icon_cancel02 = require('./icon_cancel02.png')
 const bg_01 = require('./bg_01.png')
 const bg_02 = require('./bg_02.png')
 const icon_tool_reset = require('./icon_tool_reset.png')
+const icon_tool_reset_selected = require('./icon_tool_reset_selected.png')
 
 const icon_action_follow_me = require('./icon_action_follow_me.png')
 const icon_action_greet = require('./icon_action_greet.png')
@@ -94,6 +95,12 @@ const flat_change_map = require('./flat_map.png')
 const icon_weChat = require('./icon_weChat.png')
 const icon_route = require('./icon_route.png')
 const icon_route_selected = require('./icon_route_selected.png')
+const flat_ai_pic_selected = require('./ar_exhibition_ai_pic_selected.png')
+const flat_buffer_selected = require('./ar_exhibition_buffer_selected.png')
+const flat_plot_selected = require('./ar_exhibition_plot_selected.png')
+const flat_search_selected = require('./ar_exhibition_search_selected.png')
+const flat_change_map_selected = require('./flat_map_selected.png')
+
 
 const image = {
   scan,
@@ -142,6 +149,7 @@ const image = {
   bg_01,
   bg_02,
   icon_tool_reset,
+  icon_tool_reset_selected,
   icon_tool_distance,
   icon_tool_length,
   icon_tool_slider,
@@ -191,6 +199,11 @@ const image = {
   icon_weChat,
   icon_route_selected,
   icon_route,
+  flat_ai_pic_selected,
+  flat_buffer_selected,
+  flat_plot_selected,
+  flat_search_selected,
+  flat_change_map_selected,
 }
 
 function getImage(): typeof image {

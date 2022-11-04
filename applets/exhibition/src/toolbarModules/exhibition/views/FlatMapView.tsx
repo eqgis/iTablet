@@ -68,6 +68,7 @@ class FlatMapVIew extends React.Component<Props, State> {
     return [
       {
         image: getImage().icon_tool_reset,
+        image_selected: getImage().icon_tool_reset_selected,
         title: '复位',
         action: () => {
           this.hideListIfAny()
@@ -76,6 +77,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       },
       {
         image: getImage().flat_ai_pic,
+        image_selected: getImage().flat_ai_pic_selected,
         title: '配图',
         action: () => {
           this.setState({
@@ -85,6 +87,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       },
       {
         image: getImage().flat_search,
+        image_selected: getImage().flat_search_selected,
         title: '查询',
         action: () => {
           this.hideListIfAny()
@@ -94,6 +97,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       },
       {
         image: getImage().flat_buffer,
+        image_selected: getImage().flat_buffer_selected,
         title: '分析',
         action: () => {
           this.hideListIfAny()
@@ -102,6 +106,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       },
       {
         image: getImage().flat_plot,
+        image_selected: getImage().flat_plot_selected,
         title: '标绘',
         action: () => {
           this.hideListIfAny()
@@ -115,6 +120,8 @@ class FlatMapVIew extends React.Component<Props, State> {
     return [
       {
         image: getImage().flat_change_map,
+        image_selected: getImage().flat_change_map_selected,
+        title: '地图',
         action: () => {
           this.setState({
             imageList: this.getMapList()
@@ -325,7 +332,7 @@ class FlatMapVIew extends React.Component<Props, State> {
   renderBack = () => {
     return (
       <AnimationWrap
-        range={[-100, dp(20)]}
+        range={[-dp(100), dp(20)]}
         animated={'left'}
         visible={this.state.showSide}
         style={{
@@ -335,17 +342,18 @@ class FlatMapVIew extends React.Component<Props, State> {
       >
         <TouchableOpacity
           style={{
-            width: dp(60),
-            height: dp(60),
-            borderRadius: dp(25),
+            width: dp(45),
+            height: dp(45),
+            borderRadius: dp(8),
             justifyContent: 'center',
             alignItems: 'center',
             overflow: 'hidden',
+            backgroundColor: '#1E1E1EA6'
           }}
           onPress={this.back}
         >
           <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            style={{ position: 'absolute', width: dp(30), height: dp(30) }}
             source={getImage().icon_return}
           />
         </TouchableOpacity>
@@ -356,7 +364,7 @@ class FlatMapVIew extends React.Component<Props, State> {
   renderScanIcon = () => {
     return (
       <AnimationWrap
-        range={[-100, dp(20)]}
+        range={[-dp(100), dp(20)]}
         animated={'left'}
         visible={this.state.showSide}
         style={{
@@ -366,17 +374,18 @@ class FlatMapVIew extends React.Component<Props, State> {
       >
         <TouchableOpacity
           style={{
-            width: dp(60),
-            height: dp(60),
-            borderRadius: dp(25),
+            width: dp(45),
+            height: dp(45),
+            borderRadius: dp(8),
             justifyContent: 'center',
             alignItems: 'center',
             overflow: 'hidden',
+            backgroundColor: '#1E1E1EA6'
           }}
           onPress={this.startScan}
         >
           <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            style={{ position: 'absolute',  width: dp(30), height: dp(30) }}
             source={getImage().icon_other_scan}
           />
         </TouchableOpacity>
@@ -498,7 +507,7 @@ class FlatMapVIew extends React.Component<Props, State> {
           data={this.state.imageList}
         />
         <AnimationWrap
-          range={[-100, 0]}
+          range={[-dp(100), dp(20)]}
           animated={'right'}
           visible={this.state.showSide}
           style={{

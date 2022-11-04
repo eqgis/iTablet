@@ -87,7 +87,7 @@ import {
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
-import { FileTools } from '../../../../native'
+import { FileTools, SplashScreen } from '../../../../native'
 import {
   ConstPath,
   ConstToolType,
@@ -1947,6 +1947,7 @@ export default class MapView extends React.Component {
       if (this.viewEntire) {
         SMap.viewEntire()
       }
+      Platform.OS === 'android' && SplashScreen.hide()
     }.bind(this)())
   }
 

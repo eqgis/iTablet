@@ -108,7 +108,6 @@ class Home extends React.Component<Props, State> {
 
   componentDidMount() {
     try {
-      Platform.OS === 'android' && SplashScreen.hide()
       Sound.setCategory('Playback')
       this.clickSound = new Sound('homeclick.mp3', Sound.MAIN_BUNDLE, (error) => {
         if (error) {

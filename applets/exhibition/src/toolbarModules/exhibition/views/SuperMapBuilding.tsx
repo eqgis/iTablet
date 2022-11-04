@@ -1,8 +1,8 @@
-import { AppEvent, AppStyle, AppToolBar, Toast, DataHandler, AppPath, AppLog } from '@/utils'
+import { AppEvent, AppToolBar, Toast, DataHandler, AppPath, AppLog } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from '../components/Scan'
 import { SARMap, ARLayerType, FileTools, IARTransform, ARLayer, ARAction, SExhibition } from 'imobile_for_reactnative'
 import { Point3D, Vector3 } from 'imobile_for_reactnative/types/data'
@@ -15,6 +15,8 @@ import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
 import { Pose, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { shouldBuildingMapData, buildingImported } from '../Actions'
+import SideBar, { Item } from '../components/SideBar'
+import AnimationWrap from '../components/AnimationWrap'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -177,7 +179,9 @@ type ToolType = 'position' | 'sectioning' | 'attribute' | 'lighting' | 'advertis
 
 interface State {
   showScan: boolean
+  showGuide: boolean
   showCover: boolean
+  showSide: boolean
   toolType: ToolType | ''
 }
 
@@ -209,6 +213,8 @@ class SuperMapBuilding extends React.Component<Props, State> {
     super(props)
 
     this.state = {
+      showGuide: false,
+      showSide: true,
       showScan: true,
       showCover: false,
 
@@ -242,12 +248,119 @@ class SuperMapBuilding extends React.Component<Props, State> {
               z: -1,
             },
             pose: JSON.parse(JSON.stringify(result)),
-            // scale: -0.99,
             scale: 0.01,
           })
         }
       }
     })
+    AppEvent.addListener('ar_single_click', this.onSingleClick)
+  }
+
+  onSingleClick = () => {
+    this.setState({showSide: !this.state.showSide})
+  }
+
+  getSideBarItems = (): Item[] => {
+    return [
+      {
+        image: getImage().tool_location,
+        image_selected: getImage().tool_location_selected,
+        title: '调整位置',
+        action: () => {
+          if (!this.checkSenceAndToolType()) return
+          this.showAttribute(false)
+
+          this.switchTool('position', () => {
+            const props = AppToolBar.getProps()
+            const mapInfo = props.arMapInfo
+            mapInfo?.currentLayer?.name && SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
+          })
+        }
+      },
+      // {
+      //   image: getImage().tool_sectioning,
+      //   image_selected: getImage().tool_sectioning_selected,
+      //   title: '剖切',
+      //   action: () => {
+      //     if (!this.checkSenceAndToolType()) return
+      //     this.showAttribute(false)
+      //     this.switchTool('sectioning')
+      //   }
+      // },
+      // {
+      //   image: getImage().tool_attribute,
+      //   image_selected: getImage().tool_attribute_selected,
+      //   title: '属性',
+      //   action: () => {
+      //     if (!this.checkSenceAndToolType()) return
+      //     this.switchTool('attribute', async () => {
+      //       await this.showAttribute(true)
+      //       const props = AppToolBar.getProps()
+      //       const mapInfo = props.arMapInfo
+      //       mapInfo?.currentLayer?.name && await SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
+      //       console.warn(mapInfo?.currentLayer?.name)
+      //       const status = await SARMap.getSceneLayerStatus(mapInfo?.currentLayer?.name)
+      //       this.lastLayerStatus = {...status}
+  
+      //       // status.rx = 0
+      //       // status.ry = 166.23
+      //       // status.rz = 0
+      //       status.sx = 0.06
+      //       status.sy = 0.06
+      //       status.sz = 0.06
+      //       status.x = status.x || 0
+      //       status.y = status.y || 0
+      //       status.z = (status.z || 0) - 1
+  
+      //       await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, status)
+      //     })
+
+      //   }
+      // },
+      // {
+      //   image: getImage().tool_lighting,
+      //   image_selected: getImage().tool_lighting_selected,
+      //   title: '光效',
+      //   action: () => {
+      //     if (!this.checkSenceAndToolType()) return
+      //     this.showAttribute(false)
+      //     this.switchTool('lighting')
+      //   }
+      // },
+      // {
+      //   image: getImage().flat_plot,
+      //   image_selected: getImage().flat_plot_selected,
+      //   title: '广告牌',
+      //   action: () => {
+      //     if (!this.checkSenceAndToolType()) return
+      //     this.showAttribute(false)
+      //     this.switchTool('advertising')
+      //   }
+      // }
+    ]
+  }
+
+  getSideBarReset = (): Item[] => {
+    return [
+      {
+        image: getImage().icon_tool_reset,
+        image_selected: getImage().icon_tool_reset_selected,
+        title: '复位',
+        action: async () => {
+          if (!this.checkSenceAndToolType()) return
+          // 若是属性功能,点击复位,则退出ToolView
+          if (this.state.toolType === 'attribute') {
+            this.switchTool('')
+          }
+          if (this.oraginLayerStatus) {
+            const props = AppToolBar.getProps()
+            const layerName = props.arMapInfo.currentLayer.name
+            this.toolView?.reset()
+            layerName && await SARMap.setSceneLayerStatus(layerName, this.oraginLayerStatus)
+          }
+        }
+      }
+    ]
   }
 
   arrowTricker = async (isOpen: boolean) => {
@@ -493,195 +606,48 @@ class SuperMapBuilding extends React.Component<Props, State> {
     return true
   }
 
+  startScan = () => {
+    let toolType = this.state.toolType
+    if (this.state.toolType) {
+      toolType = ''
+      SARMap.submit()
+      this.showAttribute(false)
+    }
+    this.arrowTricker(false)
+    SARMap.setAREnhancePosition()
+    this.setState({ showScan: true, toolType })
+  }
+
   renderBack = () => {
     return (
-      <>
+      <AnimationWrap
+        range={[-dp(100), dp(20)]}
+        animated={'left'}
+        visible={this.state.showSide}
+        style={{
+          position: 'absolute',
+          top: dp(20),
+        }}
+      >
         <TouchableOpacity
-          style={styles.backBtn}
+          style={{
+            width: dp(45),
+            height: dp(45),
+            borderRadius: dp(8),
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            backgroundColor: '#1E1E1EA6'
+          }}
           onPress={this.back}
         >
           <Image
-            style={styles.backImg}
+            style={{ position: 'absolute', width: dp(30), height: dp(30) }}
             source={getImage().icon_return}
           />
         </TouchableOpacity>
-        {
-          !this.state.showScan &&
-          <TouchableOpacity
-            style={styles.scanBtn}
-            onPress={() => {
-              let toolType = this.state.toolType
-              if (this.state.toolType) {
-                toolType = ''
-                SARMap.submit()
-                this.showAttribute(false)
-              }
-              this.arrowTricker(false)
-              SARMap.setAREnhancePosition()
-              this.setState({ showScan: true, toolType })
-            }}
-          >
-            <Image
-              style={styles.backImg}
-              source={getImage().icon_other_scan}
-            />
-          </TouchableOpacity>
-        }
-      </>
+      </AnimationWrap>
     )
-  }
-
-  renderRightButton = (props: {
-    style?: ViewStyle,
-    onPress: () => void,
-    image: ImageSourcePropType,
-    imageSelected?: ImageSourcePropType,
-    key: ToolType,
-    title: string,
-  }) => {
-    return (
-      <TouchableOpacity
-        key={props.key}
-        style={[
-          styles.rightBtn,
-          props.style,
-          props.key === this.state.toolType && { borderRightColor: '#F24F02'},
-        ]}
-        onPress={props.onPress}
-      >
-        <View style={styles.rightSubBtn}>
-          <Image
-            style={styles.btnImg}
-            source={props.key === this.state.toolType && props.imageSelected ? props.imageSelected : props.image}
-          />
-        </View>
-
-        <Text style={styles.rightBtnTxt}>
-          {props.title}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderReset = () => {
-    return this.renderRightButton({
-      image: getImage().icon_tool_reset,
-      onPress: async () => {
-        if (!this.checkSenceAndToolType()) return
-        // 若是属性功能,点击复位,则退出ToolView
-        if (this.state.toolType === 'attribute') {
-          this.switchTool('')
-        }
-        if (this.oraginLayerStatus) {
-          const props = AppToolBar.getProps()
-          const layerName = props.arMapInfo.currentLayer.name
-          this.toolView?.reset()
-          layerName && await SARMap.setSceneLayerStatus(layerName, this.oraginLayerStatus)
-        }
-      },
-      style: styles.resetBtn,
-      key: 'reset',
-      title: '复位',
-    })
-  }
-
-  /** 位置调整 */
-  renderPosition = () => {
-    return this.renderRightButton({
-      image: getImage().tool_location,
-      imageSelected: getImage().tool_location_selected,
-      onPress: () => {
-        if (!this.checkSenceAndToolType()) return
-        this.showAttribute(false)
-
-        this.switchTool('position', () => {
-          const props = AppToolBar.getProps()
-          const mapInfo = props.arMapInfo
-          mapInfo?.currentLayer?.name && SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
-        })
-      },
-      key: 'position',
-      title: '调整位置',
-    })
-  }
-
-  /** 剖切 */
-  renderSectioning = () => {
-    return this.renderRightButton({
-      image: getImage().tool_sectioning,
-      imageSelected: getImage().tool_sectioning_selected,
-      onPress: () => {
-        if (!this.checkSenceAndToolType()) return
-        this.showAttribute(false)
-        this.switchTool('sectioning')
-      },
-      key: 'sectioning',
-      title: '剖切',
-    })
-  }
-
-  /** 属性 */
-  renderAttribute = () => {
-    return this.renderRightButton({
-      image: getImage().tool_attribute,
-      imageSelected: getImage().tool_attribute_selected,
-      onPress: async () => {
-        if (!this.checkSenceAndToolType()) return
-        this.switchTool('attribute', async () => {
-          await this.showAttribute(true)
-          const props = AppToolBar.getProps()
-          const mapInfo = props.arMapInfo
-          mapInfo?.currentLayer?.name && await SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
-          console.warn(mapInfo?.currentLayer?.name)
-          const status = await SARMap.getSceneLayerStatus(mapInfo?.currentLayer?.name)
-          this.lastLayerStatus = {...status}
-
-          // status.rx = 0
-          // status.ry = 166.23
-          // status.rz = 0
-          status.sx = 0.06
-          status.sy = 0.06
-          status.sz = 0.06
-          status.x = status.x || 0
-          status.y = status.y || 0
-          status.z = (status.z || 0) - 1
-
-          await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, status)
-        })
-      },
-      key: 'attribute',
-      title: '属性',
-    })
-  }
-
-  /** 光效 */
-  renderLightingEffect = () => {
-    return this.renderRightButton({
-      image: getImage().tool_lighting,
-      imageSelected: getImage().tool_lighting_selected,
-      onPress: () => {
-        if (!this.checkSenceAndToolType()) return
-        this.showAttribute(false)
-        this.switchTool('lighting')
-      },
-      key: 'lighting',
-      title: '光效',
-    })
-  }
-
-  /** 广告牌 */
-  renderAdvertising = () => {
-    return this.renderRightButton({
-      image: getImage().tool_advertise,
-      imageSelected: getImage().tool_advertise_selected,
-      onPress: () => {
-        if (!this.checkSenceAndToolType()) return
-        this.showAttribute(false)
-        this.switchTool('advertising')
-      },
-      key: 'advertising',
-      title: '广告牌',
-    })
   }
 
   renderCover = () => {
@@ -786,23 +752,6 @@ class SuperMapBuilding extends React.Component<Props, State> {
           <View
             style={style}
           >
-            {/* <TouchableOpacity
-            style={{
-              width: dp(100),
-              height: dp(40),
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            // onPress={this.startScan}
-          >
-            <Image
-              style={{ position: 'absolute', width: '100%', height: '100%' }}
-              source={getImage().background_red}
-              resizeMode="stretch" />
-            <Text style={[AppStyle.h3, { color: 'white' }]}>
-              {'扫一扫'}
-            </Text>
-          </TouchableOpacity> */}
             <Text
               style={{
                 color: 'white',
@@ -844,40 +793,70 @@ class SuperMapBuilding extends React.Component<Props, State> {
     )
   }
 
-  renderFunctionBar = () => {
+  renderSideBar = () => {
     return (
-      <View style={styles.functionBarView}>
-        {this.renderReset()}
-        <View style={styles.functionBar}>
-          {this.renderPosition()}
-          {/* {this.renderSectioning()} */}
-          {/* {this.renderAttribute()} */}
-          {/* {this.renderLightingEffect()} */}
-          {/* {this.renderAdvertising()} */}
-        </View>
-      </View>
+      <AnimationWrap
+        range={[-dp(100), dp(20)]}
+        animated={'right'}
+        visible={this.state.showSide}
+        style={{
+          position: 'absolute',
+          top: dp(10),
+          // right: 0,
+        }}
+      >
+        <SideBar
+          sections={[
+            this.getSideBarReset(),
+            this.getSideBarItems(),
+          ]}
+          showIndicator
+        />
+      </AnimationWrap>
     )
-    // return (
-    //   // <View style={styles.functionBarView} pointerEvents={'box-none'}>
-    //   <View style={styles.functionBar}>
-    //     {this.renderPosition()}
-    //     {/* {this.renderSectioning()} */}
-    //     {this.renderAttribute()}
-    //     {/* {this.renderLightingEffect()} */}
-    //     {/* {this.renderAdvertising()} */}
-    //   </View>
-    //   // </View>
-    // )
+  }
+
+  renderScanIcon = () => {
+    return (
+      <AnimationWrap
+        range={[-dp(100), dp(20)]}
+        animated={'left'}
+        visible={this.state.showSide}
+        style={{
+          position: 'absolute',
+          top: dp(80),
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            width: dp(45),
+            height: dp(45),
+            borderRadius: dp(8),
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            backgroundColor: '#1E1E1EA6'
+          }}
+          onPress={this.startScan}
+        >
+          <Image
+            style={{ position: 'absolute',  width: dp(30), height: dp(30) }}
+            source={getImage().icon_other_scan}
+          />
+        </TouchableOpacity>
+      </AnimationWrap>
+    )
   }
 
   render() {
     return (
       <>
-        {this.renderFunctionBar()}
+        {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
         {this.state.showCover && this.renderCover()}
         <ARArrow />
         {this.state.showScan && this.renderScan()}
         {this.renderToolView()}
+        {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}
         {this.renderBack()}
       </>
     )

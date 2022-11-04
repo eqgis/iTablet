@@ -20,8 +20,8 @@ export default class AnimatedUnit extends React.Component<Props> {
     initialPosition: { top: 0, left: 0 },
     // waveColor: '#5BC6AD',
     waveColor: '#F89746',
-    intervals: 500,//间隔时间
-    spreadSpeed: 500,//扩散速度
+    intervals: 300,//间隔时间
+    spreadSpeed: 300,//扩散速度
   }
 
   anim: Animated.Value
@@ -49,8 +49,8 @@ export default class AnimatedUnit extends React.Component<Props> {
     const r = endDiameter / 2// 直径变化量,top与left的变化是直径的一半
     // console.warn(initialPosition)
     return (
-      <View pointerEvents='none'>
-        <Animated.View style={[styles.spreadCircle, { backgroundColor: waveColor }, {
+      <Animated.View
+        style={[styles.spreadCircle, { backgroundColor: waveColor }, {
           opacity: this.anim.interpolate({
             inputRange: [0, 1],
             outputRange: [1, 0]
@@ -71,8 +71,9 @@ export default class AnimatedUnit extends React.Component<Props> {
             inputRange: [0, 1],
             outputRange: [initialPosition.left, initialPosition.left - r]
           }),
-        },]}></Animated.View>
-      </View>
+        },]}
+        pointerEvents={'none'}
+      />
     )
   }
 }
@@ -81,5 +82,6 @@ const styles = StyleSheet.create({
   spreadCircle: {
     borderRadius: 999,
     position: 'absolute',
+    top: 0,
   },
 })

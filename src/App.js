@@ -282,7 +282,7 @@ class AppRoot extends Component {
   }
 
   componentDidMount() {
-    Platform.OS === 'android' && SplashScreen.hide()
+    // Platform.OS === 'android' && SplashScreen.hide()
     this.initOrientation()
     if (!this.state.showLaunchGuide) {
       this.showUserProtocol()

@@ -61,6 +61,30 @@ class AR3DMapView extends React.Component<Props, State> {
       }
     })
 
+    AppEvent.addListener('ar_single_click', () =>{
+      let right
+      let left
+      if (this.show) {
+        right = -200
+        left = -200
+      }else {
+        right = 0
+        left = dp(20)
+      }
+      this.show = !this.show
+      Animated.parallel([
+        Animated.timing(this.state.btRight, {
+          toValue: right,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.btLeft, {
+          toValue: left,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+      ]).start()
+    })
 
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
@@ -190,6 +214,7 @@ class AR3DMapView extends React.Component<Props, State> {
       return
     }
     AppEvent.removeListener('ar_image_tracking_result')
+    AppEvent.removeListener('ar_single_click')
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
     SMap.exitMap()
@@ -215,18 +240,19 @@ class AR3DMapView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(60),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          top: dp(55),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.startScan}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={getImage().icon_other_scan}
         />
       </TouchableOpacity>
@@ -238,17 +264,18 @@ class AR3DMapView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(25),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.back}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={getImage().icon_return}
         />
       </TouchableOpacity>
@@ -353,7 +380,7 @@ class AR3DMapView extends React.Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描演示台上的二维码加载展示内容'}
+              {'请对准演示台上二维码进行扫描'}
             </Text>
           </View>
         </View>
@@ -392,7 +419,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -445,7 +472,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -465,7 +492,6 @@ class AR3DMapView extends React.Component<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
         }}
         onPress={async ()=>{
           this.setState({showShape:false})
@@ -509,7 +535,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -529,7 +555,7 @@ class AR3DMapView extends React.Component<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
+          backgroundColor: 'rgba(30,30,30,0.65)',
         }}
         onPress={async ()=>{
           this.setState({showShape:false})
@@ -575,7 +601,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -595,7 +621,6 @@ class AR3DMapView extends React.Component<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
         }}
         onPress={async ()=>{
           this.setState({showShape:false})
@@ -641,7 +666,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -654,7 +679,7 @@ class AR3DMapView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        <TouchableOpacity
+        <View
           style={{
             position: 'absolute',
             right: 0,
@@ -662,30 +687,6 @@ class AR3DMapView extends React.Component<Props, State> {
             height: '100%',
             // justifyContent: 'center',
             alignItems: 'flex-end',
-          }}
-          onPress={()=>{
-            let right
-            let left
-            if (this.show) {
-              right = -200
-              left = -200
-            }else {
-              right = 0
-              left = dp(20)
-            }
-            this.show = !this.show
-            Animated.parallel([
-              Animated.timing(this.state.btRight, {
-                toValue: right,
-                duration: 300,
-                useNativeDriver: false,
-              }),
-              Animated.timing(this.state.btLeft, {
-                toValue: left,
-                duration: 300,
-                useNativeDriver: false,
-              }),
-            ]).start()
           }}
         >
 
@@ -708,7 +709,7 @@ class AR3DMapView extends React.Component<Props, State> {
                 justifyContent: 'center',
                 alignItems: 'center',
                 // overflow: 'hidden',
-                backgroundColor: 'white',
+                backgroundColor: 'rgba(30,30,30,0.65)',
               }}
             >
               {this.renderjx()}
@@ -723,7 +724,7 @@ class AR3DMapView extends React.Component<Props, State> {
                   top: dp(10),
                   borderTopLeftRadius: dp(10),
                   borderBottomLeftRadius: dp(10),
-                  backgroundColor: 'white',
+                  backgroundColor: 'rgba(30,30,30,0.65)',
                 }}
               >
                 {this.renderReset()}
@@ -735,7 +736,7 @@ class AR3DMapView extends React.Component<Props, State> {
                   top: dp(20),
                   borderTopLeftRadius: dp(10),
                   borderBottomLeftRadius: dp(10),
-                  backgroundColor: 'white',
+                  backgroundColor: 'rgba(30,30,30,0.65)',
                 }}
               >
                 {this.renderMapControl()}
@@ -744,7 +745,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
           </Animated.View>
 
-        </TouchableOpacity>
+        </View>
 
 
         {this.state.showScan && this.renderScan()}

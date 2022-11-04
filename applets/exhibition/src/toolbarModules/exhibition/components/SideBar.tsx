@@ -23,6 +23,7 @@ type Section = Item[]
 
 export interface Item {
   image: ImageSourcePropType
+  image_selected: ImageSourcePropType
   title?: string
   action: () => void
 }
@@ -63,20 +64,20 @@ class SideBar extends React.Component<Props, State> {
             height: dp(40),
 
           },
-          (this.props.showIndicator && isSelected) && {
-            borderRightColor: '#F24F02'
-          }
+          // (this.props.showIndicator && isSelected) && {
+          //   borderRightColor: '#F24F02'
+          // }
         ]}
       >
         <Image
-          source={item.image}
+          source={isSelected ? item.image_selected : item.image}
           style={{
             width: dp(24),
             height: dp(24)
           }}
         />
         {item.title && (
-          <Text style={AppStyle.h3}>
+          <Text style={[AppStyle.h3, {color: 'white'}]}>
             {item.title}
           </Text>
         )}
@@ -90,9 +91,8 @@ class SideBar extends React.Component<Props, State> {
         key={index + ''}
         style={[
           {
-            backgroundColor: 'white',
-            borderTopLeftRadius: dp(10),
-            borderBottomLeftRadius: dp(10),
+            backgroundColor: '#1E1E1EA6',
+            borderRadius: dp(10),
             width: dp(55),
             paddingVertical: dp(5),
             marginTop: dp(20),
@@ -109,13 +109,7 @@ class SideBar extends React.Component<Props, State> {
 
   render() {
     return (
-      <View
-        style={{
-          position: 'absolute',
-          top: dp(10),
-          right: 0,
-        }}
-      >
+      <View>
         {
           this.props.sections.map((section, index) => {
             return this.renderSection(section, index)

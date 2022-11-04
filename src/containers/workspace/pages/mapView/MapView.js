@@ -4797,6 +4797,7 @@ export default class MapView extends React.Component {
             ) {
               this.showFullMap(!this.fullMap)
             }
+            AppEvent.emitEvent('ar_single_click')
           }}
           onARElementTouch={async (element, childIndex) => {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT' && Platform.OS === 'android') {

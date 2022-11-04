@@ -55,6 +55,31 @@ class CoverView extends React.Component<Props, State> {
       SARMap.setAREnhancePosition()
     }
 
+    AppEvent.addListener('ar_single_click', () =>{
+      let right
+      let left
+      if (this.show) {
+        right = -200
+        left = -200
+      }else {
+        right = 0
+        left = dp(20)
+      }
+      this.show = !this.show
+      Animated.parallel([
+        Animated.timing(this.state.btRight, {
+          toValue: right,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.btLeft, {
+          toValue: left,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+      ]).start()
+    })
+
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
         SARMap.stopAREnhancePosition()
@@ -207,6 +232,7 @@ class CoverView extends React.Component<Props, State> {
       }
 
       AppEvent.removeListener('ar_image_tracking_result')
+      AppEvent.removeListener('ar_single_click')
       if (this.state.showScan) {
         SARMap.stopAREnhancePosition()
       }
@@ -228,17 +254,18 @@ class CoverView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(25),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.back}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={getImage().icon_return}
         />
       </TouchableOpacity>
@@ -265,7 +292,7 @@ class CoverView extends React.Component<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
+          backgroundColor: 'rgba(30,30,30,0.65)',
         }}
         onPress={async()=>{
           if(this.state.showScan){
@@ -300,7 +327,7 @@ class CoverView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -359,7 +386,7 @@ class CoverView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -416,7 +443,7 @@ class CoverView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -468,7 +495,7 @@ class CoverView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -494,7 +521,6 @@ class CoverView extends React.Component<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
         }}
         onPress={()=>{
           this.coverClick = true
@@ -520,7 +546,7 @@ class CoverView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -546,10 +572,9 @@ class CoverView extends React.Component<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          backgroundColor: 'white',
         }}
         onPress={()=>{
-          this.fixClick = true
+          this.fixClick = !this.fixClick
           this.setState({showCover:false})
           this.fix()
         }}
@@ -571,7 +596,7 @@ class CoverView extends React.Component<Props, State> {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize:10,
           }}
         >
@@ -680,7 +705,7 @@ class CoverView extends React.Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描地面上的二维码加载展示内容'}
+              {'请对准地面上的二维码进行扫描'}
             </Text>
           </View>
         </View>
@@ -865,13 +890,14 @@ class CoverView extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(60),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          top: dp(55),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={async () => {
           if (this.state.showScan) {
@@ -890,7 +916,7 @@ class CoverView extends React.Component<Props, State> {
         }}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={getImage().icon_other_scan}
         />
       </TouchableOpacity>
@@ -900,7 +926,7 @@ class CoverView extends React.Component<Props, State> {
   render() {
     return(
       <>
-        <TouchableOpacity
+        <View
           style={{
             position: 'absolute',
             right: 0,
@@ -908,30 +934,6 @@ class CoverView extends React.Component<Props, State> {
             height: '100%',
             // justifyContent: 'center',
             alignItems: 'flex-end',
-          }}
-          onPress={()=>{
-            let right
-            let left
-            if (this.show) {
-              right = -200
-              left = -200
-            }else {
-              right = 0
-              left = dp(20)
-            }
-            this.show = !this.show
-            Animated.parallel([
-              Animated.timing(this.state.btRight, {
-                toValue: right,
-                duration: 300,
-                useNativeDriver: false,
-              }),
-              Animated.timing(this.state.btLeft, {
-                toValue: left,
-                duration: 300,
-                useNativeDriver: false,
-              }),
-            ]).start()
           }}
         >
 
@@ -954,7 +956,7 @@ class CoverView extends React.Component<Props, State> {
                 justifyContent: 'center',
                 alignItems: 'center',
                 // overflow: 'hidden',
-                backgroundColor: 'white',
+                backgroundColor: 'rgba(30,30,30,0.65)',
               }}
             >
               {this.renderCover()}
@@ -969,7 +971,7 @@ class CoverView extends React.Component<Props, State> {
                   top: dp(10),
                   borderTopLeftRadius: dp(10),
                   borderBottomLeftRadius: dp(10),
-                  backgroundColor: 'white',
+                  backgroundColor: 'rgba(30,30,30,0.65)',
                 }}
               >
                 {this.renderWindow()}
@@ -980,7 +982,7 @@ class CoverView extends React.Component<Props, State> {
 
           </Animated.View>
 
-        </TouchableOpacity>
+        </View>
 
 
         {this.state.showScan && this.renderScan()}

@@ -6,7 +6,7 @@ import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
 import { SARMap ,ARLayerType, FileTools, ARAction, SExhibition, SMediaCollector} from 'imobile_for_reactnative'
 import Scan from "../components/Scan"
 import { ConstPath } from "@/constants"
-import { ARElement, ARLayer, ARModelAnimatorParameter, ModelAnimation } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { ARElement, ARLayer, ARModelAnimatorParameter, ModelAnimation, positionInfoType } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_reactnative/NativeModule/dataTypes"
 import ARArrow from "../components/ARArrow"
 import GuideView from "@/containers/workspace/components/GuideView/GuideView"
@@ -16,6 +16,7 @@ import { getLanguage } from "@/language"
 import ARGuide from '../components/ARGuide'
 import { isDoctorMapGuided, setDoctorMapGuided } from "../Actions"
 import Sound from 'react-native-sound'
+import { getRoute } from "../data/route"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -32,6 +33,22 @@ interface speakItemType {
   name: string,
   image: ImageSourcePropType,
 }
+
+interface reloaderItemType {
+  key: 'doctor' | 'doctorStudy',
+  image:  ImageSourcePropType,
+  name: string,
+  action: () => void,
+}
+
+interface routeItemType {
+  key: 'route01'| 'route02' | 'route03' | 'null',
+  title: string,
+  name: string,
+  image: ImageSourcePropType,
+  route: string,
+}
+
 interface Props {
   windowSize: ScaledSize
 }
@@ -70,7 +87,10 @@ interface State {
   /** 录像里面的引导提示文字 */
   videoGuideText: string,
   /** 模块解说引导 */
-  showGuide: boolean
+  showGuide: boolean,
+  /** 合影里按钮的选项的key */
+  photoBtnKey: 'action' | 'position' | 'operation' | 'null',
+  selectRouteKey: 'route01'| 'route02' | 'route03' | 'null',
 }
 
 homePath = ""
@@ -106,6 +126,12 @@ class DoctorCC extends Component<Props, State> {
   whoosh: Sound | null = null
   /** 动画重读播放的定时器 */
   animationTimer: NodeJS.Timer | null | undefined = null
+  /** 合影的位置路线数据 */
+  photoRouteDate: Array<routeItemType> = []
+  /** 模型的初始位置信息 包含位置，方向和大小 */
+  positionInfo: positionInfoType | null = null
+  /** 路线的推演动画的延时器 */
+  routeAnimationTimer: NodeJS.Timer | null | undefined = null
 
   constructor(props: Props) {
     super(props)
@@ -127,6 +153,8 @@ class DoctorCC extends Component<Props, State> {
       isVideoGuideShow: true,
       videoGuideText: "请选择录像动作",
       showGuide: false,
+      photoBtnKey: 'null',
+      selectRouteKey: 'null',
     }
     this.imgPath = ''
     this.isBack = false
@@ -154,6 +182,9 @@ class DoctorCC extends Component<Props, State> {
         // }
 
         if(this.ARModel) {
+          // 获取校准之后的模型位置信息
+          this.positionInfo = await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
+
           const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
           // console.warn("relativePositin: " + JSON.stringify(relativePositin))
           if(relativePositin) {
@@ -245,6 +276,29 @@ class DoctorCC extends Component<Props, State> {
         image: getImage().ar_flat_map,
       },
     ]
+    this.photoRouteDate = [
+      {
+        key: 'route01',
+        title: '路线1',
+        name: '洞见之光',
+        image: getImage().ar_dr_supermap,
+        route: getRoute().route01,
+      },
+      {
+        key: 'route02',
+        title: '路线2',
+        name: '企业使命',
+        image: getImage().ar_infra,
+        route: getRoute().route02,
+      },
+      {
+        key: 'route03',
+        title: '路线3',
+        name: '超图研究院',
+        image: getImage().ar_supermap_building,
+        route: getRoute().route03,
+      },
+    ]
   }
 
   /** 超人的解说数据 */
@@ -279,6 +333,29 @@ class DoctorCC extends Component<Props, State> {
         title: 'AR平面地图_学',
         name: 'AR平面地图',
         image: getImage().ar_flat_map,
+      },
+    ]
+    this.photoRouteDate = [
+      {
+        key: 'route01',
+        title: '路线1',
+        name: '洞见之光',
+        image: getImage().ar_dr_supermap,
+        route: getRoute().route01,
+      },
+      {
+        key: 'route02',
+        title: '路线2',
+        name: '企业使命',
+        image: getImage().ar_infra,
+        route: getRoute().route02,
+      },
+      {
+        key: 'route03',
+        title: '路线3',
+        name: '超图研究院',
+        image: getImage().ar_supermap_building,
+        route: getRoute().route03,
       },
     ]
   }
@@ -337,6 +414,8 @@ class DoctorCC extends Component<Props, State> {
               this.modelMap.set(layer.caption, model)
               // 把博士设为当前对象
               this.ARModel = model
+              // 获取模型的初始位置信息
+              this.positionInfo = await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
             } else if(layer.caption === '博士_学') {
               SARMap.setLayerVisible(layer.name, false)
               const model = {
@@ -384,6 +463,27 @@ class DoctorCC extends Component<Props, State> {
     if(this.state.isShowFull && (this.state.selectType === 'photo' || this.state.selectType === 'video')) {
       if(this.ARModel) {
         SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+        if(this.routeAnimationTimer !== null) {
+          SARMap.stopARAnimation()
+
+          const tempTimer =  setTimeout(async () => {
+            if(this.positionInfo?.renderNode && this.isPlay && this.ARModel) {
+              await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
+              this.isPlay = false
+            }
+            clearTimeout(tempTimer)
+
+            if(this.routeAnimationTimer !== null) {
+              clearTimeout(this.routeAnimationTimer)
+              this.routeAnimationTimer = null
+            }
+          },300)
+        } else {
+          if(this.positionInfo?.renderNode) {
+            await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
+            this.isPlay = false
+          }
+        }
       }
       if(this.animationTimer !== null){
         clearInterval(this.animationTimer)
@@ -394,6 +494,8 @@ class DoctorCC extends Component<Props, State> {
         isShowFull: false,
         selectAnimationKey: -1,
         isVideoGuideShow: false,
+        selectRouteKey: 'null',
+        photoBtnKey: 'null',
       })
       return
     }
@@ -448,9 +550,123 @@ class DoctorCC extends Component<Props, State> {
 
   /** 点击合影界面的动作按钮执行的方法 */
   photoBtnOnpress = async () => {
+    if(this.state.photoBtnKey === 'action') {
+      this.setState({
+        isSecondaryShow: !this.state.isSecondaryShow,
+      })
+      return
+    }
     this.setState({
-      isSecondaryShow: !this.state.isSecondaryShow,
+      isSecondaryShow: true,
       isVideoGuideShow: false,
+      photoBtnKey: 'action',
+    })
+  }
+
+  /** 点击合影界面的路线按钮执行的方法 */
+  routeBtnOnpress = async () => {
+    if(this.state.photoBtnKey === 'position') {
+      this.setState({
+        isSecondaryShow: !this.state.isSecondaryShow,
+      })
+      return
+    }
+    this.setState({
+      isSecondaryShow: true,
+      isVideoGuideShow: false,
+      photoBtnKey: 'position',
+    })
+  }
+
+  /** 点击合影界面的编辑操作按钮执行的方法 */
+  operationBtnOnpress = async () => {
+    if(this.state.photoBtnKey === 'operation') {
+      this.setState({
+        isSecondaryShow: !this.state.isSecondaryShow,
+      })
+      return
+    }
+    this.setState({
+      isSecondaryShow: true,
+      isVideoGuideShow: false,
+      photoBtnKey: 'operation',
+    })
+  }
+
+  routeItemOnPress = async (item: routeItemType) => {
+
+    if(this.isPlay) {
+      SARMap.stopARAnimation()
+      this.isPlay = false
+    }
+
+    // if(this.ARModel && this.positionInfo?.animationNode) {
+    //   const timerTemp = setTimeout(async () => {
+    //     await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.animationNode)
+    //     clearTimeout(timerTemp)
+    //   }, 300)
+    // }
+
+    if(this.state.selectRouteKey === item.key) {
+      this.setState({
+        selectRouteKey: "null",
+      })
+      return
+    }
+
+    const animation = JSON.parse(JSON.stringify(item.route))
+    // 1. 添加动画
+    const routeId = await SARMap.addARAnimation(animation)
+    // console.warn(routeId)
+    // 2. 播放动画
+    const tempTimer =  setTimeout(() => {
+      SARMap.playARAnimation(JSON.parse(JSON.stringify(item.route)))
+      clearTimeout(tempTimer)
+    },300)
+    this.isPlay = true
+
+    let time = 0
+    if(animation.type === ARAnimatorType.MODEL_TYPE || animation.type === ARAnimatorType.NODE_TYPE) {
+      time += (animation.duration || 0 ) * ((animation.repeatCount || 0) + 1) + (animation.delay || 0)
+    } else if(animation.type === ARAnimatorType.GROUP_TYPE){
+      const animationTemp = animation.animations
+      animationTemp.map((ele) => {
+        if(ele.type === ARAnimatorType.MODEL_TYPE || ele.type === ARAnimatorType.NODE_TYPE){
+          time += (ele.duration || 0) * ((ele.repeatCount || 0) + 1) + (ele.delay || 0)
+        }
+      })
+    }
+
+    this.routeAnimationTimer = setTimeout(async () => {
+      if(this.isPlay) {
+        if(this.ARModel) {
+          const positionInfo =  await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
+          console.warn("positionInfo" + JSON.stringify(positionInfo))
+
+          SARMap.stopARAnimation()
+          const tempTimer =  setTimeout(async () => {
+            if(this.isPlay && this.ARModel && positionInfo?.animationNode){
+              await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, positionInfo.animationNode)
+              this.isPlay = false
+            }
+            clearTimeout(tempTimer)
+
+            if(this.routeAnimationTimer !== null) {
+              clearTimeout(this.routeAnimationTimer)
+              this.routeAnimationTimer = null
+            }
+
+          },300)
+
+        }
+
+        // SARMap.stopARAnimation()
+      }
+    },time * 1000)
+
+    this.setState({
+      selectRouteKey: item.key,
+      isSecondaryShow: false,
     })
   }
 
@@ -557,31 +773,31 @@ class DoctorCC extends Component<Props, State> {
       this.isPlay = false
     }
 
-    if(this.ARModel) {
-      SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
-    }
+    // if(this.ARModel) {
+    //   SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+    // }
 
     if(this.animationTimer !== null){
       clearInterval(this.animationTimer)
       this.animationTimer = null
     }
 
-    // const currentElement = this.ARModel
-    // let animations: Array<ModelAnimation> = []
-    // if(currentElement) {
-    //   await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-    //   // 将图层的动画重复播放次数设置为1，对应传参为0
-    //   SARMap.setLayerAnimationRepeatCount(currentElement.layerName, -1)
-    //   animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
-    // }
+    const currentElement = this.ARModel
+    let animations: Array<ModelAnimation> = []
+    if(currentElement) {
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      // 将图层的动画重复播放次数设置为1，对应传参为0
+      SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
+      animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
+    }
 
     this.setState({
       selectType: 'photo',
       isShowFull: true,
       selectAnimationKey: -1,
-      isSecondaryShow: true,
+      isSecondaryShow: false,
       selectSpeakKey: 'null',
-      // animations: animations,
+      animations: animations,
       isSpeakGuideShow: false,
     })
   }
@@ -627,6 +843,51 @@ class DoctorCC extends Component<Props, State> {
       isShowFull: true,
       isSpeakGuideShow: false,
     })
+  }
+
+  /** 点击了超人服的换装按钮 */
+  doctorReloaderOnPress = () => {
+    // 如果当前就是该模型就不做任何改动
+    if(this.state.selectReloaderKey === 'doctor') {
+      return
+    }
+    const newModel = this.modelMap.get('博士')
+    if(newModel && this.ARModel) {
+      // 更新解说数据为博士的数据
+      this.getDoctorData()
+      // 先隐藏之前的模型图层
+      const layerName = this.ARModel.layerName
+      SARMap.setLayerVisible(layerName, false)
+      // 再显示新的模型图层
+      SARMap.setLayerVisible(newModel.layerName, true)
+      // 然后将模型给替换为新图层的模型
+      this.ARModel = newModel
+      // 修改选择模型的类型
+      this.setState({selectReloaderKey: 'doctor'})
+    }
+
+  }
+
+  /** 点击了博士服的换装按钮 */
+  doctorStudyReloaderOnPress = () => {
+    // 如果当前就是该模型就不做任何改动
+    if(this.state.selectReloaderKey === 'doctorStudy') {
+      return
+    }
+    const newModel = this.modelMap.get('博士_学')
+    if(newModel && this.ARModel) {
+      // 更新解说数据为超人的数据
+      this.getSupermanData()
+      // 先隐藏之前的模型图层
+      const layerName = this.ARModel.layerName
+      SARMap.setLayerVisible(layerName, false)
+      // 再显示新的模型图层
+      SARMap.setLayerVisible(newModel.layerName, true)
+      // 然后将模型给替换为新图层的模型
+      this.ARModel = newModel
+      // 修改选择模型的类型
+      this.setState({selectReloaderKey: 'doctorStudy'})
+    }
   }
 
 
@@ -742,9 +1003,9 @@ class DoctorCC extends Component<Props, State> {
       }
       return result === false ? result : undefined
     } catch (error) {
-      if (error.message.includes('File size cannot exceeds 10M')) {
-        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
-      }
+      // if (error.message.includes('File size cannot exceeds 10M')) {
+      //   Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+      // }
     }
   }
 
@@ -855,17 +1116,18 @@ class DoctorCC extends Component<Props, State> {
           position: 'absolute',
           top: dp(20),
           left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.back}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={getImage().icon_return}
         />
       </TouchableOpacity>
@@ -878,19 +1140,20 @@ class DoctorCC extends Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(80),
+          top: dp(75),
           left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.showScan}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={getImage().icon_other_scan}
         />
       </TouchableOpacity>
@@ -903,20 +1166,88 @@ class DoctorCC extends Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          top: dp(80),
+          top: dp(75),
           left: dp(20),
-          width: dp(60),
-          height: dp(60),
-          borderRadius: dp(5),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
         }}
         onPress={this.photoBtnOnpress}
       >
         <Image
-          style={{ position: 'absolute', width: '100%', height: '100%' }}
-          source={this.state.isSecondaryShow ? getImage().icon_btn_action_selected : getImage().icon_btn_action}
+          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
+          source={this.state.isSecondaryShow && (
+            (this.state.selectType === 'photo' && this.state.photoBtnKey === 'action')
+          )
+            ? getImage().icon_action_selected : getImage().icon_action}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  /** 合影里路线的显隐按钮 */
+  renderRouteBtn = () => {
+    return (
+      <TouchableOpacity
+        style={[{
+          position: 'absolute',
+          top: dp(130),
+          left: dp(20),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
+        },
+        ]}
+        onPress={this.routeBtnOnpress}
+      >
+        <Image
+          style={[
+            { position: 'absolute', width: dp(30), height: dp(30)},
+          ]}
+          source={this.state.isSecondaryShow && (
+            (this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')
+          )
+            ? getImage().icon_route_selected : getImage().icon_route}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  /** 合影里编辑操作的显隐按钮 */
+  renderOperationBtn = () => {
+    return (
+      <TouchableOpacity
+        style={[{
+          position: 'absolute',
+          top: dp(185),
+          left: dp(20),
+          width: dp(45),
+          height: dp(45),
+          borderRadius: dp(8),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          backgroundColor:'rgba(30,30,30,0.65)',
+        },
+        ]}
+        onPress={this.operationBtnOnpress}
+      >
+        <Image
+          style={[
+            { position: 'absolute', width: dp(30), height: dp(30) },
+          ]}
+          source={this.state.isSecondaryShow && (
+            (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation')
+          )
+            ? getImage().icon_reloader_selected : getImage().icon_reloader}
         />
       </TouchableOpacity>
     )
@@ -1021,7 +1352,7 @@ class DoctorCC extends Component<Props, State> {
                 textAlign: 'center',
               }}
             >
-              {'请扫描地面上的二维码加载展示内容'}
+              {'请对准地面上的二维码进行扫描'}
             </Text>
           </View>
         </View>
@@ -1037,16 +1368,16 @@ class DoctorCC extends Component<Props, State> {
         style={{
           position: 'absolute',
           top: dp(40),
-          right: dp(0),
+          right: dp(10),
           width: dp(50),
           height: dp(50),
-          // borderRadius: dp(5),
-          borderTopLeftRadius: dp(10),
-          borderBottomLeftRadius: dp(10),
+          borderRadius: dp(10),
+          // borderTopLeftRadius: dp(10),
+          // borderBottomLeftRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'flex-end',
           overflow: 'hidden',
-          backgroundColor: '#fff',
+          backgroundColor: 'transparent',
         }}
       >
         <TouchableOpacity
@@ -1058,9 +1389,9 @@ class DoctorCC extends Component<Props, State> {
           <View
             style={[
               styles.functionItemImageView,
-              this.state.selectType === 'speak' && {
-                borderRightColor: '#f24f02'
-              }
+              // this.state.selectType === 'speak' && {
+              //   borderRightColor: '#f24f02'
+              // }
             ]}
           >
             <Image
@@ -1081,16 +1412,16 @@ class DoctorCC extends Component<Props, State> {
         style={{
           position: 'absolute',
           top: dp(100),
-          right: dp(0),
+          right: dp(10),
           width: dp(50),
           // height: dp(50),
-          // borderRadius: dp(5),
-          borderTopLeftRadius: dp(10),
-          borderBottomLeftRadius: dp(10),
+          borderRadius: dp(10),
+          // borderTopLeftRadius: dp(10),
+          // borderBottomLeftRadius: dp(10),
           justifyContent: 'center',
           alignItems: 'flex-end',
           overflow: 'hidden',
-          backgroundColor: '#fff',
+          backgroundColor: 'transparent',
         }}
       >
         <TouchableOpacity
@@ -1102,9 +1433,9 @@ class DoctorCC extends Component<Props, State> {
           <View
             style={[
               styles.functionItemImageView,
-              this.state.selectType === 'action' && {
-                borderRightColor: '#f24f02'
-              }
+              // this.state.selectType === 'action' && {
+              //   borderRightColor: '#f24f02'
+              // }
             ]}
           >
             <Image
@@ -1222,7 +1553,7 @@ class DoctorCC extends Component<Props, State> {
             width: dp(100),
             height: dp(100),
             marginHorizontal: dp(5),
-            backgroundColor: 'rgba(255, 255, 255, .9)',
+            backgroundColor: 'rgba(0, 0, 0, .5)',
             borderRadius: dp(8),
             overflow: 'hidden',
             // opacity: 0.9,
@@ -1309,14 +1640,14 @@ class DoctorCC extends Component<Props, State> {
           ]}
         />
         <View style={[
-          {backgroundColor: '#fff', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
+          {backgroundColor: '#000', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
           this.state.selectSpeakKey === item.key && {
             backgroundColor:"#f24f02",
             height: dp(23)
           },
         ]} >
           <Text style={[
-            {fontSize:dp(12), color: '#000'},
+            {fontSize:dp(12), color: '#fff'},
             this.state.selectSpeakKey === item.key && {
               color:"#fff",
             },
@@ -1329,103 +1660,103 @@ class DoctorCC extends Component<Props, State> {
 
   /** 换装被选中时显示的换装页面 */
   renderReloaderSelected = () => {
-    return(
+    return (
       <View
-        style={{
+        style={[{
           position: 'absolute',
-          top: dp(160),
-          right: dp(60),
-          width: dp(52),
-          maxHeight: dp(120),
-          borderRadius: dp(10),
-          // paddingVertical: dp(5),
-          // paddingHorizontal: dp(5),
+          bottom: dp(15),
+          left: 0,
           justifyContent: 'center',
           alignItems: 'center',
-          overflow: 'hidden',
-          backgroundColor: '#fff',
-        }}
+          width: '100%',
+        }]}
       >
-        <TouchableOpacity
-          style={[
-            styles.ReloaderItem,
-            // this.state.selectType === 'action' && {
-            //   borderRightColor: '#f24f02'
-            // }
-          ]}
-          onPress={() => {
-            // 如果当前就是该模型就不做任何改动
-            if(this.state.selectReloaderKey === 'doctor') {
-              return
-            }
-            const newModel = this.modelMap.get('博士')
-            if(newModel && this.ARModel) {
-              // 更新解说数据为博士的数据
-              this.getDoctorData()
-              // 先隐藏之前的模型图层
-              const layerName = this.ARModel.layerName
-              SARMap.setLayerVisible(layerName, false)
-              // 再显示新的模型图层
-              SARMap.setLayerVisible(newModel.layerName, true)
-              // 然后将模型给替换为新图层的模型
-              this.ARModel = newModel
-              // 修改选择模型的类型
-              this.setState({selectReloaderKey: 'doctor'})
-            }
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={[{maxWidth: dp(550)}]}
+          contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
+        >
+          {
+            this.renderReloaderItem({
+              key: 'doctor',
+              image:  getImage().img_doctor,
+              name: "超人服",
+              action: this.doctorReloaderOnPress,
+            })
+          }
 
-          }}
-        >
-          <View
-            style={[styles.functionItemImageView]}
-          >
-            <Image
-              style={[styles.functionItemImagee]}
-              source={this.state.selectReloaderKey === 'doctor'? getImage().icon_superman_selected : getImage().icon_superman}
-            />
-            <Text style={[styles.functionItemText]}> {'超人服'} </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.ReloaderItem,
-          ]}
-          onPress={() => {
-            // 如果当前就是该模型就不做任何改动
-            if(this.state.selectReloaderKey === 'doctorStudy') {
-              return
-            }
-            const newModel = this.modelMap.get('博士_学')
-            if(newModel && this.ARModel) {
-              // 更新解说数据为超人的数据
-              this.getSupermanData()
-              // 先隐藏之前的模型图层
-              const layerName = this.ARModel.layerName
-              SARMap.setLayerVisible(layerName, false)
-              // 再显示新的模型图层
-              SARMap.setLayerVisible(newModel.layerName, true)
-              // 然后将模型给替换为新图层的模型
-              this.ARModel = newModel
-              // 修改选择模型的类型
-              this.setState({selectReloaderKey: 'doctorStudy'})
-            }
-          }}
-        >
-          <View
-            style={[styles.functionItemImageView]}
-          >
-            <Image
-              style={[styles.functionItemImagee]}
-              source={this.state.selectReloaderKey === 'doctorStudy'? getImage().icon_doctor_selected : getImage().icon_doctor}
-            />
-            <Text style={[styles.functionItemText]}> {'博士服'} </Text>
-          </View>
-        </TouchableOpacity>
+          {
+            this.renderReloaderItem({
+              key: 'doctorStudy',
+              image:  getImage().img_doctor,
+              name: "博士服",
+              action: this.doctorStudyReloaderOnPress,
+            })
+          }
+        </ScrollView>
       </View>
     )
   }
 
-  /** 合影按钮被选中时显示的选择合影动画的页面 */
-  renderPhotoSelected = () => {
+  /** 换装里具体的换装项 */
+  renderReloaderItem = (item: reloaderItemType) => {
+    return (
+      <TouchableOpacity
+        style={[
+          {
+            width: dp(100),
+            height: dp(100),
+            marginHorizontal: dp(5),
+            backgroundColor: 'rgba(0, 0, 0, .5)',
+            borderRadius: dp(8),
+            overflow: 'hidden',
+            // opacity: 0.9,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          },
+          this.state.selectReloaderKey === item.key && {
+            shadowOffset: { width: 1, height: 1 },
+            shadowColor: 'black',
+            shadowOpacity: 1,
+            width: dp(112),
+            height: dp(112),
+          },
+        ]}
+        onPress={item.action}
+      >
+        <Image
+          source={item.image}
+          style={[
+            {width: dp(80), height: dp(80),marginTop: dp(10)},
+            this.state.selectReloaderKey === item.key && {
+              width: dp(90),
+              height: dp(90),
+            }
+          ]}
+        />
+        <View style={[
+          { position:'absolute', bottom: 0, left: 0 ,backgroundColor: '#000',opacity: 0.7 , width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
+          this.state.selectReloaderKey === item.key && {
+            backgroundColor:"#f24f02",
+            opacity: 1,
+            height: dp(23)
+          },
+        ]} >
+          <Text style={[
+            {fontSize:dp(12), color: '#fff'},
+            this.state.selectReloaderKey === item.key && {
+              color:"#fff",
+            },
+
+          ]}>{item.name}</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  /** 合影按钮被选中时显示的选择合影动画的页面 也是录像里的和外面的动作页面 */
+  renderActionSelected = () => {
     return (
       <View
         style={[{
@@ -1528,7 +1859,7 @@ class DoctorCC extends Component<Props, State> {
             justifyContent: 'center',
             alignItems: 'center',
             overflow: 'hidden',
-            backgroundColor: 'rgba(255, 255, 255, .9)',
+            backgroundColor: 'rgba(0, 0, 0, .5)',
             borderRadius: dp(8),
           },
           this.state.selectAnimationKey === item.id && {
@@ -1679,14 +2010,14 @@ class DoctorCC extends Component<Props, State> {
           ]}
         />
         <View style={[
-          {backgroundColor: '#fff', width: '100%', height: dp(18), justifyContent: 'center', alignItems: 'center'},
+          {backgroundColor: '#000', width: '100%', height: dp(18), justifyContent: 'center', alignItems: 'center'},
           this.state.selectAnimationKey === item.id && {
             height: dp(22),
             backgroundColor: '#f24f02',
           }
         ]} >
           <Text style={[
-            {fontSize:dp(10), color: '#000'},
+            {fontSize:dp(10), color: '#fff'},
             this.state.selectAnimationKey === item.id && {
               color: '#fff',
             }
@@ -1695,6 +2026,93 @@ class DoctorCC extends Component<Props, State> {
       </TouchableOpacity>
     )
   }
+
+  /** 合影的位置路线被选中时的选择合影地点的页面 */
+  renderPhotoPositionSelected = () => {
+    return (
+      <View
+        style={[{
+          position: 'absolute',
+          bottom: dp(15),
+          left: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }]}
+      >
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={[{maxWidth: dp(550)}]}
+          contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
+        >
+          {
+            this.photoRouteDate.map((item) => {
+              return this.renderPhotoPositionItem(item)
+            })
+          }
+        </ScrollView>
+      </View>
+    )
+  }
+
+  /** 路线里里具体的位置路线项 */
+  renderPhotoPositionItem = (item: routeItemType) => {
+    return (
+      <TouchableOpacity
+        style={[
+          {
+            width: dp(100),
+            height: dp(100),
+            marginHorizontal: dp(5),
+            backgroundColor: 'rgba(0, 0, 0, .5)',
+            borderRadius: dp(8),
+            overflow: 'hidden',
+            // opacity: 0.9,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          },
+          this.state.selectRouteKey === item.key && {
+            shadowOffset: { width: 1, height: 1 },
+            shadowColor: 'black',
+            shadowOpacity: 1,
+            width: dp(112),
+            height: dp(112),
+          },
+        ]}
+        onPress={() => {
+          this.routeItemOnPress(item)
+        }}
+      >
+        <Image
+          source={item.image}
+          style={[
+            {width: dp(60), height: dp(60),marginTop: dp(10)},
+            this.state.selectRouteKey === item.key && {
+              width: dp(69),
+              height: dp(69),
+            }
+          ]}
+        />
+        <View style={[
+          {backgroundColor: '#000', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
+          this.state.selectRouteKey === item.key && {
+            backgroundColor:"#f24f02",
+            height: dp(23)
+          },
+        ]} >
+          <Text style={[
+            {fontSize:dp(12), color: '#fff'},
+            this.state.selectRouteKey === item.key && {
+              color:"#fff",
+            },
+
+          ]}>{item.name}</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
 
   /** 合影被选中时显示的拍照页面 */
   renderPhotoShot = () => {
@@ -1808,7 +2226,7 @@ class DoctorCC extends Component<Props, State> {
               >
                 <Image
                   style={[styles.imageBtnImg]}
-                  source={getThemeAssets().share.wechat}
+                  source={getImage().icon_weChat}
                 />
               </View>
 
@@ -2009,7 +2427,7 @@ class DoctorCC extends Component<Props, State> {
               >
                 <Image
                   style={[styles.imageBtnImg]}
-                  source={getThemeAssets().share.wechat}
+                  source={getImage().icon_weChat}
                 />
               </View>
 
@@ -2136,9 +2554,10 @@ class DoctorCC extends Component<Props, State> {
         {/* 右边按钮的响应界面 */}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
         {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()} */}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderPhotoSelected()}
+        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-        {this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'video' && this.renderPhotoSelected()}
+        {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'video' || (this.state.selectType === 'photo' && this.state.photoBtnKey === 'action')) && this.renderActionSelected()}
+        {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')) && this.renderPhotoPositionSelected()}
 
         {/* 右边按钮 */}
         {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
@@ -2149,7 +2568,9 @@ class DoctorCC extends Component<Props, State> {
         {/* 左边按钮 */}
         {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
         {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
-        {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
+        {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
+        {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
+        {/* {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()} */}
 
         {/* 合影的界面 */}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
@@ -2204,9 +2625,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: 'white',
+    backgroundColor: '#000',
     // borderRightWidth: dp(2),
     // borderRightColor: '#fff',
+    opacity: 0.6
   },
   functionItemImageView: {
     justifyContent: 'center',
@@ -2214,8 +2636,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: dp(50),
     height: dp(42),
-    borderRightWidth: dp(2),
-    borderRightColor: '#fff',
+    // borderRightWidth: dp(2),
+    // borderRightColor: '#fff',
   },
   functionItemImagee: {
     // position: 'absolute',
@@ -2224,6 +2646,7 @@ const styles = StyleSheet.create({
   },
   functionItemText: {
     fontSize:10,
+    color: '#fff',
   },
 
   ReloaderItem: {
@@ -2250,7 +2673,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: dp(45),
     height: dp(45),
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
+    opacity: 0.7,
     borderRadius: dp(10),
   },
   imageBtnImg: {

@@ -1,12 +1,13 @@
 import { getImage } from '../../../assets'
 import React from 'react'
-import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView, ImageBackground, PanResponder, PanResponderInstance, GestureResponderEvent } from 'react-native'
+import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView, ImageBackground, PanResponder, PanResponderInstance, GestureResponderEvent, Platform } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { AppDialog, AppLog, AppStyle, AppToolBar, dp ,Toast} from '@/utils'
 import { Easing } from 'react-native'
 import { SARMap } from 'imobile_for_reactnative'
 import AnimatedUnit from '../components/AnimatedUnit'
 import Sound from 'react-native-sound'
+import { SplashScreen } from '@/native'
 
 
 const AppUtils = NativeModules.AppUtils
@@ -107,6 +108,7 @@ class Home extends React.Component<Props, State> {
 
   componentDidMount() {
     try {
+      Platform.OS === 'android' && SplashScreen.hide()
       Sound.setCategory('Playback')
       this.clickSound = new Sound('homeclick.mp3', Sound.MAIN_BUNDLE, (error) => {
         if (error) {
@@ -131,7 +133,8 @@ class Home extends React.Component<Props, State> {
       initialPosition: {
         ...this.state.initialPosition,
         left: nativeEvent.pageX,
-        top: nativeEvent.pageY - this.containerHeight + CIRCLE_SIZE / 3,
+        // top: nativeEvent.pageY - this.containerHeight + CIRCLE_SIZE / 3,
+        top: nativeEvent.pageY,
       },
     }, () => {
       this.animatedUnit?.startAnimation()
@@ -452,7 +455,17 @@ class Home extends React.Component<Props, State> {
           height: dp(41),
           marginLeft: dp(-80),
         }}
-        onPress={(e: GestureResponderEvent) => {
+        // onPress={(e: GestureResponderEvent) => {
+        //   if (this.state.currentIndex === -1) {
+        //     Toast.show('请选择模块')
+        //     return
+        //   }
+        //   this._clickAction(e, () => {
+        //     const item = this.getItems()[this.state.currentIndex]
+        //     item?.action()
+        //   }, 1000)
+        // }}
+        onPressOut={(e: GestureResponderEvent) => {
           if (this.state.currentIndex === -1) {
             Toast.show('请选择模块')
             return
@@ -526,7 +539,13 @@ class Home extends React.Component<Props, State> {
               top: dp(21),
               right: dp(24),
             }}
-            onPress={() => {
+            // onPress={() => {
+            //   AppDialog.show({
+            //     text: '是否退出展厅应用？',
+            //     confirm: AppUtils.AppExit
+            //   })
+            // }}
+            onPressOut={() => {
               AppDialog.show({
                 text: '是否退出展厅应用？',
                 confirm: AppUtils.AppExit

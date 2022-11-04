@@ -11,7 +11,6 @@ import { ARAnimatorCategory, ARAnimatorType, ARElementType } from "imobile_for_r
 import ARArrow from "../components/ARArrow"
 import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 import Video from 'react-native-video'
-import { getThemeAssets } from "@/assets"
 import { getLanguage } from "@/language"
 import ARGuide from '../components/ARGuide'
 import { isDoctorMapGuided, setDoctorMapGuided } from "../Actions"
@@ -91,6 +90,9 @@ interface State {
   /** 合影里按钮的选项的key */
   photoBtnKey: 'action' | 'position' | 'operation' | 'null',
   selectRouteKey: 'route01'| 'route02' | 'route03' | 'null',
+  btRight:Animated.Value
+  btLeft:Animated.Value
+  btBottom: Animated.Value
 }
 
 homePath = ""
@@ -133,6 +135,8 @@ class DoctorCC extends Component<Props, State> {
   /** 路线的推演动画的延时器 */
   routeAnimationTimer: NodeJS.Timer | null | undefined = null
 
+  show = true
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -155,6 +159,15 @@ class DoctorCC extends Component<Props, State> {
       showGuide: false,
       photoBtnKey: 'null',
       selectRouteKey: 'null',
+      btRight: new Animated.Value (
+        0,
+      ),
+      btLeft: new Animated.Value (
+        dp(20),
+      ),
+      btBottom: new Animated.Value (
+        0,
+      ),
     }
     this.imgPath = ''
     this.isBack = false
@@ -214,6 +227,52 @@ class DoctorCC extends Component<Props, State> {
         }, 3000)
 
       },
+    })
+
+    /** 屏幕单击事件监听 */
+    AppEvent.addListener('ar_single_click', () =>{
+      let right
+      let left
+      let bottom
+      if (this.show) {
+        right = -100
+        left = -200
+        bottom = -200
+      }else {
+        right = 0
+        left = dp(20)
+        bottom = 0
+      }
+      this.show = !this.show
+      Animated.parallel([
+        Animated.timing(this.state.btRight, {
+          toValue: right,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.btLeft, {
+          toValue: left,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(this.state.btBottom, {
+          toValue: bottom,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+      ]).start()
+
+      if(!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow) {
+        this.setState({
+          isSpeakGuideShow: false,
+        })
+      }
+
+      if(this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow) {
+        this.setState({
+          isVideoGuideShow: false,
+        })
+      }
     })
   }
 
@@ -791,6 +850,9 @@ class DoctorCC extends Component<Props, State> {
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
     }
 
+    // 暂时隐藏箭头追踪功能
+    SExhibition.stopTrackingTarget()
+
     this.setState({
       selectType: 'photo',
       isShowFull: true,
@@ -1115,7 +1177,7 @@ class DoctorCC extends Component<Props, State> {
         style={{
           position: 'absolute',
           top: dp(20),
-          left: dp(20),
+          // left: dp(20),
           width: dp(45),
           height: dp(45),
           borderRadius: dp(8),
@@ -1141,7 +1203,7 @@ class DoctorCC extends Component<Props, State> {
         style={{
           position: 'absolute',
           top: dp(75),
-          left: dp(20),
+          // left: dp(20),
           width: dp(45),
           height: dp(45),
           borderRadius: dp(8),
@@ -1167,7 +1229,7 @@ class DoctorCC extends Component<Props, State> {
         style={{
           position: 'absolute',
           top: dp(75),
-          left: dp(20),
+          // left: dp(20),
           width: dp(45),
           height: dp(45),
           borderRadius: dp(8),
@@ -1196,7 +1258,7 @@ class DoctorCC extends Component<Props, State> {
         style={[{
           position: 'absolute',
           top: dp(130),
-          left: dp(20),
+          // left: dp(20),
           width: dp(45),
           height: dp(45),
           borderRadius: dp(8),
@@ -1228,7 +1290,7 @@ class DoctorCC extends Component<Props, State> {
         style={[{
           position: 'absolute',
           top: dp(185),
-          left: dp(20),
+          // left: dp(20),
           width: dp(45),
           height: dp(45),
           borderRadius: dp(8),
@@ -2551,33 +2613,97 @@ class DoctorCC extends Component<Props, State> {
   render() {
     return (
       <>
-        {/* 右边按钮的响应界面 */}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
-        {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()} */}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
-        {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-        {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'video' || (this.state.selectType === 'photo' && this.state.photoBtnKey === 'action')) && this.renderActionSelected()}
-        {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')) && this.renderPhotoPositionSelected()}
 
-        {/* 右边按钮 */}
-        {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
-        {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()}
+       
 
         {/* 扫描界面 */}
         {!this.state.isShowFull && this.state.showScan && this.renderScan()}
         {/* 左边按钮 */}
-        {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
-        {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
-        {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
-        {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
-        {/* {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()} */}
+        <Animated.View
+          style={{
+            position: 'absolute',
+            top: dp(20),
+            left: this.state.btLeft,
+            width: dp(50),
+            height: dp(200),
+            overflow: 'hidden',
+          }}
+        >
+          {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
+          {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
+          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
+          {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
+          {/* {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()} */}
 
-        {/* 合影的界面 */}
-        {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
+        </Animated.View>
+
+
+        {/* 右边按钮的响应界面 */}
+
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
+            height: '100%',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            // alignItems: 'flex-end',
+          }}
+        >
+          <Animated.View
+            style={{
+              bottom: this.state.btBottom,
+              // flexDirection: 'row',
+              width: '100%',
+              height: dp(130),
+            }}
+          >
+            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
+            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()} */}
+            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
+            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
+            {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'video' || (this.state.selectType === 'photo' && this.state.photoBtnKey === 'action')) && this.renderActionSelected()}
+            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')) && this.renderPhotoPositionSelected()}
+
+          </Animated.View>
+
+        </View>
+
+        {/* 右边按钮 */}
+        <View
+          style={{
+            position: 'absolute',
+            right: 0,
+            width: '100%',
+            height: '100%',
+            // justifyContent: 'center',
+            alignItems: 'flex-end',
+          }}
+        >
+          <Animated.View
+            style={{
+              right: this.state.btRight,
+              flexDirection: 'row',
+              width: dp(80),
+              height: '100%',
+            }}
+          >
+            {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
+            {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()}
+
+            {/* 拍照按钮 */}
+            {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
+            {/* 录像按钮 */}
+            {this.state.isShowFull && this.state.selectType === 'video' && this.renderVideoSelected()}
+          </Animated.View>
+
+        </View>
+
+        {/* 合影预览界面 */}
         {this.state.selectType === 'photo' && this.state.uri !== 'null' && this.renderPhotoImage()}
 
-        {/* 录屏的界面 */}
-        {this.state.isShowFull && this.state.selectType === 'video' && this.renderVideoSelected()}
+        {/* 录屏的预览和录像中界面 */}
         {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoTime >= 0 && this.renderVideotime()}
         {this.state.selectType === 'video' && this.state.videoUrl !== 'null' && this.renderVideo()}
 

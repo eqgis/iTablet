@@ -101,6 +101,8 @@ const flat_plot_selected = require('./ar_exhibition_plot_selected.png')
 const flat_search_selected = require('./ar_exhibition_search_selected.png')
 const flat_change_map_selected = require('./flat_map_selected.png')
 
+const img_doctor_study = require('./img_doctor_study.png')
+const img_doctor = require('./img_doctor.png')
 
 const image = {
   scan,
@@ -204,6 +206,8 @@ const image = {
   flat_plot_selected,
   flat_search_selected,
   flat_change_map_selected,
+  img_doctor_study,
+  img_doctor,
 }
 
 function getImage(): typeof image {

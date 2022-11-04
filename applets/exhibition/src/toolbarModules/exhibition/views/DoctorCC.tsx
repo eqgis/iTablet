@@ -34,6 +34,13 @@ interface speakItemType {
   image: ImageSourcePropType,
 }
 
+interface reloaderItemType {
+  key: 'doctor' | 'doctorStudy',
+  image:  ImageSourcePropType,
+  name: string,
+  action: () => void,
+}
+
 interface routeItemType {
   key: 'route01'| 'route02' | 'route03' | 'null',
   title: string,
@@ -838,6 +845,51 @@ class DoctorCC extends Component<Props, State> {
     })
   }
 
+  /** 点击了超人服的换装按钮 */
+  doctorReloaderOnPress = () => {
+    // 如果当前就是该模型就不做任何改动
+    if(this.state.selectReloaderKey === 'doctor') {
+      return
+    }
+    const newModel = this.modelMap.get('博士')
+    if(newModel && this.ARModel) {
+      // 更新解说数据为博士的数据
+      this.getDoctorData()
+      // 先隐藏之前的模型图层
+      const layerName = this.ARModel.layerName
+      SARMap.setLayerVisible(layerName, false)
+      // 再显示新的模型图层
+      SARMap.setLayerVisible(newModel.layerName, true)
+      // 然后将模型给替换为新图层的模型
+      this.ARModel = newModel
+      // 修改选择模型的类型
+      this.setState({selectReloaderKey: 'doctor'})
+    }
+
+  }
+
+  /** 点击了博士服的换装按钮 */
+  doctorStudyReloaderOnPress = () => {
+    // 如果当前就是该模型就不做任何改动
+    if(this.state.selectReloaderKey === 'doctorStudy') {
+      return
+    }
+    const newModel = this.modelMap.get('博士_学')
+    if(newModel && this.ARModel) {
+      // 更新解说数据为超人的数据
+      this.getSupermanData()
+      // 先隐藏之前的模型图层
+      const layerName = this.ARModel.layerName
+      SARMap.setLayerVisible(layerName, false)
+      // 再显示新的模型图层
+      SARMap.setLayerVisible(newModel.layerName, true)
+      // 然后将模型给替换为新图层的模型
+      this.ARModel = newModel
+      // 修改选择模型的类型
+      this.setState({selectReloaderKey: 'doctorStudy'})
+    }
+  }
+
 
   /** 点击合影(截屏)按钮响应的方法 */
   shot = async () => {
@@ -1608,98 +1660,98 @@ class DoctorCC extends Component<Props, State> {
 
   /** 换装被选中时显示的换装页面 */
   renderReloaderSelected = () => {
-    return(
+    return (
       <View
-        style={{
+        style={[{
           position: 'absolute',
-          top: dp(160),
-          right: dp(60),
-          width: dp(52),
-          maxHeight: dp(120),
-          borderRadius: dp(10),
-          // paddingVertical: dp(5),
-          // paddingHorizontal: dp(5),
+          bottom: dp(15),
+          left: 0,
           justifyContent: 'center',
           alignItems: 'center',
-          overflow: 'hidden',
-          backgroundColor: '#fff',
-        }}
+          width: '100%',
+        }]}
       >
-        <TouchableOpacity
-          style={[
-            styles.ReloaderItem,
-            // this.state.selectType === 'action' && {
-            //   borderRightColor: '#f24f02'
-            // }
-          ]}
-          onPress={() => {
-            // 如果当前就是该模型就不做任何改动
-            if(this.state.selectReloaderKey === 'doctor') {
-              return
-            }
-            const newModel = this.modelMap.get('博士')
-            if(newModel && this.ARModel) {
-              // 更新解说数据为博士的数据
-              this.getDoctorData()
-              // 先隐藏之前的模型图层
-              const layerName = this.ARModel.layerName
-              SARMap.setLayerVisible(layerName, false)
-              // 再显示新的模型图层
-              SARMap.setLayerVisible(newModel.layerName, true)
-              // 然后将模型给替换为新图层的模型
-              this.ARModel = newModel
-              // 修改选择模型的类型
-              this.setState({selectReloaderKey: 'doctor'})
-            }
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={[{maxWidth: dp(550)}]}
+          contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
+        >
+          {
+            this.renderReloaderItem({
+              key: 'doctor',
+              image:  getImage().img_doctor,
+              name: "超人服",
+              action: this.doctorReloaderOnPress,
+            })
+          }
 
-          }}
-        >
-          <View
-            style={[styles.functionItemImageView]}
-          >
-            <Image
-              style={[styles.functionItemImagee]}
-              source={this.state.selectReloaderKey === 'doctor'? getImage().icon_superman_selected : getImage().icon_superman}
-            />
-            <Text style={[styles.functionItemText]}> {'超人服'} </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.ReloaderItem,
-          ]}
-          onPress={() => {
-            // 如果当前就是该模型就不做任何改动
-            if(this.state.selectReloaderKey === 'doctorStudy') {
-              return
-            }
-            const newModel = this.modelMap.get('博士_学')
-            if(newModel && this.ARModel) {
-              // 更新解说数据为超人的数据
-              this.getSupermanData()
-              // 先隐藏之前的模型图层
-              const layerName = this.ARModel.layerName
-              SARMap.setLayerVisible(layerName, false)
-              // 再显示新的模型图层
-              SARMap.setLayerVisible(newModel.layerName, true)
-              // 然后将模型给替换为新图层的模型
-              this.ARModel = newModel
-              // 修改选择模型的类型
-              this.setState({selectReloaderKey: 'doctorStudy'})
-            }
-          }}
-        >
-          <View
-            style={[styles.functionItemImageView]}
-          >
-            <Image
-              style={[styles.functionItemImagee]}
-              source={this.state.selectReloaderKey === 'doctorStudy'? getImage().icon_doctor_selected : getImage().icon_doctor}
-            />
-            <Text style={[styles.functionItemText]}> {'博士服'} </Text>
-          </View>
-        </TouchableOpacity>
+          {
+            this.renderReloaderItem({
+              key: 'doctorStudy',
+              image:  getImage().img_doctor,
+              name: "博士服",
+              action: this.doctorStudyReloaderOnPress,
+            })
+          }
+        </ScrollView>
       </View>
+    )
+  }
+
+  /** 换装里具体的换装项 */
+  renderReloaderItem = (item: reloaderItemType) => {
+    return (
+      <TouchableOpacity
+        style={[
+          {
+            width: dp(100),
+            height: dp(100),
+            marginHorizontal: dp(5),
+            backgroundColor: 'rgba(0, 0, 0, .5)',
+            borderRadius: dp(8),
+            overflow: 'hidden',
+            // opacity: 0.9,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          },
+          this.state.selectReloaderKey === item.key && {
+            shadowOffset: { width: 1, height: 1 },
+            shadowColor: 'black',
+            shadowOpacity: 1,
+            width: dp(112),
+            height: dp(112),
+          },
+        ]}
+        onPress={item.action}
+      >
+        <Image
+          source={item.image}
+          style={[
+            {width: dp(80), height: dp(80),marginTop: dp(10)},
+            this.state.selectReloaderKey === item.key && {
+              width: dp(90),
+              height: dp(90),
+            }
+          ]}
+        />
+        <View style={[
+          { position:'absolute', bottom: 0, left: 0 ,backgroundColor: '#000',opacity: 0.7 , width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
+          this.state.selectReloaderKey === item.key && {
+            backgroundColor:"#f24f02",
+            opacity: 1,
+            height: dp(23)
+          },
+        ]} >
+          <Text style={[
+            {fontSize:dp(12), color: '#fff'},
+            this.state.selectReloaderKey === item.key && {
+              color:"#fff",
+            },
+
+          ]}>{item.name}</Text>
+        </View>
+      </TouchableOpacity>
     )
   }
 

@@ -499,8 +499,6 @@ class DoctorCC extends Component<Props, State> {
     AppEvent.removeListener('ar_image_tracking_result')
     // 移除语音结束监听
     SARMap.removeSpeakStopListener()
-    // 移除推演动画播放完成监听
-    SARMap.removeARAminationListener()
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }

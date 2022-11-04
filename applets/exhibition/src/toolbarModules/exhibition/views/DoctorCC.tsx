@@ -652,6 +652,7 @@ class DoctorCC extends Component<Props, State> {
     })
   }
 
+  /** 点击合影界面的具体路线按钮执行的方法 */
   routeItemOnPress = async (item: routeItemType) => {
 
     if(this.isPlay) {
@@ -1751,7 +1752,7 @@ class DoctorCC extends Component<Props, State> {
           {
             this.renderReloaderItem({
               key: 'doctorStudy',
-              image:  getImage().img_doctor,
+              image:  getImage().img_doctor_study,
               name: "博士服",
               action: this.doctorStudyReloaderOnPress,
             })
@@ -2613,9 +2614,6 @@ class DoctorCC extends Component<Props, State> {
   render() {
     return (
       <>
-
-       
-
         {/* 扫描界面 */}
         {!this.state.isShowFull && this.state.showScan && this.renderScan()}
         {/* 左边按钮 */}
@@ -2639,7 +2637,6 @@ class DoctorCC extends Component<Props, State> {
 
 
         {/* 右边按钮的响应界面 */}
-
         <View
           style={{
             position: 'absolute',

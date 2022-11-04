@@ -2,9 +2,12 @@ package com.supermap.itablet.splashscreen;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.widget.MediaController;
 
 import com.supermap.itablet.R;
 
@@ -20,6 +23,9 @@ public class SplashScreen {
     private static Handler mHandler = new Handler();
 
     static GifImageView gifImageView;
+    private static MediaPlayer mediaPlayer;
+    private static CustomVideoView videoView;
+    public final static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
 
     private static Runnable fadeInTask = new Runnable() {
         public void run() {
@@ -45,6 +51,18 @@ public class SplashScreen {
                 if (!activity.isFinishing()) {
                     mSplashDialog = new Dialog(activity, themeResId);
                     mSplashDialog.setContentView(R.layout.launch_screen_img);
+                    Uri uri;
+                    Boolean isPad =  (activity.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+                    if (isPad) {
+                        uri = Uri.parse("android.resource://" + activity.getPackageName() + "/" + R.raw.launch_video_pad);
+                    } else {
+                        uri = Uri.parse("android.resource://" + activity.getPackageName() + "/" + R.raw.launch_video_imobile);
+                    }
+
+                    videoView = mSplashDialog.findViewById(R.id.video_view);
+                    videoView.setMediaController(new MediaController(activity));
+                    videoView.setVideoURI(uri);
+
 //                    gifImageView = mSplashDialog.findViewById(R.id.slogan);
 //
 //                    SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("SmData", 0);
@@ -63,6 +81,9 @@ public class SplashScreen {
 
                     if (!mSplashDialog.isShowing()) {
                         mSplashDialog.show();
+
+                        videoView.requestFocus();
+                        videoView.start();
                     }
                 }
             }
@@ -109,6 +130,8 @@ public class SplashScreen {
                     boolean isDestroyed = false;
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                        if (mediaPlayer != null) mediaPlayer.stop();
+                        if (videoView != null) videoView.suspend();
                         isDestroyed = _activity.isDestroyed();
                     }
 

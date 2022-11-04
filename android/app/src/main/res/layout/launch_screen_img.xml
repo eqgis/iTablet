@@ -5,11 +5,17 @@
     android:gravity="center_horizontal"
     android:background="#F8FAFB">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="840dp"
+<!--    <ImageView-->
+<!--        android:id="@+id/icon"-->
+<!--        android:layout_width="840dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:scaleType="fitCenter"-->
+<!--        android:src="@drawable/exhibition_launch" />-->
+
+    <com.supermap.itablet.splashscreen.CustomVideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:src="@drawable/exhibition_launch" />
+        android:layout_centerInParent="true" />
 
 </LinearLayout>

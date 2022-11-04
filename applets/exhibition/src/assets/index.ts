@@ -104,6 +104,13 @@ const flat_change_map_selected = require('./flat_map_selected.png')
 const img_doctor_study = require('./img_doctor_study.png')
 const img_doctor = require('./img_doctor.png')
 
+const icon_tool_rolling = require('./icon_tool_rolling.png')
+const icon_tool_rolling_select = require('./icon_tool_rolling_select.png')
+const icon_tool_horizontal = require('./icon_tool_horizontal.png')
+const icon_tool_horizontal_select = require('./icon_tool_horizontal_select.png')
+const icon_tool_vertical = require('./icon_tool_vertical.png')
+const icon_tool_vertical_select = require('./icon_tool_vertical_select.png')
+
 const image = {
   scan,
   scan_circle,
@@ -198,6 +205,15 @@ const image = {
   flat_plot,
   flat_search,
   flat_change_map,
+
+
+  icon_tool_rolling,
+  icon_tool_rolling_select,
+  icon_tool_horizontal,
+  icon_tool_horizontal_select,
+  icon_tool_vertical,
+  icon_tool_vertical_select,
+
   icon_weChat,
   icon_route_selected,
   icon_route,
@@ -208,6 +224,7 @@ const image = {
   flat_change_map_selected,
   img_doctor_study,
   img_doctor,
+
 }
 
 function getImage(): typeof image {

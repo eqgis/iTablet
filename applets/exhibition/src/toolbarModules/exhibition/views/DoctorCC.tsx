@@ -401,21 +401,21 @@ class DoctorCC extends Component<Props, State> {
         title: '路线1',
         name: '洞见之光',
         image: getImage().img_route_route01,
-        route: getRoute().route01,
+        route: getRoute().route11,
       },
       {
         key: 'route02',
         title: '路线2',
         name: '企业使命',
         image: getImage().img_route_route02,
-        route: getRoute().route02,
+        route: getRoute().route12,
       },
       {
         key: 'route03',
         title: '路线3',
         name: '超图研究院',
         image: getImage().img_route_route03,
-        route: getRoute().route03,
+        route: getRoute().route13,
       },
     ]
   }

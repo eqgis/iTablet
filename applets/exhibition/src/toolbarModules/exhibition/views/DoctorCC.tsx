@@ -89,6 +89,7 @@ interface State {
   showGuide: boolean,
   /** 合影里按钮的选项的key */
   photoBtnKey: 'action' | 'position' | 'operation' | 'null',
+  /** 当前选择路线的key */
   selectRouteKey: 'route01'| 'route02' | 'route03' | 'null',
   btRight:Animated.Value
   btLeft:Animated.Value
@@ -529,6 +530,14 @@ class DoctorCC extends Component<Props, State> {
             if(this.positionInfo?.renderNode && this.isPlay && this.ARModel) {
               await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
               this.isPlay = false
+
+              // 更新箭头追踪的位置和范围
+              const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+              if(relativePositin) {
+                SExhibition.setTrackingTarget(relativePositin)
+                SExhibition.startTrackingTarget()
+              }
+
             }
             clearTimeout(tempTimer)
 
@@ -541,6 +550,14 @@ class DoctorCC extends Component<Props, State> {
           if(this.positionInfo?.renderNode) {
             await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
             this.isPlay = false
+
+            // 更新箭头追踪的位置和范围
+            const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+            if(relativePositin) {
+              SExhibition.setTrackingTarget(relativePositin)
+              SExhibition.startTrackingTarget()
+            }
+
           }
         }
       }
@@ -655,6 +672,7 @@ class DoctorCC extends Component<Props, State> {
   /** 点击合影界面的具体路线按钮执行的方法 */
   routeItemOnPress = async (item: routeItemType) => {
 
+    // 动作的动画停掉
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
@@ -663,6 +681,7 @@ class DoctorCC extends Component<Props, State> {
       this.animationTimer = null
     }
 
+    // 当有路线在进行中时，先停掉行走的推演动画，再关闭路线走完后的位置移动处理定时器
     if(this.isPlay) {
       SARMap.stopARAnimation()
       this.isPlay = false
@@ -673,14 +692,45 @@ class DoctorCC extends Component<Props, State> {
       }
     }
 
-    // if(this.ARModel && this.positionInfo?.animationNode) {
-    //   const timerTemp = setTimeout(async () => {
-    //     await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.animationNode)
-    //     clearTimeout(timerTemp)
-    //   }, 300)
-    // }
-
+    // 当再次选择同一路线时，表示重置位置
     if(this.state.selectRouteKey === item.key) {
+      const timerTemp = setTimeout(async () => {
+        if(this.ARModel && this.positionInfo?.animationNode) {
+          await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.animationNode)
+          // 更新箭头追踪的位置和范围
+          const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+          if(relativePositin) {
+            SExhibition.setTrackingTarget(relativePositin)
+            SExhibition.startTrackingTarget()
+          }
+        }
+
+        // 重置位置后，如果之前有选择动画，则继续播放之前的动画
+        const currentElement = this.ARModel
+        if(currentElement) {
+          const id = this.state.selectAnimationKey
+          let isAdd: animationListType | null | undefined = null
+          if(this.state.selectReloaderKey === 'doctor'){
+            isAdd = this.animationList.get(id)
+          } else if(this.state.selectReloaderKey === 'doctorStudy'){
+          // supermanAnimationList
+            isAdd = this.supermanAnimationList.get(id)
+          }
+          if(isAdd) {
+          // 动画已经存在了
+            await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+            // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+            this.animationTimer = setInterval(async () => {
+              if(this.state.selectAnimationKey === id) {
+                await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+              }
+              await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+            },(isAdd.duration + 2) * 1000)
+          }
+        }
+        clearTimeout(timerTemp)
+      }, 300)
+
       this.setState({
         selectRouteKey: "null",
       })
@@ -693,6 +743,9 @@ class DoctorCC extends Component<Props, State> {
     // console.warn(routeId)
     // 2. 播放动画
     const tempTimer =  setTimeout(() => {
+      // 路线动画开始前，停掉箭头追踪功能
+      SExhibition.stopTrackingTarget()
+      // 开始播放推演动画
       SARMap.playARAnimation(JSON.parse(JSON.stringify(item.route)))
       clearTimeout(tempTimer)
     },300)
@@ -703,7 +756,7 @@ class DoctorCC extends Component<Props, State> {
       time += (animation.duration || 0 ) * ((animation.repeatCount || 0) + 1) + (animation.delay || 0)
     } else if(animation.type === ARAnimatorType.GROUP_TYPE){
       const animationTemp = animation.animations
-      animationTemp.map((ele) => {
+      animationTemp.map((ele: any) => {
         if(ele.type === ARAnimatorType.MODEL_TYPE || ele.type === ARAnimatorType.NODE_TYPE){
           time += (ele.duration || 0) * ((ele.repeatCount || 0) + 1) + (ele.delay || 0)
         }
@@ -721,6 +774,14 @@ class DoctorCC extends Component<Props, State> {
             if(this.isPlay && this.ARModel && positionInfo?.animationNode){
               await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, positionInfo.animationNode)
               this.isPlay = false
+
+              // 更新箭头追踪的位置和范围
+              const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+              if(relativePositin) {
+                SExhibition.setTrackingTarget(relativePositin)
+                SExhibition.startTrackingTarget()
+              }
+
             }
             clearTimeout(tempTimer)
 
@@ -729,6 +790,7 @@ class DoctorCC extends Component<Props, State> {
               this.routeAnimationTimer = null
             }
 
+            // 走到指定位置后，如果之前有选择动画，则继续播放之前的动画
             const currentElement = this.ARModel
             if(currentElement) {
               const id = this.state.selectAnimationKey

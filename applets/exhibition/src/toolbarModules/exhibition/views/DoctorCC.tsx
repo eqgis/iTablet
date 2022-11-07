@@ -2714,27 +2714,6 @@ class DoctorCC extends Component<Props, State> {
   render() {
     return (
       <>
-        {/* 扫描界面 */}
-        {!this.state.isShowFull && this.state.showScan && this.renderScan()}
-        {/* 左边按钮 */}
-        <Animated.View
-          style={{
-            position: 'absolute',
-            top: dp(20),
-            left: this.state.btLeft,
-            width: dp(50),
-            height: "100%",
-            overflow: 'hidden',
-          }}
-        >
-          {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
-          {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
-          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
-          {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
-          {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()}
-
-        </Animated.View>
-
 
         {/* 右边按钮的响应界面 */}
         <View
@@ -2796,6 +2775,27 @@ class DoctorCC extends Component<Props, State> {
           </Animated.View>
 
         </View>
+
+        {/* 扫描界面 */}
+        {!this.state.isShowFull && this.state.showScan && this.renderScan()}
+        {/* 左边按钮 */}
+        <Animated.View
+          style={{
+            position: 'absolute',
+            top: dp(20),
+            left: this.state.btLeft,
+            width: dp(50),
+            height: "100%",
+            overflow: 'hidden',
+          }}
+        >
+          {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
+          {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
+          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
+          {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
+          {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()}
+
+        </Animated.View>
 
         {/* 合影预览界面 */}
         {this.state.selectType === 'photo' && this.state.uri !== 'null' && this.renderPhotoImage()}

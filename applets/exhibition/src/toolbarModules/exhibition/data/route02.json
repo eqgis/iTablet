@@ -72,6 +72,20 @@
         "name": "转身",
         "type": 0,
         "category": 2
+      },
+      {
+          "endFrame": -1,
+          "startFrame": 0,
+          "delay": 0,
+          "duration": 4,
+          "elementID": 1,
+          "layerName": "defaultArModelLayer@ARMAP_DEFAULT",
+          "modelAnimationIndex": 3,
+          "order": 0,
+          "repeatCount": 0,
+          "name": "打招呼",
+          "type": 1,
+          "category": 2
       }
     ],
     "delay": 0,

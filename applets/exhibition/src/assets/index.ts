@@ -103,6 +103,9 @@ const flat_change_map_selected = require('./flat_map_selected.png')
 
 const img_doctor_study = require('./img_doctor_study.png')
 const img_doctor = require('./img_doctor.png')
+const img_route_route01 = require('./img_route_route01.png')
+const img_route_route02 = require('./img_route_route02.png')
+const img_route_route03 = require('./img_route_route03.png')
 
 const icon_tool_rolling = require('./icon_tool_rolling.png')
 const icon_tool_rolling_select = require('./icon_tool_rolling_select.png')
@@ -224,6 +227,9 @@ const image = {
   flat_change_map_selected,
   img_doctor_study,
   img_doctor,
+  img_route_route01,
+  img_route_route02,
+  img_route_route03,
 
 }
 

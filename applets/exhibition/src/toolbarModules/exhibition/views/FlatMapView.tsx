@@ -72,6 +72,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         title: '复位',
         action: () => {
           this.hideListIfAny()
+          this.showLoading(500)
           SExhibition.onFlatFunctionPress('reset')
         }
       },
@@ -91,6 +92,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         title: '查询',
         action: () => {
           this.hideListIfAny()
+          this.showLoading(500)
           SExhibition.onFlatFunctionPress('search')
 
         }
@@ -101,6 +103,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         title: '分析',
         action: () => {
           this.hideListIfAny()
+          this.showLoading(500)
           SExhibition.onFlatFunctionPress('buffer')
         }
       },
@@ -110,6 +113,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         title: '标绘',
         action: () => {
           this.hideListIfAny()
+          this.showLoading(500)
           SExhibition.onFlatFunctionPress('plot')
         }
       }
@@ -138,6 +142,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         path: '',
         onTouch: () => {
           this.hideListIfAny()
+          this.showLoading(500)
           SExhibition.changeFlatMap(flatMaps[0].mapName)
         }
       },
@@ -146,6 +151,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         path: '',
         onTouch: () => {
           this.hideListIfAny()
+          this.showLoading(500)
           SExhibition.changeFlatMap(flatMaps[1].mapName)
         }
       },
@@ -154,6 +160,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         path: '',
         onTouch: () => {
           this.hideListIfAny()
+          this.showLoading(500)
           SExhibition.changeFlatMap(flatMaps[2].mapName)
         }
       },
@@ -189,6 +196,13 @@ class FlatMapVIew extends React.Component<Props, State> {
     if(this.state.imageList.length != 0) {
       this.imageList?.hideList()
     }
+  }
+
+  showLoading = (time: number) => {
+    global.Loading.setLoading(true)
+    setTimeout(() => {
+      global.Loading.setLoading(false)
+    }, time)
   }
 
   componentDidMount(): void {

@@ -742,7 +742,11 @@ class DoctorCC extends Component<Props, State> {
     const routeId = await SARMap.addARAnimation(animation)
     // console.warn(routeId)
     // 2. 播放动画
-    const tempTimer =  setTimeout(() => {
+    const tempTimer =  setTimeout(async () => {
+
+      if(this.ARModel && this.positionInfo?.animationNode) {
+        await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.animationNode)
+      }
       // 路线动画开始前，停掉箭头追踪功能
       SExhibition.stopTrackingTarget()
       // 开始播放推演动画
@@ -960,6 +964,7 @@ class DoctorCC extends Component<Props, State> {
       selectSpeakKey: 'null',
       animations: animations,
       isSpeakGuideShow: false,
+      photoBtnKey: 'null',
     })
   }
 
@@ -1003,6 +1008,7 @@ class DoctorCC extends Component<Props, State> {
       selectSpeakKey: 'null',
       isShowFull: true,
       isSpeakGuideShow: false,
+      photoBtnKey: 'null',
     })
   }
 
@@ -2739,8 +2745,8 @@ class DoctorCC extends Component<Props, State> {
             {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()} */}
             {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
             {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-            {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'video' || (this.state.selectType === 'photo' && this.state.photoBtnKey === 'action')) && this.renderActionSelected()}
-            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')) && this.renderPhotoPositionSelected()}
+            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
+            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
 
           </Animated.View>
 
@@ -2791,8 +2797,8 @@ class DoctorCC extends Component<Props, State> {
         >
           {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
           {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
-          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderPhotoBtn()}
-          {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
+          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoBtn()}
+          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
           {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()}
 
         </Animated.View>

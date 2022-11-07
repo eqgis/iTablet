@@ -21,6 +21,7 @@ interface State {
   showGuide:boolean
   btRight:Animated.Value
   btLeft:Animated.Value
+  showRolling:boolean
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -31,6 +32,8 @@ class CoverView extends React.Component<Props, State> {
   coverClick = false
   fixClick = false
   show = true
+  verticalClick = false
+  horizontalClick = false
 
   constructor(props: Props) {
     super(props)
@@ -42,11 +45,12 @@ class CoverView extends React.Component<Props, State> {
       backClick: true,
       showGuide: false,
       btRight:new Animated.Value(
-        0,
+        dp(20),
       ),
       btLeft:new Animated.Value(
         dp(20),
       ),
+      showRolling:false,
     }
   }
 
@@ -62,7 +66,7 @@ class CoverView extends React.Component<Props, State> {
         right = -200
         left = -200
       }else {
-        right = 0
+        right = dp(20)
         left = dp(20)
       }
       this.show = !this.show
@@ -396,6 +400,60 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 
+  renderRolling = () => {
+    let image
+    if(this.state.showRolling){
+      image = getImage().icon_tool_rolling_select
+    }else {
+      image = getImage().icon_tool_rolling
+    }
+    return (
+      <TouchableOpacity
+        style={[{
+          width: dp(50),
+          height: dp(60),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        },this.state.showRolling&&{ borderRightWidth: dp(2), borderRightColor: '#F24F02'}]}
+        onPress={()=>{
+          if(this.state.showRolling){
+            this.setState({showRolling:false})
+          }else{
+            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+            if(layer){
+              this.setState({showRolling:true})
+            }
+          }
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={image}
+          />
+        </View>
+
+        <Text
+          style={{
+            color: 'white',
+            fontSize:10,
+          }}
+        >
+          {'卷帘模式'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
   renderSliderContorl = () => {
     let image
     if(this.state.showSlider){
@@ -471,6 +529,8 @@ class CoverView extends React.Component<Props, State> {
         onPress={() => {
           this.coverClick = false
           this.fixClick = false
+          this.horizontalClick = false
+          this.verticalClick = false
           this.setState({ showSlider: false })
           const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
           if (layer) {
@@ -601,6 +661,118 @@ class CoverView extends React.Component<Props, State> {
           }}
         >
           {'固定'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderHorizontal = () => {
+    let image
+    if(this.horizontalClick){
+      image = getImage().icon_tool_horizontal_select
+    }else{
+      image = getImage().icon_tool_horizontal
+    }
+    return (
+      <TouchableOpacity
+        style={{
+          width: dp(50),
+          height: dp(60),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+        onPress={()=>{
+          this.horizontalClick = !this.horizontalClick
+          if(this.horizontalClick){
+            this.verticalClick = false
+          }
+          this.setState({showRolling:false})
+          const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+          if(layer){
+            SARMap.startRolling(layer.name,0)
+          }
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={image}
+          />
+        </View>
+
+        <Text
+          style={{
+            color: 'white',
+            fontSize:10,
+          }}
+        >
+          {'横向'}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderVertical = () => {
+    let image
+    if(this.verticalClick){
+      image = getImage().icon_tool_vertical_select
+    }else{
+      image = getImage().icon_tool_vertical
+    }
+    return (
+      <TouchableOpacity
+        style={{
+          width: dp(50),
+          height: dp(60),
+          borderRadius: dp(10),
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+        onPress={()=>{
+          this.verticalClick = !this.verticalClick
+          if(this.verticalClick){
+            this.horizontalClick = false
+          }
+          this.setState({showRolling:false})
+          const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+          if(layer){
+            SARMap.startRolling(layer.name,1)
+          }
+        }}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            width: dp(30),
+            height: dp(30),
+          }}
+        >
+          <Image
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            source={image}
+          />
+        </View>
+
+        <Text
+          style={{
+            color: 'white',
+            fontSize:10,
+          }}
+        >
+          {'纵向'}
         </Text>
       </TouchableOpacity>
     )
@@ -948,10 +1120,9 @@ class CoverView extends React.Component<Props, State> {
             {this.state.showCover && <View
               style={{
                 // position: 'absolute',
-                top: dp(15),
                 right: dp(10),
                 width: dp(50),
-                height: dp(110),
+                height: dp(120),
                 borderRadius: dp(10),
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -963,18 +1134,35 @@ class CoverView extends React.Component<Props, State> {
               {this.renderFix()}
             </View>}
 
+            {this.state.showRolling && <View
+              style={{
+                // position: 'absolute',
+                top:dp(60),
+                right: dp(10),
+                width: dp(50),
+                height: dp(120),
+                borderRadius: dp(10),
+                justifyContent: 'center',
+                alignItems: 'center',
+                // overflow: 'hidden',
+                backgroundColor: 'rgba(30,30,30,0.65)',
+              }}
+            >
+              {this.renderHorizontal()}
+              {this.renderVertical()}
+            </View>}
+
 
             <View>
               {/* {this.renderLocation()} */}
               <View
                 style={{
-                  top: dp(10),
-                  borderTopLeftRadius: dp(10),
-                  borderBottomLeftRadius: dp(10),
+                  borderRadius: dp(10),
                   backgroundColor: 'rgba(30,30,30,0.65)',
                 }}
               >
                 {this.renderWindow()}
+                {this.renderRolling()}
                 {this.renderSliderContorl()}
                 {this.renderCancel()}
               </View>

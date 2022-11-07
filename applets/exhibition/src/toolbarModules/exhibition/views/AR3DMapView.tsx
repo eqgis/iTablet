@@ -46,7 +46,7 @@ class AR3DMapView extends React.Component<Props, State> {
       showShape:false,
       showGuide: false,
       btRight:new Animated.Value(
-        0,
+        dp(20),
       ),
       btLeft:new Animated.Value(
         dp(20),
@@ -68,7 +68,7 @@ class AR3DMapView extends React.Component<Props, State> {
         right = -200
         left = -200
       }else {
-        right = 0
+        right = dp(20)
         left = dp(20)
       }
       this.show = !this.show
@@ -722,8 +722,7 @@ class AR3DMapView extends React.Component<Props, State> {
             <View>
               <View
                 style={{
-                  borderTopLeftRadius: dp(10),
-                  borderBottomLeftRadius: dp(10),
+                  borderRadius: dp(10),
                   backgroundColor: 'rgba(30,30,30,0.65)',
                 }}
               >
@@ -734,8 +733,7 @@ class AR3DMapView extends React.Component<Props, State> {
               <View
                 style={{
                   top: dp(10),
-                  borderTopLeftRadius: dp(10),
-                  borderBottomLeftRadius: dp(10),
+                  borderRadius: dp(10),
                   backgroundColor: 'rgba(30,30,30,0.65)',
                 }}
               >

@@ -2,13 +2,13 @@
 	"animations": [
 		{
 			"degrees": [
-				52.125
+				-16.928
 			],
 			"delay": 0,
 			"duration": 0.2,
 			"nodeType": 1,
-			"elementID": 1,
-			"layerName": "defaultArModelLayer@ARMAP_DEFAULT",
+			"elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
 			"rotationAxis": {
 				"z": 0,
 				"y": 1,
@@ -23,14 +23,14 @@
 		{
 			"translations": [
 				{
-					"z": 1.75,
+					"z": 6.31113160897512,
 					"y": 0,
-					"x": 2.26
+					"x": -1.9208377896623
 				}
 			],
-			"duration": 4.6,
-			"elementID": 1,
-			"layerName": "defaultArModelLayer@ARMAP_DEFAULT",
+			"duration": 10.67,
+			"elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
 			"delay": 0,
 			"nodeType": 0,
 			"order": 0,
@@ -43,9 +43,9 @@
 			"endFrame": -1,
 			"startFrame": 0,
 			"delay": 0,
-			"duration": 4.6,
-			"elementID": 1,
-			"layerName": "defaultArModelLayer@ARMAP_DEFAULT",
+			"duration": 10.67,
+			"elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
 			"modelAnimationIndex": 1,
 			"order": 1,
 			"repeatCount": 0,
@@ -55,13 +55,13 @@
 		},
 		{
 			"degrees": [
-				-123.69
+				147.529
 			],
 			"delay": 0,
 			"duration": 0.2,
 			"nodeType": 1,
-			"elementID": 1,
-			"layerName": "defaultArModelLayer@ARMAP_DEFAULT",
+			"elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
 			"rotationAxis": {
 				"z": 0,
 				"y": 1,
@@ -74,24 +74,24 @@
 			"category": 2
 		},
 		{
-				"endFrame": -1,
-				"startFrame": 0,
-				"delay": 0,
-				"duration": 4,
-				"elementID": 1,
-				"layerName": "defaultArModelLayer@ARMAP_DEFAULT",
-				"modelAnimationIndex": 3,
-				"order": 0,
-				"repeatCount": 0,
-				"name": "打招呼",
-				"type": 1,
-				"category": 2
+			"endFrame": -1,
+			"startFrame": 0,
+			"delay": 0,
+			"duration": 4,
+			"elementID": 3,
+			"layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+			"modelAnimationIndex": 3,
+			"order": 0,
+			"repeatCount": 0,
+			"name": "打招呼",
+			"type": 1,
+			"category": 2
 		}
 	],
 	"delay": 0,
 	"order": 0,
 	"repeatCount": 0,
-	"name": "位置二转一",
+	"name": "位置三转二",
 	"type": 2,
 	"category": 2
 }

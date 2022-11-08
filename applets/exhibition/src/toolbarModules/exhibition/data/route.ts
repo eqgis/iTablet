@@ -8,9 +8,13 @@ const route0_31 = require("./route0_31.json")
 const route0_32 = require("./route0_32.json")
 
 // 博士学的路线
-const route11 = require("./route11.json")
-const route12 = require("./route12.json")
-const route13 = require("./route13.json")
+const route1_11 = require("./route1_11.json")
+const route1_12 = require("./route1_12.json")
+const route1_13 = require("./route1_13.json")
+const route1_21 = require("./route1_21.json")
+const route1_23 = require("./route1_23.json")
+const route1_31 = require("./route1_31.json")
+const route1_32 = require("./route1_32.json")
 
 const routes = {
   route0_11,
@@ -21,9 +25,13 @@ const routes = {
   route0_31,
   route0_32,
 
-  route11,
-  route12,
-  route13,
+  route1_11,
+  route1_12,
+  route1_13,
+  route1_21,
+  route1_23,
+  route1_31,
+  route1_32,
 }
 
 function getRoute(): typeof routes {

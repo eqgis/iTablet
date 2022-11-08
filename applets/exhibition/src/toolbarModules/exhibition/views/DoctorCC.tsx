@@ -45,7 +45,7 @@ interface routeItemType {
   title: string,
   name: string,
   image: ImageSourcePropType,
-  route: string,
+  // route: string,
 }
 
 interface Props {
@@ -342,21 +342,21 @@ class DoctorCC extends Component<Props, State> {
         title: '路线1',
         name: '洞见之光',
         image: getImage().img_route_route01,
-        route: getRoute().route0_11,
+        // route: getRoute().route0_11,
       },
       {
         key: 'position2',
         title: '路线2',
         name: '企业使命',
         image: getImage().img_route_route02,
-        route: getRoute().route0_12,
+        // route: getRoute().route0_12,
       },
       {
         key: 'position3',
         title: '路线3',
         name: '超图研究院',
         image: getImage().img_route_route03,
-        route: getRoute().route0_13,
+        // route: getRoute().route0_13,
       },
     ]
   }
@@ -401,21 +401,21 @@ class DoctorCC extends Component<Props, State> {
         title: '路线1',
         name: '洞见之光',
         image: getImage().img_route_route01,
-        route: getRoute().route11,
+        // route: getRoute().route11,
       },
       {
         key: 'position2',
         title: '路线2',
         name: '企业使命',
         image: getImage().img_route_route02,
-        route: getRoute().route12,
+        // route: getRoute().route12,
       },
       {
         key: 'position3',
         title: '路线3',
         name: '超图研究院',
         image: getImage().img_route_route03,
-        route: getRoute().route13,
+        // route: getRoute().route13,
       },
     ]
   }
@@ -758,25 +758,49 @@ class DoctorCC extends Component<Props, State> {
     switch(this.state.selectRouteKey) {
       case "position1" : {
         if(item.key === 'position2') {
-          route = getRoute().route0_12
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_12
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_12
+          }
         } else if(item.key === 'position3') {
-          route = getRoute().route0_13
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_13
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_13
+          }
         }
         break
       }
       case 'position2' : {
         if(item.key === 'position1') {
-          route = getRoute().route0_21
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_21
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_21
+          }
         } else if(item.key === 'position3') {
-          route = getRoute().route0_23
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_23
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_23
+          }
         }
         break
       }
       case 'position3' : {
         if(item.key === 'position1') {
-          route = getRoute().route0_31
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_31
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_31
+          }
         } else if(item.key === 'position2') {
-          route = getRoute().route0_32
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_32
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_32
+          }
         }
         break
       }

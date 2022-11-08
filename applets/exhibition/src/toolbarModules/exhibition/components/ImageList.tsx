@@ -67,14 +67,22 @@ class ImageList extends React.Component<Props, State> {
   }
 
   getListWidth = () => {
-    if(this.props.data.length > 4) {
-      return '80%'
+    if(this.props.data.length == 4) {
+      return '100%'
     } else {
       return this.props.data.length * this.getItemWidth()
     }
   }
 
   renderItem = (param: ListRenderItemInfo<ImageItem>) => {
+    let width ,height
+    if(this.props.data.length == 4){
+      width = dp(IMAGE_WIDTH)-dp(IMAGE_WIDTH)/3
+      height = dp(120)-dp(120)/3
+    }else{
+      width = dp(IMAGE_WIDTH)
+      height = dp(120)
+    }
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -85,9 +93,10 @@ class ImageList extends React.Component<Props, State> {
         <Image
           source={param.item.image}
           style={{
-            width: dp(IMAGE_WIDTH),
-            height: dp(120),
+            width: width,
+            height: height,
             marginHorizontal: dp(10),
+            borderRadius:dp(5)
           }}
         />
       </TouchableOpacity>
@@ -95,6 +104,14 @@ class ImageList extends React.Component<Props, State> {
   }
 
   render() {
+    let height,backcolor
+    if(this.props.data.length == 4){
+      height = dp(120)-dp(120)/3
+      backcolor = 'rgba(0,0,0,0.3)'
+    }else{
+      height = dp(120)
+      backcolor = 'transparent'
+    }
     return(
       <>
         {this.state.vislble && (
@@ -114,9 +131,12 @@ class ImageList extends React.Component<Props, State> {
           style={{
             position: 'absolute',
             bottom: this.bottom,
-            height: dp(120),
+            height: height,
             width: this.getListWidth(),
-            alignSelf: 'center'
+            alignSelf: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: backcolor,
           }}
         >
           <FlatList

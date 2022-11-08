@@ -138,8 +138,8 @@ export default class OnlineLoginView extends React.Component {
         <Text
           style={styles.registetrText}
           onPress={() => {
-            NavigationService.navigate('Register')
-            // NavigationService.navigate('Protocol', { type: 'Register' })
+            // NavigationService.navigate('Register')
+            NavigationService.navigate('Protocol', { type: 'Register' })
           }}
         >
           {getLanguage(this.props.language).Profile.REGISTER}

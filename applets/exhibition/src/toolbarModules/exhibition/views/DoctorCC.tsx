@@ -287,7 +287,7 @@ class DoctorCC extends Component<Props, State> {
       },2000)
     }
 
-    if(this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow) {
+    if(this.state.isShowFull && this.state.selectType === 'video' && this.state.photoBtnKey === 'action' && this.state.isVideoGuideShow) {
       const videoGuideTimer = setTimeout(() => {
         this.setState({
           isVideoGuideShow: false,
@@ -635,12 +635,13 @@ class DoctorCC extends Component<Props, State> {
     if(this.state.photoBtnKey === 'action') {
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
+        isVideoGuideShow: false,
       })
       return
     }
     this.setState({
       isSecondaryShow: true,
-      isVideoGuideShow: false,
+      // isVideoGuideShow: false,
       photoBtnKey: 'action',
     })
   }
@@ -2887,7 +2888,7 @@ class DoctorCC extends Component<Props, State> {
         {/* 解说模块的按钮引导 */}
         {!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow && this.renderStartGuide()}
 
-        {this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow && this.renderVideoGuide()}
+        {this.state.isShowFull && this.state.selectType === 'video' && this.state.photoBtnKey === 'action' && this.state.isVideoGuideShow && this.renderVideoGuide()}
 
         <ARArrow
           arrowShowed={() => {

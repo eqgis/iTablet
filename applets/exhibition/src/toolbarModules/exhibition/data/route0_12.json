@@ -2,10 +2,10 @@
     "animations": [
       {
         "degrees": [
-          90
+          -56.31
         ],
         "delay": 0,
-        "duration": 0.2,
+        "duration": 0.1,
         "nodeType": 1,
         "elementID": 1,
         "layerName": "defaultArModelLayer@ARMAP_DEFAULT",
@@ -23,12 +23,12 @@
       {
         "translations": [
           {
-            "z": 0,
+            "z": 1.6,
             "y": 0,
-            "x": 4
+            "x": -2.4
           }
         ],
-        "duration": 6.66,
+        "duration": 4,
         "elementID": 1,
         "layerName": "defaultArModelLayer@ARMAP_DEFAULT",
         "delay": 0,
@@ -43,7 +43,7 @@
         "endFrame": -1,
         "startFrame": 0,
         "delay": 0,
-        "duration": 6.66,
+        "duration": 4,
         "elementID": 1,
         "layerName": "defaultArModelLayer@ARMAP_DEFAULT",
         "modelAnimationIndex": 1,
@@ -55,7 +55,7 @@
       },
       {
         "degrees": [
-          -149.036
+          127.875
         ],
         "delay": 0,
         "duration": 0.2,
@@ -91,7 +91,7 @@
     "delay": 0,
     "order": 0,
     "repeatCount": 0,
-    "name": "路线三",
+    "name": "位置一转二",
     "type": 2,
     "category": 2
   }

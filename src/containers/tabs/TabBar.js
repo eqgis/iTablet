@@ -122,6 +122,15 @@ class TabBar extends React.Component {
           }
       }
     }
+    let bRes = global.isAudit
+    if(bRes){
+      for(let i =0;i<list.length;i++){
+        if(list[i].key==='Friend'){
+            list.splice(i, 1)
+            break
+        }
+    }
+    }
     return list
   }
 

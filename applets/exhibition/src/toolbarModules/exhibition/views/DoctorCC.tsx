@@ -783,9 +783,6 @@ class DoctorCC extends Component<Props, State> {
     }
 
     const animation = JSON.parse(JSON.stringify(route))
-    console.warn("route: " + JSON.stringify(route))
-
-
 
     // 1. 添加动画
     const routeId = await SARMap.addARAnimation(animation)

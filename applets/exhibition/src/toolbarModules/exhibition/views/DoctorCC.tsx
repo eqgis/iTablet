@@ -202,8 +202,8 @@ class DoctorCC extends Component<Props, State> {
           const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
           // console.warn("relativePositin: " + JSON.stringify(relativePositin))
           if(relativePositin) {
-            SExhibition.setTrackingTarget(relativePositin)
-            SExhibition.startTrackingTarget()
+            await SExhibition.setTrackingTarget(relativePositin)
+            await SExhibition.startTrackingTarget()
           }
         }
 
@@ -523,6 +523,7 @@ class DoctorCC extends Component<Props, State> {
     if(this.state.isShowFull && (this.state.selectType === 'photo' || this.state.selectType === 'video')) {
       if(this.ARModel) {
         SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+        await SExhibition.stopTrackingTarget()
         if(this.routeAnimationTimer !== null) {
           SARMap.stopARAnimation()
 
@@ -535,8 +536,8 @@ class DoctorCC extends Component<Props, State> {
               // 更新箭头追踪的位置和范围
               const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
               if(relativePositin) {
-                SExhibition.setTrackingTarget(relativePositin)
-                SExhibition.startTrackingTarget()
+                await SExhibition.setTrackingTarget(relativePositin)
+                await SExhibition.startTrackingTarget()
               }
 
             }
@@ -556,8 +557,8 @@ class DoctorCC extends Component<Props, State> {
             // 更新箭头追踪的位置和范围
             const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
             if(relativePositin) {
-              SExhibition.setTrackingTarget(relativePositin)
-              SExhibition.startTrackingTarget()
+              await SExhibition.setTrackingTarget(relativePositin)
+              await SExhibition.startTrackingTarget()
             }
 
           }
@@ -832,8 +833,8 @@ class DoctorCC extends Component<Props, State> {
               // 更新箭头追踪的位置和范围
               const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
               if(relativePositin) {
-                SExhibition.setTrackingTarget(relativePositin)
-                SExhibition.startTrackingTarget()
+                await SExhibition.setTrackingTarget(relativePositin)
+                await SExhibition.startTrackingTarget()
               }
 
             }

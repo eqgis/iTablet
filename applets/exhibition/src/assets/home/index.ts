@@ -8,6 +8,8 @@ const ar_infra_selected = require('./ar_infra_selected.png')
 const ar_infra_unselected = require('./ar_infra_unselected.png')
 const ar_sandbox_selected = require('./ar_sandbox_selected.png')
 const ar_sandbox_unselected = require('./ar_sandbox_unselected.png')
+const ar_building_selected = require('./ar_building_selected.png')
+const ar_building_unselected = require('./ar_building_unselected.png')
 const btn_start_selected = require('./btn_start_selected.png')
 const btn_start_unselected = require('./btn_start_unselected.png')
 const icon_other_left_arrow_unselected = require('./icon_other_left_arrow_unselected.png')
@@ -31,6 +33,8 @@ export {
   ar_infra_unselected,
   ar_sandbox_selected,
   ar_sandbox_unselected,
+  ar_building_selected,
+  ar_building_unselected,
   btn_start_selected,
   btn_start_unselected,
   icon_other_left_arrow_unselected,

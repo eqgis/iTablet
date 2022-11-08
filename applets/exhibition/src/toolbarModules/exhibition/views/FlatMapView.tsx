@@ -474,6 +474,24 @@ class FlatMapVIew extends React.Component<Props, State> {
             width: '100%',
             height: '100%',
             alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              color: 'white',
+              marginTop: dp(10),
+              textAlign: 'center',
+            }}
+          >
+            {'扫码定位'}
+          </Text>
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            alignItems: 'center',
             justifyContent: 'center',
             bottom: dp(10),
           }}

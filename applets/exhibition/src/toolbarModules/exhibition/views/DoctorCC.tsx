@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, Animated, StyleProp, NativeModules } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
-import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
+import { AppEvent, AppToolBar, Toast ,DataHandler, SoundUtil} from '@/utils'
 import { SARMap ,ARLayerType, FileTools, ARAction, SExhibition, SMediaCollector} from 'imobile_for_reactnative'
 import Scan from "../components/Scan"
 import { ConstPath } from "@/constants"
@@ -2208,6 +2208,9 @@ class DoctorCC extends Component<Props, State> {
                   // loaded successfully
                   console.log('duration in seconds: ' +  this.whoosh.getDuration() + 'number of channels: ' +  this.whoosh.getNumberOfChannels())
 
+                  if(SoundUtil.isPlaying("background")) {
+                    SoundUtil.pause("background")
+                  }
                   // Play the sound with an onEnd callback
                   this.whoosh.play((success) => {
                     if (success) {
@@ -2218,6 +2221,7 @@ class DoctorCC extends Component<Props, State> {
                       console.log('playback failed due to audio decoding errors')
                       this.whoosh !== null && this.whoosh.release()
                     }
+                    SoundUtil.play("background")
                   })
                 }
 

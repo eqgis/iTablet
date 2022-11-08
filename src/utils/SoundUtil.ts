@@ -85,7 +85,7 @@ function releaseAll() {
 
 function isPlaying(key: string) {
   if (sounds[key]) {
-    sounds[key].isPlaying()
+    return sounds[key].isPlaying()
   }
 }
 

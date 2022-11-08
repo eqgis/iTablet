@@ -1381,24 +1381,30 @@ class DoctorCC extends Component<Props, State> {
   renderPhotoBtn = () => {
     return (
       <TouchableOpacity
-        style={{
-          position: 'absolute',
-          top: dp(75),
-          // left: dp(20),
-          width: dp(45),
-          height: dp(45),
-          borderRadius: dp(8),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-          backgroundColor:'rgba(30,30,30,0.65)',
-        }}
+        style={[
+          {
+            position: 'absolute',
+            top: dp(75),
+            // left: dp(20),
+            width: dp(45),
+            height: dp(45),
+            borderRadius: dp(8),
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            backgroundColor:'rgba(30,30,30,0.65)',
+          },
+          this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'action'))
+          && {
+            backgroundColor: 'rgba(229,82,12,0.65)',
+          }
+        ]}
         onPress={this.photoBtnOnpress}
       >
         <Image
           style={{ position: 'absolute', width: dp(30), height: dp(30) }}
           source={this.state.isSecondaryShow && (
-            (this.state.selectType === 'photo' && this.state.photoBtnKey === 'action')
+            ((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'action')
           )
             ? getImage().icon_action_selected : getImage().icon_action}
         />
@@ -1422,6 +1428,10 @@ class DoctorCC extends Component<Props, State> {
           overflow: 'hidden',
           backgroundColor:'rgba(30,30,30,0.65)',
         },
+        this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'position'))
+          && {
+            backgroundColor: 'rgba(229,82,12,0.65)',
+          }
         ]}
         onPress={this.routeBtnOnpress}
       >
@@ -1430,7 +1440,7 @@ class DoctorCC extends Component<Props, State> {
             { position: 'absolute', width: dp(30), height: dp(30)},
           ]}
           source={this.state.isSecondaryShow && (
-            (this.state.selectType === 'photo' && this.state.photoBtnKey === 'position')
+            ((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'position')
           )
             ? getImage().icon_route_selected : getImage().icon_route}
         />
@@ -1454,6 +1464,10 @@ class DoctorCC extends Component<Props, State> {
           overflow: 'hidden',
           backgroundColor:'rgba(30,30,30,0.65)',
         },
+        this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'operation'))
+        && {
+          backgroundColor: 'rgba(229,82,12,0.65)',
+        }
         ]}
         onPress={this.operationBtnOnpress}
       >
@@ -1462,7 +1476,7 @@ class DoctorCC extends Component<Props, State> {
             { position: 'absolute', width: dp(30), height: dp(30) },
           ]}
           source={this.state.isSecondaryShow && (
-            (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation')
+            ((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'operation')
           )
             ? getImage().tool_location_selected : getImage().tool_location}
         />
@@ -1618,6 +1632,9 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
+            this.state.selectType === 'speak' && {
+              backgroundColor: '#f24f02',
+            }
           ]}
           onPress={this.speakBtnOnpress}
         >
@@ -1662,6 +1679,9 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
+            this.state.selectType === 'action' && {
+              backgroundColor: '#f24f02',
+            }
           ]}
           onPress={this.actionBtnOnPress}
         >
@@ -1684,6 +1704,9 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
+            this.state.selectType === 'reloader' && {
+              backgroundColor: '#f24f02',
+            }
           ]}
           onPress={this.reloaderBtnOnPress}
         >
@@ -1706,6 +1729,9 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
+            this.state.selectType === 'photo' && {
+              backgroundColor: '#f24f02',
+            }
           ]}
           onPress={this.photoBtnOnPress}
         >
@@ -1728,6 +1754,9 @@ class DoctorCC extends Component<Props, State> {
         <TouchableOpacity
           style={[
             styles.functionItem,
+            this.state.selectType === 'video' && {
+              backgroundColor: '#f24f02',
+            }
           ]}
           onPress={this.videoBtnOnPress}
         >

@@ -1,0 +1,97 @@
+{
+    "animations": [
+      {
+        "degrees": [
+          -56.31
+        ],
+        "delay": 0,
+        "duration": 0.1,
+        "nodeType": 1,
+        "elementID": 3,
+        "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+        "rotationAxis": {
+          "z": 0,
+          "y": 1,
+          "x": 0
+        },
+        "order": 0,
+        "repeatCount": 0,
+        "name": "转身",
+        "type": 0,
+        "category": 2
+      },
+      {
+        "translations": [
+          {
+            "z": 1.6,
+            "y": 0,
+            "x": -2.4
+          }
+        ],
+        "duration": 4,
+        "elementID": 3,
+        "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+        "delay": 0,
+        "nodeType": 0,
+        "order": 0,
+        "repeatCount": 0,
+        "name": "位移",
+        "type": 0,
+        "category": 2
+      },
+      {
+        "endFrame": -1,
+        "startFrame": 0,
+        "delay": 0,
+        "duration": 4,
+        "elementID": 3,
+        "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+        "modelAnimationIndex": 1,
+        "order": 1,
+        "repeatCount": 0,
+        "name": "走",
+        "type": 1,
+        "category": 2
+      },
+      {
+        "degrees": [
+          127.875
+        ],
+        "delay": 0,
+        "duration": 0.2,
+        "nodeType": 1,
+        "elementID": 3,
+        "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+        "rotationAxis": {
+          "z": 0,
+          "y": 1,
+          "x": 0
+        },
+        "order": 0,
+        "repeatCount": 0,
+        "name": "转身",
+        "type": 0,
+        "category": 2
+      },
+      {
+          "endFrame": -1,
+          "startFrame": 0,
+          "delay": 0,
+          "duration": 4,
+          "elementID": 3,
+          "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+          "modelAnimationIndex": 3,
+          "order": 0,
+          "repeatCount": 0,
+          "name": "打招呼",
+          "type": 1,
+          "category": 2
+      }
+    ],
+    "delay": 0,
+    "order": 0,
+    "repeatCount": 0,
+    "name": "路线2",
+    "type": 2,
+    "category": 2
+  }

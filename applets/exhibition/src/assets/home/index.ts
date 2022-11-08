@@ -17,8 +17,8 @@ const icon_other_right_arrow_unselected = require('./icon_other_right_arrow_unse
 const icon_other_right_arrow = require('./icon_other_right_arrow.png')
 const img_bg_title = require('./img_bg_title.png')
 const img_bg = require('./img_bg.png')
-const bg_music_pause = require('./bg_music_pause.png')
-const bg_music_play = require('./bg_music_play.png')
+const icon_music = require('./icon_music.png')
+const icon_music_selected = require('./icon_music_selected.png')
 
 export {
   ar_3d_map_selected,
@@ -40,6 +40,6 @@ export {
   icon_other_right_arrow,
   img_bg_title,
   img_bg,
-  bg_music_pause,
-  bg_music_play,
+  icon_music,
+  icon_music_selected,
 }

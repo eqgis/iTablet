@@ -564,7 +564,7 @@ class Home extends React.Component<Props, State> {
             width: dp(50),
             height: dp(50)
           }}
-          source={this.state.playBg ? getImage().bg_music_play : getImage().icon_other_quit}
+          source={this.state.playBg ? getImage().icon_music_selected : getImage().icon_music}
         />
       </TouchableOpacity>
     )

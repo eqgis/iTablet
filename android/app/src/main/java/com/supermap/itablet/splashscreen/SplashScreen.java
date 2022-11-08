@@ -26,6 +26,7 @@ public class SplashScreen {
     private static MediaPlayer mediaPlayer;
     private static CustomVideoView videoView;
     public final static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+    private static int mVideoCurrantPosition = -1;
 
     private static Runnable fadeInTask = new Runnable() {
         public void run() {
@@ -139,8 +140,23 @@ public class SplashScreen {
                         mSplashDialog.dismiss();
                     }
                     mSplashDialog = null;
+                    mVideoCurrantPosition = -1;
                 }
             }
         });
+    }
+
+    public static void pauseVideo() {
+        if (videoView != null) {
+            mVideoCurrantPosition = videoView.getCurrentPosition();
+            videoView.pause();
+        }
+    }
+
+    public static void startVideo() {
+        if (videoView != null && mVideoCurrantPosition >= 0) {
+            videoView.seekTo(mVideoCurrantPosition);
+            videoView.start();
+        }
     }
 }

@@ -51,7 +51,7 @@ import { setLicenseInfo } from './redux/models/license'
 import { BundleTools, RNFS as fs } from 'imobile_for_reactnative'
 import { FileTools, SplashScreen } from './native'
 import ConfigStore from './redux/store'
-import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil } from './utils'
+import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil, SoundUtil } from './utils'
 import * as OnlineServicesUtils from './utils/OnlineServicesUtils'
 import RootNavigator from './containers/RootNavigator'
 import { color } from './styles'
@@ -301,6 +301,7 @@ class AppRoot extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
     SLocation.removeChangeDeviceSuccessListener()
+    SoundUtil.releaseAll()
     // NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
   }
 
@@ -930,6 +931,9 @@ class AppRoot extends Component {
           this.props.setShow({ orientation: orientation })
         })
       }
+      SoundUtil.play('background', true)
+    } else if (appState === 'background') {
+      SoundUtil.pauseAll()
     }
   }
 

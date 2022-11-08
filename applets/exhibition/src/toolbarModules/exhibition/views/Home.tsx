@@ -2,13 +2,12 @@ import { getImage } from '../../../assets'
 import React from 'react'
 import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView, ImageBackground, PanResponder, PanResponderInstance, GestureResponderEvent, Platform } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { AppDialog, AppLog, AppStyle, AppToolBar, dp ,Toast} from '@/utils'
+import { AppDialog, AppLog, AppToolBar, dp ,SoundUtil,Toast} from '@/utils'
 import { Easing } from 'react-native'
 import { SARMap } from 'imobile_for_reactnative'
 import AnimatedUnit from '../components/AnimatedUnit'
 import Sound from 'react-native-sound'
-import { SplashScreen } from '@/native'
-
+import { setModule, getModule } from '../Actions'
 
 const AppUtils = NativeModules.AppUtils
 interface Props {
@@ -29,6 +28,7 @@ interface State {
     bottom: number,
   },
   currentIndex: number,
+  playBg: boolean,
 }
 
 interface Item {
@@ -83,7 +83,8 @@ class Home extends React.Component<Props, State> {
         right: 0,
         bottom: 0,
       },
-      currentIndex: -1,
+      currentIndex: getModule(),
+      playBg: true,
     }
 
     this._panResponder = PanResponder.create({
@@ -108,21 +109,23 @@ class Home extends React.Component<Props, State> {
 
   componentDidMount() {
     try {
-      Sound.setCategory('Playback')
-      this.clickSound = new Sound('homeclick.mp3', Sound.MAIN_BUNDLE, (error) => {
-        if (error) {
-          console.log('failed to load the sound', error)
-          return
-        }
-      })
+      // Sound.setCategory('Playback')
+      SoundUtil.setSound('homeclick', 'homeclick.mp3', Sound.MAIN_BUNDLE)
+      // this.clickSound = new Sound('homeclick.mp3', Sound.MAIN_BUNDLE, (error) => {
+      //   if (error) {
+      //     console.log('failed to load the sound', error)
+      //     return
+      //   }
+      // })
     } catch (error) {
       __DEV__ && AppLog.error(error)
     }
   }
 
   componentWillUnmount() {
-    this.clickSound?.stop()
-    this.clickSound?.release()
+    SoundUtil.release('homeclick')
+    // this.clickSound?.stop()
+    // this.clickSound?.release()
   }
 
   _onPanResponderMove = () => { }
@@ -138,15 +141,16 @@ class Home extends React.Component<Props, State> {
     }, () => {
       this.animatedUnit?.startAnimation()
 
-      this.clickSound?.stop(() => {
-        this.clickSound?.play((success) => {
-          if (success) {
-            console.log('successfully finished playing')
-          } else {
-            console.log('playback failed due to audio decoding errors')
-          }
-        })
-      })
+      SoundUtil.play('homeclick')
+      // this.clickSound?.stop(() => {
+      //   this.clickSound?.play((success) => {
+      //     if (success) {
+      //       console.log('successfully finished playing')
+      //     } else {
+      //       console.log('playback failed due to audio decoding errors')
+      //     }
+      //   })
+      // })
     })
   }
 
@@ -170,8 +174,7 @@ class Home extends React.Component<Props, State> {
     }, () => {
       this.animatedUnit?.startAnimation()
 
-      this.clickSound?.stop(() => {
-        this.clickSound?.play()
+      SoundUtil.play('homeclick', false, () => {
         if (delay > 0) {
           setTimeout(() => {
             action?.()
@@ -180,6 +183,16 @@ class Home extends React.Component<Props, State> {
           action?.()
         }
       })
+      // this.clickSound?.stop(() => {
+      //   this.clickSound?.play()
+      //   if (delay > 0) {
+      //     setTimeout(() => {
+      //       action?.()
+      //     }, delay)
+      //   } else {
+      //     action?.()
+      //   }
+      // })
     })
   }
 
@@ -321,8 +334,8 @@ class Home extends React.Component<Props, State> {
         title: 'AR景区沙盘',
         desc: '建筑立体模型浏览、剖切，灯效显示',
         action: () => {
-          AppToolBar.show('EXHIBITION', 'EXHIBITION_SUPERMAP_BUILDING')
-          // AppToolBar.show('EXHIBITION', 'EXHIBITION_SANDBOX')
+          // AppToolBar.show('EXHIBITION', 'EXHIBITION_SUPERMAP_BUILDING')
+          AppToolBar.show('EXHIBITION', 'EXHIBITION_SANDBOX')
         }
       },
       {
@@ -388,6 +401,7 @@ class Home extends React.Component<Props, State> {
                 this.setState({
                   currentIndex: index,
                 })
+                setModule(index)
               })
             }}
           >
@@ -492,6 +506,70 @@ class Home extends React.Component<Props, State> {
     })
   }
 
+  renderClose = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: dp(21),
+          right: dp(24),
+        }}
+        onPressOut={() => {
+          AppDialog.show({
+            text: '是否退出展厅应用？',
+            confirm: () => {
+              SoundUtil.releaseAll()
+              AppUtils.AppExit()
+            },
+          })
+        }}
+      >
+        <Image
+          style={{
+            width: dp(50),
+            height: dp(50)
+          }}
+          source={getImage().icon_other_quit}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  renderSound = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          bottom: dp(21),
+          right: dp(24),
+        }}
+        onPressOut={() => {
+          if (this.state.playBg) {
+            this.setState({
+              playBg: false
+            }, () => {
+              SoundUtil.pause('background')
+            })
+          } else {
+            this.setState({
+              playBg: true
+            }, () => {
+              SoundUtil.play('background', true)
+            })
+          }
+        }}
+      >
+        <Image
+          style={{
+            width: dp(50),
+            height: dp(50)
+          }}
+          source={this.state.playBg ? getImage().bg_music_play : getImage().icon_other_quit}
+        />
+      </TouchableOpacity>
+    )
+  }
+
   isPortrait = this.props.windowSize.height > this.props.windowSize.width
   render() {
     this.isPortrait = this.props.windowSize.height > this.props.windowSize.width
@@ -532,33 +610,8 @@ class Home extends React.Component<Props, State> {
           />
           {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
           {this.renderStartButton()}
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: dp(21),
-              right: dp(24),
-            }}
-            // onPress={() => {
-            //   AppDialog.show({
-            //     text: '是否退出展厅应用？',
-            //     confirm: AppUtils.AppExit
-            //   })
-            // }}
-            onPressOut={() => {
-              AppDialog.show({
-                text: '是否退出展厅应用？',
-                confirm: AppUtils.AppExit
-              })
-            }}
-          >
-            <Image
-              style={{
-                width: dp(50),
-                height: dp(50)
-              }}
-              source={getImage().icon_other_quit}
-            />
-          </TouchableOpacity>
+          {this.renderClose()}
+          {this.renderSound()}
           <AnimatedUnit ref={ref => this.animatedUnit = ref} initialPosition={this.state.initialPosition} endDiameter={CIRCLE_SIZE} />
         </ImageBackground>
       </View>

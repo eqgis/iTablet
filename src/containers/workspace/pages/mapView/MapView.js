@@ -84,6 +84,7 @@ import {
   SCoordinationUtils,
   AppToolBar,
   AppEvent,
+  SoundUtil,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -137,9 +138,9 @@ import ARPoiSearchView from '../../components/ArNavigation/ARPoiSearchView'
 import ARNavigationView from '../../components/ArNavigation/ARNavigationView'
 import Toolbar from '@/Toolbar'
 import { onAddARAnimation } from '@/Toolbar/modules/arAnimation/Actions'
-import { CommonActions } from '@react-navigation/native'
 import { Module } from '@/class'
 import PositionStateView from '../../components/PositionStateView'
+import Sound from 'react-native-sound'
 
 global.markerTag = 118082
 
@@ -550,6 +551,8 @@ export default class MapView extends React.Component {
       this.showFullMap(true)
     }
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
+
+    SoundUtil.setSound('background', 'bg.mp3', Sound.MAIN_BUNDLE)
 
     if (global.isLicenseValid) {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
@@ -990,6 +993,7 @@ export default class MapView extends React.Component {
     // this.props.navigation.removeListener('blur', this.unsubscribeBlur)
     //移除手势监听
     global.mapView && SMap.deleteGestureDetector()
+    SoundUtil.release('background')
 
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
@@ -1948,6 +1952,8 @@ export default class MapView extends React.Component {
         SMap.viewEntire()
       }
       Platform.OS === 'android' && SplashScreen.hide()
+
+      SoundUtil.play('background', true)
     }.bind(this)())
   }
 

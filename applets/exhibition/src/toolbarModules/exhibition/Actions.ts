@@ -83,3 +83,12 @@ export function setDoctorMapGuided() {
 export function isDoctorMapGuided() {
   return doctorMapGuided
 }
+
+let currentModule = 0
+export function setModule(index: number) {
+  currentModule = index
+}
+
+export function getModule() {
+  return currentModule
+}

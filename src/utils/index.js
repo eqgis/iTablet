@@ -37,6 +37,7 @@ export { CheckSpell, CheckService } from './CheckUtils'
 export { FloatMath } from './FloatMath'
 import NavigatorUtil from './NavigatorUtil'
 import AccountUtils from './AccountUtils'
+import * as SoundUtil from './SoundUtil'
 
 export {
   screen,
@@ -82,4 +83,5 @@ export {
   FetchBlob,
   NavigatorUtil,
   AccountUtils,
+  SoundUtil,
 }

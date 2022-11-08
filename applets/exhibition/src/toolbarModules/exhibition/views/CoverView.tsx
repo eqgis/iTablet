@@ -6,8 +6,10 @@ import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle,  Animated, 
 import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
-import { getGlobalPose, isCoverGuided, setCoverGuided, setGolbalPose } from '../Actions'
+import { getGlobalPose, isCoverGuided, setCoverGuided } from '../Actions'
 import ARGuide from '../components/ARGuide'
+import SideBar, { Item } from '../components/SideBar'
+import FillAnimationWrap from '../components/FillAnimationWrap'
 
 interface Props {
   windowSize: ScaledSize
@@ -22,6 +24,8 @@ interface State {
   btRight:Animated.Value
   btLeft:Animated.Value
   showRolling:boolean
+  mainMenu: Item[]
+  showRollingMode: boolean
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -34,6 +38,8 @@ class CoverView extends React.Component<Props, State> {
   show = true
   verticalClick = false
   horizontalClick = false
+
+  isCutMode = false
 
   constructor(props: Props) {
     super(props)
@@ -51,7 +57,55 @@ class CoverView extends React.Component<Props, State> {
         dp(20),
       ),
       showRolling:false,
+      mainMenu: this.getMainMenuItem(),
+      showRollingMode: false,
     }
+  }
+
+  getMainMenuItem = (): Item[] => {
+    return [
+      {
+        image: getImage().icon_tool_rectangle,
+        title: '全景',
+        action: this.fullScape,
+      },
+      {
+        image: getImage().icon_tool_rectangle,
+        title: '视口模式',
+        action: this.cover,
+      },
+      {
+        image: getImage().icon_tool_rolling,
+        title: '卷帘模式',
+        action: this.rollingMenu,
+      },
+      // {
+      //   image: getImage().icon_tool_rolling,
+      //   title: '流向',
+      //   action: this.rollingMenu,
+      // },
+      // {
+      //   image: getImage().icon_tool_rolling,
+      //   title: '属性',
+      //   action: this.rollingMenu,
+      // },
+    ]
+  }
+
+  getCutMenu = (): Item[] => {
+    return [
+      {
+        image: getImage().icon_tool_rolling,
+        title: '范围',
+        action: this.adjustCoverBounds,
+      },
+      {
+        image: getImage().icon_tool_fix,
+        title: '固定',
+        action: this.fix,
+      }
+    ]
+
   }
 
   componentDidMount(): void {
@@ -210,10 +264,33 @@ class CoverView extends React.Component<Props, State> {
     }
   }
 
+  fullScape = () => {
+    this._exitCutMode()
+    this.stopCover()
+    this.stopRolling()
+  }
+
   cover = () => {
+    this._enterCutMode()
+    this.stopRolling()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
       SARMap.startARCover(layer.name)
+    }
+  }
+
+  stopCover = () => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SARMap.stopARCover(layer.name)
+    }
+  }
+
+  adjustCoverBounds = () => {
+    if(this.state.showSlider){
+      this.setState({ showSlider: false })
+    }else{
+      this.setState({ showSlider: true })
     }
   }
 
@@ -224,16 +301,60 @@ class CoverView extends React.Component<Props, State> {
     }
   }
 
+  rollingMenu = () => {
+    this._exitCutMode()
+    this.setState({
+      showRollingMode: true
+    })
+  }
+
+  rolling = (type: 0 | 1) => {
+    this.stopCover()
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SARMap.startRolling(layer.name, type)
+    }
+  }
+
+  stopRolling = () => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SARMap.stopRolling(layer.name)
+    }
+  }
+
+  flow = () => {
+    this._exitCutMode()
+  }
+
+  attribute = () => {
+    this._exitCutMode()
+  }
+
+  _enterCutMode = () =>{
+    if(!this.isCutMode) {
+      this.isCutMode = true
+      this.setState({
+        mainMenu: [...this.getMainMenuItem(), ...this.getCutMenu()]
+      })
+    }
+  }
+
+  _exitCutMode = () => {
+    if(this.isCutMode) {
+      this.isCutMode = false
+      this.setState({mainMenu: this.getMainMenuItem()})
+    }
+  }
+
   back = async () => {
     if (this.state.backClick) {
       if (this.state.showScan) {
         this.setState({ showScan: false })
         return
       }
-      const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-      if (layer) {
-        SARMap.stopARCover(layer.name)
-      }
+      this.stopCover()
+      this.stopRolling()
 
       AppEvent.removeListener('ar_image_tracking_result')
       AppEvent.removeListener('ar_single_click')
@@ -275,509 +396,6 @@ class CoverView extends React.Component<Props, State> {
       </TouchableOpacity>
     )
   }
-
-  renderLocation = () => {
-    let image
-    if(this.state.showScan){
-      image = getImage().icon_cover_select
-    }else{
-      image = getImage().icon_cover
-    }
-    return (
-      <TouchableOpacity
-        style={{
-          // position: 'absolute',
-          // top: dp(80),
-          // right: dp(10),
-          width: dp(50),
-          height: dp(60),
-          borderTopLeftRadius: dp(10),
-          borderBottomLeftRadius: dp(10),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-          backgroundColor: 'rgba(30,30,30,0.65)',
-        }}
-        onPress={async()=>{
-          if(this.state.showScan){
-            this.setState({showScan: false})
-          }else{
-            this.startScan()
-            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-            if (layer) {
-              SARMap.stopARCover(layer.name)
-            }
-            const props = AppToolBar.getProps()
-            await props.closeARMap()
-            await props.setCurrentARLayer()
-            this.setState({showScan: true})
-          }
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={image}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'定位'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderWindow = () => {
-    let image
-    if(this.state.showCover){
-      image = getImage().icon_window_select
-    }else {
-      image = getImage().icon_window
-    }
-    return (
-      <TouchableOpacity
-        style={[{
-          // position: 'absolute',
-          // top: dp(140),
-          // right: dp(10),
-          width: dp(50),
-          height: dp(60),
-          // borderRadius: dp(10),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-          // backgroundColor: 'white',
-        },this.state.showCover&&{ borderRightWidth: dp(2), borderRightColor: '#F24F02'}]}
-        onPress={()=>{
-          if(this.state.showCover){
-            this.setState({showCover:false})
-          }else{
-            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-            if(layer){
-              this.setState({showCover:true})
-            }
-          }
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={image}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'视口模式'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderRolling = () => {
-    let image
-    if(this.state.showRolling){
-      image = getImage().icon_tool_rolling_select
-    }else {
-      image = getImage().icon_tool_rolling
-    }
-    return (
-      <TouchableOpacity
-        style={[{
-          width: dp(50),
-          height: dp(60),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        },this.state.showRolling&&{ borderRightWidth: dp(2), borderRightColor: '#F24F02'}]}
-        onPress={()=>{
-          if(this.state.showRolling){
-            this.setState({showRolling:false})
-          }else{
-            const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-            if(layer){
-              this.setState({showRolling:true})
-            }
-          }
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={image}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'卷帘模式'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderSliderContorl = () => {
-    let image
-    if(this.state.showSlider){
-      image = getImage().icon_tool_slider_select
-    }else{
-      image = getImage().icon_tool_slider
-    }
-    return (
-      <TouchableOpacity
-        style={[{
-          // position: 'absolute',
-          // top: dp(200),
-          // right: dp(10),
-          width: dp(50),
-          height: dp(60),
-          // borderRadius: dp(10),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-          // backgroundColor: 'white',
-        },this.state.showSlider&&{borderRightWidth: dp(2),borderRightColor: '#F24F02'}]}
-        onPress={()=>{
-          if(this.state.showSlider){
-            this.setState({ showSlider: false })
-          }else{
-            this.setState({ showSlider: true })
-          }
-
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={image}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'坑洞调整'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderCancel = () => {
-    return (
-      <TouchableOpacity
-        style={{
-          // position: 'absolute',
-          // top: dp(260),
-          // right: dp(10),
-          width: dp(50),
-          height: dp(60),
-          // borderRadius: dp(10),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-          // backgroundColor: 'white',
-        }}
-        onPress={() => {
-          this.coverClick = false
-          this.fixClick = false
-          this.horizontalClick = false
-          this.verticalClick = false
-          this.setState({ showSlider: false })
-          const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-          if (layer) {
-            SARMap.stopARCover(layer.name)
-          }
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={getImage().icon_cancel}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'退出裁剪'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderCover = () => {
-    let image
-    if (this.coverClick) {
-      image = getImage().icon_tool_rectangle_select
-    }else{
-      image = getImage().icon_tool_rectangle
-    }
-    return (
-      <TouchableOpacity
-        style={{
-          width: dp(50),
-          height: dp(60),
-          borderRadius: dp(10),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        }}
-        onPress={()=>{
-          this.coverClick = true
-          this.fixClick = false
-          this.setState({showCover:false})
-          this.cover()
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={image}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'立方体'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderFix = () => {
-    let image
-    if(this.fixClick){
-      image = getImage().icon_tool_fix_select
-    }else{
-      image = getImage().icon_tool_fix
-    }
-    return (
-      <TouchableOpacity
-        style={{
-          width: dp(50),
-          height: dp(60),
-          borderRadius: dp(10),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        }}
-        onPress={()=>{
-          this.fixClick = !this.fixClick
-          this.setState({showCover:false})
-          this.fix()
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={image}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'固定'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderHorizontal = () => {
-    let image
-    if(this.horizontalClick){
-      image = getImage().icon_tool_horizontal_select
-    }else{
-      image = getImage().icon_tool_horizontal
-    }
-    return (
-      <TouchableOpacity
-        style={{
-          width: dp(50),
-          height: dp(60),
-          borderRadius: dp(10),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        }}
-        onPress={()=>{
-          this.horizontalClick = !this.horizontalClick
-          if(this.horizontalClick){
-            this.verticalClick = false
-          }
-          this.setState({showRolling:false})
-          const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-          if(layer){
-            SARMap.startRolling(layer.name,0)
-          }
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={image}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'横向'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  renderVertical = () => {
-    let image
-    if(this.verticalClick){
-      image = getImage().icon_tool_vertical_select
-    }else{
-      image = getImage().icon_tool_vertical
-    }
-    return (
-      <TouchableOpacity
-        style={{
-          width: dp(50),
-          height: dp(60),
-          borderRadius: dp(10),
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        }}
-        onPress={()=>{
-          this.verticalClick = !this.verticalClick
-          if(this.verticalClick){
-            this.horizontalClick = false
-          }
-          this.setState({showRolling:false})
-          const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-          if(layer){
-            SARMap.startRolling(layer.name,1)
-          }
-        }}
-      >
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            width: dp(30),
-            height: dp(30),
-          }}
-        >
-          <Image
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
-            source={image}
-          />
-        </View>
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize:10,
-          }}
-        >
-          {'纵向'}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
 
   renderScan = () => {
     const isPortrait = this.props.windowSize.width < this.props.windowSize.height
@@ -1095,6 +713,74 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 
+  renderRollingBtn = (item: Item) => {
+    return (
+      <TouchableOpacity
+        onPress={item.action}
+        style={{
+          width: dp(80),
+          height: dp(80),
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(30,30,30,0.65)',
+        }}
+      >
+        <Image
+          source={item.image}
+          style={{
+            width: dp(40),
+            height: dp(40)
+          }}
+        />
+        <Text style={[{...AppStyle.h3, color: 'white'}]}>
+          {item.title}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderRollingMode = () => {
+    return (
+      <FillAnimationWrap
+        visible={this.state.showRollingMode}
+        animated={'bottom'}
+        style={{
+          position: 'absolute',
+          alignSelf: 'center'
+        }}
+        range={[-dp(100), dp(20)]}
+        onHide={() => {
+          this.setState({showRollingMode: false})
+        }}
+      >
+        <View style={{
+          borderRadius: dp(10),
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}>
+          {this.renderRollingBtn({
+            image: getImage().icon_tool_horizontal,
+            title: '横向',
+            action: () => {
+              this.rolling(0)
+              this.setState({showRollingMode: false})
+            }
+          })}
+          {this.renderRollingBtn({
+            image: getImage().icon_tool_vertical,
+            title: '纵向',
+            action: () => {
+              this.rolling(1)
+              this.setState({showRollingMode: false})
+            }
+          })}
+        </View>
+      </FillAnimationWrap>
+    )
+  }
+
   render() {
     return(
       <>
@@ -1111,63 +797,15 @@ class CoverView extends React.Component<Props, State> {
 
           <Animated.View
             style={{
-              top: dp(50),
+              top: dp(20),
               right: this.state.btRight,
               flexDirection: 'row',
             }}
           >
-
-            {this.state.showCover && <View
-              style={{
-                // position: 'absolute',
-                right: dp(10),
-                width: dp(50),
-                height: dp(120),
-                borderRadius: dp(10),
-                justifyContent: 'center',
-                alignItems: 'center',
-                // overflow: 'hidden',
-                backgroundColor: 'rgba(30,30,30,0.65)',
-              }}
-            >
-              {this.renderCover()}
-              {this.renderFix()}
-            </View>}
-
-            {this.state.showRolling && <View
-              style={{
-                // position: 'absolute',
-                top:dp(60),
-                right: dp(10),
-                width: dp(50),
-                height: dp(120),
-                borderRadius: dp(10),
-                justifyContent: 'center',
-                alignItems: 'center',
-                // overflow: 'hidden',
-                backgroundColor: 'rgba(30,30,30,0.65)',
-              }}
-            >
-              {this.renderHorizontal()}
-              {this.renderVertical()}
-            </View>}
-
-
-            <View>
-              {/* {this.renderLocation()} */}
-              <View
-                style={{
-                  borderRadius: dp(10),
-                  backgroundColor: 'rgba(30,30,30,0.65)',
-                }}
-              >
-                {this.renderWindow()}
-                {this.renderRolling()}
-                {this.renderSliderContorl()}
-                {this.renderCancel()}
-              </View>
-            </View>
-
+            <SideBar
+              sections={[this.state.mainMenu]}
+              showIndicator
+            />
           </Animated.View>
 
         </View>
@@ -1189,6 +827,8 @@ class CoverView extends React.Component<Props, State> {
           {!this.state.showGuide && this.renderBack()}
           {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
         </Animated.View>
+
+        {this.renderRollingMode()}
 
 
 

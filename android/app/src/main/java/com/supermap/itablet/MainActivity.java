@@ -85,6 +85,14 @@ public class MainActivity extends ReactActivity {
       }
     }
     isFirstOnResume = false;
+    SplashScreen.startVideo();
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    //在视频播放过程中切换到home停止播放视频，并且记录下当前的播放位置
+    SplashScreen.pauseVideo();
   }
 
   @Override

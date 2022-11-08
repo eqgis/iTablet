@@ -130,7 +130,7 @@ class LicenseJoinCloud extends Component {
       const licenseResult = await SMap.queryCloudLicense()
       if(licenseResult) {
         const lockMacAddr = licenseResult.licenses[0].lockMacAddr
-        if(lockMacAddr !== "") {
+        if(lockMacAddr != null && lockMacAddr !== '' && !(await SMap.isSameDevice(lockMacAddr))) {
           Toast.show(getLanguage().LICENSE_ACTIVATED_OTHER_DEVICE)
           return
         }

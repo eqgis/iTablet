@@ -804,12 +804,19 @@ class DoctorCC extends Component<Props, State> {
         }
         break
       }
+      default: {
+        if(this.state.selectReloaderKey === 'doctor') {
+          route = getRoute().route0_11
+        } else if(this.state.selectReloaderKey === 'doctorStudy') {
+          route = getRoute().route1_11
+        }
+      }
     }
 
     const animation = JSON.parse(JSON.stringify(route))
 
     // 1. 添加动画
-    const routeId = await SARMap.addARAnimation(animation)
+    await SARMap.addARAnimation(animation)
     // console.warn(routeId)
     // 2. 播放动画
     const tempTimer =  setTimeout(async () => {

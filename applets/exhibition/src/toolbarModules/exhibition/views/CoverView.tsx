@@ -167,7 +167,7 @@ class CoverView extends React.Component<Props, State> {
     await SARMap.addARCover(layer.name, undefined)
     // }
     const _time = async function() {
-      return new Promise(function(resolve, reject) {
+      return new Promise(function(resolve) {
         const timer = setTimeout(function() {
           resolve('waitting send close message')
           timer && clearTimeout(timer)

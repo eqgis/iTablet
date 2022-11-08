@@ -568,6 +568,9 @@ class DoctorCC extends Component<Props, State> {
         this.animationTimer = null
       }
 
+      SARMap.setAction(ARAction.NULL)
+      SARMap.clearSelection()
+
       this.setState({
         isShowFull: false,
         selectAnimationKey: -1,
@@ -628,6 +631,7 @@ class DoctorCC extends Component<Props, State> {
 
   /** 点击合影界面的动作按钮执行的方法 */
   photoBtnOnpress = async () => {
+    SARMap.setAction(ARAction.NULL)
     if(this.state.photoBtnKey === 'action') {
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
@@ -643,6 +647,7 @@ class DoctorCC extends Component<Props, State> {
 
   /** 点击合影界面的路线按钮执行的方法 */
   routeBtnOnpress = async () => {
+    SARMap.setAction(ARAction.NULL)
     if(this.state.photoBtnKey === 'position') {
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
@@ -659,11 +664,17 @@ class DoctorCC extends Component<Props, State> {
   /** 点击合影界面的编辑操作按钮执行的方法 */
   operationBtnOnpress = async () => {
     if(this.state.photoBtnKey === 'operation') {
+      SARMap.setAction(ARAction.NULL)
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
       return
     }
+    if(this.ARModel) {
+      SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
+      SARMap.setAction(ARAction.SCALE)
+    }
+
     this.setState({
       isSecondaryShow: true,
       isVideoGuideShow: false,

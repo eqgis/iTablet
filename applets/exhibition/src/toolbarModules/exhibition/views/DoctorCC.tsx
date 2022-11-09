@@ -1369,7 +1369,10 @@ class DoctorCC extends Component<Props, State> {
           this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'action'))
           && {
             backgroundColor: 'rgba(229,82,12,0.65)',
-          }
+          },
+          this.state.selectType === 'video' && this.state.isVideoStart && {
+            top: dp(20),
+          },
         ]}
         onPress={this.photoBtnOnpress}
       >
@@ -1401,9 +1404,12 @@ class DoctorCC extends Component<Props, State> {
           backgroundColor:'rgba(30,30,30,0.65)',
         },
         this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'position'))
-          && {
-            backgroundColor: 'rgba(229,82,12,0.65)',
-          }
+        && {
+          backgroundColor: 'rgba(229,82,12,0.65)',
+        },
+        this.state.selectType === 'video' && this.state.isVideoStart && {
+          top: dp(75),
+        },
         ]}
         onPress={this.routeBtnOnpress}
       >
@@ -1439,7 +1445,10 @@ class DoctorCC extends Component<Props, State> {
         this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'operation'))
         && {
           backgroundColor: 'rgba(229,82,12,0.65)',
-        }
+        },
+        this.state.selectType === 'video' && this.state.isVideoStart && {
+          top: dp(130),
+        },
         ]}
         onPress={this.operationBtnOnpress}
       >

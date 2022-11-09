@@ -140,7 +140,7 @@ class DoctorCC extends Component<Props, State> {
   /** 模型的初始位置信息 包含位置，方向和大小 */
   positionInfo: positionInfoType | null = null
   /** 路线的推演动画的延时器 */
-  routeAnimationTimer: NodeJS.Timer | null | undefined = null
+  // routeAnimationTimer: NodeJS.Timer | null | undefined = null
 
   show = true
 
@@ -281,6 +281,68 @@ class DoctorCC extends Component<Props, State> {
           isVideoGuideShow: false,
         })
       }
+    })
+
+    // 推演动画结束监听
+    SARMap.addStopARAnimationListen({
+      callback: async () => {
+        if(this.state.isRoutePlay) {
+          if(this.ARModel) {
+            const positionInfo =  await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
+            // console.warn("positionInfo" + JSON.stringify(positionInfo))
+
+            SARMap.stopARAnimation()
+            const tempTimer =  setTimeout(async () => {
+              if(this.state.isRoutePlay && this.ARModel && positionInfo?.animationNode){
+                await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
+                await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, positionInfo.animationNode)
+                // this.isPlay = false
+                this.setState({
+                  isRoutePlay: false,
+                })
+
+                // 更新箭头追踪的位置和范围
+                const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+                if(relativePositin) {
+                  await SExhibition.setTrackingTarget(relativePositin)
+                  await SExhibition.startTrackingTarget()
+                }
+
+              }
+              clearTimeout(tempTimer)
+
+              // 走到指定位置后，如果之前有选择动画，则继续播放之前的动画
+              const currentElement = this.ARModel
+              if(currentElement) {
+                const id = this.state.selectAnimationKey
+                let isAdd: animationListType | null | undefined = null
+                if(this.state.selectReloaderKey === 'doctor'){
+                  isAdd = this.animationList.get(id)
+                } else if(this.state.selectReloaderKey === 'doctorStudy'){
+                // supermanAnimationList
+                  isAdd = this.supermanAnimationList.get(id)
+                }
+                if(isAdd) {
+                // 动画已经存在了
+                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+                  // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+                  this.animationTimer = setInterval(async () => {
+                    if(this.state.selectAnimationKey === id) {
+                      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+                    }
+                    await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+                  },(isAdd.duration + 2) * 1000)
+                }
+              }
+
+            },300)
+
+          }
+
+          // SARMap.stopARAnimation()
+        }
+
+      },
     })
   }
 
@@ -531,12 +593,12 @@ class DoctorCC extends Component<Props, State> {
       if(this.ARModel) {
         SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
 
-        if(this.routeAnimationTimer !== null) {
+        if(this.state.isRoutePlay) {
           SARMap.stopARAnimation()
 
           const tempTimer =  setTimeout(async () => {
             if(this.ARModel) {
-              if(this.positionInfo?.renderNode && this.state.isRoutePlay) {
+              if(this.positionInfo?.renderNode) {
                 await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
                 await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
                 // this.isPlay = false
@@ -553,10 +615,10 @@ class DoctorCC extends Component<Props, State> {
 
             clearTimeout(tempTimer)
 
-            if(this.routeAnimationTimer !== null) {
-              clearTimeout(this.routeAnimationTimer)
-              this.routeAnimationTimer = null
-            }
+            // if(this.routeAnimationTimer !== null) {
+            //   clearTimeout(this.routeAnimationTimer)
+            //   this.routeAnimationTimer = null
+            // }
             SARMap.setAction(ARAction.NULL)
             SARMap.clearSelection()
 
@@ -605,6 +667,7 @@ class DoctorCC extends Component<Props, State> {
     AppEvent.removeListener('ar_image_tracking_result')
     // 移除语音结束监听
     SARMap.removeSpeakStopListener()
+    SARMap.removeStopARAnimationListen()
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
@@ -851,80 +914,80 @@ class DoctorCC extends Component<Props, State> {
       // })
     },300)
 
-    let time = 0
-    if(animation.type === ARAnimatorType.MODEL_TYPE || animation.type === ARAnimatorType.NODE_TYPE) {
-      time += (animation.duration || 0 ) * ((animation.repeatCount || 0) + 1) + (animation.delay || 0)
-    } else if(animation.type === ARAnimatorType.GROUP_TYPE){
-      const animationTemp = animation.animations
-      animationTemp.map((ele: any) => {
-        if(ele.type === ARAnimatorType.MODEL_TYPE || ele.type === ARAnimatorType.NODE_TYPE){
-          time += (ele.duration || 0) * ((ele.repeatCount || 0) + 1) + (ele.delay || 0)
-        }
-      })
-    }
+    // let time = 0
+    // if(animation.type === ARAnimatorType.MODEL_TYPE || animation.type === ARAnimatorType.NODE_TYPE) {
+    //   time += (animation.duration || 0 ) * ((animation.repeatCount || 0) + 1) + (animation.delay || 0)
+    // } else if(animation.type === ARAnimatorType.GROUP_TYPE){
+    //   const animationTemp = animation.animations
+    //   animationTemp.map((ele: any) => {
+    //     if(ele.type === ARAnimatorType.MODEL_TYPE || ele.type === ARAnimatorType.NODE_TYPE){
+    //       time += (ele.duration || 0) * ((ele.repeatCount || 0) + 1) + (ele.delay || 0)
+    //     }
+    //   })
+    // }
 
-    this.routeAnimationTimer = setTimeout(async () => {
-      if(this.state.isRoutePlay) {
-        if(this.ARModel) {
-          const positionInfo =  await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
-          // console.warn("positionInfo" + JSON.stringify(positionInfo))
+    // this.routeAnimationTimer = setTimeout(async () => {
+    //   if(this.state.isRoutePlay) {
+    //     if(this.ARModel) {
+    //       const positionInfo =  await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
+    //       // console.warn("positionInfo" + JSON.stringify(positionInfo))
 
-          SARMap.stopARAnimation()
-          const tempTimer =  setTimeout(async () => {
-            if(this.state.isRoutePlay && this.ARModel && positionInfo?.animationNode){
-              await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
-              await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, positionInfo.animationNode)
-              // this.isPlay = false
-              this.setState({
-                isRoutePlay: false,
-              })
+    //       SARMap.stopARAnimation()
+    //       const tempTimer =  setTimeout(async () => {
+    //         if(this.state.isRoutePlay && this.ARModel && positionInfo?.animationNode){
+    //           await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
+    //           await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, positionInfo.animationNode)
+    //           // this.isPlay = false
+    //           this.setState({
+    //             isRoutePlay: false,
+    //           })
 
-              // 更新箭头追踪的位置和范围
-              const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-              if(relativePositin) {
-                await SExhibition.setTrackingTarget(relativePositin)
-                await SExhibition.startTrackingTarget()
-              }
+    //           // 更新箭头追踪的位置和范围
+    //           const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+    //           if(relativePositin) {
+    //             await SExhibition.setTrackingTarget(relativePositin)
+    //             await SExhibition.startTrackingTarget()
+    //           }
 
-            }
-            clearTimeout(tempTimer)
+    //         }
+    //         clearTimeout(tempTimer)
 
-            if(this.routeAnimationTimer !== null) {
-              clearTimeout(this.routeAnimationTimer)
-              this.routeAnimationTimer = null
-            }
+    //         if(this.routeAnimationTimer !== null) {
+    //           clearTimeout(this.routeAnimationTimer)
+    //           this.routeAnimationTimer = null
+    //         }
 
-            // 走到指定位置后，如果之前有选择动画，则继续播放之前的动画
-            const currentElement = this.ARModel
-            if(currentElement) {
-              const id = this.state.selectAnimationKey
-              let isAdd: animationListType | null | undefined = null
-              if(this.state.selectReloaderKey === 'doctor'){
-                isAdd = this.animationList.get(id)
-              } else if(this.state.selectReloaderKey === 'doctorStudy'){
-              // supermanAnimationList
-                isAdd = this.supermanAnimationList.get(id)
-              }
-              if(isAdd) {
-              // 动画已经存在了
-                await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-                // 启动动画定时器，每当上一个动画播放完2秒后重启动画
-                this.animationTimer = setInterval(async () => {
-                  if(this.state.selectAnimationKey === id) {
-                    await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-                  }
-                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-                },(isAdd.duration + 2) * 1000)
-              }
-            }
+    //         // 走到指定位置后，如果之前有选择动画，则继续播放之前的动画
+    //         const currentElement = this.ARModel
+    //         if(currentElement) {
+    //           const id = this.state.selectAnimationKey
+    //           let isAdd: animationListType | null | undefined = null
+    //           if(this.state.selectReloaderKey === 'doctor'){
+    //             isAdd = this.animationList.get(id)
+    //           } else if(this.state.selectReloaderKey === 'doctorStudy'){
+    //           // supermanAnimationList
+    //             isAdd = this.supermanAnimationList.get(id)
+    //           }
+    //           if(isAdd) {
+    //           // 动画已经存在了
+    //             await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+    //             // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+    //             this.animationTimer = setInterval(async () => {
+    //               if(this.state.selectAnimationKey === id) {
+    //                 await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+    //               }
+    //               await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+    //             },(isAdd.duration + 2) * 1000)
+    //           }
+    //         }
 
-          },300)
+    //       },300)
 
-        }
+    //     }
 
-        // SARMap.stopARAnimation()
-      }
-    },time * 1000)
+    //     // SARMap.stopARAnimation()
+    //   }
+    // },time * 1000)
 
     this.setState({
       selectRouteKey: item.key,

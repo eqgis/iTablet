@@ -23,7 +23,7 @@ type Section = Item[]
 
 export interface Item {
   image: ImageSourcePropType
-  image_selected: ImageSourcePropType
+  image_selected?: ImageSourcePropType
   title?: string
   action: () => void
 }
@@ -58,19 +58,18 @@ class SideBar extends React.Component<Props, State> {
           {
             justifyContent: 'center',
             alignItems: 'center',
-            marginVertical: dp(5),
             borderRightWidth: dp(2),
             borderRightColor: 'transparent',
-            height: dp(40),
+            height: dp(50),
 
           },
-          // (this.props.showIndicator && isSelected) && {
-          //   borderRightColor: '#F24F02'
-          // }
+          (this.props.showIndicator && isSelected) && {
+            backgroundColor: '#F24F02A6'
+          }
         ]}
       >
         <Image
-          source={isSelected ? item.image_selected : item.image}
+          source={/**sSelected ? item.image_selected : */item.image}
           style={{
             width: dp(24),
             height: dp(24)

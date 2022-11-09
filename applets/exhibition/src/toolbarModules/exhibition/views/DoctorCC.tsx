@@ -13,9 +13,9 @@ import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 import Video from 'react-native-video'
 import { getLanguage } from "@/language"
 import ARGuide from '../components/ARGuide'
-import { isDoctorMapGuided, setDoctorMapGuided } from "../Actions"
 import Sound from 'react-native-sound'
 import { getRoute } from "../data/route"
+import SideBar, { Item } from "../components/SideBar"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -91,8 +91,14 @@ interface State {
   photoBtnKey: 'action' | 'position' | 'operation' | 'null',
   /** 当前选择路线的key */
   selectRouteKey: 'position1'| 'position2' | 'position3' | 'null',
+  /** 路线的推演是否在进行中 */
+  isRoutePlay: boolean,
+
+  /** 右边工具栏的动画 */
   btRight:Animated.Value
+  /** 左边工具栏的动画 */
   btLeft:Animated.Value
+  /** 下边二级菜单的动画 */
   btBottom: Animated.Value
 }
 
@@ -133,8 +139,6 @@ class DoctorCC extends Component<Props, State> {
   photoRouteDate: Array<routeItemType> = []
   /** 模型的初始位置信息 包含位置，方向和大小 */
   positionInfo: positionInfoType | null = null
-  /** 路线的推演动画的延时器 */
-  routeAnimationTimer: NodeJS.Timer | null | undefined = null
 
   show = true
 
@@ -160,6 +164,7 @@ class DoctorCC extends Component<Props, State> {
       showGuide: false,
       photoBtnKey: 'null',
       selectRouteKey: 'position1',
+      isRoutePlay: false,
       btRight: new Animated.Value (
         0,
       ),
@@ -274,6 +279,68 @@ class DoctorCC extends Component<Props, State> {
           isVideoGuideShow: false,
         })
       }
+    })
+
+    // 推演动画结束监听
+    SARMap.addStopARAnimationListen({
+      callback: async () => {
+        if(this.state.isRoutePlay) {
+          if(this.ARModel) {
+            const positionInfo =  await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
+            // console.warn("positionInfo" + JSON.stringify(positionInfo))
+
+            SARMap.stopARAnimation()
+            const tempTimer =  setTimeout(async () => {
+              if(this.state.isRoutePlay && this.ARModel && positionInfo?.animationNode){
+                await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
+                await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, positionInfo.animationNode)
+                // this.isPlay = false
+                this.setState({
+                  isRoutePlay: false,
+                })
+
+                // 更新箭头追踪的位置和范围
+                const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+                if(relativePositin) {
+                  await SExhibition.setTrackingTarget(relativePositin)
+                  await SExhibition.startTrackingTarget()
+                }
+
+              }
+              clearTimeout(tempTimer)
+
+              // 走到指定位置后，如果之前有选择动画，则继续播放之前的动画
+              const currentElement = this.ARModel
+              if(currentElement) {
+                const id = this.state.selectAnimationKey
+                let isAdd: animationListType | null | undefined = null
+                if(this.state.selectReloaderKey === 'doctor'){
+                  isAdd = this.animationList.get(id)
+                } else if(this.state.selectReloaderKey === 'doctorStudy'){
+                // supermanAnimationList
+                  isAdd = this.supermanAnimationList.get(id)
+                }
+                if(isAdd) {
+                // 动画已经存在了
+                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+                  // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+                  this.animationTimer = setInterval(async () => {
+                    if(this.state.selectAnimationKey === id) {
+                      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+                    }
+                    isAdd && await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+                  },(isAdd.duration + 2) * 1000)
+                }
+              }
+
+            },300)
+
+          }
+
+          // SARMap.stopARAnimation()
+        }
+
+      },
     })
   }
 
@@ -420,6 +487,48 @@ class DoctorCC extends Component<Props, State> {
     ]
   }
 
+  /** 详解按钮 */
+  getSideBarSpeakItem = (): Item[] => {
+    return [
+      {
+        image: getImage().icon_speak,
+        image_selected: getImage().icon_speak_selected,
+        title: '详解',
+        action: this.speakBtnOnpress
+      }
+    ]
+  }
+
+  /** 右侧其他按钮 */
+  getSideBarItems = (): Item[] => {
+    return [
+      {
+        image: getImage().icon_action,
+        image_selected: getImage().icon_action_selected,
+        title: '动作',
+        action: this.actionBtnOnPress
+      },
+      {
+        image: getImage().icon_reloader,
+        image_selected: getImage().icon_reloader_selected,
+        title: '换装',
+        action: this.reloaderBtnOnPress
+      },
+      {
+        image: getImage().icon_photo,
+        image_selected: getImage().icon_photo_seleted,
+        title: '合影',
+        action: this.photoBtnOnPress
+      },
+      {
+        image: getImage().icon_video,
+        image_selected: getImage().icon_video_selected,
+        title: '录像',
+        action: this.videoBtnOnPress
+      }
+    ]
+  }
+
   /** 打开地图 */
   openDoctorARMap = async () => {
     // 关闭之前的地图
@@ -522,63 +631,84 @@ class DoctorCC extends Component<Props, State> {
     // 当在拍照界面或录像界面时，点击返回按钮退出拍照或录像界面
     if(this.state.isShowFull && (this.state.selectType === 'photo' || this.state.selectType === 'video')) {
       if(this.ARModel) {
-        SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
-        await SExhibition.stopTrackingTarget()
-        if(this.routeAnimationTimer !== null) {
+        // SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+
+        if(this.state.isRoutePlay) {
           SARMap.stopARAnimation()
 
           const tempTimer =  setTimeout(async () => {
-            if(this.positionInfo?.renderNode && this.isPlay && this.ARModel) {
-              await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
-              await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
-              this.isPlay = false
+            if(this.ARModel) {
+              if(this.positionInfo?.renderNode) {
+                await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
+                await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
+                // this.isPlay = false
+              }
 
               // 更新箭头追踪的位置和范围
+              await SExhibition.stopTrackingTarget()
               const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
               if(relativePositin) {
                 await SExhibition.setTrackingTarget(relativePositin)
                 await SExhibition.startTrackingTarget()
               }
-
             }
+
             clearTimeout(tempTimer)
 
-            if(this.routeAnimationTimer !== null) {
-              clearTimeout(this.routeAnimationTimer)
-              this.routeAnimationTimer = null
+            SARMap.setAction(ARAction.NULL)
+            SARMap.clearSelection()
+
+            this.ARModel && await SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+            if(this.animationTimer !== null){
+              clearInterval(this.animationTimer)
+              this.animationTimer = null
             }
+
+            this.setState({
+              isShowFull: false,
+              selectAnimationKey: -1,
+              isVideoGuideShow: false,
+              selectRouteKey: 'null',
+              photoBtnKey: 'null',
+              isRoutePlay: false,
+            })
+
           },300)
         } else {
           if(this.positionInfo?.renderNode) {
             await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
             await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
-            this.isPlay = false
+            // this.isPlay = false
 
             // 更新箭头追踪的位置和范围
+            await SExhibition.stopTrackingTarget()
             const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
             if(relativePositin) {
               await SExhibition.setTrackingTarget(relativePositin)
               await SExhibition.startTrackingTarget()
             }
 
+            SARMap.setAction(ARAction.NULL)
+            SARMap.clearSelection()
+
           }
+
+          await SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+          if(this.animationTimer !== null){
+            clearInterval(this.animationTimer)
+            this.animationTimer = null
+          }
+
+          this.setState({
+            isShowFull: false,
+            selectAnimationKey: -1,
+            isVideoGuideShow: false,
+            selectRouteKey: 'null',
+            photoBtnKey: 'null',
+            isRoutePlay: false,
+          })
         }
       }
-      if(this.animationTimer !== null){
-        clearInterval(this.animationTimer)
-        this.animationTimer = null
-      }
-
-      SARMap.setAction(ARAction.NULL)
-      SARMap.clearSelection()
-
-      this.setState({
-        isShowFull: false,
-        selectAnimationKey: -1,
-        isVideoGuideShow: false,
-        selectRouteKey: 'null',
-        photoBtnKey: 'null',
-      })
       return
     }
     // 数据未加载完成，点击返回无效
@@ -590,6 +720,7 @@ class DoctorCC extends Component<Props, State> {
     AppEvent.removeListener('ar_image_tracking_result')
     // 移除语音结束监听
     SARMap.removeSpeakStopListener()
+    SARMap.removeStopARAnimationListen()
     if(this.state.showScan) {
       SARMap.stopAREnhancePosition()
     }
@@ -696,64 +827,6 @@ class DoctorCC extends Component<Props, State> {
       this.animationTimer = null
     }
 
-    // 当有路线在进行中时，先停掉行走的推演动画，再关闭路线走完后的位置移动处理定时器
-    if(this.isPlay) {
-      SARMap.stopARAnimation()
-      this.isPlay = false
-      // 清除路线动画定时器
-      if(this.routeAnimationTimer !== null) {
-        clearTimeout(this.routeAnimationTimer)
-        this.routeAnimationTimer = null
-      }
-    }
-
-    // 当再次选择同一路线时，表示重置位置
-    // if(this.state.selectRouteKey === item.key) {
-    //   const timerTemp = setTimeout(async () => {
-    //     if(this.ARModel && this.positionInfo?.animationNode) {
-    //       await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.animationNode)
-    //       // 更新箭头追踪的位置和范围
-    //       const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-    //       if(relativePositin) {
-    //         SExhibition.setTrackingTarget(relativePositin)
-    //         SExhibition.startTrackingTarget()
-    //       }
-    //     }
-
-    //     // 重置位置后，如果之前有选择动画，则继续播放之前的动画
-    //     const currentElement = this.ARModel
-    //     if(currentElement) {
-    //       const id = this.state.selectAnimationKey
-    //       let isAdd: animationListType | null | undefined = null
-    //       if(this.state.selectReloaderKey === 'doctor'){
-    //         isAdd = this.animationList.get(id)
-    //       } else if(this.state.selectReloaderKey === 'doctorStudy'){
-    //       // supermanAnimationList
-    //         isAdd = this.supermanAnimationList.get(id)
-    //       }
-    //       if(isAdd) {
-    //       // 动画已经存在了
-    //         await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-    //         // 启动动画定时器，每当上一个动画播放完2秒后重启动画
-    //         this.animationTimer = setInterval(async () => {
-    //           if(this.state.selectAnimationKey === id) {
-    //             await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-    //           }
-    //           await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-    //         },(isAdd.duration + 2) * 1000)
-    //       }
-    //     }
-    //     clearTimeout(timerTemp)
-    //   }, 300)
-
-    //   this.setState({
-    //     selectRouteKey: "position1",
-    //   })
-    //   return
-    // }
-
-    // const animation = JSON.parse(JSON.stringify(item.route))
-
     let route = getRoute().route0_11
     switch(this.state.selectRouteKey) {
       case "position1" : {
@@ -821,93 +894,18 @@ class DoctorCC extends Component<Props, State> {
     // 2. 播放动画
     const tempTimer =  setTimeout(async () => {
 
-      // if(this.ARModel && this.positionInfo?.animationNode) {
-      //   await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.animationNode)
-      // }
       // 路线动画开始前，停掉箭头追踪功能
-      SExhibition.stopTrackingTarget()
+      await SExhibition.stopTrackingTarget()
       // 开始播放推演动画
       // SARMap.playARAnimation(JSON.parse(JSON.stringify(item.route)))
       SARMap.playARAnimation(JSON.parse(JSON.stringify(route)))
       clearTimeout(tempTimer)
-      this.isPlay = true
     },300)
-
-    let time = 0
-    if(animation.type === ARAnimatorType.MODEL_TYPE || animation.type === ARAnimatorType.NODE_TYPE) {
-      time += (animation.duration || 0 ) * ((animation.repeatCount || 0) + 1) + (animation.delay || 0)
-    } else if(animation.type === ARAnimatorType.GROUP_TYPE){
-      const animationTemp = animation.animations
-      animationTemp.map((ele: any) => {
-        if(ele.type === ARAnimatorType.MODEL_TYPE || ele.type === ARAnimatorType.NODE_TYPE){
-          time += (ele.duration || 0) * ((ele.repeatCount || 0) + 1) + (ele.delay || 0)
-        }
-      })
-    }
-
-    this.routeAnimationTimer = setTimeout(async () => {
-      if(this.isPlay) {
-        if(this.ARModel) {
-          const positionInfo =  await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
-          // console.warn("positionInfo" + JSON.stringify(positionInfo))
-
-          SARMap.stopARAnimation()
-          const tempTimer =  setTimeout(async () => {
-            if(this.isPlay && this.ARModel && positionInfo?.animationNode){
-              await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
-              await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, positionInfo.animationNode)
-              this.isPlay = false
-
-              // 更新箭头追踪的位置和范围
-              const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-              if(relativePositin) {
-                await SExhibition.setTrackingTarget(relativePositin)
-                await SExhibition.startTrackingTarget()
-              }
-
-            }
-            clearTimeout(tempTimer)
-
-            if(this.routeAnimationTimer !== null) {
-              clearTimeout(this.routeAnimationTimer)
-              this.routeAnimationTimer = null
-            }
-
-            // 走到指定位置后，如果之前有选择动画，则继续播放之前的动画
-            const currentElement = this.ARModel
-            if(currentElement) {
-              const id = this.state.selectAnimationKey
-              let isAdd: animationListType | null | undefined = null
-              if(this.state.selectReloaderKey === 'doctor'){
-                isAdd = this.animationList.get(id)
-              } else if(this.state.selectReloaderKey === 'doctorStudy'){
-              // supermanAnimationList
-                isAdd = this.supermanAnimationList.get(id)
-              }
-              if(isAdd) {
-              // 动画已经存在了
-                await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-                // 启动动画定时器，每当上一个动画播放完2秒后重启动画
-                this.animationTimer = setInterval(async () => {
-                  if(this.state.selectAnimationKey === id) {
-                    await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-                  }
-                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-                },(isAdd.duration + 2) * 1000)
-              }
-            }
-
-          },300)
-
-        }
-
-        // SARMap.stopARAnimation()
-      }
-    },time * 1000)
 
     this.setState({
       selectRouteKey: item.key,
       isSecondaryShow: false,
+      isRoutePlay: true,
     })
   }
 
@@ -947,10 +945,14 @@ class DoctorCC extends Component<Props, State> {
     const currentElement = this.ARModel
     let animations: Array<ModelAnimation> = []
     if(currentElement) {
-      // await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
       SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
     }
 
     this.setState({
@@ -1018,18 +1020,17 @@ class DoctorCC extends Component<Props, State> {
     //   SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     // }
 
-    if(this.animationTimer !== null){
-      clearInterval(this.animationTimer)
-      this.animationTimer = null
-    }
-
     const currentElement = this.ARModel
     let animations: Array<ModelAnimation> = []
     if(currentElement) {
-      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
       SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
     }
 
     // 暂时隐藏箭头追踪功能
@@ -1069,15 +1070,15 @@ class DoctorCC extends Component<Props, State> {
     const currentElement = this.ARModel
     let animations: Array<ModelAnimation> = []
     if(currentElement) {
-      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
       SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
-    }
 
-    if(this.animationTimer !== null){
-      clearInterval(this.animationTimer)
-      this.animationTimer = null
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
     }
 
     this.setState({
@@ -1166,7 +1167,8 @@ class DoctorCC extends Component<Props, State> {
 
       this.setState({
         uri: imgPath,
-        isShowFull: false,
+        // isShowFull: false,
+        isSecondaryShow: false,
       })
     } catch (error) {
       console.warn("error: " + JSON.stringify(error))
@@ -1188,7 +1190,7 @@ class DoctorCC extends Component<Props, State> {
     this.imgPath = ''
     this.setState({
       uri: 'null',
-      isSecondaryShow: true,
+      // isSecondaryShow: true,
       isShowFull: true,
     })
   }
@@ -1202,7 +1204,7 @@ class DoctorCC extends Component<Props, State> {
     this.imgPath = ''
     this.setState({
       uri: 'null',
-      isSecondaryShow: true,
+      // isSecondaryShow: true,
       isShowFull: true,
     })
   }
@@ -1219,7 +1221,7 @@ class DoctorCC extends Component<Props, State> {
     this.imgPath = ''
     this.setState({
       uri: 'null',
-      isSecondaryShow: true,
+      // isSecondaryShow: true,
     })
   }
 
@@ -1251,9 +1253,9 @@ class DoctorCC extends Component<Props, State> {
       }
       return result === false ? result : undefined
     } catch (error) {
-      // if (error.message.includes('File size cannot exceeds 10M')) {
-      //   Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
-      // }
+      if (error.message.includes('File size cannot exceeds 10M')) {
+        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+      }
     }
   }
 
@@ -1278,7 +1280,8 @@ class DoctorCC extends Component<Props, State> {
       // 停止录像
       this.setState({
         isVideoStart: false,
-        isShowFull: false,
+        // isShowFull: false,
+        isSecondaryShow: false,
         videoUrl: url,
         videoTime: -1,
       })
@@ -1428,7 +1431,10 @@ class DoctorCC extends Component<Props, State> {
           this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'action'))
           && {
             backgroundColor: 'rgba(229,82,12,0.65)',
-          }
+          },
+          this.state.selectType === 'video' && this.state.isVideoStart && {
+            top: dp(20),
+          },
         ]}
         onPress={this.photoBtnOnpress}
       >
@@ -1460,9 +1466,12 @@ class DoctorCC extends Component<Props, State> {
           backgroundColor:'rgba(30,30,30,0.65)',
         },
         this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'position'))
-          && {
-            backgroundColor: 'rgba(229,82,12,0.65)',
-          }
+        && {
+          backgroundColor: 'rgba(229,82,12,0.65)',
+        },
+        this.state.selectType === 'video' && this.state.isVideoStart && {
+          top: dp(75),
+        },
         ]}
         onPress={this.routeBtnOnpress}
       >
@@ -1498,7 +1507,10 @@ class DoctorCC extends Component<Props, State> {
         this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'operation'))
         && {
           backgroundColor: 'rgba(229,82,12,0.65)',
-        }
+        },
+        this.state.selectType === 'video' && this.state.isVideoStart && {
+          top: dp(130),
+        },
         ]}
         onPress={this.operationBtnOnpress}
       >
@@ -1641,7 +1653,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
 
-  /** 详解按钮 */
+  /** 详解按钮 已弃用 */
   renderSpeak = () => {
     return(
       <View
@@ -1688,7 +1700,7 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
-  /** 右边的其他按钮 */
+  /** 右边的其他按钮 已弃用 */
   renderFunctionList = () => {
     return(
       <View
@@ -1806,6 +1818,21 @@ class DoctorCC extends Component<Props, State> {
             <Text style={[styles.functionItemText]}> {'录像'} </Text>
           </View>
         </TouchableOpacity>
+      </View>
+    )
+  }
+
+  /** 右侧的按钮 */
+  renderSideBar = () => {
+    return (
+      <View>
+        <SideBar
+          sections={[
+            this.getSideBarSpeakItem(),
+            this.getSideBarItems()
+          ]}
+          showIndicator
+        />
       </View>
     )
   }
@@ -2245,7 +2272,7 @@ class DoctorCC extends Component<Props, State> {
                 if(this.state.selectAnimationKey === item.id) {
                   await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
                 }
-                await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+                isAdd && await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
               },(isAdd.duration + 2) * 1000)
             }
 
@@ -2768,8 +2795,8 @@ class DoctorCC extends Component<Props, State> {
     const style = {
       position: 'absolute',
       backgroundColor: 'transparent',
-      right: dp(80),
-      top: dp(38),
+      right: dp(105),
+      top: dp(28),
       flexDirection: 'column',
       justifyContent: 'center',
       // alignItems: 'center',
@@ -2903,13 +2930,14 @@ class DoctorCC extends Component<Props, State> {
               height: '100%',
             }}
           >
-            {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
-            {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()}
+            {/* {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
+            {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()} */}
+            {!this.state.isShowFull && !this.state.showGuide && this.renderSideBar()}
 
             {/* 拍照按钮 */}
-            {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
+            {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoShot()}
             {/* 录像按钮 */}
-            {this.state.isShowFull && this.state.selectType === 'video' && this.renderVideoSelected()}
+            {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderVideoSelected()}
           </Animated.View>
 
         </View>
@@ -2920,7 +2948,7 @@ class DoctorCC extends Component<Props, State> {
         <Animated.View
           style={{
             position: 'absolute',
-            top: dp(20),
+            // top: dp(20),
             left: this.state.btLeft,
             width: dp(50),
             height: "100%",
@@ -2928,10 +2956,10 @@ class DoctorCC extends Component<Props, State> {
           }}
         >
           {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
-          {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
-          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoBtn()}
-          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderRouteBtn()}
-          {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && this.renderOperationBtn()}
+          {!this.state.isVideoStart && !this.state.showGuide && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderBackBtn()}
+          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isRoutePlay && this.renderPhotoBtn()}
+          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isRoutePlay && this.renderRouteBtn()}
+          {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && !this.state.isRoutePlay && this.renderOperationBtn()}
 
         </Animated.View>
 

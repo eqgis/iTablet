@@ -1,7 +1,7 @@
 import React from 'react'
 import { ViewStyle, Animated } from 'react-native'
 
-interface AnimationWrapProps extends React.ClassAttributes<AnimationWrap> {
+export interface AnimationWrapProps extends React.ClassAttributes<AnimationWrap> {
   visible: boolean
   style: ViewStyle
   range: [number, number]

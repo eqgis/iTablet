@@ -15,6 +15,7 @@ import { getLanguage } from "@/language"
 import ARGuide from '../components/ARGuide'
 import Sound from 'react-native-sound'
 import { getRoute } from "../data/route"
+import SideBar, { Item } from "../components/SideBar"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -483,6 +484,48 @@ class DoctorCC extends Component<Props, State> {
         image: getImage().img_route_route03,
         // route: getRoute().route13,
       },
+    ]
+  }
+
+  /** 详解按钮 */
+  getSideBarSpeakItem = (): Item[] => {
+    return [
+      {
+        image: getImage().icon_speak,
+        image_selected: getImage().icon_speak_selected,
+        title: '详解',
+        action: this.speakBtnOnpress
+      }
+    ]
+  }
+
+  /** 右侧其他按钮 */
+  getSideBarItems = (): Item[] => {
+    return [
+      {
+        image: getImage().icon_action,
+        image_selected: getImage().icon_action_selected,
+        title: '动作',
+        action: this.actionBtnOnPress
+      },
+      {
+        image: getImage().icon_reloader,
+        image_selected: getImage().icon_reloader_selected,
+        title: '换装',
+        action: this.reloaderBtnOnPress
+      },
+      {
+        image: getImage().icon_photo,
+        image_selected: getImage().icon_photo_seleted,
+        title: '合影',
+        action: this.photoBtnOnPress
+      },
+      {
+        image: getImage().icon_video,
+        image_selected: getImage().icon_video_selected,
+        title: '录像',
+        action: this.videoBtnOnPress
+      }
     ]
   }
 
@@ -1779,6 +1822,20 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  renderSideBar = () => {
+    return (
+      <View>
+        <SideBar
+          sections={[
+            this.getSideBarSpeakItem(),
+            this.getSideBarItems()
+          ]}
+          showIndicator
+        />
+      </View>
+    )
+  }
+
   /** 详解被选中时显示的界面 */
   renderSpeakSelected = () => {
     return (
@@ -2872,8 +2929,9 @@ class DoctorCC extends Component<Props, State> {
               height: '100%',
             }}
           >
-            {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
-            {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()}
+            {/* {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
+            {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()} */}
+            {!this.state.isShowFull && !this.state.showGuide && this.renderSideBar()}
 
             {/* 拍照按钮 */}
             {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoShot()}

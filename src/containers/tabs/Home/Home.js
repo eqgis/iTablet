@@ -194,7 +194,8 @@ export default class Home extends Component {
   }
   _onRegister = () => {
     this._closeModal()
-    NavigationService.navigate('Register')
+    // NavigationService.navigate('Register')
+    NavigationService.navigate('Protocol', { type: 'Register' })
   }
 
   _onSetting = () => {

@@ -751,13 +751,13 @@ class SandBoxView extends React.Component<Props, State> {
 
   renderToolView = () => {
     // if (!this.state.toolType) return null
-    const props = AppToolBar.getProps()
-    const mapInfo = props.arMapInfo
+    // const props = AppToolBar.getProps()
+    // const mapInfo = props.arMapInfo
     // if (!props.arMap.currentMap || !mapInfo || !mapInfo.currentLayer) {
-    if (!props.arMap.currentMap) {
-      Toast.show('请先扫描二维码,打开超图大厦')
-      return null
-    }
+    // if (!props.arMap.currentMap) {
+    //   Toast.show('请先扫描二维码,打开超图大厦')
+    //   return null
+    // }
 
     return (
       <ToolView

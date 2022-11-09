@@ -2795,8 +2795,8 @@ class DoctorCC extends Component<Props, State> {
     const style = {
       position: 'absolute',
       backgroundColor: 'transparent',
-      right: dp(80),
-      top: dp(38),
+      right: dp(105),
+      top: dp(28),
       flexDirection: 'column',
       justifyContent: 'center',
       // alignItems: 'center',

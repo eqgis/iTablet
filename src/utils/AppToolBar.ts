@@ -334,6 +334,16 @@ function toggleListVisible() {
   toolbarRef.toggleListVisible()
 }
 
+/** 自定义AR选择事件 */
+let OnARElementSelectAction: ((element: any, childIndex: number) => void) | undefined = undefined
+function setOnARElementSelect(action?: (element: any, childIndex: number) => void) {
+  OnARElementSelectAction = action
+}
+
+function getOnARElementSelect() {
+  return OnARElementSelectAction
+}
+
 export default {
   setToolBar,
   getToolBar,
@@ -356,5 +366,7 @@ export default {
   addBottomBtn,
   deleteBottomBtn,
   showMenuView,
+  setOnARElementSelect,
+  getOnARElementSelect,
 }
 

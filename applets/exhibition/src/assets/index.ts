@@ -51,8 +51,6 @@ const tool_advertise_selected = require('./tool_advertise_selected.png')
 const tool_advertise = require('./tool_advertise.png')
 const tool_attribute_selected = require('./tool_attribute_selected.png')
 const tool_attribute = require('./tool_attribute.png')
-const tool_lighting_selected = require('./tool_lighting_selected.png')
-const tool_lighting = require('./tool_lighting.png')
 const tool_location_selected = require('./tool_location_selected.png')
 const tool_location = require('./tool_location.png')
 const tool_sectioning_selected = require('./tool_sectioning_selected.png')
@@ -86,6 +84,7 @@ const icon_tool_yuan = require('./icon_tool_yuan.png')
 const icon_tool_yuanjiaojx = require('./icon_tool_yuanjiaojx.png')
 
 import * as home_img from './home'
+import * as sandbox from './sandbox'
 
 const flat_ai_pic = require('./ar_exhibition_ai_pic.png')
 const flat_buffer = require('./ar_exhibition_buffer.png')
@@ -144,8 +143,6 @@ const image = {
   tool_advertise,
   tool_attribute_selected,
   tool_attribute,
-  tool_lighting_selected,
-  tool_lighting,
   tool_location_selected,
   tool_location,
   tool_sectioning_selected,
@@ -203,6 +200,8 @@ const image = {
   icon_btn_action_selected,
 
   ...home_img,
+  ...sandbox,
+
   flat_ai_pic,
   flat_buffer,
   flat_plot,

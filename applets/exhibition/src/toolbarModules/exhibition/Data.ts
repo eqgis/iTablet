@@ -30,6 +30,9 @@ export function getData(key: ModuleList['EXHIBITION']): IToolbarOption {
     case 'EXHIBITION_SUPERMAP_BUILDING':
       option.moduleData.page = 'supermap_building'
       break
+    case 'EXHIBITION_SANDBOX':
+      option.moduleData.page = 'sandbox'
+      break
     case 'EXHIBTION_AR_3D_MAP':
       option.moduleData.page = 'ar_3d_map'
       break

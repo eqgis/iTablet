@@ -4931,6 +4931,9 @@ export default class MapView extends React.Component {
                 AppToolBar.addData({selectARElement: element, ownModelAnimation})
                 AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ELEMENT')
               }
+            } else if (AppToolBar.getOnARElementSelect()) {
+              const customAction = AppToolBar.getOnARElementSelect()
+              customAction(element, childIndex)
             }
           }}
           onARElementAdd={element => {

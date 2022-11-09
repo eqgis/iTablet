@@ -8,6 +8,7 @@ import SuperMapBuilding from './views/SuperMapBuilding'
 import FlatMapView from './views/FlatMapView'
 import AR3DMapView from './views/AR3DMapView'
 import DoctorCC from './views/DoctorCC'
+import SandBoxView from './views/SandBoxView'
 
 export interface ExhibitionViewOption {
   page: 'home' //首页
@@ -18,6 +19,7 @@ export interface ExhibitionViewOption {
   | 'supermap_building' //超图大厦
   | 'ar_3d_map' // 立体地图
   | 'flat' // 平面地图模块
+  | 'sandbox' // AR景区沙盘
 }
 
 type Props = ModuleViewProps<ExhibitionViewOption>
@@ -60,16 +62,21 @@ class ExhibitionView extends React.Component<Props> {
     // return null
   }
 
+  renderSandBox = () => {
+    return <SandBoxView windowSize={this.props.windowSize}/>
+  }
+
   render() {
     return(
       <>
-        {this.props.data?.page === 'home' && this.renderHome()}
+        {!this.props.data?.page || this.props.data?.page === 'home' && this.renderHome()}
         {this.props.data?.page === 'scan' && this.renderScan()}
         {this.props.data?.page === 'show' && this.renderPresentation()}
         {this.props.data?.page === 'infra' && this.renderInfa()}
         {this.props.data?.page === 'flat' && this.renderFlatMap()}
         {this.props.data?.page === 'dr_supermap' && this.renderDrSuperMap()}
         {this.props.data?.page === 'supermap_building' && this.renderSuerMapBuilding()}
+        {this.props.data?.page === 'sandbox' && this.renderSandBox()}
         {this.props.data?.page === 'ar_3d_map' && this.render3DMap()}
       </>
     )

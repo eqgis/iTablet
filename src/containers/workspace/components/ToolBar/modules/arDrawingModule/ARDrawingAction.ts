@@ -339,7 +339,9 @@ async function addMedia(type: TARElementType, location?: Point3D) {
       if ((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
         content = content.substring(7)
       }
-      SARMap.addARMedia(layer.name, type, content, location)
+      SARMap.addARMedia(layer.name, type, content, {
+        position: location,
+      })
     }
     return false
   } catch (error) {

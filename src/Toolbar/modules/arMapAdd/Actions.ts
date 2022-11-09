@@ -27,7 +27,9 @@ async function addMedia(type: TARElementType, option?: AddOption) {
     if((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
       content = content.substring(7)
     }
-    SARMap.addARMedia(layer.name, type, content, option?.translation)
+    SARMap.addARMedia(layer.name, type, content, option?.translation && {
+      position: option?.translation,
+    })
   }
 }
 

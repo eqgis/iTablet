@@ -1653,7 +1653,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
 
-  /** 详解按钮 */
+  /** 详解按钮 已弃用 */
   renderSpeak = () => {
     return(
       <View
@@ -1700,7 +1700,7 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
-  /** 右边的其他按钮 */
+  /** 右边的其他按钮 已弃用 */
   renderFunctionList = () => {
     return(
       <View
@@ -1822,6 +1822,7 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  /** 右侧的按钮 */
   renderSideBar = () => {
     return (
       <View>
@@ -2947,7 +2948,7 @@ class DoctorCC extends Component<Props, State> {
         <Animated.View
           style={{
             position: 'absolute',
-            top: dp(20),
+            // top: dp(20),
             left: this.state.btLeft,
             width: dp(50),
             height: "100%",

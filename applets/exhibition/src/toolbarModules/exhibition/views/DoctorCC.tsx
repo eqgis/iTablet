@@ -1191,9 +1191,9 @@ class DoctorCC extends Component<Props, State> {
       }
       return result === false ? result : undefined
     } catch (error) {
-      // if (error.message.includes('File size cannot exceeds 10M')) {
-      //   Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
-      // }
+      if (error.message.includes('File size cannot exceeds 10M')) {
+        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+      }
     }
   }
 

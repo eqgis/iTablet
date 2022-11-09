@@ -1188,7 +1188,8 @@ class DoctorCC extends Component<Props, State> {
 
       this.setState({
         uri: imgPath,
-        isShowFull: false,
+        // isShowFull: false,
+        isSecondaryShow: false,
       })
     } catch (error) {
       console.warn("error: " + JSON.stringify(error))
@@ -1300,7 +1301,8 @@ class DoctorCC extends Component<Props, State> {
       // 停止录像
       this.setState({
         isVideoStart: false,
-        isShowFull: false,
+        // isShowFull: false,
+        isSecondaryShow: false,
         videoUrl: url,
         videoTime: -1,
       })
@@ -2929,9 +2931,9 @@ class DoctorCC extends Component<Props, State> {
             {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()}
 
             {/* 拍照按钮 */}
-            {this.state.isShowFull && this.state.selectType === 'photo' && this.renderPhotoShot()}
+            {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoShot()}
             {/* 录像按钮 */}
-            {this.state.isShowFull && this.state.selectType === 'video' && this.renderVideoSelected()}
+            {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderVideoSelected()}
           </Animated.View>
 
         </View>
@@ -2950,9 +2952,9 @@ class DoctorCC extends Component<Props, State> {
           }}
         >
           {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
-          {!this.state.isVideoStart && !this.state.showGuide && this.renderBackBtn()}
+          {!this.state.isVideoStart && !this.state.showGuide && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderBackBtn()}
           {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isRoutePlay && this.renderPhotoBtn()}
-          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && !this.state.isRoutePlay && this.renderRouteBtn()}
+          {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isRoutePlay && this.renderRouteBtn()}
           {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && !this.state.isRoutePlay && this.renderOperationBtn()}
 
         </Animated.View>

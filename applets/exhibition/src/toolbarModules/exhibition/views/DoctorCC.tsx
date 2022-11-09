@@ -13,7 +13,6 @@ import GuideView from "@/containers/workspace/components/GuideView/GuideView"
 import Video from 'react-native-video'
 import { getLanguage } from "@/language"
 import ARGuide from '../components/ARGuide'
-import { isDoctorMapGuided, setDoctorMapGuided } from "../Actions"
 import Sound from 'react-native-sound'
 import { getRoute } from "../data/route"
 
@@ -328,7 +327,7 @@ class DoctorCC extends Component<Props, State> {
                     if(this.state.selectAnimationKey === id) {
                       await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
                     }
-                    await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+                    isAdd && await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
                   },(isAdd.duration + 2) * 1000)
                 }
               }
@@ -589,7 +588,7 @@ class DoctorCC extends Component<Props, State> {
     // 当在拍照界面或录像界面时，点击返回按钮退出拍照或录像界面
     if(this.state.isShowFull && (this.state.selectType === 'photo' || this.state.selectType === 'video')) {
       if(this.ARModel) {
-        SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+        // SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
 
         if(this.state.isRoutePlay) {
           SARMap.stopARAnimation()
@@ -616,6 +615,21 @@ class DoctorCC extends Component<Props, State> {
             SARMap.setAction(ARAction.NULL)
             SARMap.clearSelection()
 
+            this.ARModel && await SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+            if(this.animationTimer !== null){
+              clearInterval(this.animationTimer)
+              this.animationTimer = null
+            }
+
+            this.setState({
+              isShowFull: false,
+              selectAnimationKey: -1,
+              isVideoGuideShow: false,
+              selectRouteKey: 'null',
+              photoBtnKey: 'null',
+              isRoutePlay: false,
+            })
+
           },300)
         } else {
           if(this.positionInfo?.renderNode) {
@@ -635,21 +649,23 @@ class DoctorCC extends Component<Props, State> {
             SARMap.clearSelection()
 
           }
+
+          await SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+          if(this.animationTimer !== null){
+            clearInterval(this.animationTimer)
+            this.animationTimer = null
+          }
+
+          this.setState({
+            isShowFull: false,
+            selectAnimationKey: -1,
+            isVideoGuideShow: false,
+            selectRouteKey: 'null',
+            photoBtnKey: 'null',
+            isRoutePlay: false,
+          })
         }
       }
-      if(this.animationTimer !== null){
-        clearInterval(this.animationTimer)
-        this.animationTimer = null
-      }
-
-      this.setState({
-        isShowFull: false,
-        selectAnimationKey: -1,
-        isVideoGuideShow: false,
-        selectRouteKey: 'null',
-        photoBtnKey: 'null',
-        isRoutePlay: false,
-      })
       return
     }
     // 数据未加载完成，点击返回无效
@@ -886,10 +902,14 @@ class DoctorCC extends Component<Props, State> {
     const currentElement = this.ARModel
     let animations: Array<ModelAnimation> = []
     if(currentElement) {
-      // await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
       SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
     }
 
     this.setState({
@@ -957,18 +977,17 @@ class DoctorCC extends Component<Props, State> {
     //   SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     // }
 
-    if(this.animationTimer !== null){
-      clearInterval(this.animationTimer)
-      this.animationTimer = null
-    }
-
     const currentElement = this.ARModel
     let animations: Array<ModelAnimation> = []
     if(currentElement) {
-      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
       SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
     }
 
     // 暂时隐藏箭头追踪功能
@@ -1008,15 +1027,15 @@ class DoctorCC extends Component<Props, State> {
     const currentElement = this.ARModel
     let animations: Array<ModelAnimation> = []
     if(currentElement) {
-      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
       // 将图层的动画重复播放次数设置为1，对应传参为0
       SARMap.setLayerAnimationRepeatCount(currentElement.layerName, 0)
       animations = await SARMap.getModelAnimation(currentElement.layerName, currentElement.id)
-    }
 
-    if(this.animationTimer !== null){
-      clearInterval(this.animationTimer)
-      this.animationTimer = null
+      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
     }
 
     this.setState({
@@ -2195,7 +2214,7 @@ class DoctorCC extends Component<Props, State> {
                 if(this.state.selectAnimationKey === item.id) {
                   await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
                 }
-                await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+                isAdd && await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
               },(isAdd.duration + 2) * 1000)
             }
 

@@ -174,13 +174,15 @@ class Home extends React.Component<Props, State> {
     }, () => {
       this.animatedUnit?.startAnimation()
 
-      SoundUtil.play('homeclick', false, () => {
-        if (delay > 0) {
-          setTimeout(() => {
+      SoundUtil.play('homeclick', false, {
+        preAction: () => {
+          if (delay > 0) {
+            setTimeout(() => {
+              action?.()
+            }, delay)
+          } else {
             action?.()
-          }, delay)
-        } else {
-          action?.()
+          }
         }
       })
       // this.clickSound?.stop(() => {

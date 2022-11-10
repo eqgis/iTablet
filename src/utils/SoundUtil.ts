@@ -24,16 +24,21 @@ function setCategory(key: string, value: "Ambient" | "SoloAmbient" | "Playback" 
   }
 }
 
-function play(key: string, repeat?: boolean, action?: Callback) {
+function play(key: string, repeat?: boolean, params?: {
+  /** 声音播放后执行 */
+  afterAction?: Callback,
+  /** 声音播放前执行 */
+  preAction?: Callback,
+}) {
   if (sounds[key]) {
     sounds[key].stop()
     sounds[key].play((success: boolean) => {
       if (success) {
-        repeat && play(key, repeat, action)
+        repeat && play(key, repeat, params)
       }
-      !repeat && action?.()
+      !repeat && params?.afterAction?.()
     })
-    // action?.()
+    params?.preAction?.()
   }
 }
 

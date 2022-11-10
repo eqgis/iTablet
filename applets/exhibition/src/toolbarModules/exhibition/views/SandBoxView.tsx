@@ -365,12 +365,9 @@ class SandBoxView extends React.Component<Props, State> {
       //   addNewDsetWhenCreate: false,
       // })
       // // TODO 打开地图,判断是否要创建新地图和新数据源
-      // if (!props.arMap.currentMap) {
-      //   await AppToolBar.getProps().createARMap()
-      //   newDatasource = true
-      // } else if (!mapInfo) {
-      //   newDatasource = true
-      // }
+      if (!props.arMap.currentMap) {
+        await AppToolBar.getProps().createARMap()
+      }
 
       // const type = ARLayerType.AR_MODEL_LAYER
 

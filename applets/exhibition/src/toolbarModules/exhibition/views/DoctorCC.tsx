@@ -2313,7 +2313,7 @@ class DoctorCC extends Component<Props, State> {
                   this.isActionSoundPlay = null
                 }
                 if(this.state.isBackground) {
-                  SoundUtil.play("background")
+                  SoundUtil.play("background",true)
                 }
               })
               this.isActionSoundPlay = source

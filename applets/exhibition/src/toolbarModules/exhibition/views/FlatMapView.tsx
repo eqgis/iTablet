@@ -140,7 +140,7 @@ class FlatMapVIew extends React.Component<Props, State> {
     return [
       {
         image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail.png'},
-        path: '',
+        path: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail.png',
         onTouch: () => {
           this.hideListIfAny()
           this.showLoading(500)
@@ -149,7 +149,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       },
       {
         image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail2.png'},
-        path: '',
+        path: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail2.png',
         onTouch: () => {
           this.hideListIfAny()
           this.showLoading(500)
@@ -158,7 +158,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       },
       {
         image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail3.png'},
-        path: '',
+        path: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail3.png',
         onTouch: () => {
           this.hideListIfAny()
           this.showLoading(500)

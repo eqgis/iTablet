@@ -1,10 +1,10 @@
-import { AppEvent, AppToolBar, Toast, DataHandler, AppLog } from '@/utils'
+import { AppEvent, AppToolBar, Toast, AppLog } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Image, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Scan from '../components/Scan'
-import { SARMap, ARLayerType, FileTools, IARTransform, ARAction, ARElementType } from 'imobile_for_reactnative'
+import { SARMap, FileTools, IARTransform, ARAction } from 'imobile_for_reactnative'
 import { Point3D } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
@@ -192,7 +192,7 @@ export interface AddOption {
   scale?: number
 }
 
-let currentElement: any
+let currentLayer: SARMap.ARLayer
 
 class SandBoxView extends React.Component<Props, State> {
 
@@ -283,28 +283,17 @@ class SandBoxView extends React.Component<Props, State> {
           this.switchTool('guide')
         }
       },
-      // {
-      //   image: getImage().tool_guide,
-      //   image_selected: getImage().tool_guide_selected,
-      //   title: '编辑',
-      //   action: () => {
-      //     if (!this.checkSenceAndToolType()) return
-      //     // SARMap.setAction(ARAction.SCALE)
-      //     AppToolBar.setOnARElementSelect((element, childIndex) => {
-      //       console.warn(childIndex, element)
-      //       currentElement = element
-      //       console.warn(element)
-      //       // inner_sandTable@sandTable
-      //       // wave@ARMAP_DEFAULT
-      //       console.warn(element.id, element.layerName)
-      //       SARMap.appointEditElement(element.id, element.layerName)
-      //       // AppEvent.removeListener('ar_single_click')
-      //       SARMap.setAction(ARAction.SCALE)
-      //       this.switchTool('edit')
-      //     })
-      //     SARMap.setAction(ARAction.SELECT)
-      //   }
-      // },
+      {
+        image: getImage().tool_guide,
+        image_selected: getImage().tool_guide_selected,
+        title: '编辑',
+        action: () => {
+          if (!this.checkSenceAndToolType()) return
+          SARMap.appointEditElement(1, currentLayer?.name)
+          SARMap.setAction(ARAction.SCALE)
+          this.switchTool('edit')
+        }
+      },
     ]
   }
 
@@ -367,20 +356,20 @@ class SandBoxView extends React.Component<Props, State> {
 
   addARLayer = async () => {
     try {
-      let newDatasource = false
+      // let newDatasource = false
       const props = AppToolBar.getProps()
-      const mapInfo = props.arMapInfo
-      AppToolBar.addData({
-        addNewDSourceWhenCreate: false,
-        addNewDsetWhenCreate: false,
-      })
-      // TODO 打开地图,判断是否要创建新地图和新数据源
-      if (!props.arMap.currentMap) {
-        await AppToolBar.getProps().createARMap()
-        newDatasource = true
-      } else if (!mapInfo) {
-        newDatasource = true
-      }
+      // const mapInfo = props.arMapInfo
+      // AppToolBar.addData({
+      //   addNewDSourceWhenCreate: false,
+      //   addNewDsetWhenCreate: false,
+      // })
+      // // TODO 打开地图,判断是否要创建新地图和新数据源
+      // if (!props.arMap.currentMap) {
+      //   await AppToolBar.getProps().createARMap()
+      //   newDatasource = true
+      // } else if (!mapInfo) {
+      //   newDatasource = true
+      // }
 
       // const type = ARLayerType.AR_MODEL_LAYER
 
@@ -392,118 +381,42 @@ class SandBoxView extends React.Component<Props, State> {
       //   await SARMap.removeARLayer(sceneLayers[0].name)
       // }
 
-      let datasourceName = DataHandler.getARRawDatasource()
+      // let datasourceName = DataHandler.getARRawDatasource()
       // let sandBoxDs = 'sandbox'
-      let waveDs = 'wave'
+      // let waveDs = 'wave'
       // const sResult = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, sandBoxDs, newDatasource, true, type)
       // const wResult = sResult.success && await DataHandler.createARElementDatasource(props.currentUser, sResult.datasourceName, waveDs, !sResult.success, true, type)
-      const wResult = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, waveDs, newDatasource, true, ARLayerType.AR_MEDIA_LAYER)
+      // const wResult = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, waveDs, newDatasource, true, ARLayerType.AR_MEDIA_LAYER)
 
       const home = await FileTools.getHomeDirectory()
       const targetHomePath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/'
-
-      let mediaLayerName = ''
-
-      // if (sResult.success && sResult.datasourceName) {
-      //   datasourceName = sResult.datasourceName
-      //   sandBoxDs = sResult.datasetName || ''
-      //   if (newDatasource) {
-      //     DataHandler.setARRawDatasource(datasourceName)
-      //   }
-
-      //   sandLayerName = await SARMap.addElementLayer(datasourceName, sandBoxDs, type, false)
-      // }
-      if (typeof wResult !== 'boolean' && wResult.success && wResult.datasourceName) {
-        datasourceName = wResult.datasourceName
-        waveDs = wResult.datasetName || ''
-        if (newDatasource) {
-          DataHandler.setARRawDatasource(datasourceName)
-        }
-
-        mediaLayerName = await SARMap.addElementLayer(datasourceName, waveDs, ARLayerType.AR_MEDIA_LAYER, false)
-      }
-
-      const layers = await props.getARLayers()
-
-      // if (sandLayerName !== '') {
-
-      //   if (sandLayerName !== '') {
-      //     const defaultLayer = layers.find(item => {
-      //       return item.type === type
-      //     })
-      //     if (defaultLayer?.name) {
-      //       props.setCurrentARLayer(defaultLayer)
-      //       this.oraginLayerStatus = await SARMap.getSceneLayerStatus(defaultLayer.name, )
-
-      //       // 添加glb
-      //       const glbs = await FileTools.getPathListByFilterDeep(targetHomePath, 'glb')
-      //       const paths: string = []
-      //       for (const glb of glbs) {
-      //         // SARMap.addARModel(defaultLayer.name, glb.path, {
-      //         //   x: 0,
-      //         //   y: 0,
-      //         //   z: 0,
-      //         // })
-      //         paths.push(glb.path)
-      //       }
-      //       SARMap.addModelToSandTable(paths)
-      //       // SARMap.addARModel(defaultLayer.name, targetHomePath + 'terrain10301.glb', {
-      //       //   x: 0,
-      //       //   y: 0,
-      //       //   z: 0,
-      //       // })
-      //     }
-      //   }
-      if (mediaLayerName !== '') {
-        if (mediaLayerName !== '') {
-          const mediaLayer = layers.find(item => {
-            return item.type === ARLayerType.AR_MEDIA_LAYER
-          })
-          if (mediaLayer?.name) {
-            SARMap.addARMedia(mediaLayer.name, ARElementType.AR_VIDEO, targetHomePath + 'wave.mp4', {
-              position: {
-                x: 0,
-                y: -49,
-                z: 0,
-              },
-              rotation: {
-                x: 90,
-                y: 0,
-                z: 2.94,
-              },
-              scale: {
-                x: 5720,
-                y: 6390,
-                z: 3720,
-              },
-            })
-          }
-        }
-      }
-      // }
-
-      // const home = await FileTools.getHomeDirectory()
-      // const targetHomePath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/'
-      SARMap.createARSandTable()
+      await SARMap.createARSandTable()
       // 添加glb
-      const glbs = await FileTools.getPathListByFilterDeep(targetHomePath, 'glb,mp4')
+      const glbs = await FileTools.getPathListByFilterDeep(targetHomePath, 'glb')
       const paths: string[] = []
       for (const glb of glbs) {
-        // SARMap.addARModel(defaultLayer.name, glb.path, {
-        //   x: 0,
-        //   y: 0,
-        //   z: 0,
-        // })
         paths.push(glb.path)
       }
-      SARMap.addModelToSandTable(paths)
-      // await this.save('SandBox')
-      // SARMap.addARModel(defaultLayer.name, targetHomePath + 'terrain10301.glb', {
-      //   x: 0,
-      //   y: 0,
-      //   z: 0,
-      // })
-
+      await SARMap.addARMediaToSandbox(targetHomePath + 'wave.mp4', {
+        position: {
+          x: -140,
+          y: -49,
+          z: -80,
+        },
+        rotation: {
+          x: 90,
+          y: 3,
+          z: 2.94,
+        },
+        scale: {
+          x: 128000,
+          y: 85000,
+          z: 30000,
+        },
+      })
+      await SARMap.addModelToSandTable(paths)
+      const layers = await props.getARLayers()
+      currentLayer = layers[0]
       this.isOpen = true
       this.arrowTricker(true)
     } catch(e) {
@@ -547,6 +460,7 @@ class SandBoxView extends React.Component<Props, State> {
     if (layer) {
       await SARMap.stopARCover(layer.name)
     }
+    await SARMap.closeARSandTable()
     AppToolBar.addData({
       PipeLineAttribute: undefined,
     })
@@ -764,15 +678,11 @@ class SandBoxView extends React.Component<Props, State> {
         ref={ref => this.toolView = ref}
         type={this.state.toolType}
         data={{
-          // layerName: mapInfo?.currentLayer?.name || '',
-          // id: 1,
-          layerName: currentElement?.layerName || '',
-          id: currentElement?.id || -1,
+          layerName: currentLayer?.name || '',
+          id: 1,
         }}
         close={async () => {
           if (this.state.toolType) {
-            // SARMap.commitSandTableChanges()
-            // await SARMap.submit()
             this.switchTool('')
             return
           }
@@ -790,7 +700,6 @@ class SandBoxView extends React.Component<Props, State> {
         style={{
           position: 'absolute',
           top: dp(10),
-          // right: 0,
         }}
       >
         <SideBar
@@ -892,8 +801,10 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
     let transformData: IARTransform = {
       // layerName: this.props.data.layerName,
       // id: this.props.data.id || -1,
-      layerName: currentElement?.layerName || '',
-      id: currentElement?.id || -1,
+      // layerName: currentElement?.layerName || '',
+      // id: currentElement?.id || -1,
+      layerName: currentLayer?.name || '',
+      id: 1,
       type: 'position',
       positionX: 0,
       positionY: 0,
@@ -931,8 +842,8 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
                 ...transformData,
                 scale: scale,
                 type: 'scale',
-                layerName: currentElement?.layerName || '',
-                id: currentElement?.id || -1,
+                layerName: currentLayer?.name || '',
+                id: 1,
               }
               SARMap.setARElementTransform(transformData)
             }}
@@ -951,8 +862,8 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
                 ...transformData,
                 rotationY: value,
                 type: 'rotation',
-                layerName: currentElement?.layerName || '',
-                id: currentElement?.id || -1,
+                layerName: currentLayer?.name || '',
+                id: 1,
               }
               SARMap.setARElementTransform(transformData)
             }}

@@ -332,6 +332,7 @@ export default class MapView extends React.Component {
     /** 自定义返回事件 */
     this.backAction = (params && params.backAction) || null
     this.state = {
+      showARMap: false,
       showMap: false, // 控制地图初始化显示
       data: params ? params.data : [],
       mapTitle: this.mapTitle,
@@ -537,7 +538,12 @@ export default class MapView extends React.Component {
     })
   }
 
+  showARMapView = (show) => {
+    this.setState({ showARMap: show})
+  }
+
   async componentDidMount() {
+    AppEvent.addListener('show_ar_map', this.showARMapView)
     if (!global.isLicenseValid) {
       let licenseStatus = await SMap.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
@@ -1231,6 +1237,7 @@ export default class MapView extends React.Component {
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
     this.onMapLoad?.('ar')
+    AppEvent.emitEvent('on_ar_mapview_loaded')
   }
 
   onChange = event => {
@@ -5121,7 +5128,7 @@ export default class MapView extends React.Component {
         )}
         {this.renderCompass()}
 
-        {this._renderMeasureAreaView()}
+        {this.state.showARMap && this._renderMeasureAreaView()}
         {this._renderPoiSearchView()}
         {this._renderArNavigationView()}
 

@@ -40,7 +40,7 @@ export default class ExhibitionModule extends Module {
       baseMapIndex: 1,
       mapType:  Module.MapType.AR,
       onMapLoad: (type) => { // ar, map
-        if(type === 'ar') {
+        if(type === 'map') {
           AppToolBar.show('EXHIBITION', 'EXHIBITION_HOME')
         }
       },

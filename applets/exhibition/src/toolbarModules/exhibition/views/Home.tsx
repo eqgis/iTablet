@@ -2,9 +2,9 @@ import { getImage } from '../../../assets'
 import React from 'react'
 import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView, ImageBackground, PanResponder, PanResponderInstance, GestureResponderEvent, Platform } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { AppDialog, AppLog, AppToolBar, dp ,SoundUtil,Toast} from '@/utils'
+import { AppDialog, AppEvent, AppLog, AppToolBar, dp ,SoundUtil,Toast} from '@/utils'
 import { Easing } from 'react-native'
-import { SARMap } from 'imobile_for_reactnative'
+import { SARMap, SExhibition } from 'imobile_for_reactnative'
 import AnimatedUnit from '../components/AnimatedUnit'
 import Sound from 'react-native-sound'
 import { setModule, getModule } from '../Actions'
@@ -311,6 +311,7 @@ class Home extends React.Component<Props, State> {
         title: 'AR超超博士',
         desc: '虚拟人物互动，一件换装，合影留念',
         action: () => {
+          AppEvent.emitEvent('show_ar_map', true)
           AppToolBar.show('EXHIBITION', 'EXHIBITION_DR_SUPERMAP')
         }
       },
@@ -325,6 +326,9 @@ class Home extends React.Component<Props, State> {
             Toast.show('暂不支持此功能')
             return
           }
+          SExhibition.setCustomOcclusionEnable(true).then(() => {
+            AppEvent.emitEvent('show_ar_map', true)
+          })
           AppToolBar.show('EXHIBITION', 'EXHIBITION_INFRA')
         }
       },
@@ -334,6 +338,7 @@ class Home extends React.Component<Props, State> {
         title: 'AR景区沙盘',
         desc: '建筑立体模型浏览、剖切，灯效显示',
         action: () => {
+          AppEvent.emitEvent('show_ar_map', true)
           // AppToolBar.show('EXHIBITION', 'EXHIBITION_SUPERMAP_BUILDING')
           AppToolBar.show('EXHIBITION', 'EXHIBITION_SANDBOX')
         }
@@ -344,6 +349,7 @@ class Home extends React.Component<Props, State> {
         title: 'AR立体地图',
         desc: '立体地图交互浏览，车辆模拟',
         action: () => {
+          AppEvent.emitEvent('show_ar_map', true)
           AppToolBar.show('EXHIBITION', 'EXHIBTION_AR_3D_MAP')
         }
       },
@@ -353,6 +359,7 @@ class Home extends React.Component<Props, State> {
         title: 'AR平面地图',
         desc: '二维地图浏览、配图、分析、查询',
         action: () => {
+          AppEvent.emitEvent('show_ar_map', true)
           AppToolBar.show('EXHIBITION', 'EXHIBITION_FLAT_MAP')
         }
       }

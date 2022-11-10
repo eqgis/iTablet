@@ -16,6 +16,7 @@ import ARGuide from '../components/ARGuide'
 import Sound from 'react-native-sound'
 import { getRoute } from "../data/route"
 import SideBar, { Item } from "../components/SideBar"
+import ARViewLoadHandler from "../components/ARViewLoadHandler"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -185,7 +186,7 @@ class DoctorCC extends Component<Props, State> {
 
   }
 
-  componentDidMount = async () => {
+  arViewDidMount = async () => {
     // Enable playback in silence mode
     // Sound.setCategory('Playback')
 
@@ -2902,7 +2903,7 @@ class DoctorCC extends Component<Props, State> {
   render() {
     return (
       <>
-
+        <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         {/* 右边按钮的响应界面 */}
         <View
           style={{

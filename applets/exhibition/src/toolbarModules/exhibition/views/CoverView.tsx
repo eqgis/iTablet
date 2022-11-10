@@ -10,6 +10,7 @@ import { getGlobalPose, isCoverGuided, setCoverGuided } from '../Actions'
 import ARGuide from '../components/ARGuide'
 import SideBar, { Item } from '../components/SideBar'
 import FillAnimationWrap from '../components/FillAnimationWrap'
+import ARViewLoadHandler from '../components/ARViewLoadHandler'
 
 interface Props {
   windowSize: ScaledSize
@@ -108,7 +109,7 @@ class CoverView extends React.Component<Props, State> {
 
   }
 
-  componentDidMount(): void {
+  arViewDidMount = (): void => {
     if(this.state.showScan) {
       SARMap.setAREnhancePosition()
     }
@@ -782,6 +783,7 @@ class CoverView extends React.Component<Props, State> {
   render() {
     return(
       <>
+        <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         <View
           style={{
             position: 'absolute',

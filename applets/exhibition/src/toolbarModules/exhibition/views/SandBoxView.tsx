@@ -15,6 +15,7 @@ import { SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interface
 import { shouldBuildingMapData, buildingImported } from '../Actions'
 import SideBar, { Item } from '../components/SideBar'
 import AnimationWrap from '../components/AnimationWrap'
+import ARViewLoadHandler from '../components/ARViewLoadHandler'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -225,7 +226,7 @@ class SandBoxView extends React.Component<Props, State> {
     })
   }
 
-  componentDidMount(): void {
+  arViewDidMount = (): void => {
     SARMap.setAREnhancePosition()
     SARMap.setAction(ARAction.NULL)
     AppEvent.addListener('ar_image_tracking_result', async result => {
@@ -839,6 +840,7 @@ class SandBoxView extends React.Component<Props, State> {
   render() {
     return (
       <>
+        <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
         {this.state.showCover && this.renderCover()}
         <ARArrow />

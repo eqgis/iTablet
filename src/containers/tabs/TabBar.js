@@ -129,7 +129,13 @@ class TabBar extends React.Component {
             list.splice(i, 1)
             break
         }
-    }
+      }
+      for(let i =0;i<list.length;i++){
+        if(list[i].key==='Find'){
+            list.splice(i, 1)
+            break
+        }
+      }
     }
     return list
   }

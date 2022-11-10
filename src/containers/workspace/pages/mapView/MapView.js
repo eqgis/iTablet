@@ -5072,12 +5072,12 @@ export default class MapView extends React.Component {
         if(this.state.isFull) {
           positionStyle = {
             bottom: scaleSize(100),
-            right: scaleSize(20),
+            right: scaleSize(22),
           }
         } else {
           positionStyle = {
             bottom: scaleSize(10),
-            right: scaleSize(20),
+            right: scaleSize(22),
           }
         }
       } else {
@@ -5089,7 +5089,7 @@ export default class MapView extends React.Component {
         } else {
           positionStyle = {
             bottom: scaleSize(10),
-            right: scaleSize(20),
+            right: scaleSize(22),
           }
         }
       }
@@ -5107,7 +5107,7 @@ export default class MapView extends React.Component {
         >
           <Text
             style={[styles.bottomInfoText]}
-          >{"国家基础地理信息中心-Gs(2021)3715号"}</Text>
+          >{"国家基础地理信息中心-GS(2022)3124号"}</Text>
         </View>
       )
     } catch (error) {

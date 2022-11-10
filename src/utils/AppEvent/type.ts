@@ -29,4 +29,6 @@ export interface Event {
   'ar_image_tracking_result': Pose
 
   'ar_single_click':undefined
+  'show_ar_map': boolean
+  'on_ar_mapview_loaded': undefined
 }

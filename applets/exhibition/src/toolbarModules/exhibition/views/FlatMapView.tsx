@@ -14,6 +14,7 @@ import ARGuide from '../components/ARGuide'
 import { ILocalData } from '@/utils/DataHandler/DataLocal'
 import SideBar, { Item } from '../components/SideBar'
 import ImageList, { ImageItem } from '../components/ImageList'
+import ARViewLoadHandler from '../components/ARViewLoadHandler'
 
 interface Props {
   windowSize: ScaledSize
@@ -205,7 +206,7 @@ class FlatMapVIew extends React.Component<Props, State> {
     }, time)
   }
 
-  componentDidMount(): void {
+  arViewDidMount = (): void => {
     this.importData().then(() => {
       if(this.state.showScan) {
         SARMap.setAREnhancePosition()
@@ -247,13 +248,13 @@ class FlatMapVIew extends React.Component<Props, State> {
   }
 
   start = (pose: Pose) => {
-    SExhibition.addTempPoint()
+    // SExhibition.addTempPoint()
     this.addMap(pose)
   }
 
   addMap = async (pose: Pose) => {
     if(!this.isMapOpend) {
-      SExhibition.addTempPoint()
+      // SExhibition.addTempPoint()
       await SMap.openMapName(flatMaps[0].mapName)
       await SMap.openMap(flatMaps[0].mapName)
       this.isMapOpend = true
@@ -263,7 +264,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       y: 0,
       z: -1,
     }
-    SExhibition.removeTempPoint()
+    // SExhibition.removeTempPoint()
     SExhibition.addFlatMap({
       pose: pose,
       translation: relativePositin
@@ -564,6 +565,7 @@ class FlatMapVIew extends React.Component<Props, State> {
   render() {
     return(
       <>
+        <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         {this.state.showScan && this.renderScan()}
         {!this.state.showGuide && this.renderBack()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}

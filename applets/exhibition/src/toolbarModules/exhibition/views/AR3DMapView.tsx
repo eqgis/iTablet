@@ -11,6 +11,7 @@ import { ConstPath } from '@/constants'
 import { getGlobalPose, isAr3dMapGuided, setAr3dMapGuided, shouldRefresh3dMapData } from '../Actions'
 import { Pose } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import ARGuide from '../components/ARGuide'
+import ARViewLoadHandler from '../components/ARViewLoadHandler'
 
 
 interface Props {
@@ -54,7 +55,7 @@ class AR3DMapView extends React.Component<Props, State> {
     }
   }
 
-  componentDidMount(): void {
+  arViewDidMount = (): void => {
     this.importData().then(() => {
       if(this.state.showScan) {
         SARMap.setAREnhancePosition()
@@ -88,7 +89,6 @@ class AR3DMapView extends React.Component<Props, State> {
 
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
-        SExhibition.addTempPoint()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
 
@@ -114,7 +114,6 @@ class AR3DMapView extends React.Component<Props, State> {
         y: 0,
         z: -0.5,
       }
-      SExhibition.removeTempPoint()
       this.result = pose
       SExhibition.addMapviewElement(0,{
         pose: pose,
@@ -520,7 +519,6 @@ class AR3DMapView extends React.Component<Props, State> {
             y: 0,
             z: -0.5,
           }
-          SExhibition.removeTempPoint()
           SExhibition.addMapviewElement(0,{
             pose: this.result,
             translation: relativePositin
@@ -584,7 +582,6 @@ class AR3DMapView extends React.Component<Props, State> {
             y: 0,
             z: -0.5,
           }
-          SExhibition.removeTempPoint()
           SExhibition.addMapviewElement(1,{
             pose: this.result,
             translation: relativePositin
@@ -649,7 +646,6 @@ class AR3DMapView extends React.Component<Props, State> {
             y: 0,
             z: -0.5,
           }
-          SExhibition.removeTempPoint()
           SExhibition.addMapviewElement(4,{
             pose: this.result,
             translation: relativePositin
@@ -698,6 +694,7 @@ class AR3DMapView extends React.Component<Props, State> {
   render() {
     return(
       <>
+        <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         <View
           style={{
             position: 'absolute',

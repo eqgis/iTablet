@@ -31,8 +31,9 @@ function play(key: string, repeat?: boolean, action?: Callback) {
       if (success) {
         repeat && play(key, repeat, action)
       }
+      !repeat && action?.()
     })
-    action?.()
+    // action?.()
   }
 }
 
@@ -42,9 +43,11 @@ function pause(key: string) {
   }
 }
 
-function stop(key: string) {
+function stop(key: string, action?: Callback) {
   if (sounds[key]) {
-    sounds[key].stop()
+    sounds[key].stop(()=> {
+      action?.()
+    })
   }
 }
 

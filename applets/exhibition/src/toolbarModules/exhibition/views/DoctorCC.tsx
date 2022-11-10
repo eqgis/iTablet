@@ -16,6 +16,7 @@ import ARGuide from '../components/ARGuide'
 import Sound from 'react-native-sound'
 import { getRoute } from "../data/route"
 import SideBar, { Item } from "../components/SideBar"
+import ARViewLoadHandler from "../components/ARViewLoadHandler"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -100,6 +101,8 @@ interface State {
   btLeft:Animated.Value
   /** 下边二级菜单的动画 */
   btBottom: Animated.Value
+  /** 全局背景音乐是否在播放 */
+  isBackground: boolean,
 }
 
 homePath = ""
@@ -131,14 +134,16 @@ class DoctorCC extends Component<Props, State> {
   /** 是否能够推出超超博士模块 true可以退出 false不可以退出 */
   isBack: boolean
 
-  /** 音效播放器 */
-  whoosh: Sound | null = null
   /** 动画重读播放的定时器 */
   animationTimer: NodeJS.Timer | null | undefined = null
   /** 合影的位置路线数据 */
   photoRouteDate: Array<routeItemType> = []
   /** 模型的初始位置信息 包含位置，方向和大小 */
   positionInfo: positionInfoType | null = null
+  /** 动作的声音资源 */
+  soundSource = ["standby", "greet", "walk", "turnaround", "handshake", "speak", "please", "followme", "risus", "click"]
+  /** 当前是否有动作的声音在播放 */
+  isActionSoundPlay: string | null = null
 
   show = true
 
@@ -174,15 +179,18 @@ class DoctorCC extends Component<Props, State> {
       btBottom: new Animated.Value (
         0,
       ),
+      isBackground: SoundUtil.isPlaying("background") || false
     }
     this.imgPath = ''
     this.isBack = false
 
   }
 
-  componentDidMount = async () => {
+  arViewDidMount = async () => {
     // Enable playback in silence mode
-    Sound.setCategory('Playback')
+    // Sound.setCategory('Playback')
+
+    this.addSound()
 
     this.getDoctorData()
     await this.openDoctorARMap()
@@ -368,6 +376,11 @@ class DoctorCC extends Component<Props, State> {
     this.setState({showGuide: show})
   }
 
+  addSound = () => {
+    this.soundSource.map((item) => {
+      SoundUtil.setSound(item, `${item}.mp3`, Sound.MAIN_BUNDLE)
+    })
+  }
 
   /** 博士的解说数据 */
   getDoctorData = () => {
@@ -725,6 +738,11 @@ class DoctorCC extends Component<Props, State> {
       SARMap.stopAREnhancePosition()
     }
 
+    // 释放音频资源
+    this.soundSource.map((item) => {
+      SoundUtil.release(item)
+    })
+
     // 关闭地图
     const props = AppToolBar.getProps()
     await props.closeARMap()
@@ -842,6 +860,12 @@ class DoctorCC extends Component<Props, State> {
           } else if(this.state.selectReloaderKey === 'doctorStudy') {
             route = getRoute().route1_13
           }
+        } else {
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_11
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_11
+          }
         }
         break
       }
@@ -858,6 +882,12 @@ class DoctorCC extends Component<Props, State> {
           } else if(this.state.selectReloaderKey === 'doctorStudy') {
             route = getRoute().route1_23
           }
+        } else {
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_11
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_11
+          }
         }
         break
       }
@@ -873,6 +903,12 @@ class DoctorCC extends Component<Props, State> {
             route = getRoute().route0_32
           } else if(this.state.selectReloaderKey === 'doctorStudy') {
             route = getRoute().route1_32
+          }
+        } else {
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_11
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_11
           }
         }
         break
@@ -2119,49 +2155,49 @@ class DoctorCC extends Component<Props, State> {
   renderPhotoItem = (item: ModelAnimation) => {
     let image = getImage().icon_action_stand_by
     let title = item.name
-    let source = "standby.mp3"
+    let source = "standby"
     switch(item.name){
       case 'stand-by':
         image = getImage().icon_action_stand_by
-        source = "standby.mp3"
+        source = "standby"
         title = "站立"
         break
       case '打招呼':
         image = getImage().icon_action_greet
-        source = "greet.mp3"
+        source = "greet"
         break
       case '行走':
         image = getImage().icon_action_walk
-        source = "walk.mp3"
+        source = "walk"
         break
       case '转圈':
         image = getImage().icon_action_turn_around
-        source = "turnaround.mp3"
+        source = "turnaround"
         break
       case '握手':
         image = getImage().icon_action_handshake
-        source = "handshake.mp3"
+        source = "handshake"
         break
       case '说话':
         image = getImage().icon_action_speak
-        source = "speak.mp3"
+        source = "speak"
         break
       case '请':
         image = getImage().icon_action_please
-        source = "please.mp3"
+        source = "please"
         break
       case '跟我走':
         image = getImage().icon_action_follow_me
-        source = "followme.mp3"
+        source = "followme"
         break
       case '大笑':
         image = getImage().icon_action_risus
-        source = "risus.mp3"
+        source = "risus"
         title = "高兴"
         break
       case '点击':
         image = getImage().icon_action_stand_by
-        source = "click.mp3"
+        source = "click"
         break
       default:
         return null
@@ -2277,41 +2313,29 @@ class DoctorCC extends Component<Props, State> {
             }
 
             if(this.state.selectType === 'action') {
-
-              if(this.whoosh !== null) {
-                this.whoosh.release()
-                this.whoosh = null
+              // 如果当前有动作的声音正在播放，则停止改声音的播放
+              if(this.isActionSoundPlay){
+                SoundUtil.stop(this.isActionSoundPlay)
+                this.isActionSoundPlay = null
               }
 
-              // 音频播放 音频文件的要求，音频文件的名字只能包含小写字母和数字之间，有其他字符该方法就会失效
-              // 参数一简介：可为xxx.音频格式 单需要放在 `android\app\src\main\res\raw`目录下，也可为手机本地路径和网络路径
-              this.whoosh = new Sound(source, Sound.MAIN_BUNDLE, (error) => {
-                if (error) {
-                  console.log('failed to load the sound', error)
-                  return
-                }
-                if(this.whoosh !== null) {
-                  // loaded successfully
-                  console.log('duration in seconds: ' +  this.whoosh.getDuration() + 'number of channels: ' +  this.whoosh.getNumberOfChannels())
+              // 当进入模块儿的时候和当前都在播背景音乐时，才暂停背景音乐
+              console.warn(this.state.isBackground + " - " + SoundUtil.isPlaying("background"))
+              if(this.state.isBackground && SoundUtil.isPlaying("background")) {
+                SoundUtil.stop("background", () => {
+                })
+              }
 
-                  if(SoundUtil.isPlaying("background")) {
-                    SoundUtil.pause("background")
-                  }
-                  // Play the sound with an onEnd callback
-                  this.whoosh.play((success) => {
-                    if (success) {
-                      // 播放成功完成了
-                      this.whoosh !== null && this.whoosh.release()
-                    } else {
-                      // 播放失败了
-                      console.log('playback failed due to audio decoding errors')
-                      this.whoosh !== null && this.whoosh.release()
-                    }
-                    SoundUtil.play("background")
-                  })
+              SoundUtil.play(source, false, () => {
+                if(this.isActionSoundPlay){
+                  SoundUtil.stop(this.isActionSoundPlay)
+                  this.isActionSoundPlay = null
                 }
-
+                if(this.state.isBackground) {
+                  SoundUtil.play("background",true)
+                }
               })
+              this.isActionSoundPlay = source
 
             }
 
@@ -2879,7 +2903,7 @@ class DoctorCC extends Component<Props, State> {
   render() {
     return (
       <>
-
+        <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         {/* 右边按钮的响应界面 */}
         <View
           style={{

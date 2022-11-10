@@ -1,5 +1,6 @@
 import { ModuleList } from "@/Toolbar/modules"
-import { SARMap } from "imobile_for_reactnative"
+import { AppEvent } from "@/utils"
+import { SARMap, SExhibition } from "imobile_for_reactnative"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { ExhibitionViewOption } from "./ExhibitionView"
 
@@ -13,6 +14,7 @@ export function getData(key: ModuleList['EXHIBITION']): IToolbarOption {
   switch (key) {
     case 'EXHIBITION_HOME':
       option.moduleData.page = 'home'
+      homeOption(option)
       break
     case 'EXHIBITION_SCAN':
       option.moduleData.page = 'scan'
@@ -44,6 +46,12 @@ export function getData(key: ModuleList['EXHIBITION']): IToolbarOption {
   return option
 }
 
+function homeOption(option: IToolbarOption) {
+  option.pageAction = () => {
+    AppEvent.emitEvent('show_ar_map', false)
+    SExhibition.setCustomOcclusionEnable(false)
+  }
+}
 
 function scanOption(option: IToolbarOption) {
 

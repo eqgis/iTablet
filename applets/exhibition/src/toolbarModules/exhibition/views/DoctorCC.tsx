@@ -133,8 +133,6 @@ class DoctorCC extends Component<Props, State> {
   /** 是否能够推出超超博士模块 true可以退出 false不可以退出 */
   isBack: boolean
 
-  /** 音效播放器 */
-  // whoosh: Sound | null = null
   /** 动画重读播放的定时器 */
   animationTimer: NodeJS.Timer | null | undefined = null
   /** 合影的位置路线数据 */
@@ -2295,66 +2293,17 @@ class DoctorCC extends Component<Props, State> {
               },(isAdd.duration + 2) * 1000)
             }
 
-            // if(this.state.selectType === 'action') {
-
-            //   if(this.whoosh !== null) {
-            //     this.whoosh.release()
-            //     this.whoosh = null
-            //   }
-
-            //   // 音频播放 音频文件的要求，音频文件的名字只能包含小写字母和数字之间，有其他字符该方法就会失效
-            //   // 参数一简介：可为xxx.音频格式 单需要放在 `android\app\src\main\res\raw`目录下，也可为手机本地路径和网络路径
-            //   this.whoosh = new Sound(source, Sound.MAIN_BUNDLE, (error) => {
-            //     if (error) {
-            //       console.log('failed to load the sound', error)
-            //       return
-            //     }
-            //     if(this.whoosh !== null) {
-            //       // loaded successfully
-            //       console.log('duration in seconds: ' +  this.whoosh.getDuration() + 'number of channels: ' +  this.whoosh.getNumberOfChannels())
-
-            //       // 当进入模块儿的时候和当前都在播背景音乐时，才暂停背景音乐
-            //       if(this.state.isBackground && SoundUtil.isPlaying("background")) {
-            //         SoundUtil.pause("background")
-            //       }
-            //       // Play the sound with an onEnd callback
-            //       this.whoosh.play((success) => {
-            //         if (success) {
-            //           // 播放成功完成了
-            //           if(this.whoosh !== null) {
-            //             this.whoosh.release()
-            //             this.whoosh = null
-            //           }
-            //         } else {
-            //           // 播放失败了
-            //           console.log('playback failed due to audio decoding errors')
-            //           this.whoosh !== null && this.whoosh.release()
-            //         }
-            //         if(this.state.isBackground) {
-            //           SoundUtil.play("background")
-            //         }
-            //       })
-            //     }
-
-            //   })
-
-            //   // 音量
-            //   this.whoosh.setVolume(4)
-
-            // }
-
             if(this.state.selectType === 'action') {
               // 如果当前有动作的声音正在播放，则停止改声音的播放
-              // if(this.isActionSoundPlay){
-              //   SoundUtil.stop(this.isActionSoundPlay)
-              //   this.isActionSoundPlay = null
-              // }
+              if(this.isActionSoundPlay){
+                SoundUtil.stop(this.isActionSoundPlay)
+                this.isActionSoundPlay = null
+              }
 
               // 当进入模块儿的时候和当前都在播背景音乐时，才暂停背景音乐
               console.warn(this.state.isBackground + " - " + SoundUtil.isPlaying("background"))
               if(this.state.isBackground && SoundUtil.isPlaying("background")) {
                 SoundUtil.stop("background", () => {
-                  console.warn("stop call")
                 })
               }
 
@@ -2363,7 +2312,6 @@ class DoctorCC extends Component<Props, State> {
                   SoundUtil.stop(this.isActionSoundPlay)
                   this.isActionSoundPlay = null
                 }
-                console.warn("play end")
                 if(this.state.isBackground) {
                   SoundUtil.play("background")
                 }

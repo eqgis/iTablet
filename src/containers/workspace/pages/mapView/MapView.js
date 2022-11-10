@@ -5072,12 +5072,12 @@ export default class MapView extends React.Component {
         if(this.state.isFull) {
           positionStyle = {
             bottom: scaleSize(100),
-            right: scaleSize(20),
+            right: scaleSize(22),
           }
         } else {
           positionStyle = {
             bottom: scaleSize(10),
-            right: scaleSize(20),
+            right: scaleSize(22),
           }
         }
       } else {
@@ -5089,7 +5089,7 @@ export default class MapView extends React.Component {
         } else {
           positionStyle = {
             bottom: scaleSize(10),
-            right: scaleSize(20),
+            right: scaleSize(22),
           }
         }
       }

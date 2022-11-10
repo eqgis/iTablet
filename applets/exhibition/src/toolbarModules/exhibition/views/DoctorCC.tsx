@@ -859,6 +859,12 @@ class DoctorCC extends Component<Props, State> {
           } else if(this.state.selectReloaderKey === 'doctorStudy') {
             route = getRoute().route1_13
           }
+        } else {
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_11
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_11
+          }
         }
         break
       }
@@ -875,6 +881,12 @@ class DoctorCC extends Component<Props, State> {
           } else if(this.state.selectReloaderKey === 'doctorStudy') {
             route = getRoute().route1_23
           }
+        } else {
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_11
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_11
+          }
         }
         break
       }
@@ -890,6 +902,12 @@ class DoctorCC extends Component<Props, State> {
             route = getRoute().route0_32
           } else if(this.state.selectReloaderKey === 'doctorStudy') {
             route = getRoute().route1_32
+          }
+        } else {
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().route0_11
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().route1_11
           }
         }
         break

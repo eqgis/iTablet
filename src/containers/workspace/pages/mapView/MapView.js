@@ -370,6 +370,7 @@ export default class MapView extends React.Component {
       samplescale: new Animated.Value(0.1),
       showPoiSearch: false,
       showNavigation: false,
+      isFull: false,
     }
     // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
     this.props.setDatumPoint(false)
@@ -2471,7 +2472,11 @@ export default class MapView extends React.Component {
       global.Type === ChunkType.MAP_AR_ANALYSIS ||
       global.Type === ChunkType.MAP_AR_MAPPING
     ) {
-      this.setState({ showArModeIcon: full })
+      this.setState({ showArModeIcon: full, isFull: full, })
+    } else {
+      this.setState({
+        isFull: full,
+      })
     }
 
     this.fullMap = !full
@@ -5047,6 +5052,69 @@ export default class MapView extends React.Component {
     }
   }
 
+  getInfoText = () => {
+    try {
+      let isTianditu = false
+      let length = this.props.layers.layers.length
+      const layer = this.props.layers.layers[length - 1]
+      let isBaseMap = LayerUtils.isBaseLayer(layer)
+      if(!isBaseMap) {
+        return null
+      }
+
+      let server = layer.datasourceServer || ""
+      if(server.toLowerCase().indexOf("tianditu") !== -1) {
+        isTianditu = true
+      }
+
+      let positionStyle = {}
+      if(this.props.device.orientation.indexOf('PORTRAIT') >= 0) {
+        if(this.state.isFull) {
+          positionStyle = {
+            bottom: scaleSize(100),
+            right: scaleSize(20),
+          }
+        } else {
+          positionStyle = {
+            bottom: scaleSize(10),
+            right: scaleSize(20),
+          }
+        }
+      } else {
+        if(this.state.isFull) {
+          positionStyle = {
+            bottom: scaleSize(10),
+            right: scaleSize(110),
+          }
+        } else {
+          positionStyle = {
+            bottom: scaleSize(10),
+            right: scaleSize(20),
+          }
+        }
+      }
+
+      if(!isTianditu) {
+        return null
+      }
+
+      return (
+        <View
+          style={[
+            styles.bottomInfoTextContainer,
+            positionStyle,
+          ]}
+        >
+          <Text
+            style={[styles.bottomInfoText]}
+          >{"国家基础地理信息中心-Gs(2021)3715号"}</Text>
+        </View>
+      )
+    } catch (error) {
+      return null
+    }
+  }
+
   renderContainer = () => {
     const width = this.px(screen.getScreenWidth())
     return (
@@ -5285,6 +5353,8 @@ export default class MapView extends React.Component {
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
+        {this.getInfoText()}
+
         <Toolbar
           navigation={this.props.navigation}
           visibleChange={visible => {

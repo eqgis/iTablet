@@ -5103,6 +5103,7 @@ export default class MapView extends React.Component {
         bottomProps={{ type: 'fix' }}
         headStyle={this.isExample && { width: '100%' }}
       >
+        {this.state.showMap && (
           <View style={[
             StyleSheet.absoluteFill,
             Platform.OS === 'android' &&

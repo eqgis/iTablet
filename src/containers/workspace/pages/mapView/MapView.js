@@ -370,7 +370,7 @@ export default class MapView extends React.Component {
       samplescale: new Animated.Value(0.1),
       showPoiSearch: false,
       showNavigation: false,
-      isFull: false,
+      isFull: true,
     }
     // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
     this.props.setDatumPoint(false)

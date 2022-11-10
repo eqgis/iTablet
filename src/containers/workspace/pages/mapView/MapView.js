@@ -370,7 +370,7 @@ export default class MapView extends React.Component {
       samplescale: new Animated.Value(0.1),
       showPoiSearch: false,
       showNavigation: false,
-      isFull: false,
+      isFull: true,
     }
     // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
     this.props.setDatumPoint(false)
@@ -5107,7 +5107,7 @@ export default class MapView extends React.Component {
         >
           <Text
             style={[styles.bottomInfoText]}
-          >{"国家基础地理信息中心-Gs(2021)3715号"}</Text>
+          >{"国家基础地理信息中心-GS(2022)3124号"}</Text>
         </View>
       )
     } catch (error) {

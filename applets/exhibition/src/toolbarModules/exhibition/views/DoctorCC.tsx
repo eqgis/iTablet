@@ -17,6 +17,8 @@ import Sound from 'react-native-sound'
 import { getRoute } from "../data/route"
 import SideBar, { Item } from "../components/SideBar"
 import ARViewLoadHandler from "../components/ARViewLoadHandler"
+import SlideBar from 'imobile_for_reactnative/components/SlideBar'
+import { IARTransform } from "@/containers/workspace/components/ToolBar/modules/types"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -145,6 +147,7 @@ class DoctorCC extends Component<Props, State> {
   /** 当前是否有动作的声音在播放 */
   isActionSoundPlay: string | null = null
 
+  scaleValue = 100
   show = true
 
   constructor(props: Props) {
@@ -677,6 +680,7 @@ class DoctorCC extends Component<Props, State> {
               this.animationTimer = null
             }
 
+            this.scaleValue = 100
             this.setState({
               isShowFull: false,
               selectAnimationKey: -1,
@@ -712,6 +716,7 @@ class DoctorCC extends Component<Props, State> {
             this.animationTimer = null
           }
 
+          this.scaleValue = 100
           this.setState({
             isShowFull: false,
             selectAnimationKey: -1,
@@ -2467,6 +2472,46 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  /** 合影里编辑操作的页面 */
+  renderOperationSelected = () => {
+    let transformData: IARTransform = {
+      layerName: this.ARModel?.layerName || "",
+      id: this.ARModel?.id || -1,
+      type: 'position',
+      positionX: 0,
+      positionY: 0,
+      positionZ: 0,
+      rotationX: 0,
+      rotationY: 0,
+      rotationZ: 0,
+      scale: 100,
+    }
+    return (
+      <View style={[styles.toolView]}>
+        <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
+          <SlideBar
+            // ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[50, 200]}
+            defaultMaxValue={this.scaleValue}
+            barColor={'#FF6E51'}
+            onMove={loc => {
+              const scale = loc / 100 - 1
+              transformData = {
+                ...transformData,
+                scale: scale,
+                type: 'scale',
+              }
+              SARMap.setARElementTransform(transformData)
+              this.scaleValue = loc
+            }}
+          />
+        </View>
+      </View>
+    )
+  }
+
 
   /** 合影被选中时显示的拍照页面 */
   renderPhotoShot = () => {
@@ -2932,6 +2977,7 @@ class DoctorCC extends Component<Props, State> {
             {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
             {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
             {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
+            {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
 
           </Animated.View>
 
@@ -3101,6 +3147,28 @@ const styles = StyleSheet.create({
     marginTop: dp(5),
     fontSize:10,
     color: '#fff',
+  },
+
+  toolView: {
+    position: 'absolute',
+    left: dp(22),
+    bottom: dp(22),
+    width: dp(360),
+    backgroundColor: '#rgba(0,0,0,0.8)',
+    borderRadius: dp(10),
+    overflow: 'hidden',
+  },
+  toolRow: {
+    flexDirection: 'row',
+    width: dp(360),
+    minHeight: dp(40),
+    alignItems: 'center',
+    paddingHorizontal: dp(20),
+  },
+  slideBar: {
+    flex: 1,
+    height: dp(30),
+    marginLeft: dp(20),
   },
 
 })

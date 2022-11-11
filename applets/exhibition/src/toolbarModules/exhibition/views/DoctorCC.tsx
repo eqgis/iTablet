@@ -1482,10 +1482,7 @@ class DoctorCC extends Component<Props, State> {
       >
         <Image
           style={{ position: 'absolute', width: dp(30), height: dp(30) }}
-          source={this.state.isSecondaryShow && (
-            ((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'action')
-          )
-            ? getImage().icon_action_selected : getImage().icon_action}
+          source={getImage().icon_action}
         />
       </TouchableOpacity>
     )
@@ -1521,10 +1518,7 @@ class DoctorCC extends Component<Props, State> {
           style={[
             { position: 'absolute', width: dp(30), height: dp(30)},
           ]}
-          source={this.state.isSecondaryShow && (
-            ((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'position')
-          )
-            ? getImage().icon_route_selected : getImage().icon_route}
+          source={getImage().icon_route}
         />
       </TouchableOpacity>
     )
@@ -1560,10 +1554,7 @@ class DoctorCC extends Component<Props, State> {
           style={[
             { position: 'absolute', width: dp(30), height: dp(30) },
           ]}
-          source={this.state.isSecondaryShow && (
-            ((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'operation')
-          )
-            ? getImage().tool_location_selected : getImage().tool_location}
+          source={getImage().tool_location}
         />
       </TouchableOpacity>
     )

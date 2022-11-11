@@ -25,6 +25,10 @@ export interface Item {
   image: ImageSourcePropType
   image_selected?: ImageSourcePropType
   title?: string
+  /** 是否显示indicator,默认为true */
+  showIndicator?: boolean
+  /** 选中后再次点击,是否取消选中模式,默认为true */
+  autoCancelSelected?: boolean
   action: () => void
 }
 
@@ -38,6 +42,12 @@ class SideBar extends React.Component<Props, State> {
     }
   }
 
+  clear = () => {
+    this.setState({
+      currentIndex: '',
+    })
+  }
+
   renderItem = (item: Item, index: number, sectionIndex: number) => {
     const isSelected = sectionIndex + '_' + index === this.state.currentIndex
     return (
@@ -45,7 +55,17 @@ class SideBar extends React.Component<Props, State> {
         key={index + ''}
         onPress={() => {
           if(this.props.showIndicator) {
-            this.setState({currentIndex: sectionIndex + '_' + index})
+            if (item.showIndicator === undefined || item.showIndicator) {
+              // this.setState({currentIndex: sectionIndex + '_' + index})
+              if (
+                (item.autoCancelSelected === undefined || item.autoCancelSelected) &&
+                this.state.currentIndex === sectionIndex + '_' + index
+              ) {
+                this.setState({currentIndex: ''})
+              } else {
+                this.setState({currentIndex: sectionIndex + '_' + index})
+              }
+            }
           }
           item.action()
           this.setState({clickable: false})

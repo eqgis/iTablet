@@ -11,7 +11,7 @@ import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
-import { SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { positionInfoType, positionNodeInfo, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { shouldBuildingMapData, buildingImported } from '../Actions'
 import SideBar, { Item } from '../components/SideBar'
 import AnimationWrap from '../components/AnimationWrap'
@@ -199,6 +199,7 @@ let currentLayer: SARMap.ARLayer
 class SandBoxView extends React.Component<Props, State> {
 
   scanRef: Scan | null = null
+  sideBar: SideBar | null = null
   clickWait = false
   pose: SARMap.Pose | undefined
   relativePositin: Point3D = {
@@ -207,7 +208,7 @@ class SandBoxView extends React.Component<Props, State> {
     z: -1,
   }
   isOpen = false // 是否已经打开模型
-  oraginSandboxStatus: IARTransform | undefined // 图层原始大小比例
+  oraginSandboxStatus: positionNodeInfo | undefined // 图层原始大小比例
   lastLayerStatus: SceneLayerStatus | undefined // 图层上一次大小比例
   toolView: ToolView | undefined | null
   timeoutTrigger: TimeoutTrigger | null = null
@@ -326,16 +327,13 @@ class SandBoxView extends React.Component<Props, State> {
         image: getImage().icon_tool_reset,
         image_selected: getImage().icon_tool_reset_selected,
         title: '复位',
+        showIndicator: false,
         action: async () => {
           if (!this.checkSenceAndToolType()) return
           if (this.oraginSandboxStatus) {
-            this.timeoutTrigger?.onFirstMenuClick()
-            // const props = AppToolBar.getProps()
-            // const layerName = props.arMapInfo.currentLayer.name
-            // this.toolView?.reset()
-            // layerName && await SARMap.setSceneLayerStatus(layerName, this.oraginSandboxStatus)
-
-            // SARMap.setARElementTransform(this.oraginSandboxStatus)
+            this.state.toolType === '' && this.timeoutTrigger?.onFirstMenuClick()
+            this.toolView?.reset()
+            await SARMap.setSandBoxPosition(currentLayer.name, 1, this.oraginSandboxStatus)
           }
         }
       }
@@ -424,6 +422,7 @@ class SandBoxView extends React.Component<Props, State> {
         position: {
           // y: -100,
           // z: -320,
+          x: 0,
           y: -1,
           z: -1.5,
         },
@@ -457,6 +456,12 @@ class SandBoxView extends React.Component<Props, State> {
       })
       const layers = await props.getARLayers()
       currentLayer = layers[0]
+
+      if(currentLayer) {
+        SARMap.getElementPositionInfo(currentLayer?.name, 1).then(result => {
+          this.oraginSandboxStatus = result?.renderNode
+        })
+      }
       this.isOpen = true
       this.arrowTricker(true)
     } catch(e) {
@@ -532,6 +537,9 @@ class SandBoxView extends React.Component<Props, State> {
       }, () => {
         this.clickWait = false
       })
+    }
+    if (toolType === '') {
+      this.sideBar?.clear()
     }
   }
 
@@ -763,6 +771,7 @@ class SandBoxView extends React.Component<Props, State> {
         }}
       >
         <SideBar
+          ref={ref => this.sideBar = ref}
           sections={[
             this.getSideBarReset(),
             this.getSideBarItems(),
@@ -855,6 +864,7 @@ interface ToolViewProps {
 
 class ToolView extends React.Component<ToolViewProps, unknown> {
   scaleBar: SlideBar | undefined | null
+  rotationBar: SlideBar | undefined | null
   rotationX: CircleBar | undefined | null
   rotationY: CircleBar | undefined | null
   rotationZ: CircleBar | undefined | null
@@ -865,6 +875,11 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
 
   close = () => {
     this.props.close?.()
+  }
+
+  reset = () => {
+    this.scaleBar?.onClear()
+    this.rotationBar?.onClear()
   }
 
   renderPosition = () => {
@@ -922,7 +937,7 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
         <View style={styles.toolRow}>
           <Text style={{textAlign: 'center', fontSize: dp(12)}}>旋转</Text>
           <SlideBar
-            ref={ref => this.scaleBar = ref}
+            ref={ref => this.rotationBar = ref}
             style={styles.slideBar}
             range={[-180, 180]}
             defaultMaxValue={0}

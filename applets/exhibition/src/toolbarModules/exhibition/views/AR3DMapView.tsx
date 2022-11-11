@@ -14,6 +14,7 @@ import ARGuide from '../components/ARGuide'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import SideBar, { Item } from '../components/SideBar'
 import FillAnimationWrap from '../components/FillAnimationWrap'
+import TimeoutTrigger from '../components/TimeoutTrigger'
 
 
 interface Props {
@@ -72,6 +73,7 @@ class AR3DMapView extends React.Component<Props, State> {
             this.isCarAnimationPlay = false
           }
           SExhibition.map3Dreset()
+          this.timeoutTrigger?.onFirstMenuClick()
         },
       },
       {
@@ -84,6 +86,7 @@ class AR3DMapView extends React.Component<Props, State> {
           }
           if (this.open) {
             this.setState({ showShape: true })
+            this.timeoutTrigger?.onShowSecondMenu()
           }
         },
       },
@@ -105,6 +108,7 @@ class AR3DMapView extends React.Component<Props, State> {
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
       }
+      this.timeoutTrigger?.onFirstMenuClick()
     } catch (error) {
       return
     }
@@ -121,6 +125,7 @@ class AR3DMapView extends React.Component<Props, State> {
         }}
         range={[-dp(100), dp(20)]}
         onHide={() => {
+          this.timeoutTrigger?.onBackFromSecondMenu()
           this.setState({showShape: false})
         }}
       >
@@ -156,6 +161,7 @@ class AR3DMapView extends React.Component<Props, State> {
               await _time()
               await SExhibition.getMapviewLocation()
               this.setState({showShape: false})
+              this.timeoutTrigger?.onBackFromSecondMenu()
             }
           })}
           {this.renderRollingBtn({
@@ -185,6 +191,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
               await SExhibition.getMapviewLocation()
               this.setState({ showShape: false })
+              this.timeoutTrigger?.onBackFromSecondMenu()
             }
           })}
         </View>
@@ -252,6 +259,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
+        this.timeoutTrigger?.onBackFromScan()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
 
@@ -335,6 +343,36 @@ class AR3DMapView extends React.Component<Props, State> {
     })
   }
 
+  showSideBar = () => {
+    let right
+    let left
+    if (this.show) {
+      right = -200
+      left = -200
+    }else {
+      right = dp(20)
+      left = dp(20)
+    }
+    this.show = !this.show
+    if(this.show) {
+      this.timeoutTrigger?.onBarShow()
+    } else {
+      this.timeoutTrigger?.onBarHide()
+    }
+    Animated.parallel([
+      Animated.timing(this.state.btRight, {
+        toValue: right,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.state.btLeft, {
+        toValue: left,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start()
+  }
+
   importData = async () => {
     const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
     const hasFlatMap = data.find(item => {
@@ -371,6 +409,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
   back = () => {
     if(this.state.showScan) {
+      this.timeoutTrigger?.onBackFromScan()
       SARMap.stopAREnhancePosition()
       this.setState({showScan: false})
       return
@@ -384,6 +423,7 @@ class AR3DMapView extends React.Component<Props, State> {
   }
 
   startScan = () => {
+    this.timeoutTrigger?.onShowScan()
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
     SMap.exitMap()
@@ -571,10 +611,17 @@ class AR3DMapView extends React.Component<Props, State> {
     )
   }
 
+  timeoutTrigger: TimeoutTrigger | null = null
+
   render() {
     return(
       <>
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
+        <TimeoutTrigger
+          ref={ref => this.timeoutTrigger = ref}
+          timeout={5000}
+          trigger={this.showSideBar}
+        />
         <View
           style={{
             position: 'absolute',

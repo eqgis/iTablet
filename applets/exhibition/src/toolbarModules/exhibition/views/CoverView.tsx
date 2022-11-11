@@ -707,7 +707,7 @@ class CoverView extends React.Component<Props, State> {
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         <TimeoutTrigger
           ref={ref => this.timeoutTrigger = ref}
-          timeout={5000}
+          timeout={15000}
           trigger={this.showSideBar}
         />
         <View

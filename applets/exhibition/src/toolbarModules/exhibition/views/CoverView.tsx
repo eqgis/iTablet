@@ -12,6 +12,7 @@ import SideBar, { Item } from '../components/SideBar'
 import FillAnimationWrap from '../components/FillAnimationWrap'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import TimeoutTrigger from '../components/TimeoutTrigger'
+import ScanWrap from '../components/ScanWrap'
 
 interface Props {
   windowSize: ScaledSize
@@ -415,109 +416,7 @@ class CoverView extends React.Component<Props, State> {
   }
 
   renderScan = () => {
-    const isPortrait = this.props.windowSize.width < this.props.windowSize.height
-    const width = Math.min(this.props.windowSize.width, this.props.windowSize.height)
-    const height = Math.max(this.props.windowSize.width, this.props.windowSize.height)
-    const isLargeScreen = width > 400 //平板
-
-    const scanSize = dp(300)
-
-    let space: number
-    let position: number
-    let maxWidth: number
-
-    const positionLargeLand = width / 2 + scanSize / 2 + dp(40)
-    const positionLargePortrait = height / 2 + scanSize / 2 + dp(40)
-    const postionSmallLand = width * 0.7 / 2 + width / 2 + dp(40)
-    const postionSmallPortrait = width * 0.7 / 2 + height / 2 + dp(40)
-
-    const spaceLarge = width - scanSize / 2
-    const spaceSmall = width * 0.3 / 2
-
-    const maxWidthLarge = (height / 2- scanSize / 2 ) * 0.9
-    const maxWidthSmall = (height / 2- width * 0.7 / 2 )
-
-    if(isLargeScreen) {
-      space = spaceLarge
-      position = isPortrait ? positionLargePortrait : positionLargeLand
-      maxWidth = maxWidthLarge
-    } else {
-      space = spaceSmall
-      position = isPortrait ? postionSmallPortrait : postionSmallLand
-      maxWidth = maxWidthSmall
-    }
-
-    let style : ViewStyle = {
-      position: 'absolute',
-      flex: 1,
-      width: '100%',
-      height: dp(70),
-      alignItems: 'center',
-      top: position,
-      overflow: 'hidden',
-    }
-    if(!isPortrait && space < dp(70)) {
-      style = {
-        position: 'absolute',
-        flex: 1,
-        maxWidth: maxWidth,
-        alignItems: 'center',
-        // top: width / 2,
-        bottom: dp(10),
-      }
-    }
-
-    return (
-      <>
-        <Scan
-          ref={ref => this.scanRef = ref}
-          windowSize={this.props.windowSize}
-          scanSize={scanSize}
-          color='red'
-        />
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bottom: dp(10),
-          }}
-        >
-          <View
-            style={style}
-          >
-            {/* <TouchableOpacity
-            style={{
-              width: dp(100),
-              height: dp(40),
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            // onPress={this.startScan}
-          >
-            <Image
-              style={{ position: 'absolute', width: '100%', height: '100%' }}
-              source={getImage().background_red}
-              resizeMode="stretch" />
-            <Text style={[AppStyle.h3, { color: 'white' }]}>
-              {'扫一扫'}
-            </Text>
-          </TouchableOpacity> */}
-            <Text
-              style={{
-                color: 'white',
-                marginTop: dp(10),
-                textAlign: 'center',
-              }}
-            >
-              {'请对准地面上的二维码进行扫描'}
-            </Text>
-          </View>
-        </View>
-      </>
-    )
+    return <ScanWrap windowSize={this.props.windowSize} hint={'请对准地面上的二维码进行扫描'}/>
   }
 
   slider = () => {

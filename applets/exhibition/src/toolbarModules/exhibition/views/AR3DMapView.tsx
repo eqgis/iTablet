@@ -41,6 +41,8 @@ class AR3DMapView extends React.Component<Props, State> {
     qw: 0
   }
   show = true
+  /** 当前车流是否在播放 */
+  isCarAnimationPlay = false
 
   constructor(props: Props) {
     super(props)
@@ -64,18 +66,48 @@ class AR3DMapView extends React.Component<Props, State> {
       {
         image: getImage().icon_tool_reset,
         title: '复位',
-        action: ()=>{SExhibition.map3Dreset()},
+        action: async ()=>{
+          if(this.isCarAnimationPlay) {
+            await SARMap.pauseCarAnimation()
+            this.isCarAnimationPlay = false
+          }
+          SExhibition.map3Dreset()
+        },
       },
       {
         image: getImage().icon_tool_shape,
         title: '地图形状',
-        action: () => {
+        action: async () => {
+          if(this.isCarAnimationPlay) {
+            await SARMap.pauseCarAnimation()
+            this.isCarAnimationPlay = false
+          }
           if (this.open) {
             this.setState({ showShape: true })
           }
         },
       },
+      {
+        image: getImage().icon_tool_car,
+        title: '车流模拟',
+        action: this.ChangeCarAnimation,
+      },
     ]
+  }
+
+  /** 点击了车流模拟按钮的响应方法 */
+  ChangeCarAnimation = async () => {
+    try {
+      if(this.isCarAnimationPlay) {
+        await SARMap.pauseCarAnimation()
+        this.isCarAnimationPlay = false
+      } else {
+        await SARMap.openCarAnimation()
+        this.isCarAnimationPlay = true
+      }
+    } catch (error) {
+      return
+    }
   }
 
   renderRollingMode = () => {
@@ -389,6 +421,7 @@ class AR3DMapView extends React.Component<Props, State> {
     )
   }
 
+  /** 返回按钮 */
   renderBack = () => {
     return (
       <TouchableOpacity
@@ -412,6 +445,7 @@ class AR3DMapView extends React.Component<Props, State> {
     )
   }
 
+  /** 扫描界面 */
   renderScan = () => {
     const isPortrait = this.props.windowSize.width < this.props.windowSize.height
     const width = Math.min(this.props.windowSize.width, this.props.windowSize.height)
@@ -554,7 +588,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
           <Animated.View
             style={{
-              top: dp(50),
+              top: dp(10),
               height: '100%',
               right: this.state.btRight,
               flexDirection: 'row',

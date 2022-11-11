@@ -4,6 +4,7 @@ import { Animated, FlatList, Image, ImageSourcePropType, ListRenderItemInfo, Sty
 
 interface Props {
   data: ImageItem[]
+  onHide?: () => void
 }
 
 interface State {
@@ -60,7 +61,7 @@ class ImageList extends React.Component<Props, State> {
       useNativeDriver: false
     }).start()
     this.setState({ vislble: false })
-
+    this.props.onHide?.()
   }
 
 

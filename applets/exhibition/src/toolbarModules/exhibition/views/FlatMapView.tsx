@@ -15,6 +15,7 @@ import { ILocalData } from '@/utils/DataHandler/DataLocal'
 import SideBar, { Item } from '../components/SideBar'
 import ImageList, { ImageItem } from '../components/ImageList'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
+import TimeoutTrigger from '../components/TimeoutTrigger'
 
 interface Props {
   windowSize: ScaledSize
@@ -72,6 +73,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().icon_tool_reset_selected,
         title: '复位',
         action: () => {
+          this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
           SExhibition.onFlatFunctionPress('reset')
@@ -82,6 +84,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_ai_pic_selected,
         title: '配图',
         action: () => {
+          this.timeoutTrigger?.onShowSecondMenu()
           this.setState({
             imageList: this.getAiList()
           })
@@ -92,6 +95,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_search_selected,
         title: '查询',
         action: () => {
+          this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
           SExhibition.onFlatFunctionPress('search')
@@ -103,6 +107,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_buffer_selected,
         title: '分析',
         action: () => {
+          this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
           SExhibition.onFlatFunctionPress('buffer')
@@ -113,6 +118,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_plot_selected,
         title: '标绘',
         action: () => {
+          this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
           SExhibition.onFlatFunctionPress('plot')
@@ -128,6 +134,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_change_map_selected,
         title: '地图',
         action: () => {
+          this.timeoutTrigger?.onShowSecondMenu()
           this.setState({
             imageList: this.getMapList()
           })
@@ -214,6 +221,7 @@ class FlatMapVIew extends React.Component<Props, State> {
     })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
+        this.timeoutTrigger?.onBackFromScan()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
 
@@ -240,6 +248,11 @@ class FlatMapVIew extends React.Component<Props, State> {
   }
 
   onSingleClick = () => {
+    if(this.state.showSide) {
+      this.timeoutTrigger?.onBarHide()
+    } else {
+      this.timeoutTrigger?.onBarShow()
+    }
     this.setState({showSide: !this.state.showSide})
   }
 
@@ -325,6 +338,7 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   back = () => {
     if(this.state.showScan) {
+      this.timeoutTrigger?.onBackFromScan()
       SARMap.stopAREnhancePosition()
       SExhibition.resumeTrackingTarget()
       this.setState({showScan: false})
@@ -339,6 +353,7 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   startScan = () => {
     if(this.state.showScan) return
+    this.timeoutTrigger?.onShowScan()
     SExhibition.pauseTrackingTarget()
     this.setState({showScan: true})
     SARMap.setAREnhancePosition()
@@ -538,6 +553,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         <ImageList
           ref={ref => this.imageList = ref}
           data={this.state.imageList}
+          onHide={this.timeoutTrigger?.onBackFromSecondMenu}
         />
         <AnimationWrap
           range={[-dp(100), dp(20)]}
@@ -562,10 +578,21 @@ class FlatMapVIew extends React.Component<Props, State> {
     )
   }
 
+  timeoutTrigger: TimeoutTrigger | null = null
+
   render() {
     return(
       <>
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
+        <TimeoutTrigger
+          ref={ref => this.timeoutTrigger = ref}
+          timeout={5000}
+          trigger={() => {
+            this.setState({
+              showSide: false
+            })
+          }}
+        />
         {this.state.showScan && this.renderScan()}
         {!this.state.showGuide && this.renderBack()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}

@@ -11,6 +11,7 @@ import ARGuide from '../components/ARGuide'
 import SideBar, { Item } from '../components/SideBar'
 import FillAnimationWrap from '../components/FillAnimationWrap'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
+import TimeoutTrigger from '../components/TimeoutTrigger'
 
 interface Props {
   windowSize: ScaledSize
@@ -114,33 +115,11 @@ class CoverView extends React.Component<Props, State> {
       SARMap.setAREnhancePosition()
     }
 
-    AppEvent.addListener('ar_single_click', () =>{
-      let right
-      let left
-      if (this.show) {
-        right = -200
-        left = -200
-      }else {
-        right = dp(20)
-        left = dp(20)
-      }
-      this.show = !this.show
-      Animated.parallel([
-        Animated.timing(this.state.btRight, {
-          toValue: right,
-          duration: 300,
-          useNativeDriver: false,
-        }),
-        Animated.timing(this.state.btLeft, {
-          toValue: left,
-          duration: 300,
-          useNativeDriver: false,
-        }),
-      ]).start()
-    })
+    AppEvent.addListener('ar_single_click', this.showSideBar)
 
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
+        this.timeoutTrigger?.onBackFromScan()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false ,backClick:false})
 
@@ -153,6 +132,36 @@ class CoverView extends React.Component<Props, State> {
         Toast.show('定位成功')
       }
     })
+  }
+
+  showSideBar = () => {
+    let right
+    let left
+    if (this.show) {
+      right = -200
+      left = -200
+    }else {
+      right = dp(20)
+      left = dp(20)
+    }
+    this.show = !this.show
+    if(this.show) {
+      this.timeoutTrigger?.onBarShow()
+    } else {
+      this.timeoutTrigger?.onBarHide()
+    }
+    Animated.parallel([
+      Animated.timing(this.state.btRight, {
+        toValue: right,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.state.btLeft, {
+        toValue: left,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start()
   }
 
   showGuide = (show: boolean) => {
@@ -266,12 +275,14 @@ class CoverView extends React.Component<Props, State> {
   }
 
   fullScape = () => {
+    this.timeoutTrigger?.onFirstMenuClick()
     this._exitCutMode()
     this.stopCover()
     this.stopRolling()
   }
 
   cover = () => {
+    this.timeoutTrigger?.onFirstMenuClick()
     this._enterCutMode()
     this.stopRolling()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
@@ -289,13 +300,16 @@ class CoverView extends React.Component<Props, State> {
 
   adjustCoverBounds = () => {
     if(this.state.showSlider){
+      this.timeoutTrigger?.onBackFromSecondMenu()
       this.setState({ showSlider: false })
     }else{
+      this.timeoutTrigger?.onShowSecondMenu()
       this.setState({ showSlider: true })
     }
   }
 
   fix = () => {
+    this.timeoutTrigger?.onFirstMenuClick()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
       SARMap.startARFix(layer.name)
@@ -303,6 +317,7 @@ class CoverView extends React.Component<Props, State> {
   }
 
   rollingMenu = () => {
+    this.timeoutTrigger?.onShowSecondMenu()
     this._exitCutMode()
     this.setState({
       showRollingMode: true
@@ -351,6 +366,7 @@ class CoverView extends React.Component<Props, State> {
   back = async () => {
     if (this.state.backClick) {
       if (this.state.showScan) {
+        this.timeoutTrigger?.onBackFromScan()
         this.setState({ showScan: false })
         return
       }
@@ -692,8 +708,10 @@ class CoverView extends React.Component<Props, State> {
         }}
         onPress={async () => {
           if (this.state.showScan) {
+            this.timeoutTrigger?.onBackFromScan()
             this.setState({ showScan: false })
           } else {
+            this.timeoutTrigger?.onShowScan()
             this.startScan()
             this.stopCover()
             this.stopRolling()
@@ -763,6 +781,7 @@ class CoverView extends React.Component<Props, State> {
             image: getImage().icon_tool_horizontal,
             title: '横向',
             action: () => {
+              this.timeoutTrigger?.onBackFromSecondMenu()
               this.rolling(0)
               this.setState({showRollingMode: false})
             }
@@ -771,6 +790,7 @@ class CoverView extends React.Component<Props, State> {
             image: getImage().icon_tool_vertical,
             title: '纵向',
             action: () => {
+              this.timeoutTrigger?.onBackFromSecondMenu()
               this.rolling(1)
               this.setState({showRollingMode: false})
             }
@@ -780,10 +800,17 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 
+  timeoutTrigger: TimeoutTrigger | null = null
+
   render() {
     return(
       <>
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
+        <TimeoutTrigger
+          ref={ref => this.timeoutTrigger = ref}
+          timeout={5000}
+          trigger={this.showSideBar}
+        />
         <View
           style={{
             position: 'absolute',

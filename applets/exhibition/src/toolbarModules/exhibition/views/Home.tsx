@@ -492,10 +492,18 @@ class Home extends React.Component<Props, State> {
             Toast.show('请选择模块')
             return
           }
-          this._clickAction(e, () => {
-            const item = this.getItems()[this.state.currentIndex]
-            item?.action()
-          }, 1000)
+          SoundUtil.play('homeclick', false, {
+            preAction: () => {
+              setTimeout(() => {
+                const item = this.getItems()[this.state.currentIndex]
+                item?.action()
+              }, 1000)
+            }
+          })
+          // this._clickAction(e, () => {
+          //   const item = this.getItems()[this.state.currentIndex]
+          //   item?.action()
+          // }, 1000)
         }}
       >
         <Image

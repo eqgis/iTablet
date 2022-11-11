@@ -95,6 +95,14 @@ class Scan extends React.Component<Props & DefaultProps> {
             }}
             source={this.props.color === 'blue' ? getImage().scan_net : getImage().scan_net_red}
           />
+          {this.props.color === 'red' && <Image
+            style={{
+              position: 'absolute',
+              width: width,
+              height: width,
+            }}
+            source={getImage().scan_inner_red}
+          />}
           <Animated.Image
             style={{
               width: width,
@@ -106,8 +114,9 @@ class Scan extends React.Component<Props & DefaultProps> {
           <Animated.Image
             style={{
               position: 'absolute',
-              width: width,
+              width: width * 0.8,
               opacity,
+              alignSelf: 'center',
               transform: [{translateY: transY}]
             }}
             source={this.props.color === 'blue' ? getImage().scan_line : getImage().scan_line_red}

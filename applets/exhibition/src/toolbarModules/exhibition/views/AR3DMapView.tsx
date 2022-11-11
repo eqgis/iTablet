@@ -14,6 +14,8 @@ import ARGuide from '../components/ARGuide'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import SideBar, { Item } from '../components/SideBar'
 import FillAnimationWrap from '../components/FillAnimationWrap'
+import TimeoutTrigger from '../components/TimeoutTrigger'
+import ScanWrap from '../components/ScanWrap'
 
 
 interface Props {
@@ -72,6 +74,7 @@ class AR3DMapView extends React.Component<Props, State> {
             this.isCarAnimationPlay = false
           }
           SExhibition.map3Dreset()
+          this.timeoutTrigger?.onFirstMenuClick()
         },
       },
       {
@@ -84,6 +87,7 @@ class AR3DMapView extends React.Component<Props, State> {
           }
           if (this.open) {
             this.setState({ showShape: true })
+            this.timeoutTrigger?.onShowSecondMenu()
           }
         },
       },
@@ -105,6 +109,7 @@ class AR3DMapView extends React.Component<Props, State> {
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
       }
+      this.timeoutTrigger?.onFirstMenuClick()
     } catch (error) {
       return
     }
@@ -121,6 +126,7 @@ class AR3DMapView extends React.Component<Props, State> {
         }}
         range={[-dp(100), dp(20)]}
         onHide={() => {
+          this.timeoutTrigger?.onBackFromSecondMenu()
           this.setState({showShape: false})
         }}
       >
@@ -156,6 +162,7 @@ class AR3DMapView extends React.Component<Props, State> {
               await _time()
               await SExhibition.getMapviewLocation()
               this.setState({showShape: false})
+              this.timeoutTrigger?.onBackFromSecondMenu()
             }
           })}
           {this.renderRollingBtn({
@@ -185,6 +192,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
               await SExhibition.getMapviewLocation()
               this.setState({ showShape: false })
+              this.timeoutTrigger?.onBackFromSecondMenu()
             }
           })}
         </View>
@@ -252,6 +260,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
+        this.timeoutTrigger?.onBackFromScan()
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
 
@@ -335,6 +344,36 @@ class AR3DMapView extends React.Component<Props, State> {
     })
   }
 
+  showSideBar = () => {
+    let right
+    let left
+    if (this.show) {
+      right = -200
+      left = -200
+    }else {
+      right = dp(20)
+      left = dp(20)
+    }
+    this.show = !this.show
+    if(this.show) {
+      this.timeoutTrigger?.onBarShow()
+    } else {
+      this.timeoutTrigger?.onBarHide()
+    }
+    Animated.parallel([
+      Animated.timing(this.state.btRight, {
+        toValue: right,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.state.btLeft, {
+        toValue: left,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start()
+  }
+
   importData = async () => {
     const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
     const hasFlatMap = data.find(item => {
@@ -371,6 +410,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
   back = () => {
     if(this.state.showScan) {
+      this.timeoutTrigger?.onBackFromScan()
       SARMap.stopAREnhancePosition()
       this.setState({showScan: false})
       return
@@ -384,6 +424,7 @@ class AR3DMapView extends React.Component<Props, State> {
   }
 
   startScan = () => {
+    this.timeoutTrigger?.onShowScan()
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
     SMap.exitMap()
@@ -447,134 +488,20 @@ class AR3DMapView extends React.Component<Props, State> {
 
   /** 扫描界面 */
   renderScan = () => {
-    const isPortrait = this.props.windowSize.width < this.props.windowSize.height
-    const width = Math.min(this.props.windowSize.width, this.props.windowSize.height)
-    const height = Math.max(this.props.windowSize.width, this.props.windowSize.height)
-    const isLargeScreen = width > 400 //平板
-
-    const scanSize = dp(300)
-
-    let space: number
-    let position: number
-    let maxWidth: number
-
-    const positionLargeLand = width / 2 + scanSize / 2 + dp(40)
-    const positionLargePortrait = height / 2 + scanSize / 2 + dp(40)
-    const postionSmallLand = width * 0.7 / 2 + width / 2 + dp(40)
-    const postionSmallPortrait = width * 0.7 / 2 + height / 2 + dp(40)
-
-    const spaceLarge = width - scanSize / 2
-    const spaceSmall = width * 0.3 / 2
-
-    const maxWidthLarge = (height / 2- scanSize / 2 ) * 0.9
-    const maxWidthSmall = (height / 2- width * 0.7 / 2 )
-
-    if(isLargeScreen) {
-      space = spaceLarge
-      position = isPortrait ? positionLargePortrait : positionLargeLand
-      maxWidth = maxWidthLarge
-    } else {
-      space = spaceSmall
-      position = isPortrait ? postionSmallPortrait : postionSmallLand
-      maxWidth = maxWidthSmall
-    }
-
-    let style : ViewStyle = {
-      position: 'absolute',
-      flex: 1,
-      width: '100%',
-      height: dp(70),
-      alignItems: 'center',
-      top: position,
-      overflow: 'hidden',
-    }
-    if(!isPortrait && space < dp(70)) {
-      style = {
-        position: 'absolute',
-        flex: 1,
-        maxWidth: maxWidth,
-        alignItems: 'center',
-        // top: width / 2,
-        bottom: dp(10),
-      }
-    }
-
-    return (
-      <>
-        <Scan
-          ref={ref => this.scanRef = ref}
-          windowSize={this.props.windowSize}
-          scanSize={scanSize}
-          color='red'
-        />
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            alignItems: 'center',
-          }}
-        >
-          <Text
-            style={{
-              color: 'white',
-              marginTop: dp(10),
-              textAlign: 'center',
-            }}
-          >
-            {'扫码定位'}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bottom: dp(10),
-          }}
-        >
-          <View
-            style={style}
-          >
-            {/* <TouchableOpacity
-            style={{
-              width: dp(100),
-              height: dp(40),
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            // onPress={this.startScan}
-          >
-            <Image
-              style={{ position: 'absolute', width: '100%', height: '100%' }}
-              source={getImage().background_red}
-              resizeMode="stretch" />
-            <Text style={[AppStyle.h3, { color: 'white' }]}>
-              {'扫一扫'}
-            </Text>
-          </TouchableOpacity> */}
-            <Text
-              style={{
-                color: 'white',
-                marginTop: dp(10),
-                textAlign: 'center',
-              }}
-            >
-              {'请对准演示台上二维码进行扫描'}
-            </Text>
-          </View>
-        </View>
-      </>
-    )
+    return <ScanWrap windowSize={this.props.windowSize} hint={'请对准演示台上二维码进行扫描'}/>
   }
+
+  timeoutTrigger: TimeoutTrigger | null = null
 
   render() {
     return(
       <>
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
+        <TimeoutTrigger
+          ref={ref => this.timeoutTrigger = ref}
+          timeout={15000}
+          trigger={this.showSideBar}
+        />
         <View
           style={{
             position: 'absolute',

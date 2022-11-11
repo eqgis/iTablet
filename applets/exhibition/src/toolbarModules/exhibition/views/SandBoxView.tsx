@@ -16,6 +16,7 @@ import { shouldBuildingMapData, buildingImported } from '../Actions'
 import SideBar, { Item } from '../components/SideBar'
 import AnimationWrap from '../components/AnimationWrap'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
+import TimeoutTrigger from '../components/TimeoutTrigger'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -174,7 +175,7 @@ interface Props {
   windowSize: ScaledSize
 }
 
-type ToolType = 'guide' | 'lighting' | 'spot' | 'reset' | 'edit'
+type ToolType = 'mountain_guide' | 'effects' | 'spot' | 'reset' | 'edit' | 'boat_guide'
 
 interface State {
   showScan: boolean
@@ -206,9 +207,10 @@ class SandBoxView extends React.Component<Props, State> {
     z: -1,
   }
   isOpen = false // 是否已经打开模型
-  oraginLayerStatus: SceneLayerStatus | undefined // 图层原始大小比例
+  oraginSandboxStatus: IARTransform | undefined // 图层原始大小比例
   lastLayerStatus: SceneLayerStatus | undefined // 图层上一次大小比例
   toolView: ToolView | undefined | null
+  timeoutTrigger: TimeoutTrigger | null = null
 
   constructor(props: Props) {
     super(props)
@@ -232,6 +234,7 @@ class SandBoxView extends React.Component<Props, State> {
     AppEvent.addListener('ar_image_tracking_result', async result => {
       this.pose = result
       if (result) {
+        this.timeoutTrigger?.onBackFromScan()
         SARMap.stopAREnhancePosition()
         this.setState({ showScan: false })
         this.relativePositin = {
@@ -248,22 +251,30 @@ class SandBoxView extends React.Component<Props, State> {
         }
       }
     })
-    // AppEvent.addListener('ar_single_click', this.onSingleClick)
+    AppEvent.addListener('ar_single_click', this.onSingleClick)
   }
 
   onSingleClick = () => {
+    if(this.state.showSide) {
+      this.timeoutTrigger?.onBarHide()
+    } else {
+      this.timeoutTrigger?.onBarShow()
+    }
     this.setState({showSide: !this.state.showSide})
   }
 
   getSideBarItems = (): Item[] => {
     return [
       {
-        image: getImage().tool_lighting,
-        image_selected: getImage().tool_lighting_selected,
-        title: '光照',
+        image: getImage().tool_guide,
+        image_selected: getImage().tool_guide_selected,
+        title: '位置调整',
         action: () => {
           if (!this.checkSenceAndToolType()) return
-          this.switchTool('lighting')
+          this.timeoutTrigger?.onShowSecondMenu()
+          SARMap.appointEditElement(1, currentLayer?.name)
+          SARMap.setAction(ARAction.SCALE)
+          this.switchTool('edit')
         }
       },
       {
@@ -272,27 +283,38 @@ class SandBoxView extends React.Component<Props, State> {
         title: '景点',
         action: () => {
           if (!this.checkSenceAndToolType()) return
+          this.timeoutTrigger?.onShowSecondMenu()
           this.switchTool('spot')
         }
       },
       {
-        image: getImage().tool_guide,
-        image_selected: getImage().tool_guide_selected,
-        title: '游园路线',
+        image: getImage().tool_lighting,
+        image_selected: getImage().tool_lighting_selected,
+        title: '游船路线',
         action: () => {
           if (!this.checkSenceAndToolType()) return
-          this.switchTool('guide')
+          this.timeoutTrigger?.onShowSecondMenu()
+          this.switchTool('boat_guide')
         }
       },
       {
         image: getImage().tool_guide,
         image_selected: getImage().tool_guide_selected,
-        title: '编辑',
+        title: '登山路线',
         action: () => {
           if (!this.checkSenceAndToolType()) return
-          SARMap.appointEditElement(1, currentLayer?.name)
-          SARMap.setAction(ARAction.SCALE)
-          this.switchTool('edit')
+          this.timeoutTrigger?.onShowSecondMenu()
+          this.switchTool('mountain_guide')
+        }
+      },
+      {
+        image: getImage().tool_guide,
+        image_selected: getImage().tool_guide_selected,
+        title: '特效',
+        action: () => {
+          if (!this.checkSenceAndToolType()) return
+          this.timeoutTrigger?.onShowSecondMenu()
+          this.switchTool('effects')
         }
       },
     ]
@@ -306,11 +328,14 @@ class SandBoxView extends React.Component<Props, State> {
         title: '复位',
         action: async () => {
           if (!this.checkSenceAndToolType()) return
-          if (this.oraginLayerStatus) {
-            const props = AppToolBar.getProps()
-            const layerName = props.arMapInfo.currentLayer.name
+          if (this.oraginSandboxStatus) {
+            this.timeoutTrigger?.onFirstMenuClick()
+            // const props = AppToolBar.getProps()
+            // const layerName = props.arMapInfo.currentLayer.name
             // this.toolView?.reset()
-            layerName && await SARMap.setSceneLayerStatus(layerName, this.oraginLayerStatus)
+            // layerName && await SARMap.setSceneLayerStatus(layerName, this.oraginSandboxStatus)
+
+            // SARMap.setARElementTransform(this.oraginSandboxStatus)
           }
         }
       }
@@ -481,6 +506,7 @@ class SandBoxView extends React.Component<Props, State> {
     })
     await this.arrowTricker(false)
     AppEvent.removeListener('ar_image_tracking_result')
+    AppEvent.removeListener('ar_single_click', this.onSingleClick)
     if (this.state.showScan) {
       await SARMap.stopAREnhancePosition()
     }
@@ -716,6 +742,7 @@ class SandBoxView extends React.Component<Props, State> {
         }}
         close={async () => {
           if (this.state.toolType) {
+            this.timeoutTrigger?.onBackFromSecondMenu()
             this.switchTool('')
             return
           }
@@ -782,6 +809,15 @@ class SandBoxView extends React.Component<Props, State> {
     return (
       <>
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
+        <TimeoutTrigger
+          ref={ref => this.timeoutTrigger = ref}
+          timeout={5000}
+          trigger={() => {
+            this.setState({
+              showSide: false
+            })
+          }}
+        />
         {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
         {this.state.showCover && this.renderCover()}
         <ARArrow />

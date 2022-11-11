@@ -13,7 +13,9 @@ const background_red = require('./background_red.png')
 const background_transparent = require('./background_transparent.png')
 const scan_circle_red = require('./scan_circle_red.png')
 const scan_line_red = require('./scan_line_red.png')
-const scan_net_red = require('./scan_inner_red.png')
+const scan_inner_red = require('./scan_inner_red.png')
+const scan_net_red = require('./scan_net_red.png')
+const scan_title = require('./scan_title_img.png')
 const icon_return = require('./icon_other_return.png')
 const guide_arrow = require('./icon_exhibition_guide.png')
 const icon_cover = require('./location_on.png')
@@ -128,7 +130,9 @@ const image = {
   background_transparent,
   scan_circle_red,
   scan_line_red,
+  scan_inner_red,
   scan_net_red,
+  scan_title,
   icon_return,
   guide_arrow,
   icon_cover,

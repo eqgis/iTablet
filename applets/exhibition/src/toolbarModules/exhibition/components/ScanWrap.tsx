@@ -4,9 +4,11 @@ import {
   View,
   ViewStyle,
   Text,
+  Image,
 } from 'react-native'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import Scan from './Scan'
+import { getImage } from '../../../assets'
 
 interface Props {
   windowSize: ScaledSize
@@ -29,7 +31,7 @@ class ScanWrap extends React.Component<Props> {
     const height = Math.max(this.props.windowSize.width, this.props.windowSize.height)
     const isLargeScreen = width > 400 //平板
 
-    const scanSize = dp(300)
+    const scanSize = dp(isLargeScreen ? 300 : 200)
 
     let space: number
     let position: number
@@ -92,15 +94,14 @@ class ScanWrap extends React.Component<Props> {
             alignItems: 'center',
           }}
         >
-          <Text
+          <Image
             style={{
-              color: 'white',
-              marginTop: dp(10),
-              textAlign: 'center',
+              marginTop: dp(15),
+              height: dp(50),
+              width: dp(390)
             }}
-          >
-            {'扫码定位'}
-          </Text>
+            source={getImage().scan_title}
+          />
         </View>
         <View
           style={{

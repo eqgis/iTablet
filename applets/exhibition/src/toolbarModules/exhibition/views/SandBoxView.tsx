@@ -395,24 +395,41 @@ class SandBoxView extends React.Component<Props, State> {
       for (const glb of glbs) {
         paths.push(glb.path)
       }
+      await SARMap.addModelToSandTable(paths, {
+        position: {
+          // y: -100,
+          // z: -320,
+          y: -1,
+          z: -1.5,
+        },
+        rotation: {
+          // x: 90,
+          // y: -80,
+          // z: 2.94,
+        },
+        scale: {
+          x: 0.0025,
+          y: 0.0025,
+          z: 0.0025,
+        },
+      })
       await SARMap.addARMediaToSandbox(targetHomePath + 'wave.mp4', {
         position: {
-          x: -140,
+          x: -30,
           y: -49,
-          z: -80,
+          z: -48,
         },
         rotation: {
           x: 90,
-          y: 3,
+          y: 5,
           z: 2.94,
         },
         scale: {
-          x: 128000,
-          y: 85000,
-          z: 30000,
+          x: 120000,
+          y: 75000,
+          z: 0,
         },
       })
-      await SARMap.addModelToSandTable(paths)
       const layers = await props.getARLayers()
       currentLayer = layers[0]
       this.isOpen = true
@@ -639,6 +656,24 @@ class SandBoxView extends React.Component<Props, State> {
             width: '100%',
             height: '100%',
             alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              color: 'white',
+              marginTop: dp(10),
+              textAlign: 'center',
+            }}
+          >
+            {'扫码定位'}
+          </Text>
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            alignItems: 'center',
             justifyContent: 'center',
             bottom: dp(10),
           }}
@@ -832,8 +867,8 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
           <SlideBar
             ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
-            range={[0, 2000]}
-            defaultMaxValue={1000}
+            range={[0, 200]}
+            defaultMaxValue={100}
             barColor={'#FF6E51'}
             onMove={loc => {
               const scale = loc / 100 - 1

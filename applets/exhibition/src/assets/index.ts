@@ -82,6 +82,9 @@ const icon_tool_shape_select = require('./icon_tool_shape_select.png')
 const icon_tool_juxing = require('./icon_tool_juxing.png')
 const icon_tool_yuan = require('./icon_tool_yuan.png')
 const icon_tool_yuanjiaojx = require('./icon_tool_yuanjiaojx.png')
+const icon_tool_car = require('./icon_tool_car.png')
+const icon_tool_video_scene = require('./icon_tool_video_scene.png')
+
 
 import * as home_img from './home'
 import * as sandbox from './sandbox'
@@ -195,6 +198,8 @@ const image = {
   icon_tool_juxing,
   icon_tool_yuan,
   icon_tool_yuanjiaojx,
+  icon_tool_car,
+  icon_tool_video_scene,
   close,
   icon_btn_action,
   icon_btn_action_selected,

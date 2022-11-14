@@ -480,7 +480,10 @@ class FlatMapVIew extends React.Component<Props, State> {
         {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
         <ARArrow
           arrowShowed={() => {
-            Toast.show('请按照箭头引导转动屏幕查看地图')
+            Toast.show('请按照箭头引导转动屏幕查看地图', {
+              backgroundColor: "#000",
+              opacity: 0.5,
+            })
           }}
         />
         <ARGuide

@@ -551,7 +551,10 @@ class AR3DMapView extends React.Component<Props, State> {
         {this.renderRollingMode()}
 
         <ARArrow
-          arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图')}
+          arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图',{
+            backgroundColor: "#000",
+            opacity: 0.5,
+          })}
         />
 
         <ARGuide

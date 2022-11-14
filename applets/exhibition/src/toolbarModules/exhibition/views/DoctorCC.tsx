@@ -227,7 +227,11 @@ class DoctorCC extends Component<Props, State> {
           }
         }
 
-        Toast.show('定位成功')
+        Toast.show('定位成功',{
+          backgroundColor: "#000",
+          opacity: 0.5,
+          position: dp(50),
+        })
       }
     })
     // 添加语音结束的监听
@@ -646,7 +650,10 @@ class DoctorCC extends Component<Props, State> {
       })
       // Toast.show("地图打开成功")
     } else {
-      Toast.show("该地图不存在")
+      Toast.show("该地图不存在", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
     }
   }
 
@@ -746,7 +753,10 @@ class DoctorCC extends Component<Props, State> {
     }
     // 数据未加载完成，点击返回无效
     if(!this.isBack) {
-      Toast.show("请等待数据加载完成再退出!")
+      Toast.show("请等待数据加载完成再退出!", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
       return
     }
     // 移除监听
@@ -1255,7 +1265,10 @@ class DoctorCC extends Component<Props, State> {
       await SARMap.saveImgFileToAlbum(this.imgPath)
       // console.warn("合影保存成功: " + album)
       FileTools.deleteFile(this.imgPath)
-      Toast.show("合影保存成功")
+      Toast.show("合影保存成功", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
     }
 
     this.imgPath = ''
@@ -1316,16 +1329,25 @@ class DoctorCC extends Component<Props, State> {
         })
 
         if (!result) {
-          Toast.show(getLanguage().Prompt.WX_SHARE_FAILED)
+          Toast.show(getLanguage().Prompt.WX_SHARE_FAILED, {
+            backgroundColor: "#000",
+            opacity: 0.5,
+          })
           return undefined
         }
       } else {
-        Toast.show(getLanguage().Prompt.WX_NOT_INSTALLED)
+        Toast.show(getLanguage().Prompt.WX_NOT_INSTALLED, {
+          backgroundColor: "#000",
+          opacity: 0.5,
+        })
       }
       return result === false ? result : undefined
     } catch (error) {
       if (error.message.includes('File size cannot exceeds 10M')) {
-        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE, {
+          backgroundColor: "#000",
+          opacity: 0.5,
+        })
       }
     }
   }
@@ -1395,7 +1417,10 @@ class DoctorCC extends Component<Props, State> {
       await SARMap.saveVideoFileToAlbum(this.state.videoUrl)
       FileTools.deleteFile(this.state.videoUrl)
       // console.warn("录屏保存成功: " + result)
-      Toast.show("录屏保存成功")
+      Toast.show("录屏保存成功", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
     }
 
     this.setState({
@@ -1871,7 +1896,10 @@ class DoctorCC extends Component<Props, State> {
           })
 
           if(time <= 0) {
-            Toast.show("该模块儿暂无讲解")
+            Toast.show("该模块儿暂无讲解", {
+              backgroundColor: "#000",
+              opacity: 0.5,
+            })
           } else {
             if(indexTemp >= 0) {
               // console.warn("list: " + JSON.stringify(list[index]))
@@ -2960,7 +2988,10 @@ class DoctorCC extends Component<Props, State> {
 
         <ARArrow
           arrowShowed={() => {
-            Toast.show('请按照箭头引导转动屏幕查看内容')
+            Toast.show('请按照箭头引导转动屏幕查看内容', {
+              backgroundColor: "#000",
+              opacity: 0.5,
+            })
           }}
         />
 

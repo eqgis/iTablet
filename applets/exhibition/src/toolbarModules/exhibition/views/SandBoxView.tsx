@@ -335,7 +335,7 @@ class SandBoxView extends React.Component<Props, State> {
       {
         image: getImage().tool_effect,
         image_selected: getImage().tool_effect,
-        title: '特效',
+        title: '天气',
         action: () => {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
@@ -553,6 +553,18 @@ class SandBoxView extends React.Component<Props, State> {
   }
 
   switchTool = async (toolType: ToolType | '', cb?: () => void) => {
+
+    if (this.state.toolType === 'effects') {
+      const props = AppToolBar.getProps()
+      const layers = await props.getARLayers()
+      const effectLayer = layers.find(item => {
+        return item.type === ARLayerType.EFFECT_LAYER
+      })
+      if(effectLayer) {
+        SARMap.setLayerVisible(effectLayer.name, false)
+      }
+    }
+
     if (this.state.toolType !== toolType) {
       this.setState({
         toolType: toolType,
@@ -560,7 +572,7 @@ class SandBoxView extends React.Component<Props, State> {
         cb?.()
       })
     } else if (this.state.toolType && this.state.toolType === toolType) {
-      await SARMap.submit()
+      // await SARMap.submit()
       this.setState({
         toolType: '',
       }, () => {
@@ -814,6 +826,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     if (prevProps.type !== this.props.type && this.props.type) {
       this.getData()
     }
+    // 退出特效,重置选中
+    if (prevProps.type === 'effects' && this.props.type !== 'effects' && this.state.selectKey) {
+      this.setState({
+        selectKey: '',
+      })
+    }
   }
 
   getData = async () => {
@@ -836,6 +854,11 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   close = () => {
     this.props.close?.()
+    if (this.state.selectKey) {
+      this.setState({
+        selectKey: '',
+      })
+    }
   }
 
   reset = () => {
@@ -1051,29 +1074,29 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
             this.setState({
               selectKey: item.key,
             })
-            const layerName = 'effectLayer'
+            let layerName = 'effectLayer'
             const props = AppToolBar.getProps()
             const layers = await props.getARLayers()
             let currentEffectLayer: SARMap.ARLayer | undefined = undefined
             for (const layer of layers) {
               if (layer.name === layerName && layer.type === ARLayerType.EFFECT_LAYER) {
                 currentEffectLayer = layer
+                layerName = currentEffectLayer.name
+                if(!currentEffectLayer.isVisible) {
+                  SARMap.setLayerVisible(currentEffectLayer.name, true)
+                }
                 break
               }
             }
 
+
             if (currentEffectLayer) {
-              SARMap.setAREffect(currentEffectLayer.name, homePath + item.path)
+              SARMap.setAREffect(layerName, item.path)
             } else {
-              await addEffectLayer(layerName + '.', item.path)
+              const path = item.path.replace(homePath, '')
+              await addEffectLayer(layerName + '.', path)
             }
             SARMap.setEffectLayerCenter(layerName)
-
-            // console.warn(layers.length)
-            // // const layerName = item.name.substring(0, item.name.lastIndexOf('.'))
-            // // const home = await FileTools.getHomeDirectory()
-            // // SARMap.setAREffect(effectLayer.name, home + item.path)
-            // SARMap.setEffectLayerCenter(item.name.substring(0, item.name.lastIndexOf('.')))
           }}
         />
       )
@@ -1091,8 +1114,13 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   }
 
   getEffects = async () => {
-    const arEffectTemp: any[] = await DataHandler.getLocalData({userName: 'Customer', nickname: 'Customer', email: '', phoneNumber: 123, userType: 'common_user'}, 'AREFFECT')
-    arEffectTemp.sort((a: any, b: any) => {
+    const home = await FileTools.getHomeDirectory()
+    const effectsPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/effects'
+    // 添加glb
+    const effects = await FileTools.getPathListByFilterDeep(effectsPath, 'areffect')
+
+    // const effects: any[] = await DataHandler.getLocalData({userName: 'Customer', nickname: 'Customer', email: '', phoneNumber: 123, userType: 'common_user'}, 'AREFFECT')
+    effects.sort((a: any, b: any) => {
       if (a.name > b.name) {
         return 1
       } else if (a.name < b.name) {
@@ -1101,7 +1129,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         return 0
       }
     })
-    return arEffectTemp
+    return effects
   }
 
   /****************************************************************************************************************************/

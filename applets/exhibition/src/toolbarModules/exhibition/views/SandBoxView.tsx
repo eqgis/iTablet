@@ -1,23 +1,25 @@
-import { AppEvent, AppToolBar, Toast, AppLog } from '@/utils'
+import { AppEvent, AppToolBar, Toast, AppLog, DataHandler } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, ScaledSize, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Scan from '../components/Scan'
-import { SARMap, FileTools, IARTransform, ARAction } from 'imobile_for_reactnative'
+import { SARMap, FileTools, IARTransform, ARAction, ARLayerType } from 'imobile_for_reactnative'
 import { Point3D } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
-import { positionInfoType, positionNodeInfo, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { positionNodeInfo, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { shouldBuildingMapData, buildingImported } from '../Actions'
 import SideBar, { Item } from '../components/SideBar'
 import AnimationWrap from '../components/AnimationWrap'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
+import ImageItem from '../components/ImageItem'
+import { addEffectLayer } from '@/Toolbar/modules/arMapAdd/Actions'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -155,6 +157,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: dp(20),
   },
+  toolScrollView: {
+    position: 'absolute',
+    bottom: dp(15),
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
   slideBar: {
     flex: 1,
     height: dp(30),
@@ -176,7 +187,7 @@ interface Props {
   windowSize: ScaledSize
 }
 
-type ToolType = 'mountain_guide' | 'effects' | 'spot' | 'reset' | 'edit' | 'boat_guide'
+type ToolType = 'mountain_guide' | 'effects' | 'spot' | 'reset' | 'edit' | 'boat_guide' | 'lighting'
 
 interface State {
   showScan: boolean
@@ -268,8 +279,8 @@ class SandBoxView extends React.Component<Props, State> {
   getSideBarItems = (): Item[] => {
     return [
       {
-        image: getImage().tool_guide,
-        image_selected: getImage().tool_guide_selected,
+        image: getImage().tool_location,
+        image_selected: getImage().tool_location_selected,
         title: '位置调整',
         action: () => {
           if (!this.checkSenceAndToolType()) return
@@ -277,6 +288,18 @@ class SandBoxView extends React.Component<Props, State> {
           SARMap.appointEditElement(1, currentLayer?.name)
           SARMap.setAction(ARAction.SCALE)
           this.switchTool('edit')
+        }
+      },
+      {
+        image: getImage().tool_lighting,
+        image_selected: getImage().tool_lighting_selected,
+        title: '光照',
+        action: () => {
+          if (!this.checkSenceAndToolType()) return
+          this.timeoutTrigger?.onShowSecondMenu()
+          SARMap.appointEditElement(1, currentLayer?.name)
+          SARMap.setAction(ARAction.SCALE)
+          this.switchTool('lighting')
         }
       },
       {
@@ -290,8 +313,8 @@ class SandBoxView extends React.Component<Props, State> {
         }
       },
       {
-        image: getImage().tool_lighting,
-        image_selected: getImage().tool_lighting_selected,
+        image: getImage().tool_boat_guide,
+        image_selected: getImage().tool_boat_guide,
         title: '游船路线',
         action: () => {
           if (!this.checkSenceAndToolType()) return
@@ -300,8 +323,8 @@ class SandBoxView extends React.Component<Props, State> {
         }
       },
       {
-        image: getImage().tool_guide,
-        image_selected: getImage().tool_guide_selected,
+        image: getImage().tool_mountain_guide,
+        image_selected: getImage().tool_mountain_guide,
         title: '登山路线',
         action: () => {
           if (!this.checkSenceAndToolType()) return
@@ -310,8 +333,8 @@ class SandBoxView extends React.Component<Props, State> {
         }
       },
       {
-        image: getImage().tool_guide,
-        image_selected: getImage().tool_guide_selected,
+        image: getImage().tool_effect,
+        image_selected: getImage().tool_effect,
         title: '特效',
         action: () => {
           if (!this.checkSenceAndToolType()) return
@@ -381,34 +404,35 @@ class SandBoxView extends React.Component<Props, State> {
 
   addARLayer = async () => {
     try {
-      // let newDatasource = false
       const props = AppToolBar.getProps()
-      // const mapInfo = props.arMapInfo
-      // AppToolBar.addData({
-      //   addNewDSourceWhenCreate: false,
-      //   addNewDsetWhenCreate: false,
-      // })
+      AppToolBar.addData({
+        addNewDSourceWhenCreate: false,
+        addNewDsetWhenCreate: false,
+      })
       // // TODO 打开地图,判断是否要创建新地图和新数据源
       if (!props.arMap.currentMap) {
         await AppToolBar.getProps().createARMap()
       }
 
-      // const type = ARLayerType.AR_MODEL_LAYER
+      // const type = ARLayerType.EFFECT_LAYER
 
       // //若已存在场景图层则先移除
-      // const sceneLayers = mapInfo?.layers?.filter((layer: ARLayer) => {
+      // const allLayers = mapInfo?.layers?.filter((layer: SARMap.ARLayer) => {
       //   return layer.type === type
       // })
-      // if (sceneLayers && sceneLayers.length > 0) {
-      //   await SARMap.removeARLayer(sceneLayers[0].name)
+      // if (allLayers && allLayers.length > 0) {
+      //   await SARMap.removeARLayer(allLayers[0].name)
       // }
 
-      // let datasourceName = DataHandler.getARRawDatasource()
-      // let sandBoxDs = 'sandbox'
-      // let waveDs = 'wave'
-      // const sResult = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, sandBoxDs, newDatasource, true, type)
-      // const wResult = sResult.success && await DataHandler.createARElementDatasource(props.currentUser, sResult.datasourceName, waveDs, !sResult.success, true, type)
-      // const wResult = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, waveDs, newDatasource, true, ARLayerType.AR_MEDIA_LAYER)
+      // const datasourceName = DataHandler.getARRawDatasource()
+      // const effectLayerName = 'effect'
+      // const sResult = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, effectLayerName, newDatasource, false, type)
+      // // success: true
+      // // datasourceName: string
+      // // datasetName: string
+      // if (sResult.success) {
+      //   SARMap.creact
+      // }
 
       const home = await FileTools.getHomeDirectory()
       const targetHomePath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/'
@@ -456,7 +480,11 @@ class SandBoxView extends React.Component<Props, State> {
         },
       })
       const layers = await props.getARLayers()
-      currentLayer = layers[0]
+      for(const layer of layers) {
+        if (layer.type === ARLayerType.AR_MODEL_LAYER) {
+          currentLayer = layer
+        }
+      }
 
       if(currentLayer) {
         SARMap.getElementPositionInfo(currentLayer?.name, 1).then(result => {
@@ -664,7 +692,7 @@ class SandBoxView extends React.Component<Props, State> {
         visible={this.state.showSide}
         style={{
           position: 'absolute',
-          top: dp(10),
+          top: dp(20),
         }}
       >
         <SideBar
@@ -687,7 +715,7 @@ class SandBoxView extends React.Component<Props, State> {
         visible={this.state.showSide}
         style={{
           position: 'absolute',
-          top: dp(80),
+          top: dp(75),
         }}
       >
         <TouchableOpacity
@@ -755,11 +783,16 @@ interface ToolViewProps {
   close: () => void,
 }
 
+interface ToolViewState {
+  selectKey: string,
+  data: any[],
+}
+
 // const circleSize = dp(66)
 // const circleR = dp(30)
 // const circleStrokeWidth = dp(4)
 
-class ToolView extends React.Component<ToolViewProps, unknown> {
+class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   scaleBar: SlideBar | undefined | null
   rotationBar: SlideBar | undefined | null
   rotationX: CircleBar | undefined | null
@@ -768,6 +801,34 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
 
   constructor(props: ToolViewProps) {
     super(props)
+    this.state = {
+      selectKey: '',
+      data: [],
+    }
+  }
+
+  componentDidUpdate(prevProps: Readonly<ToolViewProps>): void {
+    if (prevProps.type !== this.props.type && this.props.type) {
+      this.getData()
+    }
+  }
+
+  getData = async () => {
+    if (this.props.type === 'effects') {
+      const items = await this.getEffects()
+      const data = []
+      for (const item of items) {
+        data.push({
+          key: item.name.substring(0, item.name.lastIndexOf('.')),
+          name: item.name.substring(0, item.name.lastIndexOf('.')),
+          image: getImage().tool_effect,
+          path: item.path,
+        })
+      }
+      this.setState({
+        data: data,
+      })
+    }
   }
 
   close = () => {
@@ -779,6 +840,7 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
     this.rotationBar?.onClear()
   }
 
+  /********************************************************** 位置调整 ******************************************************************/
   renderPosition = () => {
     let transformData: IARTransform = {
       // layerName: this.props.data.layerName,
@@ -929,6 +991,7 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
     )
   }
 
+  /**********************************************************   ******************************************************************/
   renderSectioning = () => {
     return (
       <>
@@ -967,23 +1030,91 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
     )
   }
 
-  renderLighting = () => {
+  /********************************************************** 景区 ******************************************************************/
+  renderSpot = () => {
     return null
   }
 
-  renderAdvertising = () => {
-    return null
+  /********************************************************** 特效 ******************************************************************/
+  renderEffects = () => {
+    const views: any = []
+    for (let i = 0; i < this.state.data.length; i++) {
+      views.push(
+        <ImageItem
+          data={this.state.data[i]}
+          isSelected={this.state.selectKey === this.state.data[i].key}
+          action={async (item) => {
+            if (!item.path) return
+            this.setState({
+              selectKey: item.key,
+            })
+            const layerName = 'effectLayer'
+            const props = AppToolBar.getProps()
+            const layers = await props.getARLayers()
+            let currentEffectLayer: SARMap.ARLayer | undefined = undefined
+            for (const layer of layers) {
+              if (layer.name === layerName && layer.type === ARLayerType.EFFECT_LAYER) {
+                currentEffectLayer = layer
+                break
+              }
+            }
+
+            if (currentEffectLayer) {
+              SARMap.setAREffect(currentEffectLayer.name, homePath + item.path)
+            } else {
+              await addEffectLayer(layerName + '.', item.path)
+            }
+            SARMap.setEffectLayerCenter(layerName)
+
+            // console.warn(layers.length)
+            // // const layerName = item.name.substring(0, item.name.lastIndexOf('.'))
+            // // const home = await FileTools.getHomeDirectory()
+            // // SARMap.setAREffect(effectLayer.name, home + item.path)
+            // SARMap.setEffectLayerCenter(item.name.substring(0, item.name.lastIndexOf('.')))
+          }}
+        />
+      )
+    }
+    return (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={[{maxWidth: dp(550)}]}
+        contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
+      >
+        {views}
+      </ScrollView>
+    )
   }
+
+  getEffects = async () => {
+    const arEffectTemp: any[] = await DataHandler.getLocalData({userName: 'Customer', nickname: 'Customer', email: '', phoneNumber: 123, userType: 'common_user'}, 'AREFFECT')
+    arEffectTemp.sort((a: any, b: any) => {
+      if (a.name > b.name) {
+        return 1
+      } else if (a.name < b.name) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+    return arEffectTemp
+  }
+
+  /****************************************************************************************************************************/
 
   render() {
     if (this.props.type === '') return null
     return (
-      <View style={styles.toolView}>
+      <View
+        style={
+          this.props.type === 'edit' ? styles.toolView : styles.toolScrollView
+        }>
         {/* <View style={styles.toolBgView}/> */}
         {this.props.type === 'edit' && this.renderPosition()}
         {/* {this.props.type === 'sectioning' && this.renderSectioning()} */}
-        {/* {this.props.type === 'lighting' && this.renderLighting()} */}
-        {/* {this.props.type === 'advertising' && this.renderAdvertising()} */}
+        {this.props.type === 'spot' && this.renderSpot()}
+        {this.props.type === 'effects' && this.renderEffects()}
       </View>
     )
   }

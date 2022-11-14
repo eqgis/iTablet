@@ -113,7 +113,7 @@ class SideBar extends React.Component<Props, State> {
             backgroundColor: '#1E1E1EA6',
             borderRadius: dp(10),
             width: dp(55),
-            marginTop: dp(20),
+            marginTop: index === 0 ? 0 : dp(10),
             overflow: 'hidden',
           }
         ]}

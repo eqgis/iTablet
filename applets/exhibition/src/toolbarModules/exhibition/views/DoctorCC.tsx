@@ -1766,7 +1766,7 @@ class DoctorCC extends Component<Props, State> {
   /** 右侧的按钮 */
   renderSideBar = () => {
     return (
-      <View>
+      <View style={{marginTop: dp(20)}}>
         <SideBar
           sections={[
             this.getSideBarSpeakItem(),

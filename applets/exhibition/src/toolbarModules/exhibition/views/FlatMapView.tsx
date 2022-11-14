@@ -400,7 +400,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         visible={this.state.showSide}
         style={{
           position: 'absolute',
-          top: dp(80),
+          top: dp(75),
         }}
       >
         <TouchableOpacity
@@ -442,7 +442,7 @@ class FlatMapVIew extends React.Component<Props, State> {
           visible={this.state.showSide}
           style={{
             position: 'absolute',
-            top: dp(10),
+            top: dp(20),
             // right: 0,
           }}
         >

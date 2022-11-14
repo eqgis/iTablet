@@ -515,7 +515,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
           <Animated.View
             style={{
-              top: dp(10),
+              top: dp(20),
               height: '100%',
               right: this.state.btRight,
               flexDirection: 'row',

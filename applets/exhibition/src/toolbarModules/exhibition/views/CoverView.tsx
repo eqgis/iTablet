@@ -74,12 +74,12 @@ class CoverView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_rectangle,
-        title: '视口模式',
+        title: '挖洞',
         action: this.cover,
       },
       {
         image: getImage().icon_tool_rolling,
-        title: '卷帘模式',
+        title: '卷帘',
         action: this.rollingMenu,
       },
       // {

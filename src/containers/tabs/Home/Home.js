@@ -303,7 +303,7 @@ export default class Home extends Component {
 
   confirm = async () => {
     //先判断是否有网
-    if ((await NetInfo.fetch()).isConnected) {
+    if (true /*(await NetInfo.fetch()).isConnected*/) {
       let confirm = this.dialogConfirm ? this.dialogConfirm : () => { }
       confirm &&
         confirm(this.moduleItemRef, this.downloadData, this.state.dialogCheck)

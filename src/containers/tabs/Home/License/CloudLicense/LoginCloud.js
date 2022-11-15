@@ -129,7 +129,7 @@ class LoginCloud extends Component {
         return
       }
 
-      let isConnected = (await NetInfo.fetch()).isConnected
+      let isConnected = true//(await NetInfo.fetch()).isConnected
       if (isConnected) {
         if(this.state.reLogin) {
           this.container.setLoading(

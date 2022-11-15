@@ -1963,6 +1963,12 @@ class DoctorCC extends Component<Props, State> {
         isRepeatClickCancelSelected={true}
         data={this.speakData}
         onSelect={this.speakItemOnpress}
+        visible={this.state.isSecondaryShow}
+        onHide={()=> {
+          this.setState({
+            isSecondaryShow: false,
+          })
+        }}
       />
     )
   }
@@ -1982,6 +1988,12 @@ class DoctorCC extends Component<Props, State> {
             this.doctorStudyReloaderOnPress()
           }
         }}
+        visible={this.state.isSecondaryShow}
+        onHide={()=> {
+          this.setState({
+            isSecondaryShow: false,
+          })
+        }}
       />
     )
   }
@@ -1995,6 +2007,12 @@ class DoctorCC extends Component<Props, State> {
         data={this.getActionData()}
         currentKey={this.state.selectAnimationKey}
         onSelect={this.actionItemOnpress}
+        visible={this.state.isSecondaryShow}
+        onHide={()=> {
+          this.setState({
+            isSecondaryShow: false,
+          })
+        }}
       />
     )
   }
@@ -2008,6 +2026,12 @@ class DoctorCC extends Component<Props, State> {
         data={this.photoRouteDate}
         currentKey={this.state.selectRouteKey}
         onSelect={this.routeItemOnPress}
+        visible={this.state.isSecondaryShow}
+        onHide={()=> {
+          this.setState({
+            isSecondaryShow: false,
+          })
+        }}
       />
     )
   }

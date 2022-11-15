@@ -13,7 +13,7 @@ interface State {
 }
 
 
-const IMAGE_WIDTH = dp(140)
+const IMAGE_WIDTH = dp(110)
 
 export interface ImageItem {
   image: ImageSourcePropType
@@ -65,32 +65,27 @@ class ImageList extends React.Component<Props, State> {
   }
 
 
-  getItemWidth = () => {
-    return dp(IMAGE_WIDTH + 20)
-  }
-
-  getListWidth = () => {
-    // if(this.props.data.length == 4) {
-    return this.props.data.length*IMAGE_WIDTH
-    // } else {
-    // return this.props.data.length * this.getItemWidth()
-    // }
-  }
-
   renderItem = (param: ListRenderItemInfo<ImageItem>) => {
     // let width, height
     // if(this.props.data.length == 4){
-    let width = dp(IMAGE_WIDTH) - dp(IMAGE_WIDTH) / 3
-    let height = dp(80)
+    const width = dp(90)
+    const height = dp(90)
     let mstyle = {}
+    let m_style = {}
+    let t_width = IMAGE_WIDTH
+
+    if(param.index ===this.props.data.length-1){
+      t_width = dp(115)
+      m_style = {borderBottomRightRadius :dp(8),borderTopRightRadius :dp(8),paddingRight:dp(5)}
+    }
+
+    if(param.index === 0){
+      t_width=dp(115)
+      m_style = {borderBottomLeftRadius :dp(8),borderTopLeftRadius :dp(8),paddingLeft:dp(5)}
+    }
 
     if(this.state.touchString === param.item.path){
-      width = dp(IMAGE_WIDTH) - dp(IMAGE_WIDTH) / 3 + dp(10)
-      height = dp(90)
-      mstyle = {
-        borderColor: 'white',
-        borderWidth: dp(2),
-      }
+      mstyle = {backgroundColor: '#F24F02A6'}
     }
 
     return (
@@ -100,20 +95,21 @@ class ImageList extends React.Component<Props, State> {
           param.item.onTouch(param.item.path)
           this.setState({touchString:param.item.path})
         }}
-        style={{
+        style={[{
+          width:t_width,
+          height:dp(110),
           alignSelf: 'center',
           justifyContent: 'center',
           alignItems: 'center',
-        }}
+        },m_style,mstyle]}
       >
         <Image
           source={param.item.image}
           style={[{
             width: width,
             height: height,
-            marginHorizontal: dp(10),
             borderRadius: dp(5),
-          },mstyle]}
+          }]}
         />
       </TouchableOpacity>
     )
@@ -122,8 +118,8 @@ class ImageList extends React.Component<Props, State> {
   render() {
     // let height, backcolor
     // if(this.props.data.length == 4){
-    const height = dp(100)
-    const backcolor = 'rgba(0,0,0,0.3)'
+    const height = dp(110)
+    const backcolor = '#1E1E1EA6'
     // }else{
     //   height = dp(120)
     //   backcolor = 'transparent'
@@ -148,7 +144,6 @@ class ImageList extends React.Component<Props, State> {
             position: 'absolute',
             bottom: this.bottom,
             height: height,
-            width: this.getListWidth(),
             alignSelf: 'center',
             justifyContent: 'center',
             alignItems: 'center',

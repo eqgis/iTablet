@@ -234,6 +234,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         } else {
           this.start(result)
         }
+        Toast.show('定位成功')
       }
     })
     const globlaPose = getGlobalPose()

@@ -20,6 +20,7 @@ import ARViewLoadHandler from "../components/ARViewLoadHandler"
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import { IARTransform } from "@/containers/workspace/components/ToolBar/modules/types"
 import ScanWrap from "../components/ScanWrap"
+import TimeoutTrigger from '../components/TimeoutTrigger'
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -148,6 +149,8 @@ class DoctorCC extends Component<Props, State> {
   /** 当前是否有动作的声音在播放 */
   isActionSoundPlay: string | null = null
 
+  timeoutTrigger: TimeoutTrigger | null = null
+
   scaleValue = 100
   show = true
 
@@ -224,7 +227,11 @@ class DoctorCC extends Component<Props, State> {
           }
         }
 
-        Toast.show('定位成功')
+        Toast.show('定位成功',{
+          backgroundColor: "#000",
+          opacity: 0.5,
+          position: dp(50),
+        })
       }
     })
     // 添加语音结束的监听
@@ -249,48 +256,7 @@ class DoctorCC extends Component<Props, State> {
 
     /** 屏幕单击事件监听 */
     AppEvent.addListener('ar_single_click', () =>{
-      let right
-      let left
-      let bottom
-      if (this.show) {
-        right = -100
-        left = -200
-        bottom = -200
-      }else {
-        right = 0
-        left = dp(20)
-        bottom = 0
-      }
-      this.show = !this.show
-      Animated.parallel([
-        Animated.timing(this.state.btRight, {
-          toValue: right,
-          duration: 300,
-          useNativeDriver: false,
-        }),
-        Animated.timing(this.state.btLeft, {
-          toValue: left,
-          duration: 300,
-          useNativeDriver: false,
-        }),
-        Animated.timing(this.state.btBottom, {
-          toValue: bottom,
-          duration: 300,
-          useNativeDriver: false,
-        }),
-      ]).start()
-
-      if(!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow) {
-        this.setState({
-          isSpeakGuideShow: false,
-        })
-      }
-
-      if(this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow) {
-        this.setState({
-          isVideoGuideShow: false,
-        })
-      }
+      this.signClick()
     })
 
     // 推演动画结束监听
@@ -373,6 +339,57 @@ class DoctorCC extends Component<Props, State> {
         })
         clearTimeout(videoGuideTimer)
       }, 2000)
+    }
+  }
+
+  /** 单击响应事件 */
+  signClick = () =>{
+    let right
+    let left
+    let bottom
+    if (this.show) {
+      right = -100
+      left = -200
+      bottom = -200
+    }else {
+      right = 0
+      left = dp(20)
+      bottom = 0
+    }
+    this.show = !this.show
+    if(this.show) {
+      this.timeoutTrigger?.onBarShow()
+    } else {
+      this.timeoutTrigger?.onBarHide()
+    }
+    Animated.parallel([
+      Animated.timing(this.state.btRight, {
+        toValue: right,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.state.btLeft, {
+        toValue: left,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.state.btBottom, {
+        toValue: bottom,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start()
+
+    if(!this.state.showScan && !this.state.showGuide && this.state.isSpeakGuideShow) {
+      this.setState({
+        isSpeakGuideShow: false,
+      })
+    }
+
+    if(this.state.isShowFull && this.state.selectType === 'video' && this.state.isVideoGuideShow) {
+      this.setState({
+        isVideoGuideShow: false,
+      })
     }
   }
 
@@ -633,7 +650,10 @@ class DoctorCC extends Component<Props, State> {
       })
       // Toast.show("地图打开成功")
     } else {
-      Toast.show("该地图不存在")
+      Toast.show("该地图不存在", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
     }
   }
 
@@ -641,6 +661,7 @@ class DoctorCC extends Component<Props, State> {
   back = async () => {
     // 扫描界面未关闭时，关闭扫描界面
     if(this.state.showScan) {
+      this.timeoutTrigger?.onBackFromScan()
       this.setState({showScan: false})
       return
     }
@@ -732,7 +753,10 @@ class DoctorCC extends Component<Props, State> {
     }
     // 数据未加载完成，点击返回无效
     if(!this.isBack) {
-      Toast.show("请等待数据加载完成再退出!")
+      Toast.show("请等待数据加载完成再退出!", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
       return
     }
     // 移除监听
@@ -774,6 +798,7 @@ class DoctorCC extends Component<Props, State> {
       this.animationTimer = null
     }
 
+    this.timeoutTrigger?.onShowScan()
     SExhibition.stopTrackingTarget()
     SARMap.setAREnhancePosition()
     this.setState({
@@ -789,12 +814,14 @@ class DoctorCC extends Component<Props, State> {
   photoBtnOnpress = async () => {
     SARMap.setAction(ARAction.NULL)
     if(this.state.photoBtnKey === 'action') {
+      this.timeoutTrigger?.onFirstMenuClick()
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
         isVideoGuideShow: false,
       })
       return
     }
+    this.timeoutTrigger?.onShowSecondMenu()
     this.setState({
       isSecondaryShow: true,
       // isVideoGuideShow: false,
@@ -806,11 +833,13 @@ class DoctorCC extends Component<Props, State> {
   routeBtnOnpress = async () => {
     SARMap.setAction(ARAction.NULL)
     if(this.state.photoBtnKey === 'position') {
+      this.timeoutTrigger?.onFirstMenuClick()
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
       return
     }
+    this.timeoutTrigger?.onShowSecondMenu()
     this.setState({
       isSecondaryShow: true,
       isVideoGuideShow: false,
@@ -821,12 +850,14 @@ class DoctorCC extends Component<Props, State> {
   /** 点击合影界面的编辑操作按钮执行的方法 */
   operationBtnOnpress = async () => {
     if(this.state.photoBtnKey === 'operation') {
+      this.timeoutTrigger?.onFirstMenuClick()
       SARMap.setAction(ARAction.NULL)
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
       return
     }
+    this.timeoutTrigger?.onShowSecondMenu()
     if(this.ARModel) {
       SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
       SARMap.setAction(ARAction.SCALE)
@@ -842,6 +873,7 @@ class DoctorCC extends Component<Props, State> {
   /** 点击合影界面的具体路线按钮执行的方法 */
   routeItemOnPress = async (item: routeItemType) => {
 
+    this.timeoutTrigger?.onBackFromSecondMenu()
     // 动作的动画停掉
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
@@ -954,11 +986,13 @@ class DoctorCC extends Component<Props, State> {
   /** 点击详解按钮执行的方法 */
   speakBtnOnpress = async () => {
     if(this.state.selectType === 'speak') {
+      this.timeoutTrigger?.onFirstMenuClick()
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
       return
     }
+    this.timeoutTrigger?.onShowSecondMenu()
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
@@ -978,12 +1012,14 @@ class DoctorCC extends Component<Props, State> {
   /** 点击动作按钮执行的方法 */
   actionBtnOnPress = async ()=>{
     if(this.state.selectType === 'action') {
+      this.timeoutTrigger?.onFirstMenuClick()
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
       return
     }
 
+    this.timeoutTrigger?.onShowSecondMenu()
     const currentElement = this.ARModel
     let animations: Array<ModelAnimation> = []
     if(currentElement) {
@@ -1014,14 +1050,14 @@ class DoctorCC extends Component<Props, State> {
 
   /** 点击换装按钮执行的方法 */
   reloaderBtnOnPress = async () => {
-
     if(this.state.selectType === 'reloader') {
+      this.timeoutTrigger?.onFirstMenuClick()
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
       return
     }
-
+    this.timeoutTrigger?.onShowSecondMenu()
     if(this.ARModel) {
       SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
     }
@@ -1052,7 +1088,7 @@ class DoctorCC extends Component<Props, State> {
     //   })
     //   return
     // }
-
+    this.timeoutTrigger?.onFirstMenuClick()
     if(this.isPlay) {
       SARMap.stopARAnimation()
       this.isPlay = false
@@ -1094,6 +1130,7 @@ class DoctorCC extends Component<Props, State> {
   /** 点击录像按钮执行的方法 */
   videoBtnOnPress = async () => {
 
+    this.timeoutTrigger?.onFirstMenuClick()
     // if(this.state.selectType === 'video') {
     //   this.setState({
     //     isSecondaryShow: !this.state.isSecondaryShow,
@@ -1138,6 +1175,7 @@ class DoctorCC extends Component<Props, State> {
 
   /** 点击了超人服的换装按钮 */
   doctorReloaderOnPress = () => {
+    this.timeoutTrigger?.onBackFromSecondMenu()
     // 如果当前就是该模型就不做任何改动
     if(this.state.selectReloaderKey === 'doctor') {
       return
@@ -1161,6 +1199,7 @@ class DoctorCC extends Component<Props, State> {
 
   /** 点击了博士服的换装按钮 */
   doctorStudyReloaderOnPress = () => {
+    this.timeoutTrigger?.onBackFromSecondMenu()
     // 如果当前就是该模型就不做任何改动
     if(this.state.selectReloaderKey === 'doctorStudy') {
       return
@@ -1226,7 +1265,10 @@ class DoctorCC extends Component<Props, State> {
       await SARMap.saveImgFileToAlbum(this.imgPath)
       // console.warn("合影保存成功: " + album)
       FileTools.deleteFile(this.imgPath)
-      Toast.show("合影保存成功")
+      Toast.show("合影保存成功", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
     }
 
     this.imgPath = ''
@@ -1287,16 +1329,25 @@ class DoctorCC extends Component<Props, State> {
         })
 
         if (!result) {
-          Toast.show(getLanguage().Prompt.WX_SHARE_FAILED)
+          Toast.show(getLanguage().Prompt.WX_SHARE_FAILED, {
+            backgroundColor: "#000",
+            opacity: 0.5,
+          })
           return undefined
         }
       } else {
-        Toast.show(getLanguage().Prompt.WX_NOT_INSTALLED)
+        Toast.show(getLanguage().Prompt.WX_NOT_INSTALLED, {
+          backgroundColor: "#000",
+          opacity: 0.5,
+        })
       }
       return result === false ? result : undefined
     } catch (error) {
       if (error.message.includes('File size cannot exceeds 10M')) {
-        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE)
+        Toast.show(getLanguage().Prompt.SHARE_WX_FILE_SIZE_LIMITE, {
+          backgroundColor: "#000",
+          opacity: 0.5,
+        })
       }
     }
   }
@@ -1304,6 +1355,7 @@ class DoctorCC extends Component<Props, State> {
 
   /** 录像按钮被点击时的响应方法 */
   videoRecord = async () => {
+    this.timeoutTrigger?.onFirstMenuClick()
     if(this.state.isVideoStart) {
       // 清除录屏的定时器
       if(this.videoTimer) {
@@ -1365,7 +1417,10 @@ class DoctorCC extends Component<Props, State> {
       await SARMap.saveVideoFileToAlbum(this.state.videoUrl)
       FileTools.deleteFile(this.state.videoUrl)
       // console.warn("录屏保存成功: " + result)
-      Toast.show("录屏保存成功")
+      Toast.show("录屏保存成功", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
     }
 
     this.setState({
@@ -1736,7 +1791,7 @@ class DoctorCC extends Component<Props, State> {
   /** 右侧的按钮 */
   renderSideBar = () => {
     return (
-      <View>
+      <View style={{marginTop: dp(20)}}>
         <SideBar
           sections={[
             this.getSideBarSpeakItem(),
@@ -1802,6 +1857,7 @@ class DoctorCC extends Component<Props, State> {
           },
         ]}
         onPress={async () => {
+          this.timeoutTrigger?.onBackFromSecondMenu()
           if(this.isPlay) {
             SARMap.stopARAnimation()
             this.isPlay = false
@@ -1840,7 +1896,10 @@ class DoctorCC extends Component<Props, State> {
           })
 
           if(time <= 0) {
-            Toast.show("该模块儿暂无讲解")
+            Toast.show("该模块儿暂无讲解", {
+              backgroundColor: "#000",
+              opacity: 0.5,
+            })
           } else {
             if(indexTemp >= 0) {
               // console.warn("list: " + JSON.stringify(list[index]))
@@ -2101,6 +2160,7 @@ class DoctorCC extends Component<Props, State> {
           }
         ]}
         onPress={async ()=>{
+          this.timeoutTrigger?.onBackFromSecondMenu()
           const currentElement = this.ARModel
           if(currentElement) {
             // 当两次点击同一动作动画时需要将之前的动画清掉
@@ -2367,6 +2427,7 @@ class DoctorCC extends Component<Props, State> {
             defaultMaxValue={this.scaleValue}
             barColor={'#FF6E51'}
             onMove={loc => {
+              this.timeoutTrigger?.onBackFromSecondMenu()
               const scale = loc / 100 - 1
               transformData = {
                 ...transformData,
@@ -2821,6 +2882,13 @@ class DoctorCC extends Component<Props, State> {
     return (
       <>
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
+        <TimeoutTrigger
+          ref={ref => this.timeoutTrigger = ref}
+          timeout={15000}
+          trigger={() => {
+            this.signClick()
+          }}
+        />
         {/* 右边按钮的响应界面 */}
         <View
           style={{
@@ -2920,7 +2988,10 @@ class DoctorCC extends Component<Props, State> {
 
         <ARArrow
           arrowShowed={() => {
-            Toast.show('请按照箭头引导转动屏幕查看内容')
+            Toast.show('请按照箭头引导转动屏幕查看内容', {
+              backgroundColor: "#000",
+              opacity: 0.5,
+            })
           }}
         />
 

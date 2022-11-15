@@ -1,3 +1,4 @@
+import { dp } from '@/utils'
 import React from 'react'
 import { Image, ScaledSize, View, Animated, Easing, StyleSheet } from 'react-native'
 import { getImage } from '../../../assets'
@@ -115,6 +116,7 @@ class Scan extends React.Component<Props & DefaultProps> {
             style={{
               position: 'absolute',
               width: width * 0.8,
+              height: dp(30),
               opacity,
               alignSelf: 'center',
               transform: [{translateY: transY}]

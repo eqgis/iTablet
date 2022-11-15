@@ -97,7 +97,7 @@ class ScanWrap extends React.Component<Props> {
           <Image
             style={{
               marginTop: dp(15),
-              height: dp(50),
+              height: dp(isLargeScreen ? 50 : 40),
               width: dp(390)
             }}
             source={getImage().scan_title}

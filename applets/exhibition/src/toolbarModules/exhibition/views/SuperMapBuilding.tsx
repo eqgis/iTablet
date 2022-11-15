@@ -601,7 +601,10 @@ class SuperMapBuilding extends React.Component<Props, State> {
   checkSenceAndToolType = () => {
     const props = AppToolBar.getProps()
     if (!props.arMap.currentMap) {
-      Toast.show('请对准演示台上二维码进行扫描')
+      Toast.show('请对准演示台上二维码进行扫描', {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
       return false
     }
     return true
@@ -716,7 +719,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         visible={this.state.showSide}
         style={{
           position: 'absolute',
-          top: dp(10),
+          top: dp(20),
           // right: 0,
         }}
       >
@@ -739,7 +742,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         visible={this.state.showSide}
         style={{
           position: 'absolute',
-          top: dp(80),
+          top: dp(75),
         }}
       >
         <TouchableOpacity

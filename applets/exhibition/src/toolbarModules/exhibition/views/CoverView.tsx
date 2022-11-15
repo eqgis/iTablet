@@ -74,12 +74,12 @@ class CoverView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_rectangle,
-        title: '视口模式',
+        title: '挖洞',
         action: this.cover,
       },
       {
         image: getImage().icon_tool_rolling,
-        title: '卷帘模式',
+        title: '卷帘',
         action: this.rollingMenu,
       },
       // {
@@ -130,7 +130,10 @@ class CoverView extends React.Component<Props, State> {
         } else {
           this.openARModel()
         }
-        Toast.show('定位成功')
+        Toast.show('定位成功',{
+          backgroundColor: "#000",
+          opacity: 0.5,
+        })
       }
     })
   }

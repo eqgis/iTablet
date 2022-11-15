@@ -5054,6 +5054,10 @@ export default class MapView extends React.Component {
 
   getInfoText = () => {
     try {
+
+      if(this.props.isAR){
+        return null
+      }
       let isTianditu = false
       let isGaode  = false
       let length = this.props.layers.layers.length

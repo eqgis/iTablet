@@ -273,6 +273,7 @@ class AR3DMapView extends React.Component<Props, State> {
         Toast.show('定位成功', {
           backgroundColor: 'rgba(0,0,0,.5)',
           textColor: '#fff',
+          duration: 2000,
         })
       }
     })
@@ -338,11 +339,14 @@ class AR3DMapView extends React.Component<Props, State> {
         z: loca.vertices[3].z,
       }
 
-      SExhibition.setTrackingTarget({
-        center: center,
-        vertices: [vertice0,vertice1,vertice2,vertice3]
-      })
-      SExhibition.startTrackingTarget()
+      const timer = setTimeout(()=>{
+        SExhibition.setTrackingTarget({
+          center: center,
+          vertices: [vertice0,vertice1,vertice2,vertice3]
+        })
+        SExhibition.startTrackingTarget()
+        clearTimeout(timer)
+      }, 500)
 
       this.open = true
     })

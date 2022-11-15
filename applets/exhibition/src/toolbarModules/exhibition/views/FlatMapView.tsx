@@ -237,6 +237,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         Toast.show('定位成功', {
           backgroundColor: 'rgba(0,0,0,.5)',
           textColor: '#fff',
+          duration: 2000,
         })
       }
     })
@@ -287,11 +288,17 @@ class FlatMapVIew extends React.Component<Props, State> {
       pose: pose,
       translation: relativePositin
     })
-    SExhibition.setTrackingTarget({
-      pose: pose,
-      translation: relativePositin
-    })
-    SExhibition.startTrackingTarget()
+    if(relativePositin) {
+      const timer = setTimeout(()=>{
+        SExhibition.setTrackingTarget({
+          pose: pose,
+          translation: relativePositin
+        })
+        SExhibition.startTrackingTarget()
+        clearTimeout(timer)
+      }, 2300)
+    }
+
   }
 
 

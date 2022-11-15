@@ -219,6 +219,12 @@ class DoctorCC extends Component<Props, State> {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
 
+        Toast.show('定位成功',{
+          backgroundColor: 'rgba(0,0,0,.5)',
+          textColor: '#fff',
+          duration: 2000,
+        })
+
         // 进入模块儿暂时屏蔽模块引导讲解
         // if(!isDoctorMapGuided()) {
         //   setDoctorMapGuided()
@@ -232,16 +238,13 @@ class DoctorCC extends Component<Props, State> {
           const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
           // console.warn("relativePositin: " + JSON.stringify(relativePositin))
           if(relativePositin) {
-            await SExhibition.setTrackingTarget(relativePositin)
-            await SExhibition.startTrackingTarget()
+            const timer = setTimeout(async ()=>{
+              await SExhibition.setTrackingTarget(relativePositin)
+              await SExhibition.startTrackingTarget()
+              clearTimeout(timer)
+            }, 2300)
           }
         }
-
-        Toast.show('定位成功',{
-          backgroundColor: 'rgba(0,0,0,.5)',
-          textColor: '#fff',
-          position: dp(50),
-        })
       }
     })
     // 添加语音结束的监听

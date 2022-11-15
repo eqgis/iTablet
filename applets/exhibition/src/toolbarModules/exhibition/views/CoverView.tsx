@@ -1,18 +1,18 @@
-import { AppEvent, AppStyle, AppToolBar, Toast ,DataHandler} from '@/utils'
+import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle,  Animated, } from 'react-native'
+import { Image, ScaledSize, TouchableOpacity, View, Animated, } from 'react-native'
 import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
 import { getGlobalPose, isCoverGuided, setCoverGuided } from '../Actions'
 import ARGuide from '../components/ARGuide'
 import SideBar, { Item } from '../components/SideBar'
-import FillAnimationWrap from '../components/FillAnimationWrap'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
+import BottomMenu from '../components/BottomMenu'
 
 interface Props {
   windowSize: ScaledSize
@@ -131,8 +131,8 @@ class CoverView extends React.Component<Props, State> {
           this.openARModel()
         }
         Toast.show('定位成功',{
-          backgroundColor: "#000",
-          opacity: 0.5,
+          backgroundColor: 'rgba(0,0,0,.5)',
+          textColor: '#fff',
         })
       }
     })
@@ -632,73 +632,34 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 
-  renderRollingBtn = (item: Item) => {
-    return (
-      <TouchableOpacity
-        onPress={item.action}
-        style={{
-          width: dp(80),
-          height: dp(80),
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(30,30,30,0.65)',
-        }}
-      >
-        <Image
-          source={item.image}
-          style={{
-            width: dp(40),
-            height: dp(40)
-          }}
-        />
-        <Text style={[{...AppStyle.h3, color: 'white'}]}>
-          {item.title}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
   renderRollingMode = () => {
     return (
-      <FillAnimationWrap
+      <BottomMenu
         visible={this.state.showRollingMode}
-        animated={'bottom'}
-        style={{
-          position: 'absolute',
-          alignSelf: 'center'
-        }}
-        range={[-dp(100), dp(20)]}
         onHide={() => {
           this.setState({showRollingMode: false})
         }}
-      >
-        <View style={{
-          borderRadius: dp(10),
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        }}>
-          {this.renderRollingBtn({
+        data={[
+          {
+            name: '横向',
             image: getImage().icon_tool_horizontal,
-            title: '横向',
             action: () => {
               this.timeoutTrigger?.onBackFromSecondMenu()
               this.rolling(0)
               this.setState({showRollingMode: false})
             }
-          })}
-          {this.renderRollingBtn({
+          },
+          {
+            name: '纵向',
             image: getImage().icon_tool_vertical,
-            title: '纵向',
             action: () => {
               this.timeoutTrigger?.onBackFromSecondMenu()
               this.rolling(1)
               this.setState({showRollingMode: false})
             }
-          })}
-        </View>
-      </FillAnimationWrap>
+          }
+        ]}
+      />
     )
   }
 

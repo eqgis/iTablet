@@ -264,8 +264,8 @@ class SandBoxView extends React.Component<Props, State> {
           await this.addARLayer()
 
           Toast.show('定位成功',{
-            backgroundColor: "#000",
-            opacity: 0.5,
+            backgroundColor: 'rgba(0,0,0,.5)',
+            textColor: '#fff',
             position: dp(50),
           })
         }
@@ -599,8 +599,8 @@ class SandBoxView extends React.Component<Props, State> {
     const props = AppToolBar.getProps()
     if (!props.arMap.currentMap) {
       Toast.show('请对准演示台上二维码进行扫描', {
-        backgroundColor: "#000",
-        opacity: 0.5,
+        backgroundColor: 'rgba(0,0,0,.5)',
+        textColor: '#fff',
       })
       return false
     }

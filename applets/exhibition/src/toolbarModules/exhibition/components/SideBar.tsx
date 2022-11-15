@@ -9,9 +9,18 @@ import {
   ImageSourcePropType
 } from 'react-native'
 
-interface Props {
+interface Props extends Partial<DefaultProps> {
   sections: Section[]
+}
+
+interface DefaultProps {
   showIndicator: boolean
+  autoCancel: boolean
+}
+
+const defaultProps: DefaultProps = {
+  showIndicator: true,
+  autoCancel: true
 }
 
 interface State {
@@ -32,8 +41,11 @@ export interface Item {
   action: () => void
 }
 
-class SideBar extends React.Component<Props, State> {
-  constructor(props: Props) {
+class SideBar extends React.Component<Props & DefaultProps, State> {
+
+  static defaultProps = defaultProps
+
+  constructor(props: Props & DefaultProps) {
     super(props)
 
     this.state = {
@@ -55,16 +67,19 @@ class SideBar extends React.Component<Props, State> {
         key={index + ''}
         onPress={() => {
           if(this.props.showIndicator) {
-            if (item.showIndicator === undefined || item.showIndicator) {
-              // this.setState({currentIndex: sectionIndex + '_' + index})
-              if (
-                (item.autoCancelSelected === undefined || item.autoCancelSelected) &&
-                this.state.currentIndex === sectionIndex + '_' + index
-              ) {
-                this.setState({currentIndex: ''})
-              } else {
-                this.setState({currentIndex: sectionIndex + '_' + index})
+            if(this.props.autoCancel) {
+              if (item.showIndicator === undefined || item.showIndicator) {
+                if (
+                  (item.autoCancelSelected === undefined || item.autoCancelSelected) &&
+                  this.state.currentIndex === sectionIndex + '_' + index
+                ) {
+                  this.setState({currentIndex: ''})
+                } else {
+                  this.setState({currentIndex: sectionIndex + '_' + index})
+                }
               }
+            } else if(this.state.currentIndex !== sectionIndex + '_' + index) {
+              this.setState({currentIndex: sectionIndex + '_' + index})
             }
           }
           item.action()

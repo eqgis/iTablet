@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import { ImageSourcePropType, ScrollView, View, ViewStyle, TouchableOpacity, Text, Image } from "react-native"
 import FillAnimationWrap from "./FillAnimationWrap"
 
-interface itemConmonType {
+export interface itemConmonType {
   /** 唯一标识 如果传参的话，需要与props选择的类型保持一致，默认是number类型 */
   key?: string | number,
   /** 显示的文字 */
@@ -12,18 +12,6 @@ interface itemConmonType {
   image: ImageSourcePropType,
   /** 子项点击的回调 */
   action?: () => void,
-}
-
-export interface itemType extends itemConmonType{
-	/** 唯一标识 如果传参的话，需要与props选择的类型保持一致，默认是number类型 */
-  key?: string | number,
-  title?: string,
-	/** 显示的文字 */
-  name: string,
-	/** 显示的图片资源 */
-  image: ImageSourcePropType,
-	/** 类型不确定 */
-	data?: any
 }
 
 interface CallBackInfo {
@@ -127,6 +115,7 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
   renderItem = (item: T, index: number) => {
     return (
       <TouchableOpacity
+        key={index + '_'}
         style={[
           {
             width: dp(100),

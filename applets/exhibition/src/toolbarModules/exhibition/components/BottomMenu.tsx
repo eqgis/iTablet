@@ -9,19 +9,21 @@ interface itemConmonType {
   name: string,
 	/** 显示的图片资源 */
   image: ImageSourcePropType,
+  /** 子项点击的回调 */
+  action?: () => void,
 }
 
-// export interface itemType extends itemConmonType{
-// 	/** 唯一标识 如果传参的话，需要与props选择的类型保持一致，默认是number类型 */
-//   key?: string | number,
-//   title?: string,
-// 	/** 显示的文字 */
-//   name: string,
-// 	/** 显示的图片资源 */
-//   image: ImageSourcePropType,
-// 	/** 类型不确定 */
-// 	data?: any
-// }
+export interface itemType extends itemConmonType{
+	/** 唯一标识 如果传参的话，需要与props选择的类型保持一致，默认是number类型 */
+  key?: string | number,
+  title?: string,
+	/** 显示的文字 */
+  name: string,
+	/** 显示的图片资源 */
+  image: ImageSourcePropType,
+	/** 类型不确定 */
+	data?: any
+}
 
 interface CallBackInfo {
   /** 当前选中索引 当keyType有值时，此值永远为-1，无效 */
@@ -45,8 +47,8 @@ interface Props<T> {
 	currentIndex?: number
 	/** 当前选中项的key，当keyType存在时，有效，与currentIndex不同时存在  */
 	currentKey?: string | number
-  /** 外部传入的回调方法  参数一：当前选择项 参数二：其他信息 */
-  onSelect: (item: T, callBackInfo: CallBackInfo) => void
+  /** 外部传入的统一回调方法  参数一：当前选择项 参数二：其他信息 */
+  onSelect?: (item: T, callBackInfo: CallBackInfo) => void
 }
 
 interface State<T> {
@@ -91,8 +93,8 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
 
     }
 
-    this.props.onSelect(item, {index, isRepeatclick})
-
+    this.props?.onSelect?.(item, {index, isRepeatclick})
+    item?.action?.()
     // item?.action?.(item, isRepeatclick)
   }
 
@@ -143,7 +145,7 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
       <View
         style={[{
           position: 'absolute',
-          bottom: dp(15),
+          bottom: dp(0),
           left: 0,
           justifyContent: 'center',
           alignItems: 'center',

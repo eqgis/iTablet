@@ -18,8 +18,9 @@ import AnimationWrap from '../components/AnimationWrap'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
-import ImageItem from '../components/ImageItem'
+import ImageItem, { ImageItemData } from '../components/ImageItem'
 import { addEffectLayer } from '@/Toolbar/modules/arMapAdd/Actions'
+import BottomMenu from '../components/BottomMenu'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -777,11 +778,11 @@ class SandBoxView extends React.Component<Props, State> {
             })
           }}
         />
+        {this.renderToolView()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
         {this.state.showCover && this.renderCover()}
         <ARArrow />
         {this.state.showScan && this.renderScan()}
-        {this.renderToolView()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}
         {this.renderBack()}
       </>
@@ -1063,30 +1064,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         <ImageItem
           data={this.state.data[i]}
           isSelected={this.state.selectKey === this.state.data[i].key}
-          action={async (item) => {
-            if (!item.path) return
-            this.setState({
-              selectKey: item.key,
-            })
-            const home = await FileTools.getHomeDirectory()
-            const routeDir = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'glb')
-            // 转圈/放大/定位到登山路线
-
-            // 依次添加定位点
-            const wait = (sec: number) => {
-              return new Promise(resolve => {
-                setTimeout(() => {
-                  resolve(true)
-                }, 1000 * sec)
-              })
-            }
-            this.mountainElementIndexes = []
-            for (const route of routeDir) {
-              const pathIndexs = await SARMap.addModelToSandTable([route.path])
-              this.mountainElementIndexes = this.mountainElementIndexes.concat(pathIndexs)
-              await wait(1)
-            }
-          }}
+          action={this.mountainAction}
         />
       )
     }
@@ -1121,6 +1099,35 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     return routeDir
   }
 
+  mountainAction = async (item: ImageItemData) => {
+    try {
+      if (!item.path) return
+      this.setState({
+        selectKey: item.key,
+      })
+      const home = await FileTools.getHomeDirectory()
+      const routeDir = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'glb')
+      // 转圈/放大/定位到登山路线
+
+      // 依次添加定位点
+      const wait = (sec: number) => {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve(true)
+          }, 1000 * sec)
+        })
+      }
+      this.mountainElementIndexes = []
+      for (const route of routeDir) {
+        const pathIndexs = await SARMap.addModelToSandTable([route.path])
+        this.mountainElementIndexes = this.mountainElementIndexes.concat(pathIndexs)
+        await wait(1)
+      }
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
+  }
+
   /********************************************************** 景区 ******************************************************************/
   renderSpot = () => {
     return null
@@ -1134,35 +1141,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         <ImageItem
           data={this.state.data[i]}
           isSelected={this.state.selectKey === this.state.data[i].key}
-          action={async (item) => {
-            if (!item.path) return
-            this.setState({
-              selectKey: item.key,
-            })
-            let layerName = 'effectLayer'
-            const props = AppToolBar.getProps()
-            const layers = await props.getARLayers()
-            let currentEffectLayer: SARMap.ARLayer | undefined = undefined
-            for (const layer of layers) {
-              if (layer.name === layerName && layer.type === ARLayerType.EFFECT_LAYER) {
-                currentEffectLayer = layer
-                layerName = currentEffectLayer.name
-                if(!currentEffectLayer.isVisible) {
-                  SARMap.setLayerVisible(currentEffectLayer.name, true)
-                }
-                break
-              }
-            }
-
-
-            if (currentEffectLayer) {
-              SARMap.setAREffect(layerName, item.path)
-            } else {
-              const path = item.path.replace(homePath, '')
-              await addEffectLayer(layerName + '.', path)
-            }
-            SARMap.setEffectLayerCenter(layerName)
-          }}
+          action={this.effectAction}
         />
       )
     }
@@ -1195,21 +1174,79 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     return effects
   }
 
+  effectAction = async (item: ImageItemData) => {
+    try {
+      if (!item.path) return
+      this.setState({
+        selectKey: item.key,
+      })
+      let layerName = 'effectLayer'
+      const props = AppToolBar.getProps()
+      const layers = await props.getARLayers()
+      let currentEffectLayer: SARMap.ARLayer | undefined = undefined
+      for (const layer of layers) {
+        if (layer.name === layerName && layer.type === ARLayerType.EFFECT_LAYER) {
+          currentEffectLayer = layer
+          layerName = currentEffectLayer.name
+          if(!currentEffectLayer.isVisible) {
+            SARMap.setLayerVisible(currentEffectLayer.name, true)
+          }
+          break
+        }
+      }
+
+
+      if (currentEffectLayer) {
+        SARMap.setAREffect(layerName, item.path)
+      } else {
+        const path = item.path.replace(homePath, '')
+        await addEffectLayer(layerName + '.', path)
+      }
+      SARMap.setEffectLayerCenter(layerName)
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
+  }
+
   /****************************************************************************************************************************/
 
   render() {
-    if (this.props.type === '') return null
+    // if (this.props.type === '') return null
+    if (this.props.type === 'edit') {
+      return (
+        <View
+          style={
+            this.props.type === 'edit' ? styles.toolView : styles.toolScrollView
+          }>
+          {/* <View style={styles.toolBgView}/> */}
+          {this.props.type === 'edit' && this.renderPosition()}
+          {/* {this.props.type === 'mountain_guide' && this.renderMountainRoute()}
+          {this.props.type === 'spot' && this.renderSpot()}
+          {this.props.type === 'effects' && this.renderEffects()} */}
+        </View>
+      )
+    }
     return (
-      <View
-        style={
-          this.props.type === 'edit' ? styles.toolView : styles.toolScrollView
-        }>
-        {/* <View style={styles.toolBgView}/> */}
-        {this.props.type === 'edit' && this.renderPosition()}
-        {this.props.type === 'mountain_guide' && this.renderMountainRoute()}
-        {this.props.type === 'spot' && this.renderSpot()}
-        {this.props.type === 'effects' && this.renderEffects()}
-      </View>
+      <BottomMenu
+        keyType={"string"}
+        currentKey={this.state.selectKey}
+        isRepeatClickCancelSelected={true}
+        data={this.state.data}
+        onSelect={(data) => {
+          switch (this.props.type) {
+            case 'mountain_guide':
+              this.mountainAction(data)
+              break
+            case 'effects':
+              this.effectAction(data)
+              break
+          }
+        }}
+        visible={this.props.type !== ''}
+        onHide={()=> {
+          this.close()
+        }}
+      />
     )
   }
 }

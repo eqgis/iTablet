@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     left: dp(22),
     bottom: dp(22),
     width: dp(360),
-    backgroundColor: '#rgba(255,255,255,0.8)',
+    backgroundColor: '#1E1E1EA6',
     borderRadius: dp(10),
     overflow: 'hidden',
   },
@@ -261,6 +261,12 @@ class SandBoxView extends React.Component<Props, State> {
 
           // 创建AR数据源,数据集,图层
           await this.addARLayer()
+
+          Toast.show('定位成功',{
+            backgroundColor: "#000",
+            opacity: 0.5,
+            position: dp(50),
+          })
         }
       }
     })
@@ -297,8 +303,7 @@ class SandBoxView extends React.Component<Props, State> {
         action: () => {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
-          SARMap.appointEditElement(1, currentLayer?.name)
-          SARMap.setAction(ARAction.SCALE)
+          SARMap.openSandBoxLighting(currentLayer?.name, 1, {})
           this.switchTool('lighting')
         }
       },
@@ -438,10 +443,13 @@ class SandBoxView extends React.Component<Props, State> {
       const targetHomePath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/'
       await SARMap.createARSandTable()
       // 添加glb
-      const glbs = await FileTools.getPathListByFilterDeep(targetHomePath, 'glb')
+      // const glbs = await FileTools.getPathListByFilterDeep(targetHomePath, 'glb')
+      const glbs = await FileTools.getPathListByFilter(targetHomePath, {
+        extension: 'glb',
+      })
       const paths: string[] = []
       for (const glb of glbs) {
-        paths.push(glb.path)
+        paths.push(home + glb.path)
       }
       await SARMap.addModelToSandTable(paths, {
         position: {
@@ -563,6 +571,8 @@ class SandBoxView extends React.Component<Props, State> {
       if(effectLayer) {
         SARMap.setLayerVisible(effectLayer.name, false)
       }
+    } else if (this.state.toolType === 'lighting') {
+      SARMap.closeSandBoxLighting()
     }
 
     if (this.state.toolType !== toolType) {
@@ -810,9 +820,10 @@ interface ToolViewState {
 class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   scaleBar: SlideBar | undefined | null
   rotationBar: SlideBar | undefined | null
-  rotationX: CircleBar | undefined | null
-  rotationY: CircleBar | undefined | null
-  rotationZ: CircleBar | undefined | null
+  // rotationX: CircleBar | undefined | null
+  // rotationY: CircleBar | undefined | null
+  // rotationZ: CircleBar | undefined | null
+  mountainElementIndexes: number[] = []
 
   constructor(props: ToolViewProps) {
     super(props)
@@ -831,6 +842,16 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.setState({
         selectKey: '',
       })
+    } else if (prevProps.type === 'mountain_guide' && this.props.type !== 'mountain_guide' && this.mountainElementIndexes.length > 0) {
+      (async () => {
+        for (let i = 0; i < this.mountainElementIndexes.length; i++) {
+          await SARMap.setSandTableModelVisible(this.mountainElementIndexes[i], false)
+        }
+        this.mountainElementIndexes = []
+      })()
+      this.setState({
+        selectKey: '',
+      })
     }
   }
 
@@ -839,13 +860,30 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       const items = await this.getEffects()
       const data = []
       for (const item of items) {
+        const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
         data.push({
-          key: item.name.substring(0, item.name.lastIndexOf('.')),
-          name: item.name.substring(0, item.name.lastIndexOf('.')),
+          key: name,
+          name: name,
           image: getImage().tool_effect,
           path: item.path,
         })
       }
+      this.setState({
+        data: data,
+      })
+    } else if (this.props.type === 'mountain_guide') {
+      const items = await this.getMountainRoute()
+      const data = []
+      for (const item of items) {
+        const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
+        data.push({
+          key: name,
+          name: name,
+          image: getImage().tool_effect,
+          path: item.path,
+        })
+      }
+
       this.setState({
         data: data,
       })
@@ -887,19 +925,19 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     return (
       <View style={{paddingBottom: dp(20)}} >
         <View style={styles.toolRow}>
-          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12)}}>位置调整</Text>
+          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: 'white'}}>位置调整</Text>
           <TouchableOpacity
             style={styles.closeBtn}
             onPress={this.close}
           >
             <Image
               style={styles.closeImg}
-              source={getImage().icon_close}
+              source={getImage().icon_cancel02}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12)}}>缩放</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: 'white'}}>缩放</Text>
           <SlideBar
             ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
@@ -920,7 +958,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           />
         </View>
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12)}}>旋转</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: 'white'}}>旋转</Text>
           <SlideBar
             ref={ref => this.rotationBar = ref}
             style={styles.slideBar}
@@ -1017,43 +1055,70 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     )
   }
 
-  /**********************************************************   ******************************************************************/
-  renderSectioning = () => {
+  /********************************************************** 登山路线 ******************************************************************/
+  renderMountainRoute = () => {
+    const views: any = []
+    for (let i = 0; i < this.state.data.length; i++) {
+      views.push(
+        <ImageItem
+          data={this.state.data[i]}
+          isSelected={this.state.selectKey === this.state.data[i].key}
+          action={async (item) => {
+            if (!item.path) return
+            this.setState({
+              selectKey: item.key,
+            })
+            const home = await FileTools.getHomeDirectory()
+            const routeDir = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'glb')
+            // 转圈/放大/定位到登山路线
+
+            // 依次添加定位点
+            const wait = (sec: number) => {
+              return new Promise(resolve => {
+                setTimeout(() => {
+                  resolve(true)
+                }, 1000 * sec)
+              })
+            }
+            this.mountainElementIndexes = []
+            for (const route of routeDir) {
+              const pathIndexs = await SARMap.addModelToSandTable([route.path])
+              this.mountainElementIndexes = this.mountainElementIndexes.concat(pathIndexs)
+              await wait(1)
+            }
+          }}
+        />
+      )
+    }
     return (
-      <>
-        <View style={styles.toolRow}>
-          <Text style={{width: '100%', textAlign: 'center'}}>剖切</Text>
-        </View>
-        <View style={styles.toolRow}>
-          <Text>横向</Text>
-          <SlideBar
-            style={styles.slideBar}
-            range={[0, 100]}
-            defaultMaxValue={100}
-            onMove={loc => {
-              SARMap.clipByBox({
-                direction: 'x',
-                percent: loc,
-              })
-            }}
-          />
-        </View>
-        <View style={styles.toolRow}>
-          <Text>纵向</Text>
-          <SlideBar
-            style={styles.slideBar}
-            range={[0, 100]}
-            defaultMaxValue={100}
-            onMove={loc => {
-              SARMap.clipByBox({
-                direction: 'z',
-                percent: loc,
-              })
-            }}
-          />
-        </View>
-      </>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={[{maxWidth: dp(550)}]}
+        contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
+      >
+        {views}
+      </ScrollView>
     )
+  }
+
+  getMountainRoute = async () => {
+    const home = await FileTools.getHomeDirectory()
+    const routePath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/登山路线'
+    const routeDir = await FileTools.getPathListByFilter(routePath, {
+      type: 'Directory',
+    })
+
+    routeDir.sort((a: any, b: any) => {
+      if (a.name > b.name) {
+        return 1
+      } else if (a.name < b.name) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+    return routeDir
   }
 
   /********************************************************** 景区 ******************************************************************/
@@ -1116,10 +1181,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   getEffects = async () => {
     const home = await FileTools.getHomeDirectory()
     const effectsPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/effects'
-    // 添加glb
     const effects = await FileTools.getPathListByFilterDeep(effectsPath, 'areffect')
 
-    // const effects: any[] = await DataHandler.getLocalData({userName: 'Customer', nickname: 'Customer', email: '', phoneNumber: 123, userType: 'common_user'}, 'AREFFECT')
     effects.sort((a: any, b: any) => {
       if (a.name > b.name) {
         return 1
@@ -1143,7 +1206,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         }>
         {/* <View style={styles.toolBgView}/> */}
         {this.props.type === 'edit' && this.renderPosition()}
-        {/* {this.props.type === 'sectioning' && this.renderSectioning()} */}
+        {this.props.type === 'mountain_guide' && this.renderMountainRoute()}
         {this.props.type === 'spot' && this.renderSpot()}
         {this.props.type === 'effects' && this.renderEffects()}
       </View>

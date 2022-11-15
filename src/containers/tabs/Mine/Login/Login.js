@@ -154,11 +154,11 @@ export default class Login extends React.Component {
         return
       }
 
-      // let isConnected = (await NetInfo.fetch()).isConnected
-      // if(!isConnected) {
-      //   Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
-      //   return
-      // }
+      let isConnected = true//(await NetInfo.fetch()).isConnected
+      if(!isConnected) {
+        Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
+        return
+      }
 
       this.onlineLogin.logining()
       this.setState({covered:true})

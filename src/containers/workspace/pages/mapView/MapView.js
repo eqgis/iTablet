@@ -5054,7 +5054,12 @@ export default class MapView extends React.Component {
 
   getInfoText = () => {
     try {
+
+      if(this.props.isAR){
+        return null
+      }
       let isTianditu = false
+      let isGaode  = false
       let length = this.props.layers.layers.length
       const layer = this.props.layers.layers[length - 1]
       let isBaseMap = LayerUtils.isBaseLayer(layer)
@@ -5065,6 +5070,8 @@ export default class MapView extends React.Component {
       let server = layer.datasourceServer || ""
       if(server.toLowerCase().indexOf("tianditu") !== -1) {
         isTianditu = true
+      }else if(server.toLowerCase().indexOf("amap") !== -1){
+        isGaode = true
       }
 
       let positionStyle = {}
@@ -5094,7 +5101,12 @@ export default class MapView extends React.Component {
         }
       }
 
-      if(!isTianditu) {
+      let text = ""
+      if(isTianditu) {
+        text = "国家基础地理信息中心-GS(2022)3124号"
+      }else if(isGaode){
+        text = "高德软件-GS京(2022)1061号"
+      }else{
         return null
       }
 
@@ -5107,7 +5119,7 @@ export default class MapView extends React.Component {
         >
           <Text
             style={[styles.bottomInfoText]}
-          >{"国家基础地理信息中心-GS(2022)3124号"}</Text>
+          >{text}</Text>
         </View>
       )
     } catch (error) {

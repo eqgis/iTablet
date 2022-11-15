@@ -121,7 +121,7 @@ class ModuleList extends Component {
       let keyword = item.name.endsWith('_EXAMPLE')
         ? item.name
         : item.name + '_EXAMPLE'
-      let isConnected = (await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
+      let isConnected = true//(await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
         let result = await FetchUtils.getDataInfoByUrl(

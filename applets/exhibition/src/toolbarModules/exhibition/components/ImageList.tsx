@@ -13,8 +13,6 @@ interface State {
 }
 
 
-const IMAGE_WIDTH = dp(110)
-
 export interface ImageItem {
   image: ImageSourcePropType
   path: string
@@ -68,19 +66,20 @@ class ImageList extends React.Component<Props, State> {
   renderItem = (param: ListRenderItemInfo<ImageItem>) => {
     // let width, height
     // if(this.props.data.length == 4){
-    const width = dp(90)
-    const height = dp(90)
+    const width = dp(120)
+    const height = dp(70)
     let mstyle = {}
     let m_style = {}
-    let t_width = IMAGE_WIDTH
+    let t_width = dp(140)
+    const t_height = dp(100)
 
     if(param.index ===this.props.data.length-1){
-      t_width = dp(115)
+      t_width = dp(145)
       m_style = {borderBottomRightRadius :dp(8),borderTopRightRadius :dp(8),paddingRight:dp(5)}
     }
 
     if(param.index === 0){
-      t_width=dp(115)
+      t_width=dp(145)
       m_style = {borderBottomLeftRadius :dp(8),borderTopLeftRadius :dp(8),paddingLeft:dp(5)}
     }
 
@@ -97,7 +96,7 @@ class ImageList extends React.Component<Props, State> {
         }}
         style={[{
           width:t_width,
-          height:dp(110),
+          height:t_height,
           alignSelf: 'center',
           justifyContent: 'center',
           alignItems: 'center',
@@ -118,7 +117,6 @@ class ImageList extends React.Component<Props, State> {
   render() {
     // let height, backcolor
     // if(this.props.data.length == 4){
-    const height = dp(110)
     const backcolor = '#1E1E1EA6'
     // }else{
     //   height = dp(120)
@@ -143,7 +141,6 @@ class ImageList extends React.Component<Props, State> {
           style={{
             position: 'absolute',
             bottom: this.bottom,
-            height: height,
             alignSelf: 'center',
             justifyContent: 'center',
             alignItems: 'center',

@@ -234,7 +234,10 @@ class FlatMapVIew extends React.Component<Props, State> {
         } else {
           this.start(result)
         }
-        Toast.show('定位成功')
+        Toast.show('定位成功', {
+          backgroundColor: "#000",
+          opacity: 0.5,
+        })
       }
     })
     const globlaPose = getGlobalPose()

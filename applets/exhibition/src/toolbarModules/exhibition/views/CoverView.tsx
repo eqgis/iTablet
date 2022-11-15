@@ -131,8 +131,8 @@ class CoverView extends React.Component<Props, State> {
           this.openARModel()
         }
         Toast.show('定位成功',{
-          backgroundColor: "#000",
-          opacity: 0.5,
+          backgroundColor: 'rgba(0,0,0,.5)',
+          textColor: '#fff',
         })
       }
     })

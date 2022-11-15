@@ -21,6 +21,7 @@ import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import { IARTransform } from "@/containers/workspace/components/ToolBar/modules/types"
 import ScanWrap from "../components/ScanWrap"
 import TimeoutTrigger from '../components/TimeoutTrigger'
+import BottomMenu from "../components/BottomMenu"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -37,12 +38,18 @@ interface speakItemType {
   name: string,
   image: ImageSourcePropType,
 }
+interface actionItemType {
+  key: number,
+  name: string,
+  image: ImageSourcePropType,
+  data: ModelAnimation,
+}
 
 interface reloaderItemType {
   key: 'doctor' | 'doctorStudy',
   image:  ImageSourcePropType,
   name: string,
-  action: () => void,
+  // action: () => void,
 }
 
 interface routeItemType {
@@ -50,7 +57,6 @@ interface routeItemType {
   title: string,
   name: string,
   image: ImageSourcePropType,
-  // route: string,
 }
 
 interface Props {
@@ -148,6 +154,9 @@ class DoctorCC extends Component<Props, State> {
   soundSource = ["standby", "greet", "walk", "turnaround", "handshake", "speak", "please", "followme", "risus", "click"]
   /** 当前是否有动作的声音在播放 */
   isActionSoundPlay: string | null = null
+
+  /** 动作的渲染数据 */
+  actionData: Array<actionItemType> = []
 
   timeoutTrigger: TimeoutTrigger | null = null
 
@@ -519,6 +528,84 @@ class DoctorCC extends Component<Props, State> {
         // route: getRoute().route13,
       },
     ]
+  }
+
+  /** 获取动作的二级菜单渲染数据 */
+  getActionData = () => {
+    const actionData: actionItemType[] = []
+    if(this.state.animations.length > 0) {
+      this.state.animations.map((item:ModelAnimation) => {
+        let image = getImage().icon_action_stand_by
+        let title = item.name
+        switch(item.name){
+          case 'stand-by':
+            image = getImage().icon_action_stand_by
+            title = "站立"
+            break
+          case '打招呼':
+            image = getImage().icon_action_greet
+            break
+          case '行走':
+            image = getImage().icon_action_walk
+            break
+          case '转圈':
+            image = getImage().icon_action_turn_around
+            break
+          case '握手':
+            image = getImage().icon_action_handshake
+            break
+          case '说话':
+            image = getImage().icon_action_speak
+            break
+          case '请':
+            image = getImage().icon_action_please
+            break
+          case '跟我走':
+            image = getImage().icon_action_follow_me
+            break
+          case '大笑':
+            image = getImage().icon_action_risus
+            title = "高兴"
+            break
+          case '点击':
+            image = getImage().icon_action_stand_by
+            break
+          default:
+            return null
+        }
+        const obj: actionItemType = {
+          key: item.id,
+          name: title,
+          image: image,
+          // action: this.actionItemOnpress,
+          data: item,
+        }
+        actionData.push(obj)
+      })
+    }
+    this.actionData = actionData
+    return actionData
+  }
+
+  /** 获取换装的二级菜单渲染数据 */
+  getReloaderData = () => {
+    const data: reloaderItemType[] = []
+    const docterData: reloaderItemType = {
+      key: 'doctor',
+      image:  getImage().img_doctor,
+      name: "超人服",
+      // action: this.doctorReloaderOnPress,
+    }
+
+    const doctorStudyData:reloaderItemType = {
+      key: 'doctorStudy',
+      image:  getImage().img_doctor_study,
+      name: "博士服",
+      // action: this.doctorStudyReloaderOnPress,
+    }
+    data.push(docterData)
+    data.push(doctorStudyData)
+    return data
   }
 
   /** 详解按钮 */
@@ -1041,6 +1128,7 @@ class DoctorCC extends Component<Props, State> {
       selectAnimationKey: -1,
       isSpeakGuideShow: false,
     })
+    this.getActionData()
     if(this.isPlay) {
       SARMap.stopARAnimation()
       this.isPlay = false
@@ -1125,6 +1213,7 @@ class DoctorCC extends Component<Props, State> {
       photoBtnKey: 'null',
       selectRouteKey: 'position1',
     })
+    this.getActionData()
   }
 
   /** 点击录像按钮执行的方法 */
@@ -1170,6 +1259,237 @@ class DoctorCC extends Component<Props, State> {
       isSpeakGuideShow: false,
       photoBtnKey: 'null',
       selectRouteKey: 'position1',
+    })
+    this.getActionData()
+  }
+
+  /** 点击了具体的解说按钮 */
+  speakItemOnpress = async (item: speakItemType) => {
+    this.timeoutTrigger?.onBackFromSecondMenu()
+    if(this.isPlay) {
+      SARMap.stopARAnimation()
+      this.isPlay = false
+    }
+    // 当再次点击同一解说模块儿时，停止该模块儿的动画和取消选中状态
+    if(this.state.selectSpeakKey === item.key){
+      this.setState({
+        selectSpeakKey: 'null',
+      })
+      return
+    }
+
+    // 获取地图里的推演动画列表
+    const list = await SARMap.getARAnimations()
+
+    // 计算播放的窗格动画的时间
+    let time = 22
+    let indexTemp = -1
+    list.map((animation, index) => {
+      if(item.title.toLocaleUpperCase() === animation.name.toLocaleUpperCase()) {
+        // console.warn(animation.name + " ----- " + item.title)
+        if(animation.type === ARAnimatorType.MODEL_TYPE || animation.type === ARAnimatorType.NODE_TYPE) {
+          time += (animation.duration || 0 ) * ((animation.repeatCount || 0) + 1) + (animation.delay || 0)
+        } else if(animation.type === ARAnimatorType.GROUP_TYPE){
+          const animationTemp = animation.animations
+          animationTemp.map((ele) => {
+            if(ele.type === ARAnimatorType.MODEL_TYPE || ele.type === ARAnimatorType.NODE_TYPE){
+              time += (ele.duration || 0) * ((ele.repeatCount || 0) + 1) + (ele.delay || 0)
+            }
+          })
+        }
+
+        indexTemp = index
+      }
+
+    })
+
+    if(time <= 0) {
+      Toast.show("该模块儿暂无讲解", {
+        backgroundColor: "#000",
+        opacity: 0.5,
+      })
+    } else {
+      if(indexTemp >= 0) {
+        // console.warn("list: " + JSON.stringify(list[index]))
+        // 播放窗格动画 延迟300ms 等上一个推演动画的stop方法走完
+        const tempTimer =  setTimeout(() => {
+          SARMap.playARAnimation(list[indexTemp])
+          clearTimeout(tempTimer)
+        },300)
+        this.isPlay = true
+      }
+
+    }
+
+    this.setState({
+      isSecondaryShow: false,
+      selectSpeakKey: item.key,
+    })
+
+
+  }
+
+  /** 点击了具体的动作按钮 */
+  actionItemOnpress = async (data: actionItemType)=>{
+    const item = data?.data
+    this.timeoutTrigger?.onBackFromSecondMenu()
+    let source = "standby"
+    switch(item.name){
+      case 'stand-by':
+        source = "standby"
+        break
+      case '打招呼':
+        source = "greet"
+        break
+      case '行走':
+        source = "walk"
+        break
+      case '转圈':
+        source = "turnaround"
+        break
+      case '握手':
+        source = "handshake"
+        break
+      case '说话':
+        source = "speak"
+        break
+      case '请':
+        source = "please"
+        break
+      case '跟我走':
+        source = "followme"
+        break
+      case '大笑':
+        source = "risus"
+        break
+      case '点击':
+        source = "click"
+        break
+      default:
+        return null
+    }
+    const currentElement = this.ARModel
+    if(currentElement) {
+      // 当两次点击同一动作动画时需要将之前的动画清掉
+      if(this.state.selectAnimationKey === item.id) {
+        await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+
+        if(this.animationTimer !== null){
+          clearInterval(this.animationTimer)
+          this.animationTimer = null
+        }
+        this.setState({
+          selectAnimationKey: -1,
+          // isShowFull: true,
+          // isSecondaryShow: false,
+          isVideoGuideShow: false,
+        })
+        return
+      }
+      // 清掉上一个动画的定时器
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
+      let isAdd: animationListType | null | undefined = null
+      if(this.state.selectReloaderKey === 'doctor'){
+        isAdd = this.animationList.get(item.id)
+      } else if(this.state.selectReloaderKey === 'doctorStudy'){
+        // supermanAnimationList
+        isAdd = this.supermanAnimationList.get(item.id)
+      }
+      // const isAdd = this.animationList.get(item.id)
+      if(!isAdd) {
+        const params: ARModelAnimatorParameter = {
+          category: ARAnimatorCategory.DISAPPEAR,
+          // type: ARAnimatorType.NODE_TYPE,
+          name: item.name,
+          layerName: currentElement.layerName,
+          elementID: currentElement.id,
+          type: ARAnimatorType.MODEL_TYPE,
+          modelAnimationIndex: item.id,
+
+          // repeatCount: 0,
+          delay:0,
+
+          /** 模型动画时长 单位秒 */
+          duration: item.duration,
+          // // /** 模型动画开始帧时间 单位秒 */
+          startFrame: 0,
+          // /** 模型动画结束帧时间 单位秒 */
+          endFrame: -1,
+        }
+        const id = await SARMap.addAnimation(params)
+        await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
+
+        // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+        this.animationTimer = setInterval(async () => {
+          if(this.state.selectAnimationKey === item.id) {
+            await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+          }
+          await SARMap.setAnimation(currentElement.layerName, currentElement.id, id)
+        },(item.duration + 2) * 1000)
+
+        const animationItemtemp = {
+          id,
+          name: item.name,
+          duration: item.duration,
+        }
+
+        if(this.state.selectReloaderKey === 'doctor'){
+          this.animationList.set(item.id, animationItemtemp)
+        } else if(this.state.selectReloaderKey === 'doctorStudy'){
+          this.supermanAnimationList.set(item.id, animationItemtemp)
+        }
+        // this.animationList.set(item.id, animationItemtemp)
+      } else {
+        // 动画已经存在了
+        await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+        // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+        this.animationTimer = setInterval(async () => {
+          if(this.state.selectAnimationKey === item.id) {
+            await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+          }
+          isAdd && await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+        },(isAdd.duration + 2) * 1000)
+      }
+
+      if(this.state.selectType === 'action') {
+        // 如果当前有动作的声音正在播放，则停止改声音的播放
+        if(this.isActionSoundPlay){
+          SoundUtil.stop(this.isActionSoundPlay)
+          this.isActionSoundPlay = null
+        }
+
+        // 当进入模块儿的时候和当前都在播背景音乐时，才暂停背景音乐
+        console.warn(this.state.isBackground + " - " + SoundUtil.isPlaying("background"))
+        if(this.state.isBackground && SoundUtil.isPlaying("background")) {
+          SoundUtil.stop("background", () => {
+          })
+        }
+
+        SoundUtil.play(source, false, {
+          afterAction: () => {
+            if(this.isActionSoundPlay){
+              SoundUtil.stop(this.isActionSoundPlay)
+              this.isActionSoundPlay = null
+            }
+            if(this.state.isBackground) {
+              SoundUtil.play("background",true)
+            }
+          }
+        })
+        this.isActionSoundPlay = source
+
+      }
+
+    }
+
+    this.setState({
+      selectAnimationKey: item.id,
+      // isShowFull: true,
+      // isSecondaryShow: false,
+      isVideoGuideShow: false,
     })
   }
 
@@ -1804,7 +2124,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
   /** 详解被选中时显示的界面 */
-  renderSpeakSelected = () => {
+  renderSpeakSelected01 = () => {
     return (
       <View
         style={[{
@@ -1856,69 +2176,8 @@ class DoctorCC extends Component<Props, State> {
             height: dp(112),
           },
         ]}
-        onPress={async () => {
-          this.timeoutTrigger?.onBackFromSecondMenu()
-          if(this.isPlay) {
-            SARMap.stopARAnimation()
-            this.isPlay = false
-          }
-          // 当再次点击同一解说模块儿时，停止该模块儿的动画和取消选中状态
-          if(this.state.selectSpeakKey === item.key){
-            this.setState({
-              selectSpeakKey: 'null',
-            })
-            return
-          }
-
-          // 获取地图里的推演动画列表
-          const list = await SARMap.getARAnimations()
-
-          // 计算播放的窗格动画的时间
-          let time = 22
-          let indexTemp = -1
-          list.map((animation, index) => {
-            if(item.title.toLocaleUpperCase() === animation.name.toLocaleUpperCase()) {
-              // console.warn(animation.name + " ----- " + item.title)
-              if(animation.type === ARAnimatorType.MODEL_TYPE || animation.type === ARAnimatorType.NODE_TYPE) {
-                time += (animation.duration || 0 ) * ((animation.repeatCount || 0) + 1) + (animation.delay || 0)
-              } else if(animation.type === ARAnimatorType.GROUP_TYPE){
-                const animationTemp = animation.animations
-                animationTemp.map((ele) => {
-                  if(ele.type === ARAnimatorType.MODEL_TYPE || ele.type === ARAnimatorType.NODE_TYPE){
-                    time += (ele.duration || 0) * ((ele.repeatCount || 0) + 1) + (ele.delay || 0)
-                  }
-                })
-              }
-
-              indexTemp = index
-            }
-
-          })
-
-          if(time <= 0) {
-            Toast.show("该模块儿暂无讲解", {
-              backgroundColor: "#000",
-              opacity: 0.5,
-            })
-          } else {
-            if(indexTemp >= 0) {
-              // console.warn("list: " + JSON.stringify(list[index]))
-              // 播放窗格动画 延迟300ms 等上一个推演动画的stop方法走完
-              const tempTimer =  setTimeout(() => {
-                SARMap.playARAnimation(list[indexTemp])
-                clearTimeout(tempTimer)
-              },300)
-              this.isPlay = true
-            }
-
-          }
-
-          this.setState({
-            isSecondaryShow: false,
-            selectSpeakKey: item.key,
-          })
-
-
+        onPress={() => {
+          this.speakItemOnpress(item)
         }}
       >
         <Image
@@ -1950,105 +2209,135 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
-  /** 换装被选中时显示的换装页面 */
-  renderReloaderSelected = () => {
-    return (
-      <View
-        style={[{
-          position: 'absolute',
-          bottom: dp(15),
-          left: 0,
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-        }]}
-      >
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={[{maxWidth: dp(550)}]}
-          contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
-        >
-          {
-            this.renderReloaderItem({
-              key: 'doctor',
-              image:  getImage().img_doctor,
-              name: "超人服",
-              action: this.doctorReloaderOnPress,
-            })
-          }
-
-          {
-            this.renderReloaderItem({
-              key: 'doctorStudy',
-              image:  getImage().img_doctor_study,
-              name: "博士服",
-              action: this.doctorStudyReloaderOnPress,
-            })
-          }
-        </ScrollView>
-      </View>
+  renderSpeakSelected = () => {
+    return(
+      <BottomMenu
+        keyType={"string"}
+        currentKey={this.state.selectSpeakKey}
+        isRepeatClickCancelSelected={true}
+        data={this.speakData}
+        onSelect={this.speakItemOnpress}
+      />
     )
   }
 
-  /** 换装里具体的换装项 */
-  renderReloaderItem = (item: reloaderItemType) => {
-    return (
-      <TouchableOpacity
-        style={[
-          {
-            width: dp(100),
-            height: dp(100),
-            marginHorizontal: dp(5),
-            backgroundColor: 'rgba(0, 0, 0, .5)',
-            borderRadius: dp(8),
-            overflow: 'hidden',
-            // opacity: 0.9,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          },
-          this.state.selectReloaderKey === item.key && {
-            shadowOffset: { width: 1, height: 1 },
-            shadowColor: 'black',
-            shadowOpacity: 1,
-            width: dp(112),
-            height: dp(112),
-          },
-        ]}
-        onPress={item.action}
-      >
-        <Image
-          source={item.image}
-          style={[
-            {width: dp(80), height: dp(80),marginTop: dp(10)},
-            this.state.selectReloaderKey === item.key && {
-              width: dp(90),
-              height: dp(90),
-            }
-          ]}
-        />
-        <View style={[
-          { position:'absolute', bottom: 0, left: 0 ,backgroundColor: '#000',opacity: 0.7 , width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
-          this.state.selectReloaderKey === item.key && {
-            backgroundColor:"#f24f02",
-            opacity: 1,
-            height: dp(23)
-          },
-        ]} >
-          <Text style={[
-            {fontSize:dp(12), color: '#fff'},
-            this.state.selectReloaderKey === item.key && {
-              color:"#fff",
-            },
+  /** 换装被选中时显示的换装页面 */
+  // renderReloaderSelected01 = () => {
+  //   return (
+  //     <View
+  //       style={[{
+  //         position: 'absolute',
+  //         bottom: dp(15),
+  //         left: 0,
+  //         justifyContent: 'center',
+  //         alignItems: 'center',
+  //         width: '100%',
+  //       }]}
+  //     >
+  //       <ScrollView
+  //         horizontal
+  //         showsHorizontalScrollIndicator={false}
+  //         style={[{maxWidth: dp(550)}]}
+  //         contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
+  //       >
+  //         {
+  //           this.renderReloaderItem({
+  //             key: 'doctor',
+  //             image:  getImage().img_doctor,
+  //             name: "超人服",
+  //             action: this.doctorReloaderOnPress,
+  //           })
+  //         }
 
-          ]}>{item.name}</Text>
-        </View>
-      </TouchableOpacity>
+  //         {
+  //           this.renderReloaderItem({
+  //             key: 'doctorStudy',
+  //             image:  getImage().img_doctor_study,
+  //             name: "博士服",
+  //             action: this.doctorStudyReloaderOnPress,
+  //           })
+  //         }
+  //       </ScrollView>
+  //     </View>
+  //   )
+  // }
+
+  /** 换装里具体的换装项 */
+  // renderReloaderItem = (item: reloaderItemType) => {
+  //   return (
+  //     <TouchableOpacity
+  //       style={[
+  //         {
+  //           width: dp(100),
+  //           height: dp(100),
+  //           marginHorizontal: dp(5),
+  //           backgroundColor: 'rgba(0, 0, 0, .5)',
+  //           borderRadius: dp(8),
+  //           overflow: 'hidden',
+  //           // opacity: 0.9,
+  //           justifyContent: 'space-between',
+  //           alignItems: 'center',
+  //         },
+  //         this.state.selectReloaderKey === item.key && {
+  //           shadowOffset: { width: 1, height: 1 },
+  //           shadowColor: 'black',
+  //           shadowOpacity: 1,
+  //           width: dp(112),
+  //           height: dp(112),
+  //         },
+  //       ]}
+  //       onPress={item.action}
+  //     >
+  //       <Image
+  //         source={item.image}
+  //         style={[
+  //           {width: dp(80), height: dp(80),marginTop: dp(10)},
+  //           this.state.selectReloaderKey === item.key && {
+  //             width: dp(90),
+  //             height: dp(90),
+  //           }
+  //         ]}
+  //       />
+  //       <View style={[
+  //         { position:'absolute', bottom: 0, left: 0 ,backgroundColor: '#000',opacity: 0.7 , width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
+  //         this.state.selectReloaderKey === item.key && {
+  //           backgroundColor:"#f24f02",
+  //           opacity: 1,
+  //           height: dp(23)
+  //         },
+  //       ]} >
+  //         <Text style={[
+  //           {fontSize:dp(12), color: '#fff'},
+  //           this.state.selectReloaderKey === item.key && {
+  //             color:"#fff",
+  //           },
+
+  //         ]}>{item.name}</Text>
+  //       </View>
+  //     </TouchableOpacity>
+  //   )
+  // }
+
+  renderReloaderSelected = () => {
+    return(
+      <BottomMenu
+        keyType={"string"}
+        isRepeatClickCancelSelected={false}
+        data={this.getReloaderData()}
+        currentKey={this.state.selectReloaderKey}
+        onSelect={(item:reloaderItemType)=> {
+          if(item.key === "doctor") {
+            this.doctorReloaderOnPress()
+          } else if(item.key === "doctorStudy"){
+            this.doctorStudyReloaderOnPress()
+          }
+        }}
+      />
     )
   }
 
   /** 合影按钮被选中时显示的选择合影动画的页面 也是录像里的和外面的动作页面 */
-  renderActionSelected = () => {
+  renderActionSelected01 = () => {
     return (
       <View
         style={[{
@@ -2314,8 +2603,23 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  renderActionSelected = () => {
+    return(
+      <BottomMenu
+        keyType={"number"}
+        isRepeatClickCancelSelected={true}
+        data={this.getActionData()}
+        currentKey={this.state.selectAnimationKey}
+        onSelect={this.actionItemOnpress}
+      />
+    )
+  }
+
+
+
+
   /** 合影的位置路线被选中时的选择合影地点的页面 */
-  renderPhotoPositionSelected = () => {
+  renderPhotoPositionSelected01 = () => {
     return (
       <View
         style={[{
@@ -2399,6 +2703,18 @@ class DoctorCC extends Component<Props, State> {
           ]}>{item.name}</Text>
         </View> */}
       </TouchableOpacity>
+    )
+  }
+
+  renderPhotoPositionSelected = () => {
+    return(
+      <BottomMenu
+        keyType={"string"}
+        isRepeatClickCancelSelected={false}
+        data={this.photoRouteDate}
+        currentKey={this.state.selectRouteKey}
+        onSelect={this.routeItemOnPress}
+      />
     )
   }
 

@@ -2705,7 +2705,7 @@ const styles = StyleSheet.create({
     left: dp(22),
     bottom: dp(22),
     width: dp(360),
-    backgroundColor: '#rgba(0,0,0,0.8)',
+    backgroundColor: '#rgba(0,0,0,0.5)',
     borderRadius: dp(10),
     overflow: 'hidden',
   },

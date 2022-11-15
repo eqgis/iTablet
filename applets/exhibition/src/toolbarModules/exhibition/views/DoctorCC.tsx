@@ -2531,17 +2531,23 @@ class DoctorCC extends Component<Props, State> {
               height: dp(130),
             }}
           >
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
+            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()} */}
             {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()} */}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
-            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
+            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
+            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()} */}
+            {/* {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
+            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()} */}
             {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
 
           </Animated.View>
 
         </View>
+
+        {!this.state.isShowFull && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
+        {!this.state.isShowFull && this.state.selectType === 'action' && this.renderActionSelected()}
+        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
+        {!this.state.isShowFull && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
+        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
 
         {/* 右边按钮 */}
         <View

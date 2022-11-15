@@ -1,6 +1,7 @@
 import { dp } from "imobile_for_reactnative/utils/size"
 import React, { Component } from "react"
 import { ImageSourcePropType, ScrollView, View, ViewStyle, TouchableOpacity, Text, Image } from "react-native"
+import FillAnimationWrap from "./FillAnimationWrap"
 
 interface itemConmonType {
   /** 唯一标识 如果传参的话，需要与props选择的类型保持一致，默认是number类型 */
@@ -49,12 +50,15 @@ interface Props<T> {
 	currentKey?: string | number
   /** 外部传入的统一回调方法  参数一：当前选择项 参数二：其他信息 */
   onSelect?: (item: T, callBackInfo: CallBackInfo) => void
+  visible: boolean
+  onHide?: () => void
 }
 
 interface State<T> {
 	data: Array<T>
 	selectIndex: number
 	selectKey: string | number
+  // showRollingMode: boolean
 }
 
 class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>> {
@@ -64,8 +68,16 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
       data: this.props.data || [],
       selectIndex: this.props.currentIndex || -1,
       selectKey: this.props.currentKey || (this.props.keyType === "string" ? "null" : -1),
+      // showRollingMode: true,
     }
   }
+
+  /** 暴露给外部的显影接口 */
+  // setVisible = (visible: boolean) => {
+  //   this.setState({
+  //     showRollingMode: visible,
+  //   })
+  // }
 
   /** 单个选项的点击事件 */
   itemOnpress = (item: T, index: number) => {
@@ -141,18 +153,19 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
   }
 
   render() {
-    return (
-      <View
-        style={[{
+    return(
+      <FillAnimationWrap
+        visible={this.props.visible}
+        animated={'bottom'}
+        style={{
           position: 'absolute',
-          bottom: dp(0),
-          left: 0,
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-        },
-        this.props?.containerStyle,
-        ]}
+          alignSelf: 'center'
+        }}
+        range={[-dp(150), dp(20)]}
+        onHide={() => {
+          // this.setState({showRollingMode: false})
+          this.props?.onHide?.()
+        }}
       >
         <ScrollView
           horizontal
@@ -166,8 +179,36 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
             })
           }
         </ScrollView>
-      </View>
+
+      </FillAnimationWrap>
     )
+    // return (
+    //   <View
+    //     style={[
+    //       this.props.containerStyle || {
+    //         position: 'absolute',
+    //         bottom: dp(0),
+    //         left: 0,
+    //         justifyContent: 'center',
+    //         alignItems: 'center',
+    //         width: '100%',
+    //       },
+    //     ]}
+    //   >
+    //     <ScrollView
+    //       horizontal
+    //       showsHorizontalScrollIndicator={false}
+    //       style={[{maxWidth: dp(600)}]}
+    //       contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
+    //     >
+    //       {
+    //         this.state.data.map((item, index) => {
+    //           return this.renderItem(item, index)
+    //         })
+    //       }
+    //     </ScrollView>
+    //   </View>
+    // )
   }
 }
 

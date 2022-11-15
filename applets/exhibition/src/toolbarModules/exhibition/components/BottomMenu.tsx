@@ -23,6 +23,13 @@ interface itemConmonType {
 // 	data?: any
 // }
 
+interface CallBackInfo {
+  /** 当前选中索引 当keyType有值时，此值永远为-1，无效 */
+  index: number
+  /** 是否是重复点击 */
+  isRepeatclick: boolean
+}
+
 interface Props<T> {
 	/** 选string则itemConmonType用string类型的key,选number则itemConmonType用number类型的key,当不传该值时，表示子项里没有key，选中状态由索引决定 */
 	keyType?: "string" | "number"
@@ -38,8 +45,8 @@ interface Props<T> {
 	currentIndex?: number
 	/** 当前选中项的key，当keyType存在时，有效，与currentIndex不同时存在  */
 	currentKey?: string | number
-  /** 外部传入的回调方法  参数一：当前选择项 参数二：是否是重复点击 */
-  onSelect: (item: T, isRepeatclick: boolean) => void
+  /** 外部传入的回调方法  参数一：当前选择项 参数二：其他信息 */
+  onSelect: (item: T, callBackInfo: CallBackInfo) => void
 }
 
 interface State<T> {
@@ -84,7 +91,7 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
 
     }
 
-    this.props.onSelect(item, isRepeatclick)
+    this.props.onSelect(item, {index, isRepeatclick})
 
     // item?.action?.(item, isRepeatclick)
   }

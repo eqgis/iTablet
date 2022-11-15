@@ -326,8 +326,8 @@ class Home extends React.Component<Props, State> {
           const hw = await SARMap.isHuawei()
           if(hw){
             Toast.show('暂不支持此功能', {
-              backgroundColor: "#000",
-              opacity: 0.5,
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
             })
             return
           }
@@ -493,8 +493,8 @@ class Home extends React.Component<Props, State> {
         onPressOut={(e: GestureResponderEvent) => {
           if (this.state.currentIndex === -1) {
             Toast.show('请选择模块', {
-              backgroundColor: "#000",
-              opacity: 0.5,
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
             })
             return
           }

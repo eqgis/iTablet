@@ -1,18 +1,19 @@
-import { AppEvent, AppStyle, AppToolBar, Toast ,DataHandler} from '@/utils'
+import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle,  Animated, } from 'react-native'
+import { Image, ScaledSize, TouchableOpacity, View } from 'react-native'
 import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
 import { getGlobalPose, isCoverGuided, setCoverGuided } from '../Actions'
 import ARGuide from '../components/ARGuide'
 import SideBar, { Item } from '../components/SideBar'
-import FillAnimationWrap from '../components/FillAnimationWrap'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
+import BottomMenu, { itemConmonType } from '../components/BottomMenu'
+import AnimationWrap from '../components/AnimationWrap'
 
 interface Props {
   windowSize: ScaledSize
@@ -20,15 +21,11 @@ interface Props {
 
 interface State {
   showScan: boolean
-  showCover: boolean
   showSlider:boolean
   backClick:boolean
   showGuide:boolean
-  btRight:Animated.Value
-  btLeft:Animated.Value
-  showRolling:boolean
-  mainMenu: Item[]
-  showRollingMode: boolean
+  showSide: boolean
+  secondMenuData: itemConmonType[]
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -36,32 +33,19 @@ class CoverView extends React.Component<Props, State> {
   currentRadiusy = 1
   currentDepth = 1
   scanRef: Scan | null = null
-  coverClick = false
-  fixClick = false
   show = true
-  verticalClick = false
-  horizontalClick = false
 
-  isCutMode = false
 
   constructor(props: Props) {
     super(props)
 
     this.state = {
       showScan: true,
-      showCover: false,
       showSlider: false,
       backClick: true,
       showGuide: false,
-      btRight:new Animated.Value(
-        dp(20),
-      ),
-      btLeft:new Animated.Value(
-        dp(20),
-      ),
-      showRolling:false,
-      mainMenu: this.getMainMenuItem(),
-      showRollingMode: false,
+      showSide: true,
+      secondMenuData: [],
     }
   }
 
@@ -70,17 +54,17 @@ class CoverView extends React.Component<Props, State> {
       {
         image: getImage().icon_tool_rectangle,
         title: '全景',
-        action: this.fullScape,
+        action: this.onFullScapePress,
       },
       {
         image: getImage().icon_tool_rectangle,
         title: '挖洞',
-        action: this.cover,
+        action: this.onHolePress,
       },
       {
         image: getImage().icon_tool_rolling,
         title: '卷帘',
-        action: this.rollingMenu,
+        action: this.onRollingPress,
       },
       // {
       //   image: getImage().icon_tool_rolling,
@@ -95,28 +79,111 @@ class CoverView extends React.Component<Props, State> {
     ]
   }
 
-  getCutMenu = (): Item[] => {
+  getCutMenu = (): itemConmonType[] => {
     return [
       {
         image: getImage().icon_tool_rolling,
-        title: '范围',
-        action: this.adjustCoverBounds,
+        name: '范围',
+        action: this.onHoleBoundsPress,
       },
       {
         image: getImage().icon_tool_fix,
-        title: '固定',
-        action: this.fix,
+        name: '固定',
+        action: this.onFixPress,
       }
     ]
-
   }
+
+  getRollingModeMenu = (): itemConmonType[] => {
+    return [
+      {
+        name: '横向',
+        image: getImage().icon_tool_horizontal,
+        action: () => {
+          this.onRollingSelect(0)
+        }
+      },
+      {
+        name: '纵向',
+        image: getImage().icon_tool_vertical,
+        action: () => {
+          this.onRollingSelect(1)
+        }
+      }
+    ]
+  }
+
+  onFullScapePress = () => {
+    this.timeoutTrigger?.active()
+    this._hideSlide()
+    this.stopCover()
+    this.stopRolling()
+  }
+
+  onHolePress = () => {
+    this.timeoutTrigger?.onShowSecondMenu()
+    this._hideSlide()
+    this.stopRolling()
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SARMap.startARCover(layer.name)
+    }
+    this.setState({
+      secondMenuData: this.getCutMenu()
+    })
+  }
+
+  onRollingPress = () => {
+    this.timeoutTrigger?.onShowSecondMenu()
+    this._hideSlide()
+    this.setState({
+      secondMenuData: this.getRollingModeMenu()
+    })
+  }
+
+
+  //二级菜单
+
+  onHoleBoundsPress = () => {
+    if(this.state.showSlider){
+      this.timeoutTrigger?.onBackFromSecondMenu()
+      this.setState({ showSlider: false })
+    }else{
+      this.timeoutTrigger?.onShowSecondMenu()
+      this.setState({ showSlider: true, secondMenuData: [] })
+    }
+  }
+
+  onFixPress = () => {
+    this.timeoutTrigger?.onFirstMenuClick()
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SARMap.startARFix(layer.name)
+    }
+  }
+
+
+  onRollingSelect = (mode: 0 | 1) => {
+    this.timeoutTrigger?.onBackFromSecondMenu()
+    this.rolling(mode)
+    this.setState({secondMenuData: []})
+  }
+
+  _hideSlide = () => {
+    if(this.state.showSlider) {
+      this.setState({
+        showSlider: false
+      })
+    }
+  }
+
 
   arViewDidMount = (): void => {
     if(this.state.showScan) {
       SARMap.setAREnhancePosition()
     }
 
-    AppEvent.addListener('ar_single_click', this.showSideBar)
+    AppEvent.addListener('ar_single_click', this.onSingleClick)
 
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
@@ -131,41 +198,20 @@ class CoverView extends React.Component<Props, State> {
           this.openARModel()
         }
         Toast.show('定位成功',{
-          backgroundColor: "#000",
-          opacity: 0.5,
+          backgroundColor: 'rgba(0,0,0,.5)',
+          textColor: '#fff',
         })
       }
     })
   }
 
-  showSideBar = () => {
-    let right
-    let left
-    if (this.show) {
-      right = -200
-      left = -200
-    }else {
-      right = dp(20)
-      left = dp(20)
-    }
-    this.show = !this.show
-    if(this.show) {
+  onSingleClick = () => {
+    if(!this.state.showSide) {
       this.timeoutTrigger?.onBarShow()
     } else {
       this.timeoutTrigger?.onBarHide()
     }
-    Animated.parallel([
-      Animated.timing(this.state.btRight, {
-        toValue: right,
-        duration: 300,
-        useNativeDriver: false,
-      }),
-      Animated.timing(this.state.btLeft, {
-        toValue: left,
-        duration: 300,
-        useNativeDriver: false,
-      }),
-    ]).start()
+    this.setState({showSide: !this.state.showSide})
   }
 
   showGuide = (show: boolean) => {
@@ -278,54 +324,12 @@ class CoverView extends React.Component<Props, State> {
     }
   }
 
-  fullScape = () => {
-    this.timeoutTrigger?.onFirstMenuClick()
-    this._exitCutMode()
-    this.stopCover()
-    this.stopRolling()
-  }
-
-  cover = () => {
-    this.timeoutTrigger?.onFirstMenuClick()
-    this._enterCutMode()
-    this.stopRolling()
-    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-    if(layer){
-      SARMap.startARCover(layer.name)
-    }
-  }
 
   stopCover = () => {
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
       SARMap.stopARCover(layer.name)
     }
-  }
-
-  adjustCoverBounds = () => {
-    if(this.state.showSlider){
-      this.timeoutTrigger?.onBackFromSecondMenu()
-      this.setState({ showSlider: false })
-    }else{
-      this.timeoutTrigger?.onShowSecondMenu()
-      this.setState({ showSlider: true })
-    }
-  }
-
-  fix = () => {
-    this.timeoutTrigger?.onFirstMenuClick()
-    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-    if(layer){
-      SARMap.startARFix(layer.name)
-    }
-  }
-
-  rollingMenu = () => {
-    this.timeoutTrigger?.onShowSecondMenu()
-    this._exitCutMode()
-    this.setState({
-      showRollingMode: true
-    })
   }
 
   rolling = (type: 0 | 1) => {
@@ -344,36 +348,39 @@ class CoverView extends React.Component<Props, State> {
   }
 
   flow = () => {
-    this._exitCutMode()
+    //
   }
 
   attribute = () => {
-    this._exitCutMode()
+    //
   }
 
-  _enterCutMode = () =>{
-    if(!this.isCutMode) {
-      this.isCutMode = true
-      this.setState({
-        mainMenu: [...this.getMainMenuItem(), ...this.getCutMenu()]
-      })
+
+  onScanPress = async () => {
+    if (this.state.showScan) {
+      this.timeoutTrigger?.onBackFromScan()
+      this.setState({ showScan: false })
+    } else {
+      this.timeoutTrigger?.onShowScan()
+      this._hideSlide()
+      this.startScan()
+      this.stopCover()
+      this.stopRolling()
+      const props = AppToolBar.getProps()
+      await props.closeARMap()
+      await props.setCurrentARLayer()
+      this.setState({ showScan: true })
     }
   }
 
-  _exitCutMode = () => {
-    if(this.isCutMode) {
-      this.isCutMode = false
-      this.setState({mainMenu: this.getMainMenuItem()})
-    }
-  }
-
-  back = async () => {
+  onBackPress = async () => {
     if (this.state.backClick) {
       if (this.state.showScan) {
         this.timeoutTrigger?.onBackFromScan()
         this.setState({ showScan: false })
         return
       }
+      this._hideSlide()
       this.stopCover()
       this.stopRolling()
 
@@ -399,7 +406,6 @@ class CoverView extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
           width: dp(45),
           height: dp(45),
           borderRadius: dp(8),
@@ -408,10 +414,10 @@ class CoverView extends React.Component<Props, State> {
           overflow: 'hidden',
           backgroundColor:'rgba(30,30,30,0.65)',
         }}
-        onPress={this.back}
+        onPress={this.onBackPress}
       >
         <Image
-          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
+          style={{ width: dp(30), height: dp(30) }}
           source={getImage().icon_return}
         />
       </TouchableOpacity>
@@ -477,7 +483,6 @@ class CoverView extends React.Component<Props, State> {
                 this.currentRadiusx = value
               }}
               onEnd={() => {
-                this.fixClick = false
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
                   SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx)
@@ -527,7 +532,6 @@ class CoverView extends React.Component<Props, State> {
                 this.currentRadiusy = value
               }}
               onEnd={() => {
-                this.fixClick = false
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
                   SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy)
@@ -577,7 +581,6 @@ class CoverView extends React.Component<Props, State> {
                 this.currentDepth = value
               }}
               onEnd={() => {
-                this.fixClick = false
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
                   SARMap.setARCoverDepth(layer.name,this.currentDepth)
@@ -598,8 +601,7 @@ class CoverView extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: dp(55),
+          marginTop: dp(15),
           width: dp(45),
           height: dp(45),
           borderRadius: dp(8),
@@ -608,97 +610,63 @@ class CoverView extends React.Component<Props, State> {
           overflow: 'hidden',
           backgroundColor:'rgba(30,30,30,0.65)',
         }}
-        onPress={async () => {
-          if (this.state.showScan) {
-            this.timeoutTrigger?.onBackFromScan()
-            this.setState({ showScan: false })
-          } else {
-            this.timeoutTrigger?.onShowScan()
-            this.startScan()
-            this.stopCover()
-            this.stopRolling()
-            const props = AppToolBar.getProps()
-            await props.closeARMap()
-            await props.setCurrentARLayer()
-            this.setState({ showScan: true })
-          }
-        }}
+        onPress={this.onScanPress}
       >
         <Image
-          style={{ position: 'absolute', width: dp(30), height: dp(30) }}
+          style={{width: dp(30), height: dp(30) }}
           source={getImage().icon_other_scan}
         />
       </TouchableOpacity>
     )
   }
 
-  renderRollingBtn = (item: Item) => {
+  renderRollingMode = () => {
     return (
-      <TouchableOpacity
-        onPress={item.action}
-        style={{
-          width: dp(80),
-          height: dp(80),
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(30,30,30,0.65)',
+      <BottomMenu
+        visible={this.state.secondMenuData.length > 0}
+        onHide={() => {
+          this.timeoutTrigger?.onBackFromSecondMenu()
+          this.setState({secondMenuData: []})
         }}
-      >
-        <Image
-          source={item.image}
-          style={{
-            width: dp(40),
-            height: dp(40)
-          }}
-        />
-        <Text style={[{...AppStyle.h3, color: 'white'}]}>
-          {item.title}
-        </Text>
-      </TouchableOpacity>
+        data={this.state.secondMenuData}
+        isRepeatClickCancelSelected
+      />
     )
   }
 
-  renderRollingMode = () => {
+  renderLeftSide = () => {
     return (
-      <FillAnimationWrap
-        visible={this.state.showRollingMode}
-        animated={'bottom'}
+      <AnimationWrap
+        animated='left'
+        visible={this.state.showSide}
+        range={[-dp(100), dp(20)]}
         style={{
           position: 'absolute',
-          alignSelf: 'center'
-        }}
-        range={[-dp(100), dp(20)]}
-        onHide={() => {
-          this.setState({showRollingMode: false})
+          top: dp(20)
         }}
       >
-        <View style={{
-          borderRadius: dp(10),
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        }}>
-          {this.renderRollingBtn({
-            image: getImage().icon_tool_horizontal,
-            title: '横向',
-            action: () => {
-              this.timeoutTrigger?.onBackFromSecondMenu()
-              this.rolling(0)
-              this.setState({showRollingMode: false})
-            }
-          })}
-          {this.renderRollingBtn({
-            image: getImage().icon_tool_vertical,
-            title: '纵向',
-            action: () => {
-              this.timeoutTrigger?.onBackFromSecondMenu()
-              this.rolling(1)
-              this.setState({showRollingMode: false})
-            }
-          })}
-        </View>
-      </FillAnimationWrap>
+        {!this.state.showGuide && this.renderBack()}
+        {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
+      </AnimationWrap>
+    )
+  }
+
+  renderRightSide = () => {
+    return (
+      <AnimationWrap
+        animated='right'
+        visible={this.state.showSide}
+        range={[-dp(100), dp(20)]}
+        style={{
+          position: 'absolute',
+          top: dp(20)
+        }}
+      >
+        <SideBar
+          sections={[this.getMainMenuItem()]}
+          autoCancel={false}
+        />
+      </AnimationWrap>
     )
   }
 
@@ -711,53 +679,19 @@ class CoverView extends React.Component<Props, State> {
         <TimeoutTrigger
           ref={ref => this.timeoutTrigger = ref}
           timeout={15000}
-          trigger={this.showSideBar}
+          trigger={() => {
+            this.setState({
+              showSide: false
+            })
+          }}
         />
-        <View
-          style={{
-            position: 'absolute',
-            right: 0,
-            width: '100%',
-            height: '100%',
-            // justifyContent: 'center',
-            alignItems: 'flex-end',
-          }}
-        >
 
-          <Animated.View
-            style={{
-              top: dp(20),
-              right: this.state.btRight,
-              flexDirection: 'row',
-            }}
-          >
-            <SideBar
-              sections={[this.state.mainMenu]}
-              showIndicator
-            />
-          </Animated.View>
-
-        </View>
-
-
+        {!this.state.showScan && this.renderRightSide()}
         {this.state.showScan && this.renderScan()}
-        {this.state.showSlider && this.slider()}
-        <Animated.View
-          style={{
-            position: 'absolute',
-            top: dp(20),
-            left: this.state.btLeft,
-            width: dp(60),
-            height: dp(200),
-            overflow: 'hidden',
-          }}
-        >
-
-          {!this.state.showGuide && this.renderBack()}
-          {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
-        </Animated.View>
+        {this.renderLeftSide()}
 
         {this.renderRollingMode()}
+        {this.state.showSlider && this.slider()}
 
 
 

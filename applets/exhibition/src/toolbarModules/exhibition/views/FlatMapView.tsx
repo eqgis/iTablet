@@ -234,7 +234,10 @@ class FlatMapVIew extends React.Component<Props, State> {
         } else {
           this.start(result)
         }
-        Toast.show('定位成功')
+        Toast.show('定位成功', {
+          backgroundColor: 'rgba(0,0,0,.5)',
+          textColor: '#fff',
+        })
       }
     })
     const globlaPose = getGlobalPose()
@@ -482,8 +485,8 @@ class FlatMapVIew extends React.Component<Props, State> {
         <ARArrow
           arrowShowed={() => {
             Toast.show('请按照箭头引导转动屏幕查看地图', {
-              backgroundColor: "#000",
-              opacity: 0.5,
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
             })
           }}
         />

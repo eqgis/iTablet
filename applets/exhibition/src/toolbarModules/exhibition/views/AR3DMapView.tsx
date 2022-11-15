@@ -270,7 +270,10 @@ class AR3DMapView extends React.Component<Props, State> {
         } else {
           this.start(result)
         }
-        Toast.show('定位成功')
+        Toast.show('定位成功', {
+          backgroundColor: 'rgba(0,0,0,.5)',
+          textColor: '#fff',
+        })
       }
     })
   }
@@ -285,7 +288,7 @@ class AR3DMapView extends React.Component<Props, State> {
       const relativePositin: Vector3 = {
         x: 0,
         y: 0,
-        z: -0.5,
+        z: -1,
       }
       this.result = pose
       SExhibition.addMapviewElement(0,{
@@ -553,8 +556,8 @@ class AR3DMapView extends React.Component<Props, State> {
 
         <ARArrow
           arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图',{
-            backgroundColor: "#000",
-            opacity: 0.5,
+            backgroundColor: 'rgba(0,0,0,.5)',
+            textColor: '#fff',
           })}
         />
 

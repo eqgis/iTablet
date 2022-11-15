@@ -104,8 +104,8 @@ class PresentationView extends React.Component<Props, State> {
         {this.renderBack()}
         <ARArrow
           arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看地图集', {
-            backgroundColor: "#000",
-            opacity: 0.5,
+            backgroundColor: 'rgba(0,0,0,.5)',
+            textColor: '#fff',
           })}
         />
       </>

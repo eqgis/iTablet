@@ -946,7 +946,7 @@ class DoctorCC extends Component<Props, State> {
     this.timeoutTrigger?.onShowSecondMenu()
     if(this.ARModel) {
       SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
-      SARMap.setAction(ARAction.SCALE)
+      // SARMap.setAction(ARAction.SCALE)
     }
 
     this.setState({
@@ -2029,6 +2029,18 @@ class DoctorCC extends Component<Props, State> {
     return (
       <View style={[styles.toolView]}>
         <View style={styles.toolRow}>
+          {/* <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12)}}>位置调整</Text> */}
+          <TouchableOpacity
+            style={styles.closeBtn}
+            onPress={this.operationBtnOnpress}
+          >
+            <Image
+              style={styles.closeImg}
+              source={getImage().icon_close}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.toolRow}>
           <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
           <SlideBar
             // ref={ref => this.scaleBar = ref}
@@ -2720,6 +2732,22 @@ const styles = StyleSheet.create({
     flex: 1,
     height: dp(30),
     marginLeft: dp(20),
+  },
+  closeBtn: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: dp(10),
+    width: dp(40),
+    height: dp(40),
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  closeImg: {
+    position: 'absolute',
+    width: dp(12),
+    height: dp(12),
   },
 
 })

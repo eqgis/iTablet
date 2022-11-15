@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { ScaledSize, TouchableOpacity, Image, ViewStyle, View, Text, ScrollView, StyleSheet, ImageSourcePropType, Platform, Animated, StyleProp, NativeModules } from "react-native"
+import { ScaledSize, TouchableOpacity, Image, View, Text, StyleSheet, ImageSourcePropType, Platform, Animated, NativeModules } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { AppEvent, AppToolBar, Toast ,DataHandler, SoundUtil} from '@/utils'
@@ -158,6 +158,8 @@ class DoctorCC extends Component<Props, State> {
   actionData: Array<actionItemType> = []
 
   timeoutTrigger: TimeoutTrigger | null = null
+
+  sideBar: SideBar | null = null
 
   scaleValue = 100
   show = true
@@ -1944,6 +1946,7 @@ class DoctorCC extends Component<Props, State> {
     return (
       <View style={{marginTop: dp(20)}}>
         <SideBar
+          ref={ref => this.sideBar = ref}
           sections={[
             this.getSideBarSpeakItem(),
             this.getSideBarItems()
@@ -1968,6 +1971,7 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             isSecondaryShow: false,
           })
+          this.sideBar?.clear()
         }}
       />
     )
@@ -1993,6 +1997,7 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             isSecondaryShow: false,
           })
+          this.sideBar?.clear()
         }}
       />
     )
@@ -2012,6 +2017,7 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             isSecondaryShow: false,
           })
+          this.sideBar?.clear()
         }}
       />
     )
@@ -2031,6 +2037,7 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             isSecondaryShow: false,
           })
+          this.sideBar?.clear()
         }}
       />
     )
@@ -2555,11 +2562,11 @@ class DoctorCC extends Component<Props, State> {
               height: dp(130),
             }}
           >
-            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()} */}
-            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()} */}
-            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()} */}
-            {/* {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
+            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
+            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
+            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
+            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
+            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
             {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()} */}
             {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
 

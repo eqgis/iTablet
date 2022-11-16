@@ -2000,6 +2000,7 @@ class DoctorCC extends Component<Props, State> {
           }
         }}
         visible={this.state.isSecondaryShow}
+        imageStyle={{width: dp(80), height: dp(80), marginTop: dp(5)}}
         onHide={()=> {
           this.setState({
             isSecondaryShow: false,
@@ -2020,6 +2021,7 @@ class DoctorCC extends Component<Props, State> {
         currentKey={this.state.selectAnimationKey}
         onSelect={this.actionItemOnpress}
         visible={this.state.isSecondaryShow}
+        imageStyle={{width: dp(90), height: dp(90), marginTop: -dp(5)}}
         onHide={()=> {
           this.setState({
             isSecondaryShow: false,

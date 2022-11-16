@@ -1,6 +1,6 @@
 import { dp } from "imobile_for_reactnative/utils/size"
 import React, { Component } from "react"
-import { ImageSourcePropType, ScrollView, View, ViewStyle, TouchableOpacity, Text, Image } from "react-native"
+import { ImageSourcePropType, ScrollView, View, ViewStyle, TouchableOpacity, Text, Image, ImageStyle, Dimensions} from "react-native"
 import FillAnimationWrap from "./FillAnimationWrap"
 
 export interface itemConmonType {
@@ -28,6 +28,7 @@ interface Props<T> {
 	containerStyle?: ViewStyle
 	/** 单个选项的样式 */
 	itemStyle?: ViewStyle
+  imageStyle?: ImageStyle & ViewStyle
 	/** 渲染界面的数据数组 */
 	data: Array<T>
 	/** 重复点击是否取消当前选择项 */
@@ -125,8 +126,9 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
             borderRadius: dp(8),
             overflow: 'hidden',
             // opacity: 0.9,
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             alignItems: 'center',
+            position:'relative',
           },
           this.props?.itemStyle,
         ]}
@@ -138,10 +140,11 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
           source={item.image}
           style={[
             {width: dp(60), height: dp(60),marginTop: dp(10)},
+            this.props?.imageStyle,
           ]}
         />
         <View style={[
-          {backgroundColor: '#000', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center'},
+          {backgroundColor: '#000', width: '100%', height: dp(20), justifyContent: 'center', alignItems: 'center', position:'absolute', bottom: dp(0),left:0},
           (this.state.selectIndex === index || this.state.selectKey === item.key) && {
             backgroundColor:"#f24f02",
           },
@@ -155,15 +158,20 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
   }
 
   render() {
+    const windowWidth = Dimensions.get("window").width
+    let left = 0
+    if(this.state.data.length * dp(100) >= windowWidth - dp(35)) {
+      left = dp(35)
+    }
     return(
       <FillAnimationWrap
         visible={this.props.visible}
         animated={'bottom'}
         style={{
           position: 'absolute',
-          alignSelf: 'center'
+          alignSelf: 'center',
         }}
-        range={[-dp(150), dp(20)]}
+        range={[-dp(150), -dp(5)]}
         onHide={() => {
           // this.setState({showRollingMode: false})
           this.props?.onHide?.()
@@ -172,7 +180,7 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={[{maxWidth: dp(600)}]}
+          style={[{marginLeft: left, flex: 1}]}
           contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
         >
           {

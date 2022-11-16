@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View ,Animated,StyleSheet} from 'react-native'
+import { Image, ScaledSize, Text, TouchableOpacity, View ,Animated,StyleSheet,EmitterSubscription} from 'react-native'
 import { AppEvent, AppStyle, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
@@ -113,11 +113,16 @@ class AR3DMapView extends React.Component<Props, State> {
   scaleValue = 10
   rotationValue = 40
 
+  listeners: {
+    addListener:EmitterSubscription | undefined,
+    infoListener:EmitterSubscription | undefined
+  } | null = null
+
   constructor(props: Props) {
     super(props)
 
     this.state = {
-      showScan: true,
+      showScan: false,
       showShape:false,
       showGuide: false,
       btRight:new Animated.Value(
@@ -334,9 +339,20 @@ class AR3DMapView extends React.Component<Props, State> {
 
   arViewDidMount = (): void => {
     this.importData().then(() => {
-      if(this.state.showScan) {
-        SARMap.setAREnhancePosition()
-      }
+      // if(this.state.showScan) {
+      //   SARMap.setAREnhancePosition()
+      // }
+      this.listeners = SARMap.addMeasureStatusListeners({
+        addListener: async result => {
+          if (result) {
+            this.setState({
+              showScan: true,
+            })
+            // 启用增强定位
+            SARMap.setAREnhancePosition()
+          }
+        },
+      })
     })
 
     AppEvent.addListener('ar_single_click', () =>{
@@ -532,6 +548,7 @@ class AR3DMapView extends React.Component<Props, State> {
       return
     }
     AppEvent.removeListener('ar_image_tracking_result')
+    this.listeners && this.listeners.addListener?.remove()
     AppEvent.removeListener('ar_single_click')
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()

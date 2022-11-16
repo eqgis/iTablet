@@ -2,7 +2,7 @@ import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, TouchableOpacity, View } from 'react-native'
+import { Image, ScaledSize, TouchableOpacity, View, EmitterSubscription } from 'react-native'
 import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
@@ -34,13 +34,17 @@ class CoverView extends React.Component<Props, State> {
   currentDepth = 1
   scanRef: Scan | null = null
   show = true
+  listeners: {
+    addListener:EmitterSubscription | undefined,
+    infoListener:EmitterSubscription | undefined
+  } | null = null
 
 
   constructor(props: Props) {
     super(props)
 
     this.state = {
-      showScan: true,
+      showScan: false,
       showSlider: false,
       backClick: true,
       showGuide: false,
@@ -179,9 +183,20 @@ class CoverView extends React.Component<Props, State> {
 
 
   arViewDidMount = (): void => {
-    if(this.state.showScan) {
-      SARMap.setAREnhancePosition()
-    }
+    // if(this.state.showScan) {
+    //   SARMap.setAREnhancePosition()
+    // }
+    this.listeners = SARMap.addMeasureStatusListeners({
+      addListener: async result => {
+        if (result) {
+          this.setState({
+            showScan: true,
+          })
+          // 启用增强定位
+          SARMap.setAREnhancePosition()
+        }
+      },
+    })
 
     AppEvent.addListener('ar_single_click', this.onSingleClick)
 
@@ -385,6 +400,7 @@ class CoverView extends React.Component<Props, State> {
       this.stopRolling()
 
       AppEvent.removeListener('ar_image_tracking_result')
+      this.listeners && this.listeners.addListener?.remove()
       AppEvent.removeListener('ar_single_click')
       if (this.state.showScan) {
         SARMap.stopAREnhancePosition()

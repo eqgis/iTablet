@@ -1,0 +1,24 @@
+{
+  "animations": [
+    {
+      "endFrame": -1,
+      "startFrame": 0,
+      "delay": 0,
+      "duration": 17,
+      "elementID": 1,
+      "layerName": "defaultArModelLayer@ARMAP_DEFAULT",
+      "modelAnimationIndex": 5,
+      "order": 0,
+      "repeatCount": 0,
+      "name": "说话",
+      "type": 1,
+      "category": 2
+    }
+  ],
+  "delay": 0,
+  "order": 0,
+  "repeatCount": 0,
+  "name": "路线一",
+  "type": 2,
+  "category": 2
+}

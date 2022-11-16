@@ -349,6 +349,34 @@ class DoctorCC extends Component<Props, State> {
 
       },
     })
+
+    // 添加推演动画里的子项动画开始监听
+    SARMap.addARAnimationItemStartListen({
+      callback: async (result: any) => {
+        if(result === '说话') {
+          let source = ""
+          switch(this.state.selectRouteKey) {
+            case "position1" :
+              source = "lightinsight"
+              break
+            case "position2" :
+              source = "corporatemission"
+              break
+            case "position3" :
+              source = "researchinstitute"
+              break
+          }
+          if(source !== "") {
+            SoundUtil.play(source, false, {
+              afterAction: () => {
+                SoundUtil.stop(source)
+              }
+            })
+          }
+        }
+
+      },
+    })
   }
 
   componentDidUpdate = () => {
@@ -430,6 +458,9 @@ class DoctorCC extends Component<Props, State> {
     this.soundSource.map((item) => {
       SoundUtil.setSound(item, `${item}.mp3`, Sound.MAIN_BUNDLE)
     })
+    SoundUtil.setSound("lightinsight", `lightinsight.mp3`, Sound.MAIN_BUNDLE)
+    SoundUtil.setSound("corporatemission", `corporatemission.mp3`, Sound.MAIN_BUNDLE)
+    SoundUtil.setSound("researchinstitute", `researchinstitute.mp3`, Sound.MAIN_BUNDLE)
   }
 
   /** 博士的解说数据 */
@@ -992,82 +1023,161 @@ class DoctorCC extends Component<Props, State> {
     }
 
     let route = getRoute().route0_11
-    switch(this.state.selectRouteKey) {
-      case "position1" : {
-        if(item.key === 'position2') {
-          if(this.state.selectReloaderKey === 'doctor') {
-            route = getRoute().route0_12
-          } else if(this.state.selectReloaderKey === 'doctorStudy') {
-            route = getRoute().route1_12
+    if(this.state.selectType === 'photo') {
+      route = getRoute().route0_11
+      switch(this.state.selectRouteKey) {
+        case "position1" : {
+          if(item.key === 'position2') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_12
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_12
+            }
+          } else if(item.key === 'position3') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_13
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_13
+            }
+          } else {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_11
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_11
+            }
           }
-        } else if(item.key === 'position3') {
-          if(this.state.selectReloaderKey === 'doctor') {
-            route = getRoute().route0_13
-          } else if(this.state.selectReloaderKey === 'doctorStudy') {
-            route = getRoute().route1_13
+          break
+        }
+        case 'position2' : {
+          if(item.key === 'position1') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_21
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_21
+            }
+          } else if(item.key === 'position3') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_23
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_23
+            }
+          } else {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_11
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_11
+            }
           }
-        } else {
+          break
+        }
+        case 'position3' : {
+          if(item.key === 'position1') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_31
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_31
+            }
+          } else if(item.key === 'position2') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_32
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_32
+            }
+          } else {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().route0_11
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().route1_11
+            }
+          }
+          break
+        }
+        default: {
           if(this.state.selectReloaderKey === 'doctor') {
             route = getRoute().route0_11
           } else if(this.state.selectReloaderKey === 'doctorStudy') {
             route = getRoute().route1_11
           }
         }
-        break
       }
-      case 'position2' : {
-        if(item.key === 'position1') {
-          if(this.state.selectReloaderKey === 'doctor') {
-            route = getRoute().route0_21
-          } else if(this.state.selectReloaderKey === 'doctorStudy') {
-            route = getRoute().route1_21
+    } else if(this.state.selectType === 'video') {
+      route = getRoute().routev_0_11
+      switch(this.state.selectRouteKey) {
+        case "position1" : {
+          if(item.key === 'position2') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_12
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_12
+            }
+          } else if(item.key === 'position3') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_13
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_13
+            }
+          } else {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_11
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_11
+            }
           }
-        } else if(item.key === 'position3') {
-          if(this.state.selectReloaderKey === 'doctor') {
-            route = getRoute().route0_23
-          } else if(this.state.selectReloaderKey === 'doctorStudy') {
-            route = getRoute().route1_23
-          }
-        } else {
-          if(this.state.selectReloaderKey === 'doctor') {
-            route = getRoute().route0_11
-          } else if(this.state.selectReloaderKey === 'doctorStudy') {
-            route = getRoute().route1_11
-          }
+          break
         }
-        break
-      }
-      case 'position3' : {
-        if(item.key === 'position1') {
-          if(this.state.selectReloaderKey === 'doctor') {
-            route = getRoute().route0_31
-          } else if(this.state.selectReloaderKey === 'doctorStudy') {
-            route = getRoute().route1_31
+        case 'position2' : {
+          if(item.key === 'position1') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_21
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_21
+            }
+          } else if(item.key === 'position3') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_23
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_23
+            }
+          } else {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_22
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_22
+            }
           }
-        } else if(item.key === 'position2') {
-          if(this.state.selectReloaderKey === 'doctor') {
-            route = getRoute().route0_32
-          } else if(this.state.selectReloaderKey === 'doctorStudy') {
-            route = getRoute().route1_32
-          }
-        } else {
-          if(this.state.selectReloaderKey === 'doctor') {
-            route = getRoute().route0_11
-          } else if(this.state.selectReloaderKey === 'doctorStudy') {
-            route = getRoute().route1_11
-          }
+          break
         }
-        break
-      }
-      default: {
-        if(this.state.selectReloaderKey === 'doctor') {
-          route = getRoute().route0_11
-        } else if(this.state.selectReloaderKey === 'doctorStudy') {
-          route = getRoute().route1_11
+        case 'position3' : {
+          if(item.key === 'position1') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_31
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_31
+            }
+          } else if(item.key === 'position2') {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_32
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_32
+            }
+          } else {
+            if(this.state.selectReloaderKey === 'doctor') {
+              route = getRoute().routev_0_33
+            } else if(this.state.selectReloaderKey === 'doctorStudy') {
+              route = getRoute().routev_1_33
+            }
+          }
+          break
+        }
+        default: {
+          if(this.state.selectReloaderKey === 'doctor') {
+            route = getRoute().routev_0_11
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            route = getRoute().routev_1_11
+          }
         }
       }
     }
-
     const animation = JSON.parse(JSON.stringify(route))
 
     // 1. 添加动画

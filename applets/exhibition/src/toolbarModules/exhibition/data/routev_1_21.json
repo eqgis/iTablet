@@ -1,0 +1,97 @@
+{
+	"animations": [
+		{
+			"degrees": [
+				52.125
+			],
+			"delay": 0,
+			"duration": 0.2,
+			"nodeType": 1,
+			"elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+			"rotationAxis": {
+				"z": 0,
+				"y": 1,
+				"x": 0
+			},
+			"order": 0,
+			"repeatCount": 0,
+			"name": "转身",
+			"type": 0,
+			"category": 2
+		},
+		{
+			"translations": [
+				{
+					"z": 1.75,
+					"y": 0,
+					"x": 2.26
+				}
+			],
+			"duration": 4.6,
+			"elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+			"delay": 0,
+			"nodeType": 0,
+			"order": 0,
+			"repeatCount": 0,
+			"name": "位移",
+			"type": 0,
+			"category": 2
+		},
+		{
+			"endFrame": -1,
+			"startFrame": 0,
+			"delay": 0,
+			"duration": 4.6,
+			"elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+			"modelAnimationIndex": 1,
+			"order": 1,
+			"repeatCount": 0,
+			"name": "走",
+			"type": 1,
+			"category": 2
+		},
+		{
+			"degrees": [
+				-123.69
+			],
+			"delay": 0,
+			"duration": 0.2,
+			"nodeType": 1,
+			"elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+			"rotationAxis": {
+				"z": 0,
+				"y": 1,
+				"x": 0
+			},
+			"order": 0,
+			"repeatCount": 0,
+			"name": "转身",
+			"type": 0,
+			"category": 2
+		},
+		{
+			"endFrame": -1,
+			"startFrame": 0,
+			"delay": 0,
+			"duration": 28,
+			"elementID": 3,
+			"layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+			"modelAnimationIndex": 5,
+			"order": 0,
+			"repeatCount": 0,
+			"name": "说话",
+			"type": 1,
+			"category": 2
+		}
+	],
+	"delay": 0,
+	"order": 0,
+	"repeatCount": 0,
+	"name": "位置二转一",
+	"type": 2,
+	"category": 2
+}

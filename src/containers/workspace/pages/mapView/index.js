@@ -40,6 +40,7 @@ import {
   setDatumPoint,
   showAR,
   arPoiSearch,
+  setBackgroundSoundPlayState,
 } from '../../../../redux/models/setting'
 import { setMapSearchHistory } from '../../../../redux/models/histories'
 import { setSharing } from '../../../../redux/models/online'
@@ -120,6 +121,7 @@ const mapStateToProps = state => ({
   peripheralDevice: state.setting.toJS().peripheralDevice,
   essentialInfo: state.location.toJS().essentialInfo,
   showARLabel: state.setting.toJS().showARLabel,
+  backgroundSoundPlaystate: state.setting.toJS().backgroundSoundPlaystate,
 })
 
 const mapDispatchToProps = {
@@ -178,6 +180,7 @@ const mapDispatchToProps = {
   arPoiSearch,
   setAIClassifyModel,
   setAIDetectModel,
+  setBackgroundSoundPlayState,
 }
 
 export default connect(

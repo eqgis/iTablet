@@ -22,7 +22,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './redux/models/nav'
 import { setUser, setUsers, deleteUser } from './redux/models/user'
-import { setAgreeToProtocol, setLanguage, setMapSetting } from './redux/models/setting'
+import { setAgreeToProtocol, setLanguage, setMapSetting, setBackgroundSoundPlayState} from './redux/models/setting'
 import { setPointStateText } from './redux/models/location'
 import {
   setEditLayer,
@@ -207,6 +207,8 @@ class AppRoot extends Component {
     setMapAnalystGuide: PropTypes.func,
     loadAddedModule: PropTypes.func,
     setPointStateText: PropTypes.func,
+    backgroundSoundPlaystate: PropTypes.bool,
+    setBackgroundSoundPlayState: PropTypes.func,
   }
 
   /** 是否是华为设备 */
@@ -931,9 +933,13 @@ class AppRoot extends Component {
           this.props.setShow({ orientation: orientation })
         })
       }
-      SoundUtil.play('background', true)
+      if(this.props.backgroundSoundPlaystate){
+        SoundUtil.play('background', true)
+        this.props.setBackgroundSoundPlayState(true)
+      }
     } else if (appState === 'background') {
       SoundUtil.pauseAll()
+      this.props.setBackgroundSoundPlayState(false)
     }
   }
 
@@ -1302,6 +1308,7 @@ const mapStateToProps = state => {
     appConfig: state.appConfig.toJS(),
     version: state.home.toJS().version,
     baseMaps: state.map.toJS().baseMaps,
+    backgroundSoundPlaystate: state.setting.toJS().backgroundSoundPlaystate,
   }
 }
 
@@ -1339,6 +1346,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setBaseMap,
   loadAddedModule,
   setPointStateText,
+  setBackgroundSoundPlayState,
 })(AppRoot)
 
 const App = () =>

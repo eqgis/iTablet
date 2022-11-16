@@ -2,7 +2,7 @@ import { AppEvent, AppToolBar, Toast, AppLog } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScaledSize, ScrollView, StyleSheet, Text, TouchableOpacity, View, EmitterSubscription } from 'react-native'
 import Scan from '../components/Scan'
 import { SARMap, FileTools, IARTransform, ARAction, ARLayerType } from 'imobile_for_reactnative'
 import { Point3D } from 'imobile_for_reactnative/types/data'
@@ -225,6 +225,10 @@ class SandBoxView extends React.Component<Props, State> {
   lastLayerStatus: SceneLayerStatus | undefined // 图层上一次大小比例
   toolView: ToolView | undefined | null
   timeoutTrigger: TimeoutTrigger | null = null
+  listeners: {
+    addListener:EmitterSubscription | undefined,
+    infoListener:EmitterSubscription | undefined
+  } | null = null
 
   constructor(props: Props) {
     super(props)
@@ -232,7 +236,7 @@ class SandBoxView extends React.Component<Props, State> {
     this.state = {
       showGuide: false,
       showSide: true,
-      showScan: true,
+      showScan: false,
       showCover: false,
 
       toolType: '',
@@ -243,7 +247,19 @@ class SandBoxView extends React.Component<Props, State> {
   }
 
   arViewDidMount = (): void => {
-    SARMap.setAREnhancePosition()
+    // SARMap.setAREnhancePosition()
+    this.listeners = SARMap.addMeasureStatusListeners({
+      addListener: async result => {
+        if (result) {
+          this.setState({
+            showScan: true,
+          })
+          // 启用增强定位
+          SARMap.setAREnhancePosition()
+        }
+      },
+    })
+
     SARMap.setAction(ARAction.NULL)
     AppEvent.addListener('ar_image_tracking_result', async result => {
       this.pose = result
@@ -550,6 +566,7 @@ class SandBoxView extends React.Component<Props, State> {
     })
     await this.arrowTricker(false)
     AppEvent.removeListener('ar_image_tracking_result')
+    this.listeners && this.listeners.addListener?.remove()
     AppEvent.removeListener('ar_single_click', this.onSingleClick)
     if (this.state.showScan) {
       await SARMap.stopAREnhancePosition()

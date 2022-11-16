@@ -23,6 +23,7 @@ import { getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
 import {closeARMap, createARMap, saveARMap} from '@/redux/models/armap'
 import { setPipeLineAttribute, changeShowAttributeElement } from "@/redux/models/arattribute"
 import { ScaledSize } from "react-native"
+import { setBackgroundSoundPlayState } from "@/redux/models/setting"
 
 const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 
@@ -70,6 +71,7 @@ const mapStateToProp = (state: RootState) => ({
   currentUser: state.user.toJS().currentUser,
   pipeLineAttribute: state.arattribute.pipeLineAttribute,
   elementAttribute: state.arattribute.elementAttribute,
+  backgroundSoundPlaystate: state.setting.toJS().backgroundSoundPlaystate,
 })
 
 const mapDispatch = {
@@ -82,6 +84,7 @@ const mapDispatch = {
   setCurrentARLayer,
   setPipeLineAttribute,
   changeShowAttributeElement,
+  setBackgroundSoundPlayState,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

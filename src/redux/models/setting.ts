@@ -41,6 +41,8 @@ export const ARPOISEARCH_VIEW = 'ARPOISEARCH_VIEW'
 export const SET_AI_DETECT_MODEL = 'SET_AI_DETECT_MODEL'
 export const SET_AI_CLASSIFY_MODEL = 'SET_AI_CLASSIFY_MODEL'
 const SET_ARLABEL = 'SET_ARLABEL'
+
+export const BACKGROUND_SOUND_PLAY_STATE_SET = 'BACKGROUND_SOUND_PLAY_STATE_SET' // 展厅背景音乐
 // Actions
 // --------------------------------------------------
 
@@ -291,6 +293,17 @@ export const setAIClassifyModel = (model: any) => async (dispatch: (arg0: { type
   })
 }
 
+/** ======================= Exhibition App start========================== */
+
+export const setBackgroundSoundPlayState = (params: any) => async (dispatch: (arg0: { type: string; payload: any }) => any) => {
+  await dispatch({
+    type: BACKGROUND_SOUND_PLAY_STATE_SET,
+    payload: params,
+  })
+}
+/** ======================= Exhibition App end========================== */
+
+
 
 const defaultMapLegend: {[key in keyof Legend]?: Legend[key]} = (() => {
   let _mapLegend: {[key in keyof Legend]?: Legend[key]} = {}
@@ -364,6 +377,7 @@ const initialState = fromJS({
   poiSearch:false,
   aiDetectData: {},
   aiClassifyData: {},
+  backgroundSoundPlaystate: true,
 })
 
 interface Legend {
@@ -426,6 +440,7 @@ interface SettingState {
   poiSearch: boolean,
   aiDetectData: {[key: string]: any},
   aiClassifyData: {[key: string]: any},
+  backgroundSoundPlaystate:boolean,
 }
 
 type SettingStateType = Record<SettingState> & SettingState
@@ -575,6 +590,10 @@ export default handleActions<SettingStateType>(
     },
     [`${SET_AI_CLASSIFY_MODEL}`]: (state, { payload }) => {
       return state.setIn(['aiClassifyData'], fromJS(payload))
+    },
+    [`${BACKGROUND_SOUND_PLAY_STATE_SET}`]: (state, { payload }) => {
+      console.warn("background sound is play: " + payload)
+      return state.setIn(['backgroundSoundPlaystate'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       let data: SettingStateType = ModelUtils.checkModel(

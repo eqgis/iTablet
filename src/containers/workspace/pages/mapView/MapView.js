@@ -269,6 +269,8 @@ export default class MapView extends React.Component {
     aiClassifyData: PropTypes.object,
     setAIClassifyModel: PropTypes.func,
     setAIDetectModel: PropTypes.func,
+    backgroundSoundPlaystate: PropTypes.bool,
+    setBackgroundSoundPlayState: PropTypes.func,
   }
 
   /** 是否导航中 */
@@ -1960,7 +1962,10 @@ export default class MapView extends React.Component {
       }
       Platform.OS === 'android' && SplashScreen.hide()
 
-      SoundUtil.play('background', true)
+      if(this.props.backgroundSoundPlaystate){
+        SoundUtil.play('background', true)
+        this.props.setBackgroundSoundPlayState(true)
+      }
     }.bind(this)())
   }
 

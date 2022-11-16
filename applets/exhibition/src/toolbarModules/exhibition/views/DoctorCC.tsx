@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { ScaledSize, TouchableOpacity, Image, View, Text, StyleSheet, ImageSourcePropType, Platform, Animated, NativeModules } from "react-native"
+import { ScaledSize, TouchableOpacity, Image, View, Text, StyleSheet, ImageSourcePropType, Platform, Animated, NativeModules, EmitterSubscription } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { AppEvent, AppToolBar, Toast ,DataHandler, SoundUtil} from '@/utils'
@@ -22,6 +22,7 @@ import { IARTransform } from "@/containers/workspace/components/ToolBar/modules/
 import ScanWrap from "../components/ScanWrap"
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import BottomMenu from "../components/BottomMenu"
+import FillAnimationWrap from "../components/FillAnimationWrap"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -156,6 +157,10 @@ class DoctorCC extends Component<Props, State> {
 
   /** 动作的渲染数据 */
   actionData: Array<actionItemType> = []
+  listeners: {
+    addListener:EmitterSubscription | undefined,
+    infoListener:EmitterSubscription | undefined
+  } | null = null
 
   timeoutTrigger: TimeoutTrigger | null = null
 
@@ -167,7 +172,7 @@ class DoctorCC extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      showScan: true,
+      showScan: false,
       selectType: 'null',
       animations: [],
       selectAnimationKey: -1,
@@ -211,8 +216,19 @@ class DoctorCC extends Component<Props, State> {
 
     this.getDoctorData()
     await this.openDoctorARMap()
-    // 启用增强定位
-    SARMap.setAREnhancePosition()
+
+    this.listeners = SARMap.addMeasureStatusListeners({
+      addListener: async result => {
+        if (result) {
+          this.setState({
+            showScan: true,
+          })
+          // 启用增强定位
+          SARMap.setAREnhancePosition()
+        }
+      },
+    })
+
     // 添加监听
     AppEvent.addListener('ar_image_tracking_result', async (result) => {
       if(result) {
@@ -852,6 +868,7 @@ class DoctorCC extends Component<Props, State> {
     }
     // 移除监听
     AppEvent.removeListener('ar_image_tracking_result')
+    this.listeners && this.listeners.addListener?.remove()
     // 移除语音结束监听
     SARMap.removeSpeakStopListener()
     SARMap.removeStopARAnimationListen()
@@ -1469,6 +1486,7 @@ class DoctorCC extends Component<Props, State> {
         console.warn(this.state.isBackground + " - " + SoundUtil.isPlaying("background"))
         if(this.state.isBackground && SoundUtil.isPlaying("background")) {
           SoundUtil.stop("background", () => {
+            AppToolBar.getProps().setBackgroundSoundPlayState(false)
           })
         }
 
@@ -1480,6 +1498,7 @@ class DoctorCC extends Component<Props, State> {
             }
             if(this.state.isBackground) {
               SoundUtil.play("background",true)
+              AppToolBar.getProps().setBackgroundSoundPlayState(true)
             }
           }
         })
@@ -1939,6 +1958,7 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  /** 扫描界面 */
   renderScan = () => {
     return <ScanWrap windowSize={this.props.windowSize} hint={'请对准地面上的二维码进行扫描'}/>
   }
@@ -1996,6 +2016,7 @@ class DoctorCC extends Component<Props, State> {
           }
         }}
         visible={this.state.isSecondaryShow}
+        imageStyle={{width: dp(80), height: dp(80), marginTop: dp(5)}}
         onHide={()=> {
           this.setState({
             isSecondaryShow: false,
@@ -2016,6 +2037,7 @@ class DoctorCC extends Component<Props, State> {
         currentKey={this.state.selectAnimationKey}
         onSelect={this.actionItemOnpress}
         visible={this.state.isSecondaryShow}
+        imageStyle={{width: dp(90), height: dp(90), marginTop: -dp(5)}}
         onHide={()=> {
           this.setState({
             isSecondaryShow: false,
@@ -2061,41 +2083,54 @@ class DoctorCC extends Component<Props, State> {
       scale: 100,
     }
     return (
-      <View style={[styles.toolView]}>
-        <View style={styles.toolRow}>
-          {/* <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12)}}>位置调整</Text> */}
-          <TouchableOpacity
-            style={styles.closeBtn}
-            onPress={this.operationBtnOnpress}
-          >
-            <Image
-              style={styles.closeImg}
-              source={getImage().icon_close}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
-          <SlideBar
+      <FillAnimationWrap
+        visible={this.state.isSecondaryShow}
+        animated={'bottom'}
+        style={{
+          position: 'absolute',
+          alignSelf: 'flex-start',
+        }}
+        range={[-dp(150), dp(20)]}
+        onHide={() => {
+          this.setState({isSecondaryShow: false})
+        }}
+      >
+        <View style={[styles.toolView]}>
+          <View style={styles.toolRow}>
+            <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"位置调整"}</Text>
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={this.operationBtnOnpress}
+            >
+              <Image
+                style={styles.closeImg}
+                source={getImage().icon_cancel02}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.toolRow}>
+            <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
+            <SlideBar
             // ref={ref => this.scaleBar = ref}
-            style={styles.slideBar}
-            range={[50, 200]}
-            defaultMaxValue={this.scaleValue}
-            barColor={'#FF6E51'}
-            onMove={loc => {
-              this.timeoutTrigger?.onBackFromSecondMenu()
-              const scale = loc / 100 - 1
-              transformData = {
-                ...transformData,
-                scale: scale,
-                type: 'scale',
-              }
-              SARMap.setARElementTransform(transformData)
-              this.scaleValue = loc
-            }}
-          />
+              style={styles.slideBar}
+              range={[50, 200]}
+              defaultMaxValue={this.scaleValue}
+              barColor={'#FF6E51'}
+              onMove={loc => {
+                this.timeoutTrigger?.onBackFromSecondMenu()
+                const scale = loc / 100 - 1
+                transformData = {
+                  ...transformData,
+                  scale: scale,
+                  type: 'scale',
+                }
+                SARMap.setARElementTransform(transformData)
+                this.scaleValue = loc
+              }}
+            />
+          </View>
         </View>
-      </View>
+      </FillAnimationWrap>
     )
   }
 
@@ -2546,42 +2581,12 @@ class DoctorCC extends Component<Props, State> {
           }}
         />
         {/* 右边按钮的响应界面 */}
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            width: '100%',
-            height: '100%',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            // alignItems: 'flex-end',
-          }}
-        >
-          <Animated.View
-            style={{
-              bottom: this.state.btBottom,
-              // flexDirection: 'row',
-              width: '100%',
-              height: dp(130),
-            }}
-          >
-            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
-            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()} */}
-            {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
-
-          </Animated.View>
-
-        </View>
-
         {!this.state.isShowFull && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
         {!this.state.isShowFull && this.state.selectType === 'action' && this.renderActionSelected()}
         {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
         {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
+        {this.state.isShowFull && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
 
         {/* 右边按钮 */}
         <View
@@ -2753,9 +2758,10 @@ const styles = StyleSheet.create({
   },
 
   toolView: {
-    position: 'absolute',
-    left: dp(22),
-    bottom: dp(22),
+    // position: 'absolute',
+    // left: dp(22),
+    // bottom: dp(22),
+    marginLeft: dp(22),
     width: dp(360),
     backgroundColor: '#rgba(0,0,0,0.5)',
     borderRadius: dp(10),

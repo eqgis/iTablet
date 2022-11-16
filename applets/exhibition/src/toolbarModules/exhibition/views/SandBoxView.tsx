@@ -1,4 +1,4 @@
-import { AppEvent, AppToolBar, Toast, AppLog, DataHandler } from '@/utils'
+import { AppEvent, AppToolBar, Toast, AppLog } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
@@ -8,7 +8,7 @@ import { SARMap, FileTools, IARTransform, ARAction, ARLayerType } from 'imobile_
 import { Point3D } from 'imobile_for_reactnative/types/data'
 import { ConstPath } from '@/constants'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
-import CircleBar from '../components/CircleBar'
+// import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
 import { positionNodeInfo, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
@@ -512,6 +512,7 @@ class SandBoxView extends React.Component<Props, State> {
       }
 
       if(currentLayer) {
+        await SARMap.setLayerMaxVisibleBounds(currentLayer.name, -1)
         SARMap.getElementPositionInfo(currentLayer?.name, 1).then(result => {
           this.oraginSandboxStatus = result?.renderNode
         })
@@ -591,6 +592,8 @@ class SandBoxView extends React.Component<Props, State> {
       }
     } else if (this.state.toolType === 'lighting') {
       SARMap.closeSandBoxLighting()
+    } else if (this.state.toolType === 'edit') {
+      SARMap.setAction(ARAction.NULL)
     }
 
     if (this.state.toolType !== toolType) {
@@ -829,11 +832,13 @@ interface ToolViewProps {
 interface ToolViewState {
   selectKey: string,
   data: any[],
+  canBeClick: boolean,
 }
 
 // const circleSize = dp(66)
 // const circleR = dp(30)
 // const circleStrokeWidth = dp(4)
+const AnimationTime = 2000
 
 class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   scaleBar: SlideBar | undefined | null
@@ -842,12 +847,19 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   // rotationY: CircleBar | undefined | null
   // rotationZ: CircleBar | undefined | null
   mountainElementIndexes: number[] = []
+  lastPosition: positionNodeInfo | undefined
+  lastPosition2: {
+    position: { x: number, y: number, z: number },
+    rotation: { x: number, y: number, z: number },
+    scale: { x: number, y: number, z: number },
+  } | undefined
 
   constructor(props: ToolViewProps) {
     super(props)
     this.state = {
       selectKey: '',
       data: [],
+      canBeClick: true,
     }
   }
 
@@ -859,17 +871,10 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     if (prevProps.type === 'effects' && this.props.type !== 'effects' && this.state.selectKey) {
       this.setState({
         selectKey: '',
+        data: [],
       })
-    } else if (prevProps.type === 'mountain_guide' && this.props.type !== 'mountain_guide' && this.mountainElementIndexes.length > 0) {
-      (async () => {
-        for (let i = 0; i < this.mountainElementIndexes.length; i++) {
-          await SARMap.setSandTableModelVisible(this.mountainElementIndexes[i], false)
-        }
-        this.mountainElementIndexes = []
-      })()
-      this.setState({
-        selectKey: '',
-      })
+    } else if (prevProps.type === 'mountain_guide' && this.props.type !== 'mountain_guide' && this.state.selectKey) {
+      this.mountainClose()
     }
   }
 
@@ -905,15 +910,27 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.setState({
         data: data,
       })
+    } else {
+      this.setState({
+        data: [],
+      })
     }
   }
 
-  close = () => {
+  close = async () => {
     this.props.close?.()
     if (this.state.selectKey) {
-      this.setState({
-        selectKey: '',
-      })
+      if (this.props.type === 'mountain_guide') {
+        this.mountainClose()
+      } else {
+        this.setState({
+          selectKey: '',
+          data: [],
+        })
+      }
+    }
+    if (this.props.type === 'edit') {
+      SARMap.setAction(ARAction.NULL)
     }
   }
 
@@ -1122,9 +1139,39 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.setState({
         selectKey: item.key,
       })
+      const lastPosition = await SARMap.getElementPositionInfo(currentLayer.name, 1)
+      if (lastPosition?.renderNode) {
+        this.lastPosition = {
+          position: lastPosition.renderNode.position,
+          rotation: lastPosition.renderNode.rotation,
+          scale:lastPosition.renderNode.scale,
+        }
+      }
+      this.setState({
+        canBeClick: false,
+      })
+      // console.warn(this.lastPosition)
       const home = await FileTools.getHomeDirectory()
       const routeDir = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'glb')
       // 转圈/放大/定位到登山路线
+      await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+        position: {
+          x: 0,
+          y: 0,
+          z: -1.5,
+        },
+        rotation: {
+          x: 0,
+          y: 0,
+          z: 0,
+        },
+        scale: {
+          x: 0.005,
+          y: 0.005,
+          z: 0.005,
+        },
+        duration: AnimationTime,
+      })
 
       // 依次添加定位点
       const wait = (sec: number) => {
@@ -1134,12 +1181,109 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           }, 1000 * sec)
         })
       }
-      this.mountainElementIndexes = []
-      for (const route of routeDir) {
-        const pathIndexs = await SARMap.addModelToSandTable([route.path])
-        this.mountainElementIndexes = this.mountainElementIndexes.concat(pathIndexs)
-        await wait(1)
+
+      const twinkle = async (id: number, time: number) => {
+        let show = false, temp = 0
+        const interval = setInterval(async() => {
+          if (temp === time && interval) {
+            await SARMap.setSandTableModelVisible(id, true)
+            clearInterval(interval)
+            return
+          }
+          await SARMap.setSandTableModelVisible(id, show)
+          show = !show
+          temp++
+        }, 300)
       }
+
+      setTimeout(async () => {
+        // 等待,防止移动获取位置错误
+        await wait(1)
+        this.mountainElementIndexes = []
+        // 获取沙盘实际位置
+        const lastPosition = await SARMap.getElementPositionInfo(currentLayer.name, 1)
+        let params
+        if (lastPosition?.renderNode) {
+          // this.lastPosition2 = {
+          //   position: lastPosition.renderNode.position,
+          //   rotation: lastPosition.renderNode.rotation,
+          //   scale: {
+          //     x: lastPosition.renderNode.scale,
+          //     y: lastPosition.renderNode.scale,
+          //     z: lastPosition.renderNode.scale,
+          //   },
+          //   // scale: lastPosition.renderNode.scale,
+          // }
+          // params = {
+          //   position: lastPosition.renderNode.position,
+          //   rotation: lastPosition.renderNode.rotation,
+          //   scale: lastPosition.renderNode.scale,
+          // }
+        }
+        await SARMap.setSandBoxPosition(currentLayer.name, 1, {
+          position: {
+            x: 0,
+            y: 0,
+            z: -1.5,
+          },
+          rotation: {
+            x: 0,
+            y: 0,
+            z: 0,
+          },
+          scale: 0.005,
+        })
+        // console.warn(this.lastPosition2)
+        for (const route of routeDir) {
+          // 添加路线坐标
+          const pathIndexs = await SARMap.addModelToSandTable([route.path])
+
+          twinkle(pathIndexs[0], 2)
+          this.mountainElementIndexes = this.mountainElementIndexes.concat(pathIndexs)
+          await wait(1)
+        }
+
+        this.setState({
+          canBeClick: true,
+        })
+      }, AnimationTime)
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
+  }
+
+  mountainClose = async () => {
+    try {
+      this.setState({
+        canBeClick: false,
+      })
+      for (let i = 0; i < this.mountainElementIndexes.length; i++) {
+        SARMap.setSandTableModelVisible(this.mountainElementIndexes[i], false)
+      }
+      // const lastPosition = await SARMap.getElementPositionInfo(currentLayer.name, 1)
+      if (this.lastPosition) {
+        // lastPosition.renderNode.position.y = -1
+        SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+          position: this.lastPosition.position,
+          rotation: this.lastPosition.rotation,
+          scale: {
+            x: this.lastPosition.scale,
+            y: this.lastPosition.scale,
+            z: this.lastPosition.scale,
+          },
+          duration: AnimationTime,
+        })
+      }
+      setTimeout(() => {
+        this.lastPosition && SARMap.setSandBoxPosition(currentLayer.name, 1, this.lastPosition)
+        this.lastPosition = undefined
+        this.mountainElementIndexes = []
+        this.setState({
+          selectKey: '',
+          data: [],
+          canBeClick: true,
+        })
+      }, AnimationTime)
     } catch (error) {
       __DEV__ && console.warn(error)
     }
@@ -1244,26 +1388,38 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       )
     }
     return (
-      <BottomMenu
-        keyType={"string"}
-        currentKey={this.state.selectKey}
-        isRepeatClickCancelSelected={true}
-        data={this.state.data}
-        onSelect={(data) => {
-          switch (this.props.type) {
-            case 'mountain_guide':
-              this.mountainAction(data)
-              break
-            case 'effects':
-              this.effectAction(data)
-              break
-          }
-        }}
-        visible={this.props.type !== ''}
-        onHide={()=> {
-          this.close()
-        }}
-      />
+      <>
+        <BottomMenu
+          keyType={"string"}
+          currentKey={this.state.selectKey}
+          isRepeatClickCancelSelected={true}
+          data={this.state.data}
+          onSelect={(data) => {
+            switch (this.props.type) {
+              case 'mountain_guide':
+                this.mountainAction(data)
+                break
+              case 'effects':
+                this.effectAction(data)
+                break
+            }
+          }}
+          visible={this.props.type !== ''}
+          onHide={()=> {
+            this.close()
+          }}
+        />
+        {
+          !this.state.canBeClick &&
+          <View style={[
+            StyleSheet.absoluteFillObject,
+            {
+              backgroundColor: 'transparent',
+              zIndex: 1000,
+            }
+          ]}/>
+        }
+      </>
     )
   }
 }

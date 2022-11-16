@@ -62,14 +62,21 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
   }
 
   componentDidUpdate(prevProps: Readonly<Props<T>>, prevState: Readonly<State<T>>): void {
+    const newState: State<T> = Object.assign({}, this.state)
     if (
       JSON.stringify(prevState.data) !== JSON.stringify(this.props.data) &&
       JSON.stringify(this.state.data) !== JSON.stringify(this.props.data)
     ) {
+      newState.data = this.props.data
+      newState.selectIndex = -1
+      newState.selectKey = this.props.currentKey || (this.props.keyType === "string" ? "null" : -1)
+    }
+    if (this.state.selectKey !== this.props.currentKey && prevState.selectKey !== this.props.currentKey) {
+      newState.selectKey = this.props.currentKey || (this.props.keyType === "string" ? "null" : -1)
+    }
+    if (JSON.stringify(newState) !== JSON.stringify(this.state)) {
       this.setState({
-        data: this.props.data,
-        selectIndex: -1,
-        selectKey: this.props.currentKey || (this.props.keyType === "string" ? "null" : -1),
+        ...newState,
       })
     }
   }

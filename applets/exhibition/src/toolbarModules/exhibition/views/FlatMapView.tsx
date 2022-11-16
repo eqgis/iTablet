@@ -2,7 +2,7 @@ import { AppEvent, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle, Animated } from 'react-native'
+import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle, Animated ,StyleSheet} from 'react-native'
 import Scan from '../components/Scan'
 import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
@@ -17,6 +17,7 @@ import ImageList, { ImageItem } from '../components/ImageList'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
+import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 
 interface Props {
   windowSize: ScaledSize
@@ -27,6 +28,7 @@ interface State {
   showGuide: boolean
   imageList: ImageItem[]
   showSide: boolean
+  showSlide: boolean
 }
 
 interface FlatMap {
@@ -56,6 +58,9 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   imageList: ImageList | null = null
 
+  scaleValue = 10
+  rotationValue = 40
+
   constructor(props: Props) {
     super(props)
 
@@ -63,7 +68,8 @@ class FlatMapVIew extends React.Component<Props, State> {
       showScan: getGlobalPose() == null,
       showGuide: false,
       imageList: [],
-      showSide: true
+      showSide: true,
+      showSlide: false,
     }
   }
 
@@ -77,7 +83,25 @@ class FlatMapVIew extends React.Component<Props, State> {
           this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
-          SExhibition.onFlatFunctionPress('reset')
+          this.scaleValue = 10
+          this.rotationValue = 40
+          SExhibition.scaleFlatMap(1)
+          SExhibition.rotationFlatMap(40)
+          this.setState({showSlide:false})
+          // SExhibition.onFlatFunctionPress('reset')
+        }
+      },
+      {
+        image: getImage().tool_location,
+        image_selected: getImage().tool_location_selected,
+        title: '调整位置',
+        action: () => {
+          if(!this.state.showSlide){
+            this.timeoutTrigger?.onShowSecondMenu()
+          }else{
+            this.timeoutTrigger?.onBackFromSecondMenu()
+          }
+          this.setState({showSlide:!this.state.showSlide})
         }
       },
       {
@@ -288,6 +312,8 @@ class FlatMapVIew extends React.Component<Props, State> {
       pose: pose,
       translation: relativePositin
     })
+    this.rotationValue = 40
+    this.scaleValue = 10
     if(relativePositin) {
       const timer = setTimeout(()=>{
         SExhibition.setTrackingTarget({
@@ -298,7 +324,6 @@ class FlatMapVIew extends React.Component<Props, State> {
         clearTimeout(timer)
       }, 2300)
     }
-
   }
 
 
@@ -470,6 +495,57 @@ class FlatMapVIew extends React.Component<Props, State> {
     )
   }
 
+
+  renderSlideBar = () => {
+    return (
+      <View style={[styles.toolView]}>
+        <View style={styles.toolRow}>
+          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12),color:'white'}}>位置调整</Text>
+          <TouchableOpacity
+            style={styles.closeBtn}
+            onPress={()=>{
+              this.timeoutTrigger?.onBackFromSecondMenu()
+              this.setState({showSlide:false})
+            }}
+          >
+            <Image
+              style={styles.closeImg}
+              source={getImage().icon_cancel02}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
+          <SlideBar
+            // ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[5, 20]}
+            defaultMaxValue={this.scaleValue}
+            barColor={'#FF6E51'}
+            onMove={loc => {
+              SExhibition.scaleFlatMap(loc/10)
+              this.scaleValue = loc
+            }}
+          />
+        </View>
+        <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"旋转"}</Text>
+          <SlideBar
+            // ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[0, 180]}
+            defaultMaxValue={this.rotationValue}
+            barColor={'#FF6E51'}
+            onMove={loc => {
+              SExhibition.rotationFlatMap(loc)
+              this.rotationValue = loc
+            }}
+          />
+        </View>
+      </View>
+    )
+  }
+
   timeoutTrigger: TimeoutTrigger | null = null
 
   render() {
@@ -489,6 +565,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         {!this.state.showGuide && this.renderBack()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
+        {this.state.showSlide && this.renderSlideBar()}
         <ARArrow
           arrowShowed={() => {
             Toast.show('请按照箭头引导转动屏幕查看地图', {
@@ -581,3 +658,44 @@ class AnimationWrap extends React.Component<AnimationWrapProps> {
   }
 
 }
+
+const styles = StyleSheet.create({
+  toolView: {
+    position: 'absolute',
+    left: dp(22),
+    bottom: dp(22),
+    width: dp(360),
+    backgroundColor: '#rgba(0,0,0,0.5)',
+    borderRadius: dp(10),
+    overflow: 'hidden',
+  },
+  toolRow: {
+    flexDirection: 'row',
+    width: dp(360),
+    minHeight: dp(40),
+    alignItems: 'center',
+    paddingHorizontal: dp(20),
+  },
+  slideBar: {
+    flex: 1,
+    height: dp(30),
+    marginLeft: dp(20),
+  },
+  closeBtn: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: dp(10),
+    width: dp(40),
+    height: dp(40),
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  closeImg: {
+    position: 'absolute',
+    width: dp(12),
+    height: dp(12),
+  },
+
+})

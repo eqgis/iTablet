@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View ,Animated} from 'react-native'
+import { Image, ScaledSize, Text, TouchableOpacity, View ,Animated,StyleSheet} from 'react-native'
 import { AppEvent, AppStyle, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
@@ -16,6 +16,7 @@ import SideBar, { Item } from '../components/SideBar'
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
 import BottomMenu,{ itemConmonType } from "../components/BottomMenu"
+import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 
 
 interface Props {
@@ -29,6 +30,7 @@ interface State {
   btRight:Animated.Value
   btLeft:Animated.Value
   mainMenu: Item[]
+  showSlide: boolean
 }
 class AR3DMapView extends React.Component<Props, State> {
   scanRef: Scan | null = null
@@ -108,6 +110,9 @@ class AR3DMapView extends React.Component<Props, State> {
     },
   ]
 
+  scaleValue = 10
+  rotationValue = 40
+
   constructor(props: Props) {
     super(props)
 
@@ -122,6 +127,7 @@ class AR3DMapView extends React.Component<Props, State> {
         dp(20),
       ),
       mainMenu: this.getMainMenuItem(),
+      showSlide: false,
     }
   }
 
@@ -135,9 +141,27 @@ class AR3DMapView extends React.Component<Props, State> {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
           }
-          SExhibition.map3Dreset()
+          // SExhibition.map3Dreset()
+          this.scaleValue = 10
+          this.rotationValue = 40
+          SExhibition.scale3dMap(1)
+          SExhibition.rotation3dMap(40)
+          this.setState({showSlide:false})
           this.timeoutTrigger?.onFirstMenuClick()
         },
+      },
+      {
+        image: getImage().tool_location,
+        image_selected: getImage().tool_location_selected,
+        title: '调整位置',
+        action: () => {
+          if(!this.state.showSlide){
+            this.timeoutTrigger?.onShowSecondMenu()
+          }else{
+            this.timeoutTrigger?.onBackFromSecondMenu()
+          }
+          this.setState({showSlide:!this.state.showSlide})
+        }
       },
       {
         image: getImage().icon_tool_shape,
@@ -431,6 +455,8 @@ class AR3DMapView extends React.Component<Props, State> {
       }, 500)
 
       this.open = true
+      this.rotationValue = 40
+      this.scaleValue = 10
     })
   }
 
@@ -581,6 +607,56 @@ class AR3DMapView extends React.Component<Props, State> {
     return <ScanWrap windowSize={this.props.windowSize} hint={'请对准演示台上二维码进行扫描'}/>
   }
 
+  renderSlideBar = () => {
+    return (
+      <View style={[styles.toolView]}>
+        <View style={styles.toolRow}>
+          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12),color:'white'}}>位置调整</Text>
+          <TouchableOpacity
+            style={styles.closeBtn}
+            onPress={()=>{
+              this.timeoutTrigger?.onBackFromSecondMenu()
+              this.setState({showSlide:false})
+            }}
+          >
+            <Image
+              style={styles.closeImg}
+              source={getImage().icon_cancel02}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
+          <SlideBar
+            // ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[5, 20]}
+            defaultMaxValue={this.scaleValue}
+            barColor={'#FF6E51'}
+            onMove={loc => {
+              SExhibition.scale3dMap(loc/10)
+              this.scaleValue = loc
+            }}
+          />
+        </View>
+        <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"旋转"}</Text>
+          <SlideBar
+            // ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[0, 180]}
+            defaultMaxValue={this.rotationValue}
+            barColor={'#FF6E51'}
+            onMove={loc => {
+              SExhibition.rotation3dMap(loc)
+              this.rotationValue = loc
+            }}
+          />
+        </View>
+      </View>
+    )
+  }
+
   timeoutTrigger: TimeoutTrigger | null = null
 
   render() {
@@ -641,6 +717,8 @@ class AR3DMapView extends React.Component<Props, State> {
 
         {this.renderRollingMode()}
 
+        {this.state.showSlide && this.renderSlideBar()}
+
         <ARArrow
           arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图',{
             backgroundColor: 'rgba(0,0,0,.5)',
@@ -666,5 +744,46 @@ class AR3DMapView extends React.Component<Props, State> {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  toolView: {
+    position: 'absolute',
+    left: dp(22),
+    bottom: dp(22),
+    width: dp(360),
+    backgroundColor: '#rgba(0,0,0,0.5)',
+    borderRadius: dp(10),
+    overflow: 'hidden',
+  },
+  toolRow: {
+    flexDirection: 'row',
+    width: dp(360),
+    minHeight: dp(40),
+    alignItems: 'center',
+    paddingHorizontal: dp(20),
+  },
+  slideBar: {
+    flex: 1,
+    height: dp(30),
+    marginLeft: dp(20),
+  },
+  closeBtn: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: dp(10),
+    width: dp(40),
+    height: dp(40),
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  closeImg: {
+    position: 'absolute',
+    width: dp(12),
+    height: dp(12),
+  },
+
+})
 
 export default AR3DMapView

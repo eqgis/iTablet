@@ -22,6 +22,7 @@ import { IARTransform } from "@/containers/workspace/components/ToolBar/modules/
 import ScanWrap from "../components/ScanWrap"
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import BottomMenu from "../components/BottomMenu"
+import FillAnimationWrap from "../components/FillAnimationWrap"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -1941,6 +1942,7 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  /** 扫描界面 */
   renderScan = () => {
     return <ScanWrap windowSize={this.props.windowSize} hint={'请对准地面上的二维码进行扫描'}/>
   }
@@ -2063,41 +2065,54 @@ class DoctorCC extends Component<Props, State> {
       scale: 100,
     }
     return (
-      <View style={[styles.toolView]}>
-        <View style={styles.toolRow}>
-          {/* <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12)}}>位置调整</Text> */}
-          <TouchableOpacity
-            style={styles.closeBtn}
-            onPress={this.operationBtnOnpress}
-          >
-            <Image
-              style={styles.closeImg}
-              source={getImage().icon_close}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
-          <SlideBar
+      <FillAnimationWrap
+        visible={this.state.isSecondaryShow}
+        animated={'bottom'}
+        style={{
+          position: 'absolute',
+          alignSelf: 'flex-start',
+        }}
+        range={[-dp(150), dp(20)]}
+        onHide={() => {
+          this.setState({isSecondaryShow: false})
+        }}
+      >
+        <View style={[styles.toolView]}>
+          <View style={styles.toolRow}>
+            <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"位置调整"}</Text>
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={this.operationBtnOnpress}
+            >
+              <Image
+                style={styles.closeImg}
+                source={getImage().icon_cancel02}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.toolRow}>
+            <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
+            <SlideBar
             // ref={ref => this.scaleBar = ref}
-            style={styles.slideBar}
-            range={[50, 200]}
-            defaultMaxValue={this.scaleValue}
-            barColor={'#FF6E51'}
-            onMove={loc => {
-              this.timeoutTrigger?.onBackFromSecondMenu()
-              const scale = loc / 100 - 1
-              transformData = {
-                ...transformData,
-                scale: scale,
-                type: 'scale',
-              }
-              SARMap.setARElementTransform(transformData)
-              this.scaleValue = loc
-            }}
-          />
+              style={styles.slideBar}
+              range={[50, 200]}
+              defaultMaxValue={this.scaleValue}
+              barColor={'#FF6E51'}
+              onMove={loc => {
+                this.timeoutTrigger?.onBackFromSecondMenu()
+                const scale = loc / 100 - 1
+                transformData = {
+                  ...transformData,
+                  scale: scale,
+                  type: 'scale',
+                }
+                SARMap.setARElementTransform(transformData)
+                this.scaleValue = loc
+              }}
+            />
+          </View>
         </View>
-      </View>
+      </FillAnimationWrap>
     )
   }
 
@@ -2548,42 +2563,12 @@ class DoctorCC extends Component<Props, State> {
           }}
         />
         {/* 右边按钮的响应界面 */}
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            width: '100%',
-            height: '100%',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            // alignItems: 'flex-end',
-          }}
-        >
-          <Animated.View
-            style={{
-              bottom: this.state.btBottom,
-              // flexDirection: 'row',
-              width: '100%',
-              height: dp(130),
-            }}
-          >
-            {/* {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'action' && this.renderActionSelected()}
-            {!this.state.isShowFull && this.state.isSecondaryShow && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
-            {this.state.isShowFull && this.state.isSecondaryShow && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()} */}
-            {this.state.isShowFull && this.state.isSecondaryShow && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
-
-          </Animated.View>
-
-        </View>
-
         {!this.state.isShowFull && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
         {!this.state.isShowFull && this.state.selectType === 'action' && this.renderActionSelected()}
         {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
         {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
+        {this.state.isShowFull && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
 
         {/* 右边按钮 */}
         <View
@@ -2755,9 +2740,10 @@ const styles = StyleSheet.create({
   },
 
   toolView: {
-    position: 'absolute',
-    left: dp(22),
-    bottom: dp(22),
+    // position: 'absolute',
+    // left: dp(22),
+    // bottom: dp(22),
+    marginLeft: dp(22),
     width: dp(360),
     backgroundColor: '#rgba(0,0,0,0.5)',
     borderRadius: dp(10),

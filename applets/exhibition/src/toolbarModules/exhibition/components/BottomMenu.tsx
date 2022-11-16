@@ -160,8 +160,8 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
   render() {
     const windowWidth = Dimensions.get("window").width
     let left = 0
-    if(this.state.data.length * dp(100) >= windowWidth - dp(35)) {
-      left = dp(35)
+    if(this.state.data.length * dp(100) >= windowWidth - dp(65)) {
+      left = dp(65)
     }
     return(
       <FillAnimationWrap

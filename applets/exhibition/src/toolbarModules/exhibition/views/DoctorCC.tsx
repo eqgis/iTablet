@@ -1469,6 +1469,7 @@ class DoctorCC extends Component<Props, State> {
         console.warn(this.state.isBackground + " - " + SoundUtil.isPlaying("background"))
         if(this.state.isBackground && SoundUtil.isPlaying("background")) {
           SoundUtil.stop("background", () => {
+            AppToolBar.getProps().setBackgroundSoundPlayState(false)
           })
         }
 
@@ -1480,6 +1481,7 @@ class DoctorCC extends Component<Props, State> {
             }
             if(this.state.isBackground) {
               SoundUtil.play("background",true)
+              AppToolBar.getProps().setBackgroundSoundPlayState(true)
             }
           }
         })

@@ -84,7 +84,7 @@ class Home extends React.Component<Props, State> {
         bottom: 0,
       },
       currentIndex: getModule(),
-      playBg: true,
+      playBg: AppToolBar.getProps().backgroundSoundPlaystate === false ? false : true,
     }
 
     this._panResponder = PanResponder.create({
@@ -572,12 +572,14 @@ class Home extends React.Component<Props, State> {
               playBg: false
             }, () => {
               SoundUtil.pause('background')
+              AppToolBar.getProps().setBackgroundSoundPlayState(false)
             })
           } else {
             this.setState({
               playBg: true
             }, () => {
               SoundUtil.play('background', true)
+              AppToolBar.getProps().setBackgroundSoundPlayState(true)
             })
           }
         }}

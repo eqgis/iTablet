@@ -2058,6 +2058,7 @@ class DoctorCC extends Component<Props, State> {
         currentKey={this.state.selectRouteKey}
         onSelect={this.routeItemOnPress}
         visible={this.state.isSecondaryShow}
+        imageStyle={{width: dp(100), height: dp(100), marginTop: dp(0)}}
         onHide={()=> {
           this.setState({
             isSecondaryShow: false,

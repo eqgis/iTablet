@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle ,Animated} from 'react-native'
+import { Image, ScaledSize, Text, TouchableOpacity, View ,Animated} from 'react-native'
 import { AppEvent, AppStyle, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
@@ -13,9 +13,9 @@ import { Pose } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import ARGuide from '../components/ARGuide'
 import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import SideBar, { Item } from '../components/SideBar'
-import FillAnimationWrap from '../components/FillAnimationWrap'
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
+import BottomMenu,{ itemConmonType } from "../components/BottomMenu"
 
 
 interface Props {
@@ -45,6 +45,68 @@ class AR3DMapView extends React.Component<Props, State> {
   show = true
   /** 当前车流是否在播放 */
   isCarAnimationPlay = false
+
+  sideBar: SideBar | null = null
+  speakData: Array<itemConmonType> = [
+    {
+      name: '矩形',
+      image: getImage().icon_tool_juxing,
+      action:async () => {
+        SExhibition.removeMapviewElement()
+        const relativePositin: Vector3 = {
+          x: 0,
+          y: 0,
+          z: -0.5,
+        }
+        SExhibition.addMapviewElement(0,{
+          pose: this.result,
+          translation: relativePositin
+        })
+        const _time = async function() {
+          return new Promise(function(resolve, reject) {
+            const timer = setTimeout(function() {
+              resolve('waitting send close message')
+              timer && clearTimeout(timer)
+            }, 1500)
+          })
+        }
+        await _time()
+        await SExhibition.getMapviewLocation()
+        this.setState({showShape: false})
+        this.timeoutTrigger?.onBackFromSecondMenu()
+      },
+    },
+    {
+      name: '圆形',
+      image: getImage().icon_tool_yuan,
+      action: async () => {
+        SExhibition.removeMapviewElement()
+        const relativePositin: Vector3 = {
+          x: 0,
+          y: 0,
+          z: -0.5,
+        }
+        SExhibition.addMapviewElement(4, {
+          pose: this.result,
+          translation: relativePositin
+        })
+
+        const _time = async function () {
+          return new Promise(function (resolve, reject) {
+            const timer = setTimeout(function () {
+              resolve('waitting send close message')
+              timer && clearTimeout(timer)
+            }, 1500)
+          })
+        }
+        await _time()
+
+        await SExhibition.getMapviewLocation()
+        this.setState({ showShape: false })
+        this.timeoutTrigger?.onBackFromSecondMenu()
+      },
+    },
+  ]
 
   constructor(props: Props) {
     super(props)
@@ -115,90 +177,110 @@ class AR3DMapView extends React.Component<Props, State> {
     }
   }
 
+  /** 详解被选中时显示的界面 */
   renderRollingMode = () => {
     return (
-      <FillAnimationWrap
+      <BottomMenu
+        data={this.speakData}
+        onSelect={()=>{
+          this.setState({
+            showShape: false,
+          })
+        }}
         visible={this.state.showShape}
-        animated={'bottom'}
-        style={{
-          position: 'absolute',
-          alignSelf: 'center'
-        }}
-        range={[-dp(100), dp(20)]}
         onHide={() => {
-          this.timeoutTrigger?.onBackFromSecondMenu()
-          this.setState({showShape: false})
+          this.setState({
+            showShape: false,
+          })
         }}
-      >
-        <View style={{
-          borderRadius: dp(10),
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        }}>
-          {this.renderRollingBtn({
-            image: getImage().icon_tool_juxing,
-            title: '矩形',
-            action: async () => {
-              SExhibition.removeMapviewElement()
-              const relativePositin: Vector3 = {
-                x: 0,
-                y: 0,
-                z: -0.5,
-              }
-              SExhibition.addMapviewElement(0,{
-                pose: this.result,
-                translation: relativePositin
-              })
-              const _time = async function() {
-                return new Promise(function(resolve, reject) {
-                  const timer = setTimeout(function() {
-                    resolve('waitting send close message')
-                    timer && clearTimeout(timer)
-                  }, 1500)
-                })
-              }
-              await _time()
-              await SExhibition.getMapviewLocation()
-              this.setState({showShape: false})
-              this.timeoutTrigger?.onBackFromSecondMenu()
-            }
-          })}
-          {this.renderRollingBtn({
-            image: getImage().icon_tool_yuan,
-            title: '圆形',
-            action: async () => {
-              SExhibition.removeMapviewElement()
-              const relativePositin: Vector3 = {
-                x: 0,
-                y: 0,
-                z: -0.5,
-              }
-              SExhibition.addMapviewElement(4, {
-                pose: this.result,
-                translation: relativePositin
-              })
-
-              const _time = async function () {
-                return new Promise(function (resolve, reject) {
-                  const timer = setTimeout(function () {
-                    resolve('waitting send close message')
-                    timer && clearTimeout(timer)
-                  }, 1500)
-                })
-              }
-              await _time()
-
-              await SExhibition.getMapviewLocation()
-              this.setState({ showShape: false })
-              this.timeoutTrigger?.onBackFromSecondMenu()
-            }
-          })}
-        </View>
-      </FillAnimationWrap>
+      />
     )
   }
+
+  // renderRollingMode = () => {
+  //   return (
+  //     <FillAnimationWrap
+  //       visible={this.state.showShape}
+  //       animated={'bottom'}
+  //       style={{
+  //         position: 'absolute',
+  //         alignSelf: 'center'
+  //       }}
+  //       range={[-dp(100), dp(20)]}
+  //       onHide={() => {
+  //         this.timeoutTrigger?.onBackFromSecondMenu()
+  //         this.setState({showShape: false})
+  //       }}
+  //     >
+  //       <View style={{
+  //         borderRadius: dp(10),
+  //         flexDirection: 'row',
+  //         justifyContent: 'center',
+  //         alignItems: 'center',
+  //         overflow: 'hidden',
+  //       }}>
+  //         {this.renderRollingBtn({
+  //           image: getImage().icon_tool_juxing,
+  //           title: '矩形',
+  //           action: async () => {
+  //             SExhibition.removeMapviewElement()
+  //             const relativePositin: Vector3 = {
+  //               x: 0,
+  //               y: 0,
+  //               z: -0.5,
+  //             }
+  //             SExhibition.addMapviewElement(0,{
+  //               pose: this.result,
+  //               translation: relativePositin
+  //             })
+  //             const _time = async function() {
+  //               return new Promise(function(resolve, reject) {
+  //                 const timer = setTimeout(function() {
+  //                   resolve('waitting send close message')
+  //                   timer && clearTimeout(timer)
+  //                 }, 1500)
+  //               })
+  //             }
+  //             await _time()
+  //             await SExhibition.getMapviewLocation()
+  //             this.setState({showShape: false})
+  //             this.timeoutTrigger?.onBackFromSecondMenu()
+  //           }
+  //         })}
+  //         {this.renderRollingBtn({
+  //           image: getImage().icon_tool_yuan,
+  //           title: '圆形',
+  //           action: async () => {
+  //             SExhibition.removeMapviewElement()
+  //             const relativePositin: Vector3 = {
+  //               x: 0,
+  //               y: 0,
+  //               z: -0.5,
+  //             }
+  //             SExhibition.addMapviewElement(4, {
+  //               pose: this.result,
+  //               translation: relativePositin
+  //             })
+
+  //             const _time = async function () {
+  //               return new Promise(function (resolve, reject) {
+  //                 const timer = setTimeout(function () {
+  //                   resolve('waitting send close message')
+  //                   timer && clearTimeout(timer)
+  //                 }, 1500)
+  //               })
+  //             }
+  //             await _time()
+
+  //             await SExhibition.getMapviewLocation()
+  //             this.setState({ showShape: false })
+  //             this.timeoutTrigger?.onBackFromSecondMenu()
+  //           }
+  //         })}
+  //       </View>
+  //     </FillAnimationWrap>
+  //   )
+  // }
 
   renderRollingBtn = (item: Item) => {
     return (
@@ -530,6 +612,7 @@ class AR3DMapView extends React.Component<Props, State> {
             }}
           >
             <SideBar
+              ref={ref => this.sideBar = ref}
               sections={[this.state.mainMenu]}
               showIndicator
             />

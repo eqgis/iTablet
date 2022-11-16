@@ -2,7 +2,7 @@ import { AppEvent, AppToolBar, AppUser, DataHandler, Toast } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle, Animated } from 'react-native'
+import { Image, ScaledSize, Text, TouchableOpacity, View, ViewStyle, Animated, EmitterSubscription } from 'react-native'
 import Scan from '../components/Scan'
 import { FileTools, SARMap, SExhibition, SMap } from 'imobile_for_reactnative'
 import ARArrow from '../components/ARArrow'
@@ -55,12 +55,16 @@ class FlatMapVIew extends React.Component<Props, State> {
   isMapOpend = false
 
   imageList: ImageList | null = null
+  listeners: {
+    addListener:EmitterSubscription | undefined,
+    infoListener:EmitterSubscription | undefined
+  } | null = null
 
   constructor(props: Props) {
     super(props)
 
     this.state = {
-      showScan: getGlobalPose() == null,
+      showScan: false,
       showGuide: false,
       imageList: [],
       showSide: true
@@ -216,9 +220,20 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   arViewDidMount = (): void => {
     this.importData().then(() => {
-      if(this.state.showScan) {
-        SARMap.setAREnhancePosition()
-      }
+      // if(this.state.showScan) {
+      //   SARMap.setAREnhancePosition()
+      // }
+      this.listeners = SARMap.addMeasureStatusListeners({
+        addListener: async result => {
+          if (result) {
+            this.setState({
+              showScan: true,
+            })
+            // 启用增强定位
+            SARMap.setAREnhancePosition()
+          }
+        },
+      })
     })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
@@ -357,6 +372,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       return
     }
     AppEvent.removeListener('ar_image_tracking_result')
+    this.listeners && this.listeners.addListener?.remove()
     AppEvent.removeListener('ar_single_click', this.onSingleClick)
     SExhibition.stopTrackingTarget()
     SExhibition.removeFlatMap()

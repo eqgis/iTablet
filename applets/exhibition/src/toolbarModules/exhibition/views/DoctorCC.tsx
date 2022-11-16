@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { ScaledSize, TouchableOpacity, Image, View, Text, StyleSheet, ImageSourcePropType, Platform, Animated, NativeModules } from "react-native"
+import { ScaledSize, TouchableOpacity, Image, View, Text, StyleSheet, ImageSourcePropType, Platform, Animated, NativeModules, EmitterSubscription } from "react-native"
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { AppEvent, AppToolBar, Toast ,DataHandler, SoundUtil} from '@/utils'
@@ -157,6 +157,10 @@ class DoctorCC extends Component<Props, State> {
 
   /** 动作的渲染数据 */
   actionData: Array<actionItemType> = []
+  listeners: {
+    addListener:EmitterSubscription | undefined,
+    infoListener:EmitterSubscription | undefined
+  } | null = null
 
   timeoutTrigger: TimeoutTrigger | null = null
 
@@ -168,7 +172,7 @@ class DoctorCC extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      showScan: true,
+      showScan: false,
       selectType: 'null',
       animations: [],
       selectAnimationKey: -1,
@@ -212,8 +216,19 @@ class DoctorCC extends Component<Props, State> {
 
     this.getDoctorData()
     await this.openDoctorARMap()
-    // 启用增强定位
-    SARMap.setAREnhancePosition()
+
+    this.listeners = SARMap.addMeasureStatusListeners({
+      addListener: async result => {
+        if (result) {
+          this.setState({
+            showScan: true,
+          })
+          // 启用增强定位
+          SARMap.setAREnhancePosition()
+        }
+      },
+    })
+
     // 添加监听
     AppEvent.addListener('ar_image_tracking_result', async (result) => {
       if(result) {
@@ -853,6 +868,7 @@ class DoctorCC extends Component<Props, State> {
     }
     // 移除监听
     AppEvent.removeListener('ar_image_tracking_result')
+    this.listeners && this.listeners.addListener?.remove()
     // 移除语音结束监听
     SARMap.removeSpeakStopListener()
     SARMap.removeStopARAnimationListen()

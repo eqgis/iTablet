@@ -282,7 +282,7 @@ class AR3DMapView extends React.Component<Props, State> {
     this.speakData = [
       {
         name: '白模',
-        image: getImage().icon_tool_juxing,
+        image: getImage().icon_tool_meterials0,
         action: async () => {
           SExhibition.changeBuildMaterials(0)
           this.setState({ showShape: false })
@@ -291,7 +291,7 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         name: '纹理贴图1',
-        image: getImage().icon_tool_yuan,
+        image: getImage().icon_tool_meterials1,
         action: async () => {
           SExhibition.changeBuildMaterials(1)
           this.setState({ showShape: false })

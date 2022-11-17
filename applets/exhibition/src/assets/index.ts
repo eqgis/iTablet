@@ -120,6 +120,8 @@ const icon_tool_vertical_select = require('./icon_tool_vertical_select.png')
 
 const icon_tool_attribute = require('./icon_tool_attribute.png')
 const icon_tool_materials = require('./icon_tool_materials.png')
+const icon_tool_meterials0 = require('./icon_tool_meterials0.png')
+const icon_tool_meterials1 = require('./icon_tool_meterials1.png')
 
 const image = {
   scan,
@@ -245,6 +247,8 @@ const image = {
 
   icon_tool_attribute,
   icon_tool_materials,
+  icon_tool_meterials0,
+  icon_tool_meterials1,
 }
 
 function getImage(): typeof image {

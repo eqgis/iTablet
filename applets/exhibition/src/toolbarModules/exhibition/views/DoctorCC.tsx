@@ -321,11 +321,11 @@ class DoctorCC extends Component<Props, State> {
                 })
 
                 // 更新箭头追踪的位置和范围
-                const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-                if(relativePositin) {
-                  await SExhibition.setTrackingTarget(relativePositin)
-                  await SExhibition.startTrackingTarget()
-                }
+                // const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+                // if(relativePositin) {
+                //   await SExhibition.setTrackingTarget(relativePositin)
+                //   await SExhibition.startTrackingTarget()
+                // }
 
               }
               clearTimeout(tempTimer)
@@ -838,7 +838,7 @@ class DoctorCC extends Component<Props, State> {
               }
 
               // 更新箭头追踪的位置和范围
-              await SExhibition.stopTrackingTarget()
+              // await SExhibition.stopTrackingTarget()
               const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
               if(relativePositin) {
                 await SExhibition.setTrackingTarget(relativePositin)
@@ -874,13 +874,13 @@ class DoctorCC extends Component<Props, State> {
             await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
             // this.isPlay = false
 
-            // 更新箭头追踪的位置和范围
-            await SExhibition.stopTrackingTarget()
-            const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-            if(relativePositin) {
-              await SExhibition.setTrackingTarget(relativePositin)
-              await SExhibition.startTrackingTarget()
-            }
+            // // 更新箭头追踪的位置和范围
+            // await SExhibition.stopTrackingTarget()
+            // const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+            // if(relativePositin) {
+            //   await SExhibition.setTrackingTarget(relativePositin)
+            //   await SExhibition.startTrackingTarget()
+            // }
 
             SARMap.setAction(ARAction.NULL)
             SARMap.clearSelection()
@@ -1204,7 +1204,7 @@ class DoctorCC extends Component<Props, State> {
     const tempTimer =  setTimeout(async () => {
 
       // 路线动画开始前，停掉箭头追踪功能
-      await SExhibition.stopTrackingTarget()
+      // await SExhibition.stopTrackingTarget()
       // 开始播放推演动画
       // SARMap.playARAnimation(JSON.parse(JSON.stringify(item.route)))
       SARMap.playARAnimation(JSON.parse(JSON.stringify(route)))
@@ -1347,8 +1347,8 @@ class DoctorCC extends Component<Props, State> {
       }
     }
 
-    // 暂时隐藏箭头追踪功能
-    // SExhibition.stopTrackingTarget()
+    // 隐藏箭头追踪功能
+    SExhibition.stopTrackingTarget()
 
     this.setState({
       selectType: 'photo',
@@ -1396,6 +1396,9 @@ class DoctorCC extends Component<Props, State> {
         this.animationTimer = null
       }
     }
+
+    // 隐藏箭头追踪功能
+    SExhibition.stopTrackingTarget()
 
     this.setState({
       selectType: 'video',

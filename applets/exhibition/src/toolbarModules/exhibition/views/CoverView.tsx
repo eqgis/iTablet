@@ -2,7 +2,7 @@ import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, TouchableOpacity, View, EmitterSubscription } from 'react-native'
+import { Image, ScaledSize, TouchableOpacity, View, EmitterSubscription, StyleSheet, Text } from 'react-native'
 import Scan from '../components/Scan'
 import { TARLayerType, SARMap ,ARElementLayer,ARLayerType, SExhibition} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
@@ -14,6 +14,7 @@ import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
 import BottomMenu, { itemConmonType } from '../components/BottomMenu'
 import AnimationWrap from '../components/AnimationWrap'
+import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 
 interface Props {
   windowSize: ScaledSize
@@ -500,7 +501,7 @@ class CoverView extends React.Component<Props, State> {
     return <ScanWrap windowSize={this.props.windowSize} hint={'请对准地面上的二维码进行扫描'}/>
   }
 
-  slider = () => {
+  slider01 = () => {
     return (
       <View
         style={{
@@ -511,7 +512,7 @@ class CoverView extends React.Component<Props, State> {
           height: dp(100),
           borderRadius: dp(10),
           alignItems: 'center',
-          backgroundColor: 'white',
+          backgroundColor: 'rgba(0,0,0,.5)',
           paddingHorizontal:dp(10),
           opacity:0.7,
         }}
@@ -668,6 +669,81 @@ class CoverView extends React.Component<Props, State> {
 
   }
 
+  slider = () => {
+    return (
+      <View style={[styles.toolView]}>
+        <View style={styles.toolRow}>
+          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"挖洞调整"}</Text>
+          <TouchableOpacity
+            style={styles.closeBtn}
+            onPress={this.onHolePress}
+          >
+            <Image
+              style={styles.closeImg}
+              source={getImage().icon_cancel02}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"长度"}</Text>
+          <SlideBar
+            // ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[0, 5]}
+            defaultMaxValue={this.currentRadiusx}
+            barColor={'#FF6E51'}
+            onMove={async (value: number) => {
+              // to do
+              this.currentRadiusx = value
+              const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+              if(layer){
+                SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx)
+              }
+            }}
+          />
+        </View>
+
+        <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"宽度"}</Text>
+          <SlideBar
+            // ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[0, 5]}
+            defaultMaxValue={this.currentRadiusy}
+            barColor={'#FF6E51'}
+            onMove={async (value: number) => {
+              this.currentRadiusy = value
+              const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+              if(layer){
+                SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy)
+              }
+            }}
+          />
+        </View>
+
+        <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"深度"}</Text>
+          <SlideBar
+            // ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[0, 5]}
+            defaultMaxValue={this.currentDepth}
+            barColor={'#FF6E51'}
+            onMove={async (value: number) => {
+              // to do
+              this.currentDepth = value
+              const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+              if(layer){
+                SARMap.setARCoverDepth(layer.name,this.currentDepth)
+              }
+            }}
+          />
+        </View>
+      </View>
+    )
+  }
+
   /** 扫描按钮 */
   renderScanBtn = () => {
     return (
@@ -784,5 +860,47 @@ class CoverView extends React.Component<Props, State> {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  toolView: {
+    position: 'absolute',
+    left: dp(22),
+    bottom: dp(22),
+    marginLeft: dp(22),
+    width: dp(360),
+    backgroundColor: '#rgba(0,0,0,0.5)',
+    borderRadius: dp(10),
+    overflow: 'hidden',
+  },
+  toolRow: {
+    flexDirection: 'row',
+    width: dp(360),
+    minHeight: dp(40),
+    alignItems: 'center',
+    paddingHorizontal: dp(20),
+  },
+  slideBar: {
+    flex: 1,
+    height: dp(30),
+    marginLeft: dp(20),
+  },
+  closeBtn: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: dp(10),
+    width: dp(40),
+    height: dp(40),
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  closeImg: {
+    position: 'absolute',
+    width: dp(12),
+    height: dp(12),
+  },
+
+})
 
 export default CoverView

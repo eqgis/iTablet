@@ -247,9 +247,10 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   arViewDidMount = (): void => {
     this.importData().then(() => {
-      // if(this.state.showScan) {
-      //   SARMap.setAREnhancePosition()
-      // }
+      if(this.state.showScan && this.state.isScan) {
+        // 启用增强定位
+        SARMap.setAREnhancePosition()
+      }
       this.listeners = SARMap.addMeasureStatusListeners({
         addListener: async result => {
           if (result) {

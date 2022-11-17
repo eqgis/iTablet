@@ -221,6 +221,10 @@ class DoctorCC extends Component<Props, State> {
 
     this.getDoctorData()
     await this.openDoctorARMap()
+    if(this.state.showScan && this.state.isScan) {
+      // 启用增强定位
+      SARMap.setAREnhancePosition()
+    }
 
     this.listeners = SARMap.addMeasureStatusListeners({
       addListener: async result => {

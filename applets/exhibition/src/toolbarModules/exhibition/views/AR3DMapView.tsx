@@ -417,6 +417,7 @@ class AR3DMapView extends React.Component<Props, State> {
     return (
       <BottomMenu
         data={this.speakData}
+        imageStyle={{width: dp(100), height: dp(100), marginTop: dp(0)}}
         onSelect={()=>{
           this.setState({
             showShape: false,

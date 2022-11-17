@@ -31,6 +31,7 @@ interface State {
   btLeft:Animated.Value
   mainMenu: Item[]
   showSlide: boolean
+  attribute: boolean
   /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
   isScan: boolean,
 }
@@ -51,69 +52,10 @@ class AR3DMapView extends React.Component<Props, State> {
   isCarAnimationPlay = false
 
   sideBar: SideBar | null = null
-  speakData: Array<itemConmonType> = [
-    {
-      name: '矩形',
-      image: getImage().icon_tool_juxing,
-      action:async () => {
-        SExhibition.removeMapviewElement()
-        const relativePositin: Vector3 = {
-          x: 0,
-          y: 0,
-          z: -0.5,
-        }
-        SExhibition.addMapviewElement(0,{
-          pose: this.result,
-          translation: relativePositin
-        })
-        const _time = async function() {
-          return new Promise(function(resolve, reject) {
-            const timer = setTimeout(function() {
-              resolve('waitting send close message')
-              timer && clearTimeout(timer)
-            }, 1500)
-          })
-        }
-        await _time()
-        await SExhibition.getMapviewLocation()
-        this.setState({showShape: false})
-        this.timeoutTrigger?.onBackFromSecondMenu()
-      },
-    },
-    {
-      name: '圆形',
-      image: getImage().icon_tool_yuan,
-      action: async () => {
-        SExhibition.removeMapviewElement()
-        const relativePositin: Vector3 = {
-          x: 0,
-          y: 0,
-          z: -0.5,
-        }
-        SExhibition.addMapviewElement(4, {
-          pose: this.result,
-          translation: relativePositin
-        })
-
-        const _time = async function () {
-          return new Promise(function (resolve, reject) {
-            const timer = setTimeout(function () {
-              resolve('waitting send close message')
-              timer && clearTimeout(timer)
-            }, 1500)
-          })
-        }
-        await _time()
-
-        await SExhibition.getMapviewLocation()
-        this.setState({ showShape: false })
-        this.timeoutTrigger?.onBackFromSecondMenu()
-      },
-    },
-  ]
+  speakData: Array<itemConmonType> = []
 
   scaleValue = 10
-  rotationValue = 40
+  rotationValue = 10
 
   listeners: {
     addListener:EmitterSubscription | undefined,
@@ -136,6 +78,7 @@ class AR3DMapView extends React.Component<Props, State> {
       ),
       mainMenu: this.getMainMenuItem(),
       showSlide: false,
+      attribute:false,
     }
   }
 
@@ -151,11 +94,21 @@ class AR3DMapView extends React.Component<Props, State> {
           }
           // SExhibition.map3Dreset()
           this.scaleValue = 10
-          this.rotationValue = 40
+          this.rotationValue = 10
           SExhibition.scale3dMap(1)
-          SExhibition.rotation3dMap(40)
+          SExhibition.rotation3dMap(10)
           this.setState({showSlide:false})
           this.timeoutTrigger?.onFirstMenuClick()
+
+          if (this.state.attribute) {
+            SExhibition.setIsTouchSelect(false)
+            this.setState({ attribute: false })
+            Toast.show('查询关闭', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+              duration: 2000,
+            })
+          }
         },
       },
       {
@@ -169,6 +122,16 @@ class AR3DMapView extends React.Component<Props, State> {
             this.timeoutTrigger?.onBackFromSecondMenu()
           }
           this.setState({showSlide:!this.state.showSlide})
+
+          if(this.state.attribute){
+            SExhibition.setIsTouchSelect(false)
+            this.setState({attribute:false})
+            Toast.show('查询关闭', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+              duration: 2000,
+            })
+          }
         }
       },
       {
@@ -180,8 +143,19 @@ class AR3DMapView extends React.Component<Props, State> {
             this.isCarAnimationPlay = false
           }
           if (this.open) {
+            this.getShape()
             this.setState({ showShape: true })
             this.timeoutTrigger?.onShowSecondMenu()
+
+            if (this.state.attribute) {
+              SExhibition.setIsTouchSelect(false)
+              this.setState({ attribute: false })
+              Toast.show('查询关闭', {
+                backgroundColor: 'rgba(0,0,0,.5)',
+                textColor: '#fff',
+                duration: 2000,
+              })
+            }
           }
         },
       },
@@ -189,6 +163,140 @@ class AR3DMapView extends React.Component<Props, State> {
         image: getImage().icon_tool_car,
         title: '车流模拟',
         action: this.ChangeCarAnimation,
+      },
+      {
+        image: getImage().icon_tool_attribute,
+        title: '属性查询',
+        action: async()=>{
+          if(!this.state.attribute){
+            SExhibition.setIsTouchSelect(true)
+            Toast.show('查询开启，请点击模型查询属性', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+              duration: 2000,
+            })
+          }else{
+            SExhibition.setIsTouchSelect(false)
+            Toast.show('查询关闭', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+              duration: 2000,
+            })
+          }
+          if(this.isCarAnimationPlay) {
+            await SARMap.pauseCarAnimation()
+            this.isCarAnimationPlay = false
+          }
+          this.setState({attribute:!this.state.attribute,showSlide:false})
+          this.timeoutTrigger?.onFirstMenuClick()
+        },
+      },
+      {
+        image: getImage().icon_tool_materials,
+        title: '纹理符号',
+        action: async ()=>{
+          if (this.open) {
+            this.getMaterials()
+            this.setState({ showShape: true })
+            this.timeoutTrigger?.onShowSecondMenu()
+
+            if (this.state.attribute) {
+              SExhibition.setIsTouchSelect(false)
+              this.setState({ attribute: false })
+              Toast.show('查询关闭', {
+                backgroundColor: 'rgba(0,0,0,.5)',
+                textColor: '#fff',
+                duration: 2000,
+              })
+            }
+          }
+        },
+      },
+    ]
+  }
+
+  getShape = () => {
+    this.speakData = [
+      {
+        name: '矩形',
+        image: getImage().icon_tool_juxing,
+        action: async () => {
+          SExhibition.removeMapviewElement()
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -0.5,
+          }
+          SExhibition.addMapviewElement(0, {
+            pose: this.result,
+            translation: relativePositin
+          })
+          const _time = async function () {
+            return new Promise(function (resolve, reject) {
+              const timer = setTimeout(function () {
+                resolve('waitting send close message')
+                timer && clearTimeout(timer)
+              }, 1500)
+            })
+          }
+          await _time()
+          await SExhibition.getMapviewLocation()
+          this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
+      },
+      {
+        name: '圆形',
+        image: getImage().icon_tool_yuan,
+        action: async () => {
+          SExhibition.removeMapviewElement()
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -0.5,
+          }
+          SExhibition.addMapviewElement(4, {
+            pose: this.result,
+            translation: relativePositin
+          })
+
+          const _time = async function () {
+            return new Promise(function (resolve, reject) {
+              const timer = setTimeout(function () {
+                resolve('waitting send close message')
+                timer && clearTimeout(timer)
+              }, 1500)
+            })
+          }
+          await _time()
+
+          await SExhibition.getMapviewLocation()
+          this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
+      },
+    ]
+  }
+
+  getMaterials = () => {
+    this.speakData = [
+      {
+        name: '白模',
+        image: getImage().icon_tool_juxing,
+        action: async () => {
+          SExhibition.changeBuildMaterials(0)
+          this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
+      },
+      {
+        name: '纹理贴图1',
+        image: getImage().icon_tool_yuan,
+        action: async () => {
+          SExhibition.changeBuildMaterials(1)
+          this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
       },
     ]
   }
@@ -203,6 +311,17 @@ class AR3DMapView extends React.Component<Props, State> {
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
       }
+
+      if (this.state.attribute) {
+        SExhibition.setIsTouchSelect(false)
+        this.setState({ attribute: false })
+        Toast.show('查询关闭', {
+          backgroundColor: 'rgba(0,0,0,.5)',
+          textColor: '#fff',
+          duration: 2000,
+        })
+      }
+
       this.timeoutTrigger?.onFirstMenuClick()
     } catch (error) {
       return
@@ -485,7 +604,7 @@ class AR3DMapView extends React.Component<Props, State> {
       }, 500)
 
       this.open = true
-      this.rotationValue = 40
+      this.rotationValue = 10
       this.scaleValue = 10
     })
   }

@@ -31,6 +31,9 @@ interface State {
   btLeft:Animated.Value
   mainMenu: Item[]
   showSlide: boolean
+  attribute: boolean
+  /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
+  isScan: boolean,
 }
 class AR3DMapView extends React.Component<Props, State> {
   scanRef: Scan | null = null
@@ -49,69 +52,10 @@ class AR3DMapView extends React.Component<Props, State> {
   isCarAnimationPlay = false
 
   sideBar: SideBar | null = null
-  speakData: Array<itemConmonType> = [
-    {
-      name: '矩形',
-      image: getImage().icon_tool_juxing,
-      action:async () => {
-        SExhibition.removeMapviewElement()
-        const relativePositin: Vector3 = {
-          x: 0,
-          y: 0,
-          z: -0.5,
-        }
-        SExhibition.addMapviewElement(0,{
-          pose: this.result,
-          translation: relativePositin
-        })
-        const _time = async function() {
-          return new Promise(function(resolve, reject) {
-            const timer = setTimeout(function() {
-              resolve('waitting send close message')
-              timer && clearTimeout(timer)
-            }, 1500)
-          })
-        }
-        await _time()
-        await SExhibition.getMapviewLocation()
-        this.setState({showShape: false})
-        this.timeoutTrigger?.onBackFromSecondMenu()
-      },
-    },
-    {
-      name: '圆形',
-      image: getImage().icon_tool_yuan,
-      action: async () => {
-        SExhibition.removeMapviewElement()
-        const relativePositin: Vector3 = {
-          x: 0,
-          y: 0,
-          z: -0.5,
-        }
-        SExhibition.addMapviewElement(4, {
-          pose: this.result,
-          translation: relativePositin
-        })
-
-        const _time = async function () {
-          return new Promise(function (resolve, reject) {
-            const timer = setTimeout(function () {
-              resolve('waitting send close message')
-              timer && clearTimeout(timer)
-            }, 1500)
-          })
-        }
-        await _time()
-
-        await SExhibition.getMapviewLocation()
-        this.setState({ showShape: false })
-        this.timeoutTrigger?.onBackFromSecondMenu()
-      },
-    },
-  ]
+  speakData: Array<itemConmonType> = []
 
   scaleValue = 10
-  rotationValue = 40
+  rotationValue = 10
 
   listeners: {
     addListener:EmitterSubscription | undefined,
@@ -122,7 +66,8 @@ class AR3DMapView extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      showScan: false,
+      showScan: true,
+      isScan: true,
       showShape:false,
       showGuide: false,
       btRight:new Animated.Value(
@@ -133,6 +78,7 @@ class AR3DMapView extends React.Component<Props, State> {
       ),
       mainMenu: this.getMainMenuItem(),
       showSlide: false,
+      attribute:false,
     }
   }
 
@@ -148,11 +94,21 @@ class AR3DMapView extends React.Component<Props, State> {
           }
           // SExhibition.map3Dreset()
           this.scaleValue = 10
-          this.rotationValue = 40
+          this.rotationValue = 10
           SExhibition.scale3dMap(1)
-          SExhibition.rotation3dMap(40)
+          SExhibition.rotation3dMap(10)
           this.setState({showSlide:false})
           this.timeoutTrigger?.onFirstMenuClick()
+
+          if (this.state.attribute) {
+            SExhibition.setIsTouchSelect(false)
+            this.setState({ attribute: false })
+            Toast.show('查询关闭', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+              duration: 2000,
+            })
+          }
         },
       },
       {
@@ -166,6 +122,16 @@ class AR3DMapView extends React.Component<Props, State> {
             this.timeoutTrigger?.onBackFromSecondMenu()
           }
           this.setState({showSlide:!this.state.showSlide})
+
+          if(this.state.attribute){
+            SExhibition.setIsTouchSelect(false)
+            this.setState({attribute:false})
+            Toast.show('查询关闭', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+              duration: 2000,
+            })
+          }
         }
       },
       {
@@ -177,8 +143,19 @@ class AR3DMapView extends React.Component<Props, State> {
             this.isCarAnimationPlay = false
           }
           if (this.open) {
+            this.getShape()
             this.setState({ showShape: true })
             this.timeoutTrigger?.onShowSecondMenu()
+
+            if (this.state.attribute) {
+              SExhibition.setIsTouchSelect(false)
+              this.setState({ attribute: false })
+              Toast.show('查询关闭', {
+                backgroundColor: 'rgba(0,0,0,.5)',
+                textColor: '#fff',
+                duration: 2000,
+              })
+            }
           }
         },
       },
@@ -186,6 +163,140 @@ class AR3DMapView extends React.Component<Props, State> {
         image: getImage().icon_tool_car,
         title: '车流模拟',
         action: this.ChangeCarAnimation,
+      },
+      {
+        image: getImage().icon_tool_attribute,
+        title: '属性查询',
+        action: async()=>{
+          if(!this.state.attribute){
+            SExhibition.setIsTouchSelect(true)
+            Toast.show('查询开启，请点击模型查询属性', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+              duration: 2000,
+            })
+          }else{
+            SExhibition.setIsTouchSelect(false)
+            Toast.show('查询关闭', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+              duration: 2000,
+            })
+          }
+          if(this.isCarAnimationPlay) {
+            await SARMap.pauseCarAnimation()
+            this.isCarAnimationPlay = false
+          }
+          this.setState({attribute:!this.state.attribute,showSlide:false})
+          this.timeoutTrigger?.onFirstMenuClick()
+        },
+      },
+      {
+        image: getImage().icon_tool_materials,
+        title: '纹理符号',
+        action: async ()=>{
+          if (this.open) {
+            this.getMaterials()
+            this.setState({ showShape: true })
+            this.timeoutTrigger?.onShowSecondMenu()
+
+            if (this.state.attribute) {
+              SExhibition.setIsTouchSelect(false)
+              this.setState({ attribute: false })
+              Toast.show('查询关闭', {
+                backgroundColor: 'rgba(0,0,0,.5)',
+                textColor: '#fff',
+                duration: 2000,
+              })
+            }
+          }
+        },
+      },
+    ]
+  }
+
+  getShape = () => {
+    this.speakData = [
+      {
+        name: '矩形',
+        image: getImage().icon_tool_juxing,
+        action: async () => {
+          SExhibition.removeMapviewElement()
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -0.5,
+          }
+          SExhibition.addMapviewElement(0,false, {
+            pose: this.result,
+            translation: relativePositin
+          })
+          const _time = async function () {
+            return new Promise(function (resolve, reject) {
+              const timer = setTimeout(function () {
+                resolve('waitting send close message')
+                timer && clearTimeout(timer)
+              }, 1500)
+            })
+          }
+          await _time()
+          await SExhibition.getMapviewLocation()
+          this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
+      },
+      {
+        name: '圆形',
+        image: getImage().icon_tool_yuan,
+        action: async () => {
+          SExhibition.removeMapviewElement()
+          const relativePositin: Vector3 = {
+            x: 0,
+            y: 0,
+            z: -0.5,
+          }
+          SExhibition.addMapviewElement(4, false,{
+            pose: this.result,
+            translation: relativePositin
+          })
+
+          const _time = async function () {
+            return new Promise(function (resolve, reject) {
+              const timer = setTimeout(function () {
+                resolve('waitting send close message')
+                timer && clearTimeout(timer)
+              }, 1500)
+            })
+          }
+          await _time()
+
+          await SExhibition.getMapviewLocation()
+          this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
+      },
+    ]
+  }
+
+  getMaterials = () => {
+    this.speakData = [
+      {
+        name: '白模',
+        image: getImage().icon_tool_meterials0,
+        action: async () => {
+          SExhibition.changeBuildMaterials(0)
+          this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
+      },
+      {
+        name: '纹理贴图1',
+        image: getImage().icon_tool_meterials1,
+        action: async () => {
+          SExhibition.changeBuildMaterials(1)
+          this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
       },
     ]
   }
@@ -200,6 +311,17 @@ class AR3DMapView extends React.Component<Props, State> {
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
       }
+
+      if (this.state.attribute) {
+        SExhibition.setIsTouchSelect(false)
+        this.setState({ attribute: false })
+        Toast.show('查询关闭', {
+          backgroundColor: 'rgba(0,0,0,.5)',
+          textColor: '#fff',
+          duration: 2000,
+        })
+      }
+
       this.timeoutTrigger?.onFirstMenuClick()
     } catch (error) {
       return
@@ -216,6 +338,7 @@ class AR3DMapView extends React.Component<Props, State> {
             showShape: false,
           })
         }}
+        imageStyle={{width: '100%', height: '100%',marginTop: dp(0)}}
         visible={this.state.showShape}
         onHide={() => {
           this.setState({
@@ -225,91 +348,6 @@ class AR3DMapView extends React.Component<Props, State> {
       />
     )
   }
-
-  // renderRollingMode = () => {
-  //   return (
-  //     <FillAnimationWrap
-  //       visible={this.state.showShape}
-  //       animated={'bottom'}
-  //       style={{
-  //         position: 'absolute',
-  //         alignSelf: 'center'
-  //       }}
-  //       range={[-dp(100), dp(20)]}
-  //       onHide={() => {
-  //         this.timeoutTrigger?.onBackFromSecondMenu()
-  //         this.setState({showShape: false})
-  //       }}
-  //     >
-  //       <View style={{
-  //         borderRadius: dp(10),
-  //         flexDirection: 'row',
-  //         justifyContent: 'center',
-  //         alignItems: 'center',
-  //         overflow: 'hidden',
-  //       }}>
-  //         {this.renderRollingBtn({
-  //           image: getImage().icon_tool_juxing,
-  //           title: '矩形',
-  //           action: async () => {
-  //             SExhibition.removeMapviewElement()
-  //             const relativePositin: Vector3 = {
-  //               x: 0,
-  //               y: 0,
-  //               z: -0.5,
-  //             }
-  //             SExhibition.addMapviewElement(0,{
-  //               pose: this.result,
-  //               translation: relativePositin
-  //             })
-  //             const _time = async function() {
-  //               return new Promise(function(resolve, reject) {
-  //                 const timer = setTimeout(function() {
-  //                   resolve('waitting send close message')
-  //                   timer && clearTimeout(timer)
-  //                 }, 1500)
-  //               })
-  //             }
-  //             await _time()
-  //             await SExhibition.getMapviewLocation()
-  //             this.setState({showShape: false})
-  //             this.timeoutTrigger?.onBackFromSecondMenu()
-  //           }
-  //         })}
-  //         {this.renderRollingBtn({
-  //           image: getImage().icon_tool_yuan,
-  //           title: '圆形',
-  //           action: async () => {
-  //             SExhibition.removeMapviewElement()
-  //             const relativePositin: Vector3 = {
-  //               x: 0,
-  //               y: 0,
-  //               z: -0.5,
-  //             }
-  //             SExhibition.addMapviewElement(4, {
-  //               pose: this.result,
-  //               translation: relativePositin
-  //             })
-
-  //             const _time = async function () {
-  //               return new Promise(function (resolve, reject) {
-  //                 const timer = setTimeout(function () {
-  //                   resolve('waitting send close message')
-  //                   timer && clearTimeout(timer)
-  //                 }, 1500)
-  //               })
-  //             }
-  //             await _time()
-
-  //             await SExhibition.getMapviewLocation()
-  //             this.setState({ showShape: false })
-  //             this.timeoutTrigger?.onBackFromSecondMenu()
-  //           }
-  //         })}
-  //       </View>
-  //     </FillAnimationWrap>
-  //   )
-  // }
 
   renderRollingBtn = (item: Item) => {
     return (
@@ -345,11 +383,22 @@ class AR3DMapView extends React.Component<Props, State> {
       this.listeners = SARMap.addMeasureStatusListeners({
         addListener: async result => {
           if (result) {
+            if(this.state.showScan && !this.state.isScan) {
+              // 启用增强定位
+              SARMap.setAREnhancePosition()
+            }
             this.setState({
-              showScan: true,
+              isScan: true,
             })
-            // 启用增强定位
-            SARMap.setAREnhancePosition()
+          } else {
+            if(this.state.showScan && this.state.isScan) {
+              // 停止增强定位
+              SARMap.stopAREnhancePosition()
+            }
+
+            this.setState({
+              isScan: false,
+            })
           }
         },
       })
@@ -414,7 +463,7 @@ class AR3DMapView extends React.Component<Props, State> {
         z: -1,
       }
       this.result = pose
-      SExhibition.addMapviewElement(0,{
+      SExhibition.addMapviewElement(0,true,{
         pose: pose,
         translation: relativePositin
       })
@@ -471,7 +520,7 @@ class AR3DMapView extends React.Component<Props, State> {
       }, 500)
 
       this.open = true
-      this.rotationValue = 40
+      this.rotationValue = 10
       this.scaleValue = 10
     })
   }
@@ -543,7 +592,9 @@ class AR3DMapView extends React.Component<Props, State> {
   back = () => {
     if(this.state.showScan) {
       this.timeoutTrigger?.onBackFromScan()
-      SARMap.stopAREnhancePosition()
+      if(this.state.isScan) {
+        SARMap.stopAREnhancePosition()
+      }
       this.setState({showScan: false})
       return
     }
@@ -715,7 +766,7 @@ class AR3DMapView extends React.Component<Props, State> {
         </View>
 
 
-        {this.state.showScan && this.renderScan()}
+        {this.state.showScan && this.state.isScan && this.renderScan()}
 
         <Animated.View
           style={{

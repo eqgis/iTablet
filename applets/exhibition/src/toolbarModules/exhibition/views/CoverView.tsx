@@ -702,6 +702,7 @@ class CoverView extends React.Component<Props, State> {
         }}
         data={this.state.secondMenuData}
         isRepeatClickCancelSelected
+        imageStyle={{width: dp(100), height: dp(100), marginTop: dp(0)}}
       />
     )
   }

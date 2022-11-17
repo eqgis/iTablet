@@ -333,28 +333,28 @@ class DoctorCC extends Component<Props, State> {
               clearTimeout(tempTimer)
 
               // 走到指定位置后，如果之前有选择动画，则继续播放之前的动画
-              const currentElement = this.ARModel
-              if(currentElement) {
-                const id = this.state.selectAnimationKey
-                let isAdd: animationListType | null | undefined = null
-                if(this.state.selectReloaderKey === 'doctor'){
-                  isAdd = this.animationList.get(id)
-                } else if(this.state.selectReloaderKey === 'doctorStudy'){
-                // supermanAnimationList
-                  isAdd = this.supermanAnimationList.get(id)
-                }
-                if(isAdd) {
-                // 动画已经存在了
-                  await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-                  // 启动动画定时器，每当上一个动画播放完2秒后重启动画
-                  this.animationTimer = setInterval(async () => {
-                    if(this.state.selectAnimationKey === id) {
-                      await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
-                    }
-                    isAdd && await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
-                  },(isAdd.duration + 2) * 1000)
-                }
-              }
+              // const currentElement = this.ARModel
+              // if(currentElement) {
+              //   const id = this.state.selectAnimationKey
+              //   let isAdd: animationListType | null | undefined = null
+              //   if(this.state.selectReloaderKey === 'doctor'){
+              //     isAdd = this.animationList.get(id)
+              //   } else if(this.state.selectReloaderKey === 'doctorStudy'){
+              //   // supermanAnimationList
+              //     isAdd = this.supermanAnimationList.get(id)
+              //   }
+              //   if(isAdd) {
+              //   // 动画已经存在了
+              //     await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+              //     // 启动动画定时器，每当上一个动画播放完2秒后重启动画
+              //     this.animationTimer = setInterval(async () => {
+              //       if(this.state.selectAnimationKey === id) {
+              //         await SARMap.setAnimation(currentElement.layerName, currentElement.id, -1)
+              //       }
+              //       isAdd && await SARMap.setAnimation(currentElement.layerName, currentElement.id, isAdd.id)
+              //     },(isAdd.duration + 2) * 1000)
+              //   }
+              // }
 
             },300)
 
@@ -1238,6 +1238,7 @@ class DoctorCC extends Component<Props, State> {
       selectRouteKey: item.key,
       isSecondaryShow: false,
       isRoutePlay: true,
+      selectAnimationKey: -1,
     })
   }
 

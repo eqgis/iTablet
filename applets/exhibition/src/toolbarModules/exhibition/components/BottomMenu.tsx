@@ -103,8 +103,14 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
       }
     } else {
       if(this.props.keyType) {
+        let keyTemp = this.props.keyType === "string" ? "null" : -1
+        // 当keyType为数字时，解决为0时被误判的问题
+        if(item.key !== undefined && item.key + ""){
+          keyTemp = item.key
+        }
+
         this.setState({
-          selectKey: item.key || (this.props.keyType === "string" ? "null" : -1),
+          selectKey: keyTemp,
         })
       } else {
         this.setState({

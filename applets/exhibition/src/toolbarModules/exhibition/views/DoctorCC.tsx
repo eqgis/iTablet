@@ -1636,7 +1636,7 @@ class DoctorCC extends Component<Props, State> {
         }
 
         // 当进入模块儿的时候和当前都在播背景音乐时，才暂停背景音乐
-        console.warn(this.state.isBackground + " - " + SoundUtil.isPlaying("background"))
+        // console.warn(this.state.isBackground + " - " + SoundUtil.isPlaying("background"))
         if(this.state.isBackground && SoundUtil.isPlaying("background")) {
           SoundUtil.stop("background", () => {
             AppToolBar.getProps().setBackgroundSoundPlayState(false)
@@ -2734,21 +2734,13 @@ class DoctorCC extends Component<Props, State> {
             this.signClick()
           }}
         />
-        {/* 右边按钮的响应界面 */}
-        {!this.state.isShowFull && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
-        {!this.state.isShowFull && this.state.selectType === 'action' && this.renderActionSelected()}
-        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
-        {!this.state.isShowFull && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
-        {this.state.isShowFull && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
-
         {/* 右边按钮 */}
         <View
           style={{
             position: 'absolute',
             right: 0,
             width: '100%',
-            height: '100%',
+            // height: '100%',
             // justifyContent: 'center',
             alignItems: 'flex-end',
           }}
@@ -2761,17 +2753,23 @@ class DoctorCC extends Component<Props, State> {
               height: '100%',
             }}
           >
-            {/* {!this.state.isShowFull && !this.state.showGuide && this.renderSpeak()}
-            {!this.state.isShowFull && !this.state.showGuide && this.renderFunctionList()} */}
             {!this.state.isShowFull && !this.state.showGuide && this.renderSideBar()}
-
-            {/* 拍照按钮 */}
-            {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoShot()}
-            {/* 录像按钮 */}
-            {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderVideoSelected()}
           </Animated.View>
 
         </View>
+
+        {/* 右边按钮的响应界面 */}
+        {!this.state.isShowFull && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
+        {!this.state.isShowFull && this.state.selectType === 'action' && this.renderActionSelected()}
+        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
+        {!this.state.isShowFull && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
+        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
+        {this.state.isShowFull && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
+
+        {/* 拍照按钮 */}
+        {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoShot()}
+        {/* 录像按钮 */}
+        {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderVideoSelected()}
 
         {/* 扫描界面 */}
         {!this.state.isShowFull && this.state.showScan && this.state.isScan && this.renderScan()}

@@ -45,19 +45,19 @@ public class SplashScreen {
                 if (!activity.isFinishing()) {
                     mSplashDialog = new Dialog(activity, themeResId);
                     mSplashDialog.setContentView(R.layout.launch_screen);
-                    gifImageView = mSplashDialog.findViewById(R.id.slogan);
+
 
                     SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("SmData", 0);
                     String language = pref.getString("language","");
                     if (language == null || language.equals("")) {
                         language = "CN";
                     }
-
-                    if (!language.equals("CN") && !language.equals("")) {
-                        gifImageView.setImageResource(R.drawable.launch_slogan_en);
-                    } else {
-                        gifImageView.setImageResource(R.drawable.launch_slogan_cn);
-                    }
+//                    gifImageView = mSplashDialog.findViewById(R.id.slogan);
+//                    if (!language.equals("CN") && !language.equals("")) {
+//                        gifImageView.setImageResource(R.drawable.launch_slogan_en);
+//                    } else {
+//                        gifImageView.setImageResource(R.drawable.launch_slogan_cn);
+//                    }
 
                     mSplashDialog.setCancelable(false);
 

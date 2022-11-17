@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SuperMap iTablet</string>
-    <string name="app_full_name">SuperMap iTablet</string>
+    <string name="app_name">浪潮呼叫中心</string>
+    <string name="app_full_name">浪潮呼叫中心</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_scroller_menu">ScrollerMenuActivity</string>
     <string name="progress">Progress</string>
     <string name="selected_menu">Selected Menu</string>
-    <string name="copyright">Copyright © 2018-2022 SuperMap</string>
+    <string name="copyright">Copyright © 2022 浪潮</string>
     <string name="company">All Right Reserved</string>
 </resources>

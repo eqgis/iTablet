@@ -5,7 +5,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@color/white">
+    android:background="@color/black">
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -18,7 +18,7 @@
         android:layout_height="97dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/icon" />
+        android:src="@mipmap/langchao2" />
 
     <ImageView
         android:id="@+id/logo"
@@ -27,26 +27,7 @@
         android:layout_marginTop="10dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/logo" />
-
-    <!--    <TextView-->
-<!--        android:id="@+id/version"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:text="10i(2020)"-->
-<!--        android:textColor="@color/catalyst_redbox_background"-->
-<!--        android:textSize="18sp"-->
-<!--        android:textStyle="bold|italic" />-->
-
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/slogan"
-        android:layout_width="700dp"
-        android:layout_height="56dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/launch_slogan_cn" />
+        android:src="@drawable/langchaologo" />
 
     <View
         android:layout_width="match_parent"
@@ -60,7 +41,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/copyright"
-        android:textColor="@color/black" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/company"
@@ -69,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/company"
-        android:textColor="@color/black"/>
+        android:textColor="@color/white"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"

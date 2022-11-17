@@ -1,10 +1,9 @@
 import React from 'react'
 import { View, Image, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native'
-import { dp, Toast} from '../../utils'
+import { AppEvent, dp, Toast} from '../../utils'
 import { getThemeAssets } from '../../assets'
 import { getLanguage } from '../../language'
 interface IProps {
-  imageTrackingresultTag: string
   onBack?: () => void
   onSuccess?: () => void
 }
@@ -27,10 +26,24 @@ class AREnhancePosition extends React.Component<IProps, IState> {
     }
   }
   componentDidMount(){
+    AppEvent.addListener('ar_tracking_image_result', this.onResult)
     this.setState({
       scanning: true,
     })
     this.startAnimation()
+  }
+
+  componentWillUnmount(): void {
+    AppEvent.removeListener('ar_tracking_image_result', this.onResult)
+  }
+
+  onResult = (result: {success: boolean}) => {
+    if(result.success) {
+      Toast.show(getLanguage(global.language).Profile.CALIBRATION_SUCCESSFUL)
+      this.props.onSuccess?.()
+    } else {
+      Toast.show(getLanguage(global.language).Profile.CALIBRATION_TIMEOUT)
+    }
   }
 
   startAnimation = () => {
@@ -45,22 +58,6 @@ class AREnhancePosition extends React.Component<IProps, IState> {
   stopAnimation = () => {
     this.scanAnimation.reset()
     this.animValue.setValue(0)
-  }
-
-  startScan = () =>{
-    this.startAnimation()
-    const result = this.props.imageTrackingresultTag
-    setTimeout(()=>{
-      if(result === 'ImageTracking success') {
-        // 校准成功
-        Toast.show(getLanguage(global.language).Profile.CALIBRATION_SUCCESSFUL)
-        this.props.onSuccess?.()
-      } else {
-        // 校准超时
-        Toast.show(getLanguage(global.language).Profile.CALIBRATION_TIMEOUT)
-      }
-    }, 800)
-
   }
 
   render() {

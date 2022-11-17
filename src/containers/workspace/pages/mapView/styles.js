@@ -410,4 +410,22 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  bottomInfoTextContainer: {
+    position: 'absolute',
+    bottom: scaleSize(100),
+    right: scaleSize(20),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    backgroundColor: 'transparent'
+  },
+  bottomInfoText:{
+    color:"#fff",
+    fontSize: scaleSize(16),
+    textShadowOffset:{
+      width:scaleSize(1),
+      hegith:scaleSize(1),
+    },
+    textShadowRadius:scaleSize(1),
+    textShadowColor:'#000'
+  },
 })

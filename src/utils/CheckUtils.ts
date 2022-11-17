@@ -5,7 +5,7 @@ import { getLanguage } from "../language"
  * @param value 输入字符串
  */
 export function formatFloat(value: string): string {
-  value = value.replace(/[^\d.]/g, '') //清除“数字”和“.”以外的字符
+  value = value.replace(/[^[\d-]\d.]/g, '') //清除“数字”和“.”以外的字符
   value = value.replace(/\.{2,}/g, '.') //只保留第一个. 清除多余的
   value = value
     .replace('.', '$#$')

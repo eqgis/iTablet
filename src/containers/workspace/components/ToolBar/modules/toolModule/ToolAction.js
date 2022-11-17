@@ -583,29 +583,38 @@ function matchPictureStyle() {
   })
 }
 
-
+let qrCoding = false // 防止重复触发
 // 二维码识别
 async function qrCode() {
   try {
+    qrCoding = false
     const _params = ToolbarModule.getParams()
     NavigationService.navigate('Camera', {
       type: TYPE.BARCODE,
       qrCb: event => {
+        if (qrCoding) return
+        qrCoding = true
         if (event.length <= 0) return
-        _params.setToolbarVisible(false)
-        NavigationService.goBack('Camera')
-        LocateUtils.SearchGeoInCurrentLayer(
-          {
-            title: event[0].barcodeText,
-            value: event[0].barcodeText,
-            radius: 5000,
-            is3D: false,
+        _params.setToolbarVisible(false, '', {
+          isFullScreen: true,
+          cb: () => {
+            _params.showFullMap(true)
+            // _params.showFullMap(true)
+            LocateUtils.SearchGeoInCurrentLayer(
+              {
+                title: event[0].barcodeText,
+                value: event[0].barcodeText,
+                radius: 5000,
+                is3D: false,
+              },
+              async data => {
+                NavigationService.goBack('Camera')
+                // eslint-disable-next-line no-console
+                __DEV__ && console.warn(data)
+              },
+            )
           },
-          async data => {
-            // eslint-disable-next-line no-console
-            __DEV__ && console.warn(data)
-          },
-        )
+        })
       },
     })
   } catch (error) {

@@ -4,7 +4,7 @@ import ConstToolType from './ConstToolType'
 import ToolbarType from './ToolbarType'
 import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBtnType'
 import { getLanguage } from '../language/index'
-import { Toast, LayerUtils } from '../utils'
+import { Toast, LayerUtils, AppToolBar } from '../utils'
 import { getThemeAssets } from '../assets'
 import {
   Platform,
@@ -116,6 +116,7 @@ async function OpenData(data, index, callback) {
     //切换底图后设置比例尺中心点等 add jiakai
     SMap.setMapInfo({scale:info.scale,centerx:info.center.x,centery:info.center.y,prjCoordSys:info.prjCoordSys})
 
+    AppToolBar.getProps().getLayers()
     // SMap.viewEntire()
     Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
   } else {
@@ -338,22 +339,6 @@ function layerManagerData() {
       type: DatasetType.IMAGE,
       themeType: -1,
     },
-    // {
-    //   title: 'GaoDe',
-    //   action: () => OpenData(ConstOnline.GAODE, 0),
-    //   data: [],
-    //   image: getThemeAssets().layerType.layer_image,
-    //   type: DatasetType.IMAGE,
-    //   themeType: -1,
-    // },
-    // {
-    //   title: 'GaoDe Image',
-    //   action: () => OpenData(ConstOnline.GAODE, 1),
-    //   data: [],
-    //   image: getThemeAssets().layerType.layer_image,
-    //   type: DatasetType.IMAGE,
-    //   themeType: -1,
-    // },
     {
       title: 'BingMap',
       action: () => OpenData(ConstOnline.BingMap, 0),
@@ -431,6 +416,22 @@ function layerManagerData() {
         })
         global.SimpleDialog.setVisible(true)
       },
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'GaoDe',
+      action: () => OpenData(ConstOnline.GAODE, 0),
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
+      title: 'GaoDe Image',
+      action: () => OpenData(ConstOnline.GAODE, 1),
       data: [],
       image: getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,

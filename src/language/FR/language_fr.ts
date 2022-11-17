@@ -549,8 +549,8 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Veuillez sélectionner un objet',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Veuillez sélectionner un calque ou un objet",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Veuillez sélectionner un calque d'objet",
-  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
-  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "Impossible de styliser le tuyau 3D",
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "Impossible d'éditer le tuyau 3D",
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "Ajouter une table d'attributs à la scène AR",
 
@@ -1344,6 +1344,7 @@ export const language_fr: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "Surface de recherche",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "Distance de vue:",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"Restez loin",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"Trop faible, prenez plus de lumière",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"Trop rapide, veuillez ralentir",
@@ -1513,7 +1514,7 @@ export const language_fr: typeof language_cn = {
   LINE_WIDTH: 'Largeur de ligne',
   LINE_POINT_SIZE: 'Taille du point de ligne',
   BUTTON_TEXT_SIZE: 'Taille du bouton',
-  LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
+  LINE_POINT_ADD_SUCCESSED: 'Point de ligne ajouté avec succès',
 
   BAR_CHART: 'Diagramme à bandes',
   HISTOGRAM_ATTRIBUTE: "Attribut d'histogramme",
@@ -1637,8 +1638,8 @@ export const language_fr: typeof language_cn = {
   LAYER_MOVEUP_FAIL: 'Échec du déplacement vers le haut',
   LAYER_MOVEDOWN_SUCCESS: 'Réussite du déménagement',
   LAYER_MOVEDOWN_FAIL: 'Échec du déplacement vers le bas',
-  FIRST_EFFECT_LAYER: 'Layer is First effect layer',  // To be translated
-  LAST_EFFECT_LAYER: 'Layer is last effect layer',  // To be translated
+  FIRST_EFFECT_LAYER: "La couche est la première couche d'effet",
+  LAST_EFFECT_LAYER: "La couche est la dernière couche d'effet",
 
   VISIBLE: "Visible",
   NOT_VISIBLE: "Invisible",
@@ -2184,19 +2185,19 @@ export const language_fr: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "Auto",
   SETTING_LOCATION_DEVICE: "Dispositif de localisation",
   SETTING_LOCATION_LOCAL: "Cet appareil",
-  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
-  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
-  NTRIP_SETTING: "Differential service",  // To be translated
-  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
-  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
-  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
-  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
-  NTRIP_AGREEMENT: 'Protocol',  // To be translated
-  PROTOCOL_TYPE: 'Protocol type',  // To be translated
-  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
-  PORT_NUMBER: 'Port',  // To be translated
-  PASSWORD: 'Password',  // To be translated
-  LOADING_POINT: 'Loading point',  // To be translated
+  SETTING_LOCATION_EXTERNAL: "Matériel de réseau",
+  SETTING_LOCATION_BLUETOOTH: "Bluetooth",
+  NTRIP_SETTING: "Services différenciés",
+  DEVICE_INFORMATION_SETTING: "Paramètres d'information du périphérique",
+  INSTRUMENT_MANUFACTURER: "Fabricant de l'instrument",
+  INSTRUMENT_TYPE: "Type d'instrument",
+  BLUETOOTH_DEVICE_LIST: 'Liste des périphériques Bluetooth',
+  NTRIP_AGREEMENT: 'Accord',
+  PROTOCOL_TYPE: 'Type de protocole',
+  ESSENTIAL_INFORMATION: 'Informations de base',
+  PORT_NUMBER: 'Ville portuaire',
+  PASSWORD: 'Mot de passe',
+  LOADING_POINT: 'Point de chargement',
   SETTING_CLEAR_CACHE: "Vider le cache",
   SETTING_CLEAR_CACHE_SUCCESS:"Suppression réussie",
   DISTANCE_METER:"Distance(m)",
@@ -2205,11 +2206,11 @@ export const language_fr: typeof language_cn = {
   DISTANCE_LOCATION:"Emplacement à distance",
   TIME_LOCATION:"Temps d'emplacement",
 
-  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
-  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
-  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
-  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
-  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
+  CHANGE_DEVICE_LOCAL: "Commuté à cet appareil",
+  CHANGE_DEVICE_EXTERNAL: "Passage à un périphérique réseau",
+  CHANGE_DEVICE_BLUETOOTH: "Passage à un appareil Bluetooth",
+  SLOCATION_STATE_CURRENT: "État du positionnement",
+  WEAK_POSITIONING_SIGNAL: "Signal de localisation faible",
 
   // 许可
   LICENSE: "License",
@@ -2262,6 +2263,7 @@ export const language_fr: typeof language_cn = {
   LICENSE_ACTIVATING: "Activation",
   LICENSE_ACTIVATION_SUCCESS: "Activer avec succès",
   LICENSE_ACTIVATION_FAIL: "Activation échouée",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
   LICENSE_SELECT_LICENSE: "Sélectionnez la licence",
   LICENSE_REAMIN_DAYS: "Jours restants",
   LICENSE_SHOW_DETAIL: "Afficher les détails",
@@ -2505,7 +2507,7 @@ export const language_fr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Veuillez sélectionner une couche de point, CAD ou de parcelle",
   PLEASE_SELECT_CAD_LAYER: "Veuillez sélectionner une couche CAD ",
   DONOT_SUPPORT_ARCORE: "Installer ou mettre à niveau ARCore",
-  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
+  DEVICE_DOES_NOT_SUPPORT_AR:"Ar n'est pas pris en charge sur cet appareil",
   GET_SUPPORTED_DEVICE_LIST: "Afficher la liste des appareils pris en charge",
   PLEASE_NEW_PLOT_LAYER: "Veuillez créer une nouvelle couche de tracé",
   DOWNLOADING_PLEASE_WAIT: "Téléchargement en cours, veuillez patienter",
@@ -2551,11 +2553,11 @@ export const language_fr: typeof language_cn = {
   PUBLISH_FAILED: "Échec de la publication",
   PUBLISH_FAILED_INFO_1: "Le service a été publié",
   PUBLISH_FAILED_INFO_2: "le service est en cours de publication et ne peut pas être exploité pour le moment",
-  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
-  UNPUBLISH: "Unpublish", // need to translate
-  UNPUBLISHING: "Unpublishing", // need to translate
-  UNPUBLISH_SUCCESS: "Unpublished", // need to translate
-  UNPUBLISH_FAILED: "Failed to Unpublish", // need to translate
+  PUBLISH_FAILED_INFO_3: "Quota de service insuffisant",
+  UNPUBLISH: "Annuler la publication",
+  UNPUBLISHING: "Annulation de la publication",
+  UNPUBLISH_SUCCESS: "Non publié",
+  UNPUBLISH_FAILED: "Impossible d'annuler la publication",
   SERVICE_SUBMIT_BEFORE_UPDATE: "Veuillez mettre à jour le service avant de soumettre",
   DELETE_CONFIRM: "Voulez-vous vraiment supprimer l'élément?",
   BATCH_DELETE_CONFIRM: "Voulez-vous vraiment supprimer les éléments sélectionnés?",
@@ -2789,7 +2791,7 @@ export const language_fr: typeof language_cn = {
   ONLY_INTEGER: "Seuls les nombres entiers peuvent être saisis!",
   ONLY_INTEGER_GREATER_THAN_2: "Seuls les nombres entiers supérieurs à 2 peuvent être saisis!",
   PARAMS_ERROR: "Erreur de paramètres! Échec de paramètres!",
-  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
+  ONLY_POSITIVE_INTEGER: "Seuls les entiers positifs peuvent être entrés!",
 
   SPEECH_TIP: "You may say \n'Agrandir'，'Dézoomer'，'Localiser'，'Proche',\n 'Rechercher 'ou n'importe quelle adresse",
   SPEECH_ERROR: "Reconnaître l'erreur, veuillez réessayer plus tard",
@@ -2844,11 +2846,11 @@ export const language_fr: typeof language_cn = {
   CHAR: "Char",
   WTEXT: "WTexte",
 
-  SLIDE_RATIO: 'Slide ratio', // to be translated
+  SLIDE_RATIO: 'Taux de glissement',
 
-  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
+  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: "L'élément courant ne supporte pas l'attribut AR",
 
-  LICENSE_STAFF_TRIAL_APPLY: "Apply staff license",  // to be translated
+  LICENSE_STAFF_TRIAL_APPLY: "Demande de licence d'employé",
 
   INPUT_TEXT: 'Veuillez saisir le texte',
   INPUT_URL: "Veuillez saisir l'URL",
@@ -2858,16 +2860,16 @@ export const language_fr: typeof language_cn = {
   THE_LAST: 'la dernière photo',
 
 
-  DAYS: 'day(s)',  // to be translated
-  EXPIRE_DATE: 'Expire date',  // to be translated
+  DAYS: 'Nombre de jours',
+  EXPIRE_DATE: "Date d'expiration",
 
-  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
-  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+  OPEN_3D_SCENE: "Veuillez d'abord ouvrir la scène 3D",
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Partage non pris en charge pour les scénarios 3D en ligne',
 
-  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
-  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
-  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
-  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'La licence est déjà activée sur un autre appareil',
+  ATTRIBUTE_MAKE: 'Propriétés à générer',
+  SAND_TABLE_MAKE: 'Production de sable',
+  PANE_ANIMATION: 'Animation du panneau',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
 }

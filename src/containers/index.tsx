@@ -256,7 +256,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="CoworkTabs" options={modalOption(params)} >
         {() => CoworkTabs(params.device)}
       </Stack.Screen>
-      <Stack.Screen name="MapViewSingle" component={MapView} />
+      <Stack.Screen name="MapViewSingle" component={MapView} options={modalOption(params)}/>
       <Stack.Screen name="MapSetting" component={MapSetting} options={modalOption(params)}/>
       <Stack.Screen name="Map3DSetting" component={Map3DSetting} options={modalOption(params)}/>
       <Stack.Screen name="CoworkMember" component={CoworkMember} options={modalOption(params)} />
@@ -425,7 +425,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="CustomModePage" component={CustomModePage} options={modalOption(params)} />
       <Stack.Screen name="ARLayerManager" component={ARLayerManager} options={modalOption(params)}/>
       <Stack.Screen name="ARMapSetting" component={ARMapSetting} options={modalOption(params)}/>
-      <Stack.Screen name="ServiceShareSettings" component={ServiceShareSettings} />
+      <Stack.Screen name="ServiceShareSettings" component={ServiceShareSettings} options={modalOption(params)}/>
       <Stack.Screen name="NavigationView2D" component={NavigationView2D} options={modalOption(params)} />
       <Stack.Screen name="RoadNet" component={RoadNet} options={modalOption(params)} />
       <Stack.Screen name="Report" component={Report} options={modalOption(params)} />

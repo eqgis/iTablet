@@ -549,8 +549,8 @@ export const language_tr: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'Lütfen nesne seçin',
   PLEASE_SELECT_LAYER_OR_OBJECT: "Lütfen bir katman veya nesne seçin",
   PLEASE_SELECT_AR_OBJECT_LAYER: "Lütfen bir nesne katmanı seçin",
-  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
-  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "Üç boyutlu bor çizgileri stil edilemez",
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "Üç boyutlu bor çizgileri düzenlenemez",
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "AR sahnesine Öznitelik tablosu ekle",
 
@@ -1344,6 +1344,7 @@ export const language_tr: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "Yüzey Arama",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "Görüş Mesafesi: ",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"Uzaklaş",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"Çok Loş, Daha Fazla Işık Alın",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"Çok Hızlı, Lütfen Yavaşlayın",
@@ -1512,7 +1513,7 @@ export const language_tr: typeof language_cn = {
   LINE_WIDTH: 'Hat Genişliği',
   LINE_POINT_SIZE: 'Çizgi Noktası Boyutu',
   BUTTON_TEXT_SIZE: 'Düğme Boyutu',
-  LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
+  LINE_POINT_ADD_SUCCESSED: 'Hat noktası başarılı eklendi',
 
   BAR_CHART: 'Grafik Çubuğu',
   HISTOGRAM_ATTRIBUTE: 'Histogram Özniteliği',
@@ -1636,8 +1637,8 @@ export const language_tr: typeof language_cn = {
   LAYER_MOVEUP_FAIL: 'Yukarı taşıma başarısız',
   LAYER_MOVEDOWN_SUCCESS: 'Aşağı taşıma başarılı',
   LAYER_MOVEDOWN_FAIL: 'Aşağı taşıma başarısız',
-  FIRST_EFFECT_LAYER: 'Layer is First effect layer',  // To be translated
-  LAST_EFFECT_LAYER: 'Layer is last effect layer',  // To be translated
+  FIRST_EFFECT_LAYER: 'Layer is First effect layer',
+  LAST_EFFECT_LAYER: 'Layer is last effect layer',
 
   VISIBLE: "Görülebilir",
   NOT_VISIBLE: "Görülebilir Değil",
@@ -2182,19 +2183,19 @@ export const language_tr: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "Otomatik",
   SETTING_LOCATION_DEVICE: "Konumlandır",
   SETTING_LOCATION_LOCAL: "Bu cihaz",
-  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
-  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
-  NTRIP_SETTING: "Differential service",  // To be translated
-  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
-  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
-  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
-  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
-  NTRIP_AGREEMENT: 'Protocol',  // To be translated
-  PROTOCOL_TYPE: 'Protocol type',  // To be translated
-  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
-  PORT_NUMBER: 'Port',  // To be translated
-  PASSWORD: 'Password',  // To be translated
-  LOADING_POINT: 'Loading point',  // To be translated
+  SETTING_LOCATION_EXTERNAL: "Ağ Hizmetleri",
+  SETTING_LOCATION_BLUETOOTH: "Bluetooth",
+  NTRIP_SETTING: "Farklı hizmet",
+  DEVICE_INFORMATION_SETTING: 'Aygıt bilgi ayarları',
+  INSTRUMENT_MANUFACTURER: 'Araç üreticisi',
+  INSTRUMENT_TYPE: 'Araç türü',
+  BLUETOOTH_DEVICE_LIST: 'Bluetooth aygıt listesi',
+  NTRIP_AGREEMENT: 'Protokol',
+  PROTOCOL_TYPE: 'Protokol Türü',
+  ESSENTIAL_INFORMATION: 'Önemli Bilgi',
+  PORT_NUMBER: 'Port',
+  PASSWORD: 'Parola',
+  LOADING_POINT: 'Yükleme noktası',
   SETTING_CLEAR_CACHE: "Çerezleri temizle",
   SETTING_CLEAR_CACHE_SUCCESS:"Temizleme başarılı",
   DISTANCE_METER:"Mesafe(m)",
@@ -2203,11 +2204,11 @@ export const language_tr: typeof language_cn = {
   DISTANCE_LOCATION:"Uzaklık Konumu",
   TIME_LOCATION:"Zamansal Konum",
 
-  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
-  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
-  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
-  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
-  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
+  CHANGE_DEVICE_LOCAL: "Bu cihaza değiştirildi",
+  CHANGE_DEVICE_EXTERNAL: "Ağ aygıtına değiştirildi",
+  CHANGE_DEVICE_BLUETOOTH: "Bluetooth aygıtına değiştirildi",
+  SLOCATION_STATE_CURRENT: "Konum durumu",
+  WEAK_POSITIONING_SIGNAL: "Küçük pozisyon sinyali",
 
   // 许可
   LICENSE: "Lisans",
@@ -2260,6 +2261,7 @@ export const language_tr: typeof language_cn = {
   LICENSE_ACTIVATING: "Aktivasyon yapılıyor",
   LICENSE_ACTIVATION_SUCCESS: "Aktivasyon Başarılı",
   LICENSE_ACTIVATION_FAIL: "Aktivasyon Başarısız",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
   LICENSE_SELECT_LICENSE: "Lisans seçin",
   LICENSE_REAMIN_DAYS: "Kalan günler",
   LICENSE_SHOW_DETAIL: "Detayları göster",
@@ -2503,7 +2505,7 @@ export const language_tr: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "Lütfen bir nokta, CAD veya çizim katmanı seçin",
   PLEASE_SELECT_CAD_LAYER: "Lütfen bir CAD katmanı seçin",
   DONOT_SUPPORT_ARCORE: "ARCore'u kurun veya yükseltin",
-  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
+  DEVICE_DOES_NOT_SUPPORT_AR:"Bu cihaz AR desteklemez",
   GET_SUPPORTED_DEVICE_LIST: "Desteklenen cihaz listesini gör",
   PLEASE_NEW_PLOT_LAYER: "Lütfen Yeni Çizim Katmanı Oluşturun",
   DOWNLOADING_PLEASE_WAIT: "İndiriliyor, lütfen bekleyin",
@@ -2549,11 +2551,11 @@ export const language_tr: typeof language_cn = {
   PUBLISH_FAILED: "Yayınlama Başarısız",
   PUBLISH_FAILED_INFO_1: "Servis yayınlandı",
   PUBLISH_FAILED_INFO_2: "Hizmet yayınlanıyor fakat şu anda çalıştırılamıyor",
-  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
-  UNPUBLISH: "Unpublish", // need to translate
-  UNPUBLISHING: "Unpublishing", // need to translate
-  UNPUBLISH_SUCCESS: "Unpublished", // need to translate
-  UNPUBLISH_FAILED: "Failed to Unpublish", // need to translate
+  PUBLISH_FAILED_INFO_3: "Yeterince hizmet kvota",
+  UNPUBLISH: "Yayırma",
+  UNPUBLISHING: "Yayırmadım.",
+  UNPUBLISH_SUCCESS: "Not published",
+  UNPUBLISH_FAILED: "Yazılım Çıkarması başarısız oldu",
   SERVICE_SUBMIT_BEFORE_UPDATE: "Lütfen göndermeden önce hizmeti güncelleyin.",
   DELETE_CONFIRM: "Öğeyi silmek istediğinizden emin misiniz?",
   BATCH_DELETE_CONFIRM: "Seçili öğe(ler)i silmek istediğinizden emin misiniz?",
@@ -2645,7 +2647,7 @@ export const language_tr: typeof language_cn = {
   POI: "POI",
   WIDGET: "Aygıt",
 
-  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
+  PLEASE_SELECT_FIRST:"Lütfen Önce Seçin",
 
   ILLEGAL_DATA: "Yasadışı Veri",
 
@@ -2763,7 +2765,7 @@ export const language_tr: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "Dosya zaten mevcut, lütfen dosya adını yeniden girin",
   NETWORK_BUILDING: "Uygulanıyor...",
   ROADNET_BUILD_SUCCESS: "Başarıyla uygulandı",
-  ROADNET_BUILD_FAILED: "Failed built",//to be translate
+  ROADNET_BUILD_FAILED: "Başarısız inşa edildi",
   SELECT_LINE_SMOOTH: "Lütfen düzeltilmesi gereken çizgiyi seçin",
   SELECT_A_POINT_INLINE: "Lütfen bir çevrimiçi nokta seçin",
   SELECT_POINT_INCURRENTLINE:"Kesinti için geçerli satırdaki noktayı seçin",
@@ -2788,7 +2790,7 @@ export const language_tr: typeof language_cn = {
   ONLY_INTEGER: "Yalnızca tamsayılar girilebilir!",
   ONLY_INTEGER_GREATER_THAN_2: "Yalnızca 2'den büyük tamsayılar girilebilir!",
   PARAMS_ERROR: "Parametre hatası, ayar başarısız!",
-  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
+  ONLY_POSITIVE_INTEGER: "Sadece pozitif büyük sayılar girebilir!",
 
   SPEECH_TIP: "Aşağıdakileri seçebilirsiniz: \n'Yaklaş'，'Uzaklaş'，'Yerleştir'，'Kapat',\n 'Ara' ya da herhangi bir Adres",
   SPEECH_ERROR: "Tanımlı hata, lütfen daha sonra tekrar deneyiniz",
@@ -2843,11 +2845,11 @@ export const language_tr: typeof language_cn = {
   CHAR: "Char",
   WTEXT: "Wide Text",
 
-  SLIDE_RATIO: 'Slide ratio', // to be translated
+  SLIDE_RATIO: 'Slide Proprisyonu',
 
-  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
+  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Ağımdaki eleman AR özelliğini desteklemez',
 
-  LICENSE_STAFF_TRIAL_APPLY: "Apply staff license",  // to be translated
+  LICENSE_STAFF_TRIAL_APPLY: "Kişisel lisansını uygula",
 
   INPUT_TEXT: 'Lütfen Metin Girin',
   INPUT_URL: "Lütfen URL''yi Girin",
@@ -2857,16 +2859,16 @@ export const language_tr: typeof language_cn = {
   THE_LAST: 'Son Resim',
 
 
-  DAYS: 'day(s)',  // to be translated
-  EXPIRE_DATE: 'Expire date',  // to be translated
+  DAYS: 'Günler',
+  EXPIRE_DATE: 'Yetişme tarihi',
 
-  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
-  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+  OPEN_3D_SCENE: 'Lütfen önce 3D sahnesini aç.',
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D sahneler paylaşmayı desteklemez',
 
-  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
-  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
-  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
-  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'Lisans çoktan başka bir aygıta etkinleşti.',
+  ATTRIBUTE_MAKE: 'Yapılacak özellik',
+  SAND_TABLE_MAKE: 'Sand production',
+  PANE_ANIMATION: 'Pane animasyonu',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
 }

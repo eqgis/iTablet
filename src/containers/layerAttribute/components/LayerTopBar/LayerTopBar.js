@@ -26,13 +26,13 @@ const itemGap = scaleSize(20)
 
 export default class LayerTopBar extends React.Component {
   props: {
-    locateAction: () => {},
-    undoAction: () => {},
-    deleteAction: () => {},
-    refreshAction: () => {},
-    relateAction: () => {},
-    addFieldAction: () => {},
-    tabsAction?: () => {}, // 显示侧滑栏
+    locateAction: () => void,
+    undoAction: () => void,
+    deleteAction: () => void,
+    refreshAction: () => void,
+    relateAction: () => void,
+    addFieldAction: () => void,
+    tabsAction?: () => void, // 显示侧滑栏
     attributesData: Array,
     hasAddField?: boolean, // 是否有添加属性按钮
     hasCamera?: boolean, // 是否有多媒体按钮

@@ -59,7 +59,7 @@ export default class RegistrationDatasetPage extends Component {
             let result = this.filtDataset(dataset)
             if (!result) {
               datasetsData.splice(j, 1)
-              _index++
+              // _index++
               continue
             } else {
               dataset.title = dataset.datasetName

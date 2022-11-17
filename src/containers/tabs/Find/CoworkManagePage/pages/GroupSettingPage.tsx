@@ -18,7 +18,7 @@ import { scaleSize } from '../../../../../utils'
 import { UserType, MsgConstant } from '../../../../../constants'
 import { Container, TextBtn, TableList, ImageButton, Dialog } from '../../../../../components'
 import { color, size } from '../../../../../styles'
-import { getThemeAssets, getPublicAssets } from '../../../../../assets'
+import { getThemeAssets, getPublicAssets, getImage } from '../../../../../assets'
 import { getLanguage } from '../../../../../language'
 import SMessageServiceHTTP from '../../../Friend/SMessageServiceHTTP'
 import { Users } from '../../../../../redux/models/user'
@@ -172,6 +172,7 @@ class GroupSettingPage extends Component<Props, State> {
             // this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
             // this._setDialogVisible(false)
             // NavigationService.goBack('CoworkManagePage', null)
+            NavigationService.navigate('GroupSelectPage', null)
           }
         })
       }
@@ -187,6 +188,7 @@ class GroupSettingPage extends Component<Props, State> {
             // this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
             // this._setDialogVisible(false)
             // NavigationService.goBack('CoworkManagePage', null)
+            NavigationService.navigate('GroupSelectPage', null)
           }
         })
       }
@@ -351,7 +353,7 @@ class GroupSettingPage extends Component<Props, State> {
           width: scaleSize(44),
           height: scaleSize(44),
         }}
-        icon={getThemeAssets().functionBar.icon_tool_mark}
+        icon={getImage().setting}
         onPress={() => {
           NavigationService.navigate('CreateGroupPage', {
             initData: this.props.currentGroup,

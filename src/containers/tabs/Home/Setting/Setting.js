@@ -7,6 +7,7 @@ import {
   Text,
   ScrollView,
   RefreshControl,
+  Platform,
 } from 'react-native'
 import { scaleSize, Toast } from '../../../../utils'
 import Container from '../../../../components/Container'
@@ -43,6 +44,9 @@ export default class Setting extends Component {
     try {
       //市场不允许出现许可，在审核期间把标去掉 add xiezhy
       let bOpen = global.isAudit
+      if(Platform.OS === 'android'){
+        bOpen = false
+      }
       bOpen = !bOpen
       
       this.setState({

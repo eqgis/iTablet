@@ -52,7 +52,7 @@ class ARAttributeView extends React.Component<Props> {
 
             if (key === 'id') {
               arr.unshift(item)
-            } else if(key !== 'action') {
+            } else if(key !== 'action' && item.value !== "") {
               // 不以sm开头， 或是以下四种情况之一
               if(key.substring(0,2)!== 'Sm' || key === 'SmID'
               || key === 'SmLength' || key === 'SmTNode'

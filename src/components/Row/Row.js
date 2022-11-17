@@ -36,6 +36,7 @@ export default class Row extends Component {
     unit?: string, // CHOOSE_NUMBER 单位
     getValue?: () => {}, // 获取值的回调
     disable?: boolean, // 是否可操作
+    onFocus?: (e) => void, // 右边带删除按钮的输入框聚焦
   }
 
   static defaultProps = {
@@ -123,6 +124,9 @@ export default class Row extends Component {
             accessibilityLabel={this.props.title}
             underlineColorAndroid="transparent"
             onChangeText={this.labelChange}
+            onFocus={(e) => {
+              this.props.onFocus && this.props.onFocus(e)
+            }}
           />
           {this.props.disable && <View style={[styles.inputOverLayer, this.props.disableStyle]} />}
         </View>
@@ -143,6 +147,11 @@ export default class Row extends Component {
               this.labelChange('')
             }}
             returnKeyType={'done'}
+            // isKeyboardAvoiding={true}
+            // behavior={"padding"}
+            onFocus={(e) => {
+              this.props.onFocus && this.props.onFocus(e)
+            }}
             showClear={!this.props.disable}
           />
           {this.props.disable && <View style={[styles.inputOverLayer, this.props.disableStyle]} />}

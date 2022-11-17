@@ -375,7 +375,7 @@ export default class MapView extends React.Component {
       samplescale: new Animated.Value(0.1),
       showPoiSearch: false,
       showNavigation: false,
-      imageTrackingresultTag: '',
+      isFull: true,
     }
     // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
     this.props.setDatumPoint(false)
@@ -431,6 +431,8 @@ export default class MapView extends React.Component {
 
     // 分享按钮是否可点击标识，true为可点击
     this.isShareCanClick = true
+    /** 提示语回调 提示显示的控制定时器 */
+    this.timer = null
   }
 
   isARModule = () => {
@@ -703,34 +705,49 @@ export default class MapView extends React.Component {
 
   /**提示语回调 */
   onshowLog = result => {
-    if (result.close) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
-      })
-    }
+    if(!this.timer) {
+      this.timer = setTimeout(() => {
+        clearTimeout(this.timer)
+        this.timer = null
+      }, 2000)
 
-    if (result.dark) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
-      })
-    }
-
-    if (result.fast) {
-      this.setState({
-        dioLog: getLanguage(global.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
-      })
-    }
-
-    if (result.nofeature) {
-      if (this.state.dioLog != getLanguage(global.language).Map_Main_Menu
-        .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+      if (result.close) {
         this.setState({
           dioLog: getLanguage(global.language).Map_Main_Menu
-            .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+            .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
         })
+      }
+
+      if(result.far) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_FAR, showLog: true
+        })
+      }
+
+      if (result.dark) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
+        })
+      }
+
+      if (result.fast) {
+        this.setState({
+          dioLog: getLanguage(global.language).Map_Main_Menu
+            .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
+        })
+      }
+
+      if (result.nofeature) {
+        if (this.state.dioLog != getLanguage(global.language).Map_Main_Menu
+          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
+          this.setState({
+            dioLog: getLanguage(global.language).Map_Main_Menu
+              .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+          })
+      }
+
     }
 
     if (result.none) {
@@ -1465,7 +1482,7 @@ export default class MapView extends React.Component {
         const libIds = params.template.plotLibIds
         await SMap.removePlotSymbolLibraryArr(libIds)
       }
-      LayerUtils.setMapLayerAttributeState({}, true)
+      LayerUtils.setMapLayerAttribute(undefined, undefined, true)
       this.setLoading(false)
       NavigationService.goBack(baskFrom)
 
@@ -2466,7 +2483,11 @@ export default class MapView extends React.Component {
     if (
       this.isARModule()
     ) {
-      this.setState({ showArModeIcon: full })
+      this.setState({ showArModeIcon: full, isFull: full, })
+    } else {
+      this.setState({
+        isFull: full,
+      })
     }
 
     this.fullMap = !full
@@ -4574,11 +4595,7 @@ export default class MapView extends React.Component {
     })
   }
 
-  _startScan = () => {
-    return SARMap.startScan()
-  }
-
-  _onDatumPointClose = point => {
+  _onDatumPointClose = () => {
     this.props.setDatumPoint(false)
     if (global.Type === ChunkType.MAP_AR_MAPPING) {
       SARMap.measuerPause(false)
@@ -4707,6 +4724,11 @@ export default class MapView extends React.Component {
       case getLanguage(global.language).Map_Main_Menu
         .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:
         img = getThemeAssets().ar.icon_tips_approach
+        break
+      case getLanguage(global.language).Map_Main_Menu
+        .MAP_AR_AI_ASSISTANT_LAYOUT_FAR:
+        // 换为近一点图标 to do
+        img = getThemeAssets().ar.icon_tips_move_away
         break
       default:
         img = getThemeAssets().ar.icon_tips_move_away
@@ -4948,7 +4970,7 @@ export default class MapView extends React.Component {
             await this.setState({ imageTrackingresultTag: tag })
             // 调用AREnhancePosition的startScan方法
             this.datumPointCalibration?.arEnhancePosition?.startScan()
-            AppEvent.emitEvent('ar_image_tracking_result', tag === 'ImageTracking success')
+            AppEvent.emitEvent('ar_tracking_image_result', {success: tag === 'ImageTracking success'})
           }
           }
           onARElementGeometryTouch={element => {
@@ -5045,6 +5067,81 @@ export default class MapView extends React.Component {
         return 0x80
       default:
         return undefined
+    }
+  }
+
+  getInfoText = () => {
+    try {
+
+      if(this.props.isAR){
+        return null
+      }
+      let isTianditu = false
+      let isGaode  = false
+      let length = this.props.layers.layers.length
+      const layer = this.props.layers.layers[length - 1]
+      let isBaseMap = LayerUtils.isBaseLayer(layer)
+      if(!isBaseMap) {
+        return null
+      }
+
+      let server = layer.datasourceServer || ""
+      if(server.toLowerCase().indexOf("tianditu") !== -1) {
+        isTianditu = true
+      }else if(server.toLowerCase().indexOf("amap") !== -1){
+        isGaode = true
+      }
+
+      let positionStyle = {}
+      if(this.props.device.orientation.indexOf('PORTRAIT') >= 0) {
+        if(this.state.isFull) {
+          positionStyle = {
+            bottom: scaleSize(100),
+            right: scaleSize(22),
+          }
+        } else {
+          positionStyle = {
+            bottom: scaleSize(10),
+            right: scaleSize(22),
+          }
+        }
+      } else {
+        if(this.state.isFull) {
+          positionStyle = {
+            bottom: scaleSize(10),
+            right: scaleSize(110),
+          }
+        } else {
+          positionStyle = {
+            bottom: scaleSize(10),
+            right: scaleSize(22),
+          }
+        }
+      }
+
+      let text = ""
+      if(isTianditu) {
+        text = "国家基础地理信息中心-GS(2022)3124号"
+      }else if(isGaode){
+        text = "高德软件-GS京(2022)1061号"
+      }else{
+        return null
+      }
+
+      return (
+        <View
+          style={[
+            styles.bottomInfoTextContainer,
+            positionStyle,
+          ]}
+        >
+          <Text
+            style={[styles.bottomInfoText]}
+          >{text}</Text>
+        </View>
+      )
+    } catch (error) {
+      return null
     }
   }
 
@@ -5282,6 +5379,8 @@ export default class MapView extends React.Component {
         {this.renderBackgroundOverlay()}
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
+        {this.getInfoText()}
+
         <Toolbar
           navigation={this.props.navigation}
           visibleChange={visible => {
@@ -5306,16 +5405,9 @@ export default class MapView extends React.Component {
         {!this.props.currentGroup.id && (global.Type === ChunkType.MAP_THEME) && this.props.themeGuide && this.renderMapThemeGuideView()}
         {!this.props.currentGroup.id && (global.Type === ChunkType.MAP_COLLECTION) && this.props.collectGuide && this.renderMapCollectGuideView()}
         {!this.props.currentGroup.id && (global.Type === ChunkType.MAP_EDIT) && this.props.mapEditGuide && this.renderMapEditGuideView()}
-        {this.props.showDatumPoint && <DatumPointCalibration routeName="MapView"
-          routeData={{
-            measureType: this.measureType,
-          }}
-          startScan={this._startScan}
+        {this.props.showDatumPoint && <DatumPointCalibration
           onClose={this._onDatumPointClose}
           onConfirm={this._onDatumPointConfirm}
-          ref={(ref) => { this.datumPointCalibration = ref }}
-          // 通过属性让回调拿到的结过往子组件传
-          imageTrackingresultTag={this.state.imageTrackingresultTag}
         />}
         {this._renderExitSaveView()}
       </View>

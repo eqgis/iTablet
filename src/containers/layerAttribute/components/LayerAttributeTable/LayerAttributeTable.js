@@ -173,7 +173,7 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   componentDidMount() {
-    this.scrollToLocation({}) // 防止初始化iOS顶部显示RefreshControl空白高度
+    // this.scrollToLocation({}) // 防止初始化iOS顶部显示RefreshControl空白高度
   }
 
   componentDidUpdate(prevProps) {
@@ -640,7 +640,7 @@ export default class LayerAttributeTable extends React.Component {
   }
 
   _renderSectionHeader = ({ section }) => {
-    let titles = section.title
+    let titles = [...section.title]
     if (
       this.props.startIndex >= 0 &&
       titles && titles.length > 0 &&

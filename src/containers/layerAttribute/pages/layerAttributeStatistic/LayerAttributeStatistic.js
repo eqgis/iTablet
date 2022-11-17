@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { View, Text, FlatList, TouchableOpacity, SectionList ,Image,Animated} from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, SectionList ,Image,Animated, ScrollView} from 'react-native'
 import NavigationService from '../../../NavigationService'
 import { Container, TextBtn } from '../../../../components'
 import { getLanguage } from '../../../../language'
@@ -17,12 +17,16 @@ import {
   getThemeAssets,
   getPublicAssets,
 } from '../../../../assets'
+import { dp } from 'imobile_for_reactnative/utils/size'
 
 const PREVIOUS = 'previous'
 const NEXT = 'next'
+const UP = 'up'
+const DOWN = 'down'
 const MAX_VISIBLE_NUMBER = 5 // 显示的最大个数
 const ITEM_VIEW_WIDTH_L = scaleSize(180)  // 横屏时宽度
 const ITEM_VIEW_HEIGHT_P = scaleSize(200) // 竖屏时高度
+const CONTENT_VIEW_HEIGHT = scaleSize(562)
 
 function getData(language, fieldInfo) {
   let data
@@ -101,14 +105,39 @@ export default class LayerAttributeStatistic extends React.Component {
       result: '0.0',
       resultData:[],
       sectionData:[],
+      isShowUpDown: true,
     }
     this.clickAble = true // 防止重复点击
     this.previousOpacity = new Animated.Value(0)
     this.nextOpacity = new Animated.Value(1)
+
+    this.upOpacity = new Animated.Value(0)
+    this.downOpacity = new Animated.Value(1)
+
     this.offset = 0
     this.maxOffset = 100
     this.onPrevious = true
     this.onNext = true
+
+    /** 当前的y轴位置 */
+    this.offsetY = 0
+    /** y轴能到达的最大位置 */
+    this.maxOffsetY = 100
+    this.onUp = true
+    this.onDown = true
+
+  }
+
+  showarraw = (length: number) => {
+    let isLandscape = this.props.device.orientation.indexOf('LANDSCAPE') >= 0
+    let headerHeight = scaleSize(120)
+    if(isLandscape) {
+      headerHeight = scaleSize(80)
+    }
+    const totalHeight = this.props.device.height - headerHeight
+
+    let contentHeight = CONTENT_VIEW_HEIGHT + length * scaleSize(80)
+    return contentHeight > totalHeight
   }
 
   componentDidMount() {
@@ -137,6 +166,7 @@ export default class LayerAttributeStatistic extends React.Component {
         groupBy: this.fieldInfo.name,
       }).then(
         result => {
+          const downShow = this.showarraw(result.data.length)
           this.setState({
             currentMethod: item,
             result: result.total.toString(),
@@ -145,6 +175,7 @@ export default class LayerAttributeStatistic extends React.Component {
               data: result.data,
               visible:true,
             }],
+            isShowUpDown: downShow,
           })
         },
         () => {
@@ -243,12 +274,34 @@ export default class LayerAttributeStatistic extends React.Component {
   renderIndicator = location => {
     let source
     let style = {
-      opacity: location === PREVIOUS ? this.previousOpacity : this.nextOpacity,
+      // opacity: location === PREVIOUS ? this.previousOpacity : this.nextOpacity,
     }
-    source =
-        location === PREVIOUS
-          ? getPublicAssets().common.icon_slide_left
-          : getPublicAssets().common.icon_slide_right
+    // source =
+    //     location === PREVIOUS
+    //       ? getPublicAssets().common.icon_slide_left
+    //       : getPublicAssets().common.icon_slide_right
+
+    switch(location){
+      case PREVIOUS:
+        source = getPublicAssets().common.icon_slide_left
+        style.opacity = this.previousOpacity
+        break
+      case NEXT:
+        source = getPublicAssets().common.icon_slide_right
+        style.opacity = this.nextOpacity
+        break
+      case UP:
+        source = getPublicAssets().common.icon_slide_up
+        style.opacity = this.upOpacity
+        style.width = scaleSize(50)
+        break
+      case DOWN:
+        source = getPublicAssets().common.icon_slide_down
+        style.opacity = this.downOpacity
+        style.width = scaleSize(50)
+        break
+    }
+
     return (
       <TouchableOpacity
         style={{
@@ -319,6 +372,45 @@ export default class LayerAttributeStatistic extends React.Component {
     }
   }
 
+  handlePositionY = () => {
+    let onUp, onDown
+    // let contentHeight = (this.listViewY && this.listViewY._listRef._totalCellLength) || 0
+    if(this.maxOffsetY <= 0) {
+      // 当内容比容器高度低时，两个都不显示
+      onUp = true
+      onDown = true
+    } else {
+      if(this.offsetY <= 0) {
+        onUp = true
+        onDown = false
+      } else if(this.offsetY >= this.maxOffsetY) {
+        onUp = false
+        onDown = true
+      } else {
+        onUp = false
+        onDown = false
+      }
+    }
+
+    if (onUp !== this.onUp) {
+      this.onUp = onUp
+      Animated.timing(this.upOpacity, {
+        toValue: onUp ? 0 : 1,
+        duration: 150,
+        useNativeDriver: false,
+      }).start()
+    }
+    if (onDown !== this.onDown) {
+      this.onDown = onDown
+      Animated.timing(this.downOpacity, {
+        toValue: onDown ? 0 : 1,
+        duration: 150,
+        useNativeDriver: false,
+      }).start()
+    }
+
+
+  }
 
   _renderContent = () => {
     return (
@@ -367,6 +459,7 @@ export default class LayerAttributeStatistic extends React.Component {
     newData[section.index] = section
     this.setState({
       sectionData: newData.concat(),
+      isShowUpDown: section.visible,
     })
   }
 
@@ -442,6 +535,37 @@ export default class LayerAttributeStatistic extends React.Component {
       </View>
     )
   }
+  renderItem = ({item}) => {
+    if(item.title === 'content') {
+      return this._renderContent()
+    } else if(item.title === 'bottom' && item?.visible) {
+      return this._renderBottom()
+    }
+    return null
+  }
+
+  renderContent = () => {
+    const data = [
+      {title: 'content'},
+      {title: 'bottom', visible: this.state.currentMethod.key==='COUNT_UNIQUE' }
+    ]
+    return (
+      <FlatList
+        ref={ref => (this.listViewY = ref)}
+        data={data}
+        renderItem={this.renderItem}
+        keyExtractor={this._keyExtractor}
+        onScroll={event => {
+          this.offsetY = event.nativeEvent.contentOffset.y
+          // console.warn(JSON.stringify(event.nativeEvent))
+          this.maxOffsetY = event.nativeEvent.contentSize.height -
+            event.nativeEvent.layoutMeasurement.height
+          this.measurementY = event.nativeEvent.layoutMeasurement.height
+          this.handlePositionY()
+        }}
+      />
+    )
+  }
 
   render() {
     return (
@@ -461,8 +585,21 @@ export default class LayerAttributeStatistic extends React.Component {
         }}
       >
         {this._renderHeader()}
-        {this._renderContent()}
-        {this.state.currentMethod.key==='COUNT_UNIQUE' && this._renderBottom()}
+        {this.state.currentMethod.key==='COUNT_UNIQUE' && this.state.isShowUpDown && (
+          <View style={{height:scaleSize(40), width: '100%', alignItems: 'flex-end', position: 'absolute',
+            top:this.props.device.orientation.indexOf('LANDSCAPE') >= 0 ? dp(80): dp(120),
+            right:0}}
+          >
+            {this.renderIndicator(UP)}
+          </View>
+        )}
+        {this.renderContent()}
+        {this.state.currentMethod.key==='COUNT_UNIQUE' && this.state.isShowUpDown && (
+          <View style={{height:scaleSize(40), width: '100%', alignItems: 'flex-end', position: 'absolute', bottom:dp(5),right:0}}>
+            {this.renderIndicator(DOWN)}
+          </View>
+        )}
+
       </Container>
     )
   }

@@ -514,7 +514,7 @@ export default class MyDataPage extends Component {
     // 细分模板类型
     let tempType = undefined
     if(this.itemInfo.section.title === getLanguage(global.language).Profile.PLOTTING_TEMPLATE) {
-      tempType = 'plot'
+      tempType = 'plotting'
     } else if (this.itemInfo.section.title === getLanguage(global.language).Profile.MAP_TEMPLATE) {
       tempType = 'map'
     }

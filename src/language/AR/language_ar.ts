@@ -488,23 +488,23 @@ export const language_ar: typeof language_cn = {
 
   PLEASE_SELECT_MODEL: 'الرجاء تحديد الموديل',
 
-  SHOULD_BE_DECIMAL_FRACTION: 'should be a ddecimal fraction', // to be translated
-  SHOULD_BE_INTEGER: 'shoud be an integer', // to be translated
-  SHOULD_BE_POSITIVE_NUMBER: 'shoud be a positive number', // to be translated
+  SHOULD_BE_DECIMAL_FRACTION: 'عشري',
+  SHOULD_BE_INTEGER: 'يجب أن يكون عدد صحيح',
+  SHOULD_BE_POSITIVE_NUMBER: 'يجب أن تكون إيجابية',
 
 
-  TRANVERSE: 'Tranverse', // to be translated
-  LONGITUDINAL: 'Longitudinal', // to be translated
-  HORIZONTAL: 'Horizontal', // to be translated
-  VERTICAL: 'Vertical', // to be translated
+  TRANVERSE: 'بشكل مستعرض',
+  LONGITUDINAL: 'عمودي',
+  HORIZONTAL: 'أفقي',
+  VERTICAL: 'عمودي',
 
-  EXIT_SAND_TABLE_CONFIRM: 'Do you want to quit editing the sand table?', // to be translated
-  PLEASE_INPUT_MODEL_NAME: 'Please input model name', // to be translated
-  SAND_TABLE: 'Sand Table', // to be translated
-  EXPORT_SAND_TABLE_CONFIRM: 'Do you want to export the sand table?', // to be translated
-  MODEL_LIST: 'Model List', // to be translated
+  EXIT_SAND_TABLE_CONFIRM: 'هل تريد الخروج من تحرير الجدول ؟',
+  PLEASE_INPUT_MODEL_NAME: 'من فضلك أدخل اسم النموذج',
+  SAND_TABLE: 'رمل',
+  EXPORT_SAND_TABLE_CONFIRM: 'هل تريد تصدير الرمال الجدول ؟',
+  MODEL_LIST: 'نموذج قائمة',
 
-  ALIGN: 'Alignment', // to be translated
+  ALIGN: 'محاذاة',
 
   VISIBILITY: 'الرؤية',
   SHOW: 'عرض',
@@ -549,8 +549,8 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_OBJ: 'الرجاء تحديد الكائن',
   PLEASE_SELECT_LAYER_OR_OBJECT: "الرجاء تحديد طبقة أو كائن",
   PLEASE_SELECT_AR_OBJECT_LAYER: "الرجاء تحديد طبقة كائن الواقع المعزز",
-  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "3D pipelines cannot be styled", // To be translated
-  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "3D pipelines cannot be edited",  // To be translated
+  PIPE_LINE_ATTRIBUTE_NOT_STYLE: "لا يمكن تعيين نمط ثلاثي الأبعاد الأنابيب",
+  PIPE_LINE_ATTRIBUTE_NOT_EDIT: "لا يمكن تحرير خط أنابيب ثلاثي الأبعاد",
 
   ATTRIBUTE_ADD_TO_AR_SCENE: "أضف جدول السمات إلى مشهد الواقع المعزز",
 
@@ -1352,6 +1352,7 @@ export const language_ar: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "جارى بحث السطح",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "رؤيه المسافة",
 
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE:"ابق بعيدا",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK:"خافت للغاية ، خذ المزيد من الضوء",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST:"سريع جدًا ، يرجى الإبطاء",
@@ -1525,7 +1526,7 @@ export const language_ar: typeof language_cn = {
   LINE_WIDTH: 'عرض الخط',
   LINE_POINT_SIZE: 'حجم نقطة الخط',
   BUTTON_TEXT_SIZE: 'حجم الزر',
-  LINE_POINT_ADD_SUCCESSED: 'Line point add successed', // To be translated
+  LINE_POINT_ADD_SUCCESSED: 'خط نقطة إضافة بنجاح',
 
   BAR_CHART: 'شريط الرسم البياني',
   HISTOGRAM_ATTRIBUTE: 'سمة المدرج التكراري',
@@ -1649,8 +1650,8 @@ export const language_ar: typeof language_cn = {
   LAYER_MOVEUP_FAIL: 'نقل الفشل',
   LAYER_MOVEDOWN_SUCCESS: 'النجاح في النزول',
   LAYER_MOVEDOWN_FAIL: 'فشل الهبوط',
-  FIRST_EFFECT_LAYER: 'Layer is First effect layer',  // To be translated
-  LAST_EFFECT_LAYER: 'Layer is last effect layer',  // To be translated
+  FIRST_EFFECT_LAYER: 'أول تأثير طبقة',
+  LAST_EFFECT_LAYER: 'تأثير آخر طبقة',
 
   VISIBLE: "مرئي",
   NOT_VISIBLE: "غير مرئي",
@@ -2198,19 +2199,19 @@ export const language_ar: typeof language_cn = {
   SETTING_LANGUAGE_AUTO: "تلقائى",
   SETTING_LOCATION_DEVICE: "موقع الجهاز",
   SETTING_LOCATION_LOCAL: "هذا الجهاز",
-  SETTING_LOCATION_EXTERNAL: "network equipment",  // To be translated
-  SETTING_LOCATION_BLUETOOTH: "Bluetooth",  // To be translated
-  NTRIP_SETTING: "Differential service",  // To be translated
-  DEVICE_INFORMATION_SETTING: 'Device information settings',  // To be translated
-  INSTRUMENT_MANUFACTURER: 'Instrument manufacturer',  // To be translated
-  INSTRUMENT_TYPE: 'Instrument type',  // To be translated
-  BLUETOOTH_DEVICE_LIST: 'Bluetooth device list',  // To be translated
-  NTRIP_AGREEMENT: 'Protocol',  // To be translated
-  PROTOCOL_TYPE: 'Protocol type',  // To be translated
-  ESSENTIAL_INFORMATION: 'essential information',  // To be translated
-  PORT_NUMBER: 'Port',  // To be translated
-  PASSWORD: 'Password',  // To be translated
-  LOADING_POINT: 'Loading point',  // To be translated
+  SETTING_LOCATION_EXTERNAL: "معدات الشبكات",
+  SETTING_LOCATION_BLUETOOTH: "البلوتوث",
+  NTRIP_SETTING: "خدمة متميزة",
+  DEVICE_INFORMATION_SETTING: 'معلومات الجهاز',
+  INSTRUMENT_MANUFACTURER: 'أداة صانع',
+  INSTRUMENT_TYPE: 'نوع الصك',
+  BLUETOOTH_DEVICE_LIST: 'قائمة أجهزة بلوتوث',
+  NTRIP_AGREEMENT: 'اتفاق',
+  PROTOCOL_TYPE: 'نوع البروتوكول',
+  ESSENTIAL_INFORMATION: 'معلومات أساسية',
+  PORT_NUMBER: 'ميناء المدينة',
+  PASSWORD: 'كلمة السر',
+  LOADING_POINT: 'نقطة التحميل',
   SETTING_CLEAR_CACHE: "مسح ذاكرة التخزين المؤقت",
   SETTING_CLEAR_CACHE_SUCCESS:"إزالة بنجاح",
   DISTANCE_METER:"المسافة(m)",
@@ -2219,11 +2220,11 @@ export const language_ar: typeof language_cn = {
   DISTANCE_LOCATION:"بعد التعريب",
   TIME_LOCATION:"الوقت والمكان",
 
-  CHANGE_DEVICE_LOCAL: "Switched to this device",  // To be translated
-  CHANGE_DEVICE_EXTERNAL: "Switched to network device",  // To be translated
-  CHANGE_DEVICE_BLUETOOTH: "Switched to Bluetooth device",  // To be translated
-  SLOCATION_STATE_CURRENT: "Positioning status",  // To be translated
-  WEAK_POSITIONING_SIGNAL: "Weak positioning signal", // To be translated
+  CHANGE_DEVICE_LOCAL: "تحولت إلى هذا الجهاز",
+  CHANGE_DEVICE_EXTERNAL: "تحولت إلى جهاز الشبكة",
+  CHANGE_DEVICE_BLUETOOTH: "تحولت إلى جهاز بلوتوث",
+  SLOCATION_STATE_CURRENT: "وضع الدولة",
+  WEAK_POSITIONING_SIGNAL: "موقع إشارة ضعيفة",
 
   // 许可
   LICENSE: "الرخصة",
@@ -2278,6 +2279,7 @@ export const language_ar: typeof language_cn = {
   LICENSE_ACTIVATING: "التنشيط",
   LICENSE_ACTIVATION_SUCCESS: "نجح التنشيط",
   LICENSE_ACTIVATION_FAIL: "فشل التنشيط",
+  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
   LICENSE_SELECT_LICENSE: "اختار الترخيص",
   LICENSE_REAMIN_DAYS: "الأيام المتبقية",
   LICENSE_SHOW_DETAIL: "إظهار التفاصيل",
@@ -2526,7 +2528,7 @@ export const language_ar: typeof language_cn = {
   PLEASE_SELECT_MEDIA_LAYER: "حدد نقطة ، كندي ، أو طبقة الطباعة",
   PLEASE_SELECT_CAD_LAYER: "الرجاء اختيار طبقة كندي",
   DONOT_SUPPORT_ARCORE: "تثبيت أو ترقية ARCore",
-  DEVICE_DOES_NOT_SUPPORT_AR:"This device does not support AR",//to be translate
+  DEVICE_DOES_NOT_SUPPORT_AR:"هذا الجهاز لا يدعم ع",
   GET_SUPPORTED_DEVICE_LIST: "عرض قائمة الأجهزة المدعومة",
   PLEASE_NEW_PLOT_LAYER: "من فضلك أنشىء طبقة نقاط جديدة",
   DOWNLOADING_PLEASE_WAIT: "من فضلك انتظر جارى التنزيل",
@@ -2572,11 +2574,11 @@ export const language_ar: typeof language_cn = {
   PUBLISH_FAILED: "فشل النشر",
   PUBLISH_FAILED_INFO_1: "تم نشر هذه الخدمة",
   PUBLISH_FAILED_INFO_2: "الخدمة قيد النشر ، لا يمكن أن تعمل في هذا الوقت",
-  PUBLISH_FAILED_INFO_3: "Insufficient service quota", // need to translate
-  UNPUBLISH: "Unpublish", // need to translate
-  UNPUBLISHING: "Unpublishing", // need to translate
-  UNPUBLISH_SUCCESS: "Unpublished", // need to translate
-  UNPUBLISH_FAILED: "Failed to Unpublish", // need to translate
+  PUBLISH_FAILED_INFO_3: "خدمة الحصص غير كافية",
+  UNPUBLISH: "إلغاء نشر",
+  UNPUBLISHING: "إلغاء النشر",
+  UNPUBLISH_SUCCESS: "غير منشور",
+  UNPUBLISH_FAILED: "لا يمكن إلغاء النشر",
   SERVICE_SUBMIT_BEFORE_UPDATE: "يرجى تحديث الخدمة قبل التقديم",
   DELETE_CONFIRM: "هل أنت متأكد أنك تريد حذف العنصر؟",
   BATCH_DELETE_CONFIRM: "هل أنت متأكد من أنك تريد حذف العنصر (العناصر) المحددة؟",
@@ -2668,7 +2670,7 @@ export const language_ar: typeof language_cn = {
   POI: "نقاط الاهتمام",
   WIDGET: "جهاز صغير",
 
-  PLEASE_SELECT_FIRST:"Please Select First",//to be translate
+  PLEASE_SELECT_FIRST:"الرجاء اختيار",
 
   ILLEGAL_DATA: "بيانات غير قانونية",
 
@@ -2786,7 +2788,7 @@ export const language_ar: typeof language_cn = {
   FILENAME_ALREADY_EXIST: "الملف موجود بالفعل ، يرجى إعادة إدخال اسم الملف",
   NETWORK_BUILDING: "جاري البناء...",
   ROADNET_BUILD_SUCCESS: "تم بناؤه بنجاح",
-  ROADNET_BUILD_FAILED: "Failed built",//to be translate
+  ROADNET_BUILD_FAILED: "توليد الفشل",
   SELECT_LINE_SMOOTH: "الرجاء تحديد الخط الذي يحتاج إلى تجانس",
   SELECT_A_POINT_INLINE: "الرجاء تحديد نقطة على الإنترنت",
   SELECT_POINT_INCURRENTLINE:"حدد نقطة على الخط الحالي أن يقطع",
@@ -2811,7 +2813,7 @@ export const language_ar: typeof language_cn = {
   ONLY_INTEGER: "يمكن إدخال الأعداد الصحيحة فقط!",
   ONLY_INTEGER_GREATER_THAN_2: "يمكن إدخال الأعداد الصحيحة الأكبر من 2 فقط!",
   PARAMS_ERROR: "خطاء فى المعاملات! فشل التعيين!",
-  ONLY_POSITIVE_INTEGER: "Only positive integers can be entered!",  // To be translated
+  ONLY_POSITIVE_INTEGER: "فقط أدخل عدد صحيح موجب !",
 
   SPEECH_TIP: "يمكنك أن تقول",
   SPEECH_ERROR: "التعرف على الخطأ ، يرجى المحاولة مرة أخرى في وقت لاحق",
@@ -2868,11 +2870,11 @@ export const language_ar: typeof language_cn = {
   CHAR: "حرف",
   WTEXT: "نص واسع",
 
-  SLIDE_RATIO: 'Slide ratio', // to be translated
+  SLIDE_RATIO: 'نسبة الانزلاق',
 
-  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'Current element does not support AR attribute',  // to be translated
+  AR_ATTRIBUTE_NOT_AVAILABLE_OBJ: 'العنصر الحالي لا يدعم ع الصفات',
 
-  LICENSE_STAFF_TRIAL_APPLY: "Apply staff license",  // to be translated
+  LICENSE_STAFF_TRIAL_APPLY: "طلب ترخيص الموظف",
 
   INPUT_TEXT: 'الرجاء إدخال النص',
   INPUT_URL: 'الرجاء إدخال رابط',
@@ -2882,16 +2884,16 @@ export const language_ar: typeof language_cn = {
   THE_LAST: 'الصورة الأخيرة',
 
 
-  DAYS: 'day(s)',  // to be translated
-  EXPIRE_DATE: 'Expire date',  // to be translated
+  DAYS: 'أيام .',
+  EXPIRE_DATE: 'تاريخ انتهاء الصلاحية',
 
-  OPEN_3D_SCENE: 'Please open the 3D scene first',  // To be Tanslated
-  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'Online 3D scenes do not support sharing',  // To be Tanslated
+  OPEN_3D_SCENE: 'يرجى فتح المشهد 3D',
+  ONLINE_3D_SCENES_NOT_SUPPORT_SHARE: 'مشهد ثلاثي الأبعاد على الانترنت لا تدعم مشاركة',
 
-  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'The license has already activated on another device', // to be translated
-  ATTRIBUTE_MAKE: 'Attribute to make', // To be tanslated
-  SAND_TABLE_MAKE: 'Sand production',  // To be tanslated
-  PANE_ANIMATION: 'Pane animation',    // To be tanslated
+  LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE: 'الترخيص تم تفعيلها على جهاز آخر',
+  ATTRIBUTE_MAKE: 'خصائص توليد',
+  SAND_TABLE_MAKE: 'إنتاج الرمل',
+  PANE_ANIMATION: 'جزء الرسوم المتحركة',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
 }

@@ -1,14 +1,20 @@
 import { ConstOnline } from '@/constants'
+import { MapHeaderButton, MapTabs } from '@/constants'
 import { Module } from '@/class'
 import { getLanguage } from '@/language'
 import {
   startModule,
   addModule,
   markModule,
+  toolModule,
+  changeMapModule,
 } from '@/containers/workspace/components/ToolBar/modules'
 // import { Tour } from '../mapFunctionModules'
 import { getImage } from '../assets'
-
+import { Toast } from '@/utils'
+import {
+  Linking,
+} from 'react-native'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -22,93 +28,54 @@ export default class LangChaoDemoModule extends Module {
         startModule(),      // 开始
         addModule(),        // 添加
         markModule(),       // 标注
+        toolModule(), 
+        changeMapModule(),
         // Tour(),             // 创建轨迹
       ],
       // 地图类型（三维/二维）
       mapType: Module.MapType.MAP,
     })
+
+        // 自定义地图右上角按钮
+        this.headerButtons = [
+          // MapHeaderButton 中自带功能
+          MapHeaderButton.Audio,  // 语音
+          MapHeaderButton.Undo,   // 回退
+          MapHeaderButton.Search, // 搜索
+          // MapHeaderButton.Share,  // 分享
+    
+          // to do 自定义功能
+          // {
+          //   key: 'save',//地图保存
+          //   image: getImage().save,
+          //   action: this.save,
+          // }, 
+        ]
+    
+        // 自定义地图底部Tab
+        this.tabModules = [
+          // 系统自带Tab
+          MapTabs.MapView,          // 系统自带Tab-地图
+          MapTabs.LayerManager,     // 系统自带Tab-图层
+          // MapTabs.LayerAttribute,   // 系统自带Tab-属性
+      
+          // todo 用户自定义Tab页面
+          {
+            key: module,
+            title: "呼叫中心",
+            //'属性',
+            image: getImage().telephone1,
+            selectedImage: getImage().telephone2,
+            btnClick: () => {
+             Toast.show("呼叫中心")
+             Linking.openURL('tel:10086')
+            },
+          },
+
+          MapTabs.MapSetting,       // 系统自带Tab-设置
+        ]
+
   }
-  // action = async (user: UserInfo, lastMap, service) => {
-  //   try {
-  //     const homePath = await FileTools.appendingHomeDirectory()
-
-  //     let userPath = ConstPath.CustomerPath
-  //     if (user && user.userName) {
-  //       userPath = `${ConstPath.UserPath + user.userName}/`
-  //     }
-  //     const wsPath =
-  //       homePath +
-  //       userPath +
-  //       ConstPath.RelativeFilePath.Workspace[
-  //         global.language === 'CN' ? 'CN' : 'EN'
-  //       ]
-
-  //     let wsData
-  //     let isOpenLastMap = false
-
-  //     if (lastMap) {
-  //       isOpenLastMap = await FileTools.fileIsExistInHomeDirectory(
-  //         lastMap.path,
-  //       )
-  //     }
-
-  //     let data
-  //     if (isOpenLastMap) {
-  //       data = {
-  //         type: 'Map',
-  //         ...lastMap,
-  //       }
-  //     } else if (this.getDefaultData().openDefaultMap) {
-  //       const moduleMapFullName = `${this.getDefaultData().defaultMapName}.xml`
-  //       // 地图用相对路径
-  //       const moduleMapPath =
-  //         userPath + ConstPath.RelativeFilePath.Map + moduleMapFullName
-  //       if (await FileTools.fileIsExist(homePath + moduleMapPath)) {
-  //         data = {
-  //           type: 'Map',
-  //           path: moduleMapPath,
-  //           name: this.getDefaultData().defaultMapName,
-  //         }
-  //       }
-  //     } else {
-  //       data = [ConstOnline.tiandituCN, ConstOnline.tianditu]
-  //       // data.layerIndex = this.getDefaultData().baseMapIndex
-  //       global.BaseMapSize = data.length
-  //     }
-
-  //     wsData = [
-  //       {
-  //         DSParams: { server: wsPath },
-  //         type: 'Workspace',
-  //       },
-  //     ]
-  //     if (data instanceof Array) {
-  //       wsData = wsData.concat(data)
-  //     } else {
-  //       wsData.push(data)
-  //     }
-  //     let param = {
-  //       wsData,
-  //       mapTitle: this.getDefaultData().title,
-  //       isExample: this.getDefaultData().isExample,
-  //       type: 'tour',
-  //     }
-  //     if (service) {
-  //       param = Object.assign(param, { service: service })
-  //     }
-
-  //     // IntentModule.setNavParam('MapView', param)
-  //     NavigationService.navigate('MapStack', { screen: 'MapView', params: param })
-
-  //     // if (global.coworkMode) {
-  //     //   NavigationService.navigate('CoworkMapStack', param)
-  //     // } else {
-  //     // NavigationService.navigate('MapStack', {screen: 'MapView', params: param})
-  //   } catch (e) {
-  //     __DEV__ && console.warn(e)
-  //   }
-  // }
-
   getDefaultData = () => {
     return {
       key: LangChaoDemoModule.key,

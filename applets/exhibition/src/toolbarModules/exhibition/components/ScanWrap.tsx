@@ -46,7 +46,7 @@ class ScanWrap extends React.Component<Props, State> {
     const height = Math.max(this.props.windowSize.width, this.props.windowSize.height)
     const isLargeScreen = width > 400 //平板
 
-    const scanSize = dp(isLargeScreen ? 300 : 240)
+    const scanSize = dp(isLargeScreen ? 300 : 220)
 
     let space: number
     let position: number

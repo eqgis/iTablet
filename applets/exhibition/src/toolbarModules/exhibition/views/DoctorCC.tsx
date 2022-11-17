@@ -221,6 +221,10 @@ class DoctorCC extends Component<Props, State> {
 
     this.getDoctorData()
     await this.openDoctorARMap()
+    if(this.state.showScan && this.state.isScan) {
+      // 启用增强定位
+      SARMap.setAREnhancePosition()
+    }
 
     this.listeners = SARMap.addMeasureStatusListeners({
       addListener: async result => {
@@ -310,7 +314,6 @@ class DoctorCC extends Component<Props, State> {
         if(this.state.isRoutePlay) {
           if(this.ARModel) {
             const positionInfo =  await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
-            // console.warn("positionInfo" + JSON.stringify(positionInfo))
 
             SARMap.stopARAnimation()
             const tempTimer =  setTimeout(async () => {
@@ -322,12 +325,17 @@ class DoctorCC extends Component<Props, State> {
                   isRoutePlay: false,
                 })
 
-                // 更新箭头追踪的位置和范围
-                // const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-                // if(relativePositin) {
-                //   await SExhibition.setTrackingTarget(relativePositin)
-                //   await SExhibition.startTrackingTarget()
-                // }
+                const arrowTimer = setTimeout( async () => {
+                  // 更新箭头追踪的位置和范围
+                  if(this.ARModel) {
+                    const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+                    if(relativePositin) {
+                      await SExhibition.setTrackingTarget(relativePositin)
+                      await SExhibition.startTrackingTarget()
+                    }
+                  }
+                  clearTimeout(arrowTimer)
+                }, 300)
 
               }
               clearTimeout(tempTimer)
@@ -860,13 +868,21 @@ class DoctorCC extends Component<Props, State> {
                 // this.isPlay = false
               }
 
-              // 更新箭头追踪的位置和范围
-              // await SExhibition.stopTrackingTarget()
-              const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-              if(relativePositin) {
-                await SExhibition.setTrackingTarget(relativePositin)
-                await SExhibition.startTrackingTarget()
-              }
+              const arrowTimer = setTimeout( async () => {
+                // 更新箭头追踪的位置和范围
+                if(this.ARModel) {
+                  await SExhibition.stopTrackingTarget()
+                  const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+                  if(relativePositin) {
+                    await SExhibition.setTrackingTarget(relativePositin)
+                    await SExhibition.startTrackingTarget()
+                  }
+                }
+                clearTimeout(arrowTimer)
+              }, 300)
+
+
+
             }
 
             clearTimeout(tempTimer)
@@ -897,13 +913,18 @@ class DoctorCC extends Component<Props, State> {
             await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
             // this.isPlay = false
 
-            // // 更新箭头追踪的位置和范围
-            // await SExhibition.stopTrackingTarget()
-            // const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-            // if(relativePositin) {
-            //   await SExhibition.setTrackingTarget(relativePositin)
-            //   await SExhibition.startTrackingTarget()
-            // }
+            const arrowTimer = setTimeout( async () => {
+              // 更新箭头追踪的位置和范围
+              if(this.ARModel) {
+                await SExhibition.stopTrackingTarget()
+                const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+                if(relativePositin) {
+                  await SExhibition.setTrackingTarget(relativePositin)
+                  await SExhibition.startTrackingTarget()
+                }
+              }
+              clearTimeout(arrowTimer)
+            }, 300)
 
             SARMap.setAction(ARAction.NULL)
             SARMap.clearSelection()
@@ -1227,7 +1248,7 @@ class DoctorCC extends Component<Props, State> {
     const tempTimer =  setTimeout(async () => {
 
       // 路线动画开始前，停掉箭头追踪功能
-      // await SExhibition.stopTrackingTarget()
+      await SExhibition.stopTrackingTarget()
       // 开始播放推演动画
       // SARMap.playARAnimation(JSON.parse(JSON.stringify(item.route)))
       SARMap.playARAnimation(JSON.parse(JSON.stringify(route)))
@@ -1372,7 +1393,7 @@ class DoctorCC extends Component<Props, State> {
     }
 
     // 隐藏箭头追踪功能
-    SExhibition.stopTrackingTarget()
+    // SExhibition.stopTrackingTarget()
 
     this.setState({
       selectType: 'photo',
@@ -1422,7 +1443,7 @@ class DoctorCC extends Component<Props, State> {
     }
 
     // 隐藏箭头追踪功能
-    SExhibition.stopTrackingTarget()
+    // SExhibition.stopTrackingTarget()
 
     this.setState({
       selectType: 'video',
@@ -2252,7 +2273,7 @@ class DoctorCC extends Component<Props, State> {
       >
         <View style={[styles.toolView]}>
           <View style={styles.toolRow}>
-            <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"位置调整"}</Text>
+            <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"尺寸"}</Text>
             <TouchableOpacity
               style={styles.closeBtn}
               onPress={this.operationBtnOnpress}
@@ -2271,7 +2292,7 @@ class DoctorCC extends Component<Props, State> {
               range={[50, 200]}
               defaultMaxValue={this.scaleValue}
               barColor={'#FF6E51'}
-              onMove={loc => {
+              onMove={async (loc: number) => {
                 this.timeoutTrigger?.onBackFromSecondMenu()
                 const scale = loc / 100 - 1
                 transformData = {
@@ -2279,7 +2300,7 @@ class DoctorCC extends Component<Props, State> {
                   scale: scale,
                   type: 'scale',
                 }
-                SARMap.setARElementTransform(transformData)
+                await SARMap.setARElementTransform(transformData)
                 this.scaleValue = loc
               }}
             />

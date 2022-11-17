@@ -156,6 +156,8 @@ class DoctorCC extends Component<Props, State> {
   soundSource = ["standby", "greet", "walk", "turnaround", "handshake", "speak", "please", "followme", "risus", "click"]
   /** 当前是否有动作的声音在播放 */
   isActionSoundPlay: string | null = null
+  /** 当前正在播放的路线音频 */
+  isRouteSpeakPlay = ""
 
   /** 动作的渲染数据 */
   actionData: Array<actionItemType> = []
@@ -381,6 +383,7 @@ class DoctorCC extends Component<Props, State> {
               break
           }
           if(source !== "") {
+            this.isRouteSpeakPlay = source
             SoundUtil.play(source, false, {
               afterAction: () => {
                 SoundUtil.stop(source)
@@ -828,6 +831,10 @@ class DoctorCC extends Component<Props, State> {
 
         if(this.state.isRoutePlay) {
           SARMap.stopARAnimation()
+
+          if(this.isRouteSpeakPlay !== "") {
+            SoundUtil.stop(this.isRouteSpeakPlay)
+          }
 
           const tempTimer =  setTimeout(async () => {
             if(this.ARModel) {

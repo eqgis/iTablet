@@ -113,6 +113,8 @@ interface State {
   btBottom: Animated.Value
   /** 全局背景音乐是否在播放 */
   isBackground: boolean,
+  /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
+  isScan: boolean,
 }
 
 homePath = ""
@@ -154,6 +156,8 @@ class DoctorCC extends Component<Props, State> {
   soundSource = ["standby", "greet", "walk", "turnaround", "handshake", "speak", "please", "followme", "risus", "click"]
   /** 当前是否有动作的声音在播放 */
   isActionSoundPlay: string | null = null
+  /** 当前正在播放的路线音频 */
+  isRouteSpeakPlay = ""
 
   /** 动作的渲染数据 */
   actionData: Array<actionItemType> = []
@@ -172,7 +176,8 @@ class DoctorCC extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      showScan: false,
+      showScan: true,
+      isScan: true,
       selectType: 'null',
       animations: [],
       selectAnimationKey: -1,
@@ -220,11 +225,22 @@ class DoctorCC extends Component<Props, State> {
     this.listeners = SARMap.addMeasureStatusListeners({
       addListener: async result => {
         if (result) {
+          if(this.state.showScan && !this.state.isScan) {
+            // 启用增强定位
+            SARMap.setAREnhancePosition()
+          }
           this.setState({
-            showScan: true,
+            isScan: true,
           })
-          // 启用增强定位
-          SARMap.setAREnhancePosition()
+        } else {
+          if(this.state.showScan && this.state.isScan) {
+            // 停止增强定位
+            SARMap.stopAREnhancePosition()
+          }
+
+          this.setState({
+            isScan: false,
+          })
         }
       },
     })
@@ -307,11 +323,11 @@ class DoctorCC extends Component<Props, State> {
                 })
 
                 // 更新箭头追踪的位置和范围
-                const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-                if(relativePositin) {
-                  await SExhibition.setTrackingTarget(relativePositin)
-                  await SExhibition.startTrackingTarget()
-                }
+                // const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+                // if(relativePositin) {
+                //   await SExhibition.setTrackingTarget(relativePositin)
+                //   await SExhibition.startTrackingTarget()
+                // }
 
               }
               clearTimeout(tempTimer)
@@ -367,6 +383,7 @@ class DoctorCC extends Component<Props, State> {
               break
           }
           if(source !== "") {
+            this.isRouteSpeakPlay = source
             SoundUtil.play(source, false, {
               afterAction: () => {
                 SoundUtil.stop(source)
@@ -710,22 +727,38 @@ class DoctorCC extends Component<Props, State> {
     // 路径
     homePath = await FileTools.getHomeDirectory()
     // // 源数据路径
-    // const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
+    const path =`${homePath + ConstPath.Common}Exhibition/AR超超博士/AR超超博士/AR超超博士.arxml`
     // 导入之后的地图路径
     const arMapPath = homePath + ConstPath.UserPath + 'Customer/Data/ARMap/AR超超博士.arxml'
 
-    // // 1. 数据是否更新
+    // 1. 数据是否更新
     // const dataUpate =  await SARMap.needToImport()
-    // // 2. 导入之后的地图路径是否存在
-    // const mapExist = await FileTools.fileIsExist(arMapPath)
-    // // 当数据更新且存在导入后的地图，删掉原来的导入地图
+    // 2. 导入之后的地图路径是否存在
+    const mapExist = await FileTools.fileIsExist(arMapPath)
+    // 当数据更新且存在导入后的地图，删掉原来的导入地图
     // if(dataUpate && mapExist) {
     //   FileTools.deleteFile(arMapPath)
     // }
-    // // 当数据更新或没有导入后的地图，才进行重新导入
+    // 当数据更新或没有导入后的地图，才进行重新导入
     // if(dataUpate || !mapExist) {
     //   await SARMap.importMap(path)
     // }
+    if(mapExist){
+      await FileTools.deleteFile(arMapPath)
+    }
+    const udbpath = homePath + ConstPath.UserPath + 'Customer/Data/ARDatasource/ARMAP_DEFAULT_2_1.udb'
+    const uddpath = homePath + ConstPath.UserPath + 'Customer/Data/ARDatasource/ARMAP_DEFAULT_2_1.udd'
+    const udbExist =  await FileTools.fileIsExist(udbpath)
+    const uddExist =  await FileTools.fileIsExist(uddpath)
+
+    if(udbExist) {
+      await FileTools.deleteFile(udbpath)
+    }
+    if(uddExist) {
+      await FileTools.deleteFile(uddpath)
+    }
+
+    await SARMap.importMap(path)
 
     // 打开指定路径的地图
     const result = await SARMap.open(arMapPath)
@@ -800,6 +833,9 @@ class DoctorCC extends Component<Props, State> {
     // 扫描界面未关闭时，关闭扫描界面
     if(this.state.showScan) {
       this.timeoutTrigger?.onBackFromScan()
+      if(this.state.isScan) {
+        SARMap.stopAREnhancePosition()
+      }
       this.setState({showScan: false})
       return
     }
@@ -812,6 +848,10 @@ class DoctorCC extends Component<Props, State> {
         if(this.state.isRoutePlay) {
           SARMap.stopARAnimation()
 
+          if(this.isRouteSpeakPlay !== "") {
+            SoundUtil.stop(this.isRouteSpeakPlay)
+          }
+
           const tempTimer =  setTimeout(async () => {
             if(this.ARModel) {
               if(this.positionInfo?.renderNode) {
@@ -821,7 +861,7 @@ class DoctorCC extends Component<Props, State> {
               }
 
               // 更新箭头追踪的位置和范围
-              await SExhibition.stopTrackingTarget()
+              // await SExhibition.stopTrackingTarget()
               const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
               if(relativePositin) {
                 await SExhibition.setTrackingTarget(relativePositin)
@@ -857,13 +897,13 @@ class DoctorCC extends Component<Props, State> {
             await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)
             // this.isPlay = false
 
-            // 更新箭头追踪的位置和范围
-            await SExhibition.stopTrackingTarget()
-            const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-            if(relativePositin) {
-              await SExhibition.setTrackingTarget(relativePositin)
-              await SExhibition.startTrackingTarget()
-            }
+            // // 更新箭头追踪的位置和范围
+            // await SExhibition.stopTrackingTarget()
+            // const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+            // if(relativePositin) {
+            //   await SExhibition.setTrackingTarget(relativePositin)
+            //   await SExhibition.startTrackingTarget()
+            // }
 
             SARMap.setAction(ARAction.NULL)
             SARMap.clearSelection()
@@ -1187,7 +1227,7 @@ class DoctorCC extends Component<Props, State> {
     const tempTimer =  setTimeout(async () => {
 
       // 路线动画开始前，停掉箭头追踪功能
-      await SExhibition.stopTrackingTarget()
+      // await SExhibition.stopTrackingTarget()
       // 开始播放推演动画
       // SARMap.playARAnimation(JSON.parse(JSON.stringify(item.route)))
       SARMap.playARAnimation(JSON.parse(JSON.stringify(route)))
@@ -1330,8 +1370,8 @@ class DoctorCC extends Component<Props, State> {
       }
     }
 
-    // 暂时隐藏箭头追踪功能
-    // SExhibition.stopTrackingTarget()
+    // 隐藏箭头追踪功能
+    SExhibition.stopTrackingTarget()
 
     this.setState({
       selectType: 'photo',
@@ -1379,6 +1419,9 @@ class DoctorCC extends Component<Props, State> {
         this.animationTimer = null
       }
     }
+
+    // 隐藏箭头追踪功能
+    SExhibition.stopTrackingTarget()
 
     this.setState({
       selectType: 'video',
@@ -2731,7 +2774,7 @@ class DoctorCC extends Component<Props, State> {
         </View>
 
         {/* 扫描界面 */}
-        {!this.state.isShowFull && this.state.showScan && this.renderScan()}
+        {!this.state.isShowFull && this.state.showScan && this.state.isScan && this.renderScan()}
         {/* 左边按钮 */}
         <Animated.View
           style={{

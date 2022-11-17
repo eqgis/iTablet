@@ -196,6 +196,8 @@ interface State {
   showCover: boolean
   showSide: boolean
   toolType: ToolType | ''
+  /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
+  isScan: boolean
 }
 
 export interface AddOption {
@@ -236,7 +238,8 @@ class SandBoxView extends React.Component<Props, State> {
     this.state = {
       showGuide: false,
       showSide: true,
-      showScan: false,
+      showScan: true,
+      isScan: true,
       showCover: false,
 
       toolType: '',
@@ -251,11 +254,22 @@ class SandBoxView extends React.Component<Props, State> {
     this.listeners = SARMap.addMeasureStatusListeners({
       addListener: async result => {
         if (result) {
+          if(this.state.showScan && !this.state.isScan) {
+            // 启用增强定位
+            SARMap.setAREnhancePosition()
+          }
           this.setState({
-            showScan: true,
+            isScan: true,
           })
-          // 启用增强定位
-          SARMap.setAREnhancePosition()
+        } else {
+          if(this.state.showScan && this.state.isScan) {
+            // 停止增强定位
+            SARMap.stopAREnhancePosition()
+          }
+
+          this.setState({
+            isScan: false,
+          })
         }
       },
     })
@@ -548,6 +562,9 @@ class SandBoxView extends React.Component<Props, State> {
     if (this.clickWait) return
     this.clickWait = true
     if (this.state.showScan) {
+      if(this.state.isScan) {
+        SARMap.stopAREnhancePosition()
+      }
       if (this.isOpen) {
         this.arrowTricker(true)
       }
@@ -802,7 +819,7 @@ class SandBoxView extends React.Component<Props, State> {
         {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
         {this.state.showCover && this.renderCover()}
         <ARArrow />
-        {this.state.showScan && this.renderScan()}
+        {this.state.showScan && this.state.isScan && this.renderScan()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}
         {this.renderBack()}
       </>

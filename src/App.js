@@ -476,7 +476,7 @@ class AppRoot extends Component {
       await this.getUserApplets(userName)
       this.createXmlTemplate()
       await FileTools.initARSymbolData(userName)
-      await this.importExhibitionData()
+      // await this.importExhibitionData()
     } catch (e) {
       //
     }

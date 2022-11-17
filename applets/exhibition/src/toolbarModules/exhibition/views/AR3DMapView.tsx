@@ -134,6 +134,9 @@ class AR3DMapView extends React.Component<Props, State> {
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
+          }
+
+          if(this.open){
             SExhibition.rotation3dMap(this.rotationValue)
           }
 
@@ -160,7 +163,6 @@ class AR3DMapView extends React.Component<Props, State> {
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
-            SExhibition.rotation3dMap(this.rotationValue)
           }
           if (this.open) {
             this.getShape()
@@ -181,6 +183,8 @@ class AR3DMapView extends React.Component<Props, State> {
               this.setState({showVideo:false})
               SExhibition.showMapVideo(false)
             }
+
+            SExhibition.rotation3dMap(this.rotationValue)
           }
         },
       },
@@ -196,7 +200,6 @@ class AR3DMapView extends React.Component<Props, State> {
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
-            SExhibition.rotation3dMap(this.rotationValue)
           }
           this.timeoutTrigger?.onFirstMenuClick()
 
@@ -241,12 +244,15 @@ class AR3DMapView extends React.Component<Props, State> {
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
-            SExhibition.rotation3dMap(this.rotationValue)
           }
 
           if(this.state.showVideo){
             this.setState({showVideo:false})
             SExhibition.showMapVideo(false)
+          }
+
+          if(this.open){
+            SExhibition.rotation3dMap(this.rotationValue)
           }
 
           this.setState({ attribute: !this.state.attribute, showSlide: false })

@@ -4,7 +4,7 @@ import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Image, ScaledSize, TouchableOpacity, View, EmitterSubscription } from 'react-native'
 import Scan from '../components/Scan'
-import { TARLayerType, SARMap ,ARElementLayer,ARLayerType} from 'imobile_for_reactnative'
+import { TARLayerType, SARMap ,ARElementLayer,ARLayerType, SExhibition} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
 import { getGlobalPose, isCoverGuided, setCoverGuided } from '../Actions'
 import ARGuide from '../components/ARGuide'
@@ -62,27 +62,31 @@ class CoverView extends React.Component<Props, State> {
         image: getImage().icon_tool_rectangle,
         title: '全景',
         action: this.onFullScapePress,
+        autoCancelSelected: false,
       },
       {
         image: getImage().icon_tool_rectangle,
         title: '挖洞',
         action: this.onHolePress,
+        autoCancelSelected: false,
       },
       {
         image: getImage().icon_tool_rolling,
         title: '卷帘',
         action: this.onRollingPress,
+        autoCancelSelected: false,
       },
       // {
       //   image: getImage().icon_tool_rolling,
       //   title: '流向',
       //   action: this.rollingMenu,
       // },
-      // {
-      //   image: getImage().icon_tool_rolling,
-      //   title: '属性',
-      //   action: this.rollingMenu,
-      // },
+      {
+        image: getImage().icon_tool_rolling,
+        title: '属性',
+        action: this.onAttributePres,
+        autoCancelSelected: true,
+      },
     ]
   }
 
@@ -123,6 +127,7 @@ class CoverView extends React.Component<Props, State> {
   onFullScapePress = () => {
     this.timeoutTrigger?.active()
     this._hideSlide()
+    this._disableAttribte()
     this.stopCover()
     this.stopRolling()
   }
@@ -130,6 +135,7 @@ class CoverView extends React.Component<Props, State> {
   onHolePress = () => {
     this.timeoutTrigger?.onShowSecondMenu()
     this._hideSlide()
+    this._disableAttribte()
     this.stopRolling()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
@@ -143,9 +149,20 @@ class CoverView extends React.Component<Props, State> {
   onRollingPress = () => {
     this.timeoutTrigger?.onShowSecondMenu()
     this._hideSlide()
+    this._disableAttribte()
     this.setState({
       secondMenuData: this.getRollingModeMenu()
     })
+  }
+
+  attribteEanbled = false
+  onAttributePres = () => {
+    this.timeoutTrigger?.onFirstMenuClick()
+    this.stopCover()
+    this.stopRolling()
+    this._hideSlide()
+    this.attribteEanbled = !this.attribteEanbled
+    SExhibition.enablePipeAttribute(this.attribteEanbled)
   }
 
 
@@ -181,6 +198,13 @@ class CoverView extends React.Component<Props, State> {
       this.setState({
         showSlider: false
       })
+    }
+  }
+
+  _disableAttribte = () => {
+    if(this.attribteEanbled) {
+      this.attribteEanbled = false
+      SExhibition.enablePipeAttribute(false)
     }
   }
 
@@ -697,7 +721,7 @@ class CoverView extends React.Component<Props, State> {
       >
         <SideBar
           sections={[this.getMainMenuItem()]}
-          autoCancel={false}
+          autoCancel={true}
         />
       </AnimationWrap>
     )

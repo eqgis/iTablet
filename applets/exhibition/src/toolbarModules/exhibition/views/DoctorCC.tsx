@@ -422,7 +422,7 @@ class DoctorCC extends Component<Props, State> {
     let left
     let bottom
     if (this.show) {
-      right = -100
+      right = -200
       left = -200
       bottom = -200
     }else {

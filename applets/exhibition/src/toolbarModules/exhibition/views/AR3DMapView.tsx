@@ -227,7 +227,7 @@ class AR3DMapView extends React.Component<Props, State> {
             y: 0,
             z: -0.5,
           }
-          SExhibition.addMapviewElement(0, {
+          SExhibition.addMapviewElement(0,false, {
             pose: this.result,
             translation: relativePositin
           })
@@ -255,7 +255,7 @@ class AR3DMapView extends React.Component<Props, State> {
             y: 0,
             z: -0.5,
           }
-          SExhibition.addMapviewElement(4, {
+          SExhibition.addMapviewElement(4, false,{
             pose: this.result,
             translation: relativePositin
           })
@@ -348,91 +348,6 @@ class AR3DMapView extends React.Component<Props, State> {
       />
     )
   }
-
-  // renderRollingMode = () => {
-  //   return (
-  //     <FillAnimationWrap
-  //       visible={this.state.showShape}
-  //       animated={'bottom'}
-  //       style={{
-  //         position: 'absolute',
-  //         alignSelf: 'center'
-  //       }}
-  //       range={[-dp(100), dp(20)]}
-  //       onHide={() => {
-  //         this.timeoutTrigger?.onBackFromSecondMenu()
-  //         this.setState({showShape: false})
-  //       }}
-  //     >
-  //       <View style={{
-  //         borderRadius: dp(10),
-  //         flexDirection: 'row',
-  //         justifyContent: 'center',
-  //         alignItems: 'center',
-  //         overflow: 'hidden',
-  //       }}>
-  //         {this.renderRollingBtn({
-  //           image: getImage().icon_tool_juxing,
-  //           title: '矩形',
-  //           action: async () => {
-  //             SExhibition.removeMapviewElement()
-  //             const relativePositin: Vector3 = {
-  //               x: 0,
-  //               y: 0,
-  //               z: -0.5,
-  //             }
-  //             SExhibition.addMapviewElement(0,{
-  //               pose: this.result,
-  //               translation: relativePositin
-  //             })
-  //             const _time = async function() {
-  //               return new Promise(function(resolve, reject) {
-  //                 const timer = setTimeout(function() {
-  //                   resolve('waitting send close message')
-  //                   timer && clearTimeout(timer)
-  //                 }, 1500)
-  //               })
-  //             }
-  //             await _time()
-  //             await SExhibition.getMapviewLocation()
-  //             this.setState({showShape: false})
-  //             this.timeoutTrigger?.onBackFromSecondMenu()
-  //           }
-  //         })}
-  //         {this.renderRollingBtn({
-  //           image: getImage().icon_tool_yuan,
-  //           title: '圆形',
-  //           action: async () => {
-  //             SExhibition.removeMapviewElement()
-  //             const relativePositin: Vector3 = {
-  //               x: 0,
-  //               y: 0,
-  //               z: -0.5,
-  //             }
-  //             SExhibition.addMapviewElement(4, {
-  //               pose: this.result,
-  //               translation: relativePositin
-  //             })
-
-  //             const _time = async function () {
-  //               return new Promise(function (resolve, reject) {
-  //                 const timer = setTimeout(function () {
-  //                   resolve('waitting send close message')
-  //                   timer && clearTimeout(timer)
-  //                 }, 1500)
-  //               })
-  //             }
-  //             await _time()
-
-  //             await SExhibition.getMapviewLocation()
-  //             this.setState({ showShape: false })
-  //             this.timeoutTrigger?.onBackFromSecondMenu()
-  //           }
-  //         })}
-  //       </View>
-  //     </FillAnimationWrap>
-  //   )
-  // }
 
   renderRollingBtn = (item: Item) => {
     return (
@@ -548,7 +463,7 @@ class AR3DMapView extends React.Component<Props, State> {
         z: -1,
       }
       this.result = pose
-      SExhibition.addMapviewElement(0,{
+      SExhibition.addMapviewElement(0,true,{
         pose: pose,
         translation: relativePositin
       })

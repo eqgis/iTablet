@@ -234,6 +234,9 @@ class SandBoxView extends React.Component<Props, State> {
     infoListener:EmitterSubscription | undefined
   } | null = null
 
+  /** 第一次显示扫描界面是否完成 */
+  scanFirstShow = false
+
   constructor(props: Props) {
     super(props)
 
@@ -252,10 +255,20 @@ class SandBoxView extends React.Component<Props, State> {
   }
 
   arViewDidMount = (): void => {
-    if(this.state.showScan && this.state.isScan) {
-      // 启用增强定位
-      SARMap.setAREnhancePosition()
-    }
+    const scanShowTimer = setTimeout(() => {
+      if(!this.scanFirstShow) {
+        if(this.state.showScan && !this.state.isScan) {
+          // 启用增强定位
+          SARMap.setAREnhancePosition()
+        }
+        this.scanFirstShow = true
+        this.setState({
+          isScan: true,
+        })
+      }
+      clearTimeout(scanShowTimer)
+    }, 3000)
+
     this.listeners = SARMap.addMeasureStatusListeners({
       addListener: async result => {
         if (result) {
@@ -263,6 +276,7 @@ class SandBoxView extends React.Component<Props, State> {
             // 启用增强定位
             SARMap.setAREnhancePosition()
           }
+          this.scanFirstShow = true
           this.setState({
             isScan: true,
           })

@@ -210,6 +210,8 @@ export interface AddOption {
 }
 
 let currentLayer: SARMap.ARLayer
+interface SpotType {name: string, path: string, index: number}
+let spotOriginIndex: {[name: string]: SpotType} = {}
 
 class SandBoxView extends React.Component<Props, State> {
 
@@ -352,7 +354,7 @@ class SandBoxView extends React.Component<Props, State> {
         image: getImage().tool_boat_guide,
         image_selected: getImage().tool_boat_guide,
         title: '游船路线',
-        action: () => {
+        action: async () => {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
           this.switchTool('boat_guide')
@@ -445,31 +447,11 @@ class SandBoxView extends React.Component<Props, State> {
         addNewDSourceWhenCreate: false,
         addNewDsetWhenCreate: false,
       })
-      // // TODO 打开地图,判断是否要创建新地图和新数据源
       if (!props.arMap.currentMap) {
         await AppToolBar.getProps().createARMap()
       }
 
-      // const type = ARLayerType.EFFECT_LAYER
-
-      // //若已存在场景图层则先移除
-      // const allLayers = mapInfo?.layers?.filter((layer: SARMap.ARLayer) => {
-      //   return layer.type === type
-      // })
-      // if (allLayers && allLayers.length > 0) {
-      //   await SARMap.removeARLayer(allLayers[0].name)
-      // }
-
-      // const datasourceName = DataHandler.getARRawDatasource()
-      // const effectLayerName = 'effect'
-      // const sResult = await DataHandler.createARElementDatasource(props.currentUser, datasourceName, effectLayerName, newDatasource, false, type)
-      // // success: true
-      // // datasourceName: string
-      // // datasetName: string
-      // if (sResult.success) {
-      //   SARMap.creact
-      // }
-
+      // 公共glb
       const home = await FileTools.getHomeDirectory()
       const targetHomePath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/'
       await SARMap.createARSandTable()
@@ -482,6 +464,26 @@ class SandBoxView extends React.Component<Props, State> {
       for (const glb of glbs) {
         paths.push(home + glb.path)
       }
+
+      // 游船
+      const shipPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/游船'
+      const shipGlbs = await FileTools.getPathListByFilter(shipPath, {
+        extension: 'glb',
+      })
+      for (const glb of shipGlbs) {
+        paths.push(home + glb.path)
+      }
+
+      // 景点
+      const spotPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点'
+      const spotGlbs = await FileTools.getPathListByFilter(spotPath, {
+        extension: 'glb',
+      })
+      const spotPaths = []
+      for (const glb of spotGlbs) {
+        spotPaths.push(home + glb.path)
+      }
+
       await SARMap.addModelToSandTable(paths, {
         position: {
           // y: -100,
@@ -518,6 +520,20 @@ class SandBoxView extends React.Component<Props, State> {
           z: 0,
         },
       })
+      const spotIndexes = await SARMap.addModelToSandTable(spotPaths, {
+        position: { x: 0, y: -1, z: -1.5 },
+        scale: { x: 0.0025, y: 0.0025, z: 0.0025 },
+      })
+      for (let i = 0; i < spotIndexes.length; i++) {
+        const spotName = spotPaths[i].substring(spotPaths[i].lastIndexOf('/') + 1, spotPaths[i].lastIndexOf('.'))
+        // spotOriginIndex.[spotName]
+        spotOriginIndex = Object.assign(spotOriginIndex, {[spotName]: {
+          name: spotName,
+          path: spotPaths[i],
+          index: spotIndexes[i],
+        }})
+      }
+
       const layers = await props.getARLayers()
       for(const layer of layers) {
         if (layer.type === ARLayerType.AR_MODEL_LAYER) {
@@ -871,6 +887,9 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     scale: { x: number, y: number, z: number },
   } | undefined
 
+  /** 上一个选中的景点 */
+  lastSpot: SpotType | undefined
+
   constructor(props: ToolViewProps) {
     super(props)
     this.state = {
@@ -892,6 +911,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       })
     } else if (prevProps.type === 'mountain_guide' && this.props.type !== 'mountain_guide' && this.state.selectKey) {
       this.mountainClose()
+    } else if (prevProps.type === 'spot' && this.props.type !== 'spot' && this.state.selectKey) {
+      this.spotClose()
     }
   }
 
@@ -912,14 +933,71 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         data: data,
       })
     } else if (this.props.type === 'mountain_guide') {
+      const home = await FileTools.getHomeDirectory()
       const items = await this.getMountainRoute()
       const data = []
-      for (const item of items) {
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
         const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
+        const imagePath = `${home + item.path}/${name}.png`
+        let image
+        if (!await FileTools.fileIsExist(imagePath)) {
+          image = getImage().tool_effect
+        } else {
+          image = {uri: 'file://' + imagePath}
+        }
         data.push({
           key: name,
           name: name,
-          image: getImage().tool_effect,
+          image: image,
+          path: item.path,
+        })
+      }
+
+      this.setState({
+        data: data,
+      })
+    } else if (this.props.type === 'boat_guide') {
+      const items = await this.getBoat()
+      const data = []
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
+        const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
+        const imagePath = item.path.replace(item.name, name + '.png')
+        let image
+        if (!await FileTools.fileIsExist(imagePath)) {
+          image = getImage().tool_effect
+        } else {
+          image = {uri: 'file://' + imagePath}
+        }
+        data.push({
+          key: name,
+          name: name,
+          image: image,
+          path: item.path,
+        })
+      }
+
+      this.setState({
+        data: data,
+      })
+    } else if (this.props.type === 'spot') {
+      const items = await this.getSpot()
+      const data = []
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
+        const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
+        const imagePath = item.path.replace(item.name, name + '.png')
+        let image
+        if (!await FileTools.fileIsExist(imagePath)) {
+          image = getImage().tool_effect
+        } else {
+          image = {uri: 'file://' + imagePath}
+        }
+        data.push({
+          key: name,
+          name: name,
+          image: image,
           path: item.path,
         })
       }
@@ -939,6 +1017,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     if (this.state.selectKey) {
       if (this.props.type === 'mountain_guide') {
         this.mountainClose()
+      } else if(this.props.type === 'spot') {
+        this.spotClose()
       } else {
         this.setState({
           selectKey: '',
@@ -1108,29 +1188,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   }
 
   /********************************************************** 登山路线 ******************************************************************/
-  renderMountainRoute = () => {
-    const views: any = []
-    for (let i = 0; i < this.state.data.length; i++) {
-      views.push(
-        <ImageItem
-          data={this.state.data[i]}
-          isSelected={this.state.selectKey === this.state.data[i].key}
-          action={this.mountainAction}
-        />
-      )
-    }
-    return (
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={[{maxWidth: dp(550)}]}
-        contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
-      >
-        {views}
-      </ScrollView>
-    )
-  }
-
   getMountainRoute = async () => {
     const home = await FileTools.getHomeDirectory()
     const routePath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/登山路线'
@@ -1153,6 +1210,10 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   mountainAction = async (item: ImageItemData) => {
     try {
       if (!item.path) return
+      if (item.key === this.state.selectKey) {
+        this.mountainClose(false)
+        return
+      }
       this.setState({
         selectKey: item.key,
       })
@@ -1167,7 +1228,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.setState({
         canBeClick: false,
       })
-      // console.warn(this.lastPosition)
       const home = await FileTools.getHomeDirectory()
       const routeDir = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'glb')
       // 转圈/放大/定位到登山路线
@@ -1199,44 +1259,10 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         })
       }
 
-      const twinkle = async (id: number, time: number) => {
-        let show = false, temp = 0
-        const interval = setInterval(async() => {
-          if (temp === time && interval) {
-            await SARMap.setSandTableModelVisible(id, true)
-            clearInterval(interval)
-            return
-          }
-          await SARMap.setSandTableModelVisible(id, show)
-          show = !show
-          temp++
-        }, 300)
-      }
-
       setTimeout(async () => {
         // 等待,防止移动获取位置错误
-        await wait(1)
         this.mountainElementIndexes = []
         // 获取沙盘实际位置
-        const lastPosition = await SARMap.getElementPositionInfo(currentLayer.name, 1)
-        let params
-        if (lastPosition?.renderNode) {
-          // this.lastPosition2 = {
-          //   position: lastPosition.renderNode.position,
-          //   rotation: lastPosition.renderNode.rotation,
-          //   scale: {
-          //     x: lastPosition.renderNode.scale,
-          //     y: lastPosition.renderNode.scale,
-          //     z: lastPosition.renderNode.scale,
-          //   },
-          //   // scale: lastPosition.renderNode.scale,
-          // }
-          // params = {
-          //   position: lastPosition.renderNode.position,
-          //   rotation: lastPosition.renderNode.rotation,
-          //   scale: lastPosition.renderNode.scale,
-          // }
-        }
         await SARMap.setSandBoxPosition(currentLayer.name, 1, {
           position: {
             x: 0,
@@ -1250,12 +1276,11 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           },
           scale: 0.005,
         })
-        // console.warn(this.lastPosition2)
         for (const route of routeDir) {
           // 添加路线坐标
           const pathIndexs = await SARMap.addModelToSandTable([route.path])
 
-          twinkle(pathIndexs[0], 2)
+          this.twinkle(pathIndexs[0], 2)
           this.mountainElementIndexes = this.mountainElementIndexes.concat(pathIndexs)
           await wait(1)
         }
@@ -1269,7 +1294,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     }
   }
 
-  mountainClose = async () => {
+  mountainClose = async (clearData = true) => {
     try {
       this.setState({
         canBeClick: false,
@@ -1295,11 +1320,18 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         this.lastPosition && SARMap.setSandBoxPosition(currentLayer.name, 1, this.lastPosition)
         this.lastPosition = undefined
         this.mountainElementIndexes = []
-        this.setState({
-          selectKey: '',
-          data: [],
-          canBeClick: true,
-        })
+        if (clearData) {
+          this.setState({
+            selectKey: '',
+            data: [],
+            canBeClick: true,
+          })
+        } else {
+          this.setState({
+            selectKey: '',
+            canBeClick: true,
+          })
+        }
       }, AnimationTime)
     } catch (error) {
       __DEV__ && console.warn(error)
@@ -1307,37 +1339,141 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   }
 
   /********************************************************** 景区 ******************************************************************/
-  renderSpot = () => {
-    return null
+  getSpot = async () => {
+    const home = await FileTools.getHomeDirectory()
+    const shipPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点1'
+    const ships = await FileTools.getPathListByFilterDeep(shipPath, 'glb')
+
+    ships.sort((a: any, b: any) => {
+      if (a.name > b.name) {
+        return 1
+      } else if (a.name < b.name) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+    return ships
+  }
+
+  spotAction = async (item: ImageItemData) => {
+    try {
+      if (!item.path) return
+      if (item.key === this.state.selectKey) {
+        this.spotClose(false)
+        return
+      }
+      this.setState({
+        selectKey: item.key,
+      })
+      // 隐藏上一个选中的景点
+      if (this.lastSpot !== undefined) {
+        await SARMap.setSandTableModelVisible(this.lastSpot.index, false)
+
+        await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, true)
+      }
+      // 显示当前选中的景点
+      const pathIndexs = await SARMap.addModelToSandTable([item.path])
+      if (pathIndexs.length > 0) {
+        const spotName = item.path.substring(item.path.lastIndexOf('/') + 1, item.path.lastIndexOf('.'))
+        this.lastSpot = {
+          name: spotName,
+          path: item.path,
+          index: pathIndexs[0],
+        }
+        await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, false)
+        this.twinkle(this.lastSpot.index, 2)
+      }
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
+  }
+
+  spotClose = async (clearData = true) => {
+    try {
+      // 隐藏上一个选中的景点
+      if (this.lastSpot !== undefined) {
+        await SARMap.setSandTableModelVisible(this.lastSpot.index, false)
+
+        await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, true)
+      }
+      if (clearData) {
+        this.setState({
+          selectKey: '',
+          data: [],
+        })
+      } else {
+        this.setState({
+          selectKey: '',
+        })
+      }
+      this.lastSpot = undefined
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
+  }
+
+  /********************************************************** 游船路线 ******************************************************************/
+  getBoat = async () => {
+    const home = await FileTools.getHomeDirectory()
+    const shipPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/游船'
+    const ships = await FileTools.getPathListByFilterDeep(shipPath, 'glb')
+
+    ships.sort((a: any, b: any) => {
+      if (a.name > b.name) {
+        return 1
+      } else if (a.name < b.name) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+    return ships
+  }
+
+  boatAction = async (item: ImageItemData) => {
+    try {
+      const home = await FileTools.getHomeDirectory()
+      const modalPath = home + item.path
+      const position = [
+        { x: -18.8516, y: 0, z: -1.8626 },
+        { x: -24.8966, y: 0, z: -0.8905},
+        { x: -30.9949, y: 0, z: -0.8905},
+        { x: -30.9949, y: 0, z: -4.6744},
+        { x: -21.624, y: 0, z: -0.8905},
+        { x: -14.8262, y: 0, z: -11.2643},
+        { x: -7.0157, y: 0, z: -12.9467},
+        { x: -12.9655, y: 0, z: -9.9496},
+        { x: -16.0149, y: 0, z: -8.9459},
+        { x: -19.292, y: 0, z: -6.4939},
+        { x: -22.9803, y: 0, z: -3.8235},
+        { x: -18.9957, y: 0, z: -3.8235},
+      ]
+      SARMap.setSandBoxAnimation2(currentLayer.name, 1, modalPath, {
+        position: position,
+        // rotation: [{
+        //   x: 0,
+        //   y: 0,
+        //   z: 0,
+        // }],
+        // scale: [{
+        //   x: 0.015,
+        //   y: 0.015,
+        //   z: 0.015,
+        // }],
+        duration: 5000,
+        repeatMode: 2,
+        repeatCount: 10,
+      })
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
   }
 
   /********************************************************** 特效 ******************************************************************/
-  renderEffects = () => {
-    const views: any = []
-    for (let i = 0; i < this.state.data.length; i++) {
-      views.push(
-        <ImageItem
-          data={this.state.data[i]}
-          isSelected={this.state.selectKey === this.state.data[i].key}
-          action={this.effectAction}
-        />
-      )
-    }
-    return (
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={[{maxWidth: dp(550)}]}
-        contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
-      >
-        {views}
-      </ScrollView>
-    )
-  }
-
   getEffects = async () => {
     const home = await FileTools.getHomeDirectory()
-    const effectsPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/effects'
+    const effectsPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/天气'
     const effects = await FileTools.getPathListByFilterDeep(effectsPath, 'areffect')
 
     effects.sort((a: any, b: any) => {
@@ -1387,6 +1523,19 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   }
 
   /****************************************************************************************************************************/
+  twinkle = async (id: number, time: number) => {
+    let show = false, temp = 0
+    const interval = setInterval(async() => {
+      if (temp === time && interval) {
+        await SARMap.setSandTableModelVisible(id, true)
+        clearInterval(interval)
+        return
+      }
+      await SARMap.setSandTableModelVisible(id, show)
+      show = !show
+      temp++
+    }, 300)
+  }
 
   render() {
     // if (this.props.type === '') return null
@@ -1418,6 +1567,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
                 break
               case 'effects':
                 this.effectAction(data)
+                break
+              case 'boat_guide':
+                this.boatAction(data)
+                break
+              case 'spot':
+                this.spotAction(data)
                 break
             }
           }}

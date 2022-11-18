@@ -19,6 +19,10 @@
   <uses-permission android:name="android.permission.READ_PROFILE" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+
+
   <uses-feature android:name="android.hardware.camera.any"/>
 
   <queries>

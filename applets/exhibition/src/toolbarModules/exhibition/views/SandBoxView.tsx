@@ -1355,7 +1355,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       }
       setTimeout(() => {
         oraginSandboxStatus && SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
-        oraginSandboxStatus = undefined
+        // oraginSandboxStatus = undefined
         this.mountainElementIndexes = []
         if (clearData) {
           this.setState({

@@ -11,7 +11,7 @@ import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 // import CircleBar from '../components/CircleBar'
 import PipeLineAttribute from '../components/pipeLineAttribute'
 import ARArrow from '../components/ARArrow'
-import { positionNodeInfo, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { AnimationRoute, positionNodeInfo, SceneLayerStatus } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { shouldBuildingMapData, buildingImported } from '../Actions'
 import SideBar, { Item } from '../components/SideBar'
 import AnimationWrap from '../components/AnimationWrap'
@@ -482,15 +482,6 @@ class SandBoxView extends React.Component<Props, State> {
         paths.push(home + glb.path)
       }
 
-      // 游船
-      const shipPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/游船'
-      const shipGlbs = await FileTools.getPathListByFilter(shipPath, {
-        extension: 'glb',
-      })
-      for (const glb of shipGlbs) {
-        paths.push(home + glb.path)
-      }
-
       // 景点
       const spotPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点'
       const spotGlbs = await FileTools.getPathListByFilter(spotPath, {
@@ -522,7 +513,7 @@ class SandBoxView extends React.Component<Props, State> {
       })
       await SARMap.addARMediaToSandbox(targetHomePath + 'wave.mp4', {
         position: {
-          x: -30,
+          x: -32,
           y: -49,
           z: -48,
         },
@@ -550,6 +541,24 @@ class SandBoxView extends React.Component<Props, State> {
           index: spotIndexes[i],
         }})
       }
+
+      // 游船
+      const shipPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/游船'
+      const shipGlbs = await FileTools.getPathListByFilter(shipPath, {
+        extension: 'glb',
+      })
+      const shipPaths = []
+      for (const glb of shipGlbs) {
+        shipPaths.push({
+          path: home + glb.path,
+          point: {
+            position: { x: -180.516, y: 0, z: 8 },
+            scale: { x: 0.015, y: 0.015, z: 0.015 },
+          },
+        })
+      }
+      const shipIndexes = await SARMap.addModelToSandTable2(shipPaths)
+      console.warn(shipIndexes)
 
       const layers = await props.getARLayers()
       for(const layer of layers) {
@@ -930,6 +939,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.mountainClose()
     } else if (prevProps.type === 'spot' && this.props.type !== 'spot' && this.state.selectKey) {
       this.spotClose()
+    } else if (prevProps.type === 'boat_guide' && this.props.type !== 'boat_guide' && this.state.selectKey) {
+      this.boatClose()
     }
   }
 
@@ -1043,6 +1054,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         this.mountainClose()
       } else if(this.props.type === 'spot') {
         this.spotClose()
+      } else if(this.props.type === 'boat_guide') {
+        this.boatClose()
       } else {
         this.setState({
           selectKey: '',
@@ -1484,17 +1497,81 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   boatAction = async (item: ImageItemData) => {
     try {
-      const position = [
-        { x: -14.8262, y: 0, z: -11.2643},
-        { x: -7.0157, y: 0, z: -12.9467},
-        { x: -12.9655, y: 0, z: -9.9496},
-        { x: -16.0149, y: 0, z: -8.9459},
-        { x: -19.292, y: 0, z: -6.4939},
-        { x: -22.9803, y: 0, z: -3.8235},
-        { x: -18.9957, y: 0, z: -3.8235},
+      if (!item.path) return
+      if (item.key === this.state.selectKey) {
+        this.boatClose(false)
+        return
+      }
+      this.setState({
+        selectKey: item.key,
+      })
+
+      await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+        position: { x: 0.7, y: -1, z: -1.5 },
+        scale: { x: 0.004, y: 0.004, z: 0.004 },
+        duration: AnimationTime,
+      })
+
+      const angle = (p1: {x: number, y: number}, p2: {x: number, y: number}) => {
+        const angle = Math.atan2((p1.y-p2.y), (p2.x-p1.x)) //弧度 -0.6435011087932844, 即 2*Math.PI - 0.6435011087932844
+        const theta = angle * (180 / Math.PI)
+        return theta
+      }
+
+      const points: AnimationRoute[] = [
+        {
+          type: 'position',
+          duration: 1000,
+          points: [{ x: -250, y: 0, z: 8 }],
+        },
+        {
+          type: 'rotation',
+          duration: 1,
+          points: [{ x: 0, y: angle({x: -250, y:30}, {x: -250, y: 8}), z: 0 }],
+        },
+        {
+          type: 'position',
+          duration: 500,
+          points: [{ x: -250, y: 0, z: 30 }],
+        },
+        {
+          type: 'rotation',
+          duration: 1,
+          points: [{ x: 0, y: angle({x: -200, y:30}, {x: -250, y:30}), z: 0 }],
+        },
+        {
+          type: 'position',
+          duration: 1000,
+          points: [{ x: -200, y: 0, z: 30 }],
+        },
+        {
+          type: 'rotation',
+          duration: 1,
+          points: [{ x: 0, y: angle({x: -200, y:8}, {x: -200, y:30}), z: 0 }],
+        },
+        {
+          type: 'position',
+          duration: 500,
+          points: [{ x: -200, y: 0, z: 8 }],
+        },
+        {
+          type: 'rotation',
+          duration: 1,
+          points: [{ x: 0, y: angle({x: -180.516, y:8}, {x: -200, y:8}), z: 0 }],
+        },
+        {
+          type: 'position',
+          duration: 500,
+          points: [{ x: -180.516, y: 0, z: 8 }],
+        },
+        {
+          type: 'rotation',
+          duration: 1,
+          points: [{ x: 0, y: angle({ x: -250, y: 8 }, {x: -180.516, y:8}), z: 0 }],
+        },
       ]
-      item.path && SARMap.setSandBoxAnimation2(currentLayer.name, 1, item.path, {
-        position: position,
+      SARMap.setSandBoxAnimation2(currentLayer.name, 1, item.path, {
+        route: points,
         // rotation: [{
         //   x: 0,
         //   y: 0,
@@ -1505,7 +1582,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         //   y: 0.015,
         //   z: 0.015,
         // }],
-        duration: 5000,
         repeatMode: 2,
         repeatCount: 10,
       })
@@ -1514,7 +1590,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     }
   }
 
-  /********************************************************** 特效 ******************************************************************/
   boatClose = async (clearData = true) => {
     try {
       if (clearData) {
@@ -1522,6 +1597,19 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           selectKey: '',
           data: [],
         })
+
+        if (oraginSandboxStatus) {
+          SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+            position: oraginSandboxStatus.position,
+            rotation: oraginSandboxStatus.rotation,
+            scale: {
+              x: oraginSandboxStatus.scale,
+              y: oraginSandboxStatus.scale,
+              z: oraginSandboxStatus.scale,
+            },
+            duration: AnimationTime,
+          })
+        }
       } else {
         this.setState({
           selectKey: '',
@@ -1651,7 +1739,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
             StyleSheet.absoluteFillObject,
             {
               backgroundColor: 'transparent',
-              zIndex: 1000,
+              zIndex: 500,
             }
           ]}/>
         }

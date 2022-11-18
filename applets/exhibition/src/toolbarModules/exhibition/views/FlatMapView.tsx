@@ -104,7 +104,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
-        title: '调整位置',
+        title: '调整',
         action: () => {
           if(!this.state.showSlide){
             this.timeoutTrigger?.onShowSecondMenu()

@@ -939,7 +939,7 @@ class AppRoot extends Component {
       }
     } else if (appState === 'background') {
       SoundUtil.pauseAll()
-      this.props.setBackgroundSoundPlayState(false)
+      // this.props.setBackgroundSoundPlayState(false)
     }
   }
 

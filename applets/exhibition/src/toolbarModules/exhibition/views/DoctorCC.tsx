@@ -346,7 +346,15 @@ class DoctorCC extends Component<Props, State> {
                       await SExhibition.setTrackingTarget(relativePositin)
                       await SExhibition.startTrackingTarget()
                     }
+
+                    // 强制再停止一次动作的动画
+                    await SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+                    if(this.animationTimer !== null){
+                      clearInterval(this.animationTimer)
+                      this.animationTimer = null
+                    }
                   }
+
                   clearTimeout(arrowTimer)
                 }, 300)
 

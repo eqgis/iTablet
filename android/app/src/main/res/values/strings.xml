@@ -5,6 +5,6 @@
     <string name="title_activity_scroller_menu">ScrollerMenuActivity</string>
     <string name="progress">Progress</string>
     <string name="selected_menu">Selected Menu</string>
-    <string name="copyright">Copyright © 2022 浪潮</string>
-    <string name="company">All Right Reserved</string>
+    <string name="copyright">Copyright © 2022 浪潮 All Right Reserved</string>
+    <string name="company"></string>
 </resources>

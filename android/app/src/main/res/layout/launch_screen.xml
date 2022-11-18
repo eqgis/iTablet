@@ -5,30 +5,32 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@color/black">
+    android:background="#5a7fb7">
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
         />
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="166dp"
-        android:layout_height="97dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@mipmap/langchao2" />
+
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/langchaologo" />
 
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="280dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/langchao1" />
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"

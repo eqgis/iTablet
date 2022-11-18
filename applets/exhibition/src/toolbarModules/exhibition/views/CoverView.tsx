@@ -69,7 +69,7 @@ class CoverView extends React.Component<Props, State> {
         autoCancelSelected: false,
       },
       {
-        image: getImage().icon_tool_rectangle,
+        image: getImage().icon_window,
         title: '挖洞',
         action: this.onHolePress,
         autoCancelSelected: false,
@@ -83,10 +83,10 @@ class CoverView extends React.Component<Props, State> {
       // {
       //   image: getImage().icon_tool_rolling,
       //   title: '流向',
-      //   action: this.rollingMenu,
+      //   action: this.onFlowPress,
       // },
       {
-        image: getImage().icon_tool_rolling,
+        image: getImage().tool_attribute,
         title: '属性',
         action: this.onAttributePres,
         autoCancelSelected: true,
@@ -97,7 +97,7 @@ class CoverView extends React.Component<Props, State> {
   getCutMenu = (): itemConmonType[] => {
     return [
       {
-        image: getImage().icon_tool_rolling,
+        image: getImage().ar_pipe_bounds,
         name: '范围',
         action: this.onHoleBoundsPress,
       },
@@ -778,6 +778,7 @@ class CoverView extends React.Component<Props, State> {
         }}
         data={this.state.secondMenuData}
         isRepeatClickCancelSelected
+        imageStyle={{width: dp(100), height: dp(100), marginTop: dp(0)}}
       />
     )
   }

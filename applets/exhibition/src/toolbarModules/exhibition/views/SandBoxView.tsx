@@ -1484,6 +1484,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   boatAction = async (item: ImageItemData) => {
     try {
+      const position = [
         { x: -14.8262, y: 0, z: -11.2643},
         { x: -7.0157, y: 0, z: -12.9467},
         { x: -12.9655, y: 0, z: -9.9496},
@@ -1492,7 +1493,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         { x: -22.9803, y: 0, z: -3.8235},
         { x: -18.9957, y: 0, z: -3.8235},
       ]
-      SARMap.setSandBoxAnimation2(currentLayer.name, 1, modalPath, {
+      item.path && SARMap.setSandBoxAnimation2(currentLayer.name, 1, item.path, {
         position: position,
         // rotation: [{
         //   x: 0,

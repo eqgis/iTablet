@@ -557,8 +557,7 @@ class SandBoxView extends React.Component<Props, State> {
           },
         })
       }
-      const shipIndexes = await SARMap.addModelToSandTable2(shipPaths)
-      console.warn(shipIndexes)
+      await SARMap.addModelToSandTable2(shipPaths)
 
       const layers = await props.getARLayers()
       for(const layer of layers) {
@@ -690,8 +689,8 @@ class SandBoxView extends React.Component<Props, State> {
     let toolType = this.state.toolType
     if (this.state.toolType) {
       toolType = ''
-      SARMap.submit()
     }
+    SARMap.closeARSandTable()
     this.arrowTricker(false)
     SARMap.setAREnhancePosition()
     this.setState({ showScan: true, toolType })
@@ -1267,6 +1266,15 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       })
       const home = await FileTools.getHomeDirectory()
       const routeDir = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'glb')
+      routeDir.sort((a: any, b: any) => {
+        if (a.name > b.name) {
+          return 1
+        } else if (a.name < b.name) {
+          return -1
+        } else {
+          return 0
+        }
+      })
       // 转圈/放大/定位到登山路线
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
         position: {
@@ -1438,15 +1446,15 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           duration: AnimationTime,
         })
 
-        position.y = 0
-        await SARMap.setSandBoxPosition(currentLayer.name, 1, {
-          position: position,
-          rotation: { x: 0, y: 0, z: 0 },
-          scale: 0.006,
-        })
-        setTimeout(() => {
-          this.lastSpot && this.twinkle(this.lastSpot.index, 2)
-        }, AnimationTime)
+        // position.y = 0
+        // await SARMap.setSandBoxPosition(currentLayer.name, 1, {
+        //   position: position,
+        //   rotation: { x: 0, y: 0, z: 0 },
+        //   scale: 0.006,
+        // })
+        // setTimeout(() => {
+        //   this.lastSpot && this.twinkle(this.lastSpot.index, 2)
+        // }, AnimationTime)
       }
     } catch (error) {
       __DEV__ && console.warn(error)

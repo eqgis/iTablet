@@ -1279,7 +1279,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
         position: {
           x: 0,
-          y: 0,
+          y: -0.5,
           z: -1.5,
         },
         rotation: {
@@ -1311,15 +1311,15 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         await SARMap.setSandBoxPosition(currentLayer.name, 1, {
           position: {
             x: 0,
-            y: -1,
-            z: -2,
+            y: -0.5,
+            z: -1.45,
           },
           rotation: {
             x: 0,
             y: 0,
             z: 0,
           },
-          scale: 0.005,
+          scale: 0.0035,
         })
         for (const route of routeDir) {
           // 添加路线坐标

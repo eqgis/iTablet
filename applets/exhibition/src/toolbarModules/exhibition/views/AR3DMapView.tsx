@@ -217,7 +217,7 @@ class AR3DMapView extends React.Component<Props, State> {
           }
           if(!this.state.showVideo){
             SExhibition.showMapVideo(true)
-            SExhibition.rotation3dMap(60)
+            SExhibition.rotation3dMap(30)
           }else{
             SExhibition.showMapVideo(false)
             SExhibition.rotation3dMap(this.rotationValue)

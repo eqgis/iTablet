@@ -212,6 +212,7 @@ export interface AddOption {
 let currentLayer: SARMap.ARLayer
 interface SpotType {name: string, path: string, index: number}
 let spotOriginIndex: {[name: string]: SpotType} = {}
+let oraginSandboxStatus: positionNodeInfo | undefined // 图层原始大小比例
 
 class SandBoxView extends React.Component<Props, State> {
 
@@ -225,7 +226,6 @@ class SandBoxView extends React.Component<Props, State> {
     z: -1,
   }
   isOpen = false // 是否已经打开模型
-  oraginSandboxStatus: positionNodeInfo | undefined // 图层原始大小比例
   lastLayerStatus: SceneLayerStatus | undefined // 图层上一次大小比例
   toolView: ToolView | undefined | null
   timeoutTrigger: TimeoutTrigger | null = null
@@ -233,6 +233,9 @@ class SandBoxView extends React.Component<Props, State> {
     addListener:EmitterSubscription | undefined,
     infoListener:EmitterSubscription | undefined
   } | null = null
+
+  /** 第一次显示扫描界面是否完成 */
+  scanFirstShow = false
 
   constructor(props: Props) {
     super(props)
@@ -252,7 +255,20 @@ class SandBoxView extends React.Component<Props, State> {
   }
 
   arViewDidMount = (): void => {
-    // SARMap.setAREnhancePosition()
+    const scanShowTimer = setTimeout(() => {
+      if(!this.scanFirstShow) {
+        if(this.state.showScan && !this.state.isScan) {
+          // 启用增强定位
+          SARMap.setAREnhancePosition()
+        }
+        this.scanFirstShow = true
+        this.setState({
+          isScan: true,
+        })
+      }
+      clearTimeout(scanShowTimer)
+    }, 3000)
+
     this.listeners = SARMap.addMeasureStatusListeners({
       addListener: async result => {
         if (result) {
@@ -260,6 +276,7 @@ class SandBoxView extends React.Component<Props, State> {
             // 启用增强定位
             SARMap.setAREnhancePosition()
           }
+          this.scanFirstShow = true
           this.setState({
             isScan: true,
           })
@@ -392,10 +409,10 @@ class SandBoxView extends React.Component<Props, State> {
         showIndicator: false,
         action: async () => {
           if (!this.checkSenceAndToolType()) return
-          if (this.oraginSandboxStatus) {
+          if (oraginSandboxStatus) {
             this.state.toolType === '' && this.timeoutTrigger?.onFirstMenuClick()
             this.toolView?.reset()
-            await SARMap.setSandBoxPosition(currentLayer.name, 1, this.oraginSandboxStatus)
+            await SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
           }
         }
       }
@@ -544,7 +561,7 @@ class SandBoxView extends React.Component<Props, State> {
       if(currentLayer) {
         await SARMap.setLayerMaxVisibleBounds(currentLayer.name, -1)
         SARMap.getElementPositionInfo(currentLayer?.name, 1).then(result => {
-          this.oraginSandboxStatus = result?.renderNode
+          oraginSandboxStatus = result?.renderNode
         })
       }
       this.isOpen = true
@@ -917,15 +934,23 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   }
 
   getData = async () => {
+    const home = await FileTools.getHomeDirectory()
     if (this.props.type === 'effects') {
       const items = await this.getEffects()
       const data = []
       for (const item of items) {
         const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
+        const imagePath = item.path.replace(item.name, name + '.png')
+        let image
+        if (!await FileTools.fileIsExist(imagePath)) {
+          image = getImage().tool_effect
+        } else {
+          image = {uri: 'file://' + imagePath}
+        }
         data.push({
           key: name,
           name: name,
-          image: getImage().tool_effect,
+          image: image,
           path: item.path,
         })
       }
@@ -933,7 +958,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         data: data,
       })
     } else if (this.props.type === 'mountain_guide') {
-      const home = await FileTools.getHomeDirectory()
       const items = await this.getMountainRoute()
       const data = []
       for (let i = 0; i < items.length; i++) {
@@ -1243,9 +1267,9 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           z: 0,
         },
         scale: {
-          x: 0.005,
-          y: 0.005,
-          z: 0.005,
+          x: 0.004,
+          y: 0.004,
+          z: 0.004,
         },
         duration: AnimationTime,
       })
@@ -1266,8 +1290,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         await SARMap.setSandBoxPosition(currentLayer.name, 1, {
           position: {
             x: 0,
-            y: 0,
-            z: -1.5,
+            y: -1,
+            z: -2,
           },
           rotation: {
             x: 0,
@@ -1288,7 +1312,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         this.setState({
           canBeClick: true,
         })
-      }, AnimationTime)
+      }, AnimationTime * 2)
     } catch (error) {
       __DEV__ && console.warn(error)
     }
@@ -1303,22 +1327,22 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         SARMap.setSandTableModelVisible(this.mountainElementIndexes[i], false)
       }
       // const lastPosition = await SARMap.getElementPositionInfo(currentLayer.name, 1)
-      if (this.lastPosition) {
+      if (oraginSandboxStatus) {
         // lastPosition.renderNode.position.y = -1
         SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-          position: this.lastPosition.position,
-          rotation: this.lastPosition.rotation,
+          position: oraginSandboxStatus.position,
+          rotation: oraginSandboxStatus.rotation,
           scale: {
-            x: this.lastPosition.scale,
-            y: this.lastPosition.scale,
-            z: this.lastPosition.scale,
+            x: oraginSandboxStatus.scale,
+            y: oraginSandboxStatus.scale,
+            z: oraginSandboxStatus.scale,
           },
           duration: AnimationTime,
         })
       }
       setTimeout(() => {
-        this.lastPosition && SARMap.setSandBoxPosition(currentLayer.name, 1, this.lastPosition)
-        this.lastPosition = undefined
+        oraginSandboxStatus && SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
+        oraginSandboxStatus = undefined
         this.mountainElementIndexes = []
         if (clearData) {
           this.setState({
@@ -1382,7 +1406,34 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           index: pathIndexs[0],
         }
         await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, false)
-        this.twinkle(this.lastSpot.index, 2)
+
+        let position = { x: 0, y: -1, z: -1.5 }
+        if (this.lastSpot.name === '晓渔渡') {
+          position = { x: 0.7, y: -1, z: -1.5 }
+        } else if (this.lastSpot.name === '活动中心') {
+          position = { x: 0.6, y: -1, z: -2.4 }
+        } else if (this.lastSpot.name === '看云台') {
+          position = { x: -0.5, y: -1, z: -2 }
+        } else if (this.lastSpot.name === '湖心亭') {
+          position = { x: 0, y: -1, z: -1.5 }
+        }
+
+        await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+          position: position,
+          rotation: { x: 0, y: 0, z: 0 },
+          scale: { x: 0.006, y: 0.006, z: 0.006 },
+          duration: AnimationTime,
+        })
+
+        position.y = 0
+        await SARMap.setSandBoxPosition(currentLayer.name, 1, {
+          position: position,
+          rotation: { x: 0, y: 0, z: 0 },
+          scale: 0.006,
+        })
+        setTimeout(() => {
+          this.lastSpot && this.twinkle(this.lastSpot.index, 2)
+        }, AnimationTime)
       }
     } catch (error) {
       __DEV__ && console.warn(error)
@@ -1433,14 +1484,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   boatAction = async (item: ImageItemData) => {
     try {
-      const home = await FileTools.getHomeDirectory()
-      const modalPath = home + item.path
       const position = [
-        { x: -18.8516, y: 0, z: -1.8626 },
-        { x: -24.8966, y: 0, z: -0.8905},
-        { x: -30.9949, y: 0, z: -0.8905},
-        { x: -30.9949, y: 0, z: -4.6744},
-        { x: -21.624, y: 0, z: -0.8905},
         { x: -14.8262, y: 0, z: -11.2643},
         { x: -7.0157, y: 0, z: -12.9467},
         { x: -12.9655, y: 0, z: -9.9496},
@@ -1449,7 +1493,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         { x: -22.9803, y: 0, z: -3.8235},
         { x: -18.9957, y: 0, z: -3.8235},
       ]
-      SARMap.setSandBoxAnimation2(currentLayer.name, 1, modalPath, {
+      item.path && SARMap.setSandBoxAnimation2(currentLayer.name, 1, item.path, {
         position: position,
         // rotation: [{
         //   x: 0,
@@ -1471,6 +1515,24 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   }
 
   /********************************************************** 特效 ******************************************************************/
+  boatClose = async (clearData = true) => {
+    try {
+      if (clearData) {
+        this.setState({
+          selectKey: '',
+          data: [],
+        })
+      } else {
+        this.setState({
+          selectKey: '',
+        })
+      }
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
+  }
+
+  /********************************************************** 天气 ******************************************************************/
   getEffects = async () => {
     const home = await FileTools.getHomeDirectory()
     const effectsPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/天气'
@@ -1577,6 +1639,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
             }
           }}
           visible={this.props.type !== ''}
+          imageStyle={{flex: 1, marginTop: 0, width: dp(100), height: dp(100)}}
+          // itemStyle={{marginHorizontal: 0}}
           onHide={()=> {
             this.close()
           }}

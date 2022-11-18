@@ -122,7 +122,7 @@ class AR3DMapView extends React.Component<Props, State> {
       {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
-        title: '调整位置',
+        title: '调整',
         action: async() => {
           if(!this.state.showSlide){
             this.timeoutTrigger?.onShowSecondMenu()
@@ -158,7 +158,7 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_shape,
-        title: '地图形状',
+        title: '形状',
         action: async () => {
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
@@ -190,12 +190,12 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_car,
-        title: '车流模拟',
+        title: '车流',
         action: this.ChangeCarAnimation,
       },
       {
         image: getImage().icon_tool_video,
-        title: '视频实景',
+        title: '视频',
         action: async()=>{
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
@@ -224,7 +224,7 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_attribute,
-        title: '属性查询',
+        title: '属性',
         action: async()=>{
           if(!this.state.attribute){
             SExhibition.setIsTouchSelect(true)
@@ -261,7 +261,7 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_materials,
-        title: '纹理符号',
+        title: '纹理',
         action: async ()=>{
           if (this.open) {
             this.getMaterials()
@@ -382,9 +382,9 @@ class AR3DMapView extends React.Component<Props, State> {
         this.isCarAnimationPlay = false
         SExhibition.rotation3dMap(this.rotationValue)
       } else {
+        SExhibition.rotation3dMap(60)
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
-        SExhibition.rotation3dMap(60)
       }
       this.setState({showSlide:false})
 

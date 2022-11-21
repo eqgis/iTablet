@@ -41,8 +41,8 @@ interface Item {
 
 const BG_WIDTH = dp(151)
 const BG_HEIGTH = dp(210)
-const IMG_SIZE = dp(110)
-const IMG_BOTTOM = dp(100)
+let IMG_SIZE = dp(110)
+let IMG_BOTTOM = dp(100)
 const CIRCLE_SIZE = dp(120)
 
 class Home extends React.Component<Props, State> {
@@ -66,6 +66,10 @@ class Home extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     const scales = []
+    if(global.isPad) {
+      IMG_SIZE = dp(186)
+      IMG_BOTTOM = dp(64)
+    }
     for (let i = 0; i < this.getItems().length; i++) {
       scales.push({
         bgWidth: new Animated.Value(BG_WIDTH),
@@ -620,7 +624,7 @@ class Home extends React.Component<Props, State> {
         >
 
           <Image
-            style={{
+            style={[{
               position: 'absolute',
               top: dp(0),
               bottom: dp(176),
@@ -629,8 +633,14 @@ class Home extends React.Component<Props, State> {
               marginLeft: dp(-176),
               width: dp(352),
               height: dp(139),
-            }}
-            source={getImage().img_bg_title}
+            },
+            global.isPad && {
+              top: -dp(22),
+              marginLeft: dp(-260),
+              width: dp(520),
+              height: dp(248),
+            }]}
+            source={ global.isPad ? getImage().img_bg_title : getImage().img_bg_title_paid}
             resizeMode="contain"
           />
           {this.isPortrait ? this.renderSwiper() : this.renderStatic()}

@@ -173,8 +173,10 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
   render() {
     const windowWidth = Dimensions.get("window").width
     let left = 0
-    if(this.state.data.length * dp(100) >= windowWidth - dp(65)) {
-      left = dp(65)
+    let right = 0
+    if(this.state.data.length * dp(100) >= windowWidth - dp(40)) {
+      left = dp(20)
+      right = dp(20)
     }
     return(
       <FillAnimationWrap
@@ -193,7 +195,7 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={[{marginLeft: left, flex: 1}]}
+          style={[{marginLeft: left, flex: 1,marginRight: right}]}
           contentContainerStyle= {[{height: dp(120), alignItems: 'center'}]}
         >
           {

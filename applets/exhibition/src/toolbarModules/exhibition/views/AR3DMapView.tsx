@@ -71,7 +71,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
     this.state = {
       showScan: true,
-      isScan: true,
+      isScan: false,
       showShape:false,
       showGuide: false,
       btRight:new Animated.Value(
@@ -474,30 +474,29 @@ class AR3DMapView extends React.Component<Props, State> {
         }
         clearTimeout(scanShowTimer)
       }, 3000)
-
-      this.listeners = SARMap.addMeasureStatusListeners({
-        addListener: async result => {
-          if (result) {
-            if(this.state.showScan && !this.state.isScan) {
-              // 启用增强定位
-              SARMap.setAREnhancePosition()
-            }
-            this.scanFirstShow = true
-            this.setState({
-              isScan: true,
-            })
-          } else {
-            if(this.state.showScan && this.state.isScan) {
-              // 停止增强定位
-              SARMap.stopAREnhancePosition()
-            }
-
-            this.setState({
-              isScan: false,
-            })
+    })
+    this.listeners = SARMap.addMeasureStatusListeners({
+      addListener: async result => {
+        if (result) {
+          if(this.state.showScan && !this.state.isScan) {
+            // 启用增强定位
+            SARMap.setAREnhancePosition()
           }
-        },
-      })
+          this.scanFirstShow = true
+          this.setState({
+            isScan: true,
+          })
+        } else {
+          if(this.state.showScan && this.state.isScan) {
+            // 停止增强定位
+            SARMap.stopAREnhancePosition()
+          }
+
+          this.setState({
+            isScan: false,
+          })
+        }
+      },
     })
 
     AppEvent.addListener('ar_single_click', () =>{

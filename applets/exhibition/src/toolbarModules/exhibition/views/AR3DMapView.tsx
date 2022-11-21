@@ -707,7 +707,10 @@ class AR3DMapView extends React.Component<Props, State> {
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
     SMap.exitMap()
-    this.setState({showScan: true})
+    this.setState({
+      showScan: true,
+      showSlide: false,
+    })
     this.scanRef?.scan()
     SARMap.setAREnhancePosition()
   }
@@ -850,12 +853,13 @@ class AR3DMapView extends React.Component<Props, State> {
               flexDirection: 'row',
             }}
           >
-            <SideBar
-              ref={ref => this.sideBar = ref}
-              sections={[this.state.mainMenu]}
-              showIndicator
-            />
-
+            {!this.state.showScan && (
+              <SideBar
+                ref={ref => this.sideBar = ref}
+                sections={[this.state.mainMenu]}
+                showIndicator
+              />
+            )}
           </Animated.View>
 
         </View>
@@ -878,9 +882,9 @@ class AR3DMapView extends React.Component<Props, State> {
           {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
         </Animated.View>
 
-        {this.renderRollingMode()}
+        {!this.state.showScan && this.renderRollingMode()}
 
-        {this.state.showSlide && this.renderSlideBar()}
+        {this.state.showSlide && !this.state.showScan && this.renderSlideBar()}
 
         <ARArrow
           arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图',{

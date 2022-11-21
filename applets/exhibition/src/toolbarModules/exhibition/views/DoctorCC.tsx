@@ -2796,7 +2796,7 @@ class DoctorCC extends Component<Props, State> {
               height: '100%',
             }}
           >
-            {!this.state.isShowFull && !this.state.showGuide && this.renderSideBar()}
+            {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderSideBar()}
           </Animated.View>
 
         </View>

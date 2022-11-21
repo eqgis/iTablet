@@ -301,7 +301,7 @@ class AR3DMapView extends React.Component<Props, State> {
           const relativePositin: Vector3 = {
             x: 0,
             y: 0,
-            z: -0.5,
+            z: -1.5,
           }
           SExhibition.addMapviewElement(0,false, {
             pose: this.result,
@@ -329,7 +329,7 @@ class AR3DMapView extends React.Component<Props, State> {
           const relativePositin: Vector3 = {
             x: 0,
             y: 0,
-            z: -0.5,
+            z: -1.5,
           }
           SExhibition.addMapviewElement(4, false,{
             pose: this.result,
@@ -385,7 +385,7 @@ class AR3DMapView extends React.Component<Props, State> {
         this.isCarAnimationPlay = false
         SExhibition.rotation3dMap(this.rotationValue)
       } else {
-        SExhibition.rotation3dMap(60)
+        SExhibition.rotation3dMap(30)
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
       }
@@ -556,7 +556,7 @@ class AR3DMapView extends React.Component<Props, State> {
       const relativePositin: Vector3 = {
         x: 0,
         y: 0,
-        z: -1,
+        z: -1.5,
       }
       this.result = pose
       SExhibition.addMapviewElement(0,true,{

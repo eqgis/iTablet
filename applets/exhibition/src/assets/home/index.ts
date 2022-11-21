@@ -18,6 +18,7 @@ const icon_other_quit = require('./icon_other_quit.png')
 const icon_other_right_arrow_unselected = require('./icon_other_right_arrow_unselected.png')
 const icon_other_right_arrow = require('./icon_other_right_arrow.png')
 const img_bg_title = require('./img_bg_title.png')
+const img_bg_title_paid = require('./img_bg_title_paid.png')
 const img_bg = require('./img_bg.png')
 const icon_music = require('./icon_music.png')
 const icon_music_selected = require('./icon_music_selected.png')
@@ -43,6 +44,7 @@ export {
   icon_other_right_arrow_unselected,
   icon_other_right_arrow,
   img_bg_title,
+  img_bg_title_paid,
   img_bg,
   icon_music,
   icon_music_selected,

@@ -75,7 +75,7 @@ class FlatMapVIew extends React.Component<Props, State> {
 
     this.state = {
       showScan: true,
-      isScan: true,
+      isScan: false,
       showGuide: false,
       imageList: [],
       showSide: true,
@@ -263,30 +263,30 @@ class FlatMapVIew extends React.Component<Props, State> {
         }
         clearTimeout(scanShowTimer)
       }, 3000)
+    })
 
-      this.listeners = SARMap.addMeasureStatusListeners({
-        addListener: async result => {
-          if (result) {
-            if(this.state.showScan && !this.state.isScan) {
-              // 启用增强定位
-              SARMap.setAREnhancePosition()
-            }
-            this.scanFirstShow = true
-            this.setState({
-              isScan: true,
-            })
-          } else {
-            if(this.state.showScan && this.state.isScan) {
-              // 停止增强定位
-              SARMap.stopAREnhancePosition()
-            }
-
-            this.setState({
-              isScan: false,
-            })
+    this.listeners = SARMap.addMeasureStatusListeners({
+      addListener: async result => {
+        if (result) {
+          if(this.state.showScan && !this.state.isScan) {
+            // 启用增强定位
+            SARMap.setAREnhancePosition()
           }
-        },
-      })
+          this.scanFirstShow = true
+          this.setState({
+            isScan: true,
+          })
+        } else {
+          if(this.state.showScan && this.state.isScan) {
+            // 停止增强定位
+            SARMap.stopAREnhancePosition()
+          }
+
+          this.setState({
+            isScan: false,
+          })
+        }
+      },
     })
     AppEvent.addListener('ar_image_tracking_result', result => {
       if(result) {
@@ -439,7 +439,10 @@ class FlatMapVIew extends React.Component<Props, State> {
     if(this.state.showScan) return
     this.timeoutTrigger?.onShowScan()
     SExhibition.pauseTrackingTarget()
-    this.setState({showScan: true})
+    this.setState({
+      showScan: true,
+      showSlide: false,
+    })
     SARMap.setAREnhancePosition()
   }
 
@@ -611,8 +614,8 @@ class FlatMapVIew extends React.Component<Props, State> {
         {this.state.showScan && this.state.isScan && this.renderScan()}
         {!this.state.showGuide && this.renderBack()}
         {(!this.state.showScan && !this.state.showGuide) && this.renderScanIcon()}
-        {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
-        {this.state.showSlide && this.renderSlideBar()}
+        {(!this.state.showScan && !this.state.showGuide && !this.state.showScan) && this.renderSideBar()}
+        {this.state.showSlide && !this.state.showScan && this.renderSlideBar()}
         <ARArrow
           arrowShowed={() => {
             Toast.show('请按照箭头引导转动屏幕查看地图', {

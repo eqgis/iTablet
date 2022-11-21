@@ -51,7 +51,7 @@ class CoverView extends React.Component<Props, State> {
 
     this.state = {
       showScan: true,
-      isScan: true,
+      isScan: false,
       showSlider: false,
       backClick: true,
       showGuide: false,

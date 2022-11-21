@@ -71,7 +71,7 @@ class AR3DMapView extends React.Component<Props, State> {
 
     this.state = {
       showScan: true,
-      isScan: true,
+      isScan: false,
       showShape:false,
       showGuide: false,
       btRight:new Animated.Value(
@@ -301,7 +301,7 @@ class AR3DMapView extends React.Component<Props, State> {
           const relativePositin: Vector3 = {
             x: 0,
             y: 0,
-            z: -0.5,
+            z: -1.5,
           }
           SExhibition.addMapviewElement(0,false, {
             pose: this.result,
@@ -329,7 +329,7 @@ class AR3DMapView extends React.Component<Props, State> {
           const relativePositin: Vector3 = {
             x: 0,
             y: 0,
-            z: -0.5,
+            z: -1.5,
           }
           SExhibition.addMapviewElement(4, false,{
             pose: this.result,
@@ -385,7 +385,7 @@ class AR3DMapView extends React.Component<Props, State> {
         this.isCarAnimationPlay = false
         SExhibition.rotation3dMap(this.rotationValue)
       } else {
-        SExhibition.rotation3dMap(60)
+        SExhibition.rotation3dMap(30)
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
       }
@@ -474,30 +474,29 @@ class AR3DMapView extends React.Component<Props, State> {
         }
         clearTimeout(scanShowTimer)
       }, 3000)
-
-      this.listeners = SARMap.addMeasureStatusListeners({
-        addListener: async result => {
-          if (result) {
-            if(this.state.showScan && !this.state.isScan) {
-              // 启用增强定位
-              SARMap.setAREnhancePosition()
-            }
-            this.scanFirstShow = true
-            this.setState({
-              isScan: true,
-            })
-          } else {
-            if(this.state.showScan && this.state.isScan) {
-              // 停止增强定位
-              SARMap.stopAREnhancePosition()
-            }
-
-            this.setState({
-              isScan: false,
-            })
+    })
+    this.listeners = SARMap.addMeasureStatusListeners({
+      addListener: async result => {
+        if (result) {
+          if(this.state.showScan && !this.state.isScan) {
+            // 启用增强定位
+            SARMap.setAREnhancePosition()
           }
-        },
-      })
+          this.scanFirstShow = true
+          this.setState({
+            isScan: true,
+          })
+        } else {
+          if(this.state.showScan && this.state.isScan) {
+            // 停止增强定位
+            SARMap.stopAREnhancePosition()
+          }
+
+          this.setState({
+            isScan: false,
+          })
+        }
+      },
     })
 
     AppEvent.addListener('ar_single_click', () =>{
@@ -556,7 +555,7 @@ class AR3DMapView extends React.Component<Props, State> {
       const relativePositin: Vector3 = {
         x: 0,
         y: 0,
-        z: -1,
+        z: -1.5,
       }
       this.result = pose
       SExhibition.addMapviewElement(0,true,{
@@ -708,7 +707,10 @@ class AR3DMapView extends React.Component<Props, State> {
     SExhibition.stopTrackingTarget()
     SExhibition.removeMapviewElement()
     SMap.exitMap()
-    this.setState({showScan: true})
+    this.setState({
+      showScan: true,
+      showSlide: false,
+    })
     this.scanRef?.scan()
     SARMap.setAREnhancePosition()
   }
@@ -851,12 +853,13 @@ class AR3DMapView extends React.Component<Props, State> {
               flexDirection: 'row',
             }}
           >
-            <SideBar
-              ref={ref => this.sideBar = ref}
-              sections={[this.state.mainMenu]}
-              showIndicator
-            />
-
+            {!this.state.showScan && (
+              <SideBar
+                ref={ref => this.sideBar = ref}
+                sections={[this.state.mainMenu]}
+                showIndicator
+              />
+            )}
           </Animated.View>
 
         </View>
@@ -879,9 +882,9 @@ class AR3DMapView extends React.Component<Props, State> {
           {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
         </Animated.View>
 
-        {this.renderRollingMode()}
+        {!this.state.showScan && this.renderRollingMode()}
 
-        {this.state.showSlide && this.renderSlideBar()}
+        {this.state.showSlide && !this.state.showScan && this.renderSlideBar()}
 
         <ARArrow
           arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图',{

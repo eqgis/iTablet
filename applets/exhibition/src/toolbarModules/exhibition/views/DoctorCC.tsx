@@ -2163,7 +2163,7 @@ class DoctorCC extends Component<Props, State> {
   /** 右侧的按钮 */
   renderSideBar = () => {
     return (
-      <View style={{marginTop: dp(20)}}>
+      <View style={{marginTop: dp(20), marginRight: dp(0)}}>
         <SideBar
           ref={ref => this.sideBar = ref}
           sections={[
@@ -2792,11 +2792,11 @@ class DoctorCC extends Component<Props, State> {
             style={{
               right: this.state.btRight,
               flexDirection: 'row',
-              width: dp(90),
+              width: dp(75),
               height: '100%',
             }}
           >
-            {!this.state.isShowFull && !this.state.showGuide && this.renderSideBar()}
+            {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderSideBar()}
           </Animated.View>
 
         </View>

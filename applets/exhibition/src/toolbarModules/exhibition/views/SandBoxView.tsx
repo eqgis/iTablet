@@ -244,7 +244,7 @@ class SandBoxView extends React.Component<Props, State> {
       showGuide: false,
       showSide: true,
       showScan: true,
-      isScan: true,
+      isScan: false,
       showCover: false,
 
       toolType: '',

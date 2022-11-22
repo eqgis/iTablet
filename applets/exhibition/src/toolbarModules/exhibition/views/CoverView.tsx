@@ -29,6 +29,7 @@ interface State {
   secondMenuData: itemConmonType[]
   /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
   isScan: boolean
+  isSecondaryShow: boolean
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -44,7 +45,10 @@ class CoverView extends React.Component<Props, State> {
 
   /** 第一次显示扫描界面是否完成 */
   scanFirstShow = false
-
+  sideBar: SideBar | null = null
+  sideBarIndex: string | undefined = ""
+  holeBarIndex: string | undefined = undefined
+  rollingbarIndex: string | undefined = undefined
 
   constructor(props: Props) {
     super(props)
@@ -57,6 +61,7 @@ class CoverView extends React.Component<Props, State> {
       showGuide: false,
       showSide: true,
       secondMenuData: [],
+      isSecondaryShow: false,
     }
   }
 
@@ -128,15 +133,36 @@ class CoverView extends React.Component<Props, State> {
     ]
   }
 
-  onFullScapePress = () => {
+  onFullScapePress = (index: string) => {
+    if(this.sideBarIndex === index) {
+      this.sideBarIndex = ""
+      this.sideBar?.clear()
+      return
+    }
+    this.sideBarIndex = index
+
     this.timeoutTrigger?.active()
     this._hideSlide()
     this._disableAttribte()
     this.stopCover()
     this.stopRolling()
+    this.setState({
+      secondMenuData: [],
+    })
   }
 
-  onHolePress = () => {
+  onHolePress = (index: string) => {
+    if(this.sideBarIndex === index) {
+      this.setState({
+        isSecondaryShow: false,
+      })
+      this.sideBarIndex = ""
+      this.sideBar?.clear()
+      return
+    }
+    this.sideBarIndex = index
+    this.holeBarIndex = index
+
     this.timeoutTrigger?.onShowSecondMenu()
     this._hideSlide()
     this._disableAttribte()
@@ -146,27 +172,50 @@ class CoverView extends React.Component<Props, State> {
       SARMap.startARCover(layer.name)
     }
     this.setState({
-      secondMenuData: this.getCutMenu()
+      secondMenuData: this.getCutMenu(),
+      isSecondaryShow: true,
     })
   }
 
-  onRollingPress = () => {
+  onRollingPress = (index: string) => {
+    if(this.sideBarIndex === index) {
+      this.setState({
+        isSecondaryShow: false,
+      })
+      this.sideBarIndex = ""
+      this.sideBar?.clear()
+      return
+    }
+    this.sideBarIndex = index
+    this.rollingbarIndex = index
+
     this.timeoutTrigger?.onShowSecondMenu()
     this._hideSlide()
     this._disableAttribte()
     this.setState({
-      secondMenuData: this.getRollingModeMenu()
+      secondMenuData: this.getRollingModeMenu(),
+      isSecondaryShow: true,
     })
   }
 
   attribteEanbled = false
-  onAttributePres = () => {
+  onAttributePres = (index: string) => {
+    if(this.sideBarIndex === index) {
+      this.sideBarIndex = ""
+      this.sideBar?.clear()
+      return
+    }
+    this.sideBarIndex = index
+
     this.timeoutTrigger?.onFirstMenuClick()
     this.stopCover()
     this.stopRolling()
     this._hideSlide()
     this.attribteEanbled = !this.attribteEanbled
     SExhibition.enablePipeAttribute(this.attribteEanbled)
+    this.setState({
+      secondMenuData: [],
+    })
   }
 
 
@@ -275,12 +324,19 @@ class CoverView extends React.Component<Props, State> {
   }
 
   onSingleClick = () => {
-    if(!this.state.showSide) {
-      this.timeoutTrigger?.onBarShow()
+
+    if(this.holeBarIndex === this.sideBar?.state.currentIndex || this.rollingbarIndex === this.sideBar?.state.currentIndex) {
+      this.setState({
+        isSecondaryShow: !this.state.isSecondaryShow,
+      })
     } else {
-      this.timeoutTrigger?.onBarHide()
+      if(!this.state.showSide) {
+        this.timeoutTrigger?.onBarShow()
+      } else {
+        this.timeoutTrigger?.onBarHide()
+      }
+      this.setState({showSide: !this.state.showSide})
     }
-    this.setState({showSide: !this.state.showSide})
   }
 
   showGuide = (show: boolean) => {
@@ -771,10 +827,14 @@ class CoverView extends React.Component<Props, State> {
   renderRollingMode = () => {
     return (
       <BottomMenu
-        visible={this.state.secondMenuData.length > 0}
+        // visible={this.state.secondMenuData.length > 0}
+        visible={this.state.isSecondaryShow}
         onHide={() => {
           this.timeoutTrigger?.onBackFromSecondMenu()
-          this.setState({secondMenuData: []})
+          this.setState({
+            // secondMenuData: [],
+            isSecondaryShow: false,
+          })
         }}
         data={this.state.secondMenuData}
         isRepeatClickCancelSelected
@@ -812,6 +872,7 @@ class CoverView extends React.Component<Props, State> {
         }}
       >
         <SideBar
+          ref={ref => this.sideBar = ref}
           sections={[this.getMainMenuItem()]}
           autoCancel={true}
         />
@@ -835,11 +896,12 @@ class CoverView extends React.Component<Props, State> {
           }}
         />
 
+        {this.renderRollingMode()}
+
         {!this.state.showScan && this.renderRightSide()}
         {this.state.showScan && this.state.isScan && this.renderScan()}
         {this.renderLeftSide()}
 
-        {this.renderRollingMode()}
         {this.state.showSlider && this.slider()}
 
 

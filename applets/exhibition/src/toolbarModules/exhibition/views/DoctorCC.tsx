@@ -1054,6 +1054,14 @@ class DoctorCC extends Component<Props, State> {
         })
         clearTimeout(timer)
       }, 200)
+      // 动作的动画停掉
+      if(this.ARModel) {
+        SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+      }
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
       return
     }
     this.timeoutTrigger?.onShowSecondMenu()
@@ -1326,6 +1334,10 @@ class DoctorCC extends Component<Props, State> {
         })
         clearTimeout(timer)
       }, 200)
+      if(this.isPlay) {
+        SARMap.stopARAnimation()
+        this.isPlay = false
+      }
 
       return
     }
@@ -1363,6 +1375,14 @@ class DoctorCC extends Component<Props, State> {
         })
         clearTimeout(timer)
       }, 200)
+
+      if(this.ARModel) {
+        SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+      }
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
 
       return
     }

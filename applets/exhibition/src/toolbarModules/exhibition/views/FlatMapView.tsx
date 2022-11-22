@@ -66,6 +66,10 @@ class FlatMapVIew extends React.Component<Props, State> {
 
   /** 第一次显示扫描界面是否完成 */
   scanFirstShow = false
+  sideBar: SideBar | null = null
+  sideBarIndex: string | undefined = ""
+  aiPicBarIndex: string | undefined = undefined
+  changemapBarIndex: string | undefined = undefined 
 
   scaleValue = 10
   rotationValue = 40
@@ -89,7 +93,14 @@ class FlatMapVIew extends React.Component<Props, State> {
         image: getImage().icon_tool_reset,
         image_selected: getImage().icon_tool_reset_selected,
         title: '复位',
-        action: () => {
+        action: (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+
           this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
@@ -97,7 +108,10 @@ class FlatMapVIew extends React.Component<Props, State> {
           this.rotationValue = 40
           SExhibition.scaleFlatMap(1)
           SExhibition.rotationFlatMap(40)
-          this.setState({showSlide:false})
+          this.setState({
+            showSlide:false,
+            imageList: [],
+          })
           // SExhibition.onFlatFunctionPress('reset')
         }
       },
@@ -105,23 +119,48 @@ class FlatMapVIew extends React.Component<Props, State> {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
         title: '调整',
-        action: () => {
+        action: (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.setState({
+              showSlide:false,
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+
           if(!this.state.showSlide){
             this.timeoutTrigger?.onShowSecondMenu()
           }else{
             this.timeoutTrigger?.onBackFromSecondMenu()
           }
-          this.setState({showSlide:!this.state.showSlide})
+          this.setState({
+            showSlide:!this.state.showSlide,
+            imageList: [],
+          })
         }
       },
       {
         image: getImage().flat_ai_pic,
         image_selected: getImage().flat_ai_pic_selected,
         title: '配图',
-        action: () => {
+        action: (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.setState({
+              imageList: []
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+          this.aiPicBarIndex =index
+
           this.timeoutTrigger?.onShowSecondMenu()
           this.setState({
-            imageList: this.getAiList()
+            imageList: this.getAiList(),
+            showSlide:false,
           })
         }
       },
@@ -129,11 +168,23 @@ class FlatMapVIew extends React.Component<Props, State> {
         image: getImage().flat_search,
         image_selected: getImage().flat_search_selected,
         title: '查询',
-        action: () => {
+        action: (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+          this.changemapBarIndex = index
+
           this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
           SExhibition.onFlatFunctionPress('search')
+          this.setState({
+            imageList: [],
+            showSlide:false,
+          })
 
         }
       },
@@ -141,22 +192,44 @@ class FlatMapVIew extends React.Component<Props, State> {
         image: getImage().flat_buffer,
         image_selected: getImage().flat_buffer_selected,
         title: '分析',
-        action: () => {
+        action: (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+
           this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
           SExhibition.onFlatFunctionPress('buffer')
+          this.setState({
+            imageList: [],
+            showSlide:false,
+          })
         }
       },
       {
         image: getImage().flat_plot,
         image_selected: getImage().flat_plot_selected,
         title: '标绘',
-        action: () => {
+        action: (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+
           this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
           this.showLoading(500)
           SExhibition.onFlatFunctionPress('plot')
+          this.setState({
+            imageList: [],
+            showSlide:false,
+          })
         }
       }
     ]
@@ -168,10 +241,22 @@ class FlatMapVIew extends React.Component<Props, State> {
         image: getImage().flat_change_map,
         image_selected: getImage().flat_change_map_selected,
         title: '地图',
-        action: () => {
+        action: (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.setState({
+              imageList: []
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+          this.changemapBarIndex = index
+
           this.timeoutTrigger?.onShowSecondMenu()
           this.setState({
-            imageList: this.getMapList()
+            imageList: this.getMapList(),
+            showSlide:false,
           })
         }
       }
@@ -322,12 +407,21 @@ class FlatMapVIew extends React.Component<Props, State> {
   }
 
   onSingleClick = () => {
-    if(this.state.showSide) {
-      this.timeoutTrigger?.onBarHide()
+    if((this.aiPicBarIndex === this.sideBar?.state.currentIndex || this.changemapBarIndex === this.sideBar?.state.currentIndex) && this.state.imageList.length != 0) {
+      if(this.imageList?.state.vislble) {
+        this.hideListIfAny()
+      } else {
+        this.imageList?.showList()
+      }
+
     } else {
-      this.timeoutTrigger?.onBarShow()
+      if(this.state.showSide) {
+        this.timeoutTrigger?.onBarHide()
+      } else {
+        this.timeoutTrigger?.onBarShow()
+      }
+      this.setState({showSide: !this.state.showSide})
     }
-    this.setState({showSide: !this.state.showSide})
   }
 
   showGuide = (show: boolean) => {
@@ -533,6 +627,7 @@ class FlatMapVIew extends React.Component<Props, State> {
           }}
         >
           <SideBar
+            ref={ref => this.sideBar = ref}
             sections={[
               this.getSideBarItems(),
               this.getSideBarMapItems()

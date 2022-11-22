@@ -38,7 +38,7 @@ export interface Item {
   showIndicator?: boolean
   /** 选中后再次点击,是否取消选中模式,默认为true */
   autoCancelSelected?: boolean
-  action: () => void
+  action: (index:string) => void
 }
 
 class SideBar extends React.Component<Props & DefaultProps, State> {
@@ -82,7 +82,7 @@ class SideBar extends React.Component<Props & DefaultProps, State> {
               this.setState({currentIndex: sectionIndex + '_' + index})
             }
           }
-          item.action()
+          item.action(sectionIndex + '_' + index)
           this.setState({clickable: false})
           setTimeout(() => {
             this.setState({clickable: true})

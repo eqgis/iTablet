@@ -65,6 +65,9 @@ class AR3DMapView extends React.Component<Props, State> {
 
   /** 第一次显示扫描界面是否完成 */
   scanFirstShow = false
+  sideBarIndex: string | undefined = ""
+  shapBarIndex: string | undefined = undefined
+  materialsBarIndex: string | undefined = undefined
 
   constructor(props: Props) {
     super(props)
@@ -92,7 +95,13 @@ class AR3DMapView extends React.Component<Props, State> {
       {
         image: getImage().icon_tool_reset,
         title: '复位',
-        action: async ()=>{
+        action: async (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
@@ -120,13 +129,26 @@ class AR3DMapView extends React.Component<Props, State> {
             this.setState({showVideo:false})
             SExhibition.showMapVideo(false)
           }
+          this.setState({
+            showShape: false,
+            showSlide: false,
+          })
         },
       },
       {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
         title: '调整',
-        action: async() => {
+        action: async(index: string) => {
+          if(this.sideBarIndex === index) {
+            this.setState({
+              showSlide: false,
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
           if(!this.state.showSlide){
             this.timeoutTrigger?.onShowSecondMenu()
           }else{
@@ -157,12 +179,23 @@ class AR3DMapView extends React.Component<Props, State> {
             this.setState({showVideo:false})
             SExhibition.showMapVideo(false)
           }
+          this.setState({
+            showShape: false,
+          })
         }
       },
       {
         image: getImage().icon_tool_shape,
         title: '形状',
-        action: async () => {
+        action: async (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.setState({
+              showShape: false,
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
@@ -171,6 +204,9 @@ class AR3DMapView extends React.Component<Props, State> {
             this.getShape()
             this.setState({ showShape: true })
             this.timeoutTrigger?.onShowSecondMenu()
+
+            this.sideBarIndex = index
+            this.shapBarIndex = index
 
             if (this.state.attribute) {
               SExhibition.setIsTouchSelect(false)
@@ -188,6 +224,9 @@ class AR3DMapView extends React.Component<Props, State> {
             }
 
             // SExhibition.rotation3dMap(this.rotationValue)
+            this.setState({
+              showSlide: false,
+            })
           }
         },
       },
@@ -199,7 +238,13 @@ class AR3DMapView extends React.Component<Props, State> {
       {
         image: getImage().icon_tool_video,
         title: '视频',
-        action: async()=>{
+        action: async(index: string)=>{
+          if(this.sideBarIndex === index) {
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
@@ -222,13 +267,19 @@ class AR3DMapView extends React.Component<Props, State> {
             SExhibition.showMapVideo(false)
             // SExhibition.rotation3dMap(this.rotationValue)
           }
-          this.setState({showVideo:!this.state.showVideo,showSlide:false})
+          this.setState({showVideo:!this.state.showVideo,showSlide:false, showShape: false,})
         },
       },
       {
         image: getImage().icon_tool_attribute,
         title: '属性',
-        action: async()=>{
+        action: async(index: string) => {
+          if(this.sideBarIndex === index) {
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
           if(!this.state.attribute){
             SExhibition.setIsTouchSelect(true)
             Toast.show('查询开启，请点击模型查询属性', {
@@ -258,18 +309,29 @@ class AR3DMapView extends React.Component<Props, State> {
           //   SExhibition.rotation3dMap(this.rotationValue)
           // }
 
-          this.setState({ attribute: !this.state.attribute, showSlide: false })
+          this.setState({ attribute: !this.state.attribute, showSlide: false, showShape: false, })
           this.timeoutTrigger?.onFirstMenuClick()
         },
       },
       {
         image: getImage().icon_tool_materials,
         title: '纹理',
-        action: async ()=>{
+        action: async (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.setState({
+              showShape: false,
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if (this.open) {
             this.getMaterials()
             this.setState({ showShape: true })
             this.timeoutTrigger?.onShowSecondMenu()
+
+            this.sideBarIndex = index
+            this.materialsBarIndex = index
 
             if (this.state.attribute) {
               SExhibition.setIsTouchSelect(false)
@@ -285,6 +347,9 @@ class AR3DMapView extends React.Component<Props, State> {
               this.setState({showVideo:false})
               SExhibition.showMapVideo(false)
             }
+            this.setState({
+              showSlide: false,
+            })
           }
         },
       },
@@ -378,8 +443,14 @@ class AR3DMapView extends React.Component<Props, State> {
   }
 
   /** 点击了车流模拟按钮的响应方法 */
-  ChangeCarAnimation = async () => {
+  ChangeCarAnimation = async (index: string) => {
     try {
+      if(this.sideBarIndex === index) {
+        this.sideBarIndex = ""
+        this.sideBar?.clear()
+        return
+      }
+      this.sideBarIndex = index
       if(this.isCarAnimationPlay) {
         await SARMap.pauseCarAnimation()
         this.isCarAnimationPlay = false
@@ -389,7 +460,7 @@ class AR3DMapView extends React.Component<Props, State> {
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
       }
-      this.setState({showSlide:false})
+      this.setState({showSlide:false, showShape: false,})
 
       if (this.state.attribute) {
         SExhibition.setIsTouchSelect(false)
@@ -500,28 +571,36 @@ class AR3DMapView extends React.Component<Props, State> {
     })
 
     AppEvent.addListener('ar_single_click', () =>{
-      let right
-      let left
-      if (this.show) {
-        right = -200
-        left = -200
-      }else {
-        right = dp(20)
-        left = dp(20)
+      if(this.shapBarIndex === this.sideBar?.state.currentIndex || this.materialsBarIndex === this.sideBar?.state.currentIndex) {
+        this.setState({
+          showShape: !this.state.showShape,
+        })
+      } else {
+        let right
+        let left
+        if (this.show) {
+          right = -200
+          left = -200
+        }else {
+          right = dp(20)
+          left = dp(20)
+        }
+        this.show = !this.show
+        Animated.parallel([
+          Animated.timing(this.state.btRight, {
+            toValue: right,
+            duration: 300,
+            useNativeDriver: false,
+          }),
+          Animated.timing(this.state.btLeft, {
+            toValue: left,
+            duration: 300,
+            useNativeDriver: false,
+          }),
+        ]).start()
       }
-      this.show = !this.show
-      Animated.parallel([
-        Animated.timing(this.state.btRight, {
-          toValue: right,
-          duration: 300,
-          useNativeDriver: false,
-        }),
-        Animated.timing(this.state.btLeft, {
-          toValue: left,
-          duration: 300,
-          useNativeDriver: false,
-        }),
-      ]).start()
+
+
     })
 
     AppEvent.addListener('ar_image_tracking_result', result => {
@@ -834,6 +913,7 @@ class AR3DMapView extends React.Component<Props, State> {
           timeout={15000}
           trigger={this.showSideBar}
         />
+        {!this.state.showScan && this.renderRollingMode()}
         <View
           style={{
             position: 'absolute',
@@ -881,8 +961,6 @@ class AR3DMapView extends React.Component<Props, State> {
           {!this.state.showGuide && this.renderBack()}
           {(!this.state.showScan && !this.state.showGuide) && this.renderScanBtn()}
         </Animated.View>
-
-        {!this.state.showScan && this.renderRollingMode()}
 
         {this.state.showSlide && !this.state.showScan && this.renderSlideBar()}
 

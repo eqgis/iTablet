@@ -175,6 +175,8 @@ class DoctorCC extends Component<Props, State> {
   /** 第一次显示扫描界面是否完成 */
   scanFirstShow = false
 
+  sideBarIndex: string | undefined = ""
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -318,7 +320,13 @@ class DoctorCC extends Component<Props, State> {
 
     /** 屏幕单击事件监听 */
     AppEvent.addListener('ar_single_click', () =>{
-      this.signClick()
+      if(!this.state.isSecondaryShow && (this.sideBar?.state.currentIndex || this.state.photoBtnKey !== 'null' )) {
+        this.setState({
+          isSecondaryShow: true,
+        })
+      } else {
+        this.signClick()
+      }
     })
 
     // 推演动画结束监听
@@ -1040,6 +1048,20 @@ class DoctorCC extends Component<Props, State> {
         isSecondaryShow: !this.state.isSecondaryShow,
         isVideoGuideShow: false,
       })
+      const timer = setTimeout(() => {
+        this.setState({
+          photoBtnKey: 'null',
+        })
+        clearTimeout(timer)
+      }, 200)
+      // 动作的动画停掉
+      if(this.ARModel) {
+        SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+      }
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
       return
     }
     this.timeoutTrigger?.onShowSecondMenu()
@@ -1058,6 +1080,12 @@ class DoctorCC extends Component<Props, State> {
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
+      const timer = setTimeout(() => {
+        this.setState({
+          photoBtnKey: 'null',
+        })
+        clearTimeout(timer)
+      }, 200)
       return
     }
     this.timeoutTrigger?.onShowSecondMenu()
@@ -1076,6 +1104,12 @@ class DoctorCC extends Component<Props, State> {
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
+      const timer = setTimeout(() => {
+        this.setState({
+          photoBtnKey: 'null',
+        })
+        clearTimeout(timer)
+      }, 200)
       return
     }
     this.timeoutTrigger?.onShowSecondMenu()
@@ -1290,7 +1324,21 @@ class DoctorCC extends Component<Props, State> {
       this.timeoutTrigger?.onFirstMenuClick()
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
+        // selectType: 'null',
       })
+      this.sideBar?.clear()
+
+      const timer = setTimeout(() => {
+        this.setState({
+          selectType: 'null',
+        })
+        clearTimeout(timer)
+      }, 200)
+      if(this.isPlay) {
+        SARMap.stopARAnimation()
+        this.isPlay = false
+      }
+
       return
     }
     this.timeoutTrigger?.onShowSecondMenu()
@@ -1302,6 +1350,7 @@ class DoctorCC extends Component<Props, State> {
       this.animationTimer = null
     }
 
+    this.sideBarIndex = this.sideBar?.state.currentIndex
     this.setState({
       selectType: 'speak',
       selectAnimationKey: -1,
@@ -1316,7 +1365,25 @@ class DoctorCC extends Component<Props, State> {
       this.timeoutTrigger?.onFirstMenuClick()
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
+        // selectType: 'null',
       })
+      this.sideBar?.clear()
+
+      const timer = setTimeout(() => {
+        this.setState({
+          selectType: 'null',
+        })
+        clearTimeout(timer)
+      }, 200)
+
+      if(this.ARModel) {
+        SARMap.setAnimation(this.ARModel.layerName, this.ARModel.id, -1)
+      }
+      if(this.animationTimer !== null){
+        clearInterval(this.animationTimer)
+        this.animationTimer = null
+      }
+
       return
     }
 
@@ -1334,6 +1401,7 @@ class DoctorCC extends Component<Props, State> {
       }
     }
 
+    this.sideBarIndex = this.sideBar?.state.currentIndex
     this.setState({
       selectType: 'action',
       animations: animations,
@@ -1356,7 +1424,17 @@ class DoctorCC extends Component<Props, State> {
       this.timeoutTrigger?.onFirstMenuClick()
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
+        // selectType: 'null',
       })
+      this.sideBar?.clear()
+
+      const timer = setTimeout(() => {
+        this.setState({
+          selectType: 'null',
+        })
+        clearTimeout(timer)
+      }, 200)
+
       return
     }
     this.timeoutTrigger?.onShowSecondMenu()
@@ -1368,6 +1446,7 @@ class DoctorCC extends Component<Props, State> {
       this.animationTimer = null
     }
 
+    this.sideBarIndex = this.sideBar?.state.currentIndex
     this.setState({
       selectType: 'reloader',
       selectAnimationKey: -1,
@@ -1416,6 +1495,7 @@ class DoctorCC extends Component<Props, State> {
     // 隐藏箭头追踪功能
     // SExhibition.stopTrackingTarget()
 
+    this.sideBarIndex = this.sideBar?.state.currentIndex
     this.setState({
       selectType: 'photo',
       isShowFull: true,
@@ -1466,6 +1546,7 @@ class DoctorCC extends Component<Props, State> {
     // 隐藏箭头追踪功能
     // SExhibition.stopTrackingTarget()
 
+    this.sideBarIndex = this.sideBar?.state.currentIndex
     this.setState({
       selectType: 'video',
       animations:animations,
@@ -2064,7 +2145,7 @@ class DoctorCC extends Component<Props, State> {
             overflow: 'hidden',
             backgroundColor:'rgba(30,30,30,0.65)',
           },
-          this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'action'))
+          (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'action'))
           && {
             backgroundColor: 'rgba(229,82,12,0.65)',
           },
@@ -2098,7 +2179,7 @@ class DoctorCC extends Component<Props, State> {
           overflow: 'hidden',
           backgroundColor:'rgba(30,30,30,0.65)',
         },
-        this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'position'))
+        (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'position'))
         && {
           backgroundColor: 'rgba(229,82,12,0.65)',
         },
@@ -2134,7 +2215,7 @@ class DoctorCC extends Component<Props, State> {
           overflow: 'hidden',
           backgroundColor:'rgba(30,30,30,0.65)',
         },
-        this.state.isSecondaryShow && (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'operation'))
+        (((this.state.selectType === 'photo' || this.state.selectType === 'video') && this.state.photoBtnKey === 'operation'))
         && {
           backgroundColor: 'rgba(229,82,12,0.65)',
         },
@@ -2190,7 +2271,6 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             isSecondaryShow: false,
           })
-          this.sideBar?.clear()
         }}
       />
     )
@@ -2217,7 +2297,6 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             isSecondaryShow: false,
           })
-          this.sideBar?.clear()
         }}
       />
     )
@@ -2238,7 +2317,6 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             isSecondaryShow: false,
           })
-          this.sideBar?.clear()
         }}
       />
     )
@@ -2259,7 +2337,6 @@ class DoctorCC extends Component<Props, State> {
           this.setState({
             isSecondaryShow: false,
           })
-          this.sideBar?.clear()
         }}
       />
     )
@@ -2777,6 +2854,16 @@ class DoctorCC extends Component<Props, State> {
             this.signClick()
           }}
         />
+
+
+        {/* 右边按钮的响应界面 */}
+        {!this.state.isShowFull && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
+        {!this.state.isShowFull && this.state.selectType === 'action' && this.renderActionSelected()}
+        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
+        {!this.state.isShowFull && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
+        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
+        {this.state.isShowFull && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
+
         {/* 右边按钮 */}
         <View
           style={{
@@ -2793,22 +2880,14 @@ class DoctorCC extends Component<Props, State> {
               right: this.state.btRight,
               flexDirection: 'row',
               width: dp(75),
-              height: '100%',
+              // height: '100%',
+              height: dp(300),
             }}
           >
             {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderSideBar()}
           </Animated.View>
 
         </View>
-
-        {/* 右边按钮的响应界面 */}
-        {!this.state.isShowFull && this.state.selectType === 'speak' && this.ARModel && this.renderSpeakSelected()}
-        {!this.state.isShowFull && this.state.selectType === 'action' && this.renderActionSelected()}
-        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
-        {!this.state.isShowFull && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
-        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
-        {this.state.isShowFull && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
-
         {/* 拍照按钮 */}
         {this.state.isShowFull && this.state.selectType === 'photo' && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderPhotoShot()}
         {/* 录像按钮 */}

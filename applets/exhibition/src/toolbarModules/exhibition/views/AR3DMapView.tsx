@@ -445,6 +445,11 @@ class AR3DMapView extends React.Component<Props, State> {
   /** 点击了车流模拟按钮的响应方法 */
   ChangeCarAnimation = async (index: string) => {
     try {
+      if(this.state.showVideo){
+        this.setState({showVideo:false})
+        SExhibition.showMapVideo(false)
+      }
+
       if(this.sideBarIndex === index) {
         this.sideBarIndex = ""
         this.sideBar?.clear()
@@ -470,11 +475,6 @@ class AR3DMapView extends React.Component<Props, State> {
           textColor: '#fff',
           duration: 2000,
         })
-      }
-
-      if(this.state.showVideo){
-        this.setState({showVideo:false})
-        SExhibition.showMapVideo(false)
       }
 
       this.timeoutTrigger?.onFirstMenuClick()

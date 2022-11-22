@@ -39,6 +39,7 @@ export default class SymbolTab extends React.Component {
   // }
 
   _onSymbolClick = data => {
+    console.warn("data: " + JSON.stringify(data))
     // Toast.show(JSON.stringify(data))
     this.props.setCurrentSymbol && this.props.setCurrentSymbol(data)
     this.showToolbar(data)

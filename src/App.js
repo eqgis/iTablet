@@ -90,6 +90,7 @@ import AppNavigator from './containers'
 import AppDialog from '@/utils/AppDialog'
 import AppInputDialog from '@/utils/AppInputDialog'
 import BundleUtils from './utils/BundleUtils'
+import { LangChaoDemoModule } from 'applets/langchaoDemo/src/mapModules'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })

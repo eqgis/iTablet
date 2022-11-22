@@ -47,6 +47,9 @@ import arSandTable from './arSandTable'
 import arAnimation from './arAnimation'
 import arAttribute from './arAttribute'
 import arToolbox from './arToolbox'
+import CameraModule from './Camera'
+import PositionSubmitModule from './positionSubmit'
+import TrackModule from './trackModule'
 
 export {
   startModule,
@@ -99,4 +102,7 @@ export {
   arToolbox,
 
   changeMapModule,
+  CameraModule,
+  PositionSubmitModule,
+  TrackModule,
 }

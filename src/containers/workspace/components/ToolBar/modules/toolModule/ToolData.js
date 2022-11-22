@@ -57,76 +57,76 @@ function getData(type, params) {
           size: 'large',
           image: getThemeAssets().mapTools.icon_tool_azimuth,
         },
-        {
-          key: 'pointSelect',
-          title: getLanguage(global.language).Map_Main_Menu.TOOLS_SELECT,
-          // '点选',
-          action: ToolAction.pointSelect,
-          size: 'large',
-          image: getThemeAssets().mapTools.icon_tool_click,
-        },
-        {
-          key: 'selectByRectangle',
-          title: getLanguage(global.language).Map_Main_Menu
-            .TOOLS_RECTANGLE_SELECT,
-          // '框选',
-          action: ToolAction.selectByRectangle,
-          size: 'large',
-          image: getThemeAssets().mapTools.icon_tool_frame,
-        },
-        {
-          key: 'fullScreen',
-          title: getLanguage(global.language).Map_Main_Menu.FULL_SCREEN,
-          action: ToolAction.viewEntire,
-          size: 'large',
-          image: getThemeAssets().mapTools.icon_tool_full,
-        },
+        // {
+        //   key: 'pointSelect',
+        //   title: getLanguage(global.language).Map_Main_Menu.TOOLS_SELECT,
+        //   // '点选',
+        //   action: ToolAction.pointSelect,
+        //   size: 'large',
+        //   image: getThemeAssets().mapTools.icon_tool_click,
+        // },
+        // {
+        //   key: 'selectByRectangle',
+        //   title: getLanguage(global.language).Map_Main_Menu
+        //     .TOOLS_RECTANGLE_SELECT,
+        //   // '框选',
+        //   action: ToolAction.selectByRectangle,
+        //   size: 'large',
+        //   image: getThemeAssets().mapTools.icon_tool_frame,
+        // },
+        // {
+        //   key: 'fullScreen',
+        //   title: getLanguage(global.language).Map_Main_Menu.FULL_SCREEN,
+        //   action: ToolAction.viewEntire,
+        //   size: 'large',
+        //   image: getThemeAssets().mapTools.icon_tool_full,
+        // },
       ]
-      if (!global.coworkMode) {
-        data.push(
-          {
-            key: 'rectangularCut',
-            title: getLanguage(global.language).Map_Main_Menu
-              .TOOLS_RECTANGLE_CLIP,
-            // '矩形裁剪',
-            action: ToolAction.rectangleCut,
-            size: 'large',
-            image: getThemeAssets().mapTools.icon_tool_rectangle,
-          },
-          {
-            key: 'captureImage',
-            title: getLanguage(global.language).Map_Main_Menu.CAMERA,
-            action: ToolAction.captureImage,
-            size: 'large',
-            disable: layerType !== 'TAGGINGLAYER' && layerType !== 'CADLAYER' && layerType !== 'POINTLAYER',
-            image:
-              layerType !== 'TAGGINGLAYER' && layerType !== 'CADLAYER' && layerType !== 'POINTLAYER'
-                ? getThemeAssets().mapTools.icon_tool_multi_media_ash
-                : getThemeAssets().mapTools.icon_tool_multi_media,
-          },
-          {
-            key: 'tour',
-            title: getLanguage(global.language).Map_Main_Menu.TOUR,
-            action: ToolAction.tour,
-            size: 'large',
-            image: getThemeAssets().mapTools.icon_tool_flightpath,
-          },
-          {
-            key: 'matchPictureStyle',
-            title: getLanguage(global.language).Map_Main_Menu.STYLE_TRANSFER,
-            action: ToolAction.matchPictureStyle,
-            size: 'large',
-            image: getThemeAssets().mapTools.icon_tool_aidrafting,
-          },
-          {
-            key: 'qrCode',
-            title: getLanguage(global.language).Map_Main_Menu.SCAN,
-            action: ToolAction.qrCode,
-            size: 'large',
-            image: getThemeAssets().toolbar.icon_qrcode,
-          },
-        )
-      }
+      // if (!global.coworkMode) {
+      //   data.push(
+      //     {
+      //       key: 'rectangularCut',
+      //       title: getLanguage(global.language).Map_Main_Menu
+      //         .TOOLS_RECTANGLE_CLIP,
+      //       // '矩形裁剪',
+      //       action: ToolAction.rectangleCut,
+      //       size: 'large',
+      //       image: getThemeAssets().mapTools.icon_tool_rectangle,
+      //     },
+      //     {
+      //       key: 'captureImage',
+      //       title: getLanguage(global.language).Map_Main_Menu.CAMERA,
+      //       action: ToolAction.captureImage,
+      //       size: 'large',
+      //       disable: layerType !== 'TAGGINGLAYER' && layerType !== 'CADLAYER' && layerType !== 'POINTLAYER',
+      //       image:
+      //         layerType !== 'TAGGINGLAYER' && layerType !== 'CADLAYER' && layerType !== 'POINTLAYER'
+      //           ? getThemeAssets().mapTools.icon_tool_multi_media_ash
+      //           : getThemeAssets().mapTools.icon_tool_multi_media,
+      //     },
+      //     {
+      //       key: 'tour',
+      //       title: getLanguage(global.language).Map_Main_Menu.TOUR,
+      //       action: ToolAction.tour,
+      //       size: 'large',
+      //       image: getThemeAssets().mapTools.icon_tool_flightpath,
+      //     },
+      //     {
+      //       key: 'matchPictureStyle',
+      //       title: getLanguage(global.language).Map_Main_Menu.STYLE_TRANSFER,
+      //       action: ToolAction.matchPictureStyle,
+      //       size: 'large',
+      //       image: getThemeAssets().mapTools.icon_tool_aidrafting,
+      //     },
+      //     {
+      //       key: 'qrCode',
+      //       title: getLanguage(global.language).Map_Main_Menu.SCAN,
+      //       action: ToolAction.qrCode,
+      //       size: 'large',
+      //       image: getThemeAssets().toolbar.icon_qrcode,
+      //     },
+      //   )
+      // }
       break
     case ConstToolType.SM_MAP_TOOL_MEASURE_LENGTH:
     case ConstToolType.SM_MAP_TOOL_MEASURE_AREA:

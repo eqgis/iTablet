@@ -115,11 +115,11 @@ function getData(type) {
   })
   buttons = [
     ToolbarBtnType.CANCEL,
-    {
-      type: ToolbarBtnType.CHANGE_COLLECTION,
-      image: getThemeAssets().toolbar.icon_toolbar_switch,
-      action: () => CollectionAction.changeCollection(type),
-    },
+    // {
+    //   type: ToolbarBtnType.CHANGE_COLLECTION,
+    //   image: getThemeAssets().toolbar.icon_toolbar_switch,
+    //   action: () => CollectionAction.changeCollection(type),
+    // },
   ]
 
 
@@ -130,15 +130,15 @@ function getData(type) {
   })
 
 
-  const _params = ToolbarModule.getParams()
-  // 若是在线协作采集，则没有打开符号库
-  if (!_params.currentTask?.id) {
-    buttons.push({
-      type: ToolbarBtnType.MAP_SYMBOL,
-      image: getThemeAssets().collection.icon_symbol,
-      action: CollectionAction.showSymbol,
-    })
-  }
+  // const _params = ToolbarModule.getParams()
+  // // 若是在线协作采集，则没有打开符号库
+  // if (!_params.currentTask?.id) {
+  //   buttons.push({
+  //     type: ToolbarBtnType.MAP_SYMBOL,
+  //     image: getThemeAssets().collection.icon_symbol,
+  //     action: CollectionAction.showSymbol,
+  //   })
+  // }
 
   return { data, buttons }
 }

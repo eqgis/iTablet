@@ -7,6 +7,7 @@ import { getLanguage } from '@/language'
 import { ImagePicker } from '@/components'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMediaCollector'
+import { SuperMapKnown } from '@/containers/tabs'
 
 /**
  * 右侧创建轨迹事件
@@ -71,6 +72,39 @@ async function tour() {
   }
 }
 
+const showLoading = (time: number, callback?: () => void) => {
+  global.Loading.setLoading(true, "上报中")
+  setTimeout(() => {
+    global.Loading.setLoading(false)
+    callback && callback()
+  }, time)
+}
+
+/** 顶上的位置上传按钮 */
+const positionUpload = () => {
+  showLoading(2000, async () => {
+    // await SMap.moveToCurrent()
+    // await SMap.removeAllCallout()
+    const position = await SMap.getCurrentLocation()
+    // await SMap.addLocationCallout(position.longitude, position.latitude, '当前位置', "2")
+    await SMap.addCallouts([{
+      x: position.longitude,
+      y: position.latitude,
+    }])
+    // 地图定位到指定点位置
+    await SMap.toLocationPoint({
+      x: position.longitude,
+      y: position.latitude,
+    })
+    
+    // await SMap.setMapScale(1 / 2785.0)
+    // await SMap.setMapCenter(position.longitude, position.latitude)
+    // await SMap.refreshMap()
+    Toast.show("上报成功")
+  })
+}
+
 export default {
   tour,
+  positionUpload,
 }

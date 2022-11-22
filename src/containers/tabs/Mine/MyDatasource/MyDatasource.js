@@ -176,6 +176,7 @@ class MyDatasource extends MyDataPage {
     datasourceAlias,
   ) => {
     let newDatasourcePath = datasourcePath + datasourceName + '.udb'
+    console.warn("333: " + newDatasourcePath + " - " + datasourceAlias)
     let datasourceParams = {}
     datasourceParams.server = newDatasourcePath
     datasourceParams.engineType = EngineType.UDB

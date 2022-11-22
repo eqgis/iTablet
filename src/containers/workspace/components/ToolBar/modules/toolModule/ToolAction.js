@@ -454,6 +454,7 @@ async function setting() {
 // 多媒体采集
 function captureImage() {
   (async function() {
+    console.warn("111111111111")
     const _params = ToolbarModule.getParams()
     const { currentLayer } = _params
     // let reg = /^Label_(.*)#$/

@@ -114,6 +114,7 @@ import {
   Dimensions,
   DeviceEventEmitter,
   PixelRatio,
+  NativeModules,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -142,6 +143,8 @@ import { Module } from '@/class'
 import PositionStateView from '../../components/PositionStateView'
 
 global.markerTag = 118082
+
+const appUtilsModule = NativeModules.AppUtils
 
 const TOP_DEFAULT = Platform.select({
   android: screen.getHeaderHeight('PORTRAIT') + scaleSize(8),
@@ -1582,124 +1585,184 @@ export default class MapView extends React.Component {
   backHandler = () => {
     return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
+  renderExitDialog = () => {
+    return (
+      <Dialog
+        ref={ref => (this.exit = ref)}
+        type={'modal'}
+        confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
+        cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
+        confirmAction={this.exitConfirm}
+        opacity={1}
+        opacityStyle={styles.opacityView}
+        style={{
+          height: scaleSize(300),
+          backgroundColor: color.content_white,
+        }}
+      >
+        {this.renderExitDialogChildren()}
+      </Dialog>
+    )
+  }
+  renderExitDialogChildren = () => {
+    return (
+      <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingTop: scaleSize(30),
+      }}>
+        <Image
+          source={require('../../../../../src/assets/home/Frenchgrey/icon_prompt.png')}
+          style={{
+            width: scaleSize(80),
+            height: scaleSize(80),
+            opacity: 1,
+          }}
+        />
+        <Text style={{
+          fontSize: setSpText(30),
+          color: color.theme_white,
+          marginTop: scaleSize(5),
+          marginLeft: scaleSize(10),
+          marginRight: scaleSize(10),
+          textAlign: 'center',
+        }}>
+          {"确认退出"}
+        </Text>
+      </View>
+    )
+  }
+
+  exitConfirm = async () => {
+    try {
+      await appUtilsModule.AppExit()
+    } catch (error) {
+      Toast.show('退出失败')
+    }
+  }
 
   /**
    * 返回事件
    * @param {*} params {baskFrom?: string // 从该页面返回}
    */
   back = async params => {
-    try {
-      if (!this.state.mapLoaded) return
-      // 最顶层的语音搜索，最先处理
-      if (Audio.isShow()) {
-        Audio.hideAudio()
-        return
-      }
+    // console.warn("1111")
+    // this._closeModal()
+    this.exit.setDialogVisible(true)
 
-      // 位置校准展示时,禁止Android物理返回
-      if (Platform.OS === 'android' && this.props.showDatumPoint) {
-        return false
-      }
+    // try {
+    //   if (!this.state.mapLoaded) return
+    //   // 最顶层的语音搜索，最先处理
+    //   if (Audio.isShow()) {
+    //     Audio.hideAudio()
+    //     return
+    //   }
 
-      // AR测图-测量/测图界面返回
-      if (global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton) {
-        this.ARMappingHeaderBack()
-        return
-      }
+    //   // 位置校准展示时,禁止Android物理返回
+    //   if (Platform.OS === 'android' && this.props.showDatumPoint) {
+    //     return false
+    //   }
 
-      // 优先处理其他界面跳转到MapView传来的返回事件
-      if (this.backAction && typeof this.backAction === 'function') {
-        this.backAction({
-          showFullMap: this.showFullMap,
-        })
-        this.backAction = null
-        this.mapController && this.mapController.reset()
-        return
-      }
+    //   // AR测图-测量/测图界面返回
+    //   if (global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton) {
+    //     this.ARMappingHeaderBack()
+    //     return
+    //   }
 
-      // Android物理返回事件
-      if (Platform.OS === 'android') {
-        // Toolbar显示时，返回事件Toolbar的close
-        if (this.toolBox && this.toolBox.isShow) {
-          //在此处理 toolbar 显示时的返回事件
-          // this.toolBox.buttonView.close()
-          return true
-        }
+    //   // 优先处理其他界面跳转到MapView传来的返回事件
+    //   if (this.backAction && typeof this.backAction === 'function') {
+    //     this.backAction({
+    //       showFullMap: this.showFullMap,
+    //     })
+    //     this.backAction = null
+    //     this.mapController && this.mapController.reset()
+    //     return
+    //   }
 
-        //处理导航时返回键
-        if (global.NAVIGATIONSTARTHEAD?.state.show) {
-          global.NAVIGATIONSTARTHEAD?.close()
-          return true
-        }
+    //   // Android物理返回事件
+    //   if (Platform.OS === 'android') {
+    //     // Toolbar显示时，返回事件Toolbar的close
+    //     if (this.toolBox && this.toolBox.isShow) {
+    //       //在此处理 toolbar 显示时的返回事件
+    //       // this.toolBox.buttonView.close()
+    //       return true
+    //     }
 
-        //处理导航中返回键
-        if (this.isGuiding) {
-          return true
-        }
+    //     //处理导航时返回键
+    //     if (global.NAVIGATIONSTARTHEAD?.state.show) {
+    //       global.NAVIGATIONSTARTHEAD?.close()
+    //       return true
+    //     }
 
-        // 删除对象Dialog显示时，返回事件关闭Dialog
-        if (
-          global.removeObjectDialog &&
-          global.removeObjectDialog.getState().visible
-        ) {
-          global.removeObjectDialog.setDialogVisible(false)
-          return true
-        }
-      }
+    //     //处理导航中返回键
+    //     if (this.isGuiding) {
+    //       return true
+    //     }
 
-      // 若服务正在更新,则无法关闭地图
-      if (
-        global.coworkMode && this.props.currentTask?.groupID &&
-        this.props.currentTaskServices?.[this.props.user.currentUser.userName]?.[this.props.currentTask?.groupID]?.[this.props.currentTask?.id]?.length > 0
-      ) {
-        let currentServices = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
-        let serviceDone = true
-        for (const services of currentServices) {
-          if (services.status !== 'done') {
-            serviceDone = false
-            break
-          }
-        }
-        if (!serviceDone) {
-          Toast.show(getLanguage(this.props.language).Cowork.CLOSE_MAP_BEFORE_UPDATE_SERVICE)
-          return true
-        }
-      }
+    //     // 删除对象Dialog显示时，返回事件关闭Dialog
+    //     if (
+    //       global.removeObjectDialog &&
+    //       global.removeObjectDialog.getState().visible
+    //     ) {
+    //       global.removeObjectDialog.setDialogVisible(false)
+    //       return true
+    //     }
+    //   }
 
-      let result = await SMap.mapIsModified() // 是否保存普通地图
-      const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
-      if ((result || needSaveARMap) && !this.isExample) {
-        this.setSaveViewVisible(true, null, async () => {
-          if(Platform.OS === 'ios'){
-            SARMap.setARTouch(true)
-          }
-          this.props.showAR(false)
-          await this.props.setCurrentAttribute({})
-          // this.setState({ showScaleView: false })
-          await this._removeGeometrySelectedListener()
-          if (global.Type === ChunkType.MAP_NAVIGATION) {
-            await this._removeNavigationListeners()
-          }
-          await this.closeMapHandler(params?.baskFrom)
-        })
-      } else {
-        try {
-          this.props.showAR(false)
-          this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
-          if (global.Type === ChunkType.MAP_NAVIGATION) {
-            await this._removeNavigationListeners()
-            await SMap.clearPoint()
-            await SMap.stopGuide()
-          }
-          await this.closeMapHandler(params?.baskFrom)
-        } catch (e) {
-          this.setLoading(false)
-        }
-      }
-      return true
-    } catch (e) {
-      return true
-    }
+    //   // 若服务正在更新,则无法关闭地图
+    //   if (
+    //     global.coworkMode && this.props.currentTask?.groupID &&
+    //     this.props.currentTaskServices?.[this.props.user.currentUser.userName]?.[this.props.currentTask?.groupID]?.[this.props.currentTask?.id]?.length > 0
+    //   ) {
+    //     let currentServices = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
+    //     let serviceDone = true
+    //     for (const services of currentServices) {
+    //       if (services.status !== 'done') {
+    //         serviceDone = false
+    //         break
+    //       }
+    //     }
+    //     if (!serviceDone) {
+    //       Toast.show(getLanguage(this.props.language).Cowork.CLOSE_MAP_BEFORE_UPDATE_SERVICE)
+    //       return true
+    //     }
+    //   }
+
+    //   let result = await SMap.mapIsModified() // 是否保存普通地图
+    //   const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
+    //   if ((result || needSaveARMap) && !this.isExample) {
+    //     this.setSaveViewVisible(true, null, async () => {
+    //       if(Platform.OS === 'ios'){
+    //         SARMap.setARTouch(true)
+    //       }
+    //       this.props.showAR(false)
+    //       await this.props.setCurrentAttribute({})
+    //       // this.setState({ showScaleView: false })
+    //       await this._removeGeometrySelectedListener()
+    //       if (global.Type === ChunkType.MAP_NAVIGATION) {
+    //         await this._removeNavigationListeners()
+    //       }
+    //       await this.closeMapHandler(params?.baskFrom)
+    //     })
+    //   } else {
+    //     try {
+    //       this.props.showAR(false)
+    //       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+    //       if (global.Type === ChunkType.MAP_NAVIGATION) {
+    //         await this._removeNavigationListeners()
+    //         await SMap.clearPoint()
+    //         await SMap.stopGuide()
+    //       }
+    //       await this.closeMapHandler(params?.baskFrom)
+    //     } catch (e) {
+    //       this.setLoading(false)
+    //     }
+    //   }
+    //   return true
+    // } catch (e) {
+    //   return true
+    // }
   }
 
   /** 设置Container的loading */
@@ -5388,6 +5451,7 @@ export default class MapView extends React.Component {
           }}
           extraModule={this.toolbarModuleData}
         />
+        {this.renderExitDialog()}
       </Container>
     )
   }

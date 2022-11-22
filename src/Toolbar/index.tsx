@@ -23,6 +23,7 @@ import { getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
 import {closeARMap, createARMap, saveARMap} from '@/redux/models/armap'
 import { setPipeLineAttribute, changeShowAttributeElement } from "@/redux/models/arattribute"
 import { ScaledSize } from "react-native"
+import { setCurrentSymbol } from "@/redux/models/symbol"
 
 const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 
@@ -82,6 +83,7 @@ const mapDispatch = {
   setCurrentARLayer,
   setPipeLineAttribute,
   changeShowAttributeElement,
+  setCurrentSymbol,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

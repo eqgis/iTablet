@@ -717,6 +717,7 @@ class CoverView extends React.Component<Props, State> {
       >
         <View>
           <Image
+            resizeMode={'contain'}
             style={{ width: '100%', height: dp(50) }}
             source={getImage().icon_coverview_title}
           />
@@ -752,6 +753,7 @@ class CoverView extends React.Component<Props, State> {
             <Image
               style={{ width: '100%', height: dp(50) }}
               source={getImage().icon_coverview_back1}
+              resizeMode={'contain'}
             />
             <View
               style={{
@@ -764,7 +766,7 @@ class CoverView extends React.Component<Props, State> {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', width: dp(70), marginLeft: dp(15) }}>{"管线:"}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', width: dp(70), marginLeft: dp(30) }}>{"管线:"}</Text>
               <Text style={{ textAlign: 'left', fontSize: dp(18), color: 'white', flex: 1 }}>{name}</Text>
             </View>
           </View>

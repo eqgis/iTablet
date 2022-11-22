@@ -94,6 +94,7 @@ class ARArrow extends React.Component<Props, State> {
             isLR ? [{translateX: move}, {rotateY: this.state.targetPosition === 1 ? '0deg' : '180deg'}]
               : [{translateY: moveUpDown}, {rotate: this.state.targetPosition === 3 ? '90deg' : '270deg'}]
         }}
+        pointerEvents={"none"}
       >
         <Image
           source={getImage().guide_arrow}

@@ -15,6 +15,7 @@ import ScanWrap from '../components/ScanWrap'
 import BottomMenu, { itemConmonType } from '../components/BottomMenu'
 import AnimationWrap from '../components/AnimationWrap'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
+import { Vector3 } from 'imobile_for_reactnative/types/data'
 
 interface Props {
   windowSize: ScaledSize
@@ -85,11 +86,11 @@ class CoverView extends React.Component<Props, State> {
         action: this.onRollingPress,
         autoCancelSelected: false,
       },
-      // {
-      //   image: getImage().icon_tool_rolling,
-      //   title: '流向',
-      //   action: this.onFlowPress,
-      // },
+      {
+        image: getImage().icon_tool_rolling,
+        title: '流向',
+        action: this.onFlowPress,
+      },
       {
         image: getImage().tool_attribute,
         title: '属性',
@@ -144,6 +145,7 @@ class CoverView extends React.Component<Props, State> {
     this.timeoutTrigger?.active()
     this._hideSlide()
     this._disableAttribte()
+    this._disableFlow()
     this.stopCover()
     this.stopRolling()
     this.setState({
@@ -166,6 +168,7 @@ class CoverView extends React.Component<Props, State> {
     this.timeoutTrigger?.onShowSecondMenu()
     this._hideSlide()
     this._disableAttribte()
+    this._disableFlow()
     this.stopRolling()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
@@ -192,10 +195,207 @@ class CoverView extends React.Component<Props, State> {
     this.timeoutTrigger?.onShowSecondMenu()
     this._hideSlide()
     this._disableAttribte()
+    this._disableFlow()
     this.setState({
       secondMenuData: this.getRollingModeMenu(),
       isSecondaryShow: true,
     })
+  }
+
+  flowEnabled = false
+  onFlowPress = async () => {
+    this.timeoutTrigger?.onFirstMenuClick()
+    this.stopCover()
+    this.stopRolling()
+    this._hideSlide()
+    this._disableAttribte()
+    this.flowEnabled = !this.flowEnabled
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+
+      // const paths: [Vector3, Vector3][] = [
+
+      //   // 入口线
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -11},
+      //     {x: -1.318, y:  -0.141, z: -10.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -10.5},
+      //   //   {x: -1.318, y:  -0.141, z: -10.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -10},
+      //     {x: -1.318, y:  -0.141, z: -9.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -9.5},
+      //   //   {x: -1.318, y:  -0.141, z: -9.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -9},
+      //     {x: -1.318, y:  -0.141, z: -8.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -8.5},
+      //   //   {x: -1.318, y:  -0.141, z: -8.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -8},
+      //     {x: -1.318, y:  -0.141, z: -7.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -7.5},
+      //   //   {x: -1.318, y:  -0.141, z: -7.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -7},
+      //     {x: -1.318, y:  -0.141, z: -6.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -6.5},
+      //   //   {x: -1.318, y:  -0.141, z: -6.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -6},
+      //     {x: -1.318, y:  -0.141, z: -5.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -5.5},
+      //   //   {x: -1.318, y:  -0.141, z: -5.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -5},
+      //     {x: -1.318, y:  -0.141, z: -4.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -4.5},
+      //   //   {x: -1.318, y:  -0.141, z: -4.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -4},
+      //     {x: -1.318, y:  -0.141, z: -3.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -3.5},
+      //   //   {x: -1.318, y:  -0.141, z: -3.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -3},
+      //     {x: -1.318, y:  -0.141, z: -2.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -2.5},
+      //   //   {x: -1.318, y:  -0.141, z: -2.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -2},
+      //     {x: -1.318, y:  -0.141, z: -1.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -1.5},
+      //   //   {x: -1.318, y:  -0.141, z: -1.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -1},
+      //     {x: -1.318, y:  -0.141, z: -0.75},
+      //   ],
+
+      //   //转弯短线
+      //   [ //
+      //     {x: -1.176, y: -0.150, z: -0.141},
+      //     {x: -0.551, y: -0.130, z: -0.094},
+      //   ],
+
+      //   // 短线
+      //   [ //
+      //     {x: -0.370, y: -0.130, z: 0.132},
+      //     {x: -0.370, y: -0.130, z: 1.678},
+      //   ],
+
+      //   //长线
+      //   [ // todo 中间加点
+      //     {x: -0.528, y: -0.130, z: 1.877},
+      //     {x: -4.335, y: -0.130, z: 1.877},
+      //   ],
+
+      //   //短线
+      //   [ //
+      //     {x: -4.671, y: -0.112, z: 1.678},
+      //     {x: -4.671, y: -0.112, z: 1.030},
+      //   ],
+
+      //   //长线
+      //   [ //  todo 中间加点
+      //     {x: -4.325, y: -0.112, z: 0.966},
+      //     {x: 0.031, y: -0.110, z: 0.966},
+      //   ],
+
+      //   //出口长线
+      //   [ //  todo 中间加点
+      //     {x:0.285, y: -0.141, z: 0.656},
+      //     {x: 0.285, y: -0.141, z: -10.660},
+      //   ],
+      // ]
+
+      // SExhibition.showPipeFlow(layer.name, paths, 0.7, 0)
+
+      const speed = 0.7
+      const heightOffset = 0.05
+
+      SExhibition.showPipeFlow2(layer.name, [
+        {
+          start: {x: -1.318, y:  -0.141 + heightOffset, z: -11},
+          end:  {x: -1.318, y:  -0.141 + heightOffset, z: -0.75},
+          speed: speed,
+          segment: 10,
+          runRange: 1,
+        },
+        {
+          start: {x: -1.135, y:  -0.141 + heightOffset, z: -0.093},
+          end:  {x: -0.462, y:  -0.141 + heightOffset, z: -0.093},
+          speed: speed,
+          segment: 1,
+          runRange: 1,
+        },
+        {
+          start: {x: -0.332, y: -0.141 + heightOffset, z: 0.3},
+          end:  {x: -0.332, y:  -0.141 + heightOffset, z: 1.607},
+          speed: speed,
+          segment: 2,
+          runRange: 1,
+        },
+        {
+          start: {x: -0.677, y: -0.141 + heightOffset, z: 1.852},
+          end:  {x: -4.338, y:  -0.141 + heightOffset, z: 1.852},
+          speed: speed,
+          segment: 5,
+          runRange: 1,
+        },
+        {
+          start: {x: -4.645, y: -0.141 + heightOffset, z: 1.664},
+          end:  {x: -4.645, y:  -0.141 + heightOffset, z: 1.191},
+          speed: speed,
+          segment: 1,
+          runRange: 1,
+        },
+        {
+          start: {x: -4.324, y: -0.141 + heightOffset, z: 0.976},
+          end:  {x: -0.265, y: -0.141 + heightOffset, z: 0.976},
+          speed: speed,
+          segment: 5,
+          runRange: 1,
+        },
+        {
+          start: {x: 0.270, y: -0.141 + heightOffset, z: 0.691},
+          end:  {x: 0.270, y:  -0.141 + heightOffset, z: -10.982},
+          speed: speed,
+          segment: 10,
+          runRange: 1,
+        },
+      ])
+
+    }
   }
 
   attribteEanbled = false
@@ -211,6 +411,7 @@ class CoverView extends React.Component<Props, State> {
     this.stopCover()
     this.stopRolling()
     this._hideSlide()
+    this._disableFlow()
     this.attribteEanbled = !this.attribteEanbled
     SExhibition.enablePipeAttribute(this.attribteEanbled)
     this.setState({
@@ -258,6 +459,13 @@ class CoverView extends React.Component<Props, State> {
     if(this.attribteEanbled) {
       this.attribteEanbled = false
       SExhibition.enablePipeAttribute(false)
+    }
+  }
+
+  _disableFlow = () => {
+    if(this.flowEnabled) {
+      this.flowEnabled = false
+      SExhibition.hidePipeFlow()
     }
   }
 

@@ -896,6 +896,7 @@ interface ToolViewState {
 // const circleR = dp(30)
 // const circleStrokeWidth = dp(4)
 const AnimationTime = 2000
+const TwinkleTime = 300
 
 class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   scaleBar: SlideBar | undefined | null
@@ -929,10 +930,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     }
     // 退出特效,重置选中
     if (prevProps.type === 'effects' && this.props.type !== 'effects' && this.state.selectKey) {
-      this.setState({
-        selectKey: '',
-        data: [],
-      })
+      this.effectClose()
     } else if (prevProps.type === 'mountain_guide' && this.props.type !== 'mountain_guide' && this.state.selectKey) {
       this.mountainClose()
     } else if (prevProps.type === 'spot' && this.props.type !== 'spot' && this.state.selectKey) {
@@ -1054,6 +1052,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         this.spotClose()
       } else if(this.props.type === 'boat_guide') {
         this.boatClose()
+      } else if(this.props.type === 'effects') {
+        this.effectClose()
       } else {
         this.setState({
           selectKey: '',
@@ -1270,8 +1270,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       }
       this.setState({
         selectKey: item.key,
-      })
-      this.setState({
         canBeClick: false,
       })
       const home = await FileTools.getHomeDirectory()
@@ -1294,23 +1292,43 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       }
       // 转圈/放大/定位到登山路线
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-        position: data?.position || {
-          x: -0.2,
-          y: -0.2,
-          z: -0.65,
-        },
+        // position: data?.position || {
+        //   x: -0.2,
+        //   y: -0.2,
+        //   z: -0.65,
+        // },
         rotation: data?.rotation || {
           x: 0,
           y: -30,
           z: 0,
         },
-        scale: data?.scale || {
-          x: 0.004,
-          y: 0.004,
-          z: 0.004,
-        },
-        duration: data?.duration || AnimationTime,
+        // scale: data?.scale || {
+        //   x: 0.004,
+        //   y: 0.004,
+        //   z: 0.004,
+        // },
+        duration: data?.duration / 2 || AnimationTime,
       })
+      setTimeout(async () => {
+        await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+          position: data?.position || {
+            x: -0.2,
+            y: -0.2,
+            z: -0.65,
+          },
+          // rotation: data?.rotation || {
+          //   x: 0,
+          //   y: -30,
+          //   z: 0,
+          // },
+          scale: data?.scale || {
+            x: 0.004,
+            y: 0.004,
+            z: 0.004,
+          },
+          duration: data?.duration / 2 || AnimationTime,
+        })
+      }, data?.duration / 2 || AnimationTime)
 
       // 依次添加定位点
       const wait = (sec: number) => {
@@ -1346,44 +1364,44 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   mountainClose = async (clearData = true) => {
     try {
-      this.setState({
-        canBeClick: false,
-      })
+      // this.setState({
+      //   canBeClick: false,
+      // })
       // const lastPosition = await SARMap.getElementPositionInfo(currentLayer.name, 1)
-      if (this.lastPosition) {
-        // lastPosition.renderNode.position.y = -1
-        SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-          position: this.lastPosition.position,
-          rotation: this.lastPosition.rotation,
-          scale: {
-            x: this.lastPosition.scale,
-            y: this.lastPosition.scale,
-            z: this.lastPosition.scale,
-          },
-          duration: AnimationTime,
+      // if (this.lastPosition) {
+      //   // lastPosition.renderNode.position.y = -1
+      //   SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+      //     position: this.lastPosition.position,
+      //     rotation: this.lastPosition.rotation,
+      //     scale: {
+      //       x: this.lastPosition.scale,
+      //       y: this.lastPosition.scale,
+      //       z: this.lastPosition.scale,
+      //     },
+      //     duration: AnimationTime,
+      //   })
+      // }
+      // setTimeout(() => {
+      //   // oraginSandboxStatus && SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
+      //   SARMap.commitSandTableChanges()
+      for (let i = 0; i < this.mountainElementIndexes.length; i++) {
+        SARMap.setSandTableModelVisible(this.mountainElementIndexes[i], false)
+      }
+      // oraginSandboxStatus = undefined
+      this.mountainElementIndexes = []
+      if (clearData) {
+        this.setState({
+          selectKey: '',
+          data: [],
+          canBeClick: true,
+        })
+      } else {
+        this.setState({
+          selectKey: '',
+          canBeClick: true,
         })
       }
-      setTimeout(() => {
-        // oraginSandboxStatus && SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
-        SARMap.commitSandTableChanges()
-        for (let i = 0; i < this.mountainElementIndexes.length; i++) {
-          SARMap.setSandTableModelVisible(this.mountainElementIndexes[i], false)
-        }
-        // oraginSandboxStatus = undefined
-        this.mountainElementIndexes = []
-        if (clearData) {
-          this.setState({
-            selectKey: '',
-            data: [],
-            canBeClick: true,
-          })
-        } else {
-          this.setState({
-            selectKey: '',
-            canBeClick: true,
-          })
-        }
-      }, AnimationTime)
+      // }, AnimationTime)
     } catch (error) {
       __DEV__ && console.warn(error)
     }
@@ -1415,6 +1433,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         return
       }
       this.setState({
+        canBeClick: false,
         selectKey: item.key,
       })
       // 隐藏上一个选中的景点
@@ -1431,18 +1450,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         index: -1,
       }
 
-      let position = { x: 0, y: -1, z: -1.5 }
-      if (this.lastSpot.name === '晓渔渡') {
-        position = { x: 0.3, y: -1, z: -2.5 }
-      } else if (this.lastSpot.name === '活动中心') {
-        position = { x: 0.2, y: -1, z: -1.8 }
-      } else if (this.lastSpot.name === '看云台') {
-        position = { x: 0.3, y: -1, z: -1 }
-      } else if (this.lastSpot.name === '湖心亭') {
-        position = { x: 1, y: -1, z: -1.7 }
-      } else if (this.lastSpot.name === '南门') {
-        position = { x: -0.8, y: -1, z: -2.8 }
-      }
+      const position = { x: 0, y: -1, z: -1.5 }
 
       let data
       const dataPath = item.path.replace('.glb', '.json')
@@ -1454,7 +1462,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
         position: data?.position || position,
         rotation: data?.rotation || { x: 0, y: 0, z: 0 },
-        scale: data?.scale || { x: 0.006, y: 0.006, z: 0.006 },
+        scale: data?.scale || { x: 0.007, y: 0.007, z: 0.007 },
         duration: AnimationTime,
       })
 
@@ -1471,7 +1479,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, false)
 
           await SARMap.commitSandTableChanges()
-          this.lastSpot && this.twinkle(this.lastSpot.index, 4)
+          if (this.lastSpot && await this.twinkle(this.lastSpot.index, 3)) {
+            this.setState({
+              canBeClick: true,
+              // selectKey: item.key,
+            })
+          }
         }
       }, AnimationTime)
 
@@ -1482,40 +1495,40 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   spotClose = async (clearData = true) => {
     try {
-      if (this.lastPosition) {
-        // lastPosition.renderNode.position.y = -1
-        SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-          position: this.lastPosition.position,
-          rotation: this.lastPosition.rotation,
-          scale: {
-            x: this.lastPosition.scale,
-            y: this.lastPosition.scale,
-            z: this.lastPosition.scale,
-          },
-          duration: AnimationTime,
+      // if (this.lastPosition) {
+      //   // lastPosition.renderNode.position.y = -1
+      //   SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+      //     position: this.lastPosition.position,
+      //     rotation: this.lastPosition.rotation,
+      //     scale: {
+      //       x: this.lastPosition.scale,
+      //       y: this.lastPosition.scale,
+      //       z: this.lastPosition.scale,
+      //     },
+      //     duration: AnimationTime,
+      //   })
+      // }
+      // setTimeout(async () => {
+      //   // oraginSandboxStatus && SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
+      //   SARMap.commitSandTableChanges()
+      // 隐藏上一个选中的景点
+      if (this.lastSpot !== undefined) {
+        await SARMap.setSandTableModelVisible(this.lastSpot.index, false)
+
+        await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, true)
+      }
+      if (clearData) {
+        this.setState({
+          selectKey: '',
+          data: [],
+        })
+      } else {
+        this.setState({
+          selectKey: '',
         })
       }
-      setTimeout(async () => {
-        // oraginSandboxStatus && SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
-        SARMap.commitSandTableChanges()
-        // 隐藏上一个选中的景点
-        if (this.lastSpot !== undefined) {
-          await SARMap.setSandTableModelVisible(this.lastSpot.index, false)
-
-          await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, true)
-        }
-        if (clearData) {
-          this.setState({
-            selectKey: '',
-            data: [],
-          })
-        } else {
-          this.setState({
-            selectKey: '',
-          })
-        }
-        this.lastSpot = undefined
-      }, AnimationTime)
+      this.lastSpot = undefined
+      // }, AnimationTime)
     } catch (error) {
       __DEV__ && console.warn(error)
     }
@@ -1551,8 +1564,9 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       })
 
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-        position: { x: 0.6, y: -1, z: -1.2 },
-        scale: { x: 0.004, y: 0.004, z: 0.004 },
+        position: { x: -0.4, y: -0.3, z: -2 },
+        rotation: { x: 0, y: 40, z: 0 },
+        scale: { x: 0.005, y: 0.005, z: 0.005 },
         duration: AnimationTime,
       })
 
@@ -1611,18 +1625,18 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           data: [],
         })
 
-        if (oraginSandboxStatus) {
-          SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-            position: oraginSandboxStatus.position,
-            rotation: oraginSandboxStatus.rotation,
-            scale: {
-              x: oraginSandboxStatus.scale,
-              y: oraginSandboxStatus.scale,
-              z: oraginSandboxStatus.scale,
-            },
-            duration: AnimationTime,
-          })
-        }
+        // if (oraginSandboxStatus) {
+        //   SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+        //     position: oraginSandboxStatus.position,
+        //     rotation: oraginSandboxStatus.rotation,
+        //     scale: {
+        //       x: oraginSandboxStatus.scale,
+        //       y: oraginSandboxStatus.scale,
+        //       z: oraginSandboxStatus.scale,
+        //     },
+        //     duration: AnimationTime,
+        //   })
+        // }
       } else {
         this.setState({
           selectKey: '',
@@ -1675,14 +1689,18 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
         position: {
           x: 0,
-          y: 0,
-          z: -1.5,
+          y: -0.3,
+          z: -2.5,
         },
-        rotation: oraginSandboxStatus?.rotation,
+        rotation: {
+          x: 0,
+          y: 40,
+          z: 0,
+        },
         scale: {
-          x: 0.006,
-          y: 0.006,
-          z: 0.006,
+          x: 0.007,
+          y: 0.007,
+          z: 0.007,
         },
         duration: AnimationTime,
       })
@@ -1699,19 +1717,52 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     }
   }
 
+  effectClose = async (clearData = true) => {
+    try {
+      if (clearData) {
+        this.setState({
+          selectKey: '',
+          data: [],
+        })
+
+        // if (oraginSandboxStatus) {
+        //   SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+        //     position: oraginSandboxStatus.position,
+        //     rotation: oraginSandboxStatus.rotation,
+        //     scale: {
+        //       x: oraginSandboxStatus.scale,
+        //       y: oraginSandboxStatus.scale,
+        //       z: oraginSandboxStatus.scale,
+        //     },
+        //     duration: AnimationTime,
+        //   })
+        // }
+      } else {
+        this.setState({
+          selectKey: '',
+        })
+      }
+    } catch (error) {
+      __DEV__ && console.warn(error)
+    }
+  }
+
   /****************************************************************************************************************************/
   twinkle = async (id: number, time: number) => {
-    let show = false, temp = 0
-    const interval = setInterval(async() => {
-      if (temp === time && interval) {
-        await SARMap.setSandTableModelVisible(id, true)
-        clearInterval(interval)
-        return
-      }
-      await SARMap.setSandTableModelVisible(id, show)
-      show = !show
-      temp++
-    }, 300)
+    return new Promise((resolve) => {
+      let show = false, temp = 0
+      const interval = setInterval(async() => {
+        if (temp === time && interval) {
+          await SARMap.setSandTableModelVisible(id, true)
+          clearInterval(interval)
+          resolve(true)
+          return
+        }
+        await SARMap.setSandTableModelVisible(id, show)
+        show = !show
+        temp++
+      }, TwinkleTime)
+    })
   }
 
   render() {

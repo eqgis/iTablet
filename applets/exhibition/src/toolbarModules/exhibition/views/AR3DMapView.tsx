@@ -110,7 +110,7 @@ class AR3DMapView extends React.Component<Props, State> {
           // SExhibition.map3Dreset()
           this.scaleValue = 12
           this.rotationValue = 30
-          SExhibition.scale3dMap(1)
+          SExhibition.scale3dMap(1.2)
           SExhibition.rotation3dMap(30)
           this.setState({showSlide:false})
           this.timeoutTrigger?.onFirstMenuClick()

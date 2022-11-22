@@ -322,6 +322,10 @@ class SandBoxView extends React.Component<Props, State> {
   }
 
   onSingleClick = () => {
+    if (this.state.toolType) {
+      this.toolView?.show()
+      return
+    }
     if(this.state.showSide) {
       this.timeoutTrigger?.onBarHide()
     } else {
@@ -896,13 +900,14 @@ interface ToolViewProps {
     x: number,
     y: number,
     z: number,
-  } | undefined) => Promise<boolean>,
+  }) => Promise<boolean>,
 }
 
 interface ToolViewState {
   selectKey: string,
   data: any[],
   canBeClick: boolean,
+  showBottom: boolean,
 }
 
 // const circleSize = dp(66)
@@ -937,6 +942,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       selectKey: '',
       data: [],
       canBeClick: true,
+      showBottom: this.props.type !== '',
     }
   }
 
@@ -979,6 +985,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       }
       this.setState({
         data: data,
+        showBottom: true,
       })
     } else if (this.props.type === 'mountain_guide') {
       const items = await this.getMountainRoute()
@@ -1003,6 +1010,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
       this.setState({
         data: data,
+        showBottom: true,
       })
     } else if (this.props.type === 'boat_guide') {
       const items = await this.getBoat()
@@ -1027,6 +1035,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
       this.setState({
         data: data,
+        showBottom: true,
       })
     } else if (this.props.type === 'spot') {
       const items = await this.getSpot()
@@ -1051,10 +1060,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
       this.setState({
         data: data,
+        showBottom: true,
       })
     } else {
       this.setState({
         data: [],
+        showBottom: false,
       })
     }
   }
@@ -1813,6 +1824,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     })
   }
 
+  show = () => {
+    this.setState({
+      showBottom: !this.state.showBottom,
+    })
+  }
+
   render() {
     // if (this.props.type === '') return null
     if (this.props.type === 'edit') {
@@ -1852,11 +1869,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
                 break
             }
           }}
-          visible={this.props.type !== ''}
+          visible={this.state.showBottom}
           imageStyle={{flex: 1, marginTop: 0, width: dp(100), height: dp(100)}}
           // itemStyle={{marginHorizontal: 0}}
           onHide={()=> {
-            this.close()
+            // this.close()
+            this.show()
           }}
         />
         {

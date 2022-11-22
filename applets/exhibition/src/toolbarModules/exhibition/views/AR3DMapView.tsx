@@ -55,8 +55,8 @@ class AR3DMapView extends React.Component<Props, State> {
   sideBar: SideBar | null = null
   speakData: Array<itemConmonType> = []
 
-  scaleValue = 10
-  rotationValue = 10
+  scaleValue = 12
+  rotationValue = 30
 
   listeners: {
     addListener:EmitterSubscription | undefined,
@@ -105,13 +105,13 @@ class AR3DMapView extends React.Component<Props, State> {
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
             this.isCarAnimationPlay = false
-            SExhibition.rotation3dMap(this.rotationValue)
+            // SExhibition.rotation3dMap(this.rotationValue)
           }
           // SExhibition.map3Dreset()
-          this.scaleValue = 10
-          this.rotationValue = 10
+          this.scaleValue = 12
+          this.rotationValue = 30
           SExhibition.scale3dMap(1)
-          SExhibition.rotation3dMap(10)
+          SExhibition.rotation3dMap(30)
           this.setState({showSlide:false})
           this.timeoutTrigger?.onFirstMenuClick()
 
@@ -161,9 +161,9 @@ class AR3DMapView extends React.Component<Props, State> {
             this.isCarAnimationPlay = false
           }
 
-          if(this.open){
-            SExhibition.rotation3dMap(this.rotationValue)
-          }
+          // if(this.open){
+          //   SExhibition.rotation3dMap(this.rotationValue)
+          // }
 
           if(this.state.attribute){
             SExhibition.setIsTouchSelect(false)
@@ -223,7 +223,7 @@ class AR3DMapView extends React.Component<Props, State> {
               SExhibition.showMapVideo(false)
             }
 
-            SExhibition.rotation3dMap(this.rotationValue)
+            // SExhibition.rotation3dMap(this.rotationValue)
             this.setState({
               showSlide: false,
             })
@@ -262,10 +262,10 @@ class AR3DMapView extends React.Component<Props, State> {
           }
           if(!this.state.showVideo){
             SExhibition.showMapVideo(true)
-            SExhibition.rotation3dMap(30)
+            // SExhibition.rotation3dMap(30)
           }else{
             SExhibition.showMapVideo(false)
-            SExhibition.rotation3dMap(this.rotationValue)
+            // SExhibition.rotation3dMap(this.rotationValue)
           }
           this.setState({showVideo:!this.state.showVideo,showSlide:false, showShape: false,})
         },
@@ -305,9 +305,9 @@ class AR3DMapView extends React.Component<Props, State> {
             SExhibition.showMapVideo(false)
           }
 
-          if(this.open){
-            SExhibition.rotation3dMap(this.rotationValue)
-          }
+          // if(this.open){
+          //   SExhibition.rotation3dMap(this.rotationValue)
+          // }
 
           this.setState({ attribute: !this.state.attribute, showSlide: false, showShape: false, })
           this.timeoutTrigger?.onFirstMenuClick()
@@ -366,7 +366,7 @@ class AR3DMapView extends React.Component<Props, State> {
           const relativePositin: Vector3 = {
             x: 0,
             y: 0,
-            z: -1.5,
+            z: -1.2,
           }
           SExhibition.addMapviewElement(0,false, {
             pose: this.result,
@@ -394,7 +394,7 @@ class AR3DMapView extends React.Component<Props, State> {
           const relativePositin: Vector3 = {
             x: 0,
             y: 0,
-            z: -1.5,
+            z: -1.2,
           }
           SExhibition.addMapviewElement(4, false,{
             pose: this.result,
@@ -445,6 +445,11 @@ class AR3DMapView extends React.Component<Props, State> {
   /** 点击了车流模拟按钮的响应方法 */
   ChangeCarAnimation = async (index: string) => {
     try {
+      if(this.state.showVideo){
+        this.setState({showVideo:false})
+        SExhibition.showMapVideo(false)
+      }
+
       if(this.sideBarIndex === index) {
         this.sideBarIndex = ""
         this.sideBar?.clear()
@@ -454,9 +459,9 @@ class AR3DMapView extends React.Component<Props, State> {
       if(this.isCarAnimationPlay) {
         await SARMap.pauseCarAnimation()
         this.isCarAnimationPlay = false
-        SExhibition.rotation3dMap(this.rotationValue)
+        // SExhibition.rotation3dMap(this.rotationValue)
       } else {
-        SExhibition.rotation3dMap(30)
+        // SExhibition.rotation3dMap(30)
         await SARMap.openCarAnimation()
         this.isCarAnimationPlay = true
       }
@@ -470,11 +475,6 @@ class AR3DMapView extends React.Component<Props, State> {
           textColor: '#fff',
           duration: 2000,
         })
-      }
-
-      if(this.state.showVideo){
-        this.setState({showVideo:false})
-        SExhibition.showMapVideo(false)
       }
 
       this.timeoutTrigger?.onFirstMenuClick()
@@ -634,7 +634,7 @@ class AR3DMapView extends React.Component<Props, State> {
       const relativePositin: Vector3 = {
         x: 0,
         y: 0,
-        z: -1.5,
+        z: -1.2,
       }
       this.result = pose
       SExhibition.addMapviewElement(0,true,{
@@ -694,8 +694,8 @@ class AR3DMapView extends React.Component<Props, State> {
       }, 500)
 
       this.open = true
-      this.rotationValue = 10
-      this.scaleValue = 10
+      this.rotationValue = 30
+      this.scaleValue = 12
     })
   }
 

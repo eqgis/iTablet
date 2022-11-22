@@ -31,4 +31,6 @@ export interface Event {
   'ar_single_click':undefined
   'show_ar_map': boolean
   'on_ar_mapview_loaded': undefined
+
+  'ar_3dmap_attribute': undefined
 }

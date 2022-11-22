@@ -15,6 +15,7 @@ import ScanWrap from '../components/ScanWrap'
 import BottomMenu, { itemConmonType } from '../components/BottomMenu'
 import AnimationWrap from '../components/AnimationWrap'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
+import { Vector3 } from 'imobile_for_reactnative/types/data'
 
 interface Props {
   windowSize: ScaledSize
@@ -30,6 +31,10 @@ interface State {
   /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
   isScan: boolean
   isSecondaryShow: boolean
+  name:string
+  width:string
+  length:string
+  attributeShow:boolean
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -62,6 +67,10 @@ class CoverView extends React.Component<Props, State> {
       showSide: true,
       secondMenuData: [],
       isSecondaryShow: false,
+      name:'',
+      width:'',
+      length:'',
+      attributeShow:false,
     }
   }
 
@@ -85,11 +94,11 @@ class CoverView extends React.Component<Props, State> {
         action: this.onRollingPress,
         autoCancelSelected: false,
       },
-      // {
-      //   image: getImage().icon_tool_rolling,
-      //   title: '流向',
-      //   action: this.onFlowPress,
-      // },
+      {
+        image: getImage().icon_tool_rolling,
+        title: '流向',
+        action: this.onFlowPress,
+      },
       {
         image: getImage().tool_attribute,
         title: '属性',
@@ -144,6 +153,7 @@ class CoverView extends React.Component<Props, State> {
     this.timeoutTrigger?.active()
     this._hideSlide()
     this._disableAttribte()
+    this._disableFlow()
     this.stopCover()
     this.stopRolling()
     this.setState({
@@ -166,6 +176,7 @@ class CoverView extends React.Component<Props, State> {
     this.timeoutTrigger?.onShowSecondMenu()
     this._hideSlide()
     this._disableAttribte()
+    this._disableFlow()
     this.stopRolling()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
@@ -192,10 +203,207 @@ class CoverView extends React.Component<Props, State> {
     this.timeoutTrigger?.onShowSecondMenu()
     this._hideSlide()
     this._disableAttribte()
+    this._disableFlow()
     this.setState({
       secondMenuData: this.getRollingModeMenu(),
       isSecondaryShow: true,
     })
+  }
+
+  flowEnabled = false
+  onFlowPress = async () => {
+    this.timeoutTrigger?.onFirstMenuClick()
+    this.stopCover()
+    this.stopRolling()
+    this._hideSlide()
+    this._disableAttribte()
+    this.flowEnabled = !this.flowEnabled
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+
+      // const paths: [Vector3, Vector3][] = [
+
+      //   // 入口线
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -11},
+      //     {x: -1.318, y:  -0.141, z: -10.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -10.5},
+      //   //   {x: -1.318, y:  -0.141, z: -10.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -10},
+      //     {x: -1.318, y:  -0.141, z: -9.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -9.5},
+      //   //   {x: -1.318, y:  -0.141, z: -9.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -9},
+      //     {x: -1.318, y:  -0.141, z: -8.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -8.5},
+      //   //   {x: -1.318, y:  -0.141, z: -8.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -8},
+      //     {x: -1.318, y:  -0.141, z: -7.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -7.5},
+      //   //   {x: -1.318, y:  -0.141, z: -7.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -7},
+      //     {x: -1.318, y:  -0.141, z: -6.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -6.5},
+      //   //   {x: -1.318, y:  -0.141, z: -6.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -6},
+      //     {x: -1.318, y:  -0.141, z: -5.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -5.5},
+      //   //   {x: -1.318, y:  -0.141, z: -5.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -5},
+      //     {x: -1.318, y:  -0.141, z: -4.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -4.5},
+      //   //   {x: -1.318, y:  -0.141, z: -4.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -4},
+      //     {x: -1.318, y:  -0.141, z: -3.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -3.5},
+      //   //   {x: -1.318, y:  -0.141, z: -3.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -3},
+      //     {x: -1.318, y:  -0.141, z: -2.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -2.5},
+      //   //   {x: -1.318, y:  -0.141, z: -2.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -2},
+      //     {x: -1.318, y:  -0.141, z: -1.75},
+      //   ],
+      //   // [ // todo 中间加点
+      //   //   {x: -1.318, y:  -0.141, z: -1.5},
+      //   //   {x: -1.318, y:  -0.141, z: -1.25},
+      //   // ],
+      //   [ // todo 中间加点
+      //     {x: -1.318, y:  -0.141, z: -1},
+      //     {x: -1.318, y:  -0.141, z: -0.75},
+      //   ],
+
+      //   //转弯短线
+      //   [ //
+      //     {x: -1.176, y: -0.150, z: -0.141},
+      //     {x: -0.551, y: -0.130, z: -0.094},
+      //   ],
+
+      //   // 短线
+      //   [ //
+      //     {x: -0.370, y: -0.130, z: 0.132},
+      //     {x: -0.370, y: -0.130, z: 1.678},
+      //   ],
+
+      //   //长线
+      //   [ // todo 中间加点
+      //     {x: -0.528, y: -0.130, z: 1.877},
+      //     {x: -4.335, y: -0.130, z: 1.877},
+      //   ],
+
+      //   //短线
+      //   [ //
+      //     {x: -4.671, y: -0.112, z: 1.678},
+      //     {x: -4.671, y: -0.112, z: 1.030},
+      //   ],
+
+      //   //长线
+      //   [ //  todo 中间加点
+      //     {x: -4.325, y: -0.112, z: 0.966},
+      //     {x: 0.031, y: -0.110, z: 0.966},
+      //   ],
+
+      //   //出口长线
+      //   [ //  todo 中间加点
+      //     {x:0.285, y: -0.141, z: 0.656},
+      //     {x: 0.285, y: -0.141, z: -10.660},
+      //   ],
+      // ]
+
+      // SExhibition.showPipeFlow(layer.name, paths, 0.7, 0)
+
+      const speed = 0.7
+      const heightOffset = 0.05
+
+      SExhibition.showPipeFlow2(layer.name, [
+        {
+          start: {x: -1.318, y:  -0.141 + heightOffset, z: -11},
+          end:  {x: -1.318, y:  -0.141 + heightOffset, z: -0.75},
+          speed: speed,
+          segment: 10,
+          runRange: 1,
+        },
+        {
+          start: {x: -1.135, y:  -0.141 + heightOffset, z: -0.093},
+          end:  {x: -0.462, y:  -0.141 + heightOffset, z: -0.093},
+          speed: speed,
+          segment: 1,
+          runRange: 1,
+        },
+        {
+          start: {x: -0.332, y: -0.141 + heightOffset, z: 0.3},
+          end:  {x: -0.332, y:  -0.141 + heightOffset, z: 1.607},
+          speed: speed,
+          segment: 2,
+          runRange: 1,
+        },
+        {
+          start: {x: -0.677, y: -0.141 + heightOffset, z: 1.852},
+          end:  {x: -4.338, y:  -0.141 + heightOffset, z: 1.852},
+          speed: speed,
+          segment: 5,
+          runRange: 1,
+        },
+        {
+          start: {x: -4.645, y: -0.141 + heightOffset, z: 1.664},
+          end:  {x: -4.645, y:  -0.141 + heightOffset, z: 1.191},
+          speed: speed,
+          segment: 1,
+          runRange: 1,
+        },
+        {
+          start: {x: -4.324, y: -0.141 + heightOffset, z: 0.976},
+          end:  {x: -0.265, y: -0.141 + heightOffset, z: 0.976},
+          speed: speed,
+          segment: 5,
+          runRange: 1,
+        },
+        {
+          start: {x: 0.270, y: -0.141 + heightOffset, z: 0.691},
+          end:  {x: 0.270, y:  -0.141 + heightOffset, z: -10.982},
+          speed: speed,
+          segment: 10,
+          runRange: 1,
+        },
+      ])
+
+    }
   }
 
   attribteEanbled = false
@@ -211,6 +419,7 @@ class CoverView extends React.Component<Props, State> {
     this.stopCover()
     this.stopRolling()
     this._hideSlide()
+    this._disableFlow()
     this.attribteEanbled = !this.attribteEanbled
     SExhibition.enablePipeAttribute(this.attribteEanbled)
     this.setState({
@@ -261,6 +470,13 @@ class CoverView extends React.Component<Props, State> {
     }
   }
 
+  _disableFlow = () => {
+    if(this.flowEnabled) {
+      this.flowEnabled = false
+      SExhibition.hidePipeFlow()
+    }
+  }
+
 
   arViewDidMount = (): void => {
     const scanShowTimer = setTimeout(() => {
@@ -299,6 +515,10 @@ class CoverView extends React.Component<Props, State> {
           })
         }
       },
+    })
+
+    AppEvent.addListener('ar_3dmap_attribute',result => {
+      this.setState({name:result.name,length:result.length,width:result.width,attributeShow:result.show})
     })
 
     AppEvent.addListener('ar_single_click', this.onSingleClick)
@@ -477,7 +697,197 @@ class CoverView extends React.Component<Props, State> {
   }
 
   attribute = () => {
-    //
+    let name = ''
+    if(this.state.name === '地面'){
+      name = '地下冷水管'
+    }else{
+      name = '消防水管'
+    }
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          width: dp(320),
+          height: dp(200),
+          bottom: dp(20),
+          left: dp(20),
+          backgroundColor: '#rgba(25, 25, 25, 0.65)',
+          borderRadius: dp(8),
+        }}
+      >
+        <View>
+          <Image
+            resizeMode={'contain'}
+            style={{ width: '100%', height: dp(50) }}
+            source={getImage().icon_coverview_title}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              width: '100%',
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ textAlign: 'center', fontSize: dp(22), color: 'white' }}>{"属性"}</Text>
+          </View>
+        </View>
+
+
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: dp(10),
+          }}
+        >
+
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Image
+              style={{ width: '100%', height: dp(50) }}
+              source={getImage().icon_coverview_back1}
+              resizeMode={'contain'}
+            />
+            <View
+              style={{
+                position: 'absolute',
+                flexDirection: 'row',
+                top: 0,
+                width: '100%',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', width: dp(70), marginLeft: dp(30) }}>{"管线:"}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(18), color: 'white', flex: 1 }}>{name}</Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              width: '100%',
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                style={{ width: dp(85), height: dp(75) }}
+                source={getImage().icon_coverview_back2}
+              />
+
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"链接类型"}</Text>
+
+                <View
+                  style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
+                ></View>
+
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{"常规"}</Text>
+              </View>
+
+            </View>
+
+
+            <View
+              style={{
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                style={{ width: dp(85), height: dp(75) }}
+                source={getImage().icon_coverview_back2}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"长度"}</Text>
+
+                <View
+                  style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
+                ></View>
+
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{this.state.length}</Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                style={{ width: dp(85), height: dp(75) }}
+                source={getImage().icon_coverview_back2}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"截面直径"}</Text>
+
+                <View
+                  style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
+                ></View>
+
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{this.state.width}</Text>
+              </View>
+            </View>
+
+          </View>
+
+        </View>
+      </View>
+    )
   }
 
 
@@ -904,7 +1314,7 @@ class CoverView extends React.Component<Props, State> {
 
         {this.state.showSlider && this.slider()}
 
-
+        {this.state.attributeShow && this.attribute()}
 
         <ARGuide
           show={this.state.showGuide}

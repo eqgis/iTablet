@@ -4975,6 +4975,10 @@ export default class MapView extends React.Component {
             AppEvent.emitEvent('ar_image_tracking_result', result.pose)
           }
           }
+          onShowAttribute={async result => {
+            AppEvent.emitEvent('ar_3dmap_attribute', result)
+          }
+          }
           onARElementGeometryTouch={element => {
             // 点击矢量线和符号线的回调函数
             // if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_SELECT_ELEMENT') {

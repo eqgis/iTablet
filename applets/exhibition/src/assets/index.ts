@@ -124,6 +124,9 @@ const icon_tool_meterials0 = require('./icon_tool_meterials0.png')
 const icon_tool_meterials1 = require('./icon_tool_meterials1.png')
 const icon_tool_video = require('./icon_tool_video.png')
 const ar_pipe_bounds = require('./ar_pipe_bounds.png')
+const icon_coverview_title = require('./icon_coverview_title.png')
+const icon_coverview_back1 = require('./icon_coverview_back1.png')
+const icon_coverview_back2 = require('./icon_coverview_back2.png')
 
 const image = {
   ar_pipe_bounds,
@@ -253,6 +256,10 @@ const image = {
   icon_tool_meterials0,
   icon_tool_meterials1,
   icon_tool_video,
+
+  icon_coverview_title,
+  icon_coverview_back1,
+  icon_coverview_back2,
 }
 
 function getImage(): typeof image {

@@ -30,6 +30,10 @@ interface State {
   /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
   isScan: boolean
   isSecondaryShow: boolean
+  name:string
+  width:string
+  length:string
+  attributeShow:boolean
 }
 
 class CoverView extends React.Component<Props, State> {
@@ -62,6 +66,10 @@ class CoverView extends React.Component<Props, State> {
       showSide: true,
       secondMenuData: [],
       isSecondaryShow: false,
+      name:'',
+      width:'',
+      length:'',
+      attributeShow:false,
     }
   }
 
@@ -301,6 +309,10 @@ class CoverView extends React.Component<Props, State> {
       },
     })
 
+    AppEvent.addListener('ar_3dmap_attribute',result => {
+      this.setState({name:result.name,length:result.length,width:result.width,attributeShow:result.show})
+    })
+
     AppEvent.addListener('ar_single_click', this.onSingleClick)
 
     AppEvent.addListener('ar_image_tracking_result', result => {
@@ -477,7 +489,195 @@ class CoverView extends React.Component<Props, State> {
   }
 
   attribute = () => {
-    //
+    let name = ''
+    if(this.state.name === '地面'){
+      name = '地下冷水管'
+    }else{
+      name = '消防水管'
+    }
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          width: dp(320),
+          height: dp(200),
+          bottom: dp(20),
+          left: dp(20),
+          backgroundColor: '#rgba(25, 25, 25, 0.65)',
+          borderRadius: dp(8),
+        }}
+      >
+        <View>
+          <Image
+            style={{ width: '100%', height: dp(50) }}
+            source={getImage().icon_coverview_title}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              width: '100%',
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ textAlign: 'center', fontSize: dp(22), color: 'white' }}>{"属性"}</Text>
+          </View>
+        </View>
+
+
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: dp(10),
+          }}
+        >
+
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Image
+              style={{ width: '100%', height: dp(50) }}
+              source={getImage().icon_coverview_back1}
+            />
+            <View
+              style={{
+                position: 'absolute',
+                flexDirection: 'row',
+                top: 0,
+                width: '100%',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', width: dp(70), marginLeft: dp(15) }}>{"管线:"}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(18), color: 'white', flex: 1 }}>{name}</Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              width: '100%',
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                style={{ width: dp(85), height: dp(75) }}
+                source={getImage().icon_coverview_back2}
+              />
+
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"链接类型"}</Text>
+
+                <View
+                  style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
+                ></View>
+
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{"常规"}</Text>
+              </View>
+
+            </View>
+
+
+            <View
+              style={{
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                style={{ width: dp(85), height: dp(75) }}
+                source={getImage().icon_coverview_back2}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"长度"}</Text>
+
+                <View
+                  style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
+                ></View>
+
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{this.state.length}</Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                height: '100%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                style={{ width: dp(85), height: dp(75) }}
+                source={getImage().icon_coverview_back2}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"截面直径"}</Text>
+
+                <View
+                  style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
+                ></View>
+
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{this.state.width}</Text>
+              </View>
+            </View>
+
+          </View>
+
+        </View>
+      </View>
+    )
   }
 
 
@@ -904,7 +1104,7 @@ class CoverView extends React.Component<Props, State> {
 
         {this.state.showSlider && this.slider()}
 
-
+        {this.state.attributeShow && this.attribute()}
 
         <ARGuide
           show={this.state.showGuide}

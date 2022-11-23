@@ -697,12 +697,6 @@ class CoverView extends React.Component<Props, State> {
   }
 
   attribute = () => {
-    let name = ''
-    if(this.state.name === '地面'){
-      name = '地下冷水管'
-    }else{
-      name = '消防水管'
-    }
     return (
       <View
         style={{
@@ -767,7 +761,7 @@ class CoverView extends React.Component<Props, State> {
               }}
             >
               <Text style={{ textAlign: 'left', fontSize: dp(10), color: 'white', width: dp(70), marginLeft: dp(20) }}>{"管线:"}</Text>
-              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', flex: 1 }}>{name}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', flex: 1 }}>{this.state.name}</Text>
             </View>
           </View>
 

@@ -337,20 +337,6 @@ class SandBoxView extends React.Component<Props, State> {
   getSideBarItems = (): Item[] => {
     return [
       {
-        image: getImage().icon_tool_reset,
-        image_selected: getImage().icon_tool_reset_selected,
-        title: '复位',
-        showIndicator: false,
-        action: async () => {
-          if (!this.checkSenceAndToolType()) return
-          if (oraginSandboxStatus) {
-            this.state.toolType === '' && this.timeoutTrigger?.onFirstMenuClick()
-            this.toolView?.reset()
-            await SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
-          }
-        }
-      },
-      {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
         title: '调整',
@@ -507,6 +493,12 @@ class SandBoxView extends React.Component<Props, State> {
         paths.push(home + glb.path)
       }
 
+      // 景点
+      const spotPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点'
+      const spotGlbs = await FileTools.getPathListByFilter(spotPath, {
+        extension: 'glb',
+      })
+      const spotPaths = []
       for (const glb of spotGlbs) {
         spotPaths.push(home + glb.path)
       }
@@ -1052,8 +1044,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         const item = items[i]
         const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
         const imagePath = item.path.replace(item.name, name + '.png')
-        const spotData = JSON.parse(spotJson)
-        const imagePath = item.path.substring(0, item.path.lastIndexOf('/')) + '/' + spotData.tabImg
         let image
         if (!await FileTools.fileIsExist(imagePath)) {
           image = getImage().tool_effect

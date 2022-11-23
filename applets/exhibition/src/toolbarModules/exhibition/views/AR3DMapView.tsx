@@ -426,7 +426,7 @@ class AR3DMapView extends React.Component<Props, State> {
         image: getImage().icon_tool_meterials0,
         action: async () => {
           SExhibition.changeBuildMaterials(0)
-          this.setState({ showShape: false })
+          // this.setState({ showShape: false })
           this.timeoutTrigger?.onBackFromSecondMenu()
         },
       },
@@ -435,7 +435,16 @@ class AR3DMapView extends React.Component<Props, State> {
         image: getImage().icon_tool_meterials1,
         action: async () => {
           SExhibition.changeBuildMaterials(1)
-          this.setState({ showShape: false })
+          // this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
+      },
+      {
+        name: '纹理贴图2',
+        image: getImage().icon_tool_meterials2,
+        action: async () => {
+          SExhibition.changeBuildMaterials(2)
+          // this.setState({ showShape: false })
           this.timeoutTrigger?.onBackFromSecondMenu()
         },
       },

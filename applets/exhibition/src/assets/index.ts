@@ -122,6 +122,7 @@ const icon_tool_attribute = require('./icon_tool_attribute.png')
 const icon_tool_materials = require('./icon_tool_materials.png')
 const icon_tool_meterials0 = require('./icon_tool_meterials0.png')
 const icon_tool_meterials1 = require('./icon_tool_meterials1.png')
+const icon_tool_meterials2 = require('./icon_tool_meterials2.png')
 const icon_tool_video = require('./icon_tool_video.png')
 const ar_pipe_bounds = require('./ar_pipe_bounds.png')
 const icon_coverview_title = require('./icon_coverview_title.png')
@@ -255,6 +256,7 @@ const image = {
   icon_tool_materials,
   icon_tool_meterials0,
   icon_tool_meterials1,
+  icon_tool_meterials2,
   icon_tool_video,
 
   icon_coverview_title,

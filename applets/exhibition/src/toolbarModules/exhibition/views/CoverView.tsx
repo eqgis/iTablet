@@ -15,7 +15,7 @@ import ScanWrap from '../components/ScanWrap'
 import BottomMenu, { itemConmonType } from '../components/BottomMenu'
 import AnimationWrap from '../components/AnimationWrap'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
-import { Vector3 } from 'imobile_for_reactnative/types/data'
+import { FlowParam } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SExhibition'
 
 interface Props {
   windowSize: ScaledSize
@@ -77,7 +77,7 @@ class CoverView extends React.Component<Props, State> {
   getMainMenuItem = (): Item[] => {
     return [
       {
-        image: getImage().icon_tool_rectangle,
+        image: getImage().ar_pipe_full,
         title: '全景',
         action: this.onFullScapePress,
         autoCancelSelected: false,
@@ -95,7 +95,7 @@ class CoverView extends React.Component<Props, State> {
         autoCancelSelected: false,
       },
       {
-        image: getImage().icon_tool_rolling,
+        image: getImage().ar_pipe_flow,
         title: '流向',
         action: this.onFlowPress,
       },
@@ -137,6 +137,25 @@ class CoverView extends React.Component<Props, State> {
         image: getImage().icon_tool_vertical,
         action: () => {
           this.onRollingSelect(1)
+        }
+      }
+    ]
+  }
+
+  getFlowMenu = (): itemConmonType[] => {
+    return [
+      {
+        name: '流向1',
+        image: getImage().ar_pipe_flow_1,
+        action: () => {
+          this.onFlowSelect(1)
+        }
+      },
+      {
+        name: '流向2',
+        image: getImage().ar_pipe_flow_2,
+        action: () => {
+          this.onFlowSelect(2)
         }
       }
     ]
@@ -218,192 +237,11 @@ class CoverView extends React.Component<Props, State> {
     this._hideSlide()
     this._disableAttribte()
     this.flowEnabled = !this.flowEnabled
-    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-    if(layer){
 
-      // const paths: [Vector3, Vector3][] = [
-
-      //   // 入口线
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -11},
-      //     {x: -1.318, y:  -0.141, z: -10.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -10.5},
-      //   //   {x: -1.318, y:  -0.141, z: -10.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -10},
-      //     {x: -1.318, y:  -0.141, z: -9.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -9.5},
-      //   //   {x: -1.318, y:  -0.141, z: -9.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -9},
-      //     {x: -1.318, y:  -0.141, z: -8.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -8.5},
-      //   //   {x: -1.318, y:  -0.141, z: -8.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -8},
-      //     {x: -1.318, y:  -0.141, z: -7.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -7.5},
-      //   //   {x: -1.318, y:  -0.141, z: -7.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -7},
-      //     {x: -1.318, y:  -0.141, z: -6.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -6.5},
-      //   //   {x: -1.318, y:  -0.141, z: -6.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -6},
-      //     {x: -1.318, y:  -0.141, z: -5.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -5.5},
-      //   //   {x: -1.318, y:  -0.141, z: -5.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -5},
-      //     {x: -1.318, y:  -0.141, z: -4.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -4.5},
-      //   //   {x: -1.318, y:  -0.141, z: -4.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -4},
-      //     {x: -1.318, y:  -0.141, z: -3.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -3.5},
-      //   //   {x: -1.318, y:  -0.141, z: -3.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -3},
-      //     {x: -1.318, y:  -0.141, z: -2.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -2.5},
-      //   //   {x: -1.318, y:  -0.141, z: -2.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -2},
-      //     {x: -1.318, y:  -0.141, z: -1.75},
-      //   ],
-      //   // [ // todo 中间加点
-      //   //   {x: -1.318, y:  -0.141, z: -1.5},
-      //   //   {x: -1.318, y:  -0.141, z: -1.25},
-      //   // ],
-      //   [ // todo 中间加点
-      //     {x: -1.318, y:  -0.141, z: -1},
-      //     {x: -1.318, y:  -0.141, z: -0.75},
-      //   ],
-
-      //   //转弯短线
-      //   [ //
-      //     {x: -1.176, y: -0.150, z: -0.141},
-      //     {x: -0.551, y: -0.130, z: -0.094},
-      //   ],
-
-      //   // 短线
-      //   [ //
-      //     {x: -0.370, y: -0.130, z: 0.132},
-      //     {x: -0.370, y: -0.130, z: 1.678},
-      //   ],
-
-      //   //长线
-      //   [ // todo 中间加点
-      //     {x: -0.528, y: -0.130, z: 1.877},
-      //     {x: -4.335, y: -0.130, z: 1.877},
-      //   ],
-
-      //   //短线
-      //   [ //
-      //     {x: -4.671, y: -0.112, z: 1.678},
-      //     {x: -4.671, y: -0.112, z: 1.030},
-      //   ],
-
-      //   //长线
-      //   [ //  todo 中间加点
-      //     {x: -4.325, y: -0.112, z: 0.966},
-      //     {x: 0.031, y: -0.110, z: 0.966},
-      //   ],
-
-      //   //出口长线
-      //   [ //  todo 中间加点
-      //     {x:0.285, y: -0.141, z: 0.656},
-      //     {x: 0.285, y: -0.141, z: -10.660},
-      //   ],
-      // ]
-
-      // SExhibition.showPipeFlow(layer.name, paths, 0.7, 0)
-
-      const speed = 0.7
-      const heightOffset = 0.05
-
-      SExhibition.showPipeFlow2(layer.name, [
-        {
-          start: {x: -1.318, y:  -0.141 + heightOffset, z: -11},
-          end:  {x: -1.318, y:  -0.141 + heightOffset, z: -0.75},
-          speed: speed,
-          segment: 10,
-          runRange: 1,
-        },
-        {
-          start: {x: -1.135, y:  -0.141 + heightOffset, z: -0.093},
-          end:  {x: -0.462, y:  -0.141 + heightOffset, z: -0.093},
-          speed: speed,
-          segment: 1,
-          runRange: 1,
-        },
-        {
-          start: {x: -0.332, y: -0.141 + heightOffset, z: 0.3},
-          end:  {x: -0.332, y:  -0.141 + heightOffset, z: 1.607},
-          speed: speed,
-          segment: 2,
-          runRange: 1,
-        },
-        {
-          start: {x: -0.677, y: -0.141 + heightOffset, z: 1.852},
-          end:  {x: -4.338, y:  -0.141 + heightOffset, z: 1.852},
-          speed: speed,
-          segment: 5,
-          runRange: 1,
-        },
-        {
-          start: {x: -4.645, y: -0.141 + heightOffset, z: 1.664},
-          end:  {x: -4.645, y:  -0.141 + heightOffset, z: 1.191},
-          speed: speed,
-          segment: 1,
-          runRange: 1,
-        },
-        {
-          start: {x: -4.324, y: -0.141 + heightOffset, z: 0.976},
-          end:  {x: -0.265, y: -0.141 + heightOffset, z: 0.976},
-          speed: speed,
-          segment: 5,
-          runRange: 1,
-        },
-        {
-          start: {x: 0.270, y: -0.141 + heightOffset, z: 0.691},
-          end:  {x: 0.270, y:  -0.141 + heightOffset, z: -10.982},
-          speed: speed,
-          segment: 10,
-          runRange: 1,
-        },
-      ])
-
-    }
+    this.setState({
+      secondMenuData: this.getFlowMenu(),
+      isSecondaryShow: true
+    })
   }
 
   attribteEanbled = false
@@ -453,6 +291,10 @@ class CoverView extends React.Component<Props, State> {
     this.timeoutTrigger?.onBackFromSecondMenu()
     this.rolling(mode)
     this.setState({secondMenuData: []})
+  }
+
+  onFlowSelect = (index: 1 | 2) => {
+    this.flow(index)
   }
 
   _hideSlide = () => {
@@ -692,23 +534,24 @@ class CoverView extends React.Component<Props, State> {
     }
   }
 
-  flow = () => {
-    //
+  flow = async (index: 1 | 2) => {
+    await SExhibition.hidePipeFlow()
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SExhibition.showPipeFlow(
+        layer.name, 
+        index === 1 ? getFlowRoute1() : getFlowRoute2()
+        )
+    }
   }
 
   attribute = () => {
-    let name = ''
-    if(this.state.name === '地面'){
-      name = '地下冷水管'
-    }else{
-      name = '消防水管'
-    }
     return (
       <View
         style={{
           position: 'absolute',
-          width: dp(320),
-          height: dp(200),
+          width: dp(240),
+          height: dp(150),
           bottom: dp(20),
           left: dp(20),
           backgroundColor: '#rgba(25, 25, 25, 0.65)',
@@ -718,7 +561,7 @@ class CoverView extends React.Component<Props, State> {
         <View>
           <Image
             resizeMode={'contain'}
-            style={{ width: '100%', height: dp(50) }}
+            style={{ width: '100%', height: dp(45) }}
             source={getImage().icon_coverview_title}
           />
           <View
@@ -731,7 +574,7 @@ class CoverView extends React.Component<Props, State> {
               alignItems: 'center',
             }}
           >
-            <Text style={{ textAlign: 'center', fontSize: dp(22), color: 'white' }}>{"属性"}</Text>
+            <Text style={{ textAlign: 'center', fontSize: dp(18), color: 'white' }}>{"属性"}</Text>
           </View>
         </View>
 
@@ -751,7 +594,7 @@ class CoverView extends React.Component<Props, State> {
             }}
           >
             <Image
-              style={{ width: '100%', height: dp(50) }}
+              style={{ width: '100%', height: dp(40)}}
               source={getImage().icon_coverview_back1}
               resizeMode={'contain'}
             />
@@ -766,8 +609,8 @@ class CoverView extends React.Component<Props, State> {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', width: dp(70), marginLeft: dp(30) }}>{"管线:"}</Text>
-              <Text style={{ textAlign: 'left', fontSize: dp(18), color: 'white', flex: 1 }}>{name}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(10), color: 'white', width: dp(70), marginLeft: dp(20) }}>{"管线:"}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', flex: 1 }}>{this.state.name}</Text>
             </View>
           </View>
 
@@ -791,7 +634,8 @@ class CoverView extends React.Component<Props, State> {
               }}
             >
               <Image
-                style={{ width: dp(85), height: dp(75) }}
+                resizeMode={'contain'}
+                style={{ width: dp(65), height: dp(55) }}
                 source={getImage().icon_coverview_back2}
               />
 
@@ -805,13 +649,13 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"链接类型"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"链接类型"}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
                 ></View>
 
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{"常规"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', bottom: dp(10) }}>{"常规"}</Text>
               </View>
 
             </View>
@@ -827,7 +671,8 @@ class CoverView extends React.Component<Props, State> {
               }}
             >
               <Image
-                style={{ width: dp(85), height: dp(75) }}
+                resizeMode={'contain'}
+                style={{ width: dp(65), height: dp(55) }}
                 source={getImage().icon_coverview_back2}
               />
               <View
@@ -840,13 +685,13 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"长度"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"长度"}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
                 ></View>
 
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{this.state.length}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', bottom: dp(10) }}>{this.state.length}</Text>
               </View>
             </View>
 
@@ -860,7 +705,8 @@ class CoverView extends React.Component<Props, State> {
               }}
             >
               <Image
-                style={{ width: dp(85), height: dp(75) }}
+                resizeMode={'contain'}
+                style={{ width: dp(65), height: dp(55) }}
                 source={getImage().icon_coverview_back2}
               />
               <View
@@ -873,13 +719,13 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"截面直径"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"截面直径"}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
                 ></View>
 
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{this.state.width}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', bottom: dp(10) }}>{this.state.width}</Text>
               </View>
             </View>
 
@@ -1377,3 +1223,182 @@ const styles = StyleSheet.create({
 })
 
 export default CoverView
+
+
+function getFlowRoute1(): FlowParam[] {
+  const speed = 0.7
+  const heightOffset = 0.1
+  const pose = 0
+  return [
+    {
+      start: {x: -1.318, y:  -0.141 + heightOffset, z: -11},
+      end:  {x: -1.318, y:  -0.141 + heightOffset, z: -0.75},
+      speed: speed,
+      segment: 10,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -1.135, y:  -0.141 + heightOffset, z: -0.093},
+      end:  {x: -0.462, y:  -0.141 + heightOffset, z: -0.093},
+      speed: speed,
+      segment: 1,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -0.332, y: -0.141 + heightOffset, z: 0.3},
+      end:  {x: -0.332, y:  -0.141 + heightOffset, z: 1.607},
+      speed: speed,
+      segment: 2,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -0.677, y: -0.141 + heightOffset, z: 1.852},
+      end:  {x: -4.338, y:  -0.141 + heightOffset, z: 1.852},
+      speed: speed,
+      segment: 5,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -4.645, y: -0.141 + heightOffset, z: 1.664},
+      end:  {x: -4.645, y:  -0.141 + heightOffset, z: 1.191},
+      speed: speed,
+      segment: 1,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -4.324, y: -0.141 + heightOffset, z: 0.976},
+      end:  {x: -0.265, y: -0.141 + heightOffset, z: 0.976},
+      speed: speed,
+      segment: 5,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: 0.270, y: -0.141 + heightOffset, z: 0.691},
+      end:  {x: 0.270, y:  -0.141 + heightOffset, z: -10.982},
+      speed: speed,
+      segment: 10,
+      runRange: 1,
+      pose,
+    },
+  ]
+}
+
+
+function getFlowRoute2(): FlowParam[] {
+  const speed = 0.7
+  const offset = 0.1
+  const pose = 1
+  return [
+    {
+      start: {x: -5.909 + offset , y: 0.415, z: 9.669},
+      end:  {x: -5.909+ offset, y:  0.415 , z: 8.070},
+      speed: speed,
+      segment: 2,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -5.909 + offset , y: 0.663, z: 7.891},
+      end:  {x: -5.909+ offset, y:  0.919 , z: 7.891},
+      speed: speed,
+      segment: 1,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.069 + offset , y: 1.072, z: 7.891},
+      end:  {x: -6.069+ offset, y:  3.070 , z: 7.891},
+      speed: speed,
+      segment: 4,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.069 + offset , y: 3.312, z: 7.574},
+      end:  {x: -6.069+ offset, y:  3.312 , z: 5.942},
+      speed: speed,
+      segment: 4,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.431 + offset , y: 3.312, z: 5.681},
+      end:  {x: -6.431+ offset, y:  3.312 , z: 5.298},
+      speed: speed,
+      segment: 1,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.447 + offset , y: 3.518, z: 5.104},
+      end:  {x: -6.467 + offset, y:  3.916 , z: 5.104},
+      speed: speed,
+      segment: 1,
+      runRange: 1,
+      pose,
+    },
+
+    {
+      start: {x: -6.467 + offset , y: 4.067, z: 4.918},
+      end:  {x: -6.467 + offset, y:  4.067 , z: 2.820},
+      speed: speed,
+      segment: 3,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -5.892 + offset , y: 4.043, z: 2.427},
+      end:  {x: -5.892 + offset, y:  4.043 , z: 0.003},
+      speed: speed,
+      segment: 3,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.477 + offset , y: 4.043, z: -0.388},
+      end:  {x: -6.477+ offset, y:  4.043 , z: -2.89},
+      speed: speed,
+      segment: 3,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.061 + offset , y: 4.043, z: -3.295},
+      end:  {x: -6.061+ offset, y:  4.043 , z: -7.033},
+      speed: speed,
+      segment: 3,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.061 + offset , y: 3.396, z: -7.558},
+      end:  {x: -5.896+ offset, y: 3.419, z: -9.657},
+      speed: speed,
+      segment: 3,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -5.896 + offset , y: 3.730, z: -10.041},
+      end:  {x: -5.896+ offset, y:  4.832, z: -10.040},
+      speed: speed,
+      segment: 3,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -5.898 + offset , y: 4.977, z: -10.23},
+      end:  {x: -5.898+ offset, y:  4.977, z: -11.086},
+      speed: speed,
+      segment: 2,
+      runRange: 1,
+      pose,
+    },
+  ]
+}

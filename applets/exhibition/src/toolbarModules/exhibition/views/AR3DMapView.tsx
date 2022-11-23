@@ -56,7 +56,7 @@ class AR3DMapView extends React.Component<Props, State> {
   speakData: Array<itemConmonType> = []
 
   scaleValue = 12
-  rotationValue = 30
+  rotationValue = 10
 
   listeners: {
     addListener:EmitterSubscription | undefined,
@@ -109,9 +109,9 @@ class AR3DMapView extends React.Component<Props, State> {
           }
           // SExhibition.map3Dreset()
           this.scaleValue = 12
-          this.rotationValue = 30
-          SExhibition.scale3dMap(1)
-          SExhibition.rotation3dMap(30)
+          this.rotationValue = 10
+          SExhibition.scale3dMap(1.2)
+          SExhibition.rotation3dMap(10)
           this.setState({showSlide:false})
           this.timeoutTrigger?.onFirstMenuClick()
 
@@ -426,7 +426,7 @@ class AR3DMapView extends React.Component<Props, State> {
         image: getImage().icon_tool_meterials0,
         action: async () => {
           SExhibition.changeBuildMaterials(0)
-          this.setState({ showShape: false })
+          // this.setState({ showShape: false })
           this.timeoutTrigger?.onBackFromSecondMenu()
         },
       },
@@ -435,7 +435,16 @@ class AR3DMapView extends React.Component<Props, State> {
         image: getImage().icon_tool_meterials1,
         action: async () => {
           SExhibition.changeBuildMaterials(1)
-          this.setState({ showShape: false })
+          // this.setState({ showShape: false })
+          this.timeoutTrigger?.onBackFromSecondMenu()
+        },
+      },
+      {
+        name: '纹理贴图2',
+        image: getImage().icon_tool_meterials2,
+        action: async () => {
+          SExhibition.changeBuildMaterials(2)
+          // this.setState({ showShape: false })
           this.timeoutTrigger?.onBackFromSecondMenu()
         },
       },
@@ -694,7 +703,7 @@ class AR3DMapView extends React.Component<Props, State> {
       }, 500)
 
       this.open = true
-      this.rotationValue = 30
+      this.rotationValue = 10
       this.scaleValue = 12
     })
   }

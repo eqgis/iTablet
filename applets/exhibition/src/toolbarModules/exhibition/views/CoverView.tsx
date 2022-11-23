@@ -707,8 +707,8 @@ class CoverView extends React.Component<Props, State> {
       <View
         style={{
           position: 'absolute',
-          width: dp(320),
-          height: dp(200),
+          width: dp(240),
+          height: dp(150),
           bottom: dp(20),
           left: dp(20),
           backgroundColor: '#rgba(25, 25, 25, 0.65)',
@@ -718,7 +718,7 @@ class CoverView extends React.Component<Props, State> {
         <View>
           <Image
             resizeMode={'contain'}
-            style={{ width: '100%', height: dp(50) }}
+            style={{ width: '100%', height: dp(45) }}
             source={getImage().icon_coverview_title}
           />
           <View
@@ -731,7 +731,7 @@ class CoverView extends React.Component<Props, State> {
               alignItems: 'center',
             }}
           >
-            <Text style={{ textAlign: 'center', fontSize: dp(22), color: 'white' }}>{"属性"}</Text>
+            <Text style={{ textAlign: 'center', fontSize: dp(18), color: 'white' }}>{"属性"}</Text>
           </View>
         </View>
 
@@ -751,7 +751,7 @@ class CoverView extends React.Component<Props, State> {
             }}
           >
             <Image
-              style={{ width: '100%', height: dp(50) }}
+              style={{ width: '100%', height: dp(40)}}
               source={getImage().icon_coverview_back1}
               resizeMode={'contain'}
             />
@@ -766,8 +766,8 @@ class CoverView extends React.Component<Props, State> {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', width: dp(70), marginLeft: dp(30) }}>{"管线:"}</Text>
-              <Text style={{ textAlign: 'left', fontSize: dp(18), color: 'white', flex: 1 }}>{name}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(10), color: 'white', width: dp(70), marginLeft: dp(20) }}>{"管线:"}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', flex: 1 }}>{name}</Text>
             </View>
           </View>
 
@@ -791,7 +791,8 @@ class CoverView extends React.Component<Props, State> {
               }}
             >
               <Image
-                style={{ width: dp(85), height: dp(75) }}
+                resizeMode={'contain'}
+                style={{ width: dp(65), height: dp(55) }}
                 source={getImage().icon_coverview_back2}
               />
 
@@ -805,13 +806,13 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"链接类型"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"链接类型"}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
                 ></View>
 
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{"常规"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', bottom: dp(10) }}>{"常规"}</Text>
               </View>
 
             </View>
@@ -827,7 +828,8 @@ class CoverView extends React.Component<Props, State> {
               }}
             >
               <Image
-                style={{ width: dp(85), height: dp(75) }}
+                resizeMode={'contain'}
+                style={{ width: dp(65), height: dp(55) }}
                 source={getImage().icon_coverview_back2}
               />
               <View
@@ -840,13 +842,13 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"长度"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"长度"}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
                 ></View>
 
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{this.state.length}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', bottom: dp(10) }}>{this.state.length}</Text>
               </View>
             </View>
 
@@ -860,7 +862,8 @@ class CoverView extends React.Component<Props, State> {
               }}
             >
               <Image
-                style={{ width: dp(85), height: dp(75) }}
+                resizeMode={'contain'}
+                style={{ width: dp(65), height: dp(55) }}
                 source={getImage().icon_coverview_back2}
               />
               <View
@@ -873,13 +876,13 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', top: dp(25), }}>{"截面直径"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"截面直径"}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
                 ></View>
 
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(18), color: 'white', bottom: dp(20) }}>{this.state.width}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', bottom: dp(10) }}>{this.state.width}</Text>
               </View>
             </View>
 

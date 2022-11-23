@@ -1378,15 +1378,15 @@ function getFlowRoute2(): FlowParam[] {
     },
     {
       start: {x: -6.061 + offset , y: 3.396, z: -7.558},
-      end:  {x: -6.061+ offset, y:  3.396, z: -9.870},
+      end:  {x: -5.896+ offset, y: 3.419, z: -9.657},
       speed: speed,
       segment: 3,
       runRange: 1,
       pose,
     },
     {
-      start: {x: -6.061 + offset , y: 3.585, z: -10.04},
-      end:  {x: -6.061+ offset, y:  4.863, z: -10.040},
+      start: {x: -5.896 + offset , y: 3.730, z: -10.041},
+      end:  {x: -5.896+ offset, y:  4.832, z: -10.040},
       speed: speed,
       segment: 3,
       runRange: 1,

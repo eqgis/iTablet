@@ -1487,7 +1487,12 @@ export default class MapView extends React.Component {
       }
       LayerUtils.setMapLayerAttribute(undefined, undefined, true)
       this.setLoading(false)
-      NavigationService.goBack(baskFrom)
+      // NavigationService.goBack(baskFrom)
+      try {
+        await appUtilsModule.AppExit()
+      } catch (error) {
+        Toast.show('退出失败')
+      }
 
       this.closeSample()
     } catch (e) {
@@ -1649,120 +1654,120 @@ export default class MapView extends React.Component {
   back = async params => {
     // console.warn("1111")
     // this._closeModal()
-    this.exit.setDialogVisible(true)
+    // this.exit.setDialogVisible(true)
 
-    // try {
-    //   if (!this.state.mapLoaded) return
-    //   // 最顶层的语音搜索，最先处理
-    //   if (Audio.isShow()) {
-    //     Audio.hideAudio()
-    //     return
-    //   }
+    try {
+      if (!this.state.mapLoaded) return
+      // 最顶层的语音搜索，最先处理
+      if (Audio.isShow()) {
+        Audio.hideAudio()
+        return
+      }
 
-    //   // 位置校准展示时,禁止Android物理返回
-    //   if (Platform.OS === 'android' && this.props.showDatumPoint) {
-    //     return false
-    //   }
+      // 位置校准展示时,禁止Android物理返回
+      if (Platform.OS === 'android' && this.props.showDatumPoint) {
+        return false
+      }
 
-    //   // AR测图-测量/测图界面返回
-    //   if (global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton) {
-    //     this.ARMappingHeaderBack()
-    //     return
-    //   }
+      // AR测图-测量/测图界面返回
+      if (global.Type === ChunkType.MAP_AR_MAPPING && this.state.showArMappingButton) {
+        this.ARMappingHeaderBack()
+        return
+      }
 
-    //   // 优先处理其他界面跳转到MapView传来的返回事件
-    //   if (this.backAction && typeof this.backAction === 'function') {
-    //     this.backAction({
-    //       showFullMap: this.showFullMap,
-    //     })
-    //     this.backAction = null
-    //     this.mapController && this.mapController.reset()
-    //     return
-    //   }
+      // 优先处理其他界面跳转到MapView传来的返回事件
+      if (this.backAction && typeof this.backAction === 'function') {
+        this.backAction({
+          showFullMap: this.showFullMap,
+        })
+        this.backAction = null
+        this.mapController && this.mapController.reset()
+        return
+      }
 
-    //   // Android物理返回事件
-    //   if (Platform.OS === 'android') {
-    //     // Toolbar显示时，返回事件Toolbar的close
-    //     if (this.toolBox && this.toolBox.isShow) {
-    //       //在此处理 toolbar 显示时的返回事件
-    //       // this.toolBox.buttonView.close()
-    //       return true
-    //     }
+      // Android物理返回事件
+      if (Platform.OS === 'android') {
+        // Toolbar显示时，返回事件Toolbar的close
+        if (this.toolBox && this.toolBox.isShow) {
+          //在此处理 toolbar 显示时的返回事件
+          // this.toolBox.buttonView.close()
+          return true
+        }
 
-    //     //处理导航时返回键
-    //     if (global.NAVIGATIONSTARTHEAD?.state.show) {
-    //       global.NAVIGATIONSTARTHEAD?.close()
-    //       return true
-    //     }
+        //处理导航时返回键
+        if (global.NAVIGATIONSTARTHEAD?.state.show) {
+          global.NAVIGATIONSTARTHEAD?.close()
+          return true
+        }
 
-    //     //处理导航中返回键
-    //     if (this.isGuiding) {
-    //       return true
-    //     }
+        //处理导航中返回键
+        if (this.isGuiding) {
+          return true
+        }
 
-    //     // 删除对象Dialog显示时，返回事件关闭Dialog
-    //     if (
-    //       global.removeObjectDialog &&
-    //       global.removeObjectDialog.getState().visible
-    //     ) {
-    //       global.removeObjectDialog.setDialogVisible(false)
-    //       return true
-    //     }
-    //   }
+        // 删除对象Dialog显示时，返回事件关闭Dialog
+        if (
+          global.removeObjectDialog &&
+          global.removeObjectDialog.getState().visible
+        ) {
+          global.removeObjectDialog.setDialogVisible(false)
+          return true
+        }
+      }
 
-    //   // 若服务正在更新,则无法关闭地图
-    //   if (
-    //     global.coworkMode && this.props.currentTask?.groupID &&
-    //     this.props.currentTaskServices?.[this.props.user.currentUser.userName]?.[this.props.currentTask?.groupID]?.[this.props.currentTask?.id]?.length > 0
-    //   ) {
-    //     let currentServices = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
-    //     let serviceDone = true
-    //     for (const services of currentServices) {
-    //       if (services.status !== 'done') {
-    //         serviceDone = false
-    //         break
-    //       }
-    //     }
-    //     if (!serviceDone) {
-    //       Toast.show(getLanguage(this.props.language).Cowork.CLOSE_MAP_BEFORE_UPDATE_SERVICE)
-    //       return true
-    //     }
-    //   }
+      // 若服务正在更新,则无法关闭地图
+      if (
+        global.coworkMode && this.props.currentTask?.groupID &&
+        this.props.currentTaskServices?.[this.props.user.currentUser.userName]?.[this.props.currentTask?.groupID]?.[this.props.currentTask?.id]?.length > 0
+      ) {
+        let currentServices = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
+        let serviceDone = true
+        for (const services of currentServices) {
+          if (services.status !== 'done') {
+            serviceDone = false
+            break
+          }
+        }
+        if (!serviceDone) {
+          Toast.show(getLanguage(this.props.language).Cowork.CLOSE_MAP_BEFORE_UPDATE_SERVICE)
+          return true
+        }
+      }
 
-    //   let result = await SMap.mapIsModified() // 是否保存普通地图
-    //   const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
-    //   if ((result || needSaveARMap) && !this.isExample) {
-    //     this.setSaveViewVisible(true, null, async () => {
-    //       if(Platform.OS === 'ios'){
-    //         SARMap.setARTouch(true)
-    //       }
-    //       this.props.showAR(false)
-    //       await this.props.setCurrentAttribute({})
-    //       // this.setState({ showScaleView: false })
-    //       await this._removeGeometrySelectedListener()
-    //       if (global.Type === ChunkType.MAP_NAVIGATION) {
-    //         await this._removeNavigationListeners()
-    //       }
-    //       await this.closeMapHandler(params?.baskFrom)
-    //     })
-    //   } else {
-    //     try {
-    //       this.props.showAR(false)
-    //       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
-    //       if (global.Type === ChunkType.MAP_NAVIGATION) {
-    //         await this._removeNavigationListeners()
-    //         await SMap.clearPoint()
-    //         await SMap.stopGuide()
-    //       }
-    //       await this.closeMapHandler(params?.baskFrom)
-    //     } catch (e) {
-    //       this.setLoading(false)
-    //     }
-    //   }
-    //   return true
-    // } catch (e) {
-    //   return true
-    // }
+      let result = await SMap.mapIsModified() // 是否保存普通地图
+      const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
+      if ((result || needSaveARMap) && !this.isExample) {
+        this.setSaveViewVisible(true, null, async () => {
+          if(Platform.OS === 'ios'){
+            SARMap.setARTouch(true)
+          }
+          this.props.showAR(false)
+          await this.props.setCurrentAttribute({})
+          // this.setState({ showScaleView: false })
+          await this._removeGeometrySelectedListener()
+          if (global.Type === ChunkType.MAP_NAVIGATION) {
+            await this._removeNavigationListeners()
+          }
+          await this.closeMapHandler(params?.baskFrom)
+        })
+      } else {
+        try {
+          this.props.showAR(false)
+          this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+          if (global.Type === ChunkType.MAP_NAVIGATION) {
+            await this._removeNavigationListeners()
+            await SMap.clearPoint()
+            await SMap.stopGuide()
+          }
+          await this.closeMapHandler(params?.baskFrom)
+        } catch (e) {
+          this.setLoading(false)
+        }
+      }
+      return true
+    } catch (e) {
+      return true
+    }
   }
 
   /** 设置Container的loading */

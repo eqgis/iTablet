@@ -349,7 +349,7 @@ class CoverView extends React.Component<Props, State> {
       // SExhibition.showPipeFlow(layer.name, paths, 0.7, 0)
 
       const speed = 0.7
-      const heightOffset = 0.00
+      const heightOffset = 0.1
 
       SExhibition.showPipeFlow2(layer.name, [
         {

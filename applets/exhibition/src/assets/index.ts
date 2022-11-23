@@ -128,8 +128,16 @@ const ar_pipe_bounds = require('./ar_pipe_bounds.png')
 const icon_coverview_title = require('./icon_coverview_title.png')
 const icon_coverview_back1 = require('./icon_coverview_back1.png')
 const icon_coverview_back2 = require('./icon_coverview_back2.png')
+const ar_pipe_flow = require('./pipe_flow.png')
+const ar_pipe_full = require('./pipe_full.png')
+const ar_pipe_flow_1 = require('./pipe_flow_1.png')
+const ar_pipe_flow_2 = require('./pipe_flow_2.png')
 
 const image = {
+  ar_pipe_full,
+  ar_pipe_flow,
+  ar_pipe_flow_1,
+  ar_pipe_flow_2,
   ar_pipe_bounds,
   scan,
   scan_circle,

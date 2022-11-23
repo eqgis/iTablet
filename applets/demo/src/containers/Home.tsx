@@ -33,6 +33,10 @@ class Home extends React.Component<Props, State> {
         'android.permission.WRITE_EXTERNAL_STORAGE',
         // 'android.permission.CAMERA',
         // 'android.permission.RECORD_AUDIO',
+        // 通讯录相关权限
+        "android.permission.READ_CONTACTS",
+        "android.permission.WRITE_CONTACTS",
+        "android.permission.GET_ACCOUNTS",
       ])
 
       let isAllGranted = true

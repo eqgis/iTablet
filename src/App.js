@@ -361,6 +361,10 @@ class AppRoot extends Component {
       // 'android.permission.RECORD_AUDIO',
       'android.permission.BLUETOOTH',
       'android.permission.BLUETOOTH_ADMIN',
+      // 通讯录相关权限
+      "android.permission.READ_CONTACTS",
+      "android.permission.WRITE_CONTACTS",
+      "android.permission.GET_ACCOUNTS",
     ]
     if(Platform.OS === 'android') {
       const sdkVesion = Platform.Version

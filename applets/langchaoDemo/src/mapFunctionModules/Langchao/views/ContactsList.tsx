@@ -1,0 +1,362 @@
+import MapToolbar from "@/containers/workspace/components/MapToolbar"
+import { RootState } from "@/redux/types"
+import React, { Component } from "react"
+import { SectionList, PermissionsAndroid, View, Text, TouchableOpacity, Linking, FlatList } from "react-native"
+import { connect, ConnectedProps } from "react-redux"
+import { Container } from '../../../../../../src/components'
+import Contacts from 'react-native-contacts'
+import { getPinYin } from "@/utils/pinyin"
+import { dp } from "imobile_for_reactnative/utils/size"
+import { fontSize } from "@/containers/tabs/Mine/Register/Styles"
+
+interface contactItemType {
+  recordID: string,
+  name: string, // givenName
+  phone: string, // phoneNumbers[0].number
+  firstChar: string,
+}
+
+interface contactDataType {
+  title: string,
+  data: Array<contactItemType>
+}
+
+interface Props extends ReduxProps {
+	navigation: any,
+	mapModules: any,
+}
+
+interface State {
+	// to do
+  contactData: Array<contactDataType>
+  letterArray: Array<string>
+}
+
+class ContactsList extends Component<Props, State> {
+  _sectionList: SectionList | undefined | null = null
+
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      contactData: [],
+      letterArray: [],
+    }
+  }
+
+  componentDidMount = async (): Promise<void> => {
+    this.getContactData()
+  }
+
+  /** 获取联系人列表数据 */
+  getContactData = async (): Promise<void> => {
+    // 临时的联系人数据
+    const contactDataTemp: Array<contactDataType> = []
+    // 首字母数组
+    let letterArray: Array<string> = []
+    try {
+      // 在使用Contacts的方法之前必须先确定要有相关权限
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+        {
+          'title': 'Contacts',
+          'message': 'This app would like to view your contacts.',
+          'buttonPositive': 'Please accept bare mortal'
+        }
+      )
+      // 获取联系人列表
+      const contacts = await Contacts.getAll()
+
+      // 获取首字母数组
+      await contacts.map((contact) => {
+        // 获取名字首字母
+        const letterFirst = getPinYin(contact.givenName, "", true).substring(0, 1)
+        letterArray.push(letterFirst)
+        // 数组排序并去重
+        letterArray = [...new Set(letterArray)].sort()
+      })
+
+      // 将联系人分类的数据结构搭好
+      await letterArray.map((item: string) => {
+        contactDataTemp.push({
+          title: item,
+          data: [],
+        })
+      })
+
+      // 将联系人放进各自的分类里
+      contacts.map((contact) => {
+        contactDataTemp.map((item: contactDataType) => {
+          // 获取名字首字母
+          const letterFirst = getPinYin(contact.givenName, "", true).substring(0, 1)
+          // 获取名字第一个字符
+          const firstChar = contact.givenName.substring(0, 1)
+
+          const reg = new RegExp("-", 'gi')
+          // 构造联系人对象
+          const contactItem: contactItemType = {
+            recordID: contact.recordID,
+            name: contact.givenName,
+            phone: contact.phoneNumbers[0].number.replace(reg, ""),
+            firstChar,
+          }
+
+          if (item.title === letterFirst) {
+            item.data.push(contactItem)
+          }
+
+        })
+      })
+
+      this.setState({
+        letterArray: letterArray,
+        contactData: JSON.parse(JSON.stringify(contactDataTemp)),
+      })
+
+
+    } catch (error) {
+      // console.log("获取联系人列表失败")
+
+      this.setState({
+        letterArray: letterArray,
+        contactData: JSON.parse(JSON.stringify(contactDataTemp)),
+      })
+    }
+  }
+
+  itemAction = (telephone: string) => {
+    const url = 'tel:' + telephone
+    Linking.openURL(url)
+    // Linking.canOpenURL(url).then((supported: boolean) => {
+    //   if (!supported) {
+    //     Toast.show('您的系统不支持打电话！')
+    //   } else {
+    //     return Linking.openURL(url)
+    //   }
+    // }).catch(err => {
+    //   console.log(err)
+    // })
+  }
+
+  // 字母关联分组跳转
+  _onSectionselect = (key: number) => {
+    this._sectionList?.scrollToLocation({
+      itemIndex: 0,
+      sectionIndex: key,
+      viewOffset: 20,
+    })
+
+  }
+
+  /**
+   * 底部工具栏
+   * @returns {XML}
+   */
+  renderToolBar = () => {
+    return (
+      <MapToolbar
+        navigation={this.props.navigation}
+        mapModules={this.props.mapModules}
+        initIndex={2}
+        type={"langchao"}
+      />
+    )
+  }
+  /** 分隔线 */
+  renderSeparator = () => {
+    return (
+      <View style={{
+        width: '100%',
+        height: dp(1),
+        backgroundColor: '#ccc',
+      }}/>
+    )
+  }
+
+  _renderItem(item: contactItemType, index: number) {
+    return (
+      <TouchableOpacity
+        style={[{
+          width: '100%',
+          height: dp(60),
+          backgroundColor: '#fff',
+          flexDirection: 'row',
+          justifyContent:'flex-start',
+          alignItems: 'center',
+          paddingHorizontal: dp(10),
+        }]}
+        onPress={() => {
+          this.itemAction(item.phone)
+        }}
+      >
+        <View style={[{
+          width: dp(50),
+          height: dp(50),
+          borderRadius: dp(8),
+          backgroundColor: '#ccc',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }]}>
+          <Text style={[{
+            color: '#fff',
+            fontSize: dp(30),
+            fontWeight: 'bold',
+          }]}>{item.firstChar}</Text>
+        </View>
+
+        <View style={[{
+          flex:1,
+          height: dp(50),
+          flexDirection:'column',
+          justifyContent:'space-around',
+          alignItems:'flex-start',
+          marginLeft: dp(10),
+        }]}>
+          <Text style={[{
+            color:'#333',
+            fontSize: dp(18),
+          }]}>{item.name}</Text>
+          <Text style={[{
+            color: '#999',
+            fontSize: dp(14)
+          }]}>{item.phone}</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  _renderSectionHeader(sectionItem: { section: any }) {
+    const section = sectionItem.section
+    return (
+      <View style={[
+        {
+          width: '100%',
+          height: dp(24),
+          backgroundColor: '#eee',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignContent: 'center',
+        },
+      ]}>
+        <Text style={[
+          {
+            color: '#666',
+            fontSize: dp(16),
+            marginLeft: dp(10),
+          },
+        ]}>{section.title.toUpperCase()}</Text>
+      </View>
+    )
+  }
+
+  renderList = () => {
+    if(this.state.contactData.length <= 0) {
+      return (
+        <View style={[{
+          width: '100%',
+          height: "100%",
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#fafafa',
+        }]}>
+          <Text
+            style={[{
+              color: '#999',
+              fontSize: dp(14),
+            }]}
+          >{"当前设备的联系人为空"}</Text>
+        </View>
+      )
+    }
+    return(
+      <SectionList
+        ref={(ref)=> {this._sectionList = ref}}
+        renderItem={({item, index}) => this._renderItem(item, index)}
+        renderSectionHeader={this._renderSectionHeader}
+        sections={this.state.contactData}
+        keyExtractor={(item, index) => item.recordID + "-" + index}
+        ItemSeparatorComponent={this.renderSeparator}
+        showsVerticalScrollIndicator={false}
+      />
+    )
+  }
+
+  renderRightItem = (item: string, index: number) => {
+    return(
+      <TouchableOpacity
+        style={[{
+          width: dp(20),
+          height: dp(20),
+          borderRadius: dp(5),
+          justifyContent: 'center',
+          alignItems: 'center',
+        }]}
+        onPress={() => {
+          this._onSectionselect(index)
+        }}
+      >
+        <Text style={[{
+          color: '#333',
+          fontSize: dp(12),
+        }]}>{item}</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderRightLink = () => {
+    return(
+      <View>
+        <FlatList
+          data={this.state.letterArray}
+          keyExtractor={(item, index) => item + "-" + index}
+          renderItem={({item, index}) => this.renderRightItem(item, index)}
+          style={[{
+            position: 'absolute',
+            right: dp(10),
+            bottom: dp(50),
+            backgroundColor: 'transparent',
+          },
+          ]}
+        />
+      </View>
+    )
+  }
+
+  render() {
+    return (
+      <Container
+        // ref={ref => (this.container = ref)}
+        hideInBackground={false}
+        showFullInMap={true}
+        headerProps={{
+          title: "通讯录",
+          withoutBack: true,
+          // headerRight: this.renderHeaderRight(),
+          navigation: this.props.navigation,
+          headerStyle: { borderBottomWidth: 0 },
+        }}
+        bottomBar={this.renderToolBar()}
+        style={{
+          flex: 1,
+          backgroundColor: '#fff',
+        }}
+      >
+        {/* <Text>{"我是通讯录页面"}</Text> */}
+        {this.renderList()}
+        {this.renderRightLink()}
+
+      </Container>
+    )
+  }
+}
+
+const mapStateToProp = (state: RootState) => ({
+  mapModules: state.mapModules.toJS(),
+})
+
+const mapDispatch = {
+}
+
+type ReduxProps = ConnectedProps<typeof connector>
+const connector = connect(mapStateToProp, mapDispatch)
+
+export default connector(ContactsList)

@@ -15,13 +15,15 @@ import {
 } from '@/containers/workspace/components/ToolBar/modules'
 // import { Tour } from '../mapFunctionModules'
 import { getImage } from '../assets'
-import { AppToolBar, Toast } from '@/utils'
+import { AppToolBar, Toast, NavigatorUtil } from '@/utils'
 import {
   Linking,
 } from 'react-native'
 import { getThemeAssets } from '@/assets'
 import TourAction from '../mapFunctionModules/Langchao/TourAction'
 import { DatasetType, EngineType, FileTools, SMap, SProcess } from 'imobile_for_reactnative'
+import NavigationService from '@/containers/NavigationService'
+import navigators from '../mapFunctionModules/Langchao/views/index'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -87,12 +89,16 @@ export default class LangChaoDemoModule extends Module {
         selectedImage: getImage().telephone2,
         btnClick: () => {
           Toast.show("呼叫中心")
-          Linking.openURL('tel:10086')
+          // Linking.openURL('tel:10086')
+          NavigationService.navigate('ContactsList')
         },
       },
 
       MapTabs.MapSetting,       // 系统自带Tab-设置
     ]
+
+    // 添加新的页面导航
+    NavigatorUtil.addNavigator(navigators)
 
   }
 

@@ -156,29 +156,29 @@ class AR3DMapView extends React.Component<Props, State> {
           }
           this.setState({showSlide:!this.state.showSlide})
 
-          if(this.isCarAnimationPlay) {
-            await SARMap.pauseCarAnimation()
-            this.isCarAnimationPlay = false
-          }
+          // if(this.isCarAnimationPlay) {
+          //   await SARMap.pauseCarAnimation()
+          //   this.isCarAnimationPlay = false
+          // }
 
           // if(this.open){
           //   SExhibition.rotation3dMap(this.rotationValue)
           // }
 
-          if(this.state.attribute){
-            SExhibition.setIsTouchSelect(false)
-            this.setState({attribute:false})
-            Toast.show('查询关闭', {
-              backgroundColor: 'rgba(0,0,0,.5)',
-              textColor: '#fff',
-              duration: 2000,
-            })
-          }
+          // if(this.state.attribute){
+          //   SExhibition.setIsTouchSelect(false)
+          //   this.setState({attribute:false})
+          //   Toast.show('查询关闭', {
+          //     backgroundColor: 'rgba(0,0,0,.5)',
+          //     textColor: '#fff',
+          //     duration: 2000,
+          //   })
+          // }
 
-          if(this.state.showVideo){
-            this.setState({showVideo:false})
-            SExhibition.showMapVideo(false)
-          }
+          // if(this.state.showVideo){
+          //   this.setState({showVideo:false})
+          //   SExhibition.showMapVideo(false)
+          // }
           this.setState({
             showShape: false,
           })
@@ -196,10 +196,10 @@ class AR3DMapView extends React.Component<Props, State> {
             this.sideBar?.clear()
             return
           }
-          if(this.isCarAnimationPlay) {
-            await SARMap.pauseCarAnimation()
-            this.isCarAnimationPlay = false
-          }
+          // if(this.isCarAnimationPlay) {
+          //   await SARMap.pauseCarAnimation()
+          //   this.isCarAnimationPlay = false
+          // }
           if (this.open) {
             this.getShape()
             this.setState({ showShape: true })
@@ -208,20 +208,20 @@ class AR3DMapView extends React.Component<Props, State> {
             this.sideBarIndex = index
             this.shapBarIndex = index
 
-            if (this.state.attribute) {
-              SExhibition.setIsTouchSelect(false)
-              this.setState({ attribute: false })
-              Toast.show('查询关闭', {
-                backgroundColor: 'rgba(0,0,0,.5)',
-                textColor: '#fff',
-                duration: 2000,
-              })
-            }
+            // if (this.state.attribute) {
+            //   SExhibition.setIsTouchSelect(false)
+            //   this.setState({ attribute: false })
+            //   Toast.show('查询关闭', {
+            //     backgroundColor: 'rgba(0,0,0,.5)',
+            //     textColor: '#fff',
+            //     duration: 2000,
+            //   })
+            // }
 
-            if(this.state.showVideo){
-              this.setState({showVideo:false})
-              SExhibition.showMapVideo(false)
-            }
+            // if(this.state.showVideo){
+            //   this.setState({showVideo:false})
+            //   SExhibition.showMapVideo(false)
+            // }
 
             // SExhibition.rotation3dMap(this.rotationValue)
             this.setState({
@@ -295,15 +295,15 @@ class AR3DMapView extends React.Component<Props, State> {
               duration: 2000,
             })
           }
-          if(this.isCarAnimationPlay) {
-            await SARMap.pauseCarAnimation()
-            this.isCarAnimationPlay = false
-          }
+          // if(this.isCarAnimationPlay) {
+          //   await SARMap.pauseCarAnimation()
+          //   this.isCarAnimationPlay = false
+          // }
 
-          if(this.state.showVideo){
-            this.setState({showVideo:false})
-            SExhibition.showMapVideo(false)
-          }
+          // if(this.state.showVideo){
+          //   this.setState({showVideo:false})
+          //   SExhibition.showMapVideo(false)
+          // }
 
           // if(this.open){
           //   SExhibition.rotation3dMap(this.rotationValue)
@@ -333,20 +333,20 @@ class AR3DMapView extends React.Component<Props, State> {
             this.sideBarIndex = index
             this.materialsBarIndex = index
 
-            if (this.state.attribute) {
-              SExhibition.setIsTouchSelect(false)
-              this.setState({ attribute: false })
-              Toast.show('查询关闭', {
-                backgroundColor: 'rgba(0,0,0,.5)',
-                textColor: '#fff',
-                duration: 2000,
-              })
-            }
+            // if (this.state.attribute) {
+            //   SExhibition.setIsTouchSelect(false)
+            //   this.setState({ attribute: false })
+            //   Toast.show('查询关闭', {
+            //     backgroundColor: 'rgba(0,0,0,.5)',
+            //     textColor: '#fff',
+            //     duration: 2000,
+            //   })
+            // }
 
-            if(this.state.showVideo){
-              this.setState({showVideo:false})
-              SExhibition.showMapVideo(false)
-            }
+            // if(this.state.showVideo){
+            //   this.setState({showVideo:false})
+            //   SExhibition.showMapVideo(false)
+            // }
             this.setState({
               showSlide: false,
             })

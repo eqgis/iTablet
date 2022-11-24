@@ -83,15 +83,15 @@ class CoverView extends React.Component<Props, State> {
         autoCancelSelected: false,
       },
       {
-        image: getImage().icon_window,
-        title: '挖洞',
-        action: this.onHolePress,
-        autoCancelSelected: false,
-      },
-      {
         image: getImage().icon_tool_rolling,
         title: '卷帘',
         action: this.onRollingPress,
+        autoCancelSelected: false,
+      },
+      {
+        image: getImage().icon_window,
+        title: '挖洞',
+        action: this.onHolePress,
         autoCancelSelected: false,
       },
       {

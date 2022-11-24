@@ -919,7 +919,7 @@ class AR3DMapView extends React.Component<Props, State> {
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         <TimeoutTrigger
           ref={ref => this.timeoutTrigger = ref}
-          timeout={15000}
+          timeout={1500000}
           trigger={this.showSideBar}
         />
         {!this.state.showScan && this.renderRollingMode()}

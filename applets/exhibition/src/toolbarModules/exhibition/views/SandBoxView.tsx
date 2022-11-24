@@ -337,6 +337,20 @@ class SandBoxView extends React.Component<Props, State> {
   getSideBarItems = (): Item[] => {
     return [
       {
+        image: getImage().icon_tool_reset,
+        image_selected: getImage().icon_tool_reset_selected,
+        title: '复位',
+        showIndicator: false,
+        action: async () => {
+          if (!this.checkSenceAndToolType()) return
+          if (oraginSandboxStatus) {
+            this.state.toolType === '' && this.timeoutTrigger?.onFirstMenuClick()
+            this.toolView?.reset()
+            await SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
+          }
+        }
+      },
+      {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
         title: '调整',
@@ -813,7 +827,7 @@ class SandBoxView extends React.Component<Props, State> {
         <SideBar
           ref={ref => this.sideBar = ref}
           sections={[
-            this.getSideBarReset(),
+            // this.getSideBarReset(),
             this.getSideBarItems(),
           ]}
           showIndicator
@@ -860,7 +874,7 @@ class SandBoxView extends React.Component<Props, State> {
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         <TimeoutTrigger
           ref={ref => this.timeoutTrigger = ref}
-          timeout={15000}
+          timeout={1500000}
           trigger={() => {
             this.setState({
               showSide: false

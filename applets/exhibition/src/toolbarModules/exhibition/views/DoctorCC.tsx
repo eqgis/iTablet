@@ -2849,7 +2849,7 @@ class DoctorCC extends Component<Props, State> {
         <ARViewLoadHandler arViewDidMount={this.arViewDidMount}/>
         <TimeoutTrigger
           ref={ref => this.timeoutTrigger = ref}
-          timeout={15000}
+          timeout={1500000}
           trigger={() => {
             this.signClick()
           }}

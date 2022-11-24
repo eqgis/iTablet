@@ -1884,7 +1884,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       effects.unshift({
         name: '艳阳高照',
         path: '',
-        image: getImage().tool_lighting,
+        image: getImage().sun,
       })
     }
     return effects

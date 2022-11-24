@@ -142,29 +142,6 @@ class FlatMapVIew extends React.Component<Props, State> {
         }
       },
       {
-        image: getImage().flat_ai_pic,
-        image_selected: getImage().flat_ai_pic_selected,
-        title: '配图',
-        action: (index: string) => {
-          if(this.sideBarIndex === index) {
-            this.setState({
-              imageList: []
-            })
-            this.sideBarIndex = ""
-            this.sideBar?.clear()
-            return
-          }
-          this.sideBarIndex = index
-          this.aiPicBarIndex =index
-
-          this.timeoutTrigger?.onShowSecondMenu()
-          this.setState({
-            imageList: this.getAiList(),
-            showSlide:false,
-          })
-        }
-      },
-      {
         image: getImage().flat_search,
         image_selected: getImage().flat_search_selected,
         title: '查询',
@@ -231,7 +208,30 @@ class FlatMapVIew extends React.Component<Props, State> {
             showSlide:false,
           })
         }
-      }
+      },
+      {
+        image: getImage().flat_ai_pic,
+        image_selected: getImage().flat_ai_pic_selected,
+        title: '配图',
+        action: (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.setState({
+              imageList: []
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+          this.aiPicBarIndex =index
+
+          this.timeoutTrigger?.onShowSecondMenu()
+          this.setState({
+            imageList: this.getAiList(),
+            showSlide:false,
+          })
+        }
+      },
     ]
   }
 

@@ -83,15 +83,15 @@ class CoverView extends React.Component<Props, State> {
         autoCancelSelected: false,
       },
       {
-        image: getImage().icon_window,
-        title: '挖洞',
-        action: this.onHolePress,
-        autoCancelSelected: false,
-      },
-      {
         image: getImage().icon_tool_rolling,
         title: '卷帘',
         action: this.onRollingPress,
+        autoCancelSelected: false,
+      },
+      {
+        image: getImage().icon_window,
+        title: '挖洞',
+        action: this.onHolePress,
         autoCancelSelected: false,
       },
       {
@@ -560,7 +560,7 @@ class CoverView extends React.Component<Props, State> {
       >
         <View>
           <Image
-            resizeMode={'contain'}
+            resizeMode={'stretch'}
             style={{ width: '100%', height: dp(45) }}
             source={getImage().icon_coverview_title}
           />

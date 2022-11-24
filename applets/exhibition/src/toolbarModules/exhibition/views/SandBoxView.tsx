@@ -2,7 +2,7 @@ import { AppEvent, AppToolBar, Toast, AppLog } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
-import { Image, ScaledSize, StyleSheet, Text, TouchableOpacity, View, EmitterSubscription } from 'react-native'
+import { Image, ScaledSize, StyleSheet, Text, TouchableOpacity, View, EmitterSubscription, ImageSourcePropType } from 'react-native'
 import Scan from '../components/Scan'
 import { SARMap, FileTools, IARTransform, ARAction, ARLayerType, SExhibition } from 'imobile_for_reactnative'
 import { Point3D } from 'imobile_for_reactnative/types/data'
@@ -398,17 +398,17 @@ class SandBoxView extends React.Component<Props, State> {
           this.switchTool('edit')
         }
       },
-      {
-        image: getImage().tool_lighting,
-        image_selected: getImage().tool_lighting_selected,
-        title: '光照',
-        action: () => {
-          if (!this.checkSenceAndToolType()) return
-          this.timeoutTrigger?.onShowSecondMenu()
-          SARMap.openSandBoxLighting(currentLayer?.name, 1, {})
-          this.switchTool('lighting')
-        }
-      },
+      // {
+      //   image: getImage().tool_lighting,
+      //   image_selected: getImage().tool_lighting_selected,
+      //   title: '光照',
+      //   action: () => {
+      //     if (!this.checkSenceAndToolType()) return
+      //     this.timeoutTrigger?.onShowSecondMenu()
+      //     SARMap.openSandBoxLighting(currentLayer?.name, 1, {})
+      //     this.switchTool('lighting')
+      //   }
+      // },
       {
         image: getImage().tool_spot,
         image_selected: getImage().tool_spot_selected,
@@ -420,16 +420,6 @@ class SandBoxView extends React.Component<Props, State> {
         }
       },
       {
-        image: getImage().tool_boat_guide,
-        image_selected: getImage().tool_boat_guide,
-        title: '游船',
-        action: async () => {
-          if (!this.checkSenceAndToolType()) return
-          this.timeoutTrigger?.onShowSecondMenu()
-          this.switchTool('boat_guide')
-        }
-      },
-      {
         image: getImage().tool_mountain_guide,
         image_selected: getImage().tool_mountain_guide,
         title: '登山',
@@ -437,6 +427,16 @@ class SandBoxView extends React.Component<Props, State> {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
           this.switchTool('mountain_guide')
+        }
+      },
+      {
+        image: getImage().tool_boat_guide,
+        image_selected: getImage().tool_boat_guide,
+        title: '游船',
+        action: async () => {
+          if (!this.checkSenceAndToolType()) return
+          this.timeoutTrigger?.onShowSecondMenu()
+          this.switchTool('boat_guide')
         }
       },
       {
@@ -987,6 +987,8 @@ interface ToolViewState {
   showBottom: boolean,
 }
 
+interface EffectData {name: string, path: string, image?: ImageSourcePropType}
+
 // const circleSize = dp(66)
 // const circleR = dp(30)
 // const circleStrokeWidth = dp(4)
@@ -1048,7 +1050,9 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
         const imagePath = item.path.replace(item.name, name + '.png')
         let image
-        if (!await FileTools.fileIsExist(imagePath)) {
+        if (item.image) {
+          image = item.image
+        } else if (!await FileTools.fileIsExist(imagePath)) {
           image = getImage().tool_effect
         } else {
           image = {uri: 'file://' + imagePath}
@@ -1858,9 +1862,9 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   getEffects = async () => {
     const home = await FileTools.getHomeDirectory()
     const effectsPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/天气'
-    const effects = await FileTools.getPathListByFilterDeep(effectsPath, 'areffect')
+    const effects: EffectData[] = await FileTools.getPathListByFilterDeep(effectsPath, 'areffect')
 
-    effects.sort((a: any, b: any) => {
+    effects.sort((a: EffectData, b: EffectData) => {
       if (a.name > b.name) {
         return 1
       } else if (a.name < b.name) {
@@ -1869,15 +1873,25 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         return 0
       }
     })
+    let hasSun = false
+    for (let i = 0; i < effects.length; i++) {
+      if (effects[1].name === '艳阳高照') {
+        hasSun = true
+        break
+      }
+    }
+    if (!hasSun) {
+      effects.unshift({
+        name: '艳阳高照',
+        path: '',
+        image: getImage().tool_lighting,
+      })
+    }
     return effects
   }
 
   effectAction = async (item: ImageItemData) => {
     try {
-      if (!item.path) return
-      this.setState({
-        selectKey: item.key,
-      })
       let layerName = 'effectLayer'
       const props = AppToolBar.getProps()
       const layers = await props.getARLayers()
@@ -1892,6 +1906,25 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           break
         }
       }
+      if (this.state.selectKey === '艳阳高照') {
+        SARMap.closeSandBoxLighting()
+        if (item.name === '艳阳高照') {
+          this.setState({
+            selectKey: '',
+          })
+        }
+      } else if (item.name === '艳阳高照') {
+        currentEffectLayer && SARMap.setLayerVisible(currentEffectLayer.name, false)
+        SARMap.openSandBoxLighting(currentLayer?.name, 1, {})
+        this.setState({
+          selectKey: item.key,
+        })
+        return
+      }
+      if (!item.path) return
+      this.setState({
+        selectKey: item.key,
+      })
 
       // await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
       //   position: {
@@ -1926,6 +1959,9 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   effectClose = async (clearData = true) => {
     try {
+      if (this.state.selectKey === '艳阳高照') {
+        SARMap.closeSandBoxLighting()
+      }
       if (clearData) {
         this.setState({
           selectKey: '',

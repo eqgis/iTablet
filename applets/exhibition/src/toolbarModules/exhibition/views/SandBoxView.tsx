@@ -1012,6 +1012,16 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   /** 上一个选中的景点 */
   lastSpot: SpotType | undefined
 
+  lastFunction: {
+    type: ToolType | '',
+    action: (() => void) | undefined,
+  } = {
+      type: '',
+      action: undefined,
+    }
+
+  currentEffect: ImageItemData | undefined = undefined
+
   // 船是否在航行
   boatActive = false
 
@@ -1030,10 +1040,18 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.getData()
     }
     // 退出特效,重置选中
-    if (prevProps.type === 'effects' && this.props.type !== 'effects' && this.state.selectKey) {
+    // if (prevProps.type === 'effects' && this.props.type !== 'effects' && this.state.selectKey) {
+    if (prevProps.type === 'effects' && this.props.type === '') {
       this.effectClose(this.props.type === '')
     } else if (prevProps.type === 'mountain_guide' && this.props.type !== 'mountain_guide' && this.state.selectKey) {
-      this.mountainClose(this.props.type === '')
+      if (this.props.type === 'effects' || this.props.type === 'edit') {
+        this.lastFunction = {
+          type: 'mountain_guide',
+          action: () => this.mountainClose(this.props.type === ''),
+        }
+      } else {
+        this.mountainClose(this.props.type === '')
+      }
     } else if (prevProps.type === 'spot' && this.props.type !== 'spot' && this.state.selectKey) {
       this.spotClose(this.props.type === '')
     } else if (prevProps.type === 'boat_guide' && this.props.type !== 'boat_guide' && this.state.selectKey) {
@@ -1069,6 +1087,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         showBottom: true,
       })
     } else if (this.props.type === 'mountain_guide') {
+      this.beforeFunc()
       const items = await this.getMountainRoute()
       const data = []
       for (let i = 0; i < items.length; i++) {
@@ -1094,6 +1113,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         showBottom: true,
       })
     } else if (this.props.type === 'boat_guide') {
+      this.beforeFunc()
       const items = await this.getBoat()
       const data = []
       for (let i = 0; i < items.length; i++) {
@@ -1150,6 +1170,9 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         showBottom: true,
       })
     } else {
+      if (this.currentEffect) {
+        this.effectAction(this.currentEffect)
+      }
       this.setState({
         data: [],
         showBottom: false,
@@ -1184,6 +1207,16 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   reset = () => {
     this.scaleBar?.onClear()
     this.rotationBar?.onClear()
+  }
+
+  beforeFunc = () => {
+    if (this.props.type !== this.lastFunction.type && this.lastFunction.action) {
+      this.lastFunction.action()
+      this.lastFunction = {
+        type: '',
+        action: undefined,
+      }
+    }
   }
 
   /********************************************************** 位置调整 ******************************************************************/
@@ -1575,6 +1608,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   spotAction = async (item: ImageItemData) => {
     try {
+      this.beforeFunc()
       if (!item.path) return
       if (item.key === this.state.selectKey) {
         this.spotClose(false)
@@ -1747,6 +1781,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   boatAction = async (item: ImageItemData) => {
     try {
+      this.beforeFunc()
       if (!item.path) return
       if (item.key === this.state.selectKey) {
         this.boatClose(false)
@@ -1952,6 +1987,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         const path = item.path.replace(homePath, '')
         await addEffectLayer(layerName + '.', path)
       }
+      this.currentEffect = item
       SARMap.setEffectLayerCenter(layerName)
     } catch (error) {
       __DEV__ && console.warn(error)
@@ -1963,6 +1999,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       if (this.state.selectKey === '艳阳高照') {
         SARMap.closeSandBoxLighting()
       }
+      this.currentEffect = undefined
       if (clearData) {
         this.setState({
           selectKey: '',

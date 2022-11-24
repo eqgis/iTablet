@@ -185,6 +185,46 @@ class AR3DMapView extends React.Component<Props, State> {
         }
       },
       {
+        image: getImage().icon_tool_materials,
+        title: '纹理',
+        action: async (index: string) => {
+          if(this.sideBarIndex === index) {
+            this.setState({
+              showShape: false,
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          if (this.open) {
+            this.getMaterials()
+            this.setState({ showShape: true })
+            this.timeoutTrigger?.onShowSecondMenu()
+
+            this.sideBarIndex = index
+            this.materialsBarIndex = index
+
+            // if (this.state.attribute) {
+            //   SExhibition.setIsTouchSelect(false)
+            //   this.setState({ attribute: false })
+            //   Toast.show('查询关闭', {
+            //     backgroundColor: 'rgba(0,0,0,.5)',
+            //     textColor: '#fff',
+            //     duration: 2000,
+            //   })
+            // }
+
+            // if(this.state.showVideo){
+            //   this.setState({showVideo:false})
+            //   SExhibition.showMapVideo(false)
+            // }
+            this.setState({
+              showSlide: false,
+            })
+          }
+        },
+      },
+      {
         image: getImage().icon_tool_shape,
         title: '形状',
         action: async (index: string) => {
@@ -295,15 +335,15 @@ class AR3DMapView extends React.Component<Props, State> {
               duration: 2000,
             })
           }
-          // if(this.isCarAnimationPlay) {
-          //   await SARMap.pauseCarAnimation()
-          //   this.isCarAnimationPlay = false
-          // }
+          if(this.isCarAnimationPlay) {
+            await SARMap.pauseCarAnimation()
+            this.isCarAnimationPlay = false
+          }
 
-          // if(this.state.showVideo){
-          //   this.setState({showVideo:false})
-          //   SExhibition.showMapVideo(false)
-          // }
+          if(this.state.showVideo){
+            this.setState({showVideo:false})
+            SExhibition.showMapVideo(false)
+          }
 
           // if(this.open){
           //   SExhibition.rotation3dMap(this.rotationValue)
@@ -311,46 +351,6 @@ class AR3DMapView extends React.Component<Props, State> {
 
           this.setState({ attribute: !this.state.attribute, showSlide: false, showShape: false, })
           this.timeoutTrigger?.onFirstMenuClick()
-        },
-      },
-      {
-        image: getImage().icon_tool_materials,
-        title: '纹理',
-        action: async (index: string) => {
-          if(this.sideBarIndex === index) {
-            this.setState({
-              showShape: false,
-            })
-            this.sideBarIndex = ""
-            this.sideBar?.clear()
-            return
-          }
-          if (this.open) {
-            this.getMaterials()
-            this.setState({ showShape: true })
-            this.timeoutTrigger?.onShowSecondMenu()
-
-            this.sideBarIndex = index
-            this.materialsBarIndex = index
-
-            // if (this.state.attribute) {
-            //   SExhibition.setIsTouchSelect(false)
-            //   this.setState({ attribute: false })
-            //   Toast.show('查询关闭', {
-            //     backgroundColor: 'rgba(0,0,0,.5)',
-            //     textColor: '#fff',
-            //     duration: 2000,
-            //   })
-            // }
-
-            // if(this.state.showVideo){
-            //   this.setState({showVideo:false})
-            //   SExhibition.showMapVideo(false)
-            // }
-            this.setState({
-              showSlide: false,
-            })
-          }
         },
       },
     ]

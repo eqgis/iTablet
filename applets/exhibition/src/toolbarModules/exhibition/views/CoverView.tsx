@@ -560,7 +560,7 @@ class CoverView extends React.Component<Props, State> {
       >
         <View>
           <Image
-            resizeMode={'contain'}
+            resizeMode={'stretch'}
             style={{ width: '100%', height: dp(45) }}
             source={getImage().icon_coverview_title}
           />

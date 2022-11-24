@@ -137,6 +137,56 @@ class AR3DMapView extends React.Component<Props, State> {
         },
       },
       {
+        image: getImage().tool_location,
+        image_selected: getImage().tool_location_selected,
+        title: '调整',
+        action: async(index: string) => {
+          if(!this.state.showSlide){
+            this.timeoutTrigger?.onShowSecondMenu()
+          }else{
+            this.timeoutTrigger?.onBackFromSecondMenu()
+          }
+          this.setState({showSlide:!this.state.showSlide})
+
+          // if(this.isCarAnimationPlay) {
+          //   await SARMap.pauseCarAnimation()
+          //   this.isCarAnimationPlay = false
+          // }
+
+          // if(this.open){
+          //   SExhibition.rotation3dMap(this.rotationValue)
+          // }
+
+          // if(this.state.attribute){
+          //   SExhibition.setIsTouchSelect(false)
+          //   this.setState({attribute:false})
+          //   Toast.show('查询关闭', {
+          //     backgroundColor: 'rgba(0,0,0,.5)',
+          //     textColor: '#fff',
+          //     duration: 2000,
+          //   })
+          // }
+
+          // if(this.state.showVideo){
+          //   this.setState({showVideo:false})
+          //   SExhibition.showMapVideo(false)
+          // }
+          this.setState({
+            showShape: false,
+          })
+
+          if(this.sideBarIndex === index) {
+            this.setState({
+              showSlide: false,
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
+          this.sideBarIndex = index
+        }
+      },
+      {
         image: getImage().icon_tool_shape,
         title: '形状',
         action: async (index: string) => {
@@ -219,56 +269,6 @@ class AR3DMapView extends React.Component<Props, State> {
             this.materialsBarIndex = index
           }
         },
-      },
-      {
-        image: getImage().tool_location,
-        image_selected: getImage().tool_location_selected,
-        title: '调整',
-        action: async(index: string) => {
-          if(!this.state.showSlide){
-            this.timeoutTrigger?.onShowSecondMenu()
-          }else{
-            this.timeoutTrigger?.onBackFromSecondMenu()
-          }
-          this.setState({showSlide:!this.state.showSlide})
-
-          // if(this.isCarAnimationPlay) {
-          //   await SARMap.pauseCarAnimation()
-          //   this.isCarAnimationPlay = false
-          // }
-
-          // if(this.open){
-          //   SExhibition.rotation3dMap(this.rotationValue)
-          // }
-
-          // if(this.state.attribute){
-          //   SExhibition.setIsTouchSelect(false)
-          //   this.setState({attribute:false})
-          //   Toast.show('查询关闭', {
-          //     backgroundColor: 'rgba(0,0,0,.5)',
-          //     textColor: '#fff',
-          //     duration: 2000,
-          //   })
-          // }
-
-          // if(this.state.showVideo){
-          //   this.setState({showVideo:false})
-          //   SExhibition.showMapVideo(false)
-          // }
-          this.setState({
-            showShape: false,
-          })
-
-          if(this.sideBarIndex === index) {
-            this.setState({
-              showSlide: false,
-            })
-            this.sideBarIndex = ""
-            this.sideBar?.clear()
-            return
-          }
-          this.sideBarIndex = index
-        }
       },
       {
         image: getImage().icon_tool_car,

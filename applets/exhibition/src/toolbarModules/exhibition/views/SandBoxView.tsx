@@ -210,14 +210,50 @@ export interface AddOption {
 }
 
 let currentLayer: SARMap.ARLayer
-interface SpotType {name: string, path: string, index: number}
+// interface SpotType {name: string, path: string, index: number}
+interface Point {x: number, y: number, z: number}
+interface Location {
+  position: Point,
+  rotation: Point,
+  scale: Point
+}
+interface SpotType {
+  path: string,
+  name: string,
+  image: string,
+  selectedImage: string,
+  tabImg: string,
+  location: Location,
+  visionLocation: Location
+}
 let spotOriginIndex: {[name: string]: SpotType} = {}
 let oraginSandboxStatus: positionNodeInfo | undefined // 图层原始大小比例
 
 const DefaultArrowPoint = {
   x: 0,
-  y: -1,
+  y: 0,
   z: -1.5,
+}
+
+const DefaultScale = 0.0055
+const DefaultLocation ={
+  position: {
+    // y: -100,
+    // z: -320,
+    x: 0,
+    y: -1,
+    z: -1.5,
+  },
+  rotation: {
+    // x: 90,
+    // y: -80,
+    // z: 2.94,
+  },
+  scale: {
+    x: DefaultScale,
+    y: DefaultScale,
+    z: DefaultScale,
+  },
 }
 
 class SandBoxView extends React.Component<Props, State> {
@@ -507,35 +543,7 @@ class SandBoxView extends React.Component<Props, State> {
         paths.push(home + glb.path)
       }
 
-      // 景点
-      const spotPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点'
-      const spotGlbs = await FileTools.getPathListByFilter(spotPath, {
-        extension: 'glb',
-      })
-      const spotPaths = []
-      for (const glb of spotGlbs) {
-        spotPaths.push(home + glb.path)
-      }
-
-      await SARMap.addModelToSandTable(paths, {
-        position: {
-          // y: -100,
-          // z: -320,
-          x: 0,
-          y: -1,
-          z: -1.5,
-        },
-        rotation: {
-          // x: 90,
-          // y: -80,
-          // z: 2.94,
-        },
-        scale: {
-          x: 0.0025,
-          y: 0.0025,
-          z: 0.0025,
-        },
-      })
+      await SARMap.addModelToSandTable(paths, DefaultLocation)
       await SARMap.addARMediaToSandbox(targetHomePath + 'wave.mp4', {
         position: {
           x: -116,
@@ -553,18 +561,73 @@ class SandBoxView extends React.Component<Props, State> {
           z: 0,
         },
       })
-      const spotIndexes = await SARMap.addModelToSandTable(spotPaths, {
-        position: { x: 0, y: -1, z: -1.5 },
-        scale: { x: 0.0025, y: 0.0025, z: 0.0025 },
+
+      // 景点
+      const spotPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点'
+      const spotGlbs = await FileTools.getPathListByFilter(spotPath, {
+        extension: 'json',
       })
-      for (let i = 0; i < spotIndexes.length; i++) {
-        const spotName = spotPaths[i].substring(spotPaths[i].lastIndexOf('/') + 1, spotPaths[i].lastIndexOf('.'))
-        // spotOriginIndex.[spotName]
-        spotOriginIndex = Object.assign(spotOriginIndex, {[spotName]: {
-          name: spotName,
-          path: spotPaths[i],
-          index: spotIndexes[i],
-        }})
+      const spotPaths: string[] = []
+      try {
+        for (const spot of spotGlbs) {
+          // if (spot.path.includes('.glb') && !spot.path.includes('湖心亭')) {
+          //   spotPaths.push(home + spot.path)
+          // } else if (spot.path.includes('.png')) {
+          //   // spotImgPaths.push(home + glb.path)
+          //   await SARMap.addARMediaToSandbox(home + spot.path, {
+          //     position: { x: -147.652, y: 59.646, z: 79.892 },
+          //     rotation: { x: 0, y: 0, z: 0 },
+          //     scale: { x: 200, y: 200, z: 200 },
+          //   })
+          // }
+          const spotJson = await FileTools.readFile(home + spot.path)
+          const spotData = JSON.parse(spotJson)
+          const spotImg = spotPath + '/' + spotData.image
+          await SARMap.addARMediaToSandbox(spotImg, {
+            position: spotData?.location?.position || { x: 0, y: 0, z: 0 },
+            rotation: spotData?.location?.rotation || { x: 0, y: 0, z: 0 },
+            scale: spotData?.location?.scale || { x: 200, y: 200, z: 200 },
+          })
+        }
+      } catch(e) {
+        __DEV__ && console.warn('spot', e)
+      }
+
+      // 景点1
+      const spot1Path = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点1'
+      const spot1Glbs = await FileTools.getPathListByFilter(spot1Path, {
+        extension: 'json',
+      })
+      try {
+        for (const spot of spot1Glbs) {
+          const spotJson = await FileTools.readFile(home + spot.path)
+          const spotData = JSON.parse(spotJson)
+          const spotImg = spot1Path + '/' + spotData.image
+          await SARMap.addARMediaToSandbox(spotImg, {
+            position: spotData?.location?.position || { x: 0, y: 0, z: 0 },
+            rotation: spotData?.location?.rotation || { x: 0, y: 0, z: 0 },
+            scale: spotData?.location?.scale || { x: 200, y: 200, z: 200 },
+          })
+        }
+      } catch(e) {
+        __DEV__ && console.warn(e)
+      }
+      const spotIndexes = await SARMap.addModelToSandTable(spotPaths, {
+        position: DefaultLocation.position,
+        scale: { x: DefaultScale, y: DefaultScale, z: DefaultScale },
+      })
+      try {
+        for (let i = 0; i < spotIndexes.length; i++) {
+          const spotName = spotPaths[i].substring(spotPaths[i].lastIndexOf('/') + 1, spotPaths[i].lastIndexOf('.'))
+          // spotOriginIndex.[spotName]
+          spotOriginIndex = Object.assign(spotOriginIndex, {[spotName]: {
+            name: spotName,
+            path: spotPaths[i],
+            index: spotIndexes[i],
+          }})
+        }
+      } catch(e) {
+        __DEV__ && console.warn('spot1', e)
       }
 
       // 游船
@@ -914,7 +977,7 @@ interface ToolViewProps {
     x: number,
     y: number,
     z: number,
-  }) => Promise<boolean>,
+  }) => Promise<void>,
 }
 
 interface ToolViewState {
@@ -936,7 +999,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   // rotationX: CircleBar | undefined | null
   // rotationY: CircleBar | undefined | null
   // rotationZ: CircleBar | undefined | null
-  mountainElementIndexes: number[] = []
+  mountainElements: {index: number[], path: string[]} = {index: [], path: []}
   lastPosition: positionNodeInfo | undefined
   lastPosition2: {
     position: { x: number, y: number, z: number },
@@ -1057,7 +1120,13 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       for (let i = 0; i < items.length; i++) {
         const item = items[i]
         const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
-        const imagePath = item.path.replace(item.name, name + '.png')
+        // const imagePath = item.path.replace(item.name, name + '.png')
+
+        const spotJson = await FileTools.readFile(item.path)
+        const spotData = JSON.parse(spotJson)
+        const imagePath = item.path.substring(0, item.path.lastIndexOf('/')) + '/' + spotData.tabImg
+
+
         let image
         if (!await FileTools.fileIsExist(imagePath)) {
           image = getImage().tool_effect
@@ -1296,10 +1365,13 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         item.key && this.state.selectKey
       ) {
         // 移除之前的路线
-        for (let i = 0; i < this.mountainElementIndexes.length; i++) {
-          await SARMap.setSandTableModelVisible(this.mountainElementIndexes[i], false)
+        for (let i = 0; i < this.mountainElements.index.length; i++) {
+          await SARMap.setSandTableModelVisible(this.mountainElements.index[i], false)
         }
-        this.mountainElementIndexes = []
+        for (let i = 0; i < this.mountainElements.path.length; i++) {
+          await SARMap.deleteARMediaToSandbox(this.mountainElements.path[i])
+        }
+        this.mountainElements = {index: [], path: []}
       } else {
         const lastPosition = await SARMap.getElementPositionInfo(currentLayer.name, 1)
         if (lastPosition?.renderNode) {
@@ -1318,7 +1390,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.props.arrowTricker?.(true, {
         x: 0,
         y: 0.5,
-        z: -1.5,
+        z: DefaultLocation.position.z,
       })
       const home = await FileTools.getHomeDirectory()
       const routeDir = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'glb')
@@ -1378,6 +1450,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         })
       }, data?.duration / 2 || AnimationTime)
 
+
+
       // 依次添加定位点
       const wait = (sec: number) => {
         return new Promise(resolve => {
@@ -1389,15 +1463,34 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
       setTimeout(async () => {
         // 等待,防止移动获取位置错误
-        this.mountainElementIndexes = []
+        this.mountainElements = {index: [], path: []}
         await SARMap.commitSandTableChanges()
 
         for (const route of routeDir) {
           // 添加路线坐标
           const pathIndexs = await SARMap.addModelToSandTable([route.path])
 
+          const jsonPath = route.path.replace('.glb', '.json')
+          let data
+          if (await FileTools.fileIsExist(jsonPath)) {
+            const dataStr = await FileTools.readFile(jsonPath)
+            data = JSON.parse(dataStr)
+
+            // this.lastSpot = Object.assign({}, data, {path: item.path})
+          }
+          // const selectImg = route.path.replace('.glb', '1.png')
+          const img = route.path.replace('.glb', '.png')
+          // await SARMap.deleteARMediaToSandbox(selectImg)
+          await SARMap.addARMediaToSandbox(img, {
+            position: data?.location?.position || { x: 0, y: 0, z: 0 },
+            rotation: data?.location?.rotation || { x: 0, y: 0, z: 0 },
+            scale: data?.location?.scale || { x: 200, y: 200, z: 200 },
+          })
+
           this.twinkle(pathIndexs[0], 2)
-          this.mountainElementIndexes = this.mountainElementIndexes.concat(pathIndexs)
+          await this.twinkle2(img, data?.location, 2)
+          this.mountainElements.index = this.mountainElements.index.concat(pathIndexs)
+          this.mountainElements.path.push(img)
           await wait(1)
         }
 
@@ -1432,11 +1525,14 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       // setTimeout(() => {
       //   // oraginSandboxStatus && SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
       //   SARMap.commitSandTableChanges()
-      for (let i = 0; i < this.mountainElementIndexes.length; i++) {
-        SARMap.setSandTableModelVisible(this.mountainElementIndexes[i], false)
+      for (let i = 0; i < this.mountainElements.index.length; i++) {
+        SARMap.setSandTableModelVisible(this.mountainElements.index[i], false)
+      }
+      for (let i = 0; i < this.mountainElements.path.length; i++) {
+        await SARMap.deleteARMediaToSandbox(this.mountainElements.path[i])
       }
       // oraginSandboxStatus = undefined
-      this.mountainElementIndexes = []
+      this.mountainElements = {index: [], path: []}
       if (clearData) {
         this.setState({
           selectKey: '',
@@ -1458,8 +1554,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   /********************************************************** 景区 ******************************************************************/
   getSpot = async () => {
     const home = await FileTools.getHomeDirectory()
-    const shipPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点1'
-    const ships = await FileTools.getPathListByFilterDeep(shipPath, 'glb')
+    const shipPath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/景点'
+    const ships = await FileTools.getPathListByFilterDeep(shipPath, 'json')
 
     ships.sort((a: any, b: any) => {
       if (a.name > b.name) {
@@ -1484,66 +1580,95 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         canBeClick: false,
         selectKey: item.key,
       })
+
+      // const home = await FileTools.getHomeDirectory()
       // 隐藏上一个选中的景点
       if (this.lastSpot !== undefined) {
-        await SARMap.setSandTableModelVisible(this.lastSpot.index, false)
+        // await SARMap.setSandTableModelVisible(this.lastSpot.index, false)
 
-        await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, true)
+        // await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, true)
+
+        const selectImg = this.lastSpot.path.substring(0, this.lastSpot.path.lastIndexOf('/') + 1) + this.lastSpot.selectedImage
+        const img = this.lastSpot.path.substring(0, this.lastSpot.path.lastIndexOf('/') + 1) + this.lastSpot.image
+        await SARMap.deleteARMediaToSandbox(selectImg)
+
+        await SARMap.addARMediaToSandbox(img, {
+          position: this.lastSpot?.location?.position || { x: 0, y: 0, z: 0 },
+          rotation: this.lastSpot?.location?.rotation || { x: 0, y: 0, z: 0 },
+          scale: this.lastSpot?.location?.scale || { x: 200, y: 200, z: 200 },
+        })
       }
 
-      const spotName = item.path.substring(item.path.lastIndexOf('/') + 1, item.path.lastIndexOf('.'))
-      this.lastSpot = {
-        name: spotName,
-        path: item.path,
-        index: -1,
-      }
-
-      const position = { x: 0, y: -1, z: -1.5 }
+      // const spotName = item.path.substring(item.path.lastIndexOf('/') + 1, item.path.lastIndexOf('.'))
+      // this.lastSpot = {
+      //   name: spotName,
+      //   path: item.path,
+      //   index: -1,
+      // }
 
       let data
-      const dataPath = item.path.replace('.glb', '.json')
+      const dataPath = item.path
       if (await FileTools.fileIsExist(dataPath)) {
         const dataStr = await FileTools.readFile(dataPath)
         data = JSON.parse(dataStr)
+
+        this.lastSpot = Object.assign({}, data, {path: item.path})
       }
 
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-        position: data?.position || position,
-        rotation: data?.rotation || { x: 0, y: 0, z: 0 },
-        scale: data?.scale || { x: 0.007, y: 0.007, z: 0.007 },
+        position: data?.visionLocation?.position || DefaultLocation.position,
+        rotation: data?.visionLocation?.rotation || { x: 0, y: 0, z: 0 },
+        scale: data?.visionLocation?.scale || { x: 0.007, y: 0.007, z: 0.007 },
         duration: AnimationTime,
       })
 
       // 视角和模型相对原点的偏移
       this.props.arrowTricker?.(true, {
         x: 0,
-        y: 0,
-        z: -1.5,
+        y: 1,
+        z: DefaultLocation.position.z,
       })
 
       setTimeout(async () => {
-        if (!item.path) return
+        if (!item.path || !this.lastSpot) return
         // 显示当前选中的景点
-        const pathIndexs = await SARMap.addModelToSandTable([item.path])
-        if (pathIndexs.length > 0) {
-          this.lastSpot = {
-            name: spotName,
-            path: item.path,
-            index: pathIndexs[0],
-          }
-          await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, false)
-
-          await SARMap.commitSandTableChanges()
-          if (this.lastSpot && await this.twinkle(this.lastSpot.index, 3)) {
-            this.setState({
-              canBeClick: true,
-              // selectKey: item.key,
-            })
-          }
+        const selectImg = this.lastSpot.path.substring(0, this.lastSpot.path.lastIndexOf('/') + 1) + this.lastSpot.selectedImage
+        const img = this.lastSpot.path.substring(0, this.lastSpot.path.lastIndexOf('/') + 1) + this.lastSpot.image
+        await SARMap.deleteARMediaToSandbox(img)
+        await SARMap.addARMediaToSandbox(selectImg, {
+          position: this.lastSpot?.location?.position || { x: 0, y: 0, z: 0 },
+          rotation: this.lastSpot?.location?.rotation || { x: 0, y: 0, z: 0 },
+          scale: this.lastSpot?.location?.scale || { x: 200, y: 200, z: 200 },
+        })
+        await SARMap.commitSandTableChanges()
+        if (await this.twinkle2(selectImg, this.lastSpot?.location, 3)) {
+          this.setState({
+            canBeClick: true,
+          })
         }
+        //   const pathIndexs = await SARMap.addModelToSandTable([item.path])
+        //   if (pathIndexs.length > 0) {
+        //     this.lastSpot = {
+        //       name: spotName,
+        //       path: item.path,
+        //       index: pathIndexs[0],
+        //     }
+        //     await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, false)
+
+        //     await SARMap.commitSandTableChanges()
+        //     // if (this.lastSpot && await this.twinkle(this.lastSpot.index, 3)) {
+        //     //   this.setState({
+        //     //     canBeClick: true,
+        //     //     // selectKey: item.key,
+        //     //   })
+        //     // }
+        //   }
       }, AnimationTime)
 
     } catch (error) {
+      this.setState({
+        canBeClick: true,
+      })
       __DEV__ && console.warn(error)
     }
   }
@@ -1568,9 +1693,18 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       //   SARMap.commitSandTableChanges()
       // 隐藏上一个选中的景点
       if (this.lastSpot !== undefined) {
-        await SARMap.setSandTableModelVisible(this.lastSpot.index, false)
+        // await SARMap.setSandTableModelVisible(this.lastSpot.index, false)
 
-        await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, true)
+        // await SARMap.setSandTableModelVisible(spotOriginIndex[this.lastSpot.name].index, true)
+        const selectImg = this.lastSpot.path.substring(0, this.lastSpot.path.lastIndexOf('/') + 1) + this.lastSpot.selectedImage
+        const img = this.lastSpot.path.substring(0, this.lastSpot.path.lastIndexOf('/') + 1) + this.lastSpot.image
+        await SARMap.deleteARMediaToSandbox(selectImg)
+
+        await SARMap.addARMediaToSandbox(img, {
+          position: this.lastSpot?.location?.position || { x: 0, y: 0, z: 0 },
+          rotation: this.lastSpot?.location?.rotation || { x: 0, y: 0, z: 0 },
+          scale: this.lastSpot?.location?.scale || { x: 200, y: 200, z: 200 },
+        })
       }
       if (clearData) {
         this.setState({
@@ -1620,13 +1754,13 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.props.arrowTricker?.(true, {
         x: 0,
         y: 0,
-        z: -1.5,
+        z: DefaultLocation.position.z,
       })
 
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
         position: { x: -0.4, y: -0.3, z: -2 },
         rotation: { x: 0, y: 40, z: 0 },
-        scale: { x: 0.005, y: 0.005, z: 0.005 },
+        scale: { x: DefaultScale, y: DefaultScale, z: DefaultScale },
         duration: AnimationTime,
       })
 
@@ -1759,24 +1893,24 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         }
       }
 
-      await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-        position: {
-          x: 0,
-          y: -0.3,
-          z: -2.5,
-        },
-        rotation: {
-          x: 0,
-          y: 40,
-          z: 0,
-        },
-        scale: {
-          x: 0.007,
-          y: 0.007,
-          z: 0.007,
-        },
-        duration: AnimationTime,
-      })
+      // await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+      //   position: {
+      //     x: 0,
+      //     y: -0.3,
+      //     z: -2.5,
+      //   },
+      //   rotation: {
+      //     x: 0,
+      //     y: 40,
+      //     z: 0,
+      //   },
+      //   scale: {
+      //     x: 0.007,
+      //     y: 0.007,
+      //     z: 0.007,
+      //   },
+      //   duration: AnimationTime,
+      // })
 
       if (currentEffectLayer) {
         SARMap.setAREffect(layerName, item.path)
@@ -1834,6 +1968,37 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         await SARMap.setSandTableModelVisible(id, show)
         show = !show
         temp++
+      }, TwinkleTime)
+    })
+  }
+
+  twinkle2 = async (imgPath: string, location: Location, time: number) => {
+    return new Promise((resolve) => {
+      let show = true, temp = 0
+      const interval = setInterval(async() => {
+        if (temp === time && interval) {
+          // await SARMap.setSandTableModelVisible(id, true)
+          await SARMap.addARMediaToSandbox(imgPath, {
+            position: location?.position || { x: 0, y: 0, z: 0 },
+            rotation: location?.rotation || { x: 0, y: 0, z: 0 },
+            scale: location?.scale || { x: 200, y: 200, z: 200 },
+          })
+          clearInterval(interval)
+          resolve(true)
+          return
+        }
+        // await SARMap.setSandTableModelVisible(id, show)
+        show = !show
+        if (show) {
+          await SARMap.addARMediaToSandbox(imgPath, {
+            position: location?.position || { x: 0, y: 0, z: 0 },
+            rotation: location?.rotation || { x: 0, y: 0, z: 0 },
+            scale: location?.scale || { x: 200, y: 200, z: 200 },
+          })
+        } else {
+          await SARMap.deleteARMediaToSandbox(imgPath)
+        }
+        temp += 1
       }, TwinkleTime)
     })
   }

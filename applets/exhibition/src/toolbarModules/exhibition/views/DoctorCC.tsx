@@ -283,6 +283,7 @@ class DoctorCC extends Component<Props, State> {
         // }
 
         if(this.ARModel) {
+          await SARMap.setLayerVisible(this.ARModel.layerName, true)
           // 获取校准之后的模型位置信息
           this.positionInfo = await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
 
@@ -813,7 +814,7 @@ class DoctorCC extends Component<Props, State> {
 
             SARMap.setLayerMaxAnimationBounds(layer.name, 15)
             if(layer.caption === '博士') {
-              SARMap.setLayerVisible(layer.name, true)
+              SARMap.setLayerVisible(layer.name, false)
               const model = {
                 layerName: layer.name,
                 id: 1,

@@ -1031,13 +1031,13 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     }
     // 退出特效,重置选中
     if (prevProps.type === 'effects' && this.props.type !== 'effects' && this.state.selectKey) {
-      this.effectClose()
+      this.effectClose(this.props.type === '')
     } else if (prevProps.type === 'mountain_guide' && this.props.type !== 'mountain_guide' && this.state.selectKey) {
-      this.mountainClose()
+      this.mountainClose(this.props.type === '')
     } else if (prevProps.type === 'spot' && this.props.type !== 'spot' && this.state.selectKey) {
-      this.spotClose()
+      this.spotClose(this.props.type === '')
     } else if (prevProps.type === 'boat_guide' && this.props.type !== 'boat_guide' && this.state.selectKey) {
-      this.boatClose()
+      this.boatClose(this.props.type === '')
     }
   }
 
@@ -1501,7 +1501,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         this.setState({
           canBeClick: true,
         })
-      }, AnimationTime * 2)
+      }, data?.duration || AnimationTime * 2)
     } catch (error) {
       __DEV__ && console.warn(error)
     }
@@ -1755,11 +1755,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.setState({
         selectKey: item.key,
       })
-      this.props.arrowTricker?.(true, {
-        x: 0,
-        y: 0,
-        z: DefaultLocation.position.z,
-      })
+      // this.props.arrowTricker?.(true, {
+      //   x: 0,
+      //   y: 0,
+      //   z: DefaultLocation.position.z,
+      // })
+      this.props.arrowTricker?.(false)
 
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
         position: { x: -0.4, y: -0.3, z: -2 },
@@ -1992,18 +1993,18 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
   /****************************************************************************************************************************/
   twinkle = async (id: number, time: number) => {
+    let show = false, temp = 0
     return new Promise((resolve) => {
-      let show = false, temp = 0
       const interval = setInterval(async() => {
-        if (temp === time && interval) {
+        if (temp >= time) {
           await SARMap.setSandTableModelVisible(id, true)
-          clearInterval(interval)
+          interval && clearInterval(interval)
           resolve(true)
           return
         }
         await SARMap.setSandTableModelVisible(id, show)
         show = !show
-        temp++
+        temp += 1
       }, TwinkleTime)
     })
   }
@@ -2012,14 +2013,14 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     return new Promise((resolve) => {
       let show = true, temp = 0
       const interval = setInterval(async() => {
-        if (temp === time && interval) {
+        if (temp >= time) {
           // await SARMap.setSandTableModelVisible(id, true)
           await SARMap.addARMediaToSandbox(imgPath, {
             position: location?.position || { x: 0, y: 0, z: 0 },
             rotation: location?.rotation || { x: 0, y: 0, z: 0 },
             scale: location?.scale || { x: 200, y: 200, z: 200 },
           })
-          clearInterval(interval)
+          interval && clearInterval(interval)
           resolve(true)
           return
         }

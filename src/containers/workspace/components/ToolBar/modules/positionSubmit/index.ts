@@ -68,6 +68,8 @@ class PositionSubmitModule extends FunctionModule {
     // await SMap.setMapCenter(merPosition.x, merPosition.y)
     // await SMap.setMapScale(1 / 2785.0)
 
+    await SCollector.stopCollect()
+
   }
 }
 

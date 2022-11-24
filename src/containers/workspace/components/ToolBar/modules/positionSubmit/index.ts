@@ -45,6 +45,18 @@ class PositionSubmitModule extends FunctionModule {
     })
   }
 
+  llToMerto = (position:SMap.pointType) => {
+    const mercator = {
+      x:0,
+      y: 0,
+    }
+    const earthRad = 6378137.0
+    mercator.x = position.longitude * Math.PI / 180 * earthRad
+    const a = position.latitude * Math.PI / 180
+    mercator.y = earthRad / 2 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)))
+    return mercator
+  }
+
   action = async () => {
     const data = {name:"destination",type:"marker",id:118081}
 
@@ -52,6 +64,10 @@ class PositionSubmitModule extends FunctionModule {
 
     const type = SMCollectorType.POINT_GPS
     collectionModule().actions.showCollection(type)
+    // const merPosition = this.llToMerto(position)
+    // await SMap.setMapCenter(merPosition.x, merPosition.y)
+    // await SMap.setMapScale(1 / 2785.0)
+
   }
 }
 

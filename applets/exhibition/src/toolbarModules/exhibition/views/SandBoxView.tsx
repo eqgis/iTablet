@@ -1822,11 +1822,11 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       this.setState({
         selectKey: item.key,
       })
-      // this.props.arrowTricker?.(true, {
-      //   x: 0,
-      //   y: 0,
-      //   z: DefaultLocation.position.z,
-      // })
+      this.props.arrowTricker?.(true, {
+        x: 0,
+        y: 0,
+        z: DefaultLocation.position.z,
+      })
       this.props.arrowTricker?.(false)
 
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {

@@ -536,7 +536,7 @@ class AR3DMapView extends React.Component<Props, State> {
         data={this.speakData}
         onSelect={()=>{
           this.setState({
-            showShape: false,
+            // showShape: false,
           })
         }}
         imageStyle={{width: '100%', height: '100%',marginTop: dp(0)}}

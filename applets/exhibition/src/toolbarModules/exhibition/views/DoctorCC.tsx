@@ -285,21 +285,28 @@ class DoctorCC extends Component<Props, State> {
         //   this.showGuide(true)
         // }
 
-        console.warn("....." + JSON.stringify(this.ARModel))
         if(this.ARModel) {
           await SARMap.setLayerVisible(this.ARModel.layerName, true)
-          // 获取校准之后的模型位置信息
-          this.positionInfo = await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
 
-          const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-          // console.warn("relativePositin: " + JSON.stringify(relativePositin))
-          if(relativePositin) {
-            const timer = setTimeout(async ()=>{
-              await SExhibition.setTrackingTarget(relativePositin)
-              await SExhibition.startTrackingTarget()
-              clearTimeout(timer)
-            }, 2300)
-          }
+          const timer01 = setTimeout(async () => {
+            if(this.ARModel) {
+              // 获取校准之后的模型位置信息
+              this.positionInfo = await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
+
+              const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+              // console.warn("relativePositin: " + JSON.stringify(relativePositin))
+              if(relativePositin) {
+                const timer = setTimeout(async ()=>{
+                  await SExhibition.setTrackingTarget(relativePositin)
+                  await SExhibition.startTrackingTarget()
+                  clearTimeout(timer)
+                }, 2300)
+              }
+            }
+            clearTimeout(timer01)
+          },300)
+
+
         }
       }
     })
@@ -900,6 +907,9 @@ class DoctorCC extends Component<Props, State> {
           // 在解说时点击退出按钮
           if(this.state.isRouteSpeak) {
             this.stopRouteAnimation()
+            if(this.isRouteSpeakPlay !== "") {
+              SoundUtil.stop(this.isRouteSpeakPlay)
+            }
             return
           }
 
@@ -957,6 +967,7 @@ class DoctorCC extends Component<Props, State> {
 
           },300)
         } else {
+          console.warn("node: " + JSON.stringify(this.positionInfo?.renderNode))
           if(this.positionInfo?.renderNode) {
             await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
             await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)

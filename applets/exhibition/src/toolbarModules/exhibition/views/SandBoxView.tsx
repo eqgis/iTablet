@@ -1483,7 +1483,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
 
         this.props.arrowTricker?.(true, {
           x: 0,
-          y: data?.position.y || 0,
+          y: 0.6,
           z: DefaultLocation.position.z,
         })
       }, data?.duration !== undefined ? (data?.duration / 2) : AnimationTime)

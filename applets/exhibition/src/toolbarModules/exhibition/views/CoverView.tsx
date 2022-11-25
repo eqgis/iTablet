@@ -101,6 +101,11 @@ class CoverView extends React.Component<Props, State> {
         action: this.onFlowPress,
       },
       {
+        image: getImage().ar_pipe_alert,
+        title: '爆管',
+        action: this.onAlertPress,
+      },
+      {
         image: getImage().tool_attribute,
         title: '属性',
         action: this.onAttributePres,
@@ -162,6 +167,25 @@ class CoverView extends React.Component<Props, State> {
     ]
   }
 
+  getAlertMenu = (): itemConmonType[] => {
+    return [
+      {
+        name: '爆管1',
+        image: getImage().ar_pipe_flow_1,
+        action: () => {
+          this.onAlertSelect(1)
+        }
+      },
+      {
+        name: '爆管2',
+        image: getImage().ar_pipe_flow_2,
+        action: () => {
+          this.onAlertSelect(2)
+        }
+      }
+    ]
+  }
+
   onFullScapePress = (index: string) => {
     if(this.sideBarIndex === index) {
       this.sideBarIndex = ""
@@ -176,6 +200,7 @@ class CoverView extends React.Component<Props, State> {
     this._disableFlow()
     this.stopCover()
     this.stopRolling()
+    this._disableAlert()
     this.setState({
       secondMenuData: [],
     })
@@ -198,6 +223,7 @@ class CoverView extends React.Component<Props, State> {
     this._disableAttribte()
     this._disableFlow()
     this.stopRolling()
+    this._disableAlert()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
       SARMap.startARCover(layer.name)
@@ -224,6 +250,7 @@ class CoverView extends React.Component<Props, State> {
     this._hideSlide()
     this._disableAttribte()
     this._disableFlow()
+    this._disableAlert()
     this.setState({
       secondMenuData: this.getRollingModeMenu(),
       isSecondaryShow: true,
@@ -248,10 +275,25 @@ class CoverView extends React.Component<Props, State> {
     this.stopRolling()
     this._hideSlide()
     this._disableAttribte()
+    this._disableAlert()
     this.flowEnabled = !this.flowEnabled
 
     this.setState({
       secondMenuData: this.getFlowMenu(),
+      isSecondaryShow: true
+    })
+  }
+
+  onAlertPress = () => {
+    this.timeoutTrigger?.onFirstMenuClick()
+    this.stopCover()
+    this.stopRolling()
+    this._hideSlide()
+    this._disableAttribte()
+    this._disableFlow()
+
+    this.setState({
+      secondMenuData: this.getAlertMenu(),
       isSecondaryShow: true
     })
   }
@@ -270,6 +312,7 @@ class CoverView extends React.Component<Props, State> {
     this.stopRolling()
     this._hideSlide()
     this._disableFlow()
+    this._disableAlert()
     this.attribteEanbled = !this.attribteEanbled
     SExhibition.enablePipeAttribute(this.attribteEanbled)
     this.setState({
@@ -308,6 +351,10 @@ class CoverView extends React.Component<Props, State> {
   onFlowSelect = (index: 1 | 2) => {
     this.flow(index)
   }
+  
+  onAlertSelect = (index: 1 | 2) => {
+    this.alert(index)
+  }
 
   _hideSlide = () => {
     if(this.state.showSlider) {
@@ -339,6 +386,16 @@ class CoverView extends React.Component<Props, State> {
           getRoute2Names()
         )
       }
+    }
+  }
+
+
+  _disableAlert = async () => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer) {
+      await SExhibition.hideBreakPoint(layer.name, [...getAlertPipe1(), ...getAlertPipe2()])
+      await SExhibition.restorePipeMaterial(layer.name, [...getRoute1Names(), ...getRoute2Names()])
+      await SExhibition.hidePipeFlow()
     }
   }
 
@@ -573,6 +630,20 @@ class CoverView extends React.Component<Props, State> {
       SExhibition.makePipeMaterialTransparent(
         layer.name, 
         index === 1 ? getRoute1Names() : getRoute2Names()
+      )
+    }
+  }
+
+  alert = async (index: 1 | 2) => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    await this._disableAlert()
+    if(layer) {
+      SExhibition.showBreakPoint(layer.name, index === 1 ? getAlertPipe1() : getAlertPipe2())
+      SExhibition.makePipeMaterialTransparent(layer.name, 
+        index === 1 ? getRoute1Names() : getRoute2Names()
+      )
+      SExhibition.showPipeFlow(layer.name,
+        index === 1 ? getFlowRoute1(true) : getFlowRoute2(true)
       )
     }
   }
@@ -1257,11 +1328,13 @@ const styles = StyleSheet.create({
 export default CoverView
 
 
-function getFlowRoute1(): FlowParam[] {
-  const speed = 0.7
+function getFlowRoute1(isBreak = false): FlowParam[] {
+  const speed = 0.49
   const heightOffset = 0
   const pose = 0
   const scale = 2
+  const arrow = 3
+  const arrow_break = 4
   return [
     {
       start: {x: -1.318, y:  -0.141 + heightOffset, z: -11},
@@ -1270,6 +1343,7 @@ function getFlowRoute1(): FlowParam[] {
       segment: 10 * scale,
       runRange: 1,
       pose,
+      arrow: isBreak ? arrow_break : arrow,
     },
     {
       start: {x: -1.135, y:  -0.141 + heightOffset, z: -0.093},
@@ -1278,6 +1352,7 @@ function getFlowRoute1(): FlowParam[] {
       segment: 1* scale,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -0.332, y: -0.141 + heightOffset, z: 0.3},
@@ -1286,6 +1361,7 @@ function getFlowRoute1(): FlowParam[] {
       segment: 2* scale,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -0.677, y: -0.141 + heightOffset, z: 1.852},
@@ -1294,6 +1370,7 @@ function getFlowRoute1(): FlowParam[] {
       segment: 5* scale,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -4.645, y: -0.141 + heightOffset, z: 1.664},
@@ -1302,6 +1379,7 @@ function getFlowRoute1(): FlowParam[] {
       segment: 1* scale,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -4.324, y: -0.141 + heightOffset, z: 0.976},
@@ -1310,6 +1388,7 @@ function getFlowRoute1(): FlowParam[] {
       segment: 5* scale,
       runRange: 1,
       pose,
+      arrow: isBreak ? arrow_break : arrow,
     },
     {
       start: {x: 0.270, y: -0.141 + heightOffset, z: 0.691},
@@ -1318,15 +1397,18 @@ function getFlowRoute1(): FlowParam[] {
       segment: 10* scale,
       runRange: 1,
       pose,
+      arrow: isBreak ? arrow_break : arrow,
     },
   ]
 }
 
 
-function getFlowRoute2(): FlowParam[] {
-  const speed = 0.7
+function getFlowRoute2(isBreak = false): FlowParam[] {
+  const speed = 0.49
   const offset = 0
   const pose = 1
+  const arrow = 3
+  const arrow_break = 4
   return [
     {
       start: {x: -5.909 + offset , y: 0.415, z: 9.669},
@@ -1335,6 +1417,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 4,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -5.909 + offset , y: 0.663, z: 7.891},
@@ -1343,6 +1426,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 1,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -6.069 + offset , y: 1.072, z: 7.891},
@@ -1351,6 +1435,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 5,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -6.069 + offset , y: 3.312, z: 7.574},
@@ -1359,6 +1444,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 4,
       runRange: 1,
       pose,
+      arrow: isBreak ? arrow_break : arrow,
     },
     {
       start: {x: -6.431 + offset , y: 3.312, z: 5.681},
@@ -1367,6 +1453,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 1,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -6.447 + offset , y: 3.518, z: 5.104},
@@ -1375,6 +1462,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 1,
       runRange: 1,
       pose,
+      arrow,
     },
 
     {
@@ -1384,6 +1472,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 5,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -5.892 + offset , y: 4.043, z: 2.427},
@@ -1392,6 +1481,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 6,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -6.477 + offset , y: 4.043, z: -0.388},
@@ -1400,6 +1490,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 6,
       runRange: 1,
       pose,
+      arrow: isBreak ? arrow_break : arrow
     },
     {
       start: {x: -6.061 + offset , y: 4.043, z: -3.295},
@@ -1408,6 +1499,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 5,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -6.061 + offset , y: 4.043, z: -6.147},
@@ -1416,6 +1508,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 2,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -6.061 + offset , y: 3.418, z: -7.558},
@@ -1424,6 +1517,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 3,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -5.924 + offset , y: 3.418, z: -9.531},
@@ -1432,6 +1526,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 1,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -5.896 + offset , y: 3.730, z: -10.041},
@@ -1440,6 +1535,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 4,
       runRange: 1,
       pose,
+      arrow,
     },
     {
       start: {x: -5.898 + offset , y: 4.977, z: -10.23},
@@ -1448,6 +1544,7 @@ function getFlowRoute2(): FlowParam[] {
       segment: 2,
       runRange: 1,
       pose,
+      arrow: isBreak ? arrow_break : arrow,
     },
   ]
 }
@@ -1523,6 +1620,7 @@ function getRoute2Names(): string[] {
     '墙面冷水管_弯头21',
     '墙面冷水管_36',
     '墙面冷水管_弯头20',
+    '墙面冷水管_37',
     '墙面冷水管_弯头19',
     '墙面冷水管_38',
     '墙面冷水管_弯头18',
@@ -1537,5 +1635,47 @@ function getRoute2Names(): string[] {
     '墙面冷水管_43',
     '墙面冷水管_弯头13',
     '墙面冷水管_44',
+  ]
+}
+
+
+function getAlertPipe1(): {name: string, offsetX?: number, offsetY?: number, offsetZ?: number, scale?: number}[] {
+  return [
+    {
+      name: '地下冷水管_23',
+      offsetY: -0.02, // -0.25,
+      scale: 0.5,
+    },
+    {
+      name: '地下冷水管_29',
+      offsetY: -0.02, // -0.25,
+      scale: 0.5,
+    },
+    {
+      name: '地下冷水管_30',
+      offsetY: -0.02, // -0.25,
+      scale: 0.5,
+    }
+  ]
+}
+
+function getAlertPipe2(): {name: string, offsetX?: number, offsetY?: number, offsetZ?: number, scale?: number}[] {
+  return [
+    {
+      name: '墙面冷水管_118',
+      offsetY: -0.02, // -0.25,
+      scale: 0.5,
+    },
+    {
+      name: '墙面冷水管_116',
+      // offsetX: 0.2,
+      offsetY: -0.02, // -0.25,
+      scale: 0.5,
+    },
+    {
+      name: '墙面冷水管_44',
+      offsetY: -0.02,
+      scale: 0.5,
+    }
   ]
 }

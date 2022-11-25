@@ -1423,12 +1423,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         selectKey: item.key,
         canBeClick: false,
       })
-
-      this.props.arrowTricker?.(true, {
-        x: 0,
-        y: 0.5,
-        z: DefaultLocation.position.z,
-      })
       const home = await FileTools.getHomeDirectory()
       const routeDir = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'glb')
       routeDir.sort((a: any, b: any) => {
@@ -1440,8 +1434,23 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           return 0
         }
       })
+      const routeImgs = await FileTools.getPathListByFilterDeep(item.path.indexOf(home) === 0 ? item.path : (home + item.path), 'png')
+      routeImgs.sort((a: any, b: any) => {
+        if (a.name > b.name) {
+          return 1
+        } else if (a.name < b.name) {
+          return -1
+        } else {
+          return 0
+        }
+      })
 
-      let data
+      let data: {
+        position: Point,
+        rotation: Point,
+        scale: Point,
+        duration: 2000,
+      } | undefined = undefined
       const dataPath = (item.path.indexOf(home) === 0 ? '' : home) + item.path + item.path.substring(item.path.lastIndexOf('/')) + '.json'
       if (await FileTools.fileIsExist(dataPath)) {
         const dataStr = await FileTools.readFile(dataPath)
@@ -1449,22 +1458,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       }
       // 转圈/放大/定位到登山路线
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
-        // position: data?.position || {
-        //   x: -0.2,
-        //   y: -0.2,
-        //   z: -0.65,
-        // },
         rotation: data?.rotation || {
           x: 0,
           y: -30,
           z: 0,
         },
-        // scale: data?.scale || {
-        //   x: 0.004,
-        //   y: 0.004,
-        //   z: 0.004,
-        // },
-        duration: data?.duration / 2 || AnimationTime,
+        duration: data?.duration !== undefined ? (data?.duration / 2) : AnimationTime,
       })
       setTimeout(async () => {
         await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
@@ -1473,19 +1472,21 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
             y: -0.2,
             z: -0.65,
           },
-          // rotation: data?.rotation || {
-          //   x: 0,
-          //   y: -30,
-          //   z: 0,
-          // },
           scale: data?.scale || {
             x: 0.004,
             y: 0.004,
             z: 0.004,
           },
-          duration: data?.duration / 2 || AnimationTime,
+          duration: data?.duration !== undefined ? (data?.duration / 2) : AnimationTime,
         })
-      }, data?.duration / 2 || AnimationTime)
+
+
+        this.props.arrowTricker?.(true, {
+          x: 0,
+          y: data?.position.y || 0,
+          z: DefaultLocation.position.z,
+        })
+      }, data?.duration !== undefined ? (data?.duration / 2) : AnimationTime)
 
 
 
@@ -1527,6 +1528,37 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           this.twinkle(pathIndexs[0], 2)
           await this.twinkle2(img, data?.location, 2)
           this.mountainElements.index = this.mountainElements.index.concat(pathIndexs)
+          this.mountainElements.path.push(img)
+          await wait(1)
+        }
+
+        // 显示图片
+        for (const route of routeImgs) {
+          // 添加路线坐标
+          // const pathIndexs = await SARMap.addModelToSandTable([route.path])
+
+          const jsonPath = route.path.replace('.png', '.json')
+          let data
+          if (await FileTools.fileIsExist(jsonPath)) {
+            const dataStr = await FileTools.readFile(jsonPath)
+            data = JSON.parse(dataStr)
+
+            // this.lastSpot = Object.assign({}, data, {path: item.path})
+          }
+          // 排除不是路线上的图片
+          if (!data?.name) continue
+          // const selectImg = route.path.replace('.glb', '1.png')
+          const img = route.path
+          // await SARMap.deleteARMediaToSandbox(selectImg)
+          await SARMap.addARMediaToSandbox(route.path, {
+            position: data?.location?.position || { x: 0, y: 0, z: 0 },
+            rotation: data?.location?.rotation || { x: 0, y: 0, z: 0 },
+            scale: data?.location?.scale || { x: 200, y: 200, z: 200 },
+          })
+
+          // this.twinkle(pathIndexs[0], 2)
+          await this.twinkle2(img, data?.location, 2)
+          // this.mountainElements.index = this.mountainElements.index.concat(pathIndexs)
           this.mountainElements.path.push(img)
           await wait(1)
         }
@@ -1660,13 +1692,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         duration: AnimationTime,
       })
 
-      // 视角和模型相对原点的偏移
-      this.props.arrowTricker?.(true, {
-        x: 0,
-        y: 1,
-        z: DefaultLocation.position.z,
-      })
-
       setTimeout(async () => {
         if (!item.path || !this.lastSpot) return
         // 显示当前选中的景点
@@ -1679,6 +1704,13 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           scale: this.lastSpot?.location?.scale || { x: 200, y: 200, z: 200 },
         })
         await SARMap.commitSandTableChanges()
+
+        // 视角和模型相对原点的偏移
+        this.props.arrowTricker?.(true, {
+          x: 0,
+          y: 1,
+          z: DefaultLocation.position.z,
+        })
         if (await this.twinkle2(selectImg, this.lastSpot?.location, 3)) {
           this.setState({
             canBeClick: true,

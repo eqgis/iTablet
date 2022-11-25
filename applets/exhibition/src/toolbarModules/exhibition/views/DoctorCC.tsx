@@ -287,11 +287,12 @@ class DoctorCC extends Component<Props, State> {
 
         if(this.ARModel) {
           await SARMap.setLayerVisible(this.ARModel.layerName, true)
-          // 获取校准之后的模型位置信息
-          this.positionInfo = await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
 
           const timer01 = setTimeout(async () => {
             if(this.ARModel) {
+              // 获取校准之后的模型位置信息
+              this.positionInfo = await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
+
               const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
               // console.warn("relativePositin: " + JSON.stringify(relativePositin))
               if(relativePositin) {

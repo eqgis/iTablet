@@ -39,8 +39,8 @@ interface Item {
   action: () => void
 }
 
-const BG_WIDTH = dp(151)
-const BG_HEIGTH = dp(210)
+let BG_WIDTH = dp(151)
+let BG_HEIGTH = dp(210)
 let IMG_SIZE = dp(110)
 let IMG_BOTTOM = dp(100)
 const CIRCLE_SIZE = dp(120)
@@ -69,6 +69,8 @@ class Home extends React.Component<Props, State> {
     if(global.isPad) {
       IMG_SIZE = dp(186)
       IMG_BOTTOM = dp(64)
+      BG_WIDTH = dp(200)
+      BG_HEIGTH = dp(278)
     }
     for (let i = 0; i < this.getItems().length; i++) {
       scales.push({

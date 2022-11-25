@@ -54,6 +54,7 @@ class CoverView extends React.Component<Props, State> {
   sideBarIndex: string | undefined = ""
   holeBarIndex: string | undefined = undefined
   rollingbarIndex: string | undefined = undefined
+  flowBarIndex: string | undefined = undefined
 
   constructor(props: Props) {
     super(props)
@@ -230,7 +231,18 @@ class CoverView extends React.Component<Props, State> {
   }
 
   flowEnabled = false
-  onFlowPress = async () => {
+  onFlowPress = async (index: string) => {
+    if(this.sideBarIndex === index) {
+      this.setState({
+        isSecondaryShow: false,
+      })
+      this.sideBarIndex = ""
+      this.sideBar?.clear()
+      return
+    }
+    this.sideBarIndex = index
+    this.flowBarIndex = index
+
     this.timeoutTrigger?.onFirstMenuClick()
     this.stopCover()
     this.stopRolling()
@@ -290,7 +302,7 @@ class CoverView extends React.Component<Props, State> {
   onRollingSelect = (mode: 0 | 1) => {
     this.timeoutTrigger?.onBackFromSecondMenu()
     this.rolling(mode)
-    this.setState({secondMenuData: []})
+    // this.setState({secondMenuData: []})
   }
 
   onFlowSelect = (index: 1 | 2) => {
@@ -398,7 +410,7 @@ class CoverView extends React.Component<Props, State> {
 
   onSingleClick = () => {
 
-    if(this.holeBarIndex === this.sideBar?.state.currentIndex || this.rollingbarIndex === this.sideBar?.state.currentIndex) {
+    if(this.holeBarIndex === this.sideBar?.state.currentIndex || this.rollingbarIndex === this.sideBar?.state.currentIndex || this.flowBarIndex === this.sideBar?.state.currentIndex) {
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })

@@ -460,7 +460,7 @@ class AR3DMapView extends React.Component<Props, State> {
   getMaterials = () => {
     this.speakData = [
       {
-        name: '白模',
+        name: '素雅白',
         image: getImage().icon_tool_meterials0,
         action: async () => {
           SExhibition.changeBuildMaterials(0)
@@ -469,7 +469,7 @@ class AR3DMapView extends React.Component<Props, State> {
         },
       },
       {
-        name: '纹理贴图1',
+        name: '科技蓝',
         image: getImage().icon_tool_meterials1,
         action: async () => {
           SExhibition.changeBuildMaterials(1)
@@ -478,7 +478,7 @@ class AR3DMapView extends React.Component<Props, State> {
         },
       },
       {
-        name: '纹理贴图2',
+        name: '复古棕',
         image: getImage().icon_tool_meterials2,
         action: async () => {
           SExhibition.changeBuildMaterials(2)
@@ -536,7 +536,7 @@ class AR3DMapView extends React.Component<Props, State> {
         data={this.speakData}
         onSelect={()=>{
           this.setState({
-            showShape: false,
+            // showShape: false,
           })
         }}
         imageStyle={{width: '100%', height: '100%',marginTop: dp(0)}}
